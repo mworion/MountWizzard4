@@ -88,7 +88,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                       'pen': self.M_YELLOW},
                 'directWeatherTemp': {'pd': None,
                                       'name': 'Direct',
-                                      'pen': self.M_BLUE},
+                                      'pen': self.M_PRIM},
             },
             'Camera Temperature': {
                 'gen': {'range': (-20, 20, False),
@@ -124,7 +124,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                      'pen': self.M_YELLOW},
                 'directWeatherDew': {'pd': None,
                                      'name': 'Direct',
-                                     'pen': self.M_BLUE},
+                                     'pen': self.M_PRIM},
             },
             'Pressure': {
                 'gen': {'range': (900, 1050, False),
@@ -144,7 +144,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                        'pen': self.M_YELLOW},
                 'directWeatherPress': {'pd': None,
                                        'name': 'Direct',
-                                       'pen': self.M_BLUE},
+                                       'pen': self.M_PRIM},
             },
             'Humidity': {
                 'gen': {'range': (-5, 105, True),
@@ -164,7 +164,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                      'pen': self.M_YELLOW},
                 'directWeatherHum': {'pd': None,
                                      'name': 'Direct',
-                                     'pen': self.M_BLUE},
+                                     'pen': self.M_PRIM},
             },
             'Sky Quality': {
                 'gen': {'range': (10, 22.5, False),
@@ -343,7 +343,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         legend = pg.LegendItem(pen=self.ui.measure.pen,
                                offset=(65, 5),
                                verSpacing=-5,
-                               labelTextColor=self.M_BLUE,
+                               labelTextColor=self.M_PRIM,
                                labelTextSize='10pt',
                                brush=pg.mkBrush(color=self.M_BACK))
         legend.setParentItem(plotItem)

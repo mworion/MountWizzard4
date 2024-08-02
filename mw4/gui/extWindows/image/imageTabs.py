@@ -95,7 +95,7 @@ class ImageTabs:
         for ix in range(3):
             for iy in range(3):
                 text = f'{segHFR[ix][iy]:1.2f}'
-                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
+                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_PRIM)
                 textItem.setText(text)
                 textItem.setFont(self.fontText)
                 posX = ix * w / 3 + w / 6
@@ -179,7 +179,7 @@ class ImageTabs:
 
         # add inner value
         text = f'{self.photometry.hfrInner:1.2f}'
-        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
+        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_PRIM)
         textItem.setText(text)
         textItem.setFont(self.fontText)
         textItem.setZValue(10)
@@ -207,7 +207,7 @@ class ImageTabs:
             endIndexSeg = int((angle + offsetTiltAngle + 330) / 10)
             segData[i] = np.mean(segHFR[startIndexSeg:endIndexSeg])
             text = f'{segData[i]:1.2f}'
-            textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
+            textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_PRIM)
             textItem.setFont(self.fontText)
             textItem.setZValue(10)
             textItem.setText(text)
@@ -319,7 +319,7 @@ class ImageTabs:
                 objs['theta'][i])
             if self.ui.showValues.isChecked():
                 t = f'{self.photometry.hfr[i]:2.1f}'
-                item = pg.TextItem(text=t, color=self.M_BLUE, anchor=(1, 1))
+                item = pg.TextItem(text=t, color=self.M_PRIM, anchor=(1, 1))
                 item.setFont(self.fontAnno)
                 item.setParentItem(eItem)
         tab = self.ui.tabImage

@@ -148,6 +148,7 @@ setup(
         'Operating System :: Microsoft :: Windows :: Windows 10',
         'Operating System :: Microsoft :: Windows :: Windows 11',
         'Operating System :: POSIX :: Linux',
+        'Intended Audience :: Developers',
         'Intended Audience :: Education',
         'Intended Audience :: Science/Research',
         'Topic :: Utilities',

@@ -324,13 +324,13 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         super().__init__(*args, **kwargs, show=True)
         pg.setConfigOptions(antialias=True, imageAxisOrder='row-major')
 
-        self.pen = pg.mkPen(color=self.M_BLUE, width=1)
+        self.pen = pg.mkPen(color=self.M_PRIM, width=1)
         self.penPink = pg.mkPen(color=self.M_PINK, width=1)
-        self.brush = pg.mkBrush(color=self.M_BLUE + '80')
-        self.penGrid = pg.mkPen(color=self.M_GREY)
-        self.brushGrid = pg.mkBrush(color=self.M_GREY + '80')
-        self.penHorizon = pg.mkPen(color=self.M_BLUE + '80', width=1)
-        self.brushHorizon = pg.mkBrush(color=self.M_BLUE2 + '40')
+        self.brush = pg.mkBrush(color=self.M_PRIM + '80')
+        self.penGrid = pg.mkPen(color=self.M_SEC)
+        self.brushGrid = pg.mkBrush(color=self.M_SEC + '80')
+        self.penHorizon = pg.mkPen(color=self.M_PRIM + '80', width=1)
+        self.brushHorizon = pg.mkBrush(color=self.M_PRIM2 + '40')
         self.setBackground(self.M_BACK)
         self.cMapGYR = pg.ColorMap([0, 0.6, 1.0],
                                    [self.M_GREEN, self.M_YELLOW, self.M_RED])
@@ -348,12 +348,12 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         """
         :return:
         """
-        self.pen = pg.mkPen(color=self.M_BLUE, width=1)
-        self.brush = pg.mkBrush(color=self.M_BLUE + '80')
-        self.penGrid = pg.mkPen(color=self.M_GREY)
-        self.brushGrid = pg.mkBrush(color=self.M_GREY + '80')
-        self.penHorizon = pg.mkPen(color=self.M_BLUE + '80', width=1)
-        self.brushHorizon = pg.mkBrush(color=self.M_BLUE2 + '40')
+        self.pen = pg.mkPen(color=self.M_PRIM, width=1)
+        self.brush = pg.mkBrush(color=self.M_PRIM + '80')
+        self.penGrid = pg.mkPen(color=self.M_SEC)
+        self.brushGrid = pg.mkBrush(color=self.M_SEC + '80')
+        self.penHorizon = pg.mkPen(color=self.M_PRIM + '80', width=1)
+        self.brushHorizon = pg.mkBrush(color=self.M_PRIM2 + '40')
         self.setBackground(self.M_BACK)
         for side in ('left', 'top', 'right', 'bottom'):
             for plotItem in self.p:
@@ -556,7 +556,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
                 text = f'{90 - r}'
             else:
                 text = f'{r}'
-            textItem = pg.TextItem(text=text, color=self.M_BLUE, anchor=(0.5, 0.5))
+            textItem = pg.TextItem(text=text, color=self.M_PRIM, anchor=(0.5, 0.5))
             textItem.setFont(font)
             textItem.setPos(r * np.cos(textAngle), r * np.sin(textAngle))
             plotItem.addItem(textItem)
@@ -568,7 +568,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
                  maxL * 0.75, -maxL * 0.75, - maxL * 0.75],
                 [maxL, 0, -maxL, 0, maxL * 0.75,
                  - maxL * 0.75, - maxL * 0.75, maxL * 0.75]):
-            textItem = pg.TextItem(color=self.M_BLUE, anchor=(0.5, 0.5))
+            textItem = pg.TextItem(color=self.M_PRIM, anchor=(0.5, 0.5))
             textItem.setHtml(f'<b>{text}</b>')
             textItem.setFont(font)
             textItem.setPos(x, y)
@@ -642,7 +642,7 @@ class NormalScatter(PlotBase):
         self.p[0].getViewBox().rightMouseRange()
 
         dataVal = kwargs.get('data', y)
-        self.col = kwargs.get('color', self.M_BLUE)
+        self.col = kwargs.get('color', self.M_PRIM)
         if isinstance(self.col, (str, QColor)):
             self.col = [self.col] * len(x)
 
@@ -834,7 +834,7 @@ class ImageBar(PlotBase):
         posX = x + d
         posY = y + d
         text = pg.TextItem(text=f'{value:2.2f}',
-                           color=self.M_BLUE)
+                           color=self.M_PRIM)
         text.setPos(posX, posY)
         self.p[0].addItem(text)
         return True

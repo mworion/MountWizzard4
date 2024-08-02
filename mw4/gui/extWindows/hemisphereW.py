@@ -647,8 +647,8 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         """
         plotItem = self.ui.hemisphere.p[0]
         self.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
-        self.pointerDome.setPen(pg.mkPen(color=self.M_GREY))
-        self.pointerDome.setBrush(pg.mkBrush(color=self.M_GREY + '80'))
+        self.pointerDome.setPen(pg.mkPen(color=self.M_SEC))
+        self.pointerDome.setBrush(pg.mkBrush(color=self.M_SEC + '80'))
         self.pointerDome.setVisible(False)
         plotItem.addItem(self.pointerDome)
 
@@ -723,7 +723,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
         question = '<b>Manual slewing to coordinate</b>'
         question += '<br><br>Selected coordinates are:<br>'
-        question += f'<font color={self.M_BLUE}> Altitude: {altitude:3.1f}°'
+        question += f'<font color={self.M_PRIM}> Altitude: {altitude:3.1f}°'
         question += f'   Azimuth: {azimuth:3.1f}°</font>'
         question += '<br><br>Would you like to start slewing?<br>'
 
@@ -748,7 +748,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
         question = '<b>Polar / Ortho Alignment procedure</b>'
         question += '<br>Selected alignment star: '
-        question += f'<font color={self.M_BLUE}>{name}.</font>'
+        question += f'<font color={self.M_PRIM}>{name}.</font>'
         question += '<br>Would you like to start alignment?<br>'
 
         isDAT = self.app.mount.setting.statusDualAxisTracking

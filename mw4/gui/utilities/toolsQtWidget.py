@@ -280,7 +280,7 @@ class MWidget(QWidget, Styles):
         if not name:
             return False
 
-        icon = self.svg2icon(f':/icon/{name}.svg', self.M_WHITE)
+        icon = self.svg2icon(f':/icon/{name}.svg', self.M_TER)
         gui.setIcon(icon)
         gui.setIconSize(QSize(16, 16))
         gui.setProperty('alignLeft', True)

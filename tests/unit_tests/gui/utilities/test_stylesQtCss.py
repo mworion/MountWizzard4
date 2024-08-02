@@ -58,16 +58,16 @@ def test_getStyle_2(function):
 
 def test_property(function):
     a = function.M_TRANS
-    a = function.M_BLUE
-    a = function.M_BLUE1
-    a = function.M_BLUE2
-    a = function.M_BLUE3
-    a = function.M_BLUE4
+    a = function.M_PRIM
+    a = function.M_PRIM1
+    a = function.M_PRIM2
+    a = function.M_PRIM3
+    a = function.M_PRIM4
     a = function.M_WHITE
     a = function.M_WHITE
     a = function.M_WHITE1
-    a = function.M_GREY
-    a = function.M_GREY1
+    a = function.M_SEC
+    a = function.M_SEC1
     a = function.M_BACK
     a = function.M_BLACK
     a = function.M_RED
@@ -99,7 +99,7 @@ def test_calcHexColor_3(function):
 
 
 def test_renderStyle_1(function):
-    inStyle = '12345$M_BLUE$12345'
+    inStyle = '12345$M_PRIM$12345'
     function.colorSet = 0
     val = function.renderStyle(inStyle).strip(' ')
     assert val == '12345#2090C012345\n'

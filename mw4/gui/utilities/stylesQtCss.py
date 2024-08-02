@@ -28,17 +28,17 @@ class Styles:
     def __init__(self):
         self.cs = {
             'M_TRANS': ['#00000000', '#00000000', '#00000000', ],
-            'M_BLUE': ['#2090C0', '#C05050', '#000000', ],
-            'M_BLUE1': ['#186C90', '#903838', '#C0C0C0', ],
-            'M_BLUE2': ['#104860', '#602828', '#A0A0A0', ],
-            'M_BLUE3': ['#092B39', '#481C1C', '#808080', ],
-            'M_BLUE4': ['#04151C', '#241010', '#404040', ],
-            'M_WHITE': ['#C0C0C0', '#E00000', '#101010', ],
-            'M_WHITE1': ['#A0A0A0', '#A00000', '#404040', ],
-            'M_GREY': ['#404040', '#402020', '#A0A0A0', ],
-            'M_GREY1': ['#282828', '#201010', '#C0C0C0', ],
+            'M_PRIM': ['#2090C0', '#C05050', '#000000', ],
+            'M_PRIM1': ['#186C90', '#903838', '#C0C0C0', ],
+            'M_PRIM2': ['#104860', '#602828', '#A0A0A0', ],
+            'M_PRIM3': ['#092B39', '#481C1C', '#808080', ],
+            'M_PRIM4': ['#04151C', '#241010', '#404040', ],
+            'M_SEC': ['#404040', '#402020', '#A0A0A0', ],
+            'M_SEC1': ['#282828', '#201010', '#C0C0C0', ],
+            'M_TER': ['#C0C0C0', '#E00000', '#101010', ],
+            'M_TER1': ['#A0A0A0', '#A00000', '#404040', ],
             'M_BACK': ['#181818', '#181818', '#E0E0E0', ],
-            'M_BLACK': ['#000000', '#000000', '#FFFFFF', ],
+            'M_QUAR': ['#000000', '#000000', '#FFFFFF', ],
             'M_RED': ['#D03030', '#C03030', '#600000', ],
             'M_RED1': ['#902020', '#802020', '#A00000', ],
             'M_RED2': ['#701818', '#802020', '#E00000', ],
@@ -142,76 +142,76 @@ class Styles:
 
         self.BASIC_STYLE = """
         QWidget {
-            color: $M_BLUE$;
+            color: $M_PRIM$;
         }
         QLabel[keypad]{
-            color: $M_BLUE$;
+            color: $M_PRIM$;
             background-color: $M_BACK$;
         }
         QTextEdit {
-            color: $M_WHITE$;
-            background-color: $M_BLACK$;
+            color: $M_TER$;
+            background-color: $M_QUAR$;
             border-radius: 0px;
         }
         QToolTip {
             border-width: 2px;
             border-style: outset;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             background-color: $M_BACK$;
-            color: $M_BLUE$;
+            color: $M_PRIM$;
             padding: 5px;
             max-width: 500px;
         }
         QLabel {
             background-color: $M_TRANS$;
-            color: $M_WHITE$;
+            color: $M_TER$;
         }
         QLabel[keypad] {
-            background-color: $M_BLACK$;
+            background-color: $M_QUAR$;
             border-radius: 8px;
         }
         QLabel:disabled {
             background-color: $M_TRANS$;
-            color: $M_GREY$;
+            color: $M_SEC$;
         }
         QLabel[color='blue'] {
             border-width: 3px;
-            border-color: $M_BLUE1$;
+            border-color: $M_PRIM1$;
             border-style: outset;
             border-radius: 2px;
-            background-color: $M_BLUE1$;
+            background-color: $M_PRIM1$;
         }
         QLabel[iconpicture='true'] {
             border-width: 1px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-style: plain;
             border-radius: 0px;
         }
         /* QLine Edit*/
         QLineEdit {
-            background-color: $M_BLACK$;
-            color: $M_BLUE$;
+            background-color: $M_QUAR$;
+            color: $M_PRIM$;
             text-align: right;
             border-width: 1px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-style: flat;
             border-radius: 2px;
         }
         QLineEdit::item:active {
-            border-color: $M_BLUE$;
+            border-color: $M_PRIM$;
         }
         QLineEdit:disabled {
-            background-color: $M_GREY1$;
+            background-color: $M_SEC1$;
         }
         QLineEdit[keypad] {
             background-color: $M_BACK$;
-            color: $M_BLUE$;
+            color: $M_PRIM$;
             border-width: 0px;
             border-color: $M_BACK$;
         }
         QLineEdit[input='true']{
             border-width: 1px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-style: outset;
         }
         QLineEdit[color='green'] {
@@ -230,7 +230,7 @@ class Styles:
             border-color: $M_RED$;
         }
         QLineEdit[status='on'] {
-            color: $M_WHITE$;
+            color: $M_TER$;
         }
         QLabel[color='green'] {
             color: $M_GREEN$;
@@ -247,39 +247,39 @@ class Styles:
             border-width: 1px;
             border-style: outset;
             border-radius: 3px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             margin-top: 6px;
         }
         QGroupBox::title {
             left: 5px;
             subcontrol-origin: margin;
             subcontrol-position: top left;
-            color: $M_WHITE$;
+            color: $M_TER$;
             background-color: $M_BACK$;
         }
         QGroupBox::title[large=true] {
             left: 5px;
             subcontrol-origin: margin;
             subcontrol-position: top left;
-            color: $M_BLUE$;
+            color: $M_PRIM$;
             background-color: $M_BACK$;
         }
         QGroupBox::title[refraction=true]{
-            color: $M_BLUE$;
+            color: $M_PRIM$;
         }
         QGroupBox[refraction=true] {
-            border-color: $M_BLUE$;
+            border-color: $M_PRIM$;
         }
         QGroupBox::indicator:disabled {
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             background-color: $M_BACK$;
         }
         QGroupBox::indicator:unchecked {
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             background-color: $M_BACK$;
         }
         QGroupBox::title:disabled{
-            color: $M_GREY$;
+            color: $M_SEC$;
         }
         QGroupBox[frameless=true] {
             border-width: 0px;
@@ -290,7 +290,7 @@ class Styles:
         }
         QGroupBox::indicator {
             border-width: 2px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             background-color: $M_BACK$;
             border-style: outset;
             border-radius: 2px;
@@ -299,27 +299,27 @@ class Styles:
         }
         QGroupBox::indicator:checked {
             border-width: 1px;
-            border-color: $M_BLUE$;
-            background-color: $M_BLUE2$;
+            border-color: $M_PRIM$;
+            background-color: $M_PRIM2$;
             image: url(:/icon/$checkmark$.svg);
         }
         QGroupBox[running=true] {
-            color: $M_WHITE$;
+            color: $M_TER$;
             border-color: $M_YELLOW$;
-            background-color: $M_GREY1$;
+            background-color: $M_SEC1$;
         }
         QGroupBox:title[running=true] {
-            color: $M_WHITE$;
+            color: $M_TER$;
         }
         /* Checkboxes */
         QCheckBox {
-            color: $M_WHITE$;
+            color: $M_TER$;
             spacing: 5px;
             background-color: $M_TRANS$;;
         }
         QCheckBox::indicator {
             border-width: 1px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             background-color: $M_BACK$;
             border-style: outset;
             border-radius: 2px;
@@ -328,29 +328,29 @@ class Styles:
         }
         QCheckBox::indicator:checked {
             border-width: 1px;
-            border-color: $M_BLUE$;
-            background-color: $M_BLUE2$;
+            border-color: $M_PRIM$;
+            background-color: $M_PRIM2$;
             image: url(:/icon/$checkmark$.svg);
         }
         QCheckBox::indicator:disabled {
             background-color: $M_BACK$;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
         }
         QCheckBox:disabled {
-            color: $M_GREY$;
+            color: $M_SEC$;
         }
         QRadioButton {
-            color: $M_WHITE$;
+            color: $M_TER$;
             spacing: 5px;
             background-color: $M_TRANS$;;
         }
         QRadioButton:disabled {
-            color: $M_GREY$;
+            color: $M_SEC$;
             background-color: $M_TRANS$;;
         }
         QRadioButton::indicator {
             border-width: 2px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             background-color: $M_BACK$;
             border-style: outset;
             border-radius: 7px;
@@ -358,19 +358,19 @@ class Styles:
             height: 13px;
         }
         QRadioButton::indicator:checked {
-            border-color: $M_BLUE$;
-            background-color: $M_BLUE2$;
+            border-color: $M_PRIM$;
+            background-color: $M_PRIM2$;
             image: url(:/icon/$radio$.svg);
         }
         QRadioButton::indicator:disabled {
             background-color: $M_BACK$;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
         }
         /* Spin Boxes */
         QDoubleSpinBox {
             background-color: $M_BACK$;
-            color: $M_BLUE$;
-            border-color: $M_GREY$;
+            color: $M_PRIM$;
+            border-color: $M_SEC$;
             border-width: 1px;
             border-style: outset;
             border-radius: 2px;
@@ -378,8 +378,8 @@ class Styles:
             padding-right: 2px;
         }
         QDoubleSpinBox:disabled {
-            background-color: $M_GREY1$;
-            color: $M_GREY$;
+            background-color: $M_SEC1$;
+            color: $M_SEC$;
         }
         QDoubleSpinBox::up-button {
             subcontrol-origin: border;
@@ -387,7 +387,7 @@ class Styles:
             width: 12px;
             border-width: 1px;
             border-radius: 2px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-style: outset;
             background-color: $M_BACK$;
         }
@@ -403,7 +403,7 @@ class Styles:
             border-width: 1px;
             border-style: outset;
             border-radius: 2px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             background-color: $M_BACK$;
         }
         QDoubleSpinBox::down-arrow {
@@ -414,9 +414,9 @@ class Styles:
         /* Spin Boxes */
         QSpinBox {
             background-color: $M_BACK$;
-            color: $M_BLUE$;
+            color: $M_PRIM$;
             text-align: right;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-width: 1px;
             border-style: outset;
             border-radius: 2px;
@@ -429,7 +429,7 @@ class Styles:
             width: 16px;
             border-width: 1px;
             border-radius: 2px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-style: outset;
             background-color: $M_BACK$;
         }
@@ -445,7 +445,7 @@ class Styles:
             border-width: 1px;
             border-style: outset;
             border-radius: 2px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             background-color: $M_BACK$;
         }
         QSpinBox::down-arrow {
@@ -455,17 +455,17 @@ class Styles:
         }
         /* Push Buttons */
         QPushButton {
-            background-color: $M_GREY1$;
-            color: $M_WHITE$;
-            border-color: $M_GREY$;
+            background-color: $M_SEC1$;
+            color: $M_TER$;
+            border-color: $M_SEC$;
             border-width: 1px;
             border-style: outset;
             border-radius: 2px;
             min - width: 10em;
         }
         QPushButton[keypad] {
-            background-color: $M_GREY1$;
-            border-color: $M_BLUE$;
+            background-color: $M_SEC1$;
+            border-color: $M_PRIM$;
             border-radius: 8px;
             border-width: 2px;
             border-style: outset;
@@ -478,43 +478,43 @@ class Styles:
             padding-right: 3px;
         }
         QPushButton:pressed {
-            background-color: $M_BLUE$;
+            background-color: $M_PRIM$;
         }
         QPushButton[running=true] {
-            border-color: $M_BLUE$;
-            background-color: $M_BLUE2$;
+            border-color: $M_PRIM$;
+            background-color: $M_PRIM2$;
         }
         QPushButton:disabled {
             background-color: $M_BACK$;
-            color: $M_GREY$;
-            border-color: $M_GREY1$;
+            color: $M_SEC$;
+            border-color: $M_SEC1$;
             border-width: 1px;
             border-style: outset;
             border-radius: 2px;
         }
         QPushButton[color='gray'] {
             background-color: gray;
-            color: $M_BLACK$;
+            color: $M_QUAR$;
         }
         QPushButton[color='red'] {
             border-color: $M_RED$;
             background-color: $M_RED2$;
-            color: $M_WHITE$;
+            color: $M_TER$;
         }
         QPushButton[color='yellow'] {
             background-color: $M_YELLOW2$;
             border-color: $M_YELLOW$;
-            color: $M_WHITE$;
+            color: $M_TER$;
         }
         QPushButton[color='green'] {
             background-color: $M_GREEN2$;
             border-color: $M_GREEN$;
-            color: $M_WHITE$;
+            color: $M_TER$;
         }
         QPushButton:disabled {
             background-color: $M_BACK$;
-            color: $M_GREY$;
-            border-color: $M_GREY1$;
+            color: $M_SEC$;
+            border-color: $M_SEC1$;
             border-width: 1px;
             border-style: outset;
             border-radius: 2px;
@@ -524,9 +524,9 @@ class Styles:
             border-color: $M_RED$;
         }
         QMessageBox QPushButton {
-            background-color: $M_GREY1$;
-            color: $M_WHITE$;
-            border-color: $M_GREY$;
+            background-color: $M_SEC1$;
+            color: $M_TER$;
+            border-color: $M_SEC$;
             border-width: 1px;
             border-style: outset;
             border-radius: 2px;
@@ -535,23 +535,23 @@ class Styles:
         }
         QMessageBox QPushButton:default {
             border-width: 2px;
-            border-color: $M_BLUE$;
+            border-color: $M_PRIM$;
         }
         QListView {
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-width: 0px;
             border-style: plain;
             border-radius: 0px;
-            color: $M_WHITE$;
+            color: $M_TER$;
             padding: 0px;
             margin: 0px;
             border: 0px;
         }
         QListView::item:selected {
-            background-color: $M_BLUE$;
+            background-color: $M_PRIM$;
         }
         QTableWidget {
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-width: 0px;
             border-style: plain;
             border-radius: 0px;
@@ -564,8 +564,8 @@ class Styles:
             border-style: plain;
             border-radius: 2px;
             border-color: $M_BACK$;
-            background-color: $M_GREY1$;
-            color: $M_WHITE$;
+            background-color: $M_SEC1$;
+            color: $M_TER$;
         }
         QTableWidget QHeaderView::down-arrow{
             subcontrol-position: upper;
@@ -574,22 +574,22 @@ class Styles:
             height: 6px;
         }
         QTableView::item:selected {
-            background-color: $M_BLUE$;
+            background-color: $M_PRIM$;
             color: $M_BACK$;
         }
         /* Combo Boxes */
         QComboBox {
             combobox-popup: 0;
-            color: $M_WHITE$;
-            border-color: $M_GREY$;
+            color: $M_TER$;
+            border-color: $M_SEC$;
             border-width: 1px;
             border-style: outset;
             border-radius: 2px;
             padding-left: 5px;
-            background-color: $M_GREY1$;
+            background-color: $M_SEC1$;
         }
         QComboBox:disabled {
-            color: $M_GREY$;
+            color: $M_SEC$;
         }
         QComboBox[active=true] {
             border-color: $M_GREEN$;
@@ -599,11 +599,11 @@ class Styles:
             subcontrol-origin: border;
             subcontrol-position: right;
             width: 20px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-width: 1px;
             border-style: outset;
             border-radius: 2px;
-            background-color: $M_GREY1$;
+            background-color: $M_SEC1$;
         }
         QComboBox[active=true]::drop-down {
             border-color: $M_GREEN$;
@@ -616,32 +616,32 @@ class Styles:
         QComboBox QListView {
             border-width: 2px;
             border-style: outset;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-radius: 2px;
-            color: $M_WHITE$;
+            color: $M_TER$;
             background-color: $M_BACK$;
             min-height: 60px;
         }
         QComboBox QListView::item {
             border-width: 1px;
             min-height: 28px;
-            border-color: $M_BLUE$;
+            border-color: $M_PRIM$;
         }
         QComboBox QListView::item:selected {
             border-style: outset;
-            background-color: $M_BLUE2$;
+            background-color: $M_PRIM2$;
         }
         /* lines */
         QFrame[frameShape="4"] {
-            color: $M_BLUE1$;
+            color: $M_PRIM1$;
         }
         QFrame[frameShape="5"] {
-            color: $M_BLUE1$;
+            color: $M_PRIM1$;
         }
         /* tab widget */
         QTabWidget:pane {
             border-width: 2px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-radius: 5px;
             border-style: outset;
             top: -10px;
@@ -652,17 +652,17 @@ class Styles:
             alignment: center;
         }
         QTabBar::tab {
-            background-color: $M_GREY1$;
-            color: $M_WHITE$;
+            background-color: $M_SEC1$;
+            color: $M_TER$;
             border-width: 1px;
-            border-color: $M_BLUE2$;
+            border-color: $M_PRIM2$;
             border-radius: 3px;
             border-style: outset;
             padding: 4px;
         }
         QTabBar::tab:selected {
-            background: $M_BLUE2$;
-            border-color: $M_BLUE$;
+            background: $M_PRIM2$;
+            border-color: $M_PRIM$;
             border-width: 2px;
         }
         QTabBar::tab:!selected {
@@ -672,43 +672,43 @@ class Styles:
             margin: 1;
         }
         QTabBar::tab:disabled {
-            color: $M_GREY$;
-            border-color: $M_GREY1$;
+            color: $M_SEC$;
+            border-color: $M_SEC1$;
         }
         /* slider */
         QSlider
-        {   background-color: $M_GREY1$;
+        {   background-color: $M_SEC1$;
             width: 16px;
             height: 16px;
             margin: 0px 3px 0px 3px;
             border-width: 1px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-style: outset;
             border-radius: 2px;
         }
         QSlider::handle
-        {   background-color: $M_BLUE$;
+        {   background-color: $M_PRIM$;
             border-radius: 2px;
             border-style: outset;
             border-width: 1px;
         }
         QSlider::add-page
-        {   background-color: $M_GREY1$;
-            border-color: $M_GREY$;
+        {   background-color: $M_SEC1$;
+            border-color: $M_SEC$;
             border-style: outset;
             border-radius: 2px;
         }
         QSlider::sub-page
-        {   background-color: $M_GREY1$;
-            border-color: $M_GREY$;
+        {   background-color: $M_SEC1$;
+            border-color: $M_SEC$;
             border-style: outset;
             border-radius: 2px;
         }
         /* scroll bar */
         QScrollBar {
             border-width: 1px;
-            border-color: $M_GREY$;
-            background-color: $M_GREY1$;
+            border-color: $M_SEC$;
+            background-color: $M_SEC1$;
             border-style: outset;
             border-radius: 2px;
         }
@@ -721,7 +721,7 @@ class Styles:
             margin: 4px 16px 4px 4px;
         }
         QScrollBar::handle
-        {   background-color: $M_BLUE$;
+        {   background-color: $M_PRIM$;
             min-height: 24px;
             min-width: 24px;
             border-radius: 2px;
@@ -755,7 +755,7 @@ class Styles:
         QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
         {   background: none;
             border-width: 0px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-style: plain;
             border-radius: 0px;
         }
@@ -768,51 +768,51 @@ class Styles:
             background-color: $M_BACK$;
             border-radius: 3px;
             border-width: 1px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-style: outset;
             text-align: center;
         }
         QProgressBar:disabled {
-            color: $M_GREY$;
+            color: $M_SEC$;
             background-color: $M_BACK$;
             border-radius: 3px;
             border-width: 1px;
-            border-color: $M_GREY1$;
+            border-color: $M_SEC1$;
             border-style: outset;
         }
         QProgressBar::chunk {
-            background-color: $M_BLUE$;
+            background-color: $M_PRIM$;
             width: 1px;
             margin: 0px;
             border-width: 0px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-radius: 0px;
             border-style: outset;
         }
         QTextBrowser {
-            color: $M_BLUE$;
-            background-color: $M_BLACK$;
+            color: $M_PRIM$;
+            background-color: $M_QUAR$;
             border-radius: 3px;
             border-width: 2px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-style: outset;
             margin: -5px;
         }
         QFileDialog QListView:enabled {
             background-color: $M_BACK$;
-            color: $M_BLUE$;
+            color: $M_PRIM$;
             text-align: right;
             border-width: 1px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-style: outset;
             border-radius: 2px;
         }
         QFileDialog QListView:disabled {
             background-color: $M_BACK$;
-            color: $M_GREY$;
+            color: $M_SEC$;
             text-align: right;
             border-width: 1px;
-            border-color: $M_GREY$;
+            border-color: $M_SEC$;
             border-style: outset;
             border-radius: 2px;
         }
@@ -821,9 +821,9 @@ class Styles:
             min-height: 20px;
         }
         QInputDialog QPushButton {
-            background-color: $M_GREY1$;
-            color: $M_WHITE$;
-            border-color: $M_GREY$;
+            background-color: $M_SEC1$;
+            color: $M_TER$;
+            border-color: $M_SEC$;
             border-width: 1px;
             border-style: outset;
             border-radius: 2px;
@@ -832,7 +832,7 @@ class Styles:
         }
         QInputDialog QPushButton:default {
             border-width: 2px;
-            border-color: $M_BLUE$;
+            border-color: $M_PRIM$;
         }
         """
 
@@ -841,48 +841,48 @@ class Styles:
         return self.cs['M_TRANS'][self.colorSet]
 
     @property
-    def M_BLUE(self):
-        return self.cs['M_BLUE'][self.colorSet]
+    def M_PRIM(self):
+        return self.cs['M_PRIM'][self.colorSet]
 
     @property
-    def M_BLUE1(self):
-        return self.cs['M_BLUE1'][self.colorSet]
+    def M_PRIM1(self):
+        return self.cs['M_PRIM1'][self.colorSet]
 
     @property
-    def M_BLUE2(self):
-        return self.cs['M_BLUE2'][self.colorSet]
+    def M_PRIM2(self):
+        return self.cs['M_PRIM2'][self.colorSet]
 
     @property
-    def M_BLUE3(self):
-        return self.cs['M_BLUE3'][self.colorSet]
+    def M_PRIM3(self):
+        return self.cs['M_PRIM3'][self.colorSet]
 
     @property
-    def M_BLUE4(self):
-        return self.cs['M_BLUE4'][self.colorSet]
+    def M_PRIM4(self):
+        return self.cs['M_PRIM4'][self.colorSet]
 
     @property
-    def M_WHITE(self):
-        return self.cs['M_WHITE'][self.colorSet]
+    def M_TER(self):
+        return self.cs['M_TER'][self.colorSet]
 
     @property
-    def M_WHITE1(self):
-        return self.cs['M_WHITE1'][self.colorSet]
+    def M_TER1(self):
+        return self.cs['M_TER1'][self.colorSet]
 
     @property
-    def M_GREY(self):
-        return self.cs['M_GREY'][self.colorSet]
+    def M_SEC(self):
+        return self.cs['M_SEC'][self.colorSet]
 
     @property
-    def M_GREY1(self):
-        return self.cs['M_GREY1'][self.colorSet]
+    def M_SEC1(self):
+        return self.cs['M_SEC1'][self.colorSet]
 
     @property
     def M_BACK(self):
         return self.cs['M_BACK'][self.colorSet]
 
     @property
-    def M_BLACK(self):
-        return self.cs['M_BLACK'][self.colorSet]
+    def M_QUAR(self):
+        return self.cs['M_QUAR'][self.colorSet]
 
     @property
     def M_RED(self):

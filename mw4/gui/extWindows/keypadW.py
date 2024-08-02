@@ -259,7 +259,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
             return False
 
         if text.startswith('>'):
-            self.rows[row].setStyleSheet(f'background-color: {self.M_GREY};')
+            self.rows[row].setStyleSheet(f'background-color: {self.M_SEC};')
         else:
             self.rows[row].setStyleSheet(f'background-color: {self.M_BACK};')
         self.rows[row].setText(text)
@@ -308,7 +308,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         height = self.rows[row].height()
 
         self.ui.cursor.setStyleSheet(f'background-color: {self.M_BACK};')
-        self.ui.cursor.setStyleSheet(f'color: {self.M_BLUE};')
+        self.ui.cursor.setStyleSheet(f'color: {self.M_PRIM};')
         self.ui.cursor.setVisible(True)
         self.ui.cursor.move(x + 16 * col, y + height)
         return True
@@ -317,7 +317,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        color = self.hex2rgb(self.M_BLUE)
+        color = self.hex2rgb(self.M_PRIM)
         back = self.hex2rgb(self.M_BACK)
         pColor = [255, 255, 255]
         bColor = [0, 0, 0]

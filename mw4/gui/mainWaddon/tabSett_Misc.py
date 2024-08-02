@@ -170,13 +170,13 @@ class SettMisc(MWidget):
         """
         """
         self.wIcon(self.ui.installVersion, 'world')
-        pixmap = self.svg2pixmap(':/icon/controller.svg', self.M_BLUE)
+        pixmap = self.svg2pixmap(':/icon/controller.svg', self.M_PRIM)
         self.ui.controller1.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller2.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller3.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller4.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller5.setPixmap(pixmap.scaled(16, 16))
-        pixmap = self.svg2pixmap(':/icon/controllerNew.svg', self.M_BLUE)
+        pixmap = self.svg2pixmap(':/icon/controllerNew.svg', self.M_PRIM)
         self.ui.controllerOverview.setPixmap(pixmap)
         self.ui.controller1.setEnabled(False)
         self.ui.controller2.setEnabled(False)

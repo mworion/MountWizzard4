@@ -354,10 +354,10 @@ class EditHorizon:
             vb.setOpts(enableLimitX=True)
         else:
             self.horizonPlot = pg.PlotDataItem(
-                symbolBrush=pg.mkBrush(color=self.M_BLUE + '40'),
-                symbolPen=pg.mkPen(color=self.M_BLUE1, width=2),
-                brush=pg.mkBrush(color=self.M_BLUE + '40'),
-                pen=pg.mkPen(color=self.M_BLUE1, width=2),
+                symbolBrush=pg.mkBrush(color=self.M_PRIM + '40'),
+                symbolPen=pg.mkPen(color=self.M_PRIM1, width=2),
+                brush=pg.mkBrush(color=self.M_PRIM + '40'),
+                pen=pg.mkPen(color=self.M_PRIM1, width=2),
                 symbolSize=5, symbol='o', connect='all')
             plotItem.addItem(self.horizonPlot)
         return True

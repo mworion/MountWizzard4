@@ -178,7 +178,7 @@ class UpdateGUI:
         self.style = Styles()
         self.style.colorSet = colorSet
         self.app.setWindowIcon(QIcon(':/icon/mw4.ico'))
-        self.mColor = [QColor(self.style.M_BLUE),
+        self.mColor = [QColor(self.style.M_PRIM),
                        QColor(self.style.M_WHITE),
                        QColor(self.style.M_YELLOW),
                        QColor(self.style.M_RED),
@@ -216,7 +216,7 @@ class UpdateGUI:
         img = QPixmap(':/icon/question.svg')
         qp = QPainter(img)
         qp.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
-        qp.fillRect(img.rect(), QColor(self.style.M_BLUE))
+        qp.fillRect(img.rect(), QColor(self.style.M_PRIM))
         qp.end()
         pixmap = QPixmap(img).scaled(32, 32)
         question.setPixmap(pixmap)

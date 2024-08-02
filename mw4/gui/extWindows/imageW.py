@@ -73,7 +73,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.binning = 1
         self.folder = ''
         self.result = None
-        self.pen = pg.mkPen(color=self.M_BLUE, width=2)
+        self.pen = pg.mkPen(color=self.M_PRIM, width=2)
         self.penPink = pg.mkPen(color=self.M_PINK + '80', width=5)
         self.fontText = QFont(self.window().font().family(), 16)
         self.fontAnno = QFont(self.window().font().family(), 10, italic=True)
@@ -227,7 +227,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         """
         self.setStyleSheet(self.mw4Style)
         self.ui.image.colorChange()
-        self.pen = pg.mkPen(color=self.M_BLUE)
+        self.pen = pg.mkPen(color=self.M_PRIM)
         self.showCurrent()
         return True
 
@@ -680,7 +680,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         """
         question = '<b>Slewing to target</b>'
         question += '<br><br>Selected coordinates are:<br>'
-        question += f'<font color={self.M_BLUE}> RA: {ra.hours:3.2f}h'
+        question += f'<font color={self.M_PRIM}> RA: {ra.hours:3.2f}h'
         question += f'   DEC: {dec.degrees:3.2f}°</font>'
         question += '<br><br>Would you like to start slewing?<br>'
 

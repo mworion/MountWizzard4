@@ -81,11 +81,11 @@ class Almanac(MWidget):
     def setColors(self):
         """
         """
-        self.ui.almanacCivil.setStyleSheet(f'background-color: {self.M_BLUE1};')
-        self.ui.almanacNautical.setStyleSheet(f'background-color: {self.M_BLUE2};')
-        self.ui.almanacAstronomical.setStyleSheet(f'background-color: {self.M_BLUE3};')
-        self.ui.almanacDark.setStyleSheet(f'background-color: {self.M_BLUE4};')
-        self.colors = [self.M_BLUE4, self.M_BLUE3, self.M_BLUE2, self.M_BLUE1,
+        self.ui.almanacCivil.setStyleSheet(f'background-color: {self.M_PRIM1};')
+        self.ui.almanacNautical.setStyleSheet(f'background-color: {self.M_PRIM2};')
+        self.ui.almanacAstronomical.setStyleSheet(f'background-color: {self.M_PRIM3};')
+        self.ui.almanacDark.setStyleSheet(f'background-color: {self.M_PRIM4};')
+        self.colors = [self.M_PRIM4, self.M_PRIM3, self.M_PRIM2, self.M_PRIM1,
                        self.M_BACK]
 
     def updateColorSet(self):
@@ -161,7 +161,7 @@ class Almanac(MWidget):
         """
         text = ''
         self.ui.twilightEvents.clear()
-        self.ui.twilightEvents.setTextColor(QColor(self.M_BLUE))
+        self.ui.twilightEvents.setTextColor(QColor(self.M_PRIM))
 
         for timeEvent, event in zip(timeEvents, events):
             text += f'{self.convertTime(timeEvent, "%H:%M:%S")} '
@@ -281,7 +281,7 @@ class Almanac(MWidget):
         """
         colCover = QColor(self.M_BACK)
         colFree = QColor('transparent')
-        colFrame = QColor(self.M_GREY1)
+        colFrame = QColor(self.M_SEC1)
 
         penCov = QPen(colCover, 0)
         penFree = QPen(colFree, 0)
@@ -356,7 +356,7 @@ class Almanac(MWidget):
         moonTimes, moonEvents = calcMoon[4:6]
         text = ''
         self.ui.riseSetEventsMoon.clear()
-        self.ui.riseSetEventsMoon.setTextColor(QColor(self.M_BLUE))
+        self.ui.riseSetEventsMoon.setTextColor(QColor(self.M_PRIM))
         moon = ['set', 'rise']
         for moonTime, moonEvent in zip(moonTimes, moonEvents):
             textTime = self.convertTime(moonTime, '%d.%m. %H:%M')
@@ -371,7 +371,7 @@ class Almanac(MWidget):
         nodeTimes, nodeEvents = calcMoon[6:8]
         text = ''
         self.ui.nodeEvents.clear()
-        self.ui.nodeEvents.setTextColor(QColor(self.M_BLUE))
+        self.ui.nodeEvents.setTextColor(QColor(self.M_PRIM))
         node = ['ascending', 'descending']
         for nodeTime, nodeEvent in zip(nodeTimes, nodeEvents):
             textTime = self.convertTime(nodeTime, '%d.%m. %H:%M')

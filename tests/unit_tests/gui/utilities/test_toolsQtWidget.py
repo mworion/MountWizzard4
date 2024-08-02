@@ -257,7 +257,7 @@ def test_wIcon_3(function):
 
 
 def test_renderStyle_1(function):
-    inp = '12345$M_BLUE$12345'
+    inp = '12345$M_PRIM$12345'
     function.colorSet = 0
     val = function.renderStyle(inp).strip(' ')
     assert val == '12345#2090C012345\n'

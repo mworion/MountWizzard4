@@ -82,7 +82,7 @@ class EnvironSeeing(MWidget):
                   'seeing_arcsec', 'seeing1', 'seeing2', 'temperature',
                   'relative_humidity', 'badlayer_top', 'badlayer_bottom',
                   'badlayer_gradient', 'jetstream']
-        colorMain = self.cs['M_BLUE'][0]
+        colorMain = self.cs['M_PRIM'][0]
         colorBlack = self.cs['M_BLACK'][0]
         colorWhite = self.cs['M_WHITE'][0]
         seeTab = self.ui.meteoblueSeeing
@@ -96,7 +96,7 @@ class EnvironSeeing(MWidget):
                 t = f'{data[field][i]}'
                 item = QTableWidgetItem()
                 item.setTextAlignment(Qt.AlignmentFlag.AlignHCenter)
-                item.setForeground(QColor(self.M_BLUE))
+                item.setForeground(QColor(self.M_PRIM))
 
                 if j == 0:
                     t = self.convertTime(data[field][i], '%d%b')

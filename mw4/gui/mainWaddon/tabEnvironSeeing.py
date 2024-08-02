@@ -82,9 +82,9 @@ class EnvironSeeing(MWidget):
                   'seeing_arcsec', 'seeing1', 'seeing2', 'temperature',
                   'relative_humidity', 'badlayer_top', 'badlayer_bottom',
                   'badlayer_gradient', 'jetstream']
-        colorMain = self.cs['M_PRIM'][0]
-        colorBlack = self.cs['M_BLACK'][0]
-        colorWhite = self.cs['M_TER'][0]
+        colorPrim = self.cs['M_PRIM'][0]
+        colorQuar = self.cs['M_QUAR'][0]
+        colorTer = self.cs['M_TER'][0]
         seeTab = self.ui.meteoblueSeeing
         data = self.app.seeingWeather.data['hourly']
         self.addSkyfieldTimeObject(data)
@@ -103,17 +103,17 @@ class EnvironSeeing(MWidget):
                 elif j == 1:
                     t = self.convertTime(data[field][i], '%H:00')
                 elif j in [2, 3, 4]:
-                    color = self.calcHexColor(colorMain, data[field][i] / 100)
+                    color = self.calcHexColor(colorPrim, data[field][i] / 100)
                     item.setBackground(QColor(color))
-                    item.setForeground(QColor(colorWhite))
+                    item.setForeground(QColor(colorTer))
                 elif j in [6]:
                     color = self.calcHexColor(data['seeing1_color'][i], 0.8)
                     item.setBackground(QColor(color))
-                    item.setForeground(QColor(colorBlack))
+                    item.setForeground(QColor(colorQuar))
                 elif j in [7]:
                     color = self.calcHexColor(data['seeing2_color'][i], 0.8)
                     item.setBackground(QColor(color))
-                    item.setForeground(QColor(colorBlack))
+                    item.setForeground(QColor(colorQuar))
                 elif j in [10, 11]:
                     val = float('0' + data[field][i]) / 1000
                     t = f'{val:1.1f}'

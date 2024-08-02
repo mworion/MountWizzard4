@@ -69,7 +69,7 @@ def test_property(function):
     a = function.M_SEC
     a = function.M_SEC1
     a = function.M_BACK
-    a = function.M_BLACK
+    a = function.M_QUAR
     a = function.M_RED
     a = function.M_RED1
     a = function.M_RED2

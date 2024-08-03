@@ -61,6 +61,7 @@ class MainWindowAddons:
         self.addons = {
             'Almanac': Almanac(mainW),
             'Analysis': Analysis(mainW),
+            'SettUpdate': SettUpdate(mainW),
             'Asteroid': Asteroid(mainW),
             'BuildPoints': BuildPoints(mainW),
             'Comet': Comet(mainW),
@@ -81,7 +82,6 @@ class MainWindowAddons:
             'SettDevice': SettDevice(mainW),
             'SettDome': SettDome(mainW),
             'SettMisc': SettMisc(mainW),
-            'SettUpdate': SettUpdate(mainW),
             'SettMount': SettMount(mainW),
             'SettParkPos': SettParkPos(mainW),
             'SellRelay': SettRelay(mainW),

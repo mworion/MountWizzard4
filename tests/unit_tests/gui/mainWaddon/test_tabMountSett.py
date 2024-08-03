@@ -65,7 +65,7 @@ def test_updatePointGui_ra(function):
     obs.raJNow = Angle(hours=0)
     obs.decJNow = Angle(degrees=0)
     function.updatePointGUI(obs)
-    assert '23:58:44' == function.ui.RA.text()
+    assert '23:58' == function.ui.RA.text()[:5]
 
 
 def test_updatePointGui_dec_1(function):

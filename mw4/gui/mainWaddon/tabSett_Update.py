@@ -233,7 +233,8 @@ class SettUpdate(MWidget):
             pythonRuntime = "\"" + pythonPath + "\""
 
         os.execl(pythonPath, pythonRuntime, updaterScript, versionPackage,
-                 str(self.pos().x()), str(self.pos().y()), str(self.colorSet))
+                 str(self.mainW.pos().x()), str(self.mainW.pos().y()),
+                 str(self.colorSet))
 
     def installVersion(self):
         """

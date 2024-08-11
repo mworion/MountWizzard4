@@ -20,6 +20,7 @@ import sys
 import logging
 import subprocess
 import platform
+from typing import Callable
 
 # external packages
 
@@ -36,18 +37,13 @@ class Update:
 
     log = logging.getLogger(__name__)
 
-    def __init__(self, runnable=None, writer=None):
+    def __init__(self, runnable: Callable = None, writer: Callable = None):
         self.writer = writer
         self.runnable = runnable
 
     @staticmethod
-    def formatPIP(line=''):
+    def formatPIP(line: str = '') -> str:
         """
-        formatPIP shortens the stdout line for presenting it to the user. as the
-        lines are really long, mw4 concentrates on package names and action.
-
-        :param line:
-        :return: formatted line
         """
         if line.startswith(' '):
             return ''
@@ -69,12 +65,8 @@ class Update:
 
         return line
 
-    def isVenv(self):
+    def isVenv(self) -> bool:
         """
-        detects if the actual package is running in a virtual environment. this
-        should be the case in any situation as mw4 should be installed in a venv.
-
-        :return: status
         """
         hasReal = hasattr(sys, 'real_prefix')
         hasBase = hasattr(sys, 'base_prefix')
@@ -89,10 +81,8 @@ class Update:
         self.log.debug(f'VENV status: [{status}]')
         return status
 
-    def runInstall(self, versionPackage=''):
+    def runInstall(self, versionPackage: str = '') -> bool:
         """
-        :param versionPackage:   package version to install
-        :return: success
         """
         if not self.isVenv():
             self.writer('Updater not running in an virtual environment', 2)
@@ -132,10 +122,8 @@ class Update:
         success = process.returncode == 0
         return success
 
-    def restart(self, text):
+    def restart(self, text: str) -> None:
         """
-        :param text:
-        :return:
         """
         runDir = os.path.dirname(self.runnable)
         runScript = os.path.abspath(runDir + '/loader.py')
@@ -151,13 +139,11 @@ class Update:
             text = "\"" + text + "\""
 
         os.execl(pythonPath, pythonRuntime, runScript, text)
-        return True
 
 
 class UpdateGUI:
     """
     """
-
     log = logging.getLogger(__name__)
 
     def __init__(self, runnable=None, version=None, x=0, y=0, colorSet=0):
@@ -235,9 +221,6 @@ class UpdateGUI:
 
     def writeText(self, text, color):
         """
-        :param text:
-        :param color:
-        :return:
         """
         from PySide6.QtGui import QTextCursor
         from PySide6.QtWidgets import QApplication
@@ -247,11 +230,9 @@ class UpdateGUI:
         self.textBrow.moveCursor(QTextCursor.MoveOperation.End)
         self.log.ui(f'Updater window: [{text}]')
         QApplication.processEvents()
-        return True
 
     def runCancel(self):
         """
-        :return:
         """
         self.cancelButt.setEnabled(False)
         self.updateButt.setEnabled(False)
@@ -260,11 +241,9 @@ class UpdateGUI:
         self.writeText('Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
         self.update.restart(text)
-        return True
 
     def runUpdate(self):
         """
-        :return:
         """
         self.cancelButt.setEnabled(False)
         self.updateButt.setEnabled(False)
@@ -280,13 +259,12 @@ class UpdateGUI:
         self.writeText('Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
         self.update.restart(text)
-        return True
 
 
 class UpdateCLI:
     log = logging.getLogger(__name__)
 
-    def __init__(self, runnable=None, version=None):
+    def __init__(self, runnable: Callable = None, version: str = None):
         self.version = version
         self.update = Update(runnable=runnable, writer=self.writeText)
 
@@ -303,20 +281,15 @@ class UpdateCLI:
         self.writeText('...this takes some seconds...', 1)
         self.update.restart(text)
 
-    def writeText(self, text, color):
+    def writeText(self, text: str, color: int = 0) -> None:
         """
-        :param text:
-        :param color:
-        :return:
         """
         print(text + '\n')
         self.log.ui(f'Updater terminal: [{text}]')
-        return True
 
 
-def main():
+def main() -> None:
     """
-    :return: nothing
     """
     runnable = sys.argv[0]
     version = sys.argv[1]

@@ -36,7 +36,7 @@ from loader import getWindowPos, checkIsAdmin, extractFile, minimizeStartTermina
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
+def module_setup_teardown():
     files = glob.glob('tests/workDir/config/*.cfg')
     for f in files:
         os.remove(f)
@@ -46,7 +46,7 @@ def module_setup_teardown(qtbot):
     yield
 
 
-def test_except_hook(qtbot):
+def test_except_hook():
     with mock.patch.object(traceback,
                            'format_exception',
                            return_value=('1', '2', '3')):
@@ -56,7 +56,7 @@ def test_except_hook(qtbot):
             except_hook(1, 2, 3)
 
 
-def test_setupWorkDirs_1(qtbot):
+def test_setupWorkDirs_1():
     with mock.patch.object(os,
                            'getcwd',
                            return_value='.'):
@@ -70,7 +70,7 @@ def test_setupWorkDirs_1(qtbot):
                 assert val['modeldata'] == '4.0'
 
 
-def test_setupWorkDirs_2(qtbot):
+def test_setupWorkDirs_2():
     with mock.patch.object(os,
                            'getcwd',
                            return_value='.'):
@@ -84,7 +84,7 @@ def test_setupWorkDirs_2(qtbot):
                 assert val['modeldata'] == '4.0'
 
 
-def test_setupWorkDirs_3(qtbot):
+def test_setupWorkDirs_3():
     with mock.patch.object(os,
                            'getcwd',
                            return_value='.'):
@@ -101,7 +101,7 @@ def test_setupWorkDirs_3(qtbot):
                     assert val['modeldata'] == '4.0'
 
 
-def test_checkIsAdmin_1(qtbot):
+def test_checkIsAdmin_1():
     @staticmethod
     def getiud():
         return 0
@@ -118,7 +118,7 @@ def test_checkIsAdmin_1(qtbot):
             assert val == 'unknown'
 
 
-def test_checkIsAdmin_2(qtbot):
+def test_checkIsAdmin_2():
     @staticmethod
     def getiud():
         return 0
@@ -134,7 +134,7 @@ def test_checkIsAdmin_2(qtbot):
             assert val == 'yes'
 
 
-def test_checkIsAdmin_3(qtbot):
+def test_checkIsAdmin_3():
     @staticmethod
     def getiud():
         return 0
@@ -151,7 +151,7 @@ def test_checkIsAdmin_3(qtbot):
 
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="Windows needed")
-def test_checkIsAdmin_4(qtbot):
+def test_checkIsAdmin_4():
     import ctypes
     with mock.patch.object(platform,
                            'system',
@@ -164,7 +164,7 @@ def test_checkIsAdmin_4(qtbot):
 
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="Windows needed")
-def test_checkIsAdmin_5(qtbot):
+def test_checkIsAdmin_5():
     import ctypes
     with mock.patch.object(platform,
                            'system',
@@ -177,7 +177,7 @@ def test_checkIsAdmin_5(qtbot):
 
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="Windows needed")
-def test_checkIsAdmin_6(qtbot):
+def test_checkIsAdmin_6():
     import ctypes
     with mock.patch.object(platform,
                            'system',
@@ -190,7 +190,7 @@ def test_checkIsAdmin_6(qtbot):
 
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
-def test_checkIsAdmin_7(qtbot):
+def test_checkIsAdmin_7():
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
@@ -203,7 +203,7 @@ def test_checkIsAdmin_7(qtbot):
 
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
-def test_checkIsAdmin_8(qtbot):
+def test_checkIsAdmin_8():
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
@@ -215,7 +215,7 @@ def test_checkIsAdmin_8(qtbot):
 
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
-def test_checkIsAdmin_9(qtbot):
+def test_checkIsAdmin_9():
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
@@ -226,23 +226,21 @@ def test_checkIsAdmin_9(qtbot):
             assert val == 'no'
 
 
-def test_writeSystemInfo_1(qtbot):
+def test_writeSystemInfo_1():
     mwGlob = dict()
     mwGlob['modeldata'] = ''
     mwGlob['workDir'] = ''
-    suc = writeSystemInfo(mwGlob=mwGlob)
-    assert suc
+    writeSystemInfo(mwGlob=mwGlob)
 
 
-def test_writeSystemInfo_2(qtbot):
+def test_writeSystemInfo_2():
     mwGlob = dict()
     mwGlob['modeldata'] = ''
     mwGlob['workDir'] = ''
     with mock.patch.object(socket,
                            'gethostbyname_ex',
                            side_effect=Exception()):
-        suc = writeSystemInfo(mwGlob=mwGlob)
-        assert suc
+        writeSystemInfo(mwGlob=mwGlob)
 
 
 def test_extractFile_1():
@@ -256,8 +254,7 @@ def test_extractFile_1():
         with mock.patch.object(os,
                                'stat',
                                return_value=MTime()):
-            suc = extractFile(filePath, 'de440_mw4.bsp', 0)
-            assert suc
+            extractFile(filePath, 'de440_mw4.bsp', 0)
 
 
 def test_extractFile_2():
@@ -275,8 +272,7 @@ def test_extractFile_2():
                                    'remove'):
                 with mock.patch.object(os,
                                        'chmod'):
-                    suc = extractFile(filePath, 'de440_mw4.bsp', 2000000000.0)
-                    assert suc
+                    extractFile(filePath, 'de440_mw4.bsp', 2000000000.0)
 
 
 def test_extractFile_3():
@@ -292,34 +288,15 @@ def test_extractFile_3():
                                return_value=MTime()):
             with mock.patch.object(os,
                                    'chmod'):
-                suc = extractFile(filePath, 'de440_mw4.bsp', 0)
-                assert suc
+                extractFile(filePath, 'de440_mw4.bsp', 0)
 
 
 def test_extractDataFiles_1():
-    suc = extractDataFiles()
-    assert not suc
-
-
-def test_extractDataFiles_2():
-    mwGlob = dict()
-    mwGlob['dataDir'] = 'tests/workDir/data'
-    suc = extractDataFiles(mwGlob=mwGlob)
-    assert suc
-
-
-def test_extractDataFiles_3():
-    class Splash:
-        @staticmethod
-        def showMessage(a):
-            return
-
     mwGlob = dict()
     mwGlob['dataDir'] = 'tests/workDir/data'
     with mock.patch.object(loader,
                            'extractFile'):
-        suc = extractDataFiles(mwGlob=mwGlob, splashW=Splash())
-        assert suc
+        extractDataFiles(mwGlob=mwGlob)
 
 
 def test_getWindowPos_1():

@@ -30,6 +30,7 @@ from PySide6.QtCore import QFile, QEvent, __version__, qVersion
 from PySide6.QtGui import QMouseEvent, QIcon
 from PySide6.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
 from PySide6.QtWidgets import QApplication, QTabBar, QComboBox, QPushButton
+from PySide6.QtWidgets import QWidget
 from importlib_metadata import version
 
 # local import
@@ -61,7 +62,7 @@ class MyApp(QApplication):
         super().__init__(*argv)
         self.last = None
 
-    def handleButtons(self, obj, returnValue):
+    def handleButtons(self, obj: QWidget, returnValue: bool) -> bool:
         """
         :param obj:
         :param returnValue:
@@ -98,15 +99,8 @@ class MyApp(QApplication):
 
         return returnValue
 
-    def notify(self, obj, event):
+    def notify(self, obj: QWidget, event: QEvent) -> bool:
         """
-        notify is the replacement for the original notify method. This is done to
-        catch all undefined exception (object already deleted in C++) before the
-        app crashes and stores it to the app log file.
-
-        :param obj:
-        :param event:
-        :return:
         """
         try:
             returnValue = QApplication.notify(self, obj, event)
@@ -129,16 +123,8 @@ class MyApp(QApplication):
         return returnValue
 
 
-def except_hook(typeException, valueException, tbackException):
+def except_hook(typeException, valueException, tbackException) -> None:
     """
-    except_hook implements a wrapper around except hook to log uncatched
-    exceptions to the log file. so during user phase I get all the exceptions
-    and logs catched in the file.
-
-    :param typeException:
-    :param valueException:
-    :param tbackException:
-    :return: nothing
     """
     result = traceback.format_exception(typeException, valueException, tbackException)
     log.critical('')
@@ -151,13 +137,8 @@ def except_hook(typeException, valueException, tbackException):
     sys.__excepthook__(typeException, valueException, tbackException)
 
 
-def setupWorkDirs(mwGlob):
+def setupWorkDirs(mwGlob: dict) -> dict:
     """
-    setupWorkDirs defines the necessary work dirs and checks if they are
-    writable
-
-    :param mwGlob:
-    :return: mwGlob
     """
     mwGlob['modeldata'] = '4.0'
     mwGlob['workDir'] = os.getcwd()
@@ -180,9 +161,8 @@ def setupWorkDirs(mwGlob):
     return mwGlob
 
 
-def checkIsAdmin():
+def checkIsAdmin() -> str:
     """
-    :return:
     """
     if platform.system() == 'Windows':
         import ctypes
@@ -205,12 +185,8 @@ def checkIsAdmin():
         return 'no'
 
 
-def writeSystemInfo(mwGlob=None):
+def writeSystemInfo(mwGlob: dict=None) -> None:
     """
-    writeSystemInfo print overview data to the log file at the beginning of
-    the start
-
-    :return: true for test purpose
     """
     log.header('-' * 100)
     log.header(f'mountwizzard4    : {version("mountwizzard4")}')
@@ -227,15 +203,9 @@ def writeSystemInfo(mwGlob=None):
     log.header(f'run as admin     : {checkIsAdmin()}')
     log.header('-' * 100)
 
-    return True
 
-
-def extractFile(filePath=None, file=None, fileTimeStamp=None):
+def extractFile(filePath: str, file: str, fileTimeStamp: str) -> None:
     """
-    :param filePath:
-    :param file:
-    :param fileTimeStamp:
-    :return:
     """
     fileExist = os.path.isfile(filePath)
     if fileExist:
@@ -252,20 +222,11 @@ def extractFile(filePath=None, file=None, fileTimeStamp=None):
 
     QFile.copy(f':/data/{file}', filePath)
     os.chmod(filePath, 0o666)
-    return True
 
 
-def extractDataFiles(mwGlob=None, splashW=None):
+def extractDataFiles(mwGlob: dict) -> None:
     """
-    we have the necessary files for leap second, ephemeris and satellite already
-    stored in the files system of the app. we bring them to the file system of
-    the user, if they do not exist.
-
-    :return: True fpr test purpose
     """
-    if mwGlob is None:
-        return False
-
     files = {
         'de440_mw4.bsp': 0,
         'CDFLeapSeconds.txt': 0,
@@ -284,17 +245,13 @@ def extractDataFiles(mwGlob=None, splashW=None):
             files[name] = float(date)
 
     for file in files:
-        if splashW is not None:
-            splashW.showMessage('Loading {0}'.format(file))
         filePath = mwGlob['dataDir'] + '/' + file
         fileTimeStamp = files[file]
         extractFile(filePath=filePath, file=file, fileTimeStamp=fileTimeStamp)
-    return True
 
 
-def getWindowPos():
+def getWindowPos() -> tuple:
     """
-    :return:
     """
     configDir = os.getcwd() + '/config'
     profile = os.path.normpath(configDir + '/profile')
@@ -320,16 +277,15 @@ def getWindowPos():
             return x, y
 
 
-def minimizeStartTerminal():
+def minimizeStartTerminal() -> None:
     """
-    :return:
     """
     if platform.system() == 'Windows':
         import ctypes
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 
-def main():
+def main() -> None:
     """
     main prepares the loading of mountwizzard application. it prepares a
     splash screen and handler the setup of the logger, bundle handling etc. in
@@ -357,7 +313,7 @@ def main():
 
     splashW.showMessage('Loading star and time data')
     splashW.setValue(60)
-    extractDataFiles(mwGlob=mwGlob, splashW=splashW)
+    extractDataFiles(mwGlob=mwGlob)
 
     splashW.showMessage('Initialize Application')
     splashW.setValue(80)

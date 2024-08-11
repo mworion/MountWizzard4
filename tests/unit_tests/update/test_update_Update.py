@@ -202,8 +202,7 @@ def test_restart_1(update):
                            return_value='Windows'):
         with mock.patch.object(os,
                                'execl'):
-            suc = update.restart('test')
-            assert suc
+            update.restart('test')
 
 
 def test_restart_2(update):
@@ -212,5 +211,4 @@ def test_restart_2(update):
                            return_value='Darwin'):
         with mock.patch.object(os,
                                'execl'):
-            suc = update.restart('test')
-            assert suc
+            update.restart('test')

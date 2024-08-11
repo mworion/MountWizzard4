@@ -71,7 +71,6 @@ class SettUpdate(MWidget):
         self.setSeeingOnline()
         self.setupIERS()
         self.showUpdates()
-        return True
 
     def storeConfig(self):
         """
@@ -115,16 +114,9 @@ class SettUpdate(MWidget):
             iers.conf.auto_download = False
             iers.conf.auto_max_age = 99999
             data.conf.allow_internet = False
-        return True
 
     def versionPackage(self, packageName):
         """
-        versionPackage will look the package up in pypi.org website and parses
-        the resulting versions. if you have an alpa or beta release found it
-        returns the newest version for download and install.
-
-        :param packageName:
-        :return: None or the newest possible package
         """
         url = f'https://pypi.python.org/pypi/{packageName}/json'
         try:
@@ -157,11 +149,6 @@ class SettUpdate(MWidget):
 
     def showUpdates(self):
         """
-        showUpdates compares the actual installed and running package with the
-        one on the server. if you have a newer version available, mw4 will inform
-        the user about it.
-
-        :return: success
         """
         packageName = 'mountwizzard4'
         actPackage = importlib_metadata.version(packageName)
@@ -202,10 +189,6 @@ class SettUpdate(MWidget):
 
     def isVenv(self):
         """
-        detects if the actual package is running in a virtual environment. this
-        should be the case in any situation as mw4 should be installed in a venv.
-
-        :return: status
         """
         hasReal = hasattr(sys, 'real_prefix')
         hasBase = hasattr(sys, 'base_prefix')
@@ -238,17 +221,6 @@ class SettUpdate(MWidget):
 
     def installVersion(self):
         """
-        installVersion updates mw4 with the standard pip package installer.
-        this is actually only tested and ok for running in a virtual environment.
-        updates have to run only once at a time, so a mutex ensures this. If
-        everything is ok, a thread it started doing the installation work, and a
-        callback executes when finished.
-
-        as observation, installation on Windows side takes for some reason
-        longer than in linux or osx environment. therefore, an extended timeout
-        runs.
-
-        :return: True for test purpose
         """
         if not (self.isVenv() or platform.machine() == 'armv7l'):
             self.msg.emit(2, 'System', 'Update',
@@ -270,7 +242,6 @@ class SettUpdate(MWidget):
 
     def setLoggingLevel(self):
         """
-        :return: nothing
         """
         if self.ui.loglevelTrace.isChecked():
             setCustomLoggingLevel('TRACE')
@@ -281,11 +252,9 @@ class SettUpdate(MWidget):
 
     def openPDF(self):
         """
-        :return:
         """
         url = 'https://mworion.github.io/MountWizzard4/'
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, 'System', 'Setting Misc', 'Browser failed')
         else:
             self.msg.emit(0, 'System', 'Setting Misc', 'Doc opened')
-        return True

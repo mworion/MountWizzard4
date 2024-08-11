@@ -86,14 +86,12 @@ def test_setSeeingOnline_2(function):
 
 def test_setupIERS_1(function):
     function.ui.isOnline.setChecked(False)
-    suc = function.setupIERS()
-    assert suc
+    function.setupIERS()
 
 
 def test_setupIERS_2(function):
     function.ui.isOnline.setChecked(True)
-    suc = function.setupIERS()
-    assert suc
+    function.setupIERS()
 
 
 def test_versionPackage_1(function):
@@ -325,13 +323,11 @@ def test_openPDF_1(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=True):
-        suc = function.openPDF()
-        assert suc
+        function.openPDF()
 
 
 def test_openPDF_2(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=False):
-        suc = function.openPDF()
-        assert suc
+        function.openPDF()

@@ -14,7 +14,7 @@
 # Licence APL2.0
 #
 ###########################################################
-from setuptools import setup
+from setuptools import setup, find_packages
 from pathlib import Path
 import platform
 
@@ -54,40 +54,7 @@ with open('notes.txt', 'w') as f:
 setup(
     name='mountwizzard4',
     version='4.0.0a17',
-    packages=[
-        'mw4',
-        'mw4.base',
-        'mw4.gui',
-        'mw4.indibase',
-        'mw4.gui.extWindows',
-        'mw4.gui.extWindows.hemisphere',
-        'mw4.gui.extWindows.image',
-        'mw4.gui.extWindows.simulator',
-        'mw4.gui.mainWaddon',
-        'mw4.gui.mainWindow',
-        'mw4.gui.utilities',
-        'mw4.gui.widgets',
-        'mw4.logic.camera',
-        'mw4.logic.cover',
-        'mw4.logic.databaseProcessing',
-        'mw4.logic.dome',
-        'mw4.logic.environment',
-        'mw4.logic.file',
-        'mw4.logic.filter',
-        'mw4.logic.focuser',
-        'mw4.logic.measure',
-        'mw4.logic.modeldata',
-        'mw4.logic.photometry',
-        'mw4.logic.plateSolve',
-        'mw4.logic.powerswitch',
-        'mw4.logic.profiles',
-        'mw4.logic.remote',
-        'mw4.logic.satellites',
-        'mw4.logic.telescope',
-        'mw4.logic.keypad',
-        'mw4.mountcontrol',
-        'mw4.resource',
-    ],
+    packages=find_packages(),
     python_requires='>=3.9.0, <3.13',
     install_requires=[
         'numpy==1.26.4',

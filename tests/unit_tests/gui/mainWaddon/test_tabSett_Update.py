@@ -248,80 +248,13 @@ def test_isVenv_1(function):
     function.isVenv()
 
 
-def test_checkNewLibNeeded_0(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        suc = function.checkNewLibNeeded('1.2.3')
-        assert suc
-
-
-def test_checkNewLibNeeded_1(function):
-    class Test:
-        @staticmethod
-        def json():
-            return {'info': {'keywords': '5.15.4'}}
-
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        with mock.patch.object(requests,
-                               'get',
-                               return_value=Test(),
-                               side_effect=Exception):
-            suc = function.checkNewLibNeeded('1.2.3')
-            assert suc is None
-
-
-def test_checkNewLibNeeded_2(function):
-    class Test:
-        @staticmethod
-        def json():
-            return {'info': {'keywords': '5.15.4'}}
-
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        with mock.patch.object(requests,
-                               'get',
-                               return_value=Test()):
-            with mock.patch.object(importlib_metadata,
-                                   'version',
-                                   return_value='5.15.4'):
-                suc = function.checkNewLibNeeded('1.2.3')
-                assert suc
-
-
-def test_checkNewLibNeeded_3(function):
-    class Test:
-        @staticmethod
-        def json():
-            return {'info': {'keywords': '5.15.4'}}
-
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        with mock.patch.object(requests,
-                               'get',
-                               return_value=Test()):
-            with mock.patch.object(importlib_metadata,
-                                   'version',
-                                   return_value='5.14.4'):
-                suc = function.checkNewLibNeeded('1.2.3')
-                assert not suc
-
-
 def test_startUpdater_1(function):
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
         with mock.patch.object(os,
                                'execl'):
-            with mock.patch.object(function,
-                                   'checkNewLibNeeded',
-                                   return_value=None):
-                suc = function.startUpdater('1.2.3')
-                assert not suc
+            function.startUpdater('1.2.3')
 
 
 def test_startUpdater_2(function):
@@ -330,24 +263,7 @@ def test_startUpdater_2(function):
                            return_value='Darwin'):
         with mock.patch.object(os,
                                'execl'):
-            with mock.patch.object(function,
-                                   'checkNewLibNeeded',
-                                   return_value=True):
-                suc = function.startUpdater('1.2.3')
-                assert suc
-
-
-def test_startUpdater_3(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        with mock.patch.object(os,
-                               'execl'):
-            with mock.patch.object(function,
-                                   'checkNewLibNeeded',
-                                   return_value=False):
-                suc = function.startUpdater('1.2.3')
-                assert suc
+            function.startUpdater('1.2.3')
 
 
 def test_installVersion_1(function):

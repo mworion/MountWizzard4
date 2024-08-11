@@ -220,30 +220,8 @@ class SettUpdate(MWidget):
         self.log.debug(f'VENV status: [{status}]')
         return status
 
-    def checkNewLibNeeded(self, versionPackage):
-        """
-        :return:
-        """
-        if platform.system() != 'Windows':
-            return True
-
-        url = f'https://pypi.python.org/pypi/mountwizzard4/{versionPackage}/json'
-        try:
-            response = requests.get(url).json()
-        except Exception as e:
-            self.log.critical(f'Cannot determine package data: {e}')
-            return None
-        else:
-            self.log.trace(f'{response["info"]}')
-
-        targetLib = response['info']['keywords'].split(',')[0]
-        actLib = importlib_metadata.version('PySide6')
-        self.log.debug(f'target: [{targetLib}], actual: [{actLib}]')
-        return targetLib == actLib
-
     def startUpdater(self, versionPackage):
         """
-        :return:
         """
         pythonPath = os.path.abspath(sys.executable)
         pythonRuntime = pythonPath
@@ -254,18 +232,8 @@ class SettUpdate(MWidget):
             updaterScript = "\"" + updaterScript + "\""
             pythonRuntime = "\"" + pythonPath + "\""
 
-        needNewLib = self.checkNewLibNeeded(versionPackage)
-        if needNewLib is None:
-            return False
-        elif needNewLib:
-            updateType = 'GUI'
-        else:
-            updateType = 'CLI'
-
         os.execl(pythonPath, pythonRuntime, updaterScript, versionPackage,
-                 str(self.pos().x()), str(self.pos().y()), updateType,
-                 str(self.colorSet))
-        return True
+                 str(self.pos().x()), str(self.pos().y()), str(self.colorSet))
 
     def installVersion(self):
         """
@@ -275,7 +243,7 @@ class SettUpdate(MWidget):
         everything is ok, a thread it started doing the installation work, and a
         callback executes when finished.
 
-        as observation, installation on Windows side takes for some reasons
+        as observation, installation on Windows side takes for some reason
         longer than in linux or osx environment. therefore, an extended timeout
         runs.
 

@@ -261,33 +261,6 @@ class UpdateGUI:
         self.update.restart(text)
 
 
-class UpdateCLI:
-    log = logging.getLogger(__name__)
-
-    def __init__(self, runnable: Callable = None, version: str = None):
-        self.version = version
-        self.update = Update(runnable=runnable, writer=self.writeText)
-
-        self.writeText(f'Installing now version {self.version}', 1)
-        suc = self.update.runInstall(self.version)
-        if suc:
-            text = f'Successfully installed {self.version}'
-            self.writeText(text, 1)
-        else:
-            text = f'Error installing {self.version}'
-            self.writeText(text, 2)
-
-        self.writeText('Restarting MountWizzard4...', 1)
-        self.writeText('...this takes some seconds...', 1)
-        self.update.restart(text)
-
-    def writeText(self, text: str, color: int = 0) -> None:
-        """
-        """
-        print(text + '\n')
-        self.log.ui(f'Updater terminal: [{text}]')
-
-
 def main() -> None:
     """
     """
@@ -295,24 +268,14 @@ def main() -> None:
     version = sys.argv[1]
     x = int(sys.argv[2]) + 150
     y = int(sys.argv[3]) + 150
-    simpleGui = sys.argv[4] == 'CLI'
-    colorSet = int(sys.argv[5])
+    colorSet = int(sys.argv[4])
 
     log.header('-' * 100)
     log.header('Running updater')
-    if simpleGui:
-        log.header('Simple updater in CLI mode')
-    else:
-        log.header('Comfort updater in GUI mode')
-
     log.header('-' * 100)
-
-    if simpleGui:
-        UpdateCLI(runnable=runnable, version=version)
-    else:
-        u = UpdateGUI(runnable=runnable, version=version, x=x, y=y,
-                      colorSet=colorSet)
-        u.run()
+    u = UpdateGUI(runnable=runnable, version=version, x=x, y=y,
+                  colorSet=colorSet)
+    u.run()
 
 
 if __name__ == "__main__":

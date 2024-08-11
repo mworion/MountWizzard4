@@ -23,16 +23,6 @@ import platform
 import socket
 import sys
 import traceback
-import warnings
-
-# the following lines should avoid errors messages from OLE Automation with PySide6
-# see
-# https://stackoverflow.com/questions/51284268/
-#         windowscontext-oleinitialize-failed-com-error-0x80010106-rpc-e-changed-mode
-# and https://github.com/pywinauto/pywinauto/issues/472
-# order is important to set sys.coinit_flags = 2 before import pywinauto
-warnings.filterwarnings('ignore', category=Warning, append=True)
-sys.coinit_flags = 2
 
 # external packages
 from astropy.utils import iers, data

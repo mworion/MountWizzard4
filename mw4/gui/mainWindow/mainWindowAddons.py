@@ -61,7 +61,7 @@ class MainWindowAddons:
         self.addons = {
             'Almanac': Almanac(mainW),
             'Analysis': Analysis(mainW),
-            'SettUpdate': SettUpdate(mainW),
+            'SettUpdate': SettUpdate(mainW),  # keep isOnline state first
             'Asteroid': Asteroid(mainW),
             'BuildPoints': BuildPoints(mainW),
             'Comet': Comet(mainW),

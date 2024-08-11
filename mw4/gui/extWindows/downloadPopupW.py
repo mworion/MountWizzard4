@@ -93,7 +93,7 @@ class DownloadPopup(MWidget):
         if r.status_code != 200:
             return False
 
-        self.signalStatus.emit(f'Downloading {os.path.basename(url)}')
+        self.signalStatus.emit(f'Downloading {os.path.basename(dest)}')
         with open(dest, 'wb') as f:
             for n, chunk in enumerate(r.iter_content(512)):
                 progressPercent = int(n * 512 / totalSizeBytes * 100)
@@ -116,7 +116,7 @@ class DownloadPopup(MWidget):
         """
         """
         if unzip:
-            downloadDest = os.path.dirname(dest) + os.path.basename(url)
+            downloadDest = os.path.dirname(dest) + 'unzip.gz'
         else:
             downloadDest = dest
 

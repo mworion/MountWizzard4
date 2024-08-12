@@ -248,14 +248,16 @@ def test_windows(c, user, work, scp):
 
     runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
     cmd = 'curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip'
-    cmd += ' -L -o startup_package.zip'
+    cmd += ' -L -s -o startup_package.zip'
     runMW(c, f'ssh {user} "cd {work} && {cmd}"')
     runMW(c, f'ssh {user} "cd {work} && tar -xf startup_package.zip"')
     runMW(c, f'ssh {user} "cd {work} && python startup.pyz --no-start"')
     runMW(c, f'ssh {user} "cd {work} && python startup.pyz"')
 
 
-def test_ubuntu_main(c, user, work, scp):
+def test_ubuntu(c, user, work, scp):
+    # install on host first:
+    # sudo apt install libxcb-cursor0
     printMW('...delete test dir')
     runMW(c, f'ssh {user} "rm -rf {work}"')
     time.sleep(1)
@@ -269,11 +271,11 @@ def test_ubuntu_main(c, user, work, scp):
 
     runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
     cmd = 'curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip'
-    cmd += ' -L -o startup_package.zip'
+    cmd += ' -L -s -o startup_package.zip'
     runMW(c, f'ssh {user} "cd {work} && {cmd}"')
     runMW(c, f'ssh {user} "cd {work} && unzip startup_package.zip"')
     runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz --no-start"')
-    runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz"')
+    runMW(c, f'ssh {user} "cd {work} && export DISPLAY=:0 && python3 startup.pyz"')
 
 
 def test_mac(c, user, work, scp):
@@ -290,11 +292,11 @@ def test_mac(c, user, work, scp):
 
     runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
     cmd = 'curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip'
-    cmd += ' -L -o startup_package.zip'
+    cmd += ' -L -s -o startup_package.zip'
     runMW(c, f'ssh {user} "cd {work} && {cmd}"')
     runMW(c, f'ssh {user} "cd {work} && tar -xf startup_package.zip"')
     runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz --no-start"')
-    runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz"')
+    runMW(c, f'ssh {user} "cd {work} && python3 && export DISPLAY=:0 && startup.pyz"')
 
 
 @task(pre=[])
@@ -353,7 +355,7 @@ def test_ubuntu_20(c):
     user = client['ubuntu-20']['user']
     work = client['ubuntu-20']['work']
     scp = client['ubuntu-20']['scp']
-    test_ubuntu_main(c, user, work, scp)
+    test_ubuntu(c, user, work, scp)
     printMW('test ubuntu install finished\n')
 
 
@@ -363,7 +365,7 @@ def test_ubuntu_22(c):
     user = client['ubuntu-22']['user']
     work = client['ubuntu-22']['work']
     scp = client['ubuntu-22']['scp']
-    test_ubuntu_main(c, user, work, scp)
+    test_ubuntu(c, user, work, scp)
     printMW('test ubuntu install finished\n')
 
 
@@ -373,7 +375,7 @@ def test_comp(c):
     user = client['ubuntuRig']['user']
     work = client['ubuntuRig']['work']
     scp = client['ubuntuRig']['scp']
-    test_ubuntu_main(c, user, work, scp)
+    test_ubuntu(c, user, work, scp)
     printMW('test ubuntu rig install finished\n')
 
 

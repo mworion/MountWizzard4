@@ -41,16 +41,6 @@ client = {
         'work': '/home/mw/test',
         'scp': 'mw@astro-comp.fritz.box:/home/mw/test',
     },
-    'win10-32-old': {
-        'user': 'mw@astro-win10-32-old.fritz.box',
-        'work': 'test',
-        'scp': 'mw@astro-win10-32-old.fritz.box:/Users/mw/test',
-    },
-    'win10-64-old': {
-        'user': 'mw@astro-win10-64-old.fritz.box',
-        'work': 'test',
-        'scp': 'mw@astro-win10-64-old.fritz.box:/Users/mw/test',
-    },
     'win10-32': {
         'user': 'mw@astro-win10-32.fritz.box',
         'work': 'test',
@@ -296,31 +286,11 @@ def test_mac(c, user, work, scp):
     runMW(c, f'ssh {user} "cd {work} && {cmd}"')
     runMW(c, f'ssh {user} "cd {work} && tar -xf startup_package.zip"')
     runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz --no-start"')
-    runMW(c, f'ssh {user} "cd {work} && python3 && export DISPLAY=:0 && startup.pyz"')
+    runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz"')
 
 
 @task(pre=[])
-def test_win1032old(c):
-    printMW('test windows10 32 old install')
-    user = client['win10-32-old']['user']
-    work = client['win10-32-old']['work']
-    scp = client['win10-32-old']['scp']
-    test_windows(c, user, work, scp)
-    printMW('test windows10 install finished\n')
-
-
-@task(pre=[])
-def test_win1064old(c):
-    printMW('test windows10 64 old install')
-    user = client['win10-64-old']['user']
-    work = client['win10-64-old']['work']
-    scp = client['win10-64-old']['scp']
-    test_windows(c, user, work, scp)
-    printMW('test windows10 install finished\n')
-
-
-@task(pre=[])
-def test_win1032(c):
+def test_win10_32(c):
     printMW('test windows10 32 install')
     user = client['win10-32']['user']
     work = client['win10-32']['work']
@@ -330,7 +300,7 @@ def test_win1032(c):
 
 
 @task(pre=[])
-def test_win1064(c):
+def test_win10_64(c):
     printMW('test windows10 64 install')
     user = client['win10-64']['user']
     work = client['win10-64']['work']

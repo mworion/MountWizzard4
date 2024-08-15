@@ -44,16 +44,7 @@ def function(module):
 def test_mouseMovedHorizon_1(function):
     with mock.patch.object(function,
                            'mouseMoved'):
-        suc = function.mouseMovedHorizon('test')
-        assert suc
-
-
-def test_setIcons(function):
-    function.setIcons()
-
-
-def test_colorChangeHorizon(function):
-    function.colorChangeHorizon()
+        function.mouseMovedHorizon('test')
 
 
 def test_setTerrainFile_1(function):

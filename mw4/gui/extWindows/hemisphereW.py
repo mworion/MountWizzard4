@@ -27,7 +27,7 @@ import pyqtgraph as pg
 from gui.utilities.toolsQtWidget import MWidget
 from gui.utilities.slewInterface import SlewInterface
 from gui.widgets import hemisphere_ui
-from gui.extWindows.hemisphere.editHorizon import EditHorizon
+from gui.extWindows.hemisphereEditHorizon import EditHorizon
 from base.transform import diffModulusAbs
 
 
@@ -192,6 +192,21 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         self.drawHorizonTab()
         self.show()
         return True
+
+    def setIcons(self):
+        """
+        """
+        self.wIcon(self.ui.loadTerrainFile, 'load')
+        self.wIcon(self.ui.clearTerrainFile, 'trash')
+        self.wIcon(self.ui.loadHorizonMask, 'load')
+        self.wIcon(self.ui.saveHorizonMask, 'save')
+        self.wIcon(self.ui.saveHorizonMaskAs, 'save')
+        self.wIcon(self.ui.clearHorizonMask, 'trash')
+
+    def colorChangeHorizon(self):
+        """
+        """
+        self.setIcons()
 
     def mouseMoved(self, plotItem, pos):
         """

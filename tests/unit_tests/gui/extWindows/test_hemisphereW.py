@@ -83,6 +83,14 @@ def test_storeConfig_1(function):
     function.storeConfig()
 
 
+def test_setIcons(function):
+    function.setIcons()
+
+
+def test_colorChangeHorizon(function):
+    function.colorChangeHorizon()
+
+
 def test_enableTabsMovable(function):
     suc = function.enableTabsMovable(True)
     assert suc

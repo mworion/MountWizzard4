@@ -30,7 +30,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.keypadW import KeypadWindow
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     func = KeypadWindow(app=App())
     with mock.patch.object(func,
@@ -39,23 +39,20 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
     if 'keypadW' in function.app.config:
         del function.app.config['keypadW']
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_storeConfig_2(function):
     function.app.config['keypadW'] = {}
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_closeEvent_1(function):
@@ -98,7 +95,6 @@ def test_keyPressEvent_2(function):
             return 6
 
     function.inputActive = False
-    function.keypad = None
     with mock.patch.object(MWidget,
                            'keyPressEvent'):
         function.keyPressEvent(KeyEvent())
@@ -115,7 +111,6 @@ def test_keyPressEvent_3(function):
             return 6
 
     function.inputActive = False
-    function.keypad = None
     with mock.patch.object(MWidget,
                            'keyPressEvent'):
         function.keyPressEvent(KeyEvent())
@@ -132,7 +127,6 @@ def test_keyPressEvent_4(function):
             return 6
 
     function.inputActive = False
-    function.keypad = None
     with mock.patch.object(MWidget,
                            'keyPressEvent'):
         function.keyPressEvent(KeyEvent())
@@ -149,7 +143,6 @@ def test_keyPressEvent_5(function):
             return 6
 
     function.inputActive = False
-    function.keypad = None
     with mock.patch.object(MWidget,
                            'keyPressEvent'):
         function.keyPressEvent(KeyEvent())
@@ -163,29 +156,27 @@ def test_showWindow_1(function):
                                'show'):
             with mock.patch.object(function,
                                    'setupButtons'):
-                with mock.patch.object(function.app.mount.setting,
-                                       'setWebInterface',
-                                       return_value=False):
-                    suc = function.showWindow()
-                    assert suc
+                with mock.patch.object(function,
+                                       'startKeypad'):
+                    with mock.patch.object(function.app.mount.setting,
+                                           'setWebInterface',
+                                           return_value=False):
+                        function.showWindow()
 
 
 def test_colorChange(function):
     with mock.patch.object(function,
                            'clearGraphics'):
-        suc = function.colorChange()
-        assert suc
+        function.colorChange()
 
 
 def test_setupButtons_1(function):
-    suc = function.setupButtons()
-    assert suc
+    function.setupButtons()
 
 
 def test_websocketClear(function):
     function.websocketMutex.lock()
-    suc = function.websocketClear()
-    assert suc
+    function.websocketClear()
 
 
 def test_startKeypad_1(function):
@@ -212,8 +203,7 @@ def test_hostChanged_1(function):
                            'closeWebsocket'):
         with mock.patch.object(function,
                                'startKeypad'):
-            suc = function.hostChanged()
-            assert suc
+            function.hostChanged()
 
 
 def test_buttonPressed_1(function):
@@ -284,37 +274,31 @@ def test_writeTextRow_4(function):
 def test_clearGraphics(function):
     with mock.patch.object(function,
                            'drawGraphics'):
-        suc = function.clearGraphics()
-        assert suc
+        function.clearGraphics()
 
 
 def test_clearDisplay(function):
     with mock.patch.object(function,
                            'clearGraphics'):
-        suc = function.clearDisplay()
-        assert suc
+        function.clearDisplay()
 
 
 def test_clearCursor(function):
     function.inputActive = True
-    suc = function.clearCursor()
-    assert suc
+    function.clearCursor()
     assert not function.inputActive
 
 
 def test_setCursorPos(function):
-    suc = function.setCursorPos(1, 1)
-    assert suc
+    function.setCursorPos(1, 1)
 
 
 def test_drawGraphics(function):
-    suc = function.drawGraphics()
-    assert suc
+    function.drawGraphics()
 
 
 def test_buildGraphics(function):
     arr = np.zeros([64, 128, 3], dtype=np.uint8)
-    suc = function.buildGraphics(arr, 0, 0)
-    assert suc
+    function.buildGraphics(arr, 0, 0)
 
 

@@ -73,26 +73,15 @@ class KeypadWindow(toolsQtWidget.MWidget):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
-        :return: True for test purpose
         """
         if 'keypadW' not in self.app.config:
             self.app.config['keypadW'] = {}
         config = self.app.config['keypadW']
 
         self.positionWindow(config)
-        return True
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
-        :return: True for test purpose
         """
         config = self.app.config
         if 'keypadW' not in config:
@@ -105,12 +94,9 @@ class KeypadWindow(toolsQtWidget.MWidget):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        return True
 
     def closeEvent(self, closeEvent):
         """
-        :param closeEvent:
-        :return:
         """
         self.storeConfig()
         self.keypad.closeWebsocket()
@@ -118,8 +104,6 @@ class KeypadWindow(toolsQtWidget.MWidget):
 
     def keyPressEvent(self, keyEvent):
         """
-        :param keyEvent:
-        :return:
         """
         key = keyEvent.key()
         if key == 16777216:
@@ -139,7 +123,6 @@ class KeypadWindow(toolsQtWidget.MWidget):
 
     def showWindow(self):
         """
-        :return:
         """
         if not self.app.mount.setting.webInterfaceStat:
             self.msg.emit(0, 'System', 'Mount', 'Enable webinterface')
@@ -157,19 +140,15 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.setupButtons()
         self.show()
         self.startKeypad()
-        return True
 
     def colorChange(self):
         """
-        :return:
         """
         self.setStyleSheet(self.mw4Style)
         self.clearGraphics()
-        return True
 
     def setupButtons(self):
         """
-        :return:
         """
         self.buttons = {
             self.ui.b0: 'key_0',
@@ -196,18 +175,14 @@ class KeypadWindow(toolsQtWidget.MWidget):
         for button in self.buttons:
             button.pressed.connect(self.buttonPressed)
             button.released.connect(self.buttonReleased)
-        return True
 
     def websocketClear(self):
         """
-        :return:
         """
         self.websocketMutex.unlock()
-        return True
 
     def startKeypad(self):
         """
-        :return:
         """
         if not self.websocketMutex.tryLock():
             return False
@@ -221,15 +196,12 @@ class KeypadWindow(toolsQtWidget.MWidget):
 
     def hostChanged(self):
         """
-        :return:
         """
         self.keypad.closeWebsocket()
         self.startKeypad()
-        return True
 
     def buttonPressed(self):
         """
-        :return:
         """
         button = self.sender()
         if button not in self.buttons:
@@ -240,7 +212,6 @@ class KeypadWindow(toolsQtWidget.MWidget):
 
     def buttonReleased(self):
         """
-        :return:
         """
         button = self.sender()
         if button not in self.buttons:
@@ -251,9 +222,6 @@ class KeypadWindow(toolsQtWidget.MWidget):
 
     def writeTextRow(self, row, text):
         """
-        :param row:
-        :param text:
-        :return:
         """
         if not -1 < row < 5:
             return False
@@ -271,36 +239,27 @@ class KeypadWindow(toolsQtWidget.MWidget):
 
     def clearGraphics(self):
         """
-        :return:
         """
         self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
         self.drawGraphics()
-        return True
 
     def clearDisplay(self):
         """
-        :return:
         """
         for row in range(5):
             self.writeTextRow(row, '')
         self.clearGraphics()
         self.clearCursor()
         self.inputActive = False
-        return True
 
     def clearCursor(self):
         """
-        :return:
         """
         self.inputActive = False
         self.ui.cursor.setVisible(False)
-        return True
 
     def setCursorPos(self, row, col):
         """
-        :param row:
-        :param col:
-        :return:
         """
         self.inputActive = True
         x = self.rows[row].x()
@@ -311,11 +270,9 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.ui.cursor.setStyleSheet(f'color: {self.M_PRIM};')
         self.ui.cursor.setVisible(True)
         self.ui.cursor.move(x + 16 * col, y + height)
-        return True
 
     def drawGraphics(self):
         """
-        :return:
         """
         color = self.hex2rgb(self.M_PRIM)
         back = self.hex2rgb(self.M_BACK)
@@ -328,12 +285,9 @@ class KeypadWindow(toolsQtWidget.MWidget):
         image = array2qimage(img)
         pixmap = QPixmap().fromImage(image).scaled(256, 128)
         self.ui.graphics.setPixmap(pixmap)
-        return True
 
     def buildGraphics(self, imgArr, yPos, xPos):
         """
-        :return:
         """
         dy, dx, _ = imgArr.shape
         self.graphics[yPos: yPos + dy, xPos: xPos + dx] = imgArr
-        return True

@@ -54,21 +54,6 @@ class EditHorizon:
         plotItem = self.ui.horizon.p[0]
         self.mouseMoved(plotItem, pos)
 
-    def setIcons(self):
-        """
-        """
-        self.wIcon(self.ui.loadTerrainFile, 'load')
-        self.wIcon(self.ui.clearTerrainFile, 'trash')
-        self.wIcon(self.ui.loadHorizonMask, 'load')
-        self.wIcon(self.ui.saveHorizonMask, 'save')
-        self.wIcon(self.ui.saveHorizonMaskAs, 'save')
-        self.wIcon(self.ui.clearHorizonMask, 'trash')
-
-    def colorChangeHorizon(self):
-        """
-        """
-        self.setIcons()
-
     def setTerrainFile(self, fileName):
         """
         """

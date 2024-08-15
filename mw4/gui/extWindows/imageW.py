@@ -691,10 +691,16 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         suc = self.slewTargetRaDec(ra, dec)
         return suc
 
+    def getMouseCoordinates(self, mousePoint):
+        """
+        """
+        x = mousePoint.x()
+        y = mousePoint.y()
+        ra, dec = self.mouseToWorld(mousePoint)
+        return x, y, ra, dec
+
     def mouseMoved(self, pos):
         """
-        :param pos:
-        :return:
         """
         if not self.fileHandler.hasCelestial:
             return False
@@ -702,9 +708,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         plotItem = self.ui.image.p[0]
         vr = plotItem.getViewBox().viewRange()
         mousePoint = plotItem.getViewBox().mapSceneToView(pos)
-        x = mousePoint.x()
-        y = mousePoint.y()
-        ra, dec = self.mouseToWorld(mousePoint)
+        x, y, ra, dec = self.getMouseCoordinates(mousePoint)
 
         if vr[0][0] < x < vr[0][1] and vr[1][0] < y < vr[1][1]:
             self.guiSetText(self.ui.raMouse, 'HSTR', ra)

@@ -546,6 +546,11 @@ def test_slewDirect_3(function):
             assert suc
 
 
+def test_getMouseCoordinates_1(function):
+    mousePoint = QPointF(1, 1)
+    x, y, ra, dec = function.getMouseCoordinates(mousePoint)
+
+
 def test_mouseMoved_1(function):
     class App:
         threadPool = None
@@ -569,8 +574,11 @@ def test_mouseMoved_2(function):
     with mock.patch.object(function.fileHandler.wcs,
                            'wcs_pix2world',
                            return_value=(0, 0)):
-        suc = function.mouseMoved(pos=QPointF(50, 14))
-        assert suc
+        with mock.patch.object(function,
+                               'getMouseCoordinates',
+                               return_value=(0, 0, 0, 0)):
+            suc = function.mouseMoved(pos=QPointF(50, 14))
+            assert suc
 
 
 def test_mouseMoved_3(function):
@@ -585,9 +593,12 @@ def test_mouseMoved_3(function):
     function.ui.image.setImage(imageDisp=np.random.rand(100, 100) + 1)
     with mock.patch.object(function.fileHandler.wcs,
                            'wcs_pix2world',
-                           return_value=(0, 0)):
-        suc = function.mouseMoved(pos=QPointF(50, 25))
-        assert suc
+                           return_value=(0, 0, 50, 25)):
+        with mock.patch.object(function,
+                               'getMouseCoordinates',
+                               return_value=(0, 0, 0, 0)):
+            suc = function.mouseMoved(pos=QPointF(50, 25))
+            assert suc
 
 
 def test_mouseDoubleClick_1(function):

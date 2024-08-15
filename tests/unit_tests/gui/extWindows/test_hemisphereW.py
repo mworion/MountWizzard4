@@ -871,7 +871,7 @@ def test_setOperationModeHor_1(function):
 
 
 def test_setOperationModeHor_2(function):
-    function.ui.editModeHor.setChecked(False)
+    function.ui.normalModeHor.setChecked(True)
     function.setOperationModeHor()
 
 

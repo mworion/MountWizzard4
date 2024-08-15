@@ -1118,7 +1118,9 @@ class MainW:
 class App(QObject):
     config = {'mainW': {}}
     deviceStat = {'dome': False,
-                  'mount': False}
+                  'mount': False,
+                  'camera': False,
+                  'plateSolve': False,}
     statusOperationRunning = 0
     tabsMovable = Signal(object)
     update10s = Signal()

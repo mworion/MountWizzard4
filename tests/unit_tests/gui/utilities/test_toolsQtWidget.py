@@ -844,21 +844,6 @@ def test_timeZoneString_2(function):
     assert val == '(time is local)'
 
 
-def test_mwSuper_1(function):
-    class Test1:
-        @staticmethod
-        def test1(a):
-            pass
-
-    class Test(MWidget, Test1):
-        @staticmethod
-        def test(a):
-            pass
-
-    suc = Test().mwSuper('test1')
-    assert suc
-
-
 def test_makePointer(function):
     val = function.makePointer()
     assert isinstance(val, QPainterPath)

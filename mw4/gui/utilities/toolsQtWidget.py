@@ -721,24 +721,6 @@ class MWidget(QWidget, Styles):
         else:
             return '(time is local)'
 
-    def mwSuper(self, func):
-        """
-        mwSuper is a replacement for super() to manage the mixin style of
-        implementation it's not an ideal way to do it, but mwSuper() call the
-        method of every ! parent class if they exist.
-
-        :param func:
-        :return: true for test purpose
-        """
-        for base in self.__class__.__bases__:
-            if base.__name__ == "MWidget":
-                continue
-
-            if hasattr(base, func):
-                funcAttrib = getattr(base, func)
-                funcAttrib(self)
-        return True
-
     @staticmethod
     def makePointer():
         """

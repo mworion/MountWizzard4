@@ -17,8 +17,6 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import astropy
-import os
 import shutil
 
 # external packages
@@ -43,26 +41,6 @@ def function(module):
     yield window
 
 
-def test_initConfig_1(function):
-    function.app.config['mainW'] = {}
-    suc = function.initConfig()
-    assert suc
-
-
-def test_initConfig_2(function):
-    function.app.config['mainW'] = {}
-    with mock.patch.object(os.path,
-                           'isfile',
-                           return_value=False):
-        suc = function.mwSuper('initConfig')
-        assert suc
-
-
-def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
-
-
 def test_mouseMovedHorizon_1(function):
     with mock.patch.object(function,
                            'mouseMoved'):
@@ -71,13 +49,11 @@ def test_mouseMovedHorizon_1(function):
 
 
 def test_setIcons(function):
-    suc = function.setIcons()
-    assert suc
+    function.setIcons()
 
 
 def test_colorChangeHorizon(function):
-    suc = function.colorChangeHorizon()
-    assert suc
+    function.colorChangeHorizon()
 
 
 def test_setTerrainFile_1(function):
@@ -137,8 +113,7 @@ def test_clearTerrainFile(function):
                            'setTerrainFile'):
         with mock.patch.object(function,
                                'drawHorizonTab'):
-            suc = function.clearTerrainFile()
-            assert suc
+            function.clearTerrainFile()
 
 
 def test_loadHorizonMask_1(function):
@@ -237,25 +212,21 @@ def test_saveHorizonMaskFileAs_3(function):
 
 def test_setOperationModeHor_1(function):
     function.ui.editModeHor.setChecked(True)
-    suc = function.setOperationModeHor()
-    assert suc
+    function.setOperationModeHor()
 
 
 def test_setOperationModeHor_2(function):
     function.ui.editModeHor.setChecked(False)
-    suc = function.setOperationModeHor()
-    assert suc
+    function.setOperationModeHor()
 
 
 def test_updateDataHorizon(function):
     function.horizonPlot = pg.PlotDataItem()
-    suc = function.updateDataHorizon([1, 2], [1, 2])
-    assert suc
+    function.updateDataHorizon([1, 2], [1, 2])
 
 
 def test_clearHorizonMask(function):
-    suc = function.clearHorizonMask()
-    assert suc
+    function.clearHorizonMask()
 
 
 def test_addActualPosition_1(function):
@@ -280,8 +251,7 @@ def test_addActualPosition_2(function):
 def test_prepareHorizonView(function):
     with mock.patch.object(function,
                            'preparePlotItem'):
-        suc = function.prepareHorizonView()
-        assert suc
+        function.prepareHorizonView()
 
 
 def test_drawHorizonView_1(function):
@@ -298,8 +268,7 @@ def test_drawHorizonView_2(function):
 
 
 def test_setupPointerHor(function):
-    suc = function.prepareHorizonView()
-    assert suc
+    function.prepareHorizonView()
 
 
 def test_drawPointerHor_1(function):
@@ -325,25 +294,21 @@ def test_drawPointerHor_3(function):
 
 def test_setupHorizonView_1(function):
     function.ui.editModeHor.setChecked(True)
-    suc = function.setupHorizonView()
-    assert suc
+    function.setupHorizonView()
 
 
 def test_setupHorizonView_2(function):
     function.ui.editModeHor.setChecked(False)
-    suc = function.setupHorizonView()
-    assert suc
+    function.setupHorizonView()
 
 
 def test_drawHorizonTab_1(function):
     function.ui.showTerrain.setChecked(True)
     function.ui.editModeHor.setChecked(True)
-    suc = function.drawHorizonTab()
-    assert suc
+    function.drawHorizonTab()
 
 
 def test_drawHorizonTab_2(function):
     function.ui.showTerrain.setChecked(False)
     function.ui.editModeHor.setChecked(False)
-    suc = function.drawHorizonTab()
-    assert suc
+    function.drawHorizonTab()

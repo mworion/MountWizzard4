@@ -48,9 +48,7 @@ def test_initConfig_1(function):
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
-        with mock.patch.object(function,
-                               'mwSuper'):
-            function.initConfig()
+        function.initConfig()
 
 
 def test_initConfig_2(function):
@@ -59,9 +57,7 @@ def test_initConfig_2(function):
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
-        with mock.patch.object(function,
-                               'mwSuper'):
-            function.initConfig()
+        function.initConfig()
 
 
 def test_initConfig_3(function):
@@ -71,9 +67,7 @@ def test_initConfig_3(function):
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
-        with mock.patch.object(function,
-                               'mwSuper'):
-            function.initConfig()
+        function.initConfig()
 
 
 def test_initConfig_4(function):
@@ -81,16 +75,12 @@ def test_initConfig_4(function):
     function.app.config['hemisphereW'] = {}
     function.app.config['hemisphereW']['winPosX'] = 100
     function.app.config['hemisphereW']['winPosY'] = 100
-    with mock.patch.object(function,
-                           'mwSuper'):
-        function.initConfig()
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
     function.app.config = {}
-    with mock.patch.object(function,
-                           'mwSuper'):
-        function.storeConfig()
+    function.storeConfig()
 
 
 def test_enableTabsMovable(function):

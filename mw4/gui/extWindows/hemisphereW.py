@@ -55,7 +55,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         self.msg = app.msg
         self.ui = hemisphere_ui.Ui_HemisphereDialog()
         self.ui.setupUi(self)
-        self.mwSuper('__init__')
+        super(EditHorizon).__init__()
         self.operationMode = 'normal'
         self.pointerDome = None
         self.modelPointsText = []
@@ -74,8 +74,13 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         if 'hemisphereW' not in self.app.config:
             self.app.config['hemisphereW'] = {}
         config = self.app.config['hemisphereW']
-
+        fileName = config.get('horizonMaskFileName', '')
+        self.ui.horizonMaskFileName.setText(fileName)
+        self.app.data.loadHorizonP(fileName=fileName)
+        fileName = config.get('terrainFileName', '')
+        self.setTerrainFile(fileName)
         self.positionWindow(config)
+
         self.setTabAndIndex(self.ui.tabWidget, config, 'orderMain')
         self.ui.showSlewPath.setChecked(config.get('showSlewPath', False))
         self.ui.showMountLimits.setChecked(config.get('showMountLimits', False))
@@ -86,9 +91,17 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         self.ui.showTerrain.setChecked(config.get('showTerrain', False))
         self.ui.showIsoModel.setChecked(config.get('showIsoModel', False))
         self.ui.tabWidget.setCurrentIndex(config.get('tabWidget', 0))
+        self.ui.terrainAlpha.setValue(config.get('terrainAlpha', 0.35))
+        self.ui.azimuthShift.setValue(config.get('azimuthShift', 0))
+        self.ui.altitudeShift.setValue(config.get('altitudeShift', 0))
+        self.ui.azimuthShift.valueChanged.connect(self.drawHorizonTab)
+        self.ui.altitudeShift.valueChanged.connect(self.drawHorizonTab)
+        self.ui.terrainAlpha.valueChanged.connect(self.drawHorizonTab)
+        self.ui.normalModeHor.clicked.connect(self.setOperationModeHor)
+        self.ui.editModeHor.clicked.connect(self.setOperationModeHor)
+
         isMovable = self.app.config['mainW'].get('tabsMovable', False)
         self.enableTabsMovable(isMovable)
-        self.mwSuper('initConfig')
 
     def storeConfig(self):
         """
@@ -114,7 +127,11 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         config['showTerrain'] = self.ui.showTerrain.isChecked()
         config['showIsoModel'] = self.ui.showIsoModel.isChecked()
         config['tabWidget'] = self.ui.tabWidget.currentIndex()
-        self.mwSuper('storeConfig')
+        config['horizonMaskFileName'] = self.ui.horizonMaskFileName.text()
+        config['terrainFileName'] = self.ui.terrainFileName.text()
+        config['terrainAlpha'] = self.ui.terrainAlpha.value()
+        config['azimuthShift'] = self.ui.azimuthShift.value()
+        config['altitudeShift'] = self.ui.altitudeShift.value()
 
     def enableTabsMovable(self, isMovable):
         """

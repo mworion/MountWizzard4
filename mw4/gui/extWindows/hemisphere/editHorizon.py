@@ -46,54 +46,16 @@ class EditHorizon:
         self.ui.addPositionToHorizon.clicked.connect(self.addActualPosition)
         self.app.mount.signals.pointDone.connect(self.drawPointerHor)
         self.ui.showTerrain.clicked.connect(self.drawHorizonTab)
-
         self.setIcons()
-
-    def initConfig(self):
-        """
-        """
-        config = self.app.config.get('hemisphereW', {})
-        fileName = config.get('horizonMaskFileName', '')
-        self.ui.horizonMaskFileName.setText(fileName)
-        self.app.data.loadHorizonP(fileName=fileName)
-
-        fileName = config.get('terrainFileName', '')
-        self.ui.terrainAlpha.setValue(config.get('terrainAlpha', 0.35))
-        self.ui.azimuthShift.setValue(config.get('azimuthShift', 0))
-        self.ui.altitudeShift.setValue(config.get('altitudeShift', 0))
-
-        self.ui.azimuthShift.valueChanged.connect(self.drawHorizonTab)
-        self.ui.altitudeShift.valueChanged.connect(self.drawHorizonTab)
-        self.ui.terrainAlpha.valueChanged.connect(self.drawHorizonTab)
-
-        self.ui.normalModeHor.clicked.connect(self.setOperationModeHor)
-        self.ui.editModeHor.clicked.connect(self.setOperationModeHor)
-        self.setTerrainFile(fileName)
-        return True
-
-    def storeConfig(self):
-        """
-        """
-        config = self.app.config['hemisphereW']
-        config['horizonMaskFileName'] = self.ui.horizonMaskFileName.text()
-        config['terrainFileName'] = self.ui.terrainFileName.text()
-        config['terrainAlpha'] = self.ui.terrainAlpha.value()
-        config['azimuthShift'] = self.ui.azimuthShift.value()
-        config['altitudeShift'] = self.ui.altitudeShift.value()
-        return True
 
     def mouseMovedHorizon(self, pos):
         """
-        :param pos:
-        :return:
         """
         plotItem = self.ui.horizon.p[0]
         self.mouseMoved(plotItem, pos)
-        return True
 
     def setIcons(self):
         """
-        :return:
         """
         self.wIcon(self.ui.loadTerrainFile, 'load')
         self.wIcon(self.ui.clearTerrainFile, 'trash')
@@ -101,19 +63,14 @@ class EditHorizon:
         self.wIcon(self.ui.saveHorizonMask, 'save')
         self.wIcon(self.ui.saveHorizonMaskAs, 'save')
         self.wIcon(self.ui.clearHorizonMask, 'trash')
-        return True
 
     def colorChangeHorizon(self):
         """
-        :return:
         """
         self.setIcons()
-        return True
 
     def setTerrainFile(self, fileName):
         """
-        :param fileName:
-        :return:
         """
         self.ui.terrainFileName.setText(fileName)
         terrainFile = self.app.mwGlob['configDir'] + '/' + fileName + '.jpg'
@@ -135,7 +92,6 @@ class EditHorizon:
 
     def loadTerrainFile(self):
         """
-        :return:
         """
         folder = self.app.mwGlob['configDir']
         fileTypes = 'Terrain images (*.jpg)'
@@ -158,17 +114,14 @@ class EditHorizon:
 
     def clearTerrainFile(self):
         """
-        :return:
         """
         self.ui.terrainFileName.setText('')
         self.ui.showTerrain.setChecked(False)
         self.setTerrainFile('')
         self.drawHorizonTab()
-        return True
 
     def loadHorizonMask(self):
         """
-        :return: success
         """
         folder = self.app.mwGlob['configDir']
         fileTypes = 'Horizon mask files (*.hpts);; CSV Files (*.csv);; MW3 Files (*.txt)'
@@ -193,7 +146,6 @@ class EditHorizon:
 
     def saveHorizonMask(self):
         """
-        :return: success
         """
         fileName = self.ui.horizonMaskFileName.text()
         if not fileName:
@@ -212,7 +164,6 @@ class EditHorizon:
 
     def saveHorizonMaskAs(self):
         """
-        :return: success
         """
         folder = self.app.mwGlob['configDir']
         saveFilePath, fileName, ext = self.saveFile(
@@ -232,7 +183,6 @@ class EditHorizon:
 
     def setOperationModeHor(self):
         """
-        :return: success
         """
         if self.ui.editModeHor.isChecked():
             self.ui.addPositionToHorizon.setEnabled(True)
@@ -240,11 +190,9 @@ class EditHorizon:
             self.ui.addPositionToHorizon.setEnabled(False)
 
         self.drawHorizonTab()
-        return True
 
     def updateDataHorizon(self, x, y):
         """
-        :return:
         """
         hp = [(y, x) for y, x in zip(y, x)]
         hp.sort(key=lambda x: x[1])
@@ -253,21 +201,17 @@ class EditHorizon:
         self.horizonPlot.setData(x=x, y=y)
         self.app.data.horizonP = hp
         self.app.redrawHorizon.emit()
-        return True
 
     def clearHorizonMask(self):
         """
-        :return:
         """
         self.app.data.horizonP = []
         self.ui.horizonMaskFileName.setText('')
         self.app.redrawHorizon.emit()
         self.drawHorizonTab()
-        return True
 
     def addActualPosition(self):
         """
-        :return:
         """
         vb = self.ui.horizon.p[0].getViewBox()
         az = self.app.mount.obsSite.Az
@@ -283,16 +227,13 @@ class EditHorizon:
 
     def prepareHorizonView(self):
         """
-        :return:
         """
         plotItem = self.ui.horizon.p[0]
         self.preparePlotItem(plotItem)
         self.pointerHor = None
-        return True
 
     def drawHorizonView(self):
         """
-        :return:
         """
         hp = self.app.data.horizonP
         if len(hp) == 0:
@@ -305,7 +246,6 @@ class EditHorizon:
 
     def setupPointerHor(self):
         """
-        :return:
         """
         plotItem = self.ui.horizon.p[0]
         symbol = self.makePointer()
@@ -315,11 +255,9 @@ class EditHorizon:
         self.pointerHor.setBrush(pg.mkBrush(color=self.M_PINK + '20'))
         self.pointerHor.setZValue(10)
         plotItem.addItem(self.pointerHor)
-        return True
 
     def drawPointerHor(self):
         """
-        :return:
         """
         if self.pointerHor is None:
             return False
@@ -337,7 +275,6 @@ class EditHorizon:
 
     def setupHorizonView(self):
         """
-        :return:
         """
         plotItem = self.ui.horizon.p[0]
         if self.ui.editModeHor.isChecked():
@@ -360,11 +297,9 @@ class EditHorizon:
                 pen=pg.mkPen(color=self.M_PRIM1, width=2),
                 symbolSize=5, symbol='o', connect='all')
             plotItem.addItem(self.horizonPlot)
-        return True
 
     def drawHorizonTab(self):
         """
-        :return:
         """
         self.prepareHorizonView()
         if self.ui.showTerrain.isChecked():
@@ -374,4 +309,3 @@ class EditHorizon:
         if self.ui.editModeHor.isChecked():
             self.setupPointerHor()
             self.drawPointerHor()
-        return True

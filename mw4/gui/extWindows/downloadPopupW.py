@@ -93,7 +93,6 @@ class DownloadPopup(MWidget):
         if r.status_code != 200:
             return False
 
-        self.signalStatus.emit(f'Downloading {os.path.basename(dest)}')
         with open(dest, 'wb') as f:
             for n, chunk in enumerate(r.iter_content(512)):
                 progressPercent = int(n * 512 / totalSizeBytes * 100)
@@ -106,7 +105,6 @@ class DownloadPopup(MWidget):
     def unzipFile(self, downloadDest: str, dest: str) -> None:
         """
         """
-        self.signalStatus.emit(f'Unzipping {downloadDest}')
         with gzip.open(downloadDest, 'rb') as f_in:
             with open(dest, 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
@@ -116,11 +114,12 @@ class DownloadPopup(MWidget):
         """
         """
         if unzip:
-            downloadDest = os.path.dirname(dest) + 'unzip.gz'
+            downloadDest = os.path.dirname(dest) + '/unzip.gz'
         else:
             downloadDest = dest
 
         try:
+            self.signalStatus.emit(f'Downloading {os.path.basename(dest)}')
             suc = self.getFileFromUrl(url, downloadDest)
             if not suc:
                 return False
@@ -136,6 +135,7 @@ class DownloadPopup(MWidget):
             return True
 
         try:
+            self.signalStatus.emit(f'Unzipping {os.path.basename(dest)}')
             self.unzipFile(downloadDest, dest)
         except Exception as e:
             self.msg.emit(2, 'Download', 'Unzip', f'{url}')

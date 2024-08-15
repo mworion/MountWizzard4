@@ -39,6 +39,7 @@ def function(qapp):
 
 def test_updatePositions_1(function):
     function.app.deviceStat['mount'] = False
+    function.updatePositions()
 
 
 def test_updatePositions_2(function):

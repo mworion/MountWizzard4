@@ -105,7 +105,7 @@ def test_operationMode_2(function):
 
 def test_updateWindowsStats_1(function):
     function.imagingDeviceStat['expose'] = True
-    function.imagingDeviceStat['exposeN'] = False
+    function.imagingDeviceStat['exposeN'] = True
     function.imagingDeviceStat['solve'] = True
     function.app.deviceStat['camera'] = False
     function.app.deviceStat['plateSolve'] = True
@@ -130,6 +130,8 @@ def test_updateWindowsStats_2(function):
 
 
 def test_updateWindowsStats_3(function):
+    function.imagingDeviceStat['expose'] = False
+    function.imagingDeviceStat['exposeN'] = False
     function.imagingDeviceStat['solve'] = False
     function.app.deviceStat['camera'] = True
     function.app.deviceStat['plateSolve'] = False
@@ -567,7 +569,7 @@ def test_mouseMoved_2(function):
     with mock.patch.object(function.fileHandler.wcs,
                            'wcs_pix2world',
                            return_value=(0, 0)):
-        suc = function.mouseMoved(pos=QPointF(1, 1))
+        suc = function.mouseMoved(pos=QPointF(50, 14))
         assert suc
 
 

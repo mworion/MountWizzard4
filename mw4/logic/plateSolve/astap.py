@@ -183,7 +183,7 @@ class ASTAP(object):
         with fits.open(wcsPath) as wcsHDU:
             wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
 
-        with fits.open(fitsPath, mode='update') as fitsHDU:
+        with fits.open(fitsPath, mode='update', output_verify='silentfix+warn') as fitsHDU:
             solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,
                                                     wcsHeader=wcsHeader,
                                                     updateFits=updateFits)

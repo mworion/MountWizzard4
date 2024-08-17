@@ -340,7 +340,7 @@ def test_ubuntu_22(c):
 
 
 @task(pre=[])
-def test_comp(c):
+def test_astro_comp(c):
     printMW('test ubuntu rig install')
     user = client['ubuntuRig']['user']
     work = client['ubuntuRig']['work']

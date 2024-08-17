@@ -19,15 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: support for INDI Pegasus Uranus Meteo sensor
-- add: wait time after slew finished before exposing
-- change: writing pointing coordinates to fits header from MW4 now
-- change: celestrak interface url's and retrieval strategy
-- improve: add waiting time for image file save for NINA and SGPro 
-- improve: logging for NINA / SGPro controlled cameras
-- improve: gain handling when missing values in camera settings
-- improve: lower the dome radius to 0.8m
-- fix: typos and some minor bugs
+- improve: workaround for SGPro header keywords 
+
 """
 
 with open('notes.txt', 'w') as f:
@@ -35,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.6',
+    version='3.2.7b0',
     packages=[
         'mw4',
         'mw4.base',

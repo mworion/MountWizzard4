@@ -116,6 +116,13 @@ def test_updateFits_2(function):
     assert suc
 
 
+def test_updateFits_3(function):
+    imagePath = 'tests/workDir/image/sgp_test.fit'
+    shutil.copy('tests/testData/sgp_test.fit', 'tests/workDir/image/sgp_test.fit')
+    suc = function.updateFits(imagePath)
+    assert suc
+
+
 def test_saveFits_1(function):
     data = np.array([])
     function.abortExpose = True

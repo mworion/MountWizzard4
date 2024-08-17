@@ -155,8 +155,8 @@ class CameraSupport:
             self.log.debug(f'{imagePath}, {self.raJ2000}, {self.decJ2000}')
             return False
 
-        with fits.open(imagePath, 'update') as hdul:
-            header = hdul[0].header
+        with fits.open(imagePath, 'update', output_verify='silentfix+warn') as hdu:
+            header = hdu[0].header
             if hasCoordinate:
                 header.append(('RA', self.raJ2000._degrees, 'Float value in degree'))
                 header.append(('DEC', self.decJ2000.degrees, 'Float value in degree'))

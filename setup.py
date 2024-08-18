@@ -20,6 +20,7 @@ import platform
 
 releaseNotes = """
 - improve: workaround for SGPro header keywords 
+- improve: workaround for windows automation
 
 """
 

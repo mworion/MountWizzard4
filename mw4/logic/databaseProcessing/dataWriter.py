@@ -60,7 +60,8 @@ class DataWriter:
             shutil.copy(os.path.normpath(sourceDir + '/CDFLeapSeconds.txt'),
                         os.path.normpath(destDir + '/CDFLeapSeconds.txt'))
         else:
-            shutil.copy(os.path.normpath(sourceDir + '/tai-utc.dat'))
+            shutil.copy(os.path.normpath(sourceDir + '/tai-utc.dat'),
+                        os.path.normpath(destDir + '/tai-utc.dat'))
 
         shutil.copy(os.path.normpath(sourceDir + '/finals.data'),
                     os.path.normpath(destDir + '/finals.data'))

@@ -84,13 +84,13 @@ def test_getNumberFiles_4(function):
 
 
 def test_getNumberFiles_5(function):
-    number = function.getNumberFiles(pathDir='tests/testData', search='**/*.fit*')
-    assert number == 5
+    number = function.getNumberFiles(pathDir='tests/testData', search='**/star*.fit*')
+    assert number == 3
 
 
 def test_getNumberFiles_6(function):
-    number = function.getNumberFiles(pathDir='tests/testData', search='*.fit*')
-    assert number == 5
+    number = function.getNumberFiles(pathDir='tests/testData', search='star*.fit*')
+    assert number == 3
 
 
 def test_getNumberFiles_7(function):

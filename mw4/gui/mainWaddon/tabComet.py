@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import json
+import os
 
 # external packages
 from PySide6.QtCore import Qt
@@ -122,6 +123,7 @@ class Comet(MWidget):
                 comets = json.load(inFile)
             except Exception as e:
                 self.log.error(f'Error {e} loading from {self.comets.dest}')
+                os.remove(self.comets.dest)
                 comets = []
 
         self.comets.objects.clear()

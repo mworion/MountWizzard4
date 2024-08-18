@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import json
+import os
 
 # external packages
 from PySide6.QtCore import Qt
@@ -121,6 +122,7 @@ class Asteroid(MWidget):
                 asteroids = json.load(inFile)
             except Exception as e:
                 self.log.error(f'Error {e} loading from {self.asteroids.dest}')
+                os.remove(self.asteroids.dest)
                 asteroids = []
 
         self.asteroids.objects.clear()

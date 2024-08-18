@@ -135,10 +135,4 @@ asteroidSourceURLs = {
             'file': 'unusual_extended.json',
             'unzip': True,
         },
-    'Asteroids MPC5000 (large! >100 MB)':
-        {
-            'url': mpcBaseUrl + 'mpcorb_extended.json.gz',
-            'file': 'mpcorb_extended.json',
-            'unzip': True,
-        },
 }

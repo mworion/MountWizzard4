@@ -102,7 +102,8 @@ class DownloadPopup(MWidget):
             self.signalProgress.emit(100)
         return True
 
-    def unzipFile(self, downloadDest: str, dest: str) -> None:
+    @staticmethod
+    def unzipFile(downloadDest: str, dest: str) -> None:
         """
         """
         with gzip.open(downloadDest, 'rb') as f_in:
@@ -114,7 +115,7 @@ class DownloadPopup(MWidget):
         """
         """
         if unzip:
-            downloadDest = os.path.dirname(dest) + '/unzip.gz'
+            downloadDest = os.path.dirname(dest) + os.path.basename(url)
         else:
             downloadDest = dest
 
@@ -135,7 +136,6 @@ class DownloadPopup(MWidget):
             return True
 
         try:
-            self.signalStatus.emit(f'Unzipping {os.path.basename(dest)}')
             self.unzipFile(downloadDest, dest)
         except Exception as e:
             self.msg.emit(2, 'Download', 'Unzip', f'{url}')

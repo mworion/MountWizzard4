@@ -141,7 +141,8 @@ class SeeingWeather():
         data = data.json()
         self.log.trace(data)
 
-        with open(self.app.mwGlob['dataDir'] + '/meteoblue.data', 'w+') as f:
+        dataDir = os.path.normpath(self.app.mwGlob['dataDir'] + '/meteoblue.data')
+        with open(dataDir, 'w+') as f:
             json.dump(data, f, indent=4)
         return True
 

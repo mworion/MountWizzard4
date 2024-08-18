@@ -15,6 +15,7 @@
 #
 ###########################################################
 # standard libraries
+import os
 
 # external packages
 from PyQt5.QtWidgets import QListView
@@ -137,7 +138,7 @@ class IERSTime:
 
         source = 'finals.data'
         url = urlMain + source
-        dest = self.app.mwGlob['dataDir'] + '/' + source
+        dest = os.path.normpath(self.app.mwGlob['dataDir'] + '/' + source)
         self.msg.emit(1, 'IERS', 'Download', f'{source}')
         DownloadPopup(self, url=url, dest=dest, unzip=False,
                       callBack=self.progEarthRotationData)
@@ -156,13 +157,13 @@ class IERSTime:
 
         source = 'finals2000A.all'
         url = urlMain + source
-        dest = self.app.mwGlob['dataDir'] + '/' + source
+        dest = os.path.normpath(self.app.mwGlob['dataDir'] + '/' + source)
         self.msg.emit(1, 'IERS', 'Download', f'{source}')
         DownloadPopup(self, url=url, dest=dest, unzip=False)
 
         source = 'finals.data'
         url = urlMain + source
-        dest = self.app.mwGlob['dataDir'] + '/' + source
+        dest = os.path.normpath(self.app.mwGlob['dataDir'] + '/' + source)
         self.msg.emit(1, 'IERS', 'Download', f'{source}')
         DownloadPopup(self, url=url, dest=dest, unzip=False)
         return True

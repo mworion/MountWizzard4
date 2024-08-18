@@ -189,6 +189,7 @@ class MinorPlanet:
 
         url = self.mpcPrefix + self.minorPlanetSourceURLs[source]
         dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
+        dest = os.path.normpath(dest)
 
         isOnline = self.ui.isOnline.isChecked()
         if isOnline:

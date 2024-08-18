@@ -224,8 +224,8 @@ class AutomateWindows(QObject):
             val = self.findAppSetup(winKey)
             self.available = val[0]
             self.name = val[1]
-            self.installPath = val[2]
-            self.updaterApp = val[3]
+            self.installPath = os.path.normpath(val[2])
+            self.updaterApp = os.path.normpath(val[2] + '/' + val[3])
         except Exception as e:
             self.available = False
             self.installPath = ''
@@ -264,16 +264,16 @@ class AutomateWindows(QObject):
             Timings.slow()
 
         try:
-            self.updater.start(self.installPath + self.updaterApp)
+            self.updater.start(self.updaterApp)
         except AppStartError as e:
             e = f'{e}'.replace('\n', '')
             self.log.error(f'Start error: [{e}]')
-            self.log.error(f'Path: [{self.installPath}{self.updaterApp}]')
+            self.log.error(f'Path: [{self.updaterApp}]')
             return False
         except Exception as e:
             e = f'{e}'.replace('\n', '')
             self.log.error(f'General error: [{e}]')
-            self.log.error(f'Path: [{self.installPath}{self.updaterApp}]')
+            self.log.error(f'Path: [{self.updaterApp}]')
             return False
         else:
             suc = self.checkFloatingPointErrorWindow()
@@ -314,8 +314,7 @@ class AutomateWindows(QObject):
             return False
 
         self.updater = None
-        os.chdir(os.path.dirname(self.installPath))
-
+        os.chdir(self.installPath)
         suc = self.startUpdater()
         if not suc:
             os.chdir(self.actualWorkDir)
@@ -417,7 +416,6 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
-        self.log.debug(f'Updater win: [{self.getIdentifiers(win)}]')
 
         if comets:
             controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
@@ -429,7 +427,6 @@ class AutomateWindows(QObject):
             popup = self.updater['Asteroid orbits']
 
         self.moveWindow(popup, 30, 30)
-        self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['MPC file'].click()
         popup['MPC file'].wait('ready')
@@ -437,9 +434,8 @@ class AutomateWindows(QObject):
         fTitle = self.findFileDialogWindow('en')
         fDialog = self.updater[fTitle]
         self.moveWindow(fDialog, 50, 50)
-        self.log.debug(f'Updater filedialog: [{self.getIdentifiers(fDialog)}]')
 
-        text = self.installPath + 'minorPlanets.mpc'
+        text = 'minorPlanets.mpc'
         self.dialogInput(fDialog, text)
         self.dialogInput(fDialog, '~')
         popup['Close'].click()
@@ -467,13 +463,11 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
-        self.log.debug(f'Updater win: [{self.getIdentifiers(win)}]')
 
         controls.ButtonWrapper(win['UTC / Earth rotation data']).check_by_click()
         win['Edit...1'].click()
         popup = self.updater['UTC / Earth rotation data']
         self.moveWindow(popup, 30, 30)
-        self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['Import files...'].click()
         popup['Import files...'].wait('ready')
@@ -481,23 +475,21 @@ class AutomateWindows(QObject):
         fTitle = self.findFileDialogWindow('finals')
         fDialog = self.updater[fTitle]
         self.moveWindow(fDialog, 50, 50)
-        self.log.debug(f'Finals filedialog: [{self.getIdentifiers(fDialog)}]')
 
-        text = self.installPath + self.UTC_1_FILE
+        text =self.UTC_1_FILE
         self.dialogInput(fDialog, text)
         self.dialogInput(fDialog, '~')
 
         popup['Import files...'].wait('ready')
 
-        if self.updaterApp == 'tenmicron_v2.exe':
-            text = self.installPath + self.UTC_2a_FILE
+        if os.path.basename(self.updaterApp) == 'tenmicron_v2.exe':
+            text = self.UTC_2a_FILE
         else:
-            text = self.installPath + self.UTC_2b_FILE
+            text = self.UTC_2b_FILE
 
         fTitle = self.findFileDialogWindow('tai-utc')
         fDialog = self.updater[fTitle]
         self.moveWindow(fDialog, 50, 50)
-        self.log.debug(f'Leap filedialog: [{self.getIdentifiers(fDialog)}]')
 
         self.dialogInput(fDialog, text)
         self.dialogInput(fDialog, '~')
@@ -534,7 +526,6 @@ class AutomateWindows(QObject):
         win['Edit...2'].click()
         popup = self.updater['Satellites orbits']
         self.moveWindow(popup, 30, 30)
-        self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['Load from file'].click()
         popup['Load from file'].wait('ready')
@@ -542,9 +533,8 @@ class AutomateWindows(QObject):
         fTitle = self.findFileDialogWindow('en')
         fDialog = self.updater[fTitle]
         self.moveWindow(fDialog, 50, 50)
-        self.log.debug(f'Updater filedialog: [{self.getIdentifiers(fDialog)}]')
 
-        text = self.installPath + 'satellites.tle'
+        text = 'satellites.tle'
         self.dialogInput(fDialog, text)
         self.dialogInput(fDialog, '~')
 

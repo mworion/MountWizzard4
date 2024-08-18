@@ -67,6 +67,15 @@ class Watney(object):
             }
         }
 
+    def setDefaultPath(self):
+        """
+        :return: true for test purpose
+        """
+        self.appPath = self.workDir + '/watney-cli'
+        self.indexPath = self.workDir + '/watney-index'
+        self.saveConfigFile()
+        return True
+
     def saveConfigFile(self):
         """
         :return:
@@ -76,15 +85,6 @@ class Watney(object):
             outFile.write(f"quadDbPath: '{self.indexPath}'\n")
             outFile.write("defaultStarDetectionBgOffset: 1.0\n")
             outFile.write("defaultLowerDensityOffset: 3\n")
-        return True
-
-    def setDefaultPath(self):
-        """
-        :return: true for test purpose
-        """
-        self.appPath = self.workDir + '/watney-cli'
-        self.indexPath = self.workDir + '/watney-index'
-        self.saveConfigFile()
         return True
 
     def runWatney(self, runnable):

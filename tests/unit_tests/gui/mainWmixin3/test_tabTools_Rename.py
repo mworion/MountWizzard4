@@ -93,12 +93,12 @@ def test_getNumberFiles_4(function):
 
 def test_getNumberFiles_5(function):
     number = function.getNumberFiles(pathDir='tests/testData', search='**/*.fit*')
-    assert number == 5
+    assert number == 6
 
 
 def test_getNumberFiles_6(function):
     number = function.getNumberFiles(pathDir='tests/testData', search='*.fit*')
-    assert number == 5
+    assert number == 6
 
 
 def test_getNumberFiles_7(function):

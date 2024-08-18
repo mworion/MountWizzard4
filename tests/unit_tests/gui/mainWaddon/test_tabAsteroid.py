@@ -19,6 +19,7 @@ import pytest
 import astropy
 from unittest import mock
 import json
+import os
 
 # external packages
 from PySide6.QtWidgets import QTableWidgetItem, QWidget
@@ -97,8 +98,10 @@ def test_processAsteroidSource_1(function):
                            'load',
                            return_value='',
                            side_effect=Exception):
-        function.processAsteroidSource()
-        assert function.asteroids.objects == {}
+        with mock.patch.object(os,
+                               'remove'):
+            function.processAsteroidSource()
+            assert function.asteroids.objects == {}
 
 
 def test_processAsteroidSource_2(function):

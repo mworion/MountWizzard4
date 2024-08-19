@@ -59,8 +59,7 @@ def test_stopCommunication_1(function):
         with mock.patch.object(function.tcpServer,
                                'close',
                                return_value=True):
-            suc = function.stopCommunication()
-            assert suc
+            function.stopCommunication()
 
 
 def test_addConnection_1(function):
@@ -172,8 +171,7 @@ def test_removeConnection_1(function):
             return
 
     function.clientConnection = Test()
-    suc = function.removeConnection()
-    assert suc
+    function.removeConnection()
 
 
 def test_handleError_1(function):
@@ -187,5 +185,4 @@ def test_handleError_1(function):
             return 'Test'
 
     function.clientConnection = Test()
-    suc = function.handleError('test')
-    assert suc
+    function.handleError('test')

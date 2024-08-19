@@ -47,9 +47,8 @@ class Remote(QObject):
         self.clientConnection = None
         self.tcpServer = None
 
-    def startCommunication(self):
+    def startCommunication(self) -> bool:
         """
-        :return: success
         """
         self.tcpServer = QtNetwork.QTcpServer(self)
         hostAddress = QtNetwork.QHostAddress('localhost')
@@ -63,18 +62,15 @@ class Remote(QObject):
             self.signals.deviceConnected.emit('TCP')
             return True
 
-    def stopCommunication(self):
+    def stopCommunication(self) -> None:
         """
-        :return: true for test purpose
         """
         if self.tcpServer.isListening():
             self.tcpServer.close()
         self.signals.deviceDisconnected.emit('TCP')
-        return True
 
-    def addConnection(self):
+    def addConnection(self) -> bool:
         """
-        :return: success
         """
         if self.tcpServer is None:
             return False
@@ -92,9 +88,8 @@ class Remote(QObject):
         self.log.info(f'Connection to MountWizzard from {connection}')
         return True
 
-    def receiveMessage(self):
+    def receiveMessage(self) -> bool:
         """
-        :return: success
         """
         if self.clientConnection.bytesAvailable() == 0:
             return False
@@ -117,20 +112,15 @@ class Remote(QObject):
 
         return True
 
-    def removeConnection(self):
+    def removeConnection(self) -> None:
         """
-        :return: true for test purpose
         """
         connection = self.clientConnection.peerAddress().toString()
         self.clientConnection.close()
         self.log.debug(f'Connection from {connection} closed')
-        return True
 
-    def handleError(self, socketError):
+    def handleError(self, socketError: QtNetwork.QAbstractSocket.SocketError) -> None:
         """
-        :param socketError:
-        :return: true for test purpose
         """
         connection = self.clientConnection.peerAddress().toString()
         self.log.critical(f'Connection from {connection} failed, error: {socketError}')
-        return True

@@ -142,13 +142,13 @@ def setupWorkDirs(mwGlob: dict) -> dict:
     """
     mwGlob['modeldata'] = '4.0'
     mwGlob['workDir'] = os.getcwd()
-    mwGlob['configDir'] = mwGlob['workDir'] + '/config'
-    mwGlob['dataDir'] = mwGlob['workDir'] + '/data'
-    mwGlob['imageDir'] = mwGlob['workDir'] + '/image'
-    mwGlob['tempDir'] = mwGlob['workDir'] + '/temp'
-    mwGlob['modelDir'] = mwGlob['workDir'] + '/model'
-    mwGlob['measureDir'] = mwGlob['workDir'] + '/measure'
-    mwGlob['logDir'] = mwGlob['workDir'] + '/log'
+    mwGlob['configDir'] = os.path.normpath(mwGlob['workDir'] + '/config')
+    mwGlob['dataDir'] = os.path.normpath(mwGlob['workDir'] + '/data')
+    mwGlob['imageDir'] = os.path.normpath(mwGlob['workDir'] + '/image')
+    mwGlob['tempDir'] = os.path.normpath(mwGlob['workDir'] + '/temp')
+    mwGlob['modelDir'] = os.path.normpath(mwGlob['workDir'] + '/model')
+    mwGlob['measureDir'] = os.path.normpath(mwGlob['workDir'] + '/measure')
+    mwGlob['logDir'] = os.path.normpath(mwGlob['workDir'] + '/log')
 
     for dirPath in ['workDir', 'configDir', 'imageDir', 'dataDir',
                     'tempDir', 'modelDir', 'measureDir', 'logDir']:

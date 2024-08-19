@@ -36,42 +36,27 @@ class DataWriter:
         super().__init__()
         self.app = app
 
-    def writeEarthRotationData(self, dataFilePath=''):
+    def writeEarthRotationData(self, dataFilePath: str = '') -> bool:
         """
-        :param dataFilePath:
-        :return:
         """
-        sourceDir = self.app.mwGlob['dataDir'] + '/'
-        destDir = dataFilePath + '/'
-
+        sourceDir = self.app.mwGlob['dataDir']
+        destDir = dataFilePath
         if destDir == sourceDir:
             return False
-        if not os.path.isfile(sourceDir + 'CDFLeapSeconds.txt'):
-            return False
-        if not os.path.isfile(sourceDir + 'finals.data'):
-            return False
 
-        shutil.copy(os.path.normpath(sourceDir + 'CDFLeapSeconds.txt'),
-                    os.path.normpath(destDir + 'CDFLeapSeconds.txt'))
-        shutil.copy(os.path.normpath(sourceDir + 'finals.data'),
-                    os.path.normpath(destDir + 'finals.data'))
+        for file in ['CDFLeapSeconds.txt', 'finals.data']:
+            if not os.path.isfile(os.path.join(sourceDir, file)):
+                return False
+            shutil.copy(os.path.join(sourceDir, file), os.path.join(destDir, file))
         return True
 
     @staticmethod
-    def writeCometMPC(datas=None, dataFilePath=''):
+    def writeCometMPC(datas: list, dataFilePath: str) -> None:
         """
         data format of json and file description in
         https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
-
-        :param datas:
-        :param dataFilePath:
-        :return:
         """
-        if not datas:
-            return False
-
-        dest = dataFilePath + '/comets.mpc'
-
+        dest = os.path.join(dataFilePath, 'comets.mpc')
         with open(dest, 'w') as f:
             for data in datas:
                 line = ''
@@ -114,36 +99,27 @@ class DataWriter:
                 line += '\n'
                 f.write(line)
 
-        return True
-
     @staticmethod
-    def convertDatePacked(value):
+    def convertDatePacked(value: float) -> str:
         """
         conversion is described on
         https://www.minorplanetcenter.net/iau/info/PackedDates.html
-        :param value:
-        :return:
         """
         value = int(value)
 
         if 0 <= value < 10:
             resultChar = f'{value:1d}'
-
         elif 10 <= value < 36:
             resultChar = chr(ord('A') + value - 10)
-
         elif 36 <= value < 62:
             resultChar = chr(ord('a') + value - 36)
-
         else:
             resultChar = ' '
 
         return resultChar
 
-    def generateCycleCountTextPacked(self, cycle):
+    def generateCycleCountTextPacked(self, cycle: int) -> str:
         """
-        :param cycle:
-        :return:
         """
         digit1Value = cycle % 10
         digit2Value = int(cycle / 10)
@@ -154,27 +130,19 @@ class DataWriter:
         return cycleText
 
     @staticmethod
-    def generateCenturyPacked(century):
+    def generateCenturyPacked(century: str) -> str:
         """
-
-        :param century:
-        :return:
         """
         centConvert = {'18': 'I',
                        '19': 'J',
                        '20': 'K',
                        '21': 'L'}
+        return centConvert.get(century, ' ')
 
-        centuryP = centConvert.get(century, ' ')
-
-        return centuryP
-
-    def generateDesignationPacked(self, designation):
+    def generateDesignationPacked(self, designation: str) -> str:
         """
         description of conversion in
         https://minorplanetcenter.net//iau/info/PackedDes.html
-        :param designation:
-        :return:
         """
         if not designation:
             return 'xxxxxxx'
@@ -190,7 +158,6 @@ class DataWriter:
 
         if cycleText and cycleText.isdigit():
             cycle = int(cycleText)
-
         else:
             cycle = 0
 
@@ -199,26 +166,20 @@ class DataWriter:
         designationPacked = f'{centuryPacked}{year}{halfMonth}{cycleText}{halfMonthOrder}'
         return designationPacked
 
-    def generateDatePacked(self, month, day):
+    def generateDatePacked(self, month: str, day: str) -> str:
         """
         conversion is described on
         https://www.minorplanetcenter.net/iau/info/PackedDates.html
-        :param month:
-        :param day:
-        :return:
         """
         dateChar1 = self.convertDatePacked(month)
         dateChar2 = self.convertDatePacked(day)
-
         dayPacked = dateChar1 + dateChar2
         return dayPacked
 
-    def generateEpochPacked(self, epoch):
+    def generateEpochPacked(self, epoch: float) -> str:
         """
         conversion is described on
         https://www.minorplanetcenter.net/iau/info/PackedDates.html
-        :param epoch:
-        :return:
         """
         if not epoch:
             return 'xxxxx'
@@ -233,37 +194,27 @@ class DataWriter:
         epochPackedText = f'{centuryPacked:1s}{year:2s}{dayPacked}'
         return epochPackedText
 
-    def generateOldDesignationPacked(self, numberText):
+    def generateOldDesignationPacked(self, numberText: str) -> str:
         """
-        :param numberText:
-        :return:
         """
         if not numberText:
             return 'xxxxxxx'
 
         number = int(numberText.rstrip(')').lstrip('('))
-
         numberChar = self.convertDatePacked(number / 10000)
         designationPacked = f'{numberChar}{number % 10000:04d}  '
 
         return designationPacked
 
-    def writeAsteroidMPC(self, datas=None, dataFilePath=''):
+    def writeAsteroidMPC(self, datas: list, dataFilePath: str) -> None:
         """
         data format of json and file description in
         https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
 
         we have a mix of new and old style designation to manage. the old style seem to
         have the ley 'Number' in json, new style not.
-
-        :param datas:
-        :param dataFilePath:
-        :return:
         """
-        if not datas:
-            return False
-
-        dest = dataFilePath + '/asteroids.mpc'
+        dest = os.path.join(dataFilePath, 'asteroids.mpc')
 
         with open(dest, 'w') as f:
             for data in datas:
@@ -347,26 +298,15 @@ class DataWriter:
                 line += '\n'
                 f.write(line)
 
-        return True
-
     @staticmethod
-    def writeSatelliteTLE(datas=None, dataFilePath=''):
+    def writeSatelliteTLE(datas: list, dataFilePath: str) -> None:
         """
         data format of TLE and file description in
-
-        :param datas:
-        :param dataFilePath:
-        :return:
         """
-        if not datas:
-            return False
-
-        dest = dataFilePath + '/satellites.tle'
-
+        dest = os.path.join(dataFilePath, 'satellites.tle')
         with open(dest, 'w') as f:
             for data in datas:
                 line1, line2 = export_tle(data.model)
                 f.write(data.name + '\n')
                 f.write(line1 + '\n')
                 f.write(line2 + '\n')
-        return True

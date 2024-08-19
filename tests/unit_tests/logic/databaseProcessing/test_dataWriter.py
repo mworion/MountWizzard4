@@ -66,8 +66,11 @@ def test_writeEarthRotationData_4(function):
 
 
 def test_writeCometMPC_1(function):
-    suc = function.writeCometMPC()
-    assert not suc
+    with open('tests/testData/mpc_comet_test.json') as f:
+        data = json.load(f)
+
+    testData = [data[0]]
+    function.writeCometMPC(datas=testData, dataFilePath='tests/workDir/temp')
 
 
 def test_writeCometMPC_2(function):
@@ -75,34 +78,19 @@ def test_writeCometMPC_2(function):
         data = json.load(f)
 
     testData = [data[0]]
-
-    suc = function.writeCometMPC(datas=testData, dataFilePath='tests/workDir/temp')
-    assert suc
-
-
-def test_writeCometMPC_3(function):
-    with open('tests/testData/mpc_comet_test.json') as f:
-        data = json.load(f)
-
-    testData = [data[0]]
-
-    suc = function.writeCometMPC(datas=testData, dataFilePath='tests/workDir/temp')
-    assert suc
+    function.writeCometMPC(datas=testData, dataFilePath='tests/workDir/temp')
 
     with open('tests/workDir/temp/comets.mpc', 'r') as f:
         testLine = f.readline()
-
     with open('tests/testData/mpc_comet_test.txt', 'r') as f:
         refLine = f.readline()
-
     assert testLine == refLine
 
 
-def test_writeCometMPC_4(function):
+def test_writeCometMPC_3(function):
     data = [{'test': 'test'}]
 
-    suc = function.writeCometMPC(datas=data, dataFilePath='tests/workDir/temp')
-    assert suc
+    function.writeCometMPC(datas=data, dataFilePath='tests/workDir/temp')
     assert os.path.isfile('tests/workDir/temp/comets.mpc')
 
 
@@ -205,8 +193,11 @@ def test_generateOldDesignationPacked_2(function):
 
 
 def test_writeAsteroidMPC_1(function):
-    suc = function.writeAsteroidMPC()
-    assert not suc
+    with open('tests/testData/mpc_asteroid_test.json') as f:
+        data = json.load(f)
+
+    testData = [data[0]]
+    function.writeAsteroidMPC(datas=testData, dataFilePath='tests/workDir/temp')
 
 
 def test_writeAsteroidMPC_2(function):
@@ -214,111 +205,78 @@ def test_writeAsteroidMPC_2(function):
         data = json.load(f)
 
     testData = [data[0]]
+    function.writeAsteroidMPC(datas=testData, dataFilePath='tests/workDir/temp')
 
-    suc = function.writeAsteroidMPC(datas=testData, dataFilePath='tests/workDir/temp')
-    assert suc
+    with open('tests/workDir/temp/asteroids.mpc', 'r') as f:
+        testLine = f.readline()
+    with open('tests/testData/mpc_asteroid_test.txt', 'r') as f:
+        refLine = f.readline()
+    assert testLine[:202] == refLine[:202]
 
 
 def test_writeAsteroidMPC_3(function):
     with open('tests/testData/mpc_asteroid_test.json') as f:
         data = json.load(f)
 
-    testData = [data[0]]
-
-    suc = function.writeAsteroidMPC(datas=testData, dataFilePath='tests/workDir/temp')
-    assert suc
-
-    with open('tests/workDir/temp/asteroids.mpc', 'r') as f:
-        testLine = f.readline()
-
-    with open('tests/testData/mpc_asteroid_test.txt', 'r') as f:
-        refLine = f.readline()
-
-    assert testLine[:202] == refLine[:202]
-
-
-def test_writeAsteroidMPC_4(function):
-    with open('tests/testData/mpc_asteroid_test.json') as f:
-        data = json.load(f)
-
-    suc = function.writeAsteroidMPC(datas=data, dataFilePath='tests/workDir/temp')
-    assert suc
+    function.writeAsteroidMPC(datas=data, dataFilePath='tests/workDir/temp')
 
     with open('tests/workDir/temp/asteroids.mpc', 'r') as f:
         testLines = f.readlines()
-
     with open('tests/testData/mpc_asteroid_test.txt', 'r') as f:
         refLines = f.readlines()
-
     for test, ref in zip(testLines, refLines):
         assert test[0:8] == ref[0:8]
         assert test[14:202] == ref[14:202]
+
+
+def test_writeAsteroidMPC_4(function):
+    with open('tests/testData/nea_extended_test.json') as f:
+        data = json.load(f)
+
+    testData = [data[0]]
+    function.writeAsteroidMPC(datas=testData, dataFilePath='tests/workDir/temp')
+
+    with open('tests/workDir/temp/asteroids.mpc', 'r') as f:
+        testLine = f.readline()
+    with open('tests/testData/nea_extended_test.txt', 'r') as f:
+        refLine = f.readline()
+    assert testLine[:202] == refLine[:202]
 
 
 def test_writeAsteroidMPC_5(function):
     with open('tests/testData/nea_extended_test.json') as f:
         data = json.load(f)
 
-    testData = [data[0]]
-
-    suc = function.writeAsteroidMPC(datas=testData, dataFilePath='tests/workDir/temp')
-    assert suc
-
-    with open('tests/workDir/temp/asteroids.mpc', 'r') as f:
-        testLine = f.readline()
-
-    with open('tests/testData/nea_extended_test.txt', 'r') as f:
-        refLine = f.readline()
-
-    assert testLine[:202] == refLine[:202]
-
-
-def test_writeAsteroidMPC_6(function):
-    with open('tests/testData/nea_extended_test.json') as f:
-        data = json.load(f)
-
     with mock.patch.object(function,
                            'generateEpochPacked',
                            return_value=' 1985'):
-        suc = function.writeAsteroidMPC(datas=data, dataFilePath='tests/workDir/temp')
-        assert suc
+        function.writeAsteroidMPC(datas=data, dataFilePath='tests/workDir/temp')
 
     with open('tests/workDir/temp/asteroids.mpc', 'r') as f:
         testLines = f.readlines()
-
     with open('tests/testData/nea_extended_test.txt', 'r') as f:
         refLines = f.readlines()
-
     for test, ref in zip(testLines, refLines):
         if ref[0:3] in ['PLS']:
             continue
-
         assert test[0:7] == ref[0:7]
         assert test[21:140] == ref[21:140]
         assert test[142:167] == ref[142:167]
 
 
-def test_writeAsteroidMPC_7(function):
+def test_writeAsteroidMPC_6(function):
     data = [{}]
 
-    suc = function.writeAsteroidMPC(datas=data, dataFilePath='tests/workDir/temp')
-    assert suc
+    function.writeAsteroidMPC(datas=data, dataFilePath='tests/workDir/temp')
     assert os.path.isfile('tests/workDir/temp/asteroids.mpc')
 
 
 def test_writeSatelliteTLE_1(function):
-    data = None
-    suc = function.writeSatelliteTLE(datas=data, dataFilePath='tests/workDir/temp')
-    assert not suc
-
-
-def test_writeSatelliteTLE_2(function):
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     data = [EarthSatellite(tle[1], tle[2],  name=tle[0])]
-    suc = function.writeSatelliteTLE(datas=data, dataFilePath='tests/workDir/temp')
-    assert suc
+    function.writeSatelliteTLE(datas=data, dataFilePath='tests/workDir/temp')
 
     with open('tests/workDir/temp/satellites.tle', 'r') as f:
         refLines = f.readlines()
@@ -328,13 +286,12 @@ def test_writeSatelliteTLE_2(function):
     assert tle[2] == refLines[2].strip('\n')
 
 
-def t_writeSatelliteTLE_3(function):
+def t_writeSatelliteTLE_2(function):
     tle = ["BEIDOU-3 M23",
            "1 44542U 19061A   21180.78220369 -.00000015  00000-0 -66561+1 0  9997",
            "2 44542  54.7025 244.1098 0007981 318.8601 283.5781  1.86231125 12011"]
     data = [EarthSatellite(tle[1], tle[2],  name=tle[0])]
-    suc = function.writeSatelliteTLE(datas=data, dataFilePath='tests/workDir/temp')
-    assert suc
+    function.writeSatelliteTLE(datas=data, dataFilePath='tests/workDir/temp')
 
     with open('tests/workDir/temp/satellites.tle', 'r') as f:
         refLines = f.readlines()

@@ -195,7 +195,9 @@ class Photometry:
         for i in range(36):
             mask3 = rangeA[i] < angles
             mask4 = rangeA[i + 1] > angles
-            segHFR[i] = np.median(self.hfr[mask1 & mask2 & mask3 & mask4])
+            hfrVal = self.hfr[mask1 & mask2 & mask3 & mask4]
+            if len(hfrVal) > 0:
+                segHFR[i] = np.median(hfrVal)
         self.hfrSegTriangle = np.concatenate([segHFR, segHFR])
         self.signals.hfrTriangle.emit()
         return True

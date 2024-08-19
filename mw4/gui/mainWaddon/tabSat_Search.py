@@ -24,7 +24,8 @@ import numpy as np
 # local import
 from gui.mainWaddon.astroObjects import AstroObjects
 from gui.mainWaddon.satData import SatData
-from gui.utilities.toolsQtWidget import QCustomTableWidgetItem, MWidget
+from gui.utilities.qCustomTableWidgetItem import QCustomTableWidgetItem
+from gui.utilities.toolsQtWidget import  MWidget
 from logic.databaseProcessing.sourceURL import satSourceURLs
 from base.tpool import Worker
 from logic.satellites.satellite_calculations import findSunlit, findSatUp

@@ -17,7 +17,6 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import astropy
 import os
 import platform
 
@@ -25,7 +24,7 @@ import platform
 from PySide6.QtWidgets import QMessageBox, QFileDialog, QWidget, QTabWidget
 from PySide6.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
 from PySide6.QtWidgets import QTableWidget
-from PySide6.QtCore import Signal, QObject, Qt, QPoint
+from PySide6.QtCore import Qt, QPoint
 from PySide6.QtGui import QIcon, QPixmap, QPainterPath
 from PySide6.QtTest import QTest
 from skyfield.api import Angle, load
@@ -33,8 +32,6 @@ import numpy as np
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
-from gui.utilities.toolsQtWidget import FileSortProxyModel
-from gui.utilities.toolsQtWidget import QMultiWait, QCustomTableWidgetItem
 from gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -47,66 +44,6 @@ def function(qapp):
     window.ui = Ui_MainWindow()
     window.ui.setupUi(window)
     yield window
-
-
-def test_FileSortProxyModel_1():
-    f = FileSortProxyModel()
-    f.sort()
-
-
-def test_QMultiWait_1():
-    class Test(QObject):
-        a = Signal()
-    w = QMultiWait()
-    A = Test()
-    w.addWaitableSignal(A.a)
-
-
-def test_QMultiWait_2():
-    class Test(QObject):
-        a = Signal()
-    w = QMultiWait()
-    A = Test()
-    w.addWaitableSignal(A.a)
-    w.checkSignal()
-
-
-def test_QMultiWait_3():
-    w = QMultiWait()
-    w.resetSignals()
-
-
-def test_QMultiWait_4():
-    class Test(QObject):
-        a = Signal()
-    w = QMultiWait()
-    A = Test()
-    w.addWaitableSignal(A.a)
-    w.clear()
-
-
-def test_QCustomTableWidgetItem_1():
-    i1 = QCustomTableWidgetItem('')
-    i2 = QCustomTableWidgetItem('')
-    assert not (i1 < i2)
-
-
-def test_QCustomTableWidgetItem_2():
-    i1 = QCustomTableWidgetItem('-2.0')
-    i2 = QCustomTableWidgetItem('')
-    assert i1 < i2
-
-
-def test_QCustomTableWidgetItem_3():
-    i1 = QCustomTableWidgetItem('-2.0')
-    i2 = QCustomTableWidgetItem('5')
-    assert i1 < i2
-
-
-def test_FileSortProxyModel_1():
-    w = QWidget()
-    dialog = QFileDialog()
-    dialog.setProxyModel(FileSortProxyModel(w))
 
 
 def test_findIndexValue_0(function):
@@ -386,12 +323,6 @@ def test_prepareFileDialog_1(function):
 def test_prepareFileDialog_2(function):
     window = QWidget()
     suc = function.prepareFileDialog(window=window)
-    assert suc
-
-
-def test_prepareFileDialog_3(function):
-    window = QWidget()
-    suc = function.prepareFileDialog(window=window, enableDir=True, reverseOrder=True)
     assert suc
 
 

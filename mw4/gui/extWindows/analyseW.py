@@ -236,9 +236,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         :return: success
         """
         folder = self.app.mwGlob['modelDir']
-        val = self.openFile(self, 'Open model file', folder, 'Model files (*.model)',
-                            multiple=False,
-                            reverseOrder=True)
+        val = self.openFile(self, 'Open model file', folder, 'Model files (*.model)')
         loadFilePath, fileName, ext = val
         if os.path.isfile(loadFilePath):
             self.processModel(loadFilePath)

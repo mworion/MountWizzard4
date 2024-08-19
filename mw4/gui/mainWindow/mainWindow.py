@@ -454,8 +454,7 @@ class MainWindow(MWidget):
         """
         folder = self.app.mwGlob['configDir']
         loadFilePath, name, ext = self.openFile(
-            self, 'Open config file', folder, 'Config files (*.cfg)',
-            enableDir=False)
+            self, 'Open config file', folder, 'Config files (*.cfg)')
         if not name:
             return False
 
@@ -477,8 +476,7 @@ class MainWindow(MWidget):
         config = self.app.config
         folder = self.app.mwGlob['configDir']
         loadFilePath, name, ext = self.openFile(
-            self, 'Open add-on config file', folder, 'Config files (*.cfg)',
-            enableDir=False)
+            self, 'Open add-on config file', folder, 'Config files (*.cfg)')
         if not name:
             self.ui.profileAdd.setText('-')
             return False

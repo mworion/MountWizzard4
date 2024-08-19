@@ -23,10 +23,10 @@ from dateutil.tz import tzlocal
 
 # external packages
 from PySide6.QtWidgets import QWidget, QFileDialog, QMessageBox
-from PySide6.QtWidgets import QTableWidgetItem, QAbstractItemView
+from PySide6.QtWidgets import QAbstractItemView
 from PySide6.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
 from PySide6.QtGui import QPainterPath, QTransform, QGuiApplication
-from PySide6.QtCore import QSortFilterProxyModel, QDir, QObject, Signal
+from PySide6.QtCore import QDir, QObject, Signal
 from PySide6.QtCore import Qt, QSize, QEvent
 from PySide6.QtTest import QTest
 import numpy as np
@@ -38,8 +38,6 @@ from mountcontrol.convert import formatHstrToText, formatDstrToText
 
 __all__ = [
     'MWidget',
-    'FileSortProxyModel',
-    'QMultiWait',
     'sleepAndEvents',
 ]
 
@@ -51,81 +49,6 @@ def sleepAndEvents(value):
     """
     QTest.qWait(value)
     return True
-
-
-class FileSortProxyModel(QSortFilterProxyModel):
-    """
-    FileSortProxyModel enables a proxy solution for reversing the order of all
-    file dialogues. The sorting is now Descending meaning the last added files
-    will be on top. This is done by just overwriting the sort method
-    """
-    def sort(self, column, order):
-        self.sourceModel().sort(0, Qt.SortOrder.DescendingOrder)
-
-
-class QMultiWait(QObject):
-    """
-    QMultiWaitable implements a signal collection class for waiting of entering
-    multiple signals before firing the "AND" relation of all signals.
-    derived from:
-
-    https://stackoverflow.com/questions/21108407/qt-how-to-wait-for-multiple-signals
-
-    in addition, all received signals could be reset
-    """
-    ready = Signal()
-    log = logging.getLogger(__name__)
-
-    def __init__(self):
-        super().__init__()
-        self.waitable = set()
-        self.waitready = set()
-
-    def addWaitableSignal(self, signal):
-        if signal not in self.waitable:
-            self.waitable.add(signal)
-            signal.connect(self.checkSignal)
-
-    def checkSignal(self):
-        sender = self.sender()
-        self.waitready.add(sender)
-        self.log.debug(f'QMultiWait [{self}]: [{self.waitready}]')
-
-        if len(self.waitready) == len(self.waitable):
-            self.log.debug(f'Firing QMultiWait for [{self}]')
-            self.ready.emit()
-
-    def resetSignals(self):
-        self.waitready = set()
-
-    def clear(self):
-        for signal in self.waitable:
-            signal.disconnect(self.checkSignal)
-
-        self.waitable = set()
-        self.waitready = set()
-
-
-class QCustomTableWidgetItem(QTableWidgetItem):
-    """
-    This class reimplements the comparison for item, which are normally float
-    values as the standard sorting in this item only supports strings.
-    """
-    def __init__(self, value):
-        super().__init__(value)
-
-    def __lt__(self, other):
-        selfData = self.data(Qt.ItemDataRole.EditRole)
-        if selfData == '':
-            selfDataValue = 99
-        else:
-            selfDataValue = float(selfData)
-        otherData = other.data(Qt.ItemDataRole.EditRole)
-        if otherData == '':
-            otherDataValue = 99
-        else:
-            otherDataValue = float(otherData)
-        return selfDataValue < otherDataValue
 
 
 class MWidget(QWidget, Styles):
@@ -369,8 +292,7 @@ class MWidget(QWidget, Styles):
         else:
             return nameList, shortList, extList
 
-    def prepareFileDialog(self, window=None, enableDir=False,
-                          reverseOrder=False):
+    def prepareFileDialog(self, window=None, enableDir=False):
         """
         prepareFileDialog does some tweaking of the standard file dialogue
         widget for geometry and general settings. it also removes some parts and
@@ -378,7 +300,6 @@ class MWidget(QWidget, Styles):
 
         :param window:  parent class
         :param enableDir:   allows dir selection in file box
-        :param reverseOrder:   file selection z->a
         :return:        dlg, the dialog widget
         """
         if not window:
@@ -390,9 +311,6 @@ class MWidget(QWidget, Styles):
         dlg.setStyleSheet(self.mw4Style)
         dlg.setViewMode(QFileDialog.ViewMode.List)
         dlg.setModal(True)
-        if reverseOrder:
-            dlg.setProxyModel(FileSortProxyModel(self))
-
         if enableDir:
             dlg.setFilter(QDir.Filter.Files | QDir.Filter.AllDirs)
         else:
@@ -465,8 +383,7 @@ class MWidget(QWidget, Styles):
                  folder='',
                  filterSet=None,
                  enableDir=False,
-                 multiple=False,
-                 reverseOrder=False):
+                 multiple=False):
         """
         openFile handles a single file select with filter in a non-native format.
 
@@ -476,7 +393,6 @@ class MWidget(QWidget, Styles):
         :param filterSet:   file extension filter
         :param enableDir:   allows dir selection in file box
         :param multiple :   allows multiple selection in file box
-        :param reverseOrder :   file selection z->a
         :return:            name: full path for file else empty
                             short: just file name without extension
                             ext: extension of the file
@@ -490,9 +406,7 @@ class MWidget(QWidget, Styles):
         if not filterSet:
             return '', '', ''
 
-        dlg = self.prepareFileDialog(window=window,
-                                     enableDir=enableDir,
-                                     reverseOrder=reverseOrder)
+        dlg = self.prepareFileDialog(window=window, enableDir=enableDir)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)

@@ -98,7 +98,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.color.setCurrentIndex(config.get('color', 0))
         self.ui.snTarget.setCurrentIndex(config.get('snTarget', 0))
         self.ui.tabImage.setCurrentIndex(config.get('tabImage', 0))
-        self.imageFileName = config.get('imageFileName', '')
+        self.imageFileName = os.path.normpath(config.get('imageFileName', ''))
         self.folder = self.app.mwGlob.get('imageDir', '')
         self.ui.showCrosshair.setChecked(config.get('showCrosshair', False))
         self.ui.aspectLocked.setChecked(config.get('aspectLocked', False))
@@ -315,7 +315,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             self.msg.emit(0, 'Image', 'Loading', 'No image selected')
             return False
 
-        self.imageFileName = loadFilePath
+        self.imageFileName = os.path.normpath(loadFilePath)
         self.msg.emit(0, 'Image', 'Image selected', f'{name}{ext}')
         self.folder = os.path.dirname(loadFilePath)
         if self.ui.autoSolve.isChecked():
@@ -483,7 +483,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         else:
             fileName = 'exposure.fits'
 
-        self.imageFileName = self.app.mwGlob['imageDir'] + '/' + fileName
+        self.imageFileName = os.path.join(self.app.mwGlob['imageDir'], fileName)
         focalLength = self.app.telescope.focalLength
         self.imageFileNameOld = self.imageFileName
         suc = self.app.camera.expose(imagePath=self.imageFileName,

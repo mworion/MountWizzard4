@@ -814,6 +814,7 @@ class HemisphereWindow(MWidget, SlewInterface):
             self.slewStar(posView)
         elif self.ui.normalModeHem.isChecked():
             self.slewDirect(posView)
+
     def mouseMovedHorizon(self, pos):
         """
         """

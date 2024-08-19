@@ -25,7 +25,8 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
 from base.transform import JNowToJ2000, J2000ToJNow
-from gui.utilities.toolsQtWidget import QMultiWait, sleepAndEvents
+from gui.utilities.toolsQtWidget import sleepAndEvents
+from gui.utilities.qMultiWait import QMultiWait
 from base.packageConfig import isSimulationMount
 
 

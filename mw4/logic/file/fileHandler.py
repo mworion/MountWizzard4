@@ -60,10 +60,8 @@ class FileHandler:
         self.sizeX = 0
         self.sizeY = 0
 
-    def debayerImage(self, pattern):
+    def debayerImage(self, pattern: str) -> bool:
         """
-        :param: pattern:
-        :return:
         """
         if pattern == 'GBRG':
             R = self.image[1::2, 0::2]
@@ -98,20 +96,17 @@ class FileHandler:
         self.image = cv2.resize(self.image, (w, h))
         return True
 
-    def cleanImageFormat(self):
+    def cleanImageFormat(self) -> None:
         """
-        :return:
         """
         if not self.flipV:
             self.image = np.flipud(self.image)
         if self.flipH:
             self.image = np.fliplr(self.image)
         self.image = (self.image / np.max(self.image) * 65536.0).astype('float32')
-        return True
 
-    def checkValidImageFormat(self):
+    def checkValidImageFormat(self) -> bool:
         """
-        :return:
         """
         if self.image is None or len(self.image) == 0:
             self.log.debug('No image data in FITS')
@@ -129,20 +124,16 @@ class FileHandler:
             return False
         return True
 
-    def loadFITS(self):
+    def loadFITS(self) -> None:
         """
-        :return:
         """
         with fits.open(self.imagePath) as fitsHandle:
             self.image = fitsHandle[0].data
             self.header = fitsHandle[0].header
-        return True
 
     @staticmethod
-    def convHeaderXISF2FITS(header):
+    def convHeaderXISF2FITS(header: dict) -> fits.Header:
         """
-        :param header:
-        :return:
         """
         hdu = fits.PrimaryHDU()
         fitsHeaderNew = hdu.header
@@ -161,19 +152,15 @@ class FileHandler:
             fitsHeaderNew.append((key, value, comment))
         return fitsHeaderNew
 
-    def loadXISF(self):
+    def loadXISF(self) -> None:
         """
-        :return:
         """
         header = {}
         self.image = XISF.read(self.imagePath, image_metadata=header)[:, :, -1]
         self.header = self.convHeaderXISF2FITS(header)
-        return True
 
-    def workerLoadImage(self, imagePath):
+    def workerLoadImage(self, imagePath: str) -> bool:
         """
-        :param imagePath:
-        :return:
         """
         self.imagePath = imagePath
         _, ext = os.path.splitext(self.imagePath)
@@ -200,12 +187,9 @@ class FileHandler:
         self.signals.imageLoaded.emit()
         return True
 
-    def loadImage(self, imagePath='', flipH=False, flipV=False):
+    def loadImage(self, imagePath: str = '',
+                  flipH: bool = False, flipV: bool = False) -> bool:
         """
-        :param: imagePath:
-        :param: flipH:
-        :param: flipV:
-        :return:
         """
         if not os.path.isfile(imagePath):
             return False

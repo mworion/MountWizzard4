@@ -91,8 +91,7 @@ def test_cleanImageFormat_1(function):
     function.image = np.random.rand(100, 100) + 1
     function.flipV = False
     function.flipH = True
-    suc = function.cleanImageFormat()
-    assert suc
+    function.cleanImageFormat()
     assert function.image.dtype == np.dtype('float32')
 
 
@@ -123,6 +122,25 @@ def test_checkValidImageFormat_4(function):
     assert suc
 
 
+def test_loadFITS_1(function):
+    class Data:
+        data = np.random.rand(100, 100)
+        header = None
+
+    class FitsHandle:
+        @staticmethod
+        def __enter__():
+            return [Data(), Data()]
+
+        @staticmethod
+        def __exit__(a, b, c):
+            return
+    with mock.patch.object(fits,
+                           'open',
+                           return_value=FitsHandle()):
+        function.loadFITS()
+
+
 def test_convHeaderXISF2FITS(function):
     header = {
         'FITSKeywords': {
@@ -146,28 +164,7 @@ def test_loadXSIF(function):
                            return_value=img):
         with mock.patch.object(function,
                                'convHeaderXISF2FITS'):
-            suc = function.loadXISF()
-            assert suc
-
-
-def test_loadFITS_1(function):
-    class Data:
-        data = np.random.rand(100, 100)
-        header = None
-
-    class FitsHandle:
-        @staticmethod
-        def __enter__():
-            return [Data(), Data()]
-
-        @staticmethod
-        def __exit__(a, b, c):
-            return
-    with mock.patch.object(fits,
-                           'open',
-                           return_value=FitsHandle()):
-        suc = function.loadFITS()
-        assert suc
+            function.loadXISF()
 
 
 def test_workerLoadImage_1(function):

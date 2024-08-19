@@ -702,12 +702,9 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
     def mouseMoved(self, pos):
         """
         """
-        if not self.fileHandler.hasCelestial:
-            return False
-
-        plotItem = self.ui.image.p[0]
-        vr = plotItem.getViewBox().viewRange()
-        mousePoint = plotItem.getViewBox().mapSceneToView(pos)
+        viewBox = self.ui.image.p[0].getViewBox()
+        vr = viewBox.viewRange()
+        mousePoint = viewBox.mapSceneToView(pos)
         x, y, ra, dec = self.getMouseCoordinates(mousePoint)
 
         if vr[0][0] < x < vr[0][1] and vr[1][0] < y < vr[1][1]:

@@ -556,9 +556,13 @@ def test_mouseMoved_1(function):
         threadPool = None
 
     function.fileHandler = FileHandler(App())
-    function.fileHandler.hasCelestial = False
-    suc = function.mouseMoved(pos=QPointF(1, 1))
-    assert not suc
+    function.fileHandler.wcs = wcs.WCS({})
+    function.fileHandler.image = np.random.rand(100, 100) + 1
+    with mock.patch.object(function,
+                           'getMouseCoordinates',
+                           return_value=(0, 0, 0, 0)):
+        suc = function.mouseMoved(pos=QPointF(50, 14))
+        assert suc
 
 
 def test_mouseMoved_2(function):
@@ -566,39 +570,13 @@ def test_mouseMoved_2(function):
         threadPool = None
 
     function.fileHandler = FileHandler(App())
-    function.fileHandler.hasCelestial = True
-    function.fileHandler.flipH = True
-    function.fileHandler.flipV = False
-    function.fileHandler.wcs = wcs.WCS({})
-    function.fileHandler.image = np.random.rand(100, 100) + 1
-    with mock.patch.object(function.fileHandler.wcs,
-                           'wcs_pix2world',
-                           return_value=(0, 0)):
-        with mock.patch.object(function,
-                               'getMouseCoordinates',
-                               return_value=(0, 0, 0, 0)):
-            suc = function.mouseMoved(pos=QPointF(50, 14))
-            assert suc
-
-
-def test_mouseMoved_3(function):
-    class App:
-        threadPool = None
-
-    function.fileHandler = FileHandler(App())
-    function.fileHandler.hasCelestial = True
-    function.fileHandler.flipH = True
-    function.fileHandler.flipV = False
     function.fileHandler.wcs = wcs.WCS({})
     function.ui.image.setImage(imageDisp=np.random.rand(100, 100) + 1)
-    with mock.patch.object(function.fileHandler.wcs,
-                           'wcs_pix2world',
-                           return_value=(0, 0, 50, 25)):
-        with mock.patch.object(function,
-                               'getMouseCoordinates',
-                               return_value=(0, 0, 0, 0)):
-            suc = function.mouseMoved(pos=QPointF(50, 25))
-            assert suc
+    with mock.patch.object(function,
+                           'getMouseCoordinates',
+                           return_value=(0, 0, 0, 0)):
+        suc = function.mouseMoved(pos=QPointF(50, 25))
+        assert suc
 
 
 def test_mouseDoubleClick_1(function):

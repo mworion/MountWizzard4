@@ -219,11 +219,13 @@ def test_changeChart_2(function):
     function.ui.set0.addItem('Voltage')
     function.ui.set0.setCurrentIndex(1)
     with mock.patch.object(function,
-                           'inUseMessage'):
+                           'drawMeasure'):
         with mock.patch.object(function,
-                               'checkInUse',
-                               return_value=True):
-            function.changeChart('set0', 1)
+                               'inUseMessage'):
+            with mock.patch.object(function,
+                                   'checkInUse',
+                                   return_value=True):
+                function.changeChart('set0', 1)
 
 
 def test_drawMeasure_1(function):

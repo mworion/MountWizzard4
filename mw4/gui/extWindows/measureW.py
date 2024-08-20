@@ -390,8 +390,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
         """
         """
         if self.checkInUse(setName, index) and index != 0:
+            self.mSetUI[setName].setCurrentIndex(0)
             self.inUseMessage()
-            return
         self.drawMeasure()
 
     def drawMeasure(self) -> bool:

@@ -39,25 +39,27 @@ class DownloadPopup(MWidget):
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
 
-    def __init__(self, parentWidget: MWidget, url: str = '', dest: str = '',
-                 unzip: bool = False):
+    def __init__(self, parentWidget: MWidget, url: str, dest: str, unzip: bool = False):
         super().__init__()
-        self.ui = Ui_DownloadPopup()
-        self.ui.setupUi(self)
-        self.setWindowModality(Qt.WindowModality.ApplicationModal)
-        self.returnValues = {'success': False}
         self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
-        self.worker = None
+        self.threadPool = parentWidget.app.threadPool
+
+        self.ui = Ui_DownloadPopup()
+        self.ui.setupUi(self)
+        self.setWindowTitle('Downloading from Web')
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
-        self.setWindowTitle('Downloading from Web')
-        self.threadPool = parentWidget.app.threadPool
+
+        self.returnValues = {'success': False}
+        self.worker = None
+
         self.signalStatus.connect(self.setStatusTextToValue)
         self.signalProgress.connect(self.setProgressBarToValue)
         self.signalProgressBarColor.connect(self.setProgressBarColor)
+
         self.setIcon()
         self.show()
         self.downloadFile(url, dest, unzip=unzip)
@@ -143,7 +145,7 @@ class DownloadPopup(MWidget):
             return False
         return True
 
-    def closePopup(self, result: dict) -> None:
+    def closePopup(self, result: bool) -> None:
         """
         """
         self.signalProgress.emit(100)

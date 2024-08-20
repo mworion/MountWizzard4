@@ -36,6 +36,7 @@ class UploadPopup(MWidget):
 
     PROGRESS_DONE = 100
     CYCLES_WAIT = 20
+
     signalProgress = Signal(object)
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
@@ -98,7 +99,7 @@ class UploadPopup(MWidget):
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
 
-    def setProgressBarColor(self, colorstr) -> None:
+    def setProgressBarColor(self, colorstr: str) -> None:
         """
         """
         css = 'QProgressBar::chunk {background-color: ' + colorstr + ';}'
@@ -214,7 +215,7 @@ class UploadPopup(MWidget):
 
             sleepAndEvents(500)
 
-    def closePopup(self, result: dict) -> None:
+    def closePopup(self, result: bool) -> None:
         """
         """
         self.returnValues['success'] = result

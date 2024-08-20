@@ -147,7 +147,7 @@ class IERSTime(MWidget):
         url = urlMain + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
         self.msg.emit(1, 'IERS', 'Download', f'File: {source}')
-        self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest, unzip=False)
+        self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
         self.downloadPopup.worker.signals.finished.connect(
             self.finishLoadTimeDataFromSourceURLs)
         return True
@@ -167,7 +167,7 @@ class IERSTime(MWidget):
         url = urlMain + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
         self.msg.emit(1, 'IERS', 'Download', f'File. {source}')
-        self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest, unzip=False)
+        self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
         self.downloadPopup.worker.signals.finished.connect(
             self.finishLoadFinalsFromSourceURLs)
         return True

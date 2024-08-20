@@ -83,23 +83,29 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    with mock.patch.object(function,
+                           'setupButtons'):
+        with mock.patch.object(function,
+                               'drawMeasure'):
+            function.initConfig()
 
 
 def test_storeConfig_1(function):
     if 'measureW' in function.app.config:
         del function.app.config['measureW']
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_storeConfig_2(function):
     function.app.config['measureW'] = {}
+    function.storeConfig()
 
-    suc = function.storeConfig()
-    assert suc
+
+def test_showWindow_1(function):
+    with mock.patch.object(function,
+                           'show'):
+        function.showWindow()
 
 
 def test_closeEvent_1(function):
@@ -108,7 +114,7 @@ def test_closeEvent_1(function):
         with mock.patch.object(MWidget,
                                'closeEvent'):
             function.showWindow()
-            function.closeEvent(QCloseEvent)
+            function.closeEvent(QCloseEvent())
 
 
 def test_colorChange(function):
@@ -118,98 +124,114 @@ def test_colorChange(function):
                                'colorChange'):
             with mock.patch.object(function,
                                    'resetPlotItem'):
-                suc = function.colorChange()
-        assert suc
+                function.colorChange()
 
 
 def test_setTitle_1(function):
     function.app.measure.framework = ''
-    suc = function.setTitle()
-    assert suc
+    function.setTitle()
 
 
 def test_setTitle_2(function):
     function.app.measure.framework = 'csv'
-    suc = function.setTitle()
-    assert suc
+    function.setTitle()
 
 
 def test_setupButtons(function):
-    suc = function.setupButtons()
-    assert suc
+    function.setupButtons()
 
 
 def test_constructPlotItem_1(function):
     plotItem = pg.PlotItem()
-    values = function.dataPlots = {'gen': {'range': (0, 1, False)}}
+    values = function.dataPlots['Axis Stability']
     x = function.app.measure.data['time'].astype('datetime64[s]').astype('int')
-    suc = function.constructPlotItem(plotItem, values, x)
-    assert suc
+    function.constructPlotItem(plotItem, values, x)
 
 
 def test_plotting_1(function):
     plotItem = pg.PlotItem()
-    values = function.dataPlots['Current']
+    values = function.dataPlots['Axis Stability']
     x = function.app.measure.data['time'].astype('datetime64[s]').astype('int')
-    suc = function.plotting(plotItem, values, x)
-    assert suc
+    function.plotting(plotItem, values, x)
 
 
 def test_resetPlotItem(function):
     plotItem = pg.PlotItem()
-    values = function.dataPlots['Current']
-    suc = function.resetPlotItem(plotItem, values)
-    assert suc
+    values = function.dataPlots['Axis Stability']
+    function.resetPlotItem(plotItem, values)
 
 
 def test_triggerUpdate(function):
-    suc = function.triggerUpdate()
-    assert suc
+    function.triggerUpdate()
 
 
 def test_inUseMessage(function):
     with mock.patch.object(function,
                            'messageDialog'):
-        suc = function.inUseMessage()
-        assert suc
+        function.inUseMessage()
+
+
+def test_checkInUse_1(function):
+    function.ui.set0.clear()
+    function.ui.set0.addItem('No chart')
+    function.ui.set0.addItem('test1')
+    function.ui.set0.addItem('test2')
+    function.ui.set0.setCurrentIndex(0)
+    function.ui.set1.clear()
+    function.ui.set1.addItem('No chart')
+    function.ui.set1.addItem('test1')
+    function.ui.set1.addItem('test2')
+    function.ui.set1.setCurrentIndex(0)
+    suc = function.checkInUse('set1', 1)
+    assert not suc
+
+
+def test_checkInUse_2(function):
+    function.ui.set0.clear()
+    function.ui.set0.addItem('No chart')
+    function.ui.set0.addItem('test1')
+    function.ui.set0.addItem('test2')
+    function.ui.set0.setCurrentIndex(1)
+    function.ui.set1.clear()
+    function.ui.set1.addItem('No chart')
+    function.ui.set1.addItem('test1')
+    function.ui.set1.addItem('test2')
+    suc = function.checkInUse('set1', 1)
+    function.ui.set1.setCurrentIndex(0)
+    assert suc
 
 
 def test_changeChart_1(function):
-    def sender():
-        return function.ui.set0
-
-    function.sender = sender
+    function.ui.set4.clear()
     function.ui.set4.addItem('No chart')
     function.ui.set0.setCurrentIndex(0)
     with mock.patch.object(function,
                            'drawMeasure'):
         with mock.patch.object(function,
-                               'inUseMessage'):
-            suc = function.changeChart(0)
-            assert suc
+                               'checkInUse',
+                               return_value=False):
+            function.changeChart('set4', 0)
 
 
 def test_changeChart_2(function):
-    def sender():
-        return function.ui.set1
-
-    function.sender = sender
-    function.ui.set4.addItem('test')
+    function.ui.set0.clear()
     function.ui.set0.addItem('No chart')
-    function.ui.set0.addItem('test')
+    function.ui.set0.addItem('Voltage')
     function.ui.set0.setCurrentIndex(1)
     with mock.patch.object(function,
-                           'drawMeasure'):
+                           'inUseMessage'):
         with mock.patch.object(function,
-                               'inUseMessage'):
-            suc = function.changeChart(1)
-            assert suc
+                               'checkInUse',
+                               return_value=True):
+            function.changeChart('set0', 1)
 
 
 def test_drawMeasure_1(function):
+    temp = function.app.measure.data['time']
     function.app.measure.data['time'] = np.empty(shape=[0, 1], dtype='datetime64')
     suc = function.drawMeasure()
     assert not suc
+    function.app.measure.data['time'] = temp
 
 
 def test_drawMeasure_2(function):
@@ -220,6 +242,11 @@ def test_drawMeasure_2(function):
 
 
 def test_drawMeasure_3(function):
+    function.ui.set0.clear()
+    function.ui.set1.clear()
+    function.ui.set2.clear()
+    function.ui.set3.clear()
+    function.ui.set4.clear()
     function.ui.set0.addItem('No chart')
     function.ui.set1.addItem('Current')
     function.ui.set2.addItem('Temperature')
@@ -242,6 +269,11 @@ def test_drawMeasure_3(function):
 
 
 def test_drawMeasure_4(function):
+    function.ui.set0.clear()
+    function.ui.set1.clear()
+    function.ui.set2.clear()
+    function.ui.set3.clear()
+    function.ui.set4.clear()
     function.ui.set0.addItem('No chart')
     function.ui.set1.addItem('No chart')
     function.ui.set2.addItem('No chart')

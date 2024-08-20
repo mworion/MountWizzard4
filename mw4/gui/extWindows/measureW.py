@@ -16,10 +16,12 @@
 ###########################################################
 # standard libraries
 import os
+from functools import partial
 
 # external packages
 from PySide6.QtWidgets import QListView
 from PySide6.QtCore import QMutex
+from PySide6.QtGui import QCloseEvent
 import pyqtgraph as pg
 
 # local import
@@ -41,11 +43,13 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.ui = measure_ui.Ui_MeasureDialog()
         self.ui.setupUi(self)
         self.drawLock = QMutex()
-        self.mSetUI = [self.ui.set0,
-                       self.ui.set1,
-                       self.ui.set2,
-                       self.ui.set3,
-                       self.ui.set4]
+
+        self.mSetUI = {'set0': self.ui.set0,
+                       'set1': self.ui.set1,
+                       'set2': self.ui.set2,
+                       'set3': self.ui.set3,
+                       'set4': self.ui.set4}
+
         self.oldTitle = [None] * len(self.mSetUI)
 
         self.dataPlots = {
@@ -227,9 +231,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
             },
         }
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """
-        :return: True for test purpose
         """
         if 'measureW' not in self.app.config:
             self.app.config['measureW'] = {}
@@ -237,14 +240,12 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
         self.positionWindow(config)
         self.setupButtons()
-        for i, ui in enumerate(self.mSetUI):
-            ui.setCurrentIndex(config.get(f'set{i}', 0))
         self.drawMeasure()
-        return True
+        for setName in self.mSetUI:
+            self.mSetUI[setName].setCurrentIndex(config.get(setName, 0))
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """
-        :return: True for test purpose
         """
         config = self.app.config
         if 'measureW' not in config:
@@ -257,45 +258,38 @@ class MeasureWindow(toolsQtWidget.MWidget):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        for i, ui in enumerate(self.mSetUI):
-            config[f'set{i}'] = ui.currentIndex()
-        return True
+        for setName in self.mSetUI:
+            config[setName] = self.mSetUI[setName].currentIndex()
 
-    def showWindow(self):
+    def showWindow(self) -> None:
         """
-        :return:
         """
-        self.show()
-        for ui in self.mSetUI:
-            ui.currentIndexChanged.connect(self.changeChart)
+        for setName in self.mSetUI:
+            self.mSetUI[setName].currentIndexChanged.connect(
+                partial(self.changeChart, setName))
         self.app.colorChange.connect(self.colorChange)
         self.app.update1s.connect(self.drawMeasure)
         self.app.update1s.connect(self.setTitle)
-        return True
+        self.show()
 
-    def closeEvent(self, closeEvent):
+    def closeEvent(self, closeEvent: QCloseEvent) -> None:
         """
-        :param closeEvent:
-        :return:
         """
         self.storeConfig()
         super().closeEvent(closeEvent)
 
-    def colorChange(self):
+    def colorChange(self) -> None:
         """
-        :return:
         """
         self.setStyleSheet(self.mw4Style)
         self.ui.measure.colorChange()
-        for ui, plotItem in zip(self.mSetUI, self.ui.measure.p):
-            values = self.dataPlots.get(ui.currentText(), 0)
+        for setName, plotItem in zip(self.mSetUI.keys(), self.ui.measure.p):
+            values = self.dataPlots.get(self.mSetUI[setName].currentText(), 0)
             self.resetPlotItem(plotItem, values)
         self.drawMeasure()
-        return True
 
-    def setTitle(self):
+    def setTitle(self) -> None:
         """
-        :return:
         """
         if self.app.measure.framework == 'csv':
             imagePath = self.app.measure.run['csv'].csvFilename
@@ -303,33 +297,19 @@ class MeasureWindow(toolsQtWidget.MWidget):
         else:
             title = 'Measuring'
         self.setWindowTitle(title)
-        return True
 
-    def setupButtons(self):
+    def setupButtons(self) -> None:
         """
-        setupButtons prepares the dynamic content od the buttons in measurement
-        window. it writes the bottom texts and number as well as the coloring for
-        the actual setting
-
-        :return: success for test purpose
         """
-        for mSet in self.mSetUI:
-            mSet.clear()
-            mSet.setView(QListView())
+        for setName in self.mSetUI:
+            ui = self.mSetUI[setName]
+            ui.clear()
+            ui.setView(QListView())
             for text in self.dataPlots:
-                if text == 'No chart':
-                    mSet.addItem(text)
-                    continue
-                if self.dataPlots[text]:
-                    mSet.addItem(text)
-        return True
+                ui.addItem(text)
 
-    def constructPlotItem(self, plotItem, values, x):
+    def constructPlotItem(self, plotItem, values: dict, x: list[float]) -> None:
         """
-        :param plotItem:
-        :param values:
-        :param x:
-        :return:
         """
         yMin, yMax, fixed = values['gen'].get('range', (None, None, False))
         if yMin is not None and yMax is not None:
@@ -349,14 +329,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
         legend.setParentItem(plotItem)
         values['gen']['leg'] = legend
         plotItem.setLimits(xMin=x[0])
-        return True
 
-    def plotting(self, plotItem, values, x):
+    def plotting(self, plotItem, values: dict, x: list[float]) -> bool:
         """
-        :param plotItem:
-        :param values:
-        :param x:
-        :return:
         """
         newPlot = values['gen']['label'] != plotItem.getAxis('left').labelText
         newPlot = newPlot or values['gen']['leg'] is None
@@ -376,14 +351,10 @@ class MeasureWindow(toolsQtWidget.MWidget):
                 if values['gen']['leg'] is not None:
                     values['gen']['leg'].addItem(pd, name)
             pd.setData(x=x[5:], y=data[value][5:], pen=pen, name=name)
-        return True
 
     @staticmethod
-    def resetPlotItem(plotItem, values):
+    def resetPlotItem(plotItem, values: dict) -> None:
         """
-        :param plotItem:
-        :param values:
-        :return:
         """
         plotItem.clear()
         for value in values:
@@ -391,47 +362,40 @@ class MeasureWindow(toolsQtWidget.MWidget):
                 values['gen']['leg'] = None
             else:
                 values[value]['pd'] = None
-        return True
 
-    def triggerUpdate(self):
+    def triggerUpdate(self) -> None:
         """
-        :return:
         """
         self.resize(self.width() - 1, self.height())
         self.resize(self.width() + 1, self.height())
-        return True
 
-    def inUseMessage(self):
+    def inUseMessage(self) -> None:
         """
-        :return:
         """
         self.messageDialog(self, 'Chart selection',
                            'Chart already in use\n\n     Cannot be selected!',
                            ['Ok'], iconType=1)
-        return True
 
-    def changeChart(self, index):
+    def checkInUse(self, setName: str, index: int) -> bool:
         """
-        :param index:
-        :return:
         """
-        sender = self.sender()
-        for ui in self.mSetUI:
-            if ui == sender:
+        for name in self.mSetUI:
+            if name == setName:
                 continue
-            if ui.currentIndex() == 0:
-                continue
-            if index == ui.currentIndex():
-                sender.setCurrentIndex(0)
-                self.inUseMessage()
-                break
-        else:
-            self.drawMeasure()
-        return True
+            if self.mSetUI[name].currentIndex() == index:
+                return True
+        return False
 
-    def drawMeasure(self):
+    def changeChart(self, setName: str, index: int) -> None:
         """
-        :return: success
+        """
+        if self.checkInUse(setName, index) and index != 0:
+            self.inUseMessage()
+            return
+        self.drawMeasure()
+
+    def drawMeasure(self) -> bool:
+        """
         """
         data = self.app.measure.data
         if len(data.get('time', [])) < 5:
@@ -439,17 +403,15 @@ class MeasureWindow(toolsQtWidget.MWidget):
         if not self.drawLock.tryLock():
             return False
 
-        ui = self.ui.measure
         x = data['time'].astype('datetime64[s]').astype('int')
 
         noChart = all([x in ['No chart', None] for x in self.oldTitle])
 
-        for i, v in enumerate(zip(self.mSetUI, ui.p)):
-            ui, plotItem = v
-            title = ui.currentText()
+        for i, v in enumerate(zip(self.mSetUI.keys(), self.ui.measure.p)):
+            setName, plotItem = v
+            title = self.mSetUI[setName].currentText()
             if title != self.oldTitle[i] and self.oldTitle[i] is not None:
-                self.resetPlotItem(
-                    plotItem, self.dataPlots[self.oldTitle[i]])
+                self.resetPlotItem(plotItem, self.dataPlots[self.oldTitle[i]])
 
             self.oldTitle[i] = title
             isVisible = title != 'No chart'

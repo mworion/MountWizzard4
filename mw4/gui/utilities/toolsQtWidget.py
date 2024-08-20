@@ -85,6 +85,7 @@ class MWidget(QWidget, Styles):
         self.setWindowFlags(self.windowFlags() | newFlag)
         self.setWindowIcon(QIcon(':/icon/mw4.png'))
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.app = None
 
     @staticmethod
     def findIndexValue(ui, searchString, relaxed=False):

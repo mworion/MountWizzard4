@@ -21,8 +21,7 @@ import builtins
 
 # external packages
 import pyqtgraph as pg
-from PyQt6.QtCore import QEvent
-from PySide6.QtCore import QPointF, Qt
+from PySide6.QtCore import QPointF, Qt, QEvent
 
 # local import
 from gui.utilities.gCustomViewBox import CustomViewBox

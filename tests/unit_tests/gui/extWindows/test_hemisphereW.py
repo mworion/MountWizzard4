@@ -112,11 +112,17 @@ def test_showWindow_1(function):
 
 
 def test_mouseMoved_1(function):
-    function.mouseMoved(pos=QPointF(1, 1))
+    with mock.patch.object(function.ui.hemisphere.p[0].getViewBox(),
+                           'posInViewRange',
+                           return_value=False):
+        function.mouseMoved(pos=QPointF(1, 1))
 
 
 def test_mouseMoved_2(function):
-    function.mouseMoved(pos=QPointF(0.5, 0.5))
+    with mock.patch.object(function.ui.hemisphere.p[0].getViewBox(),
+                           'posInViewRange',
+                           return_value=True):
+        function.mouseMoved(pos=QPointF(0.5, 0.5))
 
 
 def test_colorChange(function):

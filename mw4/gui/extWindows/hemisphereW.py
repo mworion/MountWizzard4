@@ -218,8 +218,8 @@ class HemisphereWindow(MWidget, SlewInterface):
         mousePoint = viewBox.mapSceneToView(pos)
 
         if viewBox.posInViewRange(mousePoint):
-            self.ui.azimuth.setText(f'{x:3.1f}')
-            self.ui.altitude.setText(f'{y:3.1f}')
+            self.ui.azimuth.setText(f'{mousePoint.x():3.1f}')
+            self.ui.altitude.setText(f'{mousePoint.y():3.1f}')
             QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.CrossCursor))
         else:
             self.ui.azimuth.setText('')

@@ -20,7 +20,9 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QGridLayout,
     QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
     QTabWidget, QVBoxLayout, QWidget)
 
-from gui.utilities.tools4pyqtgraph import (NormalScatter, PolarScatter)
+from gui.utilities.gPolarScatter import PolarScatter
+from gui.utilities.gNormalScatter import NormalScatter
+
 
 class Ui_AnalyseDialog(object):
     def setupUi(self, AnalyseDialog):

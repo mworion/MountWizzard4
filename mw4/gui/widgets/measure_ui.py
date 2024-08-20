@@ -19,7 +19,8 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QGroupBox,
     QHBoxLayout, QLabel, QSizePolicy, QVBoxLayout,
     QWidget)
 
-from gui.utilities.tools4pyqtgraph import Measure
+from gui.utilities.gMeasure import Measure
+
 
 class Ui_MeasureDialog(object):
     def setupUi(self, MeasureDialog):

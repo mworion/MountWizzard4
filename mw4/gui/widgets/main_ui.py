@@ -23,7 +23,10 @@ from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QAbstract
     QSizePolicy, QSpacerItem, QTabWidget, QTableWidget,
     QTableWidgetItem, QTextBrowser, QVBoxLayout, QWidget)
 
-from gui.utilities.tools4pyqtgraph import (NormalScatter, PlotBase, PolarScatter)
+from gui.utilities.gPolarScatter import PolarScatter
+from gui.utilities.gNormalScatter import NormalScatter
+from gui.utilities.gPlotBase import PlotBase
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):

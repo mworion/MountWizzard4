@@ -20,7 +20,9 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QDoubleSpinBox, QGridLay
     QPushButton, QRadioButton, QSizePolicy, QSpacerItem,
     QTabWidget, QVBoxLayout, QWidget)
 
-from gui.utilities.tools4pyqtgraph import (Hemisphere, PlotBase)
+from gui.utilities.gHemisphere import Hemisphere
+from gui.utilities.gPlotBase import PlotBase
+
 
 class Ui_HemisphereDialog(object):
     def setupUi(self, HemisphereDialog):

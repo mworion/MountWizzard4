@@ -34,7 +34,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.utilities.slewInterface import SlewInterface
 from gui.extWindows.hemisphereW import HemisphereWindow
 from mountcontrol.setting import Setting
-from gui.utilities.tools4pyqtgraph import CustomViewBox
+from gui.utilities.gCustomViewBox import CustomViewBox
 
 
 @pytest.fixture(autouse=True, scope='module')

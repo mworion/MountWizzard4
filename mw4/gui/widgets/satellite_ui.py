@@ -19,7 +19,8 @@ from PySide6.QtWidgets import (QApplication, QGridLayout, QGroupBox, QHBoxLayout
     QLabel, QLineEdit, QSizePolicy, QSpacerItem,
     QVBoxLayout, QWidget)
 
-from gui.utilities.tools4pyqtgraph import PlotBase
+from gui.utilities.gPlotBase import PlotBase
+
 
 class Ui_SatelliteDialog(object):
     def setupUi(self, SatelliteDialog):

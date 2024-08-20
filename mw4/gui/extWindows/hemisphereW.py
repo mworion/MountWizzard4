@@ -189,8 +189,7 @@ class HemisphereWindow(MWidget, SlewInterface):
         self.ui.showPolar.clicked.connect(self.drawHemisphereTab)
         self.ui.showTerrain.clicked.connect(self.drawHemisphereTab)
         self.ui.showIsoModel.clicked.connect(self.drawHemisphereTab)
-        self.ui.hemisphere.p[0].scene().sigMouseMoved.connect(
-            self.mouseMovedHemisphere)
+        self.ui.hemisphere.p[0].scene().sigMouseMoved.connect(self.mouseMoved)
 
         sett = self.app.mount.setting
         self.meridianSlew = sett.meridianLimitSlew
@@ -212,14 +211,13 @@ class HemisphereWindow(MWidget, SlewInterface):
         self.wIcon(self.ui.saveHorizonMaskAs, 'save')
         self.wIcon(self.ui.clearHorizonMask, 'trash')
 
-    def mouseMoved(self, plotItem, pos):
+    def mouseMoved(self, pos):
         """
         """
-        mousePoint = plotItem.getViewBox().mapSceneToView(pos)
-        vr = plotItem.getViewBox().viewRange()
-        x = mousePoint.x()
-        y = mousePoint.y()
-        if vr[0][0] < x < vr[0][1] and vr[1][0] < y < vr[1][1]:
+        viewBox = self.ui.hemisphere.p[0].getViewBox()
+        mousePoint = viewBox.mapSceneToView(pos)
+
+        if viewBox.posInViewRange(mousePoint):
             self.ui.azimuth.setText(f'{x:3.1f}')
             self.ui.altitude.setText(f'{y:3.1f}')
             QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.CrossCursor))
@@ -227,12 +225,6 @@ class HemisphereWindow(MWidget, SlewInterface):
             self.ui.azimuth.setText('')
             self.ui.altitude.setText('')
             QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.ArrowCursor))
-
-    def mouseMovedHemisphere(self, pos):
-        """
-        """
-        plotItem = self.ui.hemisphere.p[0]
-        self.mouseMoved(plotItem, pos)
 
     def colorChange(self):
         """

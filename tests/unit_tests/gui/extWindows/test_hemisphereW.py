@@ -112,17 +112,11 @@ def test_showWindow_1(function):
 
 
 def test_mouseMoved_1(function):
-    pd = pg.PlotItem(x=[0, 1], y=[0, 1])
-    function.mouseMoved(pd, pos=QPointF(1, 1))
+    function.mouseMoved(pos=QPointF(1, 1))
 
 
 def test_mouseMoved_2(function):
-    pd = pg.PlotItem()
-    function.mouseMoved(pd, pos=QPointF(0.5, 0.5))
-
-
-def test_mouseMovedHemisphere(function):
-    function.mouseMovedHemisphere(pos=QPointF(1, 1))
+    function.mouseMoved(pos=QPointF(0.5, 0.5))
 
 
 def test_colorChange(function):

@@ -21,12 +21,12 @@ import builtins
 
 # external packages
 import pyqtgraph as pg
-from PyQt6.Qt3DInput import QMouseEvent
 from PyQt6.QtCore import QEvent
 from PySide6.QtCore import QPointF, Qt
 
 # local import
 from gui.utilities.gCustomViewBox import CustomViewBox
+from gui.utilities.gNormalScatter import NormalScatter
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -350,14 +350,26 @@ def test_CustomViewBox_checkLimits_6():
     assert x[2] == 3
 
 
-def test_CustomViewBox_rightMouseRange_1():
-    vb = CustomViewBox()
-    vb.state['limits']['xLimits'] = [None, 10]
-    vb.state['limits']['yLimits'] = [None, 10]
-
+def test_posInViewRange_1():
+    plot = NormalScatter()
+    plot.plot([-1, 1], [-1, 1])
+    vb = plot.p[0].getViewBox()
     with mock.patch.object(vb,
-                           'enableAutoRange'):
-        vb.rightMouseRange()
+                           'mapSceneToView',
+                           return_value=QPointF(0.5, 0.5)):
+        val = vb.posInViewRange(pg.Point(1, 1))
+        assert val
+
+
+def test_posInViewRange_2():
+    plot = NormalScatter()
+    plot.plot([-1, 1], [-1, 1])
+    vb = plot.p[0].getViewBox()
+    with mock.patch.object(vb,
+                           'mapSceneToView',
+                           return_value=QPointF(5, 5)):
+        val = vb.posInViewRange(pg.Point(1, 1))
+        assert not val
 
 
 def test_CustomViewBox_rightMouseRange_2():

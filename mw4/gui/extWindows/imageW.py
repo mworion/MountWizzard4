@@ -691,23 +691,14 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         suc = self.slewTargetRaDec(ra, dec)
         return suc
 
-    def getMouseCoordinates(self, mousePoint):
-        """
-        """
-        x = mousePoint.x()
-        y = mousePoint.y()
-        ra, dec = self.mouseToWorld(mousePoint)
-        return x, y, ra, dec
-
     def mouseMoved(self, pos):
         """
         """
         viewBox = self.ui.image.p[0].getViewBox()
-        vr = viewBox.viewRange()
         mousePoint = viewBox.mapSceneToView(pos)
-        x, y, ra, dec = self.getMouseCoordinates(mousePoint)
+        ra, dec = self.mouseToWorld(mousePoint)
 
-        if vr[0][0] < x < vr[0][1] and vr[1][0] < y < vr[1][1]:
+        if viewBox.posInViewRange(mousePoint):
             self.guiSetText(self.ui.raMouse, 'HSTR', ra)
             self.guiSetText(self.ui.raMouseFloat, '2.5f', ra.hours)
             self.guiSetText(self.ui.decMouse, 'DSTR', dec)
@@ -719,7 +710,6 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             self.ui.decMouse.setText('')
             self.ui.decMouseFloat.setText('')
             QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.ArrowCursor))
-        return True
 
     def mouseDoubleClick(self, ev, mousePoint):
         """

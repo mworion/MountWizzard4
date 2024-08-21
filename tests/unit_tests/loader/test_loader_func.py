@@ -66,7 +66,7 @@ def test_setupWorkDirs_1():
             with mock.patch.object(os.path,
                                    'isdir',
                                    return_value=True):
-                val = setupWorkDirs(mwGlob={})
+                val = setupWorkDirs()
                 assert val['modeldata'] == '4.0'
 
 
@@ -80,7 +80,7 @@ def test_setupWorkDirs_2():
             with mock.patch.object(os.path,
                                    'isdir',
                                    return_value=False):
-                val = setupWorkDirs(mwGlob={})
+                val = setupWorkDirs()
                 assert val['modeldata'] == '4.0'
 
 
@@ -97,7 +97,7 @@ def test_setupWorkDirs_3():
                 with mock.patch.object(os,
                                        'access',
                                        return_value=False):
-                    val = setupWorkDirs(mwGlob={})
+                    val = setupWorkDirs()
                     assert val['modeldata'] == '4.0'
 
 

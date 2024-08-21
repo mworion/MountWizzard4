@@ -47,13 +47,6 @@ log = logging.getLogger()
 
 class MyApp(QApplication):
     """
-    MyApp implements a custom notify handler to log errors, when C++ classes
-    and python wrapper in PySide6 environment mismatch. mostly this relates to the
-    situation when a C++ object is already deleted, but the python wrapper still
-    exists. so far I know that's the only chance to log this issues.
-
-    in addition it writes mouse pressed and key pressed events in debug level
-    to log including event and object name to be analysed the input methods.
     """
 
     log = logging.getLogger(__name__)
@@ -62,6 +55,7 @@ class MyApp(QApplication):
         super().__init__(*argv)
         self.last = None
 
+    # noinspection PyUnresolvedReferences
     def handleButtons(self, obj: QWidget, returnValue: bool) -> bool:
         """
         :param obj:
@@ -137,9 +131,10 @@ def except_hook(typeException, valueException, tbackException) -> None:
     sys.__excepthook__(typeException, valueException, tbackException)
 
 
-def setupWorkDirs(mwGlob: dict) -> dict:
+def setupWorkDirs() -> dict:
     """
     """
+    mwGlob = {}
     mwGlob['modeldata'] = '4.0'
     mwGlob['workDir'] = os.getcwd()
     mwGlob['configDir'] = os.path.normpath(mwGlob['workDir'] + '/config')
@@ -185,7 +180,8 @@ def checkIsAdmin() -> str:
         return 'no'
 
 
-def writeSystemInfo(mwGlob: dict=None) -> None:
+# noinspection PyUnresolvedReferences
+def writeSystemInfo(mwGlob: dict = None) -> None:
     """
     """
     log.header('-' * 100)
@@ -296,16 +292,12 @@ def main() -> None:
     """
     locale.setlocale(locale.LC_ALL, '')
     app = MyApp(sys.argv)
-    # app = QApplication(sys.argv)
-
     minimizeStartTerminal()
-
     x, y = getWindowPos()
     splashW = SplashScreen(application=app, x=x, y=y)
     splashW.showMessage('Start initialising')
     splashW.setValue(0)
-    mwGlob = dict()
-    mwGlob = setupWorkDirs(mwGlob)
+    mwGlob = setupWorkDirs()
 
     splashW.showMessage('Write system info to log')
     splashW.setValue(40)

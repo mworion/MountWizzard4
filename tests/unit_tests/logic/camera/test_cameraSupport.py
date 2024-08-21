@@ -86,7 +86,7 @@ def test_writeHeaderOptical_2(function):
 
 
 def test_writeHeaderCoordSite_1(function):
-    obs = ObsSite()
+    obs = function.app.mount.obsSite
     header = fits.PrimaryHDU(data=np.array([])).header
     obs.raJNow = Angle(hours=0)
     obs.decJNow = Angle(degrees=0)

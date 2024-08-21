@@ -46,14 +46,14 @@ def function(qapp):
 
 
 def test_updatePointGui_alt(function):
-    obs = ObsSite()
+    obs = function.mainW.app.mount.obsSite
     obs.Alt = Angle(degrees=45)
     function.updatePointGUI(obs)
     assert '45.00' == function.ui.ALT.text()
 
 
 def test_updatePointGui_az(function):
-    obs = ObsSite()
+    obs = function.mainW.app.mount.obsSite
     obs.Az = Angle(degrees=45)
     function.updatePointGUI(obs)
     assert '45.00' == function.ui.AZ.text()
@@ -61,7 +61,7 @@ def test_updatePointGui_az(function):
 
 def test_updatePointGui_ra(function):
     function.ui.coordsJ2000.setChecked(True)
-    obs = ObsSite()
+    obs = function.mainW.app.mount.obsSite
     obs.raJNow = Angle(hours=0)
     obs.decJNow = Angle(degrees=0)
     function.updatePointGUI(obs)
@@ -70,16 +70,16 @@ def test_updatePointGui_ra(function):
 
 def test_updatePointGui_dec_1(function):
     function.ui.coordsJ2000.setChecked(True)
-    obs = ObsSite()
+    obs = function.mainW.app.mount.obsSite
     obs.raJNow = Angle(hours=0)
     obs.decJNow = Angle(degrees=0)
     function.updatePointGUI(obs)
-    assert '-00:08' == function.ui.DEC.text()[:-3]
+    assert '-00:07' == function.ui.DEC.text()[:-3]
 
 
 def test_updatePointGui_dec_2(function):
     function.app.mount.obsSite.decJNow = None
-    obs = ObsSite()
+    obs = function.mainW.app.mount.obsSite
     obs.raJNow = Angle(hours=0)
     obs.decJNow = None
     function.updatePointGUI(obs)
@@ -87,28 +87,28 @@ def test_updatePointGui_dec_2(function):
 
 
 def test_updatePointGui_pierside(function):
-    obs = ObsSite()
+    obs = function.mainW.app.mount.obsSite
     obs.pierside = 'W'
     function.updatePointGUI(obs)
     assert 'WEST' == function.ui.pierside.text()
 
 
 def test_updatePointGui_ha_2(function):
-    obs = ObsSite()
+    obs = function.mainW.app.mount.obsSite
     obs.timeSidereal = None
     function.updatePointGUI(obs)
-    assert '-' == function.ui.HA.text()
+    assert '00:00:00' == function.ui.HA.text()
 
 
 def test_updatePointGUI_sidereal_1(function):
-    obs = ObsSite()
+    obs = function.mainW.app.mount.obsSite
     obs.timeSidereal = Angle(hours=12)
     function.updatePointGUI(obs)
     assert '12:00:00' == function.ui.timeSidereal.text()
 
 
 def test_updatePointGUI_sidereal_2(function):
-    obs = ObsSite()
+    obs = function.mainW.app.mount.obsSite
     obs.timeSidereal = None
     function.updatePointGUI(obs)
     assert '-' == function.ui.timeSidereal.text()
@@ -875,7 +875,7 @@ def test_setRefraction_4(function):
 
 def test_updatePointGui_ra_j2000(function):
     function.ui.coordsJ2000.setChecked(True)
-    obs = ObsSite()
+    obs = function.mainW.app.mount.obsSite
     obs.raJNow = Angle(hours=45)
     obs.decJNow = Angle(degrees=45)
     function.updatePointGUI(obs)

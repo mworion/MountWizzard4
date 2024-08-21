@@ -39,16 +39,15 @@ def test_writeRetrofitData_1(function):
 
 
 def test_writeRetrofitData_2(function):
-    model = Model()
-    stars = list()
-    a = ModelStar()
-    a.obsSite = App().mount.obsSite
-    a.coord = Star(ra_hours=0, dec_degrees=0)
-    a.errorAngle = Angle(degrees=0)
-    a.errorRMS = 1
-    a.number = 1
-    stars.append(a)
-    model._starList = stars
+    class Parent:
+        obsSite = App().mount.obsSite
+    model = Model(parent=Parent())
+    a = ModelStar(coord=Star(ra_hours=0, dec_degrees=0),
+                  errorAngle=Angle(degrees=0),
+                  errorRMS=1,
+                  number=1,
+                  obsSite=App().mount.obsSite)
+    model.addStar(a)
     model.terms = 22
     model.errorRMS = 10
     model.orthoError = 10

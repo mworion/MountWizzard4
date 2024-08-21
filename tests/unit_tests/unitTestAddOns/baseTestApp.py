@@ -1057,11 +1057,11 @@ class Mount(QObject):
         return
 
     @staticmethod
-    def startClockTimer():
+    def startMountClockTimer():
         return
 
     @staticmethod
-    def stopClockTimer():
+    def stopMountClockTimer():
         return
 
     @staticmethod

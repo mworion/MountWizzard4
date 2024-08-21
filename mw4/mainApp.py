@@ -28,7 +28,7 @@ from importlib_metadata import version
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
-from mountcontrol import qtmount
+from mountcontrol.mount import Mount
 from gui.mainWindow.mainWindow import MainWindow
 from logic.powerswitch.kmRelay import KMRelay
 from logic.modeldata.buildpoints import DataPoint
@@ -151,12 +151,11 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, 'System', 'Profile', f'Base: {profile}'))
         # initialize commands to mount
         pathToData = self.mwGlob['dataDir']
-        self.mount = qtmount.Mount(host='127.0.0.1',
-                                   MAC='00.c0.08.87.35.db',
-                                   threadPool=self.threadPool,
-                                   pathToData=pathToData,
-                                   verbose=False,
-                                   )
+        self.mount = Mount(host='127.0.0.1',
+                           MAC='00.c0.08.87.35.db',
+                           threadPool=self.threadPool,
+                           pathToData=pathToData,
+                           verbose=False)
         # setting location to last know config
         topo = self.initConfig()
         self.mount.obsSite.location = topo
@@ -184,7 +183,7 @@ class MountWizzard4(QObject):
         self.plateSolve = PlateSolve(self)
         self.mainW = MainWindow(self)
 
-        self.mount.startTimers()
+        self.mount.startMountTimers()
         self.timer0_1s = QTimer()
         self.timer0_1s.setSingleShot(False)
         self.timer0_1s.timeout.connect(self.sendCyclic)
@@ -278,7 +277,7 @@ class MountWizzard4(QObject):
         """
         """
         self.timer0_1s.stop()
-        self.mount.stopTimers()
+        self.mount.stopAllMountTimers()
 
     def quit(self) -> None:
         """

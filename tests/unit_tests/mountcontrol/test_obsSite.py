@@ -43,17 +43,23 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_setLoaderAndTimescale_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         suc = obsSite.setLoaderAndTimescale()
         assert suc
 
     def test_setLoaderAndTimescale_2(self):
-        obsSite = ObsSite()
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent())
         suc = obsSite.setLoaderAndTimescale()
         assert suc
 
     def test_setLoaderAndTimescale_3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=True):
@@ -65,15 +71,21 @@ class TestConfigData(unittest.TestCase):
                     assert suc
 
     def test_Data_without_ts(self):
-        obsSite = ObsSite(pathToData='tests/workDir/data')
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData='tests/workDir/data')
         self.assertEqual(isinstance(obsSite.ts, Timescale), True)
 
     def test_Data_with_ts(self):
-        obsSite = ObsSite(pathToData=None)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=None)
         self.assertEqual(isinstance(obsSite.ts, Timescale), True)
 
     def test_Site_location_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         elev = '999.9'
         lon = '+160*30:45.5'
@@ -88,7 +100,9 @@ class TestConfigData(unittest.TestCase):
         self.assertAlmostEqual(999.9, obsSite.location.elevation.m, 6)
 
     def test_Site_location_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(),pathToData=pathToData)
 
         elev = '999.9'
         lon = '+160*30:45.5'
@@ -103,7 +117,9 @@ class TestConfigData(unittest.TestCase):
         self.assertAlmostEqual(999.9, obsSite.location.elevation.m, 6)
 
     def test_Site_location_3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         elev = 100
         lon = 100
@@ -120,7 +136,9 @@ class TestConfigData(unittest.TestCase):
         self.assertAlmostEqual(100, obsSite.location.elevation.m, 6)
 
     def test_Site_location_4(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         lon = '+160*30:45.5'
         lat = '+45*30:45.5'
@@ -129,14 +147,18 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(None, obsSite._location)
 
     def test_Site_location_5(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         lat = '+45*30:45.5'
         obsSite.location = lat
         self.assertEqual(None, obsSite.location)
 
     def test_Site_timeJD_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.ut1_utc = '0'
         obsSite.timeJD = '2458240.12345678'
@@ -148,31 +170,41 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(None, obsSite._timeJD)
 
     def test_Site_timeJD_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.timeJD = obsSite.ts.now().tt - 69.184 / 86400
         self.assertAlmostEqual(obsSite.ts.now().tt, obsSite.timeJD.tt, 4)
 
     def test_timeDiff(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite._timeDiff = [10, 10, 10, 10, 10]
         obsSite.timeDiff = 20
         assert obsSite.timeDiff == 10
 
     def test_Site_ut1_utc(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.ut1_utc = '123.11'
         self.assertEqual(123.11 / 86400, obsSite.ut1_utc)
 
     def test_Site_utc_ut2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.ut1_utc = None
         assert obsSite.ut1_utc is None
 
     def test_Site_timeSidereal_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.timeSidereal = '12:30:00.00'
         self.assertEqual(obsSite.timeSidereal.hours, 12.5)
@@ -187,7 +219,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(obsSite.timeSidereal.hours, 12)
 
     def test_Site_ra(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.raJNow = Angle(hours=34)
         self.assertEqual(34, obsSite.raJNow.hours)
@@ -200,7 +234,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(None, obsSite.raJNow)
 
     def test_Site_dec(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.decJNow = Angle(degrees=34)
         self.assertEqual(34, obsSite.decJNow.degrees)
@@ -213,7 +249,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(None, obsSite.decJNow)
 
     def test_Site_alt(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.Alt = Angle(degrees=34)
         self.assertEqual(34, obsSite.Alt.degrees)
@@ -226,7 +264,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(None, obsSite.Alt)
 
     def test_Site_az(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.Az = Angle(degrees=34)
         self.assertEqual(34, obsSite.Az.degrees)
@@ -239,7 +279,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(None, obsSite.Az)
 
     def test_Site_pierside(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.pierside = 'E'
         self.assertEqual(obsSite.pierside, 'E')
@@ -258,7 +300,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(obsSite.pierside, None)
 
     def test_Site_raTarget(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.raJNowTarget = '*34:00:00.00'
         self.assertEqual(34, obsSite.raJNowTarget.hours)
@@ -273,35 +317,45 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(obsSite.raJNowTarget.hours, 12)
 
     def test_Site_haJNow_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.timeSidereal = 12
         obsSite.raJNow = Angle(hours=12)
         obsSite.haJNow is None
 
     def test_Site_haJNow_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.timeSidereal = Angle(hours=12)
         obsSite.raJNow = Angle(hours=12)
         obsSite.haJNow.hours == 0
 
     def test_Site_haJNowTarget_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.timeSidereal = 12
         obsSite.raJNowTarget = Angle(hours=12)
         obsSite.haJNowTarget is None
 
     def test_Site_haJNowTarget_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.timeSidereal = Angle(hours=12)
         obsSite.raJNowTarget = Angle(hours=12)
         obsSite.haJNowTarget.hours == 0
 
     def test_Site_decTarget(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.decJNowTarget = '*34:00:00.00'
         self.assertEqual(34, obsSite.decJNowTarget.degrees)
@@ -316,7 +370,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(obsSite.decJNowTarget.degrees, 34)
 
     def test_Site_altTarget(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.AltTarget = '*34:00:00.00'
         self.assertEqual(34, obsSite.AltTarget.degrees)
@@ -331,7 +387,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(None, obsSite.AltTarget)
 
     def test_Site_azTarget(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.AzTarget = '*34:00:00.00'
         self.assertEqual(34, obsSite.AzTarget.degrees)
@@ -346,67 +404,93 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(None, obsSite.AzTarget)
 
     def test_angularPosRA_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.angularPosRA = 12
         assert obsSite.angularPosRA.degrees == 12
 
     def test_angularPosRA_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.angularPosRA = Angle(degrees=12)
         assert obsSite.angularPosRA.degrees == 12
 
     def test_angularPosDEC_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.angularPosDEC = 12
         assert obsSite.angularPosDEC.degrees == 12
 
     def test_angularPosDEC_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.angularPosDEC = Angle(degrees=12)
         assert obsSite.angularPosDEC.degrees == 12
 
     def test_errorAngularPosRA_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.errorAngularPosRA = 12
         assert obsSite.errorAngularPosRA.degrees == 12
 
     def test_errorAngularPosRA_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.errorAngularPosRA = Angle(degrees=12)
         assert obsSite.errorAngularPosRA.degrees == 12
 
     def test_errorAngularPosDEC_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.errorAngularPosDEC = 12
         assert obsSite.errorAngularPosDEC.degrees == 12
 
     def test_errorAngularPosDEC_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.errorAngularPosDEC = Angle(degrees=12)
         assert obsSite.errorAngularPosDEC.degrees == 12
 
     def test_angularPosRATarget_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.angularPosRATarget = 12
         assert obsSite.angularPosRATarget.degrees == 12
 
     def test_angularPosRATarget_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.angularPosRATarget = Angle(degrees=12)
         assert obsSite.angularPosRATarget.degrees == 12
 
     def test_angularPosDECTarget_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.angularPosDECTarget = 12
         assert obsSite.angularPosDECTarget.degrees == 12
 
     def test_angularPosDECTarget_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.angularPosDECTarget = Angle(degrees=12)
         assert obsSite.angularPosDECTarget.degrees == 12
 
     def test_Site_piersideTarget(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.piersideTarget = '2'
         self.assertEqual(obsSite.piersideTarget, 'W')
@@ -425,7 +509,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(obsSite.piersideTarget, None)
 
     def test_Site_status(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.status = '1'
         self.assertEqual(1, obsSite.status)
@@ -442,47 +528,63 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(None, obsSite.status)
 
     def test_status_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.status = None
         self.assertEqual(None, obsSite.status)
 
     def test_status_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.status = 'E'
         self.assertEqual(None, obsSite.status)
 
     def test_status_3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.status = '5'
         self.assertEqual(5, obsSite.status)
 
     def test_statusSat_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.statusSat = 1
         self.assertEqual(obsSite.statusSat, None)
 
     def test_statusSat_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         obsSite.statusSat = 'V'
         self.assertEqual(obsSite.statusSat, 'V')
 
     def test_Site_statusText_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.status = None
         self.assertEqual(None, obsSite.statusText())
 
     def test_Site_statusText_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.status = '1'
         self.assertEqual('Stopped after STOP', obsSite.statusText())
 
     def test_Site_statusSlew(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         obsSite.statusSlew = '1'
         self.assertEqual(True, obsSite.statusSlew)
@@ -505,27 +607,35 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(True, obsSite.statusSlew)
 
     def test_ObsSite_parseLocation_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['+0585.2', '-011:35:00.0', '+48:07:00.0', '03']
         suc = obsSite.parseLocation(response, 4)
         self.assertEqual(True, suc)
 
     def test_ObsSite_parseLocation_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['+0585.2', '+011:35:00.0', '+48:07:00.0', '03']
         suc = obsSite.parseLocation(response, 4)
         self.assertEqual(True, suc)
 
     def test_ObsSite_parseLocation_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         suc = obsSite.parseLocation(response, 4)
         self.assertEqual(False, suc)
 
     def test_ObsSite_parseLocation_not_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['+master', '-011:35:00.0', '+48:07:00.0', '03']
 
@@ -533,7 +643,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_ObsSite_parseLocation_not_ok3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['+0585.2', '-011:35:00.0', '+48:sdj.0', '03']
 
@@ -541,7 +653,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_ObsSite_parseLocation_not_ok4(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['+0585.2', '-011:EE:00.0', '+48:07:00.0', '03']
 
@@ -549,7 +663,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_ObsSite_poll_ok(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['+0585.2', '-011:35:00.0', '+48:07:00.0', '03']
 
@@ -559,7 +675,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_poll_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['+0585.2', '-011:35:00.0', '+48:07:00.0', '03']
 
@@ -569,7 +687,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_poll_not_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['+0585.2', '-011:35:00.0', '+48:07:00.0', '03']
 
@@ -585,7 +705,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_ObsSite_parsePointing_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['13:15:35.68', '0.12', 'V',
                     '19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0',
@@ -594,7 +716,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_ObsSite_parsePointing_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['13:15:35.68', '0.12', 'V',
                     '19.44591,+88.0032,W,000.0000,+47.9945,2458352.10403639,5,0',
@@ -604,7 +728,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(type(obsSite.Az), Angle)
 
     def test_ObsSite_parsePointing_ok3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['13:15:35.68', '0.12', 'V',
                     '19.44591,+88.0032,W,000.0001,+00.0000,2458352.10403639,5,0',
@@ -614,7 +740,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(type(obsSite.Alt), Angle)
 
     def test_ObsSite_pollPointing_ok4(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['13:15:35.68', '0.12', 'V',
                     '19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0',
@@ -626,7 +754,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_pollPointing_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['13:15:35.68', '0.12',
                     '19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0',
@@ -638,7 +768,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_pollPointing_not_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['13:15:35.68', '0.12',
                     '19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0',
@@ -650,7 +782,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_pollSyncClock_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         with mock.patch.object(platform,
                                'system',
                                return_value='Windows'):
@@ -661,7 +795,9 @@ class TestConfigData(unittest.TestCase):
                 assert not suc
 
     def test_pollSyncClock_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         with mock.patch.object(platform,
                                'system',
                                return_value='Linux'):
@@ -672,7 +808,9 @@ class TestConfigData(unittest.TestCase):
                 assert not suc
 
     def test_pollSyncClock_3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         with mock.patch.object(platform,
                                'system',
                                return_value='aarch64'):
@@ -683,7 +821,9 @@ class TestConfigData(unittest.TestCase):
                 assert not suc
 
     def test_pollSyncClock_4(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         with mock.patch.object(platform,
                                'system',
                                return_value='Darwin'):
@@ -694,7 +834,9 @@ class TestConfigData(unittest.TestCase):
                 assert not suc
 
     def test_pollSyncClock_5(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         with mock.patch.object(platform,
                                'system',
                                return_value='Darwin'):
@@ -705,7 +847,9 @@ class TestConfigData(unittest.TestCase):
                 assert suc
 
     def test_adjustClock_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         with mock.patch.object(mountcontrol.obsSite.Connection,
                                'communicate',
                                return_value=(False, ['0'], 1)):
@@ -713,7 +857,9 @@ class TestConfigData(unittest.TestCase):
             assert not suc
 
     def test_adjustClock_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         with mock.patch.object(mountcontrol.obsSite.Connection,
                                'communicate',
                                return_value=(True, ['0'], 1)):
@@ -721,7 +867,9 @@ class TestConfigData(unittest.TestCase):
             assert not suc
 
     def test_adjustClock_3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         with mock.patch.object(mountcontrol.obsSite.Connection,
                                'communicate',
                                return_value=(True, ['1'], 1)):
@@ -729,13 +877,17 @@ class TestConfigData(unittest.TestCase):
             assert suc
 
     def test_startSlewing_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         suc = obsSite.startSlewing(slewType='')
         self.assertEqual(suc, False)
 
     def test_startSlewing_1_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = '1#'
 
         obsSite.status = 0
@@ -745,7 +897,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_startSlewing_1_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = '1#'
 
         obsSite.status = 1
@@ -755,7 +909,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_startSlewing_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = '1#'
 
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -764,7 +920,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_startSlewing_3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = '1#'
 
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -773,7 +931,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_startSlewing_4(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = '0#'
 
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -782,7 +942,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, True)
 
     def test_ObsSite_setTargetAltAz_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['112+45:00:00.0', '180:00:00.0', '12:30:00.00', '+45:30:00.0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 7
@@ -792,25 +954,33 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_setTargetAltAz_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         suc = obsSite.setTargetAltAz(alt_degrees=0, az_degrees=0)
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAltAz_not_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         alt = Angle(degrees=30)
         suc = obsSite.setTargetAltAz(alt, az_degrees=0)
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAltAz_not_ok3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         alt = Angle(degrees=30)
         az = Angle(degrees=30)
         suc = obsSite.setTargetAltAz(alt, az)
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAltAz_not_ok4(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['00']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
@@ -820,7 +990,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAltAz_not_ok5(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
@@ -830,7 +1002,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAltAz_not_ok6(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['1#2']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
@@ -840,7 +1014,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAltAz_not_ok7(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['1#2']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -851,14 +1027,18 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAltAz_not_ok8(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         alt = Angle(hours=5, preference='hours')
         az = Angle(degrees=30)
         suc = obsSite.setTargetAltAz(alt, az)
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAltAz_not_ok9(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         alt = Angle(degrees=30)
         az = Angle(hours=5, preference='hours')
         suc = obsSite.setTargetAltAz(alt, az)
@@ -871,7 +1051,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_ObsSite_setTargetRaDec_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['112+45:00:00.0', '180:00:00.0', '12:30:00.00', '+45:30:00.0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
@@ -881,7 +1063,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_setTargetRaDec_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['112+45:00:00.0', '180:00:00.0', '12:30:00.00', '+45:30:00.0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
@@ -892,17 +1076,23 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_setTargetRaDec_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         suc = obsSite.setTargetRaDec(ra_hours=0, dec_degrees=0)
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetRaDec_not_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         suc = obsSite.setTargetRaDec(ra_hours=0, dec_degrees=0)
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetRaDec_not_ok3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         ra = None
         dec = None
         target = None
@@ -910,14 +1100,18 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetRaDec_not_ok4(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         ra = Angle(hours=30, preference='hours')
         dec = None
         suc = obsSite.setTargetRaDec(ra, dec)
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetRaDec_not_ok5(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         ra = Angle(hours=30, preference='hours')
         dec = Angle(degrees=30)
@@ -925,7 +1119,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetRaDec_not_ok6(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['00']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -936,7 +1132,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetRaDec_not_ok7(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -947,7 +1145,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetRaDec_not_ok8(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['1#']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -958,7 +1158,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetRaDec_not_ok9(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['1#']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -969,14 +1171,18 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetRaDec_not_ok10(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         ra = Angle(degrees=30)
         dec = Angle(degrees=30)
         suc = obsSite.setTargetRaDec(ra, dec)
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetRaDec_not_ok11(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         ra = Angle(degrees=30)
         dec = Angle(hours=5, preference='hours')
         suc = obsSite.setTargetRaDec(ra, dec)
@@ -989,7 +1195,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_ObsSite_setTargetAngular_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['112+45:00:00.0', '180:00:00.0', '12:30:00.00', '+45:30:00.0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
@@ -999,7 +1207,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_setTargetAngular_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['112+45:00:00.0', '180:00:00.0', '12:30:00.00', '+45:30:00.0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
@@ -1010,19 +1220,25 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_setTargetAngular_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         suc = obsSite.setTargetAngular(ra_degrees=0, dec_degrees=0)
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAngular_not_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         ra = None
         dec = None
         suc = obsSite.setTargetAngular(ra, dec)
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAngular_not_ok3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         ra = None
         dec = None
         target = None
@@ -1030,14 +1246,18 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAngular_not_ok4(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         ra = Angle(hours=30, preference='hours')
         dec = None
         suc = obsSite.setTargetAngular(ra, dec)
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAngular_not_ok5(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         ra = Angle(hours=30, preference='hours')
         dec = Angle(degrees=30)
@@ -1045,7 +1265,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAngular_not_ok6(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['00']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1056,7 +1278,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAngular_not_ok7(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1067,7 +1291,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAngular_not_ok8(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['1#']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1078,7 +1304,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAngular_not_ok9(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['1#']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1089,14 +1317,18 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAngular_not_ok10(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         ra = Angle(degrees=30)
         dec = Angle(hours=5, preference='hours')
         suc = obsSite.setTargetAngular(ra, dec)
         self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAngular_not_ok_11(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['002+45:00:00.0', '180:00:00.0', '12:30:00.00', '+45:30:00.0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
@@ -1107,7 +1339,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetAngular_not_ok_12(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['112+45:00:00.0', '180:00:00.0', '12:30:00.00']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
@@ -1124,7 +1358,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_ObsSite_shutdown_ok(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1133,7 +1369,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_shutdown_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1142,7 +1380,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_shutdown_not_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1157,7 +1397,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_ObsSite_setLocation_ok(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         observer = wgs84.latlon(latitude_degrees=50,
                                 longitude_degrees=11,
                                 elevation_m=580)
@@ -1168,7 +1410,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_setLocation_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         observer = wgs84.latlon(latitude_degrees=50,
                                 longitude_degrees=11,
                                 elevation_m=580)
@@ -1179,7 +1423,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setLocation_not_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         observer = wgs84.latlon(latitude_degrees=50,
                                 longitude_degrees=11,
@@ -1191,7 +1437,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setLocation_not_ok3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['111']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
@@ -1199,7 +1447,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setLatitude_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
@@ -1207,7 +1457,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_setLatitude_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
@@ -1215,7 +1467,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_setLatitude_ok3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
@@ -1223,7 +1477,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_setLatitude_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
@@ -1231,7 +1487,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setLatitude_not_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
@@ -1239,7 +1497,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setLatitude_not_ok3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
@@ -1247,7 +1507,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setLongitude_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
@@ -1255,7 +1517,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_setLongitude_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
@@ -1263,7 +1527,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_setLongitude_ok3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
@@ -1271,7 +1537,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_setLongitude_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
@@ -1279,7 +1547,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setLongitude_not_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
@@ -1287,7 +1557,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setLongitude_not_ok3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1296,7 +1568,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setElevation_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1305,7 +1579,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_setElevation_not_ok0(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1314,7 +1590,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setElevation_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1323,7 +1601,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setElevation_not_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1332,7 +1612,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_setElevation_not_ok3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1347,7 +1629,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_ObsSite_startTracking_ok(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1356,7 +1640,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_startTracking_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1371,7 +1657,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_ObsSite_stopTracking_ok(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1380,7 +1668,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_stopTracking_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1395,7 +1685,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_ObsSite_park_ok(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1404,7 +1696,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_park_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1419,7 +1713,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_ObsSite_unpark_ok(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1428,7 +1724,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_unpark_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1443,7 +1741,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_ObsSite_parkOnActualPosition_ok(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1452,7 +1752,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_parkOnActualPosition_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1461,7 +1763,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_parkOnActualPosition_not_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1476,7 +1780,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_ObsSite_stop_ok(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1485,7 +1791,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_stop_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1500,7 +1808,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_ObsSite_flip_ok(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1509,7 +1819,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_ObsSite_flip_not_ok1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['0']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1518,7 +1830,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_ObsSite_flip_not_ok2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
 
         response = ['1']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
@@ -1527,7 +1841,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_moveNorth_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
@@ -1535,7 +1851,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_moveNorth_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
@@ -1543,7 +1861,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, True)
 
     def test_moveEast_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
@@ -1551,7 +1871,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_moveEast_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
@@ -1559,7 +1881,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, True)
 
     def test_moveSouth_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
@@ -1567,7 +1891,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_moveSouth_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
@@ -1575,7 +1901,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, True)
 
     def test_moveWest_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
@@ -1583,7 +1911,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_moveWest_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
@@ -1591,7 +1921,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, True)
 
     def test_stopMoveNorth_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
@@ -1599,7 +1931,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_stopMoveNorth_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
@@ -1607,7 +1941,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, True)
 
     def test_stopMoveEast_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
@@ -1615,7 +1951,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_stopMoveEast_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
@@ -1623,7 +1961,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, True)
 
     def test_stopMoveSouth_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
@@ -1631,7 +1971,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_stopMoveSouth_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
@@ -1639,7 +1981,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, True)
 
     def test_stopMoveWest_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
@@ -1647,7 +1991,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_stopMoveWest_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
@@ -1655,7 +2001,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, True)
 
     def test_stopMoveAll_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
@@ -1663,7 +2011,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_stopMoveAll_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
@@ -1671,7 +2021,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, True)
 
     def test_syncPositionToTarget_1(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = []
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
@@ -1679,7 +2031,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_syncPositionToTarget_2(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
@@ -1687,7 +2041,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(suc, False)
 
     def test_syncPositionToTarget_3(self):
-        obsSite = ObsSite(pathToData=pathToData)
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
         response = ['Coordinates']
         with mock.patch('mountcontrol.obsSite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0

@@ -32,8 +32,8 @@ class Dome(object):
 
     log = logging.getLogger(__name__)
 
-    def __init__(self, host=None):
-        self.host = host
+    def __init__(self, parent):
+        self.parent = parent
         self._shutterState = 0
         self._flapState = 0
         self._slew = False
@@ -114,7 +114,7 @@ class Dome(object):
         """
         :return: success:   True if ok, False if not
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':GDS#:GDF#:GDW#:GDA#'
         suc, response, chunks = conn.communicate(commandString)
         if not suc:
@@ -126,9 +126,9 @@ class Dome(object):
         """
         :return:
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':SDS2#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
 
         if not suc:
             return False
@@ -141,9 +141,9 @@ class Dome(object):
         """
         :return:
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':SDS1#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
 
         if not suc:
             return False
@@ -156,9 +156,9 @@ class Dome(object):
         """
         :return:
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':SDF2#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
 
         if not suc:
             return False
@@ -171,9 +171,9 @@ class Dome(object):
         """
         :return:
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':SDF1#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
 
         if not suc:
             return False
@@ -192,10 +192,10 @@ class Dome(object):
             azimuth = azimuth.degrees
 
         azimuth = azimuth % 360
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         setAzimuth = f':SDA{azimuth:04.0f}#'
         commandString = setAzimuth
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
 
         if not suc:
             return False
@@ -208,7 +208,7 @@ class Dome(object):
         """
         :return:
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':SDAr#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, _, _ = conn.communicate(commandString)
         return suc

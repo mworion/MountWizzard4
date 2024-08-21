@@ -35,7 +35,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_Firmware_ok(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
 
         fw.product = 'Test'
         self.assertEqual('Test', fw.product)
@@ -64,7 +66,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(True, fw.checkNewer(10000))
 
     def test_Firmware_not_ok_vString(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
 
         fw.vString = '21508'
         self.assertEqual(None, fw.vString)
@@ -78,18 +82,24 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(None, fw.number())
 
     def test_Firmware_checkNewer_1(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
         fw.vString = 5
         self.assertEqual(None, fw.checkNewer(100))
 
     def test_Firmware_checkNewer_2(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
         fw.vString = '2.99.99'
         suc = fw.checkNewer(30000)
         assert not suc
 
     def test_Firmware_checkNewer_3(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
         fw.vString = '2.99.99'
         suc = fw.checkNewer(29998)
         assert suc
@@ -100,7 +110,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_Firmware_parse_ok1(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
 
         response = ['Mar 19 2018', '2.15.14',
                     '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
@@ -108,7 +120,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_Firmware_parse_ok2(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
 
         response = ['Mar 19 2018', '2.15.14',
                     '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
@@ -116,7 +130,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_Firmware_parse_not_ok1(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
 
         response = ['Mar 19 2018', '2.15.14',
                     '10micron GM1000HPS', '15:56:53']
@@ -124,14 +140,18 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(False, suc)
 
     def test_Firmware_parse_not_ok2(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
 
         response = []
         suc = fw.parse(response, 5)
         self.assertEqual(False, suc)
 
     def test_Firmware_parse_not_ok3(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
 
         response = ['Mar 19 2018', '2.15.14',
                     '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
@@ -140,7 +160,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_Firmware_parse_not_ok4(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
 
         response = ['Mar 19 2018', '2.1514',
                     '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
@@ -149,7 +171,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_Firmware_parse_not_ok5(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
 
         response = ['Mar 19 2018', '2.15.14',
                     '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
@@ -158,7 +182,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_Firmware_parse_not_ok6(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
 
         response = ['Mar 19 2018', '2.15.14',
                     '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
@@ -167,7 +193,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_Firmware_poll_ok(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
 
         response = ['Mar 19 2018', '2.15.14',
                     '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
@@ -178,7 +206,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_Firmware_poll_not_ok1(self):
-        fw = Firmware()
+        class Parent:
+            host = None
+        fw = Firmware(parent=Parent())
 
         response = ['Mar 19 2018', '2.15.14',
                     '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']

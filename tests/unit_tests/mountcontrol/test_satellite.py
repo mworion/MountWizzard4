@@ -207,6 +207,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         t0 = 'NOAA 8 [-]              '
@@ -230,6 +231,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         response = ['76129888407$0A']
@@ -249,6 +251,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         response = ['76129888407$0A', ['hj']]
@@ -268,6 +271,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         t0 = 'NOAA 8 [-]              '
@@ -289,6 +293,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         t0 = 'NOAA 8 [-]              '
@@ -310,6 +315,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         t0 = 'NOAA 8 [-]              '
@@ -331,6 +337,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
 
@@ -347,6 +354,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
 
@@ -363,6 +371,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
 
@@ -379,6 +388,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
 
@@ -395,6 +405,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
 
@@ -411,6 +422,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         t0 = 'NOAA 8 [-]              '
@@ -432,6 +444,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         t0 = 'NOAA 8 [-]              '
@@ -453,6 +466,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         t0 = 'NOAA 8 [-]              '
@@ -474,6 +488,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         t0 = 'NOAA 8 [-]              '
@@ -495,6 +510,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         t0 = 'NOAA 8 [-]              '
@@ -516,6 +532,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         t0 = 'NOAA 8 [-]              '
@@ -537,6 +554,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         response = ''
@@ -551,6 +569,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         response = ''
@@ -565,6 +584,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         response = []
@@ -579,6 +599,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         response = ['E', 'E', 'E']
@@ -593,6 +614,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         s0 = ''
@@ -610,6 +632,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         s0 = '+23.12334,123.1234'
@@ -627,6 +650,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         s0 = '+23.12334,123.1234'
@@ -644,6 +668,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         s0 = 'E'
@@ -661,6 +686,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         s0 = ''
@@ -678,6 +704,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         s0 = ''
@@ -695,6 +722,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         s0 = ''
@@ -712,6 +740,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         s0 = '+23.12334,123.1234'
@@ -729,6 +758,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         s0 = '+23.12334,123.1234'
@@ -746,6 +776,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         ts = load.timescale()
@@ -764,6 +795,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         ts = load.timescale()
@@ -782,6 +814,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
 
@@ -798,6 +831,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
 
@@ -814,6 +848,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         s0 = '+23.12334,123.1234'
@@ -834,6 +869,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         s0 = '+23.12334,123.1234'
@@ -854,6 +890,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         s0 = '+23.12334,123.1234'
@@ -874,6 +911,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         s0 = '+23.12334,123.1234'
@@ -894,6 +932,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         suc = sat.getCoordsFromTLE()
@@ -906,6 +945,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         ts = load.timescale()
         julD = ts.tt_jd(1234567.8)
@@ -924,6 +964,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
         sat = Satellite(parent=Parent())
         with mock.patch('mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'E', 1
@@ -938,6 +979,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
         sat = Satellite(parent=Parent())
         response = ['E', 'E']
         ret = (True, response, 2)
@@ -954,6 +996,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
         sat = Satellite(parent=Parent())
         response = ['10.0, 10.0', 'E']
         ret = (True, response, 2)
@@ -970,6 +1013,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
         sat = Satellite(parent=Parent())
         response = ['10.0, 10.0', '10.0, 10.0']
         ret = (True, response, 2)
@@ -986,6 +1030,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
         sat = Satellite(parent=Parent())
         with mock.patch('mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'E', 1
@@ -1000,6 +1045,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
         sat = Satellite(parent=Parent())
         with mock.patch('mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'X', 1
@@ -1015,6 +1061,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
         sat = Satellite(parent=Parent())
         with mock.patch('mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'V', 1
@@ -1030,6 +1077,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
         sat = Satellite(parent=Parent())
         with mock.patch('mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'V', 2
@@ -1044,6 +1092,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         response = ''
@@ -1102,6 +1151,7 @@ class TestConfigData(unittest.TestCase):
     def test_statTLE_1(self):
         class Parent:
             obsSite = None
+            host = None
         sat = Satellite(parent=Parent())
 
         with mock.patch('mountcontrol.satellite.Connection') as mConn:
@@ -1117,6 +1167,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
 
@@ -1133,6 +1184,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (False, ['V'], 1)
@@ -1151,6 +1203,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (False, ['V'], 1)
@@ -1170,6 +1223,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['V'], 2)
@@ -1189,6 +1243,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['V', 'V'], 2)
@@ -1208,6 +1263,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['E'], 1)
@@ -1227,6 +1283,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['V'], 1)
@@ -1243,6 +1300,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['V'], 1)
@@ -1261,6 +1319,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (False, ['1', '2'], 1)
@@ -1279,6 +1338,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['1', '2'], 1)
@@ -1297,6 +1357,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['1', '2'], 2)
@@ -1315,6 +1376,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['1', '2', 'E'], 3)
@@ -1333,6 +1395,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['1', '2', '3'], 3)
@@ -1351,6 +1414,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (False, ['V'], 1)
@@ -1367,6 +1431,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (False, ['V'], 1)
@@ -1383,6 +1448,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['V'], 2)
@@ -1399,6 +1465,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['V', 'V'], 2)
@@ -1415,6 +1482,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['E'], 1)
@@ -1431,6 +1499,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['10, 10, F, F'], 1)
@@ -1447,6 +1516,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         val = (True, ['10, 10, F'], 1)
@@ -1463,6 +1533,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         suc = sat.getTrackingOffsets()
@@ -1475,6 +1546,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1491,6 +1563,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1507,6 +1580,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1523,6 +1597,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1538,6 +1613,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1554,6 +1630,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1570,6 +1647,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1586,6 +1664,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1602,6 +1681,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1617,6 +1697,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1633,6 +1714,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1649,6 +1731,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1665,6 +1748,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1681,6 +1765,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1696,6 +1781,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1711,6 +1797,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1726,6 +1813,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,
@@ -1741,6 +1829,7 @@ class TestConfigData(unittest.TestCase):
 
         class Parent:
             obsSite = ObsSite()
+            host = None
 
         sat = Satellite(parent=Parent())
         with mock.patch.object(Connection,

@@ -35,8 +35,8 @@ class Setting(object):
 
     log = logging.getLogger(__name__)
 
-    def __init__(self, host=None):
-        self.host = host
+    def __init__(self, parent=None):
+        self.parent = parent
         self._slewRate = None
         self._slewRateMin = None
         self._slewRateMax = None
@@ -394,7 +394,7 @@ class Setting(object):
 
         :return:    success:    True if ok, False if not
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         cs1 = ':U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#'
         cs2 = ':GREF#:Guaf#:Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#'
         cs3 = ':WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#:Gstm#'
@@ -420,7 +420,7 @@ class Setting(object):
             return False
         elif value > 15:
             return False
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = f':Sw{value:02.0f}#:RMs{value:02.0f}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -435,7 +435,7 @@ class Setting(object):
 
         :return: success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':RC3#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         return suc
@@ -449,7 +449,7 @@ class Setting(object):
 
         :return: success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':RC2#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         return suc
@@ -463,7 +463,7 @@ class Setting(object):
 
         :return: success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         centerSpeed = 255
         commandString = f':Rc{centerSpeed:02.0f}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -478,7 +478,7 @@ class Setting(object):
 
         :return: success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         centerSpeed = 128
         commandString = f':Rc{centerSpeed:02.0f}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -506,7 +506,7 @@ class Setting(object):
             return False
         elif pressure > 1300:
             return False
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = f':SRPRS{pressure:06.1f}#:SRTMP{temperature:+06.1f}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -530,7 +530,7 @@ class Setting(object):
             return False
         elif value > 75:
             return False
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':SRTMP{0:+06.1f}#'.format(value)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -554,7 +554,7 @@ class Setting(object):
             return False
         elif value > 1300:
             return False
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':SRPRS{0:06.1f}#'.format(value)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -571,7 +571,7 @@ class Setting(object):
         :return:        success
         """
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':SREF{0:1d}#'.format(1 if status else 0)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -588,7 +588,7 @@ class Setting(object):
         :return:        success
         """
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':Suaf{0:1d}#'.format(1 if status else 0)
         suc, response, numberOfChunks = conn.communicate(commandString)
         return suc
@@ -601,7 +601,7 @@ class Setting(object):
         :return:        success
         """
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':Sdat{0:1d}#'.format(1 if status else 0)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -618,7 +618,7 @@ class Setting(object):
         :return:        success
         """
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':SWOL{0:1d}#'.format(1 if status else 0)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -639,7 +639,7 @@ class Setting(object):
             return False
         elif value > 30:
             return False
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         value = int(value)
         commandString = f':Slmt{value:02d}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -661,7 +661,7 @@ class Setting(object):
             return False
         elif value > 30:
             return False
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         value = int(value)
         commandString = f':Slms{value:02d}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -683,7 +683,7 @@ class Setting(object):
             return False
         elif value > 90:
             return False
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         value = int(value)
         commandString = f':Sh+{value:02d}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -705,7 +705,7 @@ class Setting(object):
             return False
         elif value > 45:
             return False
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         value = int(value)
         commandString = f':So{value:+02d}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -734,7 +734,7 @@ class Setting(object):
             return False
         value = int(value)
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = f':WSS{value:1d}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -777,7 +777,7 @@ class Setting(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':RT0#')
         return suc
 
@@ -785,7 +785,7 @@ class Setting(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':RT2#')
         return suc
 
@@ -793,7 +793,7 @@ class Setting(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':RT1#')
         return suc
 
@@ -801,7 +801,7 @@ class Setting(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':NTSweb{0:1d}#'.format(1 if status else 0)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -814,7 +814,7 @@ class Setting(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = f':Sstm{time:08.3f}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:

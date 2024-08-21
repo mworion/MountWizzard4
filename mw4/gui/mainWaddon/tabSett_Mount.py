@@ -211,9 +211,9 @@ class SettMount(MWidget):
         self.ui.clockOffset.setEnabled(enableSyncTimer)
         self.ui.clockOffsetMS.setEnabled(enableSyncTimer)
         if enableSyncTimer:
-            self.app.mount.startClockTimer()
+            self.app.mount.startMountClockTimer()
         else:
-            self.app.mount.stopClockTimer()
+            self.app.mount.stopMountClockTimer()
         return True
 
     def syncClock(self):

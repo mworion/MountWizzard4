@@ -34,8 +34,8 @@ class Firmware(object):
 
     log = logging.getLogger(__name__)
 
-    def __init__(self, host=None):
-        self.host = host
+    def __init__(self, parent):
+        self.parent = parent
         self._product = None
         self._vString = None
         self._hardware = None
@@ -154,7 +154,7 @@ class Firmware(object):
         :return: success:   True if ok, False if not
         """
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':U2#:GVD#:GVN#:GVP#:GVT#:GVZ#'
         suc, response, chunks = conn.communicate(commandString)
         if not suc:

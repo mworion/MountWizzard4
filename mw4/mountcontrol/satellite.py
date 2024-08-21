@@ -289,8 +289,8 @@ class Satellite(object):
         'E': 'No slew to satellite requested'
     }
 
-    def __init__(self, parent=None, host=None):
-        self.host = host
+    def __init__(self, parent):
+        self.parent = parent
         self.obsSite = parent.obsSite
         self.tleParams = TLEParams(obsSite=parent.obsSite)
         self.trajectoryParams = TrajectoryParams(obsSite=parent.obsSite)
@@ -337,7 +337,7 @@ class Satellite(object):
 
         :return: success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':TLEG#')
         if not suc:
             return False
@@ -380,7 +380,7 @@ class Satellite(object):
             return False
 
         commandString = f':TLEL0{line0}$0a{line1}$0a{line2}#'
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
@@ -497,7 +497,7 @@ class Satellite(object):
         if not 0 < duration < 1441:
             return False
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         command = f':TLEGAZ{julD}#:TLEGEQ{julD}#:TLEP{julD},{duration}#'
         suc, response, numberOfChunks = conn.communicate(command)
         if not suc:
@@ -519,7 +519,7 @@ class Satellite(object):
         # transformation UTC <-> TT time system
         julD -= self.obsSite.UTC2TT
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         command = f':TLEGAZ{julD}#:TLEGEQ{julD}#'
         suc, response, numberOfChunks = conn.communicate(command)
         if not suc:
@@ -556,7 +556,7 @@ class Satellite(object):
 
         :return: success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':TLES#')
         if numberOfChunks != 1:
             return False, 'Error'
@@ -598,7 +598,7 @@ class Satellite(object):
 
         :return: success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':TLESCK#')
         if not suc:
             return False
@@ -620,7 +620,7 @@ class Satellite(object):
         julD -= self.obsSite.UTC2TT
 
         cmd = f':TRNEW{julD}#'
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
             return False
@@ -649,7 +649,7 @@ class Satellite(object):
         for azimuth, altitude in zip(az, alt):
             cmd += f':TRADD{azimuth},{altitude}#'
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
             return False
@@ -681,7 +681,7 @@ class Satellite(object):
         else:
             cmd = ':TRP#'
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
             return False
@@ -713,7 +713,7 @@ class Satellite(object):
         :return: success
         """
         cmd = ':TROFFGET1#:TROFFGET2#:TROFFGET3#:TROFFGET4#'
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
             return False
@@ -766,7 +766,7 @@ class Satellite(object):
             cmd += f':TROFFSET4,{Time:+05.1f}#'
             responseLen += 1
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
             return False
@@ -808,7 +808,7 @@ class Satellite(object):
             cmd += f':TROFFADD4,{Time:+05.1f}#'
             responseLen += 1
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
             return False
@@ -833,7 +833,7 @@ class Satellite(object):
         """
         cmd = ':TROFFCLR#'
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
             return False

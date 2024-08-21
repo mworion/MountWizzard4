@@ -56,73 +56,97 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_Model_altitudeError(self):
-        align = Model()
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
         align.altitudeError = '67'
         self.assertEqual(67, align.altitudeError.degrees)
         self.assertEqual(67, align._altitudeError.degrees)
 
     def test_Model_azimuthError(self):
-        align = Model()
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
         align.azimuthError = '67'
         self.assertEqual(67, align.azimuthError.degrees)
         self.assertEqual(67, align._azimuthError.degrees)
 
     def test_Model_polarError(self):
-        align = Model()
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
         align.polarError = '67'
         self.assertEqual(67, align.polarError.degrees)
         self.assertEqual(67, align._polarError.degrees)
 
     def test_Model_positionAngle1(self):
-        align = Model()
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
         align.positionAngle = '67'
         self.assertEqual(67, align.positionAngle.degrees)
         self.assertEqual(67, align._positionAngle.degrees)
 
     def test_Model_positionAngle2(self):
-        align = Model()
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
         align.positionAngle = skyfield.api.Angle(degrees=67)
         self.assertNotEqual(67, align.positionAngle)
         self.assertNotEqual(67, align._positionAngle)
 
     def test_Model_orthoError(self):
-        align = Model()
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
         align.orthoError = '67'
         self.assertEqual(67, align.orthoError.degrees)
         self.assertEqual(67, align._orthoError.degrees)
 
     def test_Model_altitudeTurns(self):
-        align = Model()
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
         align.altitudeTurns = '67'
         self.assertEqual(67, align.altitudeTurns)
         self.assertEqual(67, align._altitudeTurns)
 
     def test_Model_azimuthTurns(self):
-        align = Model()
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
         align.azimuthTurns = '67'
         self.assertEqual(67, align.azimuthTurns)
         self.assertEqual(67, align._azimuthTurns)
 
     def test_Model_terms(self):
-        align = Model()
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
         align.terms = '67'
         self.assertEqual(67, align.terms)
         self.assertEqual(67, align._terms)
 
     def test_Model_errorRMS(self):
-        align = Model()
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
         align.errorRMS = '67'
         self.assertEqual(67, align.errorRMS)
         self.assertEqual(67, align._errorRMS)
 
     def test_Model_numberStars(self):
-        align = Model()
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
         align.numberStars = '67'
         self.assertEqual(67, align.numberStars)
         self.assertEqual(67, align._numberStars)
 
     def test_Model_numberNames(self):
-        align = Model()
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
         align.numberNames = '67'
         self.assertEqual(67, align.numberNames)
         self.assertEqual(67, align._numberNames)
@@ -139,21 +163,27 @@ class TestConfigData(unittest.TestCase):
                                number=1,
                                obsSite=p5)
 
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         self.assertEqual(len(model.starList), 0)
         model.starList = [modelStar1]
         self.assertEqual(len(model.starList), 1)
 
     def test_Model_starList2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         self.assertEqual(len(model.starList), 0)
         model.starList = '67'
         self.assertEqual(len(model.starList), 0)
 
     def test_Model_starList3(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         self.assertEqual(len(model.starList), 0)
         model.starList = ['67', '78']
@@ -177,7 +207,9 @@ class TestConfigData(unittest.TestCase):
                                errorAngle=p4, number=4,
                                obsSite=obsSite)
 
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         self.assertEqual(len(model.starList), 0)
         model.addStar(modelStar1)
@@ -198,20 +230,27 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(len(model.starList), 2)
 
     def test_addStar_ok(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+            obsSite = None
+        model = Model(parent=Parent())
         self.assertEqual(len(model.starList), 0)
         model.addStar('12:45:33.01,+56*30:00.5,1234.5,90,1')
         self.assertEqual(len(model.starList), 1)
 
     def test_addStar_not_ok1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         self.assertEqual(len(model.starList), 0)
         model.addStar(67)
         self.assertEqual(len(model.starList), 0)
 
     def test_addStar_not_ok2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         self.assertEqual(len(model.starList), 0)
         model.addStar('test')
@@ -220,7 +259,9 @@ class TestConfigData(unittest.TestCase):
     def test_StarList_iteration(self):
         p1 = '12:45:33.01'
         p2 = '+56*30:00.5'
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         for i in range(0, 10):
             model.addStar(ModelStar(coord=(p1, p2),
@@ -237,56 +278,73 @@ class TestConfigData(unittest.TestCase):
                              star.errorRMS)
 
     def test_StarList_checkStarListOK(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+            obsSite = None
+        model = Model(parent=Parent())
         self.assertEqual(len(model.starList), 0)
         model.addStar('12:45:33.01,+56*30:00.5,1234.5,90,1')
         model.numberStars = 1
         self.assertEqual(True, model.checkStarListOK())
 
     def test_StarList_checkStarList_not_OK1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+            obsSite = None
+        model = Model(parent=Parent())
         self.assertEqual(len(model.starList), 0)
         model.addStar('12:45:33.01,+56*30:00.5,1234.5,90,1')
         model.numberStars = 2
         self.assertEqual(False, model.checkStarListOK())
 
-    def test_StarList_checkStarList_not_OK2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+            obsSite = None
+        model = Model(parent=Parent())
         self.assertEqual(len(model.starList), 0)
         model.addStar('12:45:33.01,+56*30:00.5,1234.5,90,1')
         self.assertEqual(False, model.checkStarListOK())
 
     def test_Model_nameList1(self):
-
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         self.assertEqual(len(model.nameList), 0)
         model.nameList = 67
         self.assertEqual(len(model.nameList), 0)
 
     def test_Model_nameList2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         self.assertEqual(len(model.nameList), 0)
         model.nameList = ['67']
         self.assertEqual(len(model.nameList), 1)
 
     def test_Model_nameList3(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         self.assertEqual(len(model.nameList), 0)
         model.nameList = ['67', '78']
         self.assertEqual(len(model.nameList), 2)
 
     def test_Model_nameList4(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         self.assertEqual(len(model.nameList), 0)
         model.nameList = ['67', 67]
         self.assertEqual(len(model.nameList), 0)
 
     def test_add_del_Name(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         self.assertEqual(len(model.nameList), 0)
         model.addName('the first one')
@@ -307,14 +365,18 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(len(model.nameList), 2)
 
     def test_addName_not_ok(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         self.assertEqual(len(model.nameList), 0)
         model.addName(45)
         self.assertEqual(len(model.nameList), 0)
 
     def test_NameList_iteration(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         for i in range(0, 10):
             model.addName('this is the {0}.th name'.format(i))
@@ -324,21 +386,27 @@ class TestConfigData(unittest.TestCase):
                              name)
 
     def test_StarList_checkNameListOK(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         self.assertEqual(len(model.starList), 0)
         model.addName('12:45:33.01,+56*30:00.5,1234.5,90,1')
         model.numberNames = 1
         self.assertEqual(True, model.checkNameListOK())
 
     def test_StarList_checkNameList_not_OK1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         self.assertEqual(len(model.starList), 0)
         model.addName('12:45:33.01,+56*30:00.5,1234.5,90,1')
         model.numberNames = 2
         self.assertEqual(False, model.checkNameListOK())
 
     def test_StarList_checkNameList_not_OK2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         self.assertEqual(len(model.starList), 0)
         model.addName('12:45:33.01,+56*30:00.5,1234.5,90,1')
         self.assertEqual(False, model.checkNameListOK())
@@ -349,38 +417,64 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_errorRMS_HPS(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.errorRMS = '36.8'
         self.assertEqual(36.8, model.errorRMS)
         self.assertEqual(36.8, model._errorRMS)
 
     def test_errorRMS_HPS_empty(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.errorRMS = 'E'
         self.assertEqual(None, model.errorRMS)
 
     def test_errorRMS_HPS_float(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.errorRMS = 36.8
         self.assertEqual(36.8, model.errorRMS)
 
     def test_errorRMS_HPS_int(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.errorRMS = 36
         self.assertEqual(36.0, model.errorRMS)
 
     def test_errorRMS_HPS_tuple(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.errorRMS = (36.8, 1.0)
         self.assertEqual(None, model.errorRMS)
 
     def test_errorRMS_QCI(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.errorRMS = ''
         self.assertEqual(None, model.errorRMS)
 
     def test_errorTerms_QCI(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.terms = ''
         self.assertEqual(None, model.terms)
     #
@@ -472,37 +566,61 @@ class TestConfigData(unittest.TestCase):
         self.assertAlmostEqual(dec, alignStar.errorDEC())
 
     def test_Model_parseNumberName_ok(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['5']
         suc = model.parseNumberNames(response, 1)
         self.assertEqual(True, suc)
 
     def test_Model_parseNumberName_not_ok1(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['df']
         suc = model.parseNumberNames(response, 1)
         self.assertEqual(True, suc)
 
     def test_Model_parseNumberName_not_ok2(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['']
         suc = model.parseNumberNames(response, 1)
         self.assertEqual(True, suc)
 
     def test_Model_parseNumberName_not_ok3(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['5a']
         suc = model.parseNumberNames(response, 1)
         self.assertEqual(True, suc)
 
     def test_Model_parseNumberName_not_ok4(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['5', '4']
         suc = model.parseNumberNames(response, 1)
         self.assertEqual(False, suc)
 
     def test_Model_parseNumberName_not_ok5(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['5', 'g']
         suc = model.parseNumberNames(response, 1)
         self.assertEqual(False, suc)
@@ -513,43 +631,71 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_Model_parseNames_ok1(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['test']
         suc = model.parseNames(response, 1)
         self.assertEqual(True, suc)
 
     def test_Model_parseNames_ok2(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['sd', '', None]
         suc = model.parseNames(response, 3)
         self.assertEqual(True, suc)
 
     def test_Model_parseNumberNames_ok3(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['5']
         suc = model.parseNumberNames(response, 1)
         self.assertEqual(True, suc)
 
     def test_Model_parseNames_not_ok1(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['sd']
         suc = model.parseNames(response, 3)
         self.assertEqual(False, suc)
 
     def test_Model_parseNumberNames_not_ok2(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['sd']
         suc = model.parseNumberNames(response, 1)
         self.assertEqual(True, suc)
 
     def test_Model_parseNumberNames_not_ok3(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['5', '6']
         suc = model.parseNumberNames(response, 2)
         self.assertEqual(False, suc)
 
     def test_getNameCount_1(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(mountcontrol.model.Connection,
                                'communicate',
                                return_value=(False, ['100'], 1)):
@@ -557,7 +703,11 @@ class TestConfigData(unittest.TestCase):
             assert not suc
 
     def test_getNameCount_2(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(mountcontrol.model.Connection,
                                'communicate',
                                return_value=(True, ['100'], 1)):
@@ -565,7 +715,11 @@ class TestConfigData(unittest.TestCase):
             assert suc
 
     def test_getNames_1(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.numberNames = 1
         with mock.patch.object(mountcontrol.model.Connection,
                                'communicate',
@@ -574,7 +728,11 @@ class TestConfigData(unittest.TestCase):
             assert not suc
 
     def test_getNames_2(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.numberNames = 1
         with mock.patch.object(mountcontrol.model.Connection,
                                'communicate',
@@ -583,7 +741,11 @@ class TestConfigData(unittest.TestCase):
             assert suc
 
     def test_pollNames_1(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(model,
                                'getNameCount',
                                return_value=False):
@@ -591,7 +753,11 @@ class TestConfigData(unittest.TestCase):
             assert not suc
 
     def test_pollNames_2(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(model,
                                'getNameCount',
                                return_value=True):
@@ -602,7 +768,11 @@ class TestConfigData(unittest.TestCase):
             assert not suc
 
     def test_pollNames_3(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(model,
                                'getNameCount',
                                return_value=True):
@@ -619,44 +789,73 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_Model_parseNumberStars_ok1(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['0', 'E']
         suc = model.parseNumberStars(response, 2)
         self.assertEqual(True, suc)
 
     def test_Model_parseNumberStars_ok2(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = \
             ['1', '023.8311, +24.8157, 29.8580, 227.45, -12.9985, +26.98, -08.97, 11, 97751.6']
         suc = model.parseNumberStars(response, 2)
         self.assertEqual(True, suc)
 
     def test_Model_parseNumberStars_not_ok0(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['4', 'E']
         suc = model.parseNumberStars(response, 1)
         self.assertEqual(False, suc)
 
     def test_Model_parseNumberStars_not_ok1(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['4']
         suc = model.parseNumberStars(response, 1)
         self.assertEqual(False, suc)
 
     def test_Model_parseNumberStars_not_ok2(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['4', '4, 4, 4']
         suc = model.parseNumberStars(response, 2)
         self.assertEqual(False, suc)
 
     def test_Model_parseNumberStars_not_ok3(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         response = ['4', '4']
         suc = model.parseNumberStars(response, 2)
         self.assertEqual(False, suc)
 
     def test_Model_parseStars_ok(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+            obsSite = None
+        model = Model(parent=Parent())
         response = [
             '21:52:58.95,+08*56:10.1,   5.7,201',
             '21:06:10.79,+45*20:52.8,  12.1,329',
@@ -675,7 +874,12 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(len(model.starList), 11)
 
     def test_Model_parseStars_not_ok1(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+            obsSite = None
+        model = Model(parent=Parent())
         response = [
             '21:52:58.95,+08*56:10.1,   5.7,201',
             '21:06:10.79,+45*20:52.8,  12.1,329',
@@ -689,7 +893,12 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(len(model.starList), 0)
 
     def test_Model_parseStars_not_ok2(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+            obsSite = None
+        model = Model(parent=Parent())
         response = [
             '21:52:58.95,+08*56:10.1,   5.7,201',
             ''
@@ -699,7 +908,11 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(len(model.starList), 1)
 
     def test_getStarCount_1(self):
-        model = Model(host=None, parent=Parent())
+
+
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(mountcontrol.model.Connection,
                                'communicate',
                                return_value=(False, ['100'], 1)):
@@ -710,7 +923,9 @@ class TestConfigData(unittest.TestCase):
                 assert not suc
 
     def test_getStarCount_2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(mountcontrol.model.Connection,
                                'communicate',
                                return_value=(True, ['100'], 1)):
@@ -721,7 +936,9 @@ class TestConfigData(unittest.TestCase):
                 assert not suc
 
     def test_getStarCount_3(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(mountcontrol.model.Connection,
                                'communicate',
                                return_value=(True, ['100'], 1)):
@@ -732,13 +949,17 @@ class TestConfigData(unittest.TestCase):
                 assert suc
 
     def test_getStars_0(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.numberStars = 0
         suc = model.getStars()
         assert suc
 
     def test_getStars_1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.numberStars = 1
         with mock.patch.object(mountcontrol.model.Connection,
                                'communicate',
@@ -747,7 +968,9 @@ class TestConfigData(unittest.TestCase):
             assert not suc
 
     def test_getStars_2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.numberStars = 1
         with mock.patch.object(mountcontrol.model.Connection,
                                'communicate',
@@ -756,7 +979,9 @@ class TestConfigData(unittest.TestCase):
             assert suc
 
     def test_pollStars_1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(model,
                                'getStarCount',
                                return_value=False):
@@ -764,7 +989,9 @@ class TestConfigData(unittest.TestCase):
             assert not suc
 
     def test_pollStars_2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(model,
                                'getStarCount',
                                return_value=True):
@@ -775,7 +1002,9 @@ class TestConfigData(unittest.TestCase):
             assert not suc
 
     def test_pollStars_3(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(model,
                                'getStarCount',
                                return_value=True):
@@ -792,7 +1021,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_Model_pollCount_1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(mountcontrol.model.Connection,
                                'communicate',
                                return_value=(True, ['5', '6'], 2)):
@@ -802,7 +1033,9 @@ class TestConfigData(unittest.TestCase):
             assert model.numberStars == 6
 
     def test_Model_pollCount_2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(mountcontrol.model.Connection,
                                'communicate',
                                return_value=(False, ['5', '6'], 2)):
@@ -810,7 +1043,9 @@ class TestConfigData(unittest.TestCase):
             assert not suc
 
     def test_Model_pollCount_3(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(mountcontrol.model.Connection,
                                'communicate',
                                return_value=(True, ['5', '6'], 3)):
@@ -818,7 +1053,9 @@ class TestConfigData(unittest.TestCase):
             assert not suc
 
     def test_Model_pollCount_4(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         with mock.patch.object(mountcontrol.model.Connection,
                                'communicate',
                                return_value=(True, ['5', '6', '7'], 3)):
@@ -832,7 +1069,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_Model_clearAlign_ok(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -841,7 +1080,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_Model_clearAlign_not_ok1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -850,7 +1091,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_clearAlign_not_ok2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = [' ']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -865,7 +1108,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_Model_deletePoint_ok(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.numberStars = 5
         response = ['1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -874,7 +1119,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_Model_deletePoint_not_ok1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.numberStars = 5
         response = ['1#']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -883,7 +1130,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_deletePoint_not_ok2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.numberStars = 5
         response = ['0#']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -892,7 +1141,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_deletePoint_not_ok3(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.numberStars = 5
         response = ['0#']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -901,7 +1152,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_deletePoint_not_ok4(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.numberStars = 5
         response = ['1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -910,7 +1163,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_deletePoint_not_ok5(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         model.numberStars = 5
         response = ['1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -925,7 +1180,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_Model_storeName_ok1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['1', '1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -934,7 +1191,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_Model_storeName_ok2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['0', '1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -943,7 +1202,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_Model_storeName_not_ok1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['1', '0']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -952,7 +1213,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_storeName_not_ok2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['1', '1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -961,7 +1224,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_storeName_not_ok3(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['1', '1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -970,7 +1235,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_storeName_not_ok4(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['0', '1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -985,7 +1252,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_Model_loadName_ok(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -994,7 +1263,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_Model_loadName_not_ok1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['0']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -1003,7 +1274,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_loadName_not_ok2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -1012,7 +1285,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_loadName_not_ok3(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -1021,7 +1296,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_loadName_not_ok4(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -1036,7 +1313,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_Model_deleteName_ok(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -1045,7 +1324,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_Model_deleteName_not_ok1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['0']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -1054,7 +1335,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_deleteName_not_ok2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -1063,7 +1346,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_deleteName_not_ok3(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -1072,7 +1357,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_deleteName_not_ok4(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         response = ['1']
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -1087,7 +1374,9 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_Model_programAlign_ok1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         aPoint = AlignStar()
         build = [aPoint]
@@ -1097,7 +1386,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(True, suc)
 
     def test_Model_programAlign_ok2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         aPoint = AlignStar()
         build = [aPoint]
@@ -1108,7 +1399,9 @@ class TestConfigData(unittest.TestCase):
             mConn.return_value.communicate.assert_called_with(':newalig#:endalig#')
 
     def test_Model_programAlign_ok3(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         v1 = ':newalig#:newalpt19:35:15.6,-15*02:43.1,W,19:35:45.3,-15*03:41.8,' \
              '17:35:31.75#:endalig#'
 
@@ -1120,7 +1413,9 @@ class TestConfigData(unittest.TestCase):
             mConn.return_value.communicate.assert_called_with(v1)
 
     def test_Model_programAlign_not_ok0(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
         v1 = ':newalig#:newalpt19:35:15.6,-15*02:43.1,W,19:35:45.3,-15*03:41.8,' \
              '17:35:31.75#:endalig#'
 
@@ -1133,7 +1428,9 @@ class TestConfigData(unittest.TestCase):
             mConn.return_value.communicate.assert_called_with(v1)
 
     def test_Model_programAlign_not_ok1(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         aPoint = AlignStar()
         build = [aPoint]
@@ -1143,7 +1440,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_programAlign_not_ok2(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         aPoint = AlignStar()
         build = [aPoint, 'test']
@@ -1153,7 +1452,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_programAlign_not_ok3(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         aPoint = AlignStar()
         build = [aPoint]
@@ -1163,7 +1464,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_programAlign_not_ok4(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         build = 'Test'
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -1172,7 +1475,9 @@ class TestConfigData(unittest.TestCase):
             self.assertEqual(False, suc)
 
     def test_Model_programAlign_not_ok5(self):
-        model = Model(host=None, parent=Parent())
+        class Parent:
+            host = None
+        model = Model(parent=Parent())
 
         aPoint = AlignStar()
         build = [aPoint]

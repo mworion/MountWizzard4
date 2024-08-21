@@ -43,8 +43,7 @@ class Model(object):
 
     log = logging.getLogger(__name__)
 
-    def __init__(self, parent=None, host=None):
-        self.host = host
+    def __init__(self, parent):
         self.parent = parent
         self.numberNames = None
         self.numberStars = None
@@ -329,7 +328,7 @@ class Model(object):
         """
         :return:
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':modelcnt#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -342,7 +341,7 @@ class Model(object):
         """
         :return:
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ''
         for i in range(1, self.numberNames + 1):
             commandString += (':modelnam{0:d}#'.format(i))
@@ -443,7 +442,7 @@ class Model(object):
         """
         :return:
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':getalst#:getain#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -456,7 +455,7 @@ class Model(object):
         """
         :return:
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         self._starList = list()
         if self.numberStars == 0:
             return True
@@ -491,7 +490,7 @@ class Model(object):
 
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':modelcnt#:getalst#'
 
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -518,7 +517,7 @@ class Model(object):
 
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':delalig#')
         if not suc:
             return False
@@ -544,7 +543,7 @@ class Model(object):
         if number < 1 or number > self._numberStars:
             return False
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':delalst{0:d}#'.format(number)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -569,7 +568,7 @@ class Model(object):
         if len(name) > 15:
             return False
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':modeldel0{0}#:modelsv0{1}#'.format(name, name)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -596,7 +595,7 @@ class Model(object):
         if len(name) > 15:
             return False
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':modelld0{0}#'.format(name)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -621,7 +620,7 @@ class Model(object):
         if len(name) > 15:
             return False
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':modeldel0{0}#'.format(name)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -667,7 +666,7 @@ class Model(object):
         if not all([isinstance(x, AlignStar) for x in build]):
             return False
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':newalig#'
 
         for aPoint in build:

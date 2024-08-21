@@ -172,7 +172,7 @@ def test_quit_1(app):
     with mock.patch.object(QCoreApplication,
                            'quit'):
         with mock.patch.object(app.mount,
-                               'stopTimers'):
+                               'stopAllMountTimers'):
             app.quit()
 
 

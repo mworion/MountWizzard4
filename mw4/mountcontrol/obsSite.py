@@ -71,13 +71,9 @@ class ObsSite(object):
         '99': 'Error',
     }
 
-    def __init__(self,
-                 host=None,
-                 pathToData=None,
-                 verbose=False,
-                 ):
+    def __init__(self, parent, pathToData=None, verbose=False):
 
-        self.host = host
+        self.parent = parent
         self.pathToData = pathToData
         self.verbose = verbose
         self.loader = None
@@ -501,7 +497,7 @@ class ObsSite(object):
         :return: success:   True if ok, False if not
         """
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':U2#:Gev#:Gg#:Gt#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -548,7 +544,7 @@ class ObsSite(object):
 
         :return: success:   True if ok, False if not
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':U2#:GS#:GDUT#:TLESCK#:Ginfo#:GaE#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -568,7 +564,7 @@ class ObsSite(object):
             corrTerm = -0.011
         else:
             corrTerm = 0
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':GJD1#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -594,7 +590,7 @@ class ObsSite(object):
         delta = min(delta, 999)
         commandString = f':NUtim{sign}{delta:03.0f}#'
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
@@ -660,7 +656,7 @@ class ObsSite(object):
                 slewTypes['keep'] = ':MA#'
 
         self.flipped = self._piersideTarget != self.pierside
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
 
         commandString = ':PO#' + slewTypes[slewType]
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -722,7 +718,7 @@ class ObsSite(object):
         if az.preference != 'degrees':
             return False
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
 
         sgn, h, m, s, frac = sexagesimalizeToInt(alt.degrees, 1)
         sign = '+' if sgn >= 0 else '-'
@@ -807,7 +803,7 @@ class ObsSite(object):
         if ra.preference != 'hours' or dec.preference != 'degrees':
             return False
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
 
         sgn, h, m, s, frac = sexagesimalizeToInt(ra.hours, 2)
         setRa = f':Sr{h:02d}:{m:02d}:{s:02d}.{frac:02d}#'
@@ -884,7 +880,7 @@ class ObsSite(object):
         if dec.preference != 'degrees' or ra.preference != 'degrees':
             return False
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         raCommand = f':SaXa{ra.degrees:+03.4f}#'
         decCommand = f':SaXb{dec.degrees:+03.4f}#'
         getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
@@ -918,7 +914,7 @@ class ObsSite(object):
         :return:    success
         """
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':shutdown#')
         if not suc:
             return False
@@ -975,7 +971,7 @@ class ObsSite(object):
         if not isinstance(loc, GeographicPosition):
             return False
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
 
         sgn, h, m, s, frac = sexagesimalizeToInt(loc.longitude.degrees, 1)
         sign = '+' if sgn < 0 else '-'
@@ -1034,7 +1030,7 @@ class ObsSite(object):
         else:
             return False
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
 
         sgn, h, m, s, frac = sexagesimalizeToInt(lat.degrees, 1)
         sign = '+' if sgn >= 0 else '-'
@@ -1090,7 +1086,7 @@ class ObsSite(object):
         else:
             return False
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
 
         sgn, h, m, s, frac = sexagesimalizeToInt(lon.degrees, 1)
         sign = '+' if sgn < 0 else '-'
@@ -1130,7 +1126,7 @@ class ObsSite(object):
         if elev is None:
             return False
 
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
 
         setElev = ':Sev{sign}{0:06.1f}#'.format(abs(elev),
                                                 sign='+' if elev > 0 else '-')
@@ -1152,7 +1148,7 @@ class ObsSite(object):
 
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':PO#:AP#')
         return suc
 
@@ -1162,7 +1158,7 @@ class ObsSite(object):
 
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':RT9#')
         return suc
 
@@ -1170,7 +1166,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':hP#')
         return suc
 
@@ -1178,7 +1174,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':PO#')
         return suc
 
@@ -1186,7 +1182,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':PiP#')
         if not suc:
             return False
@@ -1200,7 +1196,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':STOP#')
         return suc
 
@@ -1208,7 +1204,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':FLIP#')
         if not suc:
             return False
@@ -1222,7 +1218,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':PO#:Mn#')
         if not suc:
             return False
@@ -1233,7 +1229,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':PO#:Me#')
         if not suc:
             return False
@@ -1244,7 +1240,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':PO#:Ms#')
         if not suc:
             return False
@@ -1255,7 +1251,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':PO#:Mw#')
         if not suc:
             return False
@@ -1266,7 +1262,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':Q#')
         if not suc:
             return False
@@ -1277,7 +1273,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':Qn#')
         if not suc:
             return False
@@ -1290,7 +1286,7 @@ class ObsSite(object):
 
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':Qe#')
         if not suc:
             return False
@@ -1300,7 +1296,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':Qs#')
         if not suc:
             return False
@@ -1311,7 +1307,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(':Qw#')
         if not suc:
             return False
@@ -1322,7 +1318,7 @@ class ObsSite(object):
         """
         :return:    success
         """
-        conn = Connection(self.host)
+        conn = Connection(self.parent.host)
         commandString = ':CM#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:

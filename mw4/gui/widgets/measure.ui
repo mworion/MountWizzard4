@@ -245,7 +245,7 @@
   <customwidget>
    <class>Measure</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.tools4pyqtgraph</header>
+   <header>gui.utilities.gMeasure</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

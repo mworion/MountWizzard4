@@ -20,7 +20,7 @@ import logging
 import time
 from logging.handlers import RotatingFileHandler
 import datetime
-# import sys
+import sys
 
 # external packages
 
@@ -28,9 +28,11 @@ import datetime
 
 
 class LoggerWriter:
-    # taken from:
-    # https://stackoverflow.com/questions/19425736/
-    # how-to-redirect-stdout-and-stderr-to-logger-in-python
+    """
+    taken from:
+    https://stackoverflow.com/questions/19425736/
+    how-to-redirect-stdout-and-stderr-to-logger-in-python
+    """
     def __init__(self, level, mode, std):
         self.level = level
         self.mode = mode
@@ -45,9 +47,6 @@ class LoggerWriter:
             else:
                 self.level(' ' * 9 + line.strip())
 
-    def flush(self):
-        pass
-
 
 def addLoggingLevel(levelName, levelNum, methodName=None):
     """
@@ -61,8 +60,7 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
     itself and the class returned by `logging.getLoggerClass()` (usually just
     `logging.Logger`).
 
-    If `methodName` is not specified, `levelName.lower()` is
-    used.
+    If `methodName` is not specified, `levelName.lower()` is used.
 
     To avoid accidental clobberings of existing attributes, this method will
     raise an `AttributeError` if the level name is already an attribute of the
@@ -93,20 +91,13 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
 
 def redirectSTD():
     """
-    :return:
     """
-    # transfer all sys outputs to logging
-    # sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
+    sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
     # sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT', sys.stdout)
-    return True
 
 
 def setupLogging(redirect=True):
     """
-    setupLogging defines the logger and formats and disables unnecessary
-    library logging
-
-    :return: true for test purpose
     """
     if not os.path.isdir('./log'):
         os.mkdir('./log')
@@ -138,12 +129,9 @@ def setupLogging(redirect=True):
     addLoggingLevel('TRACE', 5)
     if redirect:
         redirectSTD()
-    return True
 
 
 def setCustomLoggingLevel(level='WARN'):
     """
-    :return: true for test purpose
     """
     logging.getLogger().setLevel(level)
-    return True

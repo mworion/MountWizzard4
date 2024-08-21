@@ -21,7 +21,6 @@ from PySide6.QtWidgets import (QApplication, QGridLayout, QGroupBox, QHBoxLayout
 
 from gui.utilities.gPlotBase import PlotBase
 
-
 class Ui_SatelliteDialog(object):
     def setupUi(self, SatelliteDialog):
         if not SatelliteDialog.objectName():
@@ -69,8 +68,8 @@ class Ui_SatelliteDialog(object):
         self.satLatitude.setFont(font1)
         self.satLatitude.setMouseTracking(False)
         self.satLatitude.setAcceptDrops(False)
-        self.satLatitude.setLayoutDirection(Qt.RightToLeft)
-        self.satLatitude.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.satLatitude.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.satLatitude.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.satLatitude.setReadOnly(True)
 
         self.horizontalLayout_5.addWidget(self.satLatitude)
@@ -79,7 +78,7 @@ class Ui_SatelliteDialog(object):
         self.label_330.setObjectName(u"label_330")
         self.label_330.setMinimumSize(QSize(0, 25))
         self.label_330.setFont(font1)
-        self.label_330.setAlignment(Qt.AlignCenter)
+        self.label_330.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label_330.setWordWrap(False)
 
         self.horizontalLayout_5.addWidget(self.label_330)
@@ -103,8 +102,8 @@ class Ui_SatelliteDialog(object):
         self.satLongitude.setFont(font1)
         self.satLongitude.setMouseTracking(False)
         self.satLongitude.setAcceptDrops(False)
-        self.satLongitude.setLayoutDirection(Qt.RightToLeft)
-        self.satLongitude.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.satLongitude.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.satLongitude.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.satLongitude.setReadOnly(True)
 
         self.horizontalLayout_5.addWidget(self.satLongitude)
@@ -112,7 +111,7 @@ class Ui_SatelliteDialog(object):
         self.label_205 = QLabel(SatelliteDialog)
         self.label_205.setObjectName(u"label_205")
         self.label_205.setFont(font1)
-        self.label_205.setAlignment(Qt.AlignCenter)
+        self.label_205.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label_205.setWordWrap(False)
 
         self.horizontalLayout_5.addWidget(self.label_205)
@@ -136,8 +135,8 @@ class Ui_SatelliteDialog(object):
         self.satAzimuth.setFont(font1)
         self.satAzimuth.setMouseTracking(False)
         self.satAzimuth.setAcceptDrops(False)
-        self.satAzimuth.setLayoutDirection(Qt.RightToLeft)
-        self.satAzimuth.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.satAzimuth.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.satAzimuth.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.satAzimuth.setReadOnly(True)
 
         self.horizontalLayout_5.addWidget(self.satAzimuth)
@@ -146,7 +145,7 @@ class Ui_SatelliteDialog(object):
         self.label_208.setObjectName(u"label_208")
         self.label_208.setMinimumSize(QSize(0, 25))
         self.label_208.setFont(font1)
-        self.label_208.setAlignment(Qt.AlignCenter)
+        self.label_208.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label_208.setWordWrap(False)
 
         self.horizontalLayout_5.addWidget(self.label_208)
@@ -170,8 +169,8 @@ class Ui_SatelliteDialog(object):
         self.satAltitude.setFont(font1)
         self.satAltitude.setMouseTracking(False)
         self.satAltitude.setAcceptDrops(False)
-        self.satAltitude.setLayoutDirection(Qt.RightToLeft)
-        self.satAltitude.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.satAltitude.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.satAltitude.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.satAltitude.setReadOnly(True)
 
         self.horizontalLayout_5.addWidget(self.satAltitude)
@@ -180,7 +179,7 @@ class Ui_SatelliteDialog(object):
         self.label_331.setObjectName(u"label_331")
         self.label_331.setMinimumSize(QSize(0, 25))
         self.label_331.setFont(font1)
-        self.label_331.setAlignment(Qt.AlignCenter)
+        self.label_331.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label_331.setWordWrap(False)
 
         self.horizontalLayout_5.addWidget(self.label_331)

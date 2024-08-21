@@ -4,7 +4,7 @@
  <class>MainWindow</class>
  <widget class="QWidget" name="MainWindow">
   <property name="windowModality">
-   <enum>Qt::NonModal</enum>
+   <enum>Qt::WindowModality::NonModal</enum>
   </property>
   <property name="enabled">
    <bool>true</bool>
@@ -52,10 +52,10 @@
    <cursorShape>ArrowCursor</cursorShape>
   </property>
   <property name="focusPolicy">
-   <enum>Qt::NoFocus</enum>
+   <enum>Qt::FocusPolicy::NoFocus</enum>
   </property>
   <property name="contextMenuPolicy">
-   <enum>Qt::NoContextMenu</enum>
+   <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
   </property>
   <property name="windowTitle">
    <string>MountWizzard4 (C) MW 2024</string>
@@ -98,19 +98,19 @@
     <string/>
    </property>
    <property name="layoutDirection">
-    <enum>Qt::LeftToRight</enum>
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
    </property>
    <property name="tabPosition">
-    <enum>QTabWidget::North</enum>
+    <enum>QTabWidget::TabPosition::North</enum>
    </property>
    <property name="tabShape">
-    <enum>QTabWidget::Rounded</enum>
+    <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
     <number>0</number>
    </property>
    <property name="elideMode">
-    <enum>Qt::ElideLeft</enum>
+    <enum>Qt::TextElideMode::ElideLeft</enum>
    </property>
    <property name="tabsClosable">
     <bool>false</bool>
@@ -144,7 +144,7 @@
       <number>0</number>
      </property>
      <property name="elideMode">
-      <enum>Qt::ElideLeft</enum>
+      <enum>Qt::TextElideMode::ElideLeft</enum>
      </property>
      <property name="movable">
       <bool>false</bool>
@@ -176,7 +176,7 @@
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -185,7 +185,7 @@
         <string>Shows the expiration date of UTC timetable in the mount computer. If it's happening within 1 month, the frame turns to yellow. If expired, the frame will turn to red. </string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -240,7 +240,7 @@
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -249,7 +249,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows if the mount is synced to an attached GPS receiver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -344,7 +344,7 @@
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -353,7 +353,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual set slew rate for the mount.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -417,7 +417,7 @@
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -426,7 +426,7 @@
         <string>Shows the refraction pressure used in mount</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
         <string>-</string>
@@ -530,7 +530,7 @@
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -539,7 +539,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the amount of degrees when the mount will flip after the meridian is passed when slewing. Positive values show after meridian, negative values before meridian.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;p&gt;Please refer to the mount manual for details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -663,7 +663,7 @@
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -672,7 +672,7 @@
         <string>Shows the local sidereal time from the mount computer</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
         <string>-</string>
@@ -724,7 +724,7 @@
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -733,7 +733,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the elevation of the site.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
         <string>-</string>
@@ -768,7 +768,7 @@
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -777,7 +777,7 @@
         <string>Status of unattended Flip.When clicking the field, you could change the value</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -881,7 +881,7 @@
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -890,7 +890,7 @@
         <string>Status of Wake On Lan WOL feature. When clicking the field, you could change the value.</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -1014,7 +1014,7 @@
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -1023,7 +1023,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows if the mount's webinterface is enabled (and virtual keyboard could be used)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -1058,7 +1058,7 @@
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -1067,7 +1067,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the amount of degrees when the mount will flip after the meridian is passed when tracking. Positive values show after meridian, negative values before meridian.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;p&gt;Please refer to the mount manual for details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -1128,7 +1128,7 @@
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -1138,7 +1138,7 @@
 If there is a yellow frame, the status is changed by MW4 due to functional reasons.</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -1236,7 +1236,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -1245,7 +1245,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>Shows the time until tracking ends because of flip / horizon limit</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
         <string>-</string>
@@ -1277,7 +1277,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -1286,7 +1286,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>Shows the pierside reported from the mout. Eeast or West. Definitions are given in the manual of the mount computer.</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
         <string>-</string>
@@ -1330,7 +1330,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>Type of the connection to the mount.</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
         <string>-</string>
@@ -1368,7 +1368,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -1377,7 +1377,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>Shows the refraction temperature used in mount</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
         <string>-</string>
@@ -1435,7 +1435,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -1444,7 +1444,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>Shows the time until meridian is reached</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
         <string>-</string>
@@ -1539,7 +1539,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -1548,7 +1548,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual horizon limit for slewing for high values (upper boundary).&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -1709,7 +1709,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -1718,7 +1718,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the latitude of the site.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
         <string>-</string>
@@ -1779,7 +1779,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clock difference between PC clock and Mount Computer, filtered over 10 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -1817,7 +1817,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -1826,7 +1826,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the longitude of the site.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
         <string>-</string>
@@ -1838,7 +1838,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>true</bool>
        </property>
        <property name="cursorMoveStyle">
-        <enum>Qt::LogicalMoveStyle</enum>
+        <enum>Qt::CursorMoveStyle::LogicalMoveStyle</enum>
        </property>
        <property name="input" stdset="0">
         <bool>true</bool>
@@ -1887,7 +1887,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -1896,7 +1896,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the status if the mount takes refraction parameters into account. When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -1934,7 +1934,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -1943,7 +1943,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual horizon limit for slewing for low limit (lower boundary).&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -1990,7 +1990,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -1999,7 +1999,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual set settling time for the mount.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="inputMask">
         <string/>
@@ -2452,7 +2452,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for azimuth direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;p&gt;Format is: &amp;lt;[+-]d.d&amp;gt; in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="text">
           <string/>
@@ -2516,7 +2516,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for alitude direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;p&gt;Format is: &amp;lt;[+-]d.d&amp;gt; in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="text">
           <string/>
@@ -2640,7 +2640,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for declination direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="text">
           <string/>
@@ -2675,7 +2675,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for right ascension direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="text">
           <string/>
@@ -2783,7 +2783,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for right ascension direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="text">
           <string/>
@@ -2821,7 +2821,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for declination direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="text">
           <string/>
@@ -4173,7 +4173,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>Sets the epoch for showing the pointing coordinates to JNow</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
         <string>JNow</string>
@@ -4208,7 +4208,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>Sets the epoch for showing the pointing coordinates to J2000</string>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
         <string>J2000</string>
@@ -4282,7 +4282,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::FocusPolicy::NoFocus</enum>
       </property>
       <property name="acceptDrops">
        <bool>false</bool>
@@ -4320,7 +4320,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::FocusPolicy::NoFocus</enum>
       </property>
       <property name="acceptDrops">
        <bool>false</bool>
@@ -4329,7 +4329,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display of altitude in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -4385,7 +4385,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::FocusPolicy::NoFocus</enum>
       </property>
       <property name="acceptDrops">
        <bool>false</bool>
@@ -4464,7 +4464,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::FocusPolicy::NoFocus</enum>
       </property>
       <property name="acceptDrops">
        <bool>false</bool>
@@ -4548,7 +4548,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::FocusPolicy::NoFocus</enum>
       </property>
       <property name="acceptDrops">
        <bool>false</bool>
@@ -4557,7 +4557,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <string>Display of right ascention in HH:MM:SS</string>
       </property>
       <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
       <property name="text">
        <string>RA</string>
@@ -4592,7 +4592,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::FocusPolicy::NoFocus</enum>
       </property>
       <property name="acceptDrops">
        <bool>false</bool>
@@ -4601,7 +4601,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display of hour angle in HH:MM:SS&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
       <property name="text">
        <string>HA</string>
@@ -4636,7 +4636,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::FocusPolicy::NoFocus</enum>
       </property>
       <property name="acceptDrops">
        <bool>false</bool>
@@ -4645,7 +4645,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display of azimuth in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
       <property name="text">
        <string>AZ</string>
@@ -4680,7 +4680,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::FocusPolicy::NoFocus</enum>
       </property>
       <property name="acceptDrops">
        <bool>false</bool>
@@ -4689,7 +4689,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <string>Display of declination in DD:MM:SS</string>
       </property>
       <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
       <property name="text">
        <string>DEC</string>
@@ -4767,7 +4767,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <item row="0" column="8">
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Orientation::Vertical</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -4853,7 +4853,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -4862,7 +4862,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -4903,7 +4903,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -4912,7 +4912,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -4928,7 +4928,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <item row="7" column="0">
           <spacer name="verticalSpacer_3">
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Orientation::Vertical</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -4966,7 +4966,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -4975,7 +4975,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -5016,7 +5016,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -5025,7 +5025,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -5066,7 +5066,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -5075,7 +5075,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -5116,7 +5116,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -5125,7 +5125,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -5166,7 +5166,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -5175,7 +5175,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -5284,7 +5284,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             </font>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>Airtemp.</string>
@@ -5313,7 +5313,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             </font>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>DewPoint</string>
@@ -5342,7 +5342,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             </font>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>CloudCover</string>
@@ -5371,7 +5371,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             </font>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>Humidity</string>
@@ -5429,7 +5429,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             </font>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>SkyQuality</string>
@@ -5458,7 +5458,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             </font>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>Pressure</string>
@@ -5487,7 +5487,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             </font>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>Rain vol.</string>
@@ -5642,7 +5642,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <item row="8" column="0">
           <spacer name="verticalSpacer_9">
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Orientation::Vertical</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -5731,7 +5731,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -5740,7 +5740,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -5781,7 +5781,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -5790,7 +5790,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -5806,7 +5806,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <item row="8" column="0">
           <spacer name="verticalSpacer_2">
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Orientation::Vertical</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -5844,7 +5844,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -5853,7 +5853,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -5894,7 +5894,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -5903,7 +5903,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -5944,7 +5944,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -5953,7 +5953,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -5994,7 +5994,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6003,7 +6003,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6044,7 +6044,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6053,7 +6053,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6139,7 +6139,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6148,7 +6148,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string>shows the refraction temperature used in mount</string>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6189,7 +6189,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6198,7 +6198,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string>shows the refraction pressure used in mount</string>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6214,7 +6214,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <item row="2" column="0">
           <spacer name="verticalSpacer_8">
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Orientation::Vertical</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -6303,7 +6303,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6312,7 +6312,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6328,7 +6328,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <item row="9" column="0">
           <spacer name="verticalSpacer_6">
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Orientation::Vertical</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -6366,7 +6366,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6375,7 +6375,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6416,7 +6416,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6425,7 +6425,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6466,7 +6466,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6475,7 +6475,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6516,7 +6516,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6525,7 +6525,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6566,7 +6566,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6575,7 +6575,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6616,7 +6616,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6625,7 +6625,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6720,7 +6720,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6729,7 +6729,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6745,7 +6745,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <item row="11" column="0">
           <spacer name="verticalSpacer_7">
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Orientation::Vertical</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -6783,7 +6783,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6792,7 +6792,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6833,7 +6833,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6842,7 +6842,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6883,7 +6883,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6892,7 +6892,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6933,7 +6933,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6942,7 +6942,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -6983,7 +6983,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -6992,7 +6992,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -7033,7 +7033,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -7042,7 +7042,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -7110,7 +7110,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string>Update the refraction parameters to the mount continiously with moving average filter over 1 minute</string>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>auto
@@ -7134,7 +7134,7 @@ continously</string>
             <string>No refraction update to the mount</string>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>manual</string>
@@ -7147,7 +7147,7 @@ continously</string>
          <item row="3" column="0">
           <spacer name="verticalSpacer_10">
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Orientation::Vertical</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -7170,7 +7170,7 @@ continously</string>
             <string>Update the refraction parameters to the mount when the mount is not tracking</string>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>auto
@@ -7199,7 +7199,7 @@ no tracking</string>
          </size>
         </property>
         <property name="contextMenuPolicy">
-         <enum>Qt::NoContextMenu</enum>
+         <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
         </property>
         <property name="toolTip">
          <string>Select weather device as source for refraction updates.</string>
@@ -7235,7 +7235,7 @@ no tracking</string>
          <item row="7" column="0">
           <spacer name="verticalSpacer_5">
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Orientation::Vertical</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -7273,7 +7273,7 @@ no tracking</string>
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -7282,7 +7282,7 @@ no tracking</string>
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -7323,7 +7323,7 @@ no tracking</string>
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -7332,7 +7332,7 @@ no tracking</string>
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -7373,7 +7373,7 @@ no tracking</string>
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -7382,7 +7382,7 @@ no tracking</string>
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -7423,7 +7423,7 @@ no tracking</string>
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -7432,7 +7432,7 @@ no tracking</string>
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -7473,7 +7473,7 @@ no tracking</string>
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -7482,7 +7482,7 @@ no tracking</string>
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -7523,7 +7523,7 @@ no tracking</string>
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -7532,7 +7532,7 @@ no tracking</string>
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -7573,7 +7573,7 @@ no tracking</string>
             <bool>false</bool>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+            <enum>Qt::FocusPolicy::NoFocus</enum>
            </property>
            <property name="acceptDrops">
             <bool>false</bool>
@@ -7582,7 +7582,7 @@ no tracking</string>
             <string/>
            </property>
            <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+            <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
             <string>-</string>
@@ -7638,16 +7638,16 @@ no tracking</string>
        </rect>
       </property>
       <property name="verticalScrollBarPolicy">
-       <enum>Qt::ScrollBarAsNeeded</enum>
+       <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
       </property>
       <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAsNeeded</enum>
+       <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
       </property>
       <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustIgnored</enum>
+       <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustIgnored</enum>
       </property>
       <property name="editTriggers">
-       <set>QAbstractItemView::NoEditTriggers</set>
+       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
       </property>
       <property name="tabKeyNavigation">
        <bool>false</bool>
@@ -7659,22 +7659,22 @@ no tracking</string>
        <bool>false</bool>
       </property>
       <property name="selectionMode">
-       <enum>QAbstractItemView::NoSelection</enum>
+       <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
       </property>
       <property name="textElideMode">
-       <enum>Qt::ElideLeft</enum>
+       <enum>Qt::TextElideMode::ElideLeft</enum>
       </property>
       <property name="verticalScrollMode">
-       <enum>QAbstractItemView::ScrollPerItem</enum>
+       <enum>QAbstractItemView::ScrollMode::ScrollPerItem</enum>
       </property>
       <property name="horizontalScrollMode">
-       <enum>QAbstractItemView::ScrollPerItem</enum>
+       <enum>QAbstractItemView::ScrollMode::ScrollPerItem</enum>
       </property>
       <property name="showGrid">
        <bool>true</bool>
       </property>
       <property name="gridStyle">
-       <enum>Qt::NoPen</enum>
+       <enum>Qt::PenStyle::NoPen</enum>
       </property>
       <property name="wordWrap">
        <bool>false</bool>
@@ -7813,7 +7813,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <item row="0" column="0">
        <spacer name="verticalSpacer">
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Orientation::Vertical</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -7933,7 +7933,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::FocusPolicy::NoFocus</enum>
       </property>
       <property name="acceptDrops">
        <bool>false</bool>
@@ -7942,7 +7942,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Showing the actual illumination (light part) of the overall moon surface</string>
       </property>
       <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
       <property name="text">
        <string/>
@@ -7977,7 +7977,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::FocusPolicy::NoFocus</enum>
       </property>
       <property name="acceptDrops">
        <bool>false</bool>
@@ -7986,7 +7986,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Moon phase description</string>
       </property>
       <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
       <property name="text">
        <string/>
@@ -8060,7 +8060,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::FocusPolicy::NoFocus</enum>
       </property>
       <property name="acceptDrops">
        <bool>false</bool>
@@ -8069,7 +8069,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the actual moon phase in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
       <property name="text">
        <string/>
@@ -8127,7 +8127,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::FocusPolicy::NoFocus</enum>
       </property>
       <property name="acceptDrops">
        <bool>false</bool>
@@ -8136,7 +8136,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Showing the moon phase in percent</string>
       </property>
       <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
       <property name="text">
        <string/>
@@ -8308,7 +8308,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <number>0</number>
      </property>
      <property name="elideMode">
-      <enum>Qt::ElideLeft</enum>
+      <enum>Qt::TextElideMode::ElideLeft</enum>
      </property>
      <property name="movable">
       <bool>false</bool>
@@ -8372,7 +8372,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of rows in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="buttonSymbols">
-         <enum>QAbstractSpinBox::UpDownArrows</enum>
+         <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
         </property>
         <property name="decimals">
          <number>0</number>
@@ -8473,7 +8473,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>Model point stop at maximum altitude.</string>
         </property>
         <property name="buttonSymbols">
-         <enum>QAbstractSpinBox::UpDownArrows</enum>
+         <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
         </property>
         <property name="decimals">
          <number>0</number>
@@ -8534,7 +8534,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of coloms in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="buttonSymbols">
-         <enum>QAbstractSpinBox::UpDownArrows</enum>
+         <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
         </property>
         <property name="decimals">
          <number>0</number>
@@ -8608,7 +8608,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>Model point start at minimum altitude.</string>
         </property>
         <property name="buttonSymbols">
-         <enum>QAbstractSpinBox::UpDownArrows</enum>
+         <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
         </property>
         <property name="decimals">
          <number>0</number>
@@ -8671,7 +8671,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>Name of Model Points file, where the data is stored. </string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -9117,7 +9117,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <number>1</number>
         </property>
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Orientation::Vertical</enum>
         </property>
        </widget>
        <widget class="QCheckBox" name="autoDeleteHorizon">
@@ -9340,7 +9340,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;DEC in J2000 received from SIMBAD database&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -9378,7 +9378,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;RA (HA) in J2000 received from SIMBAD database&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -9476,7 +9476,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Text field for searching the SIMBAD database for objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -9790,7 +9790,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          </rect>
         </property>
         <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
+         <enum>QFrame::Shape::NoFrame</enum>
         </property>
         <property name="midLineWidth">
          <number>0</number>
@@ -9825,7 +9825,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -9834,7 +9834,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of Turns altitude ajustment knobs for correction (down if the polar axis has to be moved downwards) &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>--- left/right</string>
@@ -9886,7 +9886,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -9895,7 +9895,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of Turns azimuth ajustment knobs for correction (left if polar axis has to be moved to the left) &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>--- left/right</string>
@@ -9914,7 +9914,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          </rect>
         </property>
         <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
+         <enum>QFrame::Shape::NoFrame</enum>
         </property>
         <property name="midLineWidth">
          <number>0</number>
@@ -10108,7 +10108,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -10117,7 +10117,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>00:00:00</string>
@@ -10149,7 +10149,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -10158,7 +10158,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>00:00:00</string>
@@ -10189,7 +10189,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="textDirection">
-         <enum>QProgressBar::TopToBottom</enum>
+         <enum>QProgressBar::Direction::TopToBottom</enum>
         </property>
        </widget>
        <widget class="QLineEdit" name="timeEstimated">
@@ -10215,7 +10215,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -10224,7 +10224,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>00:00:00</string>
@@ -10490,7 +10490,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -10499,7 +10499,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Number of alignment stars in actual used pointing model</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -10668,7 +10668,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -10677,7 +10677,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Actual position angle of the Error vector in deg.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -10729,7 +10729,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -10738,7 +10738,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual Ortho Error&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -10770,7 +10770,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -10779,7 +10779,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Number of alignment stars in actual used pointing model</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -10854,7 +10854,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -10863,7 +10863,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Actual position angle of the Error vector in azimuth deg.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -10978,7 +10978,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -10987,7 +10987,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Actual position angle of the Error vector in altitude deg.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -11019,7 +11019,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -11028,7 +11028,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual RMS Error in arc sec&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -11083,7 +11083,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -11092,7 +11092,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of Terms in actual used pointing model&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -11124,7 +11124,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -11133,7 +11133,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual Polar Error&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -11248,7 +11248,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <number>0</number>
        </property>
        <property name="elideMode">
-        <enum>Qt::ElideLeft</enum>
+        <enum>Qt::TextElideMode::ElideLeft</enum>
        </property>
        <property name="movable">
         <bool>false</bool>
@@ -11296,7 +11296,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <bool>false</bool>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+          <enum>Qt::FocusPolicy::NoFocus</enum>
          </property>
          <property name="acceptDrops">
           <bool>false</bool>
@@ -11305,7 +11305,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <string>Number of alignment stars in actual used pointing model</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="text">
           <string>00</string>
@@ -11535,7 +11535,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -11544,7 +11544,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual RMS Error in arc sec&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>0.0</string>
@@ -11753,7 +11753,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -11762,7 +11762,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual discovered model file which was used for building the model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -11862,7 +11862,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <number>0</number>
      </property>
      <property name="elideMode">
-      <enum>Qt::ElideLeft</enum>
+      <enum>Qt::TextElideMode::ElideLeft</enum>
      </property>
      <property name="movable">
       <bool>false</bool>
@@ -11965,7 +11965,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -11974,7 +11974,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Shows the actual focuser position.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="inputMask">
          <string/>
@@ -12280,7 +12280,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Checked if you would like to keep the images of modeling session</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>Keep all images of modeling run</string>
@@ -12460,7 +12460,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <bool>false</bool>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+          <enum>Qt::FocusPolicy::NoFocus</enum>
          </property>
          <property name="acceptDrops">
           <bool>false</bool>
@@ -12469,7 +12469,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Offset value of a camera if present&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="inputMask">
           <string/>
@@ -12530,7 +12530,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <bool>false</bool>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+          <enum>Qt::FocusPolicy::NoFocus</enum>
          </property>
          <property name="acceptDrops">
           <bool>false</bool>
@@ -12539,7 +12539,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <string>Shows the actual coller power.</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="text">
           <string>-</string>
@@ -12591,7 +12591,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <bool>false</bool>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+          <enum>Qt::FocusPolicy::NoFocus</enum>
          </property>
          <property name="acceptDrops">
           <bool>false</bool>
@@ -12600,7 +12600,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <string>Shows the actual cooler temp for the camera. When clicking you could change the value.</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="inputMask">
           <string/>
@@ -12735,7 +12735,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <bool>false</bool>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+          <enum>Qt::FocusPolicy::NoFocus</enum>
          </property>
          <property name="acceptDrops">
           <bool>false</bool>
@@ -12744,7 +12744,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <string>Shows the actual coller power.</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="text">
           <string>-</string>
@@ -12927,7 +12927,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <bool>false</bool>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+          <enum>Qt::FocusPolicy::NoFocus</enum>
          </property>
          <property name="acceptDrops">
           <bool>false</bool>
@@ -12936,7 +12936,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gain value of a camera if present&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="inputMask">
           <string/>
@@ -13021,7 +13021,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Checked if you would like to keep the images of modeling session</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>Keep all images of analysis run</string>
@@ -13066,10 +13066,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="contextMenuPolicy">
-         <enum>Qt::NoContextMenu</enum>
+         <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -13078,7 +13078,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the optimal binning as result from number of camera pixels and needed size of images to fulfill the modeling and functional tasks within MW4 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>1</string>
@@ -13129,7 +13129,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -13138,7 +13138,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Shows the status of the cover.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -13258,7 +13258,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -13267,7 +13267,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Shows the status of the cover.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -13334,10 +13334,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="contextMenuPolicy">
-         <enum>Qt::NoContextMenu</enum>
+         <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -13346,7 +13346,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Shows the status of the cover.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -13443,10 +13443,10 @@ Slew</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="contextMenuPolicy">
-         <enum>Qt::NoContextMenu</enum>
+         <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -13455,7 +13455,7 @@ Slew</string>
          <string>Shows the status of the cover.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -13576,7 +13576,7 @@ Slew</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -13586,7 +13586,7 @@ Slew</string>
 When clicking the button, you could change the value.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="inputMask">
          <string/>
@@ -13647,7 +13647,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -13657,7 +13657,7 @@ When clicking the button, you could change the value.</string>
 When clicking the button, you could change the value.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="inputMask">
          <string/>
@@ -13739,7 +13739,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -13748,7 +13748,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the pixel size set in the camera driver.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -13829,7 +13829,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -13838,7 +13838,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the actual Rayleigh limit for your current imaging setup and parameters</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -13910,7 +13910,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -13919,7 +13919,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the actual magnitude limit for your current imaging setup and parameters.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -13951,7 +13951,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -13960,7 +13960,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the actual Dawes' limit for your current imaging setup and parameters</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14072,7 +14072,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14081,7 +14081,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the actual Rayleigh limit for your current imaging setup and parameters</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14113,7 +14113,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14122,7 +14122,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the actual Rayleigh limit for your current imaging setup and parameters</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14210,7 +14210,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14219,7 +14219,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the pixel size set in the camera driver.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14291,7 +14291,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14300,7 +14300,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the pixel size set in the camera driver.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14332,7 +14332,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14341,7 +14341,7 @@ When clicking the button, you could change the value.</string>
          <string/>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14373,7 +14373,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14382,7 +14382,7 @@ When clicking the button, you could change the value.</string>
          <string/>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14494,7 +14494,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14503,7 +14503,7 @@ When clicking the button, you could change the value.</string>
          <string/>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14535,7 +14535,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14544,7 +14544,7 @@ When clicking the button, you could change the value.</string>
          <string/>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14636,7 +14636,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14645,7 +14645,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the pixel number set in the camera driver.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14677,7 +14677,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14686,7 +14686,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the pixel number set in the camera driver.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14738,7 +14738,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14747,7 +14747,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the rotation of the camera image set in driver.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14819,7 +14819,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14828,7 +14828,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the speed of your imaging setup.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14940,7 +14940,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14949,7 +14949,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the pixel size set in the camera driver.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -14981,7 +14981,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -14990,7 +14990,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the pixel size set in the camera driver.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -15058,7 +15058,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -15067,7 +15067,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the pixel size set in the camera driver.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -15148,7 +15148,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -15157,7 +15157,7 @@ When clicking the button, you could change the value.</string>
          <string>Shows the pixel size set in the camera driver.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -15238,7 +15238,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -15247,7 +15247,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the length of the zone in which the focused image of a star is smaller than the size of its Airy disk.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -15319,7 +15319,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -15328,7 +15328,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the length of the zone in which the focused image of a star is smaller than the size of its Airy disk.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -15360,7 +15360,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -15369,7 +15369,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the length of the zone in which the focused image of a star is smaller than the size of its Airy disk.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -15481,7 +15481,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -15490,7 +15490,7 @@ When clicking the button, you could change the value.</string>
          <string>For CCD cameras, if we take a 2x sampling ratio</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -17418,7 +17418,7 @@ When clicking the button, you could change the value.</string>
       <number>0</number>
      </property>
      <property name="elideMode">
-      <enum>Qt::ElideLeft</enum>
+      <enum>Qt::TextElideMode::ElideLeft</enum>
      </property>
      <property name="movable">
       <bool>false</bool>
@@ -17447,16 +17447,16 @@ When clicking the button, you could change the value.</string>
         <string>List of satellites.</string>
        </property>
        <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
+        <enum>QFrame::Shape::NoFrame</enum>
        </property>
        <property name="lineWidth">
         <number>0</number>
        </property>
        <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAsNeeded</enum>
+        <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
        </property>
        <property name="editTriggers">
-        <set>QAbstractItemView::NoEditTriggers</set>
+        <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
        </property>
        <property name="showDropIndicator" stdset="0">
         <bool>false</bool>
@@ -17468,16 +17468,16 @@ When clicking the button, you could change the value.</string>
         <bool>false</bool>
        </property>
        <property name="selectionMode">
-        <enum>QAbstractItemView::NoSelection</enum>
+        <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
        </property>
        <property name="selectionBehavior">
-        <enum>QAbstractItemView::SelectItems</enum>
+        <enum>QAbstractItemView::SelectionBehavior::SelectItems</enum>
        </property>
        <property name="showGrid">
         <bool>false</bool>
        </property>
        <property name="gridStyle">
-        <enum>Qt::NoPen</enum>
+        <enum>Qt::PenStyle::NoPen</enum>
        </property>
        <property name="sortingEnabled">
         <bool>true</bool>
@@ -17725,7 +17725,7 @@ When clicking the button, you could change the value.</string>
          <string>Filter for selecting satellite names. The filter is not case sensitive.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -18049,7 +18049,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1st point in time when satellite settles below standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18110,7 +18110,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1st point in time when satellite rises over standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18231,7 +18231,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1st point in time when satellite culminates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18272,7 +18272,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1st point in time when the satellite transits the meridian.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18313,7 +18313,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1nd point in time when satellite rises over standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18354,7 +18354,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;2nd point in time when satellite culminates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18395,7 +18395,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;2nd point in time when the satellite transits the meridian.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18436,7 +18436,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;2nd point in time when satellite settles below standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18477,7 +18477,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Date&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18518,7 +18518,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3rd point in time when satellite settles below standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18559,7 +18559,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3rd point in time when satellite rises over standard horizon (5 degrees altitude).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18600,7 +18600,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3rd point in time when the satellite transits the meridian.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18641,7 +18641,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3rd point in time when satellite culminates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18682,7 +18682,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Date&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18723,7 +18723,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Date&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18864,7 +18864,7 @@ When clicking the button, you could change the value.</string>
 Next point in time when satellite rises over horizon.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18923,7 +18923,7 @@ Next point in time when satellite rises over horizon.</string>
 Next point in time when satellite settles.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -18962,7 +18962,7 @@ Next point in time when satellite settles.</string>
 Next point in time when satellite settles.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -19145,7 +19145,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="textDirection">
-         <enum>QProgressBar::TopToBottom</enum>
+         <enum>QProgressBar::Direction::TopToBottom</enum>
         </property>
        </widget>
        <widget class="QPushButton" name="progTrajectory">
@@ -19291,7 +19291,7 @@ Next point in time when satellite settles.</string>
          <string>Epoch of ephermeris</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -19369,7 +19369,7 @@ Next point in time when satellite settles.</string>
          <string>Age of the TLE data</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -19407,7 +19407,7 @@ Next point in time when satellite settles.</string>
          <string>Number of the satellite.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -19445,7 +19445,7 @@ Next point in time when satellite settles.</string>
          <string>Name of the satellite.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -19707,7 +19707,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter for selecting minor planet names. The filter is not case sensitive.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -19839,16 +19839,16 @@ Next point in time when satellite settles.</string>
         <string>List of satellites.</string>
        </property>
        <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
+        <enum>QFrame::Shape::NoFrame</enum>
        </property>
        <property name="lineWidth">
         <number>0</number>
        </property>
        <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAsNeeded</enum>
+        <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
        </property>
        <property name="editTriggers">
-        <set>QAbstractItemView::NoEditTriggers</set>
+        <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
        </property>
        <property name="showDropIndicator" stdset="0">
         <bool>false</bool>
@@ -19860,16 +19860,16 @@ Next point in time when satellite settles.</string>
         <bool>false</bool>
        </property>
        <property name="selectionMode">
-        <enum>QAbstractItemView::NoSelection</enum>
+        <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
        </property>
        <property name="selectionBehavior">
-        <enum>QAbstractItemView::SelectItems</enum>
+        <enum>QAbstractItemView::SelectionBehavior::SelectItems</enum>
        </property>
        <property name="showGrid">
         <bool>false</bool>
        </property>
        <property name="gridStyle">
-        <enum>Qt::NoPen</enum>
+        <enum>Qt::PenStyle::NoPen</enum>
        </property>
        <property name="sortingEnabled">
         <bool>true</bool>
@@ -20053,7 +20053,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter for selecting minor planet names. The filter is not case sensitive.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -20121,16 +20121,16 @@ Next point in time when satellite settles.</string>
         <string>List of satellites.</string>
        </property>
        <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
+        <enum>QFrame::Shape::NoFrame</enum>
        </property>
        <property name="lineWidth">
         <number>0</number>
        </property>
        <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAsNeeded</enum>
+        <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
        </property>
        <property name="editTriggers">
-        <set>QAbstractItemView::NoEditTriggers</set>
+        <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
        </property>
        <property name="showDropIndicator" stdset="0">
         <bool>false</bool>
@@ -20142,16 +20142,16 @@ Next point in time when satellite settles.</string>
         <bool>false</bool>
        </property>
        <property name="selectionMode">
-        <enum>QAbstractItemView::NoSelection</enum>
+        <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
        </property>
        <property name="selectionBehavior">
-        <enum>QAbstractItemView::SelectItems</enum>
+        <enum>QAbstractItemView::SelectionBehavior::SelectItems</enum>
        </property>
        <property name="showGrid">
         <bool>false</bool>
        </property>
        <property name="gridStyle">
-        <enum>Qt::NoPen</enum>
+        <enum>Qt::PenStyle::NoPen</enum>
        </property>
        <property name="sortingEnabled">
         <bool>true</bool>
@@ -20225,7 +20225,7 @@ Next point in time when satellite settles.</string>
       <number>0</number>
      </property>
      <property name="elideMode">
-      <enum>Qt::ElideLeft</enum>
+      <enum>Qt::TextElideMode::ElideLeft</enum>
      </property>
      <property name="movable">
       <bool>false</bool>
@@ -21141,7 +21141,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -21150,7 +21150,7 @@ Next point in time when satellite settles.</string>
          <string>Sets the dew heater power from 0 to 100 %</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="inputMask">
          <string/>
@@ -21275,7 +21275,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -21284,7 +21284,7 @@ Next point in time when satellite settles.</string>
          <string>Sets the dew heater power from 0 to 100 %</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="inputMask">
          <string/>
@@ -21409,7 +21409,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -21418,7 +21418,7 @@ Next point in time when satellite settles.</string>
          <string>Sets the dew heater power from 0 to 100 %</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="inputMask">
          <string/>
@@ -22043,7 +22043,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -22052,7 +22052,7 @@ Next point in time when satellite settles.</string>
          <string>Sets the dew heater power from 0 to 100 %</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="inputMask">
          <string/>
@@ -22152,7 +22152,7 @@ Next point in time when satellite settles.</string>
              <number>1</number>
             </property>
             <property name="orientation">
-             <enum>Qt::Vertical</enum>
+             <enum>Qt::Orientation::Vertical</enum>
             </property>
            </widget>
           </item>
@@ -22287,7 +22287,7 @@ Next point in time when satellite settles.</string>
           <item>
            <spacer name="verticalSpacer_4">
             <property name="orientation">
-             <enum>Qt::Vertical</enum>
+             <enum>Qt::Orientation::Vertical</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -22305,14 +22305,14 @@ Next point in time when satellite settles.</string>
            <number>1</number>
           </property>
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
          </widget>
         </item>
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -22328,14 +22328,14 @@ Next point in time when satellite settles.</string>
            <number>1</number>
           </property>
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
          </widget>
         </item>
         <item>
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -22887,7 +22887,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="textDirection">
-         <enum>QProgressBar::TopToBottom</enum>
+         <enum>QProgressBar::Direction::TopToBottom</enum>
         </property>
        </widget>
        <widget class="QLineEdit" name="analysisPoints">
@@ -22913,7 +22913,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -22922,7 +22922,7 @@ Next point in time when satellite settles.</string>
          <string>Number of alignment stars in actual used pointing model</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -23012,16 +23012,16 @@ Next point in time when satellite settles.</string>
       <string notr="true"/>
      </property>
      <property name="tabPosition">
-      <enum>QTabWidget::North</enum>
+      <enum>QTabWidget::TabPosition::North</enum>
      </property>
      <property name="tabShape">
-      <enum>QTabWidget::Rounded</enum>
+      <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
      <property name="elideMode">
-      <enum>Qt::ElideLeft</enum>
+      <enum>Qt::TextElideMode::ElideLeft</enum>
      </property>
      <property name="usesScrollButtons">
       <bool>true</bool>
@@ -24119,7 +24119,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, MW4 will connect all adcom devices automatically.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>Automatic connect</string>
@@ -24181,7 +24181,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of mount, ip address and host names!&lt;/p&gt;&lt;p&gt;Please look closely to malformed explressions like 190.001.004.128. There should be no leading zero's in the ip address. Ideally you use a formal address like mount.fritz.box if your environmen supports it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>127.0.0.1</string>
@@ -24274,7 +24274,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;MAC address of the mount&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>00:00:00:00:00:00</string>
@@ -24433,7 +24433,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default is 255.255.255.255. If you would like to send WOL packet acress subnets, this is the IP address of the brodcast host in the subnet, where the mount is located.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>255.255.255.255</string>
@@ -24483,7 +24483,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default is 9. If you would like to send WOL packet acress subnets, this is the port of the brodcast host in the subnet, where the mount is located.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>9</string>
@@ -24517,7 +24517,7 @@ Next point in time when satellite settles.</string>
          <number>1</number>
         </property>
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Orientation::Vertical</enum>
         </property>
        </widget>
        <widget class="QCheckBox" name="automaticWOL">
@@ -24540,7 +24540,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, MW4 will use the driver settings for the actual telescope.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>Send WOL upon MW4 start </string>
@@ -24647,7 +24647,7 @@ Next point in time when satellite settles.</string>
          <number>1</number>
         </property>
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Orientation::Vertical</enum>
         </property>
        </widget>
       </widget>
@@ -24932,7 +24932,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -24941,7 +24941,7 @@ Next point in time when satellite settles.</string>
          <string/>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -25036,7 +25036,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -25045,7 +25045,7 @@ Next point in time when satellite settles.</string>
          <string/>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -25080,7 +25080,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -25089,7 +25089,7 @@ Next point in time when satellite settles.</string>
          <string/>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -25144,7 +25144,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -25153,7 +25153,7 @@ Next point in time when satellite settles.</string>
          <string/>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -25208,7 +25208,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -25217,7 +25217,7 @@ Next point in time when satellite settles.</string>
          <string/>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -25428,7 +25428,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, MW4 will use the driver settings for the actual telescope.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>Automatic takeover from driver</string>
@@ -25742,7 +25742,7 @@ Next point in time when satellite settles.</string>
          <string>If enabled, MW4 will calculate the dome shutter displacement based on the real geometry and azimuth of dome will be different to azimuth of mount.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>Enable dome geometry</string>
@@ -25968,7 +25968,7 @@ Next point in time when satellite settles.</string>
          <string>If enabled, MW4 will calculate the dome shutter displacement based on the real geometry and azimuth of dome will be different to azimuth of mount.</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>Automatic from driver</string>
@@ -26098,7 +26098,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, MW4 will try to slew the dome to the maximum azimuth possible without obstructing the telescope view.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>Overshoot target </string>
@@ -26169,7 +26169,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, MW4 will calculate the telecope view in relation to the real dome shutter opening and tries to avoid any unnecessary dome slew.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>Enable dynamic follow</string>
@@ -26300,7 +26300,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the used definition of geometries,when entering data or takeover from driver&lt;/p&gt;&lt;p&gt;There are two different definitions (10micron and ASCOM) in place, please beware of that !&lt;/p&gt;&lt;p&gt;MW4 calculates the other ones only upon change and if the mount is online as it needs the latitude of the mount.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>Use 10micron definitions</string>
@@ -26411,13 +26411,13 @@ Next point in time when satellite settles.</string>
         </rect>
        </property>
        <property name="tabPosition">
-        <enum>QTabWidget::North</enum>
+        <enum>QTabWidget::TabPosition::North</enum>
        </property>
        <property name="currentIndex">
         <number>0</number>
        </property>
        <property name="elideMode">
-        <enum>Qt::ElideLeft</enum>
+        <enum>Qt::TextElideMode::ElideLeft</enum>
        </property>
        <widget class="QWidget" name="tab_9">
         <attribute name="title">
@@ -26433,7 +26433,7 @@ Next point in time when satellite settles.</string>
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
@@ -26463,7 +26463,7 @@ Next point in time when satellite settles.</string>
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
@@ -26493,7 +26493,7 @@ Next point in time when satellite settles.</string>
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
@@ -26523,7 +26523,7 @@ Next point in time when satellite settles.</string>
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
@@ -26553,7 +26553,7 @@ Next point in time when satellite settles.</string>
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
@@ -26583,7 +26583,7 @@ Next point in time when satellite settles.</string>
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
@@ -26613,7 +26613,7 @@ Next point in time when satellite settles.</string>
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
@@ -26643,7 +26643,7 @@ Next point in time when satellite settles.</string>
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
@@ -26673,7 +26673,7 @@ Next point in time when satellite settles.</string>
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
@@ -26841,7 +26841,7 @@ Next point in time when satellite settles.</string>
          <string>Button text park menu 4</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -26919,7 +26919,7 @@ Next point in time when satellite settles.</string>
          <string>Button text park menu 2</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -26980,7 +26980,7 @@ Next point in time when satellite settles.</string>
          <string>Button text park menu 0</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -27064,7 +27064,7 @@ Next point in time when satellite settles.</string>
          <string>Button text park menu 3</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -27122,7 +27122,7 @@ Next point in time when satellite settles.</string>
          <string>Button text park menu 5</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -27335,7 +27335,7 @@ Next point in time when satellite settles.</string>
          <string>Button text park menu 7</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -27439,7 +27439,7 @@ Next point in time when satellite settles.</string>
          <string>Button text park menu 1</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -27603,7 +27603,7 @@ Next point in time when satellite settles.</string>
          <string>Button text park menu 6</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -27829,7 +27829,7 @@ Next point in time when satellite settles.</string>
          <string>Button text park menu 8</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -27867,7 +27867,7 @@ Next point in time when satellite settles.</string>
          <string>Button text park menu 9</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string/>
@@ -28510,7 +28510,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Button text for relay&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>relay 3</string>
@@ -28548,7 +28548,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Button text for relay&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>relay 6</string>
@@ -28586,7 +28586,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Button text for relay&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>relay 8</string>
@@ -28714,7 +28714,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Button text for relay&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>relay 5</string>
@@ -28752,7 +28752,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Button text for relay&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>relay 2</string>
@@ -28790,7 +28790,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Button text for relay&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>relay 7</string>
@@ -28978,7 +28978,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Button text for relay&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>relay 4</string>
@@ -29016,7 +29016,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Button text for relay&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>relay 1</string>
@@ -29820,7 +29820,7 @@ Updater</string>
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -29829,7 +29829,7 @@ Updater</string>
          <string/>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
          <string>-</string>
@@ -29864,7 +29864,7 @@ Updater</string>
          <bool>false</bool>
         </property>
         <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="inputMask">
          <string/>
@@ -29927,7 +29927,7 @@ Updater</string>
          <number>1</number>
         </property>
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Orientation::Vertical</enum>
         </property>
        </widget>
        <widget class="QPushButton" name="openPDF">
@@ -30789,7 +30789,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <bool>false</bool>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::NoFocus</enum>
+     <enum>Qt::FocusPolicy::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>false</bool>
@@ -30845,7 +30845,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <bool>false</bool>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::NoFocus</enum>
+     <enum>Qt::FocusPolicy::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>false</bool>
@@ -31212,7 +31212,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <bool>false</bool>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::NoFocus</enum>
+     <enum>Qt::FocusPolicy::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>false</bool>
@@ -31406,7 +31406,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <bool>false</bool>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::NoFocus</enum>
+     <enum>Qt::FocusPolicy::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>false</bool>
@@ -31541,7 +31541,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <bool>false</bool>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::NoFocus</enum>
+     <enum>Qt::FocusPolicy::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>false</bool>
@@ -31550,7 +31550,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <string>Shows the actual time of the computer</string>
     </property>
     <property name="layoutDirection">
-     <enum>Qt::LeftToRight</enum>
+     <enum>Qt::LayoutDirection::LeftToRight</enum>
     </property>
     <property name="styleSheet">
      <string notr="true"/>
@@ -31606,7 +31606,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <bool>false</bool>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::NoFocus</enum>
+     <enum>Qt::FocusPolicy::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>false</bool>
@@ -31886,7 +31886,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
        <number>5</number>
       </property>
       <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
+       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
       </property>
       <item>
        <widget class="QLineEdit" name="profile">
@@ -31922,7 +31922,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -31972,7 +31972,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
          <bool>false</bool>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="acceptDrops">
          <bool>false</bool>
@@ -32177,19 +32177,19 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <customwidget>
    <class>PlotBase</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.tools4pyqtgraph</header>
+   <header>gui.utilities.gPlotBase</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>NormalScatter</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.tools4pyqtgraph</header>
+   <header>gui.utilities.gNormalScatter</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>PolarScatter</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.tools4pyqtgraph</header>
+   <header>gui.utilities.gPolarScatter</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -23,7 +23,6 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QDoubleSpinBox, QGridLay
 from gui.utilities.gHemisphere import Hemisphere
 from gui.utilities.gPlotBase import PlotBase
 
-
 class Ui_HemisphereDialog(object):
     def setupUi(self, HemisphereDialog):
         if not HemisphereDialog.objectName():
@@ -195,7 +194,7 @@ class Ui_HemisphereDialog(object):
         self.azimuth.setSizePolicy(sizePolicy2)
         self.azimuth.setMinimumSize(QSize(0, 21))
         self.azimuth.setMaximumSize(QSize(50, 20))
-        self.azimuth.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.azimuth.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
 
         self.gridLayout_2.addWidget(self.azimuth, 3, 1, 1, 1)
 
@@ -206,7 +205,7 @@ class Ui_HemisphereDialog(object):
         self.altitude.setSizePolicy(sizePolicy2)
         self.altitude.setMinimumSize(QSize(0, 21))
         self.altitude.setMaximumSize(QSize(50, 20))
-        self.altitude.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.altitude.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
 
         self.gridLayout_2.addWidget(self.altitude, 0, 1, 1, 1)
 
@@ -237,7 +236,7 @@ class Ui_HemisphereDialog(object):
 
         self.tabWidget = QTabWidget(HemisphereDialog)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setElideMode(Qt.ElideNone)
+        self.tabWidget.setElideMode(Qt.TextElideMode.ElideNone)
         self.tabWidget.setMovable(False)
         self.HemisphereTab = QWidget()
         self.HemisphereTab.setObjectName(u"HemisphereTab")

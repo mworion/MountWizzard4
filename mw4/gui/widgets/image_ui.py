@@ -22,7 +22,6 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBo
 
 from gui.utilities.gImageBar import ImageBar
 
-
 class Ui_ImageDialog(object):
     def setupUi(self, ImageDialog):
         if not ImageDialog.objectName():
@@ -219,7 +218,7 @@ class Ui_ImageDialog(object):
         self.tabImage = QTabWidget(ImageDialog)
         self.tabImage.setObjectName(u"tabImage")
         self.tabImage.setMinimumSize(QSize(140, 0))
-        self.tabImage.setElideMode(Qt.ElideNone)
+        self.tabImage.setElideMode(Qt.TextElideMode.ElideNone)
         self.tabImage.setMovable(False)
         self.Image = QWidget()
         self.Image.setObjectName(u"Image")
@@ -421,7 +420,7 @@ class Ui_ImageDialog(object):
         self.offsetTiltAngle = QDoubleSpinBox(self.TiltTriangle)
         self.offsetTiltAngle.setObjectName(u"offsetTiltAngle")
         self.offsetTiltAngle.setMaximumSize(QSize(60, 16777215))
-        self.offsetTiltAngle.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.offsetTiltAngle.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.offsetTiltAngle.setDecimals(0)
         self.offsetTiltAngle.setMaximum(120.000000000000000)
         self.offsetTiltAngle.setSingleStep(10.000000000000000)
@@ -570,14 +569,14 @@ class Ui_ImageDialog(object):
 
         self.line_7 = QFrame(self.headerGroup)
         self.line_7.setObjectName(u"line_7")
-        self.line_7.setFrameShadow(QFrame.Plain)
+        self.line_7.setFrameShadow(QFrame.Shadow.Plain)
         self.line_7.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout.addWidget(self.line_7, 16, 0, 1, 2)
 
         self.line_11 = QFrame(self.headerGroup)
         self.line_11.setObjectName(u"line_11")
-        self.line_11.setFrameShadow(QFrame.Plain)
+        self.line_11.setFrameShadow(QFrame.Shadow.Plain)
         self.line_11.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout.addWidget(self.line_11, 27, 0, 1, 2)
@@ -591,14 +590,14 @@ class Ui_ImageDialog(object):
 
         self.line_3 = QFrame(self.headerGroup)
         self.line_3.setObjectName(u"line_3")
-        self.line_3.setFrameShadow(QFrame.Plain)
+        self.line_3.setFrameShadow(QFrame.Shadow.Plain)
         self.line_3.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout.addWidget(self.line_3, 2, 0, 1, 2)
 
         self.line_6 = QFrame(self.headerGroup)
         self.line_6.setObjectName(u"line_6")
-        self.line_6.setFrameShadow(QFrame.Plain)
+        self.line_6.setFrameShadow(QFrame.Shadow.Plain)
         self.line_6.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout.addWidget(self.line_6, 10, 0, 1, 2)
@@ -698,14 +697,14 @@ class Ui_ImageDialog(object):
 
         self.line_5 = QFrame(self.headerGroup)
         self.line_5.setObjectName(u"line_5")
-        self.line_5.setFrameShadow(QFrame.Plain)
+        self.line_5.setFrameShadow(QFrame.Shadow.Plain)
         self.line_5.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout.addWidget(self.line_5, 6, 0, 1, 2)
 
         self.line_9 = QFrame(self.headerGroup)
         self.line_9.setObjectName(u"line_9")
-        self.line_9.setFrameShadow(QFrame.Plain)
+        self.line_9.setFrameShadow(QFrame.Shadow.Plain)
         self.line_9.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout.addWidget(self.line_9, 21, 0, 1, 2)
@@ -722,7 +721,7 @@ class Ui_ImageDialog(object):
 
         self.line_10 = QFrame(self.headerGroup)
         self.line_10.setObjectName(u"line_10")
-        self.line_10.setFrameShadow(QFrame.Plain)
+        self.line_10.setFrameShadow(QFrame.Shadow.Plain)
         self.line_10.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout.addWidget(self.line_10, 24, 0, 1, 2)
@@ -813,7 +812,7 @@ class Ui_ImageDialog(object):
 
         self.line_12 = QFrame(self.groupMouseCoord)
         self.line_12.setObjectName(u"line_12")
-        self.line_12.setFrameShadow(QFrame.Plain)
+        self.line_12.setFrameShadow(QFrame.Shadow.Plain)
         self.line_12.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout_14.addWidget(self.line_12, 3, 0, 1, 1)

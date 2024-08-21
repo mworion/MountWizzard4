@@ -20,9 +20,8 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QGridLayout,
     QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
     QTabWidget, QVBoxLayout, QWidget)
 
-from gui.utilities.gPolarScatter import PolarScatter
 from gui.utilities.gNormalScatter import NormalScatter
-
+from gui.utilities.gPolarScatter import PolarScatter
 
 class Ui_AnalyseDialog(object):
     def setupUi(self, AnalyseDialog):
@@ -85,7 +84,7 @@ class Ui_AnalyseDialog(object):
         self.profile.setFont(font2)
         self.profile.setMouseTracking(False)
         self.profile.setAcceptDrops(False)
-        self.profile.setLayoutDirection(Qt.RightToLeft)
+        self.profile.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.profile.setReadOnly(True)
 
         self.gridLayout_4.addWidget(self.profile, 1, 2, 1, 1)
@@ -104,7 +103,7 @@ class Ui_AnalyseDialog(object):
         self.time.setFont(font2)
         self.time.setMouseTracking(False)
         self.time.setAcceptDrops(False)
-        self.time.setLayoutDirection(Qt.RightToLeft)
+        self.time.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.time.setReadOnly(True)
 
         self.gridLayout_4.addWidget(self.time, 2, 2, 1, 1)
@@ -195,8 +194,8 @@ class Ui_AnalyseDialog(object):
         self.goodPoints.setFont(font2)
         self.goodPoints.setMouseTracking(False)
         self.goodPoints.setAcceptDrops(False)
-        self.goodPoints.setLayoutDirection(Qt.RightToLeft)
-        self.goodPoints.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.goodPoints.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.goodPoints.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.goodPoints.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.goodPoints, 13, 0, 1, 1)
@@ -208,8 +207,8 @@ class Ui_AnalyseDialog(object):
         self.modelOrthoError.setFont(font2)
         self.modelOrthoError.setMouseTracking(False)
         self.modelOrthoError.setAcceptDrops(False)
-        self.modelOrthoError.setLayoutDirection(Qt.RightToLeft)
-        self.modelOrthoError.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.modelOrthoError.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.modelOrthoError.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.modelOrthoError.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.modelOrthoError, 7, 0, 1, 2)
@@ -221,8 +220,8 @@ class Ui_AnalyseDialog(object):
         self.version.setFont(font2)
         self.version.setMouseTracking(False)
         self.version.setAcceptDrops(False)
-        self.version.setLayoutDirection(Qt.RightToLeft)
-        self.version.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.version.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.version.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.version.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.version, 28, 0, 1, 2)
@@ -253,15 +252,15 @@ class Ui_AnalyseDialog(object):
         self.modelErrorRMS.setFont(font2)
         self.modelErrorRMS.setMouseTracking(False)
         self.modelErrorRMS.setAcceptDrops(False)
-        self.modelErrorRMS.setLayoutDirection(Qt.RightToLeft)
-        self.modelErrorRMS.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.modelErrorRMS.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.modelErrorRMS.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.modelErrorRMS.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.modelErrorRMS, 1, 0, 1, 2)
 
         self.line_2 = QFrame(self.groupBox_5)
         self.line_2.setObjectName(u"line_2")
-        self.line_2.setFrameShadow(QFrame.Plain)
+        self.line_2.setFrameShadow(QFrame.Shadow.Plain)
         self.line_2.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout_6.addWidget(self.line_2, 5, 0, 1, 3)
@@ -280,8 +279,8 @@ class Ui_AnalyseDialog(object):
         self.firmware.setFont(font2)
         self.firmware.setMouseTracking(False)
         self.firmware.setAcceptDrops(False)
-        self.firmware.setLayoutDirection(Qt.RightToLeft)
-        self.firmware.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.firmware.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.firmware.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.firmware.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.firmware, 31, 0, 1, 2)
@@ -293,15 +292,15 @@ class Ui_AnalyseDialog(object):
         self.subframe.setFont(font2)
         self.subframe.setMouseTracking(False)
         self.subframe.setAcceptDrops(False)
-        self.subframe.setLayoutDirection(Qt.RightToLeft)
-        self.subframe.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.subframe.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.subframe.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.subframe.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.subframe, 22, 0, 1, 2)
 
         self.line_7 = QFrame(self.groupBox_5)
         self.line_7.setObjectName(u"line_7")
-        self.line_7.setFrameShadow(QFrame.Plain)
+        self.line_7.setFrameShadow(QFrame.Shadow.Plain)
         self.line_7.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout_6.addWidget(self.line_7, 23, 0, 1, 3)
@@ -313,15 +312,15 @@ class Ui_AnalyseDialog(object):
         self.modelPolarError.setFont(font2)
         self.modelPolarError.setMouseTracking(False)
         self.modelPolarError.setAcceptDrops(False)
-        self.modelPolarError.setLayoutDirection(Qt.RightToLeft)
-        self.modelPolarError.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.modelPolarError.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.modelPolarError.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.modelPolarError.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.modelPolarError, 4, 0, 1, 2)
 
         self.line_4 = QFrame(self.groupBox_5)
         self.line_4.setObjectName(u"line_4")
-        self.line_4.setFrameShadow(QFrame.Plain)
+        self.line_4.setFrameShadow(QFrame.Shadow.Plain)
         self.line_4.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout_6.addWidget(self.line_4, 11, 0, 1, 3)
@@ -340,8 +339,8 @@ class Ui_AnalyseDialog(object):
         self.totalPoints.setFont(font2)
         self.totalPoints.setMouseTracking(False)
         self.totalPoints.setAcceptDrops(False)
-        self.totalPoints.setLayoutDirection(Qt.RightToLeft)
-        self.totalPoints.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.totalPoints.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.totalPoints.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.totalPoints.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.totalPoints, 13, 2, 1, 1)
@@ -367,14 +366,14 @@ class Ui_AnalyseDialog(object):
 
         self.line_9 = QFrame(self.groupBox_5)
         self.line_9.setObjectName(u"line_9")
-        self.line_9.setFrameShadow(QFrame.Plain)
+        self.line_9.setFrameShadow(QFrame.Shadow.Plain)
         self.line_9.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout_6.addWidget(self.line_9, 29, 0, 1, 3)
 
         self.line = QFrame(self.groupBox_5)
         self.line.setObjectName(u"line")
-        self.line.setFrameShadow(QFrame.Plain)
+        self.line.setFrameShadow(QFrame.Shadow.Plain)
         self.line.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout_6.addWidget(self.line, 2, 0, 1, 3)
@@ -386,15 +385,15 @@ class Ui_AnalyseDialog(object):
         self.binning.setFont(font2)
         self.binning.setMouseTracking(False)
         self.binning.setAcceptDrops(False)
-        self.binning.setLayoutDirection(Qt.RightToLeft)
-        self.binning.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.binning.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.binning.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.binning.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.binning, 19, 0, 1, 2)
 
         self.line_8 = QFrame(self.groupBox_5)
         self.line_8.setObjectName(u"line_8")
-        self.line_8.setFrameShadow(QFrame.Plain)
+        self.line_8.setFrameShadow(QFrame.Shadow.Plain)
         self.line_8.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout_6.addWidget(self.line_8, 20, 0, 1, 3)
@@ -418,8 +417,8 @@ class Ui_AnalyseDialog(object):
         self.focalLength.setFont(font2)
         self.focalLength.setMouseTracking(False)
         self.focalLength.setAcceptDrops(False)
-        self.focalLength.setLayoutDirection(Qt.RightToLeft)
-        self.focalLength.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.focalLength.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.focalLength.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.focalLength.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.focalLength, 25, 0, 1, 2)
@@ -438,15 +437,15 @@ class Ui_AnalyseDialog(object):
         self.solver.setFont(font2)
         self.solver.setMouseTracking(False)
         self.solver.setAcceptDrops(False)
-        self.solver.setLayoutDirection(Qt.RightToLeft)
-        self.solver.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.solver.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.solver.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.solver.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.solver, 34, 0, 1, 3)
 
         self.line_6 = QFrame(self.groupBox_5)
         self.line_6.setObjectName(u"line_6")
-        self.line_6.setFrameShadow(QFrame.Plain)
+        self.line_6.setFrameShadow(QFrame.Shadow.Plain)
         self.line_6.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout_6.addWidget(self.line_6, 17, 0, 1, 3)
@@ -458,7 +457,7 @@ class Ui_AnalyseDialog(object):
 
         self.line_3 = QFrame(self.groupBox_5)
         self.line_3.setObjectName(u"line_3")
-        self.line_3.setFrameShadow(QFrame.Plain)
+        self.line_3.setFrameShadow(QFrame.Shadow.Plain)
         self.line_3.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout_6.addWidget(self.line_3, 8, 0, 1, 3)
@@ -472,7 +471,7 @@ class Ui_AnalyseDialog(object):
 
         self.line_10 = QFrame(self.groupBox_5)
         self.line_10.setObjectName(u"line_10")
-        self.line_10.setFrameShadow(QFrame.Plain)
+        self.line_10.setFrameShadow(QFrame.Shadow.Plain)
         self.line_10.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout_6.addWidget(self.line_10, 26, 0, 1, 3)
@@ -498,7 +497,7 @@ class Ui_AnalyseDialog(object):
 
         self.line_5 = QFrame(self.groupBox_5)
         self.line_5.setObjectName(u"line_5")
-        self.line_5.setFrameShadow(QFrame.Plain)
+        self.line_5.setFrameShadow(QFrame.Shadow.Plain)
         self.line_5.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout_6.addWidget(self.line_5, 14, 0, 1, 3)
@@ -534,8 +533,8 @@ class Ui_AnalyseDialog(object):
         self.modelTerms.setFont(font2)
         self.modelTerms.setMouseTracking(False)
         self.modelTerms.setAcceptDrops(False)
-        self.modelTerms.setLayoutDirection(Qt.RightToLeft)
-        self.modelTerms.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.modelTerms.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.modelTerms.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.modelTerms.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.modelTerms, 10, 0, 1, 2)
@@ -547,15 +546,15 @@ class Ui_AnalyseDialog(object):
         self.eposure.setFont(font2)
         self.eposure.setMouseTracking(False)
         self.eposure.setAcceptDrops(False)
-        self.eposure.setLayoutDirection(Qt.RightToLeft)
-        self.eposure.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.eposure.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.eposure.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.eposure.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.eposure, 16, 0, 1, 2)
 
         self.line_11 = QFrame(self.groupBox_5)
         self.line_11.setObjectName(u"line_11")
-        self.line_11.setFrameShadow(QFrame.Plain)
+        self.line_11.setFrameShadow(QFrame.Shadow.Plain)
         self.line_11.setFrameShape(QFrame.Shape.HLine)
 
         self.gridLayout_6.addWidget(self.line_11, 32, 0, 1, 3)
@@ -572,7 +571,7 @@ class Ui_AnalyseDialog(object):
         self.gridLayout_2 = QGridLayout(self.General)
         self.gridLayout_2.setSpacing(4)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.gridLayout_2.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.gridLayout_2.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
         self.gridLayout_2.setContentsMargins(4, 4, 4, 4)
         self.groupBox = QGroupBox(self.General)
         self.groupBox.setObjectName(u"groupBox")

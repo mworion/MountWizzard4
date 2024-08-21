@@ -138,13 +138,13 @@
           <string>Actual latitude where the satellite could be seen in zenith.</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::RightToLeft</enum>
+          <enum>Qt::LayoutDirection::RightToLeft</enum>
          </property>
          <property name="text">
           <string>-</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -170,7 +170,7 @@
           <string>°</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
          <property name="wordWrap">
           <bool>false</bool>
@@ -180,7 +180,7 @@
        <item>
         <spacer name="horizontalSpacer">
          <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+          <enum>Qt::Orientation::Horizontal</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -244,13 +244,13 @@
           <string>Actual longitude where the satellite could be seen in zenith.</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::RightToLeft</enum>
+          <enum>Qt::LayoutDirection::RightToLeft</enum>
          </property>
          <property name="text">
           <string>-</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -270,7 +270,7 @@
           <string>°</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
          <property name="wordWrap">
           <bool>false</bool>
@@ -280,7 +280,7 @@
        <item>
         <spacer name="horizontalSpacer_2">
          <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+          <enum>Qt::Orientation::Horizontal</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -344,13 +344,13 @@
           <string>Actual azimuth of the satelite from observers position.</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::RightToLeft</enum>
+          <enum>Qt::LayoutDirection::RightToLeft</enum>
          </property>
          <property name="text">
           <string>-</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -376,7 +376,7 @@
           <string>°</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
          <property name="wordWrap">
           <bool>false</bool>
@@ -386,7 +386,7 @@
        <item>
         <spacer name="horizontalSpacer_3">
          <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+          <enum>Qt::Orientation::Horizontal</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -450,13 +450,13 @@
           <string>Actual altitude of the satelite from observers position.</string>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::RightToLeft</enum>
+          <enum>Qt::LayoutDirection::RightToLeft</enum>
          </property>
          <property name="text">
           <string>-</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -482,7 +482,7 @@
           <string>°</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
          <property name="wordWrap">
           <bool>false</bool>
@@ -492,7 +492,7 @@
        <item>
         <spacer name="horizontalSpacer_6">
          <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+          <enum>Qt::Orientation::Horizontal</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -614,7 +614,7 @@
   <customwidget>
    <class>PlotBase</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.tools4pyqtgraph</header>
+   <header>gui.utilities.gPlotBase</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

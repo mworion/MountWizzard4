@@ -21,7 +21,6 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QGroupBox,
 
 from gui.utilities.gMeasure import Measure
 
-
 class Ui_MeasureDialog(object):
     def setupUi(self, MeasureDialog):
         if not MeasureDialog.objectName():

@@ -38,7 +38,7 @@ class LoggerWriter:
         self.mode = mode
         self.standard = std
 
-    def write(self, message):
+    def write(self, message: str) -> None:
         first = True
         for line in message.rstrip().splitlines():
             if first:
@@ -47,8 +47,14 @@ class LoggerWriter:
             else:
                 self.level(' ' * 9 + line.strip())
 
+    def flush(self) -> None:
+        """
+        flush has to be present, but is not used
+        """
+        pass
 
-def addLoggingLevel(levelName, levelNum, methodName=None):
+
+def addLoggingLevel(levelName: str, levelNum: int, methodName: str = None) -> None:
     """
     Comprehensively adds a new logging level to the `logging` module and the
     currently configured logging class.
@@ -89,14 +95,14 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
     setattr(logging.getLoggerClass(), methodName, logForLevel)
 
 
-def redirectSTD():
+def redirectSTD() -> None:
     """
     """
     sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
-    # sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT', sys.stdout)
+    sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT', sys.stdout)
 
 
-def setupLogging(redirect=True):
+def setupLogging() -> None:
     """
     """
     if not os.path.isdir('./log'):
@@ -127,11 +133,10 @@ def setupLogging(redirect=True):
     addLoggingLevel('HEADER', 55)
     addLoggingLevel('UI', 35)
     addLoggingLevel('TRACE', 5)
-    if redirect:
-        redirectSTD()
+    redirectSTD()
 
 
-def setCustomLoggingLevel(level='WARN'):
+def setCustomLoggingLevel(level: str = 'WARN') -> None:
     """
     """
     logging.getLogger().setLevel(level)

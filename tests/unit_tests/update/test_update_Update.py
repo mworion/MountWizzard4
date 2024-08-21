@@ -19,7 +19,6 @@ import os
 import sys
 import unittest.mock as mock
 import pytest
-import astropy
 import subprocess
 import builtins
 import platform

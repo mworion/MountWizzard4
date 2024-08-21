@@ -23,11 +23,18 @@ import platform
 from typing import Callable
 
 # external packages
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon, QPixmap, QColor, QPainter
+from PySide6.QtWidgets import QApplication, QPushButton, QVBoxLayout
+from PySide6.QtWidgets import QHBoxLayout, QWidget, QTextBrowser, QLabel
 
 # local import
+from gui.utilities.stylesQtCss import Styles
 from base.loggerMW import setupLogging
+import resource.resources as res
+res.qInitResources()
 
-setupLogging(redirect=False)
+setupLogging()
 log = logging.getLogger()
 
 
@@ -37,7 +44,9 @@ class Update:
 
     log = logging.getLogger(__name__)
 
-    def __init__(self, runnable: Callable = None, writer: Callable = None):
+    def __init__(self, runnable: Callable = None, writer: Callable = None) -> None:
+        """
+        """
         self.writer = writer
         self.runnable = runnable
 
@@ -148,15 +157,6 @@ class UpdateGUI:
 
     def __init__(self, runnable=None, version=None, x=0, y=0, colorSet=0):
         self.version = version
-
-        from PySide6.QtCore import Qt
-        from PySide6.QtGui import QIcon, QPixmap, QColor, QPainter
-        from PySide6.QtWidgets import QApplication, QPushButton, QVBoxLayout
-        from PySide6.QtWidgets import QHBoxLayout, QWidget, QTextBrowser, QLabel
-        import resource.resources as res
-        res.qInitResources()
-        from gui.utilities.stylesQtCss import Styles
-
         self.update = Update(runnable=runnable, writer=self.writeText)
 
         QApplication.setAttribute(Qt.ApplicationAttribute.AA_ShareOpenGLContexts)
@@ -219,6 +219,7 @@ class UpdateGUI:
     def run(self):
         sys.exit(self.app.exec())
 
+    # noinspection PyUnresolvedReferences
     def writeText(self, text, color):
         """
         """
@@ -261,6 +262,7 @@ class UpdateGUI:
         self.update.restart(text)
 
 
+# noinspection PyUnresolvedReferences
 def main() -> None:
     """
     """

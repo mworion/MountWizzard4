@@ -27,14 +27,13 @@ from PySide6.QtWidgets import QWidget
 from mainApp import MountWizzard4
 from gui.mainWaddon.astroObjects import AstroObjects
 from base.loggerMW import setupLogging
-import resource.resources as res
+from mw4.resource import resources as res
 res.qInitResources()
 setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='module')
 def app(qapp):
-    global mwGlob
     mwGlob = {'configDir': 'tests/workDir/config',
               'dataDir': 'tests/workDir/data',
               'tempDir': 'tests/workDir/temp',
@@ -66,8 +65,7 @@ def app(qapp):
 
 
 def test_storeStatusOperationRunning(app):
-    suc = app.storeStatusOperationRunning(4)
-    assert suc
+    app.storeStatusOperationRunning(4)
     assert app.statusOperationRunning == 4
 
 
@@ -93,102 +91,81 @@ def test_initConfig_4(app):
 
 
 def test_storeConfig_1(app):
-    suc = app.storeConfig()
-    assert suc
-
-
-def test_storeConfig_2(app):
-    def Sender(app):
-        return None
-
-    app.sender = Sender
-
-    suc = app.storeConfig()
-    assert suc
+    app.storeConfig()
 
 
 def test_sendStart_1(app):
     app.timerCounter = 10
-    suc = app.sendStart()
-    assert suc
+    app.sendStart()
 
 
 def test_sendStart_2(app):
     app.timerCounter = 30
-    suc = app.sendStart()
-    assert suc
+    app.sendStart()
 
 
 def test_sendStart_3(app):
     app.timerCounter = 50
-    suc = app.sendStart()
-    assert suc
+    app.sendStart()
 
 
 def test_sendStart_4(app):
     app.timerCounter = 100
-    suc = app.sendStart()
-    assert suc
+    app.sendStart()
 
 
 def test_sendStart_5(app):
     app.timerCounter = 300
-    suc = app.sendStart()
-    assert suc
+    app.sendStart()
 
 
 def test_sendCyclic_1(app):
     app.timerCounter = 0
-    suc = app.sendCyclic()
-    assert suc
+    app.sendCyclic()
 
 
 def test_sendCyclic_2(app):
     app.timerCounter = 4
-    suc = app.sendCyclic()
-    assert suc
+    app.sendCyclic()
 
 
 def test_sendCyclic_3(app):
     app.timerCounter = 19
-    suc = app.sendCyclic()
-    assert suc
+    app.sendCyclic()
 
 
 def test_sendCyclic_4(app):
     app.timerCounter = 79
-    suc = app.sendCyclic()
-    assert suc
+    app.sendCyclic()
 
 
 def test_sendCyclic_5(app):
     app.timerCounter = 574
-    suc = app.sendCyclic()
-    assert suc
+    app.sendCyclic()
 
 
 def test_sendCyclic_6(app):
     app.timerCounter = 1800 - 12 - 1
-    suc = app.sendCyclic()
-    assert suc
+    app.sendCyclic()
 
 
 def test_sendCyclic_7(app):
     app.timerCounter = 6000 - 13 - 1
-    suc = app.sendCyclic()
-    assert suc
+    app.sendCyclic()
 
 
 def test_sendCyclic_8(app):
     app.timerCounter = 18000 - 14 - 1
-    suc = app.sendCyclic()
-    assert suc
+    app.sendCyclic()
 
 
 def test_sendCyclic_9(app):
     app.timerCounter = 36000 - 15 - 1
-    suc = app.sendCyclic()
-    assert suc
+    app.sendCyclic()
+
+
+def test_aboutToQuit_1(app):
+    app.aboutToQuit()
 
 
 def test_quit_1(app):
@@ -196,8 +173,11 @@ def test_quit_1(app):
                            'quit'):
         with mock.patch.object(app.mount,
                                'stopTimers'):
-            suc = app.quit()
-            assert suc
+            app.quit()
+
+
+def test_loadHorizonData_1(app):
+    app.loadHorizonData()
 
 
 def test_loadMountData_1(app):
@@ -235,5 +215,4 @@ def test_loadMountData_4(app):
 
 
 def test_writeMessageQueue(app):
-    suc = app.writeMessageQueue(1, 'test', 'test', 'test')
-    assert suc
+    app.writeMessageQueue(1, 'test', 'test', 'test')

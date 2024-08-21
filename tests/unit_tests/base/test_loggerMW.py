@@ -30,6 +30,7 @@ from mw4.base.loggerMW import LoggerWriter
 def test_loggerWriter():
     a = LoggerWriter(logging.getLogger().debug, 'Test', sys.stdout)
     a.write('test\ntest')
+    a.flush()
 
 
 def test_setupLogging():

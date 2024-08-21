@@ -20,6 +20,7 @@ import os
 import sys
 from queue import Queue
 
+from PySide6.QtWidgets import QApplication
 # external packages
 from PySide6.QtCore import QObject, Signal, QThreadPool, QTimer
 from skyfield.api import wgs84
@@ -110,18 +111,18 @@ class MountWizzard4(QObject):
     start10s = Signal()
     start30s = Signal()
 
-    def __init__(self, mwGlob=None, application=None):
+    def __init__(self, mwGlob: dict, application: QApplication):
         super().__init__()
 
-        self.application = application
-        self.expireData = False
-        self.mountUp = False
         self.mwGlob = mwGlob
-        self.timerCounter = 0
-        self.statusOperationRunning = 0
-        self.mainW = None
+        self.application = application
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(30)
+        self.expireData = False
+        self.mountUp = False
+        self.mainW = None
+        self.timerCounter = 0
+        self.statusOperationRunning = 0
         self.msg.connect(self.writeMessageQueue)
         self.config = loadProfile(configDir=self.mwGlob['configDir'])
         self.deviceStat = {
@@ -198,24 +199,14 @@ class MountWizzard4(QObject):
         if len(sys.argv) > 1:
             self.messageQueue.put((1, 'System', 'Arguments', sys.argv[1]))
 
-    def storeStatusOperationRunning(self, status):
+    def storeStatusOperationRunning(self, status: int) -> None:
         """
-        :return:
         """
         self.statusOperationRunning = status
-        return True
 
-    def initConfig(self):
+    def initConfig(self) -> wgs84:
         """
-        :return: topo object with location
         """
-        lat = self.config.get('topoLat', 51.47)
-        lon = self.config.get('topoLon', 0)
-        elev = self.config.get('topoElev', 46)
-        topo = wgs84.latlon(longitude_degrees=lon,
-                            latitude_degrees=lat,
-                            elevation_m=elev)
-
         config = self.config.get('mainW', {})
         if config.get('loglevelTrace', False):
             level = 'TRACE'
@@ -224,22 +215,27 @@ class MountWizzard4(QObject):
         else:
             level = 'INFO'
         setCustomLoggingLevel(level)
+
+        lat = self.config.get('topoLat', 51.47)
+        lon = self.config.get('topoLon', 0)
+        elev = self.config.get('topoElev', 46)
+
+        topo = wgs84.latlon(longitude_degrees=lon,
+                            latitude_degrees=lat,
+                            elevation_m=elev)
         return topo
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """
-        :return: success for test purpose
         """
         location = self.mount.obsSite.location
         if location is not None:
             self.config['topoLat'] = location.latitude.degrees
             self.config['topoLon'] = location.longitude.degrees
             self.config['topoElev'] = location.elevation.m
-        return True
 
     def sendStart(self):
         """
-        :return:
         """
         if self.timerCounter == 10:
             self.start1s.emit()
@@ -251,14 +247,9 @@ class MountWizzard4(QObject):
             self.start10s.emit()
         if self.timerCounter == 300:
             self.start30s.emit()
-        return True
 
-    def sendCyclic(self):
+    def sendCyclic(self) -> None:
         """
-        sendCyclic send regular signals in 1 and 10 seconds to enable regular
-        tasks. it tries to avoid sending the signals at the same time.
-
-        :return: true for test purpose
         """
         self.timerCounter += 1
         if self.timerCounter % 1 == 0:
@@ -282,40 +273,31 @@ class MountWizzard4(QObject):
         if (self.timerCounter + 15) % 36000 == 0:
             self.update1h.emit()
         self.sendStart()
-        return True
 
-    def aboutToQuit(self):
+    def aboutToQuit(self) -> None:
         """
-        :return:    True for test purpose
         """
         self.timer0_1s.stop()
         self.mount.stopTimers()
-        return True
 
-    def quit(self):
+    def quit(self) -> None:
         """
-        :return:    True for test purpose
         """
         self.deviceStat['mount'] = False
         self.aboutToQuit()
         self.messageQueue.put((1, 'System', 'Lifecycle',
                               'MountWizzard4 manual stopped'))
         self.application.quit()
-        return True
 
-    def loadHorizonData(self):
+    def loadHorizonData(self) -> None:
         """
-        :return:
         """
         config = self.config.get('hemisphereW', {})
         fileName = config.get('horizonMaskFileName', '')
         self.data.loadHorizonP(fileName=fileName)
-        return True
 
-    def loadMountData(self, status):
+    def loadMountData(self, status: bool) -> bool:
         """
-        :param      status: connection status to mount computer
-        :return:    status how it was called
         """
         if status and not self.mountUp:
             self.mount.cycleSetting()
@@ -336,14 +318,9 @@ class MountWizzard4(QObject):
             return False
         return status
 
-    def writeMessageQueue(self, prio, source, mType, message):
+    # noinspection PyUnresolvedReferences
+    def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
         """
-        :param prio:
-        :param source:
-        :param mType:
-        :param message:
-        :return: True for test purpose
         """
         self.log.ui(f'Message window: [{source} - {mType} - {message}]')
         self.messageQueue.put((prio, source, mType, message))
-        return True

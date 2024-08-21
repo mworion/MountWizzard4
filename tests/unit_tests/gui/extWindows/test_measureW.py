@@ -17,7 +17,6 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import astropy
 
 # external packages
 import numpy as np
@@ -143,14 +142,14 @@ def test_setupButtons(function):
 
 def test_constructPlotItem_1(function):
     plotItem = pg.PlotItem()
-    values = function.dataPlots['Axis Stability']
+    values = function.dataPlots['Current']
     x = function.app.measure.data['time'].astype('datetime64[s]').astype('int')
     function.constructPlotItem(plotItem, values, x)
 
 
 def test_plotting_1(function):
     plotItem = pg.PlotItem()
-    values = function.dataPlots['Axis Stability']
+    values = function.dataPlots['Current']
     x = function.app.measure.data['time'].astype('datetime64[s]').astype('int')
     function.plotting(plotItem, values, x)
 

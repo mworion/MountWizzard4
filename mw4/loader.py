@@ -56,15 +56,9 @@ class MyApp(QApplication):
         self.last = None
 
     # noinspection PyUnresolvedReferences
-    def handleButtons(self, obj: QWidget, returnValue: bool) -> bool:
+    def logUserInterface(self, obj: QWidget) -> bool:
         """
-        :param obj:
-        :param returnValue:
-        :return:
         """
-        if 'Window' in obj.objectName():
-            return returnValue
-
         if isinstance(obj, QTabBar):
             self.log.ui(f'Click Tab     : [{obj.tabText(obj.currentIndex())}]')
         elif isinstance(obj, QComboBox):
@@ -91,6 +85,11 @@ class MyApp(QApplication):
                                         '']:
                 self.log.ui(f'Click Object  : [{obj.objectName()}]')
 
+    def handleButtons(self, obj: QWidget, returnValue: bool) -> bool:
+        """
+        """
+        if 'Window' not in obj.objectName():
+            self.logUserInterface(obj)
         return returnValue
 
     def notify(self, obj: QWidget, event: QEvent) -> bool:
@@ -134,9 +133,10 @@ def except_hook(typeException, valueException, tbackException) -> None:
 def setupWorkDirs() -> dict:
     """
     """
-    mwGlob = {}
-    mwGlob['modeldata'] = '4.0'
-    mwGlob['workDir'] = os.getcwd()
+    mwGlob = {
+        'modeldata': '4.0',
+        'workDir': os.getcwd(),
+    }
     mwGlob['configDir'] = os.path.normpath(mwGlob['workDir'] + '/config')
     mwGlob['dataDir'] = os.path.normpath(mwGlob['workDir'] + '/data')
     mwGlob['imageDir'] = os.path.normpath(mwGlob['workDir'] + '/image')
@@ -283,12 +283,6 @@ def minimizeStartTerminal() -> None:
 
 def main() -> None:
     """
-    main prepares the loading of mountwizzard application. it prepares a
-    splash screen and handler the setup of the logger, bundle handling etc. in
-    addition some information about the system are written into the logfile to be
-    able to debug in different conditions the system environment.
-
-    :return: nothing
     """
     locale.setlocale(locale.LC_ALL, '')
     app = MyApp(sys.argv)

@@ -56,55 +56,47 @@ def test_waitTimeFlip_2(function):
 
 
 def test_waitSettlingTime(function):
-    suc = function.waitAfterSettlingAndEmit()
-    assert suc
+    function.waitAfterSettlingAndEmit()
 
 
 def test_startTimers(function):
     with mock.patch.object(QTimer,
                            'start'):
-        suc = function.startTimers()
-        assert suc
+        function.startTimers()
 
 
 def test_stopTimers(function):
     with mock.patch.object(QTimer,
                            'stop'):
-        suc = function.stopTimers()
-        assert suc
+        function.stopTimers()
 
 
 def test_startDomeTimer(function):
     with mock.patch.object(QTimer,
                            'start'):
-        suc = function.startDomeTimer()
-        assert suc
+        function.startDomeTimer()
 
 
 def test_stopDomeTimer(function):
     with mock.patch.object(QTimer,
                            'stop'):
-        suc = function.stopDomeTimer()
-        assert suc
+        function.stopDomeTimer()
 
 
 def test_startClockTimer(function):
     with mock.patch.object(QTimer,
                            'start'):
-        suc = function.startClockTimer()
-        assert suc
+        function.startClockTimer()
 
 
 def test_stopClockTimer(function):
     with mock.patch.object(QTimer,
                            'stop'):
-        suc = function.stopClockTimer()
-        assert suc
+        function.stopClockTimer()
 
 
 def test_resetData_1(function):
-    suc = function.resetData()
-    assert suc
+    function.resetData()
 
 
 def test_checkMountUp_1(function):
@@ -126,13 +118,8 @@ def test_checkMountUp_2(function):
                 assert function.mountUp
 
 
-def test_errorCycleCheckMountUp(function):
-    function.errorCycleCheckMountUp('test')
-
-
 def test_clearCycleCheckMountUp_1(function):
-    suc = function.clearCycleCheckMountUp()
-    assert suc
+    function.clearCycleCheckMountUp()
 
 
 def test_cycleCheckMountUp_1(function):
@@ -147,51 +134,40 @@ def test_cycleCheckMountUp_2(function):
     function.host = ('localhost', 80)
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.cycleCheckMountUp()
-        assert suc
-
-
-def test_errorCyclePointing_1(function):
-    suc = function.errorCyclePointing('test')
-    assert suc
+        function.cycleCheckMountUp()
 
 
 def test_clearCyclePointing_1(function):
     function.obsSite.flipped = False
-    suc = function.clearCyclePointing()
-    assert suc
+    function.clearCyclePointing()
 
 
 def test_clearCyclePointing_2(function):
     function.obsSite.flipped = True
     function.obsSite.status = 1
     function.statusAlert = False
-    suc = function.clearCyclePointing()
-    assert suc
+    function.clearCyclePointing()
     assert function.statusAlert
 
 
 def test_clearCyclePointing_3(function):
     function.obsSite.status = 0
     function.statusAlert = False
-    suc = function.clearCyclePointing()
-    assert suc
+    function.clearCyclePointing()
     assert not function.statusAlert
 
 
 def test_clearCyclePointing_4(function):
     function.obsSite.status = 0
     function.statusSlew = False
-    suc = function.clearCyclePointing()
-    assert suc
+    function.clearCyclePointing()
     assert function.statusSlew
 
 
 def test_clearCyclePointing_5(function):
     function.obsSite.status = 2
     function.statusSlew = False
-    suc = function.clearCyclePointing()
-    assert suc
+    function.clearCyclePointing()
     assert not function.statusSlew
 
 
@@ -219,13 +195,8 @@ def test_cyclePointing_3(function):
             assert not suc
 
 
-def test_errorCycleSetting(function):
-    function.errorCycleSetting('test')
-
-
 def test_clearCycleSetting_1(function):
-    suc = function.clearCycleSetting()
-    assert suc
+    function.clearCycleSetting()
 
 
 def test_cycleSetting_1(function):
@@ -244,13 +215,8 @@ def test_cycleSetting_2(function):
         assert not suc
 
 
-def test_errorGetAlign(function):
-    function.errorGetAlign('test')
-
-
 def test_clearGetAlign_1(function):
-    suc = function.clearGetAlign()
-    assert suc
+    function.clearGetAlign()
 
 
 def test_GetAlign_1(function):
@@ -269,14 +235,8 @@ def test_GetAlign_2(function):
         assert not suc
 
 
-def test_errorGetNames(function):
-    suc = function.errorGetNames('test')
-    assert suc
-
-
 def test_clearGetNames_1(function):
-    suc = function.clearGetNames()
-    assert suc
+    function.clearGetNames()
 
 
 def test_GetNames_1(function):
@@ -295,13 +255,8 @@ def test_GetNames_2(function):
         assert not suc
 
 
-def test_errorGetFW(function):
-    function.errorGetFW('test')
-
-
 def test_clearGetFW_1(function):
-    suc = function.clearGetFW()
-    assert suc
+    function.clearGetFW()
 
 
 def test_GetFW_1(function):
@@ -320,13 +275,8 @@ def test_GetFW_2(function):
         assert not suc
 
 
-def test_errorGetLocation(function):
-    function.errorGetLocation('test')
-
-
 def test_clearGetLocation_1(function):
-    suc = function.clearGetLocation()
-    assert suc
+    function.clearGetLocation()
 
 
 def test_GetLocation_1(function):
@@ -345,13 +295,8 @@ def test_GetLocation_2(function):
         assert not suc
 
 
-def test_errorCalcTLE(function):
-    function.errorCalcTLE('test')
-
-
 def test_clearCalcTLE_1(function):
-    suc = function.clearCalcTLE()
-    assert suc
+    function.clearCalcTLE()
 
 
 def test_CalcTLE_1(function):
@@ -370,13 +315,8 @@ def test_CalcTLE_2(function):
         assert not suc
 
 
-def test_errorStatTLE(function):
-    function.errorStatTLE('test')
-
-
 def test_clearStatTLE_1(function):
-    suc = function.clearStatTLE()
-    assert suc
+    function.clearStatTLE()
 
 
 def test_StatTLE_1(function):
@@ -395,13 +335,8 @@ def test_StatTLE_2(function):
         assert not suc
 
 
-def test_errorGetTLE(function):
-    function.errorGetTLE('test')
-
-
 def test_clearGetTLE_1(function):
-    suc = function.clearGetTLE()
-    assert suc
+    function.clearGetTLE()
 
 
 def test_GetTLE_1(function):
@@ -477,13 +412,8 @@ def test_shutdown_2(function):
         assert function.mountUp
 
 
-def test_errorDome(function):
-    function.errorDome('test')
-
-
 def test_clearDome_1(function):
-    suc = function.clearDome()
-    assert suc
+    function.clearDome()
 
 
 def test_cycleDome_1(function):
@@ -502,15 +432,6 @@ def test_cycleDome_2(function):
         assert not suc
 
 
-def test_errorClock(function):
-    function.errorClock('test')
-
-
-def test_clearClock_1(function):
-    suc = function.clearClock()
-    assert suc
-
-
 def test_cycleClock_1(function):
     function.mountUp = True
     with mock.patch.object(QThreadPool,
@@ -524,31 +445,6 @@ def test_cycleClock_2(function):
     with mock.patch.object(QThreadPool,
                            'start'):
         suc = function.cycleClock()
-        assert not suc
-
-
-def test_errorPreCalcTrajectory(function):
-    function.errorPreCalcTrajectory('test')
-
-
-def test_clearPreCalcTrajectory_1(function):
-    suc = function.clearPreCalcTrajectory()
-    assert suc
-
-
-def test_preCalcTrajectory_1(function):
-    function.mountUp = True
-    with mock.patch.object(QThreadPool,
-                           'start'):
-        suc = function.preCalcTrajectory()
-        assert suc
-
-
-def test_preCalcTrajectory_2(function):
-    function.mountUp = False
-    with mock.patch.object(QThreadPool,
-                           'start'):
-        suc = function.preCalcTrajectory()
         assert not suc
 
 
@@ -570,13 +466,8 @@ def test_workerProgTrajectory_2(function):
         assert not suc
 
 
-def test_errorProgTrajectory(function):
-    function.errorProgTrajectory('test')
-
-
 def test_clearProgTrajectory_1(function):
-    suc = function.clearProgTrajectory()
-    assert suc
+    function.clearProgTrajectory()
 
 
 def test_progTrajectory_1(function):

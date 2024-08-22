@@ -21,6 +21,7 @@ import os
 # external packages
 from skyfield.api import Angle, wgs84
 import numpy as np
+import astropy
 
 # local imports
 from mountcontrol.mount import MountDevice

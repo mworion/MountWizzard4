@@ -30,7 +30,6 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mountcontrol.mountSignals import MountSignals
 from mountcontrol.mount import MountDevice
 from base.loggerMW import setupLogging
-from mountcontrol.mount import checkFormatMAC
 
 setupLogging()
 
@@ -52,41 +51,6 @@ def test_mountSignals(function):
 def test_properties(function):
     function.MAC = '00:00:00:00:00:00'
     assert function.MAC == '00:00:00:00:00:00'
-
-
-def test_checkFormatMAC_1():
-    val = checkFormatMAC('')
-    assert val is None
-
-
-def test_checkFormatMAC_2():
-    val = checkFormatMAC(1234)
-    assert val is None
-
-
-def test_checkFormatMAC_3():
-    val = checkFormatMAC('00:00:00')
-    assert val is None
-
-
-def test_checkFormatMAC_4():
-    val = checkFormatMAC('00:00:00:123:00:00')
-    assert val is None
-
-
-def test_checkFormatMAC_5():
-    val = checkFormatMAC('00:00:00:12K:00:00')
-    assert val is None
-
-
-def test_checkFormatMAC_6():
-    val = checkFormatMAC('00:00:00:12:00:00')
-    assert val == '00:00:00:12:00:00'
-
-
-def test_checkFormatMAC_7():
-    val = checkFormatMAC('00:L0:00:12:00:00')
-    assert val is None
 
 
 def test_waitTimeFlip_1(function):

@@ -21,8 +21,10 @@ import socket
 import wakeonlan
 
 # local import
+from mountcontrol.setting import Setting
+from mountcontrol.firmware import  Firmware
 from gui.utilities.toolsQtWidget import MWidget
-from mountcontrol.mount import checkFormatMAC
+from base.ethernet import checkFormatMAC
 
 
 class SettMount(MWidget):
@@ -53,7 +55,7 @@ class SettMount(MWidget):
         self.app.update3s.connect(self.updateTelescopeParametersToGuiCyclic)
         self.app.update30s.connect(self.syncClock)
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """
         """
         config = self.app.config['mainW']
@@ -79,7 +81,7 @@ class SettMount(MWidget):
         if self.ui.automaticWOL.isChecked():
             self.mountBoot()
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """
         """
         config = self.app.config['mainW']
@@ -98,111 +100,86 @@ class SettMount(MWidget):
         config['syncTimeNotTrack'] = self.ui.syncTimeNotTrack.isChecked()
         config['clockSync'] = self.ui.clockSync.isChecked()
 
-    def mountBoot(self):
+    def mountBoot(self) -> None:
         """
         """
         bAddress = self.ui.mountWolAddress.text().strip()
         bPort = self.ui.mountWolPort.text().strip()
         bPort = (int(bPort) if bPort else 0)
-        suc = self.app.mount.bootMount(bAddress=bAddress, bPort=bPort)
-        if suc:
-            self.msg.emit(0, 'Mount', 'Command',
-                          'Sent boot command to mount')
+        if self.app.mount.bootMount(bAddress=bAddress, bPort=bPort):
+            self.msg.emit(0, 'Mount', 'Command', 'Sent boot command to mount')
         else:
             self.msg.emit(2, 'Mount', 'Command', 'Mount cannot be booted')
-        return suc
 
-    def mountShutdown(self):
+    def mountShutdown(self) -> None:
         """
         """
         self.app.deviceStat['mount'] = False
-        suc = self.app.mount.shutdown()
-        if suc:
+        if self.app.mount.shutdown():
             self.msg.emit(0, 'Mount', 'Command', 'Shutting mount down')
         else:
             self.msg.emit(2, 'Mount', 'Command', 'Mount cannot be shutdown')
-        return suc
 
-    def bootRackComp(self):
+    def bootRackComp(self) -> None:
         """
         """
-        MAC = self.ui.rackCompMAC.text()
-        MAC = checkFormatMAC(MAC)
+        MAC = checkFormatMAC(self.ui.rackCompMAC.text())
         if MAC is not None:
             wakeonlan.send_magic_packet(MAC)
-            self.msg.emit(0, 'Rack', 'Command',
-                          'Sent boot command to rack computer')
-            return True
+            self.msg.emit(0, 'Rack', 'Command', 'Sent boot command to rack computer')
         else:
-            self.msg.emit(2, 'Rack', 'Command',
-                          'Rack computer cannot be booted')
-            return False
+            self.msg.emit(2, 'Rack', 'Command', 'Rack computer cannot be booted')
 
-    def mountHost(self):
+    def mountHost(self) -> None:
         """
         """
-        if self.ui.port3492.isChecked():
-            port = 3492
-        else:
-            port = 3490
-
+        port = 3492 if self.ui.port3492.isChecked() else 3490
         host = self.ui.mountHost.text()
         if not host:
-            return False
+            return
         try:
             socket.gethostbyname(host)
         except Exception as e:
             self.msg.emit(2, 'Mount', 'Setting error', f'{e}')
-            return False
+            return
 
         self.app.mount.host = (host, port)
         self.app.hostChanged.emit()
-        return True
 
-    def mountMAC(self):
+    def mountMAC(self) -> None:
         """
-        :return: true for test purpose
         """
         self.app.mount.MAC = self.ui.mountMAC.text()
-        return True
 
-    def setMountMAC(self, sett=None):
+    def setMountMAC(self, sett: Setting = None) -> None:
         """
-        :param sett:
-        :return: true for test purpose
         """
         if sett is None:
-            return False
+            return
         if sett.addressLanMAC is None:
-            return False
+            return
         if not sett.addressLanMAC:
-            return False
+            return
 
         self.app.mount.MAC = sett.addressLanMAC
         self.ui.mountMAC.setText(self.app.mount.MAC)
-        return True
 
-    def setWaitTimeFlip(self):
+    def setWaitTimeFlip(self) -> None:
         """
-        :return: true for test purpose
         """
         self.app.mount.waitTimeFlip = self.ui.waitTimeMountFlip.value()
-        return True
 
-    def updateFwGui(self, fw):
+    def updateFwGui(self, fw: Firmware) -> None:
         """
-        :return:    True if ok for testing
         """
         self.guiSetText(self.ui.product, 's', fw.product)
         self.guiSetText(self.ui.vString, 's', fw.vString)
         self.guiSetText(self.ui.fwdate, 's', fw.date)
         self.guiSetText(self.ui.fwtime, 's', fw.time)
         self.guiSetText(self.ui.hardware, 's', fw.hardware)
-        return True
 
-    def toggleClockSync(self):
+    def toggleClockSync(self) -> None:
         """
-        :return:
         """
         enableSyncTimer = self.ui.clockSync.isChecked()
         self.ui.syncTimeNone.setEnabled(enableSyncTimer)
@@ -214,70 +191,51 @@ class SettMount(MWidget):
             self.app.mount.startMountClockTimer()
         else:
             self.app.mount.stopMountClockTimer()
-        return True
 
-    def syncClock(self):
+    def syncClock(self) -> None:
         """
-        :return:
         """
         syncTimeNone = self.ui.syncTimeNone.isChecked()
         if syncTimeNone:
-            return False
+            return
         if not self.app.deviceStat['mount']:
-            return False
+            return
 
         doSyncNotTrack = self.ui.syncTimeNotTrack.isChecked()
         mountTracks = self.app.mount.obsSite.status in [0, 10]
         if doSyncNotTrack and mountTracks:
-            return False
+            return
 
         delta = self.app.mount.obsSite.timeDiff * 1000
         if abs(delta) < 10:
-            return False
+            return
 
         if delta > 999:
             delta = 999
         if delta < -999:
             delta = -999
 
-        delta = int(delta)
-        suc = self.app.mount.obsSite.adjustClock(delta)
-        if not suc:
-            self.msg.emit(2, 'System', 'Clock',
-                          'Cannot adjust mount clock')
-            return False
+        if self.app.mount.obsSite.adjustClock(int(delta)):
+            self.msg.emit(0, 'System', 'Clock', f'Correction: [{-delta} ms]')
+        else:
+            self.msg.emit(2, 'System', 'Clock', 'Cannot adjust mount clock')
 
-        self.msg.emit(0, 'System', 'Clock',
-                      f'Correction: [{-delta} ms]')
-        return True
-
-    def updateTelescopeParametersToGui(self):
+    def updateTelescopeParametersToGui(self) -> None:
         """
-        updateTelescopeParametersToGui takes the information gathered from the
-        driver and programs them into gui for later use.
-
-        :return: true for test purpose
         """
-
-        value = self.app.telescope.data.get(
-            'TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 0)
+        data = self.app.telescope.data
+        value = data.get('TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 0)
         if value is not None:
             value = float(value)
             self.ui.focalLength.setValue(value)
 
-        value = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_APERTURE',
-                                            0)
+        value = data.get('TELESCOPE_INFO.TELESCOPE_APERTURE', 0)
         if value is not None:
             value = float(value)
             self.ui.aperture.setValue(value)
 
-        return True
-
-    def updateTelescopeParametersToGuiCyclic(self):
+    def updateTelescopeParametersToGuiCyclic(self) -> None:
         """
-        :return:
         """
-        if not self.ui.automaticTelescope.isChecked():
-            return False
-        self.updateTelescopeParametersToGui()
-        return True
+        if self.ui.automaticTelescope.isChecked():
+            self.updateTelescopeParametersToGui()

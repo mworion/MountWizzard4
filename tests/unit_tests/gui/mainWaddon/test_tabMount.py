@@ -147,32 +147,28 @@ def test_setLunarTracking_1(function):
     with mock.patch.object(function.app.mount.setting,
                            'setLunarTracking',
                            return_value=True):
-        suc = function.setLunarTracking()
-        assert suc
+        function.setLunarTracking()
 
 
 def test_setLunarTracking_2(function):
     with mock.patch.object(function.app.mount.setting,
                            'setLunarTracking',
                            return_value=False):
-        suc = function.setLunarTracking()
-        assert not suc
+        function.setLunarTracking()
 
 
 def test_setSiderealTracking_1(function):
     with mock.patch.object(function.app.mount.setting,
                            'setSiderealTracking',
                            return_value=False):
-        suc = function.setSiderealTracking()
-        assert not suc
+        function.setSiderealTracking()
 
 
 def test_setSiderealTracking_2(function):
     with mock.patch.object(function.app.mount.setting,
                            'setSiderealTracking',
                            return_value=True):
-        suc = function.setSiderealTracking()
-        assert suc
+        function.setSiderealTracking()
 
 
 def test_setSolarTracking_1(function):
@@ -187,8 +183,7 @@ def test_setSolarTracking_2(function):
     with mock.patch.object(function.app.mount.setting,
                            'setSolarTracking',
                            return_value=True):
-        suc = function.setSolarTracking()
-        assert suc
+        function.setSolarTracking()
 
 
 def test_flipMountGameController_1(function):
@@ -201,16 +196,14 @@ def test_flipMount_1(function):
     with mock.patch.object(function.app.mount.obsSite,
                            'flip',
                            return_value=False):
-        suc = function.flipMount()
-        assert not suc
+        function.flipMount()
 
 
 def test_flipMount_2(function):
     with mock.patch.object(function.app.mount.obsSite,
                            'flip',
                            return_value=True):
-        suc = function.flipMount()
-        assert suc
+        function.flipMount()
 
 
 def test_stopGameController_1(function):
@@ -223,13 +216,11 @@ def test_stop_1(function):
     with mock.patch.object(function.app.mount.obsSite,
                            'stop',
                            return_value=True):
-        suc = function.stop()
-        assert suc
+        function.stop()
 
 
 def test_stop_2(function):
     with mock.patch.object(function.app.mount.obsSite,
                            'stop',
                            return_value=False):
-        suc = function.stop()
-        assert not suc
+        function.stop()

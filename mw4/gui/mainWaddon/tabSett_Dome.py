@@ -32,6 +32,7 @@ class SettDome(MWidget):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
+
         self.ui.domeRadius.valueChanged.connect(self.setUseGeometry)
         self.ui.offGEM.valueChanged.connect(self.setUseGeometry)
         self.ui.offLAT.valueChanged.connect(self.setUseGeometry)

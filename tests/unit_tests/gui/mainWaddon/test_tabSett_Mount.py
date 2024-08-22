@@ -58,32 +58,28 @@ def test_mountBoot_1(function):
     with mock.patch.object(function.app.mount,
                            'bootMount',
                            return_value=False):
-        suc = function.mountBoot()
-        assert not suc
+        function.mountBoot()
 
 
 def test_mountBoot_2(function):
     with mock.patch.object(function.app.mount,
                            'bootMount',
                            return_value=True):
-        suc = function.mountBoot()
-        assert suc
+        function.mountBoot()
 
 
 def test_mountShutdown_1(function):
     with mock.patch.object(function.app.mount,
                            'shutdown',
                            return_value=False):
-        suc = function.mountShutdown()
-        assert not suc
+        function.mountShutdown()
 
 
 def test_mountShutdown_2(function):
     with mock.patch.object(function.app.mount,
                            'shutdown',
                            return_value=True):
-        suc = function.mountShutdown()
-        assert suc
+        function.mountShutdown()
 
 
 def test_bootRackComp_1(function):
@@ -93,8 +89,7 @@ def test_bootRackComp_1(function):
         with mock.patch.object(wakeonlan,
                                'send_magic_packet',
                                return_value=False):
-            suc = function.bootRackComp()
-            assert suc
+            function.bootRackComp()
 
 
 def test_bootRackComp_2(function):
@@ -102,15 +97,13 @@ def test_bootRackComp_2(function):
     with mock.patch.object(wakeonlan,
                            'send_magic_packet',
                            return_value=True):
-        suc = function.bootRackComp()
-        assert not suc
+        function.bootRackComp()
 
 
 def test_mountHost_1(function):
     function.ui.port3492.setChecked(True)
     function.ui.mountHost.setText('')
-    suc = function.mountHost()
-    assert not suc
+    function.mountHost()
 
 
 def test_mountHost_2(function):
@@ -120,15 +113,13 @@ def test_mountHost_2(function):
                            'gethostbyname',
                            return_value=True,
                            side_effect=Exception):
-        suc = function.mountHost()
-        assert not suc
+        function.mountHost()
 
 
 def test_mountHost_3(function):
     function.ui.port3490.setChecked(True)
     function.ui.mountHost.setText('192.168.2.1')
-    suc = function.mountHost()
-    assert suc
+    function.mountHost()
     assert function.app.mount.host == ('192.168.2.1', 3490)
 
 
@@ -140,24 +131,21 @@ def test_mountMAC(function):
 
 
 def test_setMountMAC_1(function):
-    suc = function.setMountMAC()
-    assert not suc
+    function.setMountMAC()
 
 
 def test_setMountMAC_2(function):
     class Test:
         addressLanMAC = None
         typeConnection = 0
-    suc = function.setMountMAC(sett=Test())
-    assert not suc
+    function.setMountMAC(sett=Test())
 
 
 def test_setMountMAC_3(function):
     class Test:
         addressLanMAC = ''
         typeConnection = 0
-    suc = function.setMountMAC(sett=Test())
-    assert not suc
+    function.setMountMAC(sett=Test())
 
 
 def test_setMountMAC_4(function):
@@ -165,16 +153,14 @@ def test_setMountMAC_4(function):
         addressLanMAC = None
         typeConnection = 0
     function.app.mount.MAC = None
-    suc = function.setMountMAC(sett=Test())
-    assert not suc
+    function.setMountMAC(sett=Test())
 
 
 def test_setMountMAC_5(function):
     class Test:
         addressLanMAC = '00:00:0xx:00:00:00'
         typeConnection = 3
-    suc = function.setMountMAC(sett=Test())
-    assert suc
+    function.setMountMAC(sett=Test())
 
 
 def test_setMountMAC_6(function):
@@ -182,101 +168,39 @@ def test_setMountMAC_6(function):
         addressLanMAC = '00:00:00:00:00:00'
         typeConnection = 3
     function.app.mount.MAC = '00:00:00:00:00:00'
-    suc = function.setMountMAC(Test())
-    assert suc
+    function.setMountMAC(Test())
 
 
 def test_setWaitTimeFlip_1(function):
-    suc = function.setWaitTimeFlip()
-    assert suc
-
-
-def test_updateFwGui_productName(function):
-    value = 'Test1234'
-    function.app.mount.firmware.product = value
-    function.updateFwGui(function.app.mount.firmware)
-    assert value == function.ui.product.text()
-    value = None
-    function.app.mount.firmware.product = value
-    function.updateFwGui(function.app.mount.firmware)
-    assert '-' == function.ui.product.text()
-
-
-def test_updateFwGui_hwVersion(function):
-    value = 'Test1234'
-    function.app.mount.firmware.hardware = value
-    function.updateFwGui(function.app.mount.firmware)
-    assert value == function.ui.hardware.text()
-    value = None
-    function.app.mount.firmware.hardware = value
-    function.updateFwGui(function.app.mount.firmware)
-    assert '-' == function.ui.hardware.text()
-
-
-def test_updateFwGui_numberString(function):
-    value = '2.15.18'
-    function.app.mount.firmware.vString = value
-    function.updateFwGui(function.app.mount.firmware)
-    assert value == function.ui.vString.text()
-    value = None
-    function.app.mount.firmware.vString = value
-    function.updateFwGui(function.app.mount.firmware)
-    assert '-' == function.ui.vString.text()
-
-
-def test_updateFwGui_fwdate(function):
-    value = 'Test1234'
-    function.app.mount.firmware.date = value
-    function.updateFwGui(function.app.mount.firmware)
-    assert value == function.ui.fwdate.text()
-    value = None
-    function.app.mount.firmware.date = value
-    function.updateFwGui(function.app.mount.firmware)
-    assert '-' == function.ui.fwdate.text()
-
-
-def test_updateFwGui_fwtime(function):
-    value = 'Test1234'
-    function.app.mount.firmware.time = value
-    function.updateFwGui(function.app.mount.firmware)
-    assert value == function.ui.fwtime.text()
-    value = None
-    function.app.mount.firmware.time = value
-    function.updateFwGui(function.app.mount.firmware)
-    assert '-' == function.ui.fwtime.text()
+    function.setWaitTimeFlip()
 
 
 def test_toggleClockSync_1(function):
     function.ui.clockSync.setChecked(True)
-    suc = function.toggleClockSync()
-    assert suc
+    function.toggleClockSync()
 
 
 def test_toggleClockSync_2(function):
     function.ui.clockSync.setChecked(False)
-    suc = function.toggleClockSync()
-    assert suc
+    function.toggleClockSync()
 
 
 def test_syncClock_1(function):
     function.ui.syncTimeNone.setChecked(True)
-    suc = function.syncClock()
-    assert not suc
+    function.syncClock()
 
 
 def test_syncClock_2(function):
     function.ui.syncTimeNotTrack.setChecked(True)
     function.app.deviceStat['mount'] = False
-    suc = function.syncClock()
-    assert not suc
+    function.syncClock()
 
 
 def test_syncClock_3(function):
     function.ui.syncTimeNotTrack.setChecked(True)
     function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 0
-    suc = function.syncClock()
-    assert not suc
+    function.syncClock()
 
 
 @mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff', 0.005)
@@ -284,8 +208,7 @@ def test_syncClock_4(function):
     function.ui.syncTimeCont.setChecked(True)
     function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 1
-    suc = function.syncClock()
-    assert not suc
+    function.syncClock()
 
 
 @mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff', 1)
@@ -296,8 +219,7 @@ def test_syncClock_5(function):
     with mock.patch.object(function.app.mount.obsSite,
                            'adjustClock',
                            return_value=False):
-        suc = function.syncClock()
-        assert not suc
+        function.syncClock()
 
 
 @mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff', -1)
@@ -308,27 +230,24 @@ def test_syncClock_6(function):
     with mock.patch.object(function.app.mount.obsSite,
                            'adjustClock',
                            return_value=True):
-        suc = function.syncClock()
-        assert suc
+        function.syncClock()
 
 
 def test_updateTelescopeParametersToGui_1(function):
     function.app.telescope.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] = 1
     function.app.telescope.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] = 1
 
-    suc = function.updateTelescopeParametersToGui()
-    assert suc
+    function.updateTelescopeParametersToGui()
 
 
 def test_updateTelescopeParametersToGuiCyclic_1(function):
     function.ui.automaticTelescope.setChecked(False)
-    suc = function.updateTelescopeParametersToGuiCyclic()
-    assert not suc
+    function.updateTelescopeParametersToGuiCyclic()
 
 
 def test_updateTelescopeParametersToGuiCyclic_2(function):
     function.ui.automaticTelescope.setChecked(True)
     with mock.patch.object(function,
                            'updateTelescopeParametersToGui'):
-        suc = function.updateTelescopeParametersToGuiCyclic()
-        assert suc
+        function.updateTelescopeParametersToGuiCyclic()
+

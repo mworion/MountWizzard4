@@ -26,8 +26,9 @@ from PySide6.QtCore import QThreadPool, QTimer
 from skyfield.api import wgs84
 
 # local imports
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mountcontrol.mountSignals import MountSignals
-from mountcontrol.mount import Mount
+from mountcontrol.mount import MountDevice
 from base.loggerMW import setupLogging
 from mountcontrol.mount import checkFormatMAC
 
@@ -36,11 +37,11 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='module')
 def function():
-    m = Mount(host=None,
-              MAC='00:00:00:00:00:00',
-              pathToData=os.getcwd() + '/data',
-              verbose=False,
-              threadPool=QThreadPool())
+    m = MountDevice(app=App(),
+                    host=None,
+                    MAC='00:00:00:00:00:00',
+                    pathToData=os.getcwd() + '/data',
+                    verbose=False)
     yield m
 
 

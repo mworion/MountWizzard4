@@ -171,6 +171,10 @@ def test_setMountMAC_6(function):
     function.setMountMAC(Test())
 
 
+def test_updateFwGui_1(function):
+    function.updateFwGui(function.app.mount.firmware)
+
+
 def test_setWaitTimeFlip_1(function):
     function.setWaitTimeFlip()
 

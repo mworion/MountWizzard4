@@ -35,7 +35,7 @@ from mountcontrol.dome import Dome
 from mountcontrol.model import Model
 from base.tpool import Worker
 
-__all__ = ['Mount']
+__all__ = ['MountDevice']
 
 
 def checkFormatMAC(value):
@@ -72,7 +72,7 @@ def checkFormatMAC(value):
     return value
 
 
-class Mount:
+class MountDevice:
     """
     """
     CYCLE_POINTING = 500
@@ -85,13 +85,14 @@ class Mount:
 
     log = logging.getLogger(__name__)
 
-    def __init__(self, host, MAC, threadPool, pathToData, verbose):
+    def __init__(self, app, host, MAC, pathToData, verbose):
         self._waitTime = 0
         self._waitTimeFlip = 0
 
+        self.app = app
         self.host = host
         self.MAC = MAC
-        self.threadPool = threadPool
+        self.threadPool = app.threadPool
         self.pathToData = pathToData
         self.verbose = verbose
 
@@ -107,6 +108,7 @@ class Mount:
         self.model = Model(parent=self)
 
         self.mountUp = False
+        self.mountUpLastStatus = False
         self.statusAlert = False
         self.statusSlew = True
 
@@ -199,13 +201,30 @@ class Mount:
                                verbose=self.verbose)
         self.satellite = Satellite(parent=self)
         self.geometry = Geometry(parent=self)
-
         self.signals.pointDone.emit(self.obsSite)
         self.signals.settingDone.emit(self.setting)
         self.signals.alignDone.emit(self.model)
         self.signals.namesDone.emit(self.model)
         self.signals.firmwareDone.emit(self.firmware)
         self.signals.locationDone.emit(self.obsSite.location)
+
+    def startupMountData(self, status: bool) -> None:
+        """
+        """
+        if status and not self.mountUpLastStatus:
+            self.mountUpLastStatus = True
+            self.cycleSetting()
+            self.getFW()
+            self.getLocation()
+            self.app.refreshModel.emit()
+            self.app.refreshName.emit()
+            self.getTLE()
+
+        elif not status and self.mountUpLastStatus:
+            self.mountUpLastStatus = False
+            location = self.obsSite.location
+            self.resetData()
+            self.obsSite.location = location
 
     def checkMountUp(self):
         """
@@ -216,17 +235,14 @@ class Mount:
                 client.connect(self.host)
             except (socket.timeout, socket.error):
                 self.mountUp = False
-                # self.timerSetting.stop()
-                # self.timerPointing.stop()
             else:
                 self.mountUp = True
-                # self.timerSetting.start(self.CYCLE_SETTING)
-                # self.timerPointing.start(self.CYCLE_POINTING)
         return self.mountUp
 
     def clearCycleCheckMountUp(self):
         """
         """
+        self.startupMountData(self.mountUp)
         self.signals.mountUp.emit(self.mountUp)
 
     def cycleCheckMountUp(self):

@@ -28,7 +28,7 @@ from importlib_metadata import version
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
-from mountcontrol.mount import Mount
+from mountcontrol.mount import MountDevice
 from gui.mainWindow.mainWindow import MainWindow
 from logic.powerswitch.kmRelay import KMRelay
 from logic.modeldata.buildpoints import DataPoint
@@ -119,7 +119,6 @@ class MountWizzard4(QObject):
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(30)
         self.expireData = False
-        self.mountUp = False
         self.mainW = None
         self.timerCounter = 0
         self.statusOperationRunning = 0
@@ -151,15 +150,14 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, 'System', 'Profile', f'Base: {profile}'))
         # initialize commands to mount
         pathToData = self.mwGlob['dataDir']
-        self.mount = Mount(host=('127.0.0.1', 3294),
-                           MAC='00.c0.08.87.35.db',
-                           threadPool=self.threadPool,
-                           pathToData=pathToData,
-                           verbose=False)
+        self.mount = MountDevice(app=self,
+                                 host=None,
+                                 MAC='00.c0.08.87.35.db',
+                                 pathToData=pathToData,
+                                 verbose=False)
         # setting location to last know config
         topo = self.initConfig()
         self.mount.obsSite.location = topo
-        self.mount.signals.mountUp.connect(self.loadMountData)
         self.ephemeris = self.mount.obsSite.loader('de440_mw4.bsp')
         self.relay = KMRelay()
         self.sensor1Weather = SensorWeather(self)
@@ -181,9 +179,9 @@ class MountWizzard4(QObject):
         self.measure = MeasureData(self)
         self.remote = Remote(self)
         self.plateSolve = PlateSolve(self)
+        self.mount.startMountTimers()
         self.mainW = MainWindow(self)
 
-        self.mount.startMountTimers()
         self.timer0_1s = QTimer()
         self.timer0_1s.setSingleShot(False)
         self.timer0_1s.timeout.connect(self.sendCyclic)
@@ -191,6 +189,7 @@ class MountWizzard4(QObject):
         self.mainW.initConfig()
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
+
 
         if os.path.isfile(self.mwGlob["workDir"] + '/test.run'):
             self.update3s.connect(self.quit)
@@ -294,28 +293,6 @@ class MountWizzard4(QObject):
         config = self.config.get('hemisphereW', {})
         fileName = config.get('horizonMaskFileName', '')
         self.data.loadHorizonP(fileName=fileName)
-
-    def loadMountData(self, status: bool) -> bool:
-        """
-        """
-        if status and not self.mountUp:
-            self.mount.cycleSetting()
-            self.mount.getFW()
-            self.mount.getLocation()
-            self.refreshName.emit()
-            self.refreshModel.emit()
-            self.mountUp = True
-            self.mount.getTLE()
-            return True
-
-        elif not status and self.mountUp:
-            location = self.mount.obsSite.location
-            self.mount.resetData()
-            self.mount.obsSite.location = location
-            self.mountUp = False
-            self.playSound.emit('ConnectionLost')
-            return False
-        return status
 
     # noinspection PyUnresolvedReferences
     def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:

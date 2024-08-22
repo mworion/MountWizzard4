@@ -17,26 +17,26 @@
 # standard libraries
 
 # external packages
-import PySide6.QtCore
+from PySide6.QtCore import QObject, Signal
 
 # local imports
 
 
-class MountSignals(PySide6.QtCore.QObject):
+class MountSignals(QObject):
     """
     """
-    pointDone = PySide6.QtCore.Signal(object)
-    domeDone = PySide6.QtCore.Signal(object)
-    settingDone = PySide6.QtCore.Signal(object)
-    alignDone = PySide6.QtCore.Signal(object)
-    namesDone = PySide6.QtCore.Signal(object)
-    firmwareDone = PySide6.QtCore.Signal(object)
-    locationDone = PySide6.QtCore.Signal(object)
-    calcTLEdone = PySide6.QtCore.Signal(object)
-    statTLEdone = PySide6.QtCore.Signal(object)
-    getTLEdone = PySide6.QtCore.Signal(object)
-    calcProgress = PySide6.QtCore.Signal(object)
-    calcTrajectoryDone = PySide6.QtCore.Signal(object)
-    mountUp = PySide6.QtCore.Signal(object)
-    slewFinished = PySide6.QtCore.Signal()
-    alert = PySide6.QtCore.Signal()
+    pointDone = Signal(object)
+    domeDone = Signal(object)
+    settingDone = Signal(object)
+    alignDone = Signal(object)
+    namesDone = Signal(object)
+    firmwareDone = Signal(object)
+    locationDone = Signal(object)
+    calcTLEdone = Signal(object)
+    statTLEdone = Signal(object)
+    getTLEdone = Signal(object)
+    calcProgress = Signal(object)
+    calcTrajectoryDone = Signal(object)
+    mountUp = Signal(object)
+    slewFinished = Signal()
+    alert = Signal()

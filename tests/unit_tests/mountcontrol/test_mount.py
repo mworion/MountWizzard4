@@ -36,7 +36,8 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='module')
 def function():
-    m = Mount(host='localhost',
+    m = Mount(host=None,
+              MAC='00:00:00:00:00:00',
               pathToData=os.getcwd() + '/data',
               verbose=False,
               threadPool=QThreadPool())
@@ -139,6 +140,40 @@ def test_stopClockTimer(function):
 
 def test_resetData_1(function):
     function.resetData()
+
+
+def test_startupMountData_1(function):
+    function.mountUpLastStatus = False
+    with mock.patch.object(function,
+                           'cycleSetting'):
+        with mock.patch.object(function,
+                               'getFW'):
+            with mock.patch.object(function,
+                                   'getLocation'):
+                with mock.patch.object(function,
+                                       'getTLE'):
+                    function.startupMountData(True)
+                    assert function.mountUpLastStatus
+
+
+def test_startupMountData_2(function):
+    function.mountUpLastStatus = False
+    function.startupMountData(False)
+    assert not function.mountUpLastStatus
+
+
+def test_startupMountData_3(function):
+    function.mountUpLastStatus = True
+    with mock.patch.object(function,
+                           'resetData'):
+        function.startupMountData(False)
+        assert not function.mountUpLastStatus
+
+
+def test_startupMountData_4(function):
+    function.mountUpLastStatus = True
+    function.startupMountData(True)
+    assert function.mountUpLastStatus
 
 
 def test_checkMountUp_1(function):

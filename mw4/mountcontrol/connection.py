@@ -236,17 +236,17 @@ class Connection(object):
 
         except socket.timeout:
             self.closeClientHard(client)
-            self.log.debug(f'[{self.id}] socket timeout')
+            self.log.trace(f'[{self.id}] socket timeout')
             return None
 
         except socket.error as e:
             self.closeClientHard(client)
-            self.log.debug(f'[{self.id}] socket error: [{e}]')
+            self.log.trace(f'[{self.id}] socket error: [{e}]')
             return None
 
         except Exception as e:
             self.closeClientHard(client)
-            self.log.debug(f'[{self.id}] socket error: [{e}]')
+            self.log.debug(f'[{self.id}] socket general: [{e}]')
             return None
 
         else:
@@ -311,7 +311,7 @@ class Connection(object):
 
         else:
             response = response.rstrip('#').split('#')
-            self.log.trace(f'[{self.id}] response: [{response}]')
+            self.log.trace(f'Response [{self.id}]: [{response}]')
             return True, response
 
     def communicate(self, commandString):
@@ -332,7 +332,7 @@ class Connection(object):
 
         numberOfChunks, getData, minBytes = self.analyseCommand(commandString)
 
-        t = f'[{self.id}] sending: [{commandString}], getData: [{getData}],'
+        t = f'Sending  [{self.id}]: [{commandString}], getData: [{getData}],'
         t += f'minBytes: [{minBytes}], numOfChunks: [{numberOfChunks}], host: [{self.host}]'
         self.log.trace(t)
 

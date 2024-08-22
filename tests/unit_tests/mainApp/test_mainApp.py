@@ -180,39 +180,5 @@ def test_loadHorizonData_1(app):
     app.loadHorizonData()
 
 
-def test_loadMountData_1(app):
-    app.mountUp = False
-    with mock.patch.object(app.mount,
-                           'cycleSetting'):
-        with mock.patch.object(app.mount,
-                               'getFW'):
-            with mock.patch.object(app.mount,
-                                   'getLocation'):
-                with mock.patch.object(app.mount,
-                                       'getTLE'):
-                    suc = app.loadMountData(True)
-                    assert suc
-
-
-def test_loadMountData_2(app):
-    app.mountUp = False
-    suc = app.loadMountData(False)
-    assert not suc
-
-
-def test_loadMountData_3(app):
-    app.mountUp = True
-    with mock.patch.object(app.mount,
-                           'resetData'):
-        suc = app.loadMountData(False)
-        assert not suc
-
-
-def test_loadMountData_4(app):
-    app.mountUp = True
-    suc = app.loadMountData(True)
-    assert suc
-
-
 def test_writeMessageQueue(app):
     app.writeMessageQueue(1, 'test', 'test', 'test')

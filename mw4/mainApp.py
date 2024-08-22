@@ -190,10 +190,8 @@ class MountWizzard4(QObject):
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
 
-
         if os.path.isfile(self.mwGlob["workDir"] + '/test.run'):
             self.update3s.connect(self.quit)
-
         if len(sys.argv) > 1:
             self.messageQueue.put((1, 'System', 'Arguments', sys.argv[1]))
 

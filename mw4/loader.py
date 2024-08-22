@@ -42,13 +42,12 @@ import resource.resources as res
 res.qInitResources()
 iers.conf.auto_download = False
 data.conf.allow_internet = False
-log = logging.getLogger()
+log = logging.getLogger('loader')
 
 
 class MyApp(QApplication):
     """
     """
-
     log = logging.getLogger(__name__)
 
     def __init__(self, *argv):

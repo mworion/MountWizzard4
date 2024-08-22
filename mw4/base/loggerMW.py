@@ -130,9 +130,11 @@ def setupLogging() -> None:
     logging.getLogger('urllib3').setLevel(logging.WARNING)
     logging.getLogger('astropy').setLevel(logging.WARNING)
     logging.getLogger('keyring').setLevel(logging.WARNING)
+
     addLoggingLevel('HEADER', 55)
     addLoggingLevel('UI', 35)
     addLoggingLevel('TRACE', 5)
+
     redirectSTD()
 
 

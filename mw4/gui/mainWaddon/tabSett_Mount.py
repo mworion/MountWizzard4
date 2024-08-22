@@ -38,6 +38,8 @@ class SettMount(MWidget):
 
         self.ui.mountOn.clicked.connect(self.mountBoot)
         self.ui.mountOff.clicked.connect(self.mountShutdown)
+        self.app.mountOn.connect(self.mountBoot)
+        self.app.mountOff.connect(self.mountShutdown)
         self.ui.mountHost.editingFinished.connect(self.mountHost)
         self.ui.port3492.clicked.connect(self.mountHost)
         self.ui.port3490.clicked.connect(self.mountHost)
@@ -46,8 +48,6 @@ class SettMount(MWidget):
         self.ui.waitTimeMountFlip.valueChanged.connect(self.setWaitTimeFlip)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
         self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
-        self.app.mountOn.connect(self.mountBoot)
-        self.app.mountOff.connect(self.mountShutdown)
         self.app.mount.signals.settingDone.connect(self.setMountMAC)
         self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
         self.app.update3s.connect(self.updateTelescopeParametersToGuiCyclic)

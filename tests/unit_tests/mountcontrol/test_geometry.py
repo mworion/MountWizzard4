@@ -23,16 +23,19 @@ from skyfield.api import Angle, wgs84
 import numpy as np
 
 # local imports
-from mountcontrol.mount import Mount
+from mountcontrol.mount import MountDevice
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from base.loggerMW import setupLogging
 setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    m = Mount(host='192.168.2.15',
-              pathToData=os.getcwd() + '/data',
-              verbose=True)
+    m = MountDevice(app=App(),
+                    host=None,
+                    MAC=None,
+                    pathToData=os.getcwd() + '/data',
+                    verbose=True)
     m.obsSite.location = wgs84.latlon(latitude_degrees=90,
                                       longitude_degrees=11,
                                       elevation_m=500)

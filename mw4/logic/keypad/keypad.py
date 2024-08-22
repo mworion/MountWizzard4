@@ -319,8 +319,7 @@ class KeyPad:
         """
         if self.ws is None:
             return
-        print(message)
-        self.ws.send(message)
+        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
 
     def mousePressed(self, key):
         """

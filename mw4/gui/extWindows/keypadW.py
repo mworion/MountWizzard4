@@ -111,7 +111,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         elif key == 16777220:
             key = 13
         elif key == 16777249:
-            key == 16
+            key = 16
 
         if self.inputActive and keyEvent.type() == 6:
             self.signals.keyPressed.emit(key)

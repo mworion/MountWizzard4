@@ -41,6 +41,7 @@ releaseNotes = """
 - refactor: satellite handling
 - improve: reduced size of app
 - improve: faster startup time
+- improve: faster database loading
 - improve: optimizing material look & feel
 - improve: don't delete message list when color change
 - improve: rewrite of the online documentation
@@ -53,7 +54,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='4.0.0a17',
+    version='4.0.0a18',
     packages=find_packages(),
     python_requires='>=3.9.0, <3.13',
     install_requires=[

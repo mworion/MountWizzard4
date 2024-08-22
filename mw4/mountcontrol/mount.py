@@ -85,9 +85,7 @@ class Mount:
 
     log = logging.getLogger(__name__)
 
-    def __init__(self, host=None, MAC=None,
-                 threadPool=None, pathToData=None, verbose=None):
-
+    def __init__(self, host, MAC, threadPool, pathToData, verbose):
         self._waitTime = 0
         self._waitTimeFlip = 0
 
@@ -218,8 +216,12 @@ class Mount:
                 client.connect(self.host)
             except (socket.timeout, socket.error):
                 self.mountUp = False
+                # self.timerSetting.stop()
+                # self.timerPointing.stop()
             else:
                 self.mountUp = True
+                # self.timerSetting.start(self.CYCLE_SETTING)
+                # self.timerPointing.start(self.CYCLE_POINTING)
         return self.mountUp
 
     def clearCycleCheckMountUp(self):

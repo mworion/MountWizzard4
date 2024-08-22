@@ -225,7 +225,7 @@ class Connection(object):
             self.log.info(f'[{self.id}] no host defined')
             return None
         if not isinstance(self.host, tuple):
-            self.log.info(f'[{self.id}] host entry malformed')
+            self.log.info(f'[{self.id}] host entry malformed> {self.host}')
             return None
 
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

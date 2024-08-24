@@ -36,7 +36,6 @@ from base.indiClass import IndiClass
 from base.alpacaClass import AlpacaClass
 from base.sgproClass import SGProClass
 from base.ninaClass import NINAClass
-from base.loggerMW import addLoggingLevel
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -59,7 +58,6 @@ def function(qapp):
                              driver='telescope',
                              deviceType='telescope')
         window.log = logging.getLogger()
-        addLoggingLevel('TRACE', 5)
         yield window
 
 

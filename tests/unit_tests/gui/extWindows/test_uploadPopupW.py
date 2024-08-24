@@ -17,17 +17,16 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import astropy
 import builtins
 
 # external packages
-from PySide6.QtCore import QThreadPool
 from PySide6.QtWidgets import QWidget
 import requests
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 import gui.extWindows.uploadPopupW
+import gui.utilities.toolsQtWidget
 from gui.extWindows.uploadPopupW import UploadPopup
 
 
@@ -128,6 +127,17 @@ def test_sendProgressValue(function):
     function.sendProgressValue('12')
 
 
+def test_pollDispatcherHelper(function):
+    text = 'Processing'
+    function.pollDispatcherHelper(text)
+    assert not function.pollStatusRunState
+
+
+def test_pollDispatcher_0(function):
+    text = ['']
+    function.pollDispatcher(text)
+
+
 def test_pollDispatcher_1(function):
     text = ['Uploading']
     function.pollDispatcher(text)
@@ -182,7 +192,7 @@ def test_pollDispatcher_7(function):
 
 
 def test_pollDispatcher_8(function):
-    text = ['wutwrut']
+    text = ['test']
     function.pollDispatcher(text)
 
 
@@ -194,6 +204,7 @@ def test_pollStatus_1(function):
 def test_pollStatus_2(function):
     class Test:
         status_code = 202
+        text = 'test'
 
     function.pollStatusRunState = True
     with mock.patch.object(requests,
@@ -202,30 +213,7 @@ def test_pollStatus_2(function):
         function.pollStatus()
         assert not function.pollStatusRunState
         assert not function.returnValues['successMount']
-
-
-def test_pollStatus_3(function):
-    class Test:
-        status_code = 200
-        text = 'test'
-
-    def pollDispatcher(text):
-        function.pollStatusRunState = False
-        function.timeoutCounter = 0
-        return False
-
-    function.pollStatusRunState = True
-    temp = function.pollDispatcher
-    function.pollDispatcher = pollDispatcher
-    with mock.patch.object(requests,
-                           'get',
-                           return_value=Test()):
-        with mock.patch.object(gui.extWindows.uploadPopupW,
-                               'sleepAndEvents'):
-            function.pollStatus()
-            assert not function.pollStatusRunState
-            assert not function.returnValues['successMount']
-    function.pollDispatcher = temp
+        assert not function.returnValues['successMount']
 
 
 def test_closePopup_1(function):

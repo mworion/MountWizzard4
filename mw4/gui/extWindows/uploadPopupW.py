@@ -115,6 +115,58 @@ class UploadPopup(MWidget):
         """
         self.ui.statusText.setText(statusText)
 
+    def sendProgressValue(self, text: str) -> None:
+        """:
+        """
+        progressValue = int(re.search(r'\d+', text).group())
+        self.signalProgress.emit(progressValue)
+
+    def pollDispatcherHelper(self, text: str) -> None:
+        """
+        """
+        self.sendProgressValue('100')
+        self.signalStatus.emit(text)
+        self.pollStatusRunState = False
+
+    def pollDispatcher(self, text: list) -> None:
+        """
+        """
+        if text == ['']:
+            return
+
+        single = len(text) == 1
+        multiple = len(text) > 1
+
+        if single and text[0].split()[0] in ['Uploading', 'Processing']:
+            self.signalStatus.emit(text[0])
+
+        elif multiple and text[-1].split()[-1] in ['file.', 'failed']:
+            self.pollDispatcherHelper(text[-1])
+            self.returnValues['successMount'] = False
+
+        elif multiple and text[-1].split()[-1] in ['saved.', 'updated.']:
+            self.pollDispatcherHelper(text[-1])
+            self.returnValues['successMount'] = True
+            self.returnValues['success'] = True
+
+        elif multiple and text[-1][0].isdigit():
+            self.sendProgressValue(text[-1])
+
+    def pollStatus(self) -> None:
+        """
+        """
+        self.signalStatus.emit('Uploading data to mount...')
+        while self.pollStatusRunState:
+            sleepAndEvents(250)
+            returnValues = requests.get(f'http://{self.url}/bin/uploadst', timeout=1)
+            self.pollDispatcher(returnValues.text.strip('\n').split('\n'))
+
+            if returnValues.status_code != 200:
+                self.log.debug(f'Error status: {returnValues.status_code}')
+                self.pollStatusRunState = False
+                self.returnValues['successMount'] = False
+                break
+
     def uploadFileWorker(self) -> bool:
         """
         """
@@ -142,78 +194,6 @@ class UploadPopup(MWidget):
             self.log.debug(f'Error uploading data: {returnValues.status_code}')
             return False
         return True
-
-    def sendProgressValue(self, text: str) -> None:
-        """:
-        """
-        progressValue = int(re.search(r'\d+', text).group())
-        self.signalProgress.emit(progressValue)
-
-    def pollDispatcher(self, text: str) -> None:
-        """
-        """
-        single = len(text) == 1
-        multiple = len(text) > 1
-
-        if single and text[0].startswith('Uploading'):
-            self.signalStatus.emit(text[0])
-
-        elif single and text[0].startswith('Processing'):
-            self.signalStatus.emit(text[0])
-
-        elif multiple and text[-1].endswith('elements file.'):
-            self.pollStatusRunState = False
-            self.sendProgressValue('100')
-            self.signalStatus.emit(text[-1])
-            self.returnValues['successMount'] = False
-
-        elif multiple and text[-1].endswith('file failed'):
-            self.pollStatusRunState = False
-            self.sendProgressValue('100')
-            self.signalStatus.emit(text[-1])
-            self.returnValues['successMount'] = False
-
-        elif multiple and text[-1].endswith('elements saved.'):
-            self.returnValues['successMount'] = True
-            self.returnValues['success'] = True
-            self.sendProgressValue('100')
-            self.signalStatus.emit(text[-1])
-            self.pollStatusRunState = False
-
-        elif multiple and text[-1].endswith('data updated.'):
-            self.returnValues['successMount'] = True
-            self.returnValues['success'] = True
-            self.sendProgressValue('100')
-            self.signalStatus.emit(text[-1])
-            self.pollStatusRunState = False
-
-        elif multiple and text[-1][0].isdigit():
-            self.sendProgressValue(text[-1])
-
-    def pollStatus(self) -> None:
-        """
-        """
-        self.timeoutCounter = 10
-        self.signalStatus.emit('Uploading data to mount...')
-        while self.pollStatusRunState:
-            url = f'http://{self.url}/bin/uploadst'
-            returnValues = requests.get(url)
-            if returnValues.status_code != 200:
-                self.log.debug(f'Error status: {returnValues.status_code}')
-                self.pollStatusRunState = False
-                self.returnValues['successMount'] = False
-                return
-
-            tRaw = returnValues.text
-            text = tRaw.strip('\n').split('\n')
-
-            if not self.pollDispatcher(text):
-                self.timeoutCounter -= 1
-                if self.timeoutCounter < 0:
-                    self.pollStatusRunState = False
-                    self.returnValues['successMount'] = False
-
-            sleepAndEvents(500)
 
     def closePopup(self, result: bool) -> None:
         """

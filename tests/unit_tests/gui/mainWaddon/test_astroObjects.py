@@ -194,15 +194,8 @@ def test_progObjects_1(function):
 
 
 def test_progObjects_2(function):
-    def test(objects, dataFilePath=''):
-        return False
-    function.objectText = 'comet'
-    function.dbProcFuncs['comet'] = test
-    function.progObjects(['test'])
-
-
-def test_progObjects_3(function):
     function.app.mount.host = ('localhost', 3492)
+
 
     def test(objects, dataFilePath=''):
         return True

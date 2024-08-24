@@ -87,9 +87,8 @@ class AstroObjects(QObject):
     def procSourceData(self, direct: bool = False) -> None:
         """
         """
-        if not direct:
-            if not self.downloadPopup.returnValues['success']:
-                return
+        if not direct and not self.downloadPopup.returnValues['success']:
+            return
         self.dataValid = False
         self.processSource()
         self.dataLoaded.emit()
@@ -158,12 +157,7 @@ class AstroObjects(QObject):
             self.msg.emit(2, self.objectText.capitalize(), 'Data error',
                           'No data to export - stopping')
             return
-        suc = self.dbProcFuncs[self.objectText](objects, dataFilePath=self.tempDir)
-        if not suc:
-            self.msg.emit(2, self.objectText, 'Data error',
-                          'Data could not be exported - stopping')
-            return
-
+        self.dbProcFuncs[self.objectText](objects, dataFilePath=self.tempDir)
         self.msg.emit(0, self.objectText.capitalize(), 'Program',
                       'Uploading to mount')
         url = self.app.mount.host[0]
@@ -184,7 +178,7 @@ class AstroObjects(QObject):
         selectedItems = self.uiObjectList.selectedItems()
         selectedObjects = []
         for entry in selectedItems:
-            if not entry.column() == 1:
+            if entry.column() != 1:
                 continue
             name = entry.text()
             selectedObjects.append(self.objects.get(name))

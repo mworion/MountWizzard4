@@ -281,7 +281,7 @@ class EnvironWeather(MWidget):
                 value = data.get(self.envFields[field]['valueKey'])
                 self.guiSetText(ui, self.envFields[field]['format'], value)
 
-    def clearSourceGui(self, source: str) -> bool:
+    def clearSourceGui(self, source: str, sender) -> bool:
         """
         """
         self.refractionSources[source]['data'].clear()

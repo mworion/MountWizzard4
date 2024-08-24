@@ -42,7 +42,7 @@ import resource.resources as res
 res.qInitResources()
 iers.conf.auto_download = False
 data.conf.allow_internet = False
-log = logging.getLogger('loader')
+log = logging.getLogger('MW4')
 
 
 class MyApp(QApplication):

@@ -210,7 +210,7 @@ class UploadPopup(MWidget):
             else:
                 self.signalProgressBarColor.emit('red')
 
-        sleepAndEvents(2500)
+        sleepAndEvents(1500)
         self.close()
 
     def uploadFile(self) -> None:

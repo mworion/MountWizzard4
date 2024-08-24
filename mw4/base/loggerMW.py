@@ -15,12 +15,14 @@
 #
 ###########################################################
 # standard libraries
-import os
-import logging
-import time
-from logging.handlers import RotatingFileHandler
-import datetime
 import sys
+import os
+import time
+import datetime
+import logging
+from logging.handlers import RotatingFileHandler
+from functools import partial, partialmethod
+
 
 # external packages
 
@@ -52,47 +54,6 @@ class LoggerWriter:
         flush has to be present, but is not used
         """
         pass
-
-
-def addLoggingLevel(levelName: str, levelNum: int, methodName: str = None) -> None:
-    """
-    Comprehensively adds a new logging level to the `logging` module and the
-    currently configured logging class.
-
-    `levelName` becomes an attribute of the `logging` module with the value
-    `levelNum`.
-
-    `methodName` becomes a convenience method for both `logging`
-    itself and the class returned by `logging.getLoggerClass()` (usually just
-    `logging.Logger`).
-
-    If `methodName` is not specified, `levelName.lower()` is used.
-
-    To avoid accidental clobberings of existing attributes, this method will
-    raise an `AttributeError` if the level name is already an attribute of the
-    `logging` module or if the method name is already present
-
-    This method was inspired by the answers to Stack Overflow post
-    http://stackoverflow.com/q/2183233/2988730, especially
-    http://stackoverflow.com/a/13638084/2988730
-
-    """
-    if not methodName:
-        methodName = levelName.lower()
-    if hasattr(logging, levelName):
-        return
-    if hasattr(logging, methodName):
-        return
-    if hasattr(logging.getLoggerClass(), methodName):
-        return
-
-    def logForLevel(self, message, *args, **kwargs):
-        if self.isEnabledFor(levelNum):
-            self._log(levelNum, message, args, **kwargs)
-
-    logging.addLevelName(levelNum, levelName)
-    setattr(logging, levelName, levelNum)
-    setattr(logging.getLoggerClass(), methodName, logForLevel)
 
 
 def redirectSTD() -> None:
@@ -131,9 +92,20 @@ def setupLogging() -> None:
     logging.getLogger('astropy').setLevel(logging.WARNING)
     logging.getLogger('keyring').setLevel(logging.WARNING)
 
-    addLoggingLevel('HEADER', 55)
-    addLoggingLevel('UI', 35)
-    addLoggingLevel('TRACE', 5)
+    logging.TRACE = 5
+    logging.addLevelName(5, 'TRACE')
+    logging.Logger.trace = partialmethod(logging.Logger.log, logging.TRACE)
+    logging.trace = partial(logging.log, logging.TRACE)
+
+    logging.UI = 35
+    logging.addLevelName(logging.UI, 'UI')
+    logging.Logger.ui = partialmethod(logging.Logger.log, logging.UI)
+    logging.ui = partial(logging.log, logging.UI)
+
+    logging.HEADER = 55
+    logging.addLevelName(logging.HEADER, 'HEADER')
+    logging.Logger.header = partialmethod(logging.Logger.log, logging.HEADER)
+    logging.header = partial(logging.log, logging.HEADER)
 
     redirectSTD()
 
@@ -141,4 +113,4 @@ def setupLogging() -> None:
 def setCustomLoggingLevel(level: str = 'WARN') -> None:
     """
     """
-    logging.getLogger().setLevel(level)
+    logging.getLogger('MW4').setLevel(level)

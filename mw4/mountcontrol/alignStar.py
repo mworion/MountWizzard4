@@ -37,7 +37,7 @@ class AlignStar(object):
     """
     __all__ = ['AlignStar']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, mCoord=None, pierside=None, sCoord=None, sidereal=None):
         self.mCoord = mCoord

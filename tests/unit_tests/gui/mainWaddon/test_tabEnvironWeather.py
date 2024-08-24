@@ -213,17 +213,8 @@ def test_selectRefractionSource_2(function):
             function.selectRefractionSource('onlineWeather')
 
 
-def test_updateFilterRefractionParameters_1(function):
-    function.refractionSource = 'onlineWeather'
-    function.app.onlineWeather.data.clear()
-    suc = function.updateFilterRefractionParameters()
-    assert not suc
-
-
 def test_updateFilterRefractionParameters_2(function):
     function.refractionSource = 'weather'
-    function.app.onlineWeather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10
-    function.app.onlineWeather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
     suc = function.updateFilterRefractionParameters()
     assert not suc
 
@@ -240,38 +231,11 @@ def test_updateFilterRefractionParameters_4(function):
     function.refractionSource = 'sensor1Weather'
     function.app.onlineWeather.data.clear()
     suc = function.updateFilterRefractionParameters()
-    assert not suc
+    assert suc
 
 
 def test_updateFilterRefractionParameters_5(function):
     function.refractionSource = 'sensor1Weather'
-    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10
-    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
-    suc = function.updateFilterRefractionParameters()
-    assert suc
-
-
-def test_updateFilterRefractionParameters_6(function):
-    function.refractionSource = 'sensor1Weather'
-    function.filteredTemperature = None
-    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10
-    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
-    suc = function.updateFilterRefractionParameters()
-    assert suc
-
-
-def test_updateFilterRefractionParameters_7(function):
-    function.refractionSource = 'sensor1Weather'
-    function.filteredPressure = None
-    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10
-    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
-    suc = function.updateFilterRefractionParameters()
-    assert suc
-
-
-def test_updateFilterRefractionParameters_8(function):
-    function.refractionSource = 'sensor1Weather'
-    function.filteredTemperature = np.full(100, 10)
     function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10
     function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
     suc = function.updateFilterRefractionParameters()
@@ -285,15 +249,6 @@ def test_updateFilterRefractionParameters_9(function):
     function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
     suc = function.updateFilterRefractionParameters()
     assert suc
-
-
-def test_movingAverageRefractionParameters_1(function):
-    function.app.sensor1Weather.data.clear()
-    function.filteredPressure = None
-    function.filteredTemperature = None
-    v1, v2 = function.movingAverageRefractionParameters()
-    assert v1 is None
-    assert v2 is None
 
 
 def test_movingAverageRefractionParameters_2(function):
@@ -324,15 +279,16 @@ def test_updateRefractionParameters_3(function):
     function.app.deviceStat['mount'] = True
     with mock.patch.object(function,
                            'movingAverageRefractionParameters',
-                           return_value=(None, None)):
+                           return_value=(0, 950)):
         suc = function.updateRefractionParameters()
-        assert not suc
+        assert suc
 
 
-def test_updateRefractionParameters_4(function):
+def test_updateRefractionParameters_4a(function):
     function.refractionSource = 'onlineWeather'
     function.app.deviceStat['mount'] = True
     function.ui.refracManual.setChecked(True)
+    function.app.mount.obsSite.status = 0
     with mock.patch.object(function,
                            'movingAverageRefractionParameters',
                            return_value=(10, 10)):
@@ -340,10 +296,9 @@ def test_updateRefractionParameters_4(function):
         assert not suc
 
 
-def test_updateRefractionParameters_5(function):
+def test_updateRefractionParameters_4(function):
     function.refractionSource = 'onlineWeather'
     function.app.deviceStat['mount'] = True
-    function.ui.refracManual.setChecked(False)
     function.ui.refracNoTrack.setChecked(True)
     function.app.mount.obsSite.status = 0
     with mock.patch.object(function,
@@ -353,7 +308,7 @@ def test_updateRefractionParameters_5(function):
         assert not suc
 
 
-def test_updateRefractionParameters_6(function):
+def test_updateRefractionParameters_5(function):
     function.refractionSource = 'onlineWeather'
     function.app.deviceStat['mount'] = True
     function.ui.refracNoTrack.setChecked(True)
@@ -369,7 +324,7 @@ def test_updateRefractionParameters_6(function):
             assert not suc
 
 
-def test_updateRefractionParameters_7(function, qtbot):
+def test_updateRefractionParameters_6(function):
     function.refractionSource = 'onlineWeather'
     function.app.deviceStat['mount'] = True
     function.ui.refracNoTrack.setChecked(True)
@@ -398,7 +353,7 @@ def test_updateSourceGui_1(function):
 
 
 def test_clearSourceGui_1(function):
-    function.clearSourceGui('test')
+    function.clearSourceGui('sensor1Weather')
     assert function.ui.temperature1.text() == '-'
     assert function.ui.pressure1.text() == '-'
     assert function.ui.dewPoint1.text() == '-'

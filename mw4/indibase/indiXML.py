@@ -70,7 +70,7 @@ Notes:
 class INDIBase(object):
     """
     """
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, etype, value, attr_dict, etree):
         self.etype = etype

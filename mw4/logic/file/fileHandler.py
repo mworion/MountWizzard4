@@ -44,7 +44,7 @@ class FileHandler:
     """
     __all__ = ['FileHandler']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, app, imagePath='', flipH=False, flipV=False):
         self.threadPool = app.threadPool

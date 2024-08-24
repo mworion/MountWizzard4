@@ -45,7 +45,7 @@ class Connection(object):
     """
     __all__ = ['Connection']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     # I don't want so wait to long for a response. In average, I see values
     # shorter than 0.5 sec, so 2 seconds should be good

@@ -34,7 +34,7 @@ class Astrometry(object):
     """
     __all__ = ['Astrometry']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, parent=None):
         self.parent = parent

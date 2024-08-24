@@ -33,7 +33,7 @@ class Watney(object):
     """
     __all__ = ['Watney']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     returnCodes = {0: 'No errors',
                    1: 'No solution',

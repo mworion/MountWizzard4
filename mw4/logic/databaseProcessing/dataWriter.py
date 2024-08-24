@@ -30,7 +30,7 @@ class DataWriter:
     """
     __all__ = ['DataWriter']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, app):
         super().__init__()

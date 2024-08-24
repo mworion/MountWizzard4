@@ -31,7 +31,7 @@ from gui.extWindows.uploadPopupW import UploadPopup
 class AstroObjects(QObject):
     """
     """
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     dataLoaded = Signal()
 

@@ -38,7 +38,7 @@ class Geometry(object):
     """
     __all__ = ['Geometry']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     geometryData = {
         '10micron GM1000HPS': {

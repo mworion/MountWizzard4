@@ -48,7 +48,7 @@ log = logging.getLogger('loader')
 class MyApp(QApplication):
     """
     """
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, *argv):
         super().__init__(*argv)

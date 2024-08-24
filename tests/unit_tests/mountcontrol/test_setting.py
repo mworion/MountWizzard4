@@ -1045,29 +1045,6 @@ class TestConfigData(unittest.TestCase):
                                              pressure=800)
             self.assertEqual(True, suc)
 
-    def test_Setting_setRefractionParam_not_ok(self):
-        class Parent:
-            host = None
-        setting = Setting(parent=Parent())
-
-        response = ['01']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 2
-            suc = setting.setRefractionParam(temperature=None,
-                                             pressure=800)
-            self.assertEqual(False, suc)
-
-    def test_Setting_setRefractionParam_not_ok0(self):
-        class Parent:
-            host = None
-        setting = Setting(parent=Parent())
-
-        response = ['01']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 2
-            suc = setting.setRefractionParam(temperature=5,
-                                             pressure=None)
-            self.assertEqual(False, suc)
 
     def test_Setting_setRefractionParam_not_ok1(self):
         class Parent:
@@ -1170,27 +1147,6 @@ class TestConfigData(unittest.TestCase):
             suc = setting.setSlewRate(5)
             self.assertEqual(True, suc)
 
-    def test_Setting_setSlewRate_not_ok(self):
-        class Parent:
-            host = None
-        setting = Setting(parent=Parent())
-
-        response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 1
-            suc = setting.setSlewRate('E')
-            self.assertEqual(False, suc)
-
-    def test_Setting_setSlewRate_not_ok0(self):
-        class Parent:
-            host = None
-        setting = Setting(parent=Parent())
-
-        response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 1
-            suc = setting.setSlewRate(None)
-            self.assertEqual(False, suc)
 
     def test_Setting_setSlewRate_not_ok1(self):
         class Parent:

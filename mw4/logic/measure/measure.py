@@ -32,7 +32,7 @@ class MeasureData:
     """
     __all__ = ['MeasureData']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     # maximum size of measurement task
     MAXSIZE = 48 * 60 * 60

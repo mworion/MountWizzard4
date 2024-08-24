@@ -43,7 +43,7 @@ class ASTAP(object):
                    -2: 'Exception during solving',
                    }
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, parent):
         self.parent = parent

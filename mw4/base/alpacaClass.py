@@ -31,9 +31,6 @@ from base.tpool import Worker
 class AlpacaClass(DriverData):
     """
     """
-
-    log = logging.getLogger(__name__)
-
     ALPACA_TIMEOUT = 3
     CLIENT_ID = uuid.uuid4().int % 2**16
 

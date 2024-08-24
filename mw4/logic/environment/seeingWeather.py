@@ -39,7 +39,7 @@ class SeeingWeather():
     """
     __all__ = ['SeeingWeather']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, app=None):
         super().__init__()

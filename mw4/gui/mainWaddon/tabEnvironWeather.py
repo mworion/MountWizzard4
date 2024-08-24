@@ -35,8 +35,8 @@ class EnvironWeather(MWidget):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.refractionSource = ''
-        self.filteredTemperature = None
-        self.filteredPressure = None
+        self.filteredTemperature = np.full(60, 0)
+        self.filteredPressure = np.full(60, 950)
         self.seeingEnabled = False
 
         self.refractionSources = {
@@ -69,7 +69,7 @@ class EnvironWeather(MWidget):
 
         for source in self.refractionSources:
             self.refractionSources[source]['signals'].deviceDisconnected.connect(
-                self.clearSourceGui)
+                partial(self.clearSourceGui, source))
             self.refractionSources[source]['group'].clicked.connect(
                 partial(self.selectRefractionSource, source))
 
@@ -211,73 +211,44 @@ class EnvironWeather(MWidget):
     def selectRefractionSource(self, source):
         """
         """
-        old = self.refractionSource
-
         if self.refractionSources[source]['group'].isChecked():
             self.refractionSource = source
         else:
             self.refractionSource = ''
 
-        if old != self.refractionSource:
-            self.filteredTemperature = None
-            self.filteredPressure = None
-
         self.setRefractionSourceGui()
         self.setRefractionUpdateType()
 
-    def updateFilterRefractionParameters(self):
+    def updateFilterRefractionParameters(self) -> bool:
         """
         """
-        if self.refractionSource in ['sensor1Weather', 'sensor2Weather',
-                                     'sensor3Weather', 'onlineWeather']:
-            key = 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE'
-            temp = self.refractionSources[self.refractionSource]['data'].get(key)
-            key = 'WEATHER_PARAMETERS.WEATHER_PRESSURE'
-            press = self.refractionSources[self.refractionSource]['data'].get(key)
-
-        else:
-            temp = None
-            press = None
-
-        if temp is None or press is None or press < 500:
-            self.filteredTemperature = None
-            self.filteredPressure = None
+        if self.refractionSource not in ['sensor1Weather', 'sensor2Weather',
+                                         'sensor3Weather', 'onlineWeather']:
             return False
 
-        if self.filteredTemperature is None:
-            self.filteredTemperature = np.full(100, temp)
-        else:
+        key = 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE'
+        temp = self.refractionSources[self.refractionSource]['data'].get(key, 0)
+        key = 'WEATHER_PARAMETERS.WEATHER_PRESSURE'
+        press = self.refractionSources[self.refractionSource]['data'].get(key, 950)
+
+        if temp is not None:
             self.filteredTemperature = np.roll(self.filteredTemperature, 1)
             self.filteredTemperature[0] = temp
 
-        if self.filteredPressure is None:
-            self.filteredPressure = np.full(100, press)
-        else:
+        if press is not None:
             self.filteredPressure = np.roll(self.filteredPressure, 1)
             self.filteredPressure[0] = press
         return True
 
-    def movingAverageRefractionParameters(self):
+    def movingAverageRefractionParameters(self) -> tuple:
         """
-        getFilteredRefracParams filters local temperature and pressure with and
-        moving average filter over 100 seconds and returns the filtered values.
-
-        :return:  temperature and pressure
         """
-        if self.filteredTemperature is None or self.filteredPressure is None:
-            return None, None
-
         temp = np.mean(self.filteredTemperature)
         press = np.mean(self.filteredPressure)
         return temp, press
 
-    def updateRefractionParameters(self):
+    def updateRefractionParameters(self) -> bool:
         """
-        updateRefractionParameters takes the actual conditions for update into
-        account and does the update of the refraction parameters. this could be
-        done during when mount is not in tracking state or continuously
-
-        :return: success if update happened
         """
         if self.refractionSource == 'directWeather':
             return False
@@ -285,8 +256,6 @@ class EnvironWeather(MWidget):
             return False
 
         temp, press = self.movingAverageRefractionParameters()
-        if temp is None or press is None:
-            return False
         if self.ui.refracManual.isChecked():
             return False
         if self.ui.refracNoTrack.isChecked():
@@ -301,7 +270,7 @@ class EnvironWeather(MWidget):
             return False
         return True
 
-    def updateSourceGui(self):
+    def updateSourceGui(self) -> bool:
         """
         """
         for source in self.refractionSources:
@@ -312,11 +281,10 @@ class EnvironWeather(MWidget):
                 value = data.get(self.envFields[field]['valueKey'])
                 self.guiSetText(ui, self.envFields[field]['format'], value)
 
-    def clearSourceGui(self, deviceName=''):
+    def clearSourceGui(self, source: str) -> bool:
         """
         """
-        for source in self.refractionSources:
-            self.refractionSources[source]['data'].clear()
+        self.refractionSources[source]['data'].clear()
         self.ui.meteoblueIcon.setVisible(False)
         self.ui.meteoblueSeeing.setVisible(False)
         self.updateSourceGui()

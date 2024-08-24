@@ -32,7 +32,7 @@ class CameraSupport:
     """
     __all__ = ['CameraSupport']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
     raJ2000 = None
     decJ2000 = None
 

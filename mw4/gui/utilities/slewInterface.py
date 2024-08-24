@@ -29,7 +29,7 @@ class SlewInterface:
     """
 
     __all__ = ['SlewInterface']
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def slewSelectedTargetWithDome(self, slewType='normal'):
         """

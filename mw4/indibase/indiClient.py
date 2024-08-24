@@ -38,7 +38,7 @@ class Client(QObject):
     """
 
     __all__ = ['Client']
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     GENERAL_INTERFACE = 0
     TELESCOPE_INTERFACE = (1 << 0)

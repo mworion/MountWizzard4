@@ -32,7 +32,7 @@ class Firmware(object):
     """
     __all__ = ['Firmware']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, parent):
         self.parent = parent

@@ -50,7 +50,7 @@ class Worker(QRunnable):
 
     __all__ = ['Worker']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, fn, *args, **kwargs):
         """

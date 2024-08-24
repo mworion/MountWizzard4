@@ -29,9 +29,8 @@ from base.driverDataClass import Signals
 class IndiClass:
     """
     """
-
     __all__ = ['IndiClass']
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5

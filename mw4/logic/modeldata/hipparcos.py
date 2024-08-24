@@ -34,7 +34,7 @@ class Hipparcos(object):
     """
     __all__ = ['Hipparcos']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, app=None):
         self.app = app

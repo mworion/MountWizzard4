@@ -31,8 +31,6 @@ from base.tpool import Worker
 class NINAClass(DriverData, QObject):
     """
     """
-    log = logging.getLogger(__name__)
-
     NINA_TIMEOUT = 3
     HOST_ADDR = 'localhost'
     PORT = 59590

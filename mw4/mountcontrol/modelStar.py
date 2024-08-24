@@ -50,7 +50,7 @@ class ModelStar(object):
     """
     __all__ = ['ModelStar']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, coord=None, errorRMS=None, errorAngle=None,
                  number=None, obsSite=None):

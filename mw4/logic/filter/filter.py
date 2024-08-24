@@ -32,7 +32,7 @@ class Filter:
     """
     __all__ = ['Filter']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, app):
         self.app = app

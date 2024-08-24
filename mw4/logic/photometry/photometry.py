@@ -48,7 +48,7 @@ class Photometry:
     """
     __all__ = ['Photometry']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     ABERRATION_SIZE = 250
     FILTER_SCALE = 10

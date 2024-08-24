@@ -67,7 +67,7 @@ class MWidget(QWidget, Styles):
     """
 
     __all__ = ['MWidget']
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self):
         super().__init__()

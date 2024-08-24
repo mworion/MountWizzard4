@@ -31,8 +31,6 @@ from base.tpool import Worker
 class SGProClass(DriverData, QObject):
     """
     """
-    log = logging.getLogger(__name__)
-
     SGPRO_TIMEOUT = 3
     HOST_ADDR = 'localhost'
     PORT = 59590

@@ -30,7 +30,7 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
 
     __all__ = ['MeasureDataCSV']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     # update rate to 1 seconds for setting indi server
     CYCLE_UPDATE_TASK = 1000

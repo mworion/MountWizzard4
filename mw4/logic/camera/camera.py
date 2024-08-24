@@ -35,7 +35,7 @@ class Camera:
     """
     __all__ = ['Camera']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, app):
         self.app = app

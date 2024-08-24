@@ -33,7 +33,7 @@ from base.packageConfig import isSimulationMount
 class RunBasic:
     """
     """
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, mainW):
         self.mainW = mainW

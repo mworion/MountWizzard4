@@ -45,7 +45,7 @@ class RemoteDeviceShutdown(QObject):
 
 
 class DriverData:
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def storePropertyToData(self, value, element, elementInv=None):
         """

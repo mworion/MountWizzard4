@@ -36,7 +36,7 @@ class Dome:
     """
     __all__ = ['Dome']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, app):
         self.app = app

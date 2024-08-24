@@ -38,7 +38,7 @@ class KMRelay:
     """
     __all__ = ['KMRelay']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     CYCLE_POLLING = 1000
     DEFAULT_PORT = 80

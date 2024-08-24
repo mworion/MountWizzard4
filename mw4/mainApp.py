@@ -60,7 +60,7 @@ class MountWizzard4(QObject):
     __all__ = ['MountWizzard4']
     __version__ = version('mountwizzard4')
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     material = Signal(object, object)
     msg = Signal(object, object, object, object)

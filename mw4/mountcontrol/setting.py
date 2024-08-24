@@ -27,13 +27,10 @@ from mountcontrol.convert import valueToInt
 
 class Setting(object):
     """
-    The class Setting inherits all information and handling of setting
-    attributes of the connected mount and provides the abstracted interface
-    to a 10 micron mount.
     """
     __all__ = ['Setting']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, parent=None):
         self.parent = parent
@@ -339,13 +336,8 @@ class Setting(object):
     def settleTime(self, value):
         self._settleTime = valueToFloat(value)
 
-    def parseSetting(self, response, numberOfChunks):
+    def parseSetting(self, response: list, numberOfChunks: int) -> bool:
         """
-        Parsing the polling med command.
-
-        :param response:        data load from mount
-        :param numberOfChunks:
-        :return: success:       True if ok, False if not
         """
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
@@ -386,13 +378,8 @@ class Setting(object):
         self.settleTime = response[23]
         return True
 
-    def pollSetting(self):
+    def pollSetting(self) -> bool:
         """
-        Sending the polling med command. As the mount need polling the data, I
-        send a set of commands to get the data back to be able to process and
-        store it.
-
-        :return:    success:    True if ok, False if not
         """
         conn = Connection(self.parent.host)
         cs1 = ':U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#'
@@ -405,110 +392,64 @@ class Setting(object):
         suc = self.parseSetting(response, numberOfChunks)
         return suc
 
-    def setSlewRate(self, value):
+    def setSlewRate(self, value: (int, float)) -> bool:
         """
-        setSlewRate sends the command for setting the max slew rate to the mount.
-
-        :param value:   float for max slew rate in degrees per second
-        :return:        success
         """
-        if value is None:
-            return False
-        if not isinstance(value, (int, float)):
-            return False
-        if value < 2:
-            return False
-        elif value > 15:
+        if value < 2 or value > 15:
             return False
         conn = Connection(self.parent.host)
         commandString = f':Sw{value:02.0f}#:RMs{value:02.0f}#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '10':
             return False
         return True
 
-    def setSlewSpeedMax(self):
+    def setSlewSpeedMax(self) -> bool:
         """
-        setSlewSpeedMax set the slewing speed to max
-
-        :return: success
         """
         conn = Connection(self.parent.host)
         commandString = ':RC3#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, _, _ = conn.communicate(commandString)
         return suc
 
-    def setSlewSpeedHigh(self):
+    def setSlewSpeedHigh(self) -> bool:
         """
-        setSlewSpeedHigh set the slewing speed to centering rate. the different
-        speeds are set through setting different centering rates, because setting
-        different slew speeds leads to a scenario, that we get a different setup
-        in max slew speed as well.
-
-        :return: success
         """
         conn = Connection(self.parent.host)
         commandString = ':RC2#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, _, _ = conn.communicate(commandString)
         return suc
 
-    def setSlewSpeedMed(self):
+    def setSlewSpeedMed(self) -> bool:
         """
-        setSlewSpeedMed set the slewing speed to centering rate. the different
-        speeds are set through setting different centering rates, because setting
-        different slew speeds leads to a scenario, that we get a different setup
-        in max slew speed as well.
-
-        :return: success
         """
         conn = Connection(self.parent.host)
         centerSpeed = 255
         commandString = f':Rc{centerSpeed:02.0f}#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, _, _ = conn.communicate(commandString)
         return suc
 
-    def setSlewSpeedLow(self):
+    def setSlewSpeedLow(self) -> bool:
         """
-        setSlewSpeedLow set the slewing speed to centering rate. the different
-        speeds are set through setting different centering rates, because setting
-        different slew speeds leads to a scenario, that we get a different setup
-        in max slew speed as well.
-
-        :return: success
         """
         conn = Connection(self.parent.host)
         centerSpeed = 128
         commandString = f':Rc{centerSpeed:02.0f}#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, _, _ = conn.communicate(commandString)
         return suc
 
-    def setRefractionParam(self, temperature=None, pressure=None):
+    def setRefractionParam(self, temperature: float, pressure: float):
         """
-        setRefractionParam sends the command for setting the temperature and
-        pressure to the mount. the limits are set to -40 to +75 for temp and 500
-        to 1300 hPa for pressure, but there is not real documented limit.
-
-        :param          temperature:    float for temperature correction in Celsius
-        :param          pressure:       float for pressure correction in hPa
-        :return:        success
         """
-        if temperature is None:
+        if temperature < -40 or temperature > 75:
             return False
-        if pressure is None:
-            return False
-        if temperature < -40:
-            return False
-        elif temperature > 75:
-            return False
-        if pressure < 500:
-            return False
-        elif pressure > 1300:
+        if pressure < 500 or pressure > 1300:
             return False
         conn = Connection(self.parent.host)
         commandString = f':SRPRS{pressure:06.1f}#:SRTMP{temperature:+06.1f}#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '11':
@@ -517,22 +458,14 @@ class Setting(object):
 
     def setRefractionTemp(self, value):
         """
-        setRefractionTemp sends the command for setting the temperature to the
-        mount. the limit is set to -40 to +75, but there is not real documented
-        limit.
-
-        :param value:   float for temperature correction in Celsius
-        :return:        success
         """
         if value is None:
             return False
-        if value < -40:
-            return False
-        elif value > 75:
+        if value < -40 or value > 75:
             return False
         conn = Connection(self.parent.host)
         commandString = ':SRTMP{0:+06.1f}#'.format(value)
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '1':
@@ -541,22 +474,14 @@ class Setting(object):
 
     def setRefractionPress(self, value):
         """
-        setRefractionPress sends the command for setting the pressure to the
-        mount. the limit is set from 500 to 1300 hPa. no limit give from the
-        mount. limits here are relevant over 5000m height
-
-        :param value:   float for pressure correction
-        :return:        success
         """
         if value is None:
             return False
-        if value < 500:
-            return False
-        elif value > 1300:
+        if value < 500 or value > 1300:
             return False
         conn = Connection(self.parent.host)
         commandString = ':SRPRS{0:06.1f}#'.format(value)
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '1':
@@ -565,15 +490,10 @@ class Setting(object):
 
     def setRefraction(self, status):
         """
-        setRefraction sends the command to the mount.
-
-        :param status:  bool for enable or disable refraction correction
-        :return:        success
         """
-
         conn = Connection(self.parent.host)
         commandString = ':SREF{0:1d}#'.format(1 if status else 0)
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '1':
@@ -582,28 +502,18 @@ class Setting(object):
 
     def setUnattendedFlip(self, status):
         """
-        setUnattendedFlip sends the  command to the mount. the command returns nothing.
-
-        :param status:  bool for enable or disable unattended flip
-        :return:        success
         """
-
         conn = Connection(self.parent.host)
         commandString = ':Suaf{0:1d}#'.format(1 if status else 0)
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, _, _ = conn.communicate(commandString)
         return suc
 
     def setDualAxisTracking(self, status):
         """
-        setDualAxisTracking sends the  command to the mount.
-
-        :param status:  bool for enable or disable dual tracking
-        :return:        success
         """
-
         conn = Connection(self.parent.host)
         commandString = ':Sdat{0:1d}#'.format(1 if status else 0)
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '1':
@@ -612,15 +522,10 @@ class Setting(object):
 
     def setWOL(self, status):
         """
-        setWOL sends the  command to the mount.
-
-        :param status:  bool for enable or disable WOL
-        :return:        success
         """
-
         conn = Connection(self.parent.host)
         commandString = ':SWOL{0:1d}#'.format(1 if status else 0)
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '1':
@@ -629,20 +534,13 @@ class Setting(object):
 
     def setMeridianLimitTrack(self, value):
         """
-        setMeridianLimitTrack sends the command for setting flip limit to the mount.
-        the limit is set from 1 to 30 degrees
-
-        :param value:   float for degrees
-        :return:        success
         """
-        if value < 1:
-            return False
-        elif value > 30:
+        if value < 1 or value > 30:
             return False
         conn = Connection(self.parent.host)
         value = int(value)
         commandString = f':Slmt{value:02d}#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '1':
@@ -651,20 +549,13 @@ class Setting(object):
 
     def setMeridianLimitSlew(self, value):
         """
-        setMeridianLimitSlew sends the command for setting flip limit to the mount.
-        the limit is set to -20 to 20 degrees
-
-        :param value:   float / int for degrees
-        :return:        success
         """
-        if value < 0:
-            return False
-        elif value > 30:
+        if value < 0 or value > 30:
             return False
         conn = Connection(self.parent.host)
         value = int(value)
         commandString = f':Slms{value:02d}#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '1':
@@ -673,20 +564,13 @@ class Setting(object):
 
     def setHorizonLimitHigh(self, value):
         """
-        setHorizonLimitHigh sends the command for setting the limit to the mount.
-        the limit is set from 0 to 90 degrees
-
-        :param value:   float / int for degrees
-        :return:        success
         """
-        if value < 0:
-            return False
-        elif value > 90:
+        if value < 0 or value > 90:
             return False
         conn = Connection(self.parent.host)
         value = int(value)
         commandString = f':Sh+{value:02d}#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '1':
@@ -695,20 +579,13 @@ class Setting(object):
 
     def setHorizonLimitLow(self, value):
         """
-        setHorizonLimitLow sends the command for setting the limit to the mount. the limit
-        has to be between -5 and +45 degrees
-
-        :param value:   float / int for degrees
-        :return:        success
         """
-        if value < -5:
-            return False
-        elif value > 45:
+        if value < -5 or value > 45:
             return False
         conn = Connection(self.parent.host)
         value = int(value)
         commandString = f':So{value:+02d}#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '1':
@@ -717,26 +594,15 @@ class Setting(object):
 
     def setDirectWeatherUpdateType(self, value):
         """
-        setDirectWeatherUpdateType sends the command for setting the operating mode for
-        updating the refraction data from weather station.
-
-            0 do not update the refraction model data
-            1 update only while the mount is not tracking
-            2 update continuously, with a 15s smoothing filter
-
-        :param value:   int
-        :return:        success
         """
 
-        if value < 0:
-            return False
-        elif value > 2:
+        if value < 0 or value > 2:
             return False
         value = int(value)
 
         conn = Connection(self.parent.host)
         commandString = f':WSS{value:1d}#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '1':
@@ -745,65 +611,46 @@ class Setting(object):
 
     def checkRateLunar(self):
         """
-        :return:
         """
-        if self._trackingRate == 62.4:
-            return True
-
-        else:
-            return False
+        return f'{self._trackingRate:2.1f}' == '62.4'
 
     def checkRateSidereal(self):
         """
-        :return:
         """
-        if self._trackingRate == 60.2:
-            return True
-
-        else:
-            return False
+        return f'{self._trackingRate:2.1f}' == '60.2'
 
     def checkRateSolar(self):
         """
-        :return:
         """
-        if self._trackingRate == 60.3:
-            return True
-
-        else:
-            return False
+        return f'{self._trackingRate:2.1f}' == '60.3'
 
     def setLunarTracking(self):
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':RT0#')
+        suc, _, _ = conn.communicate(':RT0#')
         return suc
 
     def setSiderealTracking(self):
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':RT2#')
+        suc, _, _ = conn.communicate(':RT2#')
         return suc
 
     def setSolarTracking(self):
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':RT1#')
+        suc, _, _ = conn.communicate(':RT1#')
         return suc
 
     def setWebInterface(self, status):
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
         commandString = ':NTSweb{0:1d}#'.format(1 if status else 0)
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '1':
@@ -812,11 +659,10 @@ class Setting(object):
 
     def setSettleTime(self, time):
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
         commandString = f':Sstm{time:08.3f}#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
         if response[0] != '1':

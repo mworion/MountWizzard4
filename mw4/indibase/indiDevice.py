@@ -30,7 +30,7 @@ class Device:
     """
     __all__ = ['Device']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, name=''):
         super().__init__()

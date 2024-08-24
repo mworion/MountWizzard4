@@ -50,7 +50,7 @@ class MountDevice:
     DEFAULT_PORT = 3492
     SOCKET_TIMEOUT = 1.5
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, app, host, MAC, pathToData, verbose):
         self._waitTime = 0

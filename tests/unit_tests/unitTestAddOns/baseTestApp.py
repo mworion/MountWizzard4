@@ -873,8 +873,8 @@ class Mount(QObject):
             return True
 
         @staticmethod
-        def setRefractionParam(temperature=None,
-                               pressure=None):
+        def setRefractionParam(temperature=20,
+                               pressure=900):
             return True
 
     class MountSignals(QObject):

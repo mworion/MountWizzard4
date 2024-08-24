@@ -32,7 +32,7 @@ class QMultiWait(QObject):
     in addition, all received signals could be reset
     """
     ready = Signal()
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self):
         super().__init__()

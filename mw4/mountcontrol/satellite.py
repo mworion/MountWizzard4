@@ -35,7 +35,7 @@ class TLEParams(object):
     """
     __all__ = ['TLEParams']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, obsSite=None):
         self.obsSite = obsSite
@@ -187,7 +187,7 @@ class TrajectoryParams(object):
     __all__ = ['TLEParams',
                ]
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, obsSite=None):
         self._jdStart = None
@@ -270,7 +270,7 @@ class Satellite(object):
     __all__ = ['Satellite',
                ]
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     TLES = {
         'E': 'No transit pre calculated',
@@ -521,7 +521,7 @@ class Satellite(object):
 
         conn = Connection(self.parent.host)
         command = f':TLEGAZ{julD}#:TLEGEQ{julD}#'
-        suc, response, numberOfChunks = conn.communicate(command)
+        suc, response, _ = conn.communicate(command)
         if not suc:
             return False
 

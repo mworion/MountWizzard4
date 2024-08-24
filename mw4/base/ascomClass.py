@@ -34,9 +34,6 @@ from base.driverDataClass import DriverData
 class AscomClass(DriverData):
     """
     """
-
-    log = logging.getLogger(__name__)
-
     def __init__(self, app=None, data=None):
         super().__init__()
 

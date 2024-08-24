@@ -33,7 +33,7 @@ class SensorWeather:
     """
     __all__ = ['SensorWeather']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, app):
         self.app = app

@@ -42,7 +42,7 @@ class Update:
     """
     """
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, runnable: Callable = None, writer: Callable = None) -> None:
         """
@@ -153,7 +153,7 @@ class Update:
 class UpdateGUI:
     """
     """
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     def __init__(self, runnable=None, version=None, x=0, y=0, colorSet=0):
         self.version = version

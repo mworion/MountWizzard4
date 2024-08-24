@@ -207,7 +207,7 @@ def test_send_1(function):
 def test_send_2(function):
     class WS:
         @staticmethod
-        def send(a):
+        def send(a, b):
             return
 
     function.ws = WS

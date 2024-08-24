@@ -760,6 +760,7 @@ class Mount(QObject):
         refractionPress = 0
         wakeOnLan = False
         typeConnection = 1
+        trackingRate = 60.2
         slewRateMin = 0
         slewRateMax = 1
         webInterfaceStat = True

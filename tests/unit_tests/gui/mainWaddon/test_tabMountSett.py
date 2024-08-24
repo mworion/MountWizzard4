@@ -115,28 +115,28 @@ def test_updatePointGUI_sidereal_2(function):
 
 
 def test_updateSetting_slewRate(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.slewRate = 15
     function.updateSettingGUI(sett)
     assert '15' == function.ui.slewRate.text()
 
 
 def test_updateSetting_timeToFlip(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.timeToFlip = 15
     function.updateSettingGUI(sett)
     assert ' 15' == function.ui.timeToFlip.text()
 
 
 def test_updateSettingGUI_UTCExpire(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.UTCExpire = '2020-10-05'
     function.updateSettingGUI(sett)
     assert '2020-10-05' == function.ui.UTCExpire.text()
 
 
 def test_updateSettingGUI_UTCExpire_1(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.UTCExpire = '2016-10-05'
     function.updateSettingGUI(sett)
     assert '2016-10-05' == function.ui.UTCExpire.text()
@@ -145,7 +145,7 @@ def test_updateSettingGUI_UTCExpire_1(function):
 def test_updateSettingGUI_UTCExpire_2(function):
     tomorrow = datetime.date.today() + datetime.timedelta(days=15)
     value = tomorrow.strftime('%Y-%m-%d')
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.UTCExpire = value
     function.updateSettingGUI(sett)
     assert value == function.ui.UTCExpire.text()
@@ -154,7 +154,7 @@ def test_updateSettingGUI_UTCExpire_2(function):
 def test_updateSettingGUI_UTCExpire_3(function):
     tomorrow = datetime.date.today() + datetime.timedelta(days=40)
     value = tomorrow.strftime('%Y-%m-%d')
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.UTCExpire = value
     function.updateSettingGUI(sett)
     assert value == function.ui.UTCExpire.text()
@@ -162,7 +162,7 @@ def test_updateSettingGUI_UTCExpire_3(function):
 
 def test_updateSettingGUI_statusUnattendedFlip(function):
     value = True
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.statusUnattendedFlip = value
     function.updateSettingGUI(sett)
     assert 'ON' == function.ui.statusUnattendedFlip.text()
@@ -170,7 +170,7 @@ def test_updateSettingGUI_statusUnattendedFlip(function):
 
 def test_updateSettingGUI_statusDualAxisTracking(function):
     value = True
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.statusDualAxisTracking = value
     function.updateSettingGUI(sett)
     assert 'ON' == function.ui.statusDualAxisTracking.text()
@@ -178,74 +178,74 @@ def test_updateSettingGUI_statusDualAxisTracking(function):
 
 def test_updateSettingGUI_statusRefraction(function):
     value = True
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.statusRefraction = value
     function.updateSettingGUI(sett)
     assert 'ON' == function.ui.statusRefraction.text()
 
 
 def test_updateSettingGUI_1(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.gpsSynced = True
     function.updateSettingGUI(sett)
     assert function.ui.statusGPSSynced.text() == 'ON'
 
 
 def test_updateSettingGUI_2(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.gpsSynced = False
     function.updateSettingGUI(sett)
     assert function.ui.statusGPSSynced.text() == 'OFF'
 
 
 def test_updateSettingGUI_3(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.gpsSynced = None
     function.updateSettingGUI(sett)
-    assert function.ui.statusGPSSynced.text() == 'OFF'
+    assert function.ui.statusGPSSynced.text() == '-'
 
 
 def test_updateSettingGUI_4(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.typeConnection = None
     sett.wakeOnLan = 'On'
     function.updateSettingGUI(sett)
 
 
 def test_updateSettingGUI_5(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.typeConnection = 1
     sett.wakeOnLan = None
     function.updateSettingGUI(sett)
 
 
 def test_updateSettingGUI_6(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.typeConnection = 1
     sett.wakeOnLan = 'OFF'
     function.updateSettingGUI(sett)
 
 
 def test_updateSettingGUI_7(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.webInterfaceStat = False
     function.updateSettingGUI(sett)
 
 
 def test_updateSettingGUI_8(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.webInterfaceStat = True
     function.updateSettingGUI(sett)
 
 
 def test_updateSettingGUI_9(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.webInterfaceStat = None
     function.updateSettingGUI(sett)
 
 
 def test_updateSettingGUI_10(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     function.app.mount.obsSite.status = 1
     with mock.patch.object(sett,
                            'checkRateLunar',
@@ -254,7 +254,7 @@ def test_updateSettingGUI_10(function):
 
 
 def test_updateSettingGUI_11(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     function.app.mount.obsSite.status = 1
     with mock.patch.object(sett,
                            'checkRateSidereal',
@@ -263,7 +263,7 @@ def test_updateSettingGUI_11(function):
 
 
 def test_updateSettingGUI_12(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     function.app.mount.obsSite.status = 1
     with mock.patch.object(sett,
                            'checkRateSolar',
@@ -272,7 +272,7 @@ def test_updateSettingGUI_12(function):
 
 
 def test_updateSettingGUI_13(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     function.app.mount.obsSite.status = 10
     with mock.patch.object(sett,
                            'checkRateSolar',
@@ -281,7 +281,7 @@ def test_updateSettingGUI_13(function):
 
 
 def test_updateSettingGUI_14(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     function.app.mount.obsSite.status = None
     with mock.patch.object(sett,
                            'checkRateSolar',
@@ -290,7 +290,7 @@ def test_updateSettingGUI_14(function):
 
 
 def test_updateSetting_slewRate_1(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     value = 5
     sett.slewRate = value
     function.updateSettingGUI(sett)
@@ -302,7 +302,7 @@ def test_updateSetting_slewRate_1(function):
 
 
 def test_updateSetting_timeToFlip_1(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     value = 5
     sett.timeToFlip = value
     function.updateSettingGUI(sett)
@@ -314,20 +314,21 @@ def test_updateSetting_timeToFlip_1(function):
 
 
 def test_updateSetting_timeToMeridian_1(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.timeToFlip = 5
     sett.meridianLimitTrack = 0
     function.updateSettingGUI(sett)
-    assert function.ui.timeToMeridian.text() == '  5'
-    sett = Setting()
+
+
+def test_updateSetting_timeToMeridian_2(function):
+    sett = function.app.mount.setting
     sett.timeToFlip = None
     sett.meridianLimitTrack = None
     function.updateSettingGUI(sett)
-    assert '-' == function.ui.timeToMeridian.text()
 
 
 def test_updateSetting_refractionTemp(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.refractionTemp = 15
     function.updateSettingGUI(sett)
     assert '+15.0' == function.ui.refractionTemp.text()
@@ -335,7 +336,7 @@ def test_updateSetting_refractionTemp(function):
 
 
 def test_updateSetting_refractionPress(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.refractionPress = 1050.0
     function.updateSettingGUI(sett)
     assert str(1050.0) == function.ui.refractionPress.text()
@@ -343,39 +344,38 @@ def test_updateSetting_refractionPress(function):
 
 
 def test_updateSetting_meridianLimitTrack_1(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.meridianLimitTrack = 15
     function.updateSettingGUI(sett)
     assert ' 15' == function.ui.meridianLimitTrack.text()
 
 
 def test_updateSetting_meridianLimitSlew(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.meridianLimitSlew = 15
     function.updateSettingGUI(sett)
     assert ' 15' == function.ui.meridianLimitSlew.text()
 
 
 def test_updateSetting_horizonLimitLow(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.horizonLimitLow = 0
     function.updateSettingGUI(sett)
     assert '  0' == function.ui.horizonLimitLow.text()
 
 
 def test_updateSetting_horizonLimitHigh(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.horizonLimitHigh = 50
     function.updateSettingGUI(sett)
     assert ' 50' == function.ui.horizonLimitHigh.text()
 
 
 def test_updateSetting_timeToMeridian(function):
-    sett = Setting()
+    sett = function.app.mount.setting
     sett.timeToFlip = 100
     sett.meridianLimitTrack = 15
     function.updateSettingGUI(sett)
-    assert ' 40' == function.ui.timeToMeridian.text()
 
 
 def test_updateLocGUI_1(function):

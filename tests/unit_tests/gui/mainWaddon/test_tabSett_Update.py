@@ -298,24 +298,24 @@ def test_installVersion_3(function):
                 assert suc
 
 
-def test_setLoggingLevel1(function, qtbot):
+def test_setLoggingLevel1(function):
     function.ui.loglevelDebug.setChecked(True)
     function.setLoggingLevel()
-    val = logging.getLogger().getEffectiveLevel()
+    val = logging.getLogger('MW4').getEffectiveLevel()
     assert val == 10
 
 
-def test_setLoggingLevel2(function, qtbot):
+def test_setLoggingLevel2(function):
     function.ui.loglevelStandard.setChecked(True)
     function.setLoggingLevel()
-    val = logging.getLogger().getEffectiveLevel()
+    val = logging.getLogger('MW4').getEffectiveLevel()
     assert val == 20
 
 
-def test_setLoggingLevel3(function, qtbot):
+def test_setLoggingLevel3(function):
     function.ui.loglevelTrace.setChecked(True)
     function.setLoggingLevel()
-    val = logging.getLogger().getEffectiveLevel()
+    val = logging.getLogger('MW4').getEffectiveLevel()
     assert val == 5
 
 

@@ -612,17 +612,17 @@ class Setting(object):
     def checkRateLunar(self):
         """
         """
-        return f'{self._trackingRate:2.1f}' == '62.4'
+        return f'{self.trackingRate:2.1f}' == '62.4'
 
     def checkRateSidereal(self):
         """
         """
-        return f'{self._trackingRate:2.1f}' == '60.2'
+        return f'{self.trackingRate:2.1f}' == '60.2'
 
     def checkRateSolar(self):
         """
         """
-        return f'{self._trackingRate:2.1f}' == '60.3'
+        return f'{self.trackingRate:2.1f}' == '60.3'
 
     def setLunarTracking(self):
         """

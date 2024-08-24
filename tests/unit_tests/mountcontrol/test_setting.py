@@ -1147,7 +1147,6 @@ class TestConfigData(unittest.TestCase):
             suc = setting.setSlewRate(5)
             self.assertEqual(True, suc)
 
-
     def test_Setting_setSlewRate_not_ok1(self):
         class Parent:
             host = None

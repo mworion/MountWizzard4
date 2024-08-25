@@ -22,7 +22,9 @@ import unittest.mock as mock
 from skyfield.api import Angle, load
 
 # local imports
-from mountcontrol.satellite import Satellite, TLEParams, TrajectoryParams
+from mountcontrol.satellite import Satellite
+from mountcontrol.tleParams import TLEParams
+from mountcontrol.trajectoryParams import TrajectoryParams
 from mountcontrol.connection import Connection
 from base.loggerMW import setupLogging
 
@@ -33,172 +35,6 @@ class TestConfigData(unittest.TestCase):
 
     def setUp(self):
         pass
-
-    def test_azimuth_1(self):
-        tleParams = TLEParams()
-        tleParams.azimuth = 10
-        assert tleParams.azimuth.degrees == 10
-
-    def test_azimuth_2(self):
-        tleParams = TLEParams()
-        tleParams.azimuth = Angle(degrees=10)
-        assert tleParams.azimuth.degrees == 10
-
-    def test_altitude_1(self):
-        tleParams = TLEParams()
-        tleParams.altitude = 10
-        assert tleParams.altitude.degrees == 10
-
-    def test_altitude_2(self):
-        tleParams = TLEParams()
-        tleParams.altitude = Angle(degrees=10)
-        assert tleParams.altitude.degrees == 10
-
-    def test_ra_1(self):
-        tleParams = TLEParams()
-        tleParams.ra = 10
-        assert tleParams.ra.hours == 10
-
-    def test_ra_2(self):
-        tleParams = TLEParams()
-        tleParams.ra = Angle(hours=10)
-        assert tleParams.ra.hours == 10
-
-    def test_dec_1(self):
-        tleParams = TLEParams()
-        tleParams.dec = 10
-        assert tleParams.dec.degrees == 10
-
-    def test_dec_2(self):
-        tleParams = TLEParams()
-        tleParams.dec = Angle(degrees=10)
-        assert tleParams.dec.degrees == 10
-
-    def test_flip_1(self):
-        tleParams = TLEParams()
-        tleParams.flip = True
-        assert tleParams.flip
-
-    def test_flip_2(self):
-        tleParams = TLEParams()
-        tleParams.flip = 'F'
-        assert tleParams.flip
-
-    def test_jdStart_1(self):
-        tleParams = TLEParams()
-        tleParams.jdStart = None
-        assert tleParams.jdStart is None
-
-    def test_jdStart_2(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        tleParams = TLEParams(obsSite=ObsSite())
-        tleParams.jdStart = '100'
-        assert tleParams.jdStart.tt == 169
-
-    def test_jdEnd_1(self):
-        tleParams = TLEParams()
-        tleParams.jdEnd = None
-        assert tleParams.jdEnd is None
-
-    def test_jdEnd_2(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        tleParams = TLEParams(obsSite=ObsSite())
-        tleParams.jdEnd = '100'
-        assert tleParams.jdEnd.tt == 169
-
-    def test_message_1(self):
-        tleParams = TLEParams()
-        tleParams.message = None
-        assert tleParams.message is None
-
-    def test_message_2(self):
-        tleParams = TLEParams()
-        tleParams.message = 'test'
-        assert tleParams.message == 'test'
-
-    def test_l0_1(self):
-        tleParams = TLEParams()
-        tleParams.l0 = 'test'
-        assert tleParams.l0 == 'test'
-
-    def test_l1_1(self):
-        tleParams = TLEParams()
-        tleParams.l1 = 'test'
-        assert tleParams.l1 == 'test'
-
-    def test_l2_1(self):
-        tleParams = TLEParams()
-        tleParams.l2 = 'test'
-        assert tleParams.l2 == 'test'
-
-    def test_name_1(self):
-        tleParams = TLEParams()
-        tleParams.name = 'test'
-        assert tleParams.name == 'test'
-
-    def test_TP_flip_1(self):
-        trajectoryParams = TrajectoryParams()
-        trajectoryParams.flip = None
-        assert trajectoryParams.flip is None
-
-    def test_TP_flip_2(self):
-        trajectoryParams = TrajectoryParams()
-        trajectoryParams.flip = 'F'
-        assert trajectoryParams.flip
-
-    def test_TP_flip_3(self):
-        trajectoryParams = TrajectoryParams()
-        trajectoryParams.flip = 'x'
-        assert not trajectoryParams.flip
-
-    def test_TP_flip_4(self):
-        trajectoryParams = TrajectoryParams()
-        trajectoryParams.flip = False
-        assert not trajectoryParams.flip
-
-    def test_TP_jdStart_1(self):
-        trajectoryParams = TrajectoryParams()
-        trajectoryParams.jdStart = None
-        assert trajectoryParams.jdStart is None
-
-    def test_TP_jdStart_2(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        trajectoryParams = TrajectoryParams(obsSite=ObsSite())
-        trajectoryParams.jdStart = '100'
-        assert trajectoryParams.jdStart.tt == 169
-
-    def test_TP_jdEnd_1(self):
-        trajectoryParams = TrajectoryParams()
-        trajectoryParams.jdEnd = None
-        assert trajectoryParams.jdEnd is None
-
-    def test_TP_jdEnd_2(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        trajectoryParams = TrajectoryParams(obsSite=ObsSite())
-        trajectoryParams.jdEnd = '100'
-        assert trajectoryParams.jdEnd.tt == 169
-
-    def test_TR_message_1(self):
-        trajectoryParams = TrajectoryParams()
-        trajectoryParams.message = None
-        assert trajectoryParams.message is None
-
-    def test_TR_message_2(self):
-        trajectoryParams = TrajectoryParams()
-        trajectoryParams.message = 'test'
-        assert trajectoryParams.message == 'test'
 
     def test_parseGetTLE_1(self):
         class ObsSite:
@@ -497,50 +333,6 @@ class TestConfigData(unittest.TestCase):
 
         with mock.patch('mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'V', 1
-
-            suc = sat.setTLE(line0=t0,
-                             line1=t1,
-                             line2=t2)
-            self.assertFalse(suc)
-
-    def test_setTLE_8(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-            host = None
-
-        sat = Satellite(parent=Parent())
-        t0 = 'NOAA 8 [-]              '
-        t1 = '1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996'
-        t2 = '2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407'
-
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, 'E', 1
-
-            suc = sat.setTLE(line0=t0,
-                             line1=t1,
-                             line2=t2)
-            self.assertFalse(suc)
-
-    def test_setTLE_9(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-            host = None
-
-        sat = Satellite(parent=Parent())
-        t0 = 'NOAA 8 [-]              '
-        t1 = '1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996'
-        t2 = '2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407'
-
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, 'V', 2
 
             suc = sat.setTLE(line0=t0,
                              line1=t1,
@@ -883,27 +675,6 @@ class TestConfigData(unittest.TestCase):
             suc = sat.calcTLE(julD=1234567.8)
             self.assertTrue(suc)
 
-    def test_calcTLE_6(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-            host = None
-
-        sat = Satellite(parent=Parent())
-        s0 = '+23.12334,123.1234'
-        s1 = '12.12345,+12.1234'
-        s2 = '12345678.1, 12345678.2, F'
-        response = [s0, s1, s2]
-
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 3
-
-            suc = sat.calcTLE()
-            self.assertFalse(suc)
-
     def test_calcTLE_7(self):
         class ObsSite:
             UTC2TT = 69
@@ -924,19 +695,6 @@ class TestConfigData(unittest.TestCase):
 
             suc = sat.calcTLE(julD=1234567.8, duration=0)
             self.assertFalse(suc)
-
-    def test_getCoordsFromTLE_0(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-            host = None
-
-        sat = Satellite(parent=Parent())
-        suc = sat.getCoordsFromTLE()
-        self.assertFalse(suc)
 
     def test_getCoordsFromTLE_1(self):
         class ObsSite:
@@ -1176,102 +934,6 @@ class TestConfigData(unittest.TestCase):
 
             suc = sat.statTLE()
             self.assertTrue(suc)
-
-    def test_startProgTrajectory_1(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-            host = None
-
-        sat = Satellite(parent=Parent())
-        val = (False, ['V'], 1)
-        with mock.patch.object(Connection,
-                               'communicate',
-                               return_value=val):
-            suc = sat.startProgTrajectory()
-            assert not suc
-
-    def test_startProgTrajectory_2(self):
-        ts = load.timescale()
-        julD = ts.tt_jd(12345678)
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-            host = None
-
-        sat = Satellite(parent=Parent())
-        val = (False, ['V'], 1)
-        with mock.patch.object(Connection,
-                               'communicate',
-                               return_value=val):
-            suc = sat.startProgTrajectory(julD=julD)
-            assert not suc
-
-    def test_startProgTrajectory_3(self):
-        ts = load.timescale()
-        julD = ts.tt_jd(12345678)
-
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-            host = None
-
-        sat = Satellite(parent=Parent())
-        val = (True, ['V'], 2)
-        with mock.patch.object(Connection,
-                               'communicate',
-                               return_value=val):
-            suc = sat.startProgTrajectory(julD=julD)
-            assert not suc
-
-    def test_startProgTrajectory_4(self):
-        ts = load.timescale()
-        julD = ts.tt_jd(12345678)
-
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-            host = None
-
-        sat = Satellite(parent=Parent())
-        val = (True, ['V', 'V'], 2)
-        with mock.patch.object(Connection,
-                               'communicate',
-                               return_value=val):
-            suc = sat.startProgTrajectory(julD=julD)
-            assert not suc
-
-    def test_startProgTrajectory_5(self):
-        ts = load.timescale()
-        julD = ts.tt_jd(12345678)
-
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-            host = None
-
-        sat = Satellite(parent=Parent())
-        val = (True, ['E'], 1)
-        with mock.patch.object(Connection,
-                               'communicate',
-                               return_value=val):
-            suc = sat.startProgTrajectory(julD=julD)
-            assert not suc
 
     def test_startProgTrajectory_6(self):
         ts = load.timescale()

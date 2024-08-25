@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Modeling &#8212; MountWizzard4 4.0.0a19 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=e4742b38" />
+    <link rel="stylesheet" type="text/css" href="../../_static/drawio.css" />
+    <script src="../../_static/documentation_options.js?v=8e2749f5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Profile handling" href="../profile/index.html" />
+    <link rel="prev" title="Minor Planets" href="../minorplanets/index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features.html">Feature Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config/index.html">Configuration</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Workflows and functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../almanac/index.html">Almanac</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dome/index.html">Dome</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../environment/index.html">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imaging/index.html">Imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../minorplanets/index.html">Minor Planets</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Modeling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-polar-alignment">Step 1: Polar alignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-selecting-build-points">Step 2: Selecting build points</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-running-the-model-build">Step 3: Running the model build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-managing-mount-models">Step 4: Managing mount models</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../profile/index.html">Profile handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../satellite/index.html">Satellite tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/index.html">Tools for the Job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update/index.html">Updating the app</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Workflows and functions</a><ul>
+      <li>Previous: <a href="../minorplanets/index.html" title="previous chapter">Minor Planets</a></li>
+      <li>Next: <a href="../profile/index.html" title="next chapter">Profile handling</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="modeling">
+<h1>Modeling<a class="headerlink" href="#modeling" title="Link to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>I only focus on model building with tool support, so no words about manual model
+building. I don’t know the internal algorithms of the 10micron mount how the
+calculate their corrections. So many of the hints derive from pure logical or
+mathematical approaches and even there I personally might have some
+misconceptions or make some errors.</p>
+<p>So my goal in model building is quite simple: I’m lazy in doing setups, so I
+want a solutions which gives me a correction model most accurate in minimum of
+time automatically. I rely heavily on the corrections capability on the 10micron
+mounts, so I use them always with dual tracking on. For doing a setup there are
+many things to think of beside the model (leveling, rigidity etc.). Keep them
+perfect, but I don’t talk about them. So this results in two tasks I have to do
+to get a model to do unguided images: Polar alignment and the model for
+correction itself. I refer to the Blog Filippo Riccio from 10micron:</p>
+<p><a class="reference external" href="https://www.10micron.eu/forum/viewtopic.php?f=16&amp;t=846">https://www.10micron.eu/forum/viewtopic.php?f=16&amp;t=846</a></p>
+<p>All the hints you get from the mount (how to turn knobs, alignment star) improve
+the alignment. As the model is only an approximation for the error correction,
+it will be not an one step approach. If you aim for the best result, please
+think of 2-3 iterations of the whole procedure. In my setup I normally need 2
+iterations for doing an alignment which is good for 20-30 min exposures and have
+round stars.</p>
+<p>As Overview: MountWizzard4 has a straight forward approach for building models.
+The following chart shows each basic step.</p>
+<a class="drawio reference internal image-reference" href="../../_images/workflow.svg"><img alt="../../_images/workflow.svg" class="drawio align-center" src="../../_images/workflow.svg" style="width: 456.53px; height: 533.92px;" /></a>
+<p>The following sections describe each step in detail:</p>
+</section>
+<section id="step-1-polar-alignment">
+<h2>Step 1: Polar alignment<a class="headerlink" href="#step-1-polar-alignment" title="Link to this heading">¶</a></h2>
+<p>Detailed description: <a class="reference internal" href="polar_align.html"><span class="doc">Polar align your mount</span></a></p>
+<a class="reference internal image-reference" href="../../_images/polar_align.png"><img alt="../../_images/polar_align.png" class="align-center" src="../../_images/polar_align.png" style="width: 400.0px; height: 300.0px;" /></a>
+</section>
+<section id="step-2-selecting-build-points">
+<h2>Step 2: Selecting build points<a class="headerlink" href="#step-2-selecting-build-points" title="Link to this heading">¶</a></h2>
+<p>Detailed description: <a class="reference internal" href="build_points.html"><span class="doc">Selecting build points</span></a></p>
+<a class="reference internal image-reference" href="../../_images/build_points1.png"><img alt="../../_images/build_points1.png" class="align-center" src="../../_images/build_points1.png" style="width: 400.0px; height: 300.0px;" /></a>
+</section>
+<section id="step-3-running-the-model-build">
+<h2>Step 3: Running the model build<a class="headerlink" href="#step-3-running-the-model-build" title="Link to this heading">¶</a></h2>
+<p>Detailed description: <a class="reference internal" href="model_build.html"><span class="doc">Build a model</span></a></p>
+<a class="reference internal image-reference" href="../../_images/model_build.png"><img alt="../../_images/model_build.png" class="align-center" src="../../_images/model_build.png" style="width: 400.0px; height: 300.0px;" /></a>
+</section>
+<section id="step-4-managing-mount-models">
+<h2>Step 4: Managing mount models<a class="headerlink" href="#step-4-managing-mount-models" title="Link to this heading">¶</a></h2>
+<p>Detailed description: <a class="reference internal" href="manage_model.html"><span class="doc">Managing mount models</span></a></p>
+<a class="reference internal image-reference" href="../../_images/manage_model.png"><img alt="../../_images/manage_model.png" class="align-center" src="../../_images/manage_model.png" style="width: 400.0px; height: 300.0px;" /></a>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2024, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../_sources/workflows/modeling/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

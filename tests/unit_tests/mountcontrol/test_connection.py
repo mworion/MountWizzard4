@@ -226,6 +226,16 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(True, suc)
         self.assertEqual('10micron GM1000HPS', response[0])
 
+    def test_notok_response_check(self):
+        with mock.patch('socket.socket') as m_socket:
+            m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
+            conn = Connection(host=('localhost', 3492))
+            suc, response, chunks = conn.communicate(':GVN#', '0')
+            m_socket.return_value.connect.assert_called_with(('localhost', 3492))
+            m_socket.return_value.sendall.assert_called_with(':GVN#'.encode())
+        self.assertEqual(False, suc)
+        self.assertEqual('10micron GM1000HPS', response[0])
+
     def test_no_host_defined(self):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
@@ -346,6 +356,11 @@ class TestConnection(unittest.TestCase):
         self.assertTrue(suc)
 
     def test_valid_commandSet_2(self):
+        conn = Connection()
+        suc = conn.validCommandSet(':AP#:AP#:AP#')
+        self.assertTrue(suc)
+
+    def test_valid_commandSet_3(self):
         conn = Connection()
         suc = conn.validCommandSet(':AP#:AP#:AP#')
         self.assertTrue(suc)

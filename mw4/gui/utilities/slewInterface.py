@@ -67,8 +67,8 @@ class SlewInterface:
         :param slewType:
         :return:
         """
-        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=alt,
-                                                    az_degrees=az)
+        suc = self.app.mount.obsSite.setTargetAltAz(alt=Angle(degrees=alt),
+                                                    az=Angle(degrees=az))
         if not suc:
             t = f'Cannot slew to Az:[{az:3.1f}], Alt:[{alt:3.1f}]'
             self.msg.emit(2, 'Tools', 'Slewing error', t)

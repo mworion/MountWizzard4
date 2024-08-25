@@ -23,6 +23,7 @@ import PySide6.QtCore
 import PySide6.QtWidgets
 import wakeonlan
 import numpy as np
+from skyfield.api import Angle
 
 # local imports
 from mountcontrol.mountSignals import MountSignals
@@ -456,7 +457,7 @@ class MountDevice:
     def calcMountAltAzToDomeAltAz(self, alt, az):
         """
         """
-        suc = self.obsSite.setTargetAltAz(alt_degrees=alt, az_degrees=az)
+        suc = self.obsSite.setTargetAltAz(alt=Angle(degrees=alt), az=Angle(degrees=az))
         if not suc:
             return None, None
         alt, az, _, _, _ = self.calcTransformationMatricesTarget()

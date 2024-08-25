@@ -399,12 +399,8 @@ class Setting(object):
             return False
         conn = Connection(self.parent.host)
         commandString = f':Sw{value:02.0f}#:RMs{value:02.0f}#'
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '10':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='10')
+        return suc
 
     def setSlewSpeedMax(self) -> bool:
         """
@@ -449,56 +445,36 @@ class Setting(object):
             return False
         conn = Connection(self.parent.host)
         commandString = f':SRPRS{pressure:06.1f}#:SRTMP{temperature:+06.1f}#'
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '11':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='11')
+        return suc
 
     def setRefractionTemp(self, value):
         """
         """
-        if value is None:
-            return False
         if value < -40 or value > 75:
             return False
         conn = Connection(self.parent.host)
         commandString = ':SRTMP{0:+06.1f}#'.format(value)
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '1':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
     def setRefractionPress(self, value):
         """
         """
-        if value is None:
-            return False
         if value < 500 or value > 1300:
             return False
         conn = Connection(self.parent.host)
         commandString = ':SRPRS{0:06.1f}#'.format(value)
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '1':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
     def setRefraction(self, status):
         """
         """
         conn = Connection(self.parent.host)
         commandString = ':SREF{0:1d}#'.format(1 if status else 0)
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '1':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
     def setUnattendedFlip(self, status):
         """
@@ -513,24 +489,16 @@ class Setting(object):
         """
         conn = Connection(self.parent.host)
         commandString = ':Sdat{0:1d}#'.format(1 if status else 0)
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '1':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
     def setWOL(self, status):
         """
         """
         conn = Connection(self.parent.host)
         commandString = ':SWOL{0:1d}#'.format(1 if status else 0)
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '1':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
     def setMeridianLimitTrack(self, value):
         """
@@ -540,12 +508,8 @@ class Setting(object):
         conn = Connection(self.parent.host)
         value = int(value)
         commandString = f':Slmt{value:02d}#'
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '1':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
     def setMeridianLimitSlew(self, value):
         """
@@ -555,12 +519,8 @@ class Setting(object):
         conn = Connection(self.parent.host)
         value = int(value)
         commandString = f':Slms{value:02d}#'
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '1':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
     def setHorizonLimitHigh(self, value):
         """
@@ -570,12 +530,8 @@ class Setting(object):
         conn = Connection(self.parent.host)
         value = int(value)
         commandString = f':Sh+{value:02d}#'
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '1':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
     def setHorizonLimitLow(self, value):
         """
@@ -585,29 +541,20 @@ class Setting(object):
         conn = Connection(self.parent.host)
         value = int(value)
         commandString = f':So{value:+02d}#'
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '1':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
     def setDirectWeatherUpdateType(self, value):
         """
         """
-
         if value < 0 or value > 2:
             return False
         value = int(value)
 
         conn = Connection(self.parent.host)
         commandString = f':WSS{value:1d}#'
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '1':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
     def checkRateLunar(self):
         """
@@ -650,21 +597,13 @@ class Setting(object):
         """
         conn = Connection(self.parent.host)
         commandString = ':NTSweb{0:1d}#'.format(1 if status else 0)
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '1':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
     def setSettleTime(self, time):
         """
         """
         conn = Connection(self.parent.host)
         commandString = f':Sstm{time:08.3f}#'
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if response[0] != '1':
-            return False
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc

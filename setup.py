@@ -45,6 +45,7 @@ releaseNotes = """
 - improve: optimizing material look & feel
 - improve: don't delete message list when color change
 - improve: rewrite of the online documentation
+- improve: no 10micron installer needed anymore for object data
 - remove: automation of 10micron installer
 - fix: typos
 """
@@ -54,7 +55,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='4.0.0a18',
+    version='4.0.0a19',
     packages=find_packages(),
     python_requires='>=3.9.0, <3.13',
     install_requires=[

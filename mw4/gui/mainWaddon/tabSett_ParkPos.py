@@ -17,6 +17,7 @@
 # standard libraries
 
 # external packages
+from skyfield.api import Angle
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
@@ -147,8 +148,8 @@ class SettParkPos(MWidget):
         azValue = self.posAz[index].value()
         posTextValue = self.posTexts[index].text()
 
-        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altValue,
-                                                    az_degrees=azValue)
+        suc = self.app.mount.obsSite.setTargetAltAz(alt=Angle(degrees=altValue),
+                                                    az=Angle(degrees=azValue))
         if not suc:
             self.msg.emit(2, 'Mount', 'Command error',
                           f'Cannot slew to [{posTextValue}]')

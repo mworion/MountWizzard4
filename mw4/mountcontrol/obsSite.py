@@ -537,24 +537,18 @@ class ObsSite(object):
         self.errorAngularPosDEC = responseSplit[4]
         return True
 
-    def pollPointing(self):
+    def pollPointing(self) -> bool:
         """
-        Sending the polling fast command. As the mount need polling the data, I send
-        a set of commands to get the data back to be able to process and store it.
-
-        :return: success:   True if ok, False if not
         """
         conn = Connection(self.parent.host)
         commandString = ':U2#:GS#:GDUT#:TLESCK#:Ginfo#:GaE#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
-        suc = self.parsePointing(response, numberOfChunks)
-        return suc
+        return self.parsePointing(response, numberOfChunks)
 
-    def pollSyncClock(self):
+    def pollSyncClock(self) -> bool:
         """
-        :return:
         """
         if platform.system() == 'Windows':
             corrTerm = -0.001
@@ -566,7 +560,7 @@ class ObsSite(object):
             corrTerm = 0
         conn = Connection(self.parent.host)
         commandString = ':GJD1#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
 
@@ -580,25 +574,16 @@ class ObsSite(object):
         self._timeDiff[0] = delta
         return True
 
-    def adjustClock(self, delta):
+    def adjustClock(self, delta: float) -> bool:
         """
-        :param delta: im milliseconds
-        :return:
         """
+        conn = Connection(self.parent.host)
         sign = '+' if delta >= 0 else '-'
         delta = abs(delta)
         delta = min(delta, 999)
         commandString = f':NUtim{sign}{delta:03.0f}#'
-
-        conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(commandString)
-        if not suc:
-            return False
-
-        if response[0] == '0':
-            return False
-
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
     def startSlewing(self, slewType='normal', forceUnpark=False):
         """
@@ -659,7 +644,7 @@ class ObsSite(object):
         conn = Connection(self.parent.host)
 
         commandString = ':PO#' + slewTypes[slewType]
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
 
@@ -669,55 +654,9 @@ class ObsSite(object):
 
         return True
 
-    def setTargetAltAz(self,
-                       alt=None, az=None,
-                       alt_degrees=None, az_degrees=None):
+    def setTargetAltAz(self, alt: Angle, az: Angle):
         """
-        Slew AltAz unpark the mount sets the targets for alt and az and then
-        issue the slew command.
-
-        the unpark command is:
-            :PO#
-        and returns nothing
-
-        setting alt target is the following:
-            :SzDDD*MM# or :SzDDD*MM:SS# or :SzDDD*MM:SS.S#, we use the last one
-            :SzDDD*MM:SS.S#
-
-        setting az target is the following:
-            :SasDD*MM# or :SasDD*MM:SS# or :SasDD*MM:SS.S#, we use the last one
-            :SasDD*MM:SS.S#
-
-        the slew command moves the mount and keeps tracking at the end of the move.
-        in the command protocol it is written, that the targets should be ra / dec,
-        but it works for targets defined with alt / az commands
-
-        :param alt:     altitude in type Angle
-        :param az:      azimuth in type Angle
-        :param alt_degrees:     altitude in degrees float
-        :param az_degrees:      azimuth in degrees float
-        :return:        success
         """
-        hasAngles = isinstance(alt, Angle) and isinstance(az, Angle)
-        altHasFloat = isinstance(alt_degrees, (float, int))
-        azHasFloat = isinstance(az_degrees, (float, int))
-
-        if hasAngles:
-            pass
-
-        elif altHasFloat and azHasFloat:
-            alt = Angle(degrees=alt_degrees)
-            az = Angle(degrees=az_degrees)
-
-        else:
-            return False
-
-        if alt.preference != 'degrees':
-            return False
-
-        if az.preference != 'degrees':
-            return False
-
         conn = Connection(self.parent.host)
 
         sgn, h, m, s, frac = sexagesimalizeToInt(alt.degrees, 1)
@@ -730,7 +669,7 @@ class ObsSite(object):
 
         getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
         commandString = setAlt + setAz + getTargetStatus
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
 
@@ -814,7 +753,7 @@ class ObsSite(object):
 
         getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
         commandString = setRa + setDec + getTargetStatus
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
 
@@ -834,496 +773,180 @@ class ObsSite(object):
         self.decJNowTarget = response[3]
         return suc
 
-    def setTargetAngular(self,
-                         ra=None, dec=None,
-                         ra_degrees=None, dec_degrees=None,
-                         target=None):
+    def shutdown(self) -> bool:
         """
-        Slew RaDec unpark the mount sets the targets for ra and dec and then
-        issue the slew command.
-
-        the unpark command is:
-            :PO#
-        and returns nothing
-
-        setting angular RA target is the following:
-            :SaXasXXX.XXXX#
-
-        setting angular DEC target is the following:
-            :SaXbsXXX.XXXX#
-
-        :param ra:     right ascension in type Angle
-        :param dec:    declination in type Angle preference 'hours'
-        :param ra_degrees: right ascension in float degrees
-        :param dec_degrees: declination in float degrees
-        :param target:  star in type skyfield.Star
-        :return:       success
         """
-        hasTarget = isinstance(target, starlib.Star)
-        hasAngles = isinstance(ra, Angle) and isinstance(dec, Angle)
-        decHasFloat = isinstance(ra_degrees, (float, int))
-        raHasFloat = isinstance(dec_degrees, (float, int))
-        if hasTarget:
-            ra = target.ra
-            dec = target.dec
-
-        elif hasAngles:
-            pass
-
-        elif raHasFloat and decHasFloat:
-            ra = Angle(hours=ra_degrees)
-            dec = Angle(degrees=dec_degrees)
-
-        else:
-            return False
-
-        if dec.preference != 'degrees' or ra.preference != 'degrees':
-            return False
-
         conn = Connection(self.parent.host)
-        raCommand = f':SaXa{ra.degrees:+03.4f}#'
-        decCommand = f':SaXb{dec.degrees:+03.4f}#'
-        getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
-        commandString = raCommand + decCommand + getTargetStatus
-        suc, response, numberOfChunks = conn.communicate(commandString)
-        if not suc:
-            return False
-
-        result = response[0][0:2]
-        if result.count('0') > 0:
-            self.log.debug(f'Coordinates could not be set: [{response}]')
-            return False
-
-        if len(response) != 4:
-            self.log.debug(f'Missing return values: [{response}]')
-            return False
-
-        # todo: actually SaXa and SaXb commands seem no to set other targets
-        # self.piersideTarget = response[0][2]
-        # self.AltTarget = response[0][3:]
-        # self.AzTarget = response[1]
-        # self.raJNowTarget = response[2]
-        # self.decJNowTarget = response[3]
+        suc, _, _ = conn.communicate(':shutdown#', responseCheck='1')
         return suc
 
-    def shutdown(self):
+    def setLocation(self, location: GeographicPosition) -> bool:
         """
-        shutdown send the shutdown command to the mount. if succeeded it takes about 20
-        seconds before you could switch off the power supply. please check red LED at mount
-
-        :return:    success
         """
-
-        conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':shutdown#')
-        if not suc:
-            return False
-        if response[0] == '0':
-            return False
-        return True
-
-    def setLocation(self, loc):
-        """
-        set SiteCoordinates sets the value in the mount to the given parameters.
-        the longitude will be set for east negative, because that's the definition
-        from the LX200 protocol, which the 10micron mount supports. internally we use
-        the standard east positive.
-
-        the site parameters could be set be the following commands:
-
-        longitude (we will use the last one with the highest precision):
-
-            :SgsDDD*MM# or :SgsDDD*MM:SS# or :SgsDDD*MM:SS.S#
-
-            Set current site’s longitude to sDDD*MM (sign, degrees, arcminutes),
-            sDDD*MM:SS (sign, degrees, arcminutes, arcseconds) or
-            sDDD*MM:SS.S (sign, degrees, arcminutes, arcseconds and tenths of arcsecond).
-            Note: East Longitudes are expressed as negative.
-            Returns:
-            0   invalid
-            1   valid
-
-        latitude (we will use the last one with the highest precision):
-
-            :StsDD*MM# or :StsDD*MM:SS# or :StsDD*MM:SS.S#
-
-            Sets the current site latitude to sDD*MM (sign, degrees, arcminutes),
-            sDD*MM:SS (sign, degrees, arcminutes, arcseconds), or
-            sDD*MM:SS.S (sign, degrees, arcminutes, arcseconds and tenths of arcsecond)
-
-            Returns:
-            0   invalid
-            1   valid
-
-        elevation:
-
-            :SevsXXXX.X#
-
-            Set current site’s elevation to sXXXX.X (sign, metres) in the
-            range -1000.0 to 9999.9.
-            Returns:
-            0   invalid
-            1   valid
-
-        :param      loc:        skyfield.api.Topos of site
-        :return:    success
-        """
-        if not isinstance(loc, GeographicPosition):
-            return False
-
         conn = Connection(self.parent.host)
 
-        sgn, h, m, s, frac = sexagesimalizeToInt(loc.longitude.degrees, 1)
+        sgn, h, m, s, frac = sexagesimalizeToInt(location.longitude.degrees, 1)
         sign = '+' if sgn < 0 else '-'
         setLon = f':Sg{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#'
 
-        sgn, h, m, s, frac = sexagesimalizeToInt(loc.latitude.degrees, 1)
+        sgn, h, m, s, frac = sexagesimalizeToInt(location.latitude.degrees, 1)
         sign = '+' if sgn >= 0 else '-'
         setLat = f':St{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
 
-        sign = '+' if loc.elevation.m > 0 else '-'
-        setElev = f':Sev{sign}{loc.elevation.m:06.1f}#'
+        sign = '+' if location.elevation.m > 0 else '-'
+        setElev = f':Sev{sign}{location.elevation.m:06.1f}#'
 
         commandString = setLon + setLat + setElev
-        suc, response, numberOfChunks = conn.communicate(commandString)
-        if not suc:
-            return False
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
-        if '0' in response[0]:
-            return False
-
-        return True
-
-    def setLatitude(self, lat=None, lat_degrees=None):
+    def setLatitude(self, lat: Angle) -> bool:
         """
-        setLatitude sets the value in the mount to the given parameters.
-        the site parameters could be set be the following commands:
-        latitude (we will use the last one with the highest precision):
-
-            :StsDD*MM# or :StsDD*MM:SS# or :StsDD*MM:SS.S#
-
-            Sets the current site latitude to sDD*MM (sign, degrees, arcminutes),
-            sDD*MM:SS (sign, degrees, arcminutes, arcseconds), or
-            sDD*MM:SS.S (sign, degrees, arcminutes, arcseconds and tenths of arcsecond)
-
-            Returns:
-            0   invalid
-            1   valid
-
-        :param      lat:  coordinates as Angle
-        :param      lat_degrees:  coordinates as float
-        :return:    success
         """
-        hasAngle = isinstance(lat, Angle)
-        hasFloat = isinstance(lat_degrees, (float, int))
-        hasStr = isinstance(lat, str)
-        if hasAngle:
-            pass
-
-        elif hasFloat:
-            lat = valueToAngle(lat_degrees, preference='degrees')
-
-        elif hasStr:
-            lat = lat.replace('deg', '')
-            lat = stringToAngle(lat, preference='degrees')
-
-        else:
-            return False
-
         conn = Connection(self.parent.host)
-
         sgn, h, m, s, frac = sexagesimalizeToInt(lat.degrees, 1)
         sign = '+' if sgn >= 0 else '-'
-        setLat = f':St{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
+        commandString = f':St{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
-        commandString = setLat
-        suc, response, numberOfChunks = conn.communicate(commandString)
-        if not suc:
-            return False
-
-        if '0' in response[0]:
-            return False
-
-        return True
-
-    def setLongitude(self, lon=None, lon_degrees=None):
+    def setLongitude(self, lon: Angle) -> bool:
         """
-        setLongitude sets the value in the mount to the given parameters.
-        the longitude will be set for east negative, because that's the definition
-        from the LX200 protocol, which the 10micron mount supports. internally we use
-        the standard east positive.
-
-        the site parameters could be set be the following commands:
-        longitude (we will use the last one with the highest precision):
-
-            :SgsDDD*MM# or :SgsDDD*MM:SS# or :SgsDDD*MM:SS.S#
-
-            Set current site’s longitude to sDDD*MM (sign, degrees, arcminutes),
-            sDDD*MM:SS (sign, degrees, arcminutes, arcseconds) or
-            sDDD*MM:SS.S (sign, degrees, arcminutes, arcseconds and tenths of arcsecond).
-            Note: East Longitudes are expressed as negative.
-            Returns:
-            0   invalid
-            1   valid
-
-        :param      lon:  coordinates as Angle
-        :param      lon_degrees:  coordinates as float
-        :return:    success
         """
-        hasAngle = isinstance(lon, Angle)
-        hasFloat = isinstance(lon_degrees, (float, int))
-        hasStr = isinstance(lon, str)
-        if hasAngle:
-            pass
-
-        elif hasFloat:
-            lon = valueToAngle(lon_degrees, preference='degrees')
-
-        elif hasStr:
-            lon = lon.replace('deg', '')
-            lon = stringToAngle(lon, preference='degrees')
-
-        else:
-            return False
-
         conn = Connection(self.parent.host)
-
         sgn, h, m, s, frac = sexagesimalizeToInt(lon.degrees, 1)
         sign = '+' if sgn < 0 else '-'
-        setLon = f':Sg{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#'
-
-        commandString = setLon
-        suc, response, numberOfChunks = conn.communicate(commandString)
-        if not suc:
-            return False
-
-        if '0' in response[0]:
-            return False
-
-        return True
-
-    def setElevation(self, elev):
-        """
-        setElevation sets the value in the mount to the given parameters.
-        the site parameters could be set be the following commands:
-        elevation:
-
-            :SevsXXXX.X#
-
-            Set current site’s elevation to sXXXX.X (sign, metres) in the
-            range -1000.0 to 9999.9.
-            Returns:
-            0   invalid
-            1   valid
-
-        :param      elev:        string with elevation in meters
-        :return:    success
-        """
-        if not isinstance(elev, (str, int, float)):
-            return False
-
-        elev = valueToFloat(elev)
-        if elev is None:
-            return False
-
-        conn = Connection(self.parent.host)
-
-        setElev = ':Sev{sign}{0:06.1f}#'.format(abs(elev),
-                                                sign='+' if elev > 0 else '-')
-
-        commandString = setElev
-        suc, response, numberOfChunks = conn.communicate(commandString)
-        if not suc:
-            return False
-
-        if '0' in response[0]:
-            return False
-
-        return True
-
-    def startTracking(self):
-        """
-        startTracking sends the start command to the mount. the command returns nothing.
-        it is necessary to make that direct to unpark first, than start tracking
-
-        :return:    success
-        """
-        conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':PO#:AP#')
+        commandString = f':Sg{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
         return suc
 
-    def stopTracking(self):
+    def setElevation(self, elev: (int, float)) -> bool:
         """
-        stopTracking sends the start command to the mount. the command returns nothing.
-
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':RT9#')
+        sign = '+' if elev > 0 else '-'
+        commandString = f':Sev{sign}{abs(elev):06.1f}#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
         return suc
 
-    def park(self):
+    def startTracking(self) -> bool:
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':hP#')
+        suc, _, _ = conn.communicate(':PO#:AP#')
         return suc
 
-    def unpark(self):
+    def stopTracking(self) -> bool:
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':PO#')
+        suc, _, _ = conn.communicate(':RT9#')
         return suc
 
-    def parkOnActualPosition(self):
+    def park(self) -> bool:
         """
-        :return:    success
-        """
-        conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':PiP#')
-        if not suc:
-            return False
-
-        if '0' in response[0]:
-            return False
-
-        return True
-
-    def stop(self):
-        """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':STOP#')
+        suc, _, _ = conn.communicate(':hP#')
         return suc
 
-    def flip(self):
+    def unpark(self) -> bool:
         """
-        :return:    success
-        """
-        conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':FLIP#')
-        if not suc:
-            return False
-
-        if response[0] != '1':
-            return False
-
-        return True
-
-    def moveNorth(self):
-        """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':PO#:Mn#')
-        if not suc:
-            return False
+        suc, _, _ = conn.communicate(':PO#')
+        return suc
 
-        return True
-
-    def moveEast(self):
+    def parkOnActualPosition(self) -> bool:
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':PO#:Me#')
-        if not suc:
-            return False
+        suc, _, _ = conn.communicate(':PiP#', responseCheck='1')
+        return suc
 
-        return True
-
-    def moveSouth(self):
+    def stop(self) -> bool:
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':PO#:Ms#')
-        if not suc:
-            return False
+        suc, _, _ = conn.communicate(':STOP#')
+        return suc
 
-        return True
-
-    def moveWest(self):
+    def flip(self) -> bool:
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':PO#:Mw#')
-        if not suc:
-            return False
+        suc, _, _ = conn.communicate(':FLIP#', responseCheck='1')
+        return suc
 
-        return True
-
-    def stopMoveAll(self):
+    def moveNorth(self) -> bool:
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':Q#')
-        if not suc:
-            return False
+        suc, _, _ = conn.communicate(':PO#:Mn#')
+        return suc
 
-        return True
-
-    def stopMoveNorth(self):
+    def moveEast(self) -> bool:
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':Qn#')
-        if not suc:
-            return False
+        suc, _, _ = conn.communicate(':PO#:Me#')
+        return suc
 
-        return True
-
-    def stopMoveEast(self):
+    def moveSouth(self) -> bool:
         """
-        stopMoveEast sends the flip command to the mount.
-
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':Qe#')
-        if not suc:
-            return False
-        return True
+        suc, _, _ = conn.communicate(':PO#:Ms#')
+        return suc
 
-    def stopMoveSouth(self):
+    def moveWest(self) -> bool:
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':Qs#')
-        if not suc:
-            return False
+        suc, _, _ = conn.communicate(':PO#:Mw#')
+        return suc
 
-        return True
-
-    def stopMoveWest(self):
+    def stopMoveAll(self) -> bool:
         """
-        :return:    success
         """
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(':Qw#')
-        if not suc:
-            return False
+        suc, _, _ = conn.communicate(':Q#')
+        return suc
 
-        return True
-
-    def syncPositionToTarget(self):
+    def stopMoveNorth(self) -> bool:
         """
-        :return:    success
+        """
+        conn = Connection(self.parent.host)
+        suc, _, _ = conn.communicate(':Qn#')
+        return suc
+
+    def stopMoveEast(self) :
+        """
+        """
+        conn = Connection(self.parent.host)
+        suc, _, _ = conn.communicate(':Qe#')
+        return suc
+
+    def stopMoveSouth(self) -> bool:
+        """
+        """
+        conn = Connection(self.parent.host)
+        suc, _, _ = conn.communicate(':Qs#')
+        return suc
+
+    def stopMoveWest(self) -> bool:
+        """
+        """
+        conn = Connection(self.parent.host)
+        suc, _, _ = conn.communicate(':Qw#')
+        return suc
+
+    def syncPositionToTarget(self) -> bool:
+        """
         """
         conn = Connection(self.parent.host)
         commandString = ':CM#'
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
-        if not response[0].startswith('Coord'):
-            return False
-
-        return True
+        return response[0].startswith('Coord')

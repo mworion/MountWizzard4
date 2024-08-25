@@ -107,7 +107,7 @@ class MountCommand(MWidget):
             t = f'Receive OK, took {delta:2.3f}s'
             self.ui.commandStatus.insertPlainText(t)
         else:
-            t = f'Receive ERROR, took {delta:2.3f}s'
+            t = f'Receive {val}, took {delta:2.3f}s'
             self.ui.commandStatus.insertPlainText(t)
 
         self.ui.commandOutput.insertPlainText(val + '\n')

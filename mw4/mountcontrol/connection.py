@@ -49,7 +49,7 @@ class Connection(object):
 
     # I don't want so wait to long for a response. In average, I see values
     # shorter than 0.5 sec, so 2 seconds should be good
-    SOCKET_TIMEOUT = 5
+    SOCKET_TIMEOUT = 2
 
     # complete used command list to be checked first if valid
     # these are the commands, which were used in mountcontrol so far
@@ -123,21 +123,13 @@ class Connection(object):
                  ':WSS', ':SWOL'
                  ]
 
-    def __init__(self,
-                 host=None,
-                 ):
-
+    def __init__(self, host=None):
         self.host = host
         self.id = str(uuid.uuid4())[:8]
 
     def validCommand(self, command):
         """
-        validCommand test if command is valid and known.
-
-        :param command: command for 10 micron to test
-        :return: True if valid commands were issued
         """
-
         for key in sorted(self.COMMANDS, reverse=True):
             if command.startswith(key):
                 return True
@@ -145,16 +137,11 @@ class Connection(object):
 
     def validCommandSet(self, commandString):
         """
-        validCommandSet test if all commands in the commandString are valid
-        and known.
-
-        :param commandString: command for 10 micron to test
-        :return: True if valid commands were issued
         """
-
         commandSet = commandString.split('#')[:-1]
         for command in commandSet:
             if not self.validCommand(command):
+                self.log.warning(f'[{self.id}] unknown commands: {commandString}')
                 return False
         return True
 
@@ -167,12 +154,7 @@ class Connection(object):
         the command slots will be sorted in reverse order to ensure that longer
         commands with the same leading characters will be tested first. otherwise,
         the test will be ended before testing al commands.
-
-        :param commandString:       string sent to the mount
-        :return: chunksToReceive:   counted chunks
-                 noResponse:        True, if we should not wait for receiving data
         """
-
         chunksToReceive = 0
         getData = False
         commandSet = commandString.split('#')[:-1]
@@ -193,15 +175,14 @@ class Connection(object):
                         break
                 else:
                     chunksToReceive += 1
+        t = f'Analyse: minBytes: [{minBytes}], numOfChunks: [{chunksToReceive}]'
+        t += ', host: [{self.host}]'
+        self.log.trace(t)
         return chunksToReceive, getData, minBytes
 
     @staticmethod
     def closeClientHard(client):
         """
-        closeClientHard tries to shut down a socket in case of error hard
-
-        :param client:
-        :return: success
         """
         if not client:
             return False
@@ -211,21 +192,17 @@ class Connection(object):
             client.close()
         except Exception:
             return False
-
-        return True
+        else:
+            return True
 
     def buildClient(self):
         """
-        buildClient checks necessary information and tries to open a socket.
-        if success it returns the client (socket connection)
-
-        :return: client for socket connection if succeeded
         """
         if not self.host:
             self.log.info(f'[{self.id}] no host defined')
             return None
         if not isinstance(self.host, tuple):
-            self.log.info(f'[{self.id}] host entry malformed> {self.host}')
+            self.log.info(f'[{self.id}] host entry malformed [{self.host}]')
             return None
 
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -234,12 +211,7 @@ class Connection(object):
         try:
             client.connect(self.host)
 
-        except socket.timeout:
-            self.closeClientHard(client)
-            self.log.trace(f'[{self.id}] socket timeout')
-            return None
-
-        except socket.error as e:
+        except (socket.timeout, socket.error) as e:
             self.closeClientHard(client)
             self.log.trace(f'[{self.id}] socket error: [{e}]')
             return None
@@ -254,18 +226,18 @@ class Connection(object):
 
     def sendData(self, client=None, commandString=''):
         """
-        sendData sends all data of the command string out to the given socket client.
-
-        :param client: socket client
-        :param commandString: command to mount as string
-        :return: success
+        sendData sends all data of the command string out to the given socket
+        client.
         """
         try:
+            self.log.trace(f'[{self.id}] sending  : {commandString}')
             client.sendall(commandString.encode())
+
         except Exception as e:
             self.closeClientHard(client)
             self.log.debug(f'[{self.id}] socket error: [{e}]')
             return False
+
         else:
             return True
 
@@ -314,34 +286,21 @@ class Connection(object):
             self.log.trace(f'Response [{self.id}]: [{response}]')
             return True, response
 
-    def communicate(self, commandString):
+    def communicate(self, commandString, responseCheck=''):
         """
         transfer open a socket to the mount, takes the command string for the
         mount, analyses it, check validity and finally if valid sends it to the
         mount. If response expected, wait for the response and returns the data.
-
-        :param commandString:
-        :return: success:           True or False for full transfer
-                 response:          the data load
-                 numberOfChunks:    number of responses chunks which were
-                                    split with #
         """
         if not self.validCommandSet(commandString):
-            self.log.warning(f'[{self.id}] unknown commands: {commandString}')
-            return False, 'wrong commands', 0
+            return False, '', 0
 
         numberOfChunks, getData, minBytes = self.analyseCommand(commandString)
-
-        t = f'Sending  [{self.id}]: [{commandString}], getData: [{getData}],'
-        t += f'minBytes: [{minBytes}], numOfChunks: [{numberOfChunks}], host: [{self.host}]'
-        self.log.trace(t)
-
         client = self.buildClient()
         if client is None:
             return False, '', numberOfChunks
 
-        suc = self.sendData(client=client,
-                            commandString=commandString)
+        suc = self.sendData(client=client, commandString=commandString)
         if not suc:
             return False, '', numberOfChunks
 
@@ -353,33 +312,32 @@ class Connection(object):
                                          numberOfChunks=numberOfChunks,
                                          minBytes=minBytes)
         self.closeClientHard(client)
+        if responseCheck:
+            suc = suc and response[0] == responseCheck
 
         return suc, response, numberOfChunks
 
-    def communicateRaw(self, commandString):
+    def communicateRaw(self, commandString: str) -> tuple:
         """
-        :param commandString:
-        :return:
         """
         client = self.buildClient()
         if client is None:
             return False, False, 'Socket error'
-        client.settimeout(1)
-        self.log.trace(f'[{self.id}] sending  : {commandString}')
+
         sucSend = self.sendData(client=client, commandString=commandString)
         try:
             chunkRaw = client.recv(2048)
-            chunk = chunkRaw.decode('ASCII')
+            val = chunkRaw.decode('ASCII')
         except socket.timeout:
             self.log.debug(f'[{self.id}] socket timeout')
-            chunk = 'Timeout'
+            val = 'Timeout'
             sucRec = False
         except Exception as e:
             self.log.debug(f'[{self.id}] socket error: [{e}]')
-            chunk = 'Exception'
+            val = 'Exception'
             sucRec = False
         else:
-            self.log.trace(f'[{self.id}] response: [{chunk}]')
+            self.log.trace(f'[{self.id}] response: [{val}]')
             sucRec = True
-        finally:
-            return sucSend, sucRec, chunk
+
+        return sucSend, sucRec, val

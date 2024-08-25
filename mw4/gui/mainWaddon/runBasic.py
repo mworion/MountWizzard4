@@ -22,6 +22,7 @@ import logging
 
 # external packages
 from mountcontrol.convert import convertToHMS, convertToDMS
+from skyfield.api import Angle
 
 # local import
 from base.transform import JNowToJ2000, J2000ToJNow
@@ -279,8 +280,8 @@ class RunBasic:
 
         self.log.info('Slew started')
         mPoint = self.slewQueue.get()
-        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
-                                                    az_degrees=mPoint['azimuth'])
+        suc = self.app.mount.obsSite.setTargetAltAz(alt=Angle(degrees=mPoint['altitude']),
+                                                    az=Angle(degrees=mPoint['azimuth']))
         if not suc:
             return False
 

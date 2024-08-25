@@ -18,7 +18,7 @@
 import unittest
 
 # external packages
-from skyfield.api import Angle, load
+from skyfield.api import load
 
 # local imports
 from mountcontrol.trajectoryParams import TrajectoryParams

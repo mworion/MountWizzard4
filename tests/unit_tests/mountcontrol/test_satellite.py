@@ -23,9 +23,6 @@ from skyfield.api import Angle, load
 
 # local imports
 from mountcontrol.satellite import Satellite
-from mountcontrol.tleParams import TLEParams
-from mountcontrol.trajectoryParams import TrajectoryParams
-from mountcontrol.connection import Connection
 from base.loggerMW import setupLogging
 
 setupLogging()

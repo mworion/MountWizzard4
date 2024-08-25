@@ -181,6 +181,7 @@ class Satellite(object):
         value = response[0].split(',')
         if len(value) != 2:
             return False
+
         alt, az = value
         self.tleParams.altitude = alt
         self.tleParams.azimuth = az

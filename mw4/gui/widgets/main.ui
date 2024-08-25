@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -17415,7 +17415,7 @@ When clicking the button, you could change the value.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -19117,37 +19117,6 @@ Next point in time when satellite settles.</string>
          <string>Horizon</string>
         </property>
        </widget>
-       <widget class="QProgressBar" name="calcProgress">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>75</x>
-          <y>75</y>
-          <width>196</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Progress bar for the trajectory programming&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-        <property name="textVisible">
-         <bool>true</bool>
-        </property>
-        <property name="invertedAppearance">
-         <bool>false</bool>
-        </property>
-        <property name="textDirection">
-         <enum>QProgressBar::Direction::TopToBottom</enum>
-        </property>
-       </widget>
        <widget class="QPushButton" name="progTrajectory">
         <property name="enabled">
          <bool>false</bool>
@@ -19156,7 +19125,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>10</x>
           <y>75</y>
-          <width>61</width>
+          <width>236</width>
           <height>20</height>
          </rect>
         </property>
@@ -19164,7 +19133,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Prog</string>
+         <string>Program trajectory</string>
         </property>
        </widget>
        <widget class="QCheckBox" name="trackingReplay">

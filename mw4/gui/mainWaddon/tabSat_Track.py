@@ -19,6 +19,7 @@
 # external packages
 import numpy as np
 from sgp4.exporter import export_tle
+from skyfield.api import Angle
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
@@ -63,9 +64,8 @@ class SatTrack(MWidget, SatData):
 
         msig = self.app.mount.signals
         msig.calcTLEdone.connect(self.updateSatelliteTrackGui)
-        msig.calcTrajectoryDone.connect(self.updateSatelliteTrackGui)
+        msig.calcTrajectoryDone.connect(self.updateInternalTrackGui)
         msig.getTLEdone.connect(self.getSatelliteDataFromDatabase)
-        msig.calcProgress.connect(self.calcProgress)
         msig.pointDone.connect(self.followMount)
         msig.settingDone.connect(self.updatePasses)
         msig.pointDone.connect(self.toggleTrackingOffset)
@@ -132,7 +132,6 @@ class SatTrack(MWidget, SatData):
 
         progAvailable = availableInternal and useInternal
         self.ui.trackingReplay.setEnabled(progAvailable)
-        self.ui.calcProgress.setEnabled(progAvailable)
         self.ui.progTrajectory.setEnabled(progAvailable)
         return True
 
@@ -152,7 +151,6 @@ class SatTrack(MWidget, SatData):
         self.ui.satTrajectoryStart.setText('-')
         self.ui.satTrajectoryEnd.setText('-')
         self.ui.satTrajectoryFlip.setText('-')
-        self.ui.calcProgress.setValue(0)
         self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setText('Start satellite tracking')
@@ -422,31 +420,32 @@ class SatTrack(MWidget, SatData):
         self.clearTrackingParameters()
         isReplay = self.ui.trackingReplay.isChecked()
         t = ('for simulation' if isReplay else '')
-        self.msg.emit(0, 'TLE', 'Program', f'Satellite track data {t}')
+        self.msg.emit(1, 'TLE', 'Program', f'Satellite track data {t}')
         start, end = self.selectStartEnd()
         if not start or not end:
             return False
         alt, az = self.calcTrajectoryData(start, end)
         start, end, alt, az = self.filterHorizon(start, end, alt, az)
+
         if len(alt) == 0:
             text = 'Program', 'No track data (white), please revise settings'
             self.msg.emit(2, 'TLE', 'Error', text)
             return False
-        self.changeStyleDynamic(self.ui.progTrajectory, 'running', True)
-        self.app.mount.progTrajectory(start, alt=alt, az=az, replay=isReplay)
-        return True
 
-    def calcProgress(self, value):
-        """
-        """
-        self.ui.calcProgress.setValue(int(value))
-        if value == 100:
-            self.changeStyleDynamic(self.ui.progTrajectory, 'running', False)
+        factor = int(len(alt) / 900)
+        factor = 1 if factor < 1 else factor
+        alt = Angle(degrees=np.array_split(alt, factor)[0])
+        az = Angle(degrees=np.array_split(az, factor)[0])
+
+        self.changeStyleDynamic(self.ui.progTrajectory, 'running', True)
+        self.ui.progTrajectory.setEnabled(False)
+        self.ui.progTrajectory.setText('Calculating')
+        self.app.mount.progTrajectory(start, alt, az, replay=isReplay)
+        return True
 
     def updateSatelliteTrackGui(self, params=None):
         """
         """
-        self.ui.calcProgress.setValue(0)
         title = 'Satellite tracking ' + self.timeZoneString()
         self.ui.satTrackGroup.setTitle(title)
 
@@ -481,6 +480,14 @@ class SatTrack(MWidget, SatData):
             self.ui.startSatelliteTracking.setEnabled(False)
 
         return True
+
+    def updateInternalTrackGui(self, params=None):
+        """
+        """
+        self.ui.progTrajectory.setEnabled(True)
+        self.ui.progTrajectory.setText('Program trajectory')
+        self.updateSatelliteTrackGui(params)
+        self.msg.emit(1, 'TLE', 'Program', f'Satellite track data ready!')
 
     def startTrack(self):
         """

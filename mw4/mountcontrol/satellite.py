@@ -638,19 +638,15 @@ class Satellite(object):
 
     def addTrajectoryPoint(self, alt, az):
         """
-        :param alt:
-        :param az:
-        :return:
         """
-        if len(alt) == 0 or len(alt) != len(az):
-            return False
-
-        cmd = ''
+        commandString = ''
+        az = az.degrees
+        alt = alt.degrees
         for azimuth, altitude in zip(az, alt):
-            cmd += f':TRADD{azimuth},{altitude}#'
+            commandString += f':TRADD{azimuth},{altitude}#'
 
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
+        suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
 
@@ -667,20 +663,14 @@ class Satellite(object):
 
         return True
 
-    def preCalcTrajectory(self, replay=False):
+    def preCalcTrajectory(self, replay: bool = False) -> bool:
         """
-        :param replay:    start now
-        :return: success
         """
         self.trajectoryParams.flip = None
         self.trajectoryParams.jdStart = None
         self.trajectoryParams.jdEnd = None
 
-        if replay:
-            cmd = ':TRREPLAY#'
-        else:
-            cmd = ':TRP#'
-
+        cmd = ':TRREPLAY#' if replay else ':TRP#'
         conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
@@ -708,9 +698,8 @@ class Satellite(object):
         self.trajectoryParams.jdEnd = end
         return True
 
-    def getTrackingOffsets(self):
+    def getTrackingOffsets(self) -> bool:
         """
-        :return: success
         """
         cmd = ':TROFFGET1#:TROFFGET2#:TROFFGET3#:TROFFGET4#'
         conn = Connection(self.parent.host)
@@ -743,109 +732,73 @@ class Satellite(object):
 
         return True
 
-    def setTrackingOffsets(self, RA=None, DEC=None, DECcorr=None, Time=None):
+    def setTrackingFirst(self, first: Angle) -> bool:
         """
-        :param RA:
-        :param DEC:
-        :param DECcorr:
-        :param Time:
-        :return:
         """
-        cmd = ''
-        responseLen = 0
-        if RA is not None:
-            cmd += f':TROFFSET1,{RA:+05.1f}#'
-            responseLen += 1
-        if DEC is not None:
-            cmd += f':TROFFSET2,{DEC:+05.1f}#'
-            responseLen += 1
-        if DECcorr is not None:
-            cmd += f':TROFFSET3,{DECcorr:+05.1f}#'
-            responseLen += 1
-        if Time is not None:
-            cmd += f':TROFFSET4,{Time:+05.1f}#'
-            responseLen += 1
-
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
-        if not suc:
-            return False
+        commandString = f':TROFFSET1,{first.degrees:+05.1f}#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='V')
+        return suc
 
-        if len(response) != numberOfChunks:
-            self.log.warning('wrong number of chunks')
-            return False
-        if len(response) != responseLen:
-            self.log.warning('wrong number of chunks')
-            return False
-
-        for res in response:
-            if res == 'E':
-                break
-        else:
-            return True
-        return False
-
-    def addTrackingOffsets(self, RA=None, DEC=None, DECcorr=None, Time=None):
+    def setTrackingSecond(self, second: Angle) -> bool:
         """
-        :param RA:
-        :param DEC:
-        :param DECcorr:
-        :param Time:
-        :return:
         """
-        cmd = ''
-        responseLen = 0
-        if RA is not None:
-            cmd += f':TROFFADD1,{RA:+05.1f}#'
-            responseLen += 1
-        if DEC is not None:
-            cmd += f':TROFFADD2,{DEC:+05.1f}#'
-        responseLen += 1
-        if DECcorr is not None:
-            cmd += f':TROFFADD3,{DECcorr:+05.1f}#'
-        responseLen += 1
-        if Time is not None:
-            cmd += f':TROFFADD4,{Time:+05.1f}#'
-            responseLen += 1
-
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
-        if not suc:
-            return False
+        commandString = f':TROFFSET2,{second.degrees:+05.1f}#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='V')
+        return suc
 
-        if len(response) != numberOfChunks:
-            self.log.warning('wrong number of chunks')
-            return False
-        if len(response) != responseLen:
-            self.log.warning('wrong number of chunks')
-            return False
-
-        for res in response:
-            if res == 'E':
-                break
-        else:
-            return True
-        return False
-
-    def clearTrackingOffsets(self):
+    def setTrackingFirstCorr(self, firstCorr: Angle) -> bool:
         """
-        :return:
         """
-        cmd = ':TROFFCLR#'
-
         conn = Connection(self.parent.host)
-        suc, response, numberOfChunks = conn.communicate(commandString=cmd)
-        if not suc:
-            return False
+        commandString = f':TROFFSET3,{firstCorr.degrees:+05.1f}#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='V')
+        return suc
 
-        if len(response) != numberOfChunks:
-            self.log.warning('wrong number of chunks')
-            return False
-        if len(response) != 1:
-            self.log.warning('wrong number of chunks')
-            return False
+    def setTrackingTime(self, time: float) -> bool:
+        """
+        """
+        conn = Connection(self.parent.host)
+        commandString = f':TROFFSET4,{time:+05.1f}#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='V')
+        return suc
 
-        if response[0] == 'E':
-            return False
-        else:
-            return True
+    def addTrackingFirst(self, first: Angle) -> bool:
+        """
+        """
+        conn = Connection(self.parent.host)
+        commandString = f':TROFFADD1,{first.degrees:+05.1f}#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='V')
+        return suc
+
+    def addTrackingSecond(self, second: Angle) -> bool:
+        """
+        """
+        conn = Connection(self.parent.host)
+        commandString = f':TROFFADD2,{second.degrees:+05.1f}#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='V')
+        return suc
+
+    def addTrackingFirstCorr(self, firstCorr: Angle) -> bool:
+        """
+        """
+        conn = Connection(self.parent.host)
+        commandString = f':TROFFADD3,{firstCorr.degrees:+05.1f}#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='V')
+        return suc
+
+    def addTrackingTime(self, time: float) -> bool:
+        """
+        """
+        conn = Connection(self.parent.host)
+        commandString = f':TROFFADD4,{time:+05.1f}#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='V')
+        return suc
+
+    def clearTrackingOffsets(self) -> bool:
+        """
+        """
+        conn = Connection(self.parent.host)
+        suc, _, _ = conn.communicate(':TROFFCLR#', responseCheck='V')
+        return suc

@@ -98,8 +98,7 @@ class SlewInterface:
             raJNow = Angle(hours=ra)
             decJNow = Angle(degrees=dec)
 
-        suc = self.app.mount.obsSite.setTargetRaDec(ra=raJNow,
-                                                    dec=decJNow)
+        suc = self.app.mount.obsSite.setTargetRaDec(ra=raJNow, dec=decJNow)
         if not suc:
             t = f'Cannot slew to RA:[{raJNow.hours:3.1f}], '
             t += f'DEC:[{decJNow.degrees:3.1f}]'

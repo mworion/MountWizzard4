@@ -413,14 +413,14 @@ def test_progTrajectory_1(function):
     function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        function.progTrajectory(12345678)
+        function.progTrajectory(start=1, alt=[10], az=[10])
 
 
 def test_progTrajectory_2(function):
     function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        function.progTrajectory(12345678)
+        function.progTrajectory(start=1, alt=[10], az=[10])
 
 
 def test_calcTransformationMatricesTarget(function):

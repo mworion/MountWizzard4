@@ -404,29 +404,18 @@ class MountDevice:
         """
         self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
 
-    def workerProgTrajectory(self, alt=None, az=None, replay=False):
+    def workerProgTrajectory(self, alt, az, replay=False):
         """
         """
-        factor = int(len(alt) / 32)
-        if factor < 1:
-            factor = 1
-        altP = np.array_split(alt, factor)
-        azP = np.array_split(az, factor)
-        chunks = len(altP)
-
-        for i, (altitude, azimuth) in enumerate(zip(altP, azP)):
-            self.satellite.addTrajectoryPoint(alt=altitude, az=azimuth)
-            self.signals.calcProgress.emit(min((i + 1) / chunks * 100, 100))
-        self.signals.calcProgress.emit(100)
+        self.satellite.addTrajectoryPoint(alt, az)
         self.satellite.preCalcTrajectory(replay=replay)
         return replay
 
-    def progTrajectory(self, start, alt=None, az=None, replay=False):
+    def progTrajectory(self, start, alt, az, replay=False):
         """
         """
         self.satellite.startProgTrajectory(julD=start)
-
-        worker = Worker(self.workerProgTrajectory, alt=alt, az=az, replay=replay)
+        worker = Worker(self.workerProgTrajectory, alt, az, replay=replay)
         worker.signals.result.connect(self.clearProgTrajectory)
         self.threadPool.start(worker)
 

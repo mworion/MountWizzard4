@@ -22,7 +22,6 @@ import os
 # external packages
 from skyfield.api import wgs84, Angle, load, Loader
 from skyfield.toposlib import GeographicPosition
-import skyfield.starlib as starlib
 import numpy as np
 
 # local imports
@@ -52,7 +51,7 @@ class ObsSite(object):
     """
     __all__ = ['ObsSite']
 
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('MW4')
 
     STAT = {
         '0': 'Tracking',
@@ -464,39 +463,27 @@ class ObsSite(object):
     def statusSlew(self, value):
         self._statusSlew = bool(value)
 
-    def parseLocation(self, response, numberOfChunks):
+    def parseLocation(self, response: list, numberOfChunks: int) -> bool:
         """
-        Parsing the polling slow command.
-
-        :param response:        data load from mount
-        :param numberOfChunks:  amount of parts
-        :return: success:       True if ok, False if not
+        due to compatibility to LX200 protocol east is negative, so we change that
+        in class we would like to keep the correct sign for east is positive
         """
-
         if len(response) != numberOfChunks:
             self.log.warning('Wrong number of chunks')
             return False
         elev = response[0]
-        # due to compatibility to LX200 protocol east is negative, so we change that
-        # in class we would like to keep the correct sign for east is positive
         lon = None
         if '-' in response[1]:
             lon = response[1].replace('-', '+')
         if '+' in response[1]:
             lon = response[1].replace('+', '-')
         lat = response[2]
-
         self.location = [lat, lon, elev]
         return True
 
-    def getLocation(self):
+    def getLocation(self) -> bool:
         """
-        Sending the polling command. As the mount need polling the data, I send
-        a set of commands to get the data back to be able to process and store it.
-
-        :return: success:   True if ok, False if not
         """
-
         conn = Connection(self.parent.host)
         commandString = ':U2#:Gev#:Gg#:Gt#'
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -505,20 +492,13 @@ class ObsSite(object):
         suc = self.parseLocation(response, numberOfChunks)
         return suc
 
-    def parsePointing(self, response, numberOfChunks):
+    def parsePointing(self, response: list, numberOfChunks: int) -> bool:
         """
-        Parsing the polling fast command.
-
-        :param response:        data load from mount
-        :param numberOfChunks:  amount of parts
-        :return: success:       True if ok, False if not
         """
-
         if len(response) != numberOfChunks:
             self.log.warning('Wrong number of chunks')
             return False
         self.timeSidereal = response[0]
-        # remove the leap seconds flag if present
         self.ut1_utc = response[1].replace('L', '')
         self.statusSat = response[2]
         responseSplit = response[3].split(',')
@@ -585,80 +565,24 @@ class ObsSite(object):
         suc, _, _ = conn.communicate(commandString, responseCheck='1')
         return suc
 
-    def startSlewing(self, slewType='normal', forceUnpark=False):
+    def startSlewing(self, slewType: str = 'normal'):
         """
-        startSlewing issues the final slew command to the mount after the target
-        coordinates were set. before issuing the slewing command it automatically unpark
-        the mount as well.
-
-        the slew commands are:
-            :MS#  :MA#  :MSap#  :MSao# :MaX#, :PiP#
-
-        and return:
-            0 no error
-                if the target is below the lower limit: the string
-            “1Object Below Horizon #”
-                if the target is above the high limit: the string
-            “2Object Below Higher #”
-                if the slew cannot be performed due to another cause: the string
-            “3Cannot Perform Slew #”
-                if the mount is parked: the string
-            “4Mount Parked #”
-                if the mount is restricted to one side of the meridian and the object
-                is on the other side: the string
-            “5Object on the other side #”
-
-        the types of slew is:
-        - 'normal'      slew to coordinate and tracking on
-        - 'notrack':    slew to coordinate and tracking off
-        - 'stop':       slew to coordinate and park
-        - 'park':       slew to coordinates and park
-        - 'polar':      slew to coordinate and miss for polar alignment
-        - 'ortho':      slew to coordinate and miss for orthogonal alignment
-        - 'keep':       choose between normal and notrack to keep the tracking mode
-
-        :param slewType:
-        :return:
         """
-        slewTypes = {
-            'normal': ':MS#',
-            'notrack': ':MA#',
-            'stop': ':MaX#',
-            'park': ':PaX#',
-            'polar': ':MSap#',
-            'ortho': ':MSao#',
-            'keep': '',
-        }
+        slewTypes = dict(normal=':MS#', notrack=':MA#', stop=':MaX#', park=':PaX#',
+                         polar=':MSap#', ortho=':MSao#', keep='')
 
-        if slewType not in slewTypes:
-            return False
-
-        if slewType == 'keep':
-            if self.status == 0:
-                slewTypes['keep'] = ':MS#'
-
-            else:
-                slewTypes['keep'] = ':MA#'
+        keepSlewType = ':MS#' if self.status == 0 else ':MA#'
+        slewTypes['keep'] = keepSlewType
 
         self.flipped = self._piersideTarget != self.pierside
         conn = Connection(self.parent.host)
-
         commandString = ':PO#' + slewTypes[slewType]
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-
-        if not response[0].startswith('0'):
-            self.log.debug(f'Slew could not be done: [{response}]')
-            return False
-
-        return True
+        suc, _, _ = conn.communicate(commandString, responseCheck='0')
+        return suc
 
     def setTargetAltAz(self, alt: Angle, az: Angle):
         """
         """
-        conn = Connection(self.parent.host)
-
         sgn, h, m, s, frac = sexagesimalizeToInt(alt.degrees, 1)
         sign = '+' if sgn >= 0 else '-'
         setAlt = f':Sa{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
@@ -668,6 +592,8 @@ class ObsSite(object):
         setAz = f':Sz{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#'
 
         getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
+
+        conn = Connection(self.parent.host)
         commandString = setAlt + setAz + getTargetStatus
         suc, response, _ = conn.communicate(commandString)
         if not suc:
@@ -689,61 +615,9 @@ class ObsSite(object):
         self.decJNowTarget = response[3]
         return suc
 
-    def setTargetRaDec(self,
-                       ra=None, dec=None,
-                       ra_hours=None, dec_degrees=None,
-                       target=None):
+    def setTargetRaDec(self, ra: Angle, dec: Angle) -> bool:
         """
-        Slew RaDec unpark the mount sets the targets for ra and dec and then
-        issue the slew command.
-
-        the unpark command is:
-            :PO#
-        and returns nothing
-
-        setting ra target is the following:
-            :SrHH:MM.T# or :SrHH:MM:SS# or :SrHH:MM:SS.S# or :SrHH:MM:SS.SS#
-                , we use the last one
-            :SrHH:MM:SS.SS#
-
-        setting dec target is the following:
-            :SdsDD*MM# or :SdsDD*MM:SS# or :Sd sDD*MM:SS.S#, we use the last one
-            :SdsDD*MM:SS.S#
-
-        the slew command moves the mount and keeps tracking at the end of the move.
-        in the command protocol it is written, that the targets should be ra / dec,
-        but it works for targets defined with alt / az commands
-
-        :param ra:     right ascension in type Angle
-        :param dec:    declination in type Angle preference 'hours'
-        :param ra_hours: right ascension in float hours
-        :param dec_degrees: declination in float degrees
-        :param target:  star in type skyfield.Star
-        :return:       success
         """
-        hasTarget = isinstance(target, starlib.Star)
-        hasAngles = isinstance(ra, Angle) and isinstance(dec, Angle)
-        raHasFloat = isinstance(ra_hours, (float, int))
-        decHasFloat = isinstance(dec_degrees, (float, int))
-        if hasTarget:
-            ra = target.ra
-            dec = target.dec
-
-        elif hasAngles:
-            pass
-
-        elif raHasFloat and decHasFloat:
-            ra = Angle(hours=ra_hours, preference='hours')
-            dec = Angle(degrees=dec_degrees)
-
-        else:
-            return False
-
-        if ra.preference != 'hours' or dec.preference != 'degrees':
-            return False
-
-        conn = Connection(self.parent.host)
-
         sgn, h, m, s, frac = sexagesimalizeToInt(ra.hours, 2)
         setRa = f':Sr{h:02d}:{m:02d}:{s:02d}.{frac:02d}#'
 
@@ -752,6 +626,8 @@ class ObsSite(object):
         setDec = f':Sd{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
 
         getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
+
+        conn = Connection(self.parent.host)
         commandString = setRa + setDec + getTargetStatus
         suc, response, _ = conn.communicate(commandString)
         if not suc:

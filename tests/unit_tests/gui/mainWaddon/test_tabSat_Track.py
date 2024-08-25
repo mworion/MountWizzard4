@@ -649,10 +649,6 @@ def test_startProg_3(function):
                     assert not suc
 
 
-def test_calcProgress_1(function):
-    function.calcProgress(100)
-
-
 def test_updateSatelliteTrackGui_1(function):
     suc = function.updateSatelliteTrackGui()
     assert not suc
@@ -694,6 +690,12 @@ def test_updateSatelliteTrackGui_3(function):
 
     suc = function.updateSatelliteTrackGui(Test())
     assert suc
+
+
+def test_updateInternalTrackGui_1(function):
+    with mock.patch.object(function,
+                           'updateSatelliteTrackGui'):
+        function.updateInternalTrackGui()
 
 
 def test_tle_export_1(function):

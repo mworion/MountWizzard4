@@ -35,7 +35,6 @@ class MountSignals(QObject):
     calcTLEdone = Signal(object)
     statTLEdone = Signal(object)
     getTLEdone = Signal(object)
-    calcProgress = Signal(object)
     calcTrajectoryDone = Signal(object)
     mountUp = Signal(object)
     slewFinished = Signal()

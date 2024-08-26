@@ -287,8 +287,8 @@ def test_generateBuildData_2(function):
             "azimuth": 37.194805194805184,
             "binning": 1.0,
             "countSequence": 0,
-            "decJNowS": 64.3246,
-            "decJNowM": 64.32841185357267,
+            "decJNowS": Angle(degrees=64.3246),
+            "decJNowM": Angle(degrees=64.32841185357267),
             "errorDEC": -229.0210134131381,
             "errorRMS": 237.1,
             "errorRA": -61.36599559380768,
@@ -300,9 +300,9 @@ def test_generateBuildData_2(function):
             "imagePath": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08"
                          "-57-44/image-000.fits",
             "pierside": "W",
-            "raJNowS": 8.42882,
-            "raJNowM": 8.427692953132278,
-            "siderealTime": skyfield.api.Angle(hours=12.5),
+            "raJNowS": Angle(hours=8.42882),
+            "raJNowM": Angle(hours=8.427692953132278),
+            "siderealTime": Angle(hours=12.5),
             "subFrame": 100.0
         },
     ]

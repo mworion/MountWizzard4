@@ -21,7 +21,7 @@ import numpy
 
 # external packages
 import skyfield.api
-from skyfield.api import wgs84
+from skyfield.api import wgs84, Star, Angle
 
 # local imports
 from mountcontrol.model import ModelStar, AlignStar
@@ -1378,7 +1378,9 @@ class TestConfigData(unittest.TestCase):
             host = None
         model = Model(parent=Parent())
 
-        aPoint = AlignStar()
+        aPoint = AlignStar(Star(ra_hours=0, dec_degrees=0),
+                           Star(ra_hours=0, dec_degrees=0),
+                           Angle(hours=0), 'e')
         build = [aPoint]
         with mock.patch('mountcontrol.model.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, ['1'], 1
@@ -1390,20 +1392,21 @@ class TestConfigData(unittest.TestCase):
             host = None
         model = Model(parent=Parent())
 
-        aPoint = AlignStar()
+        aPoint = AlignStar(Star(ra_hours=0, dec_degrees=0),
+                           Star(ra_hours=0, dec_degrees=0),
+                           Angle(hours=0), 'e')
         build = [aPoint]
         with mock.patch('mountcontrol.model.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, ['1'], 1
             suc = model.programAlign(build)
             self.assertEqual(True, suc)
-            mConn.return_value.communicate.assert_called_with(':newalig#:endalig#')
+            mConn.return_value.communicate.assert_called_with(':newalig#:newalpt00:00:00.0,+00*00:00.0,E,00:00:00.0,+00*00:00.0,00:00:00.00#:endalig#')
 
     def test_Model_programAlign_ok3(self):
         class Parent:
             host = None
         model = Model(parent=Parent())
-        v1 = ':newalig#:newalpt19:35:15.6,-15*02:43.1,W,19:35:45.3,-15*03:41.8,' \
-             '17:35:31.75#:endalig#'
+        v1 = ':newalig#:newalpt21:30:10.7,-14*37:31.8,W,21:30:10.8,-14*37:32.1,18:31:21.50#:endalig#'
 
         build = self.gatherData(1)
         with mock.patch('mountcontrol.model.Connection') as mConn:
@@ -1416,8 +1419,7 @@ class TestConfigData(unittest.TestCase):
         class Parent:
             host = None
         model = Model(parent=Parent())
-        v1 = ':newalig#:newalpt19:35:15.6,-15*02:43.1,W,19:35:45.3,-15*03:41.8,' \
-             '17:35:31.75#:endalig#'
+        v1 = ':newalig#:newalpt21:30:10.7,-14*37:31.8,W,21:30:10.8,-14*37:32.1,18:31:21.50#:endalig#'
 
         build = self.gatherData(2)
         build[1].mCoord = None
@@ -1432,7 +1434,9 @@ class TestConfigData(unittest.TestCase):
             host = None
         model = Model(parent=Parent())
 
-        aPoint = AlignStar()
+        aPoint = AlignStar(Star(ra_hours=0, dec_degrees=0),
+                           Star(ra_hours=0, dec_degrees=0),
+                           Angle(hours=0), 'e')
         build = [aPoint]
         with mock.patch('mountcontrol.model.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, ['E'], 1
@@ -1444,7 +1448,9 @@ class TestConfigData(unittest.TestCase):
             host = None
         model = Model(parent=Parent())
 
-        aPoint = AlignStar()
+        aPoint = AlignStar(Star(ra_hours=0, dec_degrees=0),
+                           Star(ra_hours=0, dec_degrees=0),
+                           Angle(hours=0), 'e')
         build = [aPoint, 'test']
         with mock.patch('mountcontrol.model.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, ['E'], 1
@@ -1456,7 +1462,9 @@ class TestConfigData(unittest.TestCase):
             host = None
         model = Model(parent=Parent())
 
-        aPoint = AlignStar()
+        aPoint = AlignStar(Star(ra_hours=0, dec_degrees=0),
+                           Star(ra_hours=0, dec_degrees=0),
+                           Angle(hours=0), 'e')
         build = [aPoint]
         with mock.patch('mountcontrol.model.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, ['E'], 1
@@ -1479,33 +1487,35 @@ class TestConfigData(unittest.TestCase):
             host = None
         model = Model(parent=Parent())
 
-        aPoint = AlignStar()
+        aPoint = AlignStar(Star(ra_hours=0, dec_degrees=0),
+                           Star(ra_hours=0, dec_degrees=0),
+                           Angle(hours=0), 'e')
         build = [aPoint]
         with mock.patch('mountcontrol.model.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, ['1'], 1
             suc = model.programAlign(build)
             self.assertEqual(False, suc)
-            mConn.return_value.communicate.assert_called_with(':newalig#:endalig#')
+            mConn.return_value.communicate.assert_called_with(':newalig#:newalpt00:00:00.0,+00*00:00.0,E,00:00:00.0,+00*00:00.0,00:00:00.00#:endalig#')
 
     @staticmethod
     def gatherData(number):
-        filename = 'tests/testData/2018-07-08-21-41-44_full.dat'
+        filename = 'tests/testData/test.model'
         import json
         with open(filename, 'r') as infile:
-            data = json.load(infile)
+            datas = json.load(infile)
 
-        maxNum = len(data['Index'])
-        if number > maxNum:
-            number = maxNum
         build = []
-        for i in range(0, number):
-            aPoint = AlignStar()
-            aPoint.mCoord = skyfield.api.Star(ra_hours=data['RaJNow'][i],
-                                              dec_degrees=data['DecJNow'][i])
-            aPoint.sCoord = skyfield.api.Star(ra_hours=data['RaJNowSolved'][i],
-                                              dec_degrees=data['DecJNowSolved'][i])
-            aPoint.pierside = data['Pierside'][i]
-            aPoint.sidereal = data['LocalSiderealTime'][i]
+        for i, data in enumerate(datas):
+            aPoint = AlignStar(Star(ra_hours=0, dec_degrees=0),
+                               Star(ra_hours=0, dec_degrees=0),
+                               Angle(hours=0), 'e')
+            aPoint.mCoord = Star(ra_hours=data['raJNowM'],
+                                 dec_degrees=data['decJNowM'])
+            aPoint.sCoord = Star(ra_hours=data['raJNowS'],
+                                 dec_degrees=data['decJNowS'])
+            aPoint.pierside = data['pierside']
+            aPoint.sidereal = Angle(hours=data['siderealTime'])
             build.append(aPoint)
-        build.append(AlignStar())
+            if i == number - 1:
+                break
         return build

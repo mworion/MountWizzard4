@@ -21,10 +21,11 @@ import json
 from datetime import datetime
 
 # external packages
-from mountcontrol.alignStar import AlignStar
-from mountcontrol.convert import convertToHMS, convertToDMS
+from skyfield.api import Star, Angle
 
 # local import
+from mountcontrol.alignStar import AlignStar
+from mountcontrol.convert import convertToHMS, convertToDMS
 from base.transform import J2000ToJNow
 from gui.mainWaddon.runBasic import RunBasic
 from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
@@ -271,12 +272,11 @@ class Model(MWidget, RunBasic):
         """
         build = list()
         for mPoint in self.model:
-            programmingPoint = AlignStar(mCoord=(mPoint['raJNowM'],
-                                                 mPoint['decJNowM']),
-                                         sCoord=(mPoint['raJNowS'],
-                                                 mPoint['decJNowS']),
-                                         sidereal=mPoint['siderealTime'],
-                                         pierside=mPoint['pierside'])
+            mCoord = Star(mPoint['raJNowM'], mPoint['decJNowM'])
+            sCoord = Star(mPoint['raJNowS'], mPoint['decJNowS'])
+            sidereal = mPoint['siderealTime']
+            pierside = mPoint['pierside']
+            programmingPoint = AlignStar(mCoord, sCoord, sidereal, pierside)
             build.append(programmingPoint)
         return build
 

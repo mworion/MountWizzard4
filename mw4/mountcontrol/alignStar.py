@@ -45,7 +45,6 @@ class AlignStar(object):
         if value in ['E', 'W', 'e', 'w']:
             value = value.capitalize()
             self._pierside = value
-
         else:
             self._pierside = None
-            self.log.warning('Malformed value: {0}'.format(value))
+            self.log.warning(f'Malformed value: {value}')

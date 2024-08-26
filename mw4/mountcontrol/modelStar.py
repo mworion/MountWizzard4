@@ -126,7 +126,6 @@ class ModelStar(object):
     def errorAngle(self, value):
         if isinstance(value, Angle):
             self._errorAngle = value
-
         else:
             self._errorAngle = valueToAngle(value)
 

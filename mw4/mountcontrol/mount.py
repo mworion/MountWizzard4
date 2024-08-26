@@ -426,10 +426,7 @@ class MountDevice:
         dec = self.obsSite.decJNowTarget
         lat = self.obsSite.location.latitude
         pierside = self.obsSite.piersideTarget
-        return self.geometry.calcTransformationMatrices(ha=ha,
-                                                        dec=dec,
-                                                        lat=lat,
-                                                        pierside=pierside)
+        return self.geometry.calcTransformationMatrices(ha, dec, lat, pierside)
 
     def calcTransformationMatricesActual(self):
         """
@@ -438,10 +435,7 @@ class MountDevice:
         dec = self.obsSite.decJNow
         lat = self.obsSite.location.latitude
         pierside = self.obsSite.pierside
-        return self.geometry.calcTransformationMatrices(ha=ha,
-                                                        dec=dec,
-                                                        lat=lat,
-                                                        pierside=pierside)
+        return self.geometry.calcTransformationMatrices(ha, dec, lat, pierside)
 
     def calcMountAltAzToDomeAltAz(self, alt, az):
         """

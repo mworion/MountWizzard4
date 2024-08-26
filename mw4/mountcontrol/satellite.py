@@ -58,7 +58,7 @@ class Satellite(object):
         self.tleParams = TLEParams(obsSite=parent.obsSite)
         self.trajectoryParams = TrajectoryParams(obsSite=parent.obsSite)
 
-    def parseGetTLE(self, response, numberOfChunks):
+    def parseGetTLE(self, response: list, numberOfChunks: int) -> bool:
         """
         """
         if len(response) != numberOfChunks:
@@ -77,7 +77,7 @@ class Satellite(object):
         self.tleParams.l2 = lines[2]
         return True
 
-    def getTLE(self):
+    def getTLE(self) -> bool:
         """
         """
         conn = Connection(self.parent.host)
@@ -88,7 +88,7 @@ class Satellite(object):
         suc = self.parseGetTLE(response, numberOfChunks)
         return suc
 
-    def setTLE(self, line0='', line1='', line2=''):
+    def setTLE(self, line0: str, line1: str, line2: str) -> bool:
         """
         The TLE format is described here:
         https://www.celestrak.com/NORAD/documentation/tle-fmt.asp
@@ -108,7 +108,7 @@ class Satellite(object):
         suc, _, _ = conn.communicate(commandString, responseCheck='V')
         return suc
 
-    def parseCalcTLE(self, response, numberOfChunks):
+    def parseCalcTLE(self, response: list, numberOfChunks: int) -> bool:
         """
         """
         if len(response) != numberOfChunks:

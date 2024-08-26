@@ -25,7 +25,7 @@ from skyfield.api import Angle
 from mountcontrol.convert import valueToFloat
 
 
-class Geometry(object):
+class Geometry:
     """
     The class Geometry contains all necessary geometric calculations and
     parameters for mount orientation, dome slit correction or 3D animation of
@@ -72,7 +72,6 @@ class Geometry(object):
     }
 
     def __init__(self, parent=None):
-
         self.parent = parent
         self.offBaseAltAxisX = 0
         self.offBaseAltAxisZ = 0
@@ -81,19 +80,16 @@ class Geometry(object):
         self.offGemPlate = 0
         self.altAdj = 0
         self.azAdj = 0
-
         self._offNorth = 0
         self._offNorthGEM = 0
         self._offEast = 0
         self._offEastGEM = 0
         self._offVert = 0
         self._offVertGEM = 0
-
         self._domeRadius = 1
         self._offGEM = 0
         self._offLAT = 0
         self._offPlateOTA = 0
-
         self.transMatrix = None
         self.transVector = None
 
@@ -219,42 +215,24 @@ class Geometry(object):
 
     def initializeGeometry(self, mountType):
         """
-        initializeGeometry takes the mount type as string and searches for the
-        right parameters in his database. If found it populates the parameters
-        for geometry calculation and returns True otherwise false
-
-        :param mountType: string from mount
-        :return: success
         """
         if mountType not in self.geometryData:
             self.log.error(f'[{mountType}] not in database')
             return False
-        else:
-            self.log.debug(f'using [{mountType}] geometry')
 
+        self.log.debug(f'using [{mountType}] geometry')
         self.offBaseAltAxisX = self.geometryData[mountType]['offBaseAltAxisX']
         self.offBaseAltAxisZ = self.geometryData[mountType]['offBaseAltAxisZ']
         self.offAltAxisGemX = self.geometryData[mountType]['offAltAxisGemX']
         self.offAltAxisGemZ = self.geometryData[mountType]['offAltAxisGemZ']
         self.offGemPlate = self.geometryData[mountType]['offGemPlate']
-
         return True
 
     @staticmethod
-    def transformRotX(rotX, degrees=False):
+    def transformRotX(rotX: float) -> np.ndarray:
         """
-        :param rotX: rotation angle
-        :param degrees:
-        :return: homogeneous transformation matrix
         """
-        if isinstance(rotX, Angle):
-            rot = rotX.radians
-        else:
-            if degrees:
-                rot = np.radians(rotX)
-            else:
-                rot = rotX
-
+        rot = np.radians(rotX)
         tCos = np.cos(rot)
         tSin = np.sin(rot)
 
@@ -265,20 +243,10 @@ class Geometry(object):
         return T
 
     @staticmethod
-    def transformRotY(rotY, degrees=False):
+    def transformRotY(rotY: float) -> np.ndarray:
         """
-        :param rotY: rotation angle
-        :param degrees:
-        :return: homogeneous transformation matrix
         """
-        if isinstance(rotY, Angle):
-            rot = rotY.radians
-        else:
-            if degrees:
-                rot = np.radians(rotY)
-            else:
-                rot = rotY
-
+        rot = np.radians(rotY)
         tCos = np.cos(rot)
         tSin = np.sin(rot)
 
@@ -289,20 +257,10 @@ class Geometry(object):
         return T
 
     @staticmethod
-    def transformRotZ(rotZ, degrees=False):
+    def transformRotZ(rotZ: float) -> np.ndarray:
         """
-        :param rotZ: rotation angle
-        :param degrees:
-        :return: homogeneous transformation matrix
         """
-        if isinstance(rotZ, Angle):
-            rot = rotZ.radians
-        else:
-            if degrees:
-                rot = np.radians(rotZ)
-            else:
-                rot = rotZ
-
+        rot = np.radians(rotZ)
         tCos = np.cos(rot)
         tSin = np.sin(rot)
 
@@ -313,10 +271,8 @@ class Geometry(object):
         return T
 
     @staticmethod
-    def transformTranslate(vector):
+    def transformTranslate(vector: list) -> np.ndarray:
         """
-        :param vector: translation
-        :return: homogeneous transformation matrix
         """
         T = np.array([[1, 0, 0, vector[0]],
                       [0, 1, 0, vector[1]],
@@ -347,9 +303,9 @@ class Geometry(object):
         text += f'domeRadius:{self.domeRadius}'
         self.log.trace(text)
 
-        ha = ha.radians
-        dec = dec.radians
-        lat = lat.radians
+        ha = ha._degrees
+        dec = dec.degrees
+        lat = lat.degrees
 
         # the equator of the dome and it's middle point of the hemisphere is
         # zero point for coordinate system.
@@ -371,7 +327,7 @@ class Geometry(object):
         # of the mount to true north, if the fixed pier does not make it.
         # turning counterclockwise is positive
         # we also take into account southern hemisphere
-        rotBase = self.azAdj if lat > 0 else self.azAdj + np.radians(180)
+        rotBase = self.azAdj if lat > 0 else self.azAdj + 180
         T1 = np.dot(T0, self.transformRotZ(rotBase))
         P2 = np.dot(T1, P0)
 
@@ -421,9 +377,9 @@ class Geometry(object):
             checkPier = 'E'
 
         if pierside == checkPier:
-            value = - ha + np.radians(6 / 24 * 360)
+            value = - ha + 90
         else:
-            value = - ha + np.radians(18 / 24 * 360)
+            value = - ha + 270
 
         T5 = np.dot(T4, self.transformRotX(value))
         P6 = np.dot(T5, P0)
@@ -440,7 +396,7 @@ class Geometry(object):
         if lat < 0:
             dec = -dec
 
-        value = dec - np.radians(90)
+        value = dec - 90
         if pierside == checkPier:
             value = -value
 
@@ -498,7 +454,6 @@ class Geometry(object):
             return None, None, None, None, None
 
         t1 = - p / 2 + np.sqrt(p * p / 4 - q)
-        # t2 = - p / 2 - np.sqrt(p * p / 4 - q)
 
         # we choose the positive solution as we look in the positive direction
         # and can omit the view to the back

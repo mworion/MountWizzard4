@@ -16,19 +16,16 @@
 ###########################################################
 # standard libraries
 import logging
+from packaging.version import Version
 
 # external packages
 
 # local imports
 from mountcontrol.connection import Connection
-from mountcontrol.convert import valueToInt
 
 
 class Firmware(object):
     """
-    The class Firmware inherits all information and handling of firmware
-    attributes of the connected mount and provides the abstracted interface
-    to a 10 micron mount.
     """
     __all__ = ['Firmware']
 
@@ -59,13 +56,7 @@ class Firmware(object):
         if not isinstance(value, str):
             self._vString = None
             return
-        if not value.count('.') > 0:
-            self._vString = None
-            return
-        if any(valueToInt(x) is None for x in value.split('.')):
-            self._vString = None
-            return
-        self._vString = value
+        self._vString = Version(value)
 
     @property
     def hardware(self):
@@ -91,50 +82,14 @@ class Firmware(object):
     def time(self, value):
         self._time = value
 
-    def number(self):
-        if not self._vString:
-            return None
-
-        parts = self._vString.split('.')
-        try:
-            if len(parts) == 3:
-                value = int(parts[0]) * 10000 + int(parts[1]) * 100 + int(parts[2])
-
-            elif len(parts) == 2:
-                value = int(parts[0]) * 10000 + int(parts[1]) * 100
-
-            else:
-                value = None
-
-        except Exception as e:
-            self.log.warning(f'error: {e}, malformed value: {parts}')
-            return None
-
-        else:
-            return value
-
-    def checkNewer(self, compare):
+    def checkNewer(self, compare: str) -> bool:
         """
-        Checks if the provided FW number is newer than the one of the mount
-
-        :param compare:     fw number to test as int
-        :return:            True if newer / False
         """
-        value = self.number()
-        if value:
-            return compare < value
-        else:
-            return None
+        return self.vString >= Version(compare)
 
-    def parse(self, response, numberOfChunks):
+    def parse(self, response: list, numberOfChunks: int) -> bool:
         """
-        Parsing the polling slow command.
-
-        :param response:        data load from mount
-        :param numberOfChunks:
-        :return: success:       True if ok, False if not
         """
-
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
             return False
@@ -145,15 +100,9 @@ class Firmware(object):
         self.hardware = response[4]
         return True
 
-    def poll(self):
+    def poll(self) -> bool:
         """
-        Sending the polling slow command. As the mount need polling the data,
-        I send a set of commands to get the data back to be able to process
-        and store it.
-
-        :return: success:   True if ok, False if not
         """
-
         conn = Connection(self.parent.host)
         commandString = ':U2#:GVD#:GVN#:GVP#:GVT#:GVZ#'
         suc, response, chunks = conn.communicate(commandString)

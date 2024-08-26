@@ -126,7 +126,7 @@ class SatTrack(MWidget, SatData):
         """
         """
         useInternal = self.ui.useInternalSatCalc.isChecked()
-        availableInternal = self.app.mount.firmware.checkNewer(21699)
+        availableInternal = self.app.mount.firmware.checkNewer('3')
         if availableInternal is None:
             return False
 
@@ -535,7 +535,7 @@ class SatTrack(MWidget, SatData):
     def toggleTrackingOffset(self, obs):
         """
         """
-        if not self.app.mount.firmware.checkNewer(21699):
+        if not self.app.mount.firmware.checkNewer('3'):
             return False
 
         if obs.status == 10:

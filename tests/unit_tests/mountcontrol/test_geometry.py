@@ -96,39 +96,15 @@ def test_initializeGeometry_2(function):
 
 
 def test_transformRotX_1(function):
-    function.geometry.transformRotX(90, degrees=True)
-
-
-def test_transformRotX_2(function):
-    function.geometry.transformRotX(np.pi)
-
-
-def test_transformRotX_3(function):
-    function.geometry.transformRotX(Angle(degrees=90))
+    function.geometry.transformRotX(90)
 
 
 def test_transformRotY_1(function):
-    function.geometry.transformRotY(90, degrees=True)
-
-
-def test_transformRotY_2(function):
-    function.geometry.transformRotY(np.pi)
-
-
-def test_transformRotY_3(function):
-    function.geometry.transformRotY(Angle(degrees=90))
+    function.geometry.transformRotY(90)
 
 
 def test_transformRotZ_1(function):
-    function.geometry.transformRotZ(90, degrees=True)
-
-
-def test_transformRotZ_2(function):
-    function.geometry.transformRotZ(np.pi)
-
-
-def test_transformRotZ_3(function):
-    function.geometry.transformRotZ(Angle(degrees=90))
+    function.geometry.transformRotZ(90)
 
 
 def test_transformTranslate(function):

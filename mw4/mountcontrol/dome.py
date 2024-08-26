@@ -95,11 +95,8 @@ class Dome(object):
         else:
             self._azimuth = (value / 10) % 360.0
 
-    def parse(self, response, numberOfChunks):
+    def parse(self, response: list, numberOfChunks: int) -> bool:
         """
-        :param response:        data load from mount
-        :param numberOfChunks:
-        :return: success:       True if ok, False if not
         """
         if len(response) != numberOfChunks:
             self.log.warning('wrong number of chunks')
@@ -110,9 +107,8 @@ class Dome(object):
         self.azimuth = response[3]
         return True
 
-    def poll(self):
+    def poll(self) -> bool:
         """
-        :return: success:   True if ok, False if not
         """
         conn = Connection(self.parent.host)
         commandString = ':GDS#:GDF#:GDW#:GDA#'
@@ -122,91 +118,50 @@ class Dome(object):
         suc = self.parse(response, chunks)
         return suc
 
-    def openShutter(self):
+    def openShutter(self) -> bool:
         """
-        :return:
         """
         conn = Connection(self.parent.host)
         commandString = ':SDS2#'
-        suc, response, _ = conn.communicate(commandString)
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
-        if not suc:
-            return False
-        if '0' in response[0]:
-            return False
-
-        return True
-
-    def closeShutter(self):
+    def closeShutter(self) -> bool:
         """
-        :return:
         """
         conn = Connection(self.parent.host)
         commandString = ':SDS1#'
-        suc, response, _ = conn.communicate(commandString)
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
-        if not suc:
-            return False
-        if '0' in response[0]:
-            return False
-
-        return True
-
-    def openFlap(self):
+    def openFlap(self) -> bool:
         """
-        :return:
         """
         conn = Connection(self.parent.host)
         commandString = ':SDF2#'
-        suc, response, _ = conn.communicate(commandString)
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
-        if not suc:
-            return False
-        if '0' in response[0]:
-            return False
-
-        return True
-
-    def closeFlap(self):
+    def closeFlap(self) -> bool:
         """
-        :return:
         """
         conn = Connection(self.parent.host)
         commandString = ':SDF1#'
-        suc, response, _ = conn.communicate(commandString)
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
-        if not suc:
-            return False
-        if '0' in response[0]:
-            return False
-
-        return True
-
-    def slewDome(self, azimuth=None):
+    def slewDome(self, azimuth: Angle) -> bool:
         """
-        :return:
         """
-        if azimuth is None:
-            return False
-        if isinstance(azimuth, Angle):
-            azimuth = azimuth.degrees
-
-        azimuth = azimuth % 360
+        azimuth = azimuth.degrees % 360
         conn = Connection(self.parent.host)
         setAzimuth = f':SDA{azimuth:04.0f}#'
         commandString = setAzimuth
-        suc, response, _ = conn.communicate(commandString)
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        return suc
 
-        if not suc:
-            return False
-        if '0' in response[0]:
-            return False
-
-        return True
-
-    def enableInternalDomeControl(self):
+    def enableInternalDomeControl(self) -> bool:
         """
-        :return:
         """
         conn = Connection(self.parent.host)
         commandString = ':SDAr#'

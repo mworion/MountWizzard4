@@ -173,7 +173,7 @@ class SettMount(MWidget):
         """
         """
         self.guiSetText(self.ui.product, 's', fw.product)
-        self.guiSetText(self.ui.vString, 's', fw.vString)
+        self.guiSetText(self.ui.vString, 's', fw.vString.public)
         self.guiSetText(self.ui.fwdate, 's', fw.date)
         self.guiSetText(self.ui.fwtime, 's', fw.time)
         self.guiSetText(self.ui.hardware, 's', fw.hardware)

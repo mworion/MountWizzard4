@@ -35,13 +35,14 @@ from importlib_metadata import version
 
 # local import
 from base.loggerMW import setupLogging
-setupLogging()
 from gui.utilities.splashScreen import SplashScreen
 from mainApp import MountWizzard4
 import resource.resources as res
+
 res.qInitResources()
 iers.conf.auto_download = False
 data.conf.allow_internet = False
+setupLogging()
 log = logging.getLogger('MW4')
 
 

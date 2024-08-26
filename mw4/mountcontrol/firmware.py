@@ -53,10 +53,10 @@ class Firmware(object):
 
     @vString.setter
     def vString(self, value):
-        if not isinstance(value, str):
-            self._vString = None
-            return
-        self._vString = Version(value)
+        if isinstance(value, str):
+            self._vString = Version(value)
+        else:
+            self._vString = Version('0.0.0')
 
     @property
     def hardware(self):

@@ -250,5 +250,6 @@ class Watney(object):
             self.log.info('No index files found')
 
         if sucIndex and sucProgram:
-            self.log.info(f'Watney OK, app: [{program}], index: [{self.indexPath}]')
+            self.log.info(f'Watney app: [{program}]')
+            self.log.info(f'Watney index: [{self.indexPath}]')
         return sucProgram, sucIndex

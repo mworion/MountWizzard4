@@ -34,7 +34,7 @@ class Firmware(object):
     def __init__(self, parent):
         self.parent = parent
         self._product = None
-        self._vString = None
+        self._vString = Version('0.0.0')
         self._hardware = None
         self._date = None
         self._time = None

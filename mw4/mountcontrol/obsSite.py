@@ -125,10 +125,10 @@ class ObsSite(object):
 
         if hasOnline:
             self.ts = self.loader.timescale(builtin=False)
-            self.log.info('Timescale is using downloaded version')
+            self.log.info('Using downloaded timescale version')
         else:
             self.ts = self.loader.timescale(builtin=True)
-            self.log.info('Timescale is using built-in')
+            self.log.info('Using built-in timescale version')
 
         t = self.ts.now()
         self.UTC2TT = (t.delta_t + t.dut1) / 86400

@@ -280,21 +280,9 @@ class Geometry:
                       [0, 0, 0, 1]])
         return T
 
-    def calcTransformationMatrices(self, ha=None, dec=None, lat=None, pierside='W'):
+    def calcTransformationMatrices(self, ha: Angle, dec: Angle, lat:Angle, pierside='W'):
         """
-        :param ha: hour angle in radians
-        :param dec: declination in radians
-        :param lat: latitude of observation site in radians
-        :param pierside: 'W' or 'E' for setting the right HA
-        :return: altDome, azDome: the real pointing angles for OTA in dome
         """
-        if not isinstance(ha, Angle):
-            return None, None, None, None, None
-        if not isinstance(dec, Angle):
-            return None, None, None, None, None
-        if not isinstance(lat, Angle):
-            return None, None, None, None, None
-
         text = f'HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, '
         text += f'pierside:{pierside} ,'
         text += f'offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, '

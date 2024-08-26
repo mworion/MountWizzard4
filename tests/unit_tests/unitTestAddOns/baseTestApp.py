@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 from queue import Queue
+from packaging.version import Version
 
 # external packages
 from PySide6.QtCore import QObject, Signal, QThreadPool, QTimer
@@ -727,7 +728,7 @@ class Mount(QObject):
     class MountFirmware:
         product = 'test'
         hardware = 'test'
-        vString = '12345'
+        vString = Version('0.0.0')
         date = 'test'
         time = 'test'
 

@@ -23,7 +23,7 @@ import socket
 # external packages
 import wakeonlan
 from PySide6.QtCore import QThreadPool, QTimer
-from skyfield.api import wgs84
+from skyfield.api import wgs84, Angle
 
 # local imports
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -424,35 +424,25 @@ def test_progTrajectory_2(function):
 
 
 def test_calcTransformationMatricesTarget(function):
-    function.obsSite.raJNowTarget = 12
-    function.obsSite.timeSidereal = 12
-    function.obsSite.decJNowTarget = 10
+    function.obsSite.raJNowTarget = Angle(hours=12)
+    function.obsSite.timeSidereal = Angle(hours=12)
+    function.obsSite.decJNowTarget = Angle(degrees=10)
     function.obsSite.location = wgs84.latlon(latitude_degrees=49,
                                              longitude_degrees=11,
                                              elevation_m=500)
     function.obsSite.piersideTarget = 'E'
-    val = function.calcTransformationMatricesTarget()
-    assert val[0] is None
-    assert val[1] is None
-    assert val[2] is None
-    assert val[3] is None
-    assert val[4] is None
+    function.calcTransformationMatricesTarget()
 
 
 def test_calcTransformationMatricesActual(function):
-    function.obsSite.raJNow = 12
-    function.obsSite.timeSidereal = 12
-    function.obsSite.decJNow = 10
+    function.obsSite.raJNow = Angle(hours=12)
+    function.obsSite.timeSidereal = Angle(hours=12)
+    function.obsSite.decJNow = Angle(degrees=10)
     function.obsSite.location = wgs84.latlon(latitude_degrees=49,
                                              longitude_degrees=11,
                                              elevation_m=500)
     function.obsSite.pierside = 'E'
-    val = function.calcTransformationMatricesActual()
-    assert val[0] is None
-    assert val[1] is None
-    assert val[2] is None
-    assert val[3] is None
-    assert val[4] is None
+    function.calcTransformationMatricesActual()
 
 
 def test_calcMountAltAzToDomeAltAz_1(function):

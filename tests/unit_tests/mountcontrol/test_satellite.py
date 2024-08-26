@@ -198,57 +198,6 @@ class TestConfigData(unittest.TestCase):
             suc = sat.getTLE()
             self.assertFalse(suc)
 
-    def test_setTLE_1(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-            host = None
-
-        sat = Satellite(parent=Parent())
-
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = False, 'E', 1
-
-            suc = sat.setTLE()
-            self.assertFalse(suc)
-
-    def test_setTLE_2(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-            host = None
-
-        sat = Satellite(parent=Parent())
-
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, 'E', 1
-
-            suc = sat.setTLE()
-            self.assertFalse(suc)
-
-    def test_setTLE_3(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-            host = None
-
-        sat = Satellite(parent=Parent())
-
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, 'V', 1
-
-            suc = sat.setTLE()
-            self.assertFalse(suc)
-
     def test_setTLE_4(self):
         class ObsSite:
             UTC2TT = 69

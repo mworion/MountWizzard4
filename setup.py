@@ -21,6 +21,7 @@ import platform
 releaseNotes = """
 - improve: workaround for SGPro header keywords 
 - improve: workaround for windows automation
+- improve: adding coordinates for manual imaging with ascom
 
 """
 
@@ -29,7 +30,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.7b1',
+    version='3.2.7b2',
     packages=[
         'mw4',
         'mw4.base',

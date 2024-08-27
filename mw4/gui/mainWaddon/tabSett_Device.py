@@ -226,8 +226,7 @@ class SettDevice(MWidget):
         """
         """
         config = self.app.config['mainW']
-        configD = self.app.config
-        self.loadDriversDataFromConfig(configD)
+        self.loadDriversDataFromConfig(self.app.config)
         self.ui.autoConnectASCOM.setChecked(config.get('autoConnectASCOM', False))
         self.setupDeviceGui()
         self.startDrivers()
@@ -236,8 +235,7 @@ class SettDevice(MWidget):
         """
         """
         config = self.app.config['mainW']
-        configD = self.app.config
-        configD['driversData'] = self.driversData
+        self.app.config['driversData'] = self.driversData
         config['autoConnectASCOM'] = self.ui.autoConnectASCOM.isChecked()
 
     def setupIcons(self):

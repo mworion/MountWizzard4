@@ -255,8 +255,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lon = subPoint.longitude.degrees
         pd = pg.PlotDataItem(
             x=[lat], y=[lon], symbol=self.makeSat(), symbolSize=35,
-            symbolPen=pg.mkPen(color=self.M_TER1),
-            symbolBrush=pg.mkBrush(color=self.M_TER + '40'))
+            symbolPen=pg.mkPen(color=self.M_CYAN1),
+            symbolBrush=pg.mkBrush(color=self.M_CYAN + '40'))
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)
@@ -363,8 +363,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         alt, az, _ = (self.satellite - obsSite.location).at(obsSite.ts.now()).altaz()
         pd = pg.PlotDataItem(
             x=[az.degrees], y=[alt.degrees], symbol=self.makeSat(), symbolSize=35,
-            symbolPen=pg.mkPen(color=self.M_TER1),
-            symbolBrush=pg.mkBrush(color=self.M_TER + '40'))
+            symbolPen=pg.mkPen(color=self.M_CYAN1),
+            symbolBrush=pg.mkBrush(color=self.M_CYAN + '40'))
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)

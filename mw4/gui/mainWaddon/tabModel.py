@@ -21,12 +21,12 @@ import json
 from datetime import datetime
 
 # external packages
-from skyfield.api import Star, Angle
+from skyfield.api import Star
 
 # local import
 from mountcontrol.alignStar import AlignStar
 from mountcontrol.convert import convertToHMS, convertToDMS
-from base.transform import J2000ToJNow
+from base.transform import J2000ToJNow, JNowToJ2000
 from gui.mainWaddon.runBasic import RunBasic
 from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
 from logic.modeldata.modelHandling import writeRetrofitData
@@ -575,14 +575,19 @@ class Model(MWidget, RunBasic):
         timeTag = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         fileName = timeTag + '-sync.fits'
         imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
+        ra = self.app.mount.obsSite.raJNow
+        dec = self.app.mount.obsSite.decJNow
+        timeJD = self.app.mount.obsSite.timeJD
+        ra, dec = JNowToJ2000(ra, dec, timeJD)
 
         self.app.camera.expose(imagePath=imagePath,
                                expTime=expTime,
                                binning=binning,
                                subFrame=subFrame,
                                fastReadout=fastReadout,
-                               focalLength=focalLength
-                               )
+                               focalLength=focalLength,
+                               ra=ra,
+                               dec=dec)
         text = f'{os.path.basename(imagePath)}'
         self.msg.emit(0, 'Model', 'Exposing', text)
         text = f'Duration:{expTime:3.0f}s  '

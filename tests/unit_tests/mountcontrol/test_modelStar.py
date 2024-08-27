@@ -82,9 +82,9 @@ def test_properties_5(function):
 
 def test_properties_6(function):
     function.alt = 12.0
-    assert function.alt == 12
+    assert function.alt.degrees == 12
     function.az = 12.0
-    assert function.az == 12
+    assert function.az.degrees == 12
 
 
 def test_properties_7(function):

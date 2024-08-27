@@ -135,7 +135,7 @@ class ModelStar(object):
 
     @alt.setter
     def alt(self, value):
-        self._alt = valueToFloat(value)
+        self._alt = valueToAngle(value)
 
     @property
     def az(self):
@@ -143,7 +143,7 @@ class ModelStar(object):
 
     @az.setter
     def az(self, value):
-        self._az = valueToFloat(value)
+        self._az = valueToAngle(value)
 
     def errorRA(self):
         if self._errorRMS is not None and self._errorAngle is not None:

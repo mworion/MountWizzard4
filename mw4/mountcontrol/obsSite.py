@@ -92,7 +92,6 @@ class ObsSite(object):
         self._decJNowTarget = None
         self._haJNow = None
         self._haJNowTarget = None
-        self._sidereal = None
         self._angularPosRA = None
         self._angularPosDEC = None
         self._errorAngularPosRA = None

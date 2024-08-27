@@ -26,6 +26,7 @@ from skyfield.api import Angle
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
 from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
+from base.transform import JNowToJ2000
 from gui.utilities import toolsQtWidget
 from gui.utilities.slewInterface import SlewInterface
 from gui.widgets import image_ui
@@ -486,15 +487,19 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.imageFileName = os.path.join(self.app.mwGlob['imageDir'], fileName)
         focalLength = self.app.telescope.focalLength
         self.imageFileNameOld = self.imageFileName
+        ra = self.app.mount.obsSite.raJNow
+        dec = self.app.mount.obsSite.decJNow
+        timeJD = self.app.mount.obsSite.timeJD
+        ra, dec = JNowToJ2000(ra, dec, timeJD)
+
         suc = self.app.camera.expose(imagePath=self.imageFileName,
                                      expTime=self.expTime,
                                      binning=self.binning,
                                      subFrame=subFrame,
                                      fastReadout=fastReadout,
                                      focalLength=focalLength,
-                                     ra=None,
-                                     dec=None
-                                     )
+                                     ra=ra,
+                                     dec=dec)
         if not suc:
             self.abortExpose()
             text = f'{os.path.basename(self.imageFileName)}'

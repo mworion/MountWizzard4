@@ -225,8 +225,9 @@ class SettDevice(MWidget):
     def initConfig(self):
         """
         """
-        config = self.app.config
-        self.loadDriversDataFromConfig(config)
+        config = self.app.config['mainW']
+        configD = self.app.config
+        self.loadDriversDataFromConfig(configD)
         self.ui.autoConnectASCOM.setChecked(config.get('autoConnectASCOM', False))
         self.setupDeviceGui()
         self.startDrivers()

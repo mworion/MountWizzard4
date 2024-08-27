@@ -35,9 +35,9 @@ from logic.modeldata.modelHandling import writeRetrofitData
 class Model(MWidget, RunBasic):
     """
     """
-
     def __init__(self, mainW):
         super().__init__()
+        RunBasic.__init__(self, mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

@@ -561,7 +561,7 @@ class RunBasic:
         :return:
         """
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        name = f'{prefix}-{nameTime}-{postfix}'
+        name = f'{prefix}-{nameTime}{postfix}'
         imageDir = f'{self.app.mwGlob["imageDir"]}/{name}'
 
         if not os.path.isdir(imageDir):

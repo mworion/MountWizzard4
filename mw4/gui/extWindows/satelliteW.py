@@ -150,15 +150,15 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
 
         observe = self.satellite.at(now)
-        subpoint = wgs84.subpoint_of(observe)
+        subPoint = wgs84.subpoint_of(observe)
         difference = self.satellite - location
-        self.ui.satLatitude.setText(f'{subpoint.latitude.degrees:3.2f}')
-        self.ui.satLongitude.setText(f'{subpoint.longitude.degrees:3.2f}')
+        self.ui.satLatitude.setText(f'{subPoint.latitude.degrees:3.2f}')
+        self.ui.satLongitude.setText(f'{subPoint.longitude.degrees:3.2f}')
         alt, az, _ = difference.at(now).altaz()
         self.ui.satAltitude.setText(f'{alt.degrees:3.2f}')
         self.ui.satAzimuth.setText(f'{az.degrees:3.2f}')
-        lat = subpoint.latitude.degrees
-        lon = subpoint.longitude.degrees
+        lat = subPoint.latitude.degrees
+        lon = subPoint.longitude.degrees
         self.plotSatPosEarth.setData(x=[lon], y=[lat])
         self.plotSatPosEarth.setVisible(True)
         alt = alt.degrees
@@ -250,13 +250,13 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param obsSite:
         :return:
         """
-        subpoint = wgs84.subpoint_of(self.satellite.at(obsSite.ts.now()))
-        lat = subpoint.latitude.degrees
-        lon = subpoint.longitude.degrees
+        subPoint = wgs84.subpoint_of(self.satellite.at(obsSite.ts.now()))
+        lat = subPoint.latitude.degrees
+        lon = subPoint.longitude.degrees
         pd = pg.PlotDataItem(
             x=[lat], y=[lon], symbol=self.makeSat(), symbolSize=35,
-            symbolPen=pg.mkPen(color=self.M_CYAN1),
-            symbolBrush=pg.mkBrush(color=self.M_CYAN + '40'))
+            symbolPen=pg.mkPen(color=self.M_TER1),
+            symbolBrush=pg.mkBrush(color=self.M_TER + '40'))
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)
@@ -279,18 +279,18 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             flip = satOrbit['flip'].tt
             vector = np.arange(rise, flip, step)
             vecT = obsSite.ts.tt_jd(vector)
-            subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
-            lat = subpoints.latitude.degrees
-            lon = subpoints.longitude.degrees
+            subPoints = wgs84.subpoint_of(self.satellite.at(vecT))
+            lat = subPoints.latitude.degrees
+            lon = subPoints.longitude.degrees
             for slc in self.unlinkWrap(lon):
                 pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=self.pens[2 * i])
                 plotItem.addItem(pd)
 
             vector = np.arange(flip, settle, step)
             vecT = obsSite.ts.tt_jd(vector)
-            subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
-            lat = subpoints.latitude.degrees
-            lon = subpoints.longitude.degrees
+            subPoints = wgs84.subpoint_of(self.satellite.at(vecT))
+            lat = subPoints.latitude.degrees
+            lon = subPoints.longitude.degrees
             for slc in self.unlinkWrap(lon):
                 pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=self.pens[2 * i + 1])
                 plotItem.addItem(pd)
@@ -300,9 +300,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         step = 0.001 * (settle - rise)
         vector = np.arange(rise - 0.15, settle, step)
         vecT = obsSite.ts.tt_jd(vector)
-        subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
-        lat = subpoints.latitude.degrees
-        lon = subpoints.longitude.degrees
+        subPoints = wgs84.subpoint_of(self.satellite.at(vecT))
+        lat = subPoints.latitude.degrees
+        lon = subPoints.longitude.degrees
         for slc in self.unlinkWrap(lon):
             pd = pg.PlotDataItem(x=lon[slc], y=lat[slc],
                                  pen=pg.mkPen(width=1, color=self.M_TER1 + '80'))
@@ -363,8 +363,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         alt, az, _ = (self.satellite - obsSite.location).at(obsSite.ts.now()).altaz()
         pd = pg.PlotDataItem(
             x=[az.degrees], y=[alt.degrees], symbol=self.makeSat(), symbolSize=35,
-            symbolPen=pg.mkPen(color=self.M_CYAN1),
-            symbolBrush=pg.mkBrush(color=self.M_CYAN + '40'))
+            symbolPen=pg.mkPen(color=self.M_TER1),
+            symbolBrush=pg.mkBrush(color=self.M_TER + '40'))
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)

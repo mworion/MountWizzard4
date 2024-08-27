@@ -20,7 +20,7 @@ from packaging.version import Version
 
 # external packages
 from PySide6.QtCore import QObject, Signal, QThreadPool, QTimer
-from skyfield.api import wgs84, load, Loader, Angle
+from skyfield.api import wgs84, load, Loader, Angle, load_file
 import numpy as np
 
 # local import
@@ -1190,7 +1190,7 @@ class App(QObject):
     telescope = Telescope()
     hipparcos = Hipparcos()
 
-    ephemeris = load('tests/testData/de440_mw4.bsp', reload=False)
+    ephemeris = load_file('../../testData/de440_mw4.bsp')
     mwGlob = {'modelDir': 'tests/workDir/model',
               'imageDir': 'tests/workDir/image',
               'dataDir': 'tests/workDir/data',

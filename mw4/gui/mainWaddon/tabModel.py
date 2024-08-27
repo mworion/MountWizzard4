@@ -406,7 +406,7 @@ class Model(MWidget, RunBasic):
         :return: true for test purpose
         """
         self.modelName, imgDir = self.setupFilenamesAndDirectories(prefix='m')
-        self.msg.emit(1, 'Model', 'Run', f'Starting [{self.modelName}]')
+        self.msg.emit(1, 'Model', 'Run', f'Starting model [{self.modelName}]')
 
         if not self.checkModelRunConditions():
             return False

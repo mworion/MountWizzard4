@@ -338,6 +338,8 @@ class AlpacaClass(DriverData):
         :return: success of reconnecting to server
         """
         self.propertyExceptions = []
+        self.deviceConnected = False
+        self.serverConnected = False
         for retry in range(0, 10):
             self.setAlpacaProperty('connected', Connected=True)
             suc = self.getAlpacaProperty('connected')
@@ -353,8 +355,6 @@ class AlpacaClass(DriverData):
 
         if not suc:
             self.msg.emit(2, 'ALPACA', 'Connect error', f'{self.deviceName}')
-            self.deviceConnected = False
-            self.serverConnected = False
             return False
 
         if not self.serverConnected:
@@ -365,7 +365,8 @@ class AlpacaClass(DriverData):
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f'{self.deviceName}')
             self.msg.emit(0, 'ALPACA', 'Device found', f'{self.deviceName}')
-
+            self.startTimer()
+            self.getInitialConfig()
         return True
 
     def startTimer(self):
@@ -453,8 +454,6 @@ class AlpacaClass(DriverData):
         """
         self.data.clear()
         worker = Worker(self.workerConnectDevice)
-        worker.signals.finished.connect(self.getInitialConfig)
-        worker.signals.finished.connect(self.startTimer)
         self.threadPool.start(worker)
         return True
 

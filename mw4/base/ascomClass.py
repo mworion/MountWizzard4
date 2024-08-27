@@ -67,6 +67,7 @@ class AscomClass(DriverData):
         """
         :return: true for test purpose
         """
+        print('startTimer')
         self.cyclePollData.start(self.updateRate)
         self.cyclePollStatus.start(self.updateRate)
         return True
@@ -162,12 +163,14 @@ class AscomClass(DriverData):
     def workerConnectDevice(self):
         """
         As some ASCOM devices need some time to be able to connect, we try to
-        connect multiply (10) times with an waiting period 0f 250ms, so 2,5
+        connect multiply (10) times with a waiting period 0f 250ms, so 2,5
         seconds in total.
 
         :return: true for test purpose
         """
         self.propertyExceptions = []
+        self.deviceConnected = False
+        self.serverConnected = False
         for retry in range(0, 10):
             self.setAscomProperty('Connected', True)
             suc = self.getAscomProperty('Connected')
@@ -185,8 +188,6 @@ class AscomClass(DriverData):
 
         if not suc:
             self.msg.emit(2, 'ASCOM ', 'Connect error', f'{self.deviceName}')
-            self.deviceConnected = False
-            self.serverConnected = False
             return False
 
         if not self.serverConnected:
@@ -197,6 +198,8 @@ class AscomClass(DriverData):
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f'{self.deviceName}')
             self.msg.emit(0, 'ASCOM ', 'Device found', f'{self.deviceName}')
+            self.startTimer()
+            self.getInitialConfig()
         return True
 
     def workerGetInitialConfig(self):
@@ -298,6 +301,7 @@ class AscomClass(DriverData):
         """
         :return: success
         """
+        print('getInitial')
         self.callMethodThreaded(self.workerGetInitialConfig)
         return True
 
@@ -319,8 +323,6 @@ class AscomClass(DriverData):
 
         else:
             worker = Worker(self.callerInitUnInit, self.workerConnectDevice)
-            worker.signals.finished.connect(self.getInitialConfig)
-            worker.signals.finished.connect(self.startTimer)
             self.threadPool.start(worker)
 
         return True

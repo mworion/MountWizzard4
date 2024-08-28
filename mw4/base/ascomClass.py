@@ -67,7 +67,6 @@ class AscomClass(DriverData):
         """
         :return: true for test purpose
         """
-        print('startTimer')
         self.cyclePollData.start(self.updateRate)
         self.cyclePollStatus.start(self.updateRate)
         return True
@@ -301,7 +300,6 @@ class AscomClass(DriverData):
         """
         :return: success
         """
-        print('getInitial')
         self.callMethodThreaded(self.workerGetInitialConfig)
         return True
 

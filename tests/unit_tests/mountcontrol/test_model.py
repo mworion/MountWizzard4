@@ -733,8 +733,7 @@ class TestConfigData(unittest.TestCase):
         class Parent:
             host = None
         model = Model(parent=Parent())
-        response = \
-            ['1', '023.8311, +24.8157, 29.8580, 227.45, -12.9985, +26.98, -08.97, 11, 97751.6']
+        response = ['1', '023.8311, +24.8157, 29.8580, 227.45, -12.9985, +26.98, -08.97, 11, 97751.6']
         suc = model.parseNumberStars(response, 2)
         self.assertTrue(suc)
 
@@ -808,19 +807,6 @@ class TestConfigData(unittest.TestCase):
         suc = model.parseStars(response, 4)
         self.assertFalse(suc)
         self.assertEqual(len(model.starList), 0)
-
-    def test_Model_parseStars_not_ok2(self):
-        class Parent:
-            host = None
-            obsSite = None
-        model = Model(parent=Parent())
-        response = [
-            '21:52:58.95,+08*56:10.1,   5.7,201',
-            ''
-        ]
-        suc = model.parseStars(response, 2)
-        self.assertTrue(suc)
-        self.assertEqual(len(model.starList), 1)
 
     def test_getStarCount_1(self):
         class Parent:

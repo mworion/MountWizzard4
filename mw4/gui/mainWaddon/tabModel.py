@@ -387,10 +387,6 @@ class Model(MWidget, RunBasic):
             self.msg.emit(0, '', '', 'Actual model cleared')
             self.app.refreshModel.emit()
 
-        suc = self.app.mount.model.deleteName('backup')
-        if not suc:
-            self.log.warning('Cannot delete backup model on mount')
-
         suc = self.app.mount.model.storeName('backup')
         if not suc:
             t = 'Cannot save backup model on mount, proceeding with model run'

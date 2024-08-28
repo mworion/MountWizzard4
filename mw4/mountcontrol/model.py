@@ -309,16 +309,13 @@ class Model(object):
         for number, starData in enumerate(response):
             if not starData:
                 continue
-            # mount counts stars from 1 beginning and adding the number (which
-            # is not provided by the response, but counted in the mount computer
-            # for reference reasons
-            value = '{0:s}, {1}'.format(starData, number + 1)
-            ha, dec, err, angle, number = value.split(',')
+            ha, dec, err, angle = starData.split(',')
             modelStar = ModelStar()
-            modelStar.coord = (ha, dec)
+            modelStar.coord = (valueToAngle(ha, preference='hours'),
+                               valueToAngle(dec, preference='degrees'))
             modelStar.errorRMS = err
-            modelStar.errorAngle = angle
-            modelStar.number = number
+            modelStar.errorAngle = valueToAngle(angle)
+            modelStar.number = number + 1
             modelStar.obsSite = self.parent.obsSite
             self.addStar(modelStar)
         return True
@@ -345,9 +342,9 @@ class Model(object):
 
         self.azimuthError = responseSplit[0]
         self.altitudeError = responseSplit[1]
-        self.polarError = responseSplit[2]
-        self.positionAngle = responseSplit[3]
-        self.orthoError = responseSplit[4]
+        self.polarError = valueToAngle(responseSplit[2])
+        self.positionAngle = valueToAngle(responseSplit[3])
+        self.orthoError = valueToAngle(responseSplit[4])
         self.azimuthTurns = responseSplit[5]
         self.altitudeTurns = responseSplit[6]
         self.terms = responseSplit[7]
@@ -438,8 +435,8 @@ class Model(object):
         """
         conn = Connection(self.parent.host)
         commandString = f':modeldel0{name[:15]}#:modelsv0{name[:15]}#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
-        return suc
+        suc, response, _ = conn.communicate(commandString)
+        return suc and response[1] == '1'
 
     def loadName(self, name: str) -> bool:
         """

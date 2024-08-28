@@ -280,15 +280,13 @@ class RunBasic:
 
         self.log.info('Slew started')
         mPoint = self.slewQueue.get()
-        suc = self.app.mount.obsSite.setTargetAltAz(alt=Angle(degrees=mPoint['altitude']),
-                                                    az=Angle(degrees=mPoint['azimuth']))
+        suc = self.app.mount.obsSite.setTargetAltAz(mPoint['altitude'], mPoint['azimuth'])
         if not suc:
             return False
 
         if self.app.deviceStat['dome']:
-            alt = mPoint['altitude']
             az = mPoint['azimuth']
-            delta = self.app.dome.slewDome(altitude=alt, azimuth=az)
+            delta = self.app.dome.slewDome(azimuth=az)
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
 
             text = f'{geoStat}'
@@ -607,8 +605,8 @@ class RunBasic:
             m['solveTimeout'] = solveTimeout
             m['searchRadius'] = searchRadius
             m['focalLength'] = focalLength
-            m['altitude'] = point[0]
-            m['azimuth'] = point[1]
+            m['altitude'] = Angle(degrees=point[0])
+            m['azimuth'] = Angle(degrees=point[1])
             m['waitTime'] = waitTime
             modelPoints.append(m)
         return modelPoints

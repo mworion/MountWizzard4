@@ -205,7 +205,7 @@ class ManageModel(MWidget):
         """
         """
         model = self.app.mount.model
-        if model.numberStars == 0:
+        if model.numberStars == 0 or len(model.starList) == 0:
             self.ui.modelPositions.p[0].clear()
             return False
         altitude = np.array([x.alt.degrees for x in model.starList])

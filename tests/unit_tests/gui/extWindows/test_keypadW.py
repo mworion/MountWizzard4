@@ -149,7 +149,7 @@ def test_keyPressEvent_5(function):
 
 
 def test_showWindow_1(function):
-    function.app.mount.setting.webInterfaceStat = 0
+    function.app.mount.setting.webInterfaceStat = False
     with mock.patch.object(function,
                            'show'):
         with mock.patch.object(function,

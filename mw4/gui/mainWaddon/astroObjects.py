@@ -118,7 +118,7 @@ class AstroObjects(QObject):
         localSourceAvailable = os.path.isfile(self.dest)
 
         if localSourceAvailable:
-            daysOld = self.loader.days_old(self.dest)
+            daysOld = self.loader.days_old(fileName)
             self.setAge(daysOld)
             if daysOld < self.window.ui.ageDatabases.value():
                 self.procSourceData(direct=True)

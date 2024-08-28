@@ -95,7 +95,8 @@ def test_updatePointGui_pierside(function):
 
 def test_updatePointGui_ha_2(function):
     obs = function.mainW.app.mount.obsSite
-    obs.timeSidereal = None
+    obs.timeSidereal = Angle(hours=12)
+    obs.raJNow = Angle(hours=0)
     function.updatePointGUI(obs)
     assert '00:00:00' == function.ui.HA.text()
 
@@ -103,6 +104,7 @@ def test_updatePointGui_ha_2(function):
 def test_updatePointGUI_sidereal_1(function):
     obs = function.mainW.app.mount.obsSite
     obs.timeSidereal = Angle(hours=12)
+    obs.raJNow = Angle(hours=0)
     function.updatePointGUI(obs)
     assert '12:00:00' == function.ui.timeSidereal.text()
 

@@ -294,8 +294,8 @@ def test_runSlew_2(function):
               'binning': 1,
               'subFrame': 100,
               'fastReadout': False,
-              'azimuth': 0,
-              'altitude': 0,
+              'azimuth': Angle(degrees=0),
+              'altitude': Angle(degrees=0),
               }
 
     function.slewQueue.put(mPoint)
@@ -315,8 +315,8 @@ def test_runSlew_3(function):
               'binning': 1,
               'subFrame': 100,
               'fastReadout': False,
-              'azimuth': 0,
-              'altitude': 0,
+              'azimuth': Angle(degrees=0),
+              'altitude': Angle(degrees=0),
               }
     function.slewQueue.put(mPoint)
     with mock.patch.object(function.app.mount.obsSite,
@@ -338,8 +338,8 @@ def test_runSlew_4(function):
               'binning': 1,
               'subFrame': 100,
               'fastReadout': False,
-              'azimuth': 0,
-              'altitude': 0,
+              'azimuth': Angle(degrees=0),
+              'altitude': Angle(degrees=0),
               }
     function.slewQueue.put(mPoint)
     function.ui.useDomeGeometry.setChecked(True)
@@ -363,8 +363,8 @@ def test_runSlew_5(function):
               'binning': 1,
               'subFrame': 100,
               'fastReadout': False,
-              'azimuth': 0,
-              'altitude': 0,
+              'azimuth': Angle(degrees=0),
+              'altitude': Angle(degrees=0),
               }
     function.slewQueue.put(mPoint)
     function.ui.useDomeGeometry.setChecked(True)
@@ -452,6 +452,15 @@ def test_generateSaveData_1(function):
               'raJ2000M': Angle(hours=0),
               'decJ2000M': Angle(degrees=0),
               'siderealTime': Angle(hours=0),
+              'haMountModel': Angle(hours=0),
+              'decMountModel': Angle(degrees=0),
+              'errorAngle': Angle(degrees=0),
+              'errorRA': Angle(degrees=0),
+              'errorDEC': Angle(degrees=0),
+              'modelOrthoError': Angle(degrees=0),
+              'modelPolarError': Angle(degrees=0),
+              'altitude': Angle(degrees=0),
+              'azimuth': Angle(degrees=0),
               'julianDate': function.app.mount.obsSite.timeJD,
               }
     function.model = list()

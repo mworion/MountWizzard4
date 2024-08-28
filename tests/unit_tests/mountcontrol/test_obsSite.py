@@ -332,7 +332,7 @@ class TestConfigData(unittest.TestCase):
 
         obsSite.timeSidereal = Angle(hours=12)
         obsSite.raJNow = Angle(hours=12)
-        obsSite.haJNow.hours == 0
+        obsSite.haJNow.hours == Angle(hours=0)
 
     def test_Site_haJNowTarget_1(self):
         class Parent:

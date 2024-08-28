@@ -22,6 +22,7 @@ from unittest import mock
 # external packages
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
+from skyfield.api import Angle
 import numpy as np
 
 # local import
@@ -59,7 +60,7 @@ def test_updatePositions_1(function):
 
 
 def test_updatePositions_2(function):
-    function.app.mount.obsSite.haJNow = 10
+    function.app.mount.obsSite.haJNow = Angle(hours=10)
     function.app.mount.obsSite.timeSidereal = '10:10:10'
 
     with mock.patch.object(function.app.mount,
@@ -69,7 +70,7 @@ def test_updatePositions_2(function):
 
 
 def test_updatePositions_3(function):
-    function.app.mount.obsSite.haJNow = 10
+    function.app.mount.obsSite.haJNow = Angle(hours=10)
     function.app.mount.obsSite.timeSidereal = '10:10:10'
     function.parent.entityModel['buildPoints'] = {'entity': Qt3DCore.QEntity()}
     function.parent.entityModel['buildPoints'] = {'trans': Qt3DCore.QTransform()}

@@ -20,7 +20,6 @@ import unittest.mock as mock
 
 # external packages
 from PySide6.QtWidgets import QWidget
-import astropy
 
 # local import
 from gui.mainWindow.mainWindowAddons import MainWindowAddons

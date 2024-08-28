@@ -533,8 +533,8 @@ class TestConfigData(unittest.TestCase):
         alignStar.errorAngle = 50
         ra = 6 * numpy.sin(50 * numpy.pi * 2 / 360)
         dec = 6 * numpy.cos(50 * numpy.pi * 2 / 360)
-        self.assertAlmostEqual(ra, alignStar.errorRA())
-        self.assertAlmostEqual(dec, alignStar.errorDEC())
+        self.assertAlmostEqual(ra, alignStar.errorRA().degrees)
+        self.assertAlmostEqual(dec, alignStar.errorDEC().degrees)
 
     def test_Model_parseNumberName_ok(self):
         class Parent:

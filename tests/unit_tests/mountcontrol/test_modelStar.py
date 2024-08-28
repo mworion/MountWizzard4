@@ -81,28 +81,28 @@ def test_properties_5(function):
 
 
 def test_properties_6(function):
-    function.alt = 12.0
+    function.alt = Angle(degrees=12.0)
     assert function.alt.degrees == 12
-    function.az = 12.0
+    function.az = Angle(degrees=12.0)
     assert function.az.degrees == 12
 
 
 def test_properties_7(function):
-    function.errorAngle = 12.0
+    function.errorAngle = Angle(degrees=12.0)
     assert function.errorAngle.degrees == 12
     function.errorAngle = Angle(degrees=12)
     assert function.errorAngle.degrees == 12
 
 
 def test_properties_8(function):
-    function.errorAngle = 90
+    function.errorAngle = Angle(degrees=90)
     function.errorRMS = 1
-    assert round(function.errorRA(), 2) == 1
-    assert round(function.errorDEC(), 2) == 0
-    function.errorAngle = 180
+    assert round(function.errorRA().degrees, 2) == 1
+    assert round(function.errorDEC().degrees, 2) == 0
+    function.errorAngle = Angle(degrees=180)
     function.errorRMS = 1
-    assert round(function.errorRA(), 2) == 0
-    assert round(function.errorDEC(), 2) == -1
+    assert round(function.errorRA().degrees, 2) == 0
+    assert round(function.errorDEC().degrees, 2) == -1
 
 
 def test_properties_9(function):

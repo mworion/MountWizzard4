@@ -205,10 +205,10 @@ class ManageModel(MWidget):
         """
         """
         model = self.app.mount.model
-        altitude = np.array([x.alt.degrees for x in model.starList])
-        if len(altitude) == 0:
+        if model.numberStars == 0:
             self.ui.modelPositions.p[0].clear()
             return False
+        altitude = np.array([x.alt.degrees for x in model.starList])
         azimuth = np.array([x.az.degrees for x in model.starList])
         error = np.array([x.errorRMS for x in model.starList])
         errorAngle = np.array([x.errorAngle.degrees for x in model.starList])

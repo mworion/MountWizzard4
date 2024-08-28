@@ -42,10 +42,10 @@ class Model(object):
 
     def __init__(self, parent):
         self.parent = parent
-        self.numberNames = None
-        self.numberStars = None
         self._starList = list()
         self._nameList = list()
+        self._numberNames = 0
+        self._numberStars = 0
         self._altitudeError = None
         self._azimuthError = None
         self._polarError = None
@@ -310,13 +310,11 @@ class Model(object):
             if not starData:
                 continue
             ha, dec, err, angle = starData.split(',')
-            modelStar = ModelStar()
-            modelStar.coord = (valueToAngle(ha, preference='hours'),
-                               valueToAngle(dec, preference='degrees'))
+            modelStar = ModelStar(obsSite=self.parent.obsSite)
+            modelStar.coord = (ha, dec)
             modelStar.errorRMS = err
-            modelStar.errorAngle = valueToAngle(angle)
+            modelStar.errorAngle = angle
             modelStar.number = number + 1
-            modelStar.obsSite = self.parent.obsSite
             self.addStar(modelStar)
         return True
 

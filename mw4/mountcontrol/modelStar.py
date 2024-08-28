@@ -59,6 +59,8 @@ class ModelStar(object):
         self.errorRMS = errorRMS
         self.errorAngle = errorAngle
         self.number = number
+        self.alt = Angle(degrees=0)
+        self.az = Angle(degrees=0)
 
     @property
     def coord(self):
@@ -67,8 +69,6 @@ class ModelStar(object):
     @coord.setter
     def coord(self, value):
         self._coord = None
-        self._az = None
-        self._alt = None
 
         if not isinstance(value, (tuple, list, Star)):
             return
@@ -99,8 +99,8 @@ class ModelStar(object):
 
         lat = loc.latitude.degrees
         alt, az = topoToAltAz(ha, dec, lat)
-        self._alt = Angle(degrees=alt)
-        self._az = Angle(degrees=az)
+        self.alt = Angle(degrees=alt)
+        self.az = Angle(degrees=az)
 
     @property
     def number(self):
@@ -129,31 +129,15 @@ class ModelStar(object):
         else:
             self._errorAngle = valueToAngle(value)
 
-    @property
-    def alt(self):
-        return self._alt
-
-    @alt.setter
-    def alt(self, value):
-        self._alt = valueToAngle(value)
-
-    @property
-    def az(self):
-        return self._az
-
-    @az.setter
-    def az(self, value):
-        self._az = valueToAngle(value)
-
     def errorRA(self):
         if self._errorRMS is not None and self._errorAngle is not None:
-            return self._errorRMS * numpy.sin(self._errorAngle.radians)
+            return Angle(degrees=self._errorRMS * numpy.sin(self._errorAngle.radians))
         else:
             return None
 
     def errorDEC(self):
         if self._errorRMS is not None and self._errorAngle is not None:
-            return self._errorRMS * numpy.cos(self._errorAngle.radians)
+            return Angle(degrees=self._errorRMS * numpy.cos(self._errorAngle.radians))
         else:
             return None
 

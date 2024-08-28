@@ -86,9 +86,6 @@ class Model(object):
 
     @positionAngle.setter
     def positionAngle(self, value):
-        if isinstance(value, Angle):
-            self._positionAngle = value
-            return
         self._positionAngle = valueToAngle(value)
 
     @property
@@ -340,9 +337,9 @@ class Model(object):
 
         self.azimuthError = responseSplit[0]
         self.altitudeError = responseSplit[1]
-        self.polarError = valueToAngle(responseSplit[2])
-        self.positionAngle = valueToAngle(responseSplit[3])
-        self.orthoError = valueToAngle(responseSplit[4])
+        self.polarError = responseSplit[2]
+        self.positionAngle = responseSplit[3]
+        self.orthoError = responseSplit[4]
         self.azimuthTurns = responseSplit[5]
         self.altitudeTurns = responseSplit[6]
         self.terms = responseSplit[7]

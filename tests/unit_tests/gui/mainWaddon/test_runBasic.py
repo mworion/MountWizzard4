@@ -652,5 +652,5 @@ def test_setupRunPoints_2(function):
     assert val[0]['lenSequence'] == 3
     assert val[0]['countSequence'] == 1
     assert val[1]['countSequence'] == 2
-    assert val[1]['altitude'] == 10
-    assert val[1]['azimuth'] == 10
+    assert val[1]['altitude'].degrees == 10
+    assert val[1]['azimuth'].degrees == 10

@@ -736,6 +736,15 @@ class TestConfigData(unittest.TestCase):
         response = ['1', '023.8311, +24.8157, 29.8580, 227.45, -12.9985, +26.98, -08.97, 11, 97751.6']
         suc = model.parseNumberStars(response, 2)
         self.assertTrue(suc)
+        assert model.azimuthError.degrees == 23.8311
+        assert model.altitudeError.degrees == 24.8157
+        assert model.polarError.degrees == 29.8580
+        assert model.positionAngle.degrees == 227.45
+        assert model.orthoError.degrees == -12.9985
+        assert model.azimuthTurns == 26.98
+        assert model.altitudeTurns == -08.97
+        assert model.errorRMS == 97751.6
+        assert model.terms == 11
 
     def test_Model_parseNumberStars_not_ok0(self):
         class Parent:

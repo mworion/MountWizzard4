@@ -289,8 +289,7 @@ class RunBasic:
             delta = self.app.dome.slewDome(azimuth=az)
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
 
-            text = f'{geoStat}'
-            text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
+            text = f'{geoStat}, delta: {delta:3.1f}'
             self.msg.emit(0, self.runType, 'Slewing dome', text)
 
         self.imageQueue.put(mPoint)
@@ -300,8 +299,8 @@ class RunBasic:
             self.app.mount.obsSite.startSlewing()
         self.log.debug(f'Queued to image [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         text = f'Point: {mPoint["countSequence"]:03d}, '
-        text += f'altitude: {mPoint["altitude"]:3.0f}, '
-        text += f'azimuth: {mPoint["azimuth"]:3.0f}'
+        text += f'altitude: {mPoint["altitude"].degrees:3.0f}, '
+        text += f'azimuth: {mPoint["azimuth"].degrees:3.0f}'
         self.msg.emit(0, self.runType, 'Slewing mount', text)
         return True
 
@@ -411,12 +410,21 @@ class RunBasic:
             sPoint['decJNowM'] = sPoint['decJNowM'].degrees
             sPoint['raJ2000M'] = sPoint['raJ2000M'].hours
             sPoint['decJ2000M'] = sPoint['decJ2000M'].degrees
-            sPoint['angularPosRA'] = sPoint['angularPosRA'].degrees
-            sPoint['angularPosDEC'] = sPoint['angularPosDEC'].degrees
             sPoint['raJNowS'] = sPoint['raJNowS'].hours
             sPoint['decJNowS'] = sPoint['decJNowS'].degrees
             sPoint['raJ2000S'] = sPoint['raJ2000S'].hours
-            sPoint['decJ2000S'] = sPoint['decJ2000S'].radians
+            sPoint['decJ2000S'] = sPoint['decJ2000S'].degrees
+            sPoint['haMountModel'] = sPoint['haMountModel'].hours
+            sPoint['decMountModel'] = sPoint['decMountModel'].degrees
+            sPoint['angularPosRA'] = sPoint['angularPosRA'].degrees
+            sPoint['angularPosDEC'] = sPoint['angularPosDEC'].degrees
+            sPoint['errorAngle'] = sPoint['errorAngle'].degrees
+            sPoint['errorRA'] = sPoint['errorRA'].degrees
+            sPoint['errorDEC'] = sPoint['errorDEC'].degrees
+            sPoint['modelOrthoError'] = sPoint['modelOrthoError'].degrees
+            sPoint['modelPolarError'] = sPoint['modelPolarError'].degrees
+            sPoint['altitude'] = sPoint['altitude'].degrees
+            sPoint['azimuth'] = sPoint['azimuth'].degrees
             sPoint['siderealTime'] = sPoint['siderealTime'].hours
             sPoint['julianDate'] = sPoint['julianDate'].utc_iso()
             sPoint['version'] = f'{self.app.__version__}'
@@ -424,7 +432,6 @@ class RunBasic:
             sPoint['firmware'] = self.ui.vString.text()
             sPoint['latitude'] = self.app.mount.obsSite.location.latitude.degrees
             modelDataForSave.append(sPoint)
-
         return modelDataForSave
 
     def restoreSignalsRunDefault(self):

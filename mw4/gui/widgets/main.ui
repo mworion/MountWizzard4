@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -8488,10 +8488,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <double>50.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>80.000000000000000</double>
+         <double>890.000000000000000</double>
         </property>
         <property name="value">
-         <double>70.000000000000000</double>
+         <double>80.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="label_144">
@@ -10372,9 +10372,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>150</x>
           <y>135</y>
-          <width>88</width>
+          <width>41</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>41</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -11263,7 +11269,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -11506,9 +11512,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>195</x>
           <y>70</y>
-          <width>88</width>
+          <width>61</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>61</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12015,9 +12027,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>110</x>
           <y>45</y>
-          <width>88</width>
+          <width>71</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>71</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12102,9 +12120,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>110</x>
           <y>70</y>
-          <width>88</width>
+          <width>71</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>71</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12193,9 +12217,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>110</x>
           <y>20</y>
-          <width>88</width>
+          <width>66</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>66</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12248,9 +12278,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>290</x>
           <y>20</y>
-          <width>88</width>
+          <width>51</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>51</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12332,9 +12368,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>110</x>
           <y>45</y>
-          <width>88</width>
+          <width>66</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>66</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12350,7 +12392,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <number>3</number>
         </property>
         <property name="minimum">
-         <double>0.001000000000000</double>
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
          <double>999.000000000000000</double>
@@ -12387,9 +12429,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>290</x>
           <y>45</y>
-          <width>88</width>
+          <width>51</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>51</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12641,9 +12689,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <rect>
            <x>105</x>
            <y>10</y>
-           <width>88</width>
+           <width>66</width>
            <height>21</height>
           </rect>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>66</width>
+           <height>16777215</height>
+          </size>
          </property>
          <property name="font">
           <font>
@@ -17433,7 +17487,7 @@ When clicking the button, you could change the value.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -17872,9 +17926,15 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>105</x>
           <y>140</y>
-          <width>88</width>
+          <width>51</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>51</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -17907,9 +17967,15 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>105</x>
           <y>165</y>
-          <width>88</width>
+          <width>51</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>51</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -19512,7 +19578,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>100</x>
           <y>45</y>
-          <width>88</width>
+          <width>81</width>
           <height>21</height>
          </rect>
         </property>
@@ -19531,7 +19597,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>100</x>
           <y>20</y>
-          <width>88</width>
+          <width>81</width>
           <height>21</height>
          </rect>
         </property>
@@ -19553,7 +19619,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>280</x>
           <y>20</y>
-          <width>88</width>
+          <width>81</width>
           <height>21</height>
          </rect>
         </property>
@@ -24755,9 +24821,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>300</x>
           <y>20</y>
-          <width>88</width>
+          <width>41</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>41</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -24830,9 +24902,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>300</x>
           <y>45</y>
-          <width>88</width>
+          <width>41</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>41</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -25235,7 +25313,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_396">
         <property name="geometry">
          <rect>
-          <x>185</x>
+          <x>170</x>
           <y>20</y>
           <width>31</width>
           <height>21</height>
@@ -25255,7 +25333,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_394">
         <property name="geometry">
          <rect>
-          <x>220</x>
+          <x>205</x>
           <y>20</y>
           <width>56</width>
           <height>21</height>
@@ -25328,11 +25406,17 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="focalLength">
         <property name="geometry">
          <rect>
-          <x>110</x>
+          <x>95</x>
           <y>20</y>
-          <width>88</width>
+          <width>71</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>71</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -25363,11 +25447,17 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="aperture">
         <property name="geometry">
          <rect>
-          <x>275</x>
+          <x>260</x>
           <y>20</y>
-          <width>88</width>
+          <width>71</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>71</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -25823,9 +25913,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>280</x>
           <y>15</y>
-          <width>88</width>
+          <width>56</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="minimum">
          <double>0.800000000000000</double>
@@ -25845,9 +25941,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>95</x>
           <y>50</y>
-          <width>88</width>
+          <width>56</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the north offset of the mount center in relation to the dome center.&lt;/p&gt;&lt;p&gt;There are two different definitions (10micron and ASCOM) in place, please beware of that !&lt;/p&gt;&lt;p&gt;MW4 calculates the other ones only upon change and if the mount is online as it needs the latitude of the mount.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -25867,9 +25969,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>280</x>
           <y>50</y>
-          <width>88</width>
+          <width>56</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the east offset of the mount center in relation to the dome center.&lt;/p&gt;&lt;p&gt;There are two different definitions (10micron and ASCOM) in place, please beware of that !&lt;/p&gt;&lt;p&gt;MW4 calculates the other ones only upon change and if the mount is online as it needs the latitude of the mount.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -25889,9 +25997,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>280</x>
           <y>75</y>
-          <width>88</width>
+          <width>56</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the vertical offset of the mount center in relation to the dome center.&lt;/p&gt;&lt;p&gt;There are two different definitions (10micron and ASCOM) in place, please beware of that !&lt;/p&gt;&lt;p&gt;MW4 calculates the other ones only upon change and if the mount is online as it needs the latitude of the mount.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -25911,9 +26025,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>95</x>
           <y>125</y>
-          <width>88</width>
+          <width>56</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="maximum">
          <double>1.000000000000000</double>
@@ -25969,9 +26089,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>280</x>
           <y>125</y>
-          <width>88</width>
+          <width>56</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="minimum">
          <double>-2.000000000000000</double>
@@ -26028,9 +26154,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>280</x>
           <y>200</y>
-          <width>88</width>
+          <width>56</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;From a top view: This is the distance from the rear end of the dome opening to the center of dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -26119,9 +26251,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>280</x>
           <y>150</y>
-          <width>88</width>
+          <width>56</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
@@ -26250,9 +26388,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>280</x>
           <y>175</y>
-          <width>88</width>
+          <width>56</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;From a top view: This is the safety marging from the bounding box of the dome opening to the actual viewing direction of the telescope to avoid obstuction of the view.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -26317,9 +26461,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>295</x>
           <y>20</y>
-          <width>88</width>
+          <width>41</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>41</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -26401,7 +26551,7 @@ Next point in time when satellite settles.</string>
         <enum>QTabWidget::TabPosition::North</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -27995,9 +28145,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>50</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28017,9 +28173,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>250</x>
           <y>50</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28039,9 +28201,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>250</x>
           <y>80</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28061,9 +28229,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>80</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28083,9 +28257,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>250</x>
           <y>110</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28105,9 +28285,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>110</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28127,9 +28313,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>250</x>
           <y>140</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28149,9 +28341,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>140</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28171,9 +28369,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>250</x>
           <y>170</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28193,9 +28397,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>170</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28215,9 +28425,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>250</x>
           <y>200</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28237,9 +28453,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>200</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28259,9 +28481,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>250</x>
           <y>230</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28281,9 +28509,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>230</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28303,9 +28537,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>250</x>
           <y>260</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28325,9 +28565,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>260</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28347,9 +28593,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>250</x>
           <y>290</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28369,9 +28621,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>290</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28391,9 +28649,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>250</x>
           <y>320</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -28413,9 +28677,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>320</y>
-          <width>88</width>
+          <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>2</number>
@@ -29640,9 +29910,15 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>270</x>
           <y>45</y>
-          <width>88</width>
+          <width>56</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="decimals">
          <number>0</number>

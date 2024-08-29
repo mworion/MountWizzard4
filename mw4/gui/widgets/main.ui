@@ -8361,6 +8361,12 @@ MW4 will show the actual day always in the middel of the chart.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>36</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>Arial</family>
@@ -8462,6 +8468,12 @@ MW4 will show the actual day always in the middel of the chart.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>36</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>Arial</family>
@@ -8522,6 +8534,12 @@ MW4 will show the actual day always in the middel of the chart.</string>
           <width>36</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>36</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -8596,6 +8614,12 @@ MW4 will show the actual day always in the middel of the chart.</string>
           <width>36</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>36</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -9178,6 +9202,12 @@ MW4 will show the actual day always in the middel of the chart.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>36</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>Arial</family>
@@ -9271,6 +9301,12 @@ MW4 will show the actual day always in the middel of the chart.</string>
           <width>71</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>71</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -9632,6 +9668,12 @@ MW4 will show the actual day always in the middel of the chart.</string>
           <width>51</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>51</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="font">
          <font>

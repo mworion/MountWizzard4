@@ -375,7 +375,7 @@ class Styles:
             border-style: outset;
             border-radius: 2px;
             text-align: right;
-            padding-right: 2px;
+            margin-left: -5px;
         }
         QDoubleSpinBox:disabled {
             background-color: $M_SEC1$;
@@ -407,48 +407,6 @@ class Styles:
             background-color: $M_BACK$;
         }
         QDoubleSpinBox::down-arrow {
-            image: url(:/icon/$arrow-down$.svg);
-            width: 10px;
-            height: 10px;
-        }
-        /* Spin Boxes */
-        QSpinBox {
-            background-color: $M_BACK$;
-            color: $M_PRIM$;
-            text-align: right;
-            border-color: $M_SEC$;
-            border-width: 1px;
-            border-style: outset;
-            border-radius: 2px;
-            padding-right: 2px;
-            height: 24px;
-        }
-        QSpinBox::up-button {
-            subcontrol-origin: border;
-            subcontrol-position: top right;
-            width: 16px;
-            border-width: 1px;
-            border-radius: 2px;
-            border-color: $M_SEC$;
-            border-style: outset;
-            background-color: $M_BACK$;
-        }
-        QSpinBox::up-arrow {
-            image: url(:/icon/$arrow-up$.svg);
-            width: 10px;
-            height: 10px;
-        }
-        QSpinBox::down-button {
-            subcontrol-origin: border;
-            subcontrol-position: bottom right;
-            width: 16px;
-            border-width: 1px;
-            border-style: outset;
-            border-radius: 2px;
-            border-color: $M_SEC$;
-            background-color: $M_BACK$;
-        }
-        QSpinBox::down-arrow {
             image: url(:/icon/$arrow-down$.svg);
             width: 10px;
             height: 10px;

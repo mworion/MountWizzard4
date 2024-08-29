@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -8357,13 +8357,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <rect>
           <x>40</x>
           <y>25</y>
-          <width>36</width>
+          <width>41</width>
           <height>21</height>
          </rect>
         </property>
         <property name="maximumSize">
          <size>
-          <width>36</width>
+          <width>41</width>
           <height>16777215</height>
          </size>
         </property>
@@ -8384,16 +8384,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <number>0</number>
         </property>
         <property name="minimum">
-         <double>2.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>8.000000000000000</double>
-        </property>
-        <property name="singleStep">
          <double>1.000000000000000</double>
         </property>
-        <property name="value">
-         <double>5.000000000000000</double>
+        <property name="maximum">
+         <double>10.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="label_179">
@@ -8439,7 +8433,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QLabel" name="label_203">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>255</x>
           <y>25</y>
           <width>16</width>
           <height>20</height>
@@ -8464,13 +8458,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <rect>
           <x>310</x>
           <y>25</y>
-          <width>36</width>
+          <width>41</width>
           <height>21</height>
          </rect>
         </property>
         <property name="maximumSize">
          <size>
-          <width>36</width>
+          <width>41</width>
           <height>16777215</height>
          </size>
         </property>
@@ -8491,22 +8485,19 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <number>0</number>
         </property>
         <property name="minimum">
-         <double>5.000000000000000</double>
+         <double>50.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>85.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>5.000000000000000</double>
+         <double>80.000000000000000</double>
         </property>
         <property name="value">
-         <double>75.000000000000000</double>
+         <double>70.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="label_144">
         <property name="geometry">
          <rect>
-          <x>350</x>
+          <x>355</x>
           <y>25</y>
           <width>16</width>
           <height>20</height>
@@ -8531,13 +8522,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <rect>
           <x>120</x>
           <y>25</y>
-          <width>36</width>
+          <width>41</width>
           <height>21</height>
          </rect>
         </property>
         <property name="maximumSize">
          <size>
-          <width>36</width>
+          <width>41</width>
           <height>16777215</height>
          </size>
         </property>
@@ -8558,16 +8549,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <number>0</number>
         </property>
         <property name="minimum">
-         <double>2.000000000000000</double>
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>15.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>2.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>6.000000000000000</double>
+         <double>10.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="label_180">
@@ -8611,13 +8596,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <rect>
           <x>210</x>
           <y>25</y>
-          <width>36</width>
+          <width>41</width>
           <height>21</height>
          </rect>
         </property>
         <property name="maximumSize">
          <size>
-          <width>36</width>
+          <width>41</width>
           <height>16777215</height>
          </size>
         </property>
@@ -8638,16 +8623,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <number>0</number>
         </property>
         <property name="minimum">
-         <double>5.000000000000000</double>
+         <double>10.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>85.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>5.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>30.000000000000000</double>
+         <double>40.000000000000000</double>
         </property>
        </widget>
       </widget>
@@ -9198,13 +9177,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <rect>
           <x>290</x>
           <y>115</y>
-          <width>36</width>
+          <width>41</width>
           <height>21</height>
          </rect>
         </property>
         <property name="maximumSize">
          <size>
-          <width>36</width>
+          <width>41</width>
           <height>16777215</height>
          </size>
         </property>
@@ -9231,13 +9210,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <double>1.000000000000000</double>
         </property>
         <property name="value">
-         <double>10.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="label_162">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>335</x>
           <y>115</y>
           <width>16</width>
           <height>20</height>
@@ -9321,17 +9300,11 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="decimals">
          <number>0</number>
         </property>
-        <property name="minimum">
-         <double>5.000000000000000</double>
-        </property>
         <property name="maximum">
          <double>50.000000000000000</double>
         </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
         <property name="value">
-         <double>15.000000000000000</double>
+         <double>10.000000000000000</double>
         </property>
        </widget>
        <widget class="QPushButton" name="genBuildDSO">
@@ -9643,7 +9616,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QLabel" name="label_195">
         <property name="geometry">
          <rect>
-          <x>255</x>
+          <x>235</x>
           <y>20</y>
           <width>51</width>
           <height>21</height>
@@ -9663,15 +9636,15 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QDoubleSpinBox" name="numberSpiral">
         <property name="geometry">
          <rect>
-          <x>305</x>
+          <x>285</x>
           <y>20</y>
-          <width>51</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
         <property name="maximumSize">
          <size>
-          <width>51</width>
+          <width>71</width>
           <height>16777215</height>
          </size>
         </property>

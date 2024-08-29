@@ -8549,10 +8549,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <number>0</number>
         </property>
         <property name="minimum">
-         <double>1.000000000000000</double>
+         <double>2.000000000000000</double>
         </property>
         <property name="maximum">
          <double>10.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>2.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="label_180">

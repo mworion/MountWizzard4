@@ -111,6 +111,9 @@ class Styles:
             font-weight: bold;
             font-size: 20pt;
         }
+        QDoubleSpinBox {
+            margin-left: -5px;
+        }
         QGroupBox {
             font-family: Arial;
             font-weight: normal;
@@ -375,7 +378,6 @@ class Styles:
             border-style: outset;
             border-radius: 2px;
             text-align: right;
-            margin-left: -5px;
         }
         QDoubleSpinBox:disabled {
             background-color: $M_SEC1$;

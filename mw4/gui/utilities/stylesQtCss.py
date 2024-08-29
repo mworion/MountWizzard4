@@ -70,14 +70,6 @@ class Styles:
             font-weight: normal;
             font-size: 30pt;
         }
-        QDoubleSpinBox {
-            background-color: $M_BACK$;
-            color: $M_PRIM$;
-            border-color: $M_SEC$;
-            border-width: 1px;
-            border-style: outset;
-            border-radius: 2px;
-        }
         QGroupBox {
             font-family: Arial;
             font-weight: normal;
@@ -118,16 +110,6 @@ class Styles:
             font-family: Arial;
             font-weight: bold;
             font-size: 20pt;
-        }
-        QDoubleSpinBox {
-            background-color: $M_BACK$;
-            color: $M_PRIM$;
-            border-color: $M_SEC$;
-            border-width: 1px;
-            border-style: outset;
-            border-radius: 2px;
-            padding-left: -5px;
-            padding-right: -5px;
         }
         QGroupBox {
             font-family: Arial;
@@ -385,6 +367,14 @@ class Styles:
             border-color: $M_SEC$;
         }
         /* Spin Boxes */
+       QDoubleSpinBox {
+            background-color: $M_BACK$;
+            color: $M_PRIM$;
+            border-color: $M_SEC$;
+            border-width: 1px;
+            border-style: outset;
+            border-radius: 2px;
+        }
         QDoubleSpinBox:disabled {
             background-color: $M_SEC1$;
             color: $M_SEC$;

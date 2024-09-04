@@ -287,7 +287,7 @@ class AlpacaClass(DriverData):
             return None
         if not self.deviceConnected:
             return None
-         if valueProp in self.propertyExceptions:
+        if valueProp in self.propertyExceptions:
             return None
 
         uid = uuid.uuid4().int % 2**32

@@ -17,28 +17,27 @@
 # standard libraries
 
 # external packages
+from astropy.io import fits
 
 # local imports
 from base.alpacaClass import AlpacaClass
 from base.tpool import Worker
-from logic.camera.cameraSupport import CameraSupport
 
 
-class CameraAlpaca(AlpacaClass, CameraSupport):
+class CameraAlpaca(AlpacaClass):
     """
     """
     __all__ = ['CameraAlpaca']
 
-    def __init__(self, app=None, signals=None, data=None, parent=None):
-        super().__init__(app=app, data=data)
-        self.signals = signals
-        self.data = data
-        self.abortExpose = False
+    def __init__(self, parent):
         self.parent = parent
+        self.app = parent.app
+        self.data = parent.data
+        self.signals = parent.signals
+        super().__init__(app=parent.app, data=parent.data) 
 
-    def workerGetInitialConfig(self):
+    def workerGetInitialConfig(self) -> None:
         """
-        :return: true for test purpose
         """
         super().workerGetInitialConfig()
         self.getAndStoreAlpacaProperty('cameraxsize', 'CCD_INFO.CCD_MAX_X')
@@ -60,11 +59,9 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
         self.getAndStoreAlpacaProperty('startx', 'CCD_FRAME.X')
         self.getAndStoreAlpacaProperty('starty', 'CCD_FRAME.Y')
         self.log.debug(f'Initial data: {self.data}')
-        return True
 
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         """
-        :return: true for test purpose
         """
         self.getAndStoreAlpacaProperty('binx', 'CCD_BINNING.HOR_BIN')
         self.getAndStoreAlpacaProperty('biny', 'CCD_BINNING.VERT_BIN')
@@ -79,157 +76,70 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
         self.getAndStoreAlpacaProperty('cooleron', 'CCD_COOLER.COOLER_ON')
         self.getAndStoreAlpacaProperty('coolerpower',
                                        'CCD_COOLER_POWER.CCD_COOLER_VALUE')
-        return True
 
-    def sendDownloadMode(self, fastReadout=False):
+    def sendDownloadMode(self) -> None:
         """
-        :return: success
         """
-        canFast = self.data.get('CAN_FAST', False)
-        if not canFast:
-            return False
-        if fastReadout:
-            self.setAlpacaProperty('fastreadout', FastReadout=True)
+        if self.data.get('CAN_FAST', False):
+            self.setAlpacaProperty('fastreadout', FastReadout=self.parent.fastReadout)
 
-        quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
-        self.log.info(f'Camera has readout quality entry: {quality}')
-        return True
+    def waitFunc(self) -> Bool:
+        """
+        """
+        return not self.getAlpacaProperty('imageready')
 
-    def workerExpose(self,
-                     imagePath='',
-                     expTime=3,
-                     binning=1,
-                     fastReadout=True,
-                     posX=0,
-                     posY=0,
-                     width=1,
-                     height=1,
-                     focalLength=1,
-                     ):
+    def workerExpose(self) -> None:
         """
-        :param imagePath:
-        :param expTime:
-        :param binning:
-        :param fastReadout:
-        :param posX:
-        :param posY:
-        :param width:
-        :param height:
-        :param focalLength:
-        :return: success
         """
-        self.sendDownloadMode(fastReadout=fastReadout)
-        self.setAlpacaProperty('binx', BinX=int(binning))
-        self.setAlpacaProperty('biny', BinY=int(binning))
-        self.setAlpacaProperty('startx', StartX=int(posX / binning))
-        self.setAlpacaProperty('starty', StartY=int(posY / binning))
-        self.setAlpacaProperty('numx', NumX=int(width / binning))
-        self.setAlpacaProperty('numy', NumY=int(height / binning))
-        self.setAlpacaProperty('startexposure', Duration=expTime, Light=True)
-        self.waitExposedAlpaca(expTime)
+        self.sendDownloadMode()
+        self.setAlpacaProperty('binx', BinX=self.parent.binning)
+        self.setAlpacaProperty('biny', BinY=self.parent.binning)
+        self.setAlpacaProperty('startx', StartX=self.parent.posXASCOM)
+        self.setAlpacaProperty('starty', StartY=self.pafrent.posYASCOM)
+        self.setAlpacaProperty('numx', NumX=self.parent.widthASCOM)
+        self.setAlpacaProperty('numy', NumY=self.parentheightASCOM)
+        self.setAlpacaProperty('startexposure', Duration=self.parent.expTime, Light=True)
+        
+        self.parent.waitExposedA(self.parent.expTime, self.waitFunc)
         self.signals.exposed.emit()
-        data = self.retrieveFits(self.getAlpacaProperty, 'imagearray')
-        self.signals.downloaded.emit()
-        imagePath = self.saveFits(imagePath, data, expTime, binning, focalLength)
-        self.signals.saved.emit(imagePath)
-        self.signals.exposeReady.emit()
-        self.signals.message.emit('')
-        return True
-
-    def expose(self,
-               imagePath='',
-               expTime=3,
-               binning=1,
-               fastReadout=True,
-               posX=0,
-               posY=0,
-               width=1,
-               height=1,
-               focalLength=1,
-               ra=None,
-               dec=None,
-               ):
+        data = self.parent.retrieveImage(self.getAlpacaProperty, 'imagearray')
+        self.signals.downloaded.emit()   
+        self.signals.message.emit('saving')                
+        hdu = fits.PrimaryHDU(data=data)
+        hdu.writeto(self.parent.imagePath, overwrite=True)
+        self.parent.writeImageFitsHeader()
+    
+    def expose(self) -> None:
         """
-
-        :return: success
         """
-        self.raJ2000 = ra
-        self.decJ2000 = dec
-        self.abortExpose = False
-        worker = Worker(self.workerExpose,
-                        imagePath=imagePath,
-                        expTime=expTime,
-                        binning=binning,
-                        fastReadout=fastReadout,
-                        posX=posX,
-                        posY=posY,
-                        width=width,
-                        height=height,
-                        focalLength=focalLength)
+        worker = Worker(self.workerExpose)
+        worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(worker)
+
+    def abort(self) -> Bool:
+        """
+        """
+        if self.data.get('CAN_ABORT', False):
+            self.getAlpacaProperty('stopexposure')
         return True
 
-    def abort(self):
+    def sendCoolerSwitch(self, coolerOn: Bool = False) -> None:
         """
-        :return: success
         """
-        self.raJ2000 = None
-        self.decJ2000 = None
-        self.abortExpose = True
-        if not self.deviceConnected:
-            return False
-
-        canAbort = self.data.get('CAN_ABORT', False)
-        if not canAbort:
-            return False
-
-        self.getAlpacaProperty('stopexposure')
-        return True
-
-    def sendCoolerSwitch(self, coolerOn=False):
-        """
-        :param coolerOn:
-        :return: success
-        """
-        if not self.deviceConnected:
-            return False
-
         self.setAlpacaProperty('cooleron', CoolerOn=coolerOn)
-        return True
 
-    def sendCoolerTemp(self, temperature=0):
+    def sendCoolerTemp(self, temperature: float = 0) -> None-:
         """
-        :param temperature:
-        :return: success
         """
-        if not self.deviceConnected:
-            return False
+        if self.data.get('CAN_SET_CCD_TEMPERATURE', False):
+            self.setAlpacaProperty('setccdtemperature', SetCCDTemperature=temperature)
 
-        canSetCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
-        if not canSetCCDTemp:
-            return False
-
-        self.setAlpacaProperty('setccdtemperature', SetCCDTemperature=temperature)
-        return True
-
-    def sendOffset(self, offset=0):
+    def sendOffset(self, offset: int = 0) -> None:
         """
-        :param offset:
-        :return: success
         """
-        if not self.deviceConnected:
-            return False
-
         self.setAlpacaProperty('offset', Offset=offset)
-        return True
 
-    def sendGain(self, gain=0):
+    def sendGain(self, gain: int = 0) -> None:
         """
-        :param gain:
-        :return: success
         """
-        if not self.deviceConnected:
-            return False
-
         self.setAlpacaProperty('gain', Gain=gain)
-        return True

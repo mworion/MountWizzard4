@@ -19,29 +19,29 @@ import zlib
 import os
 
 # external packages
-import astropy.io.fits as fits
+from astropy.io import fits
 
 # local imports
 from base.tpool import Worker
 from base.indiClass import IndiClass
-from logic.camera.cameraSupport import CameraSupport
 
 
-class CameraIndi(IndiClass, CameraSupport):
+class CameraIndi(IndiClass):
     """
     """
     __all__ = ['CameraIndi']
 
-    def __init__(self, app=None, signals=None, data=None):
-        self.signals = signals
-        super().__init__(app=app, data=data)
-        self.imagePath = ''
+    def __init__(self, parent):
+        self.parent = parent
+        self.app = parent.app
+        self.data = parent.data
+        self.signals = parent.signals
+        super().__init__(app=parent.app, data=parent.data) 
+
         self.isDownloading = False
 
-    def setUpdateConfig(self, deviceName):
+    def setUpdateConfig(self, deviceName: str) -> Bool:
         """
-        :param deviceName:
-        :return: success
         """
         if not super().setUpdateConfig(deviceName):
             return False
@@ -73,7 +73,7 @@ class CameraIndi(IndiClass, CameraSupport):
         self.log.info(f'Primary telescope [{deviceName}] success: [{suc}]')
         return True
 
-    def setExposureState(self):
+    def setExposureState(self) -> Bool:
         """
         setExposureState rebuilds the state information integrated and download
         as it is not explicit defined in the INDI spec. So downloaded is reached
@@ -84,8 +84,6 @@ class CameraIndi(IndiClass, CameraSupport):
         because on ALPACA and ASCOM side it's a step by step sequence, which has
         very defined states for each step. I would like ta have a common
         approach for all frameworks.
-
-        :return: success
         """
         THRESHOLD = 0.00001
         value = self.data.get('CCD_EXPOSURE.CCD_EXPOSURE_VALUE')
@@ -117,11 +115,8 @@ class CameraIndi(IndiClass, CameraSupport):
 
         return True
 
-    def updateNumber(self, deviceName, propertyName):
+    def updateNumber(self, deviceName: str, propertyName: str) -> Bool:
         """
-        :param deviceName:
-        :param propertyName:
-        :return:
         """
         if propertyName == 'CCD_GAIN':
             elements = self.device.CCD_GAIN['elementList']['GAIN']
@@ -145,46 +140,11 @@ class CameraIndi(IndiClass, CameraSupport):
             self.data['CAN_SET_CCD_TEMPERATURE'] = True
         return True
 
-    def updateHeaderInfo(self, header):
+    def workerSaveBLOB(self, data: dict) -> None:
         """
-        adding for avoid having no entry in header
-        :return:
         """
-        if self.raJ2000 is None or self.decJ2000 is None:
-            self.log.info('No coordinate for updating the header available')
-            return header
+        self.signals.message.emit('Saving')
 
-        if 'RA' in header and 'DEC' in header:
-            t = f'Found FitsRA:[{header["RA"]:4.3f}], '
-            t += f'TargetRA: [{self.raJ2000._degrees:4.3f}], '
-            t += f'FitsDEC: [{header["DEC"]:4.3f}], '
-            t += f'TargetDEC: [{self.decJ2000._degrees:4.3f}]'
-            self.log.debug(t)
-            return header
-
-        t = 'Adding missing RA/DEC header '
-        t += f'TargetRA: [{self.raJ2000._degrees:4.3f}], '
-        t += f'TargetDEC: [{self.decJ2000._degrees:4.3f}]'
-        self.log.debug(t)
-
-        header['RA'] = self.raJ2000._degrees
-        header['DEC'] = self.decJ2000.degrees
-        return header
-
-    def saveBlobSignalsFinished(self):
-        """
-        :return:
-        """
-        self.signals.saved.emit(self.imagePath)
-        self.signals.exposeReady.emit()
-        self.signals.message.emit('')
-        return True
-
-    def workerSaveBLOB(self, data):
-        """
-        :param data:
-        :return:
-        """
         if data['format'] == '.fits.fz':
             HDU = fits.HDUList.fromstring(data['value'])
             self.log.info('Image BLOB is in FPacked format')
@@ -199,18 +159,14 @@ class CameraIndi(IndiClass, CameraSupport):
 
         else:
             self.log.info('Image BLOB is not supported')
-            return True
+            return
 
-        HDU[0].header = self.updateHeaderInfo(HDU[0].header)
-        fits.writeto(self.imagePath, HDU[0].data, HDU[0].header,
-                     overwrite=True, output_verify='silentfix')
-        return True
+        fits.writeto(self.parent.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
+        self.parent.writeImageFitsHeader()
+ 
 
-    def updateBLOB(self, deviceName, propertyName):
+    def updateBLOB(self, deviceName: str, propertyName: str) -> Bool:
         """
-        :param deviceName:
-        :param propertyName:
-        :return: success
         """
         if not super().updateBLOB(deviceName, propertyName):
             return False
@@ -224,193 +180,101 @@ class CameraIndi(IndiClass, CameraSupport):
             return False
         if data.get('name', '') != 'CCD1':
             return False
-        if not self.imagePath:
-            return False
-        if not os.path.isdir(os.path.dirname(self.imagePath)):
-            return False
 
-        self.signals.message.emit('Saving')
         worker = Worker(self.workerSaveBLOB, data)
-        worker.signals.finished.connect(self.saveBlobSignalsFinished)
+        worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(worker)
         return True
 
-    def sendDownloadMode(self, fastReadout=False):
+    def sendDownloadMode(self) -> None:
         """
-        :return: success
         """
-        quality = self.device.getSwitch('READOUT_QUALITY')
-        self.log.info(f'Camera has readout quality entry: {quality}')
+        quality['QUALITY_LOW'] = 'On' if self.parent.fastReadout else 'Off'
+        quality['QUALITY_HIGH'] = 'Off' if self.parent.fastReadout else 'On'
+        self.client.sendNewSwitch(deviceName=self.deviceName,
+                                  propertyName='READOUT_QUALITY',
+                                  elements=quality)
 
-        if fastReadout:
-            quality['QUALITY_LOW'] = 'On'
-            quality['QUALITY_HIGH'] = 'Off'
-        else:
-            quality['QUALITY_LOW'] = 'Off'
-            quality['QUALITY_HIGH'] = 'On'
-
-        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
-                                        propertyName='READOUT_QUALITY',
-                                        elements=quality)
-        return suc
-
-    def expose(self,
-               imagePath='',
-               expTime=3,
-               binning=1,
-               fastReadout=True,
-               posX=0,
-               posY=0,
-               width=1,
-               height=1,
-               focalLength=1,
-               ra=None,
-               dec=None,
-               ):
+    def expose(self) -> Bool:
         """
-        :param imagePath:
-        :param expTime:
-        :param binning:
-        :param fastReadout:
-        :param posX:
-        :param posY:
-        :param width:
-        :param height:
-        :param focalLength:
-        :param ra:
-        :param dec:
-
-        :return: success
         """
-        if not self.device:
-            self.log.warning('No camera connected')
-            return False
-
-        self.raJ2000 = ra
-        self.decJ2000 = dec
-        self.imagePath = imagePath
-        suc = self.sendDownloadMode(fastReadout=fastReadout)
-        if not suc:
-            self.log.info('Download quality could not be set')
-
+        suc = self.sendDownloadMode()
         indiCmd = self.device.getNumber('CCD_BINNING')
-        indiCmd['HOR_BIN'] = binning
-        indiCmd['VER_BIN'] = binning
-        suc = self.client.sendNewNumber(deviceName=self.deviceName,
-                                        propertyName='CCD_BINNING',
-                                        elements=indiCmd)
-        if not suc:
-            self.log.info('Binning could not be set')
+        indiCmd['HOR_BIN'] = self.parent.binning
+        indiCmd['VER_BIN'] = self.parent.binning
+        self.client.sendNewNumber(deviceName=self.deviceName,
+                                  propertyName='CCD_BINNING',
+                                  elements=indiCmd)
 
         indiCmd = self.device.getNumber('CCD_FRAME')
-        indiCmd['X'] = posX
-        indiCmd['Y'] = posY
-        indiCmd['WIDTH'] = width
-        indiCmd['HEIGHT'] = height
-        suc = self.client.sendNewNumber(deviceName=self.deviceName,
-                                        propertyName='CCD_FRAME',
-                                        elements=indiCmd)
-        if not suc:
-            self.log.info('Frame could not be set')
+        indiCmd['X'] = self.parent.posX
+        indiCmd['Y'] = self.parent.posY
+        indiCmd['WIDTH'] = self.parent.width
+        indiCmd['HEIGHT'] = self.parent.height
+        self.client.sendNewNumber(deviceName=self.deviceName,
+                                  propertyName='CCD_FRAME',
+                                  elements=indiCmd)
 
         indiCmd = self.device.getNumber('CCD_EXPOSURE')
-        indiCmd['CCD_EXPOSURE_VALUE'] = expTime
-        suc = self.client.sendNewNumber(deviceName=self.deviceName,
-                                        propertyName='CCD_EXPOSURE',
-                                        elements=indiCmd)
-        return suc
+        indiCmd['CCD_EXPOSURE_VALUE'] = self.parent.expTime
+        return self.client.sendNewNumber(deviceName=self.deviceName,
+                                         propertyName='CCD_EXPOSURE',
+                                         elements=indiCmd)
 
-    def abort(self):
+    def abort(self) -> Bool:
         """
-        :return: success
         """
-        if not self.device:
-            return False
-
-        self.raJ2000 = None
-        self.decJ2000 = None
         indiCmd = self.device.getSwitch('CCD_ABORT_EXPOSURE')
         if 'ABORT' not in indiCmd:
-            return False
+            return
 
         indiCmd['ABORT'] = 'On'
-        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
-                                        propertyName='CCD_ABORT_EXPOSURE',
-                                        elements=indiCmd)
-        return suc
+        return self.client.sendNewSwitch(deviceName=self.deviceName,
+                                         propertyName='CCD_ABORT_EXPOSURE',
+                                         elements=indiCmd)
 
-    def sendCoolerSwitch(self, coolerOn=False):
+    def sendCoolerSwitch(self, coolerOn: Bool  = False) -> None:
         """
-        :param coolerOn:
-        :return: success
         """
-        if not self.device:
-            return False
-
         cooler = self.device.getSwitch('CCD_COOLER')
-        if coolerOn:
-            cooler['COOLER_ON'] = 'On'
-            cooler['COOLER_OFF'] = 'Off'
+        cooler['COOLER_ON'] = 'On' if coolerOn else 'Off'
+        cooler['COOLER_OFF'] = 'Off' if coolerOn else 'On'
+        self.client.sendNewSwitch(deviceName=self.deviceName,
+                                  propertyName='CCD_COOLER',
+                                  elements=cooler)
 
-        else:
-            cooler['COOLER_ON'] = 'Off'
-            cooler['COOLER_OFF'] = 'On'
-
-        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
-                                        propertyName='CCD_COOLER',
-                                        elements=cooler)
-        return suc
-
-    def sendCoolerTemp(self, temperature=0):
+    def sendCoolerTemp(self, temperature: float = 0) -> None:
         """
-        :param temperature:
-        :return: success
         """
-        if not self.device:
-            return False
-
         element = self.device.getNumber('CCD_TEMPERATURE')
         if 'CCD_TEMPERATURE_VALUE' not in element:
-            return False
+            return
 
         element['CCD_TEMPERATURE_VALUE'] = temperature
-        suc = self.client.sendNewNumber(deviceName=self.deviceName,
-                                        propertyName='CCD_TEMPERATURE',
-                                        elements=element)
-        return suc
+        self.client.sendNewNumber(deviceName=self.deviceName,
+                                  propertyName='CCD_TEMPERATURE',
+                                  elements=element)
 
-    def sendOffset(self, offset=0):
+    def sendOffset(self, offset; int = 0) -> None:
         """
-        :param offset:
-        :return: success
         """
-        if not self.device:
-            return False
-
         element = self.device.getNumber('CCD_OFFSET')
         if 'OFFSET' not in element:
-            return False
+            return
 
         element['OFFSET'] = offset
-        suc = self.client.sendNewNumber(deviceName=self.deviceName,
-                                        propertyName='CCD_OFFSET',
-                                        elements=element)
-        return suc
+        self.client.sendNewNumber(deviceName=self.deviceName,
+                                  propertyName='CCD_OFFSET',
+                                  elements=element)
 
-    def sendGain(self, gain=0):
+    def sendGain(self, gain: int = 0) -> None:
         """
-        :param gain:
-        :return: success
         """
-        if not self.device:
-            return False
-
         element = self.device.getNumber('CCD_GAIN')
         if 'GAIN' not in element:
-            return False
+            return
 
         element['GAIN'] = gain
-        suc = self.client.sendNewNumber(deviceName=self.deviceName,
-                                        propertyName='CCD_GAIN',
-                                        elements=element)
-        return suc
+        self.client.sendNewNumber(deviceName=self.deviceName,
+                                  propertyName='CCD_GAIN',
+                                  elements=element)

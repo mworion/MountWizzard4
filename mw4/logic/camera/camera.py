@@ -17,11 +17,16 @@
 # standard libraries
 import logging
 import platform
+from typing import Callable
 
 # external packages
+from astropy.io import fits
+import numpy as np
 
 # local imports
 from base.driverDataClass import Signals
+from base.fitsHeader import writeHeaderCamera, writeHeaderPointing
+
 from logic.camera.cameraIndi import CameraIndi
 from logic.camera.cameraAlpaca import CameraAlpaca
 if platform.system() == 'Windows':
@@ -30,7 +35,8 @@ if platform.system() == 'Windows':
     from logic.camera.cameraNINA import CameraNINA
 
 
-class Camera:
+class Camera(CameraSupport)
+:
     """
     """
     __all__ = ['Camera']
@@ -40,25 +46,41 @@ class Camera:
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = Signals()
+        self.obsSite = app.mount.obsSite
+        self.telescope = app.telescope
         self.data = {}
-        self.defaultConfig = {'framework': '',
-                              'frameworks': {}}
+        self.exposing = False
+        self.fastReadout = False
+        self.imagePath = ''
+        self.exposureTime = 1
+        self.signals = Signals()
         self.framework = ''
-        self.run = {
-            'indi': CameraIndi(self.app, self.signals, self.data),
-            'alpaca': CameraAlpaca(self.app, self.signals, self.data),
-        }
+        self.defaultConfig = {'framework': '', 'frameworks': {}}
 
+        self._binning = 1
+        self._posX = 0
+        self._posY = 0
+        self._width = 100
+        self._height = 100
+        self._posXASCOM = 0
+        self._posYASCOM = 0
+        self._widthASCOM = 100
+        self._heightASCOM = 100
+        
+        self.run = {
+            'indi': CameraIndi(self),
+            'alpaca': CameraAlpaca(self),
+        }
         if platform.system() == 'Windows':
-            self.run['nina'] = CameraNINA(self.app, self.signals, self.data)
-            self.run['sgpro'] = CameraSGPro(self.app, self.signals, self.data)
-            self.run['ascom'] = CameraAscom(self.app, self.signals, self.data)
+            self.run['nina'] = CameraNINA(self)
+            self.run['sgpro'] = CameraSGPro(self)
+            self.run['ascom'] = CameraAscom(self)
 
         for fw in self.run:
             self.defaultConfig['frameworks'].update({fw: self.run[fw].defaultConfig})
 
         self.signals.deviceDisconnected.connect(self.abort)
+        self.signals.serverDisconnected.connect(self.abort)
 
     @property
     def updateRate(self):
@@ -80,185 +102,181 @@ class Camera:
         for fw in self.run:
             self.run[fw].loadConfig = value
 
-    def startCommunication(self):
-        """
-        :return: success
-        """
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].startCommunication()
-            return suc
+    @property
+    def binning(self):
+        return self._binning
+
+    @binning.setter
+    def binning(self, value):
+        if 1 <= value <= 4 and'CCD_BINNING.HOR_BIN' in self.data
+            self._binning = int(value)
         else:
-            return False
+            self._binning = 1
+        self.subFrame(self._subFrame) 
 
-    def stopCommunication(self):
-        """
-        :return: success
-
-        """
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].stopCommunication()
-            return suc
-        else:
-            return False
-
-    def canSubFrame(self, subFrame=100):
-        """
-        :param subFrame:
-        :return: success
-        """
-        if subFrame > 100:
-            return False
-        if subFrame < 10:
-            return False
-        if 'CCD_FRAME.X' not in self.data or 'CCD_FRAME.Y' not in self.data:
-            return False
-
-        return True
-
-    def canBinning(self, binning=1):
-        """
-        :param binning:
-        :return: success
-        """
-        if binning < 1:
-            return False
-        if binning > 4:
-            return False
-        if 'CCD_BINNING.HOR_BIN' not in self.data:
-            return False
-
-        return True
-
-    def calcSubFrame(self, subFrame=100):
-        """
-        :param subFrame: percentage 0-100 of
-        :return: success
-        """
+    @subFrame.setter
+    def subFrame(self, value):
         maxX = self.data.get('CCD_INFO.CCD_MAX_X', 0)
-        maxY = self.data.get('CCD_INFO.CCD_MAX_Y', 0)
-
-        if subFrame < 10 or subFrame > 100 or maxX == 0 or maxY == 0:
-            width = maxX
-            height = maxY
-            posX = 0
-            posY = 0
-
+        maxY = self.data.get('CCD_INFO.CCD_MAX_Y', 0) 
+        if 10 <= value <= 100:
+            self._width = int(maxX * value / 100)
+            self._height = int(maxY * value / 100)
+            self._posX = int((maxX - width) / 2)
+            self._posY = int((maxY - height) / 2)
+            self._widthASCOM = int(maxX * value / 100 / self._binning)
+            self._heightASCOM = int(maxY * value / 100 / self._binning)
+            self._posXASCOM = int((maxX - width) / 2 / self._binning)
+            self._posYASCOM = int((maxY - height) / 2 / self._binning)
+            self._subFrame = value
         else:
-            width = int(maxX * subFrame / 100)
-            height = int(maxY * subFrame / 100)
-            posX = int((maxX - width) / 2)
-            posY = int((maxY - height) / 2)
+            self._width = maxX
+            self._height = maxY
+            self._posX = 0
+            self._posY = 0 
+            self._widthASCOM = int(maxX / self._binning)
+            self._heightASCOM = int(maxY / self._binning)
+            self._posXASCOM = 0
+            self._posYASCOM = 0 
+            self._subFrame = 100
 
-        return posX, posY, width, height
+    def startCommunication(self) -> Bool:
+        """
+        """
+        return self.run[self.framework].startCommunication()
 
-    def sendDownloadMode(self, fastReadout=False):
+    def stopCommunication(self) -> Bool:
         """
-        :return: success
         """
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].sendDownloadMode(fastReadout=fastReadout)
-            return suc
-        else:
-            return False
+        return self.run[self.framework].stopCommunication()
+
+    def exposeFinished(self) -> Bool:
+        """
+        """
+        self.exposing = False
+        self.signals.saved.emit(self.imagePath)
+        self.signals.exposeReady.emit()
+        self.signals.message.emit('')
 
     def expose(self,
-               imagePath='',
-               expTime=3,
-               binning=1,
-               subFrame=100,
-               fastReadout=True,
-               focalLength=1,
+               imagePath: str = '',
+               expTime: float = 3,
+               binning: int = 1,
+               subFrame: int = 100,
+               fastReadout: Bool = True,
+               focalLength: int = 1,
                ra=None,
-               dec=None):
+               dec=None) -> Bool:
         """
-
-        :param imagePath:
-        :param expTime:
-        :param binning:
-        :param subFrame:
-        :param fastReadout:
-        :param focalLength:
-        :param ra:
-        :param dec:
-        :return:
         """
-        if self.framework not in self.run.keys():
-            self.log.warning('no valid camera framework selected')
+        if self.exposing:
             return False
-        if not imagePath:
-            self.log.warning('no image path given')
-            return False
-        if subFrame != 100 and not self.canSubFrame(subFrame=subFrame):
-            subFrame = 100
-        if binning != 1 and not self.canBinning(binning=binning):
-            binning = 1
-        result = self.calcSubFrame(subFrame=subFrame)
-
-        posX, posY, width, height = result
-        t = f'Image bin:{binning}, posX:{posX}, posY:{posY}'
-        t += f', width:{width}, height:{height}, fast:{fastReadout}'
-        t += f', path: {imagePath}'
-        self.log.info(t)
+            
+        self.exposing = True
+        self.imagePath = imagePath
+        self.expTime = expTime
+        self.binning = binning
+        self.subFrame = subFrame
+        self.fastReadout = fastReadout
         self.signals.message.emit('exposing')
-        suc = self.run[self.framework].expose(imagePath=imagePath,
-                                              expTime=expTime,
-                                              binning=binning,
-                                              fastReadout=fastReadout,
-                                              posX=posX,
-                                              posY=posY,
-                                              width=width,
-                                              height=height,
-                                              focalLength=focalLength,
-                                              ra=ra,
-                                              dec=dec)
-        return suc
+        self.run[self.framework].expose()
+        return True
 
-    def abort(self):
+    def abort(self) -> Boot:
         """
-        :return: success
         """
-        if self.framework not in self.run.keys():
-            return False
-        suc = self.run[self.framework].abort()
         self.signals.message.emit('')
-        return suc
+        self.run[self.framework].abort()
+        self.exposing = False  
 
-    def sendCoolerSwitch(self, coolerOn=False):
+    def sendDownloadMode(self) -> None:
         """
-        :param coolerOn:
-        :return: success
         """
-        if self.framework not in self.run.keys():
-            return False
-        suc = self.run[self.framework].sendCoolerSwitch(coolerOn=coolerOn)
-        return suc
+        self.run[self.framework].sendDownloadMode()
 
-    def sendCoolerTemp(self, temperature=0):
+    def sendCoolerSwitch(self, coolerOn: Bool = False) -> None:
         """
-        :param temperature:
-        :return: success
         """
-        if self.framework not in self.run.keys():
-            return False
-        suc = self.run[self.framework].sendCoolerTemp(temperature=temperature)
-        return suc
+        self.run[self.framework].sendCoolerSwitch(coolerOn=coolerOn)
 
-    def sendOffset(self, offset=0):
+    def sendCoolerTemp(self, temperature: float = 0) -> None:
         """
-        :param offset:
-        :return: success
         """
-        if self.framework not in self.run.keys():
-            return False
-        suc = self.run[self.framework].sendOffset(offset=offset)
-        return suc
+        self.run[self.framework].sendCoolerTemp(temperature=temperature)
 
-    def sendGain(self, gain=0):
+    def sendOffset(self, offset: int = 0) -> None:
         """
-        :param gain:
-        :return: success
         """
-        if self.framework not in self.run.keys():
-            return False
-        suc = self.run[self.framework].sendGain(gain=gain)
-        return suc
+        self.run[self.framework].sendOffset(offset=offset)
+
+    def sendGain(self, gain: int = 0) -> None:
+        """
+        """
+        self.run[self.framework].sendGain(gain=gain)
+
+    def waitExposed(self, expTime: float, func: Callable) -> None: 
+        """
+        """
+        timeLeft = expTime
+        while self.exposing and func:
+            text = f'expose {timeLeft:3.0f} s'
+            sleepAndEvents(100)
+            self.signals.message.emit(text)
+            if timeLeft >= 0.1:
+                timeLeft -= 0.1
+            else:
+                timeLeft = 0
+
+    def waitStart(self) -> None:
+        """
+        """
+        while self.exposing and 'integrating' not in self.data.get('Device.Message'):
+            sleepAndEvents(100)
+
+    def waitDownload(self) -> None:
+        """
+        """
+        self.signals.message.emit('download')
+        while self.exposing and 'downloading' in self.data.get('Device.Message'):
+            sleepAndEvents(100)
+
+    def waitSave(self) -> None:
+        """
+        """
+        self.signals.message.emit('saving')
+        while self.exposing and 'image is ready' in self.data.get('Device.Message'):
+            sleepAndEvents(100)
+
+    def waitFinish(self, function: Callable, param: dict) -> None:
+        """
+        """
+        while self.exposing and not function(param):
+            sleepAndEvents(100)
+ 
+    def retrieveImage(self, function: Callable, param: dict) -> np.array:
+        """
+        """
+        if not self.exposing:
+            return np.array([], dtype=np.uint16)
+
+        self.signals.message.emit('download')
+        tmp = function(param)
+        if tmp is None:
+            self.exposing = False
+            data = np.array([], dtype=np.uint16)
+        else:
+            data = np.array(tmp, dtype=np.uint16).transpose()
+        return data
+        
+    def writeImageFitsHeader(self) -> None:
+        """
+        """
+        with fits.open(self.imagePath, mode='update', output_verify='silentfix') as HDU:
+            header = self.writeHeaderCamera(HDU[0].header, self)
+            header = self.writeHeaderPointing(header)
+ 
+    def updateImageFitsHeaderPointing(self) -> None:
+        """
+        """
+        with fits.open(self.imagePath, mode='update', output_verify='silentfix') as HDU:
+            header = self.writeHeaderPointing(HDU[0].header, self.obsSite)
+

@@ -17,25 +17,26 @@
 # standard libraries
 
 # external packages
+from astropy.io import fits
 
 # local imports
 from base.ascomClass import AscomClass
-from logic.camera.cameraSupport import CameraSupport
 
 
-class CameraAscom(AscomClass, CameraSupport):
+class CameraAscom(AscomClass):
     """
     """
     __all__ = ['CameraAscom']
 
-    def __init__(self, app=None, signals=None, data=None):
-        super().__init__(app=app, data=data)
-        self.signals = signals
-        self.abortExpose = False
+    def __init__(self, parent):
+        self.parent = parent
+        self.app = parent.app
+        self.data = parent.data
+        self.signals = parent.signals
+        super().__init__(app=parent.app, data=parent.data) 
 
-    def workerGetInitialConfig(self):
+    def workerGetInitialConfig(self) -> None:
         """
-        :return: true for test purpose
         """
         super().workerGetInitialConfig()
         self.getAndStoreAscomProperty('CameraXSize', 'CCD_INFO.CCD_MAX_X')
@@ -57,11 +58,9 @@ class CameraAscom(AscomClass, CameraSupport):
         self.getAndStoreAscomProperty('StartX', 'CCD_FRAME.X')
         self.getAndStoreAscomProperty('StartY', 'CCD_FRAME.Y')
         self.log.debug(f'Initial data: {self.data}')
-        return True
 
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         """
-        :return: true for test purpose
         """
         self.getAndStoreAscomProperty('BinX', 'CCD_BINNING.HOR_BIN')
         self.getAndStoreAscomProperty('BinY', 'CCD_BINNING.VERT_BIN')
@@ -76,158 +75,71 @@ class CameraAscom(AscomClass, CameraSupport):
         self.getAndStoreAscomProperty('CoolerOn', 'CCD_COOLER.COOLER_ON')
         self.getAndStoreAscomProperty('CoolerPower',
                                       'CCD_COOLER_POWER.CCD_COOLER_VALUE')
-        return True
 
-    def sendDownloadMode(self, fastReadout=False):
+    def sendDownloadMode(self) -> None:
         """
-        setDownloadMode sets the readout speed of the camera
-        :return: success
         """
-        canFast = self.data.get('CAN_FAST', False)
-        if not canFast:
-            return False
-        if fastReadout:
-            self.setAscomProperty('FastReadout', True)
+        if self.data.get('CAN_FAST', False):
+            self.setAscomProperty('FastReadout', self.parent.fastReadout)
 
-        isQualityHigh = self.data.get('READOUT_QUALITY.QUALITY_HIGH', True)
-        qualityText = 'High' if isQualityHigh else 'Low'
-        self.log.debug(f'Camera has readout quality entry: {qualityText}')
-        return True
-
-    def workerExpose(self,
-                     imagePath='',
-                     expTime=3,
-                     binning=1,
-                     fastReadout=True,
-                     posX=0,
-                     posY=0,
-                     width=1,
-                     height=1,
-                     focalLength=1,
-                     ):
+    def waitFunc(self) -> Bool:
         """
-        :param imagePath:
-        :param expTime:
-        :param binning:
-        :param fastReadout:
-        :param posX:
-        :param posY:
-        :param width:
-        :param height:
-        :param focalLength:
-        :return: success
         """
-        self.sendDownloadMode(fastReadout=fastReadout)
-        self.setAscomProperty('BinX', int(binning))
-        self.setAscomProperty('BinY', int(binning))
-        self.setAscomProperty('StartX', int(posX / binning))
-        self.setAscomProperty('StartY', int(posY / binning))
-        self.setAscomProperty('NumX', int(width / binning))
-        self.setAscomProperty('NumY', int(height / binning))
+        return not self.getAscomProperty('ImageReady')
 
-        self.client.StartExposure(expTime, True)
-        self.waitExposedAscom(expTime)
+    def workerExpose(self) -> None:
+        """
+        """
+        self.sendDownloadMode()
+        self.setAscomProperty('BinX', self.parent.binning)
+        self.setAscomProperty('BinY', self.parent.binning)
+        self.setAscomProperty('StartX', self.parent.posXASCOM)
+        self.setAscomProperty('StartY', self.parent.posYASCOM)
+        self.setAscomProperty('NumX', self.parent.widthASCOM)
+        self.setAscomProperty('NumY', self.parent.heightASCOM)
+        self.client.StartExposure(self.parent.expTime, True)
+        
+        self.parent.waitExposed(self.parent.expTime, self.waitFunc)
         self.signals.exposed.emit()
-        data = self.retrieveFits(self.getAscomProperty, 'ImageArray')
+        data = self.parent.retrieveImage(self.getAscomProperty, 'ImageArray')
         self.signals.downloaded.emit()
-        imagePath = self.saveFits(imagePath, data, expTime, binning, focalLength)
-        self.signals.saved.emit(imagePath)
-        self.signals.exposeReady.emit()
-        self.signals.message.emit('')
+        self.signals.message.emit('saving')                
+        hdu = fits.PrimaryHDU(data=data)
+        hdu.writeto(self.parent.imagePath, overwrite=True)
+        self.parent.writeImageFitsHeader()
+
+
+    def expose(self) -> None:
+        """
+        """
+        worker = Worker(self.callerInitUnInit, self.workerExpose)
+        worker.signals.finished.connect(self.parent.exposeFinished)
+        self.threadPool.start(worker)
+
+    def abort(self) -> Bool:
+        """
+        """
+        if self.data.get('CAN_ABORT', False):
+            self.callMethodThreaded(self.client.StopExposure)
         return True
 
-    def expose(self,
-               imagePath='',
-               expTime=3,
-               binning=1,
-               fastReadout=True,
-               posX=0,
-               posY=0,
-               width=1,
-               height=1,
-               focalLength=1,
-               ra=None,
-               dec=None,
-               ):
+    def sendCoolerSwitch(self, coolerOn: Bool  = False) -> None:
         """
-        :return: success
         """
-        self.raJ2000 = ra
-        self.decJ2000 = dec
-        self.abortExpose = False
-        self.callMethodThreaded(self.workerExpose,
-                                imagePath=imagePath,
-                                expTime=expTime,
-                                binning=binning,
-                                fastReadout=fastReadout,
-                                posX=posX,
-                                posY=posY,
-                                width=width,
-                                height=height,
-                                focalLength=focalLength)
-        return True
-
-    def abort(self):
-        """
-        :return: success
-        """
-        self.raJ2000 = None
-        self.decJ2000 = None
-        self.abortExpose = True
-        if not self.deviceConnected:
-            return False
-
-        canAbort = self.data.get('CAN_ABORT', False)
-        if not canAbort:
-            return False
-
-        self.callMethodThreaded(self.client.StopExposure)
-        return True
-
-    def sendCoolerSwitch(self, coolerOn=False):
-        """
-        :param coolerOn:
-        :return: success
-        """
-        if not self.deviceConnected:
-            return False
-
         self.setAscomProperty('CoolerOn', coolerOn)
-        return True
 
-    def sendCoolerTemp(self, temperature=0):
+    def sendCoolerTemp(self, temperature: float = 0) -> None:
         """
-        :param temperature:
-        :return: success
         """
-        if not self.deviceConnected:
-            return False
+        if self.data.get('CAN_SET_CCD_TEMPERATURE', False):
+            self.setAscomProperty('SetCCDTemperature', temperature)
 
-        canSetCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
-        if not canSetCCDTemp:
-            return False
-
-        self.setAscomProperty('SetCCDTemperature', temperature)
-        return True
-
-    def sendOffset(self, offset=0):
+    def sendOffset(self, offset: int = 0) -> None:
         """
-        :param offset:
-        :return: success
         """
-        if not self.deviceConnected:
-            return False
-
         self.setAscomProperty('Offset', offset)
-        return True
 
-    def sendGain(self, gain=0):
+    def sendGain(self, gain: int = 0) -> None:
         """
-        :param gain:
-        :return: success
         """
-        if not self.deviceConnected:
-            return False
-
         self.setAscomProperty('Gain', gain)
-        return True

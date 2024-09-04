@@ -85,6 +85,8 @@ class AscomClass(DriverData):
         :return: value
         """
         value = None
+        if not self.deviceConnected:
+            return value
         if valueProp in self.propertyExceptions:
             return value
 
@@ -109,6 +111,8 @@ class AscomClass(DriverData):
         :param valueProp:
         :param value:
         """
+        if not self.deviceConnected:
+            return False
         if valueProp in self.propertyExceptions:
             return False
 

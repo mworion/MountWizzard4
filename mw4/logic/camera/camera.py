@@ -35,7 +35,7 @@ if platform.system() == 'Windows':
     from logic.camera.cameraNINA import CameraNINA
 
 
-class Camera(CameraSupport)
+class Camera
 :
     """
     """

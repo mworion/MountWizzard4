@@ -255,7 +255,7 @@ class CameraIndi(IndiClass):
                                   propertyName='CCD_TEMPERATURE',
                                   elements=element)
 
-    def sendOffset(self, offset; int = 0) -> None:
+    def sendOffset(self, offset: int = 0) -> None:
         """
         """
         element = self.device.getNumber('CCD_OFFSET')

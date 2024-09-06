@@ -18,6 +18,7 @@
 import logging
 import platform
 from typing import Callable
+from pathlib import Path
 
 # external packages
 from astropy.io import fits
@@ -157,7 +158,7 @@ class Camera:
         self.signals.message.emit('')
 
     def expose(self,
-               imagePath: str = '',
+               imagePath: Path = '',
                expTime: float = 3,
                binning: int = 1,
                subFrame: int = 100,

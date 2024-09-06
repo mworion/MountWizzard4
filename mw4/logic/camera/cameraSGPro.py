@@ -40,7 +40,7 @@ class CameraSGPro(SGProClass):
         self.threadPool = parent.threadPool
         self.signals = parent.signals
 
-    def sgGetCameraTemp(self) -> bool, dict:
+    def sgGetCameraTemp(self) -> [bool, dict]:
         """
         """
         response = self.requestProperty('cameratemp')
@@ -57,7 +57,7 @@ class CameraSGPro(SGProClass):
             return False
         return response.get('Success', '')
 
-    def sgCaptureImage(self, params: dict) -> bool, dict:
+    def sgCaptureImage(self, params: dict) -> [bool, dict]:
         """
         """
         response = self.requestProperty('image', params=params)
@@ -81,7 +81,7 @@ class CameraSGPro(SGProClass):
             return False
         return response.get('Success', '')
 
-    def sgGetCameraProps(self) -> bool, dict:
+    def sgGetCameraProps(self) -> [bool, dict]:
         """
         """
         response = self.requestProperty('cameraprops')

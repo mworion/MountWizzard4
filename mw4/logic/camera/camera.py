@@ -154,7 +154,7 @@ class Camera:
         """
         return self.run[self.framework].stopCommunication()
 
-    def exposeFinished(self) -> Bool:
+    def exposeFinished(self) -> bool:
         """
         """
         self.exposing = False

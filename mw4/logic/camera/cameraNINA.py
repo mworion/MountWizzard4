@@ -39,7 +39,7 @@ class CameraNINA(NINAClass):
         self.signals = parent.signals
         super().__init__(app=parent.app, data=parent.data) 
 
-    def getCameraTemp(self) -> bool, dict:
+    def getCameraTemp(self) -> [bool, dict]:
         """
         """
         response = self.requestProperty('cameratemp')
@@ -56,7 +56,7 @@ class CameraNINA(NINAClass):
             return False
         return response.get('Success', '')
 
-    def captureImage(self, params: dict) -> bool, dict:
+    def captureImage(self, params: dict) -> [bool, dict]:
         """
         """
         response = self.requestProperty('image', params=params)
@@ -80,7 +80,7 @@ class CameraNINA(NINAClass):
             return False
         return response.get('Success', '')
 
-    def getCameraProps(self) -> bool, dict:
+    def getCameraProps(self) -> [bool, dict]:
         """
         """
         response = self.requestProperty('cameraprops')

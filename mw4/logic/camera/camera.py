@@ -58,6 +58,7 @@ class Camera:
         self.defaultConfig = {'framework': '', 'frameworks': {}}
 
         self._binning = 1
+        self._subFrame = 100
         self._posX = 0
         self._posY = 0
         self._width = 100
@@ -113,6 +114,10 @@ class Camera:
         else:
             self._binning = 1
         self.subFrame(self._subFrame) 
+        
+    @property
+    def subFrame(self):
+        return self._subFrame 
 
     @subFrame.setter
     def subFrame(self, value):

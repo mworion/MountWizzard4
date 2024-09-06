@@ -139,12 +139,12 @@ class Camera:
             self._posYASCOM = 0 
             self._subFrame = 100
 
-    def startCommunication(self) -> Bool:
+    def startCommunication(self) -> bool:
         """
         """
         return self.run[self.framework].startCommunication()
 
-    def stopCommunication(self) -> Bool:
+    def stopCommunication(self) -> bool:
         """
         """
         return self.run[self.framework].stopCommunication()
@@ -162,10 +162,10 @@ class Camera:
                expTime: float = 3,
                binning: int = 1,
                subFrame: int = 100,
-               fastReadout: Bool = True,
+               fastReadout: bool = True,
                focalLength: int = 1,
                ra=None,
-               dec=None) -> Bool:
+               dec=None) -> bool:
         """
         """
         if self.exposing:
@@ -181,7 +181,7 @@ class Camera:
         self.run[self.framework].expose()
         return True
 
-    def abort(self) -> Boot:
+    def abort(self) -> bool:
         """
         """
         self.signals.message.emit('')
@@ -193,7 +193,7 @@ class Camera:
         """
         self.run[self.framework].sendDownloadMode()
 
-    def sendCoolerSwitch(self, coolerOn: Bool = False) -> None:
+    def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
         """
         """
         self.run[self.framework].sendCoolerSwitch(coolerOn=coolerOn)

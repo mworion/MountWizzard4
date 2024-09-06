@@ -40,7 +40,7 @@ class CameraSGPro(SGProClass):
         self.threadPool = parent.threadPool
         self.signals = parent.signals
 
-    def sgGetCameraTemp(self) -> Bool, dict:
+    def sgGetCameraTemp(self) -> bool, dict:
         """
         """
         response = self.requestProperty('cameratemp')
@@ -49,7 +49,7 @@ class CameraSGPro(SGProClass):
 
         return response.get('Success', ''), response
 
-    def sgSetCameraTemp(self, temperature: float) -> Bool:
+    def sgSetCameraTemp(self, temperature: float) -> bool:
         """
         """
         response = self.requestProperty(f'setcameratemp/{temperature}')
@@ -57,7 +57,7 @@ class CameraSGPro(SGProClass):
             return False
         return response.get('Success', '')
 
-    def sgCaptureImage(self, params: dict) -> Bool, dict:
+    def sgCaptureImage(self, params: dict) -> bool, dict:
         """
         """
         response = self.requestProperty('image', params=params)
@@ -65,7 +65,7 @@ class CameraSGPro(SGProClass):
             return False, {}
         return response.get('Success', ''), response
 
-    def sgAbortImage(self) -> Bool:
+    def sgAbortImage(self) -> bool:
         """
         """
         response = self.requestProperty('abortimage')
@@ -73,7 +73,7 @@ class CameraSGPro(SGProClass):
             return False
         return response.get('Success', '')
 
-    def sgGetImagePath(self, receipt: str) -> Bool:
+    def sgGetImagePath(self, receipt: str) -> bool:
         """
         """
         response = self.requestProperty(f'imagepath/{receipt}')
@@ -81,7 +81,7 @@ class CameraSGPro(SGProClass):
             return False
         return response.get('Success', '')
 
-    def sgGetCameraProps(self) -> Bool, dict:
+    def sgGetCameraProps(self) -> bool, dict:
         """
         """
         response = self.requestProperty('cameraprops')
@@ -137,7 +137,7 @@ class CameraSGPro(SGProClass):
         """
         pass
 
-    def waitFunc(self) -> Bool:
+    def waitFunc(self) -> bool:
         """
         """
         return 'integrating' in self.data.get('Device.Message')
@@ -198,12 +198,12 @@ class CameraSGPro(SGProClass):
         worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(worker)
 
-    def abort(self) -> Bool:
+    def abort(self) -> bool:
         """
         """
         return self.sgAbortImage()
 
-    def sendCoolerSwitch(self, coolerOn: Bool = False) -> None:
+    def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
         """
         """
         pass

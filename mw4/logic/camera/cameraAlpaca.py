@@ -83,7 +83,7 @@ class CameraAlpaca(AlpacaClass):
         if self.data.get('CAN_FAST', False):
             self.setAlpacaProperty('fastreadout', FastReadout=self.parent.fastReadout)
 
-    def waitFunc(self) -> Bool:
+    def waitFunc(self) -> bool:
         """
         """
         return not self.getAlpacaProperty('imageready')
@@ -116,14 +116,14 @@ class CameraAlpaca(AlpacaClass):
         worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(worker)
 
-    def abort(self) -> Bool:
+    def abort(self) -> bool:
         """
         """
         if self.data.get('CAN_ABORT', False):
             self.getAlpacaProperty('stopexposure')
         return True
 
-    def sendCoolerSwitch(self, coolerOn: Bool = False) -> None:
+    def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
         """
         """
         self.setAlpacaProperty('cooleron', CoolerOn=coolerOn)

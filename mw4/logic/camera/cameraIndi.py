@@ -40,7 +40,7 @@ class CameraIndi(IndiClass):
 
         self.isDownloading = False
 
-    def setUpdateConfig(self, deviceName: str) -> Bool:
+    def setUpdateConfig(self, deviceName: str) -> bool:
         """
         """
         if not super().setUpdateConfig(deviceName):
@@ -73,7 +73,7 @@ class CameraIndi(IndiClass):
         self.log.info(f'Primary telescope [{deviceName}] success: [{suc}]')
         return True
 
-    def setExposureState(self) -> Bool:
+    def setExposureState(self) -> bool:
         """
         setExposureState rebuilds the state information integrated and download
         as it is not explicit defined in the INDI spec. So downloaded is reached
@@ -115,7 +115,7 @@ class CameraIndi(IndiClass):
 
         return True
 
-    def updateNumber(self, deviceName: str, propertyName: str) -> Bool:
+    def updateNumber(self, deviceName: str, propertyName: str) -> bool:
         """
         """
         if propertyName == 'CCD_GAIN':
@@ -165,7 +165,7 @@ class CameraIndi(IndiClass):
         self.parent.writeImageFitsHeader()
  
 
-    def updateBLOB(self, deviceName: str, propertyName: str) -> Bool:
+    def updateBLOB(self, deviceName: str, propertyName: str) -> bool:
         """
         """
         if not super().updateBLOB(deviceName, propertyName):
@@ -195,7 +195,7 @@ class CameraIndi(IndiClass):
                                   propertyName='READOUT_QUALITY',
                                   elements=quality)
 
-    def expose(self) -> Bool:
+    def expose(self) -> bool:
         """
         """
         suc = self.sendDownloadMode()
@@ -221,7 +221,7 @@ class CameraIndi(IndiClass):
                                          propertyName='CCD_EXPOSURE',
                                          elements=indiCmd)
 
-    def abort(self) -> Bool:
+    def abort(self) -> bool:
         """
         """
         indiCmd = self.device.getSwitch('CCD_ABORT_EXPOSURE')
@@ -233,7 +233,7 @@ class CameraIndi(IndiClass):
                                          propertyName='CCD_ABORT_EXPOSURE',
                                          elements=indiCmd)
 
-    def sendCoolerSwitch(self, coolerOn: Bool  = False) -> None:
+    def sendCoolerSwitch(self, coolerOn: bool  = False) -> None:
         """
         """
         cooler = self.device.getSwitch('CCD_COOLER')

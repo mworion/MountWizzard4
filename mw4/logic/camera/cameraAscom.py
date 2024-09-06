@@ -82,7 +82,7 @@ class CameraAscom(AscomClass):
         if self.data.get('CAN_FAST', False):
             self.setAscomProperty('FastReadout', self.parent.fastReadout)
 
-    def waitFunc(self) -> Bool:
+    def waitFunc(self) -> bool:
         """
         """
         return not self.getAscomProperty('ImageReady')
@@ -116,14 +116,14 @@ class CameraAscom(AscomClass):
         worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(worker)
 
-    def abort(self) -> Bool:
+    def abort(self) -> bool:
         """
         """
         if self.data.get('CAN_ABORT', False):
             self.callMethodThreaded(self.client.StopExposure)
         return True
 
-    def sendCoolerSwitch(self, coolerOn: Bool  = False) -> None:
+    def sendCoolerSwitch(self, coolerOn: bool  = False) -> None:
         """
         """
         self.setAscomProperty('CoolerOn', coolerOn)

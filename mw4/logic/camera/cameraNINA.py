@@ -39,7 +39,7 @@ class CameraNINA(NINAClass):
         self.signals = parent.signals
         super().__init__(app=parent.app, data=parent.data) 
 
-    def getCameraTemp(self) -> Bool, dict:
+    def getCameraTemp(self) -> bool, dict:
         """
         """
         response = self.requestProperty('cameratemp')
@@ -48,7 +48,7 @@ class CameraNINA(NINAClass):
 
         return response.get('Success', ''), response
 
-    def setCameraTemp(self, temperature: float) -> Bool:
+    def setCameraTemp(self, temperature: float) -> bool:
         """
         """
         self.requestProperty(f'setcameratemp/{temperature}')
@@ -56,7 +56,7 @@ class CameraNINA(NINAClass):
             return False
         return response.get('Success', '')
 
-    def captureImage(self, params: dict) -> Bool, dict:
+    def captureImage(self, params: dict) -> bool, dict:
         """
         """
         response = self.requestProperty('image', params=params)
@@ -64,7 +64,7 @@ class CameraNINA(NINAClass):
             return False, {}
         return response.get('Success', ''), response
 
-    def abortImage(self) -> Bool:
+    def abortImage(self) -> bool:
         """
         """
         response = self.requestProperty('abortimage')
@@ -72,7 +72,7 @@ class CameraNINA(NINAClass):
             return False
         return response.get('Success', '')
 
-    def getImagePath(self, receipt: str) -> Bool:
+    def getImagePath(self, receipt: str) -> bool:
         """
         """
         response = self.requestProperty(f'imagepath/{receipt}')
@@ -80,7 +80,7 @@ class CameraNINA(NINAClass):
             return False
         return response.get('Success', '')
 
-    def getCameraProps(self) -> Bool, dict:
+    def getCameraProps(self) -> bool, dict:
         """
         """
         response = self.requestProperty('cameraprops')
@@ -137,7 +137,7 @@ class CameraNINA(NINAClass):
         """
         return
 
-    def waitFunc(self) -> Bool:
+    def waitFunc(self) -> bool:
         """
         """
         return 'integrating' in self.data.get('Device.Message')
@@ -196,12 +196,12 @@ class CameraNINA(NINAClass):
         worker.signbals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(worker)
 
-    def abort(self) -> Bool:
+    def abort(self) -> bool:
         """
         """
         return self.abortImage():
 
-    def sendCoolerSwitch(self, coolerOn: Bool = False) -> None:
+    def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
         """
         """
         pass

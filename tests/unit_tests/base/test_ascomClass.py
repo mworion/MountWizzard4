@@ -70,6 +70,7 @@ def test_getAscomProperty_1(function):
 
 def test_getAscomProperty_2(function):
     function.propertyExceptions = ['test']
+    function.deviceConnected = True
     with mock.patch.object(base.ascomClass,
                            'eval',
                            side_effect=Exception):
@@ -84,6 +85,7 @@ def test_getAscomProperty_3(function):
 
     function.client = Client()
     function.propertyExceptions = ['test']
+    function.deviceConnected = True
     with mock.patch.object(base.ascomClass,
                            'eval',
                            return_value='1'):
@@ -98,6 +100,7 @@ def test_getAscomProperty_4(function):
 
     function.client = Client()
     function.propertyExceptions = ['test']
+    function.deviceConnected = True
     with mock.patch.object(base.ascomClass,
                            'eval',
                            return_value='1'):
@@ -105,7 +108,15 @@ def test_getAscomProperty_4(function):
         assert val
 
 
+def test_setAscomProperty_0(function):
+    function.deviceConnected = false
+    function.propertyExceptions = ['Connected']
+    suc = function.setAscomProperty('Connected', True)
+    assert not suc
+
+
 def test_setAscomProperty_1(function):
+    function.deviceConnected = True
     function.propertyExceptions = ['Connected']
     suc = function.setAscomProperty('Connected', True)
     assert not suc
@@ -113,6 +124,7 @@ def test_setAscomProperty_1(function):
 
 def test_setAscomProperty_2(function):
     function.propertyExceptions = ['test']
+    function.deviceConnected = True
     with mock.patch.object(base.ascomClass,
                            'exec',
                            side_effect=Exception):
@@ -123,6 +135,7 @@ def test_setAscomProperty_2(function):
 
 def test_setAscomProperty_3(function):
     function.propertyExceptions = ['test']
+    function.deviceConnected = True
     with mock.patch.object(base.ascomClass,
                            'exec',
                            side_effect=Exception):
@@ -137,6 +150,7 @@ def test_setAscomProperty_4(function):
 
     function.client = Client()
     function.propertyExceptions = ['test']
+    function.deviceConnected = True
     suc = function.setAscomProperty('Connected', True)
     assert suc
     assert function.client

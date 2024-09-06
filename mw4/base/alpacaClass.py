@@ -227,9 +227,9 @@ class AlpacaClass(DriverData):
         :param data:
         :return:
         """
-        if not self.deviceName:
-            return None
         if not self.deviceConnected:
+            return None
+        if not self.deviceName:
             return None
         if valueProp in self.propertyExceptions:
             return None
@@ -283,9 +283,9 @@ class AlpacaClass(DriverData):
         :param data:
         :return:
         """
-        if not self.deviceName:
-            return None
         if not self.deviceConnected:
+            return None
+        if not self.deviceName:
             return None
         if valueProp in self.propertyExceptions:
             return None

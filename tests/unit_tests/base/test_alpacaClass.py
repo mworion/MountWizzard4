@@ -225,12 +225,22 @@ def test_discoverAlpacaDevices_6(function):
 
 
 def test_getAlpacaProperty_1(function):
+    function.deviceName = ''
+    function.deviceConnected = False
+    val = function.getAlpacaProperty('')
+    assert val is None
+
+
+def test_getAlpacaProperty_2(function):
+    function.deviceName = ''
+    function.deviceConnected = True
     val = function.getAlpacaProperty('')
     assert val is None
 
 
 def test_getAlpacaProperty_3(function):
     function.deviceName = 'test'
+    function.deviceConnected = True
     function.propertyExceptions = ['test']
     val = function.getAlpacaProperty('test')
     assert val is None
@@ -238,6 +248,7 @@ def test_getAlpacaProperty_3(function):
 
 def test_getAlpacaProperty_4(function):
     function.deviceName = 'test'
+    function.deviceConnected = True
     with mock.patch.object(requests,
                            'get',
                            side_effect=requests.exceptions.Timeout):
@@ -247,6 +258,7 @@ def test_getAlpacaProperty_4(function):
 
 def test_getAlpacaProperty_5(function):
     function.deviceName = 'test'
+    function.deviceConnected = True
     with mock.patch.object(requests,
                            'get',
                            side_effect=requests.exceptions.ConnectionError):
@@ -256,6 +268,7 @@ def test_getAlpacaProperty_5(function):
 
 def test_getAlpacaProperty_6(function):
     function.deviceName = 'test'
+    function.deviceConnected = True
     with mock.patch.object(requests,
                            'get',
                            side_effect=Exception):
@@ -268,6 +281,7 @@ def test_getAlpacaProperty_7(function):
         status_code = 400
         text = 'test'
     function.deviceName = 'test'
+    function.deviceConnected = True
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
@@ -286,6 +300,7 @@ def test_getAlpacaProperty_8(function):
                     'ErrorMessage': 'msg'}
 
     function.deviceName = 'test'
+    function.deviceConnected = True
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
@@ -306,6 +321,7 @@ def test_getAlpacaProperty_9(function):
                     'Value': 'test'}
 
     function.deviceName = 'test'
+    function.deviceConnected = True
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
@@ -325,6 +341,7 @@ def test_getAlpacaProperty_10(function):
                     'Value': 'imagearray'}
 
     function.deviceName = 'test'
+    function.deviceConnected = True
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
@@ -333,12 +350,20 @@ def test_getAlpacaProperty_10(function):
 
 
 def test_setAlpacaProperty_1(function):
+    function.deviceConnected = False
+    val = function.setAlpacaProperty('')
+    assert val is None
+
+
+def test_setAlpacaProperty_2(function):
+    function.deviceConnected = True
     val = function.setAlpacaProperty('')
     assert val is None
 
 
 def test_setAlpacaProperty_3(function):
     function.deviceName = 'test'
+    function.deviceConnected = True
     function.propertyExceptions = ['test']
     val = function.setAlpacaProperty('test')
     assert val is None
@@ -346,6 +371,7 @@ def test_setAlpacaProperty_3(function):
 
 def test_setAlpacaProperty_4(function):
     function.deviceName = 'test'
+    function.deviceConnected = True
     with mock.patch.object(requests,
                            'put',
                            side_effect=requests.exceptions.Timeout):
@@ -355,6 +381,7 @@ def test_setAlpacaProperty_4(function):
 
 def test_setAlpacaProperty_5(function):
     function.deviceName = 'test'
+    function.deviceConnected = True
     with mock.patch.object(requests,
                            'put',
                            side_effect=requests.exceptions.ConnectionError):
@@ -364,6 +391,7 @@ def test_setAlpacaProperty_5(function):
 
 def test_setAlpacaProperty_6(function):
     function.deviceName = 'test'
+    function.deviceConnected = True
     with mock.patch.object(requests,
                            'put',
                            side_effect=Exception):
@@ -376,6 +404,7 @@ def test_setAlpacaProperty_7(function):
         status_code = 400
         text = 'test'
     function.deviceName = 'test'
+    function.deviceConnected = True
     with mock.patch.object(requests,
                            'put',
                            return_value=Test()):
@@ -394,6 +423,7 @@ def test_setAlpacaProperty_8(function):
                     'ErrorMessage': 'msg'}
 
     function.deviceName = 'test'
+    function.deviceConnected = True
     with mock.patch.object(requests,
                            'put',
                            return_value=Test()):
@@ -414,6 +444,7 @@ def test_setAlpacaProperty_9(function):
                     'Value': 'test'}
 
     function.deviceName = 'test'
+    function.deviceConnected = True
     with mock.patch.object(requests,
                            'put',
                            return_value=Test()):

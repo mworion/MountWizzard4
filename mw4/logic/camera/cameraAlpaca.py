@@ -128,7 +128,7 @@ class CameraAlpaca(AlpacaClass):
         """
         self.setAlpacaProperty('cooleron', CoolerOn=coolerOn)
 
-    def sendCoolerTemp(self, temperature: float = 0) -> None-:
+    def sendCoolerTemp(self, temperature: float = 0) -> None:
         """
         """
         if self.data.get('CAN_SET_CCD_TEMPERATURE', False):

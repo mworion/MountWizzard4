@@ -32,7 +32,7 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    func = CameraSGPro(app=App(), signals=Signals(), data={})
+    func = CameraSGPro(App.Camera())
     yield func
 
 

@@ -30,9 +30,9 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function():
-    func = CameraAlpaca(app=App(), signals=Signals(), data={})
+    func = CameraAlpaca(App.Camera())
     yield func
 
 

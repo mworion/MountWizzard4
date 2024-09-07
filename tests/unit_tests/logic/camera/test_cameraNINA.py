@@ -32,7 +32,7 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    func = CameraNINA(app=App(), signals=Signals(), data={})
+    func = CameraNINA(App.Camera())
     yield func
 
 

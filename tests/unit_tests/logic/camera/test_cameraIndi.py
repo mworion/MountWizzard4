@@ -34,7 +34,7 @@ from base.indiClass import IndiClass
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    func = CameraIndi(app=App(), signals=Signals(), data={})
+    func = CameraIndi(App.Camera())
     yield func
 
 

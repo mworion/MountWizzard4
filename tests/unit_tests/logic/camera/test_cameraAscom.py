@@ -71,7 +71,7 @@ def function():
         def StopExposure(function):
             return True
 
-    func = CameraAscom(app=App(), signals=Signals(), data={})
+    func = CameraAscom(App.Camera())
     func.client = Test1()
     func.clientProps = []
     yield func

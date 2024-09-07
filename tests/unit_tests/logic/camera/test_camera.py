@@ -50,24 +50,12 @@ def test_properties_2(function):
 
 
 def test_startCommunication_1(function):
-    function.framework = ''
-    suc = function.startCommunication()
-    assert not suc
-
-
-def test_startCommunication_2(function):
     function.framework = 'indi'
     suc = function.startCommunication()
     assert suc
 
 
 def test_stopCommunication_1(function):
-    function.framework = ''
-    suc = function.stopCommunication()
-    assert not suc
-
-
-def test_stopCommunication_2(function):
     function.framework = 'indi'
     suc = function.stopCommunication()
     assert suc

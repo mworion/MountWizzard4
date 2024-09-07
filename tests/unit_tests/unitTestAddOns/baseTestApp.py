@@ -1147,12 +1147,9 @@ class App(QObject):
     game_sL = Signal(object, object)
     game_sR = Signal(object, object)
     messageQueue = Queue()
-
     plateSolve = PlateSolve()
-    automation = Automation()
     camera = Camera()
     cover = Cover()
-
     data = Data()
     filter = Filter()
     focuser = Focuser()

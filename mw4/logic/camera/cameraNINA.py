@@ -199,7 +199,7 @@ class CameraNINA(NINAClass):
     def abort(self) -> bool:
         """
         """
-        return self.abortImage():
+        return self.abortImage()
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
         """

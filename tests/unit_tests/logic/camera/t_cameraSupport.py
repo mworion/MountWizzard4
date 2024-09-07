@@ -26,7 +26,6 @@ import numpy as np
 import shutil
 
 # local import
-from logic.camera.cameraSupport import CameraSupport
 import logic.camera.cameraSupport
 from logic.camera.cameraAscom import CameraAscom
 from logic.camera.cameraAlpaca import CameraAlpaca

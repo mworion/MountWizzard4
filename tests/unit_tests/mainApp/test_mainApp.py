@@ -32,7 +32,7 @@ res.qInitResources()
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def app(qapp):
     mwGlob = {'configDir': 'tests/workDir/config',
               'dataDir': 'tests/workDir/data',

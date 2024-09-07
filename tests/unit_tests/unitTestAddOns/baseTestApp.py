@@ -26,25 +26,6 @@ import numpy as np
 # local import
 
 
-class Automation:
-    installPath = None
-    updaterApp = None
-    automateFast = False
-    automateSlow = False
-
-    @staticmethod
-    def uploadTLEData():
-        return
-
-    @staticmethod
-    def uploadMPCData(comets=False):
-        return
-
-    @staticmethod
-    def uploadEarthRotationData():
-        return
-
-
 class PlateSolve:
     class PlateSolveSignals(QObject):
         done = Signal()

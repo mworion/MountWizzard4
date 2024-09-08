@@ -117,7 +117,7 @@ class Camera:
     expTimeN = 0
     binning = 1
     binningN = 1
-    focalLenght = 100
+    focalLength = 100
     subFrame = 100
     fastDownload = False
     data = {}

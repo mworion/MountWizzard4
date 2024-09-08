@@ -127,12 +127,12 @@ class Camera:
         if 10 <= value <= 100:
             self.width = int(maxX * value / 100)
             self.height = int(maxY * value / 100)
-            self.posX = int((maxX - width) / 2)
-            self.posY = int((maxY - height) / 2)
+            self.posX = int((maxX - self.width) / 2)
+            self.posY = int((maxY - self.height) / 2)
             self.widthASCOM = int(maxX * value / 100 / self._binning)
             self.heightASCOM = int(maxY * value / 100 / self._binning)
-            self.posXASCOM = int((maxX - width) / 2 / self._binning)
-            self.posYASCOM = int((maxY - height) / 2 / self._binning)
+            self.posXASCOM = int((maxX - self.width) / 2 / self._binning)
+            self.posYASCOM = int((maxY - self.height) / 2 / self._binning)
             self._subFrame = value
         else:
             self.width = maxX

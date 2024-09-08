@@ -172,7 +172,7 @@ def calcAngleScaleFromWCS(wcsHeader=None):
     return angle, scale, mirrored
 
 
-def writeHeaderCamera(self, header, camera):
+def writeHeaderCamera(header, camera):
     """
     """
     data = camera.data
@@ -201,7 +201,7 @@ def writeHeaderCamera(self, header, camera):
     header.append(('CCD-TEMP', data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
     return header
 
-def writeHeaderPointing(self, header, camera):
+def writeHeaderPointing(header, camera):
     """
     """
     header.append(('RA', camera.obsSite.raJ2000._degrees, 'Float value in degree'))

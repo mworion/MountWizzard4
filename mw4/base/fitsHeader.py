@@ -205,7 +205,7 @@ def writeHeaderCamera(header, camera):
 def writeHeaderPointing(header, camera):
     """
     """
-    ra, dec = JNowToJ2000(camera.obsSite.raJNow, camera.obsSite.decJ2000,
+    ra, dec = JNowToJ2000(camera.obsSite.raJNow, camera.obsSite.decJNow,
                           camera.obsSite.timeJD)
     header.append(('RA', ra._degrees, 'Float value in degree'))
     header.append(('DEC', dec.degrees, 'Float value in degree'))

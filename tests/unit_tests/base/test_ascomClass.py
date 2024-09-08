@@ -109,7 +109,7 @@ def test_getAscomProperty_4(function):
 
 
 def test_setAscomProperty_0(function):
-    function.deviceConnected = false
+    function.deviceConnected = False
     function.propertyExceptions = ['Connected']
     suc = function.setAscomProperty('Connected', True)
     assert not suc

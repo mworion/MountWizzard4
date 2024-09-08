@@ -224,6 +224,8 @@ def test_writeHeaderCamera():
     hdu = fits.PrimaryHDU(data=np.array([]))
     header = hdu.header
     camera = Camera()
+    camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 3
+    camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 3
     camera.app = App()
     camera.obsSite = camera.app.mount.obsSite
     header = writeHeaderCamera(header, camera)

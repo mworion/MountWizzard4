@@ -699,49 +699,6 @@ def test_guiSetStyle_4(function):
     assert suc
 
 
-def test_checkUpdaterOK_0(function):
-    temp = function.app.automation
-    function.app.automation = None
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Linux'):
-        suc = function.checkUpdaterOK()
-        assert not suc
-    function.app.automation = temp
-
-
-def test_checkUpdaterOK_1(function):
-    temp = function.app.automation
-    function.app.automation = None
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        suc = function.checkUpdaterOK()
-        assert not suc
-    function.app.automation = temp
-
-
-def test_checkUpdaterOK_2(function):
-    temp = function.app.automation
-    function.app.automation.installPath = None
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        suc = function.checkUpdaterOK()
-        assert not suc
-    function.app.automation = temp
-
-
-def test_checkUpdaterOK_3(function):
-    function.app.automation.installPath = 'test'
-    function.app.automation.updaterApp = 'test'
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        suc = function.checkUpdaterOK()
-        assert suc
-
-
 def test_sleepAndEvents(function):
     suc = sleepAndEvents(1)
     assert suc

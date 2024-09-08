@@ -222,7 +222,7 @@ def test_calcAngleScaleFromWCS_1():
     
 def test_writeHeaderCamera(): 
     hdu = fits.PrimaryHDU(data=np.array([]))
-    header = fits.getheader(hdu)
+    header = hdu.header
     camera = Camera()
     camera.app = App()
     header = writeHeaderCamera(header, camera)
@@ -230,7 +230,7 @@ def test_writeHeaderCamera():
     
 def test_writeHeaderPointing():
     hdu = fits.PrimaryHDU(data=np.array([]))
-    header = fits.getheader(hdu)
+    header = hdu.header
     camera = Camera()
     camera.app = App()
     header = writeHeaderPointing(header, camera)

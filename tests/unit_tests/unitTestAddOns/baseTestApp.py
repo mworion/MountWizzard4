@@ -67,6 +67,19 @@ class Camera:
         exposed = Signal()
         downloaded = Signal()
 
+    signals = CameraSignals()
+    expTime = 0
+    expTimeN = 0
+    binning = 1
+    binningN = 1
+    focalLength = 100
+    subFrame = 100
+    fastDownload = False
+    data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
     run = {'indi': 'dummy'}
 
     @staticmethod
@@ -111,19 +124,6 @@ class Camera:
     @staticmethod
     def startCommunication(loadConfig=None):
         return
-
-    signals = CameraSignals()
-    expTime = 0
-    expTimeN = 0
-    binning = 1
-    binningN = 1
-    focalLength = 100
-    subFrame = 100
-    fastDownload = False
-    data = {}
-    framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
 
 
 class Cover:

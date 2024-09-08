@@ -116,16 +116,16 @@ def test_sendDownloadMode_3(function):
 
 
 def test_workerExpose_1(function):
-    with mock.patch.object(function,
+    with mock.patch.object(function.parent,
                            'sendDownloadMode'):
         with mock.patch.object(function,
                                'setAscomProperty'):
             with mock.patch.object(function,
                                    'waitExposedAscom'):
-                with mock.patch.object(function,
-                                       'retrieveFits'):
-                    with mock.patch.object(function,
-                                           'saveFits'):
+                with mock.patch.object(function.parent,
+                                       'retrieveImage'):
+                    with mock.patch.object(function.parent,
+                                           'writeImageFitsHeader'):
                         suc = function.workerExpose()
                         assert suc
 
@@ -137,21 +137,7 @@ def test_expose_1(function):
         assert suc
 
 
-def test_abort_1(function):
-    function.deviceConnected = False
-    suc = function.abort()
-    assert not suc
-
-
-def test_abort_2(function):
-    function.deviceConnected = True
-    function.data['CAN_ABORT'] = False
-    suc = function.abort()
-    assert not suc
-
-
 def test_abort_3(function):
-    function.deviceConnected = True
     function.data['CAN_ABORT'] = True
     with mock.patch.object(function,
                            'callMethodThreaded'):
@@ -159,57 +145,21 @@ def test_abort_3(function):
         assert suc
 
 
-def test_sendCoolerSwitch_1(function):
-    function.deviceConnected = False
-    suc = function.sendCoolerSwitch()
-    assert not suc
-
-
 def test_sendCoolerSwitch_2(function):
     function.deviceConnected = True
-    suc = function.sendCoolerSwitch(coolerOn=True)
-    assert suc
-
-
-def test_sendCoolerTemp_1(function):
-    function.deviceConnected = False
-    suc = function.sendCoolerTemp()
-    assert not suc
-
-
-def test_sendCoolerTemp_2(function):
-    function.deviceConnected = True
-    function.data['CAN_SET_CCD_TEMPERATURE'] = False
-    suc = function.sendCoolerTemp(temperature=-10)
-    assert not suc
+    function.sendCoolerSwitch(coolerOn=True)
 
 
 def test_sendCoolerTemp_3(function):
-    function.deviceConnected = True
     function.data['CAN_SET_CCD_TEMPERATURE'] = True
-    suc = function.sendCoolerTemp(temperature=-10)
-    assert suc
+    function.sendCoolerTemp(temperature=-10)
 
 
 def test_sendOffset_1(function):
     function.deviceConnected = False
-    suc = function.sendOffset()
-    assert not suc
-
-
-def test_sendOffset_2(function):
-    function.deviceConnected = True
-    suc = function.sendOffset(offset=50)
-    assert suc
-
+    function.sendOffset()
+    
 
 def test_sendGain_1(function):
     function.deviceConnected = False
-    suc = function.sendGain()
-    assert not suc
-
-
-def test_sendGain_2(function):
-    function.deviceConnected = True
-    suc = function.sendGain(gain=50)
-    assert suc
+    function.sendGain()

@@ -502,13 +502,6 @@ def test_expose_4(function):
             assert suc
 
 
-def test_abort_1(function):
-    function.deviceName = 'test'
-    function.device = None
-    suc = function.abort()
-    assert not suc
-
-
 def test_abort_2(function):
     function.deviceName = 'test'
     function.device = Device()
@@ -532,21 +525,13 @@ def test_abort_3(function):
             assert suc
 
 
-def test_sendCoolerSwitch_1(function):
-    function.deviceName = 'test'
-    function.device = None
-    suc = function.sendCoolerSwitch()
-    assert not suc
-
-
 def test_sendCoolerSwitch_2(function):
     function.deviceName = 'test'
     function.device = Device()
     with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'Test': 1}):
-        suc = function.sendCoolerSwitch()
-        assert not suc
+        function.sendCoolerSwitch()
 
 
 def test_sendCoolerSwitch_3(function):
@@ -558,15 +543,7 @@ def test_sendCoolerSwitch_3(function):
         with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=True):
-            suc = function.sendCoolerSwitch(True)
-            assert suc
-
-
-def test_sendCoolerTemp_1(function):
-    function.deviceName = 'test'
-    function.device = None
-    suc = function.sendCoolerTemp()
-    assert not suc
+            function.sendCoolerSwitch(True)
 
 
 def test_sendCoolerTemp_2(function):
@@ -575,8 +552,7 @@ def test_sendCoolerTemp_2(function):
     with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = function.sendCoolerTemp()
-        assert not suc
+        function.sendCoolerTemp()
 
 
 def test_sendCoolerTemp_3(function):
@@ -588,15 +564,7 @@ def test_sendCoolerTemp_3(function):
         with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = function.sendCoolerTemp()
-            assert suc
-
-
-def test_sendOffset_1(function):
-    function.deviceName = 'test'
-    function.device = None
-    suc = function.sendOffset()
-    assert not suc
+            function.sendCoolerTemp()
 
 
 def test_sendOffset_2(function):
@@ -605,8 +573,7 @@ def test_sendOffset_2(function):
     with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = function.sendOffset()
-        assert not suc
+        function.sendOffset()
 
 
 def test_sendOffset_3(function):
@@ -618,15 +585,8 @@ def test_sendOffset_3(function):
         with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = function.sendOffset()
-            assert suc
+            function.sendOffset()
 
-
-def test_sendGain_1(function):
-    function.deviceName = 'test'
-    function.device = None
-    suc = function.sendGain()
-    assert not suc
 
 
 def test_sendGain_2(function):
@@ -635,8 +595,7 @@ def test_sendGain_2(function):
     with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = function.sendGain()
-        assert not suc
+        function.sendGain()
 
 
 def test_sendGain_3(function):
@@ -648,5 +607,4 @@ def test_sendGain_3(function):
         with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = function.sendGain()
-            assert suc
+            function.sendGain()

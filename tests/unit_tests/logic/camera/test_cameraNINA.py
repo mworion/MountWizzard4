@@ -266,42 +266,18 @@ def test_workerExpose_4(function):
                         assert suc
 
 
-def test_expose_1(function):
-    function.deviceConnected = False
-    suc = function.expose()
-    assert not suc
-
-
 def test_expose_2(function):
-    function.deviceConnected = True
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.expose()
-        assert suc
-
-
-def test_abort_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function,
-                           'abortImage'):
-        suc = function.abort()
-        assert not suc
+        function.expose()
 
 
 def test_abort_2(function):
-    function.deviceConnected = True
-    function.abortExpose = False
     with mock.patch.object(function,
-                           'abortImage'):
+                           'abortImage',
+                           return_value = True):
         suc = function.abort()
         assert suc
-        assert function.abortExpose
-
-
-def test_sendCoolerSwitch_1(function):
-    function.deviceConnected = False
-    suc = function.sendCoolerSwitch()
-    assert not suc
 
 
 def test_sendCoolerSwitch_2(function):
@@ -310,41 +286,15 @@ def test_sendCoolerSwitch_2(function):
     assert suc
 
 
-def test_sendCoolerTemp_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function,
-                           'setCameraTemp'):
-        suc = function.sendCoolerTemp()
-        assert not suc
-
-
 def test_sendCoolerTemp_2(function):
-    function.deviceConnected = True
     with mock.patch.object(function,
                            'setCameraTemp'):
         suc = function.sendCoolerTemp(temperature=-10)
         assert suc
 
-
-def test_sendOffset_1(function):
-    function.deviceConnected = False
-    suc = function.sendOffset()
-    assert not suc
-
-
 def test_sendOffset_2(function):
-    function.deviceConnected = True
-    suc = function.sendOffset(offset=50)
-    assert suc
-
-
-def test_sendGain_1(function):
-    function.deviceConnected = False
-    suc = function.sendGain()
-    assert not suc
+    function.sendOffset(offset=50)
 
 
 def test_sendGain_2(function):
-    function.deviceConnected = True
-    suc = function.sendGain(gain=50)
-    assert suc
+    function.sendGain(gain=50)

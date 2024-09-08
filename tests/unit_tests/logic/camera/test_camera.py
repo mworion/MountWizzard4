@@ -65,45 +65,51 @@ def test_propSubFrame_1(function):
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
                      'CCD_INFO.CCD_MAX_Y': 1000}
     function.subFrame = 90
-    assert function.posX = 0
-    assert function.posY = 0
-    assert function.width = 900
-    assert function.height = 900
+    assert function.posX == 0
+    assert function.posY == 0
+    assert function.width == 900
+    assert function.height == 900
 
 
 def test_propSubFrame_2(function):
     function.data = {'CCD_INFO.CCD_MAX_X': 100,
                      'CCD_INFO.CCD_MAX_Y': 1000}
     function.subFrame = 100
-    assert function.posX = 0
-    assert function.posY = 0
-    assert function.width = 100
-    assert function.height = 1000
+    assert function.posX == 0
+    assert function.posY == 0
+    assert function.width == 100
+    assert function.height == 1000
 
 
 def test_propSubFrame_3(function):
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
                      'CCD_INFO.CCD_MAX_Y': 100}
     function.subFrame = 100
-    assert function.posX = 0
-    assert function.posY = 0
-    assert function.width = 1000
-    assert function.height = 100
+    assert function.posX == 0
+    assert function.posY == 0
+    assert function.width == 1000
+    assert function.height == 100
 
 
 def test_propSubFrame_4(function):
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
                      'CCD_INFO.CCD_MAX_Y': 1000}
-    val = function.subFrame = 50
-    assert val == (250, 250, 500, 500)
+    function.subFrame = 50
+    assert function.posX == 0
+    assert function.posY == 0
+    assert function.width == 500
+    assert function.height == 500
 
 
 def test_propSubFrame_5(function):
     function.binning = 2
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
                      'CCD_INFO.CCD_MAX_Y': 1000}
-    val = function.subFrame = 100
-    assert val == (0, 0, 500, 500)
+    function.subFrame = 100
+    assert function.posX == 250
+    assert function.posY == 250
+    assert function.width == 500
+    assert function.height == 500
 
 
 def test_sendDownloadMode_2(function):

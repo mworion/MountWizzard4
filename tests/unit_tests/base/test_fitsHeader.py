@@ -21,9 +21,11 @@ import astropy
 # external packages
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App, Camera
 from base.loggerMW import setupLogging
 from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
 from base.fitsHeader import getCoordinatesWCS, calcAngleScaleFromWCS
+from base.fitsHeader import writeHeaderCamera, writeHeaderPointing
 setupLogging()
 
 
@@ -215,3 +217,26 @@ def test_calcAngleScaleFromWCS_1():
     assert angle == 0
     assert scale == 1
     assert mirrored
+    
+    
+def test_writeHeaderCamera(): 
+    header = {
+        'OBJCTRA': '12 00 00',
+        'OBJCTDEC': '+45 00 00',
+    }
+    camera = Camera()
+    camera.app = App()
+    header = writeHeaderCamera(header, camera)
+    
+    
+def test_writeHeaderPointing():
+    header = {
+        'OBJCTRA': '12 00 00',
+        'OBJCTDEC': '+45 00 00',
+    }
+    camera = Camera()
+    camera.app = App()
+    header = writeHeaderPointing(header, camera)
+    
+
+

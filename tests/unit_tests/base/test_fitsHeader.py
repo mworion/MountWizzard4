@@ -16,9 +16,10 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 
 # external packages
+from astropy.io import fits
+import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App, Camera
@@ -220,20 +221,16 @@ def test_calcAngleScaleFromWCS_1():
     
     
 def test_writeHeaderCamera(): 
-    header = {
-        'OBJCTRA': '12 00 00',
-        'OBJCTDEC': '+45 00 00',
-    }
+    hdu = fits.PrimaryHDU(data=np.array([])
+    header = hdu[0].header
     camera = Camera()
     camera.app = App()
     header = writeHeaderCamera(header, camera)
     
     
 def test_writeHeaderPointing():
-    header = {
-        'OBJCTRA': '12 00 00',
-        'OBJCTDEC': '+45 00 00',
-    }
+    hdu = fits.PrimaryHDU(data=np.array([])
+    header = hdu[0].header
     camera = Camera()
     camera.app = App()
     header = writeHeaderPointing(header, camera)

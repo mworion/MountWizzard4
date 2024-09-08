@@ -229,6 +229,7 @@ def test_writeHeaderCamera():
     camera.app = App()
     camera.focalLenght = 100
     camera.expTime = 1
+    camera.binning = 1
     camera.obsSite = camera.app.mount.obsSite
     header = writeHeaderCamera(header, camera)
     

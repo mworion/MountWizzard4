@@ -59,14 +59,14 @@ class Camera:
 
         self._binning = 1
         self._subFrame = 100
-        self._posX = 0
-        self._posY = 0
-        self._width = 100
-        self._height = 100
-        self._posXASCOM = 0
-        self._posYASCOM = 0
-        self._widthASCOM = 100
-        self._heightASCOM = 100
+        self.posX = 0
+        self.posY = 0
+        self.width = 100
+        self.height = 100
+        self.posXASCOM = 0
+        self.posYASCOM = 0
+        self.widthASCOM = 100
+        self.heightASCOM = 100
         
         self.run = {
             'indi': CameraIndi(self),
@@ -125,24 +125,24 @@ class Camera:
         maxX = self.data.get('CCD_INFO.CCD_MAX_X', 0)
         maxY = self.data.get('CCD_INFO.CCD_MAX_Y', 0) 
         if 10 <= value <= 100:
-            self._width = int(maxX * value / 100)
-            self._height = int(maxY * value / 100)
-            self._posX = int((maxX - width) / 2)
-            self._posY = int((maxY - height) / 2)
-            self._widthASCOM = int(maxX * value / 100 / self._binning)
-            self._heightASCOM = int(maxY * value / 100 / self._binning)
-            self._posXASCOM = int((maxX - width) / 2 / self._binning)
-            self._posYASCOM = int((maxY - height) / 2 / self._binning)
+            self.width = int(maxX * value / 100)
+            self.height = int(maxY * value / 100)
+            self.posX = int((maxX - width) / 2)
+            self.posY = int((maxY - height) / 2)
+            self.widthASCOM = int(maxX * value / 100 / self._binning)
+            self.heightASCOM = int(maxY * value / 100 / self._binning)
+            self.posXASCOM = int((maxX - width) / 2 / self._binning)
+            self.posYASCOM = int((maxY - height) / 2 / self._binning)
             self._subFrame = value
         else:
-            self._width = maxX
-            self._height = maxY
-            self._posX = 0
-            self._posY = 0 
-            self._widthASCOM = int(maxX / self._binning)
-            self._heightASCOM = int(maxY / self._binning)
-            self._posXASCOM = 0
-            self._posYASCOM = 0 
+            self.width = maxX
+            self.height = maxY
+            self.posX = 0
+            self.posY = 0 
+            self.widthASCOM = int(maxX / self._binning)
+            self.heightASCOM = int(maxY / self._binning)
+            self.posXASCOM = 0
+            self.posYASCOM = 0 
             self._subFrame = 100
 
     def setObsSite(self, obsSite):

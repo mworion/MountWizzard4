@@ -46,16 +46,16 @@ class Camera:
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
-        self.obsSite = app.mount.obsSite
-        self.telescope = app.telescope
+        self.signals = Signals()
         self.data = {}
         self.exposing = False
         self.fastReadout = False
         self.imagePath = ''
         self.exposureTime = 1
-        self.signals = Signals()
+        self.focalLength = 1 
         self.framework = ''
         self.defaultConfig = {'framework': '', 'frameworks': {}}
+        self.obsSite = None
 
         self._binning = 1
         self._subFrame = 100
@@ -82,6 +82,7 @@ class Camera:
 
         self.signals.deviceDisconnected.connect(self.abort)
         self.signals.serverDisconnected.connect(self.abort)
+        self.app.mount.signals.pointDone.connect(self.setObsSite)
 
     @property
     def updateRate(self):
@@ -143,6 +144,11 @@ class Camera:
             self._posXASCOM = 0
             self._posYASCOM = 0 
             self._subFrame = 100
+
+    def setObsSite(self, obsSite):
+        """
+        """
+        self.obsSite = obsSite
 
     def startCommunication(self) -> bool:
         """
@@ -277,11 +283,11 @@ class Camera:
         """
         with fits.open(self.imagePath, mode='update', output_verify='silentfix') as HDU:
             header = self.writeHeaderCamera(HDU[0].header, self)
-            header = self.writeHeaderPointing(header)
+            header = self.writeHeaderPointing(header, self)
  
     def updateImageFitsHeaderPointing(self) -> None:
         """
         """
         with fits.open(self.imagePath, mode='update', output_verify='silentfix') as HDU:
-            header = self.writeHeaderPointing(HDU[0].header, self.obsSite)
+            header = self.writeHeaderPointing(HDU[0].header, self)
 

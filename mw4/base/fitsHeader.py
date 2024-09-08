@@ -176,34 +176,34 @@ def writeHeaderCamera(self, header, camera):
     """
     """
     data = camera.data
-    focalLength = camera.telescope.data.get('TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 1)
     header.append(('OBJECT', 'SKY_OBJECT', 'default name from MW4'))
     header.append(('AUTHOR', 'MountWizzard4', 'default name from MW4'))
     header.append(('FRAME', 'Light', 'Modeling works with light frames'))
     header.append(('EQUINOX', 2000, 'All data is stored in J2000'))
     header.append(('OBSERVER', 'MW4'))
+    t = camera.obsSite.timeJD
+    header.append(('DATE-OBS', t.tt_strftime('%Y-%m-%dT%H:%M:%S'), 'UTC mount'))
+    header.append(('MJD-OBS', t.tt - 2400000.5, 'UTC mount'))
+    header.append(('SITELAT', formatLatToText(camera.obsSite.location.latitude)))
+    header.append(('SITELON', formatLonToText(camera.obsSite.location.longitude)))
+    header.append(('SITEELEV', camera.obsSite.location.elevation.m))
+
     header.append(('PIXSIZE1', data['CCD_INFO.CCD_PIXEL_SIZE_X'] * camera.binning))
     header.append(('PIXSIZE2', data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * camera.binning))
     header.append(('XPIXSZ', data['CCD_INFO.CCD_PIXEL_SIZE_X'] * camera.binning))
     header.append(('YPIXSZ', data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * camera.binning))
     header.append(('XBINNING', camera.binning, 'MW4 same binning x/y'))
     header.append(('YBINNING', camera.binning, 'MW4 same binning x/y'))
+    scale = camera.binning / camera.focalLength * 206.265
+    header.append(('FOCALLEN', camera.focalLength, 'Data from driver / manual input'))
+    header.append(('SCALE', data['CCD_INFO.CCD_PIXEL_SIZE_X'] * scale))
     header.append(('EXPTIME', camera.expTime))
     header.append(('CCD-TEMP', data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
-    t = camera.obsSite.timeJD
-    header.append(('DATE-OBS', t.tt_strftime('%Y-%m-%dT%H:%M:%S'), 'UTC mount'))
-    header.append(('MJD-OBS', t.tt - 2400000.5, 'UTC mount'))
-    scale = camera.binning / focalLength * 206.265
-    header.append(('FOCALLEN', focalLength, 'Data taken from driver or manual input'))
-    header.append(('SCALE', data['CCD_INFO.CCD_PIXEL_SIZE_X'] * scale))
-    header.append(('SITELAT', formatLatToText(camera.obsSite.location.latitude)))
-    header.append(('SITELON', formatLonToText(camera.obsSite.location.longitude)))
-    header.append(('SITEELEV', camera.obsSite.location.elevation.m))
     return header
 
-def writeHeaderPointing(self, header, obsSite):
+def writeHeaderPointing(self, header, camera):
     """
     """
-    header.append(('RA', obsSite.raJ2000._degrees, 'Float value in degree'))
-    header.append(('DEC', obsSite.decJ2000.degrees, 'Float value in degree'))
+    header.append(('RA', camera.obsSite.raJ2000._degrees, 'Float value in degree'))
+    header.append(('DEC', camera.obsSite.decJ2000.degrees, 'Float value in degree'))
     return header

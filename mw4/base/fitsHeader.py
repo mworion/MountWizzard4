@@ -22,6 +22,7 @@ import numpy as np
 from skyfield.api import Angle
 
 # local import
+from base.transform import JNowToJ2000
 from mountcontrol.convert import convertToAngle, convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatLatToText, formatLonToText
 
@@ -204,6 +205,8 @@ def writeHeaderCamera(header, camera):
 def writeHeaderPointing(header, camera):
     """
     """
-    header.append(('RA', camera.obsSite.raJ2000._degrees, 'Float value in degree'))
-    header.append(('DEC', camera.obsSite.decJ2000.degrees, 'Float value in degree'))
+    ra, dec = JNowToJ2000(camera.obsSite.raJNow, camera.obsSite.decJ2000,
+                          camera.obsSite.timeJD)
+    header.append(('RA', ra._degrees, 'Float value in degree'))
+    header.append(('DEC', dec.degrees, 'Float value in degree'))
     return header

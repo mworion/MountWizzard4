@@ -225,6 +225,7 @@ def test_writeHeaderCamera():
     header = hdu.header
     camera = Camera()
     camera.app = App()
+    camera.obsSite = camera.app.mount.obsSite
     header = writeHeaderCamera(header, camera)
     
     
@@ -233,6 +234,7 @@ def test_writeHeaderPointing():
     header = hdu.header
     camera = Camera()
     camera.app = App()
+    camera.obsSite = camera.app.mount.obsSite
     header = writeHeaderPointing(header, camera)
     
 

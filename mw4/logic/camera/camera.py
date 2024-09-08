@@ -114,7 +114,7 @@ class Camera:
             self._binning = int(value)
         else:
             self._binning = 1
-        self.subFrame(self._subFrame) 
+        self.subFrame = self._subFrame
         
     @property
     def subFrame(self):

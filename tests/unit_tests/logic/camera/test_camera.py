@@ -110,7 +110,7 @@ def test_propSubFrame_5(function):
     assert function.posY == 250
     assert function.width == 500
     assert function.height == 500
-
+6
 
 def test_sendDownloadMode_2(function):
     function.framework = 'indi'

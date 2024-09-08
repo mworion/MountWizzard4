@@ -26,7 +26,7 @@ if not platform.system() == 'Windows':
 import ctypes
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestApp import Camera
+from tests.unit_tests.unitTestAddOns.baseTestApp import Camera, App
 from logic.camera.cameraAscom import CameraAscom
 from base.driverDataClass import Signals
 from base.ascomClass import AscomClass
@@ -71,7 +71,9 @@ def function():
         def StopExposure(function):
             return True
 
-    func = CameraAscom(Camera())
+    camera = Camera()
+    camera.app = App()
+    func = CameraAscom(camera)
     func.client = Test1()
     func.clientProps = []
     yield func

@@ -23,7 +23,7 @@ import os
 # external packages
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestApp import Camera
+from tests.unit_tests.unitTestAddOns.baseTestApp import Camera, App
 from logic.camera.cameraSGPro import CameraSGPro
 from base.driverDataClass import Signals
 from base.loggerMW import setupLogging
@@ -32,7 +32,9 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    func = CameraSGPro(Camera())
+    camera = Camera()
+    camera.app = App()
+    func = CameraSGPro(camera)
     yield func
 
 

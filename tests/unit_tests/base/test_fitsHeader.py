@@ -227,9 +227,6 @@ def test_writeHeaderCamera():
     camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 3
     camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 3
     camera.app = App()
-    camera.focalLenght = 100
-    camera.expTime = 1
-    camera.binning = 1
     camera.obsSite = camera.app.mount.obsSite
     header = writeHeaderCamera(header, camera)
     

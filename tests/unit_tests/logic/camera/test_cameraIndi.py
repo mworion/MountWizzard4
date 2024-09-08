@@ -26,7 +26,7 @@ from indibase.indiClient import Client
 from skyfield.api import Angle, load
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import Camera
 from logic.camera.cameraIndi import CameraIndi
 from base.driverDataClass import Signals
 from base.indiClass import IndiClass
@@ -34,7 +34,7 @@ from base.indiClass import IndiClass
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    func = CameraIndi(App.Camera())
+    func = CameraIndi(Camera())
     yield func
 
 

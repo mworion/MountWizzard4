@@ -23,7 +23,7 @@ import os
 # external packages
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import Camera
 from logic.camera.cameraNINA import CameraNINA
 from base.driverDataClass import Signals
 from base.loggerMW import setupLogging
@@ -32,7 +32,7 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    func = CameraNINA(App.Camera())
+    func = CameraNINA(Camera())
     yield func
 
 

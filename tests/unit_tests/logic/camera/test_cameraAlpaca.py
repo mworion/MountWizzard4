@@ -23,7 +23,7 @@ import unittest.mock as mock
 
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import Camera
 from logic.camera.cameraAlpaca import CameraAlpaca
 from base.driverDataClass import Signals
 from base.loggerMW import setupLogging
@@ -32,7 +32,7 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='module')
 def function():
-    func = CameraAlpaca(App.Camera())
+    func = CameraAlpaca(Camera())
     yield func
 
 

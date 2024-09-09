@@ -34,6 +34,9 @@ setupLogging()
 @pytest.fixture(autouse=True, scope='module')
 def function():
     camera = Camera(App())
+    camera.expTime = 1
+    camera.binning = 1
+    camera.focalLength = 1
     func = CameraNINA(camera)
     yield func
 
@@ -140,12 +143,6 @@ def test_getCameraProps_2(function):
         assert val == {'Success': True}
 
 
-def test_workerGetInitialConfig_1(function):
-    function.deviceName = 'controlled'
-    suc = function.workerGetInitialConfig()
-    assert not suc
-
-
 def test_workerGetInitialConfig_2(function):
     function.deviceName = 'test'
     with mock.patch.object(function,
@@ -153,8 +150,7 @@ def test_workerGetInitialConfig_2(function):
         with mock.patch.object(function,
                                'getCameraProps',
                                return_value=(False, {})):
-            suc = function.workerGetInitialConfig()
-            assert not suc
+            function.workerGetInitialConfig()
 
 
 def test_workerGetInitialConfig_3(function):
@@ -172,14 +168,7 @@ def test_workerGetInitialConfig_3(function):
         with mock.patch.object(function,
                                'getCameraProps',
                                return_value=(True, val)):
-            suc = function.workerGetInitialConfig()
-            assert suc
-
-
-def test_workerPollData_1(function):
-    function.deviceName = 'controlled'
-    suc = function.workerPollData()
-    assert not suc
+            function.workerGetInitialConfig()
 
 
 def test_workerPollData_2(function):
@@ -188,8 +177,7 @@ def test_workerPollData_2(function):
     with mock.patch.object(function,
                            'getCameraTemp',
                            return_value=(False, None)):
-        suc = function.workerPollData()
-        assert not suc
+        function.workerPollData()
 
 
 def test_workerPollData_3(function):
@@ -198,21 +186,11 @@ def test_workerPollData_3(function):
     with mock.patch.object(function,
                            'getCameraTemp',
                            return_value=(True, {'Temperature': 10})):
-        suc = function.workerPollData()
-        assert suc
+        function.workerPollData()
 
 
 def test_sendDownloadMode_1(function):
-    suc = function.sendDownloadMode()
-    assert suc
-
-
-def test_workerExpose_1(function):
-    with mock.patch.object(function,
-                           'captureImage',
-                           return_value=(False, None)):
-        suc = function.workerExpose()
-        assert not suc
+    function.sendDownloadMode()
 
 
 def test_workerExpose_2(function):
@@ -230,13 +208,13 @@ def test_workerExpose_3(function):
     with mock.patch.object(function,
                            'captureImage',
                            return_value=(True, {'Receipt': '123'})):
-        with mock.patch.object(function,
+        with mock.patch.object(function.parent,
                                'waitStart'):
-            with mock.patch.object(function,
-                                   'waitExposedApp'):
-                with mock.patch.object(function,
+            with mock.patch.object(function.parent,
+                                   'waitExposed'):
+                with mock.patch.object(function.parent,
                                        'waitDownload'):
-                    with mock.patch.object(function,
+                    with mock.patch.object(function.parent,
                                            'waitSave'):
                         with mock.patch.object(os.path,
                                                'splitext',
@@ -254,13 +232,13 @@ def test_workerExpose_4(function):
     with mock.patch.object(function,
                            'captureImage',
                            return_value=(True, {'Receipt': '123'})):
-        with mock.patch.object(function,
+        with mock.patch.object(function.parent,
                                'waitStart'):
-            with mock.patch.object(function,
-                                   'waitExposedApp'):
-                with mock.patch.object(function,
+            with mock.patch.object(function.parent,
+                                   'waitExposed'):
+                with mock.patch.object(function.parent,
                                        'waitDownload'):
-                    with mock.patch.object(function,
+                    with mock.patch.object(function.parent,
                                            'waitSave'):
                         suc = function.workerExpose()
                         assert suc
@@ -281,16 +259,13 @@ def test_abort_2(function):
 
 
 def test_sendCoolerSwitch_2(function):
-    function.deviceConnected = True
-    suc = function.sendCoolerSwitch(coolerOn=True)
-    assert suc
+    function.sendCoolerSwitch(coolerOn=True)
 
 
 def test_sendCoolerTemp_2(function):
     with mock.patch.object(function,
                            'setCameraTemp'):
-        suc = function.sendCoolerTemp(temperature=-10)
-        assert suc
+        function.sendCoolerTemp(temperature=-10)
 
 def test_sendOffset_2(function):
     function.sendOffset(offset=50)

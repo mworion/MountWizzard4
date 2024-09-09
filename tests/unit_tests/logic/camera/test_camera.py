@@ -124,14 +124,14 @@ def test_sendDownloadMode_2(function):
 
 
 def test_expose_2(function):
-    self.exposing = True
+    function.exposing = True
     function.framework = 'indi'
     suc = function.expose()
     assert not suc
 
 
 def test_expose_3(function):
-    self.exposing = False
+    function.exposing = False
     function.framework = 'indi'
     with mock.patch.object(function.run['indi'],
                            'expose',

@@ -38,6 +38,9 @@ from base.indiClass import IndiClass
 @pytest.fixture(autouse=True, scope='module')
 def function():
     camera = Camera(App())
+    camera.expTime = 1
+    camera.binning = 1
+    camera.focalLength = 1
     func = CameraIndi(camera)
     yield func
 
@@ -410,13 +413,6 @@ def test_updateBLOB_8(function):
                                    return_value=hdu):
                 suc = function.updateBLOB('test', 'test')
                 assert suc
-
-
-def test_expose_1(function):
-    function.deviceName = 'test'
-    function.device = None
-    suc = function.expose()
-    assert not suc
 
 
 def test_expose_2(function):

@@ -51,7 +51,7 @@ class CameraNINA(NINAClass):
     def setCameraTemp(self, temperature: float) -> bool:
         """
         """
-        self.requestProperty(f'setcameratemp/{temperature}')
+        response = self.requestProperty(f'setcameratemp/{temperature}')
         if response is None:
             return False
         return response.get('Success', '')

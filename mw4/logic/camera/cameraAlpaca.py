@@ -95,9 +95,9 @@ class CameraAlpaca(AlpacaClass):
         self.setAlpacaProperty('binx', BinX=self.parent.binning)
         self.setAlpacaProperty('biny', BinY=self.parent.binning)
         self.setAlpacaProperty('startx', StartX=self.parent.posXASCOM)
-        self.setAlpacaProperty('starty', StartY=self.pafrent.posYASCOM)
+        self.setAlpacaProperty('starty', StartY=self.parent.posYASCOM)
         self.setAlpacaProperty('numx', NumX=self.parent.widthASCOM)
-        self.setAlpacaProperty('numy', NumY=self.parentheightASCOM)
+        self.setAlpacaProperty('numy', NumY=self.parent.heightASCOM)
         self.setAlpacaProperty('startexposure', Duration=self.parent.expTime, Light=True)
         
         self.parent.waitExposedA(self.parent.expTime, self.waitFunc)

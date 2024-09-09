@@ -291,8 +291,7 @@ def test_writeImageFitsHeader_1(function):
     
 def test_updateImageFitsHeaderPointing_1(function):
     with mock.patch.object(fits,
-                           'open',
-                           return_value=):
+                           'open'):
        with mock.patch.object(function,
                                'writeHeaderPointing'):
             function.updateImageFitsHeaderPointing()

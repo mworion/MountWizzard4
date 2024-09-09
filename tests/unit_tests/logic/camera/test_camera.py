@@ -282,9 +282,9 @@ def test_retrieveImage_3(function):
 def test_writeImageFitsHeader_1(function):
     with mock.patch.object(fits,
                            'open'):
-       with mock.patch.object(function,
+       with mock.patch.object(logic.camera.camera,
                                'writeHeaderPointing'):
-           with mock.patch.object(function,
+           with mock.patch.object(logic.camera.camera,
                                    'writeHeaderCamera'):
                 function.updateImageFitsHeaderPointing()
     
@@ -292,7 +292,7 @@ def test_writeImageFitsHeader_1(function):
 def test_updateImageFitsHeaderPointing_1(function):
     with mock.patch.object(fits,
                            'open'):
-       with mock.patch.object(function,
+       with mock.patch.object(logic.camera.camera,
                                'writeHeaderPointing'):
             function.updateImageFitsHeaderPointing()
 

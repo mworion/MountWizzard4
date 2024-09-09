@@ -113,7 +113,7 @@ def test_propSubFrame_5(function):
 
 
 def test_setObsSite(function):
-    function.setObsSite(App().obsSite)
+    function.setObsSite(function.app.mount.obsSite)
 
 
 def test_exposeFinished(function):
@@ -221,30 +221,21 @@ def test_waitExposed_2(function):
     
 
 def test_waitStart_1(function):
-    def test():
-        function.exposing = False
-        return
     with mock.patch.object(logic.camera.camera,
                            'sleepAndEvents'):
-        function.waitStart(test)
+        function.waitStart()
     
     
 def test_waitDownload(function):
-    def test():
-        function.exposing = False
-        return
     with mock.patch.object(logic.camera.camera,
                            'sleepAndEvents'):
-        function.waitDownload(test)
+        function.waitDownload()
     
     
 def test_waitSave_1(function):
-    def test():
-        function.exposing = False
-        return
     with mock.patch.object(logic.camera.camera,
                            'sleepAndEvents'):
-        function.waitSave(test)
+        function.waitSave()
     
 
 def test_waitFinish(function):   

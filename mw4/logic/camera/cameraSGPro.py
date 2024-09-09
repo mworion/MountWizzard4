@@ -145,9 +145,9 @@ class CameraSGPro(SGProClass):
     def workerExpose(self) -> None:
         """
         """
-        params = {'BinningMode': binning,
-                  'ExposureLength': max(expTime, 1),
-                  'Path': imagePath}
+        params = {'BinningMode': self.parent.binning,
+                  'ExposureLength': max(self.parent.expTime, 1),
+                  'Path': self.parent.imagePath}
         addParams = {
             'UseSubframe': True,
             'X': self.parent.posXASCOM,

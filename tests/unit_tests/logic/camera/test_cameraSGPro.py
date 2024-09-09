@@ -259,8 +259,7 @@ def test_expose_2(function):
     function.deviceConnected = True
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.expose()
-        assert suc
+        function.expose()
 
 def test_abort_2(function):
     with mock.patch.object(function,

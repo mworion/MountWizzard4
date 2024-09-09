@@ -183,7 +183,7 @@ class CameraSGPro(SGProClass):
         self.parent.waitSave()
         self.parent.waitFinish(self.sgGetImagePath, receipt)
 
-        if not self.exposing:
+        if not self.parent.exposing:
             self.parent.imagePath = ''
         else:
             pre, ext = os.path.splitext(self.parent.imagePath)

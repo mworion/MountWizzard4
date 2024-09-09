@@ -131,7 +131,6 @@ class CameraNINA(NINAClass):
         self.storePropertyToData(response.get('Temperature'),
                                  'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
 
-    @staticmethod
     def sendDownloadMode(self) -> None:
         """
         """
@@ -183,7 +182,7 @@ class CameraNINA(NINAClass):
         self.signals.downloaded.emit()
         self.parent.waitSave()
 
-        if not self.exposing:
+        if not self.parent.exposing:
             self.parent.imagePath = ''
         else:
             sleepAndEvents(500)
@@ -193,7 +192,7 @@ class CameraNINA(NINAClass):
         """
         """
         worker = Worker(self.workerExpose)
-        worker.signbals.finished.connect(self.parent.exposeFinished)
+        worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(worker)
 
     def abort(self) -> bool:

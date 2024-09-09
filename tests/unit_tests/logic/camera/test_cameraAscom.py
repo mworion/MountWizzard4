@@ -73,6 +73,9 @@ def function():
             return True
 
     camera = Camera(App())
+    camera.expTime = 1
+    camera.binning = 1
+    camera.focalLength = 1
     func = CameraAscom(camera)
     func.client = Test1()
     func.clientProps = []

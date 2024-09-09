@@ -218,7 +218,7 @@ def test_workerExpose_3(function):
         with mock.patch.object(function.parent,
                                'waitStart'):
             with mock.patch.object(function.parent,
-                                   'waitExposedApp'):
+                                   'waitExposed'):
                 with mock.patch.object(function.parent,
                                        'waitDownload'):
                     with mock.patch.object(function.parent,

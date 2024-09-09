@@ -98,8 +98,8 @@ def test_propSubFrame_4(function):
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
                      'CCD_INFO.CCD_MAX_Y': 1000}
     function.subFrame = 50
-    assert function.posX == 0
-    assert function.posY == 0
+    assert function.posX == 250
+    assert function.posY == 250
     assert function.width == 500
     assert function.height == 500
 
@@ -111,8 +111,12 @@ def test_propSubFrame_5(function):
     function.subFrame = 100
     assert function.posX == 0
     assert function.posY == 0
-    assert function.width == 500
-    assert function.height == 500
+    assert function.width == 1000
+    assert function.height == 1000
+    assert function.posXASCOM == 0
+    assert function.posYASCOM == 0
+    assert function.widthASCOM == 500
+    assert function.heightAASCOM == 500
 6
 
 def test_sendDownloadMode_2(function):

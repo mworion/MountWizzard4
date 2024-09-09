@@ -23,8 +23,8 @@ from astropy.io import fits
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-import logic
 from logic.camera.camera import Camera
+import logic
 
 
 @pytest.fixture(autouse=True, scope='module')

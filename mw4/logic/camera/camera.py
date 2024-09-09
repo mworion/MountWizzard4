@@ -282,12 +282,12 @@ class Camera:
         """
         """
         with fits.open(self.imagePath, mode='update', output_verify='silentfix') as HDU:
-            header = self.writeHeaderCamera(HDU[0].header, self)
-            header = self.writeHeaderPointing(header, self)
+            header = writeHeaderCamera(HDU[0].header, self)
+            header = writeHeaderPointing(header, self)
  
     def updateImageFitsHeaderPointing(self) -> None:
         """
         """
         with fits.open(self.imagePath, mode='update', output_verify='silentfix') as HDU:
-            header = self.writeHeaderPointing(HDU[0].header, self)
+            header = writeHeaderPointing(HDU[0].header, self)
 

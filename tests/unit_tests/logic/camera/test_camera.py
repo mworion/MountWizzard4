@@ -43,6 +43,12 @@ def test_properties(function):
     assert function.deviceName == 'test'
 
 
+def test_properties_1(function):
+    function.data = {'CCD_BINNING.HOR_BIN': 1}
+    function.binning = 0
+    assert function.binning == 1
+
+
 def test_properties_2(function):
     function.updateRate = 1000
     function.loadConfig = True
@@ -110,6 +116,7 @@ def test_propSubFrame_5(function):
     assert function.posY == 0
     assert function.width == 1000
     assert function.height == 1000
+    temp = function.subframe
 
 
 def test_setObsSite(function):
@@ -221,27 +228,48 @@ def test_waitExposed_2(function):
     
 
 def test_waitStart_1(function):
+    def test():
+        function.exposing = False
+        return
+    temp = function.sleepAndEvents 
+    function.exposing = True
+    temp = function.sleepAndEvents 
     with mock.patch.object(logic.camera.camera,
                            'sleepAndEvents'):
         function.waitStart()
+    function.sleepAndEvents = temp
     
     
 def test_waitDownload(function):
+    def test():
+        function.exposing = False
+        return
+    temp = function.sleepAndEvents 
+    function.exposing = True
+    temp = function.sleepAndEvents 
     with mock.patch.object(logic.camera.camera,
                            'sleepAndEvents'):
         function.waitDownload()
+    function.sleepAndEvents = temp
     
     
 def test_waitSave_1(function):
+    def test():
+        function.exposing = False
+        return
+    temp = function.sleepAndEvents 
+    function.sleepAndEvents = test 
     with mock.patch.object(logic.camera.camera,
                            'sleepAndEvents'):
         function.waitSave()
+    function.sleepAndEvents = temp
     
 
 def test_waitFinish(function):   
     def test():
         function.exposing = False
         return
+    function.exposing = True
     with mock.patch.object(logic.camera.camera,
                            'sleepAndEvents'):
         function.waitFinish(test, {})

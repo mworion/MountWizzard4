@@ -110,7 +110,7 @@ class Camera:
 
     @binning.setter
     def binning(self, value):
-        if 1 <= value <= 4 and'CCD_BINNING.HOR_BIN' in self.data:
+        if 1 <= value <= 4 and 'CCD_BINNING.HOR_BIN' in self.data:
             self._binning = int(value)
         else:
             self._binning = 1

@@ -20,6 +20,7 @@
 from astropy.io import fits
 
 # local imports
+from base.tpool import Worker
 from base.ascomClass import AscomClass
 
 

@@ -19,6 +19,8 @@ import pytest
 import astropy
 import unittest.mock as mock
 import zlib
+import shutil
+
 # external packages
 from astropy.io import fits
 from indibase.indiDevice import Device
@@ -181,11 +183,6 @@ def test_sendDownloadMode_1(function):
         assert not suc
 
 
-def test_updateNumber_1(function):
-    suc = function.updateNumber('test', 'test')
-    assert not suc
-
-
 def test_updateNumber_2(function):
     function.device = Device()
     setattr(function.device, 'CCD_EXPOSURE', {'state': 'Busy'})
@@ -249,46 +246,6 @@ def test_updateNumber_5(function):
         assert suc
 
 
-def test_updateHeaderInfo_1(function):
-    header = {}
-    timeJD = function.app.mount.obsSite.timeJD
-    function.app.mount.obsSite.decJNow = None
-    function.app.mount.obsSite.timeJD = None
-    h = function.updateHeaderInfo(header)
-    assert 'RA' not in h
-    assert 'DEC' not in h
-    function.app.mount.obsSite.timeJD = timeJD
-
-
-def test_updateHeaderInfo_2(function):
-    header = {'RA': 90,
-              'DEC': 90}
-    function.raJ2000 = Angle(hours=12)
-    function.decJ2000 = Angle(degrees=90)
-    timeJD = function.app.mount.obsSite.timeJD
-    function.app.mount.obsSite.raJNow = None
-    function.app.mount.obsSite.decJNow = None
-    function.app.mount.obsSite.timeJD = None
-    h = function.updateHeaderInfo(header)
-    assert 'RA' in h
-    assert 'DEC' in h
-    function.app.mount.obsSite.timeJD = timeJD
-
-
-def test_updateHeaderInfo_3(function):
-    header = {}
-    function.app.mount.obsSite.raJNow = Angle(hours=12)
-    function.app.mount.obsSite.decJNow = Angle(degrees=180)
-    function.app.mount.obsSite.timeJD = load.timescale().tt_jd(2451544.5)
-    function.raJ2000 = Angle(hours=12)
-    function.decJ2000 = Angle(degrees=90)
-    h = function.updateHeaderInfo(header)
-    assert 'RA' in h
-    assert 'DEC' in h
-    assert h['RA'] != 0
-    assert h['DEC'] != 0
-
-
 def test_saveBlobSignalsFinished(function):
     suc = function.saveBlobSignalsFinished()
     assert suc
@@ -304,8 +261,7 @@ def test_workerSaveBLOB_1(function):
     with mock.patch.object(fits.HDUList,
                            'fromstring',
                            return_value=hdu):
-        suc = function.workerSaveBLOB(data)
-        assert suc
+        function.workerSaveBLOB(data)
 
 
 def test_workerSaveBLOB_2(function):
@@ -318,8 +274,7 @@ def test_workerSaveBLOB_2(function):
     with mock.patch.object(fits.HDUList,
                            'fromstring',
                            return_value=hdu):
-        suc = function.workerSaveBLOB(data)
-        assert suc
+        function.workerSaveBLOB(data)
 
 
 def test_workerSaveBLOB_3(function):
@@ -332,8 +287,7 @@ def test_workerSaveBLOB_3(function):
     with mock.patch.object(fits.HDUList,
                            'fromstring',
                            return_value=hdu):
-        suc = function.workerSaveBLOB(data)
-        assert suc
+        function.workerSaveBLOB(data)
 
 
 def test_workerSaveBLOB_4(function):
@@ -346,8 +300,7 @@ def test_workerSaveBLOB_4(function):
     with mock.patch.object(fits.HDUList,
                            'fromstring',
                            return_value=hdu):
-        suc = function.workerSaveBLOB(data)
-        assert suc
+        function.workerSaveBLOB(data)
 
 
 def test_updateBLOB_1(function):

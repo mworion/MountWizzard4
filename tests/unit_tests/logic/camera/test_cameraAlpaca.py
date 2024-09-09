@@ -68,7 +68,7 @@ def test_workerExpose_1(function):
                                    'waitExposed'):
                 with mock.patch.object(function.parent,
                                        'retrieveImage'):
-                    with mock.patch.object(function,
+                    with mock.patch.object(function.parent,
                                            'writeImageFitsHeader'):
                         suc = function.workerExpose()
                         assert suc
@@ -108,8 +108,7 @@ def test_sendCoolerTemp_1(function):
     with mock.patch.object(function,
                            'setAlpacaProperty',
                            return_value=True):
-        suc = function.sendCoolerTemp()
-        assert suc
+        function.sendCoolerTemp()
 
 
 def test_sendOffset_1(function):

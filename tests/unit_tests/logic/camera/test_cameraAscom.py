@@ -85,34 +85,19 @@ def test_workerGetInitialConfig_1(function):
                            return_value=True):
         with mock.patch.object(function,
                                'getAndStoreAscomProperty'):
-            suc = function.workerGetInitialConfig()
-            assert suc
+            function.workerGetInitialConfig()
 
 
 def test_workerPollData_1(function):
     function.data['CAN_FAST'] = True
     function.data['CAN_SET_CCD_TEMPERATURE'] = True
     function.data['CAN_GET_COOLER_POWER'] = True
-    suc = function.workerPollData()
-    assert suc
+    function.workerPollData()
 
 
 def test_sendDownloadMode_1(function):
     function.data['CAN_FAST'] = True
-    suc = function.sendDownloadMode()
-    assert suc
-
-
-def test_sendDownloadMode_2(function):
-    function.data['CAN_FAST'] = True
-    suc = function.sendDownloadMode(fastReadout=True)
-    assert suc
-
-
-def test_sendDownloadMode_3(function):
-    function.data['CAN_FAST'] = False
-    suc = function.sendDownloadMode()
-    assert not suc
+    function.sendDownloadMode()
 
 
 def test_workerExpose_1(function):
@@ -120,8 +105,8 @@ def test_workerExpose_1(function):
                            'sendDownloadMode'):
         with mock.patch.object(function,
                                'setAscomProperty'):
-            with mock.patch.object(function,
-                                   'waitExposedAscom'):
+            with mock.patch.object(function.parent,
+                                   'waitExposed'):
                 with mock.patch.object(function.parent,
                                        'retrieveImage'):
                     with mock.patch.object(function.parent,

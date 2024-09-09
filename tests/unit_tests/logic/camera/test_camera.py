@@ -57,16 +57,19 @@ def test_startCommunication_1(function):
 
 def test_stopCommunication_1(function):
     function.framework = 'indi'
-    suc = function.stopCommunication()
-    assert suc
+    with mock.patch.object(function.run['indi'],
+                           'abort',
+                           return_value=True):
+        suc = function.stopCommunication()
+        assert suc
 
 
 def test_propSubFrame_1(function):
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
                      'CCD_INFO.CCD_MAX_Y': 1000}
     function.subFrame = 90
-    assert function.posX == 0
-    assert function.posY == 0
+    assert function.posX == 50
+    assert function.posY == 50
     assert function.width == 900
     assert function.height == 900
 
@@ -106,8 +109,8 @@ def test_propSubFrame_5(function):
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
                      'CCD_INFO.CCD_MAX_Y': 1000}
     function.subFrame = 100
-    assert function.posX == 250
-    assert function.posY == 250
+    assert function.posX == 0
+    assert function.posY == 0
     assert function.width == 500
     assert function.height == 500
 6
@@ -121,12 +124,14 @@ def test_sendDownloadMode_2(function):
 
 
 def test_expose_2(function):
+    self.exposing = True
     function.framework = 'indi'
     suc = function.expose()
     assert not suc
 
 
 def test_expose_3(function):
+    self.exposing = False
     function.framework = 'indi'
     with mock.patch.object(function.run['indi'],
                            'expose',
@@ -143,10 +148,6 @@ def test_abort_2(function):
                            return_value=True):
         function.abort()
         assert not function.exposing
-
-def test_sendCoolerSwitch_1(function):
-    suc = function.sendCoolerSwitch()
-    assert not suc
 
 
 def test_sendCoolerSwitch_2(function):

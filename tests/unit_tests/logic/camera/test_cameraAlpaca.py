@@ -20,6 +20,7 @@ import astropy
 import unittest.mock as mock
 
 # external packages
+from astropy.io import fits
 
 
 # local import

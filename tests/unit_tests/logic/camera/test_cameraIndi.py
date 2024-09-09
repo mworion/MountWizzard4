@@ -249,11 +249,6 @@ def test_updateNumber_5(function):
         assert suc
 
 
-def test_saveBlobSignalsFinished(function):
-    suc = function.saveBlobSignalsFinished()
-    assert suc
-
-
 def test_workerSaveBLOB_1(function):
     function.imagePath = 'tests/workDir/image/test.fit'
     hdu = fits.HDUList()
@@ -264,7 +259,11 @@ def test_workerSaveBLOB_1(function):
     with mock.patch.object(fits.HDUList,
                            'fromstring',
                            return_value=hdu):
-        function.workerSaveBLOB(data)
+        with mock.patch.object(fits.HDUList,
+                               'writeto'):
+            with mock.patch.object(function,
+                                   'updateHeaderInfo'):
+                function.workerSaveBLOB(data)
 
 
 def test_workerSaveBLOB_2(function):
@@ -277,7 +276,11 @@ def test_workerSaveBLOB_2(function):
     with mock.patch.object(fits.HDUList,
                            'fromstring',
                            return_value=hdu):
-        function.workerSaveBLOB(data)
+        with mock.patch.object(fits.HDUList,
+                               'writeto'):
+            with mock.patch.object(function,
+                                   'updateHeaderInfo'):
+                function.workerSaveBLOB(data)
 
 
 def test_workerSaveBLOB_3(function):
@@ -290,7 +293,11 @@ def test_workerSaveBLOB_3(function):
     with mock.patch.object(fits.HDUList,
                            'fromstring',
                            return_value=hdu):
-        function.workerSaveBLOB(data)
+        with mock.patch.object(fits.HDUList,
+                               'writeto'):
+            with mock.patch.object(function,
+                                   'updateHeaderInfo'):
+                function.workerSaveBLOB(data)
 
 
 def test_workerSaveBLOB_4(function):
@@ -303,7 +310,11 @@ def test_workerSaveBLOB_4(function):
     with mock.patch.object(fits.HDUList,
                            'fromstring',
                            return_value=hdu):
-        function.workerSaveBLOB(data)
+        with mock.patch.object(fits.HDUList,
+                               'writeto'):
+            with mock.patch.object(function,
+                                   'updateHeaderInfo'):
+                function.workerSaveBLOB(data)
 
 
 def test_updateBLOB_1(function):

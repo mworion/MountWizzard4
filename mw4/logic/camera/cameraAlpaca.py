@@ -100,7 +100,7 @@ class CameraAlpaca(AlpacaClass):
         self.setAlpacaProperty('numy', NumY=self.parent.heightASCOM)
         self.setAlpacaProperty('startexposure', Duration=self.parent.expTime, Light=True)
         
-        self.parent.waitExposedA(self.parent.expTime, self.waitFunc)
+        self.parent.waitExposed(self.parent.expTime, self.waitFunc)
         self.signals.exposed.emit()
         data = self.parent.retrieveImage(self.getAlpacaProperty, 'imagearray')
         self.signals.downloaded.emit()   

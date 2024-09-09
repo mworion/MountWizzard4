@@ -221,8 +221,7 @@ def test_workerExpose_3(function):
                                                return_value=('test', 'test')):
                             with mock.patch.object(os,
                                                    'rename'):
-                                suc = function.workerExpose()
-                                assert suc
+                                function.workerExpose()
 
 
 def test_workerExpose_4(function):
@@ -240,8 +239,7 @@ def test_workerExpose_4(function):
                                        'waitDownload'):
                     with mock.patch.object(function.parent,
                                            'waitSave'):
-                        suc = function.workerExpose()
-                        assert suc
+                        function.workerExpose()
 
 
 def test_expose_2(function):

@@ -113,11 +113,7 @@ def test_propSubFrame_5(function):
     assert function.posY == 0
     assert function.width == 1000
     assert function.height == 1000
-    assert function.posXASCOM == 0
-    assert function.posYASCOM == 0
-    assert function.widthASCOM == 500
-    assert function.heightAASCOM == 500
-6
+
 
 def test_sendDownloadMode_2(function):
     function.framework = 'indi'

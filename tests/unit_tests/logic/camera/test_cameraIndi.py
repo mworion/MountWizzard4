@@ -33,7 +33,7 @@ from base.driverDataClass import Signals
 from base.indiClass import IndiClass
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function():
     camera = Camera(App())
     func = CameraIndi(camera)

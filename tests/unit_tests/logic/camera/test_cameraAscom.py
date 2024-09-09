@@ -26,15 +26,16 @@ if not platform.system() == 'Windows':
 import ctypes
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestApp import Camera, App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.cameraAscom import CameraAscom
+from logic.camera.camera import Camera
 from base.driverDataClass import Signals
 from base.ascomClass import AscomClass
 from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function():
     class Test1:
         CameraXSize = 1000
@@ -71,8 +72,7 @@ def function():
         def StopExposure(function):
             return True
 
-    camera = Camera()
-    camera.app = App()
+    camera = Camera(App())
     func = CameraAscom(camera)
     func.client = Test1()
     func.clientProps = []

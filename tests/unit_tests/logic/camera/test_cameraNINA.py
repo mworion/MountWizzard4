@@ -23,17 +23,17 @@ import os
 # external packages
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestApp import Camera, App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from logic.camera.camera import Camera
 from logic.camera.cameraNINA import CameraNINA
 from base.driverDataClass import Signals
 from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function():
-    camera = Camera()
-    camera.app = App()
+    camera = Camera(App())
     func = CameraNINA(camera)
     yield func
 

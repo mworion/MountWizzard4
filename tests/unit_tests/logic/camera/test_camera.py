@@ -26,7 +26,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.camera import Camera
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function():
     func = Camera(app=App())
     yield func

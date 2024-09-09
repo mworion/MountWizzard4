@@ -146,7 +146,7 @@ def test_setExposureState_4(function):
     assert function.isDownloading
 
 
-def test_setExposureState_5(function):
+def test_setExposureState_5(function):  
     function.device = Device()
     setattr(function.device, 'CCD_EXPOSURE', {'state': 'Ok'})
     function.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': None}
@@ -261,8 +261,8 @@ def test_workerSaveBLOB_1(function):
                            return_value=hdu):
         with mock.patch.object(fits.HDUList,
                                'writeto'):
-            with mock.patch.object(function,
-                                   'updateHeaderInfo'):
+            with mock.patch.object(function.parent,
+                                   'writeImageFitsHeader'):
                 function.workerSaveBLOB(data)
 
 
@@ -278,8 +278,8 @@ def test_workerSaveBLOB_2(function):
                            return_value=hdu):
         with mock.patch.object(fits.HDUList,
                                'writeto'):
-            with mock.patch.object(function,
-                                   'updateHeaderInfo'):
+            with mock.patch.object(function.parent,
+                                   'writeImageFitsHeader'):
                 function.workerSaveBLOB(data)
 
 
@@ -295,8 +295,8 @@ def test_workerSaveBLOB_3(function):
                            return_value=hdu):
         with mock.patch.object(fits.HDUList,
                                'writeto'):
-            with mock.patch.object(function,
-                                   'updateHeaderInfo'):
+            with mock.patch.object(function.parent,
+                                   'writeImageFitsHeader'):
                 function.workerSaveBLOB(data)
 
 
@@ -312,18 +312,9 @@ def test_workerSaveBLOB_4(function):
                            return_value=hdu):
         with mock.patch.object(fits.HDUList,
                                'writeto'):
-            with mock.patch.object(function,
-                                   'updateHeaderInfo'):
+            with mock.patch.object(function.parent,
+                                   'writeImageFitsHeader'):
                 function.workerSaveBLOB(data)
-
-
-def test_updateBLOB_1(function):
-    function.device = Device()
-    with mock.patch.object(IndiClass,
-                           'updateBLOB',
-                           return_value=False):
-        suc = function.updateBLOB('test', 'test')
-        assert not suc
 
 
 def test_updateBLOB_2(function):
@@ -387,44 +378,10 @@ def test_updateBLOB_6(function):
                                return_value={'value': 1,
                                              'name': 'CCD1',
                                              'format': 'test'}):
-            suc = function.updateBLOB('test', 'test')
-            assert not suc
-
-
-def test_updateBLOB_7(function):
-    function.device = Device()
-    function.imagePath = 'tests/dummy/test.txt'
-    with mock.patch.object(IndiClass,
-                           'updateBLOB',
-                           return_value=True):
-        with mock.patch.object(function.device,
-                               'getBlob',
-                               return_value={'value': 1,
-                                             'name': 'CCD1',
-                                             'format': 'test'}):
-            suc = function.updateBLOB('test', 'test')
-            assert not suc
-
-
-def test_updateBLOB_8(function):
-    function.device = Device()
-    function.imagePath = 'tests/workDir/image/test.fit'
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    with mock.patch.object(IndiClass,
-                           'updateBLOB',
-                           return_value=True):
-        with mock.patch.object(function.device,
-                               'getBlob',
-                               return_value={'value': 1,
-                                             'name': 'CCD1',
-                                             'format': '.fits.fz'}):
-            with mock.patch.object(fits.HDUList,
-                                   'fromstring',
-                                   return_value=hdu):
+            with mock.patch.object(function.threadPool,
+                                   'start'):
                 suc = function.updateBLOB('test', 'test')
                 assert suc
-
 
 def test_expose_2(function):
     function.deviceName = 'test'

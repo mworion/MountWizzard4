@@ -73,8 +73,9 @@ def test_workerExpose_1(function):
                                        'retrieveImage'):
                     with mock.patch.object(function.parent,
                                            'writeImageFitsHeader'):
-                        suc = function.workerExpose()
-                        assert suc
+                        with mock.patch.object(fits.HDUList,
+                                               'writeto'):
+                            function.workerExpose()
 
 
 def test_expose_1(function):

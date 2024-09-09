@@ -107,7 +107,7 @@ class IndiClass:
     }
     signals = Signals()
 
-    def __init__(self, app=None, data=None):
+    def __init__(self, app, data):
         self.app = app
         self.msg = app.msg
         self.data = data

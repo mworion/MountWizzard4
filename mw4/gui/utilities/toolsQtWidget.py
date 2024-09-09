@@ -596,27 +596,6 @@ class MWidget(QWidget, Styles):
         self.changeStyleDynamic(ui, pStyle, pVal)
         return True
 
-    def checkUpdaterOK(self):
-        """
-        :return:
-        """
-        if platform.system() != 'Windows':
-            self.app.msg.emit(2, 'System', 'Automation',
-                              'Automation only on windows - upload not possible')
-            return ''
-
-        if not self.app.automation:
-            self.app.msg.emit(2, 'System', 'Automation',
-                              'No automation enabled - upload not possible')
-            return ''
-
-        if not self.app.automation.installPath:
-            self.app.msg.emit(2, 'System', 'Automation',
-                              'No 10micron updater available - upload not possible')
-            return ''
-
-        return self.app.automation.updaterApp
-
     def convertTime(self, value, fString):
         """
         :return:

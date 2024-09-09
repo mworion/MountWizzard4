@@ -16,10 +16,10 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 import unittest.mock as mock
 
 # external packages
+from astropy.io import fits
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -49,19 +49,14 @@ def test_properties_2(function):
     assert function.loadConfig
 
 
-def test_startCommunication_1(function):
-    function.framework = 'indi'
-    suc = function.startCommunication()
-    assert suc
-
-
-def test_stopCommunication_1(function):
-    function.framework = 'indi'
-    with mock.patch.object(function.run['indi'],
-                           'abort',
-                           return_value=True):
-        suc = function.stopCommunication()
-        assert suc
+def test_propSubFrame_0(function):
+    function.data = {'CCD_INFO.CCD_MAX_X': 1000,
+                     'CCD_INFO.CCD_MAX_Y': 1000}
+    function.subFrame = 1
+    assert function.posX == 0
+    assert function.posY == 0
+    assert function.width == 1000
+    assert function.height == 1000
 
 
 def test_propSubFrame_1(function):
@@ -115,12 +110,27 @@ def test_propSubFrame_5(function):
     assert function.height == 1000
 
 
-def test_sendDownloadMode_2(function):
+def test_setObsSite(function):
+    function.setObsSite(App().obsSite)
+
+
+def test_exposeFinished(function):
+    function.exposeFinished()
+
+
+def test_startCommunication_1(function):
+    function.framework = 'indi'
+    suc = function.startCommunication()
+    assert suc
+
+
+def test_stopCommunication_1(function):
     function.framework = 'indi'
     with mock.patch.object(function.run['indi'],
-                           'sendDownloadMode',
+                           'abort',
                            return_value=True):
-        function.sendDownloadMode()
+        suc = function.stopCommunication()
+        assert suc
 
 
 def test_expose_2(function):
@@ -148,6 +158,14 @@ def test_abort_2(function):
                            return_value=True):
         function.abort()
         assert not function.exposing
+
+
+def test_sendDownloadMode_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
+                           'sendDownloadMode',
+                           return_value=True):
+        function.sendDownloadMode()
 
 
 def test_sendCoolerSwitch_2(function):
@@ -180,3 +198,103 @@ def test_sendGain_2(function):
                            'sendGain',
                            return_value=True):
         function.sendGain()
+
+
+def test_waitExposed_1(function):
+    def test():
+        function.exposing = False
+        return
+    with mock.patch.object(logic.camera.camera,
+                           'sleepAndEvents'):
+        function.waitExposed(1, test)
+
+
+def test_waitExposed_2(function):
+    def test():
+        function.exposing = False
+        return
+    with mock.patch.object(logic.camera.camera,
+                           'sleepAndEvents'):
+        function.waitExposed(0.05, test)
+    
+
+def test_waitStart_1(function):
+    def test():
+        function.exposing = False
+        return
+    with mock.patch.object(logic.camera.camera,
+                           'sleepAndEvents'):
+        function.waitStart(test)
+    
+    
+def test_waitDownload(function):
+    def test():
+        function.exposing = False
+        return
+    with mock.patch.object(logic.camera.camera,
+                           'sleepAndEvents'):
+        function.waitDownload(test)
+    
+    
+def test_waitSave_1(function):
+    def test():
+        function.exposing = False
+        return
+    with mock.patch.object(logic.camera.camera,
+                           'sleepAndEvents'):
+        function.waitSave(test)
+    
+
+def test_waitFinish(function):   
+    def test():
+        function.exposing = False
+        return
+    with mock.patch.object(logic.camera.camera,
+                           'sleepAndEvents'):
+        function.waitFinish(test, {})
+    
+    
+def test_retrieveImage_1(function):
+    function.exposing = False
+    def test():
+        return
+        
+    function.retrieveImage(test, {})
+    
+    
+def test_retrieveImage_2(function):
+    function.exposing = True
+    def test(param):
+        return
+        
+    function.retrieveImage(test, {})
+    assert not function.exposing
+    
+    
+def test_retrieveImage_3(function):
+    function.exposing = True
+    def test(param):
+        return np.array([], dtype=np.uint16)
+        
+    function.retrieveImage(test, {})
+    
+    
+def test_writeImageFitsHeader_1(function):
+    with mock.patch.object(fits,
+                           'open',
+                           return_value=):
+       with mock.patch.object(function,
+                               'writeHeaderPointing'):
+           with mock.patch.object(function,
+                                   'writeHeaderCamera'):
+                function.updateImageFitsHeaderPointing()
+    
+    
+def test_updateImageFitsHeaderPointing_1(function):
+    with mock.patch.object(fits,
+                           'open',
+                           return_value=):
+       with mock.patch.object(function,
+                               'writeHeaderPointing'):
+            function.updateImageFitsHeaderPointing()
+

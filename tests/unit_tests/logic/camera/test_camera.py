@@ -20,6 +20,7 @@ import unittest.mock as mock
 
 # external packages
 from astropy.io import fits
+import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

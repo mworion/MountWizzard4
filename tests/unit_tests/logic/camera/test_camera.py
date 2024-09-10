@@ -232,15 +232,15 @@ def test_waitExposed_2(function):
     
 
 def test_waitStart_1(function):
-    def test(a):
-        function.exposing = False
+    #def test(a):
+    #    function.exposing = False
         
-    temp = logic.camera.camera.sleepAndEvents 
-    logic.camera.camera.sleepAndEvents = test
+    #temp = logic.camera.camera.sleepAndEvents 
+    #logic.camera.camera.sleepAndEvents = test
     function.data['Device.Message'] = ''
     function.exposing = True
     function.waitStart()
-    logic.camera.camera.sleepAndEvents = temp
+    # logic.camera.camera.sleepAndEvents = temp
     
     
 def test_waitDownload(function):

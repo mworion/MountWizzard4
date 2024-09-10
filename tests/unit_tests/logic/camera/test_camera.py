@@ -39,7 +39,6 @@ def mocked_sleepAndEvents(monkeypatch, function):
         function.exposing = False
 
     monkeypatch.setattr('logic.camera.camera.sleepAndEvents', test)
-    return mock_sleepAndEvents
 
 def test_properties(function):
     function.framework = 'indi'
@@ -290,7 +289,7 @@ def test_writeImageFitsHeader_1(function):
                                'writeHeaderPointing'):
            with mock.patch.object(logic.camera.camera,
                                    'writeHeaderCamera'):
-                function.updateImageFitsHeader()
+                function.writeImageFitsHeader()
     
     
 def test_updateImageFitsHeaderPointing_1(function):

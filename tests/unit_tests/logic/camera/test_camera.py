@@ -167,7 +167,7 @@ def test_expose_3(function):
     with mock.patch.object(function.run['indi'],
                            'expose',
                            return_value=True):
-        suc = function.expose(imagePath='tests/workDir/image', subFrame=90)
+        suc = function.expose(imagePath='tests/workDir/image')
         assert suc
 
 

@@ -474,19 +474,18 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         """
         :return: True for test purpose
         """
-        subFrame = self.app.camera.subFrame
-        fastReadout = self.app.camera.fastDownload
-
-        time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        timeString = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
 
         if self.ui.timeTagImage.isChecked():
-            fileName = time + '-exposure.fits'
+            fileName = timeString + '-exposure.fits'
         else:
             fileName = 'exposure.fits'
 
         self.imageFileName = os.path.join(self.app.mwGlob['imageDir'], fileName)
+        
         suc = self.app.camera.expose(imagePath=self.imageFileName)
         if not suc:
+            self.abortExpose()
             text = f'{os.path.basename(self.imageFileName)}'
             self.msg.emit(2, 'Image', 'Expose error', text)
             return False

@@ -786,7 +786,7 @@ def test_solveImage_3(function):
 def test_exposeRaw_1(function, qtbot):
     with mock.patch.object(function.app.camera,
                            'expose'):
-        suc = function.exposeRaw(3, 1, 100, False, 100)
+        suc = function.exposeRaw()
         assert suc
 
 

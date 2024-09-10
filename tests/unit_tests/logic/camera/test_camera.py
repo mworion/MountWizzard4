@@ -35,7 +35,7 @@ def function():
 
 @pytest.fixture
 def mocked_sleepAndEvents(monkeypatch, function):
-    def test():
+    def test(a):
         function.exposing = False
 
     monkeypatch.setattr('logic.camera.camera.sleepAndEvents', test)

@@ -116,7 +116,7 @@ def test_propSubFrame_4(function):
 def test_propSubFrame_5(function):
     function.binning = 2
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
-                     'CCD_INFO.CCD_MAX_X': 1000,
+                     'CCD_INFO.CCD_MAX_X': 1000}
     function.subFrame = 100
     assert function.posX == 0
     assert function.posY == 0

@@ -218,53 +218,36 @@ def test_sendGain_2(function):
 
 def test_waitExposed_1(function):
     def test():
-        function.exposing = False
-        return
+        return True
 
+    function.exposing = True
     function.waitExposed(1, test)
 
 
 def test_waitExposed_2(function):
     def test(a):
-        function.exposing = False
+        return True
         
+    function.exposing = True
     function.waitExposed(0.05, test)
     
 
 def test_waitStart_1(function):
-    #def test(a):
-    #    function.exposing = False
-        
-    #temp = logic.camera.camera.sleepAndEvents 
-    #logic.camera.camera.sleepAndEvents = test
-    function.data['Device.Message'] = ''
+    function.data['Device.Message'] = 'integrating'
     function.exposing = True
     function.waitStart()
-    # logic.camera.camera.sleepAndEvents = temp
     
     
 def test_waitDownload(function):
-    def test(a):
-        function.exposing = False
-        
-    temp = logic.camera.camera.sleepAndEvents 
-    logic.camera.camera.sleepAndEvents = test
-    function.data['Device.Message'] = ''
+    function.data['Device.Message'] = 'downloading'
     function.exposing = True
     function.waitDownload()
-    logic.camera.camera.sleepAndEvents = temp
     
     
 def test_waitSave_1(function):
-    def test(a):
-        function.exposing = False
-        
-    temp = logic.camera.camera.sleepAndEvents 
-    logic.camera.camera.sleepAndEvents = test
-    function.data['Device.Message'] = ''
+    function.data['Device.Message'] = 'image is ready'
     function.exposing = True
     function.waitSave()
-    logic.camera.camera.sleepAndEvents = temp
     
 
 def test_waitFinish(function):   
@@ -284,19 +267,19 @@ def test_retrieveImage_1(function):
     
     
 def test_retrieveImage_2(function):
-    function.exposing = True
     def test(param):
         return
         
+    function.exposing = True
     function.retrieveImage(test, {})
     assert not function.exposing
     
     
 def test_retrieveImage_3(function):
-    function.exposing = True
     def test(param):
         return np.array([], dtype=np.uint16)
         
+    function.exposing = True
     function.retrieveImage(test, {})
     
     
@@ -307,7 +290,7 @@ def test_writeImageFitsHeader_1(function):
                                'writeHeaderPointing'):
            with mock.patch.object(logic.camera.camera,
                                    'writeHeaderCamera'):
-                function.updateImageFitsHeaderPointing()
+                function.updateImageFitsHeader()
     
     
 def test_updateImageFitsHeaderPointing_1(function):

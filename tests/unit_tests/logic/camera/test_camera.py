@@ -51,7 +51,7 @@ def test_properties(function):
 
 def test_properties_1(function):
     function.data = {'CCD_BINNING.HOR_BIN': 1}
-    function.binning = 0
+    function.binning = 1
     assert function.binning == 1
 
 
@@ -116,7 +116,7 @@ def test_propSubFrame_4(function):
 def test_propSubFrame_5(function):
     function.binning = 2
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
-                     'CCD_INFO.CCD_MAX_Y': 1000}
+                     'CCD_INFO.CCD_MAX_X': 1000,
     function.subFrame = 100
     assert function.posX == 0
     assert function.posY == 0
@@ -232,7 +232,7 @@ def test_waitExposed_2(function, mocked_sleepAndEvents):
     
 
 def test_waitStart_1(function, mocked_sleepAndEvents):
-    function.data['Device.Message'] = 'integrating'
+    function.data['Device.Message'] = 'test'
     function.exposing = True
     function.waitStart()
     

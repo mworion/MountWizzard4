@@ -226,7 +226,7 @@ def test_updateNumber_4(function):
         with mock.patch.object(function,
                                'setExposureState'):
             suc = function.updateNumber('test', 'CCD_GAIN')
-        assert suc
+            assert suc
 
 
 def test_updateNumber_5(function):
@@ -246,7 +246,27 @@ def test_updateNumber_5(function):
         with mock.patch.object(function,
                                'setExposureState'):
             suc = function.updateNumber('test', 'CCD_OFFSET')
-        assert suc
+            assert suc
+
+
+def test_updateNumber_6(function):
+    function.device = Device()
+    data = {
+        'elementList': {
+            'OFFSET': {
+                'min': 1,
+                'max': 1
+            }
+        }
+    }
+    setattr(function.device, 'CCD_OFFSET', data)
+    with mock.patch.object(IndiClass,
+                           'updateNumber',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'setExposureState'):
+            suc = function.updateNumber('test', 'CCD_OFFSET')
+            assert not suc
 
 
 def test_workerSaveBLOB_1(function):
@@ -315,6 +335,18 @@ def test_workerSaveBLOB_4(function):
             with mock.patch.object(function.parent,
                                    'writeImageFitsHeader'):
                 function.workerSaveBLOB(data)
+
+
+def test_updateBLOB_1(function):
+    function.device = Device()
+    with mock.patch.object(IndiClass,
+                           'updateBLOB',
+                           return_value=False):
+        with mock.patch.object(function.device,
+                               'getBlob',
+                               return_value={}):
+            suc = function.updateBLOB('test', 'test')
+            assert not suc
 
 
 def test_updateBLOB_2(function):

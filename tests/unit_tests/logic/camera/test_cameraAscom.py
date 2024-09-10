@@ -16,13 +16,13 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 import unittest.mock as mock
 import platform
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 # external packages
+from astropy.io import fits
 import ctypes
 
 # local import
@@ -101,6 +101,14 @@ def test_workerPollData_1(function):
 def test_sendDownloadMode_1(function):
     function.data['CAN_FAST'] = True
     function.sendDownloadMode()
+    
+    
+def test_waitFunc(function):
+    with mock.patch.object(AscomClass,
+                           'getAscomProperty',
+                           return_value=True):
+        suc = function.waitFunc()
+        assert suc
 
 
 def test_workerExpose_1(function):
@@ -114,7 +122,9 @@ def test_workerExpose_1(function):
                                        'retrieveImage'):
                     with mock.patch.object(function.parent,
                                            'writeImageFitsHeader'):
-                        function.workerExpose()
+                        with mock.patch.object(fits.HDUList,
+                                               'writeto'):
+                            function.workerExpose()
 
 
 def test_expose_1(function):

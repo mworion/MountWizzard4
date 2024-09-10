@@ -48,11 +48,11 @@ def test_workerGetInitialConfig_1(function):
         function.workerGetInitialConfig()
 
 
-def test_pollData_1(function):
+def test_workerPollData_1(function):
     function.deviceConnected = False
     with mock.patch.object(function.threadPool,
                            'start'):
-        function.pollData()
+        function.workerPollData()
 
 
 def test_sendDownloadMode_1(function):
@@ -61,6 +61,14 @@ def test_sendDownloadMode_1(function):
                            'setAlpacaProperty',
                            return_value=False):
         function.sendDownloadMode()
+
+
+def test_waitFunc(function):
+    with mock.patch.object(function,
+                           'getAlpacaProperty',
+                           return_value=True):
+        suc = function.waitFunc() 
+        assert suc
 
 
 def test_workerExpose_1(function):

@@ -191,6 +191,12 @@ def test_workerPollData_3(function):
 
 def test_sendDownloadMode_1(function):
     function.sendDownloadMode()
+    
+    
+def test_waitFunc(function):
+    function.data['Device.Message'] = 'integrating'
+    suc = function.waitFunc() 
+    assert suc
 
 
 def test_workerExpose_1(function):

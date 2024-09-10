@@ -65,7 +65,8 @@ def test_properties_2(function):
 
 def test_propSubFrame_0(function):
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
-                     'CCD_INFO.CCD_MAX_Y': 1000}
+                     'CCD_INFO.CCD_MAX_Y': 1000,
+                     'CCD_BINNING.HOR_BIN': 1}
     function.subFrame = 1
     assert function.posX == 0
     assert function.posY == 0
@@ -75,7 +76,8 @@ def test_propSubFrame_0(function):
 
 def test_propSubFrame_1(function):
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
-                     'CCD_INFO.CCD_MAX_Y': 1000}
+                     'CCD_INFO.CCD_MAX_Y': 1000,
+                     'CCD_BINNING.HOR_BIN': 1}
     function.subFrame = 90
     assert function.posX == 50
     assert function.posY == 50
@@ -85,7 +87,8 @@ def test_propSubFrame_1(function):
 
 def test_propSubFrame_2(function):
     function.data = {'CCD_INFO.CCD_MAX_X': 100,
-                     'CCD_INFO.CCD_MAX_Y': 1000}
+                     'CCD_INFO.CCD_MAX_Y': 1000,
+                     'CCD_BINNING.HOR_BIN': 1}
     function.subFrame = 100
     assert function.posX == 0
     assert function.posY == 0
@@ -95,7 +98,8 @@ def test_propSubFrame_2(function):
 
 def test_propSubFrame_3(function):
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
-                     'CCD_INFO.CCD_MAX_Y': 100}
+                     'CCD_INFO.CCD_MAX_Y': 100,
+                     'CCD_BINNING.HOR_BIN': 1}
     function.subFrame = 100
     assert function.posX == 0
     assert function.posY == 0
@@ -105,7 +109,8 @@ def test_propSubFrame_3(function):
 
 def test_propSubFrame_4(function):
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
-                     'CCD_INFO.CCD_MAX_Y': 1000}
+                     'CCD_INFO.CCD_MAX_Y': 1000,
+                     'CCD_BINNING.HOR_BIN': 1}
     function.subFrame = 50
     assert function.posX == 250
     assert function.posY == 250
@@ -116,7 +121,8 @@ def test_propSubFrame_4(function):
 def test_propSubFrame_5(function):
     function.binning = 2
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
-                     'CCD_INFO.CCD_MAX_X': 1000}
+                     'CCD_INFO.CCD_MAX_X': 1000,
+                     'CCD_BINNING.HOR_BIN': 1}
     function.subFrame = 100
     assert function.posX == 0
     assert function.posY == 0

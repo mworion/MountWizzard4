@@ -230,11 +230,11 @@ def test_waitStart_1(function):
         function.exposing = False
         return
         
-    temp = function.sleepAndEvents 
-    function.sleepAndEvents = test
+    temp = logic.camera.camera.sleepAndEvents 
+    logic.camera.camera.sleepAndEvents = test
     function.exposing = True
     function.waitStart()
-    function.sleepAndEvents = temp
+    logic.camera.camera.sleepAndEvents = temp
     
     
 def test_waitDownload(function):
@@ -242,11 +242,11 @@ def test_waitDownload(function):
         function.exposing = False
         return
         
-    temp = function.sleepAndEvents 
-    function.sleepAndEvents = test
+    temp = logic.camera.camera.sleepAndEvents 
+    logic.camera.camera.sleepAndEvents = test
     function.exposing = True
     function.waitDownload()
-    function.sleepAndEvents = temp
+    logic.camera.camera.sleepAndEvents = temp
     
     
 def test_waitSave_1(function):
@@ -254,11 +254,11 @@ def test_waitSave_1(function):
         function.exposing = False
         return
         
-    temp = function.sleepAndEvents 
-    function.sleepAndEvents = test
+    temp = logic.camera.camera.sleepAndEvents 
+    logic.camera.camera.sleepAndEvents = test
     function.exposing = True
     function.waitSave()
-    function.sleepAndEvents = temp
+    logic.camera.camera.sleepAndEvents = temp
     
 
 def test_waitFinish(function):   

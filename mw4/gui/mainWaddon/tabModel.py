@@ -571,12 +571,6 @@ class Model(MWidget, RunBasic):
             return False
         text = f'{os.path.basename(imagePath)}'
         self.msg.emit(0, 'Model', 'Exposing', text)
-        text = f'Duration:{expTime:3.0f}s  '
-        self.msg.emit(0, '', '', f'{text}')
-        text = f'Bin:{binning:1.0f}'
-        self.msg.emit(0, '', '', f'{text}')
-        text = f'Sub:{subFrame:3.0f}%'
-        self.msg.emit(0, '', '', f'{text}')
         return True
 
     def exposeImageDone(self, imagePath=''):

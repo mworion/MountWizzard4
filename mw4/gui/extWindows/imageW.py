@@ -492,12 +492,6 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
 
         text = f'{os.path.basename(self.imageFileName)}'
         self.msg.emit(0, 'Image', 'Exposing', text)
-        text = f'Duration:{self.expTime:3.0f}s  '
-        self.msg.emit(0, '', '', f'{text}')
-        text = f'Bin:{self.binning:1.0f}'
-        self.msg.emit(0, '', '', f'{text}')
-        text = f'Sub:{subFrame:3.0f}%'
-        self.msg.emit(0, '', '', f'{text}')
         return True
 
     def exposeImageDone(self, imagePath=''):

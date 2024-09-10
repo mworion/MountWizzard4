@@ -33,6 +33,13 @@ def function():
     func = Camera(app=App())
     yield func
 
+@pytest.fixture
+def mocked_sleepAndEvents(monkeypatch):
+    def test():
+        function.exposing = False
+
+    monkeypatch.setattr('logic.camera.camera.sleepAndEvents', test)
+    return mock_sleepAndEvents
 
 def test_properties(function):
     function.framework = 'indi'
@@ -218,17 +225,15 @@ def test_waitExposed_1(function):
 
 
 def test_waitExposed_2(function):
-    def test():
+    def test(a):
         function.exposing = False
-        return
         
     function.waitExposed(0.05, test)
     
 
 def test_waitStart_1(function):
-    def test():
+    def test(a):
         function.exposing = False
-        return
         
     temp = logic.camera.camera.sleepAndEvents 
     logic.camera.camera.sleepAndEvents = test
@@ -238,9 +243,8 @@ def test_waitStart_1(function):
     
     
 def test_waitDownload(function):
-    def test():
+    def test(a):
         function.exposing = False
-        return
         
     temp = logic.camera.camera.sleepAndEvents 
     logic.camera.camera.sleepAndEvents = test
@@ -250,9 +254,8 @@ def test_waitDownload(function):
     
     
 def test_waitSave_1(function):
-    def test():
+    def test(a):
         function.exposing = False
-        return
         
     temp = logic.camera.camera.sleepAndEvents 
     logic.camera.camera.sleepAndEvents = test
@@ -264,7 +267,6 @@ def test_waitSave_1(function):
 def test_waitFinish(function):   
     def test(a):
         function.exposing = False
-        return
         
     function.exposing = True
     function.waitFinish(test, {})

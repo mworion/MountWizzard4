@@ -485,23 +485,8 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             fileName = 'exposure.fits'
 
         self.imageFileName = os.path.join(self.app.mwGlob['imageDir'], fileName)
-        focalLength = self.app.telescope.focalLength
-        self.imageFileNameOld = self.imageFileName
-        ra = self.app.mount.obsSite.raJNow
-        dec = self.app.mount.obsSite.decJNow
-        timeJD = self.app.mount.obsSite.timeJD
-        ra, dec = JNowToJ2000(ra, dec, timeJD)
-
-        suc = self.app.camera.expose(imagePath=self.imageFileName,
-                                     expTime=self.expTime,
-                                     binning=self.binning,
-                                     subFrame=subFrame,
-                                     fastReadout=fastReadout,
-                                     focalLength=focalLength,
-                                     ra=ra,
-                                     dec=dec)
+        suc = self.app.camera.expose(imagePath=self.imageFileName)
         if not suc:
-            self.abortExpose()
             text = f'{os.path.basename(self.imageFileName)}'
             self.msg.emit(2, 'Image', 'Expose error', text)
             return False
@@ -537,8 +522,6 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         """
         :return: success
         """
-        self.expTime = self.app.camera.expTime
-        self.binning = int(self.app.camera.binning)
         self.imagingDeviceStat['expose'] = True
         self.app.camera.signals.saved.connect(self.exposeImageDone)
         self.app.operationRunning.emit(6)
@@ -563,8 +546,6 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         """
         :return: success
         """
-        self.expTime = self.app.camera.expTimeN
-        self.binning = int(self.app.camera.binningN)
         self.imagingDeviceStat['exposeN'] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
         self.app.operationRunning.emit(6)

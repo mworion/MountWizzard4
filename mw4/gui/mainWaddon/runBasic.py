@@ -242,14 +242,8 @@ class RunBasic:
                                                               mPoint['julianDate'])
 
         self.solveQueue.put(mPoint)
-        suc = self.app.camera.expose(imagePath=mPoint['imagePath'],
-                                     expTime=mPoint['exposureTime'],
-                                     binning=mPoint['binning'],
-                                     subFrame=mPoint['subFrame'],
-                                     fastReadout=mPoint['fastReadout'],
-                                     focalLength=mPoint['focalLength'],
-                                     ra=mPoint['raJ2000M'],
-                                     dec=mPoint['decJ2000M'])
+        suc = self.app.camera.expose(imagePath=mPoint['imagePath'])
+        
         if not suc:
             self.log.error('Cannot start imaging')
             text = f'image-{mPoint["countSequence"]:03d} not taken'

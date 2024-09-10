@@ -559,31 +559,16 @@ class Model(MWidget, RunBasic):
         self.msg.emit(0, 'Model', 'Solving', t)
         return True
 
-    def exposeRaw(self, expTime, binning, subFrame, fastReadout, focalLength):
+    def exposeRaw(self):
         """
-        :param expTime:
-        :param binning:
-        :param subFrame:
-        :param fastReadout:
-        :param focalLength:
-        :return: True for test purpose
         """
         timeTag = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         fileName = timeTag + '-sync.fits'
         imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
-        ra = self.app.mount.obsSite.raJNow
-        dec = self.app.mount.obsSite.decJNow
-        timeJD = self.app.mount.obsSite.timeJD
-        ra, dec = JNowToJ2000(ra, dec, timeJD)
 
-        self.app.camera.expose(imagePath=imagePath,
-                               expTime=expTime,
-                               binning=binning,
-                               subFrame=subFrame,
-                               fastReadout=fastReadout,
-                               focalLength=focalLength,
-                               ra=ra,
-                               dec=dec)
+        suc = self.app.camera.expose(imagePath=imagePath)
+        if not suc:
+            return False
         text = f'{os.path.basename(imagePath)}'
         self.msg.emit(0, 'Model', 'Exposing', text)
         text = f'Duration:{expTime:3.0f}s  '
@@ -609,13 +594,8 @@ class Model(MWidget, RunBasic):
         """
         :return: success
         """
-        expTime = self.ui.expTime.value()
-        binning = self.ui.binning.value()
-        subFrame = self.ui.subFrame.value()
-        fastReadout = self.ui.fastDownload.isChecked()
-        focalLength = self.ui.focalLength.value()
         self.app.camera.signals.saved.connect(self.exposeImageDone)
-        self.exposeRaw(expTime, binning, subFrame, fastReadout, focalLength)
+        self.exposeRaw()
         return True
 
     def plateSolveSync(self):

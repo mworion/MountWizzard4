@@ -168,15 +168,7 @@ class Camera:
         self.signals.exposeReady.emit()
         self.signals.message.emit('')
 
-    def expose(self,
-               imagePath: Path = '',
-               expTime: float = 3,
-               binning: int = 1,
-               subFrame: int = 100,
-               fastReadout: bool = True,
-               focalLength: int = 1,
-               ra=None,
-               dec=None) -> bool:
+    def expose(self, imagePath: Path = '') -> bool:
         """
         """
         if self.exposing:
@@ -184,10 +176,6 @@ class Camera:
             
         self.exposing = True
         self.imagePath = imagePath
-        self.expTime = expTime
-        self.binning = binning
-        self.subFrame = subFrame
-        self.fastReadout = fastReadout
         self.signals.message.emit('exposing')
         self.run[self.framework].expose()
         return True

@@ -304,8 +304,6 @@ class Model(object):
             self.log.warning('Wrong number of chunks')
             return False
         for number, starData in enumerate(response):
-            if not starData:
-                continue
             ha, dec, err, angle = starData.split(',')
             modelStar = ModelStar(obsSite=self.parent.obsSite)
             modelStar.coord = (ha, dec)

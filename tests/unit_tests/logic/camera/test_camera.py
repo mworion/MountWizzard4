@@ -34,7 +34,7 @@ def function():
     yield func
 
 @pytest.fixture
-def mocked_sleepAndEvents(monkeypatch):
+def mocked_sleepAndEvents(monkeypatch, function):
     def test():
         function.exposing = False
 
@@ -237,6 +237,7 @@ def test_waitStart_1(function):
         
     temp = logic.camera.camera.sleepAndEvents 
     logic.camera.camera.sleepAndEvents = test
+    function.data['Device.Message'] = ''
     function.exposing = True
     function.waitStart()
     logic.camera.camera.sleepAndEvents = temp
@@ -248,6 +249,7 @@ def test_waitDownload(function):
         
     temp = logic.camera.camera.sleepAndEvents 
     logic.camera.camera.sleepAndEvents = test
+    function.data['Device.Message'] = ''
     function.exposing = True
     function.waitDownload()
     logic.camera.camera.sleepAndEvents = temp
@@ -259,6 +261,7 @@ def test_waitSave_1(function):
         
     temp = logic.camera.camera.sleepAndEvents 
     logic.camera.camera.sleepAndEvents = test
+    function.data['Device.Message'] = ''
     function.exposing = True
     function.waitSave()
     logic.camera.camera.sleepAndEvents = temp

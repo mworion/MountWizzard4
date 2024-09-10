@@ -1,0 +1,3 @@
+    temp = function.sleepAndEvents 
+    function.sleepAndEvents = test
+    function.exposing = True

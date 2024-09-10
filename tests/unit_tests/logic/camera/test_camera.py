@@ -24,6 +24,7 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from gui.utilities.toolsQtWidgets import sleepAndEvents
 from logic.camera.camera import Camera
 import logic
 
@@ -116,7 +117,7 @@ def test_propSubFrame_5(function):
     assert function.posY == 0
     assert function.width == 1000
     assert function.height == 1000
-    temp = function.subframe
+    temp = function.subFrame
 
 
 def test_setObsSite(function):
@@ -213,30 +214,27 @@ def test_waitExposed_1(function):
     def test():
         function.exposing = False
         return
-    with mock.patch.object(logic.camera.camera,
-                           'sleepAndEvents'):
-        function.waitExposed(1, test)
+
+    function.waitExposed(1, test)
 
 
 def test_waitExposed_2(function):
     def test():
         function.exposing = False
         return
-    with mock.patch.object(logic.camera.camera,
-                           'sleepAndEvents'):
-        function.waitExposed(0.05, test)
+        
+    function.waitExposed(0.05, test)
     
 
 def test_waitStart_1(function):
     def test():
         function.exposing = False
         return
+        
     temp = function.sleepAndEvents 
+    function.sleepAndEvents = test
     function.exposing = True
-    temp = function.sleepAndEvents 
-    with mock.patch.object(logic.camera.camera,
-                           'sleepAndEvents'):
-        function.waitStart()
+    function.waitStart()
     function.sleepAndEvents = temp
     
     
@@ -244,12 +242,11 @@ def test_waitDownload(function):
     def test():
         function.exposing = False
         return
+        
     temp = function.sleepAndEvents 
+    function.sleepAndEvents = test
     function.exposing = True
-    temp = function.sleepAndEvents 
-    with mock.patch.object(logic.camera.camera,
-                           'sleepAndEvents'):
-        function.waitDownload()
+    function.waitDownload()
     function.sleepAndEvents = temp
     
     
@@ -257,22 +254,21 @@ def test_waitSave_1(function):
     def test():
         function.exposing = False
         return
+        
     temp = function.sleepAndEvents 
-    function.sleepAndEvents = test 
-    with mock.patch.object(logic.camera.camera,
-                           'sleepAndEvents'):
-        function.waitSave()
+    function.sleepAndEvents = test
+    function.exposing = True
+    function.waitSave()
     function.sleepAndEvents = temp
     
 
 def test_waitFinish(function):   
-    def test():
+    def test(a):
         function.exposing = False
         return
+        
     function.exposing = True
-    with mock.patch.object(logic.camera.camera,
-                           'sleepAndEvents'):
-        function.waitFinish(test, {})
+    function.waitFinish(test, {})
     
     
 def test_retrieveImage_1(function):

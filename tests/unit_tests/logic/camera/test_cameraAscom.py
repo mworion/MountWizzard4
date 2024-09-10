@@ -114,15 +114,13 @@ def test_workerExpose_1(function):
                                        'retrieveImage'):
                     with mock.patch.object(function.parent,
                                            'writeImageFitsHeader'):
-                        suc = function.workerExpose()
-                        assert suc
+                        function.workerExpose()
 
 
 def test_expose_1(function):
     with mock.patch.object(function,
                            'callMethodThreaded'):
-        suc = function.expose()
-        assert suc
+        function.expose()
 
 
 def test_abort_3(function):

@@ -216,7 +216,7 @@ def test_sendGain_2(function):
         function.sendGain()
 
 
-def test_waitExposed_1(function):
+def test_waitExposed_1(function, mocked_sleepAndEvents):
     def test():
         return True
 
@@ -224,7 +224,7 @@ def test_waitExposed_1(function):
     function.waitExposed(1, test)
 
 
-def test_waitExposed_2(function):
+def test_waitExposed_2(function, mocked_sleepAndEvents):
     def test(a):
         return True
         
@@ -232,25 +232,25 @@ def test_waitExposed_2(function):
     function.waitExposed(0.05, test)
     
 
-def test_waitStart_1(function):
+def test_waitStart_1(function, mocked_sleepAndEvents):
     function.data['Device.Message'] = 'integrating'
     function.exposing = True
     function.waitStart()
     
     
-def test_waitDownload(function):
+def test_waitDownload(function, mocked_sleepAndEvents):
     function.data['Device.Message'] = 'downloading'
     function.exposing = True
     function.waitDownload()
     
     
-def test_waitSave_1(function):
+def test_waitSave_1(function, mocked_sleepAndEvents):
     function.data['Device.Message'] = 'image is ready'
     function.exposing = True
     function.waitSave()
     
 
-def test_waitFinish(function):   
+def test_waitFinish(function, mocked_sleepAndEvents):   
     def test(a):
         function.exposing = False
         
@@ -259,10 +259,10 @@ def test_waitFinish(function):
     
     
 def test_retrieveImage_1(function):
-    function.exposing = False
     def test():
         return
         
+    function.exposing = False
     function.retrieveImage(test, {})
     
     

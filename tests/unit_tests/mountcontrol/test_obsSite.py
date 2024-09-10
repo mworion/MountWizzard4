@@ -912,6 +912,18 @@ class TestConfigData(unittest.TestCase):
             suc = obsSite.setTargetAltAz(Angle(degrees=0), Angle(degrees=0))
             self.assertEqual(True, suc)
 
+    def test_ObsSite_setTargetAltAz_not_ok3(self):
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
+        response = ['00']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 2
+            alt = Angle(degrees=30)
+            az = Angle(degrees=30)
+            suc = obsSite.setTargetAltAz(alt, az)
+            self.assertEqual(False, suc)
+
     def test_ObsSite_setTargetAltAz_not_ok4(self):
         class Parent:
             host = None
@@ -978,6 +990,19 @@ class TestConfigData(unittest.TestCase):
             dec = Angle(degrees=30)
             suc = obsSite.setTargetRaDec(ra, dec)
             self.assertEqual(True, suc)
+
+    def test_ObsSite_setTargetRaDec_not_ok5(self):
+        class Parent:
+            host = None
+        obsSite = ObsSite(parent=Parent(), pathToData=pathToData)
+
+        response = ['00']
+        with mock.patch('mountcontrol.obsSite.Connection') as mConn:
+            mConn.return_value.communicate.return_value = False, response, 2
+            ra = Angle(hours=5, preference='hours')
+            dec = Angle(degrees=30)
+            suc = obsSite.setTargetRaDec(ra, dec)
+            self.assertEqual(False, suc)
 
     def test_ObsSite_setTargetRaDec_not_ok6(self):
         class Parent:

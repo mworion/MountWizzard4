@@ -135,7 +135,7 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(67, align.errorRMS)
         self.assertEqual(67, align._errorRMS)
 
-    def test_Model_numberStars(self):
+    def test_Model_numberStars_1(self):
         class Parent:
             host = None
         align = Model(parent=Parent())
@@ -143,13 +143,29 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(67, align.numberStars)
         self.assertEqual(67, align._numberStars)
 
-    def test_Model_numberNames(self):
+    def test_Model_numberStars_2(self):
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
+        align.numberStars = None
+        self.assertEqual(None, align.numberStars)
+        self.assertEqual(None, align._numberStars)
+
+    def test_Model_numberNames_1(self):
         class Parent:
             host = None
         align = Model(parent=Parent())
         align.numberNames = '67'
         self.assertEqual(67, align.numberNames)
         self.assertEqual(67, align._numberNames)
+
+    def test_Model_numberNames_2(self):
+        class Parent:
+            host = None
+        align = Model(parent=Parent())
+        align.numberNames = None
+        self.assertEqual(None, align.numberNames)
+        self.assertEqual(None, align._numberNames)
 
     def test_Model_starList1(self):
         p1 = '12:45:33.01'

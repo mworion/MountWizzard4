@@ -49,6 +49,9 @@ class TestConfigData(unittest.TestCase):
         fw.vString = '2.16'
         self.assertEqual(Version('2.16'), fw.vString)
         self.assertEqual(Version('2.16'), fw._vString)
+        fw.vString = 1
+        self.assertEqual(Version('0.0.0'), fw.vString)
+        self.assertEqual(Version('0.0.0'), fw._vString)
         fw.vString = '3.0'
         self.assertEqual(Version('3.0'), fw.vString)
         self.assertEqual(Version('3.0'), fw._vString)

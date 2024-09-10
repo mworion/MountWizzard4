@@ -24,7 +24,6 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidgets import sleepAndEvents
 from logic.camera.camera import Camera
 import logic
 

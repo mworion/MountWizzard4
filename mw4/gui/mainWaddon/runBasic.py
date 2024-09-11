@@ -242,7 +242,9 @@ class RunBasic:
                                                               mPoint['julianDate'])
 
         self.solveQueue.put(mPoint)
-        suc = self.app.camera.expose(imagePath=mPoint['imagePath'])
+        suc = self.app.camera.expose(imagePath=mPoint['imagePath'],
+                                     expTime=mPoint['exposureTime'],
+                                     binning=mPoint['binning'])
         
         if not suc:
             self.log.error('Cannot start imaging')

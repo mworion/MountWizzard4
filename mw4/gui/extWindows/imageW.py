@@ -470,7 +470,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.showImage(self.imageFileName)
         return True
 
-    def exposeRaw(self):
+    def exposeRaw(self, expTime: float, binning: int):
         """
         :return: True for test purpose
         """
@@ -483,7 +483,8 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
 
         self.imageFileName = os.path.join(self.app.mwGlob['imageDir'], fileName)
         
-        suc = self.app.camera.expose(imagePath=self.imageFileName)
+        suc = self.app.camera.expose(imagePath=self.imageFileName,
+                                     expTime=expTime, binning=binning)
         if not suc:
             self.abortExpose()
             text = f'{os.path.basename(self.imageFileName)}'
@@ -517,8 +518,9 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         """
         self.imagingDeviceStat['expose'] = True
         self.app.camera.signals.saved.connect(self.exposeImageDone)
-        self.app.operationRunning.emit(6)
-        self.exposeRaw()
+        self.app.operationRunning.emit(6) 
+        self.exposeRaw(expTime=self.app.camera.expTime1, 
+                       binning=self.app.camera.binning1)
         return True
 
     def exposeImageNDone(self, imagePath=''):
@@ -542,7 +544,8 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.imagingDeviceStat['exposeN'] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
         self.app.operationRunning.emit(6)
-        self.exposeRaw()
+        self.exposeRaw(expTime=self.app.camera.expTimeN, 
+                       binning=self.app.camera.binningN)
         return True
 
     def abortExpose(self):

@@ -307,37 +307,31 @@ def test_showCurrent_1(function):
 
 
 def test_exposeRaw_1(function):
-    function.app.camera.expTime = 3
-    function.app.camera.binning = 3
     function.app.camera.subFrame = 100
     function.ui.timeTagImage.setChecked(True)
     with mock.patch.object(function.app.camera,
                            'expose',
                            return_value=True):
-        suc = function.exposeRaw()
+        suc = function.exposeRaw(imagePath='test', expTime=1, binning=1)
         assert suc
 
 
 def test_exposeRaw_2(function):
-    function.app.camera.expTime = 3
-    function.app.camera.binning = 3
     function.app.camera.subFrame = 100
     function.ui.timeTagImage.setChecked(False)
     with mock.patch.object(function.app.camera,
                            'expose',
                            return_value=True):
-        suc = function.exposeRaw()
+        suc = function.exposeRaw(imagePath='test', expTime=1, binning=1)
         assert suc
 
 
 def test_exposeRaw_3(function):
-    function.app.camera.expTime = 3
-    function.app.camera.binning = 3
     function.app.camera.subFrame = 100
     with mock.patch.object(function.app.camera,
                            'expose',
                            return_value=False):
-        suc = function.exposeRaw()
+        suc = function.exposeRaw(imagePath='test', expTime=1, binning=1)
         assert not suc
 
 
@@ -383,8 +377,7 @@ def test_exposeImageN_1(function):
 
 def test_abortExpose_1(function):
     with mock.patch.object(function.app.camera,
-                           'abort',
-                           ):
+                           'abort'):
         suc = function.abortExpose()
         assert suc
 
@@ -395,8 +388,7 @@ def test_abortExpose_2(function):
     function.ui.expose.setEnabled(False)
     function.app.camera.signals.saved.connect(function.exposeRaw)
     with mock.patch.object(function.app.camera,
-                           'abort',
-                           ):
+                           'abort'):
         suc = function.abortExpose()
         assert suc
 
@@ -409,8 +401,7 @@ def test_abortExpose_3(function):
     function.ui.expose.setEnabled(True)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
     with mock.patch.object(function.app.camera,
-                           'abort',
-                           ):
+                           'abort'):
         suc = function.abortExpose()
         assert suc
 
@@ -423,8 +414,7 @@ def test_abortExpose_4(function):
     function.ui.expose.setEnabled(True)
     function.app.camera.signals.saved.connect(function.exposeImageNDone)
     with mock.patch.object(function.app.camera,
-                           'abort',
-                           ):
+                           'abort'):
         suc = function.abortExpose()
         assert suc
 

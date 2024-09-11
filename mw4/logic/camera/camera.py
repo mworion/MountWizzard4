@@ -168,14 +168,16 @@ class Camera:
         self.signals.exposeReady.emit()
         self.signals.message.emit('')
 
-    def expose(self, imagePath: Path = '') -> bool:
+    def expose(self, imagePath: Path = '', expTime: float = 1, binning: int = 1) -> bool:
         """
         """
         if self.exposing:
             return False
             
-        self.exposing = True
         self.imagePath = imagePath
+        self.expTime = expTime
+        self.binning = binning
+        self.exposing = True
         self.signals.message.emit('exposing')
         self.run[self.framework].expose()
         return True

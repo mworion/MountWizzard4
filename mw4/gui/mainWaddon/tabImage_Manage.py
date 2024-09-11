@@ -54,6 +54,7 @@ class ImageManage(MWidget):
         self.ui.coverLightOn.clicked.connect(self.switchLightOn)
         self.ui.coverLightOff.clicked.connect(self.switchLightOff)
         self.clickable(self.ui.coverLightIntensity).connect(self.setLightIntensity)
+        
         self.ui.aperture.valueChanged.connect(self.updateImagingParam)
         self.ui.focalLength.valueChanged.connect(self.updateImagingParam)
         self.ui.expTime.valueChanged.connect(self.updateImagingParam)
@@ -61,15 +62,17 @@ class ImageManage(MWidget):
         self.ui.expTimeN.valueChanged.connect(self.updateImagingParam)
         self.ui.binningN.valueChanged.connect(self.updateImagingParam)
         self.ui.subFrame.valueChanged.connect(self.updateImagingParam)
+        # self.app.update1s.connect(self.updateImagingParam)
+        
         self.ui.haltFocuser.clicked.connect(self.haltFocuser)
         self.ui.moveFocuserIn.clicked.connect(self.moveFocuserIn)
         self.ui.moveFocuserOut.clicked.connect(self.moveFocuserOut)
         self.app.game_sL.connect(self.domeMoveGameController)
+
         self.app.update1s.connect(self.updateCoverStatGui)
         self.app.update1s.connect(self.updateCoverLightGui)
         self.app.update1s.connect(self.updateDomeGui)
         self.app.update1s.connect(self.updateShutterStatGui)
-        self.app.update1s.connect(self.updateImagingParam)
 
     def initConfig(self) -> None:
         """
@@ -240,15 +243,9 @@ class ImageManage(MWidget):
             self.ui.binning.setMaximum(maxBin)
             self.ui.binningN.setMaximum(maxBin)
 
-        self.app.camera.expTime = self.ui.expTime.value()
-        self.app.camera.expTimeN = self.ui.expTimeN.value()
-        self.app.camera.binning = self.ui.binning.value()
-        self.app.camera.binningN = self.ui.binningN.value()
         self.app.camera.subFrame = self.ui.subFrame.value()
         self.app.camera.fastDownload = self.ui.fastDownload.isChecked()
-        self.app.telescope.focalLength = focalLength
-        self.app.telescope.aperture = aperture
-
+        self.app.camera.focalLength = focalLength
         self.guiSetText(self.ui.humidityCCD, '3.1f', humidityCCD)
         self.guiSetText(self.ui.optimalBinning, '1.0f', optimalBinning)
 

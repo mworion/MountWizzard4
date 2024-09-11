@@ -619,8 +619,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.app.plateSolve.solveThreading(fitsPath=imagePath,
                                            updateFits=updateFits)
         self.imagingDeviceStat['solve'] = True
-        t = f'{os.path.basename(imagePath)}'
-        self.msg.emit(0, 'Image', 'Solving', t)
+        self.msg.emit(0, 'Image', 'Solving', imagePath)
         return True
 
     def solveCurrent(self):

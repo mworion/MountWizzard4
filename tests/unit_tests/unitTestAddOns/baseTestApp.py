@@ -69,8 +69,10 @@ class Camera:
 
     signals = CameraSignals()
     expTime = 0
+    expTime1 = 0
     expTimeN = 0
     binning = 1
+    binning1 = 1
     binningN = 1
     focalLength = 100
     subFrame = 100

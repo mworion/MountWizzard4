@@ -534,7 +534,8 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
         self.app.showImage.emit(imagePath)
-        self.exposeRaw()
+        self.exposeRaw(expTime=self.app.camera.expTimeN, 
+                       binning=self.app.camera.binningN)
         return True
 
     def exposeImageN(self):

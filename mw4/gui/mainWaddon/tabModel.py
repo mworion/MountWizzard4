@@ -258,7 +258,7 @@ class Model(MWidget, RunBasic):
         self.msg.emit(0, 'Model', 'Run',
                       f'Writing model [{self.modelName}]')
         saveData = self.generateSaveData()
-        modelPath = os.path.normPath(f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model')
+        modelPath = os.path.normpath(f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model')
         with open(modelPath, 'w') as outfile:
             json.dump(saveData, outfile, sort_keys=True, indent=4)
 
@@ -564,7 +564,7 @@ class Model(MWidget, RunBasic):
         """
         timeTag = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         fileName = timeTag + '-sync.fits'
-        imagePath = os.path.normPath(f'{self.app.mwGlob["imageDir"]}/{fileName}')
+        imagePath = os.path.normpath(f'{self.app.mwGlob["imageDir"]}/{fileName}')
 
         suc = self.app.camera.expose(imagePath=imagePath,
                                      expTime=self.app.camera.expTime1,

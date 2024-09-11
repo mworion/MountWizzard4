@@ -45,6 +45,14 @@ def function(qapp):
         yield window
 
 
+@pytest.fixture
+def mocked_sleepAndEvents(monkeypatch, function):
+    def test(a):
+        function.pollStatusRunState = False
+
+    monkeypatch.setattr('gui.extWindows.downloadPopup.sleepAndEvents', test)
+
+
 def set_setIcon(function):
     function.setIcon()
 
@@ -211,28 +219,18 @@ def test_downloadFileWorker_9(function):
                 assert not suc
 
 
-def test_closePopup_1(function):
-    def test():
-        return
-
-    function.callBack = test
+def test_closePopup_1(function, mocked_sleepAndEvents):
+    function.pollStatusRunState = True
     with mock.patch.object(function,
                            'close'):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
-                               'sleepAndEvents'):
-            function.closePopup(True)
+        function.closePopup(True)
 
 
-def test_closePopup_2(function):
-    def test():
-        return
-
-    function.callBack = test
+def test_closePopup_2(function,  mocked_sleepAndEvents):
+    function.pollStatusRunState = True
     with mock.patch.object(function,
                            'close'):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
-                               'sleepAndEvents'):
-            function.closePopup(False)
+        function.closePopup(False)
 
 
 def test_downloadFile_1(function):

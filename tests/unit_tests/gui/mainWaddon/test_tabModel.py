@@ -783,9 +783,18 @@ def test_solveImage_3(function):
         assert suc
 
 
-def test_exposeRaw_1(function, qtbot):
+def test_exposeRaw_1(function):
     with mock.patch.object(function.app.camera,
-                           'expose'):
+                           'expose',
+                           return_value=True):
+        suc = function.exposeRaw()
+        assert suc
+
+
+def test_exposeRaw_2(function):
+    with mock.patch.object(function.app.camera,
+                           'expose',
+                           return_value=False):
         suc = function.exposeRaw()
         assert suc
 

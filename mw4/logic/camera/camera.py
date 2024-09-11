@@ -51,7 +51,11 @@ class Camera:
         self.exposing = False
         self.fastReadout = False
         self.imagePath = ''
-        self.exposureTime = 1
+        self.expTime = 1
+        self.expTime1 = 1
+        self.expTimeN = 1
+        self.binning1 = 1
+        self.binningN = 1
         self.focalLength = 1 
         self.framework = ''
         self.defaultConfig = {'framework': '', 'frameworks': {}}

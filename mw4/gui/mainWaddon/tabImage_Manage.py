@@ -62,7 +62,8 @@ class ImageManage(MWidget):
         self.ui.expTimeN.valueChanged.connect(self.updateImagingParam)
         self.ui.binningN.valueChanged.connect(self.updateImagingParam)
         self.ui.subFrame.valueChanged.connect(self.updateImagingParam)
-        # self.app.update1s.connect(self.updateImagingParam)
+        # todo: should we keep cyclic updates ? -> normally no !
+        self.app.update1s.connect(self.updateImagingParam)
         
         self.ui.haltFocuser.clicked.connect(self.haltFocuser)
         self.ui.moveFocuserIn.clicked.connect(self.moveFocuserIn)
@@ -243,6 +244,10 @@ class ImageManage(MWidget):
             self.ui.binning.setMaximum(maxBin)
             self.ui.binningN.setMaximum(maxBin)
 
+        self.app.camera.expTime1 = self.ui.expTime.value()
+        self.app.camera.expTimeN = self.ui.expTimeN.value()
+        self.app.camera.binning1 = self.ui.binning.value()
+        self.app.camera.binningN = self.ui.binningN.value()
         self.app.camera.subFrame = self.ui.subFrame.value()
         self.app.camera.fastDownload = self.ui.fastDownload.isChecked()
         self.app.camera.focalLength = focalLength

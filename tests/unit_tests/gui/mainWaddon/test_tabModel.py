@@ -796,7 +796,7 @@ def test_exposeRaw_2(function):
                            'expose',
                            return_value=False):
         suc = function.exposeRaw()
-        assert suc
+        assert not suc
 
 
 def test_exposeImageDone_1(function):

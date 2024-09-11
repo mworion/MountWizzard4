@@ -555,7 +555,7 @@ class Model(MWidget, RunBasic):
 
         self.app.plateSolve.signals.done.connect(self.solveDone)
         self.app.plateSolve.solveThreading(fitsPath=imagePath)
-            self.msg.emit(0, 'Model', 'Solving', f'{os.path.basename(imagePath)}')
+        self.msg.emit(0, 'Model', 'Solving', f'{os.path.basename(imagePath)}')
         return True
 
     def exposeRaw(self):

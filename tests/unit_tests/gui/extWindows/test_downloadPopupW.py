@@ -50,7 +50,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         function.pollStatusRunState = False
 
-    monkeypatch.setattr('gui.extWindows.downloadPopup.sleepAndEvents', test)
+    monkeypatch.setattr('gui.extWindows.downloadPopupW.sleepAndEvents', test)
 
 
 def set_setIcon(function):
@@ -206,17 +206,15 @@ def test_downloadFileWorker_8(function):
             assert suc
 
 
-def test_downloadFileWorker_9(function):
+def test_downloadFileWorker_9(function, mocked_sleepAndEvents):
     with mock.patch.object(function,
                            'getFileFromUrl',
                            return_value=False,):
         with mock.patch.object(function,
                                'unzipFile'):
-            with mock.patch.object(gui.extWindows.downloadPopupW,
-                                   'sleepAndEvents'):
-                suc = function.downloadFileWorker(url='',
-                                                  dest='test/workDir/temp/test.txt')
-                assert not suc
+            suc = function.downloadFileWorker(url='',
+                                              dest='test/workDir/temp/test.txt')
+            assert not suc
 
 
 def test_closePopup_1(function, mocked_sleepAndEvents):

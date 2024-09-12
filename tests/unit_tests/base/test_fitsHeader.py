@@ -25,7 +25,7 @@ import numpy as np
 from tests.unit_tests.unitTestAddOns.baseTestApp import App, Camera
 from base.loggerMW import setupLogging
 from base.fitsHeader import getCoordinatesFromHeader, getSQMFromHeader
-from base.fitheader import getExposureFromHeader, getScaleFromHeader
+from base.fitsHeader import getExposureFromHeader, getScaleFromHeader
 from base.fitsHeader import getCoordinatesFromWCSHeader, calcAngleScaleFromWCSHeader
 from base.fitsHeader import writeHeaderCamera, writeHeaderPointing
 setupLogging()

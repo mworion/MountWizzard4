@@ -39,14 +39,9 @@ __all__ = ['getCoordinates',
 log = logging.getLogger()
 
 
-def getCoordinates(header=None):
+def getCoordinatesFromHeader(header):
     """
-    :param header:
-    :return:
     """
-    if header is None:
-        header = {}
-
     if 'RA' in header and 'DEC' in header:
         hasDecimal = True
     else:
@@ -72,40 +67,29 @@ def getCoordinates(header=None):
 
     log.trace(f'Header:[{header}]')
     log.debug(f'Ra:[{ra}][{ra.hours}][{ra._degrees}], Dec: [{dec}][{dec.degrees}]')
-
     return ra, dec
 
 
-def getCoordinatesWCS(header=None):
+def getCoordinatesFromWCSHeader(header):
     """
-    :param header:
-    :return:
     """
-    ra = Angle(hours=float(header.get('CRVAL1')) * 24 / 360)
-    dec = Angle(degrees=float(header.get('CRVAL2')))
-
+    ra = Angle(hours=float(header.get('CRVAL1'), 0) * 24 / 360)
+    dec = Angle(degrees=float(header.get('CRVAL2'), 0))
+    log.debug(f'Ra:[{ra}][{ra.hours}][{ra._degrees}], Dec: [{dec}][{dec.degrees}]')
     return ra, dec
 
 
-def getSQM(header=None):
+def getSQMFromHeader(header):
     """
-    :param header:
-    :return:
     """
-    if header is None:
-        header = {}
-
     for key in ['SQM', 'SKY-QLTY', 'MPSAS']:
         value = header.get(key)
-        if value is None:
-            continue
-        break
-    else:
-        return None
-    return float(value)
+        if value is not None:
+            return float(value)
+    return 0
 
 
-def getExposure(header=None):
+def getExposureFromHeader(header=None):
     """
     :param header:
     :return:
@@ -123,14 +107,9 @@ def getExposure(header=None):
     return float(value)
 
 
-def getScale(header=None):
+def getScaleFromHeader(header):
     """
-    :param header:
-    :return:
     """
-    if header is None:
-        header = {}
-
     hasScale = 'SCALE' in header
     focalLength = float(header.get('FOCALLEN', 0))
     binning = float(header.get('XBINNING', 0))
@@ -144,28 +123,19 @@ def getScale(header=None):
     elif hasAlternatives:
         scale = pixelSize * binning / focalLength * 206.265
     else:
-        scale = None
-
+        scale = 0
     return scale
 
 
-def calcAngleScaleFromWCS(wcsHeader=None):
+def calcAngleScaleFromHeader(header=None):
     """
-    calcAngleScaleFromWCS as the name says. important is to use the numpy
-    arctan2 function, because it handles the zero points and extend the
-    calculation back to the full range from -pi to pi
-
-    :return: angle in degrees and scale in arc second per pixel (app) and
-             status if image is mirrored (not rotated for 180 degrees because
-             of the mount flip)
     """
-    CD11 = wcsHeader.get('CD1_1', 0)
-    CD12 = wcsHeader.get('CD1_2', 0)
-    CD21 = wcsHeader.get('CD2_1', 0)
-    CD22 = wcsHeader.get('CD2_2', 0)
+    CD11 = header.get('CD1_1', 0)
+    CD12 = header.get('CD1_2', 0)
+    CD21 = header.get('CD2_1', 0)
+    CD22 = header.get('CD2_2', 0)
 
     mirrored = (CD11 * CD22 - CD12 * CD21) < 0
-
     angleRad = np.arctan2(CD12, CD11)
     angle = np.degrees(angleRad)
     scale = CD11 / np.cos(angleRad) * 3600

@@ -174,7 +174,7 @@ class RunBasic:
         self.log.info(text)
 
         self.resultQueue.put(mPoint)
-        suc = self.app.plateSolve.solveThreading(fitsPath=mPoint['imagePath'])
+        suc = self.app.plateSolve.solve(imagePath=mPoint['imagePath'])
         if not suc:
             self.log.error('Cannot start solving')
             text = f'image-{mPoint["countSequence"]:03d} not solved'

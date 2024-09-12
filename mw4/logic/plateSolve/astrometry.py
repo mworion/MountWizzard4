@@ -21,6 +21,7 @@ import os
 import glob
 import time
 import platform
+from os.pathlib import Path
 
 # external packages
 from astropy.io import fits
@@ -329,40 +330,31 @@ class Astrometry(object):
         else:
             return False
 
-    def checkAvailability(self, appPath=None, indexPath=None):
+    def checkAvailabilityProgram(self, appPath: Path) -> bool:
         """
-        :return: working environment found
         """
-        if appPath is not None:
-            self.appPath = appPath
-        if indexPath is not None:
-            self.indexPath = indexPath
-
-        self.saveConfigFile()
+        self.appPath = appPath
 
         if platform.system() == 'Darwin':
             program = self.appPath + '/solve-field'
-            index = self.indexPath + '/*.fits'
         elif platform.system() == 'Linux':
             program = self.appPath + '/solve-field'
-            index = self.indexPath + '/*.fits'
         elif platform.system() == 'Windows':
             program = ''
+
+        return os.path.isfile(program):
+
+    def checkAvailabilityIndex(self, indexPath: Path) -> bool:
+        """
+        """
+        self.indexPath = indexPath
+        self.saveConfigFile()
+
+        if platform.system() == 'Darwin':
+            index = self.indexPath + '/*.fits'
+        elif platform.system() == 'Linux':
+            index = self.indexPath + '/*.fits'
+        elif platform.system() == 'Windows':
             index = ''
 
-        if not os.path.isfile(program):
-            self.log.info(f'[{program}] not found')
-            sucProgram = False
-        else:
-            sucProgram = True
-
-        if not glob.glob(index):
-            self.log.info('No index files found')
-            sucIndex = False
-        else:
-            sucIndex = True
-
-        if sucIndex and sucProgram:
-            self.log.info(f'astrometry.net app:{program}')
-            self.log.info(f'astrometry.net index:{index}')
-        return sucProgram, sucIndex
+        return bool(glob.glob(index))

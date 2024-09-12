@@ -554,7 +554,7 @@ class Model(MWidget, RunBasic):
             return False
 
         self.app.plateSolve.signals.done.connect(self.solveDone)
-        self.app.plateSolve.solveThreading(fitsPath=imagePath)
+        self.app.plateSolve.solve(imagePath=imagePath)
         self.msg.emit(0, 'Model', 'Solving', f'{os.path.basename(imagePath)}')
         return True
 

@@ -476,7 +476,7 @@ def test_solveImage_3(function):
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     file = 'tests/workDir/image/m51.fit'
     with mock.patch.object(function.app.plateSolve,
-                           'solveThreading'):
+                           'solve'):
         suc = function.solveImage(imagePath=file)
         assert suc
 

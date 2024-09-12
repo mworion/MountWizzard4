@@ -43,7 +43,7 @@ class PlateSolve:
                      'frameworks': {}}
 
     @staticmethod
-    def solveThreading():
+    def solve():
         return
 
     @staticmethod

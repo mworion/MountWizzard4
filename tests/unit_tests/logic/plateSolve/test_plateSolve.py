@@ -253,33 +253,33 @@ def test_solveClear_2(function):
     assert suc
 
 
-def test_solveThreading_1(function):
+def test_solve_1(function):
     function.framework = 'Test'
-    suc = function.solveThreading()
+    suc = function.solve()
     assert not suc
 
 
-def test_solveThreading_2(function):
+def test_solve_2(function):
     function.framework = 'astap'
-    suc = function.solveThreading()
+    suc = function.solve()
     assert not suc
 
 
-def test_solveThreading_3(function):
+def test_solve_3(function):
     function.framework = 'astap'
     file = 'tests/workDir/image/m51.fit'
     function.mutexSolve.lock()
-    suc = function.solveThreading(fitsPath=file)
+    suc = function.solve(imagePath=file)
     assert not suc
     function.mutexSolve.unlock()
 
 
-def test_solveThreading_4(function):
+def test_solve_4(function):
     function.framework = 'astap'
     file = 'tests/workDir/image/m51.fit'
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.solveThreading(fitsPath=file)
+        suc = function.solve(imagePath=file)
         function.mutexSolve.unlock()
         assert suc
 

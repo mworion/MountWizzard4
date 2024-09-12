@@ -25,7 +25,8 @@ from skyfield.api import Angle
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
-from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
+from base.fitsHeader import getCoordinatesFromHeader, getSQMFromHeader
+from base.fitHeader import getExposureFromHeader, getScaleFromHeader
 from base.transform import JNowToJ2000
 from gui.utilities import toolsQtWidget
 from gui.utilities.slewInterface import SlewInterface
@@ -616,8 +617,8 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         updateFits = self.ui.embedData.isChecked()
         self.app.plateSolve.signals.done.connect(self.solveDone)
         self.app.operationRunning.emit(6)
-        self.app.plateSolve.solveThreading(fitsPath=imagePath,
-                                           updateFits=updateFits)
+        self.app.plateSolve.solve(imagePath=imagePath,
+                                  updateFits=updateFits)
         self.imagingDeviceStat['solve'] = True
         self.msg.emit(0, 'Image', 'Solving', imagePath)
         return True

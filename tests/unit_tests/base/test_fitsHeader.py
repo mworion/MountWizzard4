@@ -24,8 +24,9 @@ import numpy as np
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App, Camera
 from base.loggerMW import setupLogging
-from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
-from base.fitsHeader import getCoordinatesWCS, calcAngleScaleFromWCS
+from base.fitsHeader import getCoordinatesFromHeader, getSQMFromHeader, 
+from base.fitheader import getExposureFromHeader, getScaleFromHeader
+from base.fitsHeader import getCoordinatesFromWCSHeader, calcAngleScaleFromWCSHeader
 from base.fitsHeader import writeHeaderCamera, writeHeaderPointing
 setupLogging()
 
@@ -35,186 +36,185 @@ def module_setup_teardown():
     pass
 
 
-def test_getCoordinates_1():
+def test_getCoordinatesFromHeader_1():
     header = {
         'RA': 180,
         'DEC': 45,
     }
-    ra, dec = getCoordinates(header=header)
+    ra, dec = getCoordinatesFromHeader(header=header)
     assert ra.hours == 12.0
     assert dec.degrees == 45.0
 
 
-def test_getCoordinates_2():
+def test_getCoordinatesFromHeader_2():
     header = {
         'OBJCTRA': '12 00 00',
         'OBJCTDEC': '+45 00 00',
     }
-    ra, dec = getCoordinates(header=header)
+    ra, dec = getCoordinatesFromHeader(header=header)
     assert ra.hours == 12.0
     assert dec.degrees == 45.0
 
 
-def test_getCoordinates_3():
-    ra, dec = getCoordinates()
+def test_getCoordinatesFromHeader_3():
+    ra, dec = getCoordinatesFromHeader()
     assert ra.hours == 0
     assert dec.degrees == 0
 
 
-def test_getCoordinatesWCS_1():
+def test_getCoordinatesFromWCSHeader_1():
     header = {
         'CRVAL1': '180',
         'CRVAL2': '180.5',
     }
-    ra, dec = getCoordinatesWCS(header=header)
+    ra, dec = getCoordinatesFromWCSHeader(header=header)
     assert ra.hours == 12.0
     assert dec.degrees == 180.5
 
 
-def test_getCoordinatesWCS_2():
+def test_getCoordinatesFromWCSHeader_2():
     header = {
         'CRVAL1': 180,
         'CRVAL2': 180.5,
     }
-    ra, dec = getCoordinatesWCS(header=header)
+    ra, dec = getCoordinatesFromWCSHeader(header=header)
     assert ra.hours == 12.0
     assert dec.degrees == 180.5
 
 
-def test_getSQM_0():
-    sqm = getSQM()
-    assert sqm is None
+def test_getSQMFromHeader_0():
+    sqm = getSQMFromHeader()
+    assert sqm == 0
 
 
-def test_getSQM_1():
+def test_getSQMFromHeader_1():
     header = {
         'SQM': '17.0',
     }
-    sqm = getSQM(header=header)
+    sqm = getSQMFromHeader(header=header)
     assert sqm == 17.0
 
 
-def test_getSQM_2():
+def test_getSQMFromHeader_2():
     header = {
         'SKY-QLTY': '17.0',
     }
-    sqm = getSQM(header=header)
+    sqm = getSQMFromHeader(header=header)
     assert sqm == 17.0
 
 
-def test_getSQM_3():
+def test_getSQMFromHeader_3():
     header = {
         'MPSAS': '17.0',
     }
-    sqm = getSQM(header=header)
+    sqm = getSQMFromHeader(header=header)
     assert sqm == 17.0
 
 
-def test_getSQM_4():
+def test_getSQMFromHeader_4():
     header = {
         'MPSAS': '15.0',
         'SKY-QLTY': '16.0',
         'SQM': '17.0',
     }
-    sqm = getSQM(header=header)
+    sqm = getSQMFromHeader(header=header)
     assert sqm == 17.0
 
 
-def test_getExposure_0():
-    exposure = getExposure()
-    assert exposure is None
+def test_getExposureFromHeader_0():
+    exposure = getExposureFromHeader()
+    assert exposure == 0
 
 
-def test_getExposure_1():
+def test_getExposureFromHeader_1():
     header = {
         'EXPOSURE': '17.0',
     }
-    exposure = getExposure(header=header)
+    exposure = getExposureFromHeader(header=header)
     assert exposure == 17.0
 
 
-def test_getExposure_2():
+def test_getExposureFromHeader_2():
     header = {
         'EXPTIME': '17.0',
     }
-    exposure = getExposure(header=header)
+    exposure = getExposureFromHeader(header=header)
     assert exposure == 17.0
 
 
-def test_getExposure_3():
+def test_getExposureFromHeader_3():
     header = {
         'EXPTIME': '15.0',
         'EXPOSURE': '16.0',
     }
-    exposure = getExposure(header=header)
+    exposure = getExposureFromHeader(header=header)
     assert exposure == 16.0
 
 
-def test_getScale_0():
-    scale = getScale()
-    assert scale is None
+def test_getScaleFromHeader_0():
+    scale = getScaleFromHeader()
+    assert scale == 0
 
 
-def test_getScale_1():
+def test_getScaleFromHeader_1():
     header = {
         'SCALE': '1.333',
     }
-    scale = getScale(header=header)
+    scale = getScaleFromHeader(header=header)
     assert scale == 1.333
 
 
-def test_getScale_2():
+def test_getScaleFromHeader_2():
     header = {
         'FOCALLEN': '570',
     }
-    scale = getScale(header=header)
+    scale = getScaleFromHeader(header=header)
     assert scale is None
 
 
-def test_getScale_3():
+def test_getScaleFromHeader_3():
     header = {
         'FOCALLEN': '570',
         'XBINNING': '1',
     }
-    scale = getScale(header=header)
+    scale = getScaleFromHeader(header=header)
     assert scale is None
 
 
-def test_getScale_4():
+def test_getScaleFromHeader_4():
     header = {
         'FOCALLEN': '570',
         'XBINNING': '1',
         'XPIXSZ': '3.69',
     }
-    scale = getScale(header=header)
+    scale = getScaleFromHeader(header=header)
     assert round(scale, 3) == 1.335
 
 
-def test_getScale_5():
+def test_getScaleFromHeader_5():
     header = {
         'FOCALLEN': '570',
         'XBINNING': '1',
         'PIXSIZE1': '3.69',
     }
-    scale = getScale(header=header)
+    scale = getScaleFromHeader(header=header)
     assert round(scale, 3) == 1.335
 
 
-def test_getScale_5():
-    header = {
-    }
-    scale = getScale(header=header)
-    assert scale is None
+def test_getScaleFromHeader_6():
+    header = {}
+    scale = getScaleFromHeader(header=header)
+    assert scale == 0
 
 
-def test_calcAngleScaleFromWCS_1():
+def test_calcAngleScaleFromWCSHeader_1():
     header = {
         'CD1_1': 0.0002777777777777778,
         'CD1_2': 0,
         'CD2_1': 0,
         'CD2_2': -0.0002777777777777778,
     }
-    angle, scale, mirrored = calcAngleScaleFromWCS(wcsHeader=header)
+    angle, scale, mirrored = calcAngleScaleFromWCSHeader(header=header)
     assert angle == 0
     assert scale == 1
     assert mirrored

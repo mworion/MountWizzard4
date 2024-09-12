@@ -193,7 +193,7 @@ def test_runSolve_2(function):
               }
     function.solveQueue.put(mPoint)
     with mock.patch.object(function.app.plateSolve,
-                           'solveThreading', return_value=False):
+                           'solve', return_value=False):
         suc = function.runSolve()
         assert not suc
 
@@ -209,7 +209,7 @@ def test_runSolve_3(function):
               }
     function.solveQueue.put(mPoint)
     with mock.patch.object(function.app.plateSolve,
-                           'solveThreading', return_value=True):
+                           'solve', return_value=True):
         suc = function.runSolve()
         assert suc
 

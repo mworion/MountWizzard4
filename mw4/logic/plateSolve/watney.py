@@ -21,6 +21,7 @@ import os
 import glob
 import time
 import platform
+from os.pathlib import Path
 
 # external packages
 from astropy.io import fits
@@ -220,16 +221,10 @@ class Watney(object):
         else:
             return False
 
-    def checkAvailability(self, appPath=None, indexPath=None):
+    def checkAvailabilityProgram(self, appPath: Path) -> bool:
         """
-        :return: working environment found
         """
-        if appPath is not None:
-            self.appPath = appPath
-        if indexPath is not None:
-            self.indexPath = indexPath
-
-        self.saveConfigFile()
+        self.appPath = appPath
 
         if platform.system() == 'Darwin':
             program = self.appPath + '/watney-solve'
@@ -238,18 +233,14 @@ class Watney(object):
         elif platform.system() == 'Windows':
             program = self.appPath + '/watney-solve.exe'
 
-        if not os.path.isfile(program):
-            self.log.info(f'[{program}] not found')
-            sucProgram = False
-        else:
-            sucProgram = True
+        return os.path.isfile(program):
 
+    def checkAvailabilityIndex(self, indexPath: Path) -> bool:
+        """
+        """
+        self.indexPath = indexPath
+        self.saveConfigFile()
+        
         numberFiles = sum('.qdb' in s for s in glob.glob(self.indexPath + '/*.*'))
-        sucIndex = numberFiles % 407 == 0 and numberFiles > 0
-        if not sucIndex:
-            self.log.info('No index files found')
-
-        if sucIndex and sucProgram:
-            self.log.info(f'Watney app: [{program}]')
-            self.log.info(f'Watney index: [{self.indexPath}]')
-        return sucProgram, sucIndex
+        return numberFiles % 407 == 0 and numberFiles > 0
+        

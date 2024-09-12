@@ -186,12 +186,12 @@ class Camera:
         self.run[self.framework].expose()
         return True
 
-    def abort(self) -> bool:
+    def abort(self) -> None:
         """
         """
         self.signals.message.emit('')
-        self.run[self.framework].abort()
         self.exposing = False  
+        self.run[self.framework].abort()
 
     def sendDownloadMode(self) -> None:
         """

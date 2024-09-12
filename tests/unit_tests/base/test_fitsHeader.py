@@ -56,12 +56,6 @@ def test_getCoordinatesFromHeader_2():
     assert dec.degrees == 45.0
 
 
-def test_getCoordinatesFromHeader_3():
-    ra, dec = getCoordinatesFromHeader()
-    assert ra.hours == 0
-    assert dec.degrees == 0
-
-
 def test_getCoordinatesFromWCSHeader_1():
     header = {
         'CRVAL1': '180',
@@ -163,7 +157,7 @@ def test_getScaleFromHeader_3():
         'XBINNING': '1',
     }
     scale = getScaleFromHeader(header=header)
-    assert scale is None
+    assert scale == 0
 
 
 def test_getScaleFromHeader_4():

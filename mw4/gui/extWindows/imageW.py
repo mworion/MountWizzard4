@@ -26,7 +26,7 @@ from skyfield.api import Angle
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
 from base.fitsHeader import getCoordinatesFromHeader, getSQMFromHeader
-from base.fitHeader import getExposureFromHeader, getScaleFromHeader
+from base.fitsHeader import getExposureFromHeader, getScaleFromHeader
 from base.transform import JNowToJ2000
 from gui.utilities import toolsQtWidget
 from gui.utilities.slewInterface import SlewInterface

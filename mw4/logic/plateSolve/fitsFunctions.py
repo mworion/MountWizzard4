@@ -25,8 +25,7 @@ from skyfield.api import Angle
 import numpy as np
 
 # local imports
-from base.fitsHeader import getCoordinatesFromHeader, getScaleFromHeader
-from base.fitsHeader import calcCoordinatesFromWCSHeader
+from base.fitsHeader import getCoordinatesFromHeader, calcAngleScaleFromWCSHeader
 
 
 def getSolutionFromWCSHeader(wcsHeader: fitsHeader, imageHeader: fitsHeader) -> None:
@@ -81,12 +80,3 @@ def updateImageFileHeaderWithSolution(imagePath: Path, solution: dict) -> fits.H
     """
     with fits.open(imagePath, mode='update', output_verify='silentfix+warn') as HDU:
         HDU[0].header = writeSolutionToHeader(HDU[0].header, solution)
-
-
-def readImageHeaderHintData(imagePath: Path) -> [Angle, Angle, float]:
-    """
-    """
-    header = getImageHeader(imagePath)
-    raHint, decHint = getCoordinatesFromHeader(header=fitsHeader)
-    scaleHint = getScaleFromHeader(header=fitsHeader)
-    return raHint, decHint, scaleHint

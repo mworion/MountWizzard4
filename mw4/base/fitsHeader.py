@@ -70,15 +70,6 @@ def getCoordinatesFromHeader(header):
     return ra, dec
 
 
-def getCoordinatesFromWCSHeader(header):
-    """
-    """
-    ra = Angle(hours=float(header.get('CRVAL1'), 0) * 24 / 360)
-    dec = Angle(degrees=float(header.get('CRVAL2'), 0))
-    log.debug(f'Ra:[{ra}][{ra.hours}][{ra._degrees}], Dec: [{dec}][{dec.degrees}]')
-    return ra, dec
-
-
 def getSQMFromHeader(header):
     """
     """
@@ -127,7 +118,16 @@ def getScaleFromHeader(header):
     return scale
 
 
-def calcAngleScaleFromHeader(header=None):
+def getCoordinatesFromWCSHeader(header):
+    """
+    """
+    ra = Angle(hours=float(header.get('CRVAL1'), 0) * 24 / 360)
+    dec = Angle(degrees=float(header.get('CRVAL2'), 0))
+    log.debug(f'Ra:[{ra}][{ra.hours}][{ra._degrees}], Dec: [{dec}][{dec.degrees}]')
+    return ra, dec
+
+
+def calcAngleScaleFromWCSHeader(header=None):
     """
     """
     CD11 = header.get('CD1_1', 0)

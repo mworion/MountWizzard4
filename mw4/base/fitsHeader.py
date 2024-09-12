@@ -24,7 +24,6 @@ from astropy.io import fits
 
 # local import
 from base.transform import JNowToJ2000
-from logic.camera.camera import Camera
 from mountcontrol.convert import convertToAngle, convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatLatToText, formatLonToText
 
@@ -157,7 +156,7 @@ def writeHeaderCamera(header: fits.Header, camera: Camera) -> fits.Header:
     header.append(('CCD-TEMP', data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
     return header
 
-def writeHeaderPointing(header: fits.Header, camera: Camera) -> fits.Header:
+def writeHeaderPointing(header: fits.Header, camera) -> fits.Header:
     """
     """
     ra, dec = JNowToJ2000(camera.obsSite.raJNow, camera.obsSite.decJNow,

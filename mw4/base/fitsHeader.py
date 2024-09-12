@@ -127,7 +127,7 @@ def calcAngleScaleFromWCSHeader(header: fits.Header) -> [float, float, bool]:
     return angle, scale, mirrored
 
 
-def writeHeaderCamera(header: fits.Header, camera: Camera) -> fits.Header:
+def writeHeaderCamera(header: fits.Header, camera) -> fits.Header:
     """
     """
     data = camera.data

@@ -427,8 +427,8 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         :return: success
         """
-        sucApp, sucIndex = self.app.plateSolve.run[framework].checkAvailability(
-            appPath=appPath, indexPath=indexPath)
+        sucApp = self.app.plateSolve.run[framework].checkAvailabilityProgram(appPath=appPath) 
+        sucIndex = self.app.plateSolve.run[framework].checkAvailabilityIndex(indexPath=indexPath)
 
         if framework == 'astap':
             color = 'green' if sucApp else 'red'

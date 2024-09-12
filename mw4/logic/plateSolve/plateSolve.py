@@ -64,7 +64,7 @@ class PlateSolve:
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
-    def processSolveQueue(self) - None:
+    def processSolveQueue(self) -> None:
         """
         """
         imagePath, updateHeader = self.solveQueue.get()
@@ -92,8 +92,8 @@ class PlateSolve:
     def startCommunication(self):
         """
         """
-        sucApp = self.checkAvailabilityProgram()
-        sucIndex = self.checkAvailabilityIndex()
+        sucApp = self.run[self.framework].checkAvailabilityProgram()
+        sucIndex = self.run[self.framework].checkAvailabilityIndex() 
         name = self.run[self.framework].deviceName
         if not sucApp or not sucIndex:
             return
@@ -121,13 +121,3 @@ class PlateSolve:
         """
         """
         self.run[self.framework].abort()
-
-    def checkAvailabilityProgram(self) -> bool:
-        """
-        """
-        return self.run[self.framework].checkAvailabilityProgram()
-
-    def checkAvailabilityIndex(self) -> bool:
-        """
-        """
-        return self.run[self.framework].checkAvailabilityIndex() 

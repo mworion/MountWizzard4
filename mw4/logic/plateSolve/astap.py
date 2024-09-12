@@ -114,14 +114,14 @@ class ASTAP(object):
         return suc, msg
 
 
-    def solve(self, imagePath: Path, updateFits: bool) -> dict:
+    def solve(self, imagePath: Path, updateHeader: bool) -> dict:
         """
         """
         self.process = None
         result = {'success': False, 'message': 'Internal error'}
         
         tempPath = os.path.normpath(self.tempDir + '/temp')
-        binPath = os.path.join(self.appPath, 'astap')
+        binPath = os.path.normpath(self.appPath, '/astap')
         wcsPath = os.path.normpath(self.tempDir + '/temp.wcs')
 
         if os.path.isfile(wcsPath):
@@ -132,7 +132,7 @@ class ASTAP(object):
 
         suc, msg = self.runASTAP(binPath=binPath,
                                       imagePath=imagePath,
-                                      tempPath=tempPAth,
+                                      tempPath=tempPath,
                                       options=options)
         if not suc:
             result['message'] = msg
@@ -147,7 +147,7 @@ class ASTAP(object):
         wcsHeader = getImageHeader(imgagePath=wcsPath)
         solution = getSolutionFromWCSHeader(wcsHeader=wcsHeader)
         
-        if updateFits:
+        if updateHeader:
             updateImageFileHeaderWithSolution(imagePath, solution)
 
         result['success'] = True

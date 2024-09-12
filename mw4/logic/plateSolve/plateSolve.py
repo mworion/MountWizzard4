@@ -64,14 +64,14 @@ class PlateSolve:
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
-    def processSolveQueue(self) -> None:
+    def processSolveQueue(self, imagePath: Path, updateHeader: bool) -> None:
         """
         """
-        imagePath, updateHeader = self.solveQueue.get()
         if not os.path.isfile(imagePath):
             result = {'success': False, 'message': f'{imagePath} not found'}
-        else 
-            result = self.run[self.framework].solve(**data)
+        else: 
+            result = self.run[self.framework].solve(imagePath=imagePath, 
+                                                    updateHeader=updateHeader)
         self.signals.done.emit(result)
          
     def workerSolveLoop(self) -> None:
@@ -81,7 +81,8 @@ class PlateSolve:
             if self.solveQueue.empty():
                 sleepAndEvents(500)
                 continue
-            self.processSolveQueue() 
+            imagePath, updateHeader = self.solveQueue.get()
+            self.processSolveQueue(imagePath, updateHeader) 
             
     def startSolveLoop(self) -> None:
         """

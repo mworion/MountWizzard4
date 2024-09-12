@@ -20,26 +20,19 @@ import logging
 # external packages
 import numpy as np
 from skyfield.api import Angle
+from astropy.io import fits
 
 # local import
 from base.transform import JNowToJ2000
+from logic.camera.camera import Camera
 from mountcontrol.convert import convertToAngle, convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatLatToText, formatLonToText
 
-__all__ = ['getCoordinates',
-           'getCoordinatesWCS',
-           'getSQM',
-           'getExposure',
-           'getScale',
-           'calcAngleScaleFromWCS',
-           'writeHeaderCamera',
-           'writeHeaderPointing',
-           ]
 
 log = logging.getLogger()
 
 
-def getCoordinatesFromHeader(header):
+def getCoordinatesFromHeader(header: fits.Header) -> [Angle, Angle]:
     """
     """
     if 'RA' in header and 'DEC' in header:
@@ -65,12 +58,10 @@ def getCoordinatesFromHeader(header):
         dec = Angle(degrees=0)
         log.debug('No coordinates found')
 
-    log.trace(f'Header:[{header}]')
-    log.debug(f'Ra:[{ra}][{ra.hours}][{ra._degrees}], Dec: [{dec}][{dec.degrees}]')
     return ra, dec
 
 
-def getSQMFromHeader(header):
+def getSQMFromHeader(header: fits.Header) -> float:
     """
     """
     for key in ['SQM', 'SKY-QLTY', 'MPSAS']:
@@ -80,25 +71,20 @@ def getSQMFromHeader(header):
     return 0
 
 
-def getExposureFromHeader(header=None):
+def getExposureFromHeader(header: fits.Header) -> float:
     """
-    :param header:
-    :return:
     """
-    if header is None:
-        header = {}
-
     for key in ['EXPOSURE', 'EXPTIME']:
         value = header.get(key)
         if value is None:
             continue
         break
     else:
-        return None
+        return 0
     return float(value)
 
 
-def getScaleFromHeader(header):
+def getScaleFromHeader(header: fits.Header) -> float:
     """
     """
     hasScale = 'SCALE' in header
@@ -118,16 +104,15 @@ def getScaleFromHeader(header):
     return scale
 
 
-def getCoordinatesFromWCSHeader(header):
+def getCoordinatesFromWCSHeader(header: fits.Header) -> [Angle, Angle]:
     """
     """
-    ra = Angle(hours=float(header.get('CRVAL1'), 0) * 24 / 360)
-    dec = Angle(degrees=float(header.get('CRVAL2'), 0))
-    log.debug(f'Ra:[{ra}][{ra.hours}][{ra._degrees}], Dec: [{dec}][{dec.degrees}]')
+    ra = Angle(hours=float(header.get('CRVAL1', 0)) * 24 / 360)
+    dec = Angle(degrees=float(header.get('CRVAL2', 0)))
     return ra, dec
 
 
-def calcAngleScaleFromWCSHeader(header=None):
+def calcAngleScaleFromWCSHeader(header: fits.Header) -> [float, float, bool]:
     """
     """
     CD11 = header.get('CD1_1', 0)
@@ -143,7 +128,7 @@ def calcAngleScaleFromWCSHeader(header=None):
     return angle, scale, mirrored
 
 
-def writeHeaderCamera(header, camera):
+def writeHeaderCamera(header: fits.Header, camera: Camera) -> fits.Header:
     """
     """
     data = camera.data
@@ -172,7 +157,7 @@ def writeHeaderCamera(header, camera):
     header.append(('CCD-TEMP', data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
     return header
 
-def writeHeaderPointing(header, camera):
+def writeHeaderPointing(header: fits.Header, camera: Camera) -> fits.Header:
     """
     """
     ra, dec = JNowToJ2000(camera.obsSite.raJNow, camera.obsSite.decJNow,

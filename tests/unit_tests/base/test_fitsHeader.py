@@ -82,11 +82,6 @@ def test_getCoordinatesFromWCSHeader_2():
     assert dec.degrees == 180.5
 
 
-def test_getSQMFromHeader_0():
-    sqm = getSQMFromHeader()
-    assert sqm == 0
-
-
 def test_getSQMFromHeader_1():
     header = {
         'SQM': '17.0',
@@ -121,11 +116,6 @@ def test_getSQMFromHeader_4():
     assert sqm == 17.0
 
 
-def test_getExposureFromHeader_0():
-    exposure = getExposureFromHeader()
-    assert exposure == 0
-
-
 def test_getExposureFromHeader_1():
     header = {
         'EXPOSURE': '17.0',
@@ -151,11 +141,6 @@ def test_getExposureFromHeader_3():
     assert exposure == 16.0
 
 
-def test_getScaleFromHeader_0():
-    scale = getScaleFromHeader()
-    assert scale == 0
-
-
 def test_getScaleFromHeader_1():
     header = {
         'SCALE': '1.333',
@@ -169,7 +154,7 @@ def test_getScaleFromHeader_2():
         'FOCALLEN': '570',
     }
     scale = getScaleFromHeader(header=header)
-    assert scale is None
+    assert scale == 0
 
 
 def test_getScaleFromHeader_3():

@@ -401,7 +401,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         :return: True for test purpose
         """
         self.guiSetText(self.ui.object, 's', header.get('OBJECT', '').upper())
-        ra, dec = getCoordinates(header=header)
+        ra, dec = getCoordinatesFromHeader(header=header)
         self.guiSetText(self.ui.ra, 'HSTR', ra)
         self.guiSetText(self.ui.raFloat, '2.5f', ra.hours)
         self.guiSetText(self.ui.dec, 'DSTR', dec)
@@ -714,6 +714,6 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         if not self.fileHandler.hasCelestial:
             return False
 
-        ra, dec = getCoordinates(self.fileHandler.header)
+        ra, dec = getCoordinatesFromHeader(self.fileHandler.header)
         self.slewDirect(ra, dec)
         return True

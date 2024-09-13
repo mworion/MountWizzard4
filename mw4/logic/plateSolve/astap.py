@@ -107,7 +107,7 @@ class ASTAP(object):
             return False, 'Exception during solving'
 
         delta = time.time() - timeStart
-        self.log.debug(f'Run {delta}s, {stdout.decode().replace("\n", " "}') 
+        self.log.debug(f'Run {delta}s, {stdout.decode().replace("\n", " ")}') 
         rCode = int(self.process.returncode)
         suc = rCode == 0
         msg = self.returnCodes.get(rCode, 'Unknown code')

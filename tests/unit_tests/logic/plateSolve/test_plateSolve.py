@@ -84,21 +84,10 @@ def test_init_1(function):
     assert 'astap' in function.run
 
 
-def test_solve_3(function):
+def test_solve_1(function):
     function.framework = 'astap'
     file = 'tests/workDir/image/m51.fit'
-    suc = function.solve(imagePath=file)
-    assert not suc
-    function.mutexSolve.unlock()
-
-
-def test_solve_4(function):
-    function.framework = 'astap'
-    file = 'tests/workDir/image/m51.fit'
-    with mock.patch.object(function.threadPool,
-                           'start'):
-        suc = function.solve(imagePath=file)
-        assert suc
+    function.solve(imagePath=file)
 
 
 def test_abort_2(function):

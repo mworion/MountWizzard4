@@ -354,8 +354,10 @@ def test_discoverNINADevices_2(function):
 def test_checkPlateSolveAvailability_1(function):
     class Avail:
         @staticmethod
-        def checkAvailability(appPath=0, indexPath=0):
-            return True, True
+        def checkAvailabilityProgram(appPath=0):
+            return True
+        def checkAvailabilityIxdex(indexPath=0):
+            return True
 
     function.app.plateSolve.run['astap'] = Avail()
     suc = function.checkPlateSolveAvailability('astap', 'test', 'test')
@@ -365,8 +367,10 @@ def test_checkPlateSolveAvailability_1(function):
 def test_checkPlateSolveAvailability_2(function):
     class Avail:
         @staticmethod
-        def checkAvailability(appPath=0, indexPath=0):
-            return True, True
+        def checkAvailabilityProgram(appPath=0):
+            return True
+        def checkAvailabilityIxdex(indexPath=0):
+            return True
 
     function.app.plateSolve.run['watney'] = Avail()
     suc = function.checkPlateSolveAvailability('watney', 'test', 'test')
@@ -376,8 +380,10 @@ def test_checkPlateSolveAvailability_2(function):
 def test_checkPlateSolveAvailability_3(function):
     class Avail:
         @staticmethod
-        def checkAvailability(appPath=0, indexPath=0):
-            return True, True
+        def checkAvailabilityProgram(appPath=0):
+            return True
+        def checkAvailabilityIxdex(indexPath=0):
+            return True
 
     function.app.plateSolve.run['astrometry'] = Avail()
     suc = function.checkPlateSolveAvailability('astrometry', 'test', 'test')

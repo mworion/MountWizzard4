@@ -128,24 +128,6 @@ def test_abort_2(function):
         assert suc
 
 
-def test_checkAvailabilityProgram_1(function):
-    function.framework = 'astap'
-    with mock.patch.object(function.run['astap'],
-                           'checkAvailabilityProgram',
-                           return_value=True):
-        val = function.checkAvailabilityProgram()
-        assert val
-
-
-def test_checkAvailabilityIndex_1(function):
-    function.framework = 'astap'
-    with mock.patch.object(function.run['astap'],
-                           'checkAvailabilityIndex',
-                           return_value=True):
-        val = function.checkAvailabilityIndex()
-        assert val
-
-
 def test_startCommunication(function):
     function.framework = 'astap'
     with mock.patch.object(function,

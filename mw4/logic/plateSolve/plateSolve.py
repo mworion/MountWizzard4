@@ -27,7 +27,7 @@ from astropy.io import fits
 from mountcontrol.convert import convertToAngle
 from base.tpool import Worker
 from gui.utilities.toolsQtWidget import sleepAndEvents
-from logic.plateSolveSignals import PlateSolveSignals
+from logic.platesolve.plateSolveSignals import PlateSolveSignals
 from logic.plateSolve.astrometry import Astrometry
 from logic.plateSolve.astap import ASTAP
 from logic.plateSolve.watney import Watney

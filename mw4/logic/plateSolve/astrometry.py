@@ -342,7 +342,7 @@ class Astrometry(object):
         elif platform.system() == 'Windows':
             program = ''
 
-        return os.path.isfile(program):
+        return os.path.isfile(program)
 
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
         """

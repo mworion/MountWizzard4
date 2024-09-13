@@ -233,7 +233,7 @@ class Watney(object):
         elif platform.system() == 'Windows':
             program = self.appPath + '/watney-solve.exe'
 
-        return os.path.isfile(program):
+        return os.path.isfile(program)
 
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
         """

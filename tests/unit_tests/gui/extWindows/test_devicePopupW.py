@@ -356,7 +356,7 @@ def test_checkPlateSolveAvailability_1(function):
         @staticmethod
         def checkAvailabilityProgram(appPath=0):
             return True
-        def checkAvailabilityIxdex(indexPath=0):
+        def checkAvailabilityIndex(indexPath=0):
             return True
 
     function.app.plateSolve.run['astap'] = Avail()
@@ -369,7 +369,7 @@ def test_checkPlateSolveAvailability_2(function):
         @staticmethod
         def checkAvailabilityProgram(appPath=0):
             return True
-        def checkAvailabilityIxdex(indexPath=0):
+        def checkAvailabilityIndex(indexPath=0):
             return True
 
     function.app.plateSolve.run['watney'] = Avail()
@@ -382,7 +382,7 @@ def test_checkPlateSolveAvailability_3(function):
         @staticmethod
         def checkAvailabilityProgram(appPath=0):
             return True
-        def checkAvailabilityIxdex(indexPath=0):
+        def checkAvailabilityIndex(indexPath=0):
             return True
 
     function.app.plateSolve.run['astrometry'] = Avail()
@@ -406,12 +406,14 @@ def test_selectAstrometryIndexPath_1(function):
 
 
 def test_selectAstrometryIndexPath_2(function):
-    class Test:
+    class Avail:
         @staticmethod
-        def checkAvailability():
-            return True, True
+        def checkAvailabilityProgram(appPath=0):
+            return True
+        def checkAvailabilityIndex(indexPath=0):
+            return True
 
-    function.app.plateSolve.run = {'astrometry': Test()}
+    function.app.plateSolve.run = {'astrometry': Avail()}
     with mock.patch.object(MWidget,
                            'openDir',
                            return_value=('test', 'test', 'test')):
@@ -540,16 +542,18 @@ def test_selectWatneyIndexPath_1(function):
 
 
 def test_selectWatneyIndexPath_2(function):
-    class Test:
+    class Avail:
         @staticmethod
-        def checkAvailability():
-            return True, True
+        def checkAvailabilityProgram(appPath=0):
+            return True
+        def checkAvailabilityIxdex(indexPath=0):
+            return True
 
         @staticmethod
         def selectWatneyIndexPath():
             return True
 
-    function.app.plateSolve.run = {'astap': Test()}
+    function.app.plateSolve.run = {'astap': Avail()}
     with mock.patch.object(MWidget,
                            'openDir',
                            return_value=('test', 'test', 'test')):

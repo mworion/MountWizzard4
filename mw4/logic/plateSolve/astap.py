@@ -177,7 +177,7 @@ class ASTAP(object):
             program = self.appPath + '/astap.exe'
 
         program = os.path.normpath(program)
-        return os.path.isfile(program):
+        return os.path.isfile(program)
 
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
         """

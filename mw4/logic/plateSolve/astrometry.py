@@ -299,7 +299,6 @@ class Astrometry(object):
 
         wcsHeader = getImageHeader(imgagePath=wcsPath)
         solution = getSolutionFromWCSHeader(wcsHeader=wcsHeader)
-
         
         if updateFits:
             updateImageFileHeaderWithSolution(fitsPath, solution)

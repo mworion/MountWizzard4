@@ -77,7 +77,7 @@ class ASTAP(object):
         """
         if platform.system() == 'Darwin':
             self.appPath = os.path.normpath('/Applications/ASTAP.app/Contents/MacOS')
-            self.indexPath = ps.path.normpath('/usr/local/opt/astap')
+            self.indexPath = os.path.normpath('/usr/local/opt/astap')
 
         elif platform.system() == 'Linux':
             self.appPath = os.path.normpath('/opt/astap')

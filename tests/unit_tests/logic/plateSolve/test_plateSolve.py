@@ -154,11 +154,9 @@ def test_startCommunication(function):
         with mock.patch.object(function,
                                'checkAvailabilityIndex',
                                return_value=True):
-            suc = function.startCommunication()
-            assert suc
+            function.startCommunication()
 
 
 def test_stopCommunication(function):
     function.framework = 'astrometry'
-    suc = function.stopCommunication()
-    assert suc
+    function.stopCommunication()

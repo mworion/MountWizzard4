@@ -112,7 +112,7 @@ class PlateSolve:
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
         
-    def solve(imagePath: Path, updateHeader: bool = False) -> None:
+    def solve(self, imagePath: Path, updateHeader: bool = False) -> None:
         """
         """
         data = (imagePath, updateHeader)

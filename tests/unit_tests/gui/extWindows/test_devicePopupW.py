@@ -356,6 +356,7 @@ def test_checkPlateSolveAvailability_1(function):
         @staticmethod
         def checkAvailabilityProgram(appPath=0):
             return True
+        @staticmethod
         def checkAvailabilityIndex(indexPath=0):
             return True
 
@@ -369,6 +370,7 @@ def test_checkPlateSolveAvailability_2(function):
         @staticmethod
         def checkAvailabilityProgram(appPath=0):
             return True
+        @staticmethod
         def checkAvailabilityIndex(indexPath=0):
             return True
 
@@ -382,6 +384,7 @@ def test_checkPlateSolveAvailability_3(function):
         @staticmethod
         def checkAvailabilityProgram(appPath=0):
             return True
+        @staticmethod
         def checkAvailabilityIndex(indexPath=0):
             return True
 
@@ -410,6 +413,7 @@ def test_selectAstrometryIndexPath_2(function):
         @staticmethod
         def checkAvailabilityProgram(appPath=0):
             return True
+        @staticmethod
         def checkAvailabilityIndex(indexPath=0):
             return True
 
@@ -480,16 +484,18 @@ def test_selectAstapIndexPath_1(function):
 
 
 def test_selectAstapIndexPath_2(function):
-    class Test:
+    class Avail:
         @staticmethod
-        def checkAvailability():
-            return True, True
-
+        def checkAvailabilityProgram(appPath=0):
+            return True
+        @staticmethod
+        def checkAvailabilityIndex(indexPath=0):
+            return True
         @staticmethod
         def selectAstapIndexPath():
             return True
 
-    function.app.plateSolve.run = {'astap': Test()}
+    function.app.plateSolve.run = {'astap': Avail()}
     with mock.patch.object(MWidget,
                            'openDir',
                            return_value=('test', 'test', 'test')):
@@ -546,9 +552,9 @@ def test_selectWatneyIndexPath_2(function):
         @staticmethod
         def checkAvailabilityProgram(appPath=0):
             return True
+        @staticmethod
         def checkAvailabilityIxdex(indexPath=0):
             return True
-
         @staticmethod
         def selectWatneyIndexPath():
             return True

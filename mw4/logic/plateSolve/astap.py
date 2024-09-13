@@ -47,8 +47,6 @@ class ASTAP(object):
 
     log = logging.getLogger('MW4')
     
-    DEVICE_NAME = 'ASTAP'
-
     def __init__(self, parent):
         self.parent = parent
         self.data = parent.data
@@ -59,6 +57,7 @@ class ASTAP(object):
         self.indexPath = ''
         self.appPath = ''
         self.setDefaultPath()
+        self.deviceName = 'ASTAP'
         self.timeout = 30
         self.searchRadius = 20
         self.defaultConfig = {

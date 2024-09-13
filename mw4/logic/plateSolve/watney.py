@@ -21,7 +21,7 @@ import os
 import glob
 import time
 import platform
-from os.pathlib import Path
+from pathlib import Path
 
 # external packages
 from astropy.io import fits

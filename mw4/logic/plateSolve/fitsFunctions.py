@@ -28,7 +28,7 @@ import numpy as np
 from base.fitsHeader import getCoordinatesFromHeader, calcAngleScaleFromWCSHeader
 
 
-def getSolutionFromWCSHeader(wcsHeader: fitsHeader, imageHeader: fitsHeader) -> None:
+def getSolutionFromWCSHeader(wcsHeader: fits.Header, imageHeader: fits.Header) -> None:
     """
     CRVAL1 and CRVAL2 give the center coordinate as right ascension and
     declination or longitude and latitude in decimal degrees.

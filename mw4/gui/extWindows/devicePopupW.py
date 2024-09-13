@@ -427,26 +427,23 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         :return: success
         """
-        sucApp = self.app.plateSolve.run[framework].checkAvailabilityProgram(appPath=appPath) 
-        sucIndex = self.app.plateSolve.run[framework].checkAvailabilityIndex(indexPath=indexPath)
+        funcClass = self.app.plateSolve.run[framework] 
+        sucApp = funcClass.checkAvailabilityProgram(appPath=appPath) 
+        sucIndex = funcClass.checkAvailabilityIndex(indexPath=indexPath)
+        colorP = 'green' if sucApp else 'red'
+        colorI = 'green' if sucIndex else 'red'
 
         if framework == 'astap':
-            color = 'green' if sucApp else 'red'
-            self.changeStyleDynamic(self.ui.astapAppPath, 'color', color)
-            color = 'green' if sucIndex else 'red'
-            self.changeStyleDynamic(self.ui.astapIndexPath, 'color', color)
+            self.changeStyleDynamic(self.ui.astapAppPath, 'color', colorP)
+            self.changeStyleDynamic(self.ui.astapIndexPath, 'color', colorI)
 
         elif framework == 'watney':
-            color = 'green' if sucApp else 'red'
-            self.changeStyleDynamic(self.ui.watneyAppPath, 'color', color)
-            color = 'green' if sucIndex else 'red'
-            self.changeStyleDynamic(self.ui.watneyIndexPath, 'color', color)
+            self.changeStyleDynamic(self.ui.watneyAppPath, 'color', colorP)
+            self.changeStyleDynamic(self.ui.watneyIndexPath, 'color', colorI)
 
         elif framework == 'astrometry':
-            color = 'green' if sucApp else 'red'
-            self.changeStyleDynamic(self.ui.astrometryAppPath, 'color', color)
-            color = 'green' if sucIndex else 'red'
-            self.changeStyleDynamic(self.ui.astrometryIndexPath, 'color', color)
+            self.changeStyleDynamic(self.ui.astrometryAppPath, 'color', colorP)
+            self.changeStyleDynamic(self.ui.astrometryIndexPath, 'color', colorI)
         return True
 
     def updatePlateSolverStatus(self):

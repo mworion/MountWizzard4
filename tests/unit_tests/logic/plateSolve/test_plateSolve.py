@@ -126,8 +126,7 @@ def test_abort_2(function):
                            return_value=True):
         suc = function.abort()
         assert suc
-
-
+        
 def test_startCommunication(function):
     function.framework = 'astap'
     with mock.patch.object(function,

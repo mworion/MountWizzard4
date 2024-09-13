@@ -89,12 +89,24 @@ class PlateSolve:
         """
         worker = Worker(self.workerSolveLoop)
         self.threadPool.start(worker)
+    
+    def checkAvailabilityProgram(self, framework: str) -> bool:
+        """
+        """
+        appPath = self.run[framework].appPath
+        return self.run[framework].checkAvailabilityProgram(appPath=appPath)
+
+    def checkAvailabilityIndex(self, framework: str) -> bool:
+        """
+        """
+        indexPath = self.run[framework].indexPath
+        return self.run[framework].checkAvailabilityIndex(indexPath=indexPath)
 
     def startCommunication(self):
         """
         """
-        sucApp = self.run[self.framework].checkAvailabilityProgram()
-        sucIndex = self.run[self.framework].checkAvailabilityIndex() 
+        sucApp = self.checkAvailabilityProgram(self.framework)
+        sucIndex = self.checkAvailabilityIndex(selfframework) 
         name = self.run[self.framework].deviceName
         if not sucApp or not sucIndex:
             return

@@ -47,7 +47,7 @@ class PlateSolve:
         self.msg = app.msg
         self.threadPool = app.threadPool
         self.signals = PlateSolveSignals()
-        self.solvingQueue = queue.Queue()
+        self.solveQueue = queue.Queue()
         self.solveLoopRunning = False
         self.tempDir = app.mwGlob['tempDir']
         self.workDir = app.mwGlob['workDir']

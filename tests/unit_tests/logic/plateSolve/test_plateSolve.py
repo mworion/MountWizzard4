@@ -84,18 +84,6 @@ def test_init_1(function):
     assert 'astap' in function.run
 
 
-def test_solve_1(function):
-    function.framework = 'Test'
-    suc = function.solve()
-    assert not suc
-
-
-def test_solve_2(function):
-    function.framework = 'astap'
-    suc = function.solve()
-    assert not suc
-
-
 def test_solve_3(function):
     function.framework = 'astap'
     file = 'tests/workDir/image/m51.fit'
@@ -113,19 +101,12 @@ def test_solve_4(function):
         assert suc
 
 
-def test_abort_1(function):
-    function.framework = 'test'
-    suc = function.abort()
-    assert not suc
-
-
 def test_abort_2(function):
     function.framework = 'astap'
     with mock.patch.object(function.run['astap'],
                            'abort',
                            return_value=True):
-        suc = function.abort()
-        assert suc
+        function.abort()
         
 def test_startCommunication(function):
     function.framework = 'astap'

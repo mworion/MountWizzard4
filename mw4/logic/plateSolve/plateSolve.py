@@ -115,8 +115,8 @@ class PlateSolve:
     def solve(imagePath: Path, updateHeader: bool = False) -> None:
         """
         """
-         data = (imagePath, updateHeader)
-         self.solveQueue.put(data)
+        data = (imagePath, updateHeader)
+        self.solveQueue.put(data)
          
     def abort(self) -> None:
         """

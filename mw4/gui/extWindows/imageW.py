@@ -406,14 +406,14 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.guiSetText(self.ui.raFloat, '2.5f', ra.hours)
         self.guiSetText(self.ui.dec, 'DSTR', dec)
         self.guiSetText(self.ui.decFloat, '2.5f', dec.degrees)
-        self.guiSetText(self.ui.scale, '5.3f', getScale(header=header))
+        self.guiSetText(self.ui.scale, '5.3f', getScaleFromHeader(header=header))
         self.guiSetText(self.ui.rotation, '6.2f', header.get('ANGLE'))
         self.guiSetText(self.ui.ccdTemp, '4.1f', header.get('CCD-TEMP'))
-        self.guiSetText(self.ui.expTime, '5.1f', getExposure(header=header))
+        self.guiSetText(self.ui.expTime, '5.1f', getExposureFromHeader(header=header))
         self.guiSetText(self.ui.filter, 's', header.get('FILTER'))
         self.guiSetText(self.ui.binX, '1.0f', header.get('XBINNING'))
         self.guiSetText(self.ui.binY, '1.0f', header.get('YBINNING'))
-        self.guiSetText(self.ui.sqm, '5.2f', getSQM(header=header))
+        self.guiSetText(self.ui.sqm, '5.2f', getSQMFromHeader(header=header))
         return True
 
     def resultPhotometry(self):

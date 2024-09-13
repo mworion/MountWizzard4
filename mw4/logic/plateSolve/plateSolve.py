@@ -18,7 +18,7 @@
 import logging
 import os
 import queue
-from os.pathlib import Path
+from pathlib import Path
 
 # external packages
 from astropy.io import fits

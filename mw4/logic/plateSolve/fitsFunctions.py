@@ -17,7 +17,7 @@
 # standard libraries
 import logging
 import os
-from os.pathlib import Path
+from pathlib import Path
 
 # external packages
 from astropy.io import fits

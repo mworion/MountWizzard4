@@ -29,6 +29,7 @@ from astropy.io import fits
 # local imports
 from logic.plateSolve.fitsFunctions import getSolutionFromWCSHeader
 from logic.plateSolve.fitsFunctions import writeSolutionToHeader
+from logic.plateSolve.fitsFunctions import getImageHeader
 
 
 class ASTAP(object):
@@ -52,7 +53,6 @@ class ASTAP(object):
         self.parent = parent
         self.data = parent.data
         self.tempDir = parent.tempDir
-        self.readFitsData = parent.readFitsData
 
         self.result = {'success': False}
         self.process = None

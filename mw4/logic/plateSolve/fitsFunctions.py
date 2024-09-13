@@ -78,8 +78,8 @@ def readImageHeaderHintData(imagePath: Path) -> [Angle, Angle, float]:
     """
     """
     header = getImageHeader(imagePath)
-    raHint, decHint = getCoordinatesFromHeader(header=fitsHeader)
-    scaleHint = getScaleFromHeader(header=fitsHeader)
+    raHint, decHint = getCoordinatesFromHeader(header)
+    scaleHint = getScaleFromHeader(header)
     return raHint, decHint, scaleHint
 
 def updateImageFileHeaderWithSolution(imagePath: Path, solution: dict) -> fits.Header:

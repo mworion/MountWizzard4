@@ -106,7 +106,7 @@ class PlateSolve:
         """
         """
         sucApp = self.checkAvailabilityProgram(self.framework)
-        sucIndex = self.checkAvailabilityIndex(selfframework) 
+        sucIndex = self.checkAvailabilityIndex(self.framework) 
         name = self.run[self.framework].deviceName
         if not sucApp or not sucIndex:
             return

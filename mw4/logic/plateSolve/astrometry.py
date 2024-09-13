@@ -28,6 +28,9 @@ from astropy.io import fits
 
 # local imports
 from mountcontrol import convert
+from logic.plateSolve.fitsFunctions import readImageHeaderHintData
+from logic.plateSolve.fitsFunctions import getSolutionFromWCSHeader
+from logic.plateSolve.fitsFunctions import writeSolutionToHeader
 
 
 class Astrometry(object):
@@ -41,9 +44,6 @@ class Astrometry(object):
         self.parent = parent
         self.data = parent.data
         self.tempDir = parent.tempDir
-        self.readFitsData = parent.readFitsData
-        self.getSolutionFromWCS = parent.getSolutionFromWCS
-        self.getWCSHeader = parent.getWCSHeader
 
         self.result = {'success': False}
         self.process = None
@@ -250,7 +250,7 @@ class Astrometry(object):
             self.result['message'] = 'image2xy failed'
             return False
 
-        raFITS, decFITS, scaleFITS = self.readFitsData(fitsPath=fitsPath)
+        raFITS, decFITS, scaleFITS = readImageHeaderHintData(imagePath=fitsPath)
         if raHint is None:
             raHint = raFITS
         if decHint is None:
@@ -297,16 +297,12 @@ class Astrometry(object):
             self.result['message'] = 'solve failed'
             return False
 
-        with fits.open(wcsPath) as wcsHDU:
-            wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
+        wcsHeader = getImageHeader(imgagePath=wcsPath)
+        solution = getSolutionFromWCSHeader(wcsHeader=wcsHeader)
 
-        with fits.open(fitsPath, mode='update', output_verify='silentfix+warn') as fitsHDU:
-            solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,
-                                                    wcsHeader=wcsHeader,
-                                                    updateFits=updateFits)
-            self.log.debug(f'Header: [{header}]')
-            self.log.debug(f'Solve : [{solve}]')
-            fitsHDU[0].header = header
+        
+        if updateFits:
+            updateImageFileHeaderWithSolution(fitsPath, solution)
 
         self.result = {
             'success': True,

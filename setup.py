@@ -38,7 +38,10 @@ releaseNotes = """
 - refactor: environment devices (now 3 generic ones)
 - refactor: remove installer to separate repo (InstallerMW4)
 - refactor: optimizing code for better performance
+- refactor: platesolving features more reliable
+- refactor: camera handling
 - refactor: satellite handling
+- refactor: database handling for MPC files
 - improve: faster calculation of satellite track using internal calculations
 - improve: reduced size of app
 - improve: faster startup time

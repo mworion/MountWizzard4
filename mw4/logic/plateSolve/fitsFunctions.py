@@ -15,8 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import logging
-import os
 from pathlib import Path
 
 # external packages
@@ -25,29 +23,30 @@ from skyfield.api import Angle
 import numpy as np
 
 # local imports
-from base.fitsHeader import getCoordinatesFromHeader, calcAngleScaleFromWCSHeader
+from mountcontrol.convert import convertToAngle
+from base.fitsHeader import getCoordinatesFromHeader, getScaleFromHeader, calcAngleScaleFromWCSHeader
 
 
-def getSolutionFromWCSHeader(wcsHeader: fits.Header, imageHeader: fits.Header) -> None:
+def getSolutionFromWCSHeader(wcsHeader: fits.Header, imageHeader: fits.Header) -> dict:
     """
     CRVAL1 and CRVAL2 give the center coordinate as right ascension and
     declination or longitude and latitude in decimal degrees.
     """
-    raJ2000 = convertToAngle(header.get('CRVAL1', 0), isHours=True)
-    decJ2000 = convertToAngle(header.get('CRVAL2', 0), isHours=False)
+    raJ2000 = convertToAngle(wcsHeader.get('CRVAL1', 0), isHours=True)
+    decJ2000 = convertToAngle(wcsHeader.get('CRVAL2', 0), isHours=False)
     
-    angle, scale, mirrored = self.calcAngleScaleFromWCSHeader(header=wcsHeader)
+    angle, scale, mirrored = calcAngleScaleFromWCSHeader(header=wcsHeader)
     raMount, decMount = getCoordinatesFromHeader(header=imageHeader)
 
-    deltaRA = Angle(degrees=(raJ2000._degrees - raMount._degrees))
-    deltaDEC = Angle(degrees=(decJ2000.degrees - decMount.degrees))
-    error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))
+    deltaRA_raw = raJ2000._degrees - raMount._degrees
+    deltaDEC_raw = decJ2000.degrees - decMount.degrees
+    error = np.sqrt(np.square(deltaRA_raw) + np.square(deltaDEC_raw))
 
     solution = {
         'raJ2000S': raJ2000,
         'decJ2000S': decJ2000,
-        'errorRA_S': deltaRA,
-        'errorDEC_S': deltaDEC,
+        'errorRA_S': Angle(degrees=deltaRA_raw),
+        'errorDEC_S': Angle(degrees=deltaDEC_raw),
         'angleS': angle,
         'scaleS': scale,
         'errorRMS_S': error,
@@ -59,11 +58,11 @@ def getSolutionFromWCSHeader(wcsHeader: fits.Header, imageHeader: fits.Header) -
 def writeSolutionToHeader(header: fits.Header, solution: dict) -> fits.Header: 
     """
     """
-    header.append(('RA', solution['raJ2000S'], 'MW4 - processed'))
-    header.append(('DEC', solution['decJ2000S'], 'MW4 - processed'))
+    header.append(('RA', solution['raJ2000S']._degrees, 'MW4 - processed'))
+    header.append(('DEC', solution['decJ2000S'].degrees, 'MW4 - processed'))
     header.append(('SCALE', solution['scaleS'], 'MW4 - processed'))
     header.append(('PIXSCALE', solution['scaleS'], 'MW4 - processed'))
-    header.append(('ANGLE', solution['angleS'], 'MW4 - processed'))
+    header.append(('ANGLE', solution['angleS'].degrees, 'MW4 - processed'))
     header.append(('MIRRORED', solution['mirroredS'], 'MW4 - processed'))
     return header
 
@@ -74,6 +73,7 @@ def getImageHeader(imagePath: Path) -> fits.Header:
     with fits.open(imagePath) as HDU:
         return HDU[0].header
 
+
 def readImageHeaderHintData(imagePath: Path) -> [Angle, Angle, float]:
     """
     """
@@ -81,6 +81,7 @@ def readImageHeaderHintData(imagePath: Path) -> [Angle, Angle, float]:
     raHint, decHint = getCoordinatesFromHeader(header)
     scaleHint = getScaleFromHeader(header)
     return raHint, decHint, scaleHint
+
 
 def updateImageFileHeaderWithSolution(imagePath: Path, solution: dict) -> fits.Header:
     """

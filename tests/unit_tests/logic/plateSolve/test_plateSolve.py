@@ -44,6 +44,14 @@ def function():
     yield func
 
 
+@pytest.fixture
+def mocked_sleepAndEvents(monkeypatch, function):
+    def test(a):
+        function.solveLoopRunning = False
+
+    monkeypatch.setattr('logic.plateSolve.plateSolve.sleepAndEvents', test)
+
+
 def test_properties_1(function):
     function.framework = 'test'
 
@@ -96,12 +104,24 @@ def test_abort_2(function):
                            'abort',
                            return_value=True):
         function.abort()
-        
-def test_startCommunication(function):
+
+
+def test_startCommunication_1(function, mocked_sleepAndEvents):
     function.framework = 'astap'
     with mock.patch.object(function,
                            'checkAvailabilityProgram',
                            return_value=True):
+        with mock.patch.object(function,
+                               'checkAvailabilityIndex',
+                               return_value=True):
+            function.startCommunication()
+
+
+def test_startCommunication_2(function, mocked_sleepAndEvents):
+    function.framework = 'astap'
+    with mock.patch.object(function,
+                           'checkAvailabilityProgram',
+                           return_value=False):
         with mock.patch.object(function,
                                'checkAvailabilityIndex',
                                return_value=True):

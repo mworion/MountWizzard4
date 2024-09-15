@@ -420,7 +420,7 @@ def test_abortExpose_4(function):
 
 
 def test_solveDone_1(function):
-    function.app.plateSolve.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.result.connect(function.solveDone)
     suc = function.solveDone()
     assert not suc
 
@@ -438,7 +438,7 @@ def test_solveDone_2(function):
         'message': 'test',
     }
 
-    function.app.plateSolve.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.result.connect(function.solveDone)
     suc = function.solveDone(result=result)
     assert not suc
 
@@ -449,7 +449,7 @@ def test_solveDone_3(function):
         'success': True,
         'raJ2000S': Angle(hours=10),
         'decJ2000S': Angle(degrees=20),
-        'angleS': 30,
+        'angleS': Angle(degrees=30),
         'scaleS': 1,
         'errorRMS_S': 3,
         'flippedS': False,
@@ -457,7 +457,7 @@ def test_solveDone_3(function):
         'message': 'test',
     }
 
-    function.app.plateSolve.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.result.connect(function.solveDone)
     suc = function.solveDone(result=result)
     assert suc
 

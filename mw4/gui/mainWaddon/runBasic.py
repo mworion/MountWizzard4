@@ -342,7 +342,7 @@ class RunBasic:
 
         self.collector.ready.connect(self.runImage)
         self.app.camera.signals.saved.connect(self.runSolve)
-        self.app.plateSolve.signals.done.connect(self.runSolveDone)
+        self.app.plateSolve.signals.result.connect(self.runSolveDone)
         self.app.camera.signals.exposeReady.emit()
 
         if self.ui.progressiveTiming.isChecked():
@@ -439,7 +439,7 @@ class RunBasic:
         """
         self.performanceTimingSignal.disconnect(self.runSlew)
         self.app.camera.signals.saved.disconnect(self.runSolve)
-        self.app.plateSolve.signals.done.disconnect(self.runSolveDone)
+        self.app.plateSolve.signals.result.disconnect(self.runSolveDone)
         self.collector.ready.disconnect(self.runImage)
         self.collector.clear()
         return True
@@ -603,7 +603,6 @@ class RunBasic:
             m['countSequence'] = index + 1
             m['pointNumber'] = index + 1
             m['name'] = name
-            m['imagePath'] = imagePath
             m['plateSolveApp'] = plateSolveApp
             m['solveTimeout'] = solveTimeout
             m['searchRadius'] = searchRadius

@@ -93,7 +93,7 @@ class SettMisc(MWidget):
             self.app.dome.signals.slewFinished.connect(lambda: self.playSound('DomeSlew'))
             self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
             self.app.camera.signals.saved.connect(lambda: self.playSound('ImageSaved'))
-            self.app.plateSolve.signals.done.connect(lambda: self.playSound('ImageSolved'))
+            self.app.plateSolve.signals.result.connect(lambda: self.playSound('ImageSolved'))
             self.app.playSound.connect(self.playSound)
             self.setupAudioSignals()
 

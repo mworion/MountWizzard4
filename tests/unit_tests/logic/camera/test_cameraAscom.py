@@ -106,7 +106,7 @@ def test_sendDownloadMode_1(function):
 def test_waitFunc(function):
     with mock.patch.object(AscomClass,
                            'getAscomProperty',
-                           return_value=True):
+                           return_value=False):
         suc = function.waitFunc()
         assert suc
 

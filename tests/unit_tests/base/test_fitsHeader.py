@@ -194,7 +194,7 @@ def test_calcAngleScaleFromWCSHeader_1():
         'CD2_2': -0.0002777777777777778,
     }
     angle, scale, mirrored = calcAngleScaleFromWCSHeader(header=header)
-    assert angle == 0
+    assert angle.degrees == 0
     assert scale == 1
     assert mirrored
     
@@ -207,7 +207,7 @@ def test_writeHeaderCamera():
     camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 3
     camera.app = App()
     camera.obsSite = camera.app.mount.obsSite
-    header = writeHeaderCamera(header, camera)
+    writeHeaderCamera(header, camera)
     
     
 def test_writeHeaderPointing():
@@ -216,7 +216,7 @@ def test_writeHeaderPointing():
     camera = Camera()
     camera.app = App()
     camera.obsSite = camera.app.mount.obsSite
-    header = writeHeaderPointing(header, camera)
+    writeHeaderPointing(header, camera)
     
 
 

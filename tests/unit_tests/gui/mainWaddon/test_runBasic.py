@@ -480,7 +480,7 @@ def test_restoreSignalsModelDefault(function):
     function.performanceTimingSignal = function.app.camera.signals.exposed
     function.app.camera.signals.saved.connect(function.runSolve)
     function.performanceTimingSignal.connect(function.runSlew)
-    function.app.plateSolve.signals.done.connect(function.runSolveDone)
+    function.app.plateSolve.signals.result.connect(function.runSolveDone)
     function.collector.ready.connect(function.runImage)
 
     suc = function.restoreSignalsRunDefault()

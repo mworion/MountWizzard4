@@ -27,7 +27,6 @@ class PlateSolveSignals(QObject):
     """
     __all__ = ['PlateSolveSignals']
 
-    done = Signal(object)
     result = Signal(object)
     message = Signal(object)
 

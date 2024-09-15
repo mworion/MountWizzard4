@@ -27,7 +27,6 @@ from skyfield.api import Angle
 from mountcontrol.convert import convertToDMS, convertToHMS
 from base.fitsHeader import getCoordinatesFromHeader, getSQMFromHeader
 from base.fitsHeader import getExposureFromHeader, getScaleFromHeader
-from base.transform import JNowToJ2000
 from gui.utilities import toolsQtWidget
 from gui.utilities.slewInterface import SlewInterface
 from gui.widgets import image_ui
@@ -574,7 +573,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         :return: success
         """
         self.imagingDeviceStat['solve'] = False
-        self.app.plateSolve.signals.done.disconnect(self.solveDone)
+        self.app.plateSolve.signals.result.disconnect(self.solveDone)
 
         if not result:
             self.msg.emit(2, 'Image', 'Solving',
@@ -593,7 +592,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         text = f'DEC: {convertToDMS(result["decJ2000S"])} '
         text += f'({result["decJ2000S"].degrees:4.3f}), '
         self.msg.emit(0, '', '', text)
-        text = f'Angle: {result["angleS"]:3.0f}, '
+        text = f'Angle: {result["angleS"].degrees:3.0f}, '
         self.msg.emit(0, '', '', text)
         text = f'Scale: {result["scaleS"]:4.3f}, '
         self.msg.emit(0, '', '', text)
@@ -614,11 +613,11 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             self.app.operationRunning.emit(0)
             return False
 
-        updateFits = self.ui.embedData.isChecked()
-        self.app.plateSolve.signals.done.connect(self.solveDone)
+        updateHeader = self.ui.embedData.isChecked()
+        self.app.plateSolve.signals.result.connect(self.solveDone)
         self.app.operationRunning.emit(6)
         self.app.plateSolve.solve(imagePath=imagePath,
-                                  updateFits=updateFits)
+                                  updateHeader=updateHeader)
         self.imagingDeviceStat['solve'] = True
         self.msg.emit(0, 'Image', 'Solving', imagePath)
         return True
@@ -632,11 +631,9 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
 
     def abortSolve(self):
         """
-        :return: success
         """
-        suc = self.app.plateSolve.abort()
+        self.app.plateSolve.abort()
         self.app.operationRunning.emit(0)
-        return suc
 
     def mouseToWorld(self, mousePoint):
         """

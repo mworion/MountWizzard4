@@ -16,19 +16,19 @@
 ###########################################################
 # standard libraries
 import os
+import time
 import logging
 import datetime
-import platform
 from dateutil.tz import tzlocal
 
 # external packages
+from PySide6.QtCore import QCoreApplication
 from PySide6.QtWidgets import QWidget, QFileDialog, QMessageBox
 from PySide6.QtWidgets import QAbstractItemView
 from PySide6.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
 from PySide6.QtGui import QPainterPath, QTransform, QGuiApplication
 from PySide6.QtCore import QDir, QObject, Signal
 from PySide6.QtCore import Qt, QSize, QEvent
-from PySide6.QtTest import QTest
 import numpy as np
 from qimage2ndarray import rgb_view, array2qimage
 
@@ -47,7 +47,9 @@ def sleepAndEvents(value):
     :param value: wait time in msec
     :return:
     """
-    QTest.qWait(value)
+    for _ in range(value):
+        time.sleep(0.001)
+        QCoreApplication.processEvents()
     return True
 
 

@@ -72,11 +72,13 @@ class UploadPopup(MWidget):
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.returnValues = {'success': False, 'successMount': False}
         self.parentWidget = parentWidget
+        self.threadPool = parentWidget.app.threadPool
+        self.worker = None
+        self.workerStatus = None
         self.url = url
         self.dataTypes = dataTypes
         self.dataFilePath = dataFilePath
-        self.worker = None
-        self.workerStatus = None
+
         self.pollStatusRunState = False
         self.timeoutCounter = 0
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
@@ -84,7 +86,6 @@ class UploadPopup(MWidget):
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
         self.setWindowTitle('Uploading to mount')
-        self.threadPool = parentWidget.app.threadPool
         self.signalStatus.connect(self.setStatusTextToValue)
         self.signalProgress.connect(self.setProgressBarToValue)
         self.signalProgressBarColor.connect(self.setProgressBarColor)

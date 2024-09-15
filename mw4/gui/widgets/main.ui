@@ -9280,13 +9280,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <rect>
           <x>285</x>
           <y>20</y>
-          <width>71</width>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
         <property name="maximumSize">
          <size>
-          <width>71</width>
+          <width>76</width>
           <height>16777215</height>
          </size>
         </property>
@@ -9641,13 +9641,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <rect>
           <x>285</x>
           <y>20</y>
-          <width>71</width>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
         <property name="maximumSize">
          <size>
-          <width>71</width>
+          <width>76</width>
           <height>16777215</height>
          </size>
         </property>

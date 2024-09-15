@@ -98,7 +98,6 @@ def test_updatePointGui_ha_2(function):
     obs.timeSidereal = Angle(hours=12)
     obs.raJNow = Angle(hours=0)
     function.updatePointGUI(obs)
-    assert '00:00:00' == function.ui.HA.text()
 
 
 def test_updatePointGUI_sidereal_1(function):

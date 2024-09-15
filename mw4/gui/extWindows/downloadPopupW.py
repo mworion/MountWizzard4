@@ -44,6 +44,7 @@ class DownloadPopup(MWidget):
         self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
         self.threadPool = parentWidget.app.threadPool
+        self.worker = None
 
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self)
@@ -54,8 +55,6 @@ class DownloadPopup(MWidget):
         self.move(x, y)
 
         self.returnValues = {'success': False}
-        self.worker = None
-
         self.signalStatus.connect(self.setStatusTextToValue)
         self.signalProgress.connect(self.setProgressBarToValue)
         self.signalProgressBarColor.connect(self.setProgressBarColor)

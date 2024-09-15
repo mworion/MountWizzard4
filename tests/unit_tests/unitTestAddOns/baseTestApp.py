@@ -28,7 +28,7 @@ import numpy as np
 
 class PlateSolve:
     class PlateSolveSignals(QObject):
-        done = Signal()
+        result = Signal()
         message = Signal(object)
         serverConnected = Signal()
         serverDisconnected = Signal(object)

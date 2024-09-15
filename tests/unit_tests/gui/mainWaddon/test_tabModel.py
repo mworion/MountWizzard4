@@ -697,7 +697,7 @@ def test_loadProgramModel_6(function):
 
 
 def test_solveDone_1(function):
-    function.app.plateSolve.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.result.connect(function.solveDone)
     suc = function.solveDone()
     assert not suc
 
@@ -715,7 +715,7 @@ def test_solveDone_2(function):
         'message': 'test',
     }
 
-    function.app.plateSolve.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.result.connect(function.solveDone)
     suc = function.solveDone(result=result)
     assert not suc
 
@@ -734,7 +734,7 @@ def test_solveDone_3(function):
         'solvedPath': 'test'
     }
 
-    function.app.plateSolve.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.result.connect(function.solveDone)
     with mock.patch.object(function.app.mount.obsSite,
                            'syncPositionToTarget',
                            return_value=True):
@@ -756,7 +756,7 @@ def test_solveDone_4(function):
         'solvedPath': 'test'
     }
 
-    function.app.plateSolve.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.result.connect(function.solveDone)
     with mock.patch.object(function.app.mount.obsSite,
                            'syncPositionToTarget',
                            return_value=False):

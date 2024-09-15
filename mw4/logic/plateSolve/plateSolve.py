@@ -21,10 +21,8 @@ import queue
 from pathlib import Path
 
 # external packages
-from astropy.io import fits
 
 # local imports
-from mountcontrol.convert import convertToAngle
 from base.tpool import Worker
 from gui.utilities.toolsQtWidget import sleepAndEvents
 from logic.plateSolve.plateSolveSignals import PlateSolveSignals
@@ -64,6 +62,8 @@ class PlateSolve:
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
+        self.signals.serverConnected.connect(self.startSolveLoop)
+
     def processSolveQueue(self, imagePath: Path, updateHeader: bool) -> None:
         """
         """
@@ -72,21 +72,23 @@ class PlateSolve:
         else: 
             result = self.run[self.framework].solve(imagePath=imagePath, 
                                                     updateHeader=updateHeader)
-        self.signals.done.emit(result)
+        self.signals.result.emit(result)
          
     def workerSolveLoop(self) -> None:
         """
         """
         while self.solveLoopRunning:
+            sleepAndEvents(500)
             if self.solveQueue.empty():
-                sleepAndEvents(500)
                 continue
             imagePath, updateHeader = self.solveQueue.get()
-            self.processSolveQueue(imagePath, updateHeader) 
+            self.processSolveQueue(imagePath, updateHeader)
+            self.solveQueue.task_done()
             
     def startSolveLoop(self) -> None:
         """
         """
+        self.solveLoopRunning = True
         worker = Worker(self.workerSolveLoop)
         self.threadPool.start(worker)
     
@@ -105,14 +107,12 @@ class PlateSolve:
     def startCommunication(self):
         """
         """
-        sucApp = self.checkAvailabilityProgram(self.framework)
+        sucProgram = self.checkAvailabilityProgram(self.framework)
         sucIndex = self.checkAvailabilityIndex(self.framework) 
         name = self.run[self.framework].deviceName
-        if not sucApp or not sucIndex:
+        if not sucProgram or not sucIndex:
             return
 
-        self.solveLoopRunning = True
-        self.startSolveLoop()
         self.signals.deviceConnected.emit(name)
         self.signals.serverConnected.emit()
 

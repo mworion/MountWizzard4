@@ -111,7 +111,7 @@ def getCoordinatesFromWCSHeader(header: fits.Header) -> [Angle, Angle]:
     return ra, dec
 
 
-def calcAngleScaleFromWCSHeader(header: fits.Header) -> [float, float, bool]:
+def calcAngleScaleFromWCSHeader(header: fits.Header) -> [Angle, float, bool]:
     """
     """
     CD11 = header.get('CD1_1', 0)
@@ -121,7 +121,7 @@ def calcAngleScaleFromWCSHeader(header: fits.Header) -> [float, float, bool]:
 
     mirrored = (CD11 * CD22 - CD12 * CD21) < 0
     angleRad = np.arctan2(CD12, CD11)
-    angle = np.degrees(angleRad)
+    angle = Angle(radians=np.degrees(angleRad))
     scale = CD11 / np.cos(angleRad) * 3600
 
     return angle, scale, mirrored
@@ -155,6 +155,7 @@ def writeHeaderCamera(header: fits.Header, camera) -> fits.Header:
     header.append(('EXPTIME', camera.expTime))
     header.append(('CCD-TEMP', data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
     return header
+
 
 def writeHeaderPointing(header: fits.Header, camera) -> fits.Header:
     """

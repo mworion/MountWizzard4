@@ -503,7 +503,7 @@ class Model(MWidget, RunBasic):
         :param result: result (named tuple)
         :return: success
         """
-        self.app.plateSolve.signals.done.disconnect(self.solveDone)
+        self.app.plateSolve.signals.result.disconnect(self.solveDone)
         if not result:
             self.msg.emit(2, 'Model', 'Solving error', 'Result missing')
             self.app.operationRunning.emit(0)
@@ -553,7 +553,7 @@ class Model(MWidget, RunBasic):
             self.app.operationRunning.emit(0)
             return False
 
-        self.app.plateSolve.signals.done.connect(self.solveDone)
+        self.app.plateSolve.signals.result.connect(self.solveDone)
         self.app.plateSolve.solve(imagePath=imagePath)
         self.msg.emit(0, 'Model', 'Solving', f'{os.path.basename(imagePath)}')
         return True

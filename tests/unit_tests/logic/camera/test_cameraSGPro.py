@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 import unittest.mock as mock
 import os
 
@@ -26,7 +25,6 @@ import os
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.camera import Camera
 from logic.camera.cameraSGPro import CameraSGPro
-from base.driverDataClass import Signals
 from base.loggerMW import setupLogging
 setupLogging()
 
@@ -39,6 +37,14 @@ def function():
     camera.focalLength = 1
     func = CameraSGPro(camera)
     yield func
+
+
+@pytest.fixture
+def mocked_sleepAndEvents(monkeypatch, function):
+    def test(a):
+        pass
+
+    monkeypatch.setattr('logic.camera.cameraSGPro.sleepAndEvents', test)
 
 
 def test_sgGetCameraTemp_1(function):
@@ -143,50 +149,13 @@ def test_sgGetCameraProps_2(function):
         assert val == {'Success': True}
 
 
-def test_workerGetInitialConfig_2(function):
-    function.deviceName = 'test'
-    with mock.patch.object(function,
-                           'storePropertyToData'):
-        with mock.patch.object(function,
-                               'sgGetCameraProps',
-                               return_value=(False, {})):
-            function.workerGetInitialConfig()
+def test_workerGetInitialConfig_1(function):
+    function.workerGetInitialConfig()
+    assert function.data['CCD_BINNING.HOR_BIN'] == 1
 
 
-def test_workerGetInitialConfig_3(function):
-    function.deviceName = 'test'
-    val = {
-        'Message': 'test',
-        'SupportsSubframe': True,
-        'NumPixelsX': 1000,
-        'NumPixelsY': 500,
-        'GainValues': ['1'],
-        'IsoValues': ['1'],
-    }
-    with mock.patch.object(function,
-                           'storePropertyToData'):
-        with mock.patch.object(function,
-                               'sgGetCameraProps',
-                               return_value=(True, val)):
-            function.workerGetInitialConfig()
-
-
-def test_workerPollData_2(function):
-    function.deviceName = 'test'
-    function.data['CAN_FAST'] = True
-    with mock.patch.object(function,
-                           'sgGetCameraTemp',
-                           return_value=(False, None)):
-        function.workerPollData()
-
-
-def test_workerPollData_3(function):
-    function.deviceName = 'test'
-    function.data['CAN_FAST'] = True
-    with mock.patch.object(function,
-                           'sgGetCameraTemp',
-                           return_value=(True, {'Temperature': 10})):
-        function.workerPollData()
+def test_workerPollData_1(function):
+    function.workerPollData()
 
 
 def test_sendDownloadMode_1(function):
@@ -203,21 +172,19 @@ def test_workerExpose_1(function):
     with mock.patch.object(function,
                            'sgCaptureImage',
                            return_value=(False, None)):
-        suc = function.workerExpose()
-        assert not suc
+        function.workerExpose()
 
 
 def test_workerExpose_2(function):
     with mock.patch.object(function,
                            'sgCaptureImage',
                            return_value=(True, {})):
-        suc = function.workerExpose()
-        assert not suc
+        function.workerExpose()
 
 
-def test_workerExpose_3(function):
+def test_workerExpose_3(function, mocked_sleepAndEvents):
     function.deviceName = 'test'
-    function.abortExpose = False
+    function.parent.exposing = True
     with mock.patch.object(function,
                            'sgCaptureImage',
                            return_value=(True, {'Receipt': '123'})):
@@ -231,18 +198,16 @@ def test_workerExpose_3(function):
                                            'waitSave'):
                         with mock.patch.object(function.parent,
                                                'waitFinish'):
-                            with mock.patch.object(os.path,
-                                                   'splitext',
-                                                   return_value=('test', 'test')):
-                                with mock.patch.object(os,
-                                                       'rename'):
+                            with mock.patch.object(os,
+                                                   'rename'):
+                                with mock.patch.object(function.parent,
+                                                       'updateImageFitsHeaderPointing'):
                                     function.workerExpose()
 
 
-def test_workerExpose_4(function):
+def test_workerExpose_4(function, mocked_sleepAndEvents):
     function.deviceName = 'test'
-    function.data['READOUT_QUALITY.QUALITY_LOW'] = True
-    function.abortExpose = True
+    function.parent.exposing = False
     with mock.patch.object(function,
                            'sgCaptureImage',
                            return_value=(True, {'Receipt': '123'})):
@@ -259,27 +224,25 @@ def test_workerExpose_4(function):
                             function.workerExpose()
 
 
-def test_expose_2(function):
+def test_expose_1(function):
     function.deviceConnected = True
     with mock.patch.object(function.threadPool,
                            'start'):
         function.expose()
 
-def test_abort_2(function):
+
+def test_abort_1(function):
     with mock.patch.object(function,
                            'sgAbortImage'):
-        suc = function.abort()
-        assert suc
+        function.abort()
 
 
-def test_sendCoolerSwitch_2(function):
+def test_sendCoolerSwitch_1(function):
     function.sendCoolerSwitch(coolerOn=True)
 
 
-def test_sendCoolerTemp_2(function):
-    with mock.patch.object(function,
-                           'sgSetCameraTemp'):
-        function.sendCoolerTemp(temperature=-10)
+def test_sendCoolerTemp_1(function):
+    function.sendCoolerTemp(temperature=-10)
 
 
 def test_sendOffset_1(function):

@@ -41,6 +41,14 @@ def function(qapp):
         yield window
 
 
+@pytest.fixture
+def mocked_sleepAndEvents(monkeypatch, function):
+    def test(a):
+        function.pollStatusRunState = False
+
+    monkeypatch.setattr('gui.extWindows.uploadPopupW.sleepAndEvents', test)
+
+
 def set_setIcon(function):
     function.setIcon()
 
@@ -216,32 +224,26 @@ def test_pollStatus_2(function):
         assert not function.returnValues['successMount']
 
 
-def test_closePopup_1(function):
+def test_closePopup_1(function, mocked_sleepAndEvents):
     with mock.patch.object(function,
                            'close'):
-        with mock.patch.object(gui.extWindows.uploadPopupW,
-                               'sleepAndEvents'):
-            function.closePopup(False)
+        function.closePopup(False)
 
 
-def test_closePopup_2(function):
+def test_closePopup_2(function, mocked_sleepAndEvents):
     function.returnValues['successMount'] = True
-    function.pollStatusRunState = False
+    function.pollStatusRunState = True
     with mock.patch.object(function,
                            'close'):
-        with mock.patch.object(gui.extWindows.uploadPopupW,
-                               'sleepAndEvents'):
-            function.closePopup(True)
+        function.closePopup(True)
 
 
-def test_closePopup_3(function):
+def test_closePopup_3(function, mocked_sleepAndEvents):
     function.returnValues['successMount'] = False
     function.pollStatusRunState = False
     with mock.patch.object(function,
                            'close'):
-        with mock.patch.object(gui.extWindows.uploadPopupW,
-                               'sleepAndEvents'):
-            function.closePopup(True)
+        function.closePopup(True)
 
 
 def test_uploadFile_1(function):

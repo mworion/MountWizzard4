@@ -92,49 +92,16 @@ class CameraNINA(NINAClass):
         """
         """
         self.storePropertyToData(1, 'CCD_BINNING.HOR_BIN')
-        if 'controlled' in self.deviceName:
-            return
-        suc, response = self.getCameraProps()
-        if not suc:
-            self.log.debug('No camera props received')
-            return
-
-        self.storePropertyToData(response['Message'], 'CCD_INFO.Message')
-        gainList = response.get('IsoValues')
-        if gainList:
-            self.storePropertyToData(gainList, 'CCD_GAIN.GAIN_LIST')
-
-        gainList = response.get('GainValues')
-        if gainList:
-            self.storePropertyToData(gainList, 'CCD_GAIN.GAIN_LIST')
-            self.storePropertyToData(1, 'CCD_GAIN.GAIN')
-
-        self.storePropertyToData(response['NumPixelsX'], 'CCD_INFO.CCD_MAX_X')
-        self.storePropertyToData(response['NumPixelsY'], 'CCD_INFO.CCD_MAX_Y')
-        canSubframe = response.get('SupportsSubframe')
-        if canSubframe:
-            self.storePropertyToData(response['NumPixelsX'], 'CCD_FRAME.X')
-            self.storePropertyToData(response['NumPixelsY'], 'CCD_FRAME.Y')
-
-        self.storePropertyToData(True, 'CAN_SET_CCD_TEMPERATURE')
-        self.log.debug(f'Initial data: {self.data}')
 
     def workerPollData(self) -> None:
         """
         """
-        if 'controlled' in self.deviceName:
-            return
-        suc, response = self.getCameraTemp()
-        if not suc:
-            return
-
-        self.storePropertyToData(response.get('Temperature'),
-                                 'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+        pass
 
     def sendDownloadMode(self) -> None:
         """
         """
-        return
+        pass
 
     def waitFunc(self) -> bool:
         """
@@ -147,23 +114,6 @@ class CameraNINA(NINAClass):
         params = {'BinningMode': self.parent.binning,
                   'ExposureLength': max(self.parent.expTime, 1),
                   'Path': self.parent.imagePath}
-
-        addParams = {
-            'UseSubframe': True,
-            'X': self.parent.posX,
-            'Y': self.parent.posY,
-            'Width': self.parent.width,
-            'Height': self.parent.height,
-            'FrameType': 'Light'}
-
-        if 'READOUT_QUALITY.QUALITY_LOW' in self.data:
-            speed = 'High' if self.parent.fastReadout else 'Normal'
-            speedParams = {'Speed': speed}
-        else:
-            speedParams = {}
-
-        if 'controlled' not in self.deviceName:
-            params = {**params, **addParams, **speedParams}
 
         suc, response = self.captureImage(params=params)
         if not suc:
@@ -208,15 +158,15 @@ class CameraNINA(NINAClass):
     def sendCoolerTemp(self, temperature: float = 0) -> None:
         """
         """
-        self.setCameraTemp(temperature=temperature)
+        pass
 
     def sendOffset(self, offset: int = 0) -> None:
         """
         """
-        self.data['CCD_OFFSET.OFFSET'] = offset
+        pass
  
     def sendGain(self, gain: int = 0) -> None:
         """
         """
-        self.data['CCD_GAIN.GAIN'] = gain
+        pass
  

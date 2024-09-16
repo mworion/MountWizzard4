@@ -62,7 +62,15 @@ def test_stopTimer(function):
         assert suc
 
 
+def test_getAscomProperty_0(function):
+    function.deviceConnected = False
+    function.propertyExceptions = ['Connected']
+    val = function.getAscomProperty('Connected')
+    assert val is None
+
+
 def test_getAscomProperty_1(function):
+    function.deviceConnected = True
     function.propertyExceptions = ['Connected']
     val = function.getAscomProperty('Connected')
     assert val is None

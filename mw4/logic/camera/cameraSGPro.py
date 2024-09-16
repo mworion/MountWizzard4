@@ -93,44 +93,11 @@ class CameraSGPro(SGProClass):
         """
         """
         self.storePropertyToData(1, 'CCD_BINNING.HOR_BIN')
-        if 'controlled' in self.deviceName:
-            return
-        suc, response = self.sgGetCameraProps()
-        if not suc:
-            self.log.debug('No camera props received')
-            return
-
-        self.storePropertyToData(response['Message'],
-                                 'CCD_INFO.Message')
-        self.storePropertyToData(response.get('IsoValues'),
-                                 'CCD_GAIN.GAIN_LIST')
-        self.storePropertyToData(response.get('GainValues'),
-                                 'CCD_GAIN.GAIN_LIST')
-        self.storePropertyToData(1,
-                                 'CCD_GAIN.GAIN')
-        self.storePropertyToData(response['NumPixelsX'],
-                                 'CCD_INFO.CCD_MAX_X')
-        self.storePropertyToData(response['NumPixelsY'],
-                                 'CCD_INFO.CCD_MAX_Y')
-        canSubframe = response.get('SupportsSubframe')
-        if canSubframe:
-            self.storePropertyToData(response['NumPixelsX'],
-                                     'CCD_FRAME.X')
-            self.storePropertyToData(response['NumPixelsY'],
-                                     'CCD_FRAME.Y')
-        self.storePropertyToData(True, 'CAN_SET_CCD_TEMPERATURE')
-        self.log.debug(f'Initial data: {self.data}') 
 
     def workerPollData(self) -> None:
         """
         """
-        if 'controlled' in self.deviceName:
-            return
-        suc, response = self.sgGetCameraTemp()
-        if not suc:
-            return
-        self.storePropertyToData(response.get('Temperature'),
-                                 'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+        pass
 
     def sendDownloadMode(self) -> None:
         """
@@ -148,22 +115,6 @@ class CameraSGPro(SGProClass):
         params = {'BinningMode': self.parent.binning,
                   'ExposureLength': max(self.parent.expTime, 1),
                   'Path': self.parent.imagePath}
-        addParams = {
-            'UseSubframe': True,
-            'X': self.parent.posXASCOM,
-            'Y': self.parent.posYASCOM,
-            'Width': self.parent.widthASCOM,
-            'Height': self.parent.heightASCOM,
-            'FrameType': 'Light'}
-
-        if 'READOUT_QUALITY.QUALITY_LOW' in self.data:
-            speed = 'High' if self.parent.fastReadout else 'Normal'
-            speedParams = {'Speed': speed}
-        else:
-            speedParams = {}
-
-        if 'controlled' not in self.deviceName:
-            params = {**params, **addParams, **speedParams}
 
         suc, response = self.sgCaptureImage(params=params)
         if not suc:
@@ -186,7 +137,7 @@ class CameraSGPro(SGProClass):
         if not self.parent.exposing:
             self.parent.imagePath = ''
         else:
-            pre, ext = os.path.splitext(self.parent.imagePath)
+            pre, _ = os.path.splitext(self.parent.imagePath)
             os.rename(pre + '.fit', self.parent.imagePath)
             sleepAndEvents(500)
             self.parent.updateImageFitsHeaderPointing()
@@ -198,7 +149,7 @@ class CameraSGPro(SGProClass):
         worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(worker)
 
-    def abort(self) -> bool:
+    def abort(self) -> None:
         """
         """
         return self.sgAbortImage()
@@ -211,14 +162,14 @@ class CameraSGPro(SGProClass):
     def sendCoolerTemp(self, temperature: float = 0) -> None:
         """
         """
-        self.sgSetCameraTemp(temperature=temperature)
+        pass
 
     def sendOffset(self, offset: int = 0) -> None:
         """
         """
-        self.data['CCD_OFFSET.OFFSET'] = offset
+        pass
 
     def sendGain(self, gain: int = 0) -> None:
         """
         """
-        self.data['CCD_GAIN.GAIN'] = gain
+        pass

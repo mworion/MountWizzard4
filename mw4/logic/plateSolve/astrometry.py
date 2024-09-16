@@ -21,16 +21,16 @@ import os
 import glob
 import time
 import platform
+from os.path import normpath
 from pathlib import Path
 
 # external packages
-from astropy.io import fits
 
 # local imports
 from mountcontrol import convert
-from logic.plateSolve.fitsFunctions import readImageHeaderHintData
 from logic.plateSolve.fitsFunctions import getSolutionFromWCSHeader
-from logic.plateSolve.fitsFunctions import writeSolutionToHeader
+from logic.plateSolve.fitsFunctions import updateImageFileHeaderWithSolution
+from logic.plateSolve.fitsFunctions import getImageHeader, readImageHeaderHintData
 
 
 class Astrometry(object):
@@ -47,13 +47,13 @@ class Astrometry(object):
 
         self.result = {'success': False}
         self.process = None
-        self.apiKey = ''
         self.indexPath = ''
         self.appPath = ''
+        self.setDefaultPath()
+        self.apiKey = ''
         self.timeout = 30
         self.searchRadius = 20
         self.deviceName = 'ASTROMETRY.NET'
-        self.setDefaultPath()
         self.defaultConfig = {
             'astrometry': {
                 'deviceName': 'ASTROMETRY.NET',
@@ -65,60 +65,43 @@ class Astrometry(object):
             }
         }
 
-    def setDefaultPath(self):
+    def setDefaultPath(self) -> None:
         """
-        :return: true for test purpose
         """
         if platform.system() == 'Darwin':
             home = os.environ.get('HOME', '')
-            self.appPath = '/Applications/KStars.app/Contents/MacOS/astrometry/bin'
-            self.indexPath = home + '/Library/Application Support/Astrometry'
+            self.appPath = normpath('/Applications/KStars.app/Contents/MacOS/astrometry/bin')
+            self.indexPath = normpath(home + '/Library/Application Support/Astrometry')
 
         elif platform.system() == 'Linux':
-            self.appPath = '/usr/bin'
-            self.indexPath = '/usr/share/astrometry'
+            self.appPath = normpath('/usr/bin')
+            self.indexPath = normpath('/usr/share/astrometry')
 
         elif platform.system() == 'Windows':
-            self.appPath = ''
-            self.indexPath = ''
+            self.appPath = normpath('')
+            self.indexPath = normpath('')
         self.saveConfigFile()
-        return True
 
     def saveConfigFile(self):
         """
-        :return:
         """
-        cfgFile = self.tempDir + '/astrometry.cfg'
+        cfgFile = os.path.join(self.tempDir, 'astrometry.cfg')
         with open(cfgFile, 'w+') as outFile:
             outFile.write('cpulimit 300\n')
             outFile.write(f'add_path {self.indexPath}\n')
             outFile.write('autoindex\n')
-        return True
 
-    def runImage2xy(self, binPath='', tempPath='', fitsPath=''):
+    def runImage2xy(self, binPath: Path, tempPath: Path, imagePath: Path) -> bool:
         """
-        runImage2xy extracts a list of stars out of the fits image. there is a
-        timeout of 3 seconds set to get the process finished
-
-        :param binPath:   full path to image2xy executable
-        :param tempPath:  full path to star file
-        :param fitsPath:  full path to fits file
-        :return: success
         """
-
-        runnable = [binPath,
-                    '-O',
-                    '-o',
-                    tempPath,
-                    fitsPath]
-
+        runnable = [binPath, '-O', '-o', tempPath, imagePath]
         timeStart = time.time()
         try:
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
                                             stderr=subprocess.PIPE,
                                             )
-            stdout, stderr = self.process.communicate(timeout=self.timeout)
+            stdout, _ = self.process.communicate(timeout=self.timeout)
 
         except subprocess.TimeoutExpired as e:
             self.log.critical(e)
@@ -128,34 +111,15 @@ class Astrometry(object):
             self.log.critical(f'error: {e} happened')
             return False
 
-        else:
-            delta = time.time() - timeStart
-            self.log.debug(f'IMAGE2XY took {delta}s return code: '
-                           + str(self.process.returncode)
-                           + f' [{fitsPath}]'
-                           + ' stderr: '
-                           + stderr.decode().replace('\n', ' ')
-                           + ' stdout: '
-                           + stdout.decode().replace('\n', ' ')
-                           )
+        delta = time.time() - timeStart
+        stdoutText = stdout.decode().replace("\n", " ")
+        self.log.debug(f'Run {delta}s, {stdoutText}')
+        return self.process.returncode == 0
 
-        success = (self.process.returncode == 0)
-        return success
-
-    def runSolveField(self, binPath='', configPath='', tempPath='', options='',
-                      fitsPath=''):
+    def runSolveField(self, binPath: Path, configPath: Path, tempPath: Path,
+                      options: list):
         """
-        runSolveField solves finally the xy star list and writes the WCS data
-        in a fits file format
-
-        :param binPath:   full path to solve-field executable
-        :param configPath: full path to astrometry.cfg file
-        :param tempPath:  full path to star file
-        :param options: additional solver options e.g. ra and dec hint
-        :param fitsPath:  full path to fits file
-        :return: success
         """
-
         runnable = [binPath,
                     '--overwrite',
                     '--no-remove-lines',
@@ -179,7 +143,7 @@ class Astrometry(object):
                                             stdout=subprocess.PIPE,
                                             stderr=subprocess.PIPE,
                                             )
-            stdout, stderr = self.process.communicate(timeout=self.timeout)
+            stdout, _ = self.process.communicate(timeout=self.timeout)
 
         except subprocess.TimeoutExpired as e:
             self.log.critical(e)
@@ -189,75 +153,35 @@ class Astrometry(object):
             self.log.critical(f'error: {e} happened')
             return False
 
-        else:
-            delta = time.time() - timeStart
-            self.log.debug(f'SOLVE-FIELD took {delta}s return code: '
-                           + str(self.process.returncode)
-                           + f' [{fitsPath}]'
-                           + ' stderr: '
-                           + stderr.decode().replace('\n', ' ')
-                           + ' stdout: '
-                           + stdout.decode().replace('\n', ' ')
-                           )
+        delta = time.time() - timeStart
+        stdoutText = stdout.decode().replace("\n", " ")
+        self.log.debug(f'Run {delta}s, {stdoutText}')
+        return self.process.returncode == 0
 
-        success = (self.process.returncode == 0)
-
-        return success
-
-    def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
-              fovHint=None, updateFits=False):
+    def solve(self, imagePath: Path, updateHeader: bool) -> dict:
         """
-        Solve uses the astrometry.net solver capabilities. The intention is to
-        use an offline solving capability, so we need an installed instance. As we
-        go multi-platform, and we need to focus on MW function, we use the
-        astrometry.net package which is distributed with KStars / EKOS. Many
-        thanks to them providing such a nice package.
-        As we go using astrometry.net we focus on the minimum feature set possible
-        to omit many of the installation and wrapping work to be done. So we only
-        support solving of FITS files, use no python environment for
-        astrometry.net parts (as we could access these via MW directly)
-
-        The base outside ideas of implementation come from astrometry.net itself
-        and the astrometry implementation from cloudmakers.eu (another nice
-        package for MAC Astro software)
-
-        :param fitsPath:  full path to fits file
-        :param raHint:  ra dest to look for solve in J2000
-        :param decHint:  dec dest to look for solve in J2000
-        :param scaleHint:  scale to look for solve in J2000
-        :param fovHint:  degrees FOV to look for solve in J2000
-        :param updateFits:  if true update Fits image file with wcsHeader data
-        :return: success
         """
         self.process = None
-        self.result = {'success': False,
-                       'message': 'Internal error'}
+        result = {'success': False, 'message': 'Internal error'}
 
-        tempPath = os.path.normpath(self.tempDir + '/temp.xy')
-        configPath = os.path.normpath(self.tempDir + '/astrometry.cfg')
-        wcsPath = os.path.normpath(self.tempDir + '/temp.wcs')
-        binPathImage2xy = os.path.normpath(self.appPath + '/image2xy')
-        binPathSolveField = os.path.normpath(self.appPath + '/solve-field')
+        tempPath = os.path.join(self.tempDir, 'temp.xy')
+        configPath = os.path.join(self.tempDir, 'astrometry.cfg')
+        wcsPath = os.path.join(self.tempDir, 'temp.wcs')
+        binPathImage2xy = os.path.join(self.appPath, 'image2xy')
+        binPathSolveField = os.path.join(self.appPath, 'solve-field')
 
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 
         suc = self.runImage2xy(binPath=binPathImage2xy,
                                tempPath=tempPath,
-                               fitsPath=fitsPath)
+                               imagePath=imagePath)
         if not suc:
-            self.log.warning(f'IMAGE2XY error in [{fitsPath}]')
+            self.log.warning(f'IMAGE2XY error in [{imagePath}]')
             self.result['message'] = 'image2xy failed'
-            return False
+            return result
 
-        raFITS, decFITS, scaleFITS = readImageHeaderHintData(imagePath=fitsPath)
-        if raHint is None:
-            raHint = raFITS
-        if decHint is None:
-            decHint = decFITS
-        if scaleHint is None:
-            scaleHint = scaleFITS
-
+        raHint, decHint, scaleHint = readImageHeaderHintData(imagePath=imagePath)
         searchRatio = 1.1
         ra = convert.convertToHMS(raHint)
         dec = convert.convertToDMS(decHint)
@@ -284,46 +208,37 @@ class Astrometry(object):
         suc = self.runSolveField(binPath=binPathSolveField,
                                  configPath=configPath,
                                  tempPath=tempPath,
-                                 options=options,
-                                 fitsPath=fitsPath,
-                                 )
+                                 options=options)
         if not suc:
-            self.log.warning(f'SOLVE-FIELD error in [{fitsPath}]')
-            self.result['message'] = 'solve-field error'
-            return False
+            self.log.warning(f'SOLVE-FIELD error in [{imagePath}]')
+            result['message'] = 'solve-field error'
+            return result
 
         if not os.path.isfile(wcsPath):
             self.log.warning(f'Solve files for [{wcsPath}] missing')
-            self.result['message'] = 'solve failed'
-            return False
+            result['message'] = 'solve failed'
+            return result
 
-        wcsHeader = getImageHeader(imgagePath=wcsPath)
-        solution = getSolutionFromWCSHeader(wcsHeader=wcsHeader)
-        
-        if updateFits:
-            updateImageFileHeaderWithSolution(fitsPath, solution)
+        wcsHeader = getImageHeader(imagePath=wcsPath)
+        imageHeader = getImageHeader(imagePath=imagePath)
+        solution = getSolutionFromWCSHeader(wcsHeader=wcsHeader, imageHeader=imageHeader)
 
-        self.result = {
-            'success': True,
-            'solvedPath': fitsPath,
-            'message': 'Solved',
-        }
-        self.result.update(solve)
-        self.log.debug(f'Result: [{self.result}]')
-        return True
+        if updateHeader:
+            updateImageFileHeaderWithSolution(imagePath, solution)
+
+        result['success'] = True
+        result['message'] = 'Solved'
+        result.update(solution)
+        self.log.debug(f'Result: [{result}]')
+        return result
 
     def abort(self):
         """
-        abortNET stops the solving function hardly just by killing the process
-
-        :return: success
         """
-
         if self.process:
             self.process.kill()
             return True
-        else:
-            return False
+        return False
 
     def checkAvailabilityProgram(self, appPath: Path) -> bool:
         """
@@ -331,12 +246,13 @@ class Astrometry(object):
         self.appPath = appPath
 
         if platform.system() == 'Darwin':
-            program = self.appPath + '/solve-field'
+            program = os.path.join(self.appPath, 'solve-field')
         elif platform.system() == 'Linux':
-            program = self.appPath + '/solve-field'
+            program = os.path.join(self.appPath, 'solve-field')
         elif platform.system() == 'Windows':
-            program = ''
-
+            program = normpath('')
+        else:
+            return False
         return os.path.isfile(program)
 
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
@@ -346,10 +262,11 @@ class Astrometry(object):
         self.saveConfigFile()
 
         if platform.system() == 'Darwin':
-            index = self.indexPath + '/*.fits'
+            index = os.path.join(self.indexPath, '*.fits')
         elif platform.system() == 'Linux':
-            index = self.indexPath + '/*.fits'
+            index = os.path.join(self.indexPath, '*.fits')
         elif platform.system() == 'Windows':
-            index = ''
-
+            index = normpath('')
+        else:
+            return False
         return bool(glob.glob(index))

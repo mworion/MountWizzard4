@@ -24,11 +24,11 @@ import platform
 from pathlib import Path
 
 # external packages
-from astropy.io import fits
 
 # local imports
 from logic.plateSolve.fitsFunctions import getSolutionFromWCSHeader
-from logic.plateSolve.fitsFunctions import writeSolutionToHeader
+from logic.plateSolve.fitsFunctions import updateImageFileHeaderWithSolution
+from logic.plateSolve.fitsFunctions import getImageHeader
 
 
 class Watney(object):
@@ -67,154 +67,109 @@ class Watney(object):
             }
         }
 
-    def saveConfigFile(self):
+    def saveConfigFile(self) -> None:
         """
-        :return:
         """
-        cfgFile = self.tempDir + '/watney-solve-config.yml'
+        cfgFile = os.path.join(self.tempDir, 'watney-solve-config.yml')
         with open(cfgFile, 'w+') as outFile:
             outFile.write(f"quadDbPath: '{self.indexPath}'\n")
             outFile.write("defaultStarDetectionBgOffset: 1.0\n")
             outFile.write("defaultLowerDensityOffset: 3\n")
-        return True
 
-    def setDefaultPath(self):
+    def setDefaultPath(self) -> None:
         """
-        :return: true for test purpose
         """
-        self.appPath = self.workDir + '/watney-cli'
-        self.indexPath = self.workDir + '/watney-index'
+        self.appPath = os.path.join(self.workDir, 'watney-cli')
+        self.indexPath = os.path.join(self.workDir, 'watney-index')
         self.saveConfigFile()
-        return True
 
-    def runWatney(self, runnable):
+    def runWatney(self, runnable: list) -> [bool, str]:
         """
-        runASTAP solves finally the xy star list and writes the WCS data in a fits
-        file format
-
-        :param runnable: additional solver options e.g. ra and dec hint
-        :return: success
         """
         timeStart = time.time()
         try:
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
                                             stderr=subprocess.PIPE)
-            stdout, stderr = self.process.communicate(timeout=self.timeout)
+            stdout, _ = self.process.communicate(timeout=self.timeout)
 
         except subprocess.TimeoutExpired:
             self.log.error('Timeout happened')
-            return False, -1
+            return False, 'Solving timed out'
 
         except Exception as e:
             self.log.critical(f'error: {e} happened')
-            return False, -2
+            return False, 'Exception during solving'
 
-        else:
-            delta = time.time() - timeStart
-            self.log.debug(f'Watney took {delta}s return code: '
-                           + f'{self.process.returncode}'
-                           + ' stderr: '
-                           + stderr.decode().replace('\n', ' ')
-                           + ' stdout: '
-                           + stdout.decode().replace('\n', ' '))
-        return True, int(self.process.returncode)
+        delta = time.time() - timeStart
+        stdoutText = stdout.decode().replace("\n", " ")
+        self.log.debug(f'Run {delta}s, {stdoutText}')
+        rCode = int(self.process.returncode)
+        suc = rCode == 0
+        msg = self.returnCodes.get(rCode, 'Unknown code')
+        return suc, msg
 
-    def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
-              fovHint=None, updateFits=False):
+    def solve(self, imagePath: Path, updateHeader: bool) -> dict:
         """
-        :param fitsPath:  full path to fits file
-        :param raHint:  ra dest to look for solve in J2000
-        :param decHint:  dec dest to look for solve in J2000
-        :param scaleHint:  scale to look for solve in J2000
-        :param fovHint:  degrees FOV to look for solve in J2000
-        :param updateFits:  if true update Fits image file with wcsHeader data
-
-        :return: success
         """
         self.process = None
-        self.result = {'success': False,
-                       'message': 'Internal error'}
+        result = {'success': False, 'message': 'Internal error'}
+
         isBlind = self.searchRadius == 180
-        jsonPath = os.path.normpath(self.tempDir + '/solve.json')
-        wcsPath = os.path.normpath(self.tempDir + '/temp.wcs')
+        jsonPath = os.path.join(self.tempDir, 'solve.json')
+        wcsPath = os.path.join(self.tempDir, 'temp.wcs')
 
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 
-        runnable = [self.appPath + '/watney-solve']
+        runnable = [os.path.join(self.appPath, 'watney-solve')]
 
         if isBlind:
             runnable += ['blind']
+            runnable += ['--min-radius', '0.15',
+                         '--max-radius', '16']
         else:
-            runnable += ['nearby']
+            runnable += ['nearby', '-h']
+            runnable += ['-s', f'{self.searchRadius:1.1f}']
 
-        runnable += ['-i', fitsPath,
+        runnable += ['-i', imagePath,
                      '-o', jsonPath,
                      '-w', wcsPath,
                      '--use-config', self.tempDir + '/watney-solve-config.yml',
                      '--extended', 'True']
 
-        if fovHint is not None:
-            rMin = max(fovHint / 4, 0.15)
-            rMax = min(fovHint * 4, 16)
-        else:
-            rMin = 0.15
-            rMax = 16
-
-        if isBlind:
-            runnable += ['--min-radius', f'{rMin}',
-                         '--max-radius', f'{rMax}']
-        else:
-            runnable += ['-s', f'{self.searchRadius:1.1f}']
-
-        if raHint is not None and decHint is not None and not isBlind:
-            runnable += ['-m',
-                         '-r', f'{raHint.hours}',
-                         '-d', f'{decHint.degrees}',
-                         '-f', f'{fovHint}']
-        elif not isBlind:
-            runnable += ['-h']
-
         suc, retValue = self.runWatney(runnable=runnable)
         if not suc:
             text = self.returnCodes.get(retValue, 'Unknown code')
-            self.result['message'] = f'Watney error: [{text}]'
-            self.log.warning(f'Watney error [{text}] in [{fitsPath}]')
-            return False
+            result['message'] = f'Watney error: [{text}]'
+            self.log.warning(f'Watney error [{text}] in [{imagePath}]')
+            return result
 
         if not os.path.isfile(wcsPath):
-            self.result['message'] = 'Solve failed'
+            result['message'] = 'Solve failed'
             self.log.warning(f'Solve files for [{wcsPath}] missing')
-            return False
+            return result
 
-        wcsHeader = getImageHeader(imgagePath=wcsPath)
-        solution = getSolutionFromWCSHeader(wcsHeader=wcsHeader)
+        wcsHeader = getImageHeader(imagePath=wcsPath)
+        imageHeader = getImageHeader(imagePath=imagePath)
+        solution = getSolutionFromWCSHeader(wcsHeader=wcsHeader, imageHeader=imageHeader)
 
-        
-        if updateFits:
-            updateImageFileHeaderWithSolution(fitsPath, solution)
+        if updateHeader:
+            updateImageFileHeaderWithSolution(imagePath, solution)
 
-        self.result = {
-            'success': True,
-            'solvedPath': fitsPath,
-            'message': 'Solved',
-        }
-        self.result.update(solve)
-        self.log.debug(f'Result: [{self.result}]')
-        return True
+        result['success'] = True
+        result['message'] = 'Solved'
+        result.update(solution)
+        self.log.debug(f'Result: [{result}]')
+        return result
 
     def abort(self):
         """
-        abort stops the solving function hardly just by killing the process
-
-        :return: success
         """
         if self.process:
             self.process.kill()
             return True
-        else:
-            return False
+        return False
 
     def checkAvailabilityProgram(self, appPath: Path) -> bool:
         """
@@ -222,12 +177,13 @@ class Watney(object):
         self.appPath = appPath
 
         if platform.system() == 'Darwin':
-            program = self.appPath + '/watney-solve'
+            program = os.path.join(self.appPath, 'watney-solve')
         elif platform.system() == 'Linux':
-            program = self.appPath + '/watney-solve'
+            program = os.path.join(self.appPath, '/watney-solve')
         elif platform.system() == 'Windows':
-            program = self.appPath + '/watney-solve.exe'
-
+            program = os.path.join(self.appPath, '/watney-solve.exe')
+        else:
+            return False
         return os.path.isfile(program)
 
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:

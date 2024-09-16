@@ -27,9 +27,9 @@ import builtins
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.plateSolve.plateSolve import PlateSolve
 import logic
-from logic.plateSolve.astap import ASTAP
+from logic.plateSolve.plateSolve import PlateSolve
+from logic.plateSolve.watney import Watney
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -44,35 +44,19 @@ def function():
         os.remove(fileP)
     
     parent = PlateSolve(app=App())
-    func = ASTAP(parent=parent)
+    func = Watney(parent=parent)
     yield func
 
 
+def test_saveConfigFile(function):
+    function.saveConfigFile()
+
+
 def test_setDefaultPath_1(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        function.setDefaultPath()
-        assert function.appPath == os.path.normpath('/Applications/ASTAP.app/Contents/MacOS')
+    function.setDefaultPath()
 
 
-def test_setDefaultPath_2(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Linux'):
-        function.setDefaultPath()
-        assert function.appPath == os.path.normpath('/opt/astap')
-
-
-def test_setDefaultPath_3(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        function.setDefaultPath()
-        assert function.appPath == os.path.normpath('C:\\Program Files\\astap')
-
-
-def test_runASTAP_1(function):
+def test_runWatney_1(function):
     class Test1:
         @staticmethod
         def decode():
@@ -90,12 +74,11 @@ def test_runASTAP_1(function):
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=Test()):
-        suc, ret = function.runASTAP('test', 'test', 'test', [])
-        assert ret == 'No solution'
+        suc, ret = function.runWatney([])
         assert not suc
 
 
-def test_runASTAP_2(function):
+def test_runWatney_2(function):
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=None):
@@ -103,22 +86,23 @@ def test_runASTAP_2(function):
                                'communicate',
                                return_value=('', ''),
                                side_effect=Exception()):
-            suc, ret = function.runASTAP('test', 'test', 'test', [])
+            suc, ret = function.runWatney(['test'])
             assert not suc
 
 
-def test_runASTAP_3(function):
+def test_runWatney_3(function):
     with mock.patch.object(subprocess.Popen,
                            'communicate',
                            return_value=('', ''),
                            side_effect=subprocess.TimeoutExpired('run', 1)):
-        suc, ret = function.runASTAP('test', 'test', 'test', [])
+        suc, ret = function.runWatney(['test'])
         assert not suc
 
 
 def test_solve_1(function):
+    function.searchRadius = 10
     with mock.patch.object(function,
-                           'runASTAP',
+                           'runWatney',
                            return_value=(False, 1)):
         with mock.patch.object(os.path,
                                'isfile',
@@ -130,27 +114,33 @@ def test_solve_1(function):
 
 
 def test_solve_2(function):
+    function.searchRadius = 180
     with mock.patch.object(function,
-                           'runASTAP',
+                           'runWatney',
                            return_value=(True, 0)):
-        res = function.solve('tests/workDir/image/m51.fit', False)
-        assert not res['success']
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=False):
+            res = function.solve('tests/workDir/image/m51.fit', False)
+            assert not res['success']
 
 
 def test_solve_3(function):
+    function.searchRadius = 10
     with mock.patch.object(function,
-                           'runASTAP',
+                           'runWatney',
                            return_value=(True, 0)):
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=True):
             with mock.patch.object(os,
-                                   'remove'):
-                with mock.patch.object(logic.plateSolve.astap,
+                                   'remove',
+                                   return_value=True):
+                with mock.patch.object(logic.plateSolve.watney,
                                        'getImageHeader'):
-                    with mock.patch.object(logic.plateSolve.astap,
+                    with mock.patch.object(logic.plateSolve.watney,
                                            'getSolutionFromWCSHeader'):
-                        with mock.patch.object(logic.plateSolve.astap,
+                        with mock.patch.object(logic.plateSolve.watney,
                                                'updateImageFileHeaderWithSolution'):
                             res = function.solve('tests/workDir/image/m51.fit', True)
                             assert res['success']
@@ -219,32 +209,7 @@ def test_checkAvailabilityProgram_4(function):
 
 def test_checkAvailabilityIndex_1(function):
     with mock.patch.object(builtins,
-                           'any',
-                           return_value=True):
-        with mock.patch.object(platform,
-                               'system',
-                               return_value='Linux'):
-            suc = function.checkAvailabilityIndex('test')
-            assert suc
-
-
-def test_checkAvailabilityIndex_2(function):
-    with mock.patch.object(builtins,
-                           'any',
-                           return_value=True):
-        with mock.patch.object(platform,
-                               'system',
-                               return_value='Darwin'):
-            suc = function.checkAvailabilityIndex('test')
-            assert suc
-
-
-def test_checkAvailabilityIndex_3(function):
-    with mock.patch.object(builtins,
-                           'any',
-                           return_value=True):
-        with mock.patch.object(platform,
-                               'system',
-                               return_value='Windows'):
-            suc = function.checkAvailabilityIndex('test')
-            assert suc
+                           'sum',
+                           return_value=407):
+        suc = function.checkAvailabilityIndex('test')
+        assert suc

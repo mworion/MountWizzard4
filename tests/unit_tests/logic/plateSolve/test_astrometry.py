@@ -17,19 +17,19 @@
 # standard libraries
 from unittest import mock
 import pytest
-import subprocess
 import os
 import glob
 import platform
-import builtins
+import subprocess
+from os.path import normpath
 
 # external packages
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.plateSolve.plateSolve import PlateSolve
 import logic
-from logic.plateSolve.astap import ASTAP
+from logic.plateSolve.astrometry import Astrometry
+from logic.plateSolve.plateSolve import PlateSolve
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -42,9 +42,9 @@ def function():
         if 'temp' not in file:
             continue
         os.remove(fileP)
-    
+
     parent = PlateSolve(app=App())
-    func = ASTAP(parent=parent)
+    func = Astrometry(parent=parent)
     yield func
 
 
@@ -53,7 +53,7 @@ def test_setDefaultPath_1(function):
                            'system',
                            return_value='Darwin'):
         function.setDefaultPath()
-        assert function.appPath == os.path.normpath('/Applications/ASTAP.app/Contents/MacOS')
+        assert function.appPath == normpath('/Applications/KStars.app/Contents/MacOS/astrometry/bin')
 
 
 def test_setDefaultPath_2(function):
@@ -61,7 +61,7 @@ def test_setDefaultPath_2(function):
                            'system',
                            return_value='Linux'):
         function.setDefaultPath()
-        assert function.appPath == os.path.normpath('/opt/astap')
+        assert function.appPath == normpath('/usr/bin')
 
 
 def test_setDefaultPath_3(function):
@@ -69,10 +69,14 @@ def test_setDefaultPath_3(function):
                            'system',
                            return_value='Windows'):
         function.setDefaultPath()
-        assert function.appPath == os.path.normpath('C:\\Program Files\\astap')
+        assert function.appPath == normpath('')
 
 
-def test_runASTAP_1(function):
+def test_saveConfigFile(function):
+    function.saveConfigFile()
+
+
+def test_runImage2xy_1(function):
     class Test1:
         @staticmethod
         def decode():
@@ -90,12 +94,11 @@ def test_runASTAP_1(function):
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=Test()):
-        suc, ret = function.runASTAP('test', 'test', 'test', [])
-        assert ret == 'No solution'
-        assert not suc
+        suc = function.runImage2xy('test', 'test', 'test')
+    assert not suc
 
 
-def test_runASTAP_2(function):
+def test_runImage2xy_2(function):
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=None):
@@ -103,23 +106,66 @@ def test_runASTAP_2(function):
                                'communicate',
                                return_value=('', ''),
                                side_effect=Exception()):
-            suc, ret = function.runASTAP('test', 'test', 'test', [])
+            suc = function.runImage2xy('test', 'test', 'test')
             assert not suc
 
 
-def test_runASTAP_3(function):
+def test_runImage2xy_3(function):
     with mock.patch.object(subprocess.Popen,
                            'communicate',
                            return_value=('', ''),
                            side_effect=subprocess.TimeoutExpired('run', 1)):
-        suc, ret = function.runASTAP('test', 'test', 'test', [])
+        suc = function.runImage2xy('test', 'test', 'test')
+        assert not suc
+
+
+def test_runSolveField_1(function):
+    class Test1:
+        @staticmethod
+        def decode():
+            return 'decode'
+
+    class Test:
+        returncode = '1'
+        stderr = Test1()
+        stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=Test()):
+        suc = function.runSolveField('test', 'test', 'test', [])
+    assert not suc
+
+
+def test_runSolveField_2(function):
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           return_value=None):
+        with mock.patch.object(subprocess.Popen,
+                               'communicate',
+                               return_value=('', ''),
+                               side_effect=Exception()):
+            suc = function.runSolveField('test', 'test', 'test', [])
+            assert not suc
+
+
+def test_runSolveField_3(function):
+    with mock.patch.object(subprocess.Popen,
+                           'communicate',
+                           return_value=('', ''),
+                           side_effect=subprocess.TimeoutExpired('run', 1)):
+        suc = function.runSolveField('test', 'test', 'test', [])
         assert not suc
 
 
 def test_solve_1(function):
     with mock.patch.object(function,
-                           'runASTAP',
-                           return_value=(False, 1)):
+                           'runImage2xy',
+                           return_value=False):
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=True):
@@ -131,29 +177,63 @@ def test_solve_1(function):
 
 def test_solve_2(function):
     with mock.patch.object(function,
-                           'runASTAP',
-                           return_value=(True, 0)):
-        res = function.solve('tests/workDir/image/m51.fit', False)
-        assert not res['success']
+                           'runImage2xy',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'runSolveField',
+                               return_value=False):
+            with mock.patch.object(os.path,
+                                   'isfile',
+                                   return_value=False):
+                with mock.patch.object(logic.plateSolve.astrometry,
+                                       'readImageHeaderHintData',
+                                       return_value=(0, 0, 0)):
+                    res = function.solve('tests/workDir/image/m51.fit', False)
+                    assert not res['success']
 
 
 def test_solve_3(function):
     with mock.patch.object(function,
-                           'runASTAP',
-                           return_value=(True, 0)):
-        with mock.patch.object(os.path,
-                               'isfile',
+                           'runImage2xy',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'runSolveField',
                                return_value=True):
-            with mock.patch.object(os,
-                                   'remove'):
-                with mock.patch.object(logic.plateSolve.astap,
-                                       'getImageHeader'):
-                    with mock.patch.object(logic.plateSolve.astap,
-                                           'getSolutionFromWCSHeader'):
-                        with mock.patch.object(logic.plateSolve.astap,
-                                               'updateImageFileHeaderWithSolution'):
-                            res = function.solve('tests/workDir/image/m51.fit', True)
-                            assert res['success']
+            with mock.patch.object(os.path,
+                                   'isfile',
+                                   return_value=False):
+                with mock.patch.object(logic.plateSolve.astrometry,
+                                       'readImageHeaderHintData',
+                                       return_value=(0, 0, 0)):
+                    res = function.solve('tests/workDir/image/m51.fit', False)
+                    assert not res['success']
+
+
+def test_solve_4(function):
+    function.indexPath = 'tests/workDir/temp'
+    function.appPath = 'Astrometry.app'
+    with mock.patch.object(function,
+                           'runImage2xy',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'runSolveField',
+                               return_value=True):
+            with mock.patch.object(os.path,
+                                   'isfile',
+                                   return_value=True):
+                with mock.patch.object(os,
+                                       'remove'):
+                    with mock.patch.object(logic.plateSolve.astrometry,
+                                           'readImageHeaderHintData',
+                                           return_value=(0, 0, 0)):
+                        with mock.patch.object(logic.plateSolve.astrometry,
+                                               'getImageHeader'):
+                            with mock.patch.object(logic.plateSolve.astrometry,
+                                                   'getSolutionFromWCSHeader'):
+                                with mock.patch.object(logic.plateSolve.astrometry,
+                                                       'updateImageFileHeaderWithSolution'):
+                                    res = function.solve(f'tests/workDir/image/m51.fit', True)
+                                    assert res['success']
 
 
 def test_abort_1(function):
@@ -167,7 +247,7 @@ def test_abort_2(function):
         @staticmethod
         def kill():
             return True
-    function.framework = 'ASTAP'
+    function.framework = 'Astrometry'
     function.process = Test()
     suc = function.abort()
     assert suc
@@ -218,8 +298,8 @@ def test_checkAvailabilityProgram_4(function):
 
 
 def test_checkAvailabilityIndex_1(function):
-    with mock.patch.object(builtins,
-                           'any',
+    with mock.patch.object(glob,
+                           'glob',
                            return_value=True):
         with mock.patch.object(platform,
                                'system',
@@ -229,8 +309,8 @@ def test_checkAvailabilityIndex_1(function):
 
 
 def test_checkAvailabilityIndex_2(function):
-    with mock.patch.object(builtins,
-                           'any',
+    with mock.patch.object(glob,
+                           'glob',
                            return_value=True):
         with mock.patch.object(platform,
                                'system',
@@ -240,11 +320,22 @@ def test_checkAvailabilityIndex_2(function):
 
 
 def test_checkAvailabilityIndex_3(function):
-    with mock.patch.object(builtins,
-                           'any',
+    with mock.patch.object(glob,
+                           'glob',
                            return_value=True):
         with mock.patch.object(platform,
                                'system',
                                return_value='Windows'):
             suc = function.checkAvailabilityIndex('test')
             assert suc
+
+
+def test_checkAvailabilityIndex_4(function):
+    with mock.patch.object(glob,
+                           'glob',
+                           return_value=True):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='test'):
+            suc = function.checkAvailabilityIndex('test')
+            assert not suc

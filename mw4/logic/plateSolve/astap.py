@@ -18,7 +18,7 @@
 import logging
 import subprocess
 import os
-from os.path import isfile, normpath, join
+from os.path import normpath, join
 from glob import glob
 import time
 import platform
@@ -180,7 +180,6 @@ class ASTAP(object):
             program = os.path.join(self.appPath, 'astap.exe')
         else:
             return False
-        program = os.path.normpath(program)
         return os.path.isfile(program)
 
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:

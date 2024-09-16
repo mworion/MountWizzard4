@@ -17,20 +17,15 @@
 # standard libraries
 from unittest import mock
 import pytest
-import astropy
 import os
-import numpy as np
 import shutil
 import glob
 
 # external packages
-from astropy.io import fits
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.plateSolve.plateSolve import PlateSolve
-from base.loggerMW import setupLogging
-setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -50,6 +45,14 @@ def mocked_sleepAndEvents(monkeypatch, function):
         function.solveLoopRunning = False
 
     monkeypatch.setattr('logic.plateSolve.plateSolve.sleepAndEvents', test)
+
+
+@pytest.fixture
+def mocked_processSolveQueue(monkeypatch, function):
+    def test(a, b, c):
+        function.solveLoopRunning = False
+
+    monkeypatch.setattr('logic.plateSolve.plateSolve.PlateSolve.processSolveQueue', test)
 
 
 def test_properties_1(function):
@@ -92,18 +95,54 @@ def test_init_1(function):
     assert 'astap' in function.run
 
 
-def test_solve_1(function):
+def test_processSolveQueue_1(function):
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        function.processSolveQueue('tests/workDir/image/m51.fit', False)
+
+
+def test_processSolveQueue_2(function):
     function.framework = 'astap'
-    file = 'tests/workDir/image/m51.fit'
-    function.solve(imagePath=file)
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        with mock.patch.object(function.run['astap'],
+                               'solve'):
+            function.processSolveQueue('tests/workDir/image/m51.fit', False)
 
 
-def test_abort_2(function):
+def test_workerSolveLoop_1(function, mocked_sleepAndEvents):
+    function.solveLoopRunning = True
+    function.workerSolveLoop()
+
+
+def test_workerSolveLoop_2(function, mocked_processSolveQueue):
+    function.solveLoopRunning = True
+    function.solveQueue.put(('tests/workDir/image/m51.fit', False))
+    function.workerSolveLoop()
+
+
+def test_startSolveLoop_1(function):
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        function.startSolveLoop()
+
+
+def test_checkAvailabilityProgram_1(function):
     function.framework = 'astap'
     with mock.patch.object(function.run['astap'],
-                           'abort',
+                           'checkAvailabilityProgram',
                            return_value=True):
-        function.abort()
+        assert function.checkAvailabilityProgram('astap')
+
+
+def test_checkAvailabilityIndex_1(function):
+    function.framework = 'astap'
+    with mock.patch.object(function.run['astap'],
+                           'checkAvailabilityIndex',
+                           return_value=True):
+        assert function.checkAvailabilityIndex('astap')
 
 
 def test_startCommunication_1(function, mocked_sleepAndEvents):
@@ -131,3 +170,18 @@ def test_startCommunication_2(function, mocked_sleepAndEvents):
 def test_stopCommunication(function):
     function.framework = 'astrometry'
     function.stopCommunication()
+
+
+def test_solve_1(function):
+    function.framework = 'astap'
+    file = 'tests/workDir/image/m51.fit'
+    function.solve(imagePath=file)
+
+
+def test_abort_1(function):
+    function.framework = 'astap'
+    with mock.patch.object(function.run['astap'],
+                           'abort',
+                           return_value=True):
+        function.abort()
+

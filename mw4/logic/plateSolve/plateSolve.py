@@ -78,8 +78,8 @@ class PlateSolve:
         """
         """
         while self.solveLoopRunning:
-            sleepAndEvents(500)
             if self.solveQueue.empty():
+                sleepAndEvents(500)
                 continue
             imagePath, updateHeader = self.solveQueue.get()
             self.processSolveQueue(imagePath, updateHeader)

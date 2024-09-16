@@ -126,7 +126,7 @@ class ASTAP(object):
         binPath = join(self.appPath, 'astap')
         wcsPath = join(self.tempDir + 'temp.wcs')
 
-        if isfile(wcsPath):
+        if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 
         options = ['-r', f'{self.searchRadius:1.1f}', '-t', '0.005', '-z', '0',

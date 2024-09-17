@@ -27,9 +27,8 @@ from pathlib import Path
 # external packages
 
 # local imports
-from logic.plateSolve.fitsFunctions import getSolutionFromWCSHeader
-from logic.plateSolve.fitsFunctions import updateImageFileHeaderWithSolution
-from logic.plateSolve.fitsFunctions import getImageHeader
+from logic.fits.fitsFunction import getSolutionFromWCSHeader, getImageHeader, \
+    updateImageFileHeaderWithSolution
 
 
 class ASTAP(object):

@@ -27,7 +27,7 @@ import numpy as np
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.driverDataClass import Signals
-from base.fitsHeader import writeHeaderCamera, writeHeaderPointing
+from logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
 from logic.camera.cameraIndi import CameraIndi
 from logic.camera.cameraAlpaca import CameraAlpaca
 if platform.system() == 'Windows':

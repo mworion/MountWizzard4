@@ -25,8 +25,8 @@ from skyfield.api import Angle
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
-from base.fitsHeader import getCoordinatesFromHeader, getSQMFromHeader
-from base.fitsHeader import getExposureFromHeader, getScaleFromHeader
+from logic.fits.fitsFunction import getCoordinatesFromHeader, getSQMFromHeader
+from logic.fits.fitsFunction import getExposureFromHeader, getScaleFromHeader
 from gui.utilities import toolsQtWidget
 from gui.utilities.slewInterface import SlewInterface
 from gui.widgets import image_ui

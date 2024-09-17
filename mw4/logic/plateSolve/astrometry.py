@@ -28,9 +28,8 @@ from pathlib import Path
 
 # local imports
 from mountcontrol import convert
-from logic.plateSolve.fitsFunctions import getSolutionFromWCSHeader
-from logic.plateSolve.fitsFunctions import updateImageFileHeaderWithSolution
-from logic.plateSolve.fitsFunctions import getImageHeader, readImageHeaderHintData
+from logic.fits.fitsFunction import getSolutionFromWCSHeader, getImageHeader, \
+    getHintFromHeader, updateImageFileHeaderWithSolution
 
 
 class Astrometry(object):
@@ -181,7 +180,7 @@ class Astrometry(object):
             self.result['message'] = 'image2xy failed'
             return result
 
-        raHint, decHint, scaleHint = readImageHeaderHintData(imagePath=imagePath)
+        raHint, decHint, scaleHint = getHintFromHeader(imagePath=imagePath)
         searchRatio = 1.1
         ra = convert.convertToHMS(raHint)
         dec = convert.convertToDMS(decHint)

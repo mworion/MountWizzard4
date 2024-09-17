@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 import unittest.mock as mock
 
 # external packages
@@ -27,7 +26,6 @@ from astropy.io import fits
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.camera import Camera
 from logic.camera.cameraAlpaca import CameraAlpaca
-from base.driverDataClass import Signals
 from base.loggerMW import setupLogging
 setupLogging()
 

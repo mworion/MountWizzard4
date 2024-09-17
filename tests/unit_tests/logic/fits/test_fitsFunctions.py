@@ -16,24 +16,38 @@
 ###########################################################
 # standard libraries
 import pytest
+import unittest.mock as mock
 
 # external packages
 from astropy.io import fits
 import numpy as np
+from skyfield.units import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App, Camera
-from base.loggerMW import setupLogging
-from base.fitsHeader import getCoordinatesFromHeader, getSQMFromHeader
-from base.fitsHeader import getExposureFromHeader, getScaleFromHeader
-from base.fitsHeader import getCoordinatesFromWCSHeader, calcAngleScaleFromWCSHeader
-from base.fitsHeader import writeHeaderCamera, writeHeaderPointing
-setupLogging()
+import logic
+from logic.fits.fitsFunction import getImageHeader, getCoordinatesFromHeader
+from logic.fits.fitsFunction import getSQMFromHeader, getExposureFromHeader
+from logic.fits.fitsFunction import getScaleFromHeader, getHintFromImageFile
+from logic.fits.fitsFunction import getCoordinatesFromWCSHeader, calcAngleScaleFromWCSHeader
+from logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
+from logic.fits.fitsFunction import updateImageFileHeaderWithSolution
+from logic.fits.fitsFunction import getSolutionFromWCSHeader
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+@pytest.fixture(autouse=True, scope='module')
+def function():
     pass
+
+
+def test_getImageHeader_1():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    with mock.patch.object(fits,
+                           'open',
+                           return_value=hdu):
+        header = getImageHeader('test')
+        assert header == hdu[0].header
 
 
 def test_getCoordinatesFromHeader_1():
@@ -56,24 +70,12 @@ def test_getCoordinatesFromHeader_2():
     assert dec.degrees == 45.0
 
 
-def test_getCoordinatesFromWCSHeader_1():
+def test_getSQMFromHeader_0():
     header = {
-        'CRVAL1': '180',
-        'CRVAL2': '180.5',
+        'test': '17.0',
     }
-    ra, dec = getCoordinatesFromWCSHeader(header=header)
-    assert ra.hours == 12.0
-    assert dec.degrees == 180.5
-
-
-def test_getCoordinatesFromWCSHeader_2():
-    header = {
-        'CRVAL1': 180,
-        'CRVAL2': 180.5,
-    }
-    ra, dec = getCoordinatesFromWCSHeader(header=header)
-    assert ra.hours == 12.0
-    assert dec.degrees == 180.5
+    sqm = getSQMFromHeader(header=header)
+    assert sqm == 0
 
 
 def test_getSQMFromHeader_1():
@@ -108,6 +110,14 @@ def test_getSQMFromHeader_4():
     }
     sqm = getSQMFromHeader(header=header)
     assert sqm == 17.0
+
+
+def test_getExposureFromHeader_0():
+    header = {
+        'test': '17.0',
+    }
+    exposure = getExposureFromHeader(header=header)
+    assert exposure == 0
 
 
 def test_getExposureFromHeader_1():
@@ -186,6 +196,31 @@ def test_getScaleFromHeader_6():
     assert scale == 0
 
 
+def test_getHintFromHeader_1():
+    with mock.patch.object(logic.fits.fitsFunction,
+                           'getImageHeader'):
+        with mock.patch.object(logic.fits.fitsFunction,
+                               'getCoordinatesFromHeader',
+                               return_value=(Angle(hours=12), Angle(degrees=45))):
+            with mock.patch.object(logic.fits.fitsFunction,
+                                   'getScaleFromHeader',
+                                   return_value=1):
+                ra, dec, scale = getHintFromImageFile('test')
+                assert ra.hours == 12.0
+                assert dec.degrees == 45.0
+                assert scale == 1
+
+
+def test_getCoordinatesFromWCSHeader_1():
+    header = {
+        'CRVAL1': 180,
+        'CRVAL2': 45,
+    }
+    ra, dec = getCoordinatesFromWCSHeader(header=header)
+    assert ra.hours == 12.0
+    assert dec.degrees == 45.0
+
+
 def test_calcAngleScaleFromWCSHeader_1():
     header = {
         'CD1_1': 0.0002777777777777778,
@@ -217,6 +252,48 @@ def test_writeHeaderPointing():
     camera.app = App()
     camera.obsSite = camera.app.mount.obsSite
     writeHeaderPointing(header, camera)
-    
 
 
+def test_updateImageFileHeaderWithSolution_1():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    solution = {
+        'raJ2000S': Angle(hours=12),
+        'decJ2000S': Angle(degrees=45),
+        'angleS': Angle(degrees=0),
+        'scaleS': 0,
+        'mirroredS': False,
+    }
+    with mock.patch.object(fits,
+                           'open',
+                           return_value=hdu):
+        updateImageFileHeaderWithSolution('test', solution)
+
+
+def test_getSolutionFromWCSHeader_1():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header.set('CRVAL1', 180.0)
+    header.set('CRVAL2', 60.0)
+    solution = getSolutionFromWCSHeader(header, header)
+    assert solution['raJ2000S'].hours == 12
+    assert solution['decJ2000S'].degrees == 60
+    assert solution['angleS'].degrees == 0
+    assert solution['scaleS'] == 0
+    assert not solution['mirroredS']
+
+
+def test_getSolutionFromWCSHeader_2():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header.set('CRVAL1', 180.0)
+    header.set('CRVAL2', 60.0)
+    solution = getSolutionFromWCSHeader(header, header)
+    assert solution['raJ2000S'].hours == 12
+    assert solution['decJ2000S'].degrees == 60
+    assert solution['angleS'].degrees == 0
+    assert solution['scaleS'] == 0
+    assert not solution['mirroredS']

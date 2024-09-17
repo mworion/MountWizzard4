@@ -186,7 +186,7 @@ def test_solve_2(function):
                                    'isfile',
                                    return_value=False):
                 with mock.patch.object(logic.plateSolve.astrometry,
-                                       'getHintFromHeader',
+                                       'getHintFromImageFile',
                                        return_value=(0, 0, 0)):
                     res = function.solve('tests/workDir/image/m51.fit', False)
                     assert not res['success']
@@ -203,7 +203,7 @@ def test_solve_3(function):
                                    'isfile',
                                    return_value=False):
                 with mock.patch.object(logic.plateSolve.astrometry,
-                                       'getHintFromHeader',
+                                       'getHintFromImageFile',
                                        return_value=(0, 0, 0)):
                     res = function.solve('tests/workDir/image/m51.fit', False)
                     assert not res['success']
@@ -224,7 +224,7 @@ def test_solve_4(function):
                 with mock.patch.object(os,
                                        'remove'):
                     with mock.patch.object(logic.plateSolve.astrometry,
-                                           'getHintFromHeader',
+                                           'getHintFromImageFile',
                                            return_value=(0, 0, 0)):
                         with mock.patch.object(logic.plateSolve.astrometry,
                                                'getImageHeader'):

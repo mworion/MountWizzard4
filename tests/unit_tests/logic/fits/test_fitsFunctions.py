@@ -196,7 +196,7 @@ def test_getScaleFromHeader_6():
     assert scale == 0
 
 
-def test_getHintFromHeader_1():
+def test_getHintFromImageFile_1():
     with mock.patch.object(logic.fits.fitsFunction,
                            'getImageHeader'):
         with mock.patch.object(logic.fits.fitsFunction,

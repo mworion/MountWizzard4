@@ -355,7 +355,7 @@ class SettDevice(MWidget):
         data = self.driversData[driver]
         deviceType = self.drivers[driver]['deviceType']
 
-        self.devicePopup = DevicePopup(self,
+        self.devicePopup = DevicePopup(self.mainW,
                                        app=self.app,
                                        driver=driver,
                                        deviceType=deviceType,

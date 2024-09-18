@@ -85,8 +85,6 @@ class AscomClass(DriverData):
         :return: value
         """
         value = None
-        if not self.deviceConnected:
-            return value
         if valueProp in self.propertyExceptions:
             return value
 
@@ -111,8 +109,6 @@ class AscomClass(DriverData):
         :param valueProp:
         :param value:
         """
-        if not self.deviceConnected:
-            return False
         if valueProp in self.propertyExceptions:
             return False
 
@@ -323,10 +319,8 @@ class AscomClass(DriverData):
             self.log.error(f'[{self.deviceName}] Dispatch error: [{e}]')
             return False
 
-        else:
-            worker = Worker(self.callerInitUnInit, self.workerConnectDevice)
-            self.threadPool.start(worker)
-
+        worker = Worker(self.callerInitUnInit, self.workerConnectDevice)
+        self.threadPool.start(worker)
         return True
 
     def stopCommunication(self):

@@ -109,7 +109,6 @@ class CameraAscom(AscomClass):
         hdu.writeto(self.parent.imagePath, overwrite=True)
         self.parent.writeImageFitsHeader()
 
-
     def expose(self) -> None:
         """
         """

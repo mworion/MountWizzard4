@@ -232,7 +232,7 @@ def test_waitExposed_1(function, mocked_sleepAndEvents):
 
 
 def test_waitExposed_2(function, mocked_sleepAndEvents):
-    def test(a):
+    def test():
         return True
         
     function.exposing = True

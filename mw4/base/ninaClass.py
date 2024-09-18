@@ -47,8 +47,8 @@ class NINAClass(DriverData, QObject):
         self.loadConfig = False
         self._deviceName = ''
         self.defaultConfig = {
-            'deviceList': ['N.I.N.A. controlled'],
-            'deviceName': 'N.I.N.A. controlled',
+            'deviceList': ['N.I.N.A.'],
+            'deviceName': 'N.I.N.A.',
         }
         self.signalRS = RemoteDeviceShutdown()
 

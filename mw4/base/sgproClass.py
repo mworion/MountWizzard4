@@ -47,8 +47,8 @@ class SGProClass(DriverData, QObject):
         self.loadConfig = False
         self._deviceName = ''
         self.defaultConfig = {
-            'deviceList': ['SGPro controlled'],
-            'deviceName': 'SGPro controlled',
+            'deviceList': ['SGPro'],
+            'deviceName': 'SGPro',
         }
         self.signalRS = RemoteDeviceShutdown()
 

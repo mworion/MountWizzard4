@@ -222,7 +222,7 @@ class Camera:
         """
         """
         timeLeft = expTime
-        while self.exposing and func:
+        while self.exposing and func():
             text = f'expose {timeLeft:3.0f} s'
             sleepAndEvents(100)
             self.signals.message.emit(text)

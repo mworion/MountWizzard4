@@ -99,7 +99,6 @@ class CameraAscom(AscomClass):
         self.setAscomProperty('NumX', self.parent.widthASCOM)
         self.setAscomProperty('NumY', self.parent.heightASCOM)
         self.client.StartExposure(self.parent.expTime, True)
-        
         self.parent.waitExposed(self.parent.expTime, self.waitFunc)
         self.signals.exposed.emit()
         data = self.parent.retrieveImage(self.getAscomProperty, 'ImageArray')
@@ -123,7 +122,7 @@ class CameraAscom(AscomClass):
             self.callMethodThreaded(self.client.StopExposure)
         return True
 
-    def sendCoolerSwitch(self, coolerOn: bool  = False) -> None:
+    def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
         """
         """
         self.setAscomProperty('CoolerOn', coolerOn)

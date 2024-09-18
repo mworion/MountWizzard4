@@ -640,6 +640,8 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         :param mousePoint:
         :return:
         """
+        if self.fileHandler.wcs is None:
+            return Angle(hours=0), Angle(degrees=0)
         x = mousePoint.x()
         y = mousePoint.y()
         if self.fileHandler.flipH:

@@ -19,7 +19,7 @@ import logging
 import platform
 
 if platform.system() == 'Windows':
-    import pythoncom
+    from pythoncom import CoInitialize, CoUninitialize
     from win32com import client
 
 # external packages
@@ -233,9 +233,9 @@ class AscomClass(DriverData):
         """
         :return: success
         """
-        pythoncom.CoInitialize()
+        CoInitialize()
         result = fn(*args, **kwargs)
-        pythoncom.CoUninitialize()
+        CoUninitialize()
         return result
 
     def callMethodThreaded(self, fn, *args, cb_res=None, cb_fin=None, **kwargs):

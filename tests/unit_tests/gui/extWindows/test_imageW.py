@@ -496,11 +496,7 @@ def test_mouseToWorld_0(function):
     function.fileHandler.wcs = None
     function.fileHandler.flipH = True
     function.fileHandler.flipV = False
-
-    with mock.patch.object(function.fileHandler.wcs,
-                           'wcs_pix2world',
-                           return_value=(0, 0)):
-        ra, dec = function.mouseToWorld(QPointF(1, 1))
+    ra, dec = function.mouseToWorld(QPointF(1, 1))
 
 
 def test_mouseToWorld_1(function):

@@ -246,7 +246,7 @@ def extractDataFiles(mwGlob: dict) -> None:
         extractFile(filePath=filePath, file=file, fileTimeStamp=fileTimeStamp)
 
 
-def getWindowPos() -> tuple:
+def getWindowPos() -> [int, int]:
     """
     """
     configDir = os.getcwd() + '/config'

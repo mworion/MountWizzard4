@@ -37,9 +37,9 @@ class Watney(object):
 
     log = logging.getLogger('MW4')
 
-    returnCodes = {0: 'No errors',
-                   1: 'No solution',
-                   }
+    returnCodes: dict = {
+        0: 'No errors',
+        1: 'No solution'}
 
     def __init__(self, parent):
         self.parent = parent
@@ -47,15 +47,15 @@ class Watney(object):
         self.tempDir = parent.tempDir
         self.workDir = parent.workDir
 
-        self.result = {'success': False}
+        self.result: dict = {'success': False}
         self.process = None
-        self.deviceName = 'Watney'
-        self.indexPath = ''
-        self.appPath = ''
-        self.timeout = 30
-        self.searchRadius = 20
+        self.deviceName: str = 'Watney'
+        self.indexPath: Path = ''
+        self.appPath: Path = ''
+        self.timeout: int = 30
+        self.searchRadius: int = 20
         self.setDefaultPath()
-        self.defaultConfig = {
+        self.defaultConfig: dict = {
             'watney': {
                 'deviceName': 'Watney',
                 'deviceList': ['Watney'],

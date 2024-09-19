@@ -46,15 +46,16 @@ class PlateSolve:
         self.threadPool = app.threadPool
         self.signals = PlateSolveSignals()
         self.solveQueue = queue.Queue()
-        self.solveLoopRunning = False
-        self.tempDir = app.mwGlob['tempDir']
-        self.workDir = app.mwGlob['workDir']
+        self.solveLoopRunning: bool = False
+        self.tempDir: Path = app.mwGlob['tempDir']
+        self.workDir: Path = app.mwGlob['workDir']
     
-        self.data = {}
-        self.defaultConfig = {'framework': '',
-                              'frameworks': {}}
-        self.framework = ''
-        self.run = {
+        self.data: dict = {}
+        self.defaultConfig: dict = {
+            'framework': '',
+            'frameworks': {}}
+        self.framework: str = ''
+        self.run: dict = {
             'astrometry': Astrometry(self),
             'astap': ASTAP(self),
             'watney': Watney(self),

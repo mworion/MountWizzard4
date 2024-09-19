@@ -52,15 +52,15 @@ class ASTAP(object):
         self.data = parent.data
         self.tempDir = parent.tempDir
 
-        self.result = {'success': False}
+        self.result: dict = {'success': False}
         self.process = None
-        self.indexPath = ''
-        self.appPath = ''
+        self.indexPath: Path = ''
+        self.appPath: Path = ''
         self.setDefaultPath()
-        self.deviceName = 'ASTAP'
-        self.timeout = 30
-        self.searchRadius = 20
-        self.defaultConfig = {
+        self.deviceName: str = 'ASTAP'
+        self.timeout: int = 30
+        self.searchRadius: int = 20
+        self.defaultConfig: dict = {
             'astap': {
                 'deviceName': 'ASTAP',
                 'deviceList': ['ASTAP'],

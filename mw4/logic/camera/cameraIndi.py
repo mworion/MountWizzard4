@@ -38,7 +38,7 @@ class CameraIndi(IndiClass):
         self.signals = parent.signals
         super().__init__(app=parent.app, data=parent.data) 
 
-        self.isDownloading = False
+        self.isDownloading: bool = False
 
     def setUpdateConfig(self, deviceName: str) -> bool:
         """

@@ -47,14 +47,14 @@ class Astrometry(object):
 
         self.result = {'success': False}
         self.process = None
-        self.indexPath = ''
-        self.appPath = ''
+        self.indexPath: Path = ''
+        self.appPath: Path = ''
         self.setDefaultPath()
-        self.apiKey = ''
-        self.timeout = 30
-        self.searchRadius = 20
-        self.deviceName = 'ASTROMETRY.NET'
-        self.defaultConfig = {
+        self.apiKey: str = ''
+        self.timeout: int = 30
+        self.searchRadius: int = 20
+        self.deviceName: str = 'ASTROMETRY.NET'
+        self.defaultConfig: dict = {
             'astrometry': {
                 'deviceName': 'ASTROMETRY.NET',
                 'deviceList': ['ASTROMETRY.NET'],

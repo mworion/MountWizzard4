@@ -491,10 +491,19 @@ def test_abortSolve_1(function):
     assert not suc
 
 
-def test_mouseToWorld(function):
-    class App:
-        threadPool = None
+def test_mouseToWorld_0(function):
+    function.fileHandler = FileHandler(App())
+    function.fileHandler.wcs = None
+    function.fileHandler.flipH = True
+    function.fileHandler.flipV = False
 
+    with mock.patch.object(function.fileHandler.wcs,
+                           'wcs_pix2world',
+                           return_value=(0, 0)):
+        ra, dec = function.mouseToWorld(QPointF(1, 1))
+
+
+def test_mouseToWorld_1(function):
     function.fileHandler = FileHandler(App())
     function.fileHandler.wcs = wcs.WCS({})
     function.fileHandler.flipH = True
@@ -537,9 +546,6 @@ def test_slewDirect_3(function):
 
 
 def test_mouseMoved_1(function):
-    class App:
-        threadPool = None
-
     function.fileHandler = FileHandler(App())
     function.fileHandler.wcs = wcs.WCS({})
     function.fileHandler.image = np.random.rand(100, 100) + 1
@@ -550,9 +556,6 @@ def test_mouseMoved_1(function):
 
 
 def test_mouseMoved_2(function):
-    class App:
-        threadPool = None
-
     function.fileHandler = FileHandler(App())
     function.fileHandler.wcs = wcs.WCS({})
     function.ui.image.setImage(imageDisp=np.random.rand(100, 100) + 1)
@@ -563,18 +566,12 @@ def test_mouseMoved_2(function):
 
 
 def test_mouseDoubleClick_1(function):
-    class App:
-        threadPool = None
-
     function.fileHandler = FileHandler(App())
     suc = function.mouseDoubleClick(1, QPointF(50, 25))
     assert not suc
 
 
 def test_mouseDoubleClick_2(function):
-    class App:
-        threadPool = None
-
     function.fileHandler = FileHandler(App())
     function.fileHandler.hasCelestial = True
     with mock.patch.object(function,
@@ -587,18 +584,12 @@ def test_mouseDoubleClick_2(function):
 
 
 def test_slewCenter_1(function):
-    class App:
-        threadPool = None
-
     function.fileHandler = FileHandler(App())
     suc = function.slewCenter()
     assert not suc
 
 
 def test_slewCenter_2(function):
-    class App:
-        threadPool = None
-
     function.fileHandler = FileHandler(App())
     function.fileHandler.header = {
         'RA': 10,

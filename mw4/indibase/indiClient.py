@@ -859,7 +859,10 @@ class Client(QObject):
         """
         Refuse = QTcpSocket.SocketError.ConnectionRefusedError
         Unknown = QTcpSocket.SocketError.UnknownSocketError
-        if socketError not in [Refuse, Unknown]:
+        RemoteClosed = QTcpSocket.SocketError.RemoteHostClosedError
+        if socketError not in [Refuse, Unknown, RemoteClosed]:
             self.log.error(f'INDI error: [{socketError}]')
+        else:
+            self.log.debug(f'INDI error: [{socketError}]')
         self.disconnectServer()
         return True

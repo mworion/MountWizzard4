@@ -1336,7 +1336,7 @@
          </widget>
         </item>
         <item row="20" column="0" colspan="2">
-         <widget class="QLineEdit" name="expTime">
+         <widget class="QLineEdit" name="exposureTime">
           <property name="enabled">
            <bool>true</bool>
           </property>

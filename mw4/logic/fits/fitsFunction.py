@@ -81,7 +81,7 @@ def getSQMFromHeader(header: fits.Header) -> float:
 def getExposureFromHeader(header: fits.Header) -> float:
     """
     """
-    for key in ['EXPOSURE', 'EXPTIME']:
+    for key in ['EXPOSURE', 'exposureTime']:
         value = header.get(key)
         if value is None:
             continue
@@ -168,7 +168,7 @@ def writeHeaderCamera(header: fits.Header, camera) -> fits.Header:
     scale = camera.binning / camera.focalLength * 206.265
     header.append(('FOCALLEN', camera.focalLength, 'Data from driver / manual input'))
     header.append(('SCALE', data['CCD_INFO.CCD_PIXEL_SIZE_X'] * scale))
-    header.append(('EXPTIME', camera.expTime))
+    header.append(('EXPTIME', camera.exposureTime))
     header.append(('CCD-TEMP', data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
     return header
 

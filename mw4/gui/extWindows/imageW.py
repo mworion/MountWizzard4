@@ -70,7 +70,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.imageSourceRange = None
         self.imageFileName = ''
         self.imageFileNameOld = ''
-        self.expTime = 1
+        self.exposureTime = 1
         self.binning = 1
         self.folder = ''
         self.result = None
@@ -408,7 +408,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.guiSetText(self.ui.scale, '5.3f', getScaleFromHeader(header=header))
         self.guiSetText(self.ui.rotation, '6.2f', header.get('ANGLE'))
         self.guiSetText(self.ui.ccdTemp, '4.1f', header.get('CCD-TEMP'))
-        self.guiSetText(self.ui.expTime, '5.1f', getExposureFromHeader(header=header))
+        self.guiSetText(self.ui.exposureTime, '5.1f', getExposureFromHeader(header=header))
         self.guiSetText(self.ui.filter, 's', header.get('FILTER'))
         self.guiSetText(self.ui.binX, '1.0f', header.get('XBINNING'))
         self.guiSetText(self.ui.binY, '1.0f', header.get('YBINNING'))
@@ -470,7 +470,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.showImage(self.imageFileName)
         return True
 
-    def exposeRaw(self, expTime: float, binning: int):
+    def exposeRaw(self, exposureTime: float, binning: int):
         """
         :return: True for test purpose
         """
@@ -484,7 +484,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.imageFileName = os.path.join(self.app.mwGlob['imageDir'], fileName)
         
         suc = self.app.camera.expose(imagePath=self.imageFileName,
-                                     expTime=expTime, binning=binning)
+                                     exposureTime=exposureTime, binning=binning)
         if not suc:
             self.abortExpose()
             text = f'{os.path.basename(self.imageFileName)}'
@@ -519,7 +519,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.imagingDeviceStat['expose'] = True
         self.app.camera.signals.saved.connect(self.exposeImageDone)
         self.app.operationRunning.emit(6) 
-        self.exposeRaw(expTime=self.app.camera.expTime1, 
+        self.exposeRaw(exposureTime=self.app.camera.exposureTime1,
                        binning=self.app.camera.binning1)
         return True
 
@@ -534,7 +534,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
         self.app.showImage.emit(imagePath)
-        self.exposeRaw(expTime=self.app.camera.expTimeN, 
+        self.exposeRaw(exposureTime=self.app.camera.exposureTimeN,
                        binning=self.app.camera.binningN)
         return True
 
@@ -545,7 +545,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.imagingDeviceStat['exposeN'] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
         self.app.operationRunning.emit(6)
-        self.exposeRaw(expTime=self.app.camera.expTimeN, 
+        self.exposeRaw(exposureTime=self.app.camera.exposureTimeN,
                        binning=self.app.camera.binningN)
         return True
 

@@ -159,7 +159,7 @@ def test_stopCommunication_1(function):
 def test_expose_2(function):
     function.exposing = True
     function.framework = 'indi'
-    suc = function.expose(imagePath='tests', expTime=1, binning=0)
+    suc = function.expose(imagePath='tests', exposureTime=1, binning=0)
     assert not suc
 
 
@@ -169,7 +169,7 @@ def test_expose_3(function):
     with mock.patch.object(function.run['indi'],
                            'expose',
                            return_value=True):
-        suc = function.expose(imagePath='tests', expTime=1, binning=0)
+        suc = function.expose(imagePath='tests', exposureTime=1, binning=0)
         assert suc
 
 

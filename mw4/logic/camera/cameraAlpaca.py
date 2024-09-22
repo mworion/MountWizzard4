@@ -34,7 +34,7 @@ class CameraAlpaca(AlpacaClass):
         self.app = parent.app
         self.data = parent.data
         self.signals = parent.signals
-        super().__init__(app=parent.app, data=parent.data) 
+        super().__init__(app=parent.app, data=parent.data)
 
     def workerGetInitialConfig(self) -> None:
         """
@@ -98,13 +98,13 @@ class CameraAlpaca(AlpacaClass):
         self.setAlpacaProperty('starty', StartY=self.parent.posYASCOM)
         self.setAlpacaProperty('numx', NumX=self.parent.widthASCOM)
         self.setAlpacaProperty('numy', NumY=self.parent.heightASCOM)
-        self.setAlpacaProperty('startexposure', Duration=self.parent.expTime, Light=True)
+        self.setAlpacaProperty('startexposure', Duration=self.parent.exposureTime, Light=True)
         
-        self.parent.waitExposed(self.parent.expTime, self.waitFunc)
+        self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
         self.signals.exposed.emit()
         data = self.parent.retrieveImage(self.getAlpacaProperty, 'imagearray')
         self.signals.downloaded.emit()   
-        self.signals.message.emit('saving')                
+        self.signals.message.emit('saving')
         hdu = fits.PrimaryHDU(data=data)
         hdu.writeto(self.parent.imagePath, overwrite=True)
         self.parent.writeImageFitsHeader()

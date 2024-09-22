@@ -640,12 +640,12 @@ class Ui_ImageDialog(object):
 
         self.gridLayout.addWidget(self.dec, 8, 0, 1, 2)
 
-        self.expTime = QLineEdit(self.headerGroup)
-        self.expTime.setObjectName(u"expTime")
-        self.expTime.setEnabled(True)
-        self.expTime.setReadOnly(True)
+        self.exposureTime = QLineEdit(self.headerGroup)
+        self.exposureTime.setObjectName(u"exposureTime")
+        self.exposureTime.setEnabled(True)
+        self.exposureTime.setReadOnly(True)
 
-        self.gridLayout.addWidget(self.expTime, 20, 0, 1, 2)
+        self.gridLayout.addWidget(self.exposureTime, 20, 0, 1, 2)
 
         self.label = QLabel(self.headerGroup)
         self.label.setObjectName(u"label")

@@ -32,7 +32,7 @@ setupLogging()
 @pytest.fixture(autouse=True, scope='module')
 def function():
     camera = Camera(App())
-    camera.expTime = 1
+    camera.exposureTime = 1
     camera.binning = 1
     camera.focalLength = 1
     func = CameraNINA(camera)

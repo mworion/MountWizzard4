@@ -49,7 +49,7 @@ class Rename(MWidget):
                                    'Frame': ['FRAME', 'IMAGETYP'],
                                    'Filter': ['FILTER'],
                                    'Binning': ['XBINNING'],
-                                   'Exp Time': ['EXPTIME'],
+                                   'Exp Time': ['exposureTime'],
                                    'CCD Temp': ['CCD-TEMP'],
                                    }
         self.setupGuiTools()

@@ -243,7 +243,7 @@ class RunBasic:
 
         self.solveQueue.put(mPoint)
         suc = self.app.camera.expose(imagePath=mPoint['imagePath'],
-                                     expTime=mPoint['exposureTime'],
+                                     exposureTime=mPoint['exposureTime'],
                                      binning=mPoint['binning'])
         
         if not suc:
@@ -581,7 +581,7 @@ class RunBasic:
         if data is None:
             data = []
         plateSolveApp = self.ui.plateSolveDevice.currentText()
-        exposureTime = self.ui.expTime.value()
+        exposureTime = self.ui.exposureTime.value()
         binning = int(self.ui.binning.value())
         subFrame = self.ui.subFrame.value()
         fastReadout = self.ui.fastDownload.isChecked()

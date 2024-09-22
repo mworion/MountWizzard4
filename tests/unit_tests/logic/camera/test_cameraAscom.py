@@ -73,7 +73,7 @@ def function():
             return True
 
     camera = Camera(App())
-    camera.expTime = 1
+    camera.exposureTime = 1
     camera.binning = 1
     camera.focalLength = 1
     func = CameraAscom(camera)

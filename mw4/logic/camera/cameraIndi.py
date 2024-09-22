@@ -142,7 +142,7 @@ class CameraIndi(IndiClass):
     def workerSaveBLOB(self, data: dict) -> None:
         """
         """
-        self.signals.message.emit('Saving')
+        self.signals.message.emit('saving')
 
         if data['format'] == '.fits.fz':
             HDU = fits.HDUList.fromstring(data['value'])
@@ -162,7 +162,6 @@ class CameraIndi(IndiClass):
 
         fits.writeto(self.parent.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
         self.parent.writeImageFitsHeader()
- 
 
     def updateBLOB(self, deviceName: str, propertyName: str) -> bool:
         """
@@ -198,7 +197,7 @@ class CameraIndi(IndiClass):
     def expose(self) -> bool:
         """
         """
-        suc = self.sendDownloadMode()
+        self.sendDownloadMode()
         indiCmd = self.device.getNumber('CCD_BINNING')
         indiCmd['HOR_BIN'] = self.parent.binning
         indiCmd['VER_BIN'] = self.parent.binning
@@ -216,7 +215,7 @@ class CameraIndi(IndiClass):
                                   elements=indiCmd)
 
         indiCmd = self.device.getNumber('CCD_EXPOSURE')
-        indiCmd['CCD_EXPOSURE_VALUE'] = self.parent.expTime
+        indiCmd['CCD_EXPOSURE_VALUE'] = self.parent.exposureTime
         return self.client.sendNewNumber(deviceName=self.deviceName,
                                          propertyName='CCD_EXPOSURE',
                                          elements=indiCmd)
@@ -226,7 +225,7 @@ class CameraIndi(IndiClass):
         """
         indiCmd = self.device.getSwitch('CCD_ABORT_EXPOSURE')
         if 'ABORT' not in indiCmd:
-            return
+            return False
 
         indiCmd['ABORT'] = 'On'
         return self.client.sendNewSwitch(deviceName=self.deviceName,

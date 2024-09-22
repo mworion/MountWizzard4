@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -12231,7 +12231,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>s</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="expTime">
+       <widget class="QDoubleSpinBox" name="exposureTime1">
         <property name="geometry">
          <rect>
           <x>110</x>
@@ -12292,7 +12292,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Binning</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="binning">
+       <widget class="QDoubleSpinBox" name="binning1">
         <property name="geometry">
          <rect>
           <x>290</x>
@@ -12382,7 +12382,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Exposure N</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="expTimeN">
+       <widget class="QDoubleSpinBox" name="exposureTimeN">
         <property name="geometry">
          <rect>
           <x>110</x>
@@ -32635,9 +32635,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>saveName</tabstop>
   <tabstop>deleteName</tabstop>
   <tabstop>refreshName</tabstop>
-  <tabstop>expTime</tabstop>
-  <tabstop>binning</tabstop>
-  <tabstop>expTimeN</tabstop>
+  <tabstop>exposureTime1</tabstop>
+  <tabstop>binning1</tabstop>
+  <tabstop>exposureTimeN</tabstop>
   <tabstop>binningN</tabstop>
   <tabstop>subFrame</tabstop>
   <tabstop>coolerOn</tabstop>

@@ -62,9 +62,9 @@ class Camera:
         downloaded = Signal()
 
     signals = CameraSignals()
-    expTime = 0
-    expTime1 = 0
-    expTimeN = 0
+    exposureTime = 0
+    exposureTime1 = 0
+    exposureTimeN = 0
     binning = 1
     binning1 = 1
     binningN = 1
@@ -80,7 +80,7 @@ class Camera:
 
     @staticmethod
     def expose(imagePath=None,
-               expTime=None,
+               exposureTime=None,
                binning=None,
                subFrame=None,
                fastReadout=None,

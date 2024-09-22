@@ -312,7 +312,7 @@ def test_exposeRaw_1(function):
     with mock.patch.object(function.app.camera,
                            'expose',
                            return_value=True):
-        suc = function.exposeRaw(expTime=1, binning=1)
+        suc = function.exposeRaw(exposureTime=1, binning=1)
         assert suc
 
 
@@ -322,7 +322,7 @@ def test_exposeRaw_2(function):
     with mock.patch.object(function.app.camera,
                            'expose',
                            return_value=True):
-        suc = function.exposeRaw(expTime=1, binning=1)
+        suc = function.exposeRaw(exposureTime=1, binning=1)
         assert suc
 
 
@@ -331,7 +331,7 @@ def test_exposeRaw_3(function):
     with mock.patch.object(function.app.camera,
                            'expose',
                            return_value=False):
-        suc = function.exposeRaw(expTime=1, binning=1)
+        suc = function.exposeRaw(exposureTime=1, binning=1)
         assert not suc
 
 

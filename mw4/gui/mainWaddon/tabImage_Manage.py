@@ -57,9 +57,9 @@ class ImageManage(MWidget):
         
         self.ui.aperture.valueChanged.connect(self.updateImagingParam)
         self.ui.focalLength.valueChanged.connect(self.updateImagingParam)
-        self.ui.expTime.valueChanged.connect(self.updateImagingParam)
-        self.ui.binning.valueChanged.connect(self.updateImagingParam)
-        self.ui.expTimeN.valueChanged.connect(self.updateImagingParam)
+        self.ui.exposureTime1.valueChanged.connect(self.updateImagingParam)
+        self.ui.binning1.valueChanged.connect(self.updateImagingParam)
+        self.ui.exposureTimeN.valueChanged.connect(self.updateImagingParam)
         self.ui.binningN.valueChanged.connect(self.updateImagingParam)
         self.ui.subFrame.valueChanged.connect(self.updateImagingParam)
         # todo: should we keep cyclic updates ? -> normally no !
@@ -79,9 +79,9 @@ class ImageManage(MWidget):
         """
         """
         config = self.app.config['mainW']
-        self.ui.expTime.setValue(config.get('expTime', 1))
-        self.ui.binning.setValue(config.get('binning', 1))
-        self.ui.expTimeN.setValue(config.get('expTimeN', 1))
+        self.ui.exposureTime1.setValue(config.get('exposureTime1', 1))
+        self.ui.binning1.setValue(config.get('binning1', 1))
+        self.ui.exposureTimeN.setValue(config.get('exposureTimeN', 1))
         self.ui.binningN.setValue(config.get('binningN', 1))
         self.ui.subFrame.setValue(config.get('subFrame', 100))
         self.ui.focalLength.setValue(config.get('focalLength', 100))
@@ -96,9 +96,9 @@ class ImageManage(MWidget):
         """
         """
         config = self.app.config['mainW']
-        config['expTime'] = self.ui.expTime.value()
-        config['binning'] = self.ui.binning.value()
-        config['expTimeN'] = self.ui.expTimeN.value()
+        config['exposureTime1'] = self.ui.exposureTime1.value()
+        config['binning1'] = self.ui.binning1.value()
+        config['exposureTimeN'] = self.ui.exposureTimeN.value()
         config['binningN'] = self.ui.binningN.value()
         config['subFrame'] = self.ui.subFrame.value()
         config['focalLength'] = self.ui.focalLength.value()
@@ -241,12 +241,12 @@ class ImageManage(MWidget):
 
         if maxBinX and maxBinY:
             maxBin = min(maxBinX, maxBinY)
-            self.ui.binning.setMaximum(maxBin)
+            self.ui.binning1.setMaximum(maxBin)
             self.ui.binningN.setMaximum(maxBin)
 
-        self.app.camera.expTime1 = self.ui.expTime.value()
-        self.app.camera.expTimeN = self.ui.expTimeN.value()
-        self.app.camera.binning1 = self.ui.binning.value()
+        self.app.camera.exposureTime1 = self.ui.exposureTime1.value()
+        self.app.camera.exposureTimeN = self.ui.exposureTimeN.value()
+        self.app.camera.binning1 = self.ui.binning1.value()
         self.app.camera.binningN = self.ui.binningN.value()
         self.app.camera.subFrame = self.ui.subFrame.value()
         self.app.camera.fastDownload = self.ui.fastDownload.isChecked()

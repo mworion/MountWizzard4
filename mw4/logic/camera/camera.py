@@ -51,9 +51,9 @@ class Camera:
         self.exposing: bool = False
         self.fastReadout: bool = False
         self.imagePath: Path = Path('')
-        self.expTime: float = 1
-        self.expTime1: float = 1
-        self.expTimeN: float = 1
+        self.exposureTime: float = 1
+        self.exposureTime1: float = 1
+        self.exposureTimeN: float = 1
         self.binning1: int = 1
         self.binningN: int = 1
         self.focalLength: int = 1 
@@ -84,8 +84,6 @@ class Camera:
         for fw in self.run:
             self.defaultConfig['frameworks'].update({fw: self.run[fw].defaultConfig})
 
-        self.signals.deviceDisconnected.connect(self.abort)
-        self.signals.serverDisconnected.connect(self.abort)
         self.app.mount.signals.pointDone.connect(self.setObsSite)
 
     @property
@@ -113,9 +111,10 @@ class Camera:
         return self._binning
 
     @binning.setter
-    def binning(self, value):
-        if 1 <= value <= 4 and 'CCD_BINNING.HOR_BIN' in self.data:
-            self._binning = int(value)
+    def binning(self, value: int):
+        value = int(value)
+        if (1 <= value <= 4) and 'CCD_BINNING.HOR_BIN' in self.data:
+            self._binning = value
         else:
             self._binning = 1
         self.subFrame = self._subFrame
@@ -172,14 +171,14 @@ class Camera:
         self.signals.exposed.emit()
         self.signals.message.emit('')
 
-    def expose(self, imagePath: Path = '', expTime: float = 1, binning: int = 1) -> bool:
+    def expose(self, imagePath: Path = '', exposureTime: float = 1, binning: int = 1) -> bool:
         """
         """
         if self.exposing:
             return False
             
         self.imagePath = imagePath
-        self.expTime = expTime
+        self.exposureTime = exposureTime
         self.binning = binning
         self.exposing = True
         self.signals.message.emit('exposing')
@@ -218,10 +217,10 @@ class Camera:
         """
         self.run[self.framework].sendGain(gain=gain)
 
-    def waitExposed(self, expTime: float, func: Callable) -> None: 
+    def waitExposed(self, exposureTime: float, func: Callable) -> None:
         """
         """
-        timeLeft = expTime
+        timeLeft = exposureTime
         while self.exposing and func():
             text = f'expose {timeLeft:3.0f} s'
             sleepAndEvents(100)

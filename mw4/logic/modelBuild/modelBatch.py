@@ -36,11 +36,11 @@ class ModelBatch(QObject):
     def __init__(self, app):
         super().__init__()
         self.app = app
+        self.msg = app.msg
 
         self.abortBatch: bool = False
         self.pauseBatch: bool = False
-        self.progressiveTiming: bool = False
-        self.normalTiming: bool = False
+        self.modelTiming: int = 0
         self.modelInputData: list = []
         self.modelBuildData: list = []
         self.modelName: str = ''
@@ -64,31 +64,35 @@ class ModelBatch(QObject):
         self.app.dome.signals.slewed.connect(self.setDomeSlewed)
         # Signals handling plate solving
         self.app.camera.signals.saved.connect(self.startNewPlateSolve)
-        self.app.plateSolve.signals.saved.connect(self.startNewPlateSolve)
+        self.app.plateSolve.signals.result.connect(self.collectPlateSolveResult)
 
     def setImageExposed(self) -> None:
         """
         """
-        imagePath = self.modelInputData[self.pointerImage]['imagePath']
+        self.msg.emit(1, 'Model', 'Signal', 'Image exposed')
+        imagePath = self.modelBuildData[self.pointerImage]['imagePath']
         self.app.showImage.emit(imagePath)
-        if self.progressiveTiming:
+        if self.modelTiming == 2:
             self.startNewSlew()
 
     def setImageDownloaded(self):
         """
         """
-        if self.normalTiming:
+        self.msg.emit(1, 'Model', 'Signal', 'Image downloaded')
+        if self.modelTiming == 1:
             self.startNewSlew()
 
     def setImageSaved(self) -> None:
         """
         """
-        if not self.progressiveTiming and not self.normalTiming:
+        self.msg.emit(1, 'Model', 'Signal', 'Image saved')
+        if self.modelTiming == 0:
             self.startNewSlew()
 
     def setMountSlewed(self) -> None:
         """
         """
+        self.msg.emit(1, 'Model', 'Signal', 'Mount slewed')
         self.mountSlewed = True
         if not self.app.deviceStat['dome']:
             self.startNewImageExposure()
@@ -99,6 +103,7 @@ class ModelBatch(QObject):
     def setDomeSlewed(self) -> None:
         """
         """
+        self.msg.emit(1, 'Model', 'Signal', 'Dome slewed')
         self.domeSlewed = True
         if self.mountSlewed:
             self.startNewImageExposure()
@@ -107,8 +112,9 @@ class ModelBatch(QObject):
         """
         """
         self.pointerSlew += 1
-        altitude = self.modelInputData[self.pointerSlew]['altitude']
-        azimuth = self.modelInputData[self.pointerSlew]['azimuth']
+        item = self.modelBuildData[self.pointerSlew]
+        altitude = item['altitude']
+        azimuth = item['azimuth']
         self.mountSlewed = False
         self.domeSlewed = False
 
@@ -117,22 +123,7 @@ class ModelBatch(QObject):
         if self.app.deviceStat['dome']:
             self.app.dome.slewDome(azimuth)
         self.app.mount.obsSite.startSlewing()
-
-    def addMountDataToModelBuildData(self) -> None:
-        """
-        """
-        item = self.modelBuildData[self.pointerImage]
-        obs = self.app.mount.obsSite
-        item['raJNowM'] = obs.raJNow
-        item['decJNowM'] = obs.decJNow
-        item['angularPosRA'] = obs.angularPosRA
-        item['angularPosDEC'] = obs.angularPosDEC
-        item['siderealTime'] = obs.timeSidereal
-        item['julianDate'] = obs.timeJD
-        item['pierside'] = obs.pierside
-        item['raJ2000M'], item['decJ2000M'] = JNowToJ2000(item['raJNowM'],
-                                                          item['decJNowM'],
-                                                          item['julianDate'])
+        self.msg.emit(2, 'Model', 'Slew', f'{self.pointerSlew}: {altitude} {azimuth}')
 
     def startNewImageExposure(self) -> None:
         """
@@ -144,18 +135,35 @@ class ModelBatch(QObject):
             sleepAndEvents(500)
             waitTime -= 1
 
-        imagePath = self.modelInputData[self.pointerImage]['imagePath']
-        exposureTime = self.modelInputData[self.pointerImage]['exposureTime']
-        binning = self.modelInputData[self.pointerImage]['binning']
-        self.addMountDataToModelBuildData()
+        item = self.modelBuildData[self.pointerImage]
+        obs = self.app.mount.obsSite
+        cam = self.app.camera
+
+        imagePath = item['imagePath']
+        exposureTime = item['exposureTime'] = cam.exposureTime1
+        binning = item['binning'] = cam.binning1
+
+        item['raJNowM'] = obs.raJNow
+        item['decJNowM'] = obs.decJNow
+        item['angularPosRA'] = obs.angularPosRA
+        item['angularPosDEC'] = obs.angularPosDEC
+        item['siderealTime'] = obs.timeSidereal
+        item['julianDate'] = obs.timeJD
+        item['pierside'] = obs.pierside
+        raJ2000M, decJ2000M = JNowToJ2000(item['raJNowM'], item['decJNowM'], item['julianDate'])
+        item['raJ2000M'] = raJ2000M
+        item['decJ2000M'] = decJ2000M
+
         self.app.camera.expose(imagePath, exposureTime, binning)
+        self.msg.emit(2, 'Model', 'Image', f'{self.pointerImage}: {imagePath} {exposureTime}')
 
     def startNewPlateSolve(self) -> None:
         """
         """
         self.pointerPlateSolve += 1
-        imagePath = self.modelInputData[self.pointerPlateSolve]['imagePath']
+        imagePath = self.modelBuildData[self.pointerPlateSolve]['imagePath']
         self.app.plateSolve.solve(imagePath)
+        self.msg.emit(2, 'Model', 'PlateSolve', f'{self.pointerPlateSolve}: {imagePath}')
 
     def collectPlateSolveResult(self, result) -> None:
         """
@@ -163,13 +171,17 @@ class ModelBatch(QObject):
         self.pointerResult += 1
         item = self.modelBuildData[self.pointerResult]
         item.update(result)
-        raJNowS, decJNowS = J2000ToJNow(item['raJ2000S'], item['decJ2000S'], item['julianDate'])
-        item['raJNowS'] = raJNowS
-        item['decJNowS'] = decJNowS
+        solved = result['success']
 
-        statusBuildPoint = 2 if result['success'] else 0
+        if solved:
+            raJNowS, decJNowS = J2000ToJNow(item['raJ2000S'], item['decJ2000S'], item['julianDate'])
+            item['raJNowS'] = raJNowS
+            item['decJNowS'] = decJNowS
+
+        statusBuildPoint = 0 if solved else 2
         self.app.data.setStatusBuildP(self.pointerResult, statusBuildPoint)
         self.app.updatePointMarker.emit()
+        self.msg.emit(2, 'Model', 'Result', f'{self.pointerResult}: {result}')
 
     def prepareModelBuildData(self) -> None:
         """
@@ -183,17 +195,17 @@ class ModelBatch(QObject):
             modelItem = {}
             imagePath = f'{self.imageDir}/image-{index + 1:03d}.fits'
             modelItem['imagePath'] = imagePath
-            modelItem['exposureTime'] = imagePath
-            modelItem['binning'] = imagePath
             modelItem['altitude'] = Angle(degrees=point[0])
             modelItem['azimuth'] = Angle(degrees=point[1])
+            self.modelBuildData.append(modelItem)
 
-    def runBatch(self):
+    def run(self):
         """
         """
         if not self.modelInputData:
             return False
 
+        self.msg.emit(2, 'Model', 'Model', 'Start')
         self.prepareModelBuildData()
         self.startNewSlew()
 

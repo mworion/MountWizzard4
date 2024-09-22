@@ -26,10 +26,11 @@ from skyfield.api import Star
 # local import
 from mountcontrol.alignStar import AlignStar
 from mountcontrol.convert import convertToHMS, convertToDMS
-from base.transform import J2000ToJNow, JNowToJ2000
+from base.transform import J2000ToJNow
 from gui.mainWaddon.runBasic import RunBasic
 from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
 from logic.modeldata.modelHandling import writeRetrofitData
+from logic.modelBuild.modelBatch import ModelBatch
 
 
 class Model(MWidget, RunBasic):
@@ -45,11 +46,13 @@ class Model(MWidget, RunBasic):
         self.timeStartModeling = None
         self.modelName = ''
         self.model = []
+        self.modelBatch = None
 
         ms = self.app.mount.signals
         ms.alignDone.connect(self.updateAlignGUI)
         ms.alignDone.connect(self.updateTurnKnobsGUI)
 
+        self.ui.runTest.clicked.connect(self.runTest)
         self.ui.runModel.clicked.connect(self.modelBuild)
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
         self.ui.dataModel.clicked.connect(self.loadProgramModel)
@@ -362,12 +365,6 @@ class Model(MWidget, RunBasic):
                           'No plate solver selected')
             return False
 
-        sucApp, sucIndex = self.app.plateSolve.checkAvailability()
-        if not (sucApp and sucIndex):
-            self.msg.emit(2, 'Model', 'Run error',
-                          'No valid configuration for plate solver')
-            return False
-
         return True
 
     def clearAlignAndBackup(self):
@@ -566,7 +563,7 @@ class Model(MWidget, RunBasic):
         imagePath = os.path.normpath(f'{self.app.mwGlob["imageDir"]}/{fileName}')
 
         suc = self.app.camera.expose(imagePath=imagePath,
-                                     expTime=self.app.camera.expTime1,
+                                     exposureTime=self.app.camera.exposureTime1,
                                      binning=self.app.camera.binning1)
         if not suc:
             return False
@@ -599,13 +596,25 @@ class Model(MWidget, RunBasic):
         """
         self.msg.emit(1, 'Model', 'Sync',
                       'Starting plate solve and sync model in mount')
-        sucApp, sucIndex = self.app.plateSolve.checkAvailability()
-        if not (sucApp and sucIndex):
-            self.msg.emit(2, 'Model', 'Sync error',
-                          'No valid configuration for plate solver')
-            return False
-
         self.app.operationRunning.emit(2)
         self.changeStyleDynamic(self.ui.plateSolveSync, 'running', True)
         self.exposeImage()
+        return True
+
+    def runTest(self):
+        """
+        """
+        data = []
+        for point in self.app.data.buildP:
+            if self.ui.excludeDonePoints.isChecked() and not point[2]:
+                continue
+            data.append(point)
+
+        name, imageDir = self.setupFilenamesAndDirectories(prefix='m')
+
+        self.modelBatch = ModelBatch(self.app)
+        self.modelBatch.modelInputData = data
+        self.modelBatch.imageDir = imageDir
+        self.modelBatch.modelName = name
+        self.modelBatch.run()
         return True

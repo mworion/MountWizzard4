@@ -113,7 +113,7 @@ class CameraSGPro(SGProClass):
         """
         """
         params = {'BinningMode': self.parent.binning,
-                  'ExposureLength': max(self.parent.expTime, 1),
+                  'ExposureLength': max(self.parent.exposureTime, 1),
                   'Path': self.parent.imagePath}
 
         suc, response = self.sgCaptureImage(params=params)
@@ -127,7 +127,7 @@ class CameraSGPro(SGProClass):
             return
 
         self.parent.waitStart()
-        self.parent.waitExposed(self.parent.expTime, self.waitFunc)
+        self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
         self.signals.exposed.emit()
         self.parent.waitDownload()
         self.signals.downloaded.emit()

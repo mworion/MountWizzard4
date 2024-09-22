@@ -166,7 +166,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         title = f'Analyse Model     {os.path.basename(loadFilePath)}'
         self.setWindowTitle(title)
-        self.ui.eposure.setText(f'{d.get("exposureTime", "")}')
+        self.ui.exposureTime.setText(f'{d.get("exposureTime", "")}')
         self.ui.solver.setText(d.get('plateSolveApp', ""))
         self.ui.binning.setText(f'{d.get("binning", 0):1.0f}')
         self.ui.time.setText(d.get('julianDate', '').replace('T', '  ').replace('Z', ''))

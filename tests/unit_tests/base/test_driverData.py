@@ -19,13 +19,12 @@
 # external packages
 
 # local import
-from base.driverDataClass import DriverData, Signals
+from base.driverDataClass import DriverData
 from base.loggerMW import setupLogging
 
 setupLogging()
 
 app = DriverData()
-Sig = Signals()
 
 
 def test_storeAscomProperty_1():

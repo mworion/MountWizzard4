@@ -24,7 +24,7 @@ from PySide6.QtCore import Signal, QMutex, QTimer
 import requests
 
 # local imports
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 
 
 class RelaySignals(Signals):

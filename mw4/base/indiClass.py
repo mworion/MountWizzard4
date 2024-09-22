@@ -23,7 +23,7 @@ from PySide6.QtCore import QTimer
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
 from indibase.indiClient import Client
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 
 
 class IndiClass:

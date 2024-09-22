@@ -21,7 +21,7 @@ import platform
 # external packages
 
 # local imports
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
 from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
 from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca

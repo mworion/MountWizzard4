@@ -22,7 +22,7 @@ from PySide6.QtCore import QObject
 from PySide6 import QtNetwork
 
 # local imports
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 
 
 class Remote(QObject):

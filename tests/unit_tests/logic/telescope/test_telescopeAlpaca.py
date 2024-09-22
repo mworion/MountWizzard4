@@ -26,7 +26,7 @@ from PySide6.QtCore import QThreadPool
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.telescope.telescopeAlpaca import TelescopeAlpaca
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')

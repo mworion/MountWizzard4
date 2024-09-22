@@ -20,7 +20,7 @@ import logging
 # external packages
 
 # local imports
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 
 
 class DirectWeather:

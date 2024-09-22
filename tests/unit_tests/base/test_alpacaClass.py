@@ -28,7 +28,7 @@ import requests
 import base.alpacaClass
 from base.alpacaClass import AlpacaClass
 from base.loggerMW import setupLogging
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

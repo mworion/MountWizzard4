@@ -26,7 +26,7 @@ from indibase.indiClient import Client
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.telescope.telescopeIndi import TelescopeIndi
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')

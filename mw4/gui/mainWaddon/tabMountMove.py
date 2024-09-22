@@ -106,7 +106,7 @@ class MountMove(MWidget, SlewInterface):
         self.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
         self.ui.moveCoordinateDec.textEdited.connect(self.setDEC)
         self.ui.moveCoordinateDec.returnPressed.connect(self.setDEC)
-        self.app.mount.signals.slewFinished.connect(self.moveAltAzDefault)
+        self.app.mount.signals.slewed.connect(self.moveAltAzDefault)
         self.app.gameDirection.connect(self.moveAltAzGameController)
         self.app.game_sR.connect(self.moveClassicGameController)
         self.setupGuiMount()

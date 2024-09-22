@@ -21,7 +21,7 @@ import platform
 # external packages
 
 # local imports
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from logic.environment.sensorWeatherIndi import SensorWeatherIndi
 from logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
 if platform.system() == 'Windows':

@@ -290,7 +290,7 @@ class RunBasic:
 
         self.imageQueue.put(mPoint)
         if isSimulationMount:
-            self.app.mount.signals.slewFinished.emit()
+            self.app.mount.signals.slewed.emit()
         else:
             self.app.mount.obsSite.startSlewing()
         self.log.debug(f'Queued to image [{mPoint["countSequence"]:03d}]: [{mPoint}]')
@@ -325,14 +325,14 @@ class RunBasic:
 
         :return: true for test purpose
         """
-        self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
-        self.collector.addWaitableSignal(self.app.camera.signals.exposeReady)
+        self.collector.addWaitableSignal(self.app.mount.signals.slewed)
+        self.collector.addWaitableSignal(self.app.camera.signals.exposed)
 
         hasDome = self.app.deviceStat.get('dome', False)
         hasAzimuth = 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION' in self.app.dome.data
 
         if hasDome and hasAzimuth:
-            self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
+            self.collector.addWaitableSignal(self.app.dome.signals.slewed)
         elif hasDome and not hasAzimuth:
             self.msg.emit(2, self.runType, 'Run',
                           'Dome without azimuth value used')
@@ -343,7 +343,7 @@ class RunBasic:
         self.collector.ready.connect(self.runImage)
         self.app.camera.signals.saved.connect(self.runSolve)
         self.app.plateSolve.signals.result.connect(self.runSolveDone)
-        self.app.camera.signals.exposeReady.emit()
+        self.app.camera.signals.exposed.emit()
 
         if self.ui.progressiveTiming.isChecked():
             self.performanceTimingSignal = self.app.camera.signals.exposed

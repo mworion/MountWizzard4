@@ -21,7 +21,7 @@ import platform
 # external packages
 
 # local imports
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from logic.telescope.telescopeIndi import TelescopeIndi
 from logic.telescope.telescopeAlpaca import TelescopeAlpaca
 if platform.system() == 'Windows':

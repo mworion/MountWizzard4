@@ -27,7 +27,7 @@ from PySide6.QtCore import QThreadPool
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.dome.domeAscom import DomeAscom
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from base.ascomClass import AscomClass
 
 if not platform.system() == 'Windows':

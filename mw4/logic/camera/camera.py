@@ -26,7 +26,7 @@ import numpy as np
 
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
 from logic.camera.cameraIndi import CameraIndi
 from logic.camera.cameraAlpaca import CameraAlpaca
@@ -50,7 +50,7 @@ class Camera:
         self.data: dict = {}
         self.exposing: bool = False
         self.fastReadout: bool = False
-        self.imagePath: Path = ''
+        self.imagePath: Path = Path('')
         self.expTime: float = 1
         self.expTime1: float = 1
         self.expTimeN: float = 1
@@ -169,7 +169,7 @@ class Camera:
         """
         self.exposing = False
         self.signals.saved.emit(self.imagePath)
-        self.signals.exposeReady.emit()
+        self.signals.exposed.emit()
         self.signals.message.emit('')
 
     def expose(self, imagePath: Path = '', expTime: float = 1, binning: int = 1) -> bool:

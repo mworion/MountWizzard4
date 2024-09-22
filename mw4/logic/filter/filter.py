@@ -19,8 +19,9 @@ import logging
 import platform
 
 # external packages
+
 # local imports
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from logic.filter.filterIndi import FilterIndi
 from logic.filter.filterAlpaca import FilterAlpaca
 if platform.system() == 'Windows':

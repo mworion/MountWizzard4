@@ -23,19 +23,14 @@ from PySide6.QtCore import QObject, Signal, QThreadPool, QTimer
 from skyfield.api import wgs84, load, Loader, Angle, load_file
 import numpy as np
 
+from base.signalsDevices import Signals
+
+
 # local import
 
 
 class PlateSolve:
-    class PlateSolveSignals(QObject):
-        result = Signal()
-        message = Signal(object)
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
-        deviceConnected = Signal(object)
-        deviceDisconnected = Signal(object)
-
-    signals = PlateSolveSignals()
+    signals = Signals()
     framework = None
     run = {}
     deviceName = ''
@@ -63,7 +58,6 @@ class Camera:
         serverDisconnected = Signal(object)
         deviceConnected = Signal(object)
         deviceDisconnected = Signal(object)
-        exposeReady = Signal()
         exposed = Signal()
         downloaded = Signal()
 
@@ -171,7 +165,7 @@ class Dome:
     class DomeSignals(QObject):
         message = Signal(object)
         azimuth = Signal()
-        slewFinished = Signal()
+        slewed = Signal()
         deviceDisconnected = Signal()
         deviceConnected = Signal()
         serverDisconnected = Signal()
@@ -874,7 +868,7 @@ class Mount(QObject):
         alignDone = Signal()
         alert = Signal()
         namesDone = Signal()
-        slewFinished = Signal()
+        slewed = Signal()
         calcTrajectoryDone = Signal(object)
         calcProgress = Signal(object)
 

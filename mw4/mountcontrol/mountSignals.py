@@ -37,5 +37,5 @@ class MountSignals(QObject):
     getTLEdone = Signal(object)
     calcTrajectoryDone = Signal(object)
     mountUp = Signal(object)
-    slewFinished = Signal()
+    slewed = Signal()
     alert = Signal()

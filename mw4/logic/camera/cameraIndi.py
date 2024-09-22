@@ -104,7 +104,6 @@ class CameraIndi(IndiClass):
         elif self.device.CCD_EXPOSURE['state'] in ['Alert']:
             self.isDownloading = False
             self.signals.exposed.emit()
-            self.signals.exposeReady.emit()
             self.signals.downloaded.emit()
             self.signals.saved.emit('')
             self.abort()

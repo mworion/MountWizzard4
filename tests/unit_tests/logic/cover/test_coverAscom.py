@@ -27,7 +27,7 @@ from PySide6.QtCore import QThreadPool
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.cover.coverAscom import CoverAscom
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)

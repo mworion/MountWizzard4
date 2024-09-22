@@ -83,7 +83,7 @@ def test_setupParkPosGui(function):
 
 
 def test_parkAtPos_1(function):
-    function.app.mount.signals.slewFinished.connect(function.parkAtPos)
+    function.app.mount.signals.slewed.connect(function.parkAtPos)
     with mock.patch.object(function.app.mount.obsSite,
                            'parkOnActualPosition',
                            return_value=False):
@@ -92,7 +92,7 @@ def test_parkAtPos_1(function):
 
 
 def test_parkAtPos_2(function):
-    function.app.mount.signals.slewFinished.connect(function.parkAtPos)
+    function.app.mount.signals.slewed.connect(function.parkAtPos)
     with mock.patch.object(function.app.mount.obsSite,
                            'parkOnActualPosition',
                            return_value=True):

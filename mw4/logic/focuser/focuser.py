@@ -21,7 +21,7 @@ import platform
 # external packages
 
 # local imports
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from logic.focuser.focuserIndi import FocuserIndi
 from logic.focuser.focuserAlpaca import FocuserAlpaca
 if platform.system() == 'Windows':

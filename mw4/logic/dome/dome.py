@@ -23,7 +23,7 @@ import PySide6
 import numpy as np
 
 # local imports
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from base.transform import diffModulusAbs
 from logic.dome.domeIndi import DomeIndi
 from logic.dome.domeAlpaca import DomeAlpaca
@@ -126,7 +126,7 @@ class Dome:
         """
         :return: true for test purpose
         """
-        self.signals.slewFinished.emit()
+        self.signals.slewed.emit()
         self.signals.message.emit('')
         return True
 
@@ -312,10 +312,6 @@ class Dome:
         :param follow:
         :return: success
         """
-        if not self.data:
-            self.log.error('No data dict available')
-            return False
-
         mount = self.app.mount
         if follow:
             func = mount.calcTransformationMatricesActual
@@ -335,7 +331,7 @@ class Dome:
             self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
             self.signals.message.emit('slewing')
         else:
-            self.signals.slewFinished.emit()
+            self.signals.slewed.emit()
         delta = azimuth - az
 
         return delta

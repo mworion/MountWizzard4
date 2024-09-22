@@ -17,21 +17,24 @@
 # standard libraries
 
 # external packages
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import Signal, QObject
 
 # local imports
 
 
-class PlateSolveSignals(QObject):
-    """
-    """
-    __all__ = ['PlateSolveSignals']
-
-    result = Signal(object)
-    message = Signal(object)
+class Signals(QObject):
+    __all__ = ['Signals']
 
     serverConnected = Signal()
     serverDisconnected = Signal(object)
-    deviceConnected = Signal(object)
-    deviceDisconnected = Signal(object)
+    deviceConnected = Signal(str)
+    deviceDisconnected = Signal(str)
 
+    exposed = Signal()
+    downloaded = Signal()
+    saved = Signal(object)
+    azimuth = Signal(object)
+    slewed = Signal()
+    message = Signal(object)
+    version = Signal(int)
+    result = Signal(object)

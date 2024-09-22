@@ -22,7 +22,6 @@ import logging
 import PySide6.QtCore
 import PySide6.QtWidgets
 import wakeonlan
-import numpy as np
 from skyfield.api import Angle
 
 # local imports
@@ -119,7 +118,7 @@ class MountDevice:
     def waitAfterSettlingAndEmit(self):
         """
         """
-        self.signals.slewFinished.emit()
+        self.signals.slewed.emit()
 
     def startMountTimers(self):
         """

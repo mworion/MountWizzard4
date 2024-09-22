@@ -25,7 +25,7 @@ from pathlib import Path
 # local imports
 from base.tpool import Worker
 from gui.utilities.toolsQtWidget import sleepAndEvents
-from logic.plateSolve.plateSolveSignals import PlateSolveSignals
+from base.signalsDevices import Signals
 from logic.plateSolve.astrometry import Astrometry
 from logic.plateSolve.astap import ASTAP
 from logic.plateSolve.watney import Watney
@@ -44,7 +44,7 @@ class PlateSolve:
         self.app = app
         self.msg = app.msg
         self.threadPool = app.threadPool
-        self.signals = PlateSolveSignals()
+        self.signals = Signals()
         self.solveQueue = queue.Queue()
         self.solveLoopRunning: bool = False
         self.tempDir: Path = app.mwGlob['tempDir']
@@ -65,7 +65,7 @@ class PlateSolve:
 
         self.signals.serverConnected.connect(self.startSolveLoop)
 
-    def processSolveQueue(self, imagePath: Path, updateHeader: bool) -> None:
+    def processSolveQueue(self, imagePath: Path, updateHeader: bool = False) -> None:
         """
         """
         if not os.path.isfile(imagePath):

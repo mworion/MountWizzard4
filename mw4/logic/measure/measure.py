@@ -22,7 +22,7 @@ from PySide6.QtCore import QMutex
 import numpy as np
 
 # local imports
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from logic.measure.measureRaw import MeasureDataRaw
 from logic.measure.measureCSV import MeasureDataCSV
 

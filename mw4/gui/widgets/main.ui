@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -8305,7 +8305,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -9995,7 +9995,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>5</x>
           <y>20</y>
-          <width>356</width>
+          <width>296</width>
           <height>26</height>
          </rect>
         </property>
@@ -10004,6 +10004,25 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>Plate solve image and sync model</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="runTest">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>20</y>
+          <width>46</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Image, Platesolve and Sync the alignment model of the mount to the given image coordinates. There is no model point added nor the model refined. It is just a matching of the model to that point. Attention: this might lead in worse model quality elsewhere.</string>
+        </property>
+        <property name="text">
+         <string>Test</string>
         </property>
        </widget>
       </widget>

@@ -25,7 +25,7 @@ import requests
 
 # local imports
 from base.tpool import Worker
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 
 
 class SeeingWeatherSignals(Signals):

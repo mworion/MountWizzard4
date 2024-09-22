@@ -27,7 +27,7 @@ from indibase.indiDevice import Device
 from base.indiClass import IndiClass
 import base.indiClass
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 
 host_ip = '127.0.0.1'
 

@@ -26,7 +26,7 @@ from PySide6.QtCore import QThreadPool
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.dome.domeAlpaca import DomeAlpaca
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from base.alpacaClass import AlpacaClass
 
 

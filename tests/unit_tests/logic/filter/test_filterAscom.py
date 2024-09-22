@@ -25,7 +25,7 @@ import platform
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.filter.filterAscom import FilterAscom
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from base.ascomClass import AscomClass
 
 if not platform.system() == 'Windows':

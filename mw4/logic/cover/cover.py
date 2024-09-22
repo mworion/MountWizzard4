@@ -21,7 +21,7 @@ import platform
 # external packages
 
 # local imports
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from logic.cover.coverIndi import CoverIndi
 from logic.cover.coverAlpaca import CoverAlpaca
 if platform.system() == 'Windows':

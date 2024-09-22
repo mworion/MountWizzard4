@@ -24,7 +24,7 @@ import platform
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.environment.sensorWeatherAscom import SensorWeatherAscom
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 

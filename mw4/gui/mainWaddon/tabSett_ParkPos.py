@@ -125,7 +125,7 @@ class SettParkPos(MWidget):
         """
         :return:
         """
-        self.app.mount.signals.slewFinished.disconnect(self.parkAtPos)
+        self.app.mount.signals.slewed.disconnect(self.parkAtPos)
         suc = self.app.mount.obsSite.parkOnActualPosition()
         if not suc:
             self.msg.emit(2, 'Mount', 'Command',
@@ -165,7 +165,7 @@ class SettParkPos(MWidget):
         if not self.ui.parkMountAfterSlew.isChecked():
             return True
 
-        self.app.mount.signals.slewFinished.connect(self.parkAtPos)
+        self.app.mount.signals.slewed.connect(self.parkAtPos)
         return False
 
     def saveActualPosition(self):

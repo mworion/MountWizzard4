@@ -31,7 +31,7 @@ from skyfield.api import Angle, load
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.camera import Camera
 from logic.camera.cameraIndi import CameraIndi
-from base.driverDataClass import Signals
+from base.signalsDevices import Signals
 from base.indiClass import IndiClass
 
 

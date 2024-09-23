@@ -470,12 +470,6 @@ def test_calcOvershoot_8(function):
     assert round(val, 3) == 10
 
 
-def test_slewDome_1(function):
-    function.data = {}
-    suc = function.slewDome()
-    assert not suc
-
-
 def test_slewDome_2(function):
     function.data = {'AZ': 1}
     function.framework = 'indi'

@@ -443,20 +443,8 @@ def test_checkModelRunConditions_4(function):
 
 def test_checkModelRunConditions_5(function):
     function.app.data.buildP = [(0, 0, True)] * 5
-    with mock.patch.object(function.app.plateSolve,
-                           'checkAvailability',
-                           return_value=(False, False)):
-        suc = function.checkModelRunConditions()
-        assert not suc
-
-
-def test_checkModelRunConditions_6(function):
-    function.app.data.buildP = [(0, 0, True)] * 5
-    with mock.patch.object(function.app.plateSolve,
-                           'checkAvailability',
-                           return_value=(True, True)):
-        suc = function.checkModelRunConditions()
-        assert suc
+    suc = function.checkModelRunConditions()
+    assert suc
 
 
 def test_clearAlignAndBackup_1(function):
@@ -815,18 +803,5 @@ def test_exposeImage_1(function):
 
 
 def test_plateSolveSync_1(function):
-    with mock.patch.object(function.app.plateSolve,
-                           'checkAvailability',
-                           return_value=(False, False)):
-        suc = function.plateSolveSync()
-        assert not suc
-
-
-def test_plateSolveSync_2(function):
-    with mock.patch.object(function.app.plateSolve,
-                           'checkAvailability',
-                           return_value=(True, True)):
-        with mock.patch.object(function,
-                               'exposeImage'):
-            suc = function.plateSolveSync()
-            assert suc
+    suc = function.plateSolveSync()
+    assert suc

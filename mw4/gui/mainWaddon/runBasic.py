@@ -58,8 +58,8 @@ class RunBasic:
         self.runType = ''
         self.imageDir = ''
 
-        self.ui.cancelModel.clicked.connect(self.cancelRun)
-        self.ui.endModel.clicked.connect(self.processDataAndFinishRun)
+        #self.ui.cancelModel.clicked.connect(self.cancelRun)
+        #self.ui.endModel.clicked.connect(self.processDataAndFinishRun)
 
     def runSolveDone(self, result):
         """
@@ -581,8 +581,8 @@ class RunBasic:
         if data is None:
             data = []
         plateSolveApp = self.ui.plateSolveDevice.currentText()
-        exposureTime = self.ui.exposureTime.value()
-        binning = int(self.ui.binning.value())
+        exposureTime = self.ui.exposureTime1.value()
+        binning = int(self.ui.binning1.value())
         subFrame = self.ui.subFrame.value()
         fastReadout = self.ui.fastDownload.isChecked()
         focalLength = self.ui.focalLength.value()

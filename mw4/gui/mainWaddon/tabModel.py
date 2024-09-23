@@ -52,12 +52,16 @@ class Model(MWidget, RunBasic):
         ms.alignDone.connect(self.updateAlignGUI)
         ms.alignDone.connect(self.updateTurnKnobsGUI)
 
-        self.ui.runTest.clicked.connect(self.runTest)
         self.ui.runModel.clicked.connect(self.modelBuild)
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
         self.ui.dataModel.clicked.connect(self.loadProgramModel)
         self.ui.plateSolveSync.clicked.connect(self.plateSolveSync)
         self.app.operationRunning.connect(self.setModelOperationMode)
+
+        self.ui.runTest.clicked.connect(self.runBatch)
+        self.ui.pauseModel.clicked.connect(self.pauseBatch)
+        self.ui.cancelModel.clicked.connect(self.cancelBatch)
+        self.ui.endModel.clicked.connect(self.endBatch)
 
     def initConfig(self):
         """
@@ -601,9 +605,46 @@ class Model(MWidget, RunBasic):
         self.exposeImage()
         return True
 
-    def runTest(self):
+    def showProgres(self, progresData):
         """
         """
+        timeElapsed = time.gmtime(progresData['secondsElapsed'])
+        timeEstimated = time.gmtime(progresData['secondsEstimated'])
+        timeFinished = time.localtime(time.time() + progresData['secondsEstimated'])
+        self.ui.timeElapsed.setText(datetime(*timeElapsed[:6]).strftime('%H:%M:%S'))
+        self.ui.timeEstimated.setText(datetime(*timeEstimated[:6]).strftime('%H:%M:%S'))
+        self.ui.timeFinished.setText(datetime(*timeFinished[:6]).strftime('%H:%M:%S'))
+        self.ui.modelProgress.setValue(progresData['modelPercent'])
+        self.ui.numberPoints.setText(f'{progresData['solved']} / {progresData['count']}')
+
+    def cancelBatch(self):
+        """
+        """
+        if not self.modelBatch:
+            return
+        self.modelBatch.abortBatch = True
+
+    def pauseBatch(self):
+        """
+        """
+        if not self.modelBatch:
+            return
+        self.modelBatch.pauseBatch = not self.modelBatch.pauseBatch
+
+    def endBatch(self):
+        """
+        """
+        if not self.modelBatch:
+            return
+        self.modelBatch.endBatch = True
+
+    def runBatch(self):
+        """
+        """
+        self.ui.cancelModel.setEnabled(True)
+        self.ui.endModel.setEnabled(True)
+        self.ui.pauseModel.setEnabled(True)
+
         data = []
         for point in self.app.data.buildP:
             if self.ui.excludeDonePoints.isChecked() and not point[2]:
@@ -613,8 +654,11 @@ class Model(MWidget, RunBasic):
         name, imageDir = self.setupFilenamesAndDirectories(prefix='m')
 
         self.modelBatch = ModelBatch(self.app)
+        self.modelBatch.progres.connect(self.showProgres)
         self.modelBatch.modelInputData = data
         self.modelBatch.imageDir = imageDir
         self.modelBatch.modelName = name
         self.modelBatch.run()
+        self.modelBatch = None
+        self.msg.emit(1, 'Model', 'Run', 'Modeling finished')
         return True

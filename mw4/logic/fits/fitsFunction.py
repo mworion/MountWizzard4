@@ -81,13 +81,13 @@ def getSQMFromHeader(header: fits.Header) -> float:
 def getExposureFromHeader(header: fits.Header) -> float:
     """
     """
-    for key in ['EXPOSURE', 'exposureTime']:
+    for key in ['EXPOSURE', 'EXPTIME']:
         value = header.get(key)
         if value is None:
             continue
         break
     else:
-        return 0
+        return 0.0
     return float(value)
 
 

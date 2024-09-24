@@ -615,7 +615,7 @@ class Model(MWidget, RunBasic):
         self.ui.timeEstimated.setText(datetime(*timeEstimated[:6]).strftime('%H:%M:%S'))
         self.ui.timeFinished.setText(datetime(*timeFinished[:6]).strftime('%H:%M:%S'))
         self.ui.modelProgress.setValue(progresData['modelPercent'])
-        self.ui.numberPoints.setText(f'{progresData['solved']} / {progresData['count']}')
+        self.ui.numberPoints.setText(f'{progresData["count"]} / {progresData["number"]}')
 
     def cancelBatch(self):
         """

@@ -101,11 +101,17 @@ class Model(MWidget):
         if status == 1:
             self.ui.runModelGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)
+            self.ui.cancelModel.setEnabled(True)
+            self.ui.endModel.setEnabled(True)
+            self.ui.pauseModel.setEnabled(True)
         elif status == 2:
             self.ui.runModelGroup.setEnabled(False)
         elif status == 0:
             self.ui.runModelGroup.setEnabled(True)
             self.ui.dataModelGroup.setEnabled(True)
+            self.ui.cancelModel.setEnabled(False)
+            self.ui.endModel.setEnabled(False)
+            self.ui.pauseModel.setEnabled(False)
         else:
             self.ui.runModelGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)
@@ -457,6 +463,32 @@ class Model(MWidget):
             return
         self.modelBatch.endBatch = True
 
+    def selectBuildData(self, excludeDonePoints: bool) -> list:
+        """
+        """
+        data = []
+        for point in self.app.data.buildP:
+            if excludeDonePoints and not point[2]:
+                continue
+            data.append(point)
+
+    def setupBatchData(self):
+        """
+        """
+        data = self.selectBuildData(self.ui.excludeDonePoints.isChecked())
+        name, imageDir = self.setupFilenamesAndDirectories(prefix='m')
+        self.modelBatch = ModelBatch(self.app)
+        self.modelBatch.progress.connect(self.showProgress)
+        self.modelBatch.modelInputData = data
+        self.modelBatch.imageDir = imageDir
+        self.modelBatch.modelName = name
+        self.modelBatch.numberRetries = self.ui.numberBuildRetries.value()
+        self.modelBatch.version = f'{self.app.__version__}'
+        self.modelBatch.profile = self.ui.profile.text()
+        self.modelBatch.firmware = self.ui.vString.text()
+        self.modelBatch.latitude = self.app.mount.obsSite.location.latitude.degrees
+        self.modelBatch.plateSolveApp = self.ui.plateSolveDevice.currentText()
+
     def runBatch(self):
         """
         """
@@ -465,33 +497,12 @@ class Model(MWidget):
         if not self.clearAlignAndBackup():
             return False
 
-        self.ui.cancelModel.setEnabled(True)
-        self.ui.endModel.setEnabled(True)
-        self.ui.pauseModel.setEnabled(True)
-
-        retryCounter = self.ui.numberBuildRetries.value()
-        runType = 'Model'
-        keepImages = self.ui.keepModelImages.isChecked()
-
-        data = []
-        for point in self.app.data.buildP:
-            if self.ui.excludeDonePoints.isChecked() and not point[2]:
-                continue
-            data.append(point)
-
         self.app.operationRunning.emit(1)
-        name, imageDir = self.setupFilenamesAndDirectories(prefix='m')
-
-        self.modelBatch = ModelBatch(self.app)
-        self.modelBatch.progress.connect(self.showProgress)
-        self.modelBatch.modelInputData = data
-        self.modelBatch.imageDir = imageDir
-        self.modelBatch.modelName = name
+        self.setupBatchData()
         self.modelBatch.run()
         self.processModelData()
 
         self.modelBatch = None
-
         self.app.operationRunning.emit(0)
         self.msg.emit(1, 'Model', 'Run', 'Modeling finished')
         return True

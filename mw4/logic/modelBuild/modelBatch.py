@@ -30,7 +30,6 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 class ModelBatch(QObject):
     """
     """
-
     __all__ = ['ModelBatch']
     progress = Signal(object)
 
@@ -45,10 +44,17 @@ class ModelBatch(QObject):
         self.modelTiming: int = 0
         self.modelInputData: list = []
         self.modelBuildData: list = []
+        self.modelSaveData: list = []
         self.modelName: str = ''
         self.imageDir: Path = Path('')
+        self.latitude: float = 0
+        self.version: str = ''
+        self.firmware: str = ''
+        self.profile: str = ''
+        self.plateSolveApp: str = ''
         self.exposureWaitTime: float = 0
         self.runTime: float = 0
+        self.numberRetries: int = 0
 
         self.pointerSlew: int = 0
         self.pointerImage: int = 0
@@ -125,6 +131,41 @@ class ModelBatch(QObject):
         if self.app.deviceStat['dome']:
             self.app.dome.slewDome(azimuth)
         self.app.mount.obsSite.startSlewing()
+
+    def generateSaveData(self) -> dict:
+        """
+        generateSaveData builds from the model file a format which could be
+        serialized in json. this format will be used for storing model on file.
+        """
+        for modelBuildPoint in self.modelBuildData:
+            modelSavePoint = dict()
+            modelSavePoint.update(modelBuildPoint)
+            modelSavePoint['raJNowM'] = modelSavePoint['raJNowM'].hours
+            modelSavePoint['decJNowM'] = modelSavePoint['decJNowM'].degrees
+            modelSavePoint['raJ2000M'] = modelSavePoint['raJ2000M'].hours
+            modelSavePoint['decJ2000M'] = modelSavePoint['decJ2000M'].degrees
+            modelSavePoint['raJNowS'] = modelSavePoint['raJNowS'].hours
+            modelSavePoint['decJNowS'] = modelSavePoint['decJNowS'].degrees
+            modelSavePoint['raJ2000S'] = modelSavePoint['raJ2000S'].hours
+            modelSavePoint['decJ2000S'] = modelSavePoint['decJ2000S'].degrees
+            modelSavePoint['haMountModel'] = modelSavePoint['haMountModel'].hours
+            modelSavePoint['decMountModel'] = modelSavePoint['decMountModel'].degrees
+            modelSavePoint['angularPosRA'] = modelSavePoint['angularPosRA'].degrees
+            modelSavePoint['angularPosDEC'] = modelSavePoint['angularPosDEC'].degrees
+            modelSavePoint['errorAngle'] = modelSavePoint['errorAngle'].degrees
+            modelSavePoint['errorRA'] = modelSavePoint['errorRA'].degrees
+            modelSavePoint['errorDEC'] = modelSavePoint['errorDEC'].degrees
+            modelSavePoint['modelOrthoError'] = modelSavePoint['modelOrthoError'].degrees
+            modelSavePoint['modelPolarError'] = modelSavePoint['modelPolarError'].degrees
+            modelSavePoint['altitude'] = modelSavePoint['altitude'].degrees
+            modelSavePoint['azimuth'] = modelSavePoint['azimuth'].degrees
+            modelSavePoint['siderealTime'] = modelSavePoint['siderealTime'].hours
+            modelSavePoint['julianDate'] = modelSavePoint['julianDate'].utc_iso()
+            modelSavePoint['version'] = self.version
+            modelSavePoint['profile'] = self.profile
+            modelSavePoint['firmware'] = self.firmware
+            modelSavePoint['latitude'] = self.latitude
+            self.modelSaveData.append(modelSavePoint)
 
     def addMountDataToModelBuildData(self) -> None:
         """
@@ -221,6 +262,15 @@ class ModelBatch(QObject):
             modelItem['imagePath'] = imagePath
             modelItem['altitude'] = Angle(degrees=point[0])
             modelItem['azimuth'] = Angle(degrees=point[1])
+            modelItem['exposureTime'] = self.app.camera.exposureTime
+            modelItem['binning'] = self.app.camera.binning
+            modelItem['subFrame'] = self.app.camera.subFrame
+            modelItem['fastReadout'] = self.app.camera.fastReadout
+            modelItem['name'] = self.modelName
+            modelItem['plateSolveApp'] = self.plateSolveApp
+            modelItem['focalLength'] = self.app.camera.focalLength
+            modelItem['waitTime'] = self.exposureWaitTime
+
             self.modelBuildData.append(modelItem)
 
     def run(self) -> None:

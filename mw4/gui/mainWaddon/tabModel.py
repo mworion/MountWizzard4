@@ -605,17 +605,17 @@ class Model(MWidget, RunBasic):
         self.exposeImage()
         return True
 
-    def showProgres(self, progresData):
+    def showProgress(self, progressData):
         """
         """
-        timeElapsed = time.gmtime(progresData['secondsElapsed'])
-        timeEstimated = time.gmtime(progresData['secondsEstimated'])
-        timeFinished = time.localtime(time.time() + progresData['secondsEstimated'])
+        timeElapsed = time.gmtime(progressData['secondsElapsed'])
+        timeEstimated = time.gmtime(progressData['secondsEstimated'])
+        timeFinished = time.localtime(time.time() + progressData['secondsEstimated'])
         self.ui.timeElapsed.setText(datetime(*timeElapsed[:6]).strftime('%H:%M:%S'))
         self.ui.timeEstimated.setText(datetime(*timeEstimated[:6]).strftime('%H:%M:%S'))
         self.ui.timeFinished.setText(datetime(*timeFinished[:6]).strftime('%H:%M:%S'))
-        self.ui.modelProgress.setValue(progresData['modelPercent'])
-        self.ui.numberPoints.setText(f'{progresData["count"]} / {progresData["number"]}')
+        self.ui.modelProgress.setValue(progressData['modelPercent'])
+        self.ui.numberPoints.setText(f'{progressData["count"]} / {progressData["number"]}')
 
     def cancelBatch(self):
         """
@@ -654,7 +654,7 @@ class Model(MWidget, RunBasic):
         name, imageDir = self.setupFilenamesAndDirectories(prefix='m')
 
         self.modelBatch = ModelBatch(self.app)
-        self.modelBatch.progres.connect(self.showProgres)
+        self.modelBatch.progress.connect(self.showProgress)
         self.modelBatch.modelInputData = data
         self.modelBatch.imageDir = imageDir
         self.modelBatch.modelName = name

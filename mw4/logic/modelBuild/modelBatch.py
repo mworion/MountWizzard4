@@ -32,7 +32,7 @@ class ModelBatch(QObject):
     """
 
     __all__ = ['ModelBatch']
-    progres = Signal(object)
+    progress = Signal(object)
 
     def __init__(self, app):
         super().__init__()
@@ -180,14 +180,14 @@ class ModelBatch(QObject):
         secondsEstimated = secondsBase * (1 - fraction)
         modelPercent = int(100 * fraction)
 
-        progresData = {
+        progressData = {
             'count': len(self.modelBuildData),
             'modelPercent': modelPercent,
             'secondsElapsed': secondsElapsed,
             'secondsEstimated': secondsEstimated,
             'solved': self.pointerResult + 1,
         }
-        self.progres.emit(progresData)
+        self.progress.emit(progressData)
 
     def collectPlateSolveResult(self, result) -> None:
         """

@@ -55,7 +55,6 @@ class Model(MWidget, RunBasic):
         self.ui.runModel.clicked.connect(self.modelBuild)
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
         self.ui.dataModel.clicked.connect(self.loadProgramModel)
-        self.ui.plateSolveSync.clicked.connect(self.plateSolveSync)
         self.app.operationRunning.connect(self.setModelOperationMode)
 
         self.ui.runTest.clicked.connect(self.runBatch)

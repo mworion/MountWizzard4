@@ -25,6 +25,7 @@ from skyfield.api import Angle
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
+from base.transform import J2000ToJNow
 from logic.fits.fitsFunction import getCoordinatesFromHeader, getSQMFromHeader
 from logic.fits.fitsFunction import getExposureFromHeader, getScaleFromHeader
 from gui.utilities import toolsQtWidget
@@ -719,3 +720,21 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         ra, dec = getCoordinatesFromHeader(self.fileHandler.header)
         self.slewDirect(ra, dec)
         return True
+
+    def syncMountToImage(self):
+        """
+        """
+        obs = self.app.mount.obsSite
+        timeJD = obs.timeJD
+        raJNow, decJNow = J2000ToJNow(result['raJ2000S'],
+                                      result['decJ2000S'],
+                                      timeJD)
+        obs.setTargetRaDec(raJNow, decJNow)
+        suc = obs.syncPositionToTarget()
+        if suc:
+            t = 'Successfully synced model in mount to coordinates'
+            self.msg.emit(1, 'Model', 'Run', t)
+        else:
+            t = 'No sync, match failed because coordinates to far off for model'
+            self.msg.emit(2, 'Model', 'Run error', t)
+

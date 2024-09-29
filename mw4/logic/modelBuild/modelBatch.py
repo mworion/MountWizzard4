@@ -230,13 +230,9 @@ class ModelBatch(QObject):
             return
 
         self.runTime = time.time()
-        self.app.operationRunning.emit(1)
         self.prepareModelBuildData()
         self.startNewSlew()
 
         notFinished = self.pointerResult < len(self.modelBuildData)
         while not self.abortBatch and notFinished and not self.endBatch:
             sleepAndEvents(500)
-
-        self.app.operationRunning.emit(0)
-

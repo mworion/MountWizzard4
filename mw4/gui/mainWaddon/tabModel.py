@@ -19,21 +19,20 @@ import os
 import time
 import json
 from datetime import datetime
+from pathlib import Path
 
 # external packages
 from skyfield.api import Star
 
 # local import
 from mountcontrol.alignStar import AlignStar
-from mountcontrol.convert import convertToHMS, convertToDMS
-from base.transform import J2000ToJNow
 from gui.mainWaddon.runBasic import RunBasic
 from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
 from logic.modeldata.modelHandling import writeRetrofitData
 from logic.modelBuild.modelBatch import ModelBatch
 
 
-class Model(MWidget, RunBasic):
+class Model(MWidget):
     """
     """
     def __init__(self, mainW):
@@ -52,19 +51,15 @@ class Model(MWidget, RunBasic):
         ms.alignDone.connect(self.updateAlignGUI)
         ms.alignDone.connect(self.updateTurnKnobsGUI)
 
-        self.ui.runModel.clicked.connect(self.modelBuild)
-        self.ui.pauseModel.clicked.connect(self.pauseBuild)
-        self.ui.dataModel.clicked.connect(self.loadProgramModel)
-        self.app.operationRunning.connect(self.setModelOperationMode)
-
         self.ui.runTest.clicked.connect(self.runBatch)
         self.ui.pauseModel.clicked.connect(self.pauseBatch)
         self.ui.cancelModel.clicked.connect(self.cancelBatch)
         self.ui.endModel.clicked.connect(self.endBatch)
+        self.ui.dataModel.clicked.connect(self.loadProgramModel)
+        self.app.operationRunning.connect(self.setModelOperationMode)
 
     def initConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         self.ui.retriesReverse.setChecked(config.get('retriesReverse', False))
@@ -75,11 +70,8 @@ class Model(MWidget, RunBasic):
         self.ui.normalTiming.setChecked(config.get('normalTiming', False))
         self.ui.conservativeTiming.setChecked(config.get('conservativeTiming', True))
 
-        return True
-
     def storeConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         config['retriesReverse'] = self.ui.retriesReverse.isChecked()
@@ -88,7 +80,6 @@ class Model(MWidget, RunBasic):
         config['progressiveTiming'] = self.ui.progressiveTiming.isChecked()
         config['normalTiming'] = self.ui.normalTiming.isChecked()
         config['conservativeTiming'] = self.ui.conservativeTiming.isChecked()
-        return True
 
     def setupIcons(self) -> None:
         """
@@ -106,29 +97,18 @@ class Model(MWidget, RunBasic):
 
     def setModelOperationMode(self, status):
         """
-        :param status:
-        :return:
         """
         if status == 1:
-            self.ui.plateSolveSyncGroup.setEnabled(False)
+            self.ui.runModelGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)
         elif status == 2:
             self.ui.runModelGroup.setEnabled(False)
-            self.ui.dataModelGroup.setEnabled(False)
-        elif status == 3:
-            self.ui.runModelGroup.setEnabled(False)
-            self.ui.plateSolveSyncGroup.setEnabled(False)
         elif status == 0:
             self.ui.runModelGroup.setEnabled(True)
-            self.ui.plateSolveSyncGroup.setEnabled(True)
             self.ui.dataModelGroup.setEnabled(True)
-            self.changeStyleDynamic(self.ui.plateSolveSync, 'running', False)
         else:
             self.ui.runModelGroup.setEnabled(False)
-            self.ui.plateSolveSyncGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)
-
-        return True
 
     def updateAlignGUI(self, model):
         """
@@ -317,31 +297,22 @@ class Model(MWidget, RunBasic):
 
     def processModelData(self, model):
         """
-        :return:
         """
         self.model = model
         if len(self.model) < 3:
             self.msg.emit(2, 'Model', 'Run error',
                           f'{self.modelName} Not enough valid model points')
-            self.app.operationRunning.emit(0)
-            return False
+            return
 
-        self.msg.emit(0, 'Model', 'Run',
-                      'Programming model to mount')
-        suc = self.programModelToMount()
-        if suc:
-            self.msg.emit(0, 'Model', 'Run',
-                          'Model programmed with success')
+        self.msg.emit(0, 'Model', 'Run', 'Programming model to mount')
+        if self.programModelToMount():
+            self.msg.emit(0, 'Model', 'Run', 'Model programmed with success')
         else:
-            self.msg.emit(2, 'Model', 'Run error',
-                          'Model programming error')
+            self.msg.emit(2, 'Model', 'Run error', 'Model programming error')
 
-        self.msg.emit(1, 'Model', 'Run',
-                      f'Modeling finished [{self.modelName}]')
+        self.msg.emit(1, 'Model', 'Run', f'Modeling finished [{self.modelName}]')
         self.app.playSound.emit('RunFinished')
         self.renewHemisphereView()
-        self.app.operationRunning.emit(0)
-        return True
 
     def checkModelRunConditions(self):
         """
@@ -367,78 +338,23 @@ class Model(MWidget, RunBasic):
             self.msg.emit(2, 'Model', 'Run error',
                           'No plate solver selected')
             return False
-
         return True
 
     def clearAlignAndBackup(self):
         """
-        :return:
         """
-        suc = self.app.mount.model.clearAlign()
-        if not suc:
-            self.msg.emit(2, 'Model', 'Run error',
-                          'Actual model cannot be cleared')
+        if not self.app.mount.model.clearAlign():
+            self.msg.emit(2, 'Model', 'Run error', 'Actual model cannot be cleared')
             self.msg.emit(2, '', '', 'Model build cancelled')
             return False
-        else:
-            self.msg.emit(0, 'Model', 'Run',
-                          'Actual model clearing, waiting 1s')
-            sleepAndEvents(1000)
-            self.msg.emit(0, '', '', 'Actual model cleared')
-            self.app.refreshModel.emit()
 
-        suc = self.app.mount.model.storeName('backup')
-        if not suc:
+        self.msg.emit(0, 'Model', 'Run', 'Actual model clearing, waiting 1s')
+        sleepAndEvents(1000)
+        self.msg.emit(0, '', '', 'Actual model cleared')
+        self.app.refreshModel.emit()
+        if not self.app.mount.model.storeName('backup'):
             t = 'Cannot save backup model on mount, proceeding with model run'
             self.msg.emit(2, 'Model', 'Run error', t)
-
-        return True
-
-    def modelBuild(self):
-        """
-        modelBuild sets the adequate gui elements, selects the model points and
-        calls the core modeling method.
-
-        :return: true for test purpose
-        """
-        self.modelName, imgDir = self.setupFilenamesAndDirectories(prefix='m')
-        self.msg.emit(1, 'Model', 'Run', f'Starting model [{self.modelName}]')
-
-        if not self.checkModelRunConditions():
-            return False
-        if not self.clearAlignAndBackup():
-            return False
-
-        self.app.operationRunning.emit(1)
-
-        data = []
-        for point in self.app.data.buildP:
-            if self.ui.excludeDonePoints.isChecked() and not point[2]:
-                continue
-            data.append(point)
-
-        waitTimeExposure = self.ui.waitTimeExposure.value()
-        modelPoints = self.setupRunPoints(data=data, imgDir=imgDir,
-                                          name=self.modelName,
-                                          waitTime=waitTimeExposure)
-        if not modelPoints:
-            self.msg.emit(2, 'Model', 'Run error',
-                          'Modeling cancelled, no valid points')
-            self.app.operationRunning.emit(0)
-            return False
-
-        self.setupModelRunContextAndGuiStatus()
-        retryCounter = self.ui.numberBuildRetries.value()
-        runType = 'Model'
-        keepImages = self.ui.keepModelImages.isChecked()
-        self.timeStartModeling = time.time()
-        self.cycleThroughPoints(modelPoints=modelPoints,
-                                retryCounter=retryCounter,
-                                runType=runType,
-                                processData=self.processModelData,
-                                progress=self.updateModelProgress,
-                                imgDir=imgDir,
-                                keepImages=keepImages)
         return True
 
     def loadProgramModel(self):
@@ -458,12 +374,10 @@ class Model(MWidget, RunBasic):
             return False
         if isinstance(loadFilePath, str):
             loadFilePath = [loadFilePath]
-
-        self.app.operationRunning.emit(3)
         if not self.clearAlignAndBackup():
-            self.app.operationRunning.emit(0)
             return False
 
+        self.app.operationRunning.emit(2)
         self.msg.emit(1, 'Model', 'Run',
                       'Programing models')
         modelJSON = list()
@@ -498,111 +412,17 @@ class Model(MWidget, RunBasic):
         self.app.operationRunning.emit(0)
         return suc
 
-    def solveDone(self, result=None):
+    def setupFilenamesAndDirectories(self, prefix: str = '', postfix: str = '') -> [Path, Path]:
         """
-        :param result: result (named tuple)
-        :return: success
         """
-        self.app.plateSolve.signals.result.disconnect(self.solveDone)
-        if not result:
-            self.msg.emit(2, 'Model', 'Solving error', 'Result missing')
-            self.app.operationRunning.emit(0)
-            return False
-        if not result['success']:
-            self.msg.emit(2, 'Model', 'Solve error', f'{result.get("message")}')
-            self.app.operationRunning.emit(0)
-            return False
+        nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        name = f'{prefix}-{nameTime}{postfix}'
+        imageDir = f'{self.app.mwGlob["imageDir"]}/{name}'
 
-        text = f'RA: {convertToHMS(result["raJ2000S"])} '
-        text += f'({result["raJ2000S"].hours:4.3f}), '
-        self.msg.emit(0, 'Model', 'Solved ', text)
-        text = f'DEC: {convertToDMS(result["decJ2000S"])} '
-        text += f'({result["decJ2000S"].degrees:4.3f}), '
-        self.msg.emit(0, '', '', text)
-        text = f'Angle: {result["angleS"]:3.0f}, '
-        self.msg.emit(0, '', '', text)
-        text = f'Scale: {result["scaleS"]:4.3f}, '
-        self.msg.emit(0, '', '', text)
-        text = f'Error: {result["errorRMS_S"]:4.1f}'
-        self.msg.emit(0, '', '', text)
+        if not os.path.isdir(imageDir):
+            os.mkdir(imageDir)
 
-        self.app.showImage.emit(result['solvedPath'])
-
-        obs = self.app.mount.obsSite
-        timeJD = obs.timeJD
-        raJNow, decJNow = J2000ToJNow(result['raJ2000S'],
-                                      result['decJ2000S'],
-                                      timeJD)
-        obs.setTargetRaDec(raJNow, decJNow)
-        suc = obs.syncPositionToTarget()
-        if suc:
-            t = 'Successfully synced model in mount to coordinates'
-            self.msg.emit(1, 'Model', 'Run', t)
-        else:
-            t = 'No sync, match failed because coordinates to far off for model'
-            self.msg.emit(2, 'Model', 'Run error', t)
-        self.app.operationRunning.emit(0)
-        return suc
-
-    def solveImage(self, imagePath=''):
-        """
-        :param imagePath:
-        :return:
-        """
-        if not os.path.isfile(imagePath):
-            self.app.operationRunning.emit(0)
-            return False
-
-        self.app.plateSolve.signals.result.connect(self.solveDone)
-        self.app.plateSolve.solve(imagePath=imagePath)
-        self.msg.emit(0, 'Model', 'Solving', f'{os.path.basename(imagePath)}')
-        return True
-
-    def exposeRaw(self):
-        """
-        """
-        timeTag = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        fileName = timeTag + '-sync.fits'
-        imagePath = os.path.normpath(f'{self.app.mwGlob["imageDir"]}/{fileName}')
-
-        suc = self.app.camera.expose(imagePath=imagePath,
-                                     exposureTime=self.app.camera.exposureTime1,
-                                     binning=self.app.camera.binning1)
-        if not suc:
-            return False
-        text = f'{os.path.basename(imagePath)}'
-        self.msg.emit(0, 'Model', 'Exposing', text)
-        return True
-
-    def exposeImageDone(self, imagePath=''):
-        """
-        :param imagePath:
-        :return: True for test purpose
-        """
-        self.app.camera.signals.saved.disconnect(self.exposeImageDone)
-        text = f'{os.path.basename(imagePath)}'
-        self.msg.emit(0, 'Model', 'Exposed', text)
-        self.solveImage(imagePath)
-        return True
-
-    def exposeImage(self):
-        """
-        :return: success
-        """
-        self.app.camera.signals.saved.connect(self.exposeImageDone)
-        self.exposeRaw()
-        return True
-
-    def plateSolveSync(self):
-        """
-        :return:
-        """
-        self.msg.emit(1, 'Model', 'Sync',
-                      'Starting plate solve and sync model in mount')
-        self.app.operationRunning.emit(2)
-        self.changeStyleDynamic(self.ui.plateSolveSync, 'running', True)
-        self.exposeImage()
-        return True
+        return name, imageDir
 
     def showProgress(self, progressData):
         """
@@ -640,9 +460,18 @@ class Model(MWidget, RunBasic):
     def runBatch(self):
         """
         """
+        if not self.checkModelRunConditions():
+            return False
+        if not self.clearAlignAndBackup():
+            return False
+
         self.ui.cancelModel.setEnabled(True)
         self.ui.endModel.setEnabled(True)
         self.ui.pauseModel.setEnabled(True)
+
+        retryCounter = self.ui.numberBuildRetries.value()
+        runType = 'Model'
+        keepImages = self.ui.keepModelImages.isChecked()
 
         data = []
         for point in self.app.data.buildP:
@@ -650,6 +479,7 @@ class Model(MWidget, RunBasic):
                 continue
             data.append(point)
 
+        self.app.operationRunning.emit(1)
         name, imageDir = self.setupFilenamesAndDirectories(prefix='m')
 
         self.modelBatch = ModelBatch(self.app)
@@ -658,6 +488,10 @@ class Model(MWidget, RunBasic):
         self.modelBatch.imageDir = imageDir
         self.modelBatch.modelName = name
         self.modelBatch.run()
+        self.processModelData()
+
         self.modelBatch = None
+
+        self.app.operationRunning.emit(0)
         self.msg.emit(1, 'Model', 'Run', 'Modeling finished')
         return True

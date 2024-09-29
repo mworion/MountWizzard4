@@ -19,11 +19,10 @@
 # external packages
 
 # local import
-from gui.mainWaddon.runBasic import RunBasic
 from gui.utilities.toolsQtWidget import MWidget
 
 
-class Analysis(MWidget, RunBasic):
+class Analysis(MWidget):
     """
     """
 
@@ -159,34 +158,4 @@ class Analysis(MWidget, RunBasic):
     def runFlexure(self):
         """
         """
-        if not self.checkAnalysisConditions():
-            self.app.operationRunning.emit(0)
-            return False
-
-        self.app.operationRunning.emit(4)
-        self.analysisRunning = True
-
-        prefix = 'a'
-        postfix = 'flexure'
-        self.analysisName, imgDir = self.setupFilenamesAndDirectories(
-            prefix=prefix, postfix=postfix)
-
-        data, waitTime = self.setupFlexurePoints()
-        analysisPoints = self.setupRunPoints(data=data, imgDir=imgDir,
-                                             name=self.analysisName,
-                                             waitTime=waitTime)
-
-        self.changeStyleDynamic(self.ui.runFlexure, 'running', True)
-        self.ui.cancelAnalysis.setEnabled(True)
-
-        self.msg.emit(1, 'Analysis', 'Flexure', f'Starting [{self.analysisName}]')
-        runType = 'Analysis'
-        keepImages = self.ui.keepAnalysisImages.isChecked()
-        self.cycleThroughPoints(modelPoints=analysisPoints,
-                                retryCounter=0,
-                                runType=runType,
-                                processData=self.processAnalysisData,
-                                progress=self.updateAnalysisProgress,
-                                imgDir=imgDir,
-                                keepImages=keepImages)
-        return True
+        pass

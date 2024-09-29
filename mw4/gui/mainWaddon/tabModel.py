@@ -26,9 +26,8 @@ from skyfield.api import Star
 
 # local import
 from mountcontrol.alignStar import AlignStar
-from gui.mainWaddon.runBasic import RunBasic
 from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
-from logic.modeldata.modelHandling import writeRetrofitData
+from logic.modelBuild.modelHandling import writeRetrofitData
 from logic.modelBuild.modelBatch import ModelBatch
 
 
@@ -37,7 +36,6 @@ class Model(MWidget):
     """
     def __init__(self, mainW):
         super().__init__()
-        RunBasic.__init__(self, mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
@@ -46,10 +44,6 @@ class Model(MWidget):
         self.modelName = ''
         self.model = []
         self.modelBatch = None
-
-        ms = self.app.mount.signals
-        ms.alignDone.connect(self.updateAlignGUI)
-        ms.alignDone.connect(self.updateTurnKnobsGUI)
 
         self.ui.runTest.clicked.connect(self.runBatch)
         self.ui.pauseModel.clicked.connect(self.pauseBatch)
@@ -90,10 +84,27 @@ class Model(MWidget):
         self.wIcon(self.ui.endModel, 'stop_m')
         self.wIcon(self.ui.dataModel, 'choose')
         self.wIcon(self.ui.plateSolveSync, 'start')
-        pixmap = self.img2pixmap(':/pics/azimuth.png').scaled(101, 101)
-        self.ui.picAZ.setPixmap(pixmap)
-        pixmap = self.img2pixmap(':/pics/altitude.png').scaled(101, 101)
-        self.ui.picALT.setPixmap(pixmap)
+
+    def cancelBatch(self):
+        """
+        """
+        if not self.modelBatch:
+            return
+        self.modelBatch.abortBatch = True
+
+    def pauseBatch(self):
+        """
+        """
+        if not self.modelBatch:
+            return
+        self.modelBatch.pauseBatch = not self.modelBatch.pauseBatch
+
+    def endBatch(self):
+        """
+        """
+        if not self.modelBatch:
+            return
+        self.modelBatch.endBatch = True
 
     def setModelOperationMode(self, status):
         """
@@ -115,47 +126,6 @@ class Model(MWidget):
         else:
             self.ui.runModelGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)
-
-    def updateAlignGUI(self, model):
-        """
-        """
-        self.guiSetText(self.ui.numberStars, '2.0f', model.numberStars)
-        self.guiSetText(self.ui.numberStars1, '2.0f', model.numberStars)
-        self.guiSetText(self.ui.errorRMS, '5.1f', model.errorRMS)
-        self.guiSetText(self.ui.errorRMS1, '5.1f', model.errorRMS)
-        self.guiSetText(self.ui.terms, '2.0f', model.terms)
-        val = None if model.positionAngle is None else model.positionAngle.degrees
-        self.guiSetText(self.ui.positionAngle, '5.1f', val)
-        val = None if model.polarError is None else model.polarError.degrees * 3600
-        self.guiSetText(self.ui.polarError, '5.0f', val)
-        val = None if model.orthoError is None else model.orthoError.degrees * 3600
-        self.guiSetText(self.ui.orthoError, '5.0f', val)
-        val = None if model.azimuthError is None else model.azimuthError.degrees
-        self.guiSetText(self.ui.azimuthError, '5.1f', val)
-        val = None if model.altitudeError is None else model.altitudeError.degrees
-        self.guiSetText(self.ui.altitudeError, '5.1f', val)
-
-    def updateTurnKnobsGUI(self, model):
-        """
-        """
-        if model.azimuthTurns is not None:
-            if model.azimuthTurns > 0:
-                text = '{0:3.1f} revs left'.format(abs(model.azimuthTurns))
-            else:
-                text = '{0:3.1f} revs right'.format(abs(model.azimuthTurns))
-        else:
-            text = '-'
-
-        self.ui.azimuthTurns.setText(text)
-        if model.altitudeTurns is not None:
-            if model.altitudeTurns > 0:
-                text = '{0:3.1f} revs down'.format(abs(model.altitudeTurns))
-            else:
-                text = '{0:3.1f} revs up'.format(abs(model.altitudeTurns))
-        else:
-            text = '-'
-
-        self.ui.altitudeTurns.setText(text)
 
     def updateModelProgress(self, mPoint):
         """
@@ -247,8 +217,7 @@ class Model(MWidget):
         """
         self.app.mount.signals.alignDone.disconnect(self.saveModelFinish)
         self.retrofitModel()
-        self.msg.emit(0, 'Model', 'Run',
-                      f'Writing model [{self.modelName}]')
+        self.msg.emit(0, 'Model', 'Run', f'Writing model [{self.modelName}]')
         saveData = self.generateSaveData()
         modelPath = os.path.normpath(f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model')
         with open(modelPath, 'w') as outfile:
@@ -274,7 +243,6 @@ class Model(MWidget):
 
     def programModelToMount(self):
         """
-        :return: True for test purpose
         """
         build = self.generateBuildData()
         if len(build) < 3:
@@ -291,16 +259,6 @@ class Model(MWidget):
         self.app.refreshModel.emit()
         return True
 
-    def renewHemisphereView(self):
-        """
-        :return: True for test purpose
-        """
-        for i in range(0, len(self.app.data.buildP)):
-            self.app.data.setStatusBuildP(i, True)
-
-        self.app.updatePointMarker.emit()
-        return True
-
     def processModelData(self, model):
         """
         """
@@ -309,20 +267,15 @@ class Model(MWidget):
             self.msg.emit(2, 'Model', 'Run error',
                           f'{self.modelName} Not enough valid model points')
             return
-
         self.msg.emit(0, 'Model', 'Run', 'Programming model to mount')
         if self.programModelToMount():
-            self.msg.emit(0, 'Model', 'Run', 'Model programmed with success')
+            self.msg.emit(1, 'Model', 'Run', f'Model {self.modelName} with success')
         else:
             self.msg.emit(2, 'Model', 'Run error', 'Model programming error')
-
-        self.msg.emit(1, 'Model', 'Run', f'Modeling finished [{self.modelName}]')
         self.app.playSound.emit('RunFinished')
-        self.renewHemisphereView()
 
-    def checkModelRunConditions(self):
+    def checkModelRunConditions(self, excludeDonePoints: bool) -> bool:
         """
-        :return:
         """
         if len(self.app.data.buildP) < 2:
             t = 'No modeling start because less than 3 points'
@@ -334,16 +287,11 @@ class Model(MWidget):
             self.msg.emit(2, 'Model', 'Run error', t)
             return False
 
-        excludeDonePoints = self.ui.excludeDonePoints.isChecked()
         if len([x for x in self.app.data.buildP if x[2]]) < 3 and excludeDonePoints:
             t = 'No modeling start because less than 3 points'
             self.msg.emit(2, 'Model', 'Run error', t)
             return False
 
-        if self.ui.plateSolveDevice.currentText().startswith('No device'):
-            self.msg.emit(2, 'Model', 'Run error',
-                          'No plate solver selected')
-            return False
         return True
 
     def clearAlignAndBackup(self):
@@ -442,28 +390,7 @@ class Model(MWidget):
         self.ui.modelProgress.setValue(progressData['modelPercent'])
         self.ui.numberPoints.setText(f'{progressData["count"]} / {progressData["number"]}')
 
-    def cancelBatch(self):
-        """
-        """
-        if not self.modelBatch:
-            return
-        self.modelBatch.abortBatch = True
-
-    def pauseBatch(self):
-        """
-        """
-        if not self.modelBatch:
-            return
-        self.modelBatch.pauseBatch = not self.modelBatch.pauseBatch
-
-    def endBatch(self):
-        """
-        """
-        if not self.modelBatch:
-            return
-        self.modelBatch.endBatch = True
-
-    def selectBuildData(self, excludeDonePoints: bool) -> list:
+    def setupModelInputData(self, excludeDonePoints: bool) -> None:
         """
         """
         data = []
@@ -471,15 +398,13 @@ class Model(MWidget):
             if excludeDonePoints and not point[2]:
                 continue
             data.append(point)
-
-    def setupBatchData(self):
-        """
-        """
-        data = self.selectBuildData(self.ui.excludeDonePoints.isChecked())
-        name, imageDir = self.setupFilenamesAndDirectories(prefix='m')
-        self.modelBatch = ModelBatch(self.app)
-        self.modelBatch.progress.connect(self.showProgress)
         self.modelBatch.modelInputData = data
+
+    def setupBatchData(self) -> None:
+        """
+        """
+        name, imageDir = self.setupFilenamesAndDirectories(prefix='m')
+        self.modelBatch.progress.connect(self.showProgress)
         self.modelBatch.imageDir = imageDir
         self.modelBatch.modelName = name
         self.modelBatch.numberRetries = self.ui.numberBuildRetries.value()
@@ -489,15 +414,25 @@ class Model(MWidget):
         self.modelBatch.latitude = self.app.mount.obsSite.location.latitude.degrees
         self.modelBatch.plateSolveApp = self.ui.plateSolveDevice.currentText()
 
+    def processModelData(self):
+        """
+        todo: prog to mount
+        todo: retrieve from mount and add
+        todo: save model on disk
+        """
+        pass
+
     def runBatch(self):
         """
         """
-        if not self.checkModelRunConditions():
+        excludeDonePoints = self.ui.excludeDonePoints.isChecked()
+        if not self.checkModelRunConditions(excludeDonePoints):
             return False
         if not self.clearAlignAndBackup():
             return False
 
-        self.app.operationRunning.emit(1)
+        self.modelBatch = ModelBatch(self.app)
+        self.setupModelInputData(excludeDonePoints)
         self.setupBatchData()
         self.modelBatch.run()
         self.processModelData()

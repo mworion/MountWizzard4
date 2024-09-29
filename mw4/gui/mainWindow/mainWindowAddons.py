@@ -30,6 +30,7 @@ from gui.mainWaddon.tabImage_Manage import ImageManage
 from gui.mainWaddon.tabImage_Stats import ImageStats
 from gui.mainWaddon.tabManageModel import ManageModel
 from gui.mainWaddon.tabModel import Model
+from gui.mainWaddon.tabModelStatus import ModelStatus
 from gui.mainWaddon.tabPower import Power
 from gui.mainWaddon.tabMount import Mount
 from gui.mainWaddon.tabMountCommand import MountCommand
@@ -71,6 +72,7 @@ class MainWindowAddons:
             'ImageStats': ImageStats(mainW),
             'ManageModel': ManageModel(mainW),
             'Model': Model(mainW),
+            'ModelStatus': ModelStatus(mainW),
             'Mount': Mount(mainW),
             'MountCommand': MountCommand(mainW),
             'MountMove': MountMove(mainW),

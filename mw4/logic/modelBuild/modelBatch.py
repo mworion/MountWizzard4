@@ -132,34 +132,23 @@ class ModelBatch(QObject):
             self.app.dome.slewDome(azimuth)
         self.app.mount.obsSite.startSlewing()
 
-    def generateSaveData(self) -> dict:
+    def generateSaveData(self) -> None:
         """
         generateSaveData builds from the model file a format which could be
         serialized in json. this format will be used for storing model on file.
         """
+        self.modelSaveData.clear()
         for modelBuildPoint in self.modelBuildData:
             modelSavePoint = dict()
             modelSavePoint.update(modelBuildPoint)
-            modelSavePoint['raJNowM'] = modelSavePoint['raJNowM'].hours
-            modelSavePoint['decJNowM'] = modelSavePoint['decJNowM'].degrees
-            modelSavePoint['raJ2000M'] = modelSavePoint['raJ2000M'].hours
-            modelSavePoint['decJ2000M'] = modelSavePoint['decJ2000M'].degrees
-            modelSavePoint['raJNowS'] = modelSavePoint['raJNowS'].hours
-            modelSavePoint['decJNowS'] = modelSavePoint['decJNowS'].degrees
-            modelSavePoint['raJ2000S'] = modelSavePoint['raJ2000S'].hours
-            modelSavePoint['decJ2000S'] = modelSavePoint['decJ2000S'].degrees
-            modelSavePoint['haMountModel'] = modelSavePoint['haMountModel'].hours
-            modelSavePoint['decMountModel'] = modelSavePoint['decMountModel'].degrees
-            modelSavePoint['angularPosRA'] = modelSavePoint['angularPosRA'].degrees
-            modelSavePoint['angularPosDEC'] = modelSavePoint['angularPosDEC'].degrees
-            modelSavePoint['errorAngle'] = modelSavePoint['errorAngle'].degrees
-            modelSavePoint['errorRA'] = modelSavePoint['errorRA'].degrees
-            modelSavePoint['errorDEC'] = modelSavePoint['errorDEC'].degrees
-            modelSavePoint['modelOrthoError'] = modelSavePoint['modelOrthoError'].degrees
-            modelSavePoint['modelPolarError'] = modelSavePoint['modelPolarError'].degrees
-            modelSavePoint['altitude'] = modelSavePoint['altitude'].degrees
-            modelSavePoint['azimuth'] = modelSavePoint['azimuth'].degrees
-            modelSavePoint['siderealTime'] = modelSavePoint['siderealTime'].hours
+            for key in modelSavePoint:
+                if not isinstance(modelSavePoint[key], Angle):
+                    continue
+                if 'ra' in key or 'ha' in key:
+                    modelSavePoint[key] = modelSavePoint[key].hours
+                else:
+                    modelSavePoint[key] = modelSavePoint[key].degrees
+
             modelSavePoint['julianDate'] = modelSavePoint['julianDate'].utc_iso()
             modelSavePoint['version'] = self.version
             modelSavePoint['profile'] = self.profile
@@ -226,7 +215,7 @@ class ModelBatch(QObject):
             'modelPercent': modelPercent,
             'secondsElapsed': secondsElapsed,
             'secondsEstimated': secondsEstimated,
-            'solved': self.pointerResult + 1,
+            'solved': self.pointerResult + 1
         }
         self.progress.emit(progressData)
 
@@ -270,11 +259,15 @@ class ModelBatch(QObject):
             modelItem['plateSolveApp'] = self.plateSolveApp
             modelItem['focalLength'] = self.app.camera.focalLength
             modelItem['waitTime'] = self.exposureWaitTime
-
             self.modelBuildData.append(modelItem)
+
+    def processModelBuildData(self):
+        """
+        """
 
     def run(self) -> None:
         """
+        todo: implement retries
         """
         if not self.modelInputData:
             return
@@ -286,3 +279,4 @@ class ModelBatch(QObject):
         notFinished = self.pointerResult < len(self.modelBuildData)
         while not self.abortBatch and notFinished and not self.endBatch:
             sleepAndEvents(500)
+        self.generateSaveData()

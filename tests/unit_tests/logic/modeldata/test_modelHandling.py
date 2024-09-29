@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 
 # external packages
 from skyfield.api import Star, Angle
@@ -24,7 +23,7 @@ from mountcontrol.modelStar import ModelStar
 from mountcontrol.model import Model
 
 # local import
-from logic.modeldata.modelHandling import writeRetrofitData
+from logic.modelBuild.modelHandling import writeRetrofitData
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

@@ -38,5 +38,4 @@ def writeRetrofitData(mountModel, buildModel):
         mPoint['modelErrorRMS'] = mountModel.errorRMS
         mPoint['modelOrthoError'] = mountModel.orthoError
         mPoint['modelPolarError'] = mountModel.polarError
-
     return buildModel

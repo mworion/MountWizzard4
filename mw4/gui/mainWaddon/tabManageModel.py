@@ -26,7 +26,7 @@ import numpy as np
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
-from logic.modeldata.modelHandling import writeRetrofitData
+from logic.modelBuild.modelHandling import writeRetrofitData
 
 
 class ManageModel(MWidget):

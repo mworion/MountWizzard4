@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -9767,9 +9767,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>225</y>
+         <y>165</y>
          <width>366</width>
-         <height>166</height>
+         <height>226</height>
         </rect>
        </property>
        <property name="title">
@@ -9782,7 +9782,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>15</x>
-          <y>15</y>
+          <y>20</y>
           <width>91</width>
           <height>21</height>
          </rect>
@@ -9802,7 +9802,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>15</x>
-          <y>55</y>
+          <y>65</y>
           <width>101</width>
           <height>101</height>
          </rect>
@@ -9827,7 +9827,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>15</x>
-          <y>35</y>
+          <y>40</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -9864,8 +9864,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QLabel" name="label_156">
         <property name="geometry">
          <rect>
-          <x>135</x>
-          <y>15</y>
+          <x>185</x>
+          <y>20</y>
           <width>91</width>
           <height>21</height>
          </rect>
@@ -9887,8 +9887,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="geometry">
          <rect>
-          <x>135</x>
-          <y>35</y>
+          <x>185</x>
+          <y>40</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -9925,8 +9925,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QLabel" name="picAZ">
         <property name="geometry">
          <rect>
-          <x>135</x>
-          <y>55</y>
+          <x>185</x>
+          <y>65</y>
           <width>101</width>
           <height>101</height>
          </rect>
@@ -9947,10 +9947,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QTextBrowser" name="textBrowser">
         <property name="geometry">
          <rect>
-          <x>250</x>
-          <y>55</y>
-          <width>106</width>
-          <height>101</height>
+          <x>5</x>
+          <y>175</y>
+          <width>356</width>
+          <height>46</height>
          </rect>
         </property>
         <property name="font">
@@ -9969,60 +9969,6 @@ li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;For polar align, turn knobs info is only helpful for large errors. If turns &amp;lt; 0.25 or polar error &amp;lt; 5 arcmin, please center star for improvement.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="plateSolveSyncGroup">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>270</y>
-         <width>366</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Fast align</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QPushButton" name="plateSolveSync">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>20</y>
-          <width>296</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Image, Platesolve and Sync the alignment model of the mount to the given image coordinates. There is no model point added nor the model refined. It is just a matching of the model to that point. Attention: this might lead in worse model quality elsewhere.</string>
-        </property>
-        <property name="text">
-         <string>Plate solve image and sync model</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="runTest">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>20</y>
-          <width>46</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Image, Platesolve and Sync the alignment model of the mount to the given image coordinates. There is no model point added nor the model refined. It is just a matching of the model to that point. Attention: this might lead in worse model quality elsewhere.</string>
-        </property>
-        <property name="text">
-         <string>Test</string>
         </property>
        </widget>
       </widget>
@@ -11212,9 +11158,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <widget class="QGroupBox" name="groupBoxCoordinateSystems_2">
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>155</y>
-         <width>361</width>
+         <x>400</x>
+         <y>260</y>
+         <width>366</width>
          <height>46</height>
         </rect>
        </property>
@@ -12333,35 +12279,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <double>1.000000000000000</double>
         </property>
        </widget>
-       <widget class="QCheckBox" name="keepModelImages">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>330</y>
-          <width>231</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Checked if you would like to keep the images of modeling session</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Keep all images of modeling run</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_302">
         <property name="geometry">
          <rect>
@@ -13070,7 +12987,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>305</y>
+          <y>350</y>
           <width>341</width>
           <height>21</height>
          </rect>
@@ -13087,35 +13004,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>Use fast image download for modeling (if available)</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="keepAnalysisImages">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>355</y>
-          <width>231</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Checked if you would like to keep the images of modeling session</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Keep all images of analysis run</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -32603,9 +32491,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>useSafetyMargin</tabstop>
   <tabstop>useDomeAz</tabstop>
   <tabstop>safetyMarginValue</tabstop>
-  <tabstop>progressiveTiming</tabstop>
-  <tabstop>normalTiming</tabstop>
-  <tabstop>conservativeTiming</tabstop>
   <tabstop>runModel</tabstop>
   <tabstop>pauseModel</tabstop>
   <tabstop>endModel</tabstop>
@@ -32614,7 +32499,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>retriesReverse</tabstop>
   <tabstop>excludeDonePoints</tabstop>
   <tabstop>parkMountAfterModel</tabstop>
-  <tabstop>plateSolveSync</tabstop>
   <tabstop>dataModel</tabstop>
   <tabstop>textBrowser</tabstop>
   <tabstop>manageTabWidget</tabstop>
@@ -32645,8 +32529,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>downloadFast</tabstop>
   <tabstop>downloadSlow</tabstop>
   <tabstop>fastDownload</tabstop>
-  <tabstop>keepModelImages</tabstop>
-  <tabstop>keepAnalysisImages</tabstop>
   <tabstop>coverUnpark</tabstop>
   <tabstop>coverPark</tabstop>
   <tabstop>coverHalt</tabstop>

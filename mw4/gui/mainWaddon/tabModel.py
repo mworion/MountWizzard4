@@ -45,7 +45,7 @@ class Model(MWidget):
         self.model = []
         self.modelBatch = None
 
-        self.ui.runTest.clicked.connect(self.runBatch)
+        self.ui.runModel.clicked.connect(self.runBatch)
         self.ui.pauseModel.clicked.connect(self.pauseBatch)
         self.ui.cancelModel.clicked.connect(self.cancelBatch)
         self.ui.endModel.clicked.connect(self.endBatch)
@@ -83,7 +83,6 @@ class Model(MWidget):
         self.wIcon(self.ui.pauseModel, 'pause')
         self.wIcon(self.ui.endModel, 'stop_m')
         self.wIcon(self.ui.dataModel, 'choose')
-        self.wIcon(self.ui.plateSolveSync, 'start')
 
     def cancelBatch(self):
         """

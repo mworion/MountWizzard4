@@ -89,8 +89,6 @@ class ImageManage(MWidget):
         self.ui.focuserStepsize.setValue(config.get('focuserStepsize', 100))
         self.ui.focuserSteps.setValue(config.get('focuserSteps', 100))
         self.ui.fastDownload.setChecked(config.get('fastDownload', True))
-        self.ui.keepModelImages.setChecked(config.get('keepModelImages', True))
-        self.ui.keepAnalysisImages.setChecked(config.get('keepAnalysisImages', True))
 
     def storeConfig(self) -> None:
         """
@@ -106,8 +104,6 @@ class ImageManage(MWidget):
         config['focuserStepsize'] = self.ui.focuserStepsize.value()
         config['focuserSteps'] = self.ui.focuserSteps.value()
         config['fastDownload'] = self.ui.fastDownload.isChecked()
-        config['keepModelImages'] = self.ui.keepModelImages.isChecked()
-        config['keepAnalysisImages'] = self.ui.keepAnalysisImages.isChecked()
 
     def setupIcons(self) -> None:
         """

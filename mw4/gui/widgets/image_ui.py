@@ -116,6 +116,13 @@ class Ui_ImageDialog(object):
 
         self.gridLayout_4.addWidget(self.slewCenter, 0, 1, 1, 1)
 
+        self.slewCenter_2 = QPushButton(self.groupImageActions)
+        self.slewCenter_2.setObjectName(u"slewCenter_2")
+        self.slewCenter_2.setEnabled(True)
+        self.slewCenter_2.setMinimumSize(QSize(95, 21))
+
+        self.gridLayout_4.addWidget(self.slewCenter_2, 0, 2, 1, 2)
+
 
         self.horizontalLayout_5.addWidget(self.groupImageActions)
 
@@ -850,6 +857,7 @@ class Ui_ImageDialog(object):
 #endif // QT_CONFIG(tooltip)
         self.timeTagImage.setText(QCoreApplication.translate("ImageDialog", u"Add time tags", None))
         self.slewCenter.setText(QCoreApplication.translate("ImageDialog", u"Slew Center", None))
+        self.slewCenter_2.setText(QCoreApplication.translate("ImageDialog", u"Sync model to image solution", None))
         self.groupBox.setTitle(QCoreApplication.translate("ImageDialog", u"Image View", None))
         self.aspectLocked.setText(QCoreApplication.translate("ImageDialog", u"Lock aspect", None))
 #if QT_CONFIG(tooltip)

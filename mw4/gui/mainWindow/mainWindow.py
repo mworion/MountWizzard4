@@ -246,13 +246,11 @@ class MainWindow(MWidget):
 
         if isModelingReady:
             self.ui.runModel.setEnabled(True)
-            self.ui.plateSolveSync.setEnabled(True)
             self.ui.dataModel.setEnabled(True)
             self.ui.runFlexure.setEnabled(True)
             self.ui.runHysteresis.setEnabled(True)
         else:
             self.ui.runModel.setEnabled(False)
-            self.ui.plateSolveSync.setEnabled(False)
             self.ui.dataModel.setEnabled(False)
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)

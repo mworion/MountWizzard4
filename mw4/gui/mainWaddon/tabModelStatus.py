@@ -39,11 +39,10 @@ class ModelStatus(MWidget):
     def setupIcons(self) -> None:
         """
         """
-        pixmap = self.img2pixmap(':/pics/azimuth.png').scaled(101, 101)
+        pixmap = self.img2pixmap(':/pics/azimuth.png').scaled(140, 140)
         self.ui.picAZ.setPixmap(pixmap)
-        pixmap = self.img2pixmap(':/pics/altitude.png').scaled(101, 101)
+        pixmap = self.img2pixmap(':/pics/altitude.png').scaled(140, 140)
         self.ui.picALT.setPixmap(pixmap)
-
 
     def updateAlignGUI(self, model):
         """

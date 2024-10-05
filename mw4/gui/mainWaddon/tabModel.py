@@ -258,21 +258,6 @@ class Model(MWidget):
         self.app.refreshModel.emit()
         return True
 
-    def processModelData(self, model):
-        """
-        """
-        self.model = model
-        if len(self.model) < 3:
-            self.msg.emit(2, 'Model', 'Run error',
-                          f'{self.modelName} Not enough valid model points')
-            return
-        self.msg.emit(0, 'Model', 'Run', 'Programming model to mount')
-        if self.programModelToMount():
-            self.msg.emit(1, 'Model', 'Run', f'Model {self.modelName} with success')
-        else:
-            self.msg.emit(2, 'Model', 'Run error', 'Model programming error')
-        self.app.playSound.emit('RunFinished')
-
     def checkModelRunConditions(self, excludeDonePoints: bool) -> bool:
         """
         """
@@ -413,13 +398,24 @@ class Model(MWidget):
         self.modelBatch.latitude = self.app.mount.obsSite.location.latitude.degrees
         self.modelBatch.plateSolveApp = self.ui.plateSolveDevice.currentText()
 
-    def processModelData(self):
+    def processModelData(self) -> None:
         """
         todo: prog to mount
         todo: retrieve from mount and add
         todo: save model on disk
         """
-        pass
+        self.msg.emit(0, 'Model', 'Run', 'Programming model to mount')
+        if self.programModelToMount():
+            self.msg.emit(0, 'Model', 'Run', 'Model programmed with success')
+
+    def communicateModelBatchRun(self) -> None:
+        """
+        """
+        if len(self.modelBatch.modelBuildData) < 3:
+            self.msg.emit(2, 'Model', 'Run error',
+                          f'{self.modelName} Not enough valid model points')
+        else:
+            self.msg.emit(1, 'Model', 'Run', f'Model {self.modelName} with success')
 
     def runBatch(self):
         """
@@ -435,8 +431,11 @@ class Model(MWidget):
         self.setupBatchData()
         self.modelBatch.run()
         self.processModelData()
+        self.communicateModelBatchRun()
+
 
         self.modelBatch = None
+        self.app.playSound.emit('RunFinished')
         self.app.operationRunning.emit(0)
-        self.msg.emit(1, 'Model', 'Run', 'Modeling finished')
+
         return True

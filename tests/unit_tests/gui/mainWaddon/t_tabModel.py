@@ -32,8 +32,6 @@ from PySide6.QtWidgets import QWidget
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabModel import Model
-from gui.mainWaddon.tabManageModel import ManageModel
-from gui.mainWaddon.runBasic import RunBasic
 import gui.mainWaddon
 from gui.widgets.main_ui import Ui_MainWindow
 

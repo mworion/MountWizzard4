@@ -20,7 +20,6 @@
 
 # local import
 from gui.mainWaddon.tabAlmanac import Almanac
-from gui.mainWaddon.tabAnalysis import Analysis
 from gui.mainWaddon.tabAsteroid import Asteroid
 from gui.mainWaddon.tabBuildPoints import BuildPoints
 from gui.mainWaddon.tabComet import Comet
@@ -61,7 +60,6 @@ class MainWindowAddons:
 
         self.addons = {
             'Almanac': Almanac(mainW),
-            'Analysis': Analysis(mainW),
             'SettUpdate': SettUpdate(mainW),  # keep isOnline state first
             'Asteroid': Asteroid(mainW),
             'BuildPoints': BuildPoints(mainW),

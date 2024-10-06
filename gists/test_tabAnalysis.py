@@ -18,14 +18,13 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import astropy
 
 # external packages
 from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWaddon.tabAnalysis import Analysis
+from gists.tabAnalysis import Analysis
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.runBasic import RunBasic
 

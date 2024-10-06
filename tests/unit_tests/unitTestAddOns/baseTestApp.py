@@ -70,7 +70,7 @@ class Camera:
     binningN = 1
     focalLength = 100
     subFrame = 100
-    fastDownload = False
+    fastReadout = False
     data = {}
     framework = None
     defaultConfig = {'framework': '',
@@ -579,6 +579,10 @@ class Data:
 
     @staticmethod
     def sort():
+        return
+
+    @staticmethod
+    def setStatusBuildP(a, b):
         return
 
     def isAboveHorizon(self, point):

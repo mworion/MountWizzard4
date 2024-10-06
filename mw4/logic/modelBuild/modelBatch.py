@@ -139,6 +139,9 @@ class ModelBatch(QObject):
         """
         self.modelSaveData.clear()
         for modelBuildPoint in self.modelBuildData:
+            if not modelBuildPoint['success']:
+                continue
+
             modelSavePoint = dict()
             modelSavePoint.update(modelBuildPoint)
             for key in modelSavePoint:
@@ -186,12 +189,10 @@ class ModelBatch(QObject):
 
         item = self.modelBuildData[self.pointerImage]
         self.addMountDataToModelBuildData()
-
         cam = self.app.camera
         imagePath = item['imagePath']
         exposureTime = item['exposureTime'] = cam.exposureTime1
         binning = item['binning'] = cam.binning1
-
         self.app.camera.expose(imagePath, exposureTime, binning)
 
     def startNewPlateSolve(self) -> None:

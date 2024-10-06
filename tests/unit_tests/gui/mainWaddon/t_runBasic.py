@@ -28,7 +28,6 @@ from PySide6.QtWidgets import QWidget
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
-from gui.mainWaddon.runBasic import RunBasic
 import gui.mainWaddon.tabModel
 from gui.widgets.main_ui import Ui_MainWindow
 from base.loggerMW import setupLogging

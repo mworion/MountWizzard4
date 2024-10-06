@@ -19,12 +19,11 @@
 # external packages
 
 # local packages
+from mountcontrol.model import Model
 
-def writeRetrofitData(mountModel, buildModel):
+
+def writeRetrofitData(mountModel: Model, buildModel: list[dict]) -> dict:
     """
-    :param mountModel:
-    :param buildModel:
-    :return:
     """
     for i, mPoint in enumerate(buildModel):
         mPoint['errorRMS'] = mountModel.starList[i].errorRMS

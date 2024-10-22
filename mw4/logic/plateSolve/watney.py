@@ -33,8 +33,6 @@ from logic.fits.fitsFunction import getSolutionFromWCSHeader, getImageHeader, \
 class Watney(object):
     """
     """
-    __all__ = ['Watney']
-
     log = logging.getLogger('MW4')
 
     returnCodes: dict = {

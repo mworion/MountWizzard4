@@ -57,7 +57,6 @@ class MountWizzard4(QObject):
     should be handled through the window classes. main class is for setup,
     config, start, persist and shutdown the application.
     """
-    __all__ = ['MountWizzard4']
     __version__ = version('mountwizzard4')
 
     log = logging.getLogger('MW4')

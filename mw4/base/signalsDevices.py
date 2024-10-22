@@ -23,8 +23,6 @@ from PySide6.QtCore import Signal, QObject
 
 
 class Signals(QObject):
-    __all__ = ['Signals']
-
     serverConnected = Signal()
     serverDisconnected = Signal(object)
     deviceConnected = Signal(str)

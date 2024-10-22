@@ -25,8 +25,6 @@ from base.indiClass import IndiClass
 class FilterIndi(IndiClass):
     """
     """
-    __all__ = ['FilterIndi']
-
     UPDATE_RATE = 1
 
     def __init__(self, app=None, signals=None, data=None):

@@ -71,9 +71,6 @@ class DataPoint(object):
         >>>                  app=None,
         >>>                  )
     """
-
-    __all__ = ['DataPoint']
-
     log = logging.getLogger('MW4')
 
     DEC_N = {'min': [-15, 0, 15, 30, 45, 60, 75],

@@ -49,8 +49,6 @@ class ObsSite(object):
     The Site class needs as parameter a ts object from skyfield.api to
     be able to make all the necessary calculations about time from and to mount
     """
-    __all__ = ['ObsSite']
-
     log = logging.getLogger('MW4')
 
     STAT = {

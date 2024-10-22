@@ -27,8 +27,6 @@ import numpy as np
 class KeyPad:
     """
     """
-    __all__ = ['KeyPad']
-
     log = logging.getLogger('MW4')
 
     keyCodesA = {

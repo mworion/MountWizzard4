@@ -48,8 +48,6 @@ class HemisphereWindow(MWidget, SlewInterface):
         - build points          40
         - checked build points  50
     """
-    __all__ = ['HemisphereWindow']
-
     def __init__(self, app):
         super().__init__()
         self.app = app

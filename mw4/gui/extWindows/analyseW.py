@@ -30,8 +30,6 @@ from gui.widgets import analyse_ui
 class AnalyseWindow(toolsQtWidget.MWidget):
     """
     """
-    __all__ = ['AnalyseWindow']
-
     def __init__(self, app):
         super().__init__()
         self.app = app

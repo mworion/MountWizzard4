@@ -33,8 +33,6 @@ from gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 class DownloadPopup(MWidget):
     """
     """
-    __all__ = ['DownloadPopup']
-
     signalProgress = Signal(object)
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)

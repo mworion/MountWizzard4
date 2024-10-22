@@ -33,8 +33,6 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 class VideoWindow(toolsQtWidget.MWidget):
     """
     """
-    __all__ = ['VideoWindow']
-
     pixmapReady = Signal(object)
 
     def __init__(self, app):

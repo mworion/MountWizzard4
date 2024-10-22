@@ -34,8 +34,6 @@ from logic.fits.fitsFunction import getSolutionFromWCSHeader, getImageHeader, \
 class ASTAP(object):
     """
     """
-    __all__ = ['ASTAP']
-
     returnCodes = {0: 'No errors',
                    1: 'No solution',
                    2: 'Not enough stars detected',

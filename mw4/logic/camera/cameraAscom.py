@@ -27,8 +27,6 @@ from base.ascomClass import AscomClass
 class CameraAscom(AscomClass):
     """
     """
-    __all__ = ['CameraAscom']
-
     def __init__(self, parent):
         self.parent = parent
         self.app = parent.app

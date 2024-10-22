@@ -34,9 +34,6 @@ class WorkerSignals(QObject):
     by the Worker class to get signals for error, finished and result to be
     transferred to the caller back
     """
-
-    __all__ = ['WorkerSignals']
-
     finished = Signal()
     error = Signal(object)
     result = Signal(object)
@@ -47,9 +44,6 @@ class Worker(QRunnable):
     The Worker class offers a generic interface to allow any function to be
     executed as a thread in a threadpool
     """
-
-    __all__ = ['Worker']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, fn, *args, **kwargs):

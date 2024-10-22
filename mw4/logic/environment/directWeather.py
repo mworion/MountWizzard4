@@ -26,8 +26,6 @@ from base.signalsDevices import Signals
 class DirectWeather:
     """
     """
-    __all__ = ['DirectWeather']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, app=None):

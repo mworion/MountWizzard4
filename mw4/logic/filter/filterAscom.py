@@ -25,8 +25,6 @@ from base.ascomClass import AscomClass
 class FilterAscom(AscomClass):
     """
     """
-    __all__ = ['FilterAscom']
-
     CYCLE_POLL_DATA = 1000
 
     def __init__(self, app=None, signals=None, data=None):

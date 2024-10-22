@@ -27,9 +27,6 @@ import PySide6
 class MeasureDataCSV(PySide6.QtCore.QObject):
     """
     """
-
-    __all__ = ['MeasureDataCSV']
-
     log = logging.getLogger('MW4')
 
     # update rate to 1 seconds for setting indi server

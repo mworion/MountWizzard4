@@ -28,8 +28,6 @@ from mountcontrol.convert import valueToInt
 class Setting(object):
     """
     """
-    __all__ = ['Setting']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, parent=None):

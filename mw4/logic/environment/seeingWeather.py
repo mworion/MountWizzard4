@@ -37,8 +37,6 @@ class SeeingWeatherSignals(Signals):
 class SeeingWeather():
     """
     """
-    __all__ = ['SeeingWeather']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, app=None):

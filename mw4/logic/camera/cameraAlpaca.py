@@ -27,8 +27,6 @@ from base.tpool import Worker
 class CameraAlpaca(AlpacaClass):
     """
     """
-    __all__ = ['CameraAlpaca']
-
     def __init__(self, parent):
         self.parent = parent
         self.app = parent.app

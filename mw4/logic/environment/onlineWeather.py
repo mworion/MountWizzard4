@@ -31,8 +31,6 @@ from base.signalsDevices import Signals
 class OnlineWeather():
     """
     """
-    __all__ = ['OnlineWeather']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, app=None):

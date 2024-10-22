@@ -28,8 +28,6 @@ from sgp4.exporter import export_tle
 class DataWriter:
     """
     """
-    __all__ = ['DataWriter']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, app):

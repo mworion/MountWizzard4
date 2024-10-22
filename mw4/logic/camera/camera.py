@@ -39,8 +39,6 @@ if platform.system() == 'Windows':
 class Camera:
     """
     """
-    __all__ = ['Camera']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, app):

@@ -24,7 +24,8 @@ from PySide6.QtCore import Signal, QObject
 
 
 class RemoteDeviceShutdown(QObject):
-    __all__ = ['RemoteDeviceShutdown']
+    """
+    """
     signalRemoteShutdown = Signal()
 
 

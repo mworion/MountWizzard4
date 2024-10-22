@@ -39,9 +39,6 @@ class SplashScreen(QObject):
     Best regards,
     Maurizio
     """
-
-    __all__ = ['SplashScreen']
-
     def __init__(self, application=None, x=0, y=0):
         super().__init__()
 

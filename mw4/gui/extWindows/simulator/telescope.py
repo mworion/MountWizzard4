@@ -25,9 +25,8 @@ from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorTelescope:
-
-    __all__ = ['SimulatorTelescope']
-
+    """
+    """
     def __init__(self, parent, app):
         super().__init__()
         self.parent = parent

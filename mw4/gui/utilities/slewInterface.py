@@ -27,8 +27,6 @@ from base.transform import J2000ToJNow
 class SlewInterface:
     """
     """
-
-    __all__ = ['SlewInterface']
     log = logging.getLogger('MW4')
 
     def slewSelectedTargetWithDome(self, slewType='normal'):

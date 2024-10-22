@@ -25,8 +25,6 @@ from base.indiClass import IndiClass
 class SensorWeatherIndi(IndiClass):
     """
     """
-    __all__ = ['SensorWeatherIndi']
-
     def __init__(self, app=None, signals=None, data=None):
         self.signals = signals
         super().__init__(app=app, data=data)

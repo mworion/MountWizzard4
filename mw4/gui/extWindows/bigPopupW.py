@@ -26,8 +26,6 @@ from gui.widgets.bigPopup_ui import Ui_BigPopup
 class BigPopup(toolsQtWidget.MWidget):
     """
     """
-    __all__ = ['BigPopup']
-
     def __init__(self, app):
 
         super().__init__()

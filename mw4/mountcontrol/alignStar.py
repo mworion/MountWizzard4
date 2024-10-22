@@ -26,8 +26,6 @@ from skyfield.api import Angle, Star
 class AlignStar(object):
     """
     """
-    __all__ = ['AlignStar']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, mCoord: Star, sCoord: Star, sidereal: Angle, pierside: str):

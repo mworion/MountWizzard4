@@ -67,8 +67,6 @@ class MWidget(QWidget, Styles):
     stylesheet. The standard screen size will be 800x600 pixel for all windows,
     but except for the main one are sizable.
     """
-
-    __all__ = ['MWidget']
     log = logging.getLogger('MW4')
 
     def __init__(self):

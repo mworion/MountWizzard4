@@ -26,10 +26,6 @@ from gui.extWindows.videoW import VideoWindow
 class VideoWindow1(VideoWindow):
     """
     """
-    __all__ = ['VideoWindow1']
-
-    pixmapReady = Signal(object)
-
     def __init__(self, app):
         super().__init__(app=app)
         self.setWindowTitle('Video Stream 1')

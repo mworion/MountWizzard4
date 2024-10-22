@@ -29,7 +29,6 @@ from base.signalsDevices import Signals
 class IndiClass:
     """
     """
-    __all__ = ['IndiClass']
     log = logging.getLogger('MW4')
 
     RETRY_DELAY = 1500

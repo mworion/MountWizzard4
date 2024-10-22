@@ -48,8 +48,6 @@ class ModelStar(object):
     equatorial system in degrees from 0 to 359 (0 towards the north pole,
     90 towards east).
     """
-    __all__ = ['ModelStar']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, coord=None, errorRMS=None, errorAngle=None,

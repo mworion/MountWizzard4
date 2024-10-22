@@ -43,8 +43,6 @@ class Connection(object):
     The class itself need parameters for the host and port to be able to interact
     with the mount.
     """
-    __all__ = ['Connection']
-
     log = logging.getLogger('MW4')
 
     # I don't want so wait to long for a response. In average, I see values

@@ -25,9 +25,8 @@ from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorDome:
-
-    __all__ = ['SimulatorDome']
-
+    """
+    """
     def __init__(self, parent, app):
         super().__init__()
         self.parent = parent

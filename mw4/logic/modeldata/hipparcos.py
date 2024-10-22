@@ -32,8 +32,6 @@ class Hipparcos(object):
     generateAlignStars, their ra dec coordinates, proper motion, parallax and
     radial velocity and the calculation of data for display and slew commands
     """
-    __all__ = ['Hipparcos']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, app=None):

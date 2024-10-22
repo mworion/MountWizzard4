@@ -25,8 +25,6 @@ from base.indiClass import IndiClass
 class CoverIndi(IndiClass):
     """
     """
-    __all__ = ['CoverIndi']
-
     def __init__(self, app=None, signals=None, data=None):
         self.signals = signals
         super().__init__(app=app, data=data)

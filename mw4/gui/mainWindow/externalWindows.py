@@ -43,9 +43,6 @@ from gui.extWindows.bigPopupW import BigPopup
 class ExternalWindows(MWidget):
     """
     """
-
-    __all__ = ['ExternalWindows']
-
     def __init__(self, mainW):
         super().__init__()
         self.mainW = mainW

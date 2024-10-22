@@ -36,8 +36,6 @@ from mountcontrol.modelStar import ModelStar
 class Model(object):
     """
     """
-    __all__ = ['Model']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, parent):

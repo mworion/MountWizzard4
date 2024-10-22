@@ -36,8 +36,6 @@ from logic.fits.fitsFunction import updateImageFileHeaderWithSolution
 class Astrometry(object):
     """
     """
-    __all__ = ['Astrometry']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, parent=None):

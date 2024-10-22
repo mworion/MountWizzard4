@@ -32,8 +32,6 @@ from logic.keypad.keypad import KeyPad
 class KeypadSignals(QObject):
     """
     """
-    __all__ = ['KeypadSignals']
-
     textRow = Signal(object, object)
     imgChunk = Signal(object, object, object)
     keyPressed = Signal(object)
@@ -48,8 +46,6 @@ class KeypadSignals(QObject):
 class KeypadWindow(toolsQtWidget.MWidget):
     """
     """
-    __all__ = ['KeypadWindow']
-
     def __init__(self, app):
         super().__init__()
         self.app = app

@@ -32,8 +32,6 @@ from gui.widgets.uploadPopup_ui import Ui_UploadPopup
 class UploadPopup(MWidget):
     """
     """
-    __all__ = ['UploadPopup']
-
     PROGRESS_DONE = 100
     CYCLES_WAIT = 20
 

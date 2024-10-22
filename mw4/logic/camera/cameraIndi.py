@@ -29,8 +29,6 @@ from base.indiClass import IndiClass
 class CameraIndi(IndiClass):
     """
     """
-    __all__ = ['CameraIndi']
-
     def __init__(self, parent):
         self.parent = parent
         self.app = parent.app

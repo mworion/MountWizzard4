@@ -30,9 +30,6 @@ from mountcontrol.trajectoryParams import TrajectoryParams
 class Satellite(object):
     """
     """
-
-    __all__ = ['Satellite']
-
     log = logging.getLogger('MW4')
 
     TLES = {

@@ -40,8 +40,6 @@ from gui.extWindows.simulator.tools import linkModel
 class SimulatorWindow(MWidget):
     """
     """
-    __all__ = ['SimulatorWindow']
-
     def __init__(self, app):
         super().__init__()
         self.app = app

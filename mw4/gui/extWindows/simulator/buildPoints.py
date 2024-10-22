@@ -29,8 +29,8 @@ from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorBuildPoints:
-
-    __all__ = ['SimulatorBuildPoints']
+    """
+    """
     LINE_RADIUS = 0.02
     POINT_SPHERE_RADIUS = 4
     POINT_ACTIVE_RADIUS = 0.07

@@ -36,8 +36,6 @@ class PlateSolve:
     Keyword definitions could be found under
         https://fits.gsfc.nasa.gov/fits_dictionary.html
     """
-    __all__ = ['PlateSolve']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, app):

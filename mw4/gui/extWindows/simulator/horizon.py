@@ -27,8 +27,8 @@ from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorHorizon:
-
-    __all__ = ['SimulatorHorizon']
+    """
+    """
     WALL_RADIUS = 4
     WALL_SPACE = 5
 

@@ -32,8 +32,6 @@ from gui.widgets import satellite_ui
 class SatelliteWindow(toolsQtWidget.MWidget):
     """
     """
-    __all__ = ['SatelliteWindow']
-
     def __init__(self, app):
         super().__init__()
         self.app = app

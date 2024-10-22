@@ -27,9 +27,8 @@ from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorLaser:
-
-    __all__ = ['SimulatorLaser']
-
+    """
+    """
     def __init__(self, parent, app):
         super().__init__()
         self.parent = parent

@@ -27,8 +27,6 @@ from mountcontrol.connection import Connection
 class Firmware(object):
     """
     """
-    __all__ = ['Firmware']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, parent):

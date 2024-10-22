@@ -28,8 +28,6 @@ from base.signalsDevices import Signals
 class Remote(QObject):
     """
     """
-    __all__ = ['Remote']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, app=None):

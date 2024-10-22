@@ -34,16 +34,12 @@ from mountcontrol.convert import valueToFloat
 class FileHandlerSignals(QObject):
     """
     """
-    __all__ = ['FileHandlerSignals']
-
     imageLoaded = Signal()
 
 
 class FileHandler:
     """
     """
-    __all__ = ['FileHandler']
-
     log = logging.getLogger('MW4')
 
     def __init__(self, app, imagePath='', flipH=False, flipV=False):

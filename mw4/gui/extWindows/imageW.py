@@ -39,15 +39,12 @@ from gui.extWindows.image.imageTabs import ImageTabs
 class ImageWindowSignals(QObject):
     """
     """
-    __all__ = ['ImageWindowSignals']
     solveImage = Signal(object)
 
 
 class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
     """
     """
-    __all__ = ['ImageWindow']
-
     TILT = {'none': 5,
             'almost none': 10,
             'mild': 15,

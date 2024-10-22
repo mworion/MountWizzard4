@@ -25,8 +25,6 @@ from base.alpacaClass import AlpacaClass
 class FilterAlpaca(AlpacaClass):
     """
     """
-    __all__ = ['FilterAlpaca']
-
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data)
         self.signals = signals

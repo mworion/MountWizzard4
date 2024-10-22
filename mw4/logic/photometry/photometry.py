@@ -31,8 +31,6 @@ from base.tpool import Worker
 class PhotometrySignals(QObject):
     """
     """
-    __all__ = ['PhotometrySignals']
-
     hfr = Signal()
     hfrSquare = Signal()
     hfrTriangle = Signal()
@@ -46,8 +44,6 @@ class PhotometrySignals(QObject):
 class Photometry:
     """
     """
-    __all__ = ['Photometry']
-
     log = logging.getLogger('MW4')
 
     ABERRATION_SIZE = 250

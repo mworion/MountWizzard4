@@ -23,8 +23,8 @@ from base.ascomClass import AscomClass
 
 
 class FocuserAscom(AscomClass):
-    """
-    """
+    """ """
+
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data)
         self.signals = signals
@@ -33,8 +33,9 @@ class FocuserAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        self.getAndStoreAscomProperty('Position',
-                                      'ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION')
+        self.getAndStoreAscomProperty(
+            "Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION"
+        )
         return True
 
     def move(self, position=None):
@@ -55,5 +56,5 @@ class FocuserAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.getAscomProperty('Halt')
+        self.getAscomProperty("Halt")
         return True

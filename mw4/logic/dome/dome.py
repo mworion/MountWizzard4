@@ -27,35 +27,35 @@ from base.signalsDevices import Signals
 from base.transform import diffModulusAbs
 from logic.dome.domeIndi import DomeIndi
 from logic.dome.domeAlpaca import DomeAlpaca
-if platform.system() == 'Windows':
+
+if platform.system() == "Windows":
     from logic.dome.domeAscom import DomeAscom
 
 
 class Dome:
-    """
-    """
-    log = logging.getLogger('MW4')
+    """ """
+
+    log = logging.getLogger("MW4")
 
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.data = {
-            'Slewing': False,
+            "Slewing": False,
         }
-        self.defaultConfig = {'framework': '',
-                              'frameworks': {}}
-        self.framework = ''
+        self.defaultConfig = {"framework": "", "frameworks": {}}
+        self.framework = ""
         self.run = {
-            'indi': DomeIndi(self.app, self.signals, self.data),
-            'alpaca': DomeAlpaca(self.app, self.signals, self.data),
+            "indi": DomeIndi(self.app, self.signals, self.data),
+            "alpaca": DomeAlpaca(self.app, self.signals, self.data),
         }
 
-        if platform.system() == 'Windows':
-            self.run['ascom'] = DomeAscom(self.app, self.signals, self.data)
+        if platform.system() == "Windows":
+            self.run["ascom"] = DomeAscom(self.app, self.signals, self.data)
 
         for fw in self.run:
-            self.defaultConfig['frameworks'].update({fw: self.run[fw].defaultConfig})
+            self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
         self.useGeometry = False
         self.useDynamicFollowing = False
@@ -113,7 +113,7 @@ class Dome:
         if self.framework not in self.run.keys():
             return False
 
-        self.signals.message.emit('')
+        self.signals.message.emit("")
         suc = self.run[self.framework].stopCommunication()
         if self.domeStarted:
             self.app.update1s.disconnect(self.checkSlewingDome)
@@ -125,7 +125,7 @@ class Dome:
         :return: true for test purpose
         """
         self.signals.slewed.emit()
-        self.signals.message.emit('')
+        self.signals.message.emit("")
         return True
 
     def checkSlewingDome(self):
@@ -133,21 +133,21 @@ class Dome:
         :return:
         """
         if self.isSlewing:
-            self.signals.message.emit('slewing')
+            self.signals.message.emit("slewing")
             self.counterStartSlewing = -1
-            if not self.data.get('Slewing'):
+            if not self.data.get("Slewing"):
                 self.isSlewing = False
-                self.signals.message.emit('wait settle')
+                self.signals.message.emit("wait settle")
                 self.settlingWait.start(int(self.settlingTime * 1000))
 
         else:
-            if self.data.get('Slewing'):
-                self.log.debug('Slewing start by signal')
+            if self.data.get("Slewing"):
+                self.log.debug("Slewing start by signal")
                 self.isSlewing = True
 
             else:
                 if self.counterStartSlewing == 0:
-                    self.log.debug('Slewing start by counter')
+                    self.log.debug("Slewing start by counter")
                     self.isSlewing = True
                 self.counterStartSlewing -= 1
 
@@ -158,23 +158,23 @@ class Dome:
         :return:
         """
         if self.openingHysteresis is None:
-            self.log.debug('No opening hysteresis')
+            self.log.debug("No opening hysteresis")
             return False
         if self.clearanceZenith is None:
-            self.log.debug('No clearance zenith')
+            self.log.debug("No clearance zenith")
             return False
         if self.overshoot is None:
-            self.log.debug('No overshoot')
+            self.log.debug("No overshoot")
             return False
         if self.radius is None:
-            self.log.debug('No radius')
+            self.log.debug("No radius")
             return False
         if self.clearOpening is None:
-            self.log.debug('No clear opening')
+            self.log.debug("No clear opening")
             return False
         BC = self.clearOpening - 2 * self.openingHysteresis
         if BC < 0:
-            self.log.warning('Resulting opening to small')
+            self.log.warning("Resulting opening to small")
             return False
         return True
 
@@ -188,12 +188,14 @@ class Dome:
         cosAz = np.cos(azRad)
         rot = np.array([[cosAz, -sinAz], [sinAz, cosAz]])
 
-        A = np.array([- self.clearanceZenith + self.openingHysteresis,
-                     self.clearOpening / 2 - self.openingHysteresis])
-        B = np.array([self.radius,
-                     self.clearOpening / 2 - self.openingHysteresis])
-        C = np.array([self.radius,
-                     - self.clearOpening / 2 + self.openingHysteresis])
+        A = np.array(
+            [
+                -self.clearanceZenith + self.openingHysteresis,
+                self.clearOpening / 2 - self.openingHysteresis,
+            ]
+        )
+        B = np.array([self.radius, self.clearOpening / 2 - self.openingHysteresis])
+        C = np.array([self.radius, -self.clearOpening / 2 + self.openingHysteresis])
 
         A = np.dot(rot, A)
         B = np.dot(rot, B)
@@ -225,14 +227,14 @@ class Dome:
         :return:
         """
         if not self.checkTargetConditions():
-            self.log.info('Target conditions not mez, slewing anyway')
+            self.log.info("Target conditions not mez, slewing anyway")
             return True
 
-        azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
+        azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0)
         A, B, C = self.calcTargetRectanglePoints(azimuth)
         M = np.array([x, y])
         slewNeeded = not self.targetInDomeShutter(A, B, C, M)
-        self.log.debug(f'Slew needed: [{slewNeeded}]')
+        self.log.debug(f"Slew needed: [{slewNeeded}]")
         return slewNeeded
 
     def calcSlewTarget(self, altitude, azimuth, func):
@@ -246,7 +248,7 @@ class Dome:
             alt, az, intersect, _, _ = func()
 
             if alt is None or az is None:
-                self.log.info(f'Geometry error, alt:{altitude}, az:{azimuth}')
+                self.log.info(f"Geometry error, alt:{altitude}, az:{azimuth}")
                 alt = altitude
                 az = azimuth
             else:
@@ -273,12 +275,12 @@ class Dome:
         if self.avoidFirstSlewOvershoot:
             self.avoidFirstSlewOvershoot = False
             self.lastFinalAz = None
-            self.log.debug(f'First overshoot disabled: [{az}]')
+            self.log.debug(f"First overshoot disabled: [{az}]")
             return az
 
         direction = self.app.mount.obsSite.AzDirection
         if direction is None:
-            self.log.info(f'Overshoot discarded no direction: [{az}]')
+            self.log.info(f"Overshoot discarded no direction: [{az}]")
             return az
 
         y = max(self.clearOpening / 2 - self.openingHysteresis, 0)
@@ -290,17 +292,17 @@ class Dome:
 
         if self.lastFinalAz is None:
             self.lastFinalAz = finalAz
-            self.log.debug(f'First overshoot value: [{finalAz}]')
+            self.log.debug(f"First overshoot value: [{finalAz}]")
             return finalAz
 
         delta = diffModulusAbs(self.lastFinalAz, finalAz, 360)
         if delta > maxOvershootAzimuth / 2:
             self.lastFinalAz = finalAz
-            self.log.debug('New overshoot value')
+            self.log.debug("New overshoot value")
         else:
-            self.log.debug('Use old overshoot value')
+            self.log.debug("Use old overshoot value")
 
-        self.log.debug(f'Overshoot value: [{self.lastFinalAz}]')
+        self.log.debug(f"Overshoot value: [{self.lastFinalAz}]")
         return self.lastFinalAz
 
     def slewDome(self, altitude=0, azimuth=0, follow=False):
@@ -327,7 +329,7 @@ class Dome:
             self.counterStartSlewing = 3
             az = self.calcOvershoot(az)
             self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
-            self.signals.message.emit('slewing')
+            self.signals.message.emit("slewing")
         else:
             self.signals.slewed.emit()
         delta = azimuth - az
@@ -346,7 +348,7 @@ class Dome:
         :return: success
         """
         if not self.data:
-            self.log.error('No data dict available')
+            self.log.error("No data dict available")
             return False
 
         suc = self.run[self.framework].openShutter()
@@ -357,7 +359,7 @@ class Dome:
         :return: success
         """
         if not self.data:
-            self.log.error('No data dict available')
+            self.log.error("No data dict available")
             return False
 
         suc = self.run[self.framework].closeShutter()
@@ -368,7 +370,7 @@ class Dome:
         :return: success
         """
         if not self.data:
-            self.log.error('No data dict available')
+            self.log.error("No data dict available")
             return False
 
         suc = self.run[self.framework].slewCW()
@@ -379,7 +381,7 @@ class Dome:
         :return: success
         """
         if not self.data:
-            self.log.error('No data dict available')
+            self.log.error("No data dict available")
             return False
 
         suc = self.run[self.framework].slewCCW()
@@ -390,7 +392,7 @@ class Dome:
         :return: success
         """
         if not self.data:
-            self.log.error('No data dict available')
+            self.log.error("No data dict available")
             return False
 
         suc = self.run[self.framework].abortSlew()

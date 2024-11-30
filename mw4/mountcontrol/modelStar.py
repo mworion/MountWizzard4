@@ -48,10 +48,12 @@ class ModelStar(object):
     equatorial system in degrees from 0 to 359 (0 towards the north pole,
     90 towards east).
     """
-    log = logging.getLogger('MW4')
 
-    def __init__(self, coord=None, errorRMS=None, errorAngle=None,
-                 number=None, obsSite=None):
+    log = logging.getLogger("MW4")
+
+    def __init__(
+        self, coord=None, errorRMS=None, errorAngle=None, number=None, obsSite=None
+    ):
         self.obsSite = obsSite
         self.coord = coord
         self.errorRMS = errorRMS
@@ -91,7 +93,7 @@ class ModelStar(object):
             dec = stringToDegree(dec)
 
             if ha is None or dec is None:
-                self.log.warning('Malformed value: {0}'.format(value))
+                self.log.warning("Malformed value: {0}".format(value))
                 return
             self._coord = Star(ra_hours=ha, dec_degrees=dec)
 

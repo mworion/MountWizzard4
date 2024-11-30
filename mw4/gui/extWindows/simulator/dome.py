@@ -25,8 +25,8 @@ from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorDome:
-    """
-    """
+    """ """
+
     def __init__(self, parent, app):
         super().__init__()
         self.parent = parent
@@ -44,20 +44,26 @@ class SimulatorDome:
         """
         showTransparent = self.parent.ui.domeTransparent.isChecked()
         alpha = 0.5 if showTransparent else 1
-        for node in ['domeWall', 'domeSphere', 'domeSlit1', 'domeSlit2',
-                     'domeDoor1', 'domeDoor2']:
+        for node in [
+            "domeWall",
+            "domeSphere",
+            "domeSlit1",
+            "domeSlit2",
+            "domeDoor1",
+            "domeDoor2",
+        ]:
             nodeM = self.parent.entityModel.get(node)
             if nodeM:
-                nodeM['material'].setAlpha(alpha)
+                nodeM["material"].setAlpha(alpha)
 
     def showEnable(self, show):
         """
         :param show:
         :return:
         """
-        node = self.parent.entityModel.get('domeRoot')
+        node = self.parent.entityModel.get("domeRoot")
         if node:
-            node['entity'].setEnabled(show)
+            node["entity"].setEnabled(show)
 
     def updateSize(self):
         """
@@ -69,13 +75,13 @@ class SimulatorDome:
         """
         radius = self.app.mount.geometry.domeRadius * 1000
         scale = 1 + (radius - 1250) / 1250
-        corrZ = - (scale - 1) * 800
+        corrZ = -(scale - 1) * 800
 
-        for node in ['domeFloor', 'domeWall']:
-            nodeT = self.parent.entityModel[node]['trans']
+        for node in ["domeFloor", "domeWall"]:
+            nodeT = self.parent.entityModel[node]["trans"]
             nodeT.setScale3D(QVector3D(scale, scale, 1))
 
-        nodeT = self.parent.entityModel['domeSphere']['trans']
+        nodeT = self.parent.entityModel["domeSphere"]["trans"]
         nodeT.setScale3D(QVector3D(scale, scale, scale))
         nodeT.setTranslation(QVector3D(0, 0, corrZ))
 
@@ -83,96 +89,96 @@ class SimulatorDome:
         """
         :return: success
         """
-        if 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION' not in self.app.dome.data:
+        if "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION" not in self.app.dome.data:
             return
 
-        az = self.app.dome.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION']
-        node = self.parent.entityModel.get('domeSphere')
+        az = self.app.dome.data["ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION"]
+        node = self.parent.entityModel.get("domeSphere")
         if node:
-            node['trans'].setRotationZ(-az)
+            node["trans"].setRotationZ(-az)
 
     def updateShutter(self):
         """
         :return:
         """
-        if 'DOME_SHUTTER.SHUTTER_OPEN' not in self.app.dome.data:
+        if "DOME_SHUTTER.SHUTTER_OPEN" not in self.app.dome.data:
             return
 
-        isOpen = self.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN']
+        isOpen = self.app.dome.data["DOME_SHUTTER.SHUTTER_OPEN"]
         radius = self.app.mount.geometry.domeRadius * 1000
         scale = 1 + (radius - 1250) / 1250
         width = self.app.dome.clearOpening * 1000
         scaleSlit = (1 + (width - 600) / 600 / 2) * 0.9
         shiftShutter = width / 2 / scale if isOpen else 0
 
-        for node in ['domeSlit1', 'domeSlit2']:
+        for node in ["domeSlit1", "domeSlit2"]:
             node = self.parent.entityModel.get(node)
             if node:
-                node['trans'].setScale3D(QVector3D(1, scaleSlit, 1))
+                node["trans"].setScale3D(QVector3D(1, scaleSlit, 1))
 
-        for node in ['domeDoor1']:
+        for node in ["domeDoor1"]:
             node = self.parent.entityModel.get(node)
             if node:
-                node['trans'].setTranslation(QVector3D(0, shiftShutter, 0))
+                node["trans"].setTranslation(QVector3D(0, shiftShutter, 0))
 
-        for node in ['domeDoor2']:
+        for node in ["domeDoor2"]:
             node = self.parent.entityModel.get(node)
             if node:
-                node['trans'].setTranslation(QVector3D(0, -shiftShutter, 0))
+                node["trans"].setTranslation(QVector3D(0, -shiftShutter, 0))
 
     def create(self):
         """
         :return:
         """
         model = {
-            'domeRoot': {
-                'parent': 'ref_fusion_m',
+            "domeRoot": {
+                "parent": "ref_fusion_m",
             },
-            'domeFloor': {
-                'parent': 'domeRoot',
-                'source': 'dome-floor.stl',
-                'scale': [1, 1, 1],
-                'mat': Materials().aluminiumGrey,
+            "domeFloor": {
+                "parent": "domeRoot",
+                "source": "dome-floor.stl",
+                "scale": [1, 1, 1],
+                "mat": Materials().aluminiumGrey,
             },
-            'domeWall': {
-                'parent': 'domeRoot',
-                'source': 'dome-wall.stl',
-                'scale': [1, 1, 1],
-                'mat': Materials().walls,
+            "domeWall": {
+                "parent": "domeRoot",
+                "source": "dome-wall.stl",
+                "scale": [1, 1, 1],
+                "mat": Materials().walls,
             },
-            'domeSphere': {
-                'parent': 'domeRoot',
-                'source': 'dome-sphere.stl',
-                'scale': [1, 1, 1],
-                'mat': Materials().domeSphere,
+            "domeSphere": {
+                "parent": "domeRoot",
+                "source": "dome-sphere.stl",
+                "scale": [1, 1, 1],
+                "mat": Materials().domeSphere,
             },
-            'domeSlit1': {
-                'parent': 'domeSphere',
-                'source': 'dome-slit1.stl',
-                'scale': [1, 1, 1],
-                'mat': Materials().domeSlit,
+            "domeSlit1": {
+                "parent": "domeSphere",
+                "source": "dome-slit1.stl",
+                "scale": [1, 1, 1],
+                "mat": Materials().domeSlit,
             },
-            'domeSlit2': {
-                'parent': 'domeSphere',
-                'source': 'dome-slit2.stl',
-                'scale': [1, 1, 1],
-                'mat': Materials().domeSlit,
+            "domeSlit2": {
+                "parent": "domeSphere",
+                "source": "dome-slit2.stl",
+                "scale": [1, 1, 1],
+                "mat": Materials().domeSlit,
             },
-            'domeDoor1': {
-                'parent': 'domeSphere',
-                'source': 'dome-door1.stl',
-                'scale': [1, 1, 1],
-                'mat': Materials().domeDoor,
+            "domeDoor1": {
+                "parent": "domeSphere",
+                "source": "dome-door1.stl",
+                "scale": [1, 1, 1],
+                "mat": Materials().domeDoor,
             },
-            'domeDoor2': {
-                'parent': 'domeSphere',
-                'source': 'dome-door2.stl',
-                'scale': [1, 1, 1],
-                'mat': Materials().domeDoor,
+            "domeDoor2": {
+                "parent": "domeSphere",
+                "source": "dome-door2.stl",
+                "scale": [1, 1, 1],
+                "mat": Materials().domeDoor,
             },
         }
         linkModel(model, self.parent.entityModel)
-        self.showEnable(self.app.deviceStat['dome'] is True)
+        self.showEnable(self.app.deviceStat["dome"] is True)
         self.updateAzimuth()
         self.updateShutter()
         self.updateSize()

@@ -23,8 +23,8 @@ from base.alpacaClass import AlpacaClass
 
 
 class FocuserAlpaca(AlpacaClass):
-    """
-    """
+    """ """
+
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data)
         self.signals = signals
@@ -37,8 +37,9 @@ class FocuserAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.getAndStoreAlpacaProperty('position',
-                                       'ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION')
+        self.getAndStoreAlpacaProperty(
+            "position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION"
+        )
         return True
 
     def move(self, position=None):
@@ -49,7 +50,7 @@ class FocuserAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.setAlpacaProperty('move', Position=position)
+        self.setAlpacaProperty("move", Position=position)
         return True
 
     def halt(self):
@@ -59,5 +60,5 @@ class FocuserAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.getAlpacaProperty('halt')
+        self.getAlpacaProperty("halt")
         return True

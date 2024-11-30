@@ -28,27 +28,26 @@ from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
 
 
 class PegasusUPB:
-    """
-    """
-    log = logging.getLogger('MW4')
+    """ """
+
+    log = logging.getLogger("MW4")
 
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.data = {}
-        self.defaultConfig = {'framework': '',
-                              'frameworks': {}}
-        self.framework = ''
+        self.defaultConfig = {"framework": "", "frameworks": {}}
+        self.framework = ""
         self.run = {
-            'indi': PegasusUPBIndi(self.app, self.signals, self.data),
-            'alpaca': PegasusUPBAlpaca(self.app, self.signals, self.data),
+            "indi": PegasusUPBIndi(self.app, self.signals, self.data),
+            "alpaca": PegasusUPBAlpaca(self.app, self.signals, self.data),
         }
-        if platform.system() == 'Windows':
-            self.run['ascom'] = PegasusUPBAscom(self.app, self.signals, self.data)
+        if platform.system() == "Windows":
+            self.run["ascom"] = PegasusUPBAscom(self.app, self.signals, self.data)
 
         for fw in self.run:
-            self.defaultConfig['frameworks'].update({fw: self.run[fw].defaultConfig})
+            self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
     @property
     def updateRate(self):
@@ -143,7 +142,7 @@ class PegasusUPB:
         suc = self.run[self.framework].toggleAutoDew()
         return suc
 
-    def sendDew(self, port='', value=None):
+    def sendDew(self, port="", value=None):
         """
         :param port:
         :param value:

@@ -23,9 +23,9 @@ from base.ascomClass import AscomClass
 
 
 class CoverAscom(AscomClass):
-    """
-    """
-    coverStates = ['NotPresent', 'Closed', 'Moving', 'Open', 'Unknown', 'Error']
+    """ """
+
+    coverStates = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data)
@@ -37,17 +37,19 @@ class CoverAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        state = self.getAscomProperty('CoverState')
+        state = self.getAscomProperty("CoverState")
         stateText = self.coverStates[state]
-        self.storePropertyToData(stateText, 'Status.Cover')
+        self.storePropertyToData(stateText, "Status.Cover")
 
-        brightness = self.getAscomProperty('Brightness')
-        self.storePropertyToData(brightness,
-                                 'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE')
+        brightness = self.getAscomProperty("Brightness")
+        self.storePropertyToData(
+            brightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"
+        )
 
-        maxBrightness = self.getAscomProperty('MaxBrightness')
-        self.storePropertyToData(maxBrightness,
-                                 'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX')
+        maxBrightness = self.getAscomProperty("MaxBrightness")
+        self.storePropertyToData(
+            maxBrightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX"
+        )
         return True
 
     def closeCover(self):
@@ -88,7 +90,8 @@ class CoverAscom(AscomClass):
             return False
 
         maxBrightness = self.app.cover.data.get(
-            'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX', 255)
+            "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
+        )
         brightness = int(maxBrightness / 2)
         self.callMethodThreaded(self.client.CalibratorOn, brightness)
         return True

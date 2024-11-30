@@ -32,7 +32,8 @@ class Hipparcos(object):
     generateAlignStars, their ra dec coordinates, proper motion, parallax and
     radial velocity and the calculation of data for display and slew commands
     """
-    log = logging.getLogger('MW4')
+
+    log = logging.getLogger("MW4")
 
     def __init__(self, app=None):
         self.app = app
@@ -67,24 +68,26 @@ class Hipparcos(object):
         star = list(self.alignStars.values())
         self.name = list(self.alignStars.keys())
 
-        aob, zob, hob, dob, rob, eo = erfa.atco13([x[0] for x in star],
-                                                  [x[1] for x in star],
-                                                  [x[2] for x in star],
-                                                  [x[3] for x in star],
-                                                  [x[4] for x in star],
-                                                  [x[5] for x in star],
-                                                  t.ut1,
-                                                  0.0,
-                                                  t.dut1,
-                                                  location.longitude.radians,
-                                                  location.latitude.radians,
-                                                  location.elevation.m,
-                                                  0.0,
-                                                  0.0,
-                                                  0.0,
-                                                  0.0,
-                                                  0.0,
-                                                  0.0)
+        aob, zob, hob, dob, rob, eo = erfa.atco13(
+            [x[0] for x in star],
+            [x[1] for x in star],
+            [x[2] for x in star],
+            [x[3] for x in star],
+            [x[4] for x in star],
+            [x[5] for x in star],
+            t.ut1,
+            0.0,
+            t.dut1,
+            location.longitude.radians,
+            location.latitude.radians,
+            location.elevation.m,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+        )
         self.az = aob * 360 / 2 / np.pi
         self.alt = 90.0 - zob * 360 / 2 / np.pi
         return True
@@ -111,15 +114,16 @@ class Hipparcos(object):
         timeJD = self.app.mount.obsSite.timeJD
         values = self.alignStars[name]
 
-        ra, dec, eo = erfa.atci13(values[0],
-                                  values[1],
-                                  values[2],
-                                  values[3],
-                                  values[4],
-                                  values[5],
-                                  timeJD.ut1,
-                                  0.0,
-                                  )
+        ra, dec, eo = erfa.atci13(
+            values[0],
+            values[1],
+            values[2],
+            values[3],
+            values[4],
+            values[5],
+            timeJD.ut1,
+            0.0,
+        )
         ra = erfa.anp(ra - eo) * 24 / 2 / np.pi
         dec = dec * 360 / 2 / np.pi
 

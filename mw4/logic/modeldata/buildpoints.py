@@ -30,8 +30,7 @@ from scipy.spatial import distance
 # local imports
 from base import transform
 
-__all__ = ['HaDecToAltAz',
-           'DataPoint']
+__all__ = ["HaDecToAltAz", "DataPoint"]
 
 
 def HaDecToAltAz(ha, dec, lat):
@@ -71,53 +70,138 @@ class DataPoint(object):
         >>>                  app=None,
         >>>                  )
     """
-    log = logging.getLogger('MW4')
 
-    DEC_N = {'min': [-15, 0, 15, 30, 45, 60, 75],
-             'norm': [-15, 0, 15, 30, 45, 60, 75],
-             'med': [-15, -5, 5, 15, 25, 40, 55, 70, 85],
-             'max': [-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85],
-             }
+    log = logging.getLogger("MW4")
 
-    DEC_S = {'min': [-75, -60, -45, -30, -15, 0, 15],
-             'norm': [-75, -60, -45, -30, -15, 0, 15],
-             'med': [-85, -70, -55, -40, -25, -15, -5, 5, 15],
-             'max': [-85, -75, -65, -55, -45, -35, -25, -15, -5, 5, 15],
-             }
+    DEC_N = {
+        "min": [-15, 0, 15, 30, 45, 60, 75],
+        "norm": [-15, 0, 15, 30, 45, 60, 75],
+        "med": [-15, -5, 5, 15, 25, 40, 55, 70, 85],
+        "max": [-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85],
+    }
 
-    STEP_N = {'min': [15, -15, 15, -15, 15, -30, 30],
-              'norm': [10, -10, 10, -10, 10, -20, 20],
-              'med': [10, -10, 10, -10, 10, -15, 15, -20, 20],
-              'max': [10, -10, 10, -10, 10, -10, 10, -20, 20, -30, 30],
-              }
+    DEC_S = {
+        "min": [-75, -60, -45, -30, -15, 0, 15],
+        "norm": [-75, -60, -45, -30, -15, 0, 15],
+        "med": [-85, -70, -55, -40, -25, -15, -5, 5, 15],
+        "max": [-85, -75, -65, -55, -45, -35, -25, -15, -5, 5, 15],
+    }
 
-    STEP_S = {'min': [30, -30, 15, -15, 15, -15, 15],
-              'norm': [20, -20, 10, -10, 10, -10, 10],
-              'med': [20, -20, 15, -15, 10, -10, 10, -10, 10],
-              'max': [30, -30, 20, -20, 10, -10, 10, -10, 10, -10, 10],
-              }
-    START = {'min': [-120, -5, -120, -5, -120, -5, -120,
-                     5, 120, 5, 120, 5, 120, 5],
-             'norm': [-120, -5, -120, -5, -120, -5, -120,
-                      5, 120, 5, 120, 5, 120, 5],
-             'med': [-120, -5, -120, -5, -120, -5, -120, -5, -120,
-                     5, 120, 5, 120, 5, 120, 5, 120, 5],
-             'max': [-120, -5, -120, -5, -120, -5, -120, -5, -120, -5, -120,
-                     5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5],
-             }
-    STOP = {'min': [0, -120, 0, -120, 0, -120, 0,
-                    120, 0, 120, 0, 120, 0, 120],
-            'norm': [0, -120, 0, -120, 0, -120, 0,
-                     120, 0, 120, 0, 120, 0, 120],
-            'med': [0, -120, 0, -120, 0, -120, 0, -120, 0,
-                    120, 0, 120, 0, 120, 0, 120, 0, 120, 0],
-            'max': [0, -120, 0, -120, 0, -120, 0, -120, 0, -120, 0,
-                    120, 0, 120, 0, 120, 0, 120, 0, 120, 0, 120, 0],
-            }
+    STEP_N = {
+        "min": [15, -15, 15, -15, 15, -30, 30],
+        "norm": [10, -10, 10, -10, 10, -20, 20],
+        "med": [10, -10, 10, -10, 10, -15, 15, -20, 20],
+        "max": [10, -10, 10, -10, 10, -10, 10, -20, 20, -30, 30],
+    }
+
+    STEP_S = {
+        "min": [30, -30, 15, -15, 15, -15, 15],
+        "norm": [20, -20, 10, -10, 10, -10, 10],
+        "med": [20, -20, 15, -15, 10, -10, 10, -10, 10],
+        "max": [30, -30, 20, -20, 10, -10, 10, -10, 10, -10, 10],
+    }
+    START = {
+        "min": [-120, -5, -120, -5, -120, -5, -120, 5, 120, 5, 120, 5, 120, 5],
+        "norm": [-120, -5, -120, -5, -120, -5, -120, 5, 120, 5, 120, 5, 120, 5],
+        "med": [
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            5,
+            120,
+            5,
+            120,
+            5,
+            120,
+            5,
+            120,
+            5,
+        ],
+        "max": [
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            5,
+            120,
+            5,
+            120,
+            5,
+            120,
+            5,
+            120,
+            5,
+            120,
+            5,
+        ],
+    }
+    STOP = {
+        "min": [0, -120, 0, -120, 0, -120, 0, 120, 0, 120, 0, 120, 0, 120],
+        "norm": [0, -120, 0, -120, 0, -120, 0, 120, 0, 120, 0, 120, 0, 120],
+        "med": [
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+        ],
+        "max": [
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+        ],
+    }
 
     def __init__(self, app=None):
         self.app = app
-        self.configDir = app.mwGlob['configDir']
+        self.configDir = app.mwGlob["configDir"]
         self._horizonP = list()
         self._buildP = list()
 
@@ -132,7 +216,7 @@ class DataPoint(object):
             return
 
         if not all([isinstance(x, tuple) for x in value]):
-            self.log.info('Malformed value: {0}'.format(value))
+            self.log.info("Malformed value: {0}".format(value))
             self._horizonP.clear()
             return
 
@@ -151,7 +235,7 @@ class DataPoint(object):
             return
 
         if not all([isinstance(x, tuple) for x in value]):
-            self.log.info('Malformed value: {0}'.format(value))
+            self.log.info("Malformed value: {0}".format(value))
             self._buildP = list()
             return
 
@@ -169,15 +253,15 @@ class DataPoint(object):
         if value is None:
             return False
         if not isinstance(value, tuple):
-            self.log.info('malformed value: {0}'.format(value))
+            self.log.info("malformed value: {0}".format(value))
             return False
         if len(value) != 3:
-            self.log.info('malformed value: {0}'.format(value))
+            self.log.info("malformed value: {0}".format(value))
             return False
         if position is None:
             position = len(self._buildP)
         if not isinstance(position, (int, float)):
-            self.log.info('malformed position: {0}'.format(position))
+            self.log.info("malformed position: {0}".format(position))
             return False
         if self.app.mount.setting.horizonLimitHigh is not None:
             high = self.app.mount.setting.horizonLimitHigh
@@ -209,12 +293,12 @@ class DataPoint(object):
         :return:
         """
         if not isinstance(position, (int, float)):
-            self.log.info('malformed position: {0}'.format(position))
+            self.log.info("malformed position: {0}".format(position))
             return False
 
         position = int(position)
         if position < 0 or position > len(self._buildP) - 1:
-            self.log.info('invalid position: {0}'.format(position))
+            self.log.info("invalid position: {0}".format(position))
             return False
 
         self._buildP.pop(position)
@@ -254,15 +338,15 @@ class DataPoint(object):
         if value is None:
             return False
         if not isinstance(value, tuple):
-            self.log.info('malformed value: {0}'.format(value))
+            self.log.info("malformed value: {0}".format(value))
             return False
         if len(value) != 2:
-            self.log.info('malformed value: {0}'.format(value))
+            self.log.info("malformed value: {0}".format(value))
             return False
         if position is None:
             position = len(self.horizonP)
         if not isinstance(position, (int, float)):
-            self.log.info('malformed position: {0}'.format(position))
+            self.log.info("malformed position: {0}".format(position))
             return False
 
         position = int(position)
@@ -280,12 +364,12 @@ class DataPoint(object):
         :return:
         """
         if not isinstance(position, (int, float)):
-            self.log.info('malformed position: {0}'.format(position))
+            self.log.info("malformed position: {0}".format(position))
             return False
 
         position = int(position)
         if position < 0 or position > len(self._horizonP):
-            self.log.info('invalid position: {0}'.format(position))
+            self.log.info("invalid position: {0}".format(position))
             return False
 
         self._horizonP.pop(position)
@@ -308,7 +392,7 @@ class DataPoint(object):
         pointRef = np.asarray([point[1], point[0]])
         closest_index = distance.cdist([pointRef], horizonI).argmin()
         pointClose = horizonI[closest_index]
-        val = np.sqrt(np.sum((pointRef - pointClose)**2))
+        val = np.sqrt(np.sum((pointRef - pointClose) ** 2))
 
         if val < margin:
             return True
@@ -393,12 +477,15 @@ class DataPoint(object):
         azI = range(0, 361, 1)
         altI = np.interp(azI, azH, altH)
         horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
-        self._buildP = [x for x in self._buildP if not self.isCloseHorizonLine(x, m, horizonI)]
+        self._buildP = [
+            x for x in self._buildP if not self.isCloseHorizonLine(x, m, horizonI)
+        ]
 
         return True
 
-    def sort(self, points=None, eastwest=False, highlow=False,
-             sortDomeAz=None, pierside=None):
+    def sort(
+        self, points=None, eastwest=False, highlow=False, sortDomeAz=None, pierside=None
+    ):
         """
         :param points:
         :param eastwest: flag if to be sorted east - west
@@ -420,7 +507,7 @@ class DataPoint(object):
             east = sorted(east, key=lambda x: -x[3])
             west = sorted(west, key=lambda x: -x[3])
 
-        if pierside == 'W' or pierside is None:
+        if pierside == "W" or pierside is None:
             self.buildP = east + west
         else:
             self.buildP = west + east
@@ -436,15 +523,15 @@ class DataPoint(object):
             return None
 
         try:
-            with open(fullFileName, 'r') as handle:
+            with open(fullFileName, "r") as handle:
                 value = json.load(handle)
 
         except Exception as e:
-            self.log.info('Cannot Model load: {0}, error: {1}'.format(fullFileName, e))
+            self.log.info("Cannot Model load: {0}, error: {1}".format(fullFileName, e))
             value = None
 
         else:
-            value = [(x['altitude'], x['azimuth']) for x in value]
+            value = [(x["altitude"], x["azimuth"]) for x in value]
 
         return value
 
@@ -457,11 +544,11 @@ class DataPoint(object):
             return None
 
         try:
-            with open(fullFileName, 'r') as handle:
+            with open(fullFileName, "r") as handle:
                 value = json.load(handle)
 
         except Exception as e:
-            self.log.info('Cannot BPTS load: {0}, error: {1}'.format(fullFileName, e))
+            self.log.info("Cannot BPTS load: {0}, error: {1}".format(fullFileName, e))
             value = None
 
         else:
@@ -477,23 +564,23 @@ class DataPoint(object):
         if not os.path.isfile(fullFileName):
             return None
 
-        with open(fullFileName, 'r') as handle:
+        with open(fullFileName, "r") as handle:
             testLine = handle.readline()
 
-        if ';' in testLine:
-            delimiter = ';'
+        if ";" in testLine:
+            delimiter = ";"
         else:
-            delimiter = ','
+            delimiter = ","
 
         try:
             value = []
-            with open(fullFileName, 'r', encoding='utf-8-sig') as csvFile:
+            with open(fullFileName, "r", encoding="utf-8-sig") as csvFile:
                 reader = csv.reader(csvFile, delimiter=delimiter)
                 for row in reader:
                     value.append(tuple(float(val) for val in row))
 
         except Exception as e:
-            self.log.info('Cannot CSV load: {0}, error: {1}'.format(fullFileName, e))
+            self.log.info("Cannot CSV load: {0}, error: {1}".format(fullFileName, e))
             return None
 
         else:
@@ -512,7 +599,7 @@ class DataPoint(object):
 
         return True
 
-    def loadBuildP(self, fullFileName=None, ext='.bpts', keep=False):
+    def loadBuildP(self, fullFileName=None, ext=".bpts", keep=False):
         """
         loadBuildP loads a modeldata pints file and stores the data in the
         buildP list. necessary conversion are made.
@@ -526,11 +613,11 @@ class DataPoint(object):
             return False
 
         value = None
-        if ext == '.csv':
+        if ext == ".csv":
             value = self.loadCSV(fullFileName)
-        elif ext == '.bpts':
+        elif ext == ".bpts":
             value = self.loadJSON(fullFileName)
-        elif ext == '.model':
+        elif ext == ".model":
             value = self.loadModel(fullFileName)
 
         if value is None:
@@ -549,8 +636,8 @@ class DataPoint(object):
             self._buildP = points
 
         # backup solution
-        if ext in ['.csv', '.model']:
-            fileName = os.path.basename(fullFileName).split('.')[0]
+        if ext in [".csv", ".model"]:
+            fileName = os.path.basename(fullFileName).split(".")[0]
             self.saveBuildP(fileName=fileName)
 
         return True
@@ -566,15 +653,13 @@ class DataPoint(object):
         if fileName is None:
             return False
 
-        fileName = self.configDir + '/' + fileName + '.bpts'
+        fileName = self.configDir + "/" + fileName + ".bpts"
         points = [(x[0], x[1]) for x in self.buildP]
-        with open(fileName, 'w') as handle:
-            json.dump(points,
-                      handle,
-                      indent=4)
+        with open(fileName, "w") as handle:
+            json.dump(points, handle, indent=4)
         return True
 
-    def loadHorizonP(self, fileName=None, ext='.hpts'):
+    def loadHorizonP(self, fileName=None, ext=".hpts"):
         """
         loadHorizonP loads a modeldata pints file and stores the data in the
         buildP list. necessary conversion are made.
@@ -586,11 +671,11 @@ class DataPoint(object):
         if fileName is None:
             return False
 
-        fullFileName = self.configDir + '/' + fileName + ext
+        fullFileName = self.configDir + "/" + fileName + ext
         value = None
-        if ext == '.csv':
+        if ext == ".csv":
             value = self.loadCSV(fullFileName)
-        elif ext == '.hpts':
+        elif ext == ".hpts":
             value = self.loadJSON(fullFileName)
 
         suc = self.checkFormat(value)
@@ -618,9 +703,9 @@ class DataPoint(object):
         if fileName is None:
             return False
 
-        fileName = self.configDir + '/' + fileName + '.hpts'
+        fileName = self.configDir + "/" + fileName + ".hpts"
 
-        with open(fileName, 'w') as handle:
+        with open(fileName, "w") as handle:
             json.dump(self.horizonP, handle, indent=4)
 
         return True
@@ -660,7 +745,7 @@ class DataPoint(object):
         for dec, step, start, stop in zip(decL, stepL, startL, stopL):
             yield dec, step, start, stop
 
-    def genGreaterCircle(self, selection='norm', keep=False):
+    def genGreaterCircle(self, selection="norm", keep=False):
         """
         genGreaterCircle takes the generated boundaries for the rang routine and
         transforms ha, dec to alt az. reasonable values for the alt az values
@@ -814,13 +899,13 @@ class DataPoint(object):
         lat = self.app.mount.obsSite.location.latitude.degrees
 
         for dec in range(-75, 90, 15):
-            for ha in range(- 119, 120, 2):
+            for ha in range(-119, 120, 2):
                 alt, az = HaDecToAltAz(ha / 10, dec, lat)
                 if alt > 0:
                     celestialEquator.append((alt, az))
 
         for ha in range(-115, 120, 10):
-            for dec in range(- 90, 90, 2):
+            for dec in range(-90, 90, 2):
                 alt, az = HaDecToAltAz(ha / 10, dec, lat)
                 if alt > 0:
                     celestialEquator.append((alt, az))
@@ -846,8 +931,9 @@ class DataPoint(object):
                 buildP.append((alt.degrees, az.degrees % 360, 1))
         return buildP
 
-    def generateDSOPath(self, ha=0, dec=0, timeJD=0, location=None,
-                        numberPoints=0, keep=False):
+    def generateDSOPath(
+        self, ha=0, dec=0, timeJD=0, location=None, numberPoints=0, keep=False
+    ):
         """
         generateDSOPath calculates a list of model points along the desired path
         beginning at ra, dec coordinates, which is in time duration hours long
@@ -912,7 +998,7 @@ class DataPoint(object):
 
         indices = np.arange(0, numberPoints, dtype=float) + 0.5
         phi = np.arccos(1 - 2 * indices / numberPoints)
-        theta = np.pi * (1 + 5 ** 0.5) * indices
+        theta = np.pi * (1 + 5**0.5) * indices
 
         altitude = 90 - np.degrees(phi)
         azimuth = np.degrees(theta) % 360

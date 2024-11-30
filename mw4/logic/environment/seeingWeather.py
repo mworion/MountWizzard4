@@ -29,15 +29,15 @@ from base.signalsDevices import Signals
 
 
 class SeeingWeatherSignals(Signals):
-    """
-    """
+    """ """
+
     update = Signal()
 
 
-class SeeingWeather():
-    """
-    """
-    log = logging.getLogger('MW4')
+class SeeingWeather:
+    """ """
+
+    log = logging.getLogger("MW4")
 
     def __init__(self, app=None):
         super().__init__()
@@ -45,29 +45,27 @@ class SeeingWeather():
         self.threadPool = app.threadPool
         self.signals = SeeingWeatherSignals()
         self.location = app.mount.obsSite.location
-        self.b = ''
+        self.b = ""
 
         # minimum set for driver package built in
-        self.framework = ''
-        self.run = {
-            'seeing': self
-        }
-        self.deviceName = ''
+        self.framework = ""
+        self.run = {"seeing": self}
+        self.deviceName = ""
         self.data = {}
         self.defaultConfig = {
-            'framework': '',
-            'frameworks': {
-                'seeing': {
-                    'deviceName': 'meteoblue',
-                    'apiKey': 'free',
-                    'hostaddress': 'my.meteoblue.com',
+            "framework": "",
+            "frameworks": {
+                "seeing": {
+                    "deviceName": "meteoblue",
+                    "apiKey": "free",
+                    "hostaddress": "my.meteoblue.com",
                 }
-            }
+            },
         }
         self.running = False
         self.enabled = False
-        self.hostaddress = ''
-        self.apiKey = ''
+        self.hostaddress = ""
+        self.apiKey = ""
         self._online = False
         self.app.update10m.connect(self.pollSeeingData)
 
@@ -95,24 +93,24 @@ class SeeingWeather():
         self.enabled = False
         self.running = False
         self.data.clear()
-        self.signals.deviceDisconnected.emit('SeeingWeather')
+        self.signals.deviceDisconnected.emit("SeeingWeather")
         return True
 
     def processSeeingData(self):
         """
         :return: success
         """
-        dataFile = self.app.mwGlob['dataDir'] + '/meteoblue.data'
+        dataFile = self.app.mwGlob["dataDir"] + "/meteoblue.data"
         dataFile = os.path.normpath(dataFile)
         if not os.path.isfile(dataFile):
-            self.log.info(f'{dataFile} not available')
+            self.log.info(f"{dataFile} not available")
             return False
 
         try:
-            with open(dataFile, 'r') as f:
+            with open(dataFile, "r") as f:
                 self.data = json.load(f)
         except Exception as e:
-            self.log.warning(f'Cannot load data file, error: {e}')
+            self.log.warning(f"Cannot load data file, error: {e}")
             return False
 
         self.signals.update.emit()
@@ -126,19 +124,19 @@ class SeeingWeather():
         try:
             data = requests.get(url, timeout=30)
         except TimeoutError:
-            self.log.warning(f'[{url}] not reachable')
+            self.log.warning(f"[{url}] not reachable")
             return False
         except Exception as e:
-            self.log.critical(f'[{url}] general exception: [{e}]')
+            self.log.critical(f"[{url}] general exception: [{e}]")
             return False
         if data.status_code != 200:
-            self.log.warning(f'[{url}] status is {data.status_code}')
+            self.log.warning(f"[{url}] status is {data.status_code}")
             return False
 
         data = data.json()
         self.log.trace(data)
 
-        with open(self.app.mwGlob['dataDir'] + '/meteoblue.data', 'w+') as f:
+        with open(self.app.mwGlob["dataDir"] + "/meteoblue.data", "w+") as f:
             json.dump(data, f, indent=4)
         return True
 
@@ -147,12 +145,12 @@ class SeeingWeather():
         :return:
         """
         if not status and self.running:
-            self.signals.deviceDisconnected.emit('SeeingWeather')
+            self.signals.deviceDisconnected.emit("SeeingWeather")
         elif status and not self.running:
-            self.signals.deviceConnected.emit('SeeingWeather')
+            self.signals.deviceConnected.emit("SeeingWeather")
         return True
 
-    def getSeeingData(self, url=''):
+    def getSeeingData(self, url=""):
         """
         :param url:
         :return: true for test purpose
@@ -169,7 +167,7 @@ class SeeingWeather():
         :param hours:
         :return:
         """
-        filePath = self.app.mwGlob['dataDir'] + '/' + fileName
+        filePath = self.app.mwGlob["dataDir"] + "/" + fileName
         filePath = os.path.normpath(filePath)
         if not os.path.isfile(filePath):
             return True
@@ -194,22 +192,22 @@ class SeeingWeather():
             return False
 
         if not self.online and self.running:
-            self.signals.deviceDisconnected.emit('SeeingWeather')
+            self.signals.deviceDisconnected.emit("SeeingWeather")
             self.running = False
             return False
         elif self.online and not self.running:
-            self.signals.deviceConnected.emit('SeeingWeather')
+            self.signals.deviceConnected.emit("SeeingWeather")
             self.running = True
 
-        if not self.loadingFileNeeded('meteoblue.data', 0.5):
+        if not self.loadingFileNeeded("meteoblue.data", 0.5):
             self.processSeeingData()
             return True
 
         lat = self.location.latitude.degrees
         lon = self.location.longitude.degrees
 
-        webSite = f'http://{self.hostaddress}/feed/seeing_json'
-        url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&tz=utc'
-        self.getSeeingData(url=url + f'&apikey={self.b}')
-        self.log.debug(f'{url}')
+        webSite = f"http://{self.hostaddress}/feed/seeing_json"
+        url = f"{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&tz=utc"
+        self.getSeeingData(url=url + f"&apikey={self.b}")
+        self.log.debug(f"{url}")
         return True

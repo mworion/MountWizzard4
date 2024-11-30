@@ -26,9 +26,9 @@ from mountcontrol.convert import valueToInt
 
 
 class Setting(object):
-    """
-    """
-    log = logging.getLogger('MW4')
+    """ """
+
+    log = logging.getLogger("MW4")
 
     def __init__(self, parent=None):
         self.parent = parent
@@ -227,7 +227,7 @@ class Setting(object):
 
     @addressLanMAC.setter
     def addressLanMAC(self, value):
-        self._addressLanMAC = value.upper().replace('.', ':')
+        self._addressLanMAC = value.upper().replace(".", ":")
 
     @property
     def addressWirelessMAC(self):
@@ -235,7 +235,7 @@ class Setting(object):
 
     @addressWirelessMAC.setter
     def addressWirelessMAC(self, value):
-        self._addressWirelessMAC = value.upper().replace('.', ':')
+        self._addressWirelessMAC = value.upper().replace(".", ":")
 
     @property
     def wakeOnLan(self):
@@ -243,12 +243,12 @@ class Setting(object):
 
     @wakeOnLan.setter
     def wakeOnLan(self, value):
-        if value == 'N':
-            self._wakeOnLan = 'None'
-        elif value == '0':
-            self._wakeOnLan = 'OFF'
-        elif value == '1':
-            self._wakeOnLan = 'ON'
+        if value == "N":
+            self._wakeOnLan = "None"
+        elif value == "0":
+            self._wakeOnLan = "OFF"
+        elif value == "1":
+            self._wakeOnLan = "ON"
         else:
             self._wakeOnLan = None
 
@@ -335,10 +335,9 @@ class Setting(object):
         self._settleTime = valueToFloat(value)
 
     def parseSetting(self, response: list, numberOfChunks: int) -> bool:
-        """
-        """
+        """ """
         if len(response) != numberOfChunks:
-            self.log.warning('wrong number of chunks')
+            self.log.warning("wrong number of chunks")
             return False
 
         self.slewRate = response[0]
@@ -350,39 +349,38 @@ class Setting(object):
         self.refractionTemp = response[6]
         self.refractionPress = response[7]
         self.telescopeTempDEC = response[8]
-        self.statusRefraction = (response[9][0] == '1')
-        self.statusUnattendedFlip = (response[9][1] == '1')
-        self.statusDualAxisTracking = (response[9][2] == '1')
+        self.statusRefraction = response[9][0] == "1"
+        self.statusUnattendedFlip = response[9][1] == "1"
+        self.statusDualAxisTracking = response[9][2] == "1"
         self.horizonLimitHigh = response[9][3:6]
         self.horizonLimitLow = response[10][0:3]
-        valid, expirationDate = response[11].split(',')
-        self.UTCValid = (valid == 'V')
+        valid, expirationDate = response[11].split(",")
+        self.UTCValid = valid == "V"
         self.UTCExpire = expirationDate
         self.typeConnection = response[12]
-        self.gpsSynced = (response[13] == '1')
+        self.gpsSynced = response[13] == "1"
         self.addressLanMAC = response[14]
         self.wakeOnLan = response[15]
         self.weatherStatus = response[16]
-        if len(response[17].split(',')) > 1:
-            self.weatherAge = response[17].split(',')[1]
+        if len(response[17].split(",")) > 1:
+            self.weatherAge = response[17].split(",")[1]
         else:
-            self.weatherAge = ''
-        self.weatherPressure = response[17].split(',')[0]
-        self.weatherTemperature = response[18].split(',')[0]
-        self.weatherHumidity = response[19].split(',')[0]
-        self.weatherDewPoint = response[20].split(',')[0]
+            self.weatherAge = ""
+        self.weatherPressure = response[17].split(",")[0]
+        self.weatherTemperature = response[18].split(",")[0]
+        self.weatherHumidity = response[19].split(",")[0]
+        self.weatherDewPoint = response[20].split(",")[0]
         self.trackingRate = response[21]
         self.webInterfaceStat = response[22]
         self.settleTime = response[23]
         return True
 
     def pollSetting(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        cs1 = ':U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#'
-        cs2 = ':GREF#:Guaf#:Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#'
-        cs3 = ':WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#:Gstm#'
+        cs1 = ":U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#"
+        cs2 = ":GREF#:Guaf#:Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#"
+        cs3 = ":WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#:Gstm#"
         commandString = cs1 + cs2 + cs3
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -391,212 +389,187 @@ class Setting(object):
         return suc
 
     def setSlewRate(self, value: (int, float)) -> bool:
-        """
-        """
+        """ """
         if value < 2 or value > 15:
             return False
         conn = Connection(self.parent.host)
-        commandString = f':Sw{value:02.0f}#:RMs{value:02.0f}#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='10')
+        commandString = f":Sw{value:02.0f}#:RMs{value:02.0f}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="10")
         return suc
 
     def setSlewSpeedMax(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = ':RC3#'
+        commandString = ":RC3#"
         suc, _, _ = conn.communicate(commandString)
         return suc
 
     def setSlewSpeedHigh(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = ':RC2#'
+        commandString = ":RC2#"
         suc, _, _ = conn.communicate(commandString)
         return suc
 
     def setSlewSpeedMed(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
         centerSpeed = 255
-        commandString = f':Rc{centerSpeed:02.0f}#'
+        commandString = f":Rc{centerSpeed:02.0f}#"
         suc, _, _ = conn.communicate(commandString)
         return suc
 
     def setSlewSpeedLow(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
         centerSpeed = 128
-        commandString = f':Rc{centerSpeed:02.0f}#'
+        commandString = f":Rc{centerSpeed:02.0f}#"
         suc, _, _ = conn.communicate(commandString)
         return suc
 
     def setRefractionParam(self, temperature: float, pressure: float) -> bool:
-        """
-        """
+        """ """
         if temperature < -40 or temperature > 75:
             return False
         if pressure < 500 or pressure > 1300:
             return False
         conn = Connection(self.parent.host)
-        commandString = f':SRPRS{pressure:06.1f}#:SRTMP{temperature:+06.1f}#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='11')
+        commandString = f":SRPRS{pressure:06.1f}#:SRTMP{temperature:+06.1f}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="11")
         return suc
 
     def setRefractionTemp(self, value: float) -> bool:
-        """
-        """
+        """ """
         if value < -40 or value > 75:
             return False
         conn = Connection(self.parent.host)
-        commandString = f':SRTMP{value:+06.1f}#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = f":SRTMP{value:+06.1f}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def setRefractionPress(self, value: float) -> bool:
-        """
-        """
+        """ """
         if value < 500 or value > 1300:
             return False
         conn = Connection(self.parent.host)
-        commandString = f':SRPRS{value:06.1f}#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = f":SRPRS{value:06.1f}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def setRefraction(self, status: bool) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = ':SREF{0:1d}#'.format(1 if status else 0)
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = ":SREF{0:1d}#".format(1 if status else 0)
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def setUnattendedFlip(self, status: bool) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = ':Suaf{0:1d}#'.format(1 if status else 0)
+        commandString = ":Suaf{0:1d}#".format(1 if status else 0)
         suc, _, _ = conn.communicate(commandString)
         return suc
 
     def setDualAxisTracking(self, status: bool) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = ':Sdat{0:1d}#'.format(1 if status else 0)
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = ":Sdat{0:1d}#".format(1 if status else 0)
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def setWOL(self, status):
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = ':SWOL{0:1d}#'.format(1 if status else 0)
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = ":SWOL{0:1d}#".format(1 if status else 0)
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def setMeridianLimitTrack(self, value: int) -> bool:
-        """
-        """
+        """ """
         if value < 1 or value > 30:
             return False
         conn = Connection(self.parent.host)
-        commandString = f':Slmt{value:02d}#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = f":Slmt{value:02d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def setMeridianLimitSlew(self, value: int) -> bool:
-        """
-        """
+        """ """
         if value < 0 or value > 30:
             return False
         conn = Connection(self.parent.host)
-        commandString = f':Slms{value:02d}#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = f":Slms{value:02d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def setHorizonLimitHigh(self, value: int) -> bool:
-        """
-        """
+        """ """
         if value < 0 or value > 90:
             return False
         conn = Connection(self.parent.host)
-        commandString = f':Sh+{value:02d}#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = f":Sh+{value:02d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def setHorizonLimitLow(self, value: int) -> bool:
-        """
-        """
+        """ """
         if value < -5 or value > 45:
             return False
         conn = Connection(self.parent.host)
-        commandString = f':So{value:+02d}#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = f":So{value:+02d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def setDirectWeatherUpdateType(self, value: int) -> bool:
-        """
-        """
+        """ """
         if value < 0 or value > 2:
             return False
 
         conn = Connection(self.parent.host)
-        commandString = f':WSS{value:1d}#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = f":WSS{value:1d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def checkRateLunar(self) -> bool:
-        """
-        """
-        return f'{self.trackingRate:2.1f}' == '62.4'
+        """ """
+        return f"{self.trackingRate:2.1f}" == "62.4"
 
     def checkRateSidereal(self) -> bool:
-        """
-        """
-        return f'{self.trackingRate:2.1f}' == '60.2'
+        """ """
+        return f"{self.trackingRate:2.1f}" == "60.2"
 
     def checkRateSolar(self) -> bool:
-        """
-        """
-        return f'{self.trackingRate:2.1f}' == '60.3'
+        """ """
+        return f"{self.trackingRate:2.1f}" == "60.3"
 
     def setLunarTracking(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        suc, _, _ = conn.communicate(':RT0#')
+        suc, _, _ = conn.communicate(":RT0#")
         return suc
 
     def setSiderealTracking(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        suc, _, _ = conn.communicate(':RT2#')
+        suc, _, _ = conn.communicate(":RT2#")
         return suc
 
     def setSolarTracking(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        suc, _, _ = conn.communicate(':RT1#')
+        suc, _, _ = conn.communicate(":RT1#")
         return suc
 
     def setWebInterface(self, status: bool) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = ':NTSweb{0:1d}#'.format(1 if status else 0)
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = ":NTSweb{0:1d}#".format(1 if status else 0)
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def setSettleTime(self, time: float) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = f':Sstm{time:08.3f}#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = f":Sstm{time:08.3f}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc

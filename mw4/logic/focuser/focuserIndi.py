@@ -23,8 +23,8 @@ from base.indiClass import IndiClass
 
 
 class FocuserIndi(IndiClass):
-    """
-    """
+    """ """
+
     def __init__(self, app=None, signals=None, data=None):
         self.signals = signals
         super().__init__(app=app, data=data)
@@ -37,12 +37,13 @@ class FocuserIndi(IndiClass):
         if self.device is None:
             return False
 
-        pos = self.device.getNumber('ABS_FOCUS_POSITION')
-        pos['FOCUS_ABSOLUTE_POSITION'] = position
-        suc = self.client.sendNewNumber(deviceName=self.deviceName,
-                                        propertyName='ABS_FOCUS_POSITION',
-                                        elements=pos,
-                                        )
+        pos = self.device.getNumber("ABS_FOCUS_POSITION")
+        pos["FOCUS_ABSOLUTE_POSITION"] = position
+        suc = self.client.sendNewNumber(
+            deviceName=self.deviceName,
+            propertyName="ABS_FOCUS_POSITION",
+            elements=pos,
+        )
         return suc
 
     def halt(self):
@@ -52,9 +53,10 @@ class FocuserIndi(IndiClass):
         if self.device is None:
             return False
 
-        pos = self.device.getNumber('ABS_FOCUS_POSITION')
-        suc = self.client.sendNewNumber(deviceName=self.deviceName,
-                                        propertyName='ABS_FOCUS_POSITION',
-                                        elements=pos,
-                                        )
+        pos = self.device.getNumber("ABS_FOCUS_POSITION")
+        suc = self.client.sendNewNumber(
+            deviceName=self.deviceName,
+            propertyName="ABS_FOCUS_POSITION",
+            elements=pos,
+        )
         return suc

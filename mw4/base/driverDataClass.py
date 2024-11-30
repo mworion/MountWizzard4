@@ -24,13 +24,13 @@ from PySide6.QtCore import Signal, QObject
 
 
 class RemoteDeviceShutdown(QObject):
-    """
-    """
+    """ """
+
     signalRemoteShutdown = Signal()
 
 
 class DriverData:
-    log = logging.getLogger('MW4')
+    log = logging.getLogger("MW4")
 
     def storePropertyToData(self, value, element, elementInv=None):
         """

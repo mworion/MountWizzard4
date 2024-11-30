@@ -43,7 +43,8 @@ class Connection(object):
     The class itself need parameters for the host and port to be able to interact
     with the mount.
     """
-    log = logging.getLogger('MW4')
+
+    log = logging.getLogger("MW4")
 
     # I don't want so wait to long for a response. In average, I see values
     # shorter than 0.5 sec, so 2 seconds should be good
@@ -51,95 +52,244 @@ class Connection(object):
 
     # complete used command list to be checked first if valid
     # these are the commands, which were used in mountcontrol so far
-    COMMANDS = [':AP',
-                ':CM',
-                ':FLIP',
-                ':GDW', ':GDA', ':GDF', ':GDS', ':GDGPS', ':GJD1',
-                ':GDUT', ':GDUTV',
-                ':GLDT', ':GMs', ':GMsa', ':GMsb', ':GMACW', ':GMAC',
-                ':GREF', ':GRPRS', ':GRTMP',
-                ':GS', ':GT', ':GTMP1', ':GUDT',
-                ':GVD', ':GVN', ':GVP', ':GVT', ':GVZ', ':GWOL',
-                ':Ga', ':GaE', ':GaXa', ':GaXb',
-                ':Gd', ':Gdat', ':Gev', ':Gg', ':Gh', ':GINQ', ':Ginfo', ':Glms',
-                ':Glmt', ':Gmte', ':Go', ':Gr', ':Gt', ':gtg', ':GTsid',
-                ':Gstm',
-                ':Guaf', ':Gz',
-                ':MA', ':MS', ':MSao', ':MSap',
-                ':MaX', ':Me', ':Mn', ':Ms', ':Mw',
-                ':NTGdisc', ':NTGweb', ':NTSdisc', ':NTSweb',
-                ':NUtim',
-                ':PO', ':PO', ':PO', ':PaX', ':PiP',
-                ':Q', ':QaXa', ':QaXb', ':Qe', ':Qn', ':Qs', ':Qw',
-                ':RC', ':Rc', ':RG', ':RM', ':RMs', ':RS',
-                ':RT0', ':RT1', ':RT2', ':RT9',
-                ':SDAr', ':SREF', ':SRPRS', ':SRTMP', ':STOP', ':SWOL',
-                ':Sa', ':SaXa', ':SaXb', ':Sd',
-                ':Sdat', ':Sev', ':Sev', ':Sg', ':Sg', ':Sh', ':Slms', ':Slmt',
-                ':Sstm',
-                ':So', ':Sr', ':St', ':Suaf', ':Sw', ':Sz',
-                ':TLEG', ':TLEL0', ':TLEGAZ', ':TLEGEQ', ':TLEP', ':TLES',
-                ':TLESCK', ':TROFFADD', ':TROFFCLR', ':TROFFGET', ':TROFFSET',
-                ':TRNEW', ':TRADD', ':TRP', ':TRREPLAY',
-                ':U2',
-                ':WSG', ':WSP', ':WST', ':WSH', ':WSD', ':WSS',
-                ':delalig', ':delalst',
-                ':endalig',
-                ':getain', ':getalp', ':getalst',
-                ':hP',
-                ':modelcnt', ':modeldel0', ':modelld0', ':modelnam',
-                ':modelsv0',
-                ':newalig', ':newalpt',
-                ':shutdown',
-                ]
+    COMMANDS = [
+        ":AP",
+        ":CM",
+        ":FLIP",
+        ":GDW",
+        ":GDA",
+        ":GDF",
+        ":GDS",
+        ":GDGPS",
+        ":GJD1",
+        ":GDUT",
+        ":GDUTV",
+        ":GLDT",
+        ":GMs",
+        ":GMsa",
+        ":GMsb",
+        ":GMACW",
+        ":GMAC",
+        ":GREF",
+        ":GRPRS",
+        ":GRTMP",
+        ":GS",
+        ":GT",
+        ":GTMP1",
+        ":GUDT",
+        ":GVD",
+        ":GVN",
+        ":GVP",
+        ":GVT",
+        ":GVZ",
+        ":GWOL",
+        ":Ga",
+        ":GaE",
+        ":GaXa",
+        ":GaXb",
+        ":Gd",
+        ":Gdat",
+        ":Gev",
+        ":Gg",
+        ":Gh",
+        ":GINQ",
+        ":Ginfo",
+        ":Glms",
+        ":Glmt",
+        ":Gmte",
+        ":Go",
+        ":Gr",
+        ":Gt",
+        ":gtg",
+        ":GTsid",
+        ":Gstm",
+        ":Guaf",
+        ":Gz",
+        ":MA",
+        ":MS",
+        ":MSao",
+        ":MSap",
+        ":MaX",
+        ":Me",
+        ":Mn",
+        ":Ms",
+        ":Mw",
+        ":NTGdisc",
+        ":NTGweb",
+        ":NTSdisc",
+        ":NTSweb",
+        ":NUtim",
+        ":PO",
+        ":PO",
+        ":PO",
+        ":PaX",
+        ":PiP",
+        ":Q",
+        ":QaXa",
+        ":QaXb",
+        ":Qe",
+        ":Qn",
+        ":Qs",
+        ":Qw",
+        ":RC",
+        ":Rc",
+        ":RG",
+        ":RM",
+        ":RMs",
+        ":RS",
+        ":RT0",
+        ":RT1",
+        ":RT2",
+        ":RT9",
+        ":SDAr",
+        ":SREF",
+        ":SRPRS",
+        ":SRTMP",
+        ":STOP",
+        ":SWOL",
+        ":Sa",
+        ":SaXa",
+        ":SaXb",
+        ":Sd",
+        ":Sdat",
+        ":Sev",
+        ":Sev",
+        ":Sg",
+        ":Sg",
+        ":Sh",
+        ":Slms",
+        ":Slmt",
+        ":Sstm",
+        ":So",
+        ":Sr",
+        ":St",
+        ":Suaf",
+        ":Sw",
+        ":Sz",
+        ":TLEG",
+        ":TLEL0",
+        ":TLEGAZ",
+        ":TLEGEQ",
+        ":TLEP",
+        ":TLES",
+        ":TLESCK",
+        ":TROFFADD",
+        ":TROFFCLR",
+        ":TROFFGET",
+        ":TROFFSET",
+        ":TRNEW",
+        ":TRADD",
+        ":TRP",
+        ":TRREPLAY",
+        ":U2",
+        ":WSG",
+        ":WSP",
+        ":WST",
+        ":WSH",
+        ":WSD",
+        ":WSS",
+        ":delalig",
+        ":delalst",
+        ":endalig",
+        ":getain",
+        ":getalp",
+        ":getalst",
+        ":hP",
+        ":modelcnt",
+        ":modeldel0",
+        ":modelld0",
+        ":modelnam",
+        ":modelsv0",
+        ":newalig",
+        ":newalpt",
+        ":shutdown",
+    ]
 
     # Command list for commands which don't reply anything
-    COMMAND_A = [':AP', ':hP',
-                 ':Me', ':Mn', ':Ms', ':Mw',
-                 ':PO',
-                 ':Q', ':Qe', ':Qn', ':Qs', ':Qw',
-                 ':RC', ':Rc', ':RG', ':RM', ':RS', ':RT0', ':RT1', ':RT2',
-                 ':RT9',
-                 ':SDAr', ':STOP', ':Suaf',
-                 ':U2',
-                 ':hP',
-                 ]
+    COMMAND_A = [
+        ":AP",
+        ":hP",
+        ":Me",
+        ":Mn",
+        ":Ms",
+        ":Mw",
+        ":PO",
+        ":Q",
+        ":Qe",
+        ":Qn",
+        ":Qs",
+        ":Qw",
+        ":RC",
+        ":Rc",
+        ":RG",
+        ":RM",
+        ":RS",
+        ":RT0",
+        ":RT1",
+        ":RT2",
+        ":RT9",
+        ":SDAr",
+        ":STOP",
+        ":Suaf",
+        ":U2",
+        ":hP",
+    ]
 
     # Command list for commands which don't reply anything, but give a parameter
-    COMMAND_P = [':RC', ':Rc', ':RG', ':Suaf']
+    COMMAND_P = [":RC", ":Rc", ":RG", ":Suaf"]
 
     # Command list for commands which have a response, but have no end mark
     # mostly these commands response value of '0' or '1'
-    COMMAND_B = [':FLIP', ':shutdown', ':GREF', ':Guaf',
-                 ':MA',
-                 ':RMs',
-                 ':SREF', ':SRPRS', ':Sa', ':Sev', ':Sr',
-                 ':SRTMP', ':Slmt', ':Slms', ':St', ':Sg', ':Sw', ':Sz',
-                 ':Sdat', ':Gdat',
-                 ':Sstm',
-                 ':GTsid', ':So', ':Sh', ':Sd', ':MSap', ':MSao', ':MS',
-                 ':WSS', ':SWOL'
-                 ]
+    COMMAND_B = [
+        ":FLIP",
+        ":shutdown",
+        ":GREF",
+        ":Guaf",
+        ":MA",
+        ":RMs",
+        ":SREF",
+        ":SRPRS",
+        ":Sa",
+        ":Sev",
+        ":Sr",
+        ":SRTMP",
+        ":Slmt",
+        ":Slms",
+        ":St",
+        ":Sg",
+        ":Sw",
+        ":Sz",
+        ":Sdat",
+        ":Gdat",
+        ":Sstm",
+        ":GTsid",
+        ":So",
+        ":Sh",
+        ":Sd",
+        ":MSap",
+        ":MSao",
+        ":MS",
+        ":WSS",
+        ":SWOL",
+    ]
 
     def __init__(self, host=None):
         self.host = host
         self.id = str(uuid.uuid4())[:8]
 
     def validCommand(self, command):
-        """
-        """
+        """ """
         for key in sorted(self.COMMANDS, reverse=True):
             if command.startswith(key):
                 return True
         return False
 
     def validCommandSet(self, commandString):
-        """
-        """
-        commandSet = commandString.split('#')[:-1]
+        """ """
+        commandSet = commandString.split("#")[:-1]
         for command in commandSet:
             if not self.validCommand(command):
-                self.log.warning(f'[{self.id}] unknown commands: {commandString}')
+                self.log.warning(f"[{self.id}] unknown commands: {commandString}")
                 return False
         return True
 
@@ -155,7 +305,7 @@ class Connection(object):
         """
         chunksToReceive = 0
         getData = False
-        commandSet = commandString.split('#')[:-1]
+        commandSet = commandString.split("#")[:-1]
         minBytes = 0
         for command in commandSet:
             foundCOMMAND_A = False
@@ -173,15 +323,14 @@ class Connection(object):
                         break
                 else:
                     chunksToReceive += 1
-        t = f'Analyse: minBytes: [{minBytes}], numOfChunks: [{chunksToReceive}]'
-        t += ', host: [{self.host}]'
+        t = f"Analyse: minBytes: [{minBytes}], numOfChunks: [{chunksToReceive}]"
+        t += ", host: [{self.host}]"
         self.log.trace(t)
         return chunksToReceive, getData, minBytes
 
     @staticmethod
     def closeClientHard(client):
-        """
-        """
+        """ """
         if not client:
             return False
 
@@ -194,13 +343,12 @@ class Connection(object):
             return True
 
     def buildClient(self):
-        """
-        """
+        """ """
         if not self.host:
-            self.log.info(f'[{self.id}] no host defined')
+            self.log.info(f"[{self.id}] no host defined")
             return None
         if not isinstance(self.host, tuple):
-            self.log.info(f'[{self.id}] host entry malformed [{self.host}]')
+            self.log.info(f"[{self.id}] host entry malformed [{self.host}]")
             return None
 
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -211,29 +359,29 @@ class Connection(object):
 
         except (socket.timeout, socket.error) as e:
             self.closeClientHard(client)
-            self.log.trace(f'[{self.id}] socket error: [{e}]')
+            self.log.trace(f"[{self.id}] socket error: [{e}]")
             return None
 
         except Exception as e:
             self.closeClientHard(client)
-            self.log.debug(f'[{self.id}] socket general: [{e}]')
+            self.log.debug(f"[{self.id}] socket general: [{e}]")
             return None
 
         else:
             return client
 
-    def sendData(self, client=None, commandString=''):
+    def sendData(self, client=None, commandString=""):
         """
         sendData sends all data of the command string out to the given socket
         client.
         """
         try:
-            self.log.trace(f'[{self.id}] sending  : {commandString}')
+            self.log.trace(f"[{self.id}] sending  : {commandString}")
             client.sendall(commandString.encode())
 
         except Exception as e:
             self.closeClientHard(client)
-            self.log.debug(f'[{self.id}] socket error: [{e}]')
+            self.log.debug(f"[{self.id}] socket error: [{e}]")
             return False
 
         else:
@@ -251,16 +399,18 @@ class Connection(object):
         :param minBytes: minimum number of data bytes
         :return: success and response data
         """
-        response = ''
+        response = ""
         receiving = True
         try:
             while receiving:
                 chunkRaw = client.recv(2048)
                 try:
-                    chunk = chunkRaw.decode('ASCII')
+                    chunk = chunkRaw.decode("ASCII")
                 except Exception as e:
-                    self.log.warning(f'[{self.id}] error: [{e}], received: [{chunkRaw}]')
-                    return False, ''
+                    self.log.warning(
+                        f"[{self.id}] error: [{e}], received: [{chunkRaw}]"
+                    )
+                    return False, ""
 
                 if not chunk:
                     break
@@ -268,47 +418,47 @@ class Connection(object):
                 response += chunk
                 if numberOfChunks == 0 and len(response) == minBytes:
                     break
-                elif numberOfChunks != 0 and numberOfChunks == response.count('#'):
+                elif numberOfChunks != 0 and numberOfChunks == response.count("#"):
                     break
 
         except socket.timeout:
-            self.log.debug(f'[{self.id}] socket timeout')
+            self.log.debug(f"[{self.id}] socket timeout")
             return False, response
 
         except Exception as e:
-            self.log.debug(f'[{self.id}] socket error: [{e}]')
+            self.log.debug(f"[{self.id}] socket error: [{e}]")
             return False, response
 
         else:
-            response = response.rstrip('#').split('#')
-            self.log.trace(f'Response [{self.id}]: [{response}]')
+            response = response.rstrip("#").split("#")
+            self.log.trace(f"Response [{self.id}]: [{response}]")
             return True, response
 
-    def communicate(self, commandString, responseCheck=''):
+    def communicate(self, commandString, responseCheck=""):
         """
         transfer open a socket to the mount, takes the command string for the
         mount, analyses it, check validity and finally if valid sends it to the
         mount. If response expected, wait for the response and returns the data.
         """
         if not self.validCommandSet(commandString):
-            return False, '', 0
+            return False, "", 0
 
         numberOfChunks, getData, minBytes = self.analyseCommand(commandString)
         client = self.buildClient()
         if client is None:
-            return False, '', numberOfChunks
+            return False, "", numberOfChunks
 
         suc = self.sendData(client=client, commandString=commandString)
         if not suc:
-            return False, '', numberOfChunks
+            return False, "", numberOfChunks
 
         if not getData:
             self.closeClientHard(client)
-            return True, '', numberOfChunks
+            return True, "", numberOfChunks
 
-        suc, response = self.receiveData(client=client,
-                                         numberOfChunks=numberOfChunks,
-                                         minBytes=minBytes)
+        suc, response = self.receiveData(
+            client=client, numberOfChunks=numberOfChunks, minBytes=minBytes
+        )
         self.closeClientHard(client)
         if responseCheck:
             suc = suc and response[0] == responseCheck
@@ -316,26 +466,25 @@ class Connection(object):
         return suc, response, numberOfChunks
 
     def communicateRaw(self, commandString: str) -> tuple:
-        """
-        """
+        """ """
         client = self.buildClient()
         if client is None:
-            return False, False, 'Socket error'
+            return False, False, "Socket error"
 
         sucSend = self.sendData(client=client, commandString=commandString)
         try:
             chunkRaw = client.recv(2048)
-            val = chunkRaw.decode('ASCII')
+            val = chunkRaw.decode("ASCII")
         except socket.timeout:
-            self.log.debug(f'[{self.id}] socket timeout')
-            val = 'Timeout'
+            self.log.debug(f"[{self.id}] socket timeout")
+            val = "Timeout"
             sucRec = False
         except Exception as e:
-            self.log.debug(f'[{self.id}] socket error: [{e}]')
-            val = 'Exception'
+            self.log.debug(f"[{self.id}] socket error: [{e}]")
+            val = "Exception"
             sucRec = False
         else:
-            self.log.trace(f'[{self.id}] response: [{val}]')
+            self.log.trace(f"[{self.id}] response: [{val}]")
             sucRec = True
 
         return sucSend, sucRec, val

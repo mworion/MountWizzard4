@@ -61,7 +61,6 @@ class ImageManage(MWidget):
         self.ui.exposureTimeN.valueChanged.connect(self.updateImagingParam)
         self.ui.binningN.valueChanged.connect(self.updateImagingParam)
         self.ui.subFrame.valueChanged.connect(self.updateImagingParam)
-        # todo: should we keep cyclic updates ? -> normally no !
         self.app.update1s.connect(self.updateImagingParam)
 
         self.ui.haltFocuser.clicked.connect(self.haltFocuser)
@@ -209,7 +208,7 @@ class ImageManage(MWidget):
     def updateImagingParam(self):
         """ """
         self.checkEnableCameraUI()
-        self.updateOffset()∆
+        self.updateOffset()
         self.updateGain()
         self.updateCooler()
         self.updateFilter()

@@ -69,7 +69,7 @@ setup(
         'astropy==5.3.4',
         'pyerfa==2.0.1.4',
         'astroquery==0.4.7',
-        'sep-pjw==1.3.6',
+        'sep_mw4==1.3.6',
         'pyqtgraph==0.13.7',
         'qimage2ndarray==1.10.0',
         'skyfield==1.49',

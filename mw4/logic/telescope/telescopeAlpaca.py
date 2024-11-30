@@ -23,10 +23,8 @@ from base.alpacaClass import AlpacaClass
 
 
 class TelescopeAlpaca(AlpacaClass):
-    """ """
-
-    __all__ = ["TelescopeAlpaca"]
-
+    """
+    """
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data)
         self.signals = signals
@@ -37,10 +35,8 @@ class TelescopeAlpaca(AlpacaClass):
         :return: true for test purpose
         """
         super().workerGetInitialConfig()
-        self.getAndStoreAlpacaProperty(
-            "aperturediameter", "TELESCOPE_INFO.TELESCOPE_APERTURE"
-        )
-        self.getAndStoreAlpacaProperty(
-            "focallength", "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"
-        )
+        self.getAndStoreAlpacaProperty('aperturediameter',
+                                       'TELESCOPE_INFO.TELESCOPE_APERTURE')
+        self.getAndStoreAlpacaProperty('focallength',
+                                       'TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH')
         return True

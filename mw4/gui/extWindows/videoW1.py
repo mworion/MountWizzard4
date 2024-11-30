@@ -24,31 +24,27 @@ from gui.extWindows.videoW import VideoWindow
 
 
 class VideoWindow1(VideoWindow):
-    """ """
-
-    __all__ = ["VideoWindow1"]
-
-    pixmapReady = Signal(object)
-
+    """
+    """
     def __init__(self, app):
         super().__init__(app=app)
-        self.setWindowTitle("Video Stream 1")
-        self.setObjectName("Video1")
+        self.setWindowTitle('Video Stream 1')
+        self.setObjectName('Video1')
 
     def initConfig(self):
         """
         :return: True for test purpose
         """
-        if "videoW1" not in self.app.config:
-            self.app.config["videoW1"] = {}
-        config = self.app.config["videoW1"]
+        if 'videoW1' not in self.app.config:
+            self.app.config['videoW1'] = {}
+        config = self.app.config['videoW1']
 
         self.positionWindow(config)
-        self.ui.videoURL.setText(config.get("videoURL", ""))
-        self.ui.videoSource.setCurrentIndex(config.get("videoSource", 0))
-        self.ui.frameRate.setCurrentIndex(config.get("frameRate", 2))
-        self.user = config.get("user", "")
-        self.password = config.get("password", "")
+        self.ui.videoURL.setText(config.get('videoURL', ''))
+        self.ui.videoSource.setCurrentIndex(config.get('videoSource', 0))
+        self.ui.frameRate.setCurrentIndex(config.get('frameRate', 2))
+        self.user = (config.get('user', ''))
+        self.password = (config.get('password', ''))
         return True
 
     def storeConfig(self):
@@ -56,21 +52,21 @@ class VideoWindow1(VideoWindow):
         :return: True for test purpose
         """
         config = self.app.config
-        if "videoW1" not in config:
-            config["videoW1"] = {}
+        if 'videoW1' not in config:
+            config['videoW1'] = {}
         else:
-            config["videoW1"].clear()
-        config = config["videoW1"]
+            config['videoW1'].clear()
+        config = config['videoW1']
 
-        config["winPosX"] = max(self.pos().x(), 0)
-        config["winPosY"] = max(self.pos().y(), 0)
-        config["height"] = self.height()
-        config["width"] = self.width()
-        config["videoURL"] = self.ui.videoURL.text()
-        config["videoSource"] = self.ui.videoSource.currentIndex()
-        config["frameRate"] = self.ui.frameRate.currentIndex()
-        config["user"] = self.user
-        config["password"] = self.password
+        config['winPosX'] = max(self.pos().x(), 0)
+        config['winPosY'] = max(self.pos().y(), 0)
+        config['height'] = self.height()
+        config['width'] = self.width()
+        config['videoURL'] = self.ui.videoURL.text()
+        config['videoSource'] = self.ui.videoSource.currentIndex()
+        config['frameRate'] = self.ui.frameRate.currentIndex()
+        config['user'] = self.user
+        config['password'] = self.password
         return True
 
     def closeEvent(self, closeEvent):

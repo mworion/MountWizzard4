@@ -29,7 +29,8 @@ from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorBuildPoints:
-    __all__ = ["SimulatorBuildPoints"]
+    """
+    """
     LINE_RADIUS = 0.02
     POINT_SPHERE_RADIUS = 4
     POINT_ACTIVE_RADIUS = 0.07
@@ -48,25 +49,28 @@ class SimulatorBuildPoints:
         self.app.drawBuildPoints.connect(self.create)
 
     def showEnable(self):
-        """ """
+        """
+        """
         isVisible = self.parent.ui.showBuildPoints.isChecked()
-        node = self.parent.entityModel.get("buildPoints")
+        node = self.parent.entityModel.get('buildPoints')
         if node:
-            node["entity"].setEnabled(isVisible)
+            node['entity'].setEnabled(isVisible)
 
     def clear(self):
-        """ """
-        node = self.parent.entityModel.get("buildPoints")
+        """
+        """
+        node = self.parent.entityModel.get('buildPoints')
         if not node:
             return
 
-        node["entity"].setParent(None)
-        del self.parent.entityModel["buildPoints"]["entity"]
-        del self.parent.entityModel["buildPoints"]
+        node['entity'].setParent(None)
+        del self.parent.entityModel['buildPoints']['entity']
+        del self.parent.entityModel['buildPoints']
         self.points = []
 
     def updatePositions(self):
-        """ """
+        """
+        """
         if not self.app.mount.obsSite.haJNow:
             return
 
@@ -76,9 +80,9 @@ class SimulatorBuildPoints:
             return
         PB[2] += 1
 
-        node = self.parent.entityModel.get("buildPoints")
+        node = self.parent.entityModel.get('buildPoints')
         if node:
-            node["trans"].setTranslation(QVector3D(PB[0], PB[1], PB[2]))
+            node['trans'].setTranslation(QVector3D(PB[0], PB[1], PB[2]))
 
     def createLine(self, parentEntity, dx, dy, dz):
         """
@@ -190,7 +194,7 @@ class SimulatorBuildPoints:
         mesh2 = Qt3DExtras.QExtrudedTextMesh()
         mesh2.setText(text)
         mesh2.setDepth(0.05)
-        mesh2.setFont(QFont("Arial", self.FONT_SIZE))
+        mesh2.setFont(QFont('Arial', self.FONT_SIZE))
         trans2 = Qt3DCore.QTransform()
         if faceIn:
             trans2.setRotationX(90 + alt)
@@ -217,21 +221,21 @@ class SimulatorBuildPoints:
 
         for index, point in enumerate(self.app.data.buildP):
             active = point[2]
-            e, x, y, z = self.createPoint(
-                buildPointEntity, np.radians(point[0]), np.radians(-point[1]), active
-            )
+            e, x, y, z = self.createPoint(buildPointEntity,
+                                          np.radians(point[0]),
+                                          np.radians(-point[1]),
+                                          active)
 
             if isNumber:
-                a = self.createAnnotation(
-                    e[0], point[0], -point[1], f"{index + 1:02d}", active
-                )
+                a = self.createAnnotation(e[0], point[0], -point[1],
+                                          f'{index + 1:02d}', active)
             else:
                 a = None
 
             if index and isSlewPath:
-                x0 = self.points[-1]["x"]
-                y0 = self.points[-1]["y"]
-                z0 = self.points[-1]["z"]
+                x0 = self.points[-1]['x']
+                y0 = self.points[-1]['y']
+                z0 = self.points[-1]['z']
                 dx = x - x0
                 dy = y - y0
                 dz = z - z0
@@ -239,7 +243,7 @@ class SimulatorBuildPoints:
             else:
                 line = None
 
-            element = {"x": x, "y": y, "z": z, "a": a, "e": e, "l": line}
+            element = {'x': x, 'y': y, 'z': z, 'a': a, 'e': e, 'l': line}
             self.points.append(element)
 
     def create(self):
@@ -256,21 +260,19 @@ class SimulatorBuildPoints:
         if len(self.app.data.buildP) == 0:
             return False
 
-        ref_fusion = self.parent.entityModel.get("ref_fusion")
+        ref_fusion = self.parent.entityModel.get('ref_fusion')
         if not ref_fusion:
             return False
 
         self.clear()
         buildPointEntity = Qt3DCore.QEntity()
-        parent = ref_fusion.get("entity")
+        parent = ref_fusion.get('entity')
         buildPointEntity.setParent(parent)
 
         buildPointTransform = Qt3DCore.QTransform()
         buildPointEntity.addComponent(buildPointTransform)
-        self.parent.entityModel["buildPoints"] = {
-            "entity": buildPointEntity,
-            "trans": buildPointTransform,
-        }
+        self.parent.entityModel['buildPoints'] = {'entity': buildPointEntity,
+                                                  'trans': buildPointTransform}
 
         self.loopCreate(buildPointEntity)
         self.updatePositions()

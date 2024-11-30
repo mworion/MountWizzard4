@@ -26,24 +26,23 @@ from sgp4.exporter import export_tle
 
 
 class DataWriter:
-    """ """
-
-    __all__ = ["DataWriter"]
-
-    log = logging.getLogger("MW4")
+    """
+    """
+    log = logging.getLogger('MW4')
 
     def __init__(self, app):
         super().__init__()
         self.app = app
 
-    def writeEarthRotationData(self, dataFilePath: str = "") -> bool:
-        """ """
-        sourceDir = self.app.mwGlob["dataDir"]
+    def writeEarthRotationData(self, dataFilePath: str = '') -> bool:
+        """
+        """
+        sourceDir = self.app.mwGlob['dataDir']
         destDir = dataFilePath
         if destDir == sourceDir:
             return False
 
-        for file in ["CDFLeapSeconds.txt", "finals.data"]:
+        for file in ['CDFLeapSeconds.txt', 'finals.data']:
             if not os.path.isfile(os.path.join(sourceDir, file)):
                 return False
             shutil.copy(os.path.join(sourceDir, file), os.path.join(destDir, file))
@@ -55,10 +54,10 @@ class DataWriter:
         data format of json and file description in
         https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
         """
-        dest = os.path.join(dataFilePath, "comets.mpc")
-        with open(dest, "w") as f:
+        dest = os.path.join(dataFilePath, 'comets.mpc')
+        with open(dest, 'w') as f:
             for data in datas:
-                line = ""
+                line = ''
                 line += f'{"":4s}'
                 line += f'{data.get("Orbit_type", ""):1s}'
                 line += f'{data.get("Provisional_packed_desig", ""):7s}'
@@ -80,7 +79,7 @@ class DataWriter:
                 line += f'{data.get("i", 0):8.4f}'
                 line += f'{"":2s}'
 
-                if "Epoch_year" in data:
+                if 'Epoch_year' in data:
                     line += f'{data.get("Epoch_year", 0):04d}'
                     line += f'{data.get("Epoch_month", 0):02d}'
                     line += f'{data.get("Epoch_day", 0):02d}'
@@ -95,7 +94,7 @@ class DataWriter:
                 line += f'{data.get("Designation_and_name", ""):56s}'
                 line += f'{"":1s}'
                 line += f'{data.get("Ref", " "):>9s}'
-                line += "\n"
+                line += '\n'
                 f.write(line)
 
     @staticmethod
@@ -107,21 +106,22 @@ class DataWriter:
         value = int(value)
 
         if 0 <= value < 10:
-            resultChar = f"{value:1d}"
+            resultChar = f'{value:1d}'
         elif 10 <= value < 36:
-            resultChar = chr(ord("A") + value - 10)
+            resultChar = chr(ord('A') + value - 10)
         elif 36 <= value < 62:
-            resultChar = chr(ord("a") + value - 36)
+            resultChar = chr(ord('a') + value - 36)
         else:
-            resultChar = " "
+            resultChar = ' '
 
         return resultChar
 
     def generateCycleCountTextPacked(self, cycle: int) -> str:
-        """ """
+        """
+        """
         digit1Value = cycle % 10
         digit2Value = int(cycle / 10)
-        cycleChar1 = f"{digit1Value:1d}"
+        cycleChar1 = f'{digit1Value:1d}'
         cycleChar2 = self.convertDatePacked(digit2Value)
         cycleText = cycleChar2 + cycleChar1
 
@@ -129,9 +129,13 @@ class DataWriter:
 
     @staticmethod
     def generateCenturyPacked(century: str) -> str:
-        """ """
-        centConvert = {"18": "I", "19": "J", "20": "K", "21": "L"}
-        return centConvert.get(century, " ")
+        """
+        """
+        centConvert = {'18': 'I',
+                       '19': 'J',
+                       '20': 'K',
+                       '21': 'L'}
+        return centConvert.get(century, ' ')
 
     def generateDesignationPacked(self, designation: str) -> str:
         """
@@ -139,7 +143,7 @@ class DataWriter:
         https://minorplanetcenter.net//iau/info/PackedDes.html
         """
         if not designation:
-            return "xxxxxxx"
+            return 'xxxxxxx'
 
         designation = designation.strip()
         century = designation[0:2]
@@ -157,9 +161,7 @@ class DataWriter:
 
         cycleText = self.generateCycleCountTextPacked(cycle)
 
-        designationPacked = (
-            f"{centuryPacked}{year}{halfMonth}{cycleText}{halfMonthOrder}"
-        )
+        designationPacked = f'{centuryPacked}{year}{halfMonth}{cycleText}{halfMonthOrder}'
         return designationPacked
 
     def generateDatePacked(self, month: str, day: str) -> str:
@@ -178,26 +180,27 @@ class DataWriter:
         https://www.minorplanetcenter.net/iau/info/PackedDates.html
         """
         if not epoch:
-            return "xxxxx"
+            return 'xxxxx'
 
         date = self.app.mount.obsSite.ts.tt_jd(int(epoch + 0.5))
-        year, month, day = date.tt_strftime("%Y-%m-%d").split("-")
+        year, month, day = date.tt_strftime('%Y-%m-%d').split('-')
         century = year[0:2]
         centuryPacked = self.generateCenturyPacked(century)
         year = year[2:4]
         dayPacked = self.generateDatePacked(month, day)
 
-        epochPackedText = f"{centuryPacked:1s}{year:2s}{dayPacked}"
+        epochPackedText = f'{centuryPacked:1s}{year:2s}{dayPacked}'
         return epochPackedText
 
     def generateOldDesignationPacked(self, numberText: str) -> str:
-        """ """
+        """
+        """
         if not numberText:
-            return "xxxxxxx"
+            return 'xxxxxxx'
 
-        number = int(numberText.rstrip(")").lstrip("("))
+        number = int(numberText.rstrip(')').lstrip('('))
         numberChar = self.convertDatePacked(number / 10000)
-        designationPacked = f"{numberChar}{number % 10000:04d}  "
+        designationPacked = f'{numberChar}{number % 10000:04d}  '
 
         return designationPacked
 
@@ -209,30 +212,30 @@ class DataWriter:
         we have a mix of new and old style designation to manage. the old style seem to
         have the ley 'Number' in json, new style not.
         """
-        dest = os.path.join(dataFilePath, "asteroids.mpc")
+        dest = os.path.join(dataFilePath, 'asteroids.mpc')
 
-        with open(dest, "w") as f:
+        with open(dest, 'w') as f:
             for data in datas:
-                line = ""
+                line = ''
 
-                if "Number" in data:
-                    numberText = data.get("Number", "")
+                if 'Number' in data:
+                    numberText = data.get('Number', '')
                     designationPacked = self.generateOldDesignationPacked(numberText)
 
                 else:
-                    designation = data.get("Principal_desig", "")
+                    designation = data.get('Principal_desig', '')
                     designationPacked = self.generateDesignationPacked(designation)
 
-                line += f"{designationPacked:7s}"
+                line += f'{designationPacked:7s}'
                 line += f'{"":1s}'
                 line += f'{data.get("H", 0):<5g}'
                 line += f'{"":1s}'
                 line += f'{data.get("G", 0):5g}'
                 line += f'{"":1s}'
 
-                epochPacked = self.generateEpochPacked(data.get("Epoch", 0))
+                epochPacked = self.generateEpochPacked(data.get('Epoch', 0))
 
-                line += f"{epochPacked:5s}"
+                line += f'{epochPacked:5s}'
                 line += f'{"":1s}'
                 line += f'{data.get("M", 0):9.5f}'
                 line += f'{"":2s}'
@@ -257,12 +260,12 @@ class DataWriter:
                 line += f'{data.get("Num_opps", 0):3.0f}'
 
                 line += f'{"":1s}'
-                if "Arc_years" in data:
+                if 'Arc_years' in data:
                     line += f'{data.get("Arc_years", ""):9s}'
 
-                elif "Arc_length" in data:
+                elif 'Arc_length' in data:
                     arcLength = data.get("Arc_length", 0)
-                    line += f"{arcLength:4.0f} days"
+                    line += f'{arcLength:4.0f} days'
 
                 else:
                     line += f'{"":9s}'
@@ -279,7 +282,7 @@ class DataWriter:
                 line += f'{data.get("Hex_flags", ""):4s}'
                 line += f'{"":1s}'
 
-                if "Number" in data:
+                if 'Number' in data:
                     line += f'{data.get("Number", ""):>8s} {data.get("Name", ""):18s}'
 
                 else:
@@ -290,7 +293,7 @@ class DataWriter:
                 line += f'{data.get("Last_obs", "").replace("-", ""):8s}'
                 line += f'{"":1s}'
                 line += f'{data.get("Tp", 0):13.5f}'
-                line += "\n"
+                line += '\n'
                 f.write(line)
 
     @staticmethod
@@ -298,10 +301,10 @@ class DataWriter:
         """
         data format of TLE and file description in
         """
-        dest = os.path.join(dataFilePath, "satellites.tle")
-        with open(dest, "w") as f:
+        dest = os.path.join(dataFilePath, 'satellites.tle')
+        with open(dest, 'w') as f:
             for data in datas:
                 line1, line2 = export_tle(data.model)
-                f.write(data.name + "\n")
-                f.write(line1 + "\n")
-                f.write(line2 + "\n")
+                f.write(data.name + '\n')
+                f.write(line1 + '\n')
+                f.write(line2 + '\n')

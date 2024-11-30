@@ -21,7 +21,6 @@ import sys
 from queue import Queue
 
 from PySide6.QtWidgets import QApplication
-
 # external packages
 from PySide6.QtCore import QObject, Signal, QThreadPool, QTimer
 from skyfield.api import wgs84
@@ -58,11 +57,9 @@ class MountWizzard4(QObject):
     should be handled through the window classes. main class is for setup,
     config, start, persist and shutdown the application.
     """
+    __version__ = version('mountwizzard4')
 
-    __all__ = ["MountWizzard4"]
-    __version__ = version("mountwizzard4")
-
-    log = logging.getLogger("MW4")
+    log = logging.getLogger('MW4')
 
     material = Signal(object, object)
     msg = Signal(object, object, object, object)
@@ -125,44 +122,42 @@ class MountWizzard4(QObject):
         self.timerCounter = 0
         self.statusOperationRunning = 0
         self.msg.connect(self.writeMessageQueue)
-        self.config = loadProfile(configDir=self.mwGlob["configDir"])
+        self.config = loadProfile(configDir=self.mwGlob['configDir'])
         self.deviceStat = {
-            "dome": None,
-            "mount": None,
-            "camera": None,
-            "plateSolve": None,
-            "refraction": None,
-            "sensor1Weather": None,
-            "sensor2Weather": None,
-            "sensor3Weather": None,
-            "onlineWeather": None,
-            "directWeather": None,
-            "seeingWeather": None,
-            "cover": None,
-            "telescope": None,
-            "power": None,
-            "remote": None,
-            "relay": None,
-            "measure": None,
+            'dome': None,
+            'mount': None,
+            'camera': None,
+            'plateSolve': None,
+            'refraction': None,
+            'sensor1Weather': None,
+            'sensor2Weather': None,
+            'sensor3Weather': None,
+            'onlineWeather': None,
+            'directWeather': None,
+            'seeingWeather': None,
+            'cover': None,
+            'telescope': None,
+            'power': None,
+            'remote': None,
+            'relay': None,
+            'measure': None,
         }
-        profile = self.config.get("profileName", "-")
-        workDir = self.mwGlob["workDir"]
-        self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 started..."))
-        self.messageQueue.put((1, "System", "Workdir", f"{workDir}"))
-        self.messageQueue.put((1, "System", "Profile", f"Base: {profile}"))
+        profile = self.config.get('profileName', '-')
+        workDir = self.mwGlob['workDir']
+        self.messageQueue.put((1, 'System', 'Lifecycle', 'MountWizzard4 started...'))
+        self.messageQueue.put((1, 'System', 'Workdir', f'{workDir}'))
+        self.messageQueue.put((1, 'System', 'Profile', f'Base: {profile}'))
         # initialize commands to mount
-        pathToData = self.mwGlob["dataDir"]
-        self.mount = MountDevice(
-            app=self,
-            host=None,
-            MAC="00.c0.08.87.35.db",
-            pathToData=pathToData,
-            verbose=False,
-        )
+        pathToData = self.mwGlob['dataDir']
+        self.mount = MountDevice(app=self,
+                                 host=None,
+                                 MAC='00.c0.08.87.35.db',
+                                 pathToData=pathToData,
+                                 verbose=False)
         # setting location to last know config
         topo = self.initConfig()
         self.mount.obsSite.location = topo
-        self.ephemeris = self.mount.obsSite.loader("de440_mw4.bsp")
+        self.ephemeris = self.mount.obsSite.loader('de440_mw4.bsp')
         self.relay = KMRelay()
         self.sensor1Weather = SensorWeather(self)
         self.sensor2Weather = SensorWeather(self)
@@ -194,45 +189,49 @@ class MountWizzard4(QObject):
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
 
-        if os.path.isfile(self.mwGlob["workDir"] + "/test.run"):
+        if os.path.isfile(self.mwGlob["workDir"] + '/test.run'):
             self.update3s.connect(self.quit)
         if len(sys.argv) > 1:
-            self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
+            self.messageQueue.put((1, 'System', 'Arguments', sys.argv[1]))
 
     def storeStatusOperationRunning(self, status: int) -> None:
-        """ """
+        """
+        """
         self.statusOperationRunning = status
 
     def initConfig(self) -> wgs84:
-        """ """
-        config = self.config.get("mainW", {})
-        if config.get("loglevelTrace", False):
-            level = "TRACE"
-        elif config.get("loglevelDebug", False):
-            level = "DEBUG"
+        """
+        """
+        config = self.config.get('mainW', {})
+        if config.get('loglevelTrace', False):
+            level = 'TRACE'
+        elif config.get('loglevelDebug', False):
+            level = 'DEBUG'
         else:
-            level = "INFO"
+            level = 'INFO'
         setCustomLoggingLevel(level)
 
-        lat = self.config.get("topoLat", 51.47)
-        lon = self.config.get("topoLon", 0)
-        elev = self.config.get("topoElev", 46)
+        lat = self.config.get('topoLat', 51.47)
+        lon = self.config.get('topoLon', 0)
+        elev = self.config.get('topoElev', 46)
 
-        topo = wgs84.latlon(
-            longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev
-        )
+        topo = wgs84.latlon(longitude_degrees=lon,
+                            latitude_degrees=lat,
+                            elevation_m=elev)
         return topo
 
     def storeConfig(self) -> None:
-        """ """
+        """
+        """
         location = self.mount.obsSite.location
         if location is not None:
-            self.config["topoLat"] = location.latitude.degrees
-            self.config["topoLon"] = location.longitude.degrees
-            self.config["topoElev"] = location.elevation.m
+            self.config['topoLat'] = location.latitude.degrees
+            self.config['topoLon'] = location.longitude.degrees
+            self.config['topoElev'] = location.elevation.m
 
     def sendStart(self):
-        """ """
+        """
+        """
         if self.timerCounter == 10:
             self.start1s.emit()
         if self.timerCounter == 30:
@@ -245,7 +244,8 @@ class MountWizzard4(QObject):
             self.start30s.emit()
 
     def sendCyclic(self) -> None:
-        """ """
+        """
+        """
         self.timerCounter += 1
         if self.timerCounter % 1 == 0:
             self.update0_1s.emit()
@@ -270,29 +270,30 @@ class MountWizzard4(QObject):
         self.sendStart()
 
     def aboutToQuit(self) -> None:
-        """ """
+        """
+        """
         self.timer0_1s.stop()
         self.mount.stopAllMountTimers()
 
     def quit(self) -> None:
-        """ """
-        self.deviceStat["mount"] = False
+        """
+        """
+        self.deviceStat['mount'] = False
         self.aboutToQuit()
-        self.messageQueue.put(
-            (1, "System", "Lifecycle", "MountWizzard4 manual stopped")
-        )
+        self.messageQueue.put((1, 'System', 'Lifecycle',
+                              'MountWizzard4 manual stopped'))
         self.application.quit()
 
     def loadHorizonData(self) -> None:
-        """ """
-        config = self.config.get("hemisphereW", {})
-        fileName = config.get("horizonMaskFileName", "")
+        """
+        """
+        config = self.config.get('hemisphereW', {})
+        fileName = config.get('horizonMaskFileName', '')
         self.data.loadHorizonP(fileName=fileName)
 
     # noinspection PyUnresolvedReferences
-    def writeMessageQueue(
-        self, prio: int, source: str, mType: str, message: str
-    ) -> None:
-        """ """
-        self.log.ui(f"Message window: [{source} - {mType} - {message}]")
+    def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
+        """
+        """
+        self.log.ui(f'Message window: [{source} - {mType} - {message}]')
         self.messageQueue.put((prio, source, mType, message))

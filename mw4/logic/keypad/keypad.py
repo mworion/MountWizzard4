@@ -25,11 +25,9 @@ import numpy as np
 
 
 class KeyPad:
-    """ """
-
-    __all__ = ["KeyPad"]
-
-    log = logging.getLogger("MW4")
+    """
+    """
+    log = logging.getLogger('MW4')
 
     keyCodesA = {
         48: 82,
@@ -52,122 +50,122 @@ class KeyPad:
         37: 14,
         40: 12,
         39: 18,
-        8: 118,
+        8: 118
     }
 
     keyCodesB = {
-        "a": 13,
-        "b": 15,
-        "c": 16,
-        "d": 17,
-        "e": 19,
-        "f": 20,
-        "g": 21,
-        "h": 23,
-        "i": 25,
-        "j": 26,
-        "k": 27,
-        "l": 29,
-        "m": 30,
-        "n": 31,
-        "o": 33,
-        "p": 35,
-        "q": 37,
-        "r": 39,
-        "s": 40,
-        "t": 41,
-        "u": 43,
-        "v": 45,
-        "w": 47,
-        "x": 50,
-        "y": 51,
-        "z": 52,
-        " ": 53,
-        "A": 54,
-        "B": 55,
-        "C": 57,
-        "D": 58,
-        "E": 59,
-        "F": 60,
-        "G": 61,
-        "H": 62,
-        "I": 63,
-        "J": 64,
-        "K": 65,
-        "L": 66,
-        "M": 67,
-        "N": 68,
-        "O": 69,
-        "P": 70,
-        "Q": 71,
-        "R": 72,
-        "S": 73,
-        "T": 74,
-        "U": 75,
-        "V": 76,
-        "W": 77,
-        "X": 78,
-        "Y": 79,
-        "Z": 80,
-        ".": 81,
-        ",": 83,
-        ";": 85,
-        ":": 86,
-        "_": 87,
-        "(": 89,
-        ")": 90,
+        'a': 13,
+        'b': 15,
+        'c': 16,
+        'd': 17,
+        'e': 19,
+        'f': 20,
+        'g': 21,
+        'h': 23,
+        'i': 25,
+        'j': 26,
+        'k': 27,
+        'l': 29,
+        'm': 30,
+        'n': 31,
+        'o': 33,
+        'p': 35,
+        'q': 37,
+        'r': 39,
+        's': 40,
+        't': 41,
+        'u': 43,
+        'v': 45,
+        'w': 47,
+        'x': 50,
+        'y': 51,
+        'z': 52,
+        ' ': 53,
+        'A': 54,
+        'B': 55,
+        'C': 57,
+        'D': 58,
+        'E': 59,
+        'F': 60,
+        'G': 61,
+        'H': 62,
+        'I': 63,
+        'J': 64,
+        'K': 65,
+        'L': 66,
+        'M': 67,
+        'N': 68,
+        'O': 69,
+        'P': 70,
+        'Q': 71,
+        'R': 72,
+        'S': 73,
+        'T': 74,
+        'U': 75,
+        'V': 76,
+        'W': 77,
+        'X': 78,
+        'Y': 79,
+        'Z': 80,
+        '.': 81,
+        ',': 83,
+        ';': 85,
+        ':': 86,
+        '_': 87,
+        '(': 89,
+        ')': 90,
         '"': 91,
         "'": 93,
         # '"': 95, is in the javascript, but duplicate
-        "/": 97,
-        "|": 99,
-        "\\": 100,
-        "%": 101,
-        "&": 103,
-        "@": 105,
-        "=": 107,
-        "?": 109,
-        "[": 110,
-        "]": 111,
-        "<": 112,
-        ">": 113,
-        "0": 82,
-        "1": 92,
-        "2": 94,
-        "3": 98,
-        "4": 32,
-        "5": 34,
-        "6": 38,
-        "7": 22,
-        "8": 24,
-        "9": 28,
-        "\x1b": 84,
-        "\r": 106,
-        "+": 36,
-        "-": 46,
+        '/': 97,
+        '|': 99,
+        '\\': 100,
+        '%': 101,
+        '&': 103,
+        '@': 105,
+        '=': 107,
+        '?': 109,
+        '[': 110,
+        ']': 111,
+        '<': 112,
+        '>': 113,
+        '0': 82,
+        '1': 92,
+        '2': 94,
+        '3': 98,
+        '4': 32,
+        '5': 34,
+        '6': 38,
+        '7': 22,
+        '8': 24,
+        '9': 28,
+        '\x1b': 84,
+        '\r': 106,
+        '+': 36,
+        '-': 46,
     }
 
     buttonCodes = {
-        "key_0": 82,
-        "key_1": 92,
-        "key_2": 94,
-        "key_3": 98,
-        "key_4": 32,
-        "key_5": 34,
-        "key_6": 38,
-        "key_7": 22,
-        "key_8": 24,
-        "key_9": 28,
-        "key_esc": 84,
-        "key_enter": 106,
-        "key_stop": 96,
-        "key_menu": 88,
-        "key_plus": 36,
-        "key_minus": 46,
-        "key_up": 11,
-        "key_left": 14,
-        "key_down": 12,
-        "key_right": 18,
+        'key_0': 82,
+        'key_1': 92,
+        'key_2': 94,
+        'key_3': 98,
+        'key_4': 32,
+        'key_5': 34,
+        'key_6': 38,
+        'key_7': 22,
+        'key_8': 24,
+        'key_9': 28,
+        'key_esc': 84,
+        'key_enter': 106,
+        'key_stop': 96,
+        'key_menu': 88,
+        'key_plus': 36,
+        'key_minus': 46,
+        'key_up': 11,
+        'key_left': 14,
+        'key_down': 12,
+        'key_right': 18,
     }
 
     charTrans = {
@@ -225,7 +223,7 @@ class KeyPad:
         for i in range(value[3]):
             if value[4 + i] != 0:
                 row[value[1] + i - 1] = self.convertChar(value[4 + i])
-        text = "".join([chr(x) for x in row])
+        text = ''.join([chr(x) for x in row])
         self.signals.textRow.emit(value[2] - 1, text)
         return True
 
@@ -242,7 +240,9 @@ class KeyPad:
                     imaArr[i, j] = [255, 255, 255]
                 else:
                     imaArr[i, j] = [0, 0, 0]
-        self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1), 8 * (value[1] - 1))
+        self.signals.imgChunk.emit(imaArr,
+                                   8 * (value[2] - 1),
+                                   8 * (value[1] - 1))
         return True
 
     def deletePixel(self, value):
@@ -258,7 +258,9 @@ class KeyPad:
                     imaArr[j, i] = [255, 255, 255]
                 else:
                     imaArr[j, i] = [0, 0, 0]
-        self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1), 12 * (value[1] - 1))
+        self.signals.imgChunk.emit(imaArr,
+                                   8 * (value[2] - 1),
+                                   12 * (value[1] - 1))
         return True
 
     def dispatch(self, value):
@@ -311,7 +313,8 @@ class KeyPad:
         return checksum
 
     def send(self, message):
-        """ """
+        """
+        """
         if self.ws is None:
             return
         self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
@@ -447,12 +450,10 @@ class KeyPad:
 
         ipaddress = host[0]
         websocket.setdefaulttimeout(3)
-        self.ws = websocket.WebSocketApp(
-            f"ws://{ipaddress}:8000/",
-            on_data=self.on_data,
-            on_close=self.on_close,
-            subprotocols=["binary"],
-        )
+        self.ws = websocket.WebSocketApp(f'ws://{ipaddress}:8000/',
+                                         on_data=self.on_data,
+                                         on_close=self.on_close,
+                                         subprotocols=["binary"])
         self.ws.run_forever()
         return True
 

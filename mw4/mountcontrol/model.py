@@ -21,6 +21,7 @@
 import logging
 
 # external packages
+from skyfield.api import Angle
 
 # local imports
 from mountcontrol.connection import Connection
@@ -33,11 +34,9 @@ from mountcontrol.modelStar import ModelStar
 
 
 class Model(object):
-    """ """
-
-    __all__ = ["Model"]
-
-    log = logging.getLogger("MW4")
+    """
+    """
+    log = logging.getLogger('MW4')
 
     def __init__(self, parent):
         self.parent = parent
@@ -118,8 +117,8 @@ class Model(object):
     @terms.setter
     def terms(self, value):
         # qci mount don't deliver this value
-        if value == "":
-            self.log.warning("QCI mount does not provide terms")
+        if value == '':
+            self.log.warning('QCI mount does not provide terms')
         self._terms = valueToFloat(value)
 
     @property
@@ -128,8 +127,8 @@ class Model(object):
 
     @errorRMS.setter
     def errorRMS(self, value):
-        if value == "":
-            self.log.warning("QCI mount does not provide RMS")
+        if value == '':
+            self.log.warning('QCI mount does not provide RMS')
             return
         self._errorRMS = valueToFloat(value)
 
@@ -159,19 +158,22 @@ class Model(object):
             self._numberStars = valueToInt(value)
 
     def addStar(self, value: ModelStar) -> None:
-        """ """
+        """
+        """
         self._starList.insert(len(self._starList), value)
 
     def delStar(self, value):
-        """ """
+        """
+        """
         value = valueToInt(value)
         if value < 0 or value > len(self._starList) - 1:
-            self.log.warning("invalid value: {0}".format(value))
+            self.log.warning('invalid value: {0}'.format(value))
             return
         self._starList.pop(value)
 
     def checkStarListOK(self):
-        """ """
+        """
+        """
         if not self._numberStars:
             return False
         if self._numberStars == len(self._starList):
@@ -205,24 +207,27 @@ class Model(object):
             self._numberNames = valueToInt(value)
 
     def addName(self, value: str) -> bool:
-        """ """
+        """
+        """
         if not isinstance(value, str):
-            self.log.warning("malformed value: {0}".format(value))
+            self.log.warning('malformed value: {0}'.format(value))
             return False
         self._nameList.insert(len(self._nameList), value)
         return True
 
     def delName(self, value: int) -> bool:
-        """ """
+        """
+        """
         value = valueToInt(value)
         if value < 0 or value > len(self._nameList) - 1:
-            self.log.warning("invalid value: {0}".format(value))
+            self.log.warning('invalid value: {0}'.format(value))
             return False
         self._nameList.pop(value)
         return True
 
     def checkNameListOK(self) -> bool:
-        """ """
+        """
+        """
         if not self._numberNames:
             return False
         if self._numberNames == len(self._nameList):
@@ -231,9 +236,10 @@ class Model(object):
             return False
 
     def parseNames(self, response: list, numberOfChunks: int) -> bool:
-        """ """
+        """
+        """
         if len(response) != numberOfChunks:
-            self.log.warning("wrong number of chunks")
+            self.log.warning('wrong number of chunks')
             return False
         for name in response:
             if not name:
@@ -242,20 +248,22 @@ class Model(object):
         return True
 
     def parseNumberNames(self, response: list, numberOfChunks: int) -> bool:
-        """ """
+        """
+        """
         if len(response) != numberOfChunks:
-            self.log.warning("wrong number of chunks")
+            self.log.warning('wrong number of chunks')
             return False
         if len(response) != 1:
-            self.log.warning("wrong number of chunks")
+            self.log.warning('wrong number of chunks')
             return False
         self.numberNames = response[0]
         return True
 
     def getNameCount(self) -> bool:
-        """ """
+        """
+        """
         conn = Connection(self.parent.host)
-        commandString = ":modelcnt#"
+        commandString = ':modelcnt#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
@@ -264,11 +272,12 @@ class Model(object):
         return suc
 
     def getNames(self) -> bool:
-        """ """
+        """
+        """
         conn = Connection(self.parent.host)
-        commandString = ""
+        commandString = ''
         for i in range(1, self.numberNames + 1):
-            commandString += ":modelnam{0:d}#".format(i)
+            commandString += (':modelnam{0:d}#'.format(i))
 
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -279,19 +288,21 @@ class Model(object):
         return suc
 
     def pollNames(self) -> bool:
-        """ """
+        """
+        """
         suc = self.getNameCount()
         if suc:
             suc = self.getNames()
         return suc
 
     def parseStars(self, response: list, numberOfChunks: int) -> bool:
-        """ """
+        """
+        """
         if len(response) != numberOfChunks:
-            self.log.warning("Wrong number of chunks")
+            self.log.warning('Wrong number of chunks')
             return False
         for number, starData in enumerate(response):
-            ha, dec, err, angle = starData.split(",")
+            ha, dec, err, angle = starData.split(',')
             modelStar = ModelStar(obsSite=self.parent.obsSite)
             modelStar.coord = (ha, dec)
             modelStar.errorRMS = err
@@ -301,22 +312,23 @@ class Model(object):
         return True
 
     def parseNumberStars(self, response: list, numberOfChunks: int) -> bool:
-        """ """
+        """
+        """
         if len(response) != numberOfChunks or len(response) == 0:
-            self.log.warning("Wrong number of chunks")
+            self.log.warning('Wrong number of chunks')
             return False
 
         self.numberStars = response[0]
         if numberOfChunks < 2:
-            self.log.warning("Wrong number of chunks")
+            self.log.warning('Wrong number of chunks')
             return False
 
-        responseSplit = response[1].split(",")
+        responseSplit = response[1].split(',')
         # if there are less than 3 points, we get 'E' as result of getain
-        if response[0] in ["0", "1", "2"] and response[1] == "E":
+        if response[0] in ['0', '1', '2'] and response[1] == 'E':
             responseSplit = [None] * 9
         if len(responseSplit) != 9:
-            self.log.warning("Wrong number of chunks in getain")
+            self.log.warning('Wrong number of chunks in getain')
             return False
 
         self.azimuthError = responseSplit[0]
@@ -331,9 +343,10 @@ class Model(object):
         return True
 
     def getStarCount(self) -> bool:
-        """ """
+        """
+        """
         conn = Connection(self.parent.host)
-        commandString = ":getalst#:getain#"
+        commandString = ':getalst#:getain#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
@@ -342,14 +355,15 @@ class Model(object):
         return suc
 
     def getStars(self) -> bool:
-        """ """
+        """
+        """
         self._starList = list()
         if self.numberStars == 0:
             return True
 
-        commandString = ""
+        commandString = ''
         for i in range(1, self.numberStars + 1):
-            commandString += ":getalp{0:d}#".format(i)
+            commandString += (':getalp{0:d}#'.format(i))
 
         conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -360,27 +374,29 @@ class Model(object):
         return suc
 
     def pollStars(self):
-        """ """
+        """
+        """
         suc = self.getStarCount()
         if suc:
             suc = self.getStars()
         return suc
 
     def pollCount(self) -> bool:
-        """ """
+        """
+        """
         conn = Connection(self.parent.host)
-        commandString = ":modelcnt#:getalst#"
+        commandString = ':modelcnt#:getalst#'
 
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
 
         if len(response) != numberOfChunks:
-            self.log.warning("Wrong number of chunks")
+            self.log.warning('Wrong number of chunks')
             return False
 
         if len(response) != 2:
-            self.log.warning("Wrong number of chunks")
+            self.log.warning('Wrong number of chunks')
             return False
 
         self.numberNames = response[0]
@@ -388,70 +404,76 @@ class Model(object):
         return True
 
     def clearAlign(self) -> bool:
-        """ """
+        """
+        """
         conn = Connection(self.parent.host)
-        suc, _, _ = conn.communicate(":delalig#", responseCheck="")
+        suc, _, _ = conn.communicate(':delalig#', responseCheck='')
         return suc
 
     def deletePoint(self, number: int) -> bool:
-        """ """
+        """
+        """
         if number < 1 or number > self._numberStars:
             return False
 
         conn = Connection(self.parent.host)
-        commandString = ":delalst{0:d}#".format(number)
-        suc, _, _ = conn.communicate(commandString, responseCheck="V")
+        commandString = ':delalst{0:d}#'.format(number)
+        suc, _, _ = conn.communicate(commandString, responseCheck='V')
         return suc
 
     def storeName(self, name: str) -> bool:
-        """ """
+        """
+        """
         conn = Connection(self.parent.host)
-        commandString = f":modeldel0{name[:15]}#:modelsv0{name[:15]}#"
+        commandString = f':modeldel0{name[:15]}#:modelsv0{name[:15]}#'
         suc, response, _ = conn.communicate(commandString)
-        return suc and response[1] == "1"
+        return suc and response[1] == '1'
 
     def loadName(self, name: str) -> bool:
-        """ """
+        """
+        """
         conn = Connection(self.parent.host)
-        commandString = f":modelld0{name[:15]}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        commandString = f':modelld0{name[:15]}#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
         return suc
 
     def deleteName(self, name: str) -> bool:
-        """ """
+        """
+        """
         conn = Connection(self.parent.host)
-        commandString = f":modeldel0{name[:15]}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        commandString = f':modeldel0{name[:15]}#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='1')
         return suc
 
     def programAlign(self, build: AlignStar) -> bool:
-        """ """
-        commandString = ":newalig#"
+        """
+        """
+        commandString = ':newalig#'
         for aPoint in build:
             sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.mCoord.ra.hours, 1)
-            ra = f"{h:02d}:{m:02d}:{s:02d}.{frac:1d}"
+            ra = f'{h:02d}:{m:02d}:{s:02d}.{frac:1d}'
 
             sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.mCoord.dec.degrees, 1)
-            sign = "+" if sgn >= 0 else "-"
-            dec = f"{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}"
+            sign = '+' if sgn >= 0 else '-'
+            dec = f'{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}'
 
             pierside = aPoint.pierside
 
             sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.sCoord.ra.hours, 1)
-            raSolve = f"{h:02d}:{m:02d}:{s:02d}.{frac:1d}"
+            raSolve = f'{h:02d}:{m:02d}:{s:02d}.{frac:1d}'
 
             sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.sCoord.dec.degrees, 1)
-            sign = "+" if sgn >= 0 else "-"
-            decSolve = f"{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}"
+            sign = '+' if sgn >= 0 else '-'
+            decSolve = f'{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}'
 
             sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.sidereal.hours, 2)
-            sidereal = f"{h:02d}:{m:02d}:{s:02d}.{frac:02d}"
+            sidereal = f'{h:02d}:{m:02d}:{s:02d}.{frac:02d}'
 
-            comFormat = ":newalpt{0},{1},{2},{3},{4},{5}#"
+            comFormat = ':newalpt{0},{1},{2},{3},{4},{5}#'
             value = comFormat.format(ra, dec, pierside, raSolve, decSolve, sidereal)
             commandString += value
 
         conn = Connection(self.parent.host)
-        commandString += ":endalig#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="V")
+        commandString += ':endalig#'
+        suc, _, _ = conn.communicate(commandString, responseCheck='V')
         return suc

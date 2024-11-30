@@ -28,12 +28,10 @@ from base.tpool import Worker
 from base.signalsDevices import Signals
 
 
-class OnlineWeather:
-    """ """
-
-    __all__ = ["OnlineWeather"]
-
-    log = logging.getLogger("MW4")
+class OnlineWeather():
+    """
+    """
+    log = logging.getLogger('MW4')
 
     def __init__(self, app=None):
         super().__init__()
@@ -43,24 +41,26 @@ class OnlineWeather:
         self.location = app.mount.obsSite.location
 
         # minimum set for driver package built in
-        self.framework = ""
-        self.run = {"onlineWeather": self}
-        self.deviceName = ""
+        self.framework = ''
+        self.run = {
+            'onlineWeather': self
+        }
+        self.deviceName = ''
         self.data = {}
         self.defaultConfig = {
-            "framework": "",
-            "frameworks": {
-                "onlineWeather": {
-                    "deviceName": "OnlineWeather",
-                    "apiKey": "",
-                    "hostaddress": "api.openweathermap.org",
+            'framework': '',
+            'frameworks': {
+                'onlineWeather': {
+                    'deviceName': 'OnlineWeather',
+                    'apiKey': '',
+                    'hostaddress': 'api.openweathermap.org',
                 }
-            },
+            }
         }
         self.running = False
         self.enabled = False
-        self.hostaddress = ""
-        self.apiKey = ""
+        self.hostaddress = ''
+        self.apiKey = ''
         self._online = False
         self.app.update10s.connect(self.pollOpenWeatherMapData)
 
@@ -88,7 +88,7 @@ class OnlineWeather:
         self.enabled = False
         self.running = False
         self.data.clear()
-        self.signals.deviceDisconnected.emit("OnlineWeather")
+        self.signals.deviceDisconnected.emit('OnlineWeather')
         return True
 
     @staticmethod
@@ -115,48 +115,46 @@ class OnlineWeather:
         """
         :return: success
         """
-        dataFile = self.app.mwGlob["dataDir"] + "/openweathermap.data"
+        dataFile = self.app.mwGlob['dataDir'] + '/openweathermap.data'
         dataFile = os.path.normpath(dataFile)
         if not os.path.isfile(dataFile):
-            self.log.info(f"{dataFile} not available")
+            self.log.info(f'{dataFile} not available')
             return False
 
         try:
-            with open(dataFile, "r") as f:
+            with open(dataFile, 'r') as f:
                 data = json.load(f)
         except Exception as e:
-            self.log.warning(f"Cannot load data file, error: {e}")
+            self.log.warning(f'Cannot load data file, error: {e}')
             return False
 
-        self.log.trace(f"onlineWeatherData:[{data}]")
+        self.log.trace(f'onlineWeatherData:[{data}]')
 
-        if "main" in data:
-            val = data["main"].get("temp", 273.15) - 273.15
-            self.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = val
-            val = data["main"].get("pressure", 0)
-            self.data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = val
-            val = data["main"].get("humidity", 0)
-            self.data["WEATHER_PARAMETERS.WEATHER_HUMIDITY"] = val
-            val = self.getDewPoint(
-                self.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"],
-                self.data["WEATHER_PARAMETERS.WEATHER_HUMIDITY"],
-            )
-            self.data["WEATHER_PARAMETERS.WEATHER_DEWPOINT"] = val
+        if 'main' in data:
+            val = data['main'].get('temp', 273.15) - 273.15
+            self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = val
+            val = data['main'].get('pressure', 0)
+            self.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = val
+            val = data['main'].get('humidity', 0)
+            self.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] = val
+            val = self.getDewPoint(self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'],
+                                   self.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'])
+            self.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = val
 
         else:
             return False
 
-        if "clouds" in data:
-            self.data["WEATHER_PARAMETERS.CloudCover"] = data["clouds"].get("all", 0)
+        if 'clouds' in data:
+            self.data['WEATHER_PARAMETERS.CloudCover'] = data['clouds'].get('all', 0)
 
-        if "wind" in data:
-            self.data["WEATHER_PARAMETERS.WindSpeed"] = data["wind"].get("speed", 0)
-            self.data["WEATHER_PARAMETERS.WindDir"] = data["wind"].get("deg", 0)
+        if 'wind' in data:
+            self.data['WEATHER_PARAMETERS.WindSpeed'] = data['wind'].get('speed', 0)
+            self.data['WEATHER_PARAMETERS.WindDir'] = data['wind'].get('deg', 0)
 
-        if "rain" in data:
-            self.data["WEATHER_PARAMETERS.RainVol"] = data["rain"].get("3h", 0)
+        if 'rain' in data:
+            self.data['WEATHER_PARAMETERS.RainVol'] = data['rain'].get('3h', 0)
         else:
-            self.data["WEATHER_PARAMETERS.RainVol"] = 0
+            self.data['WEATHER_PARAMETERS.RainVol'] = 0
         return True
 
     def workerGetOpenWeatherMapData(self, url):
@@ -167,16 +165,16 @@ class OnlineWeather:
         try:
             data = requests.get(url, timeout=30)
         except TimeoutError:
-            self.log.warning(f"[{url}] not reachable")
+            self.log.warning(f'[{url}] not reachable')
             return False
         except Exception as e:
-            self.log.critical(f"[{url}] general exception: [{e}]")
+            self.log.critical(f'[{url}] general exception: [{e}]')
             return False
         if data.status_code != 200:
-            self.log.warning(f"[{url}] status is not 200")
+            self.log.warning(f'[{url}] status is not 200')
             return False
 
-        with open(self.app.mwGlob["dataDir"] + "/openweathermap.data", "w+") as f:
+        with open(self.app.mwGlob['dataDir'] + '/openweathermap.data', 'w+') as f:
             json.dump(data.json(), f, indent=4)
             self.log.trace(data.json())
         return True
@@ -186,12 +184,12 @@ class OnlineWeather:
         :return:
         """
         if not status and self.running:
-            self.signals.deviceDisconnected.emit("OnlineWeather")
+            self.signals.deviceDisconnected.emit('OnlineWeather')
         elif status and not self.running:
-            self.signals.deviceConnected.emit("OnlineWeather")
+            self.signals.deviceConnected.emit('OnlineWeather')
         return True
 
-    def getOpenWeatherMapData(self, url=""):
+    def getOpenWeatherMapData(self, url=''):
         """
         :param url:
         :return: true for test purpose
@@ -208,7 +206,7 @@ class OnlineWeather:
         :param hours:
         :return:
         """
-        filePath = self.app.mwGlob["dataDir"] + "/" + fileName
+        filePath = self.app.mwGlob['dataDir'] + '/' + fileName
         filePath = os.path.normpath(filePath)
         if not os.path.isfile(filePath):
             return True
@@ -233,22 +231,22 @@ class OnlineWeather:
             return False
 
         if not self.online and self.running:
-            self.signals.deviceDisconnected.emit("OnlineWeather")
+            self.signals.deviceDisconnected.emit('OnlineWeather')
             self.running = False
             return False
         elif self.online and not self.running:
-            self.signals.deviceConnected.emit("OnlineWeather")
+            self.signals.deviceConnected.emit('OnlineWeather')
             self.running = True
 
-        if not self.loadingFileNeeded("openweathermap.data", 1):
+        if not self.loadingFileNeeded('openweathermap.data', 1):
             self.processOpenWeatherMapData()
             return True
 
         lat = self.location.latitude.degrees
         lon = self.location.longitude.degrees
 
-        webSite = f"http://{self.hostaddress}/data/2.5/weather"
-        url = f"{webSite}?lat={lat:1.2f}&lon={lon:1.2f}"
-        self.getOpenWeatherMapData(url=url + f"&APPID={self.apiKey}")
-        self.log.debug(f"{url}")
+        webSite = f'http://{self.hostaddress}/data/2.5/weather'
+        url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}'
+        self.getOpenWeatherMapData(url=url + f'&APPID={self.apiKey}')
+        self.log.debug(f'{url}')
         return True

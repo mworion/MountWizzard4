@@ -36,39 +36,36 @@ class Geometry:
     for the transformation between homogeneous vectors (vh) and Cartesian
     vectors (vk): vk = vh[0:2]/vh[3], vh = [vk, 1]
     """
-
-    __all__ = ["Geometry"]
-
-    log = logging.getLogger("MW4")
+    log = logging.getLogger('MW4')
 
     geometryData = {
-        "10micron GM1000HPS": {
-            "offBaseAltAxisX": -0.005,
-            "offBaseAltAxisZ": 0.095,
-            "offAltAxisGemX": 0.156,
-            "offAltAxisGemZ": 0.12,
-            "offGemPlate": 0.15,
+        '10micron GM1000HPS': {
+            'offBaseAltAxisX': -0.005,
+            'offBaseAltAxisZ': 0.095,
+            'offAltAxisGemX': 0.156,
+            'offAltAxisGemZ': 0.12,
+            'offGemPlate': 0.15,
         },
-        "10micron GM2000HPS": {
-            "offBaseAltAxisX": -0.102,
-            "offBaseAltAxisZ": 0.132,
-            "offAltAxisGemX": 0.304,
-            "offAltAxisGemZ": 0.0,
-            "offGemPlate": 0.175,
+        '10micron GM2000HPS': {
+            'offBaseAltAxisX': -0.102,
+            'offBaseAltAxisZ': 0.132,
+            'offAltAxisGemX': 0.304,
+            'offAltAxisGemZ': 0.0,
+            'offGemPlate': 0.175,
         },
-        "10micron GM3000HPS": {
-            "offBaseAltAxisX": -0.122,
-            "offBaseAltAxisZ": 0.167,
-            "offAltAxisGemX": 0.363,
-            "offAltAxisGemZ": 0.0,
-            "offGemPlate": 0.233,
+        '10micron GM3000HPS': {
+            'offBaseAltAxisX': -0.122,
+            'offBaseAltAxisZ': 0.167,
+            'offAltAxisGemX': 0.363,
+            'offAltAxisGemZ': 0.0,
+            'offGemPlate': 0.233,
         },
-        "10micron GM4000HPS": {
-            "offBaseAltAxisX": -0.128,
-            "offBaseAltAxisZ": 0.19,
-            "offAltAxisGemX": 0.413,
-            "offAltAxisGemZ": 0.0,
-            "offGemPlate": 0.300,
+        '10micron GM4000HPS': {
+            'offBaseAltAxisX': -0.128,
+            'offBaseAltAxisZ': 0.19,
+            'offAltAxisGemX': 0.413,
+            'offAltAxisGemZ': 0.0,
+            'offGemPlate': 0.300,
         },
     }
 
@@ -110,7 +107,7 @@ class Geometry:
     def offNorth(self, value):
         self._offNorth = valueToFloat(value)
         if self.parent.obsSite.location is None:
-            self.log.debug("offVert called without lat")
+            self.log.debug('offVert called without lat')
             return
 
         lat = self.parent.obsSite.location.latitude.radians
@@ -127,7 +124,7 @@ class Geometry:
     def offNorthGEM(self, value):
         self._offNorthGEM = valueToFloat(value)
         if self.parent.obsSite.location is None:
-            self.log.debug("offVert called without lat")
+            self.log.debug('offVert called without lat')
             return
 
         lat = self.parent.obsSite.location.latitude.radians
@@ -162,7 +159,7 @@ class Geometry:
     def offVert(self, value):
         self._offVert = valueToFloat(value)
         if self.parent.obsSite.location is None:
-            self.log.debug("offVert called without lat")
+            self.log.debug('offVert called without lat')
             return
 
         lat = self.parent.obsSite.location.latitude.radians
@@ -179,7 +176,7 @@ class Geometry:
     def offVertGEM(self, value):
         self._offVertGEM = valueToFloat(value)
         if self.parent.obsSite.location is None:
-            self.log.debug("offVertGEM called without lat")
+            self.log.debug('offVertGEM called without lat')
             return
 
         lat = self.parent.obsSite.location.latitude.radians
@@ -215,78 +212,81 @@ class Geometry:
         self._offGEM = self._offPlateOTA + self.offGemPlate
 
     def initializeGeometry(self, mountType):
-        """ """
+        """
+        """
         if mountType not in self.geometryData:
-            self.log.error(f"[{mountType}] not in database")
+            self.log.error(f'[{mountType}] not in database')
             return False
 
-        self.log.debug(f"using [{mountType}] geometry")
-        self.offBaseAltAxisX = self.geometryData[mountType]["offBaseAltAxisX"]
-        self.offBaseAltAxisZ = self.geometryData[mountType]["offBaseAltAxisZ"]
-        self.offAltAxisGemX = self.geometryData[mountType]["offAltAxisGemX"]
-        self.offAltAxisGemZ = self.geometryData[mountType]["offAltAxisGemZ"]
-        self.offGemPlate = self.geometryData[mountType]["offGemPlate"]
+        self.log.debug(f'using [{mountType}] geometry')
+        self.offBaseAltAxisX = self.geometryData[mountType]['offBaseAltAxisX']
+        self.offBaseAltAxisZ = self.geometryData[mountType]['offBaseAltAxisZ']
+        self.offAltAxisGemX = self.geometryData[mountType]['offAltAxisGemX']
+        self.offAltAxisGemZ = self.geometryData[mountType]['offAltAxisGemZ']
+        self.offGemPlate = self.geometryData[mountType]['offGemPlate']
         return True
 
     @staticmethod
     def transformRotX(rotX: float) -> np.ndarray:
-        """ """
+        """
+        """
         rot = np.radians(rotX)
         tCos = np.cos(rot)
         tSin = np.sin(rot)
 
-        T = np.array(
-            [[1, 0, 0, 0], [0, tCos, -tSin, 0], [0, tSin, tCos, 0], [0, 0, 0, 1]]
-        )
+        T = np.array([[1, 0, 0, 0],
+                      [0, tCos, -tSin, 0],
+                      [0, tSin, tCos, 0],
+                      [0, 0, 0, 1]])
         return T
 
     @staticmethod
     def transformRotY(rotY: float) -> np.ndarray:
-        """ """
+        """
+        """
         rot = np.radians(rotY)
         tCos = np.cos(rot)
         tSin = np.sin(rot)
 
-        T = np.array(
-            [[tCos, 0, tSin, 0], [0, 1, 0, 0], [-tSin, 0, tCos, 0], [0, 0, 0, 1]]
-        )
+        T = np.array([[tCos, 0, tSin, 0],
+                      [0, 1, 0, 0],
+                      [-tSin, 0, tCos, 0],
+                      [0, 0, 0, 1]])
         return T
 
     @staticmethod
     def transformRotZ(rotZ: float) -> np.ndarray:
-        """ """
+        """
+        """
         rot = np.radians(rotZ)
         tCos = np.cos(rot)
         tSin = np.sin(rot)
 
-        T = np.array(
-            [[tCos, -tSin, 0, 0], [tSin, tCos, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
-        )
+        T = np.array([[tCos, -tSin, 0, 0],
+                      [tSin, tCos, 0, 0],
+                      [0, 0, 1, 0],
+                      [0, 0, 0, 1]])
         return T
 
     @staticmethod
     def transformTranslate(vector: list) -> np.ndarray:
-        """ """
-        T = np.array(
-            [
-                [1, 0, 0, vector[0]],
-                [0, 1, 0, vector[1]],
-                [0, 0, 1, vector[2]],
-                [0, 0, 0, 1],
-            ]
-        )
+        """
+        """
+        T = np.array([[1, 0, 0, vector[0]],
+                      [0, 1, 0, vector[1]],
+                      [0, 0, 1, vector[2]],
+                      [0, 0, 0, 1]])
         return T
 
-    def calcTransformationMatrices(
-        self, ha: Angle, dec: Angle, lat: Angle, pierside="W"
-    ):
-        """ """
-        text = f"HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, "
-        text += f"pierside:{pierside} ,"
-        text += f"offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, "
-        text += f"offNorth:{self.offNorth}, offEast:{self.offEast}, "
-        text += f"offVert:{self.offVert}, offLAT:{self.offLAT}, "
-        text += f"domeRadius:{self.domeRadius}"
+    def calcTransformationMatrices(self, ha: Angle, dec: Angle, lat:Angle, pierside='W'):
+        """
+        """
+        text = f'HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, '
+        text += f'pierside:{pierside} ,'
+        text += f'offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, '
+        text += f'offNorth:{self.offNorth}, offEast:{self.offEast}, '
+        text += f'offVert:{self.offVert}, offLAT:{self.offLAT}, '
+        text += f'domeRadius:{self.domeRadius}'
         self.log.trace(text)
 
         ha = ha._degrees
@@ -303,7 +303,9 @@ class Geometry:
         # The offset in north is x and the offset in east is -y. in vertical
         # direction up is positive, which means the mount is above the middle
         # point of dome
-        vec0 = [self.offNorth, -self.offEast, self.offVert]
+        vec0 = [self.offNorth,
+                -self.offEast,
+                self.offVert]
         T0 = self.transformTranslate(vec0)
         P1 = np.dot(T0, P0)
 
@@ -318,7 +320,9 @@ class Geometry:
         # next we have the translation between the baseplate and the rotation
         # axis for the altitude adjustment. the axis is normally above the plate
         # (positive z) and sometime shifted. shift north mean positive x
-        vec2 = [self.offBaseAltAxisX, 0, self.offBaseAltAxisZ]
+        vec2 = [self.offBaseAltAxisX,
+                0,
+                self.offBaseAltAxisZ]
         T2 = np.dot(T1, self.transformTranslate(vec2))
         P3 = np.dot(T2, P0)
 
@@ -335,7 +339,9 @@ class Geometry:
         # of the mount to the GEM point of the mount. GEM means the crossing of
         # the ra and dec axis of the german equatorial mount basically there
         # should be a translation in x/z plane up and forward (to north)
-        vec4 = [self.offAltAxisGemX, 0, self.offAltAxisGemZ]
+        vec4 = [self.offAltAxisGemX,
+                0,
+                self.offAltAxisGemZ]
         T4 = np.dot(T3, self.transformTranslate(vec4))
         P5 = np.dot(T4, P0)
 
@@ -352,14 +358,14 @@ class Geometry:
         # You have to take care about southern hemisphere ha axis.
         if lat < 0:
             ha = -ha
-            checkPier = "W"
+            checkPier = 'W'
         else:
-            checkPier = "E"
+            checkPier = 'E'
 
         if pierside == checkPier:
-            value = -ha + 90
+            value = - ha + 90
         else:
-            value = -ha + 270
+            value = - ha + 270
 
         T5 = np.dot(T4, self.transformRotX(value))
         P6 = np.dot(T5, P0)
@@ -388,7 +394,9 @@ class Geometry:
         # the distance from GEM to baseplate, which is depending on mount type
         # and is fixed and secondly the distance between the mount plate and
         # the OTA line of sight axis
-        vec6 = [0, 0, self.offPlateOTA + self.offGemPlate]
+        vec6 = [0,
+                0,
+                self.offPlateOTA + self.offGemPlate]
         T7 = np.dot(T6, self.transformTranslate(vec6))
         P8 = np.dot(T7, P0)
 
@@ -396,7 +404,9 @@ class Geometry:
         # installed but not centered should be a translation in y. if the ota is
         # de-centered looking in the direction of the ota (out of the hemisphere)
         # to the right it's a negative y otherwise a positive one
-        vec7 = [0, -self.offLAT, 0]
+        vec7 = [0,
+                - self.offLAT,
+                0]
         T8 = np.dot(T7, self.transformTranslate(vec7))
         P9 = np.dot(T8, P0)
 
@@ -420,16 +430,16 @@ class Geometry:
         PB = P9[:-1]
 
         p = 2 * np.dot(PD, PB)
-        q = np.dot(PB, PB) - self.domeRadius**2
+        q = (np.dot(PB, PB) - self.domeRadius**2)
 
-        self.log.trace(f"Geometry calc p:[{p}], q:[{q}]")
+        self.log.trace(f'Geometry calc p:[{p}], q:[{q}]')
 
         # there should be always a reasonable solution
         if (p * p / 4 - q) < 0:
-            self.log.error("Geometry solution impossible")
+            self.log.error('Geometry solution impossible')
             return None, None, None, None, None
 
-        t1 = -p / 2 + np.sqrt(p * p / 4 - q)
+        t1 = - p / 2 + np.sqrt(p * p / 4 - q)
 
         # we choose the positive solution as we look in the positive direction
         # and can omit the view to the back
@@ -446,27 +456,17 @@ class Geometry:
         y = intersect[1]
         z = intersect[2]
 
-        value = np.mod(-np.arctan2(y, x), 2 * np.pi)
+        value = np.mod(- np.arctan2(y, x), 2 * np.pi)
         azDome = Angle(radians=value)
         base = np.sqrt(x * x + y * y)
 
         altDome = Angle(radians=np.arctan2(z, base))
 
         self.transMatrix = [T0, T1, T2, T3, T4, T5, T6, T7, T8, T9]
-        self.transVector = [
-            P0[:-1],
-            P1[:-1],
-            P2[:-1],
-            P3[:-1],
-            P4[:-1],
-            P5[:-1],
-            P6[:-1],
-            P7[:-1],
-            P8[:-1],
-            P9[:-1],
-            P10[:-1],
-        ]
+        self.transVector = [P0[:-1], P1[:-1], P2[:-1], P3[:-1], P4[:-1],
+                            P5[:-1], P6[:-1], P7[:-1], P8[:-1], P9[:-1],
+                            P10[:-1]]
 
-        self.log.trace(f"az:{azDome}, alt:{altDome}")
+        self.log.trace(f'az:{azDome}, alt:{altDome}')
 
         return altDome, azDome, intersect, PB, PD

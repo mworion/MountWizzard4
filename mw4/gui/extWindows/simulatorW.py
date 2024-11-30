@@ -38,10 +38,8 @@ from gui.extWindows.simulator.tools import linkModel
 
 
 class SimulatorWindow(MWidget):
-    """ """
-
-    __all__ = ["SimulatorWindow"]
-
+    """
+    """
     def __init__(self, app):
         super().__init__()
         self.app = app
@@ -57,9 +55,9 @@ class SimulatorWindow(MWidget):
         self.buildPoints = SimulatorBuildPoints(self, self.app)
 
         self.window3D = Qt3DExtras.Qt3DWindow()
-        self.entityModel = {"root": {"entity": Qt3DCore.QEntity()}}
-        self.window3D.setRootEntity(self.entityModel["root"]["entity"])
-        self.entityModel["root"]["entity"].setObjectName("root")
+        self.entityModel = {'root': {'entity': Qt3DCore.QEntity()}}
+        self.window3D.setRootEntity(self.entityModel['root']['entity'])
+        self.entityModel['root']['entity'].setObjectName('root')
         self.window3D.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
         self.createScene()
         self.container = QWidget.createWindowContainer(self.window3D)
@@ -67,47 +65,49 @@ class SimulatorWindow(MWidget):
 
         self.camera = None
         self.cameraController = None
-        self.setupCamera(self.entityModel["root"]["entity"])
+        self.setupCamera(self.entityModel['root']['entity'])
 
     def initConfig(self):
-        """ """
-        if "simulatorW" not in self.app.config:
-            self.app.config["simulatorW"] = {}
-        config = self.app.config["simulatorW"]
+        """
+        """
+        if 'simulatorW' not in self.app.config:
+            self.app.config['simulatorW'] = {}
+        config = self.app.config['simulatorW']
 
         self.positionWindow(config)
-        self.ui.domeTransparent.setChecked(config.get("domeTransparent", False))
-        self.ui.showPointer.setChecked(config.get("showPointer", False))
-        self.ui.showLaser.setChecked(config.get("showLaser", False))
-        self.ui.showBuildPoints.setChecked(config.get("showBuildPoints", False))
-        self.ui.showNumbers.setChecked(config.get("showNumbers", False))
-        self.ui.showSlewPath.setChecked(config.get("showSlewPath", False))
-        self.ui.showHorizon.setChecked(config.get("showHorizon", False))
+        self.ui.domeTransparent.setChecked(config.get('domeTransparent', False))
+        self.ui.showPointer.setChecked(config.get('showPointer', False))
+        self.ui.showLaser.setChecked(config.get('showLaser', False))
+        self.ui.showBuildPoints.setChecked(config.get('showBuildPoints', False))
+        self.ui.showNumbers.setChecked(config.get('showNumbers', False))
+        self.ui.showSlewPath.setChecked(config.get('showSlewPath', False))
+        self.ui.showHorizon.setChecked(config.get('showHorizon', False))
 
     def storeConfig(self):
-        """ """
+        """
+        """
         config = self.app.config
-        if "simulatorW" not in config:
-            config["simulatorW"] = {}
+        if 'simulatorW' not in config:
+            config['simulatorW'] = {}
         else:
-            config["simulatorW"].clear()
-        config = config["simulatorW"]
+            config['simulatorW'].clear()
+        config = config['simulatorW']
 
-        config["winPosX"] = max(self.pos().x(), 0)
-        config["winPosY"] = max(self.pos().y(), 0)
-        config["height"] = self.height()
-        config["width"] = self.width()
+        config['winPosX'] = max(self.pos().x(), 0)
+        config['winPosY'] = max(self.pos().y(), 0)
+        config['height'] = self.height()
+        config['width'] = self.width()
         pos = self.camera.position()
-        config["cameraPositionX"] = pos.x()
-        config["cameraPositionY"] = pos.y()
-        config["cameraPositionZ"] = pos.z()
-        config["domeTransparent"] = self.ui.domeTransparent.isChecked()
-        config["showPointer"] = self.ui.showPointer.isChecked()
-        config["showLaser"] = self.ui.showLaser.isChecked()
-        config["showBuildPoints"] = self.ui.showBuildPoints.isChecked()
-        config["showNumbers"] = self.ui.showNumbers.isChecked()
-        config["showSlewPath"] = self.ui.showSlewPath.isChecked()
-        config["showHorizon"] = self.ui.showHorizon.isChecked()
+        config['cameraPositionX'] = pos.x()
+        config['cameraPositionY'] = pos.y()
+        config['cameraPositionZ'] = pos.z()
+        config['domeTransparent'] = self.ui.domeTransparent.isChecked()
+        config['showPointer'] = self.ui.showPointer.isChecked()
+        config['showLaser'] = self.ui.showLaser.isChecked()
+        config['showBuildPoints'] = self.ui.showBuildPoints.isChecked()
+        config['showNumbers'] = self.ui.showNumbers.isChecked()
+        config['showSlewPath'] = self.ui.showSlewPath.isChecked()
+        config['showHorizon'] = self.ui.showHorizon.isChecked()
 
     def closeEvent(self, closeEvent):
         """
@@ -123,7 +123,8 @@ class SimulatorWindow(MWidget):
         super().closeEvent(closeEvent)
 
     def showWindow(self):
-        """ """
+        """
+        """
         self.ui.topView.clicked.connect(self.topView)
         self.ui.topEastView.clicked.connect(self.topEastView)
         self.ui.topWestView.clicked.connect(self.topWestView)
@@ -179,35 +180,39 @@ class SimulatorWindow(MWidget):
         The position vector in not 0,0,0 as the precision leads to a black
         screen.
         """
-        self.changeStyleDynamic(self.ui.telescopeView, "running", False)
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(0.001, 5.0, 0.001))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def topEastView(self):
-        """ """
-        self.changeStyleDynamic(self.ui.telescopeView, "running", False)
+        """
+        """
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.1, 1.5, 0.1))
         self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def topWestView(self):
-        """ """
-        self.changeStyleDynamic(self.ui.telescopeView, "running", False)
+        """
+        """
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def eastView(self):
-        """ """
-        self.changeStyleDynamic(self.ui.telescopeView, "running", False)
+        """
+        """
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def westView(self):
-        """ """
-        self.changeStyleDynamic(self.ui.telescopeView, "running", False)
+        """
+        """
+        self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
@@ -230,13 +235,13 @@ class SimulatorWindow(MWidget):
         'ref_fusion'
         """
         model = {
-            "ref_fusion": {
-                "parent": "root",
-                "rot": [-90, 90, 0],
+            'ref_fusion': {
+                'parent': 'root',
+                'rot': [-90, 90, 0],
             },
-            "ref_fusion_m": {
-                "parent": "ref_fusion",
-                "scale": [0.001, 0.001, 0.001],
+            'ref_fusion_m': {
+                'parent': 'ref_fusion',
+                'scale': [0.001, 0.001, 0.001],
             },
         }
         linkModel(model, self.entityModel)

@@ -24,11 +24,9 @@ from skyfield.api import Angle, Star
 
 
 class AlignStar(object):
-    """ """
-
-    __all__ = ["AlignStar"]
-
-    log = logging.getLogger("MW4")
+    """
+    """
+    log = logging.getLogger('MW4')
 
     def __init__(self, mCoord: Star, sCoord: Star, sidereal: Angle, pierside: str):
         self.mCoord = mCoord
@@ -42,9 +40,9 @@ class AlignStar(object):
 
     @pierside.setter
     def pierside(self, value):
-        if value in ["E", "W", "e", "w"]:
+        if value in ['E', 'W', 'e', 'w']:
             value = value.capitalize()
             self._pierside = value
         else:
             self._pierside = None
-            self.log.warning(f"Malformed value: {value}")
+            self.log.warning(f'Malformed value: {value}')

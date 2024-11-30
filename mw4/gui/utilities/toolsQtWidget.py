@@ -37,8 +37,8 @@ from gui.utilities.stylesQtCss import Styles
 from mountcontrol.convert import formatHstrToText, formatDstrToText
 
 __all__ = [
-    "MWidget",
-    "sleepAndEvents",
+    'MWidget',
+    'sleepAndEvents',
 ]
 
 
@@ -67,9 +67,7 @@ class MWidget(QWidget, Styles):
     stylesheet. The standard screen size will be 800x600 pixel for all windows,
     but except for the main one are sizable.
     """
-
-    __all__ = ["MWidget"]
-    log = logging.getLogger("MW4")
+    log = logging.getLogger('MW4')
 
     def __init__(self):
         super().__init__()
@@ -80,14 +78,12 @@ class MWidget(QWidget, Styles):
         self.screenSizeY = QGuiApplication.primaryScreen().geometry().height()
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
 
-        newFlag = Qt.WindowType.CustomizeWindowHint | Qt.WindowType.WindowSystemMenuHint
-        newFlag = (
-            newFlag
-            | Qt.WindowType.WindowMinimizeButtonHint
-            | Qt.WindowType.WindowMaximizeButtonHint
-        )
+        newFlag = (Qt.WindowType.CustomizeWindowHint |
+                   Qt.WindowType.WindowSystemMenuHint)
+        newFlag = (newFlag | Qt.WindowType.WindowMinimizeButtonHint |
+                   Qt.WindowType.WindowMaximizeButtonHint)
         self.setWindowFlags(self.windowFlags() | newFlag)
-        self.setWindowIcon(QIcon(":/icon/mw4.png"))
+        self.setWindowIcon(QIcon(':/icon/mw4.png'))
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.app = None
 
@@ -118,12 +114,12 @@ class MWidget(QWidget, Styles):
         :param window:
         :return:
         """
-        name = window.windowTitle().replace(" ", "_")
+        name = window.windowTitle().replace(' ', '_')
         timeTrigger = datetime.datetime.now(datetime.timezone.utc)
-        timeTag = timeTrigger.strftime("%Y-%m-%d-%H-%M-%S")
-        path = self.app.mwGlob["logDir"]
-        fullFileName = f"{path}/{timeTag}-{name}.png"
-        self.log.info(f"Screenshot: [{fullFileName}]")
+        timeTag = timeTrigger.strftime('%Y-%m-%d-%H-%M-%S')
+        path = self.app.mwGlob['logDir']
+        fullFileName = f'{path}/{timeTag}-{name}.png'
+        self.log.info(f'Screenshot: [{fullFileName}]')
         window.grab().save(fullFileName)
         return True
 
@@ -134,7 +130,7 @@ class MWidget(QWidget, Styles):
         windows = self.app.uiWindows
         self.saveWindowAsPNG(self.app.mainW)
         for window in windows:
-            obj = windows[window]["classObj"]
+            obj = windows[window]['classObj']
             if obj:
                 self.saveWindowAsPNG(obj)
         return True
@@ -173,7 +169,7 @@ class MWidget(QWidget, Styles):
         return pixmap
 
     @staticmethod
-    def svg2pixmap(svg, color="black"):
+    def svg2pixmap(svg, color='black'):
         """
         :param svg:
         :param color:
@@ -186,7 +182,7 @@ class MWidget(QWidget, Styles):
         qp.end()
         return img
 
-    def svg2icon(self, svg, color="black"):
+    def svg2icon(self, svg, color='black'):
         """
         :param svg:
         :param color:
@@ -195,7 +191,7 @@ class MWidget(QWidget, Styles):
         img = self.svg2pixmap(svg, color)
         return QIcon(img)
 
-    def wIcon(self, gui=None, name=""):
+    def wIcon(self, gui=None, name=''):
         """
         widget icon adds an icon to a gui element like a button.
 
@@ -208,10 +204,10 @@ class MWidget(QWidget, Styles):
         if not name:
             return False
 
-        icon = self.svg2icon(f":/icon/{name}.svg", self.M_TER)
+        icon = self.svg2icon(f':/icon/{name}.svg', self.M_TER)
         gui.setIcon(icon)
         gui.setIconSize(QSize(16, 16))
-        gui.setProperty("alignLeft", True)
+        gui.setProperty('alignLeft', True)
         gui.style().unpolish(gui)
         gui.style().polish(gui)
         return True
@@ -227,7 +223,7 @@ class MWidget(QWidget, Styles):
         """
         self.setStyleSheet(self.mw4Style)
         self.setMouseTracking(True)
-        self.setWindowIcon(QIcon(":/mw4.ico"))
+        self.setWindowIcon(QIcon(':/mw4.ico'))
         return True
 
     @staticmethod
@@ -259,7 +255,7 @@ class MWidget(QWidget, Styles):
         return True
 
     @staticmethod
-    def extractNames(names=""):
+    def extractNames(names=''):
         """
         extractNames splits a given path to basename and extension
         if the input is a multiple list, there will be as return values a
@@ -271,9 +267,9 @@ class MWidget(QWidget, Styles):
                     name:   name
         """
         if not names:
-            return "", "", ""
+            return '', '', ''
         if not isinstance(names, list):
-            return "", "", ""
+            return '', '', ''
 
         shortList = list()
         extList = list()
@@ -285,8 +281,8 @@ class MWidget(QWidget, Styles):
                 short = os.path.basename(short)
 
             else:
-                short = ""
-                ext = ""
+                short = ''
+                ext = ''
 
             nameList.append(os.path.abspath(name))
             shortList.append(short)
@@ -312,7 +308,7 @@ class MWidget(QWidget, Styles):
 
         dlg = QFileDialog()
         dlg.setOptions(QFileDialog.Option.DontUseNativeDialog)
-        dlg.setWindowIcon(QIcon(":/mw4.ico"))
+        dlg.setWindowIcon(QIcon(':/mw4.ico'))
         dlg.setStyleSheet(self.mw4Style)
         dlg.setViewMode(QFileDialog.ViewMode.List)
         dlg.setModal(True)
@@ -328,9 +324,10 @@ class MWidget(QWidget, Styles):
         px = window.geometry().x()
         py = window.geometry().y()
 
-        dlg.setGeometry(
-            px + int(0.5 * (pw - width)), py + int(0.5 * (ph - height)), width, height
-        )
+        dlg.setGeometry(px + int(0.5 * (pw - width)),
+                        py + int(0.5 * (ph - height)),
+                        width,
+                        height)
         return dlg
 
     @staticmethod
@@ -355,12 +352,8 @@ class MWidget(QWidget, Styles):
         msg.setStyleSheet(self.mw4Style)
         msg.setTextFormat(Qt.TextFormat.AutoText)
         msg.setWindowTitle(title)
-        icons = [
-            ":/icon/question.svg",
-            ":/icon/information.svg",
-            ":/icon/warning.svg",
-            ":/icon/question.svg",
-        ]
+        icons = [':/icon/question.svg', ':/icon/information.svg',
+                 ':/icon/warning.svg', ':/icon/question.svg']
         pixmap = QPixmap(icons[iconType]).scaled(64, 64)
         msg.setIconPixmap(pixmap)
         msg.setText(question)
@@ -385,15 +378,13 @@ class MWidget(QWidget, Styles):
         else:
             return reply
 
-    def openFile(
-        self,
-        window=None,
-        title="",
-        folder="",
-        filterSet=None,
-        enableDir=False,
-        multiple=False,
-    ):
+    def openFile(self,
+                 window=None,
+                 title='',
+                 folder='',
+                 filterSet=None,
+                 enableDir=False,
+                 multiple=False):
         """
         openFile handles a single file select with filter in a non-native format.
 
@@ -408,13 +399,13 @@ class MWidget(QWidget, Styles):
                             ext: extension of the file
         """
         if not window:
-            return "", "", ""
+            return '', '', ''
         if not title:
-            return "", "", ""
+            return '', '', ''
         if not folder:
-            return "", "", ""
+            return '', '', ''
         if not filterSet:
-            return "", "", ""
+            return '', '', ''
 
         dlg = self.prepareFileDialog(window=window, enableDir=enableDir)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
@@ -429,15 +420,18 @@ class MWidget(QWidget, Styles):
 
         result = self.runDialog(dlg)
         if not result:
-            return "", "", ""
+            return '', '', ''
 
         filePath = dlg.selectedFiles()
         full, short, ext = self.extractNames(names=filePath)
         return full, short, ext
 
-    def saveFile(
-        self, window=None, title="", folder="", filterSet=None, enableDir=False
-    ):
+    def saveFile(self,
+                 window=None,
+                 title='',
+                 folder='',
+                 filterSet=None,
+                 enableDir=False):
         """
         saveFile handles a single file save with filter in a non-native format.
 
@@ -451,13 +445,13 @@ class MWidget(QWidget, Styles):
                             ext: extension of the file
         """
         if not window:
-            return "", "", ""
+            return '', '', ''
         if not title:
-            return "", "", ""
+            return '', '', ''
         if not folder:
-            return "", "", ""
+            return '', '', ''
         if not filterSet:
-            return "", "", ""
+            return '', '', ''
 
         dlg = self.prepareFileDialog(window, enableDir)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
@@ -466,13 +460,16 @@ class MWidget(QWidget, Styles):
         dlg.setDirectory(folder)
         result = self.runDialog(dlg)
         if not result:
-            return "", "", ""
+            return '', '', ''
 
         filePath = dlg.selectedFiles()
         full, short, ext = self.extractNames(names=filePath)
         return full, short, ext
 
-    def openDir(self, window=None, title="", folder=""):
+    def openDir(self,
+                window=None,
+                title='',
+                folder=''):
         """
         openFile handles a single file select with filter in a non-native format.
 
@@ -484,11 +481,11 @@ class MWidget(QWidget, Styles):
                             ext: extension of the file
         """
         if not window:
-            return "", "", ""
+            return '', '', ''
         if not title:
-            return "", "", ""
+            return '', '', ''
         if not folder:
-            return "", "", ""
+            return '', '', ''
 
         dlg = self.prepareFileDialog(window=window, enableDir=True)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
@@ -497,7 +494,7 @@ class MWidget(QWidget, Styles):
         dlg.setFileMode(QFileDialog.FileMode.Directory)
         result = self.runDialog(dlg)
         if not result:
-            return "", "", ""
+            return '', '', ''
 
         filePath = dlg.selectedFiles()
         full, short, ext = self.extractNames(names=filePath)
@@ -522,10 +519,8 @@ class MWidget(QWidget, Styles):
             clicked = Signal(object)
 
             def eventFilter(self, obj, event):
-                if event.type() not in [
-                    QEvent.Type.MouseButtonRelease,
-                    QEvent.Type.FocusIn,
-                ]:
+                if event.type() not in [QEvent.Type.MouseButtonRelease,
+                                        QEvent.Type.FocusIn]:
                     return False
 
                 if event.type() == QEvent.Type.MouseButtonRelease:
@@ -550,36 +545,36 @@ class MWidget(QWidget, Styles):
         if not formatElement:
             return False
         if value is None:
-            text = "-"
+            text = '-'
         elif isinstance(value, (list, np.ndarray)) and len(value) == 0:
-            text = "-"
-        elif formatElement.startswith("HSTR"):
+            text = '-'
+        elif formatElement.startswith('HSTR'):
             text = formatHstrToText(value)
-        elif formatElement.startswith("DSTR"):
+        elif formatElement.startswith('DSTR'):
             text = formatDstrToText(value)
-        elif formatElement.startswith("D"):
-            formatStr = "{0:" + formatElement.lstrip("D") + "}"
+        elif formatElement.startswith('D'):
+            formatStr = '{0:' + formatElement.lstrip('D') + '}'
             text = formatStr.format(value.degrees)
-        elif formatElement.startswith("H"):
-            formatStr = "{0:" + formatElement.lstrip("H") + "}"
+        elif formatElement.startswith('H'):
+            formatStr = '{0:' + formatElement.lstrip('H') + '}'
             text = formatStr.format(value.hours)
-        elif value == "E":
-            text = "EAST"
-        elif value == "W":
-            text = "WEST"
+        elif value == 'E':
+            text = 'EAST'
+        elif value == 'W':
+            text = 'WEST'
         elif isinstance(value, bool):
             if value:
-                text = "ON"
+                text = 'ON'
             else:
-                text = "OFF"
+                text = 'OFF'
         else:
-            formatStr = "{0:" + formatElement + "}"
+            formatStr = '{0:' + formatElement + '}'
             text = formatStr.format(value)
 
         ui.setText(text)
         return True
 
-    def guiSetStyle(self, ui, pStyle="", value=None, pVals=None):
+    def guiSetStyle(self, ui, pStyle='', value=None, pVals=None):
         """
         :param ui:
         :param pStyle:
@@ -588,7 +583,7 @@ class MWidget(QWidget, Styles):
         :return:
         """
         if pVals is None:
-            pVals = ["", "", ""]
+            pVals = ['', '', '']
         if not pStyle:
             return False
         if value is None:
@@ -616,9 +611,9 @@ class MWidget(QWidget, Styles):
         :return:
         """
         if self.ui.unitTimeUTC.isChecked():
-            return "(time is UTC)"
+            return '(time is UTC)'
         else:
-            return "(time is local)"
+            return '(time is local)'
 
     @staticmethod
     def makePointer():
@@ -659,11 +654,11 @@ class MWidget(QWidget, Styles):
         """
         :return:
         """
-        height = config.get("height", 600)
-        width = config.get("width", 800)
+        height = config.get('height', 600)
+        width = config.get('width', 800)
         self.resize(width, height)
-        x = config.get("winPosX", 0)
-        y = config.get("winPosY", 0)
+        x = config.get('winPosX', 0)
+        y = config.get('winPosY', 0)
         if x > self.screenSizeX - width:
             x = 0
         if y > self.screenSizeY - height:
@@ -687,27 +682,30 @@ class MWidget(QWidget, Styles):
 
     @staticmethod
     def getTabAndIndex(tab, config, name):
-        """ """
-        config[name] = {"index": tab.currentIndex()}
+        """
+        """
+        config[name] = {'index': tab.currentIndex()}
         for index in range(tab.count()):
-            config[name][f"{index:02d}"] = tab.widget(index).objectName()
+            config[name][f'{index:02d}'] = tab.widget(index).objectName()
 
     def setTabAndIndex(self, tab, config, name):
-        """ """
+        """
+        """
         config = config.get(name, {})
         if not isinstance(config, dict):
             config = {}
         for index in reversed(range(tab.count())):
-            nameTab = config.get(f"{index:02d}", None)
+            nameTab = config.get(f'{index:02d}', None)
             if nameTab is None:
                 continue
             tabIndex = self.getTabIndex(tab, nameTab)
             tab.tabBar().moveTab(tabIndex, index)
-        tab.setCurrentIndex(config.get("index", 0))
+        tab.setCurrentIndex(config.get('index', 0))
 
     @staticmethod
     def positionCursorInTable(table, searchName):
-        """ """
+        """
+        """
         result = table.findItems(searchName, Qt.MatchFlag.MatchExactly)
         if len(result) == 0:
             return

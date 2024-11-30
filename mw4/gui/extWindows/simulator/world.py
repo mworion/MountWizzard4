@@ -25,8 +25,8 @@ from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorWorld:
-    __all__ = ["SimulatorWorld"]
-
+    """
+    """
     def __init__(self, parent, app):
         super().__init__()
         self.parent = parent
@@ -43,44 +43,45 @@ class SimulatorWorld:
         scale = (960 + vertical) / 960
 
         translation = QVector3D(north, -east, 0)
-        for node in ["domeColumn", "domeCompassRose", "domeCompassRoseChar"]:
+        for node in ['domeColumn', 'domeCompassRose', 'domeCompassRoseChar']:
             node = self.parent.entityModel.get(node)
             if node:
-                node["trans"].setTranslation(translation)
+                node['trans'].setTranslation(translation)
 
-        node = self.parent.entityModel.get("domeColumn")
+        node = self.parent.entityModel.get('domeColumn')
         if node:
-            node["trans"].setScale3D(QVector3D(1, 1, scale))
+            node['trans'].setScale3D(QVector3D(1, 1, scale))
 
     def create(self):
-        """ """
+        """
+        """
         model = {
-            "environRoot": {
-                "parent": "ref_fusion_m",
+            'environRoot': {
+                'parent': 'ref_fusion_m',
             },
-            "ground": {
-                "parent": "environRoot",
-                "source": "dome-base.stl",
-                "scale": [1, 1, 1],
-                "mat": Materials().environ,
+            'ground': {
+                'parent': 'environRoot',
+                'source': 'dome-base.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().environ,
             },
-            "domeColumn": {
-                "parent": "environRoot",
-                "source": "dome-column.stl",
-                "scale": [1, 1, 1],
-                "mat": Materials().domeColumn,
+            'domeColumn': {
+                'parent': 'environRoot',
+                'source': 'dome-column.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().domeColumn,
             },
-            "domeCompassRose": {
-                "parent": "environRoot",
-                "source": "dome-rose.stl",
-                "scale": [1, 1, 1],
-                "mat": Materials().aluRed,
+            'domeCompassRose': {
+                'parent': 'environRoot',
+                'source': 'dome-rose.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().aluRed,
             },
-            "domeCompassRoseChar": {
-                "parent": "environRoot",
-                "source": "dome-rose-char.stl",
-                "scale": [1, 1, 1],
-                "mat": Materials().white,
+            'domeCompassRoseChar': {
+                'parent': 'environRoot',
+                'source': 'dome-rose-char.stl',
+                'scale': [1, 1, 1],
+                'mat': Materials().white,
             },
         }
         linkModel(model, self.parent.entityModel)

@@ -25,16 +25,14 @@ from mountcontrol.connection import Connection
 
 
 class Firmware(object):
-    """ """
-
-    __all__ = ["Firmware"]
-
-    log = logging.getLogger("MW4")
+    """
+    """
+    log = logging.getLogger('MW4')
 
     def __init__(self, parent):
         self.parent = parent
         self._product = None
-        self._vString = Version("0.0.0")
+        self._vString = Version('0.0.0')
         self._hardware = None
         self._date = None
         self._time = None
@@ -56,7 +54,7 @@ class Firmware(object):
         if isinstance(value, str):
             self._vString = Version(value)
         else:
-            self._vString = Version("0.0.0")
+            self._vString = Version('0.0.0')
 
     @property
     def hardware(self):
@@ -83,13 +81,15 @@ class Firmware(object):
         self._time = value
 
     def checkNewer(self, compare: str) -> bool:
-        """ """
+        """
+        """
         return self.vString >= Version(compare)
 
     def parse(self, response: list, numberOfChunks: int) -> bool:
-        """ """
+        """
+        """
         if len(response) != numberOfChunks:
-            self.log.warning("wrong number of chunks")
+            self.log.warning('wrong number of chunks')
             return False
         self.date = response[0]
         self.vString = response[1]
@@ -99,9 +99,10 @@ class Firmware(object):
         return True
 
     def poll(self) -> bool:
-        """ """
+        """
+        """
         conn = Connection(self.parent.host)
-        commandString = ":U2#:GVD#:GVN#:GVP#:GVT#:GVZ#"
+        commandString = ':U2#:GVD#:GVN#:GVP#:GVT#:GVZ#'
         suc, response, chunks = conn.communicate(commandString)
         if not suc:
             return False

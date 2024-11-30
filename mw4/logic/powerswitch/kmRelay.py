@@ -28,17 +28,15 @@ from base.signalsDevices import Signals
 
 
 class RelaySignals(Signals):
-    """ """
-
+    """
+    """
     statusReady = Signal()
 
 
 class KMRelay:
-    """ """
-
-    __all__ = ["KMRelay"]
-
-    log = logging.getLogger("MW4")
+    """
+    """
+    log = logging.getLogger('MW4')
 
     CYCLE_POLLING = 1000
     DEFAULT_PORT = 80
@@ -48,26 +46,28 @@ class KMRelay:
     def __init__(self):
         super().__init__()
         self.signals = RelaySignals()
-        self.framework = ""
+        self.framework = ''
         self.data = {}
         self.defaultConfig = {
-            "framework": "",
-            "frameworks": {
-                "relay": {
-                    "deviceName": "KMRelay",
-                    "hostaddress": "",
-                    "user": "",
-                    "password": "",
+            'framework': '',
+            'frameworks': {
+                'relay': {
+                    'deviceName': 'KMRelay',
+                    'hostaddress': '',
+                    'user': '',
+                    'password': '',
                 }
-            },
+            }
         }
-        self.run = {"relay": self}
+        self.run = {
+            'relay': self
+        }
 
         self.mutexPoll = QMutex()
-        self.deviceName = ""
-        self.hostaddress = ""
-        self.user = ""
-        self.password = ""
+        self.deviceName = ''
+        self.hostaddress = ''
+        self.user = ''
+        self.password = ''
         self.status = [0] * 8
         self.deviceConnected = False
         self.timerTask = QTimer()
@@ -99,18 +99,18 @@ class KMRelay:
         :return: True for test purpose
         """
         if result is None:
-            self.log.info("No valid result")
+            self.log.info('No valid result')
             return False
 
-        text = result.text.replace("\r\n", ", ")
+        text = result.text.replace('\r\n', ', ')
         reason = result.reason
         status = result.status_code
         url = result.url
         elapsed = result.elapsed
-        self.log.trace(f"Result: {url}, {reason}, {status}, {elapsed}, {text}")
+        self.log.trace(f'Result: {url}, {reason}, {status}, {elapsed}, {text}')
         return True
 
-    def getRelay(self, url="/status.xml", debug=True):
+    def getRelay(self, url='/status.xml', debug=True):
         """
         :param url: web address of relay box
         :param debug: write extended debug output
@@ -122,7 +122,7 @@ class KMRelay:
             return None
 
         auth = requests.auth.HTTPBasicAuth(self.user, self.password)
-        url = f"http://{self.hostaddress}:80{url}"
+        url = f'http://{self.hostaddress}:80{url}'
 
         try:
             result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
@@ -132,7 +132,7 @@ class KMRelay:
             result = None
         except Exception as e:
             result = None
-            self.log.critical(f"Error in request: {e}")
+            self.log.critical(f'Error in request: {e}')
 
         if debug:
             self.debugOutput(result=result)
@@ -144,18 +144,18 @@ class KMRelay:
         """
         :return: success
         """
-        statusNotConnected = value is None or value.reason != "OK"
+        statusNotConnected = value is None or value.reason != 'OK'
         statusConnected = not statusNotConnected
         if self.deviceConnected:
             if statusNotConnected:
-                self.signals.deviceDisconnected.emit("KMTronic")
+                self.signals.deviceDisconnected.emit('KMTronic')
                 self.deviceConnected = False
                 return False
             else:
                 return True
         else:
             if statusConnected:
-                self.signals.deviceConnected.emit("KMTronic")
+                self.signals.deviceConnected.emit('KMTronic')
                 self.deviceConnected = True
                 return True
             else:
@@ -165,13 +165,13 @@ class KMRelay:
         """
         :return: success
         """
-        value = self.getRelay("/status.xml", debug=False)
+        value = self.getRelay('/status.xml', debug=False)
         if not self.checkConnected(value):
             return False
 
         lines = value.text.splitlines()
         for line in lines:
-            value = re.findall(r"\d", line)
+            value = re.findall(r'\d', line)
             if not value:
                 continue
             value = [int(s) for s in value]
@@ -204,18 +204,18 @@ class KMRelay:
         :param relayNumber: number of relay to be pulsed, counting from 0 onwards
         :return: success
         """
-        self.log.debug(f"Pulse relay:{relayNumber}")
+        self.log.debug(f'Pulse relay:{relayNumber}')
         byteOn = self.getByte(relayNumber=relayNumber, state=True)
         byteOff = self.getByte(relayNumber=relayNumber, state=False)
-        value1 = self.getRelay(f"/FFE0{byteOn:02X}")
+        value1 = self.getRelay(f'/FFE0{byteOn:02X}')
         time.sleep(self.PULSEWIDTH)
-        value2 = self.getRelay(f"/FFE0{byteOff:02X}")
+        value2 = self.getRelay(f'/FFE0{byteOff:02X}')
 
         if value1 is None or value2 is None:
-            self.log.warning(f"Relay:{relayNumber}")
+            self.log.warning(f'Relay:{relayNumber}')
             return False
-        elif value1.reason != "OK" or value2.reason != "OK":
-            self.log.warning(f"Relay:{relayNumber}")
+        elif value1.reason != 'OK' or value2.reason != 'OK':
+            self.log.warning(f'Relay:{relayNumber}')
             return False
 
         return True
@@ -225,13 +225,13 @@ class KMRelay:
         :param relayNumber: number of relay to be pulsed, counting from 0 onwards
         :return: success
         """
-        self.log.debug(f"Switch relay:{relayNumber}")
-        value = self.getRelay("/relays.cgi?relay={0:1d}".format(relayNumber + 1))
+        self.log.debug(f'Switch relay:{relayNumber}')
+        value = self.getRelay('/relays.cgi?relay={0:1d}'.format(relayNumber + 1))
         if value is None:
-            self.log.warning(f"Relay:{relayNumber}")
+            self.log.warning(f'Relay:{relayNumber}')
             return False
-        elif value.reason != "OK":
-            self.log.warning(f"Relay:{relayNumber}")
+        elif value.reason != 'OK':
+            self.log.warning(f'Relay:{relayNumber}')
             return False
 
         return True
@@ -242,14 +242,14 @@ class KMRelay:
         :param value: relay state.
         :return: success
         """
-        self.log.debug(f"Set relay:{relayNumber}")
+        self.log.debug(f'Set relay:{relayNumber}')
         byteOn = self.getByte(relayNumber=relayNumber, state=value)
-        value = self.getRelay(f"/FFE0{byteOn:02X}")
+        value = self.getRelay(f'/FFE0{byteOn:02X}')
         if value is None:
-            self.log.warning(f"Relay:{relayNumber}")
+            self.log.warning(f'Relay:{relayNumber}')
             return False
-        elif value.reason != "OK":
-            self.log.warning(f"Relay:{relayNumber}")
+        elif value.reason != 'OK':
+            self.log.warning(f'Relay:{relayNumber}')
             return False
 
         return True

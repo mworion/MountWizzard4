@@ -23,10 +23,8 @@ from base.ascomClass import AscomClass
 
 
 class FilterAscom(AscomClass):
-    """ """
-
-    __all__ = ["FilterAscom"]
-
+    """
+    """
     CYCLE_POLL_DATA = 1000
 
     def __init__(self, app=None, signals=None, data=None):
@@ -38,23 +36,23 @@ class FilterAscom(AscomClass):
         :return: success
         """
         super().workerGetInitialConfig()
-        names = self.getAscomProperty("Names")
+        names = self.getAscomProperty('Names')
         if names is None:
             return False
 
         for i, name in enumerate(names):
-            self.storePropertyToData(name, f"FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}")
+            self.storePropertyToData(name, f'FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}')
         return True
 
     def workerPollData(self):
         """
         :return: true for test purpose
         """
-        position = self.getAscomProperty("Position")
+        position = self.getAscomProperty('Position')
         if position == -1 or position is None:
             return False
 
-        self.storePropertyToData(position, "FILTER_SLOT.FILTER_SLOT_VALUE")
+        self.storePropertyToData(position, 'FILTER_SLOT.FILTER_SLOT_VALUE')
         return True
 
     def sendFilterNumber(self, filterNumber=0):
@@ -64,5 +62,5 @@ class FilterAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.setAscomProperty("Position", filterNumber)
+        self.setAscomProperty('Position', filterNumber)
         return True

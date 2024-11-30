@@ -23,10 +23,8 @@ from base.alpacaClass import AlpacaClass
 
 
 class SensorWeatherAlpaca(AlpacaClass):
-    """ """
-
-    __all__ = ["SensorWeatherAlpaca"]
-
+    """
+    """
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data)
         self.signals = signals
@@ -39,19 +37,18 @@ class SensorWeatherAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.getAndStoreAlpacaProperty(
-            "temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
-        )
-        self.getAndStoreAlpacaProperty(
-            "pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE"
-        )
-        self.getAndStoreAlpacaProperty(
-            "dewpoint", "WEATHER_PARAMETERS.WEATHER_DEWPOINT"
-        )
-        self.getAndStoreAlpacaProperty(
-            "humidity", "WEATHER_PARAMETERS.WEATHER_HUMIDITY"
-        )
-        self.getAndStoreAlpacaProperty("cloudcover", "WEATHER_PARAMETERS.CloudCover")
-        self.getAndStoreAlpacaProperty("rainrate", "WEATHER_PARAMETERS.RainVol")
-        self.getAndStoreAlpacaProperty("skyquality", "SKY_QUALITY.SKY_BRIGHTNESS")
+        self.getAndStoreAlpacaProperty('temperature',
+                                       'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
+        self.getAndStoreAlpacaProperty('pressure',
+                                       'WEATHER_PARAMETERS.WEATHER_PRESSURE')
+        self.getAndStoreAlpacaProperty('dewpoint',
+                                       'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
+        self.getAndStoreAlpacaProperty('humidity',
+                                       'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
+        self.getAndStoreAlpacaProperty('cloudcover',
+                                       'WEATHER_PARAMETERS.CloudCover')
+        self.getAndStoreAlpacaProperty('rainrate',
+                                       'WEATHER_PARAMETERS.RainVol')
+        self.getAndStoreAlpacaProperty('skyquality',
+                                       'SKY_QUALITY.SKY_BRIGHTNESS')
         return True

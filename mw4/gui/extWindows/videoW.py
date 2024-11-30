@@ -31,10 +31,8 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class VideoWindow(toolsQtWidget.MWidget):
-    """ """
-
-    __all__ = ["VideoWindow"]
-
+    """
+    """
     pixmapReady = Signal(object)
 
     def __init__(self, app):
@@ -46,8 +44,8 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.ui.setupUi(self)
         self.running = False
         self.capture = None
-        self.user = ""
-        self.password = ""
+        self.user = ''
+        self.password = ''
         self.runningCounter = 0
 
     def closeEvent(self, closeEvent):
@@ -77,7 +75,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.ui.authPopup.clicked.connect(self.authPopup)
         self.app.colorChange.connect(self.colorChange)
         self.app.update0_1s.connect(self.count)
-        self.changeStyleDynamic(self.ui.videoStop, "running", True)
+        self.changeStyleDynamic(self.ui.videoStop, 'running', True)
         self.checkAuth()
         self.show()
         return True
@@ -90,7 +88,7 @@ class VideoWindow(toolsQtWidget.MWidget):
             _, frame = self.capture.retrieve()
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         except cv2.error as e:
-            self.msg.emit(2, "Video", "Compatibility", e)
+            self.msg.emit(2, 'Video', 'Compatibility', e)
             return False
 
         image = qimage2ndarray.array2qimage(frame)
@@ -117,15 +115,15 @@ class VideoWindow(toolsQtWidget.MWidget):
         try:
             self.capture.open(source)
             if not self.capture.isOpened():
-                self.msg.emit(2, "Video", "Camera", f"[{source}] not available")
+                self.msg.emit(2, 'Video', 'Camera', f'[{source}] not available')
                 self.running = False
                 return False
         except cv2.error as e:
-            self.msg.emit(2, "Video", "Camera error", f"MSG: {e.err}")
+            self.msg.emit(2, 'Video', 'Camera error', f'MSG: {e.err}')
             self.running = False
             return False
         except Exception as e:
-            self.msg.emit(2, "Video", "Camera error", f"MSG: {e}")
+            self.msg.emit(2, 'Video', 'Camera error', f'MSG: {e}')
             self.running = False
             return False
 
@@ -145,11 +143,11 @@ class VideoWindow(toolsQtWidget.MWidget):
         :return:
         """
         if self.user and self.password:
-            auth = f"{self.user}:{self.password}@"
+            auth = f'{self.user}:{self.password}@'
         else:
-            auth = ""
-        url = f"{auth}{self.ui.videoURL.text()}"
-        sources = ["rtsp://" + url, "http://" + url, "https://" + url, 0, 1, 2, 3]
+            auth = ''
+        url = f'{auth}{self.ui.videoURL.text()}'
+        sources = ['rtsp://' + url, 'http://' + url, 'https://' + url, 0, 1, 2, 3]
         frameCounter = [2, 5, 10, 20, 50]
 
         sourceIndex = self.ui.videoSource.currentIndex()
@@ -159,9 +157,9 @@ class VideoWindow(toolsQtWidget.MWidget):
             return False
 
         source = sources[sourceIndex]
-        self.log.info(f"Video started: source [{source}]")
-        self.changeStyleDynamic(self.ui.videoStart, "running", True)
-        self.changeStyleDynamic(self.ui.videoStop, "running", False)
+        self.log.info(f'Video started: source [{source}]')
+        self.changeStyleDynamic(self.ui.videoStart, 'running', True)
+        self.changeStyleDynamic(self.ui.videoStop, 'running', False)
         self.running = True
         worker = Worker(self.workerVideo, source, frameRate)
         self.threadPool.start(worker)
@@ -171,8 +169,8 @@ class VideoWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.changeStyleDynamic(self.ui.videoStart, "running", False)
-        self.changeStyleDynamic(self.ui.videoStop, "running", True)
+        self.changeStyleDynamic(self.ui.videoStart, 'running', False)
+        self.changeStyleDynamic(self.ui.videoStop, 'running', True)
         self.pixmapReady.emit(None)
         self.running = False
         return True
@@ -196,9 +194,8 @@ class VideoWindow(toolsQtWidget.MWidget):
             return False
 
         pixmap = pixmap.scaled(self.ui.video.width(), self.ui.video.height())
-        self.ui.video.setSizePolicy(
-            QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Ignored
-        )
+        self.ui.video.setSizePolicy(QSizePolicy.Policy.Ignored,
+                                    QSizePolicy.Policy.Ignored)
         self.ui.video.setPixmap(pixmap)
         return True
 
@@ -206,8 +203,8 @@ class VideoWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        hasAuth = self.user != "" and self.password != ""
-        self.changeStyleDynamic(self.ui.authPopup, "running", hasAuth)
+        hasAuth = self.user != '' and self.password != ''
+        self.changeStyleDynamic(self.ui.authPopup, 'running', hasAuth)
         return True
 
     def authPopup(self):
@@ -216,19 +213,10 @@ class VideoWindow(toolsQtWidget.MWidget):
         """
         dlg = QInputDialog()
         value1, ok1 = dlg.getText(
-            self,
-            "Get authentication",
-            "Username: ",
-            QLineEdit.EchoMode.Normal,
-            self.user,
-        )
+            self, 'Get authentication', 'Username: ', QLineEdit.EchoMode.Normal, self.user)
         value2, ok2 = dlg.getText(
-            self,
-            "Get authentication",
-            "Password: ",
-            QLineEdit.EchoMode.Normal,
-            self.password,
-        )
+            self, 'Get authentication', 'Password: ', QLineEdit.EchoMode.Normal,
+            self.password)
         if not ok1 or not ok2:
             return False
         self.user = value1

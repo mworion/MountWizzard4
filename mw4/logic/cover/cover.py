@@ -24,35 +24,33 @@ import platform
 from base.signalsDevices import Signals
 from logic.cover.coverIndi import CoverIndi
 from logic.cover.coverAlpaca import CoverAlpaca
-
-if platform.system() == "Windows":
+if platform.system() == 'Windows':
     from logic.cover.coverAscom import CoverAscom
 
 
 class Cover:
-    """ """
-
-    __all__ = ["Cover"]
-
-    log = logging.getLogger("MW4")
+    """
+    """
+    log = logging.getLogger('MW4')
 
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.data = {}
-        self.defaultConfig = {"framework": "", "frameworks": {}}
-        self.framework = ""
+        self.defaultConfig = {'framework': '',
+                              'frameworks': {}}
+        self.framework = ''
         self.run = {
-            "indi": CoverIndi(self.app, self.signals, self.data),
-            "alpaca": CoverAlpaca(self.app, self.signals, self.data),
+            'indi': CoverIndi(self.app, self.signals, self.data),
+            'alpaca': CoverAlpaca(self.app, self.signals, self.data),
         }
 
-        if platform.system() == "Windows":
-            self.run["ascom"] = CoverAscom(self.app, self.signals, self.data)
+        if platform.system() == 'Windows':
+            self.run['ascom'] = CoverAscom(self.app, self.signals, self.data)
 
         for fw in self.run:
-            self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
+            self.defaultConfig['frameworks'].update({fw: self.run[fw].defaultConfig})
 
     @property
     def updateRate(self):

@@ -26,95 +26,102 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class CameraSGPro(SGProClass):
-    """ """
-
-    __all__ = ["CameraSGPro"]
-
-    DEVICE_TYPE = "Camera"
+    """
+    """
+    DEVICE_TYPE = 'Camera'
 
     def __init__(self, parent):
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
-        super().__init__(app=parent.app, data=parent.data)
+        super().__init__(app=parent.app, data=parent.data) 
         self.threadPool = parent.threadPool
         self.signals = parent.signals
 
     def sgGetCameraTemp(self) -> [bool, dict]:
-        """ """
-        response = self.requestProperty("cameratemp")
+        """
+        """
+        response = self.requestProperty('cameratemp')
         if response is None:
             return False, {}
 
-        return response.get("Success", ""), response
+        return response.get('Success', ''), response
 
     def sgSetCameraTemp(self, temperature: float) -> bool:
-        """ """
-        response = self.requestProperty(f"setcameratemp/{temperature}")
+        """
+        """
+        response = self.requestProperty(f'setcameratemp/{temperature}')
         if response is None:
             return False
-        return response.get("Success", "")
+        return response.get('Success', '')
 
     def sgCaptureImage(self, params: dict) -> [bool, dict]:
-        """ """
-        response = self.requestProperty("image", params=params)
+        """
+        """
+        response = self.requestProperty('image', params=params)
         if response is None:
             return False, {}
-        return response.get("Success", ""), response
+        return response.get('Success', ''), response
 
     def sgAbortImage(self) -> bool:
-        """ """
-        response = self.requestProperty("abortimage")
+        """
+        """
+        response = self.requestProperty('abortimage')
         if response is None:
             return False
-        return response.get("Success", "")
+        return response.get('Success', '')
 
     def sgGetImagePath(self, receipt: str) -> bool:
-        """ """
-        response = self.requestProperty(f"imagepath/{receipt}")
+        """
+        """
+        response = self.requestProperty(f'imagepath/{receipt}')
         if response is None:
             return False
-        return response.get("Success", "")
+        return response.get('Success', '')
 
     def sgGetCameraProps(self) -> [bool, dict]:
-        """ """
-        response = self.requestProperty("cameraprops")
+        """
+        """
+        response = self.requestProperty('cameraprops')
         if response is None:
             return False, {}
-        return response.get("Success", ""), response
+        return response.get('Success', ''), response
 
     def workerGetInitialConfig(self) -> None:
-        """ """
-        self.storePropertyToData(1, "CCD_BINNING.HOR_BIN")
+        """
+        """
+        self.storePropertyToData(1, 'CCD_BINNING.HOR_BIN')
 
     def workerPollData(self) -> None:
-        """ """
+        """
+        """
         pass
 
     def sendDownloadMode(self) -> None:
-        """ """
+        """
+        """
         pass
 
     def waitFunc(self) -> bool:
-        """ """
-        return "integrating" in self.data.get("Device.Message")
-
+        """
+        """
+        return 'integrating' in self.data.get('Device.Message')
+        
     def workerExpose(self) -> None:
-        """ """
-        params = {
-            "BinningMode": self.parent.binning,
-            "ExposureLength": max(self.parent.exposureTime, 1),
-            "Path": self.parent.imagePath,
-        }
+        """
+        """
+        params = {'BinningMode': self.parent.binning,
+                  'ExposureLength': max(self.parent.exposureTime, 1),
+                  'Path': self.parent.imagePath}
 
         suc, response = self.sgCaptureImage(params=params)
         if not suc:
-            self.log.debug(f"No capture image. {response}")
+            self.log.debug(f'No capture image. {response}')
             return
 
-        receipt = response.get("Receipt", "")
+        receipt = response.get('Receipt', '')
         if not receipt:
-            self.log.debug(f"No receipt received. {response}")
+            self.log.debug(f'No receipt received. {response}')
             return
 
         self.parent.waitStart()
@@ -126,35 +133,41 @@ class CameraSGPro(SGProClass):
         self.parent.waitFinish(self.sgGetImagePath, receipt)
 
         if not self.parent.exposing:
-            self.parent.imagePath = ""
+            self.parent.imagePath = ''
         else:
             pre, _ = os.path.splitext(self.parent.imagePath)
-            os.rename(pre + ".fit", self.parent.imagePath)
+            os.rename(pre + '.fit', self.parent.imagePath)
             sleepAndEvents(500)
             self.parent.updateImageFitsHeaderPointing()
 
     def expose(self) -> None:
-        """ """
+        """
+        """
         worker = Worker(self.workerExpose)
         worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(worker)
 
     def abort(self) -> None:
-        """ """
+        """
+        """
         return self.sgAbortImage()
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        """ """
+        """
+        """
         pass
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
-        """ """
+        """
+        """
         pass
 
     def sendOffset(self, offset: int = 0) -> None:
-        """ """
+        """
+        """
         pass
 
     def sendGain(self, gain: int = 0) -> None:
-        """ """
+        """
+        """
         pass

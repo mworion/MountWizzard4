@@ -16,11 +16,11 @@
 ###########################################################
 import platform
 
-excludedPlatforms = ['armv7l']
+excludedPlatforms = ["armv7l"]
 isAvailable = platform.machine() not in excludedPlatforms
 isAnalyse = False
 isReference = False
-isWindows = platform.system() == 'Windows'
-isLinux = platform.system() == 'Linux'
-isMac = platform.system() == 'Darwin'
+isWindows = platform.system() == "Windows"
+isLinux = platform.system() == "Linux"
+isMac = platform.system() == "Darwin"
 isSimulationMount = False

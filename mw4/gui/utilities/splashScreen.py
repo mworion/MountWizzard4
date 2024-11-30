@@ -40,7 +40,7 @@ class SplashScreen(QObject):
     Maurizio
     """
 
-    __all__ = ['SplashScreen']
+    __all__ = ["SplashScreen"]
 
     def __init__(self, application=None, x=0, y=0):
         super().__init__()
@@ -48,16 +48,18 @@ class SplashScreen(QObject):
         self._qapp = application
         self.x = x
         self.y = y
-        self._pxm = QPixmap(':/icon/mw4.png')
+        self._pxm = QPixmap(":/icon/mw4.png")
 
-        flags = (Qt.WindowType.WindowStaysOnTopHint |
-                 Qt.WindowType.X11BypassWindowManagerHint)
+        flags = (
+            Qt.WindowType.WindowStaysOnTopHint
+            | Qt.WindowType.X11BypassWindowManagerHint
+        )
         self.qss = QSplashScreen(self._pxm, flags)
         h = self.qss.height()
         w = self.qss.width()
         if x != 0 and y != 0:
             self.qss.move(int(x + (800 - w) / 2), int(y + (600 - h) / 2))
-        self.msg = ''
+        self.msg = ""
         self.maxv = 100.0
         self.minv = 0.0
         self.cval = 0.0

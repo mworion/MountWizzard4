@@ -28,8 +28,7 @@ from logic.satellites.satellite_calculations import calcSatPasses
 
 
 class SatTrack(MWidget, SatData):
-    """
-    """
+    """ """
 
     def __init__(self, mainW):
         super().__init__()
@@ -44,21 +43,27 @@ class SatTrack(MWidget, SatData):
         self.lastMeridianLimit = None
 
         self.passUI = {
-            0: {'rise': self.ui.satRise_1,
-                'culminate': self.ui.satCulminate_1,
-                'settle': self.ui.satSettle_1,
-                'flip': self.ui.satFlip_1,
-                'date': self.ui.satDate_1},
-            1: {'rise': self.ui.satRise_2,
-                'culminate': self.ui.satCulminate_2,
-                'settle': self.ui.satSettle_2,
-                'flip': self.ui.satFlip_2,
-                'date': self.ui.satDate_2},
-            2: {'rise': self.ui.satRise_3,
-                'culminate': self.ui.satCulminate_3,
-                'settle': self.ui.satSettle_3,
-                'flip': self.ui.satFlip_3,
-                'date': self.ui.satDate_3}
+            0: {
+                "rise": self.ui.satRise_1,
+                "culminate": self.ui.satCulminate_1,
+                "settle": self.ui.satSettle_1,
+                "flip": self.ui.satFlip_1,
+                "date": self.ui.satDate_1,
+            },
+            1: {
+                "rise": self.ui.satRise_2,
+                "culminate": self.ui.satCulminate_2,
+                "settle": self.ui.satSettle_2,
+                "flip": self.ui.satFlip_2,
+                "date": self.ui.satDate_2,
+            },
+            2: {
+                "rise": self.ui.satRise_3,
+                "culminate": self.ui.satCulminate_3,
+                "settle": self.ui.satSettle_3,
+                "flip": self.ui.satFlip_3,
+                "date": self.ui.satDate_3,
+            },
         }
         self.satOrbits = dict()
 
@@ -90,43 +95,39 @@ class SatTrack(MWidget, SatData):
         self.app.update1s.connect(self.updateOrbit)
 
     def initConfig(self):
-        """
-        """
-        config = self.app.config['mainW']
-        self.ui.domeAutoFollowSat.setChecked(config.get('domeAutoFollowSat', False))
-        self.ui.useInternalSatCalc.setChecked(config.get('useInternalSatCalc', False))
-        self.ui.satBeforeFlip.setChecked(config.get('satBeforeFlip', True))
-        self.ui.satAfterFlip.setChecked(config.get('satAfterFlip', True))
-        self.ui.avoidHorizon.setChecked(config.get('avoidHorizon', False))
-        self.ui.trackingReplay.setChecked(config.get('trackingReplay', False))
+        """ """
+        config = self.app.config["mainW"]
+        self.ui.domeAutoFollowSat.setChecked(config.get("domeAutoFollowSat", False))
+        self.ui.useInternalSatCalc.setChecked(config.get("useInternalSatCalc", False))
+        self.ui.satBeforeFlip.setChecked(config.get("satBeforeFlip", True))
+        self.ui.satAfterFlip.setChecked(config.get("satAfterFlip", True))
+        self.ui.avoidHorizon.setChecked(config.get("avoidHorizon", False))
+        self.ui.trackingReplay.setChecked(config.get("trackingReplay", False))
         self.ui.unitTimeUTC.toggled.connect(self.showSatPasses)
 
     def storeConfig(self):
-        """
-        """
-        config = self.app.config['mainW']
-        config['domeAutoFollowSat'] = self.ui.domeAutoFollowSat.isChecked()
-        config['useInternalSatCalc'] = self.ui.useInternalSatCalc.isChecked()
-        config['satBeforeFlip'] = self.ui.satBeforeFlip.isChecked()
-        config['satAfterFlip'] = self.ui.satAfterFlip.isChecked()
-        config['avoidHorizon'] = self.ui.avoidHorizon.isChecked()
-        config['trackingReplay'] = self.ui.trackingReplay.isChecked()
+        """ """
+        config = self.app.config["mainW"]
+        config["domeAutoFollowSat"] = self.ui.domeAutoFollowSat.isChecked()
+        config["useInternalSatCalc"] = self.ui.useInternalSatCalc.isChecked()
+        config["satBeforeFlip"] = self.ui.satBeforeFlip.isChecked()
+        config["satAfterFlip"] = self.ui.satAfterFlip.isChecked()
+        config["avoidHorizon"] = self.ui.avoidHorizon.isChecked()
+        config["trackingReplay"] = self.ui.trackingReplay.isChecked()
 
     def setupIcons(self):
-        """
-        """
-        self.wIcon(self.ui.stopSatelliteTracking, 'cross-circle')
-        self.wIcon(self.ui.startSatelliteTracking, 'start')
-        self.wIcon(self.ui.progSatFull, 'run')
-        self.wIcon(self.ui.progSatFiltered, 'run')
-        self.wIcon(self.ui.progSatSelected, 'run')
-        self.wIcon(self.ui.progTrajectory, 'run')
+        """ """
+        self.wIcon(self.ui.stopSatelliteTracking, "cross-circle")
+        self.wIcon(self.ui.startSatelliteTracking, "start")
+        self.wIcon(self.ui.progSatFull, "run")
+        self.wIcon(self.ui.progSatFiltered, "run")
+        self.wIcon(self.ui.progSatSelected, "run")
+        self.wIcon(self.ui.progTrajectory, "run")
 
     def enableGuiFunctions(self):
-        """
-        """
+        """ """
         useInternal = self.ui.useInternalSatCalc.isChecked()
-        availableInternal = self.app.mount.firmware.checkNewer('3')
+        availableInternal = self.app.mount.firmware.checkNewer("3")
         if availableInternal is None:
             return False
 
@@ -136,8 +137,7 @@ class SatTrack(MWidget, SatData):
         return True
 
     def signalSatelliteData(self, alt=None, az=None):
-        """
-        """
+        """ """
         if not self.satellite:
             return False
 
@@ -146,19 +146,17 @@ class SatTrack(MWidget, SatData):
         return True
 
     def clearTrackingParameters(self):
-        """
-        """
-        self.ui.satTrajectoryStart.setText('-')
-        self.ui.satTrajectoryEnd.setText('-')
-        self.ui.satTrajectoryFlip.setText('-')
+        """ """
+        self.ui.satTrajectoryStart.setText("-")
+        self.ui.satTrajectoryEnd.setText("-")
+        self.ui.satTrajectoryFlip.setText("-")
         self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setEnabled(False)
-        self.ui.startSatelliteTracking.setText('Start satellite tracking')
-        self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', False)
+        self.ui.startSatelliteTracking.setText("Start satellite tracking")
+        self.changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
 
     def updatePasses(self):
-        """
-        """
+        """ """
         actMeridianLimit = self.app.mount.setting.meridianLimitTrack
         if actMeridianLimit is None:
             return False
@@ -169,8 +167,7 @@ class SatTrack(MWidget, SatData):
         return True
 
     def calcTrajectoryData(self, start, end):
-        """
-        """
+        """ """
         duration = min(end - start, 900 / 86400)
         if duration < 1 / 86400:
             return [], []
@@ -181,7 +178,7 @@ class SatTrack(MWidget, SatData):
         timeSeries = start + np.arange(0, duration, 1 / 86400)
         timeVec = m.obsSite.ts.tt_jd(timeSeries)
 
-        earth = self.app.ephemeris['earth']
+        earth = self.app.ephemeris["earth"]
         ssb_sat = earth + self.satellite
         ssb_loc = earth + m.obsSite.location
         topocentric = ssb_loc.at(timeVec).observe(ssb_sat).apparent()
@@ -189,10 +186,9 @@ class SatTrack(MWidget, SatData):
         return alt.degrees, az.degrees
 
     def progTrajectoryToMount(self):
-        """
-        """
+        """ """
         useInternal = self.ui.useInternalSatCalc.isChecked()
-        isMount = self.app.deviceStat['mount']
+        isMount = self.app.deviceStat["mount"]
         start, end = self.selectStartEnd()
 
         if not start or not end:
@@ -212,9 +208,8 @@ class SatTrack(MWidget, SatData):
         return True
 
     def showSatPasses(self):
-        """
-        """
-        title = 'Satellite passes ' + self.timeZoneString()
+        """ """
+        title = "Satellite passes " + self.timeZoneString()
         self.ui.satPassesGroup.setTitle(title)
 
         if not self.satellite:
@@ -226,50 +221,49 @@ class SatTrack(MWidget, SatData):
         self.satOrbits = calcSatPasses(self.satellite, obsSite, setting)
 
         for i in range(0, 3):
-            self.passUI[i]['rise'].setText('-')
-            self.passUI[i]['culminate'].setText('-')
-            self.passUI[i]['settle'].setText('-')
-            self.passUI[i]['flip'].setText('-')
-            self.passUI[i]['date'].setText('-')
+            self.passUI[i]["rise"].setText("-")
+            self.passUI[i]["culminate"].setText("-")
+            self.passUI[i]["settle"].setText("-")
+            self.passUI[i]["flip"].setText("-")
+            self.passUI[i]["date"].setText("-")
 
         fString = "%H:%M:%S"
         fStringDate = "%d %b"
         for i, satOrbit in enumerate(self.satOrbits):
-            riseT = satOrbit.get('rise', None)
+            riseT = satOrbit.get("rise", None)
             if riseT is not None:
                 riseStr = self.convertTime(riseT, fString)
                 dateStr = self.convertTime(riseT, fStringDate)
             else:
-                riseStr = 'unknown'
-                dateStr = '---'
-            culminateT = satOrbit.get('culminate', None)
+                riseStr = "unknown"
+                dateStr = "---"
+            culminateT = satOrbit.get("culminate", None)
             if culminateT is not None:
                 culminateStr = self.convertTime(culminateT, fString)
             else:
-                culminateStr = 'unknown'
-            settleT = satOrbit.get('settle', None)
+                culminateStr = "unknown"
+            settleT = satOrbit.get("settle", None)
             if settleT is not None:
                 settleStr = self.convertTime(settleT, fString)
             else:
-                settleStr = 'unknown'
-            flipT = satOrbit.get('flip', None)
+                settleStr = "unknown"
+            flipT = satOrbit.get("flip", None)
             if flipT is not None:
                 flipStr = self.convertTime(flipT, fString)
             else:
-                flipStr = 'no flip'
+                flipStr = "no flip"
 
-            self.passUI[i]['rise'].setText(riseStr)
-            self.passUI[i]['culminate'].setText(culminateStr)
-            self.passUI[i]['settle'].setText(settleStr)
-            self.passUI[i]['flip'].setText(flipStr)
-            self.passUI[i]['date'].setText(dateStr)
+            self.passUI[i]["rise"].setText(riseStr)
+            self.passUI[i]["culminate"].setText(culminateStr)
+            self.passUI[i]["settle"].setText(settleStr)
+            self.passUI[i]["flip"].setText(flipStr)
+            self.passUI[i]["date"].setText(dateStr)
 
         self.progTrajectoryToMount()
         return True
 
-    def extractSatelliteData(self, satName=''):
-        """
-        """
+    def extractSatelliteData(self, satName=""):
+        """ """
         satTab = self.ui.listSats
         if satName not in self.satellites.objects:
             return False
@@ -277,51 +271,45 @@ class SatTrack(MWidget, SatData):
         self.positionCursorInTable(satTab, satName)
         self.satellite = self.satellites.objects[satName]
         self.ui.satelliteName.setText(self.satellite.name)
-        epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M')
+        epochText = self.satellite.epoch.utc_strftime("%Y-%m-%d, %H:%M")
         self.ui.satelliteEpoch.setText(epochText)
 
         now = self.app.mount.obsSite.ts.now()
         days = now - self.satellite.epoch
-        self.ui.satelliteDataAge.setText(f'{days:2.2f}')
-        self.msg.emit(0, 'Satellite', 'Data',
-                      f'Actual satellite: [{satName}]')
+        self.ui.satelliteDataAge.setText(f"{days:2.2f}")
+        self.msg.emit(0, "Satellite", "Data", f"Actual satellite: [{satName}]")
 
         if days > 10:
-            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'red')
+            self.changeStyleDynamic(self.ui.satelliteDataAge, "color", "red")
         elif 3 < days < 10:
-            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'yellow')
+            self.changeStyleDynamic(self.ui.satelliteDataAge, "color", "yellow")
         else:
-            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', '')
+            self.changeStyleDynamic(self.ui.satelliteDataAge, "color", "")
 
-        self.ui.satelliteNumber.setText(f'{self.satellite.model.satnum:5d}')
+        self.ui.satelliteNumber.setText(f"{self.satellite.model.satnum:5d}")
         return True
 
-    def programSatToMount(self, satName=''):
-        """
-        """
+    def programSatToMount(self, satName=""):
+        """ """
         if not satName:
             return False
         if satName not in self.satellites.objects:
             return False
 
         satellite = self.app.mount.satellite
-        self.msg.emit(0, 'TLE', 'Program',
-                      f'Upload to mount: [{satName}]')
+        self.msg.emit(0, "TLE", "Program", f"Upload to mount: [{satName}]")
         line1, line2 = export_tle(self.satellites.objects[satName].model)
-        suc = satellite.setTLE(line0=satName,
-                               line1=line1,
-                               line2=line2)
+        suc = satellite.setTLE(line0=satName, line1=line1, line2=line2)
         if not suc:
-            self.msg.emit(2, 'TLE', 'Program error', 'Uploading error')
+            self.msg.emit(2, "TLE", "Program error", "Uploading error")
             return False
         self.app.mount.getTLE()
         return True
 
     def chooseSatellite(self):
-        """
-        """
+        """ """
         satName = self.ui.listSats.item(self.ui.listSats.currentRow(), 1).text()
-        if self.app.deviceStat['mount']:
+        if self.app.deviceStat["mount"]:
             self.programSatToMount(satName=satName)
         else:
             self.extractSatelliteData(satName=satName)
@@ -331,8 +319,7 @@ class SatTrack(MWidget, SatData):
             self.ui.satTabWidget.setCurrentIndex(1)
 
     def getSatelliteDataFromDatabase(self, tleParams=None):
-        """
-        """
+        """ """
         if tleParams is None:
             return False
 
@@ -341,12 +328,11 @@ class SatTrack(MWidget, SatData):
         return True
 
     def updateOrbit(self):
-        """
-        """
+        """ """
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
             self.ui.stopSatelliteTracking.setEnabled(False)
-            self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', False)
+            self.changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
             return False
 
         now = self.app.mount.obsSite.ts.now()
@@ -355,28 +341,27 @@ class SatTrack(MWidget, SatData):
         return True
 
     def selectStartEnd(self):
-        """
-        """
+        """ """
         if not self.satOrbits:
             return 0, 0
-        if 'rise' not in self.satOrbits[0]:
+        if "rise" not in self.satOrbits[0]:
             return 0, 0
-        if 'settle' not in self.satOrbits[0]:
+        if "settle" not in self.satOrbits[0]:
             return 0, 0
 
         isBefore = self.ui.satBeforeFlip.isChecked()
         isAfter = self.ui.satAfterFlip.isChecked()
-        start = self.satOrbits[0]['rise'].tt
-        end = self.satOrbits[0]['settle'].tt
+        start = self.satOrbits[0]["rise"].tt
+        end = self.satOrbits[0]["settle"].tt
 
         if isBefore and isAfter:
             pass
         elif isBefore and not isAfter:
-            if 'flipLate' in self.satOrbits[0]:
-                end = self.satOrbits[0]['flipLate'].tt
+            if "flipLate" in self.satOrbits[0]:
+                end = self.satOrbits[0]["flipLate"].tt
         elif not isBefore and isAfter:
-            if 'flipEarly' in self.satOrbits[0]:
-                start = self.satOrbits[0]['flipEarly'].tt
+            if "flipEarly" in self.satOrbits[0]:
+                start = self.satOrbits[0]["flipEarly"].tt
         else:
             return 0, 0
 
@@ -415,12 +400,11 @@ class SatTrack(MWidget, SatData):
         return start, end, alt, az
 
     def startProg(self):
-        """
-        """
+        """ """
         self.clearTrackingParameters()
         isReplay = self.ui.trackingReplay.isChecked()
-        t = ('for simulation' if isReplay else '')
-        self.msg.emit(1, 'TLE', 'Program', f'Satellite track data {t}')
+        t = "for simulation" if isReplay else ""
+        self.msg.emit(1, "TLE", "Program", f"Satellite track data {t}")
         start, end = self.selectStartEnd()
         if not start or not end:
             return False
@@ -428,8 +412,8 @@ class SatTrack(MWidget, SatData):
         start, end, alt, az = self.filterHorizon(start, end, alt, az)
 
         if len(alt) == 0:
-            text = 'Program', 'No track data (white), please revise settings'
-            self.msg.emit(2, 'TLE', 'Error', text)
+            text = "Program", "No track data (white), please revise settings"
+            self.msg.emit(2, "TLE", "Error", text)
             return False
 
         factor = int(len(alt) / 900)
@@ -437,40 +421,39 @@ class SatTrack(MWidget, SatData):
         alt = Angle(degrees=np.array_split(alt, factor)[0])
         az = Angle(degrees=np.array_split(az, factor)[0])
 
-        self.changeStyleDynamic(self.ui.progTrajectory, 'running', True)
+        self.changeStyleDynamic(self.ui.progTrajectory, "running", True)
         self.ui.progTrajectory.setEnabled(False)
-        self.ui.progTrajectory.setText('Calculating')
+        self.ui.progTrajectory.setText("Calculating")
         self.app.mount.progTrajectory(start, alt, az, replay=isReplay)
         return True
 
     def updateSatelliteTrackGui(self, params=None):
-        """
-        """
-        title = 'Satellite tracking ' + self.timeZoneString()
+        """ """
+        title = "Satellite tracking " + self.timeZoneString()
         self.ui.satTrackGroup.setTitle(title)
 
         if params is None or isinstance(params, bool):
             return False
 
         if params.jdStart is not None and self.satOrbits:
-            t = self.convertTime(params.jdStart, '%d %b  %H:%M:%S')
+            t = self.convertTime(params.jdStart, "%d %b  %H:%M:%S")
             self.ui.satTrajectoryStart.setText(t)
         else:
-            self.ui.satTrajectoryStart.setText('No transit')
+            self.ui.satTrajectoryStart.setText("No transit")
 
         if params.jdEnd is not None and self.satOrbits:
-            t = self.convertTime(params.jdEnd, '%d %b  %H:%M:%S')
+            t = self.convertTime(params.jdEnd, "%d %b  %H:%M:%S")
             self.ui.satTrajectoryEnd.setText(t)
         else:
-            self.ui.satTrajectoryEnd.setText('No transit')
+            self.ui.satTrajectoryEnd.setText("No transit")
 
         if params.flip and self.satOrbits:
-            self.ui.satTrajectoryFlip.setText('YES')
+            self.ui.satTrajectoryFlip.setText("YES")
         else:
-            self.ui.satTrajectoryFlip.setText('NO')
+            self.ui.satTrajectoryFlip.setText("NO")
 
         if params.message is not None:
-            self.msg.emit(0, 'TLE', 'Message', f'{params.message}')
+            self.msg.emit(0, "TLE", "Message", f"{params.message}")
 
         if params.jdStart is not None and self.satOrbits:
             self.ui.stopSatelliteTracking.setEnabled(True)
@@ -482,60 +465,55 @@ class SatTrack(MWidget, SatData):
         return True
 
     def updateInternalTrackGui(self, params=None):
-        """
-        """
+        """ """
         self.ui.progTrajectory.setEnabled(True)
-        self.ui.progTrajectory.setText('Program trajectory')
+        self.ui.progTrajectory.setText("Program trajectory")
         self.updateSatelliteTrackGui(params)
-        self.msg.emit(1, 'TLE', 'Program', f'Satellite track data ready!')
+        self.msg.emit(1, "TLE", "Program", "Satellite track data ready!")
 
     def startTrack(self):
-        """
-        """
-        if not self.app.deviceStat['mount']:
-            self.msg.emit(2, 'TLE', 'Program', 'Mount is not online')
+        """ """
+        if not self.app.deviceStat["mount"]:
+            self.msg.emit(2, "TLE", "Program", "Mount is not online")
             return False
 
         if self.app.mount.obsSite.status == 5:
             suc = self.app.mount.obsSite.unpark()
             if suc:
-                self.msg.emit(0, 'TLE', 'Command', 'Mount unparked')
+                self.msg.emit(0, "TLE", "Command", "Mount unparked")
             else:
-                self.msg.emit(2, 'TLE', 'Command error',
-                              'Cannot unpark mount')
+                self.msg.emit(2, "TLE", "Command error", "Cannot unpark mount")
 
         self.app.dome.avoidFirstOvershoot()
         suc, message = self.app.mount.satellite.slewTLE()
         if not suc:
-            self.msg.emit(2, 'TLE', 'Command error', f'{message}')
+            self.msg.emit(2, "TLE", "Command error", f"{message}")
             return False
 
-        self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', True)
-        self.msg.emit(0, 'TLE', 'Command ', f'{message}')
+        self.changeStyleDynamic(self.ui.startSatelliteTracking, "running", True)
+        self.msg.emit(0, "TLE", "Command ", f"{message}")
         self.app.mount.satellite.setTrackingOffsets()
         return True
 
     def stopTrack(self):
-        """
-        """
-        if not self.app.deviceStat['mount']:
-            self.msg.emit(2, 'TLE', 'Command', 'Mount is not online')
+        """ """
+        if not self.app.deviceStat["mount"]:
+            self.msg.emit(2, "TLE", "Command", "Mount is not online")
             return False
 
         suc = self.app.mount.obsSite.startTracking()
         if not suc:
-            self.msg.emit(2, 'TLE', 'Command', 'Cannot stop tracking')
+            self.msg.emit(2, "TLE", "Command", "Cannot stop tracking")
             return False
 
-        self.ui.startSatelliteTracking.setText('Start satellite tracking')
-        self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', False)
-        self.msg.emit(0, 'TLE', 'Command', 'Stopped tracking')
+        self.ui.startSatelliteTracking.setText("Start satellite tracking")
+        self.changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
+        self.msg.emit(0, "TLE", "Command", "Stopped tracking")
         return suc
 
     def toggleTrackingOffset(self, obs):
-        """
-        """
-        if not self.app.mount.firmware.checkNewer('3'):
+        """ """
+        if not self.app.mount.firmware.checkNewer("3"):
             return False
 
         if obs.status == 10:
@@ -545,13 +523,12 @@ class SatTrack(MWidget, SatData):
         return True
 
     def followMount(self, obs):
-        """
-        """
+        """ """
         TLESCK = {
-            'V': 'is slewing to transit start',
-            'P': 'is waiting for satellite',
-            'S': 'is catching satellite',
-            'T': 'is tracking satellite',
+            "V": "is slewing to transit start",
+            "P": "is waiting for satellite",
+            "S": "is catching satellite",
+            "T": "is tracking satellite",
         }
 
         status = obs.status
@@ -559,11 +536,11 @@ class SatTrack(MWidget, SatData):
             return False
         if not self.ui.domeAutoFollowSat.isChecked():
             return False
-        if not self.app.deviceStat['dome']:
+        if not self.app.deviceStat["dome"]:
             return False
 
         stat = obs.statusSat
-        statText = (TLESCK[stat] if stat in TLESCK else '')
+        statText = TLESCK[stat] if stat in TLESCK else ""
         self.ui.startSatelliteTracking.setText(statText)
 
         azimuth = obs.Az.degrees
@@ -572,14 +549,13 @@ class SatTrack(MWidget, SatData):
         return True
 
     def setTrackingOffsets(self):
-        """
-        """
+        """ """
         valT = self.ui.satOffTime.value()
         valR = self.ui.satOffRa.value()
         valD = self.ui.satOffDec.value()
-        suc = self.app.mount.satellite.setTrackingOffsets(Time=valT,
-                                                          RA=valR,
-                                                          DECcorr=valD)
+        suc = self.app.mount.satellite.setTrackingOffsets(
+            Time=valT, RA=valR, DECcorr=valD
+        )
         if not suc:
-            self.msg.emit(2, 'TLE', 'Command error', 'Cannot change offset')
+            self.msg.emit(2, "TLE", "Command error", "Cannot change offset")
         return suc

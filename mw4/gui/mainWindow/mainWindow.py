@@ -35,9 +35,9 @@ from mountcontrol.obsSite import ObsSite
 
 
 class MainWindow(MWidget):
-    """
-    """
-    __all__ = ['MainWindow']
+    """ """
+
+    __all__ = ["MainWindow"]
 
     def __init__(self, app):
         super().__init__()
@@ -48,7 +48,7 @@ class MainWindow(MWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
+        self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
         self.activateWindow()
 
         self.externalWindows = ExternalWindows(self)
@@ -57,24 +57,24 @@ class MainWindow(MWidget):
         self.satStatus = False
         self.gameControllerRunning = False
         self.deviceStatGui = {
-            'dome': self.ui.domeConnected,
-            'camera': self.ui.cameraConnected,
-            'refraction': self.ui.refractionConnected,
-            'plateSolve': self.ui.plateSolveConnected,
-            'mount': self.ui.mountConnected,
+            "dome": self.ui.domeConnected,
+            "camera": self.ui.cameraConnected,
+            "refraction": self.ui.refractionConnected,
+            "plateSolve": self.ui.plateSolveConnected,
+            "mount": self.ui.mountConnected,
         }
         self.smartTabs = {
-            'Power': {
-                'statID': 'power',
-                'tab': self.ui.toolsTabWidget,
+            "Power": {
+                "statID": "power",
+                "tab": self.ui.toolsTabWidget,
             },
-            'Relay': {
-                'statID': 'relay',
-                'tab': self.ui.toolsTabWidget,
+            "Relay": {
+                "statID": "relay",
+                "tab": self.ui.toolsTabWidget,
             },
-            'RelaySett': {
-                'statID': 'relay',
-                'tab': self.ui.settingsTabWidget,
+            "RelaySett": {
+                "statID": "relay",
+                "tab": self.ui.settingsTabWidget,
             },
         }
 
@@ -89,7 +89,7 @@ class MainWindow(MWidget):
         self.ui.addFrom.clicked.connect(self.addProfileGUI)
         self.ui.saveConfigAs.clicked.connect(self.saveConfigAs)
         self.ui.saveConfig.clicked.connect(self.saveConfig)
-        self.app.seeingWeather.b = self.ui.label_b.property('a')
+        self.app.seeingWeather.b = self.ui.label_b.property("a")
         self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
         self.ui.tabsMovable.clicked.connect(self.enableTabsMovable)
         self.app.update1s.connect(self.updateTime)
@@ -101,27 +101,26 @@ class MainWindow(MWidget):
         self.app.update1s.connect(self.updateDeviceStats)
 
     def initConfig(self) -> None:
-        """
-        """
+        """ """
         config = self.app.config
-        colSet = config.get('colorSet', 0)
+        colSet = config.get("colorSet", 0)
         Styles.colorSet = colSet
         self.ui.colorSet.setCurrentIndex(colSet)
         self.setStyleSheet(self.mw4Style)
-        self.ui.profile.setText(config.get('profileName'))
-        if 'mainW' not in config:
-            config['mainW'] = {}
-        config = config['mainW']
+        self.ui.profile.setText(config.get("profileName"))
+        if "mainW" not in config:
+            config["mainW"] = {}
+        config = config["mainW"]
         self.positionWindow(config)
-        self.setTabAndIndex(self.ui.mainTabWidget, config, 'orderMain')
-        self.setTabAndIndex(self.ui.mountTabWidget, config, 'orderMount')
-        self.setTabAndIndex(self.ui.imagingTabWidget, config, 'orderImaging')
-        self.setTabAndIndex(self.ui.modelingTabWidget, config, 'orderModeling')
-        self.setTabAndIndex(self.ui.manageTabWidget, config, 'orderManage')
-        self.setTabAndIndex(self.ui.settingsTabWidget, config, 'orderSettings')
-        self.setTabAndIndex(self.ui.toolsTabWidget, config, 'orderTools')
-        self.setTabAndIndex(self.ui.satTabWidget, config, 'orderSatellite')
-        self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
+        self.setTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
+        self.setTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
+        self.setTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")
+        self.setTabAndIndex(self.ui.modelingTabWidget, config, "orderModeling")
+        self.setTabAndIndex(self.ui.manageTabWidget, config, "orderManage")
+        self.setTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
+        self.setTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
+        self.setTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
+        self.changeStyleDynamic(self.ui.mountConnected, "color", "gray")
         self.mainWindowAddons.initConfig()
         self.smartTabGui()
         self.enableTabsMovable()
@@ -130,53 +129,50 @@ class MainWindow(MWidget):
         self.externalWindows.showExtendedWindows()
 
     def storeConfig(self) -> None:
-        """
-        """
+        """ """
         config = self.app.config
-        config['colorSet'] = self.ui.colorSet.currentIndex()
-        config['profileName'] = self.ui.profile.text()
-        if 'mainW' not in config:
-            config['mainW'] = {}
+        config["colorSet"] = self.ui.colorSet.currentIndex()
+        config["profileName"] = self.ui.profile.text()
+        if "mainW" not in config:
+            config["mainW"] = {}
         else:
-            config['mainW'].clear()
-        config = config['mainW']
+            config["mainW"].clear()
+        config = config["mainW"]
 
-        config['winPosX'] = self.pos().x()
-        config['winPosY'] = self.pos().y()
-        self.getTabAndIndex(self.ui.mainTabWidget, config, 'orderMain')
-        self.getTabAndIndex(self.ui.mountTabWidget, config, 'orderMount')
-        self.getTabAndIndex(self.ui.imagingTabWidget, config, 'orderImaging')
-        self.getTabAndIndex(self.ui.modelingTabWidget, config, 'orderModeling')
-        self.getTabAndIndex(self.ui.manageTabWidget, config, 'orderManage')
-        self.getTabAndIndex(self.ui.settingsTabWidget, config, 'orderSettings')
-        self.getTabAndIndex(self.ui.toolsTabWidget, config, 'orderTools')
-        self.getTabAndIndex(self.ui.satTabWidget, config, 'orderSatellite')
+        config["winPosX"] = self.pos().x()
+        config["winPosY"] = self.pos().y()
+        self.getTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
+        self.getTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
+        self.getTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")
+        self.getTabAndIndex(self.ui.modelingTabWidget, config, "orderModeling")
+        self.getTabAndIndex(self.ui.manageTabWidget, config, "orderManage")
+        self.getTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
+        self.getTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
+        self.getTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
         self.mainWindowAddons.storeConfig()
         self.externalWindows.storeConfig()
 
     def setupIcons(self) -> None:
-        """
-        """
-        self.wIcon(self.ui.saveConfigAs, 'save')
-        self.wIcon(self.ui.loadFrom, 'load')
-        self.wIcon(self.ui.addFrom, 'load')
-        self.wIcon(self.ui.saveConfig, 'save')
-        self.wIcon(self.ui.saveConfigQuit, 'save')
-        self.wIcon(self.ui.mountOn, 'power-on')
-        self.wIcon(self.ui.mountOff, 'power-off')
-        self.wIcon(self.ui.stop, 'hand')
-        self.wIcon(self.ui.tracking, 'target')
-        self.wIcon(self.ui.followSat, 'satellite')
-        self.wIcon(self.ui.flipMount, 'flip')
-        self.wIcon(self.ui.setSiderealTracking, 'sidereal')
-        self.wIcon(self.ui.setLunarTracking, 'lunar')
-        self.wIcon(self.ui.setSolarTracking, 'solar')
-        self.wIcon(self.ui.park, 'park')
+        """ """
+        self.wIcon(self.ui.saveConfigAs, "save")
+        self.wIcon(self.ui.loadFrom, "load")
+        self.wIcon(self.ui.addFrom, "load")
+        self.wIcon(self.ui.saveConfig, "save")
+        self.wIcon(self.ui.saveConfigQuit, "save")
+        self.wIcon(self.ui.mountOn, "power-on")
+        self.wIcon(self.ui.mountOff, "power-off")
+        self.wIcon(self.ui.stop, "hand")
+        self.wIcon(self.ui.tracking, "target")
+        self.wIcon(self.ui.followSat, "satellite")
+        self.wIcon(self.ui.flipMount, "flip")
+        self.wIcon(self.ui.setSiderealTracking, "sidereal")
+        self.wIcon(self.ui.setLunarTracking, "lunar")
+        self.wIcon(self.ui.setSolarTracking, "solar")
+        self.wIcon(self.ui.park, "park")
         self.mainWindowAddons.setupIcons()
 
     def updateColorSet(self) -> None:
-        """
-        """
+        """ """
         Styles.colorSet = self.ui.colorSet.currentIndex()
         self.setStyleSheet(self.mw4Style)
         self.setupIcons()
@@ -184,8 +180,7 @@ class MainWindow(MWidget):
         self.app.colorChange.emit()
 
     def enableTabsMovable(self) -> None:
-        """
-        """
+        """ """
         isMovable = self.ui.tabsMovable.isChecked()
         self.ui.mainTabWidget.setMovable(isMovable)
         self.ui.mountTabWidget.setMovable(isMovable)
@@ -198,46 +193,43 @@ class MainWindow(MWidget):
         self.app.tabsMovable.emit(isMovable)
 
     def closeEvent(self, closeEvent) -> None:
-        """
-        """
+        """ """
         self.gameControllerRunning = False
         self.app.timer0_1s.stop()
-        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
+        self.changeStyleDynamic(self.ui.pauseModel, "pause", False)
         self.externalWindows.closeExtendedWindows()
-        self.mainWindowAddons.addons['SettDevice'].stopDrivers()
+        self.mainWindowAddons.addons["SettDevice"].stopDrivers()
         self.threadPool.waitForDone(1000)
         super().closeEvent(closeEvent)
         self.app.quit()
 
     def quitSave(self) -> None:
-        """
-        """
+        """ """
         self.app.storeConfig()
         self.saveConfig()
         self.close()
 
     def updateMountConnStat(self, status: bool) -> None:
-        """
-        """
+        """ """
         hasSim = packageConfig.isAvailable
-        self.app.deviceStat['mount'] = status
+        self.app.deviceStat["mount"] = status
 
         if status and hasSim:
             self.ui.mountConnected.setEnabled(status)
-            self.ui.mountConnected.setText('Mount 3D')
+            self.ui.mountConnected.setText("Mount 3D")
         elif status:
-            self.ui.mountConnected.setText('Mount')
+            self.ui.mountConnected.setText("Mount")
         elif not status and hasSim:
-            self.ui.mountConnected.setText('Mount')
+            self.ui.mountConnected.setText("Mount")
 
     def smartFunctionGui(self) -> None:
-        """
-        """
-        isMountReady = bool(self.app.deviceStat.get('mount'))
-        isDomeReady = bool(self.app.deviceStat.get('dome'))
+        """ """
+        isMountReady = bool(self.app.deviceStat.get("mount"))
+        isDomeReady = bool(self.app.deviceStat.get("dome"))
         isModelingReady = all(
-            bool(self.app.deviceStat.get(x)) for x in ['mount', 'camera', 'plateSolve'])
-        isPause = self.ui.pauseModel.property('pause')
+            bool(self.app.deviceStat.get(x)) for x in ["mount", "camera", "plateSolve"]
+        )
+        isPause = self.ui.pauseModel.property("pause")
 
         if isModelingReady and self.app.data.buildP and not isPause:
             self.ui.runModel.setEnabled(True)
@@ -286,21 +278,20 @@ class MainWindow(MWidget):
             self.ui.useDomeAz.setEnabled(False)
 
     def smartTabGui(self) -> None:
-        """
-        """
+        """ """
         tabChanged = False
         for key, tab in self.smartTabs.items():
-            tabIndex = self.getTabIndex(self.smartTabs[key]['tab'], key)
-            tabStatus = self.smartTabs[key]['tab'].isTabVisible(tabIndex)
+            tabIndex = self.getTabIndex(self.smartTabs[key]["tab"], key)
+            tabStatus = self.smartTabs[key]["tab"].isTabVisible(tabIndex)
 
-            stat = bool(self.app.deviceStat.get(self.smartTabs[key]['statID']))
-            self.smartTabs[key]['tab'].setTabVisible(tabIndex, stat)
+            stat = bool(self.app.deviceStat.get(self.smartTabs[key]["statID"]))
+            self.smartTabs[key]["tab"].setTabVisible(tabIndex, stat)
             actChanged = tabStatus != stat
             tabChanged = tabChanged or actChanged
 
-        tabIndex = self.getTabIndex(self.ui.imagingTabWidget, 'reference')
+        tabIndex = self.getTabIndex(self.ui.imagingTabWidget, "reference")
         self.ui.imagingTabWidget.setTabVisible(tabIndex, packageConfig.isReference)
-        tabIndex = self.getTabIndex(self.ui.toolsTabWidget, 'AnalyseFlexure')
+        tabIndex = self.getTabIndex(self.ui.toolsTabWidget, "AnalyseFlexure")
         self.ui.toolsTabWidget.setTabVisible(tabIndex, packageConfig.isAnalyse)
 
         # redraw tabs only when a change occurred. this is necessary, because
@@ -312,56 +303,51 @@ class MainWindow(MWidget):
             ui.setStyleSheet(ui.styleSheet())
 
     def setEnvironDeviceStats(self) -> None:
-        """
-        """
+        """ """
         refracOn = self.app.mount.setting.statusRefraction == 1
         isManual = self.ui.refracManual.isChecked()
         isTabEnabled = self.ui.showTabEnviron.isChecked()
         if not refracOn or not isTabEnabled:
-            self.app.deviceStat['refraction'] = None
-            self.ui.refractionConnected.setText('Refraction')
+            self.app.deviceStat["refraction"] = None
+            self.ui.refractionConnected.setText("Refraction")
         elif isManual:
-            self.ui.refractionConnected.setText('Refrac Manu')
-            self.app.deviceStat['refraction'] = True
+            self.ui.refractionConnected.setText("Refrac Manu")
+            self.app.deviceStat["refraction"] = True
         else:
-            self.ui.refractionConnected.setText('Refrac Auto')
+            self.ui.refractionConnected.setText("Refrac Auto")
             isSource = self.app.deviceStat.get(
-                self.mainWindowAddons.addons['EnvironWeather'].refractionSource, False)
-            self.app.deviceStat['refraction'] = isSource
+                self.mainWindowAddons.addons["EnvironWeather"].refractionSource, False
+            )
+            self.app.deviceStat["refraction"] = isSource
 
     def updateDeviceStats(self) -> None:
-        """
-        """
+        """ """
         for device, ui in self.deviceStatGui.items():
             if self.app.deviceStat.get(device) is None:
-                self.changeStyleDynamic(ui, 'color', 'gray')
+                self.changeStyleDynamic(ui, "color", "gray")
             elif self.app.deviceStat[device]:
-                self.changeStyleDynamic(ui, 'color', 'green')
+                self.changeStyleDynamic(ui, "color", "green")
             else:
-                self.changeStyleDynamic(ui, 'color', 'red')
+                self.changeStyleDynamic(ui, "color", "red")
 
-        isMount = self.app.deviceStat.get('mount', False)
-        self.changeStyleDynamic(self.ui.mountOn, 'running', isMount)
-        self.changeStyleDynamic(self.ui.mountOff, 'running', not isMount)
+        isMount = self.app.deviceStat.get("mount", False)
+        self.changeStyleDynamic(self.ui.mountOn, "running", isMount)
+        self.changeStyleDynamic(self.ui.mountOff, "running", not isMount)
 
     def updatePlateSolveStatus(self, text: str) -> None:
-        """
-        """
+        """ """
         self.ui.plateSolveText.setText(text)
 
     def updateDomeStatus(self, text: str) -> None:
-        """
-        """
+        """ """
         self.ui.domeText.setText(text)
 
     def updateCameraStatus(self, text: str) -> None:
-        """
-        """
+        """ """
         self.ui.cameraText.setText(text)
 
     def updateControllerStatus(self) -> None:
-        """
-        """
+        """ """
         gcStatus = self.gameControllerRunning
         self.ui.controller1.setEnabled(gcStatus)
         self.ui.controller2.setEnabled(gcStatus)
@@ -370,12 +356,11 @@ class MainWindow(MWidget):
         self.ui.controller5.setEnabled(gcStatus)
 
     def updateThreadAndOnlineStatus(self) -> None:
-        """
-        """
+        """ """
         if self.ui.isOnline.isChecked():
-            mode = 'Online'
+            mode = "Online"
         else:
-            mode = 'Offline'
+            mode = "Offline"
 
         moon = self.ui.moonPhaseIllumination.text()
 
@@ -384,63 +369,59 @@ class MainWindow(MWidget):
 
         activeCount = self.threadPool.activeThreadCount()
 
-        diskUsage = shutil.disk_usage(self.app.mwGlob['workDir'])
+        diskUsage = shutil.disk_usage(self.app.mwGlob["workDir"])
         free = int(diskUsage[2] / diskUsage[0] * 100)
 
-        t = f'{mode} - {twilight} - Moon: {moon}%'
-        t += f' - Threads:{activeCount:2d} / 30 - Disk free: {free}%'
+        t = f"{mode} - {twilight} - Moon: {moon}%"
+        t += f" - Threads:{activeCount:2d} / 30 - Disk free: {free}%"
         self.ui.statusOnline.setTitle(t)
 
     def updateTime(self) -> None:
-        """
-        """
-        self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
+        """ """
+        self.ui.timeComputer.setText(datetime.now().strftime("%H:%M:%S"))
         tzT = time.tzname[1] if time.daylight else time.tzname[0]
-        t = f'TZ: {tzT}'
+        t = f"TZ: {tzT}"
         self.ui.statusTime.setTitle(t)
 
     def updateStatusGUI(self, obs: ObsSite) -> None:
-        """
-        """
+        """ """
         if obs.statusText() is not None:
             self.ui.statusText.setText(obs.statusText())
         else:
-            self.ui.statusText.setText('-')
+            self.ui.statusText.setText("-")
 
         if self.app.mount.obsSite.status == 0:
-            self.changeStyleDynamic(self.ui.tracking, 'running', True)
+            self.changeStyleDynamic(self.ui.tracking, "running", True)
         else:
-            self.changeStyleDynamic(self.ui.tracking, 'running', False)
+            self.changeStyleDynamic(self.ui.tracking, "running", False)
 
         if self.app.mount.obsSite.status == 5:
-            self.changeStyleDynamic(self.ui.park, 'running', True)
+            self.changeStyleDynamic(self.ui.park, "running", True)
         else:
-            self.changeStyleDynamic(self.ui.park, 'running', False)
+            self.changeStyleDynamic(self.ui.park, "running", False)
 
         if self.app.mount.obsSite.status == 1:
-            self.changeStyleDynamic(self.ui.stop, 'running', True)
+            self.changeStyleDynamic(self.ui.stop, "running", True)
         else:
-            self.changeStyleDynamic(self.ui.stop, 'running', False)
+            self.changeStyleDynamic(self.ui.stop, "running", False)
 
         if self.app.mount.obsSite.status == 10 and not self.satStatus:
-            self.app.playSound.emit('SatStartTracking')
+            self.app.playSound.emit("SatStartTracking")
             self.satStatus = True
         elif self.app.mount.obsSite.status != 10:
             self.satStatus = False
 
     @staticmethod
     def checkExtension(filePath: str, ext: str) -> str:
-        """
-        """
+        """ """
         if not filePath.endswith(ext):
             filePath += ext
         return filePath
 
     def switchProfile(self, config: dict) -> None:
-        """
-        """
+        """ """
         self.externalWindows.closeExtendedWindows()
-        self.mainWindowAddons.addons['SettDevice'].stopDrivers()
+        self.mainWindowAddons.addons["SettDevice"].stopDrivers()
         self.app.config = config
         topo = self.app.initConfig()
         self.app.mount.obsSite.location = topo
@@ -448,49 +429,47 @@ class MainWindow(MWidget):
         self.externalWindows.showExtendedWindows()
 
     def loadProfileGUI(self) -> bool:
-        """
-        """
-        folder = self.app.mwGlob['configDir']
+        """ """
+        folder = self.app.mwGlob["configDir"]
         loadFilePath, name, ext = self.openFile(
-            self, 'Open config file', folder, 'Config files (*.cfg)')
+            self, "Open config file", folder, "Config files (*.cfg)"
+        )
         if not name:
             return False
 
-        config = loadProfile(configDir=self.app.mwGlob['configDir'], name=name)
+        config = loadProfile(configDir=self.app.mwGlob["configDir"], name=name)
         if config:
             self.ui.profile.setText(name)
-            self.msg.emit(1, 'System', 'Profile', f'loaded {name}')
+            self.msg.emit(1, "System", "Profile", f"loaded {name}")
         else:
-            self.msg.emit(2, 'System', 'Profile error',
-                          f'{name}] cannot no be loaded')
+            self.msg.emit(2, "System", "Profile error", f"{name}] cannot no be loaded")
             return False
 
         self.switchProfile(config)
         return True
 
     def addProfileGUI(self) -> bool:
-        """
-        """
+        """ """
         config = self.app.config
-        folder = self.app.mwGlob['configDir']
+        folder = self.app.mwGlob["configDir"]
         loadFilePath, name, ext = self.openFile(
-            self, 'Open add-on config file', folder, 'Config files (*.cfg)')
+            self, "Open add-on config file", folder, "Config files (*.cfg)"
+        )
         if not name:
-            self.ui.profileAdd.setText('-')
+            self.ui.profileAdd.setText("-")
             return False
 
         self.storeConfig()
         self.app.storeConfig()
-        configAdd = loadProfile(configDir=self.app.mwGlob['configDir'], name=name)
+        configAdd = loadProfile(configDir=self.app.mwGlob["configDir"], name=name)
         if configAdd:
             self.ui.profileAdd.setText(name)
             profile = self.ui.profile.text()
-            self.msg.emit(1, 'System', 'Profile', f'Base: {profile}')
-            self.msg.emit(1, 'System', 'Profile', f'Add : {name}')
+            self.msg.emit(1, "System", "Profile", f"Base: {profile}")
+            self.msg.emit(1, "System", "Profile", f"Add : {name}")
         else:
-            self.ui.profileAdd.setText('-')
-            self.msg.emit(2, 'System', 'Profile error',
-                          f'{name}] cannot no be loaded')
+            self.ui.profileAdd.setText("-")
+            self.msg.emit(2, "System", "Profile error", f"{name}] cannot no be loaded")
             return False
 
         config = blendProfile(config, configAdd)
@@ -498,43 +477,41 @@ class MainWindow(MWidget):
         return True
 
     def saveConfigAs(self) -> bool:
-        """
-        """
-        folder = self.app.mwGlob['configDir']
+        """ """
+        folder = self.app.mwGlob["configDir"]
         saveFilePath, name, ext = self.saveFile(
-            self, 'Save config file', folder, 'Config files (*.cfg)',
-            enableDir=False)
+            self, "Save config file", folder, "Config files (*.cfg)", enableDir=False
+        )
         if not name:
             return False
 
         self.storeConfig()
         self.app.storeConfig()
-        suc = saveProfile(configDir=self.app.mwGlob['configDir'],
-                          name=name,
-                          config=self.app.config)
+        suc = saveProfile(
+            configDir=self.app.mwGlob["configDir"], name=name, config=self.app.config
+        )
         if suc:
             self.ui.profile.setText(name)
-            self.msg.emit(1, 'System', 'Profile', f'saved {name}')
-            self.ui.profileAdd.setText('-')
+            self.msg.emit(1, "System", "Profile", f"saved {name}")
+            self.ui.profileAdd.setText("-")
         else:
-            self.msg.emit(2, 'System', 'Profile error',
-                          f'{name}] cannot no be saved')
+            self.msg.emit(2, "System", "Profile error", f"{name}] cannot no be saved")
         return True
 
     def saveConfig(self) -> bool:
-        """
-        """
+        """ """
         self.storeConfig()
         self.app.storeConfig()
-        suc = saveProfile(configDir=self.app.mwGlob['configDir'],
-                          name=self.ui.profile.text(),
-                          config=self.app.config)
+        suc = saveProfile(
+            configDir=self.app.mwGlob["configDir"],
+            name=self.ui.profile.text(),
+            config=self.app.config,
+        )
         if suc:
-            self.ui.profileAdd.setText('-')
-            self.msg.emit(1, 'System', 'Profile', 'Actual profile saved')
+            self.ui.profileAdd.setText("-")
+            self.msg.emit(1, "System", "Profile", "Actual profile saved")
         else:
-            self.msg.emit(2, 'System', 'Profile',
-                          'Actual profile cannot not be saved')
+            self.msg.emit(2, "System", "Profile", "Actual profile cannot not be saved")
         return suc
 
     def remoteCommand(self, command: str) -> None:
@@ -543,12 +520,12 @@ class MainWindow(MWidget):
         :param command:
         :return: True for test purpose
         """
-        if command == 'shutdown':
+        if command == "shutdown":
             self.quitSave()
-            self.msg.emit(2, 'System', 'Remote', 'Shutdown MW4 remotely')
-        elif command == 'shutdown mount':
-            self.mainWindowAddons.addons['SettMount'].mountShutdown()
-            self.msg.emit(2, 'System', 'Remote', 'Shutdown MW4 remotely')
-        elif command == 'boot mount':
-            self.mainWindowAddons.addons['SettMount'].mountBoot()
-            self.msg.emit(2, 'System', 'Remote', 'Boot Mount remotely')
+            self.msg.emit(2, "System", "Remote", "Shutdown MW4 remotely")
+        elif command == "shutdown mount":
+            self.mainWindowAddons.addons["SettMount"].mountShutdown()
+            self.msg.emit(2, "System", "Remote", "Shutdown MW4 remotely")
+        elif command == "boot mount":
+            self.mainWindowAddons.addons["SettMount"].mountBoot()
+            self.msg.emit(2, "System", "Remote", "Boot Mount remotely")

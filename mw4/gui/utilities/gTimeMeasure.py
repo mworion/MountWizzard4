@@ -38,6 +38,6 @@ class TimeMeasure(pg.AxisItem):
         for x in values:
             if x < 0:
                 continue
-            lStr = dt.fromtimestamp(x).strftime('%H:%M:%S')
+            lStr = dt.fromtimestamp(x).strftime("%H:%M:%S")
             ticks.append(lStr)
         return ticks

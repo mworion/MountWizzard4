@@ -15,7 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import json
 
 # external packages
@@ -29,13 +28,13 @@ from base.tpool import Worker
 
 
 class NINAClass(DriverData, QObject):
-    """
-    """
+    """ """
+
     NINA_TIMEOUT = 3
-    HOST_ADDR = 'localhost'
+    HOST_ADDR = "localhost"
     PORT = 59590
-    PROTOCOL = 'http'
-    BASE_URL = f'{PROTOCOL}://{HOST_ADDR}:{PORT}'
+    PROTOCOL = "http"
+    BASE_URL = f"{PROTOCOL}://{HOST_ADDR}:{PORT}"
 
     def __init__(self, app=None, data=None):
         super().__init__()
@@ -45,10 +44,10 @@ class NINAClass(DriverData, QObject):
         self.data = data
         self.updateRate = 1000
         self.loadConfig = False
-        self._deviceName = ''
+        self._deviceName = ""
         self.defaultConfig = {
-            'deviceList': ['N.I.N.A.'],
-            'deviceName': 'N.I.N.A.',
+            "deviceList": ["N.I.N.A."],
+            "deviceName": "N.I.N.A.",
         }
         self.signalRS = RemoteDeviceShutdown()
 
@@ -79,33 +78,37 @@ class NINAClass(DriverData, QObject):
         :return:
         """
         try:
-            t = f'N.I.N.A.: [{self.BASE_URL}/{valueProp}?format=json]'
+            t = f"N.I.N.A.: [{self.BASE_URL}/{valueProp}?format=json]"
             if params is not None:
                 t += f' data: [{bytes(json.dumps(params).encode("utf-8"))}]'
-                self.log.trace('POST ' + t)
-                response = requests.post(f'{self.BASE_URL}/{valueProp}?format=json',
-                                         json=params,
-                                         timeout=self.NINA_TIMEOUT)
+                self.log.trace("POST " + t)
+                response = requests.post(
+                    f"{self.BASE_URL}/{valueProp}?format=json",
+                    json=params,
+                    timeout=self.NINA_TIMEOUT,
+                )
             else:
-                self.log.trace('GET ' + t)
-                response = requests.get(f'{self.BASE_URL}/{valueProp}?format=json',
-                                        timeout=self.NINA_TIMEOUT)
+                self.log.trace("GET " + t)
+                response = requests.get(
+                    f"{self.BASE_URL}/{valueProp}?format=json",
+                    timeout=self.NINA_TIMEOUT,
+                )
         except requests.exceptions.Timeout:
-            self.log.debug('Request N.I.N.A. timeout error')
+            self.log.debug("Request N.I.N.A. timeout error")
             return None
         except requests.exceptions.ConnectionError:
-            self.log.error('Request N.I.N.A. connection error')
+            self.log.error("Request N.I.N.A. connection error")
             return None
         except Exception as e:
-            self.log.error(f'Request N.I.N.A. error: [{e}]')
+            self.log.error(f"Request N.I.N.A. error: [{e}]")
             return None
 
         if response.status_code != 200:
-            t = f'Request N.I.N.A. response invalid: [{response.status_code}]'
+            t = f"Request N.I.N.A. response invalid: [{response.status_code}]"
             self.log.warning(t)
             return None
 
-        self.log.trace(f'Request N.I.N.A. response: [{response.json()}]')
+        self.log.trace(f"Request N.I.N.A. response: [{response.json()}]")
         response = response.json()
         return response
 
@@ -113,59 +116,58 @@ class NINAClass(DriverData, QObject):
         """
         :return:
         """
-        devName = self.deviceName.replace(' ', '%20')
-        prop = f'connectdevice/{self.DEVICE_TYPE}/{devName}'
+        devName = self.deviceName.replace(" ", "%20")
+        prop = f"connectdevice/{self.DEVICE_TYPE}/{devName}"
         response = self.requestProperty(prop)
         if response is None:
             return False
 
-        return response.get('Success', '')
+        return response.get("Success", "")
 
     def disconnectDevice(self):
         """
         :return:
         """
-        prop = f'disconnectdevice/{self.DEVICE_TYPE}'
+        prop = f"disconnectdevice/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
         if response is None:
             return False
 
-        return response.get('Success', '')
+        return response.get("Success", "")
 
     def enumerateDevice(self):
         """
         :return:
         """
-        prop = f'enumdevices/{self.DEVICE_TYPE}'
+        prop = f"enumdevices/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
         if response is None:
             return []
 
-        return response.get('Devices', '')
+        return response.get("Devices", "")
 
     def workerConnectDevice(self):
         """
         :return: success of reconnecting to server
         """
-        if self.deviceName == 'N.I.N.A. controlled':
+        if self.deviceName == "N.I.N.A. controlled":
             return True
 
         for retry in range(0, 20):
             suc = self.connectDevice()
             if suc:
-                t = f'[{self.deviceName}] connected, [{retry}] retries'
+                t = f"[{self.deviceName}] connected, [{retry}] retries"
                 self.log.debug(t)
                 break
             else:
-                t = f' [{self.deviceName}] Connection retry: [{retry}]'
+                t = f" [{self.deviceName}] Connection retry: [{retry}]"
                 self.log.info(t)
 
         if suc:
-            t = f'[{self.deviceName}] connected'
+            t = f"[{self.deviceName}] connected"
             self.log.debug(t)
         else:
-            self.msg.emit(2, 'N.I.N.A.', 'Connect error',
-                          f'{self.deviceName}')
+            self.msg.emit(2, "N.I.N.A.", "Connect error", f"{self.deviceName}")
             self.deviceConnected = False
             self.serverConnected = False
         return suc
@@ -218,33 +220,32 @@ class NINAClass(DriverData, QObject):
         """
         :return: success
         """
-        prop = f'devicestatus/{self.DEVICE_TYPE}'
+        prop = f"devicestatus/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
 
         if response is None:
             return False
 
-        state = response.get('State', -1)
-        self.storePropertyToData(state, 'Device.Status')
+        state = response.get("State", -1)
+        self.storePropertyToData(state, "Device.Status")
         if state == 3:
-            self.storePropertyToData('integrating downloading image is ready',
-                                     'Device.Message')
+            self.storePropertyToData(
+                "integrating downloading image is ready", "Device.Message"
+            )
         elif state == 0:
-            self.storePropertyToData('IDLE', 'Device.Message')
+            self.storePropertyToData("IDLE", "Device.Message")
 
         if state == 5:
             if self.deviceConnected:
                 self.deviceConnected = False
-                self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-                self.msg.emit(0, 'N.I.N.A.', 'Device remove',
-                              f'{self.deviceName}')
+                self.signals.deviceDisconnected.emit(f"{self.deviceName}")
+                self.msg.emit(0, "N.I.N.A.", "Device remove", f"{self.deviceName}")
         else:
             if not self.deviceConnected:
                 self.deviceConnected = True
                 self.getInitialConfig()
-                self.signals.deviceConnected.emit(f'{self.deviceName}')
-                self.msg.emit(0, 'N.I.N.A.', 'Device found',
-                              f'{self.deviceName}')
+                self.signals.deviceConnected.emit(f"{self.deviceName}")
+                self.msg.emit(0, "N.I.N.A.", "Device found", f"{self.deviceName}")
         return True
 
     def pollStatus(self):
@@ -274,14 +275,13 @@ class NINAClass(DriverData, QObject):
         :return: true for test purpose
         """
         self.stopTimer()
-        if self.deviceName != 'N.I.N.A. controlled':
+        if self.deviceName != "N.I.N.A. controlled":
             self.disconnectDevice()
         self.deviceConnected = False
         self.serverConnected = False
-        self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-        self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
-        self.msg.emit(0, 'N.I.N.A.', 'Device remove',
-                      f'{self.deviceName}')
+        self.signals.deviceDisconnected.emit(f"{self.deviceName}")
+        self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
+        self.msg.emit(0, "N.I.N.A.", "Device remove", f"{self.deviceName}")
         return True
 
     def discoverDevices(self):

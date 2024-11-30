@@ -26,17 +26,18 @@ class QCustomTableWidgetItem(QTableWidgetItem):
     This class reimplements the comparison for item, which are normally float
     values as the standard sorting in this item only supports strings.
     """
+
     def __init__(self, value):
         super().__init__(value)
 
     def __lt__(self, other):
         selfData = self.data(Qt.ItemDataRole.EditRole)
-        if selfData == '':
+        if selfData == "":
             selfDataValue = 99
         else:
             selfDataValue = float(selfData)
         otherData = other.data(Qt.ItemDataRole.EditRole)
-        if otherData == '':
+        if otherData == "":
             otherDataValue = 99
         else:
             otherDataValue = float(otherData)

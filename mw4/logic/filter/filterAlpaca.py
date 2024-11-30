@@ -23,9 +23,9 @@ from base.alpacaClass import AlpacaClass
 
 
 class FilterAlpaca(AlpacaClass):
-    """
-    """
-    __all__ = ['FilterAlpaca']
+    """ """
+
+    __all__ = ["FilterAlpaca"]
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data)
@@ -37,14 +37,14 @@ class FilterAlpaca(AlpacaClass):
         :return: true for test purpose
         """
         super().workerGetInitialConfig()
-        names = self.getAlpacaProperty('names')
+        names = self.getAlpacaProperty("names")
         if names is None:
             return False
 
         for i, name in enumerate(names):
             if name is None:
                 continue
-            self.data[f'FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}'] = name
+            self.data[f"FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}"] = name
 
         return True
 
@@ -55,11 +55,11 @@ class FilterAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        position = self.getAlpacaProperty('position')
+        position = self.getAlpacaProperty("position")
         if position == -1 or position is None:
             return False
 
-        self.storePropertyToData(position, 'FILTER_SLOT.FILTER_SLOT_VALUE')
+        self.storePropertyToData(position, "FILTER_SLOT.FILTER_SLOT_VALUE")
         return True
 
     def sendFilterNumber(self, filterNumber=0):
@@ -69,5 +69,5 @@ class FilterAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        self.setAlpacaProperty('position', Position=filterNumber)
+        self.setAlpacaProperty("position", Position=filterNumber)
         return True

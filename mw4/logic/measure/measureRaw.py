@@ -24,12 +24,11 @@ import PySide6
 
 
 class MeasureDataRaw(PySide6.QtCore.QObject):
-    """
-    """
+    """ """
 
-    __all__ = ['MeasureDataRaw']
+    __all__ = ["MeasureDataRaw"]
 
-    log = logging.getLogger('MW4')
+    log = logging.getLogger("MW4")
 
     # update rate to 1 seconds for setting indi server
     CYCLE_UPDATE_TASK = 1000
@@ -42,14 +41,14 @@ class MeasureDataRaw(PySide6.QtCore.QObject):
         self.app = app
         self.parent = parent
         self.data = data
-        self.deviceName = 'RAW'
+        self.deviceName = "RAW"
         self.defaultConfig = {
-            'raw': {
-                'deviceName': 'display only',
+            "raw": {
+                "deviceName": "display only",
             }
         }
 
-    # time for measurement
+        # time for measurement
         self.timerTask = PySide6.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)

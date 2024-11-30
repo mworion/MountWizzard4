@@ -28,8 +28,7 @@ from mountcontrol.convert import formatHstrToText, formatDstrToText
 
 
 class BuildPoints(MWidget):
-    """
-    """
+    """ """
 
     def __init__(self, mainW):
         super().__init__()
@@ -39,20 +38,20 @@ class BuildPoints(MWidget):
         self.ui = mainW.ui
 
         self.sortRunning = QMutex()
-        self.lastGenerator = 'none'
+        self.lastGenerator = "none"
         self.sortedGenerators = {
-            'grid': self.genBuildGrid,
-            'align3': self.genBuildAlign3,
-            'align6': self.genBuildAlign6,
-            'align9': self.genBuildAlign9,
-            'align12': self.genBuildAlign12,
-            'max': self.genBuildMax,
-            'med': self.genBuildMed,
-            'norm': self.genBuildNorm,
-            'min': self.genBuildMin,
-            'dso': self.genBuildDSO,
-            'file': self.genBuildFile,
-            'model': self.genModel,
+            "grid": self.genBuildGrid,
+            "align3": self.genBuildAlign3,
+            "align6": self.genBuildAlign6,
+            "align9": self.genBuildAlign9,
+            "align12": self.genBuildAlign12,
+            "max": self.genBuildMax,
+            "med": self.genBuildMed,
+            "norm": self.genBuildNorm,
+            "min": self.genBuildMin,
+            "dso": self.genBuildDSO,
+            "file": self.genBuildFile,
+            "model": self.genModel,
         }
         self.simbadRa = None
         self.simbadDec = None
@@ -91,9 +90,8 @@ class BuildPoints(MWidget):
         self.ui.isOnline.stateChanged.connect(self.setupDsoGui)
 
     def initConfig(self):
-        """
-        """
-        config = self.app.config['mainW']
+        """ """
+        config = self.app.config["mainW"]
 
         self.ui.numberGridPointsCol.valueChanged.disconnect(self.genBuildGrid)
         self.ui.numberGridPointsRow.valueChanged.disconnect(self.genBuildGrid)
@@ -101,25 +99,25 @@ class BuildPoints(MWidget):
         self.ui.altitudeMax.valueChanged.disconnect(self.genBuildGrid)
         self.ui.numberDSOPoints.valueChanged.disconnect(self.genBuildDSO)
 
-        self.ui.buildPFileName.setText(config.get('buildPFileName', ''))
-        self.ui.numberGridPointsRow.setValue(config.get('numberGridPointsRow', 5))
-        self.ui.numberGridPointsCol.setValue(config.get('numberGridPointsCol', 6))
-        self.ui.altitudeMin.setValue(config.get('altitudeMin', 30))
-        self.ui.altitudeMax.setValue(config.get('altitudeMax', 75))
-        self.ui.numberDSOPoints.setValue(config.get('numberDSOPoints', 15))
-        self.ui.numberSpiral.setValue(config.get('numberSpiral', 30))
+        self.ui.buildPFileName.setText(config.get("buildPFileName", ""))
+        self.ui.numberGridPointsRow.setValue(config.get("numberGridPointsRow", 5))
+        self.ui.numberGridPointsCol.setValue(config.get("numberGridPointsCol", 6))
+        self.ui.altitudeMin.setValue(config.get("altitudeMin", 30))
+        self.ui.altitudeMax.setValue(config.get("altitudeMax", 75))
+        self.ui.numberDSOPoints.setValue(config.get("numberDSOPoints", 15))
+        self.ui.numberSpiral.setValue(config.get("numberSpiral", 30))
 
-        self.ui.autoDeleteMeridian.setChecked(config.get('autoDeleteMeridian', False))
-        self.ui.autoDeleteHorizon.setChecked(config.get('autoDeleteHorizon', True))
-        self.ui.useSafetyMargin.setChecked(config.get('useSafetyMargin', False))
-        self.ui.safetyMarginValue.setValue(config.get('safetyMarginValue', 0))
-        self.ui.avoidFlip.setChecked(config.get('avoidFlip', False))
-        self.ui.sortNothing.setChecked(config.get('sortNothing', True))
-        self.ui.sortEW.setChecked(config.get('sortEW', False))
-        self.ui.useDomeAz.setChecked(config.get('useDomeAz', False))
-        self.ui.sortHL.setChecked(config.get('sortHL', False))
-        self.ui.keepGeneratedPoints.setChecked(config.get('keepGeneratedPoints', False))
-        self.ui.ditherBuildPoints.setChecked(config.get('ditherBuildPoints', False))
+        self.ui.autoDeleteMeridian.setChecked(config.get("autoDeleteMeridian", False))
+        self.ui.autoDeleteHorizon.setChecked(config.get("autoDeleteHorizon", True))
+        self.ui.useSafetyMargin.setChecked(config.get("useSafetyMargin", False))
+        self.ui.safetyMarginValue.setValue(config.get("safetyMarginValue", 0))
+        self.ui.avoidFlip.setChecked(config.get("avoidFlip", False))
+        self.ui.sortNothing.setChecked(config.get("sortNothing", True))
+        self.ui.sortEW.setChecked(config.get("sortEW", False))
+        self.ui.useDomeAz.setChecked(config.get("useDomeAz", False))
+        self.ui.sortHL.setChecked(config.get("sortHL", False))
+        self.ui.keepGeneratedPoints.setChecked(config.get("keepGeneratedPoints", False))
+        self.ui.ditherBuildPoints.setChecked(config.get("ditherBuildPoints", False))
 
         self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
         self.ui.numberGridPointsRow.valueChanged.connect(self.genBuildGrid)
@@ -129,38 +127,36 @@ class BuildPoints(MWidget):
         self.setupDsoGui()
 
     def storeConfig(self):
-        """
-        """
-        config = self.app.config['mainW']
-        config['buildPFileName'] = self.ui.buildPFileName.text()
-        config['numberGridPointsRow'] = self.ui.numberGridPointsRow.value()
-        config['numberGridPointsCol'] = self.ui.numberGridPointsCol.value()
-        config['altitudeMin'] = self.ui.altitudeMin.value()
-        config['altitudeMax'] = self.ui.altitudeMax.value()
-        config['numberDSOPoints'] = self.ui.numberDSOPoints.value()
-        config['numberSpiral'] = self.ui.numberSpiral.value()
-        config['autoDeleteMeridian'] = self.ui.autoDeleteMeridian.isChecked()
-        config['autoDeleteHorizon'] = self.ui.autoDeleteHorizon.isChecked()
-        config['useSafetyMargin'] = self.ui.useSafetyMargin.isChecked()
-        config['safetyMarginValue'] = self.ui.safetyMarginValue.value()
-        config['avoidFlip'] = self.ui.avoidFlip.isChecked()
-        config['sortNothing'] = self.ui.sortNothing.isChecked()
-        config['sortEW'] = self.ui.sortEW.isChecked()
-        config['useDomeAz'] = self.ui.useDomeAz.isChecked()
-        config['sortHL'] = self.ui.sortHL.isChecked()
-        config['keepGeneratedPoints'] = self.ui.keepGeneratedPoints.isChecked()
-        config['ditherBuildPoints'] = self.ui.ditherBuildPoints.isChecked()
+        """ """
+        config = self.app.config["mainW"]
+        config["buildPFileName"] = self.ui.buildPFileName.text()
+        config["numberGridPointsRow"] = self.ui.numberGridPointsRow.value()
+        config["numberGridPointsCol"] = self.ui.numberGridPointsCol.value()
+        config["altitudeMin"] = self.ui.altitudeMin.value()
+        config["altitudeMax"] = self.ui.altitudeMax.value()
+        config["numberDSOPoints"] = self.ui.numberDSOPoints.value()
+        config["numberSpiral"] = self.ui.numberSpiral.value()
+        config["autoDeleteMeridian"] = self.ui.autoDeleteMeridian.isChecked()
+        config["autoDeleteHorizon"] = self.ui.autoDeleteHorizon.isChecked()
+        config["useSafetyMargin"] = self.ui.useSafetyMargin.isChecked()
+        config["safetyMarginValue"] = self.ui.safetyMarginValue.value()
+        config["avoidFlip"] = self.ui.avoidFlip.isChecked()
+        config["sortNothing"] = self.ui.sortNothing.isChecked()
+        config["sortEW"] = self.ui.sortEW.isChecked()
+        config["useDomeAz"] = self.ui.useDomeAz.isChecked()
+        config["sortHL"] = self.ui.sortHL.isChecked()
+        config["keepGeneratedPoints"] = self.ui.keepGeneratedPoints.isChecked()
+        config["ditherBuildPoints"] = self.ui.ditherBuildPoints.isChecked()
 
     def setupIcons(self):
-        self.wIcon(self.ui.loadBuildPoints, 'load')
-        self.wIcon(self.ui.saveBuildPoints, 'save')
-        self.wIcon(self.ui.saveBuildPointsAs, 'save')
-        self.wIcon(self.ui.clearBuildP, 'trash')
+        self.wIcon(self.ui.loadBuildPoints, "load")
+        self.wIcon(self.ui.saveBuildPoints, "save")
+        self.wIcon(self.ui.saveBuildPointsAs, "save")
+        self.wIcon(self.ui.clearBuildP, "trash")
 
     def genBuildGrid(self):
-        """
-        """
-        self.lastGenerator = 'grid'
+        """ """
+        self.lastGenerator = "grid"
         self.ui.numberGridPointsRow.setEnabled(False)
         self.ui.numberGridPointsCol.setEnabled(False)
         self.ui.altitudeMin.setEnabled(False)
@@ -175,19 +171,16 @@ class BuildPoints(MWidget):
         maxAlt = self.ui.altitudeMax.value()
         keep = self.ui.keepGeneratedPoints.isChecked()
 
-        suc = self.app.data.genGrid(minAlt=minAlt,
-                                    maxAlt=maxAlt,
-                                    numbRows=row,
-                                    numbCols=col,
-                                    keep=keep)
+        suc = self.app.data.genGrid(
+            minAlt=minAlt, maxAlt=maxAlt, numbRows=row, numbCols=col, keep=keep
+        )
 
         if not suc:
             self.ui.numberGridPointsRow.setEnabled(True)
             self.ui.numberGridPointsCol.setEnabled(True)
             self.ui.altitudeMin.setEnabled(True)
             self.ui.altitudeMax.setEnabled(True)
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Could not generate grid')
+            self.msg.emit(2, "Model", "Buildpoints", "Could not generate grid")
             return False
 
         self.processPoints()
@@ -198,68 +191,50 @@ class BuildPoints(MWidget):
         return True
 
     def genBuildAlign3(self):
-        """
-        """
-        self.lastGenerator = 'align3'
+        """ """
+        self.lastGenerator = "align3"
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genAlign(altBase=55,
-                                     azBase=10,
-                                     numberBase=3,
-                                     keep=keep)
+        suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=3, keep=keep)
         if not suc:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Could not generate 3 align stars')
+            self.msg.emit(2, "Model", "Buildpoints", "Could not generate 3 align stars")
             return False
 
         self.processPoints()
         return True
 
     def genBuildAlign6(self):
-        """
-        """
-        self.lastGenerator = 'align6'
+        """ """
+        self.lastGenerator = "align6"
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genAlign(altBase=55,
-                                     azBase=10,
-                                     numberBase=6,
-                                     keep=keep)
+        suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=6, keep=keep)
         if not suc:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Could not generate 6 align stars')
+            self.msg.emit(2, "Model", "Buildpoints", "Could not generate 6 align stars")
             return False
 
         self.processPoints()
         return True
 
     def genBuildAlign9(self):
-        """
-        """
-        self.lastGenerator = 'align9'
+        """ """
+        self.lastGenerator = "align9"
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genAlign(altBase=55,
-                                     azBase=10,
-                                     numberBase=9,
-                                     keep=keep)
+        suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=9, keep=keep)
         if not suc:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Could not generate 9 align stars')
+            self.msg.emit(2, "Model", "Buildpoints", "Could not generate 9 align stars")
             return False
 
         self.processPoints()
         return True
 
     def genBuildAlign12(self):
-        """
-        """
-        self.lastGenerator = 'align12'
+        """ """
+        self.lastGenerator = "align12"
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genAlign(altBase=55,
-                                     azBase=10,
-                                     numberBase=12,
-                                     keep=keep)
+        suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=12, keep=keep)
         if not suc:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Could not generate 12 align stars')
+            self.msg.emit(
+                2, "Model", "Buildpoints", "Could not generate 12 align stars"
+            )
             return False
 
         self.processPoints()
@@ -273,12 +248,13 @@ class BuildPoints(MWidget):
 
         :return: success
         """
-        self.lastGenerator = 'max'
+        self.lastGenerator = "max"
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genGreaterCircle(selection='max', keep=keep)
+        suc = self.app.data.genGreaterCircle(selection="max", keep=keep)
         if not suc:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Build points [max] cannot be generated')
+            self.msg.emit(
+                2, "Model", "Buildpoints", "Build points [max] cannot be generated"
+            )
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -294,12 +270,13 @@ class BuildPoints(MWidget):
 
         :return: success
         """
-        self.lastGenerator = 'med'
+        self.lastGenerator = "med"
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genGreaterCircle(selection='med', keep=keep)
+        suc = self.app.data.genGreaterCircle(selection="med", keep=keep)
         if not suc:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Build points [med] cannot be generated')
+            self.msg.emit(
+                2, "Model", "Buildpoints", "Build points [med] cannot be generated"
+            )
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -315,12 +292,13 @@ class BuildPoints(MWidget):
 
         :return: success
         """
-        self.lastGenerator = 'norm'
+        self.lastGenerator = "norm"
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genGreaterCircle(selection='norm', keep=keep)
+        suc = self.app.data.genGreaterCircle(selection="norm", keep=keep)
         if not suc:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Build points [norm] cannot be generated')
+            self.msg.emit(
+                2, "Model", "Buildpoints", "Build points [norm] cannot be generated"
+            )
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -336,12 +314,13 @@ class BuildPoints(MWidget):
 
         :return: success
         """
-        self.lastGenerator = 'min'
+        self.lastGenerator = "min"
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genGreaterCircle(selection='min', keep=keep)
+        suc = self.app.data.genGreaterCircle(selection="min", keep=keep)
         if not suc:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Build points [min] cannot be generated')
+            self.msg.emit(
+                2, "Model", "Buildpoints", "Build points [min] cannot be generated"
+            )
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -355,7 +334,7 @@ class BuildPoints(MWidget):
 
         :return: success
         """
-        self.lastGenerator = 'dso'
+        self.lastGenerator = "dso"
         ha = self.app.mount.obsSite.raJNow
         dec = self.app.mount.obsSite.decJNow
         lst = self.app.mount.obsSite.timeSidereal
@@ -363,8 +342,9 @@ class BuildPoints(MWidget):
         location = self.app.mount.obsSite.location
 
         if ha is None or dec is None or location is None or lst is None:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'DSO Path cannot be generated - mount off')
+            self.msg.emit(
+                2, "Model", "Buildpoints", "DSO Path cannot be generated - mount off"
+            )
             return False
 
         if self.simbadRa and self.simbadDec:
@@ -374,16 +354,19 @@ class BuildPoints(MWidget):
         self.ui.numberDSOPoints.setEnabled(False)
         numberPoints = self.ui.numberDSOPoints.value()
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.generateDSOPath(ha=ha,
-                                            dec=dec,
-                                            timeJD=timeJD,
-                                            location=location,
-                                            numberPoints=numberPoints,
-                                            keep=keep)
+        suc = self.app.data.generateDSOPath(
+            ha=ha,
+            dec=dec,
+            timeJD=timeJD,
+            location=location,
+            numberPoints=numberPoints,
+            keep=keep,
+        )
         if not suc:
             self.ui.numberDSOPoints.setEnabled(True)
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'DSO Path cannot be generated - calc error')
+            self.msg.emit(
+                2, "Model", "Buildpoints", "DSO Path cannot be generated - calc error"
+            )
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -402,9 +385,9 @@ class BuildPoints(MWidget):
 
         :return: success
         """
-        self.lastGenerator = 'spiral'
+        self.lastGenerator = "spiral"
         numberTarget = int(self.ui.numberSpiral.value())
-        self.changeStyleDynamic(self.ui.genBuildSpiral, 'running', True)
+        self.changeStyleDynamic(self.ui.genBuildSpiral, "running", True)
         numberPoints = 0
         numberFilter = 0
         while numberFilter < numberTarget:
@@ -415,10 +398,11 @@ class BuildPoints(MWidget):
             self.autoDeletePoints()
             numberFilter = len(self.app.data.buildP)
         self.processPoints()
-        self.changeStyleDynamic(self.ui.genBuildSpiral, 'running', False)
+        self.changeStyleDynamic(self.ui.genBuildSpiral, "running", False)
         if not suc:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Golden spiral cannot be generated')
+            self.msg.emit(
+                2, "Model", "Buildpoints", "Golden spiral cannot be generated"
+            )
             return False
         return True
 
@@ -426,7 +410,7 @@ class BuildPoints(MWidget):
         """
         :return: success
         """
-        self.lastGenerator = 'model'
+        self.lastGenerator = "model"
 
         keep = self.ui.keepGeneratedPoints.isChecked()
         if not keep:
@@ -446,20 +430,19 @@ class BuildPoints(MWidget):
 
         :return: success
         """
-        self.lastGenerator = 'file'
+        self.lastGenerator = "file"
         fileName = self.ui.buildPFileName.text()
         if not fileName:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Build points file name not given')
+            self.msg.emit(2, "Model", "Buildpoints", "Build points file name not given")
             return False
 
         keep = self.ui.keepGeneratedPoints.isChecked()
-        fullFileName = self.app.mwGlob['configDir'] + '/' + fileName + '.bpts'
+        fullFileName = self.app.mwGlob["configDir"] + "/" + fileName + ".bpts"
         suc = self.app.data.loadBuildP(fullFileName=fullFileName, keep=keep)
 
         if not suc:
-            text = f'Build points file [{fileName}] could not be loaded'
-            self.msg.emit(2, 'Model', 'Buildpoints', text)
+            text = f"Build points file [{fileName}] could not be loaded"
+            self.msg.emit(2, "Model", "Buildpoints", text)
             return False
 
         self.processPoints()
@@ -469,12 +452,13 @@ class BuildPoints(MWidget):
         """
         :return: success
         """
-        folder = self.app.mwGlob['configDir']
-        fileTypes = 'Build Point Files (*.bpts)'
-        fileTypes += ';; CSV Files (*.csv)'
-        fileTypes += ';; Model Files (*.model)'
+        folder = self.app.mwGlob["configDir"]
+        fileTypes = "Build Point Files (*.bpts)"
+        fileTypes += ";; CSV Files (*.csv)"
+        fileTypes += ";; Model Files (*.model)"
         fullFileName, fileName, ext = self.openFile(
-            self.mainW, 'Open build point file', folder, fileTypes)
+            self.mainW, "Open build point file", folder, fileTypes
+        )
         if not fullFileName:
             return False
 
@@ -482,11 +466,11 @@ class BuildPoints(MWidget):
         suc = self.app.data.loadBuildP(fullFileName=fullFileName, ext=ext, keep=keep)
         if suc:
             self.ui.buildPFileName.setText(fileName)
-            self.msg.emit(0, 'Model', 'Buildpoints',
-                          f'Build file [{fileName}] loaded')
+            self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fileName}] loaded")
         else:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          f'Build file [{fileName}] cannot be loaded')
+            self.msg.emit(
+                2, "Model", "Buildpoints", f"Build file [{fileName}] cannot be loaded"
+            )
         self.genBuildFile()
         return True
 
@@ -496,17 +480,16 @@ class BuildPoints(MWidget):
         """
         fileName = self.ui.buildPFileName.text()
         if not fileName:
-            self.msg.emit(0, 'Model', 'Buildpoints',
-                          'Build points file name not given')
+            self.msg.emit(0, "Model", "Buildpoints", "Build points file name not given")
             return False
 
         suc = self.app.data.saveBuildP(fileName=fileName)
         if suc:
-            self.msg.emit(0, 'Model', 'Buildpoints',
-                          f'Build file [{fileName}] saved')
+            self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fileName}] saved")
         else:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          f'Build file [{fileName}] cannot be saved')
+            self.msg.emit(
+                2, "Model", "Buildpoints", f"Build file [{fileName}] cannot be saved"
+            )
 
         return True
 
@@ -514,21 +497,21 @@ class BuildPoints(MWidget):
         """
         :return: success
         """
-        folder = self.app.mwGlob['configDir']
+        folder = self.app.mwGlob["configDir"]
         saveFilePath, fileName, ext = self.saveFile(
-            self.mainW, 'Save build point file', folder,
-            'Build point files (*.bpts)')
+            self.mainW, "Save build point file", folder, "Build point files (*.bpts)"
+        )
         if not saveFilePath:
             return False
 
         suc = self.app.data.saveBuildP(fileName=fileName)
         if suc:
             self.ui.buildPFileName.setText(fileName)
-            self.msg.emit(0, 'Model', 'Buildpoints',
-                          f'Build file [{fileName}] saved')
+            self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fileName}] saved")
         else:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          f'Build file [{fileName}] cannot be saved')
+            self.msg.emit(
+                2, "Model", "Buildpoints", f"Build file [{fileName}] cannot be saved"
+            )
         return True
 
     def clearBuildP(self):
@@ -537,7 +520,7 @@ class BuildPoints(MWidget):
         """
         self.app.data.clearBuildP()
         self.app.drawBuildPoints.emit()
-        if not self.app.uiWindows['showHemisphereW']['classObj']:
+        if not self.app.uiWindows["showHemisphereW"]["classObj"]:
             return False
 
         self.app.redrawHemisphere.emit()
@@ -560,25 +543,21 @@ class BuildPoints(MWidget):
             self.app.data.deleteCloseHorizonLine(value)
 
     def doSortDomeAzData(self, result):
-        """
-        """
+        """ """
         points, pierside = result
-        self.app.data.sort(points=points,
-                           sortDomeAz=True,
-                           pierside=pierside)
+        self.app.data.sort(points=points, sortDomeAz=True, pierside=pierside)
         self.sortRunning.unlock()
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
 
     def sortDomeAzWorker(self, points, pierside=None):
-        """
-        """
+        """ """
         pointsNew = list()
         numbAll = len(points)
         ui = self.ui.autoSortGroup
-        self.changeStyleDynamic(ui, 'running', True)
+        self.changeStyleDynamic(ui, "running", True)
         for i, point in enumerate(points):
-            t = f'Auto sort points: progress {(i + 1) / numbAll * 100:3.0f}%'
+            t = f"Auto sort points: progress {(i + 1) / numbAll * 100:3.0f}%"
             ui.setTitle(t)
             alt = point[0]
             az = point[1]
@@ -587,13 +566,12 @@ class BuildPoints(MWidget):
                 continue
             pointsNew.append((alt, az, True, domeAz.degrees))
         points = pointsNew
-        ui.setTitle('Auto sort points')
-        self.changeStyleDynamic(ui, 'running', False)
+        ui.setTitle("Auto sort points")
+        self.changeStyleDynamic(ui, "running", False)
         return points, pierside
 
     def sortDomeAz(self, points, pierside=None):
-        """
-        """
+        """ """
         if not self.sortRunning.tryLock():
             return False
         worker = Worker(self.sortDomeAzWorker, points, pierside)
@@ -602,13 +580,11 @@ class BuildPoints(MWidget):
         return True
 
     def sortMountAz(self, points, eastwest=None, highlow=None, pierside=None):
-        """
-        """
+        """ """
         points = [(x[0], x[1], x[2], 0) for x in points]
-        self.app.data.sort(points=points,
-                           eastwest=eastwest,
-                           highlow=highlow,
-                           pierside=pierside)
+        self.app.data.sort(
+            points=points, eastwest=eastwest, highlow=highlow, pierside=pierside
+        )
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
 
@@ -640,31 +616,28 @@ class BuildPoints(MWidget):
         if useDomeAz and enableDomeAz and eastwest:
             self.sortDomeAz(points=points, pierside=pierside)
         else:
-            self.sortMountAz(points=points, eastwest=eastwest, highlow=highlow,
-                             pierside=pierside)
+            self.sortMountAz(
+                points=points, eastwest=eastwest, highlow=highlow, pierside=pierside
+            )
         return True
 
     def buildPointsChanged(self):
-        """
-        """
-        self.lastGenerator = 'none'
+        """ """
+        self.lastGenerator = "none"
 
     def rebuildPoints(self):
-        """
-        """
+        """ """
         if self.lastGenerator in self.sortedGenerators:
             self.sortedGenerators[self.lastGenerator]()
         self.processPoints()
 
     def processPoints(self):
-        """
-        """
+        """ """
         self.autoDeletePoints()
         self.autoSortPoints()
 
     def setupDsoGui(self):
-        """
-        """
+        """ """
         isOnline = self.ui.isOnline.isChecked()
         self.ui.generateQuery.setEnabled(isOnline)
         self.ui.generateRa.setEnabled(isOnline)
@@ -674,17 +647,16 @@ class BuildPoints(MWidget):
         self.ui.generateDecText.setEnabled(isOnline)
 
     def querySimbad(self):
-        """
-        """
+        """ """
         if not self.ui.isOnline.isChecked():
-            self.msg.emit(2, 'Model', 'Buildpoints', 'MW4 is offline')
+            self.msg.emit(2, "Model", "Buildpoints", "MW4 is offline")
             return False
 
         ident = self.ui.generateQuery.text().strip()
         if not ident:
-            self.msg.emit(2, 'Model', 'Buildpoints', 'No query data given')
-            self.ui.generateRa.setText('')
-            self.ui.generateDec.setText('')
+            self.msg.emit(2, "Model", "Buildpoints", "No query data given")
+            self.ui.generateRa.setText("")
+            self.ui.generateDec.setText("")
             self.simbadRa = None
             self.simbadDec = None
             return False
@@ -692,19 +664,20 @@ class BuildPoints(MWidget):
         result = Simbad.query_object(ident)
 
         if not result:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          f'No response from SIMBAD for {ident}')
-            self.ui.generateRa.setText('')
-            self.ui.generateDec.setText('')
+            self.msg.emit(
+                2, "Model", "Buildpoints", f"No response from SIMBAD for {ident}"
+            )
+            self.ui.generateRa.setText("")
+            self.ui.generateDec.setText("")
             self.simbadRa = None
             self.simbadDec = None
             return False
 
-        self.simbadRa = convertRaToAngle(result['RA'].value.data[0])
+        self.simbadRa = convertRaToAngle(result["RA"].value.data[0])
         text = formatHstrToText(self.simbadRa)
         self.ui.generateRa.setText(text)
 
-        self.simbadDec = convertDecToAngle(result['DEC'].value.data[0])
+        self.simbadDec = convertDecToAngle(result["DEC"].value.data[0])
         text = formatDstrToText(self.simbadDec)
         self.ui.generateDec.setText(text)
         return True

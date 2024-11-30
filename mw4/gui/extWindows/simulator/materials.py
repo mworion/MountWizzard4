@@ -25,8 +25,7 @@ from gui.utilities.stylesQtCss import Styles
 
 
 class Materials(Styles):
-
-    __all__ = ['Materials']
+    __all__ = ["Materials"]
 
     """
     class Materials defines all used materials for the loaded stl models or the

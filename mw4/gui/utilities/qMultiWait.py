@@ -31,8 +31,9 @@ class QMultiWait(QObject):
 
     in addition, all received signals could be reset
     """
+
     ready = Signal()
-    log = logging.getLogger('MW4')
+    log = logging.getLogger("MW4")
 
     def __init__(self):
         super().__init__()
@@ -47,10 +48,10 @@ class QMultiWait(QObject):
     def checkSignal(self):
         sender = self.sender()
         self.waitready.add(sender)
-        self.log.debug(f'QMultiWait [{self}]: [{self.waitready}]')
+        self.log.debug(f"QMultiWait [{self}]: [{self.waitready}]")
 
         if len(self.waitready) == len(self.waitable):
-            self.log.debug(f'Firing QMultiWait for [{self}]')
+            self.log.debug(f"Firing QMultiWait for [{self}]")
             self.ready.emit()
 
     def resetSignals(self):

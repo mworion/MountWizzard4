@@ -23,8 +23,7 @@ from gui.utilities.toolsQtWidget import MWidget
 
 
 class SettDome(MWidget):
-    """
-    """
+    """ """
 
     def __init__(self, mainW):
         super().__init__()
@@ -95,23 +94,22 @@ class SettDome(MWidget):
 
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
-        self.ui.domeClearOpening.setValue(config.get('domeClearOpening', 0.4))
-        self.ui.domeOpeningHysteresis.setValue(config.get('domeOpeningHysteresis',
-                                                          0.0))
-        self.ui.domeClearanceZenith.setValue(config.get('domeClearanceZenith', 0.2))
-        self.ui.useOvershoot.setChecked(config.get('useOvershoot', False))
-        self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
-        self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
-        self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
-        self.ui.use10micronDef.setChecked(config.get('use10micronDef', False))
-        self.ui.offGEM.setValue(config.get('offGEM', 0))
-        self.ui.offLAT.setValue(config.get('offLAT', 0))
-        self.ui.domeRadius.setValue(config.get('domeRadius', 1.5))
-        self.ui.useDomeGeometry.setChecked(config.get('useDomeGeometry', False))
-        self.ui.automaticDome.setChecked(config.get('automaticDome', False))
-        self.ui.useDynamicFollowing.setChecked(config.get('useDynamicFollowing', False))
-        self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
+        config = self.app.config["mainW"]
+        self.ui.domeClearOpening.setValue(config.get("domeClearOpening", 0.4))
+        self.ui.domeOpeningHysteresis.setValue(config.get("domeOpeningHysteresis", 0.0))
+        self.ui.domeClearanceZenith.setValue(config.get("domeClearanceZenith", 0.2))
+        self.ui.useOvershoot.setChecked(config.get("useOvershoot", False))
+        self.ui.domeNorthOffset.setValue(config.get("domeNorthOffset", 0))
+        self.ui.domeEastOffset.setValue(config.get("domeEastOffset", 0))
+        self.ui.domeVerticalOffset.setValue(config.get("domeVerticalOffset", 0))
+        self.ui.use10micronDef.setChecked(config.get("use10micronDef", False))
+        self.ui.offGEM.setValue(config.get("offGEM", 0))
+        self.ui.offLAT.setValue(config.get("offLAT", 0))
+        self.ui.domeRadius.setValue(config.get("domeRadius", 1.5))
+        self.ui.useDomeGeometry.setChecked(config.get("useDomeGeometry", False))
+        self.ui.automaticDome.setChecked(config.get("automaticDome", False))
+        self.ui.useDynamicFollowing.setChecked(config.get("useDynamicFollowing", False))
+        self.ui.settleTimeDome.setValue(config.get("settleTimeDome", 0))
         self.setUseGeometry()
         return True
 
@@ -123,84 +121,88 @@ class SettDome(MWidget):
 
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
-        config['domeRadius'] = self.ui.domeRadius.value()
-        config['domeClearOpening'] = self.ui.domeClearOpening.value()
-        config['domeOpeningHysteresis'] = self.ui.domeOpeningHysteresis.value()
-        config['domeClearanceZenith'] = self.ui.domeClearanceZenith.value()
-        config['useOvershoot'] = self.ui.useOvershoot.isChecked()
-        config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
-        config['domeEastOffset'] = self.ui.domeEastOffset.value()
-        config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
-        config['use10micronDef'] = self.ui.use10micronDef.isChecked()
-        config['offGEM'] = self.ui.offGEM.value()
-        config['offLAT'] = self.ui.offLAT.value()
-        config['useDomeGeometry'] = self.ui.useDomeGeometry.isChecked()
-        config['automaticDome'] = self.ui.automaticDome.isChecked()
-        config['useDynamicFollowing'] = self.ui.useDynamicFollowing.isChecked()
-        config['settleTimeDome'] = self.ui.settleTimeDome.value()
+        config = self.app.config["mainW"]
+        config["domeRadius"] = self.ui.domeRadius.value()
+        config["domeClearOpening"] = self.ui.domeClearOpening.value()
+        config["domeOpeningHysteresis"] = self.ui.domeOpeningHysteresis.value()
+        config["domeClearanceZenith"] = self.ui.domeClearanceZenith.value()
+        config["useOvershoot"] = self.ui.useOvershoot.isChecked()
+        config["domeNorthOffset"] = self.ui.domeNorthOffset.value()
+        config["domeEastOffset"] = self.ui.domeEastOffset.value()
+        config["domeVerticalOffset"] = self.ui.domeVerticalOffset.value()
+        config["use10micronDef"] = self.ui.use10micronDef.isChecked()
+        config["offGEM"] = self.ui.offGEM.value()
+        config["offLAT"] = self.ui.offLAT.value()
+        config["useDomeGeometry"] = self.ui.useDomeGeometry.isChecked()
+        config["automaticDome"] = self.ui.automaticDome.isChecked()
+        config["useDynamicFollowing"] = self.ui.useDynamicFollowing.isChecked()
+        config["settleTimeDome"] = self.ui.settleTimeDome.value()
         return True
 
     def setupIcons(self):
         """
         :return:
         """
-        pixmap = self.img2pixmap(':/dome/radius.png')
+        pixmap = self.img2pixmap(":/dome/radius.png")
         self.ui.picDome1.setPixmap(pixmap)
 
         is10Micron = self.ui.use10micronDef.isChecked()
         if is10Micron:
-            pixmap = self.img2pixmap(':/dome/north.png')
+            pixmap = self.img2pixmap(":/dome/north.png")
             self.ui.picDome2.setPixmap(pixmap)
-            pixmap = self.img2pixmap(':/dome/east.png')
+            pixmap = self.img2pixmap(":/dome/east.png")
             self.ui.picDome3.setPixmap(pixmap)
-            pixmap = self.img2pixmap(':/dome/vert.png')
+            pixmap = self.img2pixmap(":/dome/vert.png")
             self.ui.picDome4.setPixmap(pixmap)
         else:
-            pixmap = self.img2pixmap(':/dome/northGEM.png')
+            pixmap = self.img2pixmap(":/dome/northGEM.png")
             self.ui.picDome2.setPixmap(pixmap)
-            pixmap = self.img2pixmap(':/dome/eastGEM.png')
+            pixmap = self.img2pixmap(":/dome/eastGEM.png")
             self.ui.picDome3.setPixmap(pixmap)
-            pixmap = self.img2pixmap(':/dome/vertGEM.png')
+            pixmap = self.img2pixmap(":/dome/vertGEM.png")
             self.ui.picDome4.setPixmap(pixmap)
 
-        pixmap = self.img2pixmap(':/dome/gem.png')
+        pixmap = self.img2pixmap(":/dome/gem.png")
         self.ui.picDome5.setPixmap(pixmap)
-        pixmap = self.img2pixmap(':/dome/lat.png')
+        pixmap = self.img2pixmap(":/dome/lat.png")
         self.ui.picDome6.setPixmap(pixmap)
-        pixmap = self.img2pixmap(':/dome/shutter.png')
+        pixmap = self.img2pixmap(":/dome/shutter.png")
         self.ui.picDome7.setPixmap(pixmap)
-        pixmap = self.img2pixmap(':/dome/hysteresis.png')
+        pixmap = self.img2pixmap(":/dome/hysteresis.png")
         self.ui.picDome8.setPixmap(pixmap)
-        pixmap = self.img2pixmap(':/dome/zenith.png')
+        pixmap = self.img2pixmap(":/dome/zenith.png")
         self.ui.picDome9.setPixmap(pixmap)
 
-        self.wIcon(self.ui.copyFromDomeDriver, 'copy')
-        self.wIcon(self.ui.domeCloseShutter, 'exit-down')
-        self.wIcon(self.ui.domeOpenShutter, 'exit-up')
-        self.wIcon(self.ui.domeAbortSlew, 'bolt-alt')
+        self.wIcon(self.ui.copyFromDomeDriver, "copy")
+        self.wIcon(self.ui.domeCloseShutter, "exit-down")
+        self.wIcon(self.ui.domeOpenShutter, "exit-up")
+        self.wIcon(self.ui.domeAbortSlew, "bolt-alt")
         return True
 
     def updateDomeGeometryToGui(self):
         """
         :return: true for test purpose
         """
-        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_OTA_OFFSET', 0))
+        value = float(self.app.dome.data.get("DOME_MEASUREMENTS.DM_OTA_OFFSET", 0))
         self.ui.offGEM.setValue(value)
 
-        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_DOME_RADIUS', 0))
+        value = float(self.app.dome.data.get("DOME_MEASUREMENTS.DM_DOME_RADIUS", 0))
         self.ui.domeRadius.setValue(value)
 
-        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_SHUTTER_WIDTH', 0))
+        value = float(self.app.dome.data.get("DOME_MEASUREMENTS.DM_SHUTTER_WIDTH", 0))
         self.ui.domeClearOpening.setValue(value)
 
-        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT', 0))
+        value = float(
+            self.app.dome.data.get("DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT", 0)
+        )
         self.ui.domeNorthOffset.setValue(value)
 
-        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT', 0))
+        value = float(
+            self.app.dome.data.get("DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT", 0)
+        )
         self.ui.domeEastOffset.setValue(value)
 
-        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_UP_DISPLACEMENT', 0))
+        value = float(self.app.dome.data.get("DOME_MEASUREMENTS.DM_UP_DISPLACEMENT", 0))
         self.ui.domeVerticalOffset.setValue(value)
         return True
 

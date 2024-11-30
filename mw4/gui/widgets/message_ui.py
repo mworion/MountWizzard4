@@ -8,23 +8,35 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFrame, QHBoxLayout,
-    QHeaderView, QPushButton, QSizePolicy, QSpacerItem,
-    QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
+from PySide6.QtCore import (
+    QCoreApplication,
+    QMetaObject,
+    QSize,
+    Qt,
+)
+from PySide6.QtGui import (
+    QFont,
+)
+from PySide6.QtWidgets import (
+    QAbstractItemView,
+    QFrame,
+    QHBoxLayout,
+    QPushButton,
+    QSizePolicy,
+    QSpacerItem,
+    QTableWidget,
+    QVBoxLayout,
+)
+
 
 class Ui_MessageDialog(object):
     def setupUi(self, MessageDialog):
         if not MessageDialog.objectName():
-            MessageDialog.setObjectName(u"MessageDialog")
+            MessageDialog.setObjectName("MessageDialog")
         MessageDialog.resize(800, 600)
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy = QSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MessageDialog.sizePolicy().hasHeightForWidth())
@@ -34,33 +46,34 @@ class Ui_MessageDialog(object):
         MessageDialog.setSizeIncrement(QSize(10, 10))
         MessageDialog.setBaseSize(QSize(10, 10))
         font = QFont()
-        font.setFamilies([u"Arial"])
+        font.setFamilies(["Arial"])
         font.setPointSize(10)
         MessageDialog.setFont(font)
         self.verticalLayout = QVBoxLayout(MessageDialog)
         self.verticalLayout.setSpacing(4)
-        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setObjectName("verticalLayout")
         self.verticalLayout.setContentsMargins(4, 4, 4, 4)
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setSpacing(4)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setObjectName("horizontalLayout")
         self.horizontalLayout.setContentsMargins(4, 4, 4, 4)
         self.clear = QPushButton(MessageDialog)
-        self.clear.setObjectName(u"clear")
+        self.clear.setObjectName("clear")
         self.clear.setMinimumSize(QSize(100, 25))
         self.clear.setMaximumSize(QSize(100, 25))
 
         self.horizontalLayout.addWidget(self.clear)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.horizontalSpacer = QSpacerItem(
+            40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum
+        )
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
-
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.line = QFrame(MessageDialog)
-        self.line.setObjectName(u"line")
+        self.line.setObjectName("line")
         self.line.setFrameShadow(QFrame.Plain)
         self.line.setLineWidth(2)
         self.line.setMidLineWidth(1)
@@ -69,9 +82,9 @@ class Ui_MessageDialog(object):
         self.verticalLayout.addWidget(self.line)
 
         self.messageTable = QTableWidget(MessageDialog)
-        self.messageTable.setObjectName(u"messageTable")
+        self.messageTable.setObjectName("messageTable")
         font1 = QFont()
-        font1.setFamilies([u"Arial"])
+        font1.setFamilies(["Arial"])
         font1.setPointSize(10)
         font1.setBold(False)
         self.messageTable.setFont(font1)
@@ -107,17 +120,28 @@ class Ui_MessageDialog(object):
 
         self.verticalLayout.addWidget(self.messageTable)
 
-
         self.retranslateUi(MessageDialog)
 
         QMetaObject.connectSlotsByName(MessageDialog)
+
     # setupUi
 
     def retranslateUi(self, MessageDialog):
-        MessageDialog.setWindowTitle(QCoreApplication.translate("MessageDialog", u"Messages", None))
-        self.clear.setText(QCoreApplication.translate("MessageDialog", u"Clear window", None))
-#if QT_CONFIG(tooltip)
-        self.messageTable.setToolTip(QCoreApplication.translate("MessageDialog", u"<html><head/><body><p>Messages</p></body></html>", None))
-#endif // QT_CONFIG(tooltip)
-    # retranslateUi
+        MessageDialog.setWindowTitle(
+            QCoreApplication.translate("MessageDialog", "Messages", None)
+        )
+        self.clear.setText(
+            QCoreApplication.translate("MessageDialog", "Clear window", None)
+        )
+        # if QT_CONFIG(tooltip)
+        self.messageTable.setToolTip(
+            QCoreApplication.translate(
+                "MessageDialog",
+                "<html><head/><body><p>Messages</p></body></html>",
+                None,
+            )
+        )
 
+
+# endif // QT_CONFIG(tooltip)
+# retranslateUi

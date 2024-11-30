@@ -28,9 +28,9 @@ from gui.widgets import message_ui
 
 
 class MessageWindow(toolsQtWidget.MWidget):
-    """
-    """
-    __all__ = ['MessageWindow']
+    """ """
+
+    __all__ = ["MessageWindow"]
 
     def __init__(self, app):
         super().__init__()
@@ -45,9 +45,9 @@ class MessageWindow(toolsQtWidget.MWidget):
         """
         :return: True for test purpose
         """
-        if 'messageW' not in self.app.config:
-            self.app.config['messageW'] = {}
-        config = self.app.config['messageW']
+        if "messageW" not in self.app.config:
+            self.app.config["messageW"] = {}
+        config = self.app.config["messageW"]
 
         self.positionWindow(config)
         return True
@@ -57,15 +57,15 @@ class MessageWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         config = self.app.config
-        if 'messageW' not in config:
-            config['messageW'] = {}
+        if "messageW" not in config:
+            config["messageW"] = {}
         else:
-            config['messageW'].clear()
-        config = config['messageW']
+            config["messageW"].clear()
+        config = config["messageW"]
 
-        config['winPosX'] = max(self.pos().x(), 0)
-        config['winPosY'] = max(self.pos().y(), 0)
-        config['height'] = self.height()
+        config["winPosX"] = max(self.pos().x(), 0)
+        config["winPosY"] = max(self.pos().y(), 0)
+        config["height"] = self.height()
         return True
 
     def closeEvent(self, closeEvent):
@@ -83,7 +83,7 @@ class MessageWindow(toolsQtWidget.MWidget):
         mesTab = self.ui.messageTable
         mesTab.setRowCount(0)
         mesTab.setColumnCount(4)
-        hl = [' Time', ' Source', ' Type', 'Message / Value']
+        hl = [" Time", " Source", " Type", "Message / Value"]
         mesTab.setHorizontalHeaderLabels(hl)
         mesTab.setColumnWidth(0, 65)
         mesTab.setColumnWidth(1, 85)
@@ -97,17 +97,19 @@ class MessageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.messColor = [QBrush(QColor(self.M_PRIM)),
-                          QBrush(QColor(self.M_TER)),
-                          QBrush(QColor(self.M_YELLOW)),
-                          QBrush(QColor(self.M_RED)),
-                          ]
+        self.messColor = [
+            QBrush(QColor(self.M_PRIM)),
+            QBrush(QColor(self.M_TER)),
+            QBrush(QColor(self.M_YELLOW)),
+            QBrush(QColor(self.M_RED)),
+        ]
         fontFam = self.window().font().family()
-        self.messFont = [QFont(fontFam, weight=QFont.Weight.Normal),
-                         QFont(fontFam, weight=QFont.Weight.Bold),
-                         QFont(fontFam, weight=QFont.Weight.Normal),
-                         QFont(fontFam, weight=QFont.Weight.Normal),
-                         ]
+        self.messFont = [
+            QFont(fontFam, weight=QFont.Weight.Normal),
+            QFont(fontFam, weight=QFont.Weight.Bold),
+            QFont(fontFam, weight=QFont.Weight.Normal),
+            QFont(fontFam, weight=QFont.Weight.Normal),
+        ]
         return True
 
     def updateListColors(self):
@@ -158,33 +160,37 @@ class MessageWindow(toolsQtWidget.MWidget):
 
             row = self.ui.messageTable.rowCount()
             self.ui.messageTable.insertRow(row)
-            timePrefix = time.strftime('%H:%M:%S', time.localtime())
+            timePrefix = time.strftime("%H:%M:%S", time.localtime())
 
             if source:
-                item = QTableWidgetItem(f'{timePrefix}')
-                item.setTextAlignment(Qt.AlignmentFlag.AlignLeft |
-                                      Qt.AlignmentFlag.AlignVCenter)
+                item = QTableWidgetItem(f"{timePrefix}")
+                item.setTextAlignment(
+                    Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+                )
                 item.setForeground(self.messColor[prio])
                 item.setFont(self.messFont[prio])
                 self.ui.messageTable.setItem(row, 0, item)
 
-            item = QTableWidgetItem(f'{source}')
-            item.setTextAlignment(Qt.AlignmentFlag.AlignLeft |
-                                  Qt.AlignmentFlag.AlignVCenter)
+            item = QTableWidgetItem(f"{source}")
+            item.setTextAlignment(
+                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+            )
             item.setFont(self.messFont[prio])
             item.setForeground(self.messColor[prio])
             self.ui.messageTable.setItem(row, 1, item)
 
-            item = QTableWidgetItem(f'{mType}')
-            item.setTextAlignment(Qt.AlignmentFlag.AlignLeft |
-                                  Qt.AlignmentFlag.AlignVCenter)
+            item = QTableWidgetItem(f"{mType}")
+            item.setTextAlignment(
+                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+            )
             item.setFont(self.messFont[prio])
             item.setForeground(self.messColor[prio])
             self.ui.messageTable.setItem(row, 2, item)
 
-            item = QTableWidgetItem(f'{message}')
-            item.setTextAlignment(Qt.AlignmentFlag.AlignLeft |
-                                  Qt.AlignmentFlag.AlignVCenter)
+            item = QTableWidgetItem(f"{message}")
+            item.setTextAlignment(
+                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+            )
             item.setFont(self.messFont[prio])
             item.setForeground(self.messColor[prio])
             self.ui.messageTable.setItem(row, 3, item)

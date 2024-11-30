@@ -26,11 +26,11 @@ from mountcontrol.convert import valueToInt, valueToFloat
 
 
 class Dome(object):
-    """
-    """
-    __all__ = ['Dome']
+    """ """
 
-    log = logging.getLogger('MW4')
+    __all__ = ["Dome"]
+
+    log = logging.getLogger("MW4")
 
     def __init__(self, parent):
         self.parent = parent
@@ -96,10 +96,9 @@ class Dome(object):
             self._azimuth = (value / 10) % 360.0
 
     def parse(self, response: list, numberOfChunks: int) -> bool:
-        """
-        """
+        """ """
         if len(response) != numberOfChunks:
-            self.log.warning('wrong number of chunks')
+            self.log.warning("wrong number of chunks")
             return False
         self.shutterState = response[0]
         self.flapState = response[1]
@@ -108,10 +107,9 @@ class Dome(object):
         return True
 
     def poll(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = ':GDS#:GDF#:GDW#:GDA#'
+        commandString = ":GDS#:GDF#:GDW#:GDA#"
         suc, response, chunks = conn.communicate(commandString)
         if not suc:
             return False
@@ -119,51 +117,45 @@ class Dome(object):
         return suc
 
     def openShutter(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = ':SDS2#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = ":SDS2#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def closeShutter(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = ':SDS1#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = ":SDS1#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def openFlap(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = ':SDF2#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = ":SDF2#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def closeFlap(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = ':SDF1#'
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        commandString = ":SDF1#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def slewDome(self, azimuth: Angle) -> bool:
-        """
-        """
+        """ """
         azimuth = azimuth.degrees % 360
         conn = Connection(self.parent.host)
-        setAzimuth = f':SDA{azimuth:04.0f}#'
+        setAzimuth = f":SDA{azimuth:04.0f}#"
         commandString = setAzimuth
-        suc, _, _ = conn.communicate(commandString, responseCheck='1')
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def enableInternalDomeControl(self) -> bool:
-        """
-        """
+        """ """
         conn = Connection(self.parent.host)
-        commandString = ':SDAr#'
+        commandString = ":SDAr#"
         suc, _, _ = conn.communicate(commandString)
         return suc

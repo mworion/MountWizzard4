@@ -37,23 +37,23 @@ class Client(QObject):
     so for xml the xml.parse.feed() mechanism is used.
     """
 
-    __all__ = ['Client']
-    log = logging.getLogger('MW4')
+    __all__ = ["Client"]
+    log = logging.getLogger("MW4")
 
     GENERAL_INTERFACE = 0
-    TELESCOPE_INTERFACE = (1 << 0)
-    CCD_INTERFACE = (1 << 1)
-    GUIDER_INTERFACE = (1 << 2)
-    FOCUSER_INTERFACE = (1 << 3)
-    FILTER_INTERFACE = (1 << 4)
-    DOME_INTERFACE = (1 << 5)
-    GPS_INTERFACE = (1 << 6)
-    WEATHER_INTERFACE = (1 << 7)
-    AO_INTERFACE = (1 << 8)
-    DUSTCAP_INTERFACE = (1 << 9)
-    LIGHTBOX_INTERFACE = (1 << 10)
-    DETECTOR_INTERFACE = (1 << 11)
-    AUX_INTERFACE = (1 << 15)
+    TELESCOPE_INTERFACE = 1 << 0
+    CCD_INTERFACE = 1 << 1
+    GUIDER_INTERFACE = 1 << 2
+    FOCUSER_INTERFACE = 1 << 3
+    FILTER_INTERFACE = 1 << 4
+    DOME_INTERFACE = 1 << 5
+    GPS_INTERFACE = 1 << 6
+    WEATHER_INTERFACE = 1 << 7
+    AO_INTERFACE = 1 << 8
+    DUSTCAP_INTERFACE = 1 << 9
+    LIGHTBOX_INTERFACE = 1 << 10
+    DETECTOR_INTERFACE = 1 << 11
+    AUX_INTERFACE = 1 << 15
 
     DEFAULT_PORT = 7624
     CONNECTION_TIMEOUT = 1000
@@ -64,7 +64,7 @@ class Client(QObject):
         self.host = host
         self.signals = INDISignals()
         self.connected = False
-        self.blobMode = 'Never'
+        self.blobMode = "Never"
         self.devices = dict()
         self.curDepth = 0
         self.parser = None
@@ -92,7 +92,7 @@ class Client(QObject):
         if not value:
             return None
         if not isinstance(value, (tuple, str)):
-            self.log.info(f'wrong host value: {value}')
+            self.log.info(f"wrong host value: {value}")
             return None
         if isinstance(value, str):
             value = (value, self.DEFAULT_PORT)
@@ -105,8 +105,8 @@ class Client(QObject):
         """
         :return: success for test purpose
         """
-        self.parser = ETree.XMLPullParser(['start', 'end'])
-        self.parser.feed('<root>')
+        self.parser = ETree.XMLPullParser(["start", "end"])
+        self.parser.feed("<root>")
         for _, _ in self.parser.read_events():
             pass
 
@@ -129,7 +129,7 @@ class Client(QObject):
         self.connected = False
         return True
 
-    def watchDevice(self, deviceName=''):
+    def watchDevice(self, deviceName=""):
         """
         Part of BASE CLIENT API of EKOS
         adds a device to the watchlist. if the device name is empty, all traffic
@@ -139,10 +139,11 @@ class Client(QObject):
         :return: success for test purpose
         """
         if deviceName:
-            cmd = indiXML.clientGetProperties(indi_attr={'version': '1.7',
-                                                         'device': deviceName})
+            cmd = indiXML.clientGetProperties(
+                indi_attr={"version": "1.7", "device": deviceName}
+            )
         else:
-            cmd = indiXML.clientGetProperties(indi_attr={'version': '1.7'})
+            cmd = indiXML.clientGetProperties(indi_attr={"version": "1.7"})
 
         suc = self._sendCmd(cmd)
         return suc
@@ -166,7 +167,7 @@ class Client(QObject):
         self.socket.connectToHost(*self._host)
         return True
 
-    def clearDevices(self, deviceName=''):
+    def clearDevices(self, deviceName=""):
         """
         clearDevices deletes all the actual knows devices and sens out the
         appropriate qt signals
@@ -180,12 +181,12 @@ class Client(QObject):
 
             self.signals.deviceDisconnected.emit(device)
             self.signals.removeDevice.emit(device)
-            self.log.info(f'Remove device [{device}]')
+            self.log.info(f"Remove device [{device}]")
 
         self.devices = {}
         return True
 
-    def disconnectServer(self, deviceName=''):
+    def disconnectServer(self, deviceName=""):
         """
         Part of BASE CLIENT API of EKOS
         disconnect drops the connection to the indi server
@@ -208,7 +209,7 @@ class Client(QObject):
         """
         return self.connected
 
-    def connectDevice(self, deviceName=''):
+    def connectDevice(self, deviceName=""):
         """
         Part of BASE CLIENT API of EKOS
 
@@ -222,23 +223,22 @@ class Client(QObject):
         if deviceName not in self.devices:
             return False
 
-        con = self.devices[deviceName].getSwitch('CONNECTION')
-        if con['CONNECT'] == 'On':
-            self.log.info(f'Device [{deviceName}] was connected at startup')
+        con = self.devices[deviceName].getSwitch("CONNECTION")
+        if con["CONNECT"] == "On":
+            self.log.info(f"Device [{deviceName}] was connected at startup")
             return False
 
         else:
-            self.log.info(f'Device [{deviceName}] unconnected - connect it now')
+            self.log.info(f"Device [{deviceName}] unconnected - connect it now")
 
-        suc = self.sendNewSwitch(deviceName=deviceName,
-                                 propertyName='CONNECTION',
-                                 elements={'CONNECT': 'On',
-                                           'DISCONNECT': 'Off'
-                                           },
-                                 )
+        suc = self.sendNewSwitch(
+            deviceName=deviceName,
+            propertyName="CONNECTION",
+            elements={"CONNECT": "On", "DISCONNECT": "Off"},
+        )
         return suc
 
-    def disconnectDevice(self, deviceName=''):
+    def disconnectDevice(self, deviceName=""):
         """
         Part of BASE CLIENT API of EKOS
 
@@ -252,20 +252,19 @@ class Client(QObject):
         if deviceName not in self.devices:
             return False
 
-        con = self.devices[deviceName].getSwitch('CONNECTION')
-        if con['DISCONNECT'] == 'On':
-            self.log.info(f'{deviceName} already disconnected')
+        con = self.devices[deviceName].getSwitch("CONNECTION")
+        if con["DISCONNECT"] == "On":
+            self.log.info(f"{deviceName} already disconnected")
             return False
 
-        suc = self.sendNewSwitch(deviceName=deviceName,
-                                 propertyName='CONNECTION',
-                                 elements={'CONNECT': 'Off',
-                                           'DISCONNECT': 'On'
-                                           },
-                                 )
+        suc = self.sendNewSwitch(
+            deviceName=deviceName,
+            propertyName="CONNECTION",
+            elements={"CONNECT": "Off", "DISCONNECT": "On"},
+        )
         return suc
 
-    def getDevice(self, deviceName=''):
+    def getDevice(self, deviceName=""):
         """
         Part of BASE CLIENT API of EKOS
         getDevice collects all the data of the given device
@@ -292,7 +291,7 @@ class Client(QObject):
                 deviceList.append(deviceName)
         return deviceList
 
-    def setBlobMode(self, blobHandling='Never', deviceName='', propertyName=''):
+    def setBlobMode(self, blobHandling="Never", deviceName="", propertyName=""):
         """
         Part of BASE CLIENT API of EKOS
 
@@ -306,14 +305,14 @@ class Client(QObject):
         if deviceName not in self.devices:
             return False
 
-        cmd = indiXML.enableBLOB(blobHandling,
-                                 indi_attr={'name': propertyName,
-                                            'device': deviceName})
+        cmd = indiXML.enableBLOB(
+            blobHandling, indi_attr={"name": propertyName, "device": deviceName}
+        )
         self.blobMode = blobHandling
         suc = self._sendCmd(cmd)
         return suc
 
-    def getBlobMode(self, deviceName='', propertyName=''):
+    def getBlobMode(self, deviceName="", propertyName=""):
         """
         Part of BASE CLIENT API of EKOS
 
@@ -330,7 +329,7 @@ class Client(QObject):
         :return: host name as str
         """
         if self._host is None:
-            return ''
+            return ""
 
         return self._host[0]
 
@@ -345,7 +344,7 @@ class Client(QObject):
 
         return self._host[1]
 
-    def sendNewText(self, deviceName='', propertyName='', elements='', text=''):
+    def sendNewText(self, deviceName="", propertyName="", elements="", text=""):
         """
         Part of BASE CLIENT API of EKOS
 
@@ -365,18 +364,14 @@ class Client(QObject):
         elementList = []
         for element in elements:
             text = elements[element]
-            elementList.append(
-                indiXML.oneText(text,
-                                indi_attr={'name': element}
-                                )
-            )
-        cmd = indiXML.newTextVector(elementList,
-                                    indi_attr={'name': propertyName,
-                                               'device': deviceName})
+            elementList.append(indiXML.oneText(text, indi_attr={"name": element}))
+        cmd = indiXML.newTextVector(
+            elementList, indi_attr={"name": propertyName, "device": deviceName}
+        )
         suc = self._sendCmd(cmd)
         return suc
 
-    def sendNewNumber(self, deviceName='', propertyName='', elements='', number=0):
+    def sendNewNumber(self, deviceName="", propertyName="", elements="", number=0):
         """
         Part of BASE CLIENT API of EKOS
 
@@ -396,18 +391,14 @@ class Client(QObject):
         elementList = []
         for element in elements:
             number = float(elements[element])
-            elementList.append(
-                indiXML.oneNumber(number,
-                                  indi_attr={'name': element}
-                                  )
-            )
-        cmd = indiXML.newNumberVector(elementList,
-                                      indi_attr={'name': propertyName,
-                                                 'device': deviceName})
+            elementList.append(indiXML.oneNumber(number, indi_attr={"name": element}))
+        cmd = indiXML.newNumberVector(
+            elementList, indi_attr={"name": propertyName, "device": deviceName}
+        )
         suc = self._sendCmd(cmd)
         return suc
 
-    def sendNewSwitch(self, deviceName='', propertyName='', elements=''):
+    def sendNewSwitch(self, deviceName="", propertyName="", elements=""):
         """
         Part of BASE CLIENT API of EKOS
 
@@ -421,24 +412,20 @@ class Client(QObject):
         # if not hasattr(self.devices[deviceName], propertyName):
         #     return False
         if not isinstance(elements, dict):
-            elements = {elements: 'On'}
+            elements = {elements: "On"}
 
         elementList = []
         for element in elements:
             switch = elements[element]
-            elementList.append(
-                indiXML.oneSwitch(switch,
-                                  indi_attr={'name': element}
-                                  )
-            )
-        cmd = indiXML.newSwitchVector(elementList,
-                                      indi_attr={'name': propertyName,
-                                                 'device': deviceName})
+            elementList.append(indiXML.oneSwitch(switch, indi_attr={"name": element}))
+        cmd = indiXML.newSwitchVector(
+            elementList, indi_attr={"name": propertyName, "device": deviceName}
+        )
         suc = self._sendCmd(cmd)
         return suc
 
     @staticmethod
-    def startBlob(deviceName='', propertyName='', timestamp=''):
+    def startBlob(deviceName="", propertyName="", timestamp=""):
         """
         Part of BASE CLIENT API of EKOS
         :return:
@@ -446,7 +433,7 @@ class Client(QObject):
         return True
 
     @staticmethod
-    def sendOneBlob(blobName='', blobSize=0, blobFormat='', blobBuffer=None):
+    def sendOneBlob(blobName="", blobSize=0, blobFormat="", blobBuffer=None):
         """
         Part of BASE CLIENT API of EKOS
         :return:
@@ -493,7 +480,7 @@ class Client(QObject):
         if self.connected:
             cmd = indiCommand.toXML()
             self.log.trace(f"SendCmd: [{cmd.decode().lstrip('<').rstrip('/>')}]")
-            number = self.socket.write(cmd + b'\n')
+            number = self.socket.write(cmd + b"\n")
             self.socket.flush()
             if number > 0:
                 return True
@@ -511,14 +498,14 @@ class Client(QObject):
         :return: binary value of type of device drivers interface
         """
         device = self.devices[deviceName]
-        if not hasattr(device, 'DRIVER_INFO'):
+        if not hasattr(device, "DRIVER_INFO"):
             return -1
 
-        val = getattr(device, 'DRIVER_INFO')
+        val = getattr(device, "DRIVER_INFO")
         if val:
-            val = val['elementList'].get('DRIVER_INTERFACE', '')
+            val = val["elementList"].get("DRIVER_INTERFACE", "")
             if val:
-                interface = val['value']
+                interface = val["value"]
                 return int(interface)
 
             else:
@@ -526,8 +513,9 @@ class Client(QObject):
         else:
             return -1
 
-    def _fillAttributes(self, deviceName=None, chunk=None, elementList=None,
-                        defVector=None):
+    def _fillAttributes(
+        self, deviceName=None, chunk=None, elementList=None, defVector=None
+    ):
         """
         :param deviceName: device name
         :param chunk:   xml element from INDI
@@ -536,32 +524,36 @@ class Client(QObject):
         :return: True for test purpose
         """
         for elt in chunk.elt_list:
-            name = elt.attr.get('name', '')
+            name = elt.attr.get("name", "")
             if not name:
                 return False
             if name in elementList:
                 elementList[name].clear()
             else:
                 elementList[name] = {}
-            elementList[name]['elementType'] = elt.etype
+            elementList[name]["elementType"] = elt.etype
 
             # as a new blob vector does not contain an initial value, we have to
             # separate this
             if not isinstance(elt, indiXML.DefBLOB):
-                elementList[name]['value'] = elt.getValue()
+                elementList[name]["value"] = elt.getValue()
 
             # now all other attributes of element are stored
             for attr in elt.attr:
                 elementList[name][attr] = elt.attr[attr]
 
             # send connected signals
-            if name == 'CONNECT' and elt.getValue() == 'On' and chunk.attr['state'] == 'Ok':
+            if (
+                name == "CONNECT"
+                and elt.getValue() == "On"
+                and chunk.attr["state"] == "Ok"
+            ):
                 self.signals.deviceConnected.emit(deviceName)
-                self.log.info(f'Device [{deviceName}] connected')
+                self.log.info(f"Device [{deviceName}] connected")
 
-            if name == 'DISCONNECT' and elt.getValue() == 'On':
+            if name == "DISCONNECT" and elt.getValue() == "On":
                 self.signals.deviceDisconnected.emit(deviceName)
-                self.log.info(f'Device [{deviceName}] disconnected')
+                self.log.info(f"Device [{deviceName}] disconnected")
 
         return True
 
@@ -572,20 +564,20 @@ class Client(QObject):
         :param device:  device class
         :return:
         """
-        iProperty = chunk.attr.get('name', '')
+        iProperty = chunk.attr.get("name", "")
         if not hasattr(device, iProperty):
             setattr(device, iProperty, {})
 
         # shortening for readability
         deviceProperty = getattr(device, iProperty)
 
-        deviceProperty['propertyType'] = chunk.etype
+        deviceProperty["propertyType"] = chunk.etype
         for vecAttr in chunk.attr:
             deviceProperty[vecAttr] = chunk.attr.get(vecAttr)
 
         # adding subspace for atomic elements (text, switch, etc)
-        deviceProperty['elementList'] = {}
-        elementList = deviceProperty['elementList']
+        deviceProperty["elementList"] = {}
+        elementList = deviceProperty["elementList"]
 
         return iProperty, elementList
 
@@ -598,11 +590,11 @@ class Client(QObject):
         :param chunk:   xml element from INDI
         :return: device and device name
         """
-        deviceName = chunk.attr.get('device', '')
+        deviceName = chunk.attr.get("device", "")
         if deviceName not in self.devices:
             self.devices[deviceName] = Device(deviceName)
             self.signals.newDevice.emit(deviceName)
-            self.log.info(f'New device [{deviceName}]')
+            self.log.info(f"New device [{deviceName}]")
 
         device = self.devices[deviceName]
         return device, deviceName
@@ -618,18 +610,17 @@ class Client(QObject):
         """
         if deviceName not in self.devices:
             return False
-        if 'name' not in chunk.attr:
+        if "name" not in chunk.attr:
             return False
 
-        iProperty = chunk.attr['name']
+        iProperty = chunk.attr["name"]
 
-        self.log.trace(f'DEL: Device:{device.name}, '
-                       f'Property: {iProperty}')
+        self.log.trace(f"DEL: Device:{device.name}, " f"Property: {iProperty}")
 
         if hasattr(device, iProperty):
             delattr(device, iProperty)
             self.signals.removeProperty.emit(deviceName, iProperty)
-            self.log.info(f'Device [{deviceName}] del property [{iProperty}]')
+            self.log.info(f"Device [{deviceName}] del property [{iProperty}]")
 
         return True
 
@@ -643,16 +634,18 @@ class Client(QObject):
         :param deviceName: device name
         :return: success
         """
-        iProperty, elementList = self._setupPropertyStructure(chunk=chunk,
-                                                              device=device)
-        self._fillAttributes(deviceName=deviceName,
-                             chunk=chunk,
-                             elementList=elementList,
-                             defVector=False)
+        iProperty, elementList = self._setupPropertyStructure(
+            chunk=chunk, device=device
+        )
+        self._fillAttributes(
+            deviceName=deviceName, chunk=chunk, elementList=elementList, defVector=False
+        )
 
-        self.log.trace(f'SET: Device:{device.name}, '
-                       f'Property: {iProperty}, '
-                       f'Elements: {elementList}')
+        self.log.trace(
+            f"SET: Device:{device.name}, "
+            f"Property: {iProperty}, "
+            f"Elements: {elementList}"
+        )
 
         if isinstance(chunk, indiXML.SetBLOBVector):
             self.signals.newBLOB.emit(deviceName, iProperty)
@@ -677,15 +670,17 @@ class Client(QObject):
         :param deviceName: device name
         :return: success
         """
-        iProperty, elementList = self._setupPropertyStructure(chunk=chunk,
-                                                              device=device)
-        self._fillAttributes(deviceName=deviceName,
-                             chunk=chunk,
-                             elementList=elementList,
-                             defVector=True)
-        self.log.trace(f'DEF: Device:{device.name}, '
-                       f'Property: {iProperty}, '
-                       f'Elements: {elementList}')
+        iProperty, elementList = self._setupPropertyStructure(
+            chunk=chunk, device=device
+        )
+        self._fillAttributes(
+            deviceName=deviceName, chunk=chunk, elementList=elementList, defVector=True
+        )
+        self.log.trace(
+            f"DEF: Device:{device.name}, "
+            f"Property: {iProperty}, "
+            f"Elements: {elementList}"
+        )
         self.signals.newProperty.emit(deviceName, iProperty)
         if isinstance(chunk, indiXML.DefBLOBVector):
             self.signals.defBLOB.emit(deviceName, iProperty)
@@ -706,7 +701,7 @@ class Client(QObject):
         :param deviceName: device name
         :return: success
         """
-        self.log.trace(f'GET: Device:{device.name}')
+        self.log.trace(f"GET: Device:{device.name}")
         return True
 
     def _message(self, chunk=None, deviceName=None):
@@ -715,7 +710,7 @@ class Client(QObject):
         :param deviceName: device name
         :return: success
         """
-        message = chunk.attr.get('message', '-')
+        message = chunk.attr.get("message", "-")
         self.signals.newMessage.emit(deviceName, message)
         return True
 
@@ -731,8 +726,8 @@ class Client(QObject):
         if not self.connected:
             return False
 
-        if 'device' not in chunk.attr:
-            self.log.warning(f'No device in chunk: [{chunk}]')
+        if "device" not in chunk.attr:
+            self.log.warning(f"No device in chunk: [{chunk}]")
             return False
 
         device, deviceName = self._getDeviceReference(chunk=chunk)
@@ -742,31 +737,37 @@ class Client(QObject):
             self._message(chunk=chunk, deviceName=deviceName)
             return True
 
-        if 'name' not in chunk.attr:
-            self.log.warning(f'No property in chunk: [{chunk}]')
+        if "name" not in chunk.attr:
+            self.log.warning(f"No property in chunk: [{chunk}]")
             return False
 
         if isinstance(chunk, indiXML.DelProperty):
             self._delProperty(chunk=chunk, device=device, deviceName=deviceName)
             return True
 
-        if isinstance(chunk, (indiXML.SetBLOBVector,
-                              indiXML.SetSwitchVector,
-                              indiXML.SetTextVector,
-                              indiXML.SetLightVector,
-                              indiXML.SetNumberVector,
-                              )
-                      ):
+        if isinstance(
+            chunk,
+            (
+                indiXML.SetBLOBVector,
+                indiXML.SetSwitchVector,
+                indiXML.SetTextVector,
+                indiXML.SetLightVector,
+                indiXML.SetNumberVector,
+            ),
+        ):
             self._setProperty(chunk=chunk, device=device, deviceName=deviceName)
             return True
 
-        if isinstance(chunk, (indiXML.DefBLOBVector,
-                              indiXML.DefSwitchVector,
-                              indiXML.DefTextVector,
-                              indiXML.DefLightVector,
-                              indiXML.DefNumberVector,
-                              )
-                      ):
+        if isinstance(
+            chunk,
+            (
+                indiXML.DefBLOBVector,
+                indiXML.DefSwitchVector,
+                indiXML.DefTextVector,
+                indiXML.DefLightVector,
+                indiXML.DefNumberVector,
+            ),
+        ):
             self._defProperty(chunk=chunk, device=device, deviceName=deviceName)
             return True
 
@@ -774,26 +775,32 @@ class Client(QObject):
             self._getProperty(chunk=chunk, device=device, deviceName=deviceName)
             return True
 
-        if isinstance(chunk, (indiXML.NewBLOBVector,
-                              indiXML.NewSwitchVector,
-                              indiXML.NewTextVector,
-                              indiXML.NewNumberVector,
-                              )
-                      ):
+        if isinstance(
+            chunk,
+            (
+                indiXML.NewBLOBVector,
+                indiXML.NewSwitchVector,
+                indiXML.NewTextVector,
+                indiXML.NewNumberVector,
+            ),
+        ):
             # todo: what to do with the "New" vector ?
             return True
 
-        if isinstance(chunk, (indiXML.OneBLOB,
-                              indiXML.OneSwitch,
-                              indiXML.OneText,
-                              indiXML.OneNumber,
-                              indiXML.OneLight,
-                              )
-                      ):
+        if isinstance(
+            chunk,
+            (
+                indiXML.OneBLOB,
+                indiXML.OneSwitch,
+                indiXML.OneText,
+                indiXML.OneNumber,
+                indiXML.OneLight,
+            ),
+        ):
             # todo: what to do with the "One" vector ?
             return True
 
-        self.log.error(f'Unknown vectors: [{chunk}]')
+        self.log.error(f"Unknown vectors: [{chunk}]")
         return False
 
     def handleReadyRead(self):
@@ -809,28 +816,28 @@ class Client(QObject):
         self.parser.feed(buf)
         try:
             for event, elem in self.parser.read_events():
-                if event == 'start':
+                if event == "start":
                     self.curDepth += 1
 
-                elif event == 'end':
+                elif event == "end":
                     self.curDepth -= 1
 
                 else:
-                    self.log.critical(f'Problem parsing event: [{event}]')
+                    self.log.critical(f"Problem parsing event: [{event}]")
                     continue
 
                 if self.curDepth > 0:
                     continue
 
                 if self.curDepth < 0:
-                    self.log.critical(f'Problem parsing event: [{event}]')
+                    self.log.critical(f"Problem parsing event: [{event}]")
                     continue
                 elemParsed = indiXML.parseETree(elem)
                 elem.clear()
                 self._parseCmd(elemParsed)
 
         except Exception as e:
-            self.log.error(f'{e}: {buf}')
+            self.log.error(f"{e}: {buf}")
             return False
 
         return True
@@ -849,7 +856,7 @@ class Client(QObject):
         """
         self.connected = False
         self.signals.serverDisconnected.emit(self.devices)
-        self.log.info('INDI client disconnected')
+        self.log.info("INDI client disconnected")
         return True
 
     def handleError(self, socketError):
@@ -861,8 +868,8 @@ class Client(QObject):
         Unknown = QTcpSocket.SocketError.UnknownSocketError
         RemoteClosed = QTcpSocket.SocketError.RemoteHostClosedError
         if socketError not in [Refuse, Unknown, RemoteClosed]:
-            self.log.error(f'INDI error: [{socketError}]')
+            self.log.error(f"INDI error: [{socketError}]")
         else:
-            self.log.debug(f'INDI error: [{socketError}]')
+            self.log.debug(f"INDI error: [{socketError}]")
         self.disconnectServer()
         return True

@@ -25,7 +25,7 @@ from PySide6.QtCore import QObject, Signal, QRunnable
 # local imports
 
 
-__all__ = ['Worker']
+__all__ = ["Worker"]
 
 
 class WorkerSignals(QObject):
@@ -35,7 +35,7 @@ class WorkerSignals(QObject):
     transferred to the caller back
     """
 
-    __all__ = ['WorkerSignals']
+    __all__ = ["WorkerSignals"]
 
     finished = Signal()
     error = Signal(object)
@@ -48,9 +48,9 @@ class Worker(QRunnable):
     executed as a thread in a threadpool
     """
 
-    __all__ = ['Worker']
+    __all__ = ["Worker"]
 
-    log = logging.getLogger('MW4')
+    log = logging.getLogger("MW4")
 
     def __init__(self, fn, *args, **kwargs):
         """
@@ -78,7 +78,7 @@ class Worker(QRunnable):
         file = os.path.basename(tb.tb_frame.f_code.co_filename)
         line = tb.tb_frame.f_lineno
         fnName = self.fn.__name__
-        eStr = f'fn: [{fnName}], file: [{file}], line: {line} '
+        eStr = f"fn: [{fnName}], file: [{file}], line: {line} "
         return eStr
 
     def run(self):
@@ -102,7 +102,7 @@ class Worker(QRunnable):
                 tb = tb.tb_next
                 eStr += self.clearPrintErrorStack(tb)
 
-            eStr += f' - excType: [{exc_type}], excValue: [{exc_value}]'
+            eStr += f" - excType: [{exc_type}], excValue: [{exc_value}]"
             self.log.critical(eStr)
             self.signals.error.emit(eStr)
 

@@ -25,8 +25,8 @@ from gui.utilities.gCustomViewBox import CustomViewBox
 
 
 class Measure(PlotBase):
-    """
-    """
+    """ """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.nextRow()
@@ -45,9 +45,9 @@ class Measure(PlotBase):
         self.setupItems()
         for plotItem in self.p:
             plotItem.showAxes(True, showValues=True)
-            plotItem.setAxisItems({'bottom': TimeMeasure(orientation='bottom')})
-            plotItem.getAxis('bottom').setPen(self.pen)
-            plotItem.getAxis('bottom').setTextPen(self.pen)
+            plotItem.setAxisItems({"bottom": TimeMeasure(orientation="bottom")})
+            plotItem.getAxis("bottom").setPen(self.pen)
+            plotItem.getAxis("bottom").setTextPen(self.pen)
             plotItem.enableAutoRange(x=True, y=True)
-            plotItem.getAxis('left').setWidth(60)
+            plotItem.getAxis("left").setWidth(60)
             plotItem.setVisible(False)

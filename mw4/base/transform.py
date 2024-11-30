@@ -28,11 +28,11 @@ from skyfield.api import Angle
 # local import
 
 __all__ = [
-    'J2000ToJNow',
-    'J2000ToAltAz',
-    'JNowToJ2000',
-    'diffModulusAbs',
-    'diffModulusSign',
+    "J2000ToJNow",
+    "J2000ToAltAz",
+    "JNowToJ2000",
+    "diffModulusAbs",
+    "diffModulusSign",
 ]
 
 log = logging.getLogger()
@@ -60,8 +60,8 @@ def JNowToJ2000(ra, dec, timeJD):
     dec = dec.radians
     ra = erfa.anp(ra + erfa.eo06a(timeJD.tt, 0.0))
     raConv, decConv, _ = erfa.atic13(ra, dec, timeJD.ut1, 0.0)
-    ra = Angle(radians=raConv, preference='hours')
-    dec = Angle(radians=decConv, preference='degrees')
+    ra = Angle(radians=raConv, preference="hours")
+    dec = Angle(radians=decConv, preference="degrees")
     mutex.unlock()
 
     return ra, dec
@@ -88,8 +88,8 @@ def J2000ToJNow(ra, dec, timeJD):
     dec = dec.radians
     raConv, decConv, eo = erfa.atci13(ra, dec, 0, 0, 0, 0, timeJD.ut1, 0)
     raConv = erfa.anp(raConv - eo)
-    ra = Angle(radians=raConv, preference='hours')
-    dec = Angle(radians=decConv, preference='degrees')
+    ra = Angle(radians=raConv, preference="hours")
+    dec = Angle(radians=decConv, preference="degrees")
     mutex.unlock()
 
     return ra, dec
@@ -122,13 +122,31 @@ def J2000ToAltAz(ra, dec, timeJD, location):
     lon = location.longitude.radians
     elevation = location.elevation.m
 
-    v = erfa.atco13(ra, dec, 0.0, 0.0, 0.0, 0.0, timeJD.ut1, 0.0, 0,
-                    lon, lat, elevation, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    v = erfa.atco13(
+        ra,
+        dec,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        timeJD.ut1,
+        0.0,
+        0,
+        lon,
+        lat,
+        elevation,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+    )
     aob, zob, hob, dob, rob, eo = v
     decConv = np.pi / 2 - zob
 
-    azimuth = Angle(radians=aob, preference='degrees')
-    altitude = Angle(radians=decConv, preference='degrees')
+    azimuth = Angle(radians=aob, preference="degrees")
+    altitude = Angle(radians=decConv, preference="degrees")
     mutex.unlock()
     return azimuth, altitude
 

@@ -25,8 +25,7 @@ from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorPointer:
-
-    __all__ = ['SimulatorPointer']
+    __all__ = ["SimulatorPointer"]
 
     def __init__(self, parent, app):
         super().__init__()
@@ -35,17 +34,15 @@ class SimulatorPointer:
         self.parent.ui.showPointer.checkStateChanged.connect(self.showEnable)
 
     def showEnable(self):
-        """
-        """
+        """ """
         isVisible = self.parent.ui.showPointer.isChecked()
-        node = self.parent.entityModel.get('pointerRoot')
+        node = self.parent.entityModel.get("pointerRoot")
         if node:
-            node['entity'].setEnabled(isVisible)
+            node["entity"].setEnabled(isVisible)
 
     def updatePositions(self):
-        """
-        """
-        if not self.app.deviceStat['mount']:
+        """ """
+        if not self.app.deviceStat["mount"]:
             return
 
         _, _, intersect, _, _ = self.app.mount.calcTransformationMatricesActual()
@@ -56,23 +53,22 @@ class SimulatorPointer:
         intersect *= 1000
         intersect[2] += 1000
 
-        node = self.parent.entityModel.get('pointerDot')
+        node = self.parent.entityModel.get("pointerDot")
         if node:
             vec = QVector3D(intersect[0], intersect[1], intersect[2])
-            node['trans'].setTranslation(vec)
+            node["trans"].setTranslation(vec)
 
     def create(self):
-        """
-        """
+        """ """
         model = {
-            'pointerRoot': {
-                'parent': 'ref_fusion_m',
+            "pointerRoot": {
+                "parent": "ref_fusion_m",
             },
-            'pointerDot': {
-                'parent': 'pointerRoot',
-                'source': ['sphere', 50, 30, 30],
-                'scale': [1, 1, 1],
-                'mat': Materials().pointer,
+            "pointerDot": {
+                "parent": "pointerRoot",
+                "source": ["sphere", 50, 30, 30],
+                "scale": [1, 1, 1],
+                "mat": Materials().pointer,
             },
         }
         linkModel(model, self.parent.entityModel)

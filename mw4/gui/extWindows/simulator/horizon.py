@@ -27,8 +27,7 @@ from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorHorizon:
-
-    __all__ = ['SimulatorHorizon']
+    __all__ = ["SimulatorHorizon"]
     WALL_RADIUS = 4
     WALL_SPACE = 5
 
@@ -39,23 +38,21 @@ class SimulatorHorizon:
         self.parent.ui.showHorizon.checkStateChanged.connect(self.showEnable)
 
     def showEnable(self):
-        """
-        """
+        """ """
         isVisible = self.parent.ui.showHorizon.isChecked()
-        node = self.parent.entityModel.get('horizonRoot')
+        node = self.parent.entityModel.get("horizonRoot")
         if node:
-            node['entity'].setEnabled(isVisible)
+            node["entity"].setEnabled(isVisible)
 
     def clear(self):
-        """
-        """
-        node = self.parent.entityModel.get('horizonRoot')
+        """ """
+        node = self.parent.entityModel.get("horizonRoot")
         if not node:
             return
 
-        node['entity'].setParent(None)
-        del self.parent.entityModel['horizonRoot']['entity']
-        del self.parent.entityModel['horizonRoot']
+        node["entity"].setParent(None)
+        del self.parent.entityModel["horizonRoot"]["entity"]
+        del self.parent.entityModel["horizonRoot"]
 
     def createWall(self, parentEntity, alt, az):
         """
@@ -109,9 +106,9 @@ class SimulatorHorizon:
 
         self.clear()
         horizonEntity = Qt3DCore.QEntity()
-        parent = self.parent.entityModel['ref_fusion']['entity']
+        parent = self.parent.entityModel["ref_fusion"]["entity"]
         horizonEntity.setParent(parent)
-        self.parent.entityModel['horizonRoot'] = {'entity': horizonEntity}
+        self.parent.entityModel["horizonRoot"] = {"entity": horizonEntity}
 
         for alt, az in zip(horizonAlt, horizonAz):
             self.createWall(horizonEntity, alt, az)

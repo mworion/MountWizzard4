@@ -28,9 +28,9 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class ModelBatch(QObject):
-    """
-    """
-    __all__ = ['ModelBatch']
+    """ """
+
+    __all__ = ["ModelBatch"]
     progress = Signal(object)
 
     def __init__(self, app):
@@ -45,13 +45,13 @@ class ModelBatch(QObject):
         self.modelInputData: list = []
         self.modelBuildData: list = []
         self.modelSaveData: list = []
-        self.modelName: str = ''
-        self.imageDir: Path = Path('')
+        self.modelName: str = ""
+        self.imageDir: Path = Path("")
         self.latitude: float = 0
-        self.version: str = ''
-        self.firmware: str = ''
-        self.profile: str = ''
-        self.plateSolveApp: str = ''
+        self.version: str = ""
+        self.firmware: str = ""
+        self.profile: str = ""
+        self.plateSolveApp: str = ""
         self.exposureWaitTime: float = 0
         self.runTime: float = 0
         self.numberRetries: int = 0
@@ -76,59 +76,53 @@ class ModelBatch(QObject):
         self.app.plateSolve.signals.result.connect(self.collectPlateSolveResult)
 
     def setImageExposed(self) -> None:
-        """
-        """
-        imagePath = self.modelBuildData[self.pointerImage]['imagePath']
+        """ """
+        imagePath = self.modelBuildData[self.pointerImage]["imagePath"]
         self.app.showImage.emit(imagePath)
         if self.modelTiming == 2:
             self.startNewSlew()
 
     def setImageDownloaded(self):
-        """
-        """
+        """ """
         if self.modelTiming == 1:
             self.startNewSlew()
 
     def setImageSaved(self) -> None:
-        """
-        """
+        """ """
         if self.modelTiming == 0:
             self.startNewSlew()
 
     def setMountSlewed(self) -> None:
-        """
-        """
+        """ """
         self.mountSlewed = True
-        if not self.app.deviceStat['dome']:
+        if not self.app.deviceStat["dome"]:
             self.startNewImageExposure()
             return
         if self.domeSlewed:
             self.startNewImageExposure()
 
     def setDomeSlewed(self) -> None:
-        """
-        """
+        """ """
         self.domeSlewed = True
         if self.mountSlewed:
             self.startNewImageExposure()
 
     def startNewSlew(self) -> None:
-        """
-        """
+        """ """
         self.pointerSlew += 1
         if self.pointerSlew >= len(self.modelBuildData):
             return
         if self.abortBatch or self.endBatch:
             return
         item = self.modelBuildData[self.pointerSlew]
-        altitude = item['altitude']
-        azimuth = item['azimuth']
+        altitude = item["altitude"]
+        azimuth = item["azimuth"]
         self.mountSlewed = False
         self.domeSlewed = False
 
         if not self.app.mount.obsSite.setTargetAltAz(altitude, azimuth):
             return
-        if self.app.deviceStat['dome']:
+        if self.app.deviceStat["dome"]:
             self.app.dome.slewDome(azimuth)
         self.app.mount.obsSite.startSlewing()
 
@@ -139,7 +133,7 @@ class ModelBatch(QObject):
         """
         self.modelSaveData.clear()
         for modelBuildPoint in self.modelBuildData:
-            if not modelBuildPoint['success']:
+            if not modelBuildPoint["success"]:
                 continue
 
             modelSavePoint = dict()
@@ -147,37 +141,37 @@ class ModelBatch(QObject):
             for key in modelSavePoint:
                 if not isinstance(modelSavePoint[key], Angle):
                     continue
-                if 'ra' in key or 'ha' in key:
+                if "ra" in key or "ha" in key:
                     modelSavePoint[key] = modelSavePoint[key].hours
                 else:
                     modelSavePoint[key] = modelSavePoint[key].degrees
 
-            modelSavePoint['julianDate'] = modelSavePoint['julianDate'].utc_iso()
-            modelSavePoint['version'] = self.version
-            modelSavePoint['profile'] = self.profile
-            modelSavePoint['firmware'] = self.firmware
-            modelSavePoint['latitude'] = self.latitude
+            modelSavePoint["julianDate"] = modelSavePoint["julianDate"].utc_iso()
+            modelSavePoint["version"] = self.version
+            modelSavePoint["profile"] = self.profile
+            modelSavePoint["firmware"] = self.firmware
+            modelSavePoint["latitude"] = self.latitude
             self.modelSaveData.append(modelSavePoint)
 
     def addMountDataToModelBuildData(self) -> None:
-        """
-        """
+        """ """
         item = self.modelBuildData[self.pointerImage]
         obs = self.app.mount.obsSite
-        item['raJNowM'] = obs.raJNow
-        item['decJNowM'] = obs.decJNow
-        item['angularPosRA'] = obs.angularPosRA
-        item['angularPosDEC'] = obs.angularPosDEC
-        item['siderealTime'] = obs.timeSidereal
-        item['julianDate'] = obs.timeJD
-        item['pierside'] = obs.pierside
-        raJ2000M, decJ2000M = JNowToJ2000(item['raJNowM'], item['decJNowM'], item['julianDate'])
-        item['raJ2000M'] = raJ2000M
-        item['decJ2000M'] = decJ2000M
+        item["raJNowM"] = obs.raJNow
+        item["decJNowM"] = obs.decJNow
+        item["angularPosRA"] = obs.angularPosRA
+        item["angularPosDEC"] = obs.angularPosDEC
+        item["siderealTime"] = obs.timeSidereal
+        item["julianDate"] = obs.timeJD
+        item["pierside"] = obs.pierside
+        raJ2000M, decJ2000M = JNowToJ2000(
+            item["raJNowM"], item["decJNowM"], item["julianDate"]
+        )
+        item["raJ2000M"] = raJ2000M
+        item["decJ2000M"] = decJ2000M
 
     def startNewImageExposure(self) -> None:
-        """
-        """
+        """ """
         self.pointerImage += 1
         if self.abortBatch or self.endBatch:
             return
@@ -190,21 +184,19 @@ class ModelBatch(QObject):
         item = self.modelBuildData[self.pointerImage]
         self.addMountDataToModelBuildData()
         cam = self.app.camera
-        imagePath = item['imagePath']
-        exposureTime = item['exposureTime'] = cam.exposureTime1
-        binning = item['binning'] = cam.binning1
+        imagePath = item["imagePath"]
+        exposureTime = item["exposureTime"] = cam.exposureTime1
+        binning = item["binning"] = cam.binning1
         self.app.camera.expose(imagePath, exposureTime, binning)
 
     def startNewPlateSolve(self) -> None:
-        """
-        """
+        """ """
         self.pointerPlateSolve += 1
-        imagePath = self.modelBuildData[self.pointerPlateSolve]['imagePath']
+        imagePath = self.modelBuildData[self.pointerPlateSolve]["imagePath"]
         self.app.plateSolve.solve(imagePath)
 
     def sendModelProgress(self) -> None:
-        """
-        """
+        """ """
         fraction = (self.pointerResult + 1) / len(self.modelBuildData)
         secondsElapsed = time.time() - self.runTime
         secondsBase = secondsElapsed / fraction
@@ -212,26 +204,27 @@ class ModelBatch(QObject):
         modelPercent = int(100 * fraction)
 
         progressData = {
-            'count': len(self.modelBuildData),
-            'modelPercent': modelPercent,
-            'secondsElapsed': secondsElapsed,
-            'secondsEstimated': secondsEstimated,
-            'solved': self.pointerResult + 1
+            "count": len(self.modelBuildData),
+            "modelPercent": modelPercent,
+            "secondsElapsed": secondsElapsed,
+            "secondsEstimated": secondsEstimated,
+            "solved": self.pointerResult + 1,
         }
         self.progress.emit(progressData)
 
     def collectPlateSolveResult(self, result) -> None:
-        """
-        """
+        """ """
         self.pointerResult += 1
         item = self.modelBuildData[self.pointerResult]
         item.update(result)
-        solved = result['success']
+        solved = result["success"]
 
         if solved:
-            raJNowS, decJNowS = J2000ToJNow(item['raJ2000S'], item['decJ2000S'], item['julianDate'])
-            item['raJNowS'] = raJNowS
-            item['decJNowS'] = decJNowS
+            raJNowS, decJNowS = J2000ToJNow(
+                item["raJ2000S"], item["decJ2000S"], item["julianDate"]
+            )
+            item["raJNowS"] = raJNowS
+            item["decJNowS"] = decJNowS
 
         statusBuildPoint = 0 if solved else 2
         self.app.data.setStatusBuildP(self.pointerResult, statusBuildPoint)
@@ -239,8 +232,7 @@ class ModelBatch(QObject):
         self.sendModelProgress()
 
     def prepareModelBuildData(self) -> None:
-        """
-        """
+        """ """
         self.pointerSlew = -1
         self.pointerImage = -1
         self.pointerPlateSolve = -1
@@ -248,23 +240,22 @@ class ModelBatch(QObject):
         self.modelBuildData.clear()
         for index, point in enumerate(self.modelInputData):
             modelItem = {}
-            imagePath = f'{self.imageDir}/image-{index + 1:03d}.fits'
-            modelItem['imagePath'] = imagePath
-            modelItem['altitude'] = Angle(degrees=point[0])
-            modelItem['azimuth'] = Angle(degrees=point[1])
-            modelItem['exposureTime'] = self.app.camera.exposureTime
-            modelItem['binning'] = self.app.camera.binning
-            modelItem['subFrame'] = self.app.camera.subFrame
-            modelItem['fastReadout'] = self.app.camera.fastReadout
-            modelItem['name'] = self.modelName
-            modelItem['plateSolveApp'] = self.plateSolveApp
-            modelItem['focalLength'] = self.app.camera.focalLength
-            modelItem['waitTime'] = self.exposureWaitTime
+            imagePath = f"{self.imageDir}/image-{index + 1:03d}.fits"
+            modelItem["imagePath"] = imagePath
+            modelItem["altitude"] = Angle(degrees=point[0])
+            modelItem["azimuth"] = Angle(degrees=point[1])
+            modelItem["exposureTime"] = self.app.camera.exposureTime
+            modelItem["binning"] = self.app.camera.binning
+            modelItem["subFrame"] = self.app.camera.subFrame
+            modelItem["fastReadout"] = self.app.camera.fastReadout
+            modelItem["name"] = self.modelName
+            modelItem["plateSolveApp"] = self.plateSolveApp
+            modelItem["focalLength"] = self.app.camera.focalLength
+            modelItem["waitTime"] = self.exposureWaitTime
             self.modelBuildData.append(modelItem)
 
     def processModelBuildData(self):
-        """
-        """
+        """ """
 
     def run(self) -> None:
         """

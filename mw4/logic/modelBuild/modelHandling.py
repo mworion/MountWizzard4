@@ -23,18 +23,17 @@ from mountcontrol.model import Model
 
 
 def writeRetrofitData(mountModel: Model, buildModel: list[dict]) -> dict:
-    """
-    """
+    """ """
     for i, mPoint in enumerate(buildModel):
-        mPoint['errorRMS'] = mountModel.starList[i].errorRMS
-        mPoint['errorAngle'] = mountModel.starList[i].errorAngle
-        mPoint['haMountModel'] = mountModel.starList[i].coord.ra
-        mPoint['decMountModel'] = mountModel.starList[i].coord.dec
-        mPoint['errorRA'] = mountModel.starList[i].errorRA()
-        mPoint['errorDEC'] = mountModel.starList[i].errorDEC()
-        mPoint['errorIndex'] = mountModel.starList[i].number
-        mPoint['modelTerms'] = mountModel.terms
-        mPoint['modelErrorRMS'] = mountModel.errorRMS
-        mPoint['modelOrthoError'] = mountModel.orthoError
-        mPoint['modelPolarError'] = mountModel.polarError
+        mPoint["errorRMS"] = mountModel.starList[i].errorRMS
+        mPoint["errorAngle"] = mountModel.starList[i].errorAngle
+        mPoint["haMountModel"] = mountModel.starList[i].coord.ra
+        mPoint["decMountModel"] = mountModel.starList[i].coord.dec
+        mPoint["errorRA"] = mountModel.starList[i].errorRA()
+        mPoint["errorDEC"] = mountModel.starList[i].errorDEC()
+        mPoint["errorIndex"] = mountModel.starList[i].number
+        mPoint["modelTerms"] = mountModel.terms
+        mPoint["modelErrorRMS"] = mountModel.errorRMS
+        mPoint["modelOrthoError"] = mountModel.orthoError
+        mPoint["modelPolarError"] = mountModel.polarError
     return buildModel

@@ -24,26 +24,26 @@ import pyqtgraph as pg
 
 
 class ImageTabs:
-
     def showTabImage(self):
         """
         :return:
         """
-        self.changeStyleDynamic(self.ui.headerGroup, 'running', False)
+        self.changeStyleDynamic(self.ui.headerGroup, "running", False)
         tab = self.ui.tabImage
-        tabIndex = self.getTabIndex(tab, 'Image')
+        tabIndex = self.getTabIndex(tab, "Image")
         tab.setTabEnabled(tabIndex, True)
 
         if self.fileHandler.image is None:
-            self.msg.emit(0, 'Image', 'Rendering error', 'Incompatible image format')
+            self.msg.emit(0, "Image", "Rendering error", "Incompatible image format")
             return False
 
         self.ui.groupMouseCoord.setVisible(self.fileHandler.hasCelestial)
         self.ui.slewCenter.setEnabled(self.fileHandler.hasCelestial)
         self.imageSourceRange = None
-        updateGeometry = not self.imagingDeviceStat['exposeN']
-        self.ui.image.setImage(imageDisp=self.fileHandler.image,
-                               updateGeometry=updateGeometry)
+        updateGeometry = not self.imagingDeviceStat["exposeN"]
+        self.ui.image.setImage(
+            imageDisp=self.fileHandler.image, updateGeometry=updateGeometry
+        )
         self.setBarColor()
         self.setCrosshair()
         self.writeHeaderDataToGUI(self.fileHandler.header)
@@ -54,15 +54,16 @@ class ImageTabs:
         :return:
         """
         self.ui.hfr.setImage(imageDisp=self.photometry.hfrGrid)
-        self.ui.hfr.barItem.setLevels(
-            (self.photometry.hfrMin, self.photometry.hfrMax))
-        self.ui.hfrPercentile.setText(f'{self.photometry.hfrPercentile:1.1f}')
-        self.ui.medianHFR.setText(f'{self.photometry.hfrMedian:1.2f}')
-        self.ui.numberStars.setText(f'{len(self.photometry.hfr):1.0f}')
+        self.ui.hfr.barItem.setLevels((self.photometry.hfrMin, self.photometry.hfrMax))
+        self.ui.hfrPercentile.setText(f"{self.photometry.hfrPercentile:1.1f}")
+        self.ui.medianHFR.setText(f"{self.photometry.hfrMedian:1.2f}")
+        self.ui.numberStars.setText(f"{len(self.photometry.hfr):1.0f}")
         if self.ui.isoLayer.isChecked():
-            self.ui.hfr.addIsoBasic(self.ui.hfr.p[0], self.photometry.hfrGrid, levels=20)
+            self.ui.hfr.addIsoBasic(
+                self.ui.hfr.p[0], self.photometry.hfrGrid, levels=20
+            )
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, 'HFR'), True)
+        tab.setTabEnabled(self.getTabIndex(tab, "HFR"), True)
         return True
 
     def showTabTiltSquare(self):
@@ -94,7 +95,7 @@ class ImageTabs:
         # write values in boxes
         for ix in range(3):
             for iy in range(3):
-                text = f'{segHFR[ix][iy]:1.2f}'
+                text = f"{segHFR[ix][iy]:1.2f}"
                 textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_PRIM)
                 textItem.setText(text)
                 textItem.setFont(self.fontText)
@@ -108,12 +109,30 @@ class ImageTabs:
         # arrays upper left to lower right
         w3 = w / 3
         h3 = h / 3
-        corners = np.array([segHFR[0][2], segHFR[1][2], segHFR[2][2],
-                            segHFR[0][1], segHFR[2][1],
-                            segHFR[0][0], segHFR[1][0], segHFR[2][0]])
-        vectors = np.array([[- w3, h3], [0, h3], [w3, h3],
-                            [- w3, 0], [w3, 0],
-                            [- w3, - h3], [0, - h3], [w3, - h3]])
+        corners = np.array(
+            [
+                segHFR[0][2],
+                segHFR[1][2],
+                segHFR[2][2],
+                segHFR[0][1],
+                segHFR[2][1],
+                segHFR[0][0],
+                segHFR[1][0],
+                segHFR[2][0],
+            ]
+        )
+        vectors = np.array(
+            [
+                [-w3, h3],
+                [0, h3],
+                [w3, h3],
+                [-w3, 0],
+                [w3, 0],
+                [-w3, -h3],
+                [0, -h3],
+                [w3, -h3],
+            ]
+        )
         best = np.min(corners)
         worst = np.max(corners)
 
@@ -123,13 +142,27 @@ class ImageTabs:
             points.append(vector * corner / worst + np.array([w / 2, h / 2]))
 
         # draw vectors
-        links = [[0, 1], [1, 2], [2, 4], [4, 7], [7, 6], [6, 5], [5, 3], [3, 0],
-                 [0, 7], [2, 5]]
+        links = [
+            [0, 1],
+            [1, 2],
+            [2, 4],
+            [4, 7],
+            [7, 6],
+            [6, 5],
+            [5, 3],
+            [3, 0],
+            [0, 7],
+            [2, 5],
+        ]
         for link in links:
             lineItem = pg.QtWidgets.QGraphicsLineItem()
             lineItem.setPen(self.penPink)
-            lineItem.setLine(points[link[0]][0], points[link[0]][1],
-                             points[link[1]][0], points[link[1]][1])
+            lineItem.setLine(
+                points[link[0]][0],
+                points[link[0]][1],
+                points[link[1]][0],
+                points[link[1]][1],
+            )
             plotItem.addItem(lineItem)
 
         tiltDiff = worst - best
@@ -138,17 +171,17 @@ class ImageTabs:
             if tiltPercent < self.TILT[tiltHint]:
                 break
 
-        t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}'
+        t = f"{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}"
         self.ui.textSquareTiltHFR.setText(t)
 
         offAxisDiff = self.photometry.hfrOuter - segHFR[1][1]
         offAxisPercent = 100 * offAxisDiff / self.photometry.hfrMedian
-        t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
+        t = f"{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)"
         self.ui.textSquareTiltOffAxis.setText(t)
-        self.ui.squareMedianHFR.setText(f'{self.photometry.hfrMedian:1.2f}')
-        self.ui.squareNumberStars.setText(f'{len(self.photometry.hfr):1.0f}')
+        self.ui.squareMedianHFR.setText(f"{self.photometry.hfrMedian:1.2f}")
+        self.ui.squareNumberStars.setText(f"{len(self.photometry.hfr):1.0f}")
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, 'TiltSquare'), True)
+        tab.setTabEnabled(self.getTabIndex(tab, "TiltSquare"), True)
         return True
 
     def showTabTiltTriangle(self):
@@ -178,7 +211,7 @@ class ImageTabs:
             plotItem.addItem(ellipseItem)
 
         # add inner value
-        text = f'{self.photometry.hfrInner:1.2f}'
+        text = f"{self.photometry.hfrInner:1.2f}"
         textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_PRIM)
         textItem.setText(text)
         textItem.setFont(self.fontText)
@@ -206,7 +239,7 @@ class ImageTabs:
             startIndexSeg = int((angle + offsetTiltAngle + 210) / 10)
             endIndexSeg = int((angle + offsetTiltAngle + 330) / 10)
             segData[i] = np.mean(segHFR[startIndexSeg:endIndexSeg])
-            text = f'{segData[i]:1.2f}'
+            text = f"{segData[i]:1.2f}"
             textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_PRIM)
             textItem.setFont(self.fontText)
             textItem.setZValue(10)
@@ -233,25 +266,29 @@ class ImageTabs:
         for link in links:
             lineItem = pg.QtWidgets.QGraphicsLineItem()
             lineItem.setPen(self.penPink)
-            lineItem.setLine(points[link[0]][0], points[link[0]][1],
-                             points[link[1]][0], points[link[1]][1])
+            lineItem.setLine(
+                points[link[0]][0],
+                points[link[0]][1],
+                points[link[1]][0],
+                points[link[1]][1],
+            )
             plotItem.addItem(lineItem)
 
         for tiltHint in self.TILT:
             if tiltPercent < self.TILT[tiltHint]:
                 break
 
-        t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}'
+        t = f"{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}"
         self.ui.textTriangleTiltHFR.setText(t)
 
         offAxisDiff = self.photometry.hfrOuter - self.photometry.hfrInner
         offAxisPercent = 100 * offAxisDiff / self.photometry.hfrMedian
-        t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
+        t = f"{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)"
         self.ui.textTriangleTiltOffAxis.setText(t)
-        self.ui.triangleMedianHFR.setText(f'{self.photometry.hfrMedian:1.2f}')
-        self.ui.triangleNumberStars.setText(f'{len(self.photometry.hfr):1.0f}')
+        self.ui.triangleMedianHFR.setText(f"{self.photometry.hfrMedian:1.2f}")
+        self.ui.triangleNumberStars.setText(f"{len(self.photometry.hfr):1.0f}")
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, 'TiltTriangle'), True)
+        tab.setTabEnabled(self.getTabIndex(tab, "TiltTriangle"), True)
         return True
 
     def showTabRoundness(self):
@@ -262,13 +299,17 @@ class ImageTabs:
         self.ui.roundness.p[0].showAxes(False, showValues=False)
         self.ui.roundness.p[0].setMouseEnabled(x=False, y=False)
         self.ui.roundness.barItem.setLevels(
-            (self.photometry.roundnessMin, self.photometry.roundnessMax))
-        self.ui.aspectRatioPercentile.setText(f'{self.photometry.roundnessPercentile:1.1f}')
+            (self.photometry.roundnessMin, self.photometry.roundnessMax)
+        )
+        self.ui.aspectRatioPercentile.setText(
+            f"{self.photometry.roundnessPercentile:1.1f}"
+        )
         if self.ui.isoLayer.isChecked():
-            self.ui.roundness.addIsoBasic(self.ui.roundness.p[0],
-                                          self.photometry.roundnessGrid, levels=20)
+            self.ui.roundness.addIsoBasic(
+                self.ui.roundness.p[0], self.photometry.roundnessGrid, levels=20
+            )
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, 'Roundness'), True)
+        tab.setTabEnabled(self.getTabIndex(tab, "Roundness"), True)
         return True
 
     def showTabAberrationInspect(self):
@@ -295,7 +336,7 @@ class ImageTabs:
             self.ui.aberration.p[0].addItem(lineItem)
 
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, 'Aberration'), True)
+        tab.setTabEnabled(self.getTabIndex(tab, "Aberration"), True)
         self.ui.aberration.p[0].getViewBox().rightMouseRange()
         return True
 
@@ -306,24 +347,27 @@ class ImageTabs:
         temp = self.imageSourceRange
         self.ui.imageSource.setImage(imageDisp=self.photometry.image)
         self.ui.imageSource.p[0].getViewBox().sigRangeChanged.connect(
-            self.getImageSourceRange)
+            self.getImageSourceRange
+        )
         if temp:
-            self.ui.imageSource.p[0].getViewBox().setRange(
-                rect=temp)
+            self.ui.imageSource.p[0].getViewBox().setRange(rect=temp)
 
         objs = self.photometry.objs
         for i in range(len(objs)):
             eItem = self.ui.imageSource.addEllipse(
-                objs['x'][i], objs['y'][i],
-                objs['a'][i] * 4, objs['b'][i] * 4,
-                objs['theta'][i])
+                objs["x"][i],
+                objs["y"][i],
+                objs["a"][i] * 4,
+                objs["b"][i] * 4,
+                objs["theta"][i],
+            )
             if self.ui.showValues.isChecked():
-                t = f'{self.photometry.hfr[i]:2.1f}'
+                t = f"{self.photometry.hfr[i]:2.1f}"
                 item = pg.TextItem(text=t, color=self.M_PRIM, anchor=(1, 1))
                 item.setFont(self.fontAnno)
                 item.setParentItem(eItem)
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, 'Sources'), True)
+        tab.setTabEnabled(self.getTabIndex(tab, "Sources"), True)
         return True
 
     def showTabBackground(self):
@@ -332,9 +376,10 @@ class ImageTabs:
         """
         self.ui.background.setImage(imageDisp=self.photometry.background)
         self.ui.background.barItem.setLevels(
-            (self.photometry.backgroundMin, self.photometry.backgroundMax))
+            (self.photometry.backgroundMin, self.photometry.backgroundMax)
+        )
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, 'Back'), True)
+        tab.setTabEnabled(self.getTabIndex(tab, "Back"), True)
         return True
 
     def showTabBackgroundRMS(self):
@@ -343,5 +388,5 @@ class ImageTabs:
         """
         self.ui.backgroundRMS.setImage(imageDisp=self.photometry.backgroundRMS)
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, 'BackRMS'), True)
+        tab.setTabEnabled(self.getTabIndex(tab, "BackRMS"), True)
         return True

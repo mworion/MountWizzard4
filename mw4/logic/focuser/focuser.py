@@ -24,35 +24,35 @@ import platform
 from base.signalsDevices import Signals
 from logic.focuser.focuserIndi import FocuserIndi
 from logic.focuser.focuserAlpaca import FocuserAlpaca
-if platform.system() == 'Windows':
+
+if platform.system() == "Windows":
     from logic.focuser.focuserAscom import FocuserAscom
 
 
 class Focuser:
-    """
-    """
-    __all__ = ['Focuser']
+    """ """
 
-    log = logging.getLogger('MW4')
+    __all__ = ["Focuser"]
+
+    log = logging.getLogger("MW4")
 
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.data = {}
-        self.defaultConfig = {'framework': '',
-                              'frameworks': {}}
-        self.framework = ''
+        self.defaultConfig = {"framework": "", "frameworks": {}}
+        self.framework = ""
         self.run = {
-            'indi': FocuserIndi(self.app, self.signals, self.data),
-            'alpaca': FocuserAlpaca(self.app, self.signals, self.data),
+            "indi": FocuserIndi(self.app, self.signals, self.data),
+            "alpaca": FocuserAlpaca(self.app, self.signals, self.data),
         }
 
-        if platform.system() == 'Windows':
-            self.run['ascom'] = FocuserAscom(self.app, self.signals, self.data)
+        if platform.system() == "Windows":
+            self.run["ascom"] = FocuserAscom(self.app, self.signals, self.data)
 
         for fw in self.run:
-            self.defaultConfig['frameworks'].update({fw: self.run[fw].defaultConfig})
+            self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
     @property
     def updateRate(self):

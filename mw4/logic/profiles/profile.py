@@ -28,7 +28,7 @@ from base.loggerMW import setupLogging
 
 setupLogging()
 log = logging.getLogger()
-profileVersion = '4.2'
+profileVersion = "4.2"
 
 
 def replaceKeys(oldDict, keyDict):
@@ -53,34 +53,34 @@ def convertKeyData(data):
     :return:
     """
     keyDict = {
-        'checkASCOMAutoConnect': 'autoConnectASCOM',
-        'checkAutoDeleteHorizon': 'autoDeleteHorizon',
-        'checkAutoDeleteMeridian': 'autoDeleteMeridian',
-        'checkAutomaticTelescope': 'automaticTelescope',
-        'checkAvoidFlip': 'avoidFlip',
-        'checkFastDownload': 'fastDownload',
-        'checkIncludeSubdirs': 'includeSubdirs',
-        'checkJ2000': 'coordsJ2000',
-        'checkJNow': 'coordsJNow',
-        'checkKeepImages': 'keepModelImages',
-        'checkRefracCont': 'refracCont',
-        'checkRefracNoTrack': 'refracNoTrack',
-        'checkRefracNone': 'refracManual',
-        'checkSafetyMarginHorizon': 'useSafetyMargin',
-        'checkSortEW': 'sortEW',
-        'checkSortHL': 'sortHL',
-        'checkSortNothing': 'sortNothing',
-        'safetyMarginHorizon': 'safetyMarginValue',
-        'syncNotTracking': 'syncTimeNotTrack',
-        'checkShowAlignStar': 'showAlignStar',
-        'checkShowCelestial': 'showCelestial',
-        'checkShowMeridian': 'showMeridian',
-        'checkShowSlewPath': 'showSlewPath',
-        'checkUseHorizon': 'showHorizon',
-        'useTerrain': 'showTerrain',
-        'checkAutoSolve': 'autoSolve',
-        'checkEmbedData': 'embedData',
-        'checkShowCrosshair': 'showCrosshair',
+        "checkASCOMAutoConnect": "autoConnectASCOM",
+        "checkAutoDeleteHorizon": "autoDeleteHorizon",
+        "checkAutoDeleteMeridian": "autoDeleteMeridian",
+        "checkAutomaticTelescope": "automaticTelescope",
+        "checkAvoidFlip": "avoidFlip",
+        "checkFastDownload": "fastDownload",
+        "checkIncludeSubdirs": "includeSubdirs",
+        "checkJ2000": "coordsJ2000",
+        "checkJNow": "coordsJNow",
+        "checkKeepImages": "keepModelImages",
+        "checkRefracCont": "refracCont",
+        "checkRefracNoTrack": "refracNoTrack",
+        "checkRefracNone": "refracManual",
+        "checkSafetyMarginHorizon": "useSafetyMargin",
+        "checkSortEW": "sortEW",
+        "checkSortHL": "sortHL",
+        "checkSortNothing": "sortNothing",
+        "safetyMarginHorizon": "safetyMarginValue",
+        "syncNotTracking": "syncTimeNotTrack",
+        "checkShowAlignStar": "showAlignStar",
+        "checkShowCelestial": "showCelestial",
+        "checkShowMeridian": "showMeridian",
+        "checkShowSlewPath": "showSlewPath",
+        "checkUseHorizon": "showHorizon",
+        "useTerrain": "showTerrain",
+        "checkAutoSolve": "autoSolve",
+        "checkEmbedData": "embedData",
+        "checkShowCrosshair": "showCrosshair",
     }
     data = replaceKeys(data, keyDict)
     return data
@@ -94,43 +94,44 @@ def convertProfileData40to41(data):
     :param      data: config data as dict
     :return:    data: config data as dict
     """
-    actVer = Version(data.get('version', '0.0'))
-    if actVer >= Version('4.1'):
+    actVer = Version(data.get("version", "0.0"))
+    if actVer >= Version("4.1"):
         return data
-    if 'mainW' not in data:
+    if "mainW" not in data:
         return data
 
     log.info(f'Conversion from [{data.get("version")}] to [4.1]')
     watney = {
-        'deviceName': 'Watney',
-        'deviceList': ['Watney'],
-        'searchRadius': 10,
-        'timeout': 30,
-        'appPath': '',
-        'indexPath': '',
+        "deviceName": "Watney",
+        "deviceList": ["Watney"],
+        "searchRadius": 10,
+        "timeout": 30,
+        "appPath": "",
+        "indexPath": "",
     }
     d = NestedDict(data)
     try:
-        d['driversData'] = d['mainW', 'driversData']
-        del d['mainW']['driversData']
+        d["driversData"] = d["mainW", "driversData"]
+        del d["mainW"]["driversData"]
 
-        d['driversData', 'plateSolve'] = d['driversData', 'astrometry']
-        del d['driversData']['astrometry']
+        d["driversData", "plateSolve"] = d["driversData", "astrometry"]
+        del d["driversData"]["astrometry"]
 
-        d['driversData', 'plateSolve', 'frameworks', 'watney'] = watney
-        d['hemisphereW', 'horizonMaskFileName'] = d['mainW', 'horizonFileName']
-        del d['mainW']['horizonFileName']
+        d["driversData", "plateSolve", "frameworks", "watney"] = watney
+        d["hemisphereW", "horizonMaskFileName"] = d["mainW", "horizonFileName"]
+        del d["mainW"]["horizonFileName"]
 
-        t = d['driversData', 'directWeather', 'frameworks', 'internal']
-        d['driversData', 'directWeather', 'frameworks', 'directWeather'] = t
-        del d['driversData']['directWeather']['frameworks']['internal']
+        t = d["driversData", "directWeather", "frameworks", "internal"]
+        d["driversData", "directWeather", "frameworks", "directWeather"] = t
+        del d["driversData"]["directWeather"]["frameworks"]["internal"]
 
-        d['driversData', 'directWeather', 'frameworks', 'directWeather',
-          'deviceName'] = 'On Mount'
-        d['version'] = '4.1'
+        d[
+            "driversData", "directWeather", "frameworks", "directWeather", "deviceName"
+        ] = "On Mount"
+        d["version"] = "4.1"
 
     except Exception as e:
-        log.error(f'Failed conversion, keep old structure: {e}')
+        log.error(f"Failed conversion, keep old structure: {e}")
     else:
         data = d.to_dict()
     return data
@@ -141,26 +142,26 @@ def convertProfileData41to42(data):
     :param      data: config data as dict
     :return:    data: config data as dict
     """
-    actVer = Version(data.get('version', '0.0'))
-    if actVer >= Version('4.2'):
+    actVer = Version(data.get("version", "0.0"))
+    if actVer >= Version("4.2"):
         return data
 
     log.info(f'Conversion from [{data.get("version")}] to [4.2]')
     d = NestedDict(data)
     try:
-        if 'sensorWeather' in d['driversData']:
-            d['driversData', 'sensor1Weather'] = d['driversData', 'sensorWeather']
-            del d['driversData']['sensorWeather']
-        if 'powerWeather' in d['driversData']:
-            d['driversData', 'sensor2Weather'] = d['driversData', 'powerWeather']
-            del d['driversData']['powerWeather']
-        if 'skymeter' in d['driversData']:
-            d['driversData', 'sensor3Weather'] = d['driversData', 'skymeter']
-            del d['driversData']['skymeter']
-        d['version'] = '4.2'
+        if "sensorWeather" in d["driversData"]:
+            d["driversData", "sensor1Weather"] = d["driversData", "sensorWeather"]
+            del d["driversData"]["sensorWeather"]
+        if "powerWeather" in d["driversData"]:
+            d["driversData", "sensor2Weather"] = d["driversData", "powerWeather"]
+            del d["driversData"]["powerWeather"]
+        if "skymeter" in d["driversData"]:
+            d["driversData", "sensor3Weather"] = d["driversData", "skymeter"]
+            del d["driversData"]["skymeter"]
+        d["version"] = "4.2"
 
     except Exception as e:
-        log.error(f'Failed conversion, keep old structure: {e}')
+        log.error(f"Failed conversion, keep old structure: {e}")
     else:
         data = d.to_dict()
     return data
@@ -183,8 +184,8 @@ def defaultConfig(config=None):
     if config is None:
         config = dict()
 
-    config['profileName'] = 'config'
-    config['version'] = profileVersion
+    config["profileName"] = "config"
+    config["version"] = profileVersion
     return config
 
 
@@ -195,7 +196,7 @@ def checkResetTabOrder(profile):
     """
     newDict = {}
     for key in profile.keys():
-        if key.startswith('order'):
+        if key.startswith("order"):
             continue
         if isinstance(profile[key], dict):
             newDict[key] = checkResetTabOrder(profile[key])
@@ -211,33 +212,33 @@ def loadProfile(configDir=None, name=None):
     :return:    success if file could be loaded
     """
     if name is None:
-        profileFile = os.path.normpath(f'{configDir}/profile')
+        profileFile = os.path.normpath(f"{configDir}/profile")
         if os.path.isfile(profileFile):
-            with open(profileFile, 'r') as profile:
+            with open(profileFile, "r") as profile:
                 name = profile.readline().strip()
         else:
-            name = 'config'
+            name = "config"
 
-    fileName = os.path.normpath(f'{configDir}/{name}.cfg')
+    fileName = os.path.normpath(f"{configDir}/{name}.cfg")
 
     if not os.path.isfile(fileName):
-        log.info(f'Config file {fileName} not existing')
+        log.info(f"Config file {fileName} not existing")
         return defaultConfig()
 
     try:
-        with open(fileName, 'r') as configFile:
+        with open(fileName, "r") as configFile:
             configData = json.load(configFile)
     except Exception as e:
-        log.critical(f'Cannot parse: {fileName}, error: {e}')
+        log.critical(f"Cannot parse: {fileName}, error: {e}")
         return defaultConfig()
 
-    configData['profileName'] = name
+    configData["profileName"] = name
     profile = convertProfileData40to41(configData)
     profile = convertProfileData41to42(profile)
-    mainW = profile.get('mainW', {})
-    resetOrder = mainW.get('resetTabOrder', False)
+    mainW = profile.get("mainW", {})
+    resetOrder = mainW.get("resetTabOrder", False)
     if resetOrder:
-        log.info('Resetting tab order upon start')
+        log.info("Resetting tab order upon start")
         profile = checkResetTabOrder(profile)
     return profile
 
@@ -252,14 +253,14 @@ def saveProfile(configDir=None, name=None, config=None):
     if config is None:
         config = {}
     if name is None:
-        name = config.get('profileName', 'config')
+        name = config.get("profileName", "config")
 
-    profileFile = f'{configDir}/profile'
-    with open(profileFile, 'w') as profile:
-        profile.writelines(f'{name}')
+    profileFile = f"{configDir}/profile"
+    with open(profileFile, "w") as profile:
+        profile.writelines(f"{name}")
 
-    fileName = configDir + '/' + name + '.cfg'
-    config['version'] = profileVersion
-    with open(fileName, 'w') as outfile:
+    fileName = configDir + "/" + name + ".cfg"
+    config["version"] = profileVersion
+    with open(fileName, "w") as outfile:
         json.dump(config, outfile, sort_keys=True, indent=4)
     return True

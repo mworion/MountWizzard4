@@ -36,12 +36,12 @@ from mountcontrol.model import Model
 from base.ethernet import checkFormatMAC
 from base.tpool import Worker
 
-__all__ = ['MountDevice']
+__all__ = ["MountDevice"]
 
 
 class MountDevice:
-    """
-    """
+    """ """
+
     CYCLE_POINTING = 500
     CYCLE_DOME = 950
     CYCLE_CLOCK = 1000
@@ -50,7 +50,7 @@ class MountDevice:
     DEFAULT_PORT = 3492
     SOCKET_TIMEOUT = 1.5
 
-    log = logging.getLogger('MW4')
+    log = logging.getLogger("MW4")
 
     def __init__(self, app, host, MAC, pathToData, verbose):
         self._waitTime = 0
@@ -66,9 +66,9 @@ class MountDevice:
         self.signals = MountSignals()
         self.firmware = Firmware(parent=self)
         self.setting = Setting(parent=self)
-        self.obsSite = ObsSite(parent=self,
-                               pathToData=self.pathToData,
-                               verbose=self.verbose)
+        self.obsSite = ObsSite(
+            parent=self, pathToData=self.pathToData, verbose=self.verbose
+        )
         self.satellite = Satellite(parent=self)
         self.geometry = Geometry(parent=self)
         self.dome = Dome(parent=self)
@@ -116,20 +116,17 @@ class MountDevice:
         self._waitTimeFlip = value * 1000
 
     def waitAfterSettlingAndEmit(self):
-        """
-        """
+        """ """
         self.signals.slewed.emit()
 
     def startMountTimers(self):
-        """
-        """
+        """ """
         self.timerSetting.start(self.CYCLE_SETTING)
         self.timerPointing.start(self.CYCLE_POINTING)
         self.timerMountUp.start(self.CYCLE_MOUNT_UP)
 
     def stopAllMountTimers(self):
-        """
-        """
+        """ """
         self.timerSetting.stop()
         self.timerPointing.stop()
         self.timerMountUp.stop()
@@ -137,35 +134,30 @@ class MountDevice:
         self.timerClock.stop()
 
     def startDomeTimer(self):
-        """
-        """
+        """ """
         self.timerDome.start(self.CYCLE_DOME)
 
     def stopDomeTimer(self):
-        """
-        """
+        """ """
         self.timerDome.stop()
 
     def startMountClockTimer(self):
-        """
-        """
+        """ """
         self.timerClock.start(self.CYCLE_CLOCK)
 
     def stopMountClockTimer(self):
-        """
-        """
+        """ """
         self.timerClock.stop()
 
     def resetData(self):
-        """
-        """
+        """ """
         self.firmware = Firmware(parent=self)
         self.dome = Dome(parent=self)
         self.setting = Setting(parent=self)
         self.model = Model(parent=self)
-        self.obsSite = ObsSite(parent=self,
-                               pathToData=self.pathToData,
-                               verbose=self.verbose)
+        self.obsSite = ObsSite(
+            parent=self, pathToData=self.pathToData, verbose=self.verbose
+        )
         self.satellite = Satellite(parent=self)
         self.geometry = Geometry(parent=self)
         self.signals.pointDone.emit(self.obsSite)
@@ -176,8 +168,7 @@ class MountDevice:
         self.signals.locationDone.emit(self.obsSite.location)
 
     def startupMountData(self, status: bool) -> None:
-        """
-        """
+        """ """
         if status and not self.mountUpLastStatus:
             self.mountUpLastStatus = True
             self.cycleSetting()
@@ -194,8 +185,7 @@ class MountDevice:
             self.obsSite.location = location
 
     def checkMountUp(self):
-        """
-        """
+        """ """
         with socket.socket() as client:
             client.settimeout(self.SOCKET_TIMEOUT)
             try:
@@ -207,14 +197,12 @@ class MountDevice:
         return self.mountUp
 
     def clearCycleCheckMountUp(self):
-        """
-        """
+        """ """
         self.startupMountData(self.mountUp)
         self.signals.mountUp.emit(self.mountUp)
 
     def cycleCheckMountUp(self):
-        """
-        """
+        """ """
         if not self.host:
             self.signals.mountUp.emit(False)
             return
@@ -224,8 +212,7 @@ class MountDevice:
         self.threadPool.start(worker)
 
     def clearCyclePointing(self):
-        """
-        """
+        """ """
         if self.obsSite.status in [1, 98, 99]:
             if not self.statusAlert:
                 self.signals.alert.emit()
@@ -256,171 +243,144 @@ class MountDevice:
         self.threadPool.start(worker)
 
     def clearCycleSetting(self):
-        """
-        """
+        """ """
         self.signals.settingDone.emit(self.setting)
 
     def cycleSetting(self):
-        """
-        """
+        """ """
         worker = Worker(self.setting.pollSetting)
         worker.signals.finished.connect(self.clearCycleSetting)
         self.threadPool.start(worker)
 
     def clearGetAlign(self):
-        """
-        """
+        """ """
         self.signals.alignDone.emit(self.model)
 
     def getAlign(self):
-        """
-        """
+        """ """
         worker = Worker(self.model.pollStars)
         worker.signals.finished.connect(self.clearGetAlign)
         self.threadPool.start(worker)
 
     def clearGetNames(self):
-        """
-        """
+        """ """
         self.signals.namesDone.emit(self.model)
 
     def getNames(self):
-        """
-        """
+        """ """
         worker = Worker(self.model.pollNames)
         worker.signals.finished.connect(self.clearGetNames)
         self.threadPool.start(worker)
 
     def clearGetFW(self):
-        """
-        """
-        self.log.header('-' * 100)
-        self.log.header(f'10micron product : {self.firmware.product}')
-        self.log.header(f'10micron firmware: {self.firmware.vString}')
-        self.log.header(f'10micron host    : {self.host}')
-        self.log.header('-' * 100)
+        """ """
+        self.log.header("-" * 100)
+        self.log.header(f"10micron product : {self.firmware.product}")
+        self.log.header(f"10micron firmware: {self.firmware.vString}")
+        self.log.header(f"10micron host    : {self.host}")
+        self.log.header("-" * 100)
         self.geometry.initializeGeometry(self.firmware.product)
         self.signals.firmwareDone.emit(self.firmware)
 
     def getFW(self):
-        """
-        """
+        """ """
         worker = Worker(self.firmware.poll)
         worker.signals.finished.connect(self.clearGetFW)
         self.threadPool.start(worker)
 
     def clearGetLocation(self):
-        """
-        """
+        """ """
         self.signals.locationDone.emit(self.obsSite)
 
     def getLocation(self):
-        """
-        """
+        """ """
         worker = Worker(self.obsSite.getLocation)
         worker.signals.finished.connect(self.clearGetLocation)
         self.threadPool.start(worker)
 
     def clearCalcTLE(self):
-        """
-        """
+        """ """
         self.signals.calcTLEdone.emit(self.satellite.tleParams)
 
     def calcTLE(self, start):
-        """
-        """
+        """ """
         worker = Worker(self.satellite.calcTLE, start)
         worker.signals.finished.connect(self.clearCalcTLE)
         self.threadPool.start(worker)
 
     def clearStatTLE(self):
-        """
-        """
+        """ """
         self.signals.statTLEdone.emit(self.satellite.tleParams)
 
     def statTLE(self):
-        """
-        """
+        """ """
         worker = Worker(self.satellite.statTLE)
         worker.signals.finished.connect(self.clearStatTLE)
         self.threadPool.start(worker)
 
     def clearGetTLE(self):
-        """
-        """
+        """ """
         self.signals.getTLEdone.emit(self.satellite.tleParams)
 
     def getTLE(self):
-        """
-        """
+        """ """
         worker = Worker(self.satellite.getTLE)
         worker.signals.finished.connect(self.clearGetTLE)
         self.threadPool.start(worker)
 
-    def bootMount(self, bAddress='', bPort=0):
-        """
-        """
-        t = f'MAC: [{self.MAC}], broadcast address: [{bAddress}], port: [{bPort}]'
+    def bootMount(self, bAddress="", bPort=0):
+        """ """
+        t = f"MAC: [{self.MAC}], broadcast address: [{bAddress}], port: [{bPort}]"
         self.log.debug(t)
         if self.MAC is None:
             return False
         if bAddress and bPort:
-            wakeonlan.send_magic_packet(self.MAC,
-                                        ip_address=bAddress,
-                                        port=bPort)
+            wakeonlan.send_magic_packet(self.MAC, ip_address=bAddress, port=bPort)
         else:
             wakeonlan.send_magic_packet(self.MAC)
         return True
 
     def shutdown(self):
-        """
-        """
+        """ """
         suc = self.obsSite.shutdown()
         if suc:
             self.mountUp = False
         return suc
 
     def clearDome(self):
-        """
-        """
+        """ """
         self.signals.domeDone.emit(self.dome)
 
     def cycleDome(self):
-        """
-        """
+        """ """
         worker = Worker(self.dome.poll)
         worker.signals.finished.connect(self.clearDome)
         self.threadPool.start(worker)
 
     def cycleClock(self):
-        """
-        """
+        """ """
         worker = Worker(self.obsSite.pollSyncClock)
         self.threadPool.start(worker)
 
     def clearProgTrajectory(self):
-        """
-        """
+        """ """
         self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
 
     def workerProgTrajectory(self, alt, az, replay=False):
-        """
-        """
+        """ """
         self.satellite.addTrajectoryPoint(alt, az)
         self.satellite.preCalcTrajectory(replay=replay)
         return replay
 
     def progTrajectory(self, start, alt, az, replay=False):
-        """
-        """
+        """ """
         self.satellite.startProgTrajectory(julD=start)
         worker = Worker(self.workerProgTrajectory, alt, az, replay=replay)
         worker.signals.result.connect(self.clearProgTrajectory)
         self.threadPool.start(worker)
 
     def calcTransformationMatricesTarget(self):
-        """
-        """
+        """ """
         ha = self.obsSite.haJNowTarget
         dec = self.obsSite.decJNowTarget
         lat = self.obsSite.location.latitude
@@ -428,8 +388,7 @@ class MountDevice:
         return self.geometry.calcTransformationMatrices(ha, dec, lat, pierside)
 
     def calcTransformationMatricesActual(self):
-        """
-        """
+        """ """
         ha = self.obsSite.haJNow
         dec = self.obsSite.decJNow
         lat = self.obsSite.location.latitude
@@ -437,8 +396,7 @@ class MountDevice:
         return self.geometry.calcTransformationMatrices(ha, dec, lat, pierside)
 
     def calcMountAltAzToDomeAltAz(self, alt, az):
-        """
-        """
+        """ """
         suc = self.obsSite.setTargetAltAz(alt=Angle(degrees=alt), az=Angle(degrees=az))
         if not suc:
             return None, None

@@ -23,9 +23,9 @@ from base.indiClass import IndiClass
 
 
 class DomeIndi(IndiClass):
-    """
-    """
-    __all__ = ['DomeIndi']
+    """ """
+
+    __all__ = ["DomeIndi"]
 
     def __init__(self, app=None, signals=None, data=None):
         self.signals = signals
@@ -44,7 +44,7 @@ class DomeIndi(IndiClass):
         if not self.client.connected:
             return False
 
-        azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
+        azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0)
         self.signals.azimuth.emit(azimuth)
         return True
 
@@ -62,20 +62,18 @@ class DomeIndi(IndiClass):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
-
-            if element == 'DOME_ABSOLUTE_POSITION':
-                azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION',
-                                        0)
+            if element == "DOME_ABSOLUTE_POSITION":
+                azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0)
                 self.signals.azimuth.emit(azimuth)
-                slewing = self.device.ABS_DOME_POSITION['state'] == 'Busy'
-                self.data['Slewing'] = slewing
+                slewing = self.device.ABS_DOME_POSITION["state"] == "Busy"
+                self.data["Slewing"] = slewing
 
-            if element == 'SHUTTER_OPEN':
-                moving = self.device.DOME_SHUTTER['state'] == 'Busy'
+            if element == "SHUTTER_OPEN":
+                moving = self.device.DOME_SHUTTER["state"] == "Busy"
                 if moving:
-                    self.data['Shutter.Status'] = 'Moving'
+                    self.data["Shutter.Status"] = "Moving"
                 else:
-                    self.data['Shutter.Status'] = '-'
+                    self.data["Shutter.Status"] = "-"
 
         return True
 
@@ -90,14 +88,16 @@ class DomeIndi(IndiClass):
         if self.deviceName is None or not self.deviceName:
             return False
 
-        position = self.device.getNumber('ABS_DOME_POSITION')
-        if 'DOME_ABSOLUTE_POSITION' not in position:
+        position = self.device.getNumber("ABS_DOME_POSITION")
+        if "DOME_ABSOLUTE_POSITION" not in position:
             return False
 
-        position['DOME_ABSOLUTE_POSITION'] = azimuth
-        suc = self.client.sendNewNumber(deviceName=self.deviceName,
-                                        propertyName='ABS_DOME_POSITION',
-                                        elements=position)
+        position["DOME_ABSOLUTE_POSITION"] = azimuth
+        suc = self.client.sendNewNumber(
+            deviceName=self.deviceName,
+            propertyName="ABS_DOME_POSITION",
+            elements=position,
+        )
         return suc
 
     def openShutter(self):
@@ -109,15 +109,15 @@ class DomeIndi(IndiClass):
         if self.deviceName is None or not self.deviceName:
             return False
 
-        position = self.device.getSwitch('DOME_SHUTTER')
-        if 'SHUTTER_OPEN' not in position:
+        position = self.device.getSwitch("DOME_SHUTTER")
+        if "SHUTTER_OPEN" not in position:
             return False
 
-        position['SHUTTER_OPEN'] = 'On'
-        position['SHUTTER_CLOSE'] = 'Off'
-        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
-                                        propertyName='DOME_SHUTTER',
-                                        elements=position)
+        position["SHUTTER_OPEN"] = "On"
+        position["SHUTTER_CLOSE"] = "Off"
+        suc = self.client.sendNewSwitch(
+            deviceName=self.deviceName, propertyName="DOME_SHUTTER", elements=position
+        )
         return suc
 
     def closeShutter(self):
@@ -129,15 +129,15 @@ class DomeIndi(IndiClass):
         if self.deviceName is None or not self.deviceName:
             return False
 
-        position = self.device.getSwitch('DOME_SHUTTER')
-        if 'SHUTTER_CLOSE' not in position:
+        position = self.device.getSwitch("DOME_SHUTTER")
+        if "SHUTTER_CLOSE" not in position:
             return False
 
-        position['SHUTTER_OPEN'] = 'Off'
-        position['SHUTTER_CLOSE'] = 'On'
-        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
-                                        propertyName='DOME_SHUTTER',
-                                        elements=position)
+        position["SHUTTER_OPEN"] = "Off"
+        position["SHUTTER_CLOSE"] = "On"
+        suc = self.client.sendNewSwitch(
+            deviceName=self.deviceName, propertyName="DOME_SHUTTER", elements=position
+        )
         return suc
 
     def slewCW(self):
@@ -149,15 +149,15 @@ class DomeIndi(IndiClass):
         if self.deviceName is None or not self.deviceName:
             return False
 
-        position = self.device.getSwitch('DOME_MOTION')
-        if 'DOME_CW' not in position:
+        position = self.device.getSwitch("DOME_MOTION")
+        if "DOME_CW" not in position:
             return False
 
-        position['DOME_CW'] = 'On'
-        position['DOME_CCW'] = 'Off'
-        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
-                                        propertyName='DOME_MOTION',
-                                        elements=position)
+        position["DOME_CW"] = "On"
+        position["DOME_CCW"] = "Off"
+        suc = self.client.sendNewSwitch(
+            deviceName=self.deviceName, propertyName="DOME_MOTION", elements=position
+        )
         return suc
 
     def slewCCW(self):
@@ -169,15 +169,15 @@ class DomeIndi(IndiClass):
         if self.deviceName is None or not self.deviceName:
             return False
 
-        position = self.device.getSwitch('DOME_MOTION')
-        if 'DOME_CW' not in position:
+        position = self.device.getSwitch("DOME_MOTION")
+        if "DOME_CW" not in position:
             return False
 
-        position['DOME_CW'] = 'Off'
-        position['DOME_CCW'] = 'On'
-        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
-                                        propertyName='DOME_MOTION',
-                                        elements=position)
+        position["DOME_CW"] = "Off"
+        position["DOME_CCW"] = "On"
+        suc = self.client.sendNewSwitch(
+            deviceName=self.deviceName, propertyName="DOME_MOTION", elements=position
+        )
         return suc
 
     def abortSlew(self):
@@ -189,12 +189,14 @@ class DomeIndi(IndiClass):
         if self.deviceName is None or not self.deviceName:
             return False
 
-        position = self.device.getSwitch('DOME_ABORT_MOTION')
-        if 'ABORT' not in position:
+        position = self.device.getSwitch("DOME_ABORT_MOTION")
+        if "ABORT" not in position:
             return False
 
-        position['ABORT'] = 'On'
-        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
-                                        propertyName='DOME_ABORT_MOTION',
-                                        elements=position)
+        position["ABORT"] = "On"
+        suc = self.client.sendNewSwitch(
+            deviceName=self.deviceName,
+            propertyName="DOME_ABORT_MOTION",
+            elements=position,
+        )
         return suc

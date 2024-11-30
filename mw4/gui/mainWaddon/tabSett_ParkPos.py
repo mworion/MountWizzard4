@@ -25,8 +25,7 @@ from mountcontrol.convert import valueToFloat
 
 
 class SettParkPos(MWidget):
-    """
-    """
+    """ """
 
     def __init__(self, mainW):
         super().__init__()
@@ -42,11 +41,11 @@ class SettParkPos(MWidget):
         self.posSaveButtons = list()
 
         for i in range(0, 10):
-            self.posButtons.append(eval('self.ui.posButton{0:1d}'.format(i)))
-            self.posTexts.append(eval('self.ui.posText{0:1d}'.format(i)))
-            self.posAlt.append(eval('self.ui.posAlt{0:1d}'.format(i)))
-            self.posAz.append(eval('self.ui.posAz{0:1d}'.format(i)))
-            self.posSaveButtons.append(eval('self.ui.posSave{0:1d}'.format(i)))
+            self.posButtons.append(eval("self.ui.posButton{0:1d}".format(i)))
+            self.posTexts.append(eval("self.ui.posText{0:1d}".format(i)))
+            self.posAlt.append(eval("self.ui.posAlt{0:1d}".format(i)))
+            self.posAz.append(eval("self.ui.posAz{0:1d}".format(i)))
+            self.posSaveButtons.append(eval("self.ui.posSave{0:1d}".format(i)))
 
         for posText in self.posTexts:
             posText.editingFinished.connect(self.updateParkPosButtonText)
@@ -59,54 +58,53 @@ class SettParkPos(MWidget):
         """
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
+        config = self.app.config["mainW"]
         for i, textField in enumerate(self.posTexts):
-            keyConfig = f'posText{i:1d}'
-            textField.setText(config.get(keyConfig, f'Park Pos {i:1d}'))
+            keyConfig = f"posText{i:1d}"
+            textField.setText(config.get(keyConfig, f"Park Pos {i:1d}"))
         for i, textField in enumerate(self.posAlt):
-            keyConfig = f'posAlt{i:1d}'
+            keyConfig = f"posAlt{i:1d}"
             val = valueToFloat(config.get(keyConfig))
             if val:
                 textField.setValue(val)
         for i, textField in enumerate(self.posAz):
-            keyConfig = f'posAz{i:1d}'
+            keyConfig = f"posAz{i:1d}"
             val = valueToFloat(config.get(keyConfig))
             if val:
                 textField.setValue(val)
         self.updateParkPosButtonText()
-        self.ui.parkMountAfterSlew.setChecked(config.get('parkMountAfterSlew', False))
+        self.ui.parkMountAfterSlew.setChecked(config.get("parkMountAfterSlew", False))
         return True
 
     def storeConfig(self):
         """
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
+        config = self.app.config["mainW"]
         for i, textField in enumerate(self.posTexts):
-            keyConfig = f'posText{i:1d}'
+            keyConfig = f"posText{i:1d}"
             config[keyConfig] = textField.text()
         for i, textField in enumerate(self.posAlt):
-            keyConfig = f'posAlt{i:1d}'
+            keyConfig = f"posAlt{i:1d}"
             config[keyConfig] = textField.value()
         for i, textField in enumerate(self.posAz):
-            keyConfig = f'posAz{i:1d}'
+            keyConfig = f"posAz{i:1d}"
             config[keyConfig] = textField.value()
-        config['parkMountAfterSlew'] = self.ui.parkMountAfterSlew.isChecked()
+        config["parkMountAfterSlew"] = self.ui.parkMountAfterSlew.isChecked()
         return True
 
     def setupIcons(self):
-        """
-        """
-        self.wIcon(self.ui.posSave0, 'download')
-        self.wIcon(self.ui.posSave1, 'download')
-        self.wIcon(self.ui.posSave2, 'download')
-        self.wIcon(self.ui.posSave3, 'download')
-        self.wIcon(self.ui.posSave4, 'download')
-        self.wIcon(self.ui.posSave5, 'download')
-        self.wIcon(self.ui.posSave6, 'download')
-        self.wIcon(self.ui.posSave7, 'download')
-        self.wIcon(self.ui.posSave8, 'download')
-        self.wIcon(self.ui.posSave9, 'download')
+        """ """
+        self.wIcon(self.ui.posSave0, "download")
+        self.wIcon(self.ui.posSave1, "download")
+        self.wIcon(self.ui.posSave2, "download")
+        self.wIcon(self.ui.posSave3, "download")
+        self.wIcon(self.ui.posSave4, "download")
+        self.wIcon(self.ui.posSave5, "download")
+        self.wIcon(self.ui.posSave6, "download")
+        self.wIcon(self.ui.posSave7, "download")
+        self.wIcon(self.ui.posSave8, "download")
+        self.wIcon(self.ui.posSave9, "download")
 
     def updateParkPosButtonText(self):
         """
@@ -118,7 +116,7 @@ class SettParkPos(MWidget):
         for button, textField in zip(self.posButtons, self.posTexts):
             text = textField.text()
             button.setText(text)
-            button.setEnabled(text.strip() != '')
+            button.setEnabled(text.strip() != "")
         return True
 
     def parkAtPos(self):
@@ -128,8 +126,7 @@ class SettParkPos(MWidget):
         self.app.mount.signals.slewed.disconnect(self.parkAtPos)
         suc = self.app.mount.obsSite.parkOnActualPosition()
         if not suc:
-            self.msg.emit(2, 'Mount', 'Command',
-                          'Cannot park at current position')
+            self.msg.emit(2, "Mount", "Command", "Cannot park at current position")
         return suc
 
     def slewToParkPos(self):
@@ -148,20 +145,23 @@ class SettParkPos(MWidget):
         azValue = self.posAz[index].value()
         posTextValue = self.posTexts[index].text()
 
-        suc = self.app.mount.obsSite.setTargetAltAz(alt=Angle(degrees=altValue),
-                                                    az=Angle(degrees=azValue))
+        suc = self.app.mount.obsSite.setTargetAltAz(
+            alt=Angle(degrees=altValue), az=Angle(degrees=azValue)
+        )
         if not suc:
-            self.msg.emit(2, 'Mount', 'Command error',
-                          f'Cannot slew to [{posTextValue}]')
+            self.msg.emit(
+                2, "Mount", "Command error", f"Cannot slew to [{posTextValue}]"
+            )
             return False
 
-        suc = self.app.mount.obsSite.startSlewing(slewType='notrack')
+        suc = self.app.mount.obsSite.startSlewing(slewType="notrack")
         if not suc:
-            self.msg.emit(2, 'Mount', 'Command error',
-                          f'Cannot slew to [{posTextValue}]')
+            self.msg.emit(
+                2, "Mount", "Command error", f"Cannot slew to [{posTextValue}]"
+            )
             return False
 
-        self.msg.emit(0, 'Mount', 'Command', f'Slew to [{posTextValue}]')
+        self.msg.emit(0, "Mount", "Command", f"Slew to [{posTextValue}]")
         if not self.ui.parkMountAfterSlew.isChecked():
             return True
 

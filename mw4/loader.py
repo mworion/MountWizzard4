@@ -43,13 +43,13 @@ res.qInitResources()
 iers.conf.auto_download = False
 data.conf.allow_internet = False
 setupLogging()
-log = logging.getLogger('MW4')
+log = logging.getLogger("MW4")
 
 
 class MyApp(QApplication):
-    """
-    """
-    log = logging.getLogger('MW4')
+    """ """
+
+    log = logging.getLogger("MW4")
 
     def __init__(self, *argv):
         super().__init__(*argv)
@@ -57,53 +57,58 @@ class MyApp(QApplication):
 
     # noinspection PyUnresolvedReferences
     def logUserInterface(self, obj: QWidget) -> bool:
-        """
-        """
+        """ """
         if isinstance(obj, QTabBar):
-            self.log.ui(f'Click Tab     : [{obj.tabText(obj.currentIndex())}]')
+            self.log.ui(f"Click Tab     : [{obj.tabText(obj.currentIndex())}]")
         elif isinstance(obj, QComboBox):
-            self.log.ui(f'Click DropDown: [{obj.objectName()}]')
+            self.log.ui(f"Click DropDown: [{obj.objectName()}]")
         elif isinstance(obj, QPushButton):
             text = obj.objectName()
             if not text:
-                text = f'Popup - {obj.text()}'
-            self.log.ui(f'Click Button  : [{text}]')
+                text = f"Popup - {obj.text()}"
+            self.log.ui(f"Click Button  : [{text}]")
         elif isinstance(obj, QRadioButton):
-            self.log.ui(f'Click Radio   : [{obj.objectName()}]'
-                        f', value: [{not obj.isChecked()}]')
+            self.log.ui(
+                f"Click Radio   : [{obj.objectName()}]"
+                f", value: [{not obj.isChecked()}]"
+            )
         elif isinstance(obj, QGroupBox):
-            self.log.ui(f'Click Group   : [{obj.objectName()}]'
-                        f', value: [{not obj.isChecked()}]')
+            self.log.ui(
+                f"Click Group   : [{obj.objectName()}]"
+                f", value: [{not obj.isChecked()}]"
+            )
         elif isinstance(obj, QCheckBox):
-            self.log.ui(f'Click Checkbox: [{obj.objectName()}]'
-                        f', value: [{not obj.isChecked()}]')
+            self.log.ui(
+                f"Click Checkbox: [{obj.objectName()}]"
+                f", value: [{not obj.isChecked()}]"
+            )
         elif isinstance(obj, QLineEdit):
-            self.log.ui(f'Click EditLine: [{obj.objectName()}]:{obj.text()}')
+            self.log.ui(f"Click EditLine: [{obj.objectName()}]:{obj.text()}")
         else:
-            if obj.objectName() not in ['qt_scrollarea_viewport',
-                                        'QComboBoxPrivateContainerClassWindow',
-                                        '']:
-                self.log.ui(f'Click Object  : [{obj.objectName()}]')
+            if obj.objectName() not in [
+                "qt_scrollarea_viewport",
+                "QComboBoxPrivateContainerClassWindow",
+                "",
+            ]:
+                self.log.ui(f"Click Object  : [{obj.objectName()}]")
 
     def handleButtons(self, obj: QWidget, returnValue: bool) -> bool:
-        """
-        """
-        if 'Window' not in obj.objectName():
+        """ """
+        if "Window" not in obj.objectName():
             self.logUserInterface(obj)
         return returnValue
 
     def notify(self, obj: QWidget, event: QEvent) -> bool:
-        """
-        """
+        """ """
         try:
             returnValue = QApplication.notify(self, obj, event)
 
         except Exception as e:
-            self.log.critical('-' * 100)
-            self.log.critical('Event: {0}'.format(event))
-            self.log.critical('EventType: {0}'.format(event.type()))
-            self.log.critical('Exception error in event loop: {0}'.format(e))
-            self.log.critical('-' * 100)
+            self.log.critical("-" * 100)
+            self.log.critical("Event: {0}".format(event))
+            self.log.critical("EventType: {0}".format(event.type()))
+            self.log.critical("Exception error in event loop: {0}".format(e))
+            self.log.critical("-" * 100)
             returnValue = False
 
         if not isinstance(event, QMouseEvent):
@@ -117,92 +122,96 @@ class MyApp(QApplication):
 
 
 def except_hook(typeException, valueException, tbackException) -> None:
-    """
-    """
+    """ """
     result = traceback.format_exception(typeException, valueException, tbackException)
-    log.critical('')
-    log.critical('Logging an uncatched Exception')
-    log.critical('')
+    log.critical("")
+    log.critical("Logging an uncatched Exception")
+    log.critical("")
     for i in range(0, len(result)):
-        log.critical(result[i].replace('\n', ''))
+        log.critical(result[i].replace("\n", ""))
 
-    log.critical('')
+    log.critical("")
     sys.__excepthook__(typeException, valueException, tbackException)
 
 
 def setupWorkDirs() -> dict:
-    """
-    """
+    """ """
     mwGlob = {
-        'modeldata': '4.0',
-        'workDir': os.getcwd(),
+        "modeldata": "4.0",
+        "workDir": os.getcwd(),
     }
-    mwGlob['configDir'] = os.path.normpath(mwGlob['workDir'] + '/config')
-    mwGlob['dataDir'] = os.path.normpath(mwGlob['workDir'] + '/data')
-    mwGlob['imageDir'] = os.path.normpath(mwGlob['workDir'] + '/image')
-    mwGlob['tempDir'] = os.path.normpath(mwGlob['workDir'] + '/temp')
-    mwGlob['modelDir'] = os.path.normpath(mwGlob['workDir'] + '/model')
-    mwGlob['measureDir'] = os.path.normpath(mwGlob['workDir'] + '/measure')
-    mwGlob['logDir'] = os.path.normpath(mwGlob['workDir'] + '/log')
+    mwGlob["configDir"] = os.path.normpath(mwGlob["workDir"] + "/config")
+    mwGlob["dataDir"] = os.path.normpath(mwGlob["workDir"] + "/data")
+    mwGlob["imageDir"] = os.path.normpath(mwGlob["workDir"] + "/image")
+    mwGlob["tempDir"] = os.path.normpath(mwGlob["workDir"] + "/temp")
+    mwGlob["modelDir"] = os.path.normpath(mwGlob["workDir"] + "/model")
+    mwGlob["measureDir"] = os.path.normpath(mwGlob["workDir"] + "/measure")
+    mwGlob["logDir"] = os.path.normpath(mwGlob["workDir"] + "/log")
 
-    for dirPath in ['workDir', 'configDir', 'imageDir', 'dataDir',
-                    'tempDir', 'modelDir', 'measureDir', 'logDir']:
+    for dirPath in [
+        "workDir",
+        "configDir",
+        "imageDir",
+        "dataDir",
+        "tempDir",
+        "modelDir",
+        "measureDir",
+        "logDir",
+    ]:
         if not os.path.isdir(mwGlob[dirPath]):
             os.makedirs(mwGlob[dirPath])
 
         if not os.access(mwGlob[dirPath], os.W_OK):
-            log.warning('no write access to {0}'.format(dirPath))
+            log.warning("no write access to {0}".format(dirPath))
 
     return mwGlob
 
 
 def checkIsAdmin() -> str:
-    """
-    """
-    if platform.system() == 'Windows':
+    """ """
+    if platform.system() == "Windows":
         import ctypes
+
         try:
             state = ctypes.windll.shell32.IsUserAnAdmin() == 1
         except Exception as e:
-            log.error(f'Check admin error: [{e}]')
+            log.error(f"Check admin error: [{e}]")
             state = None
     else:
         try:
             state = os.getuid() == 0
         except Exception as e:
-            log.error(f'Check admin error: [{e}]')
+            log.error(f"Check admin error: [{e}]")
             state = None
     if state is None:
-        return 'unknown'
+        return "unknown"
     elif state:
-        return 'yes'
+        return "yes"
     else:
-        return 'no'
+        return "no"
 
 
 # noinspection PyUnresolvedReferences
 def writeSystemInfo(mwGlob: dict = None) -> None:
-    """
-    """
-    log.header('-' * 100)
+    """ """
+    log.header("-" * 100)
     log.header(f'mountwizzard4    : {version("mountwizzard4")}')
-    log.header(f'platform         : {platform.system()}')
-    log.header(f'sys.executable   : {sys.executable}')
+    log.header(f"platform         : {platform.system()}")
+    log.header(f"sys.executable   : {sys.executable}")
     log.header(f'actual workdir   : {mwGlob["workDir"]}')
-    log.header(f'machine          : {platform.machine()}')
-    log.header(f'cpu              : {platform.processor()}')
-    log.header(f'release          : {platform.release()}')
-    log.header(f'python           : {platform.python_version()}')
-    log.header(f'python runtime   : {platform.architecture()[0]}')
-    log.header(f'PySide6 / Qt     : {__version__} / {qVersion()}')
-    log.header(f'node / hostname  : {platform.node()} / {socket.gethostname()}')
-    log.header(f'run as admin     : {checkIsAdmin()}')
-    log.header('-' * 100)
+    log.header(f"machine          : {platform.machine()}")
+    log.header(f"cpu              : {platform.processor()}")
+    log.header(f"release          : {platform.release()}")
+    log.header(f"python           : {platform.python_version()}")
+    log.header(f"python runtime   : {platform.architecture()[0]}")
+    log.header(f"PySide6 / Qt     : {__version__} / {qVersion()}")
+    log.header(f"node / hostname  : {platform.node()} / {socket.gethostname()}")
+    log.header(f"run as admin     : {checkIsAdmin()}")
+    log.header("-" * 100)
 
 
 def extractFile(filePath: str, file: str, fileTimeStamp: str) -> None:
-    """
-    """
+    """ """
     fileExist = os.path.isfile(filePath)
     if fileExist:
         mtime = os.stat(filePath).st_mtime
@@ -211,53 +220,51 @@ def extractFile(filePath: str, file: str, fileTimeStamp: str) -> None:
         overwrite = False
 
     if overwrite:
-        log.info(f'Writing new file: [{file}]')
+        log.info(f"Writing new file: [{file}]")
         os.remove(filePath)
     else:
-        log.info(f'Using existing: [{file}]')
+        log.info(f"Using existing: [{file}]")
 
-    QFile.copy(f':/data/{file}', filePath)
+    QFile.copy(f":/data/{file}", filePath)
     os.chmod(filePath, 0o666)
 
 
 def extractDataFiles(mwGlob: dict) -> None:
-    """
-    """
+    """ """
     files = {
-        'de440_mw4.bsp': 0,
-        'CDFLeapSeconds.txt': 0,
-        'tai-utc.dat': 0,
-        'finals2000A.all': 0,
-        'finals.data': 0,
+        "de440_mw4.bsp": 0,
+        "CDFLeapSeconds.txt": 0,
+        "tai-utc.dat": 0,
+        "finals2000A.all": 0,
+        "finals.data": 0,
     }
 
-    content = QFile(':/data/content.txt')
+    content = QFile(":/data/content.txt")
     content.open(QFile.OpenModeFlag.ReadOnly)
     lines = content.readAll().data().decode().splitlines()
     content.close()
     for line in lines:
-        name, date = line.split(' ')
+        name, date = line.split(" ")
         if name in files:
             files[name] = float(date)
 
     for file in files:
-        filePath = mwGlob['dataDir'] + '/' + file
+        filePath = mwGlob["dataDir"] + "/" + file
         fileTimeStamp = files[file]
         extractFile(filePath=filePath, file=file, fileTimeStamp=fileTimeStamp)
 
 
 def getWindowPos() -> [int, int]:
-    """
-    """
-    configDir = os.getcwd() + '/config'
-    profile = os.path.normpath(configDir + '/profile')
+    """ """
+    configDir = os.getcwd() + "/config"
+    profile = os.path.normpath(configDir + "/profile")
     if not os.path.isfile(profile):
         return 0, 0
 
     with open(profile) as f:
         configName = f.readline()
 
-    configFile = configDir + '/' + configName + '.cfg'
+    configFile = configDir + "/" + configName + ".cfg"
     configFile = os.path.normpath(configFile)
     if not os.path.isfile(configFile):
         return 0, 0
@@ -268,46 +275,45 @@ def getWindowPos() -> [int, int]:
         except Exception:
             return 0, 0
         else:
-            x = data['mainW'].get('winPosX', 0)
-            y = data['mainW'].get('winPosY', 0)
+            x = data["mainW"].get("winPosX", 0)
+            y = data["mainW"].get("winPosY", 0)
             return x, y
 
 
 def minimizeStartTerminal() -> None:
-    """
-    """
-    if platform.system() == 'Windows':
+    """ """
+    if platform.system() == "Windows":
         import ctypes
+
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 
 def main() -> None:
-    """
-    """
-    locale.setlocale(locale.LC_ALL, '')
+    """ """
+    locale.setlocale(locale.LC_ALL, "")
     app = MyApp(sys.argv)
     minimizeStartTerminal()
     x, y = getWindowPos()
     splashW = SplashScreen(application=app, x=x, y=y)
-    splashW.showMessage('Start initialising')
+    splashW.showMessage("Start initialising")
     splashW.setValue(0)
     mwGlob = setupWorkDirs()
 
-    splashW.showMessage('Write system info to log')
+    splashW.showMessage("Write system info to log")
     splashW.setValue(40)
     writeSystemInfo(mwGlob=mwGlob)
 
-    splashW.showMessage('Loading star and time data')
+    splashW.showMessage("Loading star and time data")
     splashW.setValue(60)
     extractDataFiles(mwGlob=mwGlob)
 
-    splashW.showMessage('Initialize Application')
+    splashW.showMessage("Initialize Application")
     splashW.setValue(80)
     sys.excepthook = except_hook
-    app.setWindowIcon(QIcon(':/icon/mw4.ico'))
+    app.setWindowIcon(QIcon(":/icon/mw4.ico"))
     MountWizzard4(mwGlob=mwGlob, application=app)
 
-    splashW.showMessage('Finishing loading')
+    splashW.showMessage("Finishing loading")
     splashW.setValue(100)
     splashW.close()
     sys.exit(app.exec())

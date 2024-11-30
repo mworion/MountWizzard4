@@ -20,6 +20,7 @@
 
 # local imports
 
+
 def checkFormatMAC(value):
     """
     checkFormatMAC makes some checks to ensure that the format of the
@@ -35,8 +36,8 @@ def checkFormatMAC(value):
         return None
 
     value = value.upper()
-    value = value.replace('.', ':')
-    value = value.split(':')
+    value = value.replace(".", ":")
+    value = value.split(":")
     if len(value) != 6:
         return None
 
@@ -45,10 +46,25 @@ def checkFormatMAC(value):
             return None
 
         for char in chunk:
-            if char not in ['0', '1', '2', '3', '4',
-                            '5', '6', '7', '8', '9',
-                            'A', 'B', 'C', 'D', 'E', 'F']:
+            if char not in [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+            ]:
                 return None
 
-    value = '{0:2s}:{1:2s}:{2:2s}:{3:2s}:{4:2s}:{5:2s}'.format(*value)
+    value = "{0:2s}:{1:2s}:{2:2s}:{3:2s}:{4:2s}:{5:2s}".format(*value)
     return value

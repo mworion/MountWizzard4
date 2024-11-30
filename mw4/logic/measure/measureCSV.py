@@ -25,12 +25,11 @@ import PySide6
 
 
 class MeasureDataCSV(PySide6.QtCore.QObject):
-    """
-    """
+    """ """
 
-    __all__ = ['MeasureDataCSV']
+    __all__ = ["MeasureDataCSV"]
 
-    log = logging.getLogger('MW4')
+    log = logging.getLogger("MW4")
 
     # update rate to 1 seconds for setting indi server
     CYCLE_UPDATE_TASK = 1000
@@ -43,11 +42,11 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         self.app = app
         self.parent = parent
         self.data = data
-        self.deviceName = 'CSV'
-        self.csvFilename = ''
+        self.deviceName = "CSV"
+        self.csvFilename = ""
         self.defaultConfig = {
-            'csv': {
-                'deviceName': 'save to file',
+            "csv": {
+                "deviceName": "save to file",
             }
         }
         self.csvFile = None
@@ -62,60 +61,61 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         """
         :return: success
         """
-        nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         self.csvFilename = f'{self.app.mwGlob["measureDir"]}/measure-{nameTime}.csv'
 
-        self.csvFile = open(self.csvFilename, 'w+')
-        fieldnames = ['time',
-                      'deltaRaJNow',
-                      'deltaDecJNow',
-                      'errorAngularPosRA',
-                      'errorAngularPosDEC',
-                      'status',
-                      'sensor1WeatherTemp',
-                      'sensor1WeatherHum',
-                      'sensor1WeatherPress',
-                      'sensor1WeatherDew',
-                      'sensor1WeatherCloud',
-                      'sensor1WeatherRain',
-                      'sensor1WeatherSky',
-                      'sensor2WeatherTemp',
-                      'sensor2WeatherHum',
-                      'sensor2WeatherPress',
-                      'sensor2WeatherDew',
-                      'sensor2WeatherCloud',
-                      'sensor2WeatherRain',
-                      'sensor2WeatherSky',
-                      'sensor3WeatherTemp',
-                      'sensor3WeatherHum',
-                      'sensor3WeatherPress',
-                      'sensor3WeatherDew',
-                      'sensor3WeatherCloud',
-                      'sensor3WeatherRain',
-                      'sensor3WeatherSky',
-                      'onlineWeatherTemp',
-                      'onlineWeatherHum',
-                      'onlineWeatherPress',
-                      'onlineWeatherDew',
-                      'onlineWeatherCloud',
-                      'onlineWeatherRain',
-                      'onlineWeatherSky',
-                      'directWeatherTemp',
-                      'directWeatherHum',
-                      'directWeatherPress',
-                      'directWeatherDew',
-                      'filterNumber',
-                      'focusPosition',
-                      'powCurr1',
-                      'powCurr2',
-                      'powCurr3',
-                      'powCurr4',
-                      'powVolt',
-                      'powCurr',
-                      'cameraTemp',
-                      'cameraPower',
-                      'timeDiff',
-                      ]
+        self.csvFile = open(self.csvFilename, "w+")
+        fieldnames = [
+            "time",
+            "deltaRaJNow",
+            "deltaDecJNow",
+            "errorAngularPosRA",
+            "errorAngularPosDEC",
+            "status",
+            "sensor1WeatherTemp",
+            "sensor1WeatherHum",
+            "sensor1WeatherPress",
+            "sensor1WeatherDew",
+            "sensor1WeatherCloud",
+            "sensor1WeatherRain",
+            "sensor1WeatherSky",
+            "sensor2WeatherTemp",
+            "sensor2WeatherHum",
+            "sensor2WeatherPress",
+            "sensor2WeatherDew",
+            "sensor2WeatherCloud",
+            "sensor2WeatherRain",
+            "sensor2WeatherSky",
+            "sensor3WeatherTemp",
+            "sensor3WeatherHum",
+            "sensor3WeatherPress",
+            "sensor3WeatherDew",
+            "sensor3WeatherCloud",
+            "sensor3WeatherRain",
+            "sensor3WeatherSky",
+            "onlineWeatherTemp",
+            "onlineWeatherHum",
+            "onlineWeatherPress",
+            "onlineWeatherDew",
+            "onlineWeatherCloud",
+            "onlineWeatherRain",
+            "onlineWeatherSky",
+            "directWeatherTemp",
+            "directWeatherHum",
+            "directWeatherPress",
+            "directWeatherDew",
+            "filterNumber",
+            "focusPosition",
+            "powCurr1",
+            "powCurr2",
+            "powCurr3",
+            "powCurr4",
+            "powVolt",
+            "powCurr",
+            "cameraTemp",
+            "cameraPower",
+            "timeDiff",
+        ]
 
         self.csvWriter = csv.DictWriter(self.csvFile, fieldnames=fieldnames)
         self.csvWriter.writeheader()

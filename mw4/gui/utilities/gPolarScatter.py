@@ -25,8 +25,8 @@ from gui.utilities.gNormalScatter import NormalScatter
 
 
 class PolarScatter(NormalScatter):
-    """
-    """
+    """ """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.p[0].setAspectLocked(True)
@@ -40,7 +40,7 @@ class PolarScatter(NormalScatter):
         :return:
         """
         x = np.radians(90 - x)
-        if kwargs.get('reverse', False):
+        if kwargs.get("reverse", False):
             posX = (90 - y) * np.cos(x)
             posY = (90 - y) * np.sin(x)
         else:
@@ -50,24 +50,26 @@ class PolarScatter(NormalScatter):
         self.p[0].showAxes(False, showValues=False)
         self.setGrid(y, **kwargs)
 
-        ang = kwargs.get('ang')
+        ang = kwargs.get("ang")
         if ang is None:
             return False
         ang = np.degrees(ang)
 
         for i in range(len(x)):
             arrow = pg.ArrowItem()
-            if 'z' in kwargs:
+            if "z" in kwargs:
                 colorVal = self.cMapGYR.mapToQColor(self.colorInx[i])
             else:
                 colorVal = self.col[i]
-            arrow.setStyle(angle=ang[i] - 90,
-                           tipAngle=0,
-                           headLen=0,
-                           tailWidth=1,
-                           tailLen=12,
-                           pen=pg.mkPen(color=colorVal),
-                           brush=pg.mkBrush(color=colorVal),)
+            arrow.setStyle(
+                angle=ang[i] - 90,
+                tipAngle=0,
+                headLen=0,
+                tailWidth=1,
+                tailLen=12,
+                pen=pg.mkPen(color=colorVal),
+                brush=pg.mkBrush(color=colorVal),
+            )
             arrow.setPos(posX[i], posY[i])
             self.p[0].addItem(arrow)
         return True

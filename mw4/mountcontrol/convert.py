@@ -25,26 +25,26 @@ from skyfield.api import Angle
 # local imports
 
 __all__ = [
-    'stringToDegree',
-    'stringToAngle',
-    'valueToAngle',
-    'valueToFloat',
-    'valueToInt',
-    'topoToAltAz',
-    'sexagesimalizeToInt',
-    'checkIsHours',
-    'convertToAngle',
-    'convertToDMS',
-    'convertToHMS',
-    'formatLatLonToAngle',
-    'convertLatToAngle',
-    'convertLonToAngle',
-    'convertRaToAngle',
-    'convertDecToAngle',
-    'formatHstrToText',
-    'formatDstrToText',
-    'formatLatToText',
-    'formatLonToText',
+    "stringToDegree",
+    "stringToAngle",
+    "valueToAngle",
+    "valueToFloat",
+    "valueToInt",
+    "topoToAltAz",
+    "sexagesimalizeToInt",
+    "checkIsHours",
+    "convertToAngle",
+    "convertToDMS",
+    "convertToHMS",
+    "formatLatLonToAngle",
+    "convertLatToAngle",
+    "convertLonToAngle",
+    "convertRaToAngle",
+    "convertDecToAngle",
+    "formatHstrToText",
+    "formatDstrToText",
+    "formatLatToText",
+    "formatLonToText",
 ]
 
 log = logging.getLogger()
@@ -67,18 +67,18 @@ def stringToDegree(value):
         return None
     if not len(value):
         return None
-    if value.count('+') > 1:
+    if value.count("+") > 1:
         return None
-    if value.count('-') > 1:
+    if value.count("-") > 1:
         return None
-    if value == 'E':
+    if value == "E":
         return None
 
-    value = value.replace('*', ' ')
-    value = value.replace(':', ' ')
-    value = value.replace('deg', ' ')
-    value = value.replace('"', ' ')
-    value = value.replace('\'', ' ')
+    value = value.replace("*", " ")
+    value = value.replace(":", " ")
+    value = value.replace("deg", " ")
+    value = value.replace('"', " ")
+    value = value.replace("'", " ")
     value = value.split()
 
     try:
@@ -100,7 +100,7 @@ def stringToDegree(value):
         return None
 
 
-def stringToAngle(value, preference='degrees'):
+def stringToAngle(value, preference="degrees"):
     """
     :param value:
     :param preference:
@@ -108,15 +108,15 @@ def stringToAngle(value, preference='degrees'):
     """
     value = stringToDegree(value)
     if value is not None:
-        if preference == 'degrees':
-            value = Angle(degrees=value, preference='degrees')
+        if preference == "degrees":
+            value = Angle(degrees=value, preference="degrees")
         else:
-            value = Angle(hours=value, preference='hours')
+            value = Angle(hours=value, preference="hours")
 
     return value
 
 
-def valueToAngle(value, preference='degrees'):
+def valueToAngle(value, preference="degrees"):
     """
     :param value:
     :param preference:
@@ -124,10 +124,10 @@ def valueToAngle(value, preference='degrees'):
     """
     value = valueToFloat(value)
     if value is not None:
-        if preference == 'degrees':
-            value = Angle(degrees=value, preference='degrees')
+        if preference == "degrees":
+            value = Angle(degrees=value, preference="degrees")
         else:
-            value = Angle(hours=value, preference='hours')
+            value = Angle(hours=value, preference="hours")
 
     return value
 
@@ -137,7 +137,7 @@ def valueToFloat(value):
     :param value:
     :return:
     """
-    if value == 'E':
+    if value == "E":
         return None
     try:
         value = float(value)
@@ -166,7 +166,7 @@ def topoToAltAz(ha, dec, lat):
     :return:
     """
     if lat is None:
-        log.warning('lat nof defined')
+        log.warning("lat nof defined")
         return None, None
 
     ha = (ha * 360 / 24 + 360.0) % 360.0
@@ -198,7 +198,7 @@ def sexagesimalizeToInt(value, decimals=0):
     """
     sign = int(np.sign(value))
     value = abs(value)
-    power = 10 ** decimals
+    power = 10**decimals
     n = int(7200 * power * value + 1) // 2
     n, fraction = divmod(n, power)
     n, seconds = divmod(n, 60)
@@ -216,11 +216,11 @@ def checkIsHours(value):
     """
     if not isinstance(value, str):
         return False
-    if '*' in value:
+    if "*" in value:
         return False
-    if '+' in value:
+    if "+" in value:
         return False
-    if '-' in value:
+    if "-" in value:
         return False
 
     return True
@@ -262,11 +262,11 @@ def convertToDMS(dec):
     if isinstance(dec, (float, int)):
         dec = Angle(degrees=dec)
     if isinstance(dec, str):
-        return ''
+        return ""
 
     t = Angle.signed_dms(dec)
-    sign = '+' if dec.degrees > 0 else '-'
-    value = f'{sign}{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}'
+    sign = "+" if dec.degrees > 0 else "-"
+    value = f"{sign}{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}"
     return value
 
 
@@ -282,10 +282,10 @@ def convertToHMS(ra):
         ra = Angle(hours=ra)
 
     if isinstance(ra, str):
-        return ''
+        return ""
 
     t = Angle.signed_hms(ra)
-    value = f'{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}'
+    value = f"{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}"
 
     return value
 
@@ -300,14 +300,14 @@ def formatLatLonToAngle(value, pf):
         return None
 
     value = value.strip()
-    p1 = re.compile(r'(\d{1,3})([' + pf + r'])\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
-    p2 = re.compile(r'([-+]?)(\d{1,3})[.,]?(\d*)?')
+    p1 = re.compile(r"(\d{1,3})([" + pf + r"])\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?")
+    p2 = re.compile(r"([-+]?)(\d{1,3})[.,]?(\d*)?")
     isSexagesimal = p1.fullmatch(value) is not None
     isFloat = p2.fullmatch(value) is not None
 
     elements = p2.split(value)
     if isFloat:
-        angle = float(value.replace(',', '.'))
+        angle = float(value.replace(",", "."))
 
     elif isSexagesimal:
         angle = float(elements[2])
@@ -320,7 +320,7 @@ def formatLatLonToAngle(value, pf):
     else:
         return None
 
-    if 'N' in pf:
+    if "N" in pf:
         maxAbs = 90
     else:
         maxAbs = 180
@@ -339,7 +339,7 @@ def convertLatToAngle(value):
     :param value:
     :return:
     """
-    angle = formatLatLonToAngle(value, 'SN')
+    angle = formatLatLonToAngle(value, "SN")
     return angle
 
 
@@ -348,7 +348,7 @@ def convertLonToAngle(value):
     :param value:
     :return:
     """
-    angle = formatLatLonToAngle(value, 'WE')
+    angle = formatLatLonToAngle(value, "WE")
     return angle
 
 
@@ -358,9 +358,9 @@ def parseRaToAngleString(value):
     :return:
     """
     value = value.strip()
-    p1 = re.compile(r'([+-]?)(\d{1,3})H[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')
-    p2 = re.compile(r'([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')
-    p3 = re.compile(r'([+-]?)(\d{1,3})[.,]?(\d*)?')
+    p1 = re.compile(r"([+-]?)(\d{1,3})H[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
+    p2 = re.compile(r"([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
+    p3 = re.compile(r"([+-]?)(\d{1,3})[.,]?(\d*)?")
     isP1 = p1.fullmatch(value) is not None
     isP2 = p2.fullmatch(value) is not None
     isSexagesimal = isP1 or isP2
@@ -371,7 +371,7 @@ def parseRaToAngleString(value):
     elif isP2:
         elements = p2.split(value)
     else:
-        elements = ''
+        elements = ""
 
     return isSexagesimal, isFloat, elements
 
@@ -389,7 +389,7 @@ def convertRaToAngle(value):
     isSexagesimal, isFloat, elements = parseRaToAngleString(value)
 
     if isFloat:
-        angle = float(value.replace(',', '.'))
+        angle = float(value.replace(",", "."))
     elif isSexagesimal:
         angle = float(elements[2])
         if elements[3] is not None:
@@ -417,9 +417,9 @@ def parseDecToAngleString(value):
     :return:
     """
     value = value.strip()
-    p1 = re.compile(r'([+-]?)(\d{1,3})Deg[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')
-    p2 = re.compile(r'([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')
-    p3 = re.compile(r'([+-]?)(\d{1,3})[.,]?(\d*)?')
+    p1 = re.compile(r"([+-]?)(\d{1,3})Deg[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
+    p2 = re.compile(r"([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
+    p3 = re.compile(r"([+-]?)(\d{1,3})[.,]?(\d*)?")
     isP1 = p1.fullmatch(value) is not None
     isP2 = p2.fullmatch(value) is not None
     isSexagesimal = isP1 or isP2
@@ -430,7 +430,7 @@ def parseDecToAngleString(value):
     elif isP2:
         elements = p2.split(value)
     else:
-        elements = ''
+        elements = ""
 
     return isSexagesimal, isFloat, elements
 
@@ -448,7 +448,7 @@ def convertDecToAngle(value):
     isSexagesimal, isFloat, elements = parseDecToAngleString(value)
 
     if isFloat:
-        angle = float(value.replace(',', '.'))
+        angle = float(value.replace(",", "."))
 
     elif isSexagesimal:
         angle = float(elements[2])
@@ -456,7 +456,7 @@ def convertDecToAngle(value):
             angle += float(elements[3]) / 60
         if elements[4] is not None:
             angle += float(elements[4]) / 3600
-        if elements[1].startswith('-'):
+        if elements[1].startswith("-"):
             angle = -angle
     else:
         return None
@@ -475,7 +475,7 @@ def formatHstrToText(angle):
     :param angle:
     :return:
     """
-    formatStr = '{1:02}:{2:02}:{3:02}'
+    formatStr = "{1:02}:{2:02}:{3:02}"
     return angle.hstr(format=formatStr)
 
 
@@ -484,7 +484,7 @@ def formatDstrToText(angle):
     :param angle:
     :return:
     """
-    formatStr = '{0:+>1}{1:02}:{2:02}:{3:02}'
+    formatStr = "{0:+>1}{1:02}:{2:02}:{3:02}"
     return angle.dstr(format=formatStr)
 
 
@@ -494,8 +494,8 @@ def formatLatToText(angle):
     :return:
     """
     sgn, h, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
-    sign = 'N' if sgn >= 0 else 'S'
-    text = f'{h:02d}{sign} {m:02d} {s:02d}'
+    sign = "N" if sgn >= 0 else "S"
+    text = f"{h:02d}{sign} {m:02d} {s:02d}"
     return text
 
 
@@ -505,6 +505,6 @@ def formatLonToText(angle):
     :return:
     """
     sgn, h, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
-    sign = 'E' if sgn >= 0 else 'W'
-    text = f'{h:03d}{sign} {m:02d} {s:02d}'
+    sign = "E" if sgn >= 0 else "W"
+    text = f"{h:03d}{sign} {m:02d} {s:02d}"
     return text

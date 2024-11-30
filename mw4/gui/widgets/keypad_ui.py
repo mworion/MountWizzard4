@@ -8,22 +8,33 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QLineEdit,
-    QPushButton, QSizePolicy, QWidget)
+from PySide6.QtCore import (
+    QCoreApplication,
+    QMetaObject,
+    QRect,
+    QSize,
+    Qt,
+)
+from PySide6.QtGui import (
+    QFont,
+)
+from PySide6.QtWidgets import (
+    QFrame,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QSizePolicy,
+)
+
 
 class Ui_KeypadDialog(object):
     def setupUi(self, KeypadDialog):
         if not KeypadDialog.objectName():
-            KeypadDialog.setObjectName(u"KeypadDialog")
+            KeypadDialog.setObjectName("KeypadDialog")
         KeypadDialog.resize(270, 600)
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy = QSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(KeypadDialog.sizePolicy().hasHeightForWidth())
@@ -33,13 +44,15 @@ class Ui_KeypadDialog(object):
         KeypadDialog.setSizeIncrement(QSize(10, 10))
         KeypadDialog.setBaseSize(QSize(10, 10))
         font = QFont()
-        font.setFamilies([u"Arial"])
+        font.setFamilies(["Arial"])
         font.setPointSize(10)
         KeypadDialog.setFont(font)
         self.b2 = QPushButton(KeypadDialog)
-        self.b2.setObjectName(u"b2")
+        self.b2.setObjectName("b2")
         self.b2.setGeometry(QRect(80, 475, 50, 50))
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy1 = QSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+        )
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.b2.sizePolicy().hasHeightForWidth())
@@ -47,12 +60,12 @@ class Ui_KeypadDialog(object):
         self.b2.setMinimumSize(QSize(50, 50))
         self.b2.setMaximumSize(QSize(50, 50))
         font1 = QFont()
-        font1.setFamilies([u"Arial"])
+        font1.setFamilies(["Arial"])
         font1.setPointSize(8)
         self.b2.setFont(font1)
         self.b2.setProperty("keypad", True)
         self.bdown = QPushButton(KeypadDialog)
-        self.bdown.setObjectName(u"bdown")
+        self.bdown.setObjectName("bdown")
         self.bdown.setGeometry(QRect(110, 295, 50, 50))
         sizePolicy.setHeightForWidth(self.bdown.sizePolicy().hasHeightForWidth())
         self.bdown.setSizePolicy(sizePolicy)
@@ -61,7 +74,7 @@ class Ui_KeypadDialog(object):
         self.bdown.setFont(font1)
         self.bdown.setProperty("keypad", True)
         self.bminus = QPushButton(KeypadDialog)
-        self.bminus.setObjectName(u"bminus")
+        self.bminus.setObjectName("bminus")
         self.bminus.setGeometry(QRect(200, 415, 50, 50))
         sizePolicy1.setHeightForWidth(self.bminus.sizePolicy().hasHeightForWidth())
         self.bminus.setSizePolicy(sizePolicy1)
@@ -70,7 +83,7 @@ class Ui_KeypadDialog(object):
         self.bminus.setFont(font1)
         self.bminus.setProperty("keypad", False)
         self.b4 = QPushButton(KeypadDialog)
-        self.b4.setObjectName(u"b4")
+        self.b4.setObjectName("b4")
         self.b4.setGeometry(QRect(20, 415, 50, 50))
         sizePolicy1.setHeightForWidth(self.b4.sizePolicy().hasHeightForWidth())
         self.b4.setSizePolicy(sizePolicy1)
@@ -79,7 +92,7 @@ class Ui_KeypadDialog(object):
         self.b4.setFont(font1)
         self.b4.setProperty("keypad", True)
         self.besc = QPushButton(KeypadDialog)
-        self.besc.setObjectName(u"besc")
+        self.besc.setObjectName("besc")
         self.besc.setGeometry(QRect(80, 535, 50, 50))
         sizePolicy1.setHeightForWidth(self.besc.sizePolicy().hasHeightForWidth())
         self.besc.setSizePolicy(sizePolicy1)
@@ -88,7 +101,7 @@ class Ui_KeypadDialog(object):
         self.besc.setFont(font1)
         self.besc.setProperty("keypad", True)
         self.b0 = QPushButton(KeypadDialog)
-        self.b0.setObjectName(u"b0")
+        self.b0.setObjectName("b0")
         self.b0.setGeometry(QRect(20, 535, 50, 50))
         sizePolicy1.setHeightForWidth(self.b0.sizePolicy().hasHeightForWidth())
         self.b0.setSizePolicy(sizePolicy1)
@@ -97,7 +110,7 @@ class Ui_KeypadDialog(object):
         self.b0.setFont(font1)
         self.b0.setProperty("keypad", True)
         self.bmenu = QPushButton(KeypadDialog)
-        self.bmenu.setObjectName(u"bmenu")
+        self.bmenu.setObjectName("bmenu")
         self.bmenu.setGeometry(QRect(140, 535, 50, 50))
         sizePolicy1.setHeightForWidth(self.bmenu.sizePolicy().hasHeightForWidth())
         self.bmenu.setSizePolicy(sizePolicy1)
@@ -106,7 +119,7 @@ class Ui_KeypadDialog(object):
         self.bmenu.setFont(font1)
         self.bmenu.setProperty("keypad", True)
         self.b7 = QPushButton(KeypadDialog)
-        self.b7.setObjectName(u"b7")
+        self.b7.setObjectName("b7")
         self.b7.setGeometry(QRect(20, 355, 50, 50))
         sizePolicy1.setHeightForWidth(self.b7.sizePolicy().hasHeightForWidth())
         self.b7.setSizePolicy(sizePolicy1)
@@ -115,7 +128,7 @@ class Ui_KeypadDialog(object):
         self.b7.setFont(font1)
         self.b7.setProperty("keypad", True)
         self.benter = QPushButton(KeypadDialog)
-        self.benter.setObjectName(u"benter")
+        self.benter.setObjectName("benter")
         self.benter.setGeometry(QRect(200, 475, 50, 50))
         sizePolicy1.setHeightForWidth(self.benter.sizePolicy().hasHeightForWidth())
         self.benter.setSizePolicy(sizePolicy1)
@@ -124,7 +137,7 @@ class Ui_KeypadDialog(object):
         self.benter.setFont(font1)
         self.benter.setProperty("keypad", True)
         self.b3 = QPushButton(KeypadDialog)
-        self.b3.setObjectName(u"b3")
+        self.b3.setObjectName("b3")
         self.b3.setGeometry(QRect(140, 475, 50, 50))
         sizePolicy1.setHeightForWidth(self.b3.sizePolicy().hasHeightForWidth())
         self.b3.setSizePolicy(sizePolicy1)
@@ -133,7 +146,7 @@ class Ui_KeypadDialog(object):
         self.b3.setFont(font1)
         self.b3.setProperty("keypad", True)
         self.bright = QPushButton(KeypadDialog)
-        self.bright.setObjectName(u"bright")
+        self.bright.setObjectName("bright")
         self.bright.setGeometry(QRect(170, 265, 50, 50))
         sizePolicy1.setHeightForWidth(self.bright.sizePolicy().hasHeightForWidth())
         self.bright.setSizePolicy(sizePolicy1)
@@ -142,7 +155,7 @@ class Ui_KeypadDialog(object):
         self.bright.setFont(font1)
         self.bright.setProperty("keypad", True)
         self.b1 = QPushButton(KeypadDialog)
-        self.b1.setObjectName(u"b1")
+        self.b1.setObjectName("b1")
         self.b1.setGeometry(QRect(20, 475, 50, 50))
         sizePolicy1.setHeightForWidth(self.b1.sizePolicy().hasHeightForWidth())
         self.b1.setSizePolicy(sizePolicy1)
@@ -151,7 +164,7 @@ class Ui_KeypadDialog(object):
         self.b1.setFont(font1)
         self.b1.setProperty("keypad", True)
         self.bup = QPushButton(KeypadDialog)
-        self.bup.setObjectName(u"bup")
+        self.bup.setObjectName("bup")
         self.bup.setGeometry(QRect(110, 230, 50, 50))
         sizePolicy.setHeightForWidth(self.bup.sizePolicy().hasHeightForWidth())
         self.bup.setSizePolicy(sizePolicy)
@@ -160,7 +173,7 @@ class Ui_KeypadDialog(object):
         self.bup.setFont(font1)
         self.bup.setProperty("keypad", True)
         self.b8 = QPushButton(KeypadDialog)
-        self.b8.setObjectName(u"b8")
+        self.b8.setObjectName("b8")
         self.b8.setGeometry(QRect(80, 355, 50, 50))
         sizePolicy1.setHeightForWidth(self.b8.sizePolicy().hasHeightForWidth())
         self.b8.setSizePolicy(sizePolicy1)
@@ -170,7 +183,7 @@ class Ui_KeypadDialog(object):
         self.b8.setLayoutDirection(Qt.LeftToRight)
         self.b8.setProperty("keypad", True)
         self.bstop = QPushButton(KeypadDialog)
-        self.bstop.setObjectName(u"bstop")
+        self.bstop.setObjectName("bstop")
         self.bstop.setGeometry(QRect(200, 535, 50, 50))
         sizePolicy1.setHeightForWidth(self.bstop.sizePolicy().hasHeightForWidth())
         self.bstop.setSizePolicy(sizePolicy1)
@@ -179,7 +192,7 @@ class Ui_KeypadDialog(object):
         self.bstop.setFont(font1)
         self.bstop.setProperty("keypad", True)
         self.b6 = QPushButton(KeypadDialog)
-        self.b6.setObjectName(u"b6")
+        self.b6.setObjectName("b6")
         self.b6.setGeometry(QRect(140, 415, 50, 50))
         sizePolicy1.setHeightForWidth(self.b6.sizePolicy().hasHeightForWidth())
         self.b6.setSizePolicy(sizePolicy1)
@@ -188,7 +201,7 @@ class Ui_KeypadDialog(object):
         self.b6.setFont(font1)
         self.b6.setProperty("keypad", True)
         self.b9 = QPushButton(KeypadDialog)
-        self.b9.setObjectName(u"b9")
+        self.b9.setObjectName("b9")
         self.b9.setGeometry(QRect(140, 355, 50, 50))
         sizePolicy1.setHeightForWidth(self.b9.sizePolicy().hasHeightForWidth())
         self.b9.setSizePolicy(sizePolicy1)
@@ -197,11 +210,11 @@ class Ui_KeypadDialog(object):
         self.b9.setFont(font1)
         self.b9.setProperty("keypad", True)
         self.graphics = QLabel(KeypadDialog)
-        self.graphics.setObjectName(u"graphics")
+        self.graphics.setObjectName("graphics")
         self.graphics.setGeometry(QRect(10, 75, 256, 128))
         self.graphics.setMinimumSize(QSize(0, 20))
         self.bplus = QPushButton(KeypadDialog)
-        self.bplus.setObjectName(u"bplus")
+        self.bplus.setObjectName("bplus")
         self.bplus.setGeometry(QRect(200, 355, 50, 50))
         sizePolicy1.setHeightForWidth(self.bplus.sizePolicy().hasHeightForWidth())
         self.bplus.setSizePolicy(sizePolicy1)
@@ -210,7 +223,7 @@ class Ui_KeypadDialog(object):
         self.bplus.setFont(font1)
         self.bplus.setProperty("keypad", True)
         self.bleft = QPushButton(KeypadDialog)
-        self.bleft.setObjectName(u"bleft")
+        self.bleft.setObjectName("bleft")
         self.bleft.setGeometry(QRect(50, 265, 50, 50))
         sizePolicy1.setHeightForWidth(self.bleft.sizePolicy().hasHeightForWidth())
         self.bleft.setSizePolicy(sizePolicy1)
@@ -219,7 +232,7 @@ class Ui_KeypadDialog(object):
         self.bleft.setFont(font1)
         self.bleft.setProperty("keypad", True)
         self.b5 = QPushButton(KeypadDialog)
-        self.b5.setObjectName(u"b5")
+        self.b5.setObjectName("b5")
         self.b5.setGeometry(QRect(80, 415, 50, 50))
         sizePolicy1.setHeightForWidth(self.b5.sizePolicy().hasHeightForWidth())
         self.b5.setSizePolicy(sizePolicy1)
@@ -228,36 +241,36 @@ class Ui_KeypadDialog(object):
         self.b5.setFont(font1)
         self.b5.setProperty("keypad", True)
         self.row0 = QLineEdit(KeypadDialog)
-        self.row0.setObjectName(u"row0")
+        self.row0.setObjectName("row0")
         self.row0.setGeometry(QRect(10, 15, 256, 25))
         self.row0.setReadOnly(True)
         self.row0.setProperty("keypad", True)
         self.row1 = QLineEdit(KeypadDialog)
-        self.row1.setObjectName(u"row1")
+        self.row1.setObjectName("row1")
         self.row1.setGeometry(QRect(10, 45, 256, 25))
         self.row1.setReadOnly(True)
         self.row1.setProperty("keypad", True)
         self.row2 = QLineEdit(KeypadDialog)
-        self.row2.setObjectName(u"row2")
+        self.row2.setObjectName("row2")
         self.row2.setGeometry(QRect(10, 75, 256, 25))
         self.row2.setReadOnly(True)
         self.row2.setProperty("keypad", True)
         self.row3 = QLineEdit(KeypadDialog)
-        self.row3.setObjectName(u"row3")
+        self.row3.setObjectName("row3")
         self.row3.setGeometry(QRect(10, 105, 256, 25))
         self.row3.setReadOnly(True)
         self.row3.setProperty("keypad", True)
         self.row4 = QLineEdit(KeypadDialog)
-        self.row4.setObjectName(u"row4")
+        self.row4.setObjectName("row4")
         self.row4.setGeometry(QRect(10, 135, 256, 25))
         self.row4.setReadOnly(True)
         self.row4.setProperty("keypad", True)
         self.label = QLabel(KeypadDialog)
-        self.label.setObjectName(u"label")
+        self.label.setObjectName("label")
         self.label.setGeometry(QRect(10, 220, 251, 376))
         self.label.setProperty("keypad", True)
         self.cursor = QFrame(KeypadDialog)
-        self.cursor.setObjectName(u"cursor")
+        self.cursor.setObjectName("cursor")
         self.cursor.setGeometry(QRect(10, 220, 15, 3))
         self.cursor.setFrameShadow(QFrame.Plain)
         self.cursor.setLineWidth(3)
@@ -295,43 +308,38 @@ class Ui_KeypadDialog(object):
         self.retranslateUi(KeypadDialog)
 
         QMetaObject.connectSlotsByName(KeypadDialog)
+
     # setupUi
 
     def retranslateUi(self, KeypadDialog):
-        KeypadDialog.setWindowTitle(QCoreApplication.translate("KeypadDialog", u"Virtual Keypad", None))
-        self.b2.setText(QCoreApplication.translate("KeypadDialog", u"2\n"
-"INFO", None))
-        self.bdown.setText(QCoreApplication.translate("KeypadDialog", u"S", None))
-        self.bminus.setText(QCoreApplication.translate("KeypadDialog", u"-\n"
-"DOWN", None))
-        self.b4.setText(QCoreApplication.translate("KeypadDialog", u"4\n"
-"STAR", None))
-        self.besc.setText(QCoreApplication.translate("KeypadDialog", u"ESC", None))
-        self.b0.setText(QCoreApplication.translate("KeypadDialog", u"0\n"
-"LIGHT", None))
-        self.bmenu.setText(QCoreApplication.translate("KeypadDialog", u"MENU", None))
-        self.b7.setText(QCoreApplication.translate("KeypadDialog", u"7\n"
-"M", None))
-        self.benter.setText(QCoreApplication.translate("KeypadDialog", u"ENTER", None))
-        self.b3.setText(QCoreApplication.translate("KeypadDialog", u"3\n"
-"DISP", None))
-        self.bright.setText(QCoreApplication.translate("KeypadDialog", u"W", None))
-        self.b1.setText(QCoreApplication.translate("KeypadDialog", u"1\n"
-"COORD", None))
-        self.bup.setText(QCoreApplication.translate("KeypadDialog", u"N", None))
-        self.b8.setText(QCoreApplication.translate("KeypadDialog", u"8\n"
-"NGC", None))
-        self.bstop.setText(QCoreApplication.translate("KeypadDialog", u"STOP", None))
-        self.b6.setText(QCoreApplication.translate("KeypadDialog", u"6\n"
-"MORE", None))
-        self.b9.setText(QCoreApplication.translate("KeypadDialog", u"9\n"
-"IC", None))
+        KeypadDialog.setWindowTitle(
+            QCoreApplication.translate("KeypadDialog", "Virtual Keypad", None)
+        )
+        self.b2.setText(QCoreApplication.translate("KeypadDialog", "2\n" "INFO", None))
+        self.bdown.setText(QCoreApplication.translate("KeypadDialog", "S", None))
+        self.bminus.setText(
+            QCoreApplication.translate("KeypadDialog", "-\n" "DOWN", None)
+        )
+        self.b4.setText(QCoreApplication.translate("KeypadDialog", "4\n" "STAR", None))
+        self.besc.setText(QCoreApplication.translate("KeypadDialog", "ESC", None))
+        self.b0.setText(QCoreApplication.translate("KeypadDialog", "0\n" "LIGHT", None))
+        self.bmenu.setText(QCoreApplication.translate("KeypadDialog", "MENU", None))
+        self.b7.setText(QCoreApplication.translate("KeypadDialog", "7\n" "M", None))
+        self.benter.setText(QCoreApplication.translate("KeypadDialog", "ENTER", None))
+        self.b3.setText(QCoreApplication.translate("KeypadDialog", "3\n" "DISP", None))
+        self.bright.setText(QCoreApplication.translate("KeypadDialog", "W", None))
+        self.b1.setText(QCoreApplication.translate("KeypadDialog", "1\n" "COORD", None))
+        self.bup.setText(QCoreApplication.translate("KeypadDialog", "N", None))
+        self.b8.setText(QCoreApplication.translate("KeypadDialog", "8\n" "NGC", None))
+        self.bstop.setText(QCoreApplication.translate("KeypadDialog", "STOP", None))
+        self.b6.setText(QCoreApplication.translate("KeypadDialog", "6\n" "MORE", None))
+        self.b9.setText(QCoreApplication.translate("KeypadDialog", "9\n" "IC", None))
         self.graphics.setText("")
-        self.bplus.setText(QCoreApplication.translate("KeypadDialog", u"+\n"
-"UP", None))
-        self.bleft.setText(QCoreApplication.translate("KeypadDialog", u"E", None))
-        self.b5.setText(QCoreApplication.translate("KeypadDialog", u"5\n"
-"PLANET", None))
+        self.bplus.setText(QCoreApplication.translate("KeypadDialog", "+\n" "UP", None))
+        self.bleft.setText(QCoreApplication.translate("KeypadDialog", "E", None))
+        self.b5.setText(
+            QCoreApplication.translate("KeypadDialog", "5\n" "PLANET", None)
+        )
         self.label.setText("")
-    # retranslateUi
 
+    # retranslateUi

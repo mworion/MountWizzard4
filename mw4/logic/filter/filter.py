@@ -24,35 +24,35 @@ import platform
 from base.signalsDevices import Signals
 from logic.filter.filterIndi import FilterIndi
 from logic.filter.filterAlpaca import FilterAlpaca
-if platform.system() == 'Windows':
+
+if platform.system() == "Windows":
     from logic.filter.filterAscom import FilterAscom
 
 
 class Filter:
-    """
-    """
-    __all__ = ['Filter']
+    """ """
 
-    log = logging.getLogger('MW4')
+    __all__ = ["Filter"]
+
+    log = logging.getLogger("MW4")
 
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.data = {}
-        self.defaultConfig = {'framework': '',
-                              'frameworks': {}}
-        self.framework = ''
+        self.defaultConfig = {"framework": "", "frameworks": {}}
+        self.framework = ""
         self.run = {
-            'indi': FilterIndi(self.app, self.signals, self.data),
-            'alpaca': FilterAlpaca(self.app, self.signals, self.data),
+            "indi": FilterIndi(self.app, self.signals, self.data),
+            "alpaca": FilterAlpaca(self.app, self.signals, self.data),
         }
 
-        if platform.system() == 'Windows':
-            self.run['ascom'] = FilterAscom(self.app, self.signals, self.data)
+        if platform.system() == "Windows":
+            self.run["ascom"] = FilterAscom(self.app, self.signals, self.data)
 
         for fw in self.run:
-            self.defaultConfig['frameworks'].update({fw: self.run[fw].defaultConfig})
+            self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
     @property
     def updateRate(self):

@@ -32,9 +32,9 @@ class TrajectoryParams(object):
         >>> trajectoryParams = TrajectoryParams(host='')
     """
 
-    __all__ = ['TrajectoryParams']
+    __all__ = ["TrajectoryParams"]
 
-    log = logging.getLogger('MW4')
+    log = logging.getLogger("MW4")
 
     def __init__(self, obsSite=None):
         self._jdStart = None
@@ -59,7 +59,7 @@ class TrajectoryParams(object):
         elif isinstance(value, bool):
             self._flip = value
             return
-        self._flip = bool(value == 'F')
+        self._flip = bool(value == "F")
 
     @property
     def jdStart(self):

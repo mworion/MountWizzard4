@@ -23,9 +23,9 @@ from base.ascomClass import AscomClass
 
 
 class TelescopeAscom(AscomClass):
-    """
-    """
-    __all__ = ['TelescopeAscom']
+    """ """
+
+    __all__ = ["TelescopeAscom"]
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data)
@@ -37,15 +37,15 @@ class TelescopeAscom(AscomClass):
         """
         super().workerGetInitialConfig()
 
-        value = self.getAscomProperty('ApertureDiameter')
+        value = self.getAscomProperty("ApertureDiameter")
         if isinstance(value, float):
             value = value * 1000
 
-        self.storePropertyToData(value, 'TELESCOPE_INFO.TELESCOPE_APERTURE')
+        self.storePropertyToData(value, "TELESCOPE_INFO.TELESCOPE_APERTURE")
 
-        value = self.getAscomProperty('FocalLength')
+        value = self.getAscomProperty("FocalLength")
         if isinstance(value, float):
             value = value * 1000
 
-        self.storePropertyToData(value, 'TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH')
+        self.storePropertyToData(value, "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH")
         return True

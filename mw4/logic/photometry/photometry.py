@@ -29,9 +29,9 @@ from base.tpool import Worker
 
 
 class PhotometrySignals(QObject):
-    """
-    """
-    __all__ = ['PhotometrySignals']
+    """ """
+
+    __all__ = ["PhotometrySignals"]
 
     hfr = Signal()
     hfrSquare = Signal()
@@ -44,11 +44,11 @@ class PhotometrySignals(QObject):
 
 
 class Photometry:
-    """
-    """
-    __all__ = ['Photometry']
+    """ """
 
-    log = logging.getLogger('MW4')
+    __all__ = ["Photometry"]
+
+    log = logging.getLogger("MW4")
 
     ABERRATION_SIZE = 250
     FILTER_SCALE = 10
@@ -110,8 +110,8 @@ class Photometry:
         rangeX = np.linspace(0, self.w, int(self.w / self.FILTER_SCALE))
         rangeY = np.linspace(0, self.h, int(self.h / self.FILTER_SCALE))
         self.xm, self.ym = np.meshgrid(rangeX, rangeY)
-        x = self.objs['x'] - self.w / 2
-        y = self.objs['y'] - self.h / 2
+        x = self.objs["x"] - self.w / 2
+        y = self.objs["y"] - self.h / 2
         radius = np.sqrt(x * x + y * y)
         maskOuter = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.75 < radius
         maskInner = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.25 > radius
@@ -125,11 +125,14 @@ class Photometry:
         """
         :return:
         """
-        img = griddata((self.objs['x'], self.objs['y']),
-                       self.hfr, (self.xm, self.ym),
-                       method='nearest', fill_value=np.min(self.hfr))
-        self.hfrGrid = uniform_filter(img, size=[self.filterConstH,
-                                      self.filterConstW])
+        img = griddata(
+            (self.objs["x"], self.objs["y"]),
+            self.hfr,
+            (self.xm, self.ym),
+            method="nearest",
+            fill_value=np.min(self.hfr),
+        )
+        self.hfrGrid = uniform_filter(img, size=[self.filterConstH, self.filterConstW])
         minB, maxB = np.percentile(self.hfrGrid, (50, 95))
         self.hfrMin = minB
         self.hfrMax = maxB
@@ -140,15 +143,20 @@ class Photometry:
         """
         :return:
         """
-        a = self.objs['a']
-        b = self.objs['b']
+        a = self.objs["a"]
+        b = self.objs["b"]
         aspectRatio = np.maximum(a / b, b / a)
         minB, maxB = np.percentile(aspectRatio, (50, 95))
-        img = griddata((self.objs['x'], self.objs['y']), aspectRatio,
-                       (self.xm, self.ym), method='linear',
-                       fill_value=np.min(aspectRatio))
-        self.roundnessGrid = uniform_filter(img, size=[self.filterConstH,
-                                            self.filterConstW])
+        img = griddata(
+            (self.objs["x"], self.objs["y"]),
+            aspectRatio,
+            (self.xm, self.ym),
+            method="linear",
+            fill_value=np.min(aspectRatio),
+        )
+        self.roundnessGrid = uniform_filter(
+            img, size=[self.filterConstH, self.filterConstW]
+        )
         self.roundnessPercentile = np.percentile(aspectRatio, 90)
         self.roundnessMin = minB
         self.roundnessMax = maxB
@@ -164,8 +172,8 @@ class Photometry:
 
         xRange = [0, stepX, 2 * stepX, 3 * stepX]
         yRange = [0, stepY, 2 * stepY, 3 * stepY]
-        x = self.objs['x']
-        y = self.objs['y']
+        x = self.objs["x"]
+        y = self.objs["y"]
         segHFR = np.zeros((3, 3))
         for ix in range(3):
             for iy in range(3):
@@ -184,8 +192,8 @@ class Photometry:
         """
         :return:
         """
-        x = self.objs['x'] - self.w / 2
-        y = self.objs['y'] - self.h / 2
+        x = self.objs["x"] - self.w / 2
+        y = self.objs["y"] - self.h / 2
         radius = min(self.h / 2, self.w / 2)
         mask1 = np.sqrt(self.h * self.h + self.w * self.w) * 0.25 < radius
         mask2 = np.sqrt(self.h * self.h + self.w * self.w) > radius
@@ -214,10 +222,10 @@ class Photometry:
         dw = int((self.w - 3 * size) / 2)
         dh = int((self.h - 3 * size) / 2)
 
-        img = np.delete(self.image, np.s_[size:size + dh], axis=0)
-        img = np.delete(img, np.s_[size * 2:size * 2 + dh], axis=0)
-        img = np.delete(img, np.s_[size:size + dw], axis=1)
-        img = np.delete(img, np.s_[size * 2:size * 2 + dw], axis=1)
+        img = np.delete(self.image, np.s_[size : size + dh], axis=0)
+        img = np.delete(img, np.s_[size * 2 : size * 2 + dh], axis=0)
+        img = np.delete(img, np.s_[size : size + dw], axis=1)
+        img = np.delete(img, np.s_[size * 2 : size * 2 + dw], axis=1)
         self.aberrationImage = img
         self.signals.aberration.emit()
         return True
@@ -229,8 +237,9 @@ class Photometry:
         maxB = np.max(self.backSignal) / self.bkg.globalback
         minB = np.min(self.backSignal) / self.bkg.globalback
         img = self.backSignal / self.bkg.globalback
-        self.background = uniform_filter(img, size=[self.filterConstH,
-                                         self.filterConstW])
+        self.background = uniform_filter(
+            img, size=[self.filterConstH, self.filterConstW]
+        )
         self.backgroundMin = minB
         self.backgroundMax = maxB
         self.signals.background.emit()
@@ -240,9 +249,9 @@ class Photometry:
         """
         :return:
         """
-        self.backgroundRMS = uniform_filter(self.backRMS,
-                                            size=[self.filterConstH,
-                                                  self.filterConstW])
+        self.backgroundRMS = uniform_filter(
+            self.backRMS, size=[self.filterConstH, self.filterConstW]
+        )
         self.signals.backgroundRMS.emit()
         return True
 
@@ -272,9 +281,13 @@ class Photometry:
         self.backSignal = self.bkg.back()
 
         try:
-            objs = sep.extract(image_sub, self.sepThreshold, err=self.backRMS,
-                               filter_kernel=None,
-                               minarea=7)
+            objs = sep.extract(
+                image_sub,
+                self.sepThreshold,
+                err=self.backRMS,
+                filter_kernel=None,
+                minarea=7,
+            )
         except Exception as e:
             self.log.error(e)
             self.objs = None
@@ -286,7 +299,7 @@ class Photometry:
         objsRaw = len(objs)
 
         # limiting the resulting object by some constraints
-        r = np.sqrt(objs['a'] * objs['a'] + objs['b'] * objs['b'])
+        r = np.sqrt(objs["a"] * objs["a"] + objs["b"] * objs["b"])
         mask = (r < 15) & (r > 0.8)
         objs = objs[mask]
         objsSelect = len(objs)
@@ -295,18 +308,27 @@ class Photometry:
         PHOT_AUTOPARAMS = [2.5, 3.5]
 
         kronRad, krFlag = sep.kron_radius(
-            image_sub, objs['x'], objs['y'], objs['a'], objs['b'], objs['theta'], 6.0)
+            image_sub, objs["x"], objs["y"], objs["a"], objs["b"], objs["theta"], 6.0
+        )
 
         flux, fluxErr, flag = sep.sum_ellipse(
-            image_sub, objs['x'], objs['y'], objs['a'], objs['b'], objs['theta'],
-            PHOT_AUTOPARAMS[0] * kronRad, subpix=1)
+            image_sub,
+            objs["x"],
+            objs["y"],
+            objs["a"],
+            objs["b"],
+            objs["theta"],
+            PHOT_AUTOPARAMS[0] * kronRad,
+            subpix=1,
+        )
 
         flag |= krFlag
         r_min = PHOT_AUTOPARAMS[1] / 2
 
-        useCircle = kronRad * np.sqrt(objs['a'] * objs['b']) < r_min
+        useCircle = kronRad * np.sqrt(objs["a"] * objs["b"]) < r_min
         cFlux, cFluxErr, cFlag = sep.sum_circle(
-            image_sub, objs['x'][useCircle], objs['y'][useCircle], r_min, subpix=1)
+            image_sub, objs["x"][useCircle], objs["y"][useCircle], r_min, subpix=1
+        )
 
         flux[useCircle] = cFlux
         fluxErr[useCircle] = cFluxErr
@@ -316,15 +338,21 @@ class Photometry:
         PHOT_FLUXFRAC = [0.5, 1.0]
 
         radius, _ = sep.flux_radius(
-            image_sub, objs['x'], objs['y'], 6.0 * objs['a'], PHOT_FLUXFRAC,
-            normflux=flux, subpix=5)
+            image_sub,
+            objs["x"],
+            objs["y"],
+            6.0 * objs["a"],
+            PHOT_FLUXFRAC,
+            normflux=flux,
+            subpix=5,
+        )
 
         self.objsAll = objs
         self.hfrAll = radius[:, 0]
 
         # limiting the resulting object by checking the S/N values
         b = []
-        for x, y in zip(objs['x'], objs['y']):
+        for x, y in zip(objs["x"], objs["y"]):
             b.append(self.backSignal[int(y)][int(x)])
 
         # calculate sn based on optimized version of
@@ -336,7 +364,7 @@ class Photometry:
         # varSky = self.bkg.globalrms * self.bkg.globalrms
         # sn = flux / np.sqrt(flux + starNumPixels * varSky * (1 + 1 / (32 * 32)))
 
-        mask = (sn > self.snTarget)
+        mask = sn > self.snTarget
         objs = objs[mask]
         radius = radius[:, 0]
         radius = radius[mask]
@@ -348,8 +376,9 @@ class Photometry:
         self.hfr = radius[mask]
         self.runCalcs()
         objsHFR = len(self.objs)
-        self.log.info(f'Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, '
-                      f'HFR:{objsHFR}')
+        self.log.info(
+            f"Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, " f"HFR:{objsHFR}"
+        )
         return True
 
     def unlockPhotometry(self):

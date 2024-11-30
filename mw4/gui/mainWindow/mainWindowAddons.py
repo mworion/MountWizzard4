@@ -49,69 +49,64 @@ from gui.mainWaddon.tabTools_IERSTime import IERSTime
 
 
 class MainWindowAddons:
-    """
-    """
+    """ """
 
-    __all__ = ['MainWindowAddons']
+    __all__ = ["MainWindowAddons"]
 
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app
 
         self.addons = {
-            'Almanac': Almanac(mainW),
-            'SettUpdate': SettUpdate(mainW),  # keep isOnline state first
-            'Asteroid': Asteroid(mainW),
-            'BuildPoints': BuildPoints(mainW),
-            'Comet': Comet(mainW),
-            'EnvironWeather': EnvironWeather(mainW),
-            'EnvironSeeing': EnvironSeeing(mainW),
-            'ImageMange': ImageManage(mainW),
-            'ImageStats': ImageStats(mainW),
-            'ManageModel': ManageModel(mainW),
-            'Model': Model(mainW),
-            'ModelStatus': ModelStatus(mainW),
-            'Mount': Mount(mainW),
-            'MountCommand': MountCommand(mainW),
-            'MountMove': MountMove(mainW),
-            'MountSett': MountSett(mainW),
-            'Power': Power(mainW),
-            'Rename': Rename(mainW),
-            'SatSearch': SatSearch(mainW),
-            'SatTrack': SatTrack(mainW),
-            'SettDevice': SettDevice(mainW),
-            'SettDome': SettDome(mainW),
-            'SettMisc': SettMisc(mainW),
-            'SettMount': SettMount(mainW),
-            'SettParkPos': SettParkPos(mainW),
-            'SellRelay': SettRelay(mainW),
-            'IERSTime': IERSTime(mainW),
+            "Almanac": Almanac(mainW),
+            "SettUpdate": SettUpdate(mainW),  # keep isOnline state first
+            "Asteroid": Asteroid(mainW),
+            "BuildPoints": BuildPoints(mainW),
+            "Comet": Comet(mainW),
+            "EnvironWeather": EnvironWeather(mainW),
+            "EnvironSeeing": EnvironSeeing(mainW),
+            "ImageMange": ImageManage(mainW),
+            "ImageStats": ImageStats(mainW),
+            "ManageModel": ManageModel(mainW),
+            "Model": Model(mainW),
+            "ModelStatus": ModelStatus(mainW),
+            "Mount": Mount(mainW),
+            "MountCommand": MountCommand(mainW),
+            "MountMove": MountMove(mainW),
+            "MountSett": MountSett(mainW),
+            "Power": Power(mainW),
+            "Rename": Rename(mainW),
+            "SatSearch": SatSearch(mainW),
+            "SatTrack": SatTrack(mainW),
+            "SettDevice": SettDevice(mainW),
+            "SettDome": SettDome(mainW),
+            "SettMisc": SettMisc(mainW),
+            "SettMount": SettMount(mainW),
+            "SettParkPos": SettParkPos(mainW),
+            "SellRelay": SettRelay(mainW),
+            "IERSTime": IERSTime(mainW),
         }
 
     def initConfig(self) -> None:
-        """
-        """
+        """ """
         for addon in self.addons:
-            if hasattr(self.addons[addon], 'initConfig'):
+            if hasattr(self.addons[addon], "initConfig"):
                 self.addons[addon].initConfig()
 
     def storeConfig(self) -> None:
-        """
-        """
+        """ """
         for addon in self.addons:
-            if hasattr(self.addons[addon], 'storeConfig'):
+            if hasattr(self.addons[addon], "storeConfig"):
                 self.addons[addon].storeConfig()
 
     def setupIcons(self) -> None:
-        """
-        """
+        """ """
         for addon in self.addons:
-            if hasattr(self.addons[addon], 'setupIcons'):
+            if hasattr(self.addons[addon], "setupIcons"):
                 self.addons[addon].setupIcons()
 
     def updateColorSet(self) -> None:
-        """
-        """
+        """ """
         for addon in self.addons:
-            if hasattr(self.addons[addon], 'updateColorSet'):
+            if hasattr(self.addons[addon], "updateColorSet"):
                 self.addons[addon].updateColorSet()

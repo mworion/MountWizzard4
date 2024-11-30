@@ -32,8 +32,7 @@ from gui.utilities.toolsQtWidget import MWidget
 
 
 class SettUpdate(MWidget):
-    """
-    """
+    """ """
 
     def __init__(self, mainW):
         super().__init__()
@@ -56,16 +55,14 @@ class SettUpdate(MWidget):
         self.ui.openPDF.clicked.connect(self.openPDF)
 
     def initConfig(self):
-        """
-        """
-        config = self.app.config['mainW']
-        self.ui.loglevelTrace.setChecked(config.get('loglevelTrace', False))
-        self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
-        self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', False))
-        self.ui.isOnline.setChecked(config.get('isOnline', False))
-        self.ui.ageDatabases.setValue(config.get('ageDatabases', 1))
-        self.ui.versionReleaseNotes.setChecked(
-            config.get('versionReleaseNotes', True))
+        """ """
+        config = self.app.config["mainW"]
+        self.ui.loglevelTrace.setChecked(config.get("loglevelTrace", False))
+        self.ui.loglevelDebug.setChecked(config.get("loglevelDebug", True))
+        self.ui.loglevelStandard.setChecked(config.get("loglevelStandard", False))
+        self.ui.isOnline.setChecked(config.get("isOnline", False))
+        self.ui.ageDatabases.setValue(config.get("ageDatabases", 1))
+        self.ui.versionReleaseNotes.setChecked(config.get("versionReleaseNotes", True))
 
         self.setWeatherOnline()
         self.setSeeingOnline()
@@ -73,19 +70,17 @@ class SettUpdate(MWidget):
         self.showUpdates()
 
     def storeConfig(self):
-        """
-        """
-        config = self.app.config['mainW']
-        config['loglevelTrace'] = self.ui.loglevelTrace.isChecked()
-        config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
-        config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
-        config['isOnline'] = self.ui.isOnline.isChecked()
-        config['ageDatabases'] = self.ui.ageDatabases.value()
-        config['versionReleaseNotes'] = self.ui.versionReleaseNotes.isChecked()
+        """ """
+        config = self.app.config["mainW"]
+        config["loglevelTrace"] = self.ui.loglevelTrace.isChecked()
+        config["loglevelDebug"] = self.ui.loglevelDebug.isChecked()
+        config["loglevelStandard"] = self.ui.loglevelStandard.isChecked()
+        config["isOnline"] = self.ui.isOnline.isChecked()
+        config["ageDatabases"] = self.ui.ageDatabases.value()
+        config["versionReleaseNotes"] = self.ui.versionReleaseNotes.isChecked()
 
     def setWeatherOnline(self):
-        """
-        """
+        """ """
         weather = self.app.onlineWeather
         if not weather:
             return False
@@ -93,8 +88,7 @@ class SettUpdate(MWidget):
         return True
 
     def setSeeingOnline(self):
-        """
-        """
+        """ """
         seeing = self.app.seeingWeather
         if not seeing:
             return False
@@ -102,8 +96,7 @@ class SettUpdate(MWidget):
         return True
 
     def setupIERS(self):
-        """
-        """
+        """ """
         isOnline = self.ui.isOnline.isChecked()
         if isOnline:
             iers.conf.auto_download = True
@@ -116,24 +109,23 @@ class SettUpdate(MWidget):
             data.conf.allow_internet = False
 
     def versionPackage(self, packageName):
-        """
-        """
-        url = f'https://pypi.python.org/pypi/{packageName}/json'
+        """ """
+        url = f"https://pypi.python.org/pypi/{packageName}/json"
         try:
             response = requests.get(url).json()
 
         except Exception as e:
-            self.log.critical(f'Cannot determine package version: {e}')
+            self.log.critical(f"Cannot determine package version: {e}")
             return None, None, None
 
-        vPackage = list(response['releases'].keys())
+        vPackage = list(response["releases"].keys())
         vPackage.sort(key=Version, reverse=True)
 
-        verBeta = [x for x in vPackage if 'b' in x]
-        verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
+        verBeta = [x for x in vPackage if "b" in x]
+        verRelease = [x for x in vPackage if "b" not in x and "a" not in x]
 
-        self.log.info(f'Package Beta:   {verBeta[:10]}')
-        self.log.info(f'Package Release:{verRelease[:10]}')
+        self.log.info(f"Package Beta:   {verBeta[:10]}")
+        self.log.info(f"Package Release:{verRelease[:10]}")
 
         if self.ui.versionBeta.isChecked():
             finalPackage = verBeta
@@ -144,27 +136,27 @@ class SettUpdate(MWidget):
             return None, None, None
 
         finalPackage = finalPackage[0]
-        comment = response['releases'][finalPackage][0]['comment_text']
+        comment = response["releases"][finalPackage][0]["comment_text"]
         return finalPackage, comment, vPackage
 
     def showUpdates(self):
-        """
-        """
-        packageName = 'mountwizzard4'
+        """ """
+        packageName = "mountwizzard4"
         actPackage = importlib_metadata.version(packageName)
         self.ui.versionActual.setText(actPackage)
         isOnline = self.ui.isOnline.isChecked()
 
         if not isOnline:
-            self.ui.versionAvailable.setText('disabled')
+            self.ui.versionAvailable.setText("disabled")
             self.ui.installVersion.setEnabled(False)
             return False
 
         availPackage, comment, _ = self.versionPackage(packageName)
 
         if availPackage is None:
-            self.msg.emit(2, 'System', 'Update',
-                          'Failed get actual package from server')
+            self.msg.emit(
+                2, "System", "Update", "Failed get actual package from server"
+            )
             return False
 
         self.ui.versionAvailable.setText(availPackage)
@@ -173,88 +165,91 @@ class SettUpdate(MWidget):
         if Version(availPackage) <= Version(actPackage):
             return True
 
-        t = f'A new version ({availPackage}) of MountWizzard is available!'
-        self.msg.emit(1, 'System', 'Update', t)
+        t = f"A new version ({availPackage}) of MountWizzard is available!"
+        self.msg.emit(1, "System", "Update", t)
 
         if not self.ui.versionReleaseNotes.isChecked():
             return True
         if not comment:
             return True
 
-        self.msg.emit(1, 'System', 'Update',
-                      f'Release notes for {availPackage}:')
-        for line in comment.split('\n'):
-            self.msg.emit(2, '', '', line)
+        self.msg.emit(1, "System", "Update", f"Release notes for {availPackage}:")
+        for line in comment.split("\n"):
+            self.msg.emit(2, "", "", line)
         return True
 
     def isVenv(self):
-        """
-        """
-        hasReal = hasattr(sys, 'real_prefix')
-        hasBase = hasattr(sys, 'base_prefix')
+        """ """
+        hasReal = hasattr(sys, "real_prefix")
+        hasBase = hasattr(sys, "base_prefix")
 
         status = hasReal or hasBase and sys.base_prefix != sys.prefix
         if hasReal:
-            self.log.debug(f'Real prefix: [{sys.real_prefix}]')
+            self.log.debug(f"Real prefix: [{sys.real_prefix}]")
         if hasBase:
-            self.log.debug(f'Base prefix: [{sys.base_prefix}]')
+            self.log.debug(f"Base prefix: [{sys.base_prefix}]")
         self.log.debug(f'PATH:        [{os.environ.get("PATH", "")}]')
         self.log.debug(f'VENV path:   [{os.environ.get("VIRTUAL_ENV", "")}]')
-        self.log.debug(f'VENV status: [{status}]')
+        self.log.debug(f"VENV status: [{status}]")
         return status
 
     def startUpdater(self, versionPackage):
-        """
-        """
+        """ """
         pythonPath = os.path.abspath(sys.executable)
         pythonRuntime = pythonPath
         updaterDir = os.path.dirname(sys.argv[0])
-        updaterScript = os.path.abspath(updaterDir + '/update.py')
+        updaterScript = os.path.abspath(updaterDir + "/update.py")
 
-        if platform.system() == 'Windows':
-            updaterScript = "\"" + updaterScript + "\""
-            pythonRuntime = "\"" + pythonPath + "\""
+        if platform.system() == "Windows":
+            updaterScript = '"' + updaterScript + '"'
+            pythonRuntime = '"' + pythonPath + '"'
 
-        os.execl(pythonPath, pythonRuntime, updaterScript, versionPackage,
-                 str(self.mainW.pos().x()), str(self.mainW.pos().y()),
-                 str(self.colorSet))
+        os.execl(
+            pythonPath,
+            pythonRuntime,
+            updaterScript,
+            versionPackage,
+            str(self.mainW.pos().x()),
+            str(self.mainW.pos().y()),
+            str(self.colorSet),
+        )
 
     def installVersion(self):
-        """
-        """
-        if not (self.isVenv() or platform.machine() == 'armv7l'):
-            self.msg.emit(2, 'System', 'Update',
-                          'MW4 not running in an virtual environment')
+        """ """
+        if not (self.isVenv() or platform.machine() == "armv7l"):
+            self.msg.emit(
+                2, "System", "Update", "MW4 not running in an virtual environment"
+            )
             return False
 
         versionPackage = self.ui.versionAvailable.text()
-        _, _, existPackage = self.versionPackage('MountWizzard4')
+        _, _, existPackage = self.versionPackage("MountWizzard4")
 
         if versionPackage not in existPackage:
-            self.msg.emit(2, 'System', 'Update',
-                          f'Version {versionPackage} does not exist')
+            self.msg.emit(
+                2, "System", "Update", f"Version {versionPackage} does not exist"
+            )
             return False
 
-        self.msg.emit(1, 'System', 'Update',
-                      f'Installing [{versionPackage}] please wait')
+        self.msg.emit(
+            1, "System", "Update", f"Installing [{versionPackage}] please wait"
+        )
         self.startUpdater(versionPackage)
         return True
 
     def setLoggingLevel(self):
-        """
-        """
+        """ """
         if self.ui.loglevelTrace.isChecked():
-            setCustomLoggingLevel('TRACE')
+            setCustomLoggingLevel("TRACE")
         elif self.ui.loglevelDebug.isChecked():
-            setCustomLoggingLevel('DEBUG')
+            setCustomLoggingLevel("DEBUG")
         elif self.ui.loglevelStandard.isChecked():
-            setCustomLoggingLevel('INFO')
+            setCustomLoggingLevel("INFO")
 
     def openPDF(self):
-        """
-        """
-        url = 'https://mworion.github.io/MountWizzard4/'
+        """ """
+        url = "https://mworion.github.io/MountWizzard4/"
         if not webbrowser.open(url, new=0):
-            self.msg.emit(2, 'System', 'Setting Misc', 'Browser failed')
+            self.msg.emit(2, "System", "Setting Misc", "Browser failed")
         else:
-            self.msg.emit(0, 'System', 'Setting Misc', 'Doc opened')
+            self.msg.emit(0, "System", "Setting Misc", "Doc opened")

@@ -27,35 +27,151 @@ class Styles:
 
     def __init__(self):
         self.cs = {
-            'M_TRANS': ['#00000000', '#00000000', '#00000000', ],
-            'M_PRIM': ['#2090C0', '#C05050', '#000000', ],
-            'M_PRIM1': ['#186C90', '#903838', '#C0C0C0', ],
-            'M_PRIM2': ['#104860', '#602828', '#A0A0A0', ],
-            'M_PRIM3': ['#092B39', '#481C1C', '#808080', ],
-            'M_PRIM4': ['#04151C', '#241010', '#404040', ],
-            'M_SEC': ['#404040', '#402020', '#A0A0A0', ],
-            'M_SEC1': ['#282828', '#201010', '#C0C0C0', ],
-            'M_TER': ['#C0C0C0', '#E00000', '#101010', ],
-            'M_TER1': ['#A0A0A0', '#A00000', '#404040', ],
-            'M_QUAR': ['#000000', '#000000', '#FFFFFF', ],
-            'M_BACK': ['#181818', '#181818', '#E0E0E0', ],
-            'M_RED': ['#D03030', '#C03030', '#800000', ],
-            'M_RED1': ['#902020', '#802020', '#A00000', ],
-            'M_RED2': ['#701818', '#802020', '#E00000', ],
-            'M_YELLOW': ['#D0D000', '#D0D000', '#808000', ],
-            'M_YELLOW1': ['#909000', '#808000', '#A0A000', ],
-            'M_YELLOW2': ['#707000', '#A0A000', '#C0C000', ],
-            'M_GREEN': ['#00C000', '#00C000', '#008000', ],
-            'M_GREEN1': ['#008000', '#008000', '#00A000', ],
-            'M_GREEN2': ['#005000', '#00A000', '#00C000', ],
-            'M_PINK': ['#FF00FF', '#C000C0', '#E000E0', ],
-            'M_PINK1': ['#B000B0', '#900090', '#900090', ],
-            'M_CYAN': ['#00FFFF', '#00FFFF', '#008080', ],
-            'M_CYAN1': ['#00B0B0', '#00B0B0', '#00A0A0', ],
-            'checkmark': ['checkmark0', 'checkmark1', 'checkmark2', ],
-            'arrow-up': ['arrow-up0', 'arrow-up1', 'arrow-up2', ],
-            'arrow-down': ['arrow-down0', 'arrow-down1', 'arrow-down2', ],
-            'radio': ['radio0', 'radio1', 'radio2', ],
+            "M_TRANS": [
+                "#00000000",
+                "#00000000",
+                "#00000000",
+            ],
+            "M_PRIM": [
+                "#2090C0",
+                "#C05050",
+                "#000000",
+            ],
+            "M_PRIM1": [
+                "#186C90",
+                "#903838",
+                "#C0C0C0",
+            ],
+            "M_PRIM2": [
+                "#104860",
+                "#602828",
+                "#A0A0A0",
+            ],
+            "M_PRIM3": [
+                "#092B39",
+                "#481C1C",
+                "#808080",
+            ],
+            "M_PRIM4": [
+                "#04151C",
+                "#241010",
+                "#404040",
+            ],
+            "M_SEC": [
+                "#404040",
+                "#402020",
+                "#A0A0A0",
+            ],
+            "M_SEC1": [
+                "#282828",
+                "#201010",
+                "#C0C0C0",
+            ],
+            "M_TER": [
+                "#C0C0C0",
+                "#E00000",
+                "#101010",
+            ],
+            "M_TER1": [
+                "#A0A0A0",
+                "#A00000",
+                "#404040",
+            ],
+            "M_QUAR": [
+                "#000000",
+                "#000000",
+                "#FFFFFF",
+            ],
+            "M_BACK": [
+                "#181818",
+                "#181818",
+                "#E0E0E0",
+            ],
+            "M_RED": [
+                "#D03030",
+                "#C03030",
+                "#800000",
+            ],
+            "M_RED1": [
+                "#902020",
+                "#802020",
+                "#A00000",
+            ],
+            "M_RED2": [
+                "#701818",
+                "#802020",
+                "#E00000",
+            ],
+            "M_YELLOW": [
+                "#D0D000",
+                "#D0D000",
+                "#808000",
+            ],
+            "M_YELLOW1": [
+                "#909000",
+                "#808000",
+                "#A0A000",
+            ],
+            "M_YELLOW2": [
+                "#707000",
+                "#A0A000",
+                "#C0C000",
+            ],
+            "M_GREEN": [
+                "#00C000",
+                "#00C000",
+                "#008000",
+            ],
+            "M_GREEN1": [
+                "#008000",
+                "#008000",
+                "#00A000",
+            ],
+            "M_GREEN2": [
+                "#005000",
+                "#00A000",
+                "#00C000",
+            ],
+            "M_PINK": [
+                "#FF00FF",
+                "#C000C0",
+                "#E000E0",
+            ],
+            "M_PINK1": [
+                "#B000B0",
+                "#900090",
+                "#900090",
+            ],
+            "M_CYAN": [
+                "#00FFFF",
+                "#00FFFF",
+                "#008080",
+            ],
+            "M_CYAN1": [
+                "#00B0B0",
+                "#00B0B0",
+                "#00A0A0",
+            ],
+            "checkmark": [
+                "checkmark0",
+                "checkmark1",
+                "checkmark2",
+            ],
+            "arrow-up": [
+                "arrow-up0",
+                "arrow-up1",
+                "arrow-up2",
+            ],
+            "arrow-down": [
+                "arrow-down0",
+                "arrow-down1",
+                "arrow-down2",
+            ],
+            "radio": [
+                "radio0",
+                "radio1",
+                "radio2",
+            ],
         }
 
         self.MAC_STYLE = """
@@ -794,107 +910,107 @@ class Styles:
 
     @property
     def M_TRANS(self):
-        return self.cs['M_TRANS'][self.colorSet]
+        return self.cs["M_TRANS"][self.colorSet]
 
     @property
     def M_PRIM(self):
-        return self.cs['M_PRIM'][self.colorSet]
+        return self.cs["M_PRIM"][self.colorSet]
 
     @property
     def M_PRIM1(self):
-        return self.cs['M_PRIM1'][self.colorSet]
+        return self.cs["M_PRIM1"][self.colorSet]
 
     @property
     def M_PRIM2(self):
-        return self.cs['M_PRIM2'][self.colorSet]
+        return self.cs["M_PRIM2"][self.colorSet]
 
     @property
     def M_PRIM3(self):
-        return self.cs['M_PRIM3'][self.colorSet]
+        return self.cs["M_PRIM3"][self.colorSet]
 
     @property
     def M_PRIM4(self):
-        return self.cs['M_PRIM4'][self.colorSet]
+        return self.cs["M_PRIM4"][self.colorSet]
 
     @property
     def M_TER(self):
-        return self.cs['M_TER'][self.colorSet]
+        return self.cs["M_TER"][self.colorSet]
 
     @property
     def M_TER1(self):
-        return self.cs['M_TER1'][self.colorSet]
+        return self.cs["M_TER1"][self.colorSet]
 
     @property
     def M_SEC(self):
-        return self.cs['M_SEC'][self.colorSet]
+        return self.cs["M_SEC"][self.colorSet]
 
     @property
     def M_SEC1(self):
-        return self.cs['M_SEC1'][self.colorSet]
+        return self.cs["M_SEC1"][self.colorSet]
 
     @property
     def M_BACK(self):
-        return self.cs['M_BACK'][self.colorSet]
+        return self.cs["M_BACK"][self.colorSet]
 
     @property
     def M_QUAR(self):
-        return self.cs['M_QUAR'][self.colorSet]
+        return self.cs["M_QUAR"][self.colorSet]
 
     @property
     def M_RED(self):
-        return self.cs['M_RED'][self.colorSet]
+        return self.cs["M_RED"][self.colorSet]
 
     @property
     def M_RED1(self):
-        return self.cs['M_RED1'][self.colorSet]
+        return self.cs["M_RED1"][self.colorSet]
 
     @property
     def M_RED2(self):
-        return self.cs['M_RED2'][self.colorSet]
+        return self.cs["M_RED2"][self.colorSet]
 
     @property
     def M_YELLOW(self):
-        return self.cs['M_YELLOW'][self.colorSet]
+        return self.cs["M_YELLOW"][self.colorSet]
 
     @property
     def M_YELLOW1(self):
-        return self.cs['M_YELLOW1'][self.colorSet]
+        return self.cs["M_YELLOW1"][self.colorSet]
 
     @property
     def M_YELLOW2(self):
-        return self.cs['M_YELLOW2'][self.colorSet]
+        return self.cs["M_YELLOW2"][self.colorSet]
 
     @property
     def M_GREEN(self):
-        return self.cs['M_GREEN'][self.colorSet]
+        return self.cs["M_GREEN"][self.colorSet]
 
     @property
     def M_GREEN1(self):
-        return self.cs['M_GREEN1'][self.colorSet]
+        return self.cs["M_GREEN1"][self.colorSet]
 
     @property
     def M_GREEN2(self):
-        return self.cs['M_GREEN2'][self.colorSet]
+        return self.cs["M_GREEN2"][self.colorSet]
 
     @property
     def M_PINK(self):
-        return self.cs['M_PINK'][self.colorSet]
+        return self.cs["M_PINK"][self.colorSet]
 
     @property
     def M_PINK1(self):
-        return self.cs['M_PINK1'][self.colorSet]
+        return self.cs["M_PINK1"][self.colorSet]
 
     @property
     def M_CYAN(self):
-        return self.cs['M_CYAN'][self.colorSet]
+        return self.cs["M_CYAN"][self.colorSet]
 
     @property
     def M_CYAN1(self):
-        return self.cs['M_CYAN1'][self.colorSet]
+        return self.cs["M_CYAN1"][self.colorSet]
 
     @property
     def mw4Style(self):
-        if platform.system() == 'Darwin':
+        if platform.system() == "Darwin":
             styleRaw = self.MAC_STYLE + self.BASIC_STYLE
         else:
             styleRaw = self.NON_MAC_STYLE + self.BASIC_STYLE
@@ -906,7 +1022,7 @@ class Styles:
         :param val:
         :return:
         """
-        val = val.lstrip('#')
+        val = val.lstrip("#")
         r = int(val[0:2], 16)
         g = int(val[2:4], 16)
         b = int(val[4:6], 16)
@@ -920,23 +1036,23 @@ class Styles:
         """
         rgb = self.hex2rgb(val)
         rgb = [int(x * f) for x in rgb]
-        return f'#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}'
+        return f"#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}"
 
     def renderStyle(self, styleRaw):
         """
         :param styleRaw:
         :return:
         """
-        style = ''
-        for line in styleRaw.split('\n'):
-            start = line.find('$')
-            end = line.find('$', start + 1)
-            key = line[start + 1:end]
+        style = ""
+        for line in styleRaw.split("\n"):
+            start = line.find("$")
+            end = line.find("$", start + 1)
+            key = line[start + 1 : end]
             if key in self.cs:
                 repl = self.cs[key][self.colorSet]
-                line = line.replace(f'${key}$', repl)
+                line = line.replace(f"${key}$", repl)
                 if repl:
-                    style += (line + '\n')
+                    style += line + "\n"
             else:
-                style += (line + '\n')
+                style += line + "\n"
         return style

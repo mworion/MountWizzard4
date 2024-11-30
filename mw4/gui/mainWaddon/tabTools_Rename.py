@@ -27,8 +27,7 @@ from gui.utilities.toolsQtWidget import MWidget
 
 
 class Rename(MWidget):
-    """
-    """
+    """ """
 
     def __init__(self, mainW):
         super().__init__()
@@ -37,21 +36,23 @@ class Rename(MWidget):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
 
-        self.selectorsDropDowns = {'rename1': self.ui.rename1,
-                                   'rename2': self.ui.rename2,
-                                   'rename3': self.ui.rename3,
-                                   'rename4': self.ui.rename4,
-                                   'rename5': self.ui.rename5,
-                                   'rename6': self.ui.rename6,
-                                   }
-        self.fitsHeaderKeywords = {'None': [''],
-                                   'Datetime': ['DATE-OBS'],
-                                   'Frame': ['FRAME', 'IMAGETYP'],
-                                   'Filter': ['FILTER'],
-                                   'Binning': ['XBINNING'],
-                                   'Exp Time': ['exposureTime'],
-                                   'CCD Temp': ['CCD-TEMP'],
-                                   }
+        self.selectorsDropDowns = {
+            "rename1": self.ui.rename1,
+            "rename2": self.ui.rename2,
+            "rename3": self.ui.rename3,
+            "rename4": self.ui.rename4,
+            "rename5": self.ui.rename5,
+            "rename6": self.ui.rename6,
+        }
+        self.fitsHeaderKeywords = {
+            "None": [""],
+            "Datetime": ["DATE-OBS"],
+            "Frame": ["FRAME", "IMAGETYP"],
+            "Filter": ["FILTER"],
+            "Binning": ["XBINNING"],
+            "Exp Time": ["exposureTime"],
+            "CCD Temp": ["CCD-TEMP"],
+        }
         self.setupGuiTools()
         self.ui.renameStart.clicked.connect(self.renameRunGUI)
         self.ui.renameInputSelect.clicked.connect(self.chooseDir)
@@ -64,11 +65,11 @@ class Rename(MWidget):
 
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
-        defaultDir = self.app.mwGlob['imageDir']
-        self.ui.renameDir.setText(config.get('renameDir', defaultDir))
-        self.ui.newObjectName.setText(config.get('newObjectName', ''))
-        self.ui.includeSubdirs.setChecked(config.get('includeSubdirs', False))
+        config = self.app.config["mainW"]
+        defaultDir = self.app.mwGlob["imageDir"]
+        self.ui.renameDir.setText(config.get("renameDir", defaultDir))
+        self.ui.newObjectName.setText(config.get("newObjectName", ""))
+        self.ui.includeSubdirs.setChecked(config.get("includeSubdirs", False))
         for name, ui in self.selectorsDropDowns.items():
             ui.setCurrentIndex(config.get(name, 0))
 
@@ -83,18 +84,18 @@ class Rename(MWidget):
 
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
-        config['renameDir'] = self.ui.renameDir.text()
-        config['newObjectName'] = self.ui.newObjectName.text()
-        config['includeSubdirs'] = self.ui.includeSubdirs.isChecked()
+        config = self.app.config["mainW"]
+        config["renameDir"] = self.ui.renameDir.text()
+        config["newObjectName"] = self.ui.newObjectName.text()
+        config["includeSubdirs"] = self.ui.includeSubdirs.isChecked()
         for name, ui in self.selectorsDropDowns.items():
             config[name] = ui.currentIndex()
 
         return True
 
     def setupIcons(self):
-        self.wIcon(self.ui.renameStart, 'start')
-        self.wIcon(self.ui.renameInputSelect, 'folder')
+        self.wIcon(self.ui.renameStart, "start")
+        self.wIcon(self.ui.renameInputSelect, "folder")
 
     def setupGuiTools(self):
         """
@@ -108,7 +109,7 @@ class Rename(MWidget):
         return True
 
     @staticmethod
-    def getNumberFiles(pathDir='', search=''):
+    def getNumberFiles(pathDir="", search=""):
         """
         getNumberFiles counts the number of files to be valid for the renaming.
 
@@ -127,7 +128,7 @@ class Rename(MWidget):
         return number
 
     @staticmethod
-    def convertHeaderEntry(entry='', fitsKey=''):
+    def convertHeaderEntry(entry="", fitsKey=""):
         """
         convertHeaderEntry takes the fitsHeader entry and reformat it to a
         reasonable string.
@@ -137,30 +138,30 @@ class Rename(MWidget):
         :return:
         """
         if not fitsKey:
-            return ''
+            return ""
         if not entry:
-            return ''
+            return ""
 
-        if fitsKey == 'DATE-OBS':
-            chunk = entry.replace(':', '-')
-            chunk = chunk.replace('T', '_')
-            chunk = chunk.split('.')[0]
-        elif fitsKey == 'XBINNING':
-            chunk = f'Bin{entry:1.0f}'
-        elif fitsKey == 'CCD-TEMP':
-            chunk = f'Temp{entry:03.0f}'
-        elif fitsKey == 'FRAME':
-            chunk = f'{entry}'
-        elif fitsKey == 'FILTER':
-            chunk = f'{entry}'
-        elif fitsKey == 'EXPTIME':
-            chunk = f'Exp{entry:1.0f}s'
+        if fitsKey == "DATE-OBS":
+            chunk = entry.replace(":", "-")
+            chunk = chunk.replace("T", "_")
+            chunk = chunk.split(".")[0]
+        elif fitsKey == "XBINNING":
+            chunk = f"Bin{entry:1.0f}"
+        elif fitsKey == "CCD-TEMP":
+            chunk = f"Temp{entry:03.0f}"
+        elif fitsKey == "FRAME":
+            chunk = f"{entry}"
+        elif fitsKey == "FILTER":
+            chunk = f"{entry}"
+        elif fitsKey == "EXPTIME":
+            chunk = f"Exp{entry:1.0f}s"
         else:
-            chunk = ''
+            chunk = ""
 
         return chunk
 
-    def processSelectors(self, fitsHeader=None, selection=''):
+    def processSelectors(self, fitsHeader=None, selection=""):
         """
         processSelectors takes the selection for a fileName chunk and runs through the
         possible list of valid fits header keys. if there is more than one valid fitsKey,
@@ -171,21 +172,22 @@ class Rename(MWidget):
         :return: nameChunk: part of the entry
         """
         if fitsHeader is None:
-            return ''
+            return ""
         if not selection:
-            return ''
+            return ""
 
-        nameChunk = ''
+        nameChunk = ""
         fitsKeywords = self.fitsHeaderKeywords[selection]
         for fitsKey in fitsKeywords:
             if fitsKey not in fitsHeader:
                 continue
-            nameChunk = self.convertHeaderEntry(entry=fitsHeader[fitsKey],
-                                                fitsKey=fitsKey)
+            nameChunk = self.convertHeaderEntry(
+                entry=fitsHeader[fitsKey], fitsKey=fitsKey
+            )
             break
         return nameChunk
 
-    def renameFile(self, fileName=''):
+    def renameFile(self, fileName=""):
         """
         renameFile opens the given FITS file and retrieves its header. if valid it
         runs through selectors of the drop-down lists and checks all header keys to
@@ -209,22 +211,22 @@ class Rename(MWidget):
                 newFilename = newObjectName
 
             else:
-                if 'OBJECT' in fitsHeader:
-                    newFilename = fitsHeader['OBJECT'].upper()
+                if "OBJECT" in fitsHeader:
+                    newFilename = fitsHeader["OBJECT"].upper()
                 else:
-                    newFilename = 'UNKNOWN'
+                    newFilename = "UNKNOWN"
 
             for _, selector in self.selectorsDropDowns.items():
                 selection = selector.currentText()
-                chunk = self.processSelectors(fitsHeader=fitsHeader,
-                                              selection=selection
-                                              )
+                chunk = self.processSelectors(
+                    fitsHeader=fitsHeader, selection=selection
+                )
                 if chunk:
-                    newFilename += f'_{chunk}'
+                    newFilename += f"_{chunk}"
 
-            newFilename += '.fits'
+            newFilename += ".fits"
             dirName = os.path.dirname(fileName)
-            newFilename = os.path.normpath(f'{dirName}/{newFilename}')
+            newFilename = os.path.normpath(f"{dirName}/{newFilename}")
             os.rename(fileName, newFilename)
         return True
 
@@ -238,19 +240,17 @@ class Rename(MWidget):
         pathDir = self.ui.renameDir.text()
         includeSubdirs = self.ui.includeSubdirs.isChecked()
         if not os.path.isdir(pathDir):
-            self.msg.emit(2, 'Tools', 'Rename error',
-                          'No valid input directory given')
+            self.msg.emit(2, "Tools", "Rename error", "No valid input directory given")
             return False
 
         if includeSubdirs:
-            search = '**/*.fit*'
+            search = "**/*.fit*"
         else:
-            search = '*.fit*'
+            search = "*.fit*"
 
         numberFiles = self.getNumberFiles(pathDir, search=search)
         if not numberFiles:
-            self.msg.emit(2, 'Tools', 'Rename error',
-                          'No files to rename')
+            self.msg.emit(2, "Tools", "Rename error", "No files to rename")
             return False
 
         for i, fileName in enumerate(Path(pathDir).glob(search)):
@@ -258,11 +258,11 @@ class Rename(MWidget):
             QApplication.processEvents()
             suc = self.renameFile(fileName=fileName)
             if not suc:
-                self.msg.emit(2, 'Tools', 'Rename error',
-                              f'{fileName} could not be renamed')
+                self.msg.emit(
+                    2, "Tools", "Rename error", f"{fileName} could not be renamed"
+                )
 
-        self.msg.emit(0, 'Tools', 'Rename',
-                      f'{numberFiles:d} images were renamed')
+        self.msg.emit(0, "Tools", "Rename", f"{numberFiles:d} images were renamed")
 
         return True
 
@@ -274,7 +274,11 @@ class Rename(MWidget):
         :return: True for test purpose
         """
         folder = self.ui.renameDir.text()
-        pathDir, _, _ = self.openDir(self.mainW, 'Choose Input Dir', folder,)
+        pathDir, _, _ = self.openDir(
+            self.mainW,
+            "Choose Input Dir",
+            folder,
+        )
         if pathDir:
             self.ui.renameDir.setText(pathDir)
             self.ui.renameProgress.setValue(0)

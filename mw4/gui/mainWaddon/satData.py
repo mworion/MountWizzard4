@@ -20,5 +20,6 @@
 
 # local import
 
+
 class SatData:
     satellites = None

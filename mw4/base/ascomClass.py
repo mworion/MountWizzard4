@@ -15,10 +15,9 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import platform
 
-if platform.system() == 'Windows':
+if platform.system() == "Windows":
     from pythoncom import CoInitialize, CoUninitialize
     from win32com import client
 
@@ -32,8 +31,8 @@ from base.driverDataClass import DriverData
 
 
 class AscomClass(DriverData):
-    """
-    """
+    """ """
+
     def __init__(self, app=None, data=None):
         super().__init__()
 
@@ -47,12 +46,12 @@ class AscomClass(DriverData):
 
         self.client = None
         self.propertyExceptions = []
-        self.deviceName = ''
+        self.deviceName = ""
         self.deviceConnected = False
         self.serverConnected = False
 
         self.defaultConfig = {
-            'deviceName': '',
+            "deviceName": "",
         }
 
         self.cyclePollStatus = QTimer()
@@ -89,18 +88,18 @@ class AscomClass(DriverData):
             return value
 
         try:
-            cmd = 'self.client.' + valueProp
+            cmd = "self.client." + valueProp
             value = eval(cmd)
         except Exception as e:
-            t = f'[{self.deviceName}] [{cmd}], property [{valueProp}] not implemented: {e}'
+            t = f"[{self.deviceName}] [{cmd}], property [{valueProp}] not implemented: {e}"
             self.log.debug(t)
             self.propertyExceptions.append(valueProp)
         else:
-            if valueProp != 'ImageArray':
-                t = f'[{self.deviceName}] property [{valueProp}] has value: [{value}]'
+            if valueProp != "ImageArray":
+                t = f"[{self.deviceName}] property [{valueProp}] has value: [{value}]"
                 self.log.trace(t)
             else:
-                self.log.trace(f'{self.deviceName}] property [{valueProp}]')
+                self.log.trace(f"{self.deviceName}] property [{valueProp}]")
         finally:
             return value
 
@@ -113,16 +112,16 @@ class AscomClass(DriverData):
             return False
 
         try:
-            cmd = 'self.client.' + valueProp + ' = value'
+            cmd = "self.client." + valueProp + " = value"
             exec(cmd)
         except Exception as e:
-            t = f'[{self.deviceName}] [{cmd}], property [{valueProp}] not implemented: {e}'
+            t = f"[{self.deviceName}] [{cmd}], property [{valueProp}] not implemented: {e}"
             self.log.debug(t)
-            if valueProp != 'Connected':
+            if valueProp != "Connected":
                 self.propertyExceptions.append(valueProp)
             return False
         else:
-            t = f'[{self.deviceName}] property [{valueProp}] set to: [{value}]'
+            t = f"[{self.deviceName}] property [{valueProp}] set to: [{value}]"
             self.log.trace(t)
             return True
 
@@ -134,17 +133,17 @@ class AscomClass(DriverData):
         if method in self.propertyExceptions:
             return False
 
-        paramStr = f'{param}'.rstrip(')').lstrip('(')
+        paramStr = f"{param}".rstrip(")").lstrip("(")
         try:
-            cmd = 'self.client.' + method + f'({paramStr})'
+            cmd = "self.client." + method + f"({paramStr})"
             exec(cmd)
         except Exception as e:
-            t = f'[{self.deviceName}] [{cmd}], method [{method}] not implemented: {e}'
+            t = f"[{self.deviceName}] [{cmd}], method [{method}] not implemented: {e}"
             self.log.debug(t)
             self.propertyExceptions.append(method)
             return False
         else:
-            t = f'[{self.deviceName}] method [{method}] called [{param}]'
+            t = f"[{self.deviceName}] method [{method}] called [{param}]"
             self.log.trace(t)
             return True
 
@@ -171,22 +170,22 @@ class AscomClass(DriverData):
         self.deviceConnected = False
         self.serverConnected = False
         for retry in range(0, 10):
-            self.setAscomProperty('Connected', True)
-            suc = self.getAscomProperty('Connected')
+            self.setAscomProperty("Connected", True)
+            suc = self.getAscomProperty("Connected")
 
             if suc:
-                t = f'[{self.deviceName}] connected, retries: [{retry}]'
+                t = f"[{self.deviceName}] connected, retries: [{retry}]"
                 self.log.debug(t)
                 break
             else:
-                t = f'[{self.deviceName}] connection retry: [{retry}]'
+                t = f"[{self.deviceName}] connection retry: [{retry}]"
                 self.log.info(t)
                 sleepAndEvents(250)
         else:
             suc = False
 
         if not suc:
-            self.msg.emit(2, 'ASCOM ', 'Connect error', f'{self.deviceName}')
+            self.msg.emit(2, "ASCOM ", "Connect error", f"{self.deviceName}")
             return False
 
         if not self.serverConnected:
@@ -195,8 +194,8 @@ class AscomClass(DriverData):
 
         if not self.deviceConnected:
             self.deviceConnected = True
-            self.signals.deviceConnected.emit(f'{self.deviceName}')
-            self.msg.emit(0, 'ASCOM ', 'Device found', f'{self.deviceName}')
+            self.signals.deviceConnected.emit(f"{self.deviceName}")
+            self.msg.emit(0, "ASCOM ", "Device found", f"{self.deviceName}")
             self.startTimer()
             self.getInitialConfig()
         return True
@@ -205,26 +204,26 @@ class AscomClass(DriverData):
         """
         :return: true for test purpose
         """
-        self.getAndStoreAscomProperty('Name', 'DRIVER_INFO.DRIVER_NAME')
-        self.getAndStoreAscomProperty('DriverVersion', 'DRIVER_INFO.DRIVER_VERSION')
-        self.getAndStoreAscomProperty('DriverInfo', 'DRIVER_INFO.DRIVER_EXEC')
+        self.getAndStoreAscomProperty("Name", "DRIVER_INFO.DRIVER_NAME")
+        self.getAndStoreAscomProperty("DriverVersion", "DRIVER_INFO.DRIVER_VERSION")
+        self.getAndStoreAscomProperty("DriverInfo", "DRIVER_INFO.DRIVER_EXEC")
         return True
 
     def workerPollStatus(self):
         """
         :return: success
         """
-        suc = self.getAscomProperty('Connected')
+        suc = self.getAscomProperty("Connected")
 
         if self.deviceConnected and not suc:
             self.deviceConnected = False
-            self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-            self.msg.emit(0, 'ASCOM ', 'Device remove', f'{self.deviceName}')
+            self.signals.deviceDisconnected.emit(f"{self.deviceName}")
+            self.msg.emit(0, "ASCOM ", "Device remove", f"{self.deviceName}")
 
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
-            self.signals.deviceConnected.emit(f'{self.deviceName}')
-            self.msg.emit(0, 'ASCOM ', 'Device found', f'{self.deviceName}')
+            self.signals.deviceConnected.emit(f"{self.deviceName}")
+            self.msg.emit(0, "ASCOM ", "Device found", f"{self.deviceName}")
 
         return suc
 
@@ -260,7 +259,7 @@ class AscomClass(DriverData):
             return False
 
         worker = Worker(self.callerInitUnInit, fn, *args, **kwargs)
-        t = f'ASCOM threaded: [{fn}], args:[{args}], kwargs:[{kwargs}]'
+        t = f"ASCOM threaded: [{fn}], args:[{args}], kwargs:[{kwargs}]"
         self.log.trace(t)
         if cb_res:
             worker.signals.result.connect(cb_res)
@@ -285,8 +284,7 @@ class AscomClass(DriverData):
         """
         :return: success
         """
-        self.callMethodThreaded(self.workerPollData,
-                                cb_res=self.processPolledData)
+        self.callMethodThreaded(self.workerPollData, cb_res=self.processPolledData)
         return True
 
     def pollStatus(self):
@@ -313,10 +311,10 @@ class AscomClass(DriverData):
 
         try:
             self.client = client.dynamic.Dispatch(self.deviceName)
-            self.log.debug(f'[{self.deviceName}] Dispatching')
+            self.log.debug(f"[{self.deviceName}] Dispatching")
 
         except Exception as e:
-            self.log.error(f'[{self.deviceName}] Dispatch error: [{e}]')
+            self.log.error(f"[{self.deviceName}] Dispatch error: [{e}]")
             return False
 
         worker = Worker(self.callerInitUnInit, self.workerConnectDevice)
@@ -329,12 +327,12 @@ class AscomClass(DriverData):
         """
         self.stopTimer()
         if self.client:
-            self.setAscomProperty('Connected', False)
+            self.setAscomProperty("Connected", False)
             self.deviceConnected = False
             self.serverConnected = False
             self.client = None
             self.propertyExceptions = []
-        self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-        self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
-        self.msg.emit(0, 'ALPACA', 'Device  remove', f'{self.deviceName}')
+        self.signals.deviceDisconnected.emit(f"{self.deviceName}")
+        self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
+        self.msg.emit(0, "ALPACA", "Device  remove", f"{self.deviceName}")
         return True

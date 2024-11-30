@@ -27,8 +27,7 @@ from logic.databaseProcessing.dataWriter import DataWriter
 
 
 class IERSTime(MWidget):
-    """
-    """
+    """ """
 
     def __init__(self, mainW):
         super().__init__()
@@ -37,13 +36,13 @@ class IERSTime(MWidget):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
 
-        self.tempDir = self.app.mwGlob['tempDir']
+        self.tempDir = self.app.mwGlob["tempDir"]
         self.uploadPopup = None
         self.downloadPopup = None
         self.databaseProcessing = DataWriter(self.app)
         self.iersSourceURLs = {
-            'Datacenter from IERS': 'https://datacenter.iers.org/products/eop/rapid/standard/',
-            'Maia from usno.navy.mil': 'https://maia.usno.navy.mil/ser7/',
+            "Datacenter from IERS": "https://datacenter.iers.org/products/eop/rapid/standard/",
+            "Maia from usno.navy.mil": "https://maia.usno.navy.mil/ser7/",
         }
 
         self.ui.progEarthRotationData.clicked.connect(self.progEarthRotationData)
@@ -57,22 +56,22 @@ class IERSTime(MWidget):
 
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
+        config = self.app.config["mainW"]
         self.setupIERSSourceURLsDropDown()
-        self.ui.iersSource.setCurrentIndex(config.get('iersSource', 0))
+        self.ui.iersSource.setCurrentIndex(config.get("iersSource", 0))
         return True
 
     def storeConfig(self):
         """
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
-        config['iersSource'] = self.ui.iersSource.currentIndex()
+        config = self.app.config["mainW"]
+        config["iersSource"] = self.ui.iersSource.currentIndex()
         return True
 
     def setupIcons(self):
-        self.wIcon(self.ui.progEarthRotationData, 'run')
-        self.wIcon(self.ui.downloadIERS, 'run')
+        self.wIcon(self.ui.progEarthRotationData, "run")
+        self.wIcon(self.ui.downloadIERS, "run")
 
     def setupIERSSourceURLsDropDown(self):
         """
@@ -92,64 +91,68 @@ class IERSTime(MWidget):
         """
         :return:
         """
-        if self.uploadPopup.returnValues['success']:
-            self.msg.emit(1, 'IERS', 'Program', 'Successfully uploaded')
+        if self.uploadPopup.returnValues["success"]:
+            self.msg.emit(1, "IERS", "Program", "Successfully uploaded")
         else:
-            self.msg.emit(1, 'IERS', 'Program', 'Upload failed')
+            self.msg.emit(1, "IERS", "Program", "Upload failed")
         return True
 
     def progEarthRotationData(self):
         """
         :return: success
         """
-        self.msg.emit(1, 'IERS', 'Program', 'Earth rotation data')
-        self.msg.emit(1, '', '', 'finals.data, CDFLeapSeconds.txt')
+        self.msg.emit(1, "IERS", "Program", "Earth rotation data")
+        self.msg.emit(1, "", "", "finals.data, CDFLeapSeconds.txt")
 
         suc = self.databaseProcessing.writeEarthRotationData(self.tempDir)
         if not suc:
-            self.msg.emit(2, 'IERS', 'Data error',
-                          'Data could not be exported - stopping')
+            self.msg.emit(
+                2, "IERS", "Data error", "Data could not be exported - stopping"
+            )
             return False
 
-        dataTypes = ['finalsdata', 'leapsec']
+        dataTypes = ["finalsdata", "leapsec"]
         url = self.app.mount.host[0]
-        self.msg.emit(0, 'IERS', 'Program', 'Uploading to mount')
-        self.uploadPopup = UploadPopup(self.mainW, url=url, dataTypes=dataTypes,
-                                       dataFilePath=self.tempDir)
+        self.msg.emit(0, "IERS", "Program", "Uploading to mount")
+        self.uploadPopup = UploadPopup(
+            self.mainW, url=url, dataTypes=dataTypes, dataFilePath=self.tempDir
+        )
         self.uploadPopup.workerStatus.signals.finished.connect(
-            self.finishProgEarthRotationData)
+            self.finishProgEarthRotationData
+        )
         return True
 
     def finishLoadTimeDataFromSourceURLs(self):
         """
         :return:
         """
-        if self.downloadPopup.returnValues['success']:
-            self.msg.emit(0, 'IERS', 'Program', 'Downloaded finals.data')
-            self.msg.emit(1, 'IERS', 'Program', 'Downloaded complete')
+        if self.downloadPopup.returnValues["success"]:
+            self.msg.emit(0, "IERS", "Program", "Downloaded finals.data")
+            self.msg.emit(1, "IERS", "Program", "Downloaded complete")
         else:
-            self.msg.emit(1, 'IERS', 'Program', 'Download failed')
+            self.msg.emit(1, "IERS", "Program", "Download failed")
         return True
 
     def finishLoadFinalsFromSourceURLs(self):
         """
         :return:
         """
-        if not self.downloadPopup.returnValues['success']:
-            self.msg.emit(0, 'IERS', 'Program', 'Download failed')
+        if not self.downloadPopup.returnValues["success"]:
+            self.msg.emit(0, "IERS", "Program", "Download failed")
             return False
 
-        self.msg.emit(1, 'IERS', 'Program', 'Downloaded finals2000A.all')
+        self.msg.emit(1, "IERS", "Program", "Downloaded finals2000A.all")
         sourceURL = self.ui.iersSource.currentText()
         urlMain = self.iersSourceURLs[sourceURL]
 
-        source = 'finals.data'
+        source = "finals.data"
         url = urlMain + source
-        dest = self.app.mwGlob['dataDir'] + '/' + source
-        self.msg.emit(1, 'IERS', 'Download', f'File: {source}')
+        dest = self.app.mwGlob["dataDir"] + "/" + source
+        self.msg.emit(1, "IERS", "Download", f"File: {source}")
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
         self.downloadPopup.worker.signals.finished.connect(
-            self.finishLoadTimeDataFromSourceURLs)
+            self.finishLoadTimeDataFromSourceURLs
+        )
         return True
 
     def loadTimeDataFromSourceURLs(self):
@@ -163,11 +166,12 @@ class IERSTime(MWidget):
         sourceURL = self.ui.iersSource.currentText()
         urlMain = self.iersSourceURLs[sourceURL]
 
-        source = 'finals2000A.all'
+        source = "finals2000A.all"
         url = urlMain + source
-        dest = self.app.mwGlob['dataDir'] + '/' + source
-        self.msg.emit(1, 'IERS', 'Download', f'File. {source}')
+        dest = self.app.mwGlob["dataDir"] + "/" + source
+        self.msg.emit(1, "IERS", "Download", f"File. {source}")
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
         self.downloadPopup.worker.signals.finished.connect(
-            self.finishLoadFinalsFromSourceURLs)
+            self.finishLoadFinalsFromSourceURLs
+        )
         return True

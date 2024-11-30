@@ -26,8 +26,8 @@ from gui.utilities.gPlotBase import PlotBase
 
 
 class ImageBar(PlotBase):
-    """
-    """
+    """ """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.lx = None
@@ -35,7 +35,7 @@ class ImageBar(PlotBase):
         self.setupItems()
         self.addBarItem(interactive=True)
         self.barItem.setVisible(True)
-        for side in ('left', 'top', 'right', 'bottom'):
+        for side in ("left", "top", "right", "bottom"):
             self.p[0].getAxis(side).setGrid(0)
         self.defRange = {}
 
@@ -76,8 +76,9 @@ class ImageBar(PlotBase):
         yMax, xMax = imageDisp.shape
         xMinR = max(xMax / 100, 100)
         yMinR = max(yMax / 100, 100)
-        self.p[0].setLimits(xMin=0, xMax=xMax, yMin=0, yMax=yMax,
-                            minXRange=xMinR, minYRange=yMinR)
+        self.p[0].setLimits(
+            xMin=0, xMax=xMax, yMin=0, yMax=yMax, minXRange=xMinR, minYRange=yMinR
+        )
         if updateGeometry:
             self.p[0].getViewBox().rightMouseRange()
 
@@ -124,8 +125,7 @@ class ImageBar(PlotBase):
         d = 3
         posX = x + d
         posY = y + d
-        text = pg.TextItem(text=f'{value:2.2f}',
-                           color=self.M_PRIM)
+        text = pg.TextItem(text=f"{value:2.2f}", color=self.M_PRIM)
         text.setPos(posX, posY)
         self.p[0].addItem(text)
         return True

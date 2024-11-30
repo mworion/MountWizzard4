@@ -30,9 +30,10 @@ class TLEParams(object):
     and managing attributes of the connected mount and provides the abstracted
     interface to a 10 micron mount.
     """
-    __all__ = ['TLEParams']
 
-    log = logging.getLogger('MW4')
+    __all__ = ["TLEParams"]
+
+    log = logging.getLogger("MW4")
 
     def __init__(self, obsSite=None):
         self.obsSite = obsSite
@@ -58,7 +59,7 @@ class TLEParams(object):
         if isinstance(value, Angle):
             self._azimuth = value
             return
-        self._azimuth = valueToAngle(value, preference='degrees')
+        self._azimuth = valueToAngle(value, preference="degrees")
 
     @property
     def altitude(self):
@@ -69,7 +70,7 @@ class TLEParams(object):
         if isinstance(value, Angle):
             self._altitude = value
             return
-        self._altitude = valueToAngle(value, preference='degrees')
+        self._altitude = valueToAngle(value, preference="degrees")
 
     @property
     def ra(self):
@@ -80,7 +81,7 @@ class TLEParams(object):
         if isinstance(value, Angle):
             self._ra = value
             return
-        self._ra = valueToAngle(value, preference='hours')
+        self._ra = valueToAngle(value, preference="hours")
 
     @property
     def dec(self):
@@ -91,7 +92,7 @@ class TLEParams(object):
         if isinstance(value, Angle):
             self._dec = value
             return
-        self._dec = valueToAngle(value, preference='degrees')
+        self._dec = valueToAngle(value, preference="degrees")
 
     @property
     def flip(self):
@@ -102,7 +103,7 @@ class TLEParams(object):
         if isinstance(value, bool):
             self._flip = value
             return
-        self._flip = bool(value == 'F')
+        self._flip = bool(value == "F")
 
     @property
     def jdStart(self):

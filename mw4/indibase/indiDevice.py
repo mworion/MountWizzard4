@@ -28,11 +28,12 @@ class Device:
     scheme. there might be not all capabilities implemented right now. all the
     data, properties and attributes are stored in a device dict.
     """
-    __all__ = ['Device']
 
-    log = logging.getLogger('MW4')
+    __all__ = ["Device"]
 
-    def __init__(self, name=''):
+    log = logging.getLogger("MW4")
+
+    def __init__(self, name=""):
         super().__init__()
 
         self.name = name
@@ -51,15 +52,14 @@ class Device:
             return {}
 
         iProperty = getattr(self, propertyName)
-        if iProperty['propertyType'] not in ['defNumberVector',
-                                             'setNumberVector']:
+        if iProperty["propertyType"] not in ["defNumberVector", "setNumberVector"]:
             self.log.warning(f'Property: {iProperty["propertyType"]} is not Number')
             return {}
 
-        elementList = iProperty['elementList']
+        elementList = iProperty["elementList"]
         retDict = {}
         for prop in elementList:
-            retDict[prop] = elementList[prop]['value']
+            retDict[prop] = elementList[prop]["value"]
 
         return retDict
 
@@ -76,15 +76,14 @@ class Device:
             return {}
 
         iProperty = getattr(self, propertyName)
-        if iProperty['propertyType'] not in ['defTextVector',
-                                             'setTextVector']:
+        if iProperty["propertyType"] not in ["defTextVector", "setTextVector"]:
             self.log.warning(f'Property: {iProperty["propertyType"]} is not Text')
             return {}
 
-        elementList = iProperty['elementList']
+        elementList = iProperty["elementList"]
         retDict = {}
         for prop in elementList:
-            retDict[prop] = elementList[prop]['value']
+            retDict[prop] = elementList[prop]["value"]
 
         return retDict
 
@@ -101,15 +100,14 @@ class Device:
             return {}
 
         iProperty = getattr(self, propertyName)
-        if iProperty['propertyType'] not in ['defSwitchVector',
-                                             'setSwitchVector']:
+        if iProperty["propertyType"] not in ["defSwitchVector", "setSwitchVector"]:
             self.log.warning(f'Property: {iProperty["propertyType"]} is not Switch')
             return {}
 
-        elementList = iProperty['elementList']
+        elementList = iProperty["elementList"]
         retDict = {}
         for prop in elementList:
-            retDict[prop] = elementList[prop]['value']
+            retDict[prop] = elementList[prop]["value"]
 
         return retDict
 
@@ -126,15 +124,14 @@ class Device:
             return {}
 
         iProperty = getattr(self, propertyName)
-        if iProperty['propertyType'] not in ['defLightVector',
-                                             'setLightVector']:
+        if iProperty["propertyType"] not in ["defLightVector", "setLightVector"]:
             self.log.warning(f'Property: {iProperty["propertyType"]} is not Light')
             return {}
 
-        elementList = iProperty['elementList']
+        elementList = iProperty["elementList"]
         retDict = {}
         for prop in elementList:
-            retDict[prop] = elementList[prop]['value']
+            retDict[prop] = elementList[prop]["value"]
 
         return retDict
 
@@ -150,9 +147,8 @@ class Device:
             return {}
 
         iProperty = getattr(self, propertyName)
-        if iProperty['propertyType'] not in ['defBLOBVector',
-                                             'setBLOBVector']:
+        if iProperty["propertyType"] not in ["defBLOBVector", "setBLOBVector"]:
             self.log.warning(f'Property: {iProperty["propertyType"]} is not Blob')
             return {}
 
-        return iProperty['elementList'][propertyName]
+        return iProperty["elementList"][propertyName]

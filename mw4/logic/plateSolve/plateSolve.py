@@ -36,9 +36,10 @@ class PlateSolve:
     Keyword definitions could be found under
         https://fits.gsfc.nasa.gov/fits_dictionary.html
     """
-    __all__ = ['PlateSolve']
 
-    log = logging.getLogger('MW4')
+    __all__ = ["PlateSolve"]
+
+    log = logging.getLogger("MW4")
 
     def __init__(self, app):
         self.app = app
@@ -47,39 +48,36 @@ class PlateSolve:
         self.signals = Signals()
         self.solveQueue = queue.Queue()
         self.solveLoopRunning: bool = False
-        self.tempDir: Path = app.mwGlob['tempDir']
-        self.workDir: Path = app.mwGlob['workDir']
-    
+        self.tempDir: Path = app.mwGlob["tempDir"]
+        self.workDir: Path = app.mwGlob["workDir"]
+
         self.data: dict = {}
-        self.defaultConfig: dict = {
-            'framework': '',
-            'frameworks': {}}
-        self.framework: str = ''
+        self.defaultConfig: dict = {"framework": "", "frameworks": {}}
+        self.framework: str = ""
         self.run: dict = {
-            'astrometry': Astrometry(self),
-            'astap': ASTAP(self),
-            'watney': Watney(self),
+            "astrometry": Astrometry(self),
+            "astap": ASTAP(self),
+            "watney": Watney(self),
         }
         for fw in self.run:
-            self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
+            self.defaultConfig["frameworks"].update(self.run[fw].defaultConfig)
 
         self.signals.serverConnected.connect(self.startSolveLoop)
 
     def processSolveQueue(self, imagePath: Path, updateHeader: bool = False) -> None:
-        """
-        """
+        """ """
         if not os.path.isfile(imagePath):
-            result = {'success': False, 'message': f'{imagePath} not found'}
+            result = {"success": False, "message": f"{imagePath} not found"}
         else:
-            self.signals.message.emit('solving')
-            result = self.run[self.framework].solve(imagePath=imagePath, 
-                                                    updateHeader=updateHeader)
-        self.signals.message.emit('')
+            self.signals.message.emit("solving")
+            result = self.run[self.framework].solve(
+                imagePath=imagePath, updateHeader=updateHeader
+            )
+        self.signals.message.emit("")
         self.signals.result.emit(result)
-         
+
     def workerSolveLoop(self) -> None:
-        """
-        """
+        """ """
         while self.solveLoopRunning:
             if self.solveQueue.empty():
                 sleepAndEvents(500)
@@ -87,31 +85,27 @@ class PlateSolve:
             imagePath, updateHeader = self.solveQueue.get()
             self.processSolveQueue(imagePath, updateHeader)
             self.solveQueue.task_done()
-            
+
     def startSolveLoop(self) -> None:
-        """
-        """
+        """ """
         self.solveLoopRunning = True
         worker = Worker(self.workerSolveLoop)
         self.threadPool.start(worker)
-    
+
     def checkAvailabilityProgram(self, framework: str) -> bool:
-        """
-        """
+        """ """
         appPath = self.run[framework].appPath
         return self.run[framework].checkAvailabilityProgram(appPath=appPath)
 
     def checkAvailabilityIndex(self, framework: str) -> bool:
-        """
-        """
+        """ """
         indexPath = self.run[framework].indexPath
         return self.run[framework].checkAvailabilityIndex(indexPath=indexPath)
 
     def startCommunication(self):
-        """
-        """
+        """ """
         sucProgram = self.checkAvailabilityProgram(self.framework)
-        sucIndex = self.checkAvailabilityIndex(self.framework) 
+        sucIndex = self.checkAvailabilityIndex(self.framework)
         name = self.run[self.framework].deviceName
         if not sucProgram or not sucIndex:
             return
@@ -120,20 +114,17 @@ class PlateSolve:
         self.signals.serverConnected.emit()
 
     def stopCommunication(self):
-        """
-        """
+        """ """
         self.solveLoopRunning = False
         name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
-        
+
     def solve(self, imagePath: Path, updateHeader: bool = False) -> None:
-        """
-        """
+        """ """
         data = (imagePath, updateHeader)
         self.solveQueue.put(data)
-         
+
     def abort(self) -> None:
-        """
-        """
+        """ """
         self.run[self.framework].abort()

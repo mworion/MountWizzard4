@@ -27,7 +27,8 @@ class INDISignals(QObject):
     The INDISignals class offers a list of signals to be used and instantiated
     by the IndiBase class to get signals for indi events.
     """
-    __all__ = ['INDISignals']
+
+    __all__ = ["INDISignals"]
 
     newDevice = Signal(str)
     removeDevice = Signal(str)

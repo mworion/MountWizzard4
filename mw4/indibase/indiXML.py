@@ -68,9 +68,9 @@ Notes:
 
 
 class INDIBase(object):
-    """
-    """
-    log = logging.getLogger('MW4')
+    """ """
+
+    log = logging.getLogger("MW4")
 
     def __init__(self, etype, value, attr_dict, etree):
         self.etype = etype
@@ -122,7 +122,7 @@ class INDIBase(object):
         return etree
 
     def toXML(self):
-        return ETree.tostring(self.toETree(), 'utf-8')
+        return ETree.tostring(self.toETree(), "utf-8")
 
 
 class INDIElement(INDIBase):
@@ -139,7 +139,7 @@ class INDIElement(INDIBase):
             if etree.text is not None:
                 self.value = etree.text.strip()
             else:
-                self.value = ''
+                self.value = ""
                 # self.log.error('Got None for {0}'.format(self.etype))
 
     def __str__(self):
@@ -318,12 +318,19 @@ class OneBLOB(INDIElement):
             self.value = base64.standard_b64decode(self.value)
 
     def __str__(self):
-        return INDIBase.__str__(self) + " - " + self.attr["size"] + " - " + self.attr["format"]
+        return (
+            INDIBase.__str__(self)
+            + " - "
+            + self.attr["size"]
+            + " - "
+            + self.attr["format"]
+        )
 
 
 #
 # Validator functions.
 #
+
 
 def BLOBEnable(value):
     return value
@@ -389,7 +396,7 @@ def switchState(value):
         else:
             value = "Off"
 
-    if not value.lower() in ["on", "off"]:
+    if value.lower() not in ["on", "off"]:
         log.error(value + " is not a valid switch state.")
         return None
 
@@ -414,309 +421,448 @@ def textValue(value):
 # 2. The structure of attribute element is [name, xml name (if different), required, validator, documentation].
 #
 indi_spec = {
-
-    "getProperties": {
-        "class": GetProperties,
-        "xml": "getProperties"
-    },
-
+    "getProperties": {"class": GetProperties, "xml": "getProperties"},
     # Commands from Device to Client.
-
     "deviceGetProperties": {
         "class": GetProperties,
         "xml": "getProperties",
         "docs": "Command to enable snooping messages from other devices. Once enabled, defXXX and setXXX messages for the Property with the given name and other messages from the device will be sent to this driver channel. Enables messages from all devices if device is not specified, and all Properties for the given device if name is not specified. Specifying name without device is not defined.",
-        "attributes": [["device", None, False, nameValue, "device to snoop, or all if absent"],
-                       ["name", None, False, nameValue, "property of device to snoop, or all if absent"]]
+        "attributes": [
+            ["device", None, False, nameValue, "device to snoop, or all if absent"],
+            [
+                "name",
+                None,
+                False,
+                nameValue,
+                "property of device to snoop, or all if absent",
+            ],
+        ],
     },
-
     "defTextVector": {
         "class": DefTextVector,
         "docs": "Define a property that holds one or more text elements.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["label", None, False, labelValue, "GUI label, use name by default"],
-                       ["group", None, False, groupTag, "Property group membership, blank by default"],
-                       ["state", None, True, propertyState, "Current state of Property"],
-                       ["perm", None, True, propertyPerm, "Ostensible Client controllability"],
-                       ["timeout", None, False, numberValue, "Worse-case time to affect, 0 default, N/A for ro"],
-                       ["timestamp", None, False, timeValue, "Moment when these data were valid"],
-                       ["message", None, False, textValue, "Commentary"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            ["label", None, False, labelValue, "GUI label, use name by default"],
+            [
+                "group",
+                None,
+                False,
+                groupTag,
+                "Property group membership, blank by default",
+            ],
+            ["state", None, True, propertyState, "Current state of Property"],
+            ["perm", None, True, propertyPerm, "Ostensible Client controllability"],
+            [
+                "timeout",
+                None,
+                False,
+                numberValue,
+                "Worse-case time to affect, 0 default, N/A for ro",
+            ],
+            ["timestamp", None, False, timeValue, "Moment when these data were valid"],
+            ["message", None, False, textValue, "Commentary"],
+        ],
     },
-
     "defText": {
         "class": DefText,
         "docs": "Define one member of a text vector.",
         "arg": textValue,
-        "attributes": [["name", None, True, nameValue, "Name of this text element"],
-                       ["label", None, False, labelValue, "GUI label, or use name by default"]]
+        "attributes": [
+            ["name", None, True, nameValue, "Name of this text element"],
+            ["label", None, False, labelValue, "GUI label, or use name by default"],
+        ],
     },
-
     "defNumberVector": {
         "class": DefNumberVector,
         "docs": "Define a property that holds one or more numeric values.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["label", None, False, labelValue, "GUI label, use name by default"],
-                       ["group", None, False, groupTag, "Property group membership, blank by default"],
-                       ["state", None, True, propertyState, "Current state of Property"],
-                       ["perm", None, True, propertyPerm, "Ostensible Client controllability"],
-                       ["timeout", None, False, numberValue, "Worse-case time to affect, 0 default, N/A for ro"],
-                       ["timestamp", None, False, timeValue, "Moment when these data were valid"],
-                       ["message", None, False, textValue, "Commentary"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            ["label", None, False, labelValue, "GUI label, use name by default"],
+            [
+                "group",
+                None,
+                False,
+                groupTag,
+                "Property group membership, blank by default",
+            ],
+            ["state", None, True, propertyState, "Current state of Property"],
+            ["perm", None, True, propertyPerm, "Ostensible Client controllability"],
+            [
+                "timeout",
+                None,
+                False,
+                numberValue,
+                "Worse-case time to affect, 0 default, N/A for ro",
+            ],
+            ["timestamp", None, False, timeValue, "Moment when these data were valid"],
+            ["message", None, False, textValue, "Commentary"],
+        ],
     },
-
     "defNumber": {
         "class": DefNumber,
         "docs": "Define one member of a number vector.",
         "arg": numberValue,
-        "attributes": [["name", None, True, nameValue, "Name of this text element"],
-                       ["label", None, False, labelValue, "GUI label, or use name by default"],
-                       ["iformat", "format", True, numberFormat, "print() style format for GUI display"],
-                       ["imin", "min", True, numberValue, "Minimal value"],
-                       ["imax", "max", True, numberValue, "Maximal value, ignore if min == max"],
-                       ["step", None, True, numberValue, "Allowed increments, ignore if 0"]]
+        "attributes": [
+            ["name", None, True, nameValue, "Name of this text element"],
+            ["label", None, False, labelValue, "GUI label, or use name by default"],
+            [
+                "iformat",
+                "format",
+                True,
+                numberFormat,
+                "print() style format for GUI display",
+            ],
+            ["imin", "min", True, numberValue, "Minimal value"],
+            ["imax", "max", True, numberValue, "Maximal value, ignore if min == max"],
+            ["step", None, True, numberValue, "Allowed increments, ignore if 0"],
+        ],
     },
-
     "defSwitchVector": {
         "class": DefSwitchVector,
         "docs": "Define a collection of switches. Rule is only a hint for use by a GUI to decide a suitable presentation style. Rules are actually implemented wholly within the Device.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["label", None, False, labelValue, "GUI label, use name by default"],
-                       ["group", None, False, groupTag, "Property group membership, blank by default"],
-                       ["state", None, True, propertyState, "Current state of Property"],
-                       ["perm", None, True, propertyPerm, "Ostensible Client controlability"],
-                       ["rule", None, True, switchRule, "Hint for GUI presentation"],
-                       ["timeout", None, False, numberValue, "Worse-case time to affect, 0 default, N/A for ro"],
-                       ["timestamp", None, False, timeValue, "Moment when these data were valid"],
-                       ["message", None, False, textValue, "Commentary"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            ["label", None, False, labelValue, "GUI label, use name by default"],
+            [
+                "group",
+                None,
+                False,
+                groupTag,
+                "Property group membership, blank by default",
+            ],
+            ["state", None, True, propertyState, "Current state of Property"],
+            ["perm", None, True, propertyPerm, "Ostensible Client controlability"],
+            ["rule", None, True, switchRule, "Hint for GUI presentation"],
+            [
+                "timeout",
+                None,
+                False,
+                numberValue,
+                "Worse-case time to affect, 0 default, N/A for ro",
+            ],
+            ["timestamp", None, False, timeValue, "Moment when these data were valid"],
+            ["message", None, False, textValue, "Commentary"],
+        ],
     },
-
     "defSwitch": {
         "class": DefSwitch,
         "docs": "Define one member of a text vector.",
         "arg": switchState,
-        "attributes": [["name", None, True, nameValue, "Name of this text element"],
-                       ["label", None, False, labelValue, "GUI label, or use name by default"]]
+        "attributes": [
+            ["name", None, True, nameValue, "Name of this text element"],
+            ["label", None, False, labelValue, "GUI label, or use name by default"],
+        ],
     },
-
     "defLightVector": {
         "class": DefLightVector,
         "docs": "Define a collection of passive indicator lights.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["label", None, False, labelValue, "GUI label, use name by default"],
-                       ["group", None, False, groupTag, "Property group membership, blank by default"],
-                       ["state", None, True, propertyState, "Current state of Property"],
-                       ["timestamp", None, False, timeValue, "Moment when these data were valid"],
-                       ["message", None, False, textValue, "Commentary"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            ["label", None, False, labelValue, "GUI label, use name by default"],
+            [
+                "group",
+                None,
+                False,
+                groupTag,
+                "Property group membership, blank by default",
+            ],
+            ["state", None, True, propertyState, "Current state of Property"],
+            ["timestamp", None, False, timeValue, "Moment when these data were valid"],
+            ["message", None, False, textValue, "Commentary"],
+        ],
     },
-
     "defLight": {
         "class": DefLight,
         "docs": "Define one member of a light vector.",
         "arg": propertyState,
-        "attributes": [["name", None, True, nameValue, "Name of this text element"],
-                       ["label", None, False, labelValue, "GUI label, or use name by default"]]
+        "attributes": [
+            ["name", None, True, nameValue, "Name of this text element"],
+            ["label", None, False, labelValue, "GUI label, or use name by default"],
+        ],
     },
-
     "defBLOBVector": {
         "class": DefBLOBVector,
         "docs": "Define a property that holds one or more Binary Large Objects, BLOBs.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["label", None, False, labelValue, "GUI label, use name by default"],
-                       ["group", None, False, groupTag, "Property group membership, blank by default"],
-                       ["state", None, True, propertyState, "Current state of Property"],
-                       ["perm", None, True, propertyPerm, "Ostensible Client controlability"],
-                       ["timeout", None, False, numberValue, "Worse-case time to affect, 0 default, N/A for ro"],
-                       ["timestamp", None, False, timeValue, "Moment when these data were valid"],
-                       ["message", None, False, textValue, "Commentary"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            ["label", None, False, labelValue, "GUI label, use name by default"],
+            [
+                "group",
+                None,
+                False,
+                groupTag,
+                "Property group membership, blank by default",
+            ],
+            ["state", None, True, propertyState, "Current state of Property"],
+            ["perm", None, True, propertyPerm, "Ostensible Client controlability"],
+            [
+                "timeout",
+                None,
+                False,
+                numberValue,
+                "Worse-case time to affect, 0 default, N/A for ro",
+            ],
+            ["timestamp", None, False, timeValue, "Moment when these data were valid"],
+            ["message", None, False, textValue, "Commentary"],
+        ],
     },
-
     "defBLOB": {
         "class": DefBLOB,
         "docs": "Define one member of a BLOB vector. Unlike other defXXX elements, this does not contain an initial value for the BLOB.",
-        "attributes": [["name", None, True, nameValue, "Name of this text element"],
-                       ["label", None, False, labelValue, "GUI label, or use name by default"]]
+        "attributes": [
+            ["name", None, True, nameValue, "Name of this text element"],
+            ["label", None, False, labelValue, "GUI label, or use name by default"],
+        ],
     },
-
     "setTextVector": {
         "class": SetTextVector,
         "docs": "Send a new set of values for a Text vector, with optional new timeout, state and message.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["state", None, False, propertyState, "State, no change if absent"],
-                       ["timeout", None, False, numberValue, "Worse-case time to affect a change"],
-                       ["timestamp", None, False, timeValue, "Moment when these data were valid"],
-                       ["message", None, False, textValue, "Commentary"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            ["state", None, False, propertyState, "State, no change if absent"],
+            ["timeout", None, False, numberValue, "Worse-case time to affect a change"],
+            ["timestamp", None, False, timeValue, "Moment when these data were valid"],
+            ["message", None, False, textValue, "Commentary"],
+        ],
     },
-
     "setNumberVector": {
         "class": SetNumberVector,
         "docs": "Send a new set of values for a Number vector, with optional new timeout, state and message.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["state", None, False, propertyState, "State, no change if absent"],
-                       ["timeout", None, False, numberValue, "Worse-case time to affect a change"],
-                       ["timestamp", None, False, timeValue, "Moment when these data were valid"],
-                       ["message", None, False, textValue, "Commentary"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            ["state", None, False, propertyState, "State, no change if absent"],
+            ["timeout", None, False, numberValue, "Worse-case time to affect a change"],
+            ["timestamp", None, False, timeValue, "Moment when these data were valid"],
+            ["message", None, False, textValue, "Commentary"],
+        ],
     },
-
     "setSwitchVector": {
         "class": SetSwitchVector,
         "docs": "Send a new set of values for a Switch vector, with optional new timeout, state and message.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["state", None, False, propertyState, "State, no change if absent"],
-                       ["timeout", None, False, numberValue, "Worse-case time to affect a change"],
-                       ["timestamp", None, False, timeValue, "Moment when these data were valid"],
-                       ["message", None, False, textValue, "Commentary"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            ["state", None, False, propertyState, "State, no change if absent"],
+            ["timeout", None, False, numberValue, "Worse-case time to affect a change"],
+            ["timestamp", None, False, timeValue, "Moment when these data were valid"],
+            ["message", None, False, textValue, "Commentary"],
+        ],
     },
-
     "setLightVector": {
         "class": SetLightVector,
         "docs": "Send a new set of values for a Light vector, with optional new state and message.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["state", None, False, propertyState, "State, no change if absent"],
-                       ["timestamp", None, False, timeValue, "Moment when these data were valid"],
-                       ["message", None, False, textValue, "Commentary"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            ["state", None, False, propertyState, "State, no change if absent"],
+            ["timestamp", None, False, timeValue, "Moment when these data were valid"],
+            ["message", None, False, textValue, "Commentary"],
+        ],
     },
-
     "setBLOBVector": {
         "class": SetBLOBVector,
         "docs": "Send a new set of values for a BLOB vector, with optional new timeout, state and message.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["state", None, False, propertyState, "State, no change if absent"],
-                       ["timeout", None, False, numberValue, "Worse-case time to affect a change"],
-                       ["timestamp", None, False, timeValue, "Moment when these data were valid"],
-                       ["message", None, False, textValue, "Commentary"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            ["state", None, False, propertyState, "State, no change if absent"],
+            ["timeout", None, False, numberValue, "Worse-case time to affect a change"],
+            ["timestamp", None, False, timeValue, "Moment when these data were valid"],
+            ["message", None, False, textValue, "Commentary"],
+        ],
     },
-
     "message": {
         "class": Message,
         "docs": "Send a message associated with a device or entire system.",
-        "attributes": [["device", None, True, nameValue, "Considered to be site-wide if absent"],
-                       ["timestamp", None, False, timeValue, "Moment when this message was generated"],
-                       ["message", None, False, textValue, "Commentary"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Considered to be site-wide if absent"],
+            [
+                "timestamp",
+                None,
+                False,
+                timeValue,
+                "Moment when this message was generated",
+            ],
+            ["message", None, False, textValue, "Commentary"],
+        ],
     },
-
     "delProperty": {
         "class": DelProperty,
         "docs": "Delete the given property, or entire device if no property is specified.",
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, False, nameValue, "Entire device if absent"],
-                       ["timestamp", None, False, timeValue, "Moment when this delete was generated"],
-                       ["message", None, False, textValue, "Commentary"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, False, nameValue, "Entire device if absent"],
+            [
+                "timestamp",
+                None,
+                False,
+                timeValue,
+                "Moment when this delete was generated",
+            ],
+            ["message", None, False, textValue, "Commentary"],
+        ],
     },
-
     "oneLight": {
         "class": OneLight,
         "docs": "Send a message to specify state of one member of a Light vector.",
         "arg": propertyState,
-        "attributes": [["name", None, True, nameValue, "Name of this light element"]]
+        "attributes": [["name", None, True, nameValue, "Name of this light element"]],
     },
-
     # Commands from Client to Device.
-
     "clientGetProperties": {
         "class": GetProperties,
         "xml": "getProperties",
         "docs": "Command to ask Device to define all Properties, or those for a specific Device or specific Property, for which it is responsible. Must always include protocol version.",
-        "attributes": [["version", None, True, nameValue, "protocol version"],
-                       ["device", None, False, nameValue, "device to snoop, or all if absent"],
-                       ["name", None, False, nameValue, "property of device to snoop, or all if absent"]]
+        "attributes": [
+            ["version", None, True, nameValue, "protocol version"],
+            ["device", None, False, nameValue, "device to snoop, or all if absent"],
+            [
+                "name",
+                None,
+                False,
+                nameValue,
+                "property of device to snoop, or all if absent",
+            ],
+        ],
     },
-
     "enableBLOB": {
         "class": EnableBLOB,
         "docs": "Command to control whether setBLOBs should be sent to this channel from a given Device. They can be turned off completely by setting Never (the default), allowed to be intermixed with other INDI commands by setting Also or made the only command by setting Only.",
         "arg": BLOBEnable,
-        "attributes": [["device", None, False, labelValue, "Name of Device"],
-                       ["name", None, False, labelValue, "Name of BLOB Property, or all if absent"]]
+        "attributes": [
+            ["device", None, False, labelValue, "Name of Device"],
+            [
+                "name",
+                None,
+                False,
+                labelValue,
+                "Name of BLOB Property, or all if absent",
+            ],
+        ],
     },
-
     "newTextVector": {
         "class": NewTextVector,
         "docs": "Send new target text values.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["timestamp", None, False, timeValue, "Moment when this message was generated"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            [
+                "timestamp",
+                None,
+                False,
+                timeValue,
+                "Moment when this message was generated",
+            ],
+        ],
     },
-
     "newNumberVector": {
         "class": NewNumberVector,
         "docs": "Send new target numeric values.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["timestamp", None, False, timeValue, "Moment when this message was generated"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            [
+                "timestamp",
+                None,
+                False,
+                timeValue,
+                "Moment when this message was generated",
+            ],
+        ],
     },
-
     "newSwitchVector": {
         "class": NewSwitchVector,
         "docs": "Send new target switch states.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["timestamp", None, False, timeValue, "Moment when this message was generated"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            [
+                "timestamp",
+                None,
+                False,
+                timeValue,
+                "Moment when this message was generated",
+            ],
+        ],
     },
-
     "newBLOBVector": {
         "class": NewBLOBVector,
         "docs": "Send new target BLOBS.",
         "arg": listValue,
-        "attributes": [["device", None, True, nameValue, "Name of Device"],
-                       ["name", None, True, nameValue, "Name of Property"],
-                       ["timestamp", None, False, timeValue, "Moment when this message was generated"]]
+        "attributes": [
+            ["device", None, True, nameValue, "Name of Device"],
+            ["name", None, True, nameValue, "Name of Property"],
+            [
+                "timestamp",
+                None,
+                False,
+                timeValue,
+                "Moment when this message was generated",
+            ],
+        ],
     },
-
     # Elements describing a vector member value, used in both directions.
-
     "oneText": {
         "class": OneText,
         "docs": "One member of a text vector.",
         "arg": textValue,
-        "attributes": [["name", None, True, nameValue, "Name of this text element"]]
+        "attributes": [["name", None, True, nameValue, "Name of this text element"]],
     },
-
     "oneNumber": {
         "class": OneNumber,
         "docs": "One member of a number vector.",
         "arg": numberValue,
-        "attributes": [["name", None, True, nameValue, "Name of this number element"]]
+        "attributes": [["name", None, True, nameValue, "Name of this number element"]],
     },
-
     "oneSwitch": {
         "class": OneSwitch,
         "docs": "One member of a switch vector.",
         "arg": switchState,
-        "attributes": [["name", None, True, nameValue, "Name of this switch element"]]
+        "attributes": [["name", None, True, nameValue, "Name of this switch element"]],
     },
-
     "oneBLOB": {
         "class": OneBLOB,
         "docs": "One member of a BLOB vector. The contents of this element must always be encoded using base64. The format attribute consists of one or more file name suffixes, each preceded with a period, which indicate how the decoded data is to be interpreted. For example .fits indicates the decoded BLOB is a FITS file, and .fits.z indicates the decoded BLOB is a FITS file compressed with zlib. The INDI protocol places no restrictions on the contents or formats of BLOBs but at minimum astronomical INDI clients are encouraged to support the FITS image file format and the zlib compression mechanism. The size attribute indicates the number of bytes in the final BLOB after decoding and after any decompression. For example, if the format is .fits.z the size attribute is the number of bytes in the FITS file. A Client unfamiliar with the specified format may use the attribute as a simple string, perhaps in combination with the timestamp attribute, to create a file name in which to store the data without processing other than decoding the base64.",
         "arg": BLOBValue,
-        "attributes": [["name", None, True, nameValue, "Name of this BLOB element"],
-                       ["size", None, True, BLOBLength, "Number of bytes in decoded and uncompressed BLOB"],
-                       ["iformat", "format", True, BLOBFormat, "Format as a file suffix, eg: .z, .fits, .fits.z"]]
+        "attributes": [
+            ["name", None, True, nameValue, "Name of this BLOB element"],
+            [
+                "size",
+                None,
+                True,
+                BLOBLength,
+                "Number of bytes in decoded and uncompressed BLOB",
+            ],
+            [
+                "iformat",
+                "format",
+                True,
+                BLOBFormat,
+                "Format as a file suffix, eg: .z, .fits, .fits.z",
+            ],
+        ],
     },
-
 }
 
 
@@ -739,7 +885,6 @@ def makeINDIFn(indi_type):
 
     # Function to make the object.
     def makeObject(fn_arg, fn_attr):
-
         # Check attributes against those in the specification.
         all_attr = []
         final_attr = {}
@@ -771,7 +916,6 @@ def makeINDIFn(indi_type):
     if "arg" in type_spec:
 
         def ifunction(arg, indi_attr=None):
-
             # Check argument with validator function.
             arg = type_spec["arg"](arg)
 
@@ -781,7 +925,6 @@ def makeINDIFn(indi_type):
     else:
 
         def ifunction(indi_attr=None):
-
             # Create object.
             return makeObject(None, indi_attr)
 
@@ -798,6 +941,7 @@ def makeINDIFn(indi_type):
 
 
 # XML parsing of incoming commands.
+
 
 def parseETree(etree):
     type_spec = indi_spec[etree.tag]

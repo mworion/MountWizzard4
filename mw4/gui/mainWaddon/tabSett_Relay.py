@@ -25,8 +25,7 @@ from gui.utilities.toolsQtWidget import MWidget
 
 
 class SettRelay(MWidget):
-    """
-    """
+    """ """
 
     def __init__(self, mainW):
         super().__init__()
@@ -36,51 +35,56 @@ class SettRelay(MWidget):
         self.ui = mainW.ui
 
         # define lists for the entries
-        self.relayDropDowns = [self.ui.relayFun0,
-                               self.ui.relayFun1,
-                               self.ui.relayFun2,
-                               self.ui.relayFun3,
-                               self.ui.relayFun4,
-                               self.ui.relayFun5,
-                               self.ui.relayFun6,
-                               self.ui.relayFun7,
-                               ]
-        self.relayDropDownKeys = ['relay0index',
-                                  'relay1index',
-                                  'relay2index',
-                                  'relay3index',
-                                  'relay4index',
-                                  'relay5index',
-                                  'relay6index',
-                                  'relay7index',
-                                  ]
-        self.relayButtons = [self.ui.relayButton0,
-                             self.ui.relayButton1,
-                             self.ui.relayButton2,
-                             self.ui.relayButton3,
-                             self.ui.relayButton4,
-                             self.ui.relayButton5,
-                             self.ui.relayButton6,
-                             self.ui.relayButton7,
-                             ]
-        self.relayButtonTexts = [self.ui.relayButtonText0,
-                                 self.ui.relayButtonText1,
-                                 self.ui.relayButtonText2,
-                                 self.ui.relayButtonText3,
-                                 self.ui.relayButtonText4,
-                                 self.ui.relayButtonText5,
-                                 self.ui.relayButtonText6,
-                                 self.ui.relayButtonText7,
-                                 ]
-        self.relayButtonTextKeys = ['relay0buttonText',
-                                    'relay1buttonText',
-                                    'relay2buttonText',
-                                    'relay3buttonText',
-                                    'relay4buttonText',
-                                    'relay5buttonText',
-                                    'relay6buttonText',
-                                    'relay7buttonText',
-                                    ]
+        self.relayDropDowns = [
+            self.ui.relayFun0,
+            self.ui.relayFun1,
+            self.ui.relayFun2,
+            self.ui.relayFun3,
+            self.ui.relayFun4,
+            self.ui.relayFun5,
+            self.ui.relayFun6,
+            self.ui.relayFun7,
+        ]
+        self.relayDropDownKeys = [
+            "relay0index",
+            "relay1index",
+            "relay2index",
+            "relay3index",
+            "relay4index",
+            "relay5index",
+            "relay6index",
+            "relay7index",
+        ]
+        self.relayButtons = [
+            self.ui.relayButton0,
+            self.ui.relayButton1,
+            self.ui.relayButton2,
+            self.ui.relayButton3,
+            self.ui.relayButton4,
+            self.ui.relayButton5,
+            self.ui.relayButton6,
+            self.ui.relayButton7,
+        ]
+        self.relayButtonTexts = [
+            self.ui.relayButtonText0,
+            self.ui.relayButtonText1,
+            self.ui.relayButtonText2,
+            self.ui.relayButtonText3,
+            self.ui.relayButtonText4,
+            self.ui.relayButtonText5,
+            self.ui.relayButtonText6,
+            self.ui.relayButtonText7,
+        ]
+        self.relayButtonTextKeys = [
+            "relay0buttonText",
+            "relay1buttonText",
+            "relay2buttonText",
+            "relay3buttonText",
+            "relay4buttonText",
+            "relay5buttonText",
+            "relay6buttonText",
+            "relay7buttonText",
+        ]
 
         # dynamically generate the widgets
         self.setupRelayGui()
@@ -100,9 +104,9 @@ class SettRelay(MWidget):
 
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
+        config = self.app.config["mainW"]
         for button, key in zip(self.relayButtonTexts, self.relayButtonTextKeys):
-            button.setText(config.get(key, ''))
+            button.setText(config.get(key, ""))
         for dropDown, key in zip(self.relayDropDowns, self.relayDropDownKeys):
             dropDown.setCurrentIndex(config.get(key, 0))
         self.updateRelayButtonText()
@@ -116,7 +120,7 @@ class SettRelay(MWidget):
 
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
+        config = self.app.config["mainW"]
         for button, key in zip(self.relayButtonTexts, self.relayButtonTextKeys):
             config[key] = button.text()
         for dropDown, key in zip(self.relayDropDowns, self.relayDropDownKeys):
@@ -133,8 +137,8 @@ class SettRelay(MWidget):
         for dropDown in self.relayDropDowns:
             dropDown.clear()
             dropDown.setView(PySide6.QtWidgets.QListView())
-            dropDown.addItem('Switch - Toggle')
-            dropDown.addItem('Pulse 0.5 sec')
+            dropDown.addItem("Switch - Toggle")
+            dropDown.addItem("Pulse 0.5 sec")
         return True
 
     def updateRelayButtonText(self):
@@ -174,7 +178,7 @@ class SettRelay(MWidget):
                 continue
             suc = self.doRelayAction(i)
         if not suc:
-            self.msg.emit(2, 'System', 'Relay', 'Action cannot be done')
+            self.msg.emit(2, "System", "Relay", "Action cannot be done")
             return False
         return True
 
@@ -187,7 +191,7 @@ class SettRelay(MWidget):
 
         for status, button in zip(self.app.relay.status, self.relayButtons):
             if status:
-                self.changeStyleDynamic(button, 'running', True)
+                self.changeStyleDynamic(button, "running", True)
             else:
-                self.changeStyleDynamic(button, 'running', False)
+                self.changeStyleDynamic(button, "running", False)
         return True

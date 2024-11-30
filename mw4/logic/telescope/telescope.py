@@ -24,34 +24,34 @@ import platform
 from base.signalsDevices import Signals
 from logic.telescope.telescopeIndi import TelescopeIndi
 from logic.telescope.telescopeAlpaca import TelescopeAlpaca
-if platform.system() == 'Windows':
+
+if platform.system() == "Windows":
     from logic.telescope.telescopeAscom import TelescopeAscom
 
 
 class Telescope:
-    """
-    """
-    __all__ = ['Telescope']
+    """ """
 
-    log = logging.getLogger('MW4')
+    __all__ = ["Telescope"]
+
+    log = logging.getLogger("MW4")
 
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.data = {}
-        self.framework = ''
-        self.defaultConfig = {'framework': '',
-                              'frameworks': {}}
+        self.framework = ""
+        self.defaultConfig = {"framework": "", "frameworks": {}}
         self.run = {
-            'indi': TelescopeIndi(self.app, self.signals, self.data),
-            'alpaca': TelescopeAlpaca(self.app, self.signals, self.data),
+            "indi": TelescopeIndi(self.app, self.signals, self.data),
+            "alpaca": TelescopeAlpaca(self.app, self.signals, self.data),
         }
-        if platform.system() == 'Windows':
-            self.run['ascom'] = TelescopeAscom(self.app, self.signals, self.data)
+        if platform.system() == "Windows":
+            self.run["ascom"] = TelescopeAscom(self.app, self.signals, self.data)
 
         for fw in self.run:
-            self.defaultConfig['frameworks'].update({fw: self.run[fw].defaultConfig})
+            self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
     @property
     def updateRate(self):

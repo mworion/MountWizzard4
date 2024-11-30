@@ -23,9 +23,9 @@ from base.indiClass import IndiClass
 
 
 class FilterIndi(IndiClass):
-    """
-    """
-    __all__ = ['FilterIndi']
+    """ """
+
+    __all__ = ["FilterIndi"]
 
     UPDATE_RATE = 1
 
@@ -41,10 +41,11 @@ class FilterIndi(IndiClass):
         if self.device is None:
             return False
 
-        filterNo = self.device.getNumber('FILTER_SLOT')
-        filterNo['FILTER_SLOT_VALUE'] = filterNumber
-        suc = self.client.sendNewNumber(deviceName=self.deviceName,
-                                        propertyName='FILTER_SLOT',
-                                        elements=filterNo,
-                                        )
+        filterNo = self.device.getNumber("FILTER_SLOT")
+        filterNo["FILTER_SLOT_VALUE"] = filterNumber
+        suc = self.client.sendNewNumber(
+            deviceName=self.deviceName,
+            propertyName="FILTER_SLOT",
+            elements=filterNo,
+        )
         return suc

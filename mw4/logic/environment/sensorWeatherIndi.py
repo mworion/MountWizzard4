@@ -23,9 +23,9 @@ from base.indiClass import IndiClass
 
 
 class SensorWeatherIndi(IndiClass):
-    """
-    """
-    __all__ = ['SensorWeatherIndi']
+    """ """
+
+    __all__ = ["SensorWeatherIndi"]
 
     def __init__(self, app=None, signals=None, data=None):
         self.signals = signals
@@ -42,10 +42,10 @@ class SensorWeatherIndi(IndiClass):
         if not super().setUpdateConfig(deviceName):
             return False
 
-        update = self.device.getNumber('POLLING_PERIOD')
-        update['PERIOD_MS'] = self.updateRate
-        suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='POLLING_PERIOD',
-                                        elements=update)
-        self.log.info(f'Polling [{deviceName}] success: [{suc}]')
+        update = self.device.getNumber("POLLING_PERIOD")
+        update["PERIOD_MS"] = self.updateRate
+        suc = self.client.sendNewNumber(
+            deviceName=deviceName, propertyName="POLLING_PERIOD", elements=update
+        )
+        self.log.info(f"Polling [{deviceName}] success: [{suc}]")
         return suc

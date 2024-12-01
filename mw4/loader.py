@@ -23,6 +23,7 @@ import platform
 import socket
 import sys
 import traceback
+import warnings
 
 # external packages
 from astropy.utils import iers, data
@@ -31,6 +32,7 @@ from PySide6.QtGui import QMouseEvent, QIcon
 from PySide6.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
 from PySide6.QtWidgets import QApplication, QTabBar, QComboBox, QPushButton
 from PySide6.QtWidgets import QWidget
+from astropy.wcs import FITSFixedWarning
 from importlib_metadata import version
 
 # local import
@@ -38,6 +40,9 @@ from base.loggerMW import setupLogging
 from gui.utilities.splashScreen import SplashScreen
 from mainApp import MountWizzard4
 import resource.resources as res
+
+warnings.filterwarnings("ignore", category=RuntimeWarning)
+warnings.filterwarnings("ignore", category=FITSFixedWarning)
 
 res.qInitResources()
 iers.conf.auto_download = False

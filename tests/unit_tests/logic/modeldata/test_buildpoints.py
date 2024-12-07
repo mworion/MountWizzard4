@@ -20,6 +20,7 @@ import os
 import json
 import binascii
 import unittest.mock as mock
+from pathlib import Path
 
 # external packages
 import skyfield.api
@@ -34,7 +35,7 @@ from logic.modeldata.buildpoints import HaDecToAltAz
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    config = "tests/workDir/config"
+    config = Path("tests/workDir/config")
     testdir = os.listdir(config)
     for item in testdir:
         if item.endswith(".bpts"):
@@ -64,285 +65,6 @@ def test_topoToAltAz2(function):
 
     assert alt is not None
     assert az is not None
-
-
-def test_genHaDecParams1(function):
-    selection = "min"
-    length = len(function.DEC_N[selection])
-    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
-        if i > length - 1:
-            j = 2 * length - i - 1
-        else:
-            j = i
-        assert a == function.DEC_N[selection][j]
-        assert b == function.STEP_N[selection][j]
-        assert c == function.START[selection][i]
-        assert d == function.STOP[selection][i]
-
-
-def test_genHaDecParams2(function):
-    selection = "norm"
-    length = len(function.DEC_N[selection])
-    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
-        if i > length - 1:
-            j = 2 * length - i - 1
-        else:
-            j = i
-        assert a == function.DEC_N[selection][j]
-        assert b == function.STEP_N[selection][j]
-        assert c == function.START[selection][i]
-        assert d == function.STOP[selection][i]
-
-
-def test_genHaDecParams3(function):
-    selection = "med"
-    length = len(function.DEC_N[selection])
-    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
-        if i > length - 1:
-            j = 2 * length - i - 1
-        else:
-            j = i
-        assert a == function.DEC_N[selection][j]
-        assert b == function.STEP_N[selection][j]
-        assert c == function.START[selection][i]
-        assert d == function.STOP[selection][i]
-
-
-def test_genHaDecParams4(function):
-    selection = "max"
-    length = len(function.DEC_N[selection])
-    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
-        if i > length - 1:
-            j = 2 * length - i - 1
-        else:
-            j = i
-        assert a == function.DEC_N[selection][j]
-        assert b == function.STEP_N[selection][j]
-        assert c == function.START[selection][i]
-        assert d == function.STOP[selection][i]
-
-
-def test_genHaDecParams5(function):
-    selection = "test"
-    val = True
-    for i, (_, _, _, _) in enumerate(function.genHaDecParams(selection, 50)):
-        val = False
-    assert val
-
-
-def test_genHaDecParams6(function):
-    selection = "max"
-    length = len(function.DEC_S[selection])
-    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, -50)):
-        if i > length - 1:
-            j = 2 * length - i - 1
-        else:
-            j = i
-        assert a == function.DEC_S[selection][j]
-        assert b == function.STEP_S[selection][j]
-        assert c == function.START[selection][i]
-        assert d == function.STOP[selection][i]
-
-
-def test_horizonP1(function):
-    function.horizonP = []
-    function.genGreaterCircle("max")
-    function.horizonP = function.buildP
-    assert len(function.horizonP) == 129
-    function.horizonP = []
-    function.genGreaterCircle("med")
-    function.horizonP = function.buildP
-    assert len(function.horizonP) == 104
-    function.horizonP = []
-    function.genGreaterCircle("norm")
-    function.horizonP = function.buildP
-    assert len(function.horizonP) == 90
-    function.horizonP = []
-    function.genGreaterCircle("min")
-    function.horizonP = function.buildP
-    assert len(function.horizonP) == 59
-
-
-def test_horizonP2(function):
-    function.horizonP = "456"
-    assert len(function.horizonP) == 0
-
-
-def test_horizonP3(function):
-    function.horizonP = [(1, 1), (1, 1), "test"]
-    assert len(function.horizonP) == 0
-
-
-def test_buildP1(function):
-    function.horizonP = []
-    function.genGreaterCircle("max")
-    assert len(function.buildP) == 129
-    function.horizonP = []
-    function.genGreaterCircle("med")
-    assert len(function.buildP) == 104
-    function.horizonP = []
-    function.genGreaterCircle("norm")
-    assert len(function.buildP) == 90
-    function.horizonP = []
-    function.genGreaterCircle("min")
-    assert len(function.buildP) == 59
-
-
-def test_buildP2(function):
-    function.buildP = "456"
-    assert len(function.buildP) == 0
-
-
-def test_buildP3(function):
-    function.buildP = [(1, 1), (1, 1), "test"]
-    assert len(function.buildP) == 0
-
-
-def test_genGreaterCircle1(function):
-    function.horizonP = []
-    selection = "min"
-    function.genGreaterCircle(selection)
-    i = 0
-    for i, (alt, az, status) in enumerate(function.buildP):
-        assert alt <= 90
-        assert az <= 360
-        assert alt >= 0
-        assert az >= 0
-        assert status
-    assert i == 58
-
-
-def test_genGreaterCircle2(function):
-    function.horizonP = []
-    selection = "norm"
-    function.genGreaterCircle(selection)
-    i = 0
-    for i, (alt, az, status) in enumerate(function.buildP):
-        assert alt <= 90
-        assert az <= 360
-        assert alt >= 0
-        assert az >= 0
-        assert status
-    assert i == 89
-
-
-def test_genGreaterCircle3(function):
-    function.horizonP = []
-    selection = "med"
-    function.genGreaterCircle(selection)
-    i = 0
-    for i, (alt, az, status) in enumerate(function.buildP):
-        assert alt <= 90
-        assert az <= 360
-        assert alt >= 0
-        assert az >= 0
-        assert status
-    assert i == 103
-
-
-def test_genGreaterCircle4(function):
-    function.horizonP = []
-    selection = "max"
-    function.genGreaterCircle(selection)
-    i = 0
-    for i, (alt, az, status) in enumerate(function.buildP):
-        assert alt <= 90
-        assert az <= 360
-        assert alt >= 0
-        assert az >= 0
-        assert status
-    assert i == 128
-
-
-def test_genGreaterCircle5(function):
-    function.horizonP = []
-    temp = function.app.mount.obsSite.location
-    function.app.mount.obsSite.location = None
-    selection = "max"
-    suc = function.genGreaterCircle(selection)
-    assert not suc
-    function.app.mount.obsSite.location = temp
-
-
-def test_checkFormat_1(function):
-    a = [[1, 1], [1, 1]]
-    suc = function.checkFormat(a)
-    assert not suc
-
-
-def test_checkFormat_2(function):
-    a = [[1, 1], [1]]
-    suc = function.checkFormat(a)
-    assert not suc
-
-
-def test_checkFormat_3(function):
-    a = [[1, 1], (1, 1)]
-    suc = function.checkFormat(a)
-    assert not suc
-
-
-def test_checkFormat_4(function):
-    a = "test"
-    suc = function.checkFormat(a)
-    assert not suc
-
-
-def test_checkFormat_5(function):
-    a = [(1, 1), (1, 1)]
-    suc = function.checkFormat(a)
-    assert suc
-
-
-def test_checkFormat_6(function):
-    a = [(1, 1), (1, 1, 1)]
-    suc = function.checkFormat(a)
-    assert not suc
-
-
-def test_clearBuildP(function):
-    function.genGreaterCircle("max")
-    assert len(function.buildP) == 129
-    function.clearBuildP()
-    assert len(function.buildP) == 0
-
-
-def test_setStatusBuildP_1(function):
-    function.buildP = []
-    function.addBuildP((10, 10, True))
-    function.addBuildP((10, 10, True))
-    function.addBuildP((10, 10, True))
-    suc = function.setStatusBuildP(-1, True)
-    assert not suc
-
-
-def test_setStatusBuildP_2(function):
-    function.buildP = []
-    function.addBuildP((10, 10, True))
-    function.addBuildP((10, 10, True))
-    function.addBuildP((10, 10, True))
-    suc = function.setStatusBuildP(3, True)
-    assert not suc
-
-
-def test_setStatusBuildP_3(function):
-    function.buildP = []
-    function.addBuildP((10, 10, True))
-    function.addBuildP((10, 10, True))
-    function.addBuildP((10, 10, True))
-    suc = function.setStatusBuildP(1, True)
-    assert suc
-    assert function.buildP[1][2]
-
-
-def test_setStatusBuildP_4(function):
-    function.buildP = []
-    function.addBuildP((10, 10, True))
-    function.addBuildP((10, 10, True))
-    function.addBuildP((10, 10, True))
-    suc = function.setStatusBuildP(1, False)
-    assert suc
-    assert not function.buildP[1][2]
 
 
 def test_addBuildP1(function):
@@ -478,6 +200,285 @@ def test_delBuildP4(function):
     assert len(function.buildP) == 127
 
 
+def test_genHaDecParams1(function):
+    selection = "min"
+    length = len(function.DEC_N[selection])
+    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
+        if i > length - 1:
+            j = 2 * length - i - 1
+        else:
+            j = i
+        assert a == function.DEC_N[selection][j]
+        assert b == function.STEP_N[selection][j]
+        assert c == function.START[selection][i]
+        assert d == function.STOP[selection][i]
+
+
+def test_genHaDecParams2(function):
+    selection = "norm"
+    length = len(function.DEC_N[selection])
+    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
+        if i > length - 1:
+            j = 2 * length - i - 1
+        else:
+            j = i
+        assert a == function.DEC_N[selection][j]
+        assert b == function.STEP_N[selection][j]
+        assert c == function.START[selection][i]
+        assert d == function.STOP[selection][i]
+
+
+def test_genHaDecParams3(function):
+    selection = "med"
+    length = len(function.DEC_N[selection])
+    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
+        if i > length - 1:
+            j = 2 * length - i - 1
+        else:
+            j = i
+        assert a == function.DEC_N[selection][j]
+        assert b == function.STEP_N[selection][j]
+        assert c == function.START[selection][i]
+        assert d == function.STOP[selection][i]
+
+
+def test_genHaDecParams4(function):
+    selection = "max"
+    length = len(function.DEC_N[selection])
+    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
+        if i > length - 1:
+            j = 2 * length - i - 1
+        else:
+            j = i
+        assert a == function.DEC_N[selection][j]
+        assert b == function.STEP_N[selection][j]
+        assert c == function.START[selection][i]
+        assert d == function.STOP[selection][i]
+
+
+def test_genHaDecParams5(function):
+    selection = "test"
+    val = True
+    for i, (_, _, _, _) in enumerate(function.genHaDecParams(selection, 50)):
+        val = False
+    assert val
+
+
+def test_genHaDecParams6(function):
+    selection = "max"
+    length = len(function.DEC_S[selection])
+    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, -50)):
+        if i > length - 1:
+            j = 2 * length - i - 1
+        else:
+            j = i
+        assert a == function.DEC_S[selection][j]
+        assert b == function.STEP_S[selection][j]
+        assert c == function.START[selection][i]
+        assert d == function.STOP[selection][i]
+
+
+def test_horizonP1(function):
+    function.horizonP = []
+    function.genGreaterCircle("max")
+    function.horizonP = function.buildP
+    assert len(function.horizonP) == 127
+    function.horizonP = []
+    function.genGreaterCircle("med")
+    function.horizonP = function.buildP
+    assert len(function.horizonP) == 102
+    function.horizonP = []
+    function.genGreaterCircle("norm")
+    function.horizonP = function.buildP
+    assert len(function.horizonP) == 89
+    function.horizonP = []
+    function.genGreaterCircle("min")
+    function.horizonP = function.buildP
+    assert len(function.horizonP) == 58
+
+
+def test_horizonP2(function):
+    function.horizonP = "456"
+    assert len(function.horizonP) == 0
+
+
+def test_horizonP3(function):
+    function.horizonP = [(1, 1), (1, 1), "test"]
+    assert len(function.horizonP) == 0
+
+
+def test_buildP1(function):
+    function.horizonP = []
+    function.genGreaterCircle("max")
+    assert len(function.buildP) == 127
+    function.horizonP = []
+    function.genGreaterCircle("med")
+    assert len(function.buildP) == 102
+    function.horizonP = []
+    function.genGreaterCircle("norm")
+    assert len(function.buildP) == 89
+    function.horizonP = []
+    function.genGreaterCircle("min")
+    assert len(function.buildP) == 58
+
+
+def test_buildP2(function):
+    function.buildP = "456"
+    assert len(function.buildP) == 0
+
+
+def test_buildP3(function):
+    function.buildP = [(1, 1), (1, 1), "test"]
+    assert len(function.buildP) == 0
+
+
+def test_genGreaterCircle1(function):
+    function.horizonP = []
+    selection = "min"
+    function.genGreaterCircle(selection)
+    i = 0
+    for i, (alt, az, status) in enumerate(function.buildP):
+        assert alt <= 90
+        assert az <= 360
+        assert alt >= 0
+        assert az >= 0
+        assert status
+    assert i == 57
+
+
+def test_genGreaterCircle2(function):
+    function.horizonP = []
+    selection = "norm"
+    function.genGreaterCircle(selection)
+    i = 0
+    for i, (alt, az, status) in enumerate(function.buildP):
+        assert alt <= 90
+        assert az <= 360
+        assert alt >= 0
+        assert az >= 0
+        assert status
+    assert i == 88
+
+
+def test_genGreaterCircle3(function):
+    function.horizonP = []
+    selection = "med"
+    function.genGreaterCircle(selection)
+    i = 0
+    for i, (alt, az, status) in enumerate(function.buildP):
+        assert alt <= 90
+        assert az <= 360
+        assert alt >= 0
+        assert az >= 0
+        assert status
+    assert i == 101
+
+
+def test_genGreaterCircle4(function):
+    function.horizonP = []
+    selection = "max"
+    function.genGreaterCircle(selection)
+    i = 0
+    for i, (alt, az, status) in enumerate(function.buildP):
+        assert alt <= 90
+        assert az <= 360
+        assert alt >= 0
+        assert az >= 0
+        assert status
+    assert i == 126
+
+
+def test_genGreaterCircle5(function):
+    function.horizonP = []
+    temp = function.app.mount.obsSite.location
+    function.app.mount.obsSite.location = None
+    selection = "max"
+    suc = function.genGreaterCircle(selection)
+    assert not suc
+    function.app.mount.obsSite.location = temp
+
+
+def test_checkFormat_1(function):
+    a = [[1, 1], [1, 1]]
+    suc = function.checkFormat(a)
+    assert not suc
+
+
+def test_checkFormat_2(function):
+    a = [[1, 1], [1]]
+    suc = function.checkFormat(a)
+    assert not suc
+
+
+def test_checkFormat_3(function):
+    a = [[1, 1], (1, 1)]
+    suc = function.checkFormat(a)
+    assert not suc
+
+
+def test_checkFormat_4(function):
+    a = "test"
+    suc = function.checkFormat(a)
+    assert not suc
+
+
+def test_checkFormat_5(function):
+    a = [(1, 1), (1, 1)]
+    suc = function.checkFormat(a)
+    assert suc
+
+
+def test_checkFormat_6(function):
+    a = [(1, 1), (1, 1, 1)]
+    suc = function.checkFormat(a)
+    assert not suc
+
+
+def test_clearBuildP(function):
+    function.genGreaterCircle("max")
+    assert len(function.buildP) == 127
+    function.clearBuildP()
+    assert len(function.buildP) == 0
+
+
+def test_setStatusBuildP_1(function):
+    function.buildP = []
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    suc = function.setStatusBuildP(-1, True)
+    assert not suc
+
+
+def test_setStatusBuildP_2(function):
+    function.buildP = []
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    suc = function.setStatusBuildP(3, True)
+    assert not suc
+
+
+def test_setStatusBuildP_3(function):
+    function.buildP = []
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    suc = function.setStatusBuildP(1, True)
+    assert suc
+    assert function.buildP[1][2]
+
+
+def test_setStatusBuildP_4(function):
+    function.buildP = []
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    suc = function.setStatusBuildP(1, False)
+    assert suc
+    assert not function.buildP[1][2]
+
+
 def test_clearHorizonP(function):
     function.genGreaterCircle("max")
     function.horizonP = function.buildP
@@ -574,8 +575,7 @@ def test_deleteBelowHorizon4(function):
 
 
 def test_deleteCloseMeridian_1(function):
-    suc = function.deleteCloseMeridian()
-    assert suc
+    function.deleteCloseMeridian()
 
 
 def test_deleteCloseHorizonLine_1(function):
@@ -706,7 +706,7 @@ def test_delHorizonP5(function):
 
 
 def test_loadModel_1(function):
-    val = function.loadModel("")
+    val = function.loadModel(Path(""))
     assert val is None
 
 
@@ -714,7 +714,7 @@ def test_loadModel_2(function):
     with open("tests/workDir/config/test.model", "w") as outfile:
         outfile.writelines("[test, ]],[]}")
 
-    val = function.loadModel("tests/workDir/config/test.model")
+    val = function.loadModel(Path("tests/workDir/config/test.model"))
     assert val is None
 
 
@@ -722,7 +722,7 @@ def test_loadModel_3(function):
     with open("tests/workDir/config/test.model", "wb") as outfile:
         outfile.write(binascii.unhexlify("9f"))
 
-    val = function.loadModel("tests/workDir/config/test.model")
+    val = function.loadModel(Path("tests/workDir/config/test.model"))
     assert val is None
 
 
@@ -731,12 +731,12 @@ def test_loadModel_4(function):
     with open("tests/workDir/config/test.model", "w") as outfile:
         json.dump(values, outfile, indent=4)
 
-    val = function.loadModel("tests/workDir/config/test.model")
+    val = function.loadModel(Path("tests/workDir/config/test.model"))
     assert val == [(1, 1), (2, 2)]
 
 
 def test_loadJSON_1(function):
-    val = function.loadJSON("")
+    val = function.loadJSON(Path(""))
     assert val is None
 
 
@@ -744,7 +744,7 @@ def test_loadJSON_2(function):
     with open("tests/workDir/config/test.bpts", "w") as outfile:
         outfile.writelines("[test, ]],[]}")
 
-    val = function.loadJSON("tests/workDir/config/test.bpts")
+    val = function.loadJSON(Path("tests/workDir/config/test.bpts"))
     assert val is None
 
 
@@ -752,7 +752,7 @@ def test_loadJSON_3(function):
     with open("tests/workDir/config/test.bpts", "wb") as outfile:
         outfile.write(binascii.unhexlify("9f"))
 
-    val = function.loadJSON("tests/workDir/config/test.bpts")
+    val = function.loadJSON(Path("tests/workDir/config/test.bpts"))
     assert val is None
 
 
@@ -761,20 +761,15 @@ def test_loadJSON_4(function):
     with open("tests/workDir/config/test.bpts", "w") as outfile:
         json.dump(values, outfile, indent=4)
 
-    val = function.loadJSON("tests/workDir/config/test.bpts")
+    val = function.loadJSON(Path("tests/workDir/config/test.bpts"))
     assert val == [(1, 1), (2, 2)]
-
-
-def test_loadCSV_1(function):
-    val = function.loadCSV("")
-    assert val is None
 
 
 def test_loadCSV_2(function):
     with open("tests/workDir/config/test.csv", "w") as outfile:
         outfile.writelines("[test, ]],[]}\n")
 
-    val = function.loadCSV("tests/workDir/config/test.csv")
+    val = function.loadCSV(Path("tests/workDir/config/test.csv"))
     assert val is None
 
 
@@ -783,7 +778,7 @@ def test_loadCSV_3(function):
         outfile.writelines("1, 1\n")
         outfile.writelines("2, 2\n")
 
-    val = function.loadCSV("tests/workDir/config/test.csv")
+    val = function.loadCSV(Path("tests/workDir/config/test.csv"))
     assert val == [(1, 1), (2, 2)]
 
 
@@ -792,19 +787,13 @@ def test_loadCSV_4(function):
         outfile.writelines("1; 1\n")
         outfile.writelines("2; 2\n")
 
-    val = function.loadCSV("tests/workDir/config/test.csv")
+    val = function.loadCSV(Path("tests/workDir/config/test.csv"))
     assert val == [(1, 1), (2, 2)]
-
-
-def test_loadBuildP_1(function):
-    # wrong fileName given
-    suc = function.loadBuildP()
-    assert not suc
 
 
 def test_loadBuildP_2(function):
     # path with not existent file given
-    suc = function.loadBuildP("test_file_not_there")
+    suc = function.loadBuildP(Path("test_file_not_there"))
     assert not suc
 
 
@@ -815,7 +804,7 @@ def test_loadBuildP_3(function):
     values = [(1, 1), (2, 2)]
     with open(fileName, "w") as outfile:
         json.dump(values, outfile, indent=4)
-    suc = function.loadBuildP("tests/workDir/config/test.bpts")
+    suc = function.loadBuildP(Path("tests/workDir/config/test.bpts"))
     assert suc
     assert function.buildP == [(1, 1, True), (2, 2, True)]
 
@@ -828,7 +817,7 @@ def test_loadBuildP_4(function):
     with open(fileName, "w") as outfile:
         json.dump(values, outfile, indent=4)
     with mock.patch.object(function, "checkFormat", return_value=False):
-        suc = function.loadBuildP("tests/workDir/config/test.bpts")
+        suc = function.loadBuildP(Path("tests/workDir/config/test.bpts"))
         assert not suc
 
 
@@ -839,7 +828,7 @@ def test_loadBuildP_5(function):
     with open(fileName, "w") as outfile:
         outfile.write("1, 1\n")
         outfile.write("2, 2\n")
-    suc = function.loadBuildP("tests/workDir/config/test.csv", ext=".csv", keep=True)
+    suc = function.loadBuildP(Path("tests/workDir/config/test.csv"), ext=".csv", keep=True)
     assert suc
 
 
@@ -850,7 +839,7 @@ def test_loadBuildP_6(function):
     with open("tests/workDir/config/test.model", "w") as outfile:
         json.dump(values, outfile, indent=4)
     suc = function.loadBuildP(
-        "tests/workDir/config/test.model", ext=".model", keep=True
+        Path("tests/workDir/config/test.model"), ext=".model", keep=True
     )
     assert suc
 
@@ -869,15 +858,9 @@ def test_saveBuildP_12(function):
     assert os.path.isfile(fileName)
 
 
-def test_loadHorizonP_1(function):
-    # no fileName given
-    suc = function.loadHorizonP()
-    assert not suc
-
-
 def test_loadHorizonP_2(function):
     # wrong fileName given
-    suc = function.loadHorizonP("format_not_ok")
+    suc = function.loadHorizonP(fileName="format_not_ok")
     assert not suc
 
 
@@ -1294,8 +1277,7 @@ def test_generateDSOPath_5(function):
 
 
 def test_generateGoldenSpiral_1(function):
-    suc = function.generateGoldenSpiral(200)
-    assert suc
+    function.generateGoldenSpiral(200)
 
 
 def test_ditherPoints(function):

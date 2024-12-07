@@ -334,10 +334,14 @@ class MountDevice:
         self.log.debug(t)
         if self.MAC is None:
             return False
-        if bAddress and bPort:
-            wakeonlan.send_magic_packet(self.MAC, ip_address=bAddress, port=bPort)
-        else:
-            wakeonlan.send_magic_packet(self.MAC)
+        try:
+            if bAddress and bPort:
+                wakeonlan.send_magic_packet(self.MAC, ip_address=bAddress, port=bPort)
+            else:
+                wakeonlan.send_magic_packet(self.MAC)
+        except Exception as e:
+            self.log.warning(f"Boot mount failed: {e}")
+            return False
         return True
 
     def shutdown(self):

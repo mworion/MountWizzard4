@@ -18,6 +18,7 @@
 import unittest.mock as mock
 import pytest
 import os
+from pathlib import Path
 
 # external packages
 from PySide6.QtWidgets import QMessageBox, QFileDialog, QWidget, QTabWidget
@@ -357,45 +358,35 @@ def test_messageDialog_3(function):
 
 
 def test_openFile_1(function):
-    full, short, ext = function.openFile()
-    assert full == ""
-    assert short == ""
-    assert ext == ""
+    full = function.openFile()
+    assert full == Path("")
 
 
 def test_openFile_2(function):
     window = QWidget()
-    full, short, ext = function.openFile(window=window)
-    assert full == ""
-    assert short == ""
-    assert ext == ""
+    full = function.openFile(window=window)
+    assert full == Path("")
 
 
 def test_openFile_3(function):
     window = QWidget()
-    full, short, ext = function.openFile(window=window, title="title")
-    assert full == ""
-    assert short == ""
-    assert ext == ""
+    full = function.openFile(window=window, title="title")
+    assert full == Path("")
 
 
 def test_openFile_4(function):
     window = QWidget()
-    full, short, ext = function.openFile(window=window, title="title", folder=".")
-    assert full == ""
-    assert short == ""
-    assert ext == ""
+    full = function.openFile(window=window, title="title", folder=".")
+    assert full == Path("")
 
 
 def test_openFile_5(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=0):
-        full, short, ext = function.openFile(
-            window=window, title="title", folder=".", filterSet="*.*"
+        full = function.openFile(
+            window=window, title="title", folder=Path("."), filterSet="*.*"
         )
-        assert full == ""
-        assert short == ""
-        assert ext == ""
+        assert full == Path("")
 
 
 def test_openFile_6(function):
@@ -404,54 +395,42 @@ def test_openFile_6(function):
         with mock.patch.object(
             QFileDialog, "selectedFiles", return_value=("test1", "test2")
         ):
-            full, short, ext = function.openFile(
-                window=window, title="title", folder=".", filterSet="*.*", multiple=True
+            full = function.openFile(
+                window=window, title="title", folder=Path("."), filterSet="*.*", multiple=True
             )
-            assert full == ""
-            assert short == ""
-            assert ext == ""
+            assert full == Path("")
 
 
 def test_saveFile_1(function):
-    full, short, ext = function.saveFile()
-    assert full == ""
-    assert short == ""
-    assert ext == ""
+    full = function.saveFile()
+    assert full == Path("")
 
 
 def test_saveFile_2(function):
     window = QWidget()
-    full, short, ext = function.saveFile(window=window)
-    assert full == ""
-    assert short == ""
-    assert ext == ""
+    full = function.saveFile(window=window)
+    assert full == Path("")
 
 
 def test_saveFile_3(function):
     window = QWidget()
-    full, short, ext = function.saveFile(window=window, title="title")
-    assert full == ""
-    assert short == ""
-    assert ext == ""
+    full = function.saveFile(window=window, title="title")
+    assert full == Path("")
 
 
 def test_saveFile_4(function):
     window = QWidget()
-    full, short, ext = function.saveFile(window=window, title="title", folder=".")
-    assert full == ""
-    assert short == ""
-    assert ext == ""
+    full = function.saveFile(window=window, title="title", folder=Path("."))
+    assert full == Path("")
 
 
 def test_saveFile_5(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=0):
-        full, short, ext = function.saveFile(
-            window=window, title="title", folder=".", filterSet="*.*"
+        full = function.saveFile(
+            window=window, title="title", folder=Path("."), filterSet="*.*"
         )
-        assert full == ""
-        assert short == ""
-        assert ext == ""
+        assert full == Path("")
 
 
 def test_saveFile_6(function):
@@ -460,50 +439,40 @@ def test_saveFile_6(function):
         with mock.patch.object(
             QFileDialog, "selectedFiles", return_value=(["tests/test.txt"])
         ):
-            full, short, ext = function.saveFile(
-                window=window, title="title", folder=".", filterSet="*.*"
+            function.saveFile(
+                window=window, title="title", folder=Path("."), filterSet="*.*"
             )
-        assert short == "test"
-        assert ext == ".txt"
 
 
 def test_openDir_1(function):
-    full, short, ext = function.openDir()
-    assert full == ""
-    assert short == ""
-    assert ext == ""
+    full = function.openDir()
+    assert full == Path("")
 
 
 def test_openDir_2(function):
     window = QWidget()
-    full, short, ext = function.openDir(window=window)
-    assert full == ""
-    assert short == ""
-    assert ext == ""
+    full = function.openDir(window=window)
+    assert full == Path("")
 
 
 def test_openDir_3(function):
     window = QWidget()
-    full, short, ext = function.openDir(window=window, title="title")
-    assert full == ""
-    assert short == ""
-    assert ext == ""
+    full = function.openDir(window=window, title="title")
+    assert full == Path("")
 
 
 def test_openDir_4(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=1):
-        full, short, ext = function.openDir(window=window, title="title", folder=".")
-        assert full == os.getcwd()
+        full = function.openDir(window=window, title="title", folder=Path("."))
+        assert full == Path(os.getcwd())
 
 
 def test_openDir_5(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=None):
-        full, short, ext = function.openDir(window=window, title="title", folder=".")
-        assert full == ""
-        assert short == ""
-        assert ext == ""
+        full = function.openDir(window=window, title="title", folder=Path("."))
+        assert full == Path("")
 
 
 def test_clickable_1(function):

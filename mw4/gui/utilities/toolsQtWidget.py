@@ -389,21 +389,12 @@ class MWidget(QWidget, Styles):
         self,
         window=None,
         title="",
-        folder="",
+        folder=Path(""),
         filterSet=None,
         enableDir=False,
         multiple=False,
     ):
         """
-        openFile handles a single file select with filter in a non-native format.
-
-        :param window:      parent window class
-        :param title:       title for the file dialog
-        :param folder:      starting folder for searching the file
-        :param filterSet:   file extension filter
-        :param enableDir:   allows dir selection in file box
-        :param multiple :   allows multiple selection in file box
-        :return:            name: full path for file else empty
         """
         if not window:
             return Path("")

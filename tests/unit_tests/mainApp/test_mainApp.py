@@ -18,6 +18,7 @@
 import pytest
 import unittest.mock as mock
 import shutil
+from pathlib import Path
 
 # external packages
 from PySide6.QtCore import QTimer, QBasicTimer, QCoreApplication
@@ -36,12 +37,12 @@ setupLogging()
 @pytest.fixture(autouse=True, scope="module")
 def app(qapp):
     mwGlob = {
-        "configDir": "tests/workDir/config",
-        "dataDir": "tests/workDir/data",
-        "tempDir": "tests/workDir/temp",
-        "imageDir": "tests/workDir/image",
-        "modelDir": "tests/workDir/model",
-        "workDir": "tests/workdir",
+        "configDir": Path("tests/workDir/config"),
+        "dataDir": Path("tests/workDir/data"),
+        "tempDir": Path("tests/workDir/temp"),
+        "imageDir": Path("tests/workDir/image"),
+        "modelDir": Path("tests/workDir/model"),
+        "workDir": Path("tests/workdir"),
     }
 
     shutil.copy("tests/testData/de440_mw4.bsp", "tests/workDir/data/de440_mw4.bsp")

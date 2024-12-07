@@ -22,6 +22,7 @@ import os
 import glob
 import platform
 import builtins
+from pathlib import Path
 
 # external packages
 
@@ -104,12 +105,12 @@ def test_solve_1(function):
     with mock.patch.object(function,
                            'runWatney',
                            return_value=(False, 1)):
-        with mock.patch.object(os.path,
-                               'isfile',
+        with mock.patch.object(Path,
+                               'is_file',
                                return_value=True):
             with mock.patch.object(os,
                                    'remove'):
-                res = function.solve('tests/workDir/image/m51.fit', False)
+                res = function.solve(Path('tests/workDir/image/m51.fit'), False)
                 assert not res['success']
 
 
@@ -118,10 +119,10 @@ def test_solve_2(function):
     with mock.patch.object(function,
                            'runWatney',
                            return_value=(True, 0)):
-        with mock.patch.object(os.path,
-                               'isfile',
+        with mock.patch.object(Path,
+                               'is_file',
                                return_value=False):
-            res = function.solve('tests/workDir/image/m51.fit', False)
+            res = function.solve(Path('tests/workDir/image/m51.fit'), False)
             assert not res['success']
 
 
@@ -130,8 +131,8 @@ def test_solve_3(function):
     with mock.patch.object(function,
                            'runWatney',
                            return_value=(True, 0)):
-        with mock.patch.object(os.path,
-                               'isfile',
+        with mock.patch.object(Path,
+                               'is_file',
                                return_value=True):
             with mock.patch.object(os,
                                    'remove',
@@ -142,7 +143,7 @@ def test_solve_3(function):
                                            'getSolutionFromWCSHeader'):
                         with mock.patch.object(logic.plateSolve.watney,
                                                'updateImageFileHeaderWithSolution'):
-                            res = function.solve('tests/workDir/image/m51.fit', True)
+                            res = function.solve(Path('tests/workDir/image/m51.fit'), True)
                             assert res['success']
 
 
@@ -164,52 +165,60 @@ def test_abort_2(function):
 
 
 def test_checkAvailabilityProgram_1(function):
-    with mock.patch.object(os.path,
-                           'isfile',
+    with mock.patch.object(Path,
+                           'is_file',
                            return_value=True):
         with mock.patch.object(platform,
                                'system',
                                return_value='Linux'):
-            suc = function.checkAvailabilityProgram('test')
+            suc = function.checkAvailabilityProgram(Path('test'))
             assert suc
 
 
 def test_checkAvailabilityProgram_2(function):
-    with mock.patch.object(os.path,
-                           'isfile',
+    with mock.patch.object(Path,
+                           'is_file',
                            return_value=True):
         with mock.patch.object(platform,
                                'system',
                                return_value='Darwin'):
-            suc = function.checkAvailabilityProgram('test')
+            suc = function.checkAvailabilityProgram(Path('test'))
             assert suc
 
 
 def test_checkAvailabilityProgram_3(function):
-    with mock.patch.object(os.path,
-                           'isfile',
+    with mock.patch.object(Path,
+                           'is_file',
                            return_value=True):
         with mock.patch.object(platform,
                                'system',
                                return_value='Windows'):
-            suc = function.checkAvailabilityProgram('test')
+            suc = function.checkAvailabilityProgram(Path('test'))
             assert suc
 
 
 def test_checkAvailabilityProgram_4(function):
-    with mock.patch.object(os.path,
-                           'isfile',
+    with mock.patch.object(Path,
+                           'is_file',
                            return_value=True):
         with mock.patch.object(platform,
                                'system',
                                return_value='test'):
-            suc = function.checkAvailabilityProgram('test')
+            suc = function.checkAvailabilityProgram(Path('test'))
             assert not suc
 
 
 def test_checkAvailabilityIndex_1(function):
-    with mock.patch.object(builtins,
-                           'sum',
-                           return_value=407):
-        suc = function.checkAvailabilityIndex('test')
+    with mock.patch.object(Path,
+                           'glob',
+                           return_value=[]):
+        suc = function.checkAvailabilityIndex(Path('test'))
+        assert not suc
+
+
+def test_checkAvailabilityIndex_2(function):
+    with mock.patch.object(Path,
+                           'glob',
+                           return_value=["test"]):
+        suc = function.checkAvailabilityIndex(Path('test'))
         assert suc

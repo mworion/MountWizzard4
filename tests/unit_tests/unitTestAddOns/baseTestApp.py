@@ -17,6 +17,7 @@
 # standard libraries
 from queue import Queue
 from packaging.version import Version
+from pathlib import Path
 
 # external packages
 from PySide6.QtCore import QObject, Signal, QThreadPool, QTimer
@@ -1170,14 +1171,14 @@ class App(QObject):
     hipparcos = Hipparcos()
 
     ephemeris = load_file('tests/testData/de440_mw4.bsp')
-    mwGlob = {'modelDir': 'tests/workDir/model',
-              'imageDir': 'tests/workDir/image',
-              'dataDir': 'tests/workDir/data',
-              'workDir': 'tests/workDir',
-              'measureDir': 'tests/workDir/measure',
-              'tempDir': 'tests/workDir/temp',
-              'configDir': 'tests/workDir/config',
-              'logDir': 'tests/workDir/log',
+    mwGlob = {'modelDir': Path('tests/workDir/model'),
+              'imageDir': Path('tests/workDir/image'),
+              'dataDir': Path('tests/workDir/data'),
+              'workDir': Path('tests/workDir'),
+              'measureDir': Path('tests/workDir/measure'),
+              'tempDir': Path('tests/workDir/temp'),
+              'configDir': Path('tests/workDir/config'),
+              'logDir': Path('tests/workDir/log'),
               }
     uiWindows = {}
     mainW = MainW()

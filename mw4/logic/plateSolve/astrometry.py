@@ -171,7 +171,7 @@ class Astrometry(object):
         binPathImage2xy = self.appPath / "image2xy"
         binPathSolveField = self.appPath / "solve-field"
 
-        if os.path.isfile(wcsPath):
+        if wcsPath.is_file():
             os.remove(wcsPath)
 
         suc = self.runImage2xy(
@@ -204,7 +204,7 @@ class Astrometry(object):
         # split between ekos and cloudmakers as cloudmakers use an older version of
         # solve-field, which need the option '--no-fits2fits', whereas the actual
         # version used in KStars throws an error using this option.
-        if "Astrometry.app" in self.appPath:
+        if "Astrometry.app" in str(self.appPath):
             options.append("--no-fits2fits")
 
         suc = self.runSolveField(
@@ -218,7 +218,7 @@ class Astrometry(object):
             result["message"] = "solve-field error"
             return result
 
-        if not os.path.isfile(wcsPath):
+        if not wcsPath.is_file():
             self.log.warning(f"Solve files for [{wcsPath}] missing")
             result["message"] = "solve failed"
             return result
@@ -257,19 +257,11 @@ class Astrometry(object):
             program = Path("")
         else:
             return False
-        return os.path.isfile(program)
+        return program.is_file()
 
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
         """ """
         self.indexPath = indexPath
         self.saveConfigFile()
 
-        if platform.system() == "Darwin":
-            index = self.indexPath / "*.fits"
-        elif platform.system() == "Linux":
-            index = self.indexPath / "*.fits"
-        elif platform.system() == "Windows":
-            index = Path("")
-        else:
-            return False
-        return bool(glob.glob(index))
+        return len(list(self.indexPath.glob("*.fits"))) > 0

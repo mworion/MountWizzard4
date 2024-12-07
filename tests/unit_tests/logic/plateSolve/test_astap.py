@@ -121,8 +121,8 @@ def test_solve_1(function):
     with mock.patch.object(function,
                            'runASTAP',
                            return_value=(False, 1)):
-        with mock.patch.object(os.path,
-                               'isfile',
+        with mock.patch.object(Path,
+                               'is_file',
                                return_value=True):
             with mock.patch.object(os,
                                    'remove'):
@@ -142,8 +142,8 @@ def test_solve_3(function):
     with mock.patch.object(function,
                            'runASTAP',
                            return_value=(True, 0)):
-        with mock.patch.object(os.path,
-                               'isfile',
+        with mock.patch.object(Path,
+                               'is_file',
                                return_value=True):
             with mock.patch.object(os,
                                    'remove'):
@@ -175,46 +175,46 @@ def test_abort_2(function):
 
 
 def test_checkAvailabilityProgram_1(function):
-    with mock.patch.object(os.path,
-                           'isfile',
+    with mock.patch.object(Path,
+                           'is_file',
                            return_value=True):
         with mock.patch.object(platform,
                                'system',
                                return_value='Linux'):
-            suc = function.checkAvailabilityProgram('test')
+            suc = function.checkAvailabilityProgram(Path('test'))
             assert suc
 
 
 def test_checkAvailabilityProgram_2(function):
-    with mock.patch.object(os.path,
-                           'isfile',
+    with mock.patch.object(Path,
+                           'is_file',
                            return_value=True):
         with mock.patch.object(platform,
                                'system',
                                return_value='Darwin'):
-            suc = function.checkAvailabilityProgram('test')
+            suc = function.checkAvailabilityProgram(Path('test'))
             assert suc
 
 
 def test_checkAvailabilityProgram_3(function):
-    with mock.patch.object(os.path,
-                           'isfile',
+    with mock.patch.object(Path,
+                           'is_file',
                            return_value=True):
         with mock.patch.object(platform,
                                'system',
                                return_value='Windows'):
-            suc = function.checkAvailabilityProgram('test')
+            suc = function.checkAvailabilityProgram(Path('test'))
             assert suc
 
 
 def test_checkAvailabilityProgram_4(function):
-    with mock.patch.object(os.path,
-                           'isfile',
+    with mock.patch.object(Path,
+                           'is_file',
                            return_value=True):
         with mock.patch.object(platform,
                                'system',
                                return_value='test'):
-            suc = function.checkAvailabilityProgram('test')
+            suc = function.checkAvailabilityProgram(Path('test'))
             assert not suc
 
 
@@ -225,7 +225,7 @@ def test_checkAvailabilityIndex_1(function):
         with mock.patch.object(platform,
                                'system',
                                return_value='Linux'):
-            suc = function.checkAvailabilityIndex('test')
+            suc = function.checkAvailabilityIndex(Path('test'))
             assert suc
 
 
@@ -236,7 +236,7 @@ def test_checkAvailabilityIndex_2(function):
         with mock.patch.object(platform,
                                'system',
                                return_value='Darwin'):
-            suc = function.checkAvailabilityIndex('test')
+            suc = function.checkAvailabilityIndex(Path('test'))
             assert suc
 
 
@@ -247,5 +247,5 @@ def test_checkAvailabilityIndex_3(function):
         with mock.patch.object(platform,
                                'system',
                                return_value='Windows'):
-            suc = function.checkAvailabilityIndex('test')
+            suc = function.checkAvailabilityIndex(Path('test'))
             assert suc

@@ -144,7 +144,7 @@ class Watney(object):
             self.log.warning(f"Watney error [{text}] in [{imagePath}]")
             return result
 
-        if not os.path.isfile(wcsPath):
+        if not wcsPath.is_file():
             result["message"] = "Solve failed"
             self.log.warning(f"Solve files for [{wcsPath}] missing")
             return result

@@ -799,7 +799,7 @@ class HemisphereWindow(MWidget, SlewInterface):
     def mouseMovedHorizon(self, pos):
         """ """
         plotItem = self.ui.horizon.p[0]
-        self.mouseMoved(plotItem, pos)
+        self.mouseMoved(pos)
 
     def setTerrainFile(self, fileName):
         """ """

@@ -19,6 +19,7 @@ import unittest.mock as mock
 from unittest.mock import patch
 import pytest
 import shutil
+from pathlib import Path
 
 # external packages
 from PySide6.QtGui import QCloseEvent
@@ -352,69 +353,74 @@ def test_switchProfile_1(window):
 
 
 def test_loadProfileGUI_1(window):
-    with mock.patch.object(window, "openFile", return_value=(None, None, "cfg")):
-        suc = window.loadProfileGUI()
-        assert not suc
+    with mock.patch.object(window, "openFile", return_value=Path("")):
+        with mock.patch.object(Path, "is_file", return_value=False):
+            suc = window.loadProfileGUI()
+            assert not suc
 
 
 def test_loadProfileGUI2(window):
-    with mock.patch.object(window, "openFile", return_value=("config", "test", "cfg")):
-        with mock.patch.object(
-            gui.mainWindow.mainWindow, "loadProfile", return_value={}
-        ):
-            with mock.patch.object(window, "switchProfile"):
-                suc = window.loadProfileGUI()
-                assert not suc
+    with mock.patch.object(window, "openFile", return_value=Path("config.cfg")):
+        with mock.patch.object(Path, "is_file", return_value=True):
+            with mock.patch.object(
+                gui.mainWindow.mainWindow, "loadProfile", return_value={}
+            ):
+                with mock.patch.object(window, "switchProfile"):
+                    suc = window.loadProfileGUI()
+                    assert not suc
 
 
 def test_loadProfileGUI_3(window):
-    with mock.patch.object(window, "openFile", return_value=("config", "test", "cfg")):
-        with mock.patch.object(
-            gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}
-        ):
-            with mock.patch.object(window, "switchProfile"):
-                suc = window.loadProfileGUI()
-                assert suc
+    with mock.patch.object(window, "openFile", return_value=Path("test.cfg")):
+        with mock.patch.object(Path, "is_file", return_value=True):
+            with mock.patch.object(
+                gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}
+            ):
+                with mock.patch.object(window, "switchProfile"):
+                    suc = window.loadProfileGUI()
+                    assert suc
 
 
 def test_addProfileGUI_1(window):
-    with mock.patch.object(window, "openFile", return_value=(None, None, "cfg")):
+    with mock.patch.object(window, "openFile", return_value=Path("cfg")):
         suc = window.addProfileGUI()
         assert not suc
 
 
 def test_addProfileGUI_2(window):
-    with mock.patch.object(window, "openFile", return_value=("config", "test", "cfg")):
-        with mock.patch.object(
-            gui.mainWindow.mainWindow, "loadProfile", return_value=None
-        ):
-            with mock.patch.object(window, "storeConfig"):
-                with mock.patch.object(window.app, "storeConfig"):
-                    with mock.patch.object(window, "switchProfile"):
-                        with mock.patch.object(
-                            gui.mainWindow.mainWindow, "blendProfile"
-                        ):
-                            suc = window.addProfileGUI()
-                            assert not suc
+    with mock.patch.object(window, "openFile", return_value=Path("test.cfg")):
+        with mock.patch.object(Path, "is_file", return_value=True):
+            with mock.patch.object(
+                gui.mainWindow.mainWindow, "loadProfile", return_value=None
+            ):
+                with mock.patch.object(window, "storeConfig"):
+                    with mock.patch.object(window.app, "storeConfig"):
+                        with mock.patch.object(window, "switchProfile"):
+                            with mock.patch.object(
+                                gui.mainWindow.mainWindow, "blendProfile"
+                            ):
+                                suc = window.addProfileGUI()
+                                assert not suc
 
 
 def test_addProfileGUI_3(window):
-    with mock.patch.object(window, "openFile", return_value=("config", "test", "cfg")):
-        with mock.patch.object(
-            gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}
-        ):
-            with mock.patch.object(window, "storeConfig"):
-                with mock.patch.object(window.app, "storeConfig"):
-                    with mock.patch.object(window, "switchProfile"):
-                        with mock.patch.object(
-                            gui.mainWindow.mainWindow, "blendProfile"
-                        ):
-                            suc = window.addProfileGUI()
-                            assert suc
+    with mock.patch.object(window, "openFile", return_value=Path("test.cfg")):
+        with mock.patch.object(Path, "is_file", return_value=True):
+            with mock.patch.object(
+                gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}
+            ):
+                with mock.patch.object(window, "storeConfig"):
+                    with mock.patch.object(window.app, "storeConfig"):
+                        with mock.patch.object(window, "switchProfile"):
+                            with mock.patch.object(
+                                gui.mainWindow.mainWindow, "blendProfile"
+                            ):
+                                suc = window.addProfileGUI()
+                                assert suc
 
 
 def test_saveConfigAs1(window):
-    with mock.patch.object(window, "saveFile", return_value=("config", "test", "cfg")):
+    with mock.patch.object(window, "saveFile", return_value=Path("test.cfg")):
         with mock.patch.object(
             gui.mainWindow.mainWindow, "saveProfile", return_value=True
         ):
@@ -425,7 +431,7 @@ def test_saveConfigAs1(window):
 
 
 def test_saveConfigAs2(window):
-    with mock.patch.object(window, "saveFile", return_value=("config", "test", "cfg")):
+    with mock.patch.object(window, "saveFile", return_value=Path("test.cfg")):
         with mock.patch.object(
             gui.mainWindow.mainWindow, "saveProfile", return_value=False
         ):
@@ -436,7 +442,7 @@ def test_saveConfigAs2(window):
 
 
 def test_saveConfigAs3(window):
-    with mock.patch.object(window, "saveFile", return_value=(None, None, "cfg")):
+    with mock.patch.object(window, "saveFile", return_value=Path("")):
         suc = window.saveConfigAs()
         assert not suc
 

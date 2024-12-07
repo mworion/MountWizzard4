@@ -462,7 +462,7 @@ class MainWindow(MWidget):
         loadFilePath = self.openFile(
             self, "Open add-on config file", folder, "Config files (*.cfg)"
         )
-        if not loadFilePath.is_file(9):
+        if not loadFilePath.is_file():
             self.ui.profileAdd.setText("-")
             return False
 
@@ -472,7 +472,7 @@ class MainWindow(MWidget):
             configDir=self.app.mwGlob["configDir"], name=loadFilePath.stem
         )
         if configAdd:
-            self.ui.profileAdd.setText(loadFilePath.name())
+            self.ui.profileAdd.setText(loadFilePath.stem)
             profile = self.ui.profile.text()
             self.msg.emit(1, "System", "Profile", f"Base: {profile}")
             self.msg.emit(1, "System", "Profile", f"Add : {loadFilePath.name}")
@@ -493,23 +493,23 @@ class MainWindow(MWidget):
     def saveConfigAs(self) -> bool:
         """ """
         folder = self.app.mwGlob["configDir"]
-        saveFilePath, name, ext = self.saveFile(
+        saveFilePath = self.saveFile(
             self, "Save config file", folder, "Config files (*.cfg)", enableDir=False
         )
-        if not name:
+        if not saveFilePath.name:
             return False
 
         self.storeConfig()
         self.app.storeConfig()
         suc = saveProfile(
-            configDir=self.app.mwGlob["configDir"], name=name, config=self.app.config
+            configDir=self.app.mwGlob["configDir"], name=saveFilePath.stem, config=self.app.config
         )
         if suc:
-            self.ui.profile.setText(name)
-            self.msg.emit(1, "System", "Profile", f"saved {name}")
+            self.ui.profile.setText(saveFilePath.stem)
+            self.msg.emit(1, "System", "Profile", f"saved {saveFilePath.stem}")
             self.ui.profileAdd.setText("-")
         else:
-            self.msg.emit(2, "System", "Profile error", f"{name}] cannot no be saved")
+            self.msg.emit(2, "System", "Profile error", f"{saveFilePath.stem}] cannot no be saved")
         return True
 
     def saveConfig(self) -> bool:

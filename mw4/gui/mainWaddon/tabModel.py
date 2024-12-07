@@ -211,9 +211,7 @@ class Model(MWidget):
         self.retrofitModel()
         self.msg.emit(0, "Model", "Run", f"Writing model [{self.modelName}]")
         saveData = self.generateSaveData()
-        modelPath = os.path.normpath(
-            f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
-        )
+        modelPath = self.app.mwGlob["modelDir"] / (self.modelName + ".model")
         with open(modelPath, "w") as outfile:
             json.dump(saveData, outfile, sort_keys=True, indent=4)
 

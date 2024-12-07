@@ -67,7 +67,7 @@ class Rename(MWidget):
         """
         config = self.app.config["mainW"]
         defaultDir = self.app.mwGlob["imageDir"]
-        self.ui.renameDir.setText(config.get("renameDir", defaultDir))
+        self.ui.renameDir.setText(config.get("renameDir", str(defaultDir)))
         self.ui.newObjectName.setText(config.get("newObjectName", ""))
         self.ui.includeSubdirs.setChecked(config.get("includeSubdirs", False))
         for name, ui in self.selectorsDropDowns.items():
@@ -201,7 +201,7 @@ class Rename(MWidget):
         if not os.path.isfile(fileName):
             return False
 
-        fileName = os.path.normpath(fileName)
+        fileName = Path(fileName)
         with fits.open(name=fileName) as fd:
             fitsHeader = fd[0].header
 
@@ -226,7 +226,7 @@ class Rename(MWidget):
 
             newFilename += ".fits"
             dirName = os.path.dirname(fileName)
-            newFilename = os.path.normpath(f"{dirName}/{newFilename}")
+            newFilename = Path(dirName, newFilename)
             os.rename(fileName, newFilename)
         return True
 

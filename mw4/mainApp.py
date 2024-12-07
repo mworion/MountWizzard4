@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import logging
-import os
 import sys
 from queue import Queue
 
@@ -150,12 +149,11 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, "System", "Workdir", f"{workDir}"))
         self.messageQueue.put((1, "System", "Profile", f"Base: {profile}"))
         # initialize commands to mount
-        pathToData = self.mwGlob["dataDir"]
         self.mount = MountDevice(
             app=self,
             host=None,
             MAC="00.c0.08.87.35.db",
-            pathToData=pathToData,
+            pathToData=self.mwGlob["dataDir"],
             verbose=False,
         )
         # setting location to last know config
@@ -193,7 +191,7 @@ class MountWizzard4(QObject):
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
 
-        if os.path.isfile(self.mwGlob["workDir"] + "/test.run"):
+        if (self.mwGlob["workDir"] / "test.run").is_file():
             self.update3s.connect(self.quit)
         if len(sys.argv) > 1:
             self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))

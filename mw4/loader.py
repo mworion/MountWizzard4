@@ -24,6 +24,7 @@ import socket
 import sys
 import traceback
 import warnings
+from pathlib import Path
 
 # external packages
 from astropy.utils import iers, data
@@ -143,15 +144,15 @@ def setupWorkDirs() -> dict:
     """ """
     mwGlob = {
         "modeldata": "4.0",
-        "workDir": os.getcwd(),
+        "workDir": Path(os.getcwd()),
     }
-    mwGlob["configDir"] = os.path.normpath(mwGlob["workDir"] + "/config")
-    mwGlob["dataDir"] = os.path.normpath(mwGlob["workDir"] + "/data")
-    mwGlob["imageDir"] = os.path.normpath(mwGlob["workDir"] + "/image")
-    mwGlob["tempDir"] = os.path.normpath(mwGlob["workDir"] + "/temp")
-    mwGlob["modelDir"] = os.path.normpath(mwGlob["workDir"] + "/model")
-    mwGlob["measureDir"] = os.path.normpath(mwGlob["workDir"] + "/measure")
-    mwGlob["logDir"] = os.path.normpath(mwGlob["workDir"] + "/log")
+    mwGlob["configDir"] = mwGlob["workDir"] / "config"
+    mwGlob["dataDir"] = mwGlob["workDir"] / "data"
+    mwGlob["imageDir"] = mwGlob["workDir"] / "image"
+    mwGlob["tempDir"] = mwGlob["workDir"] / "temp"
+    mwGlob["modelDir"] = mwGlob["workDir"] / "model"
+    mwGlob["measureDir"] = mwGlob["workDir"] / "measure"
+    mwGlob["logDir"] = mwGlob["workDir"] / "log"
 
     for dirPath in [
         "workDir",
@@ -230,7 +231,7 @@ def extractFile(filePath: str, file: str, fileTimeStamp: str) -> None:
     else:
         log.info(f"Using existing: [{file}]")
 
-    QFile.copy(f":/data/{file}", filePath)
+    QFile.copy(f":/data/{file}", str(filePath))
     os.chmod(filePath, 0o666)
 
 
@@ -254,23 +255,22 @@ def extractDataFiles(mwGlob: dict) -> None:
             files[name] = float(date)
 
     for file in files:
-        filePath = mwGlob["dataDir"] + "/" + file
+        filePath = mwGlob["dataDir"] / file
         fileTimeStamp = files[file]
         extractFile(filePath=filePath, file=file, fileTimeStamp=fileTimeStamp)
 
 
 def getWindowPos() -> [int, int]:
     """ """
-    configDir = os.getcwd() + "/config"
-    profile = os.path.normpath(configDir + "/profile")
+    configDir = Path(os.getcwd()) / "config"
+    profile = configDir / "profile"
     if not os.path.isfile(profile):
         return 0, 0
 
     with open(profile) as f:
         configName = f.readline()
 
-    configFile = configDir + "/" + configName + ".cfg"
-    configFile = os.path.normpath(configFile)
+    configFile = configDir / (configName + ".cfg")
     if not os.path.isfile(configFile):
         return 0, 0
 

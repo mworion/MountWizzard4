@@ -18,8 +18,6 @@
 import logging
 import subprocess
 import os
-from os.path import normpath, join
-from glob import glob
 import time
 import platform
 from pathlib import Path
@@ -52,12 +50,12 @@ class ASTAP(object):
     def __init__(self, parent):
         self.parent = parent
         self.data = parent.data
-        self.tempDir = parent.tempDir
+        self.tempDir = parent.app.mwGlob["tempDir"]
 
         self.result: dict = {"success": False}
         self.process = None
-        self.indexPath: Path = ""
-        self.appPath: Path = ""
+        self.indexPath = Path("")
+        self.appPath = Path("")
         self.setDefaultPath()
         self.deviceName: str = "ASTAP"
         self.timeout: int = 30
@@ -68,24 +66,24 @@ class ASTAP(object):
                 "deviceList": ["ASTAP"],
                 "searchRadius": 20,
                 "timeout": 30,
-                "appPath": self.appPath,
-                "indexPath": self.indexPath,
+                "appPath": str(self.appPath),
+                "indexPath": str(self.indexPath),
             }
         }
 
     def setDefaultPath(self) -> None:
         """ """
         if platform.system() == "Darwin":
-            self.appPath = normpath("/Applications/ASTAP.app/Contents/MacOS")
-            self.indexPath = normpath("/usr/local/opt/astap")
+            self.appPath = Path("/Applications/ASTAP.app/Contents/MacOS")
+            self.indexPath = Path("/usr/local/opt/astap")
 
         elif platform.system() == "Linux":
-            self.appPath = normpath("/opt/astap")
-            self.indexPath = normpath("/opt/astap")
+            self.appPath = Path("/opt/astap")
+            self.indexPath = Path("/opt/astap")
 
         elif platform.system() == "Windows":
-            self.appPath = normpath("C:\\Program Files\\astap")
-            self.indexPath = normpath("C:\\Program Files\\astap")
+            self.appPath = Path("C:\\Program Files\\astap")
+            self.indexPath = Path("C:\\Program Files\\astap")
 
     def runASTAP(
         self, binPath: Path, tempPath: Path, imagePath: Path, options: list[str]
@@ -121,9 +119,9 @@ class ASTAP(object):
         self.process = None
         result = {"success": False, "message": "Internal error"}
 
-        tempPath = join(self.tempDir + "temp")
-        binPath = join(self.appPath, "astap")
-        wcsPath = join(self.tempDir + "temp.wcs")
+        tempPath = self.tempDir / "temp"
+        binPath = self.appPath / "astap"
+        wcsPath = self.tempDir / "temp.wcs"
 
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
@@ -179,11 +177,11 @@ class ASTAP(object):
         self.appPath = appPath
 
         if platform.system() == "Darwin":
-            program = os.path.join(self.appPath, "astap")
+            program = self.appPath / "astap"
         elif platform.system() == "Linux":
-            program = os.path.join(self.appPath, "astap")
+            program = self.appPath / "astap"
         elif platform.system() == "Windows":
-            program = os.path.join(self.appPath, "astap.exe")
+            program = self.appPath / "astap.exe"
         else:
             return False
         return os.path.isfile(program)
@@ -201,12 +199,12 @@ class ASTAP(object):
         d20 = "d20*.1476"
         d05 = "d05*.1476"
 
-        isG17 = sum(".290" in s for s in glob(join(self.indexPath, g17))) != 0
-        isG18 = sum(".290" in s for s in glob(join(self.indexPath, g18))) != 0
-        isH17 = sum(".1476" in s for s in glob(join(self.indexPath, h17))) != 0
-        isH18 = sum(".1476" in s for s in glob(join(self.indexPath, h18))) != 0
-        isD80 = sum(".1476" in s for s in glob(join(self.indexPath, d80))) != 0
-        isD50 = sum(".1476" in s for s in glob(join(self.indexPath, d50))) != 0
-        isD20 = sum(".1476" in s for s in glob(join(self.indexPath, d20))) != 0
-        isD05 = sum(".1476" in s for s in glob(join(self.indexPath, d05))) != 0
+        isG17 = len(list(self.indexPath.glob(g17))) > 0
+        isG18 = len(list(self.indexPath.glob(g18))) > 0
+        isH17 = len(list(self.indexPath.glob(h17))) > 0
+        isH18 = len(list(self.indexPath.glob(h18))) > 0
+        isD80 = len(list(self.indexPath.glob(d80))) > 0
+        isD50 = len(list(self.indexPath.glob(d50))) > 0
+        isD20 = len(list(self.indexPath.glob(d20))) > 0
+        isD05 = len(list(self.indexPath.glob(d05))) > 0
         return any((isG17, isG18, isH17, isH18, isD05, isD20, isD50, isD80))

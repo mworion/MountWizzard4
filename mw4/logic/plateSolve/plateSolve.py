@@ -46,8 +46,6 @@ class PlateSolve:
         self.signals = Signals()
         self.solveQueue = queue.Queue()
         self.solveLoopRunning: bool = False
-        self.tempDir: Path = app.mwGlob["tempDir"]
-        self.workDir: Path = app.mwGlob["workDir"]
 
         self.data: dict = {}
         self.defaultConfig: dict = {"framework": "", "frameworks": {}}
@@ -92,12 +90,12 @@ class PlateSolve:
 
     def checkAvailabilityProgram(self, framework: str) -> bool:
         """ """
-        appPath = self.run[framework].appPath
+        appPath = Path(self.run[framework].appPath)
         return self.run[framework].checkAvailabilityProgram(appPath=appPath)
 
     def checkAvailabilityIndex(self, framework: str) -> bool:
         """ """
-        indexPath = self.run[framework].indexPath
+        indexPath = Path(self.run[framework].indexPath)
         return self.run[framework].checkAvailabilityIndex(indexPath=indexPath)
 
     def startCommunication(self):

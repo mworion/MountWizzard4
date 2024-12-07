@@ -20,6 +20,7 @@ import time
 import logging
 import datetime
 from dateutil.tz import tzlocal
+from pathlib import Path
 
 # external packages
 from PySide6.QtCore import QCoreApplication
@@ -403,23 +404,21 @@ class MWidget(QWidget, Styles):
         :param enableDir:   allows dir selection in file box
         :param multiple :   allows multiple selection in file box
         :return:            name: full path for file else empty
-                            short: just file name without extension
-                            ext: extension of the file
         """
         if not window:
-            return "", "", ""
+            return Path("")
         if not title:
-            return "", "", ""
+            return Path("")
         if not folder:
-            return "", "", ""
+            return Path("")
         if not filterSet:
-            return "", "", ""
+            return Path("")
 
         dlg = self.prepareFileDialog(window=window, enableDir=enableDir)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)
-        dlg.setDirectory(folder)
+        dlg.setDirectory(str(folder))
 
         if multiple:
             dlg.setFileMode(QFileDialog.FileMode.ExistingFiles)
@@ -428,11 +427,11 @@ class MWidget(QWidget, Styles):
 
         result = self.runDialog(dlg)
         if not result:
-            return "", "", ""
+            return Path("")
 
         filePath = dlg.selectedFiles()
-        full, short, ext = self.extractNames(names=filePath)
-        return full, short, ext
+        full, _, _ = self.extractNames(names=filePath)
+        return Path(full)
 
     def saveFile(
         self, window=None, title="", folder="", filterSet=None, enableDir=False
@@ -446,30 +445,28 @@ class MWidget(QWidget, Styles):
         :param filterSet:   file extension filter
         :param enableDir:   allows dir selection in file box
         :return:            name: full path for file else empty
-                            short: just file name without extension
-                            ext: extension of the file
         """
         if not window:
-            return "", "", ""
+            return Path("")
         if not title:
-            return "", "", ""
+            return Path("")
         if not folder:
-            return "", "", ""
+            return Path("")
         if not filterSet:
-            return "", "", ""
+            return Path("")
 
         dlg = self.prepareFileDialog(window, enableDir)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)
-        dlg.setDirectory(folder)
+        dlg.setDirectory(str(folder))
         result = self.runDialog(dlg)
         if not result:
-            return "", "", ""
+            return Path("")
 
         filePath = dlg.selectedFiles()
-        full, short, ext = self.extractNames(names=filePath)
-        return full, short, ext
+        full, _, _ = self.extractNames(names=filePath)
+        return Path(full)
 
     def openDir(self, window=None, title="", folder=""):
         """
@@ -483,24 +480,24 @@ class MWidget(QWidget, Styles):
                             ext: extension of the file
         """
         if not window:
-            return "", "", ""
+            return Path("")
         if not title:
-            return "", "", ""
+            return Path("")
         if not folder:
-            return "", "", ""
+            return Path("")
 
         dlg = self.prepareFileDialog(window=window, enableDir=True)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         dlg.setWindowTitle(title)
-        dlg.setDirectory(folder)
+        dlg.setDirectory(str(folder))
         dlg.setFileMode(QFileDialog.FileMode.Directory)
         result = self.runDialog(dlg)
         if not result:
-            return "", "", ""
+            return Path("")
 
         filePath = dlg.selectedFiles()
-        full, short, ext = self.extractNames(names=filePath)
-        return full, short, ext
+        full, _, _ = self.extractNames(names=filePath)
+        return Path(full)
 
     @staticmethod
     def clickable(widget=None):

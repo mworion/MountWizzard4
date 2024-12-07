@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import os
+from pathlib import Path
 
 # external packages
 import pyqtgraph as pg
@@ -99,7 +100,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.color.setCurrentIndex(config.get("color", 0))
         self.ui.snTarget.setCurrentIndex(config.get("snTarget", 0))
         self.ui.tabImage.setCurrentIndex(config.get("tabImage", 0))
-        self.imageFileName = os.path.normpath(config.get("imageFileName", ""))
+        self.imageFileName = Path(config.get("imageFileName", ""))
         self.folder = self.app.mwGlob.get("imageDir", "")
         self.ui.showCrosshair.setChecked(config.get("showCrosshair", False))
         self.ui.aspectLocked.setChecked(config.get("aspectLocked", False))
@@ -136,7 +137,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         config["color"] = self.ui.color.currentIndex()
         config["snTarget"] = self.ui.snTarget.currentIndex()
         config["tabImage"] = self.ui.tabImage.currentIndex()
-        config["imageFileName"] = self.imageFileName
+        config["imageFileName"] = str(self.imageFileName)
         config["showCrosshair"] = self.ui.showCrosshair.isChecked()
         config["aspectLocked"] = self.ui.aspectLocked.isChecked()
         config["autoSolve"] = self.ui.autoSolve.isChecked()
@@ -307,21 +308,20 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         """
         :return: success
         """
-        val = self.openFile(
+        loadFilePath = self.openFile(
             self,
             "Select image file",
             self.folder,
             "All (*.fit* *.xisf);; FITS files (*.fit*);;XISF files (*.xisf)",
             enableDir=True,
         )
-        loadFilePath, name, ext = val
-        if not name:
+        if not loadFilePath.is_file():
             self.msg.emit(0, "Image", "Loading", "No image selected")
             return False
 
-        self.imageFileName = os.path.normpath(loadFilePath)
-        self.msg.emit(0, "Image", "Image selected", f"{name}{ext}")
-        self.folder = os.path.dirname(loadFilePath)
+        self.imageFileName = loadFilePath
+        self.msg.emit(0, "Image", "Image selected", loadFilePath.name())
+        self.folder = loadFilePath.parents[0]
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(self.imageFileName)
         self.app.showImage.emit(self.imageFileName)
@@ -448,18 +448,12 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         )
         return True
 
-    def showImage(self, imagePath=""):
-        """
-        :param: imagePath:
-        :return:
-        """
+    def showImage(self, imagePath):
+        """ """
         if self.imagingDeviceStat["expose"]:
             self.ui.image.setImage(None)
             self.clearGui()
-        if not imagePath:
-            return False
-        imagePath = os.path.normpath(imagePath)
-        if not os.path.isfile(imagePath):
+        if not imagePath.is_file():
             return False
 
         self.changeStyleDynamic(self.ui.headerGroup, "running", True)

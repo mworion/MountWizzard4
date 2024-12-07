@@ -431,18 +431,25 @@ class MainWindow(MWidget):
     def loadProfileGUI(self) -> bool:
         """ """
         folder = self.app.mwGlob["configDir"]
-        loadFilePath, name, ext = self.openFile(
+        loadFilePath = self.openFile(
             self, "Open config file", folder, "Config files (*.cfg)"
         )
-        if not name:
+        if not loadFilePath.is_file():
             return False
 
-        config = loadProfile(configDir=self.app.mwGlob["configDir"], name=name)
+        config = loadProfile(
+            configDir=self.app.mwGlob["configDir"], name=loadFilePath.stem
+        )
         if config:
-            self.ui.profile.setText(name)
-            self.msg.emit(1, "System", "Profile", f"loaded {name}")
+            self.ui.profile.setText(loadFilePath.stem)
+            self.msg.emit(1, "System", "Profile", f"loaded {loadFilePath.stem}")
         else:
-            self.msg.emit(2, "System", "Profile error", f"{name}] cannot no be loaded")
+            self.msg.emit(
+                2,
+                "System",
+                "Profile error",
+                f"{loadFilePath.stem}] cannot no be loaded",
+            )
             return False
 
         self.switchProfile(config)
@@ -452,24 +459,31 @@ class MainWindow(MWidget):
         """ """
         config = self.app.config
         folder = self.app.mwGlob["configDir"]
-        loadFilePath, name, ext = self.openFile(
+        loadFilePath = self.openFile(
             self, "Open add-on config file", folder, "Config files (*.cfg)"
         )
-        if not name:
+        if not loadFilePath.is_file(9):
             self.ui.profileAdd.setText("-")
             return False
 
         self.storeConfig()
         self.app.storeConfig()
-        configAdd = loadProfile(configDir=self.app.mwGlob["configDir"], name=name)
+        configAdd = loadProfile(
+            configDir=self.app.mwGlob["configDir"], name=loadFilePath.stem
+        )
         if configAdd:
-            self.ui.profileAdd.setText(name)
+            self.ui.profileAdd.setText(loadFilePath.name())
             profile = self.ui.profile.text()
             self.msg.emit(1, "System", "Profile", f"Base: {profile}")
-            self.msg.emit(1, "System", "Profile", f"Add : {name}")
+            self.msg.emit(1, "System", "Profile", f"Add : {loadFilePath.name}")
         else:
             self.ui.profileAdd.setText("-")
-            self.msg.emit(2, "System", "Profile error", f"{name}] cannot no be loaded")
+            self.msg.emit(
+                2,
+                "System",
+                "Profile error",
+                f"{loadFilePath.name}] " f"cannot " f"no be loaded",
+            )
             return False
 
         config = blendProfile(config, configAdd)

@@ -427,26 +427,23 @@ class BuildPoints(MWidget):
         """
         genBuildFile tries to load a give build point file and displays it for
         usage.
-
-        :return: success
         """
         self.lastGenerator = "file"
         fileName = self.ui.buildPFileName.text()
         if not fileName:
             self.msg.emit(2, "Model", "Buildpoints", "Build points file name not given")
-            return False
+            return
 
         keep = self.ui.keepGeneratedPoints.isChecked()
-        fullFileName = self.app.mwGlob["configDir"] + "/" + fileName + ".bpts"
+        fullFileName = self.app.mwGlob["configDir"] / fileName
         suc = self.app.data.loadBuildP(fullFileName=fullFileName, keep=keep)
 
         if not suc:
             text = f"Build points file [{fileName}] could not be loaded"
             self.msg.emit(2, "Model", "Buildpoints", text)
-            return False
+            return
 
         self.processPoints()
-        return True
 
     def loadBuildFile(self):
         """
@@ -456,32 +453,36 @@ class BuildPoints(MWidget):
         fileTypes = "Build Point Files (*.bpts)"
         fileTypes += ";; CSV Files (*.csv)"
         fileTypes += ";; Model Files (*.model)"
-        fullFileName, fileName, ext = self.openFile(
+        fullFileName = self.openFile(
             self.mainW, "Open build point file", folder, fileTypes
         )
-        if not fullFileName:
-            return False
+        if not fullFileName.is_file():
+            return
 
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.loadBuildP(fullFileName=fullFileName, ext=ext, keep=keep)
+        suc = self.app.data.loadBuildP(
+            fullFileName=fullFileName, ext=fullFileName.suffix, keep=keep
+        )
         if suc:
-            self.ui.buildPFileName.setText(fileName)
-            self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fileName}] loaded")
+            self.ui.buildPFileName.setText(fullFileName.name)
+            self.msg.emit(
+                0, "Model", "Buildpoints", f"Build file [{fullFileName.name}] loaded"
+            )
         else:
             self.msg.emit(
-                2, "Model", "Buildpoints", f"Build file [{fileName}] cannot be loaded"
+                2,
+                "Model",
+                "Buildpoints",
+                f"Build file [{fullFileName.name}] cannot be loaded",
             )
         self.genBuildFile()
-        return True
 
     def saveBuildFile(self):
-        """
-        :return: success
-        """
+        """ """
         fileName = self.ui.buildPFileName.text()
         if not fileName:
             self.msg.emit(0, "Model", "Buildpoints", "Build points file name not given")
-            return False
+            return
 
         suc = self.app.data.saveBuildP(fileName=fileName)
         if suc:
@@ -490,50 +491,41 @@ class BuildPoints(MWidget):
             self.msg.emit(
                 2, "Model", "Buildpoints", f"Build file [{fileName}] cannot be saved"
             )
-
-        return True
 
     def saveBuildFileAs(self):
-        """
-        :return: success
-        """
+        """ """
         folder = self.app.mwGlob["configDir"]
-        saveFilePath, fileName, ext = self.saveFile(
+        saveFilePath = self.saveFile(
             self.mainW, "Save build point file", folder, "Build point files (*.bpts)"
         )
-        if not saveFilePath:
-            return False
+        if saveFilePath.is_dir():
+            return
 
-        suc = self.app.data.saveBuildP(fileName=fileName)
+        suc = self.app.data.saveBuildP(fileName=saveFilePath.stem)
         if suc:
-            self.ui.buildPFileName.setText(fileName)
-            self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fileName}] saved")
+            self.ui.buildPFileName.setText(saveFilePath.stem)
+            self.msg.emit(
+                0, "Model", "Buildpoints", f"Build file [{saveFilePath.stem}] saved"
+            )
         else:
             self.msg.emit(
-                2, "Model", "Buildpoints", f"Build file [{fileName}] cannot be saved"
+                2,
+                "Model",
+                "Buildpoints",
+                f"Build file [{saveFilePath.stem}] cannot be saved",
             )
-        return True
 
     def clearBuildP(self):
-        """
-        :return: success
-        """
+        """ """
         self.app.data.clearBuildP()
         self.app.drawBuildPoints.emit()
         if not self.app.uiWindows["showHemisphereW"]["classObj"]:
-            return False
+            return
 
         self.app.redrawHemisphere.emit()
-        return True
 
     def autoDeletePoints(self):
-        """
-        autoDeletePoints removes all generated or visible build points below the
-        horizon line or within the limits of the meridian flip and redraws the
-        hemisphere window.
-
-        :return: True for test purpose
-        """
+        """ """
         if self.ui.autoDeleteHorizon.isChecked():
             self.app.data.deleteBelowHorizon()
         if self.ui.autoDeleteMeridian.isChecked():
@@ -573,11 +565,10 @@ class BuildPoints(MWidget):
     def sortDomeAz(self, points, pierside=None):
         """ """
         if not self.sortRunning.tryLock():
-            return False
+            return
         worker = Worker(self.sortDomeAzWorker, points, pierside)
         worker.signals.result.connect(self.doSortDomeAzData)
         self.app.threadPool.start(worker)
-        return True
 
     def sortMountAz(self, points, eastwest=None, highlow=None, pierside=None):
         """ """
@@ -589,13 +580,7 @@ class BuildPoints(MWidget):
         self.app.drawBuildPoints.emit()
 
     def autoSortPoints(self):
-        """
-        autoSortPoints sort the given build point first to east and west and
-        then based on the decision high altitude to low altitude or east to west
-        in each hemisphere
-
-        :return: success if sorted
-        """
+        """ """
         eastwest = self.ui.sortEW.isChecked()
         highlow = self.ui.sortHL.isChecked()
         avoidFlip = self.ui.avoidFlip.isChecked()
@@ -611,7 +596,7 @@ class BuildPoints(MWidget):
         if noSort and not avoidFlip:
             self.app.redrawHemisphere.emit()
             self.app.drawBuildPoints.emit()
-            return False
+            return
 
         if useDomeAz and enableDomeAz and eastwest:
             self.sortDomeAz(points=points, pierside=pierside)
@@ -619,7 +604,6 @@ class BuildPoints(MWidget):
             self.sortMountAz(
                 points=points, eastwest=eastwest, highlow=highlow, pierside=pierside
             )
-        return True
 
     def buildPointsChanged(self):
         """ """
@@ -650,7 +634,7 @@ class BuildPoints(MWidget):
         """ """
         if not self.ui.isOnline.isChecked():
             self.msg.emit(2, "Model", "Buildpoints", "MW4 is offline")
-            return False
+            return
 
         ident = self.ui.generateQuery.text().strip()
         if not ident:
@@ -659,7 +643,7 @@ class BuildPoints(MWidget):
             self.ui.generateDec.setText("")
             self.simbadRa = None
             self.simbadDec = None
-            return False
+            return
 
         result = Simbad.query_object(ident)
 
@@ -671,7 +655,7 @@ class BuildPoints(MWidget):
             self.ui.generateDec.setText("")
             self.simbadRa = None
             self.simbadDec = None
-            return False
+            return
 
         self.simbadRa = convertRaToAngle(result["RA"].value.data[0])
         text = formatHstrToText(self.simbadRa)
@@ -680,4 +664,3 @@ class BuildPoints(MWidget):
         self.simbadDec = convertDecToAngle(result["DEC"].value.data[0])
         text = formatDstrToText(self.simbadDec)
         self.ui.generateDec.setText(text)
-        return True

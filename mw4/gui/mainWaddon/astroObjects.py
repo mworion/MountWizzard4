@@ -15,7 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import os
 import logging
 
 # external packages
@@ -116,10 +115,9 @@ class AstroObjects(QObject):
         url = self.sourceUrls[entry]["url"]
         fileName = self.sourceUrls[entry]["file"]
         unzip = self.sourceUrls[entry]["unzip"]
-        self.dest = os.path.normpath(f"{self.dataDir}/{fileName}")
-        localSourceAvailable = os.path.isfile(self.dest)
+        self.dest = self.dataDir / fileName
 
-        if localSourceAvailable:
+        if self.dest.is_file():
             daysOld = self.loader.days_old(fileName)
             self.setAge(daysOld)
             if daysOld < self.window.ui.ageDatabases.value():

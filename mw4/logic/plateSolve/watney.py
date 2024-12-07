@@ -18,7 +18,6 @@
 import logging
 import subprocess
 import os
-import glob
 import time
 import platform
 from pathlib import Path
@@ -43,14 +42,14 @@ class Watney(object):
     def __init__(self, parent):
         self.parent = parent
         self.data = parent.data
-        self.tempDir = parent.tempDir
-        self.workDir = parent.workDir
+        self.tempDir = parent.app.mwGlob["tempDir"]
+        self.workDir = parent.app.mwGlob["workDir"]
 
         self.result: dict = {"success": False}
         self.process = None
         self.deviceName: str = "Watney"
-        self.indexPath: Path = ""
-        self.appPath: Path = ""
+        self.indexPath = Path("")
+        self.appPath = Path("")
         self.timeout: int = 30
         self.searchRadius: int = 20
         self.setDefaultPath()
@@ -60,8 +59,8 @@ class Watney(object):
                 "deviceList": ["Watney"],
                 "searchRadius": 10,
                 "timeout": 30,
-                "appPath": self.appPath,
-                "indexPath": self.indexPath,
+                "appPath": str(self.appPath),
+                "indexPath": str(self.indexPath),
             }
         }
 
@@ -75,8 +74,8 @@ class Watney(object):
 
     def setDefaultPath(self) -> None:
         """ """
-        self.appPath = os.path.join(self.workDir, "watney-cli")
-        self.indexPath = os.path.join(self.workDir, "watney-index")
+        self.appPath = self.workDir / "watney-cli"
+        self.indexPath = self.workDir / "watney-index"
         self.saveConfigFile()
 
     def runWatney(self, runnable: list) -> [bool, str]:
@@ -110,13 +109,13 @@ class Watney(object):
         result = {"success": False, "message": "Internal error"}
 
         isBlind = self.searchRadius == 180
-        jsonPath = os.path.join(self.tempDir, "solve.json")
-        wcsPath = os.path.join(self.tempDir, "temp.wcs")
+        jsonPath = self.tempDir / "solve.json"
+        wcsPath = self.tempDir / "temp.wcs"
 
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 
-        runnable = [os.path.join(self.appPath, "watney-solve")]
+        runnable = [self.appPath / "watney-solve"]
 
         if isBlind:
             runnable += ["blind"]
@@ -133,7 +132,7 @@ class Watney(object):
             "-w",
             wcsPath,
             "--use-config",
-            self.tempDir + "/watney-solve-config.yml",
+            self.tempDir / "watney-solve-config.yml",
             "--extended",
             "True",
         ]
@@ -177,19 +176,18 @@ class Watney(object):
         self.appPath = appPath
 
         if platform.system() == "Darwin":
-            program = os.path.join(self.appPath, "watney-solve")
+            program = self.appPath / "watney-solve"
         elif platform.system() == "Linux":
-            program = os.path.join(self.appPath, "/watney-solve")
+            program = self.appPath / "watney-solve"
         elif platform.system() == "Windows":
-            program = os.path.join(self.appPath, "/watney-solve.exe")
+            program = self.appPath / "watney-solve.exe"
         else:
             return False
-        return os.path.isfile(program)
+        return program.is_file()
 
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
         """ """
         self.indexPath = indexPath
         self.saveConfigFile()
 
-        numberFiles = sum(".qdb" in s for s in glob.glob(self.indexPath + "/*.*"))
-        return numberFiles % 407 == 0 and numberFiles > 0
+        return len(list(self.indexPath.glob("/*.*"))) > 0

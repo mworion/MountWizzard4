@@ -18,6 +18,7 @@
 import logging
 import os
 import json
+from pathlib import Path
 
 # external libraries
 from ndicts import NestedDict
@@ -106,8 +107,8 @@ def convertProfileData40to41(data):
         "deviceList": ["Watney"],
         "searchRadius": 10,
         "timeout": 30,
-        "appPath": "",
-        "indexPath": "",
+        "appPath": Path(""),
+        "indexPath": Path(""),
     }
     d = NestedDict(data)
     try:
@@ -212,14 +213,14 @@ def loadProfile(configDir=None, name=None):
     :return:    success if file could be loaded
     """
     if name is None:
-        profileFile = os.path.normpath(f"{configDir}/profile")
+        profileFile = configDir / "profile"
         if os.path.isfile(profileFile):
             with open(profileFile, "r") as profile:
                 name = profile.readline().strip()
         else:
             name = "config"
 
-    fileName = os.path.normpath(f"{configDir}/{name}.cfg")
+    fileName = configDir / (name + ".cfg")
 
     if not os.path.isfile(fileName):
         log.info(f"Config file {fileName} not existing")
@@ -255,11 +256,10 @@ def saveProfile(configDir=None, name=None, config=None):
     if name is None:
         name = config.get("profileName", "config")
 
-    profileFile = f"{configDir}/profile"
-    with open(profileFile, "w") as profile:
+    with open(configDir / "profile", "w") as profile:
         profile.writelines(f"{name}")
 
-    fileName = configDir + "/" + name + ".cfg"
+    fileName = configDir / (name + ".cfg")
     config["version"] = profileVersion
     with open(fileName, "w") as outfile:
         json.dump(config, outfile, sort_keys=True, indent=4)

@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import logging
-import os
 import json
 import random
 import csv
@@ -519,7 +518,7 @@ class DataPoint(object):
         :param fullFileName: name of file to be handled
         :return: value: loaded data
         """
-        if not os.path.isfile(fullFileName):
+        if not fullFileName.is_file():
             return None
 
         try:
@@ -540,7 +539,7 @@ class DataPoint(object):
         :param fullFileName: name of file to be handled
         :return: value: loaded data
         """
-        if not os.path.isfile(fullFileName):
+        if not fullFileName.is_file():
             return None
 
         try:
@@ -561,7 +560,7 @@ class DataPoint(object):
         :param fullFileName: name of file to be handled
         :return: value: loaded data
         """
-        if not os.path.isfile(fullFileName):
+        if not fullFileName.is_file:
             return None
 
         with open(fullFileName, "r") as handle:
@@ -599,7 +598,7 @@ class DataPoint(object):
 
         return True
 
-    def loadBuildP(self, fullFileName=None, ext=".bpts", keep=False):
+    def loadBuildP(self, fullFileName, ext=".bpts", keep=False):
         """
         loadBuildP loads a modeldata pints file and stores the data in the
         buildP list. necessary conversion are made.
@@ -609,7 +608,7 @@ class DataPoint(object):
         :param keep:
         :return: success
         """
-        if fullFileName is None:
+        if not fullFileName.is_file():
             return False
 
         value = None
@@ -637,7 +636,7 @@ class DataPoint(object):
 
         # backup solution
         if ext in [".csv", ".model"]:
-            fileName = os.path.basename(fullFileName).split(".")[0]
+            fileName = fullFileName.stem
             self.saveBuildP(fileName=fileName)
 
         return True
@@ -653,25 +652,18 @@ class DataPoint(object):
         if fileName is None:
             return False
 
-        fileName = self.configDir + "/" + fileName + ".bpts"
+        fileName = self.configDir / (fileName + ".bpts")
         points = [(x[0], x[1]) for x in self.buildP]
         with open(fileName, "w") as handle:
             json.dump(points, handle, indent=4)
         return True
 
-    def loadHorizonP(self, fileName=None, ext=".hpts"):
+    def loadHorizonP(self, fileName, ext=".hpts"):
         """
         loadHorizonP loads a modeldata pints file and stores the data in the
         buildP list. necessary conversion are made.
-
-        :param fileName: name of file to be handled
-        :param ext: load extension type
-        :return: success
         """
-        if fileName is None:
-            return False
-
-        fullFileName = self.configDir + "/" + fileName + ext
+        fullFileName = self.configDir / (fileName + ext)
         value = None
         if ext == ".csv":
             value = self.loadCSV(fullFileName)
@@ -703,7 +695,7 @@ class DataPoint(object):
         if fileName is None:
             return False
 
-        fileName = self.configDir + "/" + fileName + ".hpts"
+        fileName = self.configDir / (fileName + ".hpts")
 
         with open(fileName, "w") as handle:
             json.dump(self.horizonP, handle, indent=4)

@@ -246,18 +246,16 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         :return: success
         """
         folder = self.app.mwGlob["modelDir"]
-        val = self.openFile(self, "Open model file", folder, "Model files (*.model)")
-        loadFilePath, fileName, ext = val
-        if os.path.isfile(loadFilePath):
+        loadFilePath = self.openFile(
+            self, "Open model file", folder, "Model files (*.model)"
+        )
+        if loadFilePath.is_file():
             self.processModel(loadFilePath)
         return True
 
     def showAnalyse(self, path):
-        """
-        :param path:
-        :return: True for test purpose
-        """
-        if os.path.isfile(path):
+        """ """
+        if path.is_file():
             self.processModel(path)
         return True
 

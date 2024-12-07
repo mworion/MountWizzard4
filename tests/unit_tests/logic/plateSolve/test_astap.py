@@ -22,6 +22,7 @@ import os
 import glob
 import platform
 import builtins
+from pathlib import Path
 
 # external packages
 
@@ -53,7 +54,7 @@ def test_setDefaultPath_1(function):
                            'system',
                            return_value='Darwin'):
         function.setDefaultPath()
-        assert function.appPath == os.path.normpath('/Applications/ASTAP.app/Contents/MacOS')
+        assert function.appPath == Path('/Applications/ASTAP.app/Contents/MacOS')
 
 
 def test_setDefaultPath_2(function):
@@ -61,7 +62,7 @@ def test_setDefaultPath_2(function):
                            'system',
                            return_value='Linux'):
         function.setDefaultPath()
-        assert function.appPath == os.path.normpath('/opt/astap')
+        assert function.appPath == Path('/opt/astap')
 
 
 def test_setDefaultPath_3(function):
@@ -69,7 +70,7 @@ def test_setDefaultPath_3(function):
                            'system',
                            return_value='Windows'):
         function.setDefaultPath()
-        assert function.appPath == os.path.normpath('C:\\Program Files\\astap')
+        assert function.appPath == Path('C:\\Program Files\\astap')
 
 
 def test_runASTAP_1(function):

@@ -100,8 +100,7 @@ class SeeingWeather:
         """
         :return: success
         """
-        dataFile = self.app.mwGlob["dataDir"] + "/meteoblue.data"
-        dataFile = os.path.normpath(dataFile)
+        dataFile = self.app.mwGlob["dataDir"] / "meteoblue.data"
         if not os.path.isfile(dataFile):
             self.log.info(f"{dataFile} not available")
             return False
@@ -136,7 +135,7 @@ class SeeingWeather:
         data = data.json()
         self.log.trace(data)
 
-        with open(self.app.mwGlob["dataDir"] + "/meteoblue.data", "w+") as f:
+        with open(self.app.mwGlob["dataDir"] / "meteoblue.data", "w+") as f:
             json.dump(data, f, indent=4)
         return True
 
@@ -167,8 +166,7 @@ class SeeingWeather:
         :param hours:
         :return:
         """
-        filePath = self.app.mwGlob["dataDir"] + "/" + fileName
-        filePath = os.path.normpath(filePath)
+        filePath = self.app.mwGlob["dataDir"] / fileName
         if not os.path.isfile(filePath):
             return True
 

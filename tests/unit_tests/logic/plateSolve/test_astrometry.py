@@ -21,7 +21,7 @@ import os
 import glob
 import platform
 import subprocess
-from os.path import normpath
+from pathlib import Path
 
 # external packages
 
@@ -53,7 +53,8 @@ def test_setDefaultPath_1(function):
                            'system',
                            return_value='Darwin'):
         function.setDefaultPath()
-        assert function.appPath == normpath('/Applications/KStars.app/Contents/MacOS/astrometry/bin')
+        assert function.appPath == Path(
+        '/Applications/KStars.app/Contents/MacOS/astrometry/bin')
 
 
 def test_setDefaultPath_2(function):
@@ -61,7 +62,7 @@ def test_setDefaultPath_2(function):
                            'system',
                            return_value='Linux'):
         function.setDefaultPath()
-        assert function.appPath == normpath('/usr/bin')
+        assert function.appPath == Path('/usr/bin')
 
 
 def test_setDefaultPath_3(function):
@@ -69,7 +70,7 @@ def test_setDefaultPath_3(function):
                            'system',
                            return_value='Windows'):
         function.setDefaultPath()
-        assert function.appPath == normpath('')
+        assert function.appPath == Path('')
 
 
 def test_saveConfigFile(function):

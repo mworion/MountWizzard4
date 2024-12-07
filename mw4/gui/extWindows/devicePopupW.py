@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import platform
+from pathlib import Path
 
 # external packages
 from PySide6.QtCore import Qt
@@ -85,22 +86,22 @@ class DevicePopup(toolsQtWidget.MWidget):
                 "deviceList": self.ui.astrometryDeviceList,
                 "searchRadius": self.ui.astrometrySearchRadius,
                 "timeout": self.ui.astrometryTimeout,
-                "appPath": self.ui.astrometryAppPath,
-                "indexPath": self.ui.astrometryIndexPath,
+                "appPath": Path(self.ui.astrometryAppPath),
+                "indexPath": Path(self.ui.astrometryIndexPath),
             },
             "astap": {
                 "deviceList": self.ui.astapDeviceList,
                 "searchRadius": self.ui.astapSearchRadius,
                 "timeout": self.ui.astapTimeout,
-                "appPath": self.ui.astapAppPath,
-                "indexPath": self.ui.astapIndexPath,
+                "appPath": Path(self.ui.astapAppPath),
+                "indexPath": Path(self.ui.astapIndexPath),
             },
             "watney": {
                 "deviceList": self.ui.watneyDeviceList,
                 "searchRadius": self.ui.watneySearchRadius,
                 "timeout": self.ui.watneyTimeout,
-                "appPath": self.ui.watneyAppPath,
-                "indexPath": self.ui.watneyIndexPath,
+                "appPath": Path(self.ui.watneyAppPath),
+                "indexPath": Path(self.ui.watneyIndexPath),
             },
             "onlineWeather": {
                 "apiKey": self.ui.onlineWeatherApiKey,

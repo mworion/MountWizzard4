@@ -17,7 +17,6 @@
 # standard libraries
 import logging
 import platform
-import os
 
 # external packages
 from skyfield.api import wgs84, Angle, load, Loader
@@ -69,7 +68,7 @@ class ObsSite(object):
         "99": "Error",
     }
 
-    def __init__(self, parent, pathToData=None, verbose=False):
+    def __init__(self, parent, pathToData, verbose=False):
         self.parent = parent
         self.pathToData = pathToData
         self.verbose = verbose
@@ -109,21 +108,14 @@ class ObsSite(object):
         self.setLoaderAndTimescale()
 
     def setLoaderAndTimescale(self):
-        """
-        :return:
-        """
-        hasPathToData = self.pathToData is not None
-        if hasPathToData:
+        """ """
+        timescaleFile = self.pathToData / "finals2000A.all"
+        if timescaleFile.is_file():
             self.loader = Loader(self.pathToData, verbose=self.verbose)
-            hasOnline = os.path.isfile(self.pathToData + "/finals2000A.all")
-        else:
-            self.loader = load
-            hasOnline = False
-
-        if hasOnline:
             self.ts = self.loader.timescale(builtin=False)
             self.log.info("Using downloaded timescale version")
         else:
+            self.loader = load
             self.ts = self.loader.timescale(builtin=True)
             self.log.info("Using built-in timescale version")
 

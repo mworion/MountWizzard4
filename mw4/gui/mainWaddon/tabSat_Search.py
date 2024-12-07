@@ -127,7 +127,7 @@ class SatSearch(MWidget, SatData):
         """ """
         self.ui.listSats.setRowCount(0)
         loader = self.app.mount.obsSite.loader
-        satellites = loader.tle_file(self.satellites.dest)
+        satellites = loader.tle_file(str(self.satellites.dest))
         self.satellites.objects.clear()
         for sat in satellites:
             self.satellites.objects[sat.name] = sat

@@ -113,8 +113,7 @@ class OnlineWeather:
         """
         :return: success
         """
-        dataFile = self.app.mwGlob["dataDir"] + "/openweathermap.data"
-        dataFile = os.path.normpath(dataFile)
+        dataFile = self.app.mwGlob["dataDir"] / "openweathermap.data"
         if not os.path.isfile(dataFile):
             self.log.info(f"{dataFile} not available")
             return False
@@ -206,8 +205,7 @@ class OnlineWeather:
         :param hours:
         :return:
         """
-        filePath = self.app.mwGlob["dataDir"] + "/" + fileName
-        filePath = os.path.normpath(filePath)
+        filePath = self.app.mwGlob["dataDir"] / fileName
         if not os.path.isfile(filePath):
             return True
 

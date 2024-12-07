@@ -15,7 +15,7 @@
 #
 ###########################################################
 # standard libraries
-import os
+from pathlib import Path
 
 # external packages
 from PySide6.QtCore import Qt, QPointF
@@ -75,10 +75,10 @@ class HemisphereWindow(MWidget, SlewInterface):
         if "hemisphereW" not in self.app.config:
             self.app.config["hemisphereW"] = {}
         config = self.app.config["hemisphereW"]
-        fileName = config.get("horizonMaskFileName", "")
-        self.ui.horizonMaskFileName.setText(fileName)
-        self.app.data.loadHorizonP(fileName=fileName)
-        fileName = config.get("terrainFileName", "")
+        fileName = Path(config.get("horizonMaskFileName", ""))
+        self.ui.horizonMaskFileName.setText(fileName.stem)
+        self.app.data.loadHorizonP(fileName=fileName.stem)
+        fileName = Path(config.get("terrainFileName", ""))
         self.setTerrainFile(fileName)
         self.positionWindow(config)
 
@@ -100,7 +100,6 @@ class HemisphereWindow(MWidget, SlewInterface):
         self.ui.terrainAlpha.valueChanged.connect(self.drawHorizonTab)
         self.ui.normalModeHor.clicked.connect(self.setOperationModeHor)
         self.ui.editModeHor.clicked.connect(self.setOperationModeHor)
-
         self.ui.saveHorizonMask.clicked.connect(self.saveHorizonMask)
         self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
         self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
@@ -260,7 +259,6 @@ class HemisphereWindow(MWidget, SlewInterface):
 
     def selectFontParam(self, relevance):
         """
-        :param relevance:
         :return: calculated color
         """
         cMap = pg.ColorMap([0, 0.6, 1.0], [self.M_RED, self.M_YELLOW, self.M_GREEN])
@@ -385,7 +383,7 @@ class HemisphereWindow(MWidget, SlewInterface):
     def drawTerrainMask(self, plotItem):
         """ """
         if self.imageTerrain is None:
-            return False
+            return
 
         shiftAz = (self.ui.azimuthShift.value() + 360) % 360
         shiftAlt = self.ui.altitudeShift.value()
@@ -402,14 +400,13 @@ class HemisphereWindow(MWidget, SlewInterface):
         imgItem.setOpts(opacity=alpha)
         imgItem.setZValue(-10)
         plotItem.addItem(imgItem)
-        return True
 
     def drawMeridianLimits(self):
         """ """
         slew = self.app.mount.setting.meridianLimitSlew
         track = self.app.mount.setting.meridianLimitTrack
         if slew is None or track is None:
-            return False
+            return
 
         plotItem = self.ui.hemisphere.p[0]
 
@@ -424,7 +421,6 @@ class HemisphereWindow(MWidget, SlewInterface):
         mTrack.setBrush(pg.mkBrush(color=self.M_YELLOW + "40"))
         mTrack.setZValue(20)
         plotItem.addItem(mTrack)
-        return True
 
     def drawHorizonLimits(self):
         """ """
@@ -450,7 +446,6 @@ class HemisphereWindow(MWidget, SlewInterface):
         hHigh.setBrush(pg.mkBrush(color=self.M_RED + "40"))
         hHigh.setZValue(0)
         plotItem.addItem(hHigh)
-        return True
 
     def setupAlignmentStars(self):
         """ """
@@ -471,9 +466,9 @@ class HemisphereWindow(MWidget, SlewInterface):
     def drawAlignmentStars(self):
         """ """
         if not self.ui.showAlignStar.isChecked():
-            return False
+            return
         if self.alignmentStars is None:
-            return False
+            return
 
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()
@@ -504,13 +499,12 @@ class HemisphereWindow(MWidget, SlewInterface):
             self.alignmentStarsText[i].setColor(fontColor)
             self.alignmentStarsText[i].setPos(az, alt)
             self.alignmentStarsText[i].setZValue(30)
-        return True
 
     def drawModelPoints(self):
         """ """
         points = self.app.data.buildP
         if not points:
-            return False
+            return
 
         x = [x[1] for x in points]
         y = [x[0] for x in points]
@@ -537,14 +531,13 @@ class HemisphereWindow(MWidget, SlewInterface):
                 spot.setPen(pg.mkPen(color=color, width=1.5))
                 spot.setBrush(pg.mkBrush(color=color + "40"))
                 spot.setSymbol(symbol)
-        return True
 
     def drawModelText(self):
         """ """
         plotItem = self.ui.hemisphere.p[0]
         points = self.app.data.buildP
         if not points:
-            return False
+            return
         x = [x[1] for x in points]
         y = [x[0] for x in points]
         act = [x[2] for x in points]
@@ -578,18 +571,14 @@ class HemisphereWindow(MWidget, SlewInterface):
             textItem.setZValue(40)
             self.modelPointsText.append(textItem)
             plotItem.addItem(textItem)
-        return True
 
     def updateDataModel(self, x, y):
-        """
-        :return:
-        """
+        """ """
         bp = [(y, x, True) for y, x in zip(y, x)]
         self.app.data.buildP = bp
         self.drawModelPoints()
         self.drawModelText()
         self.app.buildPointsChanged.emit()
-        return True
 
     def setupModel(self):
         """ """
@@ -701,10 +690,9 @@ class HemisphereWindow(MWidget, SlewInterface):
         """ """
         az, alt, err = self.getMountModelData()
         if az is None or alt is None or err is None:
-            return False
+            return
 
-        suc = self.ui.hemisphere.addIsoItemHorizon(az, alt, err)
-        return suc
+        self.ui.hemisphere.addIsoItemHorizon(az, alt, err)
 
     def drawHemisphereTab(self):
         """ """
@@ -748,16 +736,14 @@ class HemisphereWindow(MWidget, SlewInterface):
 
         suc = self.messageDialog(self, "Slewing mount", question)
         if not suc:
-            return False
-
-        suc = self.slewTargetAltAz(altitude, azimuth)
-        return suc
+            return
+        self.slewTargetAltAz(altitude, azimuth)
 
     def slewStar(self, posView):
         """ """
         spot = self.alignmentStars.pointsAt(posView)
         if len(spot) == 0:
-            return False
+            return
 
         index = spot[0].index()
         hip = self.app.hipparcos
@@ -778,7 +764,7 @@ class HemisphereWindow(MWidget, SlewInterface):
         question = question + warning if isDAT else question
         reply = self.messageDialog(self, "Slewing mount", question, buttons)
         if reply == 0:
-            return False
+            return
         elif reply == 1:
             alignType = "ortho"
         else:
@@ -786,8 +772,7 @@ class HemisphereWindow(MWidget, SlewInterface):
 
         t = f"Align [{alignType}] to [{name}]"
         self.msg.emit(1, "Hemisphere", "Align", t)
-        suc = self.slewTargetRaDec(ra, dec, slewType=alignType, epoch="JNow")
-        return suc
+        self.slewTargetRaDec(ra, dec, slewType=alignType, epoch="JNow")
 
     def mouseDoubleClick(self, ev, posView):
         """ """
@@ -798,15 +783,13 @@ class HemisphereWindow(MWidget, SlewInterface):
 
     def mouseMovedHorizon(self, pos):
         """ """
-        plotItem = self.ui.horizon.p[0]
         self.mouseMoved(pos)
 
     def setTerrainFile(self, fileName):
         """ """
-        self.ui.terrainFileName.setText(fileName)
-        terrainFile = self.app.mwGlob["configDir"] + "/" + fileName + ".jpg"
-        terrainFile = os.path.normpath(terrainFile)
-        if not os.path.isfile(terrainFile):
+        self.ui.terrainFileName.setText(fileName.stem)
+        terrainFile = self.app.mwGlob["configDir"] / fileName
+        if not terrainFile.is_file():
             self.imageTerrain = None
             return False
 
@@ -825,20 +808,22 @@ class HemisphereWindow(MWidget, SlewInterface):
         """ """
         folder = self.app.mwGlob["configDir"]
         fileTypes = "Terrain images (*.jpg)"
-        loadFilePath, fileName, ext = self.openFile(
-            self, "Open terrain image", folder, fileTypes
-        )
-        if not loadFilePath:
+        loadFilePath = self.openFile(self, "Open terrain image", folder, fileTypes)
+        if not loadFilePath.is_file():
             return False
 
-        suc = self.setTerrainFile(fileName)
-        if suc:
-            self.ui.terrainFileName.setText(fileName)
+        if self.setTerrainFile(loadFilePath):
+            self.ui.terrainFileName.setText(loadFilePath.stem)
             self.ui.showTerrain.setChecked(True)
-            self.msg.emit(0, "Hemisphere", "Terrain", f"Mask [{fileName}] loaded")
+            self.msg.emit(
+                0, "Hemisphere", "Terrain", f"Mask [{loadFilePath.stem}] loaded"
+            )
         else:
             self.msg.emit(
-                2, "Hemisphere", "Terrain", f"Image [{fileName}] cannot no be loaded"
+                2,
+                "Hemisphere",
+                "Terrain",
+                f"Image [{loadFilePath.stem}] cannot be loaded",
             )
         self.drawHorizonTab()
         return True

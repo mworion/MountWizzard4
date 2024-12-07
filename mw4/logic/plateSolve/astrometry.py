@@ -21,7 +21,6 @@ import os
 import glob
 import time
 import platform
-from os.path import normpath
 from pathlib import Path
 
 # external packages
@@ -41,12 +40,11 @@ class Astrometry(object):
     def __init__(self, parent=None):
         self.parent = parent
         self.data = parent.data
-        self.tempDir = parent.tempDir
-
+        self.tempDir = parent.app.mwGlob["tempDir"]
         self.result = {"success": False}
         self.process = None
-        self.indexPath: Path = ""
-        self.appPath: Path = ""
+        self.indexPath = Path("")
+        self.appPath = Path("")
         self.setDefaultPath()
         self.apiKey: str = ""
         self.timeout: int = 30
@@ -58,8 +56,8 @@ class Astrometry(object):
                 "deviceList": ["ASTROMETRY.NET"],
                 "searchRadius": 10,
                 "timeout": 30,
-                "appPath": self.appPath,
-                "indexPath": self.indexPath,
+                "appPath": str(self.appPath),
+                "indexPath": str(self.indexPath),
             }
         }
 
@@ -67,23 +65,23 @@ class Astrometry(object):
         """ """
         if platform.system() == "Darwin":
             home = os.environ.get("HOME", "")
-            self.appPath = normpath(
+            self.appPath = Path(
                 "/Applications/KStars.app/Contents/MacOS/astrometry/bin"
             )
-            self.indexPath = normpath(home + "/Library/Application Support/Astrometry")
+            self.indexPath = Path(home + "/Library/Application Support/Astrometry")
 
         elif platform.system() == "Linux":
-            self.appPath = normpath("/usr/bin")
-            self.indexPath = normpath("/usr/share/astrometry")
+            self.appPath = Path("/usr/bin")
+            self.indexPath = Path("/usr/share/astrometry")
 
         elif platform.system() == "Windows":
-            self.appPath = normpath("")
-            self.indexPath = normpath("")
+            self.appPath = Path("")
+            self.indexPath = Path("")
         self.saveConfigFile()
 
     def saveConfigFile(self):
         """ """
-        cfgFile = os.path.join(self.tempDir, "astrometry.cfg")
+        cfgFile = self.tempDir / "astrometry.cfg"
         with open(cfgFile, "w+") as outFile:
             outFile.write("cpulimit 300\n")
             outFile.write(f"add_path {self.indexPath}\n")
@@ -167,11 +165,11 @@ class Astrometry(object):
         self.process = None
         result = {"success": False, "message": "Internal error"}
 
-        tempPath = os.path.join(self.tempDir, "temp.xy")
-        configPath = os.path.join(self.tempDir, "astrometry.cfg")
-        wcsPath = os.path.join(self.tempDir, "temp.wcs")
-        binPathImage2xy = os.path.join(self.appPath, "image2xy")
-        binPathSolveField = os.path.join(self.appPath, "solve-field")
+        tempPath = self.tempDir / "temp.xy"
+        configPath = self.tempDir / "astrometry.cfg"
+        wcsPath = self.tempDir / "temp.wcs"
+        binPathImage2xy = self.appPath / "image2xy"
+        binPathSolveField = self.appPath / "solve-field"
 
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
@@ -252,11 +250,11 @@ class Astrometry(object):
         self.appPath = appPath
 
         if platform.system() == "Darwin":
-            program = os.path.join(self.appPath, "solve-field")
+            program = self.appPath / "solve-field"
         elif platform.system() == "Linux":
-            program = os.path.join(self.appPath, "solve-field")
+            program = self.appPath / "solve-field"
         elif platform.system() == "Windows":
-            program = normpath("")
+            program = Path("")
         else:
             return False
         return os.path.isfile(program)
@@ -267,11 +265,11 @@ class Astrometry(object):
         self.saveConfigFile()
 
         if platform.system() == "Darwin":
-            index = os.path.join(self.indexPath, "*.fits")
+            index = self.indexPath / "*.fits"
         elif platform.system() == "Linux":
-            index = os.path.join(self.indexPath, "*.fits")
+            index = self.indexPath / "*.fits"
         elif platform.system() == "Windows":
-            index = normpath("")
+            index = Path("")
         else:
             return False
         return bool(glob.glob(index))

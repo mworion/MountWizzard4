@@ -15,7 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import glob
 import json
 import os
 
@@ -174,11 +173,8 @@ class ManageModel(MWidget):
                 "dec": star.coord.dec.degrees,
             }
 
-        searchPath = os.path.normpath(self.app.mwGlob["modelDir"] + "/*.model")
-        modelFileList = glob.glob(searchPath)
-
-        for modelFilePath in modelFileList:
-            if "opt" in modelFilePath:
+        for modelFilePath in self.app.mwGlob["modelDir"].glob("*.model"):
+            if "opt" in str(modelFilePath):
                 continue
 
             with open(modelFilePath, "r") as inFile:
@@ -352,8 +348,8 @@ class ManageModel(MWidget):
 
     def writeBuildModelOptimized(self, foundModel, pointsOut):
         """ """
-        actPath = self.app.mwGlob["modelDir"] + "/" + foundModel + ".model"
-        newPath = self.app.mwGlob["modelDir"] + "/" + foundModel + "-opt.model"
+        actPath = self.app.mwGlob["modelDir"] / (foundModel + ".model")
+        newPath = self.app.mwGlob["modelDir"] / (foundModel + "-opt.model")
 
         try:
             with open(actPath) as actFile:
@@ -368,6 +364,7 @@ class ManageModel(MWidget):
                 continue
             newModel.append(element)
 
+        return True
         newModel = writeRetrofitData(self.app.mount.model, newModel)
         with open(newPath, "w+") as newFile:
             json.dump(newModel, newFile, sort_keys=True, indent=4)
@@ -562,8 +559,7 @@ class ManageModel(MWidget):
         if not self.fittedModelPath:
             return False
 
-        temp = os.path.splitext(self.fittedModelPath)
-        actualPath = os.path.normpath(temp[0] + "-opt" + temp[1])
+        actualPath = self.fittedModelPath.with_stem(self.fittedModelPath.name + "-opt")
         if not os.path.isfile(actualPath):
             return False
 

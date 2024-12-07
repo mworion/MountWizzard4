@@ -21,6 +21,7 @@ import glob
 import json
 import shutil
 import os
+from pathlib import Path
 
 # external packages
 import PySide6
@@ -132,7 +133,7 @@ def test_findFittingModel_1(function):
 
 
 def test_findFittingModel_2(function):
-    function.app.mwGlob["modelDir"] = "tests/testData"
+    function.app.mwGlob["modelDir"] = Path("tests/testData")
     function.app.mount.model.starList = list()
     a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
@@ -147,11 +148,11 @@ def test_findFittingModel_2(function):
         assert name == ""
         assert pointsIn == []
         assert pointsOut == []
-    function.app.mwGlob["modelDir"] = "tests/workDir/model"
+    function.app.mwGlob["modelDir"] = Path("tests/workDir/model")
 
 
 def test_findFittingModel_3(function):
-    function.app.mwGlob["modelDir"] = "tests/testData"
+    function.app.mwGlob["modelDir"] = Path("tests/testData")
     function.app.mount.model.starList = list()
     a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
@@ -167,11 +168,11 @@ def test_findFittingModel_3(function):
             assert name == ""
             assert pointsIn == []
             assert pointsOut == []
-    function.app.mwGlob["modelDir"] = "tests/workDir/model"
+    function.app.mwGlob["modelDir"] = Path("tests/workDir/model")
 
 
 def test_findFittingModel_4(function):
-    function.app.mwGlob["modelDir"] = "tests/testData"
+    function.app.mwGlob["modelDir"] = Path("tests/testData")
     function.app.mount.model.starList = list()
     a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
@@ -186,7 +187,7 @@ def test_findFittingModel_4(function):
 
             assert pointsIn == [1, 2, 3]
             assert pointsOut == [4]
-    function.app.mwGlob["modelDir"] = "tests/workDir/model"
+    function.app.mwGlob["modelDir"] = Path("tests/workDir/model")
 
 
 def test_showModelPosition_1(function):
@@ -775,21 +776,22 @@ def test_showOriginalModelAnalyse_3(function):
 
 
 def test_showActualModelAnalyse_1(function):
-    function.fittedModelPath = ""
+    function.fittedModelPath = Path("aaaa")
     suc = function.showActualModelAnalyse()
     assert not suc
 
 
 def test_showActualModelAnalyse_2(function):
-    function.fittedModelPath = "test"
+    function.fittedModelPath = Path("test")
     suc = function.showActualModelAnalyse()
     assert not suc
 
 
 def test_showActualModelAnalyse_3(function):
-    function.fittedModelPath = "tests/testData/test.model"
-    suc = function.showActualModelAnalyse()
-    assert suc
+    function.fittedModelPath = Path("tests/testData/test.model")
+    with mock.patch.object(Path, "is_file", return_value=True):
+        suc = function.showActualModelAnalyse()
+        assert suc
 
 
 def test_pointClicked_1(function):

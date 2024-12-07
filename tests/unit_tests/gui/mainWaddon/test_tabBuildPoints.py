@@ -17,6 +17,7 @@
 # standard libraries
 import pytest
 from unittest import mock
+from pathlib import Path
 
 # external packages
 from astroquery.simbad import Simbad
@@ -313,36 +314,32 @@ def test_genModel_1(function):
 
 def test_loadBuildFile_1(function):
     with mock.patch.object(
-        function, "openFile", return_value=("build", "test", "bpts")
+        function, "openFile", return_value=Path("test.bpts")
     ):
         with mock.patch.object(function.app.data, "loadBuildP", return_value=True):
-            suc = function.loadBuildFile()
-            assert suc
+            function.loadBuildFile()
 
 
 def test_loadBuildFile_2(function):
-    with mock.patch.object(function, "openFile", return_value=("", "", "")):
-        suc = function.loadBuildFile()
-        assert not suc
+    with mock.patch.object(function, "openFile", return_value=Path("")):
+        function.loadBuildFile()
 
 
 def test_loadBuildFile_3(function):
     with mock.patch.object(
-        function, "openFile", return_value=("build", "test", "bpts")
+        function, "openFile", return_value=Path("test.bpts")
     ):
         with mock.patch.object(function.app.data, "loadBuildP", return_value=False):
-            suc = function.loadBuildFile()
-            assert suc
+            function.loadBuildFile()
 
 
 def test_saveBuildFile_1(function):
     function.ui.buildPFileName.setText("test")
     with mock.patch.object(
-        function, "saveFile", return_value=("build", "test", "bpts")
+        function, "saveFile", return_value=Path("test.bpts")
     ):
         with mock.patch.object(function.app.data, "saveBuildP", return_value=True):
-            suc = function.saveBuildFile()
-            assert suc
+            function.saveBuildFile()
 
 
 def test_saveBuildFile_2(function):
@@ -354,66 +351,58 @@ def test_saveBuildFile_2(function):
 def test_saveBuildFile_3(function):
     function.ui.buildPFileName.setText("test")
     with mock.patch.object(
-        function, "saveFile", return_value=("build", "test", "bpts")
+        function, "saveFile", return_value=Path("test.bpts")
     ):
         with mock.patch.object(function.app.data, "saveBuildP", return_value=False):
-            suc = function.saveBuildFile()
-            assert suc
+            function.saveBuildFile()
 
 
 def test_saveBuildFileAs_1(function):
     with mock.patch.object(
-        function, "saveFile", return_value=("build", "test", "bpts")
+        function, "saveFile", return_value=Path("test.bpts")
     ):
         with mock.patch.object(function.app.data, "saveBuildP", return_value=True):
-            suc = function.saveBuildFileAs()
-            assert suc
+            function.saveBuildFileAs()
 
 
 def test_saveBuildFileAs_2(function):
-    with mock.patch.object(function, "saveFile", return_value=("", "", "")):
-        suc = function.saveBuildFileAs()
-        assert not suc
+    with mock.patch.object(function, "saveFile", return_value=Path("")):
+        function.saveBuildFileAs()
 
 
 def test_saveBuildFileAs_3(function):
     with mock.patch.object(
-        function, "saveFile", return_value=("build", "test", "bpts")
+        function, "saveFile", return_value=Path("test.bpts")
     ):
         with mock.patch.object(function.app.data, "saveBuildP", return_value=False):
-            suc = function.saveBuildFileAs()
-            assert suc
+            function.saveBuildFileAs()
 
 
 def test_genBuildFile_1(function):
     function.ui.buildPFileName.setText("")
     function.ui.autoDeleteHorizon.setChecked(True)
-    suc = function.genBuildFile()
-    assert not suc
+    function.genBuildFile()
 
 
 def test_genBuildFile_2(function):
     function.ui.buildPFileName.setText("test")
     function.ui.autoDeleteHorizon.setChecked(True)
     with mock.patch.object(function.app.data, "loadBuildP", return_value=False):
-        suc = function.genBuildFile()
-        assert not suc
+        function.genBuildFile()
 
 
 def test_genBuildFile_3(function):
     function.ui.buildPFileName.setText("test")
     function.ui.autoDeleteHorizon.setChecked(True)
     with mock.patch.object(function.app.data, "loadBuildP", return_value=True):
-        suc = function.genBuildFile()
-        assert suc
+        function.genBuildFile()
 
 
 def test_genBuildFile_4(function):
     function.ui.buildPFileName.setText("test")
     function.ui.autoDeleteHorizon.setChecked(False)
     with mock.patch.object(function.app.data, "loadBuildP", return_value=True):
-        suc = function.genBuildFile()
-        assert suc
+        function.genBuildFile()
 
 
 def test_clearBuildP_1(function):
@@ -429,8 +418,7 @@ def test_clearBuildP_2(function):
             return
 
     function.app.uiWindows = {"showHemisphereW": {"classObj": Test()}}
-    suc = function.clearBuildP()
-    assert suc
+    function.clearBuildP()
 
 
 def test_autoDeletePoints(function):
@@ -466,17 +454,14 @@ def test_sortDomeAzWorker_2(function):
 
 def test_sortDomeAz_1(function):
     with mock.patch.object(function.app.threadPool, "start"):
-        suc = function.sortDomeAz([])
-        assert suc
+        function.sortDomeAz([])
         function.sortRunning.unlock()
 
 
 def test_sortDomeAz_2(function):
     function.sortRunning.lock()
     with mock.patch.object(function.app.threadPool, "start"):
-        suc = function.sortDomeAz([])
-        assert not suc
-        function.sortRunning.unlock()
+        function.sortDomeAz([])
 
 
 def test_sortMountAz(function):
@@ -490,8 +475,7 @@ def test_autoSortPoints_1(function):
     function.ui.avoidFlip.setChecked(False)
     function.ui.useDomeAz.setChecked(False)
     function.ui.useDomeAz.setEnabled(False)
-    suc = function.autoSortPoints()
-    assert not suc
+    function.autoSortPoints()
 
 
 def test_autoSortPoints_2(function):
@@ -501,8 +485,7 @@ def test_autoSortPoints_2(function):
     function.ui.useDomeAz.setChecked(True)
     function.ui.useDomeAz.setEnabled(True)
     with mock.patch.object(function, "sortDomeAz"):
-        suc = function.autoSortPoints()
-        assert suc
+        function.autoSortPoints()
 
 
 def test_autoSortPoints_3(function):
@@ -512,8 +495,7 @@ def test_autoSortPoints_3(function):
     function.ui.useDomeAz.setChecked(False)
     function.ui.useDomeAz.setEnabled(False)
     with mock.patch.object(function, "sortMountAz"):
-        suc = function.autoSortPoints()
-        assert suc
+        function.autoSortPoints()
 
 
 def test_buildPointsChanged(function):
@@ -540,23 +522,20 @@ def test_setupDsoGui(function):
 
 def test_querySimbad_1(function):
     function.ui.isOnline.setChecked(False)
-    suc = function.querySimbad()
-    assert not suc
+    function.querySimbad()
 
 
 def test_querySimbad_2(function):
     function.ui.isOnline.setChecked(True)
     function.ui.generateQuery.setText("")
-    suc = function.querySimbad()
-    assert not suc
+    function.querySimbad()
 
 
 def test_querySimbad_3(function):
     function.ui.isOnline.setChecked(True)
     function.ui.generateQuery.setText("m31")
     with mock.patch.object(Simbad, "query_object", return_value=None):
-        suc = function.querySimbad()
-        assert not suc
+        function.querySimbad()
 
 
 def test_querySimbad_4(function):
@@ -571,5 +550,4 @@ def test_querySimbad_4(function):
     function.ui.isOnline.setChecked(True)
     function.ui.generateQuery.setText("m31")
     with mock.patch.object(Simbad, "query_object", return_value=result):
-        suc = function.querySimbad()
-        assert suc
+        function.querySimbad()

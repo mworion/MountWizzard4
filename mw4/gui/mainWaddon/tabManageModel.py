@@ -560,7 +560,7 @@ class ManageModel(MWidget):
             return False
 
         actualPath = self.fittedModelPath.with_stem(self.fittedModelPath.name + "-opt")
-        if not os.path.isfile(actualPath):
+        if not actualPath.is_file():
             return False
 
         self.app.showAnalyse.emit(actualPath)

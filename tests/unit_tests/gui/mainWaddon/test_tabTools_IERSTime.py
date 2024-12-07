@@ -17,6 +17,7 @@
 # standard libraries
 import pytest
 from unittest import mock
+from pathlib import Path
 
 # external packages
 from PySide6.QtWidgets import QWidget
@@ -43,13 +44,13 @@ def function(qapp):
 def test_initConfig_1(function):
     suc = function.initConfig()
     assert suc
-    assert function.tempDir == "tests/workDir/temp"
+    assert function.tempDir == Path("tests/workDir/temp")
 
 
 def test_initConfig_2(function):
     suc = function.initConfig()
     assert suc
-    assert function.tempDir == "tests/workDir/temp"
+    assert function.tempDir == Path("tests/workDir/temp")
 
 
 def test_storeConfig_1(function):

@@ -19,9 +19,8 @@ import logging
 import sys
 from queue import Queue
 
-from PySide6.QtWidgets import QApplication
-
 # external packages
+from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QObject, Signal, QThreadPool, QTimer
 from skyfield.api import wgs84
 from importlib_metadata import version
@@ -80,9 +79,9 @@ class MountWizzard4(QObject):
     refreshName = Signal()
     updateSatellite = Signal(object, object)
     showSatellite = Signal(object, object, object, object, object)
-    showImage = Signal(str)
-    showAnalyse = Signal(str)
-    remoteCommand = Signal(str)
+    showImage = Signal(object)
+    showAnalyse = Signal(object)
+    remoteCommand = Signal(object)
     colorChange = Signal()
     hostChanged = Signal()
     virtualStop = Signal()

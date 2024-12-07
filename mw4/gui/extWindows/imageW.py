@@ -69,8 +69,8 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.barItem = None
         self.imageItem = None
         self.imageSourceRange = None
-        self.imageFileName = ""
-        self.imageFileNameOld = ""
+        self.imageFileName: Path = Path("")
+        self.imageFileNameOld: Path = Path("")
         self.exposureTime = 1
         self.binning = 1
         self.folder = ""
@@ -280,7 +280,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
 
         isPlateSolve = bool(self.app.deviceStat.get("plateSolve", False))
         isSolving = bool(self.imagingDeviceStat.get("solve", False))
-        isImage = self.imageFileName != ""
+        isImage = self.imageFileName.is_file()
 
         self.ui.solve.setEnabled(isPlateSolve and isImage)
         self.ui.abortSolve.setEnabled(isPlateSolve and isImage and isSolving)
@@ -308,20 +308,19 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         """
         :return: success
         """
-        loadFilePath = self.openFile(
+        self.imageFileName = self.openFile(
             self,
             "Select image file",
             self.folder,
             "All (*.fit* *.xisf);; FITS files (*.fit*);;XISF files (*.xisf)",
             enableDir=True,
         )
-        if not loadFilePath.is_file():
+        if not self.imageFileName.is_file():
             self.msg.emit(0, "Image", "Loading", "No image selected")
             return False
 
-        self.imageFileName = loadFilePath
-        self.msg.emit(0, "Image", "Image selected", loadFilePath.name())
-        self.folder = loadFilePath.parents[0]
+        self.msg.emit(0, "Image", "Image selected", self.imageFileName.name)
+        self.folder = self.imageFileName.parents[0]
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(self.imageFileName)
         self.app.showImage.emit(self.imageFileName)
@@ -448,7 +447,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         )
         return True
 
-    def showImage(self, imagePath):
+    def showImage(self, imagePath: Path):
         """ """
         if self.imagingDeviceStat["expose"]:
             self.ui.image.setImage(None)
@@ -481,7 +480,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         else:
             fileName = "exposure.fits"
 
-        self.imageFileName = os.path.join(self.app.mwGlob["imageDir"], fileName)
+        self.imageFileName = self.app.mwGlob["imageDir"] / fileName
 
         suc = self.app.camera.expose(
             imagePath=self.imageFileName, exposureTime=exposureTime, binning=binning
@@ -496,7 +495,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.msg.emit(0, "Image", "Exposing", text)
         return True
 
-    def exposeImageDone(self, imagePath=""):
+    def exposeImageDone(self, imagePath):
         """
         :param imagePath:
         :return: True for test purpose

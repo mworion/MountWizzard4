@@ -236,7 +236,9 @@ def test_saveProfile_1():
 def test_saveProfile_2():
     config = {"profileName": "config"}
 
-    suc = saveProfile(configDir=Path("tests/workDir/config"), config=config, name="config")
+    suc = saveProfile(
+        configDir=Path("tests/workDir/config"), config=config, name="config"
+    )
     assert suc
     assert os.path.isfile("tests/workDir/config/config.cfg")
     assert os.path.isfile("tests/workDir/config/profile")

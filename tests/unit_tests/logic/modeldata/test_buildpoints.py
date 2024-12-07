@@ -828,7 +828,9 @@ def test_loadBuildP_5(function):
     with open(fileName, "w") as outfile:
         outfile.write("1, 1\n")
         outfile.write("2, 2\n")
-    suc = function.loadBuildP(Path("tests/workDir/config/test.csv"), ext=".csv", keep=True)
+    suc = function.loadBuildP(
+        Path("tests/workDir/config/test.csv"), ext=".csv", keep=True
+    )
     assert suc
 
 

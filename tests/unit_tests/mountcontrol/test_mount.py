@@ -19,6 +19,7 @@ from unittest import mock
 import pytest
 import os
 import socket
+from pathlib import Path
 
 # external packages
 import wakeonlan
@@ -40,7 +41,7 @@ def function():
         app=App(),
         host=None,
         MAC="00:00:00:00:00:00",
-        pathToData=os.getcwd() + "/data",
+        pathToData=Path(os.getcwd() + "/data"),
         verbose=False,
     )
     yield m

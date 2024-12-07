@@ -17,6 +17,7 @@
 # standard libraries
 import pytest
 import os
+from pathlib import Path
 
 # external packages
 from skyfield.api import Angle, wgs84
@@ -32,7 +33,7 @@ setupLogging()
 @pytest.fixture(autouse=True, scope="function")
 def function():
     m = MountDevice(
-        app=App(), host=None, MAC=None, pathToData=os.getcwd() + "/data", verbose=True
+        app=App(), host=None, MAC=None, pathToData=Path(os.getcwd() + "/data"), verbose=True
     )
     m.obsSite.location = wgs84.latlon(
         latitude_degrees=90, longitude_degrees=11, elevation_m=500

@@ -67,7 +67,7 @@ class MountDevice:
         self.firmware = Firmware(parent=self)
         self.setting = Setting(parent=self)
         self.obsSite = ObsSite(
-            parent=self, pathToData=self.pathToData, verbose=self.verbose
+            parent=self, verbose=self.verbose
         )
         self.satellite = Satellite(parent=self)
         self.geometry = Geometry(parent=self)
@@ -156,7 +156,7 @@ class MountDevice:
         self.setting = Setting(parent=self)
         self.model = Model(parent=self)
         self.obsSite = ObsSite(
-            parent=self, pathToData=self.pathToData, verbose=self.verbose
+            parent=self, verbose=self.verbose
         )
         self.satellite = Satellite(parent=self)
         self.geometry = Geometry(parent=self)

@@ -68,9 +68,9 @@ class ObsSite(object):
         "99": "Error",
     }
 
-    def __init__(self, parent, pathToData, verbose=False):
+    def __init__(self, parent, verbose=False):
         self.parent = parent
-        self.pathToData = pathToData
+        self.pathToData = parent.pathToData
         self.verbose = verbose
         self.loader = None
         self.AzDirection = None

@@ -136,7 +136,9 @@ def test_solve_3(function):
                         with mock.patch.object(
                             logic.plateSolve.astap, "updateImageFileHeaderWithSolution"
                         ):
-                            res = function.solve(Path("tests/workDir/image/m51.fit"), True)
+                            res = function.solve(
+                                Path("tests/workDir/image/m51.fit"), True
+                            )
                             assert res["success"]
 
 

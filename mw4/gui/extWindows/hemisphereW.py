@@ -78,7 +78,7 @@ class HemisphereWindow(MWidget, SlewInterface):
         fileName = Path(config.get("horizonMaskFileName", ""))
         self.ui.horizonMaskFileName.setText(fileName.stem)
         self.app.data.loadHorizonP(fileName=fileName.stem)
-        fileName = Path(config.get("terrainFileName", ""))
+        fileName = config.get("terrainFileName", "")
         self.setTerrainFile(fileName)
         self.positionWindow(config)
 
@@ -787,7 +787,7 @@ class HemisphereWindow(MWidget, SlewInterface):
 
     def setTerrainFile(self, fileName):
         """ """
-        self.ui.terrainFileName.setText(fileName.stem)
+        self.ui.terrainFileName.setText(fileName)
         terrainFile = self.app.mwGlob["configDir"] / fileName
         if not terrainFile.is_file():
             self.imageTerrain = None
@@ -841,19 +841,19 @@ class HemisphereWindow(MWidget, SlewInterface):
         fileTypes = (
             "Horizon mask files (*.hpts);; CSV Files (*.csv);; MW3 Files (*.txt)"
         )
-        loadFilePath, fileName, ext = self.openFile(
+        loadFilePath = self.openFile(
             self, "Open horizon mask file", folder, fileTypes
         )
-        if not loadFilePath:
+        if not loadFilePath.is_file():
             return False
 
-        suc = self.app.data.loadHorizonP(fileName=fileName, ext=ext)
+        suc = self.app.data.loadHorizonP(fileName=loadFilePath.stem, ext=loadFilePath.suffix)
         if suc:
-            self.ui.horizonMaskFileName.setText(fileName)
-            self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{fileName}] loaded")
+            self.ui.horizonMaskFileName.setText(loadFilePath.stem)
+            self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{loadFilePath.stem}] loaded")
         else:
             self.msg.emit(
-                2, "Hemisphere", "Horizon", f"Mask [{fileName}] cannot no be loaded"
+                2, "Hemisphere", "Horizon", f"Mask [{loadFilePath.stem}] cannot no be loaded"
             )
 
         self.app.redrawHemisphere.emit()

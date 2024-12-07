@@ -18,7 +18,7 @@
 import unittest.mock as mock
 import pytest
 import shutil
-import os
+from pathlib import Path
 
 # external packages
 from PySide6.QtGui import QCloseEvent
@@ -139,29 +139,27 @@ def test_updateWindowsStats_3(function):
 
 
 def test_selectImage_1(function):
-    with mock.patch.object(MWidget, "openFile", return_value=("test", "", ".fits")):
+    with mock.patch.object(MWidget, "openFile", return_value=Path("test.fits")):
         suc = function.selectImage()
         assert not suc
 
 
 def test_selectImage_2(function):
     function.ui.autoSolve.setChecked(False)
-    with mock.patch.object(
-        MWidget, "openFile", return_value=("c:/test/test.fits", "test", ".fits")
-    ):
-        suc = function.selectImage()
-        assert suc
-        assert function.folder == "c:/test"
+    with mock.patch.object(MWidget, "openFile", return_value=Path("c:/test/test.fits")):
+        with mock.patch.object(Path, "is_file", return_value=True):
+            suc = function.selectImage()
+            assert suc
+            assert function.folder == Path("c:/test")
 
 
 def test_selectImage_3(function):
     function.ui.autoSolve.setChecked(True)
-    with mock.patch.object(
-        MWidget, "openFile", return_value=("c:/test/test.fits", "test", ".fits")
-    ):
-        suc = function.selectImage()
-        assert suc
-        assert function.folder == "c:/test"
+    with mock.patch.object(MWidget, "openFile", return_value=Path("c:/test/test.fits")):
+        with mock.patch.object(Path, "is_file", return_value=True):
+            suc = function.selectImage()
+            assert suc
+            assert function.folder == Path("c:/test")
 
 
 def test_setBarColor_1(function):
@@ -269,21 +267,21 @@ def test_processPhotometry_2(function):
 def test_showImage_1(function):
     function.imagingDeviceStat["expose"] = True
     with mock.patch.object(function, "clearGui"):
-        suc = function.showImage()
+        suc = function.showImage(Path(""))
         assert not suc
 
 
 def test_showImage_2(function):
     function.imagingDeviceStat["expose"] = False
-    suc = function.showImage("test")
+    suc = function.showImage(Path("c:/test/test.fits"))
     assert not suc
 
 
 def test_showImage_3(function):
     function.imagingDeviceStat["expose"] = False
-    with mock.patch.object(os.path, "isfile", return_value=True):
+    with mock.patch.object(Path, "is_file", return_value=True):
         with mock.patch.object(function.fileHandler, "loadImage"):
-            suc = function.showImage("tests")
+            suc = function.showImage(Path("c:/test/test.fits"))
             assert suc
 
 
@@ -318,14 +316,14 @@ def test_exposeRaw_3(function):
 def test_exposeImageDone_1(function):
     function.ui.autoSolve.setChecked(False)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
-    suc = function.exposeImageDone()
+    suc = function.exposeImageDone(Path("test"))
     assert suc
 
 
 def test_exposeImageDone_2(function):
     function.ui.autoSolve.setChecked(True)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
-    suc = function.exposeImageDone()
+    suc = function.exposeImageDone(Path("test"))
     assert suc
 
 
@@ -338,14 +336,14 @@ def test_exposeImage_1(function):
 def test_exposeImageNDone_1(function):
     function.ui.autoSolve.setChecked(False)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
-    suc = function.exposeImageNDone()
+    suc = function.exposeImageNDone(Path("test"))
     assert suc
 
 
 def test_exposeImageNDone_2(function):
     function.ui.autoSolve.setChecked(True)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
-    suc = function.exposeImageNDone()
+    suc = function.exposeImageNDone(Path("test"))
     assert suc
 
 
@@ -500,6 +498,7 @@ def test_slewDirect_2(function):
 
 
 def test_slewDirect_3(function):
+    function.app.deviceStat["mount"] = True
     with mock.patch.object(function, "messageDialog", return_value=True):
         with mock.patch.object(SlewInterface, "slewTargetRaDec", return_value=True):
             suc = function.slewDirect(Angle(hours=0), Angle(degrees=0))

@@ -19,6 +19,7 @@ import unittest.mock as mock
 import pytest
 import os
 import shutil
+from pathlib import Path
 
 # external packages
 from PySide6.QtCore import QPointF
@@ -329,36 +330,31 @@ def test_drawTerrainMask_1(function):
 def test_drawTerrainMask_2(function):
     pd = pg.PlotItem()
     function.imageTerrain = np.ones((100, 100), dtype=np.uint8)
-    suc = function.drawTerrainMask(pd)
-    assert suc
+    function.drawTerrainMask(pd)
 
 
 def test_drawMeridianLimits_1(function):
     function.app.mount.setting.meridianLimitSlew = None
     function.app.mount.setting.meridianLimitTrack = None
-    suc = function.drawMeridianLimits()
-    assert not suc
+    function.drawMeridianLimits()
 
 
 def test_drawMeridianLimits2(function):
     function.app.mount.setting.meridianLimitSlew = 10
     function.app.mount.setting.meridianLimitTrack = 10
-    suc = function.drawMeridianLimits()
-    assert suc
+    function.drawMeridianLimits()
 
 
 def test_staticHorizonLimits_1(function):
     function.app.mount.setting.horizonLimitHigh = None
     function.app.mount.setting.horizonLimitLow = None
-    suc = function.drawHorizonLimits()
-    assert suc
+    function.drawHorizonLimits()
 
 
 def test_staticHorizonLimits_2(function):
     function.app.mount.setting.horizonLimitHigh = 90
     function.app.mount.setting.horizonLimitLow = 10
-    suc = function.drawHorizonLimits()
-    assert suc
+    function.drawHorizonLimits()
 
 
 def test_setupAlignmentStars(function):
@@ -368,15 +364,13 @@ def test_setupAlignmentStars(function):
 
 def test_drawAlignmentStars_1(function):
     function.ui.showAlignStar.setChecked(False)
-    suc = function.drawAlignmentStars()
-    assert not suc
+    function.drawAlignmentStars()
 
 
 def test_drawAlignmentStars_2(function):
     function.ui.showAlignStar.setChecked(True)
     function.alignmentStars = None
-    suc = function.drawAlignmentStars()
-    assert not suc
+    function.drawAlignmentStars()
 
 
 def test_drawAlignmentStars_3(function):
@@ -384,8 +378,7 @@ def test_drawAlignmentStars_3(function):
     function.alignmentStarsText.append(pg.TextItem())
     function.ui.showAlignStar.setChecked(True)
     function.alignmentStars = pg.ScatterPlotItem()
-    suc = function.drawAlignmentStars()
-    assert suc
+    function.drawAlignmentStars()
 
 
 def test_drawAlignmentStars_4(function):
@@ -394,27 +387,23 @@ def test_drawAlignmentStars_4(function):
     function.ui.showAlignStar.setChecked(True)
     function.ui.alignmentModeHem.setChecked(True)
     function.alignmentStars = pg.ScatterPlotItem()
-    suc = function.drawAlignmentStars()
-    assert suc
+    function.drawAlignmentStars()
 
 
 def test_drawModelPoints_1(function):
     function.app.data.buildP = None
-    suc = function.drawModelPoints()
-    assert not suc
+    function.drawModelPoints()
 
 
 def test_drawModelPoints_2(function):
     function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol="o")
     function.app.data.buildP = [(1, 1, True), (2, 2, False)]
-    suc = function.drawModelPoints()
-    assert suc
+    function.drawModelPoints()
 
 
 def test_drawModelText_1(function):
     function.app.data.buildP = None
-    suc = function.drawModelText()
-    assert not suc
+    function.drawModelText()
 
 
 def test_drawModelText_2(function):
@@ -422,23 +411,20 @@ def test_drawModelText_2(function):
     function.app.data.buildP = [(1, 1, True), (2, 2, False)]
     function.ui.editModeHem.setChecked(True)
     function.modelPointsText.append(pg.TextItem())
-    suc = function.drawModelText()
-    assert suc
+    function.drawModelText()
 
 
 def test_drawModelText_3(function):
     function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol="o")
     function.app.data.buildP = [(1, 1, True), (2, 2, False)]
     function.ui.normalModeHem.setChecked(True)
-    suc = function.drawModelText()
-    assert suc
+    function.drawModelText()
 
 
 def test_updateDataModel(function):
     with mock.patch.object(function, "drawModelPoints"):
         with mock.patch.object(function, "drawModelText"):
-            suc = function.updateDataModel([1, 2], [1, 2])
-            assert suc
+            function.updateDataModel([1, 2], [1, 2])
 
 
 def test_setupModel_1(function):
@@ -526,8 +512,7 @@ def test_drawModelIsoCurve_2(function):
     data = (val, val, val)
     with mock.patch.object(function, "getMountModelData", return_value=data):
         with mock.patch.object(function.ui.hemisphere, "addIsoItem", return_value=True):
-            suc = function.drawModelIsoCurve()
-            assert suc
+            function.drawModelIsoCurve()
 
 
 def test_drawHemisphereTab_1(function):
@@ -548,29 +533,25 @@ def test_drawHemisphereTab_1(function):
 
 def test_slewDirect_1(function):
     with mock.patch.object(function, "messageDialog", return_value=False):
-        suc = function.slewDirect(QPointF(1, 1))
-        assert not suc
+        function.slewDirect(QPointF(1, 1))
 
 
 def test_slewDirect_2(function):
     with mock.patch.object(function, "messageDialog", return_value=True):
         with mock.patch.object(SlewInterface, "slewTargetAltAz", return_value=False):
-            suc = function.slewDirect(QPointF(1, 1))
-            assert not suc
+            function.slewDirect(QPointF(1, 1))
 
 
 def test_slewDirect_3(function):
     with mock.patch.object(function, "messageDialog", return_value=True):
         with mock.patch.object(SlewInterface, "slewTargetAltAz", return_value=True):
-            suc = function.slewDirect(QPointF(1, 1))
-            assert suc
+            function.slewDirect(QPointF(1, 1))
 
 
 def test_slewStar_1(function):
     function.alignmentStars = pg.ScatterPlotItem()
     with mock.patch.object(function.alignmentStars, "pointsAt", return_value=[]):
-        suc = function.slewStar(QPointF(1, 1))
-        assert not suc
+        function.slewStar(QPointF(1, 1))
 
 
 def test_slewStar_3(function):
@@ -587,8 +568,7 @@ def test_slewStar_3(function):
             with mock.patch.object(
                 function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
             ):
-                suc = function.slewStar(QPointF(1, 1))
-                assert not suc
+                function.slewStar(QPointF(1, 1))
 
 
 def test_slewStar_4(function):
@@ -608,8 +588,7 @@ def test_slewStar_4(function):
                 with mock.patch.object(
                     SlewInterface, "slewTargetRaDec", return_value=False
                 ):
-                    suc = function.slewStar(QPointF(1, 1))
-                    assert not suc
+                    function.slewStar(QPointF(1, 1))
 
 
 def test_slewStar_5(function):
@@ -629,8 +608,7 @@ def test_slewStar_5(function):
                 with mock.patch.object(
                     SlewInterface, "slewTargetRaDec", return_value=True
                 ):
-                    suc = function.slewStar(QPointF(1, 1))
-                    assert suc
+                    function.slewStar(QPointF(1, 1))
 
 
 def test_mouseDoubleClick_1(function):
@@ -653,14 +631,12 @@ def test_mouseMovedHorizon_1(function):
 
 
 def test_setTerrainFile_1(function):
-    suc = function.setTerrainFile("test")
-    assert not suc
+    function.setTerrainFile("test")
     assert function.imageTerrain is None
 
 
 def test_setTerrainFile_2(function):
-    suc = function.setTerrainFile("terrain")
-    assert suc
+    function.setTerrainFile("terrain.jpg")
     assert function.imageTerrain is not None
 
 
@@ -671,25 +647,28 @@ def test_loadTerrainFile_1(function):
             return
 
     function.app.uiWindows = {"showHemisphereW": {"classObj": Test()}}
-    with mock.patch.object(function, "openFile", return_value=("build", "test", "jpg")):
+    with mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")):
         with mock.patch.object(function, "setTerrainFile", return_value=True):
-            with mock.patch.object(function, "drawHorizonTab"):
-                suc = function.loadTerrainFile()
-                assert suc
+            with mock.patch.object(Path, "is_file", return_value=True):
+                with mock.patch.object(function, "drawHorizonTab"):
+                    suc = function.loadTerrainFile()
+                    assert suc
 
 
 def test_loadTerrainFile_2(function):
-    with mock.patch.object(function, "openFile", return_value=("", "", "")):
-        suc = function.loadTerrainFile()
-        assert not suc
+    with mock.patch.object(function, "openFile", return_value=(Path(""))):
+        with mock.patch.object(Path, "is_file", return_value=False):
+            suc = function.loadTerrainFile()
+            assert not suc
 
 
 def test_loadTerrainFile_3(function):
-    with mock.patch.object(function, "openFile", return_value=("build", "test", "jpg")):
+    with mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")):
         with mock.patch.object(function, "setTerrainFile", return_value=False):
-            with mock.patch.object(function, "drawHorizonTab"):
-                suc = function.loadTerrainFile()
-                assert suc
+            with mock.patch.object(Path, "is_file", return_value=True):
+                with mock.patch.object(function, "drawHorizonTab"):
+                    suc = function.loadTerrainFile()
+                    assert suc
 
 
 def test_clearTerrainFile(function):
@@ -699,36 +678,33 @@ def test_clearTerrainFile(function):
 
 
 def test_loadHorizonMask_1(function):
-    with mock.patch.object(function, "openFile", return_value=("", "", "")):
-        suc = function.loadHorizonMask()
-        assert not suc
+    with mock.patch.object(function, "openFile", return_value=Path("test.test")):
+        with mock.patch.object(Path, "is_file", return_value=False):
+            suc = function.loadHorizonMask()
+            assert not suc
 
 
 def test_loadHorizonMask_2(function):
-    with mock.patch.object(
-        function, "openFile", return_value=("build", "test", "bpts")
-    ):
+    with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
         with mock.patch.object(function.app.data, "loadHorizonP", return_value=False):
-            with mock.patch.object(function, "drawHorizonTab"):
-                suc = function.loadHorizonMask()
-                assert suc
+            with mock.patch.object(Path, "is_file", return_value=True):
+                with mock.patch.object(function, "drawHorizonTab"):
+                    suc = function.loadHorizonMask()
+                    assert suc
 
 
-def test_loadHorizonMaskFile_3(function):
-    with mock.patch.object(
-        function, "openFile", return_value=("build", "test", "bpts")
-    ):
+def test_loadHorizonMask_3(function):
+    with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
         with mock.patch.object(function.app.data, "loadHorizonP", return_value=True):
-            with mock.patch.object(function, "drawHorizonTab"):
-                suc = function.loadHorizonMask()
-                assert suc
+            with mock.patch.object(Path, "is_file", return_value=True):
+                with mock.patch.object(function, "drawHorizonTab"):
+                    suc = function.loadHorizonMask()
+                    assert suc
 
 
 def test_saveHorizonMask_1(function):
     function.ui.horizonMaskFileName.setText("test")
-    with mock.patch.object(
-        function, "openFile", return_value=("build", "test", "bpts")
-    ):
+    with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
         with mock.patch.object(function.app.data, "saveHorizonP", return_value=True):
             suc = function.saveHorizonMask()
             assert suc

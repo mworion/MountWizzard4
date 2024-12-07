@@ -396,7 +396,11 @@ def test_openFile_6(function):
             QFileDialog, "selectedFiles", return_value=("test1", "test2")
         ):
             full = function.openFile(
-                window=window, title="title", folder=Path("."), filterSet="*.*", multiple=True
+                window=window,
+                title="title",
+                folder=Path("."),
+                filterSet="*.*",
+                multiple=True,
             )
             assert full == Path("")
 

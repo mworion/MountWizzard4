@@ -18,7 +18,7 @@
 import pytest
 import unittest.mock as mock
 import json
-import os
+from pathlib import Path
 
 # external packages
 from PySide6.QtGui import QCloseEvent, QResizeEvent
@@ -114,16 +114,16 @@ def test_processModel_2(function):
 
 
 def test_loadModel_1(function):
-    with mock.patch.object(function, "openFile", return_value=("", "", "")):
-        with mock.patch.object(os.path, "isfile", return_value=True):
+    with mock.patch.object(function, "openFile", return_value=Path("test.test")):
+        with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(function, "processModel"):
                 suc = function.loadModel()
                 assert suc
 
 
 def test_loadModel_2(function):
-    with mock.patch.object(function, "openFile", return_value=("test", "test", "test")):
-        with mock.patch.object(os.path, "isfile", return_value=True):
+    with mock.patch.object(function, "openFile", return_value=Path("test.test")):
+        with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(function, "processModel"):
                 suc = function.loadModel()
                 assert suc
@@ -131,8 +131,8 @@ def test_loadModel_2(function):
 
 def test_showAnalyse_1(function):
     with mock.patch.object(function, "processModel"):
-        with mock.patch.object(os.path, "isfile", return_value=True):
-            suc = function.showAnalyse("test")
+        with mock.patch.object(Path, "is_file", return_value=True):
+            suc = function.showAnalyse(Path("test.test"))
             assert suc
 
 

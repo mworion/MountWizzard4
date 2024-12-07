@@ -30,4 +30,3 @@ c = asteroidSourceURLs
 assert isinstance(a, dict)
 assert isinstance(b, dict)
 assert isinstance(c, dict)
-

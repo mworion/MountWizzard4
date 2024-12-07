@@ -30,28 +30,23 @@ from base.signalsDevices import Signals
 from base.alpacaClass import AlpacaClass
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
-    with mock.patch.object(PySide6.QtCore.QTimer,
-                           'start'):
+    with mock.patch.object(PySide6.QtCore.QTimer, "start"):
         func = DomeAlpaca(app=App(), signals=Signals(), data={})
         yield func
 
 
 def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(AlpacaClass,
-                           'getAndStoreAlpacaProperty',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'getAndStoreAlpacaProperty'):
+    with mock.patch.object(AlpacaClass, "getAndStoreAlpacaProperty", return_value=True):
+        with mock.patch.object(function, "getAndStoreAlpacaProperty"):
             suc = function.workerGetInitialConfig()
             assert suc
 
 
 def test_workerPollData_1(function):
-    function.data['CAN_FAST'] = True
-    with mock.patch.object(function,
-                           'getAndStoreAlpacaProperty'):
+    function.data["CAN_FAST"] = True
+    with mock.patch.object(function, "getAndStoreAlpacaProperty"):
         suc = function.workerPollData()
         assert suc
 
@@ -69,85 +64,70 @@ def test_workerPollData_1(function):
 
 def test_workerPollData_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty',
-                           return_value=0):
-        with mock.patch.object(function,
-                               'getAndStoreAlpacaProperty'):
+    with mock.patch.object(function, "getAlpacaProperty", return_value=0):
+        with mock.patch.object(function, "getAndStoreAlpacaProperty"):
             suc = function.workerPollData()
             assert suc
 
 
 def test_workerPollData_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty',
-                           return_value=1):
-        with mock.patch.object(function,
-                               'getAndStoreAlpacaProperty'):
+    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
+        with mock.patch.object(function, "getAndStoreAlpacaProperty"):
             suc = function.workerPollData()
             assert suc
 
 
 def test_workerPollData_4(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty',
-                           return_value=3):
-        with mock.patch.object(function,
-                               'getAndStoreAlpacaProperty'):
+    with mock.patch.object(function, "getAlpacaProperty", return_value=3):
+        with mock.patch.object(function, "getAndStoreAlpacaProperty"):
             suc = function.workerPollData()
             assert suc
 
 
 def test_slewToAltAz_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function,
-                           'setAlpacaProperty'):
+    with mock.patch.object(function, "setAlpacaProperty"):
         suc = function.slewToAltAz()
         assert not suc
 
 
 def test_slewToAltAz_2(function):
     function.deviceConnected = True
-    function.data['CanSetAzimuth'] = True
-    function.data['CanSetAltitude'] = True
-    with mock.patch.object(function,
-                           'setAlpacaProperty'):
+    function.data["CanSetAzimuth"] = True
+    function.data["CanSetAltitude"] = True
+    with mock.patch.object(function, "setAlpacaProperty"):
         suc = function.slewToAltAz()
         assert suc
 
 
 def test_closeShutter_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function,
-                           'getAlpacaProperty'):
+    with mock.patch.object(function, "getAlpacaProperty"):
         suc = function.closeShutter()
         assert not suc
 
 
 def test_closeShutter_2(function):
     function.deviceConnected = True
-    function.data['CanSetShutter'] = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty'):
+    function.data["CanSetShutter"] = True
+    with mock.patch.object(function, "getAlpacaProperty"):
         suc = function.closeShutter()
         assert suc
 
 
 def test_openShutter_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function,
-                           'getAlpacaProperty'):
+    with mock.patch.object(function, "getAlpacaProperty"):
         suc = function.openShutter()
         assert not suc
 
 
 def test_openShutter_2(function):
     function.deviceConnected = True
-    function.data['CanSetShutter'] = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty'):
+    function.data["CanSetShutter"] = True
+    with mock.patch.object(function, "getAlpacaProperty"):
         suc = function.openShutter()
         assert suc
 
@@ -178,15 +158,13 @@ def test_slewCCW_2(function):
 
 def test_abortSlew_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function,
-                           'getAlpacaProperty'):
+    with mock.patch.object(function, "getAlpacaProperty"):
         suc = function.abortSlew()
         assert not suc
 
 
 def test_abortSlew_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty'):
+    with mock.patch.object(function, "getAlpacaProperty"):
         suc = function.abortSlew()
         assert suc

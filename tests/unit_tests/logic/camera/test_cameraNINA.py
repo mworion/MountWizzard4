@@ -26,10 +26,11 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.camera import Camera
 from logic.camera.cameraNINA import CameraNINA
 from base.loggerMW import setupLogging
+
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function():
     camera = Camera(App())
     camera.exposureTime = 1
@@ -44,114 +45,90 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         pass
 
-    monkeypatch.setattr('logic.camera.cameraNINA.sleepAndEvents', test)
+    monkeypatch.setattr("logic.camera.cameraNINA.sleepAndEvents", test)
 
 
 def test_getCameraTemp_1(function):
-    with mock.patch.object(function,
-                           'requestProperty',
-                           return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value=None):
         suc, val = function.getCameraTemp()
         assert not suc
         assert val == {}
 
 
 def test_getCameraTemp_2(function):
-    with mock.patch.object(function,
-                           'requestProperty',
-                           return_value={'Success': True}):
+    with mock.patch.object(function, "requestProperty", return_value={"Success": True}):
         suc, val = function.getCameraTemp()
         assert suc
-        assert val == {'Success': True}
+        assert val == {"Success": True}
 
 
 def test_setCameraTemp_1(function):
-    with mock.patch.object(function,
-                           'requestProperty',
-                           return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value=None):
         suc = function.setCameraTemp(temperature=10)
         assert not suc
 
 
 def test_setCameraTemp_2(function):
-    with mock.patch.object(function,
-                           'requestProperty',
-                           return_value={'Success': True}):
+    with mock.patch.object(function, "requestProperty", return_value={"Success": True}):
         suc = function.setCameraTemp(temperature=10)
         assert suc
 
 
 def test_captureImage_1(function):
-    with mock.patch.object(function,
-                           'requestProperty',
-                           return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value=None):
         suc, val = function.captureImage(0)
         assert not suc
         assert val == {}
 
 
 def test_captureImage_2(function):
-    with mock.patch.object(function,
-                           'requestProperty',
-                           return_value={'Success': True}):
+    with mock.patch.object(function, "requestProperty", return_value={"Success": True}):
         suc, val = function.captureImage(0)
         assert suc
-        assert val == {'Success': True}
+        assert val == {"Success": True}
 
 
 def test_abortImage_1(function):
-    with mock.patch.object(function,
-                           'requestProperty',
-                           return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value=None):
         suc = function.abortImage()
         assert not suc
 
 
 def test_abortImage_2(function):
-    with mock.patch.object(function,
-                           'requestProperty',
-                           return_value={'Success': True}):
+    with mock.patch.object(function, "requestProperty", return_value={"Success": True}):
         suc = function.abortImage()
         assert suc
 
 
 def test_getImagePath_1(function):
-    with mock.patch.object(function,
-                           'requestProperty',
-                           return_value=None):
-        suc = function.getImagePath(receipt='1')
+    with mock.patch.object(function, "requestProperty", return_value=None):
+        suc = function.getImagePath(receipt="1")
         assert not suc
 
 
 def test_getImagePath_2(function):
-    with mock.patch.object(function,
-                           'requestProperty',
-                           return_value={'Success': True}):
-        suc = function.getImagePath(receipt='1')
+    with mock.patch.object(function, "requestProperty", return_value={"Success": True}):
+        suc = function.getImagePath(receipt="1")
         assert suc
 
 
 def test_getCameraProps_1(function):
-    with mock.patch.object(function,
-                           'requestProperty',
-                           return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value=None):
         suc, val = function.getCameraProps()
         assert not suc
         assert val == {}
 
 
 def test_getCameraProps_2(function):
-    with mock.patch.object(function,
-                           'requestProperty',
-                           return_value={'Success': True}):
+    with mock.patch.object(function, "requestProperty", return_value={"Success": True}):
         suc, val = function.getCameraProps()
         assert suc
-        assert val == {'Success': True}
+        assert val == {"Success": True}
 
 
 def test_workerGetInitialConfig_1(function):
     function.workerGetInitialConfig()
-    assert function.data['CCD_BINNING.HOR_BIN'] == 1
+    assert function.data["CCD_BINNING.HOR_BIN"] == 1
 
 
 def test_workerPollData_1(function):
@@ -160,78 +137,63 @@ def test_workerPollData_1(function):
 
 def test_sendDownloadMode_1(function):
     function.sendDownloadMode()
-    
-    
+
+
 def test_waitFunc(function):
-    function.data['Device.Message'] = 'integrating'
-    suc = function.waitFunc() 
+    function.data["Device.Message"] = "integrating"
+    suc = function.waitFunc()
     assert suc
 
 
 def test_workerExpose_1(function):
-    function.deviceName = 'test'
-    with mock.patch.object(function,
-                           'captureImage',
-                           return_value=(False, {})):
+    function.deviceName = "test"
+    with mock.patch.object(function, "captureImage", return_value=(False, {})):
         function.workerExpose()
 
 
 def test_workerExpose_2(function):
-    function.deviceName = 'test'
-    with mock.patch.object(function,
-                           'captureImage',
-                           return_value=(True, {})):
+    function.deviceName = "test"
+    with mock.patch.object(function, "captureImage", return_value=(True, {})):
         function.workerExpose()
 
 
 def test_workerExpose_3(function, mocked_sleepAndEvents):
-    function.deviceName = 'test'
+    function.deviceName = "test"
     function.parent.exposing = True
-    with mock.patch.object(function,
-                           'captureImage',
-                           return_value=(True, {'Receipt': '123'})):
-        with mock.patch.object(function.parent,
-                               'waitStart'):
-            with mock.patch.object(function.parent,
-                                   'waitExposed'):
-                with mock.patch.object(function.parent,
-                                       'waitDownload'):
-                    with mock.patch.object(function.parent,
-                                           'waitSave'):
-                        with mock.patch.object(os,
-                                               'rename'):
-                            with mock.patch.object(function.parent,
-                                               'updateImageFitsHeaderPointing'):
+    with mock.patch.object(
+        function, "captureImage", return_value=(True, {"Receipt": "123"})
+    ):
+        with mock.patch.object(function.parent, "waitStart"):
+            with mock.patch.object(function.parent, "waitExposed"):
+                with mock.patch.object(function.parent, "waitDownload"):
+                    with mock.patch.object(function.parent, "waitSave"):
+                        with mock.patch.object(os, "rename"):
+                            with mock.patch.object(
+                                function.parent, "updateImageFitsHeaderPointing"
+                            ):
                                 function.workerExpose()
 
 
 def test_workerExpose_4(function, mocked_sleepAndEvents):
-    function.deviceName = 'test'
+    function.deviceName = "test"
     function.parent.exposing = False
-    with mock.patch.object(function,
-                           'captureImage',
-                           return_value=(True, {'Receipt': '123'})):
-        with mock.patch.object(function.parent,
-                               'waitStart'):
-            with mock.patch.object(function.parent,
-                                   'waitExposed'):
-                with mock.patch.object(function.parent,
-                                       'waitDownload'):
-                    with mock.patch.object(function.parent,
-                                           'waitSave'):
+    with mock.patch.object(
+        function, "captureImage", return_value=(True, {"Receipt": "123"})
+    ):
+        with mock.patch.object(function.parent, "waitStart"):
+            with mock.patch.object(function.parent, "waitExposed"):
+                with mock.patch.object(function.parent, "waitDownload"):
+                    with mock.patch.object(function.parent, "waitSave"):
                         function.workerExpose()
 
 
 def test_expose_1(function):
-    with mock.patch.object(function.threadPool,
-                           'start'):
+    with mock.patch.object(function.threadPool, "start"):
         function.expose()
 
 
 def test_abort_1(function):
-    with mock.patch.object(function,
-                           'abortImage',
-                           return_value = True):
+    with mock.patch.object(function, "abortImage", return_value=True):
         suc = function.abort()
         assert suc
 

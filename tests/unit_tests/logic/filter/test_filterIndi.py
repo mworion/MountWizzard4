@@ -30,7 +30,7 @@ from logic.filter.filterIndi import FilterIndi
 from base.signalsDevices import Signals
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
     func = FilterIndi(app=App(), signals=Signals(), data={})
     yield func
@@ -39,91 +39,77 @@ def function():
 def test_setUpdateConfig_1(function):
     function.loadConfig = True
     function.updateRate = 1000
-    function.deviceName = ''
-    suc = function.setUpdateConfig('test')
+    function.deviceName = ""
+    suc = function.setUpdateConfig("test")
     assert not suc
 
 
 def test_setUpdateConfig_2(function):
     function.loadConfig = True
     function.updateRate = 1000
-    function.deviceName = 'test'
+    function.deviceName = "test"
     function.device = None
-    suc = function.setUpdateConfig('test')
+    suc = function.setUpdateConfig("test")
     assert not suc
 
 
 def test_setUpdateConfig_3(function):
     function.loadConfig = True
     function.updateRate = 1000
-    function.deviceName = 'test'
+    function.deviceName = "test"
     function.device = Device()
-    with mock.patch.object(function.device,
-                           'getNumber',
-                           return_value={'Test': 1}):
-        suc = function.setUpdateConfig('test')
+    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
+        suc = function.setUpdateConfig("test")
         assert not suc
 
 
 def test_setUpdateConfig_4(function):
     function.loadConfig = True
     function.updateRate = 1000
-    function.deviceName = 'test'
+    function.deviceName = "test"
     function.device = Device()
     function.client = Client()
-    with mock.patch.object(function.device,
-                           'getNumber',
-                           return_value={'PERIOD': 1}):
-        with mock.patch.object(function.client,
-                               'sendNewNumber',
-                               return_value=False):
-            suc = function.setUpdateConfig('test')
+    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
+        with mock.patch.object(function.client, "sendNewNumber", return_value=False):
+            suc = function.setUpdateConfig("test")
             assert not suc
 
 
 def test_setUpdateConfig_5(function):
     function.loadConfig = True
     function.updateRate = 1000
-    function.deviceName = 'test'
+    function.deviceName = "test"
     function.device = Device()
     function.client = Client()
-    with mock.patch.object(function.device,
-                           'getNumber',
-                           return_value={'PERIOD': 1}):
-        with mock.patch.object(function.client,
-                               'sendNewNumber',
-                               return_value=True):
-            suc = function.setUpdateConfig('test')
+    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
+        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
+            suc = function.setUpdateConfig("test")
             assert suc
 
 
 def test_sendFilterNumber_1(function):
-    function.deviceName = 'test'
+    function.deviceName = "test"
     function.device = None
     suc = function.sendFilterNumber()
     assert not suc
 
 
 def test_sendFilterNumber_2(function):
-    function.deviceName = 'test'
+    function.deviceName = "test"
     function.device = Device()
-    with mock.patch.object(function.device,
-                           'getNumber',
-                           return_value={'Test': 1}):
+    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
         suc = function.sendFilterNumber()
         assert not suc
 
 
 def test_sendFilterNumber_3(function):
-    function.deviceName = 'test'
+    function.deviceName = "test"
     function.device = Device()
     function.client = Client()
     function.UPDATE_RATE = 0
-    with mock.patch.object(function.device,
-                           'getNumber',
-                           return_value={'FILTER_SLOT': 1}):
-        with mock.patch.object(function.client,
-                               'sendNewNumber',
-                               return_value=True):
+    with mock.patch.object(
+        function.device, "getNumber", return_value={"FILTER_SLOT": 1}
+    ):
+        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
             suc = function.sendFilterNumber()
             assert suc

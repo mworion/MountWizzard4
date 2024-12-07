@@ -29,25 +29,20 @@ from logic.telescope.telescopeAlpaca import TelescopeAlpaca
 from base.signalsDevices import Signals
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
-
-    with mock.patch.object(PySide6.QtCore.QTimer,
-                           'start'):
+    with mock.patch.object(PySide6.QtCore.QTimer, "start"):
         func = TelescopeAlpaca(app=App(), signals=Signals(), data={})
         yield func
 
 
 def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(function,
-                           'getAndStoreAlpacaProperty'):
+    with mock.patch.object(function, "getAndStoreAlpacaProperty"):
         suc = function.workerGetInitialConfig()
         assert suc
 
 
 def test_workerGetInitialConfig_2(function):
-    with mock.patch.object(function,
-                           'getAndStoreAlpacaProperty',
-                           return_value=100):
+    with mock.patch.object(function, "getAndStoreAlpacaProperty", return_value=100):
         suc = function.workerGetInitialConfig()
         assert suc

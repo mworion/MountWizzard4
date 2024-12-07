@@ -18,7 +18,8 @@
 import pytest
 import unittest.mock as mock
 import platform
-if not platform.system() == 'Windows':
+
+if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 # external packages
@@ -32,10 +33,11 @@ from logic.camera.camera import Camera
 from base.signalsDevices import Signals
 from base.ascomClass import AscomClass
 from base.loggerMW import setupLogging
+
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function():
     class Test1:
         CameraXSize = 1000
@@ -57,9 +59,9 @@ def function():
         CCDTemperature = 10
         CoolerOn = True
         CoolerPower = 100
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
+        Name = "test"
+        DriverVersion = "1"
+        DriverInfo = "test1"
         ImageReady = True
         image = [1, 1, 1]
         ImageArray = (ctypes.c_int * len(image))(*image)
@@ -83,60 +85,47 @@ def function():
 
 
 def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(AscomClass,
-                           'getAndStoreAscomProperty',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'getAndStoreAscomProperty'):
+    with mock.patch.object(AscomClass, "getAndStoreAscomProperty", return_value=True):
+        with mock.patch.object(function, "getAndStoreAscomProperty"):
             function.workerGetInitialConfig()
 
 
 def test_workerPollData_1(function):
-    function.data['CAN_FAST'] = True
-    function.data['CAN_SET_CCD_TEMPERATURE'] = True
-    function.data['CAN_GET_COOLER_POWER'] = True
+    function.data["CAN_FAST"] = True
+    function.data["CAN_SET_CCD_TEMPERATURE"] = True
+    function.data["CAN_GET_COOLER_POWER"] = True
     function.workerPollData()
 
 
 def test_sendDownloadMode_1(function):
-    function.data['CAN_FAST'] = True
+    function.data["CAN_FAST"] = True
     function.sendDownloadMode()
-    
-    
+
+
 def test_waitFunc(function):
-    with mock.patch.object(AscomClass,
-                           'getAscomProperty',
-                           return_value=False):
+    with mock.patch.object(AscomClass, "getAscomProperty", return_value=False):
         suc = function.waitFunc()
         assert suc
 
 
 def test_workerExpose_1(function):
-    with mock.patch.object(function.parent,
-                           'sendDownloadMode'):
-        with mock.patch.object(function,
-                               'setAscomProperty'):
-            with mock.patch.object(function.parent,
-                                   'waitExposed'):
-                with mock.patch.object(function.parent,
-                                       'retrieveImage'):
-                    with mock.patch.object(function.parent,
-                                           'writeImageFitsHeader'):
-                        with mock.patch.object(fits.HDUList,
-                                               'writeto'):
+    with mock.patch.object(function.parent, "sendDownloadMode"):
+        with mock.patch.object(function, "setAscomProperty"):
+            with mock.patch.object(function.parent, "waitExposed"):
+                with mock.patch.object(function.parent, "retrieveImage"):
+                    with mock.patch.object(function.parent, "writeImageFitsHeader"):
+                        with mock.patch.object(fits.HDUList, "writeto"):
                             function.workerExpose()
 
 
 def test_expose_1(function):
-    with mock.patch.object(function,
-                           'callMethodThreaded'):
+    with mock.patch.object(function, "callMethodThreaded"):
         function.expose()
 
 
 def test_abort_3(function):
-    function.data['CAN_ABORT'] = True
-    with mock.patch.object(function,
-                           'callMethodThreaded'):
+    function.data["CAN_ABORT"] = True
+    with mock.patch.object(function, "callMethodThreaded"):
         suc = function.abort()
         assert suc
 
@@ -147,14 +136,14 @@ def test_sendCoolerSwitch_2(function):
 
 
 def test_sendCoolerTemp_3(function):
-    function.data['CAN_SET_CCD_TEMPERATURE'] = True
+    function.data["CAN_SET_CCD_TEMPERATURE"] = True
     function.sendCoolerTemp(temperature=-10)
 
 
 def test_sendOffset_1(function):
     function.deviceConnected = False
     function.sendOffset()
-    
+
 
 def test_sendGain_1(function):
     function.deviceConnected = False

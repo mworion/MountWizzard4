@@ -27,16 +27,16 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
 from base.signalsDevices import Signals
 
-if not platform.system() == 'Windows':
+if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
     class Test1:
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
+        Name = "test"
+        DriverVersion = "1"
+        DriverInfo = "test1"
 
         @staticmethod
         def getswitch(a):
@@ -53,17 +53,13 @@ def function():
 
 
 def test_workerPollData_1(function):
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=15):
+    with mock.patch.object(function, "getAscomProperty", return_value=15):
         suc = function.workerPollData()
         assert suc
 
 
 def test_workerPollData_2(function):
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=21):
+    with mock.patch.object(function, "getAscomProperty", return_value=21):
         suc = function.workerPollData()
         assert suc
 
@@ -82,9 +78,8 @@ def test_togglePowerPort_2(function):
 
 def test_togglePowerPort_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'callAscomMethod'):
-        suc = function.togglePowerPort('1')
+    with mock.patch.object(function, "callAscomMethod"):
+        suc = function.togglePowerPort("1")
         assert suc
 
 
@@ -126,12 +121,9 @@ def test_togglePortUSB_2(function):
 
 def test_togglePortUSB_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=21):
-        with mock.patch.object(function,
-                               'callAscomMethod'):
-            suc = function.togglePortUSB('1')
+    with mock.patch.object(function, "getAscomProperty", return_value=21):
+        with mock.patch.object(function, "callAscomMethod"):
+            suc = function.togglePortUSB("1")
             assert suc
 
 
@@ -143,22 +135,16 @@ def test_toggleAutoDew_1(function):
 
 def test_toggleAutoDew_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=21):
-        with mock.patch.object(function,
-                               'callAscomMethod'):
+    with mock.patch.object(function, "getAscomProperty", return_value=21):
+        with mock.patch.object(function, "callAscomMethod"):
             suc = function.toggleAutoDew()
             assert suc
 
 
 def test_toggleAutoDew_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=15):
-        with mock.patch.object(function,
-                               'callAscomMethod'):
+    with mock.patch.object(function, "getAscomProperty", return_value=15):
+        with mock.patch.object(function, "callAscomMethod"):
             suc = function.toggleAutoDew()
             assert suc
 
@@ -177,18 +163,15 @@ def test_sendDew_2(function):
 
 def test_sendDew_3(function):
     function.deviceConnected = True
-    suc = function.sendDew('1')
+    suc = function.sendDew("1")
     assert not suc
 
 
 def test_sendDew_4(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=21):
-        with mock.patch.object(function,
-                               'callAscomMethod'):
-            suc = function.sendDew('1', 10)
+    with mock.patch.object(function, "getAscomProperty", return_value=21):
+        with mock.patch.object(function, "callAscomMethod"):
+            suc = function.sendDew("1", 10)
             assert suc
 
 

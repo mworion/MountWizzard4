@@ -25,7 +25,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.environment.directWeather import DirectWeather
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
     func = DirectWeather(app=App())
     yield func

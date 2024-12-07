@@ -25,16 +25,17 @@ import platform
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.environment.sensorWeatherAscom import SensorWeatherAscom
 from base.signalsDevices import Signals
-if not platform.system() == 'Windows':
+
+if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
     class Test1:
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
+        Name = "test"
+        DriverVersion = "1"
+        DriverInfo = "test1"
         temperature = 10
         humidity = 85.00
         pressure = 950

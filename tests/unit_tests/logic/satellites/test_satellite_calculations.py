@@ -36,7 +36,7 @@ from logic.satellites.satellite_calculations import extractCorrectOrbits, sortFl
 from logic.satellites.satellite_calculations import addMeridianTransit, calcSatPasses
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
     yield App()
 
@@ -101,9 +101,11 @@ def test_checkTwilight_2(function):
 
 
 def test_findRangeRate(function):
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
     tEv = function.mount.obsSite.ts.tt_jd(2459215.5)
@@ -115,9 +117,11 @@ def test_findRangeRate(function):
 
 
 def test_calcSatSunPhase_1(function):
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
     ephemeris = function.ephemeris
@@ -127,26 +131,30 @@ def test_calcSatSunPhase_1(function):
 
 
 def test_calcAppMag_1(function):
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
     ephemeris = function.ephemeris
     satRange = 483
     phase = Angle(degrees=113)
     tEv = function.mount.obsSite.ts.now()
-    with mock.patch.object(logic.satellites.satellite_calculations,
-                           'calcSatSunPhase',
-                           return_value=phase):
+    with mock.patch.object(
+        logic.satellites.satellite_calculations, "calcSatSunPhase", return_value=phase
+    ):
         val = calcAppMag(sat, loc, ephemeris, satRange, tEv)
         assert round(val, 4) == -2.0456
 
 
 def test_calcSatelliteMeridianTransit(function):
-    tle = ['NOAA 8',
-           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
-           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
 
     satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
     loc = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
@@ -154,9 +162,11 @@ def test_calcSatelliteMeridianTransit(function):
 
 
 def test_calcPassEvents_1(function):
-    tle = ['NOAA 8',
-           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
-           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
 
     satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
     obsSite = function.mount.obsSite
@@ -166,9 +176,11 @@ def test_calcPassEvents_1(function):
 
 
 def test_calcPassEvents_2(function):
-    tle = ['NOAA 8',
-           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
-           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
 
     satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
     obsSite = function.mount.obsSite
@@ -193,9 +205,7 @@ def test_collectAllOrbits_1(function):
 
     times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
     events = [0, 1, 2, 0, 1, 2, 0, 1, 2]
-    with mock.patch.object(function.mount.obsSite.ts,
-                           'now',
-                           return_value=now):
+    with mock.patch.object(function.mount.obsSite.ts, "now", return_value=now):
         satOrbits = collectAllOrbits(times, events, function.mount.obsSite)
         assert len(satOrbits) == 3
 
@@ -216,9 +226,7 @@ def test_collectAllOrbits_2(function):
 
     times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
     events = [0, 1, 2, 2, 1, 1, 0, 1, 1]
-    with mock.patch.object(function.mount.obsSite.ts,
-                           'now',
-                           return_value=now):
+    with mock.patch.object(function.mount.obsSite.ts, "now", return_value=now):
         satOrbits = collectAllOrbits(times, events, function.mount.obsSite)
         assert len(satOrbits) == 2
 
@@ -240,9 +248,7 @@ def test_collectAllOrbits_3(function):
     times = [t0, t1, t2, t3, t4, t5, t6, t7, t8]
     events = [0, 1, 2, 0, 1, 2, 0, 1, 2]
 
-    with mock.patch.object(function.mount.obsSite.ts,
-                           'now',
-                           return_value=now):
+    with mock.patch.object(function.mount.obsSite.ts, "now", return_value=now):
         satOrbits = collectAllOrbits(times, events, function.mount.obsSite)
         assert len(satOrbits) == 1
 
@@ -300,30 +306,27 @@ def test_extractCorrectOrbits_2(function):
 
 def test_sortFlipEvents_0(function):
     ts = function.mount.obsSite.ts
-    satOrbit = {'rise': ts.tt_jd(2459215.5),
-                'settle': ts.tt_jd(2459215.7)}
+    satOrbit = {"rise": ts.tt_jd(2459215.5), "settle": ts.tt_jd(2459215.7)}
     t0 = []
     t1 = [ts.tt_jd(2459215.5)]
     t2 = [ts.tt_jd(2459215.6)]
     satOrbit = sortFlipEvents(satOrbit, t0, t1, t2)
-    assert 'flip' not in satOrbit
+    assert "flip" not in satOrbit
 
 
 def test_sortFlipEvents_1(function):
     ts = function.mount.obsSite.ts
-    satOrbit = {'rise': ts.tt_jd(2459215.5),
-                'settle': ts.tt_jd(2459215.7)}
+    satOrbit = {"rise": ts.tt_jd(2459215.5), "settle": ts.tt_jd(2459215.7)}
     t0 = [ts.tt_jd(2459215.5)]
     t1 = [ts.tt_jd(2459215.5)]
     t2 = [ts.tt_jd(2459215.6)]
     satOrbit = sortFlipEvents(satOrbit, t0, t1, t2)
-    assert 'flip' in satOrbit
+    assert "flip" in satOrbit
 
 
 def test_sortFlipEvents_2(function):
     ts = function.mount.obsSite.ts
-    satOrbit = {'rise': ts.tt_jd(2459215.5),
-                'settle': ts.tt_jd(2459215.7)}
+    satOrbit = {"rise": ts.tt_jd(2459215.5), "settle": ts.tt_jd(2459215.7)}
     t0 = [ts.tt_jd(2459215.5)]
     t1 = [ts.tt_jd(2459215.6)]
     t2 = [ts.tt_jd(2459215.5)]
@@ -332,99 +335,105 @@ def test_sortFlipEvents_2(function):
 
 def test_sortFlipEvents_3(function):
     ts = function.mount.obsSite.ts
-    satOrbit = {'rise': ts.tt_jd(2459215.5),
-                'settle': ts.tt_jd(2459215.7)}
+    satOrbit = {"rise": ts.tt_jd(2459215.5), "settle": ts.tt_jd(2459215.7)}
     t0 = [ts.tt_jd(2459215.5)]
     t1 = [ts.tt_jd(2459215.65)]
     t2 = []
     satOrbit = sortFlipEvents(satOrbit, t0, t1, t2)
-    assert 'flipLate' in satOrbit
+    assert "flipLate" in satOrbit
 
 
 def test_sortFlipEvents_4(function):
     ts = function.mount.obsSite.ts
-    satOrbit = {'rise': ts.tt_jd(2459215.5),
-                'settle': ts.tt_jd(2459215.7)}
+    satOrbit = {"rise": ts.tt_jd(2459215.5), "settle": ts.tt_jd(2459215.7)}
     t0 = [ts.tt_jd(2459215.5)]
     t1 = [ts.tt_jd(2459215.55)]
     t2 = []
     satOrbit = sortFlipEvents(satOrbit, t0, t1, t2)
-    assert 'flipEarly' in satOrbit
+    assert "flipEarly" in satOrbit
 
 
 def test_sortFlipEvents_5(function):
     ts = function.mount.obsSite.ts
-    satOrbit = {'rise': ts.tt_jd(2459215.5),
-                'settle': ts.tt_jd(2459215.7)}
+    satOrbit = {"rise": ts.tt_jd(2459215.5), "settle": ts.tt_jd(2459215.7)}
     t0 = [ts.tt_jd(2459215.5)]
     t1 = []
     t2 = [ts.tt_jd(2459215.55)]
     satOrbit = sortFlipEvents(satOrbit, t0, t1, t2)
-    assert 'flipEarly' in satOrbit
+    assert "flipEarly" in satOrbit
 
 
 def test_sortFlipEvents_6(function):
     ts = function.mount.obsSite.ts
-    satOrbit = {'rise': ts.tt_jd(2459215.5),
-                'settle': ts.tt_jd(2459215.7)}
+    satOrbit = {"rise": ts.tt_jd(2459215.5), "settle": ts.tt_jd(2459215.7)}
     t0 = [ts.tt_jd(2459215.5)]
     t1 = []
     t2 = [ts.tt_jd(2459215.65)]
     satOrbit = sortFlipEvents(satOrbit, t0, t1, t2)
-    assert 'flipLate' in satOrbit
+    assert "flipLate" in satOrbit
 
 
 def test_addMeridianTransit_1(function):
     location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
-    tle = ['NOAA 8',
-           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
-           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
     ts = function.mount.obsSite.ts
     setting = function.mount.setting
     satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
 
-    satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                  'settle': ts.tt_jd(2459215.7)},
-                 {'rise': ts.tt_jd(2459216.5),
-                  'settle': ts.tt_jd(2459216.7)}]
+    satOrbits = [
+        {"rise": ts.tt_jd(2459215.5), "settle": ts.tt_jd(2459215.7)},
+        {"rise": ts.tt_jd(2459216.5), "settle": ts.tt_jd(2459216.7)},
+    ]
     addMeridianTransit(satellite, satOrbits, location, setting)
 
 
 def test_addMeridianTransit_2(function):
     location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11, elevation_m=500)
-    tle = ['NOAA 8',
-           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
-           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
     ts = function.mount.obsSite.ts
     setting = function.mount.setting
     function.mount.setting.meridianLimitTrack = None
     satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
 
-    satOrbits = [{'rise': ts.tt_jd(2459215.5),
-                  'settle': ts.tt_jd(2459215.7)},
-                 {'rise': ts.tt_jd(2459216.5),
-                  'settle': ts.tt_jd(2459216.7)}]
+    satOrbits = [
+        {"rise": ts.tt_jd(2459215.5), "settle": ts.tt_jd(2459215.7)},
+        {"rise": ts.tt_jd(2459216.5), "settle": ts.tt_jd(2459216.7)},
+    ]
     addMeridianTransit(satellite, satOrbits, location, setting)
 
 
 def test_calcSatPasses_1(function):
-    tle = ['NOAA 8',
-           '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
-           '2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954']
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
 
     satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
     obsSite = function.mount.obsSite
     setting = function.mount.setting
-    with mock.patch.object(logic.satellites.satellite_calculations,
-                           'calcPassEvents',
-                           return_value=(1, 1)):
-        with mock.patch.object(logic.satellites.satellite_calculations,
-                               'collectAllOrbits',
-                               return_value=[]):
-            with mock.patch.object(logic.satellites.satellite_calculations,
-                                   'extractCorrectOrbits',
-                                   return_value=[]):
-                with mock.patch.object(logic.satellites.satellite_calculations,
-                                       'addMeridianTransit',
-                                       return_value=[]):
+    with mock.patch.object(
+        logic.satellites.satellite_calculations, "calcPassEvents", return_value=(1, 1)
+    ):
+        with mock.patch.object(
+            logic.satellites.satellite_calculations, "collectAllOrbits", return_value=[]
+        ):
+            with mock.patch.object(
+                logic.satellites.satellite_calculations,
+                "extractCorrectOrbits",
+                return_value=[],
+            ):
+                with mock.patch.object(
+                    logic.satellites.satellite_calculations,
+                    "addMeridianTransit",
+                    return_value=[],
+                ):
                     calcSatPasses(satellite, obsSite, setting)

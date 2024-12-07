@@ -27,7 +27,7 @@ from logic.modelBuild.modelHandling import writeRetrofitData
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
     yield
 
@@ -40,12 +40,15 @@ def test_writeRetrofitData_1(function):
 def test_writeRetrofitData_2(function):
     class Parent:
         obsSite = App().mount.obsSite
+
     model = Model(parent=Parent())
-    a = ModelStar(coord=Star(ra_hours=0, dec_degrees=0),
-                  errorAngle=Angle(degrees=0),
-                  errorRMS=1,
-                  number=1,
-                  obsSite=App().mount.obsSite)
+    a = ModelStar(
+        coord=Star(ra_hours=0, dec_degrees=0),
+        errorAngle=Angle(degrees=0),
+        errorRMS=1,
+        number=1,
+        obsSite=App().mount.obsSite,
+    )
     model.addStar(a)
     model.terms = 22
     model.errorRMS = 10
@@ -54,4 +57,3 @@ def test_writeRetrofitData_2(function):
 
     val = writeRetrofitData(model, [{}])
     assert val
-

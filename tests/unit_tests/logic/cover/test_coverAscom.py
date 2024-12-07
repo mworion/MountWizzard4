@@ -29,16 +29,16 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.cover.coverAscom import CoverAscom
 from base.signalsDevices import Signals
 
-if not platform.system() == 'Windows':
+if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
     class Test1:
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
+        Name = "test"
+        DriverVersion = "1"
+        DriverInfo = "test1"
         CoverState = 1
 
         @staticmethod
@@ -65,8 +65,7 @@ def function():
         def Brightness(a):
             return True
 
-    with mock.patch.object(PySide6.QtCore.QTimer,
-                           'start'):
+    with mock.patch.object(PySide6.QtCore.QTimer, "start"):
         func = CoverAscom(app=App(), signals=Signals(), data={})
         func.client = Test1()
         func.clientProps = []
@@ -74,11 +73,8 @@ def function():
 
 
 def test_workerPollData_1(function):
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=1):
-        with mock.patch.object(function,
-                               'storePropertyToData'):
+    with mock.patch.object(function, "getAscomProperty", return_value=1):
+        with mock.patch.object(function, "storePropertyToData"):
             suc = function.workerPollData()
             assert suc
 

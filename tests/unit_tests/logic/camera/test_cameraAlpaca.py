@@ -27,10 +27,11 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.camera import Camera
 from logic.camera.cameraAlpaca import CameraAlpaca
 from base.loggerMW import setupLogging
+
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function():
     camera = Camera(App())
     camera.exposureTime = 1
@@ -41,96 +42,71 @@ def function():
 
 
 def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(function,
-                           'getAndStoreAlpacaProperty'):
+    with mock.patch.object(function, "getAndStoreAlpacaProperty"):
         function.workerGetInitialConfig()
 
 
 def test_workerPollData_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function.threadPool,
-                           'start'):
+    with mock.patch.object(function.threadPool, "start"):
         function.workerPollData()
 
 
 def test_sendDownloadMode_1(function):
-    function.data['CAN_FAST'] = True
-    with mock.patch.object(function,
-                           'setAlpacaProperty',
-                           return_value=False):
+    function.data["CAN_FAST"] = True
+    with mock.patch.object(function, "setAlpacaProperty", return_value=False):
         function.sendDownloadMode()
 
 
 def test_waitFunc(function):
-    with mock.patch.object(function,
-                           'getAlpacaProperty',
-                           return_value=False):
-        suc = function.waitFunc() 
+    with mock.patch.object(function, "getAlpacaProperty", return_value=False):
+        suc = function.waitFunc()
         assert suc
 
 
 def test_workerExpose_1(function):
-    with mock.patch.object(function.parent,
-                           'sendDownloadMode'):
-        with mock.patch.object(function,
-                               'setAlpacaProperty'):
-            with mock.patch.object(function.parent,
-                                   'waitExposed'):
-                with mock.patch.object(function.parent,
-                                       'retrieveImage'):
-                    with mock.patch.object(function.parent,
-                                           'writeImageFitsHeader'):
-                        with mock.patch.object(fits.HDUList,
-                                               'writeto'):
+    with mock.patch.object(function.parent, "sendDownloadMode"):
+        with mock.patch.object(function, "setAlpacaProperty"):
+            with mock.patch.object(function.parent, "waitExposed"):
+                with mock.patch.object(function.parent, "retrieveImage"):
+                    with mock.patch.object(function.parent, "writeImageFitsHeader"):
+                        with mock.patch.object(fits.HDUList, "writeto"):
                             function.workerExpose()
 
 
 def test_expose_1(function):
-    with mock.patch.object(function.threadPool,
-                           'start'):
+    with mock.patch.object(function.threadPool, "start"):
         function.expose()
 
 
 def test_abort_3(function):
-    function.data['CAN_ABORT'] = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty',
-                           return_value=True):
+    function.data["CAN_ABORT"] = True
+    with mock.patch.object(function, "getAlpacaProperty", return_value=True):
         suc = function.abort()
         assert suc
 
 
 def test_sendCoolerSwitch_1(function):
-    with mock.patch.object(function,
-                           'setAlpacaProperty',
-                           return_value=True):
+    with mock.patch.object(function, "setAlpacaProperty", return_value=True):
         function.sendCoolerSwitch()
 
 
 def test_sendCoolerSwitch_2(function):
-    with mock.patch.object(function,
-                           'setAlpacaProperty',
-                           return_value=True):
+    with mock.patch.object(function, "setAlpacaProperty", return_value=True):
         function.sendCoolerSwitch(coolerOn=True)
 
 
 def test_sendCoolerTemp_1(function):
-    function.data['CAN_SET_CCD_TEMPERATURE'] = True
-    with mock.patch.object(function,
-                           'setAlpacaProperty',
-                           return_value=True):
+    function.data["CAN_SET_CCD_TEMPERATURE"] = True
+    with mock.patch.object(function, "setAlpacaProperty", return_value=True):
         function.sendCoolerTemp()
 
 
 def test_sendOffset_1(function):
-    with mock.patch.object(function,
-                           'setAlpacaProperty',
-                           return_value=True):
+    with mock.patch.object(function, "setAlpacaProperty", return_value=True):
         function.sendOffset()
 
 
 def test_sendGain_1(function):
-    with mock.patch.object(function,
-                           'setAlpacaProperty',
-                           return_value=True):
+    with mock.patch.object(function, "setAlpacaProperty", return_value=True):
         function.sendGain()

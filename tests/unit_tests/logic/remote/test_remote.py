@@ -29,36 +29,28 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.remote.remote import Remote
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
     func = Remote(app=App())
     yield func
 
 
 def test_startCommunication_1(function):
-    with mock.patch.object(QtNetwork.QTcpServer,
-                           'listen',
-                           return_value=True):
+    with mock.patch.object(QtNetwork.QTcpServer, "listen", return_value=True):
         suc = function.startCommunication()
         assert suc
 
 
 def test_startCommunication_2(function):
-    with mock.patch.object(QtNetwork.QTcpServer,
-                           'isListening',
-                           return_value=False):
+    with mock.patch.object(QtNetwork.QTcpServer, "isListening", return_value=False):
         suc = function.startCommunication()
         assert not suc
 
 
 def test_stopCommunication_1(function):
     function.tcpServer = QtNetwork.QTcpServer()
-    with mock.patch.object(function.tcpServer,
-                           'isListening',
-                           return_value=True):
-        with mock.patch.object(function.tcpServer,
-                               'close',
-                               return_value=True):
+    with mock.patch.object(function.tcpServer, "isListening", return_value=True):
+        with mock.patch.object(function.tcpServer, "close", return_value=True):
             function.stopCommunication()
 
 
@@ -70,9 +62,7 @@ def test_addConnection_1(function):
 
 def test_addConnection_2(function):
     function.tcpServer = QtNetwork.QTcpServer(function)
-    with mock.patch.object(function.tcpServer,
-                           'nextPendingConnection',
-                           return_value=0):
+    with mock.patch.object(function.tcpServer, "nextPendingConnection", return_value=0):
         suc = function.addConnection()
         assert not suc
 
@@ -90,17 +80,18 @@ def test_addConnection_3(function):
 
         @staticmethod
         def toString():
-            return 'Test'
+            return "Test"
+
     function.tcpServer = QtNetwork.QTcpServer(function)
-    with mock.patch.object(function.tcpServer,
-                           'nextPendingConnection',
-                           return_value=Test()):
+    with mock.patch.object(
+        function.tcpServer, "nextPendingConnection", return_value=Test()
+    ):
         suc = function.addConnection()
         assert suc
 
 
 def test_receiveMessage_1(function):
-    class Test():
+    class Test:
         @staticmethod
         def bytesAvailable():
             return 0
@@ -111,7 +102,7 @@ def test_receiveMessage_1(function):
 
 
 def test_receiveMessage_2(function):
-    class Test():
+    class Test:
         @staticmethod
         def bytesAvailable():
             return 1
@@ -122,11 +113,11 @@ def test_receiveMessage_2(function):
 
         @staticmethod
         def toString():
-            return 'Test'
+            return "Test"
 
         @staticmethod
         def read(a):
-            return 'Test'.encode('ascii')
+            return "Test".encode("ascii")
 
     function.clientConnection = Test()
     suc = function.receiveMessage()
@@ -134,7 +125,7 @@ def test_receiveMessage_2(function):
 
 
 def test_receiveMessage_3(function):
-    class Test():
+    class Test:
         @staticmethod
         def bytesAvailable():
             return 1
@@ -145,11 +136,11 @@ def test_receiveMessage_3(function):
 
         @staticmethod
         def toString():
-            return 'Test'
+            return "Test"
 
         @staticmethod
         def read(a):
-            return 'shutdown'.encode('ascii')
+            return "shutdown".encode("ascii")
 
     function.clientConnection = Test()
     suc = function.receiveMessage()
@@ -157,14 +148,14 @@ def test_receiveMessage_3(function):
 
 
 def test_removeConnection_1(function):
-    class Test():
+    class Test:
         @staticmethod
         def peerAddress():
             return Test()
 
         @staticmethod
         def toString():
-            return 'Test'
+            return "Test"
 
         @staticmethod
         def close():
@@ -175,14 +166,14 @@ def test_removeConnection_1(function):
 
 
 def test_handleError_1(function):
-    class Test():
+    class Test:
         @staticmethod
         def peerAddress():
             return Test()
 
         @staticmethod
         def toString():
-            return 'Test'
+            return "Test"
 
     function.clientConnection = Test()
-    function.handleError('test')
+    function.handleError("test")

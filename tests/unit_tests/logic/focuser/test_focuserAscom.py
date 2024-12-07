@@ -27,11 +27,11 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.focuser.focuserAscom import FocuserAscom
 from base.signalsDevices import Signals
 
-if not platform.system() == 'Windows':
+if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
     class Test1:
         @staticmethod
@@ -43,9 +43,9 @@ def function():
             return True
 
         Position = 1
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
+        Name = "test"
+        DriverVersion = "1"
+        DriverInfo = "test1"
 
     func = FocuserAscom(app=App(), signals=Signals(), data={})
     func.clientProps = []
@@ -54,8 +54,7 @@ def function():
 
 
 def test_workerPollData_1(function):
-    with mock.patch.object(function,
-                           'getAndStoreAscomProperty'):
+    with mock.patch.object(function, "getAndStoreAscomProperty"):
         suc = function.workerPollData()
         assert suc
 

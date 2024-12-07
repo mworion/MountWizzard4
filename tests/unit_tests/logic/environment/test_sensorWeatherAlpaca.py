@@ -27,7 +27,7 @@ from logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
 from base.signalsDevices import Signals
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
     func = SensorWeatherAlpaca(app=App(), signals=Signals(), data={})
     yield func
@@ -35,15 +35,13 @@ def function():
 
 def test_workerPollData_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function,
-                           'getAndStoreAlpacaProperty'):
+    with mock.patch.object(function, "getAndStoreAlpacaProperty"):
         suc = function.workerPollData()
         assert not suc
 
 
 def test_workerPollData_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAndStoreAlpacaProperty'):
+    with mock.patch.object(function, "getAndStoreAlpacaProperty"):
         suc = function.workerPollData()
         assert suc

@@ -30,9 +30,8 @@ from logic.photometry.photometry import Photometry
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function(qapp):
-
     func = Photometry(App())
     yield func
 
@@ -46,8 +45,7 @@ def test_workerGetHFR(function):
     function.filterConstW = 5
     function.xm = np.linspace(0, 100, 100)
     function.ym = np.linspace(0, 100, 100)
-    function.objs = {'x': np.linspace(0, 100, 20),
-                     'y': np.linspace(0, 100, 20)}
+    function.objs = {"x": np.linspace(0, 100, 20), "y": np.linspace(0, 100, 20)}
     function.hfr = np.ones((20, 30))
     suc = function.workerGetHFR()
     assert suc
@@ -59,13 +57,15 @@ def test_workerGetRoundness(function):
     function.filterConstW = 5
     function.xm = np.linspace(0, 100, 100)
     function.ym = np.linspace(0, 100, 100)
-    function.objs = {'x': np.linspace(0, 100, 20),
-                     'y': np.linspace(0, 100, 20),
-                     'a': np.random.rand(20, 1) + 1,
-                     'b': np.random.rand(20, 1) + 1}
-    with mock.patch.object(logic.photometry.photometry,
-                           'griddata',
-                           return_value=np.ones((20, 100))):
+    function.objs = {
+        "x": np.linspace(0, 100, 20),
+        "y": np.linspace(0, 100, 20),
+        "a": np.random.rand(20, 1) + 1,
+        "b": np.random.rand(20, 1) + 1,
+    }
+    with mock.patch.object(
+        logic.photometry.photometry, "griddata", return_value=np.ones((20, 100))
+    ):
         suc = function.workerGetRoundness()
         assert suc
         assert len(function.roundnessGrid) == 20
@@ -74,8 +74,7 @@ def test_workerGetRoundness(function):
 def test_workerCalcTiltValuesSquare(function):
     function.w = 10
     function.h = 10
-    function.objs = {'x': np.linspace(0, 100, 20),
-                     'y': np.linspace(0, 100, 20)}
+    function.objs = {"x": np.linspace(0, 100, 20), "y": np.linspace(0, 100, 20)}
     function.image = np.random.rand(100, 100) + 1
     function.hfr = np.linspace(20, 30, 20)
     suc = function.workerCalcTiltValuesSquare()
@@ -85,8 +84,7 @@ def test_workerCalcTiltValuesSquare(function):
 def test_workerCalcTiltValuesTriangle(function):
     function.w = 10
     function.h = 10
-    function.objs = {'x': np.linspace(0, 100, 20),
-                     'y': np.linspace(0, 100, 20)}
+    function.objs = {"x": np.linspace(0, 100, 20), "y": np.linspace(0, 100, 20)}
     function.image = np.random.rand(100, 100) + 1
     function.hfr = np.linspace(20, 30, 20)
     suc = function.workerCalcTiltValuesTriangle()
@@ -138,8 +136,7 @@ def test_showTabBackgroundRMS(function):
 def test_baseCalcs(function):
     function.w = 100
     function.h = 100
-    function.objs = {'x': np.linspace(0, 50, 20),
-                     'y': np.linspace(50, 100, 20)}
+    function.objs = {"x": np.linspace(0, 50, 20), "y": np.linspace(50, 100, 20)}
     function.hfr = np.linspace(20, 30, 20)
     function.image = np.random.rand(100, 100) + 1
     suc = function.baseCalcs()
@@ -148,44 +145,28 @@ def test_baseCalcs(function):
 
 def test_runCalcs_1(function):
     function.hfr = [1, 2, 3]
-    with mock.patch.object(function,
-                           'baseCalcs'):
-        with mock.patch.object(function,
-                               'workerGetHFR'):
-            with mock.patch.object(function,
-                                   'workerCalcTiltValuesSquare'):
-                with mock.patch.object(function,
-                                       'workerCalcTiltValuesTriangle'):
-                    with mock.patch.object(function,
-                                           'workerGetRoundness'):
-                        with mock.patch.object(function,
-                                               'calcAberrationInspectView'):
-                            with mock.patch.object(function,
-                                                   'calcBackground'):
-                                with mock.patch.object(function,
-                                                       'calcBackgroundRMS'):
+    with mock.patch.object(function, "baseCalcs"):
+        with mock.patch.object(function, "workerGetHFR"):
+            with mock.patch.object(function, "workerCalcTiltValuesSquare"):
+                with mock.patch.object(function, "workerCalcTiltValuesTriangle"):
+                    with mock.patch.object(function, "workerGetRoundness"):
+                        with mock.patch.object(function, "calcAberrationInspectView"):
+                            with mock.patch.object(function, "calcBackground"):
+                                with mock.patch.object(function, "calcBackgroundRMS"):
                                     suc = function.runCalcs()
                                     assert not suc
 
 
 def test_runCalcs_2(function):
     function.hfr = [1] * 20
-    with mock.patch.object(function,
-                           'baseCalcs'):
-        with mock.patch.object(function,
-                               'workerGetHFR'):
-            with mock.patch.object(function,
-                                   'workerCalcTiltValuesSquare'):
-                with mock.patch.object(function,
-                                       'workerCalcTiltValuesTriangle'):
-                    with mock.patch.object(function,
-                                           'workerGetRoundness'):
-                        with mock.patch.object(function,
-                                               'calcAberrationInspectView'):
-                            with mock.patch.object(function,
-                                                   'calcBackground'):
-                                with mock.patch.object(function,
-                                                       'calcBackgroundRMS'):
+    with mock.patch.object(function, "baseCalcs"):
+        with mock.patch.object(function, "workerGetHFR"):
+            with mock.patch.object(function, "workerCalcTiltValuesSquare"):
+                with mock.patch.object(function, "workerCalcTiltValuesTriangle"):
+                    with mock.patch.object(function, "workerGetRoundness"):
+                        with mock.patch.object(function, "calcAberrationInspectView"):
+                            with mock.patch.object(function, "calcBackground"):
+                                with mock.patch.object(function, "calcBackgroundRMS"):
                                     suc = function.runCalcs()
                                     assert suc
 
@@ -197,8 +178,7 @@ def test_workerCalcPhotometry_1(function):
     function.image[50][51] = 50
     function.image[50][49] = 50
     function.image[49][50] = 50
-    with mock.patch.object(function,
-                           'runCalcs'):
+    with mock.patch.object(function, "runCalcs"):
         suc = function.workerCalcPhotometry()
         assert suc
         assert function.bkg is not None
@@ -213,9 +193,7 @@ def test_workerCalcPhotometry_2(function):
     function.image[50][51] = 50
     function.image[50][49] = 50
     function.image[49][50] = 50
-    with mock.patch.object(sep,
-                           'extract',
-                           side_effect=Exception):
+    with mock.patch.object(sep, "extract", side_effect=Exception):
         suc = function.workerCalcPhotometry()
         assert not suc
         assert function.hfr is None
@@ -225,8 +203,7 @@ def test_workerCalcPhotometry_2(function):
 def test_workerCalcPhotometry_3(function):
     function.image = np.random.rand(100, 100) + 1
     function.image[40:60, 40:60] = 100
-    with mock.patch.object(function,
-                           'runCalcs'):
+    with mock.patch.object(function, "runCalcs"):
         suc = function.workerCalcPhotometry()
         assert suc
 
@@ -251,8 +228,7 @@ def test_processPhotometry_2(function):
 
 def test_processPhotometry_3(function):
     function.image = np.random.rand(100, 100) + 1
-    with mock.patch.object(function.threadPool,
-                           'start'):
+    with mock.patch.object(function.threadPool, "start"):
         suc = function.processPhotometry(image=np.random.rand(100, 100) + 1)
         assert suc
     function.lock.unlock()

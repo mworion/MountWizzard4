@@ -24,6 +24,7 @@ import socket
 import platform
 import json
 import ctypes
+from pathlib import Path
 
 # external packages
 import pytest
@@ -195,7 +196,7 @@ def test_extractFile_1():
     class MTime:
         st_mtime = 1000000000.0
 
-    filePath = "tests/workDir/data/de440_mw4.bsp"
+    filePath = Path("tests/workDir/data/de440_mw4.bsp")
     with mock.patch.object(os.path, "isfile", return_value=False):
         with mock.patch.object(os, "stat", return_value=MTime()):
             extractFile(filePath, "de440_mw4.bsp", 0)
@@ -205,7 +206,7 @@ def test_extractFile_2():
     class MTime:
         st_mtime = 1000000000.0
 
-    filePath = "tests/workDir/data/de440_mw4.bsp"
+    filePath = Path("tests/workDir/data/de440_mw4.bsp")
     with mock.patch.object(os.path, "isfile", return_value=True):
         with mock.patch.object(os, "stat", return_value=MTime()):
             with mock.patch.object(os, "remove"):
@@ -217,7 +218,7 @@ def test_extractFile_3():
     class MTime:
         st_mtime = 1000000000.0
 
-    filePath = "tests/workDir/data/de440_mw4.bsp"
+    filePath = Path("tests/workDir/data/de440_mw4.bsp")
     with mock.patch.object(os.path, "isfile", return_value=True):
         with mock.patch.object(os, "stat", return_value=MTime()):
             with mock.patch.object(os, "chmod"):
@@ -226,7 +227,7 @@ def test_extractFile_3():
 
 def test_extractDataFiles_1():
     mwGlob = dict()
-    mwGlob["dataDir"] = "tests/workDir/data"
+    mwGlob["dataDir"] = Path("tests/workDir/data")
     with mock.patch.object(loader, "extractFile"):
         extractDataFiles(mwGlob=mwGlob)
 

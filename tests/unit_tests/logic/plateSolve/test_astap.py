@@ -115,13 +115,13 @@ def test_solve_1(function):
     with mock.patch.object(function, "runASTAP", return_value=(False, 1)):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(os, "remove"):
-                res = function.solve("tests/workDir/image/m51.fit", False)
+                res = function.solve(Path("tests/workDir/image/m51.fit"), False)
                 assert not res["success"]
 
 
 def test_solve_2(function):
     with mock.patch.object(function, "runASTAP", return_value=(True, 0)):
-        res = function.solve("tests/workDir/image/m51.fit", False)
+        res = function.solve(Path("tests/workDir/image/m51.fit"), False)
         assert not res["success"]
 
 
@@ -136,7 +136,7 @@ def test_solve_3(function):
                         with mock.patch.object(
                             logic.plateSolve.astap, "updateImageFileHeaderWithSolution"
                         ):
-                            res = function.solve("tests/workDir/image/m51.fit", True)
+                            res = function.solve(Path("tests/workDir/image/m51.fit"), True)
                             assert res["success"]
 
 

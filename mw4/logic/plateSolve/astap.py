@@ -123,7 +123,7 @@ class ASTAP(object):
         binPath = self.appPath / "astap"
         wcsPath = self.tempDir / "temp.wcs"
 
-        if os.path.isfile(wcsPath):
+        if wcsPath.is_file():
             os.remove(wcsPath)
 
         options = [
@@ -145,7 +145,7 @@ class ASTAP(object):
             self.log.warning(f"ASTAP error in [{imagePath}]: {msg}")
             return result
 
-        if not os.path.isfile(wcsPath):
+        if not wcsPath.is_file():
             result["message"] = "ASTAP result file missing - solve failed"
             self.log.warning(f"Solve files [{wcsPath}] for [{imagePath}] missing")
             return result

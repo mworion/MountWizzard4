@@ -173,7 +173,7 @@ class OnlineWeather:
             self.log.warning(f"[{url}] status is not 200")
             return False
 
-        with open(self.app.mwGlob["dataDir"] + "/openweathermap.data", "w+") as f:
+        with open(self.app.mwGlob["dataDir"] / "openweathermap.data", "w+") as f:
             json.dump(data.json(), f, indent=4)
             self.log.trace(data.json())
         return True

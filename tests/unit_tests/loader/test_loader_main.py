@@ -19,6 +19,7 @@ import sys
 import unittest.mock as mock
 import glob
 import os
+from pathlib import Path
 
 # external packages
 import PySide6
@@ -55,12 +56,12 @@ def test_main_1():
         os.remove(f)
 
     mwGlob = {
-        "configDir": "tests/workDir/config",
-        "dataDir": "tests/workDir/data",
-        "tempDir": "tests/workDir/temp",
-        "imageDir": "tests/workDir/image",
-        "modelDir": "tests/workDir/model",
-        "workDir": "mw4/tests/workDir",
+        "configDir": Path("tests/workDir/config"),
+        "dataDir": Path("tests/workDir/data"),
+        "tempDir": Path("tests/workDir/temp"),
+        "imageDir": Path("tests/workDir/image"),
+        "modelDir": Path("tests/workDir/model"),
+        "workDir": Path("mw4/tests/workDir"),
         "modeldata": "4.0",
     }
     with mock.patch.object(PySide6.QtCore.QBasicTimer, "start"):

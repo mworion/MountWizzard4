@@ -16,8 +16,6 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
-import pytest
-import astropy
 
 # external packages
 
@@ -28,7 +26,7 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@mock.patch('sys.argv', ['python', '1', '10', '10', '0'])
+@mock.patch("sys.argv", ["python", "1", "10", "10", "0"])
 def test_main_2():
     class Test:
         def __init__(self, runnable=None, version=None, x=0, y=0, colorSet=0):

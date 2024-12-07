@@ -17,19 +17,17 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import astropy
 
 # external packages
 from PySide6.QtGui import QCloseEvent
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-import gui.extWindows.bigPopupW
 from gui.extWindows.bigPopupW import BigPopup
 from gui.utilities.toolsQtWidget import MWidget
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     window = BigPopup(App())
     yield window
@@ -41,32 +39,29 @@ def test_initConfig_1(function):
 
 
 def test_storeConfig_1(function):
-    if 'bigPopupW' in function.app.config:
-        del function.app.config['bigPopupW']
+    if "bigPopupW" in function.app.config:
+        del function.app.config["bigPopupW"]
 
     suc = function.storeConfig()
     assert suc
 
 
 def test_storeConfig_2(function):
-    function.app.config['bigPopupW'] = {}
+    function.app.config["bigPopupW"] = {}
 
     suc = function.storeConfig()
     assert suc
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function,
-                           'show'):
-        with mock.patch.object(MWidget,
-                               'closeEvent'):
+    with mock.patch.object(function, "show"):
+        with mock.patch.object(MWidget, "closeEvent"):
             function.showWindow()
             function.closeEvent(QCloseEvent)
 
 
 def test_showWindow(function):
-    with mock.patch.object(function,
-                           'show'):
+    with mock.patch.object(function, "show"):
         suc = function.showWindow()
         assert suc
 

@@ -30,7 +30,6 @@ import ctypes
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.cameraAscom import CameraAscom
 from logic.camera.camera import Camera
-from base.signalsDevices import Signals
 from base.ascomClass import AscomClass
 from base.loggerMW import setupLogging
 

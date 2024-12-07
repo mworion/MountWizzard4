@@ -16,11 +16,9 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 import unittest.mock as mock
 
 # external packages
-from PySide6.QtCore import QThreadPool, QObject, Signal
 from indibase.indiDevice import Device
 from indibase.indiClient import Client
 

@@ -23,4 +23,4 @@ from base.packageConfig import excludedPlatforms
 
 
 def test_config():
-    assert 'armv7l' in excludedPlatforms
+    assert "armv7l" in excludedPlatforms

@@ -16,7 +16,7 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
+
 # external packages
 from skyfield.api import Angle
 from skyfield.api import wgs84
@@ -25,7 +25,7 @@ from skyfield.api import wgs84
 from base import transform
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def module_setup_teardown(qtbot, qapp):
     pass
 

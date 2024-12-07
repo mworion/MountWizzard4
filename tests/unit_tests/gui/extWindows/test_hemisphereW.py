@@ -17,7 +17,6 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import astropy
 import os
 import shutil
 
@@ -37,45 +36,39 @@ from mountcontrol.setting import Setting
 from gui.utilities.gCustomViewBox import CustomViewBox
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    shutil.copy('tests/testData/terrain.jpg', 'tests/workDir/config/terrain.jpg')
+    shutil.copy("tests/testData/terrain.jpg", "tests/workDir/config/terrain.jpg")
     func = HemisphereWindow(app=App())
     yield func
     func.app.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):
-    with mock.patch.object(os.path,
-                           'isfile',
-                           return_value=False):
+    with mock.patch.object(os.path, "isfile", return_value=False):
         function.initConfig()
 
 
 def test_initConfig_2(function):
-    function.app.config['hemisphereW']['winPosX'] = 10000
-    function.app.config['hemisphereW']['winPosY'] = 10000
-    with mock.patch.object(os.path,
-                           'isfile',
-                           return_value=False):
+    function.app.config["hemisphereW"]["winPosX"] = 10000
+    function.app.config["hemisphereW"]["winPosY"] = 10000
+    with mock.patch.object(os.path, "isfile", return_value=False):
         function.initConfig()
 
 
 def test_initConfig_3(function):
-    function.app.config['hemisphereW'] = {}
-    function.app.config['hemisphereW']['winPosX'] = 100
-    function.app.config['hemisphereW']['winPosY'] = 100
-    with mock.patch.object(os.path,
-                           'isfile',
-                           return_value=False):
+    function.app.config["hemisphereW"] = {}
+    function.app.config["hemisphereW"]["winPosX"] = 100
+    function.app.config["hemisphereW"]["winPosY"] = 100
+    with mock.patch.object(os.path, "isfile", return_value=False):
         function.initConfig()
 
 
 def test_initConfig_4(function):
-    shutil.copy('tests/testData/terrain.jpg', 'tests/workDir/config/terrain.jpg')
-    function.app.config['hemisphereW'] = {}
-    function.app.config['hemisphereW']['winPosX'] = 100
-    function.app.config['hemisphereW']['winPosY'] = 100
+    shutil.copy("tests/testData/terrain.jpg", "tests/workDir/config/terrain.jpg")
+    function.app.config["hemisphereW"] = {}
+    function.app.config["hemisphereW"]["winPosX"] = 100
+    function.app.config["hemisphereW"]["winPosY"] = 100
     function.initConfig()
 
 
@@ -93,41 +86,35 @@ def test_enableTabsMovable(function):
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function,
-                           'drawHemisphereTab'):
-        with mock.patch.object(function,
-                               'show'):
-            with mock.patch.object(MWidget,
-                                   'closeEvent'):
+    with mock.patch.object(function, "drawHemisphereTab"):
+        with mock.patch.object(function, "show"):
+            with mock.patch.object(MWidget, "closeEvent"):
                 function.showWindow()
                 function.closeEvent(QCloseEvent)
 
 
 def test_showWindow_1(function):
-    with mock.patch.object(function,
-                           'drawHemisphereTab'):
-        with mock.patch.object(function,
-                               'show'):
+    with mock.patch.object(function, "drawHemisphereTab"):
+        with mock.patch.object(function, "show"):
             function.showWindow()
 
 
 def test_mouseMoved_1(function):
-    with mock.patch.object(function.ui.hemisphere.p[0].getViewBox(),
-                           'posInViewRange',
-                           return_value=False):
+    with mock.patch.object(
+        function.ui.hemisphere.p[0].getViewBox(), "posInViewRange", return_value=False
+    ):
         function.mouseMoved(pos=QPointF(1, 1))
 
 
 def test_mouseMoved_2(function):
-    with mock.patch.object(function.ui.hemisphere.p[0].getViewBox(),
-                           'posInViewRange',
-                           return_value=True):
+    with mock.patch.object(
+        function.ui.hemisphere.p[0].getViewBox(), "posInViewRange", return_value=True
+    ):
         function.mouseMoved(pos=QPointF(0.5, 0.5))
 
 
 def test_colorChange(function):
-    with mock.patch.object(function,
-                           'drawHemisphereTab'):
+    with mock.patch.object(function, "drawHemisphereTab"):
         function.colorChange()
 
 
@@ -137,19 +124,15 @@ def test_enableOperationModeChange_1(function):
 
 def test_setOperationModeHem_1(function):
     function.ui.editModeHem.setChecked(True)
-    with mock.patch.object(function,
-                           'drawModelPoints'):
-        with mock.patch.object(function,
-                               'drawHemisphereTab'):
+    with mock.patch.object(function, "drawModelPoints"):
+        with mock.patch.object(function, "drawHemisphereTab"):
             function.setOperationModeHem()
 
 
 def test_setOperationModeHem_2(function):
     function.ui.alignmentModeHem.setChecked(True)
-    with mock.patch.object(function,
-                           'drawModelPoints'):
-        with mock.patch.object(function,
-                               'drawHemisphereTab'):
+    with mock.patch.object(function, "drawModelPoints"):
+        with mock.patch.object(function, "drawHemisphereTab"):
             function.setOperationModeHem()
 
 
@@ -160,36 +143,41 @@ def test_calculateRelevance_0(function):
 
 
 def test_calculateRelevance_1(function):
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0,
-                                                       latitude_degrees=45)
+    function.app.mount.obsSite.location = wgs84.latlon(
+        longitude_degrees=0, latitude_degrees=45
+    )
     val = function.calculateRelevance(40, 180)
     assert round(val, 3) == 0.845
 
 
 def test_calculateRelevance_2(function):
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0,
-                                                       latitude_degrees=45)
+    function.app.mount.obsSite.location = wgs84.latlon(
+        longitude_degrees=0, latitude_degrees=45
+    )
     val = function.calculateRelevance(0, 0)
     assert val == 0
 
 
 def test_calculateRelevance_3(function):
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0,
-                                                       latitude_degrees=45)
+    function.app.mount.obsSite.location = wgs84.latlon(
+        longitude_degrees=0, latitude_degrees=45
+    )
     val = function.calculateRelevance(30, 180)
     assert val > 0
 
 
 def test_calculateRelevance_4(function):
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0,
-                                                       latitude_degrees=45)
+    function.app.mount.obsSite.location = wgs84.latlon(
+        longitude_degrees=0, latitude_degrees=45
+    )
     val = function.calculateRelevance(40, 10)
     assert val == 0
 
 
 def test_calculateRelevance_5(function):
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0,
-                                                       latitude_degrees=-45)
+    function.app.mount.obsSite.location = wgs84.latlon(
+        longitude_degrees=0, latitude_degrees=-45
+    )
     val = function.calculateRelevance(40, 10)
     assert val > 0
 
@@ -232,8 +220,7 @@ def test_updateOnChangedParams_1(function):
     function.meridianTrack = 0
     function.horizonLimitHigh = 0
     function.horizonLimitLow = 0
-    with mock.patch.object(function,
-                           'drawHemisphereTab'):
+    with mock.patch.object(function, "drawHemisphereTab"):
         suc = function.updateOnChangedParams(sett)
         assert suc
 
@@ -250,8 +237,7 @@ def test_updateOnChangedParams_2(function):
     function.horizonLimitHigh = 0
     function.horizonLimitLow = 0
 
-    with mock.patch.object(function,
-                           'drawHemisphereTab'):
+    with mock.patch.object(function, "drawHemisphereTab"):
         suc = function.updateOnChangedParams(sett)
         assert suc
 
@@ -268,8 +254,7 @@ def test_updateOnChangedParams_3(function):
     function.horizonLimitHigh = 0
     function.horizonLimitLow = 0
 
-    with mock.patch.object(function,
-                           'drawHemisphereTab'):
+    with mock.patch.object(function, "drawHemisphereTab"):
         suc = function.updateOnChangedParams(sett)
         assert suc
 
@@ -286,8 +271,7 @@ def test_updateOnChangedParams_4(function):
     function.horizonLimitHigh = 0
     function.horizonLimitLow = 0
 
-    with mock.patch.object(function,
-                           'drawHemisphereTab'):
+    with mock.patch.object(function, "drawHemisphereTab"):
         suc = function.updateOnChangedParams(sett)
         assert suc
 
@@ -316,17 +300,17 @@ def test_prepareHemisphere(function):
 
 
 def test_drawCelestialEquator_1(function):
-    with mock.patch.object(function.app.data,
-                           'generateCelestialEquator',
-                           return_value=None):
+    with mock.patch.object(
+        function.app.data, "generateCelestialEquator", return_value=None
+    ):
         suc = function.drawCelestialEquator()
         assert not suc
 
 
 def test_drawCelestialEquator_2(function):
-    with mock.patch.object(function.app.data,
-                           'generateCelestialEquator',
-                           return_value=[(1, 1)]):
+    with mock.patch.object(
+        function.app.data, "generateCelestialEquator", return_value=[(1, 1)]
+    ):
         suc = function.drawCelestialEquator()
         assert suc
 
@@ -378,7 +362,7 @@ def test_staticHorizonLimits_2(function):
 
 
 def test_setupAlignmentStars(function):
-    function.app.data.hip = ['test']
+    function.app.data.hip = ["test"]
     function.setupAlignmentStars()
 
 
@@ -421,7 +405,7 @@ def test_drawModelPoints_1(function):
 
 
 def test_drawModelPoints_2(function):
-    function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol='o')
+    function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol="o")
     function.app.data.buildP = [(1, 1, True), (2, 2, False)]
     suc = function.drawModelPoints()
     assert suc
@@ -434,7 +418,7 @@ def test_drawModelText_1(function):
 
 
 def test_drawModelText_2(function):
-    function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol='o')
+    function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol="o")
     function.app.data.buildP = [(1, 1, True), (2, 2, False)]
     function.ui.editModeHem.setChecked(True)
     function.modelPointsText.append(pg.TextItem())
@@ -443,7 +427,7 @@ def test_drawModelText_2(function):
 
 
 def test_drawModelText_3(function):
-    function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol='o')
+    function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol="o")
     function.app.data.buildP = [(1, 1, True), (2, 2, False)]
     function.ui.normalModeHem.setChecked(True)
     suc = function.drawModelText()
@@ -451,29 +435,23 @@ def test_drawModelText_3(function):
 
 
 def test_updateDataModel(function):
-    with mock.patch.object(function,
-                           'drawModelPoints'):
-        with mock.patch.object(function,
-                               'drawModelText'):
+    with mock.patch.object(function, "drawModelPoints"):
+        with mock.patch.object(function, "drawModelText"):
             suc = function.updateDataModel([1, 2], [1, 2])
             assert suc
 
 
 def test_setupModel_1(function):
-    with mock.patch.object(function,
-                           'drawModelPoints'):
-        with mock.patch.object(function,
-                               'drawModelText'):
+    with mock.patch.object(function, "drawModelPoints"):
+        with mock.patch.object(function, "drawModelText"):
             function.ui.editModeHem.setChecked(True)
             function.ui.showSlewPath.setChecked(True)
             function.setupModel()
 
 
 def test_setupModel_2(function):
-    with mock.patch.object(function,
-                           'drawModelPoints'):
-        with mock.patch.object(function,
-                               'drawModelText'):
+    with mock.patch.object(function, "drawModelPoints"):
+        with mock.patch.object(function, "drawModelText"):
             function.ui.normalModeHem.setChecked(True)
             function.ui.showSlewPath.setChecked(False)
             function.setupModel()
@@ -505,7 +483,7 @@ def test_setupDome(function):
 
 def test_drawDome_1(function):
     function.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
-    suc = function.drawDome('test')
+    suc = function.drawDome("test")
     assert not suc
 
 
@@ -536,9 +514,9 @@ def test_getMountModelData_2(function):
 
 
 def test_drawModelIsoCurve_1(function):
-    with mock.patch.object(function,
-                           'getMountModelData',
-                           return_value=(None, None, None)):
+    with mock.patch.object(
+        function, "getMountModelData", return_value=(None, None, None)
+    ):
         suc = function.drawModelIsoCurve()
         assert not suc
 
@@ -546,12 +524,8 @@ def test_drawModelIsoCurve_1(function):
 def test_drawModelIsoCurve_2(function):
     val = np.array([1])
     data = (val, val, val)
-    with mock.patch.object(function,
-                           'getMountModelData',
-                           return_value=data):
-        with mock.patch.object(function.ui.hemisphere,
-                               'addIsoItem',
-                               return_value=True):
+    with mock.patch.object(function, "getMountModelData", return_value=data):
+        with mock.patch.object(function.ui.hemisphere, "addIsoItem", return_value=True):
             suc = function.drawModelIsoCurve()
             assert suc
 
@@ -562,57 +536,39 @@ def test_drawHemisphereTab_1(function):
     function.ui.showTerrain.setChecked(True)
     function.ui.showMountLimits.setChecked(True)
     function.ui.showHorizon.setChecked(True)
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function,
-                           'drawCelestialEquator'):
-        with mock.patch.object(function,
-                               'drawTerrainMask'):
-            with mock.patch.object(function,
-                                   'drawMeridianLimits'):
-                with mock.patch.object(function,
-                                       'drawHorizonLimits'):
-                    with mock.patch.object(function,
-                                           'drawModelIsoCurve'):
-                        with mock.patch.object(function,
-                                               'drawHorizonOnHem'):
+    function.app.deviceStat["mount"] = True
+    with mock.patch.object(function, "drawCelestialEquator"):
+        with mock.patch.object(function, "drawTerrainMask"):
+            with mock.patch.object(function, "drawMeridianLimits"):
+                with mock.patch.object(function, "drawHorizonLimits"):
+                    with mock.patch.object(function, "drawModelIsoCurve"):
+                        with mock.patch.object(function, "drawHorizonOnHem"):
                             function.drawHemisphereTab()
 
 
 def test_slewDirect_1(function):
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=False):
+    with mock.patch.object(function, "messageDialog", return_value=False):
         suc = function.slewDirect(QPointF(1, 1))
         assert not suc
 
 
 def test_slewDirect_2(function):
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(SlewInterface,
-                               'slewTargetAltAz',
-                               return_value=False):
+    with mock.patch.object(function, "messageDialog", return_value=True):
+        with mock.patch.object(SlewInterface, "slewTargetAltAz", return_value=False):
             suc = function.slewDirect(QPointF(1, 1))
             assert not suc
 
 
 def test_slewDirect_3(function):
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(SlewInterface,
-                               'slewTargetAltAz',
-                               return_value=True):
+    with mock.patch.object(function, "messageDialog", return_value=True):
+        with mock.patch.object(SlewInterface, "slewTargetAltAz", return_value=True):
             suc = function.slewDirect(QPointF(1, 1))
             assert suc
 
 
 def test_slewStar_1(function):
     function.alignmentStars = pg.ScatterPlotItem()
-    with mock.patch.object(function.alignmentStars,
-                           'pointsAt',
-                           return_value=[]):
+    with mock.patch.object(function.alignmentStars, "pointsAt", return_value=[]):
         suc = function.slewStar(QPointF(1, 1))
         assert not suc
 
@@ -623,18 +579,14 @@ def test_slewStar_3(function):
         def index():
             return 0
 
-    function.app.hipparcos.name = ['test']
+    function.app.hipparcos.name = ["test"]
     function.app.mount.model.numberStars = 5
     function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
-    with mock.patch.object(function.alignmentStars,
-                           'pointsAt',
-                           return_value=[Spot()]):
-        with mock.patch.object(function,
-                               'messageDialog',
-                               return_value=0):
-            with mock.patch.object(function.app.hipparcos,
-                                   'getAlignStarRaDecFromName',
-                                   return_value=(0, 0)):
+    with mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]):
+        with mock.patch.object(function, "messageDialog", return_value=0):
+            with mock.patch.object(
+                function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
+            ):
                 suc = function.slewStar(QPointF(1, 1))
                 assert not suc
 
@@ -645,21 +597,17 @@ def test_slewStar_4(function):
         def index():
             return 0
 
-    function.app.hipparcos.name = ['test']
+    function.app.hipparcos.name = ["test"]
     function.app.mount.model.numberStars = 5
     function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
-    with mock.patch.object(function.alignmentStars,
-                           'pointsAt',
-                           return_value=[Spot()]):
-        with mock.patch.object(function,
-                               'messageDialog',
-                               return_value=1):
-            with mock.patch.object(function.app.hipparcos,
-                                   'getAlignStarRaDecFromName',
-                                   return_value=(0, 0)):
-                with mock.patch.object(SlewInterface,
-                                       'slewTargetRaDec',
-                                       return_value=False):
+    with mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]):
+        with mock.patch.object(function, "messageDialog", return_value=1):
+            with mock.patch.object(
+                function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
+            ):
+                with mock.patch.object(
+                    SlewInterface, "slewTargetRaDec", return_value=False
+                ):
                     suc = function.slewStar(QPointF(1, 1))
                     assert not suc
 
@@ -670,21 +618,17 @@ def test_slewStar_5(function):
         def index():
             return 0
 
-    function.app.hipparcos.name = ['test']
+    function.app.hipparcos.name = ["test"]
     function.app.mount.model.numberStars = 5
     function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
-    with mock.patch.object(function.alignmentStars,
-                           'pointsAt',
-                           return_value=[Spot()]):
-        with mock.patch.object(function,
-                               'messageDialog',
-                               return_value=2):
-            with mock.patch.object(function.app.hipparcos,
-                                   'getAlignStarRaDecFromName',
-                                   return_value=(0, 0)):
-                with mock.patch.object(SlewInterface,
-                                       'slewTargetRaDec',
-                                       return_value=True):
+    with mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]):
+        with mock.patch.object(function, "messageDialog", return_value=2):
+            with mock.patch.object(
+                function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
+            ):
+                with mock.patch.object(
+                    SlewInterface, "slewTargetRaDec", return_value=True
+                ):
                     suc = function.slewStar(QPointF(1, 1))
                     assert suc
 
@@ -692,33 +636,30 @@ def test_slewStar_5(function):
 def test_mouseDoubleClick_1(function):
     function.ui.alignmentModeHem.setChecked(True)
     function.ui.normalModeHem.setChecked(False)
-    with mock.patch.object(function,
-                           'slewStar'):
+    with mock.patch.object(function, "slewStar"):
         function.mouseDoubleClick(1, 2)
 
 
 def test_mouseDoubleClick_2(function):
     function.ui.alignmentModeHem.setChecked(False)
     function.ui.normalModeHem.setChecked(True)
-    with mock.patch.object(function,
-                           'slewDirect'):
+    with mock.patch.object(function, "slewDirect"):
         function.mouseDoubleClick(1, 2)
 
 
 def test_mouseMovedHorizon_1(function):
-    with mock.patch.object(function,
-                           'mouseMoved'):
-        function.mouseMovedHorizon('test')
+    with mock.patch.object(function, "mouseMoved"):
+        function.mouseMovedHorizon("test")
 
 
 def test_setTerrainFile_1(function):
-    suc = function.setTerrainFile('test')
+    suc = function.setTerrainFile("test")
     assert not suc
     assert function.imageTerrain is None
 
 
 def test_setTerrainFile_2(function):
-    suc = function.setTerrainFile('terrain')
+    suc = function.setTerrainFile("terrain")
     assert suc
     assert function.imageTerrain is not None
 
@@ -729,138 +670,106 @@ def test_loadTerrainFile_1(function):
         def drawHemisphere():
             return
 
-    function.app.uiWindows = {'showHemisphereW': {'classObj': Test()}}
-    with mock.patch.object(function,
-                           'openFile',
-                           return_value=('build', 'test', 'jpg')):
-        with mock.patch.object(function,
-                               'setTerrainFile',
-                               return_value=True):
-            with mock.patch.object(function,
-                                   'drawHorizonTab'):
+    function.app.uiWindows = {"showHemisphereW": {"classObj": Test()}}
+    with mock.patch.object(function, "openFile", return_value=("build", "test", "jpg")):
+        with mock.patch.object(function, "setTerrainFile", return_value=True):
+            with mock.patch.object(function, "drawHorizonTab"):
                 suc = function.loadTerrainFile()
                 assert suc
 
 
 def test_loadTerrainFile_2(function):
-    with mock.patch.object(function,
-                           'openFile',
-                           return_value=('', '', '')):
+    with mock.patch.object(function, "openFile", return_value=("", "", "")):
         suc = function.loadTerrainFile()
         assert not suc
 
 
 def test_loadTerrainFile_3(function):
-    with mock.patch.object(function,
-                           'openFile',
-                           return_value=('build', 'test', 'jpg')):
-        with mock.patch.object(function,
-                               'setTerrainFile',
-                               return_value=False):
-            with mock.patch.object(function,
-                                   'drawHorizonTab'):
+    with mock.patch.object(function, "openFile", return_value=("build", "test", "jpg")):
+        with mock.patch.object(function, "setTerrainFile", return_value=False):
+            with mock.patch.object(function, "drawHorizonTab"):
                 suc = function.loadTerrainFile()
                 assert suc
 
 
 def test_clearTerrainFile(function):
-    with mock.patch.object(function,
-                           'setTerrainFile'):
-        with mock.patch.object(function,
-                               'drawHorizonTab'):
+    with mock.patch.object(function, "setTerrainFile"):
+        with mock.patch.object(function, "drawHorizonTab"):
             function.clearTerrainFile()
 
 
 def test_loadHorizonMask_1(function):
-    with mock.patch.object(function,
-                           'openFile',
-                           return_value=('', '', '')):
+    with mock.patch.object(function, "openFile", return_value=("", "", "")):
         suc = function.loadHorizonMask()
         assert not suc
 
 
 def test_loadHorizonMask_2(function):
-    with mock.patch.object(function,
-                           'openFile',
-                           return_value=('build', 'test', 'bpts')):
-        with mock.patch.object(function.app.data,
-                               'loadHorizonP',
-                               return_value=False):
-            with mock.patch.object(function,
-                                   'drawHorizonTab'):
+    with mock.patch.object(
+        function, "openFile", return_value=("build", "test", "bpts")
+    ):
+        with mock.patch.object(function.app.data, "loadHorizonP", return_value=False):
+            with mock.patch.object(function, "drawHorizonTab"):
                 suc = function.loadHorizonMask()
                 assert suc
 
 
 def test_loadHorizonMaskFile_3(function):
-    with mock.patch.object(function,
-                           'openFile',
-                           return_value=('build', 'test', 'bpts')):
-        with mock.patch.object(function.app.data,
-                               'loadHorizonP',
-                               return_value=True):
-            with mock.patch.object(function,
-                                   'drawHorizonTab'):
+    with mock.patch.object(
+        function, "openFile", return_value=("build", "test", "bpts")
+    ):
+        with mock.patch.object(function.app.data, "loadHorizonP", return_value=True):
+            with mock.patch.object(function, "drawHorizonTab"):
                 suc = function.loadHorizonMask()
                 assert suc
 
 
 def test_saveHorizonMask_1(function):
-    function.ui.horizonMaskFileName.setText('test')
-    with mock.patch.object(function,
-                           'openFile',
-                           return_value=('build', 'test', 'bpts')):
-        with mock.patch.object(function.app.data,
-                               'saveHorizonP',
-                               return_value=True):
+    function.ui.horizonMaskFileName.setText("test")
+    with mock.patch.object(
+        function, "openFile", return_value=("build", "test", "bpts")
+    ):
+        with mock.patch.object(function.app.data, "saveHorizonP", return_value=True):
             suc = function.saveHorizonMask()
             assert suc
 
 
 def test_saveHorizonMaskFile_2(function):
-    function.ui.horizonMaskFileName.setText('')
+    function.ui.horizonMaskFileName.setText("")
     suc = function.saveHorizonMask()
     assert not suc
 
 
 def test_saveHorizonMaskFile_3(function):
-    function.ui.horizonMaskFileName.setText('test')
-    with mock.patch.object(function,
-                           'saveFile',
-                           return_value=('build', 'test', 'bpts')):
-        with mock.patch.object(function.app.data,
-                               'saveHorizonP',
-                               return_value=False):
+    function.ui.horizonMaskFileName.setText("test")
+    with mock.patch.object(
+        function, "saveFile", return_value=("build", "test", "bpts")
+    ):
+        with mock.patch.object(function.app.data, "saveHorizonP", return_value=False):
             suc = function.saveHorizonMask()
             assert suc
 
 
 def test_saveHorizonMaskFileAs_1(function):
-    with mock.patch.object(function,
-                           'saveFile',
-                           return_value=('build', 'test', 'bpts')):
-        with mock.patch.object(function.app.data,
-                               'saveHorizonP',
-                               return_value=True):
+    with mock.patch.object(
+        function, "saveFile", return_value=("build", "test", "bpts")
+    ):
+        with mock.patch.object(function.app.data, "saveHorizonP", return_value=True):
             suc = function.saveHorizonMaskAs()
             assert suc
 
 
 def test_saveHorizonMaskFileAs_2(function):
-    with mock.patch.object(function,
-                           'saveFile',
-                           return_value=('', '', '')):
+    with mock.patch.object(function, "saveFile", return_value=("", "", "")):
         suc = function.saveHorizonMaskAs()
         assert not suc
 
 
 def test_saveHorizonMaskFileAs_3(function):
-    with mock.patch.object(function,
-                           'saveFile',
-                           return_value=('build', 'test', 'bpts')):
-        with mock.patch.object(function.app.data,
-                               'saveHorizonP',
-                               return_value=False):
+    with mock.patch.object(
+        function, "saveFile", return_value=("build", "test", "bpts")
+    ):
+        with mock.patch.object(function.app.data, "saveHorizonP", return_value=False):
             suc = function.saveHorizonMaskAs()
             assert suc
 
@@ -894,18 +803,14 @@ def test_addActualPosition_1(function):
 def test_addActualPosition_2(function):
     function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.app.mount.obsSite.Az = Angle(degrees=20)
-    with mock.patch.object(CustomViewBox,
-                           'getNearestPointIndex',
-                           return_value=1):
-        with mock.patch.object(CustomViewBox,
-                               'addUpdate'):
+    with mock.patch.object(CustomViewBox, "getNearestPointIndex", return_value=1):
+        with mock.patch.object(CustomViewBox, "addUpdate"):
             suc = function.addActualPosition()
             assert suc
 
 
 def test_prepareHorizonView(function):
-    with mock.patch.object(function,
-                           'preparePlotItem'):
+    with mock.patch.object(function, "preparePlotItem"):
         function.prepareHorizonView()
 
 

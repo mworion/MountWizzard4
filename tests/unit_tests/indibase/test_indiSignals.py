@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 
 # external packages
 
@@ -24,7 +23,7 @@ import astropy
 from indibase.indiSignals import INDISignals
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
     signals = INDISignals()
     yield signals

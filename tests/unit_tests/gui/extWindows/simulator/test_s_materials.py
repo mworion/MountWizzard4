@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 
 # external packages
 
@@ -24,7 +23,7 @@ import astropy
 from gui.extWindows.simulator.materials import Materials
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def module_setup_teardown():
     global app
     app = Materials()

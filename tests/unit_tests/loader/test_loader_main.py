@@ -22,7 +22,6 @@ import os
 
 # external packages
 import PySide6
-from PySide6.QtCore import QObject
 
 # local import
 from mw4 import loader
@@ -30,7 +29,6 @@ from mw4 import loader
 
 def test_main_1():
     class App:
-
         @staticmethod
         def exec():
             return 0
@@ -40,7 +38,6 @@ def test_main_1():
             return 0
 
     class Splash:
-
         @staticmethod
         def showMessage(a):
             return
@@ -53,37 +50,30 @@ def test_main_1():
         def close():
             return
 
-    files = glob.glob('tests/workDir/config/*.cfg')
+    files = glob.glob("tests/workDir/config/*.cfg")
     for f in files:
         os.remove(f)
 
-    mwGlob = {'configDir': 'tests/workDir/config',
-              'dataDir': 'tests/workDir/data',
-              'tempDir': 'tests/workDir/temp',
-              'imageDir': 'tests/workDir/image',
-              'modelDir': 'tests/workDir/model',
-              'workDir': 'mw4/tests/workDir',
-              'modeldata': '4.0',
-              }
-    with mock.patch.object(PySide6.QtCore.QBasicTimer,
-                           'start'):
-        with mock.patch.object(PySide6.QtCore.QTimer,
-                               'start'):
-            with mock.patch.object(loader,
-                                   'QIcon'):
-                with mock.patch.object(loader,
-                                       'MyApp',
-                                       return_value=App()):
-                    with mock.patch.object(loader,
-                                           'SplashScreen',
-                                           return_value=Splash()):
-                        with mock.patch.object(loader,
-                                               'MountWizzard4'):
-                            with mock.patch.object(loader,
-                                                   'setupWorkDirs',
-                                                   return_value=mwGlob):
-                                with mock.patch.object(sys,
-                                                       'exit'):
-                                    with mock.patch.object(sys,
-                                                           'excepthook'):
+    mwGlob = {
+        "configDir": "tests/workDir/config",
+        "dataDir": "tests/workDir/data",
+        "tempDir": "tests/workDir/temp",
+        "imageDir": "tests/workDir/image",
+        "modelDir": "tests/workDir/model",
+        "workDir": "mw4/tests/workDir",
+        "modeldata": "4.0",
+    }
+    with mock.patch.object(PySide6.QtCore.QBasicTimer, "start"):
+        with mock.patch.object(PySide6.QtCore.QTimer, "start"):
+            with mock.patch.object(loader, "QIcon"):
+                with mock.patch.object(loader, "MyApp", return_value=App()):
+                    with mock.patch.object(
+                        loader, "SplashScreen", return_value=Splash()
+                    ):
+                        with mock.patch.object(loader, "MountWizzard4"):
+                            with mock.patch.object(
+                                loader, "setupWorkDirs", return_value=mwGlob
+                            ):
+                                with mock.patch.object(sys, "exit"):
+                                    with mock.patch.object(sys, "excepthook"):
                                         loader.main()

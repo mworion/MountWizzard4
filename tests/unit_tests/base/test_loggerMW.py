@@ -28,22 +28,16 @@ from mw4.base.loggerMW import LoggerWriter
 
 
 def test_loggerWriter():
-    a = LoggerWriter(logging.getLogger().debug, 'Test', sys.stdout)
-    a.write('test\ntest')
+    a = LoggerWriter(logging.getLogger().debug, "Test", sys.stdout)
+    a.write("test\ntest")
     a.flush()
 
 
 def test_setupLogging():
-    with mock.patch.object(os.path,
-                           'isdir',
-                           return_value=False):
-        with mock.patch.object(os,
-                               'mkdir'):
+    with mock.patch.object(os.path, "isdir", return_value=False):
+        with mock.patch.object(os, "mkdir"):
             loggerMW.setupLogging()
 
 
 def test_setCustomLoggingLevel():
     loggerMW.setCustomLoggingLevel()
-
-
-

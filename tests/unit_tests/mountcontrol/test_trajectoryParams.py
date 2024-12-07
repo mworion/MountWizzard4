@@ -28,7 +28,6 @@ setupLogging()
 
 
 class TestConfigData(unittest.TestCase):
-
     def setUp(self):
         pass
 
@@ -39,12 +38,12 @@ class TestConfigData(unittest.TestCase):
 
     def test_TP_flip_2(self):
         trajectoryParams = TrajectoryParams()
-        trajectoryParams.flip = 'F'
+        trajectoryParams.flip = "F"
         assert trajectoryParams.flip
 
     def test_TP_flip_3(self):
         trajectoryParams = TrajectoryParams()
-        trajectoryParams.flip = 'x'
+        trajectoryParams.flip = "x"
         assert not trajectoryParams.flip
 
     def test_TP_flip_4(self):
@@ -63,7 +62,7 @@ class TestConfigData(unittest.TestCase):
             ts = load.timescale()
 
         trajectoryParams = TrajectoryParams(obsSite=ObsSite())
-        trajectoryParams.jdStart = '100'
+        trajectoryParams.jdStart = "100"
         assert trajectoryParams.jdStart.tt == 169
 
     def test_TP_jdEnd_1(self):
@@ -77,7 +76,7 @@ class TestConfigData(unittest.TestCase):
             ts = load.timescale()
 
         trajectoryParams = TrajectoryParams(obsSite=ObsSite())
-        trajectoryParams.jdEnd = '100'
+        trajectoryParams.jdEnd = "100"
         assert trajectoryParams.jdEnd.tt == 169
 
     def test_TR_message_1(self):
@@ -87,5 +86,5 @@ class TestConfigData(unittest.TestCase):
 
     def test_TR_message_2(self):
         trajectoryParams = TrajectoryParams()
-        trajectoryParams.message = 'test'
-        assert trajectoryParams.message == 'test'
+        trajectoryParams.message = "test"
+        assert trajectoryParams.message == "test"

@@ -18,7 +18,6 @@
 import unittest.mock as mock
 import sys
 import pytest
-import astropy
 import platform
 
 # external packages
@@ -31,62 +30,42 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def app():
-    with mock.patch.object(QWidget,
-                           'show'):
-        with mock.patch.object(sys,
-                               'exit'):
-            update = UpdateGUI(runnable='python', version='1.2.3')
-            with mock.patch.object(update.app,
-                                   'exec'):
+    with mock.patch.object(QWidget, "show"):
+        with mock.patch.object(sys, "exit"):
+            update = UpdateGUI(runnable="python", version="1.2.3")
+            with mock.patch.object(update.app, "exec"):
                 yield update
                 update.app.shutdown()
                 del update.app
 
 
 def test_updateGUI_1(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
+    with mock.patch.object(platform, "system", return_value="Windows"):
         app.run()
 
 
 def test_updateGUI_2(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        app.writeText('test', 0)
+    with mock.patch.object(platform, "system", return_value="Darwin"):
+        app.writeText("test", 0)
 
 
 def test_updateGUI_3(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        with mock.patch.object(Update,
-                               'restart'):
+    with mock.patch.object(platform, "system", return_value="Darwin"):
+        with mock.patch.object(Update, "restart"):
             app.runCancel()
 
 
 def test_updateGUI_4(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        with mock.patch.object(Update,
-                               'restart'):
-            with mock.patch.object(Update,
-                                   'runInstall',
-                                   return_value=False):
+    with mock.patch.object(platform, "system", return_value="Darwin"):
+        with mock.patch.object(Update, "restart"):
+            with mock.patch.object(Update, "runInstall", return_value=False):
                 app.runUpdate()
 
 
 def test_updateGUI_5(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        with mock.patch.object(Update,
-                               'restart'):
-            with mock.patch.object(Update,
-                                   'runInstall',
-                                   return_value=True):
+    with mock.patch.object(platform, "system", return_value="Darwin"):
+        with mock.patch.object(Update, "restart"):
+            with mock.patch.object(Update, "runInstall", return_value=True):
                 app.runUpdate()

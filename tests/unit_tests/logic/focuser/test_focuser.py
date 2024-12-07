@@ -16,11 +16,9 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 from unittest import mock
 
 # external packages
-from PySide6.QtCore import QThreadPool, QObject, Signal
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

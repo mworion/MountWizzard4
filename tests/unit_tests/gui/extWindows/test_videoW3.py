@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 import unittest.mock as mock
 
 # external packages
@@ -28,11 +27,10 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.videoW3 import VideoWindow3
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     func = VideoWindow3(app=App())
-    with mock.patch.object(func,
-                           'show'):
+    with mock.patch.object(func, "show"):
         yield func
 
 
@@ -42,24 +40,22 @@ def test_initConfig_1(function):
 
 
 def test_storeConfig_1(function):
-    if 'videoW3' in function.app.config:
-        del function.app.config['videoW3']
+    if "videoW3" in function.app.config:
+        del function.app.config["videoW3"]
 
     suc = function.storeConfig()
     assert suc
 
 
 def test_storeConfig_2(function):
-    function.app.config['videoW3'] = {}
+    function.app.config["videoW3"] = {}
 
     suc = function.storeConfig()
     assert suc
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function,
-                           'stopVideo'):
-        with mock.patch.object(MWidget,
-                               'closeEvent'):
+    with mock.patch.object(function, "stopVideo"):
+        with mock.patch.object(MWidget, "closeEvent"):
             function.showWindow()
             function.closeEvent(QCloseEvent)

@@ -23,7 +23,7 @@ import pytest
 from gui.utilities.gHemisphere import Hemisphere
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def module(qapp):
     yield
 

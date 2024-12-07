@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 from unittest import mock
 
 # external packages
@@ -30,12 +29,12 @@ from gui.mainWaddon.tabSett_Misc import SettMisc
 import gui.mainWaddon.tabSett_Misc
 from gui.widgets.main_ui import Ui_MainWindow
 from base.loggerMW import setupLogging
+
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-
     mainW = QWidget()
     mainW.gameControllerRunning = False
     mainW.app = App()
@@ -47,9 +46,8 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    function.app.config['mainW'] = {}
-    with mock.patch.object(function,
-                           'populateGameControllerList'):
+    function.app.config["mainW"] = {}
+    with mock.patch.object(function, "populateGameControllerList"):
         function.initConfig()
 
 
@@ -75,9 +73,7 @@ def test_readGameController_1(function):
             return [0] * 12
 
     function.mainW.gameControllerRunning = True
-    with mock.patch.object(Gamepad,
-                           'read',
-                           side_effect=Exception):
+    with mock.patch.object(Gamepad, "read", side_effect=Exception):
         val = function.readGameController(Gamepad())
         assert len(val) == 0
 
@@ -124,7 +120,7 @@ def test_workerGameController_1(function):
 
 
 def test_convertData_1(function):
-    val = function.convertData('test', [])
+    val = function.convertData("test", [])
     assert val[0] == 0
     assert val[1] == 0
     assert val[2] == 0
@@ -136,7 +132,7 @@ def test_convertData_1(function):
 
 def test_convertData_2(function):
     iR = [0, 1, 2, 3, 0, 5, 0, 7, 0, 9, 0, 11]
-    name = 'Pro Controller'
+    name = "Pro Controller"
     val = function.convertData(name, iR)
     assert val[0] == 1
     assert val[1] == 2
@@ -149,7 +145,7 @@ def test_convertData_2(function):
 
 def test_convertData_3(function):
     iR = [0, 1, 0, 3, 0, 5, 0, 7, 0, 0, 10, 0]
-    name = 'Controller (XBOX 360 For Windows)'
+    name = "Controller (XBOX 360 For Windows)"
     val = function.convertData(name, iR)
     assert val[0] == 10
     assert val[1] == 0
@@ -162,7 +158,7 @@ def test_convertData_3(function):
 
 def test_convertData_4(function):
     iR = [0, 1, 0, 3, 0, 5, 0, 7, 0, 0, 10, 0b11100]
-    name = 'Controller (XBOX 360 For Windows)'
+    name = "Controller (XBOX 360 For Windows)"
     val = function.convertData(name, iR)
     assert val[0] == 10
     assert val[1] == 0
@@ -175,7 +171,7 @@ def test_convertData_4(function):
 
 def test_convertData_5(function):
     iR = [0, 1, 0, 3, 0, 5, 0, 7, 0, 0, 10, 0b10100]
-    name = 'Controller (XBOX 360 For Windows)'
+    name = "Controller (XBOX 360 For Windows)"
     val = function.convertData(name, iR)
     assert val[0] == 10
     assert val[1] == 0
@@ -188,7 +184,7 @@ def test_convertData_5(function):
 
 def test_convertData_6(function):
     iR = [0, 1, 0, 3, 0, 5, 0, 7, 0, 0, 10, 0b1100]
-    name = 'Controller (XBOX 360 For Windows)'
+    name = "Controller (XBOX 360 For Windows)"
     val = function.convertData(name, iR)
     assert val[0] == 10
     assert val[1] == 0
@@ -201,7 +197,7 @@ def test_convertData_6(function):
 
 def test_convertData_7(function):
     iR = [0, 1, 0, 3, 0, 5, 0, 7, 0, 0, 10, 0b100]
-    name = 'Controller (XBOX 360 For Windows)'
+    name = "Controller (XBOX 360 For Windows)"
     val = function.convertData(name, iR)
     assert val[0] == 10
     assert val[1] == 0
@@ -243,12 +239,10 @@ def test_workerGameController_2(function):
 
     function.mainW.gameControllerRunning = False
     function.ui.gameControllerList.clear()
-    function.ui.gameControllerList.addItem('test')
+    function.ui.gameControllerList.addItem("test")
     function.ui.gameControllerList.setCurrentIndex(0)
-    function.gameControllerList['test'] = {'vendorId': 1, 'productId': 1}
-    with mock.patch.object(hid,
-                           'device',
-                           return_value=Gamepad()):
+    function.gameControllerList["test"] = {"vendorId": 1, "productId": 1}
+    with mock.patch.object(hid, "device", return_value=Gamepad()):
         suc = function.workerGameController()
         assert suc
 
@@ -275,14 +269,11 @@ def test_workerGameController_3(function):
     temp = function.readGameController
     function.readGameController = gc
     function.ui.gameControllerList.clear()
-    function.ui.gameControllerList.addItem('test')
+    function.ui.gameControllerList.addItem("test")
     function.ui.gameControllerList.setCurrentIndex(0)
-    function.gameControllerList['test'] = {'vendorId': 1, 'productId': 1}
-    with mock.patch.object(hid,
-                           'device',
-                           return_value=Gamepad()):
-        with mock.patch.object(gui.mainWaddon.tabSett_Misc,
-                               'sleepAndEvents'):
+    function.gameControllerList["test"] = {"vendorId": 1, "productId": 1}
+    with mock.patch.object(hid, "device", return_value=Gamepad()):
+        with mock.patch.object(gui.mainWaddon.tabSett_Misc, "sleepAndEvents"):
             suc = function.workerGameController()
             assert suc
     function.readGameController = temp
@@ -310,35 +301,30 @@ def test_workerGameController_4(function):
     temp = function.readGameController
     function.readGameController = gc
     function.ui.gameControllerList.clear()
-    function.ui.gameControllerList.addItem('test')
+    function.ui.gameControllerList.addItem("test")
     function.ui.gameControllerList.setCurrentIndex(0)
-    function.gameControllerList['test'] = {'vendorId': 1, 'productId': 1}
-    with mock.patch.object(hid,
-                           'device',
-                           return_value=Gamepad()):
-        with mock.patch.object(gui.mainWaddon.tabSett_Misc,
-                               'sleepAndEvents'):
-            with mock.patch.object(function,
-                                   'sendGameControllerSignals'):
+    function.gameControllerList["test"] = {"vendorId": 1, "productId": 1}
+    with mock.patch.object(hid, "device", return_value=Gamepad()):
+        with mock.patch.object(gui.mainWaddon.tabSett_Misc, "sleepAndEvents"):
+            with mock.patch.object(function, "sendGameControllerSignals"):
                 suc = function.workerGameController()
                 assert suc
     function.readGameController = temp
 
 
 def test_startGameController(function):
-    with mock.patch.object(function.app.threadPool,
-                           'start'):
+    with mock.patch.object(function.app.threadPool, "start"):
         suc = function.startGameController()
         assert suc
 
 
 def test_isValidGameControllers_1(function):
-    suc = function.isValidGameControllers('test')
+    suc = function.isValidGameControllers("test")
     assert not suc
 
 
 def test_isValidGameControllers_2(function):
-    suc = function.isValidGameControllers('Game')
+    suc = function.isValidGameControllers("Game")
     assert suc
 
 
@@ -359,15 +345,9 @@ def test_populateGameControllerList_2(function):
 def test_populateGameControllerList_3(function):
     function.ui.gameControllerGroup.setChecked(True)
     function.mainW.gameControllerRunning = False
-    device = [{'product_string': 'test',
-               'vendor_id': 1,
-               'product_id': 1}]
-    with mock.patch.object(hid,
-                           'enumerate',
-                           return_value=device):
-        with mock.patch.object(function,
-                               'isValidGameControllers',
-                               return_value=False):
+    device = [{"product_string": "test", "vendor_id": 1, "product_id": 1}]
+    with mock.patch.object(hid, "enumerate", return_value=device):
+        with mock.patch.object(function, "isValidGameControllers", return_value=False):
             suc = function.populateGameControllerList()
             assert not suc
 
@@ -375,47 +355,36 @@ def test_populateGameControllerList_3(function):
 def test_populateGameControllerList_4(function):
     function.ui.gameControllerGroup.setChecked(True)
     function.mainW.gameControllerRunning = False
-    device = [{'product_string': 'test',
-               'vendor_id': 1,
-               'product_id': 1}]
-    with mock.patch.object(hid,
-                           'enumerate',
-                           return_value=device):
-        with mock.patch.object(function,
-                               'isValidGameControllers',
-                               return_value=True):
-            with mock.patch.object(function,
-                                   'startGameController'):
+    device = [{"product_string": "test", "vendor_id": 1, "product_id": 1}]
+    with mock.patch.object(hid, "enumerate", return_value=device):
+        with mock.patch.object(function, "isValidGameControllers", return_value=True):
+            with mock.patch.object(function, "startGameController"):
                 suc = function.populateGameControllerList()
                 assert suc
                 assert function.mainW.gameControllerRunning
 
 
 def test_playAudioDomeSlewFinished_1(function):
-    with mock.patch.object(QSoundEffect,
-                           'play'):
-        suc = function.playSound('DomeSlew')
+    with mock.patch.object(QSoundEffect, "play"):
+        suc = function.playSound("DomeSlew")
         assert not suc
 
 
 def test_playAudioMountSlewFinished_1(function):
-    with mock.patch.object(QSoundEffect,
-                           'play'):
-        suc = function.playSound('MountSlew')
+    with mock.patch.object(QSoundEffect, "play"):
+        suc = function.playSound("MountSlew")
         assert not suc
 
 
 def test_playAudioMountAlert_1(function):
-    with mock.patch.object(QSoundEffect,
-                           'play'):
-        suc = function.playSound('MountAlert')
+    with mock.patch.object(QSoundEffect, "play"):
+        suc = function.playSound("MountAlert")
         assert not suc
 
 
 def test_playAudioModelFinished_1(function):
-    with mock.patch.object(QSoundEffect,
-                           'play'):
-        suc = function.playSound('ModelFinished')
+    with mock.patch.object(QSoundEffect, "play"):
+        suc = function.playSound("ModelFinished")
         assert not suc
 
 
@@ -430,25 +399,23 @@ def test_playSound_1(function):
 
 
 def test_playSound_2(function):
-    function.audioSignalsSet['Pan1'] = 'test'
-    function.guiAudioList['MountSlew'] = function.ui.soundMountSlewFinished
-    function.guiAudioList['MountSlew'].clear()
-    function.guiAudioList['MountSlew'].addItem('Pan1')
-    with mock.patch.object(QSoundEffect,
-                           'play'):
-        suc = function.playSound('MountSlew')
+    function.audioSignalsSet["Pan1"] = "test"
+    function.guiAudioList["MountSlew"] = function.ui.soundMountSlewFinished
+    function.guiAudioList["MountSlew"].clear()
+    function.guiAudioList["MountSlew"].addItem("Pan1")
+    with mock.patch.object(QSoundEffect, "play"):
+        suc = function.playSound("MountSlew")
         assert suc
 
 
 def test_playSound_3(function):
-    function.audioSignalsSet['Pan1'] = 'test'
-    function.guiAudioList['MountSlew'] = function.ui.soundMountSlewFinished
-    function.guiAudioList['MountSlew'].clear()
-    function.guiAudioList['MountSlew'].addItem('Pan5')
+    function.audioSignalsSet["Pan1"] = "test"
+    function.guiAudioList["MountSlew"] = function.ui.soundMountSlewFinished
+    function.guiAudioList["MountSlew"].clear()
+    function.guiAudioList["MountSlew"].addItem("Pan5")
 
-    with mock.patch.object(QSoundEffect,
-                           'play'):
-        suc = function.playSound('MountSlew')
+    with mock.patch.object(QSoundEffect, "play"):
+        suc = function.playSound("MountSlew")
         assert not suc
 
 

@@ -25,20 +25,25 @@ from mountcontrol.model import AlignStar
 
 
 class TestConfigData(unittest.TestCase):
-
     def setUp(self):
         pass
 
     def test_APoint_pierside_1(self):
-        aPoint = AlignStar(Star(ra_hours=0, dec_degrees=0),
-                           Star(ra_hours=0, dec_degrees=0),
-                           Angle(hours=0), 'e')
-        aPoint.pierside = 'E'
-        self.assertEqual('E', aPoint.pierside)
+        aPoint = AlignStar(
+            Star(ra_hours=0, dec_degrees=0),
+            Star(ra_hours=0, dec_degrees=0),
+            Angle(hours=0),
+            "e",
+        )
+        aPoint.pierside = "E"
+        self.assertEqual("E", aPoint.pierside)
 
     def test_APoint_pierside_2(self):
-        aPoint = AlignStar(Star(ra_hours=0, dec_degrees=0),
-                           Star(ra_hours=0, dec_degrees=0),
-                           Angle(hours=0), 'e')
-        aPoint.pierside = 'x'
+        aPoint = AlignStar(
+            Star(ra_hours=0, dec_degrees=0),
+            Star(ra_hours=0, dec_degrees=0),
+            Angle(hours=0),
+            "e",
+        )
+        aPoint.pierside = "x"
         self.assertIsNone(aPoint.pierside)

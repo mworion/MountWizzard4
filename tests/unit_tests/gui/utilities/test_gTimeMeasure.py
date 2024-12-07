@@ -23,15 +23,15 @@ import pytest
 from gui.utilities.gTimeMeasure import TimeMeasure
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def module(qapp):
     yield
 
 
 def test_TimeMeasure():
-    TimeMeasure(orientation='left')
+    TimeMeasure(orientation="left")
 
 
 def test_TimeMeasure_tickStrings():
     values = [-1, 0, 1]
-    TimeMeasure(orientation='left').tickStrings(values, 0, 0)
+    TimeMeasure(orientation="left").tickStrings(values, 0, 0)

@@ -20,7 +20,6 @@ import pytest
 import os
 import shutil
 import glob
-from pathlib import Path
 
 # external packages
 

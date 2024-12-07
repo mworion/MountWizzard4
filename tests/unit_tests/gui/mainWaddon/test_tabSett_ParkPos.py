@@ -16,10 +16,8 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 from unittest import mock
 
-import logging
 from PySide6.QtWidgets import QWidget
 
 # local import
@@ -28,9 +26,8 @@ from gui.mainWaddon.tabSett_ParkPos import SettParkPos
 from gui.widgets.main_ui import Ui_MainWindow
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-
     mainW = QWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
@@ -41,7 +38,7 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    function.app.config['mainW'] = {}
+    function.app.config["mainW"] = {}
     suc = function.initConfig()
     assert suc
 
@@ -52,19 +49,19 @@ def test_initConfig_2(function):
 
 
 def test_initConfig_3(function):
-    config = function.app.config['mainW']
+    config = function.app.config["mainW"]
     for i in range(0, 10):
-        config[f'posText{i:1d}'] = str(i)
-        config[f'posAlt{i:1d}'] = i
-        config[f'posAz{i:1d}'] = i
+        config[f"posText{i:1d}"] = str(i)
+        config[f"posAlt{i:1d}"] = i
+        config[f"posAz{i:1d}"] = i
     function.initConfig()
-    assert function.ui.posText0.text() == '0'
+    assert function.ui.posText0.text() == "0"
     assert function.ui.posAlt0.value() == 0
     assert function.ui.posAz0.value() == 0
-    assert function.ui.posText4.text() == '4'
+    assert function.ui.posText4.text() == "4"
     assert function.ui.posAlt4.value() == 4
     assert function.ui.posAz4.value() == 4
-    assert function.ui.posText7.text() == '7'
+    assert function.ui.posText7.text() == "7"
     assert function.ui.posAlt7.value() == 7
     assert function.ui.posAz7.value() == 7
 
@@ -84,18 +81,18 @@ def test_setupParkPosGui(function):
 
 def test_parkAtPos_1(function):
     function.app.mount.signals.slewed.connect(function.parkAtPos)
-    with mock.patch.object(function.app.mount.obsSite,
-                           'parkOnActualPosition',
-                           return_value=False):
+    with mock.patch.object(
+        function.app.mount.obsSite, "parkOnActualPosition", return_value=False
+    ):
         suc = function.parkAtPos()
         assert not suc
 
 
 def test_parkAtPos_2(function):
     function.app.mount.signals.slewed.connect(function.parkAtPos)
-    with mock.patch.object(function.app.mount.obsSite,
-                           'parkOnActualPosition',
-                           return_value=True):
+    with mock.patch.object(
+        function.app.mount.obsSite, "parkOnActualPosition", return_value=True
+    ):
         suc = function.parkAtPos()
         assert suc
 
@@ -103,6 +100,7 @@ def test_parkAtPos_2(function):
 def test_slewParkPos_1(function):
     def Sender():
         return QWidget()
+
     function.sender = Sender
     suc = function.slewToParkPos()
     assert not suc
@@ -111,10 +109,11 @@ def test_slewParkPos_1(function):
 def test_slewParkPos_2(function):
     def Sender():
         return function.ui.posButton0
+
     function.sender = Sender
-    with mock.patch.object(function.app.mount.obsSite,
-                           'setTargetAltAz',
-                           return_value=False):
+    with mock.patch.object(
+        function.app.mount.obsSite, "setTargetAltAz", return_value=False
+    ):
         suc = function.slewToParkPos()
         assert not suc
 
@@ -122,13 +121,14 @@ def test_slewParkPos_2(function):
 def test_slewParkPos_3(function):
     def Sender():
         return function.ui.posButton0
+
     function.sender = Sender
-    with mock.patch.object(function.app.mount.obsSite,
-                           'setTargetAltAz',
-                           return_value=True):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'startSlewing',
-                               return_value=False):
+    with mock.patch.object(
+        function.app.mount.obsSite, "setTargetAltAz", return_value=True
+    ):
+        with mock.patch.object(
+            function.app.mount.obsSite, "startSlewing", return_value=False
+        ):
             suc = function.slewToParkPos()
             assert not suc
 
@@ -136,14 +136,15 @@ def test_slewParkPos_3(function):
 def test_slewParkPos_4(function):
     def Sender():
         return function.ui.posButton0
+
     function.sender = Sender
     function.ui.parkMountAfterSlew.setChecked(True)
-    with mock.patch.object(function.app.mount.obsSite,
-                           'setTargetAltAz',
-                           return_value=True):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'startSlewing',
-                               return_value=True):
+    with mock.patch.object(
+        function.app.mount.obsSite, "setTargetAltAz", return_value=True
+    ):
+        with mock.patch.object(
+            function.app.mount.obsSite, "startSlewing", return_value=True
+        ):
             suc = function.slewToParkPos()
             assert not suc
 
@@ -151,14 +152,15 @@ def test_slewParkPos_4(function):
 def test_slewParkPos_5(function):
     def Sender():
         return function.ui.posButton0
+
     function.sender = Sender
     function.ui.parkMountAfterSlew.setChecked(False)
-    with mock.patch.object(function.app.mount.obsSite,
-                           'setTargetAltAz',
-                           return_value=True):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'startSlewing',
-                               return_value=True):
+    with mock.patch.object(
+        function.app.mount.obsSite, "setTargetAltAz", return_value=True
+    ):
+        with mock.patch.object(
+            function.app.mount.obsSite, "startSlewing", return_value=True
+        ):
             suc = function.slewToParkPos()
             assert suc
 

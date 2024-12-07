@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 import threading
 from unittest import mock
 
@@ -32,9 +31,8 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabAlmanac import Almanac
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-
     mainW = QWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
@@ -45,8 +43,7 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    with mock.patch.object(function,
-                           'showTwilightDataPlot'):
+    with mock.patch.object(function, "showTwilightDataPlot"):
         function.initConfig()
 
 
@@ -57,8 +54,7 @@ def test_storeConfig_1(function):
 
 def test_storeConfig_2(function):
     function.thread = threading.Thread()
-    with mock.patch.object(threading.Thread,
-                           'join'):
+    with mock.patch.object(threading.Thread, "join"):
         function.storeConfig()
 
 
@@ -67,14 +63,10 @@ def test_setColors(function):
 
 
 def test_updateColorSet(function):
-    with mock.patch.object(function,
-                           'showTwilightDataPlot'):
-        with mock.patch.object(function,
-                               'showTwilightDataList'):
-            with mock.patch.object(function,
-                                   'showMoonPhase'):
-                with mock.patch.object(function,
-                                       'showMoonPhase'):
+    with mock.patch.object(function, "showTwilightDataPlot"):
+        with mock.patch.object(function, "showTwilightDataList"):
+            with mock.patch.object(function, "showMoonPhase"):
+                with mock.patch.object(function, "showMoonPhase"):
                     function.updateColorSet()
 
 
@@ -107,60 +99,50 @@ def test_listTwilightData_1(function):
 
 def test_calcTwilightData_1(function):
     ts = function.app.mount.obsSite.ts
-    location = wgs84.latlon(latitude_degrees=0,
-                            longitude_degrees=0,
-                            elevation_m=0)
+    location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
     val = function.calcTwilightData(ts, location, tWinL=0, tWinH=0)
     assert val
 
 
 def test_workerCalcTwilightDataPlot_1(function):
-    location = wgs84.latlon(latitude_degrees=0,
-                            longitude_degrees=0,
-                            elevation_m=0)
+    location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
     ts = function.app.mount.obsSite.ts
     tsNow = ts.now()
     t = ts.tt_jd([tsNow.tt, tsNow.tt])
     e = np.array([1, 1])
-    with mock.patch.object(function,
-                           'calcTwilightData',
-                           return_value=(t, e)):
+    with mock.patch.object(function, "calcTwilightData", return_value=(t, e)):
         suc = function.workerCalcTwilightDataPlot(ts, location, timeWindow=0)
         assert suc
 
 
 def test_showTwilightDataPlot_1(function):
     function.app.mount.obsSite.location = None
-    with mock.patch.object(threading.Thread,
-                           'start'):
+    with mock.patch.object(threading.Thread, "start"):
         suc = function.showTwilightDataPlot()
         assert not suc
 
 
 def test_showTwilightDataPlot_2(function):
-    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
-                                                       longitude_degrees=0,
-                                                       elevation_m=0)
-    with mock.patch.object(function.app.threadPool,
-                           'start'):
+    function.app.mount.obsSite.location = wgs84.latlon(
+        latitude_degrees=0, longitude_degrees=0, elevation_m=0
+    )
+    with mock.patch.object(function.app.threadPool, "start"):
         suc = function.showTwilightDataPlot()
         assert suc
 
 
 def test_showTwilightDataList_1(function):
     function.app.mount.obsSite.location = None
-    with mock.patch.object(threading.Thread,
-                           'start'):
+    with mock.patch.object(threading.Thread, "start"):
         suc = function.showTwilightDataList()
         assert not suc
 
 
 def test_showTwilightDataList_2(function):
-    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
-                                                       longitude_degrees=0,
-                                                       elevation_m=0)
-    with mock.patch.object(function,
-                           'listTwilightData'):
+    function.app.mount.obsSite.location = wgs84.latlon(
+        latitude_degrees=0, longitude_degrees=0, elevation_m=0
+    )
+    with mock.patch.object(function, "listTwilightData"):
         suc = function.showTwilightDataList()
         assert suc
 
@@ -194,10 +176,8 @@ def test_showMoonPhase_1(function):
     ts = function.app.mount.obsSite.ts
     tsNow = ts.now()
     t = ts.tt_jd([tsNow.tt, tsNow.tt])
-    val = (20, 45, .20, 0, t, [0, 1], t, [0, 1])
-    with mock.patch.object(function,
-                           'calcMoonPhase',
-                           return_value=val):
+    val = (20, 45, 0.20, 0, t, [0, 1], t, [0, 1])
+    with mock.patch.object(function, "calcMoonPhase", return_value=val):
         function.showMoonPhase()
 
 
@@ -205,8 +185,6 @@ def test_showMoonPhase_2(function):
     ts = function.app.mount.obsSite.ts
     tsNow = ts.now()
     t = ts.tt_jd([tsNow.tt, tsNow.tt])
-    val = (20, 45, .20, 0, t, [0, 1], t, [0, 1])
-    with mock.patch.object(function,
-                           'calcMoonPhase',
-                           return_value=val):
+    val = (20, 45, 0.20, 0, t, [0, 1], t, [0, 1])
+    with mock.patch.object(function, "calcMoonPhase", return_value=val):
         function.showMoonPhase()

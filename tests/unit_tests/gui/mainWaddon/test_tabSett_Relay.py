@@ -17,7 +17,6 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import astropy
 
 # external packages
 from PySide6.QtWidgets import QWidget
@@ -26,12 +25,10 @@ from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabSett_Relay import SettRelay
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-
     mainW = QWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
@@ -53,6 +50,7 @@ def test_setupRelayGui(function):
 def test_toggleRelay_1(function):
     def Sender():
         return function.ui.relayButton0
+
     function.sender = Sender
 
     function.ui.relayDevice.setCurrentIndex(0)
@@ -63,29 +61,24 @@ def test_toggleRelay_1(function):
 def test_toggleRelay_2(function):
     def Sender():
         return function.ui.relayButton0
+
     function.sender = Sender
     function.ui.relayDevice.setCurrentIndex(1)
-    with mock.patch.object(function.app.relay,
-                           'switch',
-                           return_value=False):
+    with mock.patch.object(function.app.relay, "switch", return_value=False):
         suc = function.relayButtonPressed()
         assert not suc
 
 
 def test_doRelayAction_1(function):
     function.relayDropDowns[7].setCurrentIndex(0)
-    with mock.patch.object(function.app.relay,
-                           'switch',
-                           return_value=False):
+    with mock.patch.object(function.app.relay, "switch", return_value=False):
         suc = function.doRelayAction(7)
         assert not suc
 
 
 def test_doRelayAction_2(function):
     function.relayDropDowns[7].setCurrentIndex(0)
-    with mock.patch.object(function.app.relay,
-                           'switch',
-                           return_value=True):
+    with mock.patch.object(function.app.relay, "switch", return_value=True):
         suc = function.doRelayAction(7)
         assert suc
 
@@ -98,18 +91,14 @@ def test_doRelayAction_3(function):
 
 def test_doRelayAction_4(function):
     function.relayDropDowns[7].setCurrentIndex(1)
-    with mock.patch.object(function.app.relay,
-                           'pulse',
-                           return_value=False):
+    with mock.patch.object(function.app.relay, "pulse", return_value=False):
         suc = function.doRelayAction(7)
         assert not suc
 
 
 def test_doRelayAction_5(function):
     function.relayDropDowns[7].setCurrentIndex(1)
-    with mock.patch.object(function.app.relay,
-                           'pulse',
-                           return_value=True):
+    with mock.patch.object(function.app.relay, "pulse", return_value=True):
         suc = function.doRelayAction(7)
         assert suc
 
@@ -117,11 +106,10 @@ def test_doRelayAction_5(function):
 def test_relayButtonPressed_1(function):
     def Sender():
         return function.ui.relayButton0
+
     function.sender = Sender
 
-    with mock.patch.object(function,
-                           'doRelayAction',
-                           return_value=False):
+    with mock.patch.object(function, "doRelayAction", return_value=False):
         suc = function.relayButtonPressed()
         assert not suc
 
@@ -129,11 +117,10 @@ def test_relayButtonPressed_1(function):
 def test_relayButtonPressed_2(function):
     def Sender():
         return function.ui.relayButton0
+
     function.sender = Sender
 
-    with mock.patch.object(function,
-                           'doRelayAction',
-                           return_value=True):
+    with mock.patch.object(function, "doRelayAction", return_value=True):
         suc = function.relayButtonPressed()
         assert suc
 

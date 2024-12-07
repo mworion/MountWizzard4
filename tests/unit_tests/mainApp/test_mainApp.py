@@ -28,35 +28,33 @@ from mainApp import MountWizzard4
 from gui.mainWaddon.astroObjects import AstroObjects
 from base.loggerMW import setupLogging
 from mw4.resource import resources as res
+
 res.qInitResources()
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def app(qapp):
-    mwGlob = {'configDir': 'tests/workDir/config',
-              'dataDir': 'tests/workDir/data',
-              'tempDir': 'tests/workDir/temp',
-              'imageDir': 'tests/workDir/image',
-              'modelDir': 'tests/workDir/model',
-              'workDir': 'tests/workdir',
-              }
+    mwGlob = {
+        "configDir": "tests/workDir/config",
+        "dataDir": "tests/workDir/data",
+        "tempDir": "tests/workDir/temp",
+        "imageDir": "tests/workDir/image",
+        "modelDir": "tests/workDir/model",
+        "workDir": "tests/workdir",
+    }
 
-    shutil.copy('tests/testData/de440_mw4.bsp', 'tests/workDir/data/de440_mw4.bsp')
-    shutil.copy('tests/testData/test.run', 'tests/workDir/test.run')
+    shutil.copy("tests/testData/de440_mw4.bsp", "tests/workDir/data/de440_mw4.bsp")
+    shutil.copy("tests/testData/test.run", "tests/workDir/test.run")
 
     class Test:
         def emit(self):
             return
 
-    with mock.patch.object(QWidget,
-                           'show'):
-        with mock.patch.object(QTimer,
-                               'start'):
-            with mock.patch.object(QBasicTimer,
-                                   'start'):
-                with mock.patch.object(AstroObjects,
-                                       'loadSourceUrl'):
+    with mock.patch.object(QWidget, "show"):
+        with mock.patch.object(QTimer, "start"):
+            with mock.patch.object(QBasicTimer, "start"):
+                with mock.patch.object(AstroObjects, "loadSourceUrl"):
                     app = MountWizzard4(mwGlob=mwGlob, application=qapp)
                     app.update1s = Test()
                     yield app
@@ -75,16 +73,16 @@ def test_initConfig_1(app):
 
 
 def test_initConfig_2(app):
-    app.config['mainW'] = {}
-    app.config['mainW']['loglevelDebug'] = True
+    app.config["mainW"] = {}
+    app.config["mainW"]["loglevelDebug"] = True
 
     val = app.initConfig()
     assert val.longitude.degrees == 0
 
 
 def test_initConfig_4(app):
-    app.config['mainW'] = {}
-    app.config['mainW']['loglevelTrace'] = True
+    app.config["mainW"] = {}
+    app.config["mainW"]["loglevelTrace"] = True
 
     val = app.initConfig()
     assert val.longitude.degrees == 0
@@ -169,10 +167,8 @@ def test_aboutToQuit_1(app):
 
 
 def test_quit_1(app):
-    with mock.patch.object(QCoreApplication,
-                           'quit'):
-        with mock.patch.object(app.mount,
-                               'stopAllMountTimers'):
+    with mock.patch.object(QCoreApplication, "quit"):
+        with mock.patch.object(app.mount, "stopAllMountTimers"):
             app.quit()
 
 
@@ -181,4 +177,4 @@ def test_loadHorizonData_1(app):
 
 
 def test_writeMessageQueue(app):
-    app.writeMessageQueue(1, 'test', 'test', 'test')
+    app.writeMessageQueue(1, "test", "test", "test")

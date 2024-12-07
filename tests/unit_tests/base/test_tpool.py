@@ -15,7 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import astropy
 
 # external packages
 
@@ -40,14 +39,15 @@ def test_clearPrintErrorStack():
 
 def test_Worker_1():
     def testFunc():
-        return 'test'
+        return "test"
+
     a = tpool.Worker(testFunc)
     assert a.signals
 
 
 def test_Worker_2(qtbot):
     def testFunc():
-        return 'test'
+        return "test"
 
     a = tpool.Worker(testFunc)
     with qtbot.waitSignal(a.signals.finished):
@@ -74,7 +74,7 @@ def test_Worker_4(qtbot):
 
 def test_Worker_5(qtbot):
     def testFunc():
-        raise Exception('Test')
+        raise Exception("Test")
 
     a = tpool.Worker(testFunc)
     with qtbot.waitSignal(a.signals.error):

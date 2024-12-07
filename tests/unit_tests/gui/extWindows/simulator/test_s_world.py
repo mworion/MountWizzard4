@@ -16,29 +16,28 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 from unittest import mock
 
 # external packages
-from PySide6.Qt3DCore import Qt3DCore
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.extWindows.simulatorW import SimulatorWindow
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     func = SimulatorWindow(app=App())
-    with mock.patch.object(func,
-                           'show'):
+    with mock.patch.object(func, "show"):
         yield func.world
 
 
 def test_updatePositions_1(function):
-    with mock.patch.object(function.app.mount,
-                           'calcTransformationMatricesActual',
-                           return_value=(0, 0, None, None, None)):
+    with mock.patch.object(
+        function.app.mount,
+        "calcTransformationMatricesActual",
+        return_value=(0, 0, None, None, None),
+    ):
         function.updatePositions()
 
 
@@ -48,6 +47,5 @@ def test_updatePositions_2(function):
 
 
 def test_create_1(function):
-    with mock.patch.object(function,
-                           'updatePositions'):
+    with mock.patch.object(function, "updatePositions"):
         function.create()

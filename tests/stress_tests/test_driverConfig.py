@@ -30,29 +30,30 @@ from base.tpool import Worker
 from loader import extractDataFiles
 
 
-mwglob = {'dataDir': 'tests/workDir/data',
-          'configDir': 'tests/workDir/config',
-          'workDir': 'tests/workDir',
-          'imageDir': 'tests/workDir/image',
-          'tempDir': 'tests/workDir/temp',
-          'measureDir': 'tests/workDir/measure',
-          'modelDir': 'tests/workDir/model',
-          'modelData': '4.0'
-          }
+mwglob = {
+    "dataDir": "tests/workDir/data",
+    "configDir": "tests/workDir/config",
+    "workDir": "tests/workDir",
+    "imageDir": "tests/workDir/image",
+    "tempDir": "tests/workDir/temp",
+    "measureDir": "tests/workDir/measure",
+    "modelDir": "tests/workDir/model",
+    "modelData": "4.0",
+}
 
 tp = QThreadPool()
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def module_setup_teardown():
     global tp
 
     for d in mwglob:
-        files = glob.glob(f'{mwglob[d]}/*.*')
-        if 'modelData' in d:
+        files = glob.glob(f"{mwglob[d]}/*.*")
+        if "modelData" in d:
             continue
         for f in files:
-            if 'empty' in f:
+            if "empty" in f:
                 continue
             os.remove(f)
 
@@ -61,11 +62,11 @@ def module_setup_teardown():
     yield
 
     for d in mwglob:
-        files = glob.glob(f'{mwglob[d]}/*.*')
-        if 'modelData' in d:
+        files = glob.glob(f"{mwglob[d]}/*.*")
+        if "modelData" in d:
             continue
         for f in files:
-            if 'empty' in f:
+            if "empty" in f:
                 continue
             os.remove(f)
 
@@ -88,8 +89,8 @@ def test_configAlpaca(qtbot, qapp):
     popup.ui.tab.setCurrentIndex(0)
     QTest.qWait(1000)
 
-    popup.ui.alpacaHostAddress.setText('192.168.2.211')
-    popup.ui.alpacaPort.setText('11111')
+    popup.ui.alpacaHostAddress.setText("192.168.2.211")
+    popup.ui.alpacaPort.setText("11111")
     popup.ui.alpacaCopyConfig.setChecked(True)
     qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
     QTest.qWait(1000)

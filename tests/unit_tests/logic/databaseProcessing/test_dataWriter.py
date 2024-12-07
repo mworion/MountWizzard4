@@ -16,11 +16,9 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 import unittest.mock as mock
 import os
 import json
-import requests
 import shutil
 
 # external packages

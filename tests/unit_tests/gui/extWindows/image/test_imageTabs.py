@@ -17,7 +17,6 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import astropy
 
 # external packages
 from PySide6.QtCore import QRectF
@@ -32,9 +31,8 @@ from logic.photometry.photometry import Photometry
 from logic.file.fileHandler import FileHandler
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-
     func = ImageWindow(app=App())
     yield func
 
@@ -43,12 +41,9 @@ def test_showTabImage_1(function):
     function.fileHandler = FileHandler(function)
     function.fileHandler.image = np.random.rand(100, 100) + 1
     function.fileHandler.wcs = wcs.WCS()
-    with mock.patch.object(function,
-                           'setBarColor'):
-        with mock.patch.object(function,
-                               'setCrosshair'):
-            with mock.patch.object(function,
-                                   'writeHeaderDataToGUI'):
+    with mock.patch.object(function, "setBarColor"):
+        with mock.patch.object(function, "setCrosshair"):
+            with mock.patch.object(function, "writeHeaderDataToGUI"):
                 suc = function.showTabImage()
                 assert suc
 
@@ -66,8 +61,7 @@ def test_showTabHFR(function):
     function.photometry.hfr = np.random.rand(100, 100) + 1
     function.photometry.hfrPercentile = 0
     function.photometry.hfrMedian = 0
-    with mock.patch.object(function.ui.hfr,
-                           'addIsoBasic'):
+    with mock.patch.object(function.ui.hfr, "addIsoBasic"):
         suc = function.showTabHFR()
         assert suc
 
@@ -107,8 +101,7 @@ def test_showTabRoundness(function):
     function.photometry.roundnessMax = 10
     function.photometry.roundnessPercentile = 10
     function.photometry.roundnessGrid = np.random.rand(100, 100) + 1
-    with mock.patch.object(function.ui.roundness,
-                           'addIsoBasic'):
+    with mock.patch.object(function.ui.roundness, "addIsoBasic"):
         suc = function.showTabRoundness()
     assert suc
 
@@ -124,18 +117,25 @@ def test_showTabAberrationInspect(function):
 def test_showTabImageSources(function):
     function.photometry = Photometry(function)
     function.imageSourceRange = QRectF(1, 2, 3, 4)
-    function.photometry.objs = {'x': np.linspace(0, 50, 20),
-                                'y': np.linspace(50, 100, 20),
-                                'theta': np.random.rand(20, 1) + 10,
-                                'a': np.random.rand(20, 1) + 10,
-                                'b': np.random.rand(20, 1) + 10}
+    function.photometry.objs = {
+        "x": np.linspace(0, 50, 20),
+        "y": np.linspace(50, 100, 20),
+        "theta": np.random.rand(20, 1) + 10,
+        "a": np.random.rand(20, 1) + 10,
+        "b": np.random.rand(20, 1) + 10,
+    }
     function.photometry.image = np.random.rand(100, 100) + 1
-    function.photometry.hfr = np.random.rand(20, ) + 10.0
+    function.photometry.hfr = (
+        np.random.rand(
+            20,
+        )
+        + 10.0
+    )
 
     function.ui.showValues.setChecked(True)
-    with mock.patch.object(function.ui.imageSource,
-                           'addEllipse',
-                           return_value=pg.PlotItem()):
+    with mock.patch.object(
+        function.ui.imageSource, "addEllipse", return_value=pg.PlotItem()
+    ):
         suc = function.showTabImageSources()
         assert suc
 

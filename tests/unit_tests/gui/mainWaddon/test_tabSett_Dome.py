@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 from unittest import mock
 
 # external packages
@@ -27,12 +26,12 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabSett_Dome import SettDome
 from resource import resources
+
 resources.qInitResources()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-
     mainW = QWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
@@ -79,16 +78,14 @@ def test_tab9(function):
 
 
 def test_initConfig_1(function):
-    function.app.config['mainW'] = {}
-    with mock.patch.object(function,
-                           'setUseGeometry'):
+    function.app.config["mainW"] = {}
+    with mock.patch.object(function, "setUseGeometry"):
         suc = function.initConfig()
         assert suc
 
 
 def test_initConfig_2(function):
-    with mock.patch.object(function,
-                           'setUseGeometry'):
+    with mock.patch.object(function, "setUseGeometry"):
         suc = function.initConfig()
         assert suc
 
@@ -132,8 +129,7 @@ def test_setUseGeometry_1(function):
 def test_setUseGeometry_2(function):
     function.ui.use10micronDef.setChecked(True)
     function.ui.automaticDome.setChecked(True)
-    with mock.patch.object(function,
-                           'updateDomeGeometryToGui'):
+    with mock.patch.object(function, "updateDomeGeometryToGui"):
         suc = function.setUseGeometry()
         assert suc
 

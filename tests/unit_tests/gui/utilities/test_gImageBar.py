@@ -26,7 +26,7 @@ import numpy as np
 from gui.utilities.gImageBar import ImageBar
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def module(qapp):
     yield
 
@@ -38,7 +38,7 @@ def test_ImageBar_constructPlot():
 
 def test_ImageBar_setColorMap():
     function = ImageBar()
-    suc = function.setColorMap('plasma')
+    suc = function.setColorMap("plasma")
     assert suc
 
 
@@ -72,15 +72,13 @@ def test_ImageBar_showCrosshair():
 
 def test_ImageBar_addEllipse():
     function = ImageBar()
-    with mock.patch.object(function.p[0],
-                           'addItem'):
+    with mock.patch.object(function.p[0], "addItem"):
         suc = function.addEllipse(0, 0, 1, 1, 0)
         assert suc
 
 
 def test_ImageBar_addValueAnnotation():
     function = ImageBar()
-    with mock.patch.object(function.p[0],
-                           'addItem'):
+    with mock.patch.object(function.p[0], "addItem"):
         suc = function.addValueAnnotation(0, 0, 10)
         assert suc

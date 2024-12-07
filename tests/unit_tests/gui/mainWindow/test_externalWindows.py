@@ -17,7 +17,6 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import astropy
 
 
 # external packages
@@ -33,7 +32,7 @@ from base import packageConfig
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     packageConfig.isAvailable = True
     window = QWidget()
@@ -51,22 +50,22 @@ def test_storeConfig_1(function):
         def storeConfig(self):
             return
 
-    function.uiWindows['showMessageW']['classObj'] = Test()
+    function.uiWindows["showMessageW"]["classObj"] = Test()
     function.storeConfig()
 
 
 def test_updateWindowsStats_1(function):
-    function.uiWindows['showMessageW']['classObj'] = None
+    function.uiWindows["showMessageW"]["classObj"] = None
     function.updateWindowsStats()
 
 
 def test_updateWindowsStats_2(function):
-    function.uiWindows['showMessageW']['classObj'] = 1
+    function.uiWindows["showMessageW"]["classObj"] = 1
     function.updateWindowsStats()
 
 
 def test_deleteWindowResource_1(function):
-    function.deleteWindowResource('showImageW')
+    function.deleteWindowResource("showImageW")
 
 
 def test_buildWindow_1(function):
@@ -88,16 +87,15 @@ def test_buildWindow_1(function):
         def showWindow():
             return
 
-    function.uiWindows['showSatelliteW']['class'] = Test
-    function.buildWindow('showSatelliteW')
+    function.uiWindows["showSatelliteW"]["class"] = Test
+    function.buildWindow("showSatelliteW")
 
 
 def test_toggleWindow_1(function):
-    function.uiWindows['showImageW']['classObj'] = None
+    function.uiWindows["showImageW"]["classObj"] = None
 
-    with mock.patch.object(function,
-                           'buildWindow'):
-        function.toggleWindow('showImageW')
+    with mock.patch.object(function, "buildWindow"):
+        function.toggleWindow("showImageW")
 
 
 def test_toggleWindow_2(function):
@@ -107,41 +105,38 @@ def test_toggleWindow_2(function):
         @staticmethod
         def close():
             return
-    function.uiWindows['showImageW']['classObj'] = Test()
-    with mock.patch.object(function,
-                           'buildWindow'):
-        function.toggleWindow('showImageW')
+
+    function.uiWindows["showImageW"]["classObj"] = Test()
+    with mock.patch.object(function, "buildWindow"):
+        function.toggleWindow("showImageW")
 
 
 def test_showExtendedWindows_1(function):
     function.app.config = {}
     test = function.uiWindows
-    function.uiWindows = {'showSimulatorW': True}
-    function.app.config['showMessageW'] = True
-    with mock.patch.object(function,
-                           'buildWindow'):
+    function.uiWindows = {"showSimulatorW": True}
+    function.app.config["showMessageW"] = True
+    with mock.patch.object(function, "buildWindow"):
         function.showExtendedWindows()
     function.uiWindows = test
 
 
 def test_showExtendedWindows_2(function):
     test = function.uiWindows
-    function.uiWindows = {'showMessageW': True}
-    function.app.config['showMessageW'] = False
-    with mock.patch.object(function,
-                           'buildWindow'):
+    function.uiWindows = {"showMessageW": True}
+    function.app.config["showMessageW"] = False
+    with mock.patch.object(function, "buildWindow"):
         function.showExtendedWindows()
     function.uiWindows = test
 
 
 def test_showExtendedWindows_3(function):
     test = function.uiWindows
-    function.uiWindows = {'showMessageW': True}
-    function.app.config['showMessageW'] = True
-    with mock.patch.object(function,
-                           'buildWindow'):
+    function.uiWindows = {"showMessageW": True}
+    function.app.config["showMessageW"] = True
+    with mock.patch.object(function, "buildWindow"):
         function.showExtendedWindows()
-    function.app.config['showMessageW'] = False
+    function.app.config["showMessageW"] = False
     function.uiWindows = test
 
 
@@ -149,16 +144,15 @@ def test_waitClosedExtendedWindows_1(function):
     class Test:
         @staticmethod
         def close():
-            function.uiWindows['showMessageW']['classObj'] = None
+            function.uiWindows["showMessageW"]["classObj"] = None
             return
 
     test = function.uiWindows
-    function.uiWindows = {'showMessageW': {'classObj': Test(),
-                                           'button': QPushButton()},
-                          'showImageW': {'classObj': None,
-                                         'button': QPushButton()}}
-    with mock.patch.object(gui.utilities.toolsQtWidget,
-                           'sleepAndEvents'):
+    function.uiWindows = {
+        "showMessageW": {"classObj": Test(), "button": QPushButton()},
+        "showImageW": {"classObj": None, "button": QPushButton()},
+    }
+    with mock.patch.object(gui.utilities.toolsQtWidget, "sleepAndEvents"):
         suc = function.waitClosedExtendedWindows()
         assert suc
     function.uiWindows = test
@@ -166,10 +160,8 @@ def test_waitClosedExtendedWindows_1(function):
 
 def test_waitClosedExtendedWindows_2(function):
     test = function.uiWindows
-    function.uiWindows = {'showMessageW': {'classObj': None,
-                                           'button': QPushButton()}}
-    with mock.patch.object(gui.utilities.toolsQtWidget,
-                           'sleepAndEvents'):
+    function.uiWindows = {"showMessageW": {"classObj": None, "button": QPushButton()}}
+    with mock.patch.object(gui.utilities.toolsQtWidget, "sleepAndEvents"):
         suc = function.waitClosedExtendedWindows()
         assert suc
     function.uiWindows = test
@@ -179,24 +171,20 @@ def test_closeExtendedWindows_1(function):
     class Test:
         @staticmethod
         def close():
-            function.uiWindows['showMessageW']['classObj'] = None
+            function.uiWindows["showMessageW"]["classObj"] = None
             return
 
     test = function.uiWindows
-    function.uiWindows = {'showMessageW': {'classObj': Test(),
-                                           'button': QPushButton()}}
-    with mock.patch.object(function,
-                           'waitClosedExtendedWindows'):
+    function.uiWindows = {"showMessageW": {"classObj": Test(), "button": QPushButton()}}
+    with mock.patch.object(function, "waitClosedExtendedWindows"):
         function.closeExtendedWindows()
     function.uiWindows = test
 
 
 def test_closeExtendedWindows_2(function):
     test = function.uiWindows
-    function.uiWindows = {'showMessageW': {'classObj': None,
-                                           'button': QPushButton()}}
-    with mock.patch.object(function,
-                           'waitClosedExtendedWindows'):
+    function.uiWindows = {"showMessageW": {"classObj": None, "button": QPushButton()}}
+    with mock.patch.object(function, "waitClosedExtendedWindows"):
         function.closeExtendedWindows()
     function.uiWindows = test
 
@@ -215,6 +203,5 @@ def test_collectWindows(function):
         def activateWindow():
             return
 
-    function.uiWindows = {'showMessageW': {'classObj': Test(),
-                                           'button': QPushButton()}}
+    function.uiWindows = {"showMessageW": {"classObj": Test(), "button": QPushButton()}}
     function.collectWindows()

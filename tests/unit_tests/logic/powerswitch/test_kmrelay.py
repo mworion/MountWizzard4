@@ -18,7 +18,6 @@
 from unittest import mock
 import time
 import pytest
-import astropy
 
 # external packages
 import PySide6

@@ -29,45 +29,45 @@ from PySide6.QtTest import QTest
 from mainApp import MountWizzard4
 from base.tpool import Worker
 from loader import extractDataFiles
-from resource import resources
 
 
-mwglob = {'dataDir': 'tests/workDir/data',
-          'configDir': 'tests/workDir/config',
-          'workDir': 'tests/workDir',
-          'imageDir': 'tests/workDir/image',
-          'tempDir': 'tests/workDir/temp',
-          'measureDir': 'tests/workDir/measure',
-          'modelDir': 'tests/workDir/model',
-          'modelData': '4.0'
-          }
+mwglob = {
+    "dataDir": "tests/workDir/data",
+    "configDir": "tests/workDir/config",
+    "workDir": "tests/workDir",
+    "imageDir": "tests/workDir/image",
+    "tempDir": "tests/workDir/temp",
+    "measureDir": "tests/workDir/measure",
+    "modelDir": "tests/workDir/model",
+    "modelData": "4.0",
+}
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def module_setup_teardown():
     global tp
 
     tp = QThreadPool()
     for d in mwglob:
-        files = glob.glob(f'{mwglob[d]}/*.*')
-        if 'modelData' in d:
+        files = glob.glob(f"{mwglob[d]}/*.*")
+        if "modelData" in d:
             continue
         for f in files:
-            if 'empty' in f:
+            if "empty" in f:
                 continue
             os.remove(f)
     extractDataFiles(mwGlob=mwglob)
-    shutil.copy('tests/testData/star1.fits', 'tests/workDir/image/star1.fits')
-    shutil.copy('tests/testData/star2.fits', 'tests/workDir/image/star2.fits')
-    shutil.copy('tests/testData/star3.fits', 'tests/workDir/image/star3.fits')
+    shutil.copy("tests/testData/star1.fits", "tests/workDir/image/star1.fits")
+    shutil.copy("tests/testData/star2.fits", "tests/workDir/image/star2.fits")
+    shutil.copy("tests/testData/star3.fits", "tests/workDir/image/star3.fits")
 
     yield
     for d in mwglob:
-        files = glob.glob(f'{mwglob[d]}/*.*')
-        if 'modelData' in d:
+        files = glob.glob(f"{mwglob[d]}/*.*")
+        if "modelData" in d:
             continue
         for f in files:
-            if 'empty' in f:
+            if "empty" in f:
                 continue
             os.remove(f)
     tp.waitForDone(1000)
@@ -85,12 +85,12 @@ def test_showImages(qtbot, qapp):
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    imageW = app.uiWindows['showImageW']['classObj']
+    imageW = app.uiWindows["showImageW"]["classObj"]
     imageW.move(900, 100)
     qtbot.waitExposed(imageW, timeout=1000)
 
     for i in range(50):
-        app.showImage.emit(f'tests/workDir/image/star{i%3 + 1}.fits')
+        app.showImage.emit(f"tests/workDir/image/star{i%3 + 1}.fits")
         QTest.qWait(500)
 
     QTest.qWait(1000)
@@ -109,14 +109,14 @@ def test_showImagesPhotometry(qtbot, qapp):
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    imageW = app.uiWindows['showImageW']['classObj']
+    imageW = app.uiWindows["showImageW"]["classObj"]
     imageW.move(900, 100)
 
     qtbot.waitExposed(imageW, timeout=1000)
     imageW.ui.photometryGroup.setChecked(True)
 
     for i in range(50):
-        app.showImage.emit(f'tests/workDir/image/star{i%3 + 1}.fits')
+        app.showImage.emit(f"tests/workDir/image/star{i%3 + 1}.fits")
         QTest.qWait(1000)
 
     QTest.qWait(1000)
@@ -135,7 +135,7 @@ def test_showImagesPhotometryN(qtbot, qapp):
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    imageW = app.uiWindows['showImageW']['classObj']
+    imageW = app.uiWindows["showImageW"]["classObj"]
     imageW.move(900, 100)
 
     qtbot.waitExposed(imageW, timeout=1000)

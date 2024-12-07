@@ -16,13 +16,11 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 import unittest.mock as mock
 
 # external packages
 from PySide6.QtGui import QCloseEvent
 from PySide6.Qt3DCore import Qt3DCore
-from PySide6.Qt3DRender import Qt3DRender
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -31,11 +29,10 @@ from gui.extWindows.simulatorW import SimulatorWindow
 from gui.extWindows.simulator import tools
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     func = SimulatorWindow(app=App())
-    with mock.patch.object(func,
-                           'show'):
+    with mock.patch.object(func, "show"):
         yield func
 
 
@@ -44,34 +41,32 @@ def test_initConfig_1(function):
 
 
 def test_initConfig_2(function):
-    function.app.config['simulatorW'] = {}
-    function.app.config['simulatorW']['winPosX'] = 100
-    function.app.config['simulatorW']['winPosY'] = 100
+    function.app.config["simulatorW"] = {}
+    function.app.config["simulatorW"]["winPosX"] = 100
+    function.app.config["simulatorW"]["winPosY"] = 100
     function.initConfig()
 
 
 def test_storeConfig_1(function):
-    if 'simulatorW' in function.app.config:
-        del function.app.config['simulatorW']
+    if "simulatorW" in function.app.config:
+        del function.app.config["simulatorW"]
 
     function.storeConfig()
 
 
 def test_storeConfig_2(function):
-    function.app.config['simulatorW'] = {}
+    function.app.config["simulatorW"] = {}
     function.storeConfig()
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(MWidget,
-                           'closeEvent'):
+    with mock.patch.object(MWidget, "closeEvent"):
         function.showWindow()
         function.closeEvent(QCloseEvent)
 
 
 def test_showWindow(function):
-    with mock.patch.object(function,
-                           'show'):
+    with mock.patch.object(function, "show"):
         function.showWindow()
 
 
@@ -120,28 +115,19 @@ def test_westView_1(function):
 
 
 def test_createReference_1(function):
-    function.entityModel['root'] = {'entity': Qt3DCore.QEntity()}
-    with mock.patch.object(tools,
-                           'linkModel'):
+    function.entityModel["root"] = {"entity": Qt3DCore.QEntity()}
+    with mock.patch.object(tools, "linkModel"):
         function.createReference()
 
 
 def test_createScene_1(function):
-    function.entityModel['root'] = {'entity': Qt3DCore.QEntity()}
-    with mock.patch.object(function,
-                           'createReference'):
-        with mock.patch.object(function.telescope,
-                               'create'):
-            with mock.patch.object(function.laser,
-                                   'create'):
-                with mock.patch.object(function.pointer,
-                                       'create'):
-                    with mock.patch.object(function.world,
-                                           'create'):
-                        with mock.patch.object(function.horizon,
-                                               'create'):
-                            with mock.patch.object(function.dome,
-                                                   'create'):
-                                with mock.patch.object(function.buildPoints,
-                                                       'create'):
+    function.entityModel["root"] = {"entity": Qt3DCore.QEntity()}
+    with mock.patch.object(function, "createReference"):
+        with mock.patch.object(function.telescope, "create"):
+            with mock.patch.object(function.laser, "create"):
+                with mock.patch.object(function.pointer, "create"):
+                    with mock.patch.object(function.world, "create"):
+                        with mock.patch.object(function.horizon, "create"):
+                            with mock.patch.object(function.dome, "create"):
+                                with mock.patch.object(function.buildPoints, "create"):
                                     function.createScene()

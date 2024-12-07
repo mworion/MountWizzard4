@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 from unittest import mock
 from PySide6.QtWidgets import QInputDialog, QWidget
 
@@ -26,9 +25,8 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabPower import Power
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-
     mainW = QWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
@@ -51,7 +49,7 @@ def test_updatePowerGui_1(function, qtbot):
 
 
 def test_updatePowerGui_2(function, qtbot):
-    function.app.power.data = {'FIRMWARE_INFO.VERSION': '1.5'}
+    function.app.power.data = {"FIRMWARE_INFO.VERSION": "1.5"}
     function.updatePowerGui()
 
 
@@ -61,9 +59,7 @@ def test_setDew_1(function, qtbot):
         def parent():
             return function.ui.dewA
 
-    with mock.patch.object(QInputDialog,
-                           'getInt',
-                           return_value=(0, False)):
+    with mock.patch.object(QInputDialog, "getInt", return_value=(0, False)):
         function.sender = Sender
         function.setDew()
 
@@ -74,9 +70,7 @@ def test_setDew_2(function, qtbot):
         def parent():
             return function.ui.dewA
 
-    with mock.patch.object(QInputDialog,
-                           'getInt',
-                           return_value=(0, False)):
+    with mock.patch.object(QInputDialog, "getInt", return_value=(0, False)):
         function.sender = Sender
         function.setDew()
 
@@ -87,11 +81,9 @@ def test_setDew_3(function, qtbot):
         def parent():
             return function.ui.dewA
 
-    with mock.patch.object(QInputDialog,
-                           'getInt',
-                           return_value=(0, False)):
+    with mock.patch.object(QInputDialog, "getInt", return_value=(0, False)):
         function.sender = Sender
-        function.ui.dewA.setText('10')
+        function.ui.dewA.setText("10")
         function.setDew()
 
 
@@ -101,11 +93,9 @@ def test_setDew_4(function, qtbot):
         def parent():
             return function.ui.dewA
 
-    with mock.patch.object(QInputDialog,
-                           'getInt',
-                           return_value=(0, True)):
+    with mock.patch.object(QInputDialog, "getInt", return_value=(0, True)):
         function.sender = Sender
-        function.ui.dewA.setText('10')
+        function.ui.dewA.setText("10")
         function.setDew()
 
 
@@ -114,12 +104,11 @@ def test_setDew_5(function, qtbot):
         @staticmethod
         def parent():
             return function.ui.dewA
-    function.dew = {'test': function.ui.dewB}
-    with mock.patch.object(QInputDialog,
-                           'getInt',
-                           return_value=(0, True)):
+
+    function.dew = {"test": function.ui.dewB}
+    with mock.patch.object(QInputDialog, "getInt", return_value=(0, True)):
         function.sender = Sender
-        function.ui.dewA.setText('10')
+        function.ui.dewA.setText("10")
         function.setDew()
 
 
@@ -180,32 +169,24 @@ def test_toggleAutoDew_1(function, qtbot):
 
 
 def test_setAdjustableOutput_2(function, qtbot):
-    function.ui.adjustableOutput.setText('10')
-    with mock.patch.object(QInputDialog,
-                           'getDouble',
-                           return_value=(0, False)):
+    function.ui.adjustableOutput.setText("10")
+    with mock.patch.object(QInputDialog, "getDouble", return_value=(0, False)):
         function.setAdjustableOutput()
 
 
 def test_setAdjustableOutput_3(function, qtbot):
-    function.ui.adjustableOutput.setText('10')
-    with mock.patch.object(QInputDialog,
-                           'getDouble',
-                           return_value=(0, True)):
+    function.ui.adjustableOutput.setText("10")
+    with mock.patch.object(QInputDialog, "getDouble", return_value=(0, True)):
         function.setAdjustableOutput()
 
 
 def test_rebootUPB_1(function):
-    with mock.patch.object(function.app.power,
-                           'reboot',
-                           return_value=False):
+    with mock.patch.object(function.app.power, "reboot", return_value=False):
         suc = function.rebootUPB()
         assert not suc
 
 
 def test_rebootUPB_2(function):
-    with mock.patch.object(function.app.power,
-                           'reboot',
-                           return_value=True):
+    with mock.patch.object(function.app.power, "reboot", return_value=True):
         suc = function.rebootUPB()
         assert suc

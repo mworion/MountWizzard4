@@ -34,9 +34,8 @@ class PlateSolve:
     signals = Signals()
     framework = None
     run = {}
-    deviceName = ''
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    deviceName = ""
+    defaultConfig = {"framework": "", "frameworks": {}}
 
     @staticmethod
     def solve():
@@ -74,20 +73,21 @@ class Camera:
     fastReadout = False
     data = {}
     framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    defaultConfig = {"framework": "", "frameworks": {}}
 
-    run = {'indi': 'dummy'}
+    run = {"indi": "dummy"}
 
     @staticmethod
-    def expose(imagePath=None,
-               exposureTime=None,
-               binning=None,
-               subFrame=None,
-               fastReadout=None,
-               focalLength=None,
-               ra=None,
-               dec=None):
+    def expose(
+        imagePath=None,
+        exposureTime=None,
+        binning=None,
+        subFrame=None,
+        fastReadout=None,
+        focalLength=None,
+        ra=None,
+        dec=None,
+    ):
         return
 
     @staticmethod
@@ -134,8 +134,7 @@ class Cover:
     signals = CoverSignals()
     data = {}
     framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    defaultConfig = {"framework": "", "frameworks": {}}
 
     @staticmethod
     def closeCover():
@@ -181,16 +180,12 @@ class Dome:
     data = {}
     framework = None
     signals = DomeSignals()
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    defaultConfig = {"framework": "", "frameworks": {}}
 
     @staticmethod
-    def slewDome(altitude=None,
-                 azimuth=None,
-                 piersideT=None,
-                 haT=None,
-                 decT=None,
-                 lat=None):
+    def slewDome(
+        altitude=None, azimuth=None, piersideT=None, haT=None, decT=None, lat=None
+    ):
         return
 
     @staticmethod
@@ -206,14 +201,11 @@ class Dome:
         return
 
     @staticmethod
-    def slewDome(azimuth=0,
-                 altitude=0,
-                 follow=False):
+    def slewDome(azimuth=0, altitude=0, follow=False):
         return
 
     @staticmethod
-    def followDome(azimuth=0,
-                   altitude=0):
+    def followDome(azimuth=0, altitude=0):
         return
 
     @staticmethod
@@ -240,8 +232,7 @@ class SensorWeather:
     signals = SensorWeatherSignals()
     data = {}
     framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    defaultConfig = {"framework": "", "frameworks": {}}
 
 
 class OnlineWeather:
@@ -253,8 +244,7 @@ class OnlineWeather:
 
     signals = OnlineWeatherSignals()
     framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    defaultConfig = {"framework": "", "frameworks": {}}
     data = {}
 
 
@@ -269,8 +259,7 @@ class DirectWeather:
     signals = DirectWeatherSignals()
     data = {}
     framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    defaultConfig = {"framework": "", "frameworks": {}}
 
 
 class SeeingWeather:
@@ -283,8 +272,7 @@ class SeeingWeather:
 
     signals = SeeingWeatherSignals()
     framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    defaultConfig = {"framework": "", "frameworks": {}}
     data = {}
 
 
@@ -299,8 +287,7 @@ class Filter:
     signals = FilterSignals()
     data = {}
     framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    defaultConfig = {"framework": "", "frameworks": {}}
 
     @staticmethod
     def sendFilterNumber(filterNumber=None):
@@ -322,8 +309,7 @@ class Focuser:
     signals = FocuserSignals()
     framework = None
     data = {}
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    defaultConfig = {"framework": "", "frameworks": {}}
 
     @staticmethod
     def move():
@@ -343,15 +329,14 @@ class Measure:
         deviceDisconnected = Signal(object)
 
     class CSV:
-        csvFilename = ''
+        csvFilename = ""
 
     signals = MeasureSignals()
     data = {}
     framework = None
     devices = {}
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-    run = {'csv': CSV()}
+    defaultConfig = {"framework": "", "frameworks": {}}
+    run = {"csv": CSV()}
 
 
 class Relay:
@@ -366,8 +351,7 @@ class Relay:
     signals = RelaySignals()
     data = {}
     framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    defaultConfig = {"framework": "", "frameworks": {}}
     timerTask = QTimer()
 
     @staticmethod
@@ -393,8 +377,7 @@ class Remote:
 
     signals = RemoteSignals()
     framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    defaultConfig = {"framework": "", "frameworks": {}}
 
 
 class Telescope:
@@ -406,16 +389,15 @@ class Telescope:
         deviceDisconnected = Signal(object)
 
     class Test:
-        deviceName = ''
+        deviceName = ""
 
     signals = TelescopeSignals()
     data = {}
     framework = None
-    run = {'indi': Test()}
+    run = {"indi": Test()}
     focalLength = 100
     aperture = 100
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    defaultConfig = {"framework": "", "frameworks": {}}
 
     @staticmethod
     def stopCommunication():
@@ -427,7 +409,7 @@ class Telescope:
 
 
 class Hipparcos:
-    name = ['test']
+    name = ["test"]
     az = [10]
     alt = [10]
 
@@ -452,8 +434,7 @@ class Power:
     signals = PowerSignals()
     data = {}
     framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
+    defaultConfig = {"framework": "", "frameworks": {}}
 
     @staticmethod
     def sendDew(port=None, value=None):
@@ -493,11 +474,11 @@ class Data:
     horizonP = []
 
     @staticmethod
-    def loadHorizonP(fileName=''):
+    def loadHorizonP(fileName=""):
         return
 
     @staticmethod
-    def saveHorizonP(fileName=''):
+    def saveHorizonP(fileName=""):
         return
 
     @staticmethod
@@ -525,37 +506,25 @@ class Data:
         return
 
     @staticmethod
-    def genGrid(minAlt=None,
-                maxAlt=None,
-                numbRows=None,
-                numbCols=None,
-                keep=None):
+    def genGrid(minAlt=None, maxAlt=None, numbRows=None, numbCols=None, keep=None):
         return
 
     @staticmethod
-    def genAlign(altBase=None,
-                 azBase=None,
-                 numberBase=None,
-                 keep=None):
+    def genAlign(altBase=None, azBase=None, numberBase=None, keep=None):
         return
 
     @staticmethod
-    def genGreaterCircle(selection=None,
-                         keep=None):
+    def genGreaterCircle(selection=None, keep=None):
         return
 
     @staticmethod
-    def generateDSOPath(ha=None,
-                        dec=None,
-                        timeJD=None,
-                        location=None,
-                        numberPoints=None,
-                        keep=None):
+    def generateDSOPath(
+        ha=None, dec=None, timeJD=None, location=None, numberPoints=None, keep=None
+    ):
         return
 
     @staticmethod
-    def generateGoldenSpiral(numberPoints=None,
-                             keep=None):
+    def generateGoldenSpiral(numberPoints=None, keep=None):
         return
 
     @staticmethod
@@ -623,11 +592,11 @@ class Data:
 class Mount(QObject):
     class MountSatellite:
         class Name:
-            name = ''
+            name = ""
             jdStart = 1
             jdEnd = 1
             flip = False
-            message = ''
+            message = ""
             altitude = None
             azimuth = None
 
@@ -636,7 +605,7 @@ class Mount(QObject):
         settlingTime = 0
 
         @staticmethod
-        def setTLE(line0='', line1='', line2=''):
+        def setTLE(line0="", line1="", line2=""):
             return
 
         @staticmethod
@@ -652,10 +621,7 @@ class Mount(QObject):
             return
 
         @staticmethod
-        def setTrackingOffsets(Time=None,
-                               RA=None,
-                               DEC=None,
-                               DECcorr=None):
+        def setTrackingOffsets(Time=None, RA=None, DEC=None, DECcorr=None):
             return
 
         @staticmethod
@@ -709,11 +675,11 @@ class Mount(QObject):
             return
 
     class MountFirmware:
-        product = 'test'
-        hardware = 'test'
-        vString = Version('0.0.0')
-        date = 'test'
-        time = 'test'
+        product = "test"
+        hardware = "test"
+        vString = Version("0.0.0")
+        date = "test"
+        time = "test"
 
         @staticmethod
         def checkNewer(a):
@@ -858,8 +824,7 @@ class Mount(QObject):
             return True
 
         @staticmethod
-        def setRefractionParam(temperature=20,
-                               pressure=900):
+        def setRefractionParam(temperature=20, pressure=900):
             return True
 
     class MountSignals(QObject):
@@ -892,16 +857,17 @@ class Mount(QObject):
         haJNow = Angle(hours=0)
         AzTarget = Angle(degrees=0)
         AltTarget = Angle(degrees=0)
-        pierside = 'E'
+        pierside = "E"
         timeSidereal = Angle(hours=12)
-        location = wgs84.latlon(latitude_degrees=20, longitude_degrees=10,
-                                elevation_m=500)
+        location = wgs84.latlon(
+            latitude_degrees=20, longitude_degrees=10, elevation_m=500
+        )
         ts = load.timescale(builtin=True)
         timeJD = ts.tt_jd(2459580.5)
         timeDiff = 0
-        loader = Loader('tests/workDir/data', verbose=False)
+        loader = Loader("tests/workDir/data", verbose=False)
         status = 0
-        statusSat = 'E'
+        statusSat = "E"
         UTC2TT = 69.184
 
         @staticmethod
@@ -985,13 +951,11 @@ class Mount(QObject):
             return True
 
         @staticmethod
-        def setTargetAltAz(alt_degrees=0,
-                           az_degrees=0):
+        def setTargetAltAz(alt_degrees=0, az_degrees=0):
             return True
 
         @staticmethod
-        def setTargetRaDec(ra_hours=0,
-                           dec_degrees=0):
+        def setTargetRaDec(ra_hours=0, dec_degrees=0):
             return True
 
         @staticmethod
@@ -1058,8 +1022,7 @@ class Mount(QObject):
 
     @staticmethod
     def calcTransformationMatricesActual():
-        return (1, 1, np.array([0, 0, 0]),
-                np.array([0, 0, 0]), np.array([0, 0, 0]))
+        return (1, 1, np.array([0, 0, 0]), np.array([0, 0, 0]), np.array([0, 0, 0]))
 
     @staticmethod
     def syncPositionToTarget():
@@ -1096,15 +1059,18 @@ class MainW:
 
         tabsMovable = CheckBox()
         offLAT = LineEdit()
+
     ui = Test()
 
 
 class App(QObject):
-    config = {'mainW': {}}
-    deviceStat = {'dome': False,
-                  'mount': False,
-                  'camera': False,
-                  'plateSolve': False,}
+    config = {"mainW": {}}
+    deviceStat = {
+        "dome": False,
+        "mount": False,
+        "camera": False,
+        "plateSolve": False,
+    }
     statusOperationRunning = 0
     tabsMovable = Signal(object)
     update10s = Signal()
@@ -1170,20 +1136,21 @@ class App(QObject):
     telescope = Telescope()
     hipparcos = Hipparcos()
 
-    ephemeris = load_file('tests/testData/de440_mw4.bsp')
-    mwGlob = {'modelDir': Path('tests/workDir/model'),
-              'imageDir': Path('tests/workDir/image'),
-              'dataDir': Path('tests/workDir/data'),
-              'workDir': Path('tests/workDir'),
-              'measureDir': Path('tests/workDir/measure'),
-              'tempDir': Path('tests/workDir/temp'),
-              'configDir': Path('tests/workDir/config'),
-              'logDir': Path('tests/workDir/log'),
-              }
+    ephemeris = load_file("tests/testData/de440_mw4.bsp")
+    mwGlob = {
+        "modelDir": Path("tests/workDir/model"),
+        "imageDir": Path("tests/workDir/image"),
+        "dataDir": Path("tests/workDir/data"),
+        "workDir": Path("tests/workDir"),
+        "measureDir": Path("tests/workDir/measure"),
+        "tempDir": Path("tests/workDir/temp"),
+        "configDir": Path("tests/workDir/config"),
+        "logDir": Path("tests/workDir/log"),
+    }
     uiWindows = {}
     mainW = MainW()
     threadPool = QThreadPool()
-    __version__ = 'test'
+    __version__ = "test"
 
     @staticmethod
     def loadConfig():

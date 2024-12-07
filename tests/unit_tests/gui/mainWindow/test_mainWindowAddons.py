@@ -26,10 +26,11 @@ from gui.mainWindow.mainWindowAddons import MainWindowAddons
 from gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from resource import resources
+
 resources.qInitResources()
 
 
-@pytest.fixture(autouse=False, scope='module')
+@pytest.fixture(autouse=False, scope="module")
 def window(qapp):
     mainW = QWidget()
     mainW.app = App()
@@ -41,24 +42,20 @@ def window(qapp):
 
 
 def test_initConfig_1(window):
-    with mock.patch.object(window.addons['ManageModel'],
-                           'initConfig'):
+    with mock.patch.object(window.addons["ManageModel"], "initConfig"):
         window.initConfig()
 
 
 def test_storeConfig_1(window):
-    with mock.patch.object(window.addons['ManageModel'],
-                           'storeConfig'):
+    with mock.patch.object(window.addons["ManageModel"], "storeConfig"):
         window.storeConfig()
 
 
 def test_setupIcons_1(window):
-    with mock.patch.object(window.addons['ManageModel'],
-                           'setupIcons'):
+    with mock.patch.object(window.addons["ManageModel"], "setupIcons"):
         window.setupIcons()
 
 
 def test_updateColorSet_1(window):
-    with mock.patch.object(window.addons['ManageModel'],
-                           'updateColorSet'):
+    with mock.patch.object(window.addons["ManageModel"], "updateColorSet"):
         window.updateColorSet()

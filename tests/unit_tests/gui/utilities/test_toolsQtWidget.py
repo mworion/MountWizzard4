@@ -18,7 +18,6 @@
 import unittest.mock as mock
 import pytest
 import os
-import platform
 
 # external packages
 from PySide6.QtWidgets import QMessageBox, QFileDialog, QWidget, QTabWidget
@@ -36,9 +35,8 @@ from gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-
     window = MWidget()
     window.app = App()
     window.ui = Ui_MainWindow()
@@ -48,55 +46,48 @@ def function(qapp):
 
 def test_findIndexValue_0(function):
     ui = QComboBox()
-    ui.addItem('')
-    val = function.findIndexValue(ui=ui,
-                                  searchString='dome')
+    ui.addItem("")
+    val = function.findIndexValue(ui=ui, searchString="dome")
     assert val == 0
 
 
 def test_findIndexValue_1(function):
     ui = QComboBox()
-    ui.addItem('dome')
-    ui.addItem('test')
-    val = function.findIndexValue(ui=ui,
-                                  searchString='dome')
+    ui.addItem("dome")
+    ui.addItem("test")
+    val = function.findIndexValue(ui=ui, searchString="dome")
     assert val == 0
 
 
 def test_findIndexValue_2(function):
     ui = QComboBox()
-    ui.addItem('dome')
-    ui.addItem('indi')
-    val = function.findIndexValue(ui=ui,
-                                  searchString='indi')
+    ui.addItem("dome")
+    ui.addItem("indi")
+    val = function.findIndexValue(ui=ui, searchString="indi")
     assert val == 1
 
 
 def test_findIndexValue_3(function):
     ui = QComboBox()
-    ui.addItem('dome')
-    ui.addItem('test')
-    ui.addItem('indi - test')
-    val = function.findIndexValue(ui=ui,
-                                  searchString='indi')
+    ui.addItem("dome")
+    ui.addItem("test")
+    ui.addItem("indi - test")
+    val = function.findIndexValue(ui=ui, searchString="indi")
     assert val == 2
 
 
 def test_findIndexValue_4(function):
     ui = QComboBox()
-    ui.addItem('dome')
-    ui.addItem('test')
-    ui.addItem('indi - test')
-    val = function.findIndexValue(ui=ui,
-                                  searchString='indi',
-                                  relaxed=True)
+    ui.addItem("dome")
+    ui.addItem("test")
+    ui.addItem("indi - test")
+    val = function.findIndexValue(ui=ui, searchString="indi", relaxed=True)
     assert val == 2
 
 
 def test_findIndexValue_5(function):
     ui = QComboBox()
-    val = function.findIndexValue(ui=ui,
-                                  searchString='indi')
+    val = function.findIndexValue(ui=ui, searchString="indi")
     assert val == 0
 
 
@@ -106,19 +97,15 @@ def test_saveWindowAsPNG(function):
         def save(a):
             return
 
-    with mock.patch.object(QWidget,
-                           'grab',
-                           return_value=Save()):
+    with mock.patch.object(QWidget, "grab", return_value=Save()):
         suc = function.saveWindowAsPNG(QWidget())
         assert suc
 
 
 def test_saveAllWindowsAsPNG_1(function):
-    function.app.uiWindows = {'test1': {'classObj': None},
-                              'test2': {'classObj': 1}}
+    function.app.uiWindows = {"test1": {"classObj": None}, "test2": {"classObj": 1}}
     function.app.mainW = QWidget()
-    with mock.patch.object(function,
-                           'saveWindowAsPNG'):
+    with mock.patch.object(function, "saveWindowAsPNG"):
         suc = function.saveAllWindowsAsPNG()
         assert suc
 
@@ -129,8 +116,7 @@ def test_keyPressEvent_1(function):
         def key():
             return 16777268
 
-    with mock.patch.object(function,
-                           'saveWindowAsPNG'):
+    with mock.patch.object(function, "saveWindowAsPNG"):
         function.keyPressEvent(Key())
 
 
@@ -140,8 +126,7 @@ def test_keyPressEvent_2(function):
         def key():
             return 16777269
 
-    with mock.patch.object(function,
-                           'saveAllWindowsAsPNG'):
+    with mock.patch.object(function, "saveAllWindowsAsPNG"):
         function.keyPressEvent(Key())
 
 
@@ -151,28 +136,29 @@ def test_keyPressEvent_3(function):
         def key():
             return 1
 
-    with mock.patch.object(QWidget,
-                           'keyPressEvent'):
+    with mock.patch.object(QWidget, "keyPressEvent"):
         function.keyPressEvent(Key())
 
 
 def test_img2pixmap_1(function):
-    img = function.img2pixmap(os.getcwd() + '/tests/testData/altitude.png')
+    img = function.img2pixmap(os.getcwd() + "/tests/testData/altitude.png")
     assert isinstance(img, QPixmap)
 
 
 def test_img2pixmap_2(function):
-    img = function.img2pixmap(os.getcwd() + '/tests/testData/altitude.png', '#202020', '#303030')
+    img = function.img2pixmap(
+        os.getcwd() + "/tests/testData/altitude.png", "#202020", "#303030"
+    )
     assert isinstance(img, QPixmap)
 
 
 def test_svg2pixmap(function):
-    img = function.svg2pixmap(os.getcwd() + '/tests/testData/choose.svg')
+    img = function.svg2pixmap(os.getcwd() + "/tests/testData/choose.svg")
     assert isinstance(img, QPixmap)
 
 
 def test_svg2icon_1(function):
-    val = function.svg2icon(os.getcwd() + '/tests/testData/choose.svg')
+    val = function.svg2icon(os.getcwd() + "/tests/testData/choose.svg")
     assert isinstance(val, QIcon)
 
 
@@ -189,22 +175,22 @@ def test_wIcon_2(function):
 
 def test_wIcon_3(function):
     ui = QPushButton()
-    suc = function.wIcon(gui=ui, name='load')
+    suc = function.wIcon(gui=ui, name="load")
     assert suc
 
 
 def test_renderStyle_1(function):
-    inp = '12345$M_PRIM$12345'
+    inp = "12345$M_PRIM$12345"
     function.colorSet = 0
-    val = function.renderStyle(inp).strip(' ')
-    assert val == '12345#2090C012345\n'
+    val = function.renderStyle(inp).strip(" ")
+    assert val == "12345#2090C012345\n"
 
 
 def test_renderStyle_2(function):
-    inp = '12345$M_TEST$12345'
+    inp = "12345$M_TEST$12345"
     function.colorSet = 0
-    val = function.renderStyle(inp).strip(' ')
-    assert val == '12345$M_TEST$12345\n'
+    val = function.renderStyle(inp).strip(" ")
+    assert val == "12345$M_TEST$12345\n"
 
 
 def test_initUI_1(function):
@@ -225,94 +211,92 @@ def test_changeStyleDynamic_2(function):
 
 def test_changeStyleDynamic_3(function):
     ui = QPushButton()
-    suc = function.changeStyleDynamic(ui, 'color')
+    suc = function.changeStyleDynamic(ui, "color")
     assert not suc
 
 
 def test_changeStyleDynamic_4(function):
     ui = QPushButton()
-    suc = function.changeStyleDynamic(ui, 'color', '')
+    suc = function.changeStyleDynamic(ui, "color", "")
     assert suc
 
 
 def test_changeStyleDynamic_5(function):
     ui = QPushButton()
-    ui.setProperty('color', 'red')
-    suc = function.changeStyleDynamic(ui, 'color', 'red')
+    ui.setProperty("color", "red")
+    suc = function.changeStyleDynamic(ui, "color", "red")
     assert suc
 
 
 def test_changeStyleDynamic_6(function):
     ui = QPushButton()
-    suc = function.changeStyleDynamic(ui, 'running', True)
+    suc = function.changeStyleDynamic(ui, "running", True)
     assert suc
-    suc = function.changeStyleDynamic(ui, 'running', False)
+    suc = function.changeStyleDynamic(ui, "running", False)
     assert suc
 
 
 def test_changeStyleDynamic_7(function):
     ui = QPushButton()
-    suc = function.changeStyleDynamic(ui, 'running', True)
-    suc = function.changeStyleDynamic(ui, 'running', False)
+    suc = function.changeStyleDynamic(ui, "running", True)
+    suc = function.changeStyleDynamic(ui, "running", False)
     assert suc
 
 
 def test_extractNames_0(function):
-    name = ''
+    name = ""
     name, short, ext = function.extractNames(name)
-    assert name == ''
-    assert short == ''
-    assert ext == ''
+    assert name == ""
+    assert short == ""
+    assert ext == ""
 
 
 def test_extractNames_1(function):
     name = 1
     name, short, ext = function.extractNames(name)
-    assert name == ''
-    assert short == ''
-    assert ext == ''
+    assert name == ""
+    assert short == ""
+    assert ext == ""
 
 
 def test_extractNames_2(function):
-    name = ['test']
+    name = ["test"]
     name, short, ext = function.extractNames(name)
-    assert name == os.path.abspath(os.getcwd() + '/test')
-    assert short == 'test'
-    assert ext == ''
+    assert name == os.path.abspath(os.getcwd() + "/test")
+    assert short == "test"
+    assert ext == ""
 
 
 def test_extractNames_3(function):
-    name = ['c:/test']
+    name = ["c:/test"]
     name, short, ext = function.extractNames(name)
-    assert name == os.path.abspath('c:/test')
-    assert short == 'test'
-    assert ext == ''
+    assert name == os.path.abspath("c:/test")
+    assert short == "test"
+    assert ext == ""
 
 
 def test_extractNames_4(function):
-    name = ['c:/test.cfg']
+    name = ["c:/test.cfg"]
     name, short, ext = function.extractNames(name)
-    assert name == os.path.abspath('c:/test.cfg')
-    assert short == 'test'
-    assert ext == '.cfg'
+    assert name == os.path.abspath("c:/test.cfg")
+    assert short == "test"
+    assert ext == ".cfg"
 
 
 def test_extractNames_5(function):
-    name = ['c:/test.cfg', 'c:/test.cfg']
+    name = ["c:/test.cfg", "c:/test.cfg"]
     name, short, ext = function.extractNames(name)
-    assert name == [os.path.abspath('c:/test.cfg'),
-                    os.path.abspath('c:/test.cfg')]
-    assert short == ['test', 'test']
-    assert ext == ['.cfg', '.cfg']
+    assert name == [os.path.abspath("c:/test.cfg"), os.path.abspath("c:/test.cfg")]
+    assert short == ["test", "test"]
+    assert ext == [".cfg", ".cfg"]
 
 
 def test_extractNames_6(function):
-    name = ['', 'c:/test.cfg']
+    name = ["", "c:/test.cfg"]
     name, short, ext = function.extractNames(name)
-    assert name == [os.path.abspath(''),
-                    os.path.abspath('c:/test.cfg')]
-    assert short == ['', 'test']
-    assert ext == ['', '.cfg']
+    assert name == [os.path.abspath(""), os.path.abspath("c:/test.cfg")]
+    assert short == ["", "test"]
+    assert ext == ["", ".cfg"]
 
 
 def test_prepareFileDialog_1(function):
@@ -328,231 +312,198 @@ def test_prepareFileDialog_2(function):
 
 def test_runDialog_1(function):
     dialog = QFileDialog()
-    with mock.patch.object(QFileDialog,
-                           'exec',
-                           return_value=0):
+    with mock.patch.object(QFileDialog, "exec", return_value=0):
         val = function.runDialog(dialog)
         assert val == 0
 
 
 def test_messageDialog_1(function):
     widget = QWidget()
-    with mock.patch.object(QMessageBox,
-                           'question',
-                           return_value=QMessageBox.StandardButton.No):
-        with mock.patch.object(QMessageBox,
-                               'show'):
-            with mock.patch.object(function,
-                                   'runDialog',
-                                   return_value=QMessageBox.StandardButton.No):
-                suc = function.messageDialog(widget, 'test', 'test')
+    with mock.patch.object(
+        QMessageBox, "question", return_value=QMessageBox.StandardButton.No
+    ):
+        with mock.patch.object(QMessageBox, "show"):
+            with mock.patch.object(
+                function, "runDialog", return_value=QMessageBox.StandardButton.No
+            ):
+                suc = function.messageDialog(widget, "test", "test")
                 assert not suc
 
 
 def test_messageDialog_2(function):
     widget = QWidget()
-    with mock.patch.object(QMessageBox,
-                           'question',
-                           return_value=QMessageBox.StandardButton.Yes):
-        with mock.patch.object(QMessageBox,
-                               'show'):
-            with mock.patch.object(function,
-                                   'runDialog',
-                                   return_value=QMessageBox.StandardButton.Yes):
-                suc = function.messageDialog(widget, 'test', 'test')
+    with mock.patch.object(
+        QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes
+    ):
+        with mock.patch.object(QMessageBox, "show"):
+            with mock.patch.object(
+                function, "runDialog", return_value=QMessageBox.StandardButton.Yes
+            ):
+                suc = function.messageDialog(widget, "test", "test")
                 assert suc
 
 
 def test_messageDialog_3(function):
     widget = QWidget()
-    with mock.patch.object(QMessageBox,
-                           'question',
-                           return_value=QMessageBox.StandardButton.Yes):
-        with mock.patch.object(QMessageBox,
-                               'show'):
-            with mock.patch.object(function,
-                                   'runDialog',
-                                   return_value=QMessageBox.StandardButton.Yes):
-                suc = function.messageDialog(widget, 'test', 'test', ['A', 'B'])
+    with mock.patch.object(
+        QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes
+    ):
+        with mock.patch.object(QMessageBox, "show"):
+            with mock.patch.object(
+                function, "runDialog", return_value=QMessageBox.StandardButton.Yes
+            ):
+                suc = function.messageDialog(widget, "test", "test", ["A", "B"])
                 assert suc
 
 
 def test_openFile_1(function):
     full, short, ext = function.openFile()
-    assert full == ''
-    assert short == ''
-    assert ext == ''
+    assert full == ""
+    assert short == ""
+    assert ext == ""
 
 
 def test_openFile_2(function):
     window = QWidget()
     full, short, ext = function.openFile(window=window)
-    assert full == ''
-    assert short == ''
-    assert ext == ''
+    assert full == ""
+    assert short == ""
+    assert ext == ""
 
 
 def test_openFile_3(function):
     window = QWidget()
-    full, short, ext = function.openFile(window=window,
-                                         title='title')
-    assert full == ''
-    assert short == ''
-    assert ext == ''
+    full, short, ext = function.openFile(window=window, title="title")
+    assert full == ""
+    assert short == ""
+    assert ext == ""
 
 
 def test_openFile_4(function):
     window = QWidget()
-    full, short, ext = function.openFile(window=window,
-                                         title='title',
-                                         folder='.')
-    assert full == ''
-    assert short == ''
-    assert ext == ''
+    full, short, ext = function.openFile(window=window, title="title", folder=".")
+    assert full == ""
+    assert short == ""
+    assert ext == ""
 
 
 def test_openFile_5(function):
     window = QWidget()
-    with mock.patch.object(function,
-                           'runDialog',
-                           return_value=0):
-        full, short, ext = function.openFile(window=window,
-                                             title='title',
-                                             folder='.',
-                                             filterSet='*.*')
-        assert full == ''
-        assert short == ''
-        assert ext == ''
+    with mock.patch.object(function, "runDialog", return_value=0):
+        full, short, ext = function.openFile(
+            window=window, title="title", folder=".", filterSet="*.*"
+        )
+        assert full == ""
+        assert short == ""
+        assert ext == ""
 
 
 def test_openFile_6(function):
     window = QWidget()
-    with mock.patch.object(function,
-                           'runDialog',
-                           return_value=1):
-        with mock.patch.object(QFileDialog,
-                               'selectedFiles',
-                               return_value=('test1', 'test2')):
-            full, short, ext = function.openFile(window=window,
-                                                 title='title',
-                                                 folder='.',
-                                                 filterSet='*.*',
-                                                 multiple=True)
-            assert full == ''
-            assert short == ''
-            assert ext == ''
+    with mock.patch.object(function, "runDialog", return_value=1):
+        with mock.patch.object(
+            QFileDialog, "selectedFiles", return_value=("test1", "test2")
+        ):
+            full, short, ext = function.openFile(
+                window=window, title="title", folder=".", filterSet="*.*", multiple=True
+            )
+            assert full == ""
+            assert short == ""
+            assert ext == ""
 
 
 def test_saveFile_1(function):
     full, short, ext = function.saveFile()
-    assert full == ''
-    assert short == ''
-    assert ext == ''
+    assert full == ""
+    assert short == ""
+    assert ext == ""
 
 
 def test_saveFile_2(function):
     window = QWidget()
     full, short, ext = function.saveFile(window=window)
-    assert full == ''
-    assert short == ''
-    assert ext == ''
+    assert full == ""
+    assert short == ""
+    assert ext == ""
 
 
 def test_saveFile_3(function):
     window = QWidget()
-    full, short, ext = function.saveFile(window=window,
-                                         title='title')
-    assert full == ''
-    assert short == ''
-    assert ext == ''
+    full, short, ext = function.saveFile(window=window, title="title")
+    assert full == ""
+    assert short == ""
+    assert ext == ""
 
 
 def test_saveFile_4(function):
     window = QWidget()
-    full, short, ext = function.saveFile(window=window,
-                                         title='title',
-                                         folder='.')
-    assert full == ''
-    assert short == ''
-    assert ext == ''
+    full, short, ext = function.saveFile(window=window, title="title", folder=".")
+    assert full == ""
+    assert short == ""
+    assert ext == ""
 
 
 def test_saveFile_5(function):
     window = QWidget()
-    with mock.patch.object(function,
-                           'runDialog',
-                           return_value=0):
-        full, short, ext = function.saveFile(window=window,
-                                             title='title',
-                                             folder='.',
-                                             filterSet='*.*')
-        assert full == ''
-        assert short == ''
-        assert ext == ''
+    with mock.patch.object(function, "runDialog", return_value=0):
+        full, short, ext = function.saveFile(
+            window=window, title="title", folder=".", filterSet="*.*"
+        )
+        assert full == ""
+        assert short == ""
+        assert ext == ""
 
 
 def test_saveFile_6(function):
     window = QWidget()
-    with mock.patch.object(function,
-                           'runDialog',
-                           return_value=1):
-        with mock.patch.object(QFileDialog,
-                               'selectedFiles',
-                               return_value=(['tests/test.txt'])):
-            full, short, ext = function.saveFile(window=window,
-                                                 title='title',
-                                                 folder='.',
-                                                 filterSet='*.*')
-        assert short == 'test'
-        assert ext == '.txt'
+    with mock.patch.object(function, "runDialog", return_value=1):
+        with mock.patch.object(
+            QFileDialog, "selectedFiles", return_value=(["tests/test.txt"])
+        ):
+            full, short, ext = function.saveFile(
+                window=window, title="title", folder=".", filterSet="*.*"
+            )
+        assert short == "test"
+        assert ext == ".txt"
 
 
 def test_openDir_1(function):
     full, short, ext = function.openDir()
-    assert full == ''
-    assert short == ''
-    assert ext == ''
+    assert full == ""
+    assert short == ""
+    assert ext == ""
 
 
 def test_openDir_2(function):
     window = QWidget()
     full, short, ext = function.openDir(window=window)
-    assert full == ''
-    assert short == ''
-    assert ext == ''
+    assert full == ""
+    assert short == ""
+    assert ext == ""
 
 
 def test_openDir_3(function):
     window = QWidget()
-    full, short, ext = function.openDir(window=window,
-                                        title='title')
-    assert full == ''
-    assert short == ''
-    assert ext == ''
+    full, short, ext = function.openDir(window=window, title="title")
+    assert full == ""
+    assert short == ""
+    assert ext == ""
 
 
 def test_openDir_4(function):
     window = QWidget()
-    with mock.patch.object(function,
-                           'runDialog',
-                           return_value=1):
-        full, short, ext = function.openDir(window=window,
-                                            title='title',
-                                            folder='.')
+    with mock.patch.object(function, "runDialog", return_value=1):
+        full, short, ext = function.openDir(window=window, title="title", folder=".")
         assert full == os.getcwd()
 
 
 def test_openDir_5(function):
     window = QWidget()
-    with mock.patch.object(function,
-                           'runDialog',
-                           return_value=None):
-        full, short, ext = function.openDir(window=window,
-                                            title='title',
-                                            folder='.')
-        assert full == ''
-        assert short == ''
-        assert ext == ''
+    with mock.patch.object(function, "runDialog", return_value=None):
+        full, short, ext = function.openDir(window=window, title="title", folder=".")
+        assert full == ""
+        assert short == ""
+        assert ext == ""
 
 
 def test_clickable_1(function):
@@ -595,84 +546,84 @@ def test_guiSetText_2(function):
 
 def test_guiSetText_3(function):
     pb = QPushButton()
-    suc = function.guiSetText(pb, '3.5f')
+    suc = function.guiSetText(pb, "3.5f")
     assert suc
-    assert pb.text() == '-'
+    assert pb.text() == "-"
 
 
 def test_guiSetText_3b(function):
     pb = QPushButton()
-    suc = function.guiSetText(pb, '3.5f', [])
+    suc = function.guiSetText(pb, "3.5f", [])
     assert suc
 
 
 def test_guiSetText_3c(function):
     pb = QPushButton()
-    suc = function.guiSetText(pb, '3.5f', np.array([]))
+    suc = function.guiSetText(pb, "3.5f", np.array([]))
     assert suc
 
 
 def test_guiSetText_4(function):
     pb = QPushButton()
-    suc = function.guiSetText(pb, '3.0f', 100)
+    suc = function.guiSetText(pb, "3.0f", 100)
     assert suc
-    assert pb.text() == '100'
+    assert pb.text() == "100"
 
 
 def test_guiSetText_5(function):
     pb = QPushButton()
-    suc = function.guiSetText(pb, 'HSTR', Angle(hours=10))
+    suc = function.guiSetText(pb, "HSTR", Angle(hours=10))
     assert suc
-    assert pb.text() == '10:00:00'
+    assert pb.text() == "10:00:00"
 
 
 def test_guiSetText_6(function):
     pb = QPushButton()
-    suc = function.guiSetText(pb, 'DSTR', Angle(degrees=90))
+    suc = function.guiSetText(pb, "DSTR", Angle(degrees=90))
     assert suc
-    assert pb.text() == '+90:00:00'
+    assert pb.text() == "+90:00:00"
 
 
 def test_guiSetText_7(function):
     pb = QPushButton()
-    suc = function.guiSetText(pb, 'H2.2f', Angle(hours=12))
+    suc = function.guiSetText(pb, "H2.2f", Angle(hours=12))
     assert suc
-    assert pb.text() == '12.00'
+    assert pb.text() == "12.00"
 
 
 def test_guiSetText_8(function):
     pb = QPushButton()
-    suc = function.guiSetText(pb, 'D+2.2f', Angle(degrees=90))
+    suc = function.guiSetText(pb, "D+2.2f", Angle(degrees=90))
     assert suc
-    assert pb.text() == '+90.00'
+    assert pb.text() == "+90.00"
 
 
 def test_guiSetText_9(function):
     pb = QPushButton()
-    suc = function.guiSetText(pb, 's', 'E')
+    suc = function.guiSetText(pb, "s", "E")
     assert suc
-    assert pb.text() == 'EAST'
+    assert pb.text() == "EAST"
 
 
 def test_guiSetText_10(function):
     pb = QPushButton()
-    suc = function.guiSetText(pb, 's', 'W')
+    suc = function.guiSetText(pb, "s", "W")
     assert suc
-    assert pb.text() == 'WEST'
+    assert pb.text() == "WEST"
 
 
 def test_guiSetText_11(function):
     pb = QPushButton()
-    suc = function.guiSetText(pb, 's', True)
+    suc = function.guiSetText(pb, "s", True)
     assert suc
-    assert pb.text() == 'ON'
+    assert pb.text() == "ON"
 
 
 def test_guiSetText_12(function):
     pb = QPushButton()
-    suc = function.guiSetText(pb, 's', False)
+    suc = function.guiSetText(pb, "s", False)
     assert suc
-    assert pb.text() == 'OFF'
+    assert pb.text() == "OFF"
 
 
 def test_guiSetStyle_1(function):
@@ -683,19 +634,19 @@ def test_guiSetStyle_1(function):
 
 def test_guiSetStyle_2(function):
     pb = QPushButton()
-    suc = function.guiSetStyle(pb, pStyle='color', value=None)
+    suc = function.guiSetStyle(pb, pStyle="color", value=None)
     assert suc
 
 
 def test_guiSetStyle_3(function):
     pb = QPushButton()
-    suc = function.guiSetStyle(pb, pStyle='color', value=True)
+    suc = function.guiSetStyle(pb, pStyle="color", value=True)
     assert suc
 
 
 def test_guiSetStyle_4(function):
     pb = QPushButton()
-    suc = function.guiSetStyle(pb, pStyle='color', value=False)
+    suc = function.guiSetStyle(pb, pStyle="color", value=False)
     assert suc
 
 
@@ -708,7 +659,7 @@ def test_convertTime_1(function):
     ts = load.timescale()
     t = ts.tt(2000, 1, 1, 12, 0)
     function.ui.unitTimeUTC.setChecked(True)
-    val = function.convertTime(t, '%H:%M')
+    val = function.convertTime(t, "%H:%M")
     assert val
 
 
@@ -716,20 +667,20 @@ def test_convertTime_2(function):
     ts = load.timescale()
     t = ts.tt(2000, 1, 1, 12, 0)
     function.ui.unitTimeLocal.setChecked(True)
-    val = function.convertTime(t, '%H:%M')
+    val = function.convertTime(t, "%H:%M")
     assert val
 
 
 def test_timeZoneString_1(function):
     function.ui.unitTimeUTC.setChecked(True)
     val = function.timeZoneString()
-    assert val == '(time is UTC)'
+    assert val == "(time is UTC)"
 
 
 def test_timeZoneString_2(function):
     function.ui.unitTimeLocal.setChecked(True)
     val = function.timeZoneString()
-    assert val == '(time is local)'
+    assert val == "(time is local)"
 
 
 def test_makePointer(function):
@@ -743,10 +694,7 @@ def test_makeSat(function):
 
 
 def test_positionWindow_1(function):
-    config = {'winPosX': 100,
-              'winPosY': 100,
-              'height': 400,
-              'width': 600}
+    config = {"winPosX": 100, "winPosY": 100, "height": 400, "width": 600}
     function.screenSizeX = 1000
     function.screenSizeY = 1000
     suc = function.positionWindow(config)
@@ -754,10 +702,7 @@ def test_positionWindow_1(function):
 
 
 def test_positionWindow_2(function):
-    config = {'winPosX': 900,
-              'winPosY': 900,
-              'height': 400,
-              'width': 600}
+    config = {"winPosX": 900, "winPosY": 900, "height": 400, "width": 600}
     function.screenSizeX = 1000
     function.screenSizeY = 1000
     suc = function.positionWindow(config)
@@ -767,52 +712,52 @@ def test_positionWindow_2(function):
 def test_getTabAndIndex(function):
     widget = QTabWidget()
     w = QWidget()
-    w.setObjectName('test')
-    widget.addTab(w, 'test')
+    w.setObjectName("test")
+    widget.addTab(w, "test")
     w = QWidget()
-    w.setObjectName('test1')
-    widget.addTab(w, 'test1')
+    w.setObjectName("test1")
+    widget.addTab(w, "test1")
 
-    config = {'test': 1}
-    function.getTabAndIndex(widget, config, 'test1')
+    config = {"test": 1}
+    function.getTabAndIndex(widget, config, "test1")
     print(config)
 
 
 def test_getTabIndex(function):
     widget = QTabWidget()
     w = QWidget()
-    w.setObjectName('test')
-    widget.addTab(w, 'test')
+    w.setObjectName("test")
+    widget.addTab(w, "test")
     w = QWidget()
-    w.setObjectName('test1')
-    widget.addTab(w, 'test1')
-    index = function.getTabIndex(widget, 'test1')
+    w.setObjectName("test1")
+    widget.addTab(w, "test1")
+    index = function.getTabIndex(widget, "test1")
     assert index == 1
 
 
 def test_setTabAndIndex_1(function):
     widget = QTabWidget()
-    config = {'test': 0}
-    function.setTabAndIndex(widget, config, 'test')
+    config = {"test": 0}
+    function.setTabAndIndex(widget, config, "test")
 
 
 def test_setTabAndIndex_2(function):
     widget = QTabWidget()
-    widget.addTab(QWidget(), 'test')
-    widget.addTab(QWidget(), 'tes1')
-    config = {'test': {'00': 'test'}}
-    function.setTabAndIndex(widget, config, 'test')
+    widget.addTab(QWidget(), "test")
+    widget.addTab(QWidget(), "tes1")
+    config = {"test": {"00": "test"}}
+    function.setTabAndIndex(widget, config, "test")
 
 
 def test_positionCursorInTable_1(function):
     widget = QTableWidget()
     widget.setColumnCount(2)
     widget.setRowCount(2)
-    widget.setItem(0, 0, QTableWidgetItem('test'))
-    widget.setItem(1, 0, QTableWidgetItem('test1'))
-    widget.setItem(0, 1, QTableWidgetItem('test2'))
-    widget.setItem(1, 1, QTableWidgetItem('test3'))
-    function.positionCursorInTable(widget, 'test')
+    widget.setItem(0, 0, QTableWidgetItem("test"))
+    widget.setItem(1, 0, QTableWidgetItem("test1"))
+    widget.setItem(0, 1, QTableWidgetItem("test2"))
+    widget.setItem(1, 1, QTableWidgetItem("test3"))
+    function.positionCursorInTable(widget, "test")
     assert widget.currentRow() == 0
     assert widget.currentColumn() == 0
 
@@ -821,10 +766,10 @@ def test_positionCursorInTable_2(function):
     widget = QTableWidget()
     widget.setColumnCount(2)
     widget.setRowCount(2)
-    widget.setItem(0, 0, QTableWidgetItem('test'))
-    widget.setItem(1, 0, QTableWidgetItem('test1'))
-    widget.setItem(0, 1, QTableWidgetItem('test2'))
-    widget.setItem(1, 1, QTableWidgetItem('test3'))
-    function.positionCursorInTable(widget, 'asdf')
+    widget.setItem(0, 0, QTableWidgetItem("test"))
+    widget.setItem(1, 0, QTableWidgetItem("test1"))
+    widget.setItem(0, 1, QTableWidgetItem("test2"))
+    widget.setItem(1, 1, QTableWidgetItem("test3"))
+    function.positionCursorInTable(widget, "asdf")
     assert widget.currentRow() == -1
     assert widget.currentColumn() == -1

@@ -26,6 +26,7 @@ from gui.utilities.qMultiWait import QMultiWait
 def test_QMultiWait_1():
     class Test(QObject):
         a = Signal()
+
     w = QMultiWait()
     A = Test()
     w.addWaitableSignal(A.a)
@@ -34,6 +35,7 @@ def test_QMultiWait_1():
 def test_QMultiWait_2():
     class Test(QObject):
         a = Signal()
+
     w = QMultiWait()
     A = Test()
     w.addWaitableSignal(A.a)
@@ -48,6 +50,7 @@ def test_QMultiWait_3():
 def test_QMultiWait_4():
     class Test(QObject):
         a = Signal()
+
     w = QMultiWait()
     A = Test()
     w.addWaitableSignal(A.a)

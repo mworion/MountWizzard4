@@ -27,7 +27,7 @@ from PySide6.QtWidgets import QApplication
 from gui.utilities.gPlotBase import PlotBase
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def module(qapp):
     yield
 
@@ -77,17 +77,16 @@ def test_toPolar():
 def test_findItemByName():
     p = PlotBase()
     item = pg.TextItem()
-    item.nameStr = 'test'
+    item.nameStr = "test"
     p.p[0].addItem(item)
-    assert item == p.findItemByName(p.p[0], 'test')
+    assert item == p.findItemByName(p.p[0], "test")
 
 
 def test_PlotBase_drawHorizon_0():
     p = PlotBase()
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
-    with mock.patch.object(p,
-                           'show'):
+    with mock.patch.object(p, "show"):
         suc = p.drawHorizon([], plotItem=p.p[0])
         assert not suc
 
@@ -96,8 +95,7 @@ def test_PlotBase_drawHorizon_1():
     p = PlotBase()
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
-    with mock.patch.object(p,
-                           'show'):
+    with mock.patch.object(p, "show"):
         suc = p.drawHorizon([])
         assert not suc
 
@@ -106,8 +104,7 @@ def test_PlotBase_drawHorizon_2():
     p = PlotBase()
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
-    with mock.patch.object(p,
-                           'show'):
+    with mock.patch.object(p, "show"):
         suc = p.drawHorizon([(0, 0)])
         assert not suc
 
@@ -117,8 +114,7 @@ def test_PlotBase_drawHorizon_3():
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
     p.p[0].addItem(pg.PlotDataItem())
-    with mock.patch.object(p,
-                           'show'):
+    with mock.patch.object(p, "show"):
         suc = p.drawHorizon([(0, 0), (1, 1)])
         assert suc
 
@@ -128,8 +124,7 @@ def test_PlotBase_drawHorizon_4():
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
     p.p[0].addItem(pg.PlotDataItem())
-    with mock.patch.object(p,
-                           'show'):
+    with mock.patch.object(p, "show"):
         suc = p.drawHorizon([(0, 0), (1, 1)], polar=True)
         assert suc
 
@@ -139,8 +134,7 @@ def test_addIsoBasic_1():
     az = np.random.uniform(low=10, high=350, size=(50,))
     alt = np.random.uniform(low=15, high=85, size=(50,))
     err = np.random.uniform(low=5, high=15, size=(50,))
-    with mock.patch.object(QApplication,
-                           'processEvents'):
+    with mock.patch.object(QApplication, "processEvents"):
         suc = p.addIsoBasic(p.p[0], err, levels=1)
         assert suc
 
@@ -150,8 +144,7 @@ def test_addIsoItem_1():
     az = np.random.uniform(low=10, high=350, size=(50,))
     alt = np.random.uniform(low=15, high=85, size=(50,))
     err = np.random.uniform(low=5, high=15, size=(50,))
-    with mock.patch.object(p,
-                           'addIsoBasic'):
+    with mock.patch.object(p, "addIsoBasic"):
         suc = p.addIsoItem(az, alt, err)
         assert suc
 

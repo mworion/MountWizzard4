@@ -29,42 +29,42 @@ from PySide6.QtTest import QTest
 from mainApp import MountWizzard4
 from base.tpool import Worker
 from loader import extractDataFiles
-from resource import resources
 
 
-mwglob = {'dataDir': 'tests/workDir/data',
-          'configDir': 'tests/workDir/config',
-          'workDir': 'tests/workDir',
-          'imageDir': 'tests/workDir/image',
-          'tempDir': 'tests/workDir/temp',
-          'measureDir': 'tests/workDir/measure',
-          'modelDir': 'tests/workDir/model',
-          'modelData': '4.0'
-          }
+mwglob = {
+    "dataDir": "tests/workDir/data",
+    "configDir": "tests/workDir/config",
+    "workDir": "tests/workDir",
+    "imageDir": "tests/workDir/image",
+    "tempDir": "tests/workDir/temp",
+    "measureDir": "tests/workDir/measure",
+    "modelDir": "tests/workDir/model",
+    "modelData": "4.0",
+}
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def module_setup_teardown():
     global tp
 
     tp = QThreadPool()
     for d in mwglob:
-        files = glob.glob(f'{mwglob[d]}/*.*')
-        if 'modelData' in d:
+        files = glob.glob(f"{mwglob[d]}/*.*")
+        if "modelData" in d:
             continue
         for f in files:
-            if 'empty' in f:
+            if "empty" in f:
                 continue
             print(f)
             os.remove(f)
     extractDataFiles(mwGlob=mwglob)
     yield
     for d in mwglob:
-        files = glob.glob(f'{mwglob[d]}/*.*')
-        if 'modelData' in d:
+        files = glob.glob(f"{mwglob[d]}/*.*")
+        if "modelData" in d:
             continue
         for f in files:
-            if 'empty' in f:
+            if "empty" in f:
                 continue
             os.remove(f)
     tp.waitForDone(1000)
@@ -95,8 +95,8 @@ def test_1(qtbot, qapp):
         app.mainW.ui.settingsTabWidget.setCurrentIndex(index)
         QTest.qWait(100)
     qtbot.mouseClick(app.mainW.ui.mountHost, Qt.LeftButton)
-    app.mainW.ui.mountHost.setText('192.168.2.15')
-    qtbot.keyPress(app.mainW.ui.mountHost, '\r')
+    app.mainW.ui.mountHost.setText("192.168.2.15")
+    qtbot.keyPress(app.mainW.ui.mountHost, "\r")
     for index in range(50):
         index = int(random.random() * app.mainW.ui.mainTabWidget.count())
         app.mainW.ui.mainTabWidget.setCurrentIndex(index)

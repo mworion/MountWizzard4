@@ -20,33 +20,31 @@
 from PySide6.QtWidgets import QWidget
 from PySide6.QtGui import QPainter, QPixmap
 import pytest
-import astropy
 import unittest.mock as mock
 
 # local import
 from gui.utilities.splashScreen import SplashScreen
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def module_setup_teardown():
-
-    with mock.patch.object(QWidget, 'show'):
+    with mock.patch.object(QWidget, "show"):
         yield
 
 
 def test_icon_1(qtbot):
-    value = QPixmap(':/icon/mw4.ico')
+    value = QPixmap(":/icon/mw4.ico")
     assert isinstance(value, QPixmap)
 
 
 def test_icon_2(qtbot):
-    value = QPixmap(':/icon/mw4.ico')
+    value = QPixmap(":/icon/mw4.ico")
     assert isinstance(value, QPixmap)
 
 
 def test_upcoming(qtbot):
     app = SplashScreen(QWidget())
-    app.showMessage('test')
+    app.showMessage("test")
     app.setValue(10)
     app.setValue(50)
     app.setValue(90)
@@ -69,13 +67,13 @@ def test_init():
 
 def test_finish(qtbot):
     app = SplashScreen(QWidget())
-    with mock.patch.object(app, 'update'):
-        with mock.patch.object(app.qss, 'close'):
+    with mock.patch.object(app, "update"):
+        with mock.patch.object(app.qss, "close"):
             app.finish(QWidget())
 
 
 def test_close(qtbot):
     app = SplashScreen(QWidget())
-    with mock.patch.object(app, 'update'):
-        with mock.patch.object(app.qss, 'close'):
+    with mock.patch.object(app, "update"):
+        with mock.patch.object(app.qss, "close"):
             app.close()

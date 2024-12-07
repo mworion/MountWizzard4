@@ -20,6 +20,7 @@ import json
 import pytest
 import glob
 import unittest.mock as mock
+from pathlib import Path
 
 # external packages
 
@@ -164,7 +165,7 @@ def test_checkResetTabOrder_2():
 
 
 def test_loadProfile_1():
-    val = loadProfile(configDir="tests/workDir/config")
+    val = loadProfile(configDir=Path("tests/workDir/config"))
     assert val == {"profileName": "config", "version": "4.2"}
 
 
@@ -177,7 +178,7 @@ def test_loadProfile_2():
     with open("tests/workDir/config/config.cfg", "w") as outfile:
         json.dump(config, outfile)
 
-    val = loadProfile(configDir="tests/workDir/config")
+    val = loadProfile(configDir=Path("tests/workDir/config"))
     assert val == {"profileName": "config", "version": "4.2", "mainW": {}}
 
 
@@ -185,7 +186,7 @@ def test_loadProfile_3():
     with open("tests/workDir/config/profile", "w") as outfile:
         outfile.write("config")
 
-    val = loadProfile(configDir="tests/workDir/config", name="config")
+    val = loadProfile(configDir=Path("tests/workDir/config"), name="config")
     assert val == {"profileName": "config", "version": "4.2"}
 
 
@@ -198,7 +199,7 @@ def test_loadProfile_4():
         json.dump(config, outfile)
 
     with mock.patch.object(json, "load", side_effect=Exception()):
-        val = loadProfile(configDir="tests/workDir/config", name="config")
+        val = loadProfile(configDir=Path("tests/workDir/config"), name="config")
         assert val == {"profileName": "config", "version": "4.2"}
 
 
@@ -216,14 +217,14 @@ def test_loadProfile_5():
     with open("tests/workDir/config/config.cfg", "w") as outfile:
         json.dump(config, outfile)
 
-    val = loadProfile(configDir="tests/workDir/config", name="config")
+    val = loadProfile(configDir=Path("tests/workDir/config"), name="config")
     assert "oderMain" not in list(val["mainW"].keys())
 
 
 def test_saveProfile_1():
     config = {"profileName": "config"}
 
-    suc = saveProfile(configDir="tests/workDir/config", config=config)
+    suc = saveProfile(configDir=Path("tests/workDir/config"), config=config)
     assert suc
     assert os.path.isfile("tests/workDir/config/config.cfg")
     assert os.path.isfile("tests/workDir/config/profile")
@@ -235,7 +236,7 @@ def test_saveProfile_1():
 def test_saveProfile_2():
     config = {"profileName": "config"}
 
-    suc = saveProfile(configDir="tests/workDir/config", config=config, name="config")
+    suc = saveProfile(configDir=Path("tests/workDir/config"), config=config, name="config")
     assert suc
     assert os.path.isfile("tests/workDir/config/config.cfg")
     assert os.path.isfile("tests/workDir/config/profile")
@@ -247,7 +248,7 @@ def test_saveProfile_2():
 def test_saveProfile_3():
     config = {"profileName": "new"}
 
-    suc = saveProfile(configDir="tests/workDir/config", config=config, name="new")
+    suc = saveProfile(configDir=Path("tests/workDir/config"), config=config, name="new")
     assert suc
     assert os.path.isfile("tests/workDir/config/new.cfg")
     assert os.path.isfile("tests/workDir/config/profile")
@@ -259,7 +260,7 @@ def test_saveProfile_3():
 def test_saveProfile_4():
     config = {"profileName": "new"}
 
-    suc = saveProfile(configDir="tests/workDir/config", config=config)
+    suc = saveProfile(configDir=Path("tests/workDir/config"), config=config)
     assert suc
     assert os.path.isfile("tests/workDir/config/new.cfg")
     assert os.path.isfile("tests/workDir/config/profile")
@@ -269,7 +270,7 @@ def test_saveProfile_4():
 
 
 def test_saveProfile_5():
-    suc = saveProfile(configDir="tests/workDir/config")
+    suc = saveProfile(configDir=Path("tests/workDir/config"))
     assert suc
     assert os.path.isfile("tests/workDir/config/config.cfg")
     assert os.path.isfile("tests/workDir/config/profile")

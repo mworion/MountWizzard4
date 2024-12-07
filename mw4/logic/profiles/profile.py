@@ -33,11 +33,7 @@ profileVersion = "4.2"
 
 
 def replaceKeys(oldDict, keyDict):
-    """
-    :param oldDict:
-    :param keyDict:
-    :return:
-    """
+    """ """
     newDict = {}
     for key in oldDict.keys():
         newKey = keyDict.get(key, key)
@@ -49,10 +45,7 @@ def replaceKeys(oldDict, keyDict):
 
 
 def convertKeyData(data):
-    """
-    :param data:
-    :return:
-    """
+    """ """
     keyDict = {
         "checkASCOMAutoConnect": "autoConnectASCOM",
         "checkAutoDeleteHorizon": "autoDeleteHorizon",
@@ -88,13 +81,7 @@ def convertKeyData(data):
 
 
 def convertProfileData40to41(data):
-    """
-    convertDate tries to convert data from an older or newer version of the
-    config file to the actual needed one.
-
-    :param      data: config data as dict
-    :return:    data: config data as dict
-    """
+    """ """
     actVer = Version(data.get("version", "0.0"))
     if actVer >= Version("4.1"):
         return data
@@ -139,10 +126,7 @@ def convertProfileData40to41(data):
 
 
 def convertProfileData41to42(data):
-    """
-    :param      data: config data as dict
-    :return:    data: config data as dict
-    """
+    """ """
     actVer = Version(data.get("version", "0.0"))
     if actVer >= Version("4.2"):
         return data
@@ -169,19 +153,12 @@ def convertProfileData41to42(data):
 
 
 def blendProfile(config, configAdd):
-    """
-    :param config:
-    :param configAdd:
-    :return:
-    """
+    """ """
     return config
 
 
 def defaultConfig(config=None):
-    """
-    :param config:
-    :return:
-    """
+    """ """
     if config is None:
         config = dict()
 
@@ -191,10 +168,7 @@ def defaultConfig(config=None):
 
 
 def checkResetTabOrder(profile):
-    """
-    :param profile:
-    :return:
-    """
+    """ """
     newDict = {}
     for key in profile.keys():
         if key.startswith("order"):
@@ -207,11 +181,7 @@ def checkResetTabOrder(profile):
 
 
 def loadProfile(configDir=None, name=None):
-    """
-    :param      configDir:   name of the config dir
-    :param      name:   name of the config file
-    :return:    success if file could be loaded
-    """
+    """ """
     if name is None:
         profileFile = configDir / "profile"
         if os.path.isfile(profileFile):
@@ -245,12 +215,7 @@ def loadProfile(configDir=None, name=None):
 
 
 def saveProfile(configDir=None, name=None, config=None):
-    """
-    :param      configDir:   name of the config dir
-    :param      name:   name of the config file
-    :param      config:   data
-    :return:    success
-    """
+    """ """
     if config is None:
         config = {}
     if name is None:

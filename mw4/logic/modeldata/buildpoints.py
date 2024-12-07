@@ -409,8 +409,7 @@ class DataPoint(object):
     def sort(
         self, points=None, eastwest=False, highlow=False, sortDomeAz=None, pierside=None
     ):
-        """
-        """
+        """ """
         east = [x for x in points if x[1] <= 180]
         west = [x for x in points if x[1] > 180]
 
@@ -471,8 +470,7 @@ class DataPoint(object):
         return value
 
     def loadCSV(self, fullFileName):
-        """
-        """
+        """ """
         if not fullFileName.is_file:
             return None
 
@@ -512,8 +510,7 @@ class DataPoint(object):
         return True
 
     def loadBuildP(self, fullFileName, ext=".bpts", keep=False):
-        """
-        """
+        """ """
         if not fullFileName.is_file():
             return False
 
@@ -548,8 +545,7 @@ class DataPoint(object):
         return True
 
     def saveBuildP(self, fileName=None):
-        """
-        """
+        """ """
         if fileName is None:
             return False
 
@@ -560,8 +556,7 @@ class DataPoint(object):
         return True
 
     def loadHorizonP(self, fileName, ext=".hpts"):
-        """
-        """
+        """ """
         fullFileName = self.configDir / (fileName + ext)
         value = None
         if ext == ".csv":
@@ -584,8 +579,7 @@ class DataPoint(object):
         return True
 
     def saveHorizonP(self, fileName=None):
-        """
-        """
+        """ """
         if fileName is None:
             return False
 
@@ -650,8 +644,7 @@ class DataPoint(object):
 
     @staticmethod
     def genGridGenerator(eastAlt, westAlt, minAz, stepAz, maxAz):
-        """
-        """
+        """ """
         for i, alt in enumerate(eastAlt):
             if i % 2:
                 for az in range(minAz, 180, stepAz):
@@ -715,8 +708,7 @@ class DataPoint(object):
         return True
 
     def genAlign(self, altBase=30, azBase=10, numberBase=3, keep=False):
-        """
-        """
+        """ """
         if not 5 <= altBase <= 85:
             return False
         if not 2 < numberBase < 13:
@@ -739,8 +731,7 @@ class DataPoint(object):
         return True
 
     def generateCelestialEquator(self):
-        """
-        """
+        """ """
         celestialEquator = list()
         if not self.app.mount.obsSite.location:
             return celestialEquator
@@ -763,8 +754,7 @@ class DataPoint(object):
 
     @staticmethod
     def calcPath(ts, numberPoints, edgeDSO, ha, dec, location):
-        """
-        """
+        """ """
         buildP = []
         for i in range(numberPoints):
             starTime = ts.tt_jd(edgeDSO + i / numberPoints)
@@ -776,8 +766,7 @@ class DataPoint(object):
     def generateDSOPath(
         self, ha=0, dec=0, timeJD=0, location=None, numberPoints=0, keep=False
     ):
-        """
-        """
+        """ """
         if numberPoints < 1:
             return False
         if location is None:
@@ -830,8 +819,7 @@ class DataPoint(object):
                 self.addBuildP((alt, az, 1))
 
     def ditherPoints(self):
-        """
-        """
+        """ """
         for i, point in enumerate(self.buildP):
             alt = point[0]
             az = point[1]

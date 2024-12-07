@@ -80,7 +80,6 @@ class UploadPopup(MWidget):
 
         self.pollStatusRunState = False
         self.timeoutCounter = 0
-        self.setWindowModality(Qt.WindowModality.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)

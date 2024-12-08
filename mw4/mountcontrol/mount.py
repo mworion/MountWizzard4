@@ -234,6 +234,8 @@ class MountDevice:
         """
         :return: success
         """
+        if not self.mountUp:
+            return
         worker = Worker(self.obsSite.pollPointing)
         worker.signals.finished.connect(self.clearCyclePointing)
         self.threadPool.start(worker)
@@ -244,6 +246,8 @@ class MountDevice:
 
     def cycleSetting(self):
         """ """
+        if not self.mountUp:
+            return
         worker = Worker(self.setting.pollSetting)
         worker.signals.finished.connect(self.clearCycleSetting)
         self.threadPool.start(worker)
@@ -254,6 +258,8 @@ class MountDevice:
 
     def getAlign(self):
         """ """
+        if not self.mountUp:
+            return
         worker = Worker(self.model.pollStars)
         worker.signals.finished.connect(self.clearGetAlign)
         self.threadPool.start(worker)
@@ -264,6 +270,8 @@ class MountDevice:
 
     def getNames(self):
         """ """
+        if not self.mountUp:
+            return
         worker = Worker(self.model.pollNames)
         worker.signals.finished.connect(self.clearGetNames)
         self.threadPool.start(worker)
@@ -280,6 +288,8 @@ class MountDevice:
 
     def getFW(self):
         """ """
+        if not self.mountUp:
+            return
         worker = Worker(self.firmware.poll)
         worker.signals.finished.connect(self.clearGetFW)
         self.threadPool.start(worker)
@@ -290,6 +300,8 @@ class MountDevice:
 
     def getLocation(self):
         """ """
+        if not self.mountUp:
+            return
         worker = Worker(self.obsSite.getLocation)
         worker.signals.finished.connect(self.clearGetLocation)
         self.threadPool.start(worker)
@@ -300,6 +312,8 @@ class MountDevice:
 
     def calcTLE(self, start):
         """ """
+        if not self.mountUp:
+            return
         worker = Worker(self.satellite.calcTLE, start)
         worker.signals.finished.connect(self.clearCalcTLE)
         self.threadPool.start(worker)
@@ -320,6 +334,8 @@ class MountDevice:
 
     def getTLE(self):
         """ """
+        if not self.mountUp:
+            return
         worker = Worker(self.satellite.getTLE)
         worker.signals.finished.connect(self.clearGetTLE)
         self.threadPool.start(worker)
@@ -353,12 +369,16 @@ class MountDevice:
 
     def cycleDome(self):
         """ """
+        if not self.mountUp:
+            return
         worker = Worker(self.dome.poll)
         worker.signals.finished.connect(self.clearDome)
         self.threadPool.start(worker)
 
     def cycleClock(self):
         """ """
+        if not self.mountUp:
+            return
         worker = Worker(self.obsSite.pollSyncClock)
         self.threadPool.start(worker)
 
@@ -374,6 +394,8 @@ class MountDevice:
 
     def progTrajectory(self, start, alt, az, replay=False):
         """ """
+        if not self.mountUp:
+            return
         self.satellite.startProgTrajectory(julD=start)
         worker = Worker(self.workerProgTrajectory, alt, az, replay=replay)
         worker.signals.result.connect(self.clearProgTrajectory)

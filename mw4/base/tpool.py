@@ -38,6 +38,7 @@ class WorkerSignals(QObject):
     finished = Signal()
     error = Signal(object)
     result = Signal(object)
+    progress = Signal(int)
 
 
 class Worker(QRunnable):
@@ -63,6 +64,9 @@ class Worker(QRunnable):
         self.args = args
         self.kwargs = kwargs
         self.signals = WorkerSignals()
+
+        # Add the callback to our kwargs
+        # self.kwargs['progressCallback'] = self.signals.progress
 
     def clearPrintErrorStack(self, tb):
         """

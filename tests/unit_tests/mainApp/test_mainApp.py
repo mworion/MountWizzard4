@@ -60,7 +60,7 @@ def app(qapp):
                     app.update1s = Test()
                     yield app
 
-    app.threadPool.waitForDone(1000)
+    app.threadPool.waitForDone(5000)
 
 
 def test_storeStatusOperationRunning(app):

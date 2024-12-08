@@ -346,7 +346,7 @@ def test_abortExpose_4(function):
 
 def test_solveDone_1(function):
     function.app.plateSolve.signals.result.connect(function.solveDone)
-    function.solveDone()
+    function.solveDone([])
 
 
 def test_solveDone_2(function):
@@ -385,16 +385,16 @@ def test_solveDone_3(function):
 
 
 def test_solveImage_1(function):
-    function.solveImage()
+    function.solveImage(Path(""))
 
 
 def test_solveImage_2(function):
-    function.solveImage(imagePath="testFile")
+    function.solveImage(imagePath=Path("testFile"))
 
 
 def test_solveImage_3(function):
     shutil.copy("tests/testData/m51.fit", "tests/workDir/image/m51.fit")
-    file = "tests/workDir/image/m51.fit"
+    file = Path("tests/workDir/image/m51.fit")
     with mock.patch.object(function.app.plateSolve, "solve"):
         function.solveImage(imagePath=file)
 

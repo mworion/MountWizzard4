@@ -198,6 +198,13 @@ def test_clearCyclePointing_5(function):
 
 
 def test_cyclePointing_1(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool, "start"):
+        function.cyclePointing()
+
+
+def test_cyclePointing_2(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.cyclePointing()
 
@@ -207,6 +214,13 @@ def test_clearCycleSetting_1(function):
 
 
 def test_cycleSetting_1(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool, "start"):
+        function.cycleSetting()
+
+
+def test_cycleSetting_2(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.cycleSetting()
 
@@ -216,6 +230,12 @@ def test_clearGetAlign_1(function):
 
 
 def test_GetAlign_1(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool, "start"):
+        function.getAlign()
+
+def test_GetAlign_2(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.getAlign()
 
@@ -225,6 +245,13 @@ def test_clearGetNames_1(function):
 
 
 def test_GetNames_1(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool, "start"):
+        function.getNames()
+
+
+def test_GetNames_2(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.getNames()
 
@@ -234,6 +261,13 @@ def test_clearGetFW_1(function):
 
 
 def test_GetFW_1(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool, "start"):
+        function.getFW()
+
+
+def test_GetFW_2(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.getFW()
 
@@ -243,6 +277,13 @@ def test_clearGetLocation_1(function):
 
 
 def test_GetLocation_1(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool, "start"):
+        function.getLocation()
+
+
+def test_GetLocation_2(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.getLocation()
 
@@ -252,6 +293,13 @@ def test_clearCalcTLE_1(function):
 
 
 def test_CalcTLE_1(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool, "start"):
+        function.calcTLE(1234567)
+
+
+def test_CalcTLE_2(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.calcTLE(1234567)
 
@@ -261,6 +309,13 @@ def test_clearStatTLE_1(function):
 
 
 def test_StatTLE_1(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool, "start"):
+        function.statTLE()
+
+
+def test_StatTLE_2(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.statTLE()
 
@@ -270,6 +325,13 @@ def test_clearGetTLE_1(function):
 
 
 def test_GetTLE_1(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool, "start"):
+        function.getTLE()
+
+
+def test_GetTLE_2(function):
+    function.mountUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.getTLE()
 

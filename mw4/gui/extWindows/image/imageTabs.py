@@ -24,9 +24,8 @@ import pyqtgraph as pg
 
 
 class ImageTabs:
-    def showTabImage(self):
+    def showTabImage(self) -> None:
         """
-        :return:
         """
         self.changeStyleDynamic(self.ui.headerGroup, "running", False)
         tab = self.ui.tabImage
@@ -35,7 +34,7 @@ class ImageTabs:
 
         if self.fileHandler.image is None:
             self.msg.emit(0, "Image", "Rendering error", "Incompatible image format")
-            return False
+            return
 
         self.ui.groupMouseCoord.setVisible(self.fileHandler.hasCelestial)
         self.ui.slewCenter.setEnabled(self.fileHandler.hasCelestial)
@@ -47,11 +46,9 @@ class ImageTabs:
         self.setBarColor()
         self.setCrosshair()
         self.writeHeaderDataToGUI(self.fileHandler.header)
-        return True
 
     def showTabHFR(self):
         """
-        :return:
         """
         self.ui.hfr.setImage(imageDisp=self.photometry.hfrGrid)
         self.ui.hfr.barItem.setLevels((self.photometry.hfrMin, self.photometry.hfrMax))
@@ -64,11 +61,9 @@ class ImageTabs:
             )
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "HFR"), True)
-        return True
 
     def showTabTiltSquare(self):
         """
-        :return:
         """
         segHFR = self.photometry.hfrSegSquare
         w = self.photometry.w
@@ -186,7 +181,6 @@ class ImageTabs:
 
     def showTabTiltTriangle(self):
         """
-        :return:
         """
         segHFR = self.photometry.hfrSegTriangle
         w = self.photometry.w
@@ -289,11 +283,9 @@ class ImageTabs:
         self.ui.triangleNumberStars.setText(f"{len(self.photometry.hfr):1.0f}")
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "TiltTriangle"), True)
-        return True
 
     def showTabRoundness(self):
         """
-        :return:
         """
         self.ui.roundness.setImage(imageDisp=self.photometry.roundnessGrid)
         self.ui.roundness.p[0].showAxes(False, showValues=False)
@@ -310,11 +302,9 @@ class ImageTabs:
             )
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "Roundness"), True)
-        return True
 
     def showTabAberrationInspect(self):
         """
-        :return:
         """
         self.ui.aberration.barItem.setVisible(False)
         self.ui.aberration.p[0].clear()
@@ -338,11 +328,9 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "Aberration"), True)
         self.ui.aberration.p[0].getViewBox().rightMouseRange()
-        return True
 
     def showTabImageSources(self):
         """
-        :return:
         """
         temp = self.imageSourceRange
         self.ui.imageSource.setImage(imageDisp=self.photometry.image)
@@ -368,11 +356,9 @@ class ImageTabs:
                 item.setParentItem(eItem)
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "Sources"), True)
-        return True
 
     def showTabBackground(self):
         """
-        :return:
         """
         self.ui.background.setImage(imageDisp=self.photometry.background)
         self.ui.background.barItem.setLevels(
@@ -380,13 +366,10 @@ class ImageTabs:
         )
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "Back"), True)
-        return True
 
     def showTabBackgroundRMS(self):
         """
-        :return:
         """
         self.ui.backgroundRMS.setImage(imageDisp=self.photometry.backgroundRMS)
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "BackRMS"), True)
-        return True

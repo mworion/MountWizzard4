@@ -331,7 +331,15 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         vb = self.ui.imageSource.p[0].getViewBox()
         self.imageSourceRange = vb.viewRect()
 
-    def writeHeaderDataToGUI(self, header: fits.Header) -> None:
+    @staticmethod
+    def clearImageTab(imageWidget):
+        """ """
+        imageWidget.p[0].clear()
+        imageWidget.p[0].showAxes(False, showValues=False)
+        imageWidget.p[0].setMouseEnabled(x=False, y=False)
+        imageWidget.barItem.setVisible(False)
+
+    def writeHeaderDataToGUI(self, header):
         """ """
         self.guiSetText(self.ui.object, "s", header.get("OBJECT", "").upper())
         ra, dec = getCoordinatesFromHeader(header=header)

@@ -172,6 +172,10 @@ def test_getImageSourceRange(function):
     function.getImageSourceRange()
 
 
+def test_clearImageTab(function):
+    function.clearImageTab(function.ui.image)
+
+
 def test_writeHeaderDataToGUI_1(function):
     function.header = fits.PrimaryHDU().header
     function.writeHeaderDataToGUI(function.header)

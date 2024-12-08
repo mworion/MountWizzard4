@@ -44,15 +44,13 @@ def test_showTabImage_1(function):
     with mock.patch.object(function, "setBarColor"):
         with mock.patch.object(function, "setCrosshair"):
             with mock.patch.object(function, "writeHeaderDataToGUI"):
-                suc = function.showTabImage()
-                assert suc
+                function.showTabImage()
 
 
 def test_showTabImage_2(function):
     function.fileHandler = FileHandler(function)
     function.fileHandler.image = None
-    suc = function.showTabImage()
-    assert not suc
+    function.showTabImage()
 
 
 def test_showTabHFR(function):
@@ -62,8 +60,7 @@ def test_showTabHFR(function):
     function.photometry.hfrPercentile = 0
     function.photometry.hfrMedian = 0
     with mock.patch.object(function.ui.hfr, "addIsoBasic"):
-        suc = function.showTabHFR()
-        assert suc
+        function.showTabHFR()
 
 
 def test_showTabTiltSquare(function):
@@ -76,8 +73,7 @@ def test_showTabTiltSquare(function):
     function.photometry.h = 100
     function.photometry.hfrSegSquare = np.ones((3, 3))
     function.photometry.image = np.random.rand(100, 100) + 1
-    suc = function.showTabTiltSquare()
-    assert suc
+    function.showTabTiltSquare()
 
 
 def test_showTabTiltTriangle(function):
@@ -90,8 +86,7 @@ def test_showTabTiltTriangle(function):
     function.photometry.h = 100
     function.photometry.hfrSegTriangle = np.ones(72)
     function.image = np.random.rand(100, 100) + 1
-    suc = function.showTabTiltTriangle()
-    assert suc
+    function.showTabTiltTriangle()
 
 
 def test_showTabRoundness(function):
@@ -102,16 +97,14 @@ def test_showTabRoundness(function):
     function.photometry.roundnessPercentile = 10
     function.photometry.roundnessGrid = np.random.rand(100, 100) + 1
     with mock.patch.object(function.ui.roundness, "addIsoBasic"):
-        suc = function.showTabRoundness()
-    assert suc
+        function.showTabRoundness()
 
 
 def test_showTabAberrationInspect(function):
     function.photometry = Photometry(function)
     function.photometry.image = np.random.rand(100, 100) + 1
     function.photometry.roundnessPercentile = 1
-    suc = function.showTabAberrationInspect()
-    assert suc
+    function.showTabAberrationInspect()
 
 
 def test_showTabImageSources(function):
@@ -136,19 +129,16 @@ def test_showTabImageSources(function):
     with mock.patch.object(
         function.ui.imageSource, "addEllipse", return_value=pg.PlotItem()
     ):
-        suc = function.showTabImageSources()
-        assert suc
+        function.showTabImageSources()
 
 
 def test_showTabBackground(function):
     function.photometry = Photometry(function)
     function.photometry.background = np.random.rand(100, 100) + 1
-    suc = function.showTabBackground()
-    assert suc
+    function.showTabBackground()
 
 
 def test_showTabBackgroundRMS(function):
     function.photometry = Photometry(function)
     function.photometry.backgroundRMS = np.random.rand(100, 100) + 1
-    suc = function.showTabBackgroundRMS()
-    assert suc
+    function.showTabBackgroundRMS()

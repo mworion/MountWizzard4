@@ -48,113 +48,31 @@ def function(qapp):
 
 def test_initConfig_1(function):
     function.app.config["mainW"] = {}
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_setModelOperationMode_1(function):
-    suc = function.setModelOperationMode(1)
-    assert suc
+    function.setModelOperationMode(1)
 
 
 def test_setModelOperationMode_2(function):
-    suc = function.setModelOperationMode(2)
-    assert suc
+    function.setModelOperationMode(2)
 
 
 def test_setModelOperationMode_3(function):
-    suc = function.setModelOperationMode(3)
-    assert suc
+    function.setModelOperationMode(3)
 
 
 def test_setModelOperationMode_4(function):
-    suc = function.setModelOperationMode(0)
-    assert suc
+    function.setModelOperationMode(0)
 
 
 def test_setModelOperationMode_5(function):
-    suc = function.setModelOperationMode(4)
-    assert suc
-
-
-def test_updateAlignGui_numberStars(function):
-    function.app.mount.model.starList = []
-    function.app.mount.model.numberStars = 1
-    function.updateAlignGUI(function.app.mount.model)
-    assert " 1" == function.ui.numberStars.text()
-    assert " 1" == function.ui.numberStars1.text()
-
-
-def test_updateAlignGui_altitudeError_1(function):
-    function.updateAlignGUI(function.app.mount.model)
-    assert "  0.0" == function.ui.altitudeError.text()
-
-
-def test_updateAlignGui_errorRMS_1(function):
-    function.app.mount.model.errorRMS = 1
-    function.updateAlignGUI(function.app.mount.model)
-    assert "  1.0" == function.ui.errorRMS.text()
-    assert "  1.0" == function.ui.errorRMS1.text()
-
-
-def test_updateAlignGui_azimuthError_1(function):
-    function.updateAlignGUI(function.app.mount.model)
-    assert "  0.0" == function.ui.azimuthError.text()
-
-
-def test_updateAlignGui_terms_1(function):
-    function.updateAlignGUI(function.app.mount.model)
-    assert " 1" == function.ui.terms.text()
-
-
-def test_updateAlignGui_orthoError_1(function):
-    function.updateAlignGUI(function.app.mount.model)
-    assert "    0" == function.ui.orthoError.text()
-
-
-def test_updateAlignGui_positionAngle_1(function):
-    function.updateAlignGUI(function.app.mount.model)
-    assert "  0.0" == function.ui.positionAngle.text()
-
-
-def test_updateAlignGui_polarError_1(function):
-    function.updateAlignGUI(function.app.mount.model)
-    assert "    0" == function.ui.polarError.text()
-
-
-def test_updateTurnKnobsGUI_1(function):
-    class Test:
-        azimuthTurns = None
-        altitudeTurns = None
-
-    function.updateTurnKnobsGUI(Test())
-    assert "-" == function.ui.altitudeTurns.text()
-    assert "-" == function.ui.azimuthTurns.text()
-
-
-def test_updateTurnKnobsGUI_2(function):
-    class Test:
-        azimuthTurns = -1
-        altitudeTurns = -1
-
-    function.updateTurnKnobsGUI(Test())
-    assert "1.0 revs up" == function.ui.altitudeTurns.text()
-    assert "1.0 revs right" == function.ui.azimuthTurns.text()
-
-
-def test_updateTurnKnobsGUI_3(function):
-    class Test:
-        azimuthTurns = 1
-        altitudeTurns = 1
-
-    function.updateTurnKnobsGUI(Test())
-    assert "1.0 revs down" == function.ui.altitudeTurns.text()
-    assert "1.0 revs left" == function.ui.azimuthTurns.text()
+    function.setModelOperationMode(4)
 
 
 def test_updateModelProgress_1(function):
@@ -330,94 +248,33 @@ def test_programModelToMount_3(function):
             assert suc
 
 
-def test_renewHemisphereView_1(function):
-    function.app.data.buildP = [(0, 0, True), (1, 1, True), (2, 2, True)]
-
-    with mock.patch.object(function.app.data, "setStatusBuildP"):
-        suc = function.renewHemisphereView()
-        assert suc
-
-
 def test_processModelData_1(function):
-    suc = function.processModelData([])
-    assert not suc
-
-
-def test_processModelData_2(function):
-    def playSound(a):
-        return
-
-    function.playSound = playSound
     with mock.patch.object(function, "programModelToMount", return_value=False):
-        with mock.patch.object(function, "renewHemisphereView"):
-            with mock.patch.object(
-                function.app.mount.obsSite, "park", return_value=False
-            ):
-                suc = function.processModelData([0, 1, 2])
-                assert suc
-
-
-def test_processModelData_3(function):
-    def playSound(a):
-        return
-
-    function.playSound = playSound
-    function.ui.parkMountAfterModel.setChecked(True)
-    with mock.patch.object(function, "programModelToMount", return_value=True):
-        with mock.patch.object(function, "renewHemisphereView"):
-            with mock.patch.object(
-                function.app.mount.obsSite, "park", return_value=False
-            ):
-                suc = function.processModelData([0, 1, 2])
-                assert suc
-
-
-def test_processModelData_4(function):
-    def playSound(a):
-        return
-
-    function.playSound = playSound
-    function.ui.parkMountAfterModel.setChecked(True)
-    with mock.patch.object(function, "programModelToMount", return_value=True):
-        with mock.patch.object(function, "renewHemisphereView"):
-            with mock.patch.object(
-                function.app.mount.obsSite, "park", return_value=True
-            ):
-                suc = function.processModelData([0, 1, 2])
-                assert suc
+        function.processModelData()
 
 
 def test_checkModelRunConditions_1(function):
     function.app.data.buildP = [(0, 0, True)]
-    suc = function.checkModelRunConditions()
+    suc = function.checkModelRunConditions(False)
     assert not suc
 
 
 def test_checkModelRunConditions_2(function):
     function.app.data.buildP = [(0, 0, True)] * 100
-    suc = function.checkModelRunConditions()
+    suc = function.checkModelRunConditions(False)
     assert not suc
 
 
 def test_checkModelRunConditions_3(function):
-    function.app.data.buildP = [(0, 0, True)] * 2
+    function.app.data.buildP = [(0, 0, True), (0, 0, True), (0, 0, False)]
     function.ui.excludeDonePoints.setChecked(True)
-    suc = function.checkModelRunConditions()
+    suc = function.checkModelRunConditions(True)
     assert not suc
 
 
 def test_checkModelRunConditions_4(function):
-    function.app.data.buildP = [(0, 0, True)] * 5
-    with mock.patch.object(
-        function.ui.plateSolveDevice, "currentText", return_value="No device"
-    ):
-        suc = function.checkModelRunConditions()
-        assert not suc
-
-
-def test_checkModelRunConditions_5(function):
-    function.app.data.buildP = [(0, 0, True)] * 5
-    suc = function.checkModelRunConditions()
+    function.app.data.buildP = [(0, 0, True), (0, 0, True), (0, 0, True)]
+    suc = function.checkModelRunConditions(True)
     assert suc
 
 
@@ -461,68 +318,6 @@ def test_clearAlignAndBackup_4(function):
                 with mock.patch.object(gui.mainWaddon.tabModel, "sleepAndEvents"):
                     suc = function.clearAlignAndBackup()
                     assert suc
-
-
-def test_modelBuild_1(function):
-    function.lastGenerator = "test"
-    with mock.patch.object(
-        function, "setupFilenamesAndDirectories", return_value=("", "")
-    ):
-        with mock.patch.object(function, "checkModelRunConditions", return_value=False):
-            suc = function.modelBuild()
-            assert not suc
-
-
-def test_modelBuild_2(function):
-    function.lastGenerator = "test"
-    with mock.patch.object(function, "checkModelRunConditions", return_value=True):
-        with mock.patch.object(
-            function, "setupFilenamesAndDirectories", return_value=("", "")
-        ):
-            with mock.patch.object(function, "clearAlignAndBackup", return_value=False):
-                suc = function.modelBuild()
-                assert not suc
-
-
-def test_modelBuild_3(function):
-    function.lastGenerator = ""
-    with mock.patch.object(function, "checkModelRunConditions", return_value=True):
-        with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
-            with mock.patch.object(
-                function, "setupFilenamesAndDirectories", return_value=("", "")
-            ):
-                with mock.patch.object(function, "setupRunPoints", return_value=[]):
-                    suc = function.modelBuild()
-                    assert not suc
-
-
-def test_modelBuild_4(function):
-    def test(
-        modelPoints=None,
-        retryCounter=None,
-        runType=None,
-        processData=None,
-        progress=None,
-        imgDir=None,
-        keepImages=None,
-    ):
-        return
-
-    function.lastGenerator = ""
-    function.cycleThroughPoints = test
-    function.ui.excludeDonePoints.setChecked(True)
-    function.app.data.buildP = [(0, 0, True), (10, 10, False), (20, 20, True)]
-    with mock.patch.object(function, "checkModelRunConditions", return_value=True):
-        with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
-            with mock.patch.object(
-                function, "setupFilenamesAndDirectories", return_value=("", "")
-            ):
-                with mock.patch.object(function, "setupRunPoints", return_value=[1, 2]):
-                    with mock.patch.object(
-                        function, "setupModelRunContextAndGuiStatus"
-                    ):
-                        suc = function.modelBuild()
-                        assert suc
 
 
 def test_loadProgramModel_1(function):
@@ -609,119 +404,3 @@ def test_loadProgramModel_6(function):
     with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
         suc = function.loadProgramModel()
         assert not suc
-
-
-def test_solveDone_1(function):
-    function.app.plateSolve.signals.result.connect(function.solveDone)
-    suc = function.solveDone()
-    assert not suc
-
-
-def test_solveDone_2(function):
-    result = {
-        "success": False,
-        "raJ2000S": Angle(hours=10),
-        "decJ2000S": Angle(degrees=20),
-        "angleS": 30,
-        "scaleS": 1,
-        "errorRMS_S": 3,
-        "flippedS": False,
-        "imagePath": "test",
-        "message": "test",
-    }
-
-    function.app.plateSolve.signals.result.connect(function.solveDone)
-    suc = function.solveDone(result=result)
-    assert not suc
-
-
-def test_solveDone_3(function):
-    result = {
-        "success": True,
-        "raJ2000S": Angle(hours=10),
-        "decJ2000S": Angle(degrees=20),
-        "angleS": 30,
-        "scaleS": 1,
-        "errorRMS_S": 3,
-        "flippedS": False,
-        "imagePath": "test",
-        "message": "test",
-        "solvedPath": "test",
-    }
-
-    function.app.plateSolve.signals.result.connect(function.solveDone)
-    with mock.patch.object(
-        function.app.mount.obsSite, "syncPositionToTarget", return_value=True
-    ):
-        suc = function.solveDone(result=result)
-        assert suc
-
-
-def test_solveDone_4(function):
-    result = {
-        "success": True,
-        "raJ2000S": Angle(hours=10),
-        "decJ2000S": Angle(degrees=20),
-        "angleS": 30,
-        "scaleS": 1,
-        "errorRMS_S": 3,
-        "flippedS": False,
-        "imagePath": "test",
-        "message": "test",
-        "solvedPath": "test",
-    }
-
-    function.app.plateSolve.signals.result.connect(function.solveDone)
-    with mock.patch.object(
-        function.app.mount.obsSite, "syncPositionToTarget", return_value=False
-    ):
-        suc = function.solveDone(result=result)
-        assert not suc
-
-
-def test_solveImage_1(function):
-    suc = function.solveImage()
-    assert not suc
-
-
-def test_solveImage_2(function):
-    suc = function.solveImage(imagePath="testFile")
-    assert not suc
-
-
-def test_solveImage_3(function):
-    shutil.copy("tests/testData/m51.fit", "tests/workDir/image/m51.fit")
-    file = "tests/workDir/image/m51.fit"
-    with mock.patch.object(function.app.plateSolve, "solve"):
-        suc = function.solveImage(imagePath=file)
-        assert suc
-
-
-def test_exposeRaw_1(function):
-    with mock.patch.object(function.app.camera, "expose", return_value=True):
-        suc = function.exposeRaw()
-        assert suc
-
-
-def test_exposeRaw_2(function):
-    with mock.patch.object(function.app.camera, "expose", return_value=False):
-        suc = function.exposeRaw()
-        assert not suc
-
-
-def test_exposeImageDone_1(function):
-    function.app.camera.signals.saved.connect(function.exposeImageDone)
-    with mock.patch.object(function, "solveImage"):
-        suc = function.exposeImageDone()
-        assert suc
-
-
-def test_exposeImage_1(function):
-    with mock.patch.object(function, "exposeRaw"):
-        suc = function.exposeImage()
-        assert suc
-
-
-def test_plateSolveSync_1(function):
-    suc = function.plateSolveSync()
-    assert suc

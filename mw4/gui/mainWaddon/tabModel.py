@@ -252,7 +252,7 @@ class Model(MWidget):
 
     def checkModelRunConditions(self, excludeDonePoints: bool) -> bool:
         """ """
-        if len(self.app.data.buildP) < 2:
+        if len(self.app.data.buildP) < 3:
             t = "No modeling start because less than 3 points"
             self.msg.emit(2, "Model", "Run error", t)
             return False

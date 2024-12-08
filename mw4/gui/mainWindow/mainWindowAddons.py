@@ -29,7 +29,7 @@ from gui.mainWaddon.tabImage_Manage import ImageManage
 from gui.mainWaddon.tabImage_Stats import ImageStats
 from gui.mainWaddon.tabManageModel import ManageModel
 from gui.mainWaddon.tabModel import Model
-from gui.mainWaddon.tabModelStatus import ModelStatus
+from gui.mainWaddon.tabModel_Status import ModelStatus
 from gui.mainWaddon.tabPower import Power
 from gui.mainWaddon.tabMount import Mount
 from gui.mainWaddon.tabMountCommand import MountCommand

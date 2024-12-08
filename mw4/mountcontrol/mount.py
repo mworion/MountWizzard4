@@ -66,9 +66,7 @@ class MountDevice:
         self.signals = MountSignals()
         self.firmware = Firmware(parent=self)
         self.setting = Setting(parent=self)
-        self.obsSite = ObsSite(
-            parent=self, verbose=self.verbose
-        )
+        self.obsSite = ObsSite(parent=self, verbose=self.verbose)
         self.satellite = Satellite(parent=self)
         self.geometry = Geometry(parent=self)
         self.dome = Dome(parent=self)
@@ -155,9 +153,7 @@ class MountDevice:
         self.dome = Dome(parent=self)
         self.setting = Setting(parent=self)
         self.model = Model(parent=self)
-        self.obsSite = ObsSite(
-            parent=self, verbose=self.verbose
-        )
+        self.obsSite = ObsSite(parent=self, verbose=self.verbose)
         self.satellite = Satellite(parent=self)
         self.geometry = Geometry(parent=self)
         self.signals.pointDone.emit(self.obsSite)

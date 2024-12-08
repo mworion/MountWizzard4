@@ -502,14 +502,18 @@ class MainWindow(MWidget):
         self.storeConfig()
         self.app.storeConfig()
         suc = saveProfile(
-            configDir=self.app.mwGlob["configDir"], name=saveFilePath.stem, config=self.app.config
+            configDir=self.app.mwGlob["configDir"],
+            name=saveFilePath.stem,
+            config=self.app.config,
         )
         if suc:
             self.ui.profile.setText(saveFilePath.stem)
             self.msg.emit(1, "System", "Profile", f"saved {saveFilePath.stem}")
             self.ui.profileAdd.setText("-")
         else:
-            self.msg.emit(2, "System", "Profile error", f"{saveFilePath.stem}] cannot no be saved")
+            self.msg.emit(
+                2, "System", "Profile error", f"{saveFilePath.stem}] cannot no be saved"
+            )
         return True
 
     def saveConfig(self) -> bool:

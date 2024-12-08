@@ -88,9 +88,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         }
 
     def initConfig(self):
-        """
-        :return: True for test purpose
-        """
+        """ """
         if "imageW" not in self.app.config:
             self.app.config["imageW"] = {}
         config = self.app.config["imageW"]
@@ -116,12 +114,9 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         isMovable = self.app.config["mainW"].get("tabsMovable", False)
         self.enableTabsMovable(isMovable)
         self.setCrosshair()
-        return True
 
     def storeConfig(self):
-        """
-        :return: True for test purpose
-        """
+        """ """
         config = self.app.config
         if "imageW" not in config:
             config["imageW"] = {}
@@ -149,24 +144,13 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         config["showValues"] = self.ui.showValues.isChecked()
         config["offsetTiltAngle"] = self.ui.offsetTiltAngle.value()
         config["timeTagImage"] = self.ui.timeTagImage.isChecked()
-        return True
 
     def enableTabsMovable(self, isMovable):
-        """
-        :param isMovable:
-        :return:
-        """
+        """ """
         self.ui.tabImage.setMovable(isMovable)
-        return True
 
     def showWindow(self):
-        """
-        showWindow prepares all data for showing the window, plots the image and
-        show it. Afterward all necessary signal / slot connections will be
-        established.
-
-        :return: true for test purpose
-        """
+        """ """
         self.fileHandler.signals.imageLoaded.connect(self.showTabImage)
         self.fileHandler.signals.imageLoaded.connect(self.processPhotometry)
         self.photometry.signals.sepFinished.connect(self.resultPhotometry)
@@ -178,7 +162,6 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.photometry.signals.aberration.connect(self.showTabImageSources)
         self.photometry.signals.background.connect(self.showTabBackground)
         self.photometry.signals.backgroundRMS.connect(self.showTabBackgroundRMS)
-
         self.app.update1s.connect(self.updateWindowsStats)
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.setBarColor)
@@ -213,30 +196,21 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.setAspectLocked()
         self.clearGui()
         self.show()
-        return True
 
     def closeEvent(self, closeEvent):
-        """
-        :param closeEvent:
-        :return: True for test purpose
-        """
+        """ """
         self.storeConfig()
         super().closeEvent(closeEvent)
 
     def colorChange(self):
-        """
-        :return:
-        """
+        """ """
         self.setStyleSheet(self.mw4Style)
         self.ui.image.colorChange()
         self.pen = pg.mkPen(color=self.M_PRIM)
         self.showCurrent()
-        return True
 
     def clearGui(self):
-        """
-        :return:
-        """
+        """ """
         self.ui.medianHFR.setText("")
         self.ui.hfrPercentile.setText("")
         self.ui.numberStars.setText("")
@@ -247,23 +221,16 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             if i == tabIndex:
                 continue
             self.ui.tabImage.setTabEnabled(i, False)
-        return True
 
     def operationMode(self, status):
-        """
-        :param status:
-        :return:
-        """
+        """ """
         if status == 0:
             self.ui.groupImageActions.setEnabled(True)
         elif status != 6:
             self.ui.groupImageActions.setEnabled(False)
-        return True
 
     def updateWindowsStats(self):
-        """
-        :return: true for test purpose
-        """
+        """ """
         if self.imagingDeviceStat.get("expose", False):
             self.ui.exposeN.setEnabled(False)
             self.ui.load.setEnabled(False)
@@ -302,12 +269,8 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         else:
             self.changeStyleDynamic(self.ui.solve, "running", False)
 
-        return True
-
     def selectImage(self):
-        """
-        :return: success
-        """
+        """ """
         self.imageFileName = self.openFile(
             self,
             "Select image file",
@@ -317,19 +280,16 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         )
         if not self.imageFileName.is_file():
             self.msg.emit(0, "Image", "Loading", "No image selected")
-            return False
+            return
 
         self.msg.emit(0, "Image", "Image selected", self.imageFileName.name)
         self.folder = self.imageFileName.parents[0]
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(self.imageFileName)
         self.app.showImage.emit(self.imageFileName)
-        return True
 
     def setBarColor(self):
-        """
-        :return:
-        """
+        """ """
         cMap = ["CET-L2", "plasma", "cividis", "magma", "CET-D1A"]
         colorMap = cMap[self.ui.color.currentIndex()]
         self.ui.image.setColorMap(colorMap)
@@ -341,30 +301,21 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.tiltTriangle.setColorMap(colorMap)
         self.ui.roundness.setColorMap(colorMap)
         self.ui.aberration.setColorMap(colorMap)
-        return True
 
     def copyLevels(self):
-        """
-        :return:
-        """
+        """ """
         level = self.ui.image.barItem.levels()
         self.ui.tiltSquare.barItem.setLevels(level)
         self.ui.tiltTriangle.barItem.setLevels(level)
         self.ui.aberration.barItem.setLevels(level)
         self.ui.imageSource.barItem.setLevels(level)
-        return True
 
     def setCrosshair(self):
-        """
-        :return:
-        """
+        """ """
         self.ui.image.showCrosshair(self.ui.showCrosshair.isChecked())
-        return True
 
     def setAspectLocked(self):
-        """
-        :return:
-        """
+        """ """
         isLocked = self.ui.aspectLocked.isChecked()
         self.ui.image.p[0].setAspectLocked(isLocked)
         self.ui.imageSource.p[0].setAspectLocked(isLocked)
@@ -374,33 +325,22 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.backgroundRMS.p[0].setAspectLocked(isLocked)
         self.ui.hfr.p[0].setAspectLocked(isLocked)
         self.ui.roundness.p[0].setAspectLocked(isLocked)
-        return True
 
     def getImageSourceRange(self):
-        """
-        :return:
-        """
+        """ """
         vb = self.ui.imageSource.p[0].getViewBox()
         self.imageSourceRange = vb.viewRect()
-        return True
 
     @staticmethod
     def clearImageTab(imageWidget):
-        """
-        :param imageWidget:
-        :return:
-        """
+        """ """
         imageWidget.p[0].clear()
         imageWidget.p[0].showAxes(False, showValues=False)
         imageWidget.p[0].setMouseEnabled(x=False, y=False)
         imageWidget.barItem.setVisible(False)
-        return True
 
     def writeHeaderDataToGUI(self, header):
-        """
-        :param header:
-        :return: True for test purpose
-        """
+        """ """
         self.guiSetText(self.ui.object, "s", header.get("OBJECT", "").upper())
         ra, dec = getCoordinatesFromHeader(header=header)
         self.guiSetText(self.ui.ra, "HSTR", ra)
@@ -417,26 +357,20 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.guiSetText(self.ui.binX, "1.0f", header.get("XBINNING"))
         self.guiSetText(self.ui.binY, "1.0f", header.get("YBINNING"))
         self.guiSetText(self.ui.sqm, "5.2f", getSQMFromHeader(header=header))
-        return True
 
     def resultPhotometry(self):
-        """
-        :return:
-        """
+        """ """
         if self.photometry.objs is None:
             self.msg.emit(2, "Image", "Photometry error", "Too low pixel stack")
         else:
             self.msg.emit(0, "Image", "Photometry", "SEP done")
-        return True
 
     def processPhotometry(self):
-        """
-        :return:
-        """
+        """ """
         isPhotometry = self.ui.photometryGroup.isChecked()
         if self.fileHandler.image is None or not isPhotometry:
             self.clearGui()
-            return False
+            return
 
         self.ui.showValues.setEnabled(isPhotometry)
         self.ui.isoLayer.setEnabled(isPhotometry)
@@ -445,7 +379,6 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.photometry.processPhotometry(
             image=self.fileHandler.image, snTarget=snTarget
         )
-        return True
 
     def showImage(self, imagePath: Path):
         """ """
@@ -453,26 +386,20 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             self.ui.image.setImage(None)
             self.clearGui()
         if not imagePath.is_file():
-            return False
+            return
 
         self.changeStyleDynamic(self.ui.headerGroup, "running", True)
         self.setWindowTitle(f"Imaging:   {os.path.basename(imagePath)}")
         flipH = self.ui.flipH.isChecked()
         flipV = self.ui.flipV.isChecked()
         self.fileHandler.loadImage(imagePath=imagePath, flipH=flipH, flipV=flipV)
-        return True
 
     def showCurrent(self):
-        """
-        :return: true for test purpose
-        """
+        """ """
         self.showImage(self.imageFileName)
-        return True
 
     def exposeRaw(self, exposureTime: float, binning: int):
-        """
-        :return: True for test purpose
-        """
+        """ """
         timeString = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
 
         if self.ui.timeTagImage.isChecked():
@@ -489,17 +416,13 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             self.abortExpose()
             text = f"{os.path.basename(self.imageFileName)}"
             self.msg.emit(2, "Image", "Expose error", text)
-            return False
+            return
 
         text = f"{os.path.basename(self.imageFileName)}"
         self.msg.emit(0, "Image", "Exposing", text)
-        return True
 
     def exposeImageDone(self, imagePath):
-        """
-        :param imagePath:
-        :return: True for test purpose
-        """
+        """ """
         self.app.camera.signals.saved.disconnect(self.exposeImageDone)
         text = f"{os.path.basename(imagePath)}"
         self.msg.emit(0, "Image", "Exposed", text)
@@ -510,25 +433,18 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.app.showImage.emit(imagePath)
         self.app.operationRunning.emit(0)
         self.imagingDeviceStat["expose"] = False
-        return True
 
     def exposeImage(self):
-        """
-        :return: success
-        """
+        """ """
         self.imagingDeviceStat["expose"] = True
         self.app.camera.signals.saved.connect(self.exposeImageDone)
         self.app.operationRunning.emit(6)
         self.exposeRaw(
             exposureTime=self.app.camera.exposureTime1, binning=self.app.camera.binning1
         )
-        return True
 
     def exposeImageNDone(self, imagePath=""):
-        """
-        :param imagePath:
-        :return: True for test purpose
-        """
+        """ """
         text = f"{os.path.basename(imagePath)}"
         self.msg.emit(0, "Image", "Exposed n", text)
 
@@ -538,54 +454,43 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.exposeRaw(
             exposureTime=self.app.camera.exposureTimeN, binning=self.app.camera.binningN
         )
-        return True
 
     def exposeImageN(self):
-        """
-        :return: success
-        """
+        """ """
         self.imagingDeviceStat["exposeN"] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
         self.app.operationRunning.emit(6)
         self.exposeRaw(
             exposureTime=self.app.camera.exposureTimeN, binning=self.app.camera.binningN
         )
-        return True
 
     def abortExpose(self):
-        """
-        :return: True for test purpose
-        """
+        """ """
         self.app.camera.abort()
         if self.imagingDeviceStat["expose"]:
             self.app.camera.signals.saved.disconnect(self.exposeImageDone)
         if self.imagingDeviceStat["exposeN"]:
             self.app.camera.signals.saved.disconnect(self.exposeImageNDone)
 
-        # last image file was not stored, so getting last valid it back
         self.imageFileName = self.imageFileNameOld
         self.imagingDeviceStat["expose"] = False
         self.imagingDeviceStat["exposeN"] = False
         self.msg.emit(2, "Image", "Expose", "Exposing aborted")
         self.app.operationRunning.emit(0)
-        return True
 
     def solveDone(self, result=None):
-        """
-        :param result: result (named tuple)
-        :return: success
-        """
+        """ """
         self.imagingDeviceStat["solve"] = False
         self.app.plateSolve.signals.result.disconnect(self.solveDone)
 
         if not result:
             self.msg.emit(2, "Image", "Solving", "Solving error, result missing")
             self.app.operationRunning.emit(0)
-            return False
+            return
         if not result["success"]:
             self.msg.emit(2, "Image", "Solving error", f'{result.get("message")}')
             self.app.operationRunning.emit(0)
-            return False
+            return
 
         text = f'RA: {convertToHMS(result["raJ2000S"])} '
         text += f'({result["raJ2000S"].hours:4.3f}), '
@@ -603,16 +508,12 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         if self.ui.embedData.isChecked():
             self.showCurrent()
         self.app.operationRunning.emit(0)
-        return True
 
     def solveImage(self, imagePath=""):
-        """
-        :param imagePath:
-        :return:
-        """
+        """ """
         if not os.path.isfile(imagePath):
             self.app.operationRunning.emit(0)
-            return False
+            return
 
         updateHeader = self.ui.embedData.isChecked()
         self.app.plateSolve.signals.result.connect(self.solveDone)
@@ -620,14 +521,10 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.app.plateSolve.solve(imagePath=imagePath, updateHeader=updateHeader)
         self.imagingDeviceStat["solve"] = True
         self.msg.emit(0, "Image", "Solving", imagePath)
-        return True
 
     def solveCurrent(self):
-        """
-        :return: true for test purpose
-        """
+        """ """
         self.signals.solveImage.emit(self.imageFileName)
-        return True
 
     def abortSolve(self):
         """ """
@@ -635,10 +532,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.app.operationRunning.emit(0)
 
     def mouseToWorld(self, mousePoint):
-        """
-        :param mousePoint:
-        :return:
-        """
+        """ """
         if self.fileHandler.wcs is None:
             return Angle(hours=0), Angle(degrees=0)
         x = mousePoint.x()
@@ -654,11 +548,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         return ra, dec
 
     def slewDirect(self, ra, dec):
-        """
-        :param ra:
-        :param dec:
-        :return:
-        """
+        """ """
         if not self.app.deviceStat["mount"]:
             self.msg.emit(2, "Image", "Mount", "Mount is not connected")
             return False
@@ -668,12 +558,9 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         question += f"   DEC: {dec.degrees:3.2f}°</font>"
         question += "<br><br>Would you like to start slewing?<br>"
 
-        suc = self.messageDialog(self, "Slewing mount", question)
-        if not suc:
-            return False
-
-        suc = self.slewTargetRaDec(ra, dec)
-        return suc
+        if not self.messageDialog(self, "Slewing mount", question):
+            return
+        self.slewTargetRaDec(ra, dec)
 
     def mouseMoved(self, pos):
         """ """
@@ -695,28 +582,20 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.ArrowCursor))
 
     def mouseDoubleClick(self, ev, mousePoint):
-        """
-        :param ev:
-        :param mousePoint:
-        :return:
-        """
+        """ """
         if not self.fileHandler.hasCelestial:
-            return False
+            return
 
         ra, dec = self.mouseToWorld(mousePoint)
         self.slewDirect(ra, dec)
-        return True
 
     def slewCenter(self):
-        """
-        :return:
-        """
+        """ """
         if not self.fileHandler.hasCelestial:
-            return False
+            return
 
         ra, dec = getCoordinatesFromHeader(self.fileHandler.header)
         self.slewDirect(ra, dec)
-        return True
 
     def syncMountToImage(self):
         """ """

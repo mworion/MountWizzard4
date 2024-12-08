@@ -313,9 +313,7 @@ def test_genModel_1(function):
 
 
 def test_loadBuildFile_1(function):
-    with mock.patch.object(
-        function, "openFile", return_value=Path("test.bpts")
-    ):
+    with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
         with mock.patch.object(function.app.data, "loadBuildP", return_value=True):
             function.loadBuildFile()
 
@@ -326,18 +324,14 @@ def test_loadBuildFile_2(function):
 
 
 def test_loadBuildFile_3(function):
-    with mock.patch.object(
-        function, "openFile", return_value=Path("test.bpts")
-    ):
+    with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
         with mock.patch.object(function.app.data, "loadBuildP", return_value=False):
             function.loadBuildFile()
 
 
 def test_saveBuildFile_1(function):
     function.ui.buildPFileName.setText("test")
-    with mock.patch.object(
-        function, "saveFile", return_value=Path("test.bpts")
-    ):
+    with mock.patch.object(function, "saveFile", return_value=Path("test.bpts")):
         with mock.patch.object(function.app.data, "saveBuildP", return_value=True):
             function.saveBuildFile()
 
@@ -350,17 +344,13 @@ def test_saveBuildFile_2(function):
 
 def test_saveBuildFile_3(function):
     function.ui.buildPFileName.setText("test")
-    with mock.patch.object(
-        function, "saveFile", return_value=Path("test.bpts")
-    ):
+    with mock.patch.object(function, "saveFile", return_value=Path("test.bpts")):
         with mock.patch.object(function.app.data, "saveBuildP", return_value=False):
             function.saveBuildFile()
 
 
 def test_saveBuildFileAs_1(function):
-    with mock.patch.object(
-        function, "saveFile", return_value=Path("test.bpts")
-    ):
+    with mock.patch.object(function, "saveFile", return_value=Path("test.bpts")):
         with mock.patch.object(function.app.data, "saveBuildP", return_value=True):
             function.saveBuildFileAs()
 
@@ -371,9 +361,7 @@ def test_saveBuildFileAs_2(function):
 
 
 def test_saveBuildFileAs_3(function):
-    with mock.patch.object(
-        function, "saveFile", return_value=Path("test.bpts")
-    ):
+    with mock.patch.object(function, "saveFile", return_value=Path("test.bpts")):
         with mock.patch.object(function.app.data, "saveBuildP", return_value=False):
             function.saveBuildFileAs()
 

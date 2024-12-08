@@ -47,28 +47,24 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
     if "imageW" in function.app.config:
         del function.app.config["imageW"]
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_storeConfig_2(function):
     function.app.config["imageW"] = {}
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_enableTabsMovable(function):
-    suc = function.enableTabsMovable(True)
-    assert suc
+    function.enableTabsMovable(True)
 
 
 def test_closeEvent_1(function):
@@ -80,23 +76,19 @@ def test_closeEvent_1(function):
 
 def test_colorChange(function):
     with mock.patch.object(function, "showCurrent"):
-        suc = function.colorChange()
-        assert suc
+        function.colorChange()
 
 
 def test_clearGui(function):
-    suc = function.clearGui()
-    assert suc
+    function.clearGui()
 
 
 def test_operationMode_1(function):
-    suc = function.operationMode(0)
-    assert suc
+    function.operationMode(0)
 
 
 def test_operationMode_2(function):
-    suc = function.operationMode(1)
-    assert suc
+    function.operationMode(1)
 
 
 def test_updateWindowsStats_1(function):
@@ -108,8 +100,7 @@ def test_updateWindowsStats_1(function):
     function.imagingDeviceStat["imaging"] = True
     function.imagingDeviceStat["plateSolve"] = True
 
-    suc = function.updateWindowsStats()
-    assert suc
+    function.updateWindowsStats()
 
 
 def test_updateWindowsStats_2(function):
@@ -121,8 +112,7 @@ def test_updateWindowsStats_2(function):
     function.imagingDeviceStat["imaging"] = False
     function.imagingDeviceStat["plateSolve"] = False
 
-    suc = function.updateWindowsStats()
-    assert suc
+    function.updateWindowsStats()
 
 
 def test_updateWindowsStats_3(function):
@@ -134,22 +124,19 @@ def test_updateWindowsStats_3(function):
     function.imagingDeviceStat["imaging"] = False
     function.imagingDeviceStat["plateSolve"] = False
 
-    suc = function.updateWindowsStats()
-    assert suc
+    function.updateWindowsStats()
 
 
 def test_selectImage_1(function):
     with mock.patch.object(MWidget, "openFile", return_value=Path("test.fits")):
-        suc = function.selectImage()
-        assert not suc
+        function.selectImage()
 
 
 def test_selectImage_2(function):
     function.ui.autoSolve.setChecked(False)
     with mock.patch.object(MWidget, "openFile", return_value=Path("c:/test/test.fits")):
         with mock.patch.object(Path, "is_file", return_value=True):
-            suc = function.selectImage()
-            assert suc
+            function.selectImage()
             assert function.folder == Path("c:/test")
 
 
@@ -157,56 +144,47 @@ def test_selectImage_3(function):
     function.ui.autoSolve.setChecked(True)
     with mock.patch.object(MWidget, "openFile", return_value=Path("c:/test/test.fits")):
         with mock.patch.object(Path, "is_file", return_value=True):
-            suc = function.selectImage()
-            assert suc
+            function.selectImage()
             assert function.folder == Path("c:/test")
 
 
 def test_setBarColor_1(function):
     function.ui.color.setCurrentIndex(0)
     with mock.patch.object(function.ui.image, "setColorMap"):
-        suc = function.setBarColor()
-        assert suc
+        function.setBarColor()
 
 
 def test_copyLevels(function):
-    suc = function.copyLevels()
-    assert suc
+    function.copyLevels()
 
 
 def test_setCrosshair_1(function):
     function.ui.color.setCurrentIndex(0)
     with mock.patch.object(function.ui.image, "showCrosshair"):
-        suc = function.setCrosshair()
-        assert suc
+        function.setCrosshair()
 
 
 def test_setAspectLocked(function):
-    suc = function.setAspectLocked()
-    assert suc
+    function.setAspectLocked()
 
 
 def test_getImageSourceRange(function):
-    suc = function.getImageSourceRange()
-    assert suc
+    function.getImageSourceRange()
 
 
 def test_clearImageTab(function):
-    suc = function.clearImageTab(function.ui.image)
-    assert suc
+    function.clearImageTab(function.ui.image)
 
 
 def test_writeHeaderDataToGUI_1(function):
     function.header = fits.PrimaryHDU().header
-    suc = function.writeHeaderDataToGUI(function.header)
-    assert suc
+    function.writeHeaderDataToGUI(function.header)
 
 
 def test_writeHeaderDataToGUI_2(function):
     function.header = fits.PrimaryHDU().header
     function.header["naxis"] = 2
-    suc = function.writeHeaderDataToGUI(function.header)
-    assert suc
+    function.writeHeaderDataToGUI(function.header)
 
 
 def test_writeHeaderDataToGUI_3(function):
@@ -214,8 +192,7 @@ def test_writeHeaderDataToGUI_3(function):
     function.header["naxis"] = 2
     function.header["OBJCTRA"] = "+08 00 00"
     function.header["OBJCTDEC"] = "90 00 00"
-    suc = function.writeHeaderDataToGUI(function.header)
-    assert suc
+    function.writeHeaderDataToGUI(function.header)
 
 
 def test_writeHeaderDataToGUI_4(function):
@@ -223,22 +200,19 @@ def test_writeHeaderDataToGUI_4(function):
     function.header["naxis"] = 2
     function.header["RA"] = 12.0
     function.header["DEC"] = 80.0
-    suc = function.writeHeaderDataToGUI(function.header)
-    assert suc
+    function.writeHeaderDataToGUI(function.header)
 
 
 def test_resultPhotometry_1(function):
     function.photometry = Photometry(function)
     function.photometry.objs = None
-    suc = function.resultPhotometry()
-    assert suc
+    function.resultPhotometry()
 
 
 def test_resultPhotometry_2(function):
     function.photometry = Photometry(function)
     function.photometry.objs = 1
-    suc = function.resultPhotometry()
-    assert suc
+    function.resultPhotometry()
 
 
 def test_processPhotometry_1(function):
@@ -249,8 +223,7 @@ def test_processPhotometry_1(function):
     function.ui.photometryGroup.setChecked(True)
     function.fileHandler.image = 1
     with mock.patch.object(function.photometry, "processPhotometry"):
-        suc = function.processPhotometry()
-        assert suc
+        function.processPhotometry()
 
 
 def test_processPhotometry_2(function):
@@ -260,103 +233,88 @@ def test_processPhotometry_2(function):
     function.fileHandler = FileHandler(App())
     function.fileHandler.image = None
     with mock.patch.object(function, "clearGui"):
-        suc = function.processPhotometry()
-        assert not suc
+        function.processPhotometry()
 
 
 def test_showImage_1(function):
     function.imagingDeviceStat["expose"] = True
     with mock.patch.object(function, "clearGui"):
-        suc = function.showImage(Path(""))
-        assert not suc
+        function.showImage(Path(""))
 
 
 def test_showImage_2(function):
     function.imagingDeviceStat["expose"] = False
-    suc = function.showImage(Path("c:/test/test.fits"))
-    assert not suc
+    function.showImage(Path("c:/test/test.fits"))
 
 
 def test_showImage_3(function):
     function.imagingDeviceStat["expose"] = False
     with mock.patch.object(Path, "is_file", return_value=True):
         with mock.patch.object(function.fileHandler, "loadImage"):
-            suc = function.showImage(Path("c:/test/test.fits"))
-            assert suc
+            function.showImage(Path("c:/test/test.fits"))
 
 
 def test_showCurrent_1(function):
-    suc = function.showCurrent()
-    assert suc
+    function.showCurrent()
 
 
 def test_exposeRaw_1(function):
     function.app.camera.subFrame = 100
     function.ui.timeTagImage.setChecked(True)
     with mock.patch.object(function.app.camera, "expose", return_value=True):
-        suc = function.exposeRaw(exposureTime=1, binning=1)
-        assert suc
+        function.exposeRaw(exposureTime=1, binning=1)
 
 
 def test_exposeRaw_2(function):
     function.app.camera.subFrame = 100
     function.ui.timeTagImage.setChecked(False)
     with mock.patch.object(function.app.camera, "expose", return_value=True):
-        suc = function.exposeRaw(exposureTime=1, binning=1)
-        assert suc
+        function.exposeRaw(exposureTime=1, binning=1)
 
 
 def test_exposeRaw_3(function):
     function.app.camera.subFrame = 100
     with mock.patch.object(function.app.camera, "expose", return_value=False):
-        suc = function.exposeRaw(exposureTime=1, binning=1)
-        assert not suc
+        function.exposeRaw(exposureTime=1, binning=1)
 
 
 def test_exposeImageDone_1(function):
     function.ui.autoSolve.setChecked(False)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
-    suc = function.exposeImageDone(Path("test"))
-    assert suc
+    function.exposeImageDone(Path("test"))
 
 
 def test_exposeImageDone_2(function):
     function.ui.autoSolve.setChecked(True)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
-    suc = function.exposeImageDone(Path("test"))
-    assert suc
+    function.exposeImageDone(Path("test"))
 
 
 def test_exposeImage_1(function):
     function.app.camera.data = {}
-    suc = function.exposeImage()
-    assert suc
+    function.exposeImage()
 
 
 def test_exposeImageNDone_1(function):
     function.ui.autoSolve.setChecked(False)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
-    suc = function.exposeImageNDone(Path("test"))
-    assert suc
+    function.exposeImageNDone(Path("test"))
 
 
 def test_exposeImageNDone_2(function):
     function.ui.autoSolve.setChecked(True)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
-    suc = function.exposeImageNDone(Path("test"))
-    assert suc
+    function.exposeImageNDone(Path("test"))
 
 
 def test_exposeImageN_1(function):
     function.app.camera.data = {}
-    suc = function.exposeImageN()
-    assert suc
+    function.exposeImageN()
 
 
 def test_abortExpose_1(function):
     with mock.patch.object(function.app.camera, "abort"):
-        suc = function.abortExpose()
-        assert suc
+        function.abortExpose()
 
 
 def test_abortExpose_2(function):
@@ -365,8 +323,7 @@ def test_abortExpose_2(function):
     function.ui.expose.setEnabled(False)
     function.app.camera.signals.saved.connect(function.exposeRaw)
     with mock.patch.object(function.app.camera, "abort"):
-        suc = function.abortExpose()
-        assert suc
+        function.abortExpose()
 
 
 def test_abortExpose_3(function):
@@ -377,8 +334,7 @@ def test_abortExpose_3(function):
     function.ui.expose.setEnabled(True)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
     with mock.patch.object(function.app.camera, "abort"):
-        suc = function.abortExpose()
-        assert suc
+        function.abortExpose()
 
 
 def test_abortExpose_4(function):
@@ -389,14 +345,12 @@ def test_abortExpose_4(function):
     function.ui.expose.setEnabled(True)
     function.app.camera.signals.saved.connect(function.exposeImageNDone)
     with mock.patch.object(function.app.camera, "abort"):
-        suc = function.abortExpose()
-        assert suc
+        function.abortExpose()
 
 
 def test_solveDone_1(function):
     function.app.plateSolve.signals.result.connect(function.solveDone)
-    suc = function.solveDone()
-    assert not suc
+    function.solveDone()
 
 
 def test_solveDone_2(function):
@@ -413,8 +367,7 @@ def test_solveDone_2(function):
     }
 
     function.app.plateSolve.signals.result.connect(function.solveDone)
-    suc = function.solveDone(result=result)
-    assert not suc
+    function.solveDone(result=result)
 
 
 def test_solveDone_3(function):
@@ -432,36 +385,30 @@ def test_solveDone_3(function):
     }
 
     function.app.plateSolve.signals.result.connect(function.solveDone)
-    suc = function.solveDone(result=result)
-    assert suc
+    function.solveDone(result=result)
 
 
 def test_solveImage_1(function):
-    suc = function.solveImage()
-    assert not suc
+    function.solveImage()
 
 
 def test_solveImage_2(function):
-    suc = function.solveImage(imagePath="testFile")
-    assert not suc
+    function.solveImage(imagePath="testFile")
 
 
 def test_solveImage_3(function):
     shutil.copy("tests/testData/m51.fit", "tests/workDir/image/m51.fit")
     file = "tests/workDir/image/m51.fit"
     with mock.patch.object(function.app.plateSolve, "solve"):
-        suc = function.solveImage(imagePath=file)
-        assert suc
+        function.solveImage(imagePath=file)
 
 
 def test_solveCurrent(function):
-    suc = function.solveCurrent()
-    assert suc
+    function.solveCurrent()
 
 
 def test_abortSolve_1(function):
-    suc = function.abortSolve()
-    assert not suc
+    function.abortSolve()
 
 
 def test_mouseToWorld_0(function):
@@ -486,23 +433,20 @@ def test_mouseToWorld_1(function):
 
 def test_slewDirect_1(function):
     with mock.patch.object(function, "messageDialog", return_value=False):
-        suc = function.slewDirect(Angle(hours=0), Angle(degrees=0))
-        assert not suc
+        function.slewDirect(Angle(hours=0), Angle(degrees=0))
 
 
 def test_slewDirect_2(function):
     with mock.patch.object(function, "messageDialog", return_value=True):
         with mock.patch.object(SlewInterface, "slewTargetRaDec", return_value=False):
-            suc = function.slewDirect(Angle(hours=0), Angle(degrees=0))
-            assert not suc
+            function.slewDirect(Angle(hours=0), Angle(degrees=0))
 
 
 def test_slewDirect_3(function):
     function.app.deviceStat["mount"] = True
     with mock.patch.object(function, "messageDialog", return_value=True):
         with mock.patch.object(SlewInterface, "slewTargetRaDec", return_value=True):
-            suc = function.slewDirect(Angle(hours=0), Angle(degrees=0))
-            assert suc
+            function.slewDirect(Angle(hours=0), Angle(degrees=0))
 
 
 def test_mouseMoved_1(function):
@@ -527,8 +471,7 @@ def test_mouseMoved_2(function):
 
 def test_mouseDoubleClick_1(function):
     function.fileHandler = FileHandler(App())
-    suc = function.mouseDoubleClick(1, QPointF(50, 25))
-    assert not suc
+    function.mouseDoubleClick(1, QPointF(50, 25))
 
 
 def test_mouseDoubleClick_2(function):
@@ -536,14 +479,12 @@ def test_mouseDoubleClick_2(function):
     function.fileHandler.hasCelestial = True
     with mock.patch.object(function, "slewDirect"):
         with mock.patch.object(function, "mouseToWorld", return_value=(0, 0)):
-            suc = function.mouseDoubleClick(1, QPointF(50, 25))
-            assert suc
+            function.mouseDoubleClick(1, QPointF(50, 25))
 
 
 def test_slewCenter_1(function):
     function.fileHandler = FileHandler(App())
-    suc = function.slewCenter()
-    assert not suc
+    function.slewCenter()
 
 
 def test_slewCenter_2(function):
@@ -554,5 +495,14 @@ def test_slewCenter_2(function):
     }
     function.fileHandler.hasCelestial = True
     with mock.patch.object(function, "slewDirect"):
-        suc = function.slewCenter()
-        assert suc
+        function.slewCenter()
+
+
+def test_syncMountToImage_1(function):
+    with mock.patch.object(function.app.mount.obsSite, "syncPositionToTarget", return_value=False):
+        function.syncMountToImage()
+
+
+def test_syncMountToImage_2(function):
+    with mock.patch.object(function.app.mount.obsSite, "syncPositionToTarget", return_value=True):
+        function.syncMountToImage()

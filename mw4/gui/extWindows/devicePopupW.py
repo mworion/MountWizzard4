@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import platform
-from pathlib import Path
 
 # external packages
 from PySide6.QtCore import Qt

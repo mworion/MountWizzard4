@@ -18,7 +18,6 @@
 import logging
 import subprocess
 import os
-import glob
 import time
 import platform
 from pathlib import Path

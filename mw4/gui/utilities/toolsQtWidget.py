@@ -394,8 +394,7 @@ class MWidget(QWidget, Styles):
         enableDir=False,
         multiple=False,
     ):
-        """
-        """
+        """ """
         if not window:
             return Path("")
         if not title:

@@ -98,7 +98,7 @@ class PlateSolve:
         indexPath = Path(self.run[framework].indexPath)
         return self.run[framework].checkAvailabilityIndex(indexPath=indexPath)
 
-    def startCommunication(self):
+    def startCommunication(self) -> None:
         """ """
         sucProgram = self.checkAvailabilityProgram(self.framework)
         sucIndex = self.checkAvailabilityIndex(self.framework)
@@ -109,7 +109,7 @@ class PlateSolve:
         self.signals.deviceConnected.emit(name)
         self.signals.serverConnected.emit()
 
-    def stopCommunication(self):
+    def stopCommunication(self) -> None:
         """ """
         self.solveLoopRunning = False
         name = self.run[self.framework].deviceName

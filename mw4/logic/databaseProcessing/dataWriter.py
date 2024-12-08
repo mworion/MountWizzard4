@@ -18,6 +18,7 @@
 import os
 import logging
 import shutil
+from pathlib import Path
 
 # external packages
 from sgp4.exporter import export_tle
@@ -34,7 +35,7 @@ class DataWriter:
         super().__init__()
         self.app = app
 
-    def writeEarthRotationData(self, dataFilePath: str = "") -> bool:
+    def writeEarthRotationData(self, dataFilePath: Path) -> bool:
         """ """
         sourceDir = self.app.mwGlob["dataDir"]
         destDir = dataFilePath
@@ -42,18 +43,18 @@ class DataWriter:
             return False
 
         for file in ["CDFLeapSeconds.txt", "finals.data"]:
-            if not os.path.isfile(os.path.join(sourceDir, file)):
+            if not (sourceDir / file).is_file():
                 return False
-            shutil.copy(os.path.join(sourceDir, file), os.path.join(destDir, file))
+            shutil.copy(sourceDir / file, destDir / file)
         return True
 
     @staticmethod
-    def writeCometMPC(datas: list, dataFilePath: str) -> None:
+    def writeCometMPC(datas: list, dataFilePath: Path) -> None:
         """
         data format of json and file description in
         https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
         """
-        dest = os.path.join(dataFilePath, "comets.mpc")
+        dest = dataFilePath / "comets.mpc"
         with open(dest, "w") as f:
             for data in datas:
                 line = ""
@@ -199,15 +200,14 @@ class DataWriter:
 
         return designationPacked
 
-    def writeAsteroidMPC(self, datas: list, dataFilePath: str) -> None:
+    def writeAsteroidMPC(self, datas: list, dataFilePath: Path) -> None:
         """
         data format of json and file description in
         https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
-
         we have a mix of new and old style designation to manage. the old style seem to
         have the ley 'Number' in json, new style not.
         """
-        dest = os.path.join(dataFilePath, "asteroids.mpc")
+        dest = dataFilePath / "asteroids.mpc"
 
         with open(dest, "w") as f:
             for data in datas:
@@ -292,11 +292,11 @@ class DataWriter:
                 f.write(line)
 
     @staticmethod
-    def writeSatelliteTLE(datas: list, dataFilePath: str) -> None:
+    def writeSatelliteTLE(datas: list, dataFilePath: Path) -> None:
         """
         data format of TLE and file description in
         """
-        dest = os.path.join(dataFilePath, "satellites.tle")
+        dest = dataFilePath / "satellites.tle"
         with open(dest, "w") as f:
             for data in datas:
                 line1, line2 = export_tle(data.model)

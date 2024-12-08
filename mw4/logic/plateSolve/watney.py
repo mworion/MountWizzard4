@@ -112,7 +112,7 @@ class Watney(object):
         jsonPath = self.tempDir / "solve.json"
         wcsPath = self.tempDir / "temp.wcs"
 
-        if os.path.isfile(wcsPath):
+        if wcsPath.is_file():
             os.remove(wcsPath)
 
         runnable = [self.appPath / "watney-solve"]

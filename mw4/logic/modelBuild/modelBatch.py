@@ -30,7 +30,6 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 class ModelBatch(QObject):
     """ """
 
-    __all__ = ["ModelBatch"]
     progress = Signal(object)
 
     def __init__(self, app):

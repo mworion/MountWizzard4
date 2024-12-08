@@ -791,10 +791,18 @@ def test_loadCSV_4(function):
     assert val == [(1, 1), (2, 2)]
 
 
-def test_loadBuildP_2(function):
+def test_loadBuildP_1(function):
     # path with not existent file given
     suc = function.loadBuildP(Path("test_file_not_there"))
     assert not suc
+
+
+def test_loadBuildP_2(function):
+    # path with not existent file given
+    with mock.patch.object(Path, "is_file", return_value=True):
+        with mock.patch.object(function, "loadJSON", return_value=None):
+            suc = function.loadBuildP(Path("tests/workDir/config/test.bpts"))
+            assert not suc
 
 
 def test_loadBuildP_3(function):

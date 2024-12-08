@@ -40,6 +40,14 @@ def mocked_sleepAndEvents(monkeypatch, function):
     monkeypatch.setattr("logic.modelBuild.modelBatch.sleepAndEvents", test)
 
 
+@pytest.fixture
+def mocked_sleepAndEvents_2(monkeypatch, function):
+    def test(a):
+        function.abortBatch = True
+
+    monkeypatch.setattr("logic.modelBuild.modelBatch.sleepAndEvents", test)
+
+
 def test_setImageExposed(function):
     function.modelBuildData = [{"imagePath": "test"}]
     function.pointerImage = 0
@@ -240,3 +248,16 @@ def test_prepareModelBuildData_1(function):
 
 def test_processModelBuildData_1(function):
     function.processModelBuildData()
+
+
+def test_run_1(function):
+    function.modelInputData = []
+    function.run()
+
+
+def test_run_2(function, mocked_sleepAndEvents_2):
+    function.modelInputData = [(0, 0, True)]
+    with mock.patch.object(function, "prepareModelBuildData"):
+        with mock.patch.object(function, "startNewSlew"):
+            with mock.patch.object(function, "generateSaveData"):
+                function.run()

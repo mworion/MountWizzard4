@@ -17,43 +17,43 @@
 # standard libraries
 import uuid
 
+import requests
 # external packages
 from PySide6.QtCore import QTimer
-import requests
 
-# local imports
-from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.driverDataClass import DriverData
 from base.tpool import Worker
+# local imports
+from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class AlpacaClass(DriverData):
     """ """
 
     ALPACA_TIMEOUT = 3
-    CLIENT_ID = uuid.uuid4().int % 2**16
+    CLIENT_ID = uuid.uuid4().int % 2 ** 16
 
-    def __init__(self, app=None, data=None):
+    def __init__(self, app, data):
         super().__init__()
 
         self.app = app
         self.msg = app.msg
         self.data = data
         self.threadPool = app.threadPool
-        self.updateRate = 1000
-        self.loadConfig = False
-        self.propertyExceptions = []
+        self.updateRate: int = 1000
+        self.loadConfig: bool = False
+        self.propertyExceptions: list = []
 
-        self._host = ("localhost", 11111)
-        self._port = 11111
-        self._hostaddress = "localhost"
-        self.protocol = "http"
-        self.apiVersion = 1
-        self._deviceName = ""
-        self.deviceType = ""
-        self.number = 0
+        self._host: tuple = ("localhost", 11111)
+        self._port: int = 11111
+        self._hostaddress: str = "localhost"
+        self.protocol: str = "http"
+        self.apiVersion: int = 1
+        self._deviceName: str = ""
+        self.deviceType: str = ""
+        self.number: int = 0
 
-        self.defaultConfig = {
+        self.defaultConfig: dict = {
             "deviceName": "",
             "deviceList": [],
             "hostaddress": "localhost",
@@ -64,8 +64,8 @@ class AlpacaClass(DriverData):
             "updateRate": 1000,
         }
 
-        self.deviceConnected = False
-        self.serverConnected = False
+        self.deviceConnected: bool = False
+        self.serverConnected: bool = False
 
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
@@ -119,9 +119,8 @@ class AlpacaClass(DriverData):
         self.number = valueSplit[2].strip()
         self.number = int(self.number)
 
-    def generateBaseUrl(self):
+    def generateBaseUrl(self) -> str:
         """
-        :return: value for base url
         """
         val = "{0}://{1}:{2}/api/v{3}/{4}/{5}".format(
             self.protocol,
@@ -133,15 +132,14 @@ class AlpacaClass(DriverData):
         )
         return val
 
-    def discoverAPIVersion(self):
+    def discoverAPIVersion(self) -> int:
         """
-        :return:
         """
         url = "{0}://{1}:{2}/management/apiversions".format(
             self.protocol, self.host[0], self.host[1]
         )
 
-        uid = uuid.uuid4().int % 2**32
+        uid = uuid.uuid4().int % 2 ** 32
         data = {"ClientTransactionID": uid, "ClientID": self.CLIENT_ID}
 
         try:
@@ -149,40 +147,39 @@ class AlpacaClass(DriverData):
         except requests.exceptions.Timeout:
             t = "Discover API version has timeout"
             self.log.debug(t)
-            return None
+            return 0
         except requests.exceptions.ConnectionError:
             t = "Discover API version has connection error"
             self.log.warning(t)
-            return None
+            return 0
         except Exception as e:
             t = f"Discover API version has exception: [{e}]"
             self.log.error(t)
-            return None
+            return 0
 
         if response.status_code == 400 or response.status_code == 500:
             t = f"Discover API version stat 400/500, [{response.text}]"
             self.log.warning(t)
-            return None
+            return 0
 
         response = response.json()
         if response["ErrorNumber"] != 0:
             t = f"Discover API version response: [{response}]"
             self.log.warning(t)
-            return None
+            return 0
 
         t = f"Discover API version response: [{response}]"
         self.log.trace(t)
         return response["Value"]
 
-    def discoverAlpacaDevices(self):
+    def discoverAlpacaDevices(self) -> str:
         """
-        :return:
         """
         url = "{0}://{1}:{2}/management/v{3}/configureddevices".format(
             self.protocol, self.host[0], self.host[1], self.apiVersion
         )
 
-        uid = uuid.uuid4().int % 2**32
+        uid = uuid.uuid4().int % 2 ** 32
         data = {"ClientTransactionID": uid, "ClientID": self.CLIENT_ID}
 
         try:
@@ -190,26 +187,26 @@ class AlpacaClass(DriverData):
         except requests.exceptions.Timeout:
             t = "Search devices has timeout"
             self.log.debug(t)
-            return None
+            return ""
         except requests.exceptions.ConnectionError:
             t = "Search devices has connection error"
             self.log.warning(t)
-            return None
+            return ""
         except Exception as e:
             t = f"Search devices has exception: [{e}]"
             self.log.error(t)
-            return None
+            return ""
 
         if response.status_code == 400 or response.status_code == 500:
             t = f"Search devices stat 400/500, [{response.text}]"
             self.log.warning(t)
-            return None
+            return ""
 
         response = response.json()
         if response["ErrorNumber"] != 0:
             t = f"Search devices response: [{response}]"
             self.log.warning(t)
-            return None
+            return ""
 
         t = f"Search devices response: [{response}]"
         self.log.trace(t)
@@ -226,7 +223,7 @@ class AlpacaClass(DriverData):
         if valueProp in self.propertyExceptions:
             return None
 
-        uid = uuid.uuid4().int % 2**32
+        uid = uuid.uuid4().int % 2 ** 32
         data["ClientTransactionID"] = uid
         data["ClientID"] = self.CLIENT_ID
 
@@ -281,7 +278,7 @@ class AlpacaClass(DriverData):
         if valueProp in self.propertyExceptions:
             return None
 
-        uid = uuid.uuid4().int % 2**32
+        uid = uuid.uuid4().int % 2 ** 32
         t = f"[{self.deviceName}] [{uid:10d}], set [{valueProp}] to: [{data}]"
         self.log.trace(t)
 

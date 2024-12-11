@@ -77,13 +77,13 @@ def test_baseUrl_1(function):
 def test_discoverAPIVersion_1(function):
     with mock.patch.object(requests, "get", side_effect=Exception()):
         val = function.discoverAPIVersion()
-        assert val is None
+        assert val == 0
 
 
 def test_discoverAPIVersion_2(function):
     with mock.patch.object(requests, "get", side_effect=requests.exceptions.Timeout):
         val = function.discoverAPIVersion()
-        assert val is None
+        assert val == 0
 
 
 def test_discoverAPIVersion_3(function):
@@ -91,7 +91,7 @@ def test_discoverAPIVersion_3(function):
         requests, "get", side_effect=requests.exceptions.ConnectionError
     ):
         val = function.discoverAPIVersion()
-        assert val is None
+        assert val == 0
 
 
 def test_discoverAPIVersion_4(function):
@@ -103,7 +103,7 @@ def test_discoverAPIVersion_4(function):
 
     with mock.patch.object(requests, "get", return_value=Test()):
         val = function.discoverAPIVersion()
-        assert val is None
+        assert val == 0
 
 
 def test_discoverAPIVersion_5(function):
@@ -117,7 +117,7 @@ def test_discoverAPIVersion_5(function):
 
     with mock.patch.object(requests, "get", return_value=Test()):
         val = function.discoverAPIVersion()
-        assert val is None
+        assert val == 0
 
 
 def test_discoverAPIVersion_6(function):
@@ -127,23 +127,23 @@ def test_discoverAPIVersion_6(function):
 
         @staticmethod
         def json():
-            return {"ErrorNumber": 0, "ErrorMessage": "msg", "Value": "test"}
+            return {"ErrorNumber": 0, "ErrorMessage": "msg", "Value": 1}
 
     with mock.patch.object(requests, "get", return_value=Test()):
         val = function.discoverAPIVersion()
-        assert val == "test"
+        assert val == 1
 
 
 def test_discoverAlpacaDevices_1(function):
     with mock.patch.object(requests, "get", side_effect=Exception):
         val = function.discoverAlpacaDevices()
-        assert val is None
+        assert val == ""
 
 
 def test_discoverAlpacaDevices_2(function):
     with mock.patch.object(requests, "get", side_effect=requests.exceptions.Timeout):
         val = function.discoverAlpacaDevices()
-        assert val is None
+        assert val == ""
 
 
 def test_discoverAlpacaDevices_3(function):
@@ -151,7 +151,7 @@ def test_discoverAlpacaDevices_3(function):
         requests, "get", side_effect=requests.exceptions.ConnectionError
     ):
         val = function.discoverAlpacaDevices()
-        assert val is None
+        assert val == ""
 
 
 def test_discoverAlpacaDevices_4(function):
@@ -162,7 +162,7 @@ def test_discoverAlpacaDevices_4(function):
     function.deviceName = "test"
     with mock.patch.object(requests, "get", return_value=Test()):
         val = function.discoverAlpacaDevices()
-        assert val is None
+        assert val == ""
 
 
 def test_discoverAlpacaDevices_5(function):
@@ -176,7 +176,7 @@ def test_discoverAlpacaDevices_5(function):
 
     with mock.patch.object(requests, "get", return_value=Test()):
         val = function.discoverAlpacaDevices()
-        assert val is None
+        assert val == ""
 
 
 def test_discoverAlpacaDevices_6(function):

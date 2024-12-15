@@ -135,82 +135,69 @@ def test_genBuildAlign12_2(function):
 
 def test_genBuildMax_1(function):
     function.ui.autoDeleteHorizon.setChecked(False)
-    suc = function.genBuildMax()
-    assert not suc
+    function.genBuildMax()
 
 
 def test_genBuildMax_2(function):
     with mock.patch.object(function.app.data, "genGreaterCircle", return_value=False):
-        suc = function.genBuildMax()
-        assert not suc
+        function.genBuildMax()
 
 
 def test_genBuildMax_3(function):
     function.ui.ditherBuildPoints.setChecked(True)
     with mock.patch.object(function.app.data, "genGreaterCircle", return_value=True):
-        suc = function.genBuildMax()
-        assert suc
+        function.genBuildMax()
 
 
 def test_genBuildMed_1(function):
-    suc = function.genBuildMed()
-    assert not suc
+    function.genBuildMed()
 
 
 def test_genBuildMed_2(function):
     with mock.patch.object(function.app.data, "genGreaterCircle", return_value=False):
-        suc = function.genBuildMed()
-        assert not suc
+        function.genBuildMed()
 
 
 def test_genBuildMed_3(function):
     function.ui.ditherBuildPoints.setChecked(True)
     with mock.patch.object(function.app.data, "genGreaterCircle", return_value=True):
-        suc = function.genBuildMed()
-        assert suc
+        function.genBuildMed()
 
 
 def test_genBuildNorm_1(function):
-    suc = function.genBuildNorm()
-    assert not suc
+    function.genBuildNorm()
 
 
 def test_genBuildNorm_2(function):
     with mock.patch.object(function.app.data, "genGreaterCircle", return_value=False):
-        suc = function.genBuildNorm()
-        assert not suc
+        function.genBuildNorm()
 
 
 def test_genBuildNorm_3(function):
     function.ui.ditherBuildPoints.setChecked(True)
     with mock.patch.object(function.app.data, "genGreaterCircle", return_value=True):
-        suc = function.genBuildNorm()
-        assert suc
+        function.genBuildNorm()
 
 
 def test_genBuildMin_1(function):
     function.ui.autoDeleteHorizon.setChecked(True)
-    suc = function.genBuildMin()
-    assert not suc
+    function.genBuildMin()
 
 
 def test_genBuildMin_1b(function):
     function.ui.autoDeleteHorizon.setChecked(False)
-    suc = function.genBuildMin()
-    assert not suc
+    function.genBuildMin()
 
 
 def test_genBuildMin_2(function):
     with mock.patch.object(function.app.data, "genGreaterCircle", return_value=False):
-        suc = function.genBuildMin()
-        assert not suc
+        function.genBuildMin()
 
 
 def test_genBuildMin_3(function):
     function.ui.ditherBuildPoints.setChecked(True)
     with mock.patch.object(function.app.data, "genGreaterCircle", return_value=True):
-        suc = function.genBuildMin()
-        assert suc
+        function.genBuildMin()
 
 
 def test_genBuildDSO_1(function):
@@ -285,16 +272,14 @@ def test_genBuildGoldenSpiral_1(function):
     t = function.autoDeletePoints
     function.autoDeletePoints = test
     with mock.patch.object(function.app.data, "generateGoldenSpiral", return_value=True):
-        suc = function.genBuildGoldenSpiral()
-        assert suc
+        function.genBuildGoldenSpiral()
     function.autoDeletePoints = t
 
 
 def test_genBuildGoldenSpiral_2(function):
     function.ui.numberSpiral.setValue(2)
     with mock.patch.object(function.app.data, "generateGoldenSpiral", return_value=False):
-        suc = function.genBuildGoldenSpiral()
-        assert not suc
+        function.genBuildGoldenSpiral()
 
 
 def test_genModel_1(function):
@@ -304,8 +289,7 @@ def test_genModel_1(function):
 
     function.app.mount.model.starList.append(Star())
     with mock.patch.object(function.app.data, "addBuildP"):
-        suc = function.genModel()
-        assert suc
+        function.genModel()
 
 
 def test_loadBuildFile_1(function):

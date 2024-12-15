@@ -238,85 +238,61 @@ class BuildPoints(MWidget):
         self.processPoints()
         return True
 
-    def genBuildMax(self):
+    def genBuildMax(self) -> None:
         """
-        genBuildMax generates the point pattern based on greater circles for
-        model build. the point are calculated for the observers position. max
-        goes for approx 100 points effectively when removing the horizon.
-
-        :return: success
         """
         self.lastGenerator = "max"
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection="max", keep=keep)
         if not suc:
             self.msg.emit(2, "Model", "Buildpoints", "Build points [max] cannot be generated")
-            return False
+            return
 
         if self.ui.ditherBuildPoints.isChecked():
             self.app.data.ditherPoints()
         self.processPoints()
-        return True
 
-    def genBuildMed(self):
+    def genBuildMed(self) -> None:
         """
-        genBuildMed generates the point pattern based on greater circles for
-        model build. the point are calculated for the observers position. max
-        goes for approx 70 points effectively when removing the horizon.
-
-        :return: success
         """
         self.lastGenerator = "med"
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection="med", keep=keep)
         if not suc:
             self.msg.emit(2, "Model", "Buildpoints", "Build points [med] cannot be generated")
-            return False
+            return
 
         if self.ui.ditherBuildPoints.isChecked():
             self.app.data.ditherPoints()
         self.processPoints()
-        return True
 
-    def genBuildNorm(self):
+    def genBuildNorm(self) -> None:
         """
-        genBuildNorm generates the point pattern based on greater circles for
-        model build. the point are calculated for the observers position. max
-        goes for approx 40 points effectively when removing the horizon.
-
-        :return: success
         """
         self.lastGenerator = "norm"
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection="norm", keep=keep)
         if not suc:
             self.msg.emit(2, "Model", "Buildpoints", "Build points [norm] cannot be generated")
-            return False
+            return
 
         if self.ui.ditherBuildPoints.isChecked():
             self.app.data.ditherPoints()
         self.processPoints()
-        return True
 
-    def genBuildMin(self):
+    def genBuildMin(self) -> None:
         """
-        genBuildMin generates the point pattern based on greater circles for
-        model build. the point are calculated for the observers position. min
-        goes for approx 25 points effectively when removing the horizon.
-
-        :return: success
         """
         self.lastGenerator = "min"
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection="min", keep=keep)
         if not suc:
             self.msg.emit(2, "Model", "Buildpoints", "Build points [min] cannot be generated")
-            return False
+            return
 
         if self.ui.ditherBuildPoints.isChecked():
             self.app.data.ditherPoints()
         self.processPoints()
-        return True
 
     def genBuildDSO(self):
         """
@@ -362,15 +338,7 @@ class BuildPoints(MWidget):
         return True
 
     def genBuildGoldenSpiral(self):
-        """
-        genBuildGoldenSpiral generates points along the actual tracking path
-        as the processing might take to long (at least on ubuntu), we have to
-        find a workaround to this behavior:
-        https://stackoverflow.com/questions/41568990/
-        how-do-i-prevent-double-valuechanged-events-when-i-press-the-arrows-in-a-qspinbo
-
-        :return: success
-        """
+        """ """
         self.lastGenerator = "spiral"
         numberTarget = int(self.ui.numberSpiral.value())
         self.changeStyleDynamic(self.ui.genBuildSpiral, "running", True)
@@ -378,22 +346,14 @@ class BuildPoints(MWidget):
         numberFilter = 0
         while numberFilter < numberTarget:
             numberPoints = numberPoints + numberTarget - numberFilter
-            suc = self.app.data.generateGoldenSpiral(numberPoints=numberPoints)
-            if not suc:
-                break
+            self.app.data.generateGoldenSpiral(numberPoints=numberPoints)
             self.autoDeletePoints()
             numberFilter = len(self.app.data.buildP)
         self.processPoints()
         self.changeStyleDynamic(self.ui.genBuildSpiral, "running", False)
-        if not suc:
-            self.msg.emit(2, "Model", "Buildpoints", "Golden spiral cannot be generated")
-            return False
-        return True
 
     def genModel(self):
-        """
-        :return: success
-        """
+        """ """
         self.lastGenerator = "model"
 
         keep = self.ui.keepGeneratedPoints.isChecked()
@@ -403,9 +363,7 @@ class BuildPoints(MWidget):
         model = self.app.mount.model
         for star in model.starList:
             self.app.data.addBuildP((star.alt.degrees, star.az.degrees, True))
-
         self.processPoints()
-        return True
 
     def genBuildFile(self):
         """
@@ -426,7 +384,6 @@ class BuildPoints(MWidget):
             text = f"Build points file [{fileName}] could not be loaded"
             self.msg.emit(2, "Model", "Buildpoints", text)
             return
-
         self.processPoints()
 
     def loadBuildFile(self):

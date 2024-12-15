@@ -89,8 +89,8 @@ setup(
         "xisf==0.9.5",
     ]
     + (["pywin32==306"] if platform.system() == "Windows" else [])
-    + (["PySide6==6.8.1"] if platform.machine() not in ["armv7l"] else []),
-    keywords=["6.8.1"],
+    + (["PySide6==6.7.3"] if platform.machine() not in ["armv7l"] else []),
+    keywords=["6.7.3"],
     url="https://github.com/mworion/MountWizzard4",
     license="APL 2.0",
     author="Michael Wuertenberger",

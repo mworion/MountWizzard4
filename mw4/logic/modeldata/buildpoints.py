@@ -542,7 +542,7 @@ class DataPoint(object):
 
     def saveBuildP(self, fileName):
         """ """
-        if fileName is None:
+        if not fileName:
             return False
 
         fileName = self.configDir / (fileName + ".bpts")
@@ -576,7 +576,7 @@ class DataPoint(object):
 
     def saveHorizonP(self, fileName):
         """ """
-        if fileName is None:
+        if not fileName:
             return False
 
         fileName = self.configDir / (fileName + ".hpts")

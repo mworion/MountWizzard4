@@ -857,7 +857,7 @@ def test_loadBuildP_6(function):
 
 def test_saveBuildP_11(function):
     function.genGreaterCircle("min")
-    suc = function.saveBuildP()
+    suc = function.saveBuildP("")
     assert not suc
 
 
@@ -935,7 +935,7 @@ def test_saveHorizonP_10(function):
 
 def test_saveHorizonP_11(function):
     function._horizonP = [(0, 1), (0, 2)]
-    suc = function.saveHorizonP()
+    suc = function.saveHorizonP("")
     assert not suc
 
 

@@ -140,9 +140,7 @@ class MountMove(MWidget, SlewInterface):
             )
 
         for speed in self.slewSpeeds:
-            self.slewSpeeds[speed]["button"].clicked.connect(
-                partial(self.setSlewSpeed, speed)
-            )
+            self.slewSpeeds[speed]["button"].clicked.connect(partial(self.setSlewSpeed, speed))
 
         self.ui.moveStepSizeAltAz.clear()
         for text in self.setupStepsizes:
@@ -151,9 +149,7 @@ class MountMove(MWidget, SlewInterface):
     def stopMoveAll(self):
         """ """
         for uiR in self.setupMoveClassic:
-            self.changeStyleDynamic(
-                self.setupMoveClassic[uiR]["button"], "running", False
-            )
+            self.changeStyleDynamic(self.setupMoveClassic[uiR]["button"], "running", False)
         self.app.mount.obsSite.stopMoveAll()
 
     def countDuration(self, duration):
@@ -235,9 +231,7 @@ class MountMove(MWidget, SlewInterface):
         self.targetAlt = None
         self.targetAz = None
         for key in self.setupMoveAltAz:
-            self.changeStyleDynamic(
-                self.setupMoveAltAz[key]["button"], "running", False
-            )
+            self.changeStyleDynamic(self.setupMoveAltAz[key]["button"], "running", False)
         return True
 
     def moveAltAzGameController(self, value):

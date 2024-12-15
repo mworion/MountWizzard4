@@ -86,9 +86,7 @@ class SettMisc(MWidget):
             self.app.dome.signals.slewed.connect(lambda: self.playSound("DomeSlew"))
             self.app.mount.signals.slewed.connect(lambda: self.playSound("MountSlew"))
             self.app.camera.signals.saved.connect(lambda: self.playSound("ImageSaved"))
-            self.app.plateSolve.signals.result.connect(
-                lambda: self.playSound("ImageSolved")
-            )
+            self.app.plateSolve.signals.result.connect(lambda: self.playSound("ImageSolved"))
             self.app.playSound.connect(self.playSound)
             self.setupAudioSignals()
 
@@ -109,22 +107,14 @@ class SettMisc(MWidget):
         self.ui.showTabDome.setChecked(config.get("showTabDome", True))
         self.ui.showTabParkPos.setChecked(config.get("showTabParkPos", True))
         self.ui.showTabProfile.setChecked(config.get("showTabProfile", True))
-        self.ui.soundMountSlewFinished.setCurrentIndex(
-            config.get("soundMountSlewFinished", 0)
-        )
-        self.ui.soundDomeSlewFinished.setCurrentIndex(
-            config.get("soundDomeSlewFinished", 0)
-        )
+        self.ui.soundMountSlewFinished.setCurrentIndex(config.get("soundMountSlewFinished", 0))
+        self.ui.soundDomeSlewFinished.setCurrentIndex(config.get("soundDomeSlewFinished", 0))
         self.ui.soundMountAlert.setCurrentIndex(config.get("soundMountAlert", 0))
         self.ui.soundRunFinished.setCurrentIndex(config.get("soundRunFinished", 0))
         self.ui.soundImageSaved.setCurrentIndex(config.get("soundImageSaved", 0))
         self.ui.soundImageSolved.setCurrentIndex(config.get("soundImageSolved", 0))
-        self.ui.soundConnectionLost.setCurrentIndex(
-            config.get("soundConnectionLost", 0)
-        )
-        self.ui.soundSatStartTracking.setCurrentIndex(
-            config.get("soundSatStartTracking", 0)
-        )
+        self.ui.soundConnectionLost.setCurrentIndex(config.get("soundConnectionLost", 0))
+        self.ui.soundSatStartTracking.setCurrentIndex(config.get("soundSatStartTracking", 0))
         self.ui.gameControllerGroup.setChecked(config.get("gameControllerGroup", False))
         self.ui.gameControllerList.setCurrentIndex(config.get("gameControllerList", 0))
 

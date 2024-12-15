@@ -36,9 +36,7 @@ class Ui_SimulatorDialog(object):
         if not SimulatorDialog.objectName():
             SimulatorDialog.setObjectName("SimulatorDialog")
         SimulatorDialog.resize(800, 600)
-        sizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(SimulatorDialog.sizePolicy().hasHeightForWidth())
@@ -68,9 +66,7 @@ class Ui_SimulatorDialog(object):
         self.verticalLayout_2.setContentsMargins(8, 10, 16, 4)
         self.domeTransparent = QCheckBox(self.groupBox_2)
         self.domeTransparent.setObjectName("domeTransparent")
-        sizePolicy.setHeightForWidth(
-            self.domeTransparent.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy.setHeightForWidth(self.domeTransparent.sizePolicy().hasHeightForWidth())
         self.domeTransparent.setSizePolicy(sizePolicy)
         self.domeTransparent.setMinimumSize(QSize(0, 25))
         self.domeTransparent.setFont(font)
@@ -128,9 +124,7 @@ class Ui_SimulatorDialog(object):
 
         self.groupBox = QGroupBox(SimulatorDialog)
         self.groupBox.setObjectName("groupBox")
-        sizePolicy1 = QSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding
-        )
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(1)
         sizePolicy1.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
@@ -260,9 +254,7 @@ class Ui_SimulatorDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showLaser.setText(
-            QCoreApplication.translate("SimulatorDialog", "Laser", None)
-        )
+        self.showLaser.setText(QCoreApplication.translate("SimulatorDialog", "Laser", None))
         # if QT_CONFIG(tooltip)
         self.showBuildPoints.setToolTip(
             QCoreApplication.translate(
@@ -284,9 +276,7 @@ class Ui_SimulatorDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showNumbers.setText(
-            QCoreApplication.translate("SimulatorDialog", "Numbers", None)
-        )
+        self.showNumbers.setText(QCoreApplication.translate("SimulatorDialog", "Numbers", None))
         # if QT_CONFIG(tooltip)
         self.showSlewPath.setToolTip(
             QCoreApplication.translate(
@@ -296,9 +286,7 @@ class Ui_SimulatorDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showSlewPath.setText(
-            QCoreApplication.translate("SimulatorDialog", "Slew Path", None)
-        )
+        self.showSlewPath.setText(QCoreApplication.translate("SimulatorDialog", "Slew Path", None))
         # if QT_CONFIG(tooltip)
         self.showHorizon.setToolTip(
             QCoreApplication.translate(
@@ -308,9 +296,7 @@ class Ui_SimulatorDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showHorizon.setText(
-            QCoreApplication.translate("SimulatorDialog", "Horizon", None)
-        )
+        self.showHorizon.setText(QCoreApplication.translate("SimulatorDialog", "Horizon", None))
         # if QT_CONFIG(tooltip)
         self.groupBox.setToolTip(
             QCoreApplication.translate(
@@ -340,9 +326,7 @@ class Ui_SimulatorDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.groupBox.setTitle(
-            QCoreApplication.translate("SimulatorDialog", "Select View", None)
-        )
+        self.groupBox.setTitle(QCoreApplication.translate("SimulatorDialog", "Select View", None))
         # if QT_CONFIG(tooltip)
         self.topView.setToolTip(
             QCoreApplication.translate(
@@ -352,9 +336,7 @@ class Ui_SimulatorDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.topView.setText(
-            QCoreApplication.translate("SimulatorDialog", "Top View", None)
-        )
+        self.topView.setText(QCoreApplication.translate("SimulatorDialog", "Top View", None))
         # if QT_CONFIG(tooltip)
         self.topWestView.setToolTip(
             QCoreApplication.translate(
@@ -376,9 +358,7 @@ class Ui_SimulatorDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.westView.setText(
-            QCoreApplication.translate("SimulatorDialog", "West View", None)
-        )
+        self.westView.setText(QCoreApplication.translate("SimulatorDialog", "West View", None))
         # if QT_CONFIG(tooltip)
         self.topEastView.setToolTip(
             QCoreApplication.translate(
@@ -400,9 +380,7 @@ class Ui_SimulatorDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.eastView.setText(
-            QCoreApplication.translate("SimulatorDialog", "East View", None)
-        )
+        self.eastView.setText(QCoreApplication.translate("SimulatorDialog", "East View", None))
         # if QT_CONFIG(tooltip)
         self.telescopeView.setToolTip(
             QCoreApplication.translate(

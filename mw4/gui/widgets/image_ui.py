@@ -252,9 +252,7 @@ class Ui_ImageDialog(object):
         self.gridLayout_5.setContentsMargins(0, 0, 0, 0)
         self.image = ImageBar(self.Image)
         self.image.setObjectName("image")
-        sizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
-        )
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(self.image.sizePolicy().hasHeightForWidth())
@@ -871,30 +869,18 @@ class Ui_ImageDialog(object):
     # setupUi
 
     def retranslateUi(self, ImageDialog):
-        ImageDialog.setWindowTitle(
-            QCoreApplication.translate("ImageDialog", "Imaging", None)
-        )
+        ImageDialog.setWindowTitle(QCoreApplication.translate("ImageDialog", "Imaging", None))
         self.groupImageActions.setTitle(
             QCoreApplication.translate("ImageDialog", "Image actions", None)
         )
         self.solve.setText(QCoreApplication.translate("ImageDialog", "Solve", None))
-        self.exposeN.setText(
-            QCoreApplication.translate("ImageDialog", "Expose N", None)
-        )
+        self.exposeN.setText(QCoreApplication.translate("ImageDialog", "Expose N", None))
         self.expose.setText(QCoreApplication.translate("ImageDialog", "Expose 1", None))
         self.load.setText(QCoreApplication.translate("ImageDialog", "Load", None))
-        self.abortExpose.setText(
-            QCoreApplication.translate("ImageDialog", "Exp. Abort", None)
-        )
-        self.abortSolve.setText(
-            QCoreApplication.translate("ImageDialog", "Solve Abort", None)
-        )
-        self.embedData.setText(
-            QCoreApplication.translate("ImageDialog", "Embed WCS", None)
-        )
-        self.autoSolve.setText(
-            QCoreApplication.translate("ImageDialog", "Auto Solve", None)
-        )
+        self.abortExpose.setText(QCoreApplication.translate("ImageDialog", "Exp. Abort", None))
+        self.abortSolve.setText(QCoreApplication.translate("ImageDialog", "Solve Abort", None))
+        self.embedData.setText(QCoreApplication.translate("ImageDialog", "Embed WCS", None))
+        self.autoSolve.setText(QCoreApplication.translate("ImageDialog", "Auto Solve", None))
         # if QT_CONFIG(tooltip)
         self.timeTagImage.setToolTip(
             QCoreApplication.translate(
@@ -904,23 +890,13 @@ class Ui_ImageDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.timeTagImage.setText(
-            QCoreApplication.translate("ImageDialog", "Add time tags", None)
-        )
-        self.slewCenter.setText(
-            QCoreApplication.translate("ImageDialog", "Slew Center", None)
-        )
+        self.timeTagImage.setText(QCoreApplication.translate("ImageDialog", "Add time tags", None))
+        self.slewCenter.setText(QCoreApplication.translate("ImageDialog", "Slew Center", None))
         self.slewCenter_2.setText(
-            QCoreApplication.translate(
-                "ImageDialog", "Sync model to image solution", None
-            )
+            QCoreApplication.translate("ImageDialog", "Sync model to image solution", None)
         )
-        self.groupBox.setTitle(
-            QCoreApplication.translate("ImageDialog", "Image View", None)
-        )
-        self.aspectLocked.setText(
-            QCoreApplication.translate("ImageDialog", "Lock aspect", None)
-        )
+        self.groupBox.setTitle(QCoreApplication.translate("ImageDialog", "Image View", None))
+        self.aspectLocked.setText(QCoreApplication.translate("ImageDialog", "Lock aspect", None))
         # if QT_CONFIG(tooltip)
         self.showCrosshair.setToolTip(
             QCoreApplication.translate(
@@ -930,65 +906,39 @@ class Ui_ImageDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showCrosshair.setText(
-            QCoreApplication.translate("ImageDialog", "Crosshair  ", None)
-        )
+        self.showCrosshair.setText(QCoreApplication.translate("ImageDialog", "Crosshair  ", None))
         self.flipH.setText(QCoreApplication.translate("ImageDialog", "Flip H", None))
         self.flipV.setText(QCoreApplication.translate("ImageDialog", "Flip V", None))
-        self.color.setItemText(
-            0, QCoreApplication.translate("ImageDialog", "Grey", None)
-        )
-        self.color.setItemText(
-            1, QCoreApplication.translate("ImageDialog", "Rainbow", None)
-        )
-        self.color.setItemText(
-            2, QCoreApplication.translate("ImageDialog", "Cividis", None)
-        )
-        self.color.setItemText(
-            3, QCoreApplication.translate("ImageDialog", "Magma", None)
-        )
-        self.color.setItemText(
-            4, QCoreApplication.translate("ImageDialog", "Extreme", None)
-        )
+        self.color.setItemText(0, QCoreApplication.translate("ImageDialog", "Grey", None))
+        self.color.setItemText(1, QCoreApplication.translate("ImageDialog", "Rainbow", None))
+        self.color.setItemText(2, QCoreApplication.translate("ImageDialog", "Cividis", None))
+        self.color.setItemText(3, QCoreApplication.translate("ImageDialog", "Magma", None))
+        self.color.setItemText(4, QCoreApplication.translate("ImageDialog", "Extreme", None))
 
         self.photometryGroup.setTitle(
             QCoreApplication.translate("ImageDialog", "Photometry", None)
         )
-        self.snTarget.setItemText(
-            0, QCoreApplication.translate("ImageDialog", "Star norm", None)
-        )
-        self.snTarget.setItemText(
-            1, QCoreApplication.translate("ImageDialog", "Star plus", None)
-        )
+        self.snTarget.setItemText(0, QCoreApplication.translate("ImageDialog", "Star norm", None))
+        self.snTarget.setItemText(1, QCoreApplication.translate("ImageDialog", "Star plus", None))
         self.snTarget.setItemText(
             2, QCoreApplication.translate("ImageDialog", "Star extended", None)
         )
-        self.snTarget.setItemText(
-            3, QCoreApplication.translate("ImageDialog", "Star max", None)
-        )
+        self.snTarget.setItemText(3, QCoreApplication.translate("ImageDialog", "Star max", None))
         self.snTarget.setItemText(
             4, QCoreApplication.translate("ImageDialog", "Star extreme", None)
         )
 
-        self.isoLayer.setText(
-            QCoreApplication.translate("ImageDialog", "2D contour", None)
-        )
-        self.showValues.setText(
-            QCoreApplication.translate("ImageDialog", "Show values", None)
-        )
+        self.isoLayer.setText(QCoreApplication.translate("ImageDialog", "2D contour", None))
+        self.showValues.setText(QCoreApplication.translate("ImageDialog", "Show values", None))
         self.tabImage.setTabText(
             self.tabImage.indexOf(self.Image),
             QCoreApplication.translate("ImageDialog", "Image", None),
         )
-        self.label_13.setText(
-            QCoreApplication.translate("ImageDialog", "Number of stars", None)
-        )
+        self.label_13.setText(QCoreApplication.translate("ImageDialog", "Number of stars", None))
         self.label_17.setText(
             QCoreApplication.translate("ImageDialog", "10% Percentile [HFR]", None)
         )
-        self.label_19.setText(
-            QCoreApplication.translate("ImageDialog", "Median [HFR]", None)
-        )
+        self.label_19.setText(QCoreApplication.translate("ImageDialog", "Median [HFR]", None))
         self.tabImage.setTabText(
             self.tabImage.indexOf(self.HFR),
             QCoreApplication.translate("ImageDialog", "HFR", None),
@@ -996,42 +946,28 @@ class Ui_ImageDialog(object):
         self.label_18.setText(
             QCoreApplication.translate("ImageDialog", "Off-Axis aberration [HFR]", None)
         )
-        self.label_5.setText(
-            QCoreApplication.translate("ImageDialog", "Number stars", None)
-        )
-        self.label_16.setText(
-            QCoreApplication.translate("ImageDialog", "Tilt square [HFR]", None)
-        )
-        self.label_23.setText(
-            QCoreApplication.translate("ImageDialog", "Median HFR", None)
-        )
+        self.label_5.setText(QCoreApplication.translate("ImageDialog", "Number stars", None))
+        self.label_16.setText(QCoreApplication.translate("ImageDialog", "Tilt square [HFR]", None))
+        self.label_23.setText(QCoreApplication.translate("ImageDialog", "Median HFR", None))
         self.tabImage.setTabText(
             self.tabImage.indexOf(self.TiltSquare),
             QCoreApplication.translate("ImageDialog", "Tilt Square", None),
         )
-        self.label_14.setText(
-            QCoreApplication.translate("ImageDialog", "Number stars", None)
-        )
+        self.label_14.setText(QCoreApplication.translate("ImageDialog", "Number stars", None))
         self.label_21.setText(
             QCoreApplication.translate("ImageDialog", "Tilt triangle [HFR]", None)
         )
         self.label_22.setText(
             QCoreApplication.translate("ImageDialog", "Off-Axis aberration [HFR]", None)
         )
-        self.label_20.setText(
-            QCoreApplication.translate("ImageDialog", "Offset tilt angle", None)
-        )
-        self.label_24.setText(
-            QCoreApplication.translate("ImageDialog", "Median HFR", None)
-        )
+        self.label_20.setText(QCoreApplication.translate("ImageDialog", "Offset tilt angle", None))
+        self.label_24.setText(QCoreApplication.translate("ImageDialog", "Median HFR", None))
         self.tabImage.setTabText(
             self.tabImage.indexOf(self.TiltTriangle),
             QCoreApplication.translate("ImageDialog", "Tilt Triangle", None),
         )
         self.label_15.setText(
-            QCoreApplication.translate(
-                "ImageDialog", "10% Percentile [aspect ratio]", None
-            )
+            QCoreApplication.translate("ImageDialog", "10% Percentile [aspect ratio]", None)
         )
         self.tabImage.setTabText(
             self.tabImage.indexOf(self.Roundness),
@@ -1053,27 +989,13 @@ class Ui_ImageDialog(object):
             self.tabImage.indexOf(self.BackRMS),
             QCoreApplication.translate("ImageDialog", "Back RMS", None),
         )
-        self.headerGroup.setTitle(
-            QCoreApplication.translate("ImageDialog", "Fits Header", None)
-        )
-        self.label_3.setText(
-            QCoreApplication.translate("ImageDialog", "DEC [deg]", None)
-        )
-        self.label_6.setText(
-            QCoreApplication.translate("ImageDialog", "Rot [deg]", None)
-        )
-        self.label.setText(
-            QCoreApplication.translate("ImageDialog", "Object Name", None)
-        )
-        self.label_2.setText(
-            QCoreApplication.translate("ImageDialog", "RA [hours]", None)
-        )
-        self.label_4.setText(
-            QCoreApplication.translate("ImageDialog", "SQM [mpas]", None)
-        )
-        self.label_8.setText(
-            QCoreApplication.translate("ImageDialog", "Exposure Time [s]", None)
-        )
+        self.headerGroup.setTitle(QCoreApplication.translate("ImageDialog", "Fits Header", None))
+        self.label_3.setText(QCoreApplication.translate("ImageDialog", "DEC [deg]", None))
+        self.label_6.setText(QCoreApplication.translate("ImageDialog", "Rot [deg]", None))
+        self.label.setText(QCoreApplication.translate("ImageDialog", "Object Name", None))
+        self.label_2.setText(QCoreApplication.translate("ImageDialog", "RA [hours]", None))
+        self.label_4.setText(QCoreApplication.translate("ImageDialog", "SQM [mpas]", None))
+        self.label_8.setText(QCoreApplication.translate("ImageDialog", "Exposure Time [s]", None))
         self.label_12.setText(QCoreApplication.translate("ImageDialog", "Bin Y", None))
         self.label_7.setText(QCoreApplication.translate("ImageDialog", "Scale", None))
         self.label_11.setText(QCoreApplication.translate("ImageDialog", "Bin X", None))
@@ -1082,11 +1004,7 @@ class Ui_ImageDialog(object):
         self.groupMouseCoord.setTitle(
             QCoreApplication.translate("ImageDialog", "Mouse Coords", None)
         )
-        self.label_25.setText(
-            QCoreApplication.translate("ImageDialog", "RA [hours]", None)
-        )
-        self.label_26.setText(
-            QCoreApplication.translate("ImageDialog", "DEC [deg]", None)
-        )
+        self.label_25.setText(QCoreApplication.translate("ImageDialog", "RA [hours]", None))
+        self.label_26.setText(QCoreApplication.translate("ImageDialog", "DEC [deg]", None))
 
     # retranslateUi

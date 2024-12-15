@@ -113,9 +113,7 @@ class CustomViewBox(pg.ViewBox):
         self.updateData(x=x, y=y)
         return True
 
-    def checkLimits(
-        self, data: (float, float), index: int, pos: pg.Point
-    ) -> (np.array, np.array):
+    def checkLimits(self, data: (float, float), index: int, pos: pg.Point) -> (np.array, np.array):
         """ """
         xRange = self.state["limits"]["xLimits"]
         yRange = self.state["limits"]["yLimits"]

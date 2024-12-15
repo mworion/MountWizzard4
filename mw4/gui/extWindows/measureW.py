@@ -288,9 +288,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
     def showWindow(self) -> None:
         """ """
         for setName in self.mSetUI:
-            self.mSetUI[setName].currentIndexChanged.connect(
-                partial(self.changeChart, setName)
-            )
+            self.mSetUI[setName].currentIndexChanged.connect(partial(self.changeChart, setName))
         self.app.colorChange.connect(self.colorChange)
         self.app.update1s.connect(self.drawMeasure)
         self.app.update1s.connect(self.setTitle)
@@ -334,9 +332,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         if yMin is not None and yMax is not None:
             minYRange = (yMax - yMin) if fixed else (yMax - yMin) / 4
             maxYRange = yMax - yMin
-            plotItem.setLimits(
-                yMin=yMin, yMax=yMax, minYRange=minYRange, maxYRange=maxYRange
-            )
+            plotItem.setLimits(yMin=yMin, yMax=yMax, minYRange=minYRange, maxYRange=maxYRange)
         label = values["gen"].get("label", "-")
         plotItem.setLabel("left", label)
         legend = pg.LegendItem(

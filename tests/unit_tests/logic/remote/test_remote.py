@@ -82,9 +82,7 @@ def test_addConnection_3(function):
             return "Test"
 
     function.tcpServer = QtNetwork.QTcpServer(function)
-    with mock.patch.object(
-        function.tcpServer, "nextPendingConnection", return_value=Test()
-    ):
+    with mock.patch.object(function.tcpServer, "nextPendingConnection", return_value=Test()):
         suc = function.addConnection()
         assert suc
 

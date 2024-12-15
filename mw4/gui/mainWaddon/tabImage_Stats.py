@@ -100,9 +100,7 @@ class ImageStats(MWidget):
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
             resolutionY = pixelSizeY / focalLength * 206.265
-            self.scaleHint = np.sqrt(
-                resolutionX * resolutionX + resolutionY * resolutionY
-            )
+            self.scaleHint = np.sqrt(resolutionX * resolutionX + resolutionY * resolutionY)
         else:
             resolutionX = None
             resolutionY = None

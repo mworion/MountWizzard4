@@ -48,9 +48,7 @@ class SettMount(MWidget):
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
         self.ui.waitTimeMountFlip.valueChanged.connect(self.setWaitTimeFlip)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
-        self.ui.copyFromTelescopeDriver.clicked.connect(
-            self.updateTelescopeParametersToGui
-        )
+        self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
         self.app.mount.signals.settingDone.connect(self.setMountMAC)
         self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
         self.app.update3s.connect(self.updateTelescopeParametersToGuiCyclic)
@@ -64,9 +62,7 @@ class SettMount(MWidget):
         self.mountHost()
         self.ui.mountMAC.setText(config.get("mountMAC", ""))
         self.mountMAC()
-        self.ui.mountWolAddress.setText(
-            config.get("mountWolAddress", "255.255.255.255")
-        )
+        self.ui.mountWolAddress.setText(config.get("mountWolAddress", "255.255.255.255"))
         self.ui.mountWolPort.setText(config.get("mountWolPort", "9"))
         self.ui.rackCompMAC.setText(config.get("rackCompMAC", ""))
         self.ui.waitTimeMountFlip.setValue(config.get("waitTimeFlip", 0))

@@ -45,9 +45,7 @@ def test_workerGetInitialConfig_2(function):
 
 
 def test_workerGetInitialConfig_3(function):
-    with mock.patch.object(
-        function, "getAlpacaProperty", return_value=["test", "test1"]
-    ):
+    with mock.patch.object(function, "getAlpacaProperty", return_value=["test", "test1"]):
         suc = function.workerGetInitialConfig()
         assert suc
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_0"] == "test"

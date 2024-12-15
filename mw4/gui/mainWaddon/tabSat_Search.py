@@ -116,12 +116,8 @@ class SatSearch(MWidget, SatData):
         for i, hs in enumerate(hSet):
             self.ui.listSats.setColumnWidth(i, hs)
         self.ui.listSats.verticalHeader().setDefaultSectionSize(16)
-        self.ui.listSats.setSelectionBehavior(
-            QAbstractItemView.SelectionBehavior.SelectRows
-        )
-        self.ui.listSats.setSelectionMode(
-            QAbstractItemView.SelectionMode.ExtendedSelection
-        )
+        self.ui.listSats.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.ui.listSats.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
     def processSatelliteSource(self):
         """ """
@@ -169,32 +165,22 @@ class SatSearch(MWidget, SatData):
         """ """
         self.ui.listSats.setItem(row, col, entry)
 
-    def updateListSats(
-        self, row, satParam, isUp=None, isSunlit=None, appMag=None, twilight=None
-    ):
+    def updateListSats(self, row, satParam, isUp=None, isSunlit=None, appMag=None, twilight=None):
         """ """
         entry = QTableWidgetItem(f"{satParam[0]:5.0f}")
-        entry.setTextAlignment(
-            Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
-        )
+        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.setSatListItem.emit(row, 2, entry)
 
         entry = QTableWidgetItem(f"{satParam[1]:+2.2f}")
-        entry.setTextAlignment(
-            Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
-        )
+        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.setSatListItem.emit(row, 3, entry)
 
         entry = QTableWidgetItem(f"{satParam[2]:+2.2f}")
-        entry.setTextAlignment(
-            Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
-        )
+        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.setSatListItem.emit(row, 4, entry)
 
         entry = QTableWidgetItem(f"{satParam[3]:+2.2f}")
-        entry.setTextAlignment(
-            Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
-        )
+        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.setSatListItem.emit(row, 5, entry)
 
         if isUp is not None:
@@ -204,9 +190,7 @@ class SatSearch(MWidget, SatData):
                 t = ""
 
             entry = QTableWidgetItem(t)
-            entry.setTextAlignment(
-                Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
-            )
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.setSatListItem.emit(row, 6, entry)
 
         if isSunlit is not None:
@@ -216,16 +200,12 @@ class SatSearch(MWidget, SatData):
                 value = ""
 
             entry = QCustomTableWidgetItem(value)
-            entry.setTextAlignment(
-                Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
-            )
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.setSatListItem.emit(row, 7, entry)
 
         if twilight is not None:
             entry = QTableWidgetItem(f"{twilight:1.0f}")
-            entry.setTextAlignment(
-                Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
-            )
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.setSatListItem.emit(row, 8, entry)
 
     def calcSatListDynamic(self):
@@ -336,14 +316,10 @@ class SatSearch(MWidget, SatData):
             row = self.ui.listSats.rowCount()
             self.ui.listSats.insertRow(row)
             entry = QTableWidgetItem(f"{number:5d}")
-            entry.setTextAlignment(
-                Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
-            )
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.ui.listSats.setItem(row, 0, entry)
             entry = QTableWidgetItem(name)
-            entry.setTextAlignment(
-                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
-            )
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             self.ui.listSats.setItem(row, 1, entry)
         self.satellites.dataValid = True
         self.calcSatList()

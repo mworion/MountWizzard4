@@ -301,9 +301,7 @@ class MeasureData:
         filterNo = self.app.filter.data.get("FILTER_SLOT.FILTER_SLOT_VALUE", 0)
         dat["filterNumber"] = np.append(dat["filterNumber"], filterNo)
 
-        focus = self.app.focuser.data.get(
-            "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0
-        )
+        focus = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         dat["focusPosition"] = np.append(dat["focusPosition"], focus)
 
         powCurr1 = self.app.power.data.get("POWER_CURRENT.POWER_CURRENT_1", 0)

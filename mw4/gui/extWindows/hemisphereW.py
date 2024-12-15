@@ -452,9 +452,7 @@ class HemisphereWindow(MWidget, SlewInterface):
         plotItem = self.ui.hemisphere.p[0]
         hip = self.app.hipparcos
         self.alignmentStarsText = []
-        pd = pg.ScatterPlotItem(
-            symbol="star", size=6, pen=pg.mkPen(color=self.M_YELLOW1)
-        )
+        pd = pg.ScatterPlotItem(symbol="star", size=6, pen=pg.mkPen(color=self.M_YELLOW1))
         pd.setZValue(30)
         self.alignmentStars = pd
         plotItem.addItem(pd)
@@ -815,9 +813,7 @@ class HemisphereWindow(MWidget, SlewInterface):
         if self.setTerrainFile(loadFilePath):
             self.ui.terrainFileName.setText(loadFilePath.stem)
             self.ui.showTerrain.setChecked(True)
-            self.msg.emit(
-                0, "Hemisphere", "Terrain", f"Mask [{loadFilePath.stem}] loaded"
-            )
+            self.msg.emit(0, "Hemisphere", "Terrain", f"Mask [{loadFilePath.stem}] loaded")
         else:
             self.msg.emit(
                 2,
@@ -838,21 +834,15 @@ class HemisphereWindow(MWidget, SlewInterface):
     def loadHorizonMask(self):
         """ """
         folder = self.app.mwGlob["configDir"]
-        fileTypes = (
-            "Horizon mask files (*.hpts);; CSV Files (*.csv);; MW3 Files (*.txt)"
-        )
+        fileTypes = "Horizon mask files (*.hpts);; CSV Files (*.csv);; MW3 Files (*.txt)"
         loadFilePath = self.openFile(self, "Open horizon mask file", folder, fileTypes)
         if not loadFilePath.is_file():
             return False
 
-        suc = self.app.data.loadHorizonP(
-            fileName=loadFilePath.stem, ext=loadFilePath.suffix
-        )
+        suc = self.app.data.loadHorizonP(fileName=loadFilePath.stem, ext=loadFilePath.suffix)
         if suc:
             self.ui.horizonMaskFileName.setText(loadFilePath.stem)
-            self.msg.emit(
-                0, "Hemisphere", "Horizon", f"Mask [{loadFilePath.stem}] loaded"
-            )
+            self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{loadFilePath.stem}] loaded")
         else:
             self.msg.emit(
                 2,
@@ -877,9 +867,7 @@ class HemisphereWindow(MWidget, SlewInterface):
         if suc:
             self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{fileName}] saved")
         else:
-            self.msg.emit(
-                2, "Hemisphere", "Horizon", f"Mask [{fileName}] cannot no be saved"
-            )
+            self.msg.emit(2, "Hemisphere", "Horizon", f"Mask [{fileName}] cannot no be saved")
         return True
 
     def saveHorizonMaskAs(self):
@@ -896,9 +884,7 @@ class HemisphereWindow(MWidget, SlewInterface):
             self.ui.horizonMaskFileName.setText(fileName)
             self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{fileName}] saved")
         else:
-            self.msg.emit(
-                2, "Hemisphere", "Horizon", f"Mask [{fileName}] cannot no be saved"
-            )
+            self.msg.emit(2, "Hemisphere", "Horizon", f"Mask [{fileName}] cannot no be saved")
         return True
 
     def setOperationModeHor(self):

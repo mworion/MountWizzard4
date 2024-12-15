@@ -561,9 +561,7 @@ def test_setLightIntensity_2(function):
 def test_setLightIntensity_3(function):
     function.app.cover.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
-        with mock.patch.object(
-            function.app.cover, "lightIntensity", return_value=False
-        ):
+        with mock.patch.object(function.app.cover, "lightIntensity", return_value=False):
             suc = function.setLightIntensity()
             assert not suc
 

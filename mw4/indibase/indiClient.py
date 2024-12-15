@@ -139,9 +139,7 @@ class Client(QObject):
         :return: success for test purpose
         """
         if deviceName:
-            cmd = indiXML.clientGetProperties(
-                indi_attr={"version": "1.7", "device": deviceName}
-            )
+            cmd = indiXML.clientGetProperties(indi_attr={"version": "1.7", "device": deviceName})
         else:
             cmd = indiXML.clientGetProperties(indi_attr={"version": "1.7"})
 
@@ -513,9 +511,7 @@ class Client(QObject):
         else:
             return -1
 
-    def _fillAttributes(
-        self, deviceName=None, chunk=None, elementList=None, defVector=None
-    ):
+    def _fillAttributes(self, deviceName=None, chunk=None, elementList=None, defVector=None):
         """
         :param deviceName: device name
         :param chunk:   xml element from INDI
@@ -543,11 +539,7 @@ class Client(QObject):
                 elementList[name][attr] = elt.attr[attr]
 
             # send connected signals
-            if (
-                name == "CONNECT"
-                and elt.getValue() == "On"
-                and chunk.attr["state"] == "Ok"
-            ):
+            if name == "CONNECT" and elt.getValue() == "On" and chunk.attr["state"] == "Ok":
                 self.signals.deviceConnected.emit(deviceName)
                 self.log.info(f"Device [{deviceName}] connected")
 
@@ -634,17 +626,13 @@ class Client(QObject):
         :param deviceName: device name
         :return: success
         """
-        iProperty, elementList = self._setupPropertyStructure(
-            chunk=chunk, device=device
-        )
+        iProperty, elementList = self._setupPropertyStructure(chunk=chunk, device=device)
         self._fillAttributes(
             deviceName=deviceName, chunk=chunk, elementList=elementList, defVector=False
         )
 
         self.log.trace(
-            f"SET: Device:{device.name}, "
-            f"Property: {iProperty}, "
-            f"Elements: {elementList}"
+            f"SET: Device:{device.name}, " f"Property: {iProperty}, " f"Elements: {elementList}"
         )
 
         if isinstance(chunk, indiXML.SetBLOBVector):
@@ -670,16 +658,12 @@ class Client(QObject):
         :param deviceName: device name
         :return: success
         """
-        iProperty, elementList = self._setupPropertyStructure(
-            chunk=chunk, device=device
-        )
+        iProperty, elementList = self._setupPropertyStructure(chunk=chunk, device=device)
         self._fillAttributes(
             deviceName=deviceName, chunk=chunk, elementList=elementList, defVector=True
         )
         self.log.trace(
-            f"DEF: Device:{device.name}, "
-            f"Property: {iProperty}, "
-            f"Elements: {elementList}"
+            f"DEF: Device:{device.name}, " f"Property: {iProperty}, " f"Elements: {elementList}"
         )
         self.signals.newProperty.emit(deviceName, iProperty)
         if isinstance(chunk, indiXML.DefBLOBVector):

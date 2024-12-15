@@ -232,9 +232,7 @@ class BuildPoints(MWidget):
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=12, keep=keep)
         if not suc:
-            self.msg.emit(
-                2, "Model", "Buildpoints", "Could not generate 12 align stars"
-            )
+            self.msg.emit(2, "Model", "Buildpoints", "Could not generate 12 align stars")
             return False
 
         self.processPoints()
@@ -252,9 +250,7 @@ class BuildPoints(MWidget):
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection="max", keep=keep)
         if not suc:
-            self.msg.emit(
-                2, "Model", "Buildpoints", "Build points [max] cannot be generated"
-            )
+            self.msg.emit(2, "Model", "Buildpoints", "Build points [max] cannot be generated")
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -274,9 +270,7 @@ class BuildPoints(MWidget):
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection="med", keep=keep)
         if not suc:
-            self.msg.emit(
-                2, "Model", "Buildpoints", "Build points [med] cannot be generated"
-            )
+            self.msg.emit(2, "Model", "Buildpoints", "Build points [med] cannot be generated")
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -296,9 +290,7 @@ class BuildPoints(MWidget):
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection="norm", keep=keep)
         if not suc:
-            self.msg.emit(
-                2, "Model", "Buildpoints", "Build points [norm] cannot be generated"
-            )
+            self.msg.emit(2, "Model", "Buildpoints", "Build points [norm] cannot be generated")
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -318,9 +310,7 @@ class BuildPoints(MWidget):
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection="min", keep=keep)
         if not suc:
-            self.msg.emit(
-                2, "Model", "Buildpoints", "Build points [min] cannot be generated"
-            )
+            self.msg.emit(2, "Model", "Buildpoints", "Build points [min] cannot be generated")
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -342,9 +332,7 @@ class BuildPoints(MWidget):
         location = self.app.mount.obsSite.location
 
         if ha is None or dec is None or location is None or lst is None:
-            self.msg.emit(
-                2, "Model", "Buildpoints", "DSO Path cannot be generated - mount off"
-            )
+            self.msg.emit(2, "Model", "Buildpoints", "DSO Path cannot be generated - mount off")
             return False
 
         if self.simbadRa and self.simbadDec:
@@ -364,9 +352,7 @@ class BuildPoints(MWidget):
         )
         if not suc:
             self.ui.numberDSOPoints.setEnabled(True)
-            self.msg.emit(
-                2, "Model", "Buildpoints", "DSO Path cannot be generated - calc error"
-            )
+            self.msg.emit(2, "Model", "Buildpoints", "DSO Path cannot be generated - calc error")
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -400,9 +386,7 @@ class BuildPoints(MWidget):
         self.processPoints()
         self.changeStyleDynamic(self.ui.genBuildSpiral, "running", False)
         if not suc:
-            self.msg.emit(
-                2, "Model", "Buildpoints", "Golden spiral cannot be generated"
-            )
+            self.msg.emit(2, "Model", "Buildpoints", "Golden spiral cannot be generated")
             return False
         return True
 
@@ -436,7 +420,7 @@ class BuildPoints(MWidget):
 
         keep = self.ui.keepGeneratedPoints.isChecked()
         fullFileName = self.app.mwGlob["configDir"] / fileName
-        suc = self.app.data.loadBuildP(fullFileName=fullFileName, keep=keep)
+        suc = self.app.data.loadBuildP(fullFileName, keep=keep)
 
         if not suc:
             text = f"Build points file [{fileName}] could not be loaded"
@@ -446,28 +430,20 @@ class BuildPoints(MWidget):
         self.processPoints()
 
     def loadBuildFile(self):
-        """
-        :return: success
-        """
+        """ """
         folder = self.app.mwGlob["configDir"]
         fileTypes = "Build Point Files (*.bpts)"
         fileTypes += ";; CSV Files (*.csv)"
         fileTypes += ";; Model Files (*.model)"
-        fullFileName = self.openFile(
-            self.mainW, "Open build point file", folder, fileTypes
-        )
+        fullFileName = self.openFile(self.mainW, "Open build point file", folder, fileTypes)
         if not fullFileName.is_file():
             return
 
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.loadBuildP(
-            fullFileName=fullFileName, ext=fullFileName.suffix, keep=keep
-        )
+        suc = self.app.data.loadBuildP(fullFileName, ext=fullFileName.suffix, keep=keep)
         if suc:
             self.ui.buildPFileName.setText(fullFileName.name)
-            self.msg.emit(
-                0, "Model", "Buildpoints", f"Build file [{fullFileName.name}] loaded"
-            )
+            self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fullFileName.name}] loaded")
         else:
             self.msg.emit(
                 2,
@@ -484,13 +460,11 @@ class BuildPoints(MWidget):
             self.msg.emit(0, "Model", "Buildpoints", "Build points file name not given")
             return
 
-        suc = self.app.data.saveBuildP(fileName=fileName)
+        suc = self.app.data.saveBuildP(fileName)
         if suc:
             self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fileName}] saved")
         else:
-            self.msg.emit(
-                2, "Model", "Buildpoints", f"Build file [{fileName}] cannot be saved"
-            )
+            self.msg.emit(2, "Model", "Buildpoints", f"Build file [{fileName}] cannot be saved")
 
     def saveBuildFileAs(self):
         """ """
@@ -501,12 +475,10 @@ class BuildPoints(MWidget):
         if saveFilePath.is_dir():
             return
 
-        suc = self.app.data.saveBuildP(fileName=saveFilePath.stem)
+        suc = self.app.data.saveBuildP(saveFilePath.stem)
         if suc:
             self.ui.buildPFileName.setText(saveFilePath.stem)
-            self.msg.emit(
-                0, "Model", "Buildpoints", f"Build file [{saveFilePath.stem}] saved"
-            )
+            self.msg.emit(0, "Model", "Buildpoints", f"Build file [{saveFilePath.stem}] saved")
         else:
             self.msg.emit(
                 2,
@@ -573,9 +545,7 @@ class BuildPoints(MWidget):
     def sortMountAz(self, points, eastwest=None, highlow=None, pierside=None):
         """ """
         points = [(x[0], x[1], x[2], 0) for x in points]
-        self.app.data.sort(
-            points=points, eastwest=eastwest, highlow=highlow, pierside=pierside
-        )
+        self.app.data.sort(points=points, eastwest=eastwest, highlow=highlow, pierside=pierside)
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
 
@@ -601,9 +571,7 @@ class BuildPoints(MWidget):
         if useDomeAz and enableDomeAz and eastwest:
             self.sortDomeAz(points=points, pierside=pierside)
         else:
-            self.sortMountAz(
-                points=points, eastwest=eastwest, highlow=highlow, pierside=pierside
-            )
+            self.sortMountAz(points=points, eastwest=eastwest, highlow=highlow, pierside=pierside)
 
     def buildPointsChanged(self):
         """ """
@@ -648,9 +616,7 @@ class BuildPoints(MWidget):
         result = Simbad.query_object(ident)
 
         if not result:
-            self.msg.emit(
-                2, "Model", "Buildpoints", f"No response from SIMBAD for {ident}"
-            )
+            self.msg.emit(2, "Model", "Buildpoints", f"No response from SIMBAD for {ident}")
             self.ui.generateRa.setText("")
             self.ui.generateDec.setText("")
             self.simbadRa = None

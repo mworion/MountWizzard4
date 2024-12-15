@@ -401,14 +401,10 @@ class DataPoint(object):
         azI = range(0, 361, 1)
         altI = np.interp(azI, azH, altH)
         horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
-        self._buildP = [
-            x for x in self._buildP if not self.isCloseHorizonLine(x, m, horizonI)
-        ]
+        self._buildP = [x for x in self._buildP if not self.isCloseHorizonLine(x, m, horizonI)]
         return True
 
-    def sort(
-        self, points=None, eastwest=False, highlow=False, sortDomeAz=None, pierside=None
-    ):
+    def sort(self, points=None, eastwest=False, highlow=False, sortDomeAz=None, pierside=None):
         """ """
         east = [x for x in points if x[1] <= 180]
         west = [x for x in points if x[1] > 180]
@@ -471,7 +467,7 @@ class DataPoint(object):
 
     def loadCSV(self, fullFileName):
         """ """
-        if not fullFileName.is_file:
+        if not fullFileName.is_file():
             return None
 
         with open(fullFileName, "r") as handle:
@@ -544,7 +540,7 @@ class DataPoint(object):
 
         return True
 
-    def saveBuildP(self, fileName=None):
+    def saveBuildP(self, fileName):
         """ """
         if fileName is None:
             return False
@@ -578,7 +574,7 @@ class DataPoint(object):
 
         return True
 
-    def saveHorizonP(self, fileName=None):
+    def saveHorizonP(self, fileName):
         """ """
         if fileName is None:
             return False
@@ -763,9 +759,7 @@ class DataPoint(object):
                 buildP.append((alt.degrees, az.degrees % 360, 1))
         return buildP
 
-    def generateDSOPath(
-        self, ha=0, dec=0, timeJD=0, location=None, numberPoints=0, keep=False
-    ):
+    def generateDSOPath(self, ha=0, dec=0, timeJD=0, location=None, numberPoints=0, keep=False):
         """ """
         if numberPoints < 1:
             return False

@@ -221,9 +221,7 @@ def test_openShutter_4(function):
     function.device = Device()
     function.deviceName = "test"
 
-    with mock.patch.object(
-        function.device, "getSwitch", return_value={"SHUTTER_OPEN": 1}
-    ):
+    with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_OPEN": 1}):
         suc = function.openShutter()
         assert not suc
 
@@ -233,9 +231,7 @@ def test_openShutter_5(function):
     function.client = Client()
     function.deviceName = "test"
 
-    with mock.patch.object(
-        function.device, "getSwitch", return_value={"SHUTTER_OPEN": 1}
-    ):
+    with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_OPEN": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
             suc = function.openShutter()
             assert not suc
@@ -246,9 +242,7 @@ def test_openShutter_6(function):
     function.client = Client()
     function.deviceName = "test"
 
-    with mock.patch.object(
-        function.device, "getSwitch", return_value={"SHUTTER_OPEN": 1}
-    ):
+    with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_OPEN": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
             suc = function.openShutter()
             assert suc
@@ -276,9 +270,7 @@ def test_closeShutter_4(function):
     function.device = Device()
     function.deviceName = "test"
 
-    with mock.patch.object(
-        function.device, "getSwitch", return_value={"SHUTTER_CLOSE": 1}
-    ):
+    with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_CLOSE": 1}):
         suc = function.closeShutter()
         assert not suc
 
@@ -288,9 +280,7 @@ def test_closeShutter_5(function):
     function.client = Client()
     function.deviceName = "test"
 
-    with mock.patch.object(
-        function.device, "getSwitch", return_value={"SHUTTER_CLOSE": 1}
-    ):
+    with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_CLOSE": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
             suc = function.closeShutter()
             assert not suc
@@ -301,9 +291,7 @@ def test_closeShutter_6(function):
     function.client = Client()
     function.deviceName = "test"
 
-    with mock.patch.object(
-        function.device, "getSwitch", return_value={"SHUTTER_CLOSE": 1}
-    ):
+    with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_CLOSE": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
             suc = function.closeShutter()
             assert suc

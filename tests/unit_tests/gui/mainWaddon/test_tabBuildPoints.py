@@ -284,9 +284,7 @@ def test_genBuildGoldenSpiral_1(function):
     function.ui.numberSpiral.setValue(15)
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(
-        function.app.data, "generateGoldenSpiral", return_value=True
-    ):
+    with mock.patch.object(function.app.data, "generateGoldenSpiral", return_value=True):
         suc = function.genBuildGoldenSpiral()
         assert suc
     function.autoDeletePoints = t
@@ -294,9 +292,7 @@ def test_genBuildGoldenSpiral_1(function):
 
 def test_genBuildGoldenSpiral_2(function):
     function.ui.numberSpiral.setValue(2)
-    with mock.patch.object(
-        function.app.data, "generateGoldenSpiral", return_value=False
-    ):
+    with mock.patch.object(function.app.data, "generateGoldenSpiral", return_value=False):
         suc = function.genBuildGoldenSpiral()
         assert not suc
 
@@ -313,20 +309,24 @@ def test_genModel_1(function):
 
 
 def test_loadBuildFile_1(function):
-    with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
-        with mock.patch.object(function.app.data, "loadBuildP", return_value=True):
-            function.loadBuildFile()
+    with mock.patch.object(Path, "is_file", return_value=False):
+        with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
+            with mock.patch.object(function.app.data, "loadBuildP", return_value=True):
+                function.loadBuildFile()
 
 
 def test_loadBuildFile_2(function):
-    with mock.patch.object(function, "openFile", return_value=Path("")):
-        function.loadBuildFile()
+    with mock.patch.object(Path, "is_file", return_value=True):
+        with mock.patch.object(function.app.data, "loadBuildP", return_value=True):
+            with mock.patch.object(function, "openFile", return_value=Path("")):
+                function.loadBuildFile()
 
 
 def test_loadBuildFile_3(function):
-    with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
-        with mock.patch.object(function.app.data, "loadBuildP", return_value=False):
-            function.loadBuildFile()
+    with mock.patch.object(Path, "is_file", return_value=True):
+        with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
+            with mock.patch.object(function.app.data, "loadBuildP", return_value=False):
+                function.loadBuildFile()
 
 
 def test_saveBuildFile_1(function):

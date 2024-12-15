@@ -34,9 +34,7 @@ class Ui_MessageDialog(object):
         if not MessageDialog.objectName():
             MessageDialog.setObjectName("MessageDialog")
         MessageDialog.resize(800, 600)
-        sizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MessageDialog.sizePolicy().hasHeightForWidth())
@@ -127,12 +125,8 @@ class Ui_MessageDialog(object):
     # setupUi
 
     def retranslateUi(self, MessageDialog):
-        MessageDialog.setWindowTitle(
-            QCoreApplication.translate("MessageDialog", "Messages", None)
-        )
-        self.clear.setText(
-            QCoreApplication.translate("MessageDialog", "Clear window", None)
-        )
+        MessageDialog.setWindowTitle(QCoreApplication.translate("MessageDialog", "Messages", None))
+        self.clear.setText(QCoreApplication.translate("MessageDialog", "Clear window", None))
         # if QT_CONFIG(tooltip)
         self.messageTable.setToolTip(
             QCoreApplication.translate(

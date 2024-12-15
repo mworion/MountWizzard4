@@ -124,9 +124,7 @@ def test_requestProperty_5(function):
         def json():
             return "test"
 
-    with mock.patch.object(
-        requests, "get", side_effect=Exception, return_value=Response()
-    ):
+    with mock.patch.object(requests, "get", side_effect=Exception, return_value=Response()):
         val = function.requestProperty("test")
         assert val is None
 

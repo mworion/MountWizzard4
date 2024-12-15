@@ -318,13 +318,7 @@ class OneBLOB(INDIElement):
             self.value = base64.standard_b64decode(self.value)
 
     def __str__(self):
-        return (
-            INDIBase.__str__(self)
-            + " - "
-            + self.attr["size"]
-            + " - "
-            + self.attr["format"]
-        )
+        return INDIBase.__str__(self) + " - " + self.attr["size"] + " - " + self.attr["format"]
 
 
 #

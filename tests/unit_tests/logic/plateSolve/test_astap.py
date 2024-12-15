@@ -130,15 +130,11 @@ def test_solve_3(function):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(os, "remove"):
                 with mock.patch.object(logic.plateSolve.astap, "getImageHeader"):
-                    with mock.patch.object(
-                        logic.plateSolve.astap, "getSolutionFromWCSHeader"
-                    ):
+                    with mock.patch.object(logic.plateSolve.astap, "getSolutionFromWCSHeader"):
                         with mock.patch.object(
                             logic.plateSolve.astap, "updateImageFileHeaderWithSolution"
                         ):
-                            res = function.solve(
-                                Path("tests/workDir/image/m51.fit"), True
-                            )
+                            res = function.solve(Path("tests/workDir/image/m51.fit"), True)
                             assert res["success"]
 
 

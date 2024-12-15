@@ -81,18 +81,14 @@ def test_setupParkPosGui(function):
 
 def test_parkAtPos_1(function):
     function.app.mount.signals.slewed.connect(function.parkAtPos)
-    with mock.patch.object(
-        function.app.mount.obsSite, "parkOnActualPosition", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "parkOnActualPosition", return_value=False):
         suc = function.parkAtPos()
         assert not suc
 
 
 def test_parkAtPos_2(function):
     function.app.mount.signals.slewed.connect(function.parkAtPos)
-    with mock.patch.object(
-        function.app.mount.obsSite, "parkOnActualPosition", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "parkOnActualPosition", return_value=True):
         suc = function.parkAtPos()
         assert suc
 
@@ -111,9 +107,7 @@ def test_slewParkPos_2(function):
         return function.ui.posButton0
 
     function.sender = Sender
-    with mock.patch.object(
-        function.app.mount.obsSite, "setTargetAltAz", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
         suc = function.slewToParkPos()
         assert not suc
 
@@ -123,12 +117,8 @@ def test_slewParkPos_3(function):
         return function.ui.posButton0
 
     function.sender = Sender
-    with mock.patch.object(
-        function.app.mount.obsSite, "setTargetAltAz", return_value=True
-    ):
-        with mock.patch.object(
-            function.app.mount.obsSite, "startSlewing", return_value=False
-        ):
+    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
+        with mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=False):
             suc = function.slewToParkPos()
             assert not suc
 
@@ -139,12 +129,8 @@ def test_slewParkPos_4(function):
 
     function.sender = Sender
     function.ui.parkMountAfterSlew.setChecked(True)
-    with mock.patch.object(
-        function.app.mount.obsSite, "setTargetAltAz", return_value=True
-    ):
-        with mock.patch.object(
-            function.app.mount.obsSite, "startSlewing", return_value=True
-        ):
+    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
+        with mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=True):
             suc = function.slewToParkPos()
             assert not suc
 
@@ -155,12 +141,8 @@ def test_slewParkPos_5(function):
 
     function.sender = Sender
     function.ui.parkMountAfterSlew.setChecked(False)
-    with mock.patch.object(
-        function.app.mount.obsSite, "setTargetAltAz", return_value=True
-    ):
-        with mock.patch.object(
-            function.app.mount.obsSite, "startSlewing", return_value=True
-        ):
+    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
+        with mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=True):
             suc = function.slewToParkPos()
             assert suc
 

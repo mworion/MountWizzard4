@@ -34,9 +34,7 @@ class Ui_VideoDialog(object):
         if not VideoDialog.objectName():
             VideoDialog.setObjectName("VideoDialog")
         VideoDialog.resize(800, 600)
-        sizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(VideoDialog.sizePolicy().hasHeightForWidth())
@@ -169,21 +167,11 @@ class Ui_VideoDialog(object):
             6, QCoreApplication.translate("VideoDialog", "Camera 4", None)
         )
 
-        self.frameRate.setItemText(
-            0, QCoreApplication.translate("VideoDialog", "5.0 fps", None)
-        )
-        self.frameRate.setItemText(
-            1, QCoreApplication.translate("VideoDialog", "2.0 fps", None)
-        )
-        self.frameRate.setItemText(
-            2, QCoreApplication.translate("VideoDialog", "1.0 fps", None)
-        )
-        self.frameRate.setItemText(
-            3, QCoreApplication.translate("VideoDialog", "0.5 fps", None)
-        )
-        self.frameRate.setItemText(
-            4, QCoreApplication.translate("VideoDialog", "0.2 fps", None)
-        )
+        self.frameRate.setItemText(0, QCoreApplication.translate("VideoDialog", "5.0 fps", None))
+        self.frameRate.setItemText(1, QCoreApplication.translate("VideoDialog", "2.0 fps", None))
+        self.frameRate.setItemText(2, QCoreApplication.translate("VideoDialog", "1.0 fps", None))
+        self.frameRate.setItemText(3, QCoreApplication.translate("VideoDialog", "0.5 fps", None))
+        self.frameRate.setItemText(4, QCoreApplication.translate("VideoDialog", "0.2 fps", None))
 
         self.videoStop.setText(QCoreApplication.translate("VideoDialog", "Stop", None))
         # if QT_CONFIG(tooltip)
@@ -195,9 +183,7 @@ class Ui_VideoDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.videoStart.setText(
-            QCoreApplication.translate("VideoDialog", "Start", None)
-        )
+        self.videoStart.setText(QCoreApplication.translate("VideoDialog", "Start", None))
         self.authPopup.setText(QCoreApplication.translate("VideoDialog", "Auth", None))
         self.video.setText("")
 

@@ -185,9 +185,7 @@ class MountSett(MWidget):
     def setMeridianLimitTrack(self):
         """ """
         sett = self.app.mount.setting
-        actValue = (
-            0 if sett.meridianLimitTrack is None else int(sett.meridianLimitTrack)
-        )
+        actValue = 0 if sett.meridianLimitTrack is None else int(sett.meridianLimitTrack)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
             self.mainW, "Set Meridian Limit Track", "Value (1-30):", actValue, 1, 30, 1

@@ -37,7 +37,7 @@ class ModelBatch(QObject):
         self.app = app
         self.msg = app.msg
 
-        self.abortBatch: bool = False
+        self.cancelBatch: bool = False
         self.pauseBatch: bool = False
         self.endBatch: bool = False
         self.modelTiming: int = 0
@@ -111,7 +111,7 @@ class ModelBatch(QObject):
         self.pointerSlew += 1
         if self.pointerSlew >= len(self.modelBuildData):
             return
-        if self.abortBatch or self.endBatch:
+        if self.cancelBatch or self.endBatch:
             return
         item = self.modelBuildData[self.pointerSlew]
         altitude = item["altitude"]
@@ -163,16 +163,14 @@ class ModelBatch(QObject):
         item["siderealTime"] = obs.timeSidereal
         item["julianDate"] = obs.timeJD
         item["pierside"] = obs.pierside
-        raJ2000M, decJ2000M = JNowToJ2000(
-            item["raJNowM"], item["decJNowM"], item["julianDate"]
-        )
+        raJ2000M, decJ2000M = JNowToJ2000(item["raJNowM"], item["decJNowM"], item["julianDate"])
         item["raJ2000M"] = raJ2000M
         item["decJ2000M"] = decJ2000M
 
     def startNewImageExposure(self) -> None:
         """ """
         self.pointerImage += 1
-        if self.abortBatch or self.endBatch:
+        if self.cancelBatch or self.endBatch:
             return
 
         waitTime = self.exposureWaitTime
@@ -268,6 +266,6 @@ class ModelBatch(QObject):
         self.startNewSlew()
 
         notFinished = self.pointerResult < len(self.modelBuildData)
-        while not self.abortBatch and notFinished and not self.endBatch:
+        while not self.cancelBatch and notFinished and not self.endBatch:
             sleepAndEvents(500)
         self.generateSaveData()

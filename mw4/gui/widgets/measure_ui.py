@@ -34,9 +34,7 @@ class Ui_MeasureDialog(object):
         if not MeasureDialog.objectName():
             MeasureDialog.setObjectName("MeasureDialog")
         MeasureDialog.resize(800, 600)
-        sizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MeasureDialog.sizePolicy().hasHeightForWidth())
@@ -126,9 +124,7 @@ class Ui_MeasureDialog(object):
         self.measure = Measure(MeasureDialog)
         self.measure.setObjectName("measure")
         self.measure.setEnabled(True)
-        sizePolicy1 = QSizePolicy(
-            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
-        )
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.measure.sizePolicy().hasHeightForWidth())
@@ -160,17 +156,11 @@ class Ui_MeasureDialog(object):
         self.label_2.setText(
             QCoreApplication.translate("MeasureDialog", "Upper middle chart", None)
         )
-        self.label_3.setText(
-            QCoreApplication.translate("MeasureDialog", "Lower chart", None)
-        )
+        self.label_3.setText(QCoreApplication.translate("MeasureDialog", "Lower chart", None))
         self.label_4.setText(
             QCoreApplication.translate("MeasureDialog", "Lower middle chart", None)
         )
-        self.label.setText(
-            QCoreApplication.translate("MeasureDialog", "Upper chart", None)
-        )
-        self.label_5.setText(
-            QCoreApplication.translate("MeasureDialog", "Middle chart", None)
-        )
+        self.label.setText(QCoreApplication.translate("MeasureDialog", "Upper chart", None))
+        self.label_5.setText(QCoreApplication.translate("MeasureDialog", "Middle chart", None))
 
     # retranslateUi

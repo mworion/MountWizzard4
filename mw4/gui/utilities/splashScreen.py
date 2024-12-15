@@ -48,10 +48,7 @@ class SplashScreen(QObject):
         self.y = y
         self._pxm = QPixmap(":/icon/mw4.png")
 
-        flags = (
-            Qt.WindowType.WindowStaysOnTopHint
-            | Qt.WindowType.X11BypassWindowManagerHint
-        )
+        flags = Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.X11BypassWindowManagerHint
         self.qss = QSplashScreen(self._pxm, flags)
         h = self.qss.height()
         w = self.qss.width()

@@ -56,9 +56,7 @@ def test_startCommunication_1(function):
 
 def test_startCommunication_2(function):
     function.framework = "indi"
-    with mock.patch.object(
-        function.run["indi"], "startCommunication", return_value=True
-    ):
+    with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
         suc = function.startCommunication()
         assert suc
 
@@ -71,9 +69,7 @@ def test_stopCommunication_1(function):
 
 def test_stopCommunication_2(function):
     function.framework = "indi"
-    with mock.patch.object(
-        function.run["indi"], "stopCommunication", return_value=True
-    ):
+    with mock.patch.object(function.run["indi"], "stopCommunication", return_value=True):
         suc = function.stopCommunication()
         assert suc
 

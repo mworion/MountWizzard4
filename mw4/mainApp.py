@@ -214,9 +214,7 @@ class MountWizzard4(QObject):
         lon = self.config.get("topoLon", 0)
         elev = self.config.get("topoElev", 46)
 
-        topo = wgs84.latlon(
-            longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev
-        )
+        topo = wgs84.latlon(longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev)
         return topo
 
     def storeConfig(self) -> None:
@@ -274,9 +272,7 @@ class MountWizzard4(QObject):
         """ """
         self.deviceStat["mount"] = False
         self.aboutToQuit()
-        self.messageQueue.put(
-            (1, "System", "Lifecycle", "MountWizzard4 manual stopped")
-        )
+        self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 manual stopped"))
         self.application.quit()
 
     def loadHorizonData(self) -> None:
@@ -286,9 +282,7 @@ class MountWizzard4(QObject):
         self.data.loadHorizonP(fileName=fileName)
 
     # noinspection PyUnresolvedReferences
-    def writeMessageQueue(
-        self, prio: int, source: str, mType: str, message: str
-    ) -> None:
+    def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
         """ """
         self.log.ui(f"Message window: [{source} - {mType} - {message}]")
         self.messageQueue.put((prio, source, mType, message))

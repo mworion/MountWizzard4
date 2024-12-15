@@ -1,0 +1,3 @@
+# Same as Black.
+line-length = 99
+indent-width = 4

@@ -147,9 +147,7 @@ def test_img2pixmap_1(function):
 
 
 def test_img2pixmap_2(function):
-    img = function.img2pixmap(
-        os.getcwd() + "/tests/testData/altitude.png", "#202020", "#303030"
-    )
+    img = function.img2pixmap(os.getcwd() + "/tests/testData/altitude.png", "#202020", "#303030")
     assert isinstance(img, QPixmap)
 
 
@@ -320,9 +318,7 @@ def test_runDialog_1(function):
 
 def test_messageDialog_1(function):
     widget = QWidget()
-    with mock.patch.object(
-        QMessageBox, "question", return_value=QMessageBox.StandardButton.No
-    ):
+    with mock.patch.object(QMessageBox, "question", return_value=QMessageBox.StandardButton.No):
         with mock.patch.object(QMessageBox, "show"):
             with mock.patch.object(
                 function, "runDialog", return_value=QMessageBox.StandardButton.No
@@ -333,9 +329,7 @@ def test_messageDialog_1(function):
 
 def test_messageDialog_2(function):
     widget = QWidget()
-    with mock.patch.object(
-        QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes
-    ):
+    with mock.patch.object(QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes):
         with mock.patch.object(QMessageBox, "show"):
             with mock.patch.object(
                 function, "runDialog", return_value=QMessageBox.StandardButton.Yes
@@ -346,9 +340,7 @@ def test_messageDialog_2(function):
 
 def test_messageDialog_3(function):
     widget = QWidget()
-    with mock.patch.object(
-        QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes
-    ):
+    with mock.patch.object(QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes):
         with mock.patch.object(QMessageBox, "show"):
             with mock.patch.object(
                 function, "runDialog", return_value=QMessageBox.StandardButton.Yes
@@ -383,18 +375,14 @@ def test_openFile_4(function):
 def test_openFile_5(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=0):
-        full = function.openFile(
-            window=window, title="title", folder=Path("."), filterSet="*.*"
-        )
+        full = function.openFile(window=window, title="title", folder=Path("."), filterSet="*.*")
         assert full == Path("")
 
 
 def test_openFile_6(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=1):
-        with mock.patch.object(
-            QFileDialog, "selectedFiles", return_value=("test1", "test2")
-        ):
+        with mock.patch.object(QFileDialog, "selectedFiles", return_value=("test1", "test2")):
             full = function.openFile(
                 window=window,
                 title="title",
@@ -431,21 +419,15 @@ def test_saveFile_4(function):
 def test_saveFile_5(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=0):
-        full = function.saveFile(
-            window=window, title="title", folder=Path("."), filterSet="*.*"
-        )
+        full = function.saveFile(window=window, title="title", folder=Path("."), filterSet="*.*")
         assert full == Path("")
 
 
 def test_saveFile_6(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=1):
-        with mock.patch.object(
-            QFileDialog, "selectedFiles", return_value=(["tests/test.txt"])
-        ):
-            function.saveFile(
-                window=window, title="title", folder=Path("."), filterSet="*.*"
-            )
+        with mock.patch.object(QFileDialog, "selectedFiles", return_value=(["tests/test.txt"])):
+            function.saveFile(window=window, title="title", folder=Path("."), filterSet="*.*")
 
 
 def test_openDir_1(function):

@@ -72,9 +72,7 @@ def test_mountShutdown_2(function):
 
 
 def test_bootRackComp_1(function):
-    with mock.patch.object(
-        gui.mainWaddon.tabSett_Mount, "checkFormatMAC", return_value=False
-    ):
+    with mock.patch.object(gui.mainWaddon.tabSett_Mount, "checkFormatMAC", return_value=False):
         with mock.patch.object(wakeonlan, "send_magic_packet", return_value=False):
             function.bootRackComp()
 
@@ -94,9 +92,7 @@ def test_mountHost_1(function):
 def test_mountHost_2(function):
     function.ui.port3490.setChecked(True)
     function.ui.mountHost.setText("192.168.2.1")
-    with mock.patch.object(
-        socket, "gethostbyname", return_value=True, side_effect=Exception
-    ):
+    with mock.patch.object(socket, "gethostbyname", return_value=True, side_effect=Exception):
         function.mountHost()
 
 
@@ -196,9 +192,7 @@ def test_syncClock_3(function):
     function.syncClock()
 
 
-@mock.patch(
-    "tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff", 0.005
-)
+@mock.patch("tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff", 0.005)
 def test_syncClock_4(function):
     function.ui.syncTimeCont.setChecked(True)
     function.app.deviceStat["mount"] = True
@@ -211,22 +205,16 @@ def test_syncClock_5(function):
     function.ui.syncTimeCont.setChecked(False)
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 1
-    with mock.patch.object(
-        function.app.mount.obsSite, "adjustClock", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=False):
         function.syncClock()
 
 
-@mock.patch(
-    "tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff", -1
-)
+@mock.patch("tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff", -1)
 def test_syncClock_6(function):
     function.ui.syncTimeCont.setChecked(True)
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 1
-    with mock.patch.object(
-        function.app.mount.obsSite, "adjustClock", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=True):
         function.syncClock()
 
 

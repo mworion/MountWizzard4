@@ -43,9 +43,7 @@ class Ui_AnalyseDialog(object):
         if not AnalyseDialog.objectName():
             AnalyseDialog.setObjectName("AnalyseDialog")
         AnalyseDialog.resize(800, 600)
-        sizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(AnalyseDialog.sizePolicy().hasHeightForWidth())
@@ -652,9 +650,7 @@ class Ui_AnalyseDialog(object):
         self.horizontalLayout.setContentsMargins(4, 12, 8, 8)
         self.modelPositions = PolarScatter(self.groupBox)
         self.modelPositions.setObjectName("modelPositions")
-        sizePolicy.setHeightForWidth(
-            self.modelPositions.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy.setHeightForWidth(self.modelPositions.sizePolicy().hasHeightForWidth())
         self.modelPositions.setSizePolicy(sizePolicy)
 
         self.horizontalLayout.addWidget(self.modelPositions)
@@ -670,9 +666,7 @@ class Ui_AnalyseDialog(object):
         self.horizontalLayout_2.setContentsMargins(4, 12, 8, 8)
         self.errorDistribution = PolarScatter(self.groupBox_14)
         self.errorDistribution.setObjectName("errorDistribution")
-        sizePolicy.setHeightForWidth(
-            self.errorDistribution.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy.setHeightForWidth(self.errorDistribution.sizePolicy().hasHeightForWidth())
         self.errorDistribution.setSizePolicy(sizePolicy)
 
         self.horizontalLayout_2.addWidget(self.errorDistribution)
@@ -688,9 +682,7 @@ class Ui_AnalyseDialog(object):
         self.horizontalLayout_3.setContentsMargins(4, 12, 8, 0)
         self.errorAscending = NormalScatter(self.groupBox_15)
         self.errorAscending.setObjectName("errorAscending")
-        sizePolicy.setHeightForWidth(
-            self.errorAscending.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy.setHeightForWidth(self.errorAscending.sizePolicy().hasHeightForWidth())
         self.errorAscending.setSizePolicy(sizePolicy)
 
         self.horizontalLayout_3.addWidget(self.errorAscending)
@@ -800,9 +792,7 @@ class Ui_AnalyseDialog(object):
         self.horizontalLayout_10.setContentsMargins(4, 12, 8, 0)
         self.decRawErrorsRef = NormalScatter(self.groupBox_18)
         self.decRawErrorsRef.setObjectName("decRawErrorsRef")
-        sizePolicy.setHeightForWidth(
-            self.decRawErrorsRef.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy.setHeightForWidth(self.decRawErrorsRef.sizePolicy().hasHeightForWidth())
         self.decRawErrorsRef.setSizePolicy(sizePolicy)
 
         self.horizontalLayout_10.addWidget(self.decRawErrorsRef)
@@ -818,9 +808,7 @@ class Ui_AnalyseDialog(object):
         self.horizontalLayout_9.setContentsMargins(4, 12, 8, 0)
         self.raRawErrorsRef = NormalScatter(self.groupBox_17)
         self.raRawErrorsRef.setObjectName("raRawErrorsRef")
-        sizePolicy.setHeightForWidth(
-            self.raRawErrorsRef.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy.setHeightForWidth(self.raRawErrorsRef.sizePolicy().hasHeightForWidth())
         self.raRawErrorsRef.setSizePolicy(sizePolicy)
 
         self.horizontalLayout_9.addWidget(self.raRawErrorsRef)
@@ -882,9 +870,7 @@ class Ui_AnalyseDialog(object):
         self.groupBox_3.setTitle(
             QCoreApplication.translate("AnalyseDialog", "Analysis setup", None)
         )
-        self.label_18.setText(
-            QCoreApplication.translate("AnalyseDialog", "Profile", None)
-        )
+        self.label_18.setText(QCoreApplication.translate("AnalyseDialog", "Profile", None))
         # if QT_CONFIG(tooltip)
         self.profile.setToolTip(
             QCoreApplication.translate(
@@ -895,9 +881,7 @@ class Ui_AnalyseDialog(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.profile.setText("")
-        self.label_4.setText(
-            QCoreApplication.translate("AnalyseDialog", "Time [UTC]", None)
-        )
+        self.label_4.setText(QCoreApplication.translate("AnalyseDialog", "Time [UTC]", None))
         # if QT_CONFIG(tooltip)
         self.time.setToolTip(
             QCoreApplication.translate(
@@ -910,39 +894,25 @@ class Ui_AnalyseDialog(object):
         self.time.setText("")
         # if QT_CONFIG(tooltip)
         self.load.setToolTip(
-            QCoreApplication.translate(
-                "AnalyseDialog", "Loads the model points from file", None
-            )
+            QCoreApplication.translate("AnalyseDialog", "Loads the model points from file", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.load.setText(QCoreApplication.translate("AnalyseDialog", "Load", None))
         self.groupBox_4.setTitle(
             QCoreApplication.translate("AnalyseDialog", "Analysis View", None)
         )
-        self.linkViews.setText(
-            QCoreApplication.translate("AnalyseDialog", "Link Views", None)
-        )
-        self.showISO.setText(
-            QCoreApplication.translate("AnalyseDialog", "2D contour", None)
-        )
-        self.pointsWest.setText(
-            QCoreApplication.translate("AnalyseDialog", "Pierside West", None)
-        )
+        self.linkViews.setText(QCoreApplication.translate("AnalyseDialog", "Link Views", None))
+        self.showISO.setText(QCoreApplication.translate("AnalyseDialog", "2D contour", None))
+        self.pointsWest.setText(QCoreApplication.translate("AnalyseDialog", "Pierside West", None))
         self.pointsWest.setProperty(
             "color", QCoreApplication.translate("AnalyseDialog", "green", None)
         )
-        self.pointsEast.setText(
-            QCoreApplication.translate("AnalyseDialog", "Pierside East", None)
-        )
+        self.pointsEast.setText(QCoreApplication.translate("AnalyseDialog", "Pierside East", None))
         self.pointsEast.setProperty(
             "color", QCoreApplication.translate("AnalyseDialog", "yellow", None)
         )
-        self.showHorizon.setText(
-            QCoreApplication.translate("AnalyseDialog", "Horizon mask", None)
-        )
-        self.groupBox_5.setTitle(
-            QCoreApplication.translate("AnalyseDialog", "Model params", None)
-        )
+        self.showHorizon.setText(QCoreApplication.translate("AnalyseDialog", "Horizon mask", None))
+        self.groupBox_5.setTitle(QCoreApplication.translate("AnalyseDialog", "Model params", None))
         # if QT_CONFIG(tooltip)
         self.goodPoints.setToolTip(
             QCoreApplication.translate(
@@ -973,9 +943,7 @@ class Ui_AnalyseDialog(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.version.setText("")
-        self.label.setText(
-            QCoreApplication.translate("AnalyseDialog", "Exposure", None)
-        )
+        self.label.setText(QCoreApplication.translate("AnalyseDialog", "Exposure", None))
         self.label_22.setText(QCoreApplication.translate("AnalyseDialog", "/", None))
         self.label_15.setText(QCoreApplication.translate("AnalyseDialog", "s", None))
         # if QT_CONFIG(tooltip)
@@ -988,9 +956,7 @@ class Ui_AnalyseDialog(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.modelErrorRMS.setText("")
-        self.label_19.setText(
-            QCoreApplication.translate("AnalyseDialog", "FocalLength", None)
-        )
+        self.label_19.setText(QCoreApplication.translate("AnalyseDialog", "FocalLength", None))
         # if QT_CONFIG(tooltip)
         self.firmware.setToolTip(
             QCoreApplication.translate(
@@ -1032,12 +998,8 @@ class Ui_AnalyseDialog(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.totalPoints.setText("")
-        self.label_17.setText(
-            QCoreApplication.translate("AnalyseDialog", "Points", None)
-        )
-        self.label_3.setText(
-            QCoreApplication.translate("AnalyseDialog", "Binning", None)
-        )
+        self.label_17.setText(QCoreApplication.translate("AnalyseDialog", "Points", None))
+        self.label_3.setText(QCoreApplication.translate("AnalyseDialog", "Binning", None))
         self.label_20.setText(QCoreApplication.translate("AnalyseDialog", "%", None))
         # if QT_CONFIG(tooltip)
         self.binning.setToolTip(
@@ -1049,12 +1011,8 @@ class Ui_AnalyseDialog(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.binning.setText("")
-        self.label_2.setText(
-            QCoreApplication.translate("AnalyseDialog", "Solver", None)
-        )
-        self.label_13.setText(
-            QCoreApplication.translate("AnalyseDialog", "arcsec", None)
-        )
+        self.label_2.setText(QCoreApplication.translate("AnalyseDialog", "Solver", None))
+        self.label_13.setText(QCoreApplication.translate("AnalyseDialog", "arcsec", None))
         # if QT_CONFIG(tooltip)
         self.focalLength.setToolTip(
             QCoreApplication.translate(
@@ -1065,9 +1023,7 @@ class Ui_AnalyseDialog(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.focalLength.setText("")
-        self.label_5.setText(
-            QCoreApplication.translate("AnalyseDialog", "Subframe", None)
-        )
+        self.label_5.setText(QCoreApplication.translate("AnalyseDialog", "Subframe", None))
         # if QT_CONFIG(tooltip)
         self.solver.setToolTip(
             QCoreApplication.translate(
@@ -1080,23 +1036,13 @@ class Ui_AnalyseDialog(object):
         self.solver.setText("")
         self.label_21.setText(QCoreApplication.translate("AnalyseDialog", "x/y", None))
         self.label_7.setText(QCoreApplication.translate("AnalyseDialog", "FW", None))
-        self.label_11.setText(
-            QCoreApplication.translate("AnalyseDialog", "Error RMS", None)
-        )
-        self.label_12.setText(
-            QCoreApplication.translate("AnalyseDialog", "arcsec", None)
-        )
+        self.label_11.setText(QCoreApplication.translate("AnalyseDialog", "Error RMS", None))
+        self.label_12.setText(QCoreApplication.translate("AnalyseDialog", "arcsec", None))
         self.label_8.setText(QCoreApplication.translate("AnalyseDialog", "Terms", None))
         self.label_16.setText(QCoreApplication.translate("AnalyseDialog", "mm", None))
-        self.label_10.setText(
-            QCoreApplication.translate("AnalyseDialog", "Ortho Error", None)
-        )
-        self.label_9.setText(
-            QCoreApplication.translate("AnalyseDialog", "Polar Error", None)
-        )
-        self.label_14.setText(
-            QCoreApplication.translate("AnalyseDialog", "arcsec", None)
-        )
+        self.label_10.setText(QCoreApplication.translate("AnalyseDialog", "Ortho Error", None))
+        self.label_9.setText(QCoreApplication.translate("AnalyseDialog", "Polar Error", None))
+        self.label_14.setText(QCoreApplication.translate("AnalyseDialog", "arcsec", None))
         # if QT_CONFIG(tooltip)
         self.modelTerms.setToolTip(
             QCoreApplication.translate(
@@ -1117,16 +1063,12 @@ class Ui_AnalyseDialog(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.exposureTime.setText("")
-        self.groupBox.setTitle(
-            QCoreApplication.translate("AnalyseDialog", "Overview", None)
-        )
+        self.groupBox.setTitle(QCoreApplication.translate("AnalyseDialog", "Overview", None))
         # if QT_CONFIG(tooltip)
         self.modelPositions.setToolTip("")
         # endif // QT_CONFIG(tooltip)
         self.groupBox_14.setTitle(
-            QCoreApplication.translate(
-                "AnalyseDialog", "Model point errors over polar", None
-            )
+            QCoreApplication.translate("AnalyseDialog", "Model point errors over polar", None)
         )
         # if QT_CONFIG(tooltip)
         self.errorDistribution.setToolTip("")
@@ -1140,9 +1082,7 @@ class Ui_AnalyseDialog(object):
         self.errorAscending.setToolTip("")
         # endif // QT_CONFIG(tooltip)
         self.groupBox_16.setTitle(
-            QCoreApplication.translate(
-                "AnalyseDialog", "Image pixel resolution as scale ", None
-            )
+            QCoreApplication.translate("AnalyseDialog", "Image pixel resolution as scale ", None)
         )
         # if QT_CONFIG(tooltip)
         self.scaleImage.setToolTip("")

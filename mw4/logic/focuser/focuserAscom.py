@@ -33,9 +33,7 @@ class FocuserAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        self.getAndStoreAscomProperty(
-            "Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION"
-        )
+        self.getAndStoreAscomProperty("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
         return True
 
     def move(self, position=None):

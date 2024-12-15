@@ -44,9 +44,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.penHorizon = pg.mkPen(color=self.M_PRIM + "80", width=1)
         self.brushHorizon = pg.mkBrush(color=self.M_PRIM2 + "40")
         self.setBackground(self.M_BACK)
-        self.cMapGYR = pg.ColorMap(
-            [0, 0.6, 1.0], [self.M_GREEN, self.M_YELLOW, self.M_RED]
-        )
+        self.cMapGYR = pg.ColorMap([0, 0.6, 1.0], [self.M_GREEN, self.M_YELLOW, self.M_RED])
         self.defRange = {}
         self.scatterItem = None
         self.imageItem = None
@@ -103,9 +101,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         """
         if plotItem is None:
             plotItem = self.p[0]
-        self.barItem = pg.ColorBarItem(
-            width=15, interactive=interactive, rounding=0.025
-        )
+        self.barItem = pg.ColorBarItem(width=15, interactive=interactive, rounding=0.025)
         self.barItem.setVisible(False)
         for side in ("left", "top", "right", "bottom"):
             self.barItem.getAxis(side).setPen(self.pen)
@@ -257,9 +253,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         plotItem.addLine(x=0, pen=self.penGrid)
         plotItem.addLine(y=0, pen=self.penGrid)
 
-        font = QFont(
-            self.window().font().family(), int(self.window().font().pointSize() * 1.1)
-        )
+        font = QFont(self.window().font().family(), int(self.window().font().pointSize() * 1.1))
         for r in gridLines:
             circle = pg.QtWidgets.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
             circle.setPen(self.penGrid)

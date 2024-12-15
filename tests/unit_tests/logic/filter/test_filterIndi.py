@@ -105,9 +105,7 @@ def test_sendFilterNumber_3(function):
     function.device = Device()
     function.client = Client()
     function.UPDATE_RATE = 0
-    with mock.patch.object(
-        function.device, "getNumber", return_value={"FILTER_SLOT": 1}
-    ):
+    with mock.patch.object(function.device, "getNumber", return_value={"FILTER_SLOT": 1}):
         with mock.patch.object(function.client, "sendNewNumber", return_value=True):
             suc = function.sendFilterNumber()
             assert suc

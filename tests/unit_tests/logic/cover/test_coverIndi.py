@@ -102,9 +102,7 @@ def test_updateText_2(function):
 def test_updateText_3(function):
     function.device = Device()
     function.deviceName = "test"
-    with mock.patch.object(
-        function.device, "getText", return_value={"Cover": "CLOSED"}
-    ):
+    with mock.patch.object(function.device, "getText", return_value={"Cover": "CLOSED"}):
         suc = function.updateText("test", "CAP_PARK")
         assert suc
 
@@ -150,9 +148,7 @@ def test_closeCover_4(function):
     function.device = Device()
     function.client = Client()
     function.UPDATE_RATE = 0
-    with mock.patch.object(
-        function.device, "getSwitch", return_value={"PARK": "On", "": "Off"}
-    ):
+    with mock.patch.object(function.device, "getSwitch", return_value={"PARK": "On", "": "Off"}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
             suc = function.closeCover()
             assert not suc
@@ -204,9 +200,7 @@ def test_openCover_4(function):
     function.device = Device()
     function.client = Client()
     function.UPDATE_RATE = 0
-    with mock.patch.object(
-        function.device, "getSwitch", return_value={"PARK": "On", "": "Off"}
-    ):
+    with mock.patch.object(function.device, "getSwitch", return_value={"PARK": "On", "": "Off"}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
             suc = function.openCover()
             assert not suc

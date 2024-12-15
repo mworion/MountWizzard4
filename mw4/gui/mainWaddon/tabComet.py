@@ -97,12 +97,8 @@ class Comet(MWidget):
         for i, hs in enumerate(hSet):
             self.ui.listComets.setColumnWidth(i, hs)
         self.ui.listComets.verticalHeader().setDefaultSectionSize(16)
-        self.ui.listComets.setSelectionBehavior(
-            QAbstractItemView.SelectionBehavior.SelectRows
-        )
-        self.ui.listComets.setSelectionMode(
-            QAbstractItemView.SelectionMode.ExtendedSelection
-        )
+        self.ui.listComets.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.ui.listComets.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
     @staticmethod
     def generateName(mp: dict) -> str:
@@ -156,15 +152,11 @@ class Comet(MWidget):
             self.ui.listComets.insertRow(row)
 
             entry = QTableWidgetItem(f"{number:5d}")
-            entry.setTextAlignment(
-                Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
-            )
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.ui.listComets.setItem(row, 0, entry)
 
             entry = QTableWidgetItem(name)
-            entry.setTextAlignment(
-                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
-            )
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             self.ui.listComets.setItem(row, 1, entry)
 
             if "Orbit_type" in self.comets.objects[name]:

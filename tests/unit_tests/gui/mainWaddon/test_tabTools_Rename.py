@@ -107,9 +107,7 @@ def test_convertHeaderEntry_2(function):
 
 
 def test_convertHeaderEntry_3(function):
-    chunk = function.convertHeaderEntry(
-        entry="2019-05-26T17:02:18.843", fitsKey="DATE-OBS"
-    )
+    chunk = function.convertHeaderEntry(entry="2019-05-26T17:02:18.843", fitsKey="DATE-OBS")
     assert chunk == "2019-05-26_17-02-18"
 
 

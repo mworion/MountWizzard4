@@ -31,9 +31,7 @@ class Ui_DownloadPopup(object):
         if not DownloadPopup.objectName():
             DownloadPopup.setObjectName("DownloadPopup")
         DownloadPopup.resize(400, 90)
-        sizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(DownloadPopup.sizePolicy().hasHeightForWidth())
@@ -73,8 +71,6 @@ class Ui_DownloadPopup(object):
         DownloadPopup.setWindowTitle(
             QCoreApplication.translate("DownloadPopup", "Device Setup", None)
         )
-        self.icon.setText(
-            QCoreApplication.translate("DownloadPopup", "TextLabel", None)
-        )
+        self.icon.setText(QCoreApplication.translate("DownloadPopup", "TextLabel", None))
 
     # retranslateUi

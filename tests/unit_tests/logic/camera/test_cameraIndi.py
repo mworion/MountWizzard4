@@ -373,9 +373,7 @@ def test_sendCoolerSwitch_2(function):
 def test_sendCoolerSwitch_3(function):
     function.deviceName = "test"
     function.device = Device()
-    with mock.patch.object(
-        function.device, "getSwitch", return_value={"COOLER_ON": True}
-    ):
+    with mock.patch.object(function.device, "getSwitch", return_value={"COOLER_ON": True}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
             function.sendCoolerSwitch(True)
 

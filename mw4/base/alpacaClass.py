@@ -18,11 +18,13 @@
 import uuid
 
 import requests
+
 # external packages
 from PySide6.QtCore import QTimer
 
 from base.driverDataClass import DriverData
 from base.tpool import Worker
+
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
 
@@ -31,7 +33,7 @@ class AlpacaClass(DriverData):
     """ """
 
     ALPACA_TIMEOUT = 3
-    CLIENT_ID = uuid.uuid4().int % 2 ** 16
+    CLIENT_ID = uuid.uuid4().int % 2**16
 
     def __init__(self, app, data):
         super().__init__()
@@ -120,8 +122,7 @@ class AlpacaClass(DriverData):
         self.number = int(self.number)
 
     def generateBaseUrl(self) -> str:
-        """
-        """
+        """ """
         val = "{0}://{1}:{2}/api/v{3}/{4}/{5}".format(
             self.protocol,
             self.host[0],
@@ -133,13 +134,12 @@ class AlpacaClass(DriverData):
         return val
 
     def discoverAPIVersion(self) -> int:
-        """
-        """
+        """ """
         url = "{0}://{1}:{2}/management/apiversions".format(
             self.protocol, self.host[0], self.host[1]
         )
 
-        uid = uuid.uuid4().int % 2 ** 32
+        uid = uuid.uuid4().int % 2**32
         data = {"ClientTransactionID": uid, "ClientID": self.CLIENT_ID}
 
         try:
@@ -173,13 +173,12 @@ class AlpacaClass(DriverData):
         return response["Value"]
 
     def discoverAlpacaDevices(self) -> str:
-        """
-        """
+        """ """
         url = "{0}://{1}:{2}/management/v{3}/configureddevices".format(
             self.protocol, self.host[0], self.host[1], self.apiVersion
         )
 
-        uid = uuid.uuid4().int % 2 ** 32
+        uid = uuid.uuid4().int % 2**32
         data = {"ClientTransactionID": uid, "ClientID": self.CLIENT_ID}
 
         try:
@@ -223,7 +222,7 @@ class AlpacaClass(DriverData):
         if valueProp in self.propertyExceptions:
             return None
 
-        uid = uuid.uuid4().int % 2 ** 32
+        uid = uuid.uuid4().int % 2**32
         data["ClientTransactionID"] = uid
         data["ClientID"] = self.CLIENT_ID
 
@@ -278,7 +277,7 @@ class AlpacaClass(DriverData):
         if valueProp in self.propertyExceptions:
             return None
 
-        uid = uuid.uuid4().int % 2 ** 32
+        uid = uuid.uuid4().int % 2**32
         t = f"[{self.deviceName}] [{uid:10d}], set [{valueProp}] to: [{data}]"
         self.log.trace(t)
 
@@ -383,9 +382,7 @@ class AlpacaClass(DriverData):
         :return:
         """
         self.data["DRIVER_INFO.DRIVER_NAME"] = self.getAlpacaProperty("name")
-        self.data["DRIVER_INFO.DRIVER_VERSION"] = self.getAlpacaProperty(
-            "driverversion"
-        )
+        self.data["DRIVER_INFO.DRIVER_VERSION"] = self.getAlpacaProperty("driverversion")
         self.data["DRIVER_INFO.DRIVER_EXEC"] = self.getAlpacaProperty("driverinfo")
         return True
 
@@ -473,7 +470,5 @@ class AlpacaClass(DriverData):
             return []
 
         temp = [x for x in devices if x["DeviceType"].lower() == deviceType]
-        discoverList = [
-            f'{x["DeviceName"]}:{deviceType}:{x["DeviceNumber"]}' for x in temp
-        ]
+        discoverList = [f'{x["DeviceName"]}:{deviceType}:{x["DeviceNumber"]}' for x in temp]
         return discoverList

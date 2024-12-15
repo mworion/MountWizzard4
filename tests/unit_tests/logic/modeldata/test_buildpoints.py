@@ -765,6 +765,11 @@ def test_loadJSON_4(function):
     assert val == [(1, 1), (2, 2)]
 
 
+def test_loadCSV_1(function):
+    val = function.loadCSV(Path(""))
+    assert val is None
+
+
 def test_loadCSV_2(function):
     with open("tests/workDir/config/test.csv", "w") as outfile:
         outfile.writelines("[test, ]],[]}\n")
@@ -836,9 +841,7 @@ def test_loadBuildP_5(function):
     with open(fileName, "w") as outfile:
         outfile.write("1, 1\n")
         outfile.write("2, 2\n")
-    suc = function.loadBuildP(
-        Path("tests/workDir/config/test.csv"), ext=".csv", keep=True
-    )
+    suc = function.loadBuildP(Path("tests/workDir/config/test.csv"), ext=".csv", keep=True)
     assert suc
 
 
@@ -848,9 +851,7 @@ def test_loadBuildP_6(function):
     values = [{"azimuth": 1, "altitude": 1}, {"azimuth": 2, "altitude": 2}]
     with open("tests/workDir/config/test.model", "w") as outfile:
         json.dump(values, outfile, indent=4)
-    suc = function.loadBuildP(
-        Path("tests/workDir/config/test.model"), ext=".model", keep=True
-    )
+    suc = function.loadBuildP(Path("tests/workDir/config/test.model"), ext=".model", keep=True)
     assert suc
 
 
@@ -1269,12 +1270,8 @@ def test_generateDSOPath_5(function):
     dec = skyfield.api.Angle(degrees=0)
     ts = function.app.mount.obsSite.ts
     ti = ts.tt_jd(2459580.5)
-    with mock.patch.object(
-        skyfield.almanac, "find_discrete", return_value=([ti, ti], [1, 0])
-    ):
-        with mock.patch.object(
-            function, "calcPath", return_value=[(0, 0), (0, 0), (0, 0)]
-        ):
+    with mock.patch.object(skyfield.almanac, "find_discrete", return_value=([ti, ti], [1, 0])):
+        with mock.patch.object(function, "calcPath", return_value=[(0, 0), (0, 0), (0, 0)]):
             suc = function.generateDSOPath(
                 ha=ra,
                 dec=dec,

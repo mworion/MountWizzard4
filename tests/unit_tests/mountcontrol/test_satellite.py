@@ -1118,9 +1118,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sat = Satellite(parent=Parent())
-        with mock.patch.object(
-            Connection, "communicate", return_value=(True, [1, 2, 3], 1)
-        ):
+        with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3], 1)):
             suc = sat.getTrackingOffsets()
             self.assertFalse(suc)
 
@@ -1134,9 +1132,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sat = Satellite(parent=Parent())
-        with mock.patch.object(
-            Connection, "communicate", return_value=(True, [1, 2, 3], 3)
-        ):
+        with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3], 3)):
             suc = sat.getTrackingOffsets()
             self.assertFalse(suc)
 
@@ -1150,9 +1146,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sat = Satellite(parent=Parent())
-        with mock.patch.object(
-            Connection, "communicate", return_value=(True, [1, 2, 3, 4], 4)
-        ):
+        with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3, 4], 4)):
             suc = sat.getTrackingOffsets()
             self.assertTrue(suc)
 
@@ -1166,9 +1160,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sat = Satellite(parent=Parent())
-        with mock.patch.object(
-            Connection, "communicate", return_value=(True, ["E"], 1)
-        ):
+        with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
             suc = sat.setTrackingFirst(first=Angle(degrees=1))
             self.assertTrue(suc)
 
@@ -1182,9 +1174,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sat = Satellite(parent=Parent())
-        with mock.patch.object(
-            Connection, "communicate", return_value=(True, ["E"], 1)
-        ):
+        with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
             suc = sat.setTrackingSecond(second=Angle(degrees=1))
             self.assertTrue(suc)
 
@@ -1198,9 +1188,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sat = Satellite(parent=Parent())
-        with mock.patch.object(
-            Connection, "communicate", return_value=(True, ["E"], 1)
-        ):
+        with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
             suc = sat.setTrackingFirstCorr(firstCorr=Angle(degrees=1))
             self.assertTrue(suc)
 
@@ -1214,9 +1202,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sat = Satellite(parent=Parent())
-        with mock.patch.object(
-            Connection, "communicate", return_value=(True, ["E"], 1)
-        ):
+        with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
             suc = sat.setTrackingTime(time=1)
             self.assertTrue(suc)
 
@@ -1230,9 +1216,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sat = Satellite(parent=Parent())
-        with mock.patch.object(
-            Connection, "communicate", return_value=(True, ["E"], 1)
-        ):
+        with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
             suc = sat.addTrackingFirst(first=Angle(degrees=1))
             self.assertTrue(suc)
 
@@ -1246,9 +1230,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sat = Satellite(parent=Parent())
-        with mock.patch.object(
-            Connection, "communicate", return_value=(True, ["E"], 1)
-        ):
+        with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
             suc = sat.addTrackingSecond(second=Angle(degrees=1))
             self.assertTrue(suc)
 
@@ -1262,9 +1244,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sat = Satellite(parent=Parent())
-        with mock.patch.object(
-            Connection, "communicate", return_value=(True, ["E"], 1)
-        ):
+        with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
             suc = sat.addTrackingFirstCorr(firstCorr=Angle(degrees=1))
             self.assertTrue(suc)
 
@@ -1278,9 +1258,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sat = Satellite(parent=Parent())
-        with mock.patch.object(
-            Connection, "communicate", return_value=(True, ["E"], 1)
-        ):
+        with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
             suc = sat.addTrackingTime(time=1)
             self.assertTrue(suc)
 
@@ -1294,8 +1272,6 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sat = Satellite(parent=Parent())
-        with mock.patch.object(
-            Connection, "communicate", return_value=(True, ["V"], 1)
-        ):
+        with mock.patch.object(Connection, "communicate", return_value=(True, ["V"], 1)):
             suc = sat.clearTrackingOffsets()
             self.assertTrue(suc)

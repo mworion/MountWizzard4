@@ -43,9 +43,7 @@ class Ui_HemisphereDialog(object):
         if not HemisphereDialog.objectName():
             HemisphereDialog.setObjectName("HemisphereDialog")
         HemisphereDialog.resize(800, 600)
-        sizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(HemisphereDialog.sizePolicy().hasHeightForWidth())
@@ -188,9 +186,7 @@ class Ui_HemisphereDialog(object):
         self.gridLayout_2.setContentsMargins(10, 15, 15, 10)
         self.label = QLabel(self.operationMode)
         self.label.setObjectName("label")
-        sizePolicy1 = QSizePolicy(
-            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
@@ -204,9 +200,7 @@ class Ui_HemisphereDialog(object):
         self.azimuth = QLineEdit(self.operationMode)
         self.azimuth.setObjectName("azimuth")
         self.azimuth.setEnabled(False)
-        sizePolicy2 = QSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed
-        )
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.azimuth.sizePolicy().hasHeightForWidth())
@@ -399,9 +393,7 @@ class Ui_HemisphereDialog(object):
         self.addPositionToHorizon = QPushButton(self.groupBox_4)
         self.addPositionToHorizon.setObjectName("addPositionToHorizon")
         self.addPositionToHorizon.setEnabled(False)
-        sizePolicy2.setHeightForWidth(
-            self.addPositionToHorizon.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy2.setHeightForWidth(self.addPositionToHorizon.sizePolicy().hasHeightForWidth())
         self.addPositionToHorizon.setSizePolicy(sizePolicy2)
         self.addPositionToHorizon.setMinimumSize(QSize(0, 21))
         self.addPositionToHorizon.setMaximumSize(QSize(16777215, 20))
@@ -486,9 +478,7 @@ class Ui_HemisphereDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.normalModeHem.setText(
-            QCoreApplication.translate("HemisphereDialog", "Normal", None)
-        )
+        self.normalModeHem.setText(QCoreApplication.translate("HemisphereDialog", "Normal", None))
         # if QT_CONFIG(tooltip)
         self.editModeHem.setToolTip(
             QCoreApplication.translate(
@@ -570,9 +560,7 @@ class Ui_HemisphereDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showPolar.setText(
-            QCoreApplication.translate("HemisphereDialog", "Show Polar", None)
-        )
+        self.showPolar.setText(QCoreApplication.translate("HemisphereDialog", "Show Polar", None))
         # if QT_CONFIG(tooltip)
         self.showSlewPath.setToolTip(
             QCoreApplication.translate(
@@ -594,9 +582,7 @@ class Ui_HemisphereDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showTerrain.setText(
-            QCoreApplication.translate("HemisphereDialog", "Terrain", None)
-        )
+        self.showTerrain.setText(QCoreApplication.translate("HemisphereDialog", "Terrain", None))
         # if QT_CONFIG(tooltip)
         self.showHorizon.setToolTip(
             QCoreApplication.translate(
@@ -624,17 +610,11 @@ class Ui_HemisphereDialog(object):
         self.operationMode.setTitle(
             QCoreApplication.translate("HemisphereDialog", "Coordinates", None)
         )
-        self.label.setText(
-            QCoreApplication.translate("HemisphereDialog", "Altitude:", None)
-        )
-        self.label_2.setText(
-            QCoreApplication.translate("HemisphereDialog", "Azimuth:", None)
-        )
+        self.label.setText(QCoreApplication.translate("HemisphereDialog", "Altitude:", None))
+        self.label_2.setText(QCoreApplication.translate("HemisphereDialog", "Azimuth:", None))
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.HemisphereTab),
-            QCoreApplication.translate(
-                "HemisphereDialog", "Hemisphere for Modelling", None
-            ),
+            QCoreApplication.translate("HemisphereDialog", "Hemisphere for Modelling", None),
         )
         # if QT_CONFIG(tooltip)
         self.terrainImageGroup.setToolTip(
@@ -648,18 +628,10 @@ class Ui_HemisphereDialog(object):
         self.terrainImageGroup.setTitle(
             QCoreApplication.translate("HemisphereDialog", "Terrain Image", None)
         )
-        self.label_4.setText(
-            QCoreApplication.translate("HemisphereDialog", "Alpha", None)
-        )
-        self.label_6.setText(
-            QCoreApplication.translate("HemisphereDialog", "Altitude", None)
-        )
-        self.label_3.setText(
-            QCoreApplication.translate("HemisphereDialog", "Azimuth", None)
-        )
-        self.loadTerrainFile.setText(
-            QCoreApplication.translate("HemisphereDialog", "Load", None)
-        )
+        self.label_4.setText(QCoreApplication.translate("HemisphereDialog", "Alpha", None))
+        self.label_6.setText(QCoreApplication.translate("HemisphereDialog", "Altitude", None))
+        self.label_3.setText(QCoreApplication.translate("HemisphereDialog", "Azimuth", None))
+        self.loadTerrainFile.setText(QCoreApplication.translate("HemisphereDialog", "Load", None))
         self.clearTerrainFile.setText(
             QCoreApplication.translate("HemisphereDialog", "Clear ", None)
         )
@@ -675,9 +647,7 @@ class Ui_HemisphereDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.normalModeHor.setText(
-            QCoreApplication.translate("HemisphereDialog", "Normal", None)
-        )
+        self.normalModeHor.setText(QCoreApplication.translate("HemisphereDialog", "Normal", None))
         # if QT_CONFIG(tooltip)
         self.editModeHor.setToolTip(
             QCoreApplication.translate(
@@ -705,12 +675,8 @@ class Ui_HemisphereDialog(object):
         self.horizonFileGroup.setTitle(
             QCoreApplication.translate("HemisphereDialog", "Mask File", None)
         )
-        self.loadHorizonMask.setText(
-            QCoreApplication.translate("HemisphereDialog", "Load", None)
-        )
-        self.saveHorizonMask.setText(
-            QCoreApplication.translate("HemisphereDialog", "Save", None)
-        )
+        self.loadHorizonMask.setText(QCoreApplication.translate("HemisphereDialog", "Load", None))
+        self.saveHorizonMask.setText(QCoreApplication.translate("HemisphereDialog", "Save", None))
         self.saveHorizonMaskAs.setText(
             QCoreApplication.translate("HemisphereDialog", "Save as", None)
         )

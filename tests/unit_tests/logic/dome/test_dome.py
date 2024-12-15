@@ -57,9 +57,7 @@ def test_startCommunication_1(function):
 def test_startCommunication_2(function):
     function.framework = "indi"
     function.domeStarted = False
-    with mock.patch.object(
-        function.run["indi"], "startCommunication", return_value=False
-    ):
+    with mock.patch.object(function.run["indi"], "startCommunication", return_value=False):
         suc = function.startCommunication()
         assert not suc
         assert function.domeStarted
@@ -68,9 +66,7 @@ def test_startCommunication_2(function):
 def test_startCommunication_3(function):
     function.framework = "indi"
     function.domeStarted = False
-    with mock.patch.object(
-        function.run["indi"], "startCommunication", return_value=True
-    ):
+    with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
         suc = function.startCommunication()
         assert suc
         assert function.domeStarted
@@ -86,9 +82,7 @@ def test_stopCommunication_2(function):
     function.framework = "indi"
     function.domeStarted = True
     function.app.update1s.connect(function.checkSlewingDome)
-    with mock.patch.object(
-        function.run["indi"], "startCommunication", return_value=True
-    ):
+    with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
         suc = function.stopCommunication()
         assert suc
         assert not function.domeStarted
@@ -98,9 +92,7 @@ def test_stopCommunication_3(function):
     function.framework = "indi"
     function.domeStarted = True
     function.app.update1s.connect(function.checkSlewingDome)
-    with mock.patch.object(
-        function.run["indi"], "startCommunication", return_value=False
-    ):
+    with mock.patch.object(function.run["indi"], "startCommunication", return_value=False):
         suc = function.stopCommunication()
         assert suc
         assert not function.domeStarted
@@ -293,9 +285,7 @@ def test_checkSlewNeeded_1(function):
 
 def test_checkSlewNeeded_2(function):
     with mock.patch.object(function, "checkTargetConditions", return_value=True):
-        with mock.patch.object(
-            function, "calcTargetRectanglePoints", return_value=(0, 1, 2)
-        ):
+        with mock.patch.object(function, "calcTargetRectanglePoints", return_value=(0, 1, 2)):
             with mock.patch.object(function, "targetInDomeShutter", return_value=False):
                 suc = function.checkSlewNeeded(0, 0)
                 assert suc
@@ -303,9 +293,7 @@ def test_checkSlewNeeded_2(function):
 
 def test_checkSlewNeeded_3(function):
     with mock.patch.object(function, "checkTargetConditions", return_value=True):
-        with mock.patch.object(
-            function, "calcTargetRectanglePoints", return_value=(0, 1, 2)
-        ):
+        with mock.patch.object(function, "calcTargetRectanglePoints", return_value=(0, 1, 2)):
             with mock.patch.object(function, "targetInDomeShutter", return_value=True):
                 suc = function.checkSlewNeeded(0, 0)
                 assert not suc

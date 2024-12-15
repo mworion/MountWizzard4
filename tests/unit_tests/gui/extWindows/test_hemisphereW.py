@@ -144,41 +144,31 @@ def test_calculateRelevance_0(function):
 
 
 def test_calculateRelevance_1(function):
-    function.app.mount.obsSite.location = wgs84.latlon(
-        longitude_degrees=0, latitude_degrees=45
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=45)
     val = function.calculateRelevance(40, 180)
     assert round(val, 3) == 0.845
 
 
 def test_calculateRelevance_2(function):
-    function.app.mount.obsSite.location = wgs84.latlon(
-        longitude_degrees=0, latitude_degrees=45
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=45)
     val = function.calculateRelevance(0, 0)
     assert val == 0
 
 
 def test_calculateRelevance_3(function):
-    function.app.mount.obsSite.location = wgs84.latlon(
-        longitude_degrees=0, latitude_degrees=45
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=45)
     val = function.calculateRelevance(30, 180)
     assert val > 0
 
 
 def test_calculateRelevance_4(function):
-    function.app.mount.obsSite.location = wgs84.latlon(
-        longitude_degrees=0, latitude_degrees=45
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=45)
     val = function.calculateRelevance(40, 10)
     assert val == 0
 
 
 def test_calculateRelevance_5(function):
-    function.app.mount.obsSite.location = wgs84.latlon(
-        longitude_degrees=0, latitude_degrees=-45
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=-45)
     val = function.calculateRelevance(40, 10)
     assert val > 0
 
@@ -301,17 +291,13 @@ def test_prepareHemisphere(function):
 
 
 def test_drawCelestialEquator_1(function):
-    with mock.patch.object(
-        function.app.data, "generateCelestialEquator", return_value=None
-    ):
+    with mock.patch.object(function.app.data, "generateCelestialEquator", return_value=None):
         suc = function.drawCelestialEquator()
         assert not suc
 
 
 def test_drawCelestialEquator_2(function):
-    with mock.patch.object(
-        function.app.data, "generateCelestialEquator", return_value=[(1, 1)]
-    ):
+    with mock.patch.object(function.app.data, "generateCelestialEquator", return_value=[(1, 1)]):
         suc = function.drawCelestialEquator()
         assert suc
 
@@ -500,9 +486,7 @@ def test_getMountModelData_2(function):
 
 
 def test_drawModelIsoCurve_1(function):
-    with mock.patch.object(
-        function, "getMountModelData", return_value=(None, None, None)
-    ):
+    with mock.patch.object(function, "getMountModelData", return_value=(None, None, None)):
         suc = function.drawModelIsoCurve()
         assert not suc
 
@@ -585,9 +569,7 @@ def test_slewStar_4(function):
             with mock.patch.object(
                 function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
             ):
-                with mock.patch.object(
-                    SlewInterface, "slewTargetRaDec", return_value=False
-                ):
+                with mock.patch.object(SlewInterface, "slewTargetRaDec", return_value=False):
                     function.slewStar(QPointF(1, 1))
 
 
@@ -605,9 +587,7 @@ def test_slewStar_5(function):
             with mock.patch.object(
                 function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
             ):
-                with mock.patch.object(
-                    SlewInterface, "slewTargetRaDec", return_value=True
-                ):
+                with mock.patch.object(SlewInterface, "slewTargetRaDec", return_value=True):
                     function.slewStar(QPointF(1, 1))
 
 
@@ -718,18 +698,14 @@ def test_saveHorizonMaskFile_2(function):
 
 def test_saveHorizonMaskFile_3(function):
     function.ui.horizonMaskFileName.setText("test")
-    with mock.patch.object(
-        function, "saveFile", return_value=("build", "test", "bpts")
-    ):
+    with mock.patch.object(function, "saveFile", return_value=("build", "test", "bpts")):
         with mock.patch.object(function.app.data, "saveHorizonP", return_value=False):
             suc = function.saveHorizonMask()
             assert suc
 
 
 def test_saveHorizonMaskFileAs_1(function):
-    with mock.patch.object(
-        function, "saveFile", return_value=("build", "test", "bpts")
-    ):
+    with mock.patch.object(function, "saveFile", return_value=("build", "test", "bpts")):
         with mock.patch.object(function.app.data, "saveHorizonP", return_value=True):
             suc = function.saveHorizonMaskAs()
             assert suc
@@ -742,9 +718,7 @@ def test_saveHorizonMaskFileAs_2(function):
 
 
 def test_saveHorizonMaskFileAs_3(function):
-    with mock.patch.object(
-        function, "saveFile", return_value=("build", "test", "bpts")
-    ):
+    with mock.patch.object(function, "saveFile", return_value=("build", "test", "bpts")):
         with mock.patch.object(function.app.data, "saveHorizonP", return_value=False):
             suc = function.saveHorizonMaskAs()
             assert suc

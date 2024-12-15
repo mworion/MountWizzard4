@@ -152,9 +152,7 @@ class ASTAP(object):
 
         wcsHeader = getImageHeader(imagePath=wcsPath)
         imageHeader = getImageHeader(imagePath=imagePath)
-        solution = getSolutionFromWCSHeader(
-            wcsHeader=wcsHeader, imageHeader=imageHeader
-        )
+        solution = getSolutionFromWCSHeader(wcsHeader=wcsHeader, imageHeader=imageHeader)
 
         if updateHeader:
             updateImageFileHeaderWithSolution(imagePath, solution)

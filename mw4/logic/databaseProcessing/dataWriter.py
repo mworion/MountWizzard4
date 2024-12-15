@@ -15,7 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import os
 import logging
 import shutil
 from pathlib import Path
@@ -156,9 +155,7 @@ class DataWriter:
 
         cycleText = self.generateCycleCountTextPacked(cycle)
 
-        designationPacked = (
-            f"{centuryPacked}{year}{halfMonth}{cycleText}{halfMonthOrder}"
-        )
+        designationPacked = f"{centuryPacked}{year}{halfMonth}{cycleText}{halfMonthOrder}"
         return designationPacked
 
     def generateDatePacked(self, month: str, day: str) -> str:

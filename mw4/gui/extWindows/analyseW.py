@@ -177,9 +177,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.exposureTime.setText(f'{d.get("exposureTime", "")}')
         self.ui.solver.setText(d.get("plateSolveApp", ""))
         self.ui.binning.setText(f'{d.get("binning", 0):1.0f}')
-        self.ui.time.setText(
-            d.get("julianDate", "").replace("T", "  ").replace("Z", "")
-        )
+        self.ui.time.setText(d.get("julianDate", "").replace("T", "  ").replace("Z", ""))
         self.ui.subframe.setText(f'{d.get("subFrame", 0):3.0f}')
         self.ui.modelTerms.setText(f'{d.get("modelTerms", 0):02.0f}')
         self.ui.modelErrorRMS.setText(f'{d.get("modelErrorRMS", 0):5.1f}')
@@ -246,9 +244,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         :return: success
         """
         folder = self.app.mwGlob["modelDir"]
-        loadFilePath = self.openFile(
-            self, "Open model file", folder, "Model files (*.model)"
-        )
+        loadFilePath = self.openFile(self, "Open model file", folder, "Model files (*.model)")
         if loadFilePath.is_file():
             self.processModel(loadFilePath)
         return True

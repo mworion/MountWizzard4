@@ -407,9 +407,7 @@ class Connection(object):
                 try:
                     chunk = chunkRaw.decode("ASCII")
                 except Exception as e:
-                    self.log.warning(
-                        f"[{self.id}] error: [{e}], received: [{chunkRaw}]"
-                    )
+                    self.log.warning(f"[{self.id}] error: [{e}], received: [{chunkRaw}]")
                     return False, ""
 
                 if not chunk:

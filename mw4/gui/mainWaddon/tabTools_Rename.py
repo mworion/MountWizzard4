@@ -181,9 +181,7 @@ class Rename(MWidget):
         for fitsKey in fitsKeywords:
             if fitsKey not in fitsHeader:
                 continue
-            nameChunk = self.convertHeaderEntry(
-                entry=fitsHeader[fitsKey], fitsKey=fitsKey
-            )
+            nameChunk = self.convertHeaderEntry(entry=fitsHeader[fitsKey], fitsKey=fitsKey)
             break
         return nameChunk
 
@@ -218,9 +216,7 @@ class Rename(MWidget):
 
             for _, selector in self.selectorsDropDowns.items():
                 selection = selector.currentText()
-                chunk = self.processSelectors(
-                    fitsHeader=fitsHeader, selection=selection
-                )
+                chunk = self.processSelectors(fitsHeader=fitsHeader, selection=selection)
                 if chunk:
                     newFilename += f"_{chunk}"
 
@@ -258,9 +254,7 @@ class Rename(MWidget):
             QApplication.processEvents()
             suc = self.renameFile(fileName=fileName)
             if not suc:
-                self.msg.emit(
-                    2, "Tools", "Rename error", f"{fileName} could not be renamed"
-                )
+                self.msg.emit(2, "Tools", "Rename error", f"{fileName} could not be renamed")
 
         self.msg.emit(0, "Tools", "Rename", f"{numberFiles:d} images were renamed")
 

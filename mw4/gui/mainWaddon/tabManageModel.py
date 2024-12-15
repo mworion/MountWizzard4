@@ -73,9 +73,7 @@ class ManageModel(MWidget):
         self.ui.targetRMS.setValue(config.get("targetRMS", 10))
         self.ui.optimizeOverall.setChecked(config.get("optimizeOverall", True))
         self.ui.optimizeSingle.setChecked(config.get("optimizeSingle", True))
-        self.ui.autoUpdateActualAnalyse.setChecked(
-            config.get("autoUpdateActualAnalyse", False)
-        )
+        self.ui.autoUpdateActualAnalyse.setChecked(config.get("autoUpdateActualAnalyse", False))
         self.showModelPosition()
         self.showErrorAscending()
         self.showErrorDistribution()
@@ -237,9 +235,7 @@ class ManageModel(MWidget):
         self.ui.errorAscending.p[0].setLabel("left", "Error per Star [arcsec]")
         temp = sorted(zip(error))
         y = [x[0] for x in temp]
-        self.ui.errorAscending.plot(
-            index, y, color=self.M_GREEN, tip="ErrorRMS: {y:0.1f}".format
-        )
+        self.ui.errorAscending.plot(index, y, color=self.M_GREEN, tip="ErrorRMS: {y:0.1f}".format)
         return True
 
     def showErrorDistribution(self):
@@ -290,9 +286,7 @@ class ManageModel(MWidget):
         modelName = self.ui.nameList.currentItem().text()
         suc = self.app.mount.model.loadName(modelName)
         if not suc:
-            self.msg.emit(
-                2, "Model", "Manage error", f"Model load failed: [{modelName}]"
-            )
+            self.msg.emit(2, "Model", "Manage error", f"Model load failed: [{modelName}]")
             return False
         else:
             self.msg.emit(0, "Model", "Manage", f"Model loaded: [{modelName}]")
@@ -313,9 +307,7 @@ class ManageModel(MWidget):
 
         suc = self.app.mount.model.storeName(modelName)
         if not suc:
-            self.msg.emit(
-                2, "Model", "Manage error", f"Model cannot be saved [{modelName}]"
-            )
+            self.msg.emit(2, "Model", "Manage error", f"Model cannot be saved [{modelName}]")
             return False
         else:
             self.msg.emit(0, "Model", "Manage", f"Model saved: [{modelName}]")
@@ -337,9 +329,7 @@ class ManageModel(MWidget):
 
         suc = self.app.mount.model.deleteName(modelName)
         if not suc:
-            self.msg.emit(
-                2, "Model", "Manage error", f"Model cannot be deleted [{modelName}]"
-            )
+            self.msg.emit(2, "Model", "Manage error", f"Model cannot be deleted [{modelName}]")
             return False
         else:
             self.msg.emit(0, "Model", "Manage", f"Model deleted: [{modelName}]")
@@ -410,9 +400,7 @@ class ManageModel(MWidget):
 
     def clearModel(self):
         """ """
-        suc = self.messageDialog(
-            self.mainW, "Clear model", "Clear actual alignment model"
-        )
+        suc = self.messageDialog(self.mainW, "Clear model", "Clear actual alignment model")
         if not suc:
             return False
 
@@ -479,9 +467,7 @@ class ManageModel(MWidget):
     def runSingleRMS(self):
         """ """
         mount = self.app.mount
-        if all(
-            [star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList]
-        ):
+        if all([star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList]):
             self.runningOptimize = False
         if mount.model.numberStars is None:
             numberStars = 0
@@ -585,9 +571,7 @@ class ManageModel(MWidget):
 
         suc = self.app.mount.model.deletePoint(index)
         if not suc:
-            self.msg.emit(
-                2, "Model", "Manage error", f"Point {index + 1:3.0f} cannot be deleted"
-            )
+            self.msg.emit(2, "Model", "Manage error", f"Point {index + 1:3.0f} cannot be deleted")
             return False
 
         text = f"Point: {index + 1:3.0f}, RMS of {error:5.1f}"

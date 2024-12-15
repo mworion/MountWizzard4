@@ -234,6 +234,7 @@ def test_GetAlign_1(function):
     with mock.patch.object(QThreadPool, "start"):
         function.getAlign()
 
+
 def test_GetAlign_2(function):
     function.mountUp = True
     with mock.patch.object(QThreadPool, "start"):

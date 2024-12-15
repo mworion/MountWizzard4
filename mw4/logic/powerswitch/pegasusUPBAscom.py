@@ -38,51 +38,23 @@ class PegasusUPBAscom(AscomClass):
 
         self.data["FIRMWARE_INFO.VERSION"] = "1.4" if model == "UPB" else "2.1"
         if model == "UPB":
-            self.getAndStoreAscomProperty(
-                "getswitch(0)", "POWER_CONTROL.POWER_CONTROL_1"
-            )
-            self.getAndStoreAscomProperty(
-                "getswitch(1)", "POWER_CONTROL.POWER_CONTROL_2"
-            )
-            self.getAndStoreAscomProperty(
-                "getswitch(2)", "POWER_CONTROL.POWER_CONTROL_3"
-            )
-            self.getAndStoreAscomProperty(
-                "getswitch(3)", "POWER_CONTROL.POWER_CONTROL_4"
-            )
-            self.getAndStoreAscomProperty(
-                "getswitchvalue(4)", "DEW_CURRENT.DEW_CURRENT_A"
-            )
-            self.getAndStoreAscomProperty(
-                "getswitchvalue(5)", "DEW_CURRENT.DEW_CURRENT_B"
-            )
-            self.getAndStoreAscomProperty(
-                "getswitch(6)", "USB_HUB_CONTROL.INDI_ENABLED"
-            )
+            self.getAndStoreAscomProperty("getswitch(0)", "POWER_CONTROL.POWER_CONTROL_1")
+            self.getAndStoreAscomProperty("getswitch(1)", "POWER_CONTROL.POWER_CONTROL_2")
+            self.getAndStoreAscomProperty("getswitch(2)", "POWER_CONTROL.POWER_CONTROL_3")
+            self.getAndStoreAscomProperty("getswitch(3)", "POWER_CONTROL.POWER_CONTROL_4")
+            self.getAndStoreAscomProperty("getswitchvalue(4)", "DEW_CURRENT.DEW_CURRENT_A")
+            self.getAndStoreAscomProperty("getswitchvalue(5)", "DEW_CURRENT.DEW_CURRENT_B")
+            self.getAndStoreAscomProperty("getswitch(6)", "USB_HUB_CONTROL.INDI_ENABLED")
             self.getAndStoreAscomProperty("getswitch(7)", "AUTO_DEW.INDI_ENABLED")
-            self.getAndStoreAscomProperty(
-                "getswitchvalue(11)", "POWER_SENSORS.SENSOR_VOLTAGE"
-            )
-            self.getAndStoreAscomProperty(
-                "getswitchvalue(12)", "POWER_SENSORS.SENSOR_CURRENT"
-            )
-            self.getAndStoreAscomProperty(
-                "getswitchvalue(13)", "POWER_SENSORS.SENSOR_POWER"
-            )
+            self.getAndStoreAscomProperty("getswitchvalue(11)", "POWER_SENSORS.SENSOR_VOLTAGE")
+            self.getAndStoreAscomProperty("getswitchvalue(12)", "POWER_SENSORS.SENSOR_CURRENT")
+            self.getAndStoreAscomProperty("getswitchvalue(13)", "POWER_SENSORS.SENSOR_POWER")
 
         if model == "UPBv2":
-            self.getAndStoreAscomProperty(
-                "getswitch(0)", "POWER_CONTROL.POWER_CONTROL_1"
-            )
-            self.getAndStoreAscomProperty(
-                "getswitch(1)", "POWER_CONTROL.POWER_CONTROL_2"
-            )
-            self.getAndStoreAscomProperty(
-                "getswitch(2)", "POWER_CONTROL.POWER_CONTROL_3"
-            )
-            self.getAndStoreAscomProperty(
-                "getswitch(3)", "POWER_CONTROL.POWER_CONTROL_4"
-            )
+            self.getAndStoreAscomProperty("getswitch(0)", "POWER_CONTROL.POWER_CONTROL_1")
+            self.getAndStoreAscomProperty("getswitch(1)", "POWER_CONTROL.POWER_CONTROL_2")
+            self.getAndStoreAscomProperty("getswitch(2)", "POWER_CONTROL.POWER_CONTROL_3")
+            self.getAndStoreAscomProperty("getswitch(3)", "POWER_CONTROL.POWER_CONTROL_4")
             self.getAndStoreAscomProperty("getswitchvalue(4) / 2.55", "DEW_PWM.DEW_A")
             self.getAndStoreAscomProperty("getswitchvalue(5) / 2.55", "DEW_PWM.DEW_B")
             self.getAndStoreAscomProperty("getswitchvalue(6) / 2.55", "DEW_PWM.DEW_C")
@@ -101,9 +73,7 @@ class PegasusUPBAscom(AscomClass):
             self.getAndStoreAscomProperty(
                 "getswitchvalue(18) / 10", "POWER_SENSORS.SENSOR_CURRENT"
             )
-            self.getAndStoreAscomProperty(
-                "getswitchvalue(19)", "POWER_SENSORS.SENSOR_POWER"
-            )
+            self.getAndStoreAscomProperty("getswitchvalue(19)", "POWER_SENSORS.SENSOR_POWER")
         return True
 
     def togglePowerPort(self, port=None):

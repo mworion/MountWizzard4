@@ -121,9 +121,7 @@ def test_checkIsAdmin_4():
     import ctypes
 
     with mock.patch.object(platform, "system", return_value="Windows"):
-        with mock.patch.object(
-            ctypes.windll.shell32, "IsUserAnAdmin", side_effect=Exception
-        ):
+        with mock.patch.object(ctypes.windll.shell32, "IsUserAnAdmin", side_effect=Exception):
             val = checkIsAdmin()
             assert val == "unknown"
 

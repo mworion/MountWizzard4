@@ -64,17 +64,13 @@ def test_setupIcons_1(function):
 
 
 def test_enableGuiFunctions_1(function):
-    with mock.patch.object(
-        function.app.mount.firmware, "checkNewer", return_value=None
-    ):
+    with mock.patch.object(function.app.mount.firmware, "checkNewer", return_value=None):
         suc = function.enableGuiFunctions()
         assert not suc
 
 
 def test_enableGuiFunctions_2(function):
-    with mock.patch.object(
-        function.app.mount.firmware, "checkNewer", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.firmware, "checkNewer", return_value=True):
         suc = function.enableGuiFunctions()
         assert suc
 
@@ -326,9 +322,7 @@ def test_programSatToMount_3(function):
         "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072",
     ]
     function.satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
-    function.satellites.objects = {
-        "TIANGONG 2": EarthSatellite(tle[1], tle[2], name=tle[0])
-    }
+    function.satellites.objects = {"TIANGONG 2": EarthSatellite(tle[1], tle[2], name=tle[0])}
     function.app.mount.satellite.tleParams.name = "TIANGONG 2"
     with mock.patch.object(function.app.mount.satellite, "setTLE", return_value=False):
         suc = function.programSatToMount(satName="TIANGONG 2")
@@ -342,9 +336,7 @@ def test_programSatToMount_4(function):
         "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072",
     ]
     function.satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
-    function.satellites.objects = {
-        "TIANGONG 2": EarthSatellite(tle[1], tle[2], name=tle[0])
-    }
+    function.satellites.objects = {"TIANGONG 2": EarthSatellite(tle[1], tle[2], name=tle[0])}
     function.app.mount.satellite.tleParams.name = "TIANGONG 2"
     with mock.patch.object(function.app.mount.satellite, "setTLE", return_value=True):
         with mock.patch.object(function.app.mount, "getTLE"):
@@ -583,9 +575,7 @@ def test_progTrajectoryToMount_2(function):
     function.ui.useInternalSatCalc.setChecked(True)
     with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
         with mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)):
-            with mock.patch.object(
-                function, "filterHorizon", return_value=(0, 0, 0, 0)
-            ):
+            with mock.patch.object(function, "filterHorizon", return_value=(0, 0, 0, 0)):
                 with mock.patch.object(function, "signalSatelliteData"):
                     suc = function.progTrajectoryToMount()
                     assert suc
@@ -615,9 +605,7 @@ def test_startProg_1(function):
     with mock.patch.object(function, "clearTrackingParameters"):
         with mock.patch.object(function, "selectStartEnd", return_value=(1, 2)):
             with mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)):
-                with mock.patch.object(
-                    function, "filterHorizon", return_value=(0, 0, [1], [1])
-                ):
+                with mock.patch.object(function, "filterHorizon", return_value=(0, 0, [1], [1])):
                     with mock.patch.object(function.app.mount, "progTrajectory"):
                         suc = function.startProg()
                         assert suc
@@ -634,9 +622,7 @@ def test_startProg_3(function):
     with mock.patch.object(function, "clearTrackingParameters"):
         with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
             with mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)):
-                with mock.patch.object(
-                    function, "filterHorizon", return_value=(0, 0, [], [])
-                ):
+                with mock.patch.object(function, "filterHorizon", return_value=(0, 0, [], [])):
                     suc = function.startProg()
                     assert not suc
 
@@ -720,18 +706,14 @@ def test_startTrack_1(function):
 
 def test_startTrack_2(function):
     function.app.deviceStat["mount"] = True
-    with mock.patch.object(
-        function.app.mount.satellite, "slewTLE", return_value=(False, "test")
-    ):
+    with mock.patch.object(function.app.mount.satellite, "slewTLE", return_value=(False, "test")):
         suc = function.startTrack()
         assert not suc
 
 
 def test_startTrack_3(function):
     function.app.deviceStat["mount"] = True
-    with mock.patch.object(
-        function.app.mount.satellite, "slewTLE", return_value=(False, "test")
-    ):
+    with mock.patch.object(function.app.mount.satellite, "slewTLE", return_value=(False, "test")):
         suc = function.startTrack()
         assert not suc
 
@@ -739,9 +721,7 @@ def test_startTrack_3(function):
 def test_startTrack_4(function):
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 5
-    with mock.patch.object(
-        function.app.mount.satellite, "slewTLE", return_value=(False, "test")
-    ):
+    with mock.patch.object(function.app.mount.satellite, "slewTLE", return_value=(False, "test")):
         suc = function.startTrack()
         assert not suc
 
@@ -749,9 +729,7 @@ def test_startTrack_4(function):
 def test_startTrack_5(function):
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 5
-    with mock.patch.object(
-        function.app.mount.satellite, "slewTLE", return_value=(True, "test")
-    ):
+    with mock.patch.object(function.app.mount.satellite, "slewTLE", return_value=(True, "test")):
         suc = function.startTrack()
         assert suc
 
@@ -759,9 +737,7 @@ def test_startTrack_5(function):
 def test_startTrack_6(function):
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 5
-    with mock.patch.object(
-        function.app.mount.satellite, "slewTLE", return_value=(True, "test")
-    ):
+    with mock.patch.object(function.app.mount.satellite, "slewTLE", return_value=(True, "test")):
         with mock.patch.object(function.app.mount.obsSite, "unpark", return_value=True):
             suc = function.startTrack()
             assert suc
@@ -770,12 +746,8 @@ def test_startTrack_6(function):
 def test_startTrack_7(function):
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 5
-    with mock.patch.object(
-        function.app.mount.satellite, "slewTLE", return_value=(True, "test")
-    ):
-        with mock.patch.object(
-            function.app.mount.obsSite, "unpark", return_value=False
-        ):
+    with mock.patch.object(function.app.mount.satellite, "slewTLE", return_value=(True, "test")):
+        with mock.patch.object(function.app.mount.obsSite, "unpark", return_value=False):
             with mock.patch.object(
                 function.app.mount.satellite, "clearTrackingOffsets", return_value=True
             ):
@@ -791,18 +763,14 @@ def test_stopTrack_1(function):
 
 def test_stopTrack_2(function):
     function.app.deviceStat["mount"] = True
-    with mock.patch.object(
-        function.app.mount.obsSite, "startTracking", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "startTracking", return_value=False):
         suc = function.stopTrack()
         assert not suc
 
 
 def test_stopTrack_3(function):
     function.app.deviceStat["mount"] = True
-    with mock.patch.object(
-        function.app.mount.obsSite, "startTracking", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "startTracking", return_value=True):
         suc = function.stopTrack()
         assert suc
 
@@ -811,9 +779,7 @@ def test_toggleTrackingOffset_1(function):
     class OBS:
         status = 10
 
-    with mock.patch.object(
-        function.app.mount.firmware, "checkNewer", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.firmware, "checkNewer", return_value=True):
         suc = function.toggleTrackingOffset(obs=OBS())
         assert suc
 
@@ -822,9 +788,7 @@ def test_toggleTrackingOffset_2(function):
     class OBS:
         status = 1
 
-    with mock.patch.object(
-        function.app.mount.firmware, "checkNewer", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.firmware, "checkNewer", return_value=True):
         suc = function.toggleTrackingOffset(obs=OBS())
         assert suc
 
@@ -833,9 +797,7 @@ def test_toggleTrackingOffset_3(function):
     class OBS:
         status = 1
 
-    with mock.patch.object(
-        function.app.mount.firmware, "checkNewer", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.firmware, "checkNewer", return_value=False):
         suc = function.toggleTrackingOffset(obs=OBS())
         assert not suc
 
@@ -877,16 +839,12 @@ def test_followMount_4(function):
 
 
 def test_setTrackingOffsets_1(function):
-    with mock.patch.object(
-        function.app.mount.satellite, "setTrackingOffsets", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.satellite, "setTrackingOffsets", return_value=True):
         suc = function.setTrackingOffsets()
         assert suc
 
 
 def test_setTrackingOffsets_2(function):
-    with mock.patch.object(
-        function.app.mount.satellite, "setTrackingOffsets", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.satellite, "setTrackingOffsets", return_value=False):
         suc = function.setTrackingOffsets()
         assert not suc

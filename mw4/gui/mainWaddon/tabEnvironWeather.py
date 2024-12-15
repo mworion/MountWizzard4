@@ -265,9 +265,7 @@ class EnvironWeather(MWidget):
             if self.app.mount.obsSite.status == 0:
                 return False
 
-        suc = self.app.mount.setting.setRefractionParam(
-            temperature=temp, pressure=press
-        )
+        suc = self.app.mount.setting.setRefractionParam(temperature=temp, pressure=press)
         self.log.debug(f"Setting refrac temp:[{temp}], press:[{press}]")
         if not suc:
             self.msg.emit(2, "System", "Environment", "No refraction update")

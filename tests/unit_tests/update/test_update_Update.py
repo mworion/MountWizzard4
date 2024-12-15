@@ -52,9 +52,7 @@ def test_formatPIP_2(update):
 
 
 def test_formatPIP_3(update):
-    line = update.formatPIP(
-        "Requirement already satisfied: mountcontrol in /Users (0.157)"
-    )
+    line = update.formatPIP("Requirement already satisfied: mountcontrol in /Users (0.157)")
     assert line == "Requirement already satisfied : mountcontrol"
 
 
@@ -132,9 +130,7 @@ def test_runInstall_2(update):
         def communicate(timeout=0):
             return Test1(), Test1()
 
-    with mock.patch.object(
-        subprocess, "Popen", return_value=Test(), side_effect=Exception()
-    ):
+    with mock.patch.object(subprocess, "Popen", return_value=Test(), side_effect=Exception()):
         with mock.patch.object(update, "formatPIP", return_value=""):
             with mock.patch.object(update, "isVenv", return_value=True):
                 suc = update.runInstall()

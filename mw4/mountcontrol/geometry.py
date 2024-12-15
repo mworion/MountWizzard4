@@ -233,9 +233,7 @@ class Geometry:
         tCos = np.cos(rot)
         tSin = np.sin(rot)
 
-        T = np.array(
-            [[1, 0, 0, 0], [0, tCos, -tSin, 0], [0, tSin, tCos, 0], [0, 0, 0, 1]]
-        )
+        T = np.array([[1, 0, 0, 0], [0, tCos, -tSin, 0], [0, tSin, tCos, 0], [0, 0, 0, 1]])
         return T
 
     @staticmethod
@@ -245,9 +243,7 @@ class Geometry:
         tCos = np.cos(rot)
         tSin = np.sin(rot)
 
-        T = np.array(
-            [[tCos, 0, tSin, 0], [0, 1, 0, 0], [-tSin, 0, tCos, 0], [0, 0, 0, 1]]
-        )
+        T = np.array([[tCos, 0, tSin, 0], [0, 1, 0, 0], [-tSin, 0, tCos, 0], [0, 0, 0, 1]])
         return T
 
     @staticmethod
@@ -257,9 +253,7 @@ class Geometry:
         tCos = np.cos(rot)
         tSin = np.sin(rot)
 
-        T = np.array(
-            [[tCos, -tSin, 0, 0], [tSin, tCos, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
-        )
+        T = np.array([[tCos, -tSin, 0, 0], [tSin, tCos, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
         return T
 
     @staticmethod
@@ -275,9 +269,7 @@ class Geometry:
         )
         return T
 
-    def calcTransformationMatrices(
-        self, ha: Angle, dec: Angle, lat: Angle, pierside="W"
-    ):
+    def calcTransformationMatrices(self, ha: Angle, dec: Angle, lat: Angle, pierside="W"):
         """ """
         text = f"HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, "
         text += f"pierside:{pierside} ,"

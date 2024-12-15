@@ -194,9 +194,7 @@ class VideoWindow(toolsQtWidget.MWidget):
             return False
 
         pixmap = pixmap.scaled(self.ui.video.width(), self.ui.video.height())
-        self.ui.video.setSizePolicy(
-            QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Ignored
-        )
+        self.ui.video.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Ignored)
         self.ui.video.setPixmap(pixmap)
         return True
 

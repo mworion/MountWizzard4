@@ -87,9 +87,7 @@ def test_discoverAPIVersion_2(function):
 
 
 def test_discoverAPIVersion_3(function):
-    with mock.patch.object(
-        requests, "get", side_effect=requests.exceptions.ConnectionError
-    ):
+    with mock.patch.object(requests, "get", side_effect=requests.exceptions.ConnectionError):
         val = function.discoverAPIVersion()
         assert val == 0
 
@@ -147,9 +145,7 @@ def test_discoverAlpacaDevices_2(function):
 
 
 def test_discoverAlpacaDevices_3(function):
-    with mock.patch.object(
-        requests, "get", side_effect=requests.exceptions.ConnectionError
-    ):
+    with mock.patch.object(requests, "get", side_effect=requests.exceptions.ConnectionError):
         val = function.discoverAlpacaDevices()
         assert val == ""
 
@@ -226,9 +222,7 @@ def test_getAlpacaProperty_4(function):
 def test_getAlpacaProperty_5(function):
     function.deviceName = "test"
     function.deviceConnected = True
-    with mock.patch.object(
-        requests, "get", side_effect=requests.exceptions.ConnectionError
-    ):
+    with mock.patch.object(requests, "get", side_effect=requests.exceptions.ConnectionError):
         val = function.getAlpacaProperty("test")
         assert val is None
 
@@ -333,9 +327,7 @@ def test_setAlpacaProperty_4(function):
 def test_setAlpacaProperty_5(function):
     function.deviceName = "test"
     function.deviceConnected = True
-    with mock.patch.object(
-        requests, "put", side_effect=requests.exceptions.ConnectionError
-    ):
+    with mock.patch.object(requests, "put", side_effect=requests.exceptions.ConnectionError):
         val = function.setAlpacaProperty("test")
         assert val is None
 

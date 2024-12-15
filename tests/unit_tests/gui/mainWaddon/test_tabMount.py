@@ -65,33 +65,25 @@ def test_changeTrackingGameController_1(function):
 
 def test_changeTracking_ok2(function, qtbot):
     function.app.mount.obsSite.status = 0
-    with mock.patch.object(
-        function.app.mount.obsSite, "stopTracking", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "stopTracking", return_value=False):
         function.changeTracking()
 
 
 def test_changeTracking_ok3(function, qtbot):
     function.app.mount.obsSite.status = 0
-    with mock.patch.object(
-        function.app.mount.obsSite, "stopTracking", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "stopTracking", return_value=True):
         function.changeTracking()
 
 
 def test_changeTracking_ok4(function):
     function.app.mount.obsSite.status = 1
-    with mock.patch.object(
-        function.app.mount.obsSite, "startTracking", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "startTracking", return_value=True):
         function.changeTracking()
 
 
 def test_changeTracking_ok5(function):
     function.app.mount.obsSite.status = 1
-    with mock.patch.object(
-        function.app.mount.obsSite, "startTracking", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "startTracking", return_value=False):
         function.changeTracking()
 
 
@@ -130,45 +122,33 @@ def test_changePark_notok(function, qtbot):
 
 
 def test_setLunarTracking_1(function):
-    with mock.patch.object(
-        function.app.mount.setting, "setLunarTracking", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.setting, "setLunarTracking", return_value=True):
         function.setLunarTracking()
 
 
 def test_setLunarTracking_2(function):
-    with mock.patch.object(
-        function.app.mount.setting, "setLunarTracking", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.setting, "setLunarTracking", return_value=False):
         function.setLunarTracking()
 
 
 def test_setSiderealTracking_1(function):
-    with mock.patch.object(
-        function.app.mount.setting, "setSiderealTracking", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.setting, "setSiderealTracking", return_value=False):
         function.setSiderealTracking()
 
 
 def test_setSiderealTracking_2(function):
-    with mock.patch.object(
-        function.app.mount.setting, "setSiderealTracking", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.setting, "setSiderealTracking", return_value=True):
         function.setSiderealTracking()
 
 
 def test_setSolarTracking_1(function):
-    with mock.patch.object(
-        function.app.mount.setting, "setSolarTracking", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.setting, "setSolarTracking", return_value=False):
         suc = function.setSolarTracking()
         assert not suc
 
 
 def test_setSolarTracking_2(function):
-    with mock.patch.object(
-        function.app.mount.setting, "setSolarTracking", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.setting, "setSolarTracking", return_value=True):
         function.setSolarTracking()
 
 

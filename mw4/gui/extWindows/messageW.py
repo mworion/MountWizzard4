@@ -162,33 +162,25 @@ class MessageWindow(toolsQtWidget.MWidget):
 
             if source:
                 item = QTableWidgetItem(f"{timePrefix}")
-                item.setTextAlignment(
-                    Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
-                )
+                item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
                 item.setForeground(self.messColor[prio])
                 item.setFont(self.messFont[prio])
                 self.ui.messageTable.setItem(row, 0, item)
 
             item = QTableWidgetItem(f"{source}")
-            item.setTextAlignment(
-                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
-            )
+            item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             item.setFont(self.messFont[prio])
             item.setForeground(self.messColor[prio])
             self.ui.messageTable.setItem(row, 1, item)
 
             item = QTableWidgetItem(f"{mType}")
-            item.setTextAlignment(
-                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
-            )
+            item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             item.setFont(self.messFont[prio])
             item.setForeground(self.messColor[prio])
             self.ui.messageTable.setItem(row, 2, item)
 
             item = QTableWidgetItem(f"{message}")
-            item.setTextAlignment(
-                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
-            )
+            item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             item.setFont(self.messFont[prio])
             item.setForeground(self.messColor[prio])
             self.ui.messageTable.setItem(row, 3, item)

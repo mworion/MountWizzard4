@@ -96,12 +96,8 @@ class Asteroid(MWidget):
         for i, hs in enumerate(hSet):
             self.ui.listAsteroids.setColumnWidth(i, hs)
         self.ui.listAsteroids.verticalHeader().setDefaultSectionSize(16)
-        self.ui.listAsteroids.setSelectionBehavior(
-            QAbstractItemView.SelectionBehavior.SelectRows
-        )
-        self.ui.listAsteroids.setSelectionMode(
-            QAbstractItemView.SelectionMode.ExtendedSelection
-        )
+        self.ui.listAsteroids.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.ui.listAsteroids.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
     @staticmethod
     def generateName(mp: dict) -> str:
@@ -154,14 +150,10 @@ class Asteroid(MWidget):
             self.ui.listAsteroids.insertRow(row)
 
             entry = QTableWidgetItem(f"{number:5d}")
-            entry.setTextAlignment(
-                Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
-            )
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.ui.listAsteroids.setItem(row, 0, entry)
             entry = QTableWidgetItem(name)
-            entry.setTextAlignment(
-                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
-            )
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             self.ui.listAsteroids.setItem(row, 1, entry)
 
             if "Orbit_type" in self.asteroids.objects[name]:

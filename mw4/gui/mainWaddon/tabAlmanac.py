@@ -159,13 +159,9 @@ class Almanac(MWidget):
         plotItem.clear()
         for i in range(len(t)):
             if yH[i] > 12:
-                rect = pg.QtWidgets.QGraphicsRectItem(
-                    xD[i], yH[i] - 12, 1, 24 - (yH[i] - 12)
-                )
+                rect = pg.QtWidgets.QGraphicsRectItem(xD[i], yH[i] - 12, 1, 24 - (yH[i] - 12))
             else:
-                rect = pg.QtWidgets.QGraphicsRectItem(
-                    xD[i], 12 + yH[i], 1, 24 - (12 + yH[i])
-                )
+                rect = pg.QtWidgets.QGraphicsRectItem(xD[i], 12 + yH[i], 1, 24 - (12 + yH[i]))
             rect.setPen(penBar[i])
             rect.setBrush(brushBar[i])
             plotItem.addItem(rect)
@@ -321,9 +317,7 @@ class Almanac(MWidget):
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
 
-            maskPainter.setCompositionMode(
-                QPainter.CompositionMode.CompositionMode_Clear
-            )
+            maskPainter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Clear)
             r = np.cos(np.radians(mpDegree)) * w2
             maskPainter.setBrush(colFree)
             maskPainter.setPen(colFree)
@@ -333,9 +327,7 @@ class Almanac(MWidget):
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, -90 * 16, 180 * 16)
 
-            maskPainter.setCompositionMode(
-                QPainter.CompositionMode.CompositionMode_Clear
-            )
+            maskPainter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Clear)
             r = np.cos(np.radians(mpDegree)) * w2
             maskPainter.setBrush(colFree)
             maskPainter.setPen(penFree)

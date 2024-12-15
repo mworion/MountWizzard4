@@ -41,9 +41,7 @@ def function():
         def json():
             return "test"
 
-    shutil.copy(
-        "tests/testData/openweathermap.data", "tests/workDir/data/openweathermap.data"
-    )
+    shutil.copy("tests/testData/openweathermap.data", "tests/workDir/data/openweathermap.data")
     with mock.patch.object(requests, "get", return_value=Test1()):
         func = OnlineWeather(app=App())
         yield func
@@ -162,9 +160,7 @@ def test_workerGetOpenWeatherMapData_3(function):
     class Test:
         status_code = 300
 
-    with mock.patch.object(
-        requests, "get", side_effect=Exception(), return_value=Test()
-    ):
+    with mock.patch.object(requests, "get", side_effect=Exception(), return_value=Test()):
         suc = function.workerGetOpenWeatherMapData("http://localhost")
         assert not suc
 
@@ -173,9 +169,7 @@ def test_workerGetOpenWeatherMapData_4(function):
     class Test:
         status_code = 300
 
-    with mock.patch.object(
-        requests, "get", side_effect=TimeoutError(), return_value=Test()
-    ):
+    with mock.patch.object(requests, "get", side_effect=TimeoutError(), return_value=Test()):
         suc = function.workerGetOpenWeatherMapData("http://localhost")
         assert not suc
 
@@ -219,18 +213,14 @@ def test_loadingFileNeeded_1(function):
 
 def test_loadingFileNeeded_2(function):
     with mock.patch.object(os.path, "isfile", return_value=True):
-        with mock.patch.object(
-            function.app.mount.obsSite.loader, "days_old", return_value=1
-        ):
+        with mock.patch.object(function.app.mount.obsSite.loader, "days_old", return_value=1):
             suc = function.loadingFileNeeded("test", 1)
             assert suc
 
 
 def test_loadingFileNeeded_3(function):
     with mock.patch.object(os.path, "isfile", return_value=True):
-        with mock.patch.object(
-            function.app.mount.obsSite.loader, "days_old", return_value=1
-        ):
+        with mock.patch.object(function.app.mount.obsSite.loader, "days_old", return_value=1):
             suc = function.loadingFileNeeded("test", 25)
             assert not suc
 

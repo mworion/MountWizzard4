@@ -51,9 +51,7 @@ class ModelStar(object):
 
     log = logging.getLogger("MW4")
 
-    def __init__(
-        self, coord=None, errorRMS=None, errorAngle=None, number=None, obsSite=None
-    ):
+    def __init__(self, coord=None, errorRMS=None, errorAngle=None, number=None, obsSite=None):
         self.obsSite = obsSite
         self.coord = coord
         self.errorRMS = errorRMS

@@ -154,9 +154,7 @@ class SettUpdate(MWidget):
         availPackage, comment, _ = self.versionPackage(packageName)
 
         if availPackage is None:
-            self.msg.emit(
-                2, "System", "Update", "Failed get actual package from server"
-            )
+            self.msg.emit(2, "System", "Update", "Failed get actual package from server")
             return False
 
         self.ui.versionAvailable.setText(availPackage)
@@ -217,23 +215,17 @@ class SettUpdate(MWidget):
     def installVersion(self):
         """ """
         if not (self.isVenv() or platform.machine() == "armv7l"):
-            self.msg.emit(
-                2, "System", "Update", "MW4 not running in an virtual environment"
-            )
+            self.msg.emit(2, "System", "Update", "MW4 not running in an virtual environment")
             return False
 
         versionPackage = self.ui.versionAvailable.text()
         _, _, existPackage = self.versionPackage("MountWizzard4")
 
         if versionPackage not in existPackage:
-            self.msg.emit(
-                2, "System", "Update", f"Version {versionPackage} does not exist"
-            )
+            self.msg.emit(2, "System", "Update", f"Version {versionPackage} does not exist")
             return False
 
-        self.msg.emit(
-            1, "System", "Update", f"Installing [{versionPackage}] please wait"
-        )
+        self.msg.emit(1, "System", "Update", f"Installing [{versionPackage}] please wait")
         self.startUpdater(versionPackage)
         return True
 

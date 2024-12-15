@@ -32,9 +32,7 @@ class Ui_KeypadDialog(object):
         if not KeypadDialog.objectName():
             KeypadDialog.setObjectName("KeypadDialog")
         KeypadDialog.resize(270, 600)
-        sizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(KeypadDialog.sizePolicy().hasHeightForWidth())
@@ -50,9 +48,7 @@ class Ui_KeypadDialog(object):
         self.b2 = QPushButton(KeypadDialog)
         self.b2.setObjectName("b2")
         self.b2.setGeometry(QRect(80, 475, 50, 50))
-        sizePolicy1 = QSizePolicy(
-            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
-        )
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.b2.sizePolicy().hasHeightForWidth())
@@ -317,9 +313,7 @@ class Ui_KeypadDialog(object):
         )
         self.b2.setText(QCoreApplication.translate("KeypadDialog", "2\n" "INFO", None))
         self.bdown.setText(QCoreApplication.translate("KeypadDialog", "S", None))
-        self.bminus.setText(
-            QCoreApplication.translate("KeypadDialog", "-\n" "DOWN", None)
-        )
+        self.bminus.setText(QCoreApplication.translate("KeypadDialog", "-\n" "DOWN", None))
         self.b4.setText(QCoreApplication.translate("KeypadDialog", "4\n" "STAR", None))
         self.besc.setText(QCoreApplication.translate("KeypadDialog", "ESC", None))
         self.b0.setText(QCoreApplication.translate("KeypadDialog", "0\n" "LIGHT", None))
@@ -337,9 +331,7 @@ class Ui_KeypadDialog(object):
         self.graphics.setText("")
         self.bplus.setText(QCoreApplication.translate("KeypadDialog", "+\n" "UP", None))
         self.bleft.setText(QCoreApplication.translate("KeypadDialog", "E", None))
-        self.b5.setText(
-            QCoreApplication.translate("KeypadDialog", "5\n" "PLANET", None)
-        )
+        self.b5.setText(QCoreApplication.translate("KeypadDialog", "5\n" "PLANET", None))
         self.label.setText("")
 
     # retranslateUi

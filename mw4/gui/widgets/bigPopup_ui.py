@@ -29,9 +29,7 @@ class Ui_BigPopup(object):
         if not BigPopup.objectName():
             BigPopup.setObjectName("BigPopup")
         BigPopup.resize(251, 107)
-        sizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(BigPopup.sizePolicy().hasHeightForWidth())
@@ -54,9 +52,7 @@ class Ui_BigPopup(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.mountOn = QPushButton(BigPopup)
         self.mountOn.setObjectName("mountOn")
-        sizePolicy1 = QSizePolicy(
-            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
-        )
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.mountOn.sizePolicy().hasHeightForWidth())
@@ -87,9 +83,7 @@ class Ui_BigPopup(object):
     # setupUi
 
     def retranslateUi(self, BigPopup):
-        BigPopup.setWindowTitle(
-            QCoreApplication.translate("BigPopup", "Device Setup", None)
-        )
+        BigPopup.setWindowTitle(QCoreApplication.translate("BigPopup", "Device Setup", None))
         self.mountOn.setText(QCoreApplication.translate("BigPopup", "Mount On", None))
         self.mountOff.setText(QCoreApplication.translate("BigPopup", "Mount Off", None))
         self.stop.setText(QCoreApplication.translate("BigPopup", "Mount Stop", None))

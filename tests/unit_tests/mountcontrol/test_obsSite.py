@@ -928,9 +928,7 @@ class TestConfigData(unittest.TestCase):
 
     def test_ObsSite_setLocation_ok(self):
         obsSite = ObsSite(parent=Parent())
-        observer = wgs84.latlon(
-            latitude_degrees=50, longitude_degrees=11, elevation_m=580
-        )
+        observer = wgs84.latlon(latitude_degrees=50, longitude_degrees=11, elevation_m=580)
         response = ["111"]
         with mock.patch("mountcontrol.obsSite.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 1

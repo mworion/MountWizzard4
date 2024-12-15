@@ -33,9 +33,7 @@ class SensorWeatherAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        self.getAndStoreAscomProperty(
-            "temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
-        )
+        self.getAndStoreAscomProperty("temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE")
         self.getAndStoreAscomProperty("pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE")
         self.getAndStoreAscomProperty("dewpoint", "WEATHER_PARAMETERS.WEATHER_DEWPOINT")
         self.getAndStoreAscomProperty("humidity", "WEATHER_PARAMETERS.WEATHER_HUMIDITY")

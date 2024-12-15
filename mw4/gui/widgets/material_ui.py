@@ -34,9 +34,7 @@ class Ui_MaterialDialog(object):
         if not MaterialDialog.objectName():
             MaterialDialog.setObjectName("MaterialDialog")
         MaterialDialog.resize(800, 600)
-        sizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MaterialDialog.sizePolicy().hasHeightForWidth())
@@ -499,57 +497,35 @@ class Ui_MaterialDialog(object):
             self.tabWidget.indexOf(self.tab),
             QCoreApplication.translate("MaterialDialog", "Material", None),
         )
-        self.label_15.setText(
-            QCoreApplication.translate("MaterialDialog", "Linear", None)
-        )
-        self.label_16.setText(
-            QCoreApplication.translate("MaterialDialog", "Constant", None)
-        )
-        self.label_17.setText(
-            QCoreApplication.translate("MaterialDialog", "Intesity", None)
-        )
+        self.label_15.setText(QCoreApplication.translate("MaterialDialog", "Linear", None))
+        self.label_16.setText(QCoreApplication.translate("MaterialDialog", "Constant", None))
+        self.label_17.setText(QCoreApplication.translate("MaterialDialog", "Intesity", None))
         self.label_18.setText(QCoreApplication.translate("MaterialDialog", "R", None))
         self.label_19.setText(QCoreApplication.translate("MaterialDialog", "B", None))
-        self.label_20.setText(
-            QCoreApplication.translate("MaterialDialog", "Quadratic", None)
-        )
+        self.label_20.setText(QCoreApplication.translate("MaterialDialog", "Quadratic", None))
         self.label_21.setText(QCoreApplication.translate("MaterialDialog", "G", None))
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.tab_7),
             QCoreApplication.translate("MaterialDialog", "DirectionalLight", None),
         )
-        self.label_22.setText(
-            QCoreApplication.translate("MaterialDialog", "Linear", None)
-        )
-        self.label_23.setText(
-            QCoreApplication.translate("MaterialDialog", "Constant", None)
-        )
-        self.label_24.setText(
-            QCoreApplication.translate("MaterialDialog", "Intesity", None)
-        )
+        self.label_22.setText(QCoreApplication.translate("MaterialDialog", "Linear", None))
+        self.label_23.setText(QCoreApplication.translate("MaterialDialog", "Constant", None))
+        self.label_24.setText(QCoreApplication.translate("MaterialDialog", "Intesity", None))
         self.label_25.setText(QCoreApplication.translate("MaterialDialog", "R", None))
         self.label_26.setText(QCoreApplication.translate("MaterialDialog", "B", None))
-        self.label_27.setText(
-            QCoreApplication.translate("MaterialDialog", "Quadratic", None)
-        )
+        self.label_27.setText(QCoreApplication.translate("MaterialDialog", "Quadratic", None))
         self.label_28.setText(QCoreApplication.translate("MaterialDialog", "G", None))
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.tab_6),
             QCoreApplication.translate("MaterialDialog", "SpotLight", None),
         )
         self.label.setText(QCoreApplication.translate("MaterialDialog", "Linear", None))
-        self.label_2.setText(
-            QCoreApplication.translate("MaterialDialog", "Constant", None)
-        )
-        self.label_3.setText(
-            QCoreApplication.translate("MaterialDialog", "Quadratic", None)
-        )
+        self.label_2.setText(QCoreApplication.translate("MaterialDialog", "Constant", None))
+        self.label_3.setText(QCoreApplication.translate("MaterialDialog", "Quadratic", None))
         self.label_4.setText(QCoreApplication.translate("MaterialDialog", "R", None))
         self.label_5.setText(QCoreApplication.translate("MaterialDialog", "G", None))
         self.label_6.setText(QCoreApplication.translate("MaterialDialog", "B", None))
-        self.label_7.setText(
-            QCoreApplication.translate("MaterialDialog", "Intesity", None)
-        )
+        self.label_7.setText(QCoreApplication.translate("MaterialDialog", "Intesity", None))
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.tab_5),
             QCoreApplication.translate("MaterialDialog", "PointLight", None),

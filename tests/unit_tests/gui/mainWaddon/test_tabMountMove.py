@@ -61,9 +61,7 @@ def test_setupGuiMount_1(function):
 
 
 def test_stopMoveAll(function):
-    with mock.patch.object(
-        function.app.mount.obsSite, "stopMoveAll", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "stopMoveAll", return_value=True):
         function.stopMoveAll()
 
 

@@ -317,25 +317,19 @@ def test_loadName_3(function):
             return "test"
 
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
-        with mock.patch.object(
-            function.app.mount.model, "loadName", return_value=False
-        ):
+        with mock.patch.object(function.app.mount.model, "loadName", return_value=False):
             suc = function.loadName()
             assert not suc
 
 
 def test_saveName_1(function):
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getText", return_value=("", True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=("", True)):
         suc = function.saveName()
         assert not suc
 
 
 def test_saveName_2(function):
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getText", return_value=(None, True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=(None, True)):
         suc = function.saveName()
         assert not suc
 
@@ -349,23 +343,15 @@ def test_saveName_3(function):
 
 
 def test_saveName_4(function):
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)
-    ):
-        with mock.patch.object(
-            function.app.mount.model, "storeName", return_value=False
-        ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)):
+        with mock.patch.object(function.app.mount.model, "storeName", return_value=False):
             suc = function.saveName()
             assert not suc
 
 
 def test_saveName_5(function):
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)
-    ):
-        with mock.patch.object(
-            function.app.mount.model, "storeName", return_value=True
-        ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)):
+        with mock.patch.object(function.app.mount.model, "storeName", return_value=True):
             suc = function.saveName()
             assert suc
 
@@ -396,9 +382,7 @@ def test_deleteName_3(function):
 
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
         with mock.patch.object(function, "messageDialog", return_value=True):
-            with mock.patch.object(
-                function.app.mount.model, "deleteName", return_value=True
-            ):
+            with mock.patch.object(function.app.mount.model, "deleteName", return_value=True):
                 suc = function.deleteName()
                 assert suc
 
@@ -411,9 +395,7 @@ def test_deleteName_4(function):
 
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
         with mock.patch.object(function, "messageDialog", return_value=True):
-            with mock.patch.object(
-                function.app.mount.model, "deleteName", return_value=False
-            ):
+            with mock.patch.object(function.app.mount.model, "deleteName", return_value=False):
                 suc = function.deleteName()
                 assert not suc
 
@@ -431,9 +413,7 @@ def test_writeBuildModelOptimized_1(function):
 
 def test_writeBuildModelOptimized_2(function):
     with mock.patch.object(gui.mainWaddon.tabManageModel, "writeRetrofitData"):
-        with mock.patch.object(
-            json, "load", return_value=[{"errorIndex": 1}, {"errorIndex": 3}]
-        ):
+        with mock.patch.object(json, "load", return_value=[{"errorIndex": 1}, {"errorIndex": 3}]):
             with mock.patch.object(json, "dump"):
                 suc = function.writeBuildModelOptimized("test", [1])
                 assert suc
@@ -467,18 +447,14 @@ def test_clearModel_1(function):
 
 def test_clearModel_2(function):
     with mock.patch.object(function, "messageDialog", return_value=True):
-        with mock.patch.object(
-            function.app.mount.model, "clearAlign", return_value=False
-        ):
+        with mock.patch.object(function.app.mount.model, "clearAlign", return_value=False):
             suc = function.clearModel()
             assert not suc
 
 
 def test_clearModel_3(function):
     with mock.patch.object(function, "messageDialog", return_value=True):
-        with mock.patch.object(
-            function.app.mount.model, "clearAlign", return_value=True
-        ):
+        with mock.patch.object(function.app.mount.model, "clearAlign", return_value=True):
             suc = function.clearModel()
             assert suc
 
@@ -901,9 +877,7 @@ def test_pointClicked_5(function):
     function.app.mount.model.starList.append(a)
 
     with mock.patch.object(function, "messageDialog", return_value=True):
-        with mock.patch.object(
-            function.app.mount.model, "deletePoint", return_value=False
-        ):
+        with mock.patch.object(function.app.mount.model, "deletePoint", return_value=False):
             suc = function.pointClicked(None, points, Event())
             assert not suc
 
@@ -935,9 +909,7 @@ def test_pointClicked_6(function):
     function.app.mount.model.starList.append(a)
 
     with mock.patch.object(function, "messageDialog", return_value=True):
-        with mock.patch.object(
-            function.app.mount.model, "deletePoint", return_value=True
-        ):
+        with mock.patch.object(function.app.mount.model, "deletePoint", return_value=True):
             with mock.patch.object(function, "refreshModel"):
                 suc = function.pointClicked(None, points, Event())
                 assert suc

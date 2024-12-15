@@ -123,9 +123,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.ui.alpacaDiscover.clicked.connect(self.discoverAlpacaDevices)
         self.ui.sgproDiscover.clicked.connect(self.discoverSGProDevices)
         self.ui.ninaDiscover.clicked.connect(self.discoverNINADevices)
-        self.ui.selectAstrometryIndexPath.clicked.connect(
-            self.selectAstrometryIndexPath
-        )
+        self.ui.selectAstrometryIndexPath.clicked.connect(self.selectAstrometryIndexPath)
         self.ui.selectAstrometryAppPath.clicked.connect(self.selectAstrometryAppPath)
         self.ui.selectAstapIndexPath.clicked.connect(self.selectAstapIndexPath)
         self.ui.selectAstapAppPath.clicked.connect(self.selectAstapAppPath)
@@ -152,9 +150,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.ui.tab.setCurrentIndex(tabIndex)
 
         for index in range(0, self.ui.tab.count()):
-            isVisible = (
-                self.ui.tab.widget(index).objectName() in self.data["frameworks"]
-            )
+            isVisible = self.ui.tab.widget(index).objectName() in self.data["frameworks"]
             self.ui.tab.setTabVisible(index, isVisible)
         return True
 
@@ -469,9 +465,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         """
         folder = self.ui.astrometryAppPath.text()
         folder = folder if folder else "/"
-        saveFilePath, name, ext = self.openDir(
-            self, "Select Astrometry App Path", folder
-        )
+        saveFilePath, name, ext = self.openDir(self, "Select Astrometry App Path", folder)
         if not name:
             return False
 
@@ -494,9 +488,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         """
         folder = self.ui.astrometryIndexPath.text()
         folder = folder if folder else "/"
-        saveFilePath, name, ext = self.openDir(
-            self, "Select Astrometry Index Path", folder
-        )
+        saveFilePath, name, ext = self.openDir(self, "Select Astrometry Index Path", folder)
         if not name:
             return False
 
@@ -519,9 +511,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         if platform.system() == "Darwin" and ext == ".app":
             saveFilePath += "/Contents/MacOS"
 
-        self.checkPlateSolveAvailability(
-            "astap", saveFilePath, self.ui.astapIndexPath.text()
-        )
+        self.checkPlateSolveAvailability("astap", saveFilePath, self.ui.astapIndexPath.text())
         self.ui.astapAppPath.setText(saveFilePath)
         return True
 
@@ -535,9 +525,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not name:
             return False
 
-        self.checkPlateSolveAvailability(
-            "astap", self.ui.astapAppPath.text(), saveFilePath
-        )
+        self.checkPlateSolveAvailability("astap", self.ui.astapAppPath.text(), saveFilePath)
         self.ui.astapIndexPath.setText(saveFilePath)
         return True
 
@@ -551,9 +539,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not name:
             return False
 
-        self.checkPlateSolveAvailability(
-            "watney", saveFilePath, self.ui.watneyIndexPath.text()
-        )
+        self.checkPlateSolveAvailability("watney", saveFilePath, self.ui.watneyIndexPath.text())
         self.ui.watneyAppPath.setText(saveFilePath)
         return True
 
@@ -567,9 +553,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not name:
             return False
 
-        self.checkPlateSolveAvailability(
-            "watney", self.ui.watneyAppPath.text(), saveFilePath
-        )
+        self.checkPlateSolveAvailability("watney", self.ui.watneyAppPath.text(), saveFilePath)
         self.ui.watneyIndexPath.setText(saveFilePath)
         return True
 

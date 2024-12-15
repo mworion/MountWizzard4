@@ -553,9 +553,7 @@ class SatTrack(MWidget, SatData):
         valT = self.ui.satOffTime.value()
         valR = self.ui.satOffRa.value()
         valD = self.ui.satOffDec.value()
-        suc = self.app.mount.satellite.setTrackingOffsets(
-            Time=valT, RA=valR, DECcorr=valD
-        )
+        suc = self.app.mount.satellite.setTrackingOffsets(Time=valT, RA=valR, DECcorr=valD)
         if not suc:
             self.msg.emit(2, "TLE", "Command error", "Cannot change offset")
         return suc

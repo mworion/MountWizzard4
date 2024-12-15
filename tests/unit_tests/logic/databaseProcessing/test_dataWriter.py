@@ -52,17 +52,13 @@ def test_writeEarthRotationData_2(function):
 
 
 def test_writeEarthRotationData_3(function):
-    shutil.copy(
-        "tests/testData/CDFLeapSeconds.txt", "tests/workDir/data/CDFLeapSeconds.txt"
-    )
+    shutil.copy("tests/testData/CDFLeapSeconds.txt", "tests/workDir/data/CDFLeapSeconds.txt")
     suc = function.writeEarthRotationData(dataFilePath=Path("tests/workDir/temp"))
     assert not suc
 
 
 def test_writeEarthRotationData_4(function):
-    shutil.copy(
-        "tests/testData/CDFLeapSeconds.txt", "tests/workDir/data/CDFLeapSeconds.txt"
-    )
+    shutil.copy("tests/testData/CDFLeapSeconds.txt", "tests/workDir/data/CDFLeapSeconds.txt")
     shutil.copy("tests/testData/finals.data", "tests/workDir/data/finals.data")
     suc = function.writeEarthRotationData(dataFilePath=Path("tests/workDir/temp"))
     assert suc

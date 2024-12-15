@@ -31,9 +31,7 @@ class Ui_UploadPopup(object):
         if not UploadPopup.objectName():
             UploadPopup.setObjectName("UploadPopup")
         UploadPopup.resize(400, 90)
-        sizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(UploadPopup.sizePolicy().hasHeightForWidth())
@@ -70,9 +68,7 @@ class Ui_UploadPopup(object):
     # setupUi
 
     def retranslateUi(self, UploadPopup):
-        UploadPopup.setWindowTitle(
-            QCoreApplication.translate("UploadPopup", "Device Setup", None)
-        )
+        UploadPopup.setWindowTitle(QCoreApplication.translate("UploadPopup", "Device Setup", None))
         self.icon.setText(QCoreApplication.translate("UploadPopup", "TextLabel", None))
 
     # retranslateUi

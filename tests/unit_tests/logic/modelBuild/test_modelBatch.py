@@ -43,7 +43,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
 @pytest.fixture
 def mocked_sleepAndEvents_2(monkeypatch, function):
     def test(a):
-        function.abortBatch = True
+        function.cancelBatch = True
 
     monkeypatch.setattr("logic.modelBuild.modelBatch.sleepAndEvents", test)
 
@@ -96,7 +96,7 @@ def test_setDomeSlewed_1(function):
 def test_startNewSlew_1(function):
     function.domeSlewed = True
     function.mountSlewed = True
-    function.abortBatch = False
+    function.cancelBatch = False
     function.endBatch = False
     function.pointerSlew = 0
     function.modelBuildData = [{"altitude": 0, "azimuth": 0}]
@@ -109,7 +109,7 @@ def test_startNewSlew_1(function):
 def test_startNewSlew_2(function):
     function.domeSlewed = True
     function.mountSlewed = True
-    function.abortBatch = True
+    function.cancelBatch = True
     function.endBatch = True
     function.pointerSlew = -1
     function.modelBuildData = [{"altitude": 0, "azimuth": 0}]
@@ -122,14 +122,12 @@ def test_startNewSlew_2(function):
 def test_startNewSlew_3(function):
     function.domeSlewed = True
     function.mountSlewed = True
-    function.abortBatch = False
+    function.cancelBatch = False
     function.endBatch = False
     function.pointerSlew = -1
     function.modelBuildData = [{"altitude": 0, "azimuth": 0}]
 
-    with mock.patch.object(
-        function.app.mount.obsSite, "setTargetAltAz", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
         function.startNewSlew()
         assert not function.mountSlewed
         assert not function.domeSlewed
@@ -138,15 +136,13 @@ def test_startNewSlew_3(function):
 def test_startNewSlew_4(function):
     function.domeSlewed = True
     function.mountSlewed = True
-    function.abortBatch = False
+    function.cancelBatch = False
     function.endBatch = False
     function.pointerSlew = -1
     function.app.deviceStat["dome"] = True
     function.modelBuildData = [{"altitude": 0, "azimuth": 0}]
 
-    with mock.patch.object(
-        function.app.mount.obsSite, "setTargetAltAz", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
         with mock.patch.object(function.app.dome, "slewDome"):
             with mock.patch.object(function.app.mount.obsSite, "startSlewing"):
                 function.startNewSlew()
@@ -195,13 +191,13 @@ def test_addMountDataToModelBuildData_1(function):
 
 
 def test_startNewImageExposure_1(function, mocked_sleepAndEvents):
-    function.abortBatch = True
+    function.cancelBatch = True
     function.startNewImageExposure()
 
 
 def test_startNewImageExposure_2(function, mocked_sleepAndEvents):
     function.pauseBatch = True
-    function.abortBatch = False
+    function.cancelBatch = False
     function.exposureWaitTime = 1
     function.pointerImage = -1
     function.modelBuildData = [{"imagePath": "test"}]

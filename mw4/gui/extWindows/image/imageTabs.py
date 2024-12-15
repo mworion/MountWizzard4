@@ -25,8 +25,7 @@ import pyqtgraph as pg
 
 class ImageTabs:
     def showTabImage(self) -> None:
-        """
-        """
+        """ """
         self.changeStyleDynamic(self.ui.headerGroup, "running", False)
         tab = self.ui.tabImage
         tabIndex = self.getTabIndex(tab, "Image")
@@ -40,31 +39,25 @@ class ImageTabs:
         self.ui.slewCenter.setEnabled(self.fileHandler.hasCelestial)
         self.imageSourceRange = None
         updateGeometry = not self.imagingDeviceStat["exposeN"]
-        self.ui.image.setImage(
-            imageDisp=self.fileHandler.image, updateGeometry=updateGeometry
-        )
+        self.ui.image.setImage(imageDisp=self.fileHandler.image, updateGeometry=updateGeometry)
         self.setBarColor()
         self.setCrosshair()
         self.writeHeaderDataToGUI(self.fileHandler.header)
 
     def showTabHFR(self):
-        """
-        """
+        """ """
         self.ui.hfr.setImage(imageDisp=self.photometry.hfrGrid)
         self.ui.hfr.barItem.setLevels((self.photometry.hfrMin, self.photometry.hfrMax))
         self.ui.hfrPercentile.setText(f"{self.photometry.hfrPercentile:1.1f}")
         self.ui.medianHFR.setText(f"{self.photometry.hfrMedian:1.2f}")
         self.ui.numberStars.setText(f"{len(self.photometry.hfr):1.0f}")
         if self.ui.isoLayer.isChecked():
-            self.ui.hfr.addIsoBasic(
-                self.ui.hfr.p[0], self.photometry.hfrGrid, levels=20
-            )
+            self.ui.hfr.addIsoBasic(self.ui.hfr.p[0], self.photometry.hfrGrid, levels=20)
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "HFR"), True)
 
     def showTabTiltSquare(self):
-        """
-        """
+        """ """
         segHFR = self.photometry.hfrSegSquare
         w = self.photometry.w
         h = self.photometry.h
@@ -180,8 +173,7 @@ class ImageTabs:
         return True
 
     def showTabTiltTriangle(self):
-        """
-        """
+        """ """
         segHFR = self.photometry.hfrSegTriangle
         w = self.photometry.w
         h = self.photometry.h
@@ -285,17 +277,14 @@ class ImageTabs:
         tab.setTabEnabled(self.getTabIndex(tab, "TiltTriangle"), True)
 
     def showTabRoundness(self):
-        """
-        """
+        """ """
         self.ui.roundness.setImage(imageDisp=self.photometry.roundnessGrid)
         self.ui.roundness.p[0].showAxes(False, showValues=False)
         self.ui.roundness.p[0].setMouseEnabled(x=False, y=False)
         self.ui.roundness.barItem.setLevels(
             (self.photometry.roundnessMin, self.photometry.roundnessMax)
         )
-        self.ui.aspectRatioPercentile.setText(
-            f"{self.photometry.roundnessPercentile:1.1f}"
-        )
+        self.ui.aspectRatioPercentile.setText(f"{self.photometry.roundnessPercentile:1.1f}")
         if self.ui.isoLayer.isChecked():
             self.ui.roundness.addIsoBasic(
                 self.ui.roundness.p[0], self.photometry.roundnessGrid, levels=20
@@ -304,8 +293,7 @@ class ImageTabs:
         tab.setTabEnabled(self.getTabIndex(tab, "Roundness"), True)
 
     def showTabAberrationInspect(self):
-        """
-        """
+        """ """
         self.ui.aberration.barItem.setVisible(False)
         self.ui.aberration.p[0].clear()
         self.ui.aberration.p[0].setAspectLocked(True)
@@ -330,13 +318,10 @@ class ImageTabs:
         self.ui.aberration.p[0].getViewBox().rightMouseRange()
 
     def showTabImageSources(self):
-        """
-        """
+        """ """
         temp = self.imageSourceRange
         self.ui.imageSource.setImage(imageDisp=self.photometry.image)
-        self.ui.imageSource.p[0].getViewBox().sigRangeChanged.connect(
-            self.getImageSourceRange
-        )
+        self.ui.imageSource.p[0].getViewBox().sigRangeChanged.connect(self.getImageSourceRange)
         if temp:
             self.ui.imageSource.p[0].getViewBox().setRange(rect=temp)
 
@@ -358,8 +343,7 @@ class ImageTabs:
         tab.setTabEnabled(self.getTabIndex(tab, "Sources"), True)
 
     def showTabBackground(self):
-        """
-        """
+        """ """
         self.ui.background.setImage(imageDisp=self.photometry.background)
         self.ui.background.barItem.setLevels(
             (self.photometry.backgroundMin, self.photometry.backgroundMax)
@@ -368,8 +352,7 @@ class ImageTabs:
         tab.setTabEnabled(self.getTabIndex(tab, "Back"), True)
 
     def showTabBackgroundRMS(self):
-        """
-        """
+        """ """
         self.ui.backgroundRMS.setImage(imageDisp=self.photometry.backgroundRMS)
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "BackRMS"), True)

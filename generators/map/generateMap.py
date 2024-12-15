@@ -24,7 +24,7 @@ import shapefile
 
 # local import
 
-shapeFile = 'ne_110m_land.shp'
+shapeFile = "ne_110m_land.shp"
 shape = shapefile.Reader(shapeFile)
 worldmap = {}
 
@@ -32,11 +32,10 @@ for index, record in enumerate(shape.shapeRecords()):
     x = [i[0] for i in record.shape.points[:]]
     y = [i[1] for i in record.shape.points[:]]
     worldmap[index] = {}
-    worldmap[index]['xDeg'] = x
-    worldmap[index]['yDeg'] = y
-    worldmap[index]['xRad'] = np.radians(x)
-    worldmap[index]['yRad'] = np.radians(y)
+    worldmap[index]["xDeg"] = x
+    worldmap[index]["yDeg"] = y
+    worldmap[index]["xRad"] = np.radians(x)
+    worldmap[index]["yRad"] = np.radians(y)
 
-with open('worldmap.dat', 'wb') as fd:
+with open("worldmap.dat", "wb") as fd:
     pickle.dump(worldmap, fd)
-

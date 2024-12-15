@@ -23,7 +23,6 @@ import pyqtgraph as pg
 from PySide6.QtCore import Signal, QObject, Qt
 from PySide6.QtGui import QFont, QGuiApplication, QCursor
 from skyfield.api import Angle
-from astropy.io import fits
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
@@ -350,9 +349,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.guiSetText(self.ui.scale, "5.3f", getScaleFromHeader(header=header))
         self.guiSetText(self.ui.rotation, "6.2f", header.get("ANGLE"))
         self.guiSetText(self.ui.ccdTemp, "4.1f", header.get("CCD-TEMP"))
-        self.guiSetText(
-            self.ui.exposureTime, "5.1f", getExposureFromHeader(header=header)
-        )
+        self.guiSetText(self.ui.exposureTime, "5.1f", getExposureFromHeader(header=header))
         self.guiSetText(self.ui.filter, "s", header.get("FILTER"))
         self.guiSetText(self.ui.binX, "1.0f", header.get("XBINNING"))
         self.guiSetText(self.ui.binY, "1.0f", header.get("YBINNING"))
@@ -376,9 +373,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.isoLayer.setEnabled(isPhotometry)
         snTarget = self.ui.snTarget.currentIndex()
 
-        self.photometry.processPhotometry(
-            image=self.fileHandler.image, snTarget=snTarget
-        )
+        self.photometry.processPhotometry(image=self.fileHandler.image, snTarget=snTarget)
 
     def showImage(self, imagePath: Path) -> None:
         """ """

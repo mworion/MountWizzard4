@@ -105,9 +105,7 @@ def test_move_3(function):
     function.device = Device()
     function.client = Client()
     function.UPDATE_RATE = 0
-    with mock.patch.object(
-        function.device, "getNumber", return_value={"ABS_FOCUS_POSITION": 1}
-    ):
+    with mock.patch.object(function.device, "getNumber", return_value={"ABS_FOCUS_POSITION": 1}):
         with mock.patch.object(function.client, "sendNewNumber", return_value=True):
             suc = function.move()
             assert suc
@@ -133,9 +131,7 @@ def test_halt_3(function):
     function.device = Device()
     function.client = Client()
     function.UPDATE_RATE = 0
-    with mock.patch.object(
-        function.device, "getNumber", return_value={"ABS_FOCUS_POSITION": 1}
-    ):
+    with mock.patch.object(function.device, "getNumber", return_value={"ABS_FOCUS_POSITION": 1}):
         with mock.patch.object(function.client, "sendNewNumber", return_value=True):
             suc = function.halt()
             assert suc

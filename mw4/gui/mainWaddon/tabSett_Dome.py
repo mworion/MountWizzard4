@@ -192,14 +192,10 @@ class SettDome(MWidget):
         value = float(self.app.dome.data.get("DOME_MEASUREMENTS.DM_SHUTTER_WIDTH", 0))
         self.ui.domeClearOpening.setValue(value)
 
-        value = float(
-            self.app.dome.data.get("DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT", 0)
-        )
+        value = float(self.app.dome.data.get("DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT", 0))
         self.ui.domeNorthOffset.setValue(value)
 
-        value = float(
-            self.app.dome.data.get("DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT", 0)
-        )
+        value = float(self.app.dome.data.get("DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT", 0))
         self.ui.domeEastOffset.setValue(value)
 
         value = float(self.app.dome.data.get("DOME_MEASUREMENTS.DM_UP_DISPLACEMENT", 0))

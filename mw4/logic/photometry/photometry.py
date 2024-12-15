@@ -150,9 +150,7 @@ class Photometry:
             method="linear",
             fill_value=np.min(aspectRatio),
         )
-        self.roundnessGrid = uniform_filter(
-            img, size=[self.filterConstH, self.filterConstW]
-        )
+        self.roundnessGrid = uniform_filter(img, size=[self.filterConstH, self.filterConstW])
         self.roundnessPercentile = np.percentile(aspectRatio, 90)
         self.roundnessMin = minB
         self.roundnessMax = maxB
@@ -233,9 +231,7 @@ class Photometry:
         maxB = np.max(self.backSignal) / self.bkg.globalback
         minB = np.min(self.backSignal) / self.bkg.globalback
         img = self.backSignal / self.bkg.globalback
-        self.background = uniform_filter(
-            img, size=[self.filterConstH, self.filterConstW]
-        )
+        self.background = uniform_filter(img, size=[self.filterConstH, self.filterConstW])
         self.backgroundMin = minB
         self.backgroundMax = maxB
         self.signals.background.emit()
@@ -372,9 +368,7 @@ class Photometry:
         self.hfr = radius[mask]
         self.runCalcs()
         objsHFR = len(self.objs)
-        self.log.info(
-            f"Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, " f"HFR:{objsHFR}"
-        )
+        self.log.info(f"Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, " f"HFR:{objsHFR}")
         return True
 
     def unlockPhotometry(self):

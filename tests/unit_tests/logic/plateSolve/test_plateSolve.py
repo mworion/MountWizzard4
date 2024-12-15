@@ -52,9 +52,7 @@ def mocked_processSolveQueue(monkeypatch, function):
     def test(a, b, c):
         function.solveLoopRunning = False
 
-    monkeypatch.setattr(
-        "logic.plateSolve.plateSolve.PlateSolve.processSolveQueue", test
-    )
+    monkeypatch.setattr("logic.plateSolve.plateSolve.PlateSolve.processSolveQueue", test)
 
 
 def test_properties_1(function):
@@ -127,17 +125,13 @@ def test_startSolveLoop_1(function):
 
 def test_checkAvailabilityProgram_1(function):
     function.framework = "astap"
-    with mock.patch.object(
-        function.run["astap"], "checkAvailabilityProgram", return_value=True
-    ):
+    with mock.patch.object(function.run["astap"], "checkAvailabilityProgram", return_value=True):
         assert function.checkAvailabilityProgram("astap")
 
 
 def test_checkAvailabilityIndex_1(function):
     function.framework = "astap"
-    with mock.patch.object(
-        function.run["astap"], "checkAvailabilityIndex", return_value=True
-    ):
+    with mock.patch.object(function.run["astap"], "checkAvailabilityIndex", return_value=True):
         assert function.checkAvailabilityIndex("astap")
 
 

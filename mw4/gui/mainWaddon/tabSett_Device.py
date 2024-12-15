@@ -188,13 +188,9 @@ class SettDevice(MWidget):
 
             if hasattr(self.drivers[driver]["class"], "signals"):
                 signals = self.drivers[driver]["class"].signals
-                signals.serverDisconnected.connect(
-                    partial(self.serverDisconnected, driver)
-                )
+                signals.serverDisconnected.connect(partial(self.serverDisconnected, driver))
                 signals.deviceConnected.connect(partial(self.deviceConnected, driver))
-                signals.deviceDisconnected.connect(
-                    partial(self.deviceDisconnected, driver)
-                )
+                signals.deviceDisconnected.connect(partial(self.deviceDisconnected, driver))
 
         self.ui.ascomConnect.clicked.connect(self.manualStartAllAscomDrivers)
         self.ui.ascomDisconnect.clicked.connect(self.manualStopAllAscomDrivers)
@@ -295,9 +291,7 @@ class SettDevice(MWidget):
             self.copyConfig(driverOrig=driver, framework="alpaca")
 
         selectedFramework = self.driversData[driver]["framework"]
-        index = self.findIndexValue(
-            self.drivers[driver]["uiDropDown"], selectedFramework
-        )
+        index = self.findIndexValue(self.drivers[driver]["uiDropDown"], selectedFramework)
         name = self.driversData[driver]["frameworks"][selectedFramework]["deviceName"]
 
         if not name:

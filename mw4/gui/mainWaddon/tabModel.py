@@ -22,12 +22,14 @@ from datetime import datetime
 from pathlib import Path
 
 # external packages
-from skyfield.api import Star
 
 # local import
-from mountcontrol.alignStar import AlignStar
 from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
-from logic.modelBuild.modelHandling import writeRetrofitData
+from logic.modelBuild.modelHandling import (
+    writeRetrofitData,
+    buildAlignModel,
+    loadModelsFromFile,
+)
 from logic.modelBuild.modelBatch import ModelBatch
 
 
@@ -41,9 +43,9 @@ class Model(MWidget):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.timeStartModeling = None
-        self.modelName = ""
-        self.model = []
-        self.modelBatch = None
+        self.modelName: str = ""
+        self.model: list = []
+        self.modelBatch: bool = False
 
         self.ui.runModel.clicked.connect(self.runBatch)
         self.ui.pauseModel.clicked.connect(self.pauseBatch)
@@ -52,7 +54,7 @@ class Model(MWidget):
         self.ui.dataModel.clicked.connect(self.loadProgramModel)
         self.app.operationRunning.connect(self.setModelOperationMode)
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         self.ui.retriesReverse.setChecked(config.get("retriesReverse", False))
@@ -63,7 +65,7 @@ class Model(MWidget):
         self.ui.normalTiming.setChecked(config.get("normalTiming", False))
         self.ui.conservativeTiming.setChecked(config.get("conservativeTiming", True))
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         config["retriesReverse"] = self.ui.retriesReverse.isChecked()
@@ -81,25 +83,25 @@ class Model(MWidget):
         self.wIcon(self.ui.endModel, "stop_m")
         self.wIcon(self.ui.dataModel, "choose")
 
-    def cancelBatch(self):
+    def cancelBatch(self) -> None:
         """ """
         if not self.modelBatch:
             return
-        self.modelBatch.abortBatch = True
+        self.modelBatch.cancelBatch = True
 
-    def pauseBatch(self):
+    def pauseBatch(self) -> None:
         """ """
         if not self.modelBatch:
             return
         self.modelBatch.pauseBatch = not self.modelBatch.pauseBatch
 
-    def endBatch(self):
+    def endBatch(self) -> None:
         """ """
         if not self.modelBatch:
             return
         self.modelBatch.endBatch = True
 
-    def setModelOperationMode(self, status):
+    def setModelOperationMode(self, status: int) -> None:
         """ """
         if status == 1:
             self.ui.runModelGroup.setEnabled(False)
@@ -119,18 +121,16 @@ class Model(MWidget):
             self.ui.runModelGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)
 
-    def updateModelProgress(self, mPoint):
-        """
-        :param mPoint:
-        :return: success
-        """
+    def updateModelProgress(self, mPoint) -> None:
+        """ """
         number = mPoint.get("lenSequence", 0)
         count = mPoint.get("countSequence", 0)
 
         if not 0 < count <= number:
-            return False
+            return
 
         fraction = count / number
+        modelPercent = int(100 * fraction)
 
         secondsElapsed = time.time() - self.timeStartModeling
         secondsBase = secondsElapsed / fraction
@@ -143,26 +143,18 @@ class Model(MWidget):
         self.ui.timeElapsed.setText(datetime(*timeElapsed[:6]).strftime("%H:%M:%S"))
         self.ui.timeEstimated.setText(datetime(*timeEstimated[:6]).strftime("%H:%M:%S"))
         self.ui.timeFinished.setText(datetime(*timeFinished[:6]).strftime("%H:%M:%S"))
-
-        modelPercent = int(100 * fraction)
         self.ui.numberPoints.setText(f"{count} / {number}")
         self.ui.modelProgress.setValue(modelPercent)
-        return True
 
-    def setupModelRunContextAndGuiStatus(self):
-        """
-        :return:
-        """
+    def setupModelRunContextAndGuiStatus(self) -> None:
+        """ """
         self.changeStyleDynamic(self.ui.runModel, "running", True)
         self.ui.cancelModel.setEnabled(True)
         self.ui.endModel.setEnabled(True)
         self.ui.pauseModel.setEnabled(True)
-        return True
 
-    def pauseBuild(self):
-        """
-        :return: True for test purpose
-        """
+    def pauseBuild(self) -> None:
+        """ """
         if not self.ui.pauseModel.property("pause"):
             self.changeStyleDynamic(self.ui.pauseModel, "color", "yellow")
             self.changeStyleDynamic(self.ui.pauseModel, "pause", True)
@@ -170,19 +162,8 @@ class Model(MWidget):
             self.changeStyleDynamic(self.ui.pauseModel, "color", "")
             self.changeStyleDynamic(self.ui.pauseModel, "pause", False)
 
-        return True
-
-    def retrofitModel(self):
-        """
-        retrofitModel reads the actual model points and results out of the mount
-        computer and adds the optimized (recalculated) error values to the point.
-        that's necessary, because when imaging and solving a point the error is
-        related to this old model. when programming a new model, all point will
-        be recalculated be the mount computer and get a new error value which is
-        based on the new model.
-
-        :return: True for test purpose
-        """
+    def retrofitModel(self) -> None:
+        """ """
         mountModel = self.app.mount.model
         if len(mountModel.starList) != len(self.model):
             text = f"length starList [{len(mountModel.starList)}] and length "
@@ -191,9 +172,8 @@ class Model(MWidget):
             self.model = []
 
         self.model = writeRetrofitData(mountModel, self.model)
-        return True
 
-    def saveModelFinish(self):
+    def saveModelFinish(self) -> None:
         """
         saveModelFinish is the callback after the new model data is loaded from
         the mount computer. first is disabling the signals. New we have the
@@ -204,8 +184,6 @@ class Model(MWidget):
 
         with this data, the model could be reprogrammed without doing some imaging,
         it could be added with other data to extend the model to a broader base.
-
-        :return: True for test purpose
         """
         self.app.mount.signals.alignDone.disconnect(self.saveModelFinish)
         self.retrofitModel()
@@ -215,31 +193,13 @@ class Model(MWidget):
         with open(modelPath, "w") as outfile:
             json.dump(saveData, outfile, sort_keys=True, indent=4)
 
-        return True
-
-    def generateBuildData(self):
-        """
-        generateBuildData takes the model data and generates from it a data
-        structure needed for programming the model into the mount computer.
-        :return: build
-        """
-        build = list()
-        for mPoint in self.model:
-            mCoord = Star(mPoint["raJNowM"], mPoint["decJNowM"])
-            sCoord = Star(mPoint["raJNowS"], mPoint["decJNowS"])
-            sidereal = mPoint["siderealTime"]
-            pierside = mPoint["pierside"]
-            programmingPoint = AlignStar(mCoord, sCoord, sidereal, pierside)
-            build.append(programmingPoint)
-        return build
-
     def programModelToMount(self):
         """ """
-        build = self.generateBuildData()
-        if len(build) < 3:
-            self.log.debug(f"Only {len(build)} points available")
+        alignModel = buildAlignModel(self.model)
+        if len(alignModel) < 3:
+            self.log.debug(f"Only {len(alignModel)} points available")
             return False
-        suc = self.app.mount.model.programAlign(build)
+        suc = self.app.mount.model.programAlign(alignModel)
         if not suc:
             self.log.debug("Program align failed")
             return False
@@ -286,66 +246,36 @@ class Model(MWidget):
         return True
 
     def loadProgramModel(self):
-        """
-        loadProgramModel selects one or more models from the file system,
-        combines them if more than one was selected and programs them into the
-        mount computer.
-
-        :return: success
-        """
+        """ """
         folder = self.app.mwGlob["modelDir"]
-        ret = self.openFile(
-            self, "Open model file", folder, "Model files (*.model)", multiple=True
+        modelFilesPath = self.openFile(
+            self, "Open model file(s)", folder, "Model files (*.model)", multiple=True
         )
-        loadFilePath, _, _ = ret
 
-        if not loadFilePath:
-            return False
-        if isinstance(loadFilePath, str):
-            loadFilePath = [loadFilePath]
-        if not self.clearAlignAndBackup():
-            return False
+        alignModel, message = loadModelsFromFile(modelFilesPath)
+        if not alignModel:
+            self.msg.emit(2, "Model", "Run error", message)
+            return
 
         self.app.operationRunning.emit(2)
-        self.msg.emit(1, "Model", "Run", "Programing models")
-        modelJSON = list()
-        for index, file in enumerate(loadFilePath):
-            self.msg.emit(0, "", "", f"Loading model [{os.path.basename(file)}]")
-            try:
-                with open(file, "r") as infile:
-                    model = json.load(infile)
-                    modelJSON += model
-            except Exception as e:
-                self.log.warning(f"Cannot load model file: {[file]}, error: {e}")
-                continue
+        self.msg.emit(0, "Model", "Run", message)
+        self.msg.emit(0, "Model", "Run", "Programing models")
+        if not self.clearAlignAndBackup():
+            return
 
-        if len(modelJSON) > 99:
-            self.msg.emit(
-                2, "Model", "Run error", "Model(s) exceed(s) limit of 99 points"
-            )
-            self.app.operationRunning.emit(0)
-            return False
-
-        self.msg.emit(0, "Model", "Run", f"Programming {index + 1} model(s) to mount")
-        self.model = modelJSON
-        suc = self.programModelToMount()
-
-        if suc:
+        if self.programModelToMount(alignModel):
             self.msg.emit(0, "Model", "Run", "Model programmed with success")
         else:
             self.msg.emit(2, "Model", "Run error", "Model programming error")
         self.app.operationRunning.emit(0)
-        return suc
 
-    def setupFilenamesAndDirectories(
-        self, prefix: str = "", postfix: str = ""
-    ) -> [Path, Path]:
+    def setupFilenamesAndDirectories(self, prefix: str = "", postfix: str = "") -> [Path, Path]:
         """ """
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         name = f"{prefix}-{nameTime}{postfix}"
-        imageDir = f'{self.app.mwGlob["imageDir"]}/{name}'
+        imageDir = self.app.mwGlob["imageDir"] / name
 
-        if not os.path.isdir(imageDir):
+        if not imageDir.is_dir():
             os.mkdir(imageDir)
 
         return name, imageDir
@@ -359,9 +289,7 @@ class Model(MWidget):
         self.ui.timeEstimated.setText(datetime(*timeEstimated[:6]).strftime("%H:%M:%S"))
         self.ui.timeFinished.setText(datetime(*timeFinished[:6]).strftime("%H:%M:%S"))
         self.ui.modelProgress.setValue(progressData["modelPercent"])
-        self.ui.numberPoints.setText(
-            f'{progressData["count"]} / {progressData["number"]}'
-        )
+        self.ui.numberPoints.setText(f'{progressData["count"]} / {progressData["number"]}')
 
     def setupModelInputData(self, excludeDonePoints: bool) -> None:
         """ """

@@ -124,9 +124,7 @@ class Power(MWidget):
         :return: success for test
         """
         for name, button in self.powerOnOFF.items():
-            value = self.app.power.data.get(
-                f"POWER_CONTROL.POWER_CONTROL_{name}", False
-            )
+            value = self.app.power.data.get(f"POWER_CONTROL.POWER_CONTROL_{name}", False)
             self.changeStyleDynamic(button, "running", value)
 
         for name, button in self.powerBoot.items():
@@ -180,9 +178,7 @@ class Power(MWidget):
         self.changeStyleDynamic(self.ui.autoDew, "running", value)
 
         if self.app.power.data.get("FIRMWARE_INFO.VERSION", "1.4") > "1.4":
-            value = self.app.power.data.get(
-                "ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE"
-            )
+            value = self.app.power.data.get("ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE")
             self.guiSetText(self.ui.adjustableOutput, "4.1f", value)
 
             for name, button in self.portUSB.items():
@@ -295,9 +291,7 @@ class Power(MWidget):
         actValue = float(self.ui.adjustableOutput.text())
 
         dlg = QInputDialog()
-        value, ok = dlg.getDouble(
-            self, "Set Voltage Output", "Value (3-12):", actValue, 3, 12, 1
-        )
+        value, ok = dlg.getDouble(self, "Set Voltage Output", "Value (3-12):", actValue, 3, 12, 1)
 
         if not ok:
             return False

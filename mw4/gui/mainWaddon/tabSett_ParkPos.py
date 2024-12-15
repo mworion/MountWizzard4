@@ -149,16 +149,12 @@ class SettParkPos(MWidget):
             alt=Angle(degrees=altValue), az=Angle(degrees=azValue)
         )
         if not suc:
-            self.msg.emit(
-                2, "Mount", "Command error", f"Cannot slew to [{posTextValue}]"
-            )
+            self.msg.emit(2, "Mount", "Command error", f"Cannot slew to [{posTextValue}]")
             return False
 
         suc = self.app.mount.obsSite.startSlewing(slewType="notrack")
         if not suc:
-            self.msg.emit(
-                2, "Mount", "Command error", f"Cannot slew to [{posTextValue}]"
-            )
+            self.msg.emit(2, "Mount", "Command error", f"Cannot slew to [{posTextValue}]")
             return False
 
         self.msg.emit(0, "Mount", "Command", f"Slew to [{posTextValue}]")

@@ -283,9 +283,7 @@ def test_runSlew_2(function):
     }
 
     function.slewQueue.put(mPoint)
-    with mock.patch.object(
-        function.app.mount.obsSite, "setTargetAltAz", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
         suc = function.runSlew()
         assert not suc
 
@@ -304,9 +302,7 @@ def test_runSlew_3(function):
         "altitude": Angle(degrees=0),
     }
     function.slewQueue.put(mPoint)
-    with mock.patch.object(
-        function.app.mount.obsSite, "setTargetAltAz", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
         with mock.patch.object(function.app.dome, "slewDome", return_value=0):
             suc = function.runSlew()
             assert suc
@@ -328,9 +324,7 @@ def test_runSlew_4(function):
     function.slewQueue.put(mPoint)
     function.ui.useDomeGeometry.setChecked(True)
     with mock.patch.object(function.app.dome, "slewDome", return_value=0):
-        with mock.patch.object(
-            function.app.mount.obsSite, "setTargetAltAz", return_value=True
-        ):
+        with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
             suc = function.runSlew()
             assert suc
 
@@ -352,9 +346,7 @@ def test_runSlew_5(function):
     function.slewQueue.put(mPoint)
     function.ui.useDomeGeometry.setChecked(True)
     with mock.patch.object(function.app.dome, "slewDome", return_value=0):
-        with mock.patch.object(
-            function.app.mount.obsSite, "setTargetAltAz", return_value=True
-        ):
+        with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
             suc = function.runSlew()
             assert suc
 
@@ -511,9 +503,7 @@ def test_processData_1(function):
     with mock.patch.object(function, "collectingRunOutput", return_value=[]):
         with mock.patch.object(function, "restoreSignalsRunDefault"):
             with mock.patch.object(function, "clearQueues"):
-                with mock.patch.object(
-                    function.app.mount.obsSite, "park", return_value=False
-                ):
+                with mock.patch.object(function.app.mount.obsSite, "park", return_value=False):
                     suc = function.processDataAndFinishRun()
                     assert suc
 
@@ -528,9 +518,7 @@ def test_processData_2(function):
     with mock.patch.object(function, "collectingRunOutput", return_value=[]):
         with mock.patch.object(function, "restoreSignalsRunDefault"):
             with mock.patch.object(function, "clearQueues"):
-                with mock.patch.object(
-                    function.app.mount.obsSite, "park", return_value=True
-                ):
+                with mock.patch.object(function.app.mount.obsSite, "park", return_value=True):
                     suc = function.processDataAndFinishRun()
                     assert suc
 

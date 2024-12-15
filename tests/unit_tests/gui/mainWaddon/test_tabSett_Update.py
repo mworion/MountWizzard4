@@ -101,9 +101,7 @@ def test_versionPackage_1(function):
         def json():
             return {"releases": {}}
 
-    with mock.patch.object(
-        requests, "get", return_value=Test(), side_effect=Exception()
-    ):
+    with mock.patch.object(requests, "get", return_value=Test(), side_effect=Exception()):
         val = function.versionPackage("astropy")
         assert val[0] is None
         assert val[1] is None
@@ -182,9 +180,7 @@ def test_showUpdates_2(function):
     function.ui.isOnline.setChecked(True)
     function.ui.versionReleaseNotes.setChecked(False)
     with mock.patch.object(importlib_metadata, "version", return_value="0.148.8"):
-        with mock.patch.object(
-            function, "versionPackage", return_value=(None, None, [])
-        ):
+        with mock.patch.object(function, "versionPackage", return_value=(None, None, [])):
             suc = function.showUpdates()
             assert not suc
 
@@ -259,9 +255,7 @@ def test_installVersion_1(function):
 def test_installVersion_2(function):
     function.ui.versionAvailable.setText("2.1.1")
     with mock.patch.object(function, "isVenv", return_value=True):
-        with mock.patch.object(
-            function, "versionPackage", return_value=(None, None, ["1.2.3"])
-        ):
+        with mock.patch.object(function, "versionPackage", return_value=(None, None, ["1.2.3"])):
             suc = function.installVersion()
             assert not suc
 
@@ -269,9 +263,7 @@ def test_installVersion_2(function):
 def test_installVersion_3(function):
     function.ui.versionAvailable.setText("1.2.3")
     with mock.patch.object(function, "isVenv", return_value=True):
-        with mock.patch.object(
-            function, "versionPackage", return_value=(None, None, ["1.2.3"])
-        ):
+        with mock.patch.object(function, "versionPackage", return_value=(None, None, ["1.2.3"])):
             with mock.patch.object(function, "startUpdater"):
                 suc = function.installVersion()
                 assert suc

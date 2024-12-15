@@ -307,9 +307,7 @@ def test_authPopup_1(function):
     function.password = "test"
     with mock.patch.object(function, "checkAuth"):
         with mock.patch.object(function, "restartVideo"):
-            with mock.patch.object(
-                QInputDialog, "getText", return_value=("test", False)
-            ):
+            with mock.patch.object(QInputDialog, "getText", return_value=("test", False)):
                 suc = function.authPopup()
                 assert not suc
                 assert function.user == "test"
@@ -321,9 +319,7 @@ def test_authPopup_2(function):
     function.password = "test"
     with mock.patch.object(function, "checkAuth"):
         with mock.patch.object(function, "restartVideo"):
-            with mock.patch.object(
-                QInputDialog, "getText", return_value=("test1", True)
-            ):
+            with mock.patch.object(QInputDialog, "getText", return_value=("test1", True)):
                 suc = function.authPopup()
                 assert suc
                 assert function.user == "test1"

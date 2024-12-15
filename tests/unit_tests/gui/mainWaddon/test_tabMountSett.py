@@ -387,18 +387,14 @@ def test_updateLocGUI_3(function):
 
 def test_setMeridianLimitTrack_2(function):
     function.app.mount.setting.meridianLimitTrack = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, False)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, False)):
         suc = function.setMeridianLimitTrack()
         assert not suc
 
 
 def test_setMeridianLimitTrack_3(function):
     function.app.mount.setting.meridianLimitTrack = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)):
         with mock.patch.object(
             function.app.mount.setting, "setMeridianLimitTrack", return_value=False
         ):
@@ -408,9 +404,7 @@ def test_setMeridianLimitTrack_3(function):
 
 def test_setMeridianLimitTrack_4(function):
     function.app.mount.setting.meridianLimitTrack = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)):
         with mock.patch.object(
             function.app.mount.setting, "setMeridianLimitTrack", return_value=True
         ):
@@ -420,18 +414,14 @@ def test_setMeridianLimitTrack_4(function):
 
 def test_setMeridianLimitSlew_2(function):
     function.app.mount.setting.meridianLimitSlew = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, False)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, False)):
         suc = function.setMeridianLimitSlew()
         assert not suc
 
 
 def test_setMeridianLimitSlew_3(function):
     function.app.mount.setting.meridianLimitSlew = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)):
         with mock.patch.object(
             function.app.mount.setting, "setMeridianLimitSlew", return_value=False
         ):
@@ -441,9 +431,7 @@ def test_setMeridianLimitSlew_3(function):
 
 def test_setMeridianLimitSlew_4(function):
     function.app.mount.setting.meridianLimitSlew = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)):
         with mock.patch.object(
             function.app.mount.setting, "setMeridianLimitSlew", return_value=True
         ):
@@ -453,18 +441,14 @@ def test_setMeridianLimitSlew_4(function):
 
 def test_setHorizonLimitHigh_2(function):
     function.app.mount.setting.horizonLimitHigh = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, False)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, False)):
         suc = function.setHorizonLimitHigh()
         assert not suc
 
 
 def test_setHorizonLimitHigh_3(function):
     function.app.mount.setting.horizonLimitHigh = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)):
         with mock.patch.object(
             function.app.mount.setting, "setHorizonLimitHigh", return_value=False
         ):
@@ -474,9 +458,7 @@ def test_setHorizonLimitHigh_3(function):
 
 def test_setHorizonLimitHigh_4(function):
     function.app.mount.setting.horizonLimitHigh = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)):
         with mock.patch.object(
             function.app.mount.setting, "setHorizonLimitHigh", return_value=True
         ):
@@ -486,18 +468,14 @@ def test_setHorizonLimitHigh_4(function):
 
 def test_setHorizonLimitLow_2(function):
     function.app.mount.setting.horizonLimitLow = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, False)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, False)):
         suc = function.setHorizonLimitLow()
         assert not suc
 
 
 def test_setHorizonLimitLow_3(function):
     function.app.mount.setting.horizonLimitLow = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)):
         with mock.patch.object(
             function.app.mount.setting, "setHorizonLimitLow", return_value=False
         ):
@@ -507,9 +485,7 @@ def test_setHorizonLimitLow_3(function):
 
 def test_setHorizonLimitLow_4(function):
     function.app.mount.setting.horizonLimitLow = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)):
         with mock.patch.object(
             function.app.mount.setting, "setHorizonLimitLow", return_value=True
         ):
@@ -519,33 +495,23 @@ def test_setHorizonLimitLow_4(function):
 
 def test_setSlewRate_2(function):
     function.app.mount.setting.slewRate = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, False)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, False)):
         suc = function.setSlewRate()
         assert not suc
 
 
 def test_setSlewRate_3(function):
     function.app.mount.setting.slewRate = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)
-    ):
-        with mock.patch.object(
-            function.app.mount.setting, "setSlewRate", return_value=False
-        ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)):
+        with mock.patch.object(function.app.mount.setting, "setSlewRate", return_value=False):
             suc = function.setSlewRate()
             assert not suc
 
 
 def test_setSlewRate_4(function):
     function.app.mount.setting.slewRate = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)
-    ):
-        with mock.patch.object(
-            function.app.mount.setting, "setSlewRate", return_value=True
-        ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)):
+        with mock.patch.object(function.app.mount.setting, "setSlewRate", return_value=True):
             suc = function.setSlewRate()
             assert suc
 
@@ -648,9 +614,7 @@ def test_setElevation_3(function):
     function.app.mount.obsSite.location = wgs84.latlon(
         longitude_degrees=1, latitude_degrees=2, elevation_m=3
     )
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10.0, True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10.0, True)):
         with mock.patch.object(function, "setLocationValues"):
             suc = function.setElevation()
             assert suc
@@ -658,18 +622,14 @@ def test_setElevation_3(function):
 
 def test_setUnattendedFlip_2(function):
     function.app.mount.setting.statusUnattendedFlip = True
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", False)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", False)):
         suc = function.setUnattendedFlip()
         assert not suc
 
 
 def test_setUnattendedFlip_3(function):
     function.app.mount.setting.statusUnattendedFlip = True
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)):
         with mock.patch.object(
             function.app.mount.setting, "setUnattendedFlip", return_value=False
         ):
@@ -679,30 +639,22 @@ def test_setUnattendedFlip_3(function):
 
 def test_setUnattendedFlip_4(function):
     function.app.mount.setting.statusUnattendedFlip = True
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
-    ):
-        with mock.patch.object(
-            function.app.mount.setting, "setUnattendedFlip", return_value=True
-        ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)):
+        with mock.patch.object(function.app.mount.setting, "setUnattendedFlip", return_value=True):
             suc = function.setUnattendedFlip()
             assert suc
 
 
 def test_setDualAxisTracking_2(function):
     function.app.mount.setting.statusDualAxisTracking = True
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", False)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", False)):
         suc = function.setDualAxisTracking()
         assert not suc
 
 
 def test_setDualAxisTracking_3(function):
     function.app.mount.setting.statusDualAxisTracking = True
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)):
         with mock.patch.object(
             function.app.mount.setting, "setDualAxisTracking", return_value=False
         ):
@@ -712,9 +664,7 @@ def test_setDualAxisTracking_3(function):
 
 def test_setDualAxisTracking_4(function):
     function.app.mount.setting.statusDualAxisTracking = True
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)):
         with mock.patch.object(
             function.app.mount.setting, "setDualAxisTracking", return_value=True
         ):
@@ -724,30 +674,22 @@ def test_setDualAxisTracking_4(function):
 
 def test_setWOL_2(function):
     function.app.mount.setting.statusWOL = "0"
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", False)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", False)):
         suc = function.setWOL()
         assert not suc
 
 
 def test_setWOL_3(function):
     function.app.mount.setting.statusWOL = "0"
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
-    ):
-        with mock.patch.object(
-            function.app.mount.setting, "setWOL", return_value=False
-        ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)):
+        with mock.patch.object(function.app.mount.setting, "setWOL", return_value=False):
             suc = function.setWOL()
             assert not suc
 
 
 def test_setWOL_4(function):
     function.app.mount.setting.statusWOL = "0"
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)):
         with mock.patch.object(function.app.mount.setting, "setWOL", return_value=True):
             suc = function.setWOL()
             assert suc
@@ -755,18 +697,14 @@ def test_setWOL_4(function):
 
 def test_setRefractionTemp_2(function):
     function.app.mount.setting.slewRate = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10, False)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10, False)):
         suc = function.setRefractionTemp()
         assert not suc
 
 
 def test_setRefractionTemp_3(function):
     function.app.mount.setting.slewRate = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10, True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10, True)):
         with mock.patch.object(
             function.app.mount.setting, "setRefractionTemp", return_value=False
         ):
@@ -776,30 +714,22 @@ def test_setRefractionTemp_3(function):
 
 def test_setRefractionTemp_4(function):
     function.app.mount.setting.slewRate = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10, True)
-    ):
-        with mock.patch.object(
-            function.app.mount.setting, "setRefractionTemp", return_value=True
-        ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10, True)):
+        with mock.patch.object(function.app.mount.setting, "setRefractionTemp", return_value=True):
             suc = function.setRefractionTemp()
             assert suc
 
 
 def test_setRefractionPress_2(function):
     function.app.mount.setting.slewRate = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10, False)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10, False)):
         suc = function.setRefractionPress()
         assert not suc
 
 
 def test_setRefractionPress_3(function):
     function.app.mount.setting.slewRate = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10, True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10, True)):
         with mock.patch.object(
             function.app.mount.setting, "setRefractionPress", return_value=False
         ):
@@ -809,9 +739,7 @@ def test_setRefractionPress_3(function):
 
 def test_setRefractionPress_4(function):
     function.app.mount.setting.slewRate = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10, True)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10, True)):
         with mock.patch.object(
             function.app.mount.setting, "setRefractionPress", return_value=True
         ):
@@ -821,33 +749,23 @@ def test_setRefractionPress_4(function):
 
 def test_setRefraction_2(function):
     function.app.mount.setting.statusRefraction = True
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", False)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", False)):
         suc = function.setRefraction()
         assert not suc
 
 
 def test_setRefraction_3(function):
     function.app.mount.setting.statusRefraction = True
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
-    ):
-        with mock.patch.object(
-            function.app.mount.setting, "setRefraction", return_value=False
-        ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)):
+        with mock.patch.object(function.app.mount.setting, "setRefraction", return_value=False):
             suc = function.setRefraction()
             assert not suc
 
 
 def test_setRefraction_4(function):
     function.app.mount.setting.statusRefraction = True
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
-    ):
-        with mock.patch.object(
-            function.app.mount.setting, "setRefraction", return_value=True
-        ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)):
+        with mock.patch.object(function.app.mount.setting, "setRefraction", return_value=True):
             suc = function.setRefraction()
             assert suc
 
@@ -862,33 +780,23 @@ def test_updatePointGui_ra_j2000(function):
 
 def test_setSettleTimeMount_2(function):
     function.app.mount.setting.slewRate = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, False)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, False)):
         suc = function.setSettleTimeMount()
         assert not suc
 
 
 def test_setSettleTimeMount_3(function):
     function.app.mount.setting.slewRate = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)
-    ):
-        with mock.patch.object(
-            function.app.mount.setting, "setSettleTime", return_value=False
-        ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)):
+        with mock.patch.object(function.app.mount.setting, "setSettleTime", return_value=False):
             suc = function.setSettleTimeMount()
             assert not suc
 
 
 def test_setSettleTimeMount_4(function):
     function.app.mount.setting.slewRate = 10
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)
-    ):
-        with mock.patch.object(
-            function.app.mount.setting, "setSettleTime", return_value=True
-        ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)):
+        with mock.patch.object(function.app.mount.setting, "setSettleTime", return_value=True):
             suc = function.setSettleTimeMount()
             assert suc
 
@@ -898,25 +806,19 @@ def test_showOffset_1(function):
     function.showOffset()
 
 
-@mock.patch(
-    "tests.unit_tests.unitTestAddOns.baseTestApp.App.mount" ".obsSite.timeDiff", 0.003
-)
+@mock.patch("tests.unit_tests.unitTestAddOns.baseTestApp.App.mount" ".obsSite.timeDiff", 0.003)
 def test_showOffset_2(function):
     function.ui.clockSync.setChecked(True)
     function.showOffset()
 
 
-@mock.patch(
-    "tests.unit_tests.unitTestAddOns.baseTestApp.App.mount" ".obsSite.timeDiff", 0.3
-)
+@mock.patch("tests.unit_tests.unitTestAddOns.baseTestApp.App.mount" ".obsSite.timeDiff", 0.3)
 def test_showOffset_3(function):
     function.ui.clockSync.setChecked(True)
     function.showOffset()
 
 
-@mock.patch(
-    "tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite" ".timeDiff", 0.6
-)
+@mock.patch("tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite" ".timeDiff", 0.6)
 def test_showOffset_4(function):
     function.ui.clockSync.setChecked(True)
     function.showOffset()

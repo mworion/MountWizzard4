@@ -27,9 +27,7 @@ from mountcontrol import obsSite
 
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    obsSite.location = wgs84.latlon(
-        latitude_degrees=0, longitude_degrees=0, elevation_m=0
-    )
+    obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
     modelStar = ModelStar(obsSite=obsSite)
     yield modelStar

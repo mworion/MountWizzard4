@@ -101,9 +101,7 @@ class AstroObjects(QObject):
         """ """
         if not self.window.ui.isOnline.isChecked():
             return
-        self.downloadPopup = DownloadPopup(
-            self.window, url=url, dest=self.dest, unzip=unzip
-        )
+        self.downloadPopup = DownloadPopup(self.window, url=url, dest=self.dest, unzip=unzip)
         self.downloadPopup.worker.signals.finished.connect(self.procSourceData)
 
     def loadSourceUrl(self) -> None:
@@ -137,17 +135,13 @@ class AstroObjects(QObject):
     def finishProgObjects(self) -> None:
         """ """
         if self.uploadPopup.returnValues["success"]:
-            self.msg.emit(
-                1, self.objectText.capitalize(), "Program", "Successful uploaded"
-            )
+            self.msg.emit(1, self.objectText.capitalize(), "Program", "Successful uploaded")
         else:
             self.msg.emit(2, self.objectText.capitalize(), "Program", "Upload failed")
 
     def runUploadPopup(self, url: str) -> None:
         """ """
-        self.uploadPopup = UploadPopup(
-            self.window, url, [self.objectText], self.tempDir
-        )
+        self.uploadPopup = UploadPopup(self.window, url, [self.objectText], self.tempDir)
         self.uploadPopup.workerStatus.signals.finished.connect(self.finishProgObjects)
 
     def progObjects(self, objects: list) -> None:

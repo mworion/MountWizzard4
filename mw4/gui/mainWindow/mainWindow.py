@@ -431,15 +431,11 @@ class MainWindow(MWidget):
     def loadProfileGUI(self) -> bool:
         """ """
         folder = self.app.mwGlob["configDir"]
-        loadFilePath = self.openFile(
-            self, "Open config file", folder, "Config files (*.cfg)"
-        )
+        loadFilePath = self.openFile(self, "Open config file", folder, "Config files (*.cfg)")
         if not loadFilePath.is_file():
             return False
 
-        config = loadProfile(
-            configDir=self.app.mwGlob["configDir"], name=loadFilePath.stem
-        )
+        config = loadProfile(configDir=self.app.mwGlob["configDir"], name=loadFilePath.stem)
         if config:
             self.ui.profile.setText(loadFilePath.stem)
             self.msg.emit(1, "System", "Profile", f"loaded {loadFilePath.stem}")
@@ -468,9 +464,7 @@ class MainWindow(MWidget):
 
         self.storeConfig()
         self.app.storeConfig()
-        configAdd = loadProfile(
-            configDir=self.app.mwGlob["configDir"], name=loadFilePath.stem
-        )
+        configAdd = loadProfile(configDir=self.app.mwGlob["configDir"], name=loadFilePath.stem)
         if configAdd:
             self.ui.profileAdd.setText(loadFilePath.stem)
             profile = self.ui.profile.text()
@@ -511,9 +505,7 @@ class MainWindow(MWidget):
             self.msg.emit(1, "System", "Profile", f"saved {saveFilePath.stem}")
             self.ui.profileAdd.setText("-")
         else:
-            self.msg.emit(
-                2, "System", "Profile error", f"{saveFilePath.stem}] cannot no be saved"
-            )
+            self.msg.emit(2, "System", "Profile error", f"{saveFilePath.stem}] cannot no be saved")
         return True
 
     def saveConfig(self) -> bool:

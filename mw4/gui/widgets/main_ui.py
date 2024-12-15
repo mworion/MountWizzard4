@@ -81,14 +81,10 @@ class Ui_MainWindow(object):
         self.mainTabWidget.setObjectName("mainTabWidget")
         self.mainTabWidget.setEnabled(True)
         self.mainTabWidget.setGeometry(QRect(4, 128, 791, 466))
-        sizePolicy1 = QSizePolicy(
-            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
-        )
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(
-            self.mainTabWidget.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy1.setHeightForWidth(self.mainTabWidget.sizePolicy().hasHeightForWidth())
         self.mainTabWidget.setSizePolicy(sizePolicy1)
         font1 = QFont()
         font1.setFamilies(["Arial"])
@@ -872,9 +868,7 @@ class Ui_MainWindow(object):
         self.mountCommandTable = QPushButton(self.MountTerminal)
         self.mountCommandTable.setObjectName("mountCommandTable")
         self.mountCommandTable.setGeometry(QRect(385, 15, 241, 25))
-        sizePolicy1.setHeightForWidth(
-            self.mountCommandTable.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy1.setHeightForWidth(self.mountCommandTable.sizePolicy().hasHeightForWidth())
         self.mountCommandTable.setSizePolicy(sizePolicy1)
         self.mountCommandTable.setMinimumSize(QSize(0, 0))
         self.mountCommandTable.setMaximumSize(QSize(16777215, 25))
@@ -883,9 +877,7 @@ class Ui_MainWindow(object):
         self.mountUpdateTimeDelta = QPushButton(self.MountTerminal)
         self.mountUpdateTimeDelta.setObjectName("mountUpdateTimeDelta")
         self.mountUpdateTimeDelta.setGeometry(QRect(385, 75, 241, 25))
-        sizePolicy1.setHeightForWidth(
-            self.mountUpdateTimeDelta.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy1.setHeightForWidth(self.mountUpdateTimeDelta.sizePolicy().hasHeightForWidth())
         self.mountUpdateTimeDelta.setSizePolicy(sizePolicy1)
         self.mountUpdateTimeDelta.setMinimumSize(QSize(0, 0))
         self.mountUpdateTimeDelta.setMaximumSize(QSize(16777215, 25))
@@ -894,9 +886,7 @@ class Ui_MainWindow(object):
         self.mountUpdateFirmware = QPushButton(self.MountTerminal)
         self.mountUpdateFirmware.setObjectName("mountUpdateFirmware")
         self.mountUpdateFirmware.setGeometry(QRect(385, 105, 241, 25))
-        sizePolicy1.setHeightForWidth(
-            self.mountUpdateFirmware.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy1.setHeightForWidth(self.mountUpdateFirmware.sizePolicy().hasHeightForWidth())
         self.mountUpdateFirmware.setSizePolicy(sizePolicy1)
         self.mountUpdateFirmware.setMinimumSize(QSize(0, 0))
         self.mountUpdateFirmware.setMaximumSize(QSize(16777215, 25))
@@ -905,9 +895,7 @@ class Ui_MainWindow(object):
         self.mountDocumentation = QPushButton(self.MountTerminal)
         self.mountDocumentation.setObjectName("mountDocumentation")
         self.mountDocumentation.setGeometry(QRect(385, 45, 241, 25))
-        sizePolicy1.setHeightForWidth(
-            self.mountDocumentation.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy1.setHeightForWidth(self.mountDocumentation.sizePolicy().hasHeightForWidth())
         self.mountDocumentation.setSizePolicy(sizePolicy1)
         self.mountDocumentation.setMinimumSize(QSize(0, 0))
         self.mountDocumentation.setMaximumSize(QSize(16777215, 25))
@@ -997,9 +985,7 @@ class Ui_MainWindow(object):
         self.RAfloat.setObjectName("RAfloat")
         self.RAfloat.setEnabled(False)
         self.RAfloat.setGeometry(QRect(75, 105, 141, 16))
-        sizePolicy2 = QSizePolicy(
-            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
-        )
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.RAfloat.sizePolicy().hasHeightForWidth())
@@ -2002,31 +1988,19 @@ class Ui_MainWindow(object):
         self.meteoblueSeeing = QTableWidget(self.seeingGroup)
         self.meteoblueSeeing.setObjectName("meteoblueSeeing")
         self.meteoblueSeeing.setGeometry(QRect(50, 20, 716, 181))
-        self.meteoblueSeeing.setVerticalScrollBarPolicy(
-            Qt.ScrollBarPolicy.ScrollBarAsNeeded
-        )
-        self.meteoblueSeeing.setHorizontalScrollBarPolicy(
-            Qt.ScrollBarPolicy.ScrollBarAsNeeded
-        )
+        self.meteoblueSeeing.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.meteoblueSeeing.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.meteoblueSeeing.setSizeAdjustPolicy(
             QAbstractScrollArea.SizeAdjustPolicy.AdjustIgnored
         )
-        self.meteoblueSeeing.setEditTriggers(
-            QAbstractItemView.EditTrigger.NoEditTriggers
-        )
+        self.meteoblueSeeing.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.meteoblueSeeing.setTabKeyNavigation(False)
         self.meteoblueSeeing.setProperty("showDropIndicator", False)
         self.meteoblueSeeing.setDragDropOverwriteMode(False)
-        self.meteoblueSeeing.setSelectionMode(
-            QAbstractItemView.SelectionMode.NoSelection
-        )
+        self.meteoblueSeeing.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
         self.meteoblueSeeing.setTextElideMode(Qt.TextElideMode.ElideLeft)
-        self.meteoblueSeeing.setVerticalScrollMode(
-            QAbstractItemView.ScrollMode.ScrollPerItem
-        )
-        self.meteoblueSeeing.setHorizontalScrollMode(
-            QAbstractItemView.ScrollMode.ScrollPerItem
-        )
+        self.meteoblueSeeing.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerItem)
+        self.meteoblueSeeing.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerItem)
         self.meteoblueSeeing.setShowGrid(True)
         self.meteoblueSeeing.setGridStyle(Qt.PenStyle.NoPen)
         self.meteoblueSeeing.setWordWrap(False)
@@ -2216,9 +2190,7 @@ class Ui_MainWindow(object):
         self.numberGridPointsRow.setGeometry(QRect(40, 25, 41, 21))
         self.numberGridPointsRow.setMaximumSize(QSize(41, 16777215))
         self.numberGridPointsRow.setFont(font1)
-        self.numberGridPointsRow.setButtonSymbols(
-            QAbstractSpinBox.ButtonSymbols.UpDownArrows
-        )
+        self.numberGridPointsRow.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.UpDownArrows)
         self.numberGridPointsRow.setDecimals(0)
         self.numberGridPointsRow.setMinimum(1.000000000000000)
         self.numberGridPointsRow.setMaximum(10.000000000000000)
@@ -2255,9 +2227,7 @@ class Ui_MainWindow(object):
         self.numberGridPointsCol.setGeometry(QRect(120, 25, 41, 21))
         self.numberGridPointsCol.setMaximumSize(QSize(41, 16777215))
         self.numberGridPointsCol.setFont(font1)
-        self.numberGridPointsCol.setButtonSymbols(
-            QAbstractSpinBox.ButtonSymbols.UpDownArrows
-        )
+        self.numberGridPointsCol.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.UpDownArrows)
         self.numberGridPointsCol.setDecimals(0)
         self.numberGridPointsCol.setMinimum(2.000000000000000)
         self.numberGridPointsCol.setMaximum(10.000000000000000)
@@ -2320,9 +2290,7 @@ class Ui_MainWindow(object):
         self.clearBuildP = QPushButton(self.groupBox_55)
         self.clearBuildP.setObjectName("clearBuildP")
         self.clearBuildP.setGeometry(QRect(5, 65, 356, 21))
-        sizePolicy3 = QSizePolicy(
-            QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.clearBuildP.sizePolicy().hasHeightForWidth())
@@ -3348,9 +3316,7 @@ class Ui_MainWindow(object):
         self.domeShutterStatusText.setFont(font1)
         self.domeShutterStatusText.setMouseTracking(False)
         self.domeShutterStatusText.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self.domeShutterStatusText.setContextMenuPolicy(
-            Qt.ContextMenuPolicy.NoContextMenu
-        )
+        self.domeShutterStatusText.setContextMenuPolicy(Qt.ContextMenuPolicy.NoContextMenu)
         self.domeShutterStatusText.setAcceptDrops(False)
         self.domeShutterStatusText.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
         self.domeShutterStatusText.setReadOnly(True)
@@ -4411,9 +4377,7 @@ class Ui_MainWindow(object):
         self.listSats.setDragDropOverwriteMode(False)
         self.listSats.setAlternatingRowColors(False)
         self.listSats.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
-        self.listSats.setSelectionBehavior(
-            QAbstractItemView.SelectionBehavior.SelectItems
-        )
+        self.listSats.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectItems)
         self.listSats.setShowGrid(False)
         self.listSats.setGridStyle(Qt.PenStyle.NoPen)
         self.listSats.setSortingEnabled(True)
@@ -4947,17 +4911,13 @@ class Ui_MainWindow(object):
         self.listComets.setFont(font1)
         self.listComets.setFrameShape(QFrame.Shape.NoFrame)
         self.listComets.setLineWidth(0)
-        self.listComets.setHorizontalScrollBarPolicy(
-            Qt.ScrollBarPolicy.ScrollBarAsNeeded
-        )
+        self.listComets.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.listComets.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.listComets.setProperty("showDropIndicator", False)
         self.listComets.setDragDropOverwriteMode(False)
         self.listComets.setAlternatingRowColors(False)
         self.listComets.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
-        self.listComets.setSelectionBehavior(
-            QAbstractItemView.SelectionBehavior.SelectItems
-        )
+        self.listComets.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectItems)
         self.listComets.setShowGrid(False)
         self.listComets.setGridStyle(Qt.PenStyle.NoPen)
         self.listComets.setSortingEnabled(True)
@@ -5024,17 +4984,13 @@ class Ui_MainWindow(object):
         self.listAsteroids.setFont(font1)
         self.listAsteroids.setFrameShape(QFrame.Shape.NoFrame)
         self.listAsteroids.setLineWidth(0)
-        self.listAsteroids.setHorizontalScrollBarPolicy(
-            Qt.ScrollBarPolicy.ScrollBarAsNeeded
-        )
+        self.listAsteroids.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.listAsteroids.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.listAsteroids.setProperty("showDropIndicator", False)
         self.listAsteroids.setDragDropOverwriteMode(False)
         self.listAsteroids.setAlternatingRowColors(False)
         self.listAsteroids.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
-        self.listAsteroids.setSelectionBehavior(
-            QAbstractItemView.SelectionBehavior.SelectItems
-        )
+        self.listAsteroids.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectItems)
         self.listAsteroids.setShowGrid(False)
         self.listAsteroids.setGridStyle(Qt.PenStyle.NoPen)
         self.listAsteroids.setSortingEnabled(True)
@@ -5786,9 +5742,7 @@ class Ui_MainWindow(object):
         self.settingsTabWidget.setObjectName("settingsTabWidget")
         self.settingsTabWidget.setEnabled(True)
         self.settingsTabWidget.setGeometry(QRect(5, 0, 776, 431))
-        sizePolicy1.setHeightForWidth(
-            self.settingsTabWidget.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy1.setHeightForWidth(self.settingsTabWidget.sizePolicy().hasHeightForWidth())
         self.settingsTabWidget.setSizePolicy(sizePolicy1)
         self.settingsTabWidget.setFont(font1)
         self.settingsTabWidget.setAutoFillBackground(True)
@@ -7635,9 +7589,7 @@ class Ui_MainWindow(object):
         self.plateSolveText.setObjectName("plateSolveText")
         self.plateSolveText.setEnabled(True)
         self.plateSolveText.setGeometry(QRect(345, 15, 81, 25))
-        sizePolicy2.setHeightForWidth(
-            self.plateSolveText.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy2.setHeightForWidth(self.plateSolveText.sizePolicy().hasHeightForWidth())
         self.plateSolveText.setSizePolicy(sizePolicy2)
         self.plateSolveText.setMinimumSize(QSize(0, 25))
         self.plateSolveText.setMaximumSize(QSize(16777215, 25))
@@ -7664,9 +7616,7 @@ class Ui_MainWindow(object):
         self.refractionConnected.setObjectName("refractionConnected")
         self.refractionConnected.setEnabled(True)
         self.refractionConnected.setGeometry(QRect(90, 45, 81, 25))
-        sizePolicy2.setHeightForWidth(
-            self.refractionConnected.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy2.setHeightForWidth(self.refractionConnected.sizePolicy().hasHeightForWidth())
         self.refractionConnected.setSizePolicy(sizePolicy2)
         self.refractionConnected.setMinimumSize(QSize(0, 25))
         self.refractionConnected.setMaximumSize(QSize(16777215, 25))
@@ -7675,9 +7625,7 @@ class Ui_MainWindow(object):
         self.domeConnected.setObjectName("domeConnected")
         self.domeConnected.setEnabled(True)
         self.domeConnected.setGeometry(QRect(175, 45, 81, 25))
-        sizePolicy2.setHeightForWidth(
-            self.domeConnected.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy2.setHeightForWidth(self.domeConnected.sizePolicy().hasHeightForWidth())
         self.domeConnected.setSizePolicy(sizePolicy2)
         self.domeConnected.setMinimumSize(QSize(0, 25))
         self.domeConnected.setMaximumSize(QSize(16777215, 25))
@@ -7695,9 +7643,7 @@ class Ui_MainWindow(object):
         self.cameraConnected.setObjectName("cameraConnected")
         self.cameraConnected.setEnabled(True)
         self.cameraConnected.setGeometry(QRect(260, 45, 81, 25))
-        sizePolicy2.setHeightForWidth(
-            self.cameraConnected.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy2.setHeightForWidth(self.cameraConnected.sizePolicy().hasHeightForWidth())
         self.cameraConnected.setSizePolicy(sizePolicy2)
         self.cameraConnected.setMinimumSize(QSize(0, 25))
         self.cameraConnected.setMaximumSize(QSize(16777215, 25))
@@ -7705,9 +7651,7 @@ class Ui_MainWindow(object):
         self.openSatelliteW = QPushButton(self.statusOnline)
         self.openSatelliteW.setObjectName("openSatelliteW")
         self.openSatelliteW.setGeometry(QRect(290, 75, 66, 25))
-        sizePolicy2.setHeightForWidth(
-            self.openSatelliteW.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy2.setHeightForWidth(self.openSatelliteW.sizePolicy().hasHeightForWidth())
         self.openSatelliteW.setSizePolicy(sizePolicy2)
         self.openSatelliteW.setMinimumSize(QSize(0, 25))
         self.openSatelliteW.setMaximumSize(QSize(16777215, 25))
@@ -7716,9 +7660,7 @@ class Ui_MainWindow(object):
         self.openMeasureW = QPushButton(self.statusOnline)
         self.openMeasureW.setObjectName("openMeasureW")
         self.openMeasureW.setGeometry(QRect(80, 75, 66, 25))
-        sizePolicy2.setHeightForWidth(
-            self.openMeasureW.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy2.setHeightForWidth(self.openMeasureW.sizePolicy().hasHeightForWidth())
         self.openMeasureW.setSizePolicy(sizePolicy2)
         self.openMeasureW.setMinimumSize(QSize(0, 25))
         self.openMeasureW.setMaximumSize(QSize(16777215, 25))
@@ -7728,9 +7670,7 @@ class Ui_MainWindow(object):
         self.plateSolveConnected.setObjectName("plateSolveConnected")
         self.plateSolveConnected.setEnabled(True)
         self.plateSolveConnected.setGeometry(QRect(345, 45, 81, 25))
-        sizePolicy2.setHeightForWidth(
-            self.plateSolveConnected.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy2.setHeightForWidth(self.plateSolveConnected.sizePolicy().hasHeightForWidth())
         self.plateSolveConnected.setSizePolicy(sizePolicy2)
         self.plateSolveConnected.setMinimumSize(QSize(0, 25))
         self.plateSolveConnected.setMaximumSize(QSize(16777215, 25))
@@ -7752,9 +7692,7 @@ class Ui_MainWindow(object):
         self.mountConnected.setObjectName("mountConnected")
         self.mountConnected.setEnabled(True)
         self.mountConnected.setGeometry(QRect(5, 45, 81, 25))
-        sizePolicy2.setHeightForWidth(
-            self.mountConnected.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy2.setHeightForWidth(self.mountConnected.sizePolicy().hasHeightForWidth())
         self.mountConnected.setSizePolicy(sizePolicy2)
         self.mountConnected.setMinimumSize(QSize(0, 25))
         self.mountConnected.setMaximumSize(QSize(16777215, 25))
@@ -7763,9 +7701,7 @@ class Ui_MainWindow(object):
         self.openHemisphereW = QPushButton(self.statusOnline)
         self.openHemisphereW.setObjectName("openHemisphereW")
         self.openHemisphereW.setGeometry(QRect(150, 75, 66, 25))
-        sizePolicy2.setHeightForWidth(
-            self.openHemisphereW.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy2.setHeightForWidth(self.openHemisphereW.sizePolicy().hasHeightForWidth())
         self.openHemisphereW.setSizePolicy(sizePolicy2)
         self.openHemisphereW.setMinimumSize(QSize(0, 25))
         self.openHemisphereW.setMaximumSize(QSize(16777215, 25))
@@ -7774,9 +7710,7 @@ class Ui_MainWindow(object):
         self.openMessageW = QPushButton(self.statusOnline)
         self.openMessageW.setObjectName("openMessageW")
         self.openMessageW.setGeometry(QRect(5, 75, 71, 25))
-        sizePolicy2.setHeightForWidth(
-            self.openMessageW.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy2.setHeightForWidth(self.openMessageW.sizePolicy().hasHeightForWidth())
         self.openMessageW.setSizePolicy(sizePolicy2)
         self.openMessageW.setMinimumSize(QSize(0, 25))
         self.openMessageW.setMaximumSize(QSize(16777215, 25))
@@ -7816,14 +7750,10 @@ class Ui_MainWindow(object):
         self.timeComputer.setObjectName("timeComputer")
         self.timeComputer.setEnabled(True)
         self.timeComputer.setGeometry(QRect(5, 15, 126, 31))
-        sizePolicy4 = QSizePolicy(
-            QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding
-        )
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
         sizePolicy4.setHorizontalStretch(0)
         sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(
-            self.timeComputer.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy4.setHeightForWidth(self.timeComputer.sizePolicy().hasHeightForWidth())
         self.timeComputer.setSizePolicy(sizePolicy4)
         self.timeComputer.setMinimumSize(QSize(0, 0))
         self.timeComputer.setMaximumSize(QSize(16777215, 16777215))
@@ -7843,9 +7773,7 @@ class Ui_MainWindow(object):
         self.timeUTC.setObjectName("timeUTC")
         self.timeUTC.setEnabled(True)
         self.timeUTC.setGeometry(QRect(50, 50, 81, 21))
-        sizePolicy5 = QSizePolicy(
-            QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred
-        )
+        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
         sizePolicy5.setHorizontalStretch(0)
         sizePolicy5.setVerticalStretch(0)
         sizePolicy5.setHeightForWidth(self.timeUTC.sizePolicy().hasHeightForWidth())
@@ -7874,9 +7802,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.saveConfigAs = QPushButton(self.main)
         self.saveConfigAs.setObjectName("saveConfigAs")
-        sizePolicy1.setHeightForWidth(
-            self.saveConfigAs.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy1.setHeightForWidth(self.saveConfigAs.sizePolicy().hasHeightForWidth())
         self.saveConfigAs.setSizePolicy(sizePolicy1)
         self.saveConfigAs.setMinimumSize(QSize(0, 0))
         self.saveConfigAs.setMaximumSize(QSize(16777215, 25))
@@ -7887,9 +7813,7 @@ class Ui_MainWindow(object):
 
         self.saveConfigQuit = QPushButton(self.main)
         self.saveConfigQuit.setObjectName("saveConfigQuit")
-        sizePolicy1.setHeightForWidth(
-            self.saveConfigQuit.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy1.setHeightForWidth(self.saveConfigQuit.sizePolicy().hasHeightForWidth())
         self.saveConfigQuit.setSizePolicy(sizePolicy1)
         self.saveConfigQuit.setMinimumSize(QSize(0, 0))
         self.saveConfigQuit.setMaximumSize(QSize(16777215, 25))
@@ -7941,9 +7865,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6 = QHBoxLayout()
         self.horizontalLayout_6.setSpacing(5)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.horizontalLayout_6.setSizeConstraint(
-            QLayout.SizeConstraint.SetDefaultConstraint
-        )
+        self.horizontalLayout_6.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
         self.profile = QLineEdit(self.main)
         self.profile.setObjectName("profile")
         self.profile.setEnabled(True)
@@ -8472,9 +8394,7 @@ class Ui_MainWindow(object):
         # endif // QT_CONFIG(tooltip)
         self.UTCExpire.setInputMask("")
         self.UTCExpire.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.label_152.setText(
-            QCoreApplication.translate("MainWindow", "DeltaT expires", None)
-        )
+        self.label_152.setText(QCoreApplication.translate("MainWindow", "DeltaT expires", None))
         # if QT_CONFIG(tooltip)
         self.statusGPSSynced.setToolTip(
             QCoreApplication.translate(
@@ -8485,18 +8405,12 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.statusGPSSynced.setInputMask("")
-        self.statusGPSSynced.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.statusGPSSynced.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.label_86.setText(
             QCoreApplication.translate("MainWindow", "Refraction correction", None)
         )
-        self.label_55.setText(
-            QCoreApplication.translate("MainWindow", "Unattended Flip", None)
-        )
-        self.label_28.setText(
-            QCoreApplication.translate("MainWindow", "Slew Rate", None)
-        )
+        self.label_55.setText(QCoreApplication.translate("MainWindow", "Unattended Flip", None))
+        self.label_28.setText(QCoreApplication.translate("MainWindow", "Slew Rate", None))
         # if QT_CONFIG(tooltip)
         self.slewRate.setToolTip(
             QCoreApplication.translate(
@@ -8516,14 +8430,10 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.refractionPress.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.refractionPress.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.label_91.setText(QCoreApplication.translate("MainWindow", "min", None))
         self.label_89.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
-        self.label_148.setText(
-            QCoreApplication.translate("MainWindow", "GPS time synced", None)
-        )
+        self.label_148.setText(QCoreApplication.translate("MainWindow", "GPS time synced", None))
         # if QT_CONFIG(tooltip)
         self.meridianLimitSlew.setToolTip(
             QCoreApplication.translate(
@@ -8534,13 +8444,9 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.meridianLimitSlew.setInputMask("")
-        self.meridianLimitSlew.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.meridianLimitSlew.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.label_104.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
-        self.label_mountMAC_2.setText(
-            QCoreApplication.translate("MainWindow", "Connection", None)
-        )
+        self.label_mountMAC_2.setText(QCoreApplication.translate("MainWindow", "Connection", None))
         self.clockOffset.setText(
             QCoreApplication.translate("MainWindow", "Clock sync offset", None)
         )
@@ -8557,9 +8463,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.timeSidereal.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.label_18.setText(
-            QCoreApplication.translate("MainWindow", "Pierside", None)
-        )
+        self.label_18.setText(QCoreApplication.translate("MainWindow", "Pierside", None))
         # if QT_CONFIG(tooltip)
         self.siteElevation.setToolTip(
             QCoreApplication.translate(
@@ -8580,14 +8484,10 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.statusUnattendedFlip.setInputMask("")
-        self.statusUnattendedFlip.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.statusUnattendedFlip.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.label_130.setText(QCoreApplication.translate("MainWindow", "H:M:S", None))
         self.label_109.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
-        self.label_52.setText(
-            QCoreApplication.translate("MainWindow", "Time to Flip", None)
-        )
+        self.label_52.setText(QCoreApplication.translate("MainWindow", "Time to Flip", None))
         # if QT_CONFIG(tooltip)
         self.statusWOL.setToolTip(
             QCoreApplication.translate(
@@ -8600,12 +8500,8 @@ class Ui_MainWindow(object):
         self.statusWOL.setInputMask("")
         self.statusWOL.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.clockOffsetMS.setText(QCoreApplication.translate("MainWindow", "ms", None))
-        self.label_133.setText(
-            QCoreApplication.translate("MainWindow", "\u00b0/s", None)
-        )
-        self.label_90.setText(
-            QCoreApplication.translate("MainWindow", "Time to Meridian", None)
-        )
+        self.label_133.setText(QCoreApplication.translate("MainWindow", "\u00b0/s", None))
+        self.label_90.setText(QCoreApplication.translate("MainWindow", "Time to Meridian", None))
         self.label_82.setText(QCoreApplication.translate("MainWindow", "m", None))
         # if QT_CONFIG(tooltip)
         self.statusWebInterface.setToolTip(
@@ -8617,9 +8513,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.statusWebInterface.setInputMask("")
-        self.statusWebInterface.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.statusWebInterface.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.meridianLimitTrack.setToolTip(
             QCoreApplication.translate(
@@ -8630,12 +8524,8 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.meridianLimitTrack.setInputMask("")
-        self.meridianLimitTrack.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
-        self.label_4.setText(
-            QCoreApplication.translate("MainWindow", "Horizon Lim low", None)
-        )
+        self.meridianLimitTrack.setText(QCoreApplication.translate("MainWindow", "-", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", "Horizon Lim low", None))
         # if QT_CONFIG(tooltip)
         self.statusDualAxisTracking.setToolTip(
             QCoreApplication.translate(
@@ -8647,13 +8537,9 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.statusDualAxisTracking.setInputMask("")
-        self.statusDualAxisTracking.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.statusDualAxisTracking.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", "Site Lat", None))
-        self.label_20.setText(
-            QCoreApplication.translate("MainWindow", "Horizon Lim high", None)
-        )
+        self.label_20.setText(QCoreApplication.translate("MainWindow", "Horizon Lim high", None))
         self.label_222.setText(QCoreApplication.translate("MainWindow", "Y-M-D", None))
         # if QT_CONFIG(tooltip)
         self.timeToFlip.setToolTip(
@@ -8677,14 +8563,10 @@ class Ui_MainWindow(object):
         self.pierside.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.mountTypeConnection.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Type of the connection to the mount.", None
-            )
+            QCoreApplication.translate("MainWindow", "Type of the connection to the mount.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.mountTypeConnection.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.mountTypeConnection.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.refractionTemp.setToolTip(
             QCoreApplication.translate(
@@ -8693,9 +8575,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.refractionTemp.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.label_74.setText(
-            QCoreApplication.translate("MainWindow", "Dual Axis Tracking", None)
-        )
+        self.label_74.setText(QCoreApplication.translate("MainWindow", "Dual Axis Tracking", None))
         # if QT_CONFIG(tooltip)
         self.timeToMeridian.setToolTip(
             QCoreApplication.translate(
@@ -8719,18 +8599,12 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.horizonLimitHigh.setInputMask("")
-        self.horizonLimitHigh.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.horizonLimitHigh.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.label_242.setText(
             QCoreApplication.translate("MainWindow", "Refraction pressure", None)
         )
-        self.label_12.setText(
-            QCoreApplication.translate("MainWindow", "Site Elev", None)
-        )
-        self.label_151.setText(
-            QCoreApplication.translate("MainWindow", "WakeOnLan", None)
-        )
+        self.label_12.setText(QCoreApplication.translate("MainWindow", "Site Elev", None))
+        self.label_151.setText(QCoreApplication.translate("MainWindow", "WakeOnLan", None))
         self.label_34.setText(
             QCoreApplication.translate("MainWindow", "Flip Track Tolerance", None)
         )
@@ -8748,9 +8622,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.siteLatitude.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.label_7.setText(
-            QCoreApplication.translate("MainWindow", "Local Sidereal Time", None)
-        )
+        self.label_7.setText(QCoreApplication.translate("MainWindow", "Local Sidereal Time", None))
         # if QT_CONFIG(tooltip)
         self.timeDeltaPC2Mount.setToolTip(
             QCoreApplication.translate(
@@ -8783,9 +8655,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.statusRefraction.setInputMask("")
-        self.statusRefraction.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.statusRefraction.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.horizonLimitLow.setToolTip(
             QCoreApplication.translate(
@@ -8796,9 +8666,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.horizonLimitLow.setInputMask("")
-        self.horizonLimitLow.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.horizonLimitLow.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.settleTimeMount.setToolTip(
             QCoreApplication.translate(
@@ -8809,9 +8677,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.settleTimeMount.setInputMask("")
-        self.settleTimeMount.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.settleTimeMount.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.label_mountMAC_7.setText(
             QCoreApplication.translate("MainWindow", "Settling Time", None)
         )
@@ -8830,9 +8696,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.groupBox_29.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "Defined positions (slew & park)", None
-            )
+            QCoreApplication.translate("MainWindow", "Defined positions (slew & park)", None)
         )
         # if QT_CONFIG(tooltip)
         self.posButton0.setToolTip(
@@ -8843,9 +8707,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.posButton0.setText(
-            QCoreApplication.translate("MainWindow", "Button 0", None)
-        )
+        self.posButton0.setText(QCoreApplication.translate("MainWindow", "Button 0", None))
         # if QT_CONFIG(tooltip)
         self.posButton8.setToolTip(
             QCoreApplication.translate(
@@ -8855,9 +8717,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.posButton8.setText(
-            QCoreApplication.translate("MainWindow", "Button 8", None)
-        )
+        self.posButton8.setText(QCoreApplication.translate("MainWindow", "Button 8", None))
         # if QT_CONFIG(tooltip)
         self.posButton1.setToolTip(
             QCoreApplication.translate(
@@ -8867,9 +8727,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.posButton1.setText(
-            QCoreApplication.translate("MainWindow", "Button 1", None)
-        )
+        self.posButton1.setText(QCoreApplication.translate("MainWindow", "Button 1", None))
         # if QT_CONFIG(tooltip)
         self.posButton6.setToolTip(
             QCoreApplication.translate(
@@ -8879,9 +8737,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.posButton6.setText(
-            QCoreApplication.translate("MainWindow", "Button 6", None)
-        )
+        self.posButton6.setText(QCoreApplication.translate("MainWindow", "Button 6", None))
         # if QT_CONFIG(tooltip)
         self.posButton9.setToolTip(
             QCoreApplication.translate(
@@ -8891,9 +8747,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.posButton9.setText(
-            QCoreApplication.translate("MainWindow", "Button 9", None)
-        )
+        self.posButton9.setText(QCoreApplication.translate("MainWindow", "Button 9", None))
         # if QT_CONFIG(tooltip)
         self.posButton3.setToolTip(
             QCoreApplication.translate(
@@ -8903,9 +8757,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.posButton3.setText(
-            QCoreApplication.translate("MainWindow", "Button 3", None)
-        )
+        self.posButton3.setText(QCoreApplication.translate("MainWindow", "Button 3", None))
         # if QT_CONFIG(tooltip)
         self.posButton4.setToolTip(
             QCoreApplication.translate(
@@ -8915,9 +8767,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.posButton4.setText(
-            QCoreApplication.translate("MainWindow", "Button 4", None)
-        )
+        self.posButton4.setText(QCoreApplication.translate("MainWindow", "Button 4", None))
         # if QT_CONFIG(tooltip)
         self.posButton5.setToolTip(
             QCoreApplication.translate(
@@ -8927,9 +8777,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.posButton5.setText(
-            QCoreApplication.translate("MainWindow", "Button 5", None)
-        )
+        self.posButton5.setText(QCoreApplication.translate("MainWindow", "Button 5", None))
         # if QT_CONFIG(tooltip)
         self.posButton7.setToolTip(
             QCoreApplication.translate(
@@ -8939,9 +8787,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.posButton7.setText(
-            QCoreApplication.translate("MainWindow", "Button 7", None)
-        )
+        self.posButton7.setText(QCoreApplication.translate("MainWindow", "Button 7", None))
         # if QT_CONFIG(tooltip)
         self.posButton2.setToolTip(
             QCoreApplication.translate(
@@ -8951,9 +8797,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.posButton2.setText(
-            QCoreApplication.translate("MainWindow", "Button 2", None)
-        )
+        self.posButton2.setText(QCoreApplication.translate("MainWindow", "Button 2", None))
         # if QT_CONFIG(tooltip)
         self.parkMountAfterSlew.setToolTip(
             QCoreApplication.translate(
@@ -8975,9 +8819,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.groupBox_39.setTitle(
-            QCoreApplication.translate("MainWindow", "Move Absolute", None)
-        )
+        self.groupBox_39.setTitle(QCoreApplication.translate("MainWindow", "Move Absolute", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", "Alt/Az", None))
         # if QT_CONFIG(tooltip)
         self.moveCoordinateAz.setToolTip(
@@ -9013,15 +8855,9 @@ class Ui_MainWindow(object):
         self.moveCoordinateAlt.setText("")
         self.label_315.setText(QCoreApplication.translate("MainWindow", "ALT", None))
         self.label_316.setText(QCoreApplication.translate("MainWindow", "AZ", None))
-        self.label_325.setText(
-            QCoreApplication.translate("MainWindow", "[+ -] d.d degrees", None)
-        )
-        self.label_326.setText(
-            QCoreApplication.translate("MainWindow", "[+ -] d.d degrees", None)
-        )
-        self.groupBox_23.setTitle(
-            QCoreApplication.translate("MainWindow", "RA/DEC", None)
-        )
+        self.label_325.setText(QCoreApplication.translate("MainWindow", "[+ -] d.d degrees", None))
+        self.label_326.setText(QCoreApplication.translate("MainWindow", "[+ -] d.d degrees", None))
+        self.groupBox_23.setTitle(QCoreApplication.translate("MainWindow", "RA/DEC", None))
         # if QT_CONFIG(tooltip)
         self.moveCoordinateDec.setToolTip(
             QCoreApplication.translate(
@@ -9089,9 +8925,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.groupBox_37.setTitle(
-            QCoreApplication.translate("MainWindow", "Move classic", None)
-        )
+        self.groupBox_37.setTitle(QCoreApplication.translate("MainWindow", "Move classic", None))
         # if QT_CONFIG(tooltip)
         self.stopMoveAll.setToolTip(
             QCoreApplication.translate(
@@ -9157,9 +8991,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.groupBox_20.setTitle(
-            QCoreApplication.translate("MainWindow", "Speed", None)
-        )
+        self.groupBox_20.setTitle(QCoreApplication.translate("MainWindow", "Speed", None))
         # if QT_CONFIG(tooltip)
         self.slewSpeedMax.setToolTip(
             QCoreApplication.translate(
@@ -9199,9 +9031,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.slewSpeedHigh.setText(
-            QCoreApplication.translate("MainWindow", "High", None)
-        )
+        self.slewSpeedHigh.setText(QCoreApplication.translate("MainWindow", "High", None))
         # if QT_CONFIG(tooltip)
         self.moveNorthWest.setToolTip(
             QCoreApplication.translate(
@@ -9252,9 +9082,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.moveSouthWest.setText(QCoreApplication.translate("MainWindow", "SW", None))
-        self.controller2.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.controller2.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         # if QT_CONFIG(tooltip)
         self.groupBox_38.setToolTip(
             QCoreApplication.translate(
@@ -9264,9 +9092,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.groupBox_38.setTitle(
-            QCoreApplication.translate("MainWindow", "Move Alt/Az", None)
-        )
+        self.groupBox_38.setTitle(QCoreApplication.translate("MainWindow", "Move Alt/Az", None))
         # if QT_CONFIG(tooltip)
         self.moveWestAltAz.setToolTip(
             QCoreApplication.translate(
@@ -9276,9 +9102,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.moveWestAltAz.setText(
-            QCoreApplication.translate("MainWindow", "Left", None)
-        )
+        self.moveWestAltAz.setText(QCoreApplication.translate("MainWindow", "Left", None))
         self.moveStepSizeAltAz.setItemText(
             0, QCoreApplication.translate("MainWindow", "Stepsize 0.5 \u00b0", None)
         )
@@ -9313,9 +9137,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.moveSouthAltAz.setText(
-            QCoreApplication.translate("MainWindow", "Down", None)
-        )
+        self.moveSouthAltAz.setText(QCoreApplication.translate("MainWindow", "Down", None))
         # if QT_CONFIG(tooltip)
         self.moveEastAltAz.setToolTip(
             QCoreApplication.translate(
@@ -9325,9 +9147,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.moveEastAltAz.setText(
-            QCoreApplication.translate("MainWindow", "Right", None)
-        )
+        self.moveEastAltAz.setText(QCoreApplication.translate("MainWindow", "Right", None))
         # if QT_CONFIG(tooltip)
         self.moveNorthEastAltAz.setToolTip(
             QCoreApplication.translate(
@@ -9337,9 +9157,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.moveNorthEastAltAz.setText(
-            QCoreApplication.translate("MainWindow", "UR", None)
-        )
+        self.moveNorthEastAltAz.setText(QCoreApplication.translate("MainWindow", "UR", None))
         # if QT_CONFIG(tooltip)
         self.moveSouthWestAltAz.setToolTip(
             QCoreApplication.translate(
@@ -9349,9 +9167,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.moveSouthWestAltAz.setText(
-            QCoreApplication.translate("MainWindow", "DL", None)
-        )
+        self.moveSouthWestAltAz.setText(QCoreApplication.translate("MainWindow", "DL", None))
         # if QT_CONFIG(tooltip)
         self.moveNorthAltAz.setToolTip(
             QCoreApplication.translate(
@@ -9361,9 +9177,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.moveNorthAltAz.setText(
-            QCoreApplication.translate("MainWindow", "Up", None)
-        )
+        self.moveNorthAltAz.setText(QCoreApplication.translate("MainWindow", "Up", None))
         # if QT_CONFIG(tooltip)
         self.moveSouthEastAltAz.setToolTip(
             QCoreApplication.translate(
@@ -9373,9 +9187,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.moveSouthEastAltAz.setText(
-            QCoreApplication.translate("MainWindow", "DR", None)
-        )
+        self.moveSouthEastAltAz.setText(QCoreApplication.translate("MainWindow", "DR", None))
         # if QT_CONFIG(tooltip)
         self.moveNorthWestAltAz.setToolTip(
             QCoreApplication.translate(
@@ -9385,12 +9197,8 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.moveNorthWestAltAz.setText(
-            QCoreApplication.translate("MainWindow", "UL", None)
-        )
-        self.controller1.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.moveNorthWestAltAz.setText(QCoreApplication.translate("MainWindow", "UL", None))
+        self.controller1.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.mountTabWidget.setTabText(
             self.mountTabWidget.indexOf(self.SlewRaDec),
             QCoreApplication.translate("MainWindow", "Slew Ra/Dec and Alt/Az", None),
@@ -9438,9 +9246,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.mountCommandTable.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Opens Command Table in Browser", None
-            )
+            QCoreApplication.translate("MainWindow", "Opens Command Table in Browser", None)
         )
         # if QT_CONFIG(tooltip)
         self.mountUpdateTimeDelta.setToolTip(
@@ -9452,9 +9258,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.mountUpdateTimeDelta.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Opens Update Time Delta in Browser", None
-            )
+            QCoreApplication.translate("MainWindow", "Opens Update Time Delta in Browser", None)
         )
         # if QT_CONFIG(tooltip)
         self.mountUpdateFirmware.setToolTip(
@@ -9466,9 +9270,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.mountUpdateFirmware.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Opens Update Firmware in Browser", None
-            )
+            QCoreApplication.translate("MainWindow", "Opens Update Firmware in Browser", None)
         )
         # if QT_CONFIG(tooltip)
         self.mountDocumentation.setToolTip(
@@ -9480,9 +9282,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.mountDocumentation.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Opens Mount Documentation in Browser", None
-            )
+            QCoreApplication.translate("MainWindow", "Opens Mount Documentation in Browser", None)
         )
         self.mountTabWidget.setTabText(
             self.mountTabWidget.indexOf(self.MountTerminal),
@@ -9493,9 +9293,7 @@ class Ui_MainWindow(object):
         )
         # if QT_CONFIG(tooltip)
         self.stop.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Stops all mount movements immediatly", None
-            )
+            QCoreApplication.translate("MainWindow", "Stops all mount movements immediatly", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.stop.setText(QCoreApplication.translate("MainWindow", "Mount Stop", None))
@@ -9509,9 +9307,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.park.setText(QCoreApplication.translate("MainWindow", "Mount Park", None))
-        self.controller4.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.controller4.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.trackingGroup.setTitle(
             QCoreApplication.translate("MainWindow", "Tracking / Flip", None)
         )
@@ -9524,9 +9320,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.setSolarTracking.setText(
-            QCoreApplication.translate("MainWindow", "Solar", None)
-        )
+        self.setSolarTracking.setText(QCoreApplication.translate("MainWindow", "Solar", None))
         # if QT_CONFIG(tooltip)
         self.setSiderealTracking.setToolTip(
             QCoreApplication.translate(
@@ -9548,14 +9342,10 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.setLunarTracking.setText(
-            QCoreApplication.translate("MainWindow", "Lunar", None)
-        )
+        self.setLunarTracking.setText(QCoreApplication.translate("MainWindow", "Lunar", None))
         # if QT_CONFIG(tooltip)
         self.flipMount.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Flips the mount if possible", None
-            )
+            QCoreApplication.translate("MainWindow", "Flips the mount if possible", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.flipMount.setText(QCoreApplication.translate("MainWindow", "Flip", None))
@@ -9568,9 +9358,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.tracking.setText(
-            QCoreApplication.translate("MainWindow", "Tracking", None)
-        )
+        self.tracking.setText(QCoreApplication.translate("MainWindow", "Tracking", None))
         # if QT_CONFIG(tooltip)
         self.followSat.setToolTip(
             QCoreApplication.translate(
@@ -9581,9 +9369,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.followSat.setText(QCoreApplication.translate("MainWindow", "Follow", None))
-        self.controller3.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.controller3.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.telescopePointingGroup.setTitle(
             QCoreApplication.translate("MainWindow", "Telescope pointing", None)
         )
@@ -9609,9 +9395,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.coordsJ2000.setText(
-            QCoreApplication.translate("MainWindow", "J2000", None)
-        )
+        self.coordsJ2000.setText(QCoreApplication.translate("MainWindow", "J2000", None))
         self.label_77.setText(QCoreApplication.translate("MainWindow", "RA", None))
         # if QT_CONFIG(tooltip)
         self.RAfloat.setToolTip(
@@ -9686,9 +9470,7 @@ class Ui_MainWindow(object):
         self.AZ.setText(QCoreApplication.translate("MainWindow", "AZ", None))
         # if QT_CONFIG(tooltip)
         self.DEC.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Display of declination in DD:MM:SS", None
-            )
+            QCoreApplication.translate("MainWindow", "Display of declination in DD:MM:SS", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.DEC.setText(QCoreApplication.translate("MainWindow", "DEC", None))
@@ -9711,9 +9493,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.sensor3Group.setTitle(
-            QCoreApplication.translate("MainWindow", "Sens3", None)
-        )
+        self.sensor3Group.setTitle(QCoreApplication.translate("MainWindow", "Sens3", None))
         # if QT_CONFIG(tooltip)
         self.temperature3.setToolTip("")
         # endif // QT_CONFIG(tooltip)
@@ -9742,41 +9522,21 @@ class Ui_MainWindow(object):
         self.SQR3.setToolTip("")
         # endif // QT_CONFIG(tooltip)
         self.SQR3.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.groupBox_14.setTitle(
-            QCoreApplication.translate("MainWindow", "Measures", None)
-        )
+        self.groupBox_14.setTitle(QCoreApplication.translate("MainWindow", "Measures", None))
         self.label_68.setText(QCoreApplication.translate("MainWindow", "[mm]", None))
-        self.label_24.setText(
-            QCoreApplication.translate("MainWindow", "Airtemp.", None)
-        )
-        self.label_25.setText(
-            QCoreApplication.translate("MainWindow", "DewPoint", None)
-        )
-        self.label_30.setText(
-            QCoreApplication.translate("MainWindow", "CloudCover", None)
-        )
-        self.label_26.setText(
-            QCoreApplication.translate("MainWindow", "Humidity", None)
-        )
+        self.label_24.setText(QCoreApplication.translate("MainWindow", "Airtemp.", None))
+        self.label_25.setText(QCoreApplication.translate("MainWindow", "DewPoint", None))
+        self.label_30.setText(QCoreApplication.translate("MainWindow", "CloudCover", None))
+        self.label_26.setText(QCoreApplication.translate("MainWindow", "Humidity", None))
         self.label_72.setText(QCoreApplication.translate("MainWindow", "[%]", None))
-        self.label_142.setText(
-            QCoreApplication.translate("MainWindow", "SkyQuality", None)
-        )
-        self.label_27.setText(
-            QCoreApplication.translate("MainWindow", "Pressure", None)
-        )
-        self.label_31.setText(
-            QCoreApplication.translate("MainWindow", "Rain vol.", None)
-        )
+        self.label_142.setText(QCoreApplication.translate("MainWindow", "SkyQuality", None))
+        self.label_27.setText(QCoreApplication.translate("MainWindow", "Pressure", None))
+        self.label_31.setText(QCoreApplication.translate("MainWindow", "Rain vol.", None))
         self.label_143.setText(QCoreApplication.translate("MainWindow", "[%]", None))
-        self.label_71.setText(
-            QCoreApplication.translate("MainWindow", "[\u00b0C]", None)
-        )
+        self.label_71.setText(QCoreApplication.translate("MainWindow", "[\u00b0C]", None))
         self.label_73.setText(QCoreApplication.translate("MainWindow", "[hPa]", None))
         self.label_87.setText(QCoreApplication.translate("MainWindow", "[mpas]", None))
-        self.label_70.setText(
-            QCoreApplication.translate("MainWindow", "[\u00b0C]", None)
-        )
+        self.label_70.setText(QCoreApplication.translate("MainWindow", "[\u00b0C]", None))
         # if QT_CONFIG(tooltip)
         self.directGroup.setToolTip(
             QCoreApplication.translate(
@@ -9786,9 +9546,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.directGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Direct", None)
-        )
+        self.directGroup.setTitle(QCoreApplication.translate("MainWindow", "Direct", None))
         # if QT_CONFIG(tooltip)
         self.dewPointDirect.setToolTip("")
         # endif // QT_CONFIG(tooltip)
@@ -9804,9 +9562,7 @@ class Ui_MainWindow(object):
         # if QT_CONFIG(tooltip)
         self.temperatureDirect.setToolTip("")
         # endif // QT_CONFIG(tooltip)
-        self.temperatureDirect.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.temperatureDirect.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.SQRDirect.setToolTip("")
         # endif // QT_CONFIG(tooltip)
@@ -9818,9 +9574,7 @@ class Ui_MainWindow(object):
         # if QT_CONFIG(tooltip)
         self.cloudCoverDirect.setToolTip("")
         # endif // QT_CONFIG(tooltip)
-        self.cloudCoverDirect.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.cloudCoverDirect.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.mountGroup.setToolTip(
             QCoreApplication.translate(
@@ -9830,9 +9584,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.mountGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Mount", None)
-        )
+        self.mountGroup.setTitle(QCoreApplication.translate("MainWindow", "Mount", None))
         # if QT_CONFIG(tooltip)
         self.refractionTemp1.setToolTip(
             QCoreApplication.translate(
@@ -9840,9 +9592,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.refractionTemp1.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.refractionTemp1.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.refractionPress1.setToolTip(
             QCoreApplication.translate(
@@ -9850,9 +9600,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.refractionPress1.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.refractionPress1.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.sensor2Group.setToolTip(
             QCoreApplication.translate(
@@ -9860,9 +9608,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.sensor2Group.setTitle(
-            QCoreApplication.translate("MainWindow", "Sens2", None)
-        )
+        self.sensor2Group.setTitle(QCoreApplication.translate("MainWindow", "Sens2", None))
         # if QT_CONFIG(tooltip)
         self.SQR2.setToolTip("")
         # endif // QT_CONFIG(tooltip)
@@ -9898,9 +9644,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.sensor1Group.setTitle(
-            QCoreApplication.translate("MainWindow", "Sens1", None)
-        )
+        self.sensor1Group.setTitle(QCoreApplication.translate("MainWindow", "Sens1", None))
         # if QT_CONFIG(tooltip)
         self.rainVol1.setToolTip("")
         # endif // QT_CONFIG(tooltip)
@@ -9955,14 +9699,10 @@ class Ui_MainWindow(object):
         )
         # if QT_CONFIG(tooltip)
         self.refracManual.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "No refraction update to the mount", None
-            )
+            QCoreApplication.translate("MainWindow", "No refraction update to the mount", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.refracManual.setText(
-            QCoreApplication.translate("MainWindow", "manual", None)
-        )
+        self.refracManual.setText(QCoreApplication.translate("MainWindow", "manual", None))
         # if QT_CONFIG(tooltip)
         self.refracNoTrack.setToolTip(
             QCoreApplication.translate(
@@ -9984,9 +9724,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.onlineGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Online", None)
-        )
+        self.onlineGroup.setTitle(QCoreApplication.translate("MainWindow", "Online", None))
         # if QT_CONFIG(tooltip)
         self.rainVolOnline.setToolTip("")
         # endif // QT_CONFIG(tooltip)
@@ -9998,9 +9736,7 @@ class Ui_MainWindow(object):
         # if QT_CONFIG(tooltip)
         self.temperatureOnline.setToolTip("")
         # endif // QT_CONFIG(tooltip)
-        self.temperatureOnline.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.temperatureOnline.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.pressureOnline.setToolTip("")
         # endif // QT_CONFIG(tooltip)
@@ -10012,19 +9748,13 @@ class Ui_MainWindow(object):
         # if QT_CONFIG(tooltip)
         self.cloudCoverOnline.setToolTip("")
         # endif // QT_CONFIG(tooltip)
-        self.cloudCoverOnline.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.cloudCoverOnline.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.SQROnline.setToolTip("")
         # endif // QT_CONFIG(tooltip)
         self.SQROnline.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.seeingGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Seeing data", None)
-        )
-        self.meteoblueIcon.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.seeingGroup.setTitle(QCoreApplication.translate("MainWindow", "Seeing data", None))
+        self.meteoblueIcon.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.label_b.setText("")
         self.label_b.setProperty(
             "a", QCoreApplication.translate("MainWindow", "64746d26f023", None)
@@ -10048,12 +9778,8 @@ class Ui_MainWindow(object):
         self.almanacGroup.setTitle(
             QCoreApplication.translate("MainWindow", "Annual twilight phases", None)
         )
-        self.almanacNautical.setText(
-            QCoreApplication.translate("MainWindow", "Nautical", None)
-        )
-        self.almanacCivil.setText(
-            QCoreApplication.translate("MainWindow", "Civil", None)
-        )
+        self.almanacNautical.setText(QCoreApplication.translate("MainWindow", "Nautical", None))
+        self.almanacCivil.setText(QCoreApplication.translate("MainWindow", "Civil", None))
         # if QT_CONFIG(tooltip)
         self.twilight.setToolTip("")
         # endif // QT_CONFIG(tooltip)
@@ -10064,9 +9790,7 @@ class Ui_MainWindow(object):
         # if QT_CONFIG(tooltip)
         self.sunAlmanacGroup.setToolTip("")
         # endif // QT_CONFIG(tooltip)
-        self.sunAlmanacGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Sun", None)
-        )
+        self.sunAlmanacGroup.setTitle(QCoreApplication.translate("MainWindow", "Sun", None))
         # if QT_CONFIG(tooltip)
         self.twilightEvents.setToolTip(
             QCoreApplication.translate(
@@ -10077,20 +9801,14 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.label_181.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Twilight phases upcoming night:", None
-            )
+            QCoreApplication.translate("MainWindow", "Twilight phases upcoming night:", None)
         )
         # if QT_CONFIG(tooltip)
         self.moonAlmanacGroup.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Show the moon phase as picture", None
-            )
+            QCoreApplication.translate("MainWindow", "Show the moon phase as picture", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.moonAlmanacGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Moon", None)
-        )
+        self.moonAlmanacGroup.setTitle(QCoreApplication.translate("MainWindow", "Moon", None))
         # if QT_CONFIG(tooltip)
         self.moonPhaseIllumination.setToolTip(
             QCoreApplication.translate(
@@ -10107,15 +9825,11 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.moonPhaseText.setText("")
-        self.label_146.setText(
-            QCoreApplication.translate("MainWindow", "Illumination", None)
-        )
+        self.label_146.setText(QCoreApplication.translate("MainWindow", "Illumination", None))
         # if QT_CONFIG(tooltip)
         self.moonPic.setToolTip("")
         # endif // QT_CONFIG(tooltip)
-        self.moonPic.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.moonPic.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         # if QT_CONFIG(tooltip)
         self.moonPhaseDegree.setToolTip(
             QCoreApplication.translate(
@@ -10129,9 +9843,7 @@ class Ui_MainWindow(object):
         self.label_155.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
         # if QT_CONFIG(tooltip)
         self.moonPhasePercent.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Showing the moon phase in percent", None
-            )
+            QCoreApplication.translate("MainWindow", "Showing the moon phase in percent", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.moonPhasePercent.setText("")
@@ -10157,16 +9869,12 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.label_170.setText(
-            QCoreApplication.translate("MainWindow", "Set/Rise", None)
-        )
+        self.label_170.setText(QCoreApplication.translate("MainWindow", "Set/Rise", None))
         self.mainTabWidget.setTabText(
             self.mainTabWidget.indexOf(self.Almanac),
             QCoreApplication.translate("MainWindow", "Almanac", None),
         )
-        self.groupBox_3.setTitle(
-            QCoreApplication.translate("MainWindow", "As grid", None)
-        )
+        self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", "As grid", None))
         self.label_178.setText(QCoreApplication.translate("MainWindow", "Rows", None))
         # if QT_CONFIG(tooltip)
         self.numberGridPointsRow.setToolTip(
@@ -10182,9 +9890,7 @@ class Ui_MainWindow(object):
         self.label_203.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
         # if QT_CONFIG(tooltip)
         self.altitudeMax.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Model point stop at maximum altitude.", None
-            )
+            QCoreApplication.translate("MainWindow", "Model point stop at maximum altitude.", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.label_144.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
@@ -10207,9 +9913,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.genBuildGrid.setText(
-            QCoreApplication.translate("MainWindow", "Generate", None)
-        )
+        self.genBuildGrid.setText(QCoreApplication.translate("MainWindow", "Generate", None))
         # if QT_CONFIG(tooltip)
         self.altitudeMin.setToolTip(
             QCoreApplication.translate(
@@ -10217,9 +9921,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.groupBox_2.setTitle(
-            QCoreApplication.translate("MainWindow", "Load from file", None)
-        )
+        self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", "Load from file", None))
         # if QT_CONFIG(tooltip)
         self.buildPFileName.setToolTip(
             QCoreApplication.translate(
@@ -10232,47 +9934,29 @@ class Ui_MainWindow(object):
         self.buildPFileName.setText("")
         # if QT_CONFIG(tooltip)
         self.saveBuildPointsAs.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Saves the model points in a new file", None
-            )
+            QCoreApplication.translate("MainWindow", "Saves the model points in a new file", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.saveBuildPointsAs.setText(
-            QCoreApplication.translate("MainWindow", "Save as", None)
-        )
+        self.saveBuildPointsAs.setText(QCoreApplication.translate("MainWindow", "Save as", None))
         # if QT_CONFIG(tooltip)
         self.saveBuildPoints.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Saves the model points in file.", None
-            )
+            QCoreApplication.translate("MainWindow", "Saves the model points in file.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.saveBuildPoints.setText(
-            QCoreApplication.translate("MainWindow", "Save", None)
-        )
+        self.saveBuildPoints.setText(QCoreApplication.translate("MainWindow", "Save", None))
         # if QT_CONFIG(tooltip)
         self.genBuildFile.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Show the model points from given file", None
-            )
+            QCoreApplication.translate("MainWindow", "Show the model points from given file", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.genBuildFile.setText(
-            QCoreApplication.translate("MainWindow", "Generate", None)
-        )
+        self.genBuildFile.setText(QCoreApplication.translate("MainWindow", "Generate", None))
         # if QT_CONFIG(tooltip)
         self.loadBuildPoints.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Loads the model points from file", None
-            )
+            QCoreApplication.translate("MainWindow", "Loads the model points from file", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.loadBuildPoints.setText(
-            QCoreApplication.translate("MainWindow", "Load", None)
-        )
-        self.groupBox_55.setTitle(
-            QCoreApplication.translate("MainWindow", "Specials", None)
-        )
+        self.loadBuildPoints.setText(QCoreApplication.translate("MainWindow", "Load", None))
+        self.groupBox_55.setTitle(QCoreApplication.translate("MainWindow", "Specials", None))
         # if QT_CONFIG(tooltip)
         self.clearBuildP.setToolTip(
             QCoreApplication.translate(
@@ -10295,9 +9979,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.keepGeneratedPoints.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Keep points from existing generation", None
-            )
+            QCoreApplication.translate("MainWindow", "Keep points from existing generation", None)
         )
         # if QT_CONFIG(tooltip)
         self.ditherBuildPoints.setToolTip(
@@ -10325,9 +10007,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.genModel.setText(
-            QCoreApplication.translate("MainWindow", "Generate", None)
-        )
+        self.genModel.setText(QCoreApplication.translate("MainWindow", "Generate", None))
         # if QT_CONFIG(tooltip)
         self.autoSortGroup.setToolTip(
             QCoreApplication.translate(
@@ -10345,9 +10025,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.sortHL.setText(
-            QCoreApplication.translate("MainWindow", "High/Low ALT", None)
-        )
+        self.sortHL.setText(QCoreApplication.translate("MainWindow", "High/Low ALT", None))
         # if QT_CONFIG(tooltip)
         self.sortEW.setToolTip(
             QCoreApplication.translate(
@@ -10355,19 +10033,13 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.sortEW.setText(
-            QCoreApplication.translate("MainWindow", "East/West AZ", None)
-        )
+        self.sortEW.setText(QCoreApplication.translate("MainWindow", "East/West AZ", None))
         # if QT_CONFIG(tooltip)
         self.sortNothing.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "No sorting of the model points ", None
-            )
+            QCoreApplication.translate("MainWindow", "No sorting of the model points ", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.sortNothing.setText(
-            QCoreApplication.translate("MainWindow", "No sort", None)
-        )
+        self.sortNothing.setText(QCoreApplication.translate("MainWindow", "No sort", None))
         # if QT_CONFIG(tooltip)
         self.avoidFlip.setToolTip(
             QCoreApplication.translate(
@@ -10378,9 +10050,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.avoidFlip.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Avoid meridian flip at start", None
-            )
+            QCoreApplication.translate("MainWindow", "Avoid meridian flip at start", None)
         )
         # if QT_CONFIG(tooltip)
         self.autoDeleteMeridian.setToolTip(
@@ -10405,9 +10075,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.useDomeAz.setText(
-            QCoreApplication.translate("MainWindow", "Use dome AZ", None)
-        )
+        self.useDomeAz.setText(QCoreApplication.translate("MainWindow", "Use dome AZ", None))
         # if QT_CONFIG(tooltip)
         self.autoDeleteHorizon.setToolTip(
             QCoreApplication.translate(
@@ -10418,9 +10086,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.autoDeleteHorizon.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Auto delete points below horizon", None
-            )
+            QCoreApplication.translate("MainWindow", "Auto delete points below horizon", None)
         )
         # if QT_CONFIG(tooltip)
         self.useSafetyMargin.setToolTip(
@@ -10442,9 +10108,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.label_162.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
-        self.dsoGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "For DSO tracks", None)
-        )
+        self.dsoGroup.setTitle(QCoreApplication.translate("MainWindow", "For DSO tracks", None))
         self.label_188.setText(QCoreApplication.translate("MainWindow", "Points", None))
         # if QT_CONFIG(tooltip)
         self.numberDSOPoints.setToolTip(
@@ -10460,9 +10124,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.genBuildDSO.setText(
-            QCoreApplication.translate("MainWindow", "Generate", None)
-        )
+        self.genBuildDSO.setText(QCoreApplication.translate("MainWindow", "Generate", None))
         # if QT_CONFIG(tooltip)
         self.generateDec.setToolTip(
             QCoreApplication.translate(
@@ -10483,16 +10145,10 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.generateRa.setText("")
-        self.generateRaText.setText(
-            QCoreApplication.translate("MainWindow", "RA", None)
-        )
-        self.generateDecText.setText(
-            QCoreApplication.translate("MainWindow", "DEC", None)
-        )
+        self.generateRaText.setText(QCoreApplication.translate("MainWindow", "RA", None))
+        self.generateDecText.setText(QCoreApplication.translate("MainWindow", "DEC", None))
         self.generateQueryText.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Query object in SIMBAD database", None
-            )
+            QCoreApplication.translate("MainWindow", "Query object in SIMBAD database", None)
         )
         # if QT_CONFIG(tooltip)
         self.generateQuery.setToolTip(
@@ -10505,9 +10161,7 @@ class Ui_MainWindow(object):
         # endif // QT_CONFIG(tooltip)
         self.generateQuery.setText("")
         self.groupBox_4.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "As parallels of declination", None
-            )
+            QCoreApplication.translate("MainWindow", "As parallels of declination", None)
         )
         # if QT_CONFIG(tooltip)
         self.genBuildMax.setToolTip(
@@ -10518,9 +10172,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.genBuildMax.setText(
-            QCoreApplication.translate("MainWindow", "Maximal", None)
-        )
+        self.genBuildMax.setText(QCoreApplication.translate("MainWindow", "Maximal", None))
         # if QT_CONFIG(tooltip)
         self.genBuildMed.setToolTip(
             QCoreApplication.translate(
@@ -10530,9 +10182,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.genBuildMed.setText(
-            QCoreApplication.translate("MainWindow", "Medium", None)
-        )
+        self.genBuildMed.setText(QCoreApplication.translate("MainWindow", "Medium", None))
         # if QT_CONFIG(tooltip)
         self.genBuildMin.setToolTip(
             QCoreApplication.translate(
@@ -10542,26 +10192,19 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.genBuildMin.setText(
-            QCoreApplication.translate("MainWindow", "Minimal", None)
-        )
+        self.genBuildMin.setText(QCoreApplication.translate("MainWindow", "Minimal", None))
         # if QT_CONFIG(tooltip)
         self.genBuildNorm.setToolTip(
             QCoreApplication.translate(
                 "MainWindow",
-                "Generates a pointcloud with greater circles: medium number of stars.\n"
-                "",
+                "Generates a pointcloud with greater circles: medium number of stars.\n" "",
                 None,
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.genBuildNorm.setText(
-            QCoreApplication.translate("MainWindow", "Norm", None)
-        )
+        self.genBuildNorm.setText(QCoreApplication.translate("MainWindow", "Norm", None))
         self.groupBox_6.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "Equally distributed (Golden Spiral)", None
-            )
+            QCoreApplication.translate("MainWindow", "Equally distributed (Golden Spiral)", None)
         )
         # if QT_CONFIG(tooltip)
         self.genBuildSpiral.setToolTip(
@@ -10572,50 +10215,38 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.genBuildSpiral.setText(
-            QCoreApplication.translate("MainWindow", "Generate", None)
-        )
+        self.genBuildSpiral.setText(QCoreApplication.translate("MainWindow", "Generate", None))
         self.label_195.setText(QCoreApplication.translate("MainWindow", "Points", None))
         # if QT_CONFIG(tooltip)
         self.numberSpiral.setToolTip(
             QCoreApplication.translate("MainWindow", "Number of points.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.groupBox_54.setTitle(
-            QCoreApplication.translate("MainWindow", "For alignment", None)
-        )
+        self.groupBox_54.setTitle(QCoreApplication.translate("MainWindow", "For alignment", None))
         # if QT_CONFIG(tooltip)
         self.genBuildAlign3.setToolTip(
             QCoreApplication.translate("MainWindow", "Generates three stars.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.genBuildAlign3.setText(
-            QCoreApplication.translate("MainWindow", "3 points", None)
-        )
+        self.genBuildAlign3.setText(QCoreApplication.translate("MainWindow", "3 points", None))
         # if QT_CONFIG(tooltip)
         self.genBuildAlign6.setToolTip(
             QCoreApplication.translate("MainWindow", "Generates six stars.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.genBuildAlign6.setText(
-            QCoreApplication.translate("MainWindow", "6 points", None)
-        )
+        self.genBuildAlign6.setText(QCoreApplication.translate("MainWindow", "6 points", None))
         # if QT_CONFIG(tooltip)
         self.genBuildAlign9.setToolTip(
             QCoreApplication.translate("MainWindow", "Generates nine stars.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.genBuildAlign9.setText(
-            QCoreApplication.translate("MainWindow", "9 points", None)
-        )
+        self.genBuildAlign9.setText(QCoreApplication.translate("MainWindow", "9 points", None))
         # if QT_CONFIG(tooltip)
         self.genBuildAlign12.setToolTip(
             QCoreApplication.translate("MainWindow", "Generates nine stars.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.genBuildAlign12.setText(
-            QCoreApplication.translate("MainWindow", "12 points", None)
-        )
+        self.genBuildAlign12.setText(QCoreApplication.translate("MainWindow", "12 points", None))
         self.modelingTabWidget.setTabText(
             self.modelingTabWidget.indexOf(self.GenerateBuildPoints),
             QCoreApplication.translate("MainWindow", "Generate Build Points", None),
@@ -10623,9 +10254,7 @@ class Ui_MainWindow(object):
         self.groupBox_28.setTitle(
             QCoreApplication.translate("MainWindow", "Adjust polar alignment", None)
         )
-        self.label_157.setText(
-            QCoreApplication.translate("MainWindow", "Knob ALT", None)
-        )
+        self.label_157.setText(QCoreApplication.translate("MainWindow", "Knob ALT", None))
         self.picALT.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         # if QT_CONFIG(tooltip)
         self.altitudeTurns.setToolTip(
@@ -10636,12 +10265,8 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.altitudeTurns.setText(
-            QCoreApplication.translate("MainWindow", "- turns", None)
-        )
-        self.label_156.setText(
-            QCoreApplication.translate("MainWindow", "Knob AZ", None)
-        )
+        self.altitudeTurns.setText(QCoreApplication.translate("MainWindow", "- turns", None))
+        self.label_156.setText(QCoreApplication.translate("MainWindow", "Knob AZ", None))
         # if QT_CONFIG(tooltip)
         self.azimuthTurns.setToolTip(
             QCoreApplication.translate(
@@ -10651,9 +10276,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.azimuthTurns.setText(
-            QCoreApplication.translate("MainWindow", "- turns", None)
-        )
+        self.azimuthTurns.setText(QCoreApplication.translate("MainWindow", "- turns", None))
         self.picAZ.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.textBrowser.setHtml(
             QCoreApplication.translate(
@@ -10669,32 +10292,24 @@ class Ui_MainWindow(object):
                 None,
             )
         )
-        self.runModelGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Model build", None)
-        )
+        self.runModelGroup.setTitle(QCoreApplication.translate("MainWindow", "Model build", None))
         # if QT_CONFIG(tooltip)
         self.cancelModel.setToolTip(
             QCoreApplication.translate("MainWindow", "Cancels a model build.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.cancelModel.setText(
-            QCoreApplication.translate("MainWindow", "Cancel", None)
-        )
+        self.cancelModel.setText(QCoreApplication.translate("MainWindow", "Cancel", None))
         self.cancelModel.setProperty(
             "color", QCoreApplication.translate("MainWindow", "red", None)
         )
-        self.label_35.setText(
-            QCoreApplication.translate("MainWindow", "Estimated time:", None)
-        )
+        self.label_35.setText(QCoreApplication.translate("MainWindow", "Estimated time:", None))
         # if QT_CONFIG(tooltip)
         self.runModel.setToolTip(
             QCoreApplication.translate("MainWindow", "Run a model build.", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.runModel.setText(QCoreApplication.translate("MainWindow", "Run", None))
-        self.label_29.setText(
-            QCoreApplication.translate("MainWindow", "Elapsed time:", None)
-        )
+        self.label_29.setText(QCoreApplication.translate("MainWindow", "Elapsed time:", None))
         # if QT_CONFIG(tooltip)
         self.timeElapsed.setToolTip(
             QCoreApplication.translate(
@@ -10704,9 +10319,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.timeElapsed.setText(
-            QCoreApplication.translate("MainWindow", "00:00:00", None)
-        )
+        self.timeElapsed.setText(QCoreApplication.translate("MainWindow", "00:00:00", None))
         # if QT_CONFIG(tooltip)
         self.timeFinished.setToolTip(
             QCoreApplication.translate(
@@ -10716,9 +10329,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.timeFinished.setText(
-            QCoreApplication.translate("MainWindow", "00:00:00", None)
-        )
+        self.timeFinished.setText(QCoreApplication.translate("MainWindow", "00:00:00", None))
         # if QT_CONFIG(tooltip)
         self.timeEstimated.setToolTip(
             QCoreApplication.translate(
@@ -10728,12 +10339,8 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.timeEstimated.setText(
-            QCoreApplication.translate("MainWindow", "00:00:00", None)
-        )
-        self.label_42.setText(
-            QCoreApplication.translate("MainWindow", "Finishing Time:", None)
-        )
+        self.timeEstimated.setText(QCoreApplication.translate("MainWindow", "00:00:00", None))
+        self.label_42.setText(QCoreApplication.translate("MainWindow", "Finishing Time:", None))
         # if QT_CONFIG(tooltip)
         self.pauseModel.setToolTip(
             QCoreApplication.translate(
@@ -10754,9 +10361,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.parkMountAfterModel.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Park mount after model build", None
-            )
+            QCoreApplication.translate("MainWindow", "Park mount after model build", None)
         )
         # if QT_CONFIG(tooltip)
         self.endModel.setToolTip(
@@ -10768,9 +10373,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.endModel.setText(QCoreApplication.translate("MainWindow", "End", None))
-        self.label_54.setText(
-            QCoreApplication.translate("MainWindow", "Build points", None)
-        )
+        self.label_54.setText(QCoreApplication.translate("MainWindow", "Build points", None))
         # if QT_CONFIG(tooltip)
         self.numberPoints.setToolTip(
             QCoreApplication.translate(
@@ -10793,9 +10396,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.normalTiming.setText(
-            QCoreApplication.translate("MainWindow", "Normal", None)
-        )
+        self.normalTiming.setText(QCoreApplication.translate("MainWindow", "Normal", None))
         # if QT_CONFIG(tooltip)
         self.conservativeTiming.setToolTip(
             QCoreApplication.translate(
@@ -10875,9 +10476,7 @@ class Ui_MainWindow(object):
             )
         )
         self.groupBox_11.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "Alignment info from mount computer", None
-            )
+            QCoreApplication.translate("MainWindow", "Alignment info from mount computer", None)
         )
         self.label_169.setText(QCoreApplication.translate("MainWindow", "arcsec", None))
         self.label_218.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
@@ -10891,9 +10490,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.positionAngle.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.label_158.setText(
-            QCoreApplication.translate("MainWindow", "Azimuth Pointing", None)
-        )
+        self.label_158.setText(QCoreApplication.translate("MainWindow", "Azimuth Pointing", None))
         # if QT_CONFIG(tooltip)
         self.orthoError.setToolTip(
             QCoreApplication.translate(
@@ -10914,9 +10511,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.numberStars.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.label_15.setText(
-            QCoreApplication.translate("MainWindow", "Polar Align Error ", None)
-        )
+        self.label_15.setText(QCoreApplication.translate("MainWindow", "Polar Align Error ", None))
         self.label_167.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
         # if QT_CONFIG(tooltip)
         self.azimuthError.setToolTip(
@@ -10929,20 +10524,12 @@ class Ui_MainWindow(object):
         # endif // QT_CONFIG(tooltip)
         self.azimuthError.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
-        self.label.setToolTip(
-            QCoreApplication.translate("MainWindow", "Number of stars", None)
-        )
+        self.label.setToolTip(QCoreApplication.translate("MainWindow", "Number of stars", None))
         # endif // QT_CONFIG(tooltip)
         self.label.setText(QCoreApplication.translate("MainWindow", "Stars", None))
-        self.label_153.setText(
-            QCoreApplication.translate("MainWindow", "Ortho Align Error", None)
-        )
-        self.label_159.setText(
-            QCoreApplication.translate("MainWindow", "Altitude Pointing", None)
-        )
-        self.label_160.setText(
-            QCoreApplication.translate("MainWindow", "PosAngle", None)
-        )
+        self.label_153.setText(QCoreApplication.translate("MainWindow", "Ortho Align Error", None))
+        self.label_159.setText(QCoreApplication.translate("MainWindow", "Altitude Pointing", None))
+        self.label_160.setText(QCoreApplication.translate("MainWindow", "PosAngle", None))
         # if QT_CONFIG(tooltip)
         self.altitudeError.setToolTip(
             QCoreApplication.translate(
@@ -10999,9 +10586,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.numberStars1.setText(QCoreApplication.translate("MainWindow", "00", None))
-        self.label_76.setText(
-            QCoreApplication.translate("MainWindow", "# of Stars", None)
-        )
+        self.label_76.setText(QCoreApplication.translate("MainWindow", "# of Stars", None))
         self.manageTabWidget.setTabText(
             self.manageTabWidget.indexOf(self.ModelPositions),
             QCoreApplication.translate("MainWindow", "Model Positions", None),
@@ -11027,17 +10612,13 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.clearModel.setText(QCoreApplication.translate("MainWindow", "Clear", None))
-        self.label_75.setText(
-            QCoreApplication.translate("MainWindow", "Model RMS", None)
-        )
+        self.label_75.setText(QCoreApplication.translate("MainWindow", "Model RMS", None))
         # if QT_CONFIG(tooltip)
         self.cancelOptimize.setToolTip(
             QCoreApplication.translate("MainWindow", "Cancels the optimise run.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.cancelOptimize.setText(
-            QCoreApplication.translate("MainWindow", "Cancel", None)
-        )
+        self.cancelOptimize.setText(QCoreApplication.translate("MainWindow", "Cancel", None))
         self.cancelOptimize.setProperty(
             "color", QCoreApplication.translate("MainWindow", "red", None)
         )
@@ -11060,9 +10641,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.refreshModel.setText(
-            QCoreApplication.translate("MainWindow", "Refresh", None)
-        )
+        self.refreshModel.setText(QCoreApplication.translate("MainWindow", "Refresh", None))
         # if QT_CONFIG(tooltip)
         self.errorRMS1.setToolTip(
             QCoreApplication.translate(
@@ -11073,9 +10652,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.errorRMS1.setText(QCoreApplication.translate("MainWindow", "0.0", None))
-        self.label_37.setText(
-            QCoreApplication.translate("MainWindow", "Target (RMS)", None)
-        )
+        self.label_37.setText(QCoreApplication.translate("MainWindow", "Target (RMS)", None))
         # if QT_CONFIG(tooltip)
         self.deleteWorstPoint.setToolTip(
             QCoreApplication.translate(
@@ -11085,9 +10662,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.deleteWorstPoint.setText(
-            QCoreApplication.translate("MainWindow", "Delete", None)
-        )
+        self.deleteWorstPoint.setText(QCoreApplication.translate("MainWindow", "Delete", None))
         # if QT_CONFIG(tooltip)
         self.optimizeOverall.setToolTip(
             QCoreApplication.translate(
@@ -11113,9 +10688,7 @@ class Ui_MainWindow(object):
             QCoreApplication.translate("MainWindow", "Target is per point", None)
         )
         self.modelNameGroup.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "Models stored in mount computer", None
-            )
+            QCoreApplication.translate("MainWindow", "Models stored in mount computer", None)
         )
         # if QT_CONFIG(tooltip)
         self.loadName.setToolTip(
@@ -11132,9 +10705,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.refreshName.setText(
-            QCoreApplication.translate("MainWindow", "Refresh", None)
-        )
+        self.refreshName.setText(QCoreApplication.translate("MainWindow", "Refresh", None))
         # if QT_CONFIG(tooltip)
         self.deleteName.setToolTip(
             QCoreApplication.translate(
@@ -11142,9 +10713,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.deleteName.setText(
-            QCoreApplication.translate("MainWindow", "Delete", None)
-        )
+        self.deleteName.setText(QCoreApplication.translate("MainWindow", "Delete", None))
         # if QT_CONFIG(tooltip)
         self.saveName.setToolTip(
             QCoreApplication.translate(
@@ -11177,9 +10746,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.openAnalyseW.setText(
-            QCoreApplication.translate("MainWindow", "Show", None)
-        )
+        self.openAnalyseW.setText(QCoreApplication.translate("MainWindow", "Show", None))
         # if QT_CONFIG(tooltip)
         self.showOriginalModelAnalyse.setToolTip(
             QCoreApplication.translate(
@@ -11224,25 +10791,17 @@ class Ui_MainWindow(object):
             self.mainTabWidget.indexOf(self.Modeling),
             QCoreApplication.translate("MainWindow", "Modeling", None),
         )
-        self.GroupFocuser.setTitle(
-            QCoreApplication.translate("MainWindow", "Focuser", None)
-        )
+        self.GroupFocuser.setTitle(QCoreApplication.translate("MainWindow", "Focuser", None))
         self.label_410.setText(QCoreApplication.translate("MainWindow", "Steps", None))
         self.moveFocuserIn.setText(QCoreApplication.translate("MainWindow", "In", None))
-        self.label_409.setText(
-            QCoreApplication.translate("MainWindow", "Position", None)
-        )
+        self.label_409.setText(QCoreApplication.translate("MainWindow", "Position", None))
         # if QT_CONFIG(tooltip)
         self.focuserPosition.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Shows the actual focuser position.", None
-            )
+            QCoreApplication.translate("MainWindow", "Shows the actual focuser position.", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.focuserPosition.setInputMask("")
-        self.focuserPosition.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.focuserPosition.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.focuserSteps.setToolTip(
             QCoreApplication.translate(
@@ -11252,13 +10811,9 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.moveFocuserOut.setText(
-            QCoreApplication.translate("MainWindow", "Out", None)
-        )
+        self.moveFocuserOut.setText(QCoreApplication.translate("MainWindow", "Out", None))
         self.haltFocuser.setText(QCoreApplication.translate("MainWindow", "Stop", None))
-        self.label_416.setText(
-            QCoreApplication.translate("MainWindow", "Stepsize [um]", None)
-        )
+        self.label_416.setText(QCoreApplication.translate("MainWindow", "Stepsize [um]", None))
         # if QT_CONFIG(tooltip)
         self.focuserStepsize.setToolTip(
             QCoreApplication.translate(
@@ -11271,9 +10826,7 @@ class Ui_MainWindow(object):
         self.GroupImagingSettings.setTitle(
             QCoreApplication.translate("MainWindow", "Imaging settings", None)
         )
-        self.label_299.setText(
-            QCoreApplication.translate("MainWindow", "Exposure", None)
-        )
+        self.label_299.setText(QCoreApplication.translate("MainWindow", "Exposure", None))
         self.label_294.setText(QCoreApplication.translate("MainWindow", "s", None))
         # if QT_CONFIG(tooltip)
         self.exposureTime1.setToolTip(
@@ -11294,9 +10847,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.label_302.setText(
-            QCoreApplication.translate("MainWindow", "Exposure N", None)
-        )
+        self.label_302.setText(QCoreApplication.translate("MainWindow", "Exposure N", None))
         # if QT_CONFIG(tooltip)
         self.exposureTimeN.setToolTip(
             QCoreApplication.translate(
@@ -11334,15 +10885,11 @@ class Ui_MainWindow(object):
         )
         # if QT_CONFIG(tooltip)
         self.coolerPower.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Shows the actual coller power.", None
-            )
+            QCoreApplication.translate("MainWindow", "Shows the actual coller power.", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.coolerPower.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.textHumidity.setText(
-            QCoreApplication.translate("MainWindow", "HumCam [%]", None)
-        )
+        self.textHumidity.setText(QCoreApplication.translate("MainWindow", "HumCam [%]", None))
         # if QT_CONFIG(tooltip)
         self.coolerTemp.setToolTip(
             QCoreApplication.translate(
@@ -11372,18 +10919,12 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.downloadSlow.setText(
-            QCoreApplication.translate("MainWindow", "High Qual", None)
-        )
+        self.downloadSlow.setText(QCoreApplication.translate("MainWindow", "High Qual", None))
         self.textGain.setText(QCoreApplication.translate("MainWindow", "Gain", None))
-        self.textPower.setText(
-            QCoreApplication.translate("MainWindow", "Power [%]", None)
-        )
+        self.textPower.setText(QCoreApplication.translate("MainWindow", "Power [%]", None))
         # if QT_CONFIG(tooltip)
         self.humidityCCD.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Shows the actual coller power.", None
-            )
+            QCoreApplication.translate("MainWindow", "Shows the actual coller power.", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.humidityCCD.setText(QCoreApplication.translate("MainWindow", "-", None))
@@ -11396,44 +10937,26 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.downloadFast.setText(
-            QCoreApplication.translate("MainWindow", "Fast", None)
-        )
-        self.textCoolerTempUnit.setText(
-            QCoreApplication.translate("MainWindow", "\u00b0", None)
-        )
+        self.downloadFast.setText(QCoreApplication.translate("MainWindow", "Fast", None))
+        self.textCoolerTempUnit.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
         # if QT_CONFIG(tooltip)
         self.coolerOn.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Switches the camera cooler on.", None
-            )
+            QCoreApplication.translate("MainWindow", "Switches the camera cooler on.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.coolerOn.setText(
-            QCoreApplication.translate("MainWindow", "Cooler On", None)
-        )
-        self.textOffset.setText(
-            QCoreApplication.translate("MainWindow", "Offset", None)
-        )
+        self.coolerOn.setText(QCoreApplication.translate("MainWindow", "Cooler On", None))
+        self.textOffset.setText(QCoreApplication.translate("MainWindow", "Offset", None))
         # if QT_CONFIG(tooltip)
         self.coolerOff.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Switches the camera cooler off.", None
-            )
+            QCoreApplication.translate("MainWindow", "Switches the camera cooler off.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.coolerOff.setText(
-            QCoreApplication.translate("MainWindow", "Cooler Off", None)
-        )
+        self.coolerOff.setText(QCoreApplication.translate("MainWindow", "Cooler Off", None))
         self.textReadoutSpeed.setText(
             QCoreApplication.translate("MainWindow", "Readout speed", None)
         )
-        self.textCoolerTemp.setText(
-            QCoreApplication.translate("MainWindow", "Cooler temp", None)
-        )
-        self.textSubFrame.setText(
-            QCoreApplication.translate("MainWindow", "Subframe", None)
-        )
+        self.textCoolerTemp.setText(QCoreApplication.translate("MainWindow", "Cooler temp", None))
+        self.textSubFrame.setText(QCoreApplication.translate("MainWindow", "Subframe", None))
         # if QT_CONFIG(tooltip)
         self.gainCam.setToolTip(
             QCoreApplication.translate(
@@ -11445,9 +10968,7 @@ class Ui_MainWindow(object):
         # endif // QT_CONFIG(tooltip)
         self.gainCam.setInputMask("")
         self.gainCam.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.textSubFrameUnit.setText(
-            QCoreApplication.translate("MainWindow", "%", None)
-        )
+        self.textSubFrameUnit.setText(QCoreApplication.translate("MainWindow", "%", None))
         # if QT_CONFIG(tooltip)
         self.fastDownload.setToolTip(
             QCoreApplication.translate(
@@ -11463,9 +10984,7 @@ class Ui_MainWindow(object):
             )
         )
         self.label_21.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Recommended optimal binning", None
-            )
+            QCoreApplication.translate("MainWindow", "Recommended optimal binning", None)
         )
         # if QT_CONFIG(tooltip)
         self.optimalBinning.setToolTip(
@@ -11491,20 +11010,14 @@ class Ui_MainWindow(object):
         )
         # if QT_CONFIG(tooltip)
         self.coverStatusText.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Shows the status of the cover.", None
-            )
+            QCoreApplication.translate("MainWindow", "Shows the status of the cover.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.coverStatusText.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.coverStatusText.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.coverPark.setText(QCoreApplication.translate("MainWindow", "Close", None))
         self.coverUnpark.setText(QCoreApplication.translate("MainWindow", "Open", None))
         self.coverHalt.setText(QCoreApplication.translate("MainWindow", "Stop", None))
-        self.coverLightOn.setText(
-            QCoreApplication.translate("MainWindow", "Light On", None)
-        )
+        self.coverLightOn.setText(QCoreApplication.translate("MainWindow", "Light On", None))
         # if QT_CONFIG(tooltip)
         self.coverLightOff.setToolTip(
             QCoreApplication.translate(
@@ -11514,22 +11027,14 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.coverLightOff.setText(
-            QCoreApplication.translate("MainWindow", "Light Off", None)
-        )
-        self.label_411.setText(
-            QCoreApplication.translate("MainWindow", "Intensity", None)
-        )
+        self.coverLightOff.setText(QCoreApplication.translate("MainWindow", "Light Off", None))
+        self.label_411.setText(QCoreApplication.translate("MainWindow", "Intensity", None))
         # if QT_CONFIG(tooltip)
         self.coverLightIntensity.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Shows the status of the cover.", None
-            )
+            QCoreApplication.translate("MainWindow", "Shows the status of the cover.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.coverLightIntensity.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.coverLightIntensity.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.GroupDome.setToolTip(
             QCoreApplication.translate(
@@ -11549,19 +11054,13 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.domeCloseShutter.setText(
-            QCoreApplication.translate("MainWindow", "Close", None)
-        )
+        self.domeCloseShutter.setText(QCoreApplication.translate("MainWindow", "Close", None))
         # if QT_CONFIG(tooltip)
         self.domeShutterStatusText.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Shows the status of the cover.", None
-            )
+            QCoreApplication.translate("MainWindow", "Shows the status of the cover.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.domeShutterStatusText.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.domeShutterStatusText.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.domeOpenShutter.setToolTip(
             QCoreApplication.translate(
@@ -11571,9 +11070,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.domeOpenShutter.setText(
-            QCoreApplication.translate("MainWindow", "Open", None)
-        )
+        self.domeOpenShutter.setText(QCoreApplication.translate("MainWindow", "Open", None))
         # if QT_CONFIG(tooltip)
         self.domeSlewCW.setToolTip(
             QCoreApplication.translate(
@@ -11583,9 +11080,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.domeSlewCW.setText(
-            QCoreApplication.translate("MainWindow", "Slew CW", None)
-        )
+        self.domeSlewCW.setText(QCoreApplication.translate("MainWindow", "Slew CW", None))
         # if QT_CONFIG(tooltip)
         self.domeSlewCCW.setToolTip(
             QCoreApplication.translate(
@@ -11595,9 +11090,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.domeSlewCCW.setText(
-            QCoreApplication.translate("MainWindow", "Slew CCW", None)
-        )
+        self.domeSlewCCW.setText(QCoreApplication.translate("MainWindow", "Slew CCW", None))
         # if QT_CONFIG(tooltip)
         self.domeAbortSlew.setToolTip(
             QCoreApplication.translate(
@@ -11607,32 +11100,20 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.domeAbortSlew.setText(
-            QCoreApplication.translate("MainWindow", "Stop\n" "Slew", None)
-        )
+        self.domeAbortSlew.setText(QCoreApplication.translate("MainWindow", "Stop\n" "Slew", None))
         # if QT_CONFIG(tooltip)
         self.domeAzimuth.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Shows the status of the cover.", None
-            )
+            QCoreApplication.translate("MainWindow", "Shows the status of the cover.", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.domeAzimuth.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.textCoolerTempUnit_2.setText(
-            QCoreApplication.translate("MainWindow", "\u00b0", None)
-        )
-        self.textReadoutSpeed_2.setText(
-            QCoreApplication.translate("MainWindow", "Azimuth", None)
-        )
-        self.controller5.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.textCoolerTempUnit_2.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
+        self.textReadoutSpeed_2.setText(QCoreApplication.translate("MainWindow", "Azimuth", None))
+        self.controller5.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.GroupFilterWheel.setTitle(
             QCoreApplication.translate("MainWindow", "Filterwheel", None)
         )
-        self.label_389.setText(
-            QCoreApplication.translate("MainWindow", "Filter name", None)
-        )
+        self.label_389.setText(QCoreApplication.translate("MainWindow", "Filter name", None))
         # if QT_CONFIG(tooltip)
         self.filterNumber.setToolTip(
             QCoreApplication.translate(
@@ -11645,9 +11126,7 @@ class Ui_MainWindow(object):
         # endif // QT_CONFIG(tooltip)
         self.filterNumber.setInputMask("")
         self.filterNumber.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.label_390.setText(
-            QCoreApplication.translate("MainWindow", "Filter number", None)
-        )
+        self.label_390.setText(QCoreApplication.translate("MainWindow", "Filter number", None))
         # if QT_CONFIG(tooltip)
         self.filterName.setToolTip(
             QCoreApplication.translate(
@@ -11665,13 +11144,9 @@ class Ui_MainWindow(object):
             QCoreApplication.translate("MainWindow", "Manage Imaging Train", None),
         )
         self.GroupImagingQuality_3.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "Solver recommendations ASTAP", None
-            )
+            QCoreApplication.translate("MainWindow", "Solver recommendations ASTAP", None)
         )
-        self.label_412.setText(
-            QCoreApplication.translate("MainWindow", "Index files", None)
-        )
+        self.label_412.setText(QCoreApplication.translate("MainWindow", "Index files", None))
         # if QT_CONFIG(tooltip)
         self.astapIndex.setToolTip(
             QCoreApplication.translate(
@@ -11680,17 +11155,11 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.astapIndex.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.openASTAPCatalog.setText(
-            QCoreApplication.translate("MainWindow", "Open", None)
-        )
+        self.openASTAPCatalog.setText(QCoreApplication.translate("MainWindow", "Open", None))
         self.GroupImagingQuality.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "Imaging quality calculations - limits", None
-            )
+            QCoreApplication.translate("MainWindow", "Imaging quality calculations - limits", None)
         )
-        self.label_403.setText(
-            QCoreApplication.translate("MainWindow", "Rayleigh", None)
-        )
+        self.label_403.setText(QCoreApplication.translate("MainWindow", "Rayleigh", None))
         # if QT_CONFIG(tooltip)
         self.rayleigh.setToolTip(
             QCoreApplication.translate(
@@ -11701,9 +11170,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.rayleigh.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.label_404.setText(
-            QCoreApplication.translate("MainWindow", "Magitude", None)
-        )
+        self.label_404.setText(QCoreApplication.translate("MainWindow", "Magitude", None))
         self.label_397.setText(QCoreApplication.translate("MainWindow", "Dawes'", None))
         # if QT_CONFIG(tooltip)
         self.magLimit.setToolTip(
@@ -11727,9 +11194,7 @@ class Ui_MainWindow(object):
         self.dawes.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.label_406.setText(QCoreApplication.translate("MainWindow", "arcsec", None))
         self.label_398.setText(QCoreApplication.translate("MainWindow", "arcsec", None))
-        self.label_408.setText(
-            QCoreApplication.translate("MainWindow", "Forecast", None)
-        )
+        self.label_408.setText(QCoreApplication.translate("MainWindow", "Forecast", None))
         self.label_414.setText(QCoreApplication.translate("MainWindow", "arcsec", None))
         # if QT_CONFIG(tooltip)
         self.limitForecast.setToolTip(
@@ -11750,18 +11215,14 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.limitForecastDate.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.limitForecastDate.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.label_415.setText(QCoreApplication.translate("MainWindow", "from", None))
         self.GroupImagingCalculations.setTitle(
             QCoreApplication.translate(
                 "MainWindow", "Imaging information readout and calculations", None
             )
         )
-        self.label_166.setText(
-            QCoreApplication.translate("MainWindow", "Pixel size", None)
-        )
+        self.label_166.setText(QCoreApplication.translate("MainWindow", "Pixel size", None))
         # if QT_CONFIG(tooltip)
         self.pixelSizeX.setToolTip(
             QCoreApplication.translate(
@@ -11770,9 +11231,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.pixelSizeX.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.label_379.setText(
-            QCoreApplication.translate("MainWindow", "Resolution", None)
-        )
+        self.label_379.setText(QCoreApplication.translate("MainWindow", "Resolution", None))
         self.label_380.setText(QCoreApplication.translate("MainWindow", "um", None))
         # if QT_CONFIG(tooltip)
         self.pixelSizeY.setToolTip(
@@ -11792,9 +11251,7 @@ class Ui_MainWindow(object):
         self.resolutionY.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.label_381.setText(QCoreApplication.translate("MainWindow", "x", None))
         self.label_382.setText(QCoreApplication.translate("MainWindow", "x", None))
-        self.label_383.setText(
-            QCoreApplication.translate("MainWindow", "arcsec per pixel", None)
-        )
+        self.label_383.setText(QCoreApplication.translate("MainWindow", "arcsec per pixel", None))
         self.label_384.setText(QCoreApplication.translate("MainWindow", "FOV", None))
         # if QT_CONFIG(tooltip)
         self.FOVX.setToolTip("")
@@ -11805,9 +11262,7 @@ class Ui_MainWindow(object):
         # endif // QT_CONFIG(tooltip)
         self.FOVY.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.label_385.setText(QCoreApplication.translate("MainWindow", "x", None))
-        self.label_386.setText(
-            QCoreApplication.translate("MainWindow", "degrees", None)
-        )
+        self.label_386.setText(QCoreApplication.translate("MainWindow", "degrees", None))
         self.label_313.setText(QCoreApplication.translate("MainWindow", "Pixels", None))
         # if QT_CONFIG(tooltip)
         self.pixelY.setToolTip(
@@ -11836,12 +11291,8 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.rotation.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.label_391.setText(
-            QCoreApplication.translate("MainWindow", "Rotation", None)
-        )
-        self.label_405.setText(
-            QCoreApplication.translate("MainWindow", "Speed  f /", None)
-        )
+        self.label_391.setText(QCoreApplication.translate("MainWindow", "Rotation", None))
+        self.label_405.setText(QCoreApplication.translate("MainWindow", "Speed  f /", None))
         # if QT_CONFIG(tooltip)
         self.speed.setToolTip(
             QCoreApplication.translate(
@@ -11850,12 +11301,8 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.speed.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.label_400.setText(
-            QCoreApplication.translate("MainWindow", "Focal length", None)
-        )
-        self.label_401.setText(
-            QCoreApplication.translate("MainWindow", "Aperture", None)
-        )
+        self.label_400.setText(QCoreApplication.translate("MainWindow", "Focal length", None))
+        self.label_401.setText(QCoreApplication.translate("MainWindow", "Aperture", None))
         self.label_402.setText(QCoreApplication.translate("MainWindow", "mm", None))
         self.label_407.setText(QCoreApplication.translate("MainWindow", "mm", None))
         # if QT_CONFIG(tooltip)
@@ -11865,9 +11312,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.focalLengthStats.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.focalLengthStats.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.apertureStats.setToolTip(
             QCoreApplication.translate(
@@ -11877,13 +11322,9 @@ class Ui_MainWindow(object):
         # endif // QT_CONFIG(tooltip)
         self.apertureStats.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.GroupImagingQuality_2.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "Solver recommendations Watney", None
-            )
+            QCoreApplication.translate("MainWindow", "Solver recommendations Watney", None)
         )
-        self.label_399.setText(
-            QCoreApplication.translate("MainWindow", "Index files", None)
-        )
+        self.label_399.setText(QCoreApplication.translate("MainWindow", "Index files", None))
         # if QT_CONFIG(tooltip)
         self.watneyIndex.setToolTip(
             QCoreApplication.translate(
@@ -11892,17 +11333,11 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.watneyIndex.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.openWatneyCatalog.setText(
-            QCoreApplication.translate("MainWindow", "Open", None)
-        )
+        self.openWatneyCatalog.setText(QCoreApplication.translate("MainWindow", "Open", None))
         self.GroupImagingQuality_4.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "Solver recommendations ASTROMETRY.NET", None
-            )
+            QCoreApplication.translate("MainWindow", "Solver recommendations ASTROMETRY.NET", None)
         )
-        self.label_413.setText(
-            QCoreApplication.translate("MainWindow", "Index files", None)
-        )
+        self.label_413.setText(QCoreApplication.translate("MainWindow", "Index files", None))
         # if QT_CONFIG(tooltip)
         self.astrometryIndex.setToolTip(
             QCoreApplication.translate(
@@ -11910,12 +11345,8 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.astrometryIndex.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
-        self.openAstrometryCatalog.setText(
-            QCoreApplication.translate("MainWindow", "Open", None)
-        )
+        self.astrometryIndex.setText(QCoreApplication.translate("MainWindow", "-", None))
+        self.openAstrometryCatalog.setText(QCoreApplication.translate("MainWindow", "Open", None))
         self.GroupImagingQuality_5.setTitle(
             QCoreApplication.translate("MainWindow", "Focus zones", None)
         )
@@ -11955,9 +11386,7 @@ class Ui_MainWindow(object):
         self.label_420.setText(QCoreApplication.translate("MainWindow", "um", None))
         self.label_421.setText(QCoreApplication.translate("MainWindow", "um", None))
         self.label_422.setText(QCoreApplication.translate("MainWindow", "um", None))
-        self.label_423.setText(
-            QCoreApplication.translate("MainWindow", "Fast speed", None)
-        )
+        self.label_423.setText(QCoreApplication.translate("MainWindow", "Fast speed", None))
         # if QT_CONFIG(tooltip)
         self.focusCCD.setToolTip(
             QCoreApplication.translate(
@@ -11974,48 +11403,28 @@ class Ui_MainWindow(object):
         self.GroupRelaySettings_2.setTitle(
             QCoreApplication.translate("MainWindow", "Bias Frames", None)
         )
-        self.label_184.setText(
-            QCoreApplication.translate("MainWindow", "Exp. Count", None)
-        )
+        self.label_184.setText(QCoreApplication.translate("MainWindow", "Exp. Count", None))
         self.GroupRelaySettings_3.setTitle(
             QCoreApplication.translate("MainWindow", "Dark Frames", None)
         )
-        self.label_187.setText(
-            QCoreApplication.translate("MainWindow", "Exp. Count", None)
-        )
-        self.label_196.setText(
-            QCoreApplication.translate("MainWindow", "Exp. Time", None)
-        )
+        self.label_187.setText(QCoreApplication.translate("MainWindow", "Exp. Count", None))
+        self.label_196.setText(QCoreApplication.translate("MainWindow", "Exp. Time", None))
         self.GroupRelaySettings_4.setTitle(
             QCoreApplication.translate("MainWindow", "Flat Frames", None)
         )
-        self.label_202.setText(
-            QCoreApplication.translate("MainWindow", "Exp. Count", None)
-        )
-        self.label_204.setText(
-            QCoreApplication.translate("MainWindow", "Exp. Time [s]", None)
-        )
+        self.label_202.setText(QCoreApplication.translate("MainWindow", "Exp. Count", None))
+        self.label_204.setText(QCoreApplication.translate("MainWindow", "Exp. Time [s]", None))
         self.label_205.setText(QCoreApplication.translate("MainWindow", "Filter", None))
-        self.label_207.setText(
-            QCoreApplication.translate("MainWindow", "Light Value", None)
-        )
+        self.label_207.setText(QCoreApplication.translate("MainWindow", "Light Value", None))
         self.GroupRelaySettings_5.setTitle(
             QCoreApplication.translate("MainWindow", "Base Settings", None)
         )
-        self.label_200.setText(
-            QCoreApplication.translate("MainWindow", "Exp. Temp", None)
-        )
+        self.label_200.setText(QCoreApplication.translate("MainWindow", "Exp. Temp", None))
         self.label_208.setText(QCoreApplication.translate("MainWindow", "Gain", None))
         self.label_210.setText(QCoreApplication.translate("MainWindow", "Offset", None))
-        self.label_206.setText(
-            QCoreApplication.translate("MainWindow", "Light Source", None)
-        )
-        self.label_216.setText(
-            QCoreApplication.translate("MainWindow", "Dark Filter", None)
-        )
-        self.groupBox_15.setTitle(
-            QCoreApplication.translate("MainWindow", "Running", None)
-        )
+        self.label_206.setText(QCoreApplication.translate("MainWindow", "Light Source", None))
+        self.label_216.setText(QCoreApplication.translate("MainWindow", "Dark Filter", None))
+        self.groupBox_15.setTitle(QCoreApplication.translate("MainWindow", "Running", None))
         # if QT_CONFIG(tooltip)
         self.genModel_2.setToolTip(
             QCoreApplication.translate(
@@ -12025,9 +11434,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.genModel_2.setText(
-            QCoreApplication.translate("MainWindow", "Run Bias", None)
-        )
+        self.genModel_2.setText(QCoreApplication.translate("MainWindow", "Run Bias", None))
         # if QT_CONFIG(tooltip)
         self.genModel_3.setToolTip(
             QCoreApplication.translate(
@@ -12037,9 +11444,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.genModel_3.setText(
-            QCoreApplication.translate("MainWindow", "Run Dark", None)
-        )
+        self.genModel_3.setText(QCoreApplication.translate("MainWindow", "Run Dark", None))
         # if QT_CONFIG(tooltip)
         self.genModel_4.setToolTip(
             QCoreApplication.translate(
@@ -12049,9 +11454,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.genModel_4.setText(
-            QCoreApplication.translate("MainWindow", "Run Flat", None)
-        )
+        self.genModel_4.setText(QCoreApplication.translate("MainWindow", "Run Flat", None))
         # if QT_CONFIG(tooltip)
         self.genModel_5.setToolTip(
             QCoreApplication.translate(
@@ -12061,9 +11464,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.genModel_5.setText(
-            QCoreApplication.translate("MainWindow", "Run All", None)
-        )
+        self.genModel_5.setText(QCoreApplication.translate("MainWindow", "Run All", None))
         # if QT_CONFIG(tooltip)
         self.genModel_6.setToolTip(
             QCoreApplication.translate(
@@ -12073,9 +11474,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.genModel_6.setText(
-            QCoreApplication.translate("MainWindow", "Cancel", None)
-        )
+        self.genModel_6.setText(QCoreApplication.translate("MainWindow", "Cancel", None))
         self.imagingTabWidget.setTabText(
             self.imagingTabWidget.indexOf(self.reference),
             QCoreApplication.translate("MainWindow", "Reference Images", None),
@@ -12113,9 +11512,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.progSatFiltered.setText(
-            QCoreApplication.translate("MainWindow", "Filtered", None)
-        )
+        self.progSatFiltered.setText(QCoreApplication.translate("MainWindow", "Filtered", None))
         # if QT_CONFIG(tooltip)
         self.progSatFull.setToolTip(
             QCoreApplication.translate(
@@ -12125,9 +11522,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.progSatFull.setText(
-            QCoreApplication.translate("MainWindow", "Complete", None)
-        )
+        self.progSatFull.setText(QCoreApplication.translate("MainWindow", "Complete", None))
         # if QT_CONFIG(tooltip)
         self.progSatSelected.setToolTip(
             QCoreApplication.translate(
@@ -12137,12 +11532,8 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.progSatSelected.setText(
-            QCoreApplication.translate("MainWindow", "Selected", None)
-        )
-        self.satSetupGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Setup", None)
-        )
+        self.progSatSelected.setText(QCoreApplication.translate("MainWindow", "Selected", None))
+        self.satSetupGroup.setTitle(QCoreApplication.translate("MainWindow", "Setup", None))
         # if QT_CONFIG(tooltip)
         self.satCyclicUpdates.setToolTip(
             QCoreApplication.translate(
@@ -12167,9 +11558,7 @@ class Ui_MainWindow(object):
         self.autoSwitchTrack.setText(
             QCoreApplication.translate("MainWindow", "Auto change to tracking", None)
         )
-        self.satFilterGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Filter", None)
-        )
+        self.satFilterGroup.setTitle(QCoreApplication.translate("MainWindow", "Filter", None))
         # if QT_CONFIG(tooltip)
         self.satFilterText.setToolTip(
             QCoreApplication.translate(
@@ -12180,9 +11569,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.satFilterText.setText("")
-        self.label_298.setText(
-            QCoreApplication.translate("MainWindow", "Search string", None)
-        )
+        self.label_298.setText(QCoreApplication.translate("MainWindow", "Search string", None))
         # if QT_CONFIG(tooltip)
         self.satIsSunlit.setToolTip(
             QCoreApplication.translate(
@@ -12204,9 +11591,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.satIsUp.setText(
-            QCoreApplication.translate("MainWindow", "Satellite is up", None)
-        )
+        self.satIsUp.setText(QCoreApplication.translate("MainWindow", "Satellite is up", None))
         # if QT_CONFIG(tooltip)
         self.satRemoveSO.setToolTip(
             QCoreApplication.translate(
@@ -12219,9 +11604,7 @@ class Ui_MainWindow(object):
         self.satRemoveSO.setText(
             QCoreApplication.translate("MainWindow", "Remove Starlink/Oneweb", None)
         )
-        self.satTwilight.setItemText(
-            0, QCoreApplication.translate("MainWindow", "Night", None)
-        )
+        self.satTwilight.setItemText(0, QCoreApplication.translate("MainWindow", "Night", None))
         self.satTwilight.setItemText(
             1, QCoreApplication.translate("MainWindow", "Astronomical twilight", None)
         )
@@ -12253,14 +11636,10 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.label_271.setText(
-            QCoreApplication.translate("MainWindow", "Up within next", None)
-        )
+        self.label_271.setText(QCoreApplication.translate("MainWindow", "Up within next", None))
         self.label_272.setText(QCoreApplication.translate("MainWindow", "h", None))
         self.label_297.setText(QCoreApplication.translate("MainWindow", "deg", None))
-        self.label_273.setText(
-            QCoreApplication.translate("MainWindow", "Altitude min", None)
-        )
+        self.label_273.setText(QCoreApplication.translate("MainWindow", "Altitude min", None))
         self.satTabWidget.setTabText(
             self.satTabWidget.indexOf(self.Searching),
             QCoreApplication.translate("MainWindow", "Searching Database", None),
@@ -12292,14 +11671,10 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.satRise_1.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.satRise_1.setProperty(
-            "color", QCoreApplication.translate("MainWindow", "red", None)
-        )
+        self.satRise_1.setProperty("color", QCoreApplication.translate("MainWindow", "red", None))
         self.label_335.setText(QCoreApplication.translate("MainWindow", "Settle", None))
         self.label_336.setText(QCoreApplication.translate("MainWindow", "Flip", None))
-        self.label_337.setText(
-            QCoreApplication.translate("MainWindow", "Culminate", None)
-        )
+        self.label_337.setText(QCoreApplication.translate("MainWindow", "Culminate", None))
         self.label_338.setText(QCoreApplication.translate("MainWindow", "Date", None))
         # if QT_CONFIG(tooltip)
         self.satCulminate_1.setToolTip(
@@ -12324,9 +11699,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.satFlip_1.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.satFlip_1.setProperty(
-            "color", QCoreApplication.translate("MainWindow", "red", None)
-        )
+        self.satFlip_1.setProperty("color", QCoreApplication.translate("MainWindow", "red", None))
         # if QT_CONFIG(tooltip)
         self.satRise_2.setToolTip(
             QCoreApplication.translate(
@@ -12387,9 +11760,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.satDate_1.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.satDate_1.setProperty(
-            "color", QCoreApplication.translate("MainWindow", "red", None)
-        )
+        self.satDate_1.setProperty("color", QCoreApplication.translate("MainWindow", "red", None))
         # if QT_CONFIG(tooltip)
         self.satSettle_3.setToolTip(
             QCoreApplication.translate(
@@ -12492,12 +11863,8 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.satTrajectoryStart.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
-        self.label_339.setText(
-            QCoreApplication.translate("MainWindow", "Trajectory ends", None)
-        )
+        self.satTrajectoryStart.setText(QCoreApplication.translate("MainWindow", "-", None))
+        self.label_339.setText(QCoreApplication.translate("MainWindow", "Trajectory ends", None))
         # if QT_CONFIG(tooltip)
         self.satTrajectoryFlip.setToolTip(
             QCoreApplication.translate(
@@ -12508,9 +11875,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.satTrajectoryFlip.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.satTrajectoryFlip.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.satTrajectoryEnd.setToolTip(
             QCoreApplication.translate(
@@ -12521,12 +11886,8 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.satTrajectoryEnd.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
-        self.label_343.setText(
-            QCoreApplication.translate("MainWindow", "Trajectory starts", None)
-        )
+        self.satTrajectoryEnd.setText(QCoreApplication.translate("MainWindow", "-", None))
+        self.label_343.setText(QCoreApplication.translate("MainWindow", "Trajectory starts", None))
         self.label_344.setText(QCoreApplication.translate("MainWindow", "Flip", None))
         # if QT_CONFIG(tooltip)
         self.satBeforeFlip.setToolTip(
@@ -12537,12 +11898,8 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.satBeforeFlip.setText(
-            QCoreApplication.translate("MainWindow", "Before flip", None)
-        )
-        self.segmentsText.setText(
-            QCoreApplication.translate("MainWindow", "Segments:", None)
-        )
+        self.satBeforeFlip.setText(QCoreApplication.translate("MainWindow", "Before flip", None))
+        self.segmentsText.setText(QCoreApplication.translate("MainWindow", "Segments:", None))
         # if QT_CONFIG(tooltip)
         self.satAfterFlip.setToolTip(
             QCoreApplication.translate(
@@ -12552,9 +11909,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.satAfterFlip.setText(
-            QCoreApplication.translate("MainWindow", "After flip", None)
-        )
+        self.satAfterFlip.setText(QCoreApplication.translate("MainWindow", "After flip", None))
         # if QT_CONFIG(tooltip)
         self.useInternalSatCalc.setToolTip(
             QCoreApplication.translate(
@@ -12576,9 +11931,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.avoidHorizon.setText(
-            QCoreApplication.translate("MainWindow", "Horizon", None)
-        )
+        self.avoidHorizon.setText(QCoreApplication.translate("MainWindow", "Horizon", None))
         # if QT_CONFIG(tooltip)
         self.progTrajectory.setToolTip(
             QCoreApplication.translate(
@@ -12600,9 +11953,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.trackingReplay.setText(
-            QCoreApplication.translate("MainWindow", "Replay", None)
-        )
+        self.trackingReplay.setText(QCoreApplication.translate("MainWindow", "Replay", None))
         self.groupBox_24.setTitle(
             QCoreApplication.translate("MainWindow", "Satellite data (TLE)", None)
         )
@@ -12622,17 +11973,13 @@ class Ui_MainWindow(object):
             QCoreApplication.translate("MainWindow", "Age of the TLE data", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.satelliteDataAge.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.satelliteDataAge.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.satelliteNumber.setToolTip(
             QCoreApplication.translate("MainWindow", "Number of the satellite.", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.satelliteNumber.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
+        self.satelliteNumber.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.satelliteName.setToolTip(
             QCoreApplication.translate("MainWindow", "Name of the satellite.", None)
@@ -12641,9 +11988,7 @@ class Ui_MainWindow(object):
         self.satelliteName.setText(QCoreApplication.translate("MainWindow", "-", None))
         # if QT_CONFIG(tooltip)
         self.startSatelliteTracking.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Starts the satellite tracking mode.", None
-            )
+            QCoreApplication.translate("MainWindow", "Starts the satellite tracking mode.", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.startSatelliteTracking.setText(
@@ -12673,15 +12018,9 @@ class Ui_MainWindow(object):
         self.satOffGroup.setTitle(
             QCoreApplication.translate("MainWindow", "Offset satellite position", None)
         )
-        self.label_125.setText(
-            QCoreApplication.translate("MainWindow", "RA offset", None)
-        )
-        self.label_126.setText(
-            QCoreApplication.translate("MainWindow", "DEC offset", None)
-        )
-        self.label_150.setText(
-            QCoreApplication.translate("MainWindow", "Time offset", None)
-        )
+        self.label_125.setText(QCoreApplication.translate("MainWindow", "RA offset", None))
+        self.label_126.setText(QCoreApplication.translate("MainWindow", "DEC offset", None))
+        self.label_150.setText(QCoreApplication.translate("MainWindow", "Time offset", None))
         self.satTabWidget.setTabText(
             self.satTabWidget.indexOf(self.Tracking),
             QCoreApplication.translate("MainWindow", "Run Tracking ", None),
@@ -12690,12 +12029,8 @@ class Ui_MainWindow(object):
             self.mainTabWidget.indexOf(self.Satellite),
             QCoreApplication.translate("MainWindow", "Satellite", None),
         )
-        self.satFilterGroup_2.setTitle(
-            QCoreApplication.translate("MainWindow", "Filter", None)
-        )
-        self.label_303.setText(
-            QCoreApplication.translate("MainWindow", "Search string", None)
-        )
+        self.satFilterGroup_2.setTitle(QCoreApplication.translate("MainWindow", "Filter", None))
+        self.label_303.setText(QCoreApplication.translate("MainWindow", "Search string", None))
         # if QT_CONFIG(tooltip)
         self.cometFilterText.setToolTip(
             QCoreApplication.translate(
@@ -12706,9 +12041,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.cometFilterText.setText("")
-        self.cometSourceGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Comets", None)
-        )
+        self.cometSourceGroup.setTitle(QCoreApplication.translate("MainWindow", "Comets", None))
         # if QT_CONFIG(tooltip)
         self.cometSourceList.setToolTip(
             QCoreApplication.translate(
@@ -12730,9 +12063,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.progCometFull.setText(
-            QCoreApplication.translate("MainWindow", "Complete", None)
-        )
+        self.progCometFull.setText(QCoreApplication.translate("MainWindow", "Complete", None))
         # if QT_CONFIG(tooltip)
         self.progCometFiltered.setToolTip(
             QCoreApplication.translate(
@@ -12742,9 +12073,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.progCometFiltered.setText(
-            QCoreApplication.translate("MainWindow", "Filtered", None)
-        )
+        self.progCometFiltered.setText(QCoreApplication.translate("MainWindow", "Filtered", None))
         # if QT_CONFIG(tooltip)
         self.progCometSelected.setToolTip(
             QCoreApplication.translate(
@@ -12754,9 +12083,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.progCometSelected.setText(
-            QCoreApplication.translate("MainWindow", "Selected", None)
-        )
+        self.progCometSelected.setText(QCoreApplication.translate("MainWindow", "Selected", None))
         # if QT_CONFIG(tooltip)
         self.listComets.setToolTip(
             QCoreApplication.translate("MainWindow", "List of satellites.", None)
@@ -12778,9 +12105,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.progAsteroidFull.setText(
-            QCoreApplication.translate("MainWindow", "Complete", None)
-        )
+        self.progAsteroidFull.setText(QCoreApplication.translate("MainWindow", "Complete", None))
         # if QT_CONFIG(tooltip)
         self.progAsteroidFiltered.setToolTip(
             QCoreApplication.translate(
@@ -12805,12 +12130,8 @@ class Ui_MainWindow(object):
         self.progAsteroidSelected.setText(
             QCoreApplication.translate("MainWindow", "Selected", None)
         )
-        self.asteroidFilterGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Filter", None)
-        )
-        self.label_307.setText(
-            QCoreApplication.translate("MainWindow", "Search string", None)
-        )
+        self.asteroidFilterGroup.setTitle(QCoreApplication.translate("MainWindow", "Filter", None))
+        self.label_307.setText(QCoreApplication.translate("MainWindow", "Search string", None))
         # if QT_CONFIG(tooltip)
         self.asteroidFilterText.setToolTip(
             QCoreApplication.translate(
@@ -12882,9 +12203,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.label_296.setText(
-            QCoreApplication.translate("MainWindow", "Source URL:", None)
-        )
+        self.label_296.setText(QCoreApplication.translate("MainWindow", "Source URL:", None))
         self.toolsTabWidget.setTabText(
             self.toolsTabWidget.indexOf(self.timeTables),
             QCoreApplication.translate("MainWindow", "IERS Time", None),
@@ -12906,9 +12225,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.label_305.setText(
-            QCoreApplication.translate("MainWindow", "Directory", None)
-        )
+        self.label_305.setText(QCoreApplication.translate("MainWindow", "Directory", None))
         # if QT_CONFIG(tooltip)
         self.renameInputSelect.setToolTip(
             QCoreApplication.translate(
@@ -12916,20 +12233,12 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.renameInputSelect.setText(
-            QCoreApplication.translate("MainWindow", "Select", None)
-        )
-        self.label_8.setText(
-            QCoreApplication.translate("MainWindow", "Position 1", None)
-        )
+        self.renameInputSelect.setText(QCoreApplication.translate("MainWindow", "Select", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", "Position 1", None))
         self.label_60.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Choice of FITS header entries", None
-            )
+            QCoreApplication.translate("MainWindow", "Choice of FITS header entries", None)
         )
-        self.label_9.setText(
-            QCoreApplication.translate("MainWindow", "Position 2", None)
-        )
+        self.label_9.setText(QCoreApplication.translate("MainWindow", "Position 2", None))
         # if QT_CONFIG(tooltip)
         self.includeSubdirs.setToolTip(
             QCoreApplication.translate(
@@ -12956,15 +12265,9 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.label_57.setText(
-            QCoreApplication.translate("MainWindow", "Progress", None)
-        )
-        self.label_10.setText(
-            QCoreApplication.translate("MainWindow", "Position 3", None)
-        )
-        self.label_11.setText(
-            QCoreApplication.translate("MainWindow", "Position 4", None)
-        )
+        self.label_57.setText(QCoreApplication.translate("MainWindow", "Progress", None))
+        self.label_10.setText(QCoreApplication.translate("MainWindow", "Position 3", None))
+        self.label_11.setText(QCoreApplication.translate("MainWindow", "Position 4", None))
         # if QT_CONFIG(tooltip)
         self.renameStart.setToolTip(
             QCoreApplication.translate(
@@ -12974,12 +12277,8 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.renameStart.setText(
-            QCoreApplication.translate("MainWindow", "Start", None)
-        )
-        self.label_39.setText(
-            QCoreApplication.translate("MainWindow", "Position 5", None)
-        )
+        self.renameStart.setText(QCoreApplication.translate("MainWindow", "Start", None))
+        self.label_39.setText(QCoreApplication.translate("MainWindow", "Position 5", None))
         # if QT_CONFIG(tooltip)
         self.rename3.setToolTip(
             QCoreApplication.translate(
@@ -12987,9 +12286,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.label_308.setText(
-            QCoreApplication.translate("MainWindow", "New Object Name", None)
-        )
+        self.label_308.setText(QCoreApplication.translate("MainWindow", "New Object Name", None))
         # if QT_CONFIG(tooltip)
         self.rename6.setToolTip(
             QCoreApplication.translate(
@@ -12997,63 +12294,41 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.label_62.setText(
-            QCoreApplication.translate("MainWindow", "Position 6", None)
-        )
+        self.label_62.setText(QCoreApplication.translate("MainWindow", "Position 6", None))
         self.toolsTabWidget.setTabText(
             self.toolsTabWidget.indexOf(self.FileRenaming),
             QCoreApplication.translate("MainWindow", "File Renaming", None),
         )
-        self.groupBox_21.setTitle(
-            QCoreApplication.translate("MainWindow", "Consumption", None)
-        )
+        self.groupBox_21.setTitle(QCoreApplication.translate("MainWindow", "Consumption", None))
         self.label_192.setText(QCoreApplication.translate("MainWindow", "A", None))
         self.label_284.setText(QCoreApplication.translate("MainWindow", "Wh", None))
         self.label_193.setText(QCoreApplication.translate("MainWindow", "Ah", None))
         self.label_191.setText(QCoreApplication.translate("MainWindow", "W", None))
-        self.label_286.setText(
-            QCoreApplication.translate("MainWindow", "Capacity", None)
-        )
-        self.label_287.setText(
-            QCoreApplication.translate("MainWindow", "Aver. Current", None)
-        )
-        self.label_165.setText(
-            QCoreApplication.translate("MainWindow", "Voltage", None)
-        )
+        self.label_286.setText(QCoreApplication.translate("MainWindow", "Capacity", None))
+        self.label_287.setText(QCoreApplication.translate("MainWindow", "Aver. Current", None))
+        self.label_165.setText(QCoreApplication.translate("MainWindow", "Voltage", None))
         self.label_285.setText(QCoreApplication.translate("MainWindow", "Energy", None))
-        self.label_289.setText(
-            QCoreApplication.translate("MainWindow", "Current", None)
-        )
+        self.label_289.setText(QCoreApplication.translate("MainWindow", "Current", None))
         self.label_288.setText(QCoreApplication.translate("MainWindow", "Power", None))
         self.label_173.setText(QCoreApplication.translate("MainWindow", "V", None))
         self.label_172.setText(QCoreApplication.translate("MainWindow", "A", None))
         # if QT_CONFIG(tooltip)
         self.rebootUPB.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Toggles the auto dew setting.", None
-            )
+            QCoreApplication.translate("MainWindow", "Toggles the auto dew setting.", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.rebootUPB.setText(QCoreApplication.translate("MainWindow", "Reboot", None))
         # if QT_CONFIG(tooltip)
         self.autoDew.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Toggles the auto dew setting.", None
-            )
+            QCoreApplication.translate("MainWindow", "Toggles the auto dew setting.", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.autoDew.setText(QCoreApplication.translate("MainWindow", "Auto Dew", None))
-        self.groupDewC.setTitle(
-            QCoreApplication.translate("MainWindow", "Dew heater C", None)
-        )
+        self.groupDewC.setTitle(QCoreApplication.translate("MainWindow", "Dew heater C", None))
         self.label_282.setText(QCoreApplication.translate("MainWindow", "%", None))
-        self.label_277.setText(
-            QCoreApplication.translate("MainWindow", "Current", None)
-        )
+        self.label_277.setText(QCoreApplication.translate("MainWindow", "Current", None))
         self.label_290.setText(QCoreApplication.translate("MainWindow", "A", None))
-        self.label_278.setText(
-            QCoreApplication.translate("MainWindow", "DutyCycle", None)
-        )
+        self.label_278.setText(QCoreApplication.translate("MainWindow", "DutyCycle", None))
         # if QT_CONFIG(tooltip)
         self.dewC.setToolTip(
             QCoreApplication.translate(
@@ -13063,17 +12338,11 @@ class Ui_MainWindow(object):
         # endif // QT_CONFIG(tooltip)
         self.dewC.setInputMask("")
         self.dewC.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.groupDewB.setTitle(
-            QCoreApplication.translate("MainWindow", "Dew heater B", None)
-        )
+        self.groupDewB.setTitle(QCoreApplication.translate("MainWindow", "Dew heater B", None))
         self.label_280.setText(QCoreApplication.translate("MainWindow", "%", None))
-        self.label_274.setText(
-            QCoreApplication.translate("MainWindow", "Current", None)
-        )
+        self.label_274.setText(QCoreApplication.translate("MainWindow", "Current", None))
         self.label_281.setText(QCoreApplication.translate("MainWindow", "A", None))
-        self.label_275.setText(
-            QCoreApplication.translate("MainWindow", "DutyCycle", None)
-        )
+        self.label_275.setText(QCoreApplication.translate("MainWindow", "DutyCycle", None))
         # if QT_CONFIG(tooltip)
         self.dewB.setToolTip(
             QCoreApplication.translate(
@@ -13083,17 +12352,11 @@ class Ui_MainWindow(object):
         # endif // QT_CONFIG(tooltip)
         self.dewB.setInputMask("")
         self.dewB.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.groupDewA.setTitle(
-            QCoreApplication.translate("MainWindow", "Dew heater A", None)
-        )
+        self.groupDewA.setTitle(QCoreApplication.translate("MainWindow", "Dew heater A", None))
         self.label_276.setText(QCoreApplication.translate("MainWindow", "%", None))
-        self.label_268.setText(
-            QCoreApplication.translate("MainWindow", "Current", None)
-        )
+        self.label_268.setText(QCoreApplication.translate("MainWindow", "Current", None))
         self.label_279.setText(QCoreApplication.translate("MainWindow", "A", None))
-        self.label_266.setText(
-            QCoreApplication.translate("MainWindow", "DutyCycle", None)
-        )
+        self.label_266.setText(QCoreApplication.translate("MainWindow", "DutyCycle", None))
         # if QT_CONFIG(tooltip)
         self.dewA.setToolTip(
             QCoreApplication.translate(
@@ -13103,141 +12366,99 @@ class Ui_MainWindow(object):
         # endif // QT_CONFIG(tooltip)
         self.dewA.setInputMask("")
         self.dewA.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.groupBox_17.setTitle(
-            QCoreApplication.translate("MainWindow", "Power Port 3", None)
-        )
+        self.groupBox_17.setTitle(QCoreApplication.translate("MainWindow", "Power Port 3", None))
         self.label_317.setText(QCoreApplication.translate("MainWindow", "A", None))
-        self.label_318.setText(
-            QCoreApplication.translate("MainWindow", "Current", None)
-        )
+        self.label_318.setText(QCoreApplication.translate("MainWindow", "Current", None))
         self.powerLabel3.setText(QCoreApplication.translate("MainWindow", "---", None))
         self.powerBootPort3.setText(
             QCoreApplication.translate("MainWindow", "Power on boot", None)
         )
         # if QT_CONFIG(tooltip)
         self.powerPort3.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Switches the power output on and off.", None
-            )
+            QCoreApplication.translate("MainWindow", "Switches the power output on and off.", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.powerPort3.setText(QCoreApplication.translate("MainWindow", "Power", None))
-        self.groupBox_18.setTitle(
-            QCoreApplication.translate("MainWindow", "Power Port 2", None)
-        )
+        self.groupBox_18.setTitle(QCoreApplication.translate("MainWindow", "Power Port 2", None))
         self.label_319.setText(QCoreApplication.translate("MainWindow", "A", None))
-        self.label_320.setText(
-            QCoreApplication.translate("MainWindow", "Current", None)
-        )
+        self.label_320.setText(QCoreApplication.translate("MainWindow", "Current", None))
         self.powerLabel2.setText(QCoreApplication.translate("MainWindow", "---", None))
         self.powerBootPort2.setText(
             QCoreApplication.translate("MainWindow", "Power on boot", None)
         )
         # if QT_CONFIG(tooltip)
         self.powerPort2.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Switches the power output on and off.", None
-            )
+            QCoreApplication.translate("MainWindow", "Switches the power output on and off.", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.powerPort2.setText(QCoreApplication.translate("MainWindow", "Power", None))
-        self.groupBox_13.setTitle(
-            QCoreApplication.translate("MainWindow", "Power Port 4", None)
-        )
+        self.groupBox_13.setTitle(QCoreApplication.translate("MainWindow", "Power Port 4", None))
         self.label_283.setText(QCoreApplication.translate("MainWindow", "A", None))
-        self.label_292.setText(
-            QCoreApplication.translate("MainWindow", "Current", None)
-        )
+        self.label_292.setText(QCoreApplication.translate("MainWindow", "Current", None))
         self.powerBootPort4.setText(
             QCoreApplication.translate("MainWindow", "Power on boot", None)
         )
         self.powerLabel4.setText(QCoreApplication.translate("MainWindow", "---", None))
         # if QT_CONFIG(tooltip)
         self.powerPort4.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Switches the power output on and off.", None
-            )
+            QCoreApplication.translate("MainWindow", "Switches the power output on and off.", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.powerPort4.setText(QCoreApplication.translate("MainWindow", "Power", None))
-        self.box.setTitle(
-            QCoreApplication.translate("MainWindow", "Power Port 1", None)
-        )
+        self.box.setTitle(QCoreApplication.translate("MainWindow", "Power Port 1", None))
         self.label_321.setText(QCoreApplication.translate("MainWindow", "A", None))
-        self.label_322.setText(
-            QCoreApplication.translate("MainWindow", "Current", None)
-        )
+        self.label_322.setText(QCoreApplication.translate("MainWindow", "Current", None))
         self.powerLabel1.setText(QCoreApplication.translate("MainWindow", "---", None))
         self.powerBootPort1.setText(
             QCoreApplication.translate("MainWindow", "Power on boot", None)
         )
         # if QT_CONFIG(tooltip)
         self.powerPort1.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Switches the power output on and off.", None
-            )
+            QCoreApplication.translate("MainWindow", "Switches the power output on and off.", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.powerPort1.setText(QCoreApplication.translate("MainWindow", "Power", None))
-        self.groupHubUSB.setTitle(
-            QCoreApplication.translate("MainWindow", "USB Hub", None)
-        )
+        self.groupHubUSB.setTitle(QCoreApplication.translate("MainWindow", "USB Hub", None))
         # if QT_CONFIG(tooltip)
         self.hubUSB.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Switches the USB Hub on and off", None
-            )
+            QCoreApplication.translate("MainWindow", "Switches the USB Hub on and off", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.hubUSB.setText(QCoreApplication.translate("MainWindow", "Power", None))
-        self.groupPortUSB.setTitle(
-            QCoreApplication.translate("MainWindow", "USB Port", None)
-        )
+        self.groupPortUSB.setTitle(QCoreApplication.translate("MainWindow", "USB Port", None))
         # if QT_CONFIG(tooltip)
         self.portUSB1.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Switches the USB Hub on and off", None
-            )
+            QCoreApplication.translate("MainWindow", "Switches the USB Hub on and off", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.portUSB1.setText(QCoreApplication.translate("MainWindow", "USB 1", None))
         # if QT_CONFIG(tooltip)
         self.portUSB2.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Switches the USB Hub on and off", None
-            )
+            QCoreApplication.translate("MainWindow", "Switches the USB Hub on and off", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.portUSB2.setText(QCoreApplication.translate("MainWindow", "USB 2", None))
         # if QT_CONFIG(tooltip)
         self.portUSB3.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Switches the USB Hub on and off", None
-            )
+            QCoreApplication.translate("MainWindow", "Switches the USB Hub on and off", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.portUSB3.setText(QCoreApplication.translate("MainWindow", "USB 3", None))
         # if QT_CONFIG(tooltip)
         self.portUSB4.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Switches the USB Hub on and off", None
-            )
+            QCoreApplication.translate("MainWindow", "Switches the USB Hub on and off", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.portUSB4.setText(QCoreApplication.translate("MainWindow", "USB 4", None))
         # if QT_CONFIG(tooltip)
         self.portUSB5.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Switches the USB Hub on and off", None
-            )
+            QCoreApplication.translate("MainWindow", "Switches the USB Hub on and off", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.portUSB5.setText(QCoreApplication.translate("MainWindow", "USB 5", None))
         # if QT_CONFIG(tooltip)
         self.portUSB6.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Switches the USB Hub on and off", None
-            )
+            QCoreApplication.translate("MainWindow", "Switches the USB Hub on and off", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.portUSB6.setText(QCoreApplication.translate("MainWindow", "USB 6", None))
@@ -13252,12 +12473,8 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.adjustableOutput.setInputMask("")
-        self.adjustableOutput.setText(
-            QCoreApplication.translate("MainWindow", "-", None)
-        )
-        self.label_291.setText(
-            QCoreApplication.translate("MainWindow", "Voltage", None)
-        )
+        self.adjustableOutput.setText(QCoreApplication.translate("MainWindow", "-", None))
+        self.label_291.setText(QCoreApplication.translate("MainWindow", "Voltage", None))
         self.label_293.setText(QCoreApplication.translate("MainWindow", "V", None))
         self.toolsTabWidget.setTabText(
             self.toolsTabWidget.indexOf(self.Power),
@@ -13273,9 +12490,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButton0.setText(
-            QCoreApplication.translate("MainWindow", "Relay1", None)
-        )
+        self.relayButton0.setText(QCoreApplication.translate("MainWindow", "Relay1", None))
         # if QT_CONFIG(tooltip)
         self.relayButton1.setToolTip(
             QCoreApplication.translate(
@@ -13285,9 +12500,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButton1.setText(
-            QCoreApplication.translate("MainWindow", "Relay2", None)
-        )
+        self.relayButton1.setText(QCoreApplication.translate("MainWindow", "Relay2", None))
         # if QT_CONFIG(tooltip)
         self.relayButton2.setToolTip(
             QCoreApplication.translate(
@@ -13297,9 +12510,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButton2.setText(
-            QCoreApplication.translate("MainWindow", "Relay3", None)
-        )
+        self.relayButton2.setText(QCoreApplication.translate("MainWindow", "Relay3", None))
         # if QT_CONFIG(tooltip)
         self.relayButton3.setToolTip(
             QCoreApplication.translate(
@@ -13309,9 +12520,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButton3.setText(
-            QCoreApplication.translate("MainWindow", "Relay4", None)
-        )
+        self.relayButton3.setText(QCoreApplication.translate("MainWindow", "Relay4", None))
         # if QT_CONFIG(tooltip)
         self.relayButton4.setToolTip(
             QCoreApplication.translate(
@@ -13321,9 +12530,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButton4.setText(
-            QCoreApplication.translate("MainWindow", "Relay5", None)
-        )
+        self.relayButton4.setText(QCoreApplication.translate("MainWindow", "Relay5", None))
         # if QT_CONFIG(tooltip)
         self.relayButton5.setToolTip(
             QCoreApplication.translate(
@@ -13333,9 +12540,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButton5.setText(
-            QCoreApplication.translate("MainWindow", "Relay6", None)
-        )
+        self.relayButton5.setText(QCoreApplication.translate("MainWindow", "Relay6", None))
         # if QT_CONFIG(tooltip)
         self.relayButton6.setToolTip(
             QCoreApplication.translate(
@@ -13345,9 +12550,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButton6.setText(
-            QCoreApplication.translate("MainWindow", "Relay7", None)
-        )
+        self.relayButton6.setText(QCoreApplication.translate("MainWindow", "Relay7", None))
         # if QT_CONFIG(tooltip)
         self.relayButton7.setToolTip(
             QCoreApplication.translate(
@@ -13357,9 +12560,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButton7.setText(
-            QCoreApplication.translate("MainWindow", "Relay8", None)
-        )
+        self.relayButton7.setText(QCoreApplication.translate("MainWindow", "Relay8", None))
         self.toolsTabWidget.setTabText(
             self.toolsTabWidget.indexOf(self.Relay),
             QCoreApplication.translate("MainWindow", "Relay", None),
@@ -13367,35 +12568,21 @@ class Ui_MainWindow(object):
         self.flexureGroup.setTitle(
             QCoreApplication.translate("MainWindow", "Telescope flexure", None)
         )
-        self.label_177.setText(
-            QCoreApplication.translate("MainWindow", "Cycle Time", None)
-        )
+        self.label_177.setText(QCoreApplication.translate("MainWindow", "Cycle Time", None))
         self.label_111.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
-        self.label_174.setText(
-            QCoreApplication.translate("MainWindow", "Altitude", None)
-        )
+        self.label_174.setText(QCoreApplication.translate("MainWindow", "Altitude", None))
         self.label_112.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
-        self.label_176.setText(
-            QCoreApplication.translate("MainWindow", "Duration", None)
-        )
+        self.label_176.setText(QCoreApplication.translate("MainWindow", "Duration", None))
         self.label_115.setText(QCoreApplication.translate("MainWindow", "s", None))
-        self.label_175.setText(
-            QCoreApplication.translate("MainWindow", "Azimuth", None)
-        )
+        self.label_175.setText(QCoreApplication.translate("MainWindow", "Azimuth", None))
         self.label_114.setText(QCoreApplication.translate("MainWindow", "min", None))
         self.hysteresisGroup.setTitle(
             QCoreApplication.translate("MainWindow", " Telescope hysteresis", None)
         )
-        self.label_183.setText(
-            QCoreApplication.translate("MainWindow", "Number Runs", None)
-        )
+        self.label_183.setText(QCoreApplication.translate("MainWindow", "Number Runs", None))
         self.label_120.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
-        self.label_185.setText(
-            QCoreApplication.translate("MainWindow", "Minimum Alt", None)
-        )
-        self.analysisGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Analysis Run", None)
-        )
+        self.label_185.setText(QCoreApplication.translate("MainWindow", "Minimum Alt", None))
+        self.analysisGroup.setTitle(QCoreApplication.translate("MainWindow", "Analysis Run", None))
         # if QT_CONFIG(tooltip)
         self.cancelAnalysis.setToolTip(
             QCoreApplication.translate(
@@ -13405,15 +12592,11 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.cancelAnalysis.setText(
-            QCoreApplication.translate("MainWindow", "Cancel", None)
-        )
+        self.cancelAnalysis.setText(QCoreApplication.translate("MainWindow", "Cancel", None))
         self.cancelAnalysis.setProperty(
             "color", QCoreApplication.translate("MainWindow", "red", None)
         )
-        self.label_66.setText(
-            QCoreApplication.translate("MainWindow", "Analysis points", None)
-        )
+        self.label_66.setText(QCoreApplication.translate("MainWindow", "Analysis points", None))
         # if QT_CONFIG(tooltip)
         self.analysisPoints.setToolTip(
             QCoreApplication.translate(
@@ -13433,9 +12616,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.runFlexure.setText(
-            QCoreApplication.translate("MainWindow", "Run Flexure", None)
-        )
+        self.runFlexure.setText(QCoreApplication.translate("MainWindow", "Run Flexure", None))
         # if QT_CONFIG(tooltip)
         self.runHysteresis.setToolTip(
             QCoreApplication.translate(
@@ -13497,9 +12678,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.relaySetup.setText(QCoreApplication.translate("MainWindow", "Set", None))
-        self.dome_3.setText(
-            QCoreApplication.translate("MainWindow", "Optics Data", None)
-        )
+        self.dome_3.setText(QCoreApplication.translate("MainWindow", "Optics Data", None))
         # if QT_CONFIG(tooltip)
         self.telescopeSetup.setToolTip(
             QCoreApplication.translate(
@@ -13509,9 +12688,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.telescopeSetup.setText(
-            QCoreApplication.translate("MainWindow", "Set", None)
-        )
+        self.telescopeSetup.setText(QCoreApplication.translate("MainWindow", "Set", None))
         # if QT_CONFIG(tooltip)
         self.telescopeDevice.setToolTip(
             QCoreApplication.translate(
@@ -13578,9 +12755,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.plateSolveSetup.setText(
-            QCoreApplication.translate("MainWindow", "Set", None)
-        )
+        self.plateSolveSetup.setText(QCoreApplication.translate("MainWindow", "Set", None))
         self.GroupEnvironmentConditions.setTitle(
             QCoreApplication.translate("MainWindow", "Environment conditions", None)
         )
@@ -13597,9 +12772,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.sensor1WeatherSetup.setText(
-            QCoreApplication.translate("MainWindow", "Set", None)
-        )
+        self.sensor1WeatherSetup.setText(QCoreApplication.translate("MainWindow", "Set", None))
         self.sky_2.setText(QCoreApplication.translate("MainWindow", "Sensor 3", None))
         # if QT_CONFIG(tooltip)
         self.sensor3WeatherSetup.setToolTip(
@@ -13610,9 +12783,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.sensor3WeatherSetup.setText(
-            QCoreApplication.translate("MainWindow", "Set", None)
-        )
+        self.sensor3WeatherSetup.setText(QCoreApplication.translate("MainWindow", "Set", None))
         # if QT_CONFIG(tooltip)
         self.onlineWeatherSetup.setToolTip(
             QCoreApplication.translate(
@@ -13622,9 +12793,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.onlineWeatherSetup.setText(
-            QCoreApplication.translate("MainWindow", "Set", None)
-        )
+        self.onlineWeatherSetup.setText(QCoreApplication.translate("MainWindow", "Set", None))
         # if QT_CONFIG(tooltip)
         self.sensor2WeatherSetup.setToolTip(
             QCoreApplication.translate(
@@ -13634,9 +12803,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.sensor2WeatherSetup.setText(
-            QCoreApplication.translate("MainWindow", "Set", None)
-        )
+        self.sensor2WeatherSetup.setText(QCoreApplication.translate("MainWindow", "Set", None))
         self.env_4.setText(QCoreApplication.translate("MainWindow", "Seeing", None))
         # if QT_CONFIG(tooltip)
         self.seeingWeatherSetup.setToolTip(
@@ -13647,13 +12814,9 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.seeingWeatherSetup.setText(
-            QCoreApplication.translate("MainWindow", "Set", None)
-        )
+        self.seeingWeatherSetup.setText(QCoreApplication.translate("MainWindow", "Set", None))
         self.GroupAscomConnect.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "ASCOM / ALPACA connect devices", None
-            )
+            QCoreApplication.translate("MainWindow", "ASCOM / ALPACA connect devices", None)
         )
         # if QT_CONFIG(tooltip)
         self.ascomConnect.setToolTip(
@@ -13664,9 +12827,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.ascomConnect.setText(
-            QCoreApplication.translate("MainWindow", "Connect", None)
-        )
+        self.ascomConnect.setText(QCoreApplication.translate("MainWindow", "Connect", None))
         # if QT_CONFIG(tooltip)
         self.ascomDisconnect.setToolTip(
             QCoreApplication.translate(
@@ -13676,9 +12837,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.ascomDisconnect.setText(
-            QCoreApplication.translate("MainWindow", "Disconnect", None)
-        )
+        self.ascomDisconnect.setText(QCoreApplication.translate("MainWindow", "Disconnect", None))
         # if QT_CONFIG(tooltip)
         self.autoConnectASCOM.setToolTip(
             QCoreApplication.translate(
@@ -13707,15 +12866,9 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.mountHost.setText(
-            QCoreApplication.translate("MainWindow", "127.0.0.1", None)
-        )
-        self.label_mountIP.setText(
-            QCoreApplication.translate("MainWindow", "IP Address", None)
-        )
-        self.label_mountMAC.setText(
-            QCoreApplication.translate("MainWindow", "MAC Address", None)
-        )
+        self.mountHost.setText(QCoreApplication.translate("MainWindow", "127.0.0.1", None))
+        self.label_mountIP.setText(QCoreApplication.translate("MainWindow", "IP Address", None))
+        self.label_mountMAC.setText(QCoreApplication.translate("MainWindow", "MAC Address", None))
         # if QT_CONFIG(tooltip)
         self.mountMAC.setToolTip(
             QCoreApplication.translate(
@@ -13725,9 +12878,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.mountMAC.setText(
-            QCoreApplication.translate("MainWindow", "00:00:00:00:00:00", None)
-        )
+        self.mountMAC.setText(QCoreApplication.translate("MainWindow", "00:00:00:00:00:00", None))
         # if QT_CONFIG(tooltip)
         self.port3492.setToolTip(
             QCoreApplication.translate(
@@ -13748,9 +12899,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.port3490.setText(QCoreApplication.translate("MainWindow", "3490", None))
-        self.label_mountMAC_3.setText(
-            QCoreApplication.translate("MainWindow", "Port", None)
-        )
+        self.label_mountMAC_3.setText(QCoreApplication.translate("MainWindow", "Port", None))
         self.label_mountMAC_5.setText(
             QCoreApplication.translate("MainWindow", "WOL broadcast address", None)
         )
@@ -13810,19 +12959,13 @@ class Ui_MainWindow(object):
         self.GroupRigComputer.setTitle(
             QCoreApplication.translate("MainWindow", "Computer on rig", None)
         )
-        self.label_259.setText(
-            QCoreApplication.translate("MainWindow", "MAC Address", None)
-        )
-        self.bootRackComp.setText(
-            QCoreApplication.translate("MainWindow", "Boot / WOL", None)
-        )
+        self.label_259.setText(QCoreApplication.translate("MainWindow", "MAC Address", None))
+        self.bootRackComp.setText(QCoreApplication.translate("MainWindow", "Boot / WOL", None))
         self.rackCompMAC.setText(
             QCoreApplication.translate("MainWindow", "00:00:00:00:00:00", None)
         )
         self.GroupMountSettleTime.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "Mount wait time while modeling", None
-            )
+            QCoreApplication.translate("MainWindow", "Mount wait time while modeling", None)
         )
         self.label_67.setText(
             QCoreApplication.translate(
@@ -13842,9 +12985,7 @@ class Ui_MainWindow(object):
         # endif // QT_CONFIG(tooltip)
         self.label_300.setText(QCoreApplication.translate("MainWindow", "s", None))
         self.label_69.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Additional wait time before exposure", None
-            )
+            QCoreApplication.translate("MainWindow", "Additional wait time before exposure", None)
         )
         # if QT_CONFIG(tooltip)
         self.waitTimeExposure.setToolTip(
@@ -13863,15 +13004,9 @@ class Ui_MainWindow(object):
         self.fwtime.setToolTip("")
         # endif // QT_CONFIG(tooltip)
         self.fwtime.setText(QCoreApplication.translate("MainWindow", "-", None))
-        self.firmwareProductName_3.setText(
-            QCoreApplication.translate("MainWindow", "FW:", None)
-        )
-        self.firmwareProductName_4.setText(
-            QCoreApplication.translate("MainWindow", "Date:", None)
-        )
-        self.firmwareProductName_5.setText(
-            QCoreApplication.translate("MainWindow", "Time:", None)
-        )
+        self.firmwareProductName_3.setText(QCoreApplication.translate("MainWindow", "FW:", None))
+        self.firmwareProductName_4.setText(QCoreApplication.translate("MainWindow", "Date:", None))
+        self.firmwareProductName_5.setText(QCoreApplication.translate("MainWindow", "Time:", None))
         # if QT_CONFIG(tooltip)
         self.product.setToolTip("")
         # endif // QT_CONFIG(tooltip)
@@ -13893,21 +13028,15 @@ class Ui_MainWindow(object):
         # endif // QT_CONFIG(tooltip)
         self.vString.setText(QCoreApplication.translate("MainWindow", "-", None))
         self.GroupTelescopeReadout.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "Telescope information readout", None
-            )
+            QCoreApplication.translate("MainWindow", "Telescope information readout", None)
         )
         self.label_396.setText(QCoreApplication.translate("MainWindow", "mm", None))
-        self.label_394.setText(
-            QCoreApplication.translate("MainWindow", "Aperture", None)
-        )
+        self.label_394.setText(QCoreApplication.translate("MainWindow", "Aperture", None))
         self.label_395.setText(QCoreApplication.translate("MainWindow", "mm", None))
         self.copyFromTelescopeDriver.setText(
             QCoreApplication.translate("MainWindow", "Data from Driver", None)
         )
-        self.label_387.setText(
-            QCoreApplication.translate("MainWindow", "Focal length", None)
-        )
+        self.label_387.setText(QCoreApplication.translate("MainWindow", "Focal length", None))
         # if QT_CONFIG(tooltip)
         self.focalLength.setToolTip(
             QCoreApplication.translate(
@@ -13936,14 +13065,10 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.automaticTelescope.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Automatic takeover from driver", None
-            )
+            QCoreApplication.translate("MainWindow", "Automatic takeover from driver", None)
         )
         self.GroupClockSync.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "Clock sync from computer to mount", None
-            )
+            QCoreApplication.translate("MainWindow", "Clock sync from computer to mount", None)
         )
         # if QT_CONFIG(tooltip)
         self.syncTimeCont.setToolTip(
@@ -13990,9 +13115,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.syncTimeNone.setText(
-            QCoreApplication.translate("MainWindow", "Do not sync", None)
-        )
+        self.syncTimeNone.setText(QCoreApplication.translate("MainWindow", "Do not sync", None))
         self.settingsTabWidget.setTabText(
             self.settingsTabWidget.indexOf(self.MountRemote),
             QCoreApplication.translate("MainWindow", "Mount", None),
@@ -14003,12 +13126,8 @@ class Ui_MainWindow(object):
         self.label_99.setText(QCoreApplication.translate("MainWindow", "Radius", None))
         self.label_134.setText(QCoreApplication.translate("MainWindow", "m", None))
         self.label_122.setText(QCoreApplication.translate("MainWindow", "m", None))
-        self.label_108.setText(
-            QCoreApplication.translate("MainWindow", "East offset", None)
-        )
-        self.label_110.setText(
-            QCoreApplication.translate("MainWindow", "Vert offset", None)
-        )
+        self.label_108.setText(QCoreApplication.translate("MainWindow", "East offset", None))
+        self.label_110.setText(QCoreApplication.translate("MainWindow", "Vert offset", None))
         self.label_116.setText(QCoreApplication.translate("MainWindow", "m", None))
         # if QT_CONFIG(tooltip)
         self.useDomeGeometry.setToolTip(
@@ -14024,12 +13143,8 @@ class Ui_MainWindow(object):
         )
         self.label_118.setText(QCoreApplication.translate("MainWindow", "m", None))
         self.label_123.setText(QCoreApplication.translate("MainWindow", "m", None))
-        self.label_107.setText(
-            QCoreApplication.translate("MainWindow", "North offset", None)
-        )
-        self.label_135.setText(
-            QCoreApplication.translate("MainWindow", "GEM offset", None)
-        )
+        self.label_107.setText(QCoreApplication.translate("MainWindow", "North offset", None))
+        self.label_135.setText(QCoreApplication.translate("MainWindow", "GEM offset", None))
         # if QT_CONFIG(tooltip)
         self.domeNorthOffset.setToolTip(
             QCoreApplication.translate(
@@ -14073,9 +13188,7 @@ class Ui_MainWindow(object):
             QCoreApplication.translate("MainWindow", "Automatic from driver", None)
         )
         self.label_136.setText(QCoreApplication.translate("MainWindow", "m", None))
-        self.label_137.setText(
-            QCoreApplication.translate("MainWindow", "Lateral offset", None)
-        )
+        self.label_137.setText(QCoreApplication.translate("MainWindow", "Lateral offset", None))
         # if QT_CONFIG(tooltip)
         self.domeClearanceZenith.setToolTip(
             QCoreApplication.translate(
@@ -14117,9 +13230,7 @@ class Ui_MainWindow(object):
             QCoreApplication.translate("MainWindow", "Clearance from zenith", None)
         )
         self.label_147.setText(QCoreApplication.translate("MainWindow", "m", None))
-        self.label_139.setText(
-            QCoreApplication.translate("MainWindow", "Clear opening", None)
-        )
+        self.label_139.setText(QCoreApplication.translate("MainWindow", "Clear opening", None))
         self.label_145.setText(QCoreApplication.translate("MainWindow", "m", None))
         # if QT_CONFIG(tooltip)
         self.domeOpeningHysteresis.setToolTip(
@@ -14155,70 +13266,50 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.label_100.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Waiting time after dome finished slew", None
-            )
+            QCoreApplication.translate("MainWindow", "Waiting time after dome finished slew", None)
         )
         self.label_314.setText(QCoreApplication.translate("MainWindow", "s", None))
-        self.picDome1.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.picDome1.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.tabDomeExplain.setTabText(
             self.tabDomeExplain.indexOf(self.tab_9),
             QCoreApplication.translate("MainWindow", "1", None),
         )
-        self.picDome2.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.picDome2.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.tabDomeExplain.setTabText(
             self.tabDomeExplain.indexOf(self.tab_10),
             QCoreApplication.translate("MainWindow", "2", None),
         )
-        self.picDome3.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.picDome3.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.tabDomeExplain.setTabText(
             self.tabDomeExplain.indexOf(self.tab_11),
             QCoreApplication.translate("MainWindow", "3", None),
         )
-        self.picDome4.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.picDome4.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.tabDomeExplain.setTabText(
             self.tabDomeExplain.indexOf(self.tab_12),
             QCoreApplication.translate("MainWindow", "4", None),
         )
-        self.picDome5.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.picDome5.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.tabDomeExplain.setTabText(
             self.tabDomeExplain.indexOf(self.tab_14),
             QCoreApplication.translate("MainWindow", "5", None),
         )
-        self.picDome6.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.picDome6.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.tabDomeExplain.setTabText(
             self.tabDomeExplain.indexOf(self.tab_15),
             QCoreApplication.translate("MainWindow", "6", None),
         )
-        self.picDome7.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.picDome7.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.tabDomeExplain.setTabText(
             self.tabDomeExplain.indexOf(self.tab_16),
             QCoreApplication.translate("MainWindow", "7", None),
         )
-        self.picDome8.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.picDome8.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.tabDomeExplain.setTabText(
             self.tabDomeExplain.indexOf(self.tab_4),
             QCoreApplication.translate("MainWindow", "8", None),
         )
-        self.picDome9.setText(
-            QCoreApplication.translate("MainWindow", "TextLabel", None)
-        )
+        self.picDome9.setText(QCoreApplication.translate("MainWindow", "TextLabel", None))
         self.tabDomeExplain.setTabText(
             self.tabDomeExplain.indexOf(self.tab_5),
             QCoreApplication.translate("MainWindow", "9", None),
@@ -14266,9 +13357,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.posText3.setText("")
-        self.label_132.setText(
-            QCoreApplication.translate("MainWindow", "Azimuth", None)
-        )
+        self.label_132.setText(QCoreApplication.translate("MainWindow", "Azimuth", None))
         # if QT_CONFIG(tooltip)
         self.posText5.setToolTip(
             QCoreApplication.translate("MainWindow", "Button text park menu 5", None)
@@ -14289,9 +13378,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.posText7.setText("")
-        self.label_97.setText(
-            QCoreApplication.translate("MainWindow", "Button Text", None)
-        )
+        self.label_97.setText(QCoreApplication.translate("MainWindow", "Button Text", None))
         self.label_246.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
         self.label_251.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
         # if QT_CONFIG(tooltip)
@@ -14304,9 +13391,7 @@ class Ui_MainWindow(object):
         self.label_245.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
         self.label_95.setText(QCoreApplication.translate("MainWindow", "6", None))
         self.label_44.setText(QCoreApplication.translate("MainWindow", "3", None))
-        self.label_94.setText(
-            QCoreApplication.translate("MainWindow", "Altitude", None)
-        )
+        self.label_94.setText(QCoreApplication.translate("MainWindow", "Altitude", None))
         self.label_248.setText(QCoreApplication.translate("MainWindow", "\u00b0", None))
         # if QT_CONFIG(tooltip)
         self.posText6.setToolTip(
@@ -14450,9 +13535,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButtonText2.setText(
-            QCoreApplication.translate("MainWindow", "relay 3", None)
-        )
+        self.relayButtonText2.setText(QCoreApplication.translate("MainWindow", "relay 3", None))
         # if QT_CONFIG(tooltip)
         self.relayButtonText5.setToolTip(
             QCoreApplication.translate(
@@ -14462,9 +13545,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButtonText5.setText(
-            QCoreApplication.translate("MainWindow", "relay 6", None)
-        )
+        self.relayButtonText5.setText(QCoreApplication.translate("MainWindow", "relay 6", None))
         # if QT_CONFIG(tooltip)
         self.relayButtonText7.setToolTip(
             QCoreApplication.translate(
@@ -14474,9 +13555,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButtonText7.setText(
-            QCoreApplication.translate("MainWindow", "relay 8", None)
-        )
+        self.relayButtonText7.setText(QCoreApplication.translate("MainWindow", "relay 8", None))
         self.label_220.setText(QCoreApplication.translate("MainWindow", "4", None))
         self.label_129.setText(QCoreApplication.translate("MainWindow", "3", None))
         self.label_211.setText(QCoreApplication.translate("MainWindow", "2", None))
@@ -14489,9 +13568,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButtonText4.setText(
-            QCoreApplication.translate("MainWindow", "relay 5", None)
-        )
+        self.relayButtonText4.setText(QCoreApplication.translate("MainWindow", "relay 5", None))
         # if QT_CONFIG(tooltip)
         self.relayButtonText1.setToolTip(
             QCoreApplication.translate(
@@ -14501,9 +13578,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButtonText1.setText(
-            QCoreApplication.translate("MainWindow", "relay 2", None)
-        )
+        self.relayButtonText1.setText(QCoreApplication.translate("MainWindow", "relay 2", None))
         # if QT_CONFIG(tooltip)
         self.relayButtonText6.setToolTip(
             QCoreApplication.translate(
@@ -14513,19 +13588,13 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButtonText6.setText(
-            QCoreApplication.translate("MainWindow", "relay 7", None)
-        )
+        self.relayButtonText6.setText(QCoreApplication.translate("MainWindow", "relay 7", None))
         self.label_255.setText(QCoreApplication.translate("MainWindow", "8", None))
         self.label_56.setText(QCoreApplication.translate("MainWindow", "Relay", None))
         self.label_199.setText(QCoreApplication.translate("MainWindow", "7", None))
-        self.label_198.setText(
-            QCoreApplication.translate("MainWindow", "Function", None)
-        )
+        self.label_198.setText(QCoreApplication.translate("MainWindow", "Function", None))
         self.label_43.setText(QCoreApplication.translate("MainWindow", "1", None))
-        self.label_45.setText(
-            QCoreApplication.translate("MainWindow", "Button Text", None)
-        )
+        self.label_45.setText(QCoreApplication.translate("MainWindow", "Button Text", None))
         # if QT_CONFIG(tooltip)
         self.relayButtonText3.setToolTip(
             QCoreApplication.translate(
@@ -14535,9 +13604,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButtonText3.setText(
-            QCoreApplication.translate("MainWindow", "relay 4", None)
-        )
+        self.relayButtonText3.setText(QCoreApplication.translate("MainWindow", "relay 4", None))
         # if QT_CONFIG(tooltip)
         self.relayButtonText0.setToolTip(
             QCoreApplication.translate(
@@ -14547,18 +13614,14 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.relayButtonText0.setText(
-            QCoreApplication.translate("MainWindow", "relay 1", None)
-        )
+        self.relayButtonText0.setText(QCoreApplication.translate("MainWindow", "relay 1", None))
         self.label_256.setText(QCoreApplication.translate("MainWindow", "6", None))
         self.settingsTabWidget.setTabText(
             self.settingsTabWidget.indexOf(self.RelaySett),
             QCoreApplication.translate("MainWindow", "Relay", None),
         )
         self.addProfileGroup.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "Add profile: data selection", None
-            )
+            QCoreApplication.translate("MainWindow", "Add profile: data selection", None)
         )
         # if QT_CONFIG(tooltip)
         self.profileDevices.setToolTip(
@@ -14578,9 +13641,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.profileHemisHorizon.setText(
-            QCoreApplication.translate(
-                "MainWindow", "Hemisphere and horizon data", None
-            )
+            QCoreApplication.translate("MainWindow", "Hemisphere and horizon data", None)
         )
         # if QT_CONFIG(tooltip)
         self.profileVideo.setToolTip(
@@ -14619,9 +13680,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.profileImaging.setText(
-            QCoreApplication.translate("MainWindow", "Imaging data", None)
-        )
+        self.profileImaging.setText(QCoreApplication.translate("MainWindow", "Imaging data", None))
         # if QT_CONFIG(tooltip)
         self.profileModeling.setToolTip(
             QCoreApplication.translate(
@@ -14644,9 +13703,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.label_217.setText(
-            QCoreApplication.translate("MainWindow", "Run finished", None)
-        )
+        self.label_217.setText(QCoreApplication.translate("MainWindow", "Run finished", None))
         # if QT_CONFIG(tooltip)
         self.soundDomeSlewFinished.setToolTip(
             QCoreApplication.translate(
@@ -14683,9 +13740,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.label_219.setText(
-            QCoreApplication.translate("MainWindow", "Image saved", None)
-        )
+        self.label_219.setText(QCoreApplication.translate("MainWindow", "Image saved", None))
         # if QT_CONFIG(tooltip)
         self.soundImageSaved.setToolTip(
             QCoreApplication.translate(
@@ -14695,9 +13750,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.label_223.setText(
-            QCoreApplication.translate("MainWindow", "Image solved", None)
-        )
+        self.label_223.setText(QCoreApplication.translate("MainWindow", "Image solved", None))
         # if QT_CONFIG(tooltip)
         self.soundImageSolved.setToolTip(
             QCoreApplication.translate(
@@ -14707,9 +13760,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.label_225.setText(
-            QCoreApplication.translate("MainWindow", "Connection lost", None)
-        )
+        self.label_225.setText(QCoreApplication.translate("MainWindow", "Connection lost", None))
         self.label_226.setText(
             QCoreApplication.translate("MainWindow", "Sat tracking starts", None)
         )
@@ -14758,9 +13809,7 @@ class Ui_MainWindow(object):
             )
         )
         self.label_33.setText(QCoreApplication.translate("MainWindow", "days", None))
-        self.UpdaterGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Updater", None)
-        )
+        self.UpdaterGroup.setTitle(QCoreApplication.translate("MainWindow", "Updater", None))
         # if QT_CONFIG(tooltip)
         self.installVersion.setToolTip(
             QCoreApplication.translate(
@@ -14773,12 +13822,8 @@ class Ui_MainWindow(object):
         self.installVersion.setText(
             QCoreApplication.translate("MainWindow", "Start \n" "Updater", None)
         )
-        self.label_23.setText(
-            QCoreApplication.translate("MainWindow", "Actual version", None)
-        )
-        self.label_38.setText(
-            QCoreApplication.translate("MainWindow", "Available version", None)
-        )
+        self.label_23.setText(QCoreApplication.translate("MainWindow", "Actual version", None))
+        self.label_38.setText(QCoreApplication.translate("MainWindow", "Available version", None))
         # if QT_CONFIG(tooltip)
         self.versionBeta.setToolTip(
             QCoreApplication.translate(
@@ -14824,13 +13869,9 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.openPDF.setText(
-            QCoreApplication.translate("MainWindow", "Show documentation", None)
-        )
+        self.openPDF.setText(QCoreApplication.translate("MainWindow", "Show documentation", None))
         self.CopyrightGroup_2.setTitle(
-            QCoreApplication.translate(
-                "MainWindow", "MountWizzard4 (C) 2019-2024 MWORION", None
-            )
+            QCoreApplication.translate("MainWindow", "MountWizzard4 (C) 2019-2024 MWORION", None)
         )
         self.textBrowser_2.setHtml(
             QCoreApplication.translate(
@@ -14846,9 +13887,7 @@ class Ui_MainWindow(object):
                 None,
             )
         )
-        self.LoglevelGroup.setTitle(
-            QCoreApplication.translate("MainWindow", "Logging", None)
-        )
+        self.LoglevelGroup.setTitle(QCoreApplication.translate("MainWindow", "Logging", None))
         # if QT_CONFIG(tooltip)
         self.loglevelDebug.setToolTip(
             QCoreApplication.translate(
@@ -14856,9 +13895,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.loglevelDebug.setText(
-            QCoreApplication.translate("MainWindow", "Debug", None)
-        )
+        self.loglevelDebug.setText(QCoreApplication.translate("MainWindow", "Debug", None))
         # if QT_CONFIG(tooltip)
         self.loglevelStandard.setToolTip(
             QCoreApplication.translate(
@@ -14866,9 +13903,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.loglevelStandard.setText(
-            QCoreApplication.translate("MainWindow", "Standard", None)
-        )
+        self.loglevelStandard.setText(QCoreApplication.translate("MainWindow", "Standard", None))
         # if QT_CONFIG(tooltip)
         self.loglevelTrace.setToolTip(
             QCoreApplication.translate(
@@ -14878,23 +13913,15 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.loglevelTrace.setText(
-            QCoreApplication.translate("MainWindow", "Trace", None)
-        )
+        self.loglevelTrace.setText(QCoreApplication.translate("MainWindow", "Trace", None))
         self.label_63.setText(QCoreApplication.translate("MainWindow", "Level:", None))
         self.settingsTabWidget.setTabText(
             self.settingsTabWidget.indexOf(self.Update),
             QCoreApplication.translate("MainWindow", "Update, Logging", None),
         )
-        self.GroupGuiAddOns.setTitle(
-            QCoreApplication.translate("MainWindow", "GUI add-ons", None)
-        )
-        self.label_85.setText(
-            QCoreApplication.translate("MainWindow", "Window Color Set", None)
-        )
-        self.colorSet.setItemText(
-            0, QCoreApplication.translate("MainWindow", "Main Theme", None)
-        )
+        self.GroupGuiAddOns.setTitle(QCoreApplication.translate("MainWindow", "GUI add-ons", None))
+        self.label_85.setText(QCoreApplication.translate("MainWindow", "Window Color Set", None))
+        self.colorSet.setItemText(0, QCoreApplication.translate("MainWindow", "Main Theme", None))
         self.colorSet.setItemText(
             1, QCoreApplication.translate("MainWindow", "Red Night Theme", None)
         )
@@ -14932,12 +13959,8 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.tabsMovable.setText(
-            QCoreApplication.translate("MainWindow", "Tabs movable", None)
-        )
-        self.big.setText(
-            QCoreApplication.translate("MainWindow", "Show big buttons", None)
-        )
+        self.tabsMovable.setText(QCoreApplication.translate("MainWindow", "Tabs movable", None))
+        self.big.setText(QCoreApplication.translate("MainWindow", "Show big buttons", None))
         # if QT_CONFIG(tooltip)
         self.resetTabOrder.setToolTip(
             QCoreApplication.translate(
@@ -14950,9 +13973,7 @@ class Ui_MainWindow(object):
         self.resetTabOrder.setText(
             QCoreApplication.translate("MainWindow", "Reset tab order @ start", None)
         )
-        self.GroupAlamanc.setTitle(
-            QCoreApplication.translate("MainWindow", "Almanac", None)
-        )
+        self.GroupAlamanc.setTitle(QCoreApplication.translate("MainWindow", "Almanac", None))
         self.almanacPrediction.setItemText(
             0, QCoreApplication.translate("MainWindow", "1 month", None)
         )
@@ -14990,9 +14011,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.automateGroup_2.setTitle(
-            QCoreApplication.translate("MainWindow", "Time units", None)
-        )
+        self.automateGroup_2.setTitle(QCoreApplication.translate("MainWindow", "Time units", None))
         self.label_163.setText(
             QCoreApplication.translate("MainWindow", "Sat, Environ and Almanac", None)
         )
@@ -15015,9 +14034,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.unitTimeLocal.setText(
-            QCoreApplication.translate("MainWindow", "Local", None)
-        )
+        self.unitTimeLocal.setText(QCoreApplication.translate("MainWindow", "Local", None))
         # if QT_CONFIG(tooltip)
         self.gameControllerGroup.setToolTip(
             QCoreApplication.translate(
@@ -15079,9 +14096,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showTabTools.setText(
-            QCoreApplication.translate("MainWindow", "Show Tools", None)
-        )
+        self.showTabTools.setText(QCoreApplication.translate("MainWindow", "Show Tools", None))
         # if QT_CONFIG(tooltip)
         self.showTabDome.setToolTip(
             QCoreApplication.translate(
@@ -15089,9 +14104,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showTabDome.setText(
-            QCoreApplication.translate("MainWindow", "Show Dome", None)
-        )
+        self.showTabDome.setText(QCoreApplication.translate("MainWindow", "Show Dome", None))
         # if QT_CONFIG(tooltip)
         self.showTabParkPos.setToolTip(
             QCoreApplication.translate(
@@ -15099,9 +14112,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showTabParkPos.setText(
-            QCoreApplication.translate("MainWindow", "Show ParkPos", None)
-        )
+        self.showTabParkPos.setText(QCoreApplication.translate("MainWindow", "Show ParkPos", None))
         # if QT_CONFIG(tooltip)
         self.showTabProfile.setToolTip(
             QCoreApplication.translate(
@@ -15119,9 +14130,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showTabAlmanac.setText(
-            QCoreApplication.translate("MainWindow", "Show Almanac", None)
-        )
+        self.showTabAlmanac.setText(QCoreApplication.translate("MainWindow", "Show Almanac", None))
         # if QT_CONFIG(tooltip)
         self.showTabEnviron.setToolTip(
             QCoreApplication.translate(
@@ -15129,9 +14138,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showTabEnviron.setText(
-            QCoreApplication.translate("MainWindow", "Show Environ", None)
-        )
+        self.showTabEnviron.setText(QCoreApplication.translate("MainWindow", "Show Environ", None))
         self.settingsTabWidget.setTabText(
             self.settingsTabWidget.indexOf(self.Gui),
             QCoreApplication.translate("MainWindow", "User Interface", None),
@@ -15140,9 +14147,7 @@ class Ui_MainWindow(object):
             self.mainTabWidget.indexOf(self.Settings),
             QCoreApplication.translate("MainWindow", "Settings", None),
         )
-        self.statusOnline.setTitle(
-            QCoreApplication.translate("MainWindow", "Status", None)
-        )
+        self.statusOnline.setTitle(QCoreApplication.translate("MainWindow", "Status", None))
         # if QT_CONFIG(tooltip)
         self.plateSolveText.setToolTip(
             QCoreApplication.translate(
@@ -15155,9 +14160,7 @@ class Ui_MainWindow(object):
         self.plateSolveText.setText("")
         # if QT_CONFIG(tooltip)
         self.statusText.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Status feedback from mount ", None
-            )
+            QCoreApplication.translate("MainWindow", "Status feedback from mount ", None)
         )
         # endif // QT_CONFIG(tooltip)
         self.statusText.setText(QCoreApplication.translate("MainWindow", "-", None))
@@ -15182,9 +14185,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.domeConnected.setText(
-            QCoreApplication.translate("MainWindow", "Dome", None)
-        )
+        self.domeConnected.setText(QCoreApplication.translate("MainWindow", "Dome", None))
         # if QT_CONFIG(tooltip)
         self.openImageW.setToolTip(
             QCoreApplication.translate(
@@ -15204,9 +14205,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.cameraConnected.setText(
-            QCoreApplication.translate("MainWindow", "Camera", None)
-        )
+        self.cameraConnected.setText(QCoreApplication.translate("MainWindow", "Camera", None))
         # if QT_CONFIG(tooltip)
         self.openSatelliteW.setToolTip(
             QCoreApplication.translate(
@@ -15216,9 +14215,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.openSatelliteW.setText(
-            QCoreApplication.translate("MainWindow", "Satellite", None)
-        )
+        self.openSatelliteW.setText(QCoreApplication.translate("MainWindow", "Satellite", None))
         # if QT_CONFIG(tooltip)
         self.openMeasureW.setToolTip(
             QCoreApplication.translate(
@@ -15228,9 +14225,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.openMeasureW.setText(
-            QCoreApplication.translate("MainWindow", "Measure", None)
-        )
+        self.openMeasureW.setText(QCoreApplication.translate("MainWindow", "Measure", None))
         # if QT_CONFIG(tooltip)
         self.plateSolveConnected.setToolTip(
             QCoreApplication.translate(
@@ -15240,9 +14235,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.plateSolveConnected.setText(
-            QCoreApplication.translate("MainWindow", "Solver", None)
-        )
+        self.plateSolveConnected.setText(QCoreApplication.translate("MainWindow", "Solver", None))
         # if QT_CONFIG(tooltip)
         self.cameraText.setToolTip(
             QCoreApplication.translate(
@@ -15262,9 +14255,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.mountConnected.setText(
-            QCoreApplication.translate("MainWindow", "Mount", None)
-        )
+        self.mountConnected.setText(QCoreApplication.translate("MainWindow", "Mount", None))
         self.mountConnected.setProperty(
             "color", QCoreApplication.translate("MainWindow", "gray", None)
         )
@@ -15277,9 +14268,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.openHemisphereW.setText(
-            QCoreApplication.translate("MainWindow", "Hemis", None)
-        )
+        self.openHemisphereW.setText(QCoreApplication.translate("MainWindow", "Hemis", None))
         # if QT_CONFIG(tooltip)
         self.openMessageW.setToolTip(
             QCoreApplication.translate(
@@ -15289,9 +14278,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.openMessageW.setText(
-            QCoreApplication.translate("MainWindow", "Message", None)
-        )
+        self.openMessageW.setText(QCoreApplication.translate("MainWindow", "Message", None))
         # if QT_CONFIG(tooltip)
         self.domeText.setToolTip(
             QCoreApplication.translate(
@@ -15312,20 +14299,14 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.openKeypadW.setText(
-            QCoreApplication.translate("MainWindow", "Keypad", None)
-        )
+        self.openKeypadW.setText(QCoreApplication.translate("MainWindow", "Keypad", None))
         self.statusTime.setTitle(QCoreApplication.translate("MainWindow", "Time", None))
         # if QT_CONFIG(tooltip)
         self.timeComputer.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow", "Shows the actual time of the computer", None
-            )
+            QCoreApplication.translate("MainWindow", "Shows the actual time of the computer", None)
         )
         # endif // QT_CONFIG(tooltip)
-        self.timeComputer.setText(
-            QCoreApplication.translate("MainWindow", "time", None)
-        )
+        self.timeComputer.setText(QCoreApplication.translate("MainWindow", "time", None))
         # if QT_CONFIG(tooltip)
         self.timeUTC.setToolTip(
             QCoreApplication.translate(
@@ -15347,9 +14328,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.saveConfigAs.setText(
-            QCoreApplication.translate("MainWindow", "Save as", None)
-        )
+        self.saveConfigAs.setText(QCoreApplication.translate("MainWindow", "Save as", None))
         # if QT_CONFIG(tooltip)
         self.saveConfigQuit.setToolTip(
             QCoreApplication.translate(
@@ -15359,9 +14338,7 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.saveConfigQuit.setText(
-            QCoreApplication.translate("MainWindow", "Quit/Save", None)
-        )
+        self.saveConfigQuit.setText(QCoreApplication.translate("MainWindow", "Quit/Save", None))
         # if QT_CONFIG(tooltip)
         self.loadFrom.setToolTip(
             QCoreApplication.translate("MainWindow", "Loads a profile from disk", None)

@@ -183,9 +183,7 @@ class Dome:
     defaultConfig = {"framework": "", "frameworks": {}}
 
     @staticmethod
-    def slewDome(
-        altitude=None, azimuth=None, piersideT=None, haT=None, decT=None, lat=None
-    ):
+    def slewDome(altitude=None, azimuth=None, piersideT=None, haT=None, decT=None, lat=None):
         return
 
     @staticmethod
@@ -859,9 +857,7 @@ class Mount(QObject):
         AltTarget = Angle(degrees=0)
         pierside = "E"
         timeSidereal = Angle(hours=12)
-        location = wgs84.latlon(
-            latitude_degrees=20, longitude_degrees=10, elevation_m=500
-        )
+        location = wgs84.latlon(latitude_degrees=20, longitude_degrees=10, elevation_m=500)
         ts = load.timescale(builtin=True)
         timeJD = ts.tt_jd(2459580.5)
         timeDiff = 0

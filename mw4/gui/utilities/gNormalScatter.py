@@ -44,9 +44,7 @@ class NormalScatter(PlotBase):
         """
         self.p[0].clear()
         self.p[0].showAxes(True, showValues=True)
-        self.scatterItem = pg.ScatterPlotItem(
-            hoverable=True, hoverSize=10, hoverPen=self.pen
-        )
+        self.scatterItem = pg.ScatterPlotItem(hoverable=True, hoverSize=10, hoverPen=self.pen)
         self.p[0].addItem(self.scatterItem)
         self.defRange = kwargs.get("range", {})
 

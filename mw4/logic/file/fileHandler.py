@@ -176,9 +176,7 @@ class FileHandler:
         self.signals.imageLoaded.emit()
         return True
 
-    def loadImage(
-        self, imagePath: str = "", flipH: bool = False, flipV: bool = False
-    ) -> bool:
+    def loadImage(self, imagePath: str = "", flipH: bool = False, flipV: bool = False) -> bool:
         """ """
         if not os.path.isfile(imagePath):
             return False

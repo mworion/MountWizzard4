@@ -41,9 +41,7 @@ class CameraAlpaca(AlpacaClass):
         self.getAndStoreAlpacaProperty("cameraysize", "CCD_INFO.CCD_MAX_Y")
         self.getAndStoreAlpacaProperty("canfastreadout", "CAN_FAST")
         self.getAndStoreAlpacaProperty("canabortexposure", "CAN_ABORT")
-        self.getAndStoreAlpacaProperty(
-            "cansetccdtemperature", "CAN_SET_CCD_TEMPERATURE"
-        )
+        self.getAndStoreAlpacaProperty("cansetccdtemperature", "CAN_SET_CCD_TEMPERATURE")
         self.getAndStoreAlpacaProperty("cangetcoolerpower", "CAN_GET_COOLER_POWER")
         self.getAndStoreAlpacaProperty("pixelsizex", "CCD_INFO.CCD_PIXEL_SIZE_X")
         self.getAndStoreAlpacaProperty("pixelsizey", "CCD_INFO.CCD_PIXEL_SIZE_Y")
@@ -69,13 +67,9 @@ class CameraAlpaca(AlpacaClass):
         self.getAndStoreAlpacaProperty(
             "fastreadout", "READOUT_QUALITY.QUALITY_LOW", "READOUT_QUALITY.QUALITY_HIGH"
         )
-        self.getAndStoreAlpacaProperty(
-            "ccdtemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"
-        )
+        self.getAndStoreAlpacaProperty("ccdtemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
         self.getAndStoreAlpacaProperty("cooleron", "CCD_COOLER.COOLER_ON")
-        self.getAndStoreAlpacaProperty(
-            "coolerpower", "CCD_COOLER_POWER.CCD_COOLER_VALUE"
-        )
+        self.getAndStoreAlpacaProperty("coolerpower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
 
     def sendDownloadMode(self) -> None:
         """ """
@@ -95,9 +89,7 @@ class CameraAlpaca(AlpacaClass):
         self.setAlpacaProperty("starty", StartY=self.parent.posYASCOM)
         self.setAlpacaProperty("numx", NumX=self.parent.widthASCOM)
         self.setAlpacaProperty("numy", NumY=self.parent.heightASCOM)
-        self.setAlpacaProperty(
-            "startexposure", Duration=self.parent.exposureTime, Light=True
-        )
+        self.setAlpacaProperty("startexposure", Duration=self.parent.exposureTime, Light=True)
 
         self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
         self.signals.exposed.emit()

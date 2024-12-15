@@ -39,9 +39,7 @@ def function():
         pathToData=Path(os.getcwd() + "/data"),
         verbose=True,
     )
-    m.obsSite.location = wgs84.latlon(
-        latitude_degrees=90, longitude_degrees=11, elevation_m=500
-    )
+    m.obsSite.location = wgs84.latlon(latitude_degrees=90, longitude_degrees=11, elevation_m=500)
     yield m
 
 

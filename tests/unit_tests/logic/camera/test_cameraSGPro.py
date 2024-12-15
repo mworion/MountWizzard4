@@ -158,9 +158,7 @@ def test_workerExpose_2(function):
 def test_workerExpose_3(function, mocked_sleepAndEvents):
     function.deviceName = "test"
     function.parent.exposing = True
-    with mock.patch.object(
-        function, "sgCaptureImage", return_value=(True, {"Receipt": "123"})
-    ):
+    with mock.patch.object(function, "sgCaptureImage", return_value=(True, {"Receipt": "123"})):
         with mock.patch.object(function.parent, "waitStart"):
             with mock.patch.object(function.parent, "waitExposed"):
                 with mock.patch.object(function.parent, "waitDownload"):
@@ -176,9 +174,7 @@ def test_workerExpose_3(function, mocked_sleepAndEvents):
 def test_workerExpose_4(function, mocked_sleepAndEvents):
     function.deviceName = "test"
     function.parent.exposing = False
-    with mock.patch.object(
-        function, "sgCaptureImage", return_value=(True, {"Receipt": "123"})
-    ):
+    with mock.patch.object(function, "sgCaptureImage", return_value=(True, {"Receipt": "123"})):
         with mock.patch.object(function.parent, "waitStart"):
             with mock.patch.object(function.parent, "waitExposed"):
                 with mock.patch.object(function.parent, "waitDownload"):

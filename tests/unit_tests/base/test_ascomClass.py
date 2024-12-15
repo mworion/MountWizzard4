@@ -311,9 +311,7 @@ def test_startCommunication_1(function):
 
 def test_startCommunication_2(function):
     function.deviceName = "test"
-    with mock.patch.object(
-        win32com.client.dynamic, "Dispatch", side_effect=Exception()
-    ):
+    with mock.patch.object(win32com.client.dynamic, "Dispatch", side_effect=Exception()):
         suc = function.startCommunication()
         assert not suc
 

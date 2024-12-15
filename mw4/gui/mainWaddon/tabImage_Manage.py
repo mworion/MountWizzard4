@@ -176,9 +176,7 @@ class ImageManage(MWidget):
 
     def updateCooler(self):
         """ """
-        coolerTemp = self.app.camera.data.get(
-            "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0
-        )
+        coolerTemp = self.app.camera.data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0)
         coolerPower = self.app.camera.data.get("CCD_COOLER_POWER.CCD_COOLER_VALUE", 0)
         coolerOn = self.app.camera.data.get("CCD_COOLER.COOLER_ON", False)
         self.guiSetText(self.ui.coolerTemp, "3.1f", coolerTemp)
@@ -200,9 +198,7 @@ class ImageManage(MWidget):
 
     def updateFocuser(self):
         """ """
-        focus = self.app.focuser.data.get(
-            "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0
-        )
+        focus = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         self.guiSetText(self.ui.focuserPosition, "6.0f", focus)
 
     def updateImagingParam(self):
@@ -254,9 +250,7 @@ class ImageManage(MWidget):
         if not canSetCCDTemp:
             return False
 
-        actValue = self.app.camera.data.get(
-            "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", None
-        )
+        actValue = self.app.camera.data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", None)
         if actValue is None:
             return False
 
@@ -284,9 +278,7 @@ class ImageManage(MWidget):
         offsetMax = self.app.camera.data.get("CCD_OFFSET.OFFSET_MAX")
         if offsetList is not None:
             offsetList = list(offsetList)
-            value, ok = dlg.getItem(
-                self, "Set offset", "Offset entry: ", offsetList, actValue
-            )
+            value, ok = dlg.getItem(self, "Set offset", "Offset entry: ", offsetList, actValue)
             value = offsetList.index(value)
 
         elif offsetMin is not None and offsetMax is not None:
@@ -321,9 +313,7 @@ class ImageManage(MWidget):
         gainMax = self.app.camera.data.get("CCD_GAIN.GAIN_MAX")
         if gainList is not None:
             gainList = list(gainList)
-            value, ok = dlg.getItem(
-                self, "Set gain", "Gain entry: ", gainList, actValue
-            )
+            value, ok = dlg.getItem(self, "Set gain", "Gain entry: ", gainList, actValue)
             value = gainList.index(value)
 
         elif gainMin is not None and gainMax is not None:
@@ -355,9 +345,7 @@ class ImageManage(MWidget):
             return False
         actValue = int(actValue)
 
-        availNames = list(
-            data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key
-        )
+        availNames = list(data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key)
         numberFilter = len(availNames)
         isAlpaca = "FILTER_NAME.FILTER_SLOT_NAME_0" in data
         if isAlpaca:
@@ -391,14 +379,10 @@ class ImageManage(MWidget):
             return False
         actValue = int(actValue)
 
-        availNames = list(
-            data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key
-        )
+        availNames = list(data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key)
 
         dlg = QInputDialog()
-        value, ok = dlg.getItem(
-            self, "Set filter", "Filter Name: ", availNames, actValue - 1
-        )
+        value, ok = dlg.getItem(self, "Set filter", "Filter Name: ", availNames, actValue - 1)
         self.log.debug(f"FilterSelected: [{value}], FilterList: [{availNames}]")
         if not ok:
             return False
@@ -457,9 +441,7 @@ class ImageManage(MWidget):
             self.changeStyleDynamic(self.ui.coverLightOn, "running", False)
             self.changeStyleDynamic(self.ui.coverLightOff, "running", True)
 
-        value = self.app.cover.data.get(
-            "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"
-        )
+        value = self.app.cover.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
         self.guiSetText(self.ui.coverLightIntensity, "3.0f", value)
         return True
 
@@ -491,9 +473,7 @@ class ImageManage(MWidget):
         newPos = pos - step
         suc = self.app.focuser.move(position=newPos)
         if not suc:
-            self.msg.emit(
-                2, "Setting", "Imaging", "Focuser move in could not be executed"
-            )
+            self.msg.emit(2, "Setting", "Imaging", "Focuser move in could not be executed")
         return suc
 
     def moveFocuserOut(self):
@@ -503,9 +483,7 @@ class ImageManage(MWidget):
         newPos = pos + step
         suc = self.app.focuser.move(position=newPos)
         if not suc:
-            self.msg.emit(
-                2, "Setting", "Imaging", "Focuser move out could not be executed"
-            )
+            self.msg.emit(2, "Setting", "Imaging", "Focuser move out could not be executed")
         return suc
 
     def haltFocuser(self):
@@ -531,9 +509,7 @@ class ImageManage(MWidget):
 
     def setLightIntensity(self):
         """ """
-        actValue = self.app.cover.data.get(
-            "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"
-        )
+        actValue = self.app.cover.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
         if actValue is None:
             return False
         maxBrightness = self.app.cover.data.get(
@@ -632,9 +608,7 @@ class ImageManage(MWidget):
 
         suc = self.app.dome.openShutter()
         if not suc:
-            self.msg.emit(
-                2, "Dome", "Command", "Dome open shutter could not be executed"
-            )
+            self.msg.emit(2, "Dome", "Command", "Dome open shutter could not be executed")
         return suc
 
     def domeCloseShutter(self):
@@ -644,9 +618,7 @@ class ImageManage(MWidget):
 
         suc = self.app.dome.closeShutter()
         if not suc:
-            self.msg.emit(
-                2, "Dome", "Command", "Dome close shutter could not be executed"
-            )
+            self.msg.emit(2, "Dome", "Command", "Dome close shutter could not be executed")
         return suc
 
     def domeMoveGameController(self, turnVal, openVal):

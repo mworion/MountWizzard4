@@ -64,9 +64,7 @@ class Astrometry(object):
         """ """
         if platform.system() == "Darwin":
             home = os.environ.get("HOME", "")
-            self.appPath = Path(
-                "/Applications/KStars.app/Contents/MacOS/astrometry/bin"
-            )
+            self.appPath = Path("/Applications/KStars.app/Contents/MacOS/astrometry/bin")
             self.indexPath = Path(home + "/Library/Application Support/Astrometry")
 
         elif platform.system() == "Linux":
@@ -111,9 +109,7 @@ class Astrometry(object):
         self.log.debug(f"Run {delta}s, {stdoutText}")
         return self.process.returncode == 0
 
-    def runSolveField(
-        self, binPath: Path, configPath: Path, tempPath: Path, options: list
-    ):
+    def runSolveField(self, binPath: Path, configPath: Path, tempPath: Path, options: list):
         """ """
         runnable = [
             binPath,
@@ -173,9 +169,7 @@ class Astrometry(object):
         if wcsPath.is_file():
             os.remove(wcsPath)
 
-        suc = self.runImage2xy(
-            binPath=binPathImage2xy, tempPath=tempPath, imagePath=imagePath
-        )
+        suc = self.runImage2xy(binPath=binPathImage2xy, tempPath=tempPath, imagePath=imagePath)
         if not suc:
             self.log.warning(f"IMAGE2XY error in [{imagePath}]")
             self.result["message"] = "image2xy failed"
@@ -224,9 +218,7 @@ class Astrometry(object):
 
         wcsHeader = getImageHeader(imagePath=wcsPath)
         imageHeader = getImageHeader(imagePath=imagePath)
-        solution = getSolutionFromWCSHeader(
-            wcsHeader=wcsHeader, imageHeader=imageHeader
-        )
+        solution = getSolutionFromWCSHeader(wcsHeader=wcsHeader, imageHeader=imageHeader)
 
         if updateHeader:
             updateImageFileHeaderWithSolution(imagePath, solution)

@@ -117,9 +117,7 @@ def test_getFileFromUrl_3(function):
 
 def test_unzipFile(function):
     shutil.copy("tests/testData/test.json.gz", "tests/workDir/temp/test.json.gz")
-    function.unzipFile(
-        "tests/workDir/temp/test.json.gz", "tests/workDir/temp/test.json"
-    )
+    function.unzipFile("tests/workDir/temp/test.json.gz", "tests/workDir/temp/test.json")
     assert os.path.isfile("tests/workDir/temp/test.json")
 
 
@@ -139,18 +137,14 @@ def test_downloadFileWorker_3(function):
 
 
 def test_downloadFileWorker_4(function):
-    with mock.patch.object(
-        function, "getFileFromUrl", return_value=True, side_effect=Exception
-    ):
+    with mock.patch.object(function, "getFileFromUrl", return_value=True, side_effect=Exception):
         suc = function.downloadFileWorker(url="", dest="test/workDir/temp/test.txt")
         assert not suc
 
 
 def test_downloadFileWorker_5(function):
     with mock.patch.object(function, "getFileFromUrl", return_value=True):
-        suc = function.downloadFileWorker(
-            url="", dest="test/workDir/temp/test.txt", unzip=True
-        )
+        suc = function.downloadFileWorker(url="", dest="test/workDir/temp/test.txt", unzip=True)
         assert not suc
 
 
@@ -160,9 +154,7 @@ def test_downloadFileWorker_6(function):
         "getFileFromUrl",
         return_value=True,
     ):
-        suc = function.downloadFileWorker(
-            url="", dest="test/workDir/temp/test.txt", unzip=False
-        )
+        suc = function.downloadFileWorker(url="", dest="test/workDir/temp/test.txt", unzip=False)
         assert suc
 
 

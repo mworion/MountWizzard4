@@ -51,9 +51,7 @@ def function():
 def test_setDefaultPath_1(function):
     with mock.patch.object(platform, "system", return_value="Darwin"):
         function.setDefaultPath()
-        assert function.appPath == Path(
-            "/Applications/KStars.app/Contents/MacOS/astrometry/bin"
-        )
+        assert function.appPath == Path("/Applications/KStars.app/Contents/MacOS/astrometry/bin")
 
 
 def test_setDefaultPath_2(function):
@@ -204,9 +202,7 @@ def test_solve_4(function):
                         "getHintFromImageFile",
                         return_value=(0, 0, 0),
                     ):
-                        with mock.patch.object(
-                            logic.plateSolve.astrometry, "getImageHeader"
-                        ):
+                        with mock.patch.object(logic.plateSolve.astrometry, "getImageHeader"):
                             with mock.patch.object(
                                 logic.plateSolve.astrometry, "getSolutionFromWCSHeader"
                             ):
@@ -214,9 +210,7 @@ def test_solve_4(function):
                                     logic.plateSolve.astrometry,
                                     "updateImageFileHeaderWithSolution",
                                 ):
-                                    res = function.solve(
-                                        Path("tests/workDir/image/m51.fit"), True
-                                    )
+                                    res = function.solve(Path("tests/workDir/image/m51.fit"), True)
                                     assert res["success"]
 
 

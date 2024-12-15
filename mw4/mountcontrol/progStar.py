@@ -23,7 +23,7 @@ from skyfield.api import Angle, Star
 # local imports
 
 
-class AlignStar(object):
+class ProgStar(object):
     """ """
 
     log = logging.getLogger("MW4")

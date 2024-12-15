@@ -24,7 +24,7 @@ import skyfield.api
 from skyfield.api import wgs84, Star, Angle
 
 # local imports
-from mountcontrol.model import ModelStar, AlignStar
+from mountcontrol.model import ModelStar, ProgStar
 from mountcontrol.model import Model
 from mountcontrol import obsSite
 import mountcontrol
@@ -1235,7 +1235,7 @@ class TestConfigData(unittest.TestCase):
 
         model = Model(parent=Parent())
 
-        aPoint = AlignStar(
+        aPoint = ProgStar(
             Star(ra_hours=0, dec_degrees=0),
             Star(ra_hours=0, dec_degrees=0),
             Angle(hours=0),
@@ -1281,7 +1281,7 @@ class TestConfigData(unittest.TestCase):
 
         build = []
         for i, data in enumerate(datas):
-            aPoint = AlignStar(
+            aPoint = ProgStar(
                 Star(ra_hours=0, dec_degrees=0),
                 Star(ra_hours=0, dec_degrees=0),
                 Angle(hours=0),

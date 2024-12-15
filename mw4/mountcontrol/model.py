@@ -28,7 +28,7 @@ from mountcontrol.convert import valueToFloat
 from mountcontrol.convert import valueToInt
 from mountcontrol.convert import valueToAngle
 from mountcontrol.convert import sexagesimalizeToInt
-from mountcontrol.alignStar import AlignStar
+from mountcontrol.progStar import ProgStar
 from mountcontrol.modelStar import ModelStar
 
 
@@ -422,7 +422,7 @@ class Model(object):
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
-    def programAlign(self, build: AlignStar) -> bool:
+    def programAlign(self, build: ProgStar) -> bool:
         """ """
         commandString = ":newalig#"
         for aPoint in build:

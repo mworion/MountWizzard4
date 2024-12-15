@@ -21,7 +21,7 @@ import unittest
 from skyfield.api import Angle, Star
 
 # local imports
-from mountcontrol.model import AlignStar
+from mountcontrol.progStar import ProgStar
 
 
 class TestConfigData(unittest.TestCase):
@@ -29,7 +29,7 @@ class TestConfigData(unittest.TestCase):
         pass
 
     def test_APoint_pierside_1(self):
-        aPoint = AlignStar(
+        aPoint = ProgStar(
             Star(ra_hours=0, dec_degrees=0),
             Star(ra_hours=0, dec_degrees=0),
             Angle(hours=0),
@@ -39,7 +39,7 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual("E", aPoint.pierside)
 
     def test_APoint_pierside_2(self):
-        aPoint = AlignStar(
+        aPoint = ProgStar(
             Star(ra_hours=0, dec_degrees=0),
             Star(ra_hours=0, dec_degrees=0),
             Angle(hours=0),

@@ -24,7 +24,7 @@ from skyfield.api import Star
 
 # local packages
 from mountcontrol.model import Model
-from mountcontrol.alignStar import AlignStar
+from mountcontrol.progStar import ProgStar
 
 
 log = logging.getLogger("MW4")
@@ -55,7 +55,7 @@ def buildAlignModel(model: list[dict]) -> list:
         sCoord = Star(mPoint["raJNowS"], mPoint["decJNowS"])
         sidereal = mPoint["siderealTime"]
         pierside = mPoint["pierside"]
-        programmingPoint = AlignStar(mCoord, sCoord, sidereal, pierside)
+        programmingPoint = ProgStar(mCoord, sCoord, sidereal, pierside)
         alignModel.append(programmingPoint)
     return alignModel
 

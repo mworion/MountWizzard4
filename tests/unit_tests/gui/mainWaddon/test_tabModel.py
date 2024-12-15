@@ -202,14 +202,14 @@ def test_saveModelFinish_1(function):
     shutil.copy("tests/testData/test.model", "tests/workDir/model/test.model")
     function.modelName = "test"
     function.generateSaveData = test
-    function.app.mount.signals.alignDone.connect(function.saveModelFinish)
+    function.app.mount.signals.getModelDone.connect(function.saveModelFinish)
     function.saveModelFinish()
 
 
 def test_programModelToMount_1(function):
     function.model = []
     with mock.patch.object(gui.mainWaddon.tabModel, "buildAlignModel", return_value=[]):
-        with mock.patch.object(function.app.mount.model, "programAlign", return_value=False):
+        with mock.patch.object(function.app.mount.model, "programModelFromStarList", return_value=False):
             suc = function.programModelToMount()
             assert not suc
 
@@ -217,14 +217,14 @@ def test_programModelToMount_1(function):
 def test_programModelToMount_2(function):
     function.model = []
     with mock.patch.object(gui.mainWaddon.tabModel, "buildAlignModel", return_value=[1, 2, 3]):
-        with mock.patch.object(function.app.mount.model, "programAlign", return_value=False):
+        with mock.patch.object(function.app.mount.model, "programModelFromStarList", return_value=False):
             suc = function.programModelToMount()
             assert not suc
 
 
 def test_programModelToMount_3(function):
     with mock.patch.object(gui.mainWaddon.tabModel, "buildAlignModel", return_value=[1, 2, 3]):
-        with mock.patch.object(function.app.mount.model, "programAlign", return_value=True):
+        with mock.patch.object(function.app.mount.model, "programModelFromStarList", return_value=True):
             suc = function.programModelToMount()
             assert suc
 
@@ -260,13 +260,13 @@ def test_checkModelRunConditions_4(function):
 
 
 def test_clearAlignAndBackup_1(function):
-    with mock.patch.object(function.app.mount.model, "clearAlign", return_value=False):
+    with mock.patch.object(function.app.mount.model, "clearModel", return_value=False):
         suc = function.clearAlignAndBackup()
         assert not suc
 
 
 def test_clearAlignAndBackup_2(function):
-    with mock.patch.object(function.app.mount.model, "clearAlign", return_value=True):
+    with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
         with mock.patch.object(function.app.mount.model, "deleteName", return_value=False):
             with mock.patch.object(gui.mainWaddon.tabModel, "sleepAndEvents"):
                 suc = function.clearAlignAndBackup()
@@ -274,7 +274,7 @@ def test_clearAlignAndBackup_2(function):
 
 
 def test_clearAlignAndBackup_3(function):
-    with mock.patch.object(function.app.mount.model, "clearAlign", return_value=True):
+    with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
         with mock.patch.object(function.app.mount.model, "deleteName", return_value=True):
             with mock.patch.object(function.app.mount.model, "storeName", return_value=False):
                 with mock.patch.object(gui.mainWaddon.tabModel, "sleepAndEvents"):
@@ -283,7 +283,7 @@ def test_clearAlignAndBackup_3(function):
 
 
 def test_clearAlignAndBackup_4(function):
-    with mock.patch.object(function.app.mount.model, "clearAlign", return_value=True):
+    with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
         with mock.patch.object(function.app.mount.model, "deleteName", return_value=True):
             with mock.patch.object(function.app.mount.model, "storeName", return_value=True):
                 with mock.patch.object(gui.mainWaddon.tabModel, "sleepAndEvents"):

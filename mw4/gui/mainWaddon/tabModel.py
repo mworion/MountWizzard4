@@ -185,7 +185,7 @@ class Model(MWidget):
         with this data, the model could be reprogrammed without doing some imaging,
         it could be added with other data to extend the model to a broader base.
         """
-        self.app.mount.signals.alignDone.disconnect(self.saveModelFinish)
+        self.app.mount.signals.getModelDone.disconnect(self.saveModelFinish)
         self.retrofitModel()
         self.msg.emit(0, "Model", "Run", f"Writing model [{self.modelName}]")
         saveData = self.generateSaveData()
@@ -199,12 +199,12 @@ class Model(MWidget):
         if len(alignModel) < 3:
             self.log.debug(f"Only {len(alignModel)} points available")
             return False
-        suc = self.app.mount.model.programAlign(alignModel)
+        suc = self.app.mount.model.programModelFromStarList(alignModel)
         if not suc:
             self.log.debug("Program align failed")
             return False
 
-        self.app.mount.signals.alignDone.connect(self.saveModelFinish)
+        self.app.mount.signals.getModelDone.connect(self.saveModelFinish)
         self.app.mount.model.storeName("actual")
         self.app.refreshName.emit()
         self.app.refreshModel.emit()
@@ -231,7 +231,7 @@ class Model(MWidget):
 
     def clearAlignAndBackup(self):
         """ """
-        if not self.app.mount.model.clearAlign():
+        if not self.app.mount.model.clearModel():
             self.msg.emit(2, "Model", "Run error", "Actual model cannot be cleared")
             self.msg.emit(2, "", "", "Model build cancelled")
             return False

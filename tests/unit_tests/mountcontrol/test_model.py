@@ -1063,7 +1063,7 @@ class TestConfigData(unittest.TestCase):
 
     #
     #
-    # testing clearAlign
+    # testing clearModel
     #
     #
 
@@ -1076,7 +1076,7 @@ class TestConfigData(unittest.TestCase):
         response = [""]
         with mock.patch("mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
-            suc = model.clearAlign()
+            suc = model.clearModel()
             self.assertTrue(suc)
 
     def test_Model_clearAlign_not_ok1(self):
@@ -1088,7 +1088,7 @@ class TestConfigData(unittest.TestCase):
         response = [""]
         with mock.patch("mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
-            suc = model.clearAlign()
+            suc = model.clearModel()
             self.assertFalse(suc)
 
     #
@@ -1225,7 +1225,7 @@ class TestConfigData(unittest.TestCase):
 
     #
     #
-    # testing programAlign
+    # testing programModelFromStarList
     #
     #
 
@@ -1244,7 +1244,7 @@ class TestConfigData(unittest.TestCase):
         build = [aPoint]
         with mock.patch("mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, ["1"], 1
-            suc = model.programAlign(build)
+            suc = model.programModelFromStarList(build)
             self.assertTrue(suc)
 
     def test_Model_programAlign_ok2(self):
@@ -1256,7 +1256,7 @@ class TestConfigData(unittest.TestCase):
         build = self.gatherData(1)
         with mock.patch("mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, ["1"], 1
-            suc = model.programAlign(build)
+            suc = model.programModelFromStarList(build)
             self.assertTrue(suc)
 
     def test_Model_programAlign_ok3(self):
@@ -1268,7 +1268,7 @@ class TestConfigData(unittest.TestCase):
         build = self.gatherData(3)
         with mock.patch("mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, ["E"], 1
-            suc = model.programAlign(build)
+            suc = model.programModelFromStarList(build)
             self.assertTrue(suc)
 
     @staticmethod

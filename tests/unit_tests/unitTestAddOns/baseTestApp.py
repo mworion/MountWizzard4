@@ -641,11 +641,11 @@ class Mount(QObject):
         azimuthTurns = 0
 
         @staticmethod
-        def programAlign():
+        def programModelFromStarList():
             return
 
         @staticmethod
-        def clearAlign():
+        def clearModel():
             return
 
         @staticmethod
@@ -833,7 +833,7 @@ class Mount(QObject):
         firmwareDone = Signal()
         calcTLEdone = Signal()
         getTLEdone = Signal()
-        alignDone = Signal()
+        getModelDone = Signal()
         alert = Signal()
         namesDone = Signal()
         slewed = Signal()
@@ -1025,7 +1025,7 @@ class Mount(QObject):
         return
 
     @staticmethod
-    def getAlign():
+    def getModel():
         return
 
     @staticmethod

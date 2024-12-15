@@ -385,7 +385,7 @@ class Model(object):
         self.numberStars = response[1]
         return True
 
-    def clearAlign(self) -> bool:
+    def clearModel(self) -> bool:
         """ """
         conn = Connection(self.parent.host)
         suc, _, _ = conn.communicate(":delalig#", responseCheck="")
@@ -422,7 +422,7 @@ class Model(object):
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
-    def programAlign(self, build: ProgStar) -> bool:
+    def programModelFromStarList(self, build: list[ProgStar]) -> bool:
         """ """
         commandString = ":newalig#"
         for aPoint in build:

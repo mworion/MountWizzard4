@@ -172,7 +172,7 @@ class HemisphereWindow(MWidget, SlewInterface):
         self.ui.editModeHem.clicked.connect(self.setOperationModeHem)
         self.ui.alignmentModeHem.clicked.connect(self.setOperationModeHem)
 
-        self.app.mount.signals.alignDone.connect(self.drawHemisphereTab)
+        self.app.mount.signals.getModelDone.connect(self.drawHemisphereTab)
         self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
         self.app.tabsMovable.connect(self.enableTabsMovable)
         self.ui.showSlewPath.clicked.connect(self.drawHemisphereTab)

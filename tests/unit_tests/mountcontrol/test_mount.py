@@ -225,20 +225,20 @@ def test_cycleSetting_2(function):
         function.cycleSetting()
 
 
-def test_clearGetAlign_1(function):
-    function.clearGetAlign()
+def test_clearGetModel_1(function):
+    function.clearGetModel()
 
 
-def test_GetAlign_1(function):
+def test_getModel_1(function):
     function.mountUp = False
     with mock.patch.object(QThreadPool, "start"):
-        function.getAlign()
+        function.getModel()
 
 
-def test_GetAlign_2(function):
+def test_getModel_2(function):
     function.mountUp = True
     with mock.patch.object(QThreadPool, "start"):
-        function.getAlign()
+        function.getModel()
 
 
 def test_clearGetNames_1(function):

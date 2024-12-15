@@ -28,7 +28,7 @@ class MountSignals(QObject):
     pointDone = Signal(object)
     domeDone = Signal(object)
     settingDone = Signal(object)
-    alignDone = Signal(object)
+    getModelDone = Signal(object)
     namesDone = Signal(object)
     firmwareDone = Signal(object)
     locationDone = Signal(object)

@@ -43,9 +43,9 @@ class ManageModel(MWidget):
         self.plane = None
 
         ms = self.app.mount.signals
-        ms.alignDone.connect(self.showModelPosition)
-        ms.alignDone.connect(self.showErrorAscending)
-        ms.alignDone.connect(self.showErrorDistribution)
+        ms.getModelDone.connect(self.showModelPosition)
+        ms.getModelDone.connect(self.showErrorAscending)
+        ms.getModelDone.connect(self.showErrorDistribution)
         ms.namesDone.connect(self.setNameList)
 
         self.ui.refreshName.clicked.connect(self.refreshName)
@@ -367,7 +367,7 @@ class ManageModel(MWidget):
         self.ui.deleteWorstPoint.setEnabled(True)
         self.ui.runOptimize.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
-        self.app.mount.signals.alignDone.disconnect(self.clearRefreshModel)
+        self.app.mount.signals.getModelDone.disconnect(self.clearRefreshModel)
         self.msg.emit(0, "Model", "Manage", "Align model data refreshed")
         foundModel, _, pointsOut = self.findFittingModel()
 
@@ -392,11 +392,11 @@ class ManageModel(MWidget):
         """
         self.changeStyleDynamic(self.ui.refreshModel, "running", True)
         self.changeStyleDynamic(self.ui.modelGroup, "running", True)
-        self.app.mount.signals.alignDone.connect(self.clearRefreshModel)
+        self.app.mount.signals.getModelDone.connect(self.clearRefreshModel)
         self.ui.deleteWorstPoint.setEnabled(False)
         self.ui.runOptimize.setEnabled(False)
         self.ui.clearModel.setEnabled(False)
-        self.app.mount.getAlign()
+        self.app.mount.getModel()
 
     def clearModel(self):
         """ """
@@ -404,7 +404,7 @@ class ManageModel(MWidget):
         if not suc:
             return False
 
-        suc = self.app.mount.model.clearAlign()
+        suc = self.app.mount.model.clearModel()
         if not suc:
             self.msg.emit(2, "Model", "Manage error", "Actual model cannot be cleared")
             return False
@@ -459,7 +459,7 @@ class ManageModel(MWidget):
                 text = f"Point: {wStar.number + 1:3.0f}: "
                 text += f"RMS of {wStar.errorRMS:5.1f} arcsec deleted."
                 self.msg.emit(0, "Model", "Manage", text)
-            mount.getAlign()
+            mount.getModel()
 
         else:
             self.finishOptimize()
@@ -490,7 +490,7 @@ class ManageModel(MWidget):
                 text = f"Point: {wStar.number + 1:3.0f}, RMS of {wStar.errorRMS:5.1f}"
                 text += " arcsec deleted."
                 self.msg.emit(0, "Model", "Manage", text)
-            mount.getAlign()
+            mount.getModel()
         else:
             self.finishOptimize()
 
@@ -505,10 +505,10 @@ class ManageModel(MWidget):
         self.changeStyleDynamic(self.ui.runOptimize, "running", True)
 
         if self.ui.optimizeOverall.isChecked():
-            self.app.mount.signals.alignDone.connect(self.runTargetRMS)
+            self.app.mount.signals.getModelDone.connect(self.runTargetRMS)
             self.runTargetRMS()
         else:
-            self.app.mount.signals.alignDone.connect(self.runSingleRMS)
+            self.app.mount.signals.getModelDone.connect(self.runSingleRMS)
             self.runSingleRMS()
 
     def finishOptimize(self):
@@ -516,9 +516,9 @@ class ManageModel(MWidget):
         :return:
         """
         if self.ui.optimizeOverall.isChecked():
-            self.app.mount.signals.alignDone.disconnect(self.runTargetRMS)
+            self.app.mount.signals.getModelDone.disconnect(self.runTargetRMS)
         else:
-            self.app.mount.signals.alignDone.disconnect(self.runSingleRMS)
+            self.app.mount.signals.getModelDone.disconnect(self.runSingleRMS)
 
         self.changeStyleDynamic(self.ui.runOptimize, "running", False)
         self.ui.deleteWorstPoint.setEnabled(True)

@@ -420,12 +420,12 @@ def test_writeBuildModelOptimized_2(function):
 
 
 def test_clearRefreshModel_1(function):
-    function.app.mount.signals.alignDone.connect(function.clearRefreshModel)
+    function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
     function.clearRefreshModel()
 
 
 def test_clearRefreshModel_2(function):
-    function.app.mount.signals.alignDone.connect(function.clearRefreshModel)
+    function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
     function.ui.autoUpdateActualAnalyse.setChecked(True)
     with mock.patch.object(function, "findFittingModel", return_value=("test", [], [])):
         with mock.patch.object(function, "writeBuildModelOptimized"):
@@ -434,8 +434,8 @@ def test_clearRefreshModel_2(function):
 
 
 def test_refreshModel(function):
-    function.app.mount.signals.alignDone.connect(function.clearRefreshModel)
-    with mock.patch.object(function.app.mount, "getAlign"):
+    function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
+    with mock.patch.object(function.app.mount, "getModel"):
         function.clearRefreshModel()
 
 
@@ -447,14 +447,14 @@ def test_clearModel_1(function):
 
 def test_clearModel_2(function):
     with mock.patch.object(function, "messageDialog", return_value=True):
-        with mock.patch.object(function.app.mount.model, "clearAlign", return_value=False):
+        with mock.patch.object(function.app.mount.model, "clearModel", return_value=False):
             suc = function.clearModel()
             assert not suc
 
 
 def test_clearModel_3(function):
     with mock.patch.object(function, "messageDialog", return_value=True):
-        with mock.patch.object(function.app.mount.model, "clearAlign", return_value=True):
+        with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
             suc = function.clearModel()
             assert suc
 
@@ -509,7 +509,7 @@ def test_runTargetRMS_1(function):
     function.runningOptimize = True
     function.ui.optimizeOverall.setChecked(True)
     function.ui.optimizeSingle.setChecked(False)
-    function.app.mount.signals.alignDone.connect(function.runTargetRMS)
+    function.app.mount.signals.getModelDone.connect(function.runTargetRMS)
     function.app.mount.model.errorRMS = 0.1
     function.runTargetRMS()
 
@@ -544,9 +544,9 @@ def test_runTargetRMS_2(function):
     function.app.mount.model.errorRMS = 100
     function.app.mount.model.numberStars = 3
     function.runningTargetRMS = True
-    function.app.mount.signals.alignDone.connect(function.runTargetRMS)
+    function.app.mount.signals.getModelDone.connect(function.runTargetRMS)
     with mock.patch.object(function.app.mount.model, "deletePoint", return_value=False):
-        with mock.patch.object(function.app.mount, "getAlign"):
+        with mock.patch.object(function.app.mount, "getModel"):
             function.runTargetRMS()
 
 
@@ -580,9 +580,9 @@ def test_runTargetRMS_3(function):
     function.app.mount.model.errorRMS = 100
     function.app.mount.model.numberStars = 3
     function.runningTargetRMS = True
-    function.app.mount.signals.alignDone.connect(function.runTargetRMS)
+    function.app.mount.signals.getModelDone.connect(function.runTargetRMS)
     with mock.patch.object(function.app.mount.model, "deletePoint", return_value=True):
-        with mock.patch.object(function.app.mount, "getAlign"):
+        with mock.patch.object(function.app.mount, "getModel"):
             function.runTargetRMS()
 
 
@@ -593,7 +593,7 @@ def test_runTargetRMS_4(function):
     function.app.mount.model.errorRMS = 100
     function.app.mount.model.numberStars = None
     function.runningTargetRMS = False
-    function.app.mount.signals.alignDone.connect(function.runTargetRMS)
+    function.app.mount.signals.getModelDone.connect(function.runTargetRMS)
     function.runTargetRMS()
 
 
@@ -610,7 +610,7 @@ def test_runSingleRMS_1(function):
         obsSite=function.app.mount.obsSite,
     )
     function.app.mount.model.starList = [star1]
-    function.app.mount.signals.alignDone.connect(function.runSingleRMS)
+    function.app.mount.signals.getModelDone.connect(function.runSingleRMS)
     function.app.mount.model.errorRMS = 0.1
     function.runSingleRMS()
 
@@ -645,9 +645,9 @@ def test_runSingleRMS_2(function):
     function.app.mount.model.errorRMS = 100
     function.app.mount.model.numberStars = 3
     function.runningTargetRMS = True
-    function.app.mount.signals.alignDone.connect(function.runSingleRMS)
+    function.app.mount.signals.getModelDone.connect(function.runSingleRMS)
     with mock.patch.object(function.app.mount.model, "deletePoint", return_value=False):
-        with mock.patch.object(function.app.mount, "getAlign"):
+        with mock.patch.object(function.app.mount, "getModel"):
             function.runSingleRMS()
 
 
@@ -681,9 +681,9 @@ def test_runSingleRMS_3(function):
     function.app.mount.model.errorRMS = 100
     function.app.mount.model.numberStars = 3
     function.runningTargetRMS = True
-    function.app.mount.signals.alignDone.connect(function.runSingleRMS)
+    function.app.mount.signals.getModelDone.connect(function.runSingleRMS)
     with mock.patch.object(function.app.mount.model, "deletePoint", return_value=True):
-        with mock.patch.object(function.app.mount, "getAlign"):
+        with mock.patch.object(function.app.mount, "getModel"):
             function.runSingleRMS()
 
 
@@ -695,7 +695,7 @@ def test_runSingleRMS_4(function):
     function.app.mount.model.errorRMS = 100
     function.app.mount.model.numberStars = None
     function.runningTargetRMS = False
-    function.app.mount.signals.alignDone.connect(function.runSingleRMS)
+    function.app.mount.signals.getModelDone.connect(function.runSingleRMS)
     with mock.patch.object(function, "finishOptimize"):
         function.runSingleRMS()
 
@@ -717,14 +717,14 @@ def test_runOptimize_2(function):
 def test_finishOptimize_1(function):
     function.ui.optimizeOverall.setChecked(False)
     function.ui.optimizeSingle.setChecked(True)
-    function.app.mount.signals.alignDone.connect(function.runSingleRMS)
+    function.app.mount.signals.getModelDone.connect(function.runSingleRMS)
     function.finishOptimize()
 
 
 def test_finishOptimize_2(function):
     function.ui.optimizeOverall.setChecked(True)
     function.ui.optimizeSingle.setChecked(False)
-    function.app.mount.signals.alignDone.connect(function.runTargetRMS)
+    function.app.mount.signals.getModelDone.connect(function.runTargetRMS)
     function.finishOptimize()
 
 

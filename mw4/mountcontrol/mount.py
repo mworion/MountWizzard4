@@ -158,7 +158,7 @@ class MountDevice:
         self.geometry = Geometry(parent=self)
         self.signals.pointDone.emit(self.obsSite)
         self.signals.settingDone.emit(self.setting)
-        self.signals.alignDone.emit(self.model)
+        self.signals.getModelDone.emit(self.model)
         self.signals.namesDone.emit(self.model)
         self.signals.firmwareDone.emit(self.firmware)
         self.signals.locationDone.emit(self.obsSite.location)
@@ -252,16 +252,16 @@ class MountDevice:
         worker.signals.finished.connect(self.clearCycleSetting)
         self.threadPool.start(worker)
 
-    def clearGetAlign(self):
+    def clearGetModel(self):
         """ """
-        self.signals.alignDone.emit(self.model)
+        self.signals.getModelDone.emit(self.model)
 
-    def getAlign(self):
+    def getModel(self):
         """ """
         if not self.mountUp:
             return
         worker = Worker(self.model.pollStars)
-        worker.signals.finished.connect(self.clearGetAlign)
+        worker.signals.finished.connect(self.clearGetModel)
         self.threadPool.start(worker)
 
     def clearGetNames(self):

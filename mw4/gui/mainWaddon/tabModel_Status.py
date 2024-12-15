@@ -33,8 +33,8 @@ class ModelStatus(MWidget):
         self.ui = mainW.ui
 
         ms = self.app.mount.signals
-        ms.alignDone.connect(self.updateAlignGUI)
-        ms.alignDone.connect(self.updateTurnKnobsGUI)
+        ms.getModelDone.connect(self.updateAlignGUI)
+        ms.getModelDone.connect(self.updateTurnKnobsGUI)
 
     def setupIcons(self) -> None:
         """ """

@@ -27,7 +27,7 @@ from pathlib import Path
 from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
 from logic.modelBuild.modelHandling import (
     writeRetrofitData,
-    buildAlignModel,
+    buildProgModel,
     loadModelsFromFile,
 )
 from logic.modelBuild.modelBatch import ModelBatch
@@ -102,7 +102,11 @@ class Model(MWidget):
         self.modelBatch.endBatch = True
 
     def setModelOperationMode(self, status: int) -> None:
-        """ """
+        """
+            status 0: idle
+            status 1: modeling build
+            status 2: modeling with stored data
+        """
         if status == 1:
             self.ui.runModelGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)
@@ -193,9 +197,9 @@ class Model(MWidget):
         with open(modelPath, "w") as outfile:
             json.dump(saveData, outfile, sort_keys=True, indent=4)
 
-    def programModelToMount(self):
+    def programModelToMount(self, buildModel: list[dict]) -> bool:
         """ """
-        alignModel = buildAlignModel(self.model)
+        alignModel = buildProgModel(buildModel)
         if len(alignModel) < 3:
             self.log.debug(f"Only {len(alignModel)} points available")
             return False

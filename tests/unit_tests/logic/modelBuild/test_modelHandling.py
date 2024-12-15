@@ -25,7 +25,12 @@ from skyfield.api import wgs84, Angle
 # local import
 from mountcontrol.model import Model, ModelStar
 from mountcontrol import obsSite
-from logic.modelBuild.modelHandling import writeRetrofitData, buildAlignModel, loadModelsFromFile
+from logic.modelBuild.modelHandling import (
+    writeRetrofitData,
+    buildProgModel,
+    loadModelsFromFile,
+    convertFloatToAngle,
+)
 
 obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
@@ -60,12 +65,12 @@ def test_writeRetrofitData_2():
     assert "modelPolarError" in val[0]
 
 
-def test_buildAlignModela_1():
-    alignModel = buildAlignModel([])
+def test_buildProgModel_1():
+    alignModel = buildProgModel([])
     assert alignModel == []
 
 
-def test_buildAlignModel_2():
+def test_buildProgModel_2():
     model = [
         {
             "altitude": 44.556745182012854,
@@ -92,8 +97,40 @@ def test_buildAlignModel_2():
         },
     ]
 
-    alignModel = buildAlignModel(model)
+    alignModel = buildProgModel(model)
     assert alignModel[0].sCoord.dec.degrees == 64.3246
+
+
+def test_convertFloatToAngle_1():
+    model = [
+        {
+            "altitude": 44.556745182012854,
+            "azimuth": 37.194805194805184,
+            "binning": 1.0,
+            "countSequence": 0,
+            "decJNowS": 64.3246,
+            "decJNowM": 64.32841185357267,
+            "errorDEC": -229.0210134131381,
+            "errorRMS": 237.1,
+            "errorRA": -61.36599559380768,
+            "exposureTime": 3.0,
+            "fastReadout": True,
+            "julianDate": "2019-06-08T08:57:57Z",
+            "name": "m-file-2019-06-08-08-57-44",
+            "lenSequence": 3,
+            "imagePath": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08"
+            "-57-44/image-000.fits",
+            "pierside": "W",
+            "raJNowS": 8.42882,
+            "raJNowM": 8.427692953132278,
+            "siderealTime": 12.5,
+            "subFrame": 100.0,
+        },
+    ]
+
+    alignModel = convertFloatToAngle(model)
+    assert isinstance(alignModel[0]["decJNowS"], Angle)
+    assert isinstance(alignModel[0]["raJNowS"], Angle)
 
 
 def test_loadModelsFromFile_1():
@@ -129,3 +166,4 @@ def test_loadModelsFromFile_4():
     model, msg = loadModelsFromFile(modelFilesPath)
     assert len(model) == 99
     assert msg == "Too many model points in files, cut of to 99"
+    assert isinstance(model[0]["raJNowM"], Angle)

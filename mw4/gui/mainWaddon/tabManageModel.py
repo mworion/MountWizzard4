@@ -356,7 +356,8 @@ class ManageModel(MWidget):
 
         newModel = writeRetrofitData(self.app.mount.model, newModel)
         with open(newPath, "w+") as newFile:
-            json.dump(newModel, newFile, sort_keys=True, indent=4)
+            pass
+            # json.dump(newModel, newFile, sort_keys=True, indent=4)
         return True
 
     def clearRefreshModel(self):

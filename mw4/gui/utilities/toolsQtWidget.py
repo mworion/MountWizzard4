@@ -258,45 +258,6 @@ class MWidget(QWidget, Styles):
         widget.style().polish(widget)
         return True
 
-    @staticmethod
-    def extractNames(names=""):
-        """
-        extractNames splits a given path to basename and extension
-        if the input is a multiple list, there will be as return values a
-        multiple list as well, otherwise single values
-
-        :param      names:   full path of file (s)
-        :return:    short:  basename without extension
-                    ext:    extension
-                    name:   name
-        """
-        if not names:
-            return "", "", ""
-        if not isinstance(names, list):
-            return "", "", ""
-
-        shortList = list()
-        extList = list()
-        nameList = list()
-
-        for name in names:
-            if name:
-                short, ext = os.path.splitext(name)
-                short = os.path.basename(short)
-
-            else:
-                short = ""
-                ext = ""
-
-            nameList.append(os.path.abspath(name))
-            shortList.append(short)
-            extList.append(ext)
-
-        if len(names) == 1:
-            return nameList[0], shortList[0], extList[0]
-        else:
-            return nameList, shortList, extList
-
     def prepareFileDialog(self, window=None, enableDir=False):
         """
         prepareFileDialog does some tweaking of the standard file dialogue
@@ -417,9 +378,10 @@ class MWidget(QWidget, Styles):
         if not result:
             return Path("")
 
-        filePath = dlg.selectedFiles()
-        full, _, _ = self.extractNames(names=filePath)
-        return Path(full)
+        if multiple:
+            return [Path(f) for f in dlg.selectedFiles()]
+        else:
+            return Path(dlg.selectedFiles()[0])
 
     def saveFile(self, window=None, title="", folder="", filterSet=None, enableDir=False):
         """
@@ -450,9 +412,7 @@ class MWidget(QWidget, Styles):
         if not result:
             return Path("")
 
-        filePath = dlg.selectedFiles()
-        full, _, _ = self.extractNames(names=filePath)
-        return Path(full)
+        return Path(dlg.selectedFiles()[0])
 
     def openDir(self, window=None, title="", folder=""):
         """
@@ -481,9 +441,7 @@ class MWidget(QWidget, Styles):
         if not result:
             return Path("")
 
-        filePath = dlg.selectedFiles()
-        full, _, _ = self.extractNames(names=filePath)
-        return Path(full)
+        return Path(dlg.selectedFiles()[0])
 
     @staticmethod
     def clickable(widget=None):

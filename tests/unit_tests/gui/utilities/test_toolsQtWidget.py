@@ -242,62 +242,6 @@ def test_changeStyleDynamic_7(function):
     assert suc
 
 
-def test_extractNames_0(function):
-    name = ""
-    name, short, ext = function.extractNames(name)
-    assert name == ""
-    assert short == ""
-    assert ext == ""
-
-
-def test_extractNames_1(function):
-    name = 1
-    name, short, ext = function.extractNames(name)
-    assert name == ""
-    assert short == ""
-    assert ext == ""
-
-
-def test_extractNames_2(function):
-    name = ["test"]
-    name, short, ext = function.extractNames(name)
-    assert name == os.path.abspath(os.getcwd() + "/test")
-    assert short == "test"
-    assert ext == ""
-
-
-def test_extractNames_3(function):
-    name = ["c:/test"]
-    name, short, ext = function.extractNames(name)
-    assert name == os.path.abspath("c:/test")
-    assert short == "test"
-    assert ext == ""
-
-
-def test_extractNames_4(function):
-    name = ["c:/test.cfg"]
-    name, short, ext = function.extractNames(name)
-    assert name == os.path.abspath("c:/test.cfg")
-    assert short == "test"
-    assert ext == ".cfg"
-
-
-def test_extractNames_5(function):
-    name = ["c:/test.cfg", "c:/test.cfg"]
-    name, short, ext = function.extractNames(name)
-    assert name == [os.path.abspath("c:/test.cfg"), os.path.abspath("c:/test.cfg")]
-    assert short == ["test", "test"]
-    assert ext == [".cfg", ".cfg"]
-
-
-def test_extractNames_6(function):
-    name = ["", "c:/test.cfg"]
-    name, short, ext = function.extractNames(name)
-    assert name == [os.path.abspath(""), os.path.abspath("c:/test.cfg")]
-    assert short == ["", "test"]
-    assert ext == ["", ".cfg"]
-
-
 def test_prepareFileDialog_1(function):
     suc = function.prepareFileDialog()
     assert not suc
@@ -390,7 +334,7 @@ def test_openFile_6(function):
                 filterSet="*.*",
                 multiple=True,
             )
-            assert full == Path("")
+            assert full == [Path("test1"), Path("test2")]
 
 
 def test_saveFile_1(function):

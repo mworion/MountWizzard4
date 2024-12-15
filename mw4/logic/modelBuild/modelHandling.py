@@ -20,7 +20,7 @@ import json
 from pathlib import Path
 
 # external packages
-from skyfield.api import Star
+from skyfield.api import Star, Angle
 
 # local packages
 from mountcontrol.model import Model
@@ -47,17 +47,28 @@ def writeRetrofitData(alignModel: Model, buildModel: list[dict]) -> dict:
     return buildModel
 
 
-def buildAlignModel(model: list[dict]) -> list:
+def buildProgModel(model: list[dict]) -> list:
     """ """
-    alignModel = list()
+    progModel = list()
     for mPoint in model:
         mCoord = Star(mPoint["raJNowM"], mPoint["decJNowM"])
         sCoord = Star(mPoint["raJNowS"], mPoint["decJNowS"])
         sidereal = mPoint["siderealTime"]
         pierside = mPoint["pierside"]
         programmingPoint = ProgStar(mCoord, sCoord, sidereal, pierside)
-        alignModel.append(programmingPoint)
-    return alignModel
+        progModel.append(programmingPoint)
+    return progModel
+
+
+def convertFloatToAngle(model: list[dict]) -> list[dict]:
+    """ """
+    for mPoint in model:
+        for key in mPoint.keys():
+            if "dec" in key:
+                mPoint[key] = Angle(degrees=mPoint[key])
+            elif "ra" in key:
+                mPoint[key] = Angle(hours=mPoint[key])
+    return model
 
 
 def loadModelsFromFile(modelFilesPath: list[Path]) -> (list[dict], str):
@@ -75,6 +86,8 @@ def loadModelsFromFile(modelFilesPath: list[Path]) -> (list[dict], str):
             errText = f"Cannot load model json file: {path.name}"
             log.warning(errText)
             return [], errText
+
+    model = convertFloatToAngle(model)
 
     if len(model) > 99:
         model = model[:99]

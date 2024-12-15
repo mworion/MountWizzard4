@@ -212,7 +212,9 @@ def test_saveModelFinish_1(function):
 def test_programModelToMount_1(function):
     function.model = []
     with mock.patch.object(gui.mainWaddon.tabModel, "buildAlignModel", return_value=[]):
-        with mock.patch.object(function.app.mount.model, "programModelFromStarList", return_value=False):
+        with mock.patch.object(
+            function.app.mount.model, "programModelFromStarList", return_value=False
+        ):
             suc = function.programModelToMount()
             assert not suc
 
@@ -220,14 +222,18 @@ def test_programModelToMount_1(function):
 def test_programModelToMount_2(function):
     function.model = []
     with mock.patch.object(gui.mainWaddon.tabModel, "buildAlignModel", return_value=[1, 2, 3]):
-        with mock.patch.object(function.app.mount.model, "programModelFromStarList", return_value=False):
+        with mock.patch.object(
+            function.app.mount.model, "programModelFromStarList", return_value=False
+        ):
             suc = function.programModelToMount()
             assert not suc
 
 
 def test_programModelToMount_3(function):
     with mock.patch.object(gui.mainWaddon.tabModel, "buildAlignModel", return_value=[1, 2, 3]):
-        with mock.patch.object(function.app.mount.model, "programModelFromStarList", return_value=True):
+        with mock.patch.object(
+            function.app.mount.model, "programModelFromStarList", return_value=True
+        ):
             suc = function.programModelToMount()
             assert suc
 
@@ -342,9 +348,15 @@ def test_setupFilenamesAndDirectories_2(function):
 
 
 def test_showProgress_1(function):
-    function.showProgress({"count": 10, "number": 1, "modelPercent": 10,
-                           "secondsElapsed": time.time(),
-                           "secondsEstimated": time.time()})
+    function.showProgress(
+        {
+            "count": 10,
+            "number": 1,
+            "modelPercent": 10,
+            "secondsElapsed": time.time(),
+            "secondsEstimated": time.time(),
+        }
+    )
 
 
 def test_setupModelInputData_1(function):
@@ -354,7 +366,9 @@ def test_setupModelInputData_1(function):
 
 def test_setupBatchData_1(function):
     function.modelBatch = ModelBatch(App)
-    with mock.patch.object(function, "setupFilenamesAndDirectories", return_value=(Path(""), "test")):
+    with mock.patch.object(
+        function, "setupFilenamesAndDirectories", return_value=(Path(""), "test")
+    ):
         function.setupBatchData()
 
 

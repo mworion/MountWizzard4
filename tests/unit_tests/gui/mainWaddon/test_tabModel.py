@@ -62,6 +62,7 @@ def test_setupIcons_1(function):
 
 
 def test_cancelBatch_1(function):
+    function.modelBatch = None
     function.cancelBatch()
 
 
@@ -72,6 +73,7 @@ def test_cancelBatch_2(function):
 
 
 def test_pauseBatch_1(function):
+    function.modelBatch = None
     function.pauseBatch()
 
 
@@ -82,6 +84,7 @@ def test_pauseBatch_2(function):
 
 
 def test_endBatch_1(function):
+    function.modelBatch = None
     function.endBatch()
 
 
@@ -347,3 +350,49 @@ def test_showProgress_1(function):
 def test_setupModelInputData_1(function):
     function.app.data.buildP = [(0, 0, True), (0, 0, False), (0, 0, True)]
     function.setupModelInputData(True)
+
+
+def test_setupBatchData_1(function):
+    function.modelBatch = ModelBatch(App)
+    with mock.patch.object(function, "setupFilenamesAndDirectories", return_value=(Path(""), "test")):
+        function.setupBatchData()
+
+
+def test_processModelData_1(function):
+    with mock.patch.object(function, "programModelToMount", return_value=True):
+        function.processModelData()
+
+
+def test_communicateModelBatchRun_1(function):
+    function.modelBatch = ModelBatch(App)
+    function.modelBatch.modelBuildData = []
+    function.communicateModelBatchRun()
+
+
+def test_communicateModelBatchRun_2(function):
+    function.modelBatch = ModelBatch(App)
+    function.modelBatch.modelBuildData = [1, 2, 3]
+    function.communicateModelBatchRun()
+
+
+def test_runBatch_1(function):
+    with mock.patch.object(function, "checkModelRunConditions", return_value=False):
+        function.runBatch()
+
+
+def test_runBatch_2(function):
+    with mock.patch.object(function, "checkModelRunConditions", return_value=True):
+        with mock.patch.object(function, "clearAlignAndBackup", return_value=False):
+            function.runBatch()
+
+
+def test_runBatch_3(function):
+    with mock.patch.object(function, "checkModelRunConditions", return_value=True):
+        with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
+            with mock.patch.object(function, "setupModelInputData"):
+                with mock.patch.object(function, "setupModelInputData"):
+                    with mock.patch.object(function, "setupBatchData"):
+                        with mock.patch.object(function.modelBatch, "run"):
+                            with mock.patch.object(function, "processModelData"):
+                                with mock.patch.object(function, "communicateModelBatchRun"):
+                                    function.runBatch()

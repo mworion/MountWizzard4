@@ -237,7 +237,7 @@ class ModelBatch(QObject):
         self.modelBuildData.clear()
         for index, point in enumerate(self.modelInputData):
             modelItem = {}
-            imagePath = f"{self.imageDir}/image-{index + 1:03d}.fits"
+            imagePath = self.imageDir / f"image-{index + 1:03d}.fits"
             modelItem["imagePath"] = imagePath
             modelItem["altitude"] = Angle(degrees=point[0])
             modelItem["azimuth"] = Angle(degrees=point[1])

@@ -45,7 +45,7 @@ class Model(MWidget):
         self.timeStartModeling = None
         self.modelName: str = ""
         self.model: list = []
-        self.modelBatch: bool = False
+        self.modelBatch: ModelBatch = None
 
         self.ui.runModel.clicked.connect(self.runBatch)
         self.ui.pauseModel.clicked.connect(self.pauseBatch)
@@ -335,13 +335,13 @@ class Model(MWidget):
         else:
             self.msg.emit(1, "Model", "Run", f"Model {self.modelName} with success")
 
-    def runBatch(self):
+    def runBatch(self) -> None:
         """ """
         excludeDonePoints = self.ui.excludeDonePoints.isChecked()
         if not self.checkModelRunConditions(excludeDonePoints):
-            return False
+            return
         if not self.clearAlignAndBackup():
-            return False
+            return
 
         self.modelBatch = ModelBatch(self.app)
         self.setupModelInputData(excludeDonePoints)
@@ -353,5 +353,3 @@ class Model(MWidget):
         self.modelBatch = None
         self.app.playSound.emit("RunFinished")
         self.app.operationRunning.emit(0)
-
-        return True

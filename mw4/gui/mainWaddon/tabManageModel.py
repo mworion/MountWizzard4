@@ -354,7 +354,6 @@ class ManageModel(MWidget):
                 continue
             newModel.append(element)
 
-        return True
         newModel = writeRetrofitData(self.app.mount.model, newModel)
         with open(newPath, "w+") as newFile:
             json.dump(newModel, newFile, sort_keys=True, indent=4)

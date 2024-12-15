@@ -136,7 +136,6 @@ def test_smartFunctionGui_1(window):
     window.app.data.buildP = [(0, 0)]
     window.smartFunctionGui()
     assert window.ui.runModel.isEnabled()
-    assert window.ui.dataModel.isEnabled()
     assert window.ui.runFlexure.isEnabled()
     assert window.ui.runHysteresis.isEnabled()
 
@@ -148,7 +147,6 @@ def test_smartFunctionGui_2(window):
     window.app.data.buildP = [(0, 0)]
     window.smartFunctionGui()
     assert not window.ui.runModel.isEnabled()
-    assert not window.ui.dataModel.isEnabled()
     assert not window.ui.runFlexure.isEnabled()
     assert not window.ui.runHysteresis.isEnabled()
 

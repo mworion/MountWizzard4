@@ -239,8 +239,7 @@ class BuildPoints(MWidget):
         return True
 
     def genBuildMax(self) -> None:
-        """
-        """
+        """ """
         self.lastGenerator = "max"
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection="max", keep=keep)
@@ -253,8 +252,7 @@ class BuildPoints(MWidget):
         self.processPoints()
 
     def genBuildMed(self) -> None:
-        """
-        """
+        """ """
         self.lastGenerator = "med"
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection="med", keep=keep)
@@ -267,8 +265,7 @@ class BuildPoints(MWidget):
         self.processPoints()
 
     def genBuildNorm(self) -> None:
-        """
-        """
+        """ """
         self.lastGenerator = "norm"
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection="norm", keep=keep)
@@ -281,8 +278,7 @@ class BuildPoints(MWidget):
         self.processPoints()
 
     def genBuildMin(self) -> None:
-        """
-        """
+        """ """
         self.lastGenerator = "min"
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genGreaterCircle(selection="min", keep=keep)

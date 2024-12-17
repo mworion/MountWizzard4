@@ -103,9 +103,9 @@ class Model(MWidget):
 
     def setModelOperationMode(self, status: int) -> None:
         """
-            status 0: idle
-            status 1: modeling build
-            status 2: modeling with stored data
+        status 0: idle
+        status 1: modeling build
+        status 2: modeling with stored data
         """
         if status == 1:
             self.ui.runModelGroup.setEnabled(False)
@@ -178,17 +178,7 @@ class Model(MWidget):
         self.model = writeRetrofitData(mountModel, self.model)
 
     def saveModelFinish(self) -> None:
-        """
-        saveModelFinish is the callback after the new model data is loaded from
-        the mount computer. first is disabling the signals. New we have the
-        original model build data which was programmed to the mount and the
-        retrieved model data after the mount optimized the model. retrofitModel()
-        combines this data to a signal data structure. after that it saves the
-        model data for later use.
-
-        with this data, the model could be reprogrammed without doing some imaging,
-        it could be added with other data to extend the model to a broader base.
-        """
+        """ """
         self.app.mount.signals.getModelDone.disconnect(self.saveModelFinish)
         self.retrofitModel()
         self.msg.emit(0, "Model", "Run", f"Writing model [{self.modelName}]")

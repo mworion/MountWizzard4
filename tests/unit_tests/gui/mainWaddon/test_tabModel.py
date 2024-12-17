@@ -211,30 +211,30 @@ def test_saveModelFinish_1(function):
 
 def test_programModelToMount_1(function):
     function.model = []
-    with mock.patch.object(gui.mainWaddon.tabModel, "buildAlignModel", return_value=[]):
+    with mock.patch.object(gui.mainWaddon.tabModel, "buildProgModel", return_value=[]):
         with mock.patch.object(
             function.app.mount.model, "programModelFromStarList", return_value=False
         ):
-            suc = function.programModelToMount()
+            suc = function.programModelToMount([])
             assert not suc
 
 
 def test_programModelToMount_2(function):
     function.model = []
-    with mock.patch.object(gui.mainWaddon.tabModel, "buildAlignModel", return_value=[1, 2, 3]):
+    with mock.patch.object(gui.mainWaddon.tabModel, "buildProgModel", return_value=[1, 2, 3]):
         with mock.patch.object(
             function.app.mount.model, "programModelFromStarList", return_value=False
         ):
-            suc = function.programModelToMount()
+            suc = function.programModelToMount([])
             assert not suc
 
 
 def test_programModelToMount_3(function):
-    with mock.patch.object(gui.mainWaddon.tabModel, "buildAlignModel", return_value=[1, 2, 3]):
+    with mock.patch.object(gui.mainWaddon.tabModel, "buildProgModel", return_value=[1, 2, 3]):
         with mock.patch.object(
             function.app.mount.model, "programModelFromStarList", return_value=True
         ):
-            suc = function.programModelToMount()
+            suc = function.programModelToMount([])
             assert suc
 
 

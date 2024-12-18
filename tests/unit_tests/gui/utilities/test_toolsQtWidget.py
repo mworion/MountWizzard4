@@ -312,7 +312,7 @@ def test_openFile_3(function):
 
 def test_openFile_4(function):
     window = QWidget()
-    full = function.openFile(window=window, title="title", folder=".")
+    full = function.openFile(window=window, title="title", folder=Path(".text"))
     assert full == Path("")
 
 
@@ -326,7 +326,7 @@ def test_openFile_5(function):
 def test_openFile_6(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=1):
-        with mock.patch.object(QFileDialog, "selectedFiles", return_value=("test1", "test2")):
+        with mock.patch.object(QFileDialog, "selectedFiles", return_value=["test1", "test2"]):
             full = function.openFile(
                 window=window,
                 title="title",
@@ -335,6 +335,20 @@ def test_openFile_6(function):
                 multiple=True,
             )
             assert full == [Path("test1"), Path("test2")]
+
+
+def test_openFile_7(function):
+    window = QWidget()
+    with mock.patch.object(function, "runDialog", return_value=1):
+        with mock.patch.object(QFileDialog, "selectedFiles", return_value=["test1"]):
+            full = function.openFile(
+                window=window,
+                title="title",
+                folder=Path("."),
+                filterSet="*.*",
+                multiple=False,
+            )
+            assert full == Path("test1")
 
 
 def test_saveFile_1(function):

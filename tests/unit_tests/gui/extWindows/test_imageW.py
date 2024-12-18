@@ -430,14 +430,14 @@ def test_mouseToWorld_1(function):
 
 
 def test_slewDirect_1(function):
-    with mock.patch.object(function, "messageDialog", return_value=False):
-        function.slewDirect(Angle(hours=0), Angle(degrees=0))
+    function.app.deviceStat["mount"] = False
+    function.slewDirect(Angle(hours=0), Angle(degrees=0))
 
 
 def test_slewDirect_2(function):
-    with mock.patch.object(function, "messageDialog", return_value=True):
-        with mock.patch.object(SlewInterface, "slewTargetRaDec", return_value=False):
-            function.slewDirect(Angle(hours=0), Angle(degrees=0))
+    function.app.deviceStat["mount"] = True
+    with mock.patch.object(function, "messageDialog", return_value=False):
+        function.slewDirect(Angle(hours=0), Angle(degrees=0))
 
 
 def test_slewDirect_3(function):

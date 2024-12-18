@@ -16,8 +16,8 @@
 ###########################################################
 # standard libraries
 import pytest
-import os
 from unittest import mock
+from pathlib import Path
 
 # external packages
 from PySide6.QtWidgets import QWidget, QComboBox, QTableWidget, QGroupBox
@@ -118,7 +118,7 @@ def test_loadSourceUrl_2(function):
     function.uiSourceList.clear()
     function.uiSourceList.addItem("100 brightest")
 
-    with mock.patch.object(os.path, "isfile", return_value=True):
+    with mock.patch.object(Path, "is_file", return_value=True):
         with mock.patch.object(function, "procSourceData"):
             function.loadSourceUrl()
 
@@ -128,7 +128,7 @@ def test_loadSourceUrl_3(function):
     function.uiSourceList.addItem("100 brightest")
 
     function.window.ui.isOnline.setChecked(False)
-    with mock.patch.object(os.path, "isfile", return_value=False):
+    with mock.patch.object(Path, "is_file", return_value=False):
         with mock.patch.object(function, "runDownloadPopup"):
             function.loadSourceUrl()
 
@@ -138,7 +138,7 @@ def test_loadSourceUrl_4(function):
     function.uiSourceList.addItem("100 brightest")
 
     function.window.ui.isOnline.setChecked(True)
-    with mock.patch.object(os.path, "isfile", return_value=False):
+    with mock.patch.object(Path, "is_file", return_value=False):
         with mock.patch.object(function, "runDownloadPopup"):
             function.loadSourceUrl()
 

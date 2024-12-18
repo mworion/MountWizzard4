@@ -546,7 +546,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         """ """
         if not self.app.deviceStat["mount"]:
             self.msg.emit(2, "Image", "Mount", "Mount is not connected")
-            return False
+            return
         question = "<b>Slewing to target</b>"
         question += "<br><br>Selected coordinates are:<br>"
         question += f"<font color={self.M_PRIM}> RA: {ra.hours:3.2f}h"

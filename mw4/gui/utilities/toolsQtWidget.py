@@ -358,7 +358,7 @@ class MWidget(QWidget, Styles):
             return Path("")
         if not title:
             return Path("")
-        if not folder:
+        if not folder.is_dir():
             return Path("")
         if not filterSet:
             return Path("")

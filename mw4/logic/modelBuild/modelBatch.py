@@ -134,7 +134,7 @@ class ModelBatch(QObject):
             self.modelSaveData = writeRetrofitData(self.app.mount.model, self.modelSaveData)
             self.modelSaveData = convertAngleToFloat(self.modelSaveData)
         else:
-            self.log.warning(f"Error in model data: difference in length")
+            self.log.warning("Error in model data: difference in length")
             self.modelSaveData = []
 
     def collectBuildModelResults(self) -> None:

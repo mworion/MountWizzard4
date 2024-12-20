@@ -26,10 +26,8 @@ from pathlib import Path
 # local import
 from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
 from logic.modelBuild.modelHandling import (
-    writeRetrofitData,
     buildProgModel,
     loadModelsFromFile,
-    convertAngleToFloat,
 )
 from logic.modelBuild.modelBatch import ModelBatch
 

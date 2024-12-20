@@ -25,7 +25,7 @@ import numpy as np
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
-from logic.modelBuild.modelHandling import writeRetrofitData
+from logic.modelBuild.modelHandling import writeRetrofitData, convertAngleToFloat
 
 
 class ManageModel(MWidget):
@@ -355,9 +355,9 @@ class ManageModel(MWidget):
             newModel.append(element)
 
         newModel = writeRetrofitData(self.app.mount.model, newModel)
+        newModel = convertAngleToFloat(newModel)
         with open(newPath, "w+") as newFile:
-            pass
-            # json.dump(newModel, newFile, sort_keys=True, indent=4)
+            json.dump(newModel, newFile, sort_keys=True, indent=4)
         return True
 
     def clearRefreshModel(self):

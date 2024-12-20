@@ -15,7 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import os
 import time
 import logging
 import datetime

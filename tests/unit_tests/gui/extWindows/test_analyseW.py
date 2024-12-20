@@ -34,6 +34,7 @@ from gui.extWindows.analyseW import AnalyseWindow
 def function(qapp):
     func = AnalyseWindow(app=App())
     yield func
+    func.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):

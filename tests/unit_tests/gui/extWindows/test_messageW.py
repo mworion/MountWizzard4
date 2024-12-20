@@ -31,6 +31,7 @@ from gui.extWindows.messageW import MessageWindow
 def function(qapp):
     func = MessageWindow(app=App())
     yield func
+    func.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):

@@ -51,6 +51,7 @@ def function(qapp):
         )
         window.log = logging.getLogger()
         yield window
+        window.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):

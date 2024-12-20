@@ -36,6 +36,7 @@ def function(qapp):
     func = VideoWindow(app=App())
     with mock.patch.object(func, "show"):
         yield func
+        func.app.threadPool.waitForDone(10000)
 
 
 def test_closeEvent_1(function):

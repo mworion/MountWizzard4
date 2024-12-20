@@ -78,6 +78,7 @@ def function(qapp):
     func.app.measure.data["time"] = np.append(func.app.measure.data["time"], value)
     func.app.measure.data["time"] = np.append(func.app.measure.data["time"], value)
     yield func
+    func.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):

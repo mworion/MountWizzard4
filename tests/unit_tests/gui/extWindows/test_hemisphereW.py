@@ -42,7 +42,7 @@ def function(qapp):
     shutil.copy("tests/testData/terrain.jpg", "tests/workDir/config/terrain.jpg")
     func = HemisphereWindow(app=App())
     yield func
-    func.app.threadPool.waitForDone(1000)
+    func.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):

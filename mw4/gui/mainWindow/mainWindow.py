@@ -199,7 +199,7 @@ class MainWindow(MWidget):
         self.changeStyleDynamic(self.ui.pauseModel, "pause", False)
         self.externalWindows.closeExtendedWindows()
         self.mainWindowAddons.addons["SettDevice"].stopDrivers()
-        self.threadPool.waitForDone(7000)
+        self.threadPool.waitForDone(10000)
         super().closeEvent(closeEvent)
         self.app.quit()
 

@@ -31,6 +31,7 @@ from gui.utilities.toolsQtWidget import MWidget
 def function(qapp):
     window = BigPopup(App())
     yield window
+    window.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):

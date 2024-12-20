@@ -36,7 +36,7 @@ def function(qapp):
     with mock.patch.object(pickle, "load"):
         func = SatelliteWindow(app=App())
         yield func
-        del func
+        func.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):

@@ -43,7 +43,7 @@ def window(qapp):
         with mock.patch.object(MainWindow, "initConfig"):
             window = MainWindow(app=App())
             yield window
-            window.app.threadPool.waitForDone(5000)
+            window.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(window):

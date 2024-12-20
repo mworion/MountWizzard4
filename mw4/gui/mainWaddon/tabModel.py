@@ -169,9 +169,11 @@ class Model(MWidget):
         self.modelData.generateSaveData()
         modelPath = self.app.mwGlob["modelDir"] / (self.modelData.name + ".model")
         self.modelData.saveModelData(modelPath)
+        self.app.mount.model.storeName("actual")
 
     def programModelToMount(self) -> bool:
         """ """
+        self.msg.emit(0, "Model", "Run", f"Programming {self.modelData.name}")
         if not self.modelData.modelProgData:
             self.msg.emit(3, "Model", "Run error", "No sufficient model data available")
             return
@@ -180,10 +182,8 @@ class Model(MWidget):
             self.msg.emit(3, "Model", "Run error", "Programming to mount error")
             return
 
-        self.msg.emit(0, "Model", "Run", f"Model {self.modelData.name} with success")
+        self.msg.emit(0, "Model", "Run", f"Programmed {self.modelData.name} with success")
         self.app.mount.signals.getModelDone.connect(self.programModelToMountFinish)
-        self.app.mount.model.storeName("actual")
-        self.app.refreshName.emit()
         self.app.refreshModel.emit()
 
     def checkModelRunConditions(self, excludeDonePoints: bool) -> bool:
@@ -215,7 +215,6 @@ class Model(MWidget):
         self.msg.emit(0, "Model", "Run", "Actual model clearing, waiting 1s")
         sleepAndEvents(1000)
         self.msg.emit(0, "", "", "Actual model cleared")
-        self.app.refreshModel.emit()
         if not self.app.mount.model.storeName("backup"):
             t = "Cannot save backup model on mount, proceeding with model run"
             self.msg.emit(2, "Model", "Run error", t)
@@ -224,7 +223,7 @@ class Model(MWidget):
     def setupFilenamesAndDirectories(self, prefix: str = "", postfix: str = "") -> [Path, Path]:
         """ """
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
-        name = f"{prefix}-{nameTime}{postfix}"
+        name = f"{prefix}-{nameTime}-{postfix}"
         imageDir = self.app.mwGlob["imageDir"] / name
 
         if not imageDir.is_dir():
@@ -285,17 +284,27 @@ class Model(MWidget):
 
     def runFileModel(self):
         """ """
-        if not self.clearAlignAndBackup():
-            return
-
         self.app.operationRunning.emit(2)
         self.modelData = ModelData(self.app)
-        self.modelData.name, _ = self.setupFilenamesAndDirectories(prefix="m", postfix="combi")
-        self.msg.emit(1, "Model", "Run", f"Model {self.modelData.name}")
+        self.msg.emit(1, "Model", "Run", "Model from file")
         folder = self.app.mwGlob["modelDir"]
         modelFilesPath = self.openFile(
             self, "Open model file(s)", folder, "Model files (*.model)", multiple=True
         )
+        if len(modelFilesPath) > 1:
+            self.msg.emit(0, "Model", "Run", F"Combination of len(modelFilesPath) files")
+            self.modelData.name, _ = self.setupFilenamesAndDirectories(prefix="m", postfix="add")
+        elif len(modelFilesPath) == 1:
+            self.modelData.name = modelFilesPath[0].stem
+        else:
+            self.msg.emit(1, "Model", "Run", "Model from file cancelled - no files selected")
+            self.app.operationRunning.emit(0)
+            return
+
+        if not self.clearAlignAndBackup():
+            self.app.operationRunning.emit(0)
+            return
+
         self.modelData.modelBuildData, message = loadModelsFromFile(modelFilesPath)
         self.modelData.buildProgModel()
         if self.modelData.modelBuildData:

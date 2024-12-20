@@ -353,14 +353,19 @@ class MWidget(QWidget, Styles):
         multiple=False,
     ):
         """ """
+        if multiple:
+            default = []
+        else:
+            default = Path("")
+
         if not window:
-            return Path("")
+            return default
         if not title:
-            return Path("")
+            return default
         if not folder.is_dir():
-            return Path("")
+            return default
         if not filterSet:
-            return Path("")
+            return default
 
         dlg = self.prepareFileDialog(window=window, enableDir=enableDir)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
@@ -375,7 +380,7 @@ class MWidget(QWidget, Styles):
 
         result = self.runDialog(dlg)
         if not result:
-            return Path("")
+            return default
 
         if multiple:
             return [Path(f) for f in dlg.selectedFiles()]

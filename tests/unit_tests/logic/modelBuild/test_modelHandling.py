@@ -16,11 +16,11 @@
 ###########################################################
 # standard libraries
 import shutil
-from unittest import mock
 from pathlib import Path
+from datetime import datetime
 
 # external packages
-from skyfield.api import wgs84, Angle
+from skyfield.api import wgs84, Angle, load
 
 # local import
 from mountcontrol.model import Model, ModelStar
@@ -124,6 +124,7 @@ def test_convertFloatToAngle_1():
 
 
 def test_convertAngleToFloat_1():
+    ts = load.timescale()
     target = [
         {
             "altitude": Angle(degrees=44.556745182012854),
@@ -137,7 +138,7 @@ def test_convertAngleToFloat_1():
             "errorRA": Angle(degrees=-61.36599559380768),
             "exposureTime": 3.0,
             "fastReadout": True,
-            "julianDate": "2019-06-08T08:57:57Z",
+            "julianDate": ts.from_datetime(datetime.fromisoformat("2019-06-08T08:57:57Z")),
             "name": "m-file-2019-06-08-08-57-44",
             "lenSequence": 3,
             "imagePath": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08"

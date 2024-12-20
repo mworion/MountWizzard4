@@ -18,15 +18,17 @@
 import logging
 import json
 from pathlib import Path
+from datetime import datetime
 
 # external packages
-from skyfield.api import Angle
+from skyfield.api import Angle, load
 
 # local packages
 from mountcontrol.model import Model
 
 
 log = logging.getLogger("MW4")
+ts = load.timescale()
 
 hourAngles = ["raJNowM", "raJNowS", "raJ2000M", "raJ2000S", "siderealTime", "haMountModel"]
 degreeAngles = [
@@ -74,6 +76,8 @@ def convertFloatToAngle(model: list[dict]) -> list[dict]:
                 mPoint[key] = Angle(hours=mPoint[key])
             elif key in degreeAngles:
                 mPoint[key] = Angle(degrees=mPoint[key])
+            elif key == "julianDate":
+                mPoint[key] = ts.from_datetime(datetime.fromisoformat(mPoint[key]))
     return model
 
 
@@ -85,6 +89,8 @@ def convertAngleToFloat(model: list[dict]) -> list[dict]:
                 mPoint[key] = mPoint[key].hours
             elif key in degreeAngles:
                 mPoint[key] = mPoint[key].degrees
+            elif key == "julianDate":
+                mPoint[key] = mPoint[key].utc_iso()
     return model
 
 

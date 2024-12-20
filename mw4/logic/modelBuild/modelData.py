@@ -148,7 +148,7 @@ class ModelData(QObject):
 
             modelSavePoint = dict()
             modelSavePoint.update(modelBuildPoint)
-            modelSavePoint["julianDate"] = modelSavePoint["julianDate"].utc_iso()
+            modelSavePoint["julianDate"] = modelSavePoint["julianDate"]
             modelSavePoint["version"] = self.version
             modelSavePoint["profile"] = self.profile
             modelSavePoint["firmware"] = self.firmware

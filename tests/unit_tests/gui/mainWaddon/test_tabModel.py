@@ -187,6 +187,7 @@ def test_programModelToMountFinish_1(function):
 
 def test_programModelToMount_1(function):
     function.modelData = ModelData(App)
+    function.modelData.name = "Test"
     function.modelData.modelProgData = []
     with mock.patch.object(
         function.app.mount.model, "programModelFromStarList", return_value=False
@@ -196,6 +197,7 @@ def test_programModelToMount_1(function):
 
 def test_programModelToMount_2(function):
     function.modelData = ModelData(App)
+    function.modelData.name = "Test"
     function.modelData.modelProgData = [1, 2, 3]
     with mock.patch.object(
         function.app.mount.model, "programModelFromStarList", return_value=False
@@ -329,26 +331,11 @@ def test_runBatch_3(function):
 
 
 def test_runFileModel_1(function):
-    with mock.patch.object(function, "clearAlignAndBackup", return_value=False):
+    with mock.patch.object(function, "openFile", return_value=[]):
         function.runFileModel()
 
 
 def test_runFileModel_2(function):
-    function.modelData = ModelData(App)
-    function.modelData.name = "Test"
-    val = ([], "Error")
-    with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
-        with mock.patch.object(function, "openFile", return_value=[]):
-            with mock.patch.object(
-                gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val
-            ):
-                with mock.patch.object(function.modelData, "buildProgModel"):
-                    function.runFileModel()
-
-
-def test_runFileModel_3(function):
-    function.modelData = ModelData(App)
-    function.modelData.name = "Test"
     model = [
         {
             "altitude": 44.556745182012854,
@@ -376,11 +363,39 @@ def test_runFileModel_3(function):
     ]
 
     val = (model, "Error")
+    function.modelData = ModelData(App)
+    with mock.patch.object(function, "openFile", return_value=[Path("test.model")]):
+        with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
+            with mock.patch.object(function.modelData, "buildProgModel"):
+                with mock.patch.object(
+                        gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val
+                ):
+                    with mock.patch.object(function.modelData, "buildProgModel"):
+                        with mock.patch.object(function, "programModelToMount"):
+                            function.runFileModel()
+                            assert function.modelData.name == "test"
+
+
+def test_runFileModel_3(function):
+    function.modelData = ModelData(App)
+    function.modelData.name = "Test"
+
     with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
-        with mock.patch.object(function, "openFile", return_value=[]):
-            with mock.patch.object(
-                gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val
-            ):
-                with mock.patch.object(function.modelData, "buildProgModel"):
-                    with mock.patch.object(function, "programModelToMount"):
-                        function.runFileModel()
+        with mock.patch.object(function, "openFile", return_value=[Path("test1.model"), Path("test2.model")]):
+            with mock.patch.object(function, "setupFilenamesAndDirectories", return_value=("m-test1-add", "")):
+                with mock.patch.object(
+                    gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=([], "")
+                ):
+                    with mock.patch.object(function.modelData, "buildProgModel"):
+                        with mock.patch.object(function, "programModelToMount"):
+                            function.runFileModel()
+                            assert function.modelData.name == "m-test1-add"
+
+
+def test_runFileModel_4(function):
+    function.modelData = ModelData(App)
+    function.modelData.name = "Test"
+    with mock.patch.object(function, "clearAlignAndBackup", return_value=False):
+        with mock.patch.object(function, "openFile", return_value=[Path("test1.model"), Path("test2.model")]):
+            with mock.patch.object(function, "setupFilenamesAndDirectories", return_value=("m-test1-add", "")):
+                function.runFileModel()

@@ -17,6 +17,7 @@
 # standard libraries
 import json
 import os
+from pathlib import Path
 
 # external packages
 from PySide6.QtWidgets import QLineEdit, QInputDialog
@@ -25,7 +26,11 @@ import numpy as np
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
-from logic.modelBuild.modelHandling import writeRetrofitData, convertAngleToFloat
+from logic.modelBuild.modelHandling import (
+    writeRetrofitData,
+    convertAngleToFloat,
+    convertFloatToAngle,
+)
 
 
 class ManageModel(MWidget):
@@ -189,11 +194,11 @@ class ManageModel(MWidget):
                 break
         else:
             self.fittedModelPoints = []
-            self.fittedModelPath = ""
+            self.fittedModelPath = Path("")
             pointsIn = []
             pointsOut = []
 
-        name = os.path.splitext(os.path.basename(self.fittedModelPath))[0]
+        name = self.fittedModelPath.stem
         return name, pointsIn, pointsOut
 
     def showModelPosition(self):
@@ -343,7 +348,7 @@ class ManageModel(MWidget):
 
         try:
             with open(actPath) as actFile:
-                actModel = json.load(actFile)
+                actModel = convertFloatToAngle(json.load(actFile))
         except Exception as e:
             self.log.warning(f"Cannot load model file: {[actFile]}, error: {e}")
             return False

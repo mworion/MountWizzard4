@@ -16,20 +16,23 @@
 ###########################################################
 # standard libraries
 import pytest
+import json
 from unittest import mock
+from pathlib import Path
+import builtins
 
 # external packages
 from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-import logic.modelBuild.modelBatch
-from logic.modelBuild.modelBatch import ModelBatch
+import logic.modelBuild.modelData
+from logic.modelBuild.modelData import ModelData
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    function = ModelBatch(App())
+    function = ModelData(App())
     yield function
 
 
@@ -38,7 +41,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         function.pauseBatch = False
 
-    monkeypatch.setattr("logic.modelBuild.modelBatch.sleepAndEvents", test)
+    monkeypatch.setattr("logic.modelBuild.modelData.sleepAndEvents", test)
 
 
 @pytest.fixture
@@ -46,7 +49,7 @@ def mocked_sleepAndEvents_2(monkeypatch, function):
     def test(a):
         function.cancelBatch = True
 
-    monkeypatch.setattr("logic.modelBuild.modelBatch.sleepAndEvents", test)
+    monkeypatch.setattr("logic.modelBuild.modelData.sleepAndEvents", test)
 
 
 def test_setImageExposed(function):
@@ -155,10 +158,10 @@ def test_addMountModelToBuildModel_1(function):
     function.app.mount.model.starList = [1, 2, 3]
     function.modelSaveData = [1, 2, 3]
     with mock.patch.object(
-        logic.modelBuild.modelBatch, "writeRetrofitData", return_value=[1, 2, 3]
+        logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]
     ):
         with mock.patch.object(
-            logic.modelBuild.modelBatch, "convertAngleToFloat", return_value=[1, 2, 3]
+            logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]
         ):
             function.addMountModelToBuildModel()
     assert len(function.modelSaveData) == 3
@@ -168,10 +171,10 @@ def test_addMountModelToBuildModel_2(function):
     function.app.mount.model.starList = [1, 2]
     function.modelSaveData = [1, 2, 3]
     with mock.patch.object(
-        logic.modelBuild.modelBatch, "writeRetrofitData", return_value=[1, 2, 3]
+        logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]
     ):
         with mock.patch.object(
-            logic.modelBuild.modelBatch, "convertAngleToFloat", return_value=[1, 2, 3]
+            logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]
         ):
             function.addMountModelToBuildModel()
 
@@ -222,6 +225,51 @@ def test_generateSaveData_1(function):
     with mock.patch.object(function, "collectBuildModelResults"):
         with mock.patch.object(function, "addMountModelToBuildModel"):
             function.generateSaveData()
+
+
+def test_saveModelData_1(function):
+    function.modelSaveData = [1, 2, 3]
+    with mock.patch.object(builtins, "open"):
+        with mock.patch.object(json, "dump"):
+            function.saveModelData(Path(""))
+
+
+def test_buildProgModel_1(function):
+    function.modelBuildData = []
+    function.buildProgModel()
+
+
+def test_buildProgModel_2(function):
+    model = [
+        {
+            "altitude": 44.556745182012854,
+            "azimuth": 37.194805194805184,
+            "binning": 1.0,
+            "countSequence": 0,
+            "decJNowS": Angle(degrees=64.3246),
+            "decJNowM": Angle(degrees=64.32841185357267),
+            "errorDEC": -229.0210134131381,
+            "errorRMS": 237.1,
+            "errorRA": -61.36599559380768,
+            "exposureTime": 3.0,
+            "fastReadout": True,
+            "julianDate": "2019-06-08T08:57:57Z",
+            "name": "m-file-2019-06-08-08-57-44",
+            "lenSequence": 3,
+            "imagePath": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08"
+            "-57-44/image-000.fits",
+            "pierside": "W",
+            "raJNowS": Angle(hours=8.42882),
+            "raJNowM": Angle(hours=8.427692953132278),
+            "siderealTime": Angle(hours=12.5),
+            "subFrame": 100.0,
+        },
+    ]
+
+    function.modelData = ModelData(App())
+    function.modelBuildData = model
+    function.buildProgModel()
+    assert function.modelProgData[0].sCoord.dec.degrees == 64.3246
 
 
 def test_addMountDataToModelBuildData_1(function):
@@ -286,18 +334,14 @@ def test_prepareModelBuildData_1(function):
         assert function.modelBuildData[0]["azimuth"].degrees == 0
 
 
-def test_processModelBuildData_1(function):
-    function.processModelBuildData()
-
-
 def test_run_1(function):
     function.modelInputData = []
-    function.run()
+    function.runModel()
 
 
 def test_run_2(function, mocked_sleepAndEvents_2):
     function.modelInputData = [(0, 0, True)]
     with mock.patch.object(function, "prepareModelBuildData"):
         with mock.patch.object(function, "startNewSlew"):
-            with mock.patch.object(function, "generateSaveData"):
-                function.run()
+            with mock.patch.object(function, "buildProgModel"):
+                function.runModel()

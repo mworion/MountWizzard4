@@ -19,18 +19,16 @@
 import unittest.mock as mock
 import pytest
 import time
-import shutil
 import os
 from pathlib import Path
 
 # external packages
-import skyfield.api
-from mountcontrol.modelStar import ModelStar
 from PySide6.QtWidgets import QWidget
+from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.modelBuild.modelBatch import ModelBatch
+from logic.modelBuild.modelData import ModelData
 from gui.mainWaddon.tabModel import Model
 import gui.mainWaddon.tabModel
 import gui.mainWaddon
@@ -62,36 +60,36 @@ def test_setupIcons_1(function):
 
 
 def test_cancelBatch_1(function):
-    function.modelBatch = None
+    function.modelData = None
     function.cancelBatch()
 
 
 def test_cancelBatch_2(function):
-    function.modelBatch = ModelBatch(App)
+    function.modelData = ModelData(App)
     function.cancelBatch()
-    assert function.modelBatch.cancelBatch
+    assert function.modelData.cancelBatch
 
 
 def test_pauseBatch_1(function):
-    function.modelBatch = None
+    function.modelData = None
     function.pauseBatch()
 
 
 def test_pauseBatch_2(function):
-    function.modelBatch = ModelBatch(App)
+    function.modelData = ModelData(App)
     function.pauseBatch()
-    assert function.modelBatch.pauseBatch
+    assert function.modelData.pauseBatch
 
 
 def test_endBatch_1(function):
-    function.modelBatch = None
+    function.modelData = None
     function.endBatch()
 
 
 def test_endBatch_2(function):
-    function.modelBatch = ModelBatch(App)
+    function.modelData = ModelData(App)
     function.endBatch()
-    assert function.modelBatch.endBatch
+    assert function.modelData.endBatch
 
 
 def test_setModelOperationMode_1(function):
@@ -179,44 +177,42 @@ def test_pauseBuild_2(function):
     assert function.ui.pauseModel.property("pause")
 
 
-def test_saveModelFinish_1(function):
-    function.modelBatch = ModelBatch(App)
-    with mock.patch.object(function.modelBatch, "generateSaveData", return_value=[]):
-        function.saveModelFinish()
+def test_programModelToMountFinish_1(function):
+    function.modelData = ModelData(App)
+    function.modelData.name = "Test"
+    with mock.patch.object(function.modelData, "generateSaveData"):
+        with mock.patch.object(function.modelData, "saveModelData"):
+            function.programModelToMountFinish()
 
 
 def test_programModelToMount_1(function):
-    function.model = []
-    with mock.patch.object(gui.mainWaddon.tabModel, "buildProgModel", return_value=[]):
-        with mock.patch.object(
-            function.app.mount.model, "programModelFromStarList", return_value=False
-        ):
-            suc = function.programModelToMount([])
-            assert not suc
+    function.modelData = ModelData(App)
+    function.modelData.modelProgData = []
+    with mock.patch.object(
+        function.app.mount.model, "programModelFromStarList", return_value=False
+    ):
+        function.programModelToMount()
 
 
 def test_programModelToMount_2(function):
-    function.model = []
-    with mock.patch.object(gui.mainWaddon.tabModel, "buildProgModel", return_value=[1, 2, 3]):
-        with mock.patch.object(
-            function.app.mount.model, "programModelFromStarList", return_value=False
-        ):
-            suc = function.programModelToMount([])
-            assert not suc
+    function.modelData = ModelData(App)
+    function.modelData.modelProgData = [1, 2, 3]
+    with mock.patch.object(
+        function.app.mount.model, "programModelFromStarList", return_value=False
+    ):
+        function.programModelToMount()
 
 
 def test_programModelToMount_3(function):
-    with mock.patch.object(gui.mainWaddon.tabModel, "buildProgModel", return_value=[1, 2, 3]):
-        with mock.patch.object(
-            function.app.mount.model, "programModelFromStarList", return_value=True
-        ):
-            suc = function.programModelToMount([])
-            assert suc
+    function.modelData = ModelData(App)
+    function.modelData.name = "Test"
 
-
-def test_processModelData_1(function):
-    with mock.patch.object(function, "programModelToMount", return_value=False):
-        function.processModelData()
+    function.modelData.modelProgData = [1, 2, 3]
+    with mock.patch.object(
+        function.app.mount.model, "programModelFromStarList", return_value=True
+    ):
+        with mock.patch.object(function.app.mount.model, "storeName"):
+            function.programModelToMount()
 
 
 def test_checkModelRunConditions_1(function):
@@ -276,42 +272,6 @@ def test_clearAlignAndBackup_4(function):
                     assert suc
 
 
-def test_loadProgramModel_1(function):
-    val = ([], "Error")
-    with mock.patch.object(function, "openFile", return_value=[]):
-        with mock.patch.object(gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val):
-            function.loadProgramModel()
-
-
-def test_loadProgramModel_2(function):
-    shutil.copy("tests/testData/test.model", "tests/workDir/model/test.model")
-    val = ([{}, {}], "OK")
-    with mock.patch.object(function, "openFile", return_value=[Path(""), Path("")]):
-        with mock.patch.object(gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val):
-            with mock.patch.object(function, "clearAlignAndBackup", return_value=False):
-                function.loadProgramModel()
-
-
-def test_loadProgramModel_3(function):
-    shutil.copy("tests/testData/test.model", "tests/workDir/model/test.model")
-    val = ([{}, {}], "OK")
-    with mock.patch.object(function, "openFile", return_value=[Path(""), Path("")]):
-        with mock.patch.object(gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val):
-            with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
-                with mock.patch.object(function, "programModelToMount", return_value=False):
-                    function.loadProgramModel()
-
-
-def test_loadProgramModel_4(function):
-    shutil.copy("tests/testData/test.model", "tests/workDir/model/test.model")
-    val = ([{}, {}], "OK")
-    with mock.patch.object(function, "openFile", return_value=[Path(""), Path("")]):
-        with mock.patch.object(gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val):
-            with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
-                with mock.patch.object(function, "programModelToMount", return_value=True):
-                    function.loadProgramModel()
-
-
 def test_setupFilenamesAndDirectories_1(function):
     with mock.patch.object(Path, "is_dir", return_value=False):
         with mock.patch.object(os, "mkdir"):
@@ -341,28 +301,11 @@ def test_setupModelInputData_1(function):
 
 
 def test_setupBatchData_1(function):
-    function.modelBatch = ModelBatch(App)
+    function.modelData = ModelData(App)
     with mock.patch.object(
         function, "setupFilenamesAndDirectories", return_value=(Path(""), "test")
     ):
         function.setupBatchData()
-
-
-def test_processModelData_1(function):
-    with mock.patch.object(function, "programModelToMount", return_value=True):
-        function.processModelData()
-
-
-def test_communicateModelBatchRun_1(function):
-    function.modelBatch = ModelBatch(App)
-    function.modelBatch.modelBuildData = []
-    function.communicateModelBatchRun()
-
-
-def test_communicateModelBatchRun_2(function):
-    function.modelBatch = ModelBatch(App)
-    function.modelBatch.modelBuildData = [1, 2, 3]
-    function.communicateModelBatchRun()
 
 
 def test_runBatch_1(function):
@@ -380,9 +323,64 @@ def test_runBatch_3(function):
     with mock.patch.object(function, "checkModelRunConditions", return_value=True):
         with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
             with mock.patch.object(function, "setupModelInputData"):
-                with mock.patch.object(function, "setupModelInputData"):
-                    with mock.patch.object(function, "setupBatchData"):
-                        with mock.patch.object(function.modelBatch, "run"):
-                            with mock.patch.object(function, "processModelData"):
-                                with mock.patch.object(function, "communicateModelBatchRun"):
-                                    function.runBatch()
+                with mock.patch.object(function.modelData, "runModel"):
+                    with mock.patch.object(function, "programModelToMount"):
+                        function.runBatch()
+
+
+def test_runFileModel_1(function):
+    with mock.patch.object(function, "clearAlignAndBackup", return_value=False):
+        function.runFileModel()
+
+
+def test_runFileModel_2(function):
+    function.modelData = ModelData(App)
+    function.modelData.name = "Test"
+    val = ([], "Error")
+    with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
+        with mock.patch.object(function, "openFile", return_value=[]):
+            with mock.patch.object(
+                gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val
+            ):
+                with mock.patch.object(function.modelData, "buildProgModel"):
+                    function.runFileModel()
+
+
+def test_runFileModel_3(function):
+    function.modelData = ModelData(App)
+    function.modelData.name = "Test"
+    model = [
+        {
+            "altitude": 44.556745182012854,
+            "azimuth": 37.194805194805184,
+            "binning": 1.0,
+            "countSequence": 0,
+            "decJNowS": Angle(degrees=64.3246),
+            "decJNowM": Angle(degrees=64.32841185357267),
+            "errorDEC": -229.0210134131381,
+            "errorRMS": 237.1,
+            "errorRA": -61.36599559380768,
+            "exposureTime": 3.0,
+            "fastReadout": True,
+            "julianDate": "2019-06-08T08:57:57Z",
+            "name": "m-file-2019-06-08-08-57-44",
+            "lenSequence": 3,
+            "imagePath": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08"
+            "-57-44/image-000.fits",
+            "pierside": "W",
+            "raJNowS": Angle(hours=8.42882),
+            "raJNowM": Angle(hours=8.427692953132278),
+            "siderealTime": Angle(hours=12.5),
+            "subFrame": 100.0,
+        },
+    ]
+
+    val = (model, "Error")
+    with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
+        with mock.patch.object(function, "openFile", return_value=[]):
+            with mock.patch.object(
+                gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val
+            ):
+                with mock.patch.object(function.modelData, "buildProgModel"):
+                    with mock.patch.object(function, "programModelToMount"):
+                        function.runFileModel()

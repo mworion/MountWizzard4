@@ -17,7 +17,6 @@
 # standard libraries
 import os
 import time
-import json
 from datetime import datetime
 from pathlib import Path
 
@@ -26,10 +25,9 @@ from pathlib import Path
 # local import
 from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
 from logic.modelBuild.modelHandling import (
-    buildProgModel,
     loadModelsFromFile,
 )
-from logic.modelBuild.modelBatch import ModelBatch
+from logic.modelBuild.modelData import ModelData
 
 
 class Model(MWidget):
@@ -42,15 +40,14 @@ class Model(MWidget):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.timeStartModeling = None
-        self.modelName: str = ""
         self.model: list = []
-        self.modelBatch: ModelBatch = None
+        self.modelData: ModelData = None
 
         self.ui.runModel.clicked.connect(self.runBatch)
         self.ui.pauseModel.clicked.connect(self.pauseBatch)
         self.ui.cancelModel.clicked.connect(self.cancelBatch)
         self.ui.endModel.clicked.connect(self.endBatch)
-        self.ui.dataModel.clicked.connect(self.loadProgramModel)
+        self.ui.dataModel.clicked.connect(self.runFileModel)
         self.app.operationRunning.connect(self.setModelOperationMode)
 
     def initConfig(self) -> None:
@@ -84,21 +81,21 @@ class Model(MWidget):
 
     def cancelBatch(self) -> None:
         """ """
-        if not self.modelBatch:
+        if not self.modelData:
             return
-        self.modelBatch.cancelBatch = True
+        self.modelData.cancelBatch = True
 
     def pauseBatch(self) -> None:
         """ """
-        if not self.modelBatch:
+        if not self.modelData:
             return
-        self.modelBatch.pauseBatch = not self.modelBatch.pauseBatch
+        self.modelData.pauseBatch = not self.modelData.pauseBatch
 
     def endBatch(self) -> None:
         """ """
-        if not self.modelBatch:
+        if not self.modelData:
             return
-        self.modelBatch.endBatch = True
+        self.modelData.endBatch = True
 
     def setModelOperationMode(self, status: int) -> None:
         """
@@ -165,31 +162,29 @@ class Model(MWidget):
             self.changeStyleDynamic(self.ui.pauseModel, "color", "")
             self.changeStyleDynamic(self.ui.pauseModel, "pause", False)
 
-    def saveModelFinish(self) -> None:
+    def programModelToMountFinish(self) -> None:
         """ """
-        self.app.mount.signals.getModelDone.disconnect(self.saveModelFinish)
-        self.msg.emit(0, "Model", "Run", f"Writing model [{self.modelName}]")
-        self.modelBatch.generateSaveData()
-        modelPath = self.app.mwGlob["modelDir"] / (self.modelName + ".model")
-        with open(modelPath, "w") as outfile:
-            json.dump(self.modelBatch.modelSaveData, outfile, sort_keys=True, indent=4)
+        self.app.mount.signals.getModelDone.disconnect(self.programModelToMountFinish)
+        self.msg.emit(0, "Model", "Run", f"Writing model [{self.modelData.name}]")
+        self.modelData.generateSaveData()
+        modelPath = self.app.mwGlob["modelDir"] / (self.modelData.name + ".model")
+        self.modelData.saveModelData(modelPath)
 
-    def programModelToMount(self, buildModel: list[dict]) -> bool:
+    def programModelToMount(self) -> bool:
         """ """
-        progModel = buildProgModel(buildModel)
-        if len(progModel) < 3:
-            self.log.debug(f"Only {len(progModel)} points available")
-            return False
-        suc = self.app.mount.model.programModelFromStarList(progModel)
+        if not self.modelData.modelProgData:
+            self.msg.emit(3, "Model", "Run error", "No sufficient model data available")
+            return
+        suc = self.app.mount.model.programModelFromStarList(self.modelData.modelProgData)
         if not suc:
-            self.log.debug("Program align failed")
-            return False
+            self.msg.emit(3, "Model", "Run error", "Programming to mount error")
+            return
 
-        self.app.mount.signals.getModelDone.connect(self.saveModelFinish)
+        self.msg.emit(0, "Model", "Run", f"Model {self.modelData.name} with success")
+        self.app.mount.signals.getModelDone.connect(self.programModelToMountFinish)
         self.app.mount.model.storeName("actual")
         self.app.refreshName.emit()
         self.app.refreshModel.emit()
-        return True
 
     def checkModelRunConditions(self, excludeDonePoints: bool) -> bool:
         """ """
@@ -226,30 +221,6 @@ class Model(MWidget):
             self.msg.emit(2, "Model", "Run error", t)
         return True
 
-    def loadProgramModel(self):
-        """ """
-        folder = self.app.mwGlob["modelDir"]
-        modelFilesPath = self.openFile(
-            self, "Open model file(s)", folder, "Model files (*.model)", multiple=True
-        )
-
-        alignModel, message = loadModelsFromFile(modelFilesPath)
-        if not alignModel:
-            self.msg.emit(2, "Model", "Run error", message)
-            return
-
-        self.app.operationRunning.emit(2)
-        self.msg.emit(0, "Model", "Run", message)
-        self.msg.emit(0, "Model", "Run", "Programing models")
-        if not self.clearAlignAndBackup():
-            return
-
-        if self.programModelToMount(alignModel):
-            self.msg.emit(0, "Model", "Run", "Model programmed with success")
-        else:
-            self.msg.emit(2, "Model", "Run error", "Model programming error")
-        self.app.operationRunning.emit(0)
-
     def setupFilenamesAndDirectories(self, prefix: str = "", postfix: str = "") -> [Path, Path]:
         """ """
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
@@ -279,42 +250,20 @@ class Model(MWidget):
             if excludeDonePoints and not point[2]:
                 continue
             data.append(point)
-        self.modelBatch.modelInputData = data
+        self.modelData.modelInputData = data
 
     def setupBatchData(self) -> None:
         """ """
         name, imageDir = self.setupFilenamesAndDirectories(prefix="m")
-        self.modelBatch.progress.connect(self.showProgress)
-        self.modelBatch.imageDir = imageDir
-        self.modelBatch.modelName = name
-        self.modelBatch.numberRetries = self.ui.numberBuildRetries.value()
-        self.modelBatch.version = f"{self.app.__version__}"
-        self.modelBatch.profile = self.ui.profile.text()
-        self.modelBatch.firmware = self.ui.vString.text()
-        self.modelBatch.latitude = self.app.mount.obsSite.location.latitude.degrees
-        self.modelBatch.plateSolveApp = self.ui.plateSolveDevice.currentText()
-
-    def processModelData(self) -> None:
-        """
-        todo: prog to mount
-        todo: retrieve from mount and add
-        todo: save model on disk
-        """
-        self.msg.emit(0, "Model", "Run", "Programming model to mount")
-        if self.programModelToMount():
-            self.msg.emit(0, "Model", "Run", "Model programmed with success")
-
-    def communicateModelBatchRun(self) -> None:
-        """ """
-        if len(self.modelBatch.modelBuildData) < 3:
-            self.msg.emit(
-                2,
-                "Model",
-                "Run error",
-                f"{self.modelName} Not enough valid model points",
-            )
-        else:
-            self.msg.emit(1, "Model", "Run", f"Model {self.modelName} with success")
+        self.modelData.progress.connect(self.showProgress)
+        self.modelData.imageDir = imageDir
+        self.modelData.name = name
+        self.modelData.numberRetries = self.ui.numberBuildRetries.value()
+        self.modelData.version = f"{self.app.__version__}"
+        self.modelData.profile = self.ui.profile.text()
+        self.modelData.firmware = self.ui.vString.text()
+        self.modelData.latitude = self.app.mount.obsSite.location.latitude.degrees
+        self.modelData.plateSolveApp = self.ui.plateSolveDevice.currentText()
 
     def runBatch(self) -> None:
         """ """
@@ -324,13 +273,34 @@ class Model(MWidget):
         if not self.clearAlignAndBackup():
             return
 
-        self.modelBatch = ModelBatch(self.app)
-        self.setupModelInputData(excludeDonePoints)
+        self.app.operationRunning.emit(1)
+        self.modelData = ModelData(self.app)
         self.setupBatchData()
-        self.modelBatch.run()
-        self.processModelData()
-        self.communicateModelBatchRun()
+        self.msg.emit(1, "Model", "Run", f"Model {self.modelData.name}")
+        self.setupModelInputData(excludeDonePoints)
+        self.modelData.runModel()
+        self.programModelToMount()
+        self.app.playSound.emit("RunFinished")
+        self.app.operationRunning.emit(0)
 
-        self.modelBatch = None
+    def runFileModel(self):
+        """ """
+        if not self.clearAlignAndBackup():
+            return
+
+        self.app.operationRunning.emit(2)
+        self.modelData = ModelData(self.app)
+        self.modelData.name, _ = self.setupFilenamesAndDirectories(prefix="m", postfix="combi")
+        self.msg.emit(1, "Model", "Run", f"Model {self.modelData.name}")
+        folder = self.app.mwGlob["modelDir"]
+        modelFilesPath = self.openFile(
+            self, "Open model file(s)", folder, "Model files (*.model)", multiple=True
+        )
+        self.modelData.modelBuildData, message = loadModelsFromFile(modelFilesPath)
+        self.modelData.buildProgModel()
+        if self.modelData.modelBuildData:
+            self.programModelToMount()
+        else:
+            self.msg.emit(3, "Model", "Run error", message)
         self.app.playSound.emit("RunFinished")
         self.app.operationRunning.emit(0)

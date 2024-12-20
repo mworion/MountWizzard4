@@ -17,19 +17,21 @@
 # standard libraries
 import time
 import logging
+import json
 from pathlib import Path
 
 # external packages
 from PySide6.QtCore import Signal, QObject
-from skyfield.api import Angle
+from skyfield.api import Angle, Star
 
 # local imports
 from base.transform import JNowToJ2000, J2000ToJNow
 from logic.modelBuild.modelHandling import convertAngleToFloat, writeRetrofitData
 from gui.utilities.toolsQtWidget import sleepAndEvents
+from mountcontrol.progStar import ProgStar
 
 
-class ModelBatch(QObject):
+class ModelData(QObject):
     """ """
 
     log = logging.getLogger("MW4")
@@ -38,7 +40,6 @@ class ModelBatch(QObject):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.msg = app.msg
 
         self.cancelBatch: bool = False
         self.pauseBatch: bool = False
@@ -46,6 +47,7 @@ class ModelBatch(QObject):
         self.modelTiming: int = 0
         self.modelInputData: list = []
         self.modelBuildData: list = []
+        self.modelProgData: list = []
         self.modelSaveData: list = []
         self.modelName: str = ""
         self.imageDir: Path = Path("")
@@ -158,6 +160,22 @@ class ModelBatch(QObject):
         self.collectBuildModelResults()
         self.addMountModelToBuildModel()
 
+    def saveModelData(self, modelPath: Path) -> None:
+        """ """
+        with open(modelPath, "w") as outfile:
+            json.dump(self.modelSaveData, outfile, sort_keys=True, indent=4)
+
+    def buildProgModel(self) -> None:
+        """ """
+        self.modelProgData = list()
+        for mPoint in self.modelBuildData:
+            mCoord = Star(mPoint["raJNowM"], mPoint["decJNowM"])
+            sCoord = Star(mPoint["raJNowS"], mPoint["decJNowS"])
+            sidereal = mPoint["siderealTime"]
+            pierside = mPoint["pierside"]
+            programmingPoint = ProgStar(mCoord, sCoord, sidereal, pierside)
+            self.modelProgData.append(programmingPoint)
+
     def addMountDataToModelBuildData(self) -> None:
         """ """
         item = self.modelBuildData[self.pointerImage]
@@ -257,10 +275,7 @@ class ModelBatch(QObject):
             modelItem["waitTime"] = self.exposureWaitTime
             self.modelBuildData.append(modelItem)
 
-    def processModelBuildData(self):
-        """ """
-
-    def run(self) -> None:
+    def runModel(self) -> None:
         """
         todo: implement retries
         """
@@ -274,4 +289,9 @@ class ModelBatch(QObject):
         notFinished = self.pointerResult < len(self.modelBuildData)
         while not self.cancelBatch and notFinished and not self.endBatch:
             sleepAndEvents(500)
-        self.generateSaveData()
+
+        self.buildProgModel()
+        modelSize = len(self.modelProgData)
+        if modelSize < 3:
+            self.log.warning(f"Only {modelSize} points available")
+            self.modelProgData = []

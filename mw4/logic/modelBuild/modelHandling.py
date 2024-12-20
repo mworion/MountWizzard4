@@ -20,14 +20,33 @@ import json
 from pathlib import Path
 
 # external packages
-from skyfield.api import Star, Angle
+from skyfield.api import Angle
 
 # local packages
 from mountcontrol.model import Model
-from mountcontrol.progStar import ProgStar
 
 
 log = logging.getLogger("MW4")
+
+hourAngles = ["raJNowM", "raJNowS", "raJ2000M", "raJ2000S", "siderealTime", "haMountModel"]
+degreeAngles = [
+    "decJNowM",
+    "decJNowS",
+    "decJ2000M",
+    "decJ2000S",
+    "altitude",
+    "azimuth",
+    "angularPosRA",
+    "angularPosDEC",
+    "modelOrthoError",
+    "modelPolarError",
+    "errorAngle",
+    "errorDEC",
+    "errorDEC_S",
+    "errorRA",
+    "errorRA_S",
+    "decMountModel",
+]
 
 
 def writeRetrofitData(alignModel: Model, buildModel: list[dict]) -> dict:
@@ -47,35 +66,8 @@ def writeRetrofitData(alignModel: Model, buildModel: list[dict]) -> dict:
     return buildModel
 
 
-def buildProgModel(model: list[dict]) -> list:
-    """ """
-    progModel = list()
-    for mPoint in model:
-        mCoord = Star(mPoint["raJNowM"], mPoint["decJNowM"])
-        sCoord = Star(mPoint["raJNowS"], mPoint["decJNowS"])
-        sidereal = mPoint["siderealTime"]
-        pierside = mPoint["pierside"]
-        programmingPoint = ProgStar(mCoord, sCoord, sidereal, pierside)
-        progModel.append(programmingPoint)
-    return progModel
-
-
 def convertFloatToAngle(model: list[dict]) -> list[dict]:
     """ """
-    hourAngles = ["raJNowM", "raJNowS", "siderealTime", "haMountModel"]
-    degreeAngles = [
-        "decJNowM",
-        "decJNowS",
-        "altitude",
-        "azimuth",
-        "angularPosRA",
-        "angularPosDEC",
-        "modelOrthoError",
-        "modelPolarError",
-        "errorAngle",
-        "decMountModel",
-    ]
-
     for mPoint in model:
         for key in mPoint.keys():
             if key in hourAngles:
@@ -87,20 +79,6 @@ def convertFloatToAngle(model: list[dict]) -> list[dict]:
 
 def convertAngleToFloat(model: list[dict]) -> list[dict]:
     """ """
-    hourAngles = ["raJNowM", "raJNowS", "siderealTime", "haMountModel"]
-    degreeAngles = [
-        "decJNowM",
-        "decJNowS",
-        "altitude",
-        "azimuth",
-        "angularPosRA",
-        "angularPosDEC",
-        "modelOrthoError",
-        "modelPolarError",
-        "errorAngle",
-        "decMountModel",
-    ]
-
     for mPoint in model:
         for key in mPoint.keys():
             if key in hourAngles:

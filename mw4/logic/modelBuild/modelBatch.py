@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import time
+import logging
 from pathlib import Path
 
 # external packages
@@ -24,12 +25,14 @@ from skyfield.api import Angle
 
 # local imports
 from base.transform import JNowToJ2000, J2000ToJNow
+from logic.modelBuild.modelHandling import convertAngleToFloat, writeRetrofitData
 from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class ModelBatch(QObject):
     """ """
 
+    log = logging.getLogger("MW4")
     progress = Signal(object)
 
     def __init__(self, app):
@@ -125,11 +128,17 @@ class ModelBatch(QObject):
             self.app.dome.slewDome(azimuth)
         self.app.mount.obsSite.startSlewing()
 
-    def generateSaveData(self) -> None:
-        """
-        generateSaveData builds from the model file a format which could be
-        serialized in json. this format will be used for storing model on file.
-        """
+    def addMountModelToBuildModel(self) -> None:
+        """ """
+        if len(self.app.mount.model.starList) == len(self.modelSaveData):
+            self.modelSaveData = writeRetrofitData(self.app.mount.model, self.modelSaveData)
+            self.modelSaveData = convertAngleToFloat(self.modelSaveData)
+        else:
+            self.log.warning(f"Error in model data: difference in length")
+            self.modelSaveData = []
+
+    def collectBuildModelResults(self) -> None:
+        """ """
         self.modelSaveData.clear()
         for modelBuildPoint in self.modelBuildData:
             if not modelBuildPoint["success"]:
@@ -137,20 +146,17 @@ class ModelBatch(QObject):
 
             modelSavePoint = dict()
             modelSavePoint.update(modelBuildPoint)
-            for key in modelSavePoint:
-                if not isinstance(modelSavePoint[key], Angle):
-                    continue
-                if "ra" in key or "ha" in key:
-                    modelSavePoint[key] = modelSavePoint[key].hours
-                else:
-                    modelSavePoint[key] = modelSavePoint[key].degrees
-
             modelSavePoint["julianDate"] = modelSavePoint["julianDate"].utc_iso()
             modelSavePoint["version"] = self.version
             modelSavePoint["profile"] = self.profile
             modelSavePoint["firmware"] = self.firmware
             modelSavePoint["latitude"] = self.latitude
             self.modelSaveData.append(modelSavePoint)
+
+    def generateSaveData(self) -> None:
+        """ """
+        self.collectBuildModelResults()
+        self.addMountModelToBuildModel()
 
     def addMountDataToModelBuildData(self) -> None:
         """ """

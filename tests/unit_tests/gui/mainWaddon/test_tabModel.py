@@ -179,34 +179,10 @@ def test_pauseBuild_2(function):
     assert function.ui.pauseModel.property("pause")
 
 
-def test_retrofitModel_1(function):
-    function.app.mount.model.starList = list()
-
-    point = ModelStar(
-        coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
-        number=1,
-        errorRMS=10,
-        errorAngle=skyfield.api.Angle(degrees=0),
-        obsSite=function.app.mount.obsSite,
-    )
-    stars = list()
-    stars.append(point)
-    mPoint = {}
-    function.model = list()
-    function.model.append(mPoint)
-    with mock.patch.object(gui.mainWaddon.tabModel, "writeRetrofitData"):
-        function.retrofitModel()
-
-
 def test_saveModelFinish_1(function):
-    def test():
-        return
-
-    shutil.copy("tests/testData/test.model", "tests/workDir/model/test.model")
-    function.modelName = "test"
-    function.generateSaveData = test
-    function.app.mount.signals.getModelDone.connect(function.saveModelFinish)
-    function.saveModelFinish()
+    function.modelBatch = ModelBatch(App)
+    with mock.patch.object(function.modelBatch, "generateSaveData", return_value=[]):
+        function.saveModelFinish()
 
 
 def test_programModelToMount_1(function):

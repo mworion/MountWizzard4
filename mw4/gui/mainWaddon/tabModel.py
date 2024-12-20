@@ -29,6 +29,7 @@ from logic.modelBuild.modelHandling import (
     writeRetrofitData,
     buildProgModel,
     loadModelsFromFile,
+    convertAngleToFloat,
 )
 from logic.modelBuild.modelBatch import ModelBatch
 
@@ -166,34 +167,22 @@ class Model(MWidget):
             self.changeStyleDynamic(self.ui.pauseModel, "color", "")
             self.changeStyleDynamic(self.ui.pauseModel, "pause", False)
 
-    def retrofitModel(self) -> None:
-        """ """
-        mountModel = self.app.mount.model
-        if len(mountModel.starList) != len(self.model):
-            text = f"length starList [{len(mountModel.starList)}] and length "
-            text += f"model [{len(self.model)}] is different"
-            self.log.debug(text)
-            self.model = []
-
-        self.model = writeRetrofitData(mountModel, self.model)
-
     def saveModelFinish(self) -> None:
         """ """
         self.app.mount.signals.getModelDone.disconnect(self.saveModelFinish)
-        self.retrofitModel()
         self.msg.emit(0, "Model", "Run", f"Writing model [{self.modelName}]")
-        saveData = self.generateSaveData()
+        self.modelBatch.generateSaveData()
         modelPath = self.app.mwGlob["modelDir"] / (self.modelName + ".model")
         with open(modelPath, "w") as outfile:
-            json.dump(saveData, outfile, sort_keys=True, indent=4)
+            json.dump(self.modelBatch.modelSaveData, outfile, sort_keys=True, indent=4)
 
     def programModelToMount(self, buildModel: list[dict]) -> bool:
         """ """
-        alignModel = buildProgModel(buildModel)
-        if len(alignModel) < 3:
-            self.log.debug(f"Only {len(alignModel)} points available")
+        progModel = buildProgModel(buildModel)
+        if len(progModel) < 3:
+            self.log.debug(f"Only {len(progModel)} points available")
             return False
-        suc = self.app.mount.model.programModelFromStarList(alignModel)
+        suc = self.app.mount.model.programModelFromStarList(progModel)
         if not suc:
             self.log.debug("Program align failed")
             return False

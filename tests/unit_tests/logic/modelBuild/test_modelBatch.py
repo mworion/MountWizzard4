@@ -23,6 +23,7 @@ from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+import logic.modelBuild.modelBatch
 from logic.modelBuild.modelBatch import ModelBatch
 
 
@@ -150,19 +151,56 @@ def test_startNewSlew_4(function):
                 assert not function.domeSlewed
 
 
-def test_generateSaveData_1(function):
+def test_addMountModelToBuildModel_1(function):
+    function.app.mount.model.starList = [1, 2, 3]
+    function.modelSaveData = [1, 2, 3]
+    with mock.patch.object(
+        logic.modelBuild.modelBatch, "writeRetrofitData", return_value=[1, 2, 3]
+    ):
+        with mock.patch.object(
+            logic.modelBuild.modelBatch, "convertAngleToFloat", return_value=[1, 2, 3]
+        ):
+            function.addMountModelToBuildModel()
+    assert len(function.modelSaveData) == 3
+
+
+def test_addMountModelToBuildModel_2(function):
+    function.app.mount.model.starList = [1, 2]
+    function.modelSaveData = [1, 2, 3]
+    with mock.patch.object(
+        logic.modelBuild.modelBatch, "writeRetrofitData", return_value=[1, 2, 3]
+    ):
+        with mock.patch.object(
+            logic.modelBuild.modelBatch, "convertAngleToFloat", return_value=[1, 2, 3]
+        ):
+            function.addMountModelToBuildModel()
+
+    assert len(function.modelSaveData) == 0
+
+
+def test_collectBuildModelResults_1(function):
     function.modelSaveData = [1, 2, 3]
     function.modelBuildData = []
 
-    function.generateSaveData()
+    function.collectBuildModelResults()
     assert function.modelSaveData == []
 
 
-def test_generateSaveData_2(function):
+def test_collectBuildModelResults_2(function):
     jd = function.app.mount.obsSite.timeJD
     function.modelBuildData = [
-        {"altitude": 0, "azimuth": 0, "julianDate": jd, "success": True},
-        {"altitude": 1, "azimuth": 1, "julianDate": jd, "success": False},
+        {
+            "altitude": Angle(degrees=0),
+            "azimuth": Angle(degrees=0),
+            "julianDate": jd,
+            "success": True,
+        },
+        {
+            "altitude": Angle(degrees=1),
+            "azimuth": Angle(degrees=1),
+            "julianDate": jd,
+            "success": False,
+        },
         {
             "dec": Angle(degrees=0),
             "ra": Angle(hours=0),
@@ -172,12 +210,18 @@ def test_generateSaveData_2(function):
     ]
     function.modelSaveData = [1, 2, 3]
 
-    function.generateSaveData()
+    function.collectBuildModelResults()
     assert len(function.modelSaveData) == 2
     assert "version" in function.modelSaveData[0]
     assert "profile" in function.modelSaveData[0]
     assert "firmware" in function.modelSaveData[0]
     assert "latitude" in function.modelSaveData[0]
+
+
+def test_generateSaveData_1(function):
+    with mock.patch.object(function, "collectBuildModelResults"):
+        with mock.patch.object(function, "addMountModelToBuildModel"):
+            function.generateSaveData()
 
 
 def test_addMountDataToModelBuildData_1(function):

@@ -38,7 +38,6 @@ def function(qapp):
         with mock.patch.object(DownloadPopup, "downloadFile"):
             window = DownloadPopup(parentWidget=widget, url="", dest="")
         yield window
-        window.app.threadPool.waitForDone(10000)
 
 
 @pytest.fixture

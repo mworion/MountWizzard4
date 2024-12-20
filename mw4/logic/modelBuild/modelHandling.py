@@ -62,12 +62,33 @@ def buildProgModel(model: list[dict]) -> list:
 
 def convertFloatToAngle(model: list[dict]) -> list[dict]:
     """ """
+    hourAngles = ["raJNowM", "raJNowS", "siderealTime", "haMountModel"]
+    degreeAngles = ["decJNowM", "decJNowS", "altitude", "azimuth",
+                    "angularPosRA", "angularPosDEC", "modelOrthoError",
+                    "modelPolarError", "errorAngle", "decMountModel"]
+
     for mPoint in model:
         for key in mPoint.keys():
-            if "dec" in key:
-                mPoint[key] = Angle(degrees=mPoint[key])
-            elif "ra" in key:
+            if key in hourAngles:
                 mPoint[key] = Angle(hours=mPoint[key])
+            elif key in degreeAngles:
+                mPoint[key] = Angle(degrees=mPoint[key])
+    return model
+
+
+def convertAngleToFloat(model: list[dict]) -> list[dict]:
+    """ """
+    hourAngles = ["raJNowM", "raJNowS", "siderealTime", "haMountModel"]
+    degreeAngles = ["decJNowM", "decJNowS", "altitude", "azimuth",
+                    "angularPosRA", "angularPosDEC", "modelOrthoError",
+                    "modelPolarError", "errorAngle", "decMountModel"]
+
+    for mPoint in model:
+        for key in mPoint.keys():
+            if key in hourAngles:
+                mPoint[key] = mPoint[key].hours
+            elif key in degreeAngles:
+                mPoint[key] = mPoint[key].degrees
     return model
 
 

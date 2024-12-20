@@ -35,7 +35,6 @@ def function(qapp):
     with mock.patch.object(UploadPopup, "show"):
         window = UploadPopup(parentWidget=widget, url="", dataTypes="", dataFilePath="")
         yield window
-        windows.app.threadPool.waitForDone(10000)
 
 
 @pytest.fixture

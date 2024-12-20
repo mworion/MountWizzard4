@@ -30,6 +30,7 @@ from logic.modelBuild.modelHandling import (
     buildProgModel,
     loadModelsFromFile,
     convertFloatToAngle,
+    convertAngleToFloat,
 )
 
 obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
@@ -102,6 +103,32 @@ def test_buildProgModel_2():
 
 
 def test_convertFloatToAngle_1():
+    target = [
+        {
+            "altitude": Angle(degrees=44.556745182012854),
+            "azimuth": Angle(degrees=37.194805194805184),
+            "binning": 1.0,
+            "countSequence": 0,
+            "decJNowS": Angle(degrees=64.3246),
+            "decJNowM": Angle(degrees=64.32841185357267),
+            "errorDEC": Angle(degrees=-229.0210134131381),
+            "errorRMS": 237.1,
+            "errorRA": Angle(degrees=-61.36599559380768),
+            "exposureTime": 3.0,
+            "fastReadout": True,
+            "julianDate": "2019-06-08T08:57:57Z",
+            "name": "m-file-2019-06-08-08-57-44",
+            "lenSequence": 3,
+            "imagePath": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08"
+            "-57-44/image-000.fits",
+            "pierside": "W",
+            "raJNowS": Angle(hours=8.42882),
+            "raJNowM": Angle(hours=8.427692953132278),
+            "siderealTime": Angle(hours=12.5),
+            "subFrame": 100.0,
+        },
+    ]
+
     model = [
         {
             "altitude": 44.556745182012854,
@@ -131,6 +158,38 @@ def test_convertFloatToAngle_1():
     alignModel = convertFloatToAngle(model)
     assert isinstance(alignModel[0]["decJNowS"], Angle)
     assert isinstance(alignModel[0]["raJNowS"], Angle)
+
+
+def test_convertAngleToFloat_1():
+    target = [
+        {
+            "altitude": Angle(degrees=44.556745182012854),
+            "azimuth": Angle(degrees=37.194805194805184),
+            "binning": 1.0,
+            "countSequence": 0,
+            "decJNowS": Angle(degrees=64.3246),
+            "decJNowM": Angle(degrees=64.32841185357267),
+            "errorDEC": Angle(degrees=-229.0210134131381),
+            "errorRMS": 237.1,
+            "errorRA": Angle(degrees=-61.36599559380768),
+            "exposureTime": 3.0,
+            "fastReadout": True,
+            "julianDate": "2019-06-08T08:57:57Z",
+            "name": "m-file-2019-06-08-08-57-44",
+            "lenSequence": 3,
+            "imagePath": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08"
+            "-57-44/image-000.fits",
+            "pierside": "W",
+            "raJNowS": Angle(hours=8.42882),
+            "raJNowM": Angle(hours=8.427692953132278),
+            "siderealTime": Angle(hours=12.5),
+            "subFrame": 100.0,
+        },
+    ]
+
+    jsonModel = convertAngleToFloat(target)
+    assert isinstance(jsonModel[0]["decJNowS"], float)
+    assert isinstance(jsonModel[0]["raJNowS"], float)
 
 
 def test_loadModelsFromFile_1():

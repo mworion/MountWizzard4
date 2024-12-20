@@ -433,10 +433,12 @@ def test_clearRefreshModel_2(function):
                 function.clearRefreshModel()
 
 
-def test_refreshModel(function):
+def test_clearRefreshModel_3(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
+    function.fittedModelPath = Path("tests/testData/test.model")
     with mock.patch.object(function.app.mount, "getModel"):
-        function.clearRefreshModel()
+        with mock.patch.object(function, "showActualModelAnalyse"):
+            function.clearRefreshModel()
 
 
 def test_clearModel_1(function):

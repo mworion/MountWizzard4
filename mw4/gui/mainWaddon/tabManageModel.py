@@ -550,7 +550,7 @@ class ManageModel(MWidget):
         if not self.fittedModelPath:
             return False
 
-        actualPath = self.fittedModelPath.with_stem(self.fittedModelPath.name + "-opt")
+        actualPath = self.fittedModelPath.with_stem(self.fittedModelPath.stem + "-opt")
         if not actualPath.is_file():
             return False
 

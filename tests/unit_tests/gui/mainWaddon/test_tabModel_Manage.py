@@ -33,7 +33,7 @@ from mountcontrol.modelStar import ModelStar
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 import gui
-from gui.mainWaddon.tabManageModel import ManageModel
+from gui.mainWaddon.tabModel_Manage import ModelManage
 from gui.widgets.main_ui import Ui_MainWindow
 
 
@@ -50,7 +50,7 @@ def function(qapp):
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
-    window = ManageModel(mainW)
+    window = ModelManage(mainW)
     yield window
     mainW.app.threadPool.waitForDone(10000)
 
@@ -412,7 +412,7 @@ def test_writeBuildModelOptimized_1(function):
 
 
 def test_writeBuildModelOptimized_2(function):
-    with mock.patch.object(gui.mainWaddon.tabManageModel, "writeRetrofitData"):
+    with mock.patch.object(gui.mainWaddon.tabModel_Manage, "writeRetrofitData"):
         with mock.patch.object(json, "load", return_value=[{"errorIndex": 1}, {"errorIndex": 3}]):
             with mock.patch.object(json, "dump"):
                 suc = function.writeBuildModelOptimized("test", [1])

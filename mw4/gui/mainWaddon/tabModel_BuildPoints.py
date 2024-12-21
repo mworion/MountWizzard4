@@ -41,10 +41,7 @@ class BuildPoints(MWidget):
         self.lastGenerator = "none"
         self.sortedGenerators = {
             "grid": self.genBuildGrid,
-            "align3": self.genBuildAlign3,
-            "align6": self.genBuildAlign6,
-            "align9": self.genBuildAlign9,
-            "align12": self.genBuildAlign12,
+            "align": self.genBuildAlign,
             "max": self.genBuildMax,
             "med": self.genBuildMed,
             "norm": self.genBuildNorm,
@@ -57,10 +54,7 @@ class BuildPoints(MWidget):
         self.simbadDec = None
 
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
-        self.ui.genBuildAlign3.clicked.connect(self.genBuildAlign3)
-        self.ui.genBuildAlign6.clicked.connect(self.genBuildAlign6)
-        self.ui.genBuildAlign9.clicked.connect(self.genBuildAlign9)
-        self.ui.genBuildAlign12.clicked.connect(self.genBuildAlign12)
+        self.ui.genBuildAlign3.clicked.connect(self.genBuildAlign)
         self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
         self.ui.numberGridPointsRow.valueChanged.connect(self.genBuildGrid)
         self.ui.altitudeMin.valueChanged.connect(self.genBuildGrid)
@@ -190,49 +184,13 @@ class BuildPoints(MWidget):
         self.ui.altitudeMax.setEnabled(True)
         return True
 
-    def genBuildAlign3(self):
+    def genBuildAlign(self):
         """ """
-        self.lastGenerator = "align3"
+        self.lastGenerator = "align"
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=3, keep=keep)
         if not suc:
             self.msg.emit(2, "Model", "Buildpoints", "Could not generate 3 align stars")
-            return False
-
-        self.processPoints()
-        return True
-
-    def genBuildAlign6(self):
-        """ """
-        self.lastGenerator = "align6"
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=6, keep=keep)
-        if not suc:
-            self.msg.emit(2, "Model", "Buildpoints", "Could not generate 6 align stars")
-            return False
-
-        self.processPoints()
-        return True
-
-    def genBuildAlign9(self):
-        """ """
-        self.lastGenerator = "align9"
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=9, keep=keep)
-        if not suc:
-            self.msg.emit(2, "Model", "Buildpoints", "Could not generate 9 align stars")
-            return False
-
-        self.processPoints()
-        return True
-
-    def genBuildAlign12(self):
-        """ """
-        self.lastGenerator = "align12"
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=12, keep=keep)
-        if not suc:
-            self.msg.emit(2, "Model", "Buildpoints", "Could not generate 12 align stars")
             return False
 
         self.processPoints()

@@ -33,7 +33,7 @@ from logic.modelBuild.modelHandling import (
 )
 
 
-class ManageModel(MWidget):
+class ModelManage(MWidget):
     """ """
 
     def __init__(self, mainW):

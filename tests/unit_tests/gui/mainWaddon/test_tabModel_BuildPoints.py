@@ -27,7 +27,7 @@ from skyfield.api import Angle
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabBuildPoints import BuildPoints
+from gui.mainWaddon.tabModel_BuildPoints import BuildPoints
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -85,51 +85,15 @@ def test_genBuildGrid_3(function):
         assert not suc
 
 
-def test_genBuildAlign3_1(function):
+def test_genBuildAlign_1(function):
     with mock.patch.object(function.app.data, "genAlign", return_value=False):
-        suc = function.genBuildAlign3()
+        suc = function.genBuildAlign()
         assert not suc
 
 
-def test_genBuildAlign3_2(function):
+def test_genBuildAlign_2(function):
     with mock.patch.object(function.app.data, "genAlign", return_value=True):
-        suc = function.genBuildAlign3()
-        assert suc
-
-
-def test_genBuildAlign6_1(function):
-    with mock.patch.object(function.app.data, "genAlign", return_value=False):
-        suc = function.genBuildAlign6()
-        assert not suc
-
-
-def test_genBuildAlign6_2(function):
-    with mock.patch.object(function.app.data, "genAlign", return_value=True):
-        suc = function.genBuildAlign6()
-        assert suc
-
-
-def test_genBuildAlign9_1(function):
-    with mock.patch.object(function.app.data, "genAlign", return_value=False):
-        suc = function.genBuildAlign9()
-        assert not suc
-
-
-def test_genBuildAlign9_2(function):
-    with mock.patch.object(function.app.data, "genAlign", return_value=True):
-        suc = function.genBuildAlign9()
-        assert suc
-
-
-def test_genBuildAlign12_1(function):
-    with mock.patch.object(function.app.data, "genAlign", return_value=False):
-        suc = function.genBuildAlign12()
-        assert not suc
-
-
-def test_genBuildAlign12_2(function):
-    with mock.patch.object(function.app.data, "genAlign", return_value=True):
-        suc = function.genBuildAlign12()
+        suc = function.genBuildAlign()
         assert suc
 
 

@@ -21,15 +21,15 @@
 # local import
 from gui.mainWaddon.tabAlmanac import Almanac
 from gui.mainWaddon.tabAsteroid import Asteroid
-from gui.mainWaddon.tabBuildPoints import BuildPoints
 from gui.mainWaddon.tabComet import Comet
 from gui.mainWaddon.tabEnvironWeather import EnvironWeather
 from gui.mainWaddon.tabEnvironSeeing import EnvironSeeing
 from gui.mainWaddon.tabImage_Manage import ImageManage
 from gui.mainWaddon.tabImage_Stats import ImageStats
-from gui.mainWaddon.tabManageModel import ManageModel
 from gui.mainWaddon.tabModel import Model
+from gui.mainWaddon.tabModel_Manage import ModelManage
 from gui.mainWaddon.tabModel_Status import ModelStatus
+from gui.mainWaddon.tabModel_BuildPoints import BuildPoints
 from gui.mainWaddon.tabPower import Power
 from gui.mainWaddon.tabMount import Mount
 from gui.mainWaddon.tabMountCommand import MountCommand
@@ -67,7 +67,7 @@ class MainWindowAddons:
             "EnvironSeeing": EnvironSeeing(mainW),
             "ImageMange": ImageManage(mainW),
             "ImageStats": ImageStats(mainW),
-            "ManageModel": ManageModel(mainW),
+            "ManageModel": ModelManage(mainW),
             "Model": Model(mainW),
             "ModelStatus": ModelStatus(mainW),
             "Mount": Mount(mainW),

@@ -87,6 +87,11 @@ class Styles:
                 "#181818",
                 "#E0E0E0",
             ],
+            "M_BACK0": [
+                "#141414",
+                "#141414",
+                "#E08E8E8",
+            ],
             "M_RED": [
                 "#D03030",
                 "#C03030",
@@ -359,11 +364,11 @@ class Styles:
         }
         /* Group Box */
         QGroupBox {
-            background-color: $M_BACK$;
+            background-color: $M_BACK0$;
             border-width: 1px;
             border-style: outset;
             border-radius: 3px;
-            border-color: $M_SEC$;
+            border-color: $M_PRIM3$;
             margin-top: 6px;
         }
         QGroupBox::title {
@@ -422,10 +427,6 @@ class Styles:
         QGroupBox[running=true] {
             color: $M_TER$;
             border-color: $M_YELLOW$;
-            background-color: $M_SEC1$;
-        }
-        QGroupBox:title[running=true] {
-            color: $M_TER$;
         }
         /* Checkboxes */
         QCheckBox {
@@ -714,10 +715,11 @@ class Styles:
         QTabWidget:pane {
             border-width: 2px;
             border-color: $M_SEC$;
-            border-radius: 5px;
+            border-radius: 3px;
             border-style: outset;
-            top: -10px;
-            padding-top: 10px;
+            top: -7px;
+            padding-top: 7px;
+            background-color: $M_PRIM3$;
         }
         /* needed for MAC OSX */
         QTabWidget:tab-bar {

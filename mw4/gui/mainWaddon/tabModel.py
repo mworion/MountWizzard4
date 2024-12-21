@@ -292,7 +292,7 @@ class Model(MWidget):
             self, "Open model file(s)", folder, "Model files (*.model)", multiple=True
         )
         if len(modelFilesPath) > 1:
-            self.msg.emit(0, "Model", "Run", F"Combination of len(modelFilesPath) files")
+            self.msg.emit(0, "Model", "Run", "Combination of len(modelFilesPath) files")
             self.modelData.name, _ = self.setupFilenamesAndDirectories(prefix="m", postfix="add")
         elif len(modelFilesPath) == 1:
             self.modelData.name = modelFilesPath[0].stem

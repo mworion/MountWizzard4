@@ -402,9 +402,6 @@ class BuildPoints(MWidget):
         """ """
         self.app.data.clearBuildP()
         self.app.drawBuildPoints.emit()
-        if not self.app.uiWindows["showHemisphereW"]["classObj"]:
-            return
-
         self.app.redrawHemisphere.emit()
 
     def autoDeletePoints(self):

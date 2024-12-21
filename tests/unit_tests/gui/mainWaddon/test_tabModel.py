@@ -368,7 +368,7 @@ def test_runFileModel_2(function):
         with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
             with mock.patch.object(function.modelData, "buildProgModel"):
                 with mock.patch.object(
-                        gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val
+                    gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val
                 ):
                     with mock.patch.object(function.modelData, "buildProgModel"):
                         with mock.patch.object(function, "programModelToMount"):
@@ -381,8 +381,12 @@ def test_runFileModel_3(function):
     function.modelData.name = "Test"
 
     with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
-        with mock.patch.object(function, "openFile", return_value=[Path("test1.model"), Path("test2.model")]):
-            with mock.patch.object(function, "setupFilenamesAndDirectories", return_value=("m-test1-add", "")):
+        with mock.patch.object(
+            function, "openFile", return_value=[Path("test1.model"), Path("test2.model")]
+        ):
+            with mock.patch.object(
+                function, "setupFilenamesAndDirectories", return_value=("m-test1-add", "")
+            ):
                 with mock.patch.object(
                     gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=([], "")
                 ):
@@ -396,6 +400,10 @@ def test_runFileModel_4(function):
     function.modelData = ModelData(App)
     function.modelData.name = "Test"
     with mock.patch.object(function, "clearAlignAndBackup", return_value=False):
-        with mock.patch.object(function, "openFile", return_value=[Path("test1.model"), Path("test2.model")]):
-            with mock.patch.object(function, "setupFilenamesAndDirectories", return_value=("m-test1-add", "")):
+        with mock.patch.object(
+            function, "openFile", return_value=[Path("test1.model"), Path("test2.model")]
+        ):
+            with mock.patch.object(
+                function, "setupFilenamesAndDirectories", return_value=("m-test1-add", "")
+            ):
                 function.runFileModel()

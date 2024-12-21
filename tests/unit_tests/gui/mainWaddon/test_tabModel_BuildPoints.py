@@ -342,19 +342,8 @@ def test_genBuildFile_4(function):
 
 
 def test_clearBuildP_1(function):
-    function.app.uiWindows = {"showHemisphereW": {"classObj": None}}
-    suc = function.clearBuildP()
-    assert not suc
-
-
-def test_clearBuildP_2(function):
-    class Test:
-        @staticmethod
-        def clearHemisphere():
-            return
-
-    function.app.uiWindows = {"showHemisphereW": {"classObj": Test()}}
-    function.clearBuildP()
+    with mock.patch.object(function.app.data, "clearBuildP"):
+        function.clearBuildP()
 
 
 def test_autoDeletePoints(function):

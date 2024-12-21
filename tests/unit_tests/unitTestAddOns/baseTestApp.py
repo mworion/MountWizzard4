@@ -23,9 +23,8 @@ from pathlib import Path
 from PySide6.QtCore import QObject, Signal, QThreadPool, QTimer
 from skyfield.api import wgs84, load, Loader, Angle, load_file
 import numpy as np
-from astropy import log as astropy_log
-
 from base.signalsDevices import Signals
+from astropy import log as astropy_log
 astropy_log.setLevel("ERROR")
 
 # local import

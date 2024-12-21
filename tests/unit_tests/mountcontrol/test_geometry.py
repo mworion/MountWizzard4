@@ -20,14 +20,20 @@ import os
 from pathlib import Path
 
 # external packages
+from PySide6.QtCore import QThreadPool
 from skyfield.api import Angle, wgs84
 
 # local imports
 from mountcontrol.mount import MountDevice
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from base.loggerMW import setupLogging
 
 setupLogging()
+
+
+class App:
+    def __init__(self):
+        self.threadPool = QThreadPool()
+        self.data = {}
 
 
 @pytest.fixture(autouse=True, scope="function")

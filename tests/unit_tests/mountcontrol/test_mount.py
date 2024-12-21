@@ -23,16 +23,25 @@ from pathlib import Path
 
 # external packages
 import wakeonlan
-from PySide6.QtCore import QThreadPool, QTimer
+from PySide6.QtCore import QThreadPool, QTimer, Signal, QObject
 from skyfield.api import wgs84, Angle
 
 # local imports
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mountcontrol.mountSignals import MountSignals
 from mountcontrol.mount import MountDevice
 from base.loggerMW import setupLogging
 
 setupLogging()
+
+
+class App(QObject):
+    refreshModel = Signal()
+    refreshName = Signal()
+
+    def __init__(self):
+        super().__init__()
+        self.threadPool = QThreadPool()
+        self.data = {}
 
 
 @pytest.fixture(autouse=True, scope="module")

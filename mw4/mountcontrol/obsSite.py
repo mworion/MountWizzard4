@@ -477,8 +477,7 @@ class ObsSite(object):
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
-        suc = self.parseLocation(response, numberOfChunks)
-        return suc
+        return self.parseLocation(response, numberOfChunks)
 
     def parsePointing(self, response: list, numberOfChunks: int) -> bool:
         """ """
@@ -787,8 +786,8 @@ class ObsSite(object):
     def syncPositionToTarget(self) -> bool:
         """ """
         conn = Connection(self.parent.host)
-        commandString = ":CM#"
+        commandString = ":CMCFG0#:CM#"
         suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
-        return response[0].startswith("Coord")
+        return response[1].startswith("Coord")

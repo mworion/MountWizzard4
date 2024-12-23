@@ -111,8 +111,7 @@ class Dome(object):
         suc, response, chunks = conn.communicate(commandString)
         if not suc:
             return False
-        suc = self.parse(response, chunks)
-        return suc
+        return self.parse(response, chunks)
 
     def openShutter(self) -> bool:
         """ """

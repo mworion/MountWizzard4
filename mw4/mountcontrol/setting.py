@@ -385,8 +385,7 @@ class Setting(object):
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
-        suc = self.parseSetting(response, numberOfChunks)
-        return suc
+        return self.parseSetting(response, numberOfChunks)
 
     def setSlewRate(self, value: (int, float)) -> bool:
         """ """

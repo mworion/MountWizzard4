@@ -336,6 +336,7 @@ class ModelManage(MWidget):
         self.ui.refreshModel.setEnabled(True)
         self.ui.cancelOptimize.setEnabled(False)
         self.msg.emit(0, "Model", "Manage", "Optimizing done")
+        self.refreshModel()
 
     def runTargetRMS(self) -> None:
         """ """

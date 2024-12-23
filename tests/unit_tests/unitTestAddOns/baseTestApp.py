@@ -39,7 +39,7 @@ class PlateSolve:
     defaultConfig = {"framework": "", "frameworks": {}}
 
     @staticmethod
-    def solve():
+    def solve(a, b):
         return
 
     @staticmethod

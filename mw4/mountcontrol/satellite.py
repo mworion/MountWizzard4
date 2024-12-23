@@ -79,9 +79,7 @@ class Satellite(object):
         suc, response, numberOfChunks = conn.communicate(":TLEG#")
         if not suc:
             return False
-
-        suc = self.parseGetTLE(response, numberOfChunks)
-        return suc
+        return self.parseGetTLE(response, numberOfChunks)
 
     def setTLE(self, line0: str, line1: str, line2: str) -> bool:
         """
@@ -93,9 +91,7 @@ class Satellite(object):
         1·23455U·94089A···97320.90946019··.00000140··00000-0··10191-3·0··2621
         2·23455··99.0090·272.6745·0008546·223.1686·136.8816·14.11711747148495
         """
-        if len(line1) != 69:
-            return False
-        if len(line2) != 69:
+        if len(line1) != 69 or len(line2) != 69:
             return False
 
         commandString = f":TLEL0{line0}$0a{line1}$0a{line2}#"
@@ -156,9 +152,7 @@ class Satellite(object):
         suc, response, numberOfChunks = conn.communicate(command)
         if not suc:
             return False
-
-        suc = self.parseCalcTLE(response, numberOfChunks)
-        return suc
+        return self.parseCalcTLE(response, numberOfChunks)
 
     def getCoordsFromTLE(self, julD: float) -> bool:
         """
@@ -217,9 +211,7 @@ class Satellite(object):
         suc, response, numberOfChunks = conn.communicate(":TLESCK#")
         if not suc:
             return False
-
-        suc = self.parseStatTLE(response, numberOfChunks)
-        return suc
+        return self.parseStatTLE(response, numberOfChunks)
 
     def startProgTrajectory(self, julD: float) -> bool:
         """

@@ -55,6 +55,7 @@ class Connection(object):
     COMMANDS = [
         ":AP",
         ":CM",
+        ":CMCFG",
         ":FLIP",
         ":GDW",
         ":GDA",
@@ -241,6 +242,8 @@ class Connection(object):
     # Command list for commands which have a response, but have no end mark
     # mostly these commands response value of '0' or '1'
     COMMAND_B = [
+        ":CM",
+        ":CMCFG",
         ":FLIP",
         ":shutdown",
         ":GREF",
@@ -332,15 +335,13 @@ class Connection(object):
     def closeClientHard(client):
         """ """
         if not client:
-            return False
+            return
 
         try:
             client.shutdown(socket.SHUT_RDWR)
             client.close()
         except Exception:
-            return False
-        else:
-            return True
+            return
 
     def buildClient(self):
         """ """
@@ -446,8 +447,7 @@ class Connection(object):
         if client is None:
             return False, "", numberOfChunks
 
-        suc = self.sendData(client=client, commandString=commandString)
-        if not suc:
+        if not self.sendData(client=client, commandString=commandString):
             return False, "", numberOfChunks
 
         if not getData:

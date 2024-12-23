@@ -188,23 +188,20 @@ class TestConnection(unittest.TestCase):
 
     def test_closeClientHard_1(self):
         conn = Connection()
-        val = conn.closeClientHard("")
-        self.assertFalse(val)
+        conn.closeClientHard("")
 
     def test_closeClientHard_2(self):
         conn = Connection("test")
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         with mock.patch.object(socket.socket, "shutdown", side_effect=Exception):
-            val = conn.closeClientHard(client)
-            self.assertFalse(val)
+            conn.closeClientHard(client)
 
     def test_closeClientHard_3(self):
         conn = Connection("test")
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         with mock.patch.object(socket.socket, "shutdown"):
             with mock.patch.object(socket.socket, "close"):
-                val = conn.closeClientHard(client)
-                self.assertTrue(val)
+                conn.closeClientHard(client)
 
         #
         #

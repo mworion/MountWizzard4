@@ -23,6 +23,7 @@ import pyqtgraph as pg
 from PySide6.QtCore import Signal, QObject, Qt
 from PySide6.QtGui import QFont, QGuiApplication, QCursor
 from skyfield.api import Angle
+from astropy.io import fits
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
@@ -331,14 +332,14 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.imageSourceRange = vb.viewRect()
 
     @staticmethod
-    def clearImageTab(imageWidget):
+    def clearImageTab(imageWidget) -> None:
         """ """
         imageWidget.p[0].clear()
         imageWidget.p[0].showAxes(False, showValues=False)
         imageWidget.p[0].setMouseEnabled(x=False, y=False)
         imageWidget.barItem.setVisible(False)
 
-    def writeHeaderDataToGUI(self, header):
+    def writeHeaderDataToGUI(self, header: fits.Header) -> None:
         """ """
         self.guiSetText(self.ui.object, "s", header.get("OBJECT", "").upper())
         ra, dec = getCoordinatesFromHeader(header=header)
@@ -372,7 +373,6 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.showValues.setEnabled(isPhotometry)
         self.ui.isoLayer.setEnabled(isPhotometry)
         snTarget = self.ui.snTarget.currentIndex()
-
         self.photometry.processPhotometry(image=self.fileHandler.image, snTarget=snTarget)
 
     def showImage(self, imagePath: Path) -> None:
@@ -404,10 +404,9 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
 
         self.imageFileName = self.app.mwGlob["imageDir"] / fileName
 
-        suc = self.app.camera.expose(
+        if not self.app.camera.expose(
             imagePath=self.imageFileName, exposureTime=exposureTime, binning=binning
-        )
-        if not suc:
+        ):
             self.abortExpose()
             text = f"{os.path.basename(self.imageFileName)}"
             self.msg.emit(2, "Image", "Expose error", text)
@@ -506,14 +505,14 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
 
     def solveImage(self, imagePath: Path) -> None:
         """ """
-        if not os.path.isfile(imagePath):
+        if not imagePath.is_file():
             self.app.operationRunning.emit(0)
             return
 
         updateHeader = self.ui.embedData.isChecked()
         self.app.plateSolve.signals.result.connect(self.solveDone)
         self.app.operationRunning.emit(6)
-        self.app.plateSolve.solve(imagePath=imagePath, updateHeader=updateHeader)
+        self.app.plateSolve.solve(imagePath, updateHeader)
         self.imagingDeviceStat["solve"] = True
         self.msg.emit(0, "Image", "Solving", imagePath)
 

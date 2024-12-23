@@ -1256,23 +1256,15 @@ class TestConfigData(unittest.TestCase):
 
     def test_syncPositionToTarget_1(self):
         obsSite = ObsSite(parent=Parent())
-        response = []
-        with mock.patch("mountcontrol.obsSite.Connection") as mConn:
-            mConn.return_value.communicate.return_value = False, response, 0
-            suc = obsSite.syncPositionToTarget()
-            self.assertEqual(suc, False)
-
-    def test_syncPositionToTarget_2(self):
-        obsSite = ObsSite(parent=Parent())
-        response = [""]
+        response = ["0", ""]
         with mock.patch("mountcontrol.obsSite.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = obsSite.syncPositionToTarget()
             self.assertEqual(suc, False)
 
-    def test_syncPositionToTarget_3(self):
+    def test_syncPositionToTarget_2(self):
         obsSite = ObsSite(parent=Parent())
-        response = ["Coordinates"]
+        response = ["1", "Coordinates"]
         with mock.patch("mountcontrol.obsSite.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = obsSite.syncPositionToTarget()

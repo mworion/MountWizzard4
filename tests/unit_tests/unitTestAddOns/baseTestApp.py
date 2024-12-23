@@ -25,6 +25,7 @@ from skyfield.api import wgs84, load, Loader, Angle, load_file
 import numpy as np
 from base.signalsDevices import Signals
 from astropy import log as astropy_log
+
 astropy_log.setLevel("ERROR")
 
 # local import

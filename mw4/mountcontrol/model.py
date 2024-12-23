@@ -398,7 +398,7 @@ class Model(object):
 
         conn = Connection(self.parent.host)
         commandString = ":delalst{0:d}#".format(number)
-        suc, _, _ = conn.communicate(commandString, responseCheck="V")
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def storeName(self, name: str) -> bool:

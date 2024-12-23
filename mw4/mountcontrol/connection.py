@@ -47,8 +47,8 @@ class Connection(object):
     log = logging.getLogger("MW4")
 
     # I don't want so wait to long for a response. In average, I see values
-    # shorter than 0.5 sec, so 2 seconds should be good
-    SOCKET_TIMEOUT = 2
+    # shorter than 0.5 sec, so 3 seconds should be good
+    SOCKET_TIMEOUT = 3
 
     # complete used command list to be checked first if valid
     # these are the commands, which were used in mountcontrol so far

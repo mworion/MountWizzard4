@@ -16,8 +16,6 @@
 ###########################################################
 # standard libraries
 import json
-import os
-from pathlib import Path
 
 # external packages
 from PySide6.QtWidgets import QLineEdit, QInputDialog
@@ -26,10 +24,12 @@ import numpy as np
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
+from mountcontrol.model import Model
 from logic.modelBuild.modelHandling import (
     writeRetrofitData,
     convertAngleToFloat,
     convertFloatToAngle,
+    findFittingModel,
 )
 
 
@@ -43,7 +43,6 @@ class ModelManage(MWidget):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.runningOptimize = False
-        self.fittedModelPoints = []
         self.fittedModelPath = ""
         self.plane = None
 
@@ -62,8 +61,7 @@ class ModelManage(MWidget):
         self.ui.runOptimize.clicked.connect(self.runOptimize)
         self.ui.cancelOptimize.clicked.connect(self.cancelOptimize)
         self.ui.deleteWorstPoint.clicked.connect(self.deleteWorstPoint)
-        self.ui.showActualModelAnalyse.clicked.connect(self.showActualModelAnalyse)
-        self.ui.showOriginalModelAnalyse.clicked.connect(self.showOriginalModelAnalyse)
+        self.ui.openAnalyseW.clicked.connect(self.sendAnalyseFileName)
 
         self.ui.targetRMS.valueChanged.connect(self.showModelPosition)
         self.ui.targetRMS.valueChanged.connect(self.showErrorAscending)
@@ -72,24 +70,22 @@ class ModelManage(MWidget):
         self.app.refreshModel.connect(self.refreshModel)
         self.app.refreshName.connect(self.refreshName)
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         self.ui.targetRMS.setValue(config.get("targetRMS", 10))
         self.ui.optimizeOverall.setChecked(config.get("optimizeOverall", True))
         self.ui.optimizeSingle.setChecked(config.get("optimizeSingle", True))
-        self.ui.autoUpdateActualAnalyse.setChecked(config.get("autoUpdateActualAnalyse", False))
         self.showModelPosition()
         self.showErrorAscending()
         self.showErrorDistribution()
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         config["targetRMS"] = self.ui.targetRMS.value()
         config["optimizeOverall"] = self.ui.optimizeOverall.isChecked()
         config["optimizeSingle"] = self.ui.optimizeSingle.isChecked()
-        config["autoUpdateActualAnalyse"] = self.ui.autoUpdateActualAnalyse.isChecked()
 
     def setupIcons(self) -> None:
         """ """
@@ -98,15 +94,13 @@ class ModelManage(MWidget):
         self.wIcon(self.ui.deleteWorstPoint, "circle-minus")
         self.wIcon(self.ui.clearModel, "trash")
         self.wIcon(self.ui.openAnalyseW, "bar-chart")
-        self.wIcon(self.ui.showActualModelAnalyse, "copy")
-        self.wIcon(self.ui.showOriginalModelAnalyse, "copy")
         self.wIcon(self.ui.loadName, "load")
         self.wIcon(self.ui.saveName, "save")
         self.wIcon(self.ui.deleteName, "trash")
         self.wIcon(self.ui.refreshName, "reload")
         self.wIcon(self.ui.refreshModel, "reload")
 
-    def updateColorSet(self):
+    def updateColorSet(self) -> None:
         """ """
         for plot in [
             self.ui.modelPositions,
@@ -118,95 +112,19 @@ class ModelManage(MWidget):
         self.showErrorAscending()
         self.showErrorDistribution()
 
-    def setNameList(self, model):
+    def setNameList(self, model: Model) -> None:
         """ """
         self.ui.nameList.clear()
         for name in model.nameList:
             self.ui.nameList.addItem(name)
         self.ui.nameList.sortItems()
 
-    @staticmethod
-    def findKeysFromSourceInDest(buildModel, mountModel):
-        """ """
-        pointsIn = []
-        pointsOut = []
-        for buildPoint in buildModel:
-            for mountPoint in mountModel:
-                dHA = mountModel[mountPoint]["ha"] - buildModel[buildPoint]["ha"]
-                dHA = dHA / mountModel[mountPoint]["ha"]
-                dDEC = mountModel[mountPoint]["dec"] - buildModel[buildPoint]["dec"]
-                dDEC = dDEC / mountModel[mountPoint]["dec"]
-
-                fitHA = abs(dHA) < 1e-4
-                fitDEC = abs(dDEC) < 1e-4
-
-                if fitHA and fitDEC:
-                    pointsIn.append(buildPoint)
-                    break
-
-            else:
-                pointsOut.append(buildPoint)
-        return pointsIn, pointsOut
-
-    def compareModel(self, buildModelData, mountModel):
-        """ """
-        buildModel = {}
-        for star in buildModelData:
-            index = star.get("errorIndex", 0)
-            mount = {
-                "ha": star.get("haMountModel", 0),
-                "dec": star.get("decMountModel", 0),
-            }
-            buildModel[index] = mount
-
-        pointsIn, pointsOut = self.findKeysFromSourceInDest(buildModel, mountModel)
-        return pointsIn, pointsOut
-
-    def findFittingModel(self):
-        """
-        findFittingModel takes the actual loaded model from the mount and tries
-        to find the fitting model run data. therefore it compares up to 5 points
-        to find out. all optimized model files (containing opt in filename) are
-        ignored.
-        """
-        mountModel = {}
-        for star in self.app.mount.model.starList:
-            mountModel[star.number] = {
-                "ha": star.coord.ra.hours,
-                "dec": star.coord.dec.degrees,
-            }
-
-        for modelFilePath in self.app.mwGlob["modelDir"].glob("*.model"):
-            if "opt" in str(modelFilePath):
-                continue
-
-            with open(modelFilePath, "r") as inFile:
-                try:
-                    buildModelData = json.load(inFile)
-                except Exception as e:
-                    self.log.warning(f"Cannot load model file: {[inFile]}, error: {e}")
-                    continue
-
-            pointsIn, pointsOut = self.compareModel(buildModelData, mountModel)
-            if len(pointsIn) > 2:
-                self.fittedModelPoints = pointsIn
-                self.fittedModelPath = modelFilePath
-                break
-        else:
-            self.fittedModelPoints = []
-            self.fittedModelPath = Path("")
-            pointsIn = []
-            pointsOut = []
-
-        name = self.fittedModelPath.stem
-        return name, pointsIn, pointsOut
-
-    def showModelPosition(self):
+    def showModelPosition(self) -> None:
         """ """
         model = self.app.mount.model
         if model.numberStars == 0 or len(model.starList) == 0:
             self.ui.modelPositions.p[0].clear()
-            return False
+            return
         altitude = np.array([x.alt.degrees for x in model.starList])
         azimuth = np.array([x.az.degrees for x in model.starList])
         error = np.array([x.errorRMS for x in model.starList])
@@ -226,37 +144,34 @@ class ModelManage(MWidget):
         )
         self.ui.modelPositions.plotLoc(self.app.mount.obsSite.location.latitude.degrees)
         self.ui.modelPositions.scatterItem.sigClicked.connect(self.pointClicked)
-        return True
 
-    def showErrorAscending(self):
+    def showErrorAscending(self) -> None:
         """ """
         model = self.app.mount.model
         error = np.array([star.errorRMS for star in model.starList])
         if len(error) == 0:
             self.ui.errorAscending.p[0].clear()
-            return False
+            return
         index = np.array([star.number for star in model.starList])
         self.ui.errorAscending.p[0].setLabel("bottom", "Starcount")
         self.ui.errorAscending.p[0].setLabel("left", "Error per Star [arcsec]")
         temp = sorted(zip(error))
         y = [x[0] for x in temp]
         self.ui.errorAscending.plot(index, y, color=self.M_GREEN, tip="ErrorRMS: {y:0.1f}".format)
-        return True
 
-    def showErrorDistribution(self):
+    def showErrorDistribution(self) -> None:
         """ """
         model = self.app.mount.model
         error = np.array([x.errorRMS for x in model.starList])
         if len(error) == 0:
             self.ui.errorDistribution.p[0].clear()
-            return False
+            return
         errorAngle = np.array([x.errorAngle.degrees for x in model.starList])
         self.ui.errorDistribution.plot(
             errorAngle, error, color=self.M_GREEN, tip="ErrorRMS: {y:0.1f}".format
         )
-        return True
 
-    def clearRefreshName(self):
+    def clearRefreshName(self) -> None:
         """ """
         self.changeStyleDynamic(self.ui.refreshName, "running", False)
         self.changeStyleDynamic(self.ui.modelNameGroup, "running", False)
@@ -266,15 +181,8 @@ class ModelManage(MWidget):
         self.app.mount.signals.namesDone.disconnect(self.clearRefreshName)
         self.msg.emit(0, "Model", "Manage", "Model names refreshed")
 
-    def refreshName(self):
-        """
-        refreshName disables interfering functions in gui and start reloading
-        the names list for model in the mount computer. it connects a link to
-        clearRefreshNames which enables the former disabled gui buttons and
-        removes the link to the method.
-        after it triggers the refresh of names, it finished, because behaviour
-        is event driven
-        """
+    def refreshName(self) -> None:
+        """"""
         self.app.mount.signals.namesDone.connect(self.clearRefreshName)
         self.ui.deleteName.setEnabled(False)
         self.ui.saveName.setEnabled(False)
@@ -283,75 +191,65 @@ class ModelManage(MWidget):
         self.changeStyleDynamic(self.ui.modelNameGroup, "running", True)
         self.app.mount.getNames()
 
-    def loadName(self):
+    def loadName(self) :
         """ """
         if self.ui.nameList.currentItem() is None:
             self.msg.emit(2, "Model", "Manage error", "No model name selected")
-            return False
+            return
         modelName = self.ui.nameList.currentItem().text()
-        suc = self.app.mount.model.loadName(modelName)
-        if not suc:
+        if not self.app.mount.model.loadName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model load failed: [{modelName}]")
-            return False
-        else:
-            self.msg.emit(0, "Model", "Manage", f"Model loaded: [{modelName}]")
-            self.refreshModel()
-            return True
+            return
+        self.msg.emit(0, "Model", "Manage", f"Model loaded: [{modelName}]")
+        self.refreshModel()
 
-    def saveName(self):
+    def saveName(self) -> None:
         """ """
         dlg = QInputDialog()
         modelName, ok = dlg.getText(
             self.mainW, "Save model", "New model name", QLineEdit.EchoMode.Normal, ""
         )
-        if modelName is None or not modelName:
+        if modelName is None or not modelName or not ok:
             self.msg.emit(2, "Model", "Manage error", "No model name given")
-            return False
-        if not ok:
-            return False
+            return
 
-        suc = self.app.mount.model.storeName(modelName)
-        if not suc:
+        if not self.app.mount.model.storeName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model cannot be saved [{modelName}]")
-            return False
-        else:
-            self.msg.emit(0, "Model", "Manage", f"Model saved: [{modelName}]")
-            self.refreshName()
-            return True
+            return
+        self.msg.emit(0, "Model", "Manage", f"Model saved: [{modelName}]")
+        self.refreshName()
 
-    def deleteName(self):
+    def deleteName(self) -> None:
         """ """
         if self.ui.nameList.currentItem() is None:
             self.msg.emit(2, "Model", "Manage error", "No model name selected")
-            return False
+            return
 
         modelName = self.ui.nameList.currentItem().text()
-        suc = self.messageDialog(
+        if not self.messageDialog(
             self.mainW, "Delete model", f"Delete model [{modelName}] from database?"
-        )
-        if not suc:
-            return False
+        ):
+            return
 
-        suc = self.app.mount.model.deleteName(modelName)
-        if not suc:
+        if not self.app.mount.model.deleteName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model cannot be deleted [{modelName}]")
-            return False
-        else:
-            self.msg.emit(0, "Model", "Manage", f"Model deleted: [{modelName}]")
-            self.refreshName()
-            return True
+            return
+        self.msg.emit(0, "Model", "Manage", f"Model deleted: [{modelName}]")
+        self.refreshName()
 
-    def writeBuildModelOptimized(self, foundModel, pointsOut):
+    def writeBuildModelOptimized(self, pointsOut) -> None:
         """ """
-        actPath = self.app.mwGlob["modelDir"] / (foundModel + ".model")
-        newPath = self.app.mwGlob["modelDir"] / (foundModel + "-opt.model")
+        if not pointsOut:
+            return
+        newName = self.fittedModelPath.stem.replace("-opt", "") + "-opt"
+        newPath = self.app.mwGlob["modelDir"] / (newName + ".model")
 
         try:
-            with open(actPath) as actFile:
+            with open(self.fittedModelPath) as actFile:
                 actModel = convertFloatToAngle(json.load(actFile))
         except Exception as e:
             self.log.warning(f"Cannot load model file: {[actFile]}, error: {e}")
-            return False
+            return
 
         newModel = []
         for element in actModel:
@@ -363,9 +261,9 @@ class ModelManage(MWidget):
         newModel = convertAngleToFloat(newModel)
         with open(newPath, "w+") as newFile:
             json.dump(newModel, newFile, sort_keys=True, indent=4)
-        return True
+        self.fittedModelPath = newPath
 
-    def clearRefreshModel(self):
+    def clearRefreshModel(self) -> None:
         """ """
         self.changeStyleDynamic(self.ui.refreshModel, "running", False)
         self.changeStyleDynamic(self.ui.modelGroup, "running", False)
@@ -374,27 +272,22 @@ class ModelManage(MWidget):
         self.ui.clearModel.setEnabled(True)
         self.app.mount.signals.getModelDone.disconnect(self.clearRefreshModel)
         self.msg.emit(0, "Model", "Manage", "Align model data refreshed")
-        foundModel, _, pointsOut = self.findFittingModel()
-
-        if foundModel:
-            self.msg.emit(0, "Model", "Manage", f"Found stored model:  [{foundModel}]")
-            self.ui.originalModel.setText(foundModel)
-            self.writeBuildModelOptimized(foundModel, pointsOut)
+        self.fittedModelPath, pointsOut = findFittingModel(
+            self.app.mount.model, self.app.mwGlob["modelDir"]
+        )
+        self.writeBuildModelOptimized(pointsOut)
+        if self.fittedModelPath.is_file():
+            self.msg.emit(
+                0, "Model", "Manage", f"Found stored model:  [{self.fittedModelPath.stem}]"
+            )
+            self.ui.originalModel.setText(self.fittedModelPath.stem)
 
         else:
             self.ui.originalModel.setText("No fitting model file found")
+        self.sendAnalyseFileName()
 
-        if self.ui.autoUpdateActualAnalyse.isChecked():
-            self.showActualModelAnalyse()
-
-    def refreshModel(self):
-        """
-        refreshModel disables interfering functions in gui and start reloading
-        the alignment model from the mount computer. it connects a link to
-        clearRefreshModel which enables the former disabled gui buttons and
-        removes the link to the method. after it triggers the refresh of names,
-        it finished, because behaviour is event driven
-        """
+    def refreshModel(self) -> None:
+        """ """
         self.changeStyleDynamic(self.ui.refreshModel, "running", True)
         self.changeStyleDynamic(self.ui.modelGroup, "running", True)
         self.app.mount.signals.getModelDone.connect(self.clearRefreshModel)
@@ -403,42 +296,48 @@ class ModelManage(MWidget):
         self.ui.clearModel.setEnabled(False)
         self.app.mount.getModel()
 
-    def clearModel(self):
+    def clearModel(self) -> None:
         """ """
-        suc = self.messageDialog(self.mainW, "Clear model", "Clear actual alignment model")
-        if not suc:
-            return False
-
-        suc = self.app.mount.model.clearModel()
-        if not suc:
+        if not self.messageDialog(self.mainW, "Clear model", "Clear actual alignment model"):
+            return
+        if not self.app.mount.model.clearModel():
             self.msg.emit(2, "Model", "Manage error", "Actual model cannot be cleared")
-            return False
-        else:
-            self.msg.emit(0, "Model", "Manage", "Actual model cleared")
-            self.refreshModel()
-            return True
+            return
+        self.msg.emit(0, "Model", "Manage", "Actual model cleared")
+        self.refreshModel()
 
-    def deleteWorstPoint(self):
+    def deleteWorstPoint(self) -> None:
         """ """
         model = self.app.mount.model
         if not model.numberStars:
-            return False
+            return
 
         wIndex = model.starList.index(max(model.starList))
         wStar = model.starList[wIndex]
         error = wStar.errorRMS
-        suc = model.deletePoint(wStar.number)
-        if not suc:
+        if not model.deletePoint(wStar.number):
             self.msg.emit(2, "Model", "Manage error", "Worst point cannot be deleted")
-            return False
-        else:
-            text = f"Point: {wIndex + 1:3.0f}, RMS of {error:5.1f}"
-            text += " arcsec deleted."
-            self.msg.emit(0, "Model", "Manage", text)
-            self.refreshModel()
-        return True
+            return
+        text = f"Point: {wIndex + 1:3.0f}, RMS of {error:5.1f}"
+        text += " arcsec deleted."
+        self.msg.emit(0, "Model", "Manage", text)
+        self.refreshModel()
 
-    def runTargetRMS(self):
+    def finishOptimize(self) -> None:
+        """ " """
+        if self.ui.optimizeOverall.isChecked():
+            self.app.mount.signals.getModelDone.disconnect(self.runTargetRMS)
+        else:
+            self.app.mount.signals.getModelDone.disconnect(self.runSingleRMS)
+
+        self.changeStyleDynamic(self.ui.runOptimize, "running", False)
+        self.ui.deleteWorstPoint.setEnabled(True)
+        self.ui.clearModel.setEnabled(True)
+        self.ui.refreshModel.setEnabled(True)
+        self.ui.cancelOptimize.setEnabled(False)
+        self.msg.emit(0, "Model", "Manage", "Optimizing done")
+
+    def runTargetRMS(self) -> None:
         """ """
         mount = self.app.mount
         if mount.model.errorRMS < self.ui.targetRMS.value():
@@ -451,8 +350,7 @@ class ModelManage(MWidget):
         if self.runningOptimize and numberStars > 1:
             wIndex = mount.model.starList.index(max(mount.model.starList))
             wStar = mount.model.starList[wIndex]
-            suc = mount.model.deletePoint(wStar.number)
-            if not suc:
+            if not mount.model.deletePoint(wStar.number):
                 self.runningOptimize = False
                 self.msg.emit(
                     2,
@@ -465,11 +363,10 @@ class ModelManage(MWidget):
                 text += f"RMS of {wStar.errorRMS:5.1f} arcsec deleted."
                 self.msg.emit(0, "Model", "Manage", text)
             mount.getModel()
-
         else:
             self.finishOptimize()
 
-    def runSingleRMS(self):
+    def runSingleRMS(self) -> None:
         """ """
         mount = self.app.mount
         if all([star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList]):
@@ -499,7 +396,7 @@ class ModelManage(MWidget):
         else:
             self.finishOptimize()
 
-    def runOptimize(self):
+    def runOptimize(self) -> None:
         """ """
         self.msg.emit(1, "Model", "Manage", "Start optimizing model")
         self.runningOptimize = True
@@ -516,71 +413,35 @@ class ModelManage(MWidget):
             self.app.mount.signals.getModelDone.connect(self.runSingleRMS)
             self.runSingleRMS()
 
-    def finishOptimize(self):
-        """
-        :return:
-        """
-        if self.ui.optimizeOverall.isChecked():
-            self.app.mount.signals.getModelDone.disconnect(self.runTargetRMS)
-        else:
-            self.app.mount.signals.getModelDone.disconnect(self.runSingleRMS)
-
-        self.changeStyleDynamic(self.ui.runOptimize, "running", False)
-        self.ui.deleteWorstPoint.setEnabled(True)
-        self.ui.clearModel.setEnabled(True)
-        self.ui.refreshModel.setEnabled(True)
-        self.ui.cancelOptimize.setEnabled(False)
-        self.msg.emit(0, "Model", "Manage", "Optimizing done")
-
-    def cancelOptimize(self):
+    def cancelOptimize(self) -> None:
         """ """
         self.runningOptimize = False
 
-    def showOriginalModelAnalyse(self):
+    def sendAnalyseFileName(self) -> None:
         """ """
-        if not self.fittedModelPath:
-            return False
-        if not os.path.isfile(self.fittedModelPath):
-            return False
+        if not self.fittedModelPath.is_file():
+            return
         self.app.showAnalyse.emit(self.fittedModelPath)
-        return True
 
-    def showActualModelAnalyse(self):
+    def pointClicked(self, scatterPlotItem, points, event) -> None:
         """ """
-        if not self.fittedModelPath:
-            return False
-
-        actualPath = self.fittedModelPath.with_stem(self.fittedModelPath.stem + "-opt")
-        if not actualPath.is_file():
-            return False
-
-        self.app.showAnalyse.emit(actualPath)
-        return True
-
-    def pointClicked(self, scatterPlotItem, points, event):
-        """ """
-        if event.double():
-            return False
-        if event.button() != Qt.MouseButton.LeftButton:
-            return False
+        if event.double() or event.button() != Qt.MouseButton.LeftButton:
+            return
         if len(points[0].data()) == 0:
-            return False
-        index = points[0].data()[0]
+            return
 
+        index = points[0].data()[0]
         error = self.app.mount.model.starList[index].errorRMS
         text = f"Do you want to delete \npoint {index + 1:3.0f}"
         text += f"\nRMS of {error:5.1f} arcsec"
-        isYes = self.messageDialog(self.mainW, "Deleting point", text)
-        if not isYes:
-            return False
 
-        suc = self.app.mount.model.deletePoint(index)
-        if not suc:
+        if not self.messageDialog(self.mainW, "Deleting point", text):
+            return
+        if not self.app.mount.model.deletePoint(index):
             self.msg.emit(2, "Model", "Manage error", f"Point {index + 1:3.0f} cannot be deleted")
-            return False
+            return
 
         text = f"Point: {index + 1:3.0f}, RMS of {error:5.1f}"
         text += " arcsec deleted."
         self.msg.emit(0, "Model", "Manage", text)
         self.refreshModel()
-        return True

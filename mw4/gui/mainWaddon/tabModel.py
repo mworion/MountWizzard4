@@ -289,7 +289,7 @@ class Model(MWidget):
         self.msg.emit(1, "Model", "Run", "Model from file")
         folder = self.app.mwGlob["modelDir"]
         modelFilesPath = self.openFile(
-            self, "Open model file(s)", folder, "Model files (*.model)", multiple=True
+            self.mainW, "Open model file(s)", folder, "Model files (*.model)", multiple=True
         )
         if len(modelFilesPath) > 1:
             self.msg.emit(0, "Model", "Run", "Combination of len(modelFilesPath) files")

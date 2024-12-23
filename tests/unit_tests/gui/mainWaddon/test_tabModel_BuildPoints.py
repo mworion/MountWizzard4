@@ -430,7 +430,7 @@ def test_buildPointsChanged(function):
 
 
 def test_rebuildPoints_1(function):
-    function.lastGenerator = "align3"
+    function.lastGenerator = "align"
     with mock.patch.object(function, "processPoints"):
         function.rebuildPoints()
 

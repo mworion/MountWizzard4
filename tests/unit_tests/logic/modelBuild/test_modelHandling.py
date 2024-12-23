@@ -18,9 +18,11 @@
 import shutil
 from pathlib import Path
 from datetime import datetime
+from unittest import mock
+import json
 
 # external packages
-from skyfield.api import wgs84, Angle, load
+from skyfield.api import wgs84, Angle, load, Star
 
 # local import
 from mountcontrol.model import Model, ModelStar
@@ -30,7 +32,13 @@ from logic.modelBuild.modelHandling import (
     loadModelsFromFile,
     convertFloatToAngle,
     convertAngleToFloat,
+    findKeysFromSourceInDest,
+    generateFileModelData,
+    generateMountModelData,
+    compareFile,
+    findFittingModel,
 )
+import logic.modelBuild.modelHandling
 
 obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
@@ -63,6 +71,26 @@ def test_writeRetrofitData_2():
     val = writeRetrofitData(mountModel, buildModel)
     assert "errorRMS" in val[0]
     assert "modelPolarError" in val[0]
+
+
+def test_writeRetrofitData_3():
+    class Parent:
+        host = None
+
+    mountModel = Model(parent=Parent())
+    p1 = "12:45:33.01"
+    p2 = "+56*30:00.5"
+    p3 = "1234.5"
+    p4 = "90"
+    p5 = obsSite
+    modelStar1 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1, obsSite=p5)
+
+    mountModel.addStar(modelStar1)
+    buildModel = [{"errorRMS": 1}]
+
+    val = writeRetrofitData(mountModel, buildModel)
+    assert val[0]["errorRMS"] == 1234.5
+    assert val[0]["errorRA"].degrees == Angle(degrees=1234.5).degrees
 
 
 def test_convertFloatToAngle_1():
@@ -190,3 +218,94 @@ def test_loadModelsFromFile_4():
     assert len(model) == 99
     assert msg == "Too many model points in files, cut of to 99"
     assert isinstance(model[0]["raJNowM"], Angle)
+
+
+def test_findKeysFromSourceInDest_1():
+    val1, val2 = findKeysFromSourceInDest({}, {})
+    assert val1 == []
+    assert val2 == []
+
+
+def test_findKeysFromSourceInDest_2():
+    source = {1: {"ha": 1, "dec": 2}, 2: {"ha": 4, "dec": 3}}
+    dest = {1: {"ha": 2, "dec": 1}, 2: {"ha": 3, "dec": 4}}
+    val1, val2 = findKeysFromSourceInDest(source, dest)
+    assert val1 == []
+    assert 1 in val2
+    assert 2 in val2
+
+
+def test_findKeysFromSourceInDest_3():
+    source = {1: {"ha": 1, "dec": 2}, 2: {"ha": 3, "dec": 4}}
+    dest = {1: {"ha": 2, "dec": 1}, 2: {"ha": 3, "dec": 4}}
+    val1, val2 = findKeysFromSourceInDest(source, dest)
+    assert 2 in val1
+    assert 1 in val2
+
+
+def test_generateFileModelData_1():
+    model = [
+        {
+            "errorIndex": 1,
+            "haMountModel": 10,
+            "decMountModel": 20,
+        },
+        {
+            "errorIndex": 2,
+            "haMountModel": 30,
+            "decMountModel": 40,
+        },
+    ]
+
+    val = generateFileModelData(model)
+    assert val != {}
+
+
+def test_generateMountModelData_1():
+    class ModelStar:
+        number = 1
+        coord = Star(ra_hours=10, dec_degrees=20)
+
+    class Model:
+        starList = [ModelStar(), ModelStar()]
+
+    model = Model()
+    val = generateMountModelData(model)
+    assert val != {}
+
+
+def test_compareFile_1():
+    with mock.patch.object(json, "load", side_effect=Exception):
+        val1, val2 = compareFile(Path("tests/testData/test.model"), {})
+        assert val1 == []
+        assert val2 == []
+
+
+def test_compareFile_2():
+    valIn, valOut = compareFile(Path("tests/testData/test.model"), {})
+    assert len(valIn) == 0
+    assert len(valOut) == 58
+
+
+def test_findFittingModel_1():
+    with mock.patch.object(
+        logic.modelBuild.modelHandling, "generateMountModelData", return_value={}
+    ):
+        with mock.patch.object(
+            logic.modelBuild.modelHandling, "compareFile", return_value=([1, 2, 3], [4])
+        ):
+            filePath, pointsOut = findFittingModel({}, Path("tests/testData"))
+        assert pointsOut == [4]
+        assert filePath == Path("tests/testData/test.model")
+
+
+def test_findFittingModel_2():
+    with mock.patch.object(
+        logic.modelBuild.modelHandling, "generateMountModelData", return_value={}
+    ):
+        with mock.patch.object(
+            logic.modelBuild.modelHandling, "compareFile", return_value=([1], [4])
+        ):
+            filePath, pointsOut = findFittingModel({}, Path("tests/testData"))
+        assert pointsOut == [4]
+        assert filePath == Path("")

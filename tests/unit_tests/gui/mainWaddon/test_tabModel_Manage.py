@@ -34,6 +34,7 @@ from mountcontrol.modelStar import ModelStar
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 import gui
 from gui.mainWaddon.tabModel_Manage import ModelManage
+import gui.mainWaddon.tabModel_Manage
 from gui.widgets.main_ui import Ui_MainWindow
 
 
@@ -68,6 +69,10 @@ def test_storeConfig_1(function):
     function.storeConfig()
 
 
+def test_setupIcons_1(function):
+    function.setupIcons()
+
+
 def test_updateColorSet(function):
     with mock.patch.object(function, "showModelPosition"):
         with mock.patch.object(function, "showErrorAscending"):
@@ -83,117 +88,9 @@ def test_setNameList(function):
     function.app.mount.model.nameList = []
 
 
-def test_findKeysFromSourceInDest_1(function):
-    val1, val2 = function.findKeysFromSourceInDest({}, {})
-    assert val1 == []
-    assert val2 == []
-
-
-def test_findKeysFromSourceInDest_2(function):
-    source = {1: {"ha": 1, "dec": 2}, 2: {"ha": 4, "dec": 3}}
-    dest = {1: {"ha": 2, "dec": 1}, 2: {"ha": 3, "dec": 4}}
-    val1, val2 = function.findKeysFromSourceInDest(source, dest)
-    assert val1 == []
-    assert 1 in val2
-    assert 2 in val2
-
-
-def test_findKeysFromSourceInDest_3(function):
-    source = {1: {"ha": 1, "dec": 2}, 2: {"ha": 3, "dec": 4}}
-    dest = {1: {"ha": 2, "dec": 1}, 2: {"ha": 3, "dec": 4}}
-    val1, val2 = function.findKeysFromSourceInDest(source, dest)
-    assert 2 in val1
-    assert 1 in val2
-
-
-def test_compareModel_1(function):
-    val1, val2 = function.compareModel({}, {})
-    assert val1 == []
-    assert val2 == []
-
-
-def test_compareModel_2(function):
-    source = [
-        {"errorIndex": 1, "ha": 10, "dec": 20},
-        {"errorIndex": 2, "ha": 30, "dec": 40},
-    ]
-    dest = {"1": {"ha": 30, "dec": 40}}
-    val1, val2 = function.compareModel(source, dest)
-    assert val1 == []
-    assert val2 == [1, 2]
-
-
-def test_findFittingModel_1(function):
-    function.app.mount.model.starList = list()
-    name, pointsIn, pointsOut = function.findFittingModel()
-
-    assert name == ""
-    assert pointsIn == []
-    assert pointsOut == []
-
-
-def test_findFittingModel_2(function):
-    function.app.mwGlob["modelDir"] = Path("tests/testData")
-    function.app.mount.model.starList = list()
-    a = ModelStar(obsSite=function.app.mount.obsSite)
-    a.alt = 0
-    a.az = 0
-    a.coord = Star(ra_hours=0, dec_degrees=0)
-    a.errorAngle = Angle(degrees=0)
-    a.errorRMS = 1
-    function.app.mount.model.starList.append(a)
-    with mock.patch.object(function, "compareModel", return_value=([], [])):
-        name, pointsIn, pointsOut = function.findFittingModel()
-
-        assert name == ""
-        assert pointsIn == []
-        assert pointsOut == []
-    function.app.mwGlob["modelDir"] = Path("tests/workDir/model")
-
-
-def test_findFittingModel_3(function):
-    function.app.mwGlob["modelDir"] = Path("tests/testData")
-    function.app.mount.model.starList = list()
-    a = ModelStar(obsSite=function.app.mount.obsSite)
-    a.alt = 0
-    a.az = 0
-    a.coord = Star(ra_hours=0, dec_degrees=0)
-    a.errorAngle = Angle(degrees=0)
-    a.errorRMS = 1
-    function.app.mount.model.starList.append(a)
-    with mock.patch.object(json, "load", return_value={}, side_effect=Exception):
-        with mock.patch.object(function, "compareModel", return_value=([], [])):
-            name, pointsIn, pointsOut = function.findFittingModel()
-
-            assert name == ""
-            assert pointsIn == []
-            assert pointsOut == []
-    function.app.mwGlob["modelDir"] = Path("tests/workDir/model")
-
-
-def test_findFittingModel_4(function):
-    function.app.mwGlob["modelDir"] = Path("tests/testData")
-    function.app.mount.model.starList = list()
-    a = ModelStar(obsSite=function.app.mount.obsSite)
-    a.alt = 0
-    a.az = 0
-    a.coord = Star(ra_hours=0, dec_degrees=0)
-    a.errorAngle = Angle(degrees=0)
-    a.errorRMS = 1
-    function.app.mount.model.starList.append(a)
-    with mock.patch.object(json, "load", return_value={}):
-        with mock.patch.object(function, "compareModel", return_value=([1, 2, 3], [4])):
-            name, pointsIn, pointsOut = function.findFittingModel()
-
-            assert pointsIn == [1, 2, 3]
-            assert pointsOut == [4]
-    function.app.mwGlob["modelDir"] = Path("tests/workDir/model")
-
-
 def test_showModelPosition_1(function):
     function.app.mount.model.starList = list()
-    suc = function.showModelPosition()
-    assert not suc
+    function.showModelPosition()
 
 
 def test_showModelPosition_2(function):
@@ -205,8 +102,7 @@ def test_showModelPosition_2(function):
         obsSite=function.app.mount.obsSite,
     )
     function.app.mount.model.starList = [star, star, star]
-    suc = function.showModelPosition()
-    assert suc
+    function.showModelPosition()
 
 
 def test_showErrorAscending_1(function):
@@ -218,29 +114,25 @@ def test_showErrorAscending_1(function):
         obsSite=function.app.mount.obsSite,
     )
     function.app.mount.model.starList = [star, star, star]
-    suc = function.showErrorAscending()
-    assert suc
+    function.showErrorAscending()
 
 
 def test_showErrorAscending_2(function):
     function.app.mount.model.starList = list()
-    suc = function.showErrorAscending()
-    assert not suc
+    function.showErrorAscending()
 
 
 def test_showErrorAscending_3(function):
     temp = function.app.mount.obsSite.location
     function.app.mount.obsSite.location = None
     function.app.mount.model.starList = list()
-    suc = function.showErrorAscending()
-    assert not suc
+    function.showErrorAscending()
     function.app.mount.obsSite.location = temp
 
 
 def test_showErrorAscending_4(function):
     function.app.mount.model.starList = list()
-    suc = function.showErrorAscending()
-    assert not suc
+    function.showErrorAscending()
 
 
 def test_showErrorDistribution_1(function):
@@ -252,29 +144,25 @@ def test_showErrorDistribution_1(function):
         obsSite=function.app.mount.obsSite,
     )
     function.app.mount.model.starList = [star, star, star]
-    suc = function.showErrorDistribution()
-    assert suc
+    function.showErrorDistribution()
 
 
 def test_showErrorDistribution_2(function):
     function.app.mount.model.starList = list()
-    suc = function.showErrorDistribution()
-    assert not suc
+    function.showErrorDistribution()
 
 
 def test_showErrorDistribution_3(function):
     temp = function.app.mount.obsSite.location
     function.app.mount.obsSite.location = None
     function.app.mount.model.starList = list()
-    suc = function.showErrorDistribution()
-    assert not suc
+    function.showErrorDistribution()
     function.app.mount.obsSite.location = temp
 
 
 def test_showErrorDistribution_4(function):
     function.app.mount.model.starList = list()
-    suc = function.showErrorDistribution()
-    assert not suc
+    function.showErrorDistribution()
 
 
 def test_clearRefreshName(function):
@@ -294,8 +182,7 @@ def test_refreshName_2(function):
 
 def test_loadName_1(function):
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=None):
-        suc = function.loadName()
-        assert not suc
+        function.loadName()
 
 
 def test_loadName_2(function):
@@ -306,8 +193,7 @@ def test_loadName_2(function):
 
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
         with mock.patch.object(function.app.mount.model, "loadName", return_value=True):
-            suc = function.loadName()
-            assert suc
+            function.loadName()
 
 
 def test_loadName_3(function):
@@ -318,48 +204,41 @@ def test_loadName_3(function):
 
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
         with mock.patch.object(function.app.mount.model, "loadName", return_value=False):
-            suc = function.loadName()
-            assert not suc
+            function.loadName()
 
 
 def test_saveName_1(function):
     with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=("", True)):
-        suc = function.saveName()
-        assert not suc
+        function.saveName()
 
 
 def test_saveName_2(function):
     with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=(None, True)):
-        suc = function.saveName()
-        assert not suc
+        function.saveName()
 
 
 def test_saveName_3(function):
     with mock.patch.object(
         PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", False)
     ):
-        suc = function.saveName()
-        assert not suc
+        function.saveName()
 
 
 def test_saveName_4(function):
     with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)):
         with mock.patch.object(function.app.mount.model, "storeName", return_value=False):
-            suc = function.saveName()
-            assert not suc
+            function.saveName()
 
 
 def test_saveName_5(function):
     with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)):
         with mock.patch.object(function.app.mount.model, "storeName", return_value=True):
-            suc = function.saveName()
-            assert suc
+            function.saveName()
 
 
 def test_deleteName_1(function):
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=None):
-        suc = function.deleteName()
-        assert not suc
+        function.deleteName()
 
 
 def test_deleteName_2(function):
@@ -370,8 +249,7 @@ def test_deleteName_2(function):
 
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
         with mock.patch.object(function, "messageDialog", return_value=False):
-            suc = function.deleteName()
-            assert not suc
+            function.deleteName()
 
 
 def test_deleteName_3(function):
@@ -383,8 +261,7 @@ def test_deleteName_3(function):
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
         with mock.patch.object(function, "messageDialog", return_value=True):
             with mock.patch.object(function.app.mount.model, "deleteName", return_value=True):
-                suc = function.deleteName()
-                assert suc
+                function.deleteName()
 
 
 def test_deleteName_4(function):
@@ -396,69 +273,68 @@ def test_deleteName_4(function):
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
         with mock.patch.object(function, "messageDialog", return_value=True):
             with mock.patch.object(function.app.mount.model, "deleteName", return_value=False):
-                suc = function.deleteName()
-                assert not suc
+                function.deleteName()
+
+
+def test_writeBuildModelOptimized_0(function):
+    function.fittedModelPath = Path("tests/workDir/model/test-opt.model")
+    function.writeBuildModelOptimized([])
 
 
 def test_writeBuildModelOptimized_1(function):
+    function.fittedModelPath = Path("tests/workDir/model/test-opt.model")
     with mock.patch.object(
         json,
         "load",
         return_value=[{"errorIndex": 1}, {"errorIndex": 3}],
         side_effect=Exception,
     ):
-        suc = function.writeBuildModelOptimized("test", [1])
-        assert not suc
+        function.writeBuildModelOptimized([1])
 
 
 def test_writeBuildModelOptimized_2(function):
+    function.fittedModelPath = Path("tests/workDir/model/test-opt.model")
     with mock.patch.object(gui.mainWaddon.tabModel_Manage, "writeRetrofitData"):
         with mock.patch.object(json, "load", return_value=[{"errorIndex": 1}, {"errorIndex": 3}]):
             with mock.patch.object(json, "dump"):
-                suc = function.writeBuildModelOptimized("test", [1])
-                assert suc
+                function.writeBuildModelOptimized([1])
 
 
 def test_clearRefreshModel_1(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
-    function.clearRefreshModel()
+    with mock.patch.object(
+        gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])
+    ):
+        with mock.patch.object(Path, "is_file", return_value=True):
+            with mock.patch.object(function, "writeBuildModelOptimized"):
+                function.clearRefreshModel()
 
 
 def test_clearRefreshModel_2(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
-    function.ui.autoUpdateActualAnalyse.setChecked(True)
-    with mock.patch.object(function, "findFittingModel", return_value=("test", [], [])):
-        with mock.patch.object(function, "writeBuildModelOptimized"):
-            with mock.patch.object(function, "showActualModelAnalyse"):
+    with mock.patch.object(
+        gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])
+    ):
+        with mock.patch.object(Path, "is_file", return_value=False):
+            with mock.patch.object(function, "sendAnalyseFileName"):
                 function.clearRefreshModel()
-
-
-def test_clearRefreshModel_3(function):
-    function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
-    function.fittedModelPath = Path("tests/testData/test.model")
-    with mock.patch.object(function.app.mount, "getModel"):
-        with mock.patch.object(function, "showActualModelAnalyse"):
-            function.clearRefreshModel()
 
 
 def test_clearModel_1(function):
     with mock.patch.object(function, "messageDialog", return_value=False):
-        suc = function.clearModel()
-        assert not suc
+        function.clearModel()
 
 
 def test_clearModel_2(function):
     with mock.patch.object(function, "messageDialog", return_value=True):
         with mock.patch.object(function.app.mount.model, "clearModel", return_value=False):
-            suc = function.clearModel()
-            assert not suc
+            function.clearModel()
 
 
 def test_clearModel_3(function):
     with mock.patch.object(function, "messageDialog", return_value=True):
         with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
-            suc = function.clearModel()
-            assert suc
+            function.clearModel()
 
 
 def test_deleteWorstPoint_1(function):
@@ -471,8 +347,7 @@ def test_deleteWorstPoint_1(function):
     )
     function.app.mount.model.starList = [star, star, star]
     function.app.mount.model.numberStars = 0
-    suc = function.deleteWorstPoint()
-    assert not suc
+    function.deleteWorstPoint()
 
 
 def test_deleteWorstPoint_2(function):
@@ -487,8 +362,7 @@ def test_deleteWorstPoint_2(function):
     function.app.mount.model.numberStars = 3
     with mock.patch.object(function.app.mount.model, "deletePoint", return_value=True):
         with mock.patch.object(function, "refreshModel"):
-            suc = function.deleteWorstPoint()
-            assert suc
+            function.deleteWorstPoint()
 
 
 def test_deleteWorstPoint_3(function):
@@ -503,8 +377,7 @@ def test_deleteWorstPoint_3(function):
     function.app.mount.model.numberStars = 3
     with mock.patch.object(function.app.mount.model, "deletePoint", return_value=False):
         with mock.patch.object(function, "refreshModel"):
-            suc = function.deleteWorstPoint()
-            assert not suc
+            function.deleteWorstPoint()
 
 
 def test_runTargetRMS_1(function):
@@ -735,41 +608,14 @@ def test_cancelOptimize_1(function):
     assert not function.runningOptimize
 
 
-def test_showOriginalModelAnalyse_1(function):
-    function.fittedModelPath = ""
-    suc = function.showOriginalModelAnalyse()
-    assert not suc
-
-
-def test_showOriginalModelAnalyse_2(function):
-    function.fittedModelPath = "test"
-    suc = function.showOriginalModelAnalyse()
-    assert not suc
-
-
-def test_showOriginalModelAnalyse_3(function):
-    function.fittedModelPath = "tests/testData/test.model"
-    suc = function.showOriginalModelAnalyse()
-    assert suc
-
-
-def test_showActualModelAnalyse_1(function):
-    function.fittedModelPath = Path("aaaa")
-    suc = function.showActualModelAnalyse()
-    assert not suc
-
-
-def test_showActualModelAnalyse_2(function):
+def test_sendAnalyseFile_1(function):
     function.fittedModelPath = Path("test")
-    suc = function.showActualModelAnalyse()
-    assert not suc
+    function.sendAnalyseFileName()
 
 
-def test_showActualModelAnalyse_3(function):
+def test_sendAnalyseFile_2(function):
     function.fittedModelPath = Path("tests/testData/test.model")
-    with mock.patch.object(Path, "is_file", return_value=True):
-        suc = function.showActualModelAnalyse()
-        assert suc
+    function.sendAnalyseFileName()
 
 
 def test_pointClicked_1(function):
@@ -782,8 +628,7 @@ def test_pointClicked_1(function):
         def double():
             return True
 
-    suc = function.pointClicked(None, None, Event())
-    assert not suc
+    function.pointClicked(None, None, Event())
 
 
 def test_pointClicked_2(function):
@@ -796,8 +641,7 @@ def test_pointClicked_2(function):
         def double():
             return False
 
-    suc = function.pointClicked(None, None, Event())
-    assert not suc
+    function.pointClicked(None, None, Event())
 
 
 def test_pointClicked_3(function):
@@ -816,8 +660,7 @@ def test_pointClicked_3(function):
             return []
 
     points = [Points()]
-    suc = function.pointClicked(None, points, Event())
-    assert not suc
+    function.pointClicked(None, points, Event())
 
 
 def test_pointClicked_4(function):
@@ -848,8 +691,7 @@ def test_pointClicked_4(function):
     function.app.mount.model.starList.append(a)
 
     with mock.patch.object(function, "messageDialog", return_value=False):
-        suc = function.pointClicked(None, points, Event())
-        assert not suc
+        function.pointClicked(None, points, Event())
 
 
 def test_pointClicked_5(function):
@@ -880,8 +722,7 @@ def test_pointClicked_5(function):
 
     with mock.patch.object(function, "messageDialog", return_value=True):
         with mock.patch.object(function.app.mount.model, "deletePoint", return_value=False):
-            suc = function.pointClicked(None, points, Event())
-            assert not suc
+            function.pointClicked(None, points, Event())
 
 
 def test_pointClicked_6(function):
@@ -913,5 +754,4 @@ def test_pointClicked_6(function):
     with mock.patch.object(function, "messageDialog", return_value=True):
         with mock.patch.object(function.app.mount.model, "deletePoint", return_value=True):
             with mock.patch.object(function, "refreshModel"):
-                suc = function.pointClicked(None, points, Event())
-                assert suc
+                function.pointClicked(None, points, Event())

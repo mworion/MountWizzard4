@@ -8305,7 +8305,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -11202,7 +11202,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </rect>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -11688,7 +11688,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </rect>
        </property>
        <property name="title">
-        <string>Evaluate Mount Models</string>
+        <string>Analyse actual mount model</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -11701,7 +11701,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>5</x>
           <y>20</y>
-          <width>201</width>
+          <width>271</width>
           <height>21</height>
          </rect>
         </property>
@@ -11743,9 +11743,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="geometry">
          <rect>
-          <x>210</x>
-          <y>20</y>
-          <width>66</width>
+          <x>5</x>
+          <y>45</y>
+          <width>271</width>
           <height>21</height>
          </rect>
         </property>
@@ -11753,55 +11753,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Opens an analyse window showing multiple informations about the model context.</string>
         </property>
         <property name="text">
-         <string>Show</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="showOriginalModelAnalyse">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>45</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pushed the discovered model file name to the analyse window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Original</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="autoUpdateActualAnalyse">
-        <property name="geometry">
-         <rect>
-          <x>185</x>
-          <y>45</y>
-          <width>91</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Delete model points where the value of the single point is above a certain value.</string>
-        </property>
-        <property name="text">
-         <string>Auto update</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="showActualModelAnalyse">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>45</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pushed the discovered model file name to the analyse window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Actual</string>
+         <string>Open analyse window and show data</string>
         </property>
        </widget>
       </widget>
@@ -32473,9 +32425,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>optimizeSingle</tabstop>
   <tabstop>targetRMS</tabstop>
   <tabstop>openAnalyseW</tabstop>
-  <tabstop>showOriginalModelAnalyse</tabstop>
-  <tabstop>showActualModelAnalyse</tabstop>
-  <tabstop>autoUpdateActualAnalyse</tabstop>
   <tabstop>nameList</tabstop>
   <tabstop>loadName</tabstop>
   <tabstop>saveName</tabstop>

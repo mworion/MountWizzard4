@@ -10,19 +10,41 @@
 
 from PySide6.QtCore import (
     QCoreApplication,
+    QDate,
+    QDateTime,
+    QLocale,
     QMetaObject,
+    QObject,
+    QPoint,
     QRect,
     QSize,
+    QTime,
+    QUrl,
     Qt,
 )
 from PySide6.QtGui import (
+    QBrush,
+    QColor,
+    QConicalGradient,
     QCursor,
     QFont,
+    QFontDatabase,
+    QGradient,
+    QIcon,
+    QImage,
+    QKeySequence,
+    QLinearGradient,
+    QPainter,
+    QPalette,
+    QPixmap,
+    QRadialGradient,
+    QTransform,
 )
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QAbstractScrollArea,
     QAbstractSpinBox,
+    QApplication,
     QCheckBox,
     QComboBox,
     QDoubleSpinBox,
@@ -30,10 +52,12 @@ from PySide6.QtWidgets import (
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
+    QHeaderView,
     QLabel,
     QLayout,
     QLineEdit,
     QListWidget,
+    QListWidgetItem,
     QProgressBar,
     QPushButton,
     QRadioButton,
@@ -41,6 +65,7 @@ from PySide6.QtWidgets import (
     QSpacerItem,
     QTabWidget,
     QTableWidget,
+    QTableWidgetItem,
     QTextBrowser,
     QVBoxLayout,
     QWidget,
@@ -2946,7 +2971,7 @@ class Ui_MainWindow(object):
         self.originalModel = QLineEdit(self.groupBox_22)
         self.originalModel.setObjectName("originalModel")
         self.originalModel.setEnabled(True)
-        self.originalModel.setGeometry(QRect(5, 20, 201, 21))
+        self.originalModel.setGeometry(QRect(5, 20, 271, 21))
         self.originalModel.setFont(font1)
         self.originalModel.setMouseTracking(False)
         self.originalModel.setFocusPolicy(Qt.FocusPolicy.NoFocus)
@@ -2957,16 +2982,7 @@ class Ui_MainWindow(object):
         self.openAnalyseW = QPushButton(self.groupBox_22)
         self.openAnalyseW.setObjectName("openAnalyseW")
         self.openAnalyseW.setEnabled(True)
-        self.openAnalyseW.setGeometry(QRect(210, 20, 66, 21))
-        self.showOriginalModelAnalyse = QPushButton(self.groupBox_22)
-        self.showOriginalModelAnalyse.setObjectName("showOriginalModelAnalyse")
-        self.showOriginalModelAnalyse.setGeometry(QRect(5, 45, 81, 21))
-        self.autoUpdateActualAnalyse = QRadioButton(self.groupBox_22)
-        self.autoUpdateActualAnalyse.setObjectName("autoUpdateActualAnalyse")
-        self.autoUpdateActualAnalyse.setGeometry(QRect(185, 45, 91, 21))
-        self.showActualModelAnalyse = QPushButton(self.groupBox_22)
-        self.showActualModelAnalyse.setObjectName("showActualModelAnalyse")
-        self.showActualModelAnalyse.setGeometry(QRect(95, 45, 81, 21))
+        self.openAnalyseW.setGeometry(QRect(5, 45, 271, 21))
         self.modelingTabWidget.addTab(self.ManageModels, "")
         self.mainTabWidget.addTab(self.Modeling, "")
         self.Imaging = QWidget()
@@ -8067,10 +8083,7 @@ class Ui_MainWindow(object):
         QWidget.setTabOrder(self.optimizeOverall, self.optimizeSingle)
         QWidget.setTabOrder(self.optimizeSingle, self.targetRMS)
         QWidget.setTabOrder(self.targetRMS, self.openAnalyseW)
-        QWidget.setTabOrder(self.openAnalyseW, self.showOriginalModelAnalyse)
-        QWidget.setTabOrder(self.showOriginalModelAnalyse, self.showActualModelAnalyse)
-        QWidget.setTabOrder(self.showActualModelAnalyse, self.autoUpdateActualAnalyse)
-        QWidget.setTabOrder(self.autoUpdateActualAnalyse, self.nameList)
+        QWidget.setTabOrder(self.openAnalyseW, self.nameList)
         QWidget.setTabOrder(self.nameList, self.loadName)
         QWidget.setTabOrder(self.loadName, self.saveName)
         QWidget.setTabOrder(self.saveName, self.deleteName)
@@ -8342,8 +8355,8 @@ class Ui_MainWindow(object):
 
         self.mainTabWidget.setCurrentIndex(3)
         self.mountTabWidget.setCurrentIndex(0)
-        self.modelingTabWidget.setCurrentIndex(0)
-        self.manageTabWidget.setCurrentIndex(2)
+        self.modelingTabWidget.setCurrentIndex(2)
+        self.manageTabWidget.setCurrentIndex(0)
         self.imagingTabWidget.setCurrentIndex(1)
         self.satTabWidget.setCurrentIndex(0)
         self.mpcTabWidget.setCurrentIndex(0)
@@ -10659,7 +10672,7 @@ class Ui_MainWindow(object):
         # endif // QT_CONFIG(tooltip)
         self.saveName.setText(QCoreApplication.translate("MainWindow", "Save", None))
         self.groupBox_22.setTitle(
-            QCoreApplication.translate("MainWindow", "Evaluate Mount Models", None)
+            QCoreApplication.translate("MainWindow", "Analyse actual mount model", None)
         )
         # if QT_CONFIG(tooltip)
         self.originalModel.setToolTip(
@@ -10680,42 +10693,8 @@ class Ui_MainWindow(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.openAnalyseW.setText(QCoreApplication.translate("MainWindow", "Show", None))
-        # if QT_CONFIG(tooltip)
-        self.showOriginalModelAnalyse.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow",
-                "<html><head/><body><p>Pushed the discovered model file name to the analyse window</p></body></html>",
-                None,
-            )
-        )
-        # endif // QT_CONFIG(tooltip)
-        self.showOriginalModelAnalyse.setText(
-            QCoreApplication.translate("MainWindow", "Original", None)
-        )
-        # if QT_CONFIG(tooltip)
-        self.autoUpdateActualAnalyse.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow",
-                "Delete model points where the value of the single point is above a certain value.",
-                None,
-            )
-        )
-        # endif // QT_CONFIG(tooltip)
-        self.autoUpdateActualAnalyse.setText(
-            QCoreApplication.translate("MainWindow", "Auto update", None)
-        )
-        # if QT_CONFIG(tooltip)
-        self.showActualModelAnalyse.setToolTip(
-            QCoreApplication.translate(
-                "MainWindow",
-                "<html><head/><body><p>Pushed the discovered model file name to the analyse window</p></body></html>",
-                None,
-            )
-        )
-        # endif // QT_CONFIG(tooltip)
-        self.showActualModelAnalyse.setText(
-            QCoreApplication.translate("MainWindow", "Actual", None)
+        self.openAnalyseW.setText(
+            QCoreApplication.translate("MainWindow", "Open analyse window and show", None)
         )
         self.modelingTabWidget.setTabText(
             self.modelingTabWidget.indexOf(self.ManageModels),

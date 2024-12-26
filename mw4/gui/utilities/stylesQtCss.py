@@ -90,7 +90,7 @@ class Styles:
             "M_BACK0": [
                 "#141414",
                 "#141414",
-                "#E08E8E8",
+                "#E8E8E8",
             ],
             "M_RED": [
                 "#D03030",
@@ -156,6 +156,11 @@ class Styles:
                 "#00B0B0",
                 "#00B0B0",
                 "#00A0A0",
+            ],
+            "M_TABS": [
+                "#2090C0",
+                "#C05050",
+                "#2090C0",
             ],
             "checkmark": [
                 "checkmark0",
@@ -955,6 +960,10 @@ class Styles:
         return self.cs["M_BACK"][self.colorSet]
 
     @property
+    def M_BACK0(self):
+        return self.cs["M_BACK0"][self.colorSet]
+
+    @property
     def M_QUAR(self):
         return self.cs["M_QUAR"][self.colorSet]
 
@@ -1009,6 +1018,10 @@ class Styles:
     @property
     def M_CYAN1(self):
         return self.cs["M_CYAN1"][self.colorSet]
+
+    @property
+    def M_TABS(self):
+        return self.cs["M_TABS"][self.colorSet]
 
     @property
     def mw4Style(self):

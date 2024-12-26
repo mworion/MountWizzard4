@@ -19,22 +19,20 @@ import os
 from pathlib import Path
 
 # external packages
-import pyqtgraph as pg
 from PySide6.QtCore import Signal, QObject, Qt
-from PySide6.QtGui import QFont, QGuiApplication, QCursor
+from PySide6.QtGui import QGuiApplication, QCursor
 from skyfield.api import Angle
-from astropy.io import fits
+
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
 from base.transform import J2000ToJNow
-from logic.fits.fitsFunction import getCoordinatesFromHeader, getSQMFromHeader
-from logic.fits.fitsFunction import getExposureFromHeader, getScaleFromHeader
-from gui.utilities import toolsQtWidget
+from gui.utilities.toolsQtWidget import MWidget
 from gui.utilities.slewInterface import SlewInterface
 from gui.widgets import image_ui
 from logic.file.fileHandler import FileHandler
 from logic.photometry.photometry import Photometry
+from logic.fits.fitsFunction import getCoordinatesFromHeader
 from gui.extWindows.image.imageTabs import ImageTabs
 
 
@@ -44,18 +42,8 @@ class ImageWindowSignals(QObject):
     solveImage = Signal(object)
 
 
-class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
+class ImageWindow(MWidget, SlewInterface):
     """ """
-
-    TILT = {
-        "none": 5,
-        "almost none": 10,
-        "mild": 15,
-        "moderate": 20,
-        "severe": 30,
-        "extreme": 1000,
-    }
-
     def __init__(self, app):
         super().__init__()
         self.app = app
@@ -66,27 +54,20 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.signals = ImageWindowSignals()
         self.photometry = Photometry(app=app)
         self.fileHandler = FileHandler(app=app)
-
         self.barItem = None
         self.imageItem = None
-        self.imageSourceRange = None
         self.imageFileName: Path = Path("")
         self.imageFileNameOld: Path = Path("")
         self.exposureTime = 1
         self.binning = 1
         self.folder = ""
         self.result = None
-        self.pen = pg.mkPen(color=self.M_PRIM, width=2)
-        self.penPink = pg.mkPen(color=self.M_PINK + "80", width=5)
-        self.fontText = QFont(self.window().font().family(), 16)
-        self.fontAnno = QFont(self.window().font().family(), 10, italic=True)
-        self.fontText.setBold(True)
-
         self.imagingDeviceStat = {
             "expose": False,
             "exposeN": False,
             "solve": False,
         }
+        self.tabs = ImageTabs(self)
 
     def initConfig(self) -> None:
         """ """
@@ -114,7 +95,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.timeTagImage.setChecked(config.get("timeTagImage", True))
         isMovable = self.app.config["mainW"].get("tabsMovable", False)
         self.enableTabsMovable(isMovable)
-        self.setCrosshair()
+        self.tabs.setCrosshair()
 
     def storeConfig(self) -> None:
         """ """
@@ -152,28 +133,28 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
 
     def showWindow(self) -> None:
         """ """
-        self.fileHandler.signals.imageLoaded.connect(self.showTabImage)
+        self.fileHandler.signals.imageLoaded.connect(self.tabs.showImage)
         self.fileHandler.signals.imageLoaded.connect(self.processPhotometry)
         self.photometry.signals.sepFinished.connect(self.resultPhotometry)
-        self.photometry.signals.hfr.connect(self.showTabHFR)
-        self.photometry.signals.hfrSquare.connect(self.showTabTiltSquare)
-        self.photometry.signals.hfrTriangle.connect(self.showTabTiltTriangle)
-        self.photometry.signals.roundness.connect(self.showTabRoundness)
-        self.photometry.signals.aberration.connect(self.showTabAberrationInspect)
-        self.photometry.signals.aberration.connect(self.showTabImageSources)
-        self.photometry.signals.background.connect(self.showTabBackground)
-        self.photometry.signals.backgroundRMS.connect(self.showTabBackgroundRMS)
+        self.photometry.signals.hfr.connect(self.tabs.showHFR)
+        self.photometry.signals.hfrSquare.connect(self.tabs.showTiltSquare)
+        self.photometry.signals.hfrTriangle.connect(self.tabs.showTiltTriangle)
+        self.photometry.signals.roundness.connect(self.tabs.showRoundness)
+        self.photometry.signals.aberration.connect(self.tabs.showAberrationInspect)
+        self.photometry.signals.aberration.connect(self.tabs.showImageSources)
+        self.photometry.signals.background.connect(self.tabs.showBackground)
+        self.photometry.signals.backgroundRMS.connect(self.tabs.showBackgroundRMS)
         self.app.update1s.connect(self.updateWindowsStats)
         self.ui.load.clicked.connect(self.selectImage)
-        self.ui.color.currentIndexChanged.connect(self.setBarColor)
-        self.ui.showCrosshair.clicked.connect(self.setCrosshair)
+        self.ui.color.currentIndexChanged.connect(self.tabs.setBarColor)
+        self.ui.showCrosshair.clicked.connect(self.tabs.setCrosshair)
         self.ui.flipH.clicked.connect(self.showCurrent)
         self.ui.flipV.clicked.connect(self.showCurrent)
         self.ui.aspectLocked.clicked.connect(self.setAspectLocked)
         self.ui.photometryGroup.clicked.connect(self.processPhotometry)
-        self.ui.isoLayer.clicked.connect(self.showTabHFR)
-        self.ui.isoLayer.clicked.connect(self.showTabRoundness)
-        self.ui.showValues.clicked.connect(self.showTabImageSources)
+        self.ui.isoLayer.clicked.connect(self.tabs.showHFR)
+        self.ui.isoLayer.clicked.connect(self.tabs.showRoundness)
+        self.ui.showValues.clicked.connect(self.tabs.showImageSources)
         self.ui.snTarget.currentIndexChanged.connect(self.processPhotometry)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
@@ -182,31 +163,35 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.ui.slewCenter.clicked.connect(self.slewCenter)
         self.ui.image.barItem.sigLevelsChangeFinished.connect(self.copyLevels)
-        self.ui.offsetTiltAngle.valueChanged.connect(self.showTabTiltTriangle)
+        self.ui.offsetTiltAngle.valueChanged.connect(self.tabs.showTiltTriangle)
         self.signals.solveImage.connect(self.solveImage)
         self.app.colorChange.connect(self.colorChange)
         self.app.showImage.connect(self.showImage)
         self.app.operationRunning.connect(self.operationMode)
         self.app.tabsMovable.connect(self.enableTabsMovable)
-        self.wIcon(self.ui.load, "load")
         self.operationMode(self.app.statusOperationRunning)
         self.ui.image.p[0].getViewBox().callbackMDC = self.mouseDoubleClick
         self.ui.image.p[0].scene().sigMouseMoved.connect(self.mouseMoved)
-        self.showCurrent()
         self.setAspectLocked()
         self.clearGui()
+        self.setupIcons()
         self.show()
+        self.showCurrent()
 
     def closeEvent(self, closeEvent) -> None:
         """ """
         self.storeConfig()
         super().closeEvent(closeEvent)
 
+    def setupIcons(self) -> None:
+        """ """
+        self.wIcon(self.ui.load, "load")
+
     def colorChange(self) -> None:
         """ """
         self.setStyleSheet(self.mw4Style)
-        self.ui.image.colorChange()
-        self.pen = pg.mkPen(color=self.M_PRIM)
+        self.tabs.colorChange()
+        self.setupIcons()
         self.showCurrent()
 
     def clearGui(self) -> None:
@@ -288,20 +273,6 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             self.signals.solveImage.emit(self.imageFileName)
         self.app.showImage.emit(self.imageFileName)
 
-    def setBarColor(self) -> None:
-        """ """
-        cMap = ["CET-L2", "plasma", "cividis", "magma", "CET-D1A"]
-        colorMap = cMap[self.ui.color.currentIndex()]
-        self.ui.image.setColorMap(colorMap)
-        self.ui.imageSource.setColorMap(colorMap)
-        self.ui.background.setColorMap(colorMap)
-        self.ui.backgroundRMS.setColorMap(colorMap)
-        self.ui.hfr.setColorMap(colorMap)
-        self.ui.tiltSquare.setColorMap(colorMap)
-        self.ui.tiltTriangle.setColorMap(colorMap)
-        self.ui.roundness.setColorMap(colorMap)
-        self.ui.aberration.setColorMap(colorMap)
-
     def copyLevels(self) -> None:
         """ """
         level = self.ui.image.barItem.levels()
@@ -309,10 +280,6 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.tiltTriangle.barItem.setLevels(level)
         self.ui.aberration.barItem.setLevels(level)
         self.ui.imageSource.barItem.setLevels(level)
-
-    def setCrosshair(self) -> None:
-        """ """
-        self.ui.image.showCrosshair(self.ui.showCrosshair.isChecked())
 
     def setAspectLocked(self) -> None:
         """ """
@@ -325,36 +292,6 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.backgroundRMS.p[0].setAspectLocked(isLocked)
         self.ui.hfr.p[0].setAspectLocked(isLocked)
         self.ui.roundness.p[0].setAspectLocked(isLocked)
-
-    def getImageSourceRange(self) -> None:
-        """ """
-        vb = self.ui.imageSource.p[0].getViewBox()
-        self.imageSourceRange = vb.viewRect()
-
-    @staticmethod
-    def clearImageTab(imageWidget) -> None:
-        """ """
-        imageWidget.p[0].clear()
-        imageWidget.p[0].showAxes(False, showValues=False)
-        imageWidget.p[0].setMouseEnabled(x=False, y=False)
-        imageWidget.barItem.setVisible(False)
-
-    def writeHeaderDataToGUI(self, header: fits.Header) -> None:
-        """ """
-        self.guiSetText(self.ui.object, "s", header.get("OBJECT", "").upper())
-        ra, dec = getCoordinatesFromHeader(header=header)
-        self.guiSetText(self.ui.ra, "HSTR", ra)
-        self.guiSetText(self.ui.raFloat, "2.5f", ra.hours)
-        self.guiSetText(self.ui.dec, "DSTR", dec)
-        self.guiSetText(self.ui.decFloat, "2.5f", dec.degrees)
-        self.guiSetText(self.ui.scale, "5.3f", getScaleFromHeader(header=header))
-        self.guiSetText(self.ui.rotation, "6.2f", header.get("ANGLE"))
-        self.guiSetText(self.ui.ccdTemp, "4.1f", header.get("CCD-TEMP"))
-        self.guiSetText(self.ui.exposureTime, "5.1f", getExposureFromHeader(header=header))
-        self.guiSetText(self.ui.filter, "s", header.get("FILTER"))
-        self.guiSetText(self.ui.binX, "1.0f", header.get("XBINNING"))
-        self.guiSetText(self.ui.binY, "1.0f", header.get("YBINNING"))
-        self.guiSetText(self.ui.sqm, "5.2f", getSQMFromHeader(header=header))
 
     def resultPhotometry(self) -> None:
         """ """

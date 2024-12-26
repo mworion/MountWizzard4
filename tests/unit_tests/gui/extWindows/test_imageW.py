@@ -23,7 +23,6 @@ from pathlib import Path
 # external packages
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtCore import QPointF
-from astropy.io import fits
 from astropy import wcs
 from skyfield.api import Angle
 import numpy as np
@@ -75,9 +74,14 @@ def test_closeEvent_1(function):
             function.closeEvent(QCloseEvent)
 
 
+def test_setupIcons_1(function):
+    function.setupIcons()
+
+
 def test_colorChange(function):
     with mock.patch.object(function, "showCurrent"):
-        function.colorChange()
+        with mock.patch.object(function.tabs, "colorChange"):
+            function.colorChange()
 
 
 def test_clearGui(function):
@@ -149,59 +153,12 @@ def test_selectImage_3(function):
             assert function.folder == Path("c:/test")
 
 
-def test_setBarColor_1(function):
-    function.ui.color.setCurrentIndex(0)
-    with mock.patch.object(function.ui.image, "setColorMap"):
-        function.setBarColor()
-
-
 def test_copyLevels(function):
     function.copyLevels()
 
 
-def test_setCrosshair_1(function):
-    function.ui.color.setCurrentIndex(0)
-    with mock.patch.object(function.ui.image, "showCrosshair"):
-        function.setCrosshair()
-
-
 def test_setAspectLocked(function):
     function.setAspectLocked()
-
-
-def test_getImageSourceRange(function):
-    function.getImageSourceRange()
-
-
-def test_clearImageTab(function):
-    function.clearImageTab(function.ui.image)
-
-
-def test_writeHeaderDataToGUI_1(function):
-    function.header = fits.PrimaryHDU().header
-    function.writeHeaderDataToGUI(function.header)
-
-
-def test_writeHeaderDataToGUI_2(function):
-    function.header = fits.PrimaryHDU().header
-    function.header["naxis"] = 2
-    function.writeHeaderDataToGUI(function.header)
-
-
-def test_writeHeaderDataToGUI_3(function):
-    function.header = fits.PrimaryHDU().header
-    function.header["naxis"] = 2
-    function.header["OBJCTRA"] = "+08 00 00"
-    function.header["OBJCTDEC"] = "90 00 00"
-    function.writeHeaderDataToGUI(function.header)
-
-
-def test_writeHeaderDataToGUI_4(function):
-    function.header = fits.PrimaryHDU().header
-    function.header["naxis"] = 2
-    function.header["RA"] = 12.0
-    function.header["DEC"] = 80.0
-    function.writeHeaderDataToGUI(function.header)
 
 
 def test_resultPhotometry_1(function):

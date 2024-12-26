@@ -19,12 +19,103 @@
 # external packages
 import numpy as np
 import pyqtgraph as pg
+from astropy.io import fits
+from PySide6.QtGui import QFont
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
+from logic.fits.fitsFunction import getExposureFromHeader, getScaleFromHeader
+from logic.fits.fitsFunction import getCoordinatesFromHeader, getSQMFromHeader
 
 
-class ImageTabs:
-    def showTabImage(self) -> None:
+class ImageTabs(MWidget):
+    """ """
+    TILT = {
+        "none": 5,
+        "almost none": 10,
+        "mild": 15,
+        "moderate": 20,
+        "severe": 30,
+        "extreme": 1000,
+    }
+
+    def __init__(self, parent):
+        super().__init__()
+        self.fileHandler = parent.fileHandler
+        self.ui = parent.ui
+        self.msg = parent.msg
+        self.photometry = parent.photometry
+        self.threadPool = parent.threadPool
+        self.imagingDeviceStat = parent.imagingDeviceStat
+        self.pen = pg.mkPen(color=self.M_TABS, width=2)
+        self.penPink = pg.mkPen(color=self.M_PINK + "80", width=5)
+        self.fontText = QFont(self.window().font().family(), 16)
+        self.fontAnno = QFont(self.window().font().family(), 10, italic=True)
+        self.fontText.setBold(True)
+        self.imageSourceRange = None
+
+    def colorChange(self) -> None:
+        """ """
+        self.ui.image.colorChange()
+        self.ui.imageSource.colorChange()
+        self.ui.background.colorChange()
+        self.ui.backgroundRMS.colorChange()
+        self.ui.hfr.colorChange()
+        self.ui.tiltSquare.colorChange()
+        self.ui.tiltTriangle.colorChange()
+        self.ui.roundness.colorChange()
+        self.ui.aberration.colorChange()
+        self.pen = pg.mkPen(color=self.M_TABS)
+
+    def getImageSourceRange(self) -> None:
+        """ """
+        vb = self.ui.imageSource.p[0].getViewBox()
+        self.imageSourceRange = vb.viewRect()
+
+    def setBarColor(self) -> None:
+        """ """
+        cMap = ["CET-L2", "plasma", "cividis", "magma", "CET-D1A"]
+        colorMap = cMap[self.ui.color.currentIndex()]
+        self.ui.image.setColorMap(colorMap)
+        self.ui.imageSource.setColorMap(colorMap)
+        self.ui.background.setColorMap(colorMap)
+        self.ui.backgroundRMS.setColorMap(colorMap)
+        self.ui.hfr.setColorMap(colorMap)
+        self.ui.tiltSquare.setColorMap(colorMap)
+        self.ui.tiltTriangle.setColorMap(colorMap)
+        self.ui.roundness.setColorMap(colorMap)
+        self.ui.aberration.setColorMap(colorMap)
+
+    def setCrosshair(self) -> None:
+        """ """
+        self.ui.image.showCrosshair(self.ui.showCrosshair.isChecked())
+
+    def writeHeaderDataToGUI(self, header: fits.Header) -> None:
+        """ """
+        self.guiSetText(self.ui.object, "s", header.get("OBJECT", "").upper())
+        ra, dec = getCoordinatesFromHeader(header=header)
+        self.guiSetText(self.ui.ra, "HSTR", ra)
+        self.guiSetText(self.ui.raFloat, "2.5f", ra.hours)
+        self.guiSetText(self.ui.dec, "DSTR", dec)
+        self.guiSetText(self.ui.decFloat, "2.5f", dec.degrees)
+        self.guiSetText(self.ui.scale, "5.3f", getScaleFromHeader(header=header))
+        self.guiSetText(self.ui.rotation, "6.2f", header.get("ANGLE"))
+        self.guiSetText(self.ui.ccdTemp, "4.1f", header.get("CCD-TEMP"))
+        self.guiSetText(self.ui.exposureTime, "5.1f", getExposureFromHeader(header=header))
+        self.guiSetText(self.ui.filter, "s", header.get("FILTER"))
+        self.guiSetText(self.ui.binX, "1.0f", header.get("XBINNING"))
+        self.guiSetText(self.ui.binY, "1.0f", header.get("YBINNING"))
+        self.guiSetText(self.ui.sqm, "5.2f", getSQMFromHeader(header=header))
+
+    @staticmethod
+    def clearImageTab(imageWidget) -> None:
+        """ """
+        imageWidget.p[0].clear()
+        imageWidget.p[0].showAxes(False, showValues=False)
+        imageWidget.p[0].setMouseEnabled(x=False, y=False)
+        imageWidget.barItem.setVisible(False)
+
+    def showImage(self) -> None:
         """ """
         self.changeStyleDynamic(self.ui.headerGroup, "running", False)
         tab = self.ui.tabImage
@@ -44,7 +135,7 @@ class ImageTabs:
         self.setCrosshair()
         self.writeHeaderDataToGUI(self.fileHandler.header)
 
-    def showTabHFR(self):
+    def showHFR(self):
         """ """
         self.ui.hfr.setImage(imageDisp=self.photometry.hfrGrid)
         self.ui.hfr.barItem.setLevels((self.photometry.hfrMin, self.photometry.hfrMax))
@@ -56,7 +147,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "HFR"), True)
 
-    def showTabTiltSquare(self):
+    def showTiltSquare(self):
         """ """
         segHFR = self.photometry.hfrSegSquare
         w = self.photometry.w
@@ -84,7 +175,7 @@ class ImageTabs:
         for ix in range(3):
             for iy in range(3):
                 text = f"{segHFR[ix][iy]:1.2f}"
-                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_PRIM)
+                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_TABS)
                 textItem.setText(text)
                 textItem.setFont(self.fontText)
                 posX = ix * w / 3 + w / 6
@@ -156,11 +247,10 @@ class ImageTabs:
         tiltDiff = worst - best
         tiltPercent = 100 * tiltDiff / self.photometry.hfrMedian
         for tiltHint in self.TILT:
+            t = f"{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}"
+            self.ui.textSquareTiltHFR.setText(t)
             if tiltPercent < self.TILT[tiltHint]:
                 break
-
-        t = f"{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}"
-        self.ui.textSquareTiltHFR.setText(t)
 
         offAxisDiff = self.photometry.hfrOuter - segHFR[1][1]
         offAxisPercent = 100 * offAxisDiff / self.photometry.hfrMedian
@@ -172,7 +262,7 @@ class ImageTabs:
         tab.setTabEnabled(self.getTabIndex(tab, "TiltSquare"), True)
         return True
 
-    def showTabTiltTriangle(self):
+    def showTiltTriangle(self):
         """ """
         segHFR = self.photometry.hfrSegTriangle
         w = self.photometry.w
@@ -198,7 +288,7 @@ class ImageTabs:
 
         # add inner value
         text = f"{self.photometry.hfrInner:1.2f}"
-        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_PRIM)
+        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_TABS)
         textItem.setText(text)
         textItem.setFont(self.fontText)
         textItem.setZValue(10)
@@ -261,11 +351,10 @@ class ImageTabs:
             plotItem.addItem(lineItem)
 
         for tiltHint in self.TILT:
+            t = f"{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}"
+            self.ui.textTriangleTiltHFR.setText(t)
             if tiltPercent < self.TILT[tiltHint]:
                 break
-
-        t = f"{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}"
-        self.ui.textTriangleTiltHFR.setText(t)
 
         offAxisDiff = self.photometry.hfrOuter - self.photometry.hfrInner
         offAxisPercent = 100 * offAxisDiff / self.photometry.hfrMedian
@@ -276,7 +365,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "TiltTriangle"), True)
 
-    def showTabRoundness(self):
+    def showRoundness(self):
         """ """
         self.ui.roundness.setImage(imageDisp=self.photometry.roundnessGrid)
         self.ui.roundness.p[0].showAxes(False, showValues=False)
@@ -292,7 +381,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "Roundness"), True)
 
-    def showTabAberrationInspect(self):
+    def showAberrationInspect(self):
         """ """
         self.ui.aberration.barItem.setVisible(False)
         self.ui.aberration.p[0].clear()
@@ -317,7 +406,7 @@ class ImageTabs:
         tab.setTabEnabled(self.getTabIndex(tab, "Aberration"), True)
         self.ui.aberration.p[0].getViewBox().rightMouseRange()
 
-    def showTabImageSources(self):
+    def showImageSources(self):
         """ """
         temp = self.imageSourceRange
         self.ui.imageSource.setImage(imageDisp=self.photometry.image)
@@ -342,7 +431,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "Sources"), True)
 
-    def showTabBackground(self):
+    def showBackground(self):
         """ """
         self.ui.background.setImage(imageDisp=self.photometry.background)
         self.ui.background.barItem.setLevels(
@@ -351,7 +440,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(self.getTabIndex(tab, "Back"), True)
 
-    def showTabBackgroundRMS(self):
+    def showBackgroundRMS(self):
         """ """
         self.ui.backgroundRMS.setImage(imageDisp=self.photometry.backgroundRMS)
         tab = self.ui.tabImage

@@ -23,18 +23,72 @@ from PySide6.QtCore import QRectF
 import pyqtgraph as pg
 from astropy import wcs
 import numpy as np
+from astropy.io import fits
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.extWindows.imageW import ImageWindow
+from gui.extWindows.image.imageTabs import ImageTabs
 from logic.photometry.photometry import Photometry
 from logic.file.fileHandler import FileHandler
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    func = ImageWindow(app=App())
+    parent = ImageWindow(app=App())
+    func = ImageTabs(parent)
     yield func
+
+
+def test_colorChange(function):
+    function.colorChange()
+
+
+def test_getImageSourceRange(function):
+    function.getImageSourceRange()
+
+
+def test_setBarColor_1(function):
+    function.ui.color.setCurrentIndex(0)
+    with mock.patch.object(function.ui.image, "setColorMap"):
+        function.setBarColor()
+
+
+def test_setCrosshair_1(function):
+    function.ui.color.setCurrentIndex(0)
+    with mock.patch.object(function.ui.image, "showCrosshair"):
+        function.setCrosshair()
+
+
+def test_writeHeaderDataToGUI_1(function):
+    function.header = fits.PrimaryHDU().header
+    function.writeHeaderDataToGUI(function.header)
+
+
+def test_writeHeaderDataToGUI_2(function):
+    function.header = fits.PrimaryHDU().header
+    function.header["naxis"] = 2
+    function.writeHeaderDataToGUI(function.header)
+
+
+def test_writeHeaderDataToGUI_3(function):
+    function.header = fits.PrimaryHDU().header
+    function.header["naxis"] = 2
+    function.header["OBJCTRA"] = "+08 00 00"
+    function.header["OBJCTDEC"] = "90 00 00"
+    function.writeHeaderDataToGUI(function.header)
+
+
+def test_writeHeaderDataToGUI_4(function):
+    function.header = fits.PrimaryHDU().header
+    function.header["naxis"] = 2
+    function.header["RA"] = 12.0
+    function.header["DEC"] = 80.0
+    function.writeHeaderDataToGUI(function.header)
+
+
+def test_clearImageTab(function):
+    function.clearImageTab(function.ui.image)
 
 
 def test_showTabImage_1(function):
@@ -44,13 +98,13 @@ def test_showTabImage_1(function):
     with mock.patch.object(function, "setBarColor"):
         with mock.patch.object(function, "setCrosshair"):
             with mock.patch.object(function, "writeHeaderDataToGUI"):
-                function.showTabImage()
+                function.showImage()
 
 
 def test_showTabImage_2(function):
     function.fileHandler = FileHandler(function)
     function.fileHandler.image = None
-    function.showTabImage()
+    function.showImage()
 
 
 def test_showTabHFR(function):
@@ -60,7 +114,7 @@ def test_showTabHFR(function):
     function.photometry.hfrPercentile = 0
     function.photometry.hfrMedian = 0
     with mock.patch.object(function.ui.hfr, "addIsoBasic"):
-        function.showTabHFR()
+        function.showHFR()
 
 
 def test_showTabTiltSquare(function):
@@ -73,7 +127,7 @@ def test_showTabTiltSquare(function):
     function.photometry.h = 100
     function.photometry.hfrSegSquare = np.ones((3, 3))
     function.photometry.image = np.random.rand(100, 100) + 1
-    function.showTabTiltSquare()
+    function.showTiltSquare()
 
 
 def test_showTabTiltTriangle(function):
@@ -86,7 +140,7 @@ def test_showTabTiltTriangle(function):
     function.photometry.h = 100
     function.photometry.hfrSegTriangle = np.ones(72)
     function.image = np.random.rand(100, 100) + 1
-    function.showTabTiltTriangle()
+    function.showTiltTriangle()
 
 
 def test_showTabRoundness(function):
@@ -97,14 +151,14 @@ def test_showTabRoundness(function):
     function.photometry.roundnessPercentile = 10
     function.photometry.roundnessGrid = np.random.rand(100, 100) + 1
     with mock.patch.object(function.ui.roundness, "addIsoBasic"):
-        function.showTabRoundness()
+        function.showRoundness()
 
 
 def test_showTabAberrationInspect(function):
     function.photometry = Photometry(function)
     function.photometry.image = np.random.rand(100, 100) + 1
     function.photometry.roundnessPercentile = 1
-    function.showTabAberrationInspect()
+    function.showAberrationInspect()
 
 
 def test_showTabImageSources(function):
@@ -127,16 +181,16 @@ def test_showTabImageSources(function):
 
     function.ui.showValues.setChecked(True)
     with mock.patch.object(function.ui.imageSource, "addEllipse", return_value=pg.PlotItem()):
-        function.showTabImageSources()
+        function.showImageSources()
 
 
 def test_showTabBackground(function):
     function.photometry = Photometry(function)
     function.photometry.background = np.random.rand(100, 100) + 1
-    function.showTabBackground()
+    function.showBackground()
 
 
 def test_showTabBackgroundRMS(function):
     function.photometry = Photometry(function)
     function.photometry.backgroundRMS = np.random.rand(100, 100) + 1
-    function.showTabBackgroundRMS()
+    function.showBackgroundRMS()

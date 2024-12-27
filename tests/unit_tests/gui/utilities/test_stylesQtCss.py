@@ -75,6 +75,7 @@ def test_property(function):
     a = function.M_GREEN2
     a = function.M_PINK
     a = function.M_PINK1
+    a = function.M_TABS
 
 
 def test_calcHexColor_1(function):

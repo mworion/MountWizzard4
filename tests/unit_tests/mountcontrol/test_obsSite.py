@@ -1258,7 +1258,7 @@ class TestConfigData(unittest.TestCase):
         obsSite = ObsSite(parent=Parent())
         response = ["0", ""]
         with mock.patch("mountcontrol.obsSite.Connection") as mConn:
-            mConn.return_value.communicate.return_value = True, response, 0
+            mConn.return_value.communicate.return_value = False, response, 0
             suc = obsSite.syncPositionToTarget()
             self.assertEqual(suc, False)
 

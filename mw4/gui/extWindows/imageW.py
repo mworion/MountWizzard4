@@ -19,9 +19,7 @@ import os
 from pathlib import Path
 
 # external packages
-from PySide6.QtCore import Signal, QObject
 from skyfield.api import Angle
-
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
@@ -31,14 +29,9 @@ from gui.utilities.slewInterface import SlewInterface
 from gui.widgets import image_ui
 from logic.file.fileHandler import FileHandler
 from logic.photometry.photometry import Photometry
-from logic.fits.fitsFunction import getCoordinatesFromHeader
+from logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
 from gui.extWindows.image.imageTabs import ImageTabs
-
-
-class ImageWindowSignals(QObject):
-    """ """
-
-    solveImage = Signal(object)
+from gui.extWindows.image.imageSignals import ImageWindowSignals
 
 
 class ImageWindow(MWidget, SlewInterface):
@@ -300,14 +293,11 @@ class ImageWindow(MWidget, SlewInterface):
 
     def showImage(self, imagePath: Path) -> None:
         """ """
-        if self.imagingDeviceStat["expose"]:
-            self.ui.image.setImage(None)
-            self.clearGui()
         if not imagePath.is_file():
             return
 
         self.changeStyleDynamic(self.ui.headerGroup, "running", True)
-        self.setWindowTitle(f"Imaging:   {os.path.basename(imagePath)}")
+        self.setWindowTitle(f"Imaging:   {imagePath.name}")
         flipH = self.ui.flipH.isChecked()
         flipV = self.ui.flipV.isChecked()
         self.fileHandler.loadImage(imagePath, flipH, flipV)
@@ -339,8 +329,7 @@ class ImageWindow(MWidget, SlewInterface):
     def exposeImageDone(self, imagePath: Path) -> None:
         """ """
         self.app.camera.signals.saved.disconnect(self.exposeImageDone)
-        text = f"{os.path.basename(imagePath)}"
-        self.msg.emit(0, "Image", "Exposed", text)
+        self.msg.emit(0, "Image", "Exposed", imagePath.stem)
         self.imageFileName = imagePath
 
         if self.ui.autoSolve.isChecked():
@@ -358,8 +347,7 @@ class ImageWindow(MWidget, SlewInterface):
 
     def exposeImageNDone(self, imagePath: Path) -> None:
         """ """
-        text = f"{os.path.basename(imagePath)}"
-        self.msg.emit(0, "Image", "Exposed n", text)
+        self.msg.emit(0, "Image", "Exposed n", imagePath.stem)
 
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -393,7 +381,7 @@ class ImageWindow(MWidget, SlewInterface):
         self.app.plateSolve.signals.result.disconnect(self.solveDone)
 
         if not result["success"]:
-            self.msg.emit(2, "Image", "Solving error", f'{result.get("message")}')
+            self.msg.emit(2, "Image", "Solving error", result.get("message"))
             self.app.operationRunning.emit(0)
             return
 
@@ -420,12 +408,11 @@ class ImageWindow(MWidget, SlewInterface):
             self.app.operationRunning.emit(0)
             return
 
-        updateHeader = self.ui.embedData.isChecked()
         self.app.plateSolve.signals.result.connect(self.solveDone)
         self.app.operationRunning.emit(6)
-        self.app.plateSolve.solve(imagePath, updateHeader)
+        self.app.plateSolve.solve(imagePath, self.ui.embedData.isChecked())
         self.imagingDeviceStat["solve"] = True
-        self.msg.emit(0, "Image", "Solving", imagePath)
+        self.msg.emit(0, "Image", "Solving", imagePath.name)
 
     def solveCurrent(self) -> None:
         """ """
@@ -458,14 +445,19 @@ class ImageWindow(MWidget, SlewInterface):
 
     def syncMountToImage(self) -> None:
         """ """
-        # todo: implement result
-        result = {"raJ2000S": Angle(hours=0), "decJ2000S": Angle(degrees=0)}
+        if not self.app.deviceStat["mount"]:
+            self.msg.emit(2, "Image", "Mount", "Mount is not connected")
+            return
+        if not self.imageFileName.is_file():
+            self.msg.emit(2, "Image", "Mount", "No image loaded")
+            return
+
+        ra, dec = getCoordinatesFromHeader(getImageHeader(self.imageFileName))
         obs = self.app.mount.obsSite
-        timeJD = obs.timeJD
-        raJNow, decJNow = J2000ToJNow(result["raJ2000S"], result["decJ2000S"], timeJD)
+        raJNow, decJNow = J2000ToJNow(ra, dec, obs.timeJD)
         obs.setTargetRaDec(raJNow, decJNow)
-        suc = obs.syncPositionToTarget()
-        if suc:
+
+        if obs.syncPositionToTarget():
             t = "Successfully synced model in mount to coordinates"
             self.msg.emit(1, "Model", "Run", t)
         else:

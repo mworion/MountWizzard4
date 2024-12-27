@@ -26,6 +26,7 @@ from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+import gui.extWindows.imageW
 from gui.utilities.toolsQtWidget import MWidget
 from gui.utilities.slewInterface import SlewInterface
 from gui.extWindows.imageW import ImageWindow
@@ -405,12 +406,25 @@ def test_syncMountToImage_2(function):
 def test_syncMountToImage_3(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
-    with mock.patch.object(function.app.mount.obsSite, "syncPositionToTarget", return_value=False):
-        function.syncMountToImage()
+    with mock.patch.object(gui.extWindows.imageW, "getCoordinatesFromHeader",
+                           return_value=(None, None)):
+        with mock.patch.object(function.app.mount.obsSite, "syncPositionToTarget", return_value=False):
+            function.syncMountToImage()
 
 
 def test_syncMountToImage_4(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
+    with mock.patch.object(gui.extWindows.imageW, "getCoordinatesFromHeader",
+                           return_value=(Angle(hours=10), Angle(degrees=10))):
+        with mock.patch.object(function.app.mount.obsSite, "syncPositionToTarget", return_value=False):
+            function.syncMountToImage()
+
+
+def test_syncMountToImage_5(function):
+    function.app.deviceStat["mount"] = True
+    function.imageFileName = Path("tests/testData/m51.fit")
     with mock.patch.object(function.app.mount.obsSite, "syncPositionToTarget", return_value=True):
-        function.syncMountToImage()
+        with mock.patch.object(gui.extWindows.imageW, "getCoordinatesFromHeader",
+                               return_value=(Angle(hours=10), Angle(degrees=10))):
+            function.syncMountToImage()

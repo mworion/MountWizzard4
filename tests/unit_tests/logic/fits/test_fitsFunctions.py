@@ -51,6 +51,14 @@ def test_getImageHeader_1():
         assert header == hdu[0].header
 
 
+def test_getCoordinatesFromHeader_0():
+    header = {
+    }
+    ra, dec = getCoordinatesFromHeader(header=header)
+    assert ra is None
+    assert dec is None
+
+
 def test_getCoordinatesFromHeader_1():
     header = {
         "RA": 180,
@@ -273,9 +281,12 @@ def test_getSolutionFromWCSHeader_1():
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
+    imageHeader = hdu[0].header
     header.set("CRVAL1", 180.0)
     header.set("CRVAL2", 60.0)
-    solution = getSolutionFromWCSHeader(header, header)
+    imageHeader.set("RA", 180.0)
+    imageHeader.set("DEC", 60.0)
+    solution = getSolutionFromWCSHeader(header, imageHeader)
     assert solution["raJ2000S"].hours == 12
     assert solution["decJ2000S"].degrees == 60
     assert solution["angleS"].degrees == 0
@@ -289,7 +300,10 @@ def test_getSolutionFromWCSHeader_2():
     header = hdu[0].header
     header.set("CRVAL1", 180.0)
     header.set("CRVAL2", 60.0)
-    solution = getSolutionFromWCSHeader(header, header)
+    imageHeader = hdu[0].header
+    imageHeader.set("RA", 180.0)
+    imageHeader.set("DEC", 60.0)
+    solution = getSolutionFromWCSHeader(header, imageHeader)
     assert solution["raJ2000S"].hours == 12
     assert solution["decJ2000S"].degrees == 60
     assert solution["angleS"].degrees == 0

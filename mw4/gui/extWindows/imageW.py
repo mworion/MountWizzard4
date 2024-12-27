@@ -453,6 +453,11 @@ class ImageWindow(MWidget, SlewInterface):
             return
 
         ra, dec = getCoordinatesFromHeader(getImageHeader(self.imageFileName))
+
+        if ra is None or dec is None:
+            self.msg.emit(2, "Image", "Mount", "No coordinates found in image")
+            return
+
         obs = self.app.mount.obsSite
         raJNow, decJNow = J2000ToJNow(ra, dec, obs.timeJD)
         obs.setTargetRaDec(raJNow, decJNow)

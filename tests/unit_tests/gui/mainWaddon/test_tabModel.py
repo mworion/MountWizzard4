@@ -310,6 +310,27 @@ def test_setupBatchData_1(function):
         function.setupBatchData()
 
 
+def test_setModelTiming_1(function):
+    function.modelData = ModelData(App())
+    function.ui.progressiveTiming.setChecked(True)
+    function.setModelTiming()
+    assert function.modelData.timing == function.modelData.PROGRESSIVE
+
+
+def test_setModelTiming_2(function):
+    function.modelData = ModelData(App())
+    function.ui.normalTiming.setChecked(True)
+    function.setModelTiming()
+    assert function.modelData.timing == function.modelData.NORMAL
+
+
+def test_setModelTiming_3(function):
+    function.modelData = ModelData(App())
+    function.ui.conservativeTiming.setChecked(True)
+    function.setModelTiming()
+    assert function.modelData.timing == function.modelData.CONSERVATIVE
+
+
 def test_runBatch_1(function):
     with mock.patch.object(function, "checkModelRunConditions", return_value=False):
         function.runBatch()

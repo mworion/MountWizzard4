@@ -58,7 +58,6 @@ class Model(MWidget):
         self.ui.numberBuildRetries.setValue(config.get("numberBuildRetries", 0))
         self.ui.progressiveTiming.setChecked(config.get("progressiveTiming", False))
         self.ui.normalTiming.setChecked(config.get("normalTiming", False))
-        self.ui.normalTiming.setChecked(config.get("normalTiming", False))
         self.ui.conservativeTiming.setChecked(config.get("conservativeTiming", True))
 
     def storeConfig(self) -> None:
@@ -264,6 +263,15 @@ class Model(MWidget):
         self.modelData.latitude = self.app.mount.obsSite.location.latitude.degrees
         self.modelData.plateSolveApp = self.ui.plateSolveDevice.currentText()
 
+    def setModelTiming(self) -> None:
+        """ """
+        if self.ui.progressiveTiming.isChecked():
+            self.modelData.timing = self.modelData.PROGRESSIVE
+        elif self.ui.normalTiming.isChecked():
+            self.modelData.timing = self.modelData.NORMAL
+        elif self.ui.conservativeTiming.isChecked():
+            self.modelData.timing = self.modelData.CONSERVATIVE
+
     def runBatch(self) -> None:
         """ """
         excludeDonePoints = self.ui.excludeDonePoints.isChecked()
@@ -274,6 +282,7 @@ class Model(MWidget):
 
         self.app.operationRunning.emit(1)
         self.modelData = ModelData(self.app)
+        self.setModelTiming()
         self.setupBatchData()
         self.msg.emit(1, "Model", "Run", f"Model {self.modelData.name}")
         self.setupModelInputData(excludeDonePoints)

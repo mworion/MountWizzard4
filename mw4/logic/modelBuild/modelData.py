@@ -36,6 +36,9 @@ class ModelData(QObject):
 
     log = logging.getLogger("MW4")
     progress = Signal(object)
+    PROGRESSIVE = 2
+    NORMAL = 1
+    CONSERVATIVE = 0
 
     def __init__(self, app):
         super().__init__()
@@ -44,7 +47,7 @@ class ModelData(QObject):
         self.cancelBatch: bool = False
         self.pauseBatch: bool = False
         self.endBatch: bool = False
-        self.modelTiming: int = 0
+        self.modelTiming: int = self.CONSERVATIVE
         self.modelInputData: list = []
         self.modelBuildData: list = []
         self.modelProgData: list = []
@@ -83,17 +86,17 @@ class ModelData(QObject):
         """ """
         imagePath = self.modelBuildData[self.pointerImage]["imagePath"]
         self.app.showImage.emit(imagePath)
-        if self.modelTiming == 2:
+        if self.modelTiming == self.PROGRESSIVE:
             self.startNewSlew()
 
     def setImageDownloaded(self):
         """ """
-        if self.modelTiming == 1:
+        if self.modelTiming == self.NORMAL:
             self.startNewSlew()
 
     def setImageSaved(self) -> None:
         """ """
-        if self.modelTiming == 0:
+        if self.modelTiming == self.CONSERVATIVE:
             self.startNewSlew()
 
     def setMountSlewed(self) -> None:

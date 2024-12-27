@@ -70,7 +70,6 @@ class ImageTabs(MWidget):
         self.ui.color.currentIndexChanged.connect(self.setBarColor)
         self.ui.showCrosshair.clicked.connect(self.setCrosshair)
 
-
     def colorChange(self) -> None:
         """ """
         self.ui.image.colorChange()

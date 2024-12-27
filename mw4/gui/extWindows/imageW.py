@@ -279,6 +279,7 @@ class ImageWindow(MWidget, SlewInterface):
 
     def resultPhotometry(self) -> None:
         """ """
+        self.changeStyleDynamic(self.ui.photometryGroup, "running", False)
         if self.photometry.objs is None:
             self.msg.emit(2, "Image", "Photometry error", "Too low pixel stack")
         else:
@@ -291,6 +292,7 @@ class ImageWindow(MWidget, SlewInterface):
             self.clearGui()
             return
 
+        self.changeStyleDynamic(self.ui.photometryGroup, "running", True)
         self.ui.showValues.setEnabled(isPhotometry)
         self.ui.isoLayer.setEnabled(isPhotometry)
         snTarget = self.ui.snTarget.currentIndex()

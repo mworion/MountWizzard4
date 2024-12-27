@@ -30,6 +30,7 @@ from logic.fits.fitsFunction import getCoordinatesFromHeader, getSQMFromHeader
 
 class ImageTabs(MWidget):
     """ """
+
     TILT = {
         "none": 5,
         "almost none": 10,
@@ -129,8 +130,9 @@ class ImageTabs(MWidget):
         self.ui.groupMouseCoord.setVisible(self.fileHandler.hasCelestial)
         self.ui.slewCenter.setEnabled(self.fileHandler.hasCelestial)
         self.imageSourceRange = None
-        updateGeometry = not self.imagingDeviceStat["exposeN"]
-        self.ui.image.setImage(imageDisp=self.fileHandler.image, updateGeometry=updateGeometry)
+        self.ui.image.setImage(
+            imageDisp=self.fileHandler.image, updateGeometry=not self.imagingDeviceStat["exposeN"]
+        )
         self.setBarColor()
         self.setCrosshair()
         self.writeHeaderDataToGUI(self.fileHandler.header)

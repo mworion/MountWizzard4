@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import platform
+from pathlib import Path
 
 # external packages
 from PySide6.QtCore import Qt
@@ -133,14 +134,8 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.initConfig()
         self.show()
 
-    def selectTabs(self):
-        """
-        show only the tabs needed for available frameworks and properties to be
-        - it selects the tab for the actual framework
-        - it hides all tabs, which are not relevant for the available frameworks
-
-        :return: True for test purpose
-        """
+    def selectTabs(self) -> None:
+        """ """
         firstFramework = next(iter(self.data["frameworks"]))
         framework = self.data.get("framework")
         if not framework:
@@ -152,17 +147,9 @@ class DevicePopup(toolsQtWidget.MWidget):
         for index in range(0, self.ui.tab.count()):
             isVisible = self.ui.tab.widget(index).objectName() in self.data["frameworks"]
             self.ui.tab.setTabVisible(index, isVisible)
-        return True
 
-    def populateTabs(self):
-        """
-        populateTabs takes all the data coming from driver data dict and puts
-        it onto the corresponding gui elements in the tabs. as we need to have
-        unique names in the gui, there is a translation table (self.framework2gui)
-        for all framework entries to be used.
-
-        :return: True for test purpose
-        """
+    def populateTabs(self) -> None:
+        """ """
         frameworks = self.data["frameworks"]
         for fw in frameworks:
             frameworkElements = frameworks[fw]
@@ -185,28 +172,17 @@ class DevicePopup(toolsQtWidget.MWidget):
 
                 elif isinstance(ui, QDoubleSpinBox):
                     ui.setValue(frameworks[fw][element])
-        return True
 
-    def initConfig(self):
-        """
-        :return: True for test purpose
-        """
+    def initConfig(self) -> None:
+        """ """
         self.setWindowTitle(f"Setup driver for {self.deviceType}")
         self.populateTabs()
         self.selectTabs()
         if self.data.get("framework") in ["astrometry", "watney", "astap"]:
             self.updatePlateSolverStatus()
-        return True
 
-    def readTabs(self):
-        """
-        readTabs takes all the gui information and puts it onto the data
-        dictionary and properties as we need to have unique names in the gui,
-        there is a translation table (self.framework2gui) for all framework
-        entries to be used.
-
-        :return: True for test purpose
-        """
+    def readTabs(self) -> None:
+        """ """
         framework = self.data["framework"]
         frameworkData = self.data["frameworks"][framework]
 
@@ -230,26 +206,15 @@ class DevicePopup(toolsQtWidget.MWidget):
                 frameworkData[element] = ui.isChecked()
             elif isinstance(ui, QDoubleSpinBox):
                 frameworkData[element] = ui.value()
-        return True
 
-    def readFramework(self):
-        """
-        readFramework determines, which tab was selected when leaving and writes
-        the adequate selection into the dict. as the headline might be different
-        from the keywords, a translation table (self.framework2gui) in a reverse
-        index is used.
-
-        :return: True for test purpose
-        """
+    def readFramework(self) -> None:
+        """ """
         index = self.ui.tab.currentIndex()
         framework = self.ui.tab.widget(index).objectName()
         self.data["framework"] = framework
-        return True
 
-    def storeConfig(self):
-        """
-        :return: true for test purpose
-        """
+    def storeConfig(self) -> None:
+        """ """
         self.readFramework()
         self.readTabs()
         self.returnValues["indiCopyConfig"] = self.ui.indiCopyConfig.isChecked()
@@ -257,31 +222,16 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.returnValues["close"] = "ok"
         self.returnValues["driver"] = self.driver
         self.close()
-        return True
 
-    def updateIndiDeviceNameList(self, deviceNames):
-        """
-        updateIndiDeviceNameList updates the indi device name selectors combobox
-        with the discovered entries. therefore it deletes the old list and
-        rebuild it new.
-
-        :return: True for test purpose
-        """
+    def updateIndiDeviceNameList(self, deviceNames: list[str]) -> None:
+        """ """
         self.ui.indiDeviceList.clear()
         self.ui.indiDeviceList.setView(QListView())
         for deviceName in deviceNames:
             self.ui.indiDeviceList.addItem(deviceName)
-        return True
 
-    def discoverIndiDevices(self):
-        """
-        discoverIndiDevices looks all possible indi devices up from the actual
-        server and the selected device type. The search time is defined in indi
-        class and should be about 2-3 seconds. if the search was successful,
-        the gui and the device list will be updated
-
-        :return: success
-        """
+    def discoverIndiDevices(self) -> None:
+        """ """
         indi = IndiClass(app=self.app, data=self.data)
         indi.hostaddress = self.ui.indiHostAddress.text()
         indi.port = self.ui.indiPort.text()
@@ -292,35 +242,22 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         if not deviceNames:
             self.msg.emit(2, "INDI", "Device", "No devices found")
-            return False
+            return
 
         for deviceName in deviceNames:
             self.msg.emit(0, "INDI", "Device discovered", f"{deviceName}")
 
         self.updateIndiDeviceNameList(deviceNames=deviceNames)
-        return True
 
-    def updateAlpacaDeviceNameList(self, deviceNames):
-        """
-        updateAlpacaDeviceNameList updates the indi device name selectors
-        combobox with the discovered entries. therefore it deletes the old list
-        and rebuild it new.
-
-        :return: True for test purpose
-        """
+    def updateAlpacaDeviceNameList(self, deviceNames: list[str]) -> None:
+        """ """
         self.ui.alpacaDeviceList.clear()
         self.ui.alpacaDeviceList.setView(QListView())
         for deviceName in deviceNames:
             self.ui.alpacaDeviceList.addItem(deviceName)
-        return True
 
-    def discoverAlpacaDevices(self):
-        """
-        discoverAlpacaDevices looks all possible alpaca devices up from the
-        actual server and the selected device type.
-
-        :return: success
-        """
+    def discoverAlpacaDevices(self) -> None:
+        """ """
         alpaca = AlpacaClass(app=self.app, data=self.data)
         alpaca.hostaddress = self.ui.alpacaHostAddress.text()
         alpaca.port = self.ui.alpacaPort.text()
@@ -332,35 +269,22 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         if not deviceNames:
             self.msg.emit(2, "ALPACA", "Device", "No devices found")
-            return False
+            return
 
         for deviceName in deviceNames:
             self.msg.emit(0, "ALPACA", "Device discovered", f"{deviceName}")
 
         self.updateAlpacaDeviceNameList(deviceNames=deviceNames)
-        return True
 
-    def updateSGProDeviceNameList(self, deviceNames):
-        """
-        updateSGProDeviceNameList updates the indi device name selectors
-        combobox with the discovered entries. therefore it deletes the old list
-        and rebuild it new.
-
-        :return: True for test purpose
-        """
+    def updateSGProDeviceNameList(self, deviceNames: list[str]) -> None:
+        """ """
         self.ui.sgproDeviceList.clear()
         self.ui.sgproDeviceList.setView(QListView())
         for deviceName in deviceNames:
             self.ui.sgproDeviceList.addItem(deviceName)
-        return True
 
-    def discoverSGProDevices(self):
-        """
-        discoverSGProDevices looks all possible alpaca devices up from the
-        actual server and the selected device type.
-
-        :return: success
-        """
+    def discoverSGProDevices(self) -> None:
+        """ """
         sgpro = SGProClass(app=self.app, data=self.data)
         sgpro.DEVICE_TYPE = "Camera"
 
@@ -376,29 +300,16 @@ class DevicePopup(toolsQtWidget.MWidget):
             self.msg.emit(0, "SGPRO", "Device discovered", f"{deviceName}")
 
         self.updateSGProDeviceNameList(deviceNames=deviceNames)
-        return True
 
-    def updateNINADeviceNameList(self, deviceNames):
-        """
-        updateSGProDeviceNameList updates the indi device name selectors
-        combobox with the discovered entries. therefore it deletes the old list
-        and rebuild it new.
-
-        :return: True for test purpose
-        """
+    def updateNINADeviceNameList(self, deviceNames: list[str]) -> None:
+        """ """
         self.ui.ninaDeviceList.clear()
         self.ui.ninaDeviceList.setView(QListView())
         for deviceName in deviceNames:
             self.ui.ninaDeviceList.addItem(deviceName)
-        return True
 
-    def discoverNINADevices(self):
-        """
-        discoverSGProDevices looks all possible alpaca devices up from the
-        actual server and the selected device type.
-
-        :return: success
-        """
+    def discoverNINADevices(self) -> None:
+        """ """
         nina = NINAClass(app=self.app, data=self.data)
         nina.DEVICE_TYPE = "Camera"
 
@@ -414,15 +325,9 @@ class DevicePopup(toolsQtWidget.MWidget):
             self.msg.emit(0, "N.I.N.A.", "Device discovered", f"{deviceName}")
 
         self.updateNINADeviceNameList(deviceNames=deviceNames)
-        return True
 
-    def checkPlateSolveAvailability(self, framework, appPath, indexPath):
-        """
-        checkAvailability looks the presence of the binaries and indexes up and
-        reports the result back to the gui.
-
-        :return: success
-        """
+    def checkPlateSolveAvailability(self, framework: str, appPath: Path, indexPath: Path) -> None:
+        """ """
         frameworkClass = self.app.plateSolve.run[framework]
         sucApp = frameworkClass.checkAvailabilityProgram(appPath=appPath)
         sucIndex = frameworkClass.checkAvailabilityIndex(indexPath=indexPath)
@@ -440,127 +345,106 @@ class DevicePopup(toolsQtWidget.MWidget):
         elif framework == "astrometry":
             self.changeStyleDynamic(self.ui.astrometryAppPath, "color", colorP)
             self.changeStyleDynamic(self.ui.astrometryIndexPath, "color", colorI)
-        return True
 
-    def updatePlateSolverStatus(self):
-        """
-        :return:
-        """
+    def updatePlateSolverStatus(self) -> None:
+        """ """
         self.checkPlateSolveAvailability(
             "astrometry",
-            self.ui.astrometryAppPath.text(),
-            self.ui.astrometryIndexPath.text(),
+            Path(self.ui.astrometryAppPath.text()),
+            Path(self.ui.astrometryIndexPath.text()),
         )
         self.checkPlateSolveAvailability(
-            "watney", self.ui.watneyAppPath.text(), self.ui.watneyIndexPath.text()
+            "watney", Path(self.ui.watneyAppPath.text()), Path(self.ui.watneyIndexPath.text())
         )
         self.checkPlateSolveAvailability(
-            "astap", self.ui.astapAppPath.text(), self.ui.astapIndexPath.text()
+            "astap", Path(self.ui.astapAppPath.text()), Path(self.ui.astapIndexPath.text())
         )
-        return True
 
-    def selectAstrometryAppPath(self):
-        """
-        :return:
-        """
-        folder = self.ui.astrometryAppPath.text()
-        folder = folder if folder else "/"
-        saveFilePath, name, ext = self.openDir(self, "Select Astrometry App Path", folder)
-        if not name:
-            return False
+    def selectAstrometryAppPath(self) -> None:
+        """ """
+        folder = Path(self.ui.astrometryAppPath.text())
+        appFolderPath = self.openDir(self, "Select Astrometry App Path", folder)
+        if not appFolderPath.is_dir():
+            return
 
-        if platform.system() == "Darwin" and ext == ".app":
-            if "Astrometry.app" in saveFilePath:
-                saveFilePath += "/Contents/MacOS/"
-
+        if platform.system() == "Darwin" and appFolderPath.suffix == ".app":
+            if "Astrometry.app" in str(appFolderPath):
+                appFolderPath = appFolderPath.parent / (appFolderPath.name + "/Contents/MacOS/")
             else:
-                saveFilePath += "/Contents/MacOS/astrometry/bin"
+                appFolderPath = appFolderPath.parent / (
+                    appFolderPath.name + "/Contents/MacOS/astrometry/bin"
+                )
 
         self.checkPlateSolveAvailability(
-            "astrometry", saveFilePath, self.ui.astrometryIndexPath.text()
+            "astrometry", appFolderPath, Path(self.ui.astrometryIndexPath.text())
         )
-        self.ui.astrometryAppPath.setText(saveFilePath)
-        return True
+        self.ui.astrometryAppPath.setText(str(appFolderPath))
 
-    def selectAstrometryIndexPath(self):
-        """
-        :return:
-        """
-        folder = self.ui.astrometryIndexPath.text()
-        folder = folder if folder else "/"
-        saveFilePath, name, ext = self.openDir(self, "Select Astrometry Index Path", folder)
-        if not name:
-            return False
+    def selectAstrometryIndexPath(self) -> None:
+        """ """
+        folder = Path(self.ui.astrometryIndexPath.text())
+        indexFolderPath = self.openDir(self, "Select Astrometry Index Path", folder)
+        if not indexFolderPath.is_dir():
+            return
 
         self.checkPlateSolveAvailability(
-            "astrometry", self.ui.astrometryAppPath.text(), saveFilePath
+            "astrometry", Path(self.ui.astrometryAppPath.text()), indexFolderPath
         )
-        self.ui.astrometryIndexPath.setText(saveFilePath)
-        return True
+        self.ui.astrometryIndexPath.setText(str(indexFolderPath))
 
-    def selectAstapAppPath(self):
-        """
-        :return:
-        """
-        folder = self.ui.astapAppPath.text()
-        folder = folder if folder else "/"
-        saveFilePath, name, ext = self.openDir(self, "Select ASTAP App Path", folder)
-        if not name:
-            return False
+    def selectAstapAppPath(self) -> None:
+        """ """
+        folder = Path(Path(self.ui.astapAppPath.text()))
+        appFolderPath = self.openDir(self, "Select ASTAP App Path", folder)
+        if not appFolderPath.is_dir():
+            return
 
-        if platform.system() == "Darwin" and ext == ".app":
-            saveFilePath += "/Contents/MacOS"
+        if platform.system() == "Darwin" and appFolderPath.suffix == ".app":
+            appFolderPath = appFolderPath.parent / (appFolderPath.name + "/Contents/MacOS")
 
-        self.checkPlateSolveAvailability("astap", saveFilePath, self.ui.astapIndexPath.text())
-        self.ui.astapAppPath.setText(saveFilePath)
-        return True
+        self.checkPlateSolveAvailability(
+            "astap", appFolderPath, Path(self.ui.astapIndexPath.text())
+        )
+        self.ui.astapAppPath.setText(str(appFolderPath))
 
-    def selectAstapIndexPath(self):
-        """
-        :return:
-        """
-        folder = self.ui.astapIndexPath.text()
-        folder = folder if folder else "/"
-        saveFilePath, name, ext = self.openDir(self, "Select ASTAP Index Path", folder)
-        if not name:
-            return False
+    def selectAstapIndexPath(self) -> None:
+        """ """
+        folder = Path(self.ui.astapIndexPath.text())
+        indexFolderPath = self.openDir(self, "Select ASTAP Index Path", folder)
+        if not indexFolderPath.is_dir():
+            return
 
-        self.checkPlateSolveAvailability("astap", self.ui.astapAppPath.text(), saveFilePath)
-        self.ui.astapIndexPath.setText(saveFilePath)
-        return True
+        self.checkPlateSolveAvailability(
+            "astap", Path(self.ui.astapAppPath.text()), indexFolderPath
+        )
+        self.ui.astapIndexPath.setText(str(indexFolderPath))
 
-    def selectWatneyAppPath(self):
-        """
-        :return:
-        """
-        folder = self.ui.watneyAppPath.text()
-        folder = folder if folder else "/"
-        saveFilePath, name, ext = self.openDir(self, "Select Watney App Path", folder)
-        if not name:
-            return False
+    def selectWatneyAppPath(self) -> None:
+        """ """
+        folder = Path(self.ui.watneyAppPath.text())
+        appFolderPath = self.openDir(self, "Select Watney App Path", folder)
+        if not appFolderPath.is_dir():
+            return
 
-        self.checkPlateSolveAvailability("watney", saveFilePath, self.ui.watneyIndexPath.text())
-        self.ui.watneyAppPath.setText(saveFilePath)
-        return True
+        self.checkPlateSolveAvailability(
+            "watney", appFolderPath, Path(self.ui.watneyIndexPath.text())
+        )
+        self.ui.watneyAppPath.setText(str(appFolderPath))
 
-    def selectWatneyIndexPath(self):
-        """
-        :return:
-        """
-        folder = self.ui.watneyIndexPath.text()
-        folder = folder if folder else "/"
-        saveFilePath, name, ext = self.openDir(self, "Select Watney Index Path", folder)
-        if not name:
-            return False
+    def selectWatneyIndexPath(self) -> None:
+        """ """
+        folder = Path(self.ui.watneyIndexPath.text())
+        indexFolderPath = self.openDir(self, "Select Watney Index Path", folder)
+        if not indexFolderPath.is_dir():
+            return
 
-        self.checkPlateSolveAvailability("watney", self.ui.watneyAppPath.text(), saveFilePath)
-        self.ui.watneyIndexPath.setText(saveFilePath)
-        return True
+        self.checkPlateSolveAvailability(
+            "watney", Path(self.ui.watneyAppPath.text()), indexFolderPath
+        )
+        self.ui.watneyIndexPath.setText(str(indexFolderPath))
 
-    def selectAscomDriver(self):
-        """
-        :return: success
-        """
+    def selectAscomDriver(self) -> None:
+        """ """
         deviceName = self.ui.ascomDevice.text()
         try:
             chooser = win32com.client.Dispatch("ASCOM.Utilities.Chooser")
@@ -569,8 +453,6 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         except Exception as e:
             self.log.critical(f"Error: {e}")
-            return False
+            return
 
-        finally:
-            self.ui.ascomDevice.setText(deviceName)
-        return True
+        self.ui.ascomDevice.setText(deviceName)

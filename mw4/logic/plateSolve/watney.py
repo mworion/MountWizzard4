@@ -188,4 +188,4 @@ class Watney(object):
         self.indexPath = indexPath
         self.saveConfigFile()
 
-        return len(list(self.indexPath.glob("/*.*"))) > 0
+        return len(list(self.indexPath.glob("*.*"))) > 0

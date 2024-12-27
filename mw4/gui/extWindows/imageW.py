@@ -44,6 +44,7 @@ class ImageWindowSignals(QObject):
 
 class ImageWindow(MWidget, SlewInterface):
     """ """
+
     def __init__(self, app):
         super().__init__()
         self.app = app

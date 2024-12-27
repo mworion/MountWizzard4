@@ -191,7 +191,7 @@ class ModelManage(MWidget):
         self.changeStyleDynamic(self.ui.modelNameGroup, "running", True)
         self.app.mount.getNames()
 
-    def loadName(self) :
+    def loadName(self):
         """ """
         if self.ui.nameList.currentItem() is None:
             self.msg.emit(2, "Model", "Manage error", "No model name selected")

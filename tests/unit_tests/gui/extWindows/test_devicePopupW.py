@@ -19,6 +19,7 @@ import unittest.mock as mock
 import pytest
 import platform
 import logging
+from pathlib import Path
 
 # external packages
 from PySide6.QtGui import QCloseEvent
@@ -55,8 +56,7 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_initConfig_2(function):
@@ -64,8 +64,7 @@ def test_initConfig_2(function):
     with mock.patch.object(function, "populateTabs"):
         with mock.patch.object(function, "selectTabs"):
             with mock.patch.object(function, "updatePlateSolverStatus"):
-                suc = function.initConfig()
-                assert suc
+                function.initConfig()
 
 
 def test_initConfig_3(function):
@@ -78,8 +77,7 @@ def test_initConfig_3(function):
             }
         },
     }
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_closeEvent_1(function):
@@ -97,8 +95,7 @@ def test_selectTabs_1(function):
             }
         },
     }
-    suc = function.selectTabs()
-    assert suc
+    function.selectTabs()
 
 
 def test_selectTabs_2(function):
@@ -110,8 +107,7 @@ def test_selectTabs_2(function):
             }
         },
     }
-    suc = function.selectTabs()
-    assert suc
+    function.selectTabs()
 
 
 def test_selectTabs_3(function):
@@ -123,8 +119,7 @@ def test_selectTabs_3(function):
             }
         },
     }
-    suc = function.selectTabs()
-    assert suc
+    function.selectTabs()
 
 
 def test_populateTabs_1(function):
@@ -139,8 +134,7 @@ def test_populateTabs_1(function):
             },
         },
     }
-    suc = function.populateTabs()
-    assert suc
+    function.populateTabs()
 
 
 def test_populateTabs_2(function):
@@ -155,8 +149,7 @@ def test_populateTabs_2(function):
             }
         },
     }
-    suc = function.populateTabs()
-    assert suc
+    function.populateTabs()
 
 
 def test_readTabs_1(function):
@@ -171,8 +164,7 @@ def test_readTabs_1(function):
             },
         },
     }
-    suc = function.readTabs()
-    assert suc
+    function.readTabs()
 
 
 def test_readTabs_2(function):
@@ -188,8 +180,7 @@ def test_readTabs_2(function):
             },
         },
     }
-    suc = function.readTabs()
-    assert suc
+    function.readTabs()
 
 
 def test_readTabs_3(function):
@@ -205,8 +196,7 @@ def test_readTabs_3(function):
             },
         },
     }
-    suc = function.readTabs()
-    assert suc
+    function.readTabs()
 
 
 def test_readTabs_4(function):
@@ -221,110 +211,94 @@ def test_readTabs_4(function):
             }
         },
     }
-    suc = function.readTabs()
-    assert suc
+    function.readTabs()
 
 
 def test_readFramework_1(function):
-    suc = function.readFramework()
-    assert suc
+    function.readFramework()
 
 
 def test_storeConfig_1(function):
     with mock.patch.object(function, "readFramework"):
         with mock.patch.object(function, "readTabs"):
             with mock.patch.object(function, "close"):
-                suc = function.storeConfig()
-                assert suc
+                function.storeConfig()
 
 
 def test_updateIndiDeviceNameList_1(function):
-    suc = function.updateIndiDeviceNameList(["test1", "test2"])
-    assert suc
+    function.updateIndiDeviceNameList(["test1", "test2"])
 
 
 def test_discoverIndiDevices_1(function):
     with mock.patch.object(IndiClass, "discoverDevices", return_value=()):
-        suc = function.discoverIndiDevices()
-        assert not suc
+        function.discoverIndiDevices()
 
 
 def test_discoverIndiDevices_2(function):
     with mock.patch.object(IndiClass, "discoverDevices", return_value=("Test1", "Test2")):
-        suc = function.discoverIndiDevices()
-        assert suc
+        function.discoverIndiDevices()
 
 
 def test_updateAlpacaDeviceNameList_1(function):
     with mock.patch.object(function.ui.alpacaDeviceList, "clear"):
         with mock.patch.object(function.ui.alpacaDeviceList, "setView"):
-            suc = function.updateAlpacaDeviceNameList(["test1", "test2"])
-            assert suc
+            function.updateAlpacaDeviceNameList(["test1", "test2"])
 
 
 def test_discoverAlpacaDevices_1(function):
     with mock.patch.object(AlpacaClass, "discoverDevices", return_value=()):
-        suc = function.discoverAlpacaDevices()
-        assert not suc
+        function.discoverAlpacaDevices()
 
 
 def test_discoverAlpacaDevices_2(function):
     with mock.patch.object(AlpacaClass, "discoverDevices", return_value=("Test1", "Test2")):
-        suc = function.discoverAlpacaDevices()
-        assert suc
+        function.discoverAlpacaDevices()
 
 
 def test_updateSGProDeviceNameList_1(function):
     with mock.patch.object(function.ui.sgproDeviceList, "clear"):
         with mock.patch.object(function.ui.sgproDeviceList, "setView"):
-            suc = function.updateSGProDeviceNameList(["test1", "test2"])
-            assert suc
+            function.updateSGProDeviceNameList(["test1", "test2"])
 
 
 def test_discoverSGProDevices_1(function):
     with mock.patch.object(SGProClass, "discoverDevices", return_value=[]):
-        suc = function.discoverSGProDevices()
-        assert suc
+        function.discoverSGProDevices()
 
 
 def test_discoverSGProDevices_2(function):
     with mock.patch.object(SGProClass, "discoverDevices", return_value=["Test1", "Test2"]):
-        suc = function.discoverSGProDevices()
-        assert suc
+        function.discoverSGProDevices()
 
 
 def test_updateNINADeviceNameList_1(function):
     with mock.patch.object(function.ui.ninaDeviceList, "clear"):
         with mock.patch.object(function.ui.ninaDeviceList, "setView"):
-            suc = function.updateNINADeviceNameList(["test1", "test2"])
-            assert suc
+            function.updateNINADeviceNameList(["test1", "test2"])
 
 
 def test_discoverNINADevices_1(function):
     with mock.patch.object(NINAClass, "discoverDevices", return_value=[]):
-        suc = function.discoverNINADevices()
-        assert suc
+        function.discoverNINADevices()
 
 
 def test_discoverNINADevices_2(function):
     with mock.patch.object(NINAClass, "discoverDevices", return_value=["Test1", "Test2"]):
-        suc = function.discoverNINADevices()
-        assert suc
+        function.discoverNINADevices()
 
 
 def test_checkPlateSolveAvailability_1(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityProgram(appPath=0):
+        def checkAvailabilityProgram(appPath=Path()):
             return True
 
         @staticmethod
-        def checkAvailabilityIndex(indexPath=0):
+        def checkAvailabilityIndex(indexPath=Path()):
             return True
 
     function.app.plateSolve.run["astap"] = Avail()
-    suc = function.checkPlateSolveAvailability("astap", "test", "test")
-    assert suc
+    function.checkPlateSolveAvailability("astap", "test", "test")
 
 
 def test_checkPlateSolveAvailability_2(function):
@@ -338,8 +312,7 @@ def test_checkPlateSolveAvailability_2(function):
             return True
 
     function.app.plateSolve.run["watney"] = Avail()
-    suc = function.checkPlateSolveAvailability("watney", "test", "test")
-    assert suc
+    function.checkPlateSolveAvailability("watney", "test", "test")
 
 
 def test_checkPlateSolveAvailability_3(function):
@@ -353,82 +326,101 @@ def test_checkPlateSolveAvailability_3(function):
             return True
 
     function.app.plateSolve.run["astrometry"] = Avail()
-    suc = function.checkPlateSolveAvailability("astrometry", "test", "test")
-    assert suc
+    function.checkPlateSolveAvailability("astrometry", "test", "test")
 
 
 def test_updatePlateSolverStatus(function):
     with mock.patch.object(function, "checkPlateSolveAvailability"):
-        suc = function.updatePlateSolverStatus()
-        assert suc
+        function.updatePlateSolverStatus()
+
+
+def test_selectAstrometryAppPath_1(function):
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
+        with mock.patch.object(Path, "is_dir", return_value=False):
+            function.selectAstrometryAppPath()
+
+
+def test_selectAstrometryAppPath_2(function):
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/test.app")):
+        with mock.patch.object(Path, "is_dir", return_value=True):
+            with mock.patch.object(platform, "system", return_value=("Darwin")):
+                with mock.patch.object(function, "checkPlateSolveAvailability"):
+                    function.selectAstrometryAppPath()
+                    assert (
+                        function.ui.astrometryAppPath.text()
+                        == "/test.app/Contents/MacOS/astrometry/bin"
+                    )
+
+
+def test_selectAstrometryAppPath_3(function):
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/Astrometry.app")):
+        with mock.patch.object(Path, "is_dir", return_value=True):
+            with mock.patch.object(platform, "system", return_value=("Darwin")):
+                with mock.patch.object(function, "checkPlateSolveAvailability"):
+                    function.selectAstrometryAppPath()
+                    assert function.ui.astrometryAppPath.text() == "/Astrometry.app/Contents/MacOS"
 
 
 def test_selectAstrometryIndexPath_1(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("", "", "")):
-        suc = function.selectAstrometryIndexPath()
-        assert not suc
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
+        with mock.patch.object(Path, "is_dir", return_value=False):
+            function.selectAstrometryIndexPath()
 
 
 def test_selectAstrometryIndexPath_2(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityProgram(appPath=0):
+        def checkAvailabilityProgram(appPath=Path()):
             return True
 
         @staticmethod
-        def checkAvailabilityIndex(indexPath=0):
+        def checkAvailabilityIndex(indexPath=Path()):
             return True
 
     function.app.plateSolve.run = {"astrometry": Avail()}
-    with mock.patch.object(MWidget, "openDir", return_value=("test", "test", "test")):
-        with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
-            suc = function.selectAstrometryIndexPath()
-            assert suc
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
+        with mock.patch.object(Path, "is_dir", return_value=True):
+            with mock.patch.object(function, "checkPlateSolveAvailability"):
+                function.selectAstrometryIndexPath()
 
 
-def test_selectAstrometryAppPath_1(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("", "", "")):
-        suc = function.selectAstrometryAppPath()
-        assert not suc
+def test_selectAstapAppPath_1(function):
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
+        with mock.patch.object(Path, "is_dir", return_value=False):
+            function.selectAstapAppPath()
 
 
-def test_selectAstrometryAppPath_2(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("test", "test", "test")):
-        with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
-            suc = function.selectAstrometryAppPath()
-            assert suc
+def test_selectAstapAppPath_2(function):
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
+        with mock.patch.object(Path, "is_dir", return_value=True):
+            with mock.patch.object(function, "checkPlateSolveAvailability"):
+                function.selectAstapAppPath()
 
 
-def test_selectAstrometryAppPath_3(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("test", "test", ".app")):
-        with mock.patch.object(platform, "system", return_value=("Darwin")):
-            with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
-                suc = function.selectAstrometryAppPath()
-                assert suc
-
-
-def test_selectAstrometryAppPath_4(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("Astrometry.app", "test", ".app")):
-        with mock.patch.object(platform, "system", return_value=("Darwin")):
-            with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
-                suc = function.selectAstrometryAppPath()
-                assert suc
+def test_selectAstapAppPath_3(function):
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/Astap.app")):
+        with mock.patch.object(Path, "is_dir", return_value=True):
+            with mock.patch.object(platform, "system", return_value=("Darwin")):
+                with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
+                    function.selectAstapAppPath()
+                    assert function.ui.astapAppPath.text() == "/Astap.app/Contents/MacOS"
 
 
 def test_selectAstapIndexPath_1(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("", "", "")):
-        suc = function.selectAstapIndexPath()
-        assert not suc
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
+        with mock.patch.object(Path, "is_dir", return_value=False):
+            with mock.patch.object(Path, "is_dir", return_value=False):
+                function.selectAstapIndexPath()
 
 
 def test_selectAstapIndexPath_2(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityProgram(appPath=0):
+        def checkAvailabilityProgram(appPath=Path()):
             return True
 
         @staticmethod
-        def checkAvailabilityIndex(indexPath=0):
+        def checkAvailabilityIndex(indexPath=Path()):
             return True
 
         @staticmethod
@@ -436,47 +428,47 @@ def test_selectAstapIndexPath_2(function):
             return True
 
     function.app.plateSolve.run = {"astap": Avail()}
-    with mock.patch.object(MWidget, "openDir", return_value=("test", "test", "test")):
-        with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
-            suc = function.selectAstapIndexPath()
-            assert suc
-
-
-def test_selectAstapAppPath_1(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("", "", "")):
-        suc = function.selectAstapAppPath()
-        assert not suc
-
-
-def test_selectAstapAppPath_2(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("test", "test", "test")):
-        with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
-            suc = function.selectAstapAppPath()
-            assert suc
-
-
-def test_selectAstapAppPath_3(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("test", "test", ".app")):
-        with mock.patch.object(platform, "system", return_value=("Darwin")):
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
+        with mock.patch.object(Path, "is_dir", return_value=True):
             with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
-                suc = function.selectAstapAppPath()
-                assert suc
+                function.selectAstapIndexPath()
+
+
+def test_selectWatneyAppPath_1(function):
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
+        with mock.patch.object(Path, "is_dir", return_value=False):
+            function.selectWatneyAppPath()
+
+
+def test_selectWatneyAppPath_2(function):
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
+        with mock.patch.object(Path, "is_dir", return_value=True):
+            with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
+                function.selectWatneyAppPath()
+
+
+def test_selectWatneyAppPath_3(function):
+    with mock.patch.object(MWidget, "openDir", return_value=Path("test.app")):
+        with mock.patch.object(Path, "is_dir", return_value=True):
+            with mock.patch.object(platform, "system", return_value=("Darwin")):
+                with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
+                    function.selectWatneyAppPath()
 
 
 def test_selectWatneyIndexPath_1(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("", "", "")):
-        suc = function.selectWatneyIndexPath()
-        assert not suc
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
+        with mock.patch.object(Path, "is_dir", return_value=False):
+            function.selectWatneyIndexPath()
 
 
 def test_selectWatneyIndexPath_2(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityProgram(appPath=0):
+        def checkAvailabilityProgram(appPath=Path()):
             return True
 
         @staticmethod
-        def checkAvailabilityIxdex(indexPath=0):
+        def checkAvailabilityIxdex(indexPath=Path()):
             return True
 
         @staticmethod
@@ -484,31 +476,10 @@ def test_selectWatneyIndexPath_2(function):
             return True
 
     function.app.plateSolve.run = {"astap": Avail()}
-    with mock.patch.object(MWidget, "openDir", return_value=("test", "test", "test")):
-        with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
-            suc = function.selectWatneyIndexPath()
-            assert suc
-
-
-def test_selectWatneyAppPath_1(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("", "", "")):
-        suc = function.selectWatneyAppPath()
-        assert not suc
-
-
-def test_selectWatneyAppPath_2(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("test", "test", "test")):
-        with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
-            suc = function.selectWatneyAppPath()
-            assert suc
-
-
-def test_selectWatneyAppPath_3(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("test", "test", ".app")):
-        with mock.patch.object(platform, "system", return_value=("Darwin")):
+    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
+        with mock.patch.object(Path, "is_dir", return_value=True):
             with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
-                suc = function.selectWatneyAppPath()
-                assert suc
+                function.selectWatneyIndexPath()
 
 
 def test_selectAscomDriver_1(function):
@@ -516,8 +487,7 @@ def test_selectAscomDriver_1(function):
         return
 
     with mock.patch.object(win32com.client, "Dispatch", side_effect=Exception()):
-        suc = function.selectAscomDriver()
-        assert not suc
+        function.selectAscomDriver()
 
 
 def test_selectAscomDriver_2(function):
@@ -534,6 +504,5 @@ def test_selectAscomDriver_2(function):
     function.ui.ascomDevice.setText("test")
 
     with mock.patch.object(win32com.client, "Dispatch", return_value=Test()):
-        suc = function.selectAscomDriver()
-        assert suc
+        function.selectAscomDriver()
         assert function.ui.ascomDevice.text() == "test"

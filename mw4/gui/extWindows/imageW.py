@@ -141,6 +141,7 @@ class ImageWindow(MWidget, SlewInterface):
         self.ui.abortExpose.clicked.connect(self.abortExpose)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.ui.slewCenter.clicked.connect(self.slewCenter)
+        self.ui.syncModelToImage.clicked.connect(self.syncModelToImage)
         self.ui.image.barItem.sigLevelsChangeFinished.connect(self.copyLevels)
         self.signals.solveImage.connect(self.solveImage)
         self.app.colorChange.connect(self.colorChange)
@@ -443,7 +444,7 @@ class ImageWindow(MWidget, SlewInterface):
         ra, dec = getCoordinatesFromHeader(self.fileHandler.header)
         self.slewDirect(ra, dec)
 
-    def syncMountToImage(self) -> None:
+    def syncModelToImage(self) -> None:
         """ """
         if not self.app.deviceStat["mount"]:
             self.msg.emit(2, "Image", "Mount", "Mount is not connected")

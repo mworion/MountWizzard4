@@ -391,40 +391,40 @@ def test_slewCenter_1(function):
         function.slewCenter()
 
 
-def test_syncMountToImage_1(function):
+def test_syncModelToImage_1(function):
     function.app.deviceStat["mount"] = False
     function.imageFileName = Path("tests")
-    function.syncMountToImage()
+    function.syncModelToImage()
 
 
-def test_syncMountToImage_2(function):
+def test_syncModelToImage_2(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests")
-    function.syncMountToImage()
+    function.syncModelToImage()
 
 
-def test_syncMountToImage_3(function):
+def test_syncModelToImage_3(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
     with mock.patch.object(gui.extWindows.imageW, "getCoordinatesFromHeader",
                            return_value=(None, None)):
         with mock.patch.object(function.app.mount.obsSite, "syncPositionToTarget", return_value=False):
-            function.syncMountToImage()
+            function.syncModelToImage()
 
 
-def test_syncMountToImage_4(function):
+def test_syncModelToImage_4(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
     with mock.patch.object(gui.extWindows.imageW, "getCoordinatesFromHeader",
                            return_value=(Angle(hours=10), Angle(degrees=10))):
         with mock.patch.object(function.app.mount.obsSite, "syncPositionToTarget", return_value=False):
-            function.syncMountToImage()
+            function.syncModelToImage()
 
 
-def test_syncMountToImage_5(function):
+def test_syncModelToImage_5(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
-    with mock.patch.object(function.app.mount.obsSite, "syncPositionToTarget", return_value=True):
-        with mock.patch.object(gui.extWindows.imageW, "getCoordinatesFromHeader",
-                               return_value=(Angle(hours=10), Angle(degrees=10))):
-            function.syncMountToImage()
+    with mock.patch.object(gui.extWindows.imageW, "getCoordinatesFromHeader",
+                           return_value=(Angle(hours=10), Angle(degrees=10))):
+        with mock.patch.object(function.app.mount.obsSite, "syncPositionToTarget", return_value=True):
+            function.syncModelToImage()

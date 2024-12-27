@@ -19,8 +19,7 @@ import os
 from pathlib import Path
 
 # external packages
-from PySide6.QtCore import Signal, QObject, Qt
-from PySide6.QtGui import QGuiApplication, QCursor
+from PySide6.QtCore import Signal, QObject
 from skyfield.api import Angle
 
 
@@ -134,28 +133,14 @@ class ImageWindow(MWidget, SlewInterface):
 
     def showWindow(self) -> None:
         """ """
-        self.fileHandler.signals.imageLoaded.connect(self.tabs.showImage)
         self.fileHandler.signals.imageLoaded.connect(self.processPhotometry)
         self.photometry.signals.sepFinished.connect(self.resultPhotometry)
-        self.photometry.signals.hfr.connect(self.tabs.showHFR)
-        self.photometry.signals.hfrSquare.connect(self.tabs.showTiltSquare)
-        self.photometry.signals.hfrTriangle.connect(self.tabs.showTiltTriangle)
-        self.photometry.signals.roundness.connect(self.tabs.showRoundness)
-        self.photometry.signals.aberration.connect(self.tabs.showAberrationInspect)
-        self.photometry.signals.aberration.connect(self.tabs.showImageSources)
-        self.photometry.signals.background.connect(self.tabs.showBackground)
-        self.photometry.signals.backgroundRMS.connect(self.tabs.showBackgroundRMS)
         self.app.update1s.connect(self.updateWindowsStats)
         self.ui.load.clicked.connect(self.selectImage)
-        self.ui.color.currentIndexChanged.connect(self.tabs.setBarColor)
-        self.ui.showCrosshair.clicked.connect(self.tabs.setCrosshair)
         self.ui.flipH.clicked.connect(self.showCurrent)
         self.ui.flipV.clicked.connect(self.showCurrent)
         self.ui.aspectLocked.clicked.connect(self.setAspectLocked)
         self.ui.photometryGroup.clicked.connect(self.processPhotometry)
-        self.ui.isoLayer.clicked.connect(self.tabs.showHFR)
-        self.ui.isoLayer.clicked.connect(self.tabs.showRoundness)
-        self.ui.showValues.clicked.connect(self.tabs.showImageSources)
         self.ui.snTarget.currentIndexChanged.connect(self.processPhotometry)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
@@ -164,15 +149,12 @@ class ImageWindow(MWidget, SlewInterface):
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.ui.slewCenter.clicked.connect(self.slewCenter)
         self.ui.image.barItem.sigLevelsChangeFinished.connect(self.copyLevels)
-        self.ui.offsetTiltAngle.valueChanged.connect(self.tabs.showTiltTriangle)
         self.signals.solveImage.connect(self.solveImage)
         self.app.colorChange.connect(self.colorChange)
         self.app.showImage.connect(self.showImage)
         self.app.operationRunning.connect(self.operationMode)
         self.app.tabsMovable.connect(self.enableTabsMovable)
         self.operationMode(self.app.statusOperationRunning)
-        self.ui.image.p[0].getViewBox().callbackMDC = self.mouseDoubleClick
-        self.ui.image.p[0].scene().sigMouseMoved.connect(self.mouseMoved)
         self.setAspectLocked()
         self.clearGui()
         self.setupIcons()
@@ -312,7 +294,7 @@ class ImageWindow(MWidget, SlewInterface):
         self.ui.showValues.setEnabled(isPhotometry)
         self.ui.isoLayer.setEnabled(isPhotometry)
         snTarget = self.ui.snTarget.currentIndex()
-        self.photometry.processPhotometry(image=self.fileHandler.image, snTarget=snTarget)
+        self.photometry.processPhotometry(self.fileHandler.image, snTarget)
 
     def showImage(self, imagePath: Path) -> None:
         """ """
@@ -326,7 +308,7 @@ class ImageWindow(MWidget, SlewInterface):
         self.setWindowTitle(f"Imaging:   {os.path.basename(imagePath)}")
         flipH = self.ui.flipH.isChecked()
         flipV = self.ui.flipV.isChecked()
-        self.fileHandler.loadImage(imagePath=imagePath, flipH=flipH, flipV=flipV)
+        self.fileHandler.loadImage(imagePath, flipH, flipV)
 
     def showCurrent(self) -> None:
         """ """
@@ -343,9 +325,7 @@ class ImageWindow(MWidget, SlewInterface):
 
         self.imageFileName = self.app.mwGlob["imageDir"] / fileName
 
-        if not self.app.camera.expose(
-            imagePath=self.imageFileName, exposureTime=exposureTime, binning=binning
-        ):
+        if not self.app.camera.expose(self.imageFileName, exposureTime, binning):
             self.abortExpose()
             text = f"{os.path.basename(self.imageFileName)}"
             self.msg.emit(2, "Image", "Expose error", text)
@@ -372,9 +352,7 @@ class ImageWindow(MWidget, SlewInterface):
         self.imagingDeviceStat["expose"] = True
         self.app.camera.signals.saved.connect(self.exposeImageDone)
         self.app.operationRunning.emit(6)
-        self.exposeRaw(
-            exposureTime=self.app.camera.exposureTime1, binning=self.app.camera.binning1
-        )
+        self.exposeRaw(self.app.camera.exposureTime1, self.app.camera.binning1)
 
     def exposeImageNDone(self, imagePath: Path) -> None:
         """ """
@@ -384,18 +362,14 @@ class ImageWindow(MWidget, SlewInterface):
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
         self.app.showImage.emit(imagePath)
-        self.exposeRaw(
-            exposureTime=self.app.camera.exposureTimeN, binning=self.app.camera.binningN
-        )
+        self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
 
     def exposeImageN(self) -> None:
         """ """
         self.imagingDeviceStat["exposeN"] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
         self.app.operationRunning.emit(6)
-        self.exposeRaw(
-            exposureTime=self.app.camera.exposureTimeN, binning=self.app.camera.binningN
-        )
+        self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
 
     def abortExpose(self) -> None:
         """ """
@@ -416,10 +390,6 @@ class ImageWindow(MWidget, SlewInterface):
         self.imagingDeviceStat["solve"] = False
         self.app.plateSolve.signals.result.disconnect(self.solveDone)
 
-        if not result:
-            self.msg.emit(2, "Image", "Solving", "Solving error, result missing")
-            self.app.operationRunning.emit(0)
-            return
         if not result["success"]:
             self.msg.emit(2, "Image", "Solving error", f'{result.get("message")}')
             self.app.operationRunning.emit(0)
@@ -464,22 +434,6 @@ class ImageWindow(MWidget, SlewInterface):
         self.app.plateSolve.abort()
         self.app.operationRunning.emit(0)
 
-    def mouseToWorld(self, mousePoint) -> (Angle, Angle):
-        """ """
-        if self.fileHandler.wcs is None:
-            return Angle(hours=0), Angle(degrees=0)
-        x = mousePoint.x()
-        y = mousePoint.y()
-        if self.fileHandler.flipH:
-            x = self.fileHandler.sizeX - x
-        if not self.fileHandler.flipV:
-            y = self.fileHandler.sizeY - y
-
-        ra, dec = self.fileHandler.wcs.wcs_pix2world(x, y, 0)
-        ra = Angle(hours=float(ra / 360 * 24))
-        dec = Angle(degrees=float(dec))
-        return ra, dec
-
     def slewDirect(self, ra: Angle, dec: Angle) -> None:
         """ """
         if not self.app.deviceStat["mount"]:
@@ -495,38 +449,8 @@ class ImageWindow(MWidget, SlewInterface):
             return
         self.slewTargetRaDec(ra, dec)
 
-    def mouseMoved(self, pos) -> None:
-        """ """
-        viewBox = self.ui.image.p[0].getViewBox()
-        mousePoint = viewBox.mapSceneToView(pos)
-        ra, dec = self.mouseToWorld(mousePoint)
-
-        if viewBox.posInViewRange(mousePoint):
-            self.guiSetText(self.ui.raMouse, "HSTR", ra)
-            self.guiSetText(self.ui.raMouseFloat, "2.5f", ra.hours)
-            self.guiSetText(self.ui.decMouse, "DSTR", dec)
-            self.guiSetText(self.ui.decMouseFloat, "2.5f", dec.degrees)
-            QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.CrossCursor))
-        else:
-            self.ui.raMouse.setText("")
-            self.ui.raMouseFloat.setText("")
-            self.ui.decMouse.setText("")
-            self.ui.decMouseFloat.setText("")
-            QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.ArrowCursor))
-
-    def mouseDoubleClick(self, ev, mousePoint) -> None:
-        """ """
-        if not self.fileHandler.hasCelestial:
-            return
-
-        ra, dec = self.mouseToWorld(mousePoint)
-        self.slewDirect(ra, dec)
-
     def slewCenter(self) -> None:
         """ """
-        if not self.fileHandler.hasCelestial:
-            return
-
         ra, dec = getCoordinatesFromHeader(self.fileHandler.header)
         self.slewDirect(ra, dec)
 

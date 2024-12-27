@@ -42,9 +42,9 @@ class ImageTabs(MWidget):
 
     def __init__(self, parent):
         super().__init__()
-        self.fileHandler = parent.fileHandler
         self.ui = parent.ui
         self.msg = parent.msg
+        self.fileHandler = parent.fileHandler
         self.photometry = parent.photometry
         self.threadPool = parent.threadPool
         self.imagingDeviceStat = parent.imagingDeviceStat
@@ -54,6 +54,22 @@ class ImageTabs(MWidget):
         self.fontAnno = QFont(self.window().font().family(), 10, italic=True)
         self.fontText.setBold(True)
         self.imageSourceRange = None
+        self.fileHandler.signals.imageLoaded.connect(self.showImage)
+        self.photometry.signals.hfr.connect(self.showHFR)
+        self.photometry.signals.hfrSquare.connect(self.showTiltSquare)
+        self.photometry.signals.hfrTriangle.connect(self.showTiltTriangle)
+        self.photometry.signals.roundness.connect(self.showRoundness)
+        self.photometry.signals.aberration.connect(self.showAberrationInspect)
+        self.photometry.signals.aberration.connect(self.showImageSources)
+        self.photometry.signals.background.connect(self.showBackground)
+        self.photometry.signals.backgroundRMS.connect(self.showBackgroundRMS)
+        self.ui.isoLayer.clicked.connect(self.showHFR)
+        self.ui.isoLayer.clicked.connect(self.showRoundness)
+        self.ui.showValues.clicked.connect(self.showImageSources)
+        self.ui.offsetTiltAngle.valueChanged.connect(self.showTiltTriangle)
+        self.ui.color.currentIndexChanged.connect(self.setBarColor)
+        self.ui.showCrosshair.clicked.connect(self.setCrosshair)
+
 
     def colorChange(self) -> None:
         """ """
@@ -127,7 +143,6 @@ class ImageTabs(MWidget):
             self.msg.emit(0, "Image", "Rendering error", "Incompatible image format")
             return
 
-        self.ui.groupMouseCoord.setVisible(self.fileHandler.hasCelestial)
         self.ui.slewCenter.setEnabled(self.fileHandler.hasCelestial)
         self.imageSourceRange = None
         self.ui.image.setImage(

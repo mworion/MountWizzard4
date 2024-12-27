@@ -22,10 +22,7 @@ from pathlib import Path
 
 # external packages
 from PySide6.QtGui import QCloseEvent
-from PySide6.QtCore import QPointF
-from astropy import wcs
 from skyfield.api import Angle
-import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -34,9 +31,6 @@ from gui.utilities.slewInterface import SlewInterface
 from gui.extWindows.imageW import ImageWindow
 from logic.photometry.photometry import Photometry
 from logic.file.fileHandler import FileHandler
-from base.loggerMW import setupLogging
-
-setupLogging()
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -79,9 +73,9 @@ def test_setupIcons_1(function):
 
 
 def test_colorChange(function):
+    function.tabs = mock.MagicMock()
     with mock.patch.object(function, "showCurrent"):
-        with mock.patch.object(function.tabs, "colorChange"):
-            function.colorChange()
+        function.colorChange()
 
 
 def test_clearGui(function):
@@ -323,7 +317,6 @@ def test_solveDone_2(function):
         "imagePath": "test",
         "message": "test",
     }
-
     function.app.plateSolve.signals.result.connect(function.solveDone)
     function.solveDone(result=result)
 
@@ -369,24 +362,6 @@ def test_abortSolve_1(function):
     function.abortSolve()
 
 
-def test_mouseToWorld_0(function):
-    function.fileHandler = FileHandler(App())
-    function.fileHandler.wcs = None
-    function.fileHandler.flipH = True
-    function.fileHandler.flipV = False
-    ra, dec = function.mouseToWorld(QPointF(1, 1))
-
-
-def test_mouseToWorld_1(function):
-    function.fileHandler = FileHandler(App())
-    function.fileHandler.wcs = wcs.WCS({})
-    function.fileHandler.flipH = True
-    function.fileHandler.flipV = False
-
-    with mock.patch.object(function.fileHandler.wcs, "wcs_pix2world", return_value=(0, 0)):
-        ra, dec = function.mouseToWorld(QPointF(1, 1))
-
-
 def test_slewDirect_1(function):
     function.app.deviceStat["mount"] = False
     function.slewDirect(Angle(hours=0), Angle(degrees=0))
@@ -405,51 +380,12 @@ def test_slewDirect_3(function):
             function.slewDirect(Angle(hours=0), Angle(degrees=0))
 
 
-def test_mouseMoved_1(function):
-    function.fileHandler = FileHandler(App())
-    function.fileHandler.wcs = wcs.WCS({})
-    function.fileHandler.image = np.random.rand(100, 100) + 1
-    with mock.patch.object(
-        function.ui.image.p[0].getViewBox(), "posInViewRange", return_value=True
-    ):
-        function.mouseMoved(pos=QPointF(50, 14))
-
-
-def test_mouseMoved_2(function):
-    function.fileHandler = FileHandler(App())
-    function.fileHandler.wcs = wcs.WCS({})
-    function.ui.image.setImage(imageDisp=np.random.rand(100, 100) + 1)
-    with mock.patch.object(
-        function.ui.image.p[0].getViewBox(), "posInViewRange", return_value=False
-    ):
-        function.mouseMoved(pos=QPointF(50, 25))
-
-
-def test_mouseDoubleClick_1(function):
-    function.fileHandler = FileHandler(App())
-    function.mouseDoubleClick(1, QPointF(50, 25))
-
-
-def test_mouseDoubleClick_2(function):
-    function.fileHandler = FileHandler(App())
-    function.fileHandler.hasCelestial = True
-    with mock.patch.object(function, "slewDirect"):
-        with mock.patch.object(function, "mouseToWorld", return_value=(0, 0)):
-            function.mouseDoubleClick(1, QPointF(50, 25))
-
-
 def test_slewCenter_1(function):
-    function.fileHandler = FileHandler(App())
-    function.slewCenter()
-
-
-def test_slewCenter_2(function):
     function.fileHandler = FileHandler(App())
     function.fileHandler.header = {
         "RA": 10,
         "DEC": 10,
     }
-    function.fileHandler.hasCelestial = True
     with mock.patch.object(function, "slewDirect"):
         function.slewCenter()
 

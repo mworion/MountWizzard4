@@ -182,7 +182,7 @@ def writeSolutionToHeader(header: fits.Header, solution: dict) -> fits.Header:
     return header
 
 
-def updateImageFileHeaderWithSolution(imagePath: Path, solution: dict) -> fits.Header:
+def updateImageFileHeaderWithSolution(imagePath: Path, solution: dict) -> None:
     """ """
     with fits.open(imagePath, mode="update", output_verify="silentfix+warn") as HDU:
         HDU[0].header = writeSolutionToHeader(HDU[0].header, solution)

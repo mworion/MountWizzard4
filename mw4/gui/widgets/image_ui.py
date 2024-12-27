@@ -145,7 +145,7 @@ class Ui_ImageDialog(object):
 
         self.timeTagImage = QCheckBox(self.groupImageActions)
         self.timeTagImage.setObjectName("timeTagImage")
-        self.timeTagImage.setMinimumSize(QSize(100, 0))
+        self.timeTagImage.setMinimumSize(QSize(105, 0))
 
         self.gridLayout_4.addWidget(self.timeTagImage, 1, 3, 1, 1)
 
@@ -815,71 +815,6 @@ class Ui_ImageDialog(object):
 
         self.gridLayout_2.addWidget(self.headerGroup, 1, 0, 2, 1)
 
-        self.groupMouseCoord = QGroupBox(ImageDialog)
-        self.groupMouseCoord.setObjectName("groupMouseCoord")
-        self.groupMouseCoord.setMinimumSize(QSize(120, 0))
-        self.groupMouseCoord.setMaximumSize(QSize(120, 16777215))
-        self.groupMouseCoord.setProperty("large", True)
-        self.gridLayout_14 = QGridLayout(self.groupMouseCoord)
-        self.gridLayout_14.setObjectName("gridLayout_14")
-        self.gridLayout_14.setHorizontalSpacing(4)
-        self.gridLayout_14.setVerticalSpacing(0)
-        self.gridLayout_14.setContentsMargins(4, 15, 4, 4)
-        self.label_25 = QLabel(self.groupMouseCoord)
-        self.label_25.setObjectName("label_25")
-
-        self.gridLayout_14.addWidget(self.label_25, 0, 0, 1, 1)
-
-        self.label_26 = QLabel(self.groupMouseCoord)
-        self.label_26.setObjectName("label_26")
-
-        self.gridLayout_14.addWidget(self.label_26, 4, 0, 1, 1)
-
-        self.verticalSpacer_2 = QSpacerItem(
-            20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding
-        )
-
-        self.gridLayout_14.addItem(self.verticalSpacer_2, 7, 0, 1, 1)
-
-        self.decMouse = QLineEdit(self.groupMouseCoord)
-        self.decMouse.setObjectName("decMouse")
-        self.decMouse.setEnabled(True)
-        self.decMouse.setReadOnly(True)
-
-        self.gridLayout_14.addWidget(self.decMouse, 5, 0, 1, 1)
-
-        self.decMouseFloat = QLineEdit(self.groupMouseCoord)
-        self.decMouseFloat.setObjectName("decMouseFloat")
-        self.decMouseFloat.setEnabled(True)
-        self.decMouseFloat.setReadOnly(True)
-
-        self.gridLayout_14.addWidget(self.decMouseFloat, 6, 0, 1, 1)
-
-        self.raMouse = QLineEdit(self.groupMouseCoord)
-        self.raMouse.setObjectName("raMouse")
-        self.raMouse.setEnabled(True)
-        self.raMouse.setReadOnly(True)
-
-        self.gridLayout_14.addWidget(self.raMouse, 1, 0, 1, 1)
-
-        self.raMouseFloat = QLineEdit(self.groupMouseCoord)
-        self.raMouseFloat.setObjectName("raMouseFloat")
-        self.raMouseFloat.setEnabled(True)
-        self.raMouseFloat.setReadOnly(True)
-
-        self.gridLayout_14.addWidget(self.raMouseFloat, 2, 0, 1, 1)
-
-        self.line_12 = QFrame(self.groupMouseCoord)
-        self.line_12.setObjectName("line_12")
-        self.line_12.setFrameShadow(QFrame.Shadow.Plain)
-        self.line_12.setFrameShape(QFrame.Shape.HLine)
-
-        self.gridLayout_14.addWidget(self.line_12, 3, 0, 1, 1)
-
-        self.gridLayout_14.setRowStretch(4, 1)
-
-        self.gridLayout_2.addWidget(self.groupMouseCoord, 3, 0, 1, 1)
-
         self.verticalLayout_2.addLayout(self.gridLayout_2)
 
         self.verticalLayout_2.setStretch(2, 1)
@@ -1024,10 +959,5 @@ class Ui_ImageDialog(object):
         self.label_11.setText(QCoreApplication.translate("ImageDialog", "Bin X", None))
         self.label_9.setText(QCoreApplication.translate("ImageDialog", "Temp", None))
         self.label_10.setText(QCoreApplication.translate("ImageDialog", "Filter", None))
-        self.groupMouseCoord.setTitle(
-            QCoreApplication.translate("ImageDialog", "Mouse Coords", None)
-        )
-        self.label_25.setText(QCoreApplication.translate("ImageDialog", "RA [hours]", None))
-        self.label_26.setText(QCoreApplication.translate("ImageDialog", "DEC [deg]", None))
 
     # retranslateUi

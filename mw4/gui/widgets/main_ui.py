@@ -10694,7 +10694,7 @@ class Ui_MainWindow(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.openAnalyseW.setText(
-            QCoreApplication.translate("MainWindow", "Open analyse window and show", None)
+            QCoreApplication.translate("MainWindow", "Open analyse window and show data", None)
         )
         self.modelingTabWidget.setTabText(
             self.modelingTabWidget.indexOf(self.ManageModels),

@@ -302,7 +302,7 @@ def test_abortExpose_4(function):
 
 def test_solveDone_1(function):
     function.app.plateSolve.signals.result.connect(function.solveDone)
-    function.solveDone([])
+    function.solveDone({"success": False})
 
 
 def test_solveDone_2(function):

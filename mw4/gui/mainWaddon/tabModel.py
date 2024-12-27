@@ -32,6 +32,14 @@ from logic.modelBuild.modelData import ModelData
 
 class Model(MWidget):
     """ """
+    STATUS_IDLE = 0
+    STATUS_MODEL_BATCH = 1
+    STATUS_MODEL_FILE = 2
+    STATUS_MODEL_SYNC = 3
+    STATUS_MODEL_ITERATIVE = 4
+    STATUS_EXPOSE_1 = 5
+    STATUS_EXPOSE_N = 6
+    STATUS_SOLVE = 7
 
     def __init__(self, mainW):
         super().__init__()
@@ -97,20 +105,16 @@ class Model(MWidget):
         self.modelData.endBatch = True
 
     def setModelOperationMode(self, status: int) -> None:
-        """
-        status 0: idle
-        status 1: modeling build
-        status 2: modeling with stored data
-        """
-        if status == 1:
+        """ """
+        if status == self.STATUS_MODEL_BATCH:
             self.ui.runModelGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)
             self.ui.cancelModel.setEnabled(True)
             self.ui.endModel.setEnabled(True)
             self.ui.pauseModel.setEnabled(True)
-        elif status == 2:
+        elif status == self.STATUS_MODEL_FILE:
             self.ui.runModelGroup.setEnabled(False)
-        elif status == 0:
+        elif status == self.STATUS_MODEL_SYNC:
             self.ui.runModelGroup.setEnabled(True)
             self.ui.dataModelGroup.setEnabled(True)
             self.ui.cancelModel.setEnabled(False)
@@ -280,7 +284,7 @@ class Model(MWidget):
         if not self.clearAlignAndBackup():
             return
 
-        self.app.operationRunning.emit(1)
+        self.app.operationRunning.emit(self.STATUS_MODEL_BATCH)
         self.modelData = ModelData(self.app)
         self.setModelTiming()
         self.setupBatchData()
@@ -289,11 +293,11 @@ class Model(MWidget):
         self.modelData.runModel()
         self.programModelToMount()
         self.app.playSound.emit("RunFinished")
-        self.app.operationRunning.emit(0)
+        self.app.operationRunning.emit(self.STATUS_IDLE)
 
     def runFileModel(self):
         """ """
-        self.app.operationRunning.emit(2)
+        self.app.operationRunning.emit(self.STATUS_MODEL_FILE)
         self.modelData = ModelData(self.app)
         self.msg.emit(1, "Model", "Run", "Model from file")
         folder = self.app.mwGlob["modelDir"]
@@ -307,11 +311,11 @@ class Model(MWidget):
             self.modelData.name = modelFilesPath[0].stem
         else:
             self.msg.emit(1, "Model", "Run", "Model from file cancelled - no files selected")
-            self.app.operationRunning.emit(0)
+            self.app.operationRunning.emit(self.STATUS_IDLE)
             return
 
         if not self.clearAlignAndBackup():
-            self.app.operationRunning.emit(0)
+            self.app.operationRunning.emit(self.STATUS_IDLE)
             return
 
         self.modelData.modelBuildData, message = loadModelsFromFile(modelFilesPath)
@@ -321,4 +325,4 @@ class Model(MWidget):
         else:
             self.msg.emit(3, "Model", "Run error", message)
         self.app.playSound.emit("RunFinished")
-        self.app.operationRunning.emit(0)
+        self.app.operationRunning.emit(self.STATUS_IDLE)

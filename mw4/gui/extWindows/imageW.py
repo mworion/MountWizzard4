@@ -32,6 +32,7 @@ from logic.photometry.photometry import Photometry
 from logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
 from gui.extWindows.image.imageTabs import ImageTabs
 from gui.extWindows.image.imageSignals import ImageWindowSignals
+from gui.mainWaddon.tabModel import Model
 
 
 class ImageWindow(MWidget, SlewInterface):
@@ -310,22 +311,16 @@ class ImageWindow(MWidget, SlewInterface):
     def exposeRaw(self, exposureTime: float, binning: int) -> None:
         """ """
         timeString = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
-
         if self.ui.timeTagImage.isChecked():
-            fileName = timeString + "-exposure.fits"
+            self.imageFileName = self.app.mwGlob["imageDir"] / (timeString + "-exposure.fits")
         else:
-            fileName = "exposure.fits"
-
-        self.imageFileName = self.app.mwGlob["imageDir"] / fileName
+            self.imageFileName = self.app.mwGlob["imageDir"] / "exposure.fits"
 
         if not self.app.camera.expose(self.imageFileName, exposureTime, binning):
             self.abortExpose()
-            text = f"{os.path.basename(self.imageFileName)}"
-            self.msg.emit(2, "Image", "Expose error", text)
+            self.msg.emit(2, "Image", "Expose error", self.imageFileName.name)
             return
-
-        text = f"{os.path.basename(self.imageFileName)}"
-        self.msg.emit(0, "Image", "Exposing", text)
+        self.msg.emit(0, "Image", "Exposing", self.imageFileName.name)
 
     def exposeImageDone(self, imagePath: Path) -> None:
         """ """
@@ -336,14 +331,14 @@ class ImageWindow(MWidget, SlewInterface):
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
         self.app.showImage.emit(imagePath)
-        self.app.operationRunning.emit(0)
         self.imagingDeviceStat["expose"] = False
+        self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def exposeImage(self) -> None:
         """ """
+        self.app.operationRunning.emit(Model.STATUS_EXPOSE_1)
         self.imagingDeviceStat["expose"] = True
         self.app.camera.signals.saved.connect(self.exposeImageDone)
-        self.app.operationRunning.emit(6)
         self.exposeRaw(self.app.camera.exposureTime1, self.app.camera.binning1)
 
     def exposeImageNDone(self, imagePath: Path) -> None:
@@ -357,9 +352,9 @@ class ImageWindow(MWidget, SlewInterface):
 
     def exposeImageN(self) -> None:
         """ """
+        self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
         self.imagingDeviceStat["exposeN"] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
-        self.app.operationRunning.emit(6)
         self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
 
     def abortExpose(self) -> None:
@@ -374,7 +369,7 @@ class ImageWindow(MWidget, SlewInterface):
         self.imagingDeviceStat["expose"] = False
         self.imagingDeviceStat["exposeN"] = False
         self.msg.emit(2, "Image", "Expose", "Exposing aborted")
-        self.app.operationRunning.emit(0)
+        self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def solveDone(self, result: dict) -> None:
         """ """
@@ -383,7 +378,7 @@ class ImageWindow(MWidget, SlewInterface):
 
         if not result["success"]:
             self.msg.emit(2, "Image", "Solving error", result.get("message"))
-            self.app.operationRunning.emit(0)
+            self.app.operationRunning.emit(Model.STATUS_IDLE)
             return
 
         text = f'RA: {convertToHMS(result["raJ2000S"])} '
@@ -401,16 +396,15 @@ class ImageWindow(MWidget, SlewInterface):
 
         if self.ui.embedData.isChecked():
             self.showCurrent()
-        self.app.operationRunning.emit(0)
+        self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def solveImage(self, imagePath: Path) -> None:
         """ """
         if not imagePath.is_file():
-            self.app.operationRunning.emit(0)
             return
 
+        self.app.operationRunning.emit(Model.STATUS_SOLVE)
         self.app.plateSolve.signals.result.connect(self.solveDone)
-        self.app.operationRunning.emit(6)
         self.app.plateSolve.solve(imagePath, self.ui.embedData.isChecked())
         self.imagingDeviceStat["solve"] = True
         self.msg.emit(0, "Image", "Solving", imagePath.name)
@@ -422,7 +416,7 @@ class ImageWindow(MWidget, SlewInterface):
     def abortSolve(self) -> None:
         """ """
         self.app.plateSolve.abort()
-        self.app.operationRunning.emit(0)
+        self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def slewDirect(self, ra: Angle, dec: Angle) -> None:
         """ """
@@ -459,6 +453,7 @@ class ImageWindow(MWidget, SlewInterface):
             self.msg.emit(2, "Image", "Mount", "No coordinates found in image")
             return
 
+        self.app.operationRunning.emit(Model.STATUS_MODEL_SYNC)
         obs = self.app.mount.obsSite
         raJNow, decJNow = J2000ToJNow(ra, dec, obs.timeJD)
         obs.setTargetRaDec(raJNow, decJNow)
@@ -469,3 +464,4 @@ class ImageWindow(MWidget, SlewInterface):
         else:
             t = "No sync, match failed because coordinates to far off for model"
             self.msg.emit(2, "Model", "Run error", t)
+        self.app.operationRunning.emit(Model.STATUS_IDLE)

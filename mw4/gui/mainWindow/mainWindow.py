@@ -524,9 +524,6 @@ class MainWindow(MWidget):
 
     def remoteCommand(self, command: str) -> None:
         """
-        remoteCommand received signals from remote class and executes them.
-        :param command:
-        :return: True for test purpose
         """
         if command == "shutdown":
             self.quitSave()

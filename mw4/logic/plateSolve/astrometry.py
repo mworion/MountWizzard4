@@ -84,7 +84,7 @@ class Astrometry(object):
             outFile.write(f"add_path {self.indexPath}\n")
             outFile.write("autoindex\n")
 
-    def runImage2xy(self, binPath: Path, tempPath: Path, imagePath: Path) -> bool:
+    def runImage2xy(self, binPath: Path, imagePath: Path, tempPath: Path) -> bool:
         """ """
         runnable = [binPath, "-O", "-o", tempPath, imagePath]
         timeStart = time.time()
@@ -169,13 +169,13 @@ class Astrometry(object):
         if wcsPath.is_file():
             os.remove(wcsPath)
 
-        suc = self.runImage2xy(binPath=binPathImage2xy, tempPath=tempPath, imagePath=imagePath)
+        suc = self.runImage2xy(binPathImage2xy, imagePath, tempPath)
         if not suc:
             self.log.warning(f"IMAGE2XY error in [{imagePath}]")
             self.result["message"] = "image2xy failed"
             return result
 
-        raHint, decHint, scaleHint = getHintFromImageFile(imagePath=imagePath)
+        raHint, decHint, scaleHint = getHintFromImageFile(imagePath)
         searchRatio = 1.1
         ra = convert.convertToHMS(raHint)
         dec = convert.convertToDMS(decHint)
@@ -200,12 +200,7 @@ class Astrometry(object):
         if "Astrometry.app" in str(self.appPath):
             options.append("--no-fits2fits")
 
-        suc = self.runSolveField(
-            binPath=binPathSolveField,
-            configPath=configPath,
-            tempPath=tempPath,
-            options=options,
-        )
+        suc = self.runSolveField(binPathSolveField, configPath, tempPath, options)
         if not suc:
             self.log.warning(f"SOLVE-FIELD error in [{imagePath}]")
             result["message"] = "solve-field error"
@@ -216,9 +211,9 @@ class Astrometry(object):
             result["message"] = "solve failed"
             return result
 
-        wcsHeader = getImageHeader(imagePath=wcsPath)
-        imageHeader = getImageHeader(imagePath=imagePath)
-        solution = getSolutionFromWCSHeader(wcsHeader=wcsHeader, imageHeader=imageHeader)
+        wcsHeader = getImageHeader(wcsPath)
+        imageHeader = getImageHeader(imagePath)
+        solution = getSolutionFromWCSHeader(wcsHeader, imageHeader)
 
         if updateHeader:
             updateImageFileHeaderWithSolution(imagePath, solution)
@@ -229,7 +224,7 @@ class Astrometry(object):
         self.log.debug(f"Result: [{result}]")
         return result
 
-    def abort(self):
+    def abort(self) -> bool:
         """ """
         if self.process:
             self.process.kill()

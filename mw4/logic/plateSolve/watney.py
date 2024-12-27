@@ -137,7 +137,7 @@ class Watney(object):
             "True",
         ]
 
-        suc, retValue = self.runWatney(runnable=runnable)
+        suc, retValue = self.runWatney(runnable)
         if not suc:
             text = self.returnCodes.get(retValue, "Unknown code")
             result["message"] = f"Watney error: [{text}]"
@@ -149,9 +149,9 @@ class Watney(object):
             self.log.warning(f"Solve files for [{wcsPath}] missing")
             return result
 
-        wcsHeader = getImageHeader(imagePath=wcsPath)
-        imageHeader = getImageHeader(imagePath=imagePath)
-        solution = getSolutionFromWCSHeader(wcsHeader=wcsHeader, imageHeader=imageHeader)
+        wcsHeader = getImageHeader(wcsPath)
+        imageHeader = getImageHeader(imagePath)
+        solution = getSolutionFromWCSHeader(wcsHeader, imageHeader)
 
         if updateHeader:
             updateImageFileHeaderWithSolution(imagePath, solution)
@@ -162,7 +162,7 @@ class Watney(object):
         self.log.debug(f"Result: [{result}]")
         return result
 
-    def abort(self):
+    def abort(self) -> bool:
         """ """
         if self.process:
             self.process.kill()

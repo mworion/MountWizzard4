@@ -182,6 +182,7 @@ class ImageWindow(MWidget, SlewInterface):
     def closeEvent(self, closeEvent) -> None:
         """ """
         self.storeConfig()
+        del self.tabs
         super().closeEvent(closeEvent)
 
     def setupIcons(self) -> None:
@@ -463,7 +464,7 @@ class ImageWindow(MWidget, SlewInterface):
         self.app.plateSolve.abort()
         self.app.operationRunning.emit(0)
 
-    def mouseToWorld(self, mousePoint):
+    def mouseToWorld(self, mousePoint) -> (Angle, Angle):
         """ """
         if self.fileHandler.wcs is None:
             return Angle(hours=0), Angle(degrees=0)

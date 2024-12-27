@@ -86,7 +86,7 @@ class ASTAP(object):
             self.indexPath = Path("C:\\Program Files\\astap")
 
     def runASTAP(
-        self, binPath: Path, tempPath: Path, imagePath: Path, options: list[str]
+        self, binPath: Path, imagePath: Path, tempPath: Path, options: list[str]
     ) -> [bool, str]:
         """ """
         runnable = [binPath, "-f", imagePath, "-o", tempPath, "-wcs"]
@@ -137,9 +137,7 @@ class ASTAP(object):
             self.indexPath,
         ]
 
-        suc, msg = self.runASTAP(
-            binPath=binPath, imagePath=imagePath, tempPath=tempPath, options=options
-        )
+        suc, msg = self.runASTAP(binPath, imagePath, tempPath, options)
         if not suc:
             result["message"] = msg
             self.log.warning(f"ASTAP error in [{imagePath}]: {msg}")
@@ -150,9 +148,9 @@ class ASTAP(object):
             self.log.warning(f"Solve files [{wcsPath}] for [{imagePath}] missing")
             return result
 
-        wcsHeader = getImageHeader(imagePath=wcsPath)
-        imageHeader = getImageHeader(imagePath=imagePath)
-        solution = getSolutionFromWCSHeader(wcsHeader=wcsHeader, imageHeader=imageHeader)
+        wcsHeader = getImageHeader(wcsPath)
+        imageHeader = getImageHeader(imagePath)
+        solution = getSolutionFromWCSHeader(wcsHeader, imageHeader)
 
         if updateHeader:
             updateImageFileHeaderWithSolution(imagePath, solution)

@@ -52,8 +52,7 @@ def test_getImageHeader_1():
 
 
 def test_getCoordinatesFromHeader_0():
-    header = {
-    }
+    header = {}
     ra, dec = getCoordinatesFromHeader(header=header)
     assert ra is None
     assert dec is None

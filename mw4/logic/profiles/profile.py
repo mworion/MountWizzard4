@@ -217,7 +217,7 @@ def saveProfile(saveProfilePath: Path, config: dict) -> None:
     with open(saveProfilePath.parent / "profile", "w") as profile:
         profile.writelines(saveProfilePath.stem)
 
-    file = saveProfilePath.parent / (saveProfilePath.stem + '.cfg')
+    file = saveProfilePath.parent / (saveProfilePath.stem + ".cfg")
     config["version"] = profileVersion
     with open(file, "w") as outfile:
         json.dump(config, outfile, sort_keys=True, indent=4)

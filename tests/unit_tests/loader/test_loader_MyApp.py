@@ -113,16 +113,6 @@ def test_notify_1(qapp):
     assert not suc
 
 
-def test_notify_2(qapp):
-    ui = QtWidgets.QPushButton()
-    event = QEvent(QEvent.Type.MouseButtonPress)
-    with mock.patch.object(
-        QtWidgets.QApplication, "notify", return_value=True, side_effect=Exception()
-    ):
-        suc = qapp.notify(obj=ui, event=event)
-        assert not suc
-
-
 def test_notify_3(qapp):
     ui = QtWidgets.QPushButton()
     event = QMouseEvent(

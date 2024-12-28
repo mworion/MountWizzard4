@@ -472,8 +472,7 @@ class MainWindow(MWidget):
         self.saveProfileBase(saveProfilePath)
 
     def remoteCommand(self, command: str) -> None:
-        """
-        """
+        """ """
         if command == "shutdown":
             self.quitSave()
             self.msg.emit(2, "System", "Remote", "Shutdown MW4 remotely")

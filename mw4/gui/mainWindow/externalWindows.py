@@ -156,8 +156,7 @@ class ExternalWindows(MWidget):
                 self.changeStyleDynamic(winObj["button"], "running", False)
 
     def deleteWindowResource(self, window: str) -> bool:
-        """ """
-        del self.uiWindows[window]["classObj"]
+        """"""
         self.uiWindows[window]["classObj"] = None
 
     def buildWindow(self, window: str) -> None:

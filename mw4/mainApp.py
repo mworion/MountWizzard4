@@ -46,16 +46,11 @@ from logic.powerswitch.pegasusUPB import PegasusUPB
 from logic.measure.measure import MeasureData
 from logic.remote.remote import Remote
 from logic.plateSolve.plateSolve import PlateSolve
-from logic.profiles.profile import loadProfile
+from logic.profiles.profile import loadProfileStart
 
 
 class MountWizzard4(QObject):
-    """
-    MountWizzard4 class is the main class for the application. it loads all
-    windows and classes needed to fulfil the work of mountwizzard. any gui work
-    should be handled through the window classes. main class is for setup,
-    config, start, persist and shutdown the application.
-    """
+    """ """
 
     __version__ = version("mountwizzard4")
 
@@ -112,7 +107,6 @@ class MountWizzard4(QObject):
 
     def __init__(self, mwGlob: dict, application: QApplication):
         super().__init__()
-
         self.mwGlob = mwGlob
         self.application = application
         self.threadPool = QThreadPool()
@@ -122,7 +116,7 @@ class MountWizzard4(QObject):
         self.timerCounter = 0
         self.statusOperationRunning = 0
         self.msg.connect(self.writeMessageQueue)
-        self.config = loadProfile(configDir=self.mwGlob["configDir"])
+        self.config = loadProfileStart(configDir=self.mwGlob["configDir"])
         self.deviceStat = {
             "dome": None,
             "mount": None,

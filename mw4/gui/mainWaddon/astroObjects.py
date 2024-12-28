@@ -124,7 +124,7 @@ class AstroObjects(QObject):
                 return
 
         if not self.window.ui.isOnline.isChecked():
-            self.msg.emit(2, self.objectText, "Download", "Offline mode active")
+            self.msg.emit(2, self.objectText.capitalize(), "Download", "Offline mode active")
             return
 
         self.setAge(0)

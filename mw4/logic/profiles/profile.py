@@ -32,7 +32,7 @@ log = logging.getLogger()
 profileVersion = "4.2"
 
 
-def replaceKeys(oldDict, keyDict):
+def replaceKeys(oldDict: dict, keyDict: dict) -> dict:
     """ """
     newDict = {}
     for key in oldDict.keys():
@@ -44,7 +44,7 @@ def replaceKeys(oldDict, keyDict):
     return newDict
 
 
-def convertKeyData(data):
+def convertKeyData(data: dict) -> dict:
     """ """
     keyDict = {
         "checkASCOMAutoConnect": "autoConnectASCOM",
@@ -80,7 +80,7 @@ def convertKeyData(data):
     return data
 
 
-def convertProfileData40to41(data):
+def convertProfileData40to41(data: dict) -> dict:
     """ """
     actVer = Version(data.get("version", "0.0"))
     if actVer >= Version("4.1"):
@@ -123,7 +123,7 @@ def convertProfileData40to41(data):
     return data
 
 
-def convertProfileData41to42(data):
+def convertProfileData41to42(data: dict) -> dict:
     """ """
     actVer = Version(data.get("version", "0.0"))
     if actVer >= Version("4.2"):
@@ -155,17 +155,15 @@ def blendProfile(config, configAdd):
     return config
 
 
-def defaultConfig(config=None):
+def defaultConfig() -> dict:
     """ """
-    if config is None:
-        config = dict()
-
+    config = dict()
     config["profileName"] = "config"
     config["version"] = profileVersion
     return config
 
 
-def checkResetTabOrder(profile):
+def checkResetTabOrder(profile: dict) -> dict:
     """ """
     newDict = {}
     for key in profile.keys():
@@ -178,30 +176,16 @@ def checkResetTabOrder(profile):
     return newDict
 
 
-def loadProfile(configDir=None, name=None):
+def loadProfile(loadProfilePath: Path) -> dict:
     """ """
-    if name is None:
-        profileFile = configDir / "profile"
-        if os.path.isfile(profileFile):
-            with open(profileFile, "r") as profile:
-                name = profile.readline().strip()
-        else:
-            name = "config"
-
-    fileName = configDir / (name + ".cfg")
-
-    if not os.path.isfile(fileName):
-        log.info(f"Config file {fileName} not existing")
-        return defaultConfig()
-
     try:
-        with open(fileName, "r") as configFile:
+        with open(loadProfilePath, "r") as configFile:
             configData = json.load(configFile)
     except Exception as e:
-        log.critical(f"Cannot parse: {fileName}, error: {e}")
+        log.critical(f"Cannot parse: {loadProfilePath.name}, error: {e}")
         return defaultConfig()
 
-    configData["profileName"] = name
+    configData["profileName"] = loadProfilePath.stem
     profile = convertProfileData40to41(configData)
     profile = convertProfileData41to42(profile)
     mainW = profile.get("mainW", {})
@@ -212,18 +196,28 @@ def loadProfile(configDir=None, name=None):
     return profile
 
 
-def saveProfile(configDir=None, name=None, config=None):
+def loadProfileStart(configDir: Path) -> dict:
     """ """
-    if config is None:
-        config = {}
-    if name is None:
-        name = config.get("profileName", "config")
+    profile = defaultConfig()
+    profilePath = configDir / "profile"
+    if not profilePath.exists():
+        return profile
 
-    with open(configDir / "profile", "w") as profile:
-        profile.writelines(f"{name}")
+    profileName = profilePath.read_text()
+    profilePath = configDir / (profileName + ".cfg")
+    if not profilePath.exists():
+        return profile
 
-    fileName = configDir / (name + ".cfg")
+    profile = loadProfile(profilePath)
+    return profile
+
+
+def saveProfile(saveProfilePath: Path, config: dict) -> None:
+    """ """
+    with open(saveProfilePath.parent / "profile", "w") as profile:
+        profile.writelines(saveProfilePath.stem)
+
+    file = saveProfilePath.parent / (saveProfilePath.stem + '.cfg')
     config["version"] = profileVersion
-    with open(fileName, "w") as outfile:
+    with open(file, "w") as outfile:
         json.dump(config, outfile, sort_keys=True, indent=4)
-    return True

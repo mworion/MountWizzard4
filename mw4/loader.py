@@ -103,16 +103,7 @@ class MyApp(QApplication):
 
     def notify(self, obj: QWidget, event: QEvent) -> bool:
         """ """
-        try:
-            returnValue = QApplication.notify(self, obj, event)
-
-        except Exception as e:
-            self.log.critical("-" * 100)
-            self.log.critical("Event: {0}".format(event))
-            self.log.critical("EventType: {0}".format(event.type()))
-            self.log.critical("Exception error in event loop: {0}".format(e))
-            self.log.critical("-" * 100)
-            returnValue = False
+        returnValue = QApplication.notify(self, obj, event)
 
         if not isinstance(event, QMouseEvent):
             return returnValue

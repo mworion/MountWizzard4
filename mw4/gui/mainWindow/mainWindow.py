@@ -18,6 +18,7 @@
 import time
 from datetime import datetime
 import shutil
+from pathlib import Path
 
 # external packages
 from PySide6.QtCore import Qt
@@ -87,8 +88,8 @@ class MainWindow(MWidget):
         self.ui.saveConfigQuit.clicked.connect(self.quitSave)
         self.ui.loadFrom.clicked.connect(self.loadProfileGUI)
         self.ui.addFrom.clicked.connect(self.addProfileGUI)
-        self.ui.saveConfigAs.clicked.connect(self.saveConfigAs)
-        self.ui.saveConfig.clicked.connect(self.saveConfig)
+        self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
+        self.ui.saveConfig.clicked.connect(self.saveProfile)
         self.app.seeingWeather.b = self.ui.label_b.property("a")
         self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
         self.ui.tabsMovable.clicked.connect(self.enableTabsMovable)
@@ -103,13 +104,14 @@ class MainWindow(MWidget):
     def initConfig(self) -> None:
         """ """
         config = self.app.config
+        if "mainW" not in config:
+            config["mainW"] = {}
+
         colSet = config.get("colorSet", 0)
         Styles.colorSet = colSet
         self.ui.colorSet.setCurrentIndex(colSet)
         self.setStyleSheet(self.mw4Style)
         self.ui.profile.setText(config.get("profileName"))
-        if "mainW" not in config:
-            config["mainW"] = {}
         config = config["mainW"]
         self.positionWindow(config)
         self.setTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
@@ -206,7 +208,7 @@ class MainWindow(MWidget):
     def quitSave(self) -> None:
         """ """
         self.app.storeConfig()
-        self.saveConfig()
+        self.saveProfile()
         self.close()
 
     def updateMountConnStat(self, status: bool) -> None:
@@ -355,11 +357,7 @@ class MainWindow(MWidget):
 
     def updateThreadAndOnlineStatus(self) -> None:
         """ """
-        if self.ui.isOnline.isChecked():
-            mode = "Online"
-        else:
-            mode = "Offline"
-
+        mode = "Online" if self.ui.isOnline.isChecked() else "Offline"
         moon = self.ui.moonPhaseIllumination.text()
 
         f = dark_twilight_day(self.app.ephemeris, self.app.mount.obsSite.location)
@@ -409,118 +407,69 @@ class MainWindow(MWidget):
         elif self.app.mount.obsSite.status != 10:
             self.satStatus = False
 
-    @staticmethod
-    def checkExtension(filePath: str, ext: str) -> str:
-        """ """
-        if not filePath.endswith(ext):
-            filePath += ext
-        return filePath
-
     def switchProfile(self, config: dict) -> None:
         """ """
         self.externalWindows.closeExtendedWindows()
         self.mainWindowAddons.addons["SettDevice"].stopDrivers()
+        self.threadPool.waitForDone(10000)
         self.app.config = config
         topo = self.app.initConfig()
         self.app.mount.obsSite.location = topo
         self.initConfig()
-        self.externalWindows.showExtendedWindows()
 
-    def loadProfileGUI(self) -> bool:
+    def loadProfileGUI(self) -> None:
         """ """
         folder = self.app.mwGlob["configDir"]
-        loadFilePath = self.openFile(self, "Open config file", folder, "Config files (*.cfg)")
-        if not loadFilePath.is_file():
-            return False
-
-        config = loadProfile(configDir=self.app.mwGlob["configDir"], name=loadFilePath.stem)
-        if config:
-            self.ui.profile.setText(loadFilePath.stem)
-            self.msg.emit(1, "System", "Profile", f"loaded {loadFilePath.stem}")
-        else:
-            self.msg.emit(
-                2,
-                "System",
-                "Profile error",
-                f"{loadFilePath.stem}] cannot no be loaded",
-            )
-            return False
-
+        loadProfilePath = self.openFile(self, "Open config file", folder, "Config files (*.cfg)")
+        if not loadProfilePath.is_file():
+            return
+        config = loadProfile(loadProfilePath)
         self.switchProfile(config)
-        return True
+        self.ui.profile.setText(loadProfilePath.stem)
+        self.msg.emit(1, "System", "Profile", f"{loadProfilePath.stem} loaded")
 
-    def addProfileGUI(self) -> bool:
+    def addProfileGUI(self) -> None:
         """ """
         config = self.app.config
         folder = self.app.mwGlob["configDir"]
-        loadFilePath = self.openFile(
+        loadProfilePath = self.openFile(
             self, "Open add-on config file", folder, "Config files (*.cfg)"
         )
-        if not loadFilePath.is_file():
+        if not loadProfilePath.is_file():
             self.ui.profileAdd.setText("-")
-            return False
+            return
 
-        self.storeConfig()
-        self.app.storeConfig()
-        configAdd = loadProfile(configDir=self.app.mwGlob["configDir"], name=loadFilePath.stem)
-        if configAdd:
-            self.ui.profileAdd.setText(loadFilePath.stem)
-            profile = self.ui.profile.text()
-            self.msg.emit(1, "System", "Profile", f"Base: {profile}")
-            self.msg.emit(1, "System", "Profile", f"Add : {loadFilePath.name}")
-        else:
-            self.ui.profileAdd.setText("-")
-            self.msg.emit(
-                2,
-                "System",
-                "Profile error",
-                f"{loadFilePath.name}] " f"cannot " f"no be loaded",
-            )
-            return False
-
+        configAdd = loadProfile(loadProfilePath)
         config = blendProfile(config, configAdd)
         self.switchProfile(config)
-        return True
+        self.ui.profileAdd.setText(loadProfilePath.stem)
+        profile = self.ui.profile.text()
+        self.msg.emit(1, "System", "Profile", f"Base: {profile}")
+        self.msg.emit(1, "System", "Profile", f"Add : {loadProfilePath.name}")
 
-    def saveConfigAs(self) -> bool:
+    def saveProfileBase(self, saveProfilePath: Path) -> None:
+        """ """
+        self.storeConfig()
+        self.app.storeConfig()
+        saveProfile(saveProfilePath, self.app.config)
+        self.ui.profile.setText(saveProfilePath.stem)
+        self.msg.emit(1, "System", "Profile", f"saved {saveProfilePath.stem}")
+        self.ui.profileAdd.setText("-")
+
+    def saveProfileAs(self) -> None:
         """ """
         folder = self.app.mwGlob["configDir"]
-        saveFilePath = self.saveFile(
+        saveProfilePath = self.saveFile(
             self, "Save config file", folder, "Config files (*.cfg)", enableDir=False
         )
-        if not saveFilePath.name:
-            return False
+        if not saveProfilePath.name:
+            return
+        self.saveProfileBase(saveProfilePath)
 
-        self.storeConfig()
-        self.app.storeConfig()
-        suc = saveProfile(
-            configDir=self.app.mwGlob["configDir"],
-            name=saveFilePath.stem,
-            config=self.app.config,
-        )
-        if suc:
-            self.ui.profile.setText(saveFilePath.stem)
-            self.msg.emit(1, "System", "Profile", f"saved {saveFilePath.stem}")
-            self.ui.profileAdd.setText("-")
-        else:
-            self.msg.emit(2, "System", "Profile error", f"{saveFilePath.stem}] cannot no be saved")
-        return True
-
-    def saveConfig(self) -> bool:
+    def saveProfile(self) -> None:
         """ """
-        self.storeConfig()
-        self.app.storeConfig()
-        suc = saveProfile(
-            configDir=self.app.mwGlob["configDir"],
-            name=self.ui.profile.text(),
-            config=self.app.config,
-        )
-        if suc:
-            self.ui.profileAdd.setText("-")
-            self.msg.emit(1, "System", "Profile", "Actual profile saved")
-        else:
-            self.msg.emit(2, "System", "Profile", "Actual profile cannot not be saved")
-        return suc
+        saveProfilePath = self.app.mwGlob["configDir"] / (self.ui.profile.text() + ".cfg")
+        self.saveProfileBase(saveProfilePath)
 
     def remoteCommand(self, command: str) -> None:
         """

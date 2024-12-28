@@ -40,14 +40,13 @@ resources.qInitResources()
 def window(qapp):
     packageConfig.isAvailable = True
     with mock.patch.object(MainWindow, "show"):
-        with mock.patch.object(MainWindow, "initConfig"):
-            window = MainWindow(app=App())
-            yield window
-            window.app.threadPool.waitForDone(10000)
+        window = MainWindow(app=App())
+        yield window
+        window.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(window):
-    window.app.config["mainW"] = {}
+    del window.app.config["mainW"]
     with mock.patch.object(window.mainWindowAddons, "initConfig"):
         with mock.patch.object(window, "smartTabGui"):
             with mock.patch.object(window, "enableTabsMovable"):
@@ -93,7 +92,7 @@ def test_closeEvent_1(window):
 
 def test_quitSave_1(window):
     window.ui.profile.setText("test")
-    with mock.patch.object(window, "saveConfig"):
+    with mock.patch.object(window, "saveProfile"):
         with mock.patch.object(gui.mainWindow.mainWindow, "saveProfile"):
             with mock.patch.object(window, "close"):
                 window.quitSave()
@@ -326,16 +325,6 @@ def test_updateStatusGUI_5(window):
     window.updateStatusGUI(OB)
 
 
-def test_checkExtension_1(window):
-    val = window.checkExtension("tests/workDir/image/test.fit", "fit")
-    assert val == "tests/workDir/image/test.fit"
-
-
-def test_checkExtension_2(window):
-    val = window.checkExtension("tests/workDir/image/test", ".fit")
-    assert val == "tests/workDir/image/test.fit"
-
-
 def test_switchProfile_1(window):
     loc = wgs84.latlon(latitude_degrees=10, longitude_degrees=10)
     with mock.patch.object(window.externalWindows, "closeExtendedWindows"):
@@ -351,8 +340,7 @@ def test_switchProfile_1(window):
 def test_loadProfileGUI_1(window):
     with mock.patch.object(window, "openFile", return_value=Path("")):
         with mock.patch.object(Path, "is_file", return_value=False):
-            suc = window.loadProfileGUI()
-            assert not suc
+            window.loadProfileGUI()
 
 
 def test_loadProfileGUI2(window):
@@ -360,8 +348,7 @@ def test_loadProfileGUI2(window):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(gui.mainWindow.mainWindow, "loadProfile", return_value={}):
                 with mock.patch.object(window, "switchProfile"):
-                    suc = window.loadProfileGUI()
-                    assert not suc
+                    window.loadProfileGUI()
 
 
 def test_loadProfileGUI_3(window):
@@ -371,8 +358,7 @@ def test_loadProfileGUI_3(window):
                 gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}
             ):
                 with mock.patch.object(window, "switchProfile"):
-                    suc = window.loadProfileGUI()
-                    assert suc
+                    window.loadProfileGUI()
 
 
 def test_addProfileGUI_1(window):
@@ -403,8 +389,7 @@ def test_addProfileGUI_3(window):
                     with mock.patch.object(window.app, "storeConfig"):
                         with mock.patch.object(window, "switchProfile"):
                             with mock.patch.object(gui.mainWindow.mainWindow, "blendProfile"):
-                                suc = window.addProfileGUI()
-                                assert suc
+                                window.addProfileGUI()
 
 
 def test_saveConfigAs1(window):
@@ -412,8 +397,7 @@ def test_saveConfigAs1(window):
         with mock.patch.object(gui.mainWindow.mainWindow, "saveProfile", return_value=True):
             with mock.patch.object(window.app, "storeConfig"):
                 with mock.patch.object(window, "storeConfig"):
-                    suc = window.saveConfigAs()
-                    assert suc
+                    window.saveProfileAs()
 
 
 def test_saveConfigAs2(window):
@@ -421,30 +405,26 @@ def test_saveConfigAs2(window):
         with mock.patch.object(gui.mainWindow.mainWindow, "saveProfile", return_value=False):
             with mock.patch.object(window.app, "storeConfig"):
                 with mock.patch.object(window, "storeConfig"):
-                    suc = window.saveConfigAs()
-                    assert suc
+                    window.saveProfileAs()
 
 
 def test_saveConfigAs3(window):
     with mock.patch.object(window, "saveFile", return_value=Path("")):
-        suc = window.saveConfigAs()
-        assert not suc
+        window.saveProfileAs()
 
 
 def test_saveConfig1(window):
     with mock.patch.object(window, "storeConfig"):
         with mock.patch.object(window.app, "storeConfig"):
             with mock.patch.object(gui.mainWindow.mainWindow, "saveProfile", return_value=True):
-                suc = window.saveConfig()
-                assert suc
+                window.saveProfile()
 
 
 def test_saveConfig2(window):
     with mock.patch.object(window, "storeConfig"):
         with mock.patch.object(window.app, "storeConfig"):
             with mock.patch.object(gui.mainWindow.mainWindow, "saveProfile", return_value=False):
-                suc = window.saveConfig()
-                assert not suc
+                window.saveProfile()
 
 
 def test_remoteCommand_1(window):

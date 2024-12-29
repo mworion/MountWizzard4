@@ -1070,7 +1070,7 @@ class Styles:
         return self.cs["M_TABS"][self.colorSet]
 
     @property
-    def mw4Style(self):
+    def mw4Style(self) -> str:
         if platform.system() == "Darwin":
             styleRaw = self.MAC_STYLE + self.BASIC_STYLE
         else:
@@ -1078,7 +1078,7 @@ class Styles:
         return self.renderStyle(styleRaw)
 
     @staticmethod
-    def hex2rgb(val):
+    def hex2rgb(val: str) -> list[int]:
         """
         :param val:
         :return:
@@ -1089,12 +1089,8 @@ class Styles:
         b = int(val[4:6], 16)
         return [r, g, b]
 
-    def calcHexColor(self, val, f):
-        """
-        :param val:
-        :param f:
-        :return:
-        """
+    def calcHexColor(self, val: list[int], f: float) -> str:
+        """ """
         rgb = self.hex2rgb(val)
         rgb = [int(x * f) for x in rgb]
         return f"#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}"

@@ -91,7 +91,7 @@ class EnvironSeeing(MWidget):
             "jetstream",
         ]
         colorPrim = self.cs["M_PRIM"][0]
-        colorQuar = self.cs["M_QUAR"][0]
+        colorQuar = self.cs["M_BACK"][0]
         colorTer = self.cs["M_TER"][0]
         seeTab = self.ui.meteoblueSeeing
         data = self.app.seeingWeather.data["hourly"]

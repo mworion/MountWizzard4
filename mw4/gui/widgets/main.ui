@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -8305,7 +8305,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -8801,7 +8801,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>130</y>
+         <y>135</y>
          <width>366</width>
          <height>91</height>
         </rect>
@@ -8949,9 +8949,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>250</y>
+         <y>255</y>
          <width>361</width>
-         <height>141</height>
+         <height>136</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -9039,7 +9039,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>55</y>
+          <y>50</y>
           <width>336</width>
           <height>20</height>
          </rect>
@@ -9062,7 +9062,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>75</y>
+          <y>70</y>
           <width>256</width>
           <height>20</height>
          </rect>
@@ -9088,7 +9088,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>55</y>
+          <y>50</y>
           <width>106</width>
           <height>20</height>
          </rect>
@@ -9107,30 +9107,11 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>Use dome AZ</string>
         </property>
        </widget>
-       <widget class="Line" name="line_89">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>45</y>
-          <width>341</width>
-          <height>6</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <property name="lineWidth">
-         <number>1</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Orientation::Vertical</enum>
-        </property>
-       </widget>
        <widget class="QCheckBox" name="autoDeleteHorizon">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>95</y>
+          <y>90</y>
           <width>256</width>
           <height>20</height>
          </rect>
@@ -9156,7 +9137,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>115</y>
+          <y>110</y>
           <width>271</width>
           <height>20</height>
          </rect>
@@ -9179,7 +9160,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>290</x>
-          <y>115</y>
+          <y>110</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -9220,7 +9201,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>335</x>
-          <y>115</y>
+          <y>110</y>
           <width>16</width>
           <height>20</height>
          </rect>
@@ -11774,7 +11755,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -30228,6 +30209,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <item>
          <property name="text">
           <string>Main Theme</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Main Theme 2025</string>
          </property>
         </item>
         <item>

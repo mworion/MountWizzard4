@@ -31,118 +31,148 @@ class Styles:
                 "#00000000",
                 "#00000000",
                 "#00000000",
+                "#00000000",
             ],
             "M_PRIM": [
+                "#2090C0",
                 "#2090C0",
                 "#C05050",
                 "#000000",
             ],
             "M_PRIM1": [
                 "#186C90",
+                "#186C90",
                 "#903838",
                 "#C0C0C0",
             ],
             "M_PRIM2": [
+                "#104860",
                 "#104860",
                 "#602828",
                 "#A0A0A0",
             ],
             "M_PRIM3": [
                 "#092B39",
+                "#092B39",
                 "#481C1C",
                 "#808080",
             ],
             "M_PRIM4": [
+                "#04151C",
                 "#04151C",
                 "#241010",
                 "#404040",
             ],
             "M_SEC": [
                 "#404040",
+                "#202020",
                 "#402020",
                 "#A0A0A0",
             ],
             "M_SEC1": [
                 "#282828",
+                "#101010",
                 "#201010",
                 "#C0C0C0",
             ],
             "M_TER": [
+                "#C0C0C0",
                 "#C0C0C0",
                 "#E00000",
                 "#101010",
             ],
             "M_TER1": [
                 "#A0A0A0",
+                "#A0A0A0",
                 "#A00000",
                 "#404040",
             ],
+            "M_TER2": [
+                "#808080",
+                "#808080",
+                "#800000",
+                "#606060",
+            ],
             "M_QUAR": [
+                "#000000",
                 "#000000",
                 "#000000",
                 "#FFFFFF",
             ],
             "M_BACK": [
                 "#181818",
+                "#1C1C1C",
                 "#181818",
                 "#E0E0E0",
             ],
             "M_BACK0": [
                 "#141414",
+                "#181818",
                 "#141414",
                 "#E8E8E8",
             ],
             "M_RED": [
                 "#D03030",
+                "#E02020",
                 "#C03030",
                 "#800000",
             ],
             "M_RED1": [
                 "#902020",
+                "#C01010",
                 "#802020",
                 "#A00000",
             ],
             "M_RED2": [
                 "#701818",
+                "#900C0C",
                 "#802020",
                 "#E00000",
             ],
             "M_YELLOW": [
                 "#D0D000",
+                "#E0E000",
                 "#D0D000",
                 "#808000",
             ],
             "M_YELLOW1": [
                 "#909000",
+                "#A0A000",
                 "#808000",
                 "#A0A000",
             ],
             "M_YELLOW2": [
                 "#707000",
+                "#808000",
                 "#A0A000",
                 "#C0C000",
             ],
             "M_GREEN": [
                 "#00C000",
+                "#00D000",
                 "#00C000",
                 "#008000",
             ],
             "M_GREEN1": [
                 "#008000",
+                "#009000",
                 "#008000",
                 "#00A000",
             ],
             "M_GREEN2": [
                 "#005000",
+                "#006000",
                 "#00A000",
                 "#00C000",
             ],
             "M_PINK": [
                 "#FF00FF",
+                "#FF00FF",
                 "#C000C0",
                 "#E000E0",
             ],
             "M_PINK1": [
+                "#B000B0",
                 "#B000B0",
                 "#900090",
                 "#900090",
@@ -150,34 +180,41 @@ class Styles:
             "M_CYAN": [
                 "#00FFFF",
                 "#00FFFF",
+                "#00FFFF",
                 "#008080",
             ],
             "M_CYAN1": [
+                "#00B0B0",
                 "#00B0B0",
                 "#00B0B0",
                 "#00A0A0",
             ],
             "M_TABS": [
                 "#2090C0",
+                "#2090C0",
                 "#C05050",
                 "#2090C0",
             ],
             "checkmark": [
+                "checkmark0",
                 "checkmark0",
                 "checkmark1",
                 "checkmark2",
             ],
             "arrow-up": [
                 "arrow-up0",
+                "arrow-up0",
                 "arrow-up1",
                 "arrow-up2",
             ],
             "arrow-down": [
                 "arrow-down0",
+                "arrow-down0",
                 "arrow-down1",
                 "arrow-down2",
             ],
             "radio": [
+                "radio0",
                 "radio0",
                 "radio1",
                 "radio2",
@@ -405,7 +442,7 @@ class Styles:
             background-color: $M_BACK$;
         }
         QGroupBox::title:disabled{
-            color: $M_SEC$;
+            color: $M_PRIM2$;
         }
         QGroupBox[frameless=true] {
             border-width: 0px;
@@ -437,7 +474,7 @@ class Styles:
         QCheckBox {
             color: $M_TER$;
             spacing: 5px;
-            background-color: $M_TRANS$;;
+            background-color: $M_TRANS$;
         }
         QCheckBox::indicator {
             border-width: 1px;
@@ -464,11 +501,11 @@ class Styles:
         QRadioButton {
             color: $M_TER$;
             spacing: 5px;
-            background-color: $M_TRANS$;;
+            background-color: $M_TRANS$;
         }
         QRadioButton:disabled {
             color: $M_SEC$;
-            background-color: $M_TRANS$;;
+            background-color: $M_TRANS$;
         }
         QRadioButton::indicator {
             border-width: 2px;
@@ -489,8 +526,8 @@ class Styles:
             border-color: $M_SEC$;
         }
         /* Spin Boxes */
-       QDoubleSpinBox {
-            background-color: $M_BACK$;
+        QDoubleSpinBox {
+            background-color: $M_SEC1$;
             color: $M_PRIM$;
             border-color: $M_SEC$;
             border-width: 1px;
@@ -533,7 +570,7 @@ class Styles:
         }
         /* Push Buttons */
         QPushButton {
-            background-color: $M_SEC1$;
+            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.15, stop:0 $M_TER$, stop:0.20 $M_TER2$, stop:1 $M_SEC1$);
             color: $M_TER$;
             border-color: $M_SEC$;
             border-width: 1px;
@@ -542,7 +579,6 @@ class Styles:
             min - width: 10em;
         }
         QPushButton[keypad] {
-            background-color: $M_SEC1$;
             border-color: $M_PRIM$;
             border-radius: 8px;
             border-width: 2px;
@@ -664,10 +700,11 @@ class Styles:
             border-style: outset;
             border-radius: 2px;
             padding-left: 5px;
-            background-color: $M_SEC1$;
+            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.15, stop:0 $M_TER$, stop:0.20 $M_TER2$, stop:1 $M_SEC1$);
         }
         QComboBox:disabled {
             color: $M_SEC$;
+            background-color: $M_BACK$;
         }
         QComboBox[active=true] {
             border-color: $M_GREEN$;
@@ -676,12 +713,16 @@ class Styles:
         QComboBox::drop-down {
             subcontrol-origin: border;
             subcontrol-position: right;
-            width: 20px;
+            width: 24px;
             border-color: $M_SEC$;
             border-width: 1px;
             border-style: outset;
             border-radius: 2px;
             background-color: $M_SEC1$;
+            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.15, stop:0 $M_TER$, stop:0.20 $M_TER2$, stop:1 $M_SEC1$);
+        }
+        QComboBox::drop-down:disabled {
+            background-color: $M_BACK$;
         }
         QComboBox[active=true]::drop-down {
             border-color: $M_GREEN$;
@@ -697,7 +738,7 @@ class Styles:
             border-color: $M_SEC$;
             border-radius: 2px;
             color: $M_TER$;
-            background-color: $M_BACK$;
+            background-color: $M_BACK0$;
             min-height: 60px;
         }
         QComboBox QListView::item {
@@ -708,6 +749,7 @@ class Styles:
         QComboBox QListView::item:selected {
             border-style: outset;
             background-color: $M_PRIM2$;
+            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.15, stop:0 $M_TER$, stop:0.20 $M_TER2$, stop:1 $M_SEC1$);
         }
         /* lines */
         QFrame[frameShape="4"] {
@@ -755,8 +797,8 @@ class Styles:
             border-color: $M_SEC1$;
         }
         /* slider */
-        QSlider
-        {   background-color: $M_SEC1$;
+        QSlider {   
+            background-color: $M_SEC1$;
             width: 16px;
             height: 16px;
             margin: 0px 3px 0px 3px;
@@ -765,20 +807,20 @@ class Styles:
             border-style: outset;
             border-radius: 2px;
         }
-        QSlider::handle
-        {   background-color: $M_PRIM$;
+        QSlider::handle {   
+            background-color: $M_PRIM$;
             border-radius: 2px;
             border-style: outset;
             border-width: 1px;
         }
-        QSlider::add-page
-        {   background-color: $M_SEC1$;
+        QSlider::add-page {   
+            background-color: $M_SEC1$;
             border-color: $M_SEC$;
             border-style: outset;
             border-radius: 2px;
         }
-        QSlider::sub-page
-        {   background-color: $M_SEC1$;
+        QSlider::sub-page {   
+            background-color: $M_SEC1$;
             border-color: $M_SEC$;
             border-style: outset;
             border-radius: 2px;
@@ -791,55 +833,55 @@ class Styles:
             border-style: outset;
             border-radius: 2px;
         }
-        QScrollBar:vertical
-        {   width: 16px;
+        QScrollBar:vertical {   
+            width: 16px;
             margin: 4px 4px 4px 4px;
         }
-        QScrollBar:horizontal
-        {   height: 16px;
+        QScrollBar:horizontal {   
+            height: 16px;
             margin: 4px 16px 4px 4px;
         }
-        QScrollBar::handle
-        {   background-color: $M_PRIM$;
+        QScrollBar::handle {   
+            background-color: $M_PRIM$;
             min-height: 24px;
             min-width: 24px;
             border-radius: 2px;
         }
-        QScrollBar::sub-line
-        {   margin: 2px 0px 2px 0px;
+        QScrollBar::sub-line {   
+            margin: 2px 0px 2px 0px;
             height: 0px;
             width: 0px;
             subcontrol-position: top;
             subcontrol-origin: margin;
         }
-        QScrollBar::add-line
-        {   margin: 2px 0px 2px 0px;
+        QScrollBar::add-line {   
+            margin: 2px 0px 2px 0px;
             height: 0px;
             width: 0px;
             subcontrol-position: bottom;
             subcontrol-origin: margin;
         }
-        QScrollBar::sub-line:on
-        {   height: 16px;
+        QScrollBar::sub-line:on {   
+            height: 16px;
             width: 16px;
             subcontrol-position: top;
             subcontrol-origin: margin;
         }
-        QScrollBar::add-line:on
-        {   height: 0px;
+        QScrollBar::add-line:on {   
+            height: 0px;
             width: 0px;
             subcontrol-position: bottom;
             subcontrol-origin: margin;
         }
-        QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
-        {   background: none;
+        QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {   
+            background: none;
             border-width: 0px;
             border-color: $M_SEC$;
             border-style: plain;
             border-radius: 0px;
         }
-        QScrollBar::add-page, QScrollBar::sub-page
-        {   background: none;
+        QScrollBar::add-page, QScrollBar::sub-page {   
+            background: none;
         }
         /* progress bar */
         QProgressBar {
@@ -940,6 +982,14 @@ class Styles:
         return self.cs["M_PRIM4"][self.colorSet]
 
     @property
+    def M_SEC(self):
+        return self.cs["M_SEC"][self.colorSet]
+
+    @property
+    def M_SEC1(self):
+        return self.cs["M_SEC1"][self.colorSet]
+
+    @property
     def M_TER(self):
         return self.cs["M_TER"][self.colorSet]
 
@@ -948,12 +998,8 @@ class Styles:
         return self.cs["M_TER1"][self.colorSet]
 
     @property
-    def M_SEC(self):
-        return self.cs["M_SEC"][self.colorSet]
-
-    @property
-    def M_SEC1(self):
-        return self.cs["M_SEC1"][self.colorSet]
+    def M_TER2(self):
+        return self.cs["M_TER2"][self.colorSet]
 
     @property
     def M_BACK(self):
@@ -1053,21 +1099,27 @@ class Styles:
         rgb = [int(x * f) for x in rgb]
         return f"#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}"
 
-    def renderStyle(self, styleRaw):
-        """
-        :param styleRaw:
-        :return:
-        """
+    @staticmethod
+    def findKeysInLine(line: str) -> list:
+        """ """
+        keys = []
+        start = 0
+        end = 0
+        while start < len(line):
+            start = line.find("$", end)
+            if start == -1:
+                break
+            end = line.find("$", start + 1)
+            keys.append(line[start + 1: end])
+        return keys
+
+    def renderStyle(self, styleRaw: str) -> str:
+        """ """
         style = ""
         for line in styleRaw.split("\n"):
-            start = line.find("$")
-            end = line.find("$", start + 1)
-            key = line[start + 1 : end]
-            if key in self.cs:
-                repl = self.cs[key][self.colorSet]
-                line = line.replace(f"${key}$", repl)
-                if repl:
-                    style += line + "\n"
-            else:
-                style += line + "\n"
+            for key in self.findKeysInLine(line):
+                if key in self.cs:
+                    repl = self.cs[key][self.colorSet]
+                    line = line.replace(f"${key}$", repl)
+            style += line + "\n"
         return style

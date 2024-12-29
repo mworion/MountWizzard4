@@ -570,7 +570,7 @@ class Styles:
         }
         /* Push Buttons */
         QPushButton {
-            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.15, stop:0 $M_TER$, stop:0.20 $M_TER2$, stop:1 $M_SEC1$);
+            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.1, stop:0 $M_TER$, stop:0.20 $M_TER2$, stop:1 $M_SEC1$);
             color: $M_TER$;
             border-color: $M_SEC$;
             border-width: 1px;
@@ -700,7 +700,7 @@ class Styles:
             border-style: outset;
             border-radius: 2px;
             padding-left: 5px;
-            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.15, stop:0 $M_TER$, stop:0.20 $M_TER2$, stop:1 $M_SEC1$);
+            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.1, stop:0 $M_TER$, stop:0.40 $M_TER2$, stop:1 $M_SEC1$);
         }
         QComboBox:disabled {
             color: $M_SEC$;
@@ -719,7 +719,7 @@ class Styles:
             border-style: outset;
             border-radius: 2px;
             background-color: $M_SEC1$;
-            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.15, stop:0 $M_TER$, stop:0.20 $M_TER2$, stop:1 $M_SEC1$);
+            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.1, stop:0 $M_TER$, stop:0.20 $M_TER2$, stop:1 $M_SEC1$);
         }
         QComboBox::drop-down:disabled {
             background-color: $M_BACK$;
@@ -749,7 +749,7 @@ class Styles:
         QComboBox QListView::item:selected {
             border-style: outset;
             background-color: $M_PRIM2$;
-            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.15, stop:0 $M_TER$, stop:0.20 $M_TER2$, stop:1 $M_SEC1$);
+            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.1, stop:0 $M_TER$, stop:0.20 $M_TER2$, stop:1 $M_SEC1$);
         }
         /* lines */
         QFrame[frameShape="4"] {

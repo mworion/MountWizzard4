@@ -209,7 +209,7 @@ class HemisphereWindow(MWidget, SlewInterface):
         viewBox = self.ui.hemisphere.p[0].getViewBox()
         mousePoint = viewBox.mapSceneToView(pos)
 
-        if viewBox.posInViewRange(mousePoint):
+        if viewBox.posInViewRange(pos):
             self.ui.azimuth.setText(f"{mousePoint.x():3.1f}")
             self.ui.altitude.setText(f"{mousePoint.y():3.1f}")
             QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.CrossCursor))
@@ -785,7 +785,7 @@ class HemisphereWindow(MWidget, SlewInterface):
 
     def setTerrainFile(self, fileName):
         """ """
-        self.ui.terrainFileName.setText(fileName)
+        self.ui.terrainFileName.setText(str(fileName))
         terrainFile = self.app.mwGlob["configDir"] / fileName
         if not terrainFile.is_file():
             self.imageTerrain = None

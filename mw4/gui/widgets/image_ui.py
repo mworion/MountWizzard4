@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'image.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.7.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -44,7 +44,7 @@ class Ui_ImageDialog(object):
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.groupImageActions = QGroupBox(ImageDialog)
         self.groupImageActions.setObjectName(u"groupImageActions")
-        self.groupImageActions.setProperty("large", True)
+        self.groupImageActions.setProperty(u"large", True)
         self.gridLayout_4 = QGridLayout(self.groupImageActions)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.gridLayout_4.setHorizontalSpacing(10)
@@ -121,7 +121,7 @@ class Ui_ImageDialog(object):
 
         self.groupBox = QGroupBox(ImageDialog)
         self.groupBox.setObjectName(u"groupBox")
-        self.groupBox.setProperty("large", True)
+        self.groupBox.setProperty(u"large", True)
         self.gridLayout_3 = QGridLayout(self.groupBox)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.gridLayout_3.setVerticalSpacing(5)
@@ -167,7 +167,7 @@ class Ui_ImageDialog(object):
         self.photometryGroup = QGroupBox(ImageDialog)
         self.photometryGroup.setObjectName(u"photometryGroup")
         self.photometryGroup.setCheckable(True)
-        self.photometryGroup.setProperty("large", True)
+        self.photometryGroup.setProperty(u"large", True)
         self.Imageview = QGridLayout(self.photometryGroup)
         self.Imageview.setObjectName(u"Imageview")
         self.Imageview.setHorizontalSpacing(10)
@@ -554,7 +554,7 @@ class Ui_ImageDialog(object):
         self.headerGroup.setObjectName(u"headerGroup")
         self.headerGroup.setMinimumSize(QSize(120, 0))
         self.headerGroup.setMaximumSize(QSize(0, 16777215))
-        self.headerGroup.setProperty("large", True)
+        self.headerGroup.setProperty(u"large", True)
         self.gridLayout = QGridLayout(self.headerGroup)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setHorizontalSpacing(4)
@@ -762,7 +762,7 @@ class Ui_ImageDialog(object):
         self.groupMouseCoord.setObjectName(u"groupMouseCoord")
         self.groupMouseCoord.setMinimumSize(QSize(120, 0))
         self.groupMouseCoord.setMaximumSize(QSize(120, 16777215))
-        self.groupMouseCoord.setProperty("large", True)
+        self.groupMouseCoord.setProperty(u"large", True)
         self.gridLayout_14 = QGridLayout(self.groupMouseCoord)
         self.gridLayout_14.setObjectName(u"gridLayout_14")
         self.gridLayout_14.setHorizontalSpacing(4)

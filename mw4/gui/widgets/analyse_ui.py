@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'analyse.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.7.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -56,7 +56,7 @@ class Ui_AnalyseDialog(object):
 
         self.groupBox_3 = QGroupBox(AnalyseDialog)
         self.groupBox_3.setObjectName(u"groupBox_3")
-        self.groupBox_3.setProperty("large", True)
+        self.groupBox_3.setProperty(u"large", True)
         self.gridLayout_4 = QGridLayout(self.groupBox_3)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.gridLayout_4.setHorizontalSpacing(10)
@@ -121,7 +121,7 @@ class Ui_AnalyseDialog(object):
 
         self.groupBox_4 = QGroupBox(AnalyseDialog)
         self.groupBox_4.setObjectName(u"groupBox_4")
-        self.groupBox_4.setProperty("large", True)
+        self.groupBox_4.setProperty(u"large", True)
         self.gridLayout_5 = QGridLayout(self.groupBox_4)
         self.gridLayout_5.setObjectName(u"gridLayout_5")
         self.gridLayout_5.setHorizontalSpacing(20)
@@ -181,7 +181,7 @@ class Ui_AnalyseDialog(object):
         self.groupBox_5.setObjectName(u"groupBox_5")
         self.groupBox_5.setMinimumSize(QSize(120, 0))
         self.groupBox_5.setMaximumSize(QSize(120, 16777215))
-        self.groupBox_5.setProperty("large", True)
+        self.groupBox_5.setProperty(u"large", True)
         self.gridLayout_6 = QGridLayout(self.groupBox_5)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
         self.gridLayout_6.setHorizontalSpacing(4)
@@ -575,7 +575,7 @@ class Ui_AnalyseDialog(object):
         self.gridLayout_2.setContentsMargins(4, 4, 4, 4)
         self.groupBox = QGroupBox(self.General)
         self.groupBox.setObjectName(u"groupBox")
-        self.groupBox.setProperty("large", True)
+        self.groupBox.setProperty(u"large", True)
         self.horizontalLayout = QHBoxLayout(self.groupBox)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -592,7 +592,7 @@ class Ui_AnalyseDialog(object):
 
         self.groupBox_14 = QGroupBox(self.General)
         self.groupBox_14.setObjectName(u"groupBox_14")
-        self.groupBox_14.setProperty("large", True)
+        self.groupBox_14.setProperty(u"large", True)
         self.horizontalLayout_2 = QHBoxLayout(self.groupBox_14)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
@@ -609,7 +609,7 @@ class Ui_AnalyseDialog(object):
 
         self.groupBox_15 = QGroupBox(self.General)
         self.groupBox_15.setObjectName(u"groupBox_15")
-        self.groupBox_15.setProperty("large", True)
+        self.groupBox_15.setProperty(u"large", True)
         self.horizontalLayout_3 = QHBoxLayout(self.groupBox_15)
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
@@ -626,7 +626,7 @@ class Ui_AnalyseDialog(object):
 
         self.groupBox_16 = QGroupBox(self.General)
         self.groupBox_16.setObjectName(u"groupBox_16")
-        self.groupBox_16.setProperty("large", True)
+        self.groupBox_16.setProperty(u"large", True)
         self.horizontalLayout_4 = QHBoxLayout(self.groupBox_16)
         self.horizontalLayout_4.setSpacing(0)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
@@ -650,7 +650,7 @@ class Ui_AnalyseDialog(object):
         self.gridLayout_3.setContentsMargins(4, 4, 4, 4)
         self.groupBox_2 = QGroupBox(self.AltAz)
         self.groupBox_2.setObjectName(u"groupBox_2")
-        self.groupBox_2.setProperty("large", True)
+        self.groupBox_2.setProperty(u"large", True)
         self.horizontalLayout_5 = QHBoxLayout(self.groupBox_2)
         self.horizontalLayout_5.setSpacing(0)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
@@ -667,7 +667,7 @@ class Ui_AnalyseDialog(object):
 
         self.groupBox_7 = QGroupBox(self.AltAz)
         self.groupBox_7.setObjectName(u"groupBox_7")
-        self.groupBox_7.setProperty("large", True)
+        self.groupBox_7.setProperty(u"large", True)
         self.horizontalLayout_6 = QHBoxLayout(self.groupBox_7)
         self.horizontalLayout_6.setSpacing(0)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
@@ -684,7 +684,7 @@ class Ui_AnalyseDialog(object):
 
         self.groupBox_8 = QGroupBox(self.AltAz)
         self.groupBox_8.setObjectName(u"groupBox_8")
-        self.groupBox_8.setProperty("large", True)
+        self.groupBox_8.setProperty(u"large", True)
         self.horizontalLayout_7 = QHBoxLayout(self.groupBox_8)
         self.horizontalLayout_7.setSpacing(0)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
@@ -701,7 +701,7 @@ class Ui_AnalyseDialog(object):
 
         self.groupBox_9 = QGroupBox(self.AltAz)
         self.groupBox_9.setObjectName(u"groupBox_9")
-        self.groupBox_9.setProperty("large", True)
+        self.groupBox_9.setProperty(u"large", True)
         self.horizontalLayout_8 = QHBoxLayout(self.groupBox_9)
         self.horizontalLayout_8.setSpacing(0)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
@@ -725,7 +725,7 @@ class Ui_AnalyseDialog(object):
         self.gridLayout_8.setContentsMargins(4, 4, 4, 4)
         self.groupBox_18 = QGroupBox(self.RaDec)
         self.groupBox_18.setObjectName(u"groupBox_18")
-        self.groupBox_18.setProperty("large", True)
+        self.groupBox_18.setProperty(u"large", True)
         self.horizontalLayout_10 = QHBoxLayout(self.groupBox_18)
         self.horizontalLayout_10.setSpacing(0)
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
@@ -742,7 +742,7 @@ class Ui_AnalyseDialog(object):
 
         self.groupBox_17 = QGroupBox(self.RaDec)
         self.groupBox_17.setObjectName(u"groupBox_17")
-        self.groupBox_17.setProperty("large", True)
+        self.groupBox_17.setProperty(u"large", True)
         self.horizontalLayout_9 = QHBoxLayout(self.groupBox_17)
         self.horizontalLayout_9.setSpacing(0)
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
@@ -759,7 +759,7 @@ class Ui_AnalyseDialog(object):
 
         self.groupBox_19 = QGroupBox(self.RaDec)
         self.groupBox_19.setObjectName(u"groupBox_19")
-        self.groupBox_19.setProperty("large", True)
+        self.groupBox_19.setProperty(u"large", True)
         self.horizontalLayout_11 = QHBoxLayout(self.groupBox_19)
         self.horizontalLayout_11.setSpacing(0)
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
@@ -776,7 +776,7 @@ class Ui_AnalyseDialog(object):
 
         self.groupBox_20 = QGroupBox(self.RaDec)
         self.groupBox_20.setObjectName(u"groupBox_20")
-        self.groupBox_20.setProperty("large", True)
+        self.groupBox_20.setProperty(u"large", True)
         self.horizontalLayout_12 = QHBoxLayout(self.groupBox_20)
         self.horizontalLayout_12.setSpacing(0)
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
@@ -829,9 +829,9 @@ class Ui_AnalyseDialog(object):
         self.linkViews.setText(QCoreApplication.translate("AnalyseDialog", u"Link Views", None))
         self.showISO.setText(QCoreApplication.translate("AnalyseDialog", u"2D contour", None))
         self.pointsWest.setText(QCoreApplication.translate("AnalyseDialog", u"Pierside West", None))
-        self.pointsWest.setProperty("color", QCoreApplication.translate("AnalyseDialog", u"green", None))
+        self.pointsWest.setProperty(u"color", QCoreApplication.translate("AnalyseDialog", u"green", None))
         self.pointsEast.setText(QCoreApplication.translate("AnalyseDialog", u"Pierside East", None))
-        self.pointsEast.setProperty("color", QCoreApplication.translate("AnalyseDialog", u"yellow", None))
+        self.pointsEast.setProperty(u"color", QCoreApplication.translate("AnalyseDialog", u"yellow", None))
         self.showHorizon.setText(QCoreApplication.translate("AnalyseDialog", u"Horizon mask", None))
         self.groupBox_5.setTitle(QCoreApplication.translate("AnalyseDialog", u"Model params", None))
 #if QT_CONFIG(tooltip)

@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'measure.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.7.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -49,7 +49,7 @@ class Ui_MeasureDialog(object):
         self.horizontalLayout.setContentsMargins(4, 6, 4, 6)
         self.measureGroup = QGroupBox(MeasureDialog)
         self.measureGroup.setObjectName(u"measureGroup")
-        self.measureGroup.setProperty("large", True)
+        self.measureGroup.setProperty(u"large", True)
         self.gridLayout = QGridLayout(self.measureGroup)
         self.gridLayout.setSpacing(5)
         self.gridLayout.setObjectName(u"gridLayout")

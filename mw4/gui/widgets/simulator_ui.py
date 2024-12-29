@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'simulator.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.7.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -48,7 +48,7 @@ class Ui_SimulatorDialog(object):
         self.gridLayout.setContentsMargins(0, -1, -1, -1)
         self.groupBox_2 = QGroupBox(SimulatorDialog)
         self.groupBox_2.setObjectName(u"groupBox_2")
-        self.groupBox_2.setProperty("large", True)
+        self.groupBox_2.setProperty(u"large", True)
         self.verticalLayout_2 = QVBoxLayout(self.groupBox_2)
         self.verticalLayout_2.setSpacing(4)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -118,7 +118,7 @@ class Ui_SimulatorDialog(object):
         sizePolicy1.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
         self.groupBox.setSizePolicy(sizePolicy1)
         self.groupBox.setMaximumSize(QSize(150, 16777215))
-        self.groupBox.setProperty("large", True)
+        self.groupBox.setProperty(u"large", True)
         self.verticalLayout = QVBoxLayout(self.groupBox)
         self.verticalLayout.setSpacing(4)
         self.verticalLayout.setObjectName(u"verticalLayout")

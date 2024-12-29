@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'satellite.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.7.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -202,7 +202,7 @@ class Ui_SatelliteDialog(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.groupEarth.sizePolicy().hasHeightForWidth())
         self.groupEarth.setSizePolicy(sizePolicy1)
-        self.groupEarth.setProperty("large", True)
+        self.groupEarth.setProperty(u"large", True)
         self.gridLayout_5 = QGridLayout(self.groupEarth)
         self.gridLayout_5.setSpacing(0)
         self.gridLayout_5.setObjectName(u"gridLayout_5")
@@ -221,7 +221,7 @@ class Ui_SatelliteDialog(object):
         self.groupHorizon.setObjectName(u"groupHorizon")
         sizePolicy1.setHeightForWidth(self.groupHorizon.sizePolicy().hasHeightForWidth())
         self.groupHorizon.setSizePolicy(sizePolicy1)
-        self.groupHorizon.setProperty("large", True)
+        self.groupHorizon.setProperty(u"large", True)
         self.gridLayout_4 = QGridLayout(self.groupHorizon)
         self.gridLayout_4.setSpacing(0)
         self.gridLayout_4.setObjectName(u"gridLayout_4")

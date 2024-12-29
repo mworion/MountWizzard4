@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'message.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.7.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -80,7 +80,7 @@ class Ui_MessageDialog(object):
         self.messageTable.setAutoScrollMargin(0)
         self.messageTable.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.messageTable.setTabKeyNavigation(False)
-        self.messageTable.setProperty("showDropIndicator", False)
+        self.messageTable.setProperty(u"showDropIndicator", False)
         self.messageTable.setDragDropOverwriteMode(False)
         self.messageTable.setAlternatingRowColors(False)
         self.messageTable.setSelectionMode(QAbstractItemView.NoSelection)
@@ -95,14 +95,14 @@ class Ui_MessageDialog(object):
         self.messageTable.horizontalHeader().setMinimumSectionSize(5)
         self.messageTable.horizontalHeader().setDefaultSectionSize(80)
         self.messageTable.horizontalHeader().setHighlightSections(True)
-        self.messageTable.horizontalHeader().setProperty("showSortIndicator", False)
+        self.messageTable.horizontalHeader().setProperty(u"showSortIndicator", False)
         self.messageTable.horizontalHeader().setStretchLastSection(True)
         self.messageTable.verticalHeader().setVisible(False)
         self.messageTable.verticalHeader().setCascadingSectionResizes(True)
         self.messageTable.verticalHeader().setMinimumSectionSize(1)
         self.messageTable.verticalHeader().setDefaultSectionSize(10)
         self.messageTable.verticalHeader().setHighlightSections(True)
-        self.messageTable.verticalHeader().setProperty("showSortIndicator", False)
+        self.messageTable.verticalHeader().setProperty(u"showSortIndicator", False)
         self.messageTable.verticalHeader().setStretchLastSection(False)
 
         self.verticalLayout.addWidget(self.messageTable)

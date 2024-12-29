@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'hemisphere.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.7.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -52,7 +52,7 @@ class Ui_HemisphereDialog(object):
         self.operationModeGroup = QGroupBox(HemisphereDialog)
         self.operationModeGroup.setObjectName(u"operationModeGroup")
         self.operationModeGroup.setMinimumSize(QSize(120, 0))
-        self.operationModeGroup.setProperty("large", True)
+        self.operationModeGroup.setProperty(u"large", True)
         self.gridLayout_7 = QGridLayout(self.operationModeGroup)
         self.gridLayout_7.setObjectName(u"gridLayout_7")
         self.gridLayout_7.setHorizontalSpacing(15)
@@ -89,7 +89,7 @@ class Ui_HemisphereDialog(object):
 
         self.groupBox_3 = QGroupBox(HemisphereDialog)
         self.groupBox_3.setObjectName(u"groupBox_3")
-        self.groupBox_3.setProperty("large", True)
+        self.groupBox_3.setProperty(u"large", True)
         self.gridLayout = QGridLayout(self.groupBox_3)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setHorizontalSpacing(15)
@@ -165,7 +165,7 @@ class Ui_HemisphereDialog(object):
 
         self.operationMode = QGroupBox(HemisphereDialog)
         self.operationMode.setObjectName(u"operationMode")
-        self.operationMode.setProperty("large", True)
+        self.operationMode.setProperty(u"large", True)
         self.gridLayout_2 = QGridLayout(self.operationMode)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.gridLayout_2.setHorizontalSpacing(15)
@@ -260,7 +260,7 @@ class Ui_HemisphereDialog(object):
         self.terrainImageGroup.setObjectName(u"terrainImageGroup")
         self.terrainImageGroup.setMinimumSize(QSize(120, 0))
         self.terrainImageGroup.setMaximumSize(QSize(120, 16777215))
-        self.terrainImageGroup.setProperty("large", True)
+        self.terrainImageGroup.setProperty(u"large", True)
         self.gridLayout_6 = QGridLayout(self.terrainImageGroup)
         self.gridLayout_6.setSpacing(5)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
@@ -344,7 +344,7 @@ class Ui_HemisphereDialog(object):
         self.groupBox_4.setObjectName(u"groupBox_4")
         self.groupBox_4.setMinimumSize(QSize(120, 0))
         self.groupBox_4.setMaximumSize(QSize(120, 16777215))
-        self.groupBox_4.setProperty("large", True)
+        self.groupBox_4.setProperty(u"large", True)
         self.verticalLayout_2 = QVBoxLayout(self.groupBox_4)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(5, 15, 5, 5)
@@ -382,7 +382,7 @@ class Ui_HemisphereDialog(object):
         self.horizonFileGroup.setObjectName(u"horizonFileGroup")
         self.horizonFileGroup.setMinimumSize(QSize(120, 0))
         self.horizonFileGroup.setMaximumSize(QSize(120, 16777215))
-        self.horizonFileGroup.setProperty("large", True)
+        self.horizonFileGroup.setProperty(u"large", True)
         self.verticalLayout_3 = QVBoxLayout(self.horizonFileGroup)
         self.verticalLayout_3.setSpacing(5)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")

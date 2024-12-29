@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'video.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.7.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -73,7 +73,7 @@ class Ui_VideoDialog(object):
         self.videoStop.setObjectName(u"videoStop")
         self.videoStop.setMinimumSize(QSize(60, 21))
         self.videoStop.setMaximumSize(QSize(100, 25))
-        self.videoStop.setProperty("running", False)
+        self.videoStop.setProperty(u"running", False)
 
         self.gridLayout.addWidget(self.videoStop, 0, 3, 1, 1)
 
@@ -81,7 +81,7 @@ class Ui_VideoDialog(object):
         self.videoURL.setObjectName(u"videoURL")
         self.videoURL.setMinimumSize(QSize(250, 21))
         self.videoURL.setMaximumSize(QSize(16777215, 25))
-        self.videoURL.setProperty("input", True)
+        self.videoURL.setProperty(u"input", True)
 
         self.gridLayout.addWidget(self.videoURL, 1, 3, 1, 3)
 

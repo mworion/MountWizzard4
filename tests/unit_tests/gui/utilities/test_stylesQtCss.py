@@ -58,8 +58,8 @@ def test_property(function):
     a = function.M_PRIM3
     a = function.M_PRIM4
     a = function.M_TER
-    a = function.M_TER
     a = function.M_TER1
+    a = function.M_TER2
     a = function.M_SEC
     a = function.M_SEC1
     a = function.M_BACK
@@ -92,6 +92,13 @@ def test_calcHexColor_2(function):
 def test_calcHexColor_3(function):
     val = function.calcHexColor("#808080", 0.5)
     assert val == "#404040"
+
+
+def test_findKeysInLine_1(function):
+    inStyle = "12345$M_PRIM$12345"
+    function.colorSet = 0
+    val = function.findKeysInLine(inStyle)
+    assert val[0] == "M_PRIM"
 
 
 def test_renderStyle_1(function):

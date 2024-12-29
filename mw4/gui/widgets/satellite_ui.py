@@ -98,15 +98,6 @@ class Ui_SatelliteDialog(object):
 
         self.horizontalLayout.addWidget(self.label_334)
 
-        self.label_335 = QLabel(self.groupBox)
-        self.label_335.setObjectName(u"label_335")
-        self.label_335.setMinimumSize(QSize(0, 25))
-        self.label_335.setFont(font1)
-        self.label_335.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label_335.setWordWrap(False)
-
-        self.horizontalLayout.addWidget(self.label_335)
-
         self.satLongitude = QLineEdit(self.groupBox)
         self.satLongitude.setObjectName(u"satLongitude")
         self.satLongitude.setEnabled(True)
@@ -121,6 +112,15 @@ class Ui_SatelliteDialog(object):
 
         self.horizontalLayout.addWidget(self.satLongitude)
 
+        self.label_335 = QLabel(self.groupBox)
+        self.label_335.setObjectName(u"label_335")
+        self.label_335.setMinimumSize(QSize(0, 25))
+        self.label_335.setFont(font1)
+        self.label_335.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label_335.setWordWrap(False)
+
+        self.horizontalLayout.addWidget(self.label_335)
+
         self.horizontalSpacer_5 = QSpacerItem(70, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer_5)
@@ -131,15 +131,6 @@ class Ui_SatelliteDialog(object):
         self.label_239.setFont(font1)
 
         self.horizontalLayout.addWidget(self.label_239)
-
-        self.label_209 = QLabel(self.groupBox)
-        self.label_209.setObjectName(u"label_209")
-        self.label_209.setMinimumSize(QSize(0, 25))
-        self.label_209.setFont(font1)
-        self.label_209.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label_209.setWordWrap(False)
-
-        self.horizontalLayout.addWidget(self.label_209)
 
         self.satAzimuth = QLineEdit(self.groupBox)
         self.satAzimuth.setObjectName(u"satAzimuth")
@@ -155,9 +146,32 @@ class Ui_SatelliteDialog(object):
 
         self.horizontalLayout.addWidget(self.satAzimuth)
 
+        self.label_209 = QLabel(self.groupBox)
+        self.label_209.setObjectName(u"label_209")
+        self.label_209.setMinimumSize(QSize(0, 25))
+        self.label_209.setFont(font1)
+        self.label_209.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label_209.setWordWrap(False)
+
+        self.horizontalLayout.addWidget(self.label_209)
+
         self.horizontalSpacer_7 = QSpacerItem(10, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer_7)
+
+        self.satAltitude = QLineEdit(self.groupBox)
+        self.satAltitude.setObjectName(u"satAltitude")
+        self.satAltitude.setEnabled(True)
+        self.satAltitude.setMinimumSize(QSize(0, 25))
+        self.satAltitude.setMaximumSize(QSize(60, 16777215))
+        self.satAltitude.setFont(font1)
+        self.satAltitude.setMouseTracking(False)
+        self.satAltitude.setAcceptDrops(False)
+        self.satAltitude.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.satAltitude.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
+        self.satAltitude.setReadOnly(True)
+
+        self.horizontalLayout.addWidget(self.satAltitude)
 
         self.label_298 = QLabel(self.groupBox)
         self.label_298.setObjectName(u"label_298")
@@ -173,20 +187,6 @@ class Ui_SatelliteDialog(object):
         self.label_206.setWordWrap(False)
 
         self.horizontalLayout.addWidget(self.label_206)
-
-        self.satAltitude = QLineEdit(self.groupBox)
-        self.satAltitude.setObjectName(u"satAltitude")
-        self.satAltitude.setEnabled(True)
-        self.satAltitude.setMinimumSize(QSize(0, 25))
-        self.satAltitude.setMaximumSize(QSize(60, 16777215))
-        self.satAltitude.setFont(font1)
-        self.satAltitude.setMouseTracking(False)
-        self.satAltitude.setAcceptDrops(False)
-        self.satAltitude.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
-        self.satAltitude.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
-        self.satAltitude.setReadOnly(True)
-
-        self.horizontalLayout.addWidget(self.satAltitude)
 
         self.horizontalSpacer_8 = QSpacerItem(80, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -260,23 +260,23 @@ class Ui_SatelliteDialog(object):
         self.satLatitude.setText(QCoreApplication.translate("SatelliteDialog", u"-", None))
         self.label_332.setText(QCoreApplication.translate("SatelliteDialog", u"\u00b0", None))
         self.label_334.setText(QCoreApplication.translate("SatelliteDialog", u"Longitude", None))
-        self.label_335.setText(QCoreApplication.translate("SatelliteDialog", u"\u00b0", None))
 #if QT_CONFIG(tooltip)
         self.satLongitude.setToolTip(QCoreApplication.translate("SatelliteDialog", u"Actual longitude where the satellite could be seen in zenith.", None))
 #endif // QT_CONFIG(tooltip)
         self.satLongitude.setText(QCoreApplication.translate("SatelliteDialog", u"-", None))
+        self.label_335.setText(QCoreApplication.translate("SatelliteDialog", u"\u00b0", None))
         self.label_239.setText(QCoreApplication.translate("SatelliteDialog", u"Azimuth", None))
-        self.label_209.setText(QCoreApplication.translate("SatelliteDialog", u"\u00b0", None))
 #if QT_CONFIG(tooltip)
         self.satAzimuth.setToolTip(QCoreApplication.translate("SatelliteDialog", u"Actual azimuth of the satelite from observers position.", None))
 #endif // QT_CONFIG(tooltip)
         self.satAzimuth.setText(QCoreApplication.translate("SatelliteDialog", u"-", None))
-        self.label_298.setText(QCoreApplication.translate("SatelliteDialog", u"Altitude", None))
-        self.label_206.setText(QCoreApplication.translate("SatelliteDialog", u"\u00b0", None))
+        self.label_209.setText(QCoreApplication.translate("SatelliteDialog", u"\u00b0", None))
 #if QT_CONFIG(tooltip)
         self.satAltitude.setToolTip(QCoreApplication.translate("SatelliteDialog", u"Actual altitude of the satelite from observers position.", None))
 #endif // QT_CONFIG(tooltip)
         self.satAltitude.setText(QCoreApplication.translate("SatelliteDialog", u"-", None))
+        self.label_298.setText(QCoreApplication.translate("SatelliteDialog", u"Altitude", None))
+        self.label_206.setText(QCoreApplication.translate("SatelliteDialog", u"\u00b0", None))
 #if QT_CONFIG(tooltip)
         self.groupEarth.setToolTip(QCoreApplication.translate("SatelliteDialog", u"<html><head/><body><p>Shows the satellite path vertical over ground.</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)

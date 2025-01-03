@@ -125,6 +125,43 @@ def guiSetStyle(ui, pStyle="", value=None, pVals=None):
     return True
 
 
+def guiSetText(ui, formatElement, value=None):
+    """
+    """
+    if not ui:
+        return
+    if not formatElement:
+        return
+    if value is None:
+        text = "-"
+    elif isinstance(value, (list, np.ndarray)) and len(value) == 0:
+        text = "-"
+    elif formatElement.startswith("HSTR"):
+        text = formatHstrToText(value)
+    elif formatElement.startswith("DSTR"):
+        text = formatDstrToText(value)
+    elif formatElement.startswith("D"):
+        formatStr = "{0:" + formatElement.lstrip("D") + "}"
+        text = formatStr.format(value.degrees)
+    elif formatElement.startswith("H"):
+        formatStr = "{0:" + formatElement.lstrip("H") + "}"
+        text = formatStr.format(value.hours)
+    elif value == "E":
+        text = "EAST"
+    elif value == "W":
+        text = "WEST"
+    elif isinstance(value, bool):
+        if value:
+            text = "ON"
+        else:
+            text = "OFF"
+    else:
+        formatStr = "{0:" + formatElement + "}"
+        text = formatStr.format(value)
+
+    ui.setText(text)
+
+
 class MWidget(QWidget, Styles):
     """
     MWidget defines the common parts for all windows used in MountWizzard 4 and
@@ -502,48 +539,6 @@ class MWidget(QWidget, Styles):
         clickEventFilter = MouseClickEventFilter(widget)
         widget.installEventFilter(clickEventFilter)
         return clickEventFilter.clicked
-
-    @staticmethod
-    def guiSetText(ui, formatElement, value=None):
-        """
-        :param ui:
-        :param formatElement:
-        :param value:
-        :return: True for test purpose
-        """
-        if not ui:
-            return False
-        if not formatElement:
-            return False
-        if value is None:
-            text = "-"
-        elif isinstance(value, (list, np.ndarray)) and len(value) == 0:
-            text = "-"
-        elif formatElement.startswith("HSTR"):
-            text = formatHstrToText(value)
-        elif formatElement.startswith("DSTR"):
-            text = formatDstrToText(value)
-        elif formatElement.startswith("D"):
-            formatStr = "{0:" + formatElement.lstrip("D") + "}"
-            text = formatStr.format(value.degrees)
-        elif formatElement.startswith("H"):
-            formatStr = "{0:" + formatElement.lstrip("H") + "}"
-            text = formatStr.format(value.hours)
-        elif value == "E":
-            text = "EAST"
-        elif value == "W":
-            text = "WEST"
-        elif isinstance(value, bool):
-            if value:
-                text = "ON"
-            else:
-                text = "OFF"
-        else:
-            formatStr = "{0:" + formatElement + "}"
-            text = formatStr.format(value)
-
-        ui.setText(text)
-        return True
 
     def convertTime(self, value, fString):
         """

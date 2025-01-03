@@ -24,6 +24,7 @@ import wakeonlan
 from mountcontrol.setting import Setting
 from mountcontrol.firmware import Firmware
 from base.ethernet import checkFormatMAC
+from gui.utilities.toolsQtWidget import guiSetText
 
 
 class SettMount:
@@ -159,11 +160,11 @@ class SettMount:
 
     def updateFwGui(self, fw: Firmware) -> None:
         """ """
-        self.mainW.guiSetText(self.ui.product, "s", fw.product)
-        self.mainW.guiSetText(self.ui.vString, "s", fw.vString.public)
-        self.mainW.guiSetText(self.ui.fwdate, "s", fw.date)
-        self.mainW.guiSetText(self.ui.fwtime, "s", fw.time)
-        self.mainW.guiSetText(self.ui.hardware, "s", fw.hardware)
+        guiSetText(self.ui.product, "s", fw.product)
+        guiSetText(self.ui.vString, "s", fw.vString.public)
+        guiSetText(self.ui.fwdate, "s", fw.date)
+        guiSetText(self.ui.fwtime, "s", fw.time)
+        guiSetText(self.ui.hardware, "s", fw.hardware)
 
     def toggleClockSync(self) -> None:
         """ """

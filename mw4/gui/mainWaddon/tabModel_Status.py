@@ -19,6 +19,7 @@
 # external packages
 
 # local import
+from gui.utilities.toolsQtWidget import guiSetText
 
 
 class ModelStatus:
@@ -44,21 +45,21 @@ class ModelStatus:
 
     def updateAlignGUI(self, model):
         """ """
-        self.mainW.guiSetText(self.ui.numberStars, "2.0f", model.numberStars)
-        self.mainW.guiSetText(self.ui.numberStars1, "2.0f", model.numberStars)
-        self.mainW.guiSetText(self.ui.errorRMS, "5.1f", model.errorRMS)
-        self.mainW.guiSetText(self.ui.errorRMS1, "5.1f", model.errorRMS)
-        self.mainW.guiSetText(self.ui.terms, "2.0f", model.terms)
+        guiSetText(self.ui.numberStars, "2.0f", model.numberStars)
+        guiSetText(self.ui.numberStars1, "2.0f", model.numberStars)
+        guiSetText(self.ui.errorRMS, "5.1f", model.errorRMS)
+        guiSetText(self.ui.errorRMS1, "5.1f", model.errorRMS)
+        guiSetText(self.ui.terms, "2.0f", model.terms)
         val = None if model.positionAngle is None else model.positionAngle.degrees
-        self.mainW.guiSetText(self.ui.positionAngle, "5.1f", val)
+        guiSetText(self.ui.positionAngle, "5.1f", val)
         val = None if model.polarError is None else model.polarError.degrees * 3600
-        self.mainW.guiSetText(self.ui.polarError, "5.0f", val)
+        guiSetText(self.ui.polarError, "5.0f", val)
         val = None if model.orthoError is None else model.orthoError.degrees * 3600
-        self.mainW.guiSetText(self.ui.orthoError, "5.0f", val)
+        guiSetText(self.ui.orthoError, "5.0f", val)
         val = None if model.azimuthError is None else model.azimuthError.degrees
-        self.mainW.guiSetText(self.ui.azimuthError, "5.1f", val)
+        guiSetText(self.ui.azimuthError, "5.1f", val)
         val = None if model.altitudeError is None else model.altitudeError.degrees
-        self.mainW.guiSetText(self.ui.altitudeError, "5.1f", val)
+        guiSetText(self.ui.altitudeError, "5.1f", val)
 
     def updateTurnKnobsGUI(self, model):
         """ """

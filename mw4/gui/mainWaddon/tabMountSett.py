@@ -25,7 +25,8 @@ from skyfield.api import wgs84
 from base import transform
 from mountcontrol.convert import convertLatToAngle, convertLonToAngle
 from mountcontrol.convert import formatLatToText, formatLonToText
-from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetStyle
+from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetStyle, guiSetText
+
 
 class MountSett:
     """ """
@@ -71,21 +72,21 @@ class MountSett:
             ra = obs.raJNow
             dec = obs.decJNow
 
-        self.mainW.guiSetText(self.ui.RA, "HSTR", ra)
-        self.mainW.guiSetText(self.ui.RAfloat, "H5.5f", ra)
-        self.mainW.guiSetText(self.ui.DEC, "DSTR", dec)
-        self.mainW.guiSetText(self.ui.DECfloat, "D5.5f", dec)
-        self.mainW.guiSetText(self.ui.HA, "HSTR", obs.haJNow)
-        self.mainW.guiSetText(self.ui.HAfloat, "H5.5f", obs.haJNow)
-        self.mainW.guiSetText(self.ui.ALT, "D5.2f", obs.Alt)
-        self.mainW.guiSetText(self.ui.AZ, "D5.2f", obs.Az)
-        self.mainW.guiSetText(self.ui.pierside, "s", obs.pierside)
-        self.mainW.guiSetText(self.ui.timeSidereal, "HSTR", obs.timeSidereal)
+        guiSetText(self.ui.RA, "HSTR", ra)
+        guiSetText(self.ui.RAfloat, "H5.5f", ra)
+        guiSetText(self.ui.DEC, "DSTR", dec)
+        guiSetText(self.ui.DECfloat, "D5.5f", dec)
+        guiSetText(self.ui.HA, "HSTR", obs.haJNow)
+        guiSetText(self.ui.HAfloat, "H5.5f", obs.haJNow)
+        guiSetText(self.ui.ALT, "D5.2f", obs.Alt)
+        guiSetText(self.ui.AZ, "D5.2f", obs.Az)
+        guiSetText(self.ui.pierside, "s", obs.pierside)
+        guiSetText(self.ui.timeSidereal, "HSTR", obs.timeSidereal)
 
     def updateSettingGUI(self, sett):
         """ """
         ui = self.ui.UTCExpire
-        self.mainW.guiSetText(ui, "s", sett.UTCExpire)
+        guiSetText(ui, "s", sett.UTCExpire)
         if sett.UTCExpire is not None:
             now = datetime.datetime.now()
             expire = datetime.datetime.strptime(sett.UTCExpire, "%Y-%m-%d")
@@ -98,45 +99,45 @@ class MountSett:
                 changeStyleDynamic(ui, "color", "")
 
         ui = self.ui.statusUnattendedFlip
-        self.mainW.guiSetText(ui, "s", sett.statusUnattendedFlip)
+        guiSetText(ui, "s", sett.statusUnattendedFlip)
         guiSetStyle(ui, "status", sett.statusUnattendedFlip, ["", "on", ""])
 
         ui = self.ui.statusDualAxisTracking
-        self.mainW.guiSetText(ui, "s", sett.statusDualAxisTracking)
+        guiSetText(ui, "s", sett.statusDualAxisTracking)
         guiSetStyle(ui, "status", sett.statusDualAxisTracking, ["", "on", ""])
 
         ui = self.ui.statusRefraction
-        self.mainW.guiSetText(ui, "s", sett.statusRefraction)
+        guiSetText(ui, "s", sett.statusRefraction)
         guiSetStyle(ui, "status", sett.statusRefraction, ["", "on", ""])
 
         ui = self.ui.statusGPSSynced
-        self.mainW.guiSetText(ui, "s", sett.gpsSynced)
+        guiSetText(ui, "s", sett.gpsSynced)
         guiSetStyle(ui, "status", sett.gpsSynced, ["", "on", ""])
 
         ui = self.ui.statusWOL
-        self.mainW.guiSetText(ui, "s", sett.wakeOnLan)
+        guiSetText(ui, "s", sett.wakeOnLan)
         guiSetStyle(ui, "status", sett.wakeOnLan, ["", "on", ""])
 
         ui = self.ui.statusWebInterface
-        self.mainW.guiSetText(ui, "s", sett.webInterfaceStat)
+        guiSetText(ui, "s", sett.webInterfaceStat)
         guiSetStyle(ui, "status", sett.webInterfaceStat, ["", "on", ""])
 
         if sett.typeConnection is not None:
             text = self.typeConnectionTexts[sett.typeConnection]
             self.ui.mountTypeConnection.setText(text)
 
-        self.mainW.guiSetText(self.ui.slewRate, "2.0f", sett.slewRate)
-        self.mainW.guiSetText(self.ui.timeToFlip, "3.0f", sett.timeToFlip)
-        self.mainW.guiSetText(self.ui.timeToMeridian, "3.0f", sett.timeToMeridian())
-        self.mainW.guiSetText(self.ui.refractionTemp, "+4.1f", sett.refractionTemp)
-        self.mainW.guiSetText(self.ui.refractionTemp1, "+4.1f", sett.refractionTemp)
-        self.mainW.guiSetText(self.ui.refractionPress, "6.1f", sett.refractionPress)
-        self.mainW.guiSetText(self.ui.refractionPress1, "6.1f", sett.refractionPress)
-        self.mainW.guiSetText(self.ui.meridianLimitTrack, "3.0f", sett.meridianLimitTrack)
-        self.mainW.guiSetText(self.ui.meridianLimitSlew, "3.0f", sett.meridianLimitSlew)
-        self.mainW.guiSetText(self.ui.horizonLimitLow, "3.0f", sett.horizonLimitLow)
-        self.mainW.guiSetText(self.ui.horizonLimitHigh, "3.0f", sett.horizonLimitHigh)
-        self.mainW.guiSetText(self.ui.settleTimeMount, "3.0f", sett.settleTime)
+        guiSetText(self.ui.slewRate, "2.0f", sett.slewRate)
+        guiSetText(self.ui.timeToFlip, "3.0f", sett.timeToFlip)
+        guiSetText(self.ui.timeToMeridian, "3.0f", sett.timeToMeridian())
+        guiSetText(self.ui.refractionTemp, "+4.1f", sett.refractionTemp)
+        guiSetText(self.ui.refractionTemp1, "+4.1f", sett.refractionTemp)
+        guiSetText(self.ui.refractionPress, "6.1f", sett.refractionPress)
+        guiSetText(self.ui.refractionPress1, "6.1f", sett.refractionPress)
+        guiSetText(self.ui.meridianLimitTrack, "3.0f", sett.meridianLimitTrack)
+        guiSetText(self.ui.meridianLimitSlew, "3.0f", sett.meridianLimitSlew)
+        guiSetText(self.ui.horizonLimitLow, "3.0f", sett.horizonLimitLow)
+        guiSetText(self.ui.horizonLimitHigh, "3.0f", sett.horizonLimitHigh)
+        guiSetText(self.ui.settleTimeMount, "3.0f", sett.settleTime)
 
         # todo: this might be a little bit too slow
         if self.app.mount.obsSite.status is None:

@@ -21,7 +21,7 @@ from functools import partial
 import numpy as np
 
 # local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic
+from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
 
 
 class EnvironWeather:
@@ -276,7 +276,7 @@ class EnvironWeather:
             for field in self.envFields:
                 ui = eval("self.ui." + field + uiPost)
                 value = data.get(self.envFields[field]["valueKey"])
-                self.mainW.guiSetText(ui, self.envFields[field]["format"], value)
+                guiSetText(ui, self.envFields[field]["format"], value)
 
     def clearSourceGui(self, source: str, sender) -> bool:
         """ """

@@ -20,7 +20,7 @@
 from PySide6.QtWidgets import QInputDialog
 
 # local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic
+from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
 
 
 class ImageManage:
@@ -153,9 +153,9 @@ class ImageManage:
                 actValue = len(offsetList)
             elif actValue < 0:
                 actValue = 0
-            self.mainW.guiSetText(self.ui.offsetCam, "s", offsetList[actValue - 1])
+            guiSetText(self.ui.offsetCam, "s", offsetList[actValue - 1])
         else:
-            self.mainW.guiSetText(self.ui.offsetCam, "3.0f", actValue)
+            guiSetText(self.ui.offsetCam, "3.0f", actValue)
 
     def updateGain(self):
         """ """
@@ -170,17 +170,17 @@ class ImageManage:
                 actValue = len(gainList)
             elif actValue < 0:
                 actValue = 0
-            self.mainW.guiSetText(self.ui.gainCam, "s", gainList[actValue - 1])
+            guiSetText(self.ui.gainCam, "s", gainList[actValue - 1])
         else:
-            self.mainW.guiSetText(self.ui.gainCam, "3.0f", actValue)
+            guiSetText(self.ui.gainCam, "3.0f", actValue)
 
     def updateCooler(self):
         """ """
         coolerTemp = self.app.camera.data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0)
         coolerPower = self.app.camera.data.get("CCD_COOLER_POWER.CCD_COOLER_VALUE", 0)
         coolerOn = self.app.camera.data.get("CCD_COOLER.COOLER_ON", False)
-        self.mainW.guiSetText(self.ui.coolerTemp, "3.1f", coolerTemp)
-        self.mainW.guiSetText(self.ui.coolerPower, "3.1f", coolerPower)
+        guiSetText(self.ui.coolerTemp, "3.1f", coolerTemp)
+        guiSetText(self.ui.coolerPower, "3.1f", coolerPower)
         if coolerOn:
             changeStyleDynamic(self.ui.coolerOn, "running", True)
             changeStyleDynamic(self.ui.coolerOff, "running", False)
@@ -193,13 +193,13 @@ class ImageManage:
         filterNumber = self.app.filter.data.get("FILTER_SLOT.FILTER_SLOT_VALUE", 1)
         key = f"FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}"
         filterName = self.app.filter.data.get(key, "not found")
-        self.mainW.guiSetText(self.ui.filterNumber, "1.0f", filterNumber)
-        self.mainW.guiSetText(self.ui.filterName, "s", filterName)
+        guiSetText(self.ui.filterNumber, "1.0f", filterNumber)
+        guiSetText(self.ui.filterName, "s", filterName)
 
     def updateFocuser(self):
         """ """
         focus = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
-        self.mainW.guiSetText(self.ui.focuserPosition, "6.0f", focus)
+        guiSetText(self.ui.focuserPosition, "6.0f", focus)
 
     def updateImagingParam(self):
         """ """
@@ -234,8 +234,8 @@ class ImageManage:
         self.app.camera.subFrame = self.ui.subFrame.value()
         self.app.camera.fastDownload = self.ui.fastDownload.isChecked()
         self.app.camera.focalLength = focalLength
-        self.mainW.guiSetText(self.ui.humidityCCD, "3.1f", humidityCCD)
-        self.mainW.guiSetText(self.ui.optimalBinning, "1.0f", optimalBinning)
+        guiSetText(self.ui.humidityCCD, "3.1f", humidityCCD)
+        guiSetText(self.ui.optimalBinning, "1.0f", optimalBinning)
 
         if downloadFast:
             changeStyleDynamic(self.ui.downloadFast, "running", True)
@@ -442,7 +442,7 @@ class ImageManage:
             changeStyleDynamic(self.ui.coverLightOff, "running", True)
 
         value = self.app.cover.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
-        self.mainW.guiSetText(self.ui.coverLightIntensity, "3.0f", value)
+        guiSetText(self.ui.coverLightIntensity, "3.0f", value)
         return True
 
     def setCoverPark(self):
@@ -550,7 +550,7 @@ class ImageManage:
             changeStyleDynamic(self.ui.domeSlewCCW, "running", False)
 
         value = self.app.dome.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")
-        self.mainW.guiSetText(self.ui.domeAzimuth, "3.0f", value)
+        guiSetText(self.ui.domeAzimuth, "3.0f", value)
 
     def updateShutterStatGui(self):
         """ """

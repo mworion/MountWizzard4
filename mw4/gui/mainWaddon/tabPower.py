@@ -21,7 +21,7 @@ from PySide6.QtWidgets import QInputDialog
 from mountcontrol.convert import valueToInt
 
 # local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic
+from gui.utilities.toolsQtWidget import changeStyleDynamic,
 
 
 class Power:
@@ -133,11 +133,11 @@ class Power:
 
         for name, button in self.current.items():
             value = self.app.power.data.get(f"POWER_CURRENT.POWER_CURRENT_{name}")
-            self.mainW.guiSetText(button, "4.2f", value)
+            guiSetText(button, "4.2f", value)
 
         for name, button in self.dew.items():
             value = self.app.power.data.get(f"DEW_PWM.DEW_{name}")
-            self.mainW.guiSetText(button, "3.0f", value)
+            guiSetText(button, "3.0f", value)
 
         for name, button in self.dewLabel.items():
             value = self.app.power.data.get(f"DEW_CONTROL_LABEL.DEW_LABEL_{name}", "")
@@ -150,25 +150,25 @@ class Power:
             button.setText(value)
 
         value = self.app.power.data.get("POWER_CONSUMPTION.CONSUMPTION_AVG_AMPS")
-        self.mainW.guiSetText(self.ui.consumptionAvgAmps, "4.2f", value)
+        guiSetText(self.ui.consumptionAvgAmps, "4.2f", value)
         value = self.app.power.data.get("POWER_CONSUMPTION.CONSUMPTION_AMP_HOURS")
-        self.mainW.guiSetText(self.ui.consumptionAmpHours, "4.2f", value)
+        guiSetText(self.ui.consumptionAmpHours, "4.2f", value)
         value = self.app.power.data.get("POWER_CONSUMPTION.CONSUMPTION_WATT_HOURS")
-        self.mainW.guiSetText(self.ui.consumptionWattHours, "4.2f", value)
+        guiSetText(self.ui.consumptionWattHours, "4.2f", value)
 
         value = self.app.power.data.get("POWER_SENSORS.SENSOR_VOLTAGE")
-        self.mainW.guiSetText(self.ui.sensorVoltage, "4.1f", value)
+        guiSetText(self.ui.sensorVoltage, "4.1f", value)
         value = self.app.power.data.get("POWER_SENSORS.SENSOR_CURRENT")
-        self.mainW.guiSetText(self.ui.sensorCurrent, "4.2f", value)
+        guiSetText(self.ui.sensorCurrent, "4.2f", value)
         value = self.app.power.data.get("POWER_SENSORS.SENSOR_POWER")
-        self.mainW.guiSetText(self.ui.sensorPower, "4.2f", value)
+        guiSetText(self.ui.sensorPower, "4.2f", value)
 
         value = self.app.power.data.get("DEW_CURRENT.DEW_CURRENT_A")
-        self.mainW.guiSetText(self.ui.dewCurrentA, "4.2f", value)
+        guiSetText(self.ui.dewCurrentA, "4.2f", value)
         value = self.app.power.data.get("DEW_CURRENT.DEW_CURRENT_B")
-        self.mainW.guiSetText(self.ui.dewCurrentB, "4.2f", value)
+        guiSetText(self.ui.dewCurrentB, "4.2f", value)
         value = self.app.power.data.get("DEW_CURRENT.DEW_CURRENT_C")
-        self.mainW.guiSetText(self.ui.dewCurrentC, "4.2f", value)
+        guiSetText(self.ui.dewCurrentC, "4.2f", value)
 
         value1 = self.app.power.data.get("AUTO_DEW.INDI_ENABLED", False)
         value2 = self.app.power.data.get("AUTO_DEW.DEW_A", False)
@@ -179,7 +179,7 @@ class Power:
 
         if self.app.power.data.get("FIRMWARE_INFO.VERSION", "1.4") > "1.4":
             value = self.app.power.data.get("ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE")
-            self.mainW.guiSetText(self.ui.adjustableOutput, "4.1f", value)
+            guiSetText(self.ui.adjustableOutput, "4.1f", value)
 
             for name, button in self.portUSB.items():
                 value = self.app.power.data.get(f"USB_PORT_CONTROL.PORT_{name}", False)

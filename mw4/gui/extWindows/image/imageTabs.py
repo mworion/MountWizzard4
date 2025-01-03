@@ -25,7 +25,7 @@ from PySide6.QtGui import QFont
 # local import
 from logic.fits.fitsFunction import getExposureFromHeader, getScaleFromHeader
 from logic.fits.fitsFunction import getCoordinatesFromHeader, getSQMFromHeader
-from gui.utilities.toolsQtWidget import changeStyleDynamic
+from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
 
 
 class ImageTabs:
@@ -109,20 +109,20 @@ class ImageTabs:
 
     def writeHeaderDataToGUI(self, header: fits.Header) -> None:
         """ """
-        self.parent.guiSetText(self.ui.object, "s", header.get("OBJECT", "").upper())
+        guiSetText(self.ui.object, "s", header.get("OBJECT", "").upper())
         ra, dec = getCoordinatesFromHeader(header=header)
-        self.parent.guiSetText(self.ui.ra, "HSTR", ra)
-        self.parent.guiSetText(self.ui.raFloat, "2.5f", ra.hours)
-        self.parent.guiSetText(self.ui.dec, "DSTR", dec)
-        self.parent.guiSetText(self.ui.decFloat, "2.5f", dec.degrees)
-        self.parent.guiSetText(self.ui.scale, "5.3f", getScaleFromHeader(header=header))
-        self.parent.guiSetText(self.ui.rotation, "6.2f", header.get("ANGLE"))
-        self.parent.guiSetText(self.ui.ccdTemp, "4.1f", header.get("CCD-TEMP"))
-        self.parent.guiSetText(self.ui.exposureTime, "5.1f", getExposureFromHeader(header=header))
-        self.parent.guiSetText(self.ui.filter, "s", header.get("FILTER"))
-        self.parent.guiSetText(self.ui.binX, "1.0f", header.get("XBINNING"))
-        self.parent.guiSetText(self.ui.binY, "1.0f", header.get("YBINNING"))
-        self.parent.guiSetText(self.ui.sqm, "5.2f", getSQMFromHeader(header=header))
+        guiSetText(self.ui.ra, "HSTR", ra)
+        guiSetText(self.ui.raFloat, "2.5f", ra.hours)
+        guiSetText(self.ui.dec, "DSTR", dec)
+        guiSetText(self.ui.decFloat, "2.5f", dec.degrees)
+        guiSetText(self.ui.scale, "5.3f", getScaleFromHeader(header=header))
+        guiSetText(self.ui.rotation, "6.2f", header.get("ANGLE"))
+        guiSetText(self.ui.ccdTemp, "4.1f", header.get("CCD-TEMP"))
+        guiSetText(self.ui.exposureTime, "5.1f", getExposureFromHeader(header=header))
+        guiSetText(self.ui.filter, "s", header.get("FILTER"))
+        guiSetText(self.ui.binX, "1.0f", header.get("XBINNING"))
+        guiSetText(self.ui.binY, "1.0f", header.get("YBINNING"))
+        guiSetText(self.ui.sqm, "5.2f", getSQMFromHeader(header=header))
 
     @staticmethod
     def clearImageTab(imageWidget) -> None:

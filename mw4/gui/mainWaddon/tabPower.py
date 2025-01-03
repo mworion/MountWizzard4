@@ -21,7 +21,7 @@ from PySide6.QtWidgets import QInputDialog
 from mountcontrol.convert import valueToInt
 
 # local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic,
+from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
 
 
 class Power:

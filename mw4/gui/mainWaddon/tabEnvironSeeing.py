@@ -25,6 +25,7 @@ from PySide6.QtWidgets import QTableWidgetItem
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
+from gui.styles.colors import colors
 
 
 class EnvironSeeing(MWidget):
@@ -90,9 +91,9 @@ class EnvironSeeing(MWidget):
             "badlayer_gradient",
             "jetstream",
         ]
-        colorPrim = self.cs["M_PRIM"][0]
-        colorQuar = self.cs["M_BACK"][0]
-        colorTer = self.cs["M_TER"][0]
+        colorPrim = colors["M_PRIM"][0]
+        colorQuar = colors["M_BACK"][0]
+        colorTer = colors["M_TER"][0]
         seeTab = self.ui.meteoblueSeeing
         data = self.app.seeingWeather.data["hourly"]
         self.addSkyfieldTimeObject(data)

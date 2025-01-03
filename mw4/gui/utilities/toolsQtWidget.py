@@ -33,7 +33,7 @@ import numpy as np
 from qimage2ndarray import rgb_view, array2qimage
 
 # local imports
-from gui.utilities.stylesQtCss import Styles
+from gui.styles.styles import Styles
 from mountcontrol.convert import formatHstrToText, formatDstrToText
 
 __all__ = [

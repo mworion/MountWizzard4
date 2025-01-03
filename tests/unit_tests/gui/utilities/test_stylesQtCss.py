@@ -24,7 +24,7 @@ import platform
 
 
 # local import
-from gui.utilities.stylesQtCss import Styles
+from gui.styles.stylesQtCss import Styles
 
 
 @pytest.fixture(autouse=True, scope="module")

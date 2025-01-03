@@ -25,7 +25,7 @@ from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
 
 # local imports
-from gui.utilities.stylesQtCss import Styles
+from gui.styles.styles import Styles
 from gui.utilities.gCustomViewBox import CustomViewBox
 
 

@@ -26,7 +26,7 @@ from skyfield.almanac import dark_twilight_day, TWILIGHTS
 
 # local import
 from base import packageConfig
-from gui.utilities.stylesQtCss import Styles
+from gui.styles.styles import Styles
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWindow.externalWindows import ExternalWindows

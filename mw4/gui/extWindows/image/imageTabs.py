@@ -48,7 +48,7 @@ class ImageTabs(MWidget):
         self.photometry = parent.photometry
         self.threadPool = parent.threadPool
         self.imagingDeviceStat = parent.imagingDeviceStat
-        self.pen = pg.mkPen(color=self.M_TABS, width=2)
+        self.pen = pg.mkPen(color=self.M_TAB0, width=2)
         self.penPink = pg.mkPen(color=self.M_PINK + "80", width=5)
         self.fontText = QFont(self.window().font().family(), 16)
         self.fontAnno = QFont(self.window().font().family(), 10, italic=True)
@@ -81,7 +81,7 @@ class ImageTabs(MWidget):
         self.ui.tiltTriangle.colorChange()
         self.ui.roundness.colorChange()
         self.ui.aberration.colorChange()
-        self.pen = pg.mkPen(color=self.M_TABS)
+        self.pen = pg.mkPen(color=self.M_TAB0)
 
     def getImageSourceRange(self) -> None:
         """ """

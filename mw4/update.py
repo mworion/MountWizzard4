@@ -29,7 +29,7 @@ from PySide6.QtWidgets import QApplication, QPushButton, QVBoxLayout
 from PySide6.QtWidgets import QHBoxLayout, QWidget, QTextBrowser, QLabel
 
 # local import
-from gui.utilities.stylesQtCss import Styles
+from gui.styles.stylesQtCss import Styles
 from base.loggerMW import setupLogging
 import resource.resources as res
 

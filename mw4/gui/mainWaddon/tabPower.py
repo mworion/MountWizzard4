@@ -21,7 +21,7 @@ from PySide6.QtWidgets import QInputDialog
 from mountcontrol.convert import valueToInt
 
 # local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
+from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText, clickable
 
 
 class Power:
@@ -80,11 +80,11 @@ class Power:
         self.ui.hubUSB.clicked.connect(self.toggleHubUSB)
         self.ui.autoDew.clicked.connect(self.toggleAutoDew)
         self.ui.rebootUPB.clicked.connect(self.rebootUPB)
-        self.mainW.clickable(self.ui.adjustableOutput).connect(self.setAdjustableOutput)
+        clickable(self.ui.adjustableOutput).connect(self.setAdjustableOutput)
 
         # setting gui elements
         for name, button in self.dew.items():
-            self.mainW.clickable(button).connect(self.setDew)
+            clickable(button).connect(self.setDew)
         for name, button in self.powerOnOFF.items():
             button.clicked.connect(self.togglePowerPort)
         for name, button in self.powerBoot.items():

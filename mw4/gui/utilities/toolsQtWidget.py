@@ -36,21 +36,13 @@ from qimage2ndarray import rgb_view, array2qimage
 from gui.styles.styles import Styles
 from mountcontrol.convert import formatHstrToText, formatDstrToText
 
-__all__ = [
-    "MWidget",
-    "sleepAndEvents",
-]
-
 
 def sleepAndEvents(value):
     """
-    :param value: wait time in msec
-    :return:
     """
     for _ in range(value):
         time.sleep(0.001)
         QCoreApplication.processEvents()
-    return True
 
 
 def changeStyleDynamic(widget=None, widgetProperty=None, value=None):
@@ -104,16 +96,11 @@ def findIndexValue(ui, searchString, relaxed=False):
 
 def guiSetStyle(ui, pStyle="", value=None, pVals=None):
     """
-    :param ui:
-    :param pStyle:
-    :param value:
-    :param pVals:
-    :return:
     """
     if pVals is None:
         pVals = ["", "", ""]
     if not pStyle:
-        return False
+        return
     if value is None:
         pVal = pVals[0]
     elif value:
@@ -122,7 +109,6 @@ def guiSetStyle(ui, pStyle="", value=None, pVals=None):
         pVal = pVals[2]
 
     changeStyleDynamic(ui, pStyle, pVal)
-    return True
 
 
 def guiSetText(ui, formatElement, value=None):
@@ -160,6 +146,28 @@ def guiSetText(ui, formatElement, value=None):
         text = formatStr.format(value)
 
     ui.setText(text)
+
+
+def clickable(widget: QWidget) -> Signal:
+    """    """
+    class MouseClickEventFilter(QObject):
+        clicked = Signal(object)
+
+        def eventFilter(self, obj, event):
+            if event.type() not in [
+                QEvent.Type.MouseButtonRelease,
+                QEvent.Type.FocusIn,
+            ]:
+                return False
+
+            if event.type() == QEvent.Type.MouseButtonRelease:
+                if obj.rect().contains(event.pos()):
+                    self.clicked.emit(widget)
+                    return True
+
+    clickEventFilter = MouseClickEventFilter(widget)
+    widget.installEventFilter(clickEventFilter)
+    return clickEventFilter.clicked
 
 
 class MWidget(QWidget, Styles):
@@ -505,40 +513,6 @@ class MWidget(QWidget, Styles):
             return Path("")
 
         return Path(dlg.selectedFiles()[0])
-
-    @staticmethod
-    def clickable(widget=None):
-        """
-        It uses one filter object per label, which is created when the
-        clickable() function is called with the widget that is to be
-        click-enabled. The function returns a clicked() signal that actually
-        belongs to the filter object. The caller can connect this signal to a
-        suitable callable object.
-
-        :param widget:      widget for what the event filter works
-        :return:            filtered event
-        """
-        if not widget:
-            return None
-
-        class MouseClickEventFilter(QObject):
-            clicked = Signal(object)
-
-            def eventFilter(self, obj, event):
-                if event.type() not in [
-                    QEvent.Type.MouseButtonRelease,
-                    QEvent.Type.FocusIn,
-                ]:
-                    return False
-
-                if event.type() == QEvent.Type.MouseButtonRelease:
-                    if obj.rect().contains(event.pos()):
-                        self.clicked.emit(widget)
-                        return True
-
-        clickEventFilter = MouseClickEventFilter(widget)
-        widget.installEventFilter(clickEventFilter)
-        return clickEventFilter.clicked
 
     def convertTime(self, value, fString):
         """

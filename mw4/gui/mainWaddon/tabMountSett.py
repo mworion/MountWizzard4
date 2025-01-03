@@ -25,7 +25,7 @@ from skyfield.api import wgs84
 from base import transform
 from mountcontrol.convert import convertLatToAngle, convertLonToAngle
 from mountcontrol.convert import formatLatToText, formatLonToText
-from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetStyle, guiSetText
+from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetStyle, guiSetText, clickable
 
 
 class MountSett:
@@ -44,21 +44,21 @@ class MountSett:
         ms.pointDone.connect(self.updatePointGUI)
         ms.settingDone.connect(self.updateSettingGUI)
         self.app.update1s.connect(self.showOffset)
-        self.mainW.clickable(self.ui.refractionTemp).connect(self.setRefractionTemp)
-        self.mainW.clickable(self.ui.refractionPress).connect(self.setRefractionPress)
-        self.mainW.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
-        self.mainW.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
-        self.mainW.clickable(self.ui.horizonLimitHigh).connect(self.setHorizonLimitHigh)
-        self.mainW.clickable(self.ui.horizonLimitLow).connect(self.setHorizonLimitLow)
-        self.mainW.clickable(self.ui.slewRate).connect(self.setSlewRate)
-        self.mainW.clickable(self.ui.siteLatitude).connect(self.setLatitude)
-        self.mainW.clickable(self.ui.siteLongitude).connect(self.setLongitude)
-        self.mainW.clickable(self.ui.siteElevation).connect(self.setElevation)
-        self.mainW.clickable(self.ui.statusUnattendedFlip).connect(self.setUnattendedFlip)
-        self.mainW.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
-        self.mainW.clickable(self.ui.statusWOL).connect(self.setWOL)
-        self.mainW.clickable(self.ui.statusRefraction).connect(self.setRefraction)
-        self.mainW.clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
+        clickable(self.ui.refractionTemp).connect(self.setRefractionTemp)
+        clickable(self.ui.refractionPress).connect(self.setRefractionPress)
+        clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
+        clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
+        clickable(self.ui.horizonLimitHigh).connect(self.setHorizonLimitHigh)
+        clickable(self.ui.horizonLimitLow).connect(self.setHorizonLimitLow)
+        clickable(self.ui.slewRate).connect(self.setSlewRate)
+        clickable(self.ui.siteLatitude).connect(self.setLatitude)
+        clickable(self.ui.siteLongitude).connect(self.setLongitude)
+        clickable(self.ui.siteElevation).connect(self.setElevation)
+        clickable(self.ui.statusUnattendedFlip).connect(self.setUnattendedFlip)
+        clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
+        clickable(self.ui.statusWOL).connect(self.setWOL)
+        clickable(self.ui.statusRefraction).connect(self.setRefraction)
+        clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
 
     def updatePointGUI(self, obs):
         """ """

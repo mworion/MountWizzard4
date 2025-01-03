@@ -20,7 +20,7 @@
 from PySide6.QtWidgets import QInputDialog
 
 # local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
+from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText, clickable
 
 
 class ImageManage:
@@ -37,11 +37,11 @@ class ImageManage:
         self.ui.downloadSlow.clicked.connect(self.setDownloadModeSlow)
         self.ui.coolerOn.clicked.connect(self.setCoolerOn)
         self.ui.coolerOff.clicked.connect(self.setCoolerOff)
-        self.mainW.clickable(self.ui.coolerTemp).connect(self.setCoolerTemp)
-        self.mainW.clickable(self.ui.gainCam).connect(self.setGain)
-        self.mainW.clickable(self.ui.offsetCam).connect(self.setOffset)
-        self.mainW.clickable(self.ui.filterNumber).connect(self.setFilterNumber)
-        self.mainW.clickable(self.ui.filterName).connect(self.setFilterName)
+        clickable(self.ui.coolerTemp).connect(self.setCoolerTemp)
+        clickable(self.ui.gainCam).connect(self.setGain)
+        clickable(self.ui.offsetCam).connect(self.setOffset)
+        clickable(self.ui.filterNumber).connect(self.setFilterNumber)
+        clickable(self.ui.filterName).connect(self.setFilterName)
         self.ui.coverPark.clicked.connect(self.setCoverPark)
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
         self.ui.domeSlewCW.clicked.connect(self.domeSlewCW)
@@ -52,7 +52,7 @@ class ImageManage:
         self.ui.coverHalt.clicked.connect(self.setCoverHalt)
         self.ui.coverLightOn.clicked.connect(self.switchLightOn)
         self.ui.coverLightOff.clicked.connect(self.switchLightOff)
-        self.mainW.clickable(self.ui.coverLightIntensity).connect(self.setLightIntensity)
+        clickable(self.ui.coverLightIntensity).connect(self.setLightIntensity)
 
         self.ui.aperture.valueChanged.connect(self.updateImagingParam)
         self.ui.focalLength.valueChanged.connect(self.updateImagingParam)

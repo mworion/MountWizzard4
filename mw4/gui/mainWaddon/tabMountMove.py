@@ -26,7 +26,7 @@ from mountcontrol.convert import convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatHstrToText, formatDstrToText
 from mountcontrol.convert import valueToFloat
 from gui.utilities.slewInterface import SlewInterface
-from gui.utilities.toolsQtWidget import changeStyleDynamic
+from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable
 
 
 class MountMove(SlewInterface):
@@ -97,10 +97,10 @@ class MountMove(SlewInterface):
         self.ui.stopMoveAll.clicked.connect(self.stopMoveAll)
         self.ui.moveAltAzAbsolute.clicked.connect(self.moveAltAzAbsolute)
         self.ui.moveRaDecAbsolute.clicked.connect(self.moveRaDecAbsolute)
-        self.mainW.clickable(self.ui.moveCoordinateRa).connect(self.setRA)
+        clickable(self.ui.moveCoordinateRa).connect(self.setRA)
         self.ui.moveCoordinateRa.textEdited.connect(self.setRA)
         self.ui.moveCoordinateRa.returnPressed.connect(self.setRA)
-        self.mainW.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
+        clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
         self.ui.moveCoordinateDec.textEdited.connect(self.setDEC)
         self.ui.moveCoordinateDec.returnPressed.connect(self.setDEC)
         self.app.mount.signals.slewed.connect(self.moveAltAzDefault)

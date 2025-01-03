@@ -25,7 +25,7 @@ from PySide6.QtWidgets import QTableWidgetItem
 
 # local import
 from gui.styles.colors import colors
-from gui.utilities.toolsQtWidget import changeStyleDynamic
+from gui.utilities.toolsQtWidget import clickable
 
 
 class EnvironSeeing:
@@ -45,7 +45,7 @@ class EnvironSeeing:
 
         self.ui.unitTimeUTC.toggled.connect(self.updateSeeingEntries)
         self.app.seeingWeather.signals.update.connect(self.prepareSeeingTable)
-        self.mainW.clickable(self.ui.meteoblueIcon).connect(self.openMeteoblue)
+        clickable(self.ui.meteoblueIcon).connect(self.openMeteoblue)
         self.app.start3s.connect(self.enableSeeingEntries)
         self.app.colorChange.connect(self.prepareSeeingTable)
         self.app.update30m.connect(self.updateSeeingEntries)

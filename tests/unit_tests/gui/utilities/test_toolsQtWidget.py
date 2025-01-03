@@ -32,7 +32,7 @@ import numpy as np
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents, changeStyleDynamic
-from gui.utilities.toolsQtWidget import findIndexValue, guiSetStyle
+from gui.utilities.toolsQtWidget import findIndexValue, guiSetStyle, guiSetText, clickable
 from gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -47,8 +47,7 @@ def function(qapp):
 
 
 def test_sleepAndEvents(function):
-    suc = sleepAndEvents(1)
-    assert suc
+    sleepAndEvents(1)
 
 
 def test_changeStyleDynamic_1():
@@ -104,26 +103,126 @@ def test_findIndexValue_5():
 
 def test_guiSetStyle_1():
     pb = QPushButton()
-    suc = guiSetStyle(pb)
-    assert not suc
+    guiSetStyle(pb)
 
 
 def test_guiSetStyle_2():
     pb = QPushButton()
-    suc = guiSetStyle(pb, pStyle="color", value=None)
-    assert suc
+    guiSetStyle(pb, pStyle="color", value=None)
 
 
 def test_guiSetStyle_3():
     pb = QPushButton()
-    suc = guiSetStyle(pb, pStyle="color", value=True)
-    assert suc
+    guiSetStyle(pb, pStyle="color", value=True)
 
 
 def test_guiSetStyle_4():
     pb = QPushButton()
-    suc = guiSetStyle(pb, pStyle="color", value=False)
-    assert suc
+    guiSetStyle(pb, pStyle="color", value=False)
+
+
+def test_guiSetText_1():
+    guiSetText(None, None)
+
+
+def test_guiSetText_2():
+    pb = QPushButton()
+    guiSetText(pb, None)
+
+
+def test_guiSetText_3():
+    pb = QPushButton()
+    guiSetText(pb, "3.5f")
+    assert pb.text() == "-"
+
+
+def test_guiSetText_3b():
+    pb = QPushButton()
+    guiSetText(pb, "3.5f", [])
+
+
+
+def test_guiSetText_3c():
+    pb = QPushButton()
+    guiSetText(pb, "3.5f", np.array([]))
+
+
+
+def test_guiSetText_4():
+    pb = QPushButton()
+    guiSetText(pb, "3.0f", 100)
+    assert pb.text() == "100"
+
+
+def test_guiSetText_5():
+    pb = QPushButton()
+    guiSetText(pb, "HSTR", Angle(hours=10))
+    assert pb.text() == "10:00:00"
+
+
+def test_guiSetText_6():
+    pb = QPushButton()
+    guiSetText(pb, "DSTR", Angle(degrees=90))
+    assert pb.text() == "+90:00:00"
+
+
+def test_guiSetText_7():
+    pb = QPushButton()
+    guiSetText(pb, "H2.2f", Angle(hours=12))
+    assert pb.text() == "12.00"
+
+
+def test_guiSetText_8():
+    pb = QPushButton()
+    guiSetText(pb, "D+2.2f", Angle(degrees=90))
+    assert pb.text() == "+90.00"
+
+
+def test_guiSetText_9():
+    pb = QPushButton()
+    guiSetText(pb, "s", "E")
+    assert pb.text() == "EAST"
+
+
+def test_guiSetText_10():
+    pb = QPushButton()
+    guiSetText(pb, "s", "W")
+    assert pb.text() == "WEST"
+
+
+def test_guiSetText_11():
+    pb = QPushButton()
+    guiSetText(pb, "s", True)
+    assert pb.text() == "ON"
+
+
+def test_guiSetText_12():
+    pb = QPushButton()
+    guiSetText(pb, "s", False)
+    assert pb.text() == "OFF"
+
+
+def test_clickable_2():
+    widget = QLineEdit()
+    clickable(widget=widget)
+
+
+def test_clickable_3():
+    widget = QLineEdit()
+    clickable(widget=widget)
+    QTest.mouseRelease(widget, Qt.MouseButton.LeftButton)
+
+
+def test_clickable_4():
+    widget = QLineEdit()
+    clickable(widget=widget)
+    QTest.mouseRelease(widget, Qt.MouseButton.LeftButton, pos=QPoint(0, 0))
+
+
+def test_clickable_5():
+    widget = QLineEdit()
+    clickable(widget=widget)
+    QTest.mouseMove(widget, pos=QPoint(0, 0))
 
 
 def test_saveWindowAsPNG(function):
@@ -406,126 +505,6 @@ def test_openDir_5(function):
     with mock.patch.object(function, "runDialog", return_value=None):
         full = function.openDir(window=window, title="title", folder=Path("."))
         assert full == Path("")
-
-
-def test_clickable_1(function):
-    function.clickable()
-
-
-def test_clickable_2(function):
-    widget = QLineEdit()
-    function.clickable(widget=widget)
-
-
-def test_clickable_3(function):
-    widget = QLineEdit()
-    function.clickable(widget=widget)
-    QTest.mouseRelease(widget, Qt.MouseButton.LeftButton)
-
-
-def test_clickable_4(function):
-    widget = QLineEdit()
-    function.clickable(widget=widget)
-    QTest.mouseRelease(widget, Qt.MouseButton.LeftButton, pos=QPoint(0, 0))
-
-
-def test_clickable_5(function):
-    widget = QLineEdit()
-    function.clickable(widget=widget)
-    QTest.mouseMove(widget, pos=QPoint(0, 0))
-
-
-def test_guiSetText_1(function):
-    suc = function.guiSetText(None, None)
-    assert not suc
-
-
-def test_guiSetText_2(function):
-    pb = QPushButton()
-    suc = function.guiSetText(pb, None)
-    assert not suc
-
-
-def test_guiSetText_3(function):
-    pb = QPushButton()
-    suc = function.guiSetText(pb, "3.5f")
-    assert suc
-    assert pb.text() == "-"
-
-
-def test_guiSetText_3b(function):
-    pb = QPushButton()
-    suc = function.guiSetText(pb, "3.5f", [])
-    assert suc
-
-
-def test_guiSetText_3c(function):
-    pb = QPushButton()
-    suc = function.guiSetText(pb, "3.5f", np.array([]))
-    assert suc
-
-
-def test_guiSetText_4(function):
-    pb = QPushButton()
-    suc = function.guiSetText(pb, "3.0f", 100)
-    assert suc
-    assert pb.text() == "100"
-
-
-def test_guiSetText_5(function):
-    pb = QPushButton()
-    suc = function.guiSetText(pb, "HSTR", Angle(hours=10))
-    assert suc
-    assert pb.text() == "10:00:00"
-
-
-def test_guiSetText_6(function):
-    pb = QPushButton()
-    suc = function.guiSetText(pb, "DSTR", Angle(degrees=90))
-    assert suc
-    assert pb.text() == "+90:00:00"
-
-
-def test_guiSetText_7(function):
-    pb = QPushButton()
-    suc = function.guiSetText(pb, "H2.2f", Angle(hours=12))
-    assert suc
-    assert pb.text() == "12.00"
-
-
-def test_guiSetText_8(function):
-    pb = QPushButton()
-    suc = function.guiSetText(pb, "D+2.2f", Angle(degrees=90))
-    assert suc
-    assert pb.text() == "+90.00"
-
-
-def test_guiSetText_9(function):
-    pb = QPushButton()
-    suc = function.guiSetText(pb, "s", "E")
-    assert suc
-    assert pb.text() == "EAST"
-
-
-def test_guiSetText_10(function):
-    pb = QPushButton()
-    suc = function.guiSetText(pb, "s", "W")
-    assert suc
-    assert pb.text() == "WEST"
-
-
-def test_guiSetText_11(function):
-    pb = QPushButton()
-    suc = function.guiSetText(pb, "s", True)
-    assert suc
-    assert pb.text() == "ON"
-
-
-def test_guiSetText_12(function):
-    pb = QPushButton()
-    suc = function.guiSetText(pb, "s", False)
-    assert suc
-    assert pb.text() == "OFF"
 
 
 def test_convertTime_1(function):

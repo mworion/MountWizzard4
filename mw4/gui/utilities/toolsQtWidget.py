@@ -38,8 +38,7 @@ from mountcontrol.convert import formatHstrToText, formatDstrToText
 
 
 def sleepAndEvents(value):
-    """
-    """
+    """ """
     for _ in range(value):
         time.sleep(0.001)
         QCoreApplication.processEvents()
@@ -95,8 +94,7 @@ def findIndexValue(ui, searchString, relaxed=False):
 
 
 def guiSetStyle(ui, pStyle="", value=None, pVals=None):
-    """
-    """
+    """ """
     if pVals is None:
         pVals = ["", "", ""]
     if not pStyle:
@@ -112,8 +110,7 @@ def guiSetStyle(ui, pStyle="", value=None, pVals=None):
 
 
 def guiSetText(ui, formatElement, value=None):
-    """
-    """
+    """ """
     if not ui:
         return
     if not formatElement:
@@ -149,7 +146,8 @@ def guiSetText(ui, formatElement, value=None):
 
 
 def clickable(widget: QWidget) -> Signal:
-    """    """
+    """ """
+
     class MouseClickEventFilter(QObject):
         clicked = Signal(object)
 

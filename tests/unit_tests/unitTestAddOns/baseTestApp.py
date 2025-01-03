@@ -358,7 +358,7 @@ class Relay:
         return
 
     @staticmethod
-    def pulse():
+    def pulse(a):
         return
 
     @staticmethod

@@ -141,11 +141,9 @@ def test_guiSetText_3b():
     guiSetText(pb, "3.5f", [])
 
 
-
 def test_guiSetText_3c():
     pb = QPushButton()
     guiSetText(pb, "3.5f", np.array([]))
-
 
 
 def test_guiSetText_4():

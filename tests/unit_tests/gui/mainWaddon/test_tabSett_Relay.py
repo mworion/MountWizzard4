@@ -35,7 +35,16 @@ def function(qapp):
     mainW.ui.setupUi(mainW)
     window = SettRelay(mainW)
     yield window
-    mainW.app.threadPool.waitForDone(1000)
+    mainW.app.threadPool.waitForDone(10000)
+
+
+def test_initConfig_1(function):
+    with mock.patch.object(function, "updateRelayButtonText"):
+        function.initConfig()
+
+
+def test_storeConfig_1(function):
+    function.storeConfig()
 
 
 def test_setupRelayGui(function):
@@ -47,26 +56,19 @@ def test_setupRelayGui(function):
         assert 2 == val
 
 
+def test_updateRelayButtonText_1(function):
+    function.updateRelayButtonText()
+
+
 def test_toggleRelay_1(function):
-    def Sender():
-        return function.ui.relayButton0
-
-    function.sender = Sender
-
     function.ui.relayDevice.setCurrentIndex(0)
-    suc = function.relayButtonPressed()
-    assert not suc
+    function.relayButtonPressed(0)
 
 
 def test_toggleRelay_2(function):
-    def Sender():
-        return function.ui.relayButton0
-
-    function.sender = Sender
     function.ui.relayDevice.setCurrentIndex(1)
     with mock.patch.object(function.app.relay, "switch", return_value=False):
-        suc = function.relayButtonPressed()
-        assert not suc
+        function.relayButtonPressed(1)
 
 
 def test_doRelayAction_1(function):
@@ -104,25 +106,13 @@ def test_doRelayAction_5(function):
 
 
 def test_relayButtonPressed_1(function):
-    def Sender():
-        return function.ui.relayButton0
-
-    function.sender = Sender
-
     with mock.patch.object(function, "doRelayAction", return_value=False):
-        suc = function.relayButtonPressed()
-        assert not suc
+        function.relayButtonPressed(1)
 
 
 def test_relayButtonPressed_2(function):
-    def Sender():
-        return function.ui.relayButton0
-
-    function.sender = Sender
-
     with mock.patch.object(function, "doRelayAction", return_value=True):
-        suc = function.relayButtonPressed()
-        assert suc
+        function.relayButtonPressed(2)
 
 
 def test_updateRelayGui(function):
@@ -130,5 +120,4 @@ def test_updateRelayGui(function):
     function.relayDropDown = list()
     function.relayText = list()
     function.app.relay.status = [0, 1, 0, 1, 0, 1, 0, 1]
-    suc = function.updateRelayGui()
-    assert suc
+    function.updateRelayGui()

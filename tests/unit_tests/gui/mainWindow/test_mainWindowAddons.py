@@ -25,6 +25,7 @@ from PySide6.QtWidgets import QWidget
 from gui.mainWindow.mainWindowAddons import MainWindowAddons
 from gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from gui.utilities.toolsQtWidget import MWidget
 from resource import resources
 
 resources.qInitResources()
@@ -32,7 +33,7 @@ resources.qInitResources()
 
 @pytest.fixture(autouse=False, scope="module")
 def window(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)

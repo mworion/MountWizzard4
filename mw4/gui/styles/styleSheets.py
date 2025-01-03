@@ -153,39 +153,26 @@ BASIC_STYLE = """
     QLineEdit {
         color: $M_PRIM$;
         text-align: right;
+        border-style: outset;
         border-width: %WIDTH%;
         border-color: $M_SEC$;
-        border-style: flat;
         border-radius: %ROUND%;
         background-color: $M_BACK1$;
     }
-    QLineEdit::item:active {
-        border-color: $M_PRIM$;
-    }
     QLineEdit:disabled {
-        color: $M_PRIM2$;
+        color: $M_PRIM3$;
     }
     QLineEdit[keypad] {
         color: $M_PRIM$;
         border-width: 0px;
     }
-    QLineEdit[input='true']{
-        border-width: %WIDTH%;
-        border-style: outset;
-    }
     QLineEdit[color='green'] {
-        border-width: %WIDTH%;
-        border-style: outset;
         border-color: $M_GREEN$;
     }
     QLineEdit[color='yellow'] {
-        border-width: %WIDTH%;
-        border-style: outset;
         border-color: $M_YELLOW$;
     }
     QLineEdit[color='red'] {
-        border-width: %WIDTH%;
-        border-style: outset;
         border-color: $M_RED$;
     }
     QLineEdit[status='on'] {
@@ -201,7 +188,7 @@ BASIC_STYLE = """
         margin: -5px;
     }
     QTextBrowser:disabled {
-        color: $M_PRIM2$;
+        color: $M_PRIM3$;
         background-color: $M_BACK1$;
     }
 
@@ -224,7 +211,7 @@ BASIC_STYLE = """
         border-color: $M_PRIM$;
     }
     QGroupBox::title:disabled{
-        color: $M_PRIM2$;
+        color: $M_PRIM3$;
     }
     QGroupBox[frameless=true] {
         border-width: 0px;

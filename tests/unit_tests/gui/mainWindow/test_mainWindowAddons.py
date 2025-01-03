@@ -19,7 +19,6 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PySide6.QtWidgets import QWidget
 
 # local import
 from gui.mainWindow.mainWindowAddons import MainWindowAddons
@@ -31,7 +30,7 @@ from resource import resources
 resources.qInitResources()
 
 
-@pytest.fixture(autouse=False, scope="module")
+@pytest.fixture(autouse=True, scope="module")
 def window(qapp):
     mainW = MWidget()
     mainW.app = App()

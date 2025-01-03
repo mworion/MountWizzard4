@@ -185,7 +185,7 @@ class SimulatorWindow(MWidget):
 
     def topEastView(self):
         """ """
-        hangeStyleDynamic(self.ui.telescopeView, "running", False)
+        changeStyleDynamic(self.ui.telescopeView, "running", False)
         self.camera.setViewCenter(QVector3D(0.1, 1.5, 0.1))
         self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))

@@ -70,14 +70,14 @@ class MainWindow(MWidget):
                 "statID": "power",
                 "tab": self.ui.toolsTabWidget,
             },
-            #            "Relay": {
-            #                "statID": "relay",
-            #                "tab": self.ui.toolsTabWidget,
-            #            },
-            #            "RelaySett": {
-            #                "statID": "relay",
-            #                "tab": self.ui.settingsTabWidget,
-            #            },
+            "Relay": {
+                "statID": "relay",
+                "tab": self.ui.toolsTabWidget,
+            },
+            "RelaySett": {
+                "statID": "relay",
+                "tab": self.ui.settingsTabWidget,
+            },
         }
 
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
@@ -98,7 +98,7 @@ class MainWindow(MWidget):
         self.app.update1s.connect(self.updateControllerStatus)
         self.app.update1s.connect(self.updateThreadAndOnlineStatus)
         self.app.update1s.connect(self.smartFunctionGui)
-        self.app.update1s.connect(self.smartTabGui)
+        # self.app.update1s.connect(self.smartTabGui)
         self.app.update1s.connect(self.setEnvironDeviceStats)
         self.app.update1s.connect(self.updateDeviceStats)
 

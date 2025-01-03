@@ -36,145 +36,81 @@ def function(qapp):
     mainW.app.threadPool.waitForDone(1000)
 
 
-def test_setGuiVersion_1(function, qtbot):
+def test_setGuiVersion_1(function):
     function.setGuiVersion()
 
 
-def test_setGuiVersion_2(function, qtbot):
+def test_setGuiVersion_2(function):
     function.setGuiVersion(version=2)
 
 
-def test_updatePowerGui_1(function, qtbot):
+def test_updatePowerGui_1(function):
     function.updatePowerGui()
 
 
-def test_updatePowerGui_2(function, qtbot):
+def test_updatePowerGui_2(function):
     function.app.power.data = {"FIRMWARE_INFO.VERSION": "1.5"}
     function.updatePowerGui()
 
 
-def test_setDew_1(function, qtbot):
-    class Sender:
-        @staticmethod
-        def parent():
-            return function.ui.dewA
-
+def test_setDew_1(function):
     with mock.patch.object(QInputDialog, "getInt", return_value=(0, False)):
-        function.sender = Sender
-        function.setDew()
+        function.setDew("A")
 
 
-def test_setDew_2(function, qtbot):
-    class Sender:
-        @staticmethod
-        def parent():
-            return function.ui.dewA
-
+def test_setDew_2(function):
     with mock.patch.object(QInputDialog, "getInt", return_value=(0, False)):
-        function.sender = Sender
-        function.setDew()
+        function.setDew("A")
 
 
-def test_setDew_3(function, qtbot):
-    class Sender:
-        @staticmethod
-        def parent():
-            return function.ui.dewA
-
+def test_setDew_3(function):
     with mock.patch.object(QInputDialog, "getInt", return_value=(0, False)):
-        function.sender = Sender
         function.ui.dewA.setText("10")
-        function.setDew()
+        function.setDew("A")
 
 
-def test_setDew_4(function, qtbot):
-    class Sender:
-        @staticmethod
-        def parent():
-            return function.ui.dewA
-
+def test_setDew_4(function):
     with mock.patch.object(QInputDialog, "getInt", return_value=(0, True)):
-        function.sender = Sender
-        function.ui.dewA.setText("10")
-        function.setDew()
+        function.setDew("A")
 
 
-def test_setDew_5(function, qtbot):
-    class Sender:
-        @staticmethod
-        def parent():
-            return function.ui.dewA
-
-    function.dew = {"test": function.ui.dewB}
+def test_setDew_5(function):
     with mock.patch.object(QInputDialog, "getInt", return_value=(0, True)):
-        function.sender = Sender
         function.ui.dewA.setText("10")
-        function.setDew()
+        function.setDew("A")
 
 
-def test_togglePowerPort_1(function, qtbot):
-    def Sender():
-        return function.ui.powerPort1
-
-    function.sender = Sender
-    function.togglePowerPort()
+def test_togglePowerPort_1(function):
+    function.togglePowerPort("1")
 
 
-def test_togglePowerPort_2(function, qtbot):
-    def Sender():
-        return function.ui.dewA
-
-    function.sender = Sender
-    function.togglePowerPort()
+def test_togglePowerBootPort_1(function):
+    function.togglePowerBootPort("2")
 
 
-def test_togglePowerBootPort_1(function, qtbot):
-    def Sender():
-        return function.ui.powerBootPort1
-
-    function.sender = Sender
-    function.togglePowerBootPort()
+def test_togglePowerBootPort_2(function):
+    function.togglePowerBootPort("1")
 
 
-def test_togglePowerBootPort_2(function, qtbot):
-    def Sender():
-        return function.ui.dewA
-
-    function.sender = Sender
-    function.togglePowerBootPort()
-
-
-def test_toggleHubUSB_1(function, qtbot):
+def test_toggleHubUSB_1(function):
     function.toggleHubUSB()
 
 
-def test_togglePortUSB_1(function, qtbot):
-    def Sender():
-        return function.ui.portUSB1
-
-    function.sender = Sender
-    function.togglePortUSB()
+def test_togglePortUSB_1(function):
+    function.togglePortUSB("1")
 
 
-def test_togglePortUSB_2(function, qtbot):
-    def Sender():
-        return function.ui.dewA
-
-    function.sender = Sender
-    function.togglePortUSB()
-
-
-def test_toggleAutoDew_1(function, qtbot):
+def test_toggleAutoDew_1(function):
     function.toggleAutoDew()
 
 
-def test_setAdjustableOutput_2(function, qtbot):
+def test_setAdjustableOutput_2(function):
     function.ui.adjustableOutput.setText("10")
     with mock.patch.object(QInputDialog, "getDouble", return_value=(0, False)):
         function.setAdjustableOutput()
 
 
-def test_setAdjustableOutput_3(function, qtbot):
+def test_setAdjustableOutput_3(function):
     function.ui.adjustableOutput.setText("10")
     with mock.patch.object(QInputDialog, "getDouble", return_value=(0, True)):
         function.setAdjustableOutput()

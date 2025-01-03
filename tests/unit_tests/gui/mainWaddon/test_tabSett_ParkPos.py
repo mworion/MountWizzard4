@@ -18,7 +18,9 @@
 import pytest
 from unittest import mock
 
+# external packages
 from PySide6.QtWidgets import QWidget
+from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -39,13 +41,11 @@ def function(qapp):
 
 def test_initConfig_1(function):
     function.app.config["mainW"] = {}
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_initConfig_2(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_initConfig_3(function):
@@ -67,8 +67,11 @@ def test_initConfig_3(function):
 
 
 def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
+
+
+def test_setupIcons_1(function):
+    function.setupIcons()
 
 
 def test_setupParkPosGui(function):
@@ -82,102 +85,55 @@ def test_setupParkPosGui(function):
 def test_parkAtPos_1(function):
     function.app.mount.signals.slewed.connect(function.parkAtPos)
     with mock.patch.object(function.app.mount.obsSite, "parkOnActualPosition", return_value=False):
-        suc = function.parkAtPos()
-        assert not suc
+        function.parkAtPos()
 
 
 def test_parkAtPos_2(function):
     function.app.mount.signals.slewed.connect(function.parkAtPos)
     with mock.patch.object(function.app.mount.obsSite, "parkOnActualPosition", return_value=True):
-        suc = function.parkAtPos()
-        assert suc
-
-
-def test_slewParkPos_1(function):
-    def Sender():
-        return QWidget()
-
-    function.sender = Sender
-    suc = function.slewToParkPos()
-    assert not suc
+        function.parkAtPos()
 
 
 def test_slewParkPos_2(function):
-    def Sender():
-        return function.ui.posButton0
-
-    function.sender = Sender
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
-        suc = function.slewToParkPos()
-        assert not suc
+        function.slewToParkPos(0)
 
 
 def test_slewParkPos_3(function):
-    def Sender():
-        return function.ui.posButton0
-
-    function.sender = Sender
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
         with mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=False):
-            suc = function.slewToParkPos()
-            assert not suc
+            function.slewToParkPos(0)
 
 
 def test_slewParkPos_4(function):
-    def Sender():
-        return function.ui.posButton0
-
-    function.sender = Sender
     function.ui.parkMountAfterSlew.setChecked(True)
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
         with mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=True):
-            suc = function.slewToParkPos()
-            assert not suc
+            function.slewToParkPos(0)
 
 
 def test_slewParkPos_5(function):
-    def Sender():
-        return function.ui.posButton0
-
-    function.sender = Sender
     function.ui.parkMountAfterSlew.setChecked(False)
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
         with mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=True):
-            suc = function.slewToParkPos()
-            assert suc
+            function.slewToParkPos(0)
 
 
 def test_saveActualPosition_1(function):
-    temp = function.app.mount.obsSite.Alt
+    function.app.mount.obsSite.Az = Angle(degrees=10)
     function.app.mount.obsSite.Alt = None
 
-    suc = function.saveActualPosition()
-    assert not suc
-    function.app.mount.obsSite.Alt = temp
+    function.saveActualPosition(0)
 
 
 def test_saveActualPosition_2(function):
-    temp = function.app.mount.obsSite.Az
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.app.mount.obsSite.Az = None
 
-    suc = function.saveActualPosition()
-    assert not suc
-    function.app.mount.obsSite.Az = temp
+    function.saveActualPosition(0)
 
 
 def test_saveActualPosition_3(function):
-    def Sender():
-        return QWidget()
-
-    function.sender = Sender
-    suc = function.saveActualPosition()
-    assert not suc
-
-
-def test_saveActualPosition_4(function):
-    def Sender():
-        return function.ui.posSave0
-
-    function.sender = Sender
-    suc = function.saveActualPosition()
-    assert suc
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Az = Angle(degrees=10)
+    function.saveActualPosition(0)

@@ -17,6 +17,7 @@
 # standard libraries
 
 # external packages
+from functools import partial
 from PySide6.QtWidgets import QInputDialog
 from mountcontrol.convert import valueToInt
 
@@ -84,13 +85,13 @@ class Power:
 
         # setting gui elements
         for name, button in self.dew.items():
-            clickable(button).connect(self.setDew)
+            clickable(button).connect(partial(self.setDew, name))
         for name, button in self.powerOnOFF.items():
-            button.clicked.connect(self.togglePowerPort)
+            button.clicked.connect(partial(self.togglePowerPort, name))
         for name, button in self.powerBoot.items():
-            button.clicked.connect(self.togglePowerBootPort)
+            button.clicked.connect(partial(self.togglePowerBootPort, name))
         for name, button in self.portUSB.items():
-            button.clicked.connect(self.togglePortUSB)
+            button.clicked.connect(partial(self.togglePortUSB, name))
 
         # functional signals
         self.app.power.signals.version.connect(self.setGuiVersion)
@@ -98,14 +99,8 @@ class Power:
         # cyclic tasks
         self.app.update1s.connect(self.updatePowerGui)
 
-    def setGuiVersion(self, version=1):
-        """
-        setGuiVersion enables and disables the gui elements according to the recognized
-        version the UPB.
-
-        :param version:
-        :return:
-        """
+    def setGuiVersion(self, version=1) -> None:
+        """ """
         if version == 1:
             self.ui.groupDewC.setVisible(False)
             self.ui.groupPortUSB.setVisible(False)
@@ -117,12 +112,8 @@ class Power:
             self.ui.groupHubUSB.setVisible(False)
             self.ui.groupAdjustableOutput.setVisible(True)
 
-    def updatePowerGui(self):
-        """
-        updatePowerGui changes the style of the button related to the state of the Pegasus
-
-        :return: success for test
-        """
+    def updatePowerGui(self) -> None:
+        """ """
         for name, button in self.powerOnOFF.items():
             value = self.app.power.data.get(f"POWER_CONTROL.POWER_CONTROL_{name}", False)
             changeStyleDynamic(button, "running", value)
@@ -189,121 +180,54 @@ class Power:
             value = self.app.power.data.get("USB_HUB_CONTROL.INDI_ENABLED", False)
             changeStyleDynamic(self.ui.hubUSB, "running", value)
 
-        return True
+    def setDew(self, name: str) -> bool:
+        """ """
+        actValue = valueToInt(self.dew[name].text())
+        dlg = QInputDialog()
+        value, ok = dlg.getInt(
+            self,
+            f"Set dew PWM {name}",
+            "Value (0-100):",
+            actValue,
+            0,
+            100,
+            10,
+        )
+        if not ok:
+            return False
+        return self.app.power.sendDew(name, value)
 
-    def setDew(self):
-        """
-        setDew send the new dew value to power. as self.sender() gives only the object
-        back, which is in case of an QLineEdit a wrapper, we have to go to the parent
-        object to get the line edit object directly
+    def togglePowerPort(self, name: str) -> bool:
+        """ """
+        return self.app.power.togglePowerPort(name)
 
-        :return: true fot test purpose
-        """
+    def togglePowerBootPort(self, name: str) -> bool:
+        """ """
+        return self.app.power.togglePowerPortBoot(name)
 
-        for name, button in self.dew.items():
-            if button != self.sender().parent():
-                continue
+    def toggleHubUSB(self) -> bool:
+        """ """
+        return self.app.power.toggleHubUSB()
 
-            actValue = valueToInt(button.text())
+    def togglePortUSB(self, name: str) -> bool:
+        """ """
+        return self.app.power.togglePortUSB(name)
 
-            if actValue is None:
-                return False
+    def toggleAutoDew(self) -> bool:
+        """ """
+        return self.app.power.toggleAutoDew()
 
-            dlg = QInputDialog()
-            value, ok = dlg.getInt(
-                self,
-                f"Set dew PWM {name}",
-                "Value (0-100):",
-                actValue,
-                0,
-                100,
-                10,
-            )
-
-            if not ok:
-                return False
-
-            suc = self.app.power.sendDew(port=name, value=value)
-            return suc
-
-    def togglePowerPort(self):
-        """
-        togglePowerPort  toggles the state of the power switch
-        :return: success
-        """
-
-        for name, button in self.powerOnOFF.items():
-            if button != self.sender():
-                continue
-            suc = self.app.power.togglePowerPort(port=name)
-            return suc
-
-    def togglePowerBootPort(self):
-        """
-        togglePowerPort  toggles the state of the power switch
-        :return: success
-        """
-
-        for name, button in self.powerBoot.items():
-            if button != self.sender():
-                continue
-            suc = self.app.power.togglePowerPortBoot(port=name)
-            return suc
-
-    def toggleHubUSB(self):
-        """
-        toggleHubUSB
-
-        :return: true fot test purpose
-        """
-        suc = self.app.power.toggleHubUSB()
-        return suc
-
-    def togglePortUSB(self):
-        """
-        toggleUSBPort  toggles the state of the power switch
-        :return: success
-        """
-
-        for name, button in self.portUSB.items():
-            if button != self.sender():
-                continue
-            suc = self.app.power.togglePortUSB(port=name)
-            return suc
-
-    def toggleAutoDew(self):
-        """
-        toggleAutoDew
-
-        :return: true fot test purpose
-        """
-
-        suc = self.app.power.toggleAutoDew()
-        return suc
-
-    def setAdjustableOutput(self):
-        """
-        setAdjustableOutput
-
-        :return: true fot test purpose
-        """
-
+    def setAdjustableOutput(self) -> bool:
+        """ """
         actValue = float(self.ui.adjustableOutput.text())
-
         dlg = QInputDialog()
         value, ok = dlg.getDouble(self, "Set Voltage Output", "Value (3-12):", actValue, 3, 12, 1)
 
         if not ok:
             return False
 
-        suc = self.app.power.sendAdjustableOutput(value=value)
-        return suc
+        return self.app.power.sendAdjustableOutput(value=value)
 
-    def rebootUPB(self):
-        """
-
-        :return: true fot test purpose
-        """
-
-        suc = self.app.power.reboot()
-        return suc
+    def rebootUPB(self) -> bool:
+        """ """
+        return self.app.power.reboot()

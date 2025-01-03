@@ -17,6 +17,7 @@
 # standard libraries
 
 # external packages
+from functools import partial
 from skyfield.api import Angle
 
 # local import
@@ -33,66 +34,61 @@ class SettParkPos:
         self.msg = mainW.app.msg
         self.ui = mainW.ui
 
-        self.posButtons = list()
-        self.posTexts = list()
-        self.posAlt = list()
-        self.posAz = list()
-        self.posSaveButtons = list()
+        self.posButtons = dict()
+        self.posTexts = dict()
+        self.posAlt = dict()
+        self.posAz = dict()
+        self.posSaveButtons = dict()
 
         for i in range(0, 10):
-            self.posButtons.append(eval("self.ui.posButton{0:1d}".format(i)))
-            self.posTexts.append(eval("self.ui.posText{0:1d}".format(i)))
-            self.posAlt.append(eval("self.ui.posAlt{0:1d}".format(i)))
-            self.posAz.append(eval("self.ui.posAz{0:1d}".format(i)))
-            self.posSaveButtons.append(eval("self.ui.posSave{0:1d}".format(i)))
+            self.posButtons[i] = eval("self.ui.posButton{0:1d}".format(i))
+            self.posSaveButtons[i] = eval("self.ui.posSave{0:1d}".format(i))
 
-        for posText in self.posTexts:
-            posText.editingFinished.connect(self.updateParkPosButtonText)
-        for button in self.posButtons:
-            button.clicked.connect(self.slewToParkPos)
-        for button in self.posSaveButtons:
-            button.clicked.connect(self.saveActualPosition)
+            self.posTexts[i] = eval("self.ui.posText{0:1d}".format(i))
+            self.posAlt[i] = eval("self.ui.posAlt{0:1d}".format(i))
+            self.posAz[i] = eval("self.ui.posAz{0:1d}".format(i))
 
-    def initConfig(self):
-        """
-        :return: True for test purpose
-        """
+        for index in self.posTexts:
+            self.posTexts[index].editingFinished.connect(self.updateParkPosButtonText)
+        for index in self.posButtons:
+            self.posButtons[index].clicked.connect(partial(self.slewToParkPos, index))
+        for index in self.posSaveButtons:
+            self.posButtons[index].clicked.connect(partial(self.saveActualPosition, index))
+
+    def initConfig(self) -> None:
+        """ """
         config = self.app.config["mainW"]
-        for i, textField in enumerate(self.posTexts):
-            keyConfig = f"posText{i:1d}"
-            textField.setText(config.get(keyConfig, f"Park Pos {i:1d}"))
-        for i, textField in enumerate(self.posAlt):
-            keyConfig = f"posAlt{i:1d}"
+        for index in self.posTexts:
+            keyConfig = f"posText{index:1d}"
+            self.posTexts[index].setText(config.get(keyConfig, f"Park Pos {index:1d}"))
+        for index in self.posAlt:
+            keyConfig = f"posAlt{index:1d}"
             val = valueToFloat(config.get(keyConfig))
             if val:
-                textField.setValue(val)
-        for i, textField in enumerate(self.posAz):
-            keyConfig = f"posAz{i:1d}"
+                self.posAlt[index].setValue(val)
+        for index in self.posAz:
+            keyConfig = f"posAz{index:1d}"
             val = valueToFloat(config.get(keyConfig))
             if val:
-                textField.setValue(val)
+                self.posAz[index].setValue(val)
         self.updateParkPosButtonText()
         self.ui.parkMountAfterSlew.setChecked(config.get("parkMountAfterSlew", False))
-        return True
 
-    def storeConfig(self):
-        """
-        :return: True for test purpose
-        """
+    def storeConfig(self) -> None:
+        """ """
         config = self.app.config["mainW"]
-        for i, textField in enumerate(self.posTexts):
-            keyConfig = f"posText{i:1d}"
-            config[keyConfig] = textField.text()
-        for i, textField in enumerate(self.posAlt):
-            keyConfig = f"posAlt{i:1d}"
-            config[keyConfig] = textField.value()
-        for i, textField in enumerate(self.posAz):
-            keyConfig = f"posAz{i:1d}"
-            config[keyConfig] = textField.value()
+        for index in self.posTexts:
+            keyConfig = f"posText{index:1d}"
+            config[keyConfig] = self.posTexts[index].text()
+        for index in self.posAlt:
+            keyConfig = f"posAlt{index:1d}"
+            config[keyConfig] = self.posAlt[index].value()
+        for index in self.posAz:
+            keyConfig = f"posAz{index:1d}"
+            config[keyConfig] = self.posAz[index].value()
         config["parkMountAfterSlew"] = self.ui.parkMountAfterSlew.isChecked()
-        return True
 
-    def setupIcons(self):
+    def setupIcons(self) -> None:
         """ """
         self.mainW.wIcon(self.ui.posSave0, "download")
         self.mainW.wIcon(self.ui.posSave1, "download")
@@ -105,79 +101,45 @@ class SettParkPos:
         self.mainW.wIcon(self.ui.posSave8, "download")
         self.mainW.wIcon(self.ui.posSave9, "download")
 
-    def updateParkPosButtonText(self):
-        """
-        updateParkPosButtonText updates the text in the gui button if we change
-        texts in the gui.
+    def updateParkPosButtonText(self) -> None:
+        """ """
+        for index in self.posButtons:
+            text = self.posTexts[index].text()
+            self.posButtons[index].setText(text)
+            self.posButtons[index].setEnabled(text.strip() != "")
 
-        :return: true for test purpose
-        """
-        for button, textField in zip(self.posButtons, self.posTexts):
-            text = textField.text()
-            button.setText(text)
-            button.setEnabled(text.strip() != "")
-        return True
-
-    def parkAtPos(self):
-        """
-        :return:
-        """
+    def parkAtPos(self) -> None:
+        """ """
         self.app.mount.signals.slewed.disconnect(self.parkAtPos)
-        suc = self.app.mount.obsSite.parkOnActualPosition()
-        if not suc:
+        if not self.app.mount.obsSite.parkOnActualPosition():
             self.msg.emit(2, "Mount", "Command", "Cannot park at current position")
-        return suc
 
-    def slewToParkPos(self):
-        """
-        slewToParkPos takes the configured data from park positions menu and
-        slews the mount to the targeted alt az coordinates and stops tracking.
-        actually there is no chance to park the mount directly.
-
-        :return: success
-        """
-        if self.sender() not in self.posButtons:
-            return False
-
-        index = self.posButtons.index(self.sender())
+    def slewToParkPos(self, index: int) -> None:
+        """ """
         altValue = self.posAlt[index].value()
         azValue = self.posAz[index].value()
         posTextValue = self.posTexts[index].text()
 
-        suc = self.app.mount.obsSite.setTargetAltAz(
+        if not self.app.mount.obsSite.setTargetAltAz(
             alt=Angle(degrees=altValue), az=Angle(degrees=azValue)
-        )
-        if not suc:
+        ):
             self.msg.emit(2, "Mount", "Command error", f"Cannot slew to [{posTextValue}]")
-            return False
+            return
 
-        suc = self.app.mount.obsSite.startSlewing(slewType="notrack")
-        if not suc:
+        if not self.app.mount.obsSite.startSlewing(slewType="notrack"):
             self.msg.emit(2, "Mount", "Command error", f"Cannot slew to [{posTextValue}]")
-            return False
+            return
 
         self.msg.emit(0, "Mount", "Command", f"Slew to [{posTextValue}]")
         if not self.ui.parkMountAfterSlew.isChecked():
-            return True
+            return
 
         self.app.mount.signals.slewed.connect(self.parkAtPos)
-        return False
 
-    def saveActualPosition(self):
-        """
-        saveActualPosition takes the actual mount position alt/az and stores it
-        in the alt az fields in the gui for persistence.
-
-        :return: success
-        """
+    def saveActualPosition(self, index: int) -> None:
+        """ """
         obs = self.app.mount.obsSite
-        if not obs.Alt:
-            return False
-        if not obs.Az:
-            return False
-        if self.sender() not in self.posSaveButtons:
-            return False
-        index = self.posSaveButtons.index(self.sender())
+        if obs.Alt is None or obs.Az is None:
+            return
         self.posAlt[index].setValue(obs.Alt.degrees)
         self.posAz[index].setValue(obs.Az.degrees)
-        return True

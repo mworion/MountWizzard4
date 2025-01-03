@@ -109,7 +109,7 @@ BASIC_STYLE = """
         color: $M_TER$;
     }
     QToolTip {
-        border-width: 2px;
+        border-width: %WIDTH%;
         border-style: outset;
         border-color: $M_SEC$;
         color: $M_PRIM$;
@@ -122,8 +122,6 @@ BASIC_STYLE = """
     }
     QLabel[keypad]{
         color: $M_PRIM$;
-    }
-    QLabel[keypad] {
         background-color: $M_BACK1$;
         border-radius: 8px;
     }
@@ -131,15 +129,13 @@ BASIC_STYLE = """
         color: $M_SEC$;
     }
     QLabel[color='blue'] {
-        border-width: 3px;
+        border-width: %WIDTH%;
         border-color: $M_PRIM1$;
         border-style: outset;
-        border-radius: 2px;
+        border-radius: %ROUND%;
         background-color: $M_PRIM1$;
     }
     QLabel[iconpicture='true'] {
-        border-width: 1px;
-        border-color: $M_SEC$;
         border-style: plain;
         border-radius: 0px;
     }
@@ -157,10 +153,10 @@ BASIC_STYLE = """
     QLineEdit {
         color: $M_PRIM$;
         text-align: right;
-        border-width: 1px;
+        border-width: %WIDTH%;
         border-color: $M_SEC$;
         border-style: flat;
-        border-radius: 2px;
+        border-radius: %ROUND%;
         background-color: $M_BACK1$;
     }
     QLineEdit::item:active {
@@ -174,21 +170,21 @@ BASIC_STYLE = """
         border-width: 0px;
     }
     QLineEdit[input='true']{
-        border-width: 1px;
+        border-width: %WIDTH%;
         border-style: outset;
     }
     QLineEdit[color='green'] {
-        border-width: 1px;
+        border-width: %WIDTH%;
         border-style: outset;
         border-color: $M_GREEN$;
     }
     QLineEdit[color='yellow'] {
-        border-width: 1px;
+        border-width: %WIDTH%;
         border-style: outset;
         border-color: $M_YELLOW$;
     }
     QLineEdit[color='red'] {
-        border-width: 1px;
+        border-width: %WIDTH%;
         border-style: outset;
         border-color: $M_RED$;
     }
@@ -200,8 +196,8 @@ BASIC_STYLE = """
     QTextBrowser {
         color: $M_PRIM$;
         background-color: $M_BACK1$;
-        border-radius: 5px;
-        border-width: 2px;
+        border-radius: %ROUND%;
+        border-width: %WIDTH%;
         margin: -5px;
     }
     QTextBrowser:disabled {
@@ -211,9 +207,9 @@ BASIC_STYLE = """
 
     /* Group Box */
     QGroupBox {
-        border-width: 1px;
+        border-width: %WIDTH%;
         border-style: outset;
-        border-radius: 5px;
+        border-radius: %ROUND%;
         border-color: $M_PRIM3$;
         margin-top: 6px;
         background-color: $M_BACK$;
@@ -234,20 +230,19 @@ BASIC_STYLE = """
         border-width: 0px;
     }
     QGroupBox[frameless=true]:disabled {
-        border-width: 2px;
         border-color: $M_RED$;
     }
     QGroupBox::indicator {
         border-color: $M_SEC$;
-        border-width: 2px;
+        border-width: %WIDTH%;
         border-color: $M_SEC$;
         border-style: outset;
-        border-radius: 2px;
+        border-radius: %ROUND%;
         width: 13px;
         height: 13px;
     }
     QGroupBox::indicator:checked {
-        border-width: 1px;
+        border-width: %WIDTH%;
         border-color: $M_PRIM$;
         background-color: $M_PRIM2$;
         image: url(:/icon/$checkmark$.svg);
@@ -263,16 +258,15 @@ BASIC_STYLE = """
         background-color: $M_TRANS$;
     }
     QCheckBox::indicator {
-        border-width: 1px;
+        border-width: %WIDTH%;
         border-color: $M_SEC$;
         background-color: $M_BACK$;
         border-style: outset;
-        border-radius: 2px;
+        border-radius: %ROUND%;
         width: 13px;
         height: 13px;
     }
     QCheckBox::indicator:checked {
-        border-width: 1px;
         border-color: $M_PRIM$;
         background-color: $M_PRIM2$;
         image: url(:/icon/$checkmark$.svg);
@@ -288,11 +282,11 @@ BASIC_STYLE = """
         color: $M_SEC$;
     }
     QRadioButton::indicator {
-        border-width: 2px;
+        border-width: %WIDTH%;
         border-color: $M_SEC$;
         background-color: $M_BACK$;
         border-style: outset;
-        border-radius: 7px;
+        border-radius: %ROUND%;
         width: 13px;
         height: 13px;
     }
@@ -306,16 +300,17 @@ BASIC_STYLE = """
         background-color: $M_BACK1$;
         color: $M_PRIM$;
         border-color: $M_SEC$;
-        border-width: 1px;
+        border-width: %WIDTH%;
         border-style: outset;
-        border-radius: 2px;
+        border-radius: %ROUND%;
+        padding-left: 2px;
     }
     QDoubleSpinBox::up-button {
         subcontrol-origin: border;
         subcontrol-position: top right;
         width: 12px;
-        border-width: 1px;
-        border-radius: 2px;
+        border-radius: %ROUND%;
+        border-width: %WIDTH%;
         border-color: $M_SEC$;
         border-style: outset;
         background-color: $M_BACK1$;
@@ -329,9 +324,9 @@ BASIC_STYLE = """
         subcontrol-origin: border;
         subcontrol-position: bottom right;
         width: 12px;
-        border-width: 1px;
         border-style: outset;
-        border-radius: 2px;
+        border-radius: %ROUND%;
+        border-width: %WIDTH%;
         border-color: $M_SEC$;
         background-color: $M_BACK1$;
    }
@@ -347,7 +342,7 @@ BASIC_STYLE = """
         border-color: $M_SEC$;
         border-width: 1px;
         border-style: outset;
-        border-radius: 5px;
+        border-radius: %ROUND%;
         min - width: 10em;
     }
     QPushButton[keypad] {
@@ -373,9 +368,6 @@ BASIC_STYLE = """
     QPushButton:disabled {
         color: $M_SEC$;
         border-color: $M_SEC1$;
-        border-width: 1px;
-        border-style: outset;
-        border-radius: 2px;
     }
     QPushButton[color='gray'] {
         background-color: #GRAD_1,$M_GRAY$#;
@@ -436,9 +428,9 @@ BASIC_STYLE = """
         border: 0px;
     }
     QTableWidget QHeaderView:section{
-        border-width: 1px;
+        border-width: %WIDTH%;
         border-style: plain;
-        border-radius: 2px;
+        border-radius: %ROUND%;
         border-color: $M_BACK$;
         background-color: $M_SEC1$;
         color: $M_TER$;
@@ -449,7 +441,6 @@ BASIC_STYLE = """
         width: 15px;
         height: 6px;
     }
-
     QTableView::item:selected {
         background-color: $M_PRIM$;
         color: $M_BACK$;
@@ -462,29 +453,22 @@ BASIC_STYLE = """
         border-color: $M_SEC$;
         border-width: 1px;
         border-style: outset;
-        border-radius: 5px;
+        border-radius: %ROUND%;
         padding-left: 5px;
         background-color: #GRAD_1,$M_BACK1$#;
     }
     QComboBox:disabled {
         color: $M_SEC$;
     }
-    QComboBox[active=true] {
-        border-color: $M_GREEN$;
-        background-color: $M_GREEN2$;
-    }
     QComboBox::drop-down {
         subcontrol-origin: border;
         subcontrol-position: right;
         width: 24px;
         border-color: $M_SEC$;
-        border-width: 1px;
         border-style: outset;
-        border-radius: 5px;
+        border-width: 1px;
+        border-radius: %ROUND%;
         background-color: #GRAD_1,$M_BACK1$#;
-    }
-    QComboBox[active=true]::drop-down {
-        border-color: $M_GREEN$;
     }
     QComboBox::down-arrow {
         image: url(:/icon/$arrow-down$.svg);
@@ -492,22 +476,20 @@ BASIC_STYLE = """
         height: 16px;
     }
     QComboBox QListView {
-        border-width: 2px;
+        border-width: %WIDTH%;
         border-style: outset;
         border-color: $M_SEC$;
-        border-radius: 5px;
+        border-radius: %ROUND%;
         color: $M_TER$;
         min-height: 60px;
     }
     QComboBox QListView::item {
-        border-width: 1px;
         min-height: 28px;
         border-color: $M_SEC$;
     }
     QComboBox QListView::item:selected {
         border-style: outset;
-        background-color: $M_PRIM$;
-        background-color: #GRAD_1,$M_BACK1$#;
+        background-color: #GRAD_1,$M_PRIM$#;
     }
     
     /* lines */
@@ -526,8 +508,8 @@ BASIC_STYLE = """
         background-color: #GRAD_2,$M_BACK$#;
     }
     QTabBar::tab {
-        border-radius: 5px;
-        border-width: 2px;
+        border-radius: %ROUND%;
+        border-width: %WIDTH%;
         border-style: outset;
         color: $M_TER2$;
         border-color: $M_TAB1$;
@@ -540,7 +522,7 @@ BASIC_STYLE = """
     QTabBar::tab:selected {
         background-color: #GRAD_1,$M_TAB1$#;
         color: $M_TER$;
-        border-color: $M_TAB0$;
+        border-color: $M_TAB$;
     }
     QTabBar::tab:only-one {
         margin: 1;
@@ -556,8 +538,8 @@ BASIC_STYLE = """
         width: 16px;
         height: 16px;
         margin: 0px 3px 0px 3px;
-        border-width: 1px;
-        border-radius: 5px;
+        border-width: %WIDTH%;
+        border-radius: %ROUND%;
         border-color: $M_SEC$;
     }
     QSlider::handle {   
@@ -569,12 +551,13 @@ BASIC_STYLE = """
     QSlider::sub-page {   
         background-color: $M_SEC1$;
     }
+
     /* scroll bar */
     QScrollBar {
-        border-width: 1px;
+        border-width: %WIDTH%;
         border-color: $M_SEC$;
         border-style: outset;
-        border-radius: 2px;
+        border-radius: %ROUND%;
     }
     QScrollBar:vertical {   
         width: 16px;
@@ -624,34 +607,36 @@ BASIC_STYLE = """
     /* progress bar */
     QProgressBar {
         color: white;
-        border-radius: 5px;
-        border-width: 1px;
         text-align: center;
+        border-style: outset;
+        border-color: $M_PRIM2$;
+        border-width: %WIDTH%;
+        border-radius: %ROUND%;
     }
     QProgressBar:disabled {
         color: $M_SEC$;
     }
     QProgressBar::chunk {
-        background-color: $M_PRIM$;
-        width: 1px;
-        margin: 0px;
+        border-radius: 2px;
+        background-color: #GRAD_1,$M_PRIM$#;
     }
-    QFileDialog QListView:enabled {
+    
+    /* System Dialogs */
+    QFileDialog QListView {
         background-color: $M_BACK$;
-        color: $M_PRIM$;
         text-align: right;
-        border-width: 1px;
+        border-width: %WIDTH%;
         border-color: $M_SEC$;
         border-style: outset;
-        border-radius: 2px;
+        border-radius: %ROUND%;
+    }
+    QFileDialog QListView:enabled {
+        color: $M_PRIM$;
     }
     QFileDialog QListView:disabled {
         color: $M_SEC$;
-        text-align: right;
-        border-width: 1px;
     }
     
-    /* input dialog */
     QFileDialog QPushButton {
         min-width: 50px;
         min-height: 20px;
@@ -663,7 +648,7 @@ BASIC_STYLE = """
         min-height: 25px;
     }
     QInputDialog QPushButton:default {
-        border-width: 2px;
+        border-width: %WIDTH%;
         border-color: $M_PRIM$;
     }
     """

@@ -22,12 +22,12 @@ from sgp4.exporter import export_tle
 from skyfield.api import Angle
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
 from gui.mainWaddon.satData import SatData
 from logic.satellites.satellite_calculations import calcSatPasses
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class SatTrack(MWidget, SatData):
+class SatTrack(SatData):
     """ """
 
     def __init__(self, mainW):
@@ -117,12 +117,12 @@ class SatTrack(MWidget, SatData):
 
     def setupIcons(self):
         """ """
-        self.wIcon(self.ui.stopSatelliteTracking, "cross-circle")
-        self.wIcon(self.ui.startSatelliteTracking, "start")
-        self.wIcon(self.ui.progSatFull, "run")
-        self.wIcon(self.ui.progSatFiltered, "run")
-        self.wIcon(self.ui.progSatSelected, "run")
-        self.wIcon(self.ui.progTrajectory, "run")
+        self.mainW.wIcon(self.ui.stopSatelliteTracking, "cross-circle")
+        self.mainW.wIcon(self.ui.startSatelliteTracking, "start")
+        self.mainW.wIcon(self.ui.progSatFull, "run")
+        self.mainW.wIcon(self.ui.progSatFiltered, "run")
+        self.mainW.wIcon(self.ui.progSatSelected, "run")
+        self.mainW.wIcon(self.ui.progTrajectory, "run")
 
     def enableGuiFunctions(self):
         """ """
@@ -153,7 +153,7 @@ class SatTrack(MWidget, SatData):
         self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setText("Start satellite tracking")
-        self.changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
+        changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
 
     def updatePasses(self):
         """ """
@@ -209,7 +209,7 @@ class SatTrack(MWidget, SatData):
 
     def showSatPasses(self):
         """ """
-        title = "Satellite passes " + self.timeZoneString()
+        title = "Satellite passes " + self.mainW.timeZoneString()
         self.ui.satPassesGroup.setTitle(title)
 
         if not self.satellite:
@@ -232,24 +232,24 @@ class SatTrack(MWidget, SatData):
         for i, satOrbit in enumerate(self.satOrbits):
             riseT = satOrbit.get("rise", None)
             if riseT is not None:
-                riseStr = self.convertTime(riseT, fString)
-                dateStr = self.convertTime(riseT, fStringDate)
+                riseStr = self.mainW.convertTime(riseT, fString)
+                dateStr = self.mainW.convertTime(riseT, fStringDate)
             else:
                 riseStr = "unknown"
                 dateStr = "---"
             culminateT = satOrbit.get("culminate", None)
             if culminateT is not None:
-                culminateStr = self.convertTime(culminateT, fString)
+                culminateStr = self.mainW.convertTime(culminateT, fString)
             else:
                 culminateStr = "unknown"
             settleT = satOrbit.get("settle", None)
             if settleT is not None:
-                settleStr = self.convertTime(settleT, fString)
+                settleStr = self.mainW.convertTime(settleT, fString)
             else:
                 settleStr = "unknown"
             flipT = satOrbit.get("flip", None)
             if flipT is not None:
-                flipStr = self.convertTime(flipT, fString)
+                flipStr = self.mainW.convertTime(flipT, fString)
             else:
                 flipStr = "no flip"
 
@@ -268,7 +268,7 @@ class SatTrack(MWidget, SatData):
         if satName not in self.satellites.objects:
             return False
 
-        self.positionCursorInTable(satTab, satName)
+        self.mainW.positionCursorInTable(satTab, satName)
         self.satellite = self.satellites.objects[satName]
         self.ui.satelliteName.setText(self.satellite.name)
         epochText = self.satellite.epoch.utc_strftime("%Y-%m-%d, %H:%M")
@@ -280,11 +280,11 @@ class SatTrack(MWidget, SatData):
         self.msg.emit(0, "Satellite", "Data", f"Actual satellite: [{satName}]")
 
         if days > 10:
-            self.changeStyleDynamic(self.ui.satelliteDataAge, "color", "red")
+            changeStyleDynamic(self.ui.satelliteDataAge, "color", "red")
         elif 3 < days < 10:
-            self.changeStyleDynamic(self.ui.satelliteDataAge, "color", "yellow")
+            changeStyleDynamic(self.ui.satelliteDataAge, "color", "yellow")
         else:
-            self.changeStyleDynamic(self.ui.satelliteDataAge, "color", "")
+            changeStyleDynamic(self.ui.satelliteDataAge, "color", "")
 
         self.ui.satelliteNumber.setText(f"{self.satellite.model.satnum:5d}")
         return True
@@ -332,7 +332,7 @@ class SatTrack(MWidget, SatData):
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
             self.ui.stopSatelliteTracking.setEnabled(False)
-            self.changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
+            changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
             return False
 
         now = self.app.mount.obsSite.ts.now()
@@ -421,7 +421,7 @@ class SatTrack(MWidget, SatData):
         alt = Angle(degrees=np.array_split(alt, factor)[0])
         az = Angle(degrees=np.array_split(az, factor)[0])
 
-        self.changeStyleDynamic(self.ui.progTrajectory, "running", True)
+        changeStyleDynamic(self.ui.progTrajectory, "running", True)
         self.ui.progTrajectory.setEnabled(False)
         self.ui.progTrajectory.setText("Calculating")
         self.app.mount.progTrajectory(start, alt, az, replay=isReplay)
@@ -429,14 +429,14 @@ class SatTrack(MWidget, SatData):
 
     def updateSatelliteTrackGui(self, params=None):
         """ """
-        title = "Satellite tracking " + self.timeZoneString()
+        title = "Satellite tracking " + self.mainW.timeZoneString()
         self.ui.satTrackGroup.setTitle(title)
 
         if params is None or isinstance(params, bool):
             return False
 
         if params.jdStart is not None and self.satOrbits:
-            t = self.convertTime(params.jdStart, "%d %b  %H:%M:%S")
+            t = self.mainW.convertTime(params.jdStart, "%d %b  %H:%M:%S")
             self.ui.satTrajectoryStart.setText(t)
         else:
             self.ui.satTrajectoryStart.setText("No transit")
@@ -507,7 +507,7 @@ class SatTrack(MWidget, SatData):
             return False
 
         self.ui.startSatelliteTracking.setText("Start satellite tracking")
-        self.changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
+        changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
         self.msg.emit(0, "TLE", "Command", "Stopped tracking")
         return suc
 

@@ -24,11 +24,11 @@ from PySide6.QtGui import QColor, QTransform
 from PySide6.QtWidgets import QTableWidgetItem
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
 from gui.styles.colors import colors
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class EnvironSeeing(MWidget):
+class EnvironSeeing:
     """ """
 
     def __init__(self, mainW):
@@ -45,14 +45,14 @@ class EnvironSeeing(MWidget):
 
         self.ui.unitTimeUTC.toggled.connect(self.updateSeeingEntries)
         self.app.seeingWeather.signals.update.connect(self.prepareSeeingTable)
-        self.clickable(self.ui.meteoblueIcon).connect(self.openMeteoblue)
+        self.mainW.clickable(self.ui.meteoblueIcon).connect(self.openMeteoblue)
         self.app.start3s.connect(self.enableSeeingEntries)
         self.app.colorChange.connect(self.prepareSeeingTable)
         self.app.update30m.connect(self.updateSeeingEntries)
 
     def setupIcons(self):
         """ """
-        pixmap = self.svg2pixmap(":/icon/meteoblue.svg", "#124673")
+        pixmap = self.mainW.svg2pixmap(":/icon/meteoblue.svg", "#124673")
         pixmap = pixmap.transformed(QTransform().rotate(-90))
         pixmap = pixmap.scaled(37, 128, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.meteoblueIcon.setPixmap(pixmap)
@@ -73,7 +73,7 @@ class EnvironSeeing(MWidget):
         if "hourly" not in self.app.seeingWeather.data:
             return False
 
-        self.ui.seeingGroup.setTitle("Seeing data " + self.timeZoneString())
+        self.ui.seeingGroup.setTitle("Seeing data " + self.mainW.timeZoneString())
         ts = self.app.mount.obsSite.ts
         fields = [
             "time",
@@ -105,22 +105,22 @@ class EnvironSeeing(MWidget):
                 t = f"{data[field][i]}"
                 item = QTableWidgetItem()
                 item.setTextAlignment(Qt.AlignmentFlag.AlignHCenter)
-                item.setForeground(QColor(self.M_PRIM))
+                item.setForeground(QColor(self.mainW.M_PRIM))
 
                 if j == 0:
-                    t = self.convertTime(data[field][i], "%d%b")
+                    t = self.mainW.convertTime(data[field][i], "%d%b")
                 elif j == 1:
-                    t = self.convertTime(data[field][i], "%H:00")
+                    t = self.mainW.convertTime(data[field][i], "%H:00")
                 elif j in [2, 3, 4]:
-                    color = self.calcHexColor(colorPrim, data[field][i] / 100)
+                    color = self.mainW.calcHexColor(colorPrim, data[field][i] / 100)
                     item.setBackground(QColor(color))
                     item.setForeground(QColor(colorTer))
                 elif j in [6]:
-                    color = self.calcHexColor(data["seeing1_color"][i], 0.8)
+                    color = self.mainW.calcHexColor(data["seeing1_color"][i], 0.8)
                     item.setBackground(QColor(color))
                     item.setForeground(QColor(colorQuar))
                 elif j in [7]:
-                    color = self.calcHexColor(data["seeing2_color"][i], 0.8)
+                    color = self.mainW.calcHexColor(data["seeing2_color"][i], 0.8)
                     item.setBackground(QColor(color))
                     item.setForeground(QColor(colorQuar))
                 elif j in [10, 11]:
@@ -128,7 +128,7 @@ class EnvironSeeing(MWidget):
                     t = f"{val:1.1f}"
 
                 if isActual:
-                    item.setForeground(QColor(self.M_PINK))
+                    item.setForeground(QColor(self.mainW.M_PINK))
                     val = data["seeing_arcsec"][i]
                     self.ui.limitForecast.setText(f"{val}")
                     val = self.app.seeingWeather.data["meta"]["last_model_update"]

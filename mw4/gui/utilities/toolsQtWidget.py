@@ -53,6 +53,78 @@ def sleepAndEvents(value):
     return True
 
 
+def changeStyleDynamic(widget=None, widgetProperty=None, value=None):
+    """
+    changeStyleDynamic changes the stylesheet of a given ui element and
+    makes it visible. therefore the element has to be unpolished and
+    polished again.
+
+    :param      widget: widget element, where the stylesheet has to
+                        be changed
+    :param      widgetProperty: stylesheet attribute which has to be
+                                changed
+    :param      value:  new value of the attribute
+    :return:    true for test purpose
+    """
+    if not widget:
+        return
+    if not widgetProperty:
+        return
+    if value is None:
+        return
+    if widget.property(widgetProperty) == value:
+        return
+
+    widget.style().unpolish(widget)
+    widget.setProperty(widgetProperty, value)
+    widget.style().polish(widget)
+
+
+def findIndexValue(ui, searchString, relaxed=False):
+    """
+    :param ui:
+    :param searchString:
+    :param relaxed:
+    :return:
+    """
+    for index in range(ui.model().rowCount()):
+        modelIndex = ui.model().index(index, 0)
+        indexValue = ui.model().data(modelIndex)
+
+        if not indexValue:
+            continue
+        if relaxed:
+            if searchString in indexValue:
+                return index
+        else:
+            if indexValue.startswith(searchString):
+                return index
+    return 0
+
+
+def guiSetStyle(ui, pStyle="", value=None, pVals=None):
+    """
+    :param ui:
+    :param pStyle:
+    :param value:
+    :param pVals:
+    :return:
+    """
+    if pVals is None:
+        pVals = ["", "", ""]
+    if not pStyle:
+        return False
+    if value is None:
+        pVal = pVals[0]
+    elif value:
+        pVal = pVals[1]
+    else:
+        pVal = pVals[2]
+
+    changeStyleDynamic(ui, pStyle, pVal)
+    return True
+
+
 class MWidget(QWidget, Styles):
     """
     MWidget defines the common parts for all windows used in MountWizzard 4 and
@@ -89,28 +161,6 @@ class MWidget(QWidget, Styles):
         self.setWindowIcon(QIcon(":/icon/mw4.png"))
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.app = None
-
-    @staticmethod
-    def findIndexValue(ui, searchString, relaxed=False):
-        """
-        :param ui:
-        :param searchString:
-        :param relaxed:
-        :return:
-        """
-        for index in range(ui.model().rowCount()):
-            modelIndex = ui.model().index(index, 0)
-            indexValue = ui.model().data(modelIndex)
-
-            if not indexValue:
-                continue
-            if relaxed:
-                if searchString in indexValue:
-                    return index
-            else:
-                if indexValue.startswith(searchString):
-                    return index
-        return 0
 
     def saveWindowAsPNG(self, window):
         """
@@ -227,34 +277,6 @@ class MWidget(QWidget, Styles):
         self.setStyleSheet(self.mw4Style)
         self.setMouseTracking(True)
         self.setWindowIcon(QIcon(":/mw4.ico"))
-        return True
-
-    @staticmethod
-    def changeStyleDynamic(widget=None, widgetProperty=None, value=None):
-        """
-        changeStyleDynamic changes the stylesheet of a given ui element and
-        makes it visible. therefore the element has to be unpolished and
-        polished again.
-
-        :param      widget: widget element, where the stylesheet has to
-                            be changed
-        :param      widgetProperty: stylesheet attribute which has to be
-                                    changed
-        :param      value:  new value of the attribute
-        :return:    true for test purpose
-        """
-        if not widget:
-            return False
-        if not widgetProperty:
-            return False
-        if value is None:
-            return False
-        if widget.property(widgetProperty) == value:
-            return True
-
-        widget.style().unpolish(widget)
-        widget.setProperty(widgetProperty, value)
-        widget.style().polish(widget)
         return True
 
     def prepareFileDialog(self, window=None, enableDir=False):
@@ -521,28 +543,6 @@ class MWidget(QWidget, Styles):
             text = formatStr.format(value)
 
         ui.setText(text)
-        return True
-
-    def guiSetStyle(self, ui, pStyle="", value=None, pVals=None):
-        """
-        :param ui:
-        :param pStyle:
-        :param value:
-        :param pVals:
-        :return:
-        """
-        if pVals is None:
-            pVals = ["", "", ""]
-        if not pStyle:
-            return False
-        if value is None:
-            pVal = pVals[0]
-        elif value:
-            pVal = pVals[1]
-        else:
-            pVal = pVals[2]
-
-        self.changeStyleDynamic(ui, pStyle, pVal)
         return True
 
     def convertTime(self, value, fString):

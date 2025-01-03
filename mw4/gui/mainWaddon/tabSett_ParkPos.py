@@ -20,11 +20,10 @@
 from skyfield.api import Angle
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
 from mountcontrol.convert import valueToFloat
 
 
-class SettParkPos(MWidget):
+class SettParkPos:
     """ """
 
     def __init__(self, mainW):
@@ -95,16 +94,16 @@ class SettParkPos(MWidget):
 
     def setupIcons(self):
         """ """
-        self.wIcon(self.ui.posSave0, "download")
-        self.wIcon(self.ui.posSave1, "download")
-        self.wIcon(self.ui.posSave2, "download")
-        self.wIcon(self.ui.posSave3, "download")
-        self.wIcon(self.ui.posSave4, "download")
-        self.wIcon(self.ui.posSave5, "download")
-        self.wIcon(self.ui.posSave6, "download")
-        self.wIcon(self.ui.posSave7, "download")
-        self.wIcon(self.ui.posSave8, "download")
-        self.wIcon(self.ui.posSave9, "download")
+        self.mainW.wIcon(self.ui.posSave0, "download")
+        self.mainW.wIcon(self.ui.posSave1, "download")
+        self.mainW.wIcon(self.ui.posSave2, "download")
+        self.mainW.wIcon(self.ui.posSave3, "download")
+        self.mainW.wIcon(self.ui.posSave4, "download")
+        self.mainW.wIcon(self.ui.posSave5, "download")
+        self.mainW.wIcon(self.ui.posSave6, "download")
+        self.mainW.wIcon(self.ui.posSave7, "download")
+        self.mainW.wIcon(self.ui.posSave8, "download")
+        self.mainW.wIcon(self.ui.posSave9, "download")
 
     def updateParkPosButtonText(self):
         """

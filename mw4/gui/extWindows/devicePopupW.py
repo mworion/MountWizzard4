@@ -33,6 +33,7 @@ from base.sgproClass import SGProClass
 from base.ninaClass import NINAClass
 from gui.utilities import toolsQtWidget
 from gui.widgets.devicePopup_ui import Ui_DevicePopup
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
 class DevicePopup(toolsQtWidget.MWidget):
@@ -236,9 +237,9 @@ class DevicePopup(toolsQtWidget.MWidget):
         indi.hostaddress = self.ui.indiHostAddress.text()
         indi.port = self.ui.indiPort.text()
 
-        self.changeStyleDynamic(self.ui.indiDiscover, "running", True)
+        changeStyleDynamic(self.ui.indiDiscover, "running", True)
         deviceNames = indi.discoverDevices(deviceType=self.deviceType)
-        self.changeStyleDynamic(self.ui.indiDiscover, "running", False)
+        changeStyleDynamic(self.ui.indiDiscover, "running", False)
 
         if not deviceNames:
             self.msg.emit(2, "INDI", "Device", "No devices found")
@@ -263,9 +264,9 @@ class DevicePopup(toolsQtWidget.MWidget):
         alpaca.port = self.ui.alpacaPort.text()
         alpaca.apiVersion = 1
 
-        self.changeStyleDynamic(self.ui.alpacaDiscover, "running", True)
+        changeStyleDynamic(self.ui.alpacaDiscover, "running", True)
         deviceNames = alpaca.discoverDevices(deviceType=self.deviceType)
-        self.changeStyleDynamic(self.ui.alpacaDiscover, "running", False)
+        changeStyleDynamic(self.ui.alpacaDiscover, "running", False)
 
         if not deviceNames:
             self.msg.emit(2, "ALPACA", "Device", "No devices found")
@@ -288,13 +289,13 @@ class DevicePopup(toolsQtWidget.MWidget):
         sgpro = SGProClass(app=self.app, data=self.data)
         sgpro.DEVICE_TYPE = "Camera"
 
-        self.changeStyleDynamic(self.ui.sgproDiscover, "running", True)
+        changeStyleDynamic(self.ui.sgproDiscover, "running", True)
         deviceNames = sgpro.discoverDevices()
         if not deviceNames:
             self.msg.emit(2, "SGPRO", "Device", "No devices found")
 
         deviceNames.insert(0, "SGPro controlled")
-        self.changeStyleDynamic(self.ui.sgproDiscover, "running", False)
+        changeStyleDynamic(self.ui.sgproDiscover, "running", False)
 
         for deviceName in deviceNames:
             self.msg.emit(0, "SGPRO", "Device discovered", f"{deviceName}")
@@ -313,13 +314,13 @@ class DevicePopup(toolsQtWidget.MWidget):
         nina = NINAClass(app=self.app, data=self.data)
         nina.DEVICE_TYPE = "Camera"
 
-        self.changeStyleDynamic(self.ui.ninaDiscover, "running", True)
+        changeStyleDynamic(self.ui.ninaDiscover, "running", True)
         deviceNames = nina.discoverDevices()
         if not deviceNames:
             self.msg.emit(2, "N.I.N.A.", "Device", "No devices found")
 
         deviceNames.insert(0, "N.I.N.A. controlled")
-        self.changeStyleDynamic(self.ui.ninaDiscover, "running", False)
+        changeStyleDynamic(self.ui.ninaDiscover, "running", False)
 
         for deviceName in deviceNames:
             self.msg.emit(0, "N.I.N.A.", "Device discovered", f"{deviceName}")
@@ -335,16 +336,16 @@ class DevicePopup(toolsQtWidget.MWidget):
         colorI = "green" if sucIndex else "red"
 
         if framework == "astap":
-            self.changeStyleDynamic(self.ui.astapAppPath, "color", colorP)
-            self.changeStyleDynamic(self.ui.astapIndexPath, "color", colorI)
+            changeStyleDynamic(self.ui.astapAppPath, "color", colorP)
+            changeStyleDynamic(self.ui.astapIndexPath, "color", colorI)
 
         elif framework == "watney":
-            self.changeStyleDynamic(self.ui.watneyAppPath, "color", colorP)
-            self.changeStyleDynamic(self.ui.watneyIndexPath, "color", colorI)
+            changeStyleDynamic(self.ui.watneyAppPath, "color", colorP)
+            changeStyleDynamic(self.ui.watneyIndexPath, "color", colorI)
 
         elif framework == "astrometry":
-            self.changeStyleDynamic(self.ui.astrometryAppPath, "color", colorP)
-            self.changeStyleDynamic(self.ui.astrometryIndexPath, "color", colorI)
+            changeStyleDynamic(self.ui.astrometryAppPath, "color", colorP)
+            changeStyleDynamic(self.ui.astrometryIndexPath, "color", colorI)
 
     def updatePlateSolverStatus(self) -> None:
         """ """

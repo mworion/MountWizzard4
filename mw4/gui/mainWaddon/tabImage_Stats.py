@@ -22,10 +22,9 @@ import numpy as np
 from range_key_dict import RangeKeyDict
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
 
 
-class ImageStats(MWidget):
+class ImageStats:
     """ """
 
     WATNEY = RangeKeyDict(
@@ -140,25 +139,25 @@ class ImageStats(MWidget):
             focusBlue = None
             focusCCD = None
 
-        self.guiSetText(self.ui.speed, "2.1f", speed)
-        self.guiSetText(self.ui.pixelSizeX, "2.2f", pixelSizeX)
-        self.guiSetText(self.ui.pixelSizeY, "2.2f", pixelSizeY)
-        self.guiSetText(self.ui.pixelX, "5.0f", pixelX)
-        self.guiSetText(self.ui.pixelY, "5.0f", pixelY)
-        self.guiSetText(self.ui.rotation, "3.1f", rotation)
-        self.guiSetText(self.ui.resolutionX, "2.2f", resolutionX)
-        self.guiSetText(self.ui.resolutionY, "2.2f", resolutionY)
-        self.guiSetText(self.ui.dawes, "2.2f", dawes)
-        self.guiSetText(self.ui.rayleigh, "2.2f", rayleigh)
-        self.guiSetText(self.ui.magLimit, "2.2f", magLimit)
-        self.guiSetText(self.ui.FOVX, "2.2f", FOVX)
-        self.guiSetText(self.ui.FOVY, "2.2f", FOVY)
-        self.guiSetText(self.ui.focalLengthStats, "3.0f", focalLength)
-        self.guiSetText(self.ui.apertureStats, "3.0f", aperture)
-        self.guiSetText(self.ui.focusRed, "3.0f", focusRed)
-        self.guiSetText(self.ui.focusGreen, "3.0f", focusGreen)
-        self.guiSetText(self.ui.focusBlue, "3.0f", focusBlue)
-        self.guiSetText(self.ui.focusCCD, "3.0f", focusCCD)
+        self.mainW.guiSetText(self.ui.speed, "2.1f", speed)
+        self.mainW.guiSetText(self.ui.pixelSizeX, "2.2f", pixelSizeX)
+        self.mainW.guiSetText(self.ui.pixelSizeY, "2.2f", pixelSizeY)
+        self.mainW.guiSetText(self.ui.pixelX, "5.0f", pixelX)
+        self.mainW.guiSetText(self.ui.pixelY, "5.0f", pixelY)
+        self.mainW.guiSetText(self.ui.rotation, "3.1f", rotation)
+        self.mainW.guiSetText(self.ui.resolutionX, "2.2f", resolutionX)
+        self.mainW.guiSetText(self.ui.resolutionY, "2.2f", resolutionY)
+        self.mainW.guiSetText(self.ui.dawes, "2.2f", dawes)
+        self.mainW.guiSetText(self.ui.rayleigh, "2.2f", rayleigh)
+        self.mainW.guiSetText(self.ui.magLimit, "2.2f", magLimit)
+        self.mainW.guiSetText(self.ui.FOVX, "2.2f", FOVX)
+        self.mainW.guiSetText(self.ui.FOVY, "2.2f", FOVY)
+        self.mainW.guiSetText(self.ui.focalLengthStats, "3.0f", focalLength)
+        self.mainW.guiSetText(self.ui.apertureStats, "3.0f", aperture)
+        self.mainW.guiSetText(self.ui.focusRed, "3.0f", focusRed)
+        self.mainW.guiSetText(self.ui.focusGreen, "3.0f", focusGreen)
+        self.mainW.guiSetText(self.ui.focusBlue, "3.0f", focusBlue)
+        self.mainW.guiSetText(self.ui.focusCCD, "3.0f", focusCCD)
 
         hasFovHint = self.fovHint is not None
         if hasFovHint:
@@ -174,9 +173,9 @@ class ImageStats(MWidget):
         self.ui.openASTAPCatalog.setEnabled(hasFovHint)
         self.ui.openAstrometryCatalog.setEnabled(hasFovHint)
 
-        self.guiSetText(self.ui.watneyIndex, "s", watneyText)
-        self.guiSetText(self.ui.astapIndex, "s", astapText)
-        self.guiSetText(self.ui.astrometryIndex, "s", astrometryText)
+        self.mainW.guiSetText(self.ui.watneyIndex, "s", watneyText)
+        self.mainW.guiSetText(self.ui.astapIndex, "s", astapText)
+        self.mainW.guiSetText(self.ui.astrometryIndex, "s", astrometryText)
 
     def openWatneyCatalog(self):
         """ """

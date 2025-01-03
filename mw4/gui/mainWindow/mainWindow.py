@@ -33,6 +33,7 @@ from gui.mainWindow.externalWindows import ExternalWindows
 from gui.mainWindow.mainWindowAddons import MainWindowAddons
 from logic.profiles.profile import loadProfile, saveProfile, blendProfile
 from mountcontrol.obsSite import ObsSite
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
 class MainWindow(MWidget):
@@ -122,7 +123,7 @@ class MainWindow(MWidget):
         self.setTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
         self.setTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
         self.setTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
-        self.changeStyleDynamic(self.ui.mountConnected, "color", "gray")
+        changeStyleDynamic(self.ui.mountConnected, "color", "gray")
         self.mainWindowAddons.initConfig()
         self.smartTabGui()
         self.enableTabsMovable()
@@ -198,7 +199,7 @@ class MainWindow(MWidget):
         """ """
         self.gameControllerRunning = False
         self.app.timer0_1s.stop()
-        self.changeStyleDynamic(self.ui.pauseModel, "pause", False)
+        changeStyleDynamic(self.ui.pauseModel, "pause", False)
         self.externalWindows.closeExtendedWindows()
         self.mainWindowAddons.addons["SettDevice"].stopDrivers()
         self.threadPool.waitForDone(10000)
@@ -324,15 +325,15 @@ class MainWindow(MWidget):
         """ """
         for device, ui in self.deviceStatGui.items():
             if self.app.deviceStat.get(device) is None:
-                self.changeStyleDynamic(ui, "color", "gray")
+                changeStyleDynamic(ui, "color", "gray")
             elif self.app.deviceStat[device]:
-                self.changeStyleDynamic(ui, "color", "green")
+                changeStyleDynamic(ui, "color", "green")
             else:
-                self.changeStyleDynamic(ui, "color", "red")
+                changeStyleDynamic(ui, "color", "red")
 
         isMount = self.app.deviceStat.get("mount", False)
-        self.changeStyleDynamic(self.ui.mountOn, "running", isMount)
-        self.changeStyleDynamic(self.ui.mountOff, "running", not isMount)
+        changeStyleDynamic(self.ui.mountOn, "running", isMount)
+        changeStyleDynamic(self.ui.mountOff, "running", not isMount)
 
     def updatePlateSolveStatus(self, text: str) -> None:
         """ """
@@ -387,19 +388,19 @@ class MainWindow(MWidget):
             self.ui.statusText.setText("-")
 
         if self.app.mount.obsSite.status == 0:
-            self.changeStyleDynamic(self.ui.tracking, "running", True)
+            changeStyleDynamic(self.ui.tracking, "running", True)
         else:
-            self.changeStyleDynamic(self.ui.tracking, "running", False)
+            changeStyleDynamic(self.ui.tracking, "running", False)
 
         if self.app.mount.obsSite.status == 5:
-            self.changeStyleDynamic(self.ui.park, "running", True)
+            changeStyleDynamic(self.ui.park, "running", True)
         else:
-            self.changeStyleDynamic(self.ui.park, "running", False)
+            changeStyleDynamic(self.ui.park, "running", False)
 
         if self.app.mount.obsSite.status == 1:
-            self.changeStyleDynamic(self.ui.stop, "running", True)
+            changeStyleDynamic(self.ui.stop, "running", True)
         else:
-            self.changeStyleDynamic(self.ui.stop, "running", False)
+            changeStyleDynamic(self.ui.stop, "running", False)
 
         if self.app.mount.obsSite.status == 10 and not self.satStatus:
             self.app.playSound.emit("SatStartTracking")

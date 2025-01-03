@@ -21,10 +21,10 @@ import PySide6.QtCore
 import PySide6.QtWidgets
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class SettRelay(MWidget):
+class SettRelay:
     """ """
 
     def __init__(self, mainW):
@@ -191,7 +191,7 @@ class SettRelay(MWidget):
 
         for status, button in zip(self.app.relay.status, self.relayButtons):
             if status:
-                self.changeStyleDynamic(button, "running", True)
+                changeStyleDynamic(button, "running", True)
             else:
-                self.changeStyleDynamic(button, "running", False)
+                changeStyleDynamic(button, "running", False)
         return True

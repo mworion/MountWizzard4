@@ -17,6 +17,8 @@
 # standard libraries
 from functools import partial
 
+from PySide6.QtCore import QObject
+
 # external packages
 
 # local import
@@ -25,7 +27,7 @@ from base import packageConfig
 if packageConfig.isAvailable:
     from gui.extWindows.simulatorW import SimulatorWindow
 
-from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
+from gui.utilities.toolsQtWidget import sleepAndEvents, changeStyleDynamic
 from gui.extWindows.keypadW import KeypadWindow
 from gui.extWindows.messageW import MessageWindow
 from gui.extWindows.hemisphereW import HemisphereWindow
@@ -40,7 +42,7 @@ from gui.extWindows.videoW4 import VideoWindow4
 from gui.extWindows.bigPopupW import BigPopup
 
 
-class ExternalWindows(MWidget):
+class ExternalWindows(QObject):
     """ """
 
     def __init__(self, mainW):
@@ -151,9 +153,9 @@ class ExternalWindows(MWidget):
             winObj = self.uiWindows[win]
 
             if winObj["classObj"]:
-                self.changeStyleDynamic(winObj["button"], "running", True)
+                changeStyleDynamic(winObj["button"], "running", True)
             else:
-                self.changeStyleDynamic(winObj["button"], "running", False)
+                changeStyleDynamic(winObj["button"], "running", False)
 
     def deleteWindowResource(self, window: str) -> bool:
         """"""

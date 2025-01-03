@@ -22,6 +22,7 @@ import platform
 # local imports
 from mw4.gui.styles.colors import colors
 from mw4.gui.styles.gradients import gradients
+from mw4.gui.styles.forms import forms
 from mw4.gui.styles.styleSheets import NON_MAC_STYLE, MAC_STYLE, BASIC_STYLE
 
 
@@ -137,8 +138,8 @@ class Styles:
         return colors["M_CYAN1"][self.colorSet]
 
     @property
-    def M_TAB0(self):
-        return colors["M_TAB0"][self.colorSet]
+    def M_TAB(self):
+        return colors["M_TAB"][self.colorSet]
 
     @property
     def M_TAB1(self):
@@ -158,10 +159,7 @@ class Styles:
 
     @staticmethod
     def hex2rgb(val: str) -> list[int]:
-        """
-        :param val:
-        :return:
-        """
+        """ """
         val = val.lstrip("#")
         r = int(val[0:2], 16)
         g = int(val[2:4], 16)
@@ -185,7 +183,7 @@ class Styles:
             if start == -1:
                 break
             end = line.find(keyChar, start + 1)
-            keys.append(line[start + 1: end])
+            keys.append(line[start + 1 : end])
         return keys
 
     def replaceColor(self, line: str) -> str:
@@ -194,6 +192,14 @@ class Styles:
             if key not in colors:
                 continue
             line = line.replace(f"${key}$", colors[key][self.colorSet])
+        return line
+
+    def replaceForm(self, line: str) -> str:
+        """ """
+        for key in self.findKeysInLine(line, "%"):
+            if key not in forms:
+                continue
+            line = line.replace(f"%{key}%", forms[key][self.colorSet])
         return line
 
     def insertGradient(self, line: str) -> str:
@@ -215,6 +221,7 @@ class Styles:
         style = ""
         for line in styleRaw.split("\n"):
             line = self.insertGradient(line)
+            line = self.replaceForm(line)
             line = self.replaceColor(line)
             style += line + "\n"
         return style

@@ -28,7 +28,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from logic.databaseProcessing.sourceURL import cometSourceURLs
 
 
-class Comet(MWidget):
+class Comet:
     """ """
 
     def __init__(self, mainW):
@@ -76,9 +76,9 @@ class Comet(MWidget):
 
     def setupIcons(self) -> None:
         """ """
-        self.wIcon(self.ui.progCometFull, "run")
-        self.wIcon(self.ui.progCometFiltered, "run")
-        self.wIcon(self.ui.progCometSelected, "run")
+        MWidget.wIcon(self.ui.progCometFull, "run")
+        MWidget.wIcon(self.ui.progCometFiltered, "run")
+        MWidget.wIcon(self.ui.progCometSelected, "run")
 
     def prepareCometTable(self) -> None:
         """ """
@@ -122,7 +122,7 @@ class Comet(MWidget):
             try:
                 comets = json.load(inFile)
             except Exception as e:
-                self.log.error(f"Error {e} loading from {self.comets.dest}")
+                self.mainW.log.error(f"Error {e} loading from {self.comets.dest}")
                 os.remove(self.comets.dest)
                 comets = []
 

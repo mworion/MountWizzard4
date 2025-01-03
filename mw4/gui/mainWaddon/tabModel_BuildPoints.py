@@ -22,12 +22,12 @@ from PySide6.QtCore import QMutex
 
 # local import
 from base.tpool import Worker
-from gui.utilities.toolsQtWidget import MWidget
 from mountcontrol.convert import convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatHstrToText, formatDstrToText
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class BuildPoints(MWidget):
+class BuildPoints:
     """ """
 
     def __init__(self, mainW):
@@ -143,10 +143,10 @@ class BuildPoints(MWidget):
         config["ditherBuildPoints"] = self.ui.ditherBuildPoints.isChecked()
 
     def setupIcons(self):
-        self.wIcon(self.ui.loadBuildPoints, "load")
-        self.wIcon(self.ui.saveBuildPoints, "save")
-        self.wIcon(self.ui.saveBuildPointsAs, "save")
-        self.wIcon(self.ui.clearBuildP, "trash")
+        self.mainW.wIcon(self.ui.loadBuildPoints, "load")
+        self.mainW.wIcon(self.ui.saveBuildPoints, "save")
+        self.mainW.wIcon(self.ui.saveBuildPointsAs, "save")
+        self.mainW.wIcon(self.ui.clearBuildP, "trash")
 
     def genBuildGrid(self):
         """ """
@@ -295,7 +295,7 @@ class BuildPoints(MWidget):
         """ """
         self.lastGenerator = "spiral"
         numberTarget = int(self.ui.numberSpiral.value())
-        self.changeStyleDynamic(self.ui.genBuildSpiral, "running", True)
+        changeStyleDynamic(self.ui.genBuildSpiral, "running", True)
         numberPoints = 0
         numberFilter = 0
         while numberFilter < numberTarget:
@@ -304,7 +304,7 @@ class BuildPoints(MWidget):
             self.autoDeletePoints()
             numberFilter = len(self.app.data.buildP)
         self.processPoints()
-        self.changeStyleDynamic(self.ui.genBuildSpiral, "running", False)
+        changeStyleDynamic(self.ui.genBuildSpiral, "running", False)
 
     def genModel(self):
         """ """
@@ -346,7 +346,7 @@ class BuildPoints(MWidget):
         fileTypes = "Build Point Files (*.bpts)"
         fileTypes += ";; CSV Files (*.csv)"
         fileTypes += ";; Model Files (*.model)"
-        fullFileName = self.openFile(self.mainW, "Open build point file", folder, fileTypes)
+        fullFileName = self.mainW.openFile(self.mainW, "Open build point file", folder, fileTypes)
         if not fullFileName.is_file():
             return
 
@@ -380,7 +380,7 @@ class BuildPoints(MWidget):
     def saveBuildFileAs(self):
         """ """
         folder = self.app.mwGlob["configDir"]
-        saveFilePath = self.saveFile(
+        saveFilePath = self.mainW.saveFile(
             self.mainW, "Save build point file", folder, "Build point files (*.bpts)"
         )
         if saveFilePath.is_dir():
@@ -427,7 +427,7 @@ class BuildPoints(MWidget):
         pointsNew = list()
         numbAll = len(points)
         ui = self.ui.autoSortGroup
-        self.changeStyleDynamic(ui, "running", True)
+        changeStyleDynamic(ui, "running", True)
         for i, point in enumerate(points):
             t = f"Auto sort points: progress {(i + 1) / numbAll * 100:3.0f}%"
             ui.setTitle(t)
@@ -439,7 +439,7 @@ class BuildPoints(MWidget):
             pointsNew.append((alt, az, True, domeAz.degrees))
         points = pointsNew
         ui.setTitle("Auto sort points")
-        self.changeStyleDynamic(ui, "running", False)
+        changeStyleDynamic(ui, "running", False)
         return points, pierside
 
     def sortDomeAz(self, points, pierside=None):

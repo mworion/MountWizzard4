@@ -20,13 +20,12 @@
 from PySide6.QtWidgets import QListView
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.downloadPopupW import DownloadPopup
 from gui.extWindows.uploadPopupW import UploadPopup
 from logic.databaseProcessing.dataWriter import DataWriter
 
 
-class IERSTime(MWidget):
+class IERSTime:
     """ """
 
     def __init__(self, mainW):
@@ -70,8 +69,8 @@ class IERSTime(MWidget):
         return True
 
     def setupIcons(self):
-        self.wIcon(self.ui.progEarthRotationData, "run")
-        self.wIcon(self.ui.downloadIERS, "run")
+        self.mainW.wIcon(self.ui.progEarthRotationData, "run")
+        self.mainW.wIcon(self.ui.downloadIERS, "run")
 
     def setupIERSSourceURLsDropDown(self):
         """

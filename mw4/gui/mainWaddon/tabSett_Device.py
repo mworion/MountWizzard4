@@ -22,11 +22,11 @@ import PySide6.QtCore
 import PySide6.QtWidgets
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.devicePopupW import DevicePopup
+from gui.utilities.toolsQtWidget import changeStyleDynamic, findIndexValue
 
 
-class SettDevice(MWidget):
+class SettDevice:
     """
     devices types in self.drivers are name related to ascom definitions
 
@@ -237,10 +237,10 @@ class SettDevice(MWidget):
         for driver in self.drivers:
             if self.drivers[driver]["uiSetup"] is not None:
                 ui = self.drivers[driver]["uiSetup"]
-                self.wIcon(ui, "cogs")
+                self.mainW.wIcon(ui, "cogs")
 
-        self.wIcon(self.ui.ascomConnect, "link")
-        self.wIcon(self.ui.ascomDisconnect, "unlink")
+        self.mainW.wIcon(self.ui.ascomConnect, "link")
+        self.mainW.wIcon(self.ui.ascomDisconnect, "unlink")
 
     def setupDeviceGui(self):
         """
@@ -259,7 +259,7 @@ class SettDevice(MWidget):
             frameworks = self.driversData[driver].get("frameworks")
 
             if driver not in self.drivers:
-                self.log.critical(f"Missing driver: [{driver}]")
+                self.mainW.log.critical(f"Missing driver: [{driver}]")
                 continue
 
             for fw in frameworks:
@@ -268,7 +268,7 @@ class SettDevice(MWidget):
                 self.drivers[driver]["uiDropDown"].addItem(itemText)
 
             framework = self.driversData[driver]["framework"]
-            index = self.findIndexValue(self.drivers[driver]["uiDropDown"], framework)
+            index = findIndexValue(self.drivers[driver]["uiDropDown"], framework)
             self.drivers[driver]["uiDropDown"].setCurrentIndex(index)
         return True
 
@@ -291,7 +291,7 @@ class SettDevice(MWidget):
             self.copyConfig(driverOrig=driver, framework="alpaca")
 
         selectedFramework = self.driversData[driver]["framework"]
-        index = self.findIndexValue(self.drivers[driver]["uiDropDown"], selectedFramework)
+        index = findIndexValue(self.drivers[driver]["uiDropDown"], selectedFramework)
         name = self.driversData[driver]["frameworks"][selectedFramework]["deviceName"]
 
         if not name:
@@ -376,7 +376,7 @@ class SettDevice(MWidget):
             driverClass.run[framework].deviceName = ""
             self.msg.emit(0, "Driver", f"{framework.upper()} disabled", f"{driver}")
 
-        self.changeStyleDynamic(self.drivers[driver]["uiDropDown"], "active", False)
+        changeStyleDynamic(self.drivers[driver]["uiDropDown"], "active", False)
         self.app.deviceStat[driver] = None
         return True
 
@@ -530,7 +530,7 @@ class SettDevice(MWidget):
         if not deviceName:
             return False
 
-        self.changeStyleDynamic(self.drivers[driver]["uiDropDown"], "active", True)
+        changeStyleDynamic(self.drivers[driver]["uiDropDown"], "active", True)
         self.app.deviceStat[driver] = True
         self.msg.emit(0, "Driver", "Device connected", f"{driver}")
 
@@ -542,6 +542,6 @@ class SettDevice(MWidget):
 
     def deviceDisconnected(self, driver, deviceName):
         """ """
-        self.changeStyleDynamic(self.drivers[driver]["uiDropDown"], "active", False)
+        changeStyleDynamic(self.drivers[driver]["uiDropDown"], "active", False)
         self.app.deviceStat[driver] = False
         self.msg.emit(0, "Driver", "Device disconnected", f"{driver}")

@@ -15,22 +15,26 @@
 #
 ###########################################################
 # standard libraries
+import pytest
 
 # external packages
 
-# local imports
+# local import
+from gui.styles.styleSheets import MAC_STYLE, NON_MAC_STYLE, BASIC_STYLE
 
-gradients = {
-    "GRAD_1": [
-        "",
-        "qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.15, stop:0 $M_TER$, stop:0.25 $M_TER2$, stop:1 #)",
-        "",
-        "",
-    ],
-    "GRAD_2": [
-        "",
-        "qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.0075, stop:0 $M_TER$, stop:0.2 $M_TER2$, stop:1 #)",
-        "",
-        "",
-    ],
-}
+
+@pytest.fixture(autouse=True, scope="module")
+def module(qapp):
+    yield
+
+
+def test_styleSheets_1():
+    assert isinstance(MAC_STYLE, str)
+
+
+def test_styleSheets_2():
+    assert isinstance(NON_MAC_STYLE, str)
+
+
+def test_styleSheets_3():
+    assert isinstance(BASIC_STYLE, str)

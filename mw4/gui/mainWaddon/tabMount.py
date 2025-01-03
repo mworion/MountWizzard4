@@ -20,10 +20,9 @@ from ast import Bytes
 # external packages
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
 
 
-class Mount(MWidget):
+class Mount:
     """ """
 
     def __init__(self, mainW):

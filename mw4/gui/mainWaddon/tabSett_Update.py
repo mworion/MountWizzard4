@@ -28,10 +28,9 @@ import webbrowser
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
-from gui.utilities.toolsQtWidget import MWidget
 
 
-class SettUpdate(MWidget):
+class SettUpdate:
     """ """
 
     def __init__(self, mainW):
@@ -115,7 +114,7 @@ class SettUpdate(MWidget):
             response = requests.get(url).json()
 
         except Exception as e:
-            self.log.critical(f"Cannot determine package version: {e}")
+            self.mainW.log.critical(f"Cannot determine package version: {e}")
             return None, None, None
 
         vPackage = list(response["releases"].keys())
@@ -124,8 +123,8 @@ class SettUpdate(MWidget):
         verBeta = [x for x in vPackage if "b" in x]
         verRelease = [x for x in vPackage if "b" not in x and "a" not in x]
 
-        self.log.info(f"Package Beta:   {verBeta[:10]}")
-        self.log.info(f"Package Release:{verRelease[:10]}")
+        self.mainW.log.info(f"Package Beta:   {verBeta[:10]}")
+        self.mainW.log.info(f"Package Release:{verRelease[:10]}")
 
         if self.ui.versionBeta.isChecked():
             finalPackage = verBeta
@@ -183,12 +182,12 @@ class SettUpdate(MWidget):
 
         status = hasReal or hasBase and sys.base_prefix != sys.prefix
         if hasReal:
-            self.log.debug(f"Real prefix: [{sys.real_prefix}]")
+            self.mainW.log.debug(f"Real prefix: [{sys.real_prefix}]")
         if hasBase:
-            self.log.debug(f"Base prefix: [{sys.base_prefix}]")
-        self.log.debug(f'PATH:        [{os.environ.get("PATH", "")}]')
-        self.log.debug(f'VENV path:   [{os.environ.get("VIRTUAL_ENV", "")}]')
-        self.log.debug(f"VENV status: [{status}]")
+            self.mainW.log.debug(f"Base prefix: [{sys.base_prefix}]")
+        self.mainW.log.debug(f'PATH:        [{os.environ.get("PATH", "")}]')
+        self.mainW.log.debug(f'VENV path:   [{os.environ.get("VIRTUAL_ENV", "")}]')
+        self.mainW.log.debug(f"VENV status: [{status}]")
         return status
 
     def startUpdater(self, versionPackage):
@@ -209,7 +208,7 @@ class SettUpdate(MWidget):
             versionPackage,
             str(self.mainW.pos().x()),
             str(self.mainW.pos().y()),
-            str(self.colorSet),
+            str(self.mainW.colorSet),
         )
 
     def installVersion(self):

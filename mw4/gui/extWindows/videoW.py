@@ -27,7 +27,7 @@ import qimage2ndarray
 from gui.utilities import toolsQtWidget
 from gui.widgets import video_ui
 from base.tpool import Worker
-from gui.utilities.toolsQtWidget import sleepAndEvents
+from gui.utilities.toolsQtWidget import sleepAndEvents, changeStyleDynamic
 
 
 class VideoWindow(toolsQtWidget.MWidget):
@@ -75,7 +75,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.ui.authPopup.clicked.connect(self.authPopup)
         self.app.colorChange.connect(self.colorChange)
         self.app.update0_1s.connect(self.count)
-        self.changeStyleDynamic(self.ui.videoStop, "running", True)
+        changeStyleDynamic(self.ui.videoStop, "running", True)
         self.checkAuth()
         self.show()
         return True
@@ -158,8 +158,8 @@ class VideoWindow(toolsQtWidget.MWidget):
 
         source = sources[sourceIndex]
         self.log.info(f"Video started: source [{source}]")
-        self.changeStyleDynamic(self.ui.videoStart, "running", True)
-        self.changeStyleDynamic(self.ui.videoStop, "running", False)
+        changeStyleDynamic(self.ui.videoStart, "running", True)
+        changeStyleDynamic(self.ui.videoStop, "running", False)
         self.running = True
         worker = Worker(self.workerVideo, source, frameRate)
         self.threadPool.start(worker)
@@ -169,8 +169,8 @@ class VideoWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.changeStyleDynamic(self.ui.videoStart, "running", False)
-        self.changeStyleDynamic(self.ui.videoStop, "running", True)
+        changeStyleDynamic(self.ui.videoStart, "running", False)
+        changeStyleDynamic(self.ui.videoStop, "running", True)
         self.pixmapReady.emit(None)
         self.running = False
         return True
@@ -203,7 +203,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         :return:
         """
         hasAuth = self.user != "" and self.password != ""
-        self.changeStyleDynamic(self.ui.authPopup, "running", hasAuth)
+        changeStyleDynamic(self.ui.authPopup, "running", hasAuth)
         return True
 
     def authPopup(self):

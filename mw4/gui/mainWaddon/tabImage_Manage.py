@@ -20,10 +20,10 @@
 from PySide6.QtWidgets import QInputDialog
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class ImageManage(MWidget):
+class ImageManage:
     """ """
 
     def __init__(self, mainW):
@@ -37,11 +37,11 @@ class ImageManage(MWidget):
         self.ui.downloadSlow.clicked.connect(self.setDownloadModeSlow)
         self.ui.coolerOn.clicked.connect(self.setCoolerOn)
         self.ui.coolerOff.clicked.connect(self.setCoolerOff)
-        self.clickable(self.ui.coolerTemp).connect(self.setCoolerTemp)
-        self.clickable(self.ui.gainCam).connect(self.setGain)
-        self.clickable(self.ui.offsetCam).connect(self.setOffset)
-        self.clickable(self.ui.filterNumber).connect(self.setFilterNumber)
-        self.clickable(self.ui.filterName).connect(self.setFilterName)
+        self.mainW.clickable(self.ui.coolerTemp).connect(self.setCoolerTemp)
+        self.mainW.clickable(self.ui.gainCam).connect(self.setGain)
+        self.mainW.clickable(self.ui.offsetCam).connect(self.setOffset)
+        self.mainW.clickable(self.ui.filterNumber).connect(self.setFilterNumber)
+        self.mainW.clickable(self.ui.filterName).connect(self.setFilterName)
         self.ui.coverPark.clicked.connect(self.setCoverPark)
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
         self.ui.domeSlewCW.clicked.connect(self.domeSlewCW)
@@ -52,7 +52,7 @@ class ImageManage(MWidget):
         self.ui.coverHalt.clicked.connect(self.setCoverHalt)
         self.ui.coverLightOn.clicked.connect(self.switchLightOn)
         self.ui.coverLightOff.clicked.connect(self.switchLightOff)
-        self.clickable(self.ui.coverLightIntensity).connect(self.setLightIntensity)
+        self.mainW.clickable(self.ui.coverLightIntensity).connect(self.setLightIntensity)
 
         self.ui.aperture.valueChanged.connect(self.updateImagingParam)
         self.ui.focalLength.valueChanged.connect(self.updateImagingParam)
@@ -103,12 +103,12 @@ class ImageManage(MWidget):
 
     def setupIcons(self) -> None:
         """ """
-        self.wIcon(self.ui.copyFromTelescopeDriver, "copy")
-        self.wIcon(self.ui.haltFocuser, "bolt-alt")
-        self.wIcon(self.ui.moveFocuserIn, "exit-down")
-        self.wIcon(self.ui.moveFocuserOut, "exit-up")
-        self.wIcon(self.ui.coverPark, "exit-down")
-        self.wIcon(self.ui.coverUnpark, "exit-up")
+        self.mainW.wIcon(self.ui.copyFromTelescopeDriver, "copy")
+        self.mainW.wIcon(self.ui.haltFocuser, "bolt-alt")
+        self.mainW.wIcon(self.ui.moveFocuserIn, "exit-down")
+        self.mainW.wIcon(self.ui.moveFocuserOut, "exit-up")
+        self.mainW.wIcon(self.ui.coverPark, "exit-down")
+        self.mainW.wIcon(self.ui.coverUnpark, "exit-up")
 
     def checkEnableCameraUI(self):
         """ """
@@ -146,16 +146,16 @@ class ImageManage(MWidget):
         offsetList = self.app.camera.data.get("CCD_OFFSET.OFFSET_LIST")
         if offsetList is not None and actValue is not None:
             offsetList = list(offsetList)
-            self.log.debug(f"Index: [{actValue}], List: [{offsetList}]")
+            self.mainW.log.debug(f"Index: [{actValue}], List: [{offsetList}]")
             if len(offsetList) == 0:
                 offsetList = ["0"]
             if actValue > len(offsetList):
                 actValue = len(offsetList)
             elif actValue < 0:
                 actValue = 0
-            self.guiSetText(self.ui.offsetCam, "s", offsetList[actValue - 1])
+            self.mainW.guiSetText(self.ui.offsetCam, "s", offsetList[actValue - 1])
         else:
-            self.guiSetText(self.ui.offsetCam, "3.0f", actValue)
+            self.mainW.guiSetText(self.ui.offsetCam, "3.0f", actValue)
 
     def updateGain(self):
         """ """
@@ -163,43 +163,43 @@ class ImageManage(MWidget):
         gainList = self.app.camera.data.get("CCD_GAIN.GAIN_LIST")
         if gainList is not None and actValue is not None:
             gainList = list(gainList)
-            self.log.debug(f"Index: [{actValue}], List: [{gainList}]")
+            self.mainW.log.debug(f"Index: [{actValue}], List: [{gainList}]")
             if len(gainList) == 0:
                 gainList = ["1"]
             if actValue > len(gainList):
                 actValue = len(gainList)
             elif actValue < 0:
                 actValue = 0
-            self.guiSetText(self.ui.gainCam, "s", gainList[actValue - 1])
+            self.mainW.guiSetText(self.ui.gainCam, "s", gainList[actValue - 1])
         else:
-            self.guiSetText(self.ui.gainCam, "3.0f", actValue)
+            self.mainW.guiSetText(self.ui.gainCam, "3.0f", actValue)
 
     def updateCooler(self):
         """ """
         coolerTemp = self.app.camera.data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0)
         coolerPower = self.app.camera.data.get("CCD_COOLER_POWER.CCD_COOLER_VALUE", 0)
         coolerOn = self.app.camera.data.get("CCD_COOLER.COOLER_ON", False)
-        self.guiSetText(self.ui.coolerTemp, "3.1f", coolerTemp)
-        self.guiSetText(self.ui.coolerPower, "3.1f", coolerPower)
+        self.mainW.guiSetText(self.ui.coolerTemp, "3.1f", coolerTemp)
+        self.mainW.guiSetText(self.ui.coolerPower, "3.1f", coolerPower)
         if coolerOn:
-            self.changeStyleDynamic(self.ui.coolerOn, "running", True)
-            self.changeStyleDynamic(self.ui.coolerOff, "running", False)
+            changeStyleDynamic(self.ui.coolerOn, "running", True)
+            changeStyleDynamic(self.ui.coolerOff, "running", False)
         else:
-            self.changeStyleDynamic(self.ui.coolerOn, "running", False)
-            self.changeStyleDynamic(self.ui.coolerOff, "running", True)
+            changeStyleDynamic(self.ui.coolerOn, "running", False)
+            changeStyleDynamic(self.ui.coolerOff, "running", True)
 
     def updateFilter(self):
         """ """
         filterNumber = self.app.filter.data.get("FILTER_SLOT.FILTER_SLOT_VALUE", 1)
         key = f"FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}"
         filterName = self.app.filter.data.get(key, "not found")
-        self.guiSetText(self.ui.filterNumber, "1.0f", filterNumber)
-        self.guiSetText(self.ui.filterName, "s", filterName)
+        self.mainW.guiSetText(self.ui.filterNumber, "1.0f", filterNumber)
+        self.mainW.guiSetText(self.ui.filterName, "s", filterName)
 
     def updateFocuser(self):
         """ """
         focus = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
-        self.guiSetText(self.ui.focuserPosition, "6.0f", focus)
+        self.mainW.guiSetText(self.ui.focuserPosition, "6.0f", focus)
 
     def updateImagingParam(self):
         """ """
@@ -234,15 +234,15 @@ class ImageManage(MWidget):
         self.app.camera.subFrame = self.ui.subFrame.value()
         self.app.camera.fastDownload = self.ui.fastDownload.isChecked()
         self.app.camera.focalLength = focalLength
-        self.guiSetText(self.ui.humidityCCD, "3.1f", humidityCCD)
-        self.guiSetText(self.ui.optimalBinning, "1.0f", optimalBinning)
+        self.mainW.guiSetText(self.ui.humidityCCD, "3.1f", humidityCCD)
+        self.mainW.guiSetText(self.ui.optimalBinning, "1.0f", optimalBinning)
 
         if downloadFast:
-            self.changeStyleDynamic(self.ui.downloadFast, "running", True)
-            self.changeStyleDynamic(self.ui.downloadSlow, "running", False)
+            changeStyleDynamic(self.ui.downloadFast, "running", True)
+            changeStyleDynamic(self.ui.downloadSlow, "running", False)
         else:
-            self.changeStyleDynamic(self.ui.downloadFast, "running", False)
-            self.changeStyleDynamic(self.ui.downloadSlow, "running", True)
+            changeStyleDynamic(self.ui.downloadFast, "running", False)
+            changeStyleDynamic(self.ui.downloadSlow, "running", True)
 
     def setCoolerTemp(self):
         """ """
@@ -383,7 +383,7 @@ class ImageManage(MWidget):
 
         dlg = QInputDialog()
         value, ok = dlg.getItem(self, "Set filter", "Filter Name: ", availNames, actValue - 1)
-        self.log.debug(f"FilterSelected: [{value}], FilterList: [{availNames}]")
+        self.mainW.log.debug(f"FilterSelected: [{value}], FilterList: [{availNames}]")
         if not ok:
             return False
 
@@ -416,14 +416,14 @@ class ImageManage(MWidget):
         """ """
         value = self.app.cover.data.get("CAP_PARK.PARK", None)
         if value:
-            self.changeStyleDynamic(self.ui.coverPark, "running", True)
-            self.changeStyleDynamic(self.ui.coverUnpark, "running", False)
+            changeStyleDynamic(self.ui.coverPark, "running", True)
+            changeStyleDynamic(self.ui.coverUnpark, "running", False)
         elif value is None:
-            self.changeStyleDynamic(self.ui.coverPark, "running", False)
-            self.changeStyleDynamic(self.ui.coverUnpark, "running", False)
+            changeStyleDynamic(self.ui.coverPark, "running", False)
+            changeStyleDynamic(self.ui.coverUnpark, "running", False)
         else:
-            self.changeStyleDynamic(self.ui.coverPark, "running", False)
-            self.changeStyleDynamic(self.ui.coverUnpark, "running", True)
+            changeStyleDynamic(self.ui.coverPark, "running", False)
+            changeStyleDynamic(self.ui.coverUnpark, "running", True)
 
         value = self.app.cover.data.get("Status.Cover", "-")
         self.ui.coverStatusText.setText(value)
@@ -432,17 +432,17 @@ class ImageManage(MWidget):
         """ """
         value = self.app.cover.data.get("FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON", None)
         if value:
-            self.changeStyleDynamic(self.ui.coverLightOn, "running", True)
-            self.changeStyleDynamic(self.ui.coverLightOff, "running", False)
+            changeStyleDynamic(self.ui.coverLightOn, "running", True)
+            changeStyleDynamic(self.ui.coverLightOff, "running", False)
         elif value is None:
-            self.changeStyleDynamic(self.ui.coverLightOn, "running", False)
-            self.changeStyleDynamic(self.ui.coverLightOff, "running", False)
+            changeStyleDynamic(self.ui.coverLightOn, "running", False)
+            changeStyleDynamic(self.ui.coverLightOff, "running", False)
         else:
-            self.changeStyleDynamic(self.ui.coverLightOn, "running", False)
-            self.changeStyleDynamic(self.ui.coverLightOff, "running", True)
+            changeStyleDynamic(self.ui.coverLightOn, "running", False)
+            changeStyleDynamic(self.ui.coverLightOff, "running", True)
 
         value = self.app.cover.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
-        self.guiSetText(self.ui.coverLightIntensity, "3.0f", value)
+        self.mainW.guiSetText(self.ui.coverLightIntensity, "3.0f", value)
         return True
 
     def setCoverPark(self):
@@ -539,31 +539,31 @@ class ImageManage(MWidget):
         """ """
         value = self.app.dome.data.get("DOME_MOTION.DOME_CW", None)
         if value:
-            self.changeStyleDynamic(self.ui.domeSlewCW, "running", True)
+            changeStyleDynamic(self.ui.domeSlewCW, "running", True)
         else:
-            self.changeStyleDynamic(self.ui.domeSlewCW, "running", False)
+            changeStyleDynamic(self.ui.domeSlewCW, "running", False)
 
         value = self.app.dome.data.get("DOME_MOTION.DOME_CCW", None)
         if value:
-            self.changeStyleDynamic(self.ui.domeSlewCCW, "running", True)
+            changeStyleDynamic(self.ui.domeSlewCCW, "running", True)
         else:
-            self.changeStyleDynamic(self.ui.domeSlewCCW, "running", False)
+            changeStyleDynamic(self.ui.domeSlewCCW, "running", False)
 
         value = self.app.dome.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")
-        self.guiSetText(self.ui.domeAzimuth, "3.0f", value)
+        self.mainW.guiSetText(self.ui.domeAzimuth, "3.0f", value)
 
     def updateShutterStatGui(self):
         """ """
         value = self.app.dome.data.get("DOME_SHUTTER.SHUTTER_OPEN", None)
         if value is True:
-            self.changeStyleDynamic(self.ui.domeOpenShutter, "running", True)
-            self.changeStyleDynamic(self.ui.domeCloseShutter, "running", False)
+            changeStyleDynamic(self.ui.domeOpenShutter, "running", True)
+            changeStyleDynamic(self.ui.domeCloseShutter, "running", False)
         elif value is False:
-            self.changeStyleDynamic(self.ui.domeOpenShutter, "running", False)
-            self.changeStyleDynamic(self.ui.domeCloseShutter, "running", True)
+            changeStyleDynamic(self.ui.domeOpenShutter, "running", False)
+            changeStyleDynamic(self.ui.domeCloseShutter, "running", True)
         else:
-            self.changeStyleDynamic(self.ui.domeOpenShutter, "running", False)
-            self.changeStyleDynamic(self.ui.domeCloseShutter, "running", False)
+            changeStyleDynamic(self.ui.domeOpenShutter, "running", False)
+            changeStyleDynamic(self.ui.domeCloseShutter, "running", False)
 
         value = self.app.dome.data.get("Status.Shutter", None)
         if value:

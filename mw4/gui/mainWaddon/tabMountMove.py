@@ -21,14 +21,15 @@ from functools import partial
 from PySide6.QtWidgets import QInputDialog, QLineEdit
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from mountcontrol.convert import convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatHstrToText, formatDstrToText
 from mountcontrol.convert import valueToFloat
 from gui.utilities.slewInterface import SlewInterface
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class MountMove(MWidget, SlewInterface):
+class MountMove(SlewInterface):
     """ """
 
     def __init__(self, mainW):
@@ -96,10 +97,10 @@ class MountMove(MWidget, SlewInterface):
         self.ui.stopMoveAll.clicked.connect(self.stopMoveAll)
         self.ui.moveAltAzAbsolute.clicked.connect(self.moveAltAzAbsolute)
         self.ui.moveRaDecAbsolute.clicked.connect(self.moveRaDecAbsolute)
-        self.clickable(self.ui.moveCoordinateRa).connect(self.setRA)
+        self.mainW.clickable(self.ui.moveCoordinateRa).connect(self.setRA)
         self.ui.moveCoordinateRa.textEdited.connect(self.setRA)
         self.ui.moveCoordinateRa.returnPressed.connect(self.setRA)
-        self.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
+        self.mainW.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
         self.ui.moveCoordinateDec.textEdited.connect(self.setDEC)
         self.ui.moveCoordinateDec.returnPressed.connect(self.setDEC)
         self.app.mount.signals.slewed.connect(self.moveAltAzDefault)
@@ -149,7 +150,7 @@ class MountMove(MWidget, SlewInterface):
     def stopMoveAll(self):
         """ """
         for uiR in self.setupMoveClassic:
-            self.changeStyleDynamic(self.setupMoveClassic[uiR]["button"], "running", False)
+            changeStyleDynamic(self.setupMoveClassic[uiR]["button"], "running", False)
         self.app.mount.obsSite.stopMoveAll()
 
     def countDuration(self, duration):
@@ -197,9 +198,9 @@ class MountMove(MWidget, SlewInterface):
         """ """
         uiList = self.setupMoveClassic
         for key in uiList:
-            self.changeStyleDynamic(uiList[key]["button"], "running", False)
+            changeStyleDynamic(uiList[key]["button"], "running", False)
 
-        self.changeStyleDynamic(uiList[direction]["button"], "running", True)
+        changeStyleDynamic(uiList[direction]["button"], "running", True)
 
         coord = uiList[direction]["coord"]
         if coord[0] == 1:
@@ -231,7 +232,7 @@ class MountMove(MWidget, SlewInterface):
         self.targetAlt = None
         self.targetAz = None
         for key in self.setupMoveAltAz:
-            self.changeStyleDynamic(self.setupMoveAltAz[key]["button"], "running", False)
+            changeStyleDynamic(self.setupMoveAltAz[key]["button"], "running", False)
         return True
 
     def moveAltAzGameController(self, value):
@@ -257,7 +258,7 @@ class MountMove(MWidget, SlewInterface):
             return False
 
         uiList = self.setupMoveAltAz
-        self.changeStyleDynamic(uiList[direction]["button"], "running", True)
+        changeStyleDynamic(uiList[direction]["button"], "running", True)
 
         key = list(self.setupStepsizes)[self.ui.moveStepSizeAltAz.currentIndex()]
         step = self.setupStepsizes[key]

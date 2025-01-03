@@ -21,10 +21,10 @@ from functools import partial
 import numpy as np
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class EnvironWeather(MWidget):
+class EnvironWeather:
     """ """
 
     def __init__(self, mainW):
@@ -201,14 +201,10 @@ class EnvironWeather(MWidget):
         """ """
         for source in self.refractionSources:
             if self.refractionSource == source:
-                self.changeStyleDynamic(
-                    self.refractionSources[source]["group"], "refraction", True
-                )
+                changeStyleDynamic(self.refractionSources[source]["group"], "refraction", True)
                 self.refractionSources[source]["group"].setChecked(True)
             else:
-                self.changeStyleDynamic(
-                    self.refractionSources[source]["group"], "refraction", False
-                )
+                changeStyleDynamic(self.refractionSources[source]["group"], "refraction", False)
                 self.refractionSources[source]["group"].setChecked(False)
 
     def selectRefractionSource(self, source):
@@ -266,7 +262,7 @@ class EnvironWeather(MWidget):
                 return False
 
         suc = self.app.mount.setting.setRefractionParam(temperature=temp, pressure=press)
-        self.log.debug(f"Setting refrac temp:[{temp}], press:[{press}]")
+        self.mainW.log.debug(f"Setting refrac temp:[{temp}], press:[{press}]")
         if not suc:
             self.msg.emit(2, "System", "Environment", "No refraction update")
             return False
@@ -280,7 +276,7 @@ class EnvironWeather(MWidget):
             for field in self.envFields:
                 ui = eval("self.ui." + field + uiPost)
                 value = data.get(self.envFields[field]["valueKey"])
-                self.guiSetText(ui, self.envFields[field]["format"], value)
+                self.mainW.guiSetText(ui, self.envFields[field]["format"], value)
 
     def clearSourceGui(self, source: str, sender) -> bool:
         """ """

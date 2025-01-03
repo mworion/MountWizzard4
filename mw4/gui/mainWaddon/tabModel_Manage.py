@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import json
+from pathlib import Path
 
 # external packages
 from PySide6.QtWidgets import QLineEdit, QInputDialog
@@ -23,7 +24,6 @@ from PySide6.QtCore import Qt
 import numpy as np
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
 from mountcontrol.model import Model
 from logic.modelBuild.modelHandling import (
     writeRetrofitData,
@@ -31,9 +31,10 @@ from logic.modelBuild.modelHandling import (
     convertFloatToAngle,
     findFittingModel,
 )
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class ModelManage(MWidget):
+class ModelManage:
     """ """
 
     def __init__(self, mainW):
@@ -43,7 +44,7 @@ class ModelManage(MWidget):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.runningOptimize = False
-        self.fittedModelPath = ""
+        self.fittedModelPath = Path()
         self.plane = None
 
         ms = self.app.mount.signals
@@ -89,16 +90,16 @@ class ModelManage(MWidget):
 
     def setupIcons(self) -> None:
         """ """
-        self.wIcon(self.ui.runOptimize, "start")
-        self.wIcon(self.ui.cancelOptimize, "cross-circle")
-        self.wIcon(self.ui.deleteWorstPoint, "circle-minus")
-        self.wIcon(self.ui.clearModel, "trash")
-        self.wIcon(self.ui.openAnalyseW, "bar-chart")
-        self.wIcon(self.ui.loadName, "load")
-        self.wIcon(self.ui.saveName, "save")
-        self.wIcon(self.ui.deleteName, "trash")
-        self.wIcon(self.ui.refreshName, "reload")
-        self.wIcon(self.ui.refreshModel, "reload")
+        self.mainW.wIcon(self.ui.runOptimize, "start")
+        self.mainW.wIcon(self.ui.cancelOptimize, "cross-circle")
+        self.mainW.wIcon(self.ui.deleteWorstPoint, "circle-minus")
+        self.mainW.wIcon(self.ui.clearModel, "trash")
+        self.mainW.wIcon(self.ui.openAnalyseW, "bar-chart")
+        self.mainW.wIcon(self.ui.loadName, "load")
+        self.mainW.wIcon(self.ui.saveName, "save")
+        self.mainW.wIcon(self.ui.deleteName, "trash")
+        self.mainW.wIcon(self.ui.refreshName, "reload")
+        self.mainW.wIcon(self.ui.refreshModel, "reload")
 
     def updateColorSet(self) -> None:
         """ """
@@ -157,7 +158,9 @@ class ModelManage(MWidget):
         self.ui.errorAscending.p[0].setLabel("left", "Error per Star [arcsec]")
         temp = sorted(zip(error))
         y = [x[0] for x in temp]
-        self.ui.errorAscending.plot(index, y, color=self.M_GREEN, tip="ErrorRMS: {y:0.1f}".format)
+        self.ui.errorAscending.plot(
+            index, y, color=self.mainW.M_GREEN, tip="ErrorRMS: {y:0.1f}".format
+        )
 
     def showErrorDistribution(self) -> None:
         """ """
@@ -168,13 +171,13 @@ class ModelManage(MWidget):
             return
         errorAngle = np.array([x.errorAngle.degrees for x in model.starList])
         self.ui.errorDistribution.plot(
-            errorAngle, error, color=self.M_GREEN, tip="ErrorRMS: {y:0.1f}".format
+            errorAngle, error, color=self.mainW.M_GREEN, tip="ErrorRMS: {y:0.1f}".format
         )
 
     def clearRefreshName(self) -> None:
         """ """
-        self.changeStyleDynamic(self.ui.refreshName, "running", False)
-        self.changeStyleDynamic(self.ui.modelNameGroup, "running", False)
+        changeStyleDynamic(self.ui.refreshName, "running", False)
+        changeStyleDynamic(self.ui.modelNameGroup, "running", False)
         self.ui.deleteName.setEnabled(True)
         self.ui.saveName.setEnabled(True)
         self.ui.loadName.setEnabled(True)
@@ -187,8 +190,8 @@ class ModelManage(MWidget):
         self.ui.deleteName.setEnabled(False)
         self.ui.saveName.setEnabled(False)
         self.ui.loadName.setEnabled(False)
-        self.changeStyleDynamic(self.ui.refreshName, "running", True)
-        self.changeStyleDynamic(self.ui.modelNameGroup, "running", True)
+        changeStyleDynamic(self.ui.refreshName, "running", True)
+        changeStyleDynamic(self.ui.modelNameGroup, "running", True)
         self.app.mount.getNames()
 
     def loadName(self):
@@ -226,7 +229,7 @@ class ModelManage(MWidget):
             return
 
         modelName = self.ui.nameList.currentItem().text()
-        if not self.messageDialog(
+        if not self.mainW.messageDialog(
             self.mainW, "Delete model", f"Delete model [{modelName}] from database?"
         ):
             return
@@ -248,7 +251,7 @@ class ModelManage(MWidget):
             with open(self.fittedModelPath) as actFile:
                 actModel = convertFloatToAngle(json.load(actFile))
         except Exception as e:
-            self.log.warning(f"Cannot load model file: {[actFile]}, error: {e}")
+            self.mainW.log.warning(f"Cannot load model file: {[actFile]}, error: {e}")
             return
 
         newModel = []
@@ -265,8 +268,8 @@ class ModelManage(MWidget):
 
     def clearRefreshModel(self) -> None:
         """ """
-        self.changeStyleDynamic(self.ui.refreshModel, "running", False)
-        self.changeStyleDynamic(self.ui.modelGroup, "running", False)
+        changeStyleDynamic(self.ui.refreshModel, "running", False)
+        changeStyleDynamic(self.ui.modelGroup, "running", False)
         self.ui.deleteWorstPoint.setEnabled(True)
         self.ui.runOptimize.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
@@ -288,8 +291,8 @@ class ModelManage(MWidget):
 
     def refreshModel(self) -> None:
         """ """
-        self.changeStyleDynamic(self.ui.refreshModel, "running", True)
-        self.changeStyleDynamic(self.ui.modelGroup, "running", True)
+        changeStyleDynamic(self.ui.refreshModel, "running", True)
+        changeStyleDynamic(self.ui.modelGroup, "running", True)
         self.app.mount.signals.getModelDone.connect(self.clearRefreshModel)
         self.ui.deleteWorstPoint.setEnabled(False)
         self.ui.runOptimize.setEnabled(False)
@@ -298,7 +301,7 @@ class ModelManage(MWidget):
 
     def clearModel(self) -> None:
         """ """
-        if not self.messageDialog(self.mainW, "Clear model", "Clear actual alignment model"):
+        if not self.mainW.messageDialog(self.mainW, "Clear model", "Clear actual alignment model"):
             return
         if not self.app.mount.model.clearModel():
             self.msg.emit(2, "Model", "Manage error", "Actual model cannot be cleared")
@@ -330,7 +333,7 @@ class ModelManage(MWidget):
         else:
             self.app.mount.signals.getModelDone.disconnect(self.runSingleRMS)
 
-        self.changeStyleDynamic(self.ui.runOptimize, "running", False)
+        changeStyleDynamic(self.ui.runOptimize, "running", False)
         self.ui.deleteWorstPoint.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
         self.ui.refreshModel.setEnabled(True)
@@ -405,7 +408,7 @@ class ModelManage(MWidget):
         self.ui.clearModel.setEnabled(False)
         self.ui.refreshModel.setEnabled(False)
         self.ui.cancelOptimize.setEnabled(True)
-        self.changeStyleDynamic(self.ui.runOptimize, "running", True)
+        changeStyleDynamic(self.ui.runOptimize, "running", True)
 
         if self.ui.optimizeOverall.isChecked():
             self.app.mount.signals.getModelDone.connect(self.runTargetRMS)
@@ -436,7 +439,7 @@ class ModelManage(MWidget):
         text = f"Do you want to delete \npoint {index + 1:3.0f}"
         text += f"\nRMS of {error:5.1f} arcsec"
 
-        if not self.messageDialog(self.mainW, "Deleting point", text):
+        if not self.mainW.messageDialog(self.mainW, "Deleting point", text):
             return
         if not self.app.mount.model.deletePoint(index):
             self.msg.emit(2, "Model", "Manage error", f"Point {index + 1:3.0f} cannot be deleted")

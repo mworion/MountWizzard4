@@ -14,8 +14,8 @@
 # Licence APL2.0
 #
 ###########################################################
-import base.packageConfig as pConf
 # standard libraries
+import base.packageConfig as pConf
 
 # external packages
 if pConf.isAvailable:
@@ -23,11 +23,11 @@ if pConf.isAvailable:
 import hid
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.tpool import Worker
 
 
-class SettMisc(MWidget):
+class SettMisc:
     """ """
 
     def __init__(self, mainW):
@@ -152,14 +152,14 @@ class SettMisc(MWidget):
 
     def setupIcons(self):
         """ """
-        self.wIcon(self.ui.installVersion, "world")
-        pixmap = self.svg2pixmap(":/icon/controller.svg", self.M_PRIM)
+        self.mainW.wIcon(self.ui.installVersion, "world")
+        pixmap = self.mainW.svg2pixmap(":/icon/controller.svg", self.mainW.M_PRIM)
         self.ui.controller1.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller2.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller3.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller4.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller5.setPixmap(pixmap.scaled(16, 16))
-        pixmap = self.svg2pixmap(":/icon/controllerNew.svg", self.M_PRIM)
+        pixmap = self.mainW.svg2pixmap(":/icon/controllerNew.svg", self.mainW.M_PRIM)
         self.ui.controllerOverview.setPixmap(pixmap)
         self.ui.controller1.setEnabled(False)
         self.ui.controller2.setEnabled(False)
@@ -183,7 +183,7 @@ class SettMisc(MWidget):
             self.app.game_sL.emit(act[3], act[4])
         if act[5] != old[5] or act[6] != old[6]:
             self.app.game_sR.emit(act[5], act[6])
-        self.log.trace(f"GameController: {[act]}, {[old]}")
+        self.mainW.log.trace(f"GameController: {[act]}, {[old]}")
         return True
 
     def readGameController(self, gamepad):
@@ -197,7 +197,7 @@ class SettMisc(MWidget):
                 data = gamepad.read(64)
             except Exception as e:
                 self.mainW.gameControllerRunning = False
-                self.log.warning(f"GameController error {e}")
+                self.mainW.log.warning(f"GameController error {e}")
                 return []
 
             if len(data) == 0:
@@ -228,7 +228,7 @@ class SettMisc(MWidget):
             else:
                 val = 0b00001111
             oR = [iR[10], 0, val, iR[1], iR[3], iR[5], iR[7]]
-        self.log.info(f"Controller: [{name}], values: [{oR}]")
+        self.mainW.log.info(f"Controller: [{name}], values: [{oR}]")
         return oR
 
     @staticmethod
@@ -260,7 +260,7 @@ class SettMisc(MWidget):
         vendorId = gameController["vendorId"]
         productId = gameController["productId"]
 
-        self.log.debug(f"GameController: [{name} {vendorId}:{productId}]")
+        self.mainW.log.debug(f"GameController: [{name} {vendorId}:{productId}]")
         self.msg.emit(1, "System", "GameController", f"Starting {[name]}")
         gameControllerDevice.open(vendorId, productId)
         gameControllerDevice.set_nonblocking(True)
@@ -404,6 +404,6 @@ class SettMisc(MWidget):
         """
         for tab in self.uiTabs:
             isVisible = self.uiTabs[tab]["cb"].isChecked()
-            tabIndex = self.getTabIndex(self.uiTabs[tab]["tab"], tab)
+            tabIndex = self.mainW.getTabIndex(self.uiTabs[tab]["tab"], tab)
             self.uiTabs[tab]["tab"].setTabVisible(tabIndex, isVisible)
         return True

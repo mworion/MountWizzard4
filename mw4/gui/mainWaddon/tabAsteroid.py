@@ -24,11 +24,10 @@ from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 # local import
 from gui.mainWaddon.astroObjects import AstroObjects
-from gui.utilities.toolsQtWidget import MWidget
 from logic.databaseProcessing.sourceURL import asteroidSourceURLs
 
 
-class Asteroid(MWidget):
+class Asteroid:
     """ """
 
     def __init__(self, mainW):
@@ -74,9 +73,9 @@ class Asteroid(MWidget):
 
     def setupIcons(self) -> None:
         """ """
-        self.wIcon(self.ui.progAsteroidFull, "run")
-        self.wIcon(self.ui.progAsteroidFiltered, "run")
-        self.wIcon(self.ui.progAsteroidSelected, "run")
+        self.mainW.wIcon(self.ui.progAsteroidFull, "run")
+        self.mainW.wIcon(self.ui.progAsteroidFiltered, "run")
+        self.mainW.wIcon(self.ui.progAsteroidSelected, "run")
 
     def prepareAsteroidTable(self) -> None:
         """ """
@@ -121,7 +120,7 @@ class Asteroid(MWidget):
             try:
                 asteroids = json.load(inFile)
             except Exception as e:
-                self.log.error(f"Error {e} loading from {self.asteroids.dest}")
+                self.mainW.log.error(f"Error {e} loading from {self.asteroids.dest}")
                 os.remove(self.asteroids.dest)
                 asteroids = []
 

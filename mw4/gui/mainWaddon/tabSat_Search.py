@@ -17,7 +17,7 @@
 # standard libraries
 
 # external packages
-from PySide6.QtCore import Qt, Signal, QRect, QPoint
+from PySide6.QtCore import Qt, Signal, QRect, QPoint, QObject
 from PySide6.QtWidgets import QTableWidgetItem, QAbstractItemView
 import numpy as np
 
@@ -25,15 +25,15 @@ import numpy as np
 from gui.mainWaddon.astroObjects import AstroObjects
 from gui.mainWaddon.satData import SatData
 from gui.utilities.qCustomTableWidgetItem import QCustomTableWidgetItem
-from gui.utilities.toolsQtWidget import MWidget
 from logic.databaseProcessing.sourceURL import satSourceURLs
 from base.tpool import Worker
 from logic.satellites.satellite_calculations import findSunlit, findSatUp
 from logic.satellites.satellite_calculations import checkTwilight, calcAppMag
 from logic.satellites.satellite_calculations import findRangeRate
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class SatSearch(MWidget, SatData):
+class SatSearch(SatData, QObject):
     """ """
 
     setSatListItem = Signal(int, int, object)
@@ -159,7 +159,7 @@ class SatSearch(MWidget, SatData):
 
             self.ui.listSats.setRowHidden(row, not show)
         satName = self.ui.satelliteName.text()
-        self.positionCursorInTable(self.ui.listSats, satName)
+        self.mainW.positionCursorInTable(self.ui.listSats, satName)
 
     def setListSatsEntry(self, row, col, entry):
         """ """
@@ -185,7 +185,7 @@ class SatSearch(MWidget, SatData):
 
         if isUp is not None:
             if isUp[0]:
-                t = self.convertTime(isUp[1][0], "%H:%M")
+                t = self.mainW.convertTime(isUp[1][0], "%H:%M")
             else:
                 t = ""
 
@@ -250,7 +250,7 @@ class SatSearch(MWidget, SatData):
         """ """
         msg = sat.at(tEnd).message
         if msg:
-            self.log.warning(f"{sat.name} caused SGP4: [{msg}]")
+            self.mainW.log.warning(f"{sat.name} caused SGP4: [{msg}]")
             return False
         return True
 
@@ -297,15 +297,15 @@ class SatSearch(MWidget, SatData):
 
         t = "Filter - processed: 100%"
         self.ui.satFilterGroup.setTitle(t)
-        self.changeStyleDynamic(self.ui.satFilterGroup, "running", False)
+        changeStyleDynamic(self.ui.satFilterGroup, "running", False)
 
     def calcSatList(self):
         """ """
-        title = "Setup " + self.timeZoneString()
+        title = "Setup " + self.mainW.timeZoneString()
         self.ui.satSetupGroup.setTitle(title)
         worker = Worker(self.workerCalcSatList)
         worker.signals.finished.connect(self.filterListSats)
-        self.changeStyleDynamic(self.ui.satFilterGroup, "running", True)
+        changeStyleDynamic(self.ui.satFilterGroup, "running", True)
         self.app.threadPool.start(worker)
 
     def fillSatListName(self):

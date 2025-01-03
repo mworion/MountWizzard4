@@ -23,14 +23,13 @@ from pathlib import Path
 # external packages
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
-from logic.modelBuild.modelHandling import (
-    loadModelsFromFile,
-)
+from gui.utilities.toolsQtWidget import sleepAndEvents
+from logic.modelBuild.modelHandling import loadModelsFromFile
 from logic.modelBuild.modelData import ModelData
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class Model(MWidget):
+class Model:
     """ """
 
     STATUS_IDLE = 0
@@ -81,11 +80,11 @@ class Model(MWidget):
 
     def setupIcons(self) -> None:
         """ """
-        self.wIcon(self.ui.cancelModel, "cross-circle")
-        self.wIcon(self.ui.runModel, "start")
-        self.wIcon(self.ui.pauseModel, "pause")
-        self.wIcon(self.ui.endModel, "stop_m")
-        self.wIcon(self.ui.dataModel, "choose")
+        self.mainW.wIcon(self.ui.cancelModel, "cross-circle")
+        self.mainW.wIcon(self.ui.runModel, "start")
+        self.mainW.wIcon(self.ui.pauseModel, "pause")
+        self.mainW.wIcon(self.ui.endModel, "stop_m")
+        self.mainW.wIcon(self.ui.dataModel, "choose")
 
     def cancelBatch(self) -> None:
         """ """
@@ -152,7 +151,7 @@ class Model(MWidget):
 
     def setupModelRunContextAndGuiStatus(self) -> None:
         """ """
-        self.changeStyleDynamic(self.ui.runModel, "running", True)
+        changeStyleDynamic(self.ui.runModel, "running", True)
         self.ui.cancelModel.setEnabled(True)
         self.ui.endModel.setEnabled(True)
         self.ui.pauseModel.setEnabled(True)
@@ -160,11 +159,11 @@ class Model(MWidget):
     def pauseBuild(self) -> None:
         """ """
         if not self.ui.pauseModel.property("pause"):
-            self.changeStyleDynamic(self.ui.pauseModel, "color", "yellow")
-            self.changeStyleDynamic(self.ui.pauseModel, "pause", True)
+            changeStyleDynamic(self.ui.pauseModel, "color", "yellow")
+            changeStyleDynamic(self.ui.pauseModel, "pause", True)
         else:
-            self.changeStyleDynamic(self.ui.pauseModel, "color", "")
-            self.changeStyleDynamic(self.ui.pauseModel, "pause", False)
+            changeStyleDynamic(self.ui.pauseModel, "color", "")
+            changeStyleDynamic(self.ui.pauseModel, "pause", False)
 
     def programModelToMountFinish(self) -> None:
         """ """

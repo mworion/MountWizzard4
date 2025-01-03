@@ -25,6 +25,7 @@ from PySide6.Qt3DCore import Qt3DCore
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 from gui.widgets import simulator_ui
 from gui.extWindows.simulator.dome import SimulatorDome
 from gui.extWindows.simulator.telescope import SimulatorTelescope
@@ -177,35 +178,35 @@ class SimulatorWindow(MWidget):
         The position vector in not 0,0,0 as the precision leads to a black
         screen.
         """
-        self.changeStyleDynamic(self.ui.telescopeView, "running", False)
+        changeStyleDynamic(self.ui.telescopeView, "running", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(0.001, 5.0, 0.001))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def topEastView(self):
         """ """
-        self.changeStyleDynamic(self.ui.telescopeView, "running", False)
+        hangeStyleDynamic(self.ui.telescopeView, "running", False)
         self.camera.setViewCenter(QVector3D(0.1, 1.5, 0.1))
         self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def topWestView(self):
         """ """
-        self.changeStyleDynamic(self.ui.telescopeView, "running", False)
+        changeStyleDynamic(self.ui.telescopeView, "running", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def eastView(self):
         """ """
-        self.changeStyleDynamic(self.ui.telescopeView, "running", False)
+        changeStyleDynamic(self.ui.telescopeView, "running", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def westView(self):
         """ """
-        self.changeStyleDynamic(self.ui.telescopeView, "running", False)
+        changeStyleDynamic(self.ui.telescopeView, "running", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))

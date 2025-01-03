@@ -23,12 +23,11 @@ from skyfield.api import wgs84
 
 # local import
 from base import transform
-from gui.utilities.toolsQtWidget import MWidget
 from mountcontrol.convert import convertLatToAngle, convertLonToAngle
 from mountcontrol.convert import formatLatToText, formatLonToText
+from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetStyle
 
-
-class MountSett(MWidget):
+class MountSett:
     """ """
 
     def __init__(self, mainW):
@@ -44,21 +43,21 @@ class MountSett(MWidget):
         ms.pointDone.connect(self.updatePointGUI)
         ms.settingDone.connect(self.updateSettingGUI)
         self.app.update1s.connect(self.showOffset)
-        self.clickable(self.ui.refractionTemp).connect(self.setRefractionTemp)
-        self.clickable(self.ui.refractionPress).connect(self.setRefractionPress)
-        self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
-        self.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
-        self.clickable(self.ui.horizonLimitHigh).connect(self.setHorizonLimitHigh)
-        self.clickable(self.ui.horizonLimitLow).connect(self.setHorizonLimitLow)
-        self.clickable(self.ui.slewRate).connect(self.setSlewRate)
-        self.clickable(self.ui.siteLatitude).connect(self.setLatitude)
-        self.clickable(self.ui.siteLongitude).connect(self.setLongitude)
-        self.clickable(self.ui.siteElevation).connect(self.setElevation)
-        self.clickable(self.ui.statusUnattendedFlip).connect(self.setUnattendedFlip)
-        self.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
-        self.clickable(self.ui.statusWOL).connect(self.setWOL)
-        self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
-        self.clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
+        self.mainW.clickable(self.ui.refractionTemp).connect(self.setRefractionTemp)
+        self.mainW.clickable(self.ui.refractionPress).connect(self.setRefractionPress)
+        self.mainW.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
+        self.mainW.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
+        self.mainW.clickable(self.ui.horizonLimitHigh).connect(self.setHorizonLimitHigh)
+        self.mainW.clickable(self.ui.horizonLimitLow).connect(self.setHorizonLimitLow)
+        self.mainW.clickable(self.ui.slewRate).connect(self.setSlewRate)
+        self.mainW.clickable(self.ui.siteLatitude).connect(self.setLatitude)
+        self.mainW.clickable(self.ui.siteLongitude).connect(self.setLongitude)
+        self.mainW.clickable(self.ui.siteElevation).connect(self.setElevation)
+        self.mainW.clickable(self.ui.statusUnattendedFlip).connect(self.setUnattendedFlip)
+        self.mainW.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
+        self.mainW.clickable(self.ui.statusWOL).connect(self.setWOL)
+        self.mainW.clickable(self.ui.statusRefraction).connect(self.setRefraction)
+        self.mainW.clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
 
     def updatePointGUI(self, obs):
         """ """
@@ -72,103 +71,103 @@ class MountSett(MWidget):
             ra = obs.raJNow
             dec = obs.decJNow
 
-        self.guiSetText(self.ui.RA, "HSTR", ra)
-        self.guiSetText(self.ui.RAfloat, "H5.5f", ra)
-        self.guiSetText(self.ui.DEC, "DSTR", dec)
-        self.guiSetText(self.ui.DECfloat, "D5.5f", dec)
-        self.guiSetText(self.ui.HA, "HSTR", obs.haJNow)
-        self.guiSetText(self.ui.HAfloat, "H5.5f", obs.haJNow)
-        self.guiSetText(self.ui.ALT, "D5.2f", obs.Alt)
-        self.guiSetText(self.ui.AZ, "D5.2f", obs.Az)
-        self.guiSetText(self.ui.pierside, "s", obs.pierside)
-        self.guiSetText(self.ui.timeSidereal, "HSTR", obs.timeSidereal)
+        self.mainW.guiSetText(self.ui.RA, "HSTR", ra)
+        self.mainW.guiSetText(self.ui.RAfloat, "H5.5f", ra)
+        self.mainW.guiSetText(self.ui.DEC, "DSTR", dec)
+        self.mainW.guiSetText(self.ui.DECfloat, "D5.5f", dec)
+        self.mainW.guiSetText(self.ui.HA, "HSTR", obs.haJNow)
+        self.mainW.guiSetText(self.ui.HAfloat, "H5.5f", obs.haJNow)
+        self.mainW.guiSetText(self.ui.ALT, "D5.2f", obs.Alt)
+        self.mainW.guiSetText(self.ui.AZ, "D5.2f", obs.Az)
+        self.mainW.guiSetText(self.ui.pierside, "s", obs.pierside)
+        self.mainW.guiSetText(self.ui.timeSidereal, "HSTR", obs.timeSidereal)
 
     def updateSettingGUI(self, sett):
         """ """
         ui = self.ui.UTCExpire
-        self.guiSetText(ui, "s", sett.UTCExpire)
+        self.mainW.guiSetText(ui, "s", sett.UTCExpire)
         if sett.UTCExpire is not None:
             now = datetime.datetime.now()
             expire = datetime.datetime.strptime(sett.UTCExpire, "%Y-%m-%d")
             deltaYellow = datetime.timedelta(days=30)
             if now > expire:
-                self.changeStyleDynamic(ui, "color", "red")
+                changeStyleDynamic(ui, "color", "red")
             elif now > expire - deltaYellow:
-                self.changeStyleDynamic(ui, "color", "yellow")
+                changeStyleDynamic(ui, "color", "yellow")
             else:
-                self.changeStyleDynamic(ui, "color", "")
+                changeStyleDynamic(ui, "color", "")
 
         ui = self.ui.statusUnattendedFlip
-        self.guiSetText(ui, "s", sett.statusUnattendedFlip)
-        self.guiSetStyle(ui, "status", sett.statusUnattendedFlip, ["", "on", ""])
+        self.mainW.guiSetText(ui, "s", sett.statusUnattendedFlip)
+        guiSetStyle(ui, "status", sett.statusUnattendedFlip, ["", "on", ""])
 
         ui = self.ui.statusDualAxisTracking
-        self.guiSetText(ui, "s", sett.statusDualAxisTracking)
-        self.guiSetStyle(ui, "status", sett.statusDualAxisTracking, ["", "on", ""])
+        self.mainW.guiSetText(ui, "s", sett.statusDualAxisTracking)
+        guiSetStyle(ui, "status", sett.statusDualAxisTracking, ["", "on", ""])
 
         ui = self.ui.statusRefraction
-        self.guiSetText(ui, "s", sett.statusRefraction)
-        self.guiSetStyle(ui, "status", sett.statusRefraction, ["", "on", ""])
+        self.mainW.guiSetText(ui, "s", sett.statusRefraction)
+        guiSetStyle(ui, "status", sett.statusRefraction, ["", "on", ""])
 
         ui = self.ui.statusGPSSynced
-        self.guiSetText(ui, "s", sett.gpsSynced)
-        self.guiSetStyle(ui, "status", sett.gpsSynced, ["", "on", ""])
+        self.mainW.guiSetText(ui, "s", sett.gpsSynced)
+        guiSetStyle(ui, "status", sett.gpsSynced, ["", "on", ""])
 
         ui = self.ui.statusWOL
-        self.guiSetText(ui, "s", sett.wakeOnLan)
-        self.guiSetStyle(ui, "status", sett.wakeOnLan, ["", "on", ""])
+        self.mainW.guiSetText(ui, "s", sett.wakeOnLan)
+        guiSetStyle(ui, "status", sett.wakeOnLan, ["", "on", ""])
 
         ui = self.ui.statusWebInterface
-        self.guiSetText(ui, "s", sett.webInterfaceStat)
-        self.guiSetStyle(ui, "status", sett.webInterfaceStat, ["", "on", ""])
+        self.mainW.guiSetText(ui, "s", sett.webInterfaceStat)
+        guiSetStyle(ui, "status", sett.webInterfaceStat, ["", "on", ""])
 
         if sett.typeConnection is not None:
             text = self.typeConnectionTexts[sett.typeConnection]
             self.ui.mountTypeConnection.setText(text)
 
-        self.guiSetText(self.ui.slewRate, "2.0f", sett.slewRate)
-        self.guiSetText(self.ui.timeToFlip, "3.0f", sett.timeToFlip)
-        self.guiSetText(self.ui.timeToMeridian, "3.0f", sett.timeToMeridian())
-        self.guiSetText(self.ui.refractionTemp, "+4.1f", sett.refractionTemp)
-        self.guiSetText(self.ui.refractionTemp1, "+4.1f", sett.refractionTemp)
-        self.guiSetText(self.ui.refractionPress, "6.1f", sett.refractionPress)
-        self.guiSetText(self.ui.refractionPress1, "6.1f", sett.refractionPress)
-        self.guiSetText(self.ui.meridianLimitTrack, "3.0f", sett.meridianLimitTrack)
-        self.guiSetText(self.ui.meridianLimitSlew, "3.0f", sett.meridianLimitSlew)
-        self.guiSetText(self.ui.horizonLimitLow, "3.0f", sett.horizonLimitLow)
-        self.guiSetText(self.ui.horizonLimitHigh, "3.0f", sett.horizonLimitHigh)
-        self.guiSetText(self.ui.settleTimeMount, "3.0f", sett.settleTime)
+        self.mainW.guiSetText(self.ui.slewRate, "2.0f", sett.slewRate)
+        self.mainW.guiSetText(self.ui.timeToFlip, "3.0f", sett.timeToFlip)
+        self.mainW.guiSetText(self.ui.timeToMeridian, "3.0f", sett.timeToMeridian())
+        self.mainW.guiSetText(self.ui.refractionTemp, "+4.1f", sett.refractionTemp)
+        self.mainW.guiSetText(self.ui.refractionTemp1, "+4.1f", sett.refractionTemp)
+        self.mainW.guiSetText(self.ui.refractionPress, "6.1f", sett.refractionPress)
+        self.mainW.guiSetText(self.ui.refractionPress1, "6.1f", sett.refractionPress)
+        self.mainW.guiSetText(self.ui.meridianLimitTrack, "3.0f", sett.meridianLimitTrack)
+        self.mainW.guiSetText(self.ui.meridianLimitSlew, "3.0f", sett.meridianLimitSlew)
+        self.mainW.guiSetText(self.ui.horizonLimitLow, "3.0f", sett.horizonLimitLow)
+        self.mainW.guiSetText(self.ui.horizonLimitHigh, "3.0f", sett.horizonLimitHigh)
+        self.mainW.guiSetText(self.ui.settleTimeMount, "3.0f", sett.settleTime)
 
         # todo: this might be a little bit too slow
         if self.app.mount.obsSite.status is None:
-            self.changeStyleDynamic(self.ui.followSat, "running", False)
-            self.changeStyleDynamic(self.ui.setLunarTracking, "running", False)
-            self.changeStyleDynamic(self.ui.setSiderealTracking, "running", False)
-            self.changeStyleDynamic(self.ui.setSolarTracking, "running", False)
+            changeStyleDynamic(self.ui.followSat, "running", False)
+            changeStyleDynamic(self.ui.setLunarTracking, "running", False)
+            changeStyleDynamic(self.ui.setSiderealTracking, "running", False)
+            changeStyleDynamic(self.ui.setSolarTracking, "running", False)
 
         elif self.app.mount.obsSite.status == 10:
-            self.changeStyleDynamic(self.ui.followSat, "running", True)
-            self.changeStyleDynamic(self.ui.setLunarTracking, "running", False)
-            self.changeStyleDynamic(self.ui.setSiderealTracking, "running", False)
-            self.changeStyleDynamic(self.ui.setSolarTracking, "running", False)
+            changeStyleDynamic(self.ui.followSat, "running", True)
+            changeStyleDynamic(self.ui.setLunarTracking, "running", False)
+            changeStyleDynamic(self.ui.setSiderealTracking, "running", False)
+            changeStyleDynamic(self.ui.setSolarTracking, "running", False)
 
         elif sett.checkRateLunar():
-            self.changeStyleDynamic(self.ui.followSat, "running", False)
-            self.changeStyleDynamic(self.ui.setLunarTracking, "running", True)
-            self.changeStyleDynamic(self.ui.setSiderealTracking, "running", False)
-            self.changeStyleDynamic(self.ui.setSolarTracking, "running", False)
+            changeStyleDynamic(self.ui.followSat, "running", False)
+            changeStyleDynamic(self.ui.setLunarTracking, "running", True)
+            changeStyleDynamic(self.ui.setSiderealTracking, "running", False)
+            changeStyleDynamic(self.ui.setSolarTracking, "running", False)
 
         elif sett.checkRateSidereal():
-            self.changeStyleDynamic(self.ui.followSat, "running", False)
-            self.changeStyleDynamic(self.ui.setLunarTracking, "running", False)
-            self.changeStyleDynamic(self.ui.setSiderealTracking, "running", True)
-            self.changeStyleDynamic(self.ui.setSolarTracking, "running", False)
+            changeStyleDynamic(self.ui.followSat, "running", False)
+            changeStyleDynamic(self.ui.setLunarTracking, "running", False)
+            changeStyleDynamic(self.ui.setSiderealTracking, "running", True)
+            changeStyleDynamic(self.ui.setSolarTracking, "running", False)
 
         elif sett.checkRateSolar():
-            self.changeStyleDynamic(self.ui.followSat, "running", False)
-            self.changeStyleDynamic(self.ui.setLunarTracking, "running", False)
-            self.changeStyleDynamic(self.ui.setSiderealTracking, "running", False)
-            self.changeStyleDynamic(self.ui.setSolarTracking, "running", True)
+            changeStyleDynamic(self.ui.followSat, "running", False)
+            changeStyleDynamic(self.ui.setLunarTracking, "running", False)
+            changeStyleDynamic(self.ui.setSiderealTracking, "running", False)
+            changeStyleDynamic(self.ui.setSolarTracking, "running", True)
 
     def updateLocGUI(self, obs):
         """ """
@@ -539,13 +538,13 @@ class MountSett(MWidget):
         ui.setText(text)
 
         if not connectSync:
-            self.changeStyleDynamic(ui, "color", "")
+            changeStyleDynamic(ui, "color", "")
         elif abs(delta) < 100:
-            self.changeStyleDynamic(ui, "color", "")
+            changeStyleDynamic(ui, "color", "")
         elif abs(delta) < 500:
-            self.changeStyleDynamic(ui, "color", "yellow")
+            changeStyleDynamic(ui, "color", "yellow")
         else:
-            self.changeStyleDynamic(ui, "color", "red")
+            changeStyleDynamic(ui, "color", "red")
 
         timeJD = self.app.mount.obsSite.timeJD
         if timeJD is not None:

@@ -19,12 +19,10 @@ import unittest.mock as mock
 import pytest
 import platform
 
-
 # external packages
 
-
 # local import
-from gui.styles.stylesQtCss import Styles
+from gui.styles.styles import Styles
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -36,18 +34,6 @@ def module(qapp):
 def function(module):
     window = Styles()
     yield window
-
-
-def test_getStyle_1(function):
-    with mock.patch.object(platform, "system", return_value="Darwin"):
-        ret = function.mw4Style
-        assert ret.startswith("\n")
-
-
-def test_getStyle_2(function):
-    with mock.patch.object(platform, "system", return_value="Windows"):
-        ret = function.mw4Style
-        assert ret.startswith("\n")
 
 
 def test_property(function):
@@ -76,7 +62,23 @@ def test_property(function):
     a = function.M_GREEN2
     a = function.M_PINK
     a = function.M_PINK1
-    a = function.M_TABS
+    a = function.M_CYAN
+    a = function.M_CYAN1
+    a = function.M_TAB
+    a = function.M_TAB1
+    a = function.M_TAB2
+
+
+def test_mw4Style_1(function):
+    with mock.patch.object(platform, "system", return_value="Darwin"):
+        ret = function.mw4Style
+        assert ret.startswith("\n")
+
+
+def test_mw4Style_2(function):
+    with mock.patch.object(platform, "system", return_value="Windows"):
+        ret = function.mw4Style
+        assert ret.startswith("\n")
 
 
 def test_calcHexColor_1(function):
@@ -95,10 +97,55 @@ def test_calcHexColor_3(function):
 
 
 def test_findKeysInLine_1(function):
-    inStyle = "12345$M_PRIM$12345"
+    inStyle = "12345$M_PRIM$12345#GRAD_1#%ROUND%;"
     function.colorSet = 0
-    val = function.findKeysInLine(inStyle)
+    val = function.findKeysInLine(inStyle, "$")
     assert val[0] == "M_PRIM"
+
+
+def test_findKeysInLine_2(function):
+    inStyle = "12345$M_PRIM$12345#GRAD_1#%ROUND%;"
+    function.colorSet = 0
+    val = function.findKeysInLine(inStyle, "#")
+    assert val[0] == "GRAD_1"
+
+
+def test_findKeysInLine_3(function):
+    inStyle = "12345 $M_PRIM$12345#GRAD_1#%ROUND%;"
+    function.colorSet = 0
+    val = function.findKeysInLine(inStyle, "%")
+    assert val[0] == "ROUND"
+
+
+def test_replaceColor_1(function):
+    inStyle = "12345 $M_PRIM$;"
+    function.colorSet = 0
+    val = function.replaceColor(inStyle)
+    assert val == "12345 #2090C0;"
+
+
+def test_replaceForm_1(function):
+    inStyle = "12345 %ROUND%;"
+    function.colorSet = 0
+    val = function.replaceForm(inStyle)
+    assert val == "12345 2px;"
+
+
+def test_insertGradient_1(function):
+    inStyle = "12345 #GRAD_1,$M_PRIM$#;"
+    function.colorSet = 0
+    val = function.insertGradient(inStyle)
+    assert val == "12345 $M_PRIM$;"
+
+
+def test_insertGradient_2(function):
+    inStyle = "12345 #GRAD_1,$M_PRIM$#;"
+    function.colorSet = 1
+    val = function.insertGradient(inStyle)
+    assert (
+        val
+        == "12345 qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.15, stop:0 $M_TER$, stop:0.25 $M_TER2$, stop:1 $M_PRIM$);"
+    )
 
 
 def test_renderStyle_1(function):

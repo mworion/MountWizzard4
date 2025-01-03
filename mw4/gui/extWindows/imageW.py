@@ -15,7 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import os
 from pathlib import Path
 
 # external packages
@@ -33,6 +32,7 @@ from logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
 from gui.extWindows.image.imageTabs import ImageTabs
 from gui.extWindows.image.imageSignals import ImageWindowSignals
 from gui.mainWaddon.tabModel import Model
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
 class ImageWindow(MWidget, SlewInterface):
@@ -221,17 +221,17 @@ class ImageWindow(MWidget, SlewInterface):
             self.ui.exposeN.setEnabled(False)
 
         if self.imagingDeviceStat.get("expose", False):
-            self.changeStyleDynamic(self.ui.expose, "running", True)
+            changeStyleDynamic(self.ui.expose, "running", True)
         elif self.imagingDeviceStat.get("exposeN", False):
-            self.changeStyleDynamic(self.ui.exposeN, "running", True)
+            changeStyleDynamic(self.ui.exposeN, "running", True)
         else:
-            self.changeStyleDynamic(self.ui.expose, "running", False)
-            self.changeStyleDynamic(self.ui.exposeN, "running", False)
+            changeStyleDynamic(self.ui.expose, "running", False)
+            changeStyleDynamic(self.ui.exposeN, "running", False)
 
         if self.imagingDeviceStat.get("solve", False):
-            self.changeStyleDynamic(self.ui.solve, "running", True)
+            changeStyleDynamic(self.ui.solve, "running", True)
         else:
-            self.changeStyleDynamic(self.ui.solve, "running", False)
+            changeStyleDynamic(self.ui.solve, "running", False)
 
     def selectImage(self) -> None:
         """ """
@@ -274,7 +274,7 @@ class ImageWindow(MWidget, SlewInterface):
 
     def resultPhotometry(self) -> None:
         """ """
-        self.changeStyleDynamic(self.ui.photometryGroup, "running", False)
+        changeStyleDynamic(self.ui.photometryGroup, "running", False)
         if self.photometry.objs is None:
             self.msg.emit(2, "Image", "Photometry error", "Too low pixel stack")
         else:
@@ -287,7 +287,7 @@ class ImageWindow(MWidget, SlewInterface):
             self.clearGui()
             return
 
-        self.changeStyleDynamic(self.ui.photometryGroup, "running", True)
+        changeStyleDynamic(self.ui.photometryGroup, "running", True)
         self.ui.showValues.setEnabled(isPhotometry)
         self.ui.isoLayer.setEnabled(isPhotometry)
         snTarget = self.ui.snTarget.currentIndex()
@@ -298,7 +298,7 @@ class ImageWindow(MWidget, SlewInterface):
         if not imagePath.is_file():
             return
 
-        self.changeStyleDynamic(self.ui.headerGroup, "running", True)
+        changeStyleDynamic(self.ui.headerGroup, "running", True)
         self.setWindowTitle(f"Imaging:   {imagePath.name}")
         flipH = self.ui.flipH.isChecked()
         flipV = self.ui.flipV.isChecked()

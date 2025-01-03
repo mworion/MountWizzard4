@@ -22,11 +22,10 @@ import time
 from PySide6.QtGui import QTextCursor
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
 from mountcontrol.connection import Connection
 
 
-class MountCommand(MWidget):
+class MountCommand:
     """ """
 
     def __init__(self, mainW):

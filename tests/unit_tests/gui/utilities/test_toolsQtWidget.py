@@ -31,7 +31,8 @@ from skyfield.api import Angle, load
 import numpy as np
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
+from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents, changeStyleDynamic
+from gui.utilities.toolsQtWidget import findIndexValue, guiSetStyle
 from gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -45,51 +46,84 @@ def function(qapp):
     yield window
 
 
-def test_findIndexValue_0(function):
+def test_sleepAndEvents(function):
+    suc = sleepAndEvents(1)
+    assert suc
+
+
+def test_changeStyleDynamic_1():
+    changeStyleDynamic()
+
+
+def test_findIndexValue_0():
     ui = QComboBox()
     ui.addItem("")
-    val = function.findIndexValue(ui=ui, searchString="dome")
+    val = findIndexValue(ui=ui, searchString="dome")
     assert val == 0
 
 
-def test_findIndexValue_1(function):
+def test_findIndexValue_1():
     ui = QComboBox()
     ui.addItem("dome")
     ui.addItem("test")
-    val = function.findIndexValue(ui=ui, searchString="dome")
+    val = findIndexValue(ui=ui, searchString="dome")
     assert val == 0
 
 
-def test_findIndexValue_2(function):
+def test_findIndexValue_2():
     ui = QComboBox()
     ui.addItem("dome")
     ui.addItem("indi")
-    val = function.findIndexValue(ui=ui, searchString="indi")
+    val = findIndexValue(ui=ui, searchString="indi")
     assert val == 1
 
 
-def test_findIndexValue_3(function):
+def test_findIndexValue_3():
     ui = QComboBox()
     ui.addItem("dome")
     ui.addItem("test")
     ui.addItem("indi - test")
-    val = function.findIndexValue(ui=ui, searchString="indi")
+    val = findIndexValue(ui=ui, searchString="indi")
     assert val == 2
 
 
-def test_findIndexValue_4(function):
+def test_findIndexValue_4():
     ui = QComboBox()
     ui.addItem("dome")
     ui.addItem("test")
     ui.addItem("indi - test")
-    val = function.findIndexValue(ui=ui, searchString="indi", relaxed=True)
+    val = findIndexValue(ui=ui, searchString="indi", relaxed=True)
     assert val == 2
 
 
-def test_findIndexValue_5(function):
+def test_findIndexValue_5():
     ui = QComboBox()
-    val = function.findIndexValue(ui=ui, searchString="indi")
+    val = findIndexValue(ui=ui, searchString="indi")
     assert val == 0
+
+
+def test_guiSetStyle_1():
+    pb = QPushButton()
+    suc = guiSetStyle(pb)
+    assert not suc
+
+
+def test_guiSetStyle_2():
+    pb = QPushButton()
+    suc = guiSetStyle(pb, pStyle="color", value=None)
+    assert suc
+
+
+def test_guiSetStyle_3():
+    pb = QPushButton()
+    suc = guiSetStyle(pb, pStyle="color", value=True)
+    assert suc
+
+
+def test_guiSetStyle_4():
+    pb = QPushButton()
+    suc = guiSetStyle(pb, pStyle="color", value=False)
+    assert suc
 
 
 def test_saveWindowAsPNG(function):
@@ -194,51 +228,6 @@ def test_renderStyle_2(function):
 
 def test_initUI_1(function):
     suc = function.initUI()
-    assert suc
-
-
-def test_changeStyleDynamic_1(function):
-    suc = function.changeStyleDynamic()
-    assert not suc
-
-
-def test_changeStyleDynamic_2(function):
-    ui = QPushButton()
-    suc = function.changeStyleDynamic(ui)
-    assert not suc
-
-
-def test_changeStyleDynamic_3(function):
-    ui = QPushButton()
-    suc = function.changeStyleDynamic(ui, "color")
-    assert not suc
-
-
-def test_changeStyleDynamic_4(function):
-    ui = QPushButton()
-    suc = function.changeStyleDynamic(ui, "color", "")
-    assert suc
-
-
-def test_changeStyleDynamic_5(function):
-    ui = QPushButton()
-    ui.setProperty("color", "red")
-    suc = function.changeStyleDynamic(ui, "color", "red")
-    assert suc
-
-
-def test_changeStyleDynamic_6(function):
-    ui = QPushButton()
-    suc = function.changeStyleDynamic(ui, "running", True)
-    assert suc
-    suc = function.changeStyleDynamic(ui, "running", False)
-    assert suc
-
-
-def test_changeStyleDynamic_7(function):
-    ui = QPushButton()
-    suc = function.changeStyleDynamic(ui, "running", True)
-    suc = function.changeStyleDynamic(ui, "running", False)
     assert suc
 
 
@@ -537,35 +526,6 @@ def test_guiSetText_12(function):
     suc = function.guiSetText(pb, "s", False)
     assert suc
     assert pb.text() == "OFF"
-
-
-def test_guiSetStyle_1(function):
-    pb = QPushButton()
-    suc = function.guiSetStyle(pb)
-    assert not suc
-
-
-def test_guiSetStyle_2(function):
-    pb = QPushButton()
-    suc = function.guiSetStyle(pb, pStyle="color", value=None)
-    assert suc
-
-
-def test_guiSetStyle_3(function):
-    pb = QPushButton()
-    suc = function.guiSetStyle(pb, pStyle="color", value=True)
-    assert suc
-
-
-def test_guiSetStyle_4(function):
-    pb = QPushButton()
-    suc = function.guiSetStyle(pb, pStyle="color", value=False)
-    assert suc
-
-
-def test_sleepAndEvents(function):
-    suc = sleepAndEvents(1)
-    assert suc
 
 
 def test_convertTime_1(function):

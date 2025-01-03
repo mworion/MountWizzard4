@@ -28,10 +28,10 @@ from range_key_dict import RangeKeyDict
 
 # local import
 from base.tpool import Worker
-from gui.utilities.toolsQtWidget import MWidget
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class Almanac(MWidget):
+class Almanac:
     """ """
 
     phasesText = RangeKeyDict(
@@ -80,16 +80,16 @@ class Almanac(MWidget):
 
     def setColors(self):
         """ """
-        self.ui.almanacCivil.setStyleSheet(f"background-color: {self.M_PRIM1};")
-        self.ui.almanacNautical.setStyleSheet(f"background-color: {self.M_PRIM2};")
-        self.ui.almanacAstronomical.setStyleSheet(f"background-color: {self.M_PRIM3};")
-        self.ui.almanacDark.setStyleSheet(f"background-color: {self.M_PRIM4};")
+        self.ui.almanacCivil.setStyleSheet(f"background-color: {self.mainW.M_PRIM1};")
+        self.ui.almanacNautical.setStyleSheet(f"background-color: {self.mainW.M_PRIM2};")
+        self.ui.almanacAstronomical.setStyleSheet(f"background-color: {self.mainW.M_PRIM3};")
+        self.ui.almanacDark.setStyleSheet(f"background-color: {self.mainW.M_PRIM4};")
         self.colors = [
-            self.M_PRIM4,
-            self.M_PRIM3,
-            self.M_PRIM2,
-            self.M_PRIM1,
-            self.M_BACK,
+            self.mainW.M_PRIM4,
+            self.mainW.M_PRIM3,
+            self.mainW.M_PRIM2,
+            self.mainW.M_PRIM1,
+            self.mainW.M_BACK,
         ]
 
     def updateColorSet(self):
@@ -128,7 +128,7 @@ class Almanac(MWidget):
         xLabels[0] = ""
         xTicks = [(x, y) for x, y in zip(xTicks, xLabels)]
         yTicks = [(x, y) for x, y in zip(yTicks, yLabels)]
-        penLine = pg.mkPen(color=self.M_PINK + "80", width=2)
+        penLine = pg.mkPen(color=self.mainW.M_PINK + "80", width=2)
         plotItem = self.ui.twilight.p[0]
         plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
         plotItem.getViewBox().xRange = (0, 360)
@@ -167,20 +167,20 @@ class Almanac(MWidget):
             plotItem.addItem(rect)
         plotItem.addLine(x=xNow, pen=penLine)
 
-        self.changeStyleDynamic(self.ui.almanacGroup, "running", False)
+        changeStyleDynamic(self.ui.almanacGroup, "running", False)
 
     def listTwilightData(self, timeEvents, events):
         """ """
         text = ""
         self.ui.twilightEvents.clear()
-        self.ui.twilightEvents.setTextColor(QColor(self.M_PRIM))
+        self.ui.twilightEvents.setTextColor(QColor(self.mainW.M_PRIM))
 
         for timeEvent, event in zip(timeEvents, events):
-            text += f'{self.convertTime(timeEvent, "%H:%M:%S")} '
+            text += f'{self.mainW.convertTime(timeEvent, "%H:%M:%S")} '
             text += f"{almanac.TWILIGHTS[event]}"
             self.ui.twilightEvents.insertPlainText(text)
             text = "\n"
-        title = "Sun " + self.timeZoneString()
+        title = "Sun " + self.mainW.timeZoneString()
         self.ui.sunAlmanacGroup.setTitle(title)
 
     def calcTwilightData(self, ts, location, tWinL=0, tWinH=0):
@@ -209,11 +209,11 @@ class Almanac(MWidget):
         text = self.ui.almanacPrediction.currentText()
         timeWindow = timeWindowParam[index]
 
-        t = f"Twilight passes for: {text} {self.timeZoneString()}"
+        t = f"Twilight passes for: {text} {self.mainW.timeZoneString()}"
         self.ui.almanacGroup.setTitle(t)
 
         ts = self.app.mount.obsSite.ts
-        self.changeStyleDynamic(self.ui.almanacGroup, "running", True)
+        changeStyleDynamic(self.ui.almanacGroup, "running", True)
         worker = Worker(self.workerCalcTwilightDataPlot, ts, location, timeWindow)
         worker.signals.result.connect(self.plotTwilightData)
         self.app.threadPool.start(worker)
@@ -283,9 +283,9 @@ class Almanac(MWidget):
 
     def generateMoonMask(self, pixmap, mpDegree):
         """ """
-        colCover = QColor(self.M_BACK)
+        colCover = QColor(self.mainW.M_BACK)
         colFree = QColor("transparent")
-        colFrame = QColor(self.M_SEC1)
+        colFrame = QColor(self.mainW.M_SEC1)
 
         penCov = QPen(colCover, 0)
         penFree = QPen(colFree, 0)
@@ -357,14 +357,14 @@ class Almanac(MWidget):
         moonTimes, moonEvents = calcMoon[4:6]
         text = ""
         self.ui.riseSetEventsMoon.clear()
-        self.ui.riseSetEventsMoon.setTextColor(QColor(self.M_PRIM))
+        self.ui.riseSetEventsMoon.setTextColor(QColor(self.mainW.M_PRIM))
         moon = ["set", "rise"]
         for moonTime, moonEvent in zip(moonTimes, moonEvents):
-            textTime = self.convertTime(moonTime, "%d.%m. %H:%M")
+            textTime = self.mainW.convertTime(moonTime, "%d.%m. %H:%M")
             text += f"{textTime} {moon[moonEvent]}"
             self.ui.riseSetEventsMoon.insertPlainText(text)
             text = "\n"
-        title = "Moon " + self.timeZoneString()
+        title = "Moon " + self.mainW.timeZoneString()
         self.ui.moonAlmanacGroup.setTitle(title)
 
         self.ui.moonPhaseText.setText(self.phasesText[mpPercent])
@@ -372,10 +372,10 @@ class Almanac(MWidget):
         nodeTimes, nodeEvents = calcMoon[6:8]
         text = ""
         self.ui.nodeEvents.clear()
-        self.ui.nodeEvents.setTextColor(QColor(self.M_PRIM))
+        self.ui.nodeEvents.setTextColor(QColor(self.mainW.M_PRIM))
         node = ["ascending", "descending"]
         for nodeTime, nodeEvent in zip(nodeTimes, nodeEvents):
-            textTime = self.convertTime(nodeTime, "%d.%m. %H:%M")
+            textTime = self.mainW.convertTime(nodeTime, "%d.%m. %H:%M")
             text += f"{textTime} {node[nodeEvent]}"
             self.ui.nodeEvents.insertPlainText(text)
             text = "\n"

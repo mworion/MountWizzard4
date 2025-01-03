@@ -21,6 +21,7 @@
 # local import
 from gui.utilities import toolsQtWidget
 from gui.widgets.bigPopup_ui import Ui_BigPopup
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
 class BigPopup(toolsQtWidget.MWidget):
@@ -99,8 +100,8 @@ class BigPopup(toolsQtWidget.MWidget):
         :return:
         """
         isMount = self.app.deviceStat.get("mount", False)
-        self.changeStyleDynamic(self.ui.mountOn, "running", isMount)
-        self.changeStyleDynamic(self.ui.mountOff, "running", not isMount)
+        changeStyleDynamic(self.ui.mountOn, "running", isMount)
+        changeStyleDynamic(self.ui.mountOff, "running", not isMount)
         return True
 
     def updateStatus(self):
@@ -108,7 +109,7 @@ class BigPopup(toolsQtWidget.MWidget):
         :return:
         """
         if self.app.mount.obsSite.status == 1:
-            self.changeStyleDynamic(self.ui.stop, "running", True)
+            changeStyleDynamic(self.ui.stop, "running", True)
         else:
-            self.changeStyleDynamic(self.ui.stop, "running", False)
+            changeStyleDynamic(self.ui.stop, "running", False)
         return True

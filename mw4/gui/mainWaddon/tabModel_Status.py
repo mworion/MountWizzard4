@@ -19,10 +19,9 @@
 # external packages
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
 
 
-class ModelStatus(MWidget):
+class ModelStatus:
     """ """
 
     def __init__(self, mainW):
@@ -38,28 +37,28 @@ class ModelStatus(MWidget):
 
     def setupIcons(self) -> None:
         """ """
-        pixmap = self.img2pixmap(":/pics/azimuth.png").scaled(140, 140)
+        pixmap = self.mainW.img2pixmap(":/pics/azimuth.png").scaled(140, 140)
         self.ui.picAZ.setPixmap(pixmap)
-        pixmap = self.img2pixmap(":/pics/altitude.png").scaled(140, 140)
+        pixmap = self.mainW.img2pixmap(":/pics/altitude.png").scaled(140, 140)
         self.ui.picALT.setPixmap(pixmap)
 
     def updateAlignGUI(self, model):
         """ """
-        self.guiSetText(self.ui.numberStars, "2.0f", model.numberStars)
-        self.guiSetText(self.ui.numberStars1, "2.0f", model.numberStars)
-        self.guiSetText(self.ui.errorRMS, "5.1f", model.errorRMS)
-        self.guiSetText(self.ui.errorRMS1, "5.1f", model.errorRMS)
-        self.guiSetText(self.ui.terms, "2.0f", model.terms)
+        self.mainW.guiSetText(self.ui.numberStars, "2.0f", model.numberStars)
+        self.mainW.guiSetText(self.ui.numberStars1, "2.0f", model.numberStars)
+        self.mainW.guiSetText(self.ui.errorRMS, "5.1f", model.errorRMS)
+        self.mainW.guiSetText(self.ui.errorRMS1, "5.1f", model.errorRMS)
+        self.mainW.guiSetText(self.ui.terms, "2.0f", model.terms)
         val = None if model.positionAngle is None else model.positionAngle.degrees
-        self.guiSetText(self.ui.positionAngle, "5.1f", val)
+        self.mainW.guiSetText(self.ui.positionAngle, "5.1f", val)
         val = None if model.polarError is None else model.polarError.degrees * 3600
-        self.guiSetText(self.ui.polarError, "5.0f", val)
+        self.mainW.guiSetText(self.ui.polarError, "5.0f", val)
         val = None if model.orthoError is None else model.orthoError.degrees * 3600
-        self.guiSetText(self.ui.orthoError, "5.0f", val)
+        self.mainW.guiSetText(self.ui.orthoError, "5.0f", val)
         val = None if model.azimuthError is None else model.azimuthError.degrees
-        self.guiSetText(self.ui.azimuthError, "5.1f", val)
+        self.mainW.guiSetText(self.ui.azimuthError, "5.1f", val)
         val = None if model.altitudeError is None else model.altitudeError.degrees
-        self.guiSetText(self.ui.altitudeError, "5.1f", val)
+        self.mainW.guiSetText(self.ui.altitudeError, "5.1f", val)
 
     def updateTurnKnobsGUI(self, model):
         """ """

@@ -23,12 +23,12 @@ from astropy.io import fits
 from PySide6.QtGui import QFont
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
 from logic.fits.fitsFunction import getExposureFromHeader, getScaleFromHeader
 from logic.fits.fitsFunction import getCoordinatesFromHeader, getSQMFromHeader
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class ImageTabs(MWidget):
+class ImageTabs:
     """ """
 
     TILT = {
@@ -42,16 +42,17 @@ class ImageTabs(MWidget):
 
     def __init__(self, parent):
         super().__init__()
+        self.parent = parent
         self.ui = parent.ui
         self.msg = parent.msg
         self.fileHandler = parent.fileHandler
         self.photometry = parent.photometry
         self.threadPool = parent.threadPool
         self.imagingDeviceStat = parent.imagingDeviceStat
-        self.pen = pg.mkPen(color=self.M_TAB0, width=2)
-        self.penPink = pg.mkPen(color=self.M_PINK + "80", width=5)
-        self.fontText = QFont(self.window().font().family(), 16)
-        self.fontAnno = QFont(self.window().font().family(), 10, italic=True)
+        self.pen = pg.mkPen(color=self.parent.M_PRIM, width=2)
+        self.penPink = pg.mkPen(color=self.parent.M_PINK + "80", width=5)
+        self.fontText = QFont(self.parent.window().font().family(), 16)
+        self.fontAnno = QFont(self.parent.window().font().family(), 10, italic=True)
         self.fontText.setBold(True)
         self.imageSourceRange = None
         self.fileHandler.signals.imageLoaded.connect(self.showImage)
@@ -81,7 +82,7 @@ class ImageTabs(MWidget):
         self.ui.tiltTriangle.colorChange()
         self.ui.roundness.colorChange()
         self.ui.aberration.colorChange()
-        self.pen = pg.mkPen(color=self.M_TAB0)
+        self.pen = pg.mkPen(color=self.parent.M_PRIM)
 
     def getImageSourceRange(self) -> None:
         """ """
@@ -108,20 +109,20 @@ class ImageTabs(MWidget):
 
     def writeHeaderDataToGUI(self, header: fits.Header) -> None:
         """ """
-        self.guiSetText(self.ui.object, "s", header.get("OBJECT", "").upper())
+        self.parent.guiSetText(self.ui.object, "s", header.get("OBJECT", "").upper())
         ra, dec = getCoordinatesFromHeader(header=header)
-        self.guiSetText(self.ui.ra, "HSTR", ra)
-        self.guiSetText(self.ui.raFloat, "2.5f", ra.hours)
-        self.guiSetText(self.ui.dec, "DSTR", dec)
-        self.guiSetText(self.ui.decFloat, "2.5f", dec.degrees)
-        self.guiSetText(self.ui.scale, "5.3f", getScaleFromHeader(header=header))
-        self.guiSetText(self.ui.rotation, "6.2f", header.get("ANGLE"))
-        self.guiSetText(self.ui.ccdTemp, "4.1f", header.get("CCD-TEMP"))
-        self.guiSetText(self.ui.exposureTime, "5.1f", getExposureFromHeader(header=header))
-        self.guiSetText(self.ui.filter, "s", header.get("FILTER"))
-        self.guiSetText(self.ui.binX, "1.0f", header.get("XBINNING"))
-        self.guiSetText(self.ui.binY, "1.0f", header.get("YBINNING"))
-        self.guiSetText(self.ui.sqm, "5.2f", getSQMFromHeader(header=header))
+        self.parent.guiSetText(self.ui.ra, "HSTR", ra)
+        self.parent.guiSetText(self.ui.raFloat, "2.5f", ra.hours)
+        self.parent.guiSetText(self.ui.dec, "DSTR", dec)
+        self.parent.guiSetText(self.ui.decFloat, "2.5f", dec.degrees)
+        self.parent.guiSetText(self.ui.scale, "5.3f", getScaleFromHeader(header=header))
+        self.parent.guiSetText(self.ui.rotation, "6.2f", header.get("ANGLE"))
+        self.parent.guiSetText(self.ui.ccdTemp, "4.1f", header.get("CCD-TEMP"))
+        self.parent.guiSetText(self.ui.exposureTime, "5.1f", getExposureFromHeader(header=header))
+        self.parent.guiSetText(self.ui.filter, "s", header.get("FILTER"))
+        self.parent.guiSetText(self.ui.binX, "1.0f", header.get("XBINNING"))
+        self.parent.guiSetText(self.ui.binY, "1.0f", header.get("YBINNING"))
+        self.parent.guiSetText(self.ui.sqm, "5.2f", getSQMFromHeader(header=header))
 
     @staticmethod
     def clearImageTab(imageWidget) -> None:
@@ -133,9 +134,9 @@ class ImageTabs(MWidget):
 
     def showImage(self) -> None:
         """ """
-        self.changeStyleDynamic(self.ui.headerGroup, "running", False)
+        changeStyleDynamic(self.ui.headerGroup, "running", False)
         tab = self.ui.tabImage
-        tabIndex = self.getTabIndex(tab, "Image")
+        tabIndex = self.parent.getTabIndex(tab, "Image")
         tab.setTabEnabled(tabIndex, True)
 
         if self.fileHandler.image is None:
@@ -161,7 +162,7 @@ class ImageTabs(MWidget):
         if self.ui.isoLayer.isChecked():
             self.ui.hfr.addIsoBasic(self.ui.hfr.p[0], self.photometry.hfrGrid, levels=20)
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, "HFR"), True)
+        tab.setTabEnabled(self.parent.getTabIndex(tab, "HFR"), True)
 
     def showTiltSquare(self):
         """ """
@@ -191,7 +192,7 @@ class ImageTabs(MWidget):
         for ix in range(3):
             for iy in range(3):
                 text = f"{segHFR[ix][iy]:1.2f}"
-                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_TABS)
+                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_TABS)
                 textItem.setText(text)
                 textItem.setFont(self.fontText)
                 posX = ix * w / 3 + w / 6
@@ -275,7 +276,7 @@ class ImageTabs(MWidget):
         self.ui.squareMedianHFR.setText(f"{self.photometry.hfrMedian:1.2f}")
         self.ui.squareNumberStars.setText(f"{len(self.photometry.hfr):1.0f}")
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, "TiltSquare"), True)
+        tab.setTabEnabled(self.parent.getTabIndex(tab, "TiltSquare"), True)
         return True
 
     def showTiltTriangle(self):
@@ -304,7 +305,7 @@ class ImageTabs(MWidget):
 
         # add inner value
         text = f"{self.photometry.hfrInner:1.2f}"
-        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_TABS)
+        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_TABS)
         textItem.setText(text)
         textItem.setFont(self.fontText)
         textItem.setZValue(10)
@@ -332,7 +333,7 @@ class ImageTabs(MWidget):
             endIndexSeg = int((angle + offsetTiltAngle + 330) / 10)
             segData[i] = np.mean(segHFR[startIndexSeg:endIndexSeg])
             text = f"{segData[i]:1.2f}"
-            textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_PRIM)
+            textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_PRIM)
             textItem.setFont(self.fontText)
             textItem.setZValue(10)
             textItem.setText(text)
@@ -379,7 +380,7 @@ class ImageTabs(MWidget):
         self.ui.triangleMedianHFR.setText(f"{self.photometry.hfrMedian:1.2f}")
         self.ui.triangleNumberStars.setText(f"{len(self.photometry.hfr):1.0f}")
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, "TiltTriangle"), True)
+        tab.setTabEnabled(self.parent.getTabIndex(tab, "TiltTriangle"), True)
 
     def showRoundness(self):
         """ """
@@ -395,7 +396,7 @@ class ImageTabs(MWidget):
                 self.ui.roundness.p[0], self.photometry.roundnessGrid, levels=20
             )
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, "Roundness"), True)
+        tab.setTabEnabled(self.parent.getTabIndex(tab, "Roundness"), True)
 
     def showAberrationInspect(self):
         """ """
@@ -419,7 +420,7 @@ class ImageTabs(MWidget):
             self.ui.aberration.p[0].addItem(lineItem)
 
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, "Aberration"), True)
+        tab.setTabEnabled(self.parent.getTabIndex(tab, "Aberration"), True)
         self.ui.aberration.p[0].getViewBox().rightMouseRange()
 
     def showImageSources(self):
@@ -441,11 +442,11 @@ class ImageTabs(MWidget):
             )
             if self.ui.showValues.isChecked():
                 t = f"{self.photometry.hfr[i]:2.1f}"
-                item = pg.TextItem(text=t, color=self.M_PRIM, anchor=(1, 1))
+                item = pg.TextItem(text=t, color=self.parent.M_PRIM, anchor=(1, 1))
                 item.setFont(self.fontAnno)
                 item.setParentItem(eItem)
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, "Sources"), True)
+        tab.setTabEnabled(self.parent.getTabIndex(tab, "Sources"), True)
 
     def showBackground(self):
         """ """
@@ -454,10 +455,10 @@ class ImageTabs(MWidget):
             (self.photometry.backgroundMin, self.photometry.backgroundMax)
         )
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, "Back"), True)
+        tab.setTabEnabled(self.parent.getTabIndex(tab, "Back"), True)
 
     def showBackgroundRMS(self):
         """ """
         self.ui.backgroundRMS.setImage(imageDisp=self.photometry.backgroundRMS)
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.getTabIndex(tab, "BackRMS"), True)
+        tab.setTabEnabled(self.parent.getTabIndex(tab, "BackRMS"), True)

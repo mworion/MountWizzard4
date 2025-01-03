@@ -21,10 +21,10 @@ from PySide6.QtWidgets import QInputDialog
 from mountcontrol.convert import valueToInt
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class Power(MWidget):
+class Power:
     """ """
 
     def __init__(self, mainW):
@@ -80,11 +80,11 @@ class Power(MWidget):
         self.ui.hubUSB.clicked.connect(self.toggleHubUSB)
         self.ui.autoDew.clicked.connect(self.toggleAutoDew)
         self.ui.rebootUPB.clicked.connect(self.rebootUPB)
-        self.clickable(self.ui.adjustableOutput).connect(self.setAdjustableOutput)
+        self.mainW.clickable(self.ui.adjustableOutput).connect(self.setAdjustableOutput)
 
         # setting gui elements
         for name, button in self.dew.items():
-            self.clickable(button).connect(self.setDew)
+            self.mainW.clickable(button).connect(self.setDew)
         for name, button in self.powerOnOFF.items():
             button.clicked.connect(self.togglePowerPort)
         for name, button in self.powerBoot.items():
@@ -125,7 +125,7 @@ class Power(MWidget):
         """
         for name, button in self.powerOnOFF.items():
             value = self.app.power.data.get(f"POWER_CONTROL.POWER_CONTROL_{name}", False)
-            self.changeStyleDynamic(button, "running", value)
+            changeStyleDynamic(button, "running", value)
 
         for name, button in self.powerBoot.items():
             value = self.app.power.data.get(f"POWER_ON_BOOT.POWER_PORT_{name}", False)
@@ -133,11 +133,11 @@ class Power(MWidget):
 
         for name, button in self.current.items():
             value = self.app.power.data.get(f"POWER_CURRENT.POWER_CURRENT_{name}")
-            self.guiSetText(button, "4.2f", value)
+            self.mainW.guiSetText(button, "4.2f", value)
 
         for name, button in self.dew.items():
             value = self.app.power.data.get(f"DEW_PWM.DEW_{name}")
-            self.guiSetText(button, "3.0f", value)
+            self.mainW.guiSetText(button, "3.0f", value)
 
         for name, button in self.dewLabel.items():
             value = self.app.power.data.get(f"DEW_CONTROL_LABEL.DEW_LABEL_{name}", "")
@@ -150,44 +150,44 @@ class Power(MWidget):
             button.setText(value)
 
         value = self.app.power.data.get("POWER_CONSUMPTION.CONSUMPTION_AVG_AMPS")
-        self.guiSetText(self.ui.consumptionAvgAmps, "4.2f", value)
+        self.mainW.guiSetText(self.ui.consumptionAvgAmps, "4.2f", value)
         value = self.app.power.data.get("POWER_CONSUMPTION.CONSUMPTION_AMP_HOURS")
-        self.guiSetText(self.ui.consumptionAmpHours, "4.2f", value)
+        self.mainW.guiSetText(self.ui.consumptionAmpHours, "4.2f", value)
         value = self.app.power.data.get("POWER_CONSUMPTION.CONSUMPTION_WATT_HOURS")
-        self.guiSetText(self.ui.consumptionWattHours, "4.2f", value)
+        self.mainW.guiSetText(self.ui.consumptionWattHours, "4.2f", value)
 
         value = self.app.power.data.get("POWER_SENSORS.SENSOR_VOLTAGE")
-        self.guiSetText(self.ui.sensorVoltage, "4.1f", value)
+        self.mainW.guiSetText(self.ui.sensorVoltage, "4.1f", value)
         value = self.app.power.data.get("POWER_SENSORS.SENSOR_CURRENT")
-        self.guiSetText(self.ui.sensorCurrent, "4.2f", value)
+        self.mainW.guiSetText(self.ui.sensorCurrent, "4.2f", value)
         value = self.app.power.data.get("POWER_SENSORS.SENSOR_POWER")
-        self.guiSetText(self.ui.sensorPower, "4.2f", value)
+        self.mainW.guiSetText(self.ui.sensorPower, "4.2f", value)
 
         value = self.app.power.data.get("DEW_CURRENT.DEW_CURRENT_A")
-        self.guiSetText(self.ui.dewCurrentA, "4.2f", value)
+        self.mainW.guiSetText(self.ui.dewCurrentA, "4.2f", value)
         value = self.app.power.data.get("DEW_CURRENT.DEW_CURRENT_B")
-        self.guiSetText(self.ui.dewCurrentB, "4.2f", value)
+        self.mainW.guiSetText(self.ui.dewCurrentB, "4.2f", value)
         value = self.app.power.data.get("DEW_CURRENT.DEW_CURRENT_C")
-        self.guiSetText(self.ui.dewCurrentC, "4.2f", value)
+        self.mainW.guiSetText(self.ui.dewCurrentC, "4.2f", value)
 
         value1 = self.app.power.data.get("AUTO_DEW.INDI_ENABLED", False)
         value2 = self.app.power.data.get("AUTO_DEW.DEW_A", False)
         value3 = self.app.power.data.get("AUTO_DEW.DEW_B", False)
         value4 = self.app.power.data.get("AUTO_DEW.DEW_C", False)
         value = value1 or value2 or value3 or value4
-        self.changeStyleDynamic(self.ui.autoDew, "running", value)
+        changeStyleDynamic(self.ui.autoDew, "running", value)
 
         if self.app.power.data.get("FIRMWARE_INFO.VERSION", "1.4") > "1.4":
             value = self.app.power.data.get("ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE")
-            self.guiSetText(self.ui.adjustableOutput, "4.1f", value)
+            self.mainW.guiSetText(self.ui.adjustableOutput, "4.1f", value)
 
             for name, button in self.portUSB.items():
                 value = self.app.power.data.get(f"USB_PORT_CONTROL.PORT_{name}", False)
-                self.changeStyleDynamic(button, "running", value)
+                changeStyleDynamic(button, "running", value)
 
         else:
             value = self.app.power.data.get("USB_HUB_CONTROL.INDI_ENABLED", False)
-            self.changeStyleDynamic(self.ui.hubUSB, "running", value)
+            changeStyleDynamic(self.ui.hubUSB, "running", value)
 
         return True
 

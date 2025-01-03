@@ -72,7 +72,6 @@ class KeypadWindow(toolsQtWidget.MWidget):
         if "keypadW" not in self.app.config:
             self.app.config["keypadW"] = {}
         config = self.app.config["keypadW"]
-
         self.positionWindow(config)
 
     def storeConfig(self):
@@ -134,6 +133,8 @@ class KeypadWindow(toolsQtWidget.MWidget):
     def colorChange(self):
         """ """
         self.setStyleSheet(self.mw4Style)
+        for row in self.rows:
+            row.setStyleSheet(f"background-color: {self.M_BACK};")
         self.clearGraphics()
 
     def setupButtons(self):

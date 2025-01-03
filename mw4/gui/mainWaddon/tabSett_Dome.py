@@ -19,10 +19,9 @@
 # external packages
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
 
 
-class SettDome(MWidget):
+class SettDome:
     """ """
 
     def __init__(self, mainW):
@@ -143,40 +142,40 @@ class SettDome(MWidget):
         """
         :return:
         """
-        pixmap = self.img2pixmap(":/dome/radius.png")
+        pixmap = self.mainW.img2pixmap(":/dome/radius.png")
         self.ui.picDome1.setPixmap(pixmap)
 
         is10Micron = self.ui.use10micronDef.isChecked()
         if is10Micron:
-            pixmap = self.img2pixmap(":/dome/north.png")
+            pixmap = self.mainW.img2pixmap(":/dome/north.png")
             self.ui.picDome2.setPixmap(pixmap)
-            pixmap = self.img2pixmap(":/dome/east.png")
+            pixmap = self.mainW.img2pixmap(":/dome/east.png")
             self.ui.picDome3.setPixmap(pixmap)
-            pixmap = self.img2pixmap(":/dome/vert.png")
+            pixmap = self.mainW.img2pixmap(":/dome/vert.png")
             self.ui.picDome4.setPixmap(pixmap)
         else:
-            pixmap = self.img2pixmap(":/dome/northGEM.png")
+            pixmap = self.mainW.img2pixmap(":/dome/northGEM.png")
             self.ui.picDome2.setPixmap(pixmap)
-            pixmap = self.img2pixmap(":/dome/eastGEM.png")
+            pixmap = self.mainW.img2pixmap(":/dome/eastGEM.png")
             self.ui.picDome3.setPixmap(pixmap)
-            pixmap = self.img2pixmap(":/dome/vertGEM.png")
+            pixmap = self.mainW.img2pixmap(":/dome/vertGEM.png")
             self.ui.picDome4.setPixmap(pixmap)
 
-        pixmap = self.img2pixmap(":/dome/gem.png")
+        pixmap = self.mainW.img2pixmap(":/dome/gem.png")
         self.ui.picDome5.setPixmap(pixmap)
-        pixmap = self.img2pixmap(":/dome/lat.png")
+        pixmap = self.mainW.img2pixmap(":/dome/lat.png")
         self.ui.picDome6.setPixmap(pixmap)
-        pixmap = self.img2pixmap(":/dome/shutter.png")
+        pixmap = self.mainW.img2pixmap(":/dome/shutter.png")
         self.ui.picDome7.setPixmap(pixmap)
-        pixmap = self.img2pixmap(":/dome/hysteresis.png")
+        pixmap = self.mainW.img2pixmap(":/dome/hysteresis.png")
         self.ui.picDome8.setPixmap(pixmap)
-        pixmap = self.img2pixmap(":/dome/zenith.png")
+        pixmap = self.mainW.img2pixmap(":/dome/zenith.png")
         self.ui.picDome9.setPixmap(pixmap)
 
-        self.wIcon(self.ui.copyFromDomeDriver, "copy")
-        self.wIcon(self.ui.domeCloseShutter, "exit-down")
-        self.wIcon(self.ui.domeOpenShutter, "exit-up")
-        self.wIcon(self.ui.domeAbortSlew, "bolt-alt")
+        self.mainW.wIcon(self.ui.copyFromDomeDriver, "copy")
+        self.mainW.wIcon(self.ui.domeCloseShutter, "exit-down")
+        self.mainW.wIcon(self.ui.domeOpenShutter, "exit-up")
+        self.mainW.wIcon(self.ui.domeAbortSlew, "bolt-alt")
         return True
 
     def updateDomeGeometryToGui(self):

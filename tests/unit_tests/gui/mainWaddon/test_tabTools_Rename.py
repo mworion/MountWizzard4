@@ -23,7 +23,6 @@ import shutil
 # external packages
 from astropy.io import fits
 import numpy as np
-from PySide6.QtWidgets import QWidget
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
@@ -34,7 +33,7 @@ from gui.mainWaddon.tabTools_Rename import Rename
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)

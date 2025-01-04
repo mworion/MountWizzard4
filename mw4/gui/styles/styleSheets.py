@@ -447,6 +447,10 @@ BASIC_STYLE = """
     QComboBox:disabled {
         color: $M_SEC$;
     }
+    QComboBox[active=true] {
+        border-color: $M_GREEN$;
+        background-color: $M_GREEN2$;
+    }
     QComboBox::drop-down {
         subcontrol-origin: border;
         subcontrol-position: right;
@@ -457,6 +461,9 @@ BASIC_STYLE = """
         border-radius: %ROUND%;
         background-color: #GRAD_1,$M_BACK1$#;
     }
+    QComboBox[active=true]::drop-down {
+            border-color: $M_GREEN$;
+        }
     QComboBox::down-arrow {
         image: url(:/icon/$arrow-down$.svg);
         width: 16px;

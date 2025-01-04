@@ -19,18 +19,18 @@ import pytest
 from unittest import mock
 
 # external packages
-from PySide6.QtWidgets import QWidget
 from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabSett_ParkPos import SettParkPos
 from gui.widgets.main_ui import Ui_MainWindow
+from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)

@@ -301,7 +301,7 @@ class Model:
         self.modelData = ModelData(self.app)
         self.msg.emit(1, "Model", "Run", "Model from file")
         folder = self.app.mwGlob["modelDir"]
-        modelFilesPath = self.openFile(
+        modelFilesPath = self.mainW.openFile(
             self.mainW, "Open model file(s)", folder, "Model files (*.model)", multiple=True
         )
         if len(modelFilesPath) > 1:

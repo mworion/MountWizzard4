@@ -19,17 +19,18 @@ import pytest
 from unittest import mock
 
 # external packages
-from PySide6.QtWidgets import QPushButton, QWidget
+from PySide6.QtWidgets import QPushButton
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabSett_Device import SettDevice
 from gui.widgets.main_ui import Ui_MainWindow
+from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
@@ -83,8 +84,7 @@ def test_setupDeviceGui_1(function):
             },
         }
     }
-    suc = function.setupDeviceGui()
-    assert suc
+    function.setupDeviceGui()
 
 
 def test_setupDeviceGui_2(function):
@@ -101,35 +101,7 @@ def test_setupDeviceGui_2(function):
             },
         }
     }
-    suc = function.setupDeviceGui()
-    assert suc
-
-
-def test_processPopupResults_1(function):
-    class UI:
-        ok = QPushButton()
-
-    class Test:
-        returnValues = {"driver": ""}
-        ui = UI()
-
-    function.driversData = {
-        "telescope": {
-            "framework": "astap",
-            "frameworks": {
-                "astap": {
-                    "deviceName": "",
-                    "deviceList": ["test", "test1"],
-                    "searchRadius": 30,
-                    "appPath": "test",
-                },
-            },
-        }
-    }
-    function.devicePopup = Test()
-    function.devicePopup.ui.ok.clicked.connect(function.processPopupResults)
-    suc = function.processPopupResults()
-    assert not suc
+    function.setupDeviceGui()
 
 
 def test_processPopupResults_2(function):
@@ -160,8 +132,7 @@ def test_processPopupResults_2(function):
     function.devicePopup = Test()
     function.devicePopup.ui.ok.clicked.connect(function.processPopupResults)
     with mock.patch.object(function, "copyConfig"):
-        suc = function.processPopupResults()
-        assert not suc
+        function.processPopupResults()
 
 
 def test_processPopupResults_3(function):
@@ -189,8 +160,7 @@ def test_processPopupResults_3(function):
     function.devicePopup.ui.ok.clicked.connect(function.processPopupResults)
     with mock.patch.object(function, "stopDriver"):
         with mock.patch.object(function, "startDriver"):
-            suc = function.processPopupResults()
-            assert suc
+            function.processPopupResults()
 
 
 def test_copyConfig_1(function):
@@ -322,33 +292,20 @@ def test_callPopup_1(function):
     function.drivers = test
 
 
-def test_stopDriver_1(function):
-    suc = function.stopDriver("")
-    assert not suc
-
-
 def test_stopDriver_2(function):
     function.drivers["telescope"]["class"].framework = None
-    suc = function.stopDriver("telescope")
-    assert not suc
+    function.stopDriver("telescope")
 
 
 def test_stopDriver_3(function):
     function.drivers["telescope"]["class"].framework = "indi"
     function.drivers["telescope"]["class"].run["indi"].deviceName = "indi"
-    suc = function.stopDriver("telescope")
-    assert suc
+    function.stopDriver("telescope")
 
 
 def test_stopDrivers(function):
     with mock.patch.object(function, "stopDriver"):
-        suc = function.stopDrivers()
-        assert suc
-
-
-def test_configDriver_1(function):
-    suc = function.configDriver("")
-    assert not suc
+        function.stopDrivers()
 
 
 def test_configDriver_2(function):
@@ -363,8 +320,7 @@ def test_configDriver_2(function):
             },
         }
     }
-    suc = function.configDriver("telescope")
-    assert not suc
+    function.configDriver("telescope")
 
 
 def test_configDriver_3(function):
@@ -379,13 +335,7 @@ def test_configDriver_3(function):
             },
         }
     }
-    suc = function.configDriver("telescope")
-    assert suc
-
-
-def test_startDriver_1(function):
-    suc = function.startDriver()
-    assert not suc
+    function.configDriver("telescope")
 
 
 def test_startDriver_2(function):
@@ -400,8 +350,7 @@ def test_startDriver_2(function):
             },
         }
     }
-    suc = function.startDriver("telescope")
-    assert not suc
+    function.startDriver("telescope", False)
 
 
 def test_startDriver_3(function):
@@ -417,8 +366,7 @@ def test_startDriver_3(function):
         }
     }
     with mock.patch.object(function, "configDriver"):
-        suc = function.startDriver("telescope", False)
-        assert suc
+        function.startDriver("telescope", False)
 
 
 def test_startDriver_4(function):
@@ -435,8 +383,7 @@ def test_startDriver_4(function):
     }
     with mock.patch.object(function, "configDriver"):
         with mock.patch.object(function, "configDriver"):
-            suc = function.startDriver("telescope", True)
-            assert suc
+            function.startDriver("telescope", True)
 
 
 def test_startDrivers_1(function):
@@ -451,8 +398,7 @@ def test_startDrivers_1(function):
             },
         }
     }
-    suc = function.startDrivers()
-    assert suc
+    function.startDrivers()
 
 
 def test_startDrivers_2(function):
@@ -463,10 +409,8 @@ def test_startDrivers_2(function):
         }
     }
     with mock.patch.object(function, "startDriver") as testMock:
-        suc = function.startDrivers()
-        assert suc
-        assert testMock.call_args.kwargs.get("driver") == "telescope"
-        assert not testMock.call_args.kwargs.get("autoStart")
+        function.startDrivers()
+        assert testMock.call_args.args == ("telescope", False)
 
 
 def test_startDrivers_3(function):
@@ -477,10 +421,8 @@ def test_startDrivers_3(function):
         }
     }
     with mock.patch.object(function, "startDriver") as testMock:
-        suc = function.startDrivers()
-        assert suc
-        assert testMock.call_args.kwargs.get("driver") == "telescope"
-        assert testMock.call_args.kwargs.get("autoStart")
+        function.startDrivers()
+        assert testMock.call_args.args == ("telescope", True)
 
 
 def test_startDrivers_4(function):
@@ -491,10 +433,8 @@ def test_startDrivers_4(function):
         }
     }
     with mock.patch.object(function, "startDriver") as testMock:
-        suc = function.startDrivers()
-        assert suc
-        assert testMock.call_args.kwargs.get("driver") == "telescope"
-        assert testMock.call_args.kwargs.get("autoStart")
+        function.startDrivers()
+        assert testMock.call_args.args == ("telescope", False)
 
 
 def test_manualStopAllAscomDrivers_1(function):
@@ -504,8 +444,7 @@ def test_manualStopAllAscomDrivers_1(function):
         }
     }
     with mock.patch.object(function, "stopDriver"):
-        suc = function.manualStopAllAscomDrivers()
-        assert suc
+        function.manualStopAllAscomDrivers()
 
 
 def test_manualStartAllAscomDrivers_1(function):
@@ -515,8 +454,7 @@ def test_manualStartAllAscomDrivers_1(function):
         }
     }
     with mock.patch.object(function, "startDriver"):
-        suc = function.manualStartAllAscomDrivers()
-        assert suc
+        function.manualStartAllAscomDrivers()
 
 
 def test_dispatchDriverDropdown_1(function):
@@ -544,30 +482,7 @@ def test_dispatchDriverDropdown_2(function):
 
 
 def test_serverDisconnected_1(function):
-    def Sender():
-        return function.drivers["filter"]["class"].signals
-
-    function.sender = Sender
-
-    suc = function.serverDisconnected("dome", {})
-    assert not suc
-
-
-def test_serverDisconnected_2(function):
-    def Sender():
-        return function.drivers["filter"]["class"].signals
-
-    function.sender = Sender
-    function.BACK_NORM = "#000000"
-
-    suc = function.serverDisconnected("dome", {"dome": 1})
-    assert suc
-
-
-def test_deviceConnected_1(function):
-    function.BACK_GREEN = "#000000"
-    suc = function.deviceConnected("dome", "")
-    assert not suc
+    function.serverDisconnected("dome")
 
 
 def test_deviceConnected_2(function):
@@ -575,8 +490,7 @@ def test_deviceConnected_2(function):
         "filter": {"framework": "indi", "frameworks": {"indi": {"loadConfig": True}}}
     }
     function.BACK_GREEN = "#000000"
-    suc = function.deviceConnected("filter", "test")
-    assert suc
+    function.deviceConnected("filter", "test")
 
 
 def test_deviceConnected_3(function):
@@ -584,8 +498,7 @@ def test_deviceConnected_3(function):
         "dome": {"framework": "indi", "frameworks": {"indi": {"loadConfig": True}}}
     }
     function.BACK_GREEN = "#000000"
-    suc = function.deviceConnected("dome", "test")
-    assert suc
+    function.deviceConnected("dome", "test")
 
 
 def test_deviceDisconnected_1(function):

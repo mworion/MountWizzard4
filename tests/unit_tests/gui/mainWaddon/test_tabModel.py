@@ -23,7 +23,6 @@ import os
 from pathlib import Path
 
 # external packages
-from PySide6.QtWidgets import QWidget
 from skyfield.api import Angle
 
 # local import
@@ -33,11 +32,12 @@ from gui.mainWaddon.tabModel import Model
 import gui.mainWaddon.tabModel
 import gui.mainWaddon
 from gui.widgets.main_ui import Ui_MainWindow
+from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
@@ -352,7 +352,7 @@ def test_runBatch_3(function):
 
 
 def test_runFileModel_1(function):
-    with mock.patch.object(function, "openFile", return_value=[]):
+    with mock.patch.object(MWidget, "openFile", return_value=[]):
         function.runFileModel()
 
 
@@ -385,7 +385,7 @@ def test_runFileModel_2(function):
 
     val = (model, "Error")
     function.modelData = ModelData(App)
-    with mock.patch.object(function, "openFile", return_value=[Path("test.model")]):
+    with mock.patch.object(MWidget, "openFile", return_value=[Path("test.model")]):
         with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
             with mock.patch.object(function.modelData, "buildProgModel"):
                 with mock.patch.object(
@@ -403,7 +403,7 @@ def test_runFileModel_3(function):
 
     with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
         with mock.patch.object(
-            function, "openFile", return_value=[Path("test1.model"), Path("test2.model")]
+            MWidget, "openFile", return_value=[Path("test1.model"), Path("test2.model")]
         ):
             with mock.patch.object(
                 function, "setupFilenamesAndDirectories", return_value=("m-test1-add", "")
@@ -422,7 +422,7 @@ def test_runFileModel_4(function):
     function.modelData.name = "Test"
     with mock.patch.object(function, "clearAlignAndBackup", return_value=False):
         with mock.patch.object(
-            function, "openFile", return_value=[Path("test1.model"), Path("test2.model")]
+            MWidget, "openFile", return_value=[Path("test1.model"), Path("test2.model")]
         ):
             with mock.patch.object(
                 function, "setupFilenamesAndDirectories", return_value=("m-test1-add", "")

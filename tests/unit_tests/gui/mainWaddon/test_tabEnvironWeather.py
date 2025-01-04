@@ -20,12 +20,12 @@ from unittest import mock
 
 # external packages
 import numpy as np
-from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabEnvironWeather import EnvironWeather
 from gui.widgets.main_ui import Ui_MainWindow
+from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging
 
 setupLogging()
@@ -33,7 +33,7 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)

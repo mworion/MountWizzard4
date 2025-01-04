@@ -20,18 +20,18 @@ import unittest.mock as mock
 import pytest
 
 # external packages
-from PySide6.QtWidgets import QWidget
 from PySide6.QtGui import QPixmap
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabModel_Status import ModelStatus
 from gui.widgets.main_ui import Ui_MainWindow
+from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
@@ -42,7 +42,7 @@ def function(qapp):
 
 def test_setupIcons(function):
     pm = QPixmap()
-    with mock.patch.object(function, "img2pixmap", return_value=pm):
+    with mock.patch.object(MWidget, "img2pixmap", return_value=pm):
         function.setupIcons()
 
 

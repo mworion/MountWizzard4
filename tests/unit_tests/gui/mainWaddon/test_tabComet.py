@@ -21,17 +21,18 @@ import json
 import os
 
 # external packages
-from PySide6.QtWidgets import QTableWidgetItem, QWidget
+from PySide6.QtWidgets import QTableWidgetItem
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabComet import Comet
+from gui.mainWaddon.tabComet import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)

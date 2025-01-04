@@ -20,7 +20,7 @@ from unittest import mock
 
 # external packages
 from PySide6.QtCore import QRect
-from PySide6.QtWidgets import QTableWidgetItem, QWidget
+from PySide6.QtWidgets import QTableWidgetItem
 from skyfield.api import EarthSatellite
 import numpy as np
 
@@ -29,6 +29,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 import gui
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabSat_Search import SatSearch
+from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -36,7 +37,7 @@ def function(qapp):
     class Test:
         objects = {}
 
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.satellites = Test()
     mainW.ui = Ui_MainWindow()

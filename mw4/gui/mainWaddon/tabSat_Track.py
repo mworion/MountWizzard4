@@ -442,7 +442,7 @@ class SatTrack(SatData):
             self.ui.satTrajectoryStart.setText("No transit")
 
         if params.jdEnd is not None and self.satOrbits:
-            t = self.convertTime(params.jdEnd, "%d %b  %H:%M:%S")
+            t = self.mainW.convertTime(params.jdEnd, "%d %b  %H:%M:%S")
             self.ui.satTrajectoryEnd.setText(t)
         else:
             self.ui.satTrajectoryEnd.setText("No transit")
@@ -490,7 +490,7 @@ class SatTrack(SatData):
             self.msg.emit(2, "TLE", "Command error", f"{message}")
             return False
 
-        self.changeStyleDynamic(self.ui.startSatelliteTracking, "running", True)
+        changeStyleDynamic(self.ui.startSatelliteTracking, "running", True)
         self.msg.emit(0, "TLE", "Command ", f"{message}")
         self.app.mount.satellite.setTrackingOffsets()
         return True

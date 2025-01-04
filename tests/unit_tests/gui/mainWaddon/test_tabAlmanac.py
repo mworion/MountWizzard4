@@ -21,7 +21,6 @@ from unittest import mock
 
 # external packages
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QWidget
 from skyfield.api import wgs84
 import numpy as np
 

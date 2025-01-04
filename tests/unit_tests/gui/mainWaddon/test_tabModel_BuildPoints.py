@@ -21,18 +21,18 @@ from pathlib import Path
 
 # external packages
 from astroquery.simbad import Simbad
-from PySide6.QtWidgets import QWidget
 from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabModel_BuildPoints import BuildPoints
+from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
@@ -258,7 +258,7 @@ def test_genModel_1(function):
 
 def test_loadBuildFile_1(function):
     with mock.patch.object(Path, "is_file", return_value=False):
-        with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
+        with mock.patch.object(MWidget, "openFile", return_value=Path("test.bpts")):
             with mock.patch.object(function.app.data, "loadBuildP", return_value=True):
                 function.loadBuildFile()
 
@@ -266,20 +266,20 @@ def test_loadBuildFile_1(function):
 def test_loadBuildFile_2(function):
     with mock.patch.object(Path, "is_file", return_value=True):
         with mock.patch.object(function.app.data, "loadBuildP", return_value=True):
-            with mock.patch.object(function, "openFile", return_value=Path("")):
+            with mock.patch.object(MWidget, "openFile", return_value=Path("")):
                 function.loadBuildFile()
 
 
 def test_loadBuildFile_3(function):
     with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
+        with mock.patch.object(MWidget, "openFile", return_value=Path("test.bpts")):
             with mock.patch.object(function.app.data, "loadBuildP", return_value=False):
                 function.loadBuildFile()
 
 
 def test_saveBuildFile_1(function):
     function.ui.buildPFileName.setText("test")
-    with mock.patch.object(function, "saveFile", return_value=Path("test.bpts")):
+    with mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")):
         with mock.patch.object(function.app.data, "saveBuildP", return_value=True):
             function.saveBuildFile()
 
@@ -292,24 +292,24 @@ def test_saveBuildFile_2(function):
 
 def test_saveBuildFile_3(function):
     function.ui.buildPFileName.setText("test")
-    with mock.patch.object(function, "saveFile", return_value=Path("test.bpts")):
+    with mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")):
         with mock.patch.object(function.app.data, "saveBuildP", return_value=False):
             function.saveBuildFile()
 
 
 def test_saveBuildFileAs_1(function):
-    with mock.patch.object(function, "saveFile", return_value=Path("test.bpts")):
+    with mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")):
         with mock.patch.object(function.app.data, "saveBuildP", return_value=True):
             function.saveBuildFileAs()
 
 
 def test_saveBuildFileAs_2(function):
-    with mock.patch.object(function, "saveFile", return_value=Path("")):
+    with mock.patch.object(MWidget, "saveFile", return_value=Path("")):
         function.saveBuildFileAs()
 
 
 def test_saveBuildFileAs_3(function):
-    with mock.patch.object(function, "saveFile", return_value=Path("test.bpts")):
+    with mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")):
         with mock.patch.object(function.app.data, "saveBuildP", return_value=False):
             function.saveBuildFileAs()
 

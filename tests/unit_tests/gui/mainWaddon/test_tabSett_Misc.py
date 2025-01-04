@@ -20,7 +20,6 @@ from unittest import mock
 
 # external packages
 from PySide6.QtMultimedia import QSoundEffect
-from PySide6.QtWidgets import QWidget
 import hid
 
 # local import
@@ -29,13 +28,14 @@ from gui.mainWaddon.tabSett_Misc import SettMisc
 import gui.mainWaddon.tabSett_Misc
 from gui.widgets.main_ui import Ui_MainWindow
 from base.loggerMW import setupLogging
+from gui.utilities.toolsQtWidget import MWidget
 
 setupLogging()
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.gameControllerRunning = False
     mainW.app = App()
     mainW.ui = Ui_MainWindow()

@@ -19,20 +19,20 @@ import pytest
 from unittest import mock
 
 # external packages
-from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabSett_Dome import SettDome
 from resource import resources
+from gui.utilities.toolsQtWidget import MWidget
 
 resources.qInitResources()
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)

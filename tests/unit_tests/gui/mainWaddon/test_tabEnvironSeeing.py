@@ -22,13 +22,13 @@ import webbrowser
 import platform
 
 # external packages
-from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabEnvironSeeing import EnvironSeeing
 from gui.widgets.main_ui import Ui_MainWindow
 from base.loggerMW import setupLogging
+from gui.utilities.toolsQtWidget import MWidget
 
 setupLogging()
 
@@ -37,7 +37,7 @@ setupLogging()
 def function(qapp):
     shutil.copy("tests/testData/meteoblue.data", "tests/workDir/data/meteoblue.data")
 
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)

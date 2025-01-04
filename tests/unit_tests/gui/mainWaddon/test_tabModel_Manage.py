@@ -26,7 +26,6 @@ from pathlib import Path
 # external packages
 import PySide6
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget
 from skyfield.api import Star, Angle
 from mountcontrol.modelStar import ModelStar
 
@@ -36,6 +35,7 @@ import gui
 from gui.mainWaddon.tabModel_Manage import ModelManage
 import gui.mainWaddon.tabModel_Manage
 from gui.widgets.main_ui import Ui_MainWindow
+from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -47,7 +47,7 @@ def function(qapp):
     shutil.copy("tests/testData/test1.model", "tests/workDir/model/test1.model")
     shutil.copy("tests/testData/test-opt.model", "tests/workDir/model/test-opt.model")
 
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
@@ -248,7 +248,7 @@ def test_deleteName_2(function):
             return "test"
 
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
-        with mock.patch.object(function, "messageDialog", return_value=False):
+        with mock.patch.object(MWidget, "messageDialog", return_value=False):
             function.deleteName()
 
 
@@ -259,7 +259,7 @@ def test_deleteName_3(function):
             return "test"
 
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
-        with mock.patch.object(function, "messageDialog", return_value=True):
+        with mock.patch.object(MWidget, "messageDialog", return_value=True):
             with mock.patch.object(function.app.mount.model, "deleteName", return_value=True):
                 function.deleteName()
 
@@ -271,7 +271,7 @@ def test_deleteName_4(function):
             return "test"
 
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
-        with mock.patch.object(function, "messageDialog", return_value=True):
+        with mock.patch.object(MWidget, "messageDialog", return_value=True):
             with mock.patch.object(function.app.mount.model, "deleteName", return_value=False):
                 function.deleteName()
 
@@ -321,18 +321,18 @@ def test_clearRefreshModel_2(function):
 
 
 def test_clearModel_1(function):
-    with mock.patch.object(function, "messageDialog", return_value=False):
+    with mock.patch.object(MWidget, "messageDialog", return_value=False):
         function.clearModel()
 
 
 def test_clearModel_2(function):
-    with mock.patch.object(function, "messageDialog", return_value=True):
+    with mock.patch.object(MWidget, "messageDialog", return_value=True):
         with mock.patch.object(function.app.mount.model, "clearModel", return_value=False):
             function.clearModel()
 
 
 def test_clearModel_3(function):
-    with mock.patch.object(function, "messageDialog", return_value=True):
+    with mock.patch.object(MWidget, "messageDialog", return_value=True):
         with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
             function.clearModel()
 
@@ -690,7 +690,7 @@ def test_pointClicked_4(function):
     function.app.mount.model.starList.append(a)
     function.app.mount.model.starList.append(a)
 
-    with mock.patch.object(function, "messageDialog", return_value=False):
+    with mock.patch.object(MWidget, "messageDialog", return_value=False):
         function.pointClicked(None, points, Event())
 
 
@@ -720,7 +720,7 @@ def test_pointClicked_5(function):
     function.app.mount.model.starList.append(a)
     function.app.mount.model.starList.append(a)
 
-    with mock.patch.object(function, "messageDialog", return_value=True):
+    with mock.patch.object(MWidget, "messageDialog", return_value=True):
         with mock.patch.object(function.app.mount.model, "deletePoint", return_value=False):
             function.pointClicked(None, points, Event())
 
@@ -751,7 +751,7 @@ def test_pointClicked_6(function):
     function.app.mount.model.starList.append(a)
     function.app.mount.model.starList.append(a)
 
-    with mock.patch.object(function, "messageDialog", return_value=True):
+    with mock.patch.object(MWidget, "messageDialog", return_value=True):
         with mock.patch.object(function.app.mount.model, "deletePoint", return_value=True):
             with mock.patch.object(function, "refreshModel"):
                 function.pointClicked(None, points, Event())

@@ -434,7 +434,7 @@ def test_startDrivers_4(function):
     }
     with mock.patch.object(function, "startDriver") as testMock:
         function.startDrivers()
-        assert testMock.call_args.args == ("telescope", False)
+        assert testMock.call_args.args == ("telescope", True)
 
 
 def test_manualStopAllAscomDrivers_1(function):
@@ -482,7 +482,7 @@ def test_dispatchDriverDropdown_2(function):
 
 
 def test_serverDisconnected_1(function):
-    function.serverDisconnected("dome")
+    function.serverDisconnected("dome", [])
 
 
 def test_deviceConnected_2(function):

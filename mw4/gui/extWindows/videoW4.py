@@ -66,8 +66,6 @@ class VideoWindow4(VideoWindow):
 
     def closeEvent(self, closeEvent) -> None:
         """
-        :param closeEvent:
-        :return:
         """
         self.pixmapReady.disconnect(self.receivedImage)
         self.storeConfig()

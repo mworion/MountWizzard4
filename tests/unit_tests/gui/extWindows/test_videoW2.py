@@ -48,7 +48,7 @@ def test_storeConfig_1(function):
 
 def test_storeConfig_2(function):
     function.app.config["videoW2"] = {}
-
+    
     function.storeConfig()
 
 

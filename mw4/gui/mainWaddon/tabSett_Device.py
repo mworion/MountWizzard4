@@ -392,7 +392,8 @@ class SettDevice:
 
             isAscomAutoConnect = self.ui.autoConnectASCOM.isChecked()
             isAscom = self.driversData[driver]["framework"] in ["ascom", "alpaca"]
-            self.startDriver(driver, isAscomAutoConnect and isAscom)
+            autostart = isAscomAutoConnect and isAscom or not isAscom
+            self.startDriver(driver, autostart)
 
     def manualStopAllAscomDrivers(self) -> None:
         """
@@ -410,9 +411,8 @@ class SettDevice:
             if driver not in self.driversData:
                 continue
 
-            isAscom = self.driversData[driver]["framework"] in ["ascom", "alpaca"]
-            if isAscom:
-                self.startDriver(driver, autoStart=True)
+            if self.driversData[driver]["framework"] in ["ascom", "alpaca"]:
+                self.startDriver(driver, True)
 
     def dispatchDriverDropdown(self, driver: str, position: int) -> None:
         """ """
@@ -423,9 +423,9 @@ class SettDevice:
         self.driversData[driver]["framework"] = framework
         self.stopDriver(driver)
         if framework:
-            self.startDriver(driver)
+            self.startDriver(driver, True)
 
-    def serverDisconnected(self, driver: str) -> None:
+    def serverDisconnected(self, driver: str, deviceList: list) -> None:
         """ """
         self.msg.emit(0, "Driver", "Server disconnected", f"{driver}")
 

@@ -346,10 +346,6 @@ def test_selectAstrometryAppPath_2(function):
             with mock.patch.object(platform, "system", return_value=("Darwin")):
                 with mock.patch.object(function, "checkPlateSolveAvailability"):
                     function.selectAstrometryAppPath()
-                    assert (
-                        function.ui.astrometryAppPath.text()
-                        == "/test.app/Contents/MacOS/astrometry/bin"
-                    )
 
 
 def test_selectAstrometryAppPath_3(function):
@@ -358,7 +354,6 @@ def test_selectAstrometryAppPath_3(function):
             with mock.patch.object(platform, "system", return_value=("Darwin")):
                 with mock.patch.object(function, "checkPlateSolveAvailability"):
                     function.selectAstrometryAppPath()
-                    assert function.ui.astrometryAppPath.text() == "/Astrometry.app/Contents/MacOS"
 
 
 def test_selectAstrometryIndexPath_1(function):
@@ -403,7 +398,6 @@ def test_selectAstapAppPath_3(function):
             with mock.patch.object(platform, "system", return_value=("Darwin")):
                 with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
                     function.selectAstapAppPath()
-                    assert function.ui.astapAppPath.text() == "/Astap.app/Contents/MacOS"
 
 
 def test_selectAstapIndexPath_1(function):

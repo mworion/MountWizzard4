@@ -51,7 +51,13 @@ def test_sleepAndEvents(function):
 
 
 def test_changeStyleDynamic_1():
-    changeStyleDynamic()
+    changeStyleDynamic(QPushButton(), "color", "red")
+
+
+def test_changeStyleDynamic_2():
+    butt = QPushButton()
+    changeStyleDynamic(butt, "color", "red")
+    changeStyleDynamic(butt, "color", "red")
 
 
 def test_findIndexValue_0():

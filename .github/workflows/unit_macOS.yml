@@ -79,3 +79,4 @@ jobs:
           pytest tests/unit_tests/mountcontrol
           pytest tests/unit_tests/indibase
           pytest tests/unit_tests/gui/utilities
+          pytest tests/unit_tests/gui/styles

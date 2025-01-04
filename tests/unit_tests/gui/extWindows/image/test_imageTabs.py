@@ -24,6 +24,7 @@ import pyqtgraph as pg
 from astropy import wcs
 import numpy as np
 from astropy.io import fits
+from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -58,17 +59,6 @@ def test_setCrosshair_1(function):
     function.ui.color.setCurrentIndex(0)
     with mock.patch.object(function.ui.image, "showCrosshair"):
         function.setCrosshair()
-
-
-def test_writeHeaderDataToGUI_1(function):
-    function.header = fits.PrimaryHDU().header
-    function.writeHeaderDataToGUI(function.header)
-
-
-def test_writeHeaderDataToGUI_2(function):
-    function.header = fits.PrimaryHDU().header
-    function.header["naxis"] = 2
-    function.writeHeaderDataToGUI(function.header)
 
 
 def test_writeHeaderDataToGUI_3(function):

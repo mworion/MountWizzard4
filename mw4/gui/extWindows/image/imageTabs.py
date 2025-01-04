@@ -192,7 +192,7 @@ class ImageTabs:
         for ix in range(3):
             for iy in range(3):
                 text = f"{segHFR[ix][iy]:1.2f}"
-                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_TABS)
+                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_PRIM)
                 textItem.setText(text)
                 textItem.setFont(self.fontText)
                 posX = ix * w / 3 + w / 6
@@ -305,7 +305,7 @@ class ImageTabs:
 
         # add inner value
         text = f"{self.photometry.hfrInner:1.2f}"
-        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_TABS)
+        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_PRIM)
         textItem.setText(text)
         textItem.setFont(self.fontText)
         textItem.setZValue(10)

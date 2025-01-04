@@ -37,14 +37,14 @@ from gui.styles.styles import Styles
 from mountcontrol.convert import formatHstrToText, formatDstrToText
 
 
-def sleepAndEvents(value):
+def sleepAndEvents(value: int) -> None:
     """ """
     for _ in range(value):
         time.sleep(0.001)
         QCoreApplication.processEvents()
 
 
-def changeStyleDynamic(widget=None, widgetProperty=None, value=None):
+def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str) -> None:
     """
     changeStyleDynamic changes the stylesheet of a given ui element and
     makes it visible. therefore the element has to be unpolished and
@@ -57,12 +57,6 @@ def changeStyleDynamic(widget=None, widgetProperty=None, value=None):
     :param      value:  new value of the attribute
     :return:    true for test purpose
     """
-    if not widget:
-        return
-    if not widgetProperty:
-        return
-    if value is None:
-        return
     if widget.property(widgetProperty) == value:
         return
 

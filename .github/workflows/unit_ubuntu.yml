@@ -64,6 +64,7 @@ jobs:
           xvfb-run pytest tests/unit_tests/mountcontrol
           xvfb-run pytest tests/unit_tests/indibase
           xvfb-run pytest tests/unit_tests/gui/utilities
+          xvfb-run pytest tests/unit_tests/gui/styles
         
   run_tests_ubuntu_2:
     #

@@ -26,12 +26,7 @@ from gui.styles.styles import Styles
 
 
 @pytest.fixture(autouse=True, scope="module")
-def module(qapp):
-    yield
-
-
-@pytest.fixture(autouse=True, scope="function")
-def function(module):
+def function(qapp):
     window = Styles()
     yield window
 

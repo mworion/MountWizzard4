@@ -214,16 +214,14 @@ def test_changeChart_2(function):
 def test_drawMeasure_1(function):
     temp = function.app.measure.data["time"]
     function.app.measure.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
-    suc = function.drawMeasure()
-    assert not suc
+    function.drawMeasure()
     function.app.measure.data["time"] = temp
 
 
 def test_drawMeasure_2(function):
-    function.drawLock.lock()
-    suc = function.drawMeasure()
+    function.drawLock.tryLock()
+    function.drawMeasure()
     function.drawLock.unlock()
-    assert not suc
 
 
 def test_drawMeasure_3(function):
@@ -246,8 +244,7 @@ def test_drawMeasure_3(function):
     with mock.patch.object(function, "plotting"):
         with mock.patch.object(function, "resetPlotItem"):
             with mock.patch.object(function, "triggerUpdate"):
-                suc = function.drawMeasure()
-                assert suc
+                function.drawMeasure()
 
 
 def test_drawMeasure_4(function):
@@ -270,5 +267,4 @@ def test_drawMeasure_4(function):
     with mock.patch.object(function, "plotting"):
         with mock.patch.object(function, "resetPlotItem"):
             with mock.patch.object(function, "triggerUpdate"):
-                suc = function.drawMeasure()
-                assert suc
+                function.drawMeasure()

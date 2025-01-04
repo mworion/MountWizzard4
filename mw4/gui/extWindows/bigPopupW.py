@@ -19,12 +19,12 @@
 # external packages
 
 # local import
-from gui.utilities import toolsQtWidget
+from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.bigPopup_ui import Ui_BigPopup
 from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class BigPopup(toolsQtWidget.MWidget):
+class BigPopup(MWidget):
     """ """
 
     def __init__(self, app):
@@ -36,20 +36,15 @@ class BigPopup(toolsQtWidget.MWidget):
         self.msg = app.msg
         self.setWindowTitle("Big buttons")
 
-    def initConfig(self):
-        """
-        :return: True for test purpose
-        """
+    def initConfig(self) -> None:
+        """ """
         if "bigPopupW" not in self.app.config:
             self.app.config["bigPopupW"] = {}
         config = self.app.config["bigPopupW"]
         self.positionWindow(config)
-        return True
 
-    def storeConfig(self):
-        """
-        :return: True for test purpose
-        """
+    def storeConfig(self) -> None:
+        """ """
         config = self.app.config
         if "bigPopupW" not in config:
             config["bigPopupW"] = {}
@@ -61,27 +56,18 @@ class BigPopup(toolsQtWidget.MWidget):
         config["winPosY"] = max(self.pos().y(), 0)
         config["height"] = self.height()
         config["width"] = self.width()
-        return True
 
-    def closeEvent(self, closeEvent):
-        """
-        :param closeEvent:
-        :return:
-        """
+    def closeEvent(self, closeEvent) -> None:
+        """ """
         self.storeConfig()
         super().closeEvent(closeEvent)
 
-    def colorChange(self):
-        """
-        :return:
-        """
+    def colorChange(self) -> None:
+        """ """
         self.setStyleSheet(self.mw4Style)
-        return True
 
-    def showWindow(self):
-        """
-        :return: True for test purpose
-        """
+    def showWindow(self) -> None:
+        """ """
         self.wIcon(self.ui.mountOn, "power-on")
         self.wIcon(self.ui.mountOff, "power-off")
         self.wIcon(self.ui.stop, "hand")
@@ -93,23 +79,14 @@ class BigPopup(toolsQtWidget.MWidget):
         self.ui.mountOn.clicked.connect(lambda: self.app.mountOn.emit())
         self.ui.mountOff.clicked.connect(lambda: self.app.mountOff.emit())
         self.show()
-        return True
 
-    def updateDeviceStats(self):
-        """
-        :return:
-        """
+    def updateDeviceStats(self) -> None:
+        """ """
         isMount = self.app.deviceStat.get("mount", False)
         changeStyleDynamic(self.ui.mountOn, "running", isMount)
         changeStyleDynamic(self.ui.mountOff, "running", not isMount)
-        return True
 
-    def updateStatus(self):
-        """
-        :return:
-        """
-        if self.app.mount.obsSite.status == 1:
-            changeStyleDynamic(self.ui.stop, "running", True)
-        else:
-            changeStyleDynamic(self.ui.stop, "running", False)
-        return True
+    def updateStatus(self) -> None:
+        """ """
+        running = self.app.mount.obsSite.status == 1
+        changeStyleDynamic(self.ui.stop, "running", running)

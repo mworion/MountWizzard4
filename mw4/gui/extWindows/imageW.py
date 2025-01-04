@@ -52,10 +52,10 @@ class ImageWindow(MWidget, SlewInterface):
         self.imageItem = None
         self.imageFileName: Path = Path("")
         self.imageFileNameOld: Path = Path("")
-        self.exposureTime = 1
-        self.binning = 1
-        self.folder = ""
-        self.result = None
+        self.exposureTime: float = 1
+        self.binning: int = 1
+        self.folder: Path = Path()
+        self.result: dict
         self.imagingDeviceStat = {
             "expose": False,
             "exposeN": False,
@@ -75,7 +75,7 @@ class ImageWindow(MWidget, SlewInterface):
         self.ui.snTarget.setCurrentIndex(config.get("snTarget", 0))
         self.ui.tabImage.setCurrentIndex(config.get("tabImage", 0))
         self.imageFileName = Path(config.get("imageFileName", ""))
-        self.folder = self.app.mwGlob.get("imageDir", "")
+        self.folder = Path(self.app.mwGlob.get("imageDir", ""))
         self.ui.showCrosshair.setChecked(config.get("showCrosshair", False))
         self.ui.aspectLocked.setChecked(config.get("aspectLocked", False))
         self.ui.autoSolve.setChecked(config.get("autoSolve", False))

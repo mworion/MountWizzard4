@@ -30,6 +30,11 @@ from gui.widgets import message_ui
 class MessageWindow(toolsQtWidget.MWidget):
     """ """
 
+    TEXT_NORMAL = 0
+    TEXT_HIGHLIGHT = 1
+    TEXT_WARNING = 2
+    TEXT_ERROR = 3
+
     def __init__(self, app):
         super().__init__()
         self.app = app
@@ -39,21 +44,15 @@ class MessageWindow(toolsQtWidget.MWidget):
         self.messColor = None
         self.setupMessage()
 
-    def initConfig(self):
-        """
-        :return: True for test purpose
-        """
+    def initConfig(self) -> None:
+        """ """
         if "messageW" not in self.app.config:
             self.app.config["messageW"] = {}
         config = self.app.config["messageW"]
-
         self.positionWindow(config)
-        return True
 
-    def storeConfig(self):
-        """
-        :return: True for test purpose
-        """
+    def storeConfig(self) -> None:
+        """ """
         config = self.app.config
         if "messageW" not in config:
             config["messageW"] = {}
@@ -64,20 +63,14 @@ class MessageWindow(toolsQtWidget.MWidget):
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)
         config["height"] = self.height()
-        return True
 
-    def closeEvent(self, closeEvent):
-        """
-        :param closeEvent:
-        :return:
-        """
+    def closeEvent(self, closeEvent) -> None:
+        """ """
         self.storeConfig()
         super().closeEvent(closeEvent)
 
-    def clearMessageTable(self):
-        """
-        :return:
-        """
+    def clearMessageTable(self) -> None:
+        """ """
         mesTab = self.ui.messageTable
         mesTab.setRowCount(0)
         mesTab.setColumnCount(4)
@@ -85,16 +78,13 @@ class MessageWindow(toolsQtWidget.MWidget):
         mesTab.setHorizontalHeaderLabels(hl)
         mesTab.setColumnWidth(0, 65)
         mesTab.setColumnWidth(1, 85)
-        mesTab.setColumnWidth(2, 135)
+        mesTab.setColumnWidth(2, 150)
         mesTab.horizontalHeader().setDefaultAlignment(Qt.AlignmentFlag.AlignLeft)
         mesTab.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         mesTab.verticalHeader().setDefaultSectionSize(16)
-        return True
 
-    def setupMessage(self):
-        """
-        :return:
-        """
+    def setupMessage(self) -> None:
+        """ """
         self.messColor = [
             QBrush(QColor(self.M_PRIM)),
             QBrush(QColor(self.M_TER)),
@@ -108,51 +98,31 @@ class MessageWindow(toolsQtWidget.MWidget):
             QFont(fontFam, weight=QFont.Weight.Normal),
             QFont(fontFam, weight=QFont.Weight.Normal),
         ]
-        return True
 
-    def updateListColors(self):
-        """
-        :return:
-        """
+    def updateListColors(self) -> None:
+        """ """
         for row in range(self.ui.messageTable.rowCount()):
             for col in range(self.ui.messageTable.columnCount()):
                 item = self.ui.messageTable.item(row, col)
                 item.setForeground(self.messColor[0])
                 item.setFont(self.messFont[0])
-        return True
 
-    def colorChange(self):
-        """
-        :return:
-        """
+    def colorChange(self) -> None:
+        """ """
         self.setStyleSheet(self.mw4Style)
         self.setupMessage()
         self.updateListColors()
-        return True
 
-    def showWindow(self):
-        """
-        :return: true for test purpose
-        """
+    def showWindow(self) -> None:
+        """ """
         self.ui.clear.clicked.connect(self.clearMessageTable)
         self.clearMessageTable()
         self.app.update1s.connect(self.writeMessage)
         self.app.colorChange.connect(self.colorChange)
         self.show()
-        return True
 
-    def writeMessage(self):
-        """
-        writeMessage takes singles with message and writes them to the text
-        browser window. types:
-            0: normal text
-            1: highlighted text
-            2: warning text
-            3: error text
-
-        setting bit8 means without prefix
-        :return: true for test purpose
-        """
+    def writeMessage(self) -> None:
+        """ """
         while not self.app.messageQueue.empty():
             prio, source, mType, message = self.app.messageQueue.get()
 
@@ -165,26 +135,24 @@ class MessageWindow(toolsQtWidget.MWidget):
                 item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
                 item.setForeground(self.messColor[prio])
                 item.setFont(self.messFont[prio])
-                self.ui.messageTable.setItem(row, 0, item)
+                self.ui.messageTable.setItem(row, self.TEXT_NORMAL, item)
 
             item = QTableWidgetItem(f"{source}")
             item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             item.setFont(self.messFont[prio])
             item.setForeground(self.messColor[prio])
-            self.ui.messageTable.setItem(row, 1, item)
+            self.ui.messageTable.setItem(row, self.TEXT_HIGHLIGHT, item)
 
             item = QTableWidgetItem(f"{mType}")
             item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             item.setFont(self.messFont[prio])
             item.setForeground(self.messColor[prio])
-            self.ui.messageTable.setItem(row, 2, item)
+            self.ui.messageTable.setItem(row, self.TEXT_WARNING, item)
 
             item = QTableWidgetItem(f"{message}")
             item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             item.setFont(self.messFont[prio])
             item.setForeground(self.messColor[prio])
-            self.ui.messageTable.setItem(row, 3, item)
+            self.ui.messageTable.setItem(row, self.TEXT_ERROR, item)
 
             self.ui.messageTable.scrollToBottom()
-
-        return True

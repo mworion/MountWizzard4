@@ -140,16 +140,14 @@ def test_keyPressEvent_5(function):
 
 def test_showWindow_1(function):
     function.app.mount.setting.webInterfaceStat = False
-    with mock.patch.object(function, "show"):
-        with mock.patch.object(function, "show"):
-            with mock.patch.object(function, "setupButtons"):
-                with mock.patch.object(function, "startKeypad"):
-                    with mock.patch.object(
-                        function.app.mount.setting,
-                        "setWebInterface",
-                        return_value=False,
-                    ):
-                        function.showWindow()
+    with mock.patch.object(function, "setupButtons"):
+        with mock.patch.object(function, "startKeypad"):
+            with mock.patch.object(
+                function.app.mount.setting,
+                "setWebInterface",
+                return_value=False,
+            ):
+                function.showWindow()
 
 
 def test_colorChange(function):
@@ -162,14 +160,13 @@ def test_setupButtons_1(function):
 
 
 def test_websocketClear(function):
-    function.websocketMutex.lock()
+    function.websocketMutex.try_lock()
     function.websocketClear()
 
 
 def test_startKeypad_1(function):
     function.websocketMutex.lock()
-    suc = function.startKeypad()
-    assert not suc
+    function.startKeypad()
     function.websocketMutex.unlock()
 
 
@@ -177,8 +174,7 @@ def test_startKeypad_2(function):
     with mock.patch.object(function, "clearDisplay"):
         with mock.patch.object(function, "writeTextRow"):
             with mock.patch.object(function.threadPool, "start"):
-                suc = function.startKeypad()
-                assert suc
+                function.startKeypad()
                 function.websocketMutex.unlock()
 
 
@@ -189,66 +185,42 @@ def test_hostChanged_1(function):
 
 
 def test_buttonPressed_1(function):
-    def sender():
-        return QPushButton()
-
     function.setupButtons()
-    function.sender = sender
-    suc = function.buttonPressed()
-    assert not suc
+    function.buttonPressed("key_0")
 
 
 def test_buttonPressed_2(function):
-    def sender():
-        return function.ui.b0
-
     function.setupButtons()
-    function.sender = sender
     with mock.patch.object(function.keypad, "send"):
-        suc = function.buttonPressed()
-        assert suc
+        function.buttonPressed("key_0")
 
 
 def test_buttonReleased_1(function):
-    def sender():
-        return QPushButton()
-
     function.setupButtons()
-    function.sender = sender
-    suc = function.buttonReleased()
-    assert not suc
+    function.buttonReleased("key_0")
 
 
 def test_buttonReleased_2(function):
-    def sender():
-        return function.ui.b0
-
     function.setupButtons()
-    function.sender = sender
     with mock.patch.object(function.keypad, "send"):
-        suc = function.buttonReleased()
-        assert suc
+        function.buttonReleased("key_0")
 
 
 def test_writeTextRow_1(function):
-    suc = function.writeTextRow(-1, "")
-    assert not suc
+    function.writeTextRow(-1, "")
 
 
 def test_writeTextRow_2(function):
-    suc = function.writeTextRow(1, ">")
-    assert suc
+    function.writeTextRow(1, ">")
 
 
 def test_writeTextRow_3(function):
-    suc = function.writeTextRow(1, "fsjgfdjhsfg")
-    assert suc
+    function.writeTextRow(1, "fsjgfdjhsfg")
 
 
 def test_writeTextRow_4(function):
     with mock.patch.object(function, "clearGraphics"):
-        suc = function.writeTextRow(4, "fsjgfdjhsfg")
-        assert suc
+        function.writeTextRow(4, "fsjgfdjhsfg")
 
 
 def test_clearGraphics(function):

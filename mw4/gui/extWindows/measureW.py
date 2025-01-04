@@ -409,13 +409,13 @@ class MeasureWindow(toolsQtWidget.MWidget):
             self.inUseMessage()
         self.drawMeasure()
 
-    def drawMeasure(self) -> bool:
+    def drawMeasure(self) -> None:
         """ """
         data = self.app.measure.data
         if len(data.get("time", [])) < 5:
-            return False
+            return
         if not self.drawLock.tryLock():
-            return False
+            return
 
         x = data["time"].astype("datetime64[s]").astype("int")
 
@@ -440,4 +440,3 @@ class MeasureWindow(toolsQtWidget.MWidget):
                 plotItem.enableAutoRange(x=True, y=True)
 
         self.drawLock.unlock()
-        return True

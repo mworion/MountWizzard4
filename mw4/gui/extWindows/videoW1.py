@@ -30,9 +30,8 @@ class VideoWindow1(VideoWindow):
         self.setWindowTitle("Video Stream 1")
         self.setObjectName("Video1")
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """
-        :return: True for test purpose
         """
         if "videoW1" not in self.app.config:
             self.app.config["videoW1"] = {}
@@ -44,11 +43,9 @@ class VideoWindow1(VideoWindow):
         self.ui.frameRate.setCurrentIndex(config.get("frameRate", 2))
         self.user = config.get("user", "")
         self.password = config.get("password", "")
-        return True
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """
-        :return: True for test purpose
         """
         config = self.app.config
         if "videoW1" not in config:
@@ -66,12 +63,9 @@ class VideoWindow1(VideoWindow):
         config["frameRate"] = self.ui.frameRate.currentIndex()
         config["user"] = self.user
         config["password"] = self.password
-        return True
 
-    def closeEvent(self, closeEvent):
+    def closeEvent(self, closeEvent) -> None:
         """
-        :param closeEvent:
-        :return:
         """
         self.pixmapReady.disconnect(self.receivedImage)
         self.storeConfig()

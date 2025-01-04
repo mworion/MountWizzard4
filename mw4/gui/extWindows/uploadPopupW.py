@@ -17,6 +17,7 @@
 # standard libraries
 import os
 import re
+from pathlib import Path
 
 # external packages
 from PySide6.QtCore import Qt, Signal
@@ -72,12 +73,12 @@ class UploadPopup(MWidget):
         self.threadPool = parentWidget.app.threadPool
         self.worker = None
         self.workerStatus = None
-        self.url = url
-        self.dataTypes = dataTypes
-        self.dataFilePath = dataFilePath
+        self.url: str = url
+        self.dataTypes: str = dataTypes
+        self.dataFilePath: Path = dataFilePath
 
-        self.pollStatusRunState = False
-        self.timeoutCounter = 0
+        self.pollStatusRunState: bool = False
+        self.timeoutCounter: int = 0
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)

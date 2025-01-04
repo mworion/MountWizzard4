@@ -21,9 +21,10 @@ from PySide6.QtCore import Signal, QObject, QMutex
 from PySide6.QtGui import QPixmap
 from qimage2ndarray import array2qimage
 import numpy as np
+from functools import partial
 
 # local import
-from gui.utilities import toolsQtWidget
+from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets import keypad_ui
 from base.tpool import Worker
 from logic.keypad.keypad import KeyPad
@@ -43,7 +44,7 @@ class KeypadSignals(QObject):
     clearCursor = Signal()
 
 
-class KeypadWindow(toolsQtWidget.MWidget):
+class KeypadWindow(MWidget):
     """ """
 
     def __init__(self, app):
@@ -55,10 +56,32 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.ui.setupUi(self)
         self.signals = KeypadSignals()
         self.keypad = KeyPad(self.signals)
-        self.buttons = None
-        self.inputActive = False
+        self.inputActive: bool = False
         self.websocketMutex = QMutex()
+
         self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
+        self.buttons = {
+            "key_0": self.ui.b0,
+            "key_1": self.ui.b1,
+            "key_2": self.ui.b2,
+            "key_3": self.ui.b3,
+            "key_4": self.ui.b4,
+            "key_5": self.ui.b5,
+            "key_6": self.ui.b6,
+            "key_7": self.ui.b7,
+            "key_8": self.ui.b8,
+            "key_9": self.ui.b9,
+            "key_esc": self.ui.besc,
+            "key_menu": self.ui.bmenu,
+            "key_stop": self.ui.bstop,
+            "key_plus": self.ui.bplus,
+            "key_minus": self.ui.bminus,
+            "key_up": self.ui.bup,
+            "key_down": self.ui.bdown,
+            "key_left": self.ui.bleft,
+            "key_right": self.ui.bright,
+            "key_enter": self.ui.benter,
+        }
         self.rows = [
             self.ui.row0,
             self.ui.row1,
@@ -67,14 +90,14 @@ class KeypadWindow(toolsQtWidget.MWidget):
             self.ui.row4,
         ]
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """ """
         if "keypadW" not in self.app.config:
             self.app.config["keypadW"] = {}
         config = self.app.config["keypadW"]
         self.positionWindow(config)
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """ """
         config = self.app.config
         if "keypadW" not in config:
@@ -88,13 +111,13 @@ class KeypadWindow(toolsQtWidget.MWidget):
         config["height"] = self.height()
         config["width"] = self.width()
 
-    def closeEvent(self, closeEvent):
+    def closeEvent(self, closeEvent) -> None:
         """ """
         self.storeConfig()
         self.keypad.closeWebsocket()
         super().closeEvent(closeEvent)
 
-    def keyPressEvent(self, keyEvent):
+    def keyPressEvent(self, keyEvent) -> None:
         """ """
         key = keyEvent.key()
         if key == 16777216:
@@ -112,12 +135,11 @@ class KeypadWindow(toolsQtWidget.MWidget):
 
         super().keyPressEvent(keyEvent)
 
-    def showWindow(self):
+    def showWindow(self) -> None:
         """ """
         if not self.app.mount.setting.webInterfaceStat:
             self.msg.emit(0, "System", "Mount", "Enable webinterface")
-            suc = self.app.mount.setting.setWebInterface(True)
-            if not suc:
+            if not self.app.mount.setting.setWebInterface(True):
                 self.msg.emit(2, "System", "Mount", "Could not enable webinterface")
         self.app.colorChange.connect(self.colorChange)
         self.app.hostChanged.connect(self.hostChanged)
@@ -130,102 +152,65 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.show()
         self.startKeypad()
 
-    def colorChange(self):
+    def colorChange(self) -> None:
         """ """
         self.setStyleSheet(self.mw4Style)
         for row in self.rows:
             row.setStyleSheet(f"background-color: {self.M_BACK};")
         self.clearGraphics()
 
-    def setupButtons(self):
+    def setupButtons(self) -> None:
         """ """
-        self.buttons = {
-            self.ui.b0: "key_0",
-            self.ui.b1: "key_1",
-            self.ui.b2: "key_2",
-            self.ui.b3: "key_3",
-            self.ui.b4: "key_4",
-            self.ui.b5: "key_5",
-            self.ui.b6: "key_6",
-            self.ui.b7: "key_7",
-            self.ui.b8: "key_8",
-            self.ui.b9: "key_9",
-            self.ui.besc: "key_esc",
-            self.ui.bmenu: "key_menu",
-            self.ui.bstop: "key_stop",
-            self.ui.bplus: "key_plus",
-            self.ui.bminus: "key_minus",
-            self.ui.bup: "key_up",
-            self.ui.bdown: "key_down",
-            self.ui.bleft: "key_left",
-            self.ui.bright: "key_right",
-            self.ui.benter: "key_enter",
-        }
         for button in self.buttons:
-            button.pressed.connect(self.buttonPressed)
-            button.released.connect(self.buttonReleased)
+            self.buttons[button].pressed.connect(partial(self.buttonPressed, button))
+            self.buttons[button].released.connect(partial(self.buttonReleased, button))
 
-    def websocketClear(self):
+    def websocketClear(self) -> None:
         """ """
         self.websocketMutex.unlock()
 
-    def startKeypad(self):
+    def startKeypad(self) -> None:
         """ """
         if not self.websocketMutex.tryLock():
-            return False
+            return
 
         self.clearDisplay()
         self.writeTextRow(2, "Connecting ...")
         worker = Worker(self.keypad.workerWebsocket, self.app.mount.host)
         worker.signals.finished.connect(self.websocketClear)
-        self.threadPool.start(worker)
-        return True
 
-    def hostChanged(self):
+    def hostChanged(self) -> None:
         """ """
         self.keypad.closeWebsocket()
+        self.websocketMutex.unlock()
         self.startKeypad()
 
-    def buttonPressed(self):
+    def buttonPressed(self, button: str) -> None:
         """ """
-        button = self.sender()
-        if button not in self.buttons:
-            return False
+        self.signals.mousePressed.emit(button)
 
-        self.signals.mousePressed.emit(self.buttons[button])
-        return True
-
-    def buttonReleased(self):
+    def buttonReleased(self, button: str) -> None:
         """ """
-        button = self.sender()
-        if button not in self.buttons:
-            return False
+        self.signals.mouseReleased.emit(button)
 
-        self.signals.mouseReleased.emit(self.buttons[button])
-        return True
-
-    def writeTextRow(self, row, text):
+    def writeTextRow(self, row: int, text: str) -> None:
         """ """
         if not -1 < row < 5:
-            return False
+            return
 
-        if text.startswith(">"):
-            self.rows[row].setStyleSheet(f"background-color: {self.M_SEC};")
-        else:
-            self.rows[row].setStyleSheet(f"background-color: {self.M_BACK};")
+        col = self.M_SEC if text.startswith(">") else self.M_BACK
+        self.rows[row].setStyleSheet(f"background-color: {col};")
         self.rows[row].setText(text)
 
         if row == 4 and not text.startswith("\x00"):
             self.clearGraphics()
 
-        return True
-
-    def clearGraphics(self):
+    def clearGraphics(self) -> None:
         """ """
         self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
         self.drawGraphics()
 
-    def clearDisplay(self):
+    def clearDisplay(self) -> None:
         """ """
         for row in range(5):
             self.writeTextRow(row, "")
@@ -238,7 +223,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.inputActive = False
         self.ui.cursor.setVisible(False)
 
-    def setCursorPos(self, row, col):
+    def setCursorPos(self, row: int, col: int) -> None:
         """ """
         self.inputActive = True
         x = self.rows[row].x()
@@ -250,7 +235,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.ui.cursor.setVisible(True)
         self.ui.cursor.move(x + 16 * col, y + height)
 
-    def drawGraphics(self):
+    def drawGraphics(self) -> None:
         """ """
         color = self.hex2rgb(self.M_PRIM)
         back = self.hex2rgb(self.M_BACK)
@@ -264,7 +249,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         pixmap = QPixmap().fromImage(image).scaled(256, 128)
         self.ui.graphics.setPixmap(pixmap)
 
-    def buildGraphics(self, imgArr, yPos, xPos):
+    def buildGraphics(self, imgArr: np.array, yPos: int, xPos: int) -> None:
         """ """
         dy, dx, _ = imgArr.shape
-        self.graphics[yPos : yPos + dy, xPos : xPos + dx] = imgArr
+        self.graphics[yPos: yPos + dy, xPos : xPos + dx] = imgArr

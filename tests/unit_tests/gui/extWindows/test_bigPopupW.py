@@ -35,23 +35,20 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
     if "bigPopupW" in function.app.config:
         del function.app.config["bigPopupW"]
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_storeConfig_2(function):
     function.app.config["bigPopupW"] = {}
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_closeEvent_1(function):
@@ -63,27 +60,22 @@ def test_closeEvent_1(function):
 
 def test_showWindow(function):
     with mock.patch.object(function, "show"):
-        suc = function.showWindow()
-        assert suc
+        function.showWindow()
 
 
 def test_colorChange(function):
-    suc = function.colorChange()
-    assert suc
+    function.colorChange()
 
 
 def test_updateDeviceStats(function):
-    suc = function.updateDeviceStats()
-    assert suc
+    function.updateDeviceStats()
 
 
 def test_updateStatus_1(function):
     function.app.mount.obsSite.status = 0
-    suc = function.updateStatus()
-    assert suc
+    function.updateStatus()
 
 
 def test_updateStatus_2(function):
     function.app.mount.obsSite.status = 1
-    suc = function.updateStatus()
-    assert suc
+    function.updateStatus()

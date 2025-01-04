@@ -30,9 +30,8 @@ class VideoWindow4(VideoWindow):
         self.setWindowTitle("Video Stream 4")
         self.setObjectName("Video4")
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """
-        :return: True for test purpose
         """
         if "videoW4" not in self.app.config:
             self.app.config["videoW4"] = {}
@@ -44,11 +43,9 @@ class VideoWindow4(VideoWindow):
         self.ui.frameRate.setCurrentIndex(config.get("frameRate", 2))
         self.user = config.get("user", "")
         self.password = config.get("password", "")
-        return True
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """
-        :return: True for test purpose
         """
         config = self.app.config
         if "videoW4" not in config:
@@ -66,9 +63,8 @@ class VideoWindow4(VideoWindow):
         config["frameRate"] = self.ui.frameRate.currentIndex()
         config["user"] = self.user
         config["password"] = self.password
-        return True
 
-    def closeEvent(self, closeEvent):
+    def closeEvent(self, closeEvent) -> None:
         """
         :param closeEvent:
         :return:

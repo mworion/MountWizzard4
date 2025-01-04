@@ -35,23 +35,20 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
     if "messageW" in function.app.config:
         del function.app.config["messageW"]
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_storeConfig_2(function):
     function.app.config["messageW"] = {}
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_closeEvent_1(function):
@@ -64,28 +61,23 @@ def test_closeEvent_1(function):
 def test_updateListColors(function):
     function.app.messageQueue.put((0, "test", "test", "test"))
     function.writeMessage()
-    suc = function.updateListColors()
-    assert suc
+    function.updateListColors()
 
 
 def test_colorChange(function):
     with mock.patch.object(function, "setupMessage"):
         with mock.patch.object(function, "clearMessageTable"):
-            suc = function.colorChange()
-            assert suc
+            function.colorChange()
 
 
 def test_clearMessageTable_1(function):
-    suc = function.clearMessageTable()
-    assert suc
+    function.clearMessageTable()
 
 
 def test_writeMessage_1(function):
-    suc = function.writeMessage()
-    assert suc
+    function.writeMessage()
 
 
 def test_writeMessage_2(function):
     function.app.messageQueue.put((0, "test", "test", "test"))
-    suc = function.writeMessage()
-    assert suc
+    function.writeMessage()

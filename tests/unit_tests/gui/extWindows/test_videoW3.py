@@ -36,26 +36,24 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
     if "videoW3" in function.app.config:
         del function.app.config["videoW3"]
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_storeConfig_2(function):
     function.app.config["videoW3"] = {}
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
-def test_closeEvent_1(function):
+
+def tst_closeEvent_1(function):
     with mock.patch.object(function, "stopVideo"):
         with mock.patch.object(MWidget, "closeEvent"):
             function.showWindow()

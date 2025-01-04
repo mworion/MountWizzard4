@@ -47,7 +47,6 @@ class DownloadPopup(MWidget):
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self)
         self.setWindowTitle("Downloading from Web")
-        # self.setWindowModality(Qt.WindowModality.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)

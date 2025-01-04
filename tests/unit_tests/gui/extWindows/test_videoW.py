@@ -47,14 +47,12 @@ def test_closeEvent_1(function):
 
 
 def test_colorChange(function):
-    suc = function.colorChange()
-    assert suc
+    function.colorChange()
 
 
 def test_showWindow_1(function):
     with mock.patch.object(function, "show"):
-        suc = function.showWindow()
-        assert suc
+        function.showWindow()
 
 
 def test_sendImage_1(function):
@@ -66,8 +64,7 @@ def test_sendImage_1(function):
     function.capture = Test()
     function.running = False
     with mock.patch.object(cv2, "cvtColor", return_value=np.ones((10, 10, 1))):
-        suc = function.sendImage()
-        assert not suc
+        function.sendImage()
 
 
 def test_sendImage_2(function):
@@ -81,8 +78,7 @@ def test_sendImage_2(function):
     with mock.patch.object(
         cv2, "cvtColor", return_value=np.ones((10, 10, 1)), side_effect=cv2.error
     ):
-        suc = function.sendImage()
-        assert not suc
+        function.sendImage()
 
 
 def test_sendImage_3(function):
@@ -94,14 +90,12 @@ def test_sendImage_3(function):
     function.capture = Test()
     function.running = True
     with mock.patch.object(cv2, "cvtColor", return_value=np.ones((10, 10, 1))):
-        suc = function.sendImage()
-        assert suc
+        function.sendImage()
 
 
 def test_count(function):
     function.runningCounter = 0
-    suc = function.count()
-    assert suc
+    function.count()
     assert function.runningCounter == 1
 
 
@@ -130,8 +124,7 @@ def test_workerVideoStream_0(function):
     function.running = True
     with mock.patch.object(cv2, "VideoCapture", return_value=Test()):
         with mock.patch.object(Test, "open", side_effect=cv2.error):
-            suc = function.workerVideo("test", 1)
-            assert not suc
+            function.workerVideo("test", 1)
             assert not function.running
 
 
@@ -160,8 +153,7 @@ def test_workerVideoStream_1(function):
     function.running = True
     with mock.patch.object(cv2, "VideoCapture", return_value=Test()):
         with mock.patch.object(Test, "open", side_effect=Exception):
-            suc = function.workerVideo("test", 1)
-            assert not suc
+            function.workerVideo("test", 1)
             assert not function.running
 
 
@@ -189,8 +181,7 @@ def test_workerVideoStream_2(function):
 
     function.running = True
     with mock.patch.object(cv2, "VideoCapture", return_value=Test()):
-        suc = function.workerVideo("test", 1)
-        assert not suc
+        function.workerVideo("test", 1)
         assert not function.running
 
 
@@ -219,8 +210,7 @@ def test_workerVideoStream_3(function):
     function.running = True
     with mock.patch.object(cv2, "VideoCapture", return_value=Test()):
         with mock.patch.object(function, "sendImage"):
-            suc = function.workerVideo("test", 1)
-            assert suc
+            function.workerVideo("test", 1)
 
 
 def test_workerVideoStream_4(function):
@@ -249,8 +239,7 @@ def test_workerVideoStream_4(function):
     function.running = True
     with mock.patch.object(cv2, "VideoCapture", return_value=Test()):
         with mock.patch.object(function, "sendImage"):
-            suc = function.workerVideo("test", 1)
-            assert suc
+            function.workerVideo("test", 1)
 
 
 def test_startVideoStream_1(function):
@@ -258,8 +247,7 @@ def test_startVideoStream_1(function):
     function.password = "1"
     function.ui.videoURL.setText("")
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.startVideo()
-        assert not suc
+        function.startVideo()
 
 
 def test_startVideoStream_2(function):
@@ -267,40 +255,34 @@ def test_startVideoStream_2(function):
     function.password = ""
     function.ui.videoURL.setText("test")
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.startVideo()
-        assert suc
+        function.startVideo()
 
 
 def test_stopVideoStream_1(function):
-    suc = function.stopVideo()
-    assert suc
+    function.stopVideo()
 
 
 def test_restartVideo(function):
     with mock.patch.object(function, "stopVideo"):
         with mock.patch.object(function, "startVideo"):
             with mock.patch.object(gui.extWindows.videoW, "sleepAndEvents"):
-                suc = function.restartVideo()
-                assert suc
+                function.restartVideo()
 
 
 def test_receivedImage_1(function):
     pixmap = QPixmap(100, 100)
     function.running = False
-    suc = function.receivedImage(pixmap)
-    assert not suc
+    function.receivedImage(pixmap)
 
 
 def test_receivedImage_2(function):
     pixmap = QPixmap(100, 100)
     function.running = True
-    suc = function.receivedImage(pixmap)
-    assert suc
+    function.receivedImage(pixmap)
 
 
 def test_checkAuth(function):
-    suc = function.checkAuth()
-    assert suc
+    function.checkAuth()
 
 
 def test_authPopup_1(function):
@@ -309,8 +291,7 @@ def test_authPopup_1(function):
     with mock.patch.object(function, "checkAuth"):
         with mock.patch.object(function, "restartVideo"):
             with mock.patch.object(QInputDialog, "getText", return_value=("test", False)):
-                suc = function.authPopup()
-                assert not suc
+                function.authPopup()
                 assert function.user == "test"
                 assert function.password == "test"
 
@@ -321,7 +302,6 @@ def test_authPopup_2(function):
     with mock.patch.object(function, "checkAuth"):
         with mock.patch.object(function, "restartVideo"):
             with mock.patch.object(QInputDialog, "getText", return_value=("test1", True)):
-                suc = function.authPopup()
-                assert suc
+                function.authPopup()
                 assert function.user == "test1"
                 assert function.password == "test1"

@@ -243,8 +243,7 @@ class SettDevice:
         self.mainW.wIcon(self.ui.ascomDisconnect, "unlink")
 
     def setupDeviceGui(self) -> None:
-        """
-        """
+        """ """
         dropDowns = [self.drivers[driver]["uiDropDown"] for driver in self.drivers]
         for dropDown in dropDowns:
             dropDown.clear()
@@ -268,8 +267,7 @@ class SettDevice:
             self.drivers[driver]["uiDropDown"].setCurrentIndex(index)
 
     def processPopupResults(self) -> None:
-        """
-        """
+        """ """
         self.devicePopup.ui.ok.clicked.disconnect(self.processPopupResults)
         driver = self.devicePopup.returnValues.get("driver")
         if self.devicePopup.returnValues.get("indiCopyConfig", False):
@@ -292,8 +290,7 @@ class SettDevice:
         self.startDriver(driver=driver)
 
     def copyConfig(self, driverOrig: str, framework: str) -> None:
-        """
-        """
+        """ """
         for driverDest in self.drivers:
             if driverDest == driverOrig:
                 continue
@@ -314,8 +311,7 @@ class SettDevice:
                 self.driversData[driverDest]["frameworks"][framework][param] = source
 
     def callPopup(self, driver: str) -> None:
-        """
-        """
+        """ """
         data = self.driversData[driver]
         deviceType = self.drivers[driver]["deviceType"]
         self.devicePopup = DevicePopup(
@@ -324,8 +320,7 @@ class SettDevice:
         self.devicePopup.ui.ok.clicked.connect(self.processPopupResults)
 
     def stopDriver(self, driver: str) -> None:
-        """
-        """
+        """ """
         self.app.deviceStat[driver] = None
         framework = self.drivers[driver]["class"].framework
         if framework not in self.drivers[driver]["class"].run:
@@ -342,14 +337,12 @@ class SettDevice:
         self.app.deviceStat[driver] = None
 
     def stopDrivers(self) -> None:
-        """
-        """
+        """ """
         for driver in self.drivers:
             self.stopDriver(driver=driver)
 
     def configDriver(self, driver: str) -> None:
-        """
-        """
+        """ """
         self.app.deviceStat[driver] = False
         framework = self.driversData[driver]["framework"]
         if framework not in self.drivers[driver]["class"].run:
@@ -361,8 +354,7 @@ class SettDevice:
             setattr(driverClass, attribute, frameworkConfig[attribute])
 
     def startDriver(self, driver: str, autoStart: bool) -> None:
-        """
-        """
+        """ """
         data = self.driversData[driver]
         framework = data["framework"]
         if framework not in self.drivers[driver]["class"].run:
@@ -382,8 +374,7 @@ class SettDevice:
         self.msg.emit(0, "Driver", f"{framework.upper()} enabled", f"{driver}")
 
     def startDrivers(self) -> None:
-        """
-        """
+        """ """
         for driver in self.drivers:
             if driver not in self.driversData:
                 continue
@@ -396,8 +387,7 @@ class SettDevice:
             self.startDriver(driver, autostart)
 
     def manualStopAllAscomDrivers(self) -> None:
-        """
-        """
+        """ """
         for driver in self.drivers:
             if driver not in self.driversData:
                 continue

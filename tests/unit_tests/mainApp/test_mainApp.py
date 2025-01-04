@@ -59,8 +59,7 @@ def app(qapp):
                     app = MountWizzard4(mwGlob=mwGlob, application=qapp)
                     app.update1s = Test()
                     yield app
-
-    app.threadPool.waitForDone(5000)
+                    app.threadPool.waitForDone(10000)
 
 
 def test_storeStatusOperationRunning(app):

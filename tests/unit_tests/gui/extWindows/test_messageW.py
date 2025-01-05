@@ -25,6 +25,9 @@ from PySide6.QtGui import QCloseEvent
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.messageW import MessageWindow
+from base.loggerMW import setupLogging
+
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -72,6 +75,10 @@ def test_colorChange(function):
 
 def test_clearMessageTable_1(function):
     function.clearMessageTable()
+
+
+def test_writeMessageQueue(function):
+    function.writeMessageQueue(1, "test", "test", "test")
 
 
 def test_writeMessage_1(function):

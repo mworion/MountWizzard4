@@ -81,7 +81,6 @@ class MainWindow(MWidget):
         }
 
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
-        self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.remoteCommand.connect(self.remoteCommand)
         self.app.plateSolve.signals.message.connect(self.updatePlateSolveStatus)
         self.app.dome.signals.message.connect(self.updateDomeStatus)
@@ -98,7 +97,7 @@ class MainWindow(MWidget):
         self.app.update1s.connect(self.updateControllerStatus)
         self.app.update1s.connect(self.updateThreadAndOnlineStatus)
         self.app.update1s.connect(self.smartFunctionGui)
-        # self.app.update1s.connect(self.smartTabGui)
+        self.app.update1s.connect(self.smartTabGui)
         self.app.update1s.connect(self.setEnvironDeviceStats)
         self.app.update1s.connect(self.updateDeviceStats)
 
@@ -211,19 +210,6 @@ class MainWindow(MWidget):
         self.app.storeConfig()
         self.saveProfile()
         self.close()
-
-    def updateMountConnStat(self, status: bool) -> None:
-        """ """
-        hasSim = packageConfig.isAvailable
-        self.app.deviceStat["mount"] = status
-
-        if status and hasSim:
-            self.ui.mountConnected.setEnabled(status)
-            self.ui.mountConnected.setText("Mount 3D")
-        elif status:
-            self.ui.mountConnected.setText("Mount")
-        elif not status and hasSim:
-            self.ui.mountConnected.setText("Mount")
 
     def smartFunctionGui(self) -> None:
         """ """

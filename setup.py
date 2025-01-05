@@ -29,6 +29,7 @@ releaseNotes = """
 - add: show free disk space of work dir in the status bar
 - add: support for comet and asteroid data in extended downloads
 - add: age parameter for MPC SAT databases before auto download 
+- add: new theme with 3d buttons for selection
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major version PySide6
@@ -38,7 +39,7 @@ releaseNotes = """
 - refactor: environment devices (now 3 generic ones)
 - refactor: remove installer to separate repo (InstallerMW4)
 - refactor: optimizing code for better performance
-- refactor: platesolving features more reliable
+- refactor: plate solving features more reliable
 - refactor: camera handling
 - refactor: satellite handling
 - refactor: database handling for MPC files
@@ -46,7 +47,7 @@ releaseNotes = """
 - improve: reduced size of app
 - improve: faster startup time
 - improve: faster database loading
-- improve: optimizing material look & feel
+- improve: optimizing material look & feel fpr simulator 
 - improve: don't delete message list when color change
 - improve: rewrite of the online documentation
 - improve: no 10micron installer needed anymore for object data

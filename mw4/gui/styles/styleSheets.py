@@ -522,7 +522,7 @@ BASIC_STYLE = """
         margin: 1;
     }
     QTabBar::tab:disabled {
-        color: $M_TER2$;
+        color: $M_SEC1$;
         border-color: $M_SEC1$;
         background-color: $M_BACK$;
     }

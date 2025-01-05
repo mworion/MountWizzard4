@@ -283,8 +283,8 @@ class ImageWindow(MWidget, SlewInterface):
     def processPhotometry(self) -> None:
         """ """
         isPhotometry = self.ui.photometryGroup.isChecked()
+        self.clearGui()
         if self.fileHandler.image is None or not isPhotometry:
-            self.clearGui()
             return
 
         changeStyleDynamic(self.ui.photometryGroup, "running", True)

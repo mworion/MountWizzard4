@@ -98,27 +98,6 @@ def test_quitSave_1(window):
                 window.quitSave()
 
 
-@patch("base.packageConfig.isAvailable", True)
-def test_updateMountConnStat_1(window):
-    window.updateMountConnStat(True)
-    assert window.app.deviceStat["mount"]
-    assert window.ui.mountConnected.text() == "Mount 3D"
-
-
-@patch("base.packageConfig.isAvailable", False)
-def test_updateMountConnStat_2(window):
-    window.updateMountConnStat(True)
-    assert window.app.deviceStat["mount"]
-    assert window.ui.mountConnected.text() == "Mount"
-
-
-@patch("base.packageConfig.isAvailable", True)
-def test_updateMountConnStat_3(window):
-    window.updateMountConnStat(False)
-    assert window.ui.mountConnected.text() == "Mount"
-    assert not window.app.deviceStat["mount"]
-
-
 def test_smartFunctionGui_0(window):
     window.app.deviceStat["mount"] = True
     window.app.deviceStat["camera"] = True

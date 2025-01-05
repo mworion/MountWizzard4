@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import time
+import logging
 
 # external packages
 from PySide6.QtGui import QColor, QFont, QBrush
@@ -30,6 +31,8 @@ from gui.widgets import message_ui
 class MessageWindow(toolsQtWidget.MWidget):
     """ """
 
+    log = logging.getLogger("MW4")
+
     TEXT_NORMAL = 0
     TEXT_HIGHLIGHT = 1
     TEXT_WARNING = 2
@@ -43,6 +46,7 @@ class MessageWindow(toolsQtWidget.MWidget):
         self.messFont = None
         self.messColor = None
         self.setupMessage()
+        self.app.msg.connect(self.writeMessageQueue)
 
     def initConfig(self) -> None:
         """ """
@@ -120,6 +124,11 @@ class MessageWindow(toolsQtWidget.MWidget):
         self.app.update1s.connect(self.writeMessage)
         self.app.colorChange.connect(self.colorChange)
         self.show()
+
+    def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
+        """ """
+        self.log.ui(f"Message window: [{source} - {mType} - {message}]")
+        self.app.messageQueue.put((prio, source, mType, message))
 
     def writeMessage(self) -> None:
         """ """

@@ -170,11 +170,3 @@ def test_quit_1(app):
     with mock.patch.object(QCoreApplication, "quit"):
         with mock.patch.object(app.mount, "stopAllMountTimers"):
             app.quit()
-
-
-def test_loadHorizonData_1(app):
-    app.loadHorizonData()
-
-
-def test_writeMessageQueue(app):
-    app.writeMessageQueue(1, "test", "test", "test")

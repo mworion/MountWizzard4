@@ -18,6 +18,7 @@
 import logging
 import sys
 from queue import Queue
+from pathlib import Path
 
 # external packages
 from PySide6.QtWidgets import QApplication
@@ -115,7 +116,6 @@ class MountWizzard4(QObject):
         self.mainW = None
         self.timerCounter = 0
         self.statusOperationRunning = 0
-        self.msg.connect(self.writeMessageQueue)
         self.config = loadProfileStart(configDir=self.mwGlob["configDir"])
         self.deviceStat = {
             "dome": None,
@@ -172,7 +172,6 @@ class MountWizzard4(QObject):
         self.measure = MeasureData(self)
         self.remote = Remote(self)
         self.plateSolve = PlateSolve(self)
-        self.loadHorizonData()
         self.mainW = MainWindow(self)
         self.mainW.initConfig()
 
@@ -268,15 +267,3 @@ class MountWizzard4(QObject):
         self.aboutToQuit()
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 manual stopped"))
         self.application.quit()
-
-    def loadHorizonData(self) -> None:
-        """ """
-        config = self.config.get("hemisphereW", {})
-        fileName = config.get("horizonMaskFileName", "")
-        self.data.loadHorizonP(fileName=fileName)
-
-    # noinspection PyUnresolvedReferences
-    def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
-        """ """
-        self.log.ui(f"Message window: [{source} - {mType} - {message}]")
-        self.messageQueue.put((prio, source, mType, message))

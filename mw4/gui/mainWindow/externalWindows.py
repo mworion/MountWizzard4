@@ -16,17 +16,11 @@
 ###########################################################
 # standard libraries
 from functools import partial
-
 from PySide6.QtCore import QObject
 
 # external packages
 
 # local import
-from base import packageConfig
-
-if packageConfig.isAvailable:
-    from gui.extWindows.simulatorW import SimulatorWindow
-
 from gui.utilities.toolsQtWidget import sleepAndEvents, changeStyleDynamic
 from gui.extWindows.keypadW import KeypadWindow
 from gui.extWindows.messageW import MessageWindow
@@ -39,6 +33,7 @@ from gui.extWindows.videoW1 import VideoWindow1
 from gui.extWindows.videoW2 import VideoWindow2
 from gui.extWindows.videoW3 import VideoWindow3
 from gui.extWindows.videoW4 import VideoWindow4
+from gui.extWindows.simulatorW import SimulatorWindow
 from gui.extWindows.bigPopupW import BigPopup
 
 
@@ -123,15 +118,13 @@ class ExternalWindows(QObject):
                 "name": "BigPopup",
                 "class": BigPopup,
             },
-        }
-
-        if packageConfig.isAvailable:
-            self.uiWindows["showSimulatorW"] = {
+            "showSimulatorW": {
                 "button": self.mainW.ui.mountConnected,
                 "classObj": None,
                 "name": "SimulatorDialog",
                 "class": SimulatorWindow,
-            }
+            },
+        }
 
         for window in self.uiWindows:
             self.uiWindows[window]["button"].clicked.connect(partial(self.toggleWindow, window))

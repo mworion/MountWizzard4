@@ -347,7 +347,9 @@ class MWidget(QWidget, Styles):
         px = window.geometry().x()
         py = window.geometry().y()
 
-        dlg.setGeometry(px + int(0.5 * (pw - width)), py + int(0.5 * (ph - height)), width, height)
+        dlg.setGeometry(
+            px + int(0.5 * (pw - width)), py + int(0.5 * (ph - height)), width, height
+        )
         return dlg
 
     @staticmethod

@@ -189,9 +189,7 @@ def test_programModelToMount_1(function):
     function.modelData = ModelData(App)
     function.modelData.name = "Test"
     function.modelData.modelProgData = []
-    with mock.patch.object(
-        function.app.mount.model, "programModelFromStarList", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.model, "programModelFromStarList", return_value=False):
         function.programModelToMount()
 
 
@@ -199,9 +197,7 @@ def test_programModelToMount_2(function):
     function.modelData = ModelData(App)
     function.modelData.name = "Test"
     function.modelData.modelProgData = [1, 2, 3]
-    with mock.patch.object(
-        function.app.mount.model, "programModelFromStarList", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.model, "programModelFromStarList", return_value=False):
         function.programModelToMount()
 
 
@@ -210,9 +206,7 @@ def test_programModelToMount_3(function):
     function.modelData.name = "Test"
 
     function.modelData.modelProgData = [1, 2, 3]
-    with mock.patch.object(
-        function.app.mount.model, "programModelFromStarList", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.model, "programModelFromStarList", return_value=True):
         with mock.patch.object(function.app.mount.model, "storeName"):
             function.programModelToMount()
 
@@ -304,9 +298,7 @@ def test_setupModelInputData_1(function):
 
 def test_setupBatchData_1(function):
     function.modelData = ModelData(App)
-    with mock.patch.object(
-        function, "setupFilenamesAndDirectories", return_value=(Path(""), "test")
-    ):
+    with mock.patch.object(function, "setupFilenamesAndDirectories", return_value=(Path(""), "test")):
         function.setupBatchData()
 
 
@@ -388,9 +380,7 @@ def test_runFileModel_2(function):
     with mock.patch.object(MWidget, "openFile", return_value=[Path("test.model")]):
         with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
             with mock.patch.object(function.modelData, "buildProgModel"):
-                with mock.patch.object(
-                    gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val
-                ):
+                with mock.patch.object(gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val):
                     with mock.patch.object(function.modelData, "buildProgModel"):
                         with mock.patch.object(function, "programModelToMount"):
                             function.runFileModel()

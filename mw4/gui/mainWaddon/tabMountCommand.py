@@ -42,7 +42,7 @@ class MountCommand:
         self.ui.mountUpdateFirmware.clicked.connect(self.openUpdateFirmware)
         self.ui.mountDocumentation.clicked.connect(self.openMountDocumentation)
 
-    def openCommandProtocol(self):
+    def openCommandProtocol(self) -> None:
         """ """
         url = "http://" + self.ui.mountHost.text() + "/manuals/command-protocol.pdf"
         if not webbrowser.open(url, new=0):
@@ -50,7 +50,7 @@ class MountCommand:
         else:
             self.msg.emit(0, "System", "Mount", "command protocol opened")
 
-    def openUpdateTimeDelta(self):
+    def openUpdateTimeDelta(self) -> None:
         """ """
         url = "http://" + self.ui.mountHost.text() + "/updatetime.html"
         if not webbrowser.open(url, new=0):
@@ -58,7 +58,7 @@ class MountCommand:
         else:
             self.msg.emit(0, "System", "Mount", "update time delta opened")
 
-    def openUpdateFirmware(self):
+    def openUpdateFirmware(self) -> None:
         """ """
         url = "http://" + self.ui.mountHost.text() + "/updatefirmware.html"
         if not webbrowser.open(url, new=0):
@@ -66,12 +66,12 @@ class MountCommand:
         else:
             self.msg.emit(0, "System", "Mount", "update firmware opened")
 
-    def openMountDocumentation(self):
+    def openMountDocumentation(self) -> None:
         """ """
         mountStrings = self.app.mount.firmware.product.split()
         if len(mountStrings) != 2:
             self.msg.emit(2, "System", "Mount", "Browser failed")
-            return False
+            return
         mountType = mountStrings[1]
         host = self.ui.mountHost.text()
         url = f"http://{host}/manuals/{mountType}-en.pdf"
@@ -79,9 +79,8 @@ class MountCommand:
             self.msg.emit(2, "System", "Mount", "Browser failed")
         else:
             self.msg.emit(0, "System", "Mount", "mount manual opened")
-        return True
 
-    def commandRaw(self):
+    def commandRaw(self) -> None:
         """ """
         host = self.app.mount.host
         conn = Connection(host)

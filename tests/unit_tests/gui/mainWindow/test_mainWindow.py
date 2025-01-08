@@ -310,9 +310,7 @@ def test_switchProfile_1(window):
         with mock.patch.object(window.externalWindows, "showExtendedWindows"):
             with mock.patch.object(window, "initConfig"):
                 with mock.patch.object(window.app, "initConfig", return_value=loc):
-                    with mock.patch.object(
-                        window.mainWindowAddons.addons["SettDevice"], "stopDrivers"
-                    ):
+                    with mock.patch.object(window.mainWindowAddons.addons["SettDevice"], "stopDrivers"):
                         window.switchProfile({"test": 1})
 
 
@@ -333,9 +331,7 @@ def test_loadProfileGUI2(window):
 def test_loadProfileGUI_3(window):
     with mock.patch.object(window, "openFile", return_value=Path("test.cfg")):
         with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(
-                gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}
-            ):
+            with mock.patch.object(gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}):
                 with mock.patch.object(window, "switchProfile"):
                     window.loadProfileGUI()
 
@@ -361,9 +357,7 @@ def test_addProfileGUI_2(window):
 def test_addProfileGUI_3(window):
     with mock.patch.object(window, "openFile", return_value=Path("test.cfg")):
         with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(
-                gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}
-            ):
+            with mock.patch.object(gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}):
                 with mock.patch.object(window, "storeConfig"):
                     with mock.patch.object(window.app, "storeConfig"):
                         with mock.patch.object(window, "switchProfile"):

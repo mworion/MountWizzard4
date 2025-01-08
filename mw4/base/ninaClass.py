@@ -229,7 +229,9 @@ class NINAClass(DriverData, QObject):
         state = response.get("State", -1)
         self.storePropertyToData(state, "Device.Status")
         if state == 3:
-            self.storePropertyToData("integrating downloading image is ready", "Device.Message")
+            self.storePropertyToData(
+                "integrating downloading image is ready", "Device.Message"
+            )
         elif state == 0:
             self.storePropertyToData("IDLE", "Device.Message")
 

@@ -461,9 +461,7 @@ def test_calcTransformationMatricesTarget(function):
     function.obsSite.raJNowTarget = Angle(hours=12)
     function.obsSite.timeSidereal = Angle(hours=12)
     function.obsSite.decJNowTarget = Angle(degrees=10)
-    function.obsSite.location = wgs84.latlon(
-        latitude_degrees=49, longitude_degrees=11, elevation_m=500
-    )
+    function.obsSite.location = wgs84.latlon(latitude_degrees=49, longitude_degrees=11, elevation_m=500)
     function.obsSite.piersideTarget = "E"
     function.calcTransformationMatricesTarget()
 
@@ -472,18 +470,14 @@ def test_calcTransformationMatricesActual(function):
     function.obsSite.raJNow = Angle(hours=12)
     function.obsSite.timeSidereal = Angle(hours=12)
     function.obsSite.decJNow = Angle(degrees=10)
-    function.obsSite.location = wgs84.latlon(
-        latitude_degrees=49, longitude_degrees=11, elevation_m=500
-    )
+    function.obsSite.location = wgs84.latlon(latitude_degrees=49, longitude_degrees=11, elevation_m=500)
     function.obsSite.pierside = "E"
     function.calcTransformationMatricesActual()
 
 
 def test_calcMountAltAzToDomeAltAz_1(function):
     with mock.patch.object(function.obsSite, "setTargetAltAz", return_value=True):
-        with mock.patch.object(
-            function, "calcTransformationMatricesTarget", return_value=(10, 5, 0, 0, 0)
-        ):
+        with mock.patch.object(function, "calcTransformationMatricesTarget", return_value=(10, 5, 0, 0, 0)):
             valAlt, valAz = function.calcMountAltAzToDomeAltAz(10, 5)
             assert valAlt == 10
             assert valAz == 5

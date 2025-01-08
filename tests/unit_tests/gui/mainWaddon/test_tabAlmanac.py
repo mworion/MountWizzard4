@@ -118,8 +118,7 @@ def test_workerCalcTwilightDataPlot_1(function):
 def test_showTwilightDataPlot_1(function):
     function.app.mount.obsSite.location = None
     with mock.patch.object(threading.Thread, "start"):
-        suc = function.showTwilightDataPlot()
-        assert not suc
+        function.showTwilightDataPlot()
 
 
 def test_showTwilightDataPlot_2(function):
@@ -127,15 +126,13 @@ def test_showTwilightDataPlot_2(function):
         latitude_degrees=0, longitude_degrees=0, elevation_m=0
     )
     with mock.patch.object(function.app.threadPool, "start"):
-        suc = function.showTwilightDataPlot()
-        assert suc
+        function.showTwilightDataPlot()
 
 
 def test_showTwilightDataList_1(function):
     function.app.mount.obsSite.location = None
     with mock.patch.object(threading.Thread, "start"):
-        suc = function.showTwilightDataList()
-        assert not suc
+        function.showTwilightDataList()
 
 
 def test_showTwilightDataList_2(function):
@@ -143,8 +140,7 @@ def test_showTwilightDataList_2(function):
         latitude_degrees=0, longitude_degrees=0, elevation_m=0
     )
     with mock.patch.object(function, "listTwilightData"):
-        suc = function.showTwilightDataList()
-        assert suc
+        function.showTwilightDataList()
 
 
 def test_calcMoonPhase_1(function):

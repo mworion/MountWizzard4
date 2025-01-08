@@ -45,7 +45,9 @@ class CoverAscom(AscomClass):
         self.storePropertyToData(brightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
 
         maxBrightness = self.getAscomProperty("MaxBrightness")
-        self.storePropertyToData(maxBrightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX")
+        self.storePropertyToData(
+            maxBrightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX"
+        )
         return True
 
     def closeCover(self):

@@ -218,18 +218,10 @@ class TestConfigData(unittest.TestCase):
         p2 = "+56*30:00.5"
         p3 = "1234.5"
         p4 = "90"
-        modelStar1 = ModelStar(
-            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1, obsSite=obsSite
-        )
-        modelStar2 = ModelStar(
-            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=2, obsSite=obsSite
-        )
-        modelStar3 = ModelStar(
-            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=3, obsSite=obsSite
-        )
-        modelStar4 = ModelStar(
-            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=4, obsSite=obsSite
-        )
+        modelStar1 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1, obsSite=obsSite)
+        modelStar2 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=2, obsSite=obsSite)
+        modelStar3 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=3, obsSite=obsSite)
+        modelStar4 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=4, obsSite=obsSite)
 
         class Parent:
             host = None

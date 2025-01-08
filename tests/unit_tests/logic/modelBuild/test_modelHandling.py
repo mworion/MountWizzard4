@@ -288,9 +288,7 @@ def test_compareFile_2():
 
 
 def test_findFittingModel_1():
-    with mock.patch.object(
-        logic.modelBuild.modelHandling, "generateMountModelData", return_value={}
-    ):
+    with mock.patch.object(logic.modelBuild.modelHandling, "generateMountModelData", return_value={}):
         with mock.patch.object(
             logic.modelBuild.modelHandling, "compareFile", return_value=([1, 2, 3], [4])
         ):
@@ -300,12 +298,8 @@ def test_findFittingModel_1():
 
 
 def test_findFittingModel_2():
-    with mock.patch.object(
-        logic.modelBuild.modelHandling, "generateMountModelData", return_value={}
-    ):
-        with mock.patch.object(
-            logic.modelBuild.modelHandling, "compareFile", return_value=([1], [4])
-        ):
+    with mock.patch.object(logic.modelBuild.modelHandling, "generateMountModelData", return_value={}):
+        with mock.patch.object(logic.modelBuild.modelHandling, "compareFile", return_value=([1], [4])):
             filePath, pointsOut = findFittingModel({}, Path("tests/testData"))
         assert pointsOut == [4]
         assert filePath == Path("")

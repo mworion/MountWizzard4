@@ -759,7 +759,9 @@ class DataPoint(object):
                 buildP.append((alt.degrees, az.degrees % 360, 1))
         return buildP
 
-    def generateDSOPath(self, ha=0, dec=0, timeJD=0, location=None, numberPoints=0, keep=False):
+    def generateDSOPath(
+        self, ha=0, dec=0, timeJD=0, location=None, numberPoints=0, keep=False
+    ):
         """ """
         if numberPoints < 1:
             return False

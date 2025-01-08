@@ -54,11 +54,8 @@ def test_addSkyfieldTimeObject(function):
 
 
 def test_updateSeeingEntries_1(function):
-    function.app.seeingWeather.data = {
-        "test": {"hour": [10, 11], "date": ["2022-01-01", "2022-01-01"]}
-    }
-    suc = function.updateSeeingEntries()
-    assert not suc
+    function.app.seeingWeather.data = {"test": {"hour": [10, 11], "date": ["2022-01-01", "2022-01-01"]}}
+    function.updateSeeingEntries()
 
 
 def test_updateSeeingEntries_2(function):
@@ -87,8 +84,7 @@ def test_updateSeeingEntries_2(function):
     }
     t = function.app.mount.obsSite.ts.utc(2022, 1, 1, 10, 0, 0)
     with mock.patch.object(function.app.mount.obsSite.ts, "now", return_value=t):
-        suc = function.updateSeeingEntries()
-        assert suc
+        function.updateSeeingEntries()
 
 
 def test_updateSeeingEntries_3(function):
@@ -117,8 +113,7 @@ def test_updateSeeingEntries_3(function):
     }
     t = function.app.mount.obsSite.ts.utc(2023, 1, 1, 10, 0, 0)
     with mock.patch.object(function.app.mount.obsSite.ts, "now", return_value=t):
-        suc = function.updateSeeingEntries()
-        assert suc
+        function.updateSeeingEntries()
 
 
 def test_clearSeeingEntries(function):
@@ -127,8 +122,7 @@ def test_clearSeeingEntries(function):
 
 def test_enableSeeingEntries_1(function):
     function.seeingEnabled = False
-    suc = function.enableSeeingEntries()
-    assert not suc
+    function.enableSeeingEntries()
 
 
 def test_prepareSeeingTable_1(function):

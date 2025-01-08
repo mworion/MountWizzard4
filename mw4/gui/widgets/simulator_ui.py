@@ -276,7 +276,9 @@ class Ui_SimulatorDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showNumbers.setText(QCoreApplication.translate("SimulatorDialog", "Numbers", None))
+        self.showNumbers.setText(
+            QCoreApplication.translate("SimulatorDialog", "Numbers", None)
+        )
         # if QT_CONFIG(tooltip)
         self.showSlewPath.setToolTip(
             QCoreApplication.translate(
@@ -286,7 +288,9 @@ class Ui_SimulatorDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showSlewPath.setText(QCoreApplication.translate("SimulatorDialog", "Slew Path", None))
+        self.showSlewPath.setText(
+            QCoreApplication.translate("SimulatorDialog", "Slew Path", None)
+        )
         # if QT_CONFIG(tooltip)
         self.showHorizon.setToolTip(
             QCoreApplication.translate(
@@ -296,7 +300,9 @@ class Ui_SimulatorDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.showHorizon.setText(QCoreApplication.translate("SimulatorDialog", "Horizon", None))
+        self.showHorizon.setText(
+            QCoreApplication.translate("SimulatorDialog", "Horizon", None)
+        )
         # if QT_CONFIG(tooltip)
         self.groupBox.setToolTip(
             QCoreApplication.translate(
@@ -326,7 +332,9 @@ class Ui_SimulatorDialog(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.groupBox.setTitle(QCoreApplication.translate("SimulatorDialog", "Select View", None))
+        self.groupBox.setTitle(
+            QCoreApplication.translate("SimulatorDialog", "Select View", None)
+        )
         # if QT_CONFIG(tooltip)
         self.topView.setToolTip(
             QCoreApplication.translate(

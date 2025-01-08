@@ -47,9 +47,7 @@ def function(qapp):
     }
     widget = QWidget()
     with mock.patch.object(DevicePopup, "show"):
-        window = DevicePopup(
-            widget, app=App(), data=data, driver="telescope", deviceType="telescope"
-        )
+        window = DevicePopup(widget, app=App(), data=data, driver="telescope", deviceType="telescope")
         window.log = logging.getLogger()
         yield window
         window.app.threadPool.waitForDone(10000)

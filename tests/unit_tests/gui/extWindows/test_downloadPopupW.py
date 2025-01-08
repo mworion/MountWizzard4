@@ -129,9 +129,7 @@ def test_downloadFileWorker_2(function):
 
 
 def test_downloadFileWorker_3(function):
-    with mock.patch.object(
-        function, "getFileFromUrl", return_value=True, side_effect=TimeoutError
-    ):
+    with mock.patch.object(function, "getFileFromUrl", return_value=True, side_effect=TimeoutError):
         suc = function.downloadFileWorker(url="", dest="test/workDir/temp/test.txt")
         assert not suc
 
@@ -165,9 +163,7 @@ def test_downloadFileWorker_7(function):
         return_value=True,
     ):
         with mock.patch.object(function, "unzipFile", side_effect=Exception):
-            suc = function.downloadFileWorker(
-                url="", dest="test/workDir/temp/test.txt", unzip=True
-            )
+            suc = function.downloadFileWorker(url="", dest="test/workDir/temp/test.txt", unzip=True)
             assert not suc
 
 
@@ -178,9 +174,7 @@ def test_downloadFileWorker_8(function):
         return_value=True,
     ):
         with mock.patch.object(function, "unzipFile"):
-            suc = function.downloadFileWorker(
-                url="", dest="test/workDir/temp/test.txt", unzip=True
-            )
+            suc = function.downloadFileWorker(url="", dest="test/workDir/temp/test.txt", unzip=True)
             assert suc
 
 

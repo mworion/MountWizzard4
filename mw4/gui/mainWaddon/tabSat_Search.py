@@ -165,7 +165,9 @@ class SatSearch(SatData, QObject):
         """ """
         self.ui.listSats.setItem(row, col, entry)
 
-    def updateListSats(self, row, satParam, isUp=None, isSunlit=None, appMag=None, twilight=None):
+    def updateListSats(
+        self, row, satParam, isUp=None, isSunlit=None, appMag=None, twilight=None
+    ):
         """ """
         entry = QTableWidgetItem(f"{satParam[0]:5.0f}")
         entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)

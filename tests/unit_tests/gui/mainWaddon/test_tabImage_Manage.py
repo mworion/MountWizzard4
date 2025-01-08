@@ -224,44 +224,38 @@ def test_updateImagingParam_6(function):
 
 
 def test_setCoolerTemp_1(function):
-    suc = function.setCoolerTemp()
-    assert not suc
+    function.setCoolerTemp()
 
 
 def test_setCoolerTemp_2(function):
     function.app.camera.data["CAN_SET_CCD_TEMPERATURE"] = False
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, False)):
-        suc = function.setCoolerTemp()
-        assert not suc
+        function.setCoolerTemp()
 
 
 def test_setCoolerTemp_3(function):
     function.app.camera.data["CAN_SET_CCD_TEMPERATURE"] = True
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
-        suc = function.setCoolerTemp()
-        assert not suc
+        function.setCoolerTemp()
 
 
 def test_setCoolerTemp_4(function):
     function.app.camera.data["CAN_SET_CCD_TEMPERATURE"] = True
     function.app.camera.data["CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"] = 10
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
-        suc = function.setCoolerTemp()
-        assert suc
+        function.setCoolerTemp()
 
 
 def test_setCoolerTemp_5(function):
     function.app.camera.data["CAN_SET_CCD_TEMPERATURE"] = True
     function.app.camera.data["CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"] = 10
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, False)):
-        suc = function.setCoolerTemp()
-        assert not suc
+        function.setCoolerTemp()
 
 
 def test_setOffset_1(function):
     function.app.camera.data["CCD_OFFSET.OFFSET"] = None
-    suc = function.setOffset()
-    assert not suc
+    function.setOffset()
 
 
 def test_setOffset_2(function):
@@ -270,8 +264,7 @@ def test_setOffset_2(function):
     function.app.camera.data["CCD_OFFSET.OFFSET_MAX"] = 1
     function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     with mock.patch.object(QInputDialog, "getItem", return_value=("1", False)):
-        suc = function.setOffset()
-        assert not suc
+        function.setOffset()
 
 
 def test_setOffset_3(function):
@@ -280,8 +273,7 @@ def test_setOffset_3(function):
     function.app.camera.data["CCD_OFFSET.OFFSET_MAX"] = 1
     function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     with mock.patch.object(QInputDialog, "getItem", return_value=("1", True)):
-        suc = function.setOffset()
-        assert suc
+        function.setOffset()
 
 
 def test_setOffset_4(function):
@@ -290,8 +282,7 @@ def test_setOffset_4(function):
     function.app.camera.data["CCD_OFFSET.OFFSET_MAX"] = 1
     function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = None
     with mock.patch.object(QInputDialog, "getInt", return_value=("1", True)):
-        suc = function.setOffset()
-        assert suc
+        function.setOffset()
 
 
 def test_setOffset_5(function):
@@ -300,14 +291,12 @@ def test_setOffset_5(function):
     function.app.camera.data["CCD_OFFSET.OFFSET_MAX"] = None
     function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = None
     with mock.patch.object(QInputDialog, "getInt", return_value=("1", True)):
-        suc = function.setOffset()
-        assert suc
+        function.setOffset()
 
 
 def test_setGain_1(function):
     function.app.camera.data["CCD_GAIN.GAIN"] = None
-    suc = function.setGain()
-    assert not suc
+    function.setGain()
 
 
 def test_setGain_2(function):
@@ -316,8 +305,7 @@ def test_setGain_2(function):
     function.app.camera.data["CCD_GAIN.GAIN_MAX"] = 1
     function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
     with mock.patch.object(QInputDialog, "getItem", return_value=("1", False)):
-        suc = function.setGain()
-        assert not suc
+        function.setGain()
 
 
 def test_setGain_3(function):
@@ -326,8 +314,7 @@ def test_setGain_3(function):
     function.app.camera.data["CCD_GAIN.GAIN_MAX"] = 1
     function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
     with mock.patch.object(QInputDialog, "getItem", return_value=("1", True)):
-        suc = function.setGain()
-        assert suc
+        function.setGain()
 
 
 def test_setGain_4(function):
@@ -336,8 +323,7 @@ def test_setGain_4(function):
     function.app.camera.data["CCD_GAIN.GAIN_MAX"] = 1
     function.app.camera.data["CCD_GAIN.GAIN_LIST"] = None
     with mock.patch.object(QInputDialog, "getInt", return_value=("1", True)):
-        suc = function.setGain()
-        assert suc
+        function.setGain()
 
 
 def test_setGain_5(function):
@@ -346,34 +332,29 @@ def test_setGain_5(function):
     function.app.camera.data["CCD_GAIN.GAIN_MAX"] = None
     function.app.camera.data["CCD_GAIN.GAIN_LIST"] = None
     with mock.patch.object(QInputDialog, "getInt", return_value=("1", True)):
-        suc = function.setGain()
-        assert suc
+        function.setGain()
 
 
 def test_setFilterNumber_1(function):
-    suc = function.setFilterNumber()
-    assert not suc
+    function.setFilterNumber()
 
 
 def test_setFilterNumber_2(function):
     function.app.filter.data["FILTER_SLOT.FILTER_SLOT_VALUE"] = 10
     function.app.filter.data["FILTER_NAME.FILTER_SLOT_NAME_0"] = "test"
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, False)):
-        suc = function.setFilterNumber()
-        assert not suc
+        function.setFilterNumber()
 
 
 def test_setFilterNumber_3(function):
     function.app.filter.data = {"FILTER_SLOT.FILTER_SLOT_VALUE": 10}
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
-        suc = function.setFilterNumber()
-        assert suc
+        function.setFilterNumber()
 
 
 def test_setFilterName_1(function):
     function.app.filter.data["FILTER_SLOT.FILTER_SLOT_VALUE"] = None
-    suc = function.setFilterName()
-    assert not suc
+    function.setFilterName()
 
 
 def test_setFilterName_2(function):
@@ -381,8 +362,7 @@ def test_setFilterName_2(function):
     function.app.filter.data["FILTER_NAME.FILTER_SLOT_NAME_0"] = "test1"
     function.app.filter.data["FILTER_NAME.FILTER_SLOT_NAME_1"] = "test2"
     with mock.patch.object(QInputDialog, "getItem", return_value=(10, False)):
-        suc = function.setFilterName()
-        assert not suc
+        function.setFilterName()
 
 
 def test_setFilterName_3(function):
@@ -390,8 +370,7 @@ def test_setFilterName_3(function):
     function.app.filter.data["FILTER_NAME.FILTER_SLOT_NAME_0"] = "test1"
     function.app.filter.data["FILTER_NAME.FILTER_SLOT_NAME_1"] = "test2"
     with mock.patch.object(QInputDialog, "getItem", return_value=("test1", True)):
-        suc = function.setFilterName()
-        assert suc
+        function.setFilterName()
 
 
 def test_setFilterName_4(function):
@@ -401,8 +380,7 @@ def test_setFilterName_4(function):
         "FILTER_NAME.FILTER_SLOT_NAME_2": "test2",
     }
     with mock.patch.object(QInputDialog, "getItem", return_value=("test1", True)):
-        suc = function.setFilterName()
-        assert suc
+        function.setFilterName()
 
 
 def test_setDownloadModeFast(function):
@@ -453,126 +431,106 @@ def test_updateCoverLightGui_3(function):
 
 def test_setCoverPark_1(function):
     with mock.patch.object(function.app.cover, "closeCover", return_value=False):
-        suc = function.setCoverPark()
-        assert not suc
+        function.setCoverPark()
 
 
 def test_setCoverPark_2(function):
     with mock.patch.object(function.app.cover, "closeCover", return_value=True):
-        suc = function.setCoverPark()
-        assert suc
+        function.setCoverPark()
 
 
 def test_setCoverUnpark_1(function):
     with mock.patch.object(function.app.cover, "openCover", return_value=False):
-        suc = function.setCoverUnpark()
-        assert not suc
+        function.setCoverUnpark()
 
 
 def test_setCoverUnpark_2(function):
     with mock.patch.object(function.app.cover, "openCover", return_value=True):
-        suc = function.setCoverUnpark()
-        assert suc
+        function.setCoverUnpark()
 
 
 def test_setCoverHalt_1(function):
     with mock.patch.object(function.app.cover, "haltCover", return_value=False):
-        suc = function.setCoverHalt()
-        assert not suc
+        function.setCoverHalt()
 
 
 def test_setCoverHalt_2(function):
     with mock.patch.object(function.app.cover, "haltCover", return_value=True):
-        suc = function.setCoverHalt()
-        assert suc
+        function.setCoverHalt()
 
 
 def test_moveFocuserIn_1(function):
     with mock.patch.object(function.app.focuser, "move", return_value=False):
-        suc = function.moveFocuserIn()
-        assert not suc
+        function.moveFocuserIn()
 
 
 def test_moveFocuserIn_2(function):
     with mock.patch.object(function.app.focuser, "move", return_value=True):
-        suc = function.moveFocuserIn()
-        assert suc
+        function.moveFocuserIn()
 
 
 def test_moveFocuserOut_1(function):
     with mock.patch.object(function.app.focuser, "move", return_value=False):
-        suc = function.moveFocuserOut()
-        assert not suc
+        function.moveFocuserOut()
 
 
 def test_moveFocuserOut_2(function):
     with mock.patch.object(function.app.focuser, "move", return_value=True):
-        suc = function.moveFocuserOut()
-        assert suc
+        function.moveFocuserOut()
 
 
 def test_haltFocuser_1(function):
     with mock.patch.object(function.app.focuser, "halt", return_value=False):
-        suc = function.haltFocuser()
-        assert not suc
+        function.haltFocuser()
 
 
 def test_haltFocuser_2(function):
     with mock.patch.object(function.app.focuser, "halt", return_value=True):
-        suc = function.haltFocuser()
-        assert suc
+        function.haltFocuser()
 
 
 def test_switchLightOn_1(function):
     with mock.patch.object(function.app.cover, "lightOn", return_value=False):
-        suc = function.switchLightOn()
-        assert not suc
+        function.switchLightOn()
 
 
 def test_switchLightOn_2(function):
     with mock.patch.object(function.app.cover, "lightOn", return_value=True):
-        suc = function.switchLightOn()
-        assert suc
+        function.switchLightOn()
 
 
 def test_switchLightOff_1(function):
     with mock.patch.object(function.app.cover, "lightOff", return_value=False):
-        suc = function.switchLightOff()
-        assert not suc
+        function.switchLightOff()
 
 
 def test_switchLightOff_2(function):
     with mock.patch.object(function.app.cover, "lightOff", return_value=True):
-        suc = function.switchLightOff()
-        assert suc
+        function.switchLightOff()
 
 
 def test_setLightIntensity_1(function):
-    suc = function.setLightIntensity()
-    assert not suc
+    function.setLightIntensity()
 
 
 def test_setLightIntensity_2(function):
     function.app.cover.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, False)):
-        suc = function.setLightIntensity()
-        assert not suc
+        function.setLightIntensity()
 
 
 def test_setLightIntensity_3(function):
     function.app.cover.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
         with mock.patch.object(function.app.cover, "lightIntensity", return_value=False):
-            suc = function.setLightIntensity()
-            assert not suc
+            function.setLightIntensity()
 
 
 def test_setLightIntensity_4(function):
     function.app.cover.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
         with mock.patch.object(function.app.cover, "lightIntensity", return_value=True):
-            suc = function.setLightIntensity()
-            assert suc
+            function.setLightIntensity()
 
 
 def test_updateDomeGui_1(function):
@@ -613,128 +571,109 @@ def test_updateShutterStatGui_3(function):
 
 def test_domeSlewCW_0(function):
     function.app.deviceStat["dome"] = False
-    suc = function.domeSlewCW()
-    assert not suc
+    function.domeSlewCW()
 
 
 def test_domeSlewCW_1(function):
     function.app.deviceStat["dome"] = True
     with mock.patch.object(function.app.dome, "slewCW", return_value=False):
-        suc = function.domeSlewCW()
-        assert not suc
+        function.domeSlewCW()
 
 
 def test_domeSlewCW_2(function):
     function.app.deviceStat["dome"] = True
     with mock.patch.object(function.app.dome, "slewCW", return_value=True):
-        suc = function.domeSlewCW()
-        assert suc
+        function.domeSlewCW()
 
 
 def test_domeSlewCCW_0(function):
     function.app.deviceStat["dome"] = False
-    suc = function.domeSlewCCW()
-    assert not suc
+    function.domeSlewCCW()
 
 
 def test_domeSlewCCW_1(function):
     function.app.deviceStat["dome"] = True
     with mock.patch.object(function.app.dome, "slewCCW", return_value=False):
-        suc = function.domeSlewCCW()
-        assert not suc
+        function.domeSlewCCW()
 
 
 def test_domeSlewCCW_2(function):
     function.app.deviceStat["dome"] = True
     with mock.patch.object(function.app.dome, "slewCCW", return_value=True):
-        suc = function.domeSlewCCW()
-        assert suc
+        function.domeSlewCCW()
 
 
 def test_domeAbortSlew_0(function):
     function.app.deviceStat["dome"] = False
-    suc = function.domeAbortSlew()
-    assert not suc
+    function.domeAbortSlew()
 
 
 def test_domeAbortSlew_1(function):
     function.app.deviceStat["dome"] = True
     with mock.patch.object(function.app.dome, "abortSlew", return_value=False):
-        suc = function.domeAbortSlew()
-        assert not suc
+        function.domeAbortSlew()
 
 
 def test_domeAbortSlew_2(function):
     function.app.deviceStat["dome"] = True
     with mock.patch.object(function.app.dome, "abortSlew", return_value=True):
-        suc = function.domeAbortSlew()
-        assert suc
+        function.domeAbortSlew()
 
 
 def test_domeOpenShutter_0(function):
     function.app.deviceStat["dome"] = False
-    suc = function.domeOpenShutter()
-    assert not suc
+    function.domeOpenShutter()
 
 
 def test_domeOpenShutter_1(function):
     function.app.deviceStat["dome"] = True
     with mock.patch.object(function.app.dome, "openShutter", return_value=False):
-        suc = function.domeOpenShutter()
-        assert not suc
+        function.domeOpenShutter()
 
 
 def test_domeOpenShutter_2(function):
     function.app.deviceStat["dome"] = True
     with mock.patch.object(function.app.dome, "openShutter", return_value=True):
-        suc = function.domeOpenShutter()
-        assert suc
+        function.domeOpenShutter()
 
 
 def test_domeCloseShutter_0(function):
     function.app.deviceStat["dome"] = False
-    suc = function.domeCloseShutter()
-    assert not suc
+    function.domeCloseShutter()
 
 
 def test_domeCloseShutter_1(function):
     function.app.deviceStat["dome"] = True
     with mock.patch.object(function.app.dome, "closeShutter", return_value=False):
-        suc = function.domeCloseShutter()
-        assert not suc
+        function.domeCloseShutter()
 
 
 def test_domeCloseShutter_2(function):
     function.app.deviceStat["dome"] = True
     with mock.patch.object(function.app.dome, "closeShutter", return_value=True):
-        suc = function.domeCloseShutter()
-        assert suc
+        function.domeCloseShutter()
 
 
 def test_domeMoveGameController_0(function):
     function.app.deviceStat["dome"] = False
-    suc = function.domeMoveGameController(128, 128)
-    assert not suc
+    function.domeMoveGameController(128, 128)
 
 
 def test_domeMoveGameController_1(function):
     function.app.deviceStat["dome"] = True
     with mock.patch.object(function, "domeAbortSlew"):
-        suc = function.domeMoveGameController(128, 128)
-        assert suc
+        function.domeMoveGameController(128, 128)
 
 
 def test_domeMoveGameController_2(function):
     function.app.deviceStat["dome"] = True
     with mock.patch.object(function, "domeSlewCCW"):
         with mock.patch.object(function, "domeOpenShutter"):
-            suc = function.domeMoveGameController(0, 0)
-            assert suc
+            function.domeMoveGameController(0, 0)
 
 
 def test_domeMoveGameController_3(function):
     function.app.deviceStat["dome"] = True
     with mock.patch.object(function, "domeSlewCW"):
         with mock.patch.object(function, "domeCloseShutter"):
-            suc = function.domeMoveGameController(255, 255)
-            assert suc
+            function.domeMoveGameController(255, 255)

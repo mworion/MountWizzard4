@@ -139,7 +139,9 @@ class Client(QObject):
         :return: success for test purpose
         """
         if deviceName:
-            cmd = indiXML.clientGetProperties(indi_attr={"version": "1.7", "device": deviceName})
+            cmd = indiXML.clientGetProperties(
+                indi_attr={"version": "1.7", "device": deviceName}
+            )
         else:
             cmd = indiXML.clientGetProperties(indi_attr={"version": "1.7"})
 
@@ -632,7 +634,9 @@ class Client(QObject):
         )
 
         self.log.trace(
-            f"SET: Device:{device.name}, " f"Property: {iProperty}, " f"Elements: {elementList}"
+            f"SET: Device:{device.name}, "
+            f"Property: {iProperty}, "
+            f"Elements: {elementList}"
         )
 
         if isinstance(chunk, indiXML.SetBLOBVector):
@@ -663,7 +667,9 @@ class Client(QObject):
             deviceName=deviceName, chunk=chunk, elementList=elementList, defVector=True
         )
         self.log.trace(
-            f"DEF: Device:{device.name}, " f"Property: {iProperty}, " f"Elements: {elementList}"
+            f"DEF: Device:{device.name}, "
+            f"Property: {iProperty}, "
+            f"Elements: {elementList}"
         )
         self.signals.newProperty.emit(deviceName, iProperty)
         if isinstance(chunk, indiXML.DefBLOBVector):

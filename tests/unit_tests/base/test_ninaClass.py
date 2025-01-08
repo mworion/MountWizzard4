@@ -271,9 +271,7 @@ def test_workerPollStatus_1(function):
 
 def test_workerPollStatus_2(function):
     function.DEVICE_TYPE = "Camera"
-    with mock.patch.object(
-        function, "requestProperty", return_value={"State": 3, "Message": "test"}
-    ):
+    with mock.patch.object(function, "requestProperty", return_value={"State": 3, "Message": "test"}):
         with mock.patch.object(function, "storePropertyToData"):
             suc = function.workerPollStatus()
             assert suc
@@ -283,9 +281,7 @@ def test_workerPollStatus_3(function):
     function.DEVICE_TYPE = "Camera"
 
     function.deviceConnected = True
-    with mock.patch.object(
-        function, "requestProperty", return_value={"State": 5, "Message": "test"}
-    ):
+    with mock.patch.object(function, "requestProperty", return_value={"State": 5, "Message": "test"}):
         with mock.patch.object(function, "storePropertyToData"):
             with mock.patch.object(function, "getInitialConfig"):
                 suc = function.workerPollStatus()
@@ -296,9 +292,7 @@ def test_workerPollStatus_3(function):
 def test_workerPollStatus_4(function):
     function.DEVICE_TYPE = "Camera"
     function.deviceConnected = False
-    with mock.patch.object(
-        function, "requestProperty", return_value={"State": 5, "Message": "test"}
-    ):
+    with mock.patch.object(function, "requestProperty", return_value={"State": 5, "Message": "test"}):
         with mock.patch.object(function, "storePropertyToData"):
             with mock.patch.object(function, "getInitialConfig"):
                 suc = function.workerPollStatus()
@@ -309,9 +303,7 @@ def test_workerPollStatus_4(function):
 def test_workerPollStatus_5(function):
     function.DEVICE_TYPE = "Camera"
     function.deviceConnected = True
-    with mock.patch.object(
-        function, "requestProperty", return_value={"State": 0, "Message": "test"}
-    ):
+    with mock.patch.object(function, "requestProperty", return_value={"State": 0, "Message": "test"}):
         with mock.patch.object(function, "storePropertyToData"):
             with mock.patch.object(function, "getInitialConfig"):
                 suc = function.workerPollStatus()
@@ -322,9 +314,7 @@ def test_workerPollStatus_5(function):
 def test_workerPollStatus_6(function):
     function.DEVICE_TYPE = "Camera"
     function.deviceConnected = False
-    with mock.patch.object(
-        function, "requestProperty", return_value={"State": 0, "Message": "test"}
-    ):
+    with mock.patch.object(function, "requestProperty", return_value={"State": 0, "Message": "test"}):
         with mock.patch.object(function, "storePropertyToData"):
             with mock.patch.object(function, "getInitialConfig"):
                 suc = function.workerPollStatus()

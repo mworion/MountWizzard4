@@ -127,7 +127,9 @@ class ExternalWindows(QObject):
         }
 
         for window in self.uiWindows:
-            self.uiWindows[window]["button"].clicked.connect(partial(self.toggleWindow, window))
+            self.uiWindows[window]["button"].clicked.connect(
+                partial(self.toggleWindow, window)
+            )
 
         self.app.update1s.connect(self.updateWindowsStats)
         self.mainW.ui.collectWindows.clicked.connect(self.collectWindows)

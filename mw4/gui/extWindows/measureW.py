@@ -288,7 +288,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
     def showWindow(self) -> None:
         """ """
         for setName in self.mSetUI:
-            self.mSetUI[setName].currentIndexChanged.connect(partial(self.changeChart, setName))
+            self.mSetUI[setName].currentIndexChanged.connect(
+                partial(self.changeChart, setName)
+            )
         self.app.colorChange.connect(self.colorChange)
         self.app.update1s.connect(self.drawMeasure)
         self.app.update1s.connect(self.setTitle)

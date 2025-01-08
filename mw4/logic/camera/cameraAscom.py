@@ -67,7 +67,9 @@ class CameraAscom(AscomClass):
         self.getAndStoreAscomProperty(
             "FastReadout", "READOUT_QUALITY.QUALITY_LOW", "READOUT_QUALITY.QUALITY_HIGH"
         )
-        self.getAndStoreAscomProperty("CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
+        self.getAndStoreAscomProperty(
+            "CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"
+        )
         self.getAndStoreAscomProperty("CoolerOn", "CCD_COOLER.COOLER_ON")
         self.getAndStoreAscomProperty("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
 

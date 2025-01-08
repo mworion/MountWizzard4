@@ -84,9 +84,7 @@ def test_finishProgEarthRotationData_2(function):
 
 def test_progEarthRotationData_1(function):
     function.app.mount.host = ("127.0.0.1", 3294)
-    with mock.patch.object(
-        function.databaseProcessing, "writeEarthRotationData", return_value=False
-    ):
+    with mock.patch.object(function.databaseProcessing, "writeEarthRotationData", return_value=False):
         with mock.patch.object(UploadPopup, "show"):
             suc = function.progEarthRotationData()
             assert not suc
@@ -94,9 +92,7 @@ def test_progEarthRotationData_1(function):
 
 def test_progEarthRotationData_2(function):
     function.app.mount.host = ("127.0.0.1", 3294)
-    with mock.patch.object(
-        function.databaseProcessing, "writeEarthRotationData", return_value=True
-    ):
+    with mock.patch.object(function.databaseProcessing, "writeEarthRotationData", return_value=True):
         with mock.patch.object(UploadPopup, "show"):
             with mock.patch.object(UploadPopup, "show"):
                 suc = function.progEarthRotationData()

@@ -63,7 +63,9 @@ class Ui_UploadPopup(object):
     # setupUi
 
     def retranslateUi(self, UploadPopup):
-        UploadPopup.setWindowTitle(QCoreApplication.translate("UploadPopup", "Device Setup", None))
+        UploadPopup.setWindowTitle(
+            QCoreApplication.translate("UploadPopup", "Device Setup", None)
+        )
         self.icon.setText(QCoreApplication.translate("UploadPopup", "TextLabel", None))
 
     # retranslateUi

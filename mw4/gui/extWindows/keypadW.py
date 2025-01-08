@@ -252,4 +252,4 @@ class KeypadWindow(MWidget):
     def buildGraphics(self, imgArr: np.array, yPos: int, xPos: int) -> None:
         """ """
         dy, dx, _ = imgArr.shape
-        self.graphics[yPos: yPos + dy, xPos : xPos + dx] = imgArr
+        self.graphics[yPos : yPos + dy, xPos : xPos + dx] = imgArr

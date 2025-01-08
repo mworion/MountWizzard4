@@ -146,7 +146,8 @@ class ImageTabs:
         self.ui.slewCenter.setEnabled(self.fileHandler.hasCelestial)
         self.imageSourceRange = None
         self.ui.image.setImage(
-            imageDisp=self.fileHandler.image, updateGeometry=not self.imagingDeviceStat["exposeN"]
+            imageDisp=self.fileHandler.image,
+            updateGeometry=not self.imagingDeviceStat["exposeN"],
         )
         self.setBarColor()
         self.setCrosshair()

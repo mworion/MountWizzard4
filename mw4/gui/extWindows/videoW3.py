@@ -31,8 +31,7 @@ class VideoWindow3(VideoWindow):
         self.setObjectName("Video3")
 
     def initConfig(self) -> None:
-        """
-        """
+        """ """
         if "videoW3" not in self.app.config:
             self.app.config["videoW3"] = {}
         config = self.app.config["videoW3"]
@@ -45,8 +44,7 @@ class VideoWindow3(VideoWindow):
         self.password = config.get("password", "")
 
     def storeConfig(self) -> None:
-        """
-        """
+        """ """
         config = self.app.config
         if "videoW3" not in config:
             config["videoW3"] = {}
@@ -65,8 +63,7 @@ class VideoWindow3(VideoWindow):
         config["password"] = self.password
 
     def closeEvent(self, closeEvent) -> None:
-        """
-        """
+        """ """
         self.pixmapReady.disconnect(self.receivedImage)
         self.storeConfig()
         super().closeEvent(closeEvent)

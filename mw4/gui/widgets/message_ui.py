@@ -125,7 +125,9 @@ class Ui_MessageDialog(object):
     # setupUi
 
     def retranslateUi(self, MessageDialog):
-        MessageDialog.setWindowTitle(QCoreApplication.translate("MessageDialog", "Messages", None))
+        MessageDialog.setWindowTitle(
+            QCoreApplication.translate("MessageDialog", "Messages", None)
+        )
         self.clear.setText(QCoreApplication.translate("MessageDialog", "Clear window", None))
         # if QT_CONFIG(tooltip)
         self.messageTable.setToolTip(

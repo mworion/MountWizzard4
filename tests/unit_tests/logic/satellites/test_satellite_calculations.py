@@ -141,9 +141,7 @@ def test_calcAppMag_1(function):
     satRange = 483
     phase = Angle(degrees=113)
     tEv = function.mount.obsSite.ts.now()
-    with mock.patch.object(
-        logic.satellites.satellite_calculations, "calcSatSunPhase", return_value=phase
-    ):
+    with mock.patch.object(logic.satellites.satellite_calculations, "calcSatSunPhase", return_value=phase):
         val = calcAppMag(sat, loc, ephemeris, satRange, tEv)
         assert round(val, 4) == -2.0456
 
@@ -419,9 +417,7 @@ def test_calcSatPasses_1(function):
     satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
     obsSite = function.mount.obsSite
     setting = function.mount.setting
-    with mock.patch.object(
-        logic.satellites.satellite_calculations, "calcPassEvents", return_value=(1, 1)
-    ):
+    with mock.patch.object(logic.satellites.satellite_calculations, "calcPassEvents", return_value=(1, 1)):
         with mock.patch.object(
             logic.satellites.satellite_calculations, "collectAllOrbits", return_value=[]
         ):

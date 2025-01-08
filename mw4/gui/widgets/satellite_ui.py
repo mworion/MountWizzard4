@@ -283,7 +283,9 @@ class Ui_SatelliteDialog(object):
         SatelliteDialog.setWindowTitle(
             QCoreApplication.translate("SatelliteDialog", "Satellite", None)
         )
-        self.groupBox.setTitle(QCoreApplication.translate("SatelliteDialog", "Coordinates", None))
+        self.groupBox.setTitle(
+            QCoreApplication.translate("SatelliteDialog", "Coordinates", None)
+        )
         self.label_274.setText(QCoreApplication.translate("SatelliteDialog", "Latitude", None))
         # if QT_CONFIG(tooltip)
         self.satLatitude.setToolTip(
@@ -296,7 +298,9 @@ class Ui_SatelliteDialog(object):
         # endif // QT_CONFIG(tooltip)
         self.satLatitude.setText(QCoreApplication.translate("SatelliteDialog", "-", None))
         self.label_332.setText(QCoreApplication.translate("SatelliteDialog", "\u00b0", None))
-        self.label_334.setText(QCoreApplication.translate("SatelliteDialog", "Longitude", None))
+        self.label_334.setText(
+            QCoreApplication.translate("SatelliteDialog", "Longitude", None)
+        )
         # if QT_CONFIG(tooltip)
         self.satLongitude.setToolTip(
             QCoreApplication.translate(
@@ -312,7 +316,9 @@ class Ui_SatelliteDialog(object):
         # if QT_CONFIG(tooltip)
         self.satAzimuth.setToolTip(
             QCoreApplication.translate(
-                "SatelliteDialog", "Actual azimuth of the satelite from observers position.", None
+                "SatelliteDialog",
+                "Actual azimuth of the satelite from observers position.",
+                None,
             )
         )
         # endif // QT_CONFIG(tooltip)
@@ -321,7 +327,9 @@ class Ui_SatelliteDialog(object):
         # if QT_CONFIG(tooltip)
         self.satAltitude.setToolTip(
             QCoreApplication.translate(
-                "SatelliteDialog", "Actual altitude of the satelite from observers position.", None
+                "SatelliteDialog",
+                "Actual altitude of the satelite from observers position.",
+                None,
             )
         )
         # endif // QT_CONFIG(tooltip)

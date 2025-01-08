@@ -62,9 +62,7 @@ def test_workerGetRoundness(function):
         "a": np.random.rand(20, 1) + 1,
         "b": np.random.rand(20, 1) + 1,
     }
-    with mock.patch.object(
-        logic.photometry.photometry, "griddata", return_value=np.ones((20, 100))
-    ):
+    with mock.patch.object(logic.photometry.photometry, "griddata", return_value=np.ones((20, 100))):
         suc = function.workerGetRoundness()
         assert suc
         assert len(function.roundnessGrid) == 20

@@ -203,9 +203,7 @@ def test_solve_4(function):
                         return_value=(0, 0, 0),
                     ):
                         with mock.patch.object(logic.plateSolve.astrometry, "getImageHeader"):
-                            with mock.patch.object(
-                                logic.plateSolve.astrometry, "getSolutionFromWCSHeader"
-                            ):
+                            with mock.patch.object(logic.plateSolve.astrometry, "getSolutionFromWCSHeader"):
                                 with mock.patch.object(
                                     logic.plateSolve.astrometry,
                                     "updateImageFileHeaderWithSolution",

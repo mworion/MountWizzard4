@@ -262,7 +262,9 @@ class BuildPoints:
         location = self.app.mount.obsSite.location
 
         if ha is None or dec is None or location is None or lst is None:
-            self.msg.emit(2, "Model", "Buildpoints", "DSO Path cannot be generated - mount off")
+            self.msg.emit(
+                2, "Model", "Buildpoints", "DSO Path cannot be generated - mount off"
+            )
             return False
 
         if self.simbadRa and self.simbadDec:
@@ -282,7 +284,9 @@ class BuildPoints:
         )
         if not suc:
             self.ui.numberDSOPoints.setEnabled(True)
-            self.msg.emit(2, "Model", "Buildpoints", "DSO Path cannot be generated - calc error")
+            self.msg.emit(
+                2, "Model", "Buildpoints", "DSO Path cannot be generated - calc error"
+            )
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -346,7 +350,9 @@ class BuildPoints:
         fileTypes = "Build Point Files (*.bpts)"
         fileTypes += ";; CSV Files (*.csv)"
         fileTypes += ";; Model Files (*.model)"
-        fullFileName = self.mainW.openFile(self.mainW, "Open build point file", folder, fileTypes)
+        fullFileName = self.mainW.openFile(
+            self.mainW, "Open build point file", folder, fileTypes
+        )
         if not fullFileName.is_file():
             return
 
@@ -354,7 +360,9 @@ class BuildPoints:
         suc = self.app.data.loadBuildP(fullFileName, ext=fullFileName.suffix, keep=keep)
         if suc:
             self.ui.buildPFileName.setText(fullFileName.name)
-            self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fullFileName.name}] loaded")
+            self.msg.emit(
+                0, "Model", "Buildpoints", f"Build file [{fullFileName.name}] loaded"
+            )
         else:
             self.msg.emit(
                 2,
@@ -375,7 +383,9 @@ class BuildPoints:
         if suc:
             self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fileName}] saved")
         else:
-            self.msg.emit(2, "Model", "Buildpoints", f"Build file [{fileName}] cannot be saved")
+            self.msg.emit(
+                2, "Model", "Buildpoints", f"Build file [{fileName}] cannot be saved"
+            )
 
     def saveBuildFileAs(self):
         """ """
@@ -453,7 +463,9 @@ class BuildPoints:
     def sortMountAz(self, points, eastwest=None, highlow=None, pierside=None):
         """ """
         points = [(x[0], x[1], x[2], 0) for x in points]
-        self.app.data.sort(points=points, eastwest=eastwest, highlow=highlow, pierside=pierside)
+        self.app.data.sort(
+            points=points, eastwest=eastwest, highlow=highlow, pierside=pierside
+        )
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
 
@@ -479,7 +491,9 @@ class BuildPoints:
         if useDomeAz and enableDomeAz and eastwest:
             self.sortDomeAz(points=points, pierside=pierside)
         else:
-            self.sortMountAz(points=points, eastwest=eastwest, highlow=highlow, pierside=pierside)
+            self.sortMountAz(
+                points=points, eastwest=eastwest, highlow=highlow, pierside=pierside
+            )
 
     def buildPointsChanged(self):
         """ """

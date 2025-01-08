@@ -221,7 +221,9 @@ class Power:
         """ """
         actValue = float(self.ui.adjustableOutput.text())
         dlg = QInputDialog()
-        value, ok = dlg.getDouble(self, "Set Voltage Output", "Value (3-12):", actValue, 3, 12, 1)
+        value, ok = dlg.getDouble(
+            self, "Set Voltage Output", "Value (3-12):", actValue, 3, 12, 1
+        )
 
         if not ok:
             return False

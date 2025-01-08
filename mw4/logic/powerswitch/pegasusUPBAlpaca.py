@@ -129,9 +129,15 @@ class PegasusUPBAlpaca(AlpacaClass):
             self.storePropertyToData(
                 self.getAlpacaProperty("getswitch", Id=12), "USB_PORT_CONTROL.PORT_6"
             )
-            self.storePropertyToData(self.getAlpacaProperty("getswitch", Id=13), "AUTO_DEW.DEW_A")
-            self.storePropertyToData(self.getAlpacaProperty("getswitch", Id=13), "AUTO_DEW.DEW_B")
-            self.storePropertyToData(self.getAlpacaProperty("getswitch", Id=13), "AUTO_DEW.DEW_C")
+            self.storePropertyToData(
+                self.getAlpacaProperty("getswitch", Id=13), "AUTO_DEW.DEW_A"
+            )
+            self.storePropertyToData(
+                self.getAlpacaProperty("getswitch", Id=13), "AUTO_DEW.DEW_B"
+            )
+            self.storePropertyToData(
+                self.getAlpacaProperty("getswitch", Id=13), "AUTO_DEW.DEW_C"
+            )
             self.storePropertyToData(
                 self.getAlpacaProperty("getswitchvalue", Id=17),
                 "POWER_SENSORS.SENSOR_VOLTAGE",

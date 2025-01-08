@@ -76,17 +76,13 @@ def test_checkAnalysisConditions_1(function):
 
 
 def test_checkAnalysisConditions_2(function):
-    with mock.patch.object(
-        function.app.plateSolve, "checkAvailability", return_value=(False, False)
-    ):
+    with mock.patch.object(function.app.plateSolve, "checkAvailability", return_value=(False, False)):
         suc = function.checkAnalysisConditions()
         assert not suc
 
 
 def test_checkAnalysisConditions_3(function):
-    with mock.patch.object(
-        function.app.plateSolve, "checkAvailability", return_value=(True, True)
-    ):
+    with mock.patch.object(function.app.plateSolve, "checkAvailability", return_value=(True, True)):
         suc = function.checkAnalysisConditions()
         assert suc
 

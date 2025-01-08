@@ -50,7 +50,7 @@ class EnvironSeeing:
         self.app.colorChange.connect(self.prepareSeeingTable)
         self.app.update30m.connect(self.updateSeeingEntries)
 
-    def setupIcons(self):
+    def setupIcons(self) -> None:
         """ """
         pixmap = self.mainW.svg2pixmap(":/icon/meteoblue.svg", "#124673")
         pixmap = pixmap.transformed(QTransform().rotate(-90))
@@ -59,7 +59,7 @@ class EnvironSeeing:
         self.ui.meteoblueIcon.setVisible(False)
         self.ui.meteoblueSeeing.setVisible(False)
 
-    def addSkyfieldTimeObject(self, data):
+    def addSkyfieldTimeObject(self, data: dict) -> None:
         """ """
         ts = self.app.mount.obsSite.ts
         data["time"] = []
@@ -68,10 +68,10 @@ class EnvironSeeing:
             y, m, d = date.split("-")
             data["time"].append(ts.utc(int(y), int(m), int(d), hour, 0, 0))
 
-    def updateSeeingEntries(self):
+    def updateSeeingEntries(self) -> None:
         """ """
         if "hourly" not in self.app.seeingWeather.data:
-            return False
+            return
 
         self.ui.seeingGroup.setTitle("Seeing data " + self.mainW.timeZoneString())
         ts = self.app.mount.obsSite.ts
@@ -141,27 +141,23 @@ class EnvironSeeing:
                 seeTab.setItem(j, i, item)
 
         seeTab.selectColumn(columnCenter + 10)
-        return True
 
-    def clearSeeingEntries(self):
+    def clearSeeingEntries(self) -> None:
         """ """
         self.ui.meteoblueSeeing.clear()
         self.ui.meteoblueIcon.setVisible(False)
         self.ui.meteoblueSeeing.setVisible(False)
         self.seeingEnabled = False
 
-    def enableSeeingEntries(self):
-        """
-        :return:
-        """
+    def enableSeeingEntries(self) -> None:
+        """ """
         if not self.seeingEnabled:
-            return False
+            return
 
         self.ui.meteoblueIcon.setVisible(True)
         self.ui.meteoblueSeeing.setVisible(True)
-        return True
 
-    def prepareSeeingTable(self):
+    def prepareSeeingTable(self) -> None:
         """ """
         vl = [
             "Date [dd mon]",
@@ -195,7 +191,7 @@ class EnvironSeeing:
         self.updateSeeingEntries()
         seeTab.resizeColumnsToContents()
 
-    def openMeteoblue(self):
+    def openMeteoblue(self) -> None:
         """ """
         url = "https://www.meteoblue.com/de/wetter/outdoorsports/seeing"
         if not webbrowser.open(url, new=0):

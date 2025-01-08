@@ -370,9 +370,7 @@ def test_sortDomeAzWorker_1(function):
 
 
 def test_sortDomeAzWorker_2(function):
-    with mock.patch.object(
-        function.app.mount, "calcMountAltAzToDomeAltAz", return_value=(None, None)
-    ):
+    with mock.patch.object(function.app.mount, "calcMountAltAzToDomeAltAz", return_value=(None, None)):
         suc = function.sortDomeAzWorker([(10, 10, True)])
         assert suc
 

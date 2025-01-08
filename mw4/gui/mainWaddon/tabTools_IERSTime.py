@@ -114,7 +114,9 @@ class IERSTime:
         self.uploadPopup = UploadPopup(
             self.mainW, url=url, dataTypes=dataTypes, dataFilePath=self.tempDir
         )
-        self.uploadPopup.workerStatus.signals.finished.connect(self.finishProgEarthRotationData)
+        self.uploadPopup.workerStatus.signals.finished.connect(
+            self.finishProgEarthRotationData
+        )
         return True
 
     def finishLoadTimeDataFromSourceURLs(self):
@@ -145,7 +147,9 @@ class IERSTime:
         dest = self.app.mwGlob["dataDir"] / source
         self.msg.emit(1, "IERS", "Download", f"File: {source}")
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
-        self.downloadPopup.worker.signals.finished.connect(self.finishLoadTimeDataFromSourceURLs)
+        self.downloadPopup.worker.signals.finished.connect(
+            self.finishLoadTimeDataFromSourceURLs
+        )
         return True
 
     def loadTimeDataFromSourceURLs(self):

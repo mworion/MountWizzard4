@@ -253,7 +253,9 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         plotItem.addLine(x=0, pen=self.penGrid)
         plotItem.addLine(y=0, pen=self.penGrid)
 
-        font = QFont(self.window().font().family(), int(self.window().font().pointSize() * 1.1))
+        font = QFont(
+            self.window().font().family(), int(self.window().font().pointSize() * 1.1)
+        )
         for r in gridLines:
             circle = pg.QtWidgets.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
             circle.setPen(self.penGrid)

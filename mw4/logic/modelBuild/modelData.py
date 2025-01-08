@@ -190,7 +190,9 @@ class ModelData(QObject):
         item["siderealTime"] = obs.timeSidereal
         item["julianDate"] = obs.timeJD
         item["pierside"] = obs.pierside
-        raJ2000M, decJ2000M = JNowToJ2000(item["raJNowM"], item["decJNowM"], item["julianDate"])
+        raJ2000M, decJ2000M = JNowToJ2000(
+            item["raJNowM"], item["decJNowM"], item["julianDate"]
+        )
         item["raJ2000M"] = raJ2000M
         item["decJ2000M"] = decJ2000M
 

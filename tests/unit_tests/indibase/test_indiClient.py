@@ -202,9 +202,7 @@ def test_disconnectDevice_3(function):
 def test_disconnectDevice_4(function):
     function.connected = True
     function.devices = {"test": Device()}
-    with mock.patch.object(
-        function.devices["test"], "getSwitch", return_value={"DISCONNECT": "On"}
-    ):
+    with mock.patch.object(function.devices["test"], "getSwitch", return_value={"DISCONNECT": "On"}):
         suc = function.disconnectDevice("test")
         assert not suc
 
@@ -212,9 +210,7 @@ def test_disconnectDevice_4(function):
 def test_disconnectDevice_5(function):
     function.connected = True
     function.devices = {"test": Device()}
-    with mock.patch.object(
-        function.devices["test"], "getSwitch", return_value={"DISCONNECT": "Off"}
-    ):
+    with mock.patch.object(function.devices["test"], "getSwitch", return_value={"DISCONNECT": "Off"}):
         with mock.patch.object(function, "sendNewSwitch", return_value=False):
             suc = function.disconnectDevice("test")
             assert not suc
@@ -223,9 +219,7 @@ def test_disconnectDevice_5(function):
 def test_disconnectDevice_6(function):
     function.connected = True
     function.devices = {"test": Device()}
-    with mock.patch.object(
-        function.devices["test"], "getSwitch", return_value={"DISCONNECT": "Off"}
-    ):
+    with mock.patch.object(function.devices["test"], "getSwitch", return_value={"DISCONNECT": "Off"}):
         with mock.patch.object(function, "sendNewSwitch", return_value=True):
             suc = function.disconnectDevice("test")
             assert suc
@@ -611,9 +605,7 @@ def test_setProperty_1(function):
     chunk = indiXML.SetBLOBVector("defBLOB", [elem], {"name": "test"}, None)
     with mock.patch.object(function, "_setupPropertyStructure", return_value=("test", "test")):
         with mock.patch.object(function, "_fillAttributes"):
-            suc = function._setProperty(
-                chunk=chunk, device=function.devices["test"], deviceName="test"
-            )
+            suc = function._setProperty(chunk=chunk, device=function.devices["test"], deviceName="test")
             assert suc
 
 
@@ -624,9 +616,7 @@ def test_setProperty_2(function):
     chunk = indiXML.SetSwitchVector("defSwitch", [elem], {"name": "test"}, None)
     with mock.patch.object(function, "_setupPropertyStructure", return_value=("test", "test")):
         with mock.patch.object(function, "_fillAttributes"):
-            suc = function._setProperty(
-                chunk=chunk, device=function.devices["test"], deviceName="test"
-            )
+            suc = function._setProperty(chunk=chunk, device=function.devices["test"], deviceName="test")
             assert suc
 
 
@@ -637,9 +627,7 @@ def test_setProperty_3(function):
     chunk = indiXML.SetNumberVector("defNumber", [elem], {"name": "test"}, None)
     with mock.patch.object(function, "_setupPropertyStructure", return_value=("test", "test")):
         with mock.patch.object(function, "_fillAttributes"):
-            suc = function._setProperty(
-                chunk=chunk, device=function.devices["test"], deviceName="test"
-            )
+            suc = function._setProperty(chunk=chunk, device=function.devices["test"], deviceName="test")
             assert suc
 
 
@@ -650,9 +638,7 @@ def test_setProperty_4(function):
     chunk = indiXML.SetTextVector("defText", [elem], {"name": "test"}, None)
     with mock.patch.object(function, "_setupPropertyStructure", return_value=("test", "test")):
         with mock.patch.object(function, "_fillAttributes"):
-            suc = function._setProperty(
-                chunk=chunk, device=function.devices["test"], deviceName="test"
-            )
+            suc = function._setProperty(chunk=chunk, device=function.devices["test"], deviceName="test")
             assert suc
 
 
@@ -663,9 +649,7 @@ def test_setProperty_5(function):
     chunk = indiXML.SetLightVector("defText", [elem], {"name": "test"}, None)
     with mock.patch.object(function, "_setupPropertyStructure", return_value=("test", "test")):
         with mock.patch.object(function, "_fillAttributes"):
-            suc = function._setProperty(
-                chunk=chunk, device=function.devices["test"], deviceName="test"
-            )
+            suc = function._setProperty(chunk=chunk, device=function.devices["test"], deviceName="test")
             assert suc
 
 
@@ -676,9 +660,7 @@ def test_defProperty_1(function):
     chunk = indiXML.DefBLOBVector("defBLOB", [elem], {"name": "test"}, None)
     with mock.patch.object(function, "_setupPropertyStructure", return_value=("test", "test")):
         with mock.patch.object(function, "_fillAttributes"):
-            suc = function._defProperty(
-                chunk=chunk, device=function.devices["test"], deviceName="test"
-            )
+            suc = function._defProperty(chunk=chunk, device=function.devices["test"], deviceName="test")
             assert suc
 
 
@@ -689,9 +671,7 @@ def test_defProperty_2(function):
     chunk = indiXML.DefSwitchVector("defSwitch", [elem], {"name": "test"}, None)
     with mock.patch.object(function, "_setupPropertyStructure", return_value=("test", "test")):
         with mock.patch.object(function, "_fillAttributes"):
-            suc = function._defProperty(
-                chunk=chunk, device=function.devices["test"], deviceName="test"
-            )
+            suc = function._defProperty(chunk=chunk, device=function.devices["test"], deviceName="test")
             assert suc
 
 
@@ -702,9 +682,7 @@ def test_defProperty_3(function):
     chunk = indiXML.DefNumberVector("defNumber", [elem], {"name": "test"}, None)
     with mock.patch.object(function, "_setupPropertyStructure", return_value=("test", "test")):
         with mock.patch.object(function, "_fillAttributes"):
-            suc = function._defProperty(
-                chunk=chunk, device=function.devices["test"], deviceName="test"
-            )
+            suc = function._defProperty(chunk=chunk, device=function.devices["test"], deviceName="test")
             assert suc
 
 
@@ -715,9 +693,7 @@ def test_defProperty_4(function):
     chunk = indiXML.DefTextVector("defText", [elem], {"name": "test"}, None)
     with mock.patch.object(function, "_setupPropertyStructure", return_value=("test", "test")):
         with mock.patch.object(function, "_fillAttributes"):
-            suc = function._defProperty(
-                chunk=chunk, device=function.devices["test"], deviceName="test"
-            )
+            suc = function._defProperty(chunk=chunk, device=function.devices["test"], deviceName="test")
             assert suc
 
 
@@ -728,9 +704,7 @@ def test_defProperty_5(function):
     chunk = indiXML.DefLightVector("defLight", [elem], {"name": "test"}, None)
     with mock.patch.object(function, "_setupPropertyStructure", return_value=("test", "test")):
         with mock.patch.object(function, "_fillAttributes"):
-            suc = function._defProperty(
-                chunk=chunk, device=function.devices["test"], deviceName="test"
-            )
+            suc = function._defProperty(chunk=chunk, device=function.devices["test"], deviceName="test")
             assert suc
 
 

@@ -407,7 +407,9 @@ class MainWindow(MWidget):
     def loadProfileGUI(self) -> None:
         """ """
         folder = self.app.mwGlob["configDir"]
-        loadProfilePath = self.openFile(self, "Open config file", folder, "Config files (*.cfg)")
+        loadProfilePath = self.openFile(
+            self, "Open config file", folder, "Config files (*.cfg)"
+        )
         if not loadProfilePath.is_file():
             return
         config = loadProfile(loadProfilePath)

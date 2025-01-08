@@ -76,7 +76,9 @@ class ImageBar(PlotBase):
         yMax, xMax = imageDisp.shape
         xMinR = max(xMax / 100, 100)
         yMinR = max(yMax / 100, 100)
-        self.p[0].setLimits(xMin=0, xMax=xMax, yMin=0, yMax=yMax, minXRange=xMinR, minYRange=yMinR)
+        self.p[0].setLimits(
+            xMin=0, xMax=xMax, yMin=0, yMax=yMax, minXRange=xMinR, minYRange=yMinR
+        )
         if updateGeometry:
             self.p[0].getViewBox().rightMouseRange()
 

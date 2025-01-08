@@ -250,9 +250,7 @@ def test_windows(c, user, work, scp):
         runMW(c, f"scp -r mountwizzard4.tar.gz {scp}")
 
     runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
-    cmd = (
-        "curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip"
-    )
+    cmd = "curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip"
     cmd += " -L -s -o startup_package.zip"
     runMW(c, f'ssh {user} "cd {work} && {cmd}"')
     runMW(c, f'ssh {user} "cd {work} && tar -xf startup_package.zip"')
@@ -275,9 +273,7 @@ def test_ubuntu(c, user, work, scp):
         runMW(c, f"scp -r mountwizzard4.tar.gz {scp}")
 
     runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
-    cmd = (
-        "curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip"
-    )
+    cmd = "curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip"
     cmd += " -L -s -o startup_package.zip"
     runMW(c, f'ssh {user} "cd {work} && {cmd}"')
     runMW(c, f'ssh {user} "cd {work} && unzip startup_package.zip"')
@@ -298,9 +294,7 @@ def test_mac(c, user, work, scp):
         runMW(c, f"scp -r mountwizzard4.tar.gz {scp}")
 
     runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
-    cmd = (
-        "curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip"
-    )
+    cmd = "curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip"
     cmd += " -L -s -o startup_package.zip"
     runMW(c, f'ssh {user} "cd {work} && {cmd}"')
     runMW(c, f'ssh {user} "cd {work} && tar -xf startup_package.zip"')

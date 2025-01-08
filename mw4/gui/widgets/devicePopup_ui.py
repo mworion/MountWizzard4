@@ -523,7 +523,9 @@ class Ui_DevicePopup(object):
         self.watneySearchRadius.setObjectName("watneySearchRadius")
         self.watneySearchRadius.setGeometry(QRect(100, 150, 46, 21))
         self.watneySearchRadius.setFont(font1)
-        self.watneySearchRadius.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
+        self.watneySearchRadius.setAlignment(
+            Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter
+        )
         self.watneySearchRadius.setDecimals(0)
         self.watneySearchRadius.setMinimum(1.000000000000000)
         self.watneySearchRadius.setMaximum(180.000000000000000)
@@ -743,7 +745,9 @@ class Ui_DevicePopup(object):
     # setupUi
 
     def retranslateUi(self, DevicePopup):
-        DevicePopup.setWindowTitle(QCoreApplication.translate("DevicePopup", "Device Setup", None))
+        DevicePopup.setWindowTitle(
+            QCoreApplication.translate("DevicePopup", "Device Setup", None)
+        )
         self.label_mountIP_7.setText(
             QCoreApplication.translate("DevicePopup", "Device Name", None)
         )
@@ -757,7 +761,9 @@ class Ui_DevicePopup(object):
         self.label_mountIP_8.setText(
             QCoreApplication.translate("DevicePopup", "Host Address", None)
         )
-        self.label_mountIP_10.setText(QCoreApplication.translate("DevicePopup", "Host Port", None))
+        self.label_mountIP_10.setText(
+            QCoreApplication.translate("DevicePopup", "Host Port", None)
+        )
         # if QT_CONFIG(tooltip)
         self.alpacaHostAddress.setToolTip(
             QCoreApplication.translate(
@@ -771,7 +777,9 @@ class Ui_DevicePopup(object):
             QCoreApplication.translate("DevicePopup", "localhost", None)
         )
         self.label_mountIP_11.setText(QCoreApplication.translate("DevicePopup", "User", None))
-        self.label_mountIP_12.setText(QCoreApplication.translate("DevicePopup", "Password", None))
+        self.label_mountIP_12.setText(
+            QCoreApplication.translate("DevicePopup", "Password", None)
+        )
         # if QT_CONFIG(tooltip)
         self.alpacaUser.setToolTip(
             QCoreApplication.translate("DevicePopup", "User for alpaca device", None)
@@ -814,7 +822,9 @@ class Ui_DevicePopup(object):
         )
         # if QT_CONFIG(tooltip)
         self.ascomSelector.setToolTip(
-            QCoreApplication.translate("DevicePopup", "Starting the ASCOM device chooser.", None)
+            QCoreApplication.translate(
+                "DevicePopup", "Starting the ASCOM device chooser.", None
+            )
         )
         # endif // QT_CONFIG(tooltip)
         self.ascomSelector.setText(
@@ -830,7 +840,8 @@ class Ui_DevicePopup(object):
         # endif // QT_CONFIG(tooltip)
         self.ascomDevice.setText("")
         self.tab.setTabText(
-            self.tab.indexOf(self.ascom), QCoreApplication.translate("DevicePopup", "ASCOM", None)
+            self.tab.indexOf(self.ascom),
+            QCoreApplication.translate("DevicePopup", "ASCOM", None),
         )
         self.label_mountIP_20.setText(
             QCoreApplication.translate("DevicePopup", "Device Name", None)
@@ -846,7 +857,8 @@ class Ui_DevicePopup(object):
         # endif // QT_CONFIG(tooltip)
         self.sgproDiscover.setText(QCoreApplication.translate("DevicePopup", "Search", None))
         self.tab.setTabText(
-            self.tab.indexOf(self.sgpro), QCoreApplication.translate("DevicePopup", "SGPro", None)
+            self.tab.indexOf(self.sgpro),
+            QCoreApplication.translate("DevicePopup", "SGPro", None),
         )
         self.label_mountIP_21.setText(
             QCoreApplication.translate("DevicePopup", "Device Name", None)
@@ -875,8 +887,12 @@ class Ui_DevicePopup(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.indiHostAddress.setText(QCoreApplication.translate("DevicePopup", "localhost", None))
-        self.label_mountIP_4.setText(QCoreApplication.translate("DevicePopup", "Host Port", None))
+        self.indiHostAddress.setText(
+            QCoreApplication.translate("DevicePopup", "localhost", None)
+        )
+        self.label_mountIP_4.setText(
+            QCoreApplication.translate("DevicePopup", "Host Port", None)
+        )
         # if QT_CONFIG(tooltip)
         self.indiDiscover.setToolTip(
             QCoreApplication.translate(
@@ -899,7 +915,9 @@ class Ui_DevicePopup(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.indiMessages.setText(QCoreApplication.translate("DevicePopup", "Show Messages", None))
+        self.indiMessages.setText(
+            QCoreApplication.translate("DevicePopup", "Show Messages", None)
+        )
         # if QT_CONFIG(tooltip)
         self.indiPort.setToolTip(
             QCoreApplication.translate("DevicePopup", "Port of INDI server", None)
@@ -949,7 +967,9 @@ class Ui_DevicePopup(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.astrometryIndexPath.setText(QCoreApplication.translate("DevicePopup", "/usr/", None))
+        self.astrometryIndexPath.setText(
+            QCoreApplication.translate("DevicePopup", "/usr/", None)
+        )
         # if QT_CONFIG(tooltip)
         self.selectAstrometryIndexPath.setToolTip(
             QCoreApplication.translate(
@@ -983,7 +1003,9 @@ class Ui_DevicePopup(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.label_315.setText(QCoreApplication.translate("DevicePopup", "Search radius", None))
+        self.label_315.setText(
+            QCoreApplication.translate("DevicePopup", "Search radius", None)
+        )
         self.label_317.setText(QCoreApplication.translate("DevicePopup", "s", None))
         self.label_318.setText(QCoreApplication.translate("DevicePopup", "deg", None))
         self.label_mountIP_17.setText(
@@ -998,7 +1020,9 @@ class Ui_DevicePopup(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.astrometryAppPath.setText(QCoreApplication.translate("DevicePopup", "/usr/", None))
+        self.astrometryAppPath.setText(
+            QCoreApplication.translate("DevicePopup", "/usr/", None)
+        )
         # if QT_CONFIG(tooltip)
         self.selectAstrometryAppPath.setToolTip(
             QCoreApplication.translate(
@@ -1033,7 +1057,9 @@ class Ui_DevicePopup(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.label_319.setText(QCoreApplication.translate("DevicePopup", "Timeout", None))
-        self.label_320.setText(QCoreApplication.translate("DevicePopup", "Search radius", None))
+        self.label_320.setText(
+            QCoreApplication.translate("DevicePopup", "Search radius", None)
+        )
         self.label_321.setText(QCoreApplication.translate("DevicePopup", "s", None))
         self.label_322.setText(
             QCoreApplication.translate("DevicePopup", "deg  (use 180 to enable all sky)", None)
@@ -1079,7 +1105,9 @@ class Ui_DevicePopup(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.selectAstapAppPath.setText(QCoreApplication.translate("DevicePopup", "Select", None))
+        self.selectAstapAppPath.setText(
+            QCoreApplication.translate("DevicePopup", "Select", None)
+        )
         # if QT_CONFIG(tooltip)
         self.astapDeviceList.setToolTip(
             QCoreApplication.translate("DevicePopup", "Select the device.", None)
@@ -1092,9 +1120,12 @@ class Ui_DevicePopup(object):
             QCoreApplication.translate("DevicePopup", "Folder application", None)
         )
         self.tab.setTabText(
-            self.tab.indexOf(self.astap), QCoreApplication.translate("DevicePopup", "ASTAP", None)
+            self.tab.indexOf(self.astap),
+            QCoreApplication.translate("DevicePopup", "ASTAP", None),
         )
-        self.label_323.setText(QCoreApplication.translate("DevicePopup", "Search radius", None))
+        self.label_323.setText(
+            QCoreApplication.translate("DevicePopup", "Search radius", None)
+        )
         # if QT_CONFIG(tooltip)
         self.selectWatneyIndexPath.setToolTip(
             QCoreApplication.translate(
@@ -1167,7 +1198,9 @@ class Ui_DevicePopup(object):
             )
         )
         # endif // QT_CONFIG(tooltip)
-        self.selectWatneyAppPath.setText(QCoreApplication.translate("DevicePopup", "Select", None))
+        self.selectWatneyAppPath.setText(
+            QCoreApplication.translate("DevicePopup", "Select", None)
+        )
         self.tab.setTabText(
             self.tab.indexOf(self.watney),
             QCoreApplication.translate("DevicePopup", "Watney", None),
@@ -1197,12 +1230,16 @@ class Ui_DevicePopup(object):
         )
         # endif // QT_CONFIG(tooltip)
         self.onlineWeatherApiKey.setText("")
-        self.label_mountIP_34.setText(QCoreApplication.translate("DevicePopup", "API Key", None))
+        self.label_mountIP_34.setText(
+            QCoreApplication.translate("DevicePopup", "API Key", None)
+        )
         self.tab.setTabText(
             self.tab.indexOf(self.onlineWeather),
             QCoreApplication.translate("DevicePopup", "Online Weather", None),
         )
-        self.label_mountIP_38.setText(QCoreApplication.translate("DevicePopup", "API Key", None))
+        self.label_mountIP_38.setText(
+            QCoreApplication.translate("DevicePopup", "API Key", None)
+        )
         # if QT_CONFIG(tooltip)
         self.seeingWeatherHostAddress.setToolTip(
             QCoreApplication.translate(
@@ -1266,9 +1303,12 @@ class Ui_DevicePopup(object):
         # endif // QT_CONFIG(tooltip)
         self.relayUser.setText("")
         self.label_mountIP_36.setText(QCoreApplication.translate("DevicePopup", "User", None))
-        self.label_mountIP_37.setText(QCoreApplication.translate("DevicePopup", "Password", None))
+        self.label_mountIP_37.setText(
+            QCoreApplication.translate("DevicePopup", "Password", None)
+        )
         self.tab.setTabText(
-            self.tab.indexOf(self.relay), QCoreApplication.translate("DevicePopup", "Relay", None)
+            self.tab.indexOf(self.relay),
+            QCoreApplication.translate("DevicePopup", "Relay", None),
         )
         self.ok.setText(QCoreApplication.translate("DevicePopup", "OK", None))
         self.cancel.setText(QCoreApplication.translate("DevicePopup", "Cancel", None))

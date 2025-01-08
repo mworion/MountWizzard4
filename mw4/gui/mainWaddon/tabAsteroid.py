@@ -95,8 +95,12 @@ class Asteroid:
         for i, hs in enumerate(hSet):
             self.ui.listAsteroids.setColumnWidth(i, hs)
         self.ui.listAsteroids.verticalHeader().setDefaultSectionSize(16)
-        self.ui.listAsteroids.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.ui.listAsteroids.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.ui.listAsteroids.setSelectionBehavior(
+            QAbstractItemView.SelectionBehavior.SelectRows
+        )
+        self.ui.listAsteroids.setSelectionMode(
+            QAbstractItemView.SelectionMode.ExtendedSelection
+        )
 
     @staticmethod
     def generateName(mp: dict) -> str:

@@ -67,7 +67,9 @@ class CameraAlpaca(AlpacaClass):
         self.getAndStoreAlpacaProperty(
             "fastreadout", "READOUT_QUALITY.QUALITY_LOW", "READOUT_QUALITY.QUALITY_HIGH"
         )
-        self.getAndStoreAlpacaProperty("ccdtemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
+        self.getAndStoreAlpacaProperty(
+            "ccdtemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"
+        )
         self.getAndStoreAlpacaProperty("cooleron", "CCD_COOLER.COOLER_ON")
         self.getAndStoreAlpacaProperty("coolerpower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
 

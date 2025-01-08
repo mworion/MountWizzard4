@@ -269,7 +269,9 @@ class Geometry:
         )
         return T
 
-    def calcTransformationMatrices(self, ha: Angle, dec: Angle, lat: Angle, pierside="W") -> tuple:
+    def calcTransformationMatrices(
+        self, ha: Angle, dec: Angle, lat: Angle, pierside="W"
+    ) -> tuple:
         """ """
         text = f"HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, "
         text += f"pierside:{pierside} ,"

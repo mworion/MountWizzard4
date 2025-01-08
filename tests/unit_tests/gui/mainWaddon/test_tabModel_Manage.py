@@ -218,9 +218,7 @@ def test_saveName_2(function):
 
 
 def test_saveName_3(function):
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", False)
-    ):
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", False)):
         function.saveName()
 
 
@@ -302,9 +300,7 @@ def test_writeBuildModelOptimized_2(function):
 
 def test_clearRefreshModel_1(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
-    with mock.patch.object(
-        gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])
-    ):
+    with mock.patch.object(gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(function, "writeBuildModelOptimized"):
                 function.clearRefreshModel()
@@ -312,9 +308,7 @@ def test_clearRefreshModel_1(function):
 
 def test_clearRefreshModel_2(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
-    with mock.patch.object(
-        gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])
-    ):
+    with mock.patch.object(gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])):
         with mock.patch.object(Path, "is_file", return_value=False):
             with mock.patch.object(function, "sendAnalyseFileName"):
                 function.clearRefreshModel()

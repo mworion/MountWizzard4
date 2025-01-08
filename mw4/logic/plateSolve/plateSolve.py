@@ -66,7 +66,9 @@ class PlateSolve:
             result = {"success": False, "message": f"{imagePath} not found"}
         else:
             self.signals.message.emit("solving")
-            result = self.run[self.framework].solve(imagePath=imagePath, updateHeader=updateHeader)
+            result = self.run[self.framework].solve(
+                imagePath=imagePath, updateHeader=updateHeader
+            )
         self.signals.message.emit("")
         self.signals.result.emit(result)
 

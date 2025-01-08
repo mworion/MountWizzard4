@@ -223,7 +223,9 @@ class SimulatorBuildPoints:
             )
 
             if isNumber:
-                a = self.createAnnotation(e[0], point[0], -point[1], f"{index + 1:02d}", active)
+                a = self.createAnnotation(
+                    e[0], point[0], -point[1], f"{index + 1:02d}", active
+                )
             else:
                 a = None
 

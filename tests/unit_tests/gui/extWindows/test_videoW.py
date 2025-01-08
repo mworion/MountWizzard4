@@ -75,9 +75,7 @@ def test_sendImage_2(function):
 
     function.capture = Test()
     function.running = False
-    with mock.patch.object(
-        cv2, "cvtColor", return_value=np.ones((10, 10, 1)), side_effect=cv2.error
-    ):
+    with mock.patch.object(cv2, "cvtColor", return_value=np.ones((10, 10, 1)), side_effect=cv2.error):
         function.sendImage()
 
 

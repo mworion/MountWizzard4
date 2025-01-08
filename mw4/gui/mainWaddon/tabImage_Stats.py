@@ -87,7 +87,7 @@ class ImageStats:
         self.fovHint = None
         self.scaleHint = None
 
-    def updateImageStats(self):
+    def updateImageStats(self) -> None:
         """ """
         focalLength = self.ui.focalLength.value()
         aperture = self.ui.aperture.value()
@@ -178,19 +178,19 @@ class ImageStats:
         guiSetText(self.ui.astapIndex, "s", astapText)
         guiSetText(self.ui.astrometryIndex, "s", astrometryText)
 
-    def openWatneyCatalog(self):
+    def openWatneyCatalog(self) -> None:
         """ """
         url = "https://github.com/Jusas/WatneyAstrometry/releases/tag/watneyqdb3"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "ImageStats", "Browser failed")
 
-    def openASTAPCatalog(self):
+    def openASTAPCatalog(self) -> None:
         """ """
         url = "https://www.hnsky.org/astap.htm"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "ImageStats", "Browser failed")
 
-    def openAstrometryCatalog(self):
+    def openAstrometryCatalog(self) -> None:
         """ """
         url = "http://data.astrometry.net/4200/"
         if not webbrowser.open(url, new=0):

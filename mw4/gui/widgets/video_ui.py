@@ -167,11 +167,21 @@ class Ui_VideoDialog(object):
             6, QCoreApplication.translate("VideoDialog", "Camera 4", None)
         )
 
-        self.frameRate.setItemText(0, QCoreApplication.translate("VideoDialog", "5.0 fps", None))
-        self.frameRate.setItemText(1, QCoreApplication.translate("VideoDialog", "2.0 fps", None))
-        self.frameRate.setItemText(2, QCoreApplication.translate("VideoDialog", "1.0 fps", None))
-        self.frameRate.setItemText(3, QCoreApplication.translate("VideoDialog", "0.5 fps", None))
-        self.frameRate.setItemText(4, QCoreApplication.translate("VideoDialog", "0.2 fps", None))
+        self.frameRate.setItemText(
+            0, QCoreApplication.translate("VideoDialog", "5.0 fps", None)
+        )
+        self.frameRate.setItemText(
+            1, QCoreApplication.translate("VideoDialog", "2.0 fps", None)
+        )
+        self.frameRate.setItemText(
+            2, QCoreApplication.translate("VideoDialog", "1.0 fps", None)
+        )
+        self.frameRate.setItemText(
+            3, QCoreApplication.translate("VideoDialog", "0.5 fps", None)
+        )
+        self.frameRate.setItemText(
+            4, QCoreApplication.translate("VideoDialog", "0.2 fps", None)
+        )
 
         self.videoStop.setText(QCoreApplication.translate("VideoDialog", "Stop", None))
         # if QT_CONFIG(tooltip)

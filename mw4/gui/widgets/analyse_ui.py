@@ -890,7 +890,9 @@ class Ui_AnalyseDialog(object):
         self.time.setText("")
         # if QT_CONFIG(tooltip)
         self.load.setToolTip(
-            QCoreApplication.translate("AnalyseDialog", "Loads the model points from file", None)
+            QCoreApplication.translate(
+                "AnalyseDialog", "Loads the model points from file", None
+            )
         )
         # endif // QT_CONFIG(tooltip)
         self.load.setText(QCoreApplication.translate("AnalyseDialog", "Load", None))
@@ -899,16 +901,24 @@ class Ui_AnalyseDialog(object):
         )
         self.linkViews.setText(QCoreApplication.translate("AnalyseDialog", "Link Views", None))
         self.showISO.setText(QCoreApplication.translate("AnalyseDialog", "2D contour", None))
-        self.pointsWest.setText(QCoreApplication.translate("AnalyseDialog", "Pierside West", None))
+        self.pointsWest.setText(
+            QCoreApplication.translate("AnalyseDialog", "Pierside West", None)
+        )
         self.pointsWest.setProperty(
             "color", QCoreApplication.translate("AnalyseDialog", "green", None)
         )
-        self.pointsEast.setText(QCoreApplication.translate("AnalyseDialog", "Pierside East", None))
+        self.pointsEast.setText(
+            QCoreApplication.translate("AnalyseDialog", "Pierside East", None)
+        )
         self.pointsEast.setProperty(
             "color", QCoreApplication.translate("AnalyseDialog", "yellow", None)
         )
-        self.showHorizon.setText(QCoreApplication.translate("AnalyseDialog", "Horizon mask", None))
-        self.groupBox_5.setTitle(QCoreApplication.translate("AnalyseDialog", "Model params", None))
+        self.showHorizon.setText(
+            QCoreApplication.translate("AnalyseDialog", "Horizon mask", None)
+        )
+        self.groupBox_5.setTitle(
+            QCoreApplication.translate("AnalyseDialog", "Model params", None)
+        )
         # if QT_CONFIG(tooltip)
         self.goodPoints.setToolTip(
             QCoreApplication.translate(
@@ -1052,7 +1062,9 @@ class Ui_AnalyseDialog(object):
         self.errorAscending.setToolTip("")
         # endif // QT_CONFIG(tooltip)
         self.groupBox_16.setTitle(
-            QCoreApplication.translate("AnalyseDialog", "Image pixel resolution as scale ", None)
+            QCoreApplication.translate(
+                "AnalyseDialog", "Image pixel resolution as scale ", None
+            )
         )
         # if QT_CONFIG(tooltip)
         self.scaleImage.setToolTip("")

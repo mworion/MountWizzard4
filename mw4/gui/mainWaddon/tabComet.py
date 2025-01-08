@@ -61,7 +61,7 @@ class Comet:
         self.ui.cometFilterText.setText(config.get("cometFilterText"))
         self.ui.mpcTabWidget.setCurrentIndex(config.get("mpcTab", 0))
 
-    def initConfigDelayedComet(self):
+    def initConfigDelayedComet(self) -> None:
         """ """
         config = self.app.config["mainW"]
         self.ui.cometSourceList.setCurrentIndex(config.get("cometSource", 0))
@@ -72,7 +72,6 @@ class Comet:
         config["cometSource"] = self.ui.cometSourceList.currentIndex()
         config["cometFilterText"] = self.ui.cometFilterText.text()
         config["mpcTab"] = self.ui.mpcTabWidget.currentIndex()
-        return True
 
     def setupIcons(self) -> None:
         """ """

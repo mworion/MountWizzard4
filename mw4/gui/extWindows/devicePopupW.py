@@ -327,7 +327,9 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         self.updateNINADeviceNameList(deviceNames=deviceNames)
 
-    def checkPlateSolveAvailability(self, framework: str, appPath: Path, indexPath: Path) -> None:
+    def checkPlateSolveAvailability(
+        self, framework: str, appPath: Path, indexPath: Path
+    ) -> None:
         """ """
         frameworkClass = self.app.plateSolve.run[framework]
         sucApp = frameworkClass.checkAvailabilityProgram(appPath=appPath)
@@ -370,7 +372,9 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         if platform.system() == "Darwin" and appFolderPath.suffix == ".app":
             if "Astrometry.app" in str(appFolderPath):
-                appFolderPath = appFolderPath.parent / (appFolderPath.name + "/Contents/MacOS/")
+                appFolderPath = appFolderPath.parent / (
+                    appFolderPath.name + "/Contents/MacOS/"
+                )
             else:
                 appFolderPath = appFolderPath.parent / (
                     appFolderPath.name + "/Contents/MacOS/astrometry/bin"

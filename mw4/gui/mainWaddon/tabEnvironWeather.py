@@ -141,8 +141,7 @@ class EnvironWeather:
         config["refractionSource"] = self.refractionSource
 
     def smartEnvironGui(self) -> None:
-        """
-        """
+        """ """
         for source in self.refractionSources:
             stat = self.app.deviceStat.get(source, None)
             group = self.refractionSources[source]["group"]

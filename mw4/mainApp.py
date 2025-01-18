@@ -18,7 +18,6 @@
 import logging
 import sys
 from queue import Queue
-from pathlib import Path
 
 # external packages
 from PySide6.QtWidgets import QApplication

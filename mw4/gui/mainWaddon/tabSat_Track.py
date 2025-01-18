@@ -136,7 +136,7 @@ class SatTrack(SatData):
         self.ui.progTrajectory.setEnabled(progAvailable)
         return True
 
-    def signalSatelliteData(self, alt=None, az=None):
+    def signalSatelliteData(self, alt=[], az=[]):
         """ """
         if not self.satellite:
             return False

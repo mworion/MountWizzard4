@@ -17,16 +17,19 @@
 # standard libraries
 import pickle
 from io import BytesIO
+from typing import Iterator
 
 # external packages
 from PySide6.QtCore import QFile, Qt
 import numpy as np
-from skyfield.api import wgs84
+from skyfield.api import wgs84, Timescale
 import pyqtgraph as pg
+from pyqtgraph import PlotWidget
 
 # local import
 from gui.utilities import toolsQtWidget
 from gui.widgets import satellite_ui
+from mountcontrol.obsSite import ObsSite
 
 
 class SatelliteWindow(toolsQtWidget.MWidget):
@@ -59,21 +62,14 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.app.updateSatellite.connect(self.updatePositions)
         self.app.redrawHorizon.connect(self.drawHorizon)
 
-    def initConfig(self):
-        """
-        :return:
-        """
+    def initConfig(self) -> None:
+        """ """
         if "satelliteW" not in self.app.config:
             self.app.config["satelliteW"] = {}
-        config = self.app.config["satelliteW"]
+        self.positionWindow(self.app.config["satelliteW"])
 
-        self.positionWindow(config)
-        return True
-
-    def storeConfig(self):
-        """
-        :return:
-        """
+    def storeConfig(self) -> None:
+        """ """
         config = self.app.config
         if "satelliteW" not in config:
             config["satelliteW"] = {}
@@ -85,66 +81,47 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         config["winPosY"] = max(self.pos().y(), 0)
         config["height"] = self.height()
         config["width"] = self.width()
-        return True
 
-    def closeEvent(self, closeEvent):
-        """
-        :param closeEvent:
-        :return:
-        """
+    def closeEvent(self, closeEvent) -> None:
+        """ """
         self.storeConfig()
         super().closeEvent(closeEvent)
 
-    def showWindow(self):
-        """
-        :return: True for test purpose
-        """
+    def showWindow(self) -> None:
+        """ """
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.colorChange.connect(self.colorChange)
         self.app.sendSatelliteData.emit()
         self.show()
-        return True
 
-    def colorChange(self):
-        """
-        :return:
-        """
+    def colorChange(self) -> None:
+        """ """
         self.setStyleSheet(self.mw4Style)
         self.ui.satEarth.colorChange()
         self.ui.satHorizon.colorChange()
         self.app.sendSatelliteData.emit()
-        return True
 
-    def updatePointerAltAz(self, obsSite):
-        """
-        :return: success
-        """
+    def updatePointerAltAz(self, obsSite: ObsSite) -> None:
+        """ """
         if self.pointerAltAz is None:
-            return False
+            return
         if obsSite.Alt is None or obsSite.Az is None:
             self.pointerAltAz.setVisible(False)
-            return False
+            return
 
         self.pointerAltAz.setVisible(True)
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         self.pointerAltAz.setData(x=[az], y=[alt])
-        return True
 
-    def updatePositions(self, now=None, location=None):
-        """
-        :return:
-        """
-        if now is None:
-            return False
-        if location is None:
-            return False
-        if self.satellite is None:
-            return False
-        if self.plotSatPosEarth is None:
-            return False
-        if self.plotSatPosHorizon is None:
-            return False
+    def updatePositions(self, now: Timescale, location: wgs84) -> None:
+        """ """
+        if (
+            self.satellite is None
+            or self.plotSatPosEarth is None
+            or self.plotSatPosHorizon is None
+        ):
+            return
 
         observe = self.satellite.at(now)
         subPoint = wgs84.subpoint_of(observe)
@@ -162,26 +139,12 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         az = az.degrees
         self.plotSatPosHorizon.setData(x=[az], y=[alt])
         self.plotSatPosHorizon.setVisible(True)
-        return True
 
     @staticmethod
-    def unlinkWrap(dat, limits=(-180, 180), thresh=0.97):
-        """
-        Iterate over contiguous regions of `dat` (i.e. where it does not
-        jump from near one limit to the other).
-        This function returns an iterator object that yields slice
-        objects, which index the contiguous portions of `dat`.
-        This function implicitly assumes that all points in `dat` fall
-        within `limits`.
-
-        :param dat:
-        :param limits:
-        :param thresh:
-        :return:
-        """
-        # if np.isnan(dat).any():
-        #     yield []
-
+    def unlinkWrap(dat) -> Iterator[slice]:
+        """ """
+        limits = (-180, 180)
+        thresh = 0.97
         jump = np.nonzero(np.abs(np.diff(dat)) > ((limits[1] - limits[0]) * thresh))[0]
         lastIndex = 0
         for ind in jump:
@@ -190,11 +153,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         yield slice(lastIndex, len(dat))
 
     @staticmethod
-    def prepareEarth(plotItem):
-        """
-        :param plotItem:
-        :return:
-        """
+    def prepareEarth(plotItem: PlotWidget) -> None:
+        """ """
         plotItem.showAxes(True, showValues=True)
         plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
         xTicks = [(x, f"{x:0.0f}") for x in np.arange(-135, 136, 45)]
@@ -210,13 +170,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         plotItem.disableAutoRange()
         plotItem.setMouseEnabled(x=True, y=True)
         plotItem.clear()
-        return True
 
-    def drawShoreLine(self, plotItem):
-        """
-        :param plotItem:
-        :return:
-        """
+    def drawShoreLine(self, plotItem: PlotWidget) -> None:
+        """ """
         for key in self.world.keys():
             shape = self.world[key]
             x = np.array(shape["xDeg"])
@@ -226,14 +182,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             poly.setPen(self.ui.satEarth.penHorizon)
             poly.setBrush(self.ui.satEarth.brushHorizon)
             plotItem.addItem(poly)
-        return True
 
-    def drawPosition(self, plotItem, obsSite):
-        """
-        :param plotItem:
-        :param obsSite:
-        :return:
-        """
+    def drawPosition(self, plotItem: PlotWidget, obsSite: ObsSite) -> None:
+        """ """
         lat = obsSite.location.latitude.degrees
         lon = obsSite.location.longitude.degrees
         pd = pg.PlotDataItem(
@@ -245,37 +196,34 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             symbolBrush=self.brushLocation,
         )
         plotItem.addItem(pd)
-        return True
 
-    def prepareEarthSatellite(self, plotItem, obsSite):
-        """
-        :param plotItem:
-        :param obsSite:
-        :return:
-        """
+    def prepareSatellite(self, x, y) -> pg.PlotDataItem:
+        """ """
+        pd = pg.PlotDataItem(
+            x=x,
+            y=y,
+            symbol=self.makeSat(),
+            symbolSize=35,
+            symbolPen=pg.mkPen(color=self.M_TER),
+            symbolBrush=pg.mkBrush(color=self.M_PINK + "20"),
+        )
+        return pd
+
+    def prepareEarthSatellite(self, plotItem: PlotWidget, obsSite: ObsSite) -> pg.PlotDataItem:
+        """ """
         subPoint = wgs84.subpoint_of(self.satellite.at(obsSite.ts.now()))
         lat = subPoint.latitude.degrees
         lon = subPoint.longitude.degrees
-        pd = pg.PlotDataItem(
-            x=[lat],
-            y=[lon],
-            symbol=self.makeSat(),
-            symbolSize=35,
-            symbolPen=pg.mkPen(color=self.M_CYAN1),
-            symbolBrush=pg.mkBrush(color=self.M_CYAN + "40"),
-        )
+        pd = self.prepareSatellite([lat], [lon])
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)
         return pd
 
-    def drawEarthTrajectory(self, plotItem, obsSite, satOrbits):
-        """
-        :param plotItem:
-        :param obsSite:
-        :param satOrbits:
-        :return:
-        """
+    def drawEarthTrajectory(
+        self, plotItem: PlotWidget, obsSite: ObsSite, satOrbits: list
+    ) -> None:
+        """ """
         for i, satOrbit in enumerate(satOrbits):
             rise = satOrbit["rise"].tt
             settle = satOrbit["settle"].tt
@@ -316,34 +264,25 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             )
             pd.setZValue(-10)
             plotItem.addItem(pd)
-        return True
 
-    def drawEarth(self, obsSite=None, satOrbits=None):
-        """
-        :param obsSite:
-        :param satOrbits:
-        :return: success
-        """
+    def drawEarth(self, obsSite: ObsSite, satOrbits: list) -> None:
+        """ """
         plotItem = self.ui.satEarth.p[0]
         self.prepareEarth(plotItem)
         self.drawShoreLine(plotItem)
         if obsSite is None:
-            return False
+            return
 
         self.drawPosition(plotItem, obsSite)
         if not satOrbits:
-            return False
+            return
 
         self.plotSatPosEarth = self.prepareEarthSatellite(plotItem, obsSite)
         self.drawEarthTrajectory(plotItem, obsSite, satOrbits)
-        return True
 
     @staticmethod
-    def prepareHorizon(plotItem):
-        """
-        :param plotItem:
-        :return:
-        """
+    def prepareHorizon(plotItem: PlotWidget) -> None:
+        """ """
         plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
         plotItem.showAxes(True, showValues=True)
         xTicks = [(x, f"{x:0.0f}") for x in np.arange(30, 360, 30)]
@@ -361,33 +300,20 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         plotItem.disableAutoRange()
         plotItem.setMouseEnabled(x=True, y=True)
         plotItem.clear()
-        return True
 
-    def prepareHorizonSatellite(self, plotItem, obsSite):
-        """
-        :param plotItem:
-        :param obsSite:
-        :return:
-        """
+    def prepareHorizonSatellite(
+        self, plotItem: PlotWidget, obsSite: ObsSite
+    ) -> pg.PlotDataItem:
+        """ """
         alt, az, _ = (self.satellite - obsSite.location).at(obsSite.ts.now()).altaz()
-        pd = pg.PlotDataItem(
-            x=[az.degrees],
-            y=[alt.degrees],
-            symbol=self.makeSat(),
-            symbolSize=35,
-            symbolPen=pg.mkPen(color=self.M_CYAN1),
-            symbolBrush=pg.mkBrush(color=self.M_CYAN + "40"),
-        )
+        pd = self.prepareSatellite([az.degrees], [alt.degrees])
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)
         return pd
 
-    def preparePointer(self, plotItem):
-        """
-        :param plotItem:
-        :return:
-        """
+    def preparePointer(self, plotItem: PlotWidget) -> pg.PlotDataItem:
+        """ """
         pd = pg.PlotDataItem(
             x=[180],
             y=[45],
@@ -401,15 +327,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         plotItem.addItem(pd)
         return pd
 
-    def drawHorizonTrajectory(self, plotItem, obsSite, satOrbits, altitude, azimuth):
-        """
-        :param plotItem:
-        :param obsSite:
-        :param satOrbits:
-        :param altitude:
-        :param azimuth:
-        :return:
-        """
+    def drawHorizonTrajectory(
+        self, plotItem: PlotWidget, obsSite, satOrbits, altitude, azimuth
+    ):
+        """ """
         ts = obsSite.ts
         for i, satOrbit in enumerate(satOrbits):
             rise = satOrbit["rise"].tt
@@ -446,52 +367,33 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             pd.setZValue(-5)
             plotItem.addItem(pd)
 
-    def drawHorizon(self):
-        """
-        :return:
-        """
+    def drawHorizon(self) -> None:
+        """ """
         self.ui.satHorizon.drawHorizon(self.app.data.horizonP)
-        return True
 
-    def drawHorizonView(self, obsSite=None, satOrbits=None, altitude=None, azimuth=None):
-        """
-        drawHorizonView shows the horizon and enable the users to explore a
-        satellite passing by
-
-        :param obsSite:
-        :param satOrbits:
-        :param altitude:
-        :param azimuth:
-        :return: success
-        """
+    def drawHorizonView(
+        self, obsSite: ObsSite, satOrbits: list, altitude: list[float], azimuth: list[float]
+    ) -> None:
+        """ """
         plotItem = self.ui.satHorizon.p[0]
         self.prepareHorizon(plotItem)
         self.drawHorizonTrajectory(plotItem, obsSite, satOrbits, altitude, azimuth)
         self.plotSatPosHorizon = self.prepareHorizonSatellite(plotItem, obsSite)
         self.pointerAltAz = self.preparePointer(plotItem)
         self.drawHorizon()
-        return True
 
     def drawSatellite(
-        self, satellite=None, satOrbits=None, altitude=None, azimuth=None, name=""
-    ):
-        """
-        :param satellite:
-        :param satOrbits:
-        :param altitude:
-        :param azimuth:
-        :param name:
-        :return: True for test purpose
-        """
+        self, satellite, satOrbits, altitude: list[float], azimuth: list[float], name: str
+    ) -> None:
+        """ """
         self.setWindowTitle(f"Satellite {name}")
         self.satellite = satellite
         self.drawEarth(self.app.mount.obsSite, satOrbits=satOrbits)
         if satOrbits is None or self.app.mount.obsSite is None:
-            return False
+            return
         self.drawHorizonView(
             self.app.mount.obsSite,
             satOrbits=satOrbits,
             altitude=altitude,
             azimuth=azimuth,
         )
-        return True

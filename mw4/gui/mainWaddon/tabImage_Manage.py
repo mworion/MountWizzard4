@@ -536,8 +536,7 @@ class ImageManage:
             self.ui.domeShutterStatusText.setText(value)
 
     def domeSlewCW(self) -> None:
-        """
-        """
+        """ """
         if not self.app.deviceStat["dome"]:
             return
         if not self.app.dome.slewCW():

@@ -115,7 +115,7 @@ class MountWizzard4(QObject):
         self.mainW = None
         self.timerCounter = 0
         self.statusOperationRunning = 0
-        self.config = loadProfileStart(configDir=self.mwGlob["configDir"])
+        self.config = loadProfileStart(self.mwGlob["configDir"])
         self.deviceStat = {
             "dome": None,
             "mount": None,

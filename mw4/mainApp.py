@@ -146,7 +146,7 @@ class MountWizzard4(QObject):
             host=None,
             MAC="00.c0.08.87.35.db",
             pathToData=self.mwGlob["dataDir"],
-            verbose=False,
+            verbose=True,
         )
         # setting location to last know config
         topo = self.initConfig()

@@ -39,12 +39,12 @@ def app(qapp):
 
 def test_start_parameters_1(qapp):
     mwGlob = {
-        "configDir": "tests/workDir/config",
-        "dataDir": "tests/workDir/data",
-        "tempDir": "tests/workDir/temp",
-        "imageDir": "tests/workDir/image",
-        "modelDir": "tests/workDir/model",
-        "workDir": "tests/workDir",
+        "configDir": "tests/work/config",
+        "dataDir": "tests/work/data",
+        "tempDir": "tests/work/temp",
+        "imageDir": "tests/work/image",
+        "modelDir": "tests/work/model",
+        "workDir": "tests/work",
     }
     with open(mwGlob["workDir"] + "/test.run", "w+") as test:
         test.write("test")
@@ -59,12 +59,12 @@ def test_start_parameters_1(qapp):
 
 def test_start_parameters_2(qapp):
     mwGlob = {
-        "configDir": "tests/workDir/config",
-        "dataDir": "tests/workDir/data",
-        "tempDir": "tests/workDir/temp",
-        "imageDir": "tests/workDir/image",
-        "modelDir": "tests/workDir/model",
-        "workDir": "tests/workDir",
+        "configDir": "tests/work/config",
+        "dataDir": "tests/work/data",
+        "tempDir": "tests/work/temp",
+        "imageDir": "tests/work/image",
+        "modelDir": "tests/work/model",
+        "workDir": "tests/work",
     }
     with open(mwGlob["workDir"] + "/test.run", "w+") as test:
         test.write("test")

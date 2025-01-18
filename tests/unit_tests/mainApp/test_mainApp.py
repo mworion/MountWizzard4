@@ -37,16 +37,16 @@ setupLogging()
 @pytest.fixture(autouse=True, scope="module")
 def app(qapp):
     mwGlob = {
-        "configDir": Path("tests/workDir/config"),
-        "dataDir": Path("tests/workDir/data"),
-        "tempDir": Path("tests/workDir/temp"),
-        "imageDir": Path("tests/workDir/image"),
-        "modelDir": Path("tests/workDir/model"),
-        "workDir": Path("tests/workdir"),
+        "configDir": Path("tests/work/config"),
+        "dataDir": Path("tests/work/data"),
+        "tempDir": Path("tests/work/temp"),
+        "imageDir": Path("tests/work/image"),
+        "modelDir": Path("tests/work/model"),
+        "workDir": Path("tests/work"),
     }
 
-    shutil.copy("tests/testData/de440_mw4.bsp", Path("tests/workDir/data/de440_mw4.bsp"))
-    shutil.copy("tests/testData/test.run", Path("tests/workDir/test.run"))
+    shutil.copy("tests/testData/de440_mw4.bsp", Path("tests/work/data/de440_mw4.bsp"))
+    shutil.copy("tests/testData/test.run", Path("tests/work/test.run"))
 
     class Test:
         def emit(self):

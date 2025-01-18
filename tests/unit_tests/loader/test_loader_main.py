@@ -56,12 +56,12 @@ def test_main_1():
         os.remove(f)
 
     mwGlob = {
-        "configDir": Path("tests/workDir/config"),
-        "dataDir": Path("tests/workDir/data"),
-        "tempDir": Path("tests/workDir/temp"),
-        "imageDir": Path("tests/workDir/image"),
-        "modelDir": Path("tests/workDir/model"),
-        "workDir": Path("mw4/tests/workDir"),
+        "configDir": Path("tests/work/config"),
+        "dataDir": Path("tests/work/data"),
+        "tempDir": Path("tests/work/temp"),
+        "imageDir": Path("tests/work/image"),
+        "modelDir": Path("tests/work/model"),
+        "workDir": Path("mw4/tests/work"),
         "modeldata": "4.0",
     }
     with mock.patch.object(PySide6.QtCore.QBasicTimer, "start"):

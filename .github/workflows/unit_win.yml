@@ -109,6 +109,9 @@ jobs:
           dir tests/work
           dir tests/work/data
           pytest tests/unit_tests/mainApp ${{env.cov}}
+          dir
+          dir tests/work
+          dir tests/work/data
           
       - name: rename_coveragefile
         run: mv .coverage c2.dat

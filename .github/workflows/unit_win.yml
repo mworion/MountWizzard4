@@ -105,6 +105,9 @@ jobs:
   
       - name: running_unit_tests
         run: |
+          ls -la
+          ls -la tests/work
+          ls -la tests/work/data
           pytest tests/unit_tests/mainApp ${{env.cov}}
           
       - name: rename_coveragefile

@@ -19,6 +19,7 @@ import pytest
 import unittest.mock as mock
 import shutil
 from pathlib import Path
+import os
 
 # external packages
 from PySide6.QtCore import QTimer, QBasicTimer, QCoreApplication

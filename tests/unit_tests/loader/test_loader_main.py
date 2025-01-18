@@ -51,7 +51,7 @@ def test_main_1():
         def close():
             return
 
-    files = glob.glob("tests/workDir/config/*.cfg")
+    files = glob.glob("tests/work/config/*.cfg")
     for f in files:
         os.remove(f)
 

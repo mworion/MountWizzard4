@@ -162,7 +162,7 @@ def test_loadXSIF(function):
 
 
 def test_workerLoadImage_1(function):
-    imageFileName = "tests/workDir/image/m51.fit"
+    imageFileName = "tests/work/image/m51.fit"
     with mock.patch.object(function, "loadFITS"):
         with mock.patch.object(function, "checkValidImageFormat", return_value=False):
             suc = function.workerLoadImage(imageFileName)
@@ -170,7 +170,7 @@ def test_workerLoadImage_1(function):
 
 
 def test_workerLoadImage_2(function):
-    imageFileName = "tests/workDir/image/m51.xisf"
+    imageFileName = "tests/work/image/m51.xisf"
     with mock.patch.object(function, "loadXISF"):
         with mock.patch.object(function, "checkValidImageFormat", return_value=False):
             suc = function.workerLoadImage(imageFileName)
@@ -187,7 +187,7 @@ def test_workerLoadImage_3(function):
         "NAXIS2": 200,
     }
 
-    imageFileName = "tests/workDir/image/m51.fit"
+    imageFileName = "tests/work/image/m51.fit"
     with mock.patch.object(function, "loadFITS"):
         with mock.patch.object(function, "checkValidImageFormat", return_value=True):
             with mock.patch.object(function, "cleanImageFormat"):
@@ -203,8 +203,8 @@ def test_loadImage_1(function):
 
 
 def test_loadImage_2(function):
-    imageFileName = "tests/workDir/image/m51.fit"
-    shutil.copy("tests/testData/m51.fit", "tests/workDir/image/m51.fit")
+    imageFileName = "tests/work/image/m51.fit"
+    shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
     with mock.patch.object(function.threadPool, "start"):
         suc = function.loadImage(imageFileName)
         assert suc

@@ -860,7 +860,7 @@ class Mount(QObject):
         ts = load.timescale(builtin=True)
         timeJD = ts.tt_jd(2459580.5)
         timeDiff = 0
-        loader = Loader("tests/workDir/data", verbose=False)
+        loader = Loader("tests/work/data", verbose=False)
         status = 0
         statusSat = "E"
         UTC2TT = 69.184
@@ -1133,14 +1133,14 @@ class App(QObject):
 
     ephemeris = load_file("tests/testData/de440_mw4.bsp")
     mwGlob = {
-        "modelDir": Path("tests/workDir/model"),
-        "imageDir": Path("tests/workDir/image"),
-        "dataDir": Path("tests/workDir/data"),
-        "workDir": Path("tests/workDir"),
-        "measureDir": Path("tests/workDir/measure"),
-        "tempDir": Path("tests/workDir/temp"),
-        "configDir": Path("tests/workDir/config"),
-        "logDir": Path("tests/workDir/log"),
+        "modelDir": Path("tests/work/model"),
+        "imageDir": Path("tests/work/image"),
+        "dataDir": Path("tests/work/data"),
+        "workDir": Path("tests/work"),
+        "measureDir": Path("tests/work/measure"),
+        "tempDir": Path("tests/work/temp"),
+        "configDir": Path("tests/work/config"),
+        "logDir": Path("tests/work/log"),
     }
     uiWindows = {}
     mainW = MainW()

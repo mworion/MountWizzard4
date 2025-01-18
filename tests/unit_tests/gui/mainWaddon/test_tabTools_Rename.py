@@ -187,26 +187,26 @@ def test_renameFile_1(function):
 
 
 def test_renameFile_2(function):
-    if os.path.isfile("tests/workDir/image/m51.fit"):
-        os.remove("tests/workDir/image/m51.fit")
-    suc = function.renameFile("tests/workDir/image/m51.fit")
+    if os.path.isfile("tests/work/image/m51.fit"):
+        os.remove("tests/work/image/m51.fit")
+    suc = function.renameFile("tests/work/image/m51.fit")
     assert not suc
 
 
 def test_renameFile_3(function):
-    shutil.copy("tests/testData/m51.fit", "tests/workDir/image/m51.fit")
+    shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
 
     with mock.patch.object(os, "rename"):
-        suc = function.renameFile("tests/workDir/image/m51.fit")
+        suc = function.renameFile("tests/work/image/m51.fit")
         assert suc
 
 
 def test_renameFile_4(function):
-    shutil.copy("tests/testData/m51.fit", "tests/workDir/image/m51.fit")
+    shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
     function.ui.newObjectName.setText("test")
 
     with mock.patch.object(os, "rename"):
-        suc = function.renameFile("tests/workDir/image/m51.fit")
+        suc = function.renameFile("tests/work/image/m51.fit")
         assert suc
 
 
@@ -214,10 +214,10 @@ def test_renameFile_5(function):
     hdu = fits.PrimaryHDU(np.arange(100.0))
     hduList = fits.HDUList([hdu])
     function.ui.newObjectName.setText("")
-    hduList.writeto("tests/workDir/image/m51.fit", overwrite=True)
+    hduList.writeto("tests/work/image/m51.fit", overwrite=True)
 
     with mock.patch.object(os, "rename"):
-        suc = function.renameFile("tests/workDir/image/m51.fit")
+        suc = function.renameFile("tests/work/image/m51.fit")
         assert suc
 
 
@@ -225,40 +225,40 @@ def test_renameFile_6(function):
     hdu = fits.PrimaryHDU(np.arange(100.0))
     hdu.header["FILTER"] = "test"
     hduList = fits.HDUList([hdu])
-    hduList.writeto("tests/workDir/image/m51.fit", overwrite=True)
+    hduList.writeto("tests/work/image/m51.fit", overwrite=True)
 
     function.ui.rename1.clear()
     function.ui.rename1.addItem("Filter")
 
     with mock.patch.object(os, "rename"):
-        suc = function.renameFile("tests/workDir/image/m51.fit")
+        suc = function.renameFile("tests/work/image/m51.fit")
         assert suc
 
 
 def test_renameRunGUI_1(function):
-    shutil.copy("tests/testData/m51.fit", "tests/workDir/image/m51.fit")
+    shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
     function.ui.renameDir.setText("")
     suc = function.renameRunGUI()
     assert not suc
 
 
 def test_renameRunGUI_2(function):
-    function.ui.renameDir.setText("tests/workDir/img")
+    function.ui.renameDir.setText("tests/work/img")
     suc = function.renameRunGUI()
     assert not suc
 
 
 def test_renameRunGUI_3(function):
     function.ui.includeSubdirs.setChecked(True)
-    function.ui.renameDir.setText("tests/workDir/image")
+    function.ui.renameDir.setText("tests/work/image")
     with mock.patch.object(function, "getNumberFiles", return_value=0):
         suc = function.renameRunGUI()
         assert not suc
 
 
 def test_renameRunGUI_4(function):
-    shutil.copy("tests/testData/m51.fit", "tests/workDir/image/m51.fit")
-    function.ui.renameDir.setText("tests/workDir/image")
+    shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
+    function.ui.renameDir.setText("tests/work/image")
     function.ui.includeSubdirs.setChecked(False)
     with mock.patch.object(function, "renameFile", return_value=True):
         suc = function.renameRunGUI()
@@ -266,8 +266,8 @@ def test_renameRunGUI_4(function):
 
 
 def test_renameRunGUI_5(function):
-    shutil.copy("tests/testData/m51.fit", "tests/workDir/image/m51.fit")
-    function.ui.renameDir.setText("tests/workDir/image")
+    shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
+    function.ui.renameDir.setText("tests/work/image")
     with mock.patch.object(function, "renameFile", return_value=False):
         suc = function.renameRunGUI()
         assert suc

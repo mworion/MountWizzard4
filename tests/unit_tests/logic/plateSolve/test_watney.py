@@ -34,11 +34,11 @@ from logic.plateSolve.watney import Watney
 
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    files = glob.glob("tests/workDir/image/*.fit*")
+    files = glob.glob("tests/work/image/*.fit*")
     for f in files:
         os.remove(f)
-    for file in os.listdir("tests/workDir/temp"):
-        fileP = os.path.join("tests/workDir/temp", file)
+    for file in os.listdir("tests/work/temp"):
+        fileP = os.path.join("tests/work/temp", file)
         if "temp" not in file:
             continue
         os.remove(fileP)
@@ -104,7 +104,7 @@ def test_solve_1(function):
     with mock.patch.object(function, "runWatney", return_value=(False, 1)):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(os, "remove"):
-                res = function.solve(Path("tests/workDir/image/m51.fit"), False)
+                res = function.solve(Path("tests/work/image/m51.fit"), False)
                 assert not res["success"]
 
 
@@ -112,7 +112,7 @@ def test_solve_2(function):
     function.searchRadius = 180
     with mock.patch.object(function, "runWatney", return_value=(True, 0)):
         with mock.patch.object(Path, "is_file", return_value=False):
-            res = function.solve(Path("tests/workDir/image/m51.fit"), False)
+            res = function.solve(Path("tests/work/image/m51.fit"), False)
             assert not res["success"]
 
 
@@ -126,7 +126,7 @@ def test_solve_3(function):
                         with mock.patch.object(
                             logic.plateSolve.watney, "updateImageFileHeaderWithSolution"
                         ):
-                            res = function.solve(Path("tests/workDir/image/m51.fit"), True)
+                            res = function.solve(Path("tests/work/image/m51.fit"), True)
                             assert res["success"]
 
 

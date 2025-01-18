@@ -40,12 +40,12 @@ from gui.utilities.toolsQtWidget import MWidget
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    files = glob.glob("tests/workDir/model/*.model")
+    files = glob.glob("tests/work/model/*.model")
     for f in files:
         os.remove(f)
-    shutil.copy("tests/testData/test.model", "tests/workDir/model/test.model")
-    shutil.copy("tests/testData/test1.model", "tests/workDir/model/test1.model")
-    shutil.copy("tests/testData/test-opt.model", "tests/workDir/model/test-opt.model")
+    shutil.copy("tests/testData/test.model", "tests/work/model/test.model")
+    shutil.copy("tests/testData/test1.model", "tests/work/model/test1.model")
+    shutil.copy("tests/testData/test-opt.model", "tests/work/model/test-opt.model")
 
     mainW = MWidget()
     mainW.app = App()
@@ -275,12 +275,12 @@ def test_deleteName_4(function):
 
 
 def test_writeBuildModelOptimized_0(function):
-    function.fittedModelPath = Path("tests/workDir/model/test-opt.model")
+    function.fittedModelPath = Path("tests/work/model/test-opt.model")
     function.writeBuildModelOptimized([])
 
 
 def test_writeBuildModelOptimized_1(function):
-    function.fittedModelPath = Path("tests/workDir/model/test-opt.model")
+    function.fittedModelPath = Path("tests/work/model/test-opt.model")
     with mock.patch.object(
         json,
         "load",
@@ -291,7 +291,7 @@ def test_writeBuildModelOptimized_1(function):
 
 
 def test_writeBuildModelOptimized_2(function):
-    function.fittedModelPath = Path("tests/workDir/model/test-opt.model")
+    function.fittedModelPath = Path("tests/work/model/test-opt.model")
     with mock.patch.object(gui.mainWaddon.tabModel_Manage, "writeRetrofitData"):
         with mock.patch.object(json, "load", return_value=[{"errorIndex": 1}, {"errorIndex": 3}]):
             with mock.patch.object(json, "dump"):

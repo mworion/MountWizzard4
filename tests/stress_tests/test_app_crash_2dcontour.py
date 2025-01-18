@@ -33,13 +33,13 @@ from loader import extractDataFiles
 
 
 mwglob = {
-    "dataDir": "tests/workDir/data",
-    "configDir": "tests/workDir/config",
-    "workDir": "tests/workDir",
-    "imageDir": "tests/workDir/image",
-    "tempDir": "tests/workDir/temp",
-    "measureDir": "tests/workDir/measure",
-    "modelDir": "tests/workDir/model",
+    "dataDir": "tests/work/data",
+    "configDir": "tests/work/config",
+    "workDir": "tests/work",
+    "imageDir": "tests/work/image",
+    "tempDir": "tests/work/temp",
+    "measureDir": "tests/work/measure",
+    "modelDir": "tests/work/model",
     "modelData": "4.0",
 }
 
@@ -58,7 +58,7 @@ def module_setup_teardown():
                 continue
             os.remove(f)
     extractDataFiles(mwGlob=mwglob)
-    shutil.copy("tests/testData/star1.fits", "tests/workDir/image/star1.fits")
+    shutil.copy("tests/testData/star1.fits", "tests/work/image/star1.fits")
 
     yield
     for d in mwglob:
@@ -90,7 +90,7 @@ def test_showImagesPhotometry(qtbot, qapp):
     qtbot.waitExposed(imageW, timeout=1000)
     imageW.ui.photometryGroup.setChecked(True)
     imageW.ui.timeTagImage.setChecked(False)
-    app.showImage.emit("tests/workDir/image/star1.fits")
+    app.showImage.emit("tests/work/image/star1.fits")
     TAB = [1, 4]
 
     for i in range(20):

@@ -41,7 +41,7 @@ def function():
         def json():
             return "test"
 
-    shutil.copy("tests/testData/openweathermap.data", "tests/workDir/data/openweathermap.data")
+    shutil.copy("tests/testData/openweathermap.data", "tests/work/data/openweathermap.data")
     with mock.patch.object(requests, "get", return_value=Test1()):
         func = OnlineWeather(app=App())
         yield func

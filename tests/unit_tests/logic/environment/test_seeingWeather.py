@@ -41,7 +41,7 @@ def function():
         def json():
             return "test"
 
-    shutil.copy("tests/testData/meteoblue.data", "tests/workDir/data/meteoblue.data")
+    shutil.copy("tests/testData/meteoblue.data", "tests/work/data/meteoblue.data")
 
     with mock.patch.object(requests, "get", return_value=Test1()):
         func = SeeingWeather(app=App())

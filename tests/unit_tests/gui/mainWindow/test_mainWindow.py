@@ -235,14 +235,14 @@ def test_updateCameraStatus(window):
 
 
 def test_updateThreadAndOnlineStatus_1(window):
-    window.app.mwGlob["workDir"] = "tests/workDir"
+    window.app.mwGlob["workDir"] = "tests/work"
     window.ui.isOnline.setChecked(True)
     with mock.patch.object(shutil, "disk_usage", return_value=(100, 100, 100)):
         window.updateThreadAndOnlineStatus()
 
 
 def test_updateThreadAndOnlineStatus_2(window):
-    window.app.mwGlob["workDir"] = "tests/workDir"
+    window.app.mwGlob["workDir"] = "tests/work"
     window.ui.isOnline.setChecked(False)
     with mock.patch.object(shutil, "disk_usage", return_value=(100, 100, 100)):
         window.updateThreadAndOnlineStatus()

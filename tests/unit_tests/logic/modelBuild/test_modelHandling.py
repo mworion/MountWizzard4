@@ -192,27 +192,27 @@ def test_loadModelsFromFile_1():
 
 
 def test_loadModelsFromFile_2():
-    shutil.copy("tests/testData/test.model", "tests/workDir/model/test.model")
-    modelFilesPath = [Path("tests/workDir/model/test.model")]
+    shutil.copy("tests/testData/test.model", "tests/work/model/test.model")
+    modelFilesPath = [Path("tests/work/model/test.model")]
     model, msg = loadModelsFromFile(modelFilesPath)
     assert len(model) == 58
     assert msg == "Model data loaded"
 
 
 def test_loadModelsFromFile_3():
-    shutil.copy("tests/testData/astrometry.cfg", "tests/workDir/model/test.model")
-    modelFilesPath = [Path("tests/workDir/model/test.model")]
+    shutil.copy("tests/testData/astrometry.cfg", "tests/work/model/test.model")
+    modelFilesPath = [Path("tests/work/model/test.model")]
     model, msg = loadModelsFromFile(modelFilesPath)
     assert len(model) == 0
     assert msg == "Cannot load model json file: test.model"
 
 
 def test_loadModelsFromFile_4():
-    shutil.copy("tests/testData/test.model", "tests/workDir/model/test.model")
-    shutil.copy("tests/testData/test1.model", "tests/workDir/model/test1.model")
+    shutil.copy("tests/testData/test.model", "tests/work/model/test.model")
+    shutil.copy("tests/testData/test1.model", "tests/work/model/test1.model")
     modelFilesPath = [
-        Path("tests/workDir/model/test.model"),
-        Path("tests/workDir/model/test1.model"),
+        Path("tests/work/model/test.model"),
+        Path("tests/work/model/test1.model"),
     ]
     model, msg = loadModelsFromFile(modelFilesPath)
     assert len(model) == 99

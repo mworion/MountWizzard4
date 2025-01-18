@@ -35,7 +35,7 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    shutil.copy("tests/testData/meteoblue.data", "tests/workDir/data/meteoblue.data")
+    shutil.copy("tests/testData/meteoblue.data", "tests/work/data/meteoblue.data")
 
     mainW = MWidget()
     mainW.app = App()

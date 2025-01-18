@@ -33,13 +33,13 @@ from loader import extractDataFiles
 
 
 mwglob = {
-    "dataDir": "tests/workDir/data",
-    "configDir": "tests/workDir/config",
+    "dataDir": "tests/work/data",
+    "configDir": "tests/work/config",
     "workDir": "mw4/workDir",
-    "imageDir": "tests/workDir/image",
-    "tempDir": "tests/workDir/temp",
-    "measureDir": "tests/workDir/measure",
-    "modelDir": "tests/workDir/model",
+    "imageDir": "tests/work/image",
+    "tempDir": "tests/work/temp",
+    "measureDir": "tests/work/measure",
+    "modelDir": "tests/work/model",
     "modelData": "4.0",
 }
 

@@ -32,13 +32,13 @@ from loader import extractDataFiles
 
 
 mwglob = {
-    "dataDir": "tests/workDir/data",
-    "configDir": "tests/workDir/config",
-    "workDir": "tests/workDir",
-    "imageDir": "tests/workDir/image",
-    "tempDir": "tests/workDir/temp",
-    "measureDir": "tests/workDir/measure",
-    "modelDir": "tests/workDir/model",
+    "dataDir": "tests/work/data",
+    "configDir": "tests/work/config",
+    "workDir": "tests/work",
+    "imageDir": "tests/work/image",
+    "tempDir": "tests/work/temp",
+    "measureDir": "tests/work/measure",
+    "modelDir": "tests/work/model",
     "modelData": "4.0",
 }
 
@@ -57,9 +57,9 @@ def module_setup_teardown():
                 continue
             os.remove(f)
     extractDataFiles(mwGlob=mwglob)
-    shutil.copy("tests/testData/star1.fits", "tests/workDir/image/star1.fits")
-    shutil.copy("tests/testData/star2.fits", "tests/workDir/image/star2.fits")
-    shutil.copy("tests/testData/star3.fits", "tests/workDir/image/star3.fits")
+    shutil.copy("tests/testData/star1.fits", "tests/work/image/star1.fits")
+    shutil.copy("tests/testData/star2.fits", "tests/work/image/star2.fits")
+    shutil.copy("tests/testData/star3.fits", "tests/work/image/star3.fits")
 
     yield
     for d in mwglob:
@@ -90,7 +90,7 @@ def test_showImages(qtbot, qapp):
     qtbot.waitExposed(imageW, timeout=1000)
 
     for i in range(50):
-        app.showImage.emit(f"tests/workDir/image/star{i%3 + 1}.fits")
+        app.showImage.emit(f"tests/work/image/star{i%3 + 1}.fits")
         QTest.qWait(500)
 
     QTest.qWait(1000)
@@ -116,7 +116,7 @@ def test_showImagesPhotometry(qtbot, qapp):
     imageW.ui.photometryGroup.setChecked(True)
 
     for i in range(50):
-        app.showImage.emit(f"tests/workDir/image/star{i%3 + 1}.fits")
+        app.showImage.emit(f"tests/work/image/star{i%3 + 1}.fits")
         QTest.qWait(1000)
 
     QTest.qWait(1000)

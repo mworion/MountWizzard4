@@ -33,7 +33,7 @@ from logic.databaseProcessing.dataWriter import DataWriter
 @pytest.fixture(autouse=True, scope="function")
 def function(qapp):
     for file in ["CDFLeapSeconds.txt", "finals.data", "tai-utc.dat"]:
-        path = "tests/workDir/data/" + file
+        path = "tests/work/data/" + file
         if os.path.isfile(path):
             os.remove(path)
 
@@ -42,25 +42,25 @@ def function(qapp):
 
 
 def test_writeEarthRotationData_1(function):
-    suc = function.writeEarthRotationData(dataFilePath=Path("tests/workDir/data"))
+    suc = function.writeEarthRotationData(dataFilePath=Path("tests/work/data"))
     assert not suc
 
 
 def test_writeEarthRotationData_2(function):
-    suc = function.writeEarthRotationData(dataFilePath=Path("tests/workDir/temp"))
+    suc = function.writeEarthRotationData(dataFilePath=Path("tests/work/temp"))
     assert not suc
 
 
 def test_writeEarthRotationData_3(function):
-    shutil.copy("tests/testData/CDFLeapSeconds.txt", "tests/workDir/data/CDFLeapSeconds.txt")
-    suc = function.writeEarthRotationData(dataFilePath=Path("tests/workDir/temp"))
+    shutil.copy("tests/testData/CDFLeapSeconds.txt", "tests/work/data/CDFLeapSeconds.txt")
+    suc = function.writeEarthRotationData(dataFilePath=Path("tests/work/temp"))
     assert not suc
 
 
 def test_writeEarthRotationData_4(function):
-    shutil.copy("tests/testData/CDFLeapSeconds.txt", "tests/workDir/data/CDFLeapSeconds.txt")
-    shutil.copy("tests/testData/finals.data", "tests/workDir/data/finals.data")
-    suc = function.writeEarthRotationData(dataFilePath=Path("tests/workDir/temp"))
+    shutil.copy("tests/testData/CDFLeapSeconds.txt", "tests/work/data/CDFLeapSeconds.txt")
+    shutil.copy("tests/testData/finals.data", "tests/work/data/finals.data")
+    suc = function.writeEarthRotationData(dataFilePath=Path("tests/work/temp"))
     assert suc
 
 
@@ -69,7 +69,7 @@ def test_writeCometMPC_1(function):
         data = json.load(f)
 
     testData = [data[0]]
-    function.writeCometMPC(datas=testData, dataFilePath=Path("tests/workDir/temp"))
+    function.writeCometMPC(datas=testData, dataFilePath=Path("tests/work/temp"))
 
 
 def test_writeCometMPC_2(function):
@@ -77,9 +77,9 @@ def test_writeCometMPC_2(function):
         data = json.load(f)
 
     testData = [data[0]]
-    function.writeCometMPC(datas=testData, dataFilePath=Path("tests/workDir/temp"))
+    function.writeCometMPC(datas=testData, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/workDir/temp/comets.mpc", "r") as f:
+    with open("tests/work/temp/comets.mpc", "r") as f:
         testLine = f.readline()
     with open("tests/testData/mpc_comet_test.txt", "r") as f:
         refLine = f.readline()
@@ -89,8 +89,8 @@ def test_writeCometMPC_2(function):
 def test_writeCometMPC_3(function):
     data = [{"test": "test"}]
 
-    function.writeCometMPC(datas=data, dataFilePath=Path("tests/workDir/temp"))
-    assert os.path.isfile("tests/workDir/temp/comets.mpc")
+    function.writeCometMPC(datas=data, dataFilePath=Path("tests/work/temp"))
+    assert os.path.isfile("tests/work/temp/comets.mpc")
 
 
 def test_generateCycleCountPackedText(function):
@@ -185,7 +185,7 @@ def test_writeAsteroidMPC_1(function):
         data = json.load(f)
 
     testData = [data[0]]
-    function.writeAsteroidMPC(datas=testData, dataFilePath=Path("tests/workDir/temp"))
+    function.writeAsteroidMPC(datas=testData, dataFilePath=Path("tests/work/temp"))
 
 
 def test_writeAsteroidMPC_2(function):
@@ -193,9 +193,9 @@ def test_writeAsteroidMPC_2(function):
         data = json.load(f)
 
     testData = [data[0]]
-    function.writeAsteroidMPC(datas=testData, dataFilePath=Path("tests/workDir/temp"))
+    function.writeAsteroidMPC(datas=testData, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/workDir/temp/asteroids.mpc", "r") as f:
+    with open("tests/work/temp/asteroids.mpc", "r") as f:
         testLine = f.readline()
     with open("tests/testData/mpc_asteroid_test.txt", "r") as f:
         refLine = f.readline()
@@ -206,9 +206,9 @@ def test_writeAsteroidMPC_3(function):
     with open("tests/testData/mpc_asteroid_test.json") as f:
         data = json.load(f)
 
-    function.writeAsteroidMPC(datas=data, dataFilePath=Path("tests/workDir/temp"))
+    function.writeAsteroidMPC(datas=data, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/workDir/temp/asteroids.mpc", "r") as f:
+    with open("tests/work/temp/asteroids.mpc", "r") as f:
         testLines = f.readlines()
     with open("tests/testData/mpc_asteroid_test.txt", "r") as f:
         refLines = f.readlines()
@@ -222,9 +222,9 @@ def test_writeAsteroidMPC_4(function):
         data = json.load(f)
 
     testData = [data[0]]
-    function.writeAsteroidMPC(datas=testData, dataFilePath=Path("tests/workDir/temp"))
+    function.writeAsteroidMPC(datas=testData, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/workDir/temp/asteroids.mpc", "r") as f:
+    with open("tests/work/temp/asteroids.mpc", "r") as f:
         testLine = f.readline()
     with open("tests/testData/nea_extended_test.txt", "r") as f:
         refLine = f.readline()
@@ -236,9 +236,9 @@ def test_writeAsteroidMPC_5(function):
         data = json.load(f)
 
     with mock.patch.object(function, "generateEpochPacked", return_value=" 1985"):
-        function.writeAsteroidMPC(datas=data, dataFilePath=Path("tests/workDir/temp"))
+        function.writeAsteroidMPC(datas=data, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/workDir/temp/asteroids.mpc", "r") as f:
+    with open("tests/work/temp/asteroids.mpc", "r") as f:
         testLines = f.readlines()
     with open("tests/testData/nea_extended_test.txt", "r") as f:
         refLines = f.readlines()
@@ -253,8 +253,8 @@ def test_writeAsteroidMPC_5(function):
 def test_writeAsteroidMPC_6(function):
     data = [{}]
 
-    function.writeAsteroidMPC(datas=data, dataFilePath=Path("tests/workDir/temp"))
-    assert os.path.isfile("tests/workDir/temp/asteroids.mpc")
+    function.writeAsteroidMPC(datas=data, dataFilePath=Path("tests/work/temp"))
+    assert os.path.isfile("tests/work/temp/asteroids.mpc")
 
 
 def test_writeSatelliteTLE_1(function):
@@ -264,9 +264,9 @@ def test_writeSatelliteTLE_1(function):
         "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
     ]
     data = [EarthSatellite(tle[1], tle[2], name=tle[0])]
-    function.writeSatelliteTLE(datas=data, dataFilePath=Path("tests/workDir/temp"))
+    function.writeSatelliteTLE(datas=data, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/workDir/temp/satellites.tle", "r") as f:
+    with open("tests/work/temp/satellites.tle", "r") as f:
         refLines = f.readlines()
 
     assert tle[0] == refLines[0].strip("\n")
@@ -281,9 +281,9 @@ def t_writeSatelliteTLE_2(function):
         "2 44542  54.7025 244.1098 0007981 318.8601 283.5781  1.86231125 12011",
     ]
     data = [EarthSatellite(tle[1], tle[2], name=tle[0])]
-    function.writeSatelliteTLE(datas=data, dataFilePath=Path("tests/workDir/temp"))
+    function.writeSatelliteTLE(datas=data, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/workDir/temp/satellites.tle", "r") as f:
+    with open("tests/work/temp/satellites.tle", "r") as f:
         refLines = f.readlines()
 
     assert tle[0] == refLines[0].strip("\n")

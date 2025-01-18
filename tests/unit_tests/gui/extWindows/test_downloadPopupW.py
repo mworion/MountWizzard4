@@ -79,7 +79,7 @@ def test_getFileFromUrl_1(function):
     function.cancel = False
     with mock.patch.object(requests, "get", return_value=Response()):
         with mock.patch.object(builtins, "open"):
-            suc = function.getFileFromUrl("http://local", "tests/workDir/temp/test.txt")
+            suc = function.getFileFromUrl("http://local", "tests/work/temp/test.txt")
             assert suc
 
 
@@ -95,7 +95,7 @@ def test_getFileFromUrl_2(function):
 
     with mock.patch.object(requests, "get", return_value=Response()):
         with mock.patch.object(builtins, "open"):
-            suc = function.getFileFromUrl("http://local", "tests/workDir/temp/test.txt")
+            suc = function.getFileFromUrl("http://local", "tests/work/temp/test.txt")
             assert suc
 
 
@@ -111,20 +111,20 @@ def test_getFileFromUrl_3(function):
 
     with mock.patch.object(requests, "get", return_value=Response()):
         with mock.patch.object(builtins, "open"):
-            suc = function.getFileFromUrl("http://local", "tests/workDir/temp/test.txt")
+            suc = function.getFileFromUrl("http://local", "tests/work/temp/test.txt")
             assert not suc
 
 
 def test_unzipFile(function):
-    shutil.copy("tests/testData/test.json.gz", "tests/workDir/temp/test.json.gz")
-    function.unzipFile("tests/workDir/temp/test.json.gz", "tests/workDir/temp/test.json")
-    assert os.path.isfile("tests/workDir/temp/test.json")
+    shutil.copy("tests/testData/test.json.gz", "tests/work/temp/test.json.gz")
+    function.unzipFile("tests/work/temp/test.json.gz", "tests/work/temp/test.json")
+    assert os.path.isfile("tests/work/temp/test.json")
 
 
 def test_downloadFileWorker_2(function):
-    shutil.copy("tests/testData/visual.txt", "tests/workDir/temp/test.txt")
+    shutil.copy("tests/testData/visual.txt", "tests/work/temp/test.txt")
     with mock.patch.object(function, "getFileFromUrl", return_value=False):
-        suc = function.downloadFileWorker(url="", dest="tests/workDir/temp/test.txt")
+        suc = function.downloadFileWorker(url="", dest="tests/work/temp/test.txt")
         assert not suc
 
 

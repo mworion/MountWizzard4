@@ -44,13 +44,13 @@ def function(qapp):
 def test_initConfig_1(function):
     suc = function.initConfig()
     assert suc
-    assert function.tempDir == Path("tests/workDir/temp")
+    assert function.tempDir == Path("tests/work/temp")
 
 
 def test_initConfig_2(function):
     suc = function.initConfig()
     assert suc
-    assert function.tempDir == Path("tests/workDir/temp")
+    assert function.tempDir == Path("tests/work/temp")
 
 
 def test_storeConfig_1(function):

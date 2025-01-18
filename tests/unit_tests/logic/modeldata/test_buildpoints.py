@@ -35,7 +35,7 @@ from logic.modeldata.buildpoints import HaDecToAltAz
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    config = Path("tests/workDir/config")
+    config = Path("tests/work/config")
     testdir = os.listdir(config)
     for item in testdir:
         if item.endswith(".bpts"):
@@ -711,27 +711,27 @@ def test_loadModel_1(function):
 
 
 def test_loadModel_2(function):
-    with open("tests/workDir/config/test.model", "w") as outfile:
+    with open("tests/work/config/test.model", "w") as outfile:
         outfile.writelines("[test, ]],[]}")
 
-    val = function.loadModel(Path("tests/workDir/config/test.model"))
+    val = function.loadModel(Path("tests/work/config/test.model"))
     assert val is None
 
 
 def test_loadModel_3(function):
-    with open("tests/workDir/config/test.model", "wb") as outfile:
+    with open("tests/work/config/test.model", "wb") as outfile:
         outfile.write(binascii.unhexlify("9f"))
 
-    val = function.loadModel(Path("tests/workDir/config/test.model"))
+    val = function.loadModel(Path("tests/work/config/test.model"))
     assert val is None
 
 
 def test_loadModel_4(function):
     values = [{"azimuth": 1, "altitude": 1}, {"azimuth": 2, "altitude": 2}]
-    with open("tests/workDir/config/test.model", "w") as outfile:
+    with open("tests/work/config/test.model", "w") as outfile:
         json.dump(values, outfile, indent=4)
 
-    val = function.loadModel(Path("tests/workDir/config/test.model"))
+    val = function.loadModel(Path("tests/work/config/test.model"))
     assert val == [(1, 1), (2, 2)]
 
 
@@ -741,27 +741,27 @@ def test_loadJSON_1(function):
 
 
 def test_loadJSON_2(function):
-    with open("tests/workDir/config/test.bpts", "w") as outfile:
+    with open("tests/work/config/test.bpts", "w") as outfile:
         outfile.writelines("[test, ]],[]}")
 
-    val = function.loadJSON(Path("tests/workDir/config/test.bpts"))
+    val = function.loadJSON(Path("tests/work/config/test.bpts"))
     assert val is None
 
 
 def test_loadJSON_3(function):
-    with open("tests/workDir/config/test.bpts", "wb") as outfile:
+    with open("tests/work/config/test.bpts", "wb") as outfile:
         outfile.write(binascii.unhexlify("9f"))
 
-    val = function.loadJSON(Path("tests/workDir/config/test.bpts"))
+    val = function.loadJSON(Path("tests/work/config/test.bpts"))
     assert val is None
 
 
 def test_loadJSON_4(function):
     values = [(1, 1), (2, 2)]
-    with open("tests/workDir/config/test.bpts", "w") as outfile:
+    with open("tests/work/config/test.bpts", "w") as outfile:
         json.dump(values, outfile, indent=4)
 
-    val = function.loadJSON(Path("tests/workDir/config/test.bpts"))
+    val = function.loadJSON(Path("tests/work/config/test.bpts"))
     assert val == [(1, 1), (2, 2)]
 
 
@@ -771,28 +771,28 @@ def test_loadCSV_1(function):
 
 
 def test_loadCSV_2(function):
-    with open("tests/workDir/config/test.csv", "w") as outfile:
+    with open("tests/work/config/test.csv", "w") as outfile:
         outfile.writelines("[test, ]],[]}\n")
 
-    val = function.loadCSV(Path("tests/workDir/config/test.csv"))
+    val = function.loadCSV(Path("tests/work/config/test.csv"))
     assert val is None
 
 
 def test_loadCSV_3(function):
-    with open("tests/workDir/config/test.csv", "w") as outfile:
+    with open("tests/work/config/test.csv", "w") as outfile:
         outfile.writelines("1, 1\n")
         outfile.writelines("2, 2\n")
 
-    val = function.loadCSV(Path("tests/workDir/config/test.csv"))
+    val = function.loadCSV(Path("tests/work/config/test.csv"))
     assert val == [(1, 1), (2, 2)]
 
 
 def test_loadCSV_4(function):
-    with open("tests/workDir/config/test.csv", "w") as outfile:
+    with open("tests/work/config/test.csv", "w") as outfile:
         outfile.writelines("1; 1\n")
         outfile.writelines("2; 2\n")
 
-    val = function.loadCSV(Path("tests/workDir/config/test.csv"))
+    val = function.loadCSV(Path("tests/work/config/test.csv"))
     assert val == [(1, 1), (2, 2)]
 
 
@@ -806,42 +806,42 @@ def test_loadBuildP_2(function):
     # path with not existent file given
     with mock.patch.object(Path, "is_file", return_value=True):
         with mock.patch.object(function, "loadJSON", return_value=None):
-            suc = function.loadBuildP(Path("tests/workDir/config/test.bpts"))
+            suc = function.loadBuildP(Path("tests/work/config/test.bpts"))
             assert not suc
 
 
 def test_loadBuildP_3(function):
     # load file with path
     function.buildPFile = ""
-    fileName = "tests/workDir/config/test.bpts"
+    fileName = "tests/work/config/test.bpts"
     values = [(1, 1), (2, 2)]
     with open(fileName, "w") as outfile:
         json.dump(values, outfile, indent=4)
-    suc = function.loadBuildP(Path("tests/workDir/config/test.bpts"))
+    suc = function.loadBuildP(Path("tests/work/config/test.bpts"))
     assert suc
     assert function.buildP == [(1, 1, True), (2, 2, True)]
 
 
 def test_loadBuildP_4(function):
     # load file without path
-    fileName = "tests/workDir/config/test.bpts"
+    fileName = "tests/work/config/test.bpts"
     function.buildPFile = "test"
     values = [(1, 1), (2, 2)]
     with open(fileName, "w") as outfile:
         json.dump(values, outfile, indent=4)
     with mock.patch.object(function, "checkFormat", return_value=False):
-        suc = function.loadBuildP(Path("tests/workDir/config/test.bpts"))
+        suc = function.loadBuildP(Path("tests/work/config/test.bpts"))
         assert not suc
 
 
 def test_loadBuildP_5(function):
     # load file with path
     function.buildPFile = ""
-    fileName = "tests/workDir/config/test.csv"
+    fileName = "tests/work/config/test.csv"
     with open(fileName, "w") as outfile:
         outfile.write("1, 1\n")
         outfile.write("2, 2\n")
-    suc = function.loadBuildP(Path("tests/workDir/config/test.csv"), ext=".csv", keep=True)
+    suc = function.loadBuildP(Path("tests/work/config/test.csv"), ext=".csv", keep=True)
     assert suc
 
 
@@ -849,9 +849,9 @@ def test_loadBuildP_6(function):
     # load file with path
     function.buildPFile = ""
     values = [{"azimuth": 1, "altitude": 1}, {"azimuth": 2, "altitude": 2}]
-    with open("tests/workDir/config/test.model", "w") as outfile:
+    with open("tests/work/config/test.model", "w") as outfile:
         json.dump(values, outfile, indent=4)
-    suc = function.loadBuildP(Path("tests/workDir/config/test.model"), ext=".model", keep=True)
+    suc = function.loadBuildP(Path("tests/work/config/test.model"), ext=".model", keep=True)
     assert suc
 
 
@@ -862,7 +862,7 @@ def test_saveBuildP_11(function):
 
 
 def test_saveBuildP_12(function):
-    fileName = "tests/workDir/config/save_test.bpts"
+    fileName = "tests/work/config/save_test.bpts"
     function.genGreaterCircle("min")
     suc = function.saveBuildP("save_test")
     assert suc
@@ -877,14 +877,14 @@ def test_loadHorizonP_2(function):
 
 def test_loadHorizonP_3(function):
     # path with not existent file given
-    fileName = "tests/workDir/config/test_load_horizon.hpts"
+    fileName = "tests/work/config/test_load_horizon.hpts"
     suc = function.loadHorizonP(fileName, ".hpts")
     assert not suc
 
 
 def test_loadHorizonP_4(function):
     # load file with path
-    fileName = "tests/workDir/config/test_horizon_2.hpts"
+    fileName = "tests/work/config/test_horizon_2.hpts"
     values = [(1, 1), (2, 2)]
     with open(fileName, "w") as outfile:
         json.dump(values, outfile, indent=4)
@@ -896,7 +896,7 @@ def test_loadHorizonP_4(function):
 def test_loadHorizonP_5(function):
     # load with wrong content
     function.horizonPFile = ""
-    fileName = "tests/workDir/config/test_horizon_2.hpts"
+    fileName = "tests/work/config/test_horizon_2.hpts"
     with open(fileName, "wb") as outfile:
         outfile.write(binascii.unhexlify("9f"))
     suc = function.loadHorizonP("test_horizon_2", ".hpts")
@@ -907,7 +907,7 @@ def test_loadHorizonP_5(function):
 def test_loadHorizonP_6(function):
     # load with wrong content 2
     function.horizonPFile = ""
-    fileName = "tests/workDir/config/test_horizon_2.hpts"
+    fileName = "tests/work/config/test_horizon_2.hpts"
     with open(fileName, "w") as outfile:
         outfile.writelines("[test, ]],[]}")
     suc = function.loadHorizonP("test_horizon_2", ".hpts")
@@ -917,7 +917,7 @@ def test_loadHorizonP_6(function):
 
 def test_loadHorizonP_7(function):
     # load file with path
-    fileName = "tests/workDir/config/test_horizon_2.csv"
+    fileName = "tests/work/config/test_horizon_2.csv"
     values = [(1.0, 1.0), (2.0, 2.0)]
     with open(fileName, "w") as outfile:
         outfile.write("1,1\n2,2\n")
@@ -943,7 +943,7 @@ def test_saveHorizonP_12(function):
     function._horizonP = [(0, 1), (0, 2)]
     suc = function.saveHorizonP(fileName="test_horizon_1")
     assert suc
-    fileName = "tests/workDir/config/" + "test_horizon_1" + ".hpts"
+    fileName = "tests/work/config/" + "test_horizon_1" + ".hpts"
     with open(fileName, "r") as infile:
         value = json.load(infile)
         assert value[0] == [0, 1]

@@ -66,13 +66,13 @@ def test_writeCSV_1(function):
 
 
 def test_writeCSV_2(function):
-    function.csvFile = open("tests/workDir/temp/test.csv", "w")
+    function.csvFile = open("tests/work/temp/test.csv", "w")
     suc = function.writeCSV()
     assert not suc
 
 
 def test_writeCSV_3(function):
-    function.csvFile = open("tests/workDir/temp/test.csv", "w")
+    function.csvFile = open("tests/work/temp/test.csv", "w")
     function.csvWriter = csv.DictWriter(function.csvFile, ["test"])
     function.data = {"test": [1, 2]}
     suc = function.writeCSV()
@@ -85,13 +85,13 @@ def test_closeCSV_1(function):
 
 
 def test_closeCSV_2(function):
-    function.csvFile = open("tests/workDir/temp/test.csv", "w")
+    function.csvFile = open("tests/work/temp/test.csv", "w")
     suc = function.closeCSV()
     assert not suc
 
 
 def test_closeCSV_3(function):
-    function.csvFile = open("tests/workDir/temp/test.csv", "w")
+    function.csvFile = open("tests/work/temp/test.csv", "w")
     function.csvWriter = csv.DictWriter(function.csvFile, ["test"])
     suc = function.closeCSV()
     assert suc

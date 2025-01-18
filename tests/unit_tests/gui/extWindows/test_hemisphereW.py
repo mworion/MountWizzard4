@@ -39,7 +39,7 @@ from gui.utilities.gCustomViewBox import CustomViewBox
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    shutil.copy("tests/testData/terrain.jpg", "tests/workDir/config/terrain.jpg")
+    shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
     func = HemisphereWindow(app=App())
     yield func
     func.app.threadPool.waitForDone(10000)
@@ -66,7 +66,7 @@ def test_initConfig_3(function):
 
 
 def test_initConfig_4(function):
-    shutil.copy("tests/testData/terrain.jpg", "tests/workDir/config/terrain.jpg")
+    shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
     function.app.config["hemisphereW"] = {}
     function.app.config["hemisphereW"]["winPosX"] = 100
     function.app.config["hemisphereW"]["winPosY"] = 100

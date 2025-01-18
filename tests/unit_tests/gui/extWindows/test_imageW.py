@@ -349,8 +349,8 @@ def test_solveImage_2(function):
 
 
 def test_solveImage_3(function):
-    shutil.copy("tests/testData/m51.fit", "tests/workDir/image/m51.fit")
-    file = Path("tests/workDir/image/m51.fit")
+    shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
+    file = Path("tests/work/image/m51.fit")
     with mock.patch.object(function.app.plateSolve, "solve"):
         function.solveImage(imagePath=file)
 

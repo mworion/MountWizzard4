@@ -30,11 +30,11 @@ from logic.plateSolve.plateSolve import PlateSolve
 
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    files = glob.glob("tests/workDir/image/*.fit*")
+    files = glob.glob("tests/work/image/*.fit*")
     for f in files:
         os.remove(f)
-    shutil.copy("tests/testData/m51.fit", "tests/workDir/image/m51.fit")
-    shutil.copy("tests/testData/astrometry.cfg", "tests/workDir/temp/astrometry.cfg")
+    shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
+    shutil.copy("tests/testData/astrometry.cfg", "tests/work/temp/astrometry.cfg")
     func = PlateSolve(app=App())
     yield func
 
@@ -97,14 +97,14 @@ def test_init_1(function):
 
 def test_processSolveQueue_1(function):
     with mock.patch.object(os.path, "isfile", return_value=False):
-        function.processSolveQueue("tests/workDir/image/m51.fit", False)
+        function.processSolveQueue("tests/work/image/m51.fit", False)
 
 
 def test_processSolveQueue_2(function):
     function.framework = "astap"
     with mock.patch.object(os.path, "isfile", return_value=True):
         with mock.patch.object(function.run["astap"], "solve"):
-            function.processSolveQueue("tests/workDir/image/m51.fit", False)
+            function.processSolveQueue("tests/work/image/m51.fit", False)
 
 
 def test_workerSolveLoop_1(function, mocked_sleepAndEvents):
@@ -114,7 +114,7 @@ def test_workerSolveLoop_1(function, mocked_sleepAndEvents):
 
 def test_workerSolveLoop_2(function, mocked_processSolveQueue):
     function.solveLoopRunning = True
-    function.solveQueue.put(("tests/workDir/image/m51.fit", False))
+    function.solveQueue.put(("tests/work/image/m51.fit", False))
     function.workerSolveLoop()
 
 
@@ -156,7 +156,7 @@ def test_stopCommunication(function):
 
 def test_solve_1(function):
     function.framework = "astap"
-    file = "tests/workDir/image/m51.fit"
+    file = "tests/work/image/m51.fit"
     function.solve(imagePath=file)
 
 

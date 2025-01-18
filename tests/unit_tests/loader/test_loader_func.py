@@ -37,10 +37,10 @@ from loader import getWindowPos, checkIsAdmin, extractFile, minimizeStartTermina
 
 @pytest.fixture(autouse=True, scope="function")
 def module_setup_teardown():
-    files = glob.glob("tests/workDir/config/*.cfg")
+    files = glob.glob("tests/work/config/*.cfg")
     for f in files:
         os.remove(f)
-    files = glob.glob("tests/workDir/config/profile")
+    files = glob.glob("tests/work/config/profile")
     for f in files:
         os.remove(f)
     yield
@@ -194,7 +194,7 @@ def test_extractFile_1():
     class MTime:
         st_mtime = 1000000000.0
 
-    filePath = Path("tests/workDir/data/de440_mw4.bsp")
+    filePath = Path("tests/work/data/de440_mw4.bsp")
     with mock.patch.object(os.path, "isfile", return_value=False):
         with mock.patch.object(os, "stat", return_value=MTime()):
             extractFile(filePath, "de440_mw4.bsp", 0)
@@ -204,7 +204,7 @@ def test_extractFile_2():
     class MTime:
         st_mtime = 1000000000.0
 
-    filePath = Path("tests/workDir/data/de440_mw4.bsp")
+    filePath = Path("tests/work/data/de440_mw4.bsp")
     with mock.patch.object(os.path, "isfile", return_value=True):
         with mock.patch.object(os, "stat", return_value=MTime()):
             with mock.patch.object(os, "remove"):
@@ -216,7 +216,7 @@ def test_extractFile_3():
     class MTime:
         st_mtime = 1000000000.0
 
-    filePath = Path("tests/workDir/data/de440_mw4.bsp")
+    filePath = Path("tests/work/data/de440_mw4.bsp")
     with mock.patch.object(os.path, "isfile", return_value=True):
         with mock.patch.object(os, "stat", return_value=MTime()):
             with mock.patch.object(os, "chmod"):
@@ -225,7 +225,7 @@ def test_extractFile_3():
 
 def test_extractDataFiles_1():
     mwGlob = dict()
-    mwGlob["dataDir"] = Path("tests/workDir/data")
+    mwGlob["dataDir"] = Path("tests/work/data")
     with mock.patch.object(loader, "extractFile"):
         extractDataFiles(mwGlob=mwGlob)
 
@@ -239,7 +239,7 @@ def test_getWindowPos_1():
 
 
 def test_getWindowPos_2():
-    test = "tests/workDir"
+    test = "tests/work"
     with open(test + "/config/profile", "w+") as f:
         f.write("config")
     with mock.patch.object(os, "getcwd", return_value=test):
@@ -249,7 +249,7 @@ def test_getWindowPos_2():
 
 
 def test_getWindowPos_3():
-    test = "tests/workDir"
+    test = "tests/work"
     with open(test + "/config/profile", "w+") as f:
         f.write("config")
     with open(test + "/config/config.cfg", "w+") as f:
@@ -261,7 +261,7 @@ def test_getWindowPos_3():
 
 
 def test_getWindowPos_4():
-    test = "tests/workDir"
+    test = "tests/work"
     with open(test + "/config/profile", "w+") as f:
         f.write("config")
     with open(test + "/config/config.cfg", "w+") as f:

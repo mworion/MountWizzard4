@@ -218,7 +218,7 @@ def test_updateNumber_6(function):
 
 
 def test_workerSaveBLOB_1(function):
-    function.imagePath = "tests/workDir/image/test.fit"
+    function.imagePath = "tests/work/image/test.fit"
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     data = {"value": "1", "name": "CCD1", "format": ".fits.fz"}
@@ -229,7 +229,7 @@ def test_workerSaveBLOB_1(function):
 
 
 def test_workerSaveBLOB_2(function):
-    function.imagePath = "tests/workDir/image/test.fit"
+    function.imagePath = "tests/work/image/test.fit"
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     data = {"value": zlib.compress(b"1"), "name": "CCD1", "format": ".fits.z"}
@@ -240,7 +240,7 @@ def test_workerSaveBLOB_2(function):
 
 
 def test_workerSaveBLOB_3(function):
-    function.imagePath = "tests/workDir/image/test.fit"
+    function.imagePath = "tests/work/image/test.fit"
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     data = {"value": "1", "name": "CCD1", "format": ".fits"}
@@ -251,7 +251,7 @@ def test_workerSaveBLOB_3(function):
 
 
 def test_workerSaveBLOB_4(function):
-    function.imagePath = "tests/workDir/image/test.fit"
+    function.imagePath = "tests/work/image/test.fit"
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     data = {"value": "1", "name": "CCD1", "format": ".test"}

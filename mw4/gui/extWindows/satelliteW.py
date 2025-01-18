@@ -29,7 +29,6 @@ from pyqtgraph import PlotWidget
 # local import
 from gui.utilities import toolsQtWidget
 from gui.widgets import satellite_ui
-from mountcontrol.obsSite import ObsSite
 
 
 class SatelliteWindow(toolsQtWidget.MWidget):
@@ -38,10 +37,12 @@ class SatelliteWindow(toolsQtWidget.MWidget):
     def __init__(self, app):
         super().__init__()
         self.app = app
+        self.obsSite = app.mount.obsSite
         self.threadPool = app.threadPool
         self.ui = satellite_ui.Ui_SatelliteDialog()
         self.ui.setupUi(self)
         self.satellite = None
+        self.satOrbits = None
         self.plotSatPosHorizon = None
         self.plotSatPosEarth = None
         self.pointerAltAz = None
@@ -101,17 +102,17 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.ui.satHorizon.colorChange()
         self.app.sendSatelliteData.emit()
 
-    def updatePointerAltAz(self, obsSite: ObsSite) -> None:
+    def updatePointerAltAz(self) -> None:
         """ """
         if self.pointerAltAz is None:
             return
-        if obsSite.Alt is None or obsSite.Az is None:
+        if self.obsSite.Alt is None or self.obsSite.Az is None:
             self.pointerAltAz.setVisible(False)
             return
 
         self.pointerAltAz.setVisible(True)
-        alt = obsSite.Alt.degrees
-        az = obsSite.Az.degrees
+        alt = self.obsSite.Alt.degrees
+        az = self.obsSite.Az.degrees
         self.pointerAltAz.setData(x=[az], y=[alt])
 
     def updatePositions(self, now: Timescale, location: wgs84) -> None:
@@ -183,10 +184,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             poly.setBrush(self.ui.satEarth.brushHorizon)
             plotItem.addItem(poly)
 
-    def drawPosition(self, plotItem: PlotWidget, obsSite: ObsSite) -> None:
+    def drawPosition(self, plotItem: PlotWidget) -> None:
         """ """
-        lat = obsSite.location.latitude.degrees
-        lon = obsSite.location.longitude.degrees
+        lat = self.obsSite.location.latitude.degrees
+        lon = self.obsSite.location.longitude.degrees
         pd = pg.PlotDataItem(
             x=[lon],
             y=[lat],
@@ -205,13 +206,13 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             symbol=self.makeSat(),
             symbolSize=35,
             symbolPen=pg.mkPen(color=self.M_TER),
-            symbolBrush=pg.mkBrush(color=self.M_PINK + "20"),
+            symbolBrush=pg.mkBrush(color=self.M_PINK + "80"),
         )
         return pd
 
-    def prepareEarthSatellite(self, plotItem: PlotWidget, obsSite: ObsSite) -> pg.PlotDataItem:
+    def prepareEarthSatellite(self, plotItem: PlotWidget,) -> pg.PlotDataItem:
         """ """
-        subPoint = wgs84.subpoint_of(self.satellite.at(obsSite.ts.now()))
+        subPoint = wgs84.subpoint_of(self.satellite.at(self.obsSite.ts.now()))
         lat = subPoint.latitude.degrees
         lon = subPoint.longitude.degrees
         pd = self.prepareSatellite([lat], [lon])
@@ -220,11 +221,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         plotItem.addItem(pd)
         return pd
 
-    def drawEarthTrajectory(
-        self, plotItem: PlotWidget, obsSite: ObsSite, satOrbits: list
-    ) -> None:
+    def drawEarthTrajectory(self, plotItem: PlotWidget) -> None:
         """ """
-        for i, satOrbit in enumerate(satOrbits):
+        for i, satOrbit in enumerate(self.satOrbits):
             rise = satOrbit["rise"].tt
             settle = satOrbit["settle"].tt
             step = 0.005 * (settle - rise)
@@ -233,7 +232,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
             flip = satOrbit["flip"].tt
             vector = np.arange(rise, flip, step)
-            vecT = obsSite.ts.tt_jd(vector)
+            vecT = self.obsSite.ts.tt_jd(vector)
             subPoints = wgs84.subpoint_of(self.satellite.at(vecT))
             lat = subPoints.latitude.degrees
             lon = subPoints.longitude.degrees
@@ -242,7 +241,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                 plotItem.addItem(pd)
 
             vector = np.arange(flip, settle, step)
-            vecT = obsSite.ts.tt_jd(vector)
+            vecT = self.obsSite.ts.tt_jd(vector)
             subPoints = wgs84.subpoint_of(self.satellite.at(vecT))
             lat = subPoints.latitude.degrees
             lon = subPoints.longitude.degrees
@@ -250,11 +249,11 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                 pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=self.pens[2 * i + 1])
                 plotItem.addItem(pd)
 
-        rise = satOrbits[0]["rise"].tt
-        settle = satOrbits[-1]["settle"].tt
+        rise = self.satOrbits[0]["rise"].tt
+        settle = self.satOrbits[-1]["settle"].tt
         step = 0.001 * (settle - rise)
         vector = np.arange(rise - 0.15, settle, step)
-        vecT = obsSite.ts.tt_jd(vector)
+        vecT = self.obsSite.ts.tt_jd(vector)
         subPoints = wgs84.subpoint_of(self.satellite.at(vecT))
         lat = subPoints.latitude.degrees
         lon = subPoints.longitude.degrees
@@ -265,20 +264,14 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             pd.setZValue(-10)
             plotItem.addItem(pd)
 
-    def drawEarth(self, obsSite: ObsSite, satOrbits: list) -> None:
+    def drawEarth(self) -> None:
         """ """
         plotItem = self.ui.satEarth.p[0]
         self.prepareEarth(plotItem)
         self.drawShoreLine(plotItem)
-        if obsSite is None:
-            return
-
-        self.drawPosition(plotItem, obsSite)
-        if not satOrbits:
-            return
-
-        self.plotSatPosEarth = self.prepareEarthSatellite(plotItem, obsSite)
-        self.drawEarthTrajectory(plotItem, obsSite, satOrbits)
+        self.drawPosition(plotItem)
+        self.plotSatPosEarth = self.prepareEarthSatellite(plotItem)
+        self.drawEarthTrajectory(plotItem)
 
     @staticmethod
     def prepareHorizon(plotItem: PlotWidget) -> None:
@@ -302,10 +295,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         plotItem.clear()
 
     def prepareHorizonSatellite(
-        self, plotItem: PlotWidget, obsSite: ObsSite
-    ) -> pg.PlotDataItem:
+        self, plotItem: PlotWidget) -> pg.PlotDataItem:
         """ """
-        alt, az, _ = (self.satellite - obsSite.location).at(obsSite.ts.now()).altaz()
+        alt, az, _ = (self.satellite - self.obsSite.location).at(self.obsSite.ts.now()).altaz()
         pd = self.prepareSatellite([az.degrees], [alt.degrees])
         pd.setVisible(False)
         pd.setZValue(10)
@@ -328,11 +320,11 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         return pd
 
     def drawHorizonTrajectory(
-        self, plotItem: PlotWidget, obsSite, satOrbits, altitude, azimuth
+        self, plotItem: PlotWidget, altitude, azimuth
     ):
         """ """
-        ts = obsSite.ts
-        for i, satOrbit in enumerate(satOrbits):
+        ts = self.obsSite.ts
+        for i, satOrbit in enumerate(self.satOrbits):
             rise = satOrbit["rise"].tt
             settle = satOrbit["settle"].tt
             step = 0.005 * (settle - rise)
@@ -343,7 +335,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             flip = satOrbit["flip"].tt
             vector = np.arange(rise, flip, step)
             vecT = ts.tt_jd(vector)
-            alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
+            alt, az, _ = (self.satellite - self.obsSite.location).at(vecT).altaz()
 
             for slc in self.unlinkWrap(az.degrees):
                 pd = pg.PlotDataItem(
@@ -353,7 +345,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
             vector = np.arange(flip, settle, step)
             vecT = ts.tt_jd(vector)
-            alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
+            alt, az, _ = (self.satellite - self.obsSite.location).at(vecT).altaz()
             for slc in self.unlinkWrap(az.degrees):
                 pd = pg.PlotDataItem(
                     x=az.degrees[slc], y=alt.degrees[slc], pen=self.pens[2 * i + 1]
@@ -371,29 +363,23 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """ """
         self.ui.satHorizon.drawHorizon(self.app.data.horizonP)
 
-    def drawHorizonView(
-        self, obsSite: ObsSite, satOrbits: list, altitude: list[float], azimuth: list[float]
-    ) -> None:
+    def drawHorizonView(self, altitude: list[float], azimuth: list[float]) -> None:
         """ """
         plotItem = self.ui.satHorizon.p[0]
         self.prepareHorizon(plotItem)
-        self.drawHorizonTrajectory(plotItem, obsSite, satOrbits, altitude, azimuth)
-        self.plotSatPosHorizon = self.prepareHorizonSatellite(plotItem, obsSite)
+        self.drawHorizonTrajectory(plotItem, altitude, azimuth)
+        self.plotSatPosHorizon = self.prepareHorizonSatellite(plotItem)
         self.pointerAltAz = self.preparePointer(plotItem)
         self.drawHorizon()
 
     def drawSatellite(
-        self, satellite, satOrbits, altitude: list[float], azimuth: list[float], name: str
+        self, satellite, satOrbits, altitude: float, azimuth: float, name: str
     ) -> None:
         """ """
         self.setWindowTitle(f"Satellite {name}")
         self.satellite = satellite
-        self.drawEarth(self.app.mount.obsSite, satOrbits=satOrbits)
-        if satOrbits is None or self.app.mount.obsSite is None:
+        self.satOrbits = satOrbits
+        if satOrbits is None or self.obsSite is None:
             return
-        self.drawHorizonView(
-            self.app.mount.obsSite,
-            satOrbits=satOrbits,
-            altitude=altitude,
-            azimuth=azimuth,
-        )
+        self.drawEarth()
+        self.drawHorizonView(altitude, azimuth)

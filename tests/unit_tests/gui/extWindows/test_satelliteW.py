@@ -76,28 +76,28 @@ def test_colorChange(function):
 
 def test_updatePointerAltAz_1(function):
     function.pointerAltAz = None
-    function.updatePointerAltAz(function.app.mount.obsSite)
+    function.updatePointerAltAz()
 
 
 def test_updatePointerAltAz_2(function):
     function.pointerAltAz = pg.PlotDataItem()
     function.app.mount.obsSite.Alt = Angle(degrees=80)
     function.app.mount.obsSite.Az = None
-    function.updatePointerAltAz(function.app.mount.obsSite)
+    function.updatePointerAltAz()
 
 
 def test_updatePointerAltAz_3(function):
     function.pointerAltAz = pg.PlotDataItem()
     function.app.mount.obsSite.Alt = None
     function.app.mount.obsSite.Az = Angle(degrees=80)
-    function.updatePointerAltAz(function.app.mount.obsSite)
+    function.updatePointerAltAz()
 
 
 def test_updatePointerAltAz_4(function):
     function.pointerAltAz = pg.PlotDataItem()
     function.app.mount.obsSite.Alt = Angle(degrees=80)
     function.app.mount.obsSite.Az = Angle(degrees=80)
-    function.updatePointerAltAz(function.app.mount.obsSite)
+    function.updatePointerAltAz()
 
 
 def test_updatePositions_3(function):
@@ -169,7 +169,7 @@ def test_drawShoreLine(function):
 
 
 def test_drawPosition(function):
-    function.drawPosition(pg.PlotItem(), function.app.mount.obsSite)
+    function.drawPosition(pg.PlotItem())
 
 
 def test_prepareSatellite(function):
@@ -177,7 +177,7 @@ def test_prepareSatellite(function):
 
 
 def test_prepareEarthSatellite(function):
-    function.prepareEarthSatellite(pg.PlotItem(), function.app.mount.obsSite)
+    function.prepareEarthSatellite(pg.PlotItem())
 
 
 def test_drawEarthTrajectory_1(function):
@@ -200,25 +200,14 @@ def test_drawEarthTrajectory_1(function):
         {"rise": t2, "culminate": t2, "settle": t3},
         {"rise": t3, "culminate": t3, "flip": t3, "settle": t4},
     ]
-    function.drawEarthTrajectory(pg.PlotItem(), function.app.mount.obsSite, satOrbits)
+    function.satOrbits = satOrbits
+    function.drawEarthTrajectory(pg.PlotItem())
 
 
 def test_drawEarth_1(function):
     with mock.patch.object(function, "prepareEarthSatellite"):
         with mock.patch.object(function, "drawEarthTrajectory"):
-            function.drawEarth(None, [])
-
-
-def test_drawEarth_2(function):
-    with mock.patch.object(function, "prepareEarthSatellite"):
-        with mock.patch.object(function, "drawEarthTrajectory"):
-            function.drawEarth(function.app.mount.obsSite, [])
-
-
-def test_drawEarth_3(function):
-    with mock.patch.object(function, "prepareEarthSatellite"):
-        with mock.patch.object(function, "drawEarthTrajectory"):
-            function.drawEarth(function.app.mount.obsSite, [1])
+            function.drawEarth()
 
 
 def test_prepareHorizon(function):
@@ -226,7 +215,7 @@ def test_prepareHorizon(function):
 
 
 def test_prepareHorizonSatellite(function):
-    function.prepareHorizonSatellite(pg.PlotItem(), function.app.mount.obsSite)
+    function.prepareHorizonSatellite(pg.PlotItem())
 
 
 def test_preparePointer(function):
@@ -253,7 +242,8 @@ def test_drawHorizonTrajectory_1(function):
         {"rise": t2, "culminate": t2, "settle": t3},
         {"rise": t3, "culminate": t3, "flip": t3, "settle": t4},
     ]
-    function.drawHorizonTrajectory(pg.PlotItem(), function.app.mount.obsSite, satOrbits, [], [])
+    function.satOrbits = satOrbits
+    function.drawHorizonTrajectory(pg.PlotItem(), [], [])
 
 
 def test_drawHorizon(function):
@@ -266,17 +256,17 @@ def test_drawHorizonView_1(function):
             with mock.patch.object(function, "prepareHorizonSatellite"):
                 with mock.patch.object(function, "preparePointer"):
                     with mock.patch.object(function, "drawHorizon"):
-                        function.drawHorizonView(1, 1, [], [])
+                        function.drawHorizonView(1, 1)
 
 
 def test_drawSatellite_1(function):
     with mock.patch.object(function, "drawEarth"):
         with mock.patch.object(function, "drawHorizonView"):
-            function.drawSatellite(1, None, [], [], "")
+            function.drawSatellite(1, None, 1, 1, "")
 
 
 def test_drawSatellite_2(function):
 
     with mock.patch.object(function, "drawEarth"):
         with mock.patch.object(function, "drawHorizonView"):
-            function.drawSatellite(1, [1], [], [], "")
+            function.drawSatellite(1, [1], 1, 1, "")

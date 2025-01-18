@@ -49,21 +49,18 @@ class TestConfigData(unittest.TestCase):
 
     def test_setLoaderAndTimescale_1(self):
         obsSite = ObsSite(parent=Parent())
-        suc = obsSite.setLoaderAndTimescale()
-        assert suc
+        obsSite.setLoaderAndTimescale()
 
     def test_setLoaderAndTimescale_2(self):
         obsSite = ObsSite(parent=Parent())
-        suc = obsSite.setLoaderAndTimescale()
-        assert suc
+        obsSite.setLoaderAndTimescale()
 
     def test_setLoaderAndTimescale_3(self):
         obsSite = ObsSite(parent=Parent())
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(Loader, "timescale"):
                 with mock.patch.object(Loader.timescale, "now"):
-                    suc = obsSite.setLoaderAndTimescale()
-                    assert suc
+                    obsSite.setLoaderAndTimescale()
 
     def test_Data_without_ts(self):
         obsSite = ObsSite(parent=Parent())

@@ -107,7 +107,7 @@ class ObsSite(object):
         self.UTC2TT = None
         self.setLoaderAndTimescale()
 
-    def setLoaderAndTimescale(self):
+    def setLoaderAndTimescale(self) -> None:
         """ """
         timescaleFile = self.pathToData / "finals2000A.all"
         if timescaleFile.is_file():
@@ -121,7 +121,6 @@ class ObsSite(object):
 
         t = self.ts.now()
         self.UTC2TT = (t.delta_t + t.dut1) / 86400
-        return True
 
     @property
     def location(self):

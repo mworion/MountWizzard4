@@ -100,27 +100,21 @@ class MountSett:
 
         ui = self.ui.statusUnattendedFlip
         guiSetText(ui, "s", sett.statusUnattendedFlip)
-        guiSetStyle(ui, "status", sett.statusUnattendedFlip, ["", "on", ""])
 
         ui = self.ui.statusDualAxisTracking
         guiSetText(ui, "s", sett.statusDualAxisTracking)
-        guiSetStyle(ui, "status", sett.statusDualAxisTracking, ["", "on", ""])
 
         ui = self.ui.statusRefraction
         guiSetText(ui, "s", sett.statusRefraction)
-        guiSetStyle(ui, "status", sett.statusRefraction, ["", "on", ""])
 
         ui = self.ui.statusGPSSynced
         guiSetText(ui, "s", sett.gpsSynced)
-        guiSetStyle(ui, "status", sett.gpsSynced, ["", "on", ""])
 
         ui = self.ui.statusWOL
         guiSetText(ui, "s", sett.wakeOnLan)
-        guiSetStyle(ui, "status", sett.wakeOnLan, ["", "on", ""])
 
         ui = self.ui.statusWebInterface
         guiSetText(ui, "s", sett.webInterfaceStat)
-        guiSetStyle(ui, "status", sett.webInterfaceStat, ["", "on", ""])
 
         if sett.typeConnection is not None:
             text = self.typeConnectionTexts[sett.typeConnection]

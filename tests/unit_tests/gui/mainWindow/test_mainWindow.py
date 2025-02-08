@@ -218,6 +218,11 @@ def test_updatePlateSolveStatus_1(window):
     window.updatePlateSolveStatus("")
 
 
+def test_updateMountConnStat_1(window):
+    window.updateMountConnStat(True)
+    assert window.app.deviceStat["mount"]
+
+
 def test_updatePlateSolveStatus(window):
     window.updatePlateSolveStatus("test")
     assert window.ui.plateSolveText.text() == "test"

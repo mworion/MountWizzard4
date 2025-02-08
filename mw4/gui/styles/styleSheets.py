@@ -175,9 +175,6 @@ BASIC_STYLE = """
     QLineEdit[color='red'] {
         border-color: $M_RED$;
     }
-    QLineEdit[status='on'] {
-        color: $M_TER$;
-    }
             
     /* text browser */
     QTextBrowser {

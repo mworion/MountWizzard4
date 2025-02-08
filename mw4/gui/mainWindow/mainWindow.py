@@ -81,6 +81,7 @@ class MainWindow(MWidget):
         }
 
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
+        self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.remoteCommand.connect(self.remoteCommand)
         self.app.plateSolve.signals.message.connect(self.updatePlateSolveStatus)
         self.app.dome.signals.message.connect(self.updateDomeStatus)
@@ -320,6 +321,10 @@ class MainWindow(MWidget):
         isMount = self.app.deviceStat.get("mount", False)
         changeStyleDynamic(self.ui.mountOn, "running", isMount)
         changeStyleDynamic(self.ui.mountOff, "running", not isMount)
+
+    def updateMountConnStat(self, status: bool) -> None:
+        """ """
+        self.app.deviceStat["mount"] = status
 
     def updatePlateSolveStatus(self, text: str) -> None:
         """ """

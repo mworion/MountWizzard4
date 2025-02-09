@@ -207,18 +207,18 @@ class MWidget(QWidget, Styles):
         name = window.windowTitle().replace(" ", "_")
         timeTrigger = datetime.datetime.now(datetime.timezone.utc)
         timeTag = timeTrigger.strftime("%Y-%m-%d-%H-%M-%S")
-        path = self.app.mwGlob["logDir"]
+        path = window.app.mwGlob["logDir"]
         fullFileName = f"{path}/{timeTag}-{name}.png"
-        self.log.info(f"Screenshot: [{fullFileName}]")
+        window.log.info(f"Screenshot: [{fullFileName}]")
         window.grab().save(fullFileName)
         return True
 
-    def saveAllWindowsAsPNG(self):
+    def saveAllWindowsAsPNG(self, window):
         """
         :return:
         """
-        windows = self.app.uiWindows
-        self.saveWindowAsPNG(self.app.mainW)
+        windows = window.app.uiWindows
+        self.saveWindowAsPNG(window.app.mainW)
         for window in windows:
             obj = windows[window]["classObj"]
             if obj:
@@ -236,7 +236,7 @@ class MWidget(QWidget, Styles):
             self.saveWindowAsPNG(self)
             return
         elif keyEvent.key() == 16777269:
-            self.saveAllWindowsAsPNG()
+            self.saveAllWindowsAsPNG(self)
             return
         super().keyPressEvent(keyEvent)
 

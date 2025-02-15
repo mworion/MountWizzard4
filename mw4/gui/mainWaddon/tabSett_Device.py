@@ -286,8 +286,8 @@ class SettDevice:
         self.drivers[driver]["uiDropDown"].setCurrentIndex(index)
         self.drivers[driver]["uiDropDown"].setItemText(index, itemText)
 
-        self.stopDriver(driver=driver)
-        self.startDriver(driver=driver)
+        self.stopDriver(driver)
+        self.startDriver(driver)
 
     def copyConfig(self, driverOrig: str, framework: str) -> None:
         """ """
@@ -353,7 +353,7 @@ class SettDevice:
         for attribute in frameworkConfig:
             setattr(driverClass, attribute, frameworkConfig[attribute])
 
-    def startDriver(self, driver: str, autoStart: bool) -> None:
+    def startDriver(self, driver: str, autoStart: bool = False) -> None:
         """ """
         data = self.driversData[driver]
         framework = data["framework"]

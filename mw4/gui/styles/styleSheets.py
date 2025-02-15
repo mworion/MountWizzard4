@@ -498,6 +498,9 @@ BASIC_STYLE = """
         border-width: 0px;
         background-color: #GRAD_2,$M_BACK$#;
     }
+    QTabWidget:tab-bar {
+        alignment: center;
+    }
     QTabBar::tab {
         border-radius: %ROUND%;
         border-width: %WIDTH%;

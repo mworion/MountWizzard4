@@ -20,7 +20,7 @@ import pytest
 
 # external packages
 import numpy as np
-import sep_mw4 as sep
+import sep
 
 # local import
 import logic.photometry.photometry

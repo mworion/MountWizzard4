@@ -19,7 +19,7 @@ import logging
 
 # external packages
 import numpy as np
-import sep_mw4 as sep
+import sep
 from PySide6.QtCore import Signal, QObject, QMutex
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter

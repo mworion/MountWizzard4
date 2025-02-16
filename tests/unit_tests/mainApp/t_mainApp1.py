@@ -52,7 +52,9 @@ def test_start_parameters_1(qapp):
     with mock.patch.object(PySide6.QtWidgets.QWidget, "show"):
         with mock.patch.object(PySide6.QtCore.QTimer, "start"):
             with mock.patch.object(PySide6.QtCore.QBasicTimer, "start"):
-                with mock.patch.object(MountWizzard4, "checkAndSetAutomation", return_value=None):
+                with mock.patch.object(
+                    MountWizzard4, "checkAndSetAutomation", return_value=None
+                ):
                     MountWizzard4(mwGlob=mwGlob, application=qapp)
                     time.sleep(10)
 
@@ -72,6 +74,8 @@ def test_start_parameters_2(qapp):
     with mock.patch.object(PySide6.QtWidgets.QWidget, "show"):
         with mock.patch.object(PySide6.QtCore.QTimer, "start"):
             with mock.patch.object(PySide6.QtCore.QBasicTimer, "start"):
-                with mock.patch.object(MountWizzard4, "checkAndSetAutomation", return_value=None):
+                with mock.patch.object(
+                    MountWizzard4, "checkAndSetAutomation", return_value=None
+                ):
                     MountWizzard4(mwGlob=mwGlob, application=qapp)
                     time.sleep(10)

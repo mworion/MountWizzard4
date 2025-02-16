@@ -126,7 +126,9 @@ def test_updateNumber_3(function):
     function.device = Device()
     function.deviceName = "test"
     setattr(function.device, "DOME_SHUTTER", {"state": "Busy"})
-    with mock.patch.object(function.device, "getNumber", return_value={"TEST": 1, "SHUTTER_OPEN": 2}):
+    with mock.patch.object(
+        function.device, "getNumber", return_value={"TEST": 1, "SHUTTER_OPEN": 2}
+    ):
         suc = function.updateNumber("test", "SHUTTER_OPEN")
         assert suc
 
@@ -135,7 +137,9 @@ def test_updateNumber_4(function):
     function.device = Device()
     function.deviceName = "test"
     setattr(function.device, "DOME_SHUTTER", {"state": "test"})
-    with mock.patch.object(function.device, "getNumber", return_value={"TEST": 1, "SHUTTER_OPEN": 2}):
+    with mock.patch.object(
+        function.device, "getNumber", return_value={"TEST": 1, "SHUTTER_OPEN": 2}
+    ):
         suc = function.updateNumber("test", "SHUTTER_OPEN")
         assert suc
 
@@ -162,7 +166,9 @@ def test_slewToAltAz_4(function):
     function.device = Device()
     function.deviceName = "test"
 
-    with mock.patch.object(function.device, "getNumber", return_value={"DOME_ABSOLUTE_POSITION": 1}):
+    with mock.patch.object(
+        function.device, "getNumber", return_value={"DOME_ABSOLUTE_POSITION": 1}
+    ):
         suc = function.slewToAltAz()
         assert not suc
 
@@ -172,7 +178,9 @@ def test_slewToAltAz_5(function):
     function.client = Client()
     function.deviceName = "test"
 
-    with mock.patch.object(function.device, "getNumber", return_value={"DOME_ABSOLUTE_POSITION": 1}):
+    with mock.patch.object(
+        function.device, "getNumber", return_value={"DOME_ABSOLUTE_POSITION": 1}
+    ):
         with mock.patch.object(function.client, "sendNewNumber", return_value=False):
             suc = function.slewToAltAz()
             assert not suc
@@ -183,7 +191,9 @@ def test_slewToAltAz_6(function):
     function.client = Client()
     function.deviceName = "test"
 
-    with mock.patch.object(function.device, "getNumber", return_value={"DOME_ABSOLUTE_POSITION": 1}):
+    with mock.patch.object(
+        function.device, "getNumber", return_value={"DOME_ABSOLUTE_POSITION": 1}
+    ):
         with mock.patch.object(function.client, "sendNewNumber", return_value=True):
             suc = function.slewToAltAz()
             assert suc

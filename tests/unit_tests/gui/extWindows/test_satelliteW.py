@@ -266,7 +266,6 @@ def test_drawSatellite_1(function):
 
 
 def test_drawSatellite_2(function):
-
     with mock.patch.object(function, "drawEarth"):
         with mock.patch.object(function, "drawHorizonView"):
             function.drawSatellite(1, [1], 1, 1, "")

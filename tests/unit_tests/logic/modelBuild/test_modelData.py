@@ -157,8 +157,12 @@ def test_startNewSlew_4(function):
 def test_addMountModelToBuildModel_1(function):
     function.app.mount.model.starList = [1, 2, 3]
     function.modelSaveData = [1, 2, 3]
-    with mock.patch.object(logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]):
-        with mock.patch.object(logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]):
+    with mock.patch.object(
+        logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]
+    ):
+        with mock.patch.object(
+            logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]
+        ):
             function.addMountModelToBuildModel()
     assert len(function.modelSaveData) == 3
 
@@ -166,8 +170,12 @@ def test_addMountModelToBuildModel_1(function):
 def test_addMountModelToBuildModel_2(function):
     function.app.mount.model.starList = [1, 2]
     function.modelSaveData = [1, 2, 3]
-    with mock.patch.object(logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]):
-        with mock.patch.object(logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]):
+    with mock.patch.object(
+        logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]
+    ):
+        with mock.patch.object(
+            logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]
+        ):
             function.addMountModelToBuildModel()
 
     assert len(function.modelSaveData) == 0

@@ -70,19 +70,25 @@ def test_setAnalysisOperationMode_4(function):
 
 
 def test_checkAnalysisConditions_1(function):
-    with mock.patch.object(function.ui.plateSolveDevice, "currentText", return_value="No device"):
+    with mock.patch.object(
+        function.ui.plateSolveDevice, "currentText", return_value="No device"
+    ):
         suc = function.checkAnalysisConditions()
         assert not suc
 
 
 def test_checkAnalysisConditions_2(function):
-    with mock.patch.object(function.app.plateSolve, "checkAvailability", return_value=(False, False)):
+    with mock.patch.object(
+        function.app.plateSolve, "checkAvailability", return_value=(False, False)
+    ):
         suc = function.checkAnalysisConditions()
         assert not suc
 
 
 def test_checkAnalysisConditions_3(function):
-    with mock.patch.object(function.app.plateSolve, "checkAvailability", return_value=(True, True)):
+    with mock.patch.object(
+        function.app.plateSolve, "checkAvailability", return_value=(True, True)
+    ):
         suc = function.checkAnalysisConditions()
         assert suc
 
@@ -150,7 +156,9 @@ def test_runFlexure_2(function):
 
     function.cycleThroughPoints = test
     with mock.patch.object(function, "checkAnalysisConditions", return_value=True):
-        with mock.patch.object(RunBasic, "setupFilenamesAndDirectories", return_value=("", "")):
+        with mock.patch.object(
+            RunBasic, "setupFilenamesAndDirectories", return_value=("", "")
+        ):
             with mock.patch.object(RunBasic, "setupRunPoints", return_value=[1, 2]):
                 suc = function.runFlexure()
                 assert suc

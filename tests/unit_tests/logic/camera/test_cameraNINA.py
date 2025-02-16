@@ -166,7 +166,9 @@ def test_workerExpose_3(function, mocked_sleepAndEvents):
                 with mock.patch.object(function.parent, "waitDownload"):
                     with mock.patch.object(function.parent, "waitSave"):
                         with mock.patch.object(os, "rename"):
-                            with mock.patch.object(function.parent, "updateImageFitsHeaderPointing"):
+                            with mock.patch.object(
+                                function.parent, "updateImageFitsHeaderPointing"
+                            ):
                                 function.workerExpose()
 
 

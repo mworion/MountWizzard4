@@ -93,7 +93,9 @@ def test_getRelay_2(function):
 
 def test_getRelay_3(function):
     function.hostaddress = "localhost"
-    with mock.patch.object(requests, "get", return_value=None, side_effect=requests.exceptions.Timeout):
+    with mock.patch.object(
+        requests, "get", return_value=None, side_effect=requests.exceptions.Timeout
+    ):
         suc = function.getRelay()
         assert suc is None
 

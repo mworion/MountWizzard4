@@ -45,18 +45,7 @@ def sleepAndEvents(value: int) -> None:
 
 
 def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str) -> None:
-    """
-    changeStyleDynamic changes the stylesheet of a given ui element and
-    makes it visible. therefore the element has to be unpolished and
-    polished again.
-
-    :param      widget: widget element, where the stylesheet has to
-                        be changed
-    :param      widgetProperty: stylesheet attribute which has to be
-                                changed
-    :param      value:  new value of the attribute
-    :return:    true for test purpose
-    """
+    """ """
     if widget.property(widgetProperty) == value:
         return
 
@@ -66,12 +55,7 @@ def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str) -> None
 
 
 def findIndexValue(ui, searchString, relaxed=False):
-    """
-    :param ui:
-    :param searchString:
-    :param relaxed:
-    :return:
-    """
+    """ """
     for index in range(ui.model().rowCount()):
         modelIndex = ui.model().index(index, 0)
         indexValue = ui.model().data(modelIndex)
@@ -163,19 +147,7 @@ def clickable(widget: QWidget) -> Signal:
 
 
 class MWidget(QWidget, Styles):
-    """
-    MWidget defines the common parts for all windows used in MountWizzard 4 and
-    extends the standard widgets. All widgets configs which are used mor than
-    one time are centralized in this class.
-
-    For the File dialogues, the original widgets are used, but with the removal
-    of some features to make them simpler. As one optimization they always show
-    the files and directories in descending order.
-
-    The styles of the widgets are defined separately in a css looking
-    stylesheet. The standard screen size will be 800x600 pixel for all windows,
-    but except for the main one are sizable.
-    """
+    """ """
 
     log = logging.getLogger("MW4")
 
@@ -199,11 +171,9 @@ class MWidget(QWidget, Styles):
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.app = None
 
-    def saveWindowAsPNG(self, window):
-        """
-        :param window:
-        :return:
-        """
+    @staticmethod
+    def saveWindowAsPNG(window):
+        """ """
         name = window.windowTitle().replace(" ", "_")
         timeTrigger = datetime.datetime.now(datetime.timezone.utc)
         timeTag = timeTrigger.strftime("%Y-%m-%d-%H-%M-%S")
@@ -211,26 +181,20 @@ class MWidget(QWidget, Styles):
         fullFileName = f"{path}/{timeTag}-{name}.png"
         window.log.info(f"Screenshot: [{fullFileName}]")
         window.grab().save(fullFileName)
-        return True
 
     def saveAllWindowsAsPNG(self, window):
-        """
-        :return:
-        """
-        windows = window.app.uiWindows
-        self.saveWindowAsPNG(window.app.mainW)
+        """ """
+        windows = window.app.mainW.externalWindows.uiWindows
+        self.saveWindowAsPNG(window)
         for window in windows:
             obj = windows[window]["classObj"]
             if obj:
                 self.saveWindowAsPNG(obj)
-        return True
 
     def keyPressEvent(self, keyEvent):
         """
         Pressing F5 makes a screen copy of the actual window
         Pressing F6 makes a screen copy of all open windows
-        :param keyEvent:
-        :return:
         """
         if keyEvent.key() == 16777268:
             self.saveWindowAsPNG(self)
@@ -241,12 +205,7 @@ class MWidget(QWidget, Styles):
         super().keyPressEvent(keyEvent)
 
     def img2pixmap(self, img, detect=None, color=None):
-        """
-        :param img:
-        :param detect:
-        :param color:
-        :return:
-        """
+        """ """
         image = QImage(img)
         image.convertToFormat(QImage.Format.Format_RGB32)
         imgArr = rgb_view(image)
@@ -260,11 +219,7 @@ class MWidget(QWidget, Styles):
 
     @staticmethod
     def svg2pixmap(svg, color="black"):
-        """
-        :param svg:
-        :param color:
-        :return:
-        """
+        """ """
         img = QPixmap(svg)
         qp = QPainter(img)
         qp.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
@@ -273,26 +228,14 @@ class MWidget(QWidget, Styles):
         return img
 
     def svg2icon(self, svg, color="black"):
-        """
-        :param svg:
-        :param color:
-        :return:
-        """
+        """ """
         img = self.svg2pixmap(svg, color)
         return QIcon(img)
 
     def wIcon(self, gui=None, name=""):
-        """
-        widget icon adds an icon to a gui element like a button.
-
-        :param      gui:        gui element, which will be expanded by an icon
-        :param      name:       icon to be added
-        :return:    true for test purpose
-        """
-        if not gui:
-            return False
-        if not name:
-            return False
+        """ """
+        if not gui or not name:
+            return
 
         icon = self.svg2icon(f":/icon/{name}.svg", self.M_TER)
         gui.setIcon(icon)
@@ -300,32 +243,15 @@ class MWidget(QWidget, Styles):
         gui.setProperty("alignLeft", True)
         gui.style().unpolish(gui)
         gui.style().polish(gui)
-        return True
 
     def initUI(self):
-        """
-        init_UI makes the basic initialisation of the GUI. it sets the window
-        flags and sets the handling of the window. is as well fixes the windows
-        size, unless a windows will be scalable later on. in addition, the
-        appropriate style sheet for mac and non mac will be selected and used.
-
-        :return:    true for test purpose
-        """
+        """ """
         self.setStyleSheet(self.mw4Style)
         self.setMouseTracking(True)
         self.setWindowIcon(QIcon(":/mw4.ico"))
-        return True
 
     def prepareFileDialog(self, window=None, enableDir=False):
-        """
-        prepareFileDialog does some tweaking of the standard file dialogue
-        widget for geometry and general settings. it also removes some parts and
-        makes the dialog modal.
-
-        :param window:  parent class
-        :param enableDir:   allows dir selection in file box
-        :return:        dlg, the dialog widget
-        """
+        """ """
         if not window:
             return None
 
@@ -354,21 +280,11 @@ class MWidget(QWidget, Styles):
 
     @staticmethod
     def runDialog(dlg):
-        """
-        :param dlg:
-        :return: result
-        """
+        """ """
         return dlg.exec()
 
     def messageDialog(self, parentWidget, title, question, buttons=None, iconType=0):
-        """
-        :param parentWidget:
-        :param title:
-        :param question:
-        :param buttons:
-        :param iconType:
-        :return: OK
-        """
+        """ """
         msg = QMessageBox()
         msg.setWindowModality(Qt.WindowModality.ApplicationModal)
         msg.setStyleSheet(self.mw4Style)
@@ -449,16 +365,7 @@ class MWidget(QWidget, Styles):
             return Path(dlg.selectedFiles()[0])
 
     def saveFile(self, window=None, title="", folder="", filterSet=None, enableDir=False):
-        """
-        saveFile handles a single file save with filter in a non-native format.
-
-        :param window:      parent window class
-        :param title:       title for the file dialog
-        :param folder:      starting folder for searching the file
-        :param filterSet:   file extension filter
-        :param enableDir:   allows dir selection in file box
-        :return:            name: full path for file else empty
-        """
+        """ """
         if not window:
             return Path("")
         if not title:
@@ -480,16 +387,7 @@ class MWidget(QWidget, Styles):
         return Path(dlg.selectedFiles()[0])
 
     def openDir(self, window=None, title="", folder=""):
-        """
-        openFile handles a single file select with filter in a non-native format.
-
-        :param window:      parent window class
-        :param title:       title for the file dialog
-        :param folder:      starting folder for searching the file
-        :return:            name: full path for file else empty
-                            short: just file name without extension
-                            ext: extension of the file
-        """
+        """ """
         if not window:
             return Path("")
         if not title:
@@ -509,9 +407,7 @@ class MWidget(QWidget, Styles):
         return Path(dlg.selectedFiles()[0])
 
     def convertTime(self, value, fString):
-        """
-        :return:
-        """
+        """ """
         isUTC = self.ui.unitTimeUTC.isChecked()
         if isUTC:
             return value.utc_strftime(fString)
@@ -519,9 +415,7 @@ class MWidget(QWidget, Styles):
             return value.astimezone(tzlocal()).strftime(fString)
 
     def timeZoneString(self):
-        """
-        :return:
-        """
+        """ """
         if self.ui.unitTimeUTC.isChecked():
             return "(time is UTC)"
         else:
@@ -529,9 +423,7 @@ class MWidget(QWidget, Styles):
 
     @staticmethod
     def makePointer():
-        """
-        :return:
-        """
+        """ """
         path = QPainterPath()
         path.moveTo(0, -1)
         path.lineTo(0, 1)
@@ -543,9 +435,7 @@ class MWidget(QWidget, Styles):
 
     @staticmethod
     def makeSat():
-        """
-        :return:
-        """
+        """ """
         path = QPainterPath()
         tr = QTransform()
         path.addRect(-0.35, -0.15, 0.1, 0.3)
@@ -563,9 +453,7 @@ class MWidget(QWidget, Styles):
         return path
 
     def positionWindow(self, config):
-        """
-        :return:
-        """
+        """ """
         height = config.get("height", 600)
         width = config.get("width", 800)
         self.resize(width, height)
@@ -583,11 +471,7 @@ class MWidget(QWidget, Styles):
 
     @staticmethod
     def getTabIndex(tab, name):
-        """
-        :param tab:
-        :param name:
-        :return:
-        """
+        """ """
         tabWidget = tab.findChild(QWidget, name)
         tabIndex = tab.indexOf(tabWidget)
         return tabIndex

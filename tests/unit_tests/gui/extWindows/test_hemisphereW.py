@@ -101,12 +101,16 @@ def test_showWindow_1(function):
 
 
 def test_mouseMoved_1(function):
-    with mock.patch.object(function.ui.hemisphere.p[0].getViewBox(), "posInViewRange", return_value=False):
+    with mock.patch.object(
+        function.ui.hemisphere.p[0].getViewBox(), "posInViewRange", return_value=False
+    ):
         function.mouseMoved(pos=QPointF(1, 1))
 
 
 def test_mouseMoved_2(function):
-    with mock.patch.object(function.ui.hemisphere.p[0].getViewBox(), "posInViewRange", return_value=True):
+    with mock.patch.object(
+        function.ui.hemisphere.p[0].getViewBox(), "posInViewRange", return_value=True
+    ):
         function.mouseMoved(pos=QPointF(0.5, 0.5))
 
 
@@ -140,31 +144,41 @@ def test_calculateRelevance_0(function):
 
 
 def test_calculateRelevance_1(function):
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=45)
+    function.app.mount.obsSite.location = wgs84.latlon(
+        longitude_degrees=0, latitude_degrees=45
+    )
     val = function.calculateRelevance(40, 180)
     assert round(val, 3) == 0.845
 
 
 def test_calculateRelevance_2(function):
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=45)
+    function.app.mount.obsSite.location = wgs84.latlon(
+        longitude_degrees=0, latitude_degrees=45
+    )
     val = function.calculateRelevance(0, 0)
     assert val == 0
 
 
 def test_calculateRelevance_3(function):
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=45)
+    function.app.mount.obsSite.location = wgs84.latlon(
+        longitude_degrees=0, latitude_degrees=45
+    )
     val = function.calculateRelevance(30, 180)
     assert val > 0
 
 
 def test_calculateRelevance_4(function):
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=45)
+    function.app.mount.obsSite.location = wgs84.latlon(
+        longitude_degrees=0, latitude_degrees=45
+    )
     val = function.calculateRelevance(40, 10)
     assert val == 0
 
 
 def test_calculateRelevance_5(function):
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=-45)
+    function.app.mount.obsSite.location = wgs84.latlon(
+        longitude_degrees=0, latitude_degrees=-45
+    )
     val = function.calculateRelevance(40, 10)
     assert val > 0
 
@@ -293,7 +307,9 @@ def test_drawCelestialEquator_1(function):
 
 
 def test_drawCelestialEquator_2(function):
-    with mock.patch.object(function.app.data, "generateCelestialEquator", return_value=[(1, 1)]):
+    with mock.patch.object(
+        function.app.data, "generateCelestialEquator", return_value=[(1, 1)]
+    ):
         suc = function.drawCelestialEquator()
         assert suc
 

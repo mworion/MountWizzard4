@@ -47,7 +47,9 @@ def function(qapp):
     }
     widget = QWidget()
     with mock.patch.object(DevicePopup, "show"):
-        window = DevicePopup(widget, app=App(), data=data, driver="telescope", deviceType="telescope")
+        window = DevicePopup(
+            widget, app=App(), data=data, driver="telescope", deviceType="telescope"
+        )
         window.log = logging.getLogger()
         yield window
         window.app.threadPool.waitForDone(10000)
@@ -394,7 +396,9 @@ def test_selectAstapAppPath_3(function):
     with mock.patch.object(MWidget, "openDir", return_value=Path("/Astap.app")):
         with mock.patch.object(Path, "is_dir", return_value=True):
             with mock.patch.object(platform, "system", return_value=("Darwin")):
-                with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
+                with mock.patch.object(
+                    function, "checkPlateSolveAvailability", return_value=True
+                ):
                     function.selectAstapAppPath()
 
 
@@ -443,7 +447,9 @@ def test_selectWatneyAppPath_3(function):
     with mock.patch.object(MWidget, "openDir", return_value=Path("test.app")):
         with mock.patch.object(Path, "is_dir", return_value=True):
             with mock.patch.object(platform, "system", return_value=("Darwin")):
-                with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
+                with mock.patch.object(
+                    function, "checkPlateSolveAvailability", return_value=True
+                ):
                     function.selectWatneyAppPath()
 
 

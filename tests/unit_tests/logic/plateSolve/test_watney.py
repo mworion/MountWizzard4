@@ -122,7 +122,9 @@ def test_solve_3(function):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(os, "remove", return_value=True):
                 with mock.patch.object(logic.plateSolve.watney, "getImageHeader"):
-                    with mock.patch.object(logic.plateSolve.watney, "getSolutionFromWCSHeader"):
+                    with mock.patch.object(
+                        logic.plateSolve.watney, "getSolutionFromWCSHeader"
+                    ):
                         with mock.patch.object(
                             logic.plateSolve.watney, "updateImageFileHeaderWithSolution"
                         ):

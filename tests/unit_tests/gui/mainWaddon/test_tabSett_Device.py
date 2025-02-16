@@ -486,13 +486,17 @@ def test_serverDisconnected_1(function):
 
 
 def test_deviceConnected_2(function):
-    function.driversData = {"filter": {"framework": "indi", "frameworks": {"indi": {"loadConfig": True}}}}
+    function.driversData = {
+        "filter": {"framework": "indi", "frameworks": {"indi": {"loadConfig": True}}}
+    }
     function.BACK_GREEN = "#000000"
     function.deviceConnected("filter", "test")
 
 
 def test_deviceConnected_3(function):
-    function.driversData = {"dome": {"framework": "indi", "frameworks": {"indi": {"loadConfig": True}}}}
+    function.driversData = {
+        "dome": {"framework": "indi", "frameworks": {"indi": {"loadConfig": True}}}
+    }
     function.BACK_GREEN = "#000000"
     function.deviceConnected("dome", "test")
 

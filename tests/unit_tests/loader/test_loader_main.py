@@ -70,7 +70,9 @@ def test_main_1():
                 with mock.patch.object(loader, "MyApp", return_value=App()):
                     with mock.patch.object(loader, "SplashScreen", return_value=Splash()):
                         with mock.patch.object(loader, "MountWizzard4"):
-                            with mock.patch.object(loader, "setupWorkDirs", return_value=mwGlob):
+                            with mock.patch.object(
+                                loader, "setupWorkDirs", return_value=mwGlob
+                            ):
                                 with mock.patch.object(sys, "exit"):
                                     with mock.patch.object(sys, "excepthook"):
                                         loader.main()

@@ -189,7 +189,9 @@ def test_showUpdates_3(function):
     function.ui.isOnline.setChecked(True)
     function.ui.versionReleaseNotes.setChecked(False)
     with mock.patch.object(importlib_metadata, "version", return_value="0.148.10"):
-        with mock.patch.object(function, "versionPackage", return_value=("0.148.9", "test", ["1.2.3"])):
+        with mock.patch.object(
+            function, "versionPackage", return_value=("0.148.9", "test", ["1.2.3"])
+        ):
             suc = function.showUpdates()
             assert suc
 
@@ -198,7 +200,9 @@ def test_showUpdates_4(function):
     function.ui.isOnline.setChecked(True)
     function.ui.versionReleaseNotes.setChecked(False)
     with mock.patch.object(importlib_metadata, "version", return_value="0.148.8"):
-        with mock.patch.object(function, "versionPackage", return_value=("0.148.9", "test", ["1.2.3"])):
+        with mock.patch.object(
+            function, "versionPackage", return_value=("0.148.9", "test", ["1.2.3"])
+        ):
             suc = function.showUpdates()
             assert suc
 
@@ -207,7 +211,9 @@ def test_showUpdates_5(function):
     function.ui.isOnline.setChecked(True)
     function.ui.versionReleaseNotes.setChecked(True)
     with mock.patch.object(importlib_metadata, "version", return_value="0.148.8"):
-        with mock.patch.object(function, "versionPackage", return_value=("0.148.9", "", ["1.2.3"])):
+        with mock.patch.object(
+            function, "versionPackage", return_value=("0.148.9", "", ["1.2.3"])
+        ):
             suc = function.showUpdates()
             assert suc
 
@@ -216,7 +222,9 @@ def test_showUpdates_6(function):
     function.ui.isOnline.setChecked(True)
     function.ui.versionReleaseNotes.setChecked(True)
     with mock.patch.object(importlib_metadata, "version", return_value="0.148.8"):
-        with mock.patch.object(function, "versionPackage", return_value=("0.148.9", "test", ["1.2.3"])):
+        with mock.patch.object(
+            function, "versionPackage", return_value=("0.148.9", "test", ["1.2.3"])
+        ):
             suc = function.showUpdates()
             assert suc
 
@@ -247,7 +255,9 @@ def test_installVersion_1(function):
 def test_installVersion_2(function):
     function.ui.versionAvailable.setText("2.1.1")
     with mock.patch.object(function, "isVenv", return_value=True):
-        with mock.patch.object(function, "versionPackage", return_value=(None, None, ["1.2.3"])):
+        with mock.patch.object(
+            function, "versionPackage", return_value=(None, None, ["1.2.3"])
+        ):
             suc = function.installVersion()
             assert not suc
 
@@ -255,7 +265,9 @@ def test_installVersion_2(function):
 def test_installVersion_3(function):
     function.ui.versionAvailable.setText("1.2.3")
     with mock.patch.object(function, "isVenv", return_value=True):
-        with mock.patch.object(function, "versionPackage", return_value=(None, None, ["1.2.3"])):
+        with mock.patch.object(
+            function, "versionPackage", return_value=(None, None, ["1.2.3"])
+        ):
             with mock.patch.object(function, "startUpdater"):
                 suc = function.installVersion()
                 assert suc

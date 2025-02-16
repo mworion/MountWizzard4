@@ -197,7 +197,9 @@ def test_progSelected_1(function):
 
     with mock.patch.object(function, "progGUI"):
         with mock.patch.object(function, "progObjects"):
-            with mock.patch.object(function.uiObjectList, "selectedItems", return_value=[Test()]):
+            with mock.patch.object(
+                function.uiObjectList, "selectedItems", return_value=[Test()]
+            ):
                 function.progSelected()
 
 
@@ -213,7 +215,9 @@ def test_progSelected_2(function):
 
     with mock.patch.object(function, "progGUI"):
         with mock.patch.object(function, "progObjects"):
-            with mock.patch.object(function.uiObjectList, "selectedItems", return_value=[Test()]):
+            with mock.patch.object(
+                function.uiObjectList, "selectedItems", return_value=[Test()]
+            ):
                 function.progSelected()
 
 

@@ -288,7 +288,9 @@ def test_updateBLOB_3(function):
 def test_updateBLOB_4(function):
     function.device = Device()
     with mock.patch.object(IndiClass, "updateBLOB", return_value=True):
-        with mock.patch.object(function.device, "getBlob", return_value={"value": 1, "name": "test"}):
+        with mock.patch.object(
+            function.device, "getBlob", return_value={"value": 1, "name": "test"}
+        ):
             suc = function.updateBLOB("test", "test")
             assert not suc
 
@@ -386,7 +388,9 @@ def test_sendCoolerTemp_2(function):
 def test_sendCoolerTemp_3(function):
     function.deviceName = "test"
     function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"CCD_TEMPERATURE_VALUE": 1}):
+    with mock.patch.object(
+        function.device, "getNumber", return_value={"CCD_TEMPERATURE_VALUE": 1}
+    ):
         with mock.patch.object(function.client, "sendNewNumber", return_value=True):
             function.sendCoolerTemp()
 

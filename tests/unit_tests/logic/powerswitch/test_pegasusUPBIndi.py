@@ -170,14 +170,18 @@ def test_togglePowerPort_2(function):
 
 def test_togglePowerPort_3(function):
     function.device = Device()
-    with mock.patch.object(function.device, "getSwitch", return_value={"POWER_CONTROL_0": "On"}):
+    with mock.patch.object(
+        function.device, "getSwitch", return_value={"POWER_CONTROL_0": "On"}
+    ):
         suc = function.togglePowerPort(port=1)
         assert not suc
 
 
 def test_togglePowerPort_4(function):
     function.device = Device()
-    with mock.patch.object(function.device, "getSwitch", return_value={"POWER_CONTROL_1": "On"}):
+    with mock.patch.object(
+        function.device, "getSwitch", return_value={"POWER_CONTROL_1": "On"}
+    ):
         suc = function.togglePowerPort(port=1)
         assert not suc
 
@@ -523,7 +527,9 @@ def test_sendAdjustableOutput_2(function):
 
 def test_sendAdjustableOutput_3(function):
     function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"ADJUSTABLE_VOLTAGE": 12}):
+    with mock.patch.object(
+        function.device, "getNumber", return_value={"ADJUSTABLE_VOLTAGE": 12}
+    ):
         suc = function.sendAdjustableOutput()
         assert not suc
 
@@ -531,7 +537,9 @@ def test_sendAdjustableOutput_3(function):
 def test_sendAdjustableOutput_4(function):
     function.device = Device()
     function.isINDIGO = True
-    with mock.patch.object(function.device, "getNumber", return_value={"ADJUSTABLE_VOLTAGE": 12}):
+    with mock.patch.object(
+        function.device, "getNumber", return_value={"ADJUSTABLE_VOLTAGE": 12}
+    ):
         suc = function.sendAdjustableOutput()
         assert not suc
 

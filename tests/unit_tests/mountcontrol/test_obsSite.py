@@ -106,7 +106,9 @@ class TestConfigData(unittest.TestCase):
         elev = 100
         lon = 100
         lat = 45
-        obsSite.location = wgs84.latlon(longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev)
+        obsSite.location = wgs84.latlon(
+            longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev
+        )
         self.assertAlmostEqual(100, obsSite.location.longitude.dms()[0], 6)
         self.assertAlmostEqual(0, obsSite.location.longitude.dms()[1], 6)
         self.assertAlmostEqual(0, obsSite.location.longitude.dms()[2], 6)

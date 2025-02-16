@@ -171,7 +171,9 @@ def test_calcSatListDynamic_4(function):
     function.ui.listSats.setItem(0, 0, entry)
     with mock.patch.object(QRect, "intersects", return_value=False):
         with mock.patch.object(gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10):
-            with mock.patch.object(gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True):
+            with mock.patch.object(
+                gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True
+            ):
                 function.calcSatListDynamic()
 
 
@@ -217,8 +219,12 @@ def test_calcSatListDynamic_6(function):
     function.ui.listSats.setRowHidden(0, False)
     function.satellites.objects = {"NOAA 8": sat}
     with mock.patch.object(function, "updateListSats"):
-        with mock.patch.object(gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[1, 2, 3]):
-            with mock.patch.object(gui.mainWaddon.tabSat_Search, "findSunlit", return_value=False):
+        with mock.patch.object(
+            gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[1, 2, 3]
+        ):
+            with mock.patch.object(
+                gui.mainWaddon.tabSat_Search, "findSunlit", return_value=False
+            ):
                 with mock.patch.object(QRect, "intersects", return_value=True):
                     function.calcSatListDynamic()
 
@@ -242,9 +248,15 @@ def test_calcSatListDynamic_7(function):
     function.ui.listSats.setRowHidden(0, False)
     function.satellites.objects = {"NOAA 8": sat}
     with mock.patch.object(function, "updateListSats"):
-        with mock.patch.object(gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[1, 2, 3]):
-            with mock.patch.object(gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True):
-                with mock.patch.object(gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10):
+        with mock.patch.object(
+            gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[1, 2, 3]
+        ):
+            with mock.patch.object(
+                gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True
+            ):
+                with mock.patch.object(
+                    gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10
+                ):
                     with mock.patch.object(QRect, "intersects", return_value=True):
                         function.calcSatListDynamic()
 
@@ -267,9 +279,15 @@ def test_calcSatListDynamic_8(function):
     function.ui.listSats.setRowHidden(0, False)
     function.satellites.objects = {"NOAA 8": sat}
     with mock.patch.object(function, "updateListSats"):
-        with mock.patch.object(gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[np.nan, 2, 3]):
-            with mock.patch.object(gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True):
-                with mock.patch.object(gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10):
+        with mock.patch.object(
+            gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[np.nan, 2, 3]
+        ):
+            with mock.patch.object(
+                gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True
+            ):
+                with mock.patch.object(
+                    gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10
+                ):
                     with mock.patch.object(QRect, "intersects", return_value=True):
                         function.calcSatListDynamic()
 
@@ -308,7 +326,9 @@ def test_calcSat_1(function):
     ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
 
-    with mock.patch.object(gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=(1, 1, 1, 1)):
+    with mock.patch.object(
+        gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=(1, 1, 1, 1)
+    ):
         with mock.patch.object(gui.mainWaddon.tabSat_Search, "findSunlit", return_value=False):
             with mock.patch.object(gui.mainWaddon.tabSat_Search, "findSatUp"):
                 with mock.patch.object(gui.mainWaddon.tabSat_Search, "checkTwilight"):
@@ -324,11 +344,15 @@ def test_calcSat_2(function):
     ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
 
-    with mock.patch.object(gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=(1, 1, 1, 1)):
+    with mock.patch.object(
+        gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=(1, 1, 1, 1)
+    ):
         with mock.patch.object(gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True):
             with mock.patch.object(gui.mainWaddon.tabSat_Search, "findSatUp"):
                 with mock.patch.object(gui.mainWaddon.tabSat_Search, "checkTwilight"):
-                    with mock.patch.object(gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=0):
+                    with mock.patch.object(
+                        gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=0
+                    ):
                         with mock.patch.object(function, "updateListSats"):
                             function.calcSat(sat, 0, 0, 0, 0, 0, 0)
 
@@ -341,7 +365,9 @@ def test_calcSat_3(function):
     ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
 
-    with mock.patch.object(gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=(np.nan, 0, 0, 0)):
+    with mock.patch.object(
+        gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=(np.nan, 0, 0, 0)
+    ):
         with mock.patch.object(function, "updateListSats"):
             function.calcSat(sat, 0, 0, 0, 0, 0, 0)
 

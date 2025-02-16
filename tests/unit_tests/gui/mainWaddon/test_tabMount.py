@@ -132,12 +132,16 @@ def test_setLunarTracking_2(function):
 
 
 def test_setSiderealTracking_1(function):
-    with mock.patch.object(function.app.mount.setting, "setSiderealTracking", return_value=False):
+    with mock.patch.object(
+        function.app.mount.setting, "setSiderealTracking", return_value=False
+    ):
         function.setSiderealTracking()
 
 
 def test_setSiderealTracking_2(function):
-    with mock.patch.object(function.app.mount.setting, "setSiderealTracking", return_value=True):
+    with mock.patch.object(
+        function.app.mount.setting, "setSiderealTracking", return_value=True
+    ):
         function.setSiderealTracking()
 
 

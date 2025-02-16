@@ -93,7 +93,9 @@ class Analysis(MWidget):
 
         sucApp, sucIndex = self.app.plateSolve.checkAvailability()
         if not (sucApp and sucIndex):
-            self.msg.emit(2, "Analysis", "Run error", "No valid configuration for plate solver")
+            self.msg.emit(
+                2, "Analysis", "Run error", "No valid configuration for plate solver"
+            )
             return False
         return True
 

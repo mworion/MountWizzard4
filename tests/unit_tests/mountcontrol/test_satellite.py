@@ -1146,7 +1146,9 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sat = Satellite(parent=Parent())
-        with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3, 4], 4)):
+        with mock.patch.object(
+            Connection, "communicate", return_value=(True, [1, 2, 3, 4], 4)
+        ):
             suc = sat.getTrackingOffsets()
             self.assertTrue(suc)
 

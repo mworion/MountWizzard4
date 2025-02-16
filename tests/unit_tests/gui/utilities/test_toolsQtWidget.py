@@ -18,6 +18,7 @@
 import unittest.mock as mock
 import pytest
 import os
+import logging
 from pathlib import Path
 
 # external packages
@@ -235,17 +236,23 @@ def test_saveWindowAsPNG(function):
         def save(a):
             return
 
+    window = QWidget()
+    window.app = App()
+    window.log = logging.getLogger("MW4")
     with mock.patch.object(QWidget, "grab", return_value=Save()):
-        suc = function.saveWindowAsPNG(QWidget())
-        assert suc
+        function.saveWindowAsPNG(window)
 
 
 def test_saveAllWindowsAsPNG_1(function):
-    function.app.uiWindows = {"test1": {"classObj": None}, "test2": {"classObj": 1}}
-    function.app.mainW = QWidget()
+    class ExternalWindows:
+        uiWindows = {"test1": {"classObj": None}, "test2": {"classObj": 1}}
+
+    window = QWidget()
+    window.app = App()
+    window.app.mainW.externalWindows = ExternalWindows()
+
     with mock.patch.object(function, "saveWindowAsPNG"):
-        suc = function.saveAllWindowsAsPNG()
-        assert suc
+        function.saveAllWindowsAsPNG(window)
 
 
 def test_keyPressEvent_1(function):
@@ -284,7 +291,9 @@ def test_img2pixmap_1(function):
 
 
 def test_img2pixmap_2(function):
-    img = function.img2pixmap(os.getcwd() + "/tests/testData/altitude.png", "#202020", "#303030")
+    img = function.img2pixmap(
+        os.getcwd() + "/tests/testData/altitude.png", "#202020", "#303030"
+    )
     assert isinstance(img, QPixmap)
 
 
@@ -299,20 +308,8 @@ def test_svg2icon_1(function):
 
 
 def test_wIcon_1(function):
-    suc = function.wIcon()
-    assert not suc
-
-
-def test_wIcon_2(function):
     ui = QPushButton()
-    suc = function.wIcon(gui=ui)
-    assert not suc
-
-
-def test_wIcon_3(function):
-    ui = QPushButton()
-    suc = function.wIcon(gui=ui, name="load")
-    assert suc
+    function.wIcon(ui, "load")
 
 
 def test_renderStyle_1(function):
@@ -330,8 +327,7 @@ def test_renderStyle_2(function):
 
 
 def test_initUI_1(function):
-    suc = function.initUI()
-    assert suc
+    function.initUI()
 
 
 def test_prepareFileDialog_1(function):
@@ -354,27 +350,39 @@ def test_runDialog_1(function):
 
 def test_messageDialog_1(function):
     widget = QWidget()
-    with mock.patch.object(QMessageBox, "question", return_value=QMessageBox.StandardButton.No):
+    with mock.patch.object(
+        QMessageBox, "question", return_value=QMessageBox.StandardButton.No
+    ):
         with mock.patch.object(QMessageBox, "show"):
-            with mock.patch.object(function, "runDialog", return_value=QMessageBox.StandardButton.No):
+            with mock.patch.object(
+                function, "runDialog", return_value=QMessageBox.StandardButton.No
+            ):
                 suc = function.messageDialog(widget, "test", "test")
                 assert not suc
 
 
 def test_messageDialog_2(function):
     widget = QWidget()
-    with mock.patch.object(QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes):
+    with mock.patch.object(
+        QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes
+    ):
         with mock.patch.object(QMessageBox, "show"):
-            with mock.patch.object(function, "runDialog", return_value=QMessageBox.StandardButton.Yes):
+            with mock.patch.object(
+                function, "runDialog", return_value=QMessageBox.StandardButton.Yes
+            ):
                 suc = function.messageDialog(widget, "test", "test")
                 assert suc
 
 
 def test_messageDialog_3(function):
     widget = QWidget()
-    with mock.patch.object(QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes):
+    with mock.patch.object(
+        QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes
+    ):
         with mock.patch.object(QMessageBox, "show"):
-            with mock.patch.object(function, "runDialog", return_value=QMessageBox.StandardButton.Yes):
+            with mock.patch.object(
+                function, "runDialog", return_value=QMessageBox.StandardButton.Yes
+            ):
                 suc = function.messageDialog(widget, "test", "test", ["A", "B"])
                 assert suc
 
@@ -405,7 +413,9 @@ def test_openFile_4(function):
 def test_openFile_5(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=0):
-        full = function.openFile(window=window, title="title", folder=Path("."), filterSet="*.*")
+        full = function.openFile(
+            window=window, title="title", folder=Path("."), filterSet="*.*"
+        )
         assert full == Path("")
 
 
@@ -463,14 +473,18 @@ def test_saveFile_4(function):
 def test_saveFile_5(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=0):
-        full = function.saveFile(window=window, title="title", folder=Path("."), filterSet="*.*")
+        full = function.saveFile(
+            window=window, title="title", folder=Path("."), filterSet="*.*"
+        )
         assert full == Path("")
 
 
 def test_saveFile_6(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=1):
-        with mock.patch.object(QFileDialog, "selectedFiles", return_value=(["tests/test.txt"])):
+        with mock.patch.object(
+            QFileDialog, "selectedFiles", return_value=(["tests/test.txt"])
+        ):
             function.saveFile(window=window, title="title", folder=Path("."), filterSet="*.*")
 
 

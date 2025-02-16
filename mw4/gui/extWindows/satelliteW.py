@@ -210,7 +210,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         )
         return pd
 
-    def prepareEarthSatellite(self, plotItem: PlotWidget,) -> pg.PlotDataItem:
+    def prepareEarthSatellite(
+        self,
+        plotItem: PlotWidget,
+    ) -> pg.PlotDataItem:
         """ """
         subPoint = wgs84.subpoint_of(self.satellite.at(self.obsSite.ts.now()))
         lat = subPoint.latitude.degrees
@@ -294,8 +297,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         plotItem.setMouseEnabled(x=True, y=True)
         plotItem.clear()
 
-    def prepareHorizonSatellite(
-        self, plotItem: PlotWidget) -> pg.PlotDataItem:
+    def prepareHorizonSatellite(self, plotItem: PlotWidget) -> pg.PlotDataItem:
         """ """
         alt, az, _ = (self.satellite - self.obsSite.location).at(self.obsSite.ts.now()).altaz()
         pd = self.prepareSatellite([az.degrees], [alt.degrees])
@@ -319,9 +321,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         plotItem.addItem(pd)
         return pd
 
-    def drawHorizonTrajectory(
-        self, plotItem: PlotWidget, altitude, azimuth
-    ):
+    def drawHorizonTrajectory(self, plotItem: PlotWidget, altitude, azimuth):
         """ """
         ts = self.obsSite.ts
         for i, satOrbit in enumerate(self.satOrbits):

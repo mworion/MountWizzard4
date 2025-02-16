@@ -125,7 +125,9 @@ def test_startSolveLoop_1(function):
 
 def test_checkAvailabilityProgram_1(function):
     function.framework = "astap"
-    with mock.patch.object(function.run["astap"], "checkAvailabilityProgram", return_value=True):
+    with mock.patch.object(
+        function.run["astap"], "checkAvailabilityProgram", return_value=True
+    ):
         assert function.checkAvailabilityProgram("astap")
 
 

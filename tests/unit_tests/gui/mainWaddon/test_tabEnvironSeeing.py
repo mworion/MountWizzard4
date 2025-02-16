@@ -54,7 +54,9 @@ def test_addSkyfieldTimeObject(function):
 
 
 def test_updateSeeingEntries_1(function):
-    function.app.seeingWeather.data = {"test": {"hour": [10, 11], "date": ["2022-01-01", "2022-01-01"]}}
+    function.app.seeingWeather.data = {
+        "test": {"hour": [10, 11], "date": ["2022-01-01", "2022-01-01"]}
+    }
     function.updateSeeingEntries()
 
 

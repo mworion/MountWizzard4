@@ -182,7 +182,9 @@ class TestConfigData(unittest.TestCase):
         p3 = "1234.5"
         p4 = "90"
         p5 = obsSite
-        modelStar1 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1, obsSite=p5)
+        modelStar1 = ModelStar(
+            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1, obsSite=p5
+        )
 
         class Parent:
             host = None
@@ -218,10 +220,18 @@ class TestConfigData(unittest.TestCase):
         p2 = "+56*30:00.5"
         p3 = "1234.5"
         p4 = "90"
-        modelStar1 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1, obsSite=obsSite)
-        modelStar2 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=2, obsSite=obsSite)
-        modelStar3 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=3, obsSite=obsSite)
-        modelStar4 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=4, obsSite=obsSite)
+        modelStar1 = ModelStar(
+            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1, obsSite=obsSite
+        )
+        modelStar2 = ModelStar(
+            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=2, obsSite=obsSite
+        )
+        modelStar3 = ModelStar(
+            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=3, obsSite=obsSite
+        )
+        modelStar4 = ModelStar(
+            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=4, obsSite=obsSite
+        )
 
         class Parent:
             host = None
@@ -514,7 +524,9 @@ class TestConfigData(unittest.TestCase):
         star = skyfield.api.Star(ra_hours=12.55, dec_degrees=56.55)
         p3 = "1234.5"
         p4 = "90"
-        alignStar = ModelStar(coord=star, errorRMS=p3, errorAngle=p4, number=1, obsSite=obsSite)
+        alignStar = ModelStar(
+            coord=star, errorRMS=p3, errorAngle=p4, number=1, obsSite=obsSite
+        )
         self.assertAlmostEqual(alignStar.coord.ra.hms()[0], 12, 6)
         self.assertAlmostEqual(alignStar.coord.ra.hms()[1], 33, 6)
         self.assertAlmostEqual(alignStar.coord.ra.hms()[2], 0, 6)

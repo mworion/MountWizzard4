@@ -213,23 +213,31 @@ def test_saveName_1(function):
 
 
 def test_saveName_2(function):
-    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=(None, True)):
+    with mock.patch.object(
+        PySide6.QtWidgets.QInputDialog, "getText", return_value=(None, True)
+    ):
         function.saveName()
 
 
 def test_saveName_3(function):
-    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", False)):
+    with mock.patch.object(
+        PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", False)
+    ):
         function.saveName()
 
 
 def test_saveName_4(function):
-    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)):
+    with mock.patch.object(
+        PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)
+    ):
         with mock.patch.object(function.app.mount.model, "storeName", return_value=False):
             function.saveName()
 
 
 def test_saveName_5(function):
-    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)):
+    with mock.patch.object(
+        PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)
+    ):
         with mock.patch.object(function.app.mount.model, "storeName", return_value=True):
             function.saveName()
 
@@ -293,14 +301,18 @@ def test_writeBuildModelOptimized_1(function):
 def test_writeBuildModelOptimized_2(function):
     function.fittedModelPath = Path("tests/work/model/test-opt.model")
     with mock.patch.object(gui.mainWaddon.tabModel_Manage, "writeRetrofitData"):
-        with mock.patch.object(json, "load", return_value=[{"errorIndex": 1}, {"errorIndex": 3}]):
+        with mock.patch.object(
+            json, "load", return_value=[{"errorIndex": 1}, {"errorIndex": 3}]
+        ):
             with mock.patch.object(json, "dump"):
                 function.writeBuildModelOptimized([1])
 
 
 def test_clearRefreshModel_1(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
-    with mock.patch.object(gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])):
+    with mock.patch.object(
+        gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])
+    ):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(function, "writeBuildModelOptimized"):
                 function.clearRefreshModel()
@@ -308,7 +320,9 @@ def test_clearRefreshModel_1(function):
 
 def test_clearRefreshModel_2(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
-    with mock.patch.object(gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])):
+    with mock.patch.object(
+        gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])
+    ):
         with mock.patch.object(Path, "is_file", return_value=False):
             with mock.patch.object(function, "sendAnalyseFileName"):
                 function.clearRefreshModel()

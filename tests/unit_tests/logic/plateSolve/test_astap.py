@@ -131,7 +131,9 @@ def test_solve_3(function):
             with mock.patch.object(os, "remove"):
                 with mock.patch.object(logic.plateSolve.astap, "getImageHeader"):
                     with mock.patch.object(logic.plateSolve.astap, "getSolutionFromWCSHeader"):
-                        with mock.patch.object(logic.plateSolve.astap, "updateImageFileHeaderWithSolution"):
+                        with mock.patch.object(
+                            logic.plateSolve.astap, "updateImageFileHeaderWithSolution"
+                        ):
                             res = function.solve(Path("tests/work/image/m51.fit"), True)
                             assert res["success"]
 

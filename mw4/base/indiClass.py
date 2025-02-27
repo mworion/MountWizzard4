@@ -188,121 +188,72 @@ class IndiClass:
         self._port = int(value)
         self.client.host = (self._hostaddress, self._port)
 
-    def serverConnected(self):
+    def serverConnected(self) -> None:
         """
-        serverConnected is called when the server signals the connection. if
-        so, we would like to start watching the defined device. this will be
-        triggered directly
-
-        :return: success
         """
         if self.deviceName:
             suc = self.client.watchDevice(self.deviceName)
             self.log.info(f"INDI watch: [{self.deviceName}], result: [{suc}]")
-            return suc
         self.client.watchDevice()
-        return False
 
-    def serverDisconnected(self, devices):
+    def serverDisconnected(self, devices: str) -> None:
         """
-        :param devices:
-        :return: true for test purpose
         """
         t = f"INDI server for [{self.deviceName}] disconnected"
         self.log.debug(t)
-        return True
 
-    def newDevice(self, deviceName):
+    def newDevice(self, deviceName: str) -> None:
         """
-        newDevice is called whenever a new device entry is received in indi
-        client. it adds the device if the name fits to the given name in
-        configuration.
-
-        :param deviceName:
-        :return: true for test purpose
         """
         if deviceName == self.deviceName:
             self.device = self.client.getDevice(deviceName)
             self.msg.emit(0, "INDI", "Device found", f"{deviceName}")
         else:
             self.log.info(f"INDI device snoop: [{deviceName}]")
-        return True
 
-    def removeDevice(self, deviceName):
+    def removeDevice(self, deviceName: str) -> None:
         """
-        removeDevice is called whenever a device is removed from indi client.
-        it sets the device entry to None
-
-        :param deviceName:
-        :return: true for test purpose
         """
         if deviceName == self.deviceName:
             self.msg.emit(0, "INDI", "Device removed", f"{deviceName}")
             self.device = None
             self.data.clear()
-            return True
 
-        else:
-            return False
-
-    def startRetry(self):
+    def startRetry(self) -> None:
         """
-        startRetry tries to connect the server a NUMBER_RETRY times, if
-        necessary with a delay of RETRY_DELAY
-
-        :return: True for test purpose
         """
         self.timerRetry.start(self.RETRY_DELAY)
         if not self.deviceName:
-            return False
+            return
         if self.client.connected:
-            return False
+            return
 
         self.client.connectServer()
-        return True
 
     def startCommunication(self):
         """
-        :return: success of reconnecting to server
         """
         self.data.clear()
         self.timerRetry.start(self.RETRY_DELAY)
-        return True
 
-    def stopCommunication(self):
+    def stopCommunication(self) -> None:
         """
-        :return: success of reconnecting to server
         """
         suc = self.client.disconnectServer(self.deviceName)
         self.deviceName = ""
         self.deviceConnected = False
-        return suc
 
-    def connectDevice(self, deviceName, propertyName):
+    def connectDevice(self, deviceName: str, propertyName: str) -> None:
         """
-        connectDevice is called when a new property is received and checks it
-        against property CONNECTION. if this is there, we could check the
-        connection state of a given device
-
-        :param deviceName:
-        :param propertyName:
-        :return: success if device could connect
         """
         if propertyName != "CONNECTION":
-            return False
+            return
 
-        suc = False
         if deviceName == self.deviceName:
-            suc = self.client.connectDevice(deviceName=deviceName)
-        return suc
+            self.client.connectDevice(deviceName=deviceName)
 
-    def loadIndiConfig(self, deviceName):
+    def loadIndiConfig(self, deviceName: str) -> None:
         """
-        loadIndiConfig send the command to the indi server to load the default
-        config for the given device.
-
-        :param deviceName:
-        :return: success
         """
         loadObject = self.device.getSwitch("CONFIG_PROCESS")
         loadObject["CONFIG_LOAD"] = True
@@ -311,17 +262,14 @@ class IndiClass:
         )
         t = f"Config load [{deviceName}] success: [{suc}], value: [True]"
         self.log.info(t)
-        return suc
 
-    def setUpdateConfig(self, deviceName):
+    def setUpdateConfig(self, deviceName: str) -> None:
         """
-        :param deviceName:
-        :return: success
         """
         if deviceName != self.deviceName:
-            return False
+            return
         if self.device is None:
-            return False
+            return
 
         if self.loadConfig:
             self.loadIndiConfig(deviceName=deviceName)
@@ -333,31 +281,21 @@ class IndiClass:
         )
         t = f'Polling [{deviceName}] success: [{suc}], value:[{update["PERIOD_MS"]}]'
         self.log.info(t)
-        return suc
 
-    def convertIndigoProperty(self, key):
+    def convertIndigoProperty(self, key: str) -> str:
         """
-        :param key:
-        :return:
         """
         if key in self.INDIGO:
             key = self.INDIGO.get(key)
         return key
 
-    def updateNumber(self, deviceName, propertyName):
+    def updateNumber(self, deviceName: str, propertyName: str) -> None:
         """
-        updateNumber is called whenever a new number is received in client.
-        it runs through the device list and writes the number data to the
-        according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return: success
         """
         if self.device is None:
-            return False
+            return
         if deviceName != self.deviceName:
-            return False
+            return
 
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + "." + element
@@ -366,22 +304,13 @@ class IndiClass:
             key = self.convertIndigoProperty(key)
             self.data[key] = float(value)
 
-        return True
-
-    def updateSwitch(self, deviceName, propertyName):
+    def updateSwitch(self, deviceName: str, propertyName: str) -> None:
         """
-        updateSwitch is called whenever a new switch is received in client.
-        it runs through the device list and writes the switch data to the
-        according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return: success
         """
         if self.device is None:
-            return False
+            return
         if deviceName != self.deviceName:
-            return False
+            return
 
         for element, value in self.device.getSwitch(propertyName).items():
             key = propertyName + "." + element
@@ -393,22 +322,13 @@ class IndiClass:
             key = self.convertIndigoProperty(key)
             self.data[key] = value == "On"
 
-        return True
-
-    def updateText(self, deviceName, propertyName):
+    def updateText(self, deviceName: str, propertyName: str) -> None:
         """
-        updateText is called whenever a new text is received in client.
-        it runs through the device list and writes the text data to the according
-        locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return: success
         """
         if self.device is None:
-            return False
+            return
         if deviceName != self.deviceName:
-            return False
+            return
 
         for element, value in self.device.getText(propertyName).items():
             key = propertyName + "." + element
@@ -417,22 +337,13 @@ class IndiClass:
             key = self.convertIndigoProperty(key)
             self.data[key] = value
 
-        return True
-
-    def updateLight(self, deviceName, propertyName):
+    def updateLight(self, deviceName: str, propertyName: str) -> None:
         """
-        updateLight is called whenever a new light is received in client.
-        it runs through the device list and writes the light data to the
-        according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return: success
         """
         if self.device is None:
-            return False
+            return
         if deviceName != self.deviceName:
-            return False
+            return
 
         for element, value in self.device.getLight(propertyName).items():
             key = propertyName + "." + element
@@ -441,45 +352,26 @@ class IndiClass:
             key = self.convertIndigoProperty(key)
             self.data[key] = value
 
-        return True
-
-    def updateBLOB(self, deviceName, propertyName):
+    def updateBLOB(self, deviceName: str, propertyName: str) -> None:
         """
-        updateBLOB is called whenever a new BLOB is received in client.
-        it runs through the device list and writes the BLOB data to the according
-        locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return: success
         """
         if self.device is None:
-            return False
+            return
         if deviceName != self.deviceName:
-            return False
+            return
         if self.SHOW_COMM:
             print("blob ", deviceName)
-        return True
 
     @staticmethod
-    def removePrefix(text, prefix):
+    def removePrefix(text: str, prefix: str) -> str:
         """
-        :param text:
-        :param prefix:
-        :return:
         """
         value = text[text.startswith(prefix) and len(prefix) :]
         value = value.strip()
         return value
 
-    def updateMessage(self, device, text):
+    def updateMessage(self, device: str, text: str) -> None:
         """
-        message take a message send by indi device and emits them in the user
-        message window as well.
-
-        :param device: device name
-        :param text: message received
-        :return: success
         """
         if self.messages:
             if text.startswith("[WARNING]"):
@@ -493,58 +385,32 @@ class IndiClass:
                 self.msg.emit(2, "INDI", "Device error", f"{device:15s} {text}")
             else:
                 self.msg.emit(0, "INDI", "Device message", f"{device:15s} {text}")
-            return True
-        return False
 
-    def addDiscoveredDevice(self, deviceName, propertyName):
+    def addDiscoveredDevice(self, deviceName: str, propertyName: str) -> None:
         """
-        addDevicesWithType gety called whenever a new device send out text
-        messages. then it checks, if the device type fits to the search type
-        desired. if they match, the device name is added to the list.
-
-        unfortunately the indi definitions are not well-defined. so for example
-        SQM reports only aux general. this is value '0'. So I have to treat all
-        devices reporting device type '0' as devices which could be used for
-        everything.
-
-        :param deviceName:
-        :param propertyName:
-        :return: success
         """
         if propertyName != "DRIVER_INFO":
-            return False
+            return
 
         device = self.client.devices.get(deviceName)
         if not device:
-            return False
+            return
 
         interface = device.getText(propertyName).get("DRIVER_INTERFACE", None)
         if interface is None:
-            return False
+            return
         if interface == "0":
             interface = 0xFFFF
         if self.discoverType is None:
-            return False
+            return
 
         self.log.debug(f"Found: [{deviceName}], interface: [{interface}]")
         interface = int(interface)
         if interface & self.discoverType:
             self.discoverList.append(deviceName)
-        return True
 
-    def discoverDevices(self, deviceType=""):
+    def discoverDevices(self, deviceType: str) -> list:
         """
-        discoverDevices implements a discovery for devices of a certain device
-        type. it is called from a button press and checks which button it was.
-        after that for the right device it collects all necessary data for host
-        value, instantiates an INDI client and watches for all devices connected
-        to this server. Then it connects a subroutine for collecting the right
-        device names and waits a certain amount of time. the data collection
-        takes place as long as the model dialog is open. when the user closes
-        this dialog, the collected data is written to the drop-down list.
-
-        :param deviceType: device type of discovered indi devices
-        :return: success
         """
         self.discoverList = list()
         self.discoverType = self.INDI_TYPES.get(deviceType, 0)

@@ -144,14 +144,6 @@ class AlpacaClass(DriverData):
 
         try:
             response = requests.get(url, params=data, timeout=self.ALPACA_TIMEOUT)
-        except requests.exceptions.Timeout:
-            t = "Discover API version has timeout"
-            self.log.debug(t)
-            return 0
-        except requests.exceptions.ConnectionError:
-            t = "Discover API version has connection error"
-            self.log.warning(t)
-            return 0
         except Exception as e:
             t = f"Discover API version has exception: [{e}]"
             self.log.error(t)
@@ -183,14 +175,6 @@ class AlpacaClass(DriverData):
 
         try:
             response = requests.get(url, params=data, timeout=self.ALPACA_TIMEOUT)
-        except requests.exceptions.Timeout:
-            t = "Search devices has timeout"
-            self.log.debug(t)
-            return ""
-        except requests.exceptions.ConnectionError:
-            t = "Search devices has connection error"
-            self.log.warning(t)
-            return ""
         except Exception as e:
             t = f"Search devices has exception: [{e}]"
             self.log.error(t)
@@ -211,16 +195,13 @@ class AlpacaClass(DriverData):
         self.log.trace(t)
         return response["Value"]
 
-    def getAlpacaProperty(self, valueProp, **data):
+    def getAlpacaProperty(self, valueProp: str, **data) -> dict:
         """
-        :param valueProp:
-        :param data:
-        :return:
         """
         if not self.deviceName:
-            return None
+            return
         if valueProp in self.propertyExceptions:
-            return None
+            return
 
         uid = uuid.uuid4().int % 2**32
         data["ClientTransactionID"] = uid
@@ -233,30 +214,22 @@ class AlpacaClass(DriverData):
             response = requests.get(
                 f"{self.baseUrl}/{valueProp}", params=data, timeout=self.ALPACA_TIMEOUT
             )
-        except requests.exceptions.Timeout:
-            t = f"[{self.deviceName}] [{uid:10d}] has timeout"
-            self.log.debug(t)
-            return None
-        except requests.exceptions.ConnectionError:
-            t = f"[{self.deviceName}] [{uid:10d}] has connection error"
-            self.log.warning(t)
-            return None
         except Exception as e:
             t = f"[{self.deviceName}] [{uid:10d}] has exception: [{e}]"
             self.log.error(t)
-            return None
+            return
 
         if response.status_code == 400 or response.status_code == 500:
             t = f"[{self.deviceName}] [{uid:10d}], stat 400/500, [{response.text}]"
             self.log.warning(t)
-            return None
+            return
 
         response = response.json()
         if response["ErrorNumber"] != 0:
             t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
             self.log.warning(t)
             self.propertyExceptions.append(valueProp)
-            return None
+            return
 
         if valueProp != "imagearray":
             t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
@@ -266,16 +239,13 @@ class AlpacaClass(DriverData):
 
         return response["Value"]
 
-    def setAlpacaProperty(self, valueProp, **data):
+    def setAlpacaProperty(self, valueProp: str, **data) -> dict:
         """
-        :param valueProp:
-        :param data:
-        :return:
         """
         if not self.deviceName:
-            return None
+            return
         if valueProp in self.propertyExceptions:
-            return None
+            return
 
         uid = uuid.uuid4().int % 2**32
         t = f"[{self.deviceName}] [{uid:10d}], set [{valueProp}] to: [{data}]"
@@ -288,46 +258,40 @@ class AlpacaClass(DriverData):
         except requests.exceptions.Timeout:
             t = f"[{self.deviceName}] [{uid:10d}] has timeout"
             self.log.debug(t)
-            return None
+            return
         except requests.exceptions.ConnectionError:
             t = f"[{self.deviceName}] [{uid:10d}] has connection error"
             self.log.warning(t)
-            return None
+            return
         except Exception as e:
             t = f"[{self.deviceName}] [{uid:10d}] has exception: [{e}]"
             self.log.error(t)
-            return None
+            return
 
         if response.status_code == 400 or response.status_code == 500:
             t = f"[{self.deviceName}] [{uid:10d}], stat 400/500, [{response.text}]"
             self.log.warning(t)
-            return None
+            return
 
         response = response.json()
         if response["ErrorNumber"] != 0:
             t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
             self.log.warning(t)
             self.propertyExceptions.append(valueProp)
-            return None
+            return
 
         t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
         self.log.trace(t)
         return response
 
-    def getAndStoreAlpacaProperty(self, valueProp, element, elementInv=None):
+    def getAndStoreAlpacaProperty(self, valueProp: str, element: str) -> None:
         """
-        :param valueProp:
-        :param element:
-        :param elementInv:
-        :return: reset entry
         """
         value = self.getAlpacaProperty(valueProp)
-        self.storePropertyToData(value, element, elementInv)
-        return True
+        self.storePropertyToData(value, element)
 
-    def workerConnectDevice(self):
+    def workerConnectDevice(self) -> None:
         """
-        :return: success of reconnecting to server
         """
         self.propertyExceptions = []
         self.deviceConnected = False
@@ -361,34 +325,27 @@ class AlpacaClass(DriverData):
             self.getInitialConfig()
         return True
 
-    def startTimer(self):
+    def startTimer(self) -> None:
         """
-        :return: true for test purpose
         """
         self.cycleData.start(self.updateRate)
         self.cycleDevice.start(self.updateRate)
-        return True
 
-    def stopTimer(self):
+    def stopTimer(self) -> None:
         """
-        :return: true for test purpose
         """
         self.cycleData.stop()
         self.cycleDevice.stop()
-        return True
 
-    def workerGetInitialConfig(self):
+    def workerGetInitialConfig(self) -> None:
         """
-        :return:
         """
         self.data["DRIVER_INFO.DRIVER_NAME"] = self.getAlpacaProperty("name")
         self.data["DRIVER_INFO.DRIVER_VERSION"] = self.getAlpacaProperty("driverversion")
         self.data["DRIVER_INFO.DRIVER_EXEC"] = self.getAlpacaProperty("driverinfo")
-        return True
 
-    def workerPollStatus(self):
+    def workerPollStatus(self) -> None:
         """
-        :return: success
         """
         suc = self.getAlpacaProperty("connected")
         if self.deviceConnected and not suc:
@@ -401,57 +358,46 @@ class AlpacaClass(DriverData):
             self.signals.deviceConnected.emit(f"{self.deviceName}")
             self.msg.emit(0, "ALPACA", "Device found", f"{self.deviceName}")
 
-        return suc
-
     def processPolledData(self):
         pass
 
     def workerPollData(self):
         pass
 
-    def pollData(self):
+    def pollData(self) -> None:
         """
-        :return: success
         """
         if not self.deviceConnected:
-            return False
+            return
         worker = Worker(self.workerPollData)
         worker.signals.result.connect(self.processPolledData)
         self.threadPool.start(worker)
-        return True
 
-    def pollStatus(self):
+    def pollStatus(self) -> None:
         """
-        :return: success
         """
         if not self.deviceConnected:
-            return False
+            return
         worker = Worker(self.workerPollStatus)
         self.threadPool.start(worker)
-        return True
 
-    def getInitialConfig(self):
+    def getInitialConfig(self) -> None:
         """
-        :return: success
         """
         if not self.deviceConnected:
-            return False
+            return
         worker = Worker(self.workerGetInitialConfig)
         self.threadPool.start(worker)
-        return True
 
-    def startCommunication(self):
+    def startCommunication(self) -> None:
         """
-        :return: True for test purpose
         """
         self.data.clear()
         worker = Worker(self.workerConnectDevice)
         self.threadPool.start(worker)
-        return True
 
-    def stopCommunication(self):
+    def stopCommunication(self) -> None:
         """
-        :return: true for test purpose
         """
         self.stopTimer()
         self.setAlpacaProperty("connected", Connected=False)
@@ -461,9 +407,8 @@ class AlpacaClass(DriverData):
         self.signals.deviceDisconnected.emit(f"{self.deviceName}")
         self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
         self.msg.emit(0, "ALPACA", "Device  remove", f"{self.deviceName}")
-        return True
 
-    def discoverDevices(self, deviceType=""):
+    def discoverDevices(self, deviceType: str) -> list:
         """ """
         devices = self.discoverAlpacaDevices()
         if not devices:

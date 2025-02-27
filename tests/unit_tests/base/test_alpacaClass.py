@@ -211,22 +211,6 @@ def test_getAlpacaProperty_3(function):
     assert val is None
 
 
-def test_getAlpacaProperty_4(function):
-    function.deviceName = "test"
-    function.deviceConnected = True
-    with mock.patch.object(requests, "get", side_effect=requests.exceptions.Timeout):
-        val = function.getAlpacaProperty("test")
-        assert val is None
-
-
-def test_getAlpacaProperty_5(function):
-    function.deviceName = "test"
-    function.deviceConnected = True
-    with mock.patch.object(requests, "get", side_effect=requests.exceptions.ConnectionError):
-        val = function.getAlpacaProperty("test")
-        assert val is None
-
-
 def test_getAlpacaProperty_6(function):
     function.deviceName = "test"
     function.deviceConnected = True
@@ -316,22 +300,6 @@ def test_setAlpacaProperty_3(function):
     assert val is None
 
 
-def test_setAlpacaProperty_4(function):
-    function.deviceName = "test"
-    function.deviceConnected = True
-    with mock.patch.object(requests, "put", side_effect=requests.exceptions.Timeout):
-        val = function.setAlpacaProperty("test")
-        assert val is None
-
-
-def test_setAlpacaProperty_5(function):
-    function.deviceName = "test"
-    function.deviceConnected = True
-    with mock.patch.object(requests, "put", side_effect=requests.exceptions.ConnectionError):
-        val = function.setAlpacaProperty("test")
-        assert val is None
-
-
 def test_setAlpacaProperty_6(function):
     function.deviceName = "test"
     function.deviceConnected = True
@@ -388,8 +356,7 @@ def test_setAlpacaProperty_9(function):
 def test_getAndStoreAlpacaProperty(function):
     with mock.patch.object(function, "getAlpacaProperty"):
         with mock.patch.object(function, "storePropertyToData"):
-            suc = function.getAndStoreAlpacaProperty(10, "YES", "NO")
-            assert suc
+            function.getAndStoreAlpacaProperty(10, "YES", "NO")
 
 
 def test_workerConnectDevice_1(function):
@@ -398,8 +365,7 @@ def test_workerConnectDevice_1(function):
     with mock.patch.object(base.alpacaClass, "sleepAndEvents"):
         with mock.patch.object(function, "setAlpacaProperty"):
             with mock.patch.object(function, "getAlpacaProperty", return_value=False):
-                suc = function.workerConnectDevice()
-                assert not suc
+                function.workerConnectDevice()
                 assert not function.serverConnected
                 assert not function.deviceConnected
 
@@ -410,27 +376,23 @@ def test_workerConnectDevice_2(function):
     with mock.patch.object(base.alpacaClass, "sleepAndEvents"):
         with mock.patch.object(function, "setAlpacaProperty"):
             with mock.patch.object(function, "getAlpacaProperty", return_value=True):
-                suc = function.workerConnectDevice()
-                assert suc
+                function.workerConnectDevice()
                 assert function.serverConnected
                 assert function.deviceConnected
 
 
 def test_startTimer(function):
-    suc = function.startTimer()
-    assert suc
+    function.startTimer()
 
 
 def test_stopTimer(function):
     with mock.patch.object(PySide6.QtCore.QTimer, "stop"):
-        suc = function.stopTimer()
-        assert suc
+        function.stopTimer()
 
 
 def test_workerGetInitialConfig_1(function):
     with mock.patch.object(function, "getAlpacaProperty", return_value="test"):
-        suc = function.workerGetInitialConfig()
-        assert suc
+        function.workerGetInitialConfig()
         assert function.data["DRIVER_INFO.DRIVER_NAME"] == "test"
         assert function.data["DRIVER_INFO.DRIVER_VERSION"] == "test"
         assert function.data["DRIVER_INFO.DRIVER_EXEC"] == "test"
@@ -439,16 +401,14 @@ def test_workerGetInitialConfig_1(function):
 def test_workerPollStatus_1(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getAlpacaProperty", return_value=False):
-        suc = function.workerPollStatus()
-        assert not suc
+        function.workerPollStatus()
         assert not function.deviceConnected
 
 
 def test_workerPollStatus_2(function):
     function.deviceConnected = False
     with mock.patch.object(function, "getAlpacaProperty", return_value=True):
-        suc = function.workerPollStatus()
-        assert suc
+        function.workerPollStatus()
         assert function.deviceConnected
 
 
@@ -463,49 +423,42 @@ def test_workerPollData(function):
 def test_pollData_1(function):
     function.deviceConnected = True
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.pollData()
-        assert suc
+        function.pollData()
 
 
 def test_pollData_2(function):
     function.deviceConnected = False
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.pollData()
-        assert not suc
+        function.pollData()
 
 
 def test_pollStatus_1(function):
     function.deviceConnected = True
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.pollStatus()
-        assert suc
+        function.pollStatus()
 
 
 def test_pollStatus_2(function):
     function.deviceConnected = False
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.pollStatus()
-        assert not suc
+        function.pollStatus()
 
 
 def test_getInitialConfig_1(function):
     function.deviceConnected = True
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.getInitialConfig()
-        assert suc
+        function.getInitialConfig()
 
 
 def test_getInitialConfig_2(function):
     function.deviceConnected = False
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.getInitialConfig()
-        assert not suc
+        function.getInitialConfig()
 
 
 def test_startCommunication(function):
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.startCommunication()
-        assert suc
+        function.startCommunication()
 
 
 def test_stopCommunication_1(function):
@@ -514,8 +467,7 @@ def test_stopCommunication_1(function):
     function.deviceName = "test"
     with mock.patch.object(function, "stopTimer"):
         with mock.patch.object(function, "setAlpacaProperty"):
-            suc = function.stopCommunication()
-            assert suc
+            function.stopCommunication()
             assert not function.serverConnected
             assert not function.deviceConnected
 

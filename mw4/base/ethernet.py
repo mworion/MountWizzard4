@@ -21,29 +21,24 @@
 # local imports
 
 
-def checkFormatMAC(value):
+def checkFormatMAC(value: str) -> str:
     """
-    checkFormatMAC makes some checks to ensure that the format of the
-    string is ok for WOL package.
-
-    :param      value: string with mac address
-    :return:    checked string in upper cases
     """
     if not value:
-        return None
+        return ''
 
     if not isinstance(value, str):
-        return None
+        return ''
 
     value = value.upper()
     value = value.replace(".", ":")
     value = value.split(":")
     if len(value) != 6:
-        return None
+        return ''
 
     for chunk in value:
         if len(chunk) != 2:
-            return None
+            return ''
 
         for char in chunk:
             if char not in [
@@ -64,7 +59,7 @@ def checkFormatMAC(value):
                 "E",
                 "F",
             ]:
-                return None
+                return ''
 
     value = "{0:2s}:{1:2s}:{2:2s}:{3:2s}:{4:2s}:{5:2s}".format(*value)
     return value

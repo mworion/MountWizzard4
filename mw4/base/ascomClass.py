@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import platform
+from typing import Union
 
 if platform.system() == "Windows":
     from pythoncom import CoInitialize, CoUninitialize
@@ -62,26 +63,20 @@ class AscomClass(DriverData):
         self.cyclePollData.setSingleShot(False)
         self.cyclePollData.timeout.connect(self.pollData)
 
-    def startTimer(self):
+    def startTimer(self) -> None:
         """
-        :return: true for test purpose
         """
         self.cyclePollData.start(self.updateRate)
         self.cyclePollStatus.start(self.updateRate)
-        return True
 
-    def stopTimer(self):
+    def stopTimer(self) -> None:
         """
-        :return: true for test purpose
         """
         self.cyclePollData.stop()
         self.cyclePollStatus.stop()
-        return True
 
-    def getAscomProperty(self, valueProp):
+    def getAscomProperty(self, valueProp: str) -> Union[str, float]:
         """
-        :param valueProp:
-        :return: value
         """
         value = None
         if valueProp in self.propertyExceptions:
@@ -103,13 +98,11 @@ class AscomClass(DriverData):
         finally:
             return value
 
-    def setAscomProperty(self, valueProp, value):
+    def setAscomProperty(self, valueProp: str, value: Union[str, float]) -> None:
         """
-        :param valueProp:
-        :param value:
         """
         if valueProp in self.propertyExceptions:
-            return False
+            return
 
         try:
             cmd = "self.client." + valueProp + " = value"
@@ -119,19 +112,15 @@ class AscomClass(DriverData):
             self.log.debug(t)
             if valueProp != "Connected":
                 self.propertyExceptions.append(valueProp)
-            return False
-        else:
-            t = f"[{self.deviceName}] property [{valueProp}] set to: [{value}]"
-            self.log.trace(t)
-            return True
+            return
+        t = f"[{self.deviceName}] property [{valueProp}] set to: [{value}]"
+        self.log.trace(t)
 
-    def callAscomMethod(self, method, param):
+    def callAscomMethod(self, method: callable, param) -> None:
         """
-        :param method:
-        :param param:
         """
         if method in self.propertyExceptions:
-            return False
+            return
 
         paramStr = f"{param}".rstrip(")").lstrip("(")
         try:
@@ -141,30 +130,19 @@ class AscomClass(DriverData):
             t = f"[{self.deviceName}] [{cmd}], method [{method}] not implemented: {e}"
             self.log.debug(t)
             self.propertyExceptions.append(method)
-            return False
-        else:
-            t = f"[{self.deviceName}] method [{method}] called [{param}]"
-            self.log.trace(t)
-            return True
+            return
 
-    def getAndStoreAscomProperty(self, valueProp, element, elementInv=None):
+        t = f"[{self.deviceName}] method [{method}] called [{param}]"
+        self.log.trace(t)
+
+    def getAndStoreAscomProperty(self, valueProp: str, element: str) -> None:
         """
-        :param valueProp:
-        :param element:
-        :param elementInv:
-        :return: reset entry
         """
         value = self.getAscomProperty(valueProp)
-        self.storePropertyToData(value, element, elementInv)
-        return True
+        self.storePropertyToData(value, element)
 
-    def workerConnectDevice(self):
+    def workerConnectDevice(self) -> None:
         """
-        As some ASCOM devices need some time to be able to connect, we try to
-        connect multiply (10) times with a waiting period 0f 250ms, so 2,5
-        seconds in total.
-
-        :return: true for test purpose
         """
         self.propertyExceptions = []
         self.deviceConnected = False
@@ -186,7 +164,7 @@ class AscomClass(DriverData):
 
         if not suc:
             self.msg.emit(2, "ASCOM ", "Connect error", f"{self.deviceName}")
-            return False
+            return
 
         if not self.serverConnected:
             self.serverConnected = True
@@ -198,20 +176,16 @@ class AscomClass(DriverData):
             self.msg.emit(0, "ASCOM ", "Device found", f"{self.deviceName}")
             self.startTimer()
             self.getInitialConfig()
-        return True
 
-    def workerGetInitialConfig(self):
+    def workerGetInitialConfig(self) -> None:
         """
-        :return: true for test purpose
         """
         self.getAndStoreAscomProperty("Name", "DRIVER_INFO.DRIVER_NAME")
         self.getAndStoreAscomProperty("DriverVersion", "DRIVER_INFO.DRIVER_VERSION")
         self.getAndStoreAscomProperty("DriverInfo", "DRIVER_INFO.DRIVER_EXEC")
-        return True
 
-    def workerPollStatus(self):
+    def workerPollStatus(self) -> None:
         """
-        :return: success
         """
         suc = self.getAscomProperty("Connected")
 
@@ -225,17 +199,13 @@ class AscomClass(DriverData):
             self.signals.deviceConnected.emit(f"{self.deviceName}")
             self.msg.emit(0, "ASCOM ", "Device found", f"{self.deviceName}")
 
-        return suc
-
     @staticmethod
-    def callerInitUnInit(fn, *args, **kwargs):
+    def callerInitUnInit(fn, *args, **kwargs) -> None:
         """
-        :return: success
         """
         CoInitialize()
-        result = fn(*args, **kwargs)
+        fn(*args, **kwargs)
         CoUninitialize()
-        return result
 
     def callMethodThreaded(self, fn, *args, cb_res=None, cb_fin=None, **kwargs):
         """
@@ -268,46 +238,37 @@ class AscomClass(DriverData):
         self.threadPool.start(worker)
         return True
 
-    def processPolledData(self):
+    def processPolledData(self) -> None:
         """
-        :return:
-        """
-        pass
-
-    def workerPollData(self):
-        """
-        :return:
         """
         pass
 
-    def pollData(self):
+    def workerPollData(self) -> None:
         """
-        :return: success
+        """
+        pass
+
+    def pollData(self) -> None:
+        """
         """
         self.callMethodThreaded(self.workerPollData, cb_res=self.processPolledData)
-        return True
 
-    def pollStatus(self):
+    def pollStatus(self) -> None:
         """
-        :return: success
         """
         self.callMethodThreaded(self.workerPollStatus)
-        return True
 
-    def getInitialConfig(self):
+    def getInitialConfig(self) -> None:
         """
-        :return: success
         """
         self.callMethodThreaded(self.workerGetInitialConfig)
-        return True
 
-    def startCommunication(self):
+    def startCommunication(self) -> None:
         """
-        :return: True for test purpose
         """
         self.data.clear()
         if not self.deviceName:
-            return False
+            return
 
         try:
             self.client = client.dynamic.Dispatch(self.deviceName)
@@ -315,15 +276,13 @@ class AscomClass(DriverData):
 
         except Exception as e:
             self.log.error(f"[{self.deviceName}] Dispatch error: [{e}]")
-            return False
+            return
 
         worker = Worker(self.callerInitUnInit, self.workerConnectDevice)
         self.threadPool.start(worker)
-        return True
 
-    def stopCommunication(self):
+    def stopCommunication(self) -> None:
         """
-        :return: true for test purpose
         """
         self.stopTimer()
         if self.client:
@@ -335,4 +294,3 @@ class AscomClass(DriverData):
         self.signals.deviceDisconnected.emit(f"{self.deviceName}")
         self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
         self.msg.emit(0, "ALPACA", "Device  remove", f"{self.deviceName}")
-        return True

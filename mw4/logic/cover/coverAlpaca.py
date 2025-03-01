@@ -31,13 +31,12 @@ class CoverAlpaca(AlpacaClass):
         self.alpacaSignals = signals
         self.data = data
 
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         """
-        :return: true for test purpose
         """
         states = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
         if not self.deviceConnected:
-            return False
+            return
 
         state = self.getAlpacaProperty("coverstate")
         stateText = states[state]
@@ -50,69 +49,49 @@ class CoverAlpaca(AlpacaClass):
         self.storePropertyToData(
             maxBrightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX"
         )
-        return True
 
-    def closeCover(self):
+    def closeCover(self) -> None:
         """
-        :return: true for test purpose
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.getAlpacaProperty("closecover")
-        return True
 
-    def openCover(self):
+    def openCover(self) -> None:
         """
-        :return: true for test purpose
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.getAlpacaProperty("opencover")
-        return True
 
-    def haltCover(self):
+    def haltCover(self) -> None:
         """
-        :return: true for test purpose
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.getAlpacaProperty("haltcover")
-        return True
 
-    def lightOn(self):
+    def lightOn(self) -> None:
         """
-        :return:
         """
         if not self.deviceConnected:
-            return False
-
+            return
         maxBrightness = self.app.cover.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
         )
         brightness = int(maxBrightness / 2)
         self.setAlpacaProperty("calibratoron", Brightness=brightness)
-        return True
 
-    def lightOff(self):
+    def lightOff(self) -> None:
         """
-        :return:
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.getAlpacaProperty("calibratoroff")
-        return True
 
-    def lightIntensity(self, value):
+    def lightIntensity(self, value: float) -> None:
         """
-        :param value:
-        :return:
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.setAlpacaProperty("calibratoron", Brightness=value)
-        return True

@@ -33,9 +33,8 @@ class CoverAscom(AscomClass):
         self.signals = signals
         self.data = data
 
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         """
-        :return: true for test purpose
         """
         state = self.getAscomProperty("CoverState")
         stateText = self.coverStates[state]
@@ -48,69 +47,49 @@ class CoverAscom(AscomClass):
         self.storePropertyToData(
             maxBrightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX"
         )
-        return True
 
-    def closeCover(self):
+    def closeCover(self) -> None:
         """
-        :return: true for test purpose
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.callMethodThreaded(self.client.CloseCover)
-        return True
 
-    def openCover(self):
+    def openCover(self) -> None:
         """
-        :return: true for test purpose
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.callMethodThreaded(self.client.OpenCover)
-        return True
 
-    def haltCover(self):
+    def haltCover(self) -> None:
         """
-        :return: true for test purpose
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.callMethodThreaded(self.client.HaltCover)
-        return True
 
-    def lightOn(self):
+    def lightOn(self) -> None:
         """
-        :return:
         """
         if not self.deviceConnected:
-            return False
-
+            return
         maxBrightness = self.app.cover.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
         )
         brightness = int(maxBrightness / 2)
         self.callMethodThreaded(self.client.CalibratorOn, brightness)
-        return True
 
-    def lightOff(self):
+    def lightOff(self) -> None:
         """
-        :return:
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.callMethodThreaded(self.client.CalibratorOff)
-        return True
 
-    def lightIntensity(self, value):
+    def lightIntensity(self, value: float) -> None:
         """
-        :param value:
-        :return:
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.callMethodThreaded(self.client.CalibratorOn, value)
-        return True

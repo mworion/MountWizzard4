@@ -80,63 +80,32 @@ class Cover:
         """ """
         self.run[self.framework].stopCommunication()
 
-    def closeCover(self):
+    def closeCover(self) -> bool:
         """
-        :return: success
         """
-        if self.framework not in self.run.keys():
-            return False
+        return self.run[self.framework].closeCover()
 
-        suc = self.run[self.framework].closeCover()
-        return suc
-
-    def openCover(self):
+    def openCover(self) -> bool:
         """
-        :return: success
         """
-        if self.framework not in self.run.keys():
-            return False
+        return self.run[self.framework].openCover()
 
-        suc = self.run[self.framework].openCover()
-        return suc
-
-    def haltCover(self):
+    def haltCover(self) -> bool:
         """
-        :return: success
         """
-        if self.framework not in self.run.keys():
-            return False
+        return self.run[self.framework].haltCover()
 
-        suc = self.run[self.framework].haltCover()
-        return suc
-
-    def lightOn(self):
+    def lightOn(self) -> bool:
         """
-        :return:
         """
-        if self.framework not in self.run.keys():
-            return False
+        return self.run[self.framework].lightOn()
 
-        suc = self.run[self.framework].lightOn()
-        return suc
-
-    def lightOff(self):
+    def lightOff(self) -> bool:
         """
-        :return:
         """
-        if self.framework not in self.run.keys():
-            return False
+        return self.run[self.framework].lightOff()
 
-        suc = self.run[self.framework].lightOff()
-        return suc
-
-    def lightIntensity(self, value):
+    def lightIntensity(self, value: float) -> bool:
         """
-        :param value:
-        :return:
         """
-        if self.framework not in self.run.keys():
-            return False
-
-        suc = self.run[self.framework].lightIntensity(value)
-        return suc
+        return self.run[self.framework].lightIntensity(value)

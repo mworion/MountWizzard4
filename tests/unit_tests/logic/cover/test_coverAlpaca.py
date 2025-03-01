@@ -37,93 +37,79 @@ def function():
 def test_workerPollData_1(function):
     function.deviceConnected = False
     with mock.patch.object(function, "getAlpacaProperty", return_value=1):
-        suc = function.workerPollData()
-        assert not suc
+        function.workerPollData()
 
 
 def test_workerPollData_2(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getAlpacaProperty", return_value=1):
         with mock.patch.object(function, "storePropertyToData"):
-            suc = function.workerPollData()
-            assert suc
+            function.workerPollData()
 
 
 def test_closeCover_1(function):
     with mock.patch.object(function, "getAlpacaProperty"):
-        suc = function.closeCover()
-        assert not suc
+        function.closeCover()
 
 
 def test_closeCover_2(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getAlpacaProperty"):
-        suc = function.closeCover()
-        assert suc
+        function.closeCover()
 
 
 def test_openCover_1(function):
     with mock.patch.object(function, "getAlpacaProperty"):
-        suc = function.openCover()
-        assert not suc
+        function.openCover()
 
 
 def test_openCover_2(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getAlpacaProperty"):
-        suc = function.openCover()
-        assert suc
+        function.openCover()
 
 
 def test_haltCover_1(function):
     with mock.patch.object(function, "getAlpacaProperty"):
-        suc = function.haltCover()
-        assert not suc
+        function.haltCover()
 
 
 def test_haltCover_2(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getAlpacaProperty"):
-        suc = function.haltCover()
-        assert suc
+        function.haltCover()
 
 
 def test_lightOn_1(function):
     with mock.patch.object(function, "getAlpacaProperty", return_value=0):
         with mock.patch.object(function, "setAlpacaProperty"):
-            suc = function.lightOn()
-            assert not suc
+            function.lightOn()
 
 
 def test_lightOn_2(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getAlpacaProperty", return_value=0):
         with mock.patch.object(function, "setAlpacaProperty"):
-            suc = function.lightOn()
-            assert suc
+            function.lightOn()
 
 
 def test_lightOff_1(function):
     with mock.patch.object(function, "getAlpacaProperty"):
-        suc = function.lightOff()
-        assert not suc
+        function.lightOff()
 
 
 def test_lightOff_2(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getAlpacaProperty"):
-        suc = function.lightOff()
-        assert suc
+        function.lightOff()
 
 
 def test_lightIntensity_1(function):
     with mock.patch.object(function, "setAlpacaProperty"):
-        suc = function.lightIntensity(0)
-        assert not suc
+        function.lightIntensity(0)
 
 
 def test_lightIntensity_2(function):
     function.deviceConnected = True
     with mock.patch.object(function, "setAlpacaProperty"):
-        suc = function.lightIntensity(0)
-        assert suc
+        function.lightIntensity(0)

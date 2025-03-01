@@ -60,12 +60,6 @@ def test_stopCommunication_2(function):
         function.stopCommunication()
 
 
-def test_closeCover_1(function):
-    function.framework = ""
-    suc = function.closeCover()
-    assert not suc
-
-
 def test_closeCover_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "closeCover", return_value=False):
@@ -78,12 +72,6 @@ def test_closeCover_3(function):
     with mock.patch.object(function.run["indi"], "closeCover", return_value=True):
         suc = function.closeCover()
         assert suc
-
-
-def test_openCover_1(function):
-    function.framework = ""
-    suc = function.openCover()
-    assert not suc
 
 
 def test_openCover_2(function):
@@ -100,12 +88,6 @@ def test_openCover_3(function):
         assert suc
 
 
-def test_haltCover_1(function):
-    function.framework = ""
-    suc = function.haltCover()
-    assert not suc
-
-
 def test_haltCover_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "haltCover", return_value=False):
@@ -118,12 +100,6 @@ def test_haltCover_3(function):
     with mock.patch.object(function.run["indi"], "haltCover", return_value=True):
         suc = function.haltCover()
         assert suc
-
-
-def test_lightOn_1(function):
-    function.framework = ""
-    suc = function.lightOn()
-    assert not suc
 
 
 def test_lightOn_2(function):
@@ -140,12 +116,6 @@ def test_lightOn_3(function):
         assert suc
 
 
-def test_lightOff_1(function):
-    function.framework = ""
-    suc = function.lightOff()
-    assert not suc
-
-
 def test_lightOff_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "lightOff", return_value=False):
@@ -158,12 +128,6 @@ def test_lightOff_3(function):
     with mock.patch.object(function.run["indi"], "lightOff", return_value=True):
         suc = function.lightOff()
         assert suc
-
-
-def test_lightIntensity_1(function):
-    function.framework = ""
-    suc = function.lightIntensity(0)
-    assert not suc
 
 
 def test_lightIntensity_2(function):

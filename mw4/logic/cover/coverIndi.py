@@ -29,14 +29,11 @@ class CoverIndi(IndiClass):
         self.signals = signals
         super().__init__(app=app, data=data)
 
-    def updateText(self, deviceName, propertyName):
+    def updateText(self, deviceName: str, propertyName: str):
         """
-        :param deviceName:
-        :param propertyName:
-        :return:
         """
         if not super().updateText(deviceName, propertyName):
-            return False
+            return
 
         for element, value in self.device.getText(propertyName).items():
             if element == "Cover":
@@ -53,120 +50,92 @@ class CoverIndi(IndiClass):
                     self.data["CAP_PARK.UNPARK"] = None
                     self.data["CAP_PARK.PARK"] = None
 
-        return True
-
-    def closeCover(self):
+    def closeCover(self) -> None:
         """
-        :return: success
         """
         if self.device is None:
-            return False
-
+            return
         cover = self.device.getSwitch("CAP_PARK")
-
         if "PARK" not in cover:
-            return False
-
+            return
         cover["UNPARK"] = "Off"
         cover["PARK"] = "On"
 
-        suc = self.client.sendNewSwitch(
+        self.client.sendNewSwitch(
             deviceName=self.deviceName,
             propertyName="CAP_PARK",
             elements=cover,
         )
-        return suc
 
-    def openCover(self):
+    def openCover(self) -> None:
         """
-        :return: success
         """
         if self.device is None:
-            return False
-
+            return
         cover = self.device.getSwitch("CAP_PARK")
-
         if "UNPARK" not in cover:
-            return False
-
+            return
         cover["UNPARK"] = "On"
         cover["PARK"] = "Off"
 
-        suc = self.client.sendNewSwitch(
+        self.client.sendNewSwitch(
             deviceName=self.deviceName,
             propertyName="CAP_PARK",
             elements=cover,
         )
-        return suc
 
     @staticmethod
-    def haltCover():
+    def haltCover() -> None:
         """
-        :return: success
         """
-        return False
+        pass
 
-    def lightOn(self):
+    def lightOn(self) -> None:
         """
-        :return:
         """
         if self.device is None:
-            return False
-
+            return
         light = self.device.getSwitch("FLAT_LIGHT_CONTROL")
-
         if "FLAT_LIGHT_ON" not in light:
-            return False
-
+            return
         light["FLAT_LIGHT_ON"] = "On"
         light["FLAT_LIGHT_OFF"] = "Off"
 
-        suc = self.client.sendNewSwitch(
+        self.client.sendNewSwitch(
             deviceName=self.deviceName,
             propertyName="FLAT_LIGHT_CONTROL",
             elements=light,
         )
-        return suc
 
-    def lightOff(self):
+    def lightOff(self) -> None:
         """
-        :return:
         """
         if self.device is None:
-            return False
-
+            return
         light = self.device.getSwitch("FLAT_LIGHT_CONTROL")
-
         if "FLAT_LIGHT_OFF" not in light:
-            return False
-
+            return
         light["FLAT_LIGHT_ON"] = "Off"
         light["FLAT_LIGHT_OFF"] = "On"
 
-        suc = self.client.sendNewSwitch(
+        self.client.sendNewSwitch(
             deviceName=self.deviceName,
             propertyName="FLAT_LIGHT_CONTROL",
             elements=light,
         )
-        return suc
 
-    def lightIntensity(self, value):
+    def lightIntensity(self, value: float) -> None:
         """
-        :return:
         """
         if self.device is None:
-            return False
-
+            return
         light = self.device.getNumber("FLAT_LIGHT_INTENSITY")
-
         if "FLAT_LIGHT_INTENSITY_VALUE" not in light:
-            return False
-
+            return
         light["FLAT_LIGHT_INTENSITY_VALUE"] = value
 
-        suc = self.client.sendNewNumber(
+        self.client.sendNewNumber(
             deviceName=self.deviceName,
             propertyName="FLAT_LIGHT_INTENSITY",
             elements=light,
         )
-        return suc

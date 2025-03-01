@@ -31,28 +31,19 @@ class FocuserAscom(AscomClass):
 
     def workerPollData(self):
         """
-        :return: true for test purpose
         """
         self.getAndStoreAscomProperty("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
-        return True
 
-    def move(self, position=None):
+    def move(self, position: int) -> None:
         """
-        :param position:
-        :return:
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.client.move(position)
-        return True
 
-    def halt(self):
+    def halt(self) -> None:
         """
-        :return:
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.getAscomProperty("Halt")
-        return True

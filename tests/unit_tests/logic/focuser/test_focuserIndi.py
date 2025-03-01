@@ -83,16 +83,14 @@ def test_setUpdateConfig_5(function):
 def test_move_1(function):
     function.deviceName = "test"
     function.device = None
-    suc = function.move()
-    assert not suc
+    function.move(1000)
 
 
 def test_move_2(function):
     function.deviceName = "test"
     function.device = Device()
     with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        suc = function.move()
-        assert not suc
+        function.move(1000)
 
 
 def test_move_3(function):
@@ -104,23 +102,20 @@ def test_move_3(function):
         function.device, "getNumber", return_value={"ABS_FOCUS_POSITION": 1}
     ):
         with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            suc = function.move()
-            assert suc
+            function.move(1000)
 
 
 def test_halt_1(function):
     function.deviceName = "test"
     function.device = None
-    suc = function.halt()
-    assert not suc
+    function.halt()
 
 
 def test_halt_2(function):
     function.deviceName = "test"
     function.device = Device()
     with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        suc = function.halt()
-        assert not suc
+        function.halt()
 
 
 def test_halt_3(function):
@@ -132,5 +127,4 @@ def test_halt_3(function):
         function.device, "getNumber", return_value={"ABS_FOCUS_POSITION": 1}
     ):
         with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            suc = function.halt()
-            assert suc
+            function.halt()

@@ -54,29 +54,24 @@ def function():
 
 def test_workerPollData_1(function):
     with mock.patch.object(function, "getAndStoreAscomProperty"):
-        suc = function.workerPollData()
-        assert suc
+        function.workerPollData()
 
 
 def test_move_1(function):
     function.deviceConnected = True
-    suc = function.move(3)
-    assert suc
+    function.move(3)
 
 
 def test_move_2(function):
     function.deviceConnected = False
-    suc = function.move(3)
-    assert not suc
+    function.move(3)
 
 
 def test_halt_1(function):
     function.deviceConnected = True
-    suc = function.halt()
-    assert suc
+    function.halt()
 
 
 def test_halt_2(function):
     function.deviceConnected = False
-    suc = function.halt()
-    assert not suc
+    function.halt()

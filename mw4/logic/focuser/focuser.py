@@ -67,8 +67,7 @@ class Focuser:
         return self.run[self.framework].loadConfig
 
     @loadConfig.setter
-    def loadConfig(self, value):
-        value = bool(value)
+    def loadConfig(self, value: bool):
         for fw in self.run:
             self.run[fw].loadConfig = value
 
@@ -80,23 +79,12 @@ class Focuser:
         """ """
         self.run[self.framework].stopCommunication()
 
-    def move(self, position=None):
+    def move(self, position: int) -> None:
         """
-        :param position:
-        :return:
         """
-        if self.framework not in self.run.keys():
-            return False
+        self.run[self.framework].move(position=position)
 
-        suc = self.run[self.framework].move(position=position)
-        return suc
-
-    def halt(self):
+    def halt(self) -> None:
         """
-        :return:
         """
-        if self.framework not in self.run.keys():
-            return False
-
-        suc = self.run[self.framework].halt()
-        return suc
+        self.run[self.framework].halt()

@@ -29,34 +29,27 @@ class FocuserIndi(IndiClass):
         self.signals = signals
         super().__init__(app=app, data=data)
 
-    def move(self, position=None):
+    def move(self, position: int) -> None:
         """
-        :param position:
-        :return:
         """
         if self.device is None:
-            return False
-
+            return
         pos = self.device.getNumber("ABS_FOCUS_POSITION")
         pos["FOCUS_ABSOLUTE_POSITION"] = position
-        suc = self.client.sendNewNumber(
+        self.client.sendNewNumber(
             deviceName=self.deviceName,
             propertyName="ABS_FOCUS_POSITION",
             elements=pos,
         )
-        return suc
 
-    def halt(self):
+    def halt(self) -> None:
         """
-        :return:
         """
         if self.device is None:
-            return False
-
+            return
         pos = self.device.getNumber("ABS_FOCUS_POSITION")
-        suc = self.client.sendNewNumber(
+        self.client.sendNewNumber(
             deviceName=self.deviceName,
             propertyName="ABS_FOCUS_POSITION",
             elements=pos,
         )
-        return suc

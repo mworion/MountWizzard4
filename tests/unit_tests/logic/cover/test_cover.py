@@ -63,82 +63,70 @@ def test_stopCommunication_2(function):
 def test_closeCover_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "closeCover", return_value=False):
-        suc = function.closeCover()
-        assert not suc
+        function.closeCover()
 
 
 def test_closeCover_3(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "closeCover", return_value=True):
-        suc = function.closeCover()
-        assert suc
+        function.closeCover()
 
 
 def test_openCover_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "openCover", return_value=False):
-        suc = function.openCover()
-        assert not suc
+        function.openCover()
 
 
 def test_openCover_3(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "openCover", return_value=True):
-        suc = function.openCover()
-        assert suc
+        function.openCover()
 
 
 def test_haltCover_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "haltCover", return_value=False):
-        suc = function.haltCover()
-        assert not suc
+        function.haltCover()
 
 
 def test_haltCover_3(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "haltCover", return_value=True):
-        suc = function.haltCover()
-        assert suc
+        function.haltCover()
 
 
 def test_lightOn_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "lightOn", return_value=False):
-        suc = function.lightOn()
-        assert not suc
+        function.lightOn()
 
 
 def test_lightOn_3(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "lightOn", return_value=True):
-        suc = function.lightOn()
-        assert suc
+        function.lightOn()
 
 
 def test_lightOff_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "lightOff", return_value=False):
-        suc = function.lightOff()
-        assert not suc
+        function.lightOff()
 
 
 def test_lightOff_3(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "lightOff", return_value=True):
-        suc = function.lightOff()
-        assert suc
+        function.lightOff()
 
 
 def test_lightIntensity_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "lightIntensity", return_value=False):
-        suc = function.lightIntensity(0)
-        assert not suc
+        function.lightIntensity(0)
 
 
 def test_lightIntensity_3(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "lightIntensity", return_value=True):
-        suc = function.lightIntensity(0)
-        assert suc
+        function.lightIntensity(0)

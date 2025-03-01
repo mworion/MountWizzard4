@@ -60,27 +60,13 @@ def test_stopCommunication_2(function):
         function.stopCommunication()
 
 
-def test_move_1(function):
-    function.framework = ""
-    suc = function.move()
-    assert not suc
-
-
 def test_move_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "move", return_value=True):
-        suc = function.move()
-        assert suc
-
-
-def test_halt_1(function):
-    function.framework = ""
-    suc = function.halt()
-    assert not suc
+        function.move(1000)
 
 
 def test_halt_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "halt", return_value=True):
-        suc = function.halt()
-        assert suc
+        function.halt()

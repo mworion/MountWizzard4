@@ -431,49 +431,41 @@ class ImageManage:
 
     def setCoverPark(self) -> None:
         """ """
-        if not self.app.cover.closeCover():
-            self.msg.emit(2, "Setting", "Imaging", "Cover close could not be executed")
+        self.app.cover.closeCover()
 
     def setCoverUnpark(self) -> None:
         """ """
-        if not self.app.cover.openCover():
-            self.msg.emit(2, "Setting", "Imaging", "Cover open could not be executed")
+        self.app.cover.openCover()
 
     def setCoverHalt(self) -> None:
         """ """
-        if not self.app.cover.haltCover():
-            self.msg.emit(2, "Setting", "Imaging", "Cover stop could not be executed")
+        self.app.cover.haltCover()
 
     def moveFocuserIn(self) -> None:
         """ """
         pos = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         step = self.ui.focuserSteps.value()
         newPos = pos - step
-        if not self.app.focuser.move(position=newPos):
-            self.msg.emit(2, "Setting", "Imaging", "Focuser move in could not be executed")
+        self.app.focuser.move(position=newPos)
 
     def moveFocuserOut(self) -> None:
         """ """
         pos = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         step = self.ui.focuserSteps.value()
         newPos = pos + step
-        if not self.app.focuser.move(position=newPos):
-            self.msg.emit(2, "Setting", "Imaging", "Focuser move out could not be executed")
+        self.app.focuser.move(position=newPos)
 
     def haltFocuser(self) -> None:
         """ """
-        if not self.app.focuser.halt():
-            self.msg.emit(2, "Setting", "Imaging", "Focuser halt could not be executed")
+        self.app.focuser.halt()
 
     def switchLightOn(self) -> None:
         """ """
-        if not self.app.cover.lightOn():
-            self.msg.emit(2, "Setting", "Imaging", "Light could not be switched on")
+        self.app.cover.lightOn()
 
     def switchLightOff(self) -> None:
         """ """
-        if not self.app.cover.lightOff():
-            self.msg.emit(2, "Setting", "Imaging", "Light could not be switched off")
+        self.app.cover.lightOff()
 
     def setLightIntensity(self) -> None:
         """ """
@@ -498,8 +490,7 @@ class ImageManage:
             return
 
         self.ui.coverLightIntensity.setText(f"{value}")
-        if not self.app.cover.lightIntensity(value):
-            self.msg.emit(2, "Setting", "Imaging", "Light intensity could not be set")
+        self.app.cover.lightIntensity(value)
 
     def updateDomeGui(self) -> None:
         """ """

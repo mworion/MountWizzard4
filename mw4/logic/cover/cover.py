@@ -80,32 +80,32 @@ class Cover:
         """ """
         self.run[self.framework].stopCommunication()
 
-    def closeCover(self) -> bool:
+    def closeCover(self) -> None:
         """
         """
-        return self.run[self.framework].closeCover()
+        self.run[self.framework].closeCover()
 
-    def openCover(self) -> bool:
+    def openCover(self) -> None:
         """
         """
-        return self.run[self.framework].openCover()
+        self.run[self.framework].openCover()
 
-    def haltCover(self) -> bool:
+    def haltCover(self) -> None:
         """
         """
-        return self.run[self.framework].haltCover()
+        self.run[self.framework].haltCover()
 
-    def lightOn(self) -> bool:
+    def lightOn(self) -> None:
         """
         """
-        return self.run[self.framework].lightOn()
+        self.run[self.framework].lightOn()
 
-    def lightOff(self) -> bool:
+    def lightOff(self) -> None:
         """
         """
-        return self.run[self.framework].lightOff()
+        self.run[self.framework].lightOff()
 
-    def lightIntensity(self, value: float) -> bool:
+    def lightIntensity(self, value: float) -> None:
         """
         """
-        return self.run[self.framework].lightIntensity(value)
+        self.run[self.framework].lightIntensity(value)

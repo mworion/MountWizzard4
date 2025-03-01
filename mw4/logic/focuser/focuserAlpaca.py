@@ -30,35 +30,25 @@ class FocuserAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
 
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         """
-        :return: true for test purpose
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.getAndStoreAlpacaProperty(
             "position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION"
         )
-        return True
 
-    def move(self, position=None):
+    def move(self, position: int) -> None:
         """
-        :param position:
-        :return:
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.setAlpacaProperty("move", Position=position)
-        return True
 
-    def halt(self):
+    def halt(self) -> None:
         """
-        :return:
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.getAlpacaProperty("halt")
-        return True

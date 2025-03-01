@@ -22,23 +22,22 @@
 
 
 def checkFormatMAC(value: str) -> str:
-    """
-    """
+    """ """
     if not value:
-        return ''
+        return ""
 
     if not isinstance(value, str):
-        return ''
+        return ""
 
     value = value.upper()
     value = value.replace(".", ":")
     value = value.split(":")
     if len(value) != 6:
-        return ''
+        return ""
 
     for chunk in value:
         if len(chunk) != 2:
-            return ''
+            return ""
 
         for char in chunk:
             if char not in [
@@ -59,7 +58,7 @@ def checkFormatMAC(value: str) -> str:
                 "E",
                 "F",
             ]:
-                return ''
+                return ""
 
     value = "{0:2s}:{1:2s}:{2:2s}:{3:2s}:{4:2s}:{5:2s}".format(*value)
     return value

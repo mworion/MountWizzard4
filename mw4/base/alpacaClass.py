@@ -196,8 +196,7 @@ class AlpacaClass(DriverData):
         return response["Value"]
 
     def getAlpacaProperty(self, valueProp: str, **data) -> dict:
-        """
-        """
+        """ """
         if not self.deviceName:
             return
         if valueProp in self.propertyExceptions:
@@ -240,8 +239,7 @@ class AlpacaClass(DriverData):
         return response["Value"]
 
     def setAlpacaProperty(self, valueProp: str, **data) -> dict:
-        """
-        """
+        """ """
         if not self.deviceName:
             return
         if valueProp in self.propertyExceptions:
@@ -285,14 +283,12 @@ class AlpacaClass(DriverData):
         return response
 
     def getAndStoreAlpacaProperty(self, valueProp: str, element: str) -> None:
-        """
-        """
+        """ """
         value = self.getAlpacaProperty(valueProp)
         self.storePropertyToData(value, element)
 
     def workerConnectDevice(self) -> None:
-        """
-        """
+        """ """
         self.propertyExceptions = []
         self.deviceConnected = False
         self.serverConnected = False
@@ -326,27 +322,23 @@ class AlpacaClass(DriverData):
         return True
 
     def startTimer(self) -> None:
-        """
-        """
+        """ """
         self.cycleData.start(self.updateRate)
         self.cycleDevice.start(self.updateRate)
 
     def stopTimer(self) -> None:
-        """
-        """
+        """ """
         self.cycleData.stop()
         self.cycleDevice.stop()
 
     def workerGetInitialConfig(self) -> None:
-        """
-        """
+        """ """
         self.data["DRIVER_INFO.DRIVER_NAME"] = self.getAlpacaProperty("name")
         self.data["DRIVER_INFO.DRIVER_VERSION"] = self.getAlpacaProperty("driverversion")
         self.data["DRIVER_INFO.DRIVER_EXEC"] = self.getAlpacaProperty("driverinfo")
 
     def workerPollStatus(self) -> None:
-        """
-        """
+        """ """
         suc = self.getAlpacaProperty("connected")
         if self.deviceConnected and not suc:
             self.deviceConnected = False
@@ -365,8 +357,7 @@ class AlpacaClass(DriverData):
         pass
 
     def pollData(self) -> None:
-        """
-        """
+        """ """
         if not self.deviceConnected:
             return
         worker = Worker(self.workerPollData)
@@ -374,31 +365,27 @@ class AlpacaClass(DriverData):
         self.threadPool.start(worker)
 
     def pollStatus(self) -> None:
-        """
-        """
+        """ """
         if not self.deviceConnected:
             return
         worker = Worker(self.workerPollStatus)
         self.threadPool.start(worker)
 
     def getInitialConfig(self) -> None:
-        """
-        """
+        """ """
         if not self.deviceConnected:
             return
         worker = Worker(self.workerGetInitialConfig)
         self.threadPool.start(worker)
 
     def startCommunication(self) -> None:
-        """
-        """
+        """ """
         self.data.clear()
         worker = Worker(self.workerConnectDevice)
         self.threadPool.start(worker)
 
     def stopCommunication(self) -> None:
-        """
-        """
+        """ """
         self.stopTimer()
         self.setAlpacaProperty("connected", Connected=False)
         self.deviceConnected = False

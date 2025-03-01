@@ -40,7 +40,7 @@ class CameraNINA(NINAClass):
     def getCameraTemp(self) -> [bool, dict]:
         """ """
         response = self.requestProperty("cameratemp")
-        if response is None:
+        if not response:
             return False, {}
 
         return response.get("Success", ""), response
@@ -48,37 +48,27 @@ class CameraNINA(NINAClass):
     def setCameraTemp(self, temperature: float) -> bool:
         """ """
         response = self.requestProperty(f"setcameratemp/{temperature}")
-        if response is None:
-            return False
-        return response.get("Success", "")
+        return response.get("Success", False)
 
     def captureImage(self, params: dict) -> [bool, dict]:
         """ """
         response = self.requestProperty("image", params=params)
-        if response is None:
-            return False, {}
-        return response.get("Success", ""), response
+        return response.get("Success", False), response
 
     def abortImage(self) -> bool:
         """ """
         response = self.requestProperty("abortimage")
-        if response is None:
-            return False
-        return response.get("Success", "")
+        return response.get("Success", False)
 
     def getImagePath(self, receipt: str) -> bool:
         """ """
         response = self.requestProperty(f"imagepath/{receipt}")
-        if response is None:
-            return False
-        return response.get("Success", "")
+        return response.get("Success", False)
 
     def getCameraProps(self) -> [bool, dict]:
         """ """
         response = self.requestProperty("cameraprops")
-        if response is None:
-            return False, {}
-        return response.get("Success", ""), response
+        return response.get("Success", False), response
 
     def workerGetInitialConfig(self) -> None:
         """ """

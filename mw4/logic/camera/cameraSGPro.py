@@ -41,45 +41,32 @@ class CameraSGPro(SGProClass):
     def sgGetCameraTemp(self) -> [bool, dict]:
         """ """
         response = self.requestProperty("cameratemp")
-        if response is None:
-            return False, {}
-
-        return response.get("Success", ""), response
+        return response.get("Success", False), response
 
     def sgSetCameraTemp(self, temperature: float) -> bool:
         """ """
         response = self.requestProperty(f"setcameratemp/{temperature}")
-        if response is None:
-            return False
-        return response.get("Success", "")
+        return response.get("Success", False)
 
     def sgCaptureImage(self, params: dict) -> [bool, dict]:
         """ """
         response = self.requestProperty("image", params=params)
-        if response is None:
-            return False, {}
-        return response.get("Success", ""), response
+        return response.get("Success", False), response
 
     def sgAbortImage(self) -> bool:
         """ """
         response = self.requestProperty("abortimage")
-        if response is None:
-            return False
-        return response.get("Success", "")
+        return response.get("Success", False)
 
     def sgGetImagePath(self, receipt: str) -> bool:
         """ """
         response = self.requestProperty(f"imagepath/{receipt}")
-        if response is None:
-            return False
-        return response.get("Success", "")
+        return response.get("Success", False)
 
     def sgGetCameraProps(self) -> [bool, dict]:
         """ """
         response = self.requestProperty("cameraprops")
-        if response is None:
-            return False, {}
-        return response.get("Success", ""), response
+        return response.get("Success", False), response
 
     def workerGetInitialConfig(self) -> None:
         """ """

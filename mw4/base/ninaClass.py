@@ -71,15 +71,11 @@ class NINAClass(DriverData, QObject):
     def deviceName(self, value):
         self._deviceName = value
 
-    def requestProperty(self, valueProp, params=None):
-        """
-        :param valueProp:
-        :param params:
-        :return:
-        """
+    def requestProperty(self, valueProp: str, params: dict = {}) -> dict:
+        """ """
         try:
             t = f"N.I.N.A.: [{self.BASE_URL}/{valueProp}?format=json]"
-            if params is not None:
+            if params:
                 t += f' data: [{bytes(json.dumps(params).encode("utf-8"))}]'
                 self.log.trace("POST " + t)
                 response = requests.post(
@@ -95,120 +91,67 @@ class NINAClass(DriverData, QObject):
                 )
         except Exception as e:
             self.log.error(f"Request N.I.N.A. error: [{e}]")
-            return
+            return {}
 
         if response.status_code != 200:
             t = f"Request N.I.N.A. response invalid: [{response.status_code}]"
             self.log.warning(t)
-            return
+            return {}
 
         self.log.trace(f"Request N.I.N.A. response: [{response.json()}]")
         response = response.json()
         return response
 
-    def connectDevice(self):
-        """
-        :return:
-        """
+    def connectDevice(self) -> bool:
+        """ """
         devName = self.deviceName.replace(" ", "%20")
         prop = f"connectdevice/{self.DEVICE_TYPE}/{devName}"
         response = self.requestProperty(prop)
-        if response is None:
-            return False
+        return response.get("Success", False)
 
-        return response.get("Success", "")
-
-    def disconnectDevice(self):
-        """
-        :return:
-        """
+    def disconnectDevice(self) -> bool:
+        """ """
         prop = f"disconnectdevice/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
-        if response is None:
-            return False
+        return response.get("Success", False)
 
-        return response.get("Success", "")
-
-    def enumerateDevice(self):
-        """
-        :return:
-        """
+    def enumerateDevice(self) -> list:
+        """ """
         prop = f"enumdevices/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
-        if response is None:
-            return []
+        return response.get("Devices", [])
 
-        return response.get("Devices", "")
-
-    def workerConnectDevice(self):
-        """
-        :return: success of reconnecting to server
-        """
-        if self.deviceName == "N.I.N.A. controlled":
-            return True
-
-        for retry in range(0, 20):
-            suc = self.connectDevice()
-            if suc:
-                t = f"[{self.deviceName}] connected, [{retry}] retries"
-                self.log.debug(t)
-                break
-            else:
-                t = f" [{self.deviceName}] Connection retry: [{retry}]"
-                self.log.info(t)
-
-        if suc:
-            t = f"[{self.deviceName}] connected"
-            self.log.debug(t)
-        else:
-            self.msg.emit(2, "N.I.N.A.", "Connect error", f"{self.deviceName}")
-            self.deviceConnected = False
-            self.serverConnected = False
-        return suc
-
-    def startTimer(self):
-        """
-        :return: true for test purpose
-        """
+    def startTimer(self) -> None:
+        """ """
         self.cycleData.start(self.updateRate)
         self.cycleDevice.start(self.updateRate)
-        return True
 
-    def stopTimer(self):
-        """
-        :return: true for test purpose
-        """
+    def stopTimer(self) -> None:
+        """ """
         self.cycleData.stop()
         self.cycleDevice.stop()
-        return True
 
-    def processPolledData(self):
+    def processPolledData(self) -> None:
         pass
 
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         pass
 
-    def pollData(self):
-        """
-        :return: success
-        """
+    def pollData(self) -> None:
+        """ """
         if not self.deviceConnected:
-            return False
+            return
         worker = Worker(self.workerPollData)
         worker.signals.result.connect(self.processPolledData)
         self.threadPool.start(worker)
-        return True
 
-    def workerGetInitialConfig(self):
+    def workerGetInitialConfig(self) -> None:
         pass
 
-    def getInitialConfig(self):
-        """
-        :return: success
-        """
+    def getInitialConfig(self) -> None:
+        """ """
         worker = Worker(self.workerGetInitialConfig)
         self.threadPool.start(worker)
-        return True
 
     def workerPollStatus(self):
         """
@@ -217,8 +160,8 @@ class NINAClass(DriverData, QObject):
         prop = f"devicestatus/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
 
-        if response is None:
-            return False
+        if not response:
+            return
 
         state = response.get("State", -1)
         self.storePropertyToData(state, "Device.Status")
@@ -240,34 +183,22 @@ class NINAClass(DriverData, QObject):
                 self.getInitialConfig()
                 self.signals.deviceConnected.emit(f"{self.deviceName}")
                 self.msg.emit(0, "N.I.N.A.", "Device found", f"{self.deviceName}")
-        return True
 
-    def pollStatus(self):
-        """
-        :return: success
-        """
+    def pollStatus(self) -> None:
+        """ """
         worker = Worker(self.workerPollStatus)
         self.threadPool.start(worker)
-        return True
 
-    def startCommunication(self):
-        """
-        :return: True for test purpose
-        """
+    def startCommunication(self) -> None:
+        """ """
         self.data.clear()
         if not self.serverConnected:
             self.serverConnected = True
             self.signals.serverConnected.emit()
+        self.startTimer()
 
-        worker = Worker(self.workerConnectDevice)
-        worker.signals.result.connect(self.startTimer)
-        self.threadPool.start(worker)
-        return True
-
-    def stopCommunication(self):
-        """
-        :return: true for test purpose
-        """
+    def stopCommunication(self) -> None:
+        """ """
         self.stopTimer()
         if self.deviceName != "N.I.N.A. controlled":
             self.disconnectDevice()
@@ -276,11 +207,8 @@ class NINAClass(DriverData, QObject):
         self.signals.deviceDisconnected.emit(f"{self.deviceName}")
         self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
         self.msg.emit(0, "N.I.N.A.", "Device remove", f"{self.deviceName}")
-        return True
 
-    def discoverDevices(self):
-        """
-        :return: device list
-        """
+    def discoverDevices(self) -> list:
+        """ """
         discoverList = self.enumerateDevice()
         return discoverList

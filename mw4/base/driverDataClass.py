@@ -26,6 +26,7 @@ from PySide6.QtCore import Signal, QObject
 
 class RemoteDeviceShutdown(QObject):
     """ """
+
     signalRemoteShutdown = Signal()
 
 
@@ -33,8 +34,7 @@ class DriverData:
     log = logging.getLogger("MW4")
 
     def storePropertyToData(self, value: Union[str, float], element: str) -> None:
-        """
-        """
+        """ """
         if value is None and element in self.data:
             del self.data[element]
         else:

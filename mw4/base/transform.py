@@ -20,10 +20,9 @@ import logging
 # external packages
 from PySide6.QtCore import QMutex
 import numpy as np
-
-# noinspection PyProtectedMember
 import erfa
 from skyfield.api import Angle
+from skyfield.toposlib import GeographicPosition
 
 # local import
 
@@ -39,22 +38,9 @@ log = logging.getLogger()
 mutex = QMutex()
 
 
-def JNowToJ2000(ra, dec, timeJD):
+def JNowToJ2000(ra: Angle, dec: Angle, timeJD: float) -> (Angle, Angle):
     """
-    JNowToJ2000 uses the ERFA library which actually is included in the astropy
-    package for doing the transform. If future releases of astropy this might be
-    a separate package and will be imported and used adequately.
-
-    :param ra:
-    :param dec:
-    :param timeJD:
-    :return:
     """
-    if not isinstance(ra, Angle):
-        return Angle(hours=0), Angle(degrees=0)
-    if not isinstance(dec, Angle):
-        return Angle(hours=0), Angle(degrees=0)
-
     mutex.lock()
     ra = ra.radians
     dec = dec.radians
@@ -63,26 +49,12 @@ def JNowToJ2000(ra, dec, timeJD):
     ra = Angle(radians=raConv, preference="hours")
     dec = Angle(radians=decConv, preference="degrees")
     mutex.unlock()
-
     return ra, dec
 
 
-def J2000ToJNow(ra, dec, timeJD):
+def J2000ToJNow(ra: Angle, dec: Angle, timeJD: float) -> (Angle, Angle):
     """
-    J2000ToJNow uses the ERFA library which actually is included in the astropy
-    package for doing the transform. If future releases of astropy this might be
-    a separate package and will be imported and used adequately.
-
-    :param ra:
-    :param dec:
-    :param timeJD:
-    :return:
     """
-    if not isinstance(ra, Angle):
-        return Angle(hours=0), Angle(degrees=0)
-    if not isinstance(dec, Angle):
-        return Angle(hours=0), Angle(degrees=0)
-
     mutex.lock()
     ra = ra.radians
     dec = dec.radians
@@ -91,30 +63,12 @@ def J2000ToJNow(ra, dec, timeJD):
     ra = Angle(radians=raConv, preference="hours")
     dec = Angle(radians=decConv, preference="degrees")
     mutex.unlock()
-
     return ra, dec
 
 
-def J2000ToAltAz(ra, dec, timeJD, location):
+def J2000ToAltAz(ra: Angle, dec: Angle, timeJD: float, location: GeographicPosition) -> (Angle, Angle):
     """
-    J2000ToAltAz uses the ERFA library which actually is included in the astropy
-    package for doing the transform. If future releases of astropy this might be
-    a separate package and will be imported and used adequately.
-
-    Please be aware, that all refraction corrections are made in the mount itself,
-    so all parameters which are related to RC are set to zero.
-
-    :param ra:
-    :param dec:
-    :param timeJD:
-    :param location:
-    :return:
     """
-    if not isinstance(ra, Angle):
-        return Angle(degrees=0), Angle(degrees=0)
-    if not isinstance(dec, Angle):
-        return Angle(degrees=0), Angle(degrees=0)
-
     mutex.lock()
     ra = ra.radians
     dec = dec.radians
@@ -151,13 +105,13 @@ def J2000ToAltAz(ra, dec, timeJD, location):
     return azimuth, altitude
 
 
-def diffModulusAbs(x, y, m):
+def diffModulusAbs(x: float, y: float, m: int) -> float:
     diff = abs(y - x)
     diff = diff % m
     return min(diff, abs(diff - m))
 
 
-def diffModulusSign(x, y, m):
+def diffModulusSign(x: float, y: float, m: int) -> float:
     x = (x + m) % m
     y = (y + m) % m
     diff = y - x

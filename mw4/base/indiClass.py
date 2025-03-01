@@ -189,20 +189,17 @@ class IndiClass:
         self.client.host = (self._hostaddress, self._port)
 
     def serverConnected(self) -> None:
-        """
-        """
+        """ """
         suc = self.client.watchDevice(self.deviceName)
         self.log.info(f"INDI watch: [{self.deviceName}], result: [{suc}]")
 
     def serverDisconnected(self, devices: str) -> None:
-        """
-        """
+        """ """
         t = f"INDI server for [{self.deviceName}] disconnected"
         self.log.debug(t)
 
     def newDevice(self, deviceName: str) -> None:
-        """
-        """
+        """ """
         if deviceName == self.deviceName:
             self.device = self.client.getDevice(deviceName)
             self.msg.emit(0, "INDI", "Device found", f"{deviceName}")
@@ -210,16 +207,14 @@ class IndiClass:
             self.log.info(f"INDI device snoop: [{deviceName}]")
 
     def removeDevice(self, deviceName: str) -> None:
-        """
-        """
+        """ """
         if deviceName == self.deviceName:
             self.msg.emit(0, "INDI", "Device removed", f"{deviceName}")
             self.device = None
             self.data.clear()
 
     def startRetry(self) -> None:
-        """
-        """
+        """ """
         self.timerRetry.start(self.RETRY_DELAY)
         if not self.deviceName:
             return
@@ -229,21 +224,18 @@ class IndiClass:
         self.client.connectServer()
 
     def startCommunication(self) -> None:
-        """
-        """
+        """ """
         self.data.clear()
         self.timerRetry.start(self.RETRY_DELAY)
 
     def stopCommunication(self) -> None:
-        """
-        """
+        """ """
         suc = self.client.disconnectServer(self.deviceName)
         self.deviceName = ""
         self.deviceConnected = False
 
     def connectDevice(self, deviceName: str, propertyName: str) -> None:
-        """
-        """
+        """ """
         if propertyName != "CONNECTION":
             return
 
@@ -251,8 +243,7 @@ class IndiClass:
             self.client.connectDevice(deviceName=deviceName)
 
     def loadIndiConfig(self, deviceName: str) -> None:
-        """
-        """
+        """ """
         loadObject = self.device.getSwitch("CONFIG_PROCESS")
         loadObject["CONFIG_LOAD"] = True
         suc = self.client.sendNewSwitch(
@@ -262,8 +253,7 @@ class IndiClass:
         self.log.info(t)
 
     def setUpdateConfig(self, deviceName: str) -> None:
-        """
-        """
+        """ """
         if deviceName != self.deviceName:
             return
         if self.device is None:
@@ -281,15 +271,13 @@ class IndiClass:
         self.log.info(t)
 
     def convertIndigoProperty(self, key: str) -> str:
-        """
-        """
+        """ """
         if key in self.INDIGO:
             key = self.INDIGO.get(key)
         return key
 
     def updateNumber(self, deviceName: str, propertyName: str) -> None:
-        """
-        """
+        """ """
         if self.device is None:
             return
         if deviceName != self.deviceName:
@@ -303,8 +291,7 @@ class IndiClass:
             self.data[key] = float(value)
 
     def updateSwitch(self, deviceName: str, propertyName: str) -> None:
-        """
-        """
+        """ """
         if self.device is None:
             return
         if deviceName != self.deviceName:
@@ -321,8 +308,7 @@ class IndiClass:
             self.data[key] = value == "On"
 
     def updateText(self, deviceName: str, propertyName: str) -> None:
-        """
-        """
+        """ """
         if self.device is None:
             return
         if deviceName != self.deviceName:
@@ -336,8 +322,7 @@ class IndiClass:
             self.data[key] = value
 
     def updateLight(self, deviceName: str, propertyName: str) -> None:
-        """
-        """
+        """ """
         if self.device is None:
             return
         if deviceName != self.deviceName:
@@ -351,8 +336,7 @@ class IndiClass:
             self.data[key] = value
 
     def updateBLOB(self, deviceName: str, propertyName: str) -> None:
-        """
-        """
+        """ """
         if self.device is None:
             return
         if deviceName != self.deviceName:
@@ -362,15 +346,13 @@ class IndiClass:
 
     @staticmethod
     def removePrefix(text: str, prefix: str) -> str:
-        """
-        """
+        """ """
         value = text[text.startswith(prefix) and len(prefix) :]
         value = value.strip()
         return value
 
     def updateMessage(self, device: str, text: str) -> None:
-        """
-        """
+        """ """
         if self.messages:
             if text.startswith("[WARNING]"):
                 text = self.removePrefix(text, "[WARNING]")
@@ -385,8 +367,7 @@ class IndiClass:
                 self.msg.emit(0, "INDI", "Device message", f"{device:15s} {text}")
 
     def addDiscoveredDevice(self, deviceName: str, propertyName: str) -> None:
-        """
-        """
+        """ """
         if propertyName != "DRIVER_INFO":
             return
 
@@ -408,8 +389,7 @@ class IndiClass:
             self.discoverList.append(deviceName)
 
     def discoverDevices(self, deviceType: str) -> list:
-        """
-        """
+        """ """
         self.discoverList = list()
         self.discoverType = self.INDI_TYPES.get(deviceType, 0)
         self.client.signals.defText.connect(self.addDiscoveredDevice)

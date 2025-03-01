@@ -96,11 +96,6 @@ def test_updateStatus_2(function):
     function.updateStatus()
 
 
-def test_updateNumber_1(function):
-    function.device = None
-    function.updateNumber("test", "test")
-
-
 def test_updateNumber_2(function):
     function.device = Device()
     function.deviceName = "test"

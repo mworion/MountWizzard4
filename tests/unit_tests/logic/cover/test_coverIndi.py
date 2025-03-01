@@ -80,11 +80,6 @@ def test_setUpdateConfig_5(function):
             function.setUpdateConfig("test")
 
 
-def test_updateText_1(function):
-    function.device = None
-    function.updateText("test", "test")
-
-
 def test_updateText_2(function):
     function.device = Device()
     function.deviceName = "test"

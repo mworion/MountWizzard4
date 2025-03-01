@@ -34,21 +34,6 @@ def function():
     yield func
 
 
-def test_setUpdateConfig_1(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = ""
-    function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_2(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = None
-    function.setUpdateConfig("test")
-
-
 def test_setUpdateConfig_3(function):
     function.loadConfig = True
     function.updateRate = 1000

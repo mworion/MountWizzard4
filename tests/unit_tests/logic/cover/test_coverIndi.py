@@ -38,8 +38,7 @@ def test_setUpdateConfig_1(function):
     function.deviceName = ""
     function.loadConfig = True
     function.updateRate = 1000
-    suc = function.setUpdateConfig("test")
-    assert not suc
+    function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_2(function):
@@ -47,8 +46,7 @@ def test_setUpdateConfig_2(function):
     function.loadConfig = True
     function.updateRate = 1000
     function.device = None
-    suc = function.setUpdateConfig("test")
-    assert not suc
+    function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_3(function):
@@ -57,8 +55,7 @@ def test_setUpdateConfig_3(function):
     function.updateRate = 1000
     function.device = Device()
     with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        suc = function.setUpdateConfig("test")
-        assert not suc
+        function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_4(function):
@@ -69,8 +66,7 @@ def test_setUpdateConfig_4(function):
     function.updateRate = 1000
     with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
         with mock.patch.object(function.client, "sendNewNumber", return_value=False):
-            suc = function.setUpdateConfig("test")
-            assert not suc
+            function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_5(function):
@@ -81,38 +77,33 @@ def test_setUpdateConfig_5(function):
     function.updateRate = 1000
     with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
         with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            suc = function.setUpdateConfig("test")
-            assert suc
+            function.setUpdateConfig("test")
 
 
 def test_updateText_1(function):
     function.device = None
-    suc = function.updateText("test", "test")
-    assert not suc
+    function.updateText("test", "test")
 
 
 def test_updateText_2(function):
     function.device = Device()
     function.deviceName = "test"
     with mock.patch.object(function.device, "getText", return_value={"Cover": "OPEN"}):
-        suc = function.updateText("test", "CAP_PARK")
-        assert suc
+        function.updateText("test", "CAP_PARK")
 
 
 def test_updateText_3(function):
     function.device = Device()
     function.deviceName = "test"
     with mock.patch.object(function.device, "getText", return_value={"Cover": "CLOSED"}):
-        suc = function.updateText("test", "CAP_PARK")
-        assert suc
+        function.updateText("test", "CAP_PARK")
 
 
 def test_updateText_4(function):
     function.device = Device()
     function.deviceName = "test"
     with mock.patch.object(function.device, "getText", return_value={"Cover": "test"}):
-        suc = function.updateText("test", "CAP_PARK")
-        assert suc
+        function.updateText("test", "CAP_PARK")
 
 
 def test_closeCover_1(function):

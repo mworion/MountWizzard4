@@ -45,8 +45,7 @@ def test_setUpdateConfig_1(function):
     function.deviceName = ""
     function.loadConfig = True
     function.updateRate = 1000
-    suc = function.setUpdateConfig("test")
-    assert not suc
+    function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_2(function):
@@ -54,8 +53,7 @@ def test_setUpdateConfig_2(function):
     function.loadConfig = True
     function.updateRate = 1000
     function.device = None
-    suc = function.setUpdateConfig("test")
-    assert not suc
+    function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_3(function):
@@ -64,8 +62,7 @@ def test_setUpdateConfig_3(function):
     function.updateRate = 1000
     function.device = Device()
     with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        suc = function.setUpdateConfig("test")
-        assert not suc
+        function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_4(function):
@@ -76,8 +73,7 @@ def test_setUpdateConfig_4(function):
     function.client = Client()
     with mock.patch.object(function.device, "getNumber", return_value={"PERIOD_MS": 1}):
         with mock.patch.object(function.client, "sendNewNumber", return_value=False):
-            suc = function.setUpdateConfig("test")
-            assert not suc
+            function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_5(function):
@@ -88,8 +84,7 @@ def test_setUpdateConfig_5(function):
     function.client = Client()
     with mock.patch.object(function.device, "getNumber", return_value={"PERIOD_MS": 1}):
         with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            suc = function.setUpdateConfig("test")
-            assert suc
+            function.setUpdateConfig("test")
 
 
 def test_setExposureState_1(function):

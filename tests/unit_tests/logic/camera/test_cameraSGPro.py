@@ -49,7 +49,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
 
 
 def test_sgGetCameraTemp_1(function):
-    with mock.patch.object(function, "requestProperty", return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value={}):
         suc, val = function.sgGetCameraTemp()
         assert not suc
         assert val == {}
@@ -63,7 +63,7 @@ def test_sgGetCameraTemp_2(function):
 
 
 def test_sgSetCameraTemp_1(function):
-    with mock.patch.object(function, "requestProperty", return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value={}):
         suc = function.sgSetCameraTemp(temperature=10)
         assert not suc
 
@@ -75,7 +75,7 @@ def test_sgSetCameraTemp_2(function):
 
 
 def test_sgCaptureImage_1(function):
-    with mock.patch.object(function, "requestProperty", return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value={}):
         suc, val = function.sgCaptureImage(0)
         assert not suc
         assert val == {}
@@ -89,7 +89,7 @@ def test_sgCaptureImage_2(function):
 
 
 def test_sgAbortImage_1(function):
-    with mock.patch.object(function, "requestProperty", return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value={}):
         suc = function.sgAbortImage()
         assert not suc
 
@@ -101,7 +101,7 @@ def test_sgAbortImage_2(function):
 
 
 def test_sgGetImagePath_1(function):
-    with mock.patch.object(function, "requestProperty", return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value={}):
         suc = function.sgGetImagePath(receipt="1")
         assert not suc
 
@@ -113,7 +113,7 @@ def test_sgGetImagePath_2(function):
 
 
 def test_sgGetCameraProps_1(function):
-    with mock.patch.object(function, "requestProperty", return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value={}):
         suc, val = function.sgGetCameraProps()
         assert not suc
         assert val == {}

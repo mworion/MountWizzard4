@@ -48,30 +48,16 @@ def test_properties_2(function):
     assert function.loadConfig
 
 
-def test_startCommunication_1(function):
-    function.framework = ""
-    suc = function.startCommunication()
-    assert not suc
-
-
 def test_startCommunication_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
-        suc = function.startCommunication()
-        assert suc
-
-
-def test_stopCommunication_1(function):
-    function.framework = ""
-    suc = function.stopCommunication()
-    assert not suc
+        function.startCommunication()
 
 
 def test_stopCommunication_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "stopCommunication", return_value=True):
-        suc = function.stopCommunication()
-        assert suc
+        function.stopCommunication()
 
 
 def test_closeCover_1(function):

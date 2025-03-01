@@ -94,31 +94,19 @@ class Dome:
         for fw in self.run:
             self.run[fw].loadConfig = value
 
-    def startCommunication(self):
-        """
-        :return:
-        """
-        if self.framework not in self.run.keys():
-            return False
-
-        suc = self.run[self.framework].startCommunication()
+    def startCommunication(self) -> None:
+        """ """
+        self.run[self.framework].startCommunication()
         self.app.update1s.connect(self.checkSlewingDome)
         self.domeStarted = True
-        return suc
 
-    def stopCommunication(self):
-        """
-        :return:
-        """
-        if self.framework not in self.run.keys():
-            return False
-
+    def stopCommunication(self) -> None:
+        """ """
         self.signals.message.emit("")
-        suc = self.run[self.framework].stopCommunication()
+        self.run[self.framework].stopCommunication()
         if self.domeStarted:
             self.app.update1s.disconnect(self.checkSlewingDome)
             self.domeStarted = False
-        return suc
 
     def waitSettlingAndEmit(self):
         """

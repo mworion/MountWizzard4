@@ -72,25 +72,13 @@ class Focuser:
         for fw in self.run:
             self.run[fw].loadConfig = value
 
-    def startCommunication(self):
-        """
-        :return:
-        """
-        if self.framework not in self.run.keys():
-            return False
+    def startCommunication(self) -> None:
+        """ """
+        self.run[self.framework].startCommunication()
 
-        suc = self.run[self.framework].startCommunication()
-        return suc
-
-    def stopCommunication(self):
-        """
-        :return:
-        """
-        if self.framework not in self.run.keys():
-            return False
-
-        suc = self.run[self.framework].stopCommunication()
-        return suc
+    def stopCommunication(self) -> None:
+        """ """
+        self.run[self.framework].stopCommunication()
 
     def move(self, position=None):
         """

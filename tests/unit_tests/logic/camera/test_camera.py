@@ -155,15 +155,13 @@ def test_exposeFinished(function):
 
 def test_startCommunication_1(function):
     function.framework = "indi"
-    suc = function.startCommunication()
-    assert suc
+    function.startCommunication()
 
 
 def test_stopCommunication_1(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "abort", return_value=True):
-        suc = function.stopCommunication()
-        assert suc
+        function.stopCommunication()
 
 
 def test_expose_2(function):

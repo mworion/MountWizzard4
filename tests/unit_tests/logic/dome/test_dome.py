@@ -46,20 +46,11 @@ def test_properties_2(function):
     assert function.loadConfig
 
 
-def test_startCommunication_1(function):
-    function.domeStarted = False
-    function.framework = ""
-    suc = function.startCommunication()
-    assert not suc
-    assert not function.domeStarted
-
-
 def test_startCommunication_2(function):
     function.framework = "indi"
     function.domeStarted = False
     with mock.patch.object(function.run["indi"], "startCommunication", return_value=False):
-        suc = function.startCommunication()
-        assert not suc
+        function.startCommunication()
         assert function.domeStarted
 
 
@@ -67,15 +58,8 @@ def test_startCommunication_3(function):
     function.framework = "indi"
     function.domeStarted = False
     with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
-        suc = function.startCommunication()
-        assert suc
+        function.startCommunication()
         assert function.domeStarted
-
-
-def test_stopCommunication_1(function):
-    function.framework = ""
-    suc = function.stopCommunication()
-    assert not suc
 
 
 def test_stopCommunication_2(function):
@@ -83,8 +67,7 @@ def test_stopCommunication_2(function):
     function.domeStarted = True
     function.app.update1s.connect(function.checkSlewingDome)
     with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
-        suc = function.stopCommunication()
-        assert suc
+        function.stopCommunication()
         assert not function.domeStarted
 
 
@@ -93,8 +76,7 @@ def test_stopCommunication_3(function):
     function.domeStarted = True
     function.app.update1s.connect(function.checkSlewingDome)
     with mock.patch.object(function.run["indi"], "startCommunication", return_value=False):
-        suc = function.stopCommunication()
-        assert suc
+        function.stopCommunication()
         assert not function.domeStarted
 
 

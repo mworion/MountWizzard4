@@ -151,13 +151,13 @@ class Camera:
         """ """
         self.obsSite = obsSite
 
-    def startCommunication(self) -> bool:
+    def startCommunication(self) -> None:
         """ """
-        return self.run[self.framework].startCommunication()
+        self.run[self.framework].startCommunication()
 
-    def stopCommunication(self) -> bool:
+    def stopCommunication(self) -> None:
         """ """
-        return self.run[self.framework].stopCommunication()
+        self.run[self.framework].stopCommunication()
 
     def exposeFinished(self) -> bool:
         """ """

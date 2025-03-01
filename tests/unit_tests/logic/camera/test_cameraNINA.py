@@ -63,19 +63,17 @@ def test_getCameraTemp_2(function):
 
 
 def test_setCameraTemp_1(function):
-    with mock.patch.object(function, "requestProperty", return_value=None):
-        suc = function.setCameraTemp(temperature=10)
-        assert not suc
+    with mock.patch.object(function, "requestProperty", return_value={}):
+        function.setCameraTemp(temperature=10)
 
 
 def test_setCameraTemp_2(function):
     with mock.patch.object(function, "requestProperty", return_value={"Success": True}):
-        suc = function.setCameraTemp(temperature=10)
-        assert suc
+        function.setCameraTemp(temperature=10)
 
 
 def test_captureImage_1(function):
-    with mock.patch.object(function, "requestProperty", return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value={}):
         suc, val = function.captureImage(0)
         assert not suc
         assert val == {}
@@ -89,7 +87,7 @@ def test_captureImage_2(function):
 
 
 def test_abortImage_1(function):
-    with mock.patch.object(function, "requestProperty", return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value={}):
         suc = function.abortImage()
         assert not suc
 
@@ -101,7 +99,7 @@ def test_abortImage_2(function):
 
 
 def test_getImagePath_1(function):
-    with mock.patch.object(function, "requestProperty", return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value={}):
         suc = function.getImagePath(receipt="1")
         assert not suc
 
@@ -113,7 +111,7 @@ def test_getImagePath_2(function):
 
 
 def test_getCameraProps_1(function):
-    with mock.patch.object(function, "requestProperty", return_value=None):
+    with mock.patch.object(function, "requestProperty", return_value={}):
         suc, val = function.getCameraProps()
         assert not suc
         assert val == {}

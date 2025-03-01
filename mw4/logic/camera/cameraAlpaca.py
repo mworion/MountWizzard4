@@ -64,9 +64,7 @@ class CameraAlpaca(AlpacaClass):
         self.getAndStoreAlpacaProperty("camerastate", "CAMERA.STATE")
         self.getAndStoreAlpacaProperty("gain", "CCD_GAIN.GAIN")
         self.getAndStoreAlpacaProperty("offset", "CCD_OFFSET.OFFSET")
-        self.getAndStoreAlpacaProperty(
-            "fastreadout", "READOUT_QUALITY.QUALITY_LOW", "READOUT_QUALITY.QUALITY_HIGH"
-        )
+        self.getAndStoreAlpacaProperty("fastreadout", "READOUT_QUALITY.QUALITY_LOW")
         self.getAndStoreAlpacaProperty(
             "ccdtemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"
         )

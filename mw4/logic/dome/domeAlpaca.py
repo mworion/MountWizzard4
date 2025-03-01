@@ -65,19 +65,13 @@ class DomeAlpaca(AlpacaClass):
         if state == 0:
             stateText = shutterStates[state]
             self.storePropertyToData(stateText, "Status.Shutter")
-            self.storePropertyToData(
-                True,
-                "DOME_SHUTTER.SHUTTER_OPEN",
-                elementInv="DOME_SHUTTER.SHUTTER_CLOSED",
-            )
+            self.storePropertyToData(True, "DOME_SHUTTER.SHUTTER_OPEN")
+            self.storePropertyToData(False, "DOME_SHUTTER.SHUTTER_CLOSED")
         elif state == 1:
             stateText = shutterStates[state]
             self.storePropertyToData(stateText, "Status.Shutter")
-            self.storePropertyToData(
-                False,
-                "DOME_SHUTTER.SHUTTER_OPEN",
-                elementInv="DOME_SHUTTER.SHUTTER_CLOSED",
-            )
+            self.storePropertyToData(False, "DOME_SHUTTER.SHUTTER_OPEN")
+            self.storePropertyToData(True, "DOME_SHUTTER.SHUTTER_CLOSED")
         else:
             self.data["DOME_SHUTTER.SHUTTER_OPEN"] = None
             self.data["DOME_SHUTTER.SHUTTER_CLOSED"] = None

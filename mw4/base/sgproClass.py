@@ -72,8 +72,7 @@ class SGProClass(DriverData, QObject):
         self._deviceName = value
 
     def requestProperty(self, valueProp, params: dict = {}) -> dict:
-        """
-        """
+        """ """
         try:
             t = f"SGPro: [{self.BASE_URL}/{valueProp}?format=json]"
             if params:
@@ -104,36 +103,31 @@ class SGProClass(DriverData, QObject):
         return response
 
     def sgConnectDevice(self) -> bool:
-        """
-        """
+        """ """
         devName = self.deviceName.replace(" ", "%20")
         prop = f"connectdevice/{self.DEVICE_TYPE}/{devName}"
         response = self.requestProperty(prop)
         return response.get("Success", False)
 
     def sgDisconnectDevice(self) -> bool:
-        """
-        """
+        """ """
         prop = f"disconnectdevice/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
         return response.get("Success", False)
 
     def sgEnumerateDevice(self) -> list:
-        """
-        """
+        """ """
         prop = f"enumdevices/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
         return response.get("Devices", [])
 
     def startTimer(self) -> None:
-        """
-        """
+        """ """
         self.cycleData.start(self.updateRate)
         self.cycleDevice.start(self.updateRate)
 
     def stopTimer(self) -> None:
-        """
-        """
+        """ """
         self.cycleData.stop()
         self.cycleDevice.stop()
 
@@ -144,8 +138,7 @@ class SGProClass(DriverData, QObject):
         pass
 
     def pollData(self) -> None:
-        """
-        """
+        """ """
         if not self.deviceConnected:
             return
         worker = Worker(self.workerPollData)
@@ -156,14 +149,12 @@ class SGProClass(DriverData, QObject):
         pass
 
     def getInitialConfig(self) -> None:
-        """
-        """
+        """ """
         worker = Worker(self.workerGetInitialConfig)
         self.threadPool.start(worker)
 
     def workerPollStatus(self) -> None:
-        """
-        """
+        """ """
         prop = f"devicestatus/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
 
@@ -187,14 +178,12 @@ class SGProClass(DriverData, QObject):
                 self.msg.emit(0, "SGPRO", "Device found", f"{self.deviceName}")
 
     def pollStatus(self) -> None:
-        """
-        """
+        """ """
         worker = Worker(self.workerPollStatus)
         self.threadPool.start(worker)
 
     def startCommunication(self) -> None:
-        """
-        """
+        """ """
         self.data.clear()
         if not self.serverConnected:
             self.serverConnected = True
@@ -202,8 +191,7 @@ class SGProClass(DriverData, QObject):
         self.startTimer()
 
     def stopCommunication(self) -> None:
-        """
-        """
+        """ """
         self.stopTimer()
         if self.deviceName != "SGPro controlled":
             self.sgDisconnectDevice()
@@ -214,7 +202,6 @@ class SGProClass(DriverData, QObject):
         self.msg.emit(0, "SGPRO", "Device remove", f"{self.deviceName}")
 
     def discoverDevices(self) -> list:
-        """
-        """
+        """ """
         discoverList = self.sgEnumerateDevice()
         return discoverList

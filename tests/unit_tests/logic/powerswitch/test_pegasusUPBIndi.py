@@ -39,8 +39,7 @@ def test_setUpdateConfig_1(function):
     function.loadConfig = True
     function.updateRate = 1000
     function.deviceName = ""
-    suc = function.setUpdateConfig("test")
-    assert not suc
+    function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_2(function):
@@ -48,8 +47,7 @@ def test_setUpdateConfig_2(function):
     function.updateRate = 1000
     function.deviceName = "test"
     function.device = None
-    suc = function.setUpdateConfig("test")
-    assert not suc
+    function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_3(function):
@@ -58,8 +56,7 @@ def test_setUpdateConfig_3(function):
     function.deviceName = "test"
     function.device = Device()
     with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        suc = function.setUpdateConfig("test")
-        assert not suc
+        function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_4(function):
@@ -70,8 +67,7 @@ def test_setUpdateConfig_4(function):
     function.client = Client()
     with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
         with mock.patch.object(function.client, "sendNewNumber", return_value=False):
-            suc = function.setUpdateConfig("test")
-            assert not suc
+            function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_5(function):
@@ -82,28 +78,24 @@ def test_setUpdateConfig_5(function):
     function.client = Client()
     with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
         with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            suc = function.setUpdateConfig("test")
-            assert suc
+            function.setUpdateConfig("test")
 
 
 def test_updateText_1(function):
-    suc = function.updateText("test", "test")
-    assert not suc
+    function.updateText("test", "test")
 
 
 def test_updateText_2(function):
     function.data = {"AUTO_DEW.DEW_C": 1, "VERSION.UPB": 1}
     with mock.patch.object(IndiClass, "updateText", return_value=True):
-        suc = function.updateText("test", "test")
-        assert not suc
+        function.updateText("test", "test")
 
 
 def test_updateText_3(function):
     function.data = {"DRIVER_INFO.DEVICE_MODEL": "UPB", "FIRMWARE_INFO.VERSION": "1.4"}
 
     with mock.patch.object(IndiClass, "updateText", return_value=True):
-        suc = function.updateText("test", "DRIVER_INFO")
-        assert suc
+        function.updateText("test", "DRIVER_INFO")
 
 
 def test_updateText_4(function):
@@ -113,8 +105,7 @@ def test_updateText_4(function):
     }
 
     with mock.patch.object(IndiClass, "updateText", return_value=True):
-        suc = function.updateText("test", "DRIVER_INFO")
-        assert suc
+        function.updateText("test", "DRIVER_INFO")
 
 
 def test_updateText_5(function):
@@ -123,15 +114,13 @@ def test_updateText_5(function):
         "FIRMWARE_INFO.VERSION": "1.4",
     }
     with mock.patch.object(IndiClass, "updateText", return_value=True):
-        suc = function.updateText("test", "DRIVER_INFO")
-        assert suc
+        function.updateText("test", "DRIVER_INFO")
 
 
 def test_updateText_6(function):
     function.data = {"DRIVER_INFO.DEVICE_MODEL": "UPB", "FIRMWARE_INFO.VERSION": "1.5"}
     with mock.patch.object(IndiClass, "updateText", return_value=True):
-        suc = function.updateText("test", "DRIVER_INFO")
-        assert suc
+        function.updateText("test", "DRIVER_INFO")
 
 
 def test_updateNumber_1(function):
@@ -147,15 +136,13 @@ def test_updateNumber_2(function):
 
 
 def test_updateSwitch_1(function):
-    suc = function.updateSwitch("test", "test")
-    assert not suc
+    function.updateSwitch("test", "test")
 
 
 def test_updateSwitch_2(function):
     function.data = {"AUTO_DEW.AUTO_DEW_ENABLED": 1, "VERSION.UPB": 2}
     with mock.patch.object(IndiClass, "updateSwitch", return_value=True):
-        suc = function.updateSwitch("test", "test")
-        assert suc
+        function.updateSwitch("test", "test")
 
 
 def test_togglePowerPort_1(function):

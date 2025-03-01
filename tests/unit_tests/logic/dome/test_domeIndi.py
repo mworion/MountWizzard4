@@ -38,8 +38,7 @@ def test_setUpdateConfig_1(function):
     function.deviceName = ""
     function.loadConfig = True
     function.updateRate = 1000
-    suc = function.setUpdateConfig("test")
-    assert not suc
+    function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_2(function):
@@ -47,8 +46,7 @@ def test_setUpdateConfig_2(function):
     function.device = None
     function.loadConfig = True
     function.updateRate = 1000
-    suc = function.setUpdateConfig("test")
-    assert not suc
+    function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_3(function):
@@ -57,8 +55,7 @@ def test_setUpdateConfig_3(function):
     function.loadConfig = True
     function.updateRate = 1000
     with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        suc = function.setUpdateConfig("test")
-        assert not suc
+        function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_4(function):
@@ -69,8 +66,7 @@ def test_setUpdateConfig_4(function):
     function.updateRate = 1000
     with mock.patch.object(function.device, "getNumber", return_value={"PERIOD_MS": 1}):
         with mock.patch.object(function.client, "sendNewNumber", return_value=False):
-            suc = function.setUpdateConfig("test")
-            assert not suc
+            function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_5(function):
@@ -81,8 +77,7 @@ def test_setUpdateConfig_5(function):
     function.updateRate = 1000
     with mock.patch.object(function.device, "getNumber", return_value={"PERIOD_MS": 1}):
         with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            suc = function.setUpdateConfig("test")
-            assert suc
+            function.setUpdateConfig("test")
 
 
 def test_updateStatus_1(function):
@@ -118,8 +113,7 @@ def test_updateNumber_2(function):
         "getNumber",
         return_value={"TEST": 1, "DOME_ABSOLUTE_POSITION": 2},
     ):
-        suc = function.updateNumber("test", "ABS_DOME_POSITION")
-        assert suc
+        function.updateNumber("test", "ABS_DOME_POSITION")
 
 
 def test_updateNumber_3(function):
@@ -129,8 +123,7 @@ def test_updateNumber_3(function):
     with mock.patch.object(
         function.device, "getNumber", return_value={"TEST": 1, "SHUTTER_OPEN": 2}
     ):
-        suc = function.updateNumber("test", "SHUTTER_OPEN")
-        assert suc
+        function.updateNumber("test", "SHUTTER_OPEN")
 
 
 def test_updateNumber_4(function):
@@ -140,8 +133,7 @@ def test_updateNumber_4(function):
     with mock.patch.object(
         function.device, "getNumber", return_value={"TEST": 1, "SHUTTER_OPEN": 2}
     ):
-        suc = function.updateNumber("test", "SHUTTER_OPEN")
-        assert suc
+        function.updateNumber("test", "SHUTTER_OPEN")
 
 
 def test_slewToAltAz_1(function):

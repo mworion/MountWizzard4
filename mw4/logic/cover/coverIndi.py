@@ -31,9 +31,6 @@ class CoverIndi(IndiClass):
 
     def updateText(self, deviceName: str, propertyName: str) -> None:
         """ """
-        if not super().updateText(deviceName, propertyName):
-            return
-
         for element, value in self.device.getText(propertyName).items():
             if element == "Cover":
                 value = value.strip().upper()

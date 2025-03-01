@@ -37,11 +37,8 @@ class CameraIndi(IndiClass):
 
         self.isDownloading: bool = False
 
-    def setUpdateConfig(self, deviceName: str) -> bool:
+    def setUpdateConfig(self, deviceName: str) -> None:
         """ """
-        if not super().setUpdateConfig(deviceName):
-            return False
-
         suc = self.client.setBlobMode(blobHandling="Also", deviceName=deviceName)
         self.log.info(f"Blob mode [{deviceName}] success: [{suc}]")
 
@@ -66,7 +63,6 @@ class CameraIndi(IndiClass):
             deviceName=deviceName, propertyName="TELESCOPE_TYPE", elements=telescope
         )
         self.log.info(f"Primary telescope [{deviceName}] success: [{suc}]")
-        return True
 
     def setExposureState(self) -> bool:
         """

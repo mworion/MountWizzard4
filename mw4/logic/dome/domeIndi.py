@@ -41,9 +41,6 @@ class DomeIndi(IndiClass):
 
     def updateNumber(self, deviceName: str, propertyName: str) -> None:
         """ """
-        if not super().updateNumber(deviceName, propertyName):
-            return
-
         for element, value in self.device.getNumber(propertyName).items():
             if element == "DOME_ABSOLUTE_POSITION":
                 azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0)

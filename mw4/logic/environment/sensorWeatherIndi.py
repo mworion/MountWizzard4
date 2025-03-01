@@ -29,21 +29,11 @@ class SensorWeatherIndi(IndiClass):
         self.signals = signals
         super().__init__(app=app, data=data)
 
-    def setUpdateConfig(self, deviceName):
+    def setUpdateConfig(self, deviceName: str) -> None:
         """
-        setUpdateRate corrects the update rate of weather devices to get a defined
-        setting regardless, what is set up in server side.
-
-        :param deviceName:
-        :return: success
         """
-        if not super().setUpdateConfig(deviceName):
-            return False
-
         update = self.device.getNumber("POLLING_PERIOD")
         update["PERIOD_MS"] = self.updateRate
-        suc = self.client.sendNewNumber(
+        self.client.sendNewNumber(
             deviceName=deviceName, propertyName="POLLING_PERIOD", elements=update
         )
-        self.log.info(f"Polling [{deviceName}] success: [{suc}]")
-        return suc

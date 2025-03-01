@@ -24,6 +24,7 @@ from indibase.indiDevice import Device
 from indibase import indiXML
 from indibase.indiXML import INDIBase
 from base.loggerMW import setupLogging
+from PySide6.QtNetwork import QTcpSocket
 
 setupLogging()
 
@@ -951,4 +952,11 @@ def test_handleError_1(function):
     function.connected = True
     with mock.patch.object(function, "disconnectServer"):
         suc = function.handleError("")
+        assert suc
+
+
+def test_handleError_2(function):
+    function.connected = True
+    with mock.patch.object(function, "disconnectServer"):
+        suc = function.handleError(QTcpSocket.RemoteHostClosedError)
         assert suc

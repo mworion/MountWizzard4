@@ -43,13 +43,19 @@ def function(qapp):
 
 def test_updatePointGui_alt(function):
     obs = function.mainW.app.mount.obsSite
+    obs.raJNow = Angle(hours=0)
+    obs.decJNow = Angle(degrees=0)
     obs.Alt = Angle(degrees=45)
+    obs.Az = Angle(degrees=45)
     function.updatePointGUI(obs)
     assert "45.00" == function.ui.ALT.text()
 
 
 def test_updatePointGui_az(function):
     obs = function.mainW.app.mount.obsSite
+    obs.raJNow = Angle(hours=0)
+    obs.decJNow = Angle(degrees=0)
+    obs.Alt = Angle(degrees=45)
     obs.Az = Angle(degrees=45)
     function.updatePointGUI(obs)
     assert "45.00" == function.ui.AZ.text()

@@ -85,8 +85,7 @@ def test_updateStatus_1(function):
     function.client = Client()
     function.client.connected = False
 
-    suc = function.updateStatus()
-    assert not suc
+    function.updateStatus()
 
 
 def test_updateStatus_2(function):
@@ -94,14 +93,12 @@ def test_updateStatus_2(function):
     function.client = Client()
     function.client.connected = True
 
-    suc = function.updateStatus()
-    assert suc
+    function.updateStatus()
 
 
 def test_updateNumber_1(function):
     function.device = None
-    suc = function.updateNumber("test", "test")
-    assert not suc
+    function.updateNumber("test", "test")
 
 
 def test_updateNumber_2(function):
@@ -137,21 +134,18 @@ def test_updateNumber_4(function):
 
 
 def test_slewToAltAz_1(function):
-    suc = function.slewToAltAz()
-    assert not suc
+    function.slewToAltAz(azimuth=0, altitude=0)
 
 
 def test_slewToAltAz_2(function):
     function.device = Device()
-    suc = function.slewToAltAz()
-    assert not suc
+    function.slewToAltAz(azimuth=0, altitude=0)
 
 
 def test_slewToAltAz_3(function):
     function.device = Device()
     function.deviceName = "test"
-    suc = function.slewToAltAz()
-    assert not suc
+    function.slewToAltAz(azimuth=0, altitude=0)
 
 
 def test_slewToAltAz_4(function):
@@ -161,8 +155,7 @@ def test_slewToAltAz_4(function):
     with mock.patch.object(
         function.device, "getNumber", return_value={"DOME_ABSOLUTE_POSITION": 1}
     ):
-        suc = function.slewToAltAz()
-        assert not suc
+        function.slewToAltAz(azimuth=0, altitude=0)
 
 
 def test_slewToAltAz_5(function):
@@ -174,8 +167,7 @@ def test_slewToAltAz_5(function):
         function.device, "getNumber", return_value={"DOME_ABSOLUTE_POSITION": 1}
     ):
         with mock.patch.object(function.client, "sendNewNumber", return_value=False):
-            suc = function.slewToAltAz()
-            assert not suc
+            function.slewToAltAz(azimuth=0, altitude=0)
 
 
 def test_slewToAltAz_6(function):
@@ -187,26 +179,22 @@ def test_slewToAltAz_6(function):
         function.device, "getNumber", return_value={"DOME_ABSOLUTE_POSITION": 1}
     ):
         with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            suc = function.slewToAltAz()
-            assert suc
+            function.slewToAltAz(azimuth=0, altitude=0)
 
 
 def test_openShutter_1(function):
-    suc = function.openShutter()
-    assert not suc
+    function.openShutter()
 
 
 def test_openShutter_2(function):
     function.device = Device()
-    suc = function.openShutter()
-    assert not suc
+    function.openShutter()
 
 
 def test_openShutter_3(function):
     function.device = Device()
     function.deviceName = "test"
-    suc = function.openShutter()
-    assert not suc
+    function.openShutter()
 
 
 def test_openShutter_4(function):
@@ -214,8 +202,7 @@ def test_openShutter_4(function):
     function.deviceName = "test"
 
     with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_OPEN": 1}):
-        suc = function.openShutter()
-        assert not suc
+        function.openShutter()
 
 
 def test_openShutter_5(function):
@@ -225,8 +212,7 @@ def test_openShutter_5(function):
 
     with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_OPEN": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
-            suc = function.openShutter()
-            assert not suc
+            function.openShutter()
 
 
 def test_openShutter_6(function):
@@ -236,26 +222,22 @@ def test_openShutter_6(function):
 
     with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_OPEN": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            suc = function.openShutter()
-            assert suc
+            function.openShutter()
 
 
 def test_closeShutter_1(function):
-    suc = function.closeShutter()
-    assert not suc
+    function.closeShutter()
 
 
 def test_closeShutter_2(function):
     function.device = Device()
-    suc = function.closeShutter()
-    assert not suc
+    function.closeShutter()
 
 
 def test_closeShutter_3(function):
     function.device = Device()
     function.deviceName = "test"
-    suc = function.closeShutter()
-    assert not suc
+    function.closeShutter()
 
 
 def test_closeShutter_4(function):
@@ -263,8 +245,7 @@ def test_closeShutter_4(function):
     function.deviceName = "test"
 
     with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_CLOSE": 1}):
-        suc = function.closeShutter()
-        assert not suc
+        function.closeShutter()
 
 
 def test_closeShutter_5(function):
@@ -274,8 +255,7 @@ def test_closeShutter_5(function):
 
     with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_CLOSE": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
-            suc = function.closeShutter()
-            assert not suc
+            function.closeShutter()
 
 
 def test_closeShutter_6(function):
@@ -285,26 +265,22 @@ def test_closeShutter_6(function):
 
     with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_CLOSE": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            suc = function.closeShutter()
-            assert suc
+            function.closeShutter()
 
 
 def test_slewCW_1(function):
-    suc = function.slewCW()
-    assert not suc
+    function.slewCW()
 
 
 def test_slewCW_2(function):
     function.device = Device()
-    suc = function.slewCW()
-    assert not suc
+    function.slewCW()
 
 
 def test_slewCW_3(function):
     function.device = Device()
     function.deviceName = "test"
-    suc = function.slewCW()
-    assert not suc
+    function.slewCW()
 
 
 def test_slewCW_4(function):
@@ -312,8 +288,7 @@ def test_slewCW_4(function):
     function.deviceName = "test"
 
     with mock.patch.object(function.device, "getSwitch", return_value={"DOME_CW": 1}):
-        suc = function.slewCW()
-        assert not suc
+        function.slewCW()
 
 
 def test_slewCW_5(function):
@@ -323,8 +298,8 @@ def test_slewCW_5(function):
 
     with mock.patch.object(function.device, "getSwitch", return_value={"DOME_CW": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
-            suc = function.slewCW()
-            assert not suc
+            function.slewCW()
+
 
 
 def test_slewCW_6(function):
@@ -334,26 +309,22 @@ def test_slewCW_6(function):
 
     with mock.patch.object(function.device, "getSwitch", return_value={"DOME_CW": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            suc = function.slewCW()
-            assert suc
+            function.slewCW()
 
 
 def test_slewCCW_1(function):
-    suc = function.slewCCW()
-    assert not suc
+    function.slewCCW()
 
 
 def test_slewCCW_2(function):
     function.device = Device()
-    suc = function.slewCCW()
-    assert not suc
+    function.slewCCW()
 
 
 def test_slewCCW_3(function):
     function.device = Device()
     function.deviceName = "test"
-    suc = function.slewCCW()
-    assert not suc
+    function.slewCCW()
 
 
 def test_slewCCW_4(function):
@@ -361,8 +332,7 @@ def test_slewCCW_4(function):
     function.deviceName = "test"
 
     with mock.patch.object(function.device, "getSwitch", return_value={"DOME_CW": 1}):
-        suc = function.slewCCW()
-        assert not suc
+        function.slewCCW()
 
 
 def test_slewCCW_5(function):
@@ -372,8 +342,7 @@ def test_slewCCW_5(function):
 
     with mock.patch.object(function.device, "getSwitch", return_value={"DOME_CW": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
-            suc = function.slewCCW()
-            assert not suc
+            function.slewCCW()
 
 
 def test_slewCCW_6(function):
@@ -383,26 +352,22 @@ def test_slewCCW_6(function):
 
     with mock.patch.object(function.device, "getSwitch", return_value={"DOME_CW": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            suc = function.slewCCW()
-            assert suc
+            function.slewCCW()
 
 
 def test_abortSlew_1(function):
-    suc = function.abortSlew()
-    assert not suc
+    function.abortSlew()
 
 
 def test_abortSlew_2(function):
     function.device = Device()
-    suc = function.abortSlew()
-    assert not suc
+    function.abortSlew()
 
 
 def test_abortSlew_3(function):
     function.device = Device()
     function.deviceName = "test"
-    suc = function.abortSlew()
-    assert not suc
+    function.abortSlew()
 
 
 def test_abortSlew_4(function):
@@ -410,8 +375,7 @@ def test_abortSlew_4(function):
     function.deviceName = "test"
 
     with mock.patch.object(function.device, "getSwitch", return_value={"ABORT": 1}):
-        suc = function.abortSlew()
-        assert not suc
+        function.abortSlew()
 
 
 def test_abortSlew_5(function):
@@ -421,8 +385,7 @@ def test_abortSlew_5(function):
 
     with mock.patch.object(function.device, "getSwitch", return_value={"ABORT": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
-            suc = function.abortSlew()
-            assert not suc
+            function.abortSlew()
 
 
 def test_abortSlew_6(function):
@@ -432,5 +395,4 @@ def test_abortSlew_6(function):
 
     with mock.patch.object(function.device, "getSwitch", return_value={"ABORT": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            suc = function.abortSlew()
-            assert suc
+            function.abortSlew()

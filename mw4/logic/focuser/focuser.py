@@ -80,11 +80,9 @@ class Focuser:
         self.run[self.framework].stopCommunication()
 
     def move(self, position: int) -> None:
-        """
-        """
+        """ """
         self.run[self.framework].move(position=position)
 
     def halt(self) -> None:
-        """
-        """
+        """ """
         self.run[self.framework].halt()

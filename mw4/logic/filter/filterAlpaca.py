@@ -31,8 +31,7 @@ class FilterAlpaca(AlpacaClass):
         self.data = data
 
     def workerGetInitialConfig(self) -> None:
-        """
-        """
+        """ """
         super().workerGetInitialConfig()
         names = self.getAlpacaProperty("names")
         if names is None:
@@ -44,8 +43,7 @@ class FilterAlpaca(AlpacaClass):
             self.data[f"FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}"] = name
 
     def workerPollData(self) -> None:
-        """
-        """
+        """ """
         if not self.deviceConnected:
             return
 
@@ -55,8 +53,7 @@ class FilterAlpaca(AlpacaClass):
         self.storePropertyToData(position, "FILTER_SLOT.FILTER_SLOT_VALUE")
 
     def sendFilterNumber(self, filterNumber: int = 0) -> None:
-        """
-        """
+        """ """
         if not self.deviceConnected:
             return
         self.setAlpacaProperty("position", Position=filterNumber)

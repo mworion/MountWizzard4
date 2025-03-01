@@ -29,31 +29,26 @@ class DomeAlpaca(AlpacaClass):
         super().__init__(app=app, data=data)
         self.signals = signals
 
-    def workerGetInitialConfig(self):
+    def workerGetInitialConfig(self) -> None:
         """
-        :return: true for test purpose
         """
         super().workerGetInitialConfig()
         self.getAndStoreAlpacaProperty("cansetaltitude", "CanSetAltitude")
         self.getAndStoreAlpacaProperty("cansetazimuth", "CanSetAzimuth")
         self.getAndStoreAlpacaProperty("cansetshutter", "CanSetShutter")
         self.log.debug(f"Initial data: {self.data}")
-        return True
 
-    def processPolledData(self):
+    def processPolledData(self) -> None:
         """
-        :return: true for test purpose
         """
         azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0)
         self.signals.azimuth.emit(azimuth)
-        return True
 
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         """
-        :return: true for test purpose
         """
         if not self.deviceConnected:
-            return False
+            return
 
         shutterStates = ["Open", "Closed", "Opening", "Closing", "Error"]
         azimuth = self.getAlpacaProperty("azimuth")
@@ -76,70 +71,45 @@ class DomeAlpaca(AlpacaClass):
             self.data["DOME_SHUTTER.SHUTTER_OPEN"] = None
             self.data["DOME_SHUTTER.SHUTTER_CLOSED"] = None
 
-        return True
-
-    def slewToAltAz(self, altitude=0, azimuth=0):
+    def slewToAltAz(self, altitude: float, azimuth: float) -> None:
         """
-        slewToAltAz sends a command to the dome to move to azimuth / altitude.
-        if a dome does support this
-
-        :param altitude:
-        :param azimuth:
-        :return: success
         """
         if not self.deviceConnected:
-            return False
-
+            return
         if self.data.get("CanSetAzimuth"):
             self.setAlpacaProperty("slewtoazimuth", Azimuth=azimuth)
         if self.data.get("CanSetAltitude"):
             self.setAlpacaProperty("slewtoaltitude", Altitude=altitude)
-        return True
 
-    def openShutter(self):
+    def openShutter(self) -> None:
         """
-        :return: success
         """
         if not self.deviceConnected:
-            return False
-
+            return
         if self.data.get("CanSetShutter"):
             self.getAlpacaProperty("openshutter")
-        return True
 
-    def closeShutter(self):
+    def closeShutter(self) -> None:
         """
-        :return: success
         """
         if not self.deviceConnected:
-            return False
-
+            return
         if self.data.get("CanSetShutter"):
             self.getAlpacaProperty("closeshutter")
-        return True
 
-    def slewCW(self):
+    def slewCW(self) -> None:
         """
-        :return: success
+        """
+        pass
+
+    def slewCCW(self) -> None:
+        """
+        """
+        pass
+
+    def abortSlew(self) -> None:
+        """
         """
         if not self.deviceConnected:
-            return False
-        return True
-
-    def slewCCW(self):
-        """
-        :return: success
-        """
-        if not self.deviceConnected:
-            return False
-        return True
-
-    def abortSlew(self):
-        """
-        :return: success
-        """
-        if not self.deviceConnected:
-            return False
-
+            return
         self.getAlpacaProperty("abortslew")
-        return True

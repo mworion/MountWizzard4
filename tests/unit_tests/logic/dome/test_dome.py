@@ -81,30 +81,26 @@ def test_stopCommunication_3(function):
 
 
 def test_waitSettlingAndEmit(function):
-    suc = function.waitSettlingAndEmit()
-    assert suc
+    function.waitSettlingAndEmit()
 
 
 def test_checkSlewingDome_1(function):
     function.data["Slewing"] = False
     with mock.patch.object(function.settlingWait, "start"):
-        suc = function.checkSlewingDome()
-        assert suc
+        function.checkSlewingDome()
 
 
 def test_checkSlewingDome_2(function):
     function.isSlewing = True
     function.data["Slewing"] = False
     with mock.patch.object(function.settlingWait, "start"):
-        suc = function.checkSlewingDome()
-        assert suc
+        function.checkSlewingDome()
 
 
 def test_checkSlewingDome_3(function):
     function.data["Slewing"] = True
     with mock.patch.object(function.settlingWait, "start"):
-        suc = function.checkSlewingDome()
-        assert suc
+        function.checkSlewingDome()
 
 
 def test_checkSlewingDome_4(function):
@@ -112,8 +108,7 @@ def test_checkSlewingDome_4(function):
     function.isSlewing = False
     function.data["Slewing"] = False
     with mock.patch.object(function.settlingWait, "start"):
-        suc = function.checkSlewingDome()
-        assert suc
+        function.checkSlewingDome()
 
 
 def test_checkTargetConditions_1(function):
@@ -459,116 +454,101 @@ def test_slewDome_4(function):
 
 def test_avoidFirstOvershoot(function):
     function.avoidFirstSlewOvershoot = False
-    suc = function.avoidFirstOvershoot()
-    assert suc
+    function.avoidFirstOvershoot()
     assert function.avoidFirstSlewOvershoot
 
 
 def test_openShutter_1(function):
     function.data = {}
-    suc = function.openShutter()
-    assert not suc
+    function.openShutter()
 
 
 def test_openShutter_2(function):
     function.data = {"AZ": 1}
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "openShutter", return_value=False):
-        suc = function.openShutter()
-        assert not suc
+        function.openShutter()
 
 
 def test_openShutter_3(function):
     function.data = {"AZ": 1}
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "openShutter", return_value=True):
-        suc = function.openShutter()
-        assert suc
+        function.openShutter()
 
 
 def test_closeShutter_1(function):
     function.data = {}
-    suc = function.closeShutter()
-    assert not suc
+    function.closeShutter()
 
 
 def test_closeShutter_2(function):
     function.data = {"AZ": 1}
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "closeShutter", return_value=False):
-        suc = function.closeShutter()
-        assert not suc
+        function.closeShutter()
 
 
 def test_closeShutter_3(function):
     function.data = {"AZ": 1}
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "closeShutter", return_value=True):
-        suc = function.closeShutter()
-        assert suc
+        function.closeShutter()
 
 
 def test_slewCW_1(function):
     function.data = {}
-    suc = function.slewCW()
-    assert not suc
+    function.slewCW()
 
 
 def test_slewCW_2(function):
     function.data = {"AZ": 1}
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "slewCW", return_value=False):
-        suc = function.slewCW()
-        assert not suc
+        function.slewCW()
 
 
 def test_slewCW_3(function):
     function.data = {"AZ": 1}
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "slewCW", return_value=True):
-        suc = function.slewCW()
-        assert suc
+        function.slewCW()
 
 
 def test_slewCCW_1(function):
     function.data = {}
-    suc = function.slewCCW()
-    assert not suc
+    function.slewCCW()
 
 
 def test_slewCCW_2(function):
     function.data = {"AZ": 1}
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "slewCCW", return_value=False):
-        suc = function.slewCCW()
-        assert not suc
+        function.slewCCW()
 
 
 def test_slewCCW_3(function):
     function.data = {"AZ": 1}
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "slewCCW", return_value=True):
-        suc = function.slewCCW()
-        assert suc
+        function.slewCCW()
 
 
 def test_abortSlew_1(function):
     function.data = {}
-    suc = function.abortSlew()
-    assert not suc
+    function.abortSlew()
 
 
 def test_abortSlew_2(function):
     function.data = {"AZ": 1}
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "abortSlew", return_value=False):
-        suc = function.abortSlew()
-        assert not suc
+        function.abortSlew()
 
 
 def test_abortSlew_3(function):
     function.data = {"AZ": 1}
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "abortSlew", return_value=True):
-        suc = function.abortSlew()
-        assert suc
+        function.abortSlew()
+

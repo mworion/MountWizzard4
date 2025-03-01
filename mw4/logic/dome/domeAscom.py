@@ -31,29 +31,23 @@ class DomeAscom(AscomClass):
         super().__init__(app=app, data=data)
         self.signals = signals
 
-    def workerGetInitialConfig(self):
+    def workerGetInitialConfig(self) -> None:
         """
-        :return: true for test purpose
         """
         super().workerGetInitialConfig()
         self.getAndStoreAscomProperty("CanSetAltitude", "CanSetAltitude")
         self.getAndStoreAscomProperty("CanSetAzimuth", "CanSetAzimuth")
         self.getAndStoreAscomProperty("CanSetShutter", "CanSetShutter")
         self.log.debug(f"Initial data: {self.data}")
-        return True
 
-    def processPolledData(self):
+    def processPolledData(self) -> None:
         """
-        :return: true for test purpose
         """
         azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0)
         self.signals.azimuth.emit(azimuth)
 
-        return True
-
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         """
-        :return: true for test purpose
         """
         azimuth = self.getAscomProperty("Azimuth")
         self.storePropertyToData(azimuth, "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")
@@ -81,63 +75,42 @@ class DomeAscom(AscomClass):
             self.data["DOME_SHUTTER.SHUTTER_OPEN"] = None
             self.data["DOME_SHUTTER.SHUTTER_CLOSED"] = None
 
-        return True
-
-    def slewToAltAz(self, altitude=0, azimuth=0):
+    def slewToAltAz(self, altitude: float, azimuth: float) -> None:
         """
-        :param altitude:
-        :param azimuth:
-        :return: success
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.callMethodThreaded(self.client.SlewToAzimuth, azimuth)
         self.callMethodThreaded(self.client.SlewToAltitude, altitude)
-        return True
 
-    def openShutter(self):
+    def openShutter(self) -> None:
         """
-        :return: success
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.callMethodThreaded(self.client.OpenShutter)
-        return True
 
-    def closeShutter(self):
+    def closeShutter(self) -> None:
         """
-        :return: success
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.callMethodThreaded(self.client.CloseShutter)
-        return True
 
-    def slewCW(self):
+    def slewCW(self) -> None:
         """
-        :return: success
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.callMethodThreaded(self.client.OpenShutter)
-        return True
 
-    def slewCCW(self):
+    def slewCCW(self) -> None:
         """
-        :return: success
         """
-        if not self.deviceConnected:
-            return False
-        return True
+        pass
 
-    def abortSlew(self):
+    def abortSlew(self) -> None:
         """
-        :return: success
+
         """
-        if not self.deviceConnected:
-            return False
-        return True
+        pass

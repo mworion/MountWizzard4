@@ -32,8 +32,7 @@ class FilterIndi(IndiClass):
         super().__init__(app=app, data=data)
 
     def sendFilterNumber(self, filterNumber: int = 1) -> None:
-        """
-        """
+        """ """
         if self.device is None:
             return
 

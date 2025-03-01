@@ -81,8 +81,7 @@ class Filter:
         self.run[self.framework].stopCommunication()
 
     def sendFilterNumber(self, filterNumber: int = 1) -> None:
-        """
-        """
+        """ """
         if self.framework not in self.run.keys():
             return
         self.run[self.framework].sendFilterNumber(filterNumber=filterNumber)

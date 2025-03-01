@@ -31,33 +31,18 @@ class DomeIndi(IndiClass):
         self.lastAzimuth = None
         self.app.update1s.connect(self.updateStatus)
 
-    def updateStatus(self):
-        """
-        updateStatus emits the actual azimuth status every 3 second in case of
-        opening a window and get the signals late connected as INDI does not
-        repeat any signal of it's own
-
-        :return: true for test purpose
-        """
+    def updateStatus(self) -> None:
+        """ """
         if not self.client.connected:
-            return False
+            return
 
         azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0)
         self.signals.azimuth.emit(azimuth)
-        return True
 
-    def updateNumber(self, deviceName, propertyName):
-        """
-        updateNumber is called whenever a new number is received in client. it
-        runs through the device list and writes the number data to the according
-        locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
+    def updateNumber(self, deviceName: str, propertyName: str) -> None:
+        """ """
         if not super().updateNumber(deviceName, propertyName):
-            return False
+            return
 
         for element, value in self.device.getNumber(propertyName).items():
             if element == "DOME_ABSOLUTE_POSITION":
@@ -73,99 +58,81 @@ class DomeIndi(IndiClass):
                 else:
                     self.data["Shutter.Status"] = "-"
 
-        return True
-
-    def slewToAltAz(self, altitude=0, azimuth=0):
-        """
-        :param altitude:
-        :param azimuth:
-        :return: success
-        """
+    def slewToAltAz(self, altitude: float, azimuth: float) -> None:
+        """ """
         if self.device is None:
-            return False
+            return
         if self.deviceName is None or not self.deviceName:
-            return False
+            return
 
         position = self.device.getNumber("ABS_DOME_POSITION")
         if "DOME_ABSOLUTE_POSITION" not in position:
-            return False
+            return
 
         position["DOME_ABSOLUTE_POSITION"] = azimuth
-        suc = self.client.sendNewNumber(
+        self.client.sendNewNumber(
             deviceName=self.deviceName,
             propertyName="ABS_DOME_POSITION",
             elements=position,
         )
-        return suc
 
-    def openShutter(self):
-        """
-        :return: success
-        """
+    def openShutter(self) -> None:
+        """ """
         if self.device is None:
-            return False
+            return
         if self.deviceName is None or not self.deviceName:
-            return False
+            return
 
         position = self.device.getSwitch("DOME_SHUTTER")
         if "SHUTTER_OPEN" not in position:
-            return False
+            return
 
         position["SHUTTER_OPEN"] = "On"
         position["SHUTTER_CLOSE"] = "Off"
-        suc = self.client.sendNewSwitch(
+        self.client.sendNewSwitch(
             deviceName=self.deviceName, propertyName="DOME_SHUTTER", elements=position
         )
-        return suc
 
-    def closeShutter(self):
-        """
-        :return: success
-        """
+    def closeShutter(self) -> None:
+        """ """
         if self.device is None:
-            return False
+            return
         if self.deviceName is None or not self.deviceName:
-            return False
+            return
 
         position = self.device.getSwitch("DOME_SHUTTER")
         if "SHUTTER_CLOSE" not in position:
-            return False
+            return
 
         position["SHUTTER_OPEN"] = "Off"
         position["SHUTTER_CLOSE"] = "On"
-        suc = self.client.sendNewSwitch(
+        self.client.sendNewSwitch(
             deviceName=self.deviceName, propertyName="DOME_SHUTTER", elements=position
         )
-        return suc
 
-    def slewCW(self):
-        """
-        :return: success
-        """
+    def slewCW(self) -> None:
+        """ """
         if self.device is None:
-            return False
+            return
         if self.deviceName is None or not self.deviceName:
-            return False
+            return
 
         position = self.device.getSwitch("DOME_MOTION")
         if "DOME_CW" not in position:
-            return False
+            return
 
         position["DOME_CW"] = "On"
         position["DOME_CCW"] = "Off"
-        suc = self.client.sendNewSwitch(
+        self.client.sendNewSwitch(
             deviceName=self.deviceName, propertyName="DOME_MOTION", elements=position
         )
-        return suc
 
-    def slewCCW(self):
-        """
-        :return: success
-        """
+    def slewCCW(self) -> None:
+        """ """
         if self.device is None:
-            return False
+            return
         if self.deviceName is None or not self.deviceName:
-            return False
+            return
 
         position = self.device.getSwitch("DOME_MOTION")
         if "DOME_CW" not in position:
@@ -173,28 +140,24 @@ class DomeIndi(IndiClass):
 
         position["DOME_CW"] = "Off"
         position["DOME_CCW"] = "On"
-        suc = self.client.sendNewSwitch(
+        self.client.sendNewSwitch(
             deviceName=self.deviceName, propertyName="DOME_MOTION", elements=position
         )
-        return suc
 
-    def abortSlew(self):
-        """
-        :return: success
-        """
+    def abortSlew(self) -> None:
+        """ """
         if self.device is None:
-            return False
+            return
         if self.deviceName is None or not self.deviceName:
-            return False
+            return
 
         position = self.device.getSwitch("DOME_ABORT_MOTION")
         if "ABORT" not in position:
-            return False
+            return
 
         position["ABORT"] = "On"
-        suc = self.client.sendNewSwitch(
+        self.client.sendNewSwitch(
             deviceName=self.deviceName,
             propertyName="DOME_ABORT_MOTION",
             elements=position,
         )
-        return suc

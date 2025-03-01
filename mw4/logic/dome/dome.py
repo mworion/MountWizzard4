@@ -108,17 +108,14 @@ class Dome:
             self.app.update1s.disconnect(self.checkSlewingDome)
             self.domeStarted = False
 
-    def waitSettlingAndEmit(self):
+    def waitSettlingAndEmit(self) -> None:
         """
-        :return: true for test purpose
         """
         self.signals.slewed.emit()
         self.signals.message.emit("")
-        return True
 
-    def checkSlewingDome(self):
+    def checkSlewingDome(self) -> None:
         """
-        :return:
         """
         if self.isSlewing:
             self.signals.message.emit("slewing")
@@ -139,11 +136,8 @@ class Dome:
                     self.isSlewing = True
                 self.counterStartSlewing -= 1
 
-        return True
-
-    def checkTargetConditions(self):
+    def checkTargetConditions(self) -> bool:
         """
-        :return:
         """
         if self.openingHysteresis is None:
             self.log.debug("No opening hysteresis")
@@ -166,10 +160,8 @@ class Dome:
             return False
         return True
 
-    def calcTargetRectanglePoints(self, azimuth):
+    def calcTargetRectanglePoints(self, azimuth: float) -> tuple:
         """
-        :param azimuth:
-        :return:
         """
         azRad = np.radians(-azimuth)
         sinAz = np.sin(azRad)
@@ -192,7 +184,7 @@ class Dome:
         return A, B, C
 
     @staticmethod
-    def targetInDomeShutter(A, B, C, M):
+    def targetInDomeShutter(A, B, C, M) -> bool:
         """
         Based on the maths presented on:
             https://stackoverflow.com/questions/2752725/
@@ -208,7 +200,7 @@ class Dome:
         result = checkAB and checkBC
         return result
 
-    def checkSlewNeeded(self, x, y):
+    def checkSlewNeeded(self, x: float, y: float) -> bool:
         """
         :param x:
         :param y:
@@ -225,12 +217,8 @@ class Dome:
         self.log.debug(f"Slew needed: [{slewNeeded}]")
         return slewNeeded
 
-    def calcSlewTarget(self, altitude, azimuth, func):
+    def calcSlewTarget(self, altitude: float, azimuth: float, func: callable) -> tuple:
         """
-        :param altitude:
-        :param azimuth:
-        :param func:
-        :return:
         """
         if self.useGeometry:
             alt, az, intersect, _, _ = func()
@@ -251,10 +239,8 @@ class Dome:
         y = intersect[1]
         return alt, az, x, y
 
-    def calcOvershoot(self, az):
+    def calcOvershoot(self, az: float) -> float:
         """
-        :param az:
-        :return:
         """
         if not self.overshoot:
             self.lastFinalAz = None
@@ -293,12 +279,8 @@ class Dome:
         self.log.debug(f"Overshoot value: [{self.lastFinalAz}]")
         return self.lastFinalAz
 
-    def slewDome(self, altitude=0, azimuth=0, follow=False):
+    def slewDome(self, altitude: float = 0, azimuth: float = 0, follow: bool = False) -> float:
         """
-        :param altitude:
-        :param azimuth:
-        :param follow:
-        :return: success
         """
         mount = self.app.mount
         if follow:
@@ -324,64 +306,47 @@ class Dome:
 
         return delta
 
-    def avoidFirstOvershoot(self):
+    def avoidFirstOvershoot(self) -> None:
         """
-        :return:
         """
         self.avoidFirstSlewOvershoot = True
-        return True
 
-    def openShutter(self):
+    def openShutter(self) -> None:
         """
-        :return: success
         """
         if not self.data:
             self.log.error("No data dict available")
-            return False
+            return
+        self.run[self.framework].openShutter()
 
-        suc = self.run[self.framework].openShutter()
-        return suc
-
-    def closeShutter(self):
+    def closeShutter(self) -> None:
         """
-        :return: success
         """
         if not self.data:
             self.log.error("No data dict available")
-            return False
+            return
+        self.run[self.framework].closeShutter()
 
-        suc = self.run[self.framework].closeShutter()
-        return suc
-
-    def slewCW(self):
+    def slewCW(self) -> None:
         """
-        :return: success
         """
         if not self.data:
             self.log.error("No data dict available")
-            return False
+            return
+        self.run[self.framework].slewCW()
 
-        suc = self.run[self.framework].slewCW()
-        return suc
-
-    def slewCCW(self):
+    def slewCCW(self) -> None:
         """
-        :return: success
         """
         if not self.data:
             self.log.error("No data dict available")
-            return False
+            return
+        self.run[self.framework].slewCCW()
 
-        suc = self.run[self.framework].slewCCW()
-        return suc
-
-    def abortSlew(self):
+    def abortSlew(self) -> None:
         """
-        :return: success
         """
         if not self.data:
             self.log.error("No data dict available")
-            return False
-
-        suc = self.run[self.framework].abortSlew()
-        return suc
+            return
+        self.run[self.framework].abortSlew()

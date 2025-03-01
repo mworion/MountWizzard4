@@ -530,36 +530,31 @@ class ImageManage:
         """ """
         if not self.app.deviceStat["dome"]:
             return
-        if not self.app.dome.slewCW():
-            self.msg.emit(2, "Setting", "Imaging", "Dome could not be slewed CW")
+        self.app.dome.slewCW()
 
     def domeSlewCCW(self) -> None:
         """ """
         if not self.app.deviceStat["dome"]:
             return
-        if not self.app.dome.slewCCW():
-            self.msg.emit(2, "Setting", "Imaging", "Dome could not be slewed CCW")
+        self.app.dome.slewCCW()
 
     def domeAbortSlew(self) -> None:
         """ """
         if not self.app.deviceStat["dome"]:
             return
-        if not self.app.dome.abortSlew():
-            self.msg.emit(2, "Dome", "Command", "Dome slew abort could not be executed")
+        self.app.dome.abortSlew()
 
     def domeOpenShutter(self) -> None:
         """ """
         if not self.app.deviceStat["dome"]:
             return
-        if not self.app.dome.openShutter():
-            self.msg.emit(2, "Dome", "Command", "Dome open shutter could not be executed")
+        self.app.dome.openShutter()
 
     def domeCloseShutter(self) -> None:
         """ """
         if not self.app.deviceStat["dome"]:
             return
-        if not self.app.dome.closeShutter():
-            self.msg.emit(2, "Dome", "Command", "Dome close shutter could not be executed")
+        self.app.dome.closeShutter()
 
     def domeMoveGameController(self, turnVal: int, openVal: int) -> None:
         """ """

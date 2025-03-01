@@ -30,8 +30,7 @@ class FocuserIndi(IndiClass):
         super().__init__(app=app, data=data)
 
     def move(self, position: int) -> None:
-        """
-        """
+        """ """
         if self.device is None:
             return
         pos = self.device.getNumber("ABS_FOCUS_POSITION")
@@ -43,8 +42,7 @@ class FocuserIndi(IndiClass):
         )
 
     def halt(self) -> None:
-        """
-        """
+        """ """
         if self.device is None:
             return
         pos = self.device.getNumber("ABS_FOCUS_POSITION")

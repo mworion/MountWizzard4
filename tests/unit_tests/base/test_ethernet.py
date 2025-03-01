@@ -30,27 +30,27 @@ def module_setup_teardown(qapp):
 
 def test_checkFormatMAC_1():
     val = checkFormatMAC("")
-    assert val is None
+    assert not val
 
 
 def test_checkFormatMAC_2():
     val = checkFormatMAC(1234)
-    assert val is None
+    assert not val
 
 
 def test_checkFormatMAC_3():
     val = checkFormatMAC("00:00:00")
-    assert val is None
+    assert not val
 
 
 def test_checkFormatMAC_4():
     val = checkFormatMAC("00:00:00:123:00:00")
-    assert val is None
+    assert not val
 
 
 def test_checkFormatMAC_5():
     val = checkFormatMAC("00:00:00:12K:00:00")
-    assert val is None
+    assert not val
 
 
 def test_checkFormatMAC_6():
@@ -60,4 +60,4 @@ def test_checkFormatMAC_6():
 
 def test_checkFormatMAC_7():
     val = checkFormatMAC("00:L0:00:12:00:00")
-    assert val is None
+    assert not val

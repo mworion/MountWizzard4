@@ -356,7 +356,7 @@ def test_setAlpacaProperty_9(function):
 def test_getAndStoreAlpacaProperty(function):
     with mock.patch.object(function, "getAlpacaProperty"):
         with mock.patch.object(function, "storePropertyToData"):
-            function.getAndStoreAlpacaProperty(10, "YES", "NO")
+            function.getAndStoreAlpacaProperty(10, "YES")
 
 
 def test_workerConnectDevice_1(function):

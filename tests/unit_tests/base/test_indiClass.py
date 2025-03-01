@@ -59,36 +59,31 @@ def test_properties(function):
 
 def test_serverConnected_1(function):
     function.deviceName = ""
-    suc = function.serverConnected()
-    assert not suc
+    function.serverConnected()
 
 
 def test_serverConnected_2(function):
     function.deviceName = "test"
     with mock.patch.object(function.client, "watchDevice", return_value=True) as call:
-        suc = function.serverConnected()
-        assert suc
+        function.serverConnected()
         call.assert_called_with("test")
 
 
 def test_serverDisconnected(function):
-    suc = function.serverDisconnected({"test": "test"})
-    assert suc
+    function.serverDisconnected({"test": "test"})
 
 
 def test_newDevice_1(function):
     function.deviceName = "false"
     with mock.patch.object(function.client, "getDevice", return_value=None):
-        suc = function.newDevice("test")
-        assert suc
+        function.newDevice("test")
         assert None is function.device
 
 
 def test_newDevice_2(function):
     function.deviceName = "test"
     with mock.patch.object(function.client, "getDevice", return_value=Device()):
-        suc = function.newDevice("test")
-        assert suc
+        function.newDevice("test")
         assert function.device is not None
 
 
@@ -96,24 +91,21 @@ def test_removeDevice_1(function):
     function.deviceName = "test"
     function.device = Device()
     function.data = {"test": 1}
-    suc = function.removeDevice("foo")
-    assert not suc
+    function.removeDevice("foo")
 
 
 def test_removeDevice_2(function):
     function.deviceName = "test"
     function.device = Device()
     function.data = {"test": 1}
-    suc = function.removeDevice("test")
-    assert suc
+    function.removeDevice("test")
     assert function.data == {}
     assert function.device is None
 
 
 def test_startRetry_1(function):
     function.deviceName = ""
-    suc = function.startRetry()
-    assert not suc
+    function.startRetry()
 
 
 def test_startRetry_2(function):
@@ -121,8 +113,7 @@ def test_startRetry_2(function):
     function.device = Device()
     function.client.connected = True
     with mock.patch.object(function.client, "connectServer", return_value=True):
-        suc = function.startRetry()
-        assert not suc
+        function.startRetry()
 
 
 def test_startRetry_3(function):
@@ -130,70 +121,60 @@ def test_startRetry_3(function):
     function.device = Device()
     function.client.connected = False
     with mock.patch.object(function.client, "connectServer", return_value=True):
-        suc = function.startRetry()
-        assert suc
+        function.startRetry()
 
 
 def test_startCommunication_1(function):
     function.data = {}
     with mock.patch.object(function.client, "connectServer", return_value=False):
         with mock.patch.object(function.timerRetry, "start"):
-            suc = function.startCommunication()
-            assert suc
+            function.startCommunication()
 
 
 def test_startCommunication_2(function):
     function.data = {}
     with mock.patch.object(function.client, "connectServer", return_value=True):
         with mock.patch.object(function.timerRetry, "start"):
-            suc = function.startCommunication()
-            assert suc
+            function.startCommunication()
 
 
 def test_stopCommunication_1(function):
     with mock.patch.object(function.client, "disconnectServer", return_value=False):
-        suc = function.stopCommunication()
-        assert not suc
+        function.stopCommunication()
 
 
 def test_stopCommunication_2(function):
     with mock.patch.object(function.client, "disconnectServer", return_value=True):
-        suc = function.stopCommunication()
-        assert suc
+        function.stopCommunication()
 
 
 def test_connectDevice1(function):
     with mock.patch.object(function.client, "connectDevice", return_value=False):
-        suc = function.connectDevice("test", "test")
-        assert not suc
+        function.connectDevice("test", "test")
 
 
 def test_connectDevice2(function):
     with mock.patch.object(function.client, "connectDevice", return_value=False):
-        suc = function.connectDevice("test", "CONNECTION")
-        assert not suc
+        function.connectDevice("test", "CONNECTION")
 
 
 def test_connectDevice3(function):
     function.deviceName = "test"
     with mock.patch.object(function.client, "connectDevice", return_value=True):
-        suc = function.connectDevice("test", "CONNECTION")
-        assert suc
+        function.connectDevice("test", "CONNECTION")
 
 
 def test_connectDevice4(function):
     function.deviceName = "test"
     with mock.patch.object(function.client, "connectDevice", return_value=False):
-        suc = function.connectDevice("test", "CONNECTION")
-        assert not suc
+        function.connectDevice("test", "CONNECTION")
 
 
 def test_loadDefaultConfig_1(function):
     function.loadIndiConfigFlag = False
     function.device = Device()
     with mock.patch.object(function.device, "getSwitch", return_value={"test": 1}):
-        suc = function.loadIndiConfig("test")
-        assert not suc
+        function.loadIndiConfig("test")
 
 
 def test_loadDefaultConfig_2(function):
@@ -201,8 +182,7 @@ def test_loadDefaultConfig_2(function):
     function.device = Device()
     with mock.patch.object(function.device, "getSwitch", return_value={"test": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
-            suc = function.loadIndiConfig("test")
-            assert not suc
+            function.loadIndiConfig("test")
 
 
 def test_loadDefaultConfig_3(function):
@@ -210,24 +190,21 @@ def test_loadDefaultConfig_3(function):
     function.device = Device()
     with mock.patch.object(function.device, "getSwitch", return_value={"test": 1}):
         with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            suc = function.loadIndiConfig("test")
-            assert suc
+            function.loadIndiConfig("test")
 
 
 def test_setUpdateConfig_1(function):
     function.deviceName = ""
     function.loadConfig = True
     with mock.patch.object(function, "loadIndiConfig"):
-        suc = function.setUpdateConfig("test")
-        assert not suc
+        function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_2(function):
     function.deviceName = "test"
     function.loadConfig = True
     with mock.patch.object(function, "loadIndiConfig"):
-        suc = function.setUpdateConfig("test")
-        assert not suc
+        function.setUpdateConfig("test")
 
 
 def test_setUpdateConfig_3(function):
@@ -237,8 +214,7 @@ def test_setUpdateConfig_3(function):
     function.device = Device()
     with mock.patch.object(function, "loadIndiConfig"):
         with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            suc = function.setUpdateConfig("test")
-            assert suc
+            function.setUpdateConfig("test")
 
 
 def test_convertIndigoProperty_1(function):
@@ -248,14 +224,12 @@ def test_convertIndigoProperty_1(function):
 
 
 def test_updateNumber_1(function):
-    suc = function.updateNumber("telescope", "test")
-    assert not suc
+    function.updateNumber("telescope", "test")
 
 
 def test_updateNumber_2(function):
     function.device = Device()
-    suc = function.updateNumber("telescope", "test")
-    assert not suc
+    function.updateNumber("telescope", "test")
 
 
 def test_updateNumber_3(function):
@@ -263,19 +237,16 @@ def test_updateNumber_3(function):
     function.device = Device()
     function.deviceName = "telescope"
     with mock.patch.object(function.device, "getNumber", return_value={"test": 1}):
-        suc = function.updateNumber("telescope", "test")
-        assert suc
+        function.updateNumber("telescope", "test")
 
 
 def test_updateText_1(function):
-    suc = function.updateText("telescope", "test")
-    assert not suc
+    function.updateText("telescope", "test")
 
 
 def test_updateText_2(function):
     function.device = Device()
-    suc = function.updateText("telescope", "test")
-    assert not suc
+    function.updateText("telescope", "test")
 
 
 def test_updateText_3(function):
@@ -283,19 +254,16 @@ def test_updateText_3(function):
     function.device = Device()
     function.deviceName = "telescope"
     with mock.patch.object(function.device, "getText", return_value={"test": 1}):
-        suc = function.updateText("telescope", "test")
-        assert suc
+        function.updateText("telescope", "test")
 
 
 def test_updateSwitch_1(function):
-    suc = function.updateSwitch("telescope", "test")
-    assert not suc
+    function.updateSwitch("telescope", "test")
 
 
 def test_updateSwitch_2(function):
     function.device = Device()
-    suc = function.updateSwitch("telescope", "test")
-    assert not suc
+    function.updateSwitch("telescope", "test")
 
 
 def test_updateSwitch_3(function):
@@ -303,8 +271,7 @@ def test_updateSwitch_3(function):
     function.device = Device()
     function.deviceName = "telescope"
     with mock.patch.object(function.device, "getSwitch", return_value={"test": 1}):
-        suc = function.updateSwitch("telescope", "test")
-        assert suc
+        function.updateSwitch("telescope", "test")
 
 
 def test_updateSwitch_4(function):
@@ -312,19 +279,16 @@ def test_updateSwitch_4(function):
     function.device = Device()
     function.deviceName = "telescope"
     with mock.patch.object(function.device, "getSwitch", return_value={"test": 1}):
-        suc = function.updateSwitch("telescope", "PROFILE")
-        assert suc
+        function.updateSwitch("telescope", "PROFILE")
 
 
 def test_updateLight_1(function):
-    suc = function.updateLight("telescope", "test")
-    assert not suc
+    function.updateLight("telescope", "test")
 
 
 def test_updateLight_2(function):
     function.device = Device()
-    suc = function.updateLight("telescope", "test")
-    assert not suc
+    function.updateLight("telescope", "test")
 
 
 def test_updateLight_3(function):
@@ -332,26 +296,22 @@ def test_updateLight_3(function):
     function.device = Device()
     function.deviceName = "telescope"
     with mock.patch.object(function.device, "getLight", return_value={"test": 1}):
-        suc = function.updateLight("telescope", "test")
-        assert suc
+        function.updateLight("telescope", "test")
 
 
 def test_updateBLOB_1(function):
-    suc = function.updateBLOB("telescope", "test")
-    assert not suc
+    function.updateBLOB("telescope", "test")
 
 
 def test_updateBLOB_2(function):
     function.device = Device()
-    suc = function.updateBLOB("telescope", "test")
-    assert not suc
+    function.updateBLOB("telescope", "test")
 
 
 def test_updateBLOB_3(function):
     function.device = Device()
     function.deviceName = "telescope"
-    suc = function.updateBLOB("telescope", "test")
-    assert suc
+    function.updateBLOB("telescope", "test")
 
 
 def test_removePrefix_1(function):
@@ -366,53 +326,45 @@ def test_removePrefix_2(function):
 
 def test_updateMessage_1(function):
     function.messages = False
-    suc = function.updateMessage("test", "text")
-    assert not suc
+    function.updateMessage("test", "text")
 
 
 def test_updateMessage_2(function):
     function.messages = True
-    suc = function.updateMessage("test", "text")
-    assert suc
+    function.updateMessage("test", "text")
 
 
 def test_updateMessage_3(function):
     function.messages = True
-    suc = function.updateMessage("test", "[WARNING] should not be shown")
-    assert suc
+    function.updateMessage("test", "[WARNING] should not be shown")
 
 
 def test_updateMessage_4(function):
     function.messages = True
-    suc = function.updateMessage("test", "[ERROR] should not be shown")
-    assert suc
+    function.updateMessage("test", "[ERROR] should not be shown")
 
 
 def test_updateMessage_5(function):
     function.messages = True
-    suc = function.updateMessage("test", "NOT should not be shown")
-    assert suc
+    function.updateMessage("test", "NOT should not be shown")
 
 
 def test_updateMessage_6(function):
     function.messages = True
-    suc = function.updateMessage("test", "[INFO] should not be shown")
-    assert suc
+    function.updateMessage("test", "[INFO] should not be shown")
 
 
 def test_addDiscoveredDevice_1(function):
     device = Device()
     function.indiClass = S(app=App())
     with mock.patch.object(device, "getText", return_value={"DRIVER_INTERFACE": None}):
-        suc = function.addDiscoveredDevice("telescope", "test")
-        assert not suc
+        function.addDiscoveredDevice("telescope", "test")
 
 
 def test_addDiscoveredDevice_2(function):
     function.indiClass = S(app=App())
     function.indiClass.client.devices["telescope"] = {}
-    suc = function.addDiscoveredDevice("telescope", "DRIVER_INFO")
-    assert not suc
+    function.addDiscoveredDevice("telescope", "DRIVER_INFO")
 
 
 def test_addDiscoveredDevice_3(function):
@@ -421,8 +373,7 @@ def test_addDiscoveredDevice_3(function):
     function.client.devices["telescope"] = device
     function.discoverType = None
     with mock.patch.object(device, "getText", return_value={}):
-        suc = function.addDiscoveredDevice("telescope", "DRIVER_INFO")
-        assert not suc
+        function.addDiscoveredDevice("telescope", "DRIVER_INFO")
 
 
 def test_addDiscoveredDevice_4(function):
@@ -432,8 +383,7 @@ def test_addDiscoveredDevice_4(function):
     function.discoverType = None
     function.discoverList = list()
     with mock.patch.object(device, "getText", return_value={"DRIVER_INTERFACE": "0"}):
-        suc = function.addDiscoveredDevice("telescope", "DRIVER_INFO")
-        assert not suc
+        function.addDiscoveredDevice("telescope", "DRIVER_INFO")
 
 
 def test_addDiscoveredDevice_5(function):
@@ -443,8 +393,7 @@ def test_addDiscoveredDevice_5(function):
     function.discoverType = 1
     function.discoverList = list()
     with mock.patch.object(device, "getText", return_value={"DRIVER_INTERFACE": 1}):
-        suc = function.addDiscoveredDevice("telescope", "DRIVER_INFO")
-        assert suc
+        function.addDiscoveredDevice("telescope", "DRIVER_INFO")
 
 
 def test_discoverDevices_1(function):

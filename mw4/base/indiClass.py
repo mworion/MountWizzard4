@@ -191,10 +191,8 @@ class IndiClass:
     def serverConnected(self) -> None:
         """
         """
-        if self.deviceName:
-            suc = self.client.watchDevice(self.deviceName)
-            self.log.info(f"INDI watch: [{self.deviceName}], result: [{suc}]")
-        self.client.watchDevice()
+        suc = self.client.watchDevice(self.deviceName)
+        self.log.info(f"INDI watch: [{self.deviceName}], result: [{suc}]")
 
     def serverDisconnected(self, devices: str) -> None:
         """
@@ -230,7 +228,7 @@ class IndiClass:
 
         self.client.connectServer()
 
-    def startCommunication(self):
+    def startCommunication(self) -> None:
         """
         """
         self.data.clear()

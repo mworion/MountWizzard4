@@ -26,55 +26,60 @@ rn = ""
 #
 
 client = {
-    "ubuntu-20": {
-        "user": "mw@astro-ubuntu-20.fritz.box",
+    "ubuntu20": {
+        "user": "mw@astro-ubuntu-20.uranus",
         "work": "/home/mw/test",
-        "scp": "mw@astro-ubuntu-20.fritz.box:/home/mw/test",
+        "scp": "mw@astro-ubuntu-20.uranus:/home/mw/test",
     },
-    "ubuntu-22": {
-        "user": "mw@astro-ubuntu-22.fritz.box",
+    "ubuntu22": {
+        "user": "mw@astro-ubuntu-22.uranus",
         "work": "/home/mw/test",
-        "scp": "mw@astro-ubuntu-22.fritz.box:/home/mw/test",
+        "scp": "mw@astro-ubuntu-22.uranus:/home/mw/test",
+    },
+    "ubuntu24": {
+        "user": "mw@astro-ubuntu-24.uranus",
+        "work": "/home/mw/test",
+        "scp": "mw@astro-ubuntu-24.uranus:/home/mw/test",
     },
     "ubuntuRig": {
-        "user": "mw@astro-comp.fritz.box",
+        "user": "mw@astro-comp.uranus",
         "work": "/home/mw/test",
-        "scp": "mw@astro-comp.fritz.box:/home/mw/test",
+        "scp": "mw@astro-comp.uranus:/home/mw/test",
     },
-    "win10-32": {
-        "user": "mw@astro-win10-32.fritz.box",
+    "win10": {
+        "user": "mw@astro-win-10.uranus",
         "work": "test",
-        "scp": "mw@astro-win10-32.fritz.box:/Users/mw/test",
-    },
-    "win10-64": {
-        "user": "mw@astro-win10-64.fritz.box",
-        "work": "test",
-        "scp": "mw@astro-win10-64.fritz.box:/Users/mw/test",
+        "scp": "mw@astro-win-10.uranus:/Users/mw/test",
     },
     "win11": {
-        "user": "mw@astro-win11.fritz.box",
+        "user": "mw@astro-win-11.uranus",
         "work": "test",
-        "scp": "mw@astro-win11.fritz.box:/Users/mw/test",
+        "scp": "mw@astro-win-11.uranus:/Users/mw/test",
     },
-    "macBigsur": {
-        "user": "mw@astro-mac-bigsur.fritz.box",
+    "mac11": {
+        "user": "mw@astro-mac-10.uranus",
         "work": "test",
-        "scp": "mw@astro-mac-bigsur.fritz.box:/Users/mw/test",
+        "scp": "mw@astro-mac-12.uranus:/Users/mw/test",
     },
-    "macMonterey": {
-        "user": "mw@astro-mac-monterey.fritz.box",
+    "mac12": {
+        "user": "mw@astro-mac-12.uranus",
         "work": "test",
-        "scp": "mw@astro-mac-monterey.fritz.box:/Users/mw/test",
+        "scp": "mw@astro-mac-m12.uranus:/Users/mw/test",
     },
-    "macVentura": {
-        "user": "mw@astro-mac-ventura.fritz.box",
+    "mac13": {
+        "user": "mw@astro-mac-13.uranus",
         "work": "test",
-        "scp": "mw@astro-mac-ventura.fritz.box:/Users/mw/test",
+        "scp": "mw@astro-mac-v13.uranus:/Users/mw/test",
     },
-    "macSonoma": {
-        "user": "mw@astro-mac-sonoma.fritz.box",
+    "mac14": {
+        "user": "mw@astro-mac-14.uranus",
         "work": "test",
-        "scp": "mw@astro-mac-sonoma.fritz.box:/Users/mw/test",
+        "scp": "mw@astro-mac-14.uranus:/Users/mw/test",
+    },
+    "mac15": {
+        "user": "mw@astro-mac-15.uranus",
+        "work": "test",
+        "scp": "mw@astro-mac-15.uranus:/Users/mw/test",
     },
 }
 
@@ -303,53 +308,53 @@ def test_mac(c, user, work, scp):
 
 
 @task(pre=[])
-def test_win10_32(c):
-    printMW("test windows10 32 install")
-    user = client["win10-32"]["user"]
-    work = client["win10-32"]["work"]
-    scp = client["win10-32"]["scp"]
+def test_win10(c):
+    printMW("test win10 install")
+    user = client["win10"]["user"]
+    work = client["win10"]["work"]
+    scp = client["win10"]["scp"]
     test_windows(c, user, work, scp)
-    printMW("test windows10 install finished\n")
-
-
-@task(pre=[])
-def test_win10_64(c):
-    printMW("test windows10 64 install")
-    user = client["win10-64"]["user"]
-    work = client["win10-64"]["work"]
-    scp = client["win10-64"]["scp"]
-    test_windows(c, user, work, scp)
-    printMW("test windows10 install finished\n")
+    printMW("test win10 install finished\n")
 
 
 @task(pre=[])
 def test_win11(c):
-    printMW("test windows11 install")
+    printMW("test win11 install")
     user = client["win11"]["user"]
     work = client["win11"]["work"]
     scp = client["win11"]["scp"]
     test_windows(c, user, work, scp)
-    printMW("test windows11 install finished\n")
+    printMW("test win11 install finished\n")
 
 
 @task(pre=[])
-def test_ubuntu_20(c):
-    printMW("test ubuntu install")
-    user = client["ubuntu-20"]["user"]
-    work = client["ubuntu-20"]["work"]
-    scp = client["ubuntu-20"]["scp"]
+def test_ubuntu20(c):
+    printMW("test ubuntu20 install")
+    user = client["ubuntu20"]["user"]
+    work = client["ubuntu20"]["work"]
+    scp = client["ubuntu20"]["scp"]
     test_ubuntu(c, user, work, scp)
-    printMW("test ubuntu install finished\n")
+    printMW("test ubuntu20 install finished\n")
 
 
 @task(pre=[])
-def test_ubuntu_22(c):
-    printMW("test ubuntu install")
-    user = client["ubuntu-22"]["user"]
-    work = client["ubuntu-22"]["work"]
-    scp = client["ubuntu-22"]["scp"]
+def test_ubuntu22(c):
+    printMW("test ubuntu22 install")
+    user = client["ubuntu22"]["user"]
+    work = client["ubuntu22"]["work"]
+    scp = client["ubuntu22"]["scp"]
     test_ubuntu(c, user, work, scp)
-    printMW("test ubuntu install finished\n")
+    printMW("test ubuntu22 install finished\n")
+
+
+@task(pre=[])
+def test_ubuntu24(c):
+    printMW("test ubuntu24 install")
+    user = client["ubuntu24"]["user"]
+    work = client["ubuntu24"]["work"]
+    scp = client["ubuntu24"]["scp"]
+    test_ubuntu(c, user, work, scp)
+    printMW("test ubuntu24 install finished\n")
 
 
 @task(pre=[])
@@ -363,43 +368,53 @@ def test_astro_comp(c):
 
 
 @task(pre=[])
-def test_macBigsur(c):
-    printMW("test BigSur install")
-    user = client["macBigsur"]["user"]
-    work = client["macBigsur"]["work"]
-    scp = client["macBigsur"]["scp"]
+def test_mac11(c):
+    printMW("test mac11 install")
+    user = client["mac11"]["user"]
+    work = client["mac11"]["work"]
+    scp = client["mac11"]["scp"]
     test_mac(c, user, work, scp)
-    printMW("test BigSur install finished\n")
+    printMW("test mac11 install finished\n")
 
 
 @task(pre=[])
-def test_macMonterey(c):
-    printMW("test Monterey install")
-    user = client["macMonterey"]["user"]
-    work = client["macMonterey"]["work"]
-    scp = client["macMonterey"]["scp"]
+def test_mac12(c):
+    printMW("test mac12 install")
+    user = client["mac12"]["user"]
+    work = client["mac12"]["work"]
+    scp = client["mac12"]["scp"]
     test_mac(c, user, work, scp)
-    printMW("test Monterey install finished\n")
+    printMW("test mac12 install finished\n")
 
 
 @task(pre=[])
-def test_macVentura(c):
-    printMW("test Ventura install")
-    user = client["macVentura"]["user"]
-    work = client["macVentura"]["work"]
-    scp = client["macVentura"]["scp"]
+def test_mac13(c):
+    printMW("test mac13 install")
+    user = client["mac13"]["user"]
+    work = client["mac13"]["work"]
+    scp = client["mac13"]["scp"]
     test_mac(c, user, work, scp)
-    printMW("test Ventura install finished\n")
+    printMW("test mac13 install finished\n")
 
 
 @task(pre=[])
-def test_macSonoma(c):
-    printMW("test Sonoma install")
-    user = client["macSonoma"]["user"]
-    work = client["macSonoma"]["work"]
-    scp = client["macSonoma"]["scp"]
+def test_mac14(c):
+    printMW("test mac14 install")
+    user = client["mac14"]["user"]
+    work = client["mac14"]["work"]
+    scp = client["mac14"]["scp"]
     test_mac(c, user, work, scp)
-    printMW("test Sonoma install finished\n")
+    printMW("test mac14 install finished\n")
+
+
+@task(pre=[])
+def test_mac15(c):
+    printMW("test mac15 install")
+    user = client["mac15"]["user"]
+    work = client["mac15"]["work"]
+    scp = client["mac15"]["scp"]
+    test_mac(c, user, work, scp)
+    printMW("test mac15 install finished\n")
 
 
 @task(pre=[build_resource, build_widgets])

@@ -31,36 +31,28 @@ class FilterAscom(AscomClass):
         super().__init__(app=app, data=data)
         self.signals = signals
 
-    def workerGetInitialConfig(self):
+    def workerGetInitialConfig(self) -> None:
         """
-        :return: success
         """
         super().workerGetInitialConfig()
         names = self.getAscomProperty("Names")
         if names is None:
-            return False
+            return
 
         for i, name in enumerate(names):
             self.storePropertyToData(name, f"FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}")
-        return True
 
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         """
-        :return: true for test purpose
         """
         position = self.getAscomProperty("Position")
         if position == -1 or position is None:
-            return False
-
+            return
         self.storePropertyToData(position, "FILTER_SLOT.FILTER_SLOT_VALUE")
-        return True
 
-    def sendFilterNumber(self, filterNumber=0):
+    def sendFilterNumber(self, filterNumber: int = 0) -> None:
         """
-        :return: true for test purpose
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.setAscomProperty("Position", filterNumber)
-        return True

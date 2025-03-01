@@ -80,13 +80,9 @@ class Filter:
         """ """
         self.run[self.framework].stopCommunication()
 
-    def sendFilterNumber(self, filterNumber=1):
+    def sendFilterNumber(self, filterNumber: int = 1) -> None:
         """
-        :param filterNumber:
-        :return:
         """
         if self.framework not in self.run.keys():
-            return False
-
-        suc = self.run[self.framework].sendFilterNumber(filterNumber=filterNumber)
-        return suc
+            return
+        self.run[self.framework].sendFilterNumber(filterNumber=filterNumber)

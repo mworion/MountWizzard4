@@ -30,42 +30,33 @@ class FilterAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
 
-    def workerGetInitialConfig(self):
+    def workerGetInitialConfig(self) -> None:
         """
-        :return: true for test purpose
         """
         super().workerGetInitialConfig()
         names = self.getAlpacaProperty("names")
         if names is None:
-            return False
+            return
 
         for i, name in enumerate(names):
             if name is None:
                 continue
             self.data[f"FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}"] = name
 
-        return True
-
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         """
-        :return: true for test purpose
         """
         if not self.deviceConnected:
-            return False
+            return
 
         position = self.getAlpacaProperty("position")
         if position == -1 or position is None:
-            return False
-
+            return
         self.storePropertyToData(position, "FILTER_SLOT.FILTER_SLOT_VALUE")
-        return True
 
-    def sendFilterNumber(self, filterNumber=0):
+    def sendFilterNumber(self, filterNumber: int = 0) -> None:
         """
-        :return: true for test purpose
         """
         if not self.deviceConnected:
-            return False
-
+            return
         self.setAlpacaProperty("position", Position=filterNumber)
-        return True

@@ -49,47 +49,40 @@ def function():
 def test_workerGetInitialConfig_1(function):
     with mock.patch.object(AscomClass, "workerGetInitialConfig", return_value=True):
         with mock.patch.object(function, "getAscomProperty", return_value=None):
-            suc = function.workerGetInitialConfig()
-            assert not suc
+            function.workerGetInitialConfig()
 
 
 def test_workerGetInitialConfig_2(function):
     with mock.patch.object(AscomClass, "workerGetInitialConfig", return_value=True):
         with mock.patch.object(function, "getAscomProperty", return_value=["test"]):
             with mock.patch.object(function, "storePropertyToData"):
-                suc = function.workerGetInitialConfig()
-                assert suc
+                function.workerGetInitialConfig()
 
 
 def test_workerPollData_1(function):
     function.client.Position = -1
-    suc = function.workerPollData()
-    assert not suc
+    function.workerPollData()
 
 
 def test_workerPollData_2(function):
     function.client.Position = 1
     with mock.patch.object(function, "getAscomProperty", return_value=-1):
-        suc = function.workerPollData()
-        assert not suc
+        function.workerPollData()
 
 
 def test_workerPollData_3(function):
     function.client.Position = 1
     with mock.patch.object(function, "getAscomProperty", return_value=1):
         with mock.patch.object(function, "storePropertyToData"):
-            suc = function.workerPollData()
-            assert suc
+            function.workerPollData()
 
 
 def test_sendFilterNumber_1(function):
     function.deviceConnected = True
     with mock.patch.object(function, "setAscomProperty"):
-        suc = function.sendFilterNumber(3)
-        assert suc
+        function.sendFilterNumber(3)
 
 
 def test_sendFilterNumber_2(function):
     function.deviceConnected = False
-    suc = function.sendFilterNumber(3)
-    assert not suc
+    function.sendFilterNumber(3)

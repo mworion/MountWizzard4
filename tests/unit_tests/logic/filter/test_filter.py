@@ -62,11 +62,9 @@ def test_stopCommunication_2(function):
 
 def test_sendFilterNumber_1(function):
     function.framework = ""
-    suc = function.sendFilterNumber()
-    assert not suc
+    function.sendFilterNumber()
 
 
 def test_sendFilterNumber_2(function):
     function.framework = "indi"
-    suc = function.sendFilterNumber()
-    assert not suc
+    function.sendFilterNumber()

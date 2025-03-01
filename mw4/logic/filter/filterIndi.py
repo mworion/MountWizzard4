@@ -31,19 +31,16 @@ class FilterIndi(IndiClass):
         self.signals = signals
         super().__init__(app=app, data=data)
 
-    def sendFilterNumber(self, filterNumber=1):
+    def sendFilterNumber(self, filterNumber: int = 1) -> None:
         """
-        :param filterNumber:
-        :return: success
         """
         if self.device is None:
-            return False
+            return
 
         filterNo = self.device.getNumber("FILTER_SLOT")
         filterNo["FILTER_SLOT_VALUE"] = filterNumber
-        suc = self.client.sendNewNumber(
+        self.client.sendNewNumber(
             deviceName=self.deviceName,
             propertyName="FILTER_SLOT",
             elements=filterNo,
         )
-        return suc

@@ -29,7 +29,7 @@ class CoverIndi(IndiClass):
         self.signals = signals
         super().__init__(app=app, data=data)
 
-    def updateText(self, deviceName: str, propertyName: str):
+    def updateText(self, deviceName: str, propertyName: str) -> None:
         """
         """
         if not super().updateText(deviceName, propertyName):

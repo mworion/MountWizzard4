@@ -296,7 +296,6 @@ def test_slewCW_5(function):
             function.slewCW()
 
 
-
 def test_slewCW_6(function):
     function.device = Device()
     function.client = Client()

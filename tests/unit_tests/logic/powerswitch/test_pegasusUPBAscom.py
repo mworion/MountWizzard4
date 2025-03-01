@@ -53,146 +53,123 @@ def function():
 
 def test_workerPollData_1(function):
     with mock.patch.object(function, "getAscomProperty", return_value=15):
-        suc = function.workerPollData()
-        assert suc
+        function.workerPollData()
 
 
 def test_workerPollData_2(function):
     with mock.patch.object(function, "getAscomProperty", return_value=21):
-        suc = function.workerPollData()
-        assert suc
+        function.workerPollData()
 
 
 def test_togglePowerPort_1(function):
     function.deviceConnected = False
-    suc = function.togglePowerPort()
-    assert not suc
+    function.togglePowerPort("1")
 
 
 def test_togglePowerPort_2(function):
     function.deviceConnected = True
-    suc = function.togglePowerPort()
-    assert not suc
+    function.togglePowerPort("1")
 
 
 def test_togglePowerPort_3(function):
     function.deviceConnected = True
     with mock.patch.object(function, "callAscomMethod"):
-        suc = function.togglePowerPort("1")
-        assert suc
+        function.togglePowerPort("1")
 
 
 def test_togglePowerPortBoot_1(function):
     function.deviceConnected = False
-    suc = function.togglePowerPortBoot()
-    assert not suc
+    function.togglePowerPortBoot("1")
 
 
 def test_togglePowerPortBoot_2(function):
     function.deviceConnected = True
-    suc = function.togglePowerPortBoot()
-    assert suc
+    function.togglePowerPortBoot("1")
 
 
 def test_toggleHubUSB_1(function):
     function.deviceConnected = False
-    suc = function.toggleHubUSB()
-    assert not suc
+    function.toggleHubUSB()
 
 
 def test_toggleHubUSB_2(function):
     function.deviceConnected = True
-    suc = function.toggleHubUSB()
-    assert suc
+    function.toggleHubUSB()
 
 
 def test_togglePortUSB_1(function):
     function.deviceConnected = False
-    suc = function.togglePortUSB()
-    assert not suc
+    function.togglePortUSB("1")
 
 
 def test_togglePortUSB_2(function):
     function.deviceConnected = True
-    suc = function.togglePortUSB()
-    assert not suc
+    function.togglePortUSB()
 
 
 def test_togglePortUSB_3(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getAscomProperty", return_value=21):
         with mock.patch.object(function, "callAscomMethod"):
-            suc = function.togglePortUSB("1")
-            assert suc
+            function.togglePortUSB("1")
 
 
 def test_toggleAutoDew_1(function):
     function.deviceConnected = False
-    suc = function.toggleAutoDew()
-    assert not suc
+    function.toggleAutoDew()
 
 
 def test_toggleAutoDew_2(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getAscomProperty", return_value=21):
         with mock.patch.object(function, "callAscomMethod"):
-            suc = function.toggleAutoDew()
-            assert suc
+            function.toggleAutoDew()
 
 
 def test_toggleAutoDew_3(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getAscomProperty", return_value=15):
         with mock.patch.object(function, "callAscomMethod"):
-            suc = function.toggleAutoDew()
-            assert suc
+            function.toggleAutoDew()
 
 
 def test_sendDew_1(function):
     function.deviceConnected = False
-    suc = function.sendDew()
-    assert not suc
+    function.sendDew("1", 10)
 
 
 def test_sendDew_2(function):
     function.deviceConnected = True
-    suc = function.sendDew()
-    assert not suc
+    function.sendDew("1", 10)
 
 
 def test_sendDew_3(function):
     function.deviceConnected = True
-    suc = function.sendDew("1")
-    assert not suc
+    function.sendDew("1", 10)
 
 
 def test_sendDew_4(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getAscomProperty", return_value=21):
         with mock.patch.object(function, "callAscomMethod"):
-            suc = function.sendDew("1", 10)
-            assert suc
+            function.sendDew("1", 10)
 
 
 def test_sendAdjustableOutput_1(function):
     function.deviceConnected = False
-    suc = function.sendAdjustableOutput()
-    assert not suc
+    function.sendAdjustableOutput(1)
 
 
 def test_sendAdjustableOutput_2(function):
     function.deviceConnected = True
-    suc = function.sendAdjustableOutput(4)
-    assert suc
+    function.sendAdjustableOutput(4)
 
 
 def test_reboot_1(function):
     function.deviceConnected = False
-    suc = function.reboot()
-    assert not suc
+    function.reboot()
 
 
 def test_reboot_2(function):
     function.deviceConnected = True
-    suc = function.reboot()
-    assert suc
+    function.reboot()

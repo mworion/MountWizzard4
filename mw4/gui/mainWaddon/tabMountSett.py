@@ -25,7 +25,7 @@ from skyfield.api import wgs84
 from base import transform
 from mountcontrol.convert import convertLatToAngle, convertLonToAngle
 from mountcontrol.convert import formatLatToText, formatLonToText
-from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetStyle, guiSetText, clickable
+from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText, clickable
 
 
 class MountSett:

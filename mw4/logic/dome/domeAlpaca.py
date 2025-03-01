@@ -30,8 +30,7 @@ class DomeAlpaca(AlpacaClass):
         self.signals = signals
 
     def workerGetInitialConfig(self) -> None:
-        """
-        """
+        """ """
         super().workerGetInitialConfig()
         self.getAndStoreAlpacaProperty("cansetaltitude", "CanSetAltitude")
         self.getAndStoreAlpacaProperty("cansetazimuth", "CanSetAzimuth")
@@ -39,14 +38,12 @@ class DomeAlpaca(AlpacaClass):
         self.log.debug(f"Initial data: {self.data}")
 
     def processPolledData(self) -> None:
-        """
-        """
+        """ """
         azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0)
         self.signals.azimuth.emit(azimuth)
 
     def workerPollData(self) -> None:
-        """
-        """
+        """ """
         if not self.deviceConnected:
             return
 
@@ -72,8 +69,7 @@ class DomeAlpaca(AlpacaClass):
             self.data["DOME_SHUTTER.SHUTTER_CLOSED"] = None
 
     def slewToAltAz(self, altitude: float, azimuth: float) -> None:
-        """
-        """
+        """ """
         if not self.deviceConnected:
             return
         if self.data.get("CanSetAzimuth"):
@@ -82,34 +78,29 @@ class DomeAlpaca(AlpacaClass):
             self.setAlpacaProperty("slewtoaltitude", Altitude=altitude)
 
     def openShutter(self) -> None:
-        """
-        """
+        """ """
         if not self.deviceConnected:
             return
         if self.data.get("CanSetShutter"):
             self.getAlpacaProperty("openshutter")
 
     def closeShutter(self) -> None:
-        """
-        """
+        """ """
         if not self.deviceConnected:
             return
         if self.data.get("CanSetShutter"):
             self.getAlpacaProperty("closeshutter")
 
     def slewCW(self) -> None:
-        """
-        """
+        """ """
         pass
 
     def slewCCW(self) -> None:
-        """
-        """
+        """ """
         pass
 
     def abortSlew(self) -> None:
-        """
-        """
+        """ """
         if not self.deviceConnected:
             return
         self.getAlpacaProperty("abortslew")

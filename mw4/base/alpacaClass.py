@@ -253,14 +253,6 @@ class AlpacaClass(DriverData):
             response = requests.put(
                 f"{self.baseUrl}/{valueProp}", data=data, timeout=self.ALPACA_TIMEOUT
             )
-        except requests.exceptions.Timeout:
-            t = f"[{self.deviceName}] [{uid:10d}] has timeout"
-            self.log.debug(t)
-            return
-        except requests.exceptions.ConnectionError:
-            t = f"[{self.deviceName}] [{uid:10d}] has connection error"
-            self.log.warning(t)
-            return
         except Exception as e:
             t = f"[{self.deviceName}] [{uid:10d}] has exception: [{e}]"
             self.log.error(t)

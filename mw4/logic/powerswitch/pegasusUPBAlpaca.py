@@ -30,12 +30,10 @@ class PegasusUPBAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
 
-    def workerPollData(self):
-        """
-        :return: true for test purpose
-        """
+    def workerPollData(self) -> None:
+        """ """
         if not self.deviceConnected:
-            return False
+            return
 
         model = "UPB" if self.getAlpacaProperty("maxswitch") == 15 else "UPBv2"
 
@@ -151,45 +149,35 @@ class PegasusUPBAlpaca(AlpacaClass):
                 "POWER_SENSORS.SENSOR_POWER",
             )
 
-        return True
-
-    def togglePowerPort(self, port=None):
+    def togglePowerPort(self, port: str) -> None:
         if not self.deviceConnected:
-            return False
-        if port is None:
-            return False
+            return
 
         switchNumber = int(port) - 1
         val = self.data.get(f"POWER_CONTROL.POWER_CONTROL_{port}", True)
         self.setAlpacaProperty("setswitchvalue", Id=switchNumber, Value=not val)
-        return True
 
-    def togglePowerPortBoot(self, port=None):
-        if not self.deviceConnected:
-            return False
-        return True
+    def togglePowerPortBoot(self, port: str):
+        """ """
+        pass
 
-    def toggleHubUSB(self):
-        if not self.deviceConnected:
-            return False
-        return True
+    def toggleHubUSB(self) -> None:
+        """ """
+        pass
 
-    def togglePortUSB(self, port=None):
+    def togglePortUSB(self, port: str) -> None:
         if not self.deviceConnected:
-            return False
-        if port is None:
-            return False
+            return
 
         model = "UPB" if self.getAlpacaProperty("maxswitch") == 15 else "UPBv2"
         if model == "UPBv2":
             switchNumber = int(port) + 6
             val = self.data.get(f"USB_PORT_CONTROL.PORT_{port}", True)
             self.setAlpacaProperty("setswitchvalue", Id=switchNumber, Value=val)
-        return True
 
-    def toggleAutoDew(self):
+    def toggleAutoDew(self) -> None:
         if not self.deviceConnected:
-            return False
+            return
 
         model = "UPB" if self.getAlpacaProperty("maxswitch") == 15 else "UPBv2"
         if model == "UPB":
@@ -198,29 +186,21 @@ class PegasusUPBAlpaca(AlpacaClass):
         else:
             val = self.data.get("AUTO_DEW.DEW_A", False)
             self.setAlpacaProperty("setswitchvalue", Id=13, Value=val)
-        return True
 
-    def sendDew(self, port=None, value=None):
+    def sendDew(self, port: str, value: float) -> None:
         if not self.deviceConnected:
-            return False
-        if port is None:
-            return False
-        if value is None:
-            return False
+            return
 
         model = "UPB" if self.getAlpacaProperty("maxswitch") == 15 else "UPBv2"
         switchNumber = ord(port) - ord("A") + 4
         val = int(value * 2.55)
         if model == "UPBv2":
             self.setAlpacaProperty("setswitchvalue", Id=switchNumber, Value=val)
-        return True
 
-    def sendAdjustableOutput(self, value=None):
-        if not self.deviceConnected:
-            return False
-        return True
+    def sendAdjustableOutput(self, value: float) -> None:
+        """ """
+        pass
 
-    def reboot(self):
-        if not self.deviceConnected:
-            return False
-        return True
+    def reboot(self) -> None:
+        """ """
+        pass

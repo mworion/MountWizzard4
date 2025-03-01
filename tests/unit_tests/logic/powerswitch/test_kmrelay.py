@@ -87,7 +87,7 @@ def test_getRelay_3(function):
     with mock.patch.object(
         requests, "get", return_value=None, side_effect=requests.exceptions.Timeout
     ):
-        suc = function.getRelay('test', debug=True)
+        suc = function.getRelay("test", debug=True)
         assert not suc
 
 
@@ -99,14 +99,14 @@ def test_getRelay_4(function):
         return_value=None,
         side_effect=requests.exceptions.ConnectionError,
     ):
-        suc = function.getRelay('test', debug=True)
+        suc = function.getRelay("test", debug=True)
         assert not suc
 
 
 def test_getRelay_5(function):
     function.hostaddress = "localhost"
     with mock.patch.object(requests, "get", return_value=None, side_effect=Exception()):
-        suc = function.getRelay('test', debug=True)
+        suc = function.getRelay("test", debug=True)
         assert not suc
 
 
@@ -304,14 +304,14 @@ def test_status4(function):
 
 def test_getRelay_1(function):
     function.mutexPoll.lock()
-    suc = function.getRelay('test', debug=True)
+    suc = function.getRelay("test", debug=True)
     function.mutexPoll.unlock()
     assert not suc
 
 
 def test_getRelay_2(function):
     function.hostaddress = None
-    suc = function.getRelay('test', debug=True)
+    suc = function.getRelay("test", debug=True)
     assert not suc
 
 

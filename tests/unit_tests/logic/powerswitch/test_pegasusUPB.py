@@ -48,139 +48,67 @@ def test_properties_2(function):
     assert function.loadConfig
 
 
-def test_startCommunication_1(function):
-    function.framework = ""
-    suc = function.startCommunication()
-    assert not suc
-
-
 def test_startCommunication_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
-        suc = function.startCommunication()
-        assert suc
-
-
-def test_stopCommunication_1(function):
-    function.framework = ""
-    suc = function.stopCommunication()
-    assert not suc
+        function.startCommunication()
 
 
 def test_stopCommunication_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "stopCommunication", return_value=True):
-        suc = function.stopCommunication()
-        assert suc
-
-
-def test_togglePowerPort_1(function):
-    function.framework = ""
-    suc = function.togglePowerPort()
-    assert not suc
+        function.stopCommunication()
 
 
 def test_togglePowerPort_2(function):
     function.framework = "indi"
-    suc = function.togglePowerPort()
-    assert not suc
-
-
-def test_togglePowerPortBoot_1(function):
-    function.framework = ""
-    suc = function.togglePowerPortBoot()
-    assert not suc
+    function.togglePowerPort("1")
 
 
 def test_togglePowerPortBoot_2(function):
     function.framework = "indi"
-    suc = function.togglePowerPortBoot()
-    assert not suc
-
-
-def test_toggleHubUSB_1(function):
-    function.framework = ""
-    suc = function.toggleHubUSB()
-    assert not suc
+    function.togglePowerPortBoot("1")
 
 
 def test_toggleHubUSB_2(function):
     function.framework = "indi"
-    suc = function.toggleHubUSB()
-    assert not suc
-
-
-def test_togglePortUSB_1(function):
-    function.framework = ""
-    suc = function.togglePortUSB()
-    assert not suc
+    function.toggleHubUSB()
 
 
 def test_togglePortUSB_2(function):
     function.framework = "indi"
-    suc = function.togglePortUSB()
-    assert not suc
-
-
-def test_toggleAutoDew_1(function):
-    function.framework = ""
-    suc = function.toggleAutoDew()
-    assert not suc
+    function.togglePortUSB("1")
 
 
 def test_toggleAutoDew_2(function):
     function.framework = "indi"
-    suc = function.toggleAutoDew()
-    assert not suc
-
-
-def test_sendDew_1(function):
-    function.framework = ""
-    suc = function.sendDew()
-    assert not suc
+    function.toggleAutoDew()
 
 
 def test_sendDew_2(function):
     function.framework = "indi"
-    suc = function.sendDew()
-    assert not suc
-
-
-def test_sendAdjustableOutput_1(function):
-    function.framework = ""
-    suc = function.sendAdjustableOutput()
-    assert not suc
+    function.sendDew("1", 100)
 
 
 def test_sendAdjustableOutput_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "sendAdjustableOutput", return_value=False):
-        suc = function.sendAdjustableOutput()
-        assert not suc
+        function.sendAdjustableOutput(1)
 
 
 def test_sendAdjustableOutput_3(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "sendAdjustableOutput", return_value=True):
-        suc = function.sendAdjustableOutput()
-        assert suc
-
-
-def test_reboot_1(function):
-    function.framework = ""
-    suc = function.reboot()
-    assert not suc
+        function.sendAdjustableOutput(1)
 
 
 def test_reboot_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "reboot", return_value=False):
-        suc = function.reboot()
-        assert not suc
+        function.reboot()
 
 
 def test_reboot_3(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "reboot", return_value=True):
-        suc = function.reboot()
-        assert suc
+        function.reboot()

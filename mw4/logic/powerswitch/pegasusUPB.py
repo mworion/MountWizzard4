@@ -69,108 +69,42 @@ class PegasusUPB:
         for fw in self.run:
             self.run[fw].loadConfig = value
 
-    def startCommunication(self):
-        """
-        :return: success
-        """
-        if self.framework not in self.run.keys():
-            return False
+    def startCommunication(self) -> None:
+        """ """
+        self.run[self.framework].startCommunication()
 
-        suc = self.run[self.framework].startCommunication()
-        return suc
+    def stopCommunication(self) -> None:
+        """ """
+        self.run[self.framework].stopCommunication()
 
-    def stopCommunication(self):
-        """
-        :return: true for test purpose
-        """
-        if self.framework not in self.run.keys():
-            return False
+    def togglePowerPort(self, port: str) -> None:
+        """ """
+        self.run[self.framework].togglePowerPort(port=port)
 
-        suc = self.run[self.framework].stopCommunication()
-        return suc
+    def togglePowerPortBoot(self, port: str) -> None:
+        """ """
+        self.run[self.framework].togglePowerPortBoot(port=port)
 
-    def togglePowerPort(self, port=None):
-        """
-        :param port:
-        :return: true fot test purpose
-        """
-        if self.framework not in self.run.keys():
-            return False
+    def toggleHubUSB(self) -> None:
+        """ """
+        self.run[self.framework].toggleHubUSB()
 
-        suc = self.run[self.framework].togglePowerPort(port=port)
-        return suc
+    def togglePortUSB(self, port: str) -> None:
+        """ """
+        self.run[self.framework].togglePortUSB(port=port)
 
-    def togglePowerPortBoot(self, port=None):
-        """
-        :param port:
-        :return: true fot test purpose
-        """
-        if self.framework not in self.run.keys():
-            return False
+    def toggleAutoDew(self) -> None:
+        """ """
+        self.run[self.framework].toggleAutoDew()
 
-        suc = self.run[self.framework].togglePowerPortBoot(port=port)
-        return suc
+    def sendDew(self, port: str, value: float) -> None:
+        """ """
+        self.run[self.framework].sendDew(port=port, value=value)
 
-    def toggleHubUSB(self):
-        """
-        :return: true fot test purpose
-        """
-        if self.framework not in self.run.keys():
-            return False
+    def sendAdjustableOutput(self, value: float) -> None:
+        """ """
+        self.run[self.framework].sendAdjustableOutput(value=value)
 
-        suc = self.run[self.framework].toggleHubUSB()
-        return suc
-
-    def togglePortUSB(self, port=None):
-        """
-        :param port:
-        :return: true fot test purpose
-        """
-        if self.framework not in self.run.keys():
-            return False
-
-        suc = self.run[self.framework].togglePortUSB(port=port)
-        return suc
-
-    def toggleAutoDew(self):
-        """
-        :return: true fot test purpose
-        """
-        if self.framework not in self.run.keys():
-            return False
-
-        suc = self.run[self.framework].toggleAutoDew()
-        return suc
-
-    def sendDew(self, port="", value=None):
-        """
-        :param port:
-        :param value:
-        :return: success
-        """
-        if self.framework not in self.run.keys():
-            return False
-
-        suc = self.run[self.framework].sendDew(port=port, value=value)
-        return suc
-
-    def sendAdjustableOutput(self, value=None):
-        """
-        :param value:
-        :return: success
-        """
-        if self.framework not in self.run.keys():
-            return False
-
-        suc = self.run[self.framework].sendAdjustableOutput(value=value)
-        return suc
-
-    def reboot(self):
-        """
-        :return: success
-        """
-        if self.framework not in self.run.keys():
-            return False
-
-        suc = self.run[self.framework].reboot()
-        return suc
+    def reboot(self) -> None:
+        """ """
+        self.run[self.framework].reboot()

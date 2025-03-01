@@ -230,7 +230,7 @@ class IndiClass:
 
     def stopCommunication(self) -> None:
         """ """
-        suc = self.client.disconnectServer(self.deviceName)
+        self.client.disconnectServer(self.deviceName)
         self.deviceName = ""
         self.deviceConnected = False
 

@@ -551,4 +551,3 @@ def test_abortSlew_3(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "abortSlew", return_value=True):
         function.abortSlew()
-

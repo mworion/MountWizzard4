@@ -64,9 +64,7 @@ class CameraAscom(AscomClass):
         self.getAndStoreAscomProperty("CameraState", "CAMERA.STATE")
         self.getAndStoreAscomProperty("Gain", "CCD_GAIN.GAIN")
         self.getAndStoreAscomProperty("Offset", "CCD_OFFSET.OFFSET")
-        self.getAndStoreAscomProperty(
-            "FastReadout", "READOUT_QUALITY.QUALITY_LOW", "READOUT_QUALITY.QUALITY_HIGH"
-        )
+        self.getAndStoreAscomProperty("FastReadout", "READOUT_QUALITY.QUALITY_LOW")
         self.getAndStoreAscomProperty(
             "CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"
         )

@@ -109,14 +109,12 @@ class Dome:
             self.domeStarted = False
 
     def waitSettlingAndEmit(self) -> None:
-        """
-        """
+        """ """
         self.signals.slewed.emit()
         self.signals.message.emit("")
 
     def checkSlewingDome(self) -> None:
-        """
-        """
+        """ """
         if self.isSlewing:
             self.signals.message.emit("slewing")
             self.counterStartSlewing = -1
@@ -137,8 +135,7 @@ class Dome:
                 self.counterStartSlewing -= 1
 
     def checkTargetConditions(self) -> bool:
-        """
-        """
+        """ """
         if self.openingHysteresis is None:
             self.log.debug("No opening hysteresis")
             return False
@@ -161,8 +158,7 @@ class Dome:
         return True
 
     def calcTargetRectanglePoints(self, azimuth: float) -> tuple:
-        """
-        """
+        """ """
         azRad = np.radians(-azimuth)
         sinAz = np.sin(azRad)
         cosAz = np.cos(azRad)
@@ -218,8 +214,7 @@ class Dome:
         return slewNeeded
 
     def calcSlewTarget(self, altitude: float, azimuth: float, func: callable) -> tuple:
-        """
-        """
+        """ """
         if self.useGeometry:
             alt, az, intersect, _, _ = func()
 
@@ -240,8 +235,7 @@ class Dome:
         return alt, az, x, y
 
     def calcOvershoot(self, az: float) -> float:
-        """
-        """
+        """ """
         if not self.overshoot:
             self.lastFinalAz = None
             return az
@@ -280,8 +274,7 @@ class Dome:
         return self.lastFinalAz
 
     def slewDome(self, altitude: float = 0, azimuth: float = 0, follow: bool = False) -> float:
-        """
-        """
+        """ """
         mount = self.app.mount
         if follow:
             func = mount.calcTransformationMatricesActual
@@ -307,45 +300,39 @@ class Dome:
         return delta
 
     def avoidFirstOvershoot(self) -> None:
-        """
-        """
+        """ """
         self.avoidFirstSlewOvershoot = True
 
     def openShutter(self) -> None:
-        """
-        """
+        """ """
         if not self.data:
             self.log.error("No data dict available")
             return
         self.run[self.framework].openShutter()
 
     def closeShutter(self) -> None:
-        """
-        """
+        """ """
         if not self.data:
             self.log.error("No data dict available")
             return
         self.run[self.framework].closeShutter()
 
     def slewCW(self) -> None:
-        """
-        """
+        """ """
         if not self.data:
             self.log.error("No data dict available")
             return
         self.run[self.framework].slewCW()
 
     def slewCCW(self) -> None:
-        """
-        """
+        """ """
         if not self.data:
             self.log.error("No data dict available")
             return
         self.run[self.framework].slewCCW()
 
     def abortSlew(self) -> None:
-        """
-        """
+        """ """
         if not self.data:
             self.log.error("No data dict available")
             return

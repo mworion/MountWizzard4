@@ -191,6 +191,7 @@ def findFittingModel(mountModel: Model, modelPath: Path) -> (Path, list):
     mountModelData = generateMountModelData(mountModel)
     fittedModelPath = Path("")
 
+    pointsOut = []
     for modelFilePath in sorted(modelPath.glob("*.model"), key=lambda x: x.stem):
         pointsIn, pointsOut = compareFile(modelFilePath, mountModelData)
         if len(pointsIn) > 2:

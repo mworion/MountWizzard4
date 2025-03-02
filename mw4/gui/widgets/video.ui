@@ -110,6 +110,11 @@
        </item>
        <item>
         <property name="text">
+         <string>URL</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Camera 1</string>
         </property>
        </item>
@@ -212,7 +217,7 @@
      <item row="0" column="6" rowspan="2" colspan="2">
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -265,7 +270,7 @@
    <item>
     <widget class="Line" name="line">
      <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+      <enum>QFrame::Shadow::Plain</enum>
      </property>
      <property name="lineWidth">
       <number>2</number>
@@ -274,7 +279,7 @@
       <number>1</number>
      </property>
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>

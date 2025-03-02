@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PySide for python
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -59,7 +59,7 @@ class MainWindowAddons:
 
         self.addons = {
             "Almanac": Almanac(mainW),
-            "SettUpdate": SettUpdate(mainW),  # keep isOnline state first
+            "SettUpdate": SettUpdate(mainW),  # set isOnline state first
             "Asteroid": Asteroid(mainW),
             "BuildPoints": BuildPoints(mainW),
             "Comet": Comet(mainW),

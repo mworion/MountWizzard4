@@ -182,11 +182,8 @@ class KeyPad:
         self.signals.mouseReleased.connect(self.mouseReleased)
 
     @staticmethod
-    def expand7to8(value, fill=False):
+    def expand7to8(value: int, fill: bool = False) -> list:
         """
-        :param value:
-        :param fill:
-        :return:
         """
         result = []
         n = 0
@@ -203,10 +200,8 @@ class KeyPad:
             result.append(u)
         return result
 
-    def convertChar(self, inChar):
+    def convertChar(self, inChar: int) -> int:
         """
-        :param inChar:
-        :return:
         """
         if inChar in self.charTrans:
             outChar = self.charTrans[inChar]
@@ -214,10 +209,8 @@ class KeyPad:
             outChar = inChar
         return outChar
 
-    def dispText(self, value):
+    def dispText(self, value: str) -> None:
         """
-        :param value:
-        :return:
         """
         row = np.zeros(16, dtype=np.uint8)
         for i in range(value[3]):
@@ -225,12 +218,9 @@ class KeyPad:
                 row[value[1] + i - 1] = self.convertChar(value[4 + i])
         text = "".join([chr(x) for x in row])
         self.signals.textRow.emit(value[2] - 1, text)
-        return True
 
-    def drawPixel(self, value):
+    def drawPixel(self, value: int) -> None:
         """
-        :param value:
-        :return:
         """
         imaArr = np.zeros([8, 8, 3], dtype=np.uint8)
         for i in range(8):
@@ -241,12 +231,9 @@ class KeyPad:
                 else:
                     imaArr[i, j] = [0, 0, 0]
         self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1), 8 * (value[1] - 1))
-        return True
 
-    def deletePixel(self, value):
+    def deletePixel(self, value: int) -> None:
         """
-        :param value:
-        :return:
         """
         imaArr = np.zeros([8, 12, 3], dtype=np.uint8)
         for i in range(12):
@@ -257,16 +244,13 @@ class KeyPad:
                 else:
                     imaArr[j, i] = [0, 0, 0]
         self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1), 12 * (value[1] - 1))
-        return True
 
-    def dispatch(self, value):
+    def dispatch(self, value: int) -> None:
         """
-        :param value:
-        :return:
         """
         value = self.expand7to8(value, False)
         if len(value) <= 0:
-            return False
+            return
         if value[0] == 1:
             self.dispText(value)
         elif value[0] == 2:
@@ -284,22 +268,16 @@ class KeyPad:
         elif value[0] == 12:
             pass
             # print('select 12')
-        return True
 
-    def checkDispatch(self, value):
+    def checkDispatch(self, value: int) -> None:
         """
-        :param value:
-        :return:
         """
         if value[0] == 0:
             self.dispatch(value[1:])
-        return True
 
     @staticmethod
-    def calcChecksum(value):
+    def calcChecksum(value: int) -> int:
         """
-        :param value:
-        :return:
         """
         checksum = 0
         for i in range(len(value)):
@@ -308,83 +286,69 @@ class KeyPad:
             checksum = checksum + 10
         return checksum
 
-    def send(self, message):
+    def send(self, message: str) -> None:
         """ """
         if self.ws is None:
             return
         self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
 
-    def mousePressed(self, key):
+    def mousePressed(self, key: str) -> None:
         """
-        :param key:
-        :return:
         """
         key = self.buttonCodes.get(key, None)
         if key is None:
-            return False
+            return
 
         message = [2, 6, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
         self.send(message)
-        return True
 
-    def mouseReleased(self, key):
+    def mouseReleased(self, key: str) -> None:
         """
-        :param key:
-        :return:
         """
         key = self.buttonCodes.get(key, None)
         if key is None:
-            return False
+            return
 
         message = [2, 5, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
         self.send(message)
-        return True
 
-    def keyDown(self, key):
+    def keyDown(self, key: int) -> None:
         """
-        :param key:
-        :return:
         """
         key = self.keyCodesA.get(key, None)
         if key is None:
-            return False
+            return
 
         message = [2, 6, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
         self.send(message)
-        return True
 
-    def keyUp(self, key):
+    def keyUp(self, key: int) -> None:
         """
-        :param key:
-        :return:
         """
         key = self.keyCodesA.get(key, None)
         if key is None:
-            return False
+            return
 
         message = [2, 5, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
         self.send(message)
-        return True
 
-    def keyPressed(self, key):
+    def keyPressed(self, key: int) -> None:
         """
-        :param key:
-        :return:
         """
         if key > 255:
-            return False
+            return
 
         key = self.keyCodesB.get(chr(key), None)
         if key is None:
-            return False
+            return
 
         message = [2, 6, key]
         message = message + [self.calcChecksum(message)]
@@ -394,15 +358,9 @@ class KeyPad:
         message = message + [self.calcChecksum(message)]
         message = message + [3]
         self.send(message)
-        return True
 
-    def on_data(self, ws, data, typeOpcode, cont):
+    def on_data(self, ws: websocket.WebSocketApp, data: list, typeOpcode, cont) -> None:
         """
-        :param ws:
-        :param data:
-        :param typeOpcode:
-        :param cont:
-        :return:
         """
         result = []
         started = False
@@ -419,29 +377,17 @@ class KeyPad:
                 else:
                     if started:
                         result.append(data[i])
-        return True
 
-    def on_close(self, ws, close_status_code, close_msg):
+    def on_close(self, ws: websocket.WebSocketApp, close_status_code, close_msg) -> None:
         """
-        :param ws:
-        :param close_status_code:
-        :param close_msg:
-        :return:
         """
         self.ws = None
-        return True
 
-    def workerWebsocket(self, host=None):
+    def workerWebsocket(self, host: tuple) -> None:
         """
-        :param host:
-        :return:
         """
-        if host is None:
-            return False
-        if not isinstance(host, tuple):
-            return False
         if self.ws is not None:
-            return False
+            return
 
         ipaddress = host[0]
         websocket.setdefaulttimeout(3)
@@ -452,12 +398,9 @@ class KeyPad:
             subprotocols=["binary"],
         )
         self.ws.run_forever()
-        return True
 
-    def closeWebsocket(self):
+    def closeWebsocket(self) -> None:
         """
-        :return:
         """
         if self.ws is not None:
             self.ws.close()
-        return True

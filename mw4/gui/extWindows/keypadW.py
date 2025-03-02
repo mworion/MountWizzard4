@@ -178,6 +178,7 @@ class KeypadWindow(MWidget):
         self.writeTextRow(2, "Connecting ...")
         worker = Worker(self.keypad.workerWebsocket, self.app.mount.host)
         worker.signals.finished.connect(self.websocketClear)
+        self.threadPool.start(worker)
 
     def hostChanged(self) -> None:
         """ """

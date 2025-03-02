@@ -73,93 +73,80 @@ def test_convertChar_2(function):
 
 def test_dispText(function):
     value = [1, 1, 1, 1, 88]
-    suc = function.dispText(value)
-    assert suc
+    function.dispText(value)
 
 
 def test_drawPixel(function):
     value = [2, 1, 1, 40, 40, 40, 40, 40, 40, 40, 40]
-    suc = function.drawPixel(value)
-    assert suc
+    function.drawPixel(value)
 
 
 def test_deletePixel(function):
     value = [3, 1, 1, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
-    suc = function.deletePixel(value)
-    assert suc
+    function.deletePixel(value)
 
 
 def test_dispatch_0(function):
     msg = []
     with mock.patch.object(function, "expand7to8", return_value=msg):
-        suc = function.dispatch(msg)
-        assert not suc
+        function.dispatch(msg)
 
 
 def test_dispatch_1(function):
     msg = [1, 1]
     with mock.patch.object(function, "expand7to8", return_value=msg):
         with mock.patch.object(function, "dispText"):
-            suc = function.dispatch(msg)
-            assert suc
+            function.dispatch(msg)
 
 
 def test_dispatch_2(function):
     msg = [2, 1]
     with mock.patch.object(function, "expand7to8", return_value=msg):
         with mock.patch.object(function, "drawPixel"):
-            suc = function.dispatch(msg)
-            assert suc
+            function.dispatch(msg)
 
 
 def test_dispatch_3(function):
     msg = [3, 1]
     with mock.patch.object(function, "expand7to8", return_value=msg):
         with mock.patch.object(function, "deletePixel"):
-            suc = function.dispatch(msg)
-            assert suc
+            function.dispatch(msg)
 
 
 def test_dispatch_5(function):
     msg = [4, 1]
     with mock.patch.object(function, "expand7to8", return_value=msg):
-        suc = function.dispatch(msg)
-        assert suc
+        function.dispatch(msg)
 
 
 def test_dispatch_6(function):
     msg = [5, 1, 1]
     with mock.patch.object(function, "expand7to8", return_value=msg):
-        suc = function.dispatch(msg)
-        assert suc
+        function.dispatch(msg)
 
 
 def test_dispatch_7(function):
     msg = [6, 1]
     with mock.patch.object(function, "expand7to8", return_value=msg):
-        suc = function.dispatch(msg)
-        assert suc
+        function.dispatch(msg)
 
 
 def test_dispatch_8(function):
     msg = [11, 1]
     with mock.patch.object(function, "expand7to8", return_value=msg):
-        suc = function.dispatch(msg)
-        assert suc
+        function.dispatch(msg)
 
 
 def test_dispatch_9(function):
     msg = [12, 1]
     with mock.patch.object(function, "expand7to8", return_value=msg):
-        suc = function.dispatch(msg)
-        assert suc
+        function.dispatch(msg)
 
 
 def test_checkDispatch_1(function):
     msg = [0, 100, 110, 120]
     with mock.patch.object(function, "dispatch"):
-        suc = function.checkDispatch(msg)
-        assert suc
+        function.checkDispatch(msg)
 
 
 def test_calcChecksum_1(function):
@@ -217,67 +204,56 @@ def test_send_2(function):
 
 def test_mousePressed_1(function):
     with mock.patch.object(function, "send"):
-        suc = function.mousePressed("key_0")
-        assert suc
+        function.mousePressed("key_0")
 
 
 def test_mousePressed_2(function):
     with mock.patch.object(function, "send"):
-        suc = function.mousePressed("test")
-        assert not suc
+        function.mousePressed("test")
 
 
 def test_mouseReleased_1(function):
     with mock.patch.object(function, "send"):
-        suc = function.mouseReleased("key_0")
-        assert suc
+        function.mouseReleased("key_0")
 
 
 def test_mouseReleased_2(function):
     with mock.patch.object(function, "send"):
-        suc = function.mouseReleased("test")
-        assert not suc
+        function.mouseReleased("test")
 
 
 def test_keyDown_1(function):
     with mock.patch.object(function, "send"):
-        suc = function.keyDown(48)
-        assert suc
+        function.keyDown(48)
 
 
 def test_keyDown_2(function):
     with mock.patch.object(function, "send"):
-        suc = function.keyDown(0)
-        assert not suc
+        function.keyDown(0)
 
 
 def test_keyUp_1(function):
     with mock.patch.object(function, "send"):
-        suc = function.keyUp(48)
-        assert suc
+        function.keyUp(48)
 
 
 def test_keyUp_2(function):
     with mock.patch.object(function, "send"):
-        suc = function.keyUp(0)
-        assert not suc
+        function.keyUp(0)
 
 
 def test_keyPressed_1(function):
-    suc = function.keyPressed(1000)
-    assert not suc
+    function.keyPressed(1000)
 
 
 def test_keyPressed_2(function):
-    suc = function.keyPressed(10)
-    assert not suc
+    function.keyPressed(10)
 
 
 def test_keyPressed_3(function):
     with mock.patch.object(function, "send"):
         with mock.patch.object(function, "calcChecksum"):
-            suc = function.keyPressed(54)
-            assert suc
+            function.keyPressed(54)
 
 
 def test_on_data_1(function):
@@ -311,23 +287,15 @@ def test_on_data_1(function):
         3,
     ]
     with mock.patch.object(function, "checkDispatch"):
-        suc = function.on_data(0, data, 0, 0)
-        assert suc
+        function.on_data(0, data, 0, 0)
 
 
 def test_on_close(function):
-    suc = function.on_close(0, 0, 0)
-    assert suc
-
-
-def test_workerWebsocket_1(function):
-    suc = function.workerWebsocket(host=None)
-    assert not suc
+    function.on_close(0, 0, 0)
 
 
 def test_workerWebsocket_2(function):
-    suc = function.workerWebsocket(host="1234")
-    assert not suc
+    function.workerWebsocket(host="1234")
 
 
 def test_workerWebsocket_3(function):
@@ -336,14 +304,12 @@ def test_workerWebsocket_3(function):
             return
 
     function.ws = WS()
-    suc = function.workerWebsocket(host=("localhost", 8000))
-    assert not suc
+    function.workerWebsocket(host=("localhost", 8000))
 
 
 def test_workerWebsocket_4(function):
     with mock.patch.object(WebSocketApp, "run_forever"):
-        suc = function.workerWebsocket(host=("localhost", 8000))
-        assert suc
+        function.workerWebsocket(host=("localhost", 8000))
 
 
 def test_closeWebsocket(function):
@@ -353,5 +319,4 @@ def test_closeWebsocket(function):
 
     function.ws = WS()
 
-    suc = function.closeWebsocket()
-    assert suc
+    function.closeWebsocket()

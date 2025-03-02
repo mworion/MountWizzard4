@@ -465,6 +465,7 @@ BASIC_STYLE = """
         image: url(:/icon/$arrow-down$.svg);
         width: 16px;
         height: 16px;
+        background-color: #GRAD_1,$M_BACK1$#;
     }
     QComboBox QListView {
         border-width: %WIDTH%;
@@ -475,11 +476,10 @@ BASIC_STYLE = """
         min-height: 60px;
     }
     QComboBox QListView::item {
-        min-height: 28px;
         border-color: $M_SEC$;
+        min-height: 28px;
     }
     QComboBox QListView::item:selected {
-        border-style: outset;
         background-color: #GRAD_1,$M_PRIM$#;
     }
     

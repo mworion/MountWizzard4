@@ -18,11 +18,12 @@
 from ast import Bytes
 
 # external packages
+from PySide6.QtCore import QObject
 
 # local import
 
 
-class Mount:
+class Mount(QObject):
     """ """
 
     def __init__(self, mainW):

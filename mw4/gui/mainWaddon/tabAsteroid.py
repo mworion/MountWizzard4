@@ -19,7 +19,7 @@ import json
 import os
 
 # external packages
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QObject
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 # local import
@@ -27,7 +27,7 @@ from gui.mainWaddon.astroObjects import AstroObjects
 from logic.databaseProcessing.sourceURL import asteroidSourceURLs
 
 
-class Asteroid:
+class Asteroid(QObject):
     """ """
 
     def __init__(self, mainW):

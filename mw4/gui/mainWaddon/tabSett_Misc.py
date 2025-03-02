@@ -20,6 +20,7 @@ import base.packageConfig as pConf
 # external packages
 if pConf.isAvailable:
     from PySide6.QtMultimedia import QSoundEffect
+from PySide6.QtCore import QObject
 import hid
 
 # local import
@@ -27,7 +28,7 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.tpool import Worker
 
 
-class SettMisc:
+class SettMisc(QObject):
     """ """
 
     def __init__(self, mainW):

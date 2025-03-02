@@ -33,7 +33,7 @@ from logic.satellites.satellite_calculations import findRangeRate
 from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class SatSearch(SatData, QObject):
+class SatSearch(QObject, SatData):
     """ """
 
     setSatListItem = Signal(int, int, object)

@@ -20,12 +20,13 @@ import time
 
 # external packages
 from PySide6.QtGui import QTextCursor
+from PySide6.QtCore import QObject
 
 # local import
 from mountcontrol.connection import Connection
 
 
-class MountCommand:
+class MountCommand(QObject):
     """ """
 
     def __init__(self, mainW):

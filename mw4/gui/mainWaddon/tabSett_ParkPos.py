@@ -19,12 +19,13 @@
 # external packages
 from functools import partial
 from skyfield.api import Angle
+from PySide6.QtCore import QObject
 
 # local import
 from mountcontrol.convert import valueToFloat
 
 
-class SettParkPos:
+class SettParkPos(QObject):
     """ """
 
     def __init__(self, mainW):

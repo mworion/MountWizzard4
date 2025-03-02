@@ -19,7 +19,7 @@ from dateutil.tz import tzlocal
 
 # external packages
 from PySide6.QtGui import QPixmap, QPainter, QPen, QColor
-from PySide6.QtCore import Qt, QPointF
+from PySide6.QtCore import Qt, QPointF, QObject
 import pyqtgraph as pg
 from skyfield import almanac
 from skyfield.toposlib import GeographicPosition
@@ -32,7 +32,7 @@ from base.tpool import Worker
 from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class Almanac:
+class Almanac(QObject):
     """ """
 
     phasesText = RangeKeyDict(

@@ -18,6 +18,7 @@
 import socket
 
 # external packages
+from PySide6.QtCore import QObject
 import wakeonlan
 
 # local import
@@ -27,7 +28,7 @@ from base.ethernet import checkFormatMAC
 from gui.utilities.toolsQtWidget import guiSetText
 
 
-class SettMount:
+class SettMount(QObject):
     """ """
 
     def __init__(self, mainW):

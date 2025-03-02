@@ -19,6 +19,7 @@ from functools import partial
 
 # external packages
 from PySide6.QtWidgets import QInputDialog, QLineEdit
+from PySide6.QtCore import QObject
 
 # local import
 from gui.utilities.toolsQtWidget import sleepAndEvents
@@ -29,7 +30,7 @@ from gui.utilities.slewInterface import SlewInterface
 from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable
 
 
-class MountMove(SlewInterface):
+class MountMove(QObject, SlewInterface):
     """ """
 
     def __init__(self, mainW):

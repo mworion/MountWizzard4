@@ -20,12 +20,13 @@ from pathlib import Path
 
 # external packages
 from PySide6.QtWidgets import QListView, QApplication
+from PySide6.QtCore import QObject
 from astropy.io import fits
 
 # local import
 
 
-class Rename:
+class Rename(QObject):
     """ """
 
     def __init__(self, mainW):

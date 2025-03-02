@@ -18,6 +18,7 @@
 
 # external packages
 from PySide6.QtWidgets import QListView
+from PySide6.QtCore import QObject
 
 # local import
 from gui.extWindows.downloadPopupW import DownloadPopup
@@ -25,7 +26,7 @@ from gui.extWindows.uploadPopupW import UploadPopup
 from logic.databaseProcessing.dataWriter import DataWriter
 
 
-class IERSTime:
+class IERSTime(QObject):
     """ """
 
     def __init__(self, mainW):

@@ -18,7 +18,7 @@
 
 # external packages
 from astroquery.simbad import Simbad
-from PySide6.QtCore import QMutex
+from PySide6.QtCore import QMutex, QObject
 
 # local import
 from base.tpool import Worker
@@ -27,7 +27,7 @@ from mountcontrol.convert import formatHstrToText, formatDstrToText
 from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class BuildPoints:
+class BuildPoints(QObject):
     """ """
 
     def __init__(self, mainW):

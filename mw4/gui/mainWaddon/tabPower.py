@@ -19,13 +19,14 @@
 # external packages
 from functools import partial
 from PySide6.QtWidgets import QInputDialog
+from PySide6.QtCore import QObject
 from mountcontrol.convert import valueToInt
 
 # local import
 from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText, clickable
 
 
-class Power:
+class Power(QObject):
     """ """
 
     def __init__(self, mainW):

@@ -21,6 +21,7 @@ from datetime import datetime
 from pathlib import Path
 
 # external packages
+from PySide6.QtCore import QObject
 
 # local import
 from gui.utilities.toolsQtWidget import sleepAndEvents
@@ -29,7 +30,7 @@ from logic.modelBuild.modelData import ModelData
 from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class Model:
+class Model(QObject):
     """ """
 
     STATUS_IDLE = 0

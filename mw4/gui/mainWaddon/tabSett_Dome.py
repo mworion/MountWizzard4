@@ -17,11 +17,12 @@
 # standard libraries
 
 # external packages
+from PySide6.QtCore import QObject
 
 # local import
 
 
-class SettDome:
+class SettDome(QObject):
     """ """
 
     def __init__(self, mainW):

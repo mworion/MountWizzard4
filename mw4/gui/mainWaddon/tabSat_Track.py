@@ -20,6 +20,7 @@
 import numpy as np
 from sgp4.exporter import export_tle
 from skyfield.api import Angle
+from PySide6.QtCore import QObject
 
 # local import
 from gui.mainWaddon.satData import SatData
@@ -27,7 +28,7 @@ from logic.satellites.satellite_calculations import calcSatPasses
 from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class SatTrack(SatData):
+class SatTrack(QObject, SatData):
     """ """
 
     def __init__(self, mainW):

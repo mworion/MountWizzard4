@@ -18,15 +18,15 @@
 from functools import partial
 
 # external packages
-import PySide6.QtCore
-import PySide6.QtWidgets
+from PySide6.QtCore import QObject
+from PySide6.QtWidgets import QListView
 
 # local import
 from gui.extWindows.devicePopupW import DevicePopup
 from gui.utilities.toolsQtWidget import changeStyleDynamic, findIndexValue
 
 
-class SettDevice:
+class SettDevice(QObject):
     """
     devices types in self.drivers are name related to ascom definitions
 
@@ -247,7 +247,7 @@ class SettDevice:
         dropDowns = [self.drivers[driver]["uiDropDown"] for driver in self.drivers]
         for dropDown in dropDowns:
             dropDown.clear()
-            dropDown.setView(PySide6.QtWidgets.QListView())
+            dropDown.setView(QListView())
             dropDown.addItem("device disabled")
 
         for driver in self.driversData:

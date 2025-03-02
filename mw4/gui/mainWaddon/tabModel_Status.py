@@ -17,12 +17,13 @@
 # standard libraries
 
 # external packages
+from PySide6.QtCore import QObject
 
 # local import
 from gui.utilities.toolsQtWidget import guiSetText
 
 
-class ModelStatus:
+class ModelStatus(QObject):
     """ """
 
     def __init__(self, mainW):

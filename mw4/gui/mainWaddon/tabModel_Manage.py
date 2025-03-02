@@ -20,7 +20,7 @@ from pathlib import Path
 
 # external packages
 from PySide6.QtWidgets import QLineEdit, QInputDialog
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QObject
 import numpy as np
 
 # local import
@@ -34,7 +34,7 @@ from logic.modelBuild.modelHandling import (
 from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class ModelManage:
+class ModelManage(QObject):
     """ """
 
     def __init__(self, mainW):

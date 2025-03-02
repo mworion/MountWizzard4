@@ -19,7 +19,7 @@ import platform
 import webbrowser
 
 # external packages
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QObject
 from PySide6.QtGui import QColor, QTransform
 from PySide6.QtWidgets import QTableWidgetItem
 
@@ -28,7 +28,7 @@ from gui.styles.colors import colors
 from gui.utilities.toolsQtWidget import clickable
 
 
-class EnvironSeeing:
+class EnvironSeeing(QObject):
     """ """
 
     def __init__(self, mainW):

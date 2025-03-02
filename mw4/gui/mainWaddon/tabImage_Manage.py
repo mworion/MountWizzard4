@@ -18,12 +18,13 @@
 
 # external packages
 from PySide6.QtWidgets import QInputDialog
+from PySide6.QtCore import QObject
 
 # local import
 from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText, clickable
 
 
-class ImageManage:
+class ImageManage(QObject):
     """ """
 
     def __init__(self, mainW):

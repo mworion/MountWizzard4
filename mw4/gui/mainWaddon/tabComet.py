@@ -19,7 +19,7 @@ import json
 import os
 
 # external packages
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QObject
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 # local import
@@ -28,7 +28,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from logic.databaseProcessing.sourceURL import cometSourceURLs
 
 
-class Comet:
+class Comet(QObject):
     """ """
 
     def __init__(self, mainW):

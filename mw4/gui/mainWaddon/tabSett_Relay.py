@@ -18,15 +18,15 @@
 
 
 # external packages
-import PySide6.QtCore
-import PySide6.QtWidgets
+from PySide6.QtCore import QObject
+from PySide6.QtWidgets import QListView
 from functools import partial
 
 # local import
 from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class SettRelay:
+class SettRelay(QObject):
     """ """
 
     def __init__(self, mainW):
@@ -119,7 +119,7 @@ class SettRelay:
         """ " """
         for dropDown in self.relayDropDowns:
             dropDown.clear()
-            dropDown.setView(PySide6.QtWidgets.QListView())
+            dropDown.setView(QListView())
             dropDown.addItem("Switch - Toggle")
             dropDown.addItem("Pulse 0.5 sec")
 

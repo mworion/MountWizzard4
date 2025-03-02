@@ -19,6 +19,7 @@ import datetime
 
 # external packages
 from PySide6.QtWidgets import QInputDialog, QLineEdit
+from PySide6.QtCore import QObject
 from skyfield.api import wgs84
 
 # local import
@@ -28,7 +29,7 @@ from mountcontrol.convert import formatLatToText, formatLonToText
 from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText, clickable
 
 
-class MountSett:
+class MountSett(QObject):
     """ """
 
     def __init__(self, mainW):

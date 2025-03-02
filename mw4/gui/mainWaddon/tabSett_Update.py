@@ -25,12 +25,13 @@ import requests
 import importlib_metadata
 from astropy.utils import iers, data
 import webbrowser
+from PySide6.QtCore import QObject
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
 
 
-class SettUpdate:
+class SettUpdate(QObject):
     """ """
 
     def __init__(self, mainW):

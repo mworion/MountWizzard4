@@ -18,6 +18,7 @@
 import logging
 import json
 import os
+from pathlib import Path
 
 # external packages
 from PySide6.QtCore import Signal
@@ -78,27 +79,22 @@ class SeeingWeather:
         self._online = value
         self.pollSeeingData()
 
-    def startCommunication(self):
+    def startCommunication(self) -> None:
         """
-        :return: success of reconnecting to server
         """
         self.enabled = True
         self.pollSeeingData()
-        return True
 
-    def stopCommunication(self):
+    def stopCommunication(self) -> None:
         """
-        :return: success of reconnecting to server
         """
         self.enabled = False
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit("SeeingWeather")
-        return True
 
-    def processSeeingData(self):
+    def processSeeingData(self) -> bool:
         """
-        :return: success
         """
         dataFile = self.app.mwGlob["dataDir"] / "meteoblue.data"
         if not os.path.isfile(dataFile):
@@ -115,56 +111,43 @@ class SeeingWeather:
         self.signals.update.emit()
         return True
 
-    def workerGetSeeingData(self, url):
+    def workerGetSeeingData(self, url: Path) -> None:
         """
-        :param url:
-        :return: data
         """
         try:
             data = requests.get(url, timeout=30)
-        except TimeoutError:
-            self.log.warning(f"[{url}] not reachable")
-            return False
         except Exception as e:
             self.log.critical(f"[{url}] general exception: [{e}]")
-            return False
+            return
+
         if data.status_code != 200:
             self.log.warning(f"[{url}] status is {data.status_code}")
-            return False
+            return
 
         data = data.json()
         self.log.trace(data)
 
         with open(self.app.mwGlob["dataDir"] / "meteoblue.data", "w+") as f:
             json.dump(data, f, indent=4)
-        return True
 
-    def sendStatus(self, status):
+    def sendStatus(self, status: bool) -> None:
         """
-        :return:
         """
         if not status and self.running:
             self.signals.deviceDisconnected.emit("SeeingWeather")
         elif status and not self.running:
             self.signals.deviceConnected.emit("SeeingWeather")
-        return True
 
-    def getSeeingData(self, url=""):
+    def getSeeingData(self, url: Path) -> None:
         """
-        :param url:
-        :return: true for test purpose
         """
         worker = Worker(self.workerGetSeeingData, url)
         worker.signals.finished.connect(self.processSeeingData)
         worker.signals.result.connect(self.sendStatus)
         self.threadPool.start(worker)
-        return True
 
-    def loadingFileNeeded(self, fileName, hours):
+    def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:
         """
-        :param fileName:
-        :param hours:
-        :return:
         """
         filePath = self.app.mwGlob["dataDir"] / fileName
         if not os.path.isfile(filePath):
@@ -176,30 +159,25 @@ class SeeingWeather:
         else:
             return True
 
-    def pollSeeingData(self):
+    def pollSeeingData(self) -> None:
         """
-        updateOpenWeatherMap downloads the actual OpenWeatherMap image and
-        displays it in environment tab. it checks first if online is set,
-        otherwise not download will take place. it will be updated every 10 minutes.
-
-        :return: success
         """
         if not self.enabled:
-            return False
+            return
         if not self.apiKey or not self.b:
-            return False
+            return
 
         if not self.online and self.running:
             self.signals.deviceDisconnected.emit("SeeingWeather")
             self.running = False
-            return False
+            return
         elif self.online and not self.running:
             self.signals.deviceConnected.emit("SeeingWeather")
             self.running = True
 
         if not self.loadingFileNeeded("meteoblue.data", 0.5):
             self.processSeeingData()
-            return True
+            return
 
         lat = self.location.latitude.degrees
         lon = self.location.longitude.degrees
@@ -208,4 +186,3 @@ class SeeingWeather:
         url = f"{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&tz=utc"
         self.getSeeingData(url=url + f"&apikey={self.b}")
         self.log.debug(f"{url}")
-        return True

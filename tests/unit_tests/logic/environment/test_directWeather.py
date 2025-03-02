@@ -31,20 +31,17 @@ def function():
 
 
 def test_startCommunication_1(function):
-    suc = function.startCommunication()
-    assert suc
+    function.startCommunication()
 
 
 def test_stopCommunication_1(function):
-    suc = function.stopCommunication()
-    assert suc
+    function.stopCommunication()
 
 
 def test_updateData_1(function):
     function.enabled = False
     function.running = False
-    suc = function.updateData(1)
-    assert not suc
+    function.updateData(1)
 
 
 def test_updateData_2(function):
@@ -57,8 +54,7 @@ def test_updateData_2(function):
 
     function.enabled = True
     function.running = True
-    suc = function.updateData(Sett())
-    assert suc
+    function.updateData(Sett())
     assert not function.running
 
 
@@ -72,6 +68,5 @@ def test_updateData_3(function):
 
     function.enabled = True
     function.running = False
-    suc = function.updateData(Sett())
-    assert suc
+    function.updateData(Sett())
     assert function.running

@@ -72,22 +72,12 @@ class SensorWeather:
         for fw in self.run:
             self.run[fw].loadConfig = value
 
-    def startCommunication(self):
+    def startCommunication(self) -> None:
         """
-        :return: success
         """
-        if self.framework not in self.run.keys():
-            return False
+        self.run[self.framework].startCommunication()
 
-        suc = self.run[self.framework].startCommunication()
-        return suc
-
-    def stopCommunication(self):
+    def stopCommunication(self) -> None:
         """
-        :return: success
         """
-        if self.framework not in self.run.keys():
-            return False
-
-        suc = self.run[self.framework].stopCommunication()
-        return suc
+        self.run[self.framework].stopCommunication()

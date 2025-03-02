@@ -29,9 +29,8 @@ class SensorWeatherAscom(AscomClass):
         super().__init__(app=app, data=data)
         self.signals = signals
 
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         """
-        :return: true for test purpose
         """
         self.getAndStoreAscomProperty("temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE")
         self.getAndStoreAscomProperty("pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE")
@@ -40,4 +39,3 @@ class SensorWeatherAscom(AscomClass):
         self.getAndStoreAscomProperty("cloudcover", "WEATHER_PARAMETERS.CloudCover")
         self.getAndStoreAscomProperty("rainrate", "WEATHER_PARAMETERS.RainVol")
         self.getAndStoreAscomProperty("skyquality", "SKY_QUALITY.SKY_BRIGHTNESS")
-        return True

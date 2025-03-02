@@ -58,16 +58,14 @@ def test_properties(function):
 def test_startCommunication_(function):
     function.enabled = False
     with mock.patch.object(function, "pollOpenWeatherMapData"):
-        suc = function.startCommunication()
-        assert suc
+        function.startCommunication()
         assert function.enabled
 
 
 def test_stopCommunication_1(function):
     function.running = True
     function.enabled = True
-    suc = function.stopCommunication()
-    assert suc
+    function.stopCommunication()
     assert not function.running
     assert not function.enabled
 
@@ -152,8 +150,7 @@ def test_workerGetOpenWeatherMapData_1(function):
         status_code = 300
 
     with mock.patch.object(requests, "get", return_value=Test()):
-        suc = function.workerGetOpenWeatherMapData("http://localhost")
-        assert not suc
+        function.workerGetOpenWeatherMapData("http://localhost")
 
 
 def test_workerGetOpenWeatherMapData_3(function):
@@ -161,8 +158,7 @@ def test_workerGetOpenWeatherMapData_3(function):
         status_code = 300
 
     with mock.patch.object(requests, "get", side_effect=Exception(), return_value=Test()):
-        suc = function.workerGetOpenWeatherMapData("http://localhost")
-        assert not suc
+        function.workerGetOpenWeatherMapData("http://localhost")
 
 
 def test_workerGetOpenWeatherMapData_4(function):
@@ -170,8 +166,7 @@ def test_workerGetOpenWeatherMapData_4(function):
         status_code = 300
 
     with mock.patch.object(requests, "get", side_effect=TimeoutError(), return_value=Test()):
-        suc = function.workerGetOpenWeatherMapData("http://localhost")
-        assert not suc
+        function.workerGetOpenWeatherMapData("http://localhost")
 
 
 def test_workerGetOpenWeatherMapData_5(function):
@@ -183,26 +178,22 @@ def test_workerGetOpenWeatherMapData_5(function):
             return "test"
 
     with mock.patch.object(requests, "get", return_value=Test()):
-        suc = function.workerGetOpenWeatherMapData("http://localhost")
-        assert suc
+        function.workerGetOpenWeatherMapData("http://localhost")
 
 
 def test_sendStatus_1(function):
     function.running = True
-    suc = function.sendStatus(False)
-    assert suc
+    function.sendStatus(False)
 
 
 def test_sendStatus_2(function):
     function.running = False
-    suc = function.sendStatus(True)
-    assert suc
+    function.sendStatus(True)
 
 
 def test_getOpenWeatherMapData(function):
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.getOpenWeatherMapData("test")
-        assert suc
+        function.getOpenWeatherMapData("test")
 
 
 def test_loadingFileNeeded_1(function):
@@ -230,8 +221,7 @@ def test_pollOpenWeatherMapData_1(function):
     function.running = False
     function.online = False
     function.apiKey = ""
-    suc = function.pollOpenWeatherMapData()
-    assert not suc
+    function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_2(function):
@@ -239,8 +229,7 @@ def test_pollOpenWeatherMapData_2(function):
     function.online = False
     function.running = False
     function.apiKey = ""
-    suc = function.pollOpenWeatherMapData()
-    assert not suc
+    function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_3(function):
@@ -248,8 +237,7 @@ def test_pollOpenWeatherMapData_3(function):
     function.online = False
     function.running = True
     function.apiKey = "test"
-    suc = function.pollOpenWeatherMapData()
-    assert not suc
+    function.pollOpenWeatherMapData()
     assert not function.running
 
 
@@ -259,8 +247,7 @@ def test_pollOpenWeatherMapData_4(function):
     function.running = False
     function.apiKey = "test"
     with mock.patch.object(function, "loadingFileNeeded", return_value=False):
-        suc = function.pollOpenWeatherMapData()
-        assert suc
+        function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_5(function):
@@ -270,5 +257,4 @@ def test_pollOpenWeatherMapData_5(function):
     function.apiKey = "test"
     with mock.patch.object(function, "loadingFileNeeded", return_value=True):
         with mock.patch.object(function, "getOpenWeatherMapData"):
-            suc = function.pollOpenWeatherMapData()
-            assert suc
+            function.pollOpenWeatherMapData()

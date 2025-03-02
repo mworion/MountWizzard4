@@ -30,12 +30,11 @@ class SensorWeatherAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
 
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         """
-        :return: true for test purpose
         """
         if not self.deviceConnected:
-            return False
+            return
 
         self.getAndStoreAlpacaProperty("temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE")
         self.getAndStoreAlpacaProperty("pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE")
@@ -44,4 +43,3 @@ class SensorWeatherAlpaca(AlpacaClass):
         self.getAndStoreAlpacaProperty("cloudcover", "WEATHER_PARAMETERS.CloudCover")
         self.getAndStoreAlpacaProperty("rainrate", "WEATHER_PARAMETERS.RainVol")
         self.getAndStoreAlpacaProperty("skyquality", "SKY_QUALITY.SKY_BRIGHTNESS")
-        return True

@@ -21,6 +21,7 @@ import logging
 
 # local imports
 from base.signalsDevices import Signals
+from mountcontrol.setting import Setting
 
 
 class DirectWeather:
@@ -45,30 +46,21 @@ class DirectWeather:
         self.enabled = False
         self.app.mount.signals.settingDone.connect(self.updateData)
 
-    def startCommunication(self):
-        """
-        startCommunication enables the cyclic polling in framework driver
-        :return: success
-        """
+    def startCommunication(self) -> None:
+        """ """
         self.enabled = True
         self.app.deviceStat["directWeather"] = False
-        return True
 
-    def stopCommunication(self):
-        """
-        :return:
-        """
+    def stopCommunication(self) -> None:
+        """ """
         self.enabled = False
         self.running = False
         self.app.deviceStat["directWeather"] = None
         self.data.clear()
         self.signals.deviceDisconnected.emit("DirectWeather")
-        return True
 
-    def updateData(self, sett):
+    def updateData(self, sett: Setting) -> None:
         """
-        :param sett:
-        :return:
         """
         if not self.enabled:
             return False
@@ -93,4 +85,3 @@ class DirectWeather:
         self.data["WEATHER_PARAMETERS.WEATHER_DEWPOINT"] = value3
         self.data["WEATHER_PARAMETERS.WEATHER_HUMIDITY"] = value4
         self.data["WEATHER_PARAMETERS.WEATHER_AGE"] = value5
-        return True

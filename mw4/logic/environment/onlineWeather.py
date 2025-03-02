@@ -18,6 +18,7 @@
 import logging
 import json
 import os
+from pathlib import Path
 
 # external packages
 import numpy as np
@@ -63,34 +64,30 @@ class OnlineWeather:
         self.app.update10s.connect(self.pollOpenWeatherMapData)
 
     @property
-    def online(self):
+    def online(self) -> bool:
         return self._online
 
     @online.setter
-    def online(self, value):
+    def online(self, value: bool) -> None:
         self._online = value
         self.pollOpenWeatherMapData()
 
-    def startCommunication(self):
+    def startCommunication(self) -> None:
         """
-        :return: success of reconnecting to server
         """
         self.enabled = True
         self.pollOpenWeatherMapData()
-        return True
 
-    def stopCommunication(self):
+    def stopCommunication(self) -> None:
         """
-        :return: success of reconnecting to server
         """
         self.enabled = False
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit("OnlineWeather")
-        return True
 
     @staticmethod
-    def getDewPoint(tempAir, relativeHumidity):
+    def getDewPoint(tempAir: float, relativeHumidity: float) -> float:
         """
         Compute the dew point in degrees Celsius
 
@@ -109,9 +106,8 @@ class OnlineWeather:
         dewPoint = (B * alpha) / (A - alpha)
         return dewPoint
 
-    def processOpenWeatherMapData(self):
+    def processOpenWeatherMapData(self) -> bool:
         """
-        :return: success
         """
         dataFile = self.app.mwGlob["dataDir"] / "openweathermap.data"
         if not os.path.isfile(dataFile):
@@ -124,8 +120,6 @@ class OnlineWeather:
         except Exception as e:
             self.log.warning(f"Cannot load data file, error: {e}")
             return False
-
-        self.log.trace(f"onlineWeatherData:[{data}]")
 
         if "main" in data:
             val = data["main"].get("temp", 273.15) - 273.15
@@ -156,89 +150,68 @@ class OnlineWeather:
             self.data["WEATHER_PARAMETERS.RainVol"] = 0
         return True
 
-    def workerGetOpenWeatherMapData(self, url):
+    def workerGetOpenWeatherMapData(self, url: Path) -> None:
         """
-        :param url:
-        :return: data
         """
         try:
             data = requests.get(url, timeout=30)
-        except TimeoutError:
-            self.log.warning(f"[{url}] not reachable")
-            return False
         except Exception as e:
             self.log.critical(f"[{url}] general exception: [{e}]")
-            return False
+            return
+
         if data.status_code != 200:
             self.log.warning(f"[{url}] status is not 200")
-            return False
+            return
 
         with open(self.app.mwGlob["dataDir"] / "openweathermap.data", "w+") as f:
             json.dump(data.json(), f, indent=4)
             self.log.trace(data.json())
-        return True
 
-    def sendStatus(self, status):
+    def sendStatus(self, status: bool) -> None:
         """
-        :return:
         """
         if not status and self.running:
             self.signals.deviceDisconnected.emit("OnlineWeather")
         elif status and not self.running:
             self.signals.deviceConnected.emit("OnlineWeather")
-        return True
 
-    def getOpenWeatherMapData(self, url=""):
+    def getOpenWeatherMapData(self, url: Path) -> None:
         """
-        :param url:
-        :return: true for test purpose
         """
         worker = Worker(self.workerGetOpenWeatherMapData, url)
         worker.signals.finished.connect(self.processOpenWeatherMapData)
         worker.signals.result.connect(self.sendStatus)
         self.threadPool.start(worker)
-        return True
 
-    def loadingFileNeeded(self, fileName, hours):
+    def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:
         """
-        :param fileName:
-        :param hours:
-        :return:
         """
         filePath = self.app.mwGlob["dataDir"] / fileName
         if not os.path.isfile(filePath):
             return True
 
         ageData = self.app.mount.obsSite.loader.days_old(fileName)
-        if ageData < hours / 24:
-            return False
-        else:
-            return True
+        return ageData > hours / 24
 
-    def pollOpenWeatherMapData(self):
+    def pollOpenWeatherMapData(self) -> None:
         """
-        updateOpenWeatherMap downloads the actual OpenWeatherMap image and
-        displays it in environment tab. it checks first if online is set,
-        otherwise not download will take place. it will be updated every 10 minutes.
-
-        :return: success
         """
         if not self.enabled:
-            return False
+            return
         if not self.apiKey:
-            return False
+            return
 
         if not self.online and self.running:
             self.signals.deviceDisconnected.emit("OnlineWeather")
             self.running = False
-            return False
+            return
         elif self.online and not self.running:
             self.signals.deviceConnected.emit("OnlineWeather")
             self.running = True
 
         if not self.loadingFileNeeded("openweathermap.data", 1):
             self.processOpenWeatherMapData()
-            return True
+            return
 
         lat = self.location.latitude.degrees
         lon = self.location.longitude.degrees
@@ -247,4 +220,3 @@ class OnlineWeather:
         url = f"{webSite}?lat={lat:1.2f}&lon={lon:1.2f}"
         self.getOpenWeatherMapData(url=url + f"&APPID={self.apiKey}")
         self.log.debug(f"{url}")
-        return True

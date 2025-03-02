@@ -47,5 +47,4 @@ def function():
 
 
 def test_workerPollData_1(function):
-    suc = function.workerPollData()
-    assert suc
+    function.workerPollData()

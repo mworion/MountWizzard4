@@ -59,16 +59,14 @@ def test_properties(function):
 def test_startCommunication_(function):
     function.enabled = False
     with mock.patch.object(function, "pollSeeingData"):
-        suc = function.startCommunication()
-        assert suc
+        function.startCommunication()
         assert function.enabled
 
 
 def test_stopCommunication_1(function):
     function.running = True
     function.enabled = True
-    suc = function.stopCommunication()
-    assert suc
+    function.stopCommunication()
     assert not function.running
     assert not function.enabled
 
@@ -96,8 +94,7 @@ def test_workerGetSeeingData_1(function):
         status_code = 300
 
     with mock.patch.object(requests, "get", return_value=Test()):
-        suc = function.workerGetSeeingData("http://localhost")
-        assert not suc
+        function.workerGetSeeingData("http://localhost")
 
 
 def test_workerGetSeeingData_3(function):
@@ -105,8 +102,7 @@ def test_workerGetSeeingData_3(function):
         status_code = 300
 
     with mock.patch.object(requests, "get", side_effect=Exception(), return_value=Test()):
-        suc = function.workerGetSeeingData("http://localhost")
-        assert not suc
+        function.workerGetSeeingData("http://localhost")
 
 
 def test_workerGetSeeingData_4(function):
@@ -114,8 +110,7 @@ def test_workerGetSeeingData_4(function):
         status_code = 300
 
     with mock.patch.object(requests, "get", side_effect=TimeoutError(), return_value=Test()):
-        suc = function.workerGetSeeingData("http://localhost")
-        assert not suc
+        function.workerGetSeeingData("http://localhost")
 
 
 def test_workerGetSeeingData_5(function):
@@ -127,26 +122,22 @@ def test_workerGetSeeingData_5(function):
             return "test"
 
     with mock.patch.object(requests, "get", return_value=Test()):
-        suc = function.workerGetSeeingData("http://localhost")
-        assert suc
+        function.workerGetSeeingData("http://localhost")
 
 
 def test_sendStatus_1(function):
     function.running = True
-    suc = function.sendStatus(False)
-    assert suc
+    function.sendStatus(False)
 
 
 def test_sendStatus_2(function):
     function.running = False
-    suc = function.sendStatus(True)
-    assert suc
+    function.sendStatus(True)
 
 
 def test_getSeeingData(function):
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.getSeeingData("test")
-        assert suc
+        function.getSeeingData("test")
 
 
 def test_loadingFileNeeded_1(function):
@@ -174,8 +165,7 @@ def test_pollSeeingData_1(function):
     function.running = False
     function.online = False
     function.apiKey = ""
-    suc = function.pollSeeingData()
-    assert not suc
+    function.pollSeeingData()
 
 
 def test_pollSeeingData_2(function):
@@ -183,8 +173,7 @@ def test_pollSeeingData_2(function):
     function.online = False
     function.running = False
     function.apiKey = ""
-    suc = function.pollSeeingData()
-    assert not suc
+    function.pollSeeingData()
 
 
 def test_pollSeeingData_3(function):
@@ -193,8 +182,7 @@ def test_pollSeeingData_3(function):
     function.running = True
     function.apiKey = "test"
     function.b = "test"
-    suc = function.pollSeeingData()
-    assert not suc
+    function.pollSeeingData()
     assert not function.running
 
 
@@ -205,8 +193,7 @@ def test_pollSeeingData_4(function):
     function.apiKey = "test"
     function.b = "test"
     with mock.patch.object(function, "loadingFileNeeded", return_value=False):
-        suc = function.pollSeeingData()
-        assert suc
+        function.pollSeeingData()
 
 
 def test_pollSeeingData_5(function):
@@ -217,5 +204,4 @@ def test_pollSeeingData_5(function):
     function.b = "test"
     with mock.patch.object(function, "loadingFileNeeded", return_value=True):
         with mock.patch.object(function, "getSeeingData"):
-            suc = function.pollSeeingData()
-            assert suc
+            function.pollSeeingData()

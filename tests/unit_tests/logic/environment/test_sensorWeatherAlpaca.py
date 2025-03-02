@@ -35,12 +35,10 @@ def function():
 def test_workerPollData_1(function):
     function.deviceConnected = False
     with mock.patch.object(function, "getAndStoreAlpacaProperty"):
-        suc = function.workerPollData()
-        assert not suc
+        function.workerPollData()
 
 
 def test_workerPollData_2(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getAndStoreAlpacaProperty"):
-        suc = function.workerPollData()
-        assert suc
+        function.workerPollData()

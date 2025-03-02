@@ -17,6 +17,7 @@
 # standard libraries
 import os
 import logging
+from pathlib import Path
 
 # external packages
 from PySide6.QtCore import Signal, QObject
@@ -149,7 +150,7 @@ class FileHandler:
         self.image = XISF.read(self.imagePath, image_metadata=header)[:, :, -1]
         self.header = self.convHeaderXISF2FITS(header)
 
-    def workerLoadImage(self, imagePath: str) -> bool:
+    def workerLoadImage(self, imagePath: Path) -> None:
         """ """
         self.imagePath = imagePath
         _, ext = os.path.splitext(self.imagePath)
@@ -162,7 +163,7 @@ class FileHandler:
         isValid = self.checkValidImageFormat()
         if not isValid:
             self.signals.imageLoaded.emit()
-            return False
+            return
 
         self.cleanImageFormat()
         bayerPattern = self.header.get("BAYERPAT", "").strip()
@@ -174,12 +175,11 @@ class FileHandler:
         self.hasCelestial = self.wcs.has_celestial
         self.sizeY, self.sizeX = self.wcs.array_shape
         self.signals.imageLoaded.emit()
-        return True
 
-    def loadImage(self, imagePath: str = "", flipH: bool = False, flipV: bool = False) -> bool:
+    def loadImage(self, imagePath: Path = Path(''), flipH: bool = False, flipV: bool = False) -> None:
         """ """
-        if not os.path.isfile(imagePath):
-            return False
+        if not imagePath.is_file():
+            return
 
         self.image = None
         self.imagePath = imagePath
@@ -188,4 +188,3 @@ class FileHandler:
 
         worker = Worker(self.workerLoadImage, imagePath)
         self.threadPool.start(worker)
-        return True

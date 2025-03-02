@@ -73,14 +73,12 @@ class OnlineWeather:
         self.pollOpenWeatherMapData()
 
     def startCommunication(self) -> None:
-        """
-        """
+        """ """
         self.enabled = True
         self.pollOpenWeatherMapData()
 
     def stopCommunication(self) -> None:
-        """
-        """
+        """ """
         self.enabled = False
         self.running = False
         self.data.clear()
@@ -107,8 +105,7 @@ class OnlineWeather:
         return dewPoint
 
     def processOpenWeatherMapData(self) -> bool:
-        """
-        """
+        """ """
         dataFile = self.app.mwGlob["dataDir"] / "openweathermap.data"
         if not os.path.isfile(dataFile):
             self.log.info(f"{dataFile} not available")
@@ -151,8 +148,7 @@ class OnlineWeather:
         return True
 
     def workerGetOpenWeatherMapData(self, url: Path) -> None:
-        """
-        """
+        """ """
         try:
             data = requests.get(url, timeout=30)
         except Exception as e:
@@ -168,24 +164,21 @@ class OnlineWeather:
             self.log.trace(data.json())
 
     def sendStatus(self, status: bool) -> None:
-        """
-        """
+        """ """
         if not status and self.running:
             self.signals.deviceDisconnected.emit("OnlineWeather")
         elif status and not self.running:
             self.signals.deviceConnected.emit("OnlineWeather")
 
     def getOpenWeatherMapData(self, url: Path) -> None:
-        """
-        """
+        """ """
         worker = Worker(self.workerGetOpenWeatherMapData, url)
         worker.signals.finished.connect(self.processOpenWeatherMapData)
         worker.signals.result.connect(self.sendStatus)
         self.threadPool.start(worker)
 
     def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:
-        """
-        """
+        """ """
         filePath = self.app.mwGlob["dataDir"] / fileName
         if not os.path.isfile(filePath):
             return True
@@ -194,8 +187,7 @@ class OnlineWeather:
         return ageData > hours / 24
 
     def pollOpenWeatherMapData(self) -> None:
-        """
-        """
+        """ """
         if not self.enabled:
             return
         if not self.apiKey:

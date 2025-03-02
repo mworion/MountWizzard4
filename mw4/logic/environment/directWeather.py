@@ -60,8 +60,7 @@ class DirectWeather:
         self.signals.deviceDisconnected.emit("DirectWeather")
 
     def updateData(self, sett: Setting) -> None:
-        """
-        """
+        """ """
         if not self.enabled:
             return False
 

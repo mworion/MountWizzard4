@@ -80,22 +80,19 @@ class SeeingWeather:
         self.pollSeeingData()
 
     def startCommunication(self) -> None:
-        """
-        """
+        """ """
         self.enabled = True
         self.pollSeeingData()
 
     def stopCommunication(self) -> None:
-        """
-        """
+        """ """
         self.enabled = False
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit("SeeingWeather")
 
     def processSeeingData(self) -> bool:
-        """
-        """
+        """ """
         dataFile = self.app.mwGlob["dataDir"] / "meteoblue.data"
         if not os.path.isfile(dataFile):
             self.log.info(f"{dataFile} not available")
@@ -112,8 +109,7 @@ class SeeingWeather:
         return True
 
     def workerGetSeeingData(self, url: Path) -> None:
-        """
-        """
+        """ """
         try:
             data = requests.get(url, timeout=30)
         except Exception as e:
@@ -131,24 +127,21 @@ class SeeingWeather:
             json.dump(data, f, indent=4)
 
     def sendStatus(self, status: bool) -> None:
-        """
-        """
+        """ """
         if not status and self.running:
             self.signals.deviceDisconnected.emit("SeeingWeather")
         elif status and not self.running:
             self.signals.deviceConnected.emit("SeeingWeather")
 
     def getSeeingData(self, url: Path) -> None:
-        """
-        """
+        """ """
         worker = Worker(self.workerGetSeeingData, url)
         worker.signals.finished.connect(self.processSeeingData)
         worker.signals.result.connect(self.sendStatus)
         self.threadPool.start(worker)
 
     def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:
-        """
-        """
+        """ """
         filePath = self.app.mwGlob["dataDir"] / fileName
         if not os.path.isfile(filePath):
             return True
@@ -160,8 +153,7 @@ class SeeingWeather:
             return True
 
     def pollSeeingData(self) -> None:
-        """
-        """
+        """ """
         if not self.enabled:
             return
         if not self.apiKey or not self.b:

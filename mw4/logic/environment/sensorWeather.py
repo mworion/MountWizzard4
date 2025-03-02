@@ -73,11 +73,9 @@ class SensorWeather:
             self.run[fw].loadConfig = value
 
     def startCommunication(self) -> None:
-        """
-        """
+        """ """
         self.run[self.framework].startCommunication()
 
     def stopCommunication(self) -> None:
-        """
-        """
+        """ """
         self.run[self.framework].stopCommunication()

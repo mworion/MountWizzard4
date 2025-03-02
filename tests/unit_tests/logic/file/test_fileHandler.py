@@ -18,6 +18,7 @@
 import unittest.mock as mock
 import pytest
 import shutil
+from pathlib import Path
 
 # external packages
 from astropy.io import fits
@@ -165,16 +166,14 @@ def test_workerLoadImage_1(function):
     imageFileName = "tests/work/image/m51.fit"
     with mock.patch.object(function, "loadFITS"):
         with mock.patch.object(function, "checkValidImageFormat", return_value=False):
-            suc = function.workerLoadImage(imageFileName)
-            assert not suc
+            function.workerLoadImage(imageFileName)
 
 
 def test_workerLoadImage_2(function):
     imageFileName = "tests/work/image/m51.xisf"
     with mock.patch.object(function, "loadXISF"):
         with mock.patch.object(function, "checkValidImageFormat", return_value=False):
-            suc = function.workerLoadImage(imageFileName)
-            assert not suc
+            function.workerLoadImage(imageFileName)
 
 
 def test_workerLoadImage_3(function):
@@ -187,24 +186,21 @@ def test_workerLoadImage_3(function):
         "NAXIS2": 200,
     }
 
-    imageFileName = "tests/work/image/m51.fit"
+    imageFileName = Path("tests/work/image/m51.fit")
     with mock.patch.object(function, "loadFITS"):
         with mock.patch.object(function, "checkValidImageFormat", return_value=True):
             with mock.patch.object(function, "cleanImageFormat"):
                 with mock.patch.object(function, "debayerImage"):
-                    suc = function.workerLoadImage(imageFileName)
-                    assert suc
+                    function.workerLoadImage(imageFileName)
 
 
 def test_loadImage_1(function):
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.loadImage()
-        assert not suc
+        function.loadImage()
 
 
 def test_loadImage_2(function):
-    imageFileName = "tests/work/image/m51.fit"
+    imageFileName = Path("tests/work/image/m51.fit")
     shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.loadImage(imageFileName)
-        assert suc
+        function.loadImage(imageFileName)

@@ -73,7 +73,7 @@ setup(
         "sep==1.4.0",
         "pyqtgraph==0.13.7",
         "qimage2ndarray==1.10.0",
-        "skyfield==1.50",
+        "skyfield==1.51",
         "sgp4==2.23",
         "requests==2.32.3",
         "requests_toolbelt==1.0.0",

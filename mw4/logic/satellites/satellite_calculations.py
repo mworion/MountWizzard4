@@ -23,7 +23,7 @@ from skyfield import almanac
 # local import
 
 
-def findSunlit(sat, ephemeris, tEvent):
+def findSunlit(sat, ephemeris, tEvent) -> bool:
     """
     :param sat:
     :param ephemeris:
@@ -34,7 +34,7 @@ def findSunlit(sat, ephemeris, tEvent):
     return sunlit
 
 
-def findSatUp(sat, loc, tStart, tEnd, alt):
+def findSatUp(sat, loc, tStart, tEnd, alt) -> [bool, list]:
     """
     :param sat:
     :param loc:
@@ -50,7 +50,7 @@ def findSatUp(sat, loc, tStart, tEnd, alt):
         return False, []
 
 
-def checkTwilight(ephemeris, loc, data):
+def checkTwilight(ephemeris, loc, data) -> int:
     """
     :param ephemeris:
     :param loc:
@@ -67,7 +67,7 @@ def checkTwilight(ephemeris, loc, data):
     return twilight
 
 
-def findRangeRate(sat, loc, tEv):
+def findRangeRate(sat, loc, tEv) -> [float, float, float, float]:
     """
     :param sat:
     :param loc:
@@ -84,7 +84,7 @@ def findRangeRate(sat, loc, tEv):
     )
 
 
-def calcSatSunPhase(sat, loc, ephemeris, tEv):
+def calcSatSunPhase(sat, loc, ephemeris, tEv) -> float:
     """
     https://stackoverflow.com/questions/19759501
         /calculating-the-phase-angle-between-the-sun-iss-and-an-observer-on-the
@@ -105,7 +105,7 @@ def calcSatSunPhase(sat, loc, ephemeris, tEv):
     return phase
 
 
-def calcAppMag(sat, loc, ephemeris, satRange, tEv):
+def calcAppMag(sat, loc, ephemeris, satRange, tEv) -> float:
     """
     solution base on the work from:
     https://astronomy.stackexchange.com/questions/28744
@@ -135,7 +135,7 @@ def calcAppMag(sat, loc, ephemeris, satRange, tEv):
     return appMag
 
 
-def calcSatelliteMeridianTransit(satellite, location, tolerance):
+def calcSatelliteMeridianTransit(satellite, location, tolerance) -> callable:
     """ """
     difference = satellite - location
 
@@ -148,7 +148,7 @@ def calcSatelliteMeridianTransit(satellite, location, tolerance):
     return west_of_meridian_at
 
 
-def calcPassEvents(satellite, obsSite, minAlt=5):
+def calcPassEvents(satellite, obsSite, minAlt=5) -> [list, list]:
     """ """
     if minAlt is None:
         minAlt = 5
@@ -163,7 +163,7 @@ def calcPassEvents(satellite, obsSite, minAlt=5):
     return times, events
 
 
-def collectAllOrbits(times, events, obsSite):
+def collectAllOrbits(times, events, obsSite) -> list:
     """ """
     counter = 0
     satOrbits = []
@@ -191,7 +191,7 @@ def collectAllOrbits(times, events, obsSite):
     return satOrbits
 
 
-def extractCorrectOrbits(times, events, satOrbits):
+def extractCorrectOrbits(times, events, satOrbits) -> list:
     """ """
     if not satOrbits and np.all(events == 1) and len(events) > 0:
         satOrbits.append({"rise": times[0]})
@@ -204,7 +204,7 @@ def extractCorrectOrbits(times, events, satOrbits):
     return satOrbits
 
 
-def sortFlipEvents(satOrbit, t0, t1, t2):
+def sortFlipEvents(satOrbit, t0, t1, t2) -> dict:
     """ """
     settle = satOrbit["settle"]
     rise = satOrbit["rise"]
@@ -230,7 +230,7 @@ def sortFlipEvents(satOrbit, t0, t1, t2):
     return satOrbit
 
 
-def addMeridianTransit(satellite, satOrbits, location, setting):
+def addMeridianTransit(satellite, satOrbits, location, setting) -> list:
     """ """
     limit = setting.meridianLimitTrack
     if limit is None:
@@ -249,7 +249,7 @@ def addMeridianTransit(satellite, satOrbits, location, setting):
     return satOrbits
 
 
-def calcSatPasses(satellite, obsSite, setting):
+def calcSatPasses(satellite, obsSite, setting) -> list:
     """ """
     times, events = calcPassEvents(satellite, obsSite, setting.horizonLimitLow)
     satOrbits = collectAllOrbits(times, events, obsSite)

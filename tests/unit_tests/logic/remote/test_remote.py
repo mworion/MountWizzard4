@@ -55,15 +55,13 @@ def test_stopCommunication_1(function):
 
 def test_addConnection_1(function):
     function.tcpServer = None
-    suc = function.addConnection()
-    assert not suc
+    function.addConnection()
 
 
 def test_addConnection_2(function):
     function.tcpServer = QtNetwork.QTcpServer(function)
     with mock.patch.object(function.tcpServer, "nextPendingConnection", return_value=0):
-        suc = function.addConnection()
-        assert not suc
+        function.addConnection()
 
 
 def test_addConnection_3(function):
@@ -83,8 +81,7 @@ def test_addConnection_3(function):
 
     function.tcpServer = QtNetwork.QTcpServer(function)
     with mock.patch.object(function.tcpServer, "nextPendingConnection", return_value=Test()):
-        suc = function.addConnection()
-        assert suc
+        function.addConnection()
 
 
 def test_receiveMessage_1(function):

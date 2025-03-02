@@ -65,15 +65,15 @@ class Remote(QObject):
             self.tcpServer.close()
         self.signals.deviceDisconnected.emit("TCP")
 
-    def addConnection(self) -> bool:
+    def addConnection(self) -> None:
         """ """
         if self.tcpServer is None:
-            return False
+            return
 
         self.clientConnection = self.tcpServer.nextPendingConnection()
         if not self.clientConnection:
             self.log.warning("Cannot establish incoming connection")
-            return False
+            return
 
         self.clientConnection.nextBlockSize = 0
         self.clientConnection.readyRead.connect(self.receiveMessage)
@@ -81,7 +81,6 @@ class Remote(QObject):
         self.clientConnection.error.connect(self.handleError)
         connection = self.clientConnection.peerAddress().toString()
         self.log.info(f"Connection to MountWizzard from {connection}")
-        return True
 
     def receiveMessage(self) -> bool:
         """ """

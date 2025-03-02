@@ -55,10 +55,8 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)
 
-    def openCSV(self):
-        """
-        :return: success
-        """
+    def openCSV(self) -> None:
+        """ """
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         self.csvFilename = f'{self.app.mwGlob["measureDir"]}/measure-{nameTime}.csv'
 
@@ -118,59 +116,44 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         self.csvWriter = csv.DictWriter(self.csvFile, fieldnames=fieldnames)
         self.csvWriter.writeheader()
 
-        return True
-
-    def writeCSV(self):
-        """
-        :return: success for write
-        """
+    def writeCSV(self) -> None:
+        """ """
         if not self.csvFile or not self.csvWriter:
-            return False
+            return
 
         row = dict()
         for key in self.data.keys():
             row[key] = self.data[key][0]
 
         self.csvWriter.writerow(row)
-        return True
 
-    def closeCSV(self):
-        """
-        :return: success for close
-        """
+    def closeCSV(self) -> None:
+        """ """
         if not self.csvFile or not self.csvWriter:
-            return False
+            return
 
         self.csvFile.close()
         self.csvWriter = None
         self.csvFile = None
-        return True
 
-    def startCommunication(self):
-        """
-        startCommunication starts cycling of the polling.
-        :return: True for test purpose
-        """
+    def startCommunication(self) -> None:
+        """ """
         self.parent.setEmptyData()
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
         self.openCSV()
-        return True
 
-    def stopCommunication(self):
-        """
-        stopCommunication stops the device
-        :return: true for test purpose
-        """
+    def stopCommunication(self) -> None:
+        """ """
         self.closeCSV()
         self.timerTask.stop()
-        return True
 
-    def measureTask(self):
+    def measureTask(self) -> None:
         """
-        measureTask runs all necessary pre processing and collecting task to assemble a
-        large dict of lists, where all measurement data is stored. the intention later on
-        would be to store and export this data.
-        the time object is related to the time held in mount computer and is in utc timezone.
+        measureTask runs all necessary pre-processing and collecting task to
+        assemble a large dict of lists, where all measurement data is stored.
+        the intention later on would be to store and export this data.
+        the time object is related to the time held in mount computer and is
+        in utc timezone.
 
         data sources are:
             environment
@@ -178,8 +161,5 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
 
         :return: success
         """
-        suc = self.parent.measureTask()
-        if suc:
-            self.writeCSV()
-
-        return suc
+        self.parent.measureTask()
+        self.writeCSV()

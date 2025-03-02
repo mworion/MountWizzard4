@@ -51,41 +51,26 @@ class MeasureDataRaw(PySide6.QtCore.QObject):
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)
 
-    def startCommunication(self):
-        """
-        startCommunication starts cycling of the polling.
-        :return: True for test purpose
-        """
-
+    def startCommunication(self) -> None:
+        """ """
         self.parent.setEmptyData()
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
 
-        return True
-
-    def stopCommunication(self):
-        """
-        stopCommunication stops the devices
-
-        :return: true for test purpose
-        """
-
+    def stopCommunication(self) -> None:
+        """ """
         self.timerTask.stop()
-        return True
 
-    def measureTask(self):
+    def measureTask(self) -> None:
         """
-        measureTask runs all necessary pre processing and collecting task to assemble a
-        large dict of lists, where all measurement data is stored. the intention later on
-        would be to store and export this data.
-        the time object is related to the time held in mount computer and is in utc timezone.
+        measureTask runs all necessary pre-processing and collecting task to
+        assemble a large dict of lists, where all measurement data is stored.
+        the intention later on would be to store and export this data.
+        the time object is related to the time held in mount computer and is
+        in utc timezone.
 
         data sources are:
             environment
             mount pointing position
 
-        :return: success
         """
-
-        suc = self.parent.measureTask()
-
-        return suc
+        self.parent.measureTask()

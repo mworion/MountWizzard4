@@ -43,16 +43,12 @@ def function():
 
 def test_startCommunication(function):
     with mock.patch.object(function.timerTask, "start"):
-        suc = function.startCommunication()
-        assert suc
-
+        function.startCommunication()
 
 def test_stopCommunication(function):
     with mock.patch.object(function.timerTask, "stop"):
-        suc = function.stopCommunication()
-        assert suc
+        function.stopCommunication()
 
 
 def test_measureTask(function):
-    suc = function.measureTask()
-    assert suc
+    function.measureTask()

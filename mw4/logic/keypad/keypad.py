@@ -183,8 +183,7 @@ class KeyPad:
 
     @staticmethod
     def expand7to8(value: int, fill: bool = False) -> list:
-        """
-        """
+        """ """
         result = []
         n = 0
         o = 0
@@ -201,8 +200,7 @@ class KeyPad:
         return result
 
     def convertChar(self, inChar: int) -> int:
-        """
-        """
+        """ """
         if inChar in self.charTrans:
             outChar = self.charTrans[inChar]
         else:
@@ -210,8 +208,7 @@ class KeyPad:
         return outChar
 
     def dispText(self, value: str) -> None:
-        """
-        """
+        """ """
         row = np.zeros(16, dtype=np.uint8)
         for i in range(value[3]):
             if value[4 + i] != 0:
@@ -220,8 +217,7 @@ class KeyPad:
         self.signals.textRow.emit(value[2] - 1, text)
 
     def drawPixel(self, value: int) -> None:
-        """
-        """
+        """ """
         imaArr = np.zeros([8, 8, 3], dtype=np.uint8)
         for i in range(8):
             for j in range(8):
@@ -233,8 +229,7 @@ class KeyPad:
         self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1), 8 * (value[1] - 1))
 
     def deletePixel(self, value: int) -> None:
-        """
-        """
+        """ """
         imaArr = np.zeros([8, 12, 3], dtype=np.uint8)
         for i in range(12):
             for j in range(8):
@@ -246,8 +241,7 @@ class KeyPad:
         self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1), 12 * (value[1] - 1))
 
     def dispatch(self, value: int) -> None:
-        """
-        """
+        """ """
         value = self.expand7to8(value, False)
         if len(value) <= 0:
             return
@@ -270,15 +264,13 @@ class KeyPad:
             # print('select 12')
 
     def checkDispatch(self, value: int) -> None:
-        """
-        """
+        """ """
         if value[0] == 0:
             self.dispatch(value[1:])
 
     @staticmethod
     def calcChecksum(value: int) -> int:
-        """
-        """
+        """ """
         checksum = 0
         for i in range(len(value)):
             checksum = checksum ^ value[i]
@@ -293,8 +285,7 @@ class KeyPad:
         self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
 
     def mousePressed(self, key: str) -> None:
-        """
-        """
+        """ """
         key = self.buttonCodes.get(key, None)
         if key is None:
             return
@@ -305,8 +296,7 @@ class KeyPad:
         self.send(message)
 
     def mouseReleased(self, key: str) -> None:
-        """
-        """
+        """ """
         key = self.buttonCodes.get(key, None)
         if key is None:
             return
@@ -317,8 +307,7 @@ class KeyPad:
         self.send(message)
 
     def keyDown(self, key: int) -> None:
-        """
-        """
+        """ """
         key = self.keyCodesA.get(key, None)
         if key is None:
             return
@@ -329,8 +318,7 @@ class KeyPad:
         self.send(message)
 
     def keyUp(self, key: int) -> None:
-        """
-        """
+        """ """
         key = self.keyCodesA.get(key, None)
         if key is None:
             return
@@ -341,8 +329,7 @@ class KeyPad:
         self.send(message)
 
     def keyPressed(self, key: int) -> None:
-        """
-        """
+        """ """
         if key > 255:
             return
 
@@ -360,8 +347,7 @@ class KeyPad:
         self.send(message)
 
     def on_data(self, ws: websocket.WebSocketApp, data: list, typeOpcode, cont) -> None:
-        """
-        """
+        """ """
         result = []
         started = False
         for i in range(len(data)):
@@ -379,13 +365,11 @@ class KeyPad:
                         result.append(data[i])
 
     def on_close(self, ws: websocket.WebSocketApp, close_status_code, close_msg) -> None:
-        """
-        """
+        """ """
         self.ws = None
 
     def workerWebsocket(self, host: tuple) -> None:
-        """
-        """
+        """ """
         if self.ws is not None:
             return
 
@@ -400,7 +384,6 @@ class KeyPad:
         self.ws.run_forever()
 
     def closeWebsocket(self) -> None:
-        """
-        """
+        """ """
         if self.ws is not None:
             self.ws.close()

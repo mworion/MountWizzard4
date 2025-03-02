@@ -61,43 +61,25 @@ class MeasureData:
             self.defaultConfig["frameworks"].update(self.run[fw].defaultConfig)
         self.framework = ""
 
-    def startCommunication(self):
-        """
-        :return: True for test purpose
-        """
+    def startCommunication(self) -> None:
+        """ """
         deviceStat = self.app.deviceStat
         dItems = deviceStat.items()
         self.devices = [key for key, value in dItems if deviceStat[key] is not None]
-
-        if self.framework not in self.run.keys():
-            return False
-
         name = self.run[self.framework].deviceName
-        suc = self.run[self.framework].startCommunication()
-        if suc:
-            self.signals.deviceConnected.emit(name)
-            self.msg.emit(0, "System", "Measure device found", f"{name}")
+        self.run[self.framework].startCommunication()
+        self.signals.deviceConnected.emit(name)
 
-        return suc
-
-    def stopCommunication(self):
-        """
-        :return: true for test purpose
-        """
-        if self.framework not in self.run.keys():
-            return False
-
-        suc = self.run[self.framework].stopCommunication()
+    def stopCommunication(self) -> None:
+        """ """
+        self.run[self.framework].stopCommunication()
         name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
         self.msg.emit(0, "System", "Measure device removed", f"{name}")
-        return suc
 
-    def setEmptyData(self):
-        """
-        :return: True for test purpose
-        """
+    def setEmptyData(self) -> None:
+        """ """
         self.data.clear()
         self.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
         self.data["deltaRaJNow"] = np.empty(shape=[0, 1])
@@ -130,8 +112,6 @@ class MeasureData:
         self.data["cameraTemp"] = np.empty(shape=[0, 1])
         self.data["cameraPower"] = np.empty(shape=[0, 1])
         self.data["timeDiff"] = np.empty(shape=[0, 1])
-
-        return True
 
     def calculateReference(self):
         """
@@ -185,21 +165,14 @@ class MeasureData:
         errAngPosDec = obs.errorAngularPosDEC.degrees * 3600
         return raJNow, decJNow, errAngPosRa, errAngPosDec
 
-    def checkStart(self, lenData):
-        """
-        checkStart throws the first N measurements away, because they or not valid
-
-        :param lenData:
-        :return: True for test purpose
-        """
+    def checkStart(self, lenData: int) -> None:
+        """ """
         if self.shorteningStart and lenData > 2:
             self.shorteningStart = False
             for measure in self.data:
                 self.data[measure] = np.delete(self.data[measure], range(0, 2))
 
-        return True
-
-    def checkSize(self, lenData):
+    def checkSize(self, lenData: int) -> None:
         """
         checkSize keep tracking of memory usage of the measurement. if the measurement
         get s too much data, it split the history by half and only keeps the latest only
@@ -210,18 +183,12 @@ class MeasureData:
         :return: True if splitting happens
         """
         if lenData < self.MAXSIZE:
-            return False
-
+            return
         for measure in self.data:
             self.data[measure] = np.split(self.data[measure], 2)[1]
-        return True
 
-    def getDirectWeather(self):
-        """
-        getDirectWeather checks if data is already collected and send 0 in case of missing
-        data.
-        :return: values
-        """
+    def getDirectWeather(self) -> tuple:
+        """ """
         temp = self.app.mount.setting.weatherTemperature
         if temp is None:
             temp = 0
@@ -237,7 +204,7 @@ class MeasureData:
 
         return temp, press, dew, hum
 
-    def measureTask(self):
+    def measureTask(self) -> None:
         """
         measureTask runs all necessary pre-processing and collecting task to
         assemble a large dict of lists, where all measurement data is stored. the
@@ -252,7 +219,7 @@ class MeasureData:
         """
         if not self.mutexMeasure.tryLock():
             self.log.info("overrun in measure")
-            return False
+            return
 
         lenData = len(self.data["time"])
         self.checkStart(lenData)
@@ -329,4 +296,3 @@ class MeasureData:
             dat["timeDiff"][0:29].fill(dat["timeDiff"][30])
 
         self.mutexMeasure.unlock()
-        return True

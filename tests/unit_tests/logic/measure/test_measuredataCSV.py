@@ -45,58 +45,48 @@ def function():
 
 def test_startCommunication(function):
     with mock.patch.object(function.timerTask, "start"):
-        suc = function.startCommunication()
-        assert suc
+        function.startCommunication()
 
 
 def test_stopCommunication(function):
     with mock.patch.object(function.timerTask, "stop"):
-        suc = function.stopCommunication()
-        assert suc
+        function.stopCommunication()
 
 
 def test_openCSV_1(function):
-    suc = function.openCSV()
-    assert suc
+    function.openCSV()
 
 
 def test_writeCSV_1(function):
-    suc = function.writeCSV()
-    assert not suc
+    function.writeCSV()
 
 
 def test_writeCSV_2(function):
     function.csvFile = open("tests/work/temp/test.csv", "w")
-    suc = function.writeCSV()
-    assert not suc
+    function.writeCSV()
 
 
 def test_writeCSV_3(function):
     function.csvFile = open("tests/work/temp/test.csv", "w")
     function.csvWriter = csv.DictWriter(function.csvFile, ["test"])
     function.data = {"test": [1, 2]}
-    suc = function.writeCSV()
-    assert suc
+    function.writeCSV()
 
 
 def test_closeCSV_1(function):
-    suc = function.closeCSV()
-    assert not suc
+    function.closeCSV()
 
 
 def test_closeCSV_2(function):
     function.csvFile = open("tests/work/temp/test.csv", "w")
-    suc = function.closeCSV()
-    assert not suc
+    function.closeCSV()
 
 
 def test_closeCSV_3(function):
     function.csvFile = open("tests/work/temp/test.csv", "w")
     function.csvWriter = csv.DictWriter(function.csvFile, ["test"])
-    suc = function.closeCSV()
-    assert suc
+    function.closeCSV()
 
 
 def test_measureTask(function):
-    suc = function.measureTask()
-    assert suc
+    function.measureTask()

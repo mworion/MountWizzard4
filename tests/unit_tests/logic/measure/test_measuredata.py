@@ -39,33 +39,20 @@ def test_property(function):
     assert function.deviceName == "test"
 
 
-def test_startCommunication_1(function):
-    suc = function.startCommunication()
-    assert not suc
-
-
 def test_startCommunication_2(function):
     function.framework = "raw"
     with mock.patch.object(function.run[function.framework].timerTask, "start"):
-        suc = function.startCommunication()
-        assert suc
-
-
-def test_stopCommunication_1(function):
-    suc = function.stopCommunication()
-    assert not suc
+        function.startCommunication()
 
 
 def test_stopCommunication_2(function):
     function.framework = "raw"
     with mock.patch.object(function.run[function.framework].timerTask, "stop"):
-        suc = function.stopCommunication()
-        assert suc
+        function.stopCommunication()
 
 
 def test_setEmptyData(function):
-    suc = function.setEmptyData()
-    assert suc
+    function.setEmptyData()
 
 
 def test_calculateReference_1(function):
@@ -169,21 +156,18 @@ def test_calculateReference_8(function):
 
 
 def test_checkStart_1(function):
-    suc = function.checkStart(2)
-    assert suc
+    function.checkStart(2)
 
 
 def test_checkStart_2(function):
     function.shorteningStart = True
-    suc = function.checkStart(2)
-    assert suc
+    function.checkStart(2)
 
 
 def test_checkStart_3(function):
     function.data = {"test": [2, 2, 2]}
     function.shorteningStart = True
-    suc = function.checkStart(3)
-    assert suc
+    function.checkStart(3)
 
 
 def test_checkSize_1(function):
@@ -198,8 +182,7 @@ def test_checkSize_1(function):
     function.data["status"] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     function.MAXSIZE = 20
     lenData = len(function.data["time"])
-    suc = function.checkSize(lenData=lenData)
-    assert not suc
+    function.checkSize(lenData=lenData)
 
 
 def test_checkSize_2(function):
@@ -215,8 +198,7 @@ def test_checkSize_2(function):
     function.data["status"] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     function.MAXSIZE = 5
     lenData = len(function.data["time"])
-    suc = function.checkSize(lenData=lenData)
-    assert suc
+    function.checkSize(lenData=lenData)
 
 
 def test_getDirectWeather(function):
@@ -230,63 +212,54 @@ def test_getDirectWeather(function):
 
 def test_measureTask_1(function):
     function.mutexMeasure.lock()
-    suc = function.measureTask()
+    function.measureTask()
     function.mutexMeasure.unlock()
-    assert not suc
 
 
 def test_measureTask_2(function):
     function.devices = ["sensorWeather"]
     function.setEmptyData()
-    suc = function.measureTask()
-    assert suc
+    function.measureTask()
 
 
 def test_measureTask_3(function):
     function.devices = ["onlineWeather"]
     function.setEmptyData()
-    suc = function.measureTask()
-    assert suc
+    function.measureTask()
 
 
 def test_measureTask_4(function):
     function.devices = ["directWeather"]
     function.setEmptyData()
-    suc = function.measureTask()
-    assert suc
+    function.measureTask()
 
 
 def test_measureTask_5(function):
     function.devices = ["skymeter"]
     function.setEmptyData()
-    suc = function.measureTask()
-    assert suc
+    function.measureTask()
 
 
 def test_measureTask_6(function):
     function.devices = ["filterwheel"]
     function.setEmptyData()
-    suc = function.measureTask()
-    assert suc
+    function.measureTask()
 
 
 def test_measureTask_7(function):
     function.devices = ["focuser"]
     function.setEmptyData()
-    suc = function.measureTask()
-    assert suc
+    function.measureTask()
 
 
 def test_measureTask_8(function):
     function.devices = ["power"]
     function.setEmptyData()
-    suc = function.measureTask()
-    assert suc
+    function.measureTask()
 
 
 def test_measureTask_9(function):
     function.devices = ["camera"]
     function.setEmptyData()
     function.data["timeDiff"] = np.ones(30)
-    suc = function.measureTask()
-    assert suc
+    function.measureTask()

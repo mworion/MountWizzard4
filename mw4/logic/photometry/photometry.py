@@ -96,10 +96,8 @@ class Photometry:
         self.hfrSegTriangle = None
         self.hfrSegSquare = None
 
-    def baseCalcs(self):
-        """
-        :return:
-        """
+    def baseCalcs(self) -> None:
+        """ """
         self.h, self.w = self.image.shape
         self.filterConstW = int(self.w / (self.FILTER_SCALE * 3))
         self.filterConstH = int(self.h / (self.FILTER_SCALE * 3))
@@ -115,12 +113,9 @@ class Photometry:
         self.hfrInner = np.median(self.hfr[maskInner])
         self.hfrPercentile = np.percentile(self.hfr, 90)
         self.hfrMedian = np.median(self.hfr)
-        return True
 
-    def workerGetHFR(self):
-        """
-        :return:
-        """
+    def workerGetHFR(self) -> None:
+        """ """
         img = griddata(
             (self.objs["x"], self.objs["y"]),
             self.hfr,
@@ -133,12 +128,9 @@ class Photometry:
         self.hfrMin = minB
         self.hfrMax = maxB
         self.signals.hfr.emit()
-        return True
 
-    def workerGetRoundness(self):
-        """
-        :return:
-        """
+    def workerGetRoundness(self) -> None:
+        """ """
         a = self.objs["a"]
         b = self.objs["b"]
         aspectRatio = np.maximum(a / b, b / a)
@@ -155,12 +147,9 @@ class Photometry:
         self.roundnessMin = minB
         self.roundnessMax = maxB
         self.signals.roundness.emit()
-        return True
 
-    def workerCalcTiltValuesSquare(self):
-        """
-        :return:
-        """
+    def workerCalcTiltValuesSquare(self) -> None:
+        """ """
         stepY = int(self.h / 3)
         stepX = int(self.w / 3)
 
@@ -180,12 +169,9 @@ class Photometry:
                 segHFR[ix][iy] = med_hfr
         self.hfrSegSquare = segHFR
         self.signals.hfrSquare.emit()
-        return True
 
-    def workerCalcTiltValuesTriangle(self):
-        """
-        :return:
-        """
+    def workerCalcTiltValuesTriangle(self) -> None:
+        """ """
         x = self.objs["x"] - self.w / 2
         y = self.objs["y"] - self.h / 2
         radius = min(self.h / 2, self.w / 2)
@@ -202,16 +188,13 @@ class Photometry:
                 segHFR[i] = np.median(hfrVal)
         self.hfrSegTriangle = np.concatenate([segHFR, segHFR])
         self.signals.hfrTriangle.emit()
-        return True
 
-    def calcAberrationInspectView(self):
-        """
-        :return:
-        """
+    def calcAberrationInspectView(self) -> None:
+        """ """
         size = self.ABERRATION_SIZE
         if self.w < 3 * size or self.h < 3 * size:
             self.aberrationImage = self.image
-            return False
+            return
 
         dw = int((self.w - 3 * size) / 2)
         dh = int((self.h - 3 * size) / 2)
@@ -222,12 +205,9 @@ class Photometry:
         img = np.delete(img, np.s_[size * 2 : size * 2 + dw], axis=1)
         self.aberrationImage = img
         self.signals.aberration.emit()
-        return True
 
-    def calcBackground(self):
-        """
-        :return:
-        """
+    def calcBackground(self) -> None:
+        """ """
         maxB = np.max(self.backSignal) / self.bkg.globalback
         minB = np.min(self.backSignal) / self.bkg.globalback
         img = self.backSignal / self.bkg.globalback
@@ -235,24 +215,18 @@ class Photometry:
         self.backgroundMin = minB
         self.backgroundMax = maxB
         self.signals.background.emit()
-        return True
 
-    def calcBackgroundRMS(self):
-        """
-        :return:
-        """
+    def calcBackgroundRMS(self) -> None:
+        """ """
         self.backgroundRMS = uniform_filter(
             self.backRMS, size=[self.filterConstH, self.filterConstW]
         )
         self.signals.backgroundRMS.emit()
-        return True
 
-    def runCalcs(self):
-        """
-        :return:
-        """
+    def runCalcs(self) -> None:
+        """ """
         if len(self.hfr) < 10:
-            return False
+            return
         self.baseCalcs()
         self.workerGetHFR()
         self.workerCalcTiltValuesSquare()
@@ -261,12 +235,9 @@ class Photometry:
         self.calcAberrationInspectView()
         self.calcBackground()
         self.calcBackgroundRMS()
-        return True
 
-    def workerCalcPhotometry(self):
-        """
-        :return:
-        """
+    def workerCalcPhotometry(self) -> None:
+        """ """
         self.bkg = sep.Background(self.image, bw=32, bh=32)
         image_sub = self.image - self.bkg
         self.backRMS = self.bkg.rms()
@@ -286,7 +257,7 @@ class Photometry:
             self.objsAll = None
             self.hfr = None
             self.hfrAll = None
-            return False
+            return
 
         objsRaw = len(objs)
 
@@ -369,33 +340,21 @@ class Photometry:
         self.runCalcs()
         objsHFR = len(self.objs)
         self.log.info(f"Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, " f"HFR:{objsHFR}")
-        return True
 
-    def unlockPhotometry(self):
-        """
-        :return:
-        """
+    def unlockPhotometry(self) -> None:
+        """ """
         self.lock.unlock()
-        return True
 
-    def processPhotometry(self, image=None, snTarget=0):
-        """
-        :param image:
-        :param snTarget:
-        :return:
-        """
-        if image is None:
-            return False
-
+    def processPhotometry(self, image: object, snTarget: float) -> None:
+        """ """
         self.image = image
         self.snTarget = self.SN[snTarget]
         self.sepThreshold = self.SEP[snTarget]
 
         if not self.lock.tryLock():
-            return False
+            return
 
         worker = Worker(self.workerCalcPhotometry)
         worker.signals.result.connect(lambda: self.signals.sepFinished.emit())
         worker.signals.finished.connect(self.unlockPhotometry)
         self.threadPool.start(worker)
-        return True

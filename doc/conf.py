@@ -36,7 +36,7 @@
 # -- Project information -----------------------------------------------------
 
 project = "MountWizzard4"
-copyright = "2024, mworion"
+copyright = "2025, mworion"
 author = "Michael Würtenberger"
 
 # The full version, including alpha/beta/rc tags
@@ -77,10 +77,8 @@ html_theme = "alabaster"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
-
-pdf_documents = [("index", "MountWizzard4", "MountWizzard4", "mworion")]
-# index - master document
+html_static_path = ['_static']
+html_css_files = ["custom.css"]
 
 html_theme_options = {
     "logo": "mw4.png",

@@ -470,19 +470,19 @@ class ImageManage(QObject):
 
     def setLightIntensity(self) -> None:
         """ """
-        actValue = self.app.cover.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
-        if actValue is None:
-            return
+        actValue = self.app.cover.data.get(
+            "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE", 0
+        )
         maxBrightness = self.app.cover.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
         )
 
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self,
-            "Set light intensity",
+            self.mainW,
+            "Set intensity",
             f"Value (0..{maxBrightness}):",
-            float(actValue),
+            actValue,
             0,
             maxBrightness,
             1,

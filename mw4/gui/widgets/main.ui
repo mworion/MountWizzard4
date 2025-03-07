@@ -8398,7 +8398,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -9795,7 +9795,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <x>5</x>
          <y>150</y>
          <width>366</width>
-         <height>241</height>
+         <height>251</height>
         </rect>
        </property>
        <property name="title">
@@ -9976,7 +9976,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
           <x>5</x>
           <y>200</y>
           <width>356</width>
-          <height>36</height>
+          <height>46</height>
          </rect>
         </property>
         <property name="font">
@@ -10392,7 +10392,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>340</y>
+         <y>350</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -11049,7 +11049,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>225</y>
+         <y>230</y>
          <width>366</width>
          <height>101</height>
         </rect>
@@ -11650,7 +11650,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>145</x>
           <y>100</y>
-          <width>136</width>
+          <width>131</width>
           <height>18</height>
          </rect>
         </property>
@@ -19479,7 +19479,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>100</x>
           <y>45</y>
-          <width>81</width>
+          <width>88</width>
           <height>21</height>
          </rect>
         </property>
@@ -19498,7 +19498,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>100</x>
           <y>20</y>
-          <width>81</width>
+          <width>88</width>
           <height>21</height>
          </rect>
         </property>
@@ -19520,7 +19520,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>280</x>
           <y>20</y>
-          <width>81</width>
+          <width>88</width>
           <height>21</height>
          </rect>
         </property>
@@ -22972,7 +22972,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -30121,7 +30121,7 @@ Updater</string>
         </rect>
        </property>
        <property name="title">
-        <string>MountWizzard4 (C) 2019-2024 MWORION</string>
+        <string>MountWizzard4 (C) 2019-2025 MWORION</string>
        </property>
        <widget class="QTextBrowser" name="textBrowser_2">
         <property name="enabled">

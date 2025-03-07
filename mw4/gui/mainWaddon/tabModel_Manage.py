@@ -242,7 +242,7 @@ class ModelManage(QObject):
 
     def writeBuildModelOptimized(self, pointsOut) -> None:
         """ """
-        if not pointsOut:
+        if not pointsOut or self.fittedModelPath.is_dir():
             return
         newName = self.fittedModelPath.stem.replace("-opt", "") + "-opt"
         newPath = self.app.mwGlob["modelDir"] / (newName + ".model")
@@ -251,7 +251,7 @@ class ModelManage(QObject):
             with open(self.fittedModelPath) as actFile:
                 actModel = convertFloatToAngle(json.load(actFile))
         except Exception as e:
-            self.mainW.log.warning(f"Cannot load model file: {[actFile]}, error: {e}")
+            self.mainW.log.warning(f"Cannot load model file: {[self.fittedModelPath]}, error: {e}")
             return
 
         newModel = []

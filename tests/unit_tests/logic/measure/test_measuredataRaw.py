@@ -45,6 +45,7 @@ def test_startCommunication(function):
     with mock.patch.object(function.timerTask, "start"):
         function.startCommunication()
 
+
 def test_stopCommunication(function):
     with mock.patch.object(function.timerTask, "stop"):
         function.stopCommunication()

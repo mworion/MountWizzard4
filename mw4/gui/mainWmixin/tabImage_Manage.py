@@ -584,7 +584,7 @@ class ImageManage:
         dlg = QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set light intensity', f'Value (0..{maxBrightness}):',
-                               float(actValue), 0, maxBrightness, 1)
+                               actValue, 0, maxBrightness, 1)
         if not ok:
             return False
 

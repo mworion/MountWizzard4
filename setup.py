@@ -19,9 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- improve: workaround for SGPro header keywords 
-- improve: workaround for windows automation
-- improve: adding coordinates for manual imaging with ascom
+- improve: bugfixes and improvements from pyqt5 library
 
 """
 
@@ -30,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.7',
+    version='3.2.8b0',
     packages=[
         'mw4',
         'mw4.base',
@@ -94,10 +92,10 @@ setup(
     ]
     + (['pywin32==306'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
-    + (['PyQt5==5.15.9'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt3D==5.15.6'] if platform.machine() not in ['armv7l',
+    + (['PyQt5==5.15.11'] if platform.machine() not in ['armv7l'] else [])
+    + (['PyQt3D==5.15.7'] if platform.machine() not in ['armv7l',
                                                         'aarch64'] else []),
-    keywords=['5.15.9'],
+    keywords=['5.15.11'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='Michael Wuertenberger',

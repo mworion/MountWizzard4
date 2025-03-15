@@ -108,17 +108,6 @@ def clean_mw(c):
 
 
 @task
-def image_res(c):
-    printMW("changing image resolution for docs to 150 dpi")
-    files = glob.glob("./doc/source/**/*.png", recursive=True)
-    for file in files:
-        print(file)
-        im = Image.open(file)
-        im.save(file, dpi=(150, 150))
-    printMW("changing image resolution for docs to 150 dpi finished\n")
-
-
-@task
 def version_doc(c):
     printMW("changing the version number to setup.py")
 

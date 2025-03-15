@@ -20,7 +20,6 @@ are in meters. It starts with the radius
 
 .. image:: image/radius.png
     :align: center
-    :scale: 71%
 
 followed by the displacement of the mount in north and east direction. A
 displacement to the north is treated positive as well as a displacement to
@@ -88,7 +87,7 @@ your telescope still could view your target and no dome movement is necessary.
 
 Top view of your dome setup:
 
-.. image:: image/dome_math_1.png
+.. image:: image/dome_math_1.drawio
     :align: center
 
 .. image:: image/dome_opening_hysteresis.png

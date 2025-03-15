@@ -92,7 +92,7 @@ html_theme_options = {
 }
 
 simplepdf_file_name = "mountwizzard4-" + version + ".pdf"
-simplepdf_use_weasyprint_api = True
+simplepdf_use_weasyprint_api = False
 simplepdf_weasyprint_flags = ["-v"]
 simplepdf_vars = {
     "primary": "rgb(32, 128, 208)",

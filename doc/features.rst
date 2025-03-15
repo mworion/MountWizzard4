@@ -1,5 +1,5 @@
 Features
-========
+--------
 
 For being fully operational, MountWizzard4 needs either:
 

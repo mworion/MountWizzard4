@@ -1,5 +1,5 @@
 Modeling
-========
+--------
 I only focus on model building with tool support, so no words about manual model
 building. I don't know the internal algorithms of the 10micron mount how the
 calculate their corrections. So many of the hints derive from pure logical or
@@ -34,7 +34,7 @@ The following chart shows each basic step.
 The following sections describe each step in detail:
 
 Step 1: Polar alignment
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^
 Detailed description: :doc:`polar_align`
 
 .. image:: image/polar_align.png
@@ -42,7 +42,7 @@ Detailed description: :doc:`polar_align`
     :scale: 71%
 
 Step 2: Selecting build points
-------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Detailed description: :doc:`build_points`
 
 .. image:: image/build_points1.png
@@ -50,7 +50,7 @@ Detailed description: :doc:`build_points`
     :scale: 71%
 
 Step 3: Running the model build
--------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Detailed description: :doc:`model_build`
 
 .. image:: image/model_build.png
@@ -58,7 +58,7 @@ Detailed description: :doc:`model_build`
     :scale: 71%
 
 Step 4: Managing mount models
------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Detailed description: :doc:`manage_model`
 
 .. image:: image/manage_model.png

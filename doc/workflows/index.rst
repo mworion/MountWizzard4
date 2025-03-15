@@ -6,7 +6,7 @@ given to understand and they are based of the experience of the author or other
 users.
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 4
 
     almanac/index
     dome/index

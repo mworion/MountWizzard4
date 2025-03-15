@@ -1,5 +1,3 @@
-Build a model
-=============
 After you have selected you build points, MountWizzard4 could automatically run
 through the points and generate the data to generate a model. These are steps
 you could basically all manual as the final model calculation itself is done in

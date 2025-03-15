@@ -34,45 +34,39 @@ The following chart shows each basic step.
 The following sections describe each step in detail:
 
 Step 1: Polar alignment
-^^^^^^^^^^^^^^^^^^^^^^^
-Detailed description: :doc:`polar_align`
+=======================
 
 .. image:: image/polar_align.png
     :align: center
     :scale: 71%
 
+.. include:: polar_align.rst
+
 Step 2: Selecting build points
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Detailed description: :doc:`build_points`
+==============================
 
 .. image:: image/build_points1.png
     :align: center
     :scale: 71%
 
+.. include:: build_points.rst
+
+
 Step 3: Running the model build
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Detailed description: :doc:`model_build`
+===============================
 
 .. image:: image/model_build.png
     :align: center
     :scale: 71%
 
+.. include:: model_build.rst
+
 Step 4: Managing mount models
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Detailed description: :doc:`manage_model`
+=============================
 
 .. image:: image/manage_model.png
     :align: center
     :scale: 71%
 
+.. include:: manage_model.rst
 
-Steps described in detail:
-==========================
-
-.. toctree::
-    :maxdepth: 3
-
-    polar_align
-    build_points
-    model_build
-    manage_model

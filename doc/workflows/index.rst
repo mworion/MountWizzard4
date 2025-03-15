@@ -14,10 +14,6 @@ users.
     imaging/index
     minorplanets/index
     modeling/index
-    modeling/polar_align
-    modeling/build_points
-    modeling/model_build
-    modeling/manage_model
     profile/index
     satellite/index
     tools/index

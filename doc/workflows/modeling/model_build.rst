@@ -1,3 +1,5 @@
+.. _model_build:
+
 Build a model
 -------------
 After you have selected you build points, MountWizzard4 could automatically run

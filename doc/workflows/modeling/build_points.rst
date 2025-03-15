@@ -1,3 +1,5 @@
+.. _build_points:
+
 Selecting build points
 ----------------------
 The first step for building a model is the selection of the desired model

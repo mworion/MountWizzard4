@@ -1,3 +1,5 @@
+.. _polar_align:
+
 Polar align your mount
 ----------------------
 All credits for explaining the following section go to 10micron and many experts

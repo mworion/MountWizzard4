@@ -7,9 +7,8 @@ as my development documentation. There might be some faults and error in it. If
 you find one, please let me know. I would like to get MountWizzard4 from it's 
 technical base as clean as possible.
 
-.. toctree::
-    :maxdepth: 2
 
-    a_time
-    calculations
+.. include:: a_time.rst
+
+.. include:: calculations.rst
 

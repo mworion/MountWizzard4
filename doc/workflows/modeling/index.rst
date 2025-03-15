@@ -66,6 +66,8 @@ Detailed description: :doc:`manage_model`
     :scale: 71%
 
 
+Steps described in detail:
+==========================
 
 .. toctree::
     :maxdepth: 3

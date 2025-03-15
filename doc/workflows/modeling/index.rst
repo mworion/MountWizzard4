@@ -33,40 +33,11 @@ The following chart shows each basic step.
 
 The following sections describe each step in detail:
 
-Step 1: Polar alignment
-=======================
-
-.. image:: image/polar_align.png
-    :align: center
-    :scale: 71%
-
 .. include:: polar_align.rst
-
-Step 2: Selecting build points
-==============================
-
-.. image:: image/build_points1.png
-    :align: center
-    :scale: 71%
 
 .. include:: build_points.rst
 
-
-Step 3: Running the model build
-===============================
-
-.. image:: image/model_build.png
-    :align: center
-    :scale: 71%
-
 .. include:: model_build.rst
-
-Step 4: Managing mount models
-=============================
-
-.. image:: image/manage_model.png
-    :align: center
-    :scale: 71%
 
 .. include:: manage_model.rst
 

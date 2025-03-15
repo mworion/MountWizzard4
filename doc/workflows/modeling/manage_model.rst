@@ -1,3 +1,5 @@
+Step 4: Managing mount models
+=============================
 Managing your models is a central task especially if you image in a mobile
 environment. MountWizzard4 supports this in the Manage Model Tab in the main
 window. All functions there are related to the actual mount model or the models

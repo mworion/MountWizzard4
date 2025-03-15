@@ -1,3 +1,5 @@
+Step 2: Selecting build points
+==============================
 The first step for building a model is the selection of the desired model
 points. Handling you horizon is an important step as MountWizzard4 helps you
 could in finding points, which were not covered through obstacles in your

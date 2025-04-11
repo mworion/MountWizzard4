@@ -34,8 +34,6 @@ class ImageManage(QObject):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
 
-        self.ui.downloadFast.clicked.connect(self.setDownloadModeFast)
-        self.ui.downloadSlow.clicked.connect(self.setDownloadModeSlow)
         self.ui.coolerOn.clicked.connect(self.setCoolerOn)
         self.ui.coolerOff.clicked.connect(self.setCoolerOff)
         clickable(self.ui.coolerTemp).connect(self.setCoolerTemp)
@@ -86,7 +84,6 @@ class ImageManage(QObject):
         self.ui.aperture.setValue(config.get("aperture", 100))
         self.ui.focuserStepsize.setValue(config.get("focuserStepsize", 100))
         self.ui.focuserSteps.setValue(config.get("focuserSteps", 100))
-        self.ui.fastDownload.setChecked(config.get("fastDownload", True))
 
     def storeConfig(self) -> None:
         """ """
@@ -100,7 +97,6 @@ class ImageManage(QObject):
         config["aperture"] = self.ui.aperture.value()
         config["focuserStepsize"] = self.ui.focuserStepsize.value()
         config["focuserSteps"] = self.ui.focuserSteps.value()
-        config["fastDownload"] = self.ui.fastDownload.isChecked()
 
     def setupIcons(self) -> None:
         """ """
@@ -119,7 +115,6 @@ class ImageManage(QObject):
         offsetCam = self.app.camera.data.get("CCD_OFFSET.OFFSET")
         humidityCCD = self.app.camera.data.get("CCD_HUMIDITY.HUMIDITY")
         coolerOn = self.app.camera.data.get("CCD_COOLER.COOLER_ON")
-        downloadFast = self.app.camera.data.get("READOUT_QUALITY.QUALITY_LOW")
         pixelX = self.app.camera.data.get("CCD_INFO.CCD_MAX_X")
 
         enable = coolerTemp is not None
@@ -135,9 +130,6 @@ class ImageManage(QObject):
         enable = coolerOn is not None
         self.ui.coolerOn.setEnabled(enable)
         self.ui.coolerOff.setEnabled(enable)
-        enable = downloadFast is not None
-        self.ui.downloadFast.setEnabled(enable)
-        self.ui.downloadSlow.setEnabled(enable)
         enable = pixelX is not None
         self.ui.subFrame.setEnabled(enable)
 
@@ -217,7 +209,6 @@ class ImageManage(QObject):
         pixelX = self.app.camera.data.get("CCD_INFO.CCD_MAX_X", 0)
         pixelY = self.app.camera.data.get("CCD_INFO.CCD_MAX_Y", 0)
         humidityCCD = self.app.camera.data.get("CCD_HUMIDITY.HUMIDITY")
-        downloadFast = self.app.camera.data.get("READOUT_QUALITY.QUALITY_LOW", False)
 
         optimalBinningX = int(pixelX / 1750)
         optimalBinningY = int(pixelY / 1750)
@@ -233,17 +224,10 @@ class ImageManage(QObject):
         self.app.camera.binning1 = self.ui.binning1.value()
         self.app.camera.binningN = self.ui.binningN.value()
         self.app.camera.subFrame = self.ui.subFrame.value()
-        self.app.camera.fastDownload = self.ui.fastDownload.isChecked()
+        self.app.camera.fastDownload = True
         self.app.camera.focalLength = focalLength
         guiSetText(self.ui.humidityCCD, "3.1f", humidityCCD)
         guiSetText(self.ui.optimalBinning, "1.0f", optimalBinning)
-
-        if downloadFast:
-            changeStyleDynamic(self.ui.downloadFast, "running", True)
-            changeStyleDynamic(self.ui.downloadSlow, "running", False)
-        else:
-            changeStyleDynamic(self.ui.downloadFast, "running", False)
-            changeStyleDynamic(self.ui.downloadSlow, "running", True)
 
     def setCoolerTemp(self) -> None:
         """ """
@@ -381,14 +365,6 @@ class ImageManage(QObject):
         else:
             number = availNames.index(value) + 1
         self.app.filter.sendFilterNumber(filterNumber=number)
-
-    def setDownloadModeFast(self) -> None:
-        """ """
-        self.app.camera.sendDownloadMode(fastReadout=True)
-
-    def setDownloadModeSlow(self) -> None:
-        """ """
-        self.app.camera.sendDownloadMode(fastReadout=False)
 
     def setCoolerOn(self) -> None:
         """ """

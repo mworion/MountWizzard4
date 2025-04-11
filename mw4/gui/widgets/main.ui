@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -11864,7 +11864,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>185</y>
+         <y>145</y>
          <width>366</width>
          <height>101</height>
         </rect>
@@ -12122,7 +12122,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <x>5</x>
          <y>10</y>
          <width>366</width>
-         <height>381</height>
+         <height>276</height>
         </rect>
        </property>
        <property name="title">
@@ -12655,22 +12655,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <double>100.000000000000000</double>
          </property>
         </widget>
-        <widget class="QPushButton" name="downloadSlow">
-         <property name="geometry">
-          <rect>
-           <x>285</x>
-           <y>85</y>
-           <width>66</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="toolTip">
-          <string>Set readout speed for the camera to high quality if available.</string>
-         </property>
-         <property name="text">
-          <string>High Qual</string>
-         </property>
-        </widget>
         <widget class="QLabel" name="textGain">
          <property name="enabled">
           <bool>true</bool>
@@ -12755,22 +12739,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QPushButton" name="downloadFast">
-         <property name="geometry">
-          <rect>
-           <x>105</x>
-           <y>85</y>
-           <width>66</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="toolTip">
-          <string>Set readout speed for the camera to fast if available.</string>
-         </property>
-         <property name="text">
-          <string>Fast</string>
-         </property>
-        </widget>
         <widget class="QLabel" name="textCoolerTempUnit">
          <property name="geometry">
           <rect>
@@ -12844,26 +12812,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </property>
          <property name="text">
           <string>Cooler Off</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="textReadoutSpeed">
-         <property name="geometry">
-          <rect>
-           <x>5</x>
-           <y>85</y>
-           <width>96</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Readout speed</string>
          </property>
         </widget>
         <widget class="QLabel" name="textCoolerTemp">
@@ -12977,32 +12925,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </property>
         </widget>
        </widget>
-       <widget class="QCheckBox" name="fastDownload">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>350</y>
-          <width>341</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Use Highspeed download of CCD camera if availabe</string>
-        </property>
-        <property name="text">
-         <string>Use fast image download for modeling (if available)</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_21">
         <property name="geometry">
          <rect>
@@ -13065,7 +12987,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>80</y>
+         <y>10</y>
          <width>366</width>
          <height>81</height>
         </rect>
@@ -13494,8 +13416,8 @@ Slew</string>
       <widget class="QGroupBox" name="GroupFilterWheel">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>10</y>
+         <x>5</x>
+         <y>340</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -32516,9 +32438,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>subFrame</tabstop>
   <tabstop>coolerOn</tabstop>
   <tabstop>coolerOff</tabstop>
-  <tabstop>downloadFast</tabstop>
-  <tabstop>downloadSlow</tabstop>
-  <tabstop>fastDownload</tabstop>
   <tabstop>coverUnpark</tabstop>
   <tabstop>coverPark</tabstop>
   <tabstop>coverHalt</tabstop>

@@ -51,7 +51,6 @@ def convertKeyData(data: dict) -> dict:
         "checkAutoDeleteMeridian": "autoDeleteMeridian",
         "checkAutomaticTelescope": "automaticTelescope",
         "checkAvoidFlip": "avoidFlip",
-        "checkFastDownload": "fastDownload",
         "checkIncludeSubdirs": "includeSubdirs",
         "checkJ2000": "coordsJ2000",
         "checkJNow": "coordsJNow",

@@ -383,14 +383,6 @@ def test_setFilterName_4(function):
         function.setFilterName()
 
 
-def test_setDownloadModeFast(function):
-    function.setDownloadModeFast()
-
-
-def test_setDownloadModeSlow(function):
-    function.setDownloadModeSlow()
-
-
 def test_setCoolerOn_1(function):
     function.setCoolerOn()
 
@@ -507,10 +499,6 @@ def test_switchLightOff_1(function):
 def test_switchLightOff_2(function):
     with mock.patch.object(function.app.cover, "lightOff", return_value=True):
         function.switchLightOff()
-
-
-def test_setLightIntensity_1(function):
-    function.setLightIntensity()
 
 
 def test_setLightIntensity_2(function):

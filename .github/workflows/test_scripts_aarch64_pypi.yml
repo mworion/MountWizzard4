@@ -23,7 +23,7 @@ concurrency:
 
 env:
   gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
-  version: '-v 4.0.0a17'
+  version: '-v 4.0.0a19'
 
 on:
   push:

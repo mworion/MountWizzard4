@@ -36,7 +36,7 @@ on:
 jobs:
   
   install_package_aarch64:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     name: install_${{ matrix.distro }}_${{ matrix.arch }}
     strategy:
       matrix:

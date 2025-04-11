@@ -38,28 +38,24 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
     if "analyseW" in function.app.config:
         del function.app.config["analyseW"]
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_storeConfig_2(function):
     function.app.config["analyseW"] = {}
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_enableTabsMovable(function):
-    suc = function.enableTabsMovable(True)
-    assert suc
+    function.enableTabsMovable(True)
 
 
 def test_closeEvent_1(function):
@@ -76,27 +72,23 @@ def test_resizeEvent(function):
 
 def test_showWindow(function):
     with mock.patch.object(function, "show"):
-        suc = function.showWindow()
-        assert suc
+        function.showWindow()
 
 
 def test_colorChange(function):
     with mock.patch.object(function, "drawAll"):
-        suc = function.colorChange()
-        assert suc
+        function.colorChange()
 
 
 def test_writeGui_1(function):
-    suc = function.writeGui([{"a": 1}], "test")
-    assert suc
+    function.writeGui([{"a": 1}], "test")
 
 
 def test_generateDataSets(function):
     with open("tests/testData/test.model", "r") as infile:
         modelJSON = json.load(infile)
 
-    suc = function.generateDataSets(modelJSON)
-    assert suc
+    function.generateDataSets(modelJSON)
     assert function.latitude == 48.1
 
 
@@ -104,37 +96,32 @@ def test_processModel_1(function):
     with mock.patch.object(function, "writeGui"):
         with mock.patch.object(function, "generateDataSets"):
             with mock.patch.object(function, "drawAll"):
-                suc = function.processModel("tests/testData/test.model")
-                assert suc
+                function.processModel(Path("tests/testData/test.model"))
 
 
 def test_processModel_2(function):
     with mock.patch.object(json, "load", return_value={}, side_effect=Exception):
-        suc = function.processModel("tests/testData/test.model")
-        assert not suc
+        function.processModel(Path("tests/testData/test.model"))
 
 
 def test_loadModel_1(function):
     with mock.patch.object(function, "openFile", return_value=Path("test.test")):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(function, "processModel"):
-                suc = function.loadModel()
-                assert suc
+                function.loadModel()
 
 
 def test_loadModel_2(function):
     with mock.patch.object(function, "openFile", return_value=Path("test.test")):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(function, "processModel"):
-                suc = function.loadModel()
-                assert suc
+                function.loadModel()
 
 
 def test_showAnalyse_1(function):
     with mock.patch.object(function, "processModel"):
         with mock.patch.object(Path, "is_file", return_value=True):
-            suc = function.showAnalyse(Path("test.test"))
-            assert suc
+            function.showAnalyse(Path("test.test"))
 
 
 def test_draw_raRawErrors(function):
@@ -142,8 +129,7 @@ def test_draw_raRawErrors(function):
     function.errorDEC_S = [0, 1, 2]
     function.azimuth = [0, 1, 2]
     function.altitude = [0, 1, 2]
-    suc = function.drawRaRawErrors()
-    assert suc
+    function.drawRaRawErrors()
 
 
 def test_draw_decRawErrors(function):
@@ -151,8 +137,7 @@ def test_draw_decRawErrors(function):
     function.errorDEC_S = [0, 1, 2]
     function.azimuth = [0, 1, 2]
     function.altitude = [0, 1, 2]
-    suc = function.drawDecRawErrors()
-    assert suc
+    function.drawDecRawErrors()
 
 
 def test_draw_raErrors(function):
@@ -160,8 +145,7 @@ def test_draw_raErrors(function):
     function.errorDEC = [0, 1, 2]
     function.azimuth = [0, 1, 2]
     function.altitude = [0, 1, 2]
-    suc = function.drawRaErrors()
-    assert suc
+    function.drawRaErrors()
 
 
 def test_draw_decErrors(function):
@@ -169,56 +153,49 @@ def test_draw_decErrors(function):
     function.errorDEC = [0, 1, 2]
     function.azimuth = [0, 1, 2]
     function.altitude = [0, 1, 2]
-    suc = function.drawDecError()
-    assert suc
+    function.drawDecError()
 
 
 def test_draw_raErrorsRef(function):
     function.angularPosRA = [0, 1, 2]
     function.errorRA = [0, 0, 0]
     function.pierside = ["E", "W", "E"]
-    suc = function.drawRaErrorsRef()
-    assert suc
+    function.drawRaErrorsRef()
 
 
 def test_draw_decErrorsRef(function):
     function.angularPosDEC = [0, 0, 0]
     function.errorDEC = [0, 0, 0]
     function.pierside = ["E", "W", "E"]
-    suc = function.drawDecErrorsRef()
-    assert suc
+    function.drawDecErrorsRef()
 
 
 def test_draw_raRawErrorsRef(function):
     function.angularPosRA = [0, 1, 2]
     function.errorRA_S = [0, 0, 0]
     function.pierside = ["E", "W", "E"]
-    suc = function.drawRaRawErrorsRef()
-    assert suc
+    function.drawRaRawErrorsRef()
 
 
 def test_draw_decRawErrorsRef(function):
     function.errorDEC_S = [0, 0, 0]
     function.angularPosDEC = [0, 0, 0]
     function.pierside = ["E", "W", "E"]
-    suc = function.drawDecRawErrorsRef()
-    assert suc
+    function.drawDecRawErrorsRef()
 
 
 def test_draw_scaleImage(function):
     function.index = [0, 1, 2]
     function.scaleS = [0, 0, 0]
     function.pierside = ["E", "W", "E"]
-    suc = function.drawScaleImage()
-    assert suc
+    function.drawScaleImage()
 
 
 def test_draw_errorAscending(function):
     function.errorRMS = [0, 1, 2]
     function.index = [0, 0, 0]
     function.pierside = ["E", "W", "E"]
-    suc = function.drawErrorAscending()
-    assert suc
+    function.drawErrorAscending()
 
 
 def test_draw_modelPositions_1(function):
@@ -227,64 +204,54 @@ def test_draw_modelPositions_1(function):
     function.errorRMS = np.array([0, 2, 4])
     function.errorAngle = np.array([0, 0, 0])
     function.latitude = 48
-    suc = function.drawModelPositions()
-    assert suc
+    function.drawModelPositions()
 
 
 def test_draw_errorDistribution_1(function):
     function.errorRMS = np.array([0, 2, 4])
     function.errorAngle = np.array([0, 1, 2])
     function.pierside = ["E", "W", "E"]
-    suc = function.drawErrorDistribution()
-    assert suc
+    function.drawErrorDistribution()
 
 
 def test_drawHorizon_1(function):
     function.ui.showHorizon.setChecked(False)
-    suc = function.drawHorizon()
-    assert not suc
+    function.drawHorizon()
 
 
 def test_drawHorizon_2(function):
     function.ui.showHorizon.setChecked(True)
-    suc = function.drawHorizon()
-    assert suc
+    function.drawHorizon()
 
 
 def test_linkViewsAltAz_1(function):
     function.ui.linkViews.setChecked(True)
-    suc = function.linkViewsAltAz()
-    assert suc
+    function.linkViewsAltAz()
 
 
 def test_linkViewsAltAz_2(function):
     function.ui.linkViews.setChecked(False)
-    suc = function.linkViewsAltAz()
-    assert suc
+    function.linkViewsAltAz()
 
 
 def test_linkViewsRa_1(function):
     function.ui.linkViews.setChecked(True)
-    suc = function.linkViewsRa()
-    assert suc
+    function.linkViewsRa()
 
 
 def test_linkViewsRa_2(function):
     function.ui.linkViews.setChecked(False)
-    suc = function.linkViewsRa()
-    assert suc
+    function.linkViewsRa()
 
 
 def test_linkViewsDec_1(function):
     function.ui.linkViews.setChecked(True)
-    suc = function.linkViewsDec()
-    assert suc
+    function.linkViewsDec()
 
 
 def test_linkViewsDec_2(function):
     function.ui.linkViews.setChecked(False)
-    suc = function.linkViewsDec()
-    assert suc
+    function.linkViewsDec()
 
 
 def test_drawAll_1(function):
@@ -296,8 +263,7 @@ def test_drawAll_1(function):
     with mock.patch.object(function, "linkViewsAltAz"):
         with mock.patch.object(function, "linkViewsRa"):
             with mock.patch.object(function, "linkViewsDec"):
-                suc = function.drawAll()
-                assert suc
+                function.drawAll()
 
 
 def test_drawAll_2(function):
@@ -309,5 +275,4 @@ def test_drawAll_2(function):
     with mock.patch.object(function, "linkViewsAltAz"):
         with mock.patch.object(function, "linkViewsRa"):
             with mock.patch.object(function, "linkViewsDec"):
-                suc = function.drawAll()
-                assert not suc
+                function.drawAll()

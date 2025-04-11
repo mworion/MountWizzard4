@@ -17,6 +17,7 @@
 # standard libraries
 import json
 import os
+from pathlib import Path
 
 # external packages
 import numpy as np
@@ -73,14 +74,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             self.drawHorizon,
         ]
 
-    def initConfig(self):
-        """
-        :return: True for test purpose
-        """
-        if "analyseW" not in self.app.config:
-            self.app.config["analyseW"] = {}
-        config = self.app.config["analyseW"]
-
+    def initConfig(self) -> None:
+        """ """
+        config = self.app.config.get("analyseW", {})
         self.positionWindow(config)
         self.setTabAndIndex(self.ui.tabWidget, config, "orderMain")
         self.ui.showHorizon.setChecked(config.get("showHorizon", False))
@@ -88,18 +84,12 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.linkViews.setChecked(config.get("linkViews", False))
         isMovable = self.app.config["mainW"].get("tabsMovable", False)
         self.enableTabsMovable(isMovable)
-        return True
 
-    def storeConfig(self):
-        """
-        :return: True for test purpose
-        """
-        config = self.app.config
-        if "analyseW" not in config:
-            config["analyseW"] = {}
-        else:
-            config["analyseW"].clear()
-        config = config["analyseW"]
+    def storeConfig(self) -> None:
+        """ """
+        configMain = self.app.config
+        configMain["analyseW"] = {}
+        config = configMain["analyseW"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)
@@ -109,40 +99,27 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         config["showHorizon"] = self.ui.showHorizon.isChecked()
         config["showISO"] = self.ui.showISO.isChecked()
         config["linkViews"] = self.ui.linkViews.isChecked()
-        return True
 
-    def enableTabsMovable(self, isMovable):
-        """
-        :param isMovable:
-        :return:
-        """
+    def enableTabsMovable(self, isMovable: bool) -> None:
+        """ """
         self.ui.tabWidget.setMovable(isMovable)
-        return True
 
-    def closeEvent(self, closeEvent):
-        """
-        :param closeEvent:
-        :return:
-        """
+    def closeEvent(self, closeEvent) -> None:
+        """ """
         self.storeConfig()
         super().closeEvent(closeEvent)
 
-    def showWindow(self):
-        """
-        :return: True for test purpose
-        """
+    def showWindow(self) -> None:
+        """ """
         self.show()
         self.app.showAnalyse.connect(self.showAnalyse)
         self.app.tabsMovable.connect(self.enableTabsMovable)
         self.ui.showHorizon.clicked.connect(self.drawAll)
         self.ui.showISO.clicked.connect(self.drawAll)
         self.ui.linkViews.clicked.connect(self.drawAll)
-        return True
 
-    def colorChange(self):
-        """
-        :return:
-        """
+    def colorChange(self) -> None:
+        """ """
         self.wIcon(self.ui.load, "load")
         self.setStyleSheet(self.mw4Style)
         for plot in [
@@ -161,14 +138,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         ]:
             plot.colorChange()
         self.drawAll()
-        return True
 
-    def writeGui(self, data, loadFilePath):
-        """
-        :param data:
-        :param loadFilePath:
-        :return: True for test purpose
-        """
+    def writeGui(self, data: list, loadFilePath: Path) -> None:
+        """ """
         d = data[0]
         de = data[-1]
 
@@ -193,13 +165,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         version = d.get("version", "").lstrip("MountWizzard4 - v")
         self.ui.version.setText(f"{version}")
 
-        return True
-
-    def generateDataSets(self, modelJSON):
-        """
-        :param modelJSON:
-        :return:
-        """
+    def generateDataSets(self, modelJSON: dict) -> None:
+        """ """
         model = dict()
         for key in modelJSON[0].keys():
             model[key] = list()
@@ -221,44 +188,34 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.errorDEC = np.array(model["errorDEC"], dtype=np.float32)
         self.angularPosRA = np.array(model["angularPosRA"], dtype=np.float32)
         self.angularPosDEC = np.array(model["angularPosDEC"], dtype=np.float32)
-        return True
 
-    def processModel(self, loadFilePath):
-        """
-        :return: success
-        """
+    def processModel(self, loadFilePath: Path) -> None:
+        """ """
         try:
             with open(loadFilePath, "r") as infile:
                 modelJSON = json.load(infile)
         except Exception as e:
             self.log.warning(f"Cannot load model file: {[loadFilePath]}, error: {e}")
-            return False
+            return
 
         self.writeGui(modelJSON, loadFilePath)
         self.generateDataSets(modelJSON)
         self.drawAll()
-        return True
 
-    def loadModel(self):
-        """
-        :return: success
-        """
+    def loadModel(self) -> None:
+        """ """
         folder = self.app.mwGlob["modelDir"]
         loadFilePath = self.openFile(self, "Open model file", folder, "Model files (*.model)")
         if loadFilePath.is_file():
             self.processModel(loadFilePath)
-        return True
 
-    def showAnalyse(self, path):
+    def showAnalyse(self, path: Path) -> None:
         """ """
         if path.is_file():
             self.processModel(path)
-        return True
 
-    def drawRaRawErrors(self):
-        """
-        :return:    True if ok for testing
-        """
+    def drawRaRawErrors(self) -> None:
+        """ """
         hasISO = self.ui.showISO.isChecked()
         isoLevels = 20 if hasISO else 0
         self.ui.raRawErrors.p[0].setLabel("bottom", "Azimuth [deg]")
@@ -275,12 +232,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip="Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}".format,
             isoLevels=isoLevels,
         )
-        return True
 
-    def drawDecRawErrors(self):
-        """
-        :return:    True if ok for testing
-        """
+    def drawDecRawErrors(self) -> None:
+        """ """
         hasISO = self.ui.showISO.isChecked()
         isoLevels = 20 if hasISO else 0
         self.ui.decRawErrors.p[0].setLabel("bottom", "Azimuth [deg]")
@@ -297,12 +251,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip="Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}".format,
             isoLevels=isoLevels,
         )
-        return True
 
-    def drawRaErrors(self):
-        """
-        :return:    True if ok for testing
-        """
+    def drawRaErrors(self) -> None:
+        """ """
         hasISO = self.ui.showISO.isChecked()
         isoLevels = 20 if hasISO else 0
         self.ui.raErrors.p[0].setLabel("bottom", "Azimuth [deg]")
@@ -319,12 +270,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip="Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}".format,
             isoLevels=isoLevels,
         )
-        return True
 
-    def drawDecError(self):
-        """
-        :return:    True if ok for testing
-        """
+    def drawDecError(self) -> None:
+        """ """
         hasISO = self.ui.showISO.isChecked()
         isoLevels = 20 if hasISO else 0
         self.ui.decErrors.p[0].setLabel("bottom", "Azimuth [deg]")
@@ -341,12 +289,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip="Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}".format,
             isoLevels=isoLevels,
         )
-        return True
 
-    def drawRaRawErrorsRef(self):
-        """
-        :return:    True if ok for testing
-        """
+    def drawRaRawErrorsRef(self) -> None:
+        """ """
         self.ui.raRawErrorsRef.p[0].setLabel("bottom", "RA Encoder Abs [deg]")
         self.ui.raRawErrorsRef.p[0].setLabel("left", "Error per Star [arcsec]")
         ticks = [(x, f"{x}") for x in range(30, 180, 30)]
@@ -361,12 +306,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             data=self.pierside,
             tip="AngularRA: {x:0.1f}\nErrorRa: {y:0.1f}\nPier: {data}".format,
         )
-        return True
 
-    def drawDecRawErrorsRef(self):
-        """
-        :return:    True if ok for testing
-        """
+    def drawDecRawErrorsRef(self) -> None:
+        """ """
         self.ui.decRawErrorsRef.p[0].setLabel("bottom", "DEC Encoder Abs [deg]")
         self.ui.decRawErrorsRef.p[0].setLabel("left", "Error per Star [arcsec]")
         ticks = [(x, f"{x}") for x in range(-80, 90, 20)]
@@ -382,12 +324,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             data=self.pierside,
             tip="AngularDEC: {x:0.1f}\nErrorDec: {y:0.1f}\nPier: {data}".format,
         )
-        return True
 
-    def drawRaErrorsRef(self):
-        """
-        :return:    True if ok for testing
-        """
+    def drawRaErrorsRef(self) -> None:
+        """ """
         self.ui.raErrorsRef.p[0].setLabel("bottom", "RA Encoder Abs [deg]")
         self.ui.raErrorsRef.p[0].setLabel("left", "Error per Star [arcsec]")
         ticks = [(x, f"{x}") for x in range(30, 180, 30)]
@@ -402,12 +341,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             data=self.pierside,
             tip="AngularRA: {x:0.1f}\nErrorRA: {y:0.1f}\nPier: {data}".format,
         )
-        return True
 
-    def drawDecErrorsRef(self):
-        """
-        :return:    True if ok for testing
-        """
+    def drawDecErrorsRef(self) -> None:
+        """ """
         self.ui.decErrorsRef.p[0].setLabel("bottom", "DEC Encoder Abs [deg]")
         self.ui.decErrorsRef.p[0].setLabel("left", "Error per Star [arcsec]")
         ticks = [(x, f"{x}") for x in range(-80, 90, 20)]
@@ -423,12 +359,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             data=self.pierside,
             tip="AngularDEC: {x:0.1f}\nErrorDec: {y:0.1f}\nPier: {data}".format,
         )
-        return True
 
-    def drawScaleImage(self):
-        """
-        :return:    True if ok for testing
-        """
+    def drawScaleImage(self) -> None:
+        """ """
         self.ui.scaleImage.p[0].setLabel("bottom", "Star Number")
         self.ui.scaleImage.p[0].setLabel("left", "Image Scale [arcsec/pix]")
         color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
@@ -439,12 +372,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             data=self.pierside,
             tip="PointNo: {x:0.0f}\nScale: {y:0.1f}\nPier: {data}".format,
         )
-        return True
 
-    def drawErrorAscending(self):
-        """
-        :return:    True if ok for testing
-        """
+    def drawErrorAscending(self) -> None:
+        """ """
         self.ui.errorAscending.p[0].setLabel("bottom", "Starcount")
         self.ui.errorAscending.p[0].setLabel("left", "Error per Star [arcsec]")
         temp = sorted(zip(self.errorRMS, self.pierside))
@@ -458,12 +388,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             data=pierside,
             tip="ErrorRMS: {y:0.1f}\nPier: {data}".format,
         )
-        return True
 
-    def drawModelPositions(self):
-        """
-        :return:    True if ok for testing
-        """
+    def drawModelPositions(self) -> None:
+        """ """
         self.ui.modelPositions.barItem.setLabel("right", "Error [RMS]")
         self.ui.modelPositions.plot(
             self.azimuth,
@@ -477,12 +404,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip="ErrorRMS: {data:0.1f}".format,
         )
         self.ui.modelPositions.plotLoc(self.latitude)
-        return True
 
-    def drawErrorDistribution(self):
-        """
-        :return:    True if ok for testing
-        """
+    def drawErrorDistribution(self) -> None:
+        """ """
         color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
         self.ui.errorDistribution.plot(
             self.errorAngle,
@@ -491,25 +415,19 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             data=self.pierside,
             tip="ErrorRMS: {y:0.1f}\nPier: {data}".format,
         )
-        return True
 
-    def drawHorizon(self):
-        """
-        :return:
-        """
+    def drawHorizon(self) -> None:
+        """ """
         if not self.ui.showHorizon.isChecked():
-            return False
+            return
 
         self.ui.raErrors.drawHorizon(self.app.data.horizonP)
         self.ui.decErrors.drawHorizon(self.app.data.horizonP)
         self.ui.raRawErrors.drawHorizon(self.app.data.horizonP)
         self.ui.decRawErrors.drawHorizon(self.app.data.horizonP)
-        return True
 
-    def linkViewsAltAz(self):
-        """
-        :return:
-        """
+    def linkViewsAltAz(self) -> None:
+        """ """
         isLinked = self.ui.linkViews.isChecked()
         views = list()
         views.append(self.ui.raRawErrors.p[0].getViewBox())
@@ -527,12 +445,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                     sourceView.setXLink(None)
                     sourceView.setYLink(None)
             sourceView.rightMouseRange()
-        return True
 
-    def linkViewsRa(self):
-        """
-        :return:
-        """
+    def linkViewsRa(self) -> None:
+        """ """
         isLinked = self.ui.linkViews.isChecked()
         views = list()
         views.append(self.ui.raRawErrorsRef.p[0].getViewBox())
@@ -546,12 +461,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                 else:
                     sourceView.setXLink(None)
             sourceView.rightMouseRange()
-        return True
 
-    def linkViewsDec(self):
-        """
-        :return:
-        """
+    def linkViewsDec(self) -> None:
+        """ """
         isLinked = self.ui.linkViews.isChecked()
         views = list()
         views.append(self.ui.decRawErrorsRef.p[0].getViewBox())
@@ -565,18 +477,14 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                 else:
                     sourceView.setXLink(None)
             sourceView.rightMouseRange()
-        return True
 
-    def drawAll(self):
-        """
-        :return:
-        """
+    def drawAll(self) -> None:
+        """ """
         if self.index is None:
-            return False
+            return
         for chart in self.charts:
             chart()
             sleepAndEvents(0)
         self.linkViewsAltAz()
         self.linkViewsRa()
         self.linkViewsDec()
-        return True

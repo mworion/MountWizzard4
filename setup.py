@@ -60,7 +60,7 @@ with open("notes.txt", "w") as f:
 
 setup(
     name="mountwizzard4",
-    version="4.0.0a19",
+    version="4.0.0a20",
     packages=find_packages(),
     python_requires=">=3.9.0, <3.13",
     install_requires=[
@@ -73,7 +73,7 @@ setup(
         "sep==1.4.1",
         "pyqtgraph==0.13.7",
         "qimage2ndarray==1.10.0",
-        "skyfield==1.51",
+        "skyfield==1.53",
         "sgp4==2.24",
         "requests==2.32.3",
         "requests_toolbelt==1.0.0",
@@ -86,7 +86,7 @@ setup(
         "range-key-dict==1.1.0",
         "ndicts==0.3.0",
         "packaging==24.2",
-        "lz4==4.4.3",
+        "lz4==4.4.4",
         "xisf==0.9.5",
     ]
     + (["pywin32==306"] if platform.system() == "Windows" else [])

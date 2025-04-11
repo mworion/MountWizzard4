@@ -32,9 +32,7 @@ class VideoWindow1(VideoWindow):
 
     def initConfig(self) -> None:
         """ """
-        if "videoW1" not in self.app.config:
-            self.app.config["videoW1"] = {}
-        config = self.app.config["videoW1"]
+        config = self.app.config.get("videoW1", {})
 
         self.positionWindow(config)
         self.ui.videoURL.setText(config.get("videoURL", ""))
@@ -45,12 +43,9 @@ class VideoWindow1(VideoWindow):
 
     def storeConfig(self) -> None:
         """ """
-        config = self.app.config
-        if "videoW1" not in config:
-            config["videoW1"] = {}
-        else:
-            config["videoW1"].clear()
-        config = config["videoW1"]
+        configMain = self.app.config
+        configMain["videoW1"] = {}
+        config = configMain["videoW1"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

@@ -50,19 +50,14 @@ class MessageWindow(toolsQtWidget.MWidget):
 
     def initConfig(self) -> None:
         """ """
-        if "messageW" not in self.app.config:
-            self.app.config["messageW"] = {}
-        config = self.app.config["messageW"]
+        config = self.app.config.get("messageW", {})
         self.positionWindow(config)
 
     def storeConfig(self) -> None:
         """ """
-        config = self.app.config
-        if "messageW" not in config:
-            config["messageW"] = {}
-        else:
-            config["messageW"].clear()
-        config = config["messageW"]
+        configMain = self.app.config
+        configMain["messageW"] = {}
+        config = configMain["messageW"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

@@ -38,19 +38,14 @@ class BigPopup(MWidget):
 
     def initConfig(self) -> None:
         """ """
-        if "bigPopupW" not in self.app.config:
-            self.app.config["bigPopupW"] = {}
-        config = self.app.config["bigPopupW"]
+        config = self.app.config.get("bigPopupW", {})
         self.positionWindow(config)
 
     def storeConfig(self) -> None:
         """ """
-        config = self.app.config
-        if "bigPopupW" not in config:
-            config["bigPopupW"] = {}
-        else:
-            config["bigPopupW"].clear()
-        config = config["bigPopupW"]
+        configMain = self.app.config
+        configMain["bigPopupW"] = {}
+        config = configMain["bigPopupW"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

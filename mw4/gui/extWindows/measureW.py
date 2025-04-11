@@ -259,9 +259,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def initConfig(self) -> None:
         """ """
-        if "measureW" not in self.app.config:
-            self.app.config["measureW"] = {}
-        config = self.app.config["measureW"]
+        config = self.app.config.get("measureW", {})
 
         self.positionWindow(config)
         self.setupButtons()
@@ -271,12 +269,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def storeConfig(self) -> None:
         """ """
-        config = self.app.config
-        if "measureW" not in config:
-            config["measureW"] = {}
-        else:
-            config["measureW"].clear()
-        config = config["measureW"]
+        configMain = self.app.config
+        configMain["measureW"] = {}
+        config = configMain["measureW"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

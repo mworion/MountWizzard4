@@ -92,19 +92,14 @@ class KeypadWindow(MWidget):
 
     def initConfig(self) -> None:
         """ """
-        if "keypadW" not in self.app.config:
-            self.app.config["keypadW"] = {}
-        config = self.app.config["keypadW"]
+        config = self.app.config.get("keypadW", {})
         self.positionWindow(config)
 
     def storeConfig(self) -> None:
         """ """
-        config = self.app.config
-        if "keypadW" not in config:
-            config["keypadW"] = {}
-        else:
-            config["keypadW"].clear()
-        config = config["keypadW"]
+        configMain = self.app.config
+        configMain["keypadW"] = {}
+        config = configMain["keypadW"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

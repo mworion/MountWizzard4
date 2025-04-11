@@ -65,18 +65,13 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
     def initConfig(self) -> None:
         """ """
-        if "satelliteW" not in self.app.config:
-            self.app.config["satelliteW"] = {}
-        self.positionWindow(self.app.config["satelliteW"])
+        self.positionWindow(self.app.config.get("satelliteW", {}))
 
     def storeConfig(self) -> None:
         """ """
-        config = self.app.config
-        if "satelliteW" not in config:
-            config["satelliteW"] = {}
-        else:
-            config["satelliteW"].clear()
-        config = config["satelliteW"]
+        configMain = self.app.config
+        configMain["satelliteW"] = {}
+        config = configMain["satelliteW"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

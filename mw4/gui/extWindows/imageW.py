@@ -65,9 +65,7 @@ class ImageWindow(MWidget, SlewInterface):
 
     def initConfig(self) -> None:
         """ """
-        if "imageW" not in self.app.config:
-            self.app.config["imageW"] = {}
-        config = self.app.config["imageW"]
+        config = self.app.config.get("imageW", {})
 
         self.positionWindow(config)
         self.setTabAndIndex(self.ui.tabImage, config, "orderMain")
@@ -93,12 +91,9 @@ class ImageWindow(MWidget, SlewInterface):
 
     def storeConfig(self) -> None:
         """ """
-        config = self.app.config
-        if "imageW" not in config:
-            config["imageW"] = {}
-        else:
-            config["imageW"].clear()
-        config = config["imageW"]
+        configMain = self.app.config
+        configMain["imageW"] = {}
+        config = configMain["imageW"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

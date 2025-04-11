@@ -70,9 +70,7 @@ class SimulatorWindow(MWidget):
 
     def initConfig(self):
         """ """
-        if "simulatorW" not in self.app.config:
-            self.app.config["simulatorW"] = {}
-        config = self.app.config["simulatorW"]
+        config = self.app.config.get("simulatorW", {})
 
         self.positionWindow(config)
         self.ui.domeTransparent.setChecked(config.get("domeTransparent", False))
@@ -85,12 +83,9 @@ class SimulatorWindow(MWidget):
 
     def storeConfig(self):
         """ """
-        config = self.app.config
-        if "simulatorW" not in config:
-            config["simulatorW"] = {}
-        else:
-            config["simulatorW"].clear()
-        config = config["simulatorW"]
+        configMain = self.app.config
+        configMain["simulatorW"] = {}
+        config = configMain["simulatorW"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

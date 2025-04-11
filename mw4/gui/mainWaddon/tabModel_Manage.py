@@ -251,7 +251,9 @@ class ModelManage(QObject):
             with open(self.fittedModelPath) as actFile:
                 actModel = convertFloatToAngle(json.load(actFile))
         except Exception as e:
-            self.mainW.log.warning(f"Cannot load model file: {[self.fittedModelPath]}, error: {e}")
+            self.mainW.log.warning(
+                f"Cannot load model file: {[self.fittedModelPath]}, error: {e}"
+            )
             return
 
         newModel = []

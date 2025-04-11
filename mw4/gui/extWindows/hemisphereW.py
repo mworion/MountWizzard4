@@ -72,9 +72,7 @@ class HemisphereWindow(MWidget, SlewInterface):
 
     def initConfig(self):
         """ """
-        if "hemisphereW" not in self.app.config:
-            self.app.config["hemisphereW"] = {}
-        config = self.app.config["hemisphereW"]
+        config = self.app.config.get("hemisphereW", {})
         fileName = Path(config.get("horizonMaskFileName", ""))
         self.ui.horizonMaskFileName.setText(fileName.stem)
         self.app.data.loadHorizonP(fileName=fileName.stem)
@@ -116,12 +114,9 @@ class HemisphereWindow(MWidget, SlewInterface):
 
     def storeConfig(self):
         """ """
-        config = self.app.config
-        if "hemisphereW" not in config:
-            config["hemisphereW"] = {}
-        else:
-            config["hemisphereW"].clear()
-        config = config["hemisphereW"]
+        configMain = self.app.config
+        configMain["hemisphereW"] = {}
+        config = configMain["hemisphereW"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

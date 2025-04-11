@@ -51,16 +51,16 @@ def test_initConfig_1(function):
 
 
 def test_initConfig_2(function):
-    function.app.config["hemisphereW"]["winPosX"] = 10000
-    function.app.config["hemisphereW"]["winPosY"] = 10000
+    function.app.config["hemisphereW"] = {"winPosX": 10000}
+    function.app.config["hemisphereW"] = {"winPosY": 10000}
     with mock.patch.object(os.path, "isfile", return_value=False):
         function.initConfig()
 
 
 def test_initConfig_3(function):
     function.app.config["hemisphereW"] = {}
-    function.app.config["hemisphereW"]["winPosX"] = 100
-    function.app.config["hemisphereW"]["winPosY"] = 100
+    function.app.config["hemisphereW"] = {"winPosX": 100}
+    function.app.config["hemisphereW"] = {"winPosY": 100}
     with mock.patch.object(os.path, "isfile", return_value=False):
         function.initConfig()
 
@@ -68,8 +68,8 @@ def test_initConfig_3(function):
 def test_initConfig_4(function):
     shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
     function.app.config["hemisphereW"] = {}
-    function.app.config["hemisphereW"]["winPosX"] = 100
-    function.app.config["hemisphereW"]["winPosY"] = 100
+    function.app.config["hemisphereW"] = {"winPosX": 100}
+    function.app.config["hemisphereW"] = {"winPosY": 100}
     function.initConfig()
 
 

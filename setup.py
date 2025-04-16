@@ -22,7 +22,7 @@ releaseNotes = """
 - this is a major release !
   please try out in a separate work folder for test!
   
-- add: support for python 3.11 and 3.12, remove 3.7, 3.8
+- add: support for python 3.11, 3.12 and 3.13, remove 3.7, 3.8, 3.9
 - add native support for Macs with Apple silicon
 - add: support automation with 10micron webservices
 - add: support uploading mechanism for databases for macos and linux
@@ -32,8 +32,8 @@ releaseNotes = """
 - add: new theme with 3d buttons for selection
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
-- change: moving PyQt5 to major version PySide6
-- change: moving libraries to latest versions
+- change: moving PyQt5 to major PySide6
+- change: moving libraries to latest
 - change: remove old windows automation
 - change: remove embedded documentation and replace with online link
 - refactor: environment devices (now 3 generic ones)
@@ -60,14 +60,14 @@ with open("notes.txt", "w") as f:
 
 setup(
     name="mountwizzard4",
-    version="4.0.0a20",
+    version="4.0.0a23",
     packages=find_packages(),
-    python_requires=">=3.9.0, <3.13",
+    python_requires=">=3.10.0, <3.14",
     install_requires=[
-        "numpy==1.26.4",
+        "numpy==2.2.4",
         "opencv-python-headless==4.11.0.86",
-        "scipy==1.13.1",
-        "astropy==5.3.4",
+        "scipy==1.15.2",
+        "astropy==6.1.7",
         "pyerfa==2.0.1.5",
         "astroquery==0.4.9.post1",
         "sep==1.4.1",
@@ -90,8 +90,8 @@ setup(
         "xisf==0.9.5",
     ]
     + (["pywin32==306"] if platform.system() == "Windows" else [])
-    + (["PySide6==6.7.3"] if platform.machine() not in ["armv7l"] else []),
-    keywords=["6.7.3"],
+    + (["PySide6==6.9.0"] if platform.machine() not in ["armv7l"] else []),
+    keywords=["6.9.0"],
     url="https://github.com/mworion/MountWizzard4",
     license="APL 2.0",
     author="Michael Wuertenberger",
@@ -112,10 +112,10 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Environment :: MacOS X",
         "Environment :: Other Environment",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Programming Language :: Python :: 3 :: Only",
         "Programming Language :: Python :: Implementation",
         "Operating System :: MacOS :: MacOS X",

@@ -15,7 +15,6 @@
 #
 ###########################################################
 from invoke import task
-from PIL import Image
 import glob
 import time
 import os
@@ -117,7 +116,7 @@ def version_doc(c):
 
     for line in text:
         if line.strip().startswith("version"):
-            _, number, _ = line.split("'")
+            _, number, _ = line.split('"')
 
     # reading configuration file
     with open("./doc/conf.py", "r") as conf:

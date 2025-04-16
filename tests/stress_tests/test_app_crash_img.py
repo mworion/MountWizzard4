@@ -18,6 +18,7 @@
 import os
 import glob
 import shutil
+from pathlib import Path
 
 # external packages
 import pytest
@@ -32,13 +33,13 @@ from loader import extractDataFiles
 
 
 mwglob = {
-    "dataDir": "tests/work/data",
-    "configDir": "tests/work/config",
-    "workDir": "tests/work",
-    "imageDir": "tests/work/image",
-    "tempDir": "tests/work/temp",
-    "measureDir": "tests/work/measure",
-    "modelDir": "tests/work/model",
+    "dataDir": Path("tests/work/data"),
+    "configDir":  Path("tests/work/config"),
+    "workDir":  Path("tests/work"),
+    "imageDir":  Path("tests/work/image"),
+    "tempDir":  Path("tests/work/temp"),
+    "measureDir":  Path("tests/work/measure"),
+    "modelDir":  Path("tests/work/model"),
     "modelData": "4.0",
 }
 
@@ -85,7 +86,7 @@ def test_showImages(qtbot, qapp):
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    imageW = app.uiWindows["showImageW"]["classObj"]
+    imageW = app.mainW.externalWindows.uiWindows["showImageW"]["classObj"]
     imageW.move(900, 100)
     qtbot.waitExposed(imageW, timeout=1000)
 

@@ -11,7 +11,7 @@ Version 4.x
 - this is a major release !
   please try out in a separate work folder for test!
 
-- add: support for python 3.11 and 3.12, remove 3.7, 3.8
+- add: support for python 3.11, 3.12 and 3.13, remove 3.7, 3.8, 3.9
 - add native support for Macs with Apple silicon
 - add: support automation with 10micron webservices
 - add: support uploading mechanism for databases for macos and linux
@@ -21,8 +21,8 @@ Version 4.x
 - add: new theme with 3d buttons for selection
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
-- change: moving PyQt5 to major version PySide6
-- change: moving libraries to latest versions
+- change: moving PyQt5 to major PySide6
+- change: moving libraries to latest
 - change: remove old windows automation
 - change: remove embedded documentation and replace with online link
 - refactor: environment devices (now 3 generic ones)

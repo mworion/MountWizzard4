@@ -18,6 +18,7 @@
 import os
 import glob
 import pytest
+from pathlib import Path
 from random import randint
 
 # external packages
@@ -33,13 +34,13 @@ from loader import extractDataFiles
 
 
 mwglob = {
-    "dataDir": "tests/work/data",
-    "configDir": "tests/work/config",
-    "workDir": "mw4/workDir",
-    "imageDir": "tests/work/image",
-    "tempDir": "tests/work/temp",
-    "measureDir": "tests/work/measure",
-    "modelDir": "tests/work/model",
+    "dataDir": Path("tests/work/data"),
+    "configDir":  Path("tests/work/config"),
+    "workDir":  Path("tests/work"),
+    "imageDir":  Path("tests/work/image"),
+    "tempDir":  Path("tests/work/temp"),
+    "measureDir":  Path("tests/work/measure"),
+    "modelDir":  Path("tests/work/model"),
     "modelData": "4.0",
 }
 

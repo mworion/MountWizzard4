@@ -18,12 +18,6 @@ startup in the menu (2). All configuration are save when leaving MountWizzard4
 with Save/Quit button or just when saving the profile. You can add or change
 any config later on at any time.
 
-.. toctree::
-    :maxdepth: 2
-
-    settlingTime
-
-
 Settling Time / Waiting Time
 ----------------------------
 

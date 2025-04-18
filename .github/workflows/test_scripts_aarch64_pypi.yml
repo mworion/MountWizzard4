@@ -37,8 +37,12 @@ jobs:
   
   install_package_aarch64:
     runs-on: ubuntu-22.04
-    name: install_${{ matrix.distro }}_${{ matrix.arch }}
+    if: |
+      ( github.event_name == 'workflow_run'  && github.event.workflow_run.conclusion == 'success' ) ||
+      github.event_name == 'push'
+    
     strategy:
+      fail-fast: false
       matrix:
         include:
           - arch: aarch64
@@ -48,9 +52,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: pyside
-            
+      
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1.6.0
         with:

@@ -22,7 +22,7 @@ on:
     # Run this action on the trigger event when specific files are touched
     paths:
       - 'doc/**'
-      - '.github/workflow/documentation.yml'
+      - '.github/workflows/documentation.yml'
 
 permissions:
   contents: write

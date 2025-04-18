@@ -3,7 +3,7 @@ Welcome to MountWizzard4!
 MountWizzard4 is a general utility for 10micron users for improving the workflow 
 for astronomy work. It runs on Windows11, Windows10, Mac OSX (beginning from
 10.12 to 15.x) including Mx variants if Rosetta is used and Linux (Ubuntu from
-16.04 to 22.04). If you have some knowledge around Raspberry Pi's and other SOC,
+16.04 to 24.04). If you have some knowledge around Raspberry Pi's and other SOC,
 you might be able to install MountWizzard4 on a RPi3+, RPi4 or RPi5.
 
 PDF Documentation:
@@ -36,8 +36,8 @@ previews, explanations:
 
 https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA
 
-For full operation MountWizzard4 supports several frameworks: INDI / INDIGO, ASCOM, Alpaca
-and in addition Sequence Generator Pro and N.I.N.A. as camera device.
+For full operation MountWizzard4 supports several frameworks: INDI / INDIGO,
+ASCOM, Alpaca and in addition Sequence Generator Pro and N.I.N.A. as camera device.
 
 Known limitations
 =================

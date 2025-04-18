@@ -60,7 +60,7 @@ with open("notes.txt", "w") as f:
 
 setup(
     name="mountwizzard4",
-    version="4.0.0a23",
+    version="4.0.0a24",
     packages=find_packages(),
     python_requires=">=3.10.0, <3.14",
     install_requires=[
@@ -69,7 +69,7 @@ setup(
         "scipy==1.15.2",
         "astropy==6.1.7",
         "pyerfa==2.0.1.5",
-        "astroquery==0.4.9.post1",
+        "astroquery==0.4.10",
         "sep==1.4.1",
         "pyqtgraph==0.13.7",
         "qimage2ndarray==1.10.0",
@@ -89,7 +89,7 @@ setup(
         "lz4==4.4.4",
         "xisf==0.9.5",
     ]
-    + (["pywin32==306"] if platform.system() == "Windows" else [])
+    + (["pywin32==310"] if platform.system() == "Windows" else [])
     + (["PySide6==6.9.0"] if platform.machine() not in ["armv7l"] else []),
     keywords=["6.9.0"],
     url="https://github.com/mworion/MountWizzard4",

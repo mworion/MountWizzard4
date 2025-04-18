@@ -50,11 +50,7 @@ jobs:
           - arch: aarch64
             distro: bookworm
           - arch: aarch64
-            distro: ubuntu-20.04
-          - arch: aarch64
-            distro: ubuntu-22.04
-          - arch: aarch64
-            distro: ubuntu-20.04
+            distro: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4

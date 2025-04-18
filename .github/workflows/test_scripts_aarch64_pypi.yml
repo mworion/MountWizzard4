@@ -67,7 +67,7 @@ jobs:
           distro: ${{ matrix.distro }}
 
           # Not required, but speeds up builds
-          githubToken: ${{ github.token }}
+          githubToken: ${{ github.token }}${{ matrix.distro }})
 
           # Mount the wheels directory as /artifacts in the container
           dockerRunArgs: |

@@ -46,7 +46,15 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: [bullseye, bookworm, ubuntu-20.04, ubuntu-22.04, ubuntu-20.04]
+            distro: bullseye
+          - arch: aarch64
+            distro: bookworm
+          - arch: aarch64
+            distro: ubuntu-20.04
+          - arch: aarch64
+            distro: ubuntu-22.04
+          - arch: aarch64
+            distro: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v4

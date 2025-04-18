@@ -8,7 +8,7 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PyQT5 for python
+# GUI with PySide6 for python
 #
 # written in python3, (c) 2019-2025 by mworion
 #

@@ -145,8 +145,7 @@ class AlpacaClass(DriverData):
         try:
             response = requests.get(url, params=data, timeout=self.ALPACA_TIMEOUT)
         except Exception as e:
-            t = f"Discover API version has exception: [{e}]"
-            self.log.error(t)
+            self.log.error(f"Discover API exception: [{e}]")
             return 0
 
         if response.status_code == 400 or response.status_code == 500:
@@ -156,12 +155,10 @@ class AlpacaClass(DriverData):
 
         response = response.json()
         if response["ErrorNumber"] != 0:
-            t = f"Discover API version response: [{response}]"
-            self.log.warning(t)
+            self.log.warning(f"Discover API response: [{response}]")
             return 0
 
-        t = f"Discover API version response: [{response}]"
-        self.log.trace(t)
+        self.log.trace(f"Discover API response: [{response}]")
         return response["Value"]
 
     def discoverAlpacaDevices(self) -> str:
@@ -175,32 +172,29 @@ class AlpacaClass(DriverData):
 
         try:
             response = requests.get(url, params=data, timeout=self.ALPACA_TIMEOUT)
+
         except Exception as e:
-            t = f"Search devices has exception: [{e}]"
-            self.log.error(t)
+            self.log.error(f"Search devices exception: [{e}]")
             return ""
 
         if response.status_code == 400 or response.status_code == 500:
-            t = f"Search devices stat 400/500, [{response.text}]"
-            self.log.warning(t)
+            self.log.warning("Search devices stat 400/500]")
             return ""
 
         response = response.json()
         if response["ErrorNumber"] != 0:
-            t = f"Search devices response: [{response}]"
-            self.log.warning(t)
+            self.log.warning(f"Search devices response: [{response}]")
             return ""
 
-        t = f"Search devices response: [{response}]"
-        self.log.trace(t)
+        self.log.trace(f"Search devices response: [{response}]")
         return response["Value"]
 
     def getAlpacaProperty(self, valueProp: str, **data) -> dict:
         """ """
         if not self.deviceName:
-            return
+            return {}
         if valueProp in self.propertyExceptions:
-            return
+            return {}
 
         uid = uuid.uuid4().int % 2**32
         data["ClientTransactionID"] = uid
@@ -216,19 +210,19 @@ class AlpacaClass(DriverData):
         except Exception as e:
             t = f"[{self.deviceName}] [{uid:10d}] has exception: [{e}]"
             self.log.error(t)
-            return
+            return {}
 
         if response.status_code == 400 or response.status_code == 500:
-            t = f"[{self.deviceName}] [{uid:10d}], stat 400/500, [{response.text}]"
+            t = f"[{self.deviceName}] [{uid:10d}], stat 400/500"
             self.log.warning(t)
-            return
+            return {}
 
         response = response.json()
         if response["ErrorNumber"] != 0:
             t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
             self.log.warning(t)
             self.propertyExceptions.append(valueProp)
-            return
+            return {}
 
         if valueProp != "imagearray":
             t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
@@ -241,9 +235,9 @@ class AlpacaClass(DriverData):
     def setAlpacaProperty(self, valueProp: str, **data) -> dict:
         """ """
         if not self.deviceName:
-            return
+            return {}
         if valueProp in self.propertyExceptions:
-            return
+            return {}
 
         uid = uuid.uuid4().int % 2**32
         t = f"[{self.deviceName}] [{uid:10d}], set [{valueProp}] to: [{data}]"
@@ -256,19 +250,19 @@ class AlpacaClass(DriverData):
         except Exception as e:
             t = f"[{self.deviceName}] [{uid:10d}] has exception: [{e}]"
             self.log.error(t)
-            return
+            return {}
 
         if response.status_code == 400 or response.status_code == 500:
             t = f"[{self.deviceName}] [{uid:10d}], stat 400/500, [{response.text}]"
             self.log.warning(t)
-            return
+            return {}
 
         response = response.json()
         if response["ErrorNumber"] != 0:
             t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
             self.log.warning(t)
             self.propertyExceptions.append(valueProp)
-            return
+            return {}
 
         t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
         self.log.trace(t)

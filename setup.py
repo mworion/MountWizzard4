@@ -64,7 +64,7 @@ setup(
     packages=find_packages(),
     python_requires=">=3.10.0, <3.14",
     install_requires=[
-        "numpy==2.2.4",
+        "numpy==2.2.5",
         "opencv-python-headless==4.11.0.86",
         "scipy==1.15.2",
         "astropy==6.1.7",

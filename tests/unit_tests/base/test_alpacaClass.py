@@ -193,14 +193,14 @@ def test_getAlpacaProperty_1(function):
     function.deviceName = ""
     function.deviceConnected = False
     val = function.getAlpacaProperty("")
-    assert val is None
+    assert val == {}
 
 
 def test_getAlpacaProperty_2(function):
     function.deviceName = ""
     function.deviceConnected = True
     val = function.getAlpacaProperty("")
-    assert val is None
+    assert val == {}
 
 
 def test_getAlpacaProperty_3(function):
@@ -208,7 +208,7 @@ def test_getAlpacaProperty_3(function):
     function.deviceConnected = True
     function.propertyExceptions = ["test"]
     val = function.getAlpacaProperty("test")
-    assert val is None
+    assert val == {}
 
 
 def test_getAlpacaProperty_6(function):
@@ -216,7 +216,7 @@ def test_getAlpacaProperty_6(function):
     function.deviceConnected = True
     with mock.patch.object(requests, "get", side_effect=Exception):
         val = function.getAlpacaProperty("test")
-        assert val is None
+        assert val == {}
 
 
 def test_getAlpacaProperty_7(function):
@@ -228,7 +228,7 @@ def test_getAlpacaProperty_7(function):
     function.deviceConnected = True
     with mock.patch.object(requests, "get", return_value=Test()):
         val = function.getAlpacaProperty("test")
-        assert val is None
+        assert val == {}
 
 
 def test_getAlpacaProperty_8(function):
@@ -244,7 +244,7 @@ def test_getAlpacaProperty_8(function):
     function.deviceConnected = True
     with mock.patch.object(requests, "get", return_value=Test()):
         val = function.getAlpacaProperty("test")
-        assert val is None
+        assert val == {}
         assert "test" in function.propertyExceptions
 
 
@@ -283,13 +283,13 @@ def test_getAlpacaProperty_10(function):
 def test_setAlpacaProperty_1(function):
     function.deviceConnected = False
     val = function.setAlpacaProperty("")
-    assert val is None
+    assert val == {}
 
 
 def test_setAlpacaProperty_2(function):
     function.deviceConnected = True
     val = function.setAlpacaProperty("")
-    assert val is None
+    assert val == {}
 
 
 def test_setAlpacaProperty_3(function):
@@ -297,7 +297,7 @@ def test_setAlpacaProperty_3(function):
     function.deviceConnected = True
     function.propertyExceptions = ["test"]
     val = function.setAlpacaProperty("test")
-    assert val is None
+    assert val == {}
 
 
 def test_setAlpacaProperty_6(function):
@@ -305,7 +305,7 @@ def test_setAlpacaProperty_6(function):
     function.deviceConnected = True
     with mock.patch.object(requests, "put", side_effect=Exception):
         val = function.setAlpacaProperty("test")
-        assert val is None
+        assert val == {}
 
 
 def test_setAlpacaProperty_7(function):
@@ -317,7 +317,7 @@ def test_setAlpacaProperty_7(function):
     function.deviceConnected = True
     with mock.patch.object(requests, "put", return_value=Test()):
         val = function.setAlpacaProperty("test")
-        assert val is None
+        assert val == {}
 
 
 def test_setAlpacaProperty_8(function):
@@ -333,7 +333,7 @@ def test_setAlpacaProperty_8(function):
     function.deviceConnected = True
     with mock.patch.object(requests, "put", return_value=Test()):
         val = function.setAlpacaProperty("test")
-        assert val is None
+        assert val == {}
         assert "test" in function.propertyExceptions
 
 

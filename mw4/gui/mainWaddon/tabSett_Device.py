@@ -287,7 +287,7 @@ class SettDevice(QObject):
         self.drivers[driver]["uiDropDown"].setItemText(index, itemText)
 
         self.stopDriver(driver)
-        self.startDriver(driver)
+        self.startDriver(driver, True)
 
     def copyConfig(self, driverOrig: str, framework: str) -> None:
         """ """

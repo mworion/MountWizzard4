@@ -76,7 +76,7 @@ class NINAClass(DriverData, QObject):
         try:
             t = f"N.I.N.A.: [{self.BASE_URL}/{valueProp}?format=json]"
             if params:
-                t += f' data: [{bytes(json.dumps(params).encode("utf-8"))}]'
+                t += f" data: [{bytes(json.dumps(params).encode('utf-8'))}]"
                 self.log.trace("POST " + t)
                 response = requests.post(
                     f"{self.BASE_URL}/{valueProp}?format=json",

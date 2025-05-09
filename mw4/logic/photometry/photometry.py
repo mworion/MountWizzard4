@@ -339,7 +339,7 @@ class Photometry:
         self.hfr = radius[mask]
         self.runCalcs()
         objsHFR = len(self.objs)
-        self.log.info(f"Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, " f"HFR:{objsHFR}")
+        self.log.info(f"Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, HFR:{objsHFR}")
 
     def unlockPhotometry(self) -> None:
         """ """

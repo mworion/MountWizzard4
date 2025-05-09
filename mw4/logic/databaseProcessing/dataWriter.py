@@ -57,42 +57,42 @@ class DataWriter:
         with open(dest, "w") as f:
             for data in datas:
                 line = ""
-                line += f'{"":4s}'
-                line += f'{data.get("Orbit_type", ""):1s}'
-                line += f'{data.get("Provisional_packed_desig", ""):7s}'
-                line += f'{"":2s}'
-                line += f'{data.get("Year_of_perihelion", 0):04d}'
-                line += f'{"":1s}'
-                line += f'{data.get("Month_of_perihelion", 0):02d}'
-                line += f'{"":1s}'
-                line += f'{data.get("Day_of_perihelion", 0):7.4f}'
-                line += f'{"":1s}'
-                line += f'{data.get("Perihelion_dist", 0):9.6f}'
-                line += f'{"":2s}'
-                line += f'{data.get("e", 0):8.6f}'
-                line += f'{"":2s}'
-                line += f'{data.get("Peri", 0):8.4f}'
-                line += f'{"":2s}'
-                line += f'{data.get("Node", 0):8.4f}'
-                line += f'{"":2s}'
-                line += f'{data.get("i", 0):8.4f}'
-                line += f'{"":2s}'
+                line += f"{'':4s}"
+                line += f"{data.get('Orbit_type', ''):1s}"
+                line += f"{data.get('Provisional_packed_desig', ''):7s}"
+                line += f"{'':2s}"
+                line += f"{data.get('Year_of_perihelion', 0):04d}"
+                line += f"{'':1s}"
+                line += f"{data.get('Month_of_perihelion', 0):02d}"
+                line += f"{'':1s}"
+                line += f"{data.get('Day_of_perihelion', 0):7.4f}"
+                line += f"{'':1s}"
+                line += f"{data.get('Perihelion_dist', 0):9.6f}"
+                line += f"{'':2s}"
+                line += f"{data.get('e', 0):8.6f}"
+                line += f"{'':2s}"
+                line += f"{data.get('Peri', 0):8.4f}"
+                line += f"{'':2s}"
+                line += f"{data.get('Node', 0):8.4f}"
+                line += f"{'':2s}"
+                line += f"{data.get('i', 0):8.4f}"
+                line += f"{'':2s}"
 
                 if "Epoch_year" in data:
-                    line += f'{data.get("Epoch_year", 0):04d}'
-                    line += f'{data.get("Epoch_month", 0):02d}'
-                    line += f'{data.get("Epoch_day", 0):02d}'
+                    line += f"{data.get('Epoch_year', 0):04d}"
+                    line += f"{data.get('Epoch_month', 0):02d}"
+                    line += f"{data.get('Epoch_day', 0):02d}"
                 else:
-                    line += f'{"":8s}'
+                    line += f"{'':8s}"
 
-                line += f'{"":2s}'
-                line += f'{data.get("H", 0):4.1f}'
-                line += f'{"":1s}'
-                line += f'{data.get("G", 0):4.1f}'
-                line += f'{"":2s}'
-                line += f'{data.get("Designation_and_name", ""):56s}'
-                line += f'{"":1s}'
-                line += f'{data.get("Ref", " "):>9s}'
+                line += f"{'':2s}"
+                line += f"{data.get('H', 0):4.1f}"
+                line += f"{'':1s}"
+                line += f"{data.get('G', 0):4.1f}"
+                line += f"{'':2s}"
+                line += f"{data.get('Designation_and_name', ''):56s}"
+                line += f"{'':1s}"
+                line += f"{data.get('Ref', ' '):>9s}"
                 line += "\n"
                 f.write(line)
 
@@ -219,72 +219,72 @@ class DataWriter:
                     designationPacked = self.generateDesignationPacked(designation)
 
                 line += f"{designationPacked:7s}"
-                line += f'{"":1s}'
-                line += f'{data.get("H", 0):<5g}'
-                line += f'{"":1s}'
-                line += f'{data.get("G", 0):5g}'
-                line += f'{"":1s}'
+                line += f"{'':1s}"
+                line += f"{data.get('H', 0):<5g}"
+                line += f"{'':1s}"
+                line += f"{data.get('G', 0):5g}"
+                line += f"{'':1s}"
 
                 epochPacked = self.generateEpochPacked(data.get("Epoch", 0))
 
                 line += f"{epochPacked:5s}"
-                line += f'{"":1s}'
-                line += f'{data.get("M", 0):9.5f}'
-                line += f'{"":2s}'
-                line += f'{data.get("Peri", 0):9.5f}'
-                line += f'{"":2s}'
-                line += f'{data.get("Node", 0):9.5f}'
-                line += f'{"":2s}'
-                line += f'{data.get("i", 0):9.5f}'
-                line += f'{"":2s}'
-                line += f'{data.get("e", 0):9.7f}'
-                line += f'{"":1s}'
-                line += f'{data.get("n", 0):11.8f}'
-                line += f'{"":1s}'
-                line += f'{data.get("a", 0):11.7f}'
-                line += f'{"":2s}'
-                line += f'{data.get("U", ""):1s}'
-                line += f'{"":1s}'
-                line += f'{data.get("Ref", ""):9s}'
-                line += f'{"":1s}'
-                line += f'{data.get("Num_obs", 0):5.0f}'
-                line += f'{"":1s}'
-                line += f'{data.get("Num_opps", 0):3.0f}'
+                line += f"{'':1s}"
+                line += f"{data.get('M', 0):9.5f}"
+                line += f"{'':2s}"
+                line += f"{data.get('Peri', 0):9.5f}"
+                line += f"{'':2s}"
+                line += f"{data.get('Node', 0):9.5f}"
+                line += f"{'':2s}"
+                line += f"{data.get('i', 0):9.5f}"
+                line += f"{'':2s}"
+                line += f"{data.get('e', 0):9.7f}"
+                line += f"{'':1s}"
+                line += f"{data.get('n', 0):11.8f}"
+                line += f"{'':1s}"
+                line += f"{data.get('a', 0):11.7f}"
+                line += f"{'':2s}"
+                line += f"{data.get('U', ''):1s}"
+                line += f"{'':1s}"
+                line += f"{data.get('Ref', ''):9s}"
+                line += f"{'':1s}"
+                line += f"{data.get('Num_obs', 0):5.0f}"
+                line += f"{'':1s}"
+                line += f"{data.get('Num_opps', 0):3.0f}"
 
-                line += f'{"":1s}'
+                line += f"{'':1s}"
                 if "Arc_years" in data:
-                    line += f'{data.get("Arc_years", ""):9s}'
+                    line += f"{data.get('Arc_years', ''):9s}"
 
                 elif "Arc_length" in data:
                     arcLength = data.get("Arc_length", 0)
                     line += f"{arcLength:4.0f} days"
 
                 else:
-                    line += f'{"":9s}'
+                    line += f"{'':9s}"
 
-                line += f'{"":1s}'
-                line += f'{data.get("rms", 0):4.2f}'
-                line += f'{"":1s}'
-                line += f'{data.get("Perturbers", ""):3s}'
-                line += f'{"":1s}'
-                line += f'{data.get("Perturbers_2", ""):3s}'
-                line += f'{"":1s}'
-                line += f'{data.get("Computer", ""):10s}'
-                line += f'{"":1s}'
-                line += f'{data.get("Hex_flags", ""):4s}'
-                line += f'{"":1s}'
+                line += f"{'':1s}"
+                line += f"{data.get('rms', 0):4.2f}"
+                line += f"{'':1s}"
+                line += f"{data.get('Perturbers', ''):3s}"
+                line += f"{'':1s}"
+                line += f"{data.get('Perturbers_2', ''):3s}"
+                line += f"{'':1s}"
+                line += f"{data.get('Computer', ''):10s}"
+                line += f"{'':1s}"
+                line += f"{data.get('Hex_flags', ''):4s}"
+                line += f"{'':1s}"
 
                 if "Number" in data:
-                    line += f'{data.get("Number", ""):>8s} {data.get("Name", ""):18s}'
+                    line += f"{data.get('Number', ''):>8s} {data.get('Name', ''):18s}"
 
                 else:
-                    line += f'{"":9s}'
-                    line += f'{data.get("Principal_desig", ""):18s}'
+                    line += f"{'':9s}"
+                    line += f"{data.get('Principal_desig', ''):18s}"
 
-                line += f'{"":1s}'
-                line += f'{data.get("Last_obs", "").replace("-", ""):8s}'
-                line += f'{"":1s}'
-                line += f'{data.get("Tp", 0):13.5f}'
+                line += f"{'':1s}"
+                line += f"{data.get('Last_obs', '').replace('-', ''):8s}"
+                line += f"{'':1s}"
+                line += f"{data.get('Tp', 0):13.5f}"
                 line += "\n"
                 f.write(line)
 

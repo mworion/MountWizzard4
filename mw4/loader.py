@@ -75,15 +75,15 @@ class MyApp(QApplication):
             self.log.ui(f"Click Button  : [{text}]")
         elif isinstance(obj, QRadioButton):
             self.log.ui(
-                f"Click Radio   : [{obj.objectName()}]" f", value: [{not obj.isChecked()}]"
+                f"Click Radio   : [{obj.objectName()}], value: [{not obj.isChecked()}]"
             )
         elif isinstance(obj, QGroupBox):
             self.log.ui(
-                f"Click Group   : [{obj.objectName()}]" f", value: [{not obj.isChecked()}]"
+                f"Click Group   : [{obj.objectName()}], value: [{not obj.isChecked()}]"
             )
         elif isinstance(obj, QCheckBox):
             self.log.ui(
-                f"Click Checkbox: [{obj.objectName()}]" f", value: [{not obj.isChecked()}]"
+                f"Click Checkbox: [{obj.objectName()}], value: [{not obj.isChecked()}]"
             )
         elif isinstance(obj, QLineEdit):
             self.log.ui(f"Click EditLine: [{obj.objectName()}]:{obj.text()}")
@@ -189,10 +189,10 @@ def checkIsAdmin() -> str:
 def writeSystemInfo(mwGlob: dict = None) -> None:
     """ """
     log.header("-" * 100)
-    log.header(f'mountwizzard4    : {version("mountwizzard4")}')
+    log.header(f"mountwizzard4    : {version('mountwizzard4')}")
     log.header(f"platform         : {platform.system()}")
     log.header(f"sys.executable   : {sys.executable}")
-    log.header(f'actual workdir   : {mwGlob["workDir"]}')
+    log.header(f"actual workdir   : {mwGlob['workDir']}")
     log.header(f"machine          : {platform.machine()}")
     log.header(f"cpu              : {platform.processor()}")
     log.header(f"release          : {platform.release()}")

@@ -163,7 +163,7 @@ class Almanac(QObject):
         self.ui.twilightEvents.setTextColor(QColor(self.mainW.M_PRIM))
 
         for timeEvent, event in zip(timeEvents, events):
-            text += f'{self.mainW.convertTime(timeEvent, "%H:%M:%S")} '
+            text += f"{self.mainW.convertTime(timeEvent, '%H:%M:%S')} "
             text += f"{almanac.TWILIGHTS[event]}"
             self.ui.twilightEvents.insertPlainText(text)
             text = "\n"

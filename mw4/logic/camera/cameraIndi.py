@@ -100,7 +100,7 @@ class CameraIndi(IndiClass):
             self.abort()
             self.log.warning("INDI camera state alert")
         else:
-            t = f'[{self.deviceName}] state: [{self.device.CCD_EXPOSURE["state"]}]'
+            t = f"[{self.deviceName}] state: [{self.device.CCD_EXPOSURE['state']}]"
             self.log.warning(t)
 
         return True

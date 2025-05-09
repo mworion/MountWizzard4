@@ -60,14 +60,6 @@ def test_initConfig_1(function):
 
 
 def test_initConfig_2(function):
-    function.data["framework"] = "astap"
-    with mock.patch.object(function, "populateTabs"):
-        with mock.patch.object(function, "selectTabs"):
-            with mock.patch.object(function, "updatePlateSolverStatus"):
-                function.initConfig()
-
-
-def test_initConfig_3(function):
     function.data = {
         "framework": "indi",
         "frameworks": {
@@ -124,9 +116,9 @@ def test_selectTabs_3(function):
 
 def test_populateTabs_1(function):
     function.data = {
-        "framework": "astap",
+        "framework": "alpaca",
         "frameworks": {
-            "astap": {
+            "alpaca": {
                 "deviceName": "astap",
                 "deviceList": ["test", "test1"],
                 "searchRadius": 30,
@@ -154,45 +146,13 @@ def test_populateTabs_2(function):
 
 def test_readTabs_1(function):
     function.data = {
-        "framework": "astap",
+        "framework": "alpaca",
         "frameworks": {
-            "astap": {
+            "alpaca": {
                 "deviceName": "astap",
                 "deviceList": ["test", "test1"],
                 "searchRadius": 30,
                 "appPath": "test",
-            },
-        },
-    }
-    function.readTabs()
-
-
-def test_readTabs_2(function):
-    function.framework2gui["astap"]["appPath"].setText("100")
-    function.data = {
-        "framework": "astap",
-        "frameworks": {
-            "astap": {
-                "deviceName": "astap",
-                "deviceList": ["test", "test1"],
-                "searchRadius": 30,
-                "appPath": 100,
-            },
-        },
-    }
-    function.readTabs()
-
-
-def test_readTabs_3(function):
-    function.framework2gui["astap"]["appPath"].setText("100")
-    function.data = {
-        "framework": "astap",
-        "frameworks": {
-            "astap": {
-                "deviceName": "astap",
-                "deviceList": ["test", "test1"],
-                "searchRadius": 30,
-                "appPath": 100.0,
             },
         },
     }
@@ -287,87 +247,92 @@ def test_discoverNINADevices_2(function):
         function.discoverNINADevices()
 
 
-def test_checkPlateSolveAvailability_1(function):
+def test_checkApp_1(function):
     class Avail:
         @staticmethod
         def checkAvailabilityProgram(appPath=Path()):
             return True
 
+    function.app.plateSolve.run["astap"] = Avail()
+    function.checkApp("astap", "test")
+
+
+def test_checkApp_2(function):
+    class Avail:
+        @staticmethod
+        def checkAvailabilityProgram(appPath=0):
+            return True
+
+    function.app.plateSolve.run["watney"] = Avail()
+    function.checkApp("watney", "test")
+
+
+def test_checkApp_3(function):
+    class Avail:
+        @staticmethod
+        def checkAvailabilityProgram(appPath=0):
+            return True
+
+    function.app.plateSolve.run["astrometry"] = Avail()
+    function.checkApp("astrometry", "test")
+
+
+def test_checkIndex_1(function):
+    class Avail:
         @staticmethod
         def checkAvailabilityIndex(indexPath=Path()):
             return True
 
     function.app.plateSolve.run["astap"] = Avail()
-    function.checkPlateSolveAvailability("astap", "test", "test")
+    function.checkIndex("astap", "test")
 
 
-def test_checkPlateSolveAvailability_2(function):
+def test_checkIndex_2(function):
     class Avail:
-        @staticmethod
-        def checkAvailabilityProgram(appPath=0):
-            return True
-
         @staticmethod
         def checkAvailabilityIndex(indexPath=0):
             return True
 
     function.app.plateSolve.run["watney"] = Avail()
-    function.checkPlateSolveAvailability("watney", "test", "test")
+    function.checkIndex("watney", "test")
 
 
-def test_checkPlateSolveAvailability_3(function):
+def test_checkIndex_3(function):
     class Avail:
-        @staticmethod
-        def checkAvailabilityProgram(appPath=0):
-            return True
-
         @staticmethod
         def checkAvailabilityIndex(indexPath=0):
             return True
 
     function.app.plateSolve.run["astrometry"] = Avail()
-    function.checkPlateSolveAvailability("astrometry", "test", "test")
+    function.checkIndex("astrometry", "test")
 
 
-def test_updatePlateSolverStatus(function):
-    with mock.patch.object(function, "checkPlateSolveAvailability"):
-        function.updatePlateSolverStatus()
-
-
-def test_selectAstrometryAppPath_1(function):
+def test_selectAppPath_1(function):
     with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
         with mock.patch.object(Path, "is_dir", return_value=False):
-            function.selectAstrometryAppPath()
+            function.selectAppPath('astap')
 
 
-def test_selectAstrometryAppPath_2(function):
+def test_selectAppPath_2(function):
     with mock.patch.object(MWidget, "openDir", return_value=Path("/test.app")):
         with mock.patch.object(Path, "is_dir", return_value=True):
-            with mock.patch.object(platform, "system", return_value=("Darwin")):
-                with mock.patch.object(function, "checkPlateSolveAvailability"):
-                    function.selectAstrometryAppPath()
+            function.selectAppPath('astap')
 
 
-def test_selectAstrometryAppPath_3(function):
+def test_selectAppPath_3(function):
     with mock.patch.object(MWidget, "openDir", return_value=Path("/Astrometry.app")):
         with mock.patch.object(Path, "is_dir", return_value=True):
-            with mock.patch.object(platform, "system", return_value=("Darwin")):
-                with mock.patch.object(function, "checkPlateSolveAvailability"):
-                    function.selectAstrometryAppPath()
+            function.selectAppPath('astap')
 
 
-def test_selectAstrometryIndexPath_1(function):
+def test_selectIndexPath_1(function):
     with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
         with mock.patch.object(Path, "is_dir", return_value=False):
-            function.selectAstrometryIndexPath()
+            function.selectIndexPath('astap')
 
 
-def test_selectAstrometryIndexPath_2(function):
+def test_selectIndexPath_2(function):
     class Avail:
-        @staticmethod
-        def checkAvailabilityProgram(appPath=Path()):
-            return True
-
         @staticmethod
         def checkAvailabilityIndex(indexPath=Path()):
             return True
@@ -375,109 +340,7 @@ def test_selectAstrometryIndexPath_2(function):
     function.app.plateSolve.run = {"astrometry": Avail()}
     with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
         with mock.patch.object(Path, "is_dir", return_value=True):
-            with mock.patch.object(function, "checkPlateSolveAvailability"):
-                function.selectAstrometryIndexPath()
-
-
-def test_selectAstapAppPath_1(function):
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
-        with mock.patch.object(Path, "is_dir", return_value=False):
-            function.selectAstapAppPath()
-
-
-def test_selectAstapAppPath_2(function):
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
-        with mock.patch.object(Path, "is_dir", return_value=True):
-            with mock.patch.object(function, "checkPlateSolveAvailability"):
-                function.selectAstapAppPath()
-
-
-def test_selectAstapAppPath_3(function):
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/Astap.app")):
-        with mock.patch.object(Path, "is_dir", return_value=True):
-            with mock.patch.object(platform, "system", return_value=("Darwin")):
-                with mock.patch.object(
-                    function, "checkPlateSolveAvailability", return_value=True
-                ):
-                    function.selectAstapAppPath()
-
-
-def test_selectAstapIndexPath_1(function):
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
-        with mock.patch.object(Path, "is_dir", return_value=False):
-            with mock.patch.object(Path, "is_dir", return_value=False):
-                function.selectAstapIndexPath()
-
-
-def test_selectAstapIndexPath_2(function):
-    class Avail:
-        @staticmethod
-        def checkAvailabilityProgram(appPath=Path()):
-            return True
-
-        @staticmethod
-        def checkAvailabilityIndex(indexPath=Path()):
-            return True
-
-        @staticmethod
-        def selectAstapIndexPath():
-            return True
-
-    function.app.plateSolve.run = {"astap": Avail()}
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
-        with mock.patch.object(Path, "is_dir", return_value=True):
-            with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
-                function.selectAstapIndexPath()
-
-
-def test_selectWatneyAppPath_1(function):
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
-        with mock.patch.object(Path, "is_dir", return_value=False):
-            function.selectWatneyAppPath()
-
-
-def test_selectWatneyAppPath_2(function):
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
-        with mock.patch.object(Path, "is_dir", return_value=True):
-            with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
-                function.selectWatneyAppPath()
-
-
-def test_selectWatneyAppPath_3(function):
-    with mock.patch.object(MWidget, "openDir", return_value=Path("test.app")):
-        with mock.patch.object(Path, "is_dir", return_value=True):
-            with mock.patch.object(platform, "system", return_value=("Darwin")):
-                with mock.patch.object(
-                    function, "checkPlateSolveAvailability", return_value=True
-                ):
-                    function.selectWatneyAppPath()
-
-
-def test_selectWatneyIndexPath_1(function):
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
-        with mock.patch.object(Path, "is_dir", return_value=False):
-            function.selectWatneyIndexPath()
-
-
-def test_selectWatneyIndexPath_2(function):
-    class Avail:
-        @staticmethod
-        def checkAvailabilityProgram(appPath=Path()):
-            return True
-
-        @staticmethod
-        def checkAvailabilityIxdex(indexPath=Path()):
-            return True
-
-        @staticmethod
-        def selectWatneyIndexPath():
-            return True
-
-    function.app.plateSolve.run = {"astap": Avail()}
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
-        with mock.patch.object(Path, "is_dir", return_value=True):
-            with mock.patch.object(function, "checkPlateSolveAvailability", return_value=True):
-                function.selectWatneyIndexPath()
+            function.selectIndexPath('astap')
 
 
 def test_selectAscomDriver_1(function):

@@ -388,5 +388,5 @@ class AlpacaClass(DriverData):
             return []
 
         temp = [x for x in devices if x["DeviceType"].lower() == deviceType]
-        discoverList = [f'{x["DeviceName"]}:{deviceType}:{x["DeviceNumber"]}' for x in temp]
+        discoverList = [f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}" for x in temp]
         return discoverList

@@ -267,7 +267,7 @@ class IndiClass:
         suc = self.client.sendNewNumber(
             deviceName=deviceName, propertyName="POLLING_PERIOD", elements=update
         )
-        t = f'Polling [{deviceName}] success: [{suc}], value:[{update["PERIOD_MS"]}]'
+        t = f"Polling [{deviceName}] success: [{suc}], value:[{update['PERIOD_MS']}]"
         self.log.info(t)
 
     def convertIndigoProperty(self, key: str) -> str:

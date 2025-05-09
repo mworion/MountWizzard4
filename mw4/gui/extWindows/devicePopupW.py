@@ -17,6 +17,7 @@
 # standard libraries
 import platform
 from pathlib import Path
+from functools import partial
 
 # external packages
 from PySide6.QtCore import Qt
@@ -33,7 +34,7 @@ from base.sgproClass import SGProClass
 from base.ninaClass import NINAClass
 from gui.utilities import toolsQtWidget
 from gui.widgets.devicePopup_ui import Ui_DevicePopup
-from gui.utilities.toolsQtWidget import changeStyleDynamic
+from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable
 
 
 class DevicePopup(toolsQtWidget.MWidget):
@@ -119,19 +120,43 @@ class DevicePopup(toolsQtWidget.MWidget):
             },
         }
 
+        self.platesolvers = {
+            "astrometry": {
+                "appPath": self.ui.astrometryAppPath,
+                "indexPath": self.ui.astrometryIndexPath,
+            },
+            "astap": {
+                "appPath": self.ui.astapAppPath,
+                "indexPath": self.ui.astapIndexPath,
+            },
+            "watney": {
+                "appPath": self.ui.watneyAppPath,
+                "indexPath": self.ui.watneyIndexPath,
+            },
+        }
+
         self.ui.cancel.clicked.connect(self.close)
         self.ui.ok.clicked.connect(self.storeConfig)
         self.ui.indiDiscover.clicked.connect(self.discoverIndiDevices)
         self.ui.alpacaDiscover.clicked.connect(self.discoverAlpacaDevices)
         self.ui.sgproDiscover.clicked.connect(self.discoverSGProDevices)
         self.ui.ninaDiscover.clicked.connect(self.discoverNINADevices)
-        self.ui.selectAstrometryIndexPath.clicked.connect(self.selectAstrometryIndexPath)
-        self.ui.selectAstrometryAppPath.clicked.connect(self.selectAstrometryAppPath)
-        self.ui.selectAstapIndexPath.clicked.connect(self.selectAstapIndexPath)
-        self.ui.selectAstapAppPath.clicked.connect(self.selectAstapAppPath)
-        self.ui.selectWatneyIndexPath.clicked.connect(self.selectWatneyIndexPath)
-        self.ui.selectWatneyAppPath.clicked.connect(self.selectWatneyAppPath)
         self.ui.ascomSelector.clicked.connect(self.selectAscomDriver)
+
+        for framework in self.platesolvers:
+            clickable(self.platesolvers[framework]["appPath"]).connect(
+                partial(self.selectAppPath, framework)
+            )
+            clickable(self.platesolvers[framework]["indexPath"]).connect(
+                partial(self.selectIndexPath, framework)
+            )
+            self.platesolvers[framework]["appPath"].textChanged.connect(
+                partial(self.checkApp, framework)
+            )
+            self.platesolvers[framework]["indexPath"].textChanged.connect(
+                partial(self.checkIndex, framework)
+            )
+
         self.initConfig()
         self.show()
 
@@ -179,8 +204,10 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.setWindowTitle(f"Setup driver for {self.deviceType}")
         self.populateTabs()
         self.selectTabs()
-        if self.data.get("framework") in ["astrometry", "watney", "astap"]:
-            self.updatePlateSolverStatus()
+        framework = self.data.get("framework", "")
+        if framework in self.platesolvers:
+            self.checkApp(framework, self.platesolvers[framework]["appPath"].text())
+            self.checkIndex(framework, self.platesolvers[framework]["indexPath"].text())
 
     def readTabs(self) -> None:
         """ """
@@ -327,126 +354,33 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         self.updateNINADeviceNameList(deviceNames=deviceNames)
 
-    def checkPlateSolveAvailability(
-        self, framework: str, appPath: Path, indexPath: Path
-    ) -> None:
+    def checkApp(self, framework: str, folder: str = "") -> None:
         """ """
         frameworkClass = self.app.plateSolve.run[framework]
-        sucApp = frameworkClass.checkAvailabilityProgram(appPath=appPath)
-        sucIndex = frameworkClass.checkAvailabilityIndex(indexPath=indexPath)
+        sucApp = frameworkClass.checkAvailabilityProgram(Path(folder))
         colorP = "green" if sucApp else "red"
+        changeStyleDynamic(self.platesolvers[framework]["appPath"], "color", colorP)
+
+    def checkIndex(self, framework: str, folder: str = "") -> None:
+        """ """
+        frameworkClass = self.app.plateSolve.run[framework]
+        sucIndex = frameworkClass.checkAvailabilityIndex(Path(folder))
         colorI = "green" if sucIndex else "red"
+        changeStyleDynamic(self.platesolvers[framework]["indexPath"], "color", colorI)
 
-        if framework == "astap":
-            changeStyleDynamic(self.ui.astapAppPath, "color", colorP)
-            changeStyleDynamic(self.ui.astapIndexPath, "color", colorI)
-
-        elif framework == "watney":
-            changeStyleDynamic(self.ui.watneyAppPath, "color", colorP)
-            changeStyleDynamic(self.ui.watneyIndexPath, "color", colorI)
-
-        elif framework == "astrometry":
-            changeStyleDynamic(self.ui.astrometryAppPath, "color", colorP)
-            changeStyleDynamic(self.ui.astrometryIndexPath, "color", colorI)
-
-    def updatePlateSolverStatus(self) -> None:
+    def selectAppPath(self, framework: str, folder: str = "") -> None:
         """ """
-        self.checkPlateSolveAvailability(
-            "astrometry",
-            Path(self.ui.astrometryAppPath.text()),
-            Path(self.ui.astrometryIndexPath.text()),
-        )
-        self.checkPlateSolveAvailability(
-            "watney", Path(self.ui.watneyAppPath.text()), Path(self.ui.watneyIndexPath.text())
-        )
-        self.checkPlateSolveAvailability(
-            "astap", Path(self.ui.astapAppPath.text()), Path(self.ui.astapIndexPath.text())
-        )
-
-    def selectAstrometryAppPath(self) -> None:
-        """ """
-        folder = Path(self.ui.astrometryAppPath.text())
-        appFolderPath = self.openDir(self, "Select Astrometry App Path", folder)
+        appFolderPath = self.openDir(self, "Select App Path", Path(folder))
         if not appFolderPath.is_dir():
             return
+        self.platesolvers[framework]["appPath"].setText(str(appFolderPath))
 
-        if platform.system() == "Darwin" and appFolderPath.suffix == ".app":
-            if "Astrometry.app" in str(appFolderPath):
-                appFolderPath = appFolderPath.parent / (
-                    appFolderPath.name + "/Contents/MacOS/"
-                )
-            else:
-                appFolderPath = appFolderPath.parent / (
-                    appFolderPath.name + "/Contents/MacOS/astrometry/bin"
-                )
-
-        self.checkPlateSolveAvailability(
-            "astrometry", appFolderPath, Path(self.ui.astrometryIndexPath.text())
-        )
-        self.ui.astrometryAppPath.setText(str(appFolderPath))
-
-    def selectAstrometryIndexPath(self) -> None:
+    def selectIndexPath(self, framework: str, folder: str = "") -> None:
         """ """
-        folder = Path(self.ui.astrometryIndexPath.text())
-        indexFolderPath = self.openDir(self, "Select Astrometry Index Path", folder)
+        indexFolderPath = self.openDir(self, "Select Index Path", Path(folder))
         if not indexFolderPath.is_dir():
             return
-
-        self.checkPlateSolveAvailability(
-            "astrometry", Path(self.ui.astrometryAppPath.text()), indexFolderPath
-        )
-        self.ui.astrometryIndexPath.setText(str(indexFolderPath))
-
-    def selectAstapAppPath(self) -> None:
-        """ """
-        folder = Path(Path(self.ui.astapAppPath.text()))
-        appFolderPath = self.openDir(self, "Select ASTAP App Path", folder)
-        if not appFolderPath.is_dir():
-            return
-
-        if platform.system() == "Darwin" and appFolderPath.suffix == ".app":
-            appFolderPath = appFolderPath.parent / (appFolderPath.name + "/Contents/MacOS")
-
-        self.checkPlateSolveAvailability(
-            "astap", appFolderPath, Path(self.ui.astapIndexPath.text())
-        )
-        self.ui.astapAppPath.setText(str(appFolderPath))
-
-    def selectAstapIndexPath(self) -> None:
-        """ """
-        folder = Path(self.ui.astapIndexPath.text())
-        indexFolderPath = self.openDir(self, "Select ASTAP Index Path", folder)
-        if not indexFolderPath.is_dir():
-            return
-
-        self.checkPlateSolveAvailability(
-            "astap", Path(self.ui.astapAppPath.text()), indexFolderPath
-        )
-        self.ui.astapIndexPath.setText(str(indexFolderPath))
-
-    def selectWatneyAppPath(self) -> None:
-        """ """
-        folder = Path(self.ui.watneyAppPath.text())
-        appFolderPath = self.openDir(self, "Select Watney App Path", folder)
-        if not appFolderPath.is_dir():
-            return
-
-        self.checkPlateSolveAvailability(
-            "watney", appFolderPath, Path(self.ui.watneyIndexPath.text())
-        )
-        self.ui.watneyAppPath.setText(str(appFolderPath))
-
-    def selectWatneyIndexPath(self) -> None:
-        """ """
-        folder = Path(self.ui.watneyIndexPath.text())
-        indexFolderPath = self.openDir(self, "Select Watney Index Path", folder)
-        if not indexFolderPath.is_dir():
-            return
-
-        self.checkPlateSolveAvailability(
-            "watney", Path(self.ui.watneyAppPath.text()), indexFolderPath
-        )
-        self.ui.watneyIndexPath.setText(str(indexFolderPath))
+        self.platesolvers[framework]["indexPath"].setText(str(indexFolderPath))
 
     def selectAscomDriver(self) -> None:
         """ """

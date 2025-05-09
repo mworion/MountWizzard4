@@ -141,6 +141,8 @@ def clickable(widget: QWidget) -> Signal:
                     self.clicked.emit(widget)
                     return True
 
+            return False
+
     clickEventFilter = MouseClickEventFilter(widget)
     widget.installEventFilter(clickEventFilter)
     return clickEventFilter.clicked

@@ -35,6 +35,7 @@ class NINAClass(DriverData, QObject):
     PORT = 59590
     PROTOCOL = "http"
     BASE_URL = f"{PROTOCOL}://{HOST_ADDR}:{PORT}"
+    DEVICE_TYPE = "Camera"
 
     def __init__(self, app=None, data=None):
         super().__init__()
@@ -208,7 +209,7 @@ class NINAClass(DriverData, QObject):
         self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
         self.msg.emit(0, "N.I.N.A.", "Device remove", f"{self.deviceName}")
 
-    def discoverDevices(self) -> list:
+    def discoverDevices(self, deviceType: str) -> list:
         """ """
         discoverList = self.enumerateDevice()
         return discoverList

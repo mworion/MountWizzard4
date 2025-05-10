@@ -174,38 +174,6 @@ def test_discoverDevices_2(function):
         function.discoverDevices('indi', QWidget())
 
 
-def test_updateSGProDeviceNameList_1(function):
-    with mock.patch.object(function.ui.sgproDeviceList, "clear"):
-        with mock.patch.object(function.ui.sgproDeviceList, "setView"):
-            function.updateSGProDeviceNameList(["test1", "test2"])
-
-
-def test_discoverSGProDevices_1(function):
-    with mock.patch.object(SGProClass, "discoverDevices", return_value=[]):
-        function.discoverSGProDevices()
-
-
-def test_discoverSGProDevices_2(function):
-    with mock.patch.object(SGProClass, "discoverDevices", return_value=["Test1", "Test2"]):
-        function.discoverSGProDevices()
-
-
-def test_updateNINADeviceNameList_1(function):
-    with mock.patch.object(function.ui.ninaDeviceList, "clear"):
-        with mock.patch.object(function.ui.ninaDeviceList, "setView"):
-            function.updateNINADeviceNameList(["test1", "test2"])
-
-
-def test_discoverNINADevices_1(function):
-    with mock.patch.object(NINAClass, "discoverDevices", return_value=[]):
-        function.discoverNINADevices()
-
-
-def test_discoverNINADevices_2(function):
-    with mock.patch.object(NINAClass, "discoverDevices", return_value=["Test1", "Test2"]):
-        function.discoverNINADevices()
-
-
 def test_checkApp_1(function):
     class Avail:
         @staticmethod
@@ -284,7 +252,7 @@ def test_selectAppPath_2(function):
         def checkAvailabilityProgram(indexPath=0):
             return True
 
-    function.app.plateSolve.run["astrometry"] = Avail()
+    function.app.plateSolve.run["astap"] = Avail()
     with mock.patch.object(MWidget, "openDir", return_value=Path("/test.app")):
         with mock.patch.object(Path, "is_dir", return_value=True):
             function.selectAppPath('astap')
@@ -296,7 +264,7 @@ def test_selectAppPath_3(function):
         def checkAvailabilityProgram(indexPath=0):
             return True
 
-    function.app.plateSolve.run["astrometry"] = Avail()
+    function.app.plateSolve.run["astap"] = Avail()
     with mock.patch.object(MWidget, "openDir", return_value=Path("/Astrometry.app")):
         with mock.patch.object(Path, "is_dir", return_value=True):
             function.selectAppPath('astap')
@@ -308,7 +276,7 @@ def test_selectIndexPath_1(function):
         def checkAvailabilityIndex(indexPath=0):
             return True
 
-    function.app.plateSolve.run["astrometry"] = Avail()
+    function.app.plateSolve.run["astap"] = Avail()
     with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
         with mock.patch.object(Path, "is_dir", return_value=False):
             function.selectIndexPath('astap')
@@ -320,7 +288,7 @@ def test_selectIndexPath_2(function):
         def checkAvailabilityIndex(indexPath):
             return True
 
-    function.app.plateSolve.run = {"astrometry": Avail()}
+    function.app.plateSolve.run = {"astap": Avail()}
     with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
         with mock.patch.object(Path, "is_dir", return_value=True):
             function.selectIndexPath('astap')

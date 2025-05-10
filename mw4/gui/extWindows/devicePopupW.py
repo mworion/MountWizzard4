@@ -162,15 +162,10 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.ui.cancel.clicked.connect(self.close)
         self.ui.ok.clicked.connect(self.storeConfig)
 
-        clickable(self.discovers["indi"]["button"]).connect(
-            partial(self.discoverDevices, "indi")
-        )
-        clickable(self.discovers["alpaca"]["button"]).connect(
-            partial(self.discoverDevices, "alpaca")
-        )
-
-        self.ui.sgproDiscover.clicked.connect(self.discoverSGProDevices)
-        self.ui.ninaDiscover.clicked.connect(self.discoverNINADevices)
+        for framework in self.discovers:
+            clickable(self.discovers[framework]["button"]).connect(
+                partial(self.discoverDevices, framework)
+            )
 
         self.ui.ascomSelector.clicked.connect(self.selectAscomDriver)
 
@@ -289,8 +284,10 @@ class DevicePopup(toolsQtWidget.MWidget):
     def discoverDevices(self, framework: str, widget) -> None:
         """ """
         device = self.discovers[framework]["class"](app=self.app, data=self.data)
-        device.hostaddress = self.discovers[framework]["hostaddress"].text()
-        device.port = self.discovers[framework]["port"].text()
+
+        if framework in ["indi", "alpaca"]:
+            device.hostaddress = self.discovers[framework]["hostaddress"].text()
+            device.port = self.discovers[framework]["port"].text()
 
         changeStyleDynamic(self.discovers[framework]["button"], "running", True)
         deviceNames = device.discoverDevices(deviceType=self.deviceType)
@@ -304,56 +301,6 @@ class DevicePopup(toolsQtWidget.MWidget):
             self.msg.emit(0, framework.upper(), "Device discovered", f"{deviceName}")
 
         self.updateDeviceNameList(framework, deviceNames)
-
-    def updateSGProDeviceNameList(self, deviceNames: list[str]) -> None:
-        """ """
-        self.ui.sgproDeviceList.clear()
-        self.ui.sgproDeviceList.setView(QListView())
-        for deviceName in deviceNames:
-            self.ui.sgproDeviceList.addItem(deviceName)
-
-    def discoverSGProDevices(self) -> None:
-        """ """
-        sgpro = SGProClass(app=self.app, data=self.data)
-        sgpro.DEVICE_TYPE = "Camera"
-
-        changeStyleDynamic(self.ui.sgproDiscover, "running", True)
-        deviceNames = sgpro.discoverDevices()
-        if not deviceNames:
-            self.msg.emit(2, "SGPRO", "Device", "No devices found")
-
-        deviceNames.insert(0, "SGPro controlled")
-        changeStyleDynamic(self.ui.sgproDiscover, "running", False)
-
-        for deviceName in deviceNames:
-            self.msg.emit(0, "SGPRO", "Device discovered", f"{deviceName}")
-
-        self.updateSGProDeviceNameList(deviceNames=deviceNames)
-
-    def updateNINADeviceNameList(self, deviceNames: list[str]) -> None:
-        """ """
-        self.ui.ninaDeviceList.clear()
-        self.ui.ninaDeviceList.setView(QListView())
-        for deviceName in deviceNames:
-            self.ui.ninaDeviceList.addItem(deviceName)
-
-    def discoverNINADevices(self) -> None:
-        """ """
-        nina = NINAClass(app=self.app, data=self.data)
-        nina.DEVICE_TYPE = "Camera"
-
-        changeStyleDynamic(self.ui.ninaDiscover, "running", True)
-        deviceNames = nina.discoverDevices()
-        if not deviceNames:
-            self.msg.emit(2, "N.I.N.A.", "Device", "No devices found")
-
-        deviceNames.insert(0, "N.I.N.A. controlled")
-        changeStyleDynamic(self.ui.ninaDiscover, "running", False)
-
-        for deviceName in deviceNames:
-            self.msg.emit(0, "N.I.N.A.", "Device discovered", f"{deviceName}")
-
-        self.updateNINADeviceNameList(deviceNames=deviceNames)
 
     def checkApp(self, framework: str, folder: str = "") -> None:
         """ """

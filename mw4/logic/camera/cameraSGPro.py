@@ -28,8 +28,6 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 class CameraSGPro(SGProClass):
     """ """
 
-    DEVICE_TYPE = "Camera"
-
     def __init__(self, parent):
         self.parent = parent
         self.app = parent.app

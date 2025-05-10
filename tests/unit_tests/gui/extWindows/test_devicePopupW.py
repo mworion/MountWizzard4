@@ -17,27 +17,19 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import platform
 import logging
 from pathlib import Path
 
 # external packages
-from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QWidget
-
-if platform.system() == "Windows":
-    import win32com.client
-
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.devicePopupW import DevicePopup
 from base.indiClass import IndiClass
-from base.alpacaClass import AlpacaClass
 from base.ascomClass import AscomClass
-from base.sgproClass import SGProClass
-from base.ninaClass import NINAClass
+
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -177,7 +169,7 @@ def test_discoverDevices_2(function):
 def test_checkApp_1(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityProgram(appPath=Path()):
+        def checkAvailabilityProgram(appPath):
             return True
 
     function.app.plateSolve.run["astap"] = Avail()
@@ -187,7 +179,7 @@ def test_checkApp_1(function):
 def test_checkApp_2(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityProgram(appPath=0):
+        def checkAvailabilityProgram(appPath):
             return True
 
     function.app.plateSolve.run["watney"] = Avail()
@@ -197,7 +189,7 @@ def test_checkApp_2(function):
 def test_checkApp_3(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityProgram(appPath=0):
+        def checkAvailabilityProgram(appPath):
             return True
 
     function.app.plateSolve.run["astrometry"] = Avail()
@@ -207,7 +199,7 @@ def test_checkApp_3(function):
 def test_checkIndex_1(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityIndex(indexPath=Path()):
+        def checkAvailabilityIndex(indexPath):
             return True
 
     function.app.plateSolve.run["astap"] = Avail()
@@ -217,7 +209,7 @@ def test_checkIndex_1(function):
 def test_checkIndex_2(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityIndex(indexPath=0):
+        def checkAvailabilityIndex(indexPath):
             return True
 
     function.app.plateSolve.run["watney"] = Avail()
@@ -227,7 +219,7 @@ def test_checkIndex_2(function):
 def test_checkIndex_3(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityIndex(indexPath=0):
+        def checkAvailabilityIndex(indexPath):
             return True
 
     function.app.plateSolve.run["astrometry"] = Avail()
@@ -237,7 +229,7 @@ def test_checkIndex_3(function):
 def test_selectAppPath_1(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityProgram(indexPath=0):
+        def checkAvailabilityProgram(indexPath):
             return True
 
     function.app.plateSolve.run["astrometry"] = Avail()
@@ -249,7 +241,7 @@ def test_selectAppPath_1(function):
 def test_selectAppPath_2(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityProgram(indexPath=0):
+        def checkAvailabilityProgram(appPath):
             return True
 
     function.app.plateSolve.run["astap"] = Avail()
@@ -261,7 +253,7 @@ def test_selectAppPath_2(function):
 def test_selectAppPath_3(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityProgram(indexPath=0):
+        def checkAvailabilityProgram(appPath):
             return True
 
     function.app.plateSolve.run["astap"] = Avail()
@@ -273,7 +265,7 @@ def test_selectAppPath_3(function):
 def test_selectIndexPath_1(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityIndex(indexPath=0):
+        def checkAvailabilityIndex(indexPath):
             return True
 
     function.app.plateSolve.run["astap"] = Avail()

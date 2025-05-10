@@ -320,11 +320,11 @@ def test_stopCommunication_1(function):
 
 def test_discoverDevices_1(function):
     with mock.patch.object(function, "enumerateDevice", return_value=[]):
-        val = function.discoverDevices()
+        val = function.discoverDevices('Camera')
         assert val == []
 
 
 def test_discoverDevices_2(function):
     with mock.patch.object(function, "enumerateDevice", return_value=["test"]):
-        val = function.discoverDevices()
+        val = function.discoverDevices('Camera')
         assert val == ["test"]

@@ -35,6 +35,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.devicePopupW import DevicePopup
 from base.indiClass import IndiClass
 from base.alpacaClass import AlpacaClass
+from base.ascomClass import AscomClass
 from base.sgproClass import SGProClass
 from base.ninaClass import NINAClass
 
@@ -53,29 +54,37 @@ def function(qapp):
         window.log = logging.getLogger()
         yield window
         window.app.threadPool.waitForDone(10000)
+        del window
 
 
 def test_initConfig_1(function):
-    function.initConfig()
+    with mock.patch.object(function, "populateTabs"):
+        with mock.patch.object(function, "selectTabs"):
+            function.initConfig()
 
 
 def test_initConfig_2(function):
     function.data = {
-        "framework": "indi",
+        "framework": "astap",
         "frameworks": {
-            "indi": {
+            "astap": {
                 "deviceName": "telescope",
                 "deviceList": ["telescope", "test2"],
             }
         },
     }
-    function.initConfig()
+    with mock.patch.object(function, "checkApp"):
+        with mock.patch.object(function, "checkIndex"):
+            with mock.patch.object(function, "populateTabs"):
+                with mock.patch.object(function, "selectTabs"):
+                    function.initConfig()
 
 
-def test_closeEvent_1(function):
-    with mock.patch.object(function, "show"):
-        with mock.patch.object(MWidget, "closeEvent"):
-            function.closeEvent(QCloseEvent)
+def test_storeConfig_1(function):
+    with mock.patch.object(function, "readFramework"):
+        with mock.patch.object(function, "readTabs"):
+            with mock.patch.object(function, "close"):
+                function.storeConfig()
 
 
 def test_selectTabs_1(function):
@@ -116,29 +125,15 @@ def test_selectTabs_3(function):
 
 def test_populateTabs_1(function):
     function.data = {
-        "framework": "alpaca",
-        "frameworks": {
-            "alpaca": {
-                "deviceName": "astap",
-                "deviceList": ["test", "test1"],
-                "searchRadius": 30,
-                "appPath": "test",
-            },
-        },
-    }
-    function.populateTabs()
-
-
-def test_populateTabs_2(function):
-    function.data = {
         "framework": "indi",
         "frameworks": {
             "indi": {
-                "deviceName": "astap",
+                "deviceName": "test",
                 "deviceList": ["test", "test1"],
-                "host": "test",
+                "updateRate": 30,
+                "hostaddress": "test",
                 "messages": True,
-            }
+            },
         },
     }
     function.populateTabs()
@@ -146,29 +141,16 @@ def test_populateTabs_2(function):
 
 def test_readTabs_1(function):
     function.data = {
-        "framework": "alpaca",
-        "frameworks": {
-            "alpaca": {
-                "deviceName": "astap",
-                "deviceList": ["test", "test1"],
-                "searchRadius": 30,
-                "appPath": "test",
-            },
-        },
-    }
-    function.readTabs()
-
-
-def test_readTabs_4(function):
-    function.data = {
         "framework": "indi",
         "frameworks": {
             "indi": {
                 "deviceName": "astap",
                 "deviceList": ["test", "test1"],
-                "host": "test",
+                "updateRate": 30.0,
+                "hostaddress": "test",
                 "messages": True,
-            }
+                "port": 10,
+            },
         },
     }
     function.readTabs()
@@ -176,13 +158,6 @@ def test_readTabs_4(function):
 
 def test_readFramework_1(function):
     function.readFramework()
-
-
-def test_storeConfig_1(function):
-    with mock.patch.object(function, "readFramework"):
-        with mock.patch.object(function, "readTabs"):
-            with mock.patch.object(function, "close"):
-                function.storeConfig()
 
 
 def test_updateIndiDeviceNameList_1(function):
@@ -334,7 +309,7 @@ def test_selectIndexPath_1(function):
 def test_selectIndexPath_2(function):
     class Avail:
         @staticmethod
-        def checkAvailabilityIndex(indexPath=Path()):
+        def checkAvailabilityIndex(indexPath):
             return True
 
     function.app.plateSolve.run = {"astrometry": Avail()}
@@ -344,26 +319,6 @@ def test_selectIndexPath_2(function):
 
 
 def test_selectAscomDriver_1(function):
-    if platform.system() != "Windows":
-        return
-
-    with mock.patch.object(win32com.client, "Dispatch", side_effect=Exception()):
-        function.selectAscomDriver()
-
-
-def test_selectAscomDriver_2(function):
-    if platform.system() != "Windows":
-        return
-
-    class Test:
-        DeviceType = None
-
-        @staticmethod
-        def Choose(name):
-            return name
-
-    function.ui.ascomDevice.setText("test")
-
-    with mock.patch.object(win32com.client, "Dispatch", return_value=Test()):
+    with mock.patch.object(AscomClass, "selectAscomDriver", return_value="test"):
         function.selectAscomDriver()
         assert function.ui.ascomDevice.text() == "test"

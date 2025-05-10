@@ -15,7 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import platform
 from pathlib import Path
 from functools import partial
 
@@ -24,12 +23,10 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QListView, QComboBox, QLineEdit
 from PySide6.QtWidgets import QCheckBox, QDoubleSpinBox
 
-if platform.system() == "Windows":
-    import win32com.client
-
 # local import
 from base.indiClass import IndiClass
 from base.alpacaClass import AlpacaClass
+from base.ascomClass import AscomClass
 from base.sgproClass import SGProClass
 from base.ninaClass import NINAClass
 from gui.utilities import toolsQtWidget
@@ -160,6 +157,26 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.initConfig()
         self.show()
 
+    def initConfig(self) -> None:
+        """ """
+        self.setWindowTitle(f"Setup driver for {self.deviceType}")
+        self.populateTabs()
+        self.selectTabs()
+        framework = self.data.get("framework", "")
+        if framework in self.platesolvers:
+            self.checkApp(framework, self.platesolvers[framework]["appPath"].text())
+            self.checkIndex(framework, self.platesolvers[framework]["indexPath"].text())
+
+    def storeConfig(self) -> None:
+        """ """
+        self.readFramework()
+        self.readTabs()
+        self.returnValues["indiCopyConfig"] = self.ui.indiCopyConfig.isChecked()
+        self.returnValues["alpacaCopyConfig"] = self.ui.alpacaCopyConfig.isChecked()
+        self.returnValues["close"] = "ok"
+        self.returnValues["driver"] = self.driver
+        self.close()
+
     def selectTabs(self) -> None:
         """ """
         firstFramework = next(iter(self.data["frameworks"]))
@@ -199,16 +216,6 @@ class DevicePopup(toolsQtWidget.MWidget):
                 elif isinstance(ui, QDoubleSpinBox):
                     ui.setValue(frameworks[fw][element])
 
-    def initConfig(self) -> None:
-        """ """
-        self.setWindowTitle(f"Setup driver for {self.deviceType}")
-        self.populateTabs()
-        self.selectTabs()
-        framework = self.data.get("framework", "")
-        if framework in self.platesolvers:
-            self.checkApp(framework, self.platesolvers[framework]["appPath"].text())
-            self.checkIndex(framework, self.platesolvers[framework]["indexPath"].text())
-
     def readTabs(self) -> None:
         """ """
         framework = self.data["framework"]
@@ -223,12 +230,10 @@ class DevicePopup(toolsQtWidget.MWidget):
                     frameworkData[element].append(ui.model().item(index).text())
 
             elif isinstance(ui, QLineEdit):
-                if isinstance(frameworkData[element], str):
-                    frameworkData[element] = ui.text()
-                elif isinstance(frameworkData[element], int):
+                if isinstance(frameworkData[element], int):
                     frameworkData[element] = int(ui.text())
                 else:
-                    frameworkData[element] = float(ui.text())
+                    frameworkData[element] = ui.text()
 
             elif isinstance(ui, QCheckBox):
                 frameworkData[element] = ui.isChecked()
@@ -240,16 +245,6 @@ class DevicePopup(toolsQtWidget.MWidget):
         index = self.ui.tab.currentIndex()
         framework = self.ui.tab.widget(index).objectName()
         self.data["framework"] = framework
-
-    def storeConfig(self) -> None:
-        """ """
-        self.readFramework()
-        self.readTabs()
-        self.returnValues["indiCopyConfig"] = self.ui.indiCopyConfig.isChecked()
-        self.returnValues["alpacaCopyConfig"] = self.ui.alpacaCopyConfig.isChecked()
-        self.returnValues["close"] = "ok"
-        self.returnValues["driver"] = self.driver
-        self.close()
 
     def updateIndiDeviceNameList(self, deviceNames: list[str]) -> None:
         """ """
@@ -384,14 +379,6 @@ class DevicePopup(toolsQtWidget.MWidget):
 
     def selectAscomDriver(self) -> None:
         """ """
-        deviceName = self.ui.ascomDevice.text()
-        try:
-            chooser = win32com.client.Dispatch("ASCOM.Utilities.Chooser")
-            chooser.DeviceType = self.deviceType
-            deviceName = chooser.Choose(deviceName)
-
-        except Exception as e:
-            self.log.critical(f"Error: {e}")
-            return
-
+        ascom = AscomClass(app=self.app, data=self.data)
+        deviceName = ascom.selectAscomDriver(self.ui.ascomDevice.text())
         self.ui.ascomDevice.setText(deviceName)

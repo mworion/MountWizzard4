@@ -277,3 +277,16 @@ class AscomClass(DriverData):
         self.signals.deviceDisconnected.emit(f"{self.deviceName}")
         self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
         self.msg.emit(0, "ALPACA", "Device  remove", f"{self.deviceName}")
+
+    def selectAscomDriver(self, deviceName: str) -> str:
+        """ """
+        try:
+            chooser = client.Dispatch("ASCOM.Utilities.Chooser")
+            chooser.DeviceType = self.deviceType
+            deviceName = chooser.Choose(deviceName)
+
+        except Exception as e:
+            self.log.critical(f"Error: {e}")
+            deviceName = ""
+
+        return deviceName

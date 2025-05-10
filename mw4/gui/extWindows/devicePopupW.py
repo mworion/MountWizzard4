@@ -132,12 +132,46 @@ class DevicePopup(toolsQtWidget.MWidget):
             },
         }
 
+        self.discovers = {
+            "indi": {
+                "deviceList": self.ui.indiDeviceList,
+                "hostaddress": self.ui.indiHostAddress,
+                "button": self.ui.indiDiscover,
+                "port": self.ui.indiPort,
+                "class": IndiClass,
+            },
+            "alpaca": {
+                "deviceList": self.ui.alpacaDeviceList,
+                "hostaddress": self.ui.alpacaHostAddress,
+                "button": self.ui.alpacaDiscover,
+                "port": self.ui.alpacaPort,
+                "class": AlpacaClass,
+            },
+            "sgpro": {
+                "deviceList": self.ui.sgproDeviceList,
+                "button": self.ui.sgproDiscover,
+                "class": SGProClass,
+            },
+            "nina": {
+                "deviceList": self.ui.ninaDeviceList,
+                "button": self.ui.ninaDiscover,
+                "class": NINAClass,
+            },
+        }
+
         self.ui.cancel.clicked.connect(self.close)
         self.ui.ok.clicked.connect(self.storeConfig)
-        self.ui.indiDiscover.clicked.connect(self.discoverIndiDevices)
-        self.ui.alpacaDiscover.clicked.connect(self.discoverAlpacaDevices)
+
+        clickable(self.discovers["indi"]["button"]).connect(
+            partial(self.discoverDevices, "indi")
+        )
+        clickable(self.discovers["alpaca"]["button"]).connect(
+            partial(self.discoverDevices, "alpaca")
+        )
+
         self.ui.sgproDiscover.clicked.connect(self.discoverSGProDevices)
         self.ui.ninaDiscover.clicked.connect(self.discoverNINADevices)
+
         self.ui.ascomSelector.clicked.connect(self.selectAscomDriver)
 
         for framework in self.platesolvers:
@@ -246,58 +280,30 @@ class DevicePopup(toolsQtWidget.MWidget):
         framework = self.ui.tab.widget(index).objectName()
         self.data["framework"] = framework
 
-    def updateIndiDeviceNameList(self, deviceNames: list[str]) -> None:
-        """ """
-        self.ui.indiDeviceList.clear()
-        self.ui.indiDeviceList.setView(QListView())
+    def updateDeviceNameList(self, framework: str, deviceNames: list[str]) -> None:
+        self.discovers[framework]["deviceList"].clear()
+        self.discovers[framework]["deviceList"].setView(QListView())
         for deviceName in deviceNames:
-            self.ui.indiDeviceList.addItem(deviceName)
+            self.discovers[framework]["deviceList"].addItem(deviceName)
 
-    def discoverIndiDevices(self) -> None:
+    def discoverDevices(self, framework: str, widget) -> None:
         """ """
-        indi = IndiClass(app=self.app, data=self.data)
-        indi.hostaddress = self.ui.indiHostAddress.text()
-        indi.port = self.ui.indiPort.text()
+        device = self.discovers[framework]["class"](app=self.app, data=self.data)
+        device.hostaddress = self.discovers[framework]["hostaddress"].text()
+        device.port = self.discovers[framework]["port"].text()
 
-        changeStyleDynamic(self.ui.indiDiscover, "running", True)
-        deviceNames = indi.discoverDevices(deviceType=self.deviceType)
-        changeStyleDynamic(self.ui.indiDiscover, "running", False)
+        changeStyleDynamic(self.discovers[framework]["button"], "running", True)
+        deviceNames = device.discoverDevices(deviceType=self.deviceType)
+        changeStyleDynamic(self.discovers[framework]["button"], "running", False)
 
         if not deviceNames:
-            self.msg.emit(2, "INDI", "Device", "No devices found")
+            self.msg.emit(2, framework.upper(), "Device", "No devices found")
             return
 
         for deviceName in deviceNames:
-            self.msg.emit(0, "INDI", "Device discovered", f"{deviceName}")
+            self.msg.emit(0, framework.upper(), "Device discovered", f"{deviceName}")
 
-        self.updateIndiDeviceNameList(deviceNames=deviceNames)
-
-    def updateAlpacaDeviceNameList(self, deviceNames: list[str]) -> None:
-        """ """
-        self.ui.alpacaDeviceList.clear()
-        self.ui.alpacaDeviceList.setView(QListView())
-        for deviceName in deviceNames:
-            self.ui.alpacaDeviceList.addItem(deviceName)
-
-    def discoverAlpacaDevices(self) -> None:
-        """ """
-        alpaca = AlpacaClass(app=self.app, data=self.data)
-        alpaca.hostaddress = self.ui.alpacaHostAddress.text()
-        alpaca.port = self.ui.alpacaPort.text()
-        alpaca.apiVersion = 1
-
-        changeStyleDynamic(self.ui.alpacaDiscover, "running", True)
-        deviceNames = alpaca.discoverDevices(deviceType=self.deviceType)
-        changeStyleDynamic(self.ui.alpacaDiscover, "running", False)
-
-        if not deviceNames:
-            self.msg.emit(2, "ALPACA", "Device", "No devices found")
-            return
-
-        for deviceName in deviceNames:
-            self.msg.emit(0, "ALPACA", "Device discovered", f"{deviceName}")
-
-        self.updateAlpacaDeviceNameList(deviceNames=deviceNames)
+        self.updateDeviceNameList(framework, deviceNames)
 
     def updateSGProDeviceNameList(self, deviceNames: list[str]) -> None:
         """ """

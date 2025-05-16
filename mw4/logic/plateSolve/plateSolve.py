@@ -19,6 +19,8 @@ import logging
 import os
 import queue
 from pathlib import Path
+from threading import Lock
+from typing import Optional, Dict, Any
 
 # external packages
 
@@ -59,6 +61,16 @@ class PlateSolve:
             self.defaultConfig["frameworks"].update(self.run[fw].defaultConfig)
 
         self.signals.serverConnected.connect(self.startSolveLoop)
+        self._lock = Lock()
+        self._current_worker: Optional[Worker] = None
+        
+    def startSolveLoop(self) -> None:
+        """"""
+        with self._lock:
+            if not self._current_worker:
+                self.solveLoopRunning = True
+                self._current_worker = Worker(self.workerSolveLoop)
+                self.threadPool.start(self._current_worker)
 
     def processSolveQueue(self, imagePath: Path, updateHeader: bool = False) -> None:
         """ """
@@ -81,12 +93,6 @@ class PlateSolve:
             imagePath, updateHeader = self.solveQueue.get()
             self.processSolveQueue(imagePath, updateHeader)
             self.solveQueue.task_done()
-
-    def startSolveLoop(self) -> None:
-        """ """
-        self.solveLoopRunning = True
-        worker = Worker(self.workerSolveLoop)
-        self.threadPool.start(worker)
 
     def checkAvailabilityProgram(self, framework: str) -> bool:
         """ """

@@ -196,7 +196,7 @@ class IndiClass:
     def serverDisconnected(self, devices: str) -> None:
         """ """
         t = f"INDI server for [{self.deviceName}] disconnected"
-        self.log.debug(t)
+        self.log.info(t)
 
     def newDevice(self, deviceName: str) -> None:
         """ """

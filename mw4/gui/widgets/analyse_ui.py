@@ -85,6 +85,7 @@ class Ui_AnalyseDialog(object):
         self.profile.setMouseTracking(False)
         self.profile.setAcceptDrops(False)
         self.profile.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.profile.setFrame(False)
         self.profile.setReadOnly(True)
 
         self.gridLayout_4.addWidget(self.profile, 1, 2, 1, 1)
@@ -104,6 +105,7 @@ class Ui_AnalyseDialog(object):
         self.time.setMouseTracking(False)
         self.time.setAcceptDrops(False)
         self.time.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.time.setFrame(False)
         self.time.setReadOnly(True)
 
         self.gridLayout_4.addWidget(self.time, 2, 2, 1, 1)
@@ -195,6 +197,7 @@ class Ui_AnalyseDialog(object):
         self.goodPoints.setMouseTracking(False)
         self.goodPoints.setAcceptDrops(False)
         self.goodPoints.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.goodPoints.setFrame(False)
         self.goodPoints.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.goodPoints.setReadOnly(True)
 
@@ -208,6 +211,7 @@ class Ui_AnalyseDialog(object):
         self.modelOrthoError.setMouseTracking(False)
         self.modelOrthoError.setAcceptDrops(False)
         self.modelOrthoError.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.modelOrthoError.setFrame(False)
         self.modelOrthoError.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.modelOrthoError.setReadOnly(True)
 
@@ -221,6 +225,7 @@ class Ui_AnalyseDialog(object):
         self.version.setMouseTracking(False)
         self.version.setAcceptDrops(False)
         self.version.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.version.setFrame(False)
         self.version.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.version.setReadOnly(True)
 
@@ -253,6 +258,7 @@ class Ui_AnalyseDialog(object):
         self.modelErrorRMS.setMouseTracking(False)
         self.modelErrorRMS.setAcceptDrops(False)
         self.modelErrorRMS.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.modelErrorRMS.setFrame(False)
         self.modelErrorRMS.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.modelErrorRMS.setReadOnly(True)
 
@@ -280,6 +286,7 @@ class Ui_AnalyseDialog(object):
         self.firmware.setMouseTracking(False)
         self.firmware.setAcceptDrops(False)
         self.firmware.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.firmware.setFrame(False)
         self.firmware.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.firmware.setReadOnly(True)
 
@@ -293,6 +300,7 @@ class Ui_AnalyseDialog(object):
         self.subframe.setMouseTracking(False)
         self.subframe.setAcceptDrops(False)
         self.subframe.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.subframe.setFrame(False)
         self.subframe.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.subframe.setReadOnly(True)
 
@@ -313,6 +321,7 @@ class Ui_AnalyseDialog(object):
         self.modelPolarError.setMouseTracking(False)
         self.modelPolarError.setAcceptDrops(False)
         self.modelPolarError.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.modelPolarError.setFrame(False)
         self.modelPolarError.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.modelPolarError.setReadOnly(True)
 
@@ -340,6 +349,7 @@ class Ui_AnalyseDialog(object):
         self.totalPoints.setMouseTracking(False)
         self.totalPoints.setAcceptDrops(False)
         self.totalPoints.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.totalPoints.setFrame(False)
         self.totalPoints.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.totalPoints.setReadOnly(True)
 
@@ -386,6 +396,7 @@ class Ui_AnalyseDialog(object):
         self.binning.setMouseTracking(False)
         self.binning.setAcceptDrops(False)
         self.binning.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.binning.setFrame(False)
         self.binning.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.binning.setReadOnly(True)
 
@@ -418,6 +429,7 @@ class Ui_AnalyseDialog(object):
         self.focalLength.setMouseTracking(False)
         self.focalLength.setAcceptDrops(False)
         self.focalLength.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.focalLength.setFrame(False)
         self.focalLength.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.focalLength.setReadOnly(True)
 
@@ -438,6 +450,7 @@ class Ui_AnalyseDialog(object):
         self.solver.setMouseTracking(False)
         self.solver.setAcceptDrops(False)
         self.solver.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.solver.setFrame(False)
         self.solver.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.solver.setReadOnly(True)
 
@@ -534,6 +547,7 @@ class Ui_AnalyseDialog(object):
         self.modelTerms.setMouseTracking(False)
         self.modelTerms.setAcceptDrops(False)
         self.modelTerms.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.modelTerms.setFrame(False)
         self.modelTerms.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.modelTerms.setReadOnly(True)
 
@@ -547,6 +561,7 @@ class Ui_AnalyseDialog(object):
         self.exposureTime.setMouseTracking(False)
         self.exposureTime.setAcceptDrops(False)
         self.exposureTime.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.exposureTime.setFrame(False)
         self.exposureTime.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.exposureTime.setReadOnly(True)
 

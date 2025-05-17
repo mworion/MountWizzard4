@@ -68,7 +68,7 @@
     <number>0</number>
    </property>
    <property name="elideMode">
-    <enum>Qt::ElideNone</enum>
+    <enum>Qt::TextElideMode::ElideNone</enum>
    </property>
    <widget class="QWidget" name="alpaca">
     <attribute name="title">
@@ -130,10 +130,10 @@
       <string>1</string>
      </property>
      <property name="frame">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="label_mountIP_8">
@@ -206,7 +206,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string>localhost</string>
@@ -214,8 +214,11 @@
      <property name="maxLength">
       <number>50</number>
      </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -294,7 +297,7 @@
       <string>User for alpaca device</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string/>
@@ -302,8 +305,11 @@
      <property name="maxLength">
       <number>50</number>
      </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -344,7 +350,7 @@
       <string>Passwor for alpaca device</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string/>
@@ -352,8 +358,11 @@
      <property name="maxLength">
       <number>50</number>
      </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -394,7 +403,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
+      <enum>Qt::LayoutDirection::LeftToRight</enum>
      </property>
      <property name="text">
       <string>Copy config to all devices</string>
@@ -438,7 +447,7 @@
       </rect>
      </property>
      <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="decimals">
       <number>0</number>
@@ -572,7 +581,7 @@
       <string>Drvice name of ASCOM driver.</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string/>
@@ -580,8 +589,11 @@
      <property name="maxLength">
       <number>50</number>
      </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -758,7 +770,7 @@
       <string>IP address of INDI server, ip address and host names!</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string>localhost</string>
@@ -766,8 +778,11 @@
      <property name="maxLength">
       <number>50</number>
      </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -865,7 +880,7 @@
       <string>When checked, the indi messages received will be shown inthe central message window</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
+      <enum>Qt::LayoutDirection::LeftToRight</enum>
      </property>
      <property name="text">
       <string>Show Messages</string>
@@ -910,8 +925,11 @@
      <property name="text">
       <string>7</string>
      </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
     </widget>
     <widget class="QCheckBox" name="indiLoadConfig">
@@ -936,7 +954,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
+      <enum>Qt::LayoutDirection::LeftToRight</enum>
      </property>
      <property name="text">
       <string>Load configuration on start</string>
@@ -970,7 +988,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
+      <enum>Qt::LayoutDirection::LeftToRight</enum>
      </property>
      <property name="text">
       <string>Copy config to all devices</string>
@@ -1030,7 +1048,7 @@
       </rect>
      </property>
      <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="decimals">
       <number>0</number>
@@ -1107,7 +1125,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to astrometry.net index files. Where native installation or e.g. KStars put the files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string>/usr/</string>
@@ -1115,8 +1133,11 @@
      <property name="maxLength">
       <number>100</number>
      </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -1219,7 +1240,7 @@
       <string>Set the search radius for the plate solver. </string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="decimals">
       <number>0</number>
@@ -1257,7 +1278,7 @@
       <string>Set the timeout for the plate solver.</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="decimals">
       <number>0</number>
@@ -1389,7 +1410,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to astrometry.net binary files. Where native installation or e.g. KStars put the files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string>/usr/</string>
@@ -1397,8 +1418,11 @@
      <property name="maxLength">
       <number>100</number>
      </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -1476,7 +1500,7 @@
       <string>Set the timeout for the plate solver.</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="decimals">
       <number>0</number>
@@ -1514,7 +1538,7 @@
       <string>Set the search radius for the plate solver. </string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="decimals">
       <number>0</number>
@@ -1647,7 +1671,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to astap index files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string>/usr/</string>
@@ -1656,7 +1680,7 @@
       <number>100</number>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -1700,7 +1724,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to astap application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string>/usr/</string>
@@ -1709,7 +1733,7 @@
       <number>100</number>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -1889,7 +1913,7 @@
       <string>Set the timeout for the plate solver.</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="decimals">
       <number>0</number>
@@ -1981,7 +2005,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to watney application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string>/usr/</string>
@@ -1990,7 +2014,7 @@
       <number>100</number>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -2059,7 +2083,7 @@
       <string>Set the search radius for the plate solver. </string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="decimals">
       <number>0</number>
@@ -2112,7 +2136,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to watney star database.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string>/usr/</string>
@@ -2121,7 +2145,7 @@
       <number>100</number>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -2265,7 +2289,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address for open weather service&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string>api.openweathermap.org</string>
@@ -2274,7 +2298,7 @@
       <number>50</number>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -2315,7 +2339,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;api key for open weather service&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string/>
@@ -2324,7 +2348,7 @@
       <number>50</number>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -2411,7 +2435,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address for open weather service&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string>api.openweathermap.org</string>
@@ -2420,7 +2444,7 @@
       <number>50</number>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -2480,7 +2504,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;api key for open weather service&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string/>
@@ -2489,7 +2513,7 @@
       <number>50</number>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -2557,7 +2581,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address for relay device&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string/>
@@ -2566,7 +2590,7 @@
       <number>50</number>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -2607,7 +2631,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Passwor for relay device&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string/>
@@ -2616,7 +2640,7 @@
       <number>50</number>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
@@ -2657,7 +2681,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;User for relay device&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
      </property>
      <property name="text">
       <string/>
@@ -2666,7 +2690,7 @@
       <number>50</number>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>

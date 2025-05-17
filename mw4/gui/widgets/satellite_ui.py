@@ -73,6 +73,7 @@ class Ui_SatelliteDialog(object):
         self.satLatitude.setMouseTracking(False)
         self.satLatitude.setAcceptDrops(False)
         self.satLatitude.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.satLatitude.setFrame(False)
         self.satLatitude.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.satLatitude.setReadOnly(True)
 
@@ -107,6 +108,7 @@ class Ui_SatelliteDialog(object):
         self.satLongitude.setMouseTracking(False)
         self.satLongitude.setAcceptDrops(False)
         self.satLongitude.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.satLongitude.setFrame(False)
         self.satLongitude.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.satLongitude.setReadOnly(True)
 
@@ -141,6 +143,7 @@ class Ui_SatelliteDialog(object):
         self.satAzimuth.setMouseTracking(False)
         self.satAzimuth.setAcceptDrops(False)
         self.satAzimuth.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.satAzimuth.setFrame(False)
         self.satAzimuth.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.satAzimuth.setReadOnly(True)
 
@@ -168,6 +171,7 @@ class Ui_SatelliteDialog(object):
         self.satAltitude.setMouseTracking(False)
         self.satAltitude.setAcceptDrops(False)
         self.satAltitude.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.satAltitude.setFrame(False)
         self.satAltitude.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.satAltitude.setReadOnly(True)
 

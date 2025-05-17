@@ -82,6 +82,7 @@ class Ui_VideoDialog(object):
         self.videoURL.setObjectName(u"videoURL")
         self.videoURL.setMinimumSize(QSize(250, 21))
         self.videoURL.setMaximumSize(QSize(16777215, 25))
+        self.videoURL.setFrame(False)
         self.videoURL.setProperty(u"input", True)
 
         self.gridLayout.addWidget(self.videoURL, 1, 3, 1, 3)

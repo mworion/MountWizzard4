@@ -546,6 +546,9 @@
             <height>20</height>
            </size>
           </property>
+          <property name="frame">
+           <bool>false</bool>
+          </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
@@ -573,6 +576,9 @@
             <width>50</width>
             <height>20</height>
            </size>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -644,7 +650,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideNone</enum>
@@ -797,6 +803,9 @@
               <width>0</width>
               <height>21</height>
              </size>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -1129,6 +1138,9 @@
               <width>0</width>
               <height>21</height>
              </size>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
             </property>
            </widget>
           </item>

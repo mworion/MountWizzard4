@@ -2580,6 +2580,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="text">
           <string/>
          </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
          <property name="readOnly">
           <bool>false</bool>
          </property>
@@ -2643,6 +2646,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
          </property>
          <property name="readOnly">
           <bool>false</bool>
@@ -2768,6 +2774,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="text">
           <string/>
          </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
          <property name="readOnly">
           <bool>false</bool>
          </property>
@@ -2802,6 +2811,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
          </property>
          <property name="readOnly">
           <bool>false</bool>
@@ -2911,6 +2923,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="text">
           <string/>
          </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -2948,6 +2963,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
          </property>
          <property name="readOnly">
           <bool>true</bool>

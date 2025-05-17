@@ -186,7 +186,7 @@ class Ui_HemisphereDialog(object):
 
         self.azimuth = QLineEdit(self.operationMode)
         self.azimuth.setObjectName(u"azimuth")
-        self.azimuth.setEnabled(False)
+        self.azimuth.setEnabled(True)
         sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
@@ -200,7 +200,7 @@ class Ui_HemisphereDialog(object):
 
         self.altitude = QLineEdit(self.operationMode)
         self.altitude.setObjectName(u"altitude")
-        self.altitude.setEnabled(False)
+        self.altitude.setEnabled(True)
         sizePolicy2.setHeightForWidth(self.altitude.sizePolicy().hasHeightForWidth())
         self.altitude.setSizePolicy(sizePolicy2)
         self.altitude.setMinimumSize(QSize(0, 21))
@@ -433,7 +433,7 @@ class Ui_HemisphereDialog(object):
 
         self.retranslateUi(HemisphereDialog)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(HemisphereDialog)

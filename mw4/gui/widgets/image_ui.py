@@ -44,12 +44,13 @@ class Ui_ImageDialog(object):
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.groupImageActions = QGroupBox(ImageDialog)
         self.groupImageActions.setObjectName(u"groupImageActions")
+        self.groupImageActions.setMinimumSize(QSize(0, 0))
         self.groupImageActions.setProperty(u"large", True)
         self.gridLayout_4 = QGridLayout(self.groupImageActions)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.gridLayout_4.setHorizontalSpacing(10)
         self.gridLayout_4.setVerticalSpacing(5)
-        self.gridLayout_4.setContentsMargins(5, 10, 5, 5)
+        self.gridLayout_4.setContentsMargins(5, 15, 5, 5)
         self.solve = QPushButton(self.groupImageActions)
         self.solve.setObjectName(u"solve")
         self.solve.setEnabled(False)
@@ -128,6 +129,7 @@ class Ui_ImageDialog(object):
 
         self.groupBox = QGroupBox(ImageDialog)
         self.groupBox.setObjectName(u"groupBox")
+        self.groupBox.setMinimumSize(QSize(0, 0))
         self.groupBox.setProperty(u"large", True)
         self.gridLayout_3 = QGridLayout(self.groupBox)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
@@ -173,6 +175,7 @@ class Ui_ImageDialog(object):
 
         self.photometryGroup = QGroupBox(ImageDialog)
         self.photometryGroup.setObjectName(u"photometryGroup")
+        self.photometryGroup.setMinimumSize(QSize(0, 0))
         self.photometryGroup.setCheckable(True)
         self.photometryGroup.setProperty(u"large", True)
         self.Imageview = QGridLayout(self.photometryGroup)
@@ -570,8 +573,8 @@ class Ui_ImageDialog(object):
         self.binX = QLineEdit(self.headerGroup)
         self.binX.setObjectName(u"binX")
         self.binX.setEnabled(True)
+        self.binX.setFrame(False)
         self.binX.setReadOnly(True)
-        self.binX.setProperty(u"withoutFrame", True)
 
         self.gridLayout.addWidget(self.binX, 26, 0, 1, 1)
 
@@ -592,8 +595,8 @@ class Ui_ImageDialog(object):
         self.scale = QLineEdit(self.headerGroup)
         self.scale.setObjectName(u"scale")
         self.scale.setEnabled(True)
+        self.scale.setFrame(False)
         self.scale.setReadOnly(True)
-        self.scale.setProperty(u"withoutFrame", True)
 
         self.gridLayout.addWidget(self.scale, 15, 1, 1, 1)
 
@@ -619,16 +622,16 @@ class Ui_ImageDialog(object):
         self.sqm = QLineEdit(self.headerGroup)
         self.sqm.setObjectName(u"sqm")
         self.sqm.setEnabled(True)
+        self.sqm.setFrame(False)
         self.sqm.setReadOnly(True)
-        self.sqm.setProperty(u"withoutFrame", True)
 
         self.gridLayout.addWidget(self.sqm, 32, 0, 1, 2)
 
         self.rotation = QLineEdit(self.headerGroup)
         self.rotation.setObjectName(u"rotation")
         self.rotation.setEnabled(True)
+        self.rotation.setFrame(False)
         self.rotation.setReadOnly(True)
-        self.rotation.setProperty(u"withoutFrame", True)
 
         self.gridLayout.addWidget(self.rotation, 15, 0, 1, 1)
 
@@ -640,24 +643,24 @@ class Ui_ImageDialog(object):
         self.ccdTemp = QLineEdit(self.headerGroup)
         self.ccdTemp.setObjectName(u"ccdTemp")
         self.ccdTemp.setEnabled(True)
+        self.ccdTemp.setFrame(False)
         self.ccdTemp.setReadOnly(True)
-        self.ccdTemp.setProperty(u"withoutFrame", True)
 
         self.gridLayout.addWidget(self.ccdTemp, 23, 1, 1, 1)
 
         self.dec = QLineEdit(self.headerGroup)
         self.dec.setObjectName(u"dec")
         self.dec.setEnabled(True)
+        self.dec.setFrame(False)
         self.dec.setReadOnly(True)
-        self.dec.setProperty(u"withoutFrame", True)
 
         self.gridLayout.addWidget(self.dec, 8, 0, 1, 2)
 
         self.exposureTime = QLineEdit(self.headerGroup)
         self.exposureTime.setObjectName(u"exposureTime")
         self.exposureTime.setEnabled(True)
+        self.exposureTime.setFrame(False)
         self.exposureTime.setReadOnly(True)
-        self.exposureTime.setProperty(u"withoutFrame", True)
 
         self.gridLayout.addWidget(self.exposureTime, 20, 0, 1, 2)
 
@@ -669,8 +672,8 @@ class Ui_ImageDialog(object):
         self.object = QLineEdit(self.headerGroup)
         self.object.setObjectName(u"object")
         self.object.setEnabled(True)
+        self.object.setFrame(False)
         self.object.setReadOnly(True)
-        self.object.setProperty(u"withoutFrame", True)
 
         self.gridLayout.addWidget(self.object, 1, 0, 1, 2)
 
@@ -682,8 +685,8 @@ class Ui_ImageDialog(object):
         self.binY = QLineEdit(self.headerGroup)
         self.binY.setObjectName(u"binY")
         self.binY.setEnabled(True)
+        self.binY.setFrame(False)
         self.binY.setReadOnly(True)
-        self.binY.setProperty(u"withoutFrame", True)
 
         self.gridLayout.addWidget(self.binY, 26, 1, 1, 1)
 
@@ -695,16 +698,16 @@ class Ui_ImageDialog(object):
         self.raFloat = QLineEdit(self.headerGroup)
         self.raFloat.setObjectName(u"raFloat")
         self.raFloat.setEnabled(True)
+        self.raFloat.setFrame(False)
         self.raFloat.setReadOnly(True)
-        self.raFloat.setProperty(u"withoutFrame", True)
 
         self.gridLayout.addWidget(self.raFloat, 5, 0, 1, 2)
 
         self.filter = QLineEdit(self.headerGroup)
         self.filter.setObjectName(u"filter")
         self.filter.setEnabled(True)
+        self.filter.setFrame(False)
         self.filter.setReadOnly(True)
-        self.filter.setProperty(u"withoutFrame", True)
 
         self.gridLayout.addWidget(self.filter, 23, 0, 1, 1)
 
@@ -747,8 +750,8 @@ class Ui_ImageDialog(object):
         self.ra = QLineEdit(self.headerGroup)
         self.ra.setObjectName(u"ra")
         self.ra.setEnabled(True)
+        self.ra.setFrame(False)
         self.ra.setReadOnly(True)
-        self.ra.setProperty(u"withoutFrame", True)
 
         self.gridLayout.addWidget(self.ra, 4, 0, 1, 2)
 
@@ -770,8 +773,8 @@ class Ui_ImageDialog(object):
         self.decFloat = QLineEdit(self.headerGroup)
         self.decFloat.setObjectName(u"decFloat")
         self.decFloat.setEnabled(True)
+        self.decFloat.setFrame(False)
         self.decFloat.setReadOnly(True)
-        self.decFloat.setProperty(u"withoutFrame", True)
 
         self.gridLayout.addWidget(self.decFloat, 9, 0, 1, 2)
 

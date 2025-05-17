@@ -153,10 +153,6 @@ BASIC_STYLE = """
     QLineEdit {
         color: $M_PRIM$;
         text-align: right;
-        border-style: outset;
-        border-width: %WIDTH%;
-        border-color: $M_SEC$;
-        border-radius: %ROUND%;
         background-color: $M_BACK1$;
     }
     QLineEdit:disabled {

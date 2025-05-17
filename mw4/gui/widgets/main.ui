@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -193,6 +193,9 @@
        <property name="text">
         <string>-</string>
        </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
@@ -259,6 +262,9 @@
        </property>
        <property name="text">
         <string>-</string>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -367,6 +373,9 @@
        <property name="text">
         <string>-</string>
        </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
        <property name="cursorPosition">
         <number>1</number>
        </property>
@@ -442,6 +451,9 @@
        </property>
        <property name="maxLength">
         <number>8</number>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -558,6 +570,9 @@
        </property>
        <property name="text">
         <string>-</string>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
        </property>
        <property name="cursorPosition">
         <number>1</number>
@@ -692,6 +707,9 @@
        <property name="text">
         <string>-</string>
        </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
@@ -756,6 +774,9 @@
        <property name="text">
         <string>-</string>
        </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
@@ -802,6 +823,9 @@
        </property>
        <property name="text">
         <string>-</string>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -918,6 +942,9 @@
        </property>
        <property name="text">
         <string>-</string>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -1052,6 +1079,9 @@
        <property name="text">
         <string>-</string>
        </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
@@ -1098,6 +1128,9 @@
        </property>
        <property name="text">
         <string>-</string>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
        </property>
        <property name="cursorPosition">
         <number>1</number>
@@ -1172,6 +1205,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="text">
         <string>-</string>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -1277,6 +1313,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="text">
         <string>-</string>
        </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
@@ -1320,6 +1359,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="text">
         <string>-</string>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -1371,6 +1413,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="maxLength">
         <number>18</number>
        </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
@@ -1420,6 +1465,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="maxLength">
         <number>8</number>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -1487,6 +1535,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="text">
         <string>-</string>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -1597,6 +1648,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="text">
         <string>-</string>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
        </property>
        <property name="cursorPosition">
         <number>1</number>
@@ -1768,6 +1822,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="text">
         <string>-</string>
        </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
@@ -1835,6 +1892,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="maxLength">
         <number>20</number>
        </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
@@ -1881,6 +1941,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="maxLength">
         <number>32634</number>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -1952,6 +2015,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="text">
         <string>-</string>
        </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
@@ -2003,7 +2069,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <number>32767</number>
        </property>
        <property name="frame">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -2057,6 +2123,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="text">
         <string>-</string>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
        </property>
        <property name="cursorPosition">
         <number>1</number>
@@ -4356,6 +4425,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="text">
        <string>-</string>
       </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
       <property name="alignment">
        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
@@ -4402,6 +4474,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="text">
        <string>ALT</string>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
       </property>
       <property name="alignment">
        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -4467,6 +4542,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="text">
        <string>-</string>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
       </property>
       <property name="alignment">
        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -4552,6 +4630,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="text">
        <string>-</string>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
       </property>
       <property name="alignment">
        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -4643,6 +4724,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="text">
        <string>RA</string>
       </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
       <property name="alignment">
        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
@@ -4689,6 +4773,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="text">
        <string>HA</string>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
       </property>
       <property name="alignment">
        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -4737,6 +4824,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="text">
        <string>AZ</string>
       </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
       <property name="alignment">
        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
@@ -4783,6 +4873,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="text">
        <string>DEC</string>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
       </property>
       <property name="alignment">
        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -4963,6 +5056,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -5012,6 +5108,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -5076,6 +5175,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -5125,6 +5227,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -5176,6 +5281,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -5226,6 +5334,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -5275,6 +5386,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -5841,6 +5955,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -5890,6 +6007,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -5954,6 +6074,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -6003,6 +6126,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -6054,6 +6180,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -6104,6 +6233,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -6153,6 +6285,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -6249,6 +6384,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -6298,6 +6436,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -6413,6 +6554,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -6476,6 +6620,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -6525,6 +6672,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -6576,6 +6726,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -6625,6 +6778,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -6676,6 +6832,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -6725,6 +6884,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -6830,6 +6992,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -6893,6 +7058,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -6942,6 +7110,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -6993,6 +7164,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -7042,6 +7216,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -7093,6 +7270,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -7142,6 +7322,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -7383,6 +7566,9 @@ no tracking</string>
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -7432,6 +7618,9 @@ no tracking</string>
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -7483,6 +7672,9 @@ no tracking</string>
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -7532,6 +7724,9 @@ no tracking</string>
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -7583,6 +7778,9 @@ no tracking</string>
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -7633,6 +7831,9 @@ no tracking</string>
            <property name="maxLength">
             <number>8</number>
            </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -7682,6 +7883,9 @@ no tracking</string>
            </property>
            <property name="maxLength">
             <number>8</number>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -8043,6 +8247,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="maxLength">
        <number>8</number>
       </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
       <property name="readOnly">
        <bool>true</bool>
       </property>
@@ -8086,6 +8293,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="maxLength">
        <number>-1</number>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
       </property>
       <property name="readOnly">
        <bool>true</bool>
@@ -8170,6 +8380,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="maxLength">
        <number>8</number>
       </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
       <property name="readOnly">
        <bool>true</bool>
       </property>
@@ -8236,6 +8449,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="maxLength">
        <number>8</number>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
       </property>
       <property name="readOnly">
        <bool>true</bool>
@@ -8398,7 +8614,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -8774,6 +8990,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -9431,6 +9650,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="text">
          <string/>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="dragEnabled">
          <bool>false</bool>
         </property>
@@ -9468,6 +9690,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="dragEnabled">
          <bool>false</bool>
@@ -9566,6 +9791,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="dragEnabled">
          <bool>true</bool>
@@ -9883,6 +10111,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="text">
          <string>- turns</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -9943,6 +10174,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="text">
          <string>- turns</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -10131,6 +10365,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="text">
          <string>00:00:00</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -10171,6 +10408,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>00:00:00</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -10237,6 +10477,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>00:00:00</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -10383,6 +10626,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -10489,7 +10735,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>10</x>
           <y>75</y>
-          <width>101</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -10509,7 +10755,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>10</x>
           <y>50</y>
-          <width>91</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -10560,6 +10806,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -10622,6 +10871,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -10662,6 +10914,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -10747,6 +11002,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -10756,7 +11014,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <rect>
           <x>10</x>
           <y>25</y>
-          <width>101</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -10871,6 +11129,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -10911,6 +11172,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -10976,6 +11240,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -11016,6 +11283,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -11276,7 +11546,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -11586,6 +11856,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="text">
          <string>0.0</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -11807,6 +12080,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="maxLength">
          <number>50</number>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -11848,7 +12124,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -11970,6 +12246,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="cursorPosition">
          <number>1</number>
@@ -12473,6 +12752,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <property name="text">
           <string>-</string>
          </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
          <property name="cursorPosition">
           <number>1</number>
          </property>
@@ -12540,6 +12822,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <property name="text">
           <string>-</string>
          </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
          <property name="readOnly">
           <bool>false</bool>
          </property>
@@ -12603,6 +12888,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </property>
          <property name="text">
           <string>-</string>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
          </property>
          <property name="cursorPosition">
           <number>1</number>
@@ -12734,6 +13022,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </property>
          <property name="text">
           <string>-</string>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -12894,6 +13185,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <property name="text">
           <string>-</string>
          </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
          <property name="cursorPosition">
           <number>1</number>
          </property>
@@ -12978,6 +13272,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="text">
          <string>1</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -13037,6 +13334,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -13167,6 +13467,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -13245,6 +13548,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -13354,6 +13660,9 @@ Slew</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -13489,6 +13798,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="cursorPosition">
          <number>1</number>
         </property>
@@ -13559,6 +13871,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="cursorPosition">
          <number>1</number>
@@ -13647,6 +13962,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -13738,6 +14056,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -13819,6 +14140,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -13859,6 +14183,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -13981,6 +14308,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -14021,6 +14351,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -14119,6 +14452,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -14200,6 +14536,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -14241,6 +14580,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -14281,6 +14623,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -14403,6 +14748,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -14443,6 +14791,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -14545,6 +14896,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -14585,6 +14939,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -14646,6 +15003,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -14727,6 +15087,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -14849,6 +15212,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -14889,6 +15255,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -14966,6 +15335,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -15057,6 +15429,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -15147,6 +15522,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -15228,6 +15606,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -15268,6 +15649,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -15389,6 +15773,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -17310,7 +17697,7 @@ When clicking the button, you could change the value.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -17624,6 +18011,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -17961,6 +18351,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -18021,6 +18414,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -18143,6 +18539,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -18183,6 +18582,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -18225,6 +18627,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -18265,6 +18670,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -18307,6 +18715,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -18347,6 +18758,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -18389,6 +18803,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -18429,6 +18846,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -18471,6 +18891,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -18511,6 +18934,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -18553,6 +18979,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -18594,6 +19023,9 @@ When clicking the button, you could change the value.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -18634,6 +19066,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -18776,6 +19211,9 @@ Next point in time when satellite rises over horizon.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -18835,6 +19273,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -18873,6 +19314,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -19172,6 +19616,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -19250,6 +19697,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -19288,6 +19738,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -19325,6 +19778,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -19516,7 +19972,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -19587,6 +20043,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -19934,6 +20393,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string/>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>false</bool>
         </property>
@@ -20098,7 +20560,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -20272,6 +20734,9 @@ Next point in time when satellite settles.</string>
           <width>0</width>
           <height>0</height>
          </size>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -20566,6 +21031,9 @@ Next point in time when satellite settles.</string>
           <height>0</height>
          </size>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="input" stdset="0">
          <bool>true</bool>
         </property>
@@ -20700,6 +21168,9 @@ Next point in time when satellite settles.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -20768,6 +21239,9 @@ Next point in time when satellite settles.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -20797,6 +21271,9 @@ Next point in time when satellite settles.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -20813,6 +21290,9 @@ Next point in time when satellite settles.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -20828,6 +21308,9 @@ Next point in time when satellite settles.</string>
           <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -20857,6 +21340,9 @@ Next point in time when satellite settles.</string>
           <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -20990,6 +21476,9 @@ Next point in time when satellite settles.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -21033,6 +21522,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="cursorPosition">
          <number>1</number>
@@ -21124,6 +21616,9 @@ Next point in time when satellite settles.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -21168,6 +21663,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="cursorPosition">
          <number>1</number>
         </property>
@@ -21205,6 +21703,9 @@ Next point in time when satellite settles.</string>
           <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -21302,6 +21803,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="cursorPosition">
          <number>1</number>
         </property>
@@ -21378,6 +21882,9 @@ Next point in time when satellite settles.</string>
           <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -21471,6 +21978,9 @@ Next point in time when satellite settles.</string>
           <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -21578,6 +22088,9 @@ Next point in time when satellite settles.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -21683,6 +22196,9 @@ Next point in time when satellite settles.</string>
           <width>56</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -21935,6 +22451,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="cursorPosition">
          <number>1</number>
@@ -22803,6 +23322,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -22894,7 +23416,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>7</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -24065,6 +24587,9 @@ Next point in time when satellite settles.</string>
         <property name="maxLength">
          <number>50</number>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="dragEnabled">
          <bool>true</bool>
         </property>
@@ -24157,6 +24682,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="maxLength">
          <number>18</number>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="dragEnabled">
          <bool>true</bool>
@@ -24317,6 +24845,9 @@ Next point in time when satellite settles.</string>
         <property name="maxLength">
          <number>50</number>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="dragEnabled">
          <bool>true</bool>
         </property>
@@ -24366,6 +24897,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="maxLength">
          <number>50</number>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="dragEnabled">
          <bool>true</bool>
@@ -24598,6 +25132,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string>00:00:00:00:00:00</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="input" stdset="0">
          <bool>true</bool>
@@ -24837,6 +25374,9 @@ Next point in time when satellite settles.</string>
         <property name="maxLength">
          <number>8</number>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -24941,6 +25481,9 @@ Next point in time when satellite settles.</string>
         <property name="maxLength">
          <number>25</number>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -24984,6 +25527,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="maxLength">
          <number>25</number>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -25049,6 +25595,9 @@ Next point in time when satellite settles.</string>
         <property name="maxLength">
          <number>25</number>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -25112,6 +25661,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="maxLength">
          <number>8</number>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -26806,6 +27358,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string/>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>false</bool>
         </property>
@@ -26884,6 +27439,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string/>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>false</bool>
         </property>
@@ -26944,6 +27502,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -27029,6 +27590,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string/>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>false</bool>
         </property>
@@ -27086,6 +27650,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -27300,6 +27867,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string/>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>false</bool>
         </property>
@@ -27403,6 +27973,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -27567,6 +28140,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -27794,6 +28370,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string/>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>false</bool>
         </property>
@@ -27831,6 +28410,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -28595,6 +29177,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string>relay 3</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>false</bool>
         </property>
@@ -28633,6 +29218,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string>relay 6</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>false</bool>
         </property>
@@ -28670,6 +29258,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string>relay 8</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -28799,6 +29390,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string>relay 5</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>false</bool>
         </property>
@@ -28837,6 +29431,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string>relay 2</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>false</bool>
         </property>
@@ -28874,6 +29471,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string>relay 7</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -29063,6 +29663,9 @@ Next point in time when satellite settles.</string>
         <property name="text">
          <string>relay 4</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>false</bool>
         </property>
@@ -29100,6 +29703,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string>relay 1</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -29923,6 +30529,9 @@ Updater</string>
         <property name="maxLength">
          <number>20</number>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -29960,6 +30569,9 @@ Updater</string>
         </property>
         <property name="maxLength">
          <number>20</number>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -30891,6 +31503,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <property name="text">
      <string/>
     </property>
+    <property name="frame">
+     <bool>false</bool>
+    </property>
     <property name="readOnly">
      <bool>true</bool>
     </property>
@@ -30946,6 +31561,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </property>
     <property name="text">
      <string>-</string>
+    </property>
+    <property name="frame">
+     <bool>false</bool>
     </property>
     <property name="readOnly">
      <bool>true</bool>
@@ -31314,6 +31932,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <property name="text">
      <string/>
     </property>
+    <property name="frame">
+     <bool>false</bool>
+    </property>
     <property name="readOnly">
      <bool>true</bool>
     </property>
@@ -31508,6 +32129,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <property name="text">
      <string/>
     </property>
+    <property name="frame">
+     <bool>false</bool>
+    </property>
     <property name="readOnly">
      <bool>true</bool>
     </property>
@@ -31649,6 +32273,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     <property name="text">
      <string>time</string>
     </property>
+    <property name="frame">
+     <bool>false</bool>
+    </property>
     <property name="readOnly">
      <bool>true</bool>
     </property>
@@ -31707,6 +32334,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="text">
      <string>-</string>
+    </property>
+    <property name="frame">
+     <bool>false</bool>
     </property>
     <property name="readOnly">
      <bool>true</bool>
@@ -32024,6 +32654,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
         <property name="text">
          <string>-</string>
         </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -32073,6 +32706,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
         </property>
         <property name="text">
          <string>-</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
         <property name="readOnly">
          <bool>true</bool>

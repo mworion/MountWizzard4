@@ -148,13 +148,13 @@ class ImageWindow(MWidget, SlewInterface):
         self.setAspectLocked()
         self.clearGui()
         self.setupIcons()
+        self.colorChange()
         self.show()
         self.showCurrent()
 
     def closeEvent(self, closeEvent) -> None:
         """ """
         self.storeConfig()
-        del self.tabs
         super().closeEvent(closeEvent)
 
     def setupIcons(self) -> None:

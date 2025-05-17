@@ -148,9 +148,9 @@ class ExternalWindows(QObject):
         """ """
         config = self.app.config
         for window in self.uiWindows:
-            config[window] = bool(self.uiWindows[window]['classObj'])
+            config[window] = bool(self.uiWindows[window]["classObj"])
             if config[window]:
-                self.uiWindows[window]['classObj'].storeConfig()
+                self.uiWindows[window]["classObj"].storeConfig()
 
     def deleteWindowResource(self, window: str) -> None:
         """"""

@@ -20,7 +20,7 @@ import os
 import queue
 from pathlib import Path
 from threading import Lock
-from typing import Optional, Dict, Any
+from typing import Optional
 
 # external packages
 
@@ -63,7 +63,7 @@ class PlateSolve:
         self.signals.serverConnected.connect(self.startSolveLoop)
         self._lock = Lock()
         self._current_worker: Optional[Worker] = None
-        
+
     def startSolveLoop(self) -> None:
         """"""
         with self._lock:

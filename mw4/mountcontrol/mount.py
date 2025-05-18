@@ -82,16 +82,16 @@ class MountDevice:
         self.workerCalcTLE: Worker = None
         self.workerGetModel: Worker = None
         self.workerGetNames: Worker = None
-        self.workerProgTrajectory: Worker = None
+        self.workerTrajectory: Worker = None
         self.workerCycleDome: Worker = None
         self.mutexCycleMountUp = QMutex()
         self.mutexCycleClock = QMutex()
         self.mutexCycleSetting = QMutex()
         self.mutexCyclePointing = QMutex()
-        self.mountUp: Bool = False
-        self.mountUpLastStatus: Bool = False
-        self.statusAlert: Bool = False
-        self.statusSlew: Bool = True
+        self.mountUp: bool = False
+        self.mountUpLastStatus: bool = False
+        self.statusAlert: bool = False
+        self.statusSlew: bool = True
 
         self.timerPointing = QTimer()
         self.timerPointing.setSingleShot(False)
@@ -434,9 +434,9 @@ class MountDevice:
             return
 
         self.satellite.startProgTrajectory(julD=start)
-        self.workerProgTrajectory = Worker(self.workerProgTrajectory, alt, az, replay=replay)
-        self.workerProgTrajectory.signals.result.connect(self.clearProgTrajectory)
-        self.threadPool.start(self.workerProgTrajectory)
+        self.workerTrajectory = Worker(self.workerProgTrajectory, alt, az, replay=replay)
+        self.workerTrajectory.signals.result.connect(self.clearProgTrajectory)
+        self.threadPool.start(self.workerTrajectory)
 
     def calcTransformationMatricesTarget(self):
         """ """

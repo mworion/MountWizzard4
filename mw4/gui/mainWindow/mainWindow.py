@@ -209,7 +209,6 @@ class MainWindow(MWidget):
 
     def quitSave(self) -> None:
         """ """
-        self.storeConfig()
         self.saveProfile()
         self.close()
 
@@ -444,6 +443,7 @@ class MainWindow(MWidget):
 
     def saveProfileBase(self, saveProfilePath: Path) -> None:
         """ """
+        self.storeConfig()
         saveProfile(saveProfilePath, self.app.config)
         self.ui.profile.setText(saveProfilePath.stem)
         self.msg.emit(1, "System", "Profile", f"saved {saveProfilePath.stem}")

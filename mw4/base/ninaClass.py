@@ -54,6 +54,9 @@ class NINAClass(DriverData, QObject):
 
         self.deviceConnected = False
         self.serverConnected = False
+        self.workerPollData = None
+        self.workerGetConfig = None
+        self.workerPollStatus = None
 
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
@@ -142,17 +145,17 @@ class NINAClass(DriverData, QObject):
         """ """
         if not self.deviceConnected:
             return
-        worker = Worker(self.workerPollData)
-        worker.signals.result.connect(self.processPolledData)
-        self.threadPool.start(worker)
+        self.workerPollData = Worker(self.workerPollData)
+        self.workerPollData.signals.result.connect(self.processPolledData)
+        self.threadPool.start(self.workerPollData)
 
     def workerGetInitialConfig(self) -> None:
         pass
 
     def getInitialConfig(self) -> None:
         """ """
-        worker = Worker(self.workerGetInitialConfig)
-        self.threadPool.start(worker)
+        self.workerGetConfig = Worker(self.workerGetInitialConfig)
+        self.threadPool.start(self.workerGetConfig)
 
     def workerPollStatus(self):
         """
@@ -187,8 +190,8 @@ class NINAClass(DriverData, QObject):
 
     def pollStatus(self) -> None:
         """ """
-        worker = Worker(self.workerPollStatus)
-        self.threadPool.start(worker)
+        self.workerPollStatus = Worker(self.workerPollStatus)
+        self.threadPool.start(self.workerPollStatus)
 
     def startCommunication(self) -> None:
         """ """

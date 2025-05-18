@@ -44,6 +44,7 @@ class SatSearch(QObject, SatData):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
+        self.worker = None
 
         SatData.satellites = AstroObjects(
             self.mainW,
@@ -305,10 +306,10 @@ class SatSearch(QObject, SatData):
         """ """
         title = "Setup " + self.mainW.timeZoneString()
         self.ui.satSetupGroup.setTitle(title)
-        worker = Worker(self.workerCalcSatList)
-        worker.signals.finished.connect(self.filterListSats)
+        self.worker = Worker(self.workerCalcSatList)
+        self.worker.signals.finished.connect(self.filterListSats)
         changeStyleDynamic(self.ui.satFilterGroup, "running", True)
-        self.app.threadPool.start(worker)
+        self.app.threadPool.start(self.worker)
 
     def fillSatListName(self):
         """ """

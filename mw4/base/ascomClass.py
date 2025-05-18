@@ -44,6 +44,8 @@ class AscomClass(DriverData):
         self.updateRate = 3000
         self.loadConfig = False
         self.tM = QMutex()
+        self.worker = None
+        self.workerConnectDevice = None
 
         self.client = None
         self.propertyExceptions = []
@@ -218,14 +220,14 @@ class AscomClass(DriverData):
         if not self.deviceConnected:
             return False
 
-        worker = Worker(self.callerInitUnInit, fn, *args, **kwargs)
+        self.worker = Worker(self.callerInitUnInit, fn, *args, **kwargs)
         t = f"ASCOM threaded: [{fn}], args:[{args}], kwargs:[{kwargs}]"
         self.log.trace(t)
         if cb_res:
-            worker.signals.result.connect(cb_res)
+            self.worker.signals.result.connect(cb_res)
         if cb_fin:
-            worker.signals.finished.connect(cb_fin)
-        self.threadPool.start(worker)
+            self.worker.signals.finished.connect(cb_fin)
+        self.threadPool.start(self.worker)
         return True
 
     def processPolledData(self) -> None:
@@ -262,8 +264,8 @@ class AscomClass(DriverData):
             self.log.error(f"[{self.deviceName}] Dispatch error: [{e}]")
             return
 
-        worker = Worker(self.callerInitUnInit, self.workerConnectDevice)
-        self.threadPool.start(worker)
+        self.workerConnectDevice = Worker(self.callerInitUnInit, self.workerConnectDevice)
+        self.threadPool.start(self.workerConnectDevice)
 
     def stopCommunication(self) -> None:
         """ """

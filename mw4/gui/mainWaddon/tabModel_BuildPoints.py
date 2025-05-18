@@ -38,6 +38,7 @@ class BuildPoints(QObject):
         self.ui = mainW.ui
 
         self.sortRunning = QMutex()
+        self.worker = None
         self.lastGenerator = "none"
         self.sortedGenerators = {
             "grid": self.genBuildGrid,
@@ -456,9 +457,9 @@ class BuildPoints(QObject):
         """ """
         if not self.sortRunning.tryLock():
             return
-        worker = Worker(self.sortDomeAzWorker, points, pierside)
-        worker.signals.result.connect(self.doSortDomeAzData)
-        self.app.threadPool.start(worker)
+        self.worker = Worker(self.sortDomeAzWorker, points, pierside)
+        self.worker.signals.result.connect(self.doSortDomeAzData)
+        self.app.threadPool.start(self.worker)
 
     def sortMountAz(self, points, eastwest=None, highlow=None, pierside=None):
         """ """

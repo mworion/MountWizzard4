@@ -130,6 +130,7 @@ class SimulatorWindow(MWidget):
         self.app.mount.signals.pointDone.connect(self.pointer.updatePositions)
         self.app.mount.signals.pointDone.connect(self.telescope.updateRotation)
         self.show()
+        self.colorChange()
 
     def setupCamera(self, parentEntity):
         """

@@ -71,7 +71,7 @@ class UploadPopup(MWidget):
         self.returnValues = {"success": False, "successMount": False}
         self.parentWidget = parentWidget
         self.threadPool = parentWidget.app.threadPool
-        self.worker. Worker = None
+        self.worker: Worker = None
         self.workerStatus: Worker = None
         self.url: str = url
         self.dataTypes: str = dataTypes

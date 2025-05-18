@@ -63,7 +63,7 @@ class Almanac(QObject):
         self.twilightTime = None
         self.twilightEvents = None
         self.colors = None
-        self.worker = None
+        self.worker: Worker = None
         self.setColors()
         self.app.update1h.connect(self.showMoonPhase)
         self.app.colorChange.connect(self.updateColorSet)

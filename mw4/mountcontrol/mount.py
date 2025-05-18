@@ -19,7 +19,7 @@ import socket
 import logging
 
 # external packages
-import PySide6.QtCore
+from PySide6.QtCore import QTimer, QMutex
 import PySide6.QtWidgets
 import wakeonlan
 from skyfield.api import Angle
@@ -72,43 +72,43 @@ class MountDevice:
         self.dome = Dome(parent=self)
         self.model = Model(parent=self)
 
-        self.workerMountUp = None
-        self.workerCycleClock = None
-        self.workerCycleSetting = None
-        self.workerCyclePointing = None
-        self.workerGetLocation = None
-        self.workerGetFW = None
-        self.workerGetTLE = None
-        self.workerCalcTLE = None
-        self.workerGetModel = None
-        self.workerGetNames = None
-        self.workerProgTrajectory = None
-        self.workerCycleDome = None
-        self.mutexCycleMountUp = PySide6.QtCore.QMutex()
-        self.mutexCycleClock = PySide6.QtCore.QMutex()
-        self.mutexCycleSetting = PySide6.QtCore.QMutex()
-        self.mutexCyclePointing = PySide6.QtCore.QMutex()
-        self.mountUp = False
-        self.mountUpLastStatus = False
-        self.statusAlert = False
-        self.statusSlew = True
+        self.workerMountUp: Worker = None
+        self.workerCycleClock: Worker = None
+        self.workerCycleSetting: Worker = None
+        self.workerCyclePointing: Worker = None
+        self.workerGetLocation: Worker = None
+        self.workerGetFW: Worker = None
+        self.workerGetTLE: Worker = None
+        self.workerCalcTLE: Worker = None
+        self.workerGetModel: Worker = None
+        self.workerGetNames: Worker = None
+        self.workerProgTrajectory: Worker = None
+        self.workerCycleDome: Worker = None
+        self.mutexCycleMountUp = QMutex()
+        self.mutexCycleClock = QMutex()
+        self.mutexCycleSetting = QMutex()
+        self.mutexCyclePointing = QMutex()
+        self.mountUp: Bool = False
+        self.mountUpLastStatus: Bool = False
+        self.statusAlert: Bool = False
+        self.statusSlew: Bool = True
 
-        self.timerPointing = PySide6.QtCore.QTimer()
+        self.timerPointing = QTimer()
         self.timerPointing.setSingleShot(False)
         self.timerPointing.timeout.connect(self.cyclePointing)
-        self.timerDome = PySide6.QtCore.QTimer()
+        self.timerDome = QTimer()
         self.timerDome.setSingleShot(False)
         self.timerDome.timeout.connect(self.cycleDome)
-        self.timerClock = PySide6.QtCore.QTimer()
+        self.timerClock = QTimer()
         self.timerClock.setSingleShot(False)
         self.timerClock.timeout.connect(self.cycleClock)
-        self.timerSetting = PySide6.QtCore.QTimer()
+        self.timerSetting = QTimer()
         self.timerSetting.setSingleShot(False)
         self.timerSetting.timeout.connect(self.cycleSetting)
-        self.timerMountUp = PySide6.QtCore.QTimer()
+        self.timerMountUp = QTimer()
         self.timerMountUp.setSingleShot(False)
         self.timerMountUp.timeout.connect(self.cycleCheckMountUp)
-        self.settlingWait = PySide6.QtCore.QTimer()
+        self.settlingWait = QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
 

@@ -58,7 +58,7 @@ class KeypadWindow(MWidget):
         self.keypad = KeyPad(self.signals)
         self.inputActive: bool = False
         self.websocketMutex = QMutex()
-        self.worker = None
+        self.worker: Worker = None
 
         self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
         self.buttons = {

@@ -44,14 +44,17 @@ class AscomClass(DriverData):
         self.updateRate = 3000
         self.loadConfig = False
         self.tM = QMutex()
-        self.worker = None
-        self.workerConnectDevice = None
+        self.worker: Worker = None
+        self.workerData: Worker = None
+        self.workerGetConfig: Worker = None
+        self.workerStatus: Worker = None
+        self.workerConnect: Worker = None
 
         self.client = None
-        self.propertyExceptions = []
-        self.deviceName = ""
-        self.deviceConnected = False
-        self.serverConnected = False
+        self.propertyExceptions: list = []
+        self.deviceName: str = ""
+        self.deviceConnected: bool = False
+        self.serverConnected: bool = False
 
         self.defaultConfig = {
             "deviceName": "",
@@ -199,7 +202,7 @@ class AscomClass(DriverData):
         fn(*args, **kwargs)
         CoUninitialize()
 
-    def callMethodThreaded(self, fn, *args, cb_res=None, cb_fin=None, **kwargs):
+    def callMethodThreaded(self, fn, *args, cb_res=None, cb_fin=None, **kwargs) -> None:
         """
         callMethodThreaded is done mainly for ASCOM ctypes interfaces which take
         longer to end and should not slow down the gui thread itself. All called
@@ -212,13 +215,13 @@ class AscomClass(DriverData):
 
         :param fn: function
         :param args:
-        :param cb_res: callback
-        :param cb_fin: callback
+        :param cb_res: callback result
+        :param cb_fin: callback finished
         :param kwargs:
         :return:
         """
         if not self.deviceConnected:
-            return False
+            return
 
         self.worker = Worker(self.callerInitUnInit, fn, *args, **kwargs)
         t = f"ASCOM threaded: [{fn}], args:[{args}], kwargs:[{kwargs}]"
@@ -228,7 +231,6 @@ class AscomClass(DriverData):
         if cb_fin:
             self.worker.signals.finished.connect(cb_fin)
         self.threadPool.start(self.worker)
-        return True
 
     def processPolledData(self) -> None:
         """ """
@@ -240,15 +242,19 @@ class AscomClass(DriverData):
 
     def pollData(self) -> None:
         """ """
-        self.callMethodThreaded(self.workerPollData, cb_res=self.processPolledData)
+        self.workerData = Worker(self.workerPollData)
+        self.workerData.signals.result.connect(self.processPolledData)
+        self.threadPool.start(self.workerData)
 
     def pollStatus(self) -> None:
         """ """
-        self.callMethodThreaded(self.workerPollStatus)
+        self.workerStatus = Worker(self.workerPollStatus)
+        self.threadPool.start(self.workerStatus)
 
     def getInitialConfig(self) -> None:
         """ """
-        self.callMethodThreaded(self.workerGetInitialConfig)
+        self.workerGetConfig = Worker(self.workerGetInitialConfig)
+        self.threadPool.start(self.workerGetConfig)
 
     def startCommunication(self) -> None:
         """ """
@@ -264,8 +270,8 @@ class AscomClass(DriverData):
             self.log.error(f"[{self.deviceName}] Dispatch error: [{e}]")
             return
 
-        self.workerConnectDevice = Worker(self.callerInitUnInit, self.workerConnectDevice)
-        self.threadPool.start(self.workerConnectDevice)
+        self.workerConnect = Worker(self.callerInitUnInit, self.workerConnectDevice)
+        self.threadPool.start(self.workerConnect)
 
     def stopCommunication(self) -> None:
         """ """

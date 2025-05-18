@@ -37,7 +37,7 @@ class SettMisc(QObject):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.worker = None
+        self.worker: Worker = None
 
         self.audioSignalsSet = dict()
         self.guiAudioList = dict()

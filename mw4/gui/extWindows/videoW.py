@@ -47,7 +47,7 @@ class VideoWindow(MWidget):
         self.user = ""
         self.password = ""
         self.runningCounter = 0
-        self.worker = None
+        self.worker: Worker = None
 
     def closeEvent(self, closeEvent) -> None:
         """ """

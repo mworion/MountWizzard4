@@ -168,7 +168,7 @@ def test_callAscomMethod_3(function):
 def test_getAndStoreAscomProperty(function):
     with mock.patch.object(function, "getAscomProperty"):
         with mock.patch.object(function, "storePropertyToData"):
-            function.getAndStoreAscomProperty(10, "YES", "NO")
+            function.getAndStoreAscomProperty(10, "YES")
 
 
 def test_workerConnectDevice_1(function):
@@ -195,8 +195,7 @@ def test_workerConnectDevice_2(function):
 
 def test_workerGetInitialConfig_1(function):
     with mock.patch.object(function, "getAndStoreAscomProperty", return_value="test"):
-        suc = function.workerGetInitialConfig()
-        assert suc
+        function.workerGetInitialConfig()
 
 
 def test_pollStatus_1(function):
@@ -225,8 +224,7 @@ def test_callMethodThreaded_1(function):
         return
 
     function.deviceConnected = False
-    suc = function.callMethodThreaded(test)
-    assert not suc
+    function.callMethodThreaded(test)
 
 
 def test_callMethodThreaded_2(function):
@@ -235,8 +233,7 @@ def test_callMethodThreaded_2(function):
 
     function.deviceConnected = True
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.callMethodThreaded(test, cb_fin=test, cb_res=test)
-        assert suc
+        function.callMethodThreaded(test, cb_fin=test, cb_res=test)
 
 
 def test_callMethodThreaded_3(function):
@@ -245,8 +242,7 @@ def test_callMethodThreaded_3(function):
 
     function.deviceConnected = True
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.callMethodThreaded(test, 10, 20, cb_fin=test, cb_res=test)
-        assert suc
+        function.callMethodThreaded(test, 10, 20, cb_fin=test, cb_res=test)
 
 
 def test_callMethodThreaded_4(function):
@@ -255,8 +251,7 @@ def test_callMethodThreaded_4(function):
 
     function.deviceConnected = True
     with mock.patch.object(function.threadPool, "start"):
-        suc = function.callMethodThreaded(test, 10, 20)
-        assert suc
+        function.callMethodThreaded(test, 10, 20)
 
 
 def test_processPolledData(function):
@@ -322,12 +317,13 @@ def test_stopCommunication_2(function):
 
 def test_selectAscomDriver_1(function):
     with mock.patch.object(win32com.client, "Dispatch", side_effect=Exception()):
-        function.selectAscomDriver()
+        function.selectAscomDriver("Test")
 
 
 def test_selectAscomDriver_2(function):
     class Test:
-        DeviceType = None
+        def init(self):
+            self.DeviceType = None
 
         @staticmethod
         def Choose(name):

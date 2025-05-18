@@ -86,6 +86,7 @@ class MountDevice:
         self.workerCycleDome: Worker = None
         self.mutexCycleMountUp = QMutex()
         self.mutexCycleClock = QMutex()
+        self.mutexCycleDome = QMutex()
         self.mutexCycleSetting = QMutex()
         self.mutexCyclePointing = QMutex()
         self.mountUp: bool = False
@@ -413,6 +414,9 @@ class MountDevice:
     def cycleClock(self):
         """ """
         if not self.mountUp:
+            return
+
+        if not self.mutexCycleClock.tryLock():
             return
 
         self.workerCycleClock = Worker(self.obsSite.pollSyncClock)

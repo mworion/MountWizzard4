@@ -194,6 +194,9 @@ BASIC_STYLE = """
         margin-top: 6px;
         background-color: $M_BACK$;
     }
+    QGroupBox QLineEdit:disabled {
+        color: $M_PRIM$;
+    }
     QGroupBox::title {
         left: 5px;
         subcontrol-origin: margin;

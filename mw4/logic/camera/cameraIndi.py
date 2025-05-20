@@ -33,6 +33,7 @@ class CameraIndi(IndiClass):
         self.app = parent.app
         self.data = parent.data
         self.signals = parent.signals
+        self.worker: Worker = None
         super().__init__(app=parent.app, data=parent.data)
 
         self.isDownloading: bool = False
@@ -167,9 +168,9 @@ class CameraIndi(IndiClass):
         if data.get("name", "") != "CCD1":
             return False
 
-        worker = Worker(self.workerSaveBLOB, data)
-        worker.signals.finished.connect(self.parent.exposeFinished)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.workerSaveBLOB, data)
+        self.worker.signals.finished.connect(self.parent.exposeFinished)
+        self.threadPool.start(self.worker)
         return True
 
     def sendDownloadMode(self) -> None:

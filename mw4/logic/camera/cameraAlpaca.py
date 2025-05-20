@@ -31,6 +31,7 @@ class CameraAlpaca(AlpacaClass):
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
+        self.worker: Worker = None
         self.signals = parent.signals
         super().__init__(app=parent.app, data=parent.data)
 
@@ -102,9 +103,9 @@ class CameraAlpaca(AlpacaClass):
 
     def expose(self) -> None:
         """ """
-        worker = Worker(self.workerExpose)
-        worker.signals.finished.connect(self.parent.exposeFinished)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.workerExpose)
+        self.worker.signals.finished.connect(self.parent.exposeFinished)
+        self.threadPool.start(self.worker)
 
     def abort(self) -> bool:
         """ """

@@ -35,6 +35,7 @@ class CameraSGPro(SGProClass):
         super().__init__(app=parent.app, data=parent.data)
         self.threadPool = parent.threadPool
         self.signals = parent.signals
+        self.worker: Worker = None
 
     def sgGetCameraTemp(self) -> [bool, dict]:
         """ """
@@ -118,9 +119,9 @@ class CameraSGPro(SGProClass):
 
     def expose(self) -> None:
         """ """
-        worker = Worker(self.workerExpose)
-        worker.signals.finished.connect(self.parent.exposeFinished)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.workerExpose)
+        self.worker.signals.finished.connect(self.parent.exposeFinished)
+        self.threadPool.start(self.worker)
 
     def abort(self) -> None:
         """ """

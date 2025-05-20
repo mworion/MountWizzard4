@@ -60,6 +60,7 @@ class Photometry:
         self.snTarget = self.SN[snSelector]
         self.sepThreshold = self.SEP[snSelector]
         self.lock = QMutex()
+        self.worker: Worker = None
 
         self.objs = None
         self.objsAll = None
@@ -354,7 +355,7 @@ class Photometry:
         if not self.lock.tryLock():
             return
 
-        worker = Worker(self.workerCalcPhotometry)
-        worker.signals.result.connect(lambda: self.signals.sepFinished.emit())
-        worker.signals.finished.connect(self.unlockPhotometry)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.workerCalcPhotometry)
+        self.worker.signals.result.connect(lambda: self.signals.sepFinished.emit())
+        self.worker.signals.finished.connect(self.unlockPhotometry)
+        self.threadPool.start(self.worker)

@@ -870,7 +870,7 @@ class Ui_MainWindow(object):
         self.groupBox_12.setProperty(u"large", True)
         self.commandInput = QLineEdit(self.groupBox_12)
         self.commandInput.setObjectName(u"commandInput")
-        self.commandInput.setEnabled(False)
+        self.commandInput.setEnabled(True)
         self.commandInput.setGeometry(QRect(65, 25, 296, 21))
         self.commandInput.setMinimumSize(QSize(0, 0))
         self.commandInput.setFrame(False)
@@ -8514,7 +8514,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.mainTabWidget.setCurrentIndex(0)
-        self.mountTabWidget.setCurrentIndex(0)
+        self.mountTabWidget.setCurrentIndex(3)
         self.modelingTabWidget.setCurrentIndex(0)
         self.manageTabWidget.setCurrentIndex(0)
         self.imagingTabWidget.setCurrentIndex(0)

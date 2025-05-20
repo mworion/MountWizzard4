@@ -53,6 +53,7 @@ class SeeingWeather:
         self.run = {"seeing": self}
         self.deviceName = ""
         self.data = {}
+        self.worker: Worker = None
         self.defaultConfig = {
             "framework": "",
             "frameworks": {
@@ -135,10 +136,10 @@ class SeeingWeather:
 
     def getSeeingData(self, url: Path) -> None:
         """ """
-        worker = Worker(self.workerGetSeeingData, url)
-        worker.signals.finished.connect(self.processSeeingData)
-        worker.signals.result.connect(self.sendStatus)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.workerGetSeeingData, url)
+        self.worker.signals.finished.connect(self.processSeeingData)
+        self.worker.signals.result.connect(self.sendStatus)
+        self.threadPool.start(self.worker)
 
     def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:
         """ """

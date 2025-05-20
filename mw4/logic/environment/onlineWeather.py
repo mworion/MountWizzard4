@@ -46,6 +46,7 @@ class OnlineWeather:
         self.run = {"onlineWeather": self}
         self.deviceName = ""
         self.data = {}
+        self.worker: Worker = None
         self.defaultConfig = {
             "framework": "",
             "frameworks": {
@@ -172,10 +173,10 @@ class OnlineWeather:
 
     def getOpenWeatherMapData(self, url: Path) -> None:
         """ """
-        worker = Worker(self.workerGetOpenWeatherMapData, url)
-        worker.signals.finished.connect(self.processOpenWeatherMapData)
-        worker.signals.result.connect(self.sendStatus)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.workerGetOpenWeatherMapData, url)
+        self.worker.signals.finished.connect(self.processOpenWeatherMapData)
+        self.worker.signals.result.connect(self.sendStatus)
+        self.threadPool.start(self.worker)
 
     def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:
         """ """

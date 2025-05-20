@@ -46,6 +46,7 @@ class FileHandler:
     def __init__(self, app, imagePath="", flipH=False, flipV=False):
         self.threadPool = app.threadPool
         self.signals = FileHandlerSignals()
+        self.worker: Worker = None
 
         self.imagePath = imagePath
         self.flipH = flipH
@@ -188,5 +189,5 @@ class FileHandler:
         self.flipH = flipH
         self.flipV = flipV
 
-        worker = Worker(self.workerLoadImage, imagePath)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.workerLoadImage, imagePath)
+        self.threadPool.start(self.worker)

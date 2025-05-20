@@ -80,6 +80,7 @@ class MountDevice:
         self.workerGetFW: Worker = None
         self.workerGetTLE: Worker = None
         self.workerCalcTLE: Worker = None
+        self.workerStatTLE: Worker = None
         self.workerGetModel: Worker = None
         self.workerGetNames: Worker = None
         self.workerTrajectory: Worker = None
@@ -358,9 +359,9 @@ class MountDevice:
 
     def statTLE(self):
         """ """
-        worker = Worker(self.satellite.statTLE)
-        worker.signals.finished.connect(self.clearStatTLE)
-        self.threadPool.start(worker)
+        self.workerStatTLE = Worker(self.satellite.statTLE)
+        self.workerStatTLE.signals.finished.connect(self.clearStatTLE)
+        self.threadPool.start(self.workerStatTLE)
 
     def clearGetTLE(self):
         """ """

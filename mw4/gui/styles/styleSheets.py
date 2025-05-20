@@ -163,12 +163,18 @@ BASIC_STYLE = """
         border-width: 0px;
     }
     QLineEdit[color='green'] {
+        border-width: 1px;
+        border-style: outset;
         border-color: $M_GREEN$;
     }
     QLineEdit[color='yellow'] {
+        border-width: 1px;
+        border-style: outset;
         border-color: $M_YELLOW$;
     }
     QLineEdit[color='red'] {
+        border-width: 1px;
+        border-style: outset;
         border-color: $M_RED$;
     }
             

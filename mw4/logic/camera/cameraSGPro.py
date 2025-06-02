@@ -89,11 +89,11 @@ class CameraSGPro(SGProClass):
             "BinningMode": self.parent.binning,
             "ExposureLength": max(self.parent.exposureTime, 1),
             "Path": self.parent.imagePath,
-            'UseSubframe': True,
-            'X': self.posX,
-            'Y': self.posY,
-            'Width': self.width,
-            'Height': self.height,
+            'UseSubframe': self.parent.subframe != 100,
+            'X': self.parent.posX,
+            'Y': self.parent.posY,
+            'Width': self.parent.width,
+            'Height': self.parent.height,
             'FrameType': 'Light'
         }
 

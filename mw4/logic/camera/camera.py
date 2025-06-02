@@ -123,20 +123,21 @@ class Camera:
         return self._subFrame
 
     @subFrame.setter
-    def subFrame(self, value):
+    def subFrame(self, value: int):
         maxX = int(self.data.get("CCD_INFO.CCD_MAX_X", 0))
         maxY = int(self.data.get("CCD_INFO.CCD_MAX_Y", 0))
-        if 10 <= value <= 100:
-            self.width = int(maxX * value / 100)
-            self.height = int(maxY * value / 100)
+        if 10 <= value < 100:
+            self._subFrame = value
+            self.width = int(maxX * self._subFrame / 100)
+            self.height = int(maxY * self._subFrame / 100)
             self.posX = int((maxX - self.width) / 2)
             self.posY = int((maxY - self.height) / 2)
-            self.widthASCOM = int(maxX * value / 100 / self._binning)
-            self.heightASCOM = int(maxY * value / 100 / self._binning)
+            self.widthASCOM = int(maxX * self._subFrame / 100 / self._binning)
+            self.heightASCOM = int(maxY * self._subFrame / 100 / self._binning)
             self.posXASCOM = int((maxX - self.width) / 2 / self._binning)
             self.posYASCOM = int((maxY - self.height) / 2 / self._binning)
-            self._subFrame = value
         else:
+            self._subFrame = 100
             self.width = maxX
             self.height = maxY
             self.posX = 0
@@ -145,7 +146,6 @@ class Camera:
             self.heightASCOM = int(maxY / self._binning)
             self.posXASCOM = 0
             self.posYASCOM = 0
-            self._subFrame = 100
 
     def setObsSite(self, obsSite):
         """ """

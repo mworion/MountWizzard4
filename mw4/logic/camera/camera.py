@@ -124,8 +124,8 @@ class Camera:
 
     @subFrame.setter
     def subFrame(self, value):
-        maxX = self.data.get("CCD_INFO.CCD_MAX_X", 0)
-        maxY = self.data.get("CCD_INFO.CCD_MAX_Y", 0)
+        maxX = int(self.data.get("CCD_INFO.CCD_MAX_X", 0))
+        maxY = int(self.data.get("CCD_INFO.CCD_MAX_Y", 0))
         if 10 <= value <= 100:
             self.width = int(maxX * value / 100)
             self.height = int(maxY * value / 100)

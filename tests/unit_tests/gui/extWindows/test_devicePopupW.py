@@ -29,7 +29,16 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.devicePopupW import DevicePopup
 from base.indiClass import IndiClass
 from base.ascomClass import AscomClass
+from base.signalsDevices import Signals
 
+
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    deviceType = "telescope"
+    loadConfig = True
+    updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -41,7 +50,7 @@ def function(qapp):
     widget = QWidget()
     with mock.patch.object(DevicePopup, "show"):
         window = DevicePopup(
-            widget, app=App(), data=data, driver="telescope", deviceType="telescope"
+            widget, parent=Parent(), data=data, driver="telescope", deviceType="telescope"
         )
         window.log = logging.getLogger()
         yield window

@@ -37,13 +37,14 @@ from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable
 class DevicePopup(toolsQtWidget.MWidget):
     """ """
 
-    def __init__(self, parentWidget, app=None, driver=None, deviceType=None, data=None):
+    def __init__(self, parentWidget, parent, driver=None, deviceType=None, data=None):
         super().__init__()
-        self.app = app
+        self.parent = parent
+        self.app = parent.app
+        self.msg = parent.app.msg
         self.data = data
         self.driver = driver
         self.deviceType = deviceType
-        self.msg = app.msg
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self)
@@ -283,7 +284,7 @@ class DevicePopup(toolsQtWidget.MWidget):
 
     def discoverDevices(self, framework: str, widget) -> None:
         """ """
-        device = self.discovers[framework]["class"](app=self.app, data=self.data)
+        device = self.discovers[framework]["class"](parent=self.parent)
 
         if framework in ["indi", "alpaca"]:
             device.hostaddress = self.discovers[framework]["hostaddress"].text()
@@ -332,6 +333,6 @@ class DevicePopup(toolsQtWidget.MWidget):
 
     def selectAscomDriver(self) -> None:
         """ """
-        ascom = AscomClass(app=self.app, data=self.data)
+        ascom = AscomClass(parent=self.parent)
         deviceName = ascom.selectAscomDriver(self.ui.ascomDevice.text())
         self.ui.ascomDevice.setText(deviceName)

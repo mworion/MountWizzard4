@@ -19,15 +19,7 @@
 # external packages
 
 # local imports
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from base.indiClass import IndiClass
-
-
-class Parent:
-    app = App()
-    data = {}
-    loadConfig = True
-    updateRate = 1000
 
 
 class TelescopeIndi(IndiClass):

@@ -314,8 +314,9 @@ class SettDevice(QObject):
         """ """
         data = self.driversData[driver]
         deviceType = self.drivers[driver]["deviceType"]
+        deviceClass = self.drivers[driver]['class']
         self.devicePopup = DevicePopup(
-            self.mainW, app=self.app, driver=driver, deviceType=deviceType, data=data
+            self.mainW, parent=deviceClass, driver=driver, deviceType=deviceType, data=data
         )
         self.devicePopup.ui.ok.clicked.connect(self.processPopupResults)
 

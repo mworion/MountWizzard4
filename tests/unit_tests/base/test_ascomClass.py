@@ -37,10 +37,19 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 setupLogging()
 
 
+class Parent:
+    app = App()
+    data = {}
+    deviceType = ""
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
     with mock.patch.object(QTimer, "start"):
-        func = AscomClass(app=App(), data={})
+        func = AscomClass(parent=Parent())
         func.signals = Signals()
         yield func
 
@@ -298,7 +307,7 @@ def test_stopCommunication_1(function):
     function.deviceConnected = True
     function.serverConnected = True
     function.deviceName = "test"
-    with mock.patch.object(function, "stopTimer"):
+    with mock.patch.object(function, "stopAscomTimer"):
         with mock.patch.object(function, "setAscomProperty"):
             function.stopCommunication()
 
@@ -308,7 +317,7 @@ def test_stopCommunication_2(function):
     function.deviceConnected = True
     function.serverConnected = True
     function.deviceName = "test"
-    with mock.patch.object(function, "stopTimer"):
+    with mock.patch.object(function, "stopAscomTimer"):
         with mock.patch.object(function, "setAscomProperty"):
             function.stopCommunication()
             assert not function.serverConnected

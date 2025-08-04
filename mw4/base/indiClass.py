@@ -33,7 +33,6 @@ class IndiClass:
 
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5
-    SHOW_COMM = False
     INDIGO = {
         # numbers
         "WEATHER_PARAMETERS.WEATHER_BAROMETER": "WEATHER_PARAMETERS.WEATHER_PRESSURE",
@@ -283,10 +282,7 @@ class IndiClass:
             return
 
         for element, value in self.device.getNumber(propertyName).items():
-            key = propertyName + "." + element
-            if self.SHOW_COMM:
-                print("number", self.deviceName, key, value)
-            key = self.convertIndigoProperty(key)
+            key = self.convertIndigoProperty(propertyName + "." + element)
             self.data[key] = float(value)
 
     def updateSwitch(self, deviceName: str, propertyName: str) -> None:
@@ -297,12 +293,9 @@ class IndiClass:
             return
 
         for element, value in self.device.getSwitch(propertyName).items():
-            key = propertyName + "." + element
             if propertyName == "PROFILE":
                 self.isINDIGO = True
-            if self.SHOW_COMM:
-                print("switch", self.deviceName, key, value)
-            key = self.convertIndigoProperty(key)
+            key = self.convertIndigoProperty(propertyName + "." + element)
             self.data[key] = value == "On"
 
     def updateText(self, deviceName: str, propertyName: str) -> None:
@@ -313,10 +306,7 @@ class IndiClass:
             return
 
         for element, value in self.device.getText(propertyName).items():
-            key = propertyName + "." + element
-            if self.SHOW_COMM:
-                print("text  ", self.deviceName, key, value)
-            key = self.convertIndigoProperty(key)
+            key = self.convertIndigoProperty(propertyName + "." + element)
             self.data[key] = value
 
     def updateLight(self, deviceName: str, propertyName: str) -> None:
@@ -327,10 +317,7 @@ class IndiClass:
             return
 
         for element, value in self.device.getLight(propertyName).items():
-            key = propertyName + "." + element
-            if self.SHOW_COMM:
-                print("light ", self.deviceName, key, value)
-            key = self.convertIndigoProperty(key)
+            key = self.convertIndigoProperty(propertyName + "." + element)
             self.data[key] = value
 
     def updateBLOB(self, deviceName: str, propertyName: str) -> None:
@@ -339,8 +326,6 @@ class IndiClass:
             return
         if deviceName != self.deviceName:
             return
-        if self.SHOW_COMM:
-            print("blob ", deviceName)
 
     @staticmethod
     def removePrefix(text: str, prefix: str) -> str:

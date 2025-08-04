@@ -18,7 +18,7 @@
 import json
 
 # external packages
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, QMutex
 import requests
 
 # local imports
@@ -59,6 +59,7 @@ class SGProClass(DriverData):
         self.workerData: Worker = None
         self.workerGetConfig: Worker = None
         self.workerStatus: Worker = None
+        self.mutexPollStatus = QMutex()
 
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
@@ -183,9 +184,17 @@ class SGProClass(DriverData):
                 self.signals.deviceConnected.emit(f"{self.deviceName}")
                 self.msg.emit(0, "SGPRO", "Device found", f"{self.deviceName}")
 
+    def clearPollStatus(self) -> None:
+        """ """
+        self.mutexPollStatus.unlock()
+
     def pollStatus(self) -> None:
         """ """
+        if not self.mutexPollStatus.tryLock():
+            return
+
         self.workerStatus = Worker(self.workerPollStatus)
+        self.workerStatus.signals.finished.connect(self.clearPollStatus)
         self.threadPool.start(self.workerStatus)
 
     def startCommunication(self) -> None:

@@ -294,9 +294,22 @@ def test_workerPollStatus_5(function):
                 assert function.deviceConnected
 
 
+def test_clearPollStatus(function):
+    function.mutexPollStatus.lock()
+    function.clearPollStatus()
+
+
 def test_pollStatus_1(function):
+    function.mutexPollStatus.lock()
     with mock.patch.object(function.threadPool, "start"):
         function.pollStatus()
+    function.mutexPollStatus.unlock()
+
+
+def test_pollStatus_2(function):
+    with mock.patch.object(function.threadPool, "start"):
+        function.pollStatus()
+    function.mutexPollStatus.unlock()
 
 
 def test_startCommunication_1(function):

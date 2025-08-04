@@ -20,7 +20,6 @@ import logging
 
 # external packages
 from PySide6.QtCore import QTimer, QMutex
-import PySide6.QtWidgets
 import wakeonlan
 from skyfield.api import Angle
 

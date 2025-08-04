@@ -18,7 +18,7 @@
 import json
 
 # external packages
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, QMutex
 import requests
 
 # local imports
@@ -59,6 +59,7 @@ class NINAClass(DriverData):
         self.workerData: Worker = None
         self.workerGetConfig: Worker = None
         self.workerStatus: Worker = None
+        self.mutexPollStatus = QMutex()
 
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
@@ -138,9 +139,11 @@ class NINAClass(DriverData):
         self.cycleDevice.stop()
 
     def processPolledData(self) -> None:
+        """ """
         pass
 
     def workerPollData(self) -> None:
+        """ """
         pass
 
     def pollData(self) -> None:
@@ -152,6 +155,7 @@ class NINAClass(DriverData):
         self.threadPool.start(self.workerData)
 
     def workerGetInitialConfig(self) -> None:
+        """"""
         pass
 
     def getInitialConfig(self) -> None:
@@ -190,8 +194,15 @@ class NINAClass(DriverData):
                 self.signals.deviceConnected.emit(f"{self.deviceName}")
                 self.msg.emit(0, "N.I.N.A.", "Device found", f"{self.deviceName}")
 
+    def clearPollStatus(self) -> None:
+        """ """
+        self.mutexPollStatus.unlock()
+
     def pollStatus(self) -> None:
         """ """
+        if not self.mutexPollStatus.tryLock():
+            return
+
         self.workerStatus = Worker(self.workerPollStatus)
         self.threadPool.start(self.workerStatus)
 

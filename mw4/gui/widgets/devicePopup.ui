@@ -626,28 +626,6 @@
       <string>Device Name</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="sgproDiscover">
-     <property name="geometry">
-      <rect>
-       <x>305</x>
-       <y>100</y>
-       <width>51</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Search collects a list of available devices in SGPro application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Search</string>
-     </property>
-    </widget>
     <widget class="QComboBox" name="sgproDeviceList">
      <property name="geometry">
       <rect>
@@ -690,28 +668,6 @@
      </property>
      <property name="text">
       <string>Device Name</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="ninaDiscover">
-     <property name="geometry">
-      <rect>
-       <x>305</x>
-       <y>100</y>
-       <width>51</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Search collects a list of available devices in N.I.N.A. application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Search</string>
      </property>
     </widget>
    </widget>

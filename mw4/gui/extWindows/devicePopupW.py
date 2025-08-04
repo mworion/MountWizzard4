@@ -148,16 +148,6 @@ class DevicePopup(toolsQtWidget.MWidget):
                 "port": self.ui.alpacaPort,
                 "class": AlpacaClass,
             },
-            "sgpro": {
-                "deviceList": self.ui.sgproDeviceList,
-                "button": self.ui.sgproDiscover,
-                "class": SGProClass,
-            },
-            "nina": {
-                "deviceList": self.ui.ninaDeviceList,
-                "button": self.ui.ninaDiscover,
-                "class": NINAClass,
-            },
         }
 
         self.ui.cancel.clicked.connect(self.close)

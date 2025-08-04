@@ -38,8 +38,8 @@ class Dome:
     log = logging.getLogger("MW4")
 
     def __init__(self, parent):
-        self.app = parent.app
-        self.threadPool = parent.app.threadPool
+        self.app = parent
+        self.threadPool = parent.threadPool
         self.signals = Signals()
         self.loadConfig: bool = True
         self.updateRate: int = 1000

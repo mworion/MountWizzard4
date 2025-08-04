@@ -30,6 +30,7 @@ from mainApp import MountWizzard4
 from gui.mainWaddon.astroObjects import AstroObjects
 from base.loggerMW import setupLogging
 from mw4.resource import resources as res
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 res.qInitResources()
 setupLogging()

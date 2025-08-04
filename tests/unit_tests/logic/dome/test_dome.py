@@ -27,16 +27,9 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.dome.dome import Dome
 
 
-class Parent:
-    app = App()
-    data = {}
-    loadConfig = True
-    updateRate = 1000
-
-
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    func = Dome(parent=Parent())
+    func = Dome(app=App())
     yield func
 
 

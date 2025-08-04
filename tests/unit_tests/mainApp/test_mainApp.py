@@ -19,7 +19,6 @@ import pytest
 import unittest.mock as mock
 import shutil
 from pathlib import Path
-import os
 
 # external packages
 from PySide6.QtCore import QTimer, QBasicTimer, QCoreApplication
@@ -30,7 +29,6 @@ from mainApp import MountWizzard4
 from gui.mainWaddon.astroObjects import AstroObjects
 from base.loggerMW import setupLogging
 from mw4.resource import resources as res
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 res.qInitResources()
 setupLogging()

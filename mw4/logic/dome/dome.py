@@ -43,6 +43,7 @@ class Dome:
         self.signals = Signals()
         self.loadConfig: bool = True
         self.updateRate: int = 1000
+        self.deviceType: str = ""
         self.data = {
             "Slewing": False,
         }

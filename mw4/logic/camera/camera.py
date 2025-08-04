@@ -49,6 +49,7 @@ class Camera:
         self.data: dict = {}
         self.loadConfig: bool = True
         self.updateRate: int = 1000
+        self.deviceType: str = ""
         self.exposing: bool = False
         self.fastReadout: bool = False
         self.imagePath: Path = Path("")

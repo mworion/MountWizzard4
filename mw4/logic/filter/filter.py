@@ -41,6 +41,7 @@ class Filter:
         self.data = {}
         self.loadConfig: bool = True
         self.updateRate: int = 1000
+        self.deviceType: str = ""
         self.defaultConfig = {"framework": "", "frameworks": {}}
         self.framework = ""
         self.run = {

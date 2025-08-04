@@ -32,6 +32,7 @@ if not platform.system() == "Windows":
 class Parent:
     app = App()
     data = {}
+    deviceType = ""
     signals = Signals()
     loadConfig = True
     updateRate = 1000

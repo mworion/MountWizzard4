@@ -27,6 +27,9 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.dome.domeAscom import DomeAscom
 from base.signalsDevices import Signals
 from base.ascomClass import AscomClass
+from base.loggerMW import setupLogging
+
+setupLogging()
 
 if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
@@ -35,6 +38,7 @@ if not platform.system() == "Windows":
 class Parent:
     app = App()
     data = {}
+    deviceType = ""
     signals = Signals()
     loadConfig = True
     updateRate = 1000

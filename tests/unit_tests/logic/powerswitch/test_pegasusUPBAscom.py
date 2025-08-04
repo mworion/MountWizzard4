@@ -25,6 +25,9 @@ import unittest.mock as mock
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
 from base.signalsDevices import Signals
+from base.loggerMW import setupLogging
+
+setupLogging()
 
 if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
@@ -33,6 +36,7 @@ if not platform.system() == "Windows":
 class Parent:
     app = App()
     data = {}
+    deviceType = ""
     signals = Signals()
     loadConfig = True
     updateRate = 1000
@@ -112,7 +116,7 @@ def test_togglePortUSB_1(function):
 
 def test_togglePortUSB_2(function):
     function.deviceConnected = True
-    function.togglePortUSB()
+    function.togglePortUSB("1")
 
 
 def test_togglePortUSB_3(function):

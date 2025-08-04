@@ -47,7 +47,7 @@ class PegasusUPB:
             "alpaca": PegasusUPBAlpaca(self),
         }
         if platform.system() == "Windows":
-            self.run["ascom"] = PegasusUPBAscom(self.app)
+            self.run["ascom"] = PegasusUPBAscom(self)
 
         for fw in self.run:
             self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})

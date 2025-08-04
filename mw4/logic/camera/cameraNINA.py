@@ -28,13 +28,13 @@ class CameraNINA(NINAClass):
     """ """
 
     def __init__(self, parent):
+        super().__init__(parent=parent)
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
         self.signals = parent.signals
         self.threadPool = parent.threadPool
         self.worker: Worker = None
-        super().__init__(app=parent.app, data=parent.data)
 
     def getCameraTemp(self) -> [bool, dict]:
         """ """

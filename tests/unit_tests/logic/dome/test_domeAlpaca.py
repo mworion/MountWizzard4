@@ -28,10 +28,18 @@ from base.signalsDevices import Signals
 from base.alpacaClass import AlpacaClass
 
 
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = DomeAlpaca(app=App(), signals=Signals(), data={})
+        func = DomeAlpaca(parent=Parent())
         yield func
 
 

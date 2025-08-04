@@ -28,9 +28,17 @@ from logic.environment.sensorWeatherIndi import SensorWeatherIndi
 from base.signalsDevices import Signals
 
 
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    func = SensorWeatherIndi(app=App(), signals=Signals(), data={})
+    func = SensorWeatherIndi(parent=Parent())
     yield func
 
 

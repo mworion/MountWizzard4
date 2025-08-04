@@ -25,9 +25,31 @@ import os
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.camera import Camera
 from logic.camera.cameraNINA import CameraNINA
-from base.loggerMW import setupLogging
+from base.signalsDevices import Signals
 
-setupLogging()
+
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+    binning = 1
+    exposureTime = 1
+    imagePath = "tests/work/image/test.fit"
+    width = 100
+    height = 100
+    subframe = 100
+    posX = 0
+    posY = 0
+    threadPool = mock.Mock()
+    exposeFinished = mock.Mock()
+    waitStart = mock.Mock()
+    waitExposed = mock.Mock()
+    waitDownload = mock.Mock()
+    waitSave = mock.Mock()
+    updateImageFitsHeaderPointing = mock.Mock()
+
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -36,7 +58,7 @@ def function():
     camera.exposureTime = 1
     camera.binning = 1
     camera.focalLength = 1
-    func = CameraNINA(camera)
+    func = CameraNINA(parent=Parent())
     yield func
 
 

@@ -28,9 +28,17 @@ from logic.focuser.focuserIndi import FocuserIndi
 from base.signalsDevices import Signals
 
 
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    func = FocuserIndi(app=App(), signals=Signals(), data={})
+    func = FocuserIndi(parent=Parent())
     yield func
 
 

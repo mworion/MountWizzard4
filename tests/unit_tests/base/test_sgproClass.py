@@ -34,9 +34,12 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope="function")
 def function():
+    class Parent:
+        app = App()
+        data = {}
+        signals = Signals()
     with mock.patch.object(QTimer, "start"):
-        func = SGProClass(app=App(), data={})
-        func.signals = Signals()
+        func = SGProClass(parent=Parent())
         yield func
 
 
@@ -194,12 +197,12 @@ def test_sgEnumerateDevice_2(function):
 
 
 def test_startTimer(function):
-    function.startTimer()
+    function.startSGProTimer()
 
 
 def test_stopTimer(function):
     with mock.patch.object(PySide6.QtCore.QTimer, "stop"):
-        function.stopTimer()
+        function.stopSGProTimer()
 
 
 def test_processPolledData(function):
@@ -307,7 +310,7 @@ def test_stopCommunication_1(function):
     function.deviceConnected = True
     function.serverConnected = True
     function.deviceName = "test"
-    with mock.patch.object(function, "stopTimer"):
+    with mock.patch.object(function, "stopSGProTimer"):
         with mock.patch.object(function, "sgDisconnectDevice"):
             function.stopCommunication()
             assert not function.serverConnected

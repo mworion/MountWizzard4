@@ -176,8 +176,8 @@ class CameraIndi(IndiClass):
     def sendDownloadMode(self) -> None:
         """ """
         quality = self.device.getSwitch("READOUT_QUALITY")
-        quality["QUALITY_LOW"] = "On" if self.parent.fastReadout else "Off"
-        quality["QUALITY_HIGH"] = "Off" if self.parent.fastReadout else "On"
+        quality["QUALITY_LOW"] = "On"
+        quality["QUALITY_HIGH"] = "Off"
         self.client.sendNewSwitch(
             deviceName=self.deviceName, propertyName="READOUT_QUALITY", elements=quality
         )

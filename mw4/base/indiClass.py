@@ -298,7 +298,6 @@ class IndiClass:
 
         for element, value in self.device.getSwitch(propertyName).items():
             key = propertyName + "." + element
-            # todo: is that the item which tells me it's an indigo server ?
             if propertyName == "PROFILE":
                 self.isINDIGO = True
             if self.SHOW_COMM:

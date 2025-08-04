@@ -47,12 +47,12 @@ def function():
 
 def test_startTimer(function):
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        function.startTimer()
+        function.startAscomTimer()
 
 
 def test_stopTimer(function):
     with mock.patch.object(PySide6.QtCore.QTimer, "stop"):
-        function.stopTimer()
+        function.stopAscomTimer()
 
 
 def test_getAscomProperty_0(function):

@@ -47,6 +47,8 @@ class Camera:
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.data: dict = {}
+        self.loadConfig: bool = True
+        self.updateRate: int = 1000
         self.exposing: bool = False
         self.fastReadout: bool = False
         self.imagePath: Path = Path("")
@@ -84,26 +86,6 @@ class Camera:
             self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
         self.app.mount.signals.pointDone.connect(self.setObsSite)
-
-    @property
-    def updateRate(self):
-        return self.run[self.framework].updateRate
-
-    @updateRate.setter
-    def updateRate(self, value):
-        value = int(value)
-        for fw in self.run:
-            self.run[fw].updateRate = value
-
-    @property
-    def loadConfig(self):
-        return self.run[self.framework].loadConfig
-
-    @loadConfig.setter
-    def loadConfig(self, value):
-        value = bool(value)
-        for fw in self.run:
-            self.run[fw].loadConfig = value
 
     @property
     def binning(self):

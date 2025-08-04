@@ -39,38 +39,20 @@ class SensorWeather:
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.data = {}
+        self.loadConfig: bool = True
+        self.updateRate: int = 1000
         self.defaultConfig = {"framework": "", "frameworks": {}}
         self.framework = ""
         self.run = {
-            "indi": SensorWeatherIndi(self.app, self.signals, self.data),
-            "alpaca": SensorWeatherAlpaca(self.app, self.signals, self.data),
+            "indi": SensorWeatherIndi(self),
+            "alpaca": SensorWeatherAlpaca(self),
         }
 
         if platform.system() == "Windows":
-            self.run["ascom"] = SensorWeatherAscom(self.app, self.signals, self.data)
+            self.run["ascom"] = SensorWeatherAscom(self)
 
         for fw in self.run:
             self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
-
-    @property
-    def updateRate(self):
-        return self.run[self.framework].updateRate
-
-    @updateRate.setter
-    def updateRate(self, value):
-        value = int(value)
-        for fw in self.run:
-            self.run[fw].updateRate = value
-
-    @property
-    def loadConfig(self):
-        return self.run[self.framework].loadConfig
-
-    @loadConfig.setter
-    def loadConfig(self, value):
-        value = bool(value)
-        for fw in self.run:
-            self.run[fw].loadConfig = value
 
     def startCommunication(self) -> None:
         """ """

@@ -33,7 +33,7 @@ class CameraAscom(AscomClass):
         self.data = parent.data
         self.signals = parent.signals
         self.worker: Worker = None
-        super().__init__(app=parent.app, data=parent.data)
+        super().__init__(parent=parent)
 
     def workerGetInitialConfig(self) -> None:
         """ """

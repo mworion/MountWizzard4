@@ -25,9 +25,9 @@ from base.indiClass import IndiClass
 class PegasusUPBIndi(IndiClass):
     """ """
 
-    def __init__(self, app=None, signals=None, data=None):
-        self.signals = signals
-        super().__init__(app=app, data=data)
+    def __init__(self, parent):
+        super().__init__(parent=parent)
+        self.signals = parent.signals
         self.modelVersion = 0
 
     def setUpdateConfig(self, deviceName: str) -> None:

@@ -31,9 +31,9 @@ class CameraAlpaca(AlpacaClass):
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
-        self.worker: Worker = None
         self.signals = parent.signals
-        super().__init__(app=parent.app, data=parent.data)
+        self.worker: Worker = None
+        super().__init__(parent=parent)
 
     def workerGetInitialConfig(self) -> None:
         """ """

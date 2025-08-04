@@ -34,13 +34,15 @@ from base.driverDataClass import DriverData
 class AscomClass(DriverData):
     """ """
 
-    def __init__(self, app=None, data=None):
+    def __init__(self, parent):
         super().__init__()
-
-        self.app = app
-        self.data = data
-        self.threadPool = app.threadPool
-        self.msg = app.msg
+        self.parent = parent
+        self.app = parent.app
+        self.data = parent.data
+        self.signals = parent.signals
+        self.msg = parent.app.msg
+        self.deviceType = parent.deviceType
+        self.threadPool = parent.app.threadPool
         self.updateRate = 3000
         self.loadConfig = False
         self.tM = QMutex()
@@ -68,12 +70,12 @@ class AscomClass(DriverData):
         self.cyclePollData.setSingleShot(False)
         self.cyclePollData.timeout.connect(self.pollData)
 
-    def startTimer(self) -> None:
+    def startAscomTimer(self) -> None:
         """ """
         self.cyclePollData.start(self.updateRate)
         self.cyclePollStatus.start(self.updateRate)
 
-    def stopTimer(self) -> None:
+    def stopAscomTimer(self) -> None:
         """ """
         self.cyclePollData.stop()
         self.cyclePollStatus.stop()
@@ -84,8 +86,8 @@ class AscomClass(DriverData):
         if valueProp in self.propertyExceptions:
             return value
 
+        cmd = "self.client." + valueProp
         try:
-            cmd = "self.client." + valueProp
             value = eval(cmd)
         except Exception as e:
             t = f"[{self.deviceName}] [{cmd}], property [{valueProp}] not implemented: {e}"
@@ -97,16 +99,15 @@ class AscomClass(DriverData):
                 self.log.trace(t)
             else:
                 self.log.trace(f"{self.deviceName}] property [{valueProp}]")
-        finally:
-            return value
+        return value
 
     def setAscomProperty(self, valueProp: str, value: Union[str, float]) -> None:
         """ """
         if valueProp in self.propertyExceptions:
             return
 
+        cmd = "self.client." + valueProp + " = value"
         try:
-            cmd = "self.client." + valueProp + " = value"
             exec(cmd)
         except Exception as e:
             t = f"[{self.deviceName}] [{cmd}], property [{valueProp}] not implemented: {e}"
@@ -123,8 +124,8 @@ class AscomClass(DriverData):
             return
 
         paramStr = f"{param}".rstrip(")").lstrip("(")
+        cmd = "self.client." + method + f"({paramStr})"
         try:
-            cmd = "self.client." + method + f"({paramStr})"
             exec(cmd)
         except Exception as e:
             t = f"[{self.deviceName}] [{cmd}], method [{method}] not implemented: {e}"
@@ -172,7 +173,7 @@ class AscomClass(DriverData):
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f"{self.deviceName}")
             self.msg.emit(0, "ASCOM ", "Device found", f"{self.deviceName}")
-            self.startTimer()
+            self.startAscomTimer()
             self.getInitialConfig()
 
     def workerGetInitialConfig(self) -> None:
@@ -275,7 +276,7 @@ class AscomClass(DriverData):
 
     def stopCommunication(self) -> None:
         """ """
-        self.stopTimer()
+        self.stopAscomTimer()
         if self.client:
             self.setAscomProperty("Connected", False)
             self.deviceConnected = False

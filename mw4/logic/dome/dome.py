@@ -41,18 +41,20 @@ class Dome:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
+        self.loadConfig: bool = True
+        self.updateRate: int = 1000
         self.data = {
             "Slewing": False,
         }
         self.defaultConfig = {"framework": "", "frameworks": {}}
         self.framework = ""
         self.run = {
-            "indi": DomeIndi(self.app, self.signals, self.data),
-            "alpaca": DomeAlpaca(self.app, self.signals, self.data),
+            "indi": DomeIndi(self),
+            "alpaca": DomeAlpaca(self),
         }
 
         if platform.system() == "Windows":
-            self.run["ascom"] = DomeAscom(self.app, self.signals, self.data)
+            self.run["ascom"] = DomeAscom(self)
 
         for fw in self.run:
             self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
@@ -73,26 +75,6 @@ class Dome:
         self.settlingWait = PySide6.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
-
-    @property
-    def updateRate(self):
-        return self.run[self.framework].updateRate
-
-    @updateRate.setter
-    def updateRate(self, value):
-        value = int(value)
-        for fw in self.run:
-            self.run[fw].updateRate = value
-
-    @property
-    def loadConfig(self):
-        return self.run[self.framework].loadConfig
-
-    @loadConfig.setter
-    def loadConfig(self, value):
-        value = bool(value)
-        for fw in self.run:
-            self.run[fw].loadConfig = value
 
     def startCommunication(self) -> None:
         """ """

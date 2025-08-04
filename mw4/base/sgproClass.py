@@ -18,7 +18,7 @@
 import json
 
 # external packages
-from PySide6.QtCore import QTimer, QObject
+from PySide6.QtCore import QTimer
 import requests
 
 # local imports
@@ -27,7 +27,7 @@ from base.driverDataClass import RemoteDeviceShutdown
 from base.tpool import Worker
 
 
-class SGProClass(DriverData, QObject):
+class SGProClass(DriverData):
     """ """
 
     SGPRO_TIMEOUT = 3
@@ -37,12 +37,14 @@ class SGProClass(DriverData, QObject):
     BASE_URL = f"{PROTOCOL}://{HOST_ADDR}:{PORT}"
     DEVICE_TYPE = "Camera"
 
-    def __init__(self, app=None, data=None):
+    def __init__(self, parent):
         super().__init__()
-        self.app = app
-        self.threadPool = app.threadPool
-        self.msg = app.msg
-        self.data = data
+        self.parent = parent
+        self.app = parent.app
+        self.data = parent.data
+        self.msg = parent.app.msg
+        self.signals = parent.signals
+        self.threadPool = parent.app.threadPool
         self.updateRate = 1000
         self.loadConfig = False
         self._deviceName = ""
@@ -75,7 +77,7 @@ class SGProClass(DriverData, QObject):
     def deviceName(self, value):
         self._deviceName = value
 
-    def requestProperty(self, valueProp, params: dict = {}) -> dict:
+    def requestProperty(self, valueProp, params: dict = None) -> dict:
         """ """
         try:
             t = f"SGPro: [{self.BASE_URL}/{valueProp}?format=json]"
@@ -125,12 +127,12 @@ class SGProClass(DriverData, QObject):
         response = self.requestProperty(prop)
         return response.get("Devices", [])
 
-    def startTimer(self) -> None:
+    def startSGProTimer(self) -> None:
         """ """
         self.cycleData.start(self.updateRate)
         self.cycleDevice.start(self.updateRate)
 
-    def stopTimer(self) -> None:
+    def stopSGProTimer(self) -> None:
         """ """
         self.cycleData.stop()
         self.cycleDevice.stop()
@@ -192,11 +194,11 @@ class SGProClass(DriverData, QObject):
         if not self.serverConnected:
             self.serverConnected = True
             self.signals.serverConnected.emit()
-        self.startTimer()
+        self.startSGProTimer()
 
     def stopCommunication(self) -> None:
         """ """
-        self.stopTimer()
+        self.stopSGProTimer()
         if self.deviceName != "SGPro controlled":
             self.sgDisconnectDevice()
         self.deviceConnected = False
@@ -208,4 +210,5 @@ class SGProClass(DriverData, QObject):
     def discoverDevices(self, deviceType: str) -> list:
         """ """
         discoverList = self.sgEnumerateDevice()
+        self.log.debug(f"[Type: {deviceType}: {discoverList}]")
         return discoverList

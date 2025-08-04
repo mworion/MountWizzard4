@@ -31,9 +31,9 @@ class CameraNINA(NINAClass):
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
-        self.worker: Worker = None
-        self.threadPool = parent.threadPool
         self.signals = parent.signals
+        self.threadPool = parent.threadPool
+        self.worker: Worker = None
         super().__init__(app=parent.app, data=parent.data)
 
     def getCameraTemp(self) -> [bool, dict]:

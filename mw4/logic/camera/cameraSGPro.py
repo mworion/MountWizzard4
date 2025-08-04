@@ -32,7 +32,7 @@ class CameraSGPro(SGProClass):
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
-        super().__init__(app=parent.app, data=parent.data)
+        super().__init__(parent=parent)
         self.threadPool = parent.threadPool
         self.signals = parent.signals
         self.worker: Worker = None

@@ -118,20 +118,20 @@ class ImageManage(QObject):
         pixelX = self.app.camera.data.get("CCD_INFO.CCD_MAX_X")
 
         enable = coolerTemp is not None
-        self.ui.coolerTemp.setEnabled(enable)
+        self.ui.coolerTemp.setVisible(enable)
         enable = coolerPower is not None
-        self.ui.coolerPower.setEnabled(enable)
+        self.ui.coolerPower.setVisible(enable)
         enable = gainCam is not None
-        self.ui.gainCam.setEnabled(enable)
+        self.ui.gainCam.setVisible(enable)
         enable = offsetCam is not None
-        self.ui.offsetCam.setEnabled(enable)
+        self.ui.offsetCam.setVisible(enable)
         enable = humidityCCD is not None
-        self.ui.humidityCCD.setEnabled(enable)
+        self.ui.humidityCCD.setVisible(enable)
         enable = coolerOn is not None
-        self.ui.coolerOn.setEnabled(enable)
-        self.ui.coolerOff.setEnabled(enable)
+        self.ui.coolerOn.setVisible(enable)
+        self.ui.coolerOff.setVisible(enable)
         enable = pixelX is not None
-        self.ui.subFrame.setEnabled(enable)
+        self.ui.subFrame.setVisible(enable)
 
     def updateOffset(self) -> None:
         """ """

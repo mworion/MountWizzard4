@@ -26,6 +26,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabSett_Device import SettDevice
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
+import gui
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -286,8 +287,9 @@ def test_callPopup_1(function):
 
     function.driversData = {"cover": {}}
     test = function.drivers
-    function.drivers = {"cover": {"deviceType": "cover"}}
-    with mock.patch("gui.mainWaddon.tabSett_Device.DevicePopup", return_value=Pop()):
+    function.drivers = {"cover": {"deviceType": "cover",
+                                  'class': mock.Mock()}}
+    with mock.patch.object(gui.mainWaddon.tabSett_Device, "DevicePopup", return_value=Pop()):
         function.callPopup("cover")
     function.drivers = test
 

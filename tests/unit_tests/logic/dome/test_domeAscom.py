@@ -32,6 +32,14 @@ if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
     class Test1:
@@ -58,7 +66,7 @@ def function():
             return True
 
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = DomeAscom(app=App(), signals=Signals(), data={})
+        func = DomeAscom(parent=Parent())
         func.client = Test1()
         func.clientProps = []
         yield func

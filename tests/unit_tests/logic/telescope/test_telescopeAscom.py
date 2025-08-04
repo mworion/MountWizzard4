@@ -32,6 +32,14 @@ if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
     class Test1:
@@ -43,7 +51,7 @@ def function():
         DriverInfo = "test1"
 
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = TelescopeAscom(app=App(), signals=Signals(), data={})
+        func = TelescopeAscom(parent=Parent())
         func.client = Test1()
         func.clientProps = []
         yield func
@@ -51,13 +59,11 @@ def function():
 
 def test_workerGetInitialConfig_1(function):
     with mock.patch.object(AscomClass, "workerGetInitialConfig", return_value=True):
-        suc = function.workerGetInitialConfig()
-        assert suc
+        function.workerGetInitialConfig()
 
 
 def test_workerGetInitialConfig_2(function):
     with mock.patch.object(function, "getAscomProperty", return_value=0.57):
-        suc = function.workerGetInitialConfig()
-        assert suc
+        function.workerGetInitialConfig()
         assert function.data["TELESCOPE_INFO.TELESCOPE_APERTURE"] == 570.0
         assert function.data["TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"] == 570.0

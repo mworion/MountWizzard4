@@ -30,6 +30,14 @@ if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
     class Test1:
@@ -46,7 +54,7 @@ def function():
         DriverVersion = "1"
         DriverInfo = "test1"
 
-    func = FocuserAscom(app=App(), signals=Signals(), data={})
+    func = FocuserAscom(parent=Parent())
     func.clientProps = []
     func.client = Test1()
     yield func

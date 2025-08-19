@@ -232,7 +232,7 @@ class Window(QWidget):
         with open(fileName, "rb") as f:
             for i, line in enumerate(f.readlines()):
                 line = line.decode("utf-8", errors="ignore")
-                t = title + f"   -   progress: {i +1 } lines loaded from {numLines}"
+                t = title + f"   -   progress: {i + 1} lines loaded from {numLines}"
                 t += f"   -   {int((i + 1) / numLines * 100)} %"
                 self.loadButt.setText(t)
                 self.lifecycleTab.addEntry(line)

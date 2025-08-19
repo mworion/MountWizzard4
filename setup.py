@@ -88,6 +88,7 @@ setup(
         "packaging==25.0",
         "lz4==4.4.4",
         "xisf==0.9.5",
+        "pyside6==6.9.1",
     ]
     + (["pywin32==311"] if platform.system() == "Windows" else []),
     keywords=["6.9.1"],

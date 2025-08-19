@@ -38,6 +38,7 @@ def function():
         app = App()
         data = {}
         signals = Signals()
+
     with mock.patch.object(QTimer, "start"):
         func = SGProClass(parent=Parent())
         yield func
@@ -332,11 +333,11 @@ def test_stopCommunication_1(function):
 
 def test_discoverDevices_1(function):
     with mock.patch.object(function, "sgEnumerateDevice", return_value=[]):
-        val = function.discoverDevices('Camera')
+        val = function.discoverDevices("Camera")
         assert val == []
 
 
 def test_discoverDevices_2(function):
     with mock.patch.object(function, "sgEnumerateDevice", return_value=["test"]):
-        val = function.discoverDevices('Camera')
+        val = function.discoverDevices("Camera")
         assert val == ["test"]

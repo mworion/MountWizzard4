@@ -330,7 +330,7 @@ class IndiClass:
     @staticmethod
     def removePrefix(text: str, prefix: str) -> str:
         """ """
-        value = text[text.startswith(prefix) and len(prefix):]
+        value = text[text.startswith(prefix) and len(prefix) :]
         value = value.strip()
         return value
 

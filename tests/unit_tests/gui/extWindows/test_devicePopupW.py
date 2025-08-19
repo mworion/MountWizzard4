@@ -167,12 +167,12 @@ def test_updateDeviceNameList_1(function):
 
 def test_discoverDevices_1(function):
     with mock.patch.object(IndiClass, "discoverDevices", return_value=()):
-        function.discoverDevices('indi', QWidget())
+        function.discoverDevices("indi", QWidget())
 
 
 def test_discoverDevices_2(function):
     with mock.patch.object(IndiClass, "discoverDevices", return_value=("Test1", "Test2")):
-        function.discoverDevices('indi', QWidget())
+        function.discoverDevices("indi", QWidget())
 
 
 def test_checkApp_1(function):
@@ -244,7 +244,7 @@ def test_selectAppPath_1(function):
     function.app.plateSolve.run["astrometry"] = Avail()
     with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
         with mock.patch.object(Path, "is_dir", return_value=False):
-            function.selectAppPath('astap')
+            function.selectAppPath("astap")
 
 
 def test_selectAppPath_2(function):
@@ -256,7 +256,7 @@ def test_selectAppPath_2(function):
     function.app.plateSolve.run["astap"] = Avail()
     with mock.patch.object(MWidget, "openDir", return_value=Path("/test.app")):
         with mock.patch.object(Path, "is_dir", return_value=True):
-            function.selectAppPath('astap')
+            function.selectAppPath("astap")
 
 
 def test_selectAppPath_3(function):
@@ -268,7 +268,7 @@ def test_selectAppPath_3(function):
     function.app.plateSolve.run["astap"] = Avail()
     with mock.patch.object(MWidget, "openDir", return_value=Path("/Astrometry.app")):
         with mock.patch.object(Path, "is_dir", return_value=True):
-            function.selectAppPath('astap')
+            function.selectAppPath("astap")
 
 
 def test_selectIndexPath_1(function):
@@ -280,7 +280,7 @@ def test_selectIndexPath_1(function):
     function.app.plateSolve.run["astap"] = Avail()
     with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
         with mock.patch.object(Path, "is_dir", return_value=False):
-            function.selectIndexPath('astap')
+            function.selectIndexPath("astap")
 
 
 def test_selectIndexPath_2(function):
@@ -292,7 +292,7 @@ def test_selectIndexPath_2(function):
     function.app.plateSolve.run = {"astap": Avail()}
     with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
         with mock.patch.object(Path, "is_dir", return_value=True):
-            function.selectIndexPath('astap')
+            function.selectIndexPath("astap")
 
 
 def test_selectAscomDriver_1(function):

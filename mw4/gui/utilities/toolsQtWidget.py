@@ -125,6 +125,7 @@ def guiSetText(ui, formatElement, value=None):
 
 def clickable(widget: QWidget) -> Signal:
     """ """
+
     class MouseClickEventFilter(QObject):
         clicked = Signal(object)
 

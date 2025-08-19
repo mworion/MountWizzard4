@@ -314,7 +314,7 @@ class SettDevice(QObject):
         """ """
         data = self.driversData[driver]
         deviceType = self.drivers[driver]["deviceType"]
-        deviceClass = self.drivers[driver]['class']
+        deviceClass = self.drivers[driver]["class"]
         self.devicePopup = DevicePopup(
             self.mainW, parent=deviceClass, driver=driver, deviceType=deviceType, data=data
         )

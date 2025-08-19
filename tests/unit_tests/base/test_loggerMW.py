@@ -45,14 +45,14 @@ def clean_log_directory():
 
 def test_loggerwriter_write_single_line():
     mock_level = MagicMock()
-    writer = LoggerWriter(level=mock_level, mode='INFO', std='stdout')
+    writer = LoggerWriter(level=mock_level, mode="INFO", std="stdout")
     writer.write("Test message")
     mock_level.assert_called_once_with("[INFO] Test message")
 
 
 def test_loggerwriter_write_multi_line():
     mock_level = MagicMock()
-    writer = LoggerWriter(level=mock_level, mode='DEBUG', std='stderr')
+    writer = LoggerWriter(level=mock_level, mode="DEBUG", std="stderr")
     writer.write("Line 1\nLine 2\nLine 3")
     assert mock_level.call_count == 3
     mock_level.assert_any_call("[DEBUG] Line 1")
@@ -62,7 +62,7 @@ def test_loggerwriter_write_multi_line():
 
 def test_loggerwriter_flush():
     mock_level = MagicMock()
-    writer = LoggerWriter(level=mock_level, mode='INFO', std='stdout')
+    writer = LoggerWriter(level=mock_level, mode="INFO", std="stdout")
     assert writer.flush() is None
 
 
@@ -84,17 +84,29 @@ def test_setupLogging_configures_logging_format(clean_log_directory):
     logger = logging.getLogger()
     assert logger.handlers, "Logger should have at least one handler."
     handler = logger.handlers[0]
-    assert isinstance(handler, logging.Handler), "Handler should be an instance of logging.Handler."
+    assert isinstance(handler, logging.Handler), (
+        "Handler should be an instance of logging.Handler."
+    )
     formatter = handler.formatter
 
 
 def test_setupLogging_configures_specific_log_levels(clean_log_directory):
     setupLogging()
-    assert logging.getLogger("PySide6").level == logging.WARNING, "PySide6 logger level should be WARNING."
-    assert logging.getLogger("requests").level == logging.WARNING, "Requests logger level should be WARNING."
-    assert logging.getLogger("urllib3").level == logging.WARNING, "Urllib3 logger level should be WARNING."
-    assert logging.getLogger("astropy").level == logging.WARNING, "Astropy logger level should be WARNING."
-    assert logging.getLogger("keyring").level == logging.WARNING, "Keyring logger level should be WARNING."
+    assert logging.getLogger("PySide6").level == logging.WARNING, (
+        "PySide6 logger level should be WARNING."
+    )
+    assert logging.getLogger("requests").level == logging.WARNING, (
+        "Requests logger level should be WARNING."
+    )
+    assert logging.getLogger("urllib3").level == logging.WARNING, (
+        "Urllib3 logger level should be WARNING."
+    )
+    assert logging.getLogger("astropy").level == logging.WARNING, (
+        "Astropy logger level should be WARNING."
+    )
+    assert logging.getLogger("keyring").level == logging.WARNING, (
+        "Keyring logger level should be WARNING."
+    )
 
 
 def test_setupLogging_custom_log_levels(clean_log_directory):

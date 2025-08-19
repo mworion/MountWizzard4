@@ -413,7 +413,7 @@ def build_mw(c):
         runMW(c, "python setup.py sdist")
         runMW(
             c,
-            "cp dist/mountwizzard4*.tar.gz " "../MountWizzard4/dist/mountwizzard4.tar.gz",
+            "cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz",
         )
 
     with open("notes.txt") as f:

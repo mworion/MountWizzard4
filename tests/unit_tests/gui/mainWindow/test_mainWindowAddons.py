@@ -51,7 +51,7 @@ def window(qapp):
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     window = MainWindowAddons(mainW)
-    window. addons = {"test": Test()}
+    window.addons = {"test": Test()}
     yield window
     mainW.app.threadPool.waitForDone(10000)
 

@@ -27,8 +27,6 @@ from PySide6.QtWidgets import QCheckBox, QDoubleSpinBox
 from base.indiClass import IndiClass
 from base.alpacaClass import AlpacaClass
 from base.ascomClass import AscomClass
-from base.sgproClass import SGProClass
-from base.ninaClass import NINAClass
 from gui.utilities import toolsQtWidget
 from gui.widgets.devicePopup_ui import Ui_DevicePopup
 from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable

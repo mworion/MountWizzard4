@@ -339,4 +339,4 @@ def test_selectAscomDriver_2(function):
             return name
 
     with mock.patch.object(win32com.client, "Dispatch", return_value=Test()):
-        function.selectAscomDriver('Test')
+        function.selectAscomDriver("Test")

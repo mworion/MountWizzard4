@@ -361,7 +361,7 @@ class Connection(object):
 
         except socket.timeout:
             self.closeClientHard(client)
-            self.log.debug(f'[{self.id}] socket timeout')
+            self.log.debug(f"[{self.id}] socket timeout")
             return None
 
         except Exception as e:

@@ -34,12 +34,12 @@ from loader import extractDataFiles
 
 mwglob = {
     "dataDir": Path("tests/work/data"),
-    "configDir":  Path("tests/work/config"),
-    "workDir":  Path("tests/work"),
-    "imageDir":  Path("tests/work/image"),
-    "tempDir":  Path("tests/work/temp"),
-    "measureDir":  Path("tests/work/measure"),
-    "modelDir":  Path("tests/work/model"),
+    "configDir": Path("tests/work/config"),
+    "workDir": Path("tests/work"),
+    "imageDir": Path("tests/work/image"),
+    "tempDir": Path("tests/work/temp"),
+    "measureDir": Path("tests/work/measure"),
+    "modelDir": Path("tests/work/model"),
     "modelData": "4.0",
 }
 
@@ -91,7 +91,7 @@ def test_showImages(qtbot, qapp):
     qtbot.waitExposed(imageW, timeout=1000)
 
     for i in range(50):
-        app.showImage.emit(f"tests/work/image/star{i%3 + 1}.fits")
+        app.showImage.emit(f"tests/work/image/star{i % 3 + 1}.fits")
         QTest.qWait(500)
 
     QTest.qWait(1000)
@@ -117,7 +117,7 @@ def test_showImagesPhotometry(qtbot, qapp):
     imageW.ui.photometryGroup.setChecked(True)
 
     for i in range(50):
-        app.showImage.emit(f"tests/work/image/star{i%3 + 1}.fits")
+        app.showImage.emit(f"tests/work/image/star{i % 3 + 1}.fits")
         QTest.qWait(1000)
 
     QTest.qWait(1000)

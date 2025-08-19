@@ -39,6 +39,7 @@ def function():
         app = App()
         data = {}
         signals = Signals()
+
     with mock.patch.object(QTimer, "start"):
         func = AlpacaClass(parent=Parent())
         yield func

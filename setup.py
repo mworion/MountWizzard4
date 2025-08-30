@@ -60,7 +60,7 @@ with open("notes.txt", "w") as f:
 
 setup(
     name="mountwizzard4",
-    version="4.0.0a24",
+    version="4.0.0a25",
     packages=find_packages(),
     python_requires=">=3.10.0, <3.14",
     install_requires=[
@@ -88,10 +88,10 @@ setup(
         "packaging==25.0",
         "lz4==4.4.4",
         "xisf==0.9.5",
-        "pyside6==6.9.1",
+        "pyside6==6.9.2",
     ]
     + (["pywin32==311"] if platform.system() == "Windows" else []),
-    keywords=["6.9.1"],
+    keywords=["6.9.2"],
     url="https://github.com/mworion/MountWizzard4",
     license="APL 2.0",
     author="Michael Wuertenberger",

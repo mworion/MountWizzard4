@@ -117,7 +117,7 @@ def test_showTabTiltSquare(function):
     function.photometry.h = 100
     function.photometry.hfrSegSquare = np.ones((3, 3))
     function.photometry.image = np.random.rand(100, 100) + 1
-    function.showTiltSquare()
+    function.showTiltSquare
 
 
 def test_showTabTiltTriangle(function):

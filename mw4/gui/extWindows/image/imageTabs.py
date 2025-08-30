@@ -165,7 +165,6 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(self.parent.getTabIndex(tab, "HFR"), True)
 
-    @property
     def showTiltSquare(self):
         """ """
         segHFR = self.photometry.hfrSegSquare

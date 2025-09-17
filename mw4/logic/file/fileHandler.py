@@ -23,9 +23,9 @@ from pathlib import Path
 from PySide6.QtCore import Signal, QObject
 import numpy as np
 import cv2
+from astropy import wcs
 from astropy.io import fits
 from xisf import XISF
-from astropy import wcs
 
 # local import
 from base.tpool import Worker

@@ -29,9 +29,17 @@ from base.signalsDevices import Signals
 from base.indiClass import IndiClass
 
 
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    func = PegasusUPBIndi(app=App(), signals=Signals(), data={})
+    func = PegasusUPBIndi(parent=Parent())
     yield func
 
 

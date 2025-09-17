@@ -25,10 +25,10 @@ from base.alpacaClass import AlpacaClass
 class FilterAlpaca(AlpacaClass):
     """ """
 
-    def __init__(self, app=None, signals=None, data=None):
-        super().__init__(app=app, data=data)
-        self.signals = signals
-        self.data = data
+    def __init__(self, parent):
+        super().__init__(parent=parent)
+        self.signals = parent.signals
+        self.data = parent.data
 
     def workerGetInitialConfig(self) -> None:
         """ """

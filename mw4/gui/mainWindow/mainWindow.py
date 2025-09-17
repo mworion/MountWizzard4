@@ -152,8 +152,9 @@ class MainWindow(MWidget):
         self.getTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
         self.getTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
         self.getTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
+        self.externalWindows.storeConfigExtendedWindows()
         self.mainWindowAddons.storeConfig()
-        self.externalWindows.storeConfig()
+        self.app.storeConfig()
 
     def setupIcons(self) -> None:
         """ """
@@ -208,7 +209,6 @@ class MainWindow(MWidget):
 
     def quitSave(self) -> None:
         """ """
-        self.app.storeConfig()
         self.saveProfile()
         self.close()
 
@@ -444,7 +444,6 @@ class MainWindow(MWidget):
     def saveProfileBase(self, saveProfilePath: Path) -> None:
         """ """
         self.storeConfig()
-        self.app.storeConfig()
         saveProfile(saveProfilePath, self.app.config)
         self.ui.profile.setText(saveProfilePath.stem)
         self.msg.emit(1, "System", "Profile", f"saved {saveProfilePath.stem}")

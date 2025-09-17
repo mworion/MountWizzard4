@@ -82,8 +82,8 @@ class Update:
             self.log.debug(f"Real prefix: [{sys.real_prefix}]")
         if hasBase:
             self.log.debug(f"Base prefix: [{sys.base_prefix}]")
-        self.log.debug(f'PATH:        [{os.environ.get("PATH", "")}]')
-        self.log.debug(f'VENV path:   [{os.environ.get("VIRTUAL_ENV", "")}]')
+        self.log.debug(f"PATH:        [{os.environ.get('PATH', '')}]")
+        self.log.debug(f"VENV path:   [{os.environ.get('VIRTUAL_ENV', '')}]")
         self.log.debug(f"VENV status: [{status}]")
         return status
 

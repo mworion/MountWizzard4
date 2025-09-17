@@ -56,14 +56,14 @@ def test_initConfig_1(window):
 
 def test_storeConfig_1(window):
     with mock.patch.object(window.mainWindowAddons, "storeConfig"):
-        with mock.patch.object(window.externalWindows, "storeConfig"):
+        with mock.patch.object(window.externalWindows, "storeConfigExtendedWindows"):
             window.storeConfig()
 
 
 def test_storeConfig_2(window):
     del window.app.config["mainW"]
     with mock.patch.object(window.mainWindowAddons, "storeConfig"):
-        with mock.patch.object(window.externalWindows, "storeConfig"):
+        with mock.patch.object(window.externalWindows, "storeConfigExtendedWindows"):
             window.storeConfig()
 
 

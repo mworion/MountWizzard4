@@ -206,7 +206,7 @@ class Connection(object):
         ":shutdown",
     ]
 
-    # Command list for commands which don't reply anything
+    # Command list for commands which don't reply to anything
     COMMAND_A = [
         ":AP",
         ":hP",
@@ -236,10 +236,10 @@ class Connection(object):
         ":hP",
     ]
 
-    # Command list for commands which don't reply anything, but give a parameter
+    # Command list for commands which don't reply to anything, but give a parameter
     COMMAND_P = [":RC", ":Rc", ":RG", ":Suaf"]
 
-    # Command list for commands which have a response, but have no end mark
+    # Command list for commands which have a response but have no end mark
     # mostly these commands response value of '0' or '1'
     COMMAND_B = [
         ":CM",
@@ -299,7 +299,7 @@ class Connection(object):
     def analyseCommand(self, commandString):
         """
         analyseCommand parses the provided commandString against the two command
-        type A and B to evaluate if a response is expected and how many chunks of
+        types A and B to evaluate if a response is expected and how many chunks of
         data show be received.
 
         the command slots will be sorted in reverse order to ensure that longer
@@ -340,6 +340,7 @@ class Connection(object):
         try:
             client.shutdown(socket.SHUT_RDWR)
             client.close()
+
         except Exception:
             return
 
@@ -358,9 +359,9 @@ class Connection(object):
         try:
             client.connect(self.host)
 
-        except (socket.timeout, socket.error) as e:
+        except socket.timeout:
             self.closeClientHard(client)
-            self.log.trace(f"[{self.id}] socket error: [{e}]")
+            self.log.debug(f"[{self.id}] socket timeout")
             return None
 
         except Exception as e:
@@ -391,9 +392,9 @@ class Connection(object):
     def receiveData(self, client=None, numberOfChunks=0, minBytes=0):
         """
         receive Data waits on the give socket client for a number of chunks to
-        be receive or a minimum set of bytes received. the chunks are delimited
-        with #. the min bytes is necessary, because the mount computer has
-        commands which giv a response without delimiter. this is bad, but status.
+        be received or a minimum set of bytes received. the chunks are delimited
+        with #. the min bytes are necessary because the mount computer has
+        commands which give a response without a delimiter. this is bad, but status.
 
         :param client: socket client
         :param numberOfChunks: number of data chunks
@@ -437,7 +438,7 @@ class Connection(object):
         """
         transfer open a socket to the mount, takes the command string for the
         mount, analyses it, check validity and finally if valid sends it to the
-        mount. If response expected, wait for the response and returns the data.
+        mount. If a response is expected, wait for the response and return the data.
         """
         if not self.validCommandSet(commandString):
             return False, "", 0

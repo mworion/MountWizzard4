@@ -51,24 +51,25 @@ class Photometry:
     SN = [30, 20, 15, 10, 10]
     SEP = [3.0, 3.0, 2.5, 2.5, 2.0]
 
-    def __init__(self, app, image=None, snSelector=0):
+    def __init__(self, app, image=np.zeros((30, 30)), snSelector=0):
         self.threadPool = app.threadPool
         self.signals = PhotometrySignals()
 
         self.image = image
-        self.aberrationImage = None
+        self.aberrationImage = np.zeros((30, 30))
         self.snTarget = self.SN[snSelector]
         self.sepThreshold = self.SEP[snSelector]
         self.lock = QMutex()
+        self.worker: Worker = None
 
         self.objs = None
         self.objsAll = None
         self.bkg = None
 
-        self.xm = None
-        self.ym = None
-        self.h = None
-        self.w = None
+        self.xm: int = 0
+        self.ym: int = 0
+        self.h: int = 0
+        self.w: int = 0
         self.filterConstW = None
         self.filterConstH = None
 
@@ -84,17 +85,17 @@ class Photometry:
         self.backSignal = None
         self.backRMS = None
 
-        self.hfr = None
-        self.hfrAll = None
-        self.hfrMin = None
-        self.hfrMax = None
-        self.hfrPercentile = None
-        self.hfrMedian = None
-        self.hfrGrid = None
-        self.hfrInner = None
-        self.hfrOuter = None
-        self.hfrSegTriangle = None
-        self.hfrSegSquare = None
+        self.hfr: np.array = np.zeros(30)
+        self.hfrAll: np.array = np.zeros(30)
+        self.hfrMin: float = 1
+        self.hfrMax: float = 1
+        self.hfrPercentile: float = 1
+        self.hfrMedian: float = 1
+        self.hfrGrid = np.zeros((30, 30))
+        self.hfrInner: float = 1
+        self.hfrOuter: float = 1
+        self.hfrSegTriangle = np.zeros((3, 3))
+        self.hfrSegSquare = np.zeros((3, 3))
 
     def baseCalcs(self) -> None:
         """ """
@@ -339,7 +340,7 @@ class Photometry:
         self.hfr = radius[mask]
         self.runCalcs()
         objsHFR = len(self.objs)
-        self.log.info(f"Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, " f"HFR:{objsHFR}")
+        self.log.info(f"Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, HFR:{objsHFR}")
 
     def unlockPhotometry(self) -> None:
         """ """
@@ -354,7 +355,7 @@ class Photometry:
         if not self.lock.tryLock():
             return
 
-        worker = Worker(self.workerCalcPhotometry)
-        worker.signals.result.connect(lambda: self.signals.sepFinished.emit())
-        worker.signals.finished.connect(self.unlockPhotometry)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.workerCalcPhotometry)
+        self.worker.signals.result.connect(lambda: self.signals.sepFinished.emit())
+        self.worker.signals.finished.connect(self.unlockPhotometry)
+        self.threadPool.start(self.worker)

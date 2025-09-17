@@ -28,15 +28,14 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 class CameraSGPro(SGProClass):
     """ """
 
-    DEVICE_TYPE = "Camera"
-
     def __init__(self, parent):
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
-        super().__init__(app=parent.app, data=parent.data)
+        super().__init__(parent=parent)
         self.threadPool = parent.threadPool
         self.signals = parent.signals
+        self.worker: Worker = None
 
     def sgGetCameraTemp(self) -> [bool, dict]:
         """ """
@@ -120,9 +119,9 @@ class CameraSGPro(SGProClass):
 
     def expose(self) -> None:
         """ """
-        worker = Worker(self.workerExpose)
-        worker.signals.finished.connect(self.parent.exposeFinished)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.workerExpose)
+        self.worker.signals.finished.connect(self.parent.exposeFinished)
+        self.threadPool.start(self.worker)
 
     def abort(self) -> None:
         """ """

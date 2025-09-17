@@ -27,15 +27,14 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 class CameraNINA(NINAClass):
     """ """
 
-    DEVICE_TYPE = "Camera"
-
     def __init__(self, parent):
+        super().__init__(parent=parent)
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
-        self.threadPool = parent.threadPool
         self.signals = parent.signals
-        super().__init__(app=parent.app, data=parent.data)
+        self.threadPool = parent.threadPool
+        self.worker: Worker = None
 
     def getCameraTemp(self) -> [bool, dict]:
         """ """
@@ -119,9 +118,9 @@ class CameraNINA(NINAClass):
 
     def expose(self) -> None:
         """ """
-        worker = Worker(self.workerExpose)
-        worker.signals.finished.connect(self.parent.exposeFinished)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.workerExpose)
+        self.worker.signals.finished.connect(self.parent.exposeFinished)
+        self.threadPool.start(self.worker)
 
     def abort(self) -> bool:
         """ """

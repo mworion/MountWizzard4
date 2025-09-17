@@ -153,10 +153,6 @@ BASIC_STYLE = """
     QLineEdit {
         color: $M_PRIM$;
         text-align: right;
-        border-style: outset;
-        border-width: %WIDTH%;
-        border-color: $M_SEC$;
-        border-radius: %ROUND%;
         background-color: $M_BACK1$;
     }
     QLineEdit:disabled {
@@ -167,12 +163,18 @@ BASIC_STYLE = """
         border-width: 0px;
     }
     QLineEdit[color='green'] {
+        border-width: 1px;
+        border-style: outset;
         border-color: $M_GREEN$;
     }
     QLineEdit[color='yellow'] {
+        border-width: 1px;
+        border-style: outset;
         border-color: $M_YELLOW$;
     }
     QLineEdit[color='red'] {
+        border-width: 1px;
+        border-style: outset;
         border-color: $M_RED$;
     }
             
@@ -197,6 +199,9 @@ BASIC_STYLE = """
         border-color: $M_PRIM3$;
         margin-top: 6px;
         background-color: $M_BACK$;
+    }
+    QGroupBox QLineEdit:disabled {
+        color: $M_PRIM$;
     }
     QGroupBox::title {
         left: 5px;

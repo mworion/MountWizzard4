@@ -33,9 +33,6 @@ class IndiClass:
 
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5
-
-    SHOW_COMM = False
-
     INDIGO = {
         # numbers
         "WEATHER_PARAMETERS.WEATHER_BAROMETER": "WEATHER_PARAMETERS.WEATHER_PRESSURE",
@@ -87,9 +84,7 @@ class IndiClass:
         "CLOUDS.CloudSkyTemperature": "SKY_QUALITY.SKY_TEMPERATURE",
         "SKYQUALITY.MPAS": "SKY_QUALITY.SKY_BRIGHTNESS",
     }
-
     INDI = {y: x for x, y in INDIGO.items()}
-
     INDI_TYPES = {
         "telescope": (1 << 0),
         "camera": (1 << 1),
@@ -104,11 +99,14 @@ class IndiClass:
     }
     signals = Signals()
 
-    def __init__(self, app, data):
-        self.app = app
-        self.msg = app.msg
-        self.data = data
-        self.threadPool = app.threadPool
+    def __init__(self, parent):
+        self.parent = parent
+        self.app = parent.app
+        self.msg = parent.app.msg
+        self.data = parent.data
+        self.loadConfig = parent.loadConfig
+        self.updateRate = parent.updateRate
+        self.threadPool = parent.app.threadPool
         self.client = Client(host=None)
 
         clientSig = self.client.signals
@@ -195,8 +193,8 @@ class IndiClass:
 
     def serverDisconnected(self, devices: str) -> None:
         """ """
-        t = f"INDI server for [{self.deviceName}] disconnected"
-        self.log.debug(t)
+        t = f"INDI server for [{self.deviceName}:{devices}] disconnected"
+        self.log.info(t)
 
     def newDevice(self, deviceName: str) -> None:
         """ """
@@ -267,7 +265,7 @@ class IndiClass:
         suc = self.client.sendNewNumber(
             deviceName=deviceName, propertyName="POLLING_PERIOD", elements=update
         )
-        t = f'Polling [{deviceName}] success: [{suc}], value:[{update["PERIOD_MS"]}]'
+        t = f"Polling [{deviceName}] success: [{suc}], value:[{update['PERIOD_MS']}]"
         self.log.info(t)
 
     def convertIndigoProperty(self, key: str) -> str:
@@ -284,10 +282,7 @@ class IndiClass:
             return
 
         for element, value in self.device.getNumber(propertyName).items():
-            key = propertyName + "." + element
-            if self.SHOW_COMM:
-                print("number", self.deviceName, key, value)
-            key = self.convertIndigoProperty(key)
+            key = self.convertIndigoProperty(propertyName + "." + element)
             self.data[key] = float(value)
 
     def updateSwitch(self, deviceName: str, propertyName: str) -> None:
@@ -298,13 +293,9 @@ class IndiClass:
             return
 
         for element, value in self.device.getSwitch(propertyName).items():
-            key = propertyName + "." + element
-            # todo: is that the item which tells me it's an indigo server ?
             if propertyName == "PROFILE":
                 self.isINDIGO = True
-            if self.SHOW_COMM:
-                print("switch", self.deviceName, key, value)
-            key = self.convertIndigoProperty(key)
+            key = self.convertIndigoProperty(propertyName + "." + element)
             self.data[key] = value == "On"
 
     def updateText(self, deviceName: str, propertyName: str) -> None:
@@ -315,10 +306,7 @@ class IndiClass:
             return
 
         for element, value in self.device.getText(propertyName).items():
-            key = propertyName + "." + element
-            if self.SHOW_COMM:
-                print("text  ", self.deviceName, key, value)
-            key = self.convertIndigoProperty(key)
+            key = self.convertIndigoProperty(propertyName + "." + element)
             self.data[key] = value
 
     def updateLight(self, deviceName: str, propertyName: str) -> None:
@@ -329,10 +317,7 @@ class IndiClass:
             return
 
         for element, value in self.device.getLight(propertyName).items():
-            key = propertyName + "." + element
-            if self.SHOW_COMM:
-                print("light ", self.deviceName, key, value)
-            key = self.convertIndigoProperty(key)
+            key = self.convertIndigoProperty(propertyName + "." + element)
             self.data[key] = value
 
     def updateBLOB(self, deviceName: str, propertyName: str) -> None:
@@ -341,8 +326,6 @@ class IndiClass:
             return
         if deviceName != self.deviceName:
             return
-        if self.SHOW_COMM:
-            print("blob ", deviceName)
 
     @staticmethod
     def removePrefix(text: str, prefix: str) -> str:

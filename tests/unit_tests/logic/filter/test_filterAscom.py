@@ -26,9 +26,21 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.filter.filterAscom import FilterAscom
 from base.signalsDevices import Signals
 from base.ascomClass import AscomClass
+from base.loggerMW import setupLogging
+
+setupLogging()
 
 if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
+
+
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    deviceType = ""
+    loadConfig = True
+    updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="function")
@@ -40,7 +52,7 @@ def function():
         DriverVersion = "1"
         DriverInfo = "test1"
 
-    func = FilterAscom(app=App(), signals=Signals(), data={})
+    func = FilterAscom(parent=Parent())
     func.clientProps = []
     func.client = Test1()
     yield func

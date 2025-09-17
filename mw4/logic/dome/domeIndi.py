@@ -25,9 +25,9 @@ from base.indiClass import IndiClass
 class DomeIndi(IndiClass):
     """ """
 
-    def __init__(self, app=None, signals=None, data=None):
-        self.signals = signals
-        super().__init__(app=app, data=data)
+    def __init__(self, parent):
+        super().__init__(parent=parent)
+        self.signals = parent.signals
         self.lastAzimuth = None
         self.app.update1s.connect(self.updateStatus)
 

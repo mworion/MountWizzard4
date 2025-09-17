@@ -134,14 +134,6 @@ class ExternalWindows(QObject):
         self.app.update1s.connect(self.updateWindowsStats)
         self.mainW.ui.collectWindows.clicked.connect(self.collectWindows)
 
-    def storeConfig(self) -> None:
-        """ """
-        config = self.app.config
-        for window in self.uiWindows:
-            config[window] = bool(self.uiWindows[window]["classObj"])
-            if config[window]:
-                self.uiWindows[window]["classObj"].storeConfig()
-
     def updateWindowsStats(self) -> None:
         """ """
         for win in self.uiWindows:
@@ -152,7 +144,15 @@ class ExternalWindows(QObject):
             else:
                 changeStyleDynamic(winObj["button"], "running", False)
 
-    def deleteWindowResource(self, window: str) -> bool:
+    def storeConfigExtendedWindows(self):
+        """ """
+        config = self.app.config
+        for window in self.uiWindows:
+            config[window] = bool(self.uiWindows[window]["classObj"])
+            if config[window]:
+                self.uiWindows[window]["classObj"].storeConfig()
+
+    def deleteWindowResource(self, window: str) -> None:
         """"""
         self.uiWindows[window]["classObj"] = None
 
@@ -179,7 +179,7 @@ class ExternalWindows(QObject):
         else:
             self.uiWindows[windowName]["classObj"].close()
 
-    def waitClosedExtendedWindows(self) -> bool:
+    def waitCloseExtendedWindows(self) -> bool:
         """ """
         waitDeleted = True
         while waitDeleted:
@@ -198,7 +198,7 @@ class ExternalWindows(QObject):
                 continue
 
             self.uiWindows[window]["classObj"].close()
-        self.waitClosedExtendedWindows()
+        self.waitCloseExtendedWindows()
 
     def collectWindows(self) -> None:
         """ """

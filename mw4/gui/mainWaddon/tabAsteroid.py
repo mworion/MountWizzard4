@@ -106,13 +106,13 @@ class Asteroid(QObject):
     def generateName(mp: dict) -> str:
         """ """
         if "Designation_and_name" in mp:
-            name = f'{mp["Designation_and_name"]}'
+            name = f"{mp['Designation_and_name']}"
         elif "Name" in mp and "Principal_desig" in mp:
-            name = f'{mp["Principal_desig"]} - {mp["Name"]} {mp["Number"]}'
+            name = f"{mp['Principal_desig']} - {mp['Name']} {mp['Number']}"
         elif "Principal_desig" in mp:
-            name = f'{mp["Principal_desig"]}'
+            name = f"{mp['Principal_desig']}"
         elif "Name" in mp:
-            name = f'{mp["Name"]} {mp["Number"]}'
+            name = f"{mp['Name']} {mp['Number']}"
         else:
             name = ""
         return name
@@ -167,7 +167,7 @@ class Asteroid(QObject):
                 self.ui.listAsteroids.setItem(row, 2, entry)
 
             if "Perihelion_dist" in self.asteroids.objects[name]:
-                pdist = f'{self.asteroids.objects[name]["Perihelion_dist"]:8.6f}'
+                pdist = f"{self.asteroids.objects[name]['Perihelion_dist']:8.6f}"
                 entry = QTableWidgetItem(pdist)
                 entry.setTextAlignment(
                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
@@ -175,7 +175,7 @@ class Asteroid(QObject):
                 self.ui.listAsteroids.setItem(row, 3, entry)
 
             if "Aphelion_dist" in self.asteroids.objects[name]:
-                adist = f'{self.asteroids.objects[name]["Aphelion_dist"]:8.6f}'
+                adist = f"{self.asteroids.objects[name]['Aphelion_dist']:8.6f}"
                 entry = QTableWidgetItem(adist)
                 entry.setTextAlignment(
                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
@@ -183,7 +183,7 @@ class Asteroid(QObject):
                 self.ui.listAsteroids.setItem(row, 4, entry)
 
             if "e" in self.asteroids.objects[name]:
-                e = f'{self.asteroids.objects[name]["e"]:8.5f}'
+                e = f"{self.asteroids.objects[name]['e']:8.5f}"
                 entry = QTableWidgetItem(e)
                 entry.setTextAlignment(
                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter

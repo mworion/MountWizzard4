@@ -37,37 +37,20 @@ class PegasusUPB:
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.data = {}
+        self.loadConfig: bool = True
+        self.updateRate: int = 1000
+        self.deviceType: str = ""
         self.defaultConfig = {"framework": "", "frameworks": {}}
         self.framework = ""
         self.run = {
-            "indi": PegasusUPBIndi(self.app, self.signals, self.data),
-            "alpaca": PegasusUPBAlpaca(self.app, self.signals, self.data),
+            "indi": PegasusUPBIndi(self),
+            "alpaca": PegasusUPBAlpaca(self),
         }
         if platform.system() == "Windows":
-            self.run["ascom"] = PegasusUPBAscom(self.app, self.signals, self.data)
+            self.run["ascom"] = PegasusUPBAscom(self)
 
         for fw in self.run:
             self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
-
-    @property
-    def updateRate(self):
-        return self.run[self.framework].updateRate
-
-    @updateRate.setter
-    def updateRate(self, value):
-        value = int(value)
-        for fw in self.run:
-            self.run[fw].updateRate = value
-
-    @property
-    def loadConfig(self):
-        return self.run[self.framework].loadConfig
-
-    @loadConfig.setter
-    def loadConfig(self, value):
-        value = bool(value)
-        for fw in self.run:
-            self.run[fw].loadConfig = value
 
     def startCommunication(self) -> None:
         """ """

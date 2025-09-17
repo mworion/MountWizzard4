@@ -27,9 +27,21 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.dome.domeAscom import DomeAscom
 from base.signalsDevices import Signals
 from base.ascomClass import AscomClass
+from base.loggerMW import setupLogging
+
+setupLogging()
 
 if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
+
+
+class Parent:
+    app = App()
+    data = {}
+    deviceType = ""
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="function")
@@ -58,7 +70,7 @@ def function():
             return True
 
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = DomeAscom(app=App(), signals=Signals(), data={})
+        func = DomeAscom(parent=Parent())
         func.client = Test1()
         func.clientProps = []
         yield func

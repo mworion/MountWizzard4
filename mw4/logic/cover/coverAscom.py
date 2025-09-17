@@ -27,11 +27,11 @@ class CoverAscom(AscomClass):
 
     coverStates = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
 
-    def __init__(self, app=None, signals=None, data=None):
-        super().__init__(app=app, data=data)
+    def __init__(self, parent) -> None:
+        super().__init__(parent=parent)
 
-        self.signals = signals
-        self.data = data
+        self.signals = parent.signals
+        self.data = parent.data
 
     def workerPollData(self) -> None:
         """ """

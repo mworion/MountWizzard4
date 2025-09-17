@@ -35,8 +35,8 @@ class EnvironWeather(QObject):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.refractionSource = ""
-        self.filteredTemperature = np.full(60, 0)
-        self.filteredPressure = np.full(60, 950)
+        self.filteredTemperature = np.full(60, -99)
+        self.filteredPressure = np.full(60, 0)
         self.seeingEnabled = False
 
         self.refractionSources = {
@@ -221,9 +221,15 @@ class EnvironWeather(QObject):
             return
 
         key = "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
-        temp = self.refractionSources[self.refractionSource]["data"].get(key, 0)
+        temp = self.refractionSources[self.refractionSource]["data"].get(key, -99)
         key = "WEATHER_PARAMETERS.WEATHER_PRESSURE"
-        press = self.refractionSources[self.refractionSource]["data"].get(key, 950)
+        press = self.refractionSources[self.refractionSource]["data"].get(key, 0)
+
+        if all(i == -99 for i in self.filteredTemperature):
+            self.filteredTemperature = np.full(60, temp)
+
+        if all(i == 0 for i in self.filteredPressure):
+            self.filteredPressure = np.full(60, press)
 
         if temp is not None:
             self.filteredTemperature = np.roll(self.filteredTemperature, 1)

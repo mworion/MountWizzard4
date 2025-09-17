@@ -1058,6 +1058,7 @@ class MainW:
         offLAT = LineEdit()
 
     ui = Test()
+    gameControllerRunning = False
 
 
 class App(QObject):

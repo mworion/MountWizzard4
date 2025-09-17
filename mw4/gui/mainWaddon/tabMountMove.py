@@ -157,7 +157,7 @@ class MountMove(QObject, SlewInterface):
     def countDuration(self, duration):
         """ """
         for t in range(duration * 10, -1, -1):
-            self.ui.stopMoveAll.setText(f"{t/10:.1f}s")
+            self.ui.stopMoveAll.setText(f"{t / 10:.1f}s")
             sleepAndEvents(100)
         self.ui.stopMoveAll.setText("STOP")
 
@@ -282,7 +282,7 @@ class MountMove(QObject, SlewInterface):
         value, ok = dlg.getText(
             self.mainW,
             "Set telescope RA",
-            "Format: <dd[H] mm ss.s> in hours or <[+]d.d> in " "degrees",
+            "Format: <dd[H] mm ss.s> in hours or <[+]d.d> in degrees",
             QLineEdit.EchoMode.Normal,
             self.ui.moveCoordinateRa.text(),
         )

@@ -51,7 +51,7 @@ def test_storeConfig_1(function):
             return
 
     function.uiWindows["showMessageW"]["classObj"] = Test()
-    function.storeConfig()
+    function.storeConfigExtendedWindows()
 
 
 def test_updateWindowsStats_1(function):
@@ -140,7 +140,7 @@ def test_showExtendedWindows_3(function):
     function.uiWindows = test
 
 
-def test_waitClosedExtendedWindows_1(function):
+def test_waitCloseExtendedWindows_1(function):
     class Test:
         @staticmethod
         def close():
@@ -153,16 +153,16 @@ def test_waitClosedExtendedWindows_1(function):
         "showImageW": {"classObj": None, "button": QPushButton()},
     }
     with mock.patch.object(gui.utilities.toolsQtWidget, "sleepAndEvents"):
-        suc = function.waitClosedExtendedWindows()
+        suc = function.waitCloseExtendedWindows()
         assert suc
     function.uiWindows = test
 
 
-def test_waitClosedExtendedWindows_2(function):
+def test_waitCloseExtendedWindows_2(function):
     test = function.uiWindows
     function.uiWindows = {"showMessageW": {"classObj": None, "button": QPushButton()}}
     with mock.patch.object(gui.utilities.toolsQtWidget, "sleepAndEvents"):
-        suc = function.waitClosedExtendedWindows()
+        suc = function.waitCloseExtendedWindows()
         assert suc
     function.uiWindows = test
 
@@ -176,7 +176,7 @@ def test_closeExtendedWindows_1(function):
 
     test = function.uiWindows
     function.uiWindows = {"showMessageW": {"classObj": Test(), "button": QPushButton()}}
-    with mock.patch.object(function, "waitClosedExtendedWindows"):
+    with mock.patch.object(function, "waitCloseExtendedWindows"):
         function.closeExtendedWindows()
     function.uiWindows = test
 
@@ -184,7 +184,7 @@ def test_closeExtendedWindows_1(function):
 def test_closeExtendedWindows_2(function):
     test = function.uiWindows
     function.uiWindows = {"showMessageW": {"classObj": None, "button": QPushButton()}}
-    with mock.patch.object(function, "waitClosedExtendedWindows"):
+    with mock.patch.object(function, "waitCloseExtendedWindows"):
         function.closeExtendedWindows()
     function.uiWindows = test
 

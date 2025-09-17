@@ -364,7 +364,7 @@ class ModelManage(QObject):
                     2,
                     "Model",
                     "Manage error",
-                    f"Star [{wStar.number + 1:3.0f}] cannot be " f"deleted",
+                    f"Star [{wStar.number + 1:3.0f}] cannot be deleted",
                 )
             else:
                 text = f"Point: {wStar.number + 1:3.0f}: "

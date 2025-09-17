@@ -47,19 +47,9 @@ class Worker(QRunnable):
     executed as a thread in a threadpool
     """
 
-    log = logging.getLogger("MW4")
-
     def __init__(self, fn, *args, **kwargs):
-        """
-        the worker signal must not be a class variable, but instance otherwise
-        we get trouble when having multiple threads running
-        Store constructor arguments (re-used for processing)
-
-        :param fn:
-        :param args:
-        :param kwargs:
-        """
         super(Worker, self).__init__()
+        self.log = logging.getLogger("MW4")
         self.fn = fn
         self.args = args
         self.kwargs = kwargs

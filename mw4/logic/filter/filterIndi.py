@@ -27,9 +27,9 @@ class FilterIndi(IndiClass):
 
     UPDATE_RATE = 1
 
-    def __init__(self, app=None, signals=None, data=None):
-        self.signals = signals
-        super().__init__(app=app, data=data)
+    def __init__(self, parent):
+        super().__init__(parent=parent)
+        self.signals = parent.signals
 
     def sendFilterNumber(self, filterNumber: int = 1) -> None:
         """ """

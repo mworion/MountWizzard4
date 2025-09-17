@@ -47,6 +47,7 @@ class VideoWindow(MWidget):
         self.user = ""
         self.password = ""
         self.runningCounter = 0
+        self.worker: Worker = None
 
     def closeEvent(self, closeEvent) -> None:
         """ """
@@ -139,8 +140,8 @@ class VideoWindow(MWidget):
         changeStyleDynamic(self.ui.videoStart, "running", True)
         changeStyleDynamic(self.ui.videoStop, "running", False)
         self.running = True
-        worker = Worker(self.workerVideo, source, frameRate)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.workerVideo, source, frameRate)
+        self.threadPool.start(self.worker)
 
     def stopVideo(self) -> None:
         """ """

@@ -30,6 +30,20 @@ from resource import resources
 resources.qInitResources()
 
 
+class Test:
+    def initConfig(self):
+        pass
+
+    def storeConfig(self):
+        pass
+
+    def setupIcons(self):
+        pass
+
+    def updateColorSet(self):
+        pass
+
+
 @pytest.fixture(autouse=True, scope="module")
 def window(qapp):
     mainW = MWidget()
@@ -37,25 +51,22 @@ def window(qapp):
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     window = MainWindowAddons(mainW)
+    window.addons = {"test": Test()}
     yield window
     mainW.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(window):
-    with mock.patch.object(window.addons["ManageModel"], "initConfig"):
-        window.initConfig()
+    window.initConfig()
 
 
 def test_storeConfig_1(window):
-    with mock.patch.object(window.addons["ManageModel"], "storeConfig"):
-        window.storeConfig()
+    window.storeConfig()
 
 
 def test_setupIcons_1(window):
-    with mock.patch.object(window.addons["ManageModel"], "setupIcons"):
-        window.setupIcons()
+    window.setupIcons()
 
 
 def test_updateColorSet_1(window):
-    with mock.patch.object(window.addons["ManageModel"], "updateColorSet"):
-        window.updateColorSet()
+    window.updateColorSet()

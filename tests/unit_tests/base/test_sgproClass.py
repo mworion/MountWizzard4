@@ -34,9 +34,13 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope="function")
 def function():
+    class Parent:
+        app = App()
+        data = {}
+        signals = Signals()
+
     with mock.patch.object(QTimer, "start"):
-        func = SGProClass(app=App(), data={})
-        func.signals = Signals()
+        func = SGProClass(parent=Parent())
         yield func
 
 
@@ -194,12 +198,12 @@ def test_sgEnumerateDevice_2(function):
 
 
 def test_startTimer(function):
-    function.startTimer()
+    function.startSGProTimer()
 
 
 def test_stopTimer(function):
     with mock.patch.object(PySide6.QtCore.QTimer, "stop"):
-        function.stopTimer()
+        function.stopSGProTimer()
 
 
 def test_processPolledData(function):
@@ -291,9 +295,22 @@ def test_workerPollStatus_5(function):
                 assert function.deviceConnected
 
 
+def test_clearPollStatus(function):
+    function.mutexPollStatus.lock()
+    function.clearPollStatus()
+
+
 def test_pollStatus_1(function):
+    function.mutexPollStatus.lock()
     with mock.patch.object(function.threadPool, "start"):
         function.pollStatus()
+    function.mutexPollStatus.unlock()
+
+
+def test_pollStatus_2(function):
+    with mock.patch.object(function.threadPool, "start"):
+        function.pollStatus()
+    function.mutexPollStatus.unlock()
 
 
 def test_startCommunication_1(function):
@@ -307,7 +324,7 @@ def test_stopCommunication_1(function):
     function.deviceConnected = True
     function.serverConnected = True
     function.deviceName = "test"
-    with mock.patch.object(function, "stopTimer"):
+    with mock.patch.object(function, "stopSGProTimer"):
         with mock.patch.object(function, "sgDisconnectDevice"):
             function.stopCommunication()
             assert not function.serverConnected
@@ -316,11 +333,11 @@ def test_stopCommunication_1(function):
 
 def test_discoverDevices_1(function):
     with mock.patch.object(function, "sgEnumerateDevice", return_value=[]):
-        val = function.discoverDevices()
+        val = function.discoverDevices("Camera")
         assert val == []
 
 
 def test_discoverDevices_2(function):
     with mock.patch.object(function, "sgEnumerateDevice", return_value=["test"]):
-        val = function.discoverDevices()
+        val = function.discoverDevices("Camera")
         assert val == ["test"]

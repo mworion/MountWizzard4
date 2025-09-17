@@ -29,13 +29,14 @@ class CameraIndi(IndiClass):
     """ """
 
     def __init__(self, parent):
+        super().__init__(parent=parent)
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
         self.signals = parent.signals
-        super().__init__(app=parent.app, data=parent.data)
-
+        self.worker: Worker = None
         self.isDownloading: bool = False
+        self.loadConfig: bool = True
 
     def setUpdateConfig(self, deviceName: str) -> None:
         """ """
@@ -100,7 +101,7 @@ class CameraIndi(IndiClass):
             self.abort()
             self.log.warning("INDI camera state alert")
         else:
-            t = f'[{self.deviceName}] state: [{self.device.CCD_EXPOSURE["state"]}]'
+            t = f"[{self.deviceName}] state: [{self.device.CCD_EXPOSURE['state']}]"
             self.log.warning(t)
 
         return True
@@ -167,16 +168,16 @@ class CameraIndi(IndiClass):
         if data.get("name", "") != "CCD1":
             return False
 
-        worker = Worker(self.workerSaveBLOB, data)
-        worker.signals.finished.connect(self.parent.exposeFinished)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.workerSaveBLOB, data)
+        self.worker.signals.finished.connect(self.parent.exposeFinished)
+        self.threadPool.start(self.worker)
         return True
 
     def sendDownloadMode(self) -> None:
         """ """
         quality = self.device.getSwitch("READOUT_QUALITY")
-        quality["QUALITY_LOW"] = "On" if self.parent.fastReadout else "Off"
-        quality["QUALITY_HIGH"] = "Off" if self.parent.fastReadout else "On"
+        quality["QUALITY_LOW"] = "On"
+        quality["QUALITY_HIGH"] = "Off"
         self.client.sendNewSwitch(
             deviceName=self.deviceName, propertyName="READOUT_QUALITY", elements=quality
         )

@@ -63,6 +63,7 @@ class Almanac(QObject):
         self.twilightTime = None
         self.twilightEvents = None
         self.colors = None
+        self.worker: Worker = None
         self.setColors()
         self.app.update1h.connect(self.showMoonPhase)
         self.app.colorChange.connect(self.updateColorSet)
@@ -163,7 +164,7 @@ class Almanac(QObject):
         self.ui.twilightEvents.setTextColor(QColor(self.mainW.M_PRIM))
 
         for timeEvent, event in zip(timeEvents, events):
-            text += f'{self.mainW.convertTime(timeEvent, "%H:%M:%S")} '
+            text += f"{self.mainW.convertTime(timeEvent, '%H:%M:%S')} "
             text += f"{almanac.TWILIGHTS[event]}"
             self.ui.twilightEvents.insertPlainText(text)
             text = "\n"
@@ -205,9 +206,9 @@ class Almanac(QObject):
 
         ts = self.app.mount.obsSite.ts
         changeStyleDynamic(self.ui.almanacGroup, "running", True)
-        worker = Worker(self.workerCalcTwilightDataPlot, ts, location, timeWindow)
-        worker.signals.result.connect(self.plotTwilightData)
-        self.app.threadPool.start(worker)
+        self.worker = Worker(self.workerCalcTwilightDataPlot, ts, location, timeWindow)
+        self.worker.signals.result.connect(self.plotTwilightData)
+        self.app.threadPool.start(self.worker)
 
     def showTwilightDataList(self) -> None:
         """ """

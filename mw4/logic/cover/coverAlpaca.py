@@ -25,11 +25,11 @@ from base.alpacaClass import AlpacaClass
 class CoverAlpaca(AlpacaClass):
     """ """
 
-    def __init__(self, app=None, signals=None, data=None):
-        super().__init__(app=app, data=data)
-
-        self.alpacaSignals = signals
-        self.data = data
+    def __init__(self, parent):
+        super().__init__(parent=parent)
+        self.parent = parent
+        self.alpacaSignals = parent.signals
+        self.data = parent.data
 
     def workerPollData(self) -> None:
         """ """

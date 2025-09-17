@@ -28,9 +28,17 @@ from logic.telescope.telescopeIndi import TelescopeIndi
 from base.signalsDevices import Signals
 
 
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    func = TelescopeIndi(app=App(), signals=Signals(), data={})
+    func = TelescopeIndi(parent=Parent())
     yield func
 
 

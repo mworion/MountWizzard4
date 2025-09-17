@@ -26,9 +26,17 @@ from logic.focuser.focuserAlpaca import FocuserAlpaca
 from base.signalsDevices import Signals
 
 
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    func = FocuserAlpaca(app=App(), signals=Signals(), data={})
+    func = FocuserAlpaca(parent=Parent())
     yield func
 
 

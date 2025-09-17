@@ -27,10 +27,18 @@ from logic.cover.coverAlpaca import CoverAlpaca
 from base.signalsDevices import Signals
 
 
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = CoverAlpaca(app=App(), signals=Signals(), data={})
+        func = CoverAlpaca(parent=Parent())
         yield func
 
 

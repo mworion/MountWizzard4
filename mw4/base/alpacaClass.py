@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import uuid
-
 import requests
 
 # external packages
@@ -35,13 +34,14 @@ class AlpacaClass(DriverData):
     ALPACA_TIMEOUT = 3
     CLIENT_ID = uuid.uuid4().int % 2**16
 
-    def __init__(self, app, data):
+    def __init__(self, parent):
         super().__init__()
 
-        self.app = app
-        self.msg = app.msg
-        self.data = data
-        self.threadPool = app.threadPool
+        self.app = parent.app
+        self.msg = parent.app.msg
+        self.data = parent.data
+        self.signals = parent.signals
+        self.threadPool = parent.app.threadPool
         self.updateRate: int = 1000
         self.loadConfig: bool = False
         self.propertyExceptions: list = []
@@ -68,6 +68,11 @@ class AlpacaClass(DriverData):
 
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
+        self.worker: Worker = None
+        self.workerGetConfig: Worker = None
+        self.workerStatus: Worker = None
+        self.workerData: Worker = None
+        self.workerConnect: Worker = None
 
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
@@ -278,6 +283,7 @@ class AlpacaClass(DriverData):
         self.propertyExceptions = []
         self.deviceConnected = False
         self.serverConnected = False
+        suc = False
         for retry in range(0, 10):
             self.setAlpacaProperty("connected", Connected=True)
             suc = self.getAlpacaProperty("connected")
@@ -303,16 +309,16 @@ class AlpacaClass(DriverData):
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f"{self.deviceName}")
             self.msg.emit(0, "ALPACA", "Device found", f"{self.deviceName}")
-            self.startTimer()
+            self.startAlpacaTimer()
             self.getInitialConfig()
         return True
 
-    def startTimer(self) -> None:
+    def startAlpacaTimer(self) -> None:
         """ """
         self.cycleData.start(self.updateRate)
         self.cycleDevice.start(self.updateRate)
 
-    def stopTimer(self) -> None:
+    def stopAlpacaTimer(self) -> None:
         """ """
         self.cycleData.stop()
         self.cycleDevice.stop()
@@ -346,33 +352,36 @@ class AlpacaClass(DriverData):
         """ """
         if not self.deviceConnected:
             return
-        worker = Worker(self.workerPollData)
-        worker.signals.result.connect(self.processPolledData)
-        self.threadPool.start(worker)
+
+        self.workerData = Worker(self.workerPollData)
+        self.workerData.signals.result.connect(self.processPolledData)
+        self.threadPool.start(self.workerData)
 
     def pollStatus(self) -> None:
         """ """
         if not self.deviceConnected:
             return
-        worker = Worker(self.workerPollStatus)
-        self.threadPool.start(worker)
+
+        self.workerStatus = Worker(self.workerPollStatus)
+        self.threadPool.start(self.workerStatus)
 
     def getInitialConfig(self) -> None:
         """ """
         if not self.deviceConnected:
             return
-        worker = Worker(self.workerGetInitialConfig)
-        self.threadPool.start(worker)
+
+        self.workerGetConfig = Worker(self.workerGetInitialConfig)
+        self.threadPool.start(self.workerGetConfig)
 
     def startCommunication(self) -> None:
         """ """
         self.data.clear()
-        worker = Worker(self.workerConnectDevice)
-        self.threadPool.start(worker)
+        self.workerConnect = Worker(self.workerConnectDevice)
+        self.threadPool.start(self.workerConnect)
 
     def stopCommunication(self) -> None:
         """ """
-        self.stopTimer()
+        self.stopAlpacaTimer()
         self.setAlpacaProperty("connected", Connected=False)
         self.deviceConnected = False
         self.serverConnected = False
@@ -388,5 +397,5 @@ class AlpacaClass(DriverData):
             return []
 
         temp = [x for x in devices if x["DeviceType"].lower() == deviceType]
-        discoverList = [f'{x["DeviceName"]}:{deviceType}:{x["DeviceNumber"]}' for x in temp]
+        discoverList = [f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}" for x in temp]
         return discoverList

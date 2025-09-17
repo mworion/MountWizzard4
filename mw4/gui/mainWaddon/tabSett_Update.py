@@ -186,8 +186,8 @@ class SettUpdate(QObject):
             self.mainW.log.debug(f"Real prefix: [{sys.real_prefix}]")
         if hasBase:
             self.mainW.log.debug(f"Base prefix: [{sys.base_prefix}]")
-        self.mainW.log.debug(f'PATH:        [{os.environ.get("PATH", "")}]')
-        self.mainW.log.debug(f'VENV path:   [{os.environ.get("VIRTUAL_ENV", "")}]')
+        self.mainW.log.debug(f"PATH:        [{os.environ.get('PATH', '')}]")
+        self.mainW.log.debug(f"VENV path:   [{os.environ.get('VIRTUAL_ENV', '')}]")
         self.mainW.log.debug(f"VENV status: [{status}]")
         return status
 

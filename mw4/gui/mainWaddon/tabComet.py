@@ -103,13 +103,13 @@ class Comet(QObject):
     def generateName(mp: dict) -> str:
         """ """
         if "Designation_and_name" in mp:
-            name = f'{mp["Designation_and_name"]}'
+            name = f"{mp['Designation_and_name']}"
         elif "Name" in mp and "Principal_desig" in mp:
-            name = f'{mp["Principal_desig"]} - {mp["Name"]} {mp["Number"]}'
+            name = f"{mp['Principal_desig']} - {mp['Name']} {mp['Number']}"
         elif "Principal_desig" in mp:
-            name = f'{mp["Principal_desig"]}'
+            name = f"{mp['Principal_desig']}"
         elif "Name" in mp:
-            name = f'{mp["Name"]} {mp["Number"]}'
+            name = f"{mp['Name']} {mp['Number']}"
         else:
             name = ""
         return name
@@ -177,7 +177,7 @@ class Comet(QObject):
                 self.ui.listComets.setItem(row, 3, entry)
 
             if "Perihelion_dist" in self.comets.objects[name]:
-                dist = f'{self.comets.objects[name]["Perihelion_dist"]:8.6f}'
+                dist = f"{self.comets.objects[name]['Perihelion_dist']:8.6f}"
                 entry = QTableWidgetItem(dist)
                 entry.setTextAlignment(
                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
@@ -185,7 +185,7 @@ class Comet(QObject):
                 self.ui.listComets.setItem(row, 4, entry)
 
             if "e" in self.comets.objects[name]:
-                e = f'{self.comets.objects[name]["e"]:8.5f}'
+                e = f"{self.comets.objects[name]['e']:8.5f}"
                 entry = QTableWidgetItem(e)
                 entry.setTextAlignment(
                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter

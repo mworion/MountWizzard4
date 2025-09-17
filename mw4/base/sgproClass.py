@@ -18,7 +18,7 @@
 import json
 
 # external packages
-from PySide6.QtCore import QTimer, QObject
+from PySide6.QtCore import QTimer, QMutex
 import requests
 
 # local imports
@@ -27,7 +27,7 @@ from base.driverDataClass import RemoteDeviceShutdown
 from base.tpool import Worker
 
 
-class SGProClass(DriverData, QObject):
+class SGProClass(DriverData):
     """ """
 
     SGPRO_TIMEOUT = 3
@@ -35,13 +35,16 @@ class SGProClass(DriverData, QObject):
     PORT = 59590
     PROTOCOL = "http"
     BASE_URL = f"{PROTOCOL}://{HOST_ADDR}:{PORT}"
+    DEVICE_TYPE = "Camera"
 
-    def __init__(self, app=None, data=None):
+    def __init__(self, parent):
         super().__init__()
-        self.app = app
-        self.threadPool = app.threadPool
-        self.msg = app.msg
-        self.data = data
+        self.parent = parent
+        self.app = parent.app
+        self.data = parent.data
+        self.msg = parent.app.msg
+        self.signals = parent.signals
+        self.threadPool = parent.app.threadPool
         self.updateRate = 1000
         self.loadConfig = False
         self._deviceName = ""
@@ -51,8 +54,12 @@ class SGProClass(DriverData, QObject):
         }
         self.signalRS = RemoteDeviceShutdown()
 
-        self.deviceConnected = False
-        self.serverConnected = False
+        self.deviceConnected: bool = False
+        self.serverConnected: bool = False
+        self.workerData: Worker = None
+        self.workerGetConfig: Worker = None
+        self.workerStatus: Worker = None
+        self.mutexPollStatus = QMutex()
 
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
@@ -71,12 +78,12 @@ class SGProClass(DriverData, QObject):
     def deviceName(self, value):
         self._deviceName = value
 
-    def requestProperty(self, valueProp, params: dict = {}) -> dict:
+    def requestProperty(self, valueProp, params: dict = None) -> dict:
         """ """
         try:
             t = f"SGPro: [{self.BASE_URL}/{valueProp}?format=json]"
             if params:
-                t += f' data: [{bytes(json.dumps(params).encode("utf-8"))}]'
+                t += f" data: [{bytes(json.dumps(params).encode('utf-8'))}]"
                 self.log.trace("POST " + t)
                 response = requests.post(
                     f"{self.BASE_URL}/{valueProp}?format=json",
@@ -121,12 +128,12 @@ class SGProClass(DriverData, QObject):
         response = self.requestProperty(prop)
         return response.get("Devices", [])
 
-    def startTimer(self) -> None:
+    def startSGProTimer(self) -> None:
         """ """
         self.cycleData.start(self.updateRate)
         self.cycleDevice.start(self.updateRate)
 
-    def stopTimer(self) -> None:
+    def stopSGProTimer(self) -> None:
         """ """
         self.cycleData.stop()
         self.cycleDevice.stop()
@@ -141,17 +148,17 @@ class SGProClass(DriverData, QObject):
         """ """
         if not self.deviceConnected:
             return
-        worker = Worker(self.workerPollData)
-        worker.signals.result.connect(self.processPolledData)
-        self.threadPool.start(worker)
+        self.workerData = Worker(self.workerPollData)
+        self.workerData.signals.result.connect(self.processPolledData)
+        self.threadPool.start(self.workerData)
 
     def workerGetInitialConfig(self) -> None:
         pass
 
     def getInitialConfig(self) -> None:
         """ """
-        worker = Worker(self.workerGetInitialConfig)
-        self.threadPool.start(worker)
+        self.workerGetConfig = Worker(self.workerGetInitialConfig)
+        self.threadPool.start(self.workerGetConfig)
 
     def workerPollStatus(self) -> None:
         """ """
@@ -177,10 +184,18 @@ class SGProClass(DriverData, QObject):
                 self.signals.deviceConnected.emit(f"{self.deviceName}")
                 self.msg.emit(0, "SGPRO", "Device found", f"{self.deviceName}")
 
+    def clearPollStatus(self) -> None:
+        """ """
+        self.mutexPollStatus.unlock()
+
     def pollStatus(self) -> None:
         """ """
-        worker = Worker(self.workerPollStatus)
-        self.threadPool.start(worker)
+        if not self.mutexPollStatus.tryLock():
+            return
+
+        self.workerStatus = Worker(self.workerPollStatus)
+        self.workerStatus.signals.finished.connect(self.clearPollStatus)
+        self.threadPool.start(self.workerStatus)
 
     def startCommunication(self) -> None:
         """ """
@@ -188,11 +203,11 @@ class SGProClass(DriverData, QObject):
         if not self.serverConnected:
             self.serverConnected = True
             self.signals.serverConnected.emit()
-        self.startTimer()
+        self.startSGProTimer()
 
     def stopCommunication(self) -> None:
         """ """
-        self.stopTimer()
+        self.stopSGProTimer()
         if self.deviceName != "SGPro controlled":
             self.sgDisconnectDevice()
         self.deviceConnected = False
@@ -201,7 +216,8 @@ class SGProClass(DriverData, QObject):
         self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
         self.msg.emit(0, "SGPRO", "Device remove", f"{self.deviceName}")
 
-    def discoverDevices(self) -> list:
+    def discoverDevices(self, deviceType: str) -> list:
         """ """
         discoverList = self.sgEnumerateDevice()
+        self.log.debug(f"[Type: {deviceType}: {discoverList}]")
         return discoverList

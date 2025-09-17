@@ -34,22 +34,29 @@ from base.driverDataClass import DriverData
 class AscomClass(DriverData):
     """ """
 
-    def __init__(self, app=None, data=None):
+    def __init__(self, parent):
         super().__init__()
-
-        self.app = app
-        self.data = data
-        self.threadPool = app.threadPool
-        self.msg = app.msg
+        self.parent = parent
+        self.app = parent.app
+        self.data = parent.data
+        self.signals = parent.signals
+        self.msg = parent.app.msg
+        self.deviceType = parent.deviceType
+        self.threadPool = parent.app.threadPool
         self.updateRate = 3000
         self.loadConfig = False
         self.tM = QMutex()
+        self.worker: Worker = None
+        self.workerData: Worker = None
+        self.workerGetConfig: Worker = None
+        self.workerStatus: Worker = None
+        self.workerConnect: Worker = None
 
         self.client = None
-        self.propertyExceptions = []
-        self.deviceName = ""
-        self.deviceConnected = False
-        self.serverConnected = False
+        self.propertyExceptions: list = []
+        self.deviceName: str = ""
+        self.deviceConnected: bool = False
+        self.serverConnected: bool = False
 
         self.defaultConfig = {
             "deviceName": "",
@@ -63,12 +70,12 @@ class AscomClass(DriverData):
         self.cyclePollData.setSingleShot(False)
         self.cyclePollData.timeout.connect(self.pollData)
 
-    def startTimer(self) -> None:
+    def startAscomTimer(self) -> None:
         """ """
         self.cyclePollData.start(self.updateRate)
         self.cyclePollStatus.start(self.updateRate)
 
-    def stopTimer(self) -> None:
+    def stopAscomTimer(self) -> None:
         """ """
         self.cyclePollData.stop()
         self.cyclePollStatus.stop()
@@ -79,8 +86,8 @@ class AscomClass(DriverData):
         if valueProp in self.propertyExceptions:
             return value
 
+        cmd = "self.client." + valueProp
         try:
-            cmd = "self.client." + valueProp
             value = eval(cmd)
         except Exception as e:
             t = f"[{self.deviceName}] [{cmd}], property [{valueProp}] not implemented: {e}"
@@ -92,16 +99,15 @@ class AscomClass(DriverData):
                 self.log.trace(t)
             else:
                 self.log.trace(f"{self.deviceName}] property [{valueProp}]")
-        finally:
-            return value
+        return value
 
     def setAscomProperty(self, valueProp: str, value: Union[str, float]) -> None:
         """ """
         if valueProp in self.propertyExceptions:
             return
 
+        cmd = "self.client." + valueProp + " = value"
         try:
-            cmd = "self.client." + valueProp + " = value"
             exec(cmd)
         except Exception as e:
             t = f"[{self.deviceName}] [{cmd}], property [{valueProp}] not implemented: {e}"
@@ -118,8 +124,8 @@ class AscomClass(DriverData):
             return
 
         paramStr = f"{param}".rstrip(")").lstrip("(")
+        cmd = "self.client." + method + f"({paramStr})"
         try:
-            cmd = "self.client." + method + f"({paramStr})"
             exec(cmd)
         except Exception as e:
             t = f"[{self.deviceName}] [{cmd}], method [{method}] not implemented: {e}"
@@ -167,7 +173,7 @@ class AscomClass(DriverData):
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f"{self.deviceName}")
             self.msg.emit(0, "ASCOM ", "Device found", f"{self.deviceName}")
-            self.startTimer()
+            self.startAscomTimer()
             self.getInitialConfig()
 
     def workerGetInitialConfig(self) -> None:
@@ -197,7 +203,7 @@ class AscomClass(DriverData):
         fn(*args, **kwargs)
         CoUninitialize()
 
-    def callMethodThreaded(self, fn, *args, cb_res=None, cb_fin=None, **kwargs):
+    def callMethodThreaded(self, fn, *args, cb_res=None, cb_fin=None, **kwargs) -> None:
         """
         callMethodThreaded is done mainly for ASCOM ctypes interfaces which take
         longer to end and should not slow down the gui thread itself. All called
@@ -210,23 +216,22 @@ class AscomClass(DriverData):
 
         :param fn: function
         :param args:
-        :param cb_res: callback
-        :param cb_fin: callback
+        :param cb_res: callback result
+        :param cb_fin: callback finished
         :param kwargs:
         :return:
         """
         if not self.deviceConnected:
-            return False
+            return
 
-        worker = Worker(self.callerInitUnInit, fn, *args, **kwargs)
+        self.worker = Worker(self.callerInitUnInit, fn, *args, **kwargs)
         t = f"ASCOM threaded: [{fn}], args:[{args}], kwargs:[{kwargs}]"
         self.log.trace(t)
         if cb_res:
-            worker.signals.result.connect(cb_res)
+            self.worker.signals.result.connect(cb_res)
         if cb_fin:
-            worker.signals.finished.connect(cb_fin)
-        self.threadPool.start(worker)
-        return True
+            self.worker.signals.finished.connect(cb_fin)
+        self.threadPool.start(self.worker)
 
     def processPolledData(self) -> None:
         """ """
@@ -238,15 +243,19 @@ class AscomClass(DriverData):
 
     def pollData(self) -> None:
         """ """
-        self.callMethodThreaded(self.workerPollData, cb_res=self.processPolledData)
+        self.workerData = Worker(self.workerPollData)
+        self.workerData.signals.result.connect(self.processPolledData)
+        self.threadPool.start(self.workerData)
 
     def pollStatus(self) -> None:
         """ """
-        self.callMethodThreaded(self.workerPollStatus)
+        self.workerStatus = Worker(self.workerPollStatus)
+        self.threadPool.start(self.workerStatus)
 
     def getInitialConfig(self) -> None:
         """ """
-        self.callMethodThreaded(self.workerGetInitialConfig)
+        self.workerGetConfig = Worker(self.workerGetInitialConfig)
+        self.threadPool.start(self.workerGetConfig)
 
     def startCommunication(self) -> None:
         """ """
@@ -262,12 +271,12 @@ class AscomClass(DriverData):
             self.log.error(f"[{self.deviceName}] Dispatch error: [{e}]")
             return
 
-        worker = Worker(self.callerInitUnInit, self.workerConnectDevice)
-        self.threadPool.start(worker)
+        self.workerConnect = Worker(self.callerInitUnInit, self.workerConnectDevice)
+        self.threadPool.start(self.workerConnect)
 
     def stopCommunication(self) -> None:
         """ """
-        self.stopTimer()
+        self.stopAscomTimer()
         if self.client:
             self.setAscomProperty("Connected", False)
             self.deviceConnected = False
@@ -277,3 +286,16 @@ class AscomClass(DriverData):
         self.signals.deviceDisconnected.emit(f"{self.deviceName}")
         self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
         self.msg.emit(0, "ALPACA", "Device  remove", f"{self.deviceName}")
+
+    def selectAscomDriver(self, deviceName: str) -> str:
+        """ """
+        try:
+            chooser = client.Dispatch("ASCOM.Utilities.Chooser")
+            chooser.DeviceType = self.deviceType
+            deviceName = chooser.Choose(deviceName)
+
+        except Exception as e:
+            self.log.critical(f"Error: {e}")
+            deviceName = ""
+
+        return deviceName

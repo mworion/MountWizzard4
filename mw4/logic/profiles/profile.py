@@ -86,7 +86,7 @@ def convertProfileData40to41(data: dict) -> dict:
     if "mainW" not in data:
         return data
 
-    log.info(f'Conversion from [{data.get("version")}] to [4.1]')
+    log.info(f"Conversion from [{data.get('version')}] to [4.1]")
     watney = {
         "deviceName": "Watney",
         "deviceList": ["Watney"],
@@ -129,7 +129,7 @@ def convertProfileData41to42(data: dict) -> dict:
     if actVer >= Version("4.2"):
         return data
 
-    log.info(f'Conversion from [{data.get("version")}] to [4.2]')
+    log.info(f"Conversion from [{data.get('version')}] to [4.2]")
     d = NestedDict(data)
     try:
         if "sensorWeather" in d["driversData"]:

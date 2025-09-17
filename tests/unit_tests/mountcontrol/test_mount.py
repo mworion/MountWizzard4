@@ -168,8 +168,17 @@ def test_cycleCheckMountUp_1(function):
 
 def test_cycleCheckMountUp_2(function):
     function.host = ("localhost", 80)
+    function.mutexCycleMountUp.lock()
     with mock.patch.object(function.threadPool, "start"):
         function.cycleCheckMountUp()
+    function.mutexCycleMountUp.unlock()
+
+
+def test_cycleCheckMountUp_3(function):
+    function.host = ("localhost", 80)
+    with mock.patch.object(function.threadPool, "start"):
+        function.cycleCheckMountUp()
+    function.mutexCycleMountUp.unlock()
 
 
 def test_clearCyclePointing_1(function):
@@ -214,8 +223,17 @@ def test_cyclePointing_1(function):
 
 def test_cyclePointing_2(function):
     function.mountUp = True
+    function.mutexCyclePointing.lock()
     with mock.patch.object(QThreadPool, "start"):
         function.cyclePointing()
+    function.mutexCyclePointing.unlock()
+
+
+def test_cyclePointing_3(function):
+    function.mountUp = True
+    with mock.patch.object(QThreadPool, "start"):
+        function.cyclePointing()
+    function.mutexCyclePointing.unlock()
 
 
 def test_clearCycleSetting_1(function):
@@ -230,8 +248,17 @@ def test_cycleSetting_1(function):
 
 def test_cycleSetting_2(function):
     function.mountUp = True
+    function.mutexCycleSetting.lock()
     with mock.patch.object(QThreadPool, "start"):
         function.cycleSetting()
+    function.mutexCycleSetting.unlock()
+
+
+def test_cycleSetting_3(function):
+    function.mountUp = True
+    with mock.patch.object(QThreadPool, "start"):
+        function.cycleSetting()
+    function.mutexCycleSetting.unlock()
 
 
 def test_clearGetModel_1(function):
@@ -402,27 +429,45 @@ def test_clearDome_1(function):
 
 
 def test_cycleDome_1(function):
-    function.mountUp = True
+    function.mountUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.cycleDome()
 
 
 def test_cycleDome_2(function):
-    function.mountUp = False
+    function.mountUp = True
+    function.mutexCycleDome.lock()
     with mock.patch.object(QThreadPool, "start"):
         function.cycleDome()
+    function.mutexCycleDome.unlock()
+
+
+def test_cycleDome_3(function):
+    function.mountUp = True
+    with mock.patch.object(QThreadPool, "start"):
+        function.cycleDome()
+    function.mutexCycleDome.unlock()
 
 
 def test_cycleClock_1(function):
-    function.mountUp = True
+    function.mountUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.cycleClock()
 
 
 def test_cycleClock_2(function):
-    function.mountUp = False
+    function.mountUp = True
+    function.mutexCycleClock.lock()
     with mock.patch.object(QThreadPool, "start"):
         function.cycleClock()
+    function.mutexCycleClock.unlock()
+
+
+def test_cycleClock_3(function):
+    function.mountUp = True
+    with mock.patch.object(QThreadPool, "start"):
+        function.cycleClock()
+    function.mutexCycleClock.unlock()
 
 
 def test_workerProgTrajectory_1(function):
@@ -437,8 +482,9 @@ def test_workerProgTrajectory_2(function):
     alt = [10, 20, 30]
     az = [10, 20, 30]
     with mock.patch.object(function.satellite, "addTrajectoryPoint"):
-        suc = function.workerProgTrajectory(alt, az, False)
-        assert not suc
+        with mock.patch.object(function.satellite, "preCalcTrajectory"):
+            suc = function.workerProgTrajectory(alt, az, False)
+            assert not suc
 
 
 def test_clearProgTrajectory_1(function):

@@ -58,7 +58,7 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
     def openCSV(self) -> None:
         """ """
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
-        self.csvFilename = f'{self.app.mwGlob["measureDir"]}/measure-{nameTime}.csv'
+        self.csvFilename = f"{self.app.mwGlob['measureDir']}/measure-{nameTime}.csv"
 
         self.csvFile = open(self.csvFilename, "w+")
         fieldnames = [

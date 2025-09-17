@@ -609,7 +609,7 @@ class Client(QObject):
 
         iProperty = chunk.attr["name"]
 
-        self.log.trace(f"DEL: Device:{device.name}, " f"Property: {iProperty}")
+        self.log.trace(f"DEL: Device:{device.name}, Property: {iProperty}")
 
         if hasattr(device, iProperty):
             delattr(device, iProperty)
@@ -634,9 +634,7 @@ class Client(QObject):
         )
 
         self.log.trace(
-            f"SET: Device:{device.name}, "
-            f"Property: {iProperty}, "
-            f"Elements: {elementList}"
+            f"SET: Device:{device.name}, Property: {iProperty}, Elements: {elementList}"
         )
 
         if isinstance(chunk, indiXML.SetBLOBVector):
@@ -667,9 +665,7 @@ class Client(QObject):
             deviceName=deviceName, chunk=chunk, elementList=elementList, defVector=True
         )
         self.log.trace(
-            f"DEF: Device:{device.name}, "
-            f"Property: {iProperty}, "
-            f"Elements: {elementList}"
+            f"DEF: Device:{device.name}, Property: {iProperty}, Elements: {elementList}"
         )
         self.signals.newProperty.emit(deviceName, iProperty)
         if isinstance(chunk, indiXML.DefBLOBVector):

@@ -610,7 +610,7 @@ COORD</string>
     </font>
    </property>
    <property name="layoutDirection">
-    <enum>Qt::LeftToRight</enum>
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
    </property>
    <property name="text">
     <string>8
@@ -892,6 +892,9 @@ PLANET</string>
      <height>25</height>
     </rect>
    </property>
+   <property name="frame">
+    <bool>false</bool>
+   </property>
    <property name="readOnly">
     <bool>true</bool>
    </property>
@@ -907,6 +910,9 @@ PLANET</string>
      <width>256</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="frame">
+    <bool>false</bool>
    </property>
    <property name="readOnly">
     <bool>true</bool>
@@ -924,6 +930,9 @@ PLANET</string>
      <height>25</height>
     </rect>
    </property>
+   <property name="frame">
+    <bool>false</bool>
+   </property>
    <property name="readOnly">
     <bool>true</bool>
    </property>
@@ -940,6 +949,9 @@ PLANET</string>
      <height>25</height>
     </rect>
    </property>
+   <property name="frame">
+    <bool>false</bool>
+   </property>
    <property name="readOnly">
     <bool>true</bool>
    </property>
@@ -955,6 +967,9 @@ PLANET</string>
      <width>256</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="frame">
+    <bool>false</bool>
    </property>
    <property name="readOnly">
     <bool>true</bool>
@@ -989,7 +1004,7 @@ PLANET</string>
     </rect>
    </property>
    <property name="frameShadow">
-    <enum>QFrame::Plain</enum>
+    <enum>QFrame::Shadow::Plain</enum>
    </property>
    <property name="lineWidth">
     <number>3</number>
@@ -998,7 +1013,7 @@ PLANET</string>
     <number>0</number>
    </property>
    <property name="orientation">
-    <enum>Qt::Horizontal</enum>
+    <enum>Qt::Orientation::Horizontal</enum>
    </property>
   </widget>
   <zorder>label</zorder>

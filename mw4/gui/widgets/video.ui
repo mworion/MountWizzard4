@@ -209,6 +209,9 @@
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please enter source here. If you have and rtsp url, please leave rtsp:// out, but add the right port if needed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
        <property name="input" stdset="0">
         <bool>true</bool>
        </property>

@@ -58,6 +58,7 @@ class KeypadWindow(MWidget):
         self.keypad = KeyPad(self.signals)
         self.inputActive: bool = False
         self.websocketMutex = QMutex()
+        self.worker: Worker = None
 
         self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
         self.buttons = {
@@ -171,9 +172,9 @@ class KeypadWindow(MWidget):
 
         self.clearDisplay()
         self.writeTextRow(2, "Connecting ...")
-        worker = Worker(self.keypad.workerWebsocket, self.app.mount.host)
-        worker.signals.finished.connect(self.websocketClear)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.keypad.workerWebsocket, self.app.mount.host)
+        self.worker.signals.finished.connect(self.websocketClear)
+        self.threadPool.start(self.worker)
 
     def hostChanged(self) -> None:
         """ """

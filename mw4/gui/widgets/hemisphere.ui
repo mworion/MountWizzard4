@@ -526,7 +526,7 @@
         <item row="3" column="1">
          <widget class="QLineEdit" name="azimuth">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -545,6 +545,9 @@
             <width>50</width>
             <height>20</height>
            </size>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -554,7 +557,7 @@
         <item row="0" column="1">
          <widget class="QLineEdit" name="altitude">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -573,6 +576,9 @@
             <width>50</width>
             <height>20</height>
            </size>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -798,6 +804,9 @@
               <height>21</height>
              </size>
             </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
           <item row="3" column="0">
@@ -867,7 +876,7 @@
            </widget>
           </item>
           <item row="0" column="0" colspan="2">
-           <widget class="QPushButton" name="loadTerrainFile">
+           <widget class="QPushButton" name="selectTerrainFile">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -1129,6 +1138,9 @@
               <width>0</width>
               <height>21</height>
              </size>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
             </property>
            </widget>
           </item>

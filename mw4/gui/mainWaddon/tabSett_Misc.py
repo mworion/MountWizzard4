@@ -37,6 +37,7 @@ class SettMisc(QObject):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
+        self.worker: Worker = None
 
         self.audioSignalsSet = dict()
         self.guiAudioList = dict()
@@ -281,8 +282,8 @@ class SettMisc(QObject):
         """
         :return:
         """
-        worker = Worker(self.workerGameController)
-        self.app.threadPool.start(worker)
+        self.worker = Worker(self.workerGameController)
+        self.app.threadPool.start(self.worker)
         return True
 
     @staticmethod

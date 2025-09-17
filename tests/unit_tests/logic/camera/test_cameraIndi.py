@@ -23,12 +23,39 @@ import zlib
 from astropy.io import fits
 from indibase.indiDevice import Device
 from indibase.indiClient import Client
+from PySide6.QtCore import QObject, Signal
+
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.camera import Camera
 from logic.camera.cameraIndi import CameraIndi
 from base.indiClass import IndiClass
+from base.signalsDevices import Signals
+
+
+class Parent(QObject):
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+    binning = 1
+    posX = 0
+    posY = 0
+    width = 1000
+    height = 1000
+    exposureTime = 1
+    exposeFinished = Signal()
+    imagePath = "tests/work/image/test.fit"
+
+    def writeImageFitsHeader(self, hdu, data):
+        """Mock method to simulate writing FITS header."""
+        pass
+
+    def writePointingFitsHeader(self, hdu, data):
+        """Mock method to simulate writing pointing FITS header."""
+        pass
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -37,8 +64,9 @@ def function():
     camera.exposureTime = 1
     camera.binning = 1
     camera.focalLength = 1
-    func = CameraIndi(camera)
+    func = CameraIndi(parent=Parent())
     yield func
+    func.app.threadPool.waitForDone(5000)
 
 
 def test_setUpdateConfig_3(function):

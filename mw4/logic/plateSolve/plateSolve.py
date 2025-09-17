@@ -46,6 +46,7 @@ class PlateSolve:
         self.signals = Signals()
         self.solveQueue = queue.Queue()
         self.solveLoopRunning: bool = False
+        self.worker: Worker = None
 
         self.data: dict = {}
         self.defaultConfig: dict = {"framework": "", "frameworks": {}}
@@ -85,8 +86,8 @@ class PlateSolve:
     def startSolveLoop(self) -> None:
         """ """
         self.solveLoopRunning = True
-        worker = Worker(self.workerSolveLoop)
-        self.threadPool.start(worker)
+        self.worker = Worker(self.workerSolveLoop)
+        self.threadPool.start(self.worker)
 
     def checkAvailabilityProgram(self, framework: str) -> bool:
         """ """

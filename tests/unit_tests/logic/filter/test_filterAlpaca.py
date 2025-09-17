@@ -26,9 +26,17 @@ from logic.filter.filterAlpaca import FilterAlpaca
 from base.signalsDevices import Signals
 
 
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    func = FilterAlpaca(app=App(), signals=Signals(), data={})
+    func = FilterAlpaca(parent=Parent())
     yield func
 
 

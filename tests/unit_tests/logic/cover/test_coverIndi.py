@@ -28,9 +28,17 @@ from logic.cover.coverIndi import CoverIndi
 from base.signalsDevices import Signals
 
 
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    func = CoverIndi(app=App(), signals=Signals(), data={})
+    func = CoverIndi(parent=Parent())
     yield func
 
 

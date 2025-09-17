@@ -246,7 +246,7 @@ class Model(QObject):
         self.ui.timeEstimated.setText(datetime(*timeEstimated[:6]).strftime("%H:%M:%S"))
         self.ui.timeFinished.setText(datetime(*timeFinished[:6]).strftime("%H:%M:%S"))
         self.ui.modelProgress.setValue(progressData["modelPercent"])
-        self.ui.numberPoints.setText(f'{progressData["count"]} / {progressData["number"]}')
+        self.ui.numberPoints.setText(f"{progressData['count']} / {progressData['number']}")
 
     def setupModelInputData(self, excludeDonePoints: bool) -> None:
         """ """

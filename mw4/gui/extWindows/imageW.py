@@ -148,13 +148,13 @@ class ImageWindow(MWidget, SlewInterface):
         self.setAspectLocked()
         self.clearGui()
         self.setupIcons()
+        self.colorChange()
         self.show()
         self.showCurrent()
 
     def closeEvent(self, closeEvent) -> None:
         """ """
         self.storeConfig()
-        del self.tabs
         super().closeEvent(closeEvent)
 
     def setupIcons(self) -> None:
@@ -376,17 +376,17 @@ class ImageWindow(MWidget, SlewInterface):
             self.app.operationRunning.emit(Model.STATUS_IDLE)
             return
 
-        text = f'RA: {convertToHMS(result["raJ2000S"])} '
-        text += f'({result["raJ2000S"].hours:4.3f}), '
+        text = f"RA: {convertToHMS(result['raJ2000S'])} "
+        text += f"({result['raJ2000S'].hours:4.3f}), "
         self.msg.emit(0, "Image", "Solved", text)
-        text = f'DEC: {convertToDMS(result["decJ2000S"])} '
-        text += f'({result["decJ2000S"].degrees:4.3f}), '
+        text = f"DEC: {convertToDMS(result['decJ2000S'])} "
+        text += f"({result['decJ2000S'].degrees:4.3f}), "
         self.msg.emit(0, "", "", text)
-        text = f'Angle: {result["angleS"].degrees:3.0f}, '
+        text = f"Angle: {result['angleS'].degrees:3.0f}, "
         self.msg.emit(0, "", "", text)
-        text = f'Scale: {result["scaleS"]:4.3f}, '
+        text = f"Scale: {result['scaleS']:4.3f}, "
         self.msg.emit(0, "", "", text)
-        text = f'Error: {result["errorRMS_S"]:4.1f}'
+        text = f"Error: {result['errorRMS_S']:4.1f}"
         self.msg.emit(0, "", "", text)
 
         if self.ui.embedData.isChecked():

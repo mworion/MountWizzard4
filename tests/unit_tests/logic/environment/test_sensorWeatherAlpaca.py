@@ -26,9 +26,17 @@ from logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
 from base.signalsDevices import Signals
 
 
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    func = SensorWeatherAlpaca(app=App(), signals=Signals(), data={})
+    func = SensorWeatherAlpaca(parent=Parent())
     yield func
 
 

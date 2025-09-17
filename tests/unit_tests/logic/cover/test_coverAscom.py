@@ -26,9 +26,21 @@ import PySide6
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.cover.coverAscom import CoverAscom
 from base.signalsDevices import Signals
+from base.loggerMW import setupLogging
+
+setupLogging()
 
 if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
+
+
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    deviceType = ""
+    loadConfig = True
+    updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="function")
@@ -64,7 +76,7 @@ def function():
             return True
 
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = CoverAscom(app=App(), signals=Signals(), data={})
+        func = CoverAscom(parent=Parent)
         func.client = Test1()
         func.clientProps = []
         yield func

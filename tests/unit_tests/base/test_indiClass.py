@@ -31,18 +31,18 @@ from base.signalsDevices import Signals
 host_ip = "127.0.0.1"
 
 
-class S(IndiClass):
-    def __init__(self, app=None, data=None):
-        self.signals = Signals()
-        self.data = data
-        super().__init__(app=app, data=None)
-        self.SHOW_COMM = True
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="function")
 def function():
     with mock.patch.object(QTimer, "start"):
-        func = S(app=App(), data={})
+        func = IndiClass(parent=Parent())
         yield func
 
 
@@ -356,20 +356,20 @@ def test_updateMessage_6(function):
 
 def test_addDiscoveredDevice_1(function):
     device = Device()
-    function.indiClass = S(app=App())
+    function.indiClass = IndiClass(parent=Parent())
     with mock.patch.object(device, "getText", return_value={"DRIVER_INTERFACE": None}):
         function.addDiscoveredDevice("telescope", "test")
 
 
 def test_addDiscoveredDevice_2(function):
-    function.indiClass = S(app=App())
+    function.indiClass = IndiClass(parent=Parent())
     function.indiClass.client.devices["telescope"] = {}
     function.addDiscoveredDevice("telescope", "DRIVER_INFO")
 
 
 def test_addDiscoveredDevice_3(function):
     device = Device()
-    function.indiClass = S(app=App())
+    function.indiClass = IndiClass(parent=Parent())
     function.client.devices["telescope"] = device
     function.discoverType = None
     with mock.patch.object(device, "getText", return_value={}):
@@ -378,7 +378,7 @@ def test_addDiscoveredDevice_3(function):
 
 def test_addDiscoveredDevice_4(function):
     device = Device()
-    function.indiClass = S(app=App())
+    function.indiClass = IndiClass(parent=Parent())
     function.client.devices["telescope"] = device
     function.discoverType = None
     function.discoverList = list()
@@ -388,7 +388,7 @@ def test_addDiscoveredDevice_4(function):
 
 def test_addDiscoveredDevice_5(function):
     device = Device()
-    function.indiClass = S(app=App())
+    function.indiClass = IndiClass(parent=Parent())
     function.client.devices["telescope"] = device
     function.discoverType = 1
     function.discoverList = list()

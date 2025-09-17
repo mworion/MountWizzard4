@@ -42,7 +42,7 @@ class DownloadPopup(MWidget):
         self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
         self.threadPool = parentWidget.app.threadPool
-        self.worker = None
+        self.worker: Worker = None
 
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self)

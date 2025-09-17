@@ -30,15 +30,18 @@ import gui.extWindows.imageW
 from gui.utilities.toolsQtWidget import MWidget
 from gui.utilities.slewInterface import SlewInterface
 from gui.extWindows.imageW import ImageWindow
+from gui.extWindows.image.imageTabs import ImageTabs
 from logic.photometry.photometry import Photometry
 from logic.file.fileHandler import FileHandler
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    func = ImageWindow(app=App())
-    yield func
-    func.app.threadPool.waitForDone(10000)
+    with mock.patch.object(ImageTabs, "setCrosshair"):
+        with mock.patch.object(ImageTabs, "colorChange"):
+            func = ImageWindow(app=App())
+            yield func
+            func.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):

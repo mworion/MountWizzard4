@@ -72,18 +72,24 @@
      </property>
      <item>
       <widget class="QGroupBox" name="groupImageActions">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="title">
         <string>Image actions</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <layout class="QGridLayout" name="gridLayout_4">
+       <layout class="QGridLayout" name="gridLayout_4" rowminimumheight="0,0,0,0">
         <property name="leftMargin">
          <number>5</number>
         </property>
         <property name="topMargin">
-         <number>10</number>
+         <number>15</number>
         </property>
         <property name="rightMargin">
          <number>5</number>
@@ -269,13 +275,19 @@
      </item>
      <item>
       <widget class="QGroupBox" name="groupBox">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="title">
         <string>Image View</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,0,0">
+       <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,0,0" rowminimumheight="0,0,0">
         <property name="leftMargin">
          <number>5</number>
         </property>
@@ -386,6 +398,12 @@
      </item>
      <item>
       <widget class="QGroupBox" name="photometryGroup">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="title">
         <string>Photometry</string>
        </property>
@@ -395,7 +413,7 @@
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <layout class="QGridLayout" name="Imageview">
+       <layout class="QGridLayout" name="Imageview" rowminimumheight="0,0,0">
         <property name="leftMargin">
          <number>10</number>
         </property>
@@ -1242,6 +1260,9 @@
           <property name="enabled">
            <bool>true</bool>
           </property>
+          <property name="frame">
+           <bool>false</bool>
+          </property>
           <property name="readOnly">
            <bool>true</bool>
           </property>
@@ -1271,6 +1292,9 @@
          <widget class="QLineEdit" name="scale">
           <property name="enabled">
            <bool>true</bool>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
           </property>
           <property name="readOnly">
            <bool>true</bool>
@@ -1309,6 +1333,9 @@
           <property name="enabled">
            <bool>true</bool>
           </property>
+          <property name="frame">
+           <bool>false</bool>
+          </property>
           <property name="readOnly">
            <bool>true</bool>
           </property>
@@ -1318,6 +1345,9 @@
          <widget class="QLineEdit" name="rotation">
           <property name="enabled">
            <bool>true</bool>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
           </property>
           <property name="readOnly">
            <bool>true</bool>
@@ -1336,6 +1366,9 @@
           <property name="enabled">
            <bool>true</bool>
           </property>
+          <property name="frame">
+           <bool>false</bool>
+          </property>
           <property name="readOnly">
            <bool>true</bool>
           </property>
@@ -1346,6 +1379,9 @@
           <property name="enabled">
            <bool>true</bool>
           </property>
+          <property name="frame">
+           <bool>false</bool>
+          </property>
           <property name="readOnly">
            <bool>true</bool>
           </property>
@@ -1355,6 +1391,9 @@
          <widget class="QLineEdit" name="exposureTime">
           <property name="enabled">
            <bool>true</bool>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
           </property>
           <property name="readOnly">
            <bool>true</bool>
@@ -1373,6 +1412,9 @@
           <property name="enabled">
            <bool>true</bool>
           </property>
+          <property name="frame">
+           <bool>false</bool>
+          </property>
           <property name="readOnly">
            <bool>true</bool>
           </property>
@@ -1389,6 +1431,9 @@
          <widget class="QLineEdit" name="binY">
           <property name="enabled">
            <bool>true</bool>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
           </property>
           <property name="readOnly">
            <bool>true</bool>
@@ -1407,6 +1452,9 @@
           <property name="enabled">
            <bool>true</bool>
           </property>
+          <property name="frame">
+           <bool>false</bool>
+          </property>
           <property name="readOnly">
            <bool>true</bool>
           </property>
@@ -1416,6 +1464,9 @@
          <widget class="QLineEdit" name="filter">
           <property name="enabled">
            <bool>true</bool>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
           </property>
           <property name="readOnly">
            <bool>true</bool>
@@ -1478,6 +1529,9 @@
           <property name="enabled">
            <bool>true</bool>
           </property>
+          <property name="frame">
+           <bool>false</bool>
+          </property>
           <property name="readOnly">
            <bool>true</bool>
           </property>
@@ -1508,6 +1562,9 @@
          <widget class="QLineEdit" name="decFloat">
           <property name="enabled">
            <bool>true</bool>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
           </property>
           <property name="readOnly">
            <bool>true</bool>

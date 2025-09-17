@@ -65,19 +65,19 @@
     <number>0</number>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignmentFlag::AlignCenter</set>
    </property>
    <property name="textVisible">
     <bool>true</bool>
    </property>
    <property name="orientation">
-    <enum>Qt::Horizontal</enum>
+    <enum>Qt::Orientation::Horizontal</enum>
    </property>
    <property name="invertedAppearance">
     <bool>false</bool>
    </property>
    <property name="textDirection">
-    <enum>QProgressBar::TopToBottom</enum>
+    <enum>QProgressBar::Direction::TopToBottom</enum>
    </property>
   </widget>
   <widget class="QLineEdit" name="statusText">
@@ -88,6 +88,9 @@
      <width>291</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="frame">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="icon">

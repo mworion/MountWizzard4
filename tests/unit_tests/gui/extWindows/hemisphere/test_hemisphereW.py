@@ -28,7 +28,7 @@ import pyqtgraph as pg
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.hemisphereW import HemisphereWindow
+from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 
 
 @pytest.fixture(autouse=True, scope="module")

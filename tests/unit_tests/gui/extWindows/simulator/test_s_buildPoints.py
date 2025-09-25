@@ -26,7 +26,7 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.extWindows.simulatorW import SimulatorWindow
+from gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 
 @pytest.fixture(autouse=True, scope="module")

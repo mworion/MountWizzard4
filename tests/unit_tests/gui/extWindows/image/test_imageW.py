@@ -26,7 +26,7 @@ from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-import gui.extWindows.imageW
+import gui.extWindows.image.imageW
 from gui.utilities.toolsQtWidget import MWidget
 from gui.utilities.slewInterface import SlewInterface
 from gui.extWindows.image.imageW import ImageWindow

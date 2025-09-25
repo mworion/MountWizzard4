@@ -410,7 +410,7 @@ def test_syncModelToImage_3(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
     with mock.patch.object(
-        gui.extWindows.imageW, "getCoordinatesFromHeader", return_value=(None, None)
+        gui.extWindows.image.imageW, "getCoordinatesFromHeader", return_value=(None, None)
     ):
         with mock.patch.object(
             function.app.mount.obsSite, "syncPositionToTarget", return_value=False
@@ -422,7 +422,7 @@ def test_syncModelToImage_4(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
     with mock.patch.object(
-        gui.extWindows.imageW,
+        gui.extWindows.image.imageW,
         "getCoordinatesFromHeader",
         return_value=(Angle(hours=10), Angle(degrees=10)),
     ):
@@ -436,7 +436,7 @@ def test_syncModelToImage_5(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
     with mock.patch.object(
-        gui.extWindows.imageW,
+        gui.extWindows.image.imageW,
         "getCoordinatesFromHeader",
         return_value=(Angle(hours=10), Angle(degrees=10)),
     ):

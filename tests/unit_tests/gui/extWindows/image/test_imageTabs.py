@@ -28,7 +28,7 @@ from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.extWindows.imageW import ImageWindow
+from gui.extWindows.image.imageW import ImageWindow
 from gui.extWindows.image.imageTabs import ImageTabs
 from logic.photometry.photometry import Photometry
 from logic.file.fileHandler import FileHandler

@@ -29,7 +29,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 import gui.extWindows.imageW
 from gui.utilities.toolsQtWidget import MWidget
 from gui.utilities.slewInterface import SlewInterface
-from gui.extWindows.imageW import ImageWindow
+from gui.extWindows.image.imageW import ImageWindow
 from gui.extWindows.image.imageTabs import ImageTabs
 from logic.photometry.photometry import Photometry
 from logic.file.fileHandler import FileHandler

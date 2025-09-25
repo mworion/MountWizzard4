@@ -29,7 +29,7 @@ import pyqtgraph as pg
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.slewInterface import SlewInterface
-from gui.extWindows.hemisphereW import HemisphereWindow
+from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
 from mountcontrol.setting import Setting
 

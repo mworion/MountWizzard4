@@ -28,7 +28,7 @@ import cv2
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.video.videoBase import VideoWindowBase
-import gui.extWindows.videoW
+import gui.extWindows.video.videoW
 
 
 @pytest.fixture(autouse=True, scope="module")

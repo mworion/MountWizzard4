@@ -19,20 +19,20 @@
 # external packages
 
 # local import
-from gui.extWindows.videoW import VideoWindow
+from gui.extWindows.video.videoW import VideoWindow
 
 
-class VideoWindow1(VideoWindow):
+class VideoWindow2(VideoWindow):
     """ """
 
     def __init__(self, app):
         super().__init__(app=app)
-        self.setWindowTitle("Video Stream 1")
-        self.setObjectName("Video1")
+        self.setWindowTitle("Video Stream 2")
+        self.setObjectName("Video2")
 
     def initConfig(self) -> None:
         """ """
-        config = self.app.config.get("videoW1", {})
+        config = self.app.config.get("videoW2", {})
 
         self.positionWindow(config)
         self.ui.videoURL.setText(config.get("videoURL", ""))
@@ -44,8 +44,8 @@ class VideoWindow1(VideoWindow):
     def storeConfig(self) -> None:
         """ """
         configMain = self.app.config
-        configMain["videoW1"] = {}
-        config = configMain["videoW1"]
+        configMain["videoW2"] = {}
+        config = configMain["videoW2"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

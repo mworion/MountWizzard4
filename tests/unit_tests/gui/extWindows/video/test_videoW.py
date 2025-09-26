@@ -27,7 +27,7 @@ import cv2
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.videoW import VideoWindow
+from gui.extWindows.video.videoW import VideoWindow
 import gui.extWindows.videoW
 
 
@@ -265,7 +265,7 @@ def test_stopVideoStream_1(function):
 def test_restartVideo(function):
     with mock.patch.object(function, "stopVideo"):
         with mock.patch.object(function, "startVideo"):
-            with mock.patch.object(gui.extWindows.videoW, "sleepAndEvents"):
+            with mock.patch.object(gui.extWindows.video.videoW, "sleepAndEvents"):
                 function.restartVideo()
 
 

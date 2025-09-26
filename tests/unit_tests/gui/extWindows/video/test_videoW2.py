@@ -24,12 +24,12 @@ from PySide6.QtGui import QCloseEvent
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.videoW1 import VideoWindow1
+from gui.extWindows.video.videoW2 import VideoWindow2
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    func = VideoWindow1(app=App())
+    func = VideoWindow2(app=App())
     with mock.patch.object(func, "show"):
         yield func
         func.app.threadPool.waitForDone(10000)
@@ -40,14 +40,14 @@ def test_initConfig_1(function):
 
 
 def test_storeConfig_1(function):
-    if "videoW1" in function.app.config:
-        del function.app.config["videoW1"]
+    if "videoW2" in function.app.config:
+        del function.app.config["videoW2"]
 
     function.storeConfig()
 
 
 def test_storeConfig_2(function):
-    function.app.config["videoW1"] = {}
+    function.app.config["videoW2"] = {}
 
     function.storeConfig()
 

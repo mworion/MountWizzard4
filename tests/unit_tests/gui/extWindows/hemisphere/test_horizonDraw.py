@@ -31,7 +31,7 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.extWindows.hemisphereW import HemisphereWindow
+from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from gui.extWindows.hemisphere.horizonDraw import HorizonDraw
 from gui.utilities.gCustomViewBox import CustomViewBox
 

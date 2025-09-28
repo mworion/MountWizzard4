@@ -111,7 +111,7 @@ def version_doc(c):
     printMW("changing the version number to setup.py")
 
     # getting version of desired package
-    with open("setup.py") as setup:
+    with open("pyproject.toml") as setup:
         text = setup.readlines()
 
     for line in text:

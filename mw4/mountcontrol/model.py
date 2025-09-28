@@ -7,7 +7,7 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
 # Michael Würtenberger
 #

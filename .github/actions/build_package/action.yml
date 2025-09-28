@@ -32,6 +32,8 @@ runs:
         python -m pip install setuptools wheel build
         python -m build
         mv dist/mountwizzard4*.* dist/mountwizzard4.tar.gz
+        ls -la
+        ls -la dist
       shell: bash
 
     - name: upload package

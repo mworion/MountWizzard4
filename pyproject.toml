@@ -5,6 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mountwizzard4"
 version = "4.0.0a25"
+license = "Apache-2.0"
 description = "Tool for managing 10micron mounts"
 readme = "README.rst"
 license = {text = "APL 2.0"}
@@ -31,7 +32,6 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "Topic :: Utilities",
     "Topic :: Scientific/Engineering :: Astronomy",
-    "License :: OSI Approved :: Apache Software License",
     "Natural Language :: English",
     "Natural Language :: German",
     "Topic :: Documentation :: Sphinx"

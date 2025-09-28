@@ -88,3 +88,7 @@ jobs:
           xvfb-run pytest tests/unit_tests/gui/mainWindow
           xvfb-run pytest tests/unit_tests/gui/mainWaddon
           xvfb-run pytest tests/unit_tests/gui/extWindows
+          xvfb-run pytest tests/unit_tests/gui/extWindows/video
+          xvfb-run pytest tests/unit_tests/gui/extWindows/image
+          xvfb-run pytest tests/unit_tests/gui/extWindows/hemisphere
+          xvfb-run pytest tests/unit_tests/gui/extWindows/simulator

@@ -27,13 +27,13 @@ import cv2
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.videoW import VideoWindow
-import gui.extWindows.videoW
+from gui.extWindows.video.videoBase import VideoWindowBase
+import gui.extWindows.video.videoBase
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    func = VideoWindow(app=App())
+    func = VideoWindowBase(app=App())
     with mock.patch.object(func, "show"):
         yield func
         func.app.threadPool.waitForDone(10000)
@@ -265,7 +265,7 @@ def test_stopVideoStream_1(function):
 def test_restartVideo(function):
     with mock.patch.object(function, "stopVideo"):
         with mock.patch.object(function, "startVideo"):
-            with mock.patch.object(gui.extWindows.videoW, "sleepAndEvents"):
+            with mock.patch.object(gui.extWindows.video.videoBase, "sleepAndEvents"):
                 function.restartVideo()
 
 

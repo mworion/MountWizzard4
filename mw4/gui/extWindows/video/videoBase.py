@@ -30,7 +30,7 @@ from base.tpool import Worker
 from gui.utilities.toolsQtWidget import sleepAndEvents, changeStyleDynamic
 
 
-class VideoWindow(MWidget):
+class VideoWindowBase(MWidget):
     """ """
 
     pixmapReady = Signal(object)

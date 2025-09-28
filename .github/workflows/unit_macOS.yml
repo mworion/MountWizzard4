@@ -59,6 +59,10 @@ jobs:
           pytest tests/unit_tests/mainApp
           pytest tests/unit_tests/gui/mainWindow
           pytest tests/unit_tests/gui/extWindows
+          pytest tests/unit_tests/gui/extWindows/video
+          pytest tests/unit_tests/gui/extWindows/image
+          pytest tests/unit_tests/gui/extWindows/hemisphere
+          pytest tests/unit_tests/gui/extWindows/simulator
           pytest tests/unit_tests/gui/mainWaddon
 
   run_tests_macos_2:

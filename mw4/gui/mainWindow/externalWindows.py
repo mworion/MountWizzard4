@@ -24,16 +24,13 @@ from PySide6.QtCore import QObject
 from gui.utilities.toolsQtWidget import sleepAndEvents, changeStyleDynamic
 from gui.extWindows.keypadW import KeypadWindow
 from gui.extWindows.messageW import MessageWindow
-from gui.extWindows.hemisphereW import HemisphereWindow
+from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from gui.extWindows.measureW import MeasureWindow
-from gui.extWindows.imageW import ImageWindow
+from gui.extWindows.image.imageW import ImageWindow
 from gui.extWindows.satelliteW import SatelliteWindow
 from gui.extWindows.analyseW import AnalyseWindow
-from gui.extWindows.videoW1 import VideoWindow1
-from gui.extWindows.videoW2 import VideoWindow2
-from gui.extWindows.videoW3 import VideoWindow3
-from gui.extWindows.videoW4 import VideoWindow4
-from gui.extWindows.simulatorW import SimulatorWindow
+from gui.extWindows.video.videoW import VideoWindow
+from gui.extWindows.simulator.simulatorW import SimulatorWindow
 from gui.extWindows.bigPopupW import BigPopup
 
 
@@ -86,25 +83,25 @@ class ExternalWindows(QObject):
                 "button": self.mainW.ui.openV1,
                 "classObj": None,
                 "name": "Video1",
-                "class": VideoWindow1,
+                "class": VideoWindow,
             },
             "showVideoW2": {
                 "button": self.mainW.ui.openV2,
                 "classObj": None,
                 "name": "Video2",
-                "class": VideoWindow2,
+                "class": VideoWindow,
             },
             "showVideoW3": {
                 "button": self.mainW.ui.openV3,
                 "classObj": None,
                 "name": "Video3",
-                "class": VideoWindow3,
+                "class": VideoWindow,
             },
             "showVideoW4": {
                 "button": self.mainW.ui.openV4,
                 "classObj": None,
                 "name": "Video4",
-                "class": VideoWindow4,
+                "class": VideoWindow,
             },
             "showKeypadW": {
                 "button": self.mainW.ui.openKeypadW,

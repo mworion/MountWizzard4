@@ -30,8 +30,7 @@ on:
     paths:
       - 'mw4/**'
       - 'tests/unit_tests/**'
-      - 'setup.py'
-      - 'tox.ini'
+      - 'pyproject.toml'
       - '.github/workflows/unit_win.yml'
       - '.github/actions/build_package/action.yml'
       - '.github/actions/setup_test/action.yml'

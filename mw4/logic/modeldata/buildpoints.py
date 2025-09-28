@@ -614,8 +614,7 @@ class DataPoint(object):
         startL = self.START[selection]
         stopL = self.STOP[selection]
 
-        for dec, step, start, stop in zip(decL, stepL, startL, stopL):
-            yield dec, step, start, stop
+        yield from zip(decL, stepL, startL, stopL)
 
     def genGreaterCircle(self, selection="norm", keep=False):
         """

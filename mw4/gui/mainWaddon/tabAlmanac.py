@@ -14,21 +14,21 @@
 #
 ###########################################################
 # standard libraries
-from dateutil.tz import tzlocal
-
-# external packages
-from PySide6.QtGui import QPixmap, QPainter, QPen, QColor
-from PySide6.QtCore import Qt, QPointF, QObject
-import pyqtgraph as pg
-from skyfield import almanac
-from skyfield.toposlib import GeographicPosition
-from skyfield.trigonometry import position_angle_of
 import numpy as np
-from range_key_dict import RangeKeyDict
+import pyqtgraph as pg
 
 # local import
 from base.tpool import Worker
+from dateutil.tz import tzlocal
 from gui.utilities.toolsQtWidget import changeStyleDynamic
+from PySide6.QtCore import QObject, QPointF, Qt
+
+# external packages
+from PySide6.QtGui import QColor, QPainter, QPen, QPixmap
+from range_key_dict import RangeKeyDict
+from skyfield import almanac
+from skyfield.toposlib import GeographicPosition
+from skyfield.trigonometry import position_angle_of
 
 
 class Almanac(QObject):

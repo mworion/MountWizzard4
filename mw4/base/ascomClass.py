@@ -21,12 +21,12 @@ if platform.system() == "Windows":
     from win32com import client
 
 # external packages
-from PySide6.QtCore import QTimer, QMutex
+from base.driverDataClass import DriverData
+from base.tpool import Worker
 
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
-from base.tpool import Worker
-from base.driverDataClass import DriverData
+from PySide6.QtCore import QMutex, QTimer
 
 
 class AscomClass(DriverData):

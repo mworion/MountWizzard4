@@ -16,10 +16,9 @@
 # standard libraries
 
 # external packages
-from PySide6.QtCore import QObject
-
 # local import
 from gui.utilities.toolsQtWidget import guiSetText
+from PySide6.QtCore import QObject
 
 
 class ModelStatus(QObject):

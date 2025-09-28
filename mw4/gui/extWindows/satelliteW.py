@@ -15,19 +15,20 @@
 ###########################################################
 # standard libraries
 import pickle
-from io import BytesIO
 from collections.abc import Iterator
+from io import BytesIO
 
-# external packages
-from PySide6.QtCore import QFile, Qt
 import numpy as np
-from skyfield.api import wgs84, Timescale
 import pyqtgraph as pg
-from pyqtgraph import PlotWidget
 
 # local import
 from gui.utilities import toolsQtWidget
 from gui.widgets import satellite_ui
+from pyqtgraph import PlotWidget
+
+# external packages
+from PySide6.QtCore import QFile, Qt
+from skyfield.api import Timescale, wgs84
 
 
 class SatelliteWindow(toolsQtWidget.MWidget):

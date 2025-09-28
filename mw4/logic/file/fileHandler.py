@@ -14,21 +14,22 @@
 #
 ###########################################################
 # standard libraries
-import os
 import logging
+import os
 from pathlib import Path
 
-# external packages
-from PySide6.QtCore import Signal, QObject
-import numpy as np
 import cv2
+import numpy as np
 from astropy import wcs
 from astropy.io import fits
-from xisf import XISF
 
 # local import
 from base.tpool import Worker
 from mountcontrol.convert import valueToFloat
+
+# external packages
+from PySide6.QtCore import QObject, Signal
+from xisf import XISF
 
 
 class FileHandlerSignals(QObject):

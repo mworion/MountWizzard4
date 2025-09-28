@@ -17,14 +17,14 @@
 import platform
 import webbrowser
 
-# external packages
-from PySide6.QtCore import Qt, QObject
-from PySide6.QtGui import QColor, QTransform
-from PySide6.QtWidgets import QTableWidgetItem
-
 # local import
 from gui.styles.colors import colors
 from gui.utilities.toolsQtWidget import clickable
+
+# external packages
+from PySide6.QtCore import QObject, Qt
+from PySide6.QtGui import QColor, QTransform
+from PySide6.QtWidgets import QTableWidgetItem
 
 
 class EnvironSeeing(QObject):

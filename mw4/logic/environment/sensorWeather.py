@@ -18,11 +18,10 @@ import logging
 import platform
 
 # external packages
-
 # local imports
 from base.signalsDevices import Signals
-from logic.environment.sensorWeatherIndi import SensorWeatherIndi
 from logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
+from logic.environment.sensorWeatherIndi import SensorWeatherIndi
 
 if platform.system() == "Windows":
     from logic.environment.sensorWeatherAscom import SensorWeatherAscom

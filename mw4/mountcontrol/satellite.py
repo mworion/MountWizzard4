@@ -16,14 +16,14 @@
 # standard libraries
 import logging
 
-# external packages
-from skyfield.api import Angle
-
 # local imports
 from mountcontrol.connection import Connection
 from mountcontrol.convert import valueToFloat
 from mountcontrol.tleParams import TLEParams
 from mountcontrol.trajectoryParams import TrajectoryParams
+
+# external packages
+from skyfield.api import Angle
 
 
 class Satellite:

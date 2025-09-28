@@ -14,25 +14,26 @@
 #
 ###########################################################
 # standard libraries
-import socket
 import logging
+import socket
 
-# external packages
-from PySide6.QtCore import QTimer, QMutex
 import wakeonlan
-from skyfield.api import Angle
+from base.ethernet import checkFormatMAC
+from base.tpool import Worker
+from mountcontrol.dome import Dome
+from mountcontrol.firmware import Firmware
+from mountcontrol.geometry import Geometry
+from mountcontrol.model import Model
 
 # local imports
 from mountcontrol.mountSignals import MountSignals
-from mountcontrol.firmware import Firmware
 from mountcontrol.obsSite import ObsSite
-from mountcontrol.setting import Setting
 from mountcontrol.satellite import Satellite
-from mountcontrol.geometry import Geometry
-from mountcontrol.dome import Dome
-from mountcontrol.model import Model
-from base.ethernet import checkFormatMAC
-from base.tpool import Worker
+from mountcontrol.setting import Setting
+
+# external packages
+from PySide6.QtCore import QMutex, QTimer
+from skyfield.api import Angle
 
 __all__ = ["MountDevice"]
 

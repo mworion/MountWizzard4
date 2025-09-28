@@ -17,7 +17,6 @@
 import logging
 
 # external packages
-
 # local imports
 from base.signalsDevices import Signals
 from mountcontrol.setting import Setting

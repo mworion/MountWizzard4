@@ -14,20 +14,20 @@
 #
 ###########################################################
 # standard libraries
-import time
-import logging
 import json
+import logging
+import time
 from pathlib import Path
 
-# external packages
-from PySide6.QtCore import Signal, QObject
-from skyfield.api import Angle, Star
-
 # local imports
-from base.transform import JNowToJ2000, J2000ToJNow
-from logic.modelBuild.modelHandling import convertAngleToFloat, writeRetrofitData
+from base.transform import J2000ToJNow, JNowToJ2000
 from gui.utilities.toolsQtWidget import sleepAndEvents
+from logic.modelBuild.modelHandling import convertAngleToFloat, writeRetrofitData
 from mountcontrol.progStar import ProgStar
+
+# external packages
+from PySide6.QtCore import QObject, Signal
+from skyfield.api import Angle, Star
 
 
 class ModelData(QObject):

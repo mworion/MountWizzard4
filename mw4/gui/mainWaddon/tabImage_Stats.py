@@ -18,11 +18,11 @@ import webbrowser
 
 # external packages
 import numpy as np
-from range_key_dict import RangeKeyDict
-from PySide6.QtCore import QObject
 
 # local import
 from gui.utilities.toolsQtWidget import guiSetText
+from PySide6.QtCore import QObject
+from range_key_dict import RangeKeyDict
 
 
 class ImageStats(QObject):

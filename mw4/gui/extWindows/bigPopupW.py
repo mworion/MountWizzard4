@@ -18,9 +18,8 @@
 # external packages
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
+from gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
 from gui.widgets.bigPopup_ui import Ui_BigPopup
-from gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
 class BigPopup(MWidget):

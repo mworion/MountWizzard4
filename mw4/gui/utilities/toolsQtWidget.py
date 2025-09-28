@@ -14,26 +14,33 @@
 #
 ###########################################################
 # standard libraries
-import time
-import logging
 import datetime
-from dateutil.tz import tzlocal
+import logging
+import time
 from pathlib import Path
 
-# external packages
-from PySide6.QtCore import QCoreApplication
-from PySide6.QtWidgets import QWidget, QFileDialog, QMessageBox
-from PySide6.QtWidgets import QAbstractItemView
-from PySide6.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
-from PySide6.QtGui import QPainterPath, QTransform, QGuiApplication
-from PySide6.QtCore import QDir, QObject, Signal
-from PySide6.QtCore import Qt, QSize, QEvent
 import numpy as np
-from qimage2ndarray import rgb_view, array2qimage
+from dateutil.tz import tzlocal
 
 # local imports
 from gui.styles.styles import Styles
-from mountcontrol.convert import formatHstrToText, formatDstrToText
+from mountcontrol.convert import formatDstrToText, formatHstrToText
+
+# external packages
+from PySide6.QtCore import QCoreApplication, QDir, QEvent, QObject, QSize, Qt, Signal
+from PySide6.QtGui import (
+    QColor,
+    QGuiApplication,
+    QIcon,
+    QImage,
+    QPainter,
+    QPainterPath,
+    QPalette,
+    QPixmap,
+    QTransform,
+)
+from PySide6.QtWidgets import QAbstractItemView, QFileDialog, QMessageBox, QWidget
+from qimage2ndarray import array2qimage, rgb_view
 
 
 def sleepAndEvents(value: int) -> None:

@@ -17,15 +17,16 @@
 import logging
 import platform
 
+import numpy as np
+
 # external packages
 import PySide6
-import numpy as np
 
 # local imports
 from base.signalsDevices import Signals
 from base.transform import diffModulusAbs
-from logic.dome.domeIndi import DomeIndi
 from logic.dome.domeAlpaca import DomeAlpaca
+from logic.dome.domeIndi import DomeIndi
 
 if platform.system() == "Windows":
     from logic.dome.domeAscom import DomeAscom

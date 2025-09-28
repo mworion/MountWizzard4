@@ -16,9 +16,10 @@
 # standard libraries
 import logging
 
+import numpy as np
+
 # external packages
 import websocket
-import numpy as np
 
 # local imports
 

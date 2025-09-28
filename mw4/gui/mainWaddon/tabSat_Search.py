@@ -16,20 +16,24 @@
 # standard libraries
 
 # external packages
-from PySide6.QtCore import Qt, Signal, QRect, QPoint, QObject
-from PySide6.QtWidgets import QTableWidgetItem, QAbstractItemView
 import numpy as np
+from base.tpool import Worker
 
 # local import
 from gui.mainWaddon.astroObjects import AstroObjects
 from gui.mainWaddon.satData import SatData
 from gui.utilities.qCustomTableWidgetItem import QCustomTableWidgetItem
-from logic.databaseProcessing.sourceURL import satSourceURLs
-from base.tpool import Worker
-from logic.satellites.satellite_calculations import findSunlit, findSatUp
-from logic.satellites.satellite_calculations import checkTwilight, calcAppMag
-from logic.satellites.satellite_calculations import findRangeRate
 from gui.utilities.toolsQtWidget import changeStyleDynamic
+from logic.databaseProcessing.sourceURL import satSourceURLs
+from logic.satellites.satellite_calculations import (
+    calcAppMag,
+    checkTwilight,
+    findRangeRate,
+    findSatUp,
+    findSunlit,
+)
+from PySide6.QtCore import QObject, QPoint, QRect, Qt, Signal
+from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 
 class SatSearch(QObject, SatData):

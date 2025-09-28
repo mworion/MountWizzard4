@@ -16,14 +16,15 @@
 # standard libraries
 import logging
 
-# external packages
-from PySide6.QtCore import Signal, QObject
-from PySide6.QtWidgets import QListView
+from gui.extWindows.downloadPopupW import DownloadPopup
+from gui.extWindows.uploadPopupW import UploadPopup
 
 # local import
 from logic.databaseProcessing.dataWriter import DataWriter
-from gui.extWindows.downloadPopupW import DownloadPopup
-from gui.extWindows.uploadPopupW import UploadPopup
+
+# external packages
+from PySide6.QtCore import QObject, Signal
+from PySide6.QtWidgets import QListView
 
 
 class AstroObjects(QObject):

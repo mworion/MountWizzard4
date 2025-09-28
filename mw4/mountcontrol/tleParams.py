@@ -16,11 +16,11 @@
 # standard libraries
 import logging
 
-# external packages
-from skyfield.units import Angle
-
 # local imports
 from mountcontrol.convert import valueToAngle, valueToFloat
+
+# external packages
+from skyfield.units import Angle
 
 
 class TLEParams:

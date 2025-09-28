@@ -18,15 +18,15 @@ import os
 import re
 from pathlib import Path
 
-# external packages
-from PySide6.QtCore import Qt, Signal
 import requests
+from base.tpool import Worker
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from base.tpool import Worker
+from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
 from gui.widgets.uploadPopup_ui import Ui_UploadPopup
+
+# external packages
+from PySide6.QtCore import Qt, Signal
 
 
 class UploadPopup(MWidget):

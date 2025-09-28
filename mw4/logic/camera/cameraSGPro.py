@@ -17,7 +17,6 @@
 import os
 
 # external packages
-
 # local imports
 from base.sgproClass import SGProClass
 from base.tpool import Worker

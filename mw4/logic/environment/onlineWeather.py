@@ -14,18 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import json
+import logging
 import os
 from pathlib import Path
 
 # external packages
 import numpy as np
 import requests
+from base.signalsDevices import Signals
 
 # local imports
 from base.tpool import Worker
-from base.signalsDevices import Signals
 
 
 class OnlineWeather:

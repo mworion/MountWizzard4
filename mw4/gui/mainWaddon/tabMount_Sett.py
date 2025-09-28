@@ -16,16 +16,20 @@
 # standard libraries
 import datetime
 
-# external packages
-from PySide6.QtWidgets import QInputDialog, QLineEdit
-from PySide6.QtCore import QObject
-from skyfield.api import wgs84
-
 # local import
 from base import transform
-from mountcontrol.convert import convertLatToAngle, convertLonToAngle
-from mountcontrol.convert import formatLatToText, formatLonToText
-from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText, clickable
+from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
+from mountcontrol.convert import (
+    convertLatToAngle,
+    convertLonToAngle,
+    formatLatToText,
+    formatLonToText,
+)
+from PySide6.QtCore import QObject
+
+# external packages
+from PySide6.QtWidgets import QInputDialog, QLineEdit
+from skyfield.api import wgs84
 
 
 class MountSett(QObject):

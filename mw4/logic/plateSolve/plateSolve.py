@@ -19,14 +19,14 @@ import os
 import queue
 from pathlib import Path
 
-# external packages
+from base.signalsDevices import Signals
 
+# external packages
 # local imports
 from base.tpool import Worker
 from gui.utilities.toolsQtWidget import sleepAndEvents
-from base.signalsDevices import Signals
-from logic.plateSolve.astrometry import Astrometry
 from logic.plateSolve.astap import ASTAP
+from logic.plateSolve.astrometry import Astrometry
 from logic.plateSolve.watney import Watney
 
 

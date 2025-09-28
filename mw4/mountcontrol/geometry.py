@@ -18,10 +18,10 @@ import logging
 
 # external packages
 import numpy as np
-from skyfield.api import Angle
 
 # local imports
 from mountcontrol.convert import valueToFloat
+from skyfield.api import Angle
 
 
 class Geometry:

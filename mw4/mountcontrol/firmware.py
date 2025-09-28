@@ -15,12 +15,11 @@
 ###########################################################
 # standard libraries
 import logging
-from packaging.version import Version
 
 # external packages
-
 # local imports
 from mountcontrol.connection import Connection
+from packaging.version import Version
 
 
 class Firmware:

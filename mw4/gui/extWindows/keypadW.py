@@ -16,17 +16,18 @@
 # standard libraries
 
 # external packages
-from PySide6.QtCore import Signal, QObject, QMutex
-from PySide6.QtGui import QPixmap
-from qimage2ndarray import array2qimage
-import numpy as np
 from functools import partial
+
+import numpy as np
+from base.tpool import Worker
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets import keypad_ui
-from base.tpool import Worker
 from logic.keypad.keypad import KeyPad
+from PySide6.QtCore import QMutex, QObject, Signal
+from PySide6.QtGui import QPixmap
+from qimage2ndarray import array2qimage
 
 
 class KeypadSignals(QObject):

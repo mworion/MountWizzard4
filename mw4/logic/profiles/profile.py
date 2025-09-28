@@ -14,16 +14,16 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import json
+import logging
 from pathlib import Path
+
+# local imports
+from base.loggerMW import setupLogging
 
 # external libraries
 from ndicts import NestedDict
 from packaging.utils import Version
-
-# local imports
-from base.loggerMW import setupLogging
 
 setupLogging()
 log = logging.getLogger()

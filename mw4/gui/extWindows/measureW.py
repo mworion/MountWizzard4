@@ -17,15 +17,16 @@
 import os
 from functools import partial
 
-# external packages
-from PySide6.QtWidgets import QListView
-from PySide6.QtCore import QMutex
-from PySide6.QtGui import QCloseEvent
 import pyqtgraph as pg
 
 # local import
 from gui.utilities import toolsQtWidget
 from gui.widgets import measure_ui
+from PySide6.QtCore import QMutex
+from PySide6.QtGui import QCloseEvent
+
+# external packages
+from PySide6.QtWidgets import QListView
 
 
 class MeasureWindow(toolsQtWidget.MWidget):

@@ -18,14 +18,14 @@
 # external packages
 import numpy as np
 import pyqtgraph as pg
-from PySide6.QtGui import QPainterPath, QFont
-from PySide6.QtWidgets import QApplication
-from scipy.interpolate import griddata
-from scipy.ndimage import uniform_filter
 
 # local imports
 from gui.styles.styles import Styles
 from gui.utilities.gCustomViewBox import CustomViewBox
+from PySide6.QtGui import QFont, QPainterPath
+from PySide6.QtWidgets import QApplication
+from scipy.interpolate import griddata
+from scipy.ndimage import uniform_filter
 
 
 class PlotBase(pg.GraphicsLayoutWidget, Styles):

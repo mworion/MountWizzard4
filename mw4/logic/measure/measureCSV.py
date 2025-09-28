@@ -14,8 +14,8 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import csv
+import logging
 
 # external packages
 import PySide6

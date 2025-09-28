@@ -18,11 +18,10 @@ import logging
 import platform
 
 # external packages
-
 # local imports
 from base.signalsDevices import Signals
-from logic.focuser.focuserIndi import FocuserIndi
 from logic.focuser.focuserAlpaca import FocuserAlpaca
+from logic.focuser.focuserIndi import FocuserIndi
 
 if platform.system() == "Windows":
     from logic.focuser.focuserAscom import FocuserAscom

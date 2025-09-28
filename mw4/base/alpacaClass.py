@@ -15,16 +15,16 @@
 ###########################################################
 # standard libraries
 import uuid
+
 import requests
-
-# external packages
-from PySide6.QtCore import QTimer
-
 from base.driverDataClass import DriverData
 from base.tpool import Worker
 
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
+
+# external packages
+from PySide6.QtCore import QTimer
 
 
 class AlpacaClass(DriverData):

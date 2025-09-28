@@ -15,22 +15,22 @@
 ###########################################################
 # standard libraries
 from functools import partial
-from PySide6.QtCore import QObject
+
+from gui.extWindows.analyseW import AnalyseWindow
+from gui.extWindows.bigPopupW import BigPopup
+from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
+from gui.extWindows.image.imageW import ImageWindow
+from gui.extWindows.keypadW import KeypadWindow
+from gui.extWindows.measureW import MeasureWindow
+from gui.extWindows.messageW import MessageWindow
+from gui.extWindows.satelliteW import SatelliteWindow
+from gui.extWindows.simulator.simulatorW import SimulatorWindow
+from gui.extWindows.video.videoW import VideoWindow
 
 # external packages
-
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents, changeStyleDynamic
-from gui.extWindows.keypadW import KeypadWindow
-from gui.extWindows.messageW import MessageWindow
-from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
-from gui.extWindows.measureW import MeasureWindow
-from gui.extWindows.image.imageW import ImageWindow
-from gui.extWindows.satelliteW import SatelliteWindow
-from gui.extWindows.analyseW import AnalyseWindow
-from gui.extWindows.video.videoW import VideoWindow
-from gui.extWindows.simulator.simulatorW import SimulatorWindow
-from gui.extWindows.bigPopupW import BigPopup
+from gui.utilities.toolsQtWidget import changeStyleDynamic, sleepAndEvents
+from PySide6.QtCore import QObject
 
 
 class ExternalWindows(QObject):

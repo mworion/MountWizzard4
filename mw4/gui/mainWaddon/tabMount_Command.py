@@ -14,15 +14,15 @@
 #
 ###########################################################
 # standard libraries
-import webbrowser
 import time
-
-# external packages
-from PySide6.QtGui import QTextCursor
-from PySide6.QtCore import QObject
+import webbrowser
 
 # local import
 from mountcontrol.connection import Connection
+from PySide6.QtCore import QObject
+
+# external packages
+from PySide6.QtGui import QTextCursor
 
 
 class MountCommand(QObject):

@@ -17,11 +17,9 @@
 import logging
 
 # external packages
-
 # local imports
 from mountcontrol.connection import Connection
-from mountcontrol.convert import valueToFloat
-from mountcontrol.convert import valueToInt
+from mountcontrol.convert import valueToFloat, valueToInt
 
 
 class Setting:

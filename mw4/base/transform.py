@@ -16,10 +16,11 @@
 # standard libraries
 import logging
 
+import erfa
+import numpy as np
+
 # external packages
 from PySide6.QtCore import QMutex
-import numpy as np
-import erfa
 from skyfield.api import Angle
 from skyfield.toposlib import GeographicPosition
 

@@ -18,12 +18,11 @@ import logging
 import platform
 
 # external packages
-
 # local imports
 from base.signalsDevices import Signals
-from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
-from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
 from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
+from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
+from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
 
 
 class PegasusUPB:

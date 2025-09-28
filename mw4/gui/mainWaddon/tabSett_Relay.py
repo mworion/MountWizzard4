@@ -17,12 +17,12 @@
 
 
 # external packages
-from PySide6.QtCore import QObject
-from PySide6.QtWidgets import QListView
 from functools import partial
 
 # local import
 from gui.utilities.toolsQtWidget import changeStyleDynamic
+from PySide6.QtCore import QObject
+from PySide6.QtWidgets import QListView
 
 
 class SettRelay(QObject):

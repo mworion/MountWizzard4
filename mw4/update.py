@@ -14,23 +14,31 @@
 #
 ###########################################################
 # standard libraries
-import os
-import sys
 import logging
-import subprocess
+import os
 import platform
+import resource.resources as res
+import subprocess
+import sys
 from collections.abc import Callable
 
-# external packages
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QIcon, QPixmap, QColor, QPainter
-from PySide6.QtWidgets import QApplication, QPushButton, QVBoxLayout
-from PySide6.QtWidgets import QHBoxLayout, QWidget, QTextBrowser, QLabel
+from base.loggerMW import setupLogging
 
 # local import
 from gui.styles.styles import Styles
-from base.loggerMW import setupLogging
-import resource.resources as res
+
+# external packages
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QColor, QIcon, QPainter, QPixmap
+from PySide6.QtWidgets import (
+    QApplication,
+    QHBoxLayout,
+    QLabel,
+    QPushButton,
+    QTextBrowser,
+    QVBoxLayout,
+    QWidget,
+)
 
 res.qInitResources()
 

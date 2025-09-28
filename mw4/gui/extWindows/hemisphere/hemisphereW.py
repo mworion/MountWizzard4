@@ -16,16 +16,16 @@
 # standard libraries
 
 # external packages
-from PySide6.QtCore import Qt, QPointF
-from PySide6.QtGui import QGuiApplication, QCursor
 import numpy as np
 import pyqtgraph as pg
+from gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
+from gui.extWindows.hemisphere.horizonDraw import HorizonDraw
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets import hemisphere_ui
-from gui.extWindows.hemisphere.horizonDraw import HorizonDraw
-from gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
+from PySide6.QtCore import QPointF, Qt
+from PySide6.QtGui import QCursor, QGuiApplication
 
 
 class HemisphereWindow(MWidget):

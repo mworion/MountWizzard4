@@ -16,16 +16,16 @@
 # standard libraries
 
 # external packages
-from PySide6.QtCore import Qt, QPointF
-from PySide6.QtGui import QFont
 import numpy as np
 import pyqtgraph as pg
+from base.transform import diffModulusAbs
 
 # local import
 from gui.utilities.slewInterface import SlewInterface
 from gui.utilities.toolsQtWidget import MWidget
-from base.transform import diffModulusAbs
 from mountcontrol.setting import Setting
+from PySide6.QtCore import QPointF, Qt
+from PySide6.QtGui import QFont
 
 
 class HemisphereDraw(MWidget, SlewInterface):

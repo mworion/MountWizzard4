@@ -16,14 +16,15 @@
 # standard libraries
 import logging
 
-# external packages
-from PySide6.QtCore import QMutex
 import numpy as np
 
 # local imports
 from base.signalsDevices import Signals
-from logic.measure.measureRaw import MeasureDataRaw
 from logic.measure.measureCSV import MeasureDataCSV
+from logic.measure.measureRaw import MeasureDataRaw
+
+# external packages
+from PySide6.QtCore import QMutex
 
 
 class MeasureData:

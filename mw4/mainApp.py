@@ -18,34 +18,34 @@ import logging
 import sys
 from queue import Queue
 
-# external packages
-from PySide6.QtWidgets import QApplication
-from PySide6.QtCore import QObject, Signal, QThreadPool, QTimer
-from skyfield.api import wgs84
-from importlib_metadata import version
-
 # local import
 from base.loggerMW import setCustomLoggingLevel
-from mountcontrol.mount import MountDevice
 from gui.mainWindow.mainWindow import MainWindow
-from logic.powerswitch.kmRelay import KMRelay
-from logic.modeldata.buildpoints import DataPoint
-from logic.modeldata.hipparcos import Hipparcos
-from logic.dome.dome import Dome
+from importlib_metadata import version
 from logic.camera.camera import Camera
+from logic.cover.cover import Cover
+from logic.dome.dome import Dome
+from logic.environment.directWeather import DirectWeather
+from logic.environment.onlineWeather import OnlineWeather
+from logic.environment.seeingWeather import SeeingWeather
+from logic.environment.sensorWeather import SensorWeather
 from logic.filter.filter import Filter
 from logic.focuser.focuser import Focuser
-from logic.environment.sensorWeather import SensorWeather
-from logic.environment.onlineWeather import OnlineWeather
-from logic.environment.directWeather import DirectWeather
-from logic.environment.seeingWeather import SeeingWeather
-from logic.cover.cover import Cover
-from logic.telescope.telescope import Telescope
-from logic.powerswitch.pegasusUPB import PegasusUPB
 from logic.measure.measure import MeasureData
-from logic.remote.remote import Remote
+from logic.modeldata.buildpoints import DataPoint
+from logic.modeldata.hipparcos import Hipparcos
 from logic.plateSolve.plateSolve import PlateSolve
+from logic.powerswitch.kmRelay import KMRelay
+from logic.powerswitch.pegasusUPB import PegasusUPB
 from logic.profiles.profile import loadProfileStart
+from logic.remote.remote import Remote
+from logic.telescope.telescope import Telescope
+from mountcontrol.mount import MountDevice
+from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
+
+# external packages
+from PySide6.QtWidgets import QApplication
+from skyfield.api import wgs84
 
 
 class MountWizzard4(QObject):

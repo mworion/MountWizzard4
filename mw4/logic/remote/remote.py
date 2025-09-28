@@ -16,12 +16,12 @@
 # standard libraries
 import logging
 
-# external packages
-from PySide6.QtCore import QObject
-from PySide6 import QtNetwork
-
 # local imports
 from base.signalsDevices import Signals
+from PySide6 import QtNetwork
+
+# external packages
+from PySide6.QtCore import QObject
 
 
 class Remote(QObject):

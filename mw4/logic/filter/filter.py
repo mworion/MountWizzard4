@@ -18,11 +18,10 @@ import logging
 import platform
 
 # external packages
-
 # local imports
 from base.signalsDevices import Signals
-from logic.filter.filterIndi import FilterIndi
 from logic.filter.filterAlpaca import FilterAlpaca
+from logic.filter.filterIndi import FilterIndi
 
 if platform.system() == "Windows":
     from logic.filter.filterAscom import FilterAscom

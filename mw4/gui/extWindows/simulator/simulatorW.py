@@ -16,25 +16,23 @@
 # standard libraries
 
 # external packages
-from PySide6.QtGui import QColor
-from PySide6.QtGui import QVector3D
-from PySide6.QtWidgets import QWidget
-from PySide6.Qt3DExtras import Qt3DExtras
-from PySide6.Qt3DCore import Qt3DCore
+from gui.extWindows.simulator.buildPoints import SimulatorBuildPoints
+from gui.extWindows.simulator.dome import SimulatorDome
+from gui.extWindows.simulator.horizon import SimulatorHorizon
+from gui.extWindows.simulator.laser import SimulatorLaser
+from gui.extWindows.simulator.light import SimulatorLight
+from gui.extWindows.simulator.pointer import SimulatorPointer
+from gui.extWindows.simulator.telescope import SimulatorTelescope
+from gui.extWindows.simulator.tools import linkModel
+from gui.extWindows.simulator.world import SimulatorWorld
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
-from gui.utilities.toolsQtWidget import changeStyleDynamic
+from gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
 from gui.widgets import simulator_ui
-from gui.extWindows.simulator.dome import SimulatorDome
-from gui.extWindows.simulator.telescope import SimulatorTelescope
-from gui.extWindows.simulator.horizon import SimulatorHorizon
-from gui.extWindows.simulator.buildPoints import SimulatorBuildPoints
-from gui.extWindows.simulator.pointer import SimulatorPointer
-from gui.extWindows.simulator.laser import SimulatorLaser
-from gui.extWindows.simulator.world import SimulatorWorld
-from gui.extWindows.simulator.light import SimulatorLight
-from gui.extWindows.simulator.tools import linkModel
+from PySide6.Qt3DCore import Qt3DCore
+from PySide6.Qt3DExtras import Qt3DExtras
+from PySide6.QtGui import QColor, QVector3D
+from PySide6.QtWidgets import QWidget
 
 
 class SimulatorWindow(MWidget):

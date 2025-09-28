@@ -17,20 +17,24 @@
 import logging
 import platform
 
-# external packages
-from skyfield.api import wgs84, Angle, load, Loader
-from skyfield.toposlib import GeographicPosition
 import numpy as np
 
 # local imports
 from base.transform import diffModulusSign
+
+# external packages
+from skyfield.api import Angle, Loader, load, wgs84
+from skyfield.toposlib import GeographicPosition
+
 from .connection import Connection
-from .convert import stringToAngle
-from .convert import stringToDegree
-from .convert import valueToFloat
-from .convert import valueToInt
-from .convert import valueToAngle
-from .convert import sexagesimalizeToInt
+from .convert import (
+    sexagesimalizeToInt,
+    stringToAngle,
+    stringToDegree,
+    valueToAngle,
+    valueToFloat,
+    valueToInt,
+)
 
 
 class ObsSite:

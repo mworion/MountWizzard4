@@ -19,21 +19,22 @@ import platform
 from collections.abc import Callable
 from pathlib import Path
 
+import numpy as np
+
 # external packages
 from astropy.io import fits
-import numpy as np
+from base.signalsDevices import Signals
 
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
-from base.signalsDevices import Signals
-from logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
-from logic.camera.cameraIndi import CameraIndi
 from logic.camera.cameraAlpaca import CameraAlpaca
+from logic.camera.cameraIndi import CameraIndi
+from logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
 
 if platform.system() == "Windows":
     from logic.camera.cameraAscom import CameraAscom
-    from logic.camera.cameraSGPro import CameraSGPro
     from logic.camera.cameraNINA import CameraNINA
+    from logic.camera.cameraSGPro import CameraSGPro
 
 
 class Camera:

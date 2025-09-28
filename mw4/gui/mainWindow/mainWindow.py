@@ -14,25 +14,24 @@
 #
 ###########################################################
 # standard libraries
+import shutil
 import time
 from datetime import datetime
-import shutil
 from pathlib import Path
-
-# external packages
-from PySide6.QtCore import Qt
-from skyfield.almanac import dark_twilight_day, TWILIGHTS
 
 # local import
 from base import packageConfig
-from gui.styles.styles import Styles
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWindow.externalWindows import ExternalWindows
 from gui.mainWindow.mainWindowAddons import MainWindowAddons
-from logic.profiles.profile import loadProfile, saveProfile, blendProfile
+from gui.styles.styles import Styles
+from gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
+from gui.widgets.main_ui import Ui_MainWindow
+from logic.profiles.profile import blendProfile, loadProfile, saveProfile
 from mountcontrol.obsSite import ObsSite
-from gui.utilities.toolsQtWidget import changeStyleDynamic
+
+# external packages
+from PySide6.QtCore import Qt
+from skyfield.almanac import TWILIGHTS, dark_twilight_day
 
 
 class MainWindow(MWidget):

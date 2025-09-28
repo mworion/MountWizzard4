@@ -15,19 +15,22 @@
 ###########################################################
 # standard libraries
 import logging
-import subprocess
 import os
-import time
 import platform
+import subprocess
+import time
 from pathlib import Path
 
-# external packages
+from logic.fits.fitsFunction import (
+    getHintFromImageFile,
+    getImageHeader,
+    getSolutionFromWCSHeader,
+    updateImageFileHeaderWithSolution,
+)
 
+# external packages
 # local imports
 from mountcontrol import convert
-from logic.fits.fitsFunction import getSolutionFromWCSHeader, getImageHeader
-from logic.fits.fitsFunction import getHintFromImageFile
-from logic.fits.fitsFunction import updateImageFileHeaderWithSolution
 
 
 class Astrometry:

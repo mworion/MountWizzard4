@@ -18,10 +18,10 @@ import zlib
 
 # external packages
 from astropy.io import fits
+from base.indiClass import IndiClass
 
 # local imports
 from base.tpool import Worker
-from base.indiClass import IndiClass
 
 
 class CameraIndi(IndiClass):

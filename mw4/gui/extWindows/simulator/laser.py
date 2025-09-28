@@ -16,13 +16,13 @@
 # standard libraries
 
 # external packages
-from PySide6.QtGui import QVector3D
-from skyfield import functions
 import numpy as np
+from gui.extWindows.simulator.materials import Materials
 
 # local import
 from gui.extWindows.simulator.tools import linkModel
-from gui.extWindows.simulator.materials import Materials
+from PySide6.QtGui import QVector3D
+from skyfield import functions
 
 
 class SimulatorLaser:

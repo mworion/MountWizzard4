@@ -16,13 +16,12 @@
 # standard libraries
 
 # external packages
-from PySide6.QtWidgets import QListView
-from PySide6.QtCore import QObject
-
 # local import
 from gui.extWindows.downloadPopupW import DownloadPopup
 from gui.extWindows.uploadPopupW import UploadPopup
 from logic.databaseProcessing.dataWriter import DataWriter
+from PySide6.QtCore import QObject
+from PySide6.QtWidgets import QListView
 
 
 class IERSTime(QObject):

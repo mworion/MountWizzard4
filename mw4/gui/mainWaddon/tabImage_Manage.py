@@ -16,11 +16,10 @@
 # standard libraries
 
 # external packages
-from PySide6.QtWidgets import QInputDialog
-from PySide6.QtCore import QObject
-
 # local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText, clickable
+from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
+from PySide6.QtCore import QObject
+from PySide6.QtWidgets import QInputDialog
 
 
 class ImageManage(QObject):

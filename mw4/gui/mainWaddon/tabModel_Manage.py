@@ -17,20 +17,21 @@
 import json
 from pathlib import Path
 
-# external packages
-from PySide6.QtWidgets import QLineEdit, QInputDialog
-from PySide6.QtCore import Qt, QObject
 import numpy as np
-
-# local import
-from mountcontrol.model import Model
+from gui.utilities.toolsQtWidget import changeStyleDynamic
 from logic.modelBuild.modelHandling import (
-    writeRetrofitData,
     convertAngleToFloat,
     convertFloatToAngle,
     findFittingModel,
+    writeRetrofitData,
 )
-from gui.utilities.toolsQtWidget import changeStyleDynamic
+
+# local import
+from mountcontrol.model import Model
+from PySide6.QtCore import QObject, Qt
+
+# external packages
+from PySide6.QtWidgets import QInputDialog, QLineEdit
 
 
 class ModelManage(QObject):

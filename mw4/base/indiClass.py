@@ -16,13 +16,14 @@
 # standard libraries
 import logging
 
-# external packages
-from PySide6.QtCore import QTimer
+from base.signalsDevices import Signals
 
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
 from indibase.indiClient import Client
-from base.signalsDevices import Signals
+
+# external packages
+from PySide6.QtCore import QTimer
 
 
 class IndiClass:

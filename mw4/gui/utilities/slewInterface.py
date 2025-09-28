@@ -16,11 +16,11 @@
 # standard libraries
 import logging
 
-# external packages
-from skyfield.api import Angle
-
 # local imports
 from base.transform import J2000ToJNow
+
+# external packages
+from skyfield.api import Angle
 
 
 class SlewInterface:

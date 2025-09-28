@@ -19,15 +19,11 @@
 import logging
 
 # external packages
-
 # local imports
 from mountcontrol.connection import Connection
-from mountcontrol.convert import valueToFloat
-from mountcontrol.convert import valueToInt
-from mountcontrol.convert import valueToAngle
-from mountcontrol.convert import sexagesimalizeToInt
-from mountcontrol.progStar import ProgStar
+from mountcontrol.convert import sexagesimalizeToInt, valueToAngle, valueToFloat, valueToInt
 from mountcontrol.modelStar import ModelStar
+from mountcontrol.progStar import ProgStar
 
 
 class Model:

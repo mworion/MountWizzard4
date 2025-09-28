@@ -14,17 +14,17 @@
 #
 ###########################################################
 # standard libraries
-import time
 import logging
-
-# external packages
-from PySide6.QtGui import QColor, QFont, QBrush
-from PySide6.QtWidgets import QTableWidgetItem
-from PySide6.QtCore import Qt
+import time
 
 # local import
 from gui.utilities import toolsQtWidget
 from gui.widgets import message_ui
+from PySide6.QtCore import Qt
+
+# external packages
+from PySide6.QtGui import QBrush, QColor, QFont
+from PySide6.QtWidgets import QTableWidgetItem
 
 
 class MessageWindow(toolsQtWidget.MWidget):

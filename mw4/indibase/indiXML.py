@@ -29,8 +29,8 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import base64
+import logging
 import numbers
 
 # external packages

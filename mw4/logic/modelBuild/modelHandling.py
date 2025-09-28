@@ -14,17 +14,16 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import json
-from pathlib import Path
+import logging
 from datetime import datetime
-
-# external packages
-from skyfield.api import Angle, load
+from pathlib import Path
 
 # local packages
 from mountcontrol.model import Model
 
+# external packages
+from skyfield.api import Angle, load
 
 log = logging.getLogger("MW4")
 ts = load.timescale()

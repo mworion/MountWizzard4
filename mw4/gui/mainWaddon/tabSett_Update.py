@@ -15,19 +15,20 @@
 ###########################################################
 # standard libraries
 import os
-import sys
 import platform
-from packaging.utils import Version
+import sys
+import webbrowser
+
+import importlib_metadata
 
 # external packages
 import requests
-import importlib_metadata
-from astropy.utils import iers, data
-import webbrowser
-from PySide6.QtCore import QObject
+from astropy.utils import data, iers
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
+from packaging.utils import Version
+from PySide6.QtCore import QObject
 
 
 class SettUpdate(QObject):

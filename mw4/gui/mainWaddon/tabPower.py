@@ -17,12 +17,12 @@
 
 # external packages
 from functools import partial
-from PySide6.QtWidgets import QInputDialog
-from PySide6.QtCore import QObject
-from mountcontrol.convert import valueToInt
 
 # local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText, clickable
+from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
+from mountcontrol.convert import valueToInt
+from PySide6.QtCore import QObject
+from PySide6.QtWidgets import QInputDialog
 
 
 class Power(QObject):

@@ -14,8 +14,8 @@
 #
 ###########################################################
 # standard libraries
-import socket
 import logging
+import socket
 import uuid
 
 # external packages

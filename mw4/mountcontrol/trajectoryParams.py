@@ -17,7 +17,6 @@
 import logging
 
 # external packages
-
 # local imports
 from mountcontrol.convert import valueToFloat
 

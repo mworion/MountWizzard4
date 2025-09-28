@@ -17,10 +17,11 @@
 import os
 from pathlib import Path
 
-# external packages
-from PySide6.QtWidgets import QListView, QApplication
-from PySide6.QtCore import QObject
 from astropy.io import fits
+from PySide6.QtCore import QObject
+
+# external packages
+from PySide6.QtWidgets import QApplication, QListView
 
 # local import
 

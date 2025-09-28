@@ -18,9 +18,9 @@
 # external packages
 
 # local imports
+from gui.utilities.gCustomViewBox import CustomViewBox
 from gui.utilities.gPlotBase import PlotBase
 from gui.utilities.gTimeMeasure import TimeMeasure
-from gui.utilities.gCustomViewBox import CustomViewBox
 
 
 class Measure(PlotBase):

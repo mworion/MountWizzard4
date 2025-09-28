@@ -17,14 +17,14 @@
 import json
 import os
 
-# external packages
-from PySide6.QtCore import Qt, QObject
-from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
-
 # local import
 from gui.mainWaddon.astroObjects import AstroObjects
 from gui.utilities.toolsQtWidget import MWidget
 from logic.databaseProcessing.sourceURL import cometSourceURLs
+
+# external packages
+from PySide6.QtCore import QObject, Qt
+from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 
 class Comet(QObject):

@@ -16,16 +16,19 @@
 # standard libraries
 import logging
 
-# external packages
-from skyfield.api import Star, Angle
 import numpy
 
 # local imports
-from mountcontrol.convert import stringToDegree
-from mountcontrol.convert import valueToAngle
-from mountcontrol.convert import valueToFloat
-from mountcontrol.convert import valueToInt
-from mountcontrol.convert import topoToAltAz
+from mountcontrol.convert import (
+    stringToDegree,
+    topoToAltAz,
+    valueToAngle,
+    valueToFloat,
+    valueToInt,
+)
+
+# external packages
+from skyfield.api import Angle, Star
 
 
 class ModelStar:

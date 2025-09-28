@@ -16,17 +16,16 @@
 # standard libraries
 
 # external packages
-from PySide6.QtCore import Signal
-from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QSizePolicy, QInputDialog, QLineEdit
 import cv2
 import qimage2ndarray
+from base.tpool import Worker
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
+from gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic, sleepAndEvents
 from gui.widgets import video_ui
-from base.tpool import Worker
-from gui.utilities.toolsQtWidget import sleepAndEvents, changeStyleDynamic
+from PySide6.QtCore import Signal
+from PySide6.QtGui import QPixmap
+from PySide6.QtWidgets import QInputDialog, QLineEdit, QSizePolicy
 
 
 class VideoWindowBase(MWidget):

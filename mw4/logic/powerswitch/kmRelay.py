@@ -18,12 +18,13 @@ import logging
 import re
 import time
 
-# external packages
-from PySide6.QtCore import Signal, QMutex, QTimer
 import requests
 
 # local imports
 from base.signalsDevices import Signals
+
+# external packages
+from PySide6.QtCore import QMutex, QTimer, Signal
 
 
 class RelaySignals(Signals):

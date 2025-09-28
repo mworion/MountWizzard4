@@ -19,12 +19,16 @@
 import numpy as np
 import pyqtgraph as pg
 from astropy.io import fits
-from PySide6.QtGui import QFont
+from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
 
 # local import
-from logic.fits.fitsFunction import getExposureFromHeader, getScaleFromHeader
-from logic.fits.fitsFunction import getCoordinatesFromHeader, getSQMFromHeader
-from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
+from logic.fits.fitsFunction import (
+    getCoordinatesFromHeader,
+    getExposureFromHeader,
+    getScaleFromHeader,
+    getSQMFromHeader,
+)
+from PySide6.QtGui import QFont
 
 
 class ImageTabs:

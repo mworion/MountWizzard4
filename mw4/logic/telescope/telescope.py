@@ -18,11 +18,10 @@ import logging
 import platform
 
 # external packages
-
 # local imports
 from base.signalsDevices import Signals
-from logic.telescope.telescopeIndi import TelescopeIndi
 from logic.telescope.telescopeAlpaca import TelescopeAlpaca
+from logic.telescope.telescopeIndi import TelescopeIndi
 
 if platform.system() == "Windows":
     from logic.telescope.telescopeAscom import TelescopeAscom

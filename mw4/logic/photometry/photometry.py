@@ -19,12 +19,12 @@ import logging
 # external packages
 import numpy as np
 import sep
-from PySide6.QtCore import Signal, QObject, QMutex
-from scipy.interpolate import griddata
-from scipy.ndimage import uniform_filter
 
 # local import
 from base.tpool import Worker
+from PySide6.QtCore import QMutex, QObject, Signal
+from scipy.interpolate import griddata
+from scipy.ndimage import uniform_filter
 
 
 class PhotometrySignals(QObject):

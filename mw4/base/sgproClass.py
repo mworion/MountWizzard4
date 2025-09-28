@@ -16,14 +16,14 @@
 # standard libraries
 import json
 
-# external packages
-from PySide6.QtCore import QTimer, QMutex
 import requests
 
 # local imports
-from base.driverDataClass import DriverData
-from base.driverDataClass import RemoteDeviceShutdown
+from base.driverDataClass import DriverData, RemoteDeviceShutdown
 from base.tpool import Worker
+
+# external packages
+from PySide6.QtCore import QMutex, QTimer
 
 
 class SGProClass(DriverData):

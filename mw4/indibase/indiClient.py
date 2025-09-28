@@ -15,16 +15,16 @@
 ###########################################################
 # standard libraries
 import logging
-
-# external packages
-from PySide6.QtCore import QObject
-from PySide6.QtNetwork import QTcpSocket
 import xml.etree.ElementTree as ETree
 
 # local import
 from indibase import indiXML
-from indibase.indiSignals import INDISignals
 from indibase.indiDevice import Device
+from indibase.indiSignals import INDISignals
+
+# external packages
+from PySide6.QtCore import QObject
+from PySide6.QtNetwork import QTcpSocket
 
 
 class Client(QObject):

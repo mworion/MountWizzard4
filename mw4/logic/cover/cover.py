@@ -18,11 +18,10 @@ import logging
 import platform
 
 # external packages
-
 # local imports
 from base.signalsDevices import Signals
-from logic.cover.coverIndi import CoverIndi
 from logic.cover.coverAlpaca import CoverAlpaca
+from logic.cover.coverIndi import CoverIndi
 
 if platform.system() == "Windows":
     from logic.cover.coverAscom import CoverAscom

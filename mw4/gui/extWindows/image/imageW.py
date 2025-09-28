@@ -16,22 +16,22 @@
 # standard libraries
 from pathlib import Path
 
-# external packages
-from skyfield.api import Angle
+from base.transform import J2000ToJNow
+from gui.extWindows.image.imageSignals import ImageWindowSignals
+from gui.extWindows.image.imageTabs import ImageTabs
+from gui.mainWaddon.tabModel import Model
+from gui.utilities.slewInterface import SlewInterface
+from gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
+from gui.widgets import image_ui
+from logic.file.fileHandler import FileHandler
+from logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
+from logic.photometry.photometry import Photometry
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
-from base.transform import J2000ToJNow
-from gui.utilities.toolsQtWidget import MWidget
-from gui.utilities.slewInterface import SlewInterface
-from gui.widgets import image_ui
-from logic.file.fileHandler import FileHandler
-from logic.photometry.photometry import Photometry
-from logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
-from gui.extWindows.image.imageTabs import ImageTabs
-from gui.extWindows.image.imageSignals import ImageWindowSignals
-from gui.mainWaddon.tabModel import Model
-from gui.utilities.toolsQtWidget import changeStyleDynamic
+
+# external packages
+from skyfield.api import Angle
 
 
 class ImageWindow(MWidget, SlewInterface):

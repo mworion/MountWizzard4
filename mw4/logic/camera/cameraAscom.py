@@ -17,10 +17,10 @@
 
 # external packages
 from astropy.io import fits
+from base.ascomClass import AscomClass
 
 # local imports
 from base.tpool import Worker
-from base.ascomClass import AscomClass
 
 
 class CameraAscom(AscomClass):

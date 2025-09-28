@@ -19,12 +19,12 @@ import base.packageConfig as pConf
 # external packages
 if pConf.isAvailable:
     from PySide6.QtMultimedia import QSoundEffect
-from PySide6.QtCore import QObject
 import hid
+from base.tpool import Worker
 
 # local import
 from gui.utilities.toolsQtWidget import sleepAndEvents
-from base.tpool import Worker
+from PySide6.QtCore import QObject
 
 
 class SettMisc(QObject):

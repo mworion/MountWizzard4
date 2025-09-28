@@ -14,19 +14,19 @@
 #
 ###########################################################
 # standard libraries
-import os
 import gzip
+import os
 import shutil
+
+import requests
+from base.tpool import Worker
+
+# local import
+from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
+from gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 
 # external packages
 from PySide6.QtCore import Qt, Signal
-import requests
-
-# local import
-from gui.utilities.toolsQtWidget import MWidget
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from base.tpool import Worker
-from gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 
 
 class DownloadPopup(MWidget):

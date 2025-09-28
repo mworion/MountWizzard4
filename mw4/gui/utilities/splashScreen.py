@@ -17,8 +17,8 @@
 
 # external packages
 import numpy as np
-from PySide6.QtCore import QObject, Qt, QRectF
-from PySide6.QtGui import QPixmap, QColor
+from PySide6.QtCore import QObject, QRectF, Qt
+from PySide6.QtGui import QColor, QPixmap
 from PySide6.QtWidgets import QApplication, QSplashScreen
 
 # local import

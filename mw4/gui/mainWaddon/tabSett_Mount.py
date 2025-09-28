@@ -16,15 +16,16 @@
 # standard libraries
 import socket
 
-# external packages
-from PySide6.QtCore import QObject
 import wakeonlan
+from base.ethernet import checkFormatMAC
+from gui.utilities.toolsQtWidget import guiSetText
+from mountcontrol.firmware import Firmware
 
 # local import
 from mountcontrol.setting import Setting
-from mountcontrol.firmware import Firmware
-from base.ethernet import checkFormatMAC
-from gui.utilities.toolsQtWidget import guiSetText
+
+# external packages
+from PySide6.QtCore import QObject
 
 
 class SettMount(QObject):

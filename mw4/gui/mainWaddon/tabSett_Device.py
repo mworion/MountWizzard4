@@ -16,13 +16,13 @@
 # standard libraries
 from functools import partial
 
-# external packages
-from PySide6.QtCore import QObject
-from PySide6.QtWidgets import QListView
-
 # local import
 from gui.extWindows.devicePopupW import DevicePopup
 from gui.utilities.toolsQtWidget import changeStyleDynamic, findIndexValue
+
+# external packages
+from PySide6.QtCore import QObject
+from PySide6.QtWidgets import QListView
 
 
 class SettDevice(QObject):

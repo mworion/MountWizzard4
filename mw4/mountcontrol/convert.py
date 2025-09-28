@@ -15,8 +15,9 @@
 ###########################################################
 # standard libraries
 import logging
-import numpy as np
 import re
+
+import numpy as np
 
 # external packages
 from skyfield.api import Angle

@@ -16,17 +16,21 @@
 # standard libraries
 from functools import partial
 
-# external packages
-from PySide6.QtWidgets import QInputDialog, QLineEdit
-from PySide6.QtCore import QObject
+from gui.utilities.slewInterface import SlewInterface
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from mountcontrol.convert import convertRaToAngle, convertDecToAngle
-from mountcontrol.convert import formatHstrToText, formatDstrToText
-from mountcontrol.convert import valueToFloat
-from gui.utilities.slewInterface import SlewInterface
-from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable
+from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, sleepAndEvents
+from mountcontrol.convert import (
+    convertDecToAngle,
+    convertRaToAngle,
+    formatDstrToText,
+    formatHstrToText,
+    valueToFloat,
+)
+from PySide6.QtCore import QObject
+
+# external packages
+from PySide6.QtWidgets import QInputDialog, QLineEdit
 
 
 class MountMove(QObject, SlewInterface):

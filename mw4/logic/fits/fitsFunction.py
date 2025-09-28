@@ -20,13 +20,17 @@ from pathlib import Path
 # external packages
 import numpy as np
 from astropy.io import fits
-from skyfield.units import Angle
 
 # local import
 from base.transform import JNowToJ2000
-from mountcontrol.convert import convertToAngle, convertRaToAngle, convertDecToAngle
-from mountcontrol.convert import formatLatToText, formatLonToText
-
+from mountcontrol.convert import (
+    convertDecToAngle,
+    convertRaToAngle,
+    convertToAngle,
+    formatLatToText,
+    formatLonToText,
+)
+from skyfield.units import Angle
 
 log = logging.getLogger()
 

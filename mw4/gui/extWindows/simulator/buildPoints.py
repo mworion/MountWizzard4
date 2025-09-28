@@ -17,14 +17,13 @@
 
 # external packages
 import numpy as np
-from PySide6.QtGui import QFont
-from PySide6.QtGui import QVector3D
-from PySide6.Qt3DExtras import Qt3DExtras
-from PySide6.Qt3DCore import Qt3DCore
-from skyfield import functions
 
 # local import
 from gui.extWindows.simulator.materials import Materials
+from PySide6.Qt3DCore import Qt3DCore
+from PySide6.Qt3DExtras import Qt3DExtras
+from PySide6.QtGui import QFont, QVector3D
+from skyfield import functions
 
 
 class SimulatorBuildPoints:

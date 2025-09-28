@@ -16,14 +16,15 @@
 # standard libraries
 from pathlib import Path
 
-# external packages
-from PySide6.QtCore import QPointF
-import numpy as np
 import cv2
+import numpy as np
 import pyqtgraph as pg
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
+
+# external packages
+from PySide6.QtCore import QPointF
 
 
 class HorizonDraw(MWidget):

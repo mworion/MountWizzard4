@@ -16,9 +16,10 @@
 # standard libraries
 import logging
 
+import erfa
+
 # external packages
 import numpy as np
-import erfa
 
 # local imports
 from logic.modeldata.alignstars import generateAlignStars

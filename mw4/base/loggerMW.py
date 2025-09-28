@@ -14,13 +14,12 @@
 #
 ###########################################################
 # standard libraries
-import os
-import time
 import datetime
 import logging
-from logging.handlers import RotatingFileHandler
+import os
+import time
 from functools import partial, partialmethod
-
+from logging.handlers import RotatingFileHandler
 
 # external packages
 

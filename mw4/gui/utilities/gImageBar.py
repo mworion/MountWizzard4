@@ -18,10 +18,10 @@
 # external packages
 import numpy as np
 import pyqtgraph as pg
-from PySide6.QtGui import QTransform
 
 # local imports
 from gui.utilities.gPlotBase import PlotBase
+from PySide6.QtGui import QTransform
 
 
 class ImageBar(PlotBase):

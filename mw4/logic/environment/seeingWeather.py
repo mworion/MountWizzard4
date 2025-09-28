@@ -14,18 +14,19 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import json
+import logging
 import os
 from pathlib import Path
 
-# external packages
-from PySide6.QtCore import Signal
 import requests
+from base.signalsDevices import Signals
 
 # local imports
 from base.tpool import Worker
-from base.signalsDevices import Signals
+
+# external packages
+from PySide6.QtCore import Signal
 
 
 class SeeingWeatherSignals(Signals):

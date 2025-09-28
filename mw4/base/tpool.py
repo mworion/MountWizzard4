@@ -15,11 +15,11 @@
 ###########################################################
 # standard libraries
 import logging
-import sys
 import os
+import sys
 
 # external packages
-from PySide6.QtCore import QObject, Signal, QRunnable
+from PySide6.QtCore import QObject, QRunnable, Signal
 
 # local imports
 

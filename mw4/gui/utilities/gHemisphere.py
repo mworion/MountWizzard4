@@ -18,8 +18,8 @@
 # external packages
 
 # local imports
-from gui.utilities.gPlotBase import PlotBase
 from gui.utilities.gCustomViewBox import CustomViewBox
+from gui.utilities.gPlotBase import PlotBase
 
 
 class Hemisphere(PlotBase):

@@ -14,21 +14,21 @@
 #
 ###########################################################
 # standard libraries
-from pathlib import Path
 from functools import partial
+from pathlib import Path
 
-# external packages
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QListView, QComboBox, QLineEdit
-from PySide6.QtWidgets import QCheckBox, QDoubleSpinBox
+from base.alpacaClass import AlpacaClass
+from base.ascomClass import AscomClass
 
 # local import
 from base.indiClass import IndiClass
-from base.alpacaClass import AlpacaClass
-from base.ascomClass import AscomClass
 from gui.utilities import toolsQtWidget
-from gui.widgets.devicePopup_ui import Ui_DevicePopup
 from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable
+from gui.widgets.devicePopup_ui import Ui_DevicePopup
+
+# external packages
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QCheckBox, QComboBox, QDoubleSpinBox, QLineEdit, QListView
 
 
 class DevicePopup(toolsQtWidget.MWidget):

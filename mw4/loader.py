@@ -19,6 +19,7 @@ import locale
 import logging
 import os
 import platform
+import resource.resources as res
 import socket
 import sys
 import traceback
@@ -26,20 +27,27 @@ import warnings
 from pathlib import Path
 
 # external packages
-from astropy.utils import iers, data
-from PySide6.QtCore import QFile, QEvent, __version__, qVersion
-from PySide6.QtGui import QMouseEvent, QIcon
-from PySide6.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
-from PySide6.QtWidgets import QApplication, QTabBar, QComboBox, QPushButton
-from PySide6.QtWidgets import QWidget
+from astropy.utils import data, iers
 from astropy.wcs import FITSFixedWarning
-from importlib_metadata import version
 
 # local import
 from base.loggerMW import setupLogging
 from gui.utilities.splashScreen import SplashScreen
+from importlib_metadata import version
 from mainApp import MountWizzard4
-import resource.resources as res
+from PySide6.QtCore import QEvent, QFile, __version__, qVersion
+from PySide6.QtGui import QIcon, QMouseEvent
+from PySide6.QtWidgets import (
+    QApplication,
+    QCheckBox,
+    QComboBox,
+    QGroupBox,
+    QLineEdit,
+    QPushButton,
+    QRadioButton,
+    QTabBar,
+    QWidget,
+)
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 warnings.filterwarnings("ignore", category=FITSFixedWarning)

@@ -14,19 +14,19 @@
 #
 ###########################################################
 # standard libraries
-import logging
-import json
-import random
 import csv
+import json
+import logging
+import random
 
 # external packages
 import numpy as np
-from skyfield.api import Star
-from skyfield import almanac
-from scipy.spatial import distance
 
 # local imports
 from base import transform
+from scipy.spatial import distance
+from skyfield import almanac
+from skyfield.api import Star
 
 
 def HaDecToAltAz(ha, dec, lat):

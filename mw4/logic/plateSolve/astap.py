@@ -15,18 +15,17 @@
 ###########################################################
 # standard libraries
 import logging
-import subprocess
 import os
-import time
 import platform
+import subprocess
+import time
 from pathlib import Path
 
 # external packages
-
 # local imports
 from logic.fits.fitsFunction import (
-    getSolutionFromWCSHeader,
     getImageHeader,
+    getSolutionFromWCSHeader,
     updateImageFileHeaderWithSolution,
 )
 

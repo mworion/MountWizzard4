@@ -98,6 +98,7 @@ class EnvironSeeing(QObject):
         data = self.app.seeingWeather.data["hourly"]
         self.addSkyfieldTimeObject(data)
 
+        columnCenter = 1
         for i in range(0, 96):
             isActual = abs(data["time"][i] - ts.now()) < 1 / 48
 
@@ -134,8 +135,6 @@ class EnvironSeeing(QObject):
                     val = self.app.seeingWeather.data["meta"]["last_model_update"]
                     self.ui.limitForecastDate.setText(f"{val}")
                     columnCenter = i
-                else:
-                    columnCenter = 1
 
                 item.setText(t)
                 seeTab.setItem(j, i, item)
@@ -151,11 +150,8 @@ class EnvironSeeing(QObject):
 
     def enableSeeingEntries(self) -> None:
         """ """
-        if not self.seeingEnabled:
-            return
-
-        self.ui.meteoblueIcon.setVisible(True)
-        self.ui.meteoblueSeeing.setVisible(True)
+        self.ui.meteoblueIcon.setVisible(self.seeingEnabled)
+        self.ui.meteoblueSeeing.setVisible(self.seeingEnabled)
 
     def prepareSeeingTable(self) -> None:
         """ """

@@ -26,7 +26,7 @@ from skyfield.api import Angle
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabMountMove import MountMove
+from gui.mainWaddon.tabMount_Move import MountMove
 import gui.mainWaddon.tabMount
 
 

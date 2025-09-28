@@ -23,7 +23,7 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWaddon.tabEnvironWeather import EnvironWeather
+from gui.mainWaddon.tabEnviron_Weather import EnvironWeather
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging

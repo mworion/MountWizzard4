@@ -27,7 +27,7 @@ from skyfield.api import Angle, wgs84
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabMountSett import MountSett
+from gui.mainWaddon.tabMount_Sett import MountSett
 
 
 @pytest.fixture(autouse=True, scope="module")

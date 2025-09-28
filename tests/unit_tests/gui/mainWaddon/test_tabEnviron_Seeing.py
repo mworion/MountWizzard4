@@ -25,7 +25,7 @@ import platform
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWaddon.tabEnvironSeeing import EnvironSeeing
+from gui.mainWaddon.tabEnviron_Seeing import EnvironSeeing
 from gui.widgets.main_ui import Ui_MainWindow
 from base.loggerMW import setupLogging
 from gui.utilities.toolsQtWidget import MWidget
@@ -44,6 +44,10 @@ def function(qapp):
     window = EnvironSeeing(mainW)
     yield window
     mainW.app.threadPool.waitForDone(1000)
+
+
+def test_setupIcons(function):
+    function.setupIcons()
 
 
 def test_addSkyfieldTimeObject(function):

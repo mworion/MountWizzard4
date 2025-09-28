@@ -25,7 +25,7 @@ from PySide6.QtWidgets import QWidget
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabMountCommand import MountCommand
+from gui.mainWaddon.tabMount_Command import MountCommand
 import mountcontrol
 
 

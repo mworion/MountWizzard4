@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'hemisphere.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.9.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -372,11 +372,11 @@ class Ui_HemisphereDialog(object):
 
         self.gridLayout_6.addWidget(self.altitudeShift, 4, 1, 1, 1)
 
-        self.loadTerrainFile = QPushButton(self.terrainImageGroup)
-        self.loadTerrainFile.setObjectName("selectTerrainFile")
-        self.loadTerrainFile.setMinimumSize(QSize(0, 21))
+        self.selectTerrainFile = QPushButton(self.terrainImageGroup)
+        self.selectTerrainFile.setObjectName("selectTerrainFile")
+        self.selectTerrainFile.setMinimumSize(QSize(0, 21))
 
-        self.gridLayout_6.addWidget(self.loadTerrainFile, 0, 0, 1, 2)
+        self.gridLayout_6.addWidget(self.selectTerrainFile, 0, 0, 1, 2)
 
         self.clearTerrainFile = QPushButton(self.terrainImageGroup)
         self.clearTerrainFile.setObjectName("clearTerrainFile")
@@ -665,7 +665,7 @@ class Ui_HemisphereDialog(object):
         self.label_4.setText(QCoreApplication.translate("HemisphereDialog", "Alpha", None))
         self.label_6.setText(QCoreApplication.translate("HemisphereDialog", "Altitude", None))
         self.label_3.setText(QCoreApplication.translate("HemisphereDialog", "Azimuth", None))
-        self.loadTerrainFile.setText(
+        self.selectTerrainFile.setText(
             QCoreApplication.translate("HemisphereDialog", "Load", None)
         )
         self.clearTerrainFile.setText(

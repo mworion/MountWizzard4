@@ -23,6 +23,7 @@
 - refactor: camera handling
 - refactor: satellite handling
 - refactor: database handling for MPC files
+- move project to new ci style and packaging worflow
 - improve: faster calculation of satellite track using internal calculations
 - improve: reduced size of app
 - improve: faster startup time

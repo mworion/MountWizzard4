@@ -81,6 +81,7 @@ jobs:
       run: |
         python -m pip install setuptools wheel build
         python -m build
+        rm dist/*.whl
         mv dist/mountwizzard4*.* dist/mountwizzard4.tar.gz
 
     - name: upload_package

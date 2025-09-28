@@ -56,8 +56,8 @@ def getCoordinatesFromHeader(header: fits.Header) -> [Angle, Angle]:
         dec = convertDecToAngle(header["OBJCTDEC"])
         log.debug("Sexagesimal coordinates used")
     else:
-        ra = None
-        dec = None
+        ra = Angle(hours=0)
+        dec = Angle(degrees=0)
         log.debug("No coordinates found")
 
     return ra, dec

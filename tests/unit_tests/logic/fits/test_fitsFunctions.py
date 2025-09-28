@@ -54,8 +54,8 @@ def test_getImageHeader_1():
 def test_getCoordinatesFromHeader_0():
     header = {}
     ra, dec = getCoordinatesFromHeader(header=header)
-    assert ra is None
-    assert dec is None
+    assert ra.hours == Angle(hours=0).hours
+    assert dec.degrees == Angle(degrees=0).degrees
 
 
 def test_getCoordinatesFromHeader_1():

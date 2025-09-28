@@ -256,9 +256,7 @@ class Setting:
     @weatherStatus.setter
     def weatherStatus(self, value):
         value = valueToInt(value)
-        if value is None:
-            self._weatherStatus = value
-        elif 0 <= value <= 2:
+        if value is None or 0 <= value <= 2:
             self._weatherStatus = value
         else:
             self._weatherStatus = None

@@ -69,7 +69,7 @@ def writeRetrofitData(mountModel: Model, buildModel: list[dict]) -> dict:
 def convertFloatToAngle(model: list[dict]) -> list[dict]:
     """ """
     for mPoint in model:
-        for key in mPoint.keys():
+        for key in mPoint:
             if key in hourAngles:
                 mPoint[key] = Angle(hours=mPoint[key])
             elif key in degreeAngles:
@@ -82,7 +82,7 @@ def convertFloatToAngle(model: list[dict]) -> list[dict]:
 def convertAngleToFloat(model: list[dict]) -> list[dict]:
     """ """
     for mPoint in model:
-        for key in mPoint.keys():
+        for key in mPoint:
             if key in hourAngles:
                 mPoint[key] = mPoint[key].hours
             elif key in degreeAngles:

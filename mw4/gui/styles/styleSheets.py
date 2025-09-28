@@ -147,7 +147,7 @@ BASIC_STYLE = """
     QLabel[color='red'] {
         color: $M_RED$;
     }
-    
+
     /* QLine Edit*/
     QLineEdit {
         color: $M_PRIM$;
@@ -176,7 +176,7 @@ BASIC_STYLE = """
         border-style: outset;
         border-color: $M_RED$;
     }
-            
+
     /* text browser */
     QTextBrowser {
         color: $M_PRIM$;
@@ -380,7 +380,7 @@ BASIC_STYLE = """
         color: $M_RED2$;
         border-color: $M_RED$;
     }
-    
+
     /* Message Boxes */
     QMessageBox QPushButton {
         min-width: 90px;
@@ -389,7 +389,7 @@ BASIC_STYLE = """
     QMessageBox QPushButton:default {
         border-color: $M_PRIM$;
     }
-    
+
     /* ListView */
     QListView {
         border-color: $M_SEC$;
@@ -404,7 +404,7 @@ BASIC_STYLE = """
     QListView::item:selected {
         border-color: $M_PRIM$;
     }
-    
+
     /* Table Widget */
     QTableWidget {
         border-color: $M_SEC$;
@@ -433,7 +433,7 @@ BASIC_STYLE = """
         background-color: $M_PRIM$;
         color: $M_BACK$;
     }
-    
+
     /* Combo Boxes */
     QComboBox {
         combobox-popup: 0;
@@ -486,7 +486,7 @@ BASIC_STYLE = """
     QComboBox QListView::item:selected {
         background-color: #GRAD_1,$M_PRIM$#;
     }
-    
+
     /* lines */
     QFrame[frameShape="4"] {
         color: $M_PRIM1$;
@@ -494,7 +494,7 @@ BASIC_STYLE = """
     QFrame[frameShape="5"] {
         color: $M_PRIM1$;
     }
-    
+
     /* tab widget */
     QTabWidget:pane {
         top: -6px;
@@ -530,9 +530,9 @@ BASIC_STYLE = """
         border-color: $M_SEC1$;
         background-color: $M_BACK$;
     }
-    
+
     /* slider */
-    QSlider {   
+    QSlider {
         width: 16px;
         height: 16px;
         margin: 0px 3px 0px 3px;
@@ -540,13 +540,13 @@ BASIC_STYLE = """
         border-radius: %ROUND%;
         border-color: $M_SEC$;
     }
-    QSlider::handle {   
+    QSlider::handle {
         background-color: $M_PRIM$;
     }
-    QSlider::add-page {   
+    QSlider::add-page {
         background-color: $M_SEC1$;
     }
-    QSlider::sub-page {   
+    QSlider::sub-page {
         background-color: $M_SEC1$;
     }
 
@@ -557,51 +557,51 @@ BASIC_STYLE = """
         border-style: outset;
         border-radius: %ROUND%;
     }
-    QScrollBar:vertical {   
+    QScrollBar:vertical {
         width: 16px;
         margin: 4px 4px 4px 4px;
     }
-    QScrollBar:horizontal {   
+    QScrollBar:horizontal {
         height: 16px;
         margin: 4px 16px 4px 4px;
     }
-    QScrollBar::handle {   
+    QScrollBar::handle {
         background-color: $M_PRIM$;
         min-height: 24px;
         min-width: 24px;
     }
-    QScrollBar::sub-line {   
+    QScrollBar::sub-line {
         margin: 2px 0px 2px 0px;
         height: 0px;
         width: 0px;
         subcontrol-position: top;
         subcontrol-origin: margin;
     }
-    QScrollBar::add-line {   
+    QScrollBar::add-line {
         margin: 2px 0px 2px 0px;
         height: 0px;
         width: 0px;
         subcontrol-position: bottom;
         subcontrol-origin: margin;
     }
-    QScrollBar::sub-line:on {   
+    QScrollBar::sub-line:on {
         height: 16px;
         width: 16px;
         subcontrol-position: top;
         subcontrol-origin: margin;
     }
-    QScrollBar::add-line:on {   
+    QScrollBar::add-line:on {
         height: 0px;
         width: 0px;
         subcontrol-position: bottom;
         subcontrol-origin: margin;
     }
-    QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {   
+    QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
         border-width: 0px;
         border-style: plain;
         border-radius: 0px;
     }
-    
+
     /* progress bar */
     QProgressBar {
         color: white;
@@ -618,7 +618,7 @@ BASIC_STYLE = """
         border-radius: 2px;
         background-color: #GRAD_1,$M_PRIM$#;
     }
-    
+
     /* System Dialogs */
     QFileDialog QListView {
         background-color: $M_BACK$;
@@ -634,7 +634,7 @@ BASIC_STYLE = """
     QFileDialog QListView:disabled {
         color: $M_SEC$;
     }
-    
+
     QFileDialog QPushButton {
         min-width: 50px;
         min-height: 20px;

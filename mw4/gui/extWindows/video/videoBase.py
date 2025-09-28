@@ -119,10 +119,7 @@ class VideoWindowBase(MWidget):
 
     def startVideo(self) -> None:
         """ """
-        if self.user and self.password:
-            auth = f"{self.user}:{self.password}@"
-        else:
-            auth = ""
+        auth = f"{self.user}:{self.password}@" if self.user and self.password else ""
         url = f"{auth}{self.ui.videoURL.text()}"
         sources = ["rtsp://" + url, "http://" + url, "https://" + url, url, 0, 1, 2, 3]
         frameCounter = [2, 5, 10, 20, 50]

@@ -121,9 +121,8 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
     @staticmethod
     def findItemByName(plotItem, name):
         for item in plotItem.items:
-            if hasattr(item, "nameStr"):
-                if item.nameStr == name:
-                    return item
+            if hasattr(item, "nameStr") and item.nameStr == name:
+                return item
         return None
 
     def drawHorizon(self, horizonP, plotItem=None, polar=False):
@@ -259,10 +258,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             circle = pg.QtWidgets.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
             circle.setPen(self.penGrid)
             plotItem.addItem(circle)
-            if kwargs.get("reverse", False):
-                text = f"{90 - r}"
-            else:
-                text = f"{r}"
+            text = f"{90 - r}" if kwargs.get("reverse", False) else f"{r}"
             textItem = pg.TextItem(text=text, color=self.M_PRIM, anchor=(0.5, 0.5))
             textItem.setFont(font)
             textItem.setPos(r * np.cos(textAngle), r * np.sin(textAngle))

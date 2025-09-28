@@ -350,10 +350,7 @@ class ModelManage(QObject):
         mount = self.app.mount
         if mount.model.errorRMS < self.ui.targetRMS.value():
             self.runningOptimize = False
-        if mount.model.numberStars is None:
-            numberStars = 0
-        else:
-            numberStars = mount.model.numberStars
+        numberStars = 0 if mount.model.numberStars is None else mount.model.numberStars
 
         if self.runningOptimize and numberStars > 1:
             wIndex = mount.model.starList.index(max(mount.model.starList))
@@ -379,10 +376,7 @@ class ModelManage(QObject):
         mount = self.app.mount
         if all(star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList):
             self.runningOptimize = False
-        if mount.model.numberStars is None:
-            numberStars = 0
-        else:
-            numberStars = mount.model.numberStars
+        numberStars = 0 if mount.model.numberStars is None else mount.model.numberStars
 
         if self.runningOptimize and numberStars > 1:
             wIndex = mount.model.starList.index(max(mount.model.starList))

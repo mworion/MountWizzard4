@@ -121,7 +121,7 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
             return
 
         row = {}
-        for key in self.data.keys():
+        for key in self.data:
             row[key] = self.data[key][0]
 
         self.csvWriter.writerow(row)

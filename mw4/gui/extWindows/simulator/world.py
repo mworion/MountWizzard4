@@ -42,8 +42,8 @@ class SimulatorWorld:
         scale = (960 + vertical) / 960
 
         translation = QVector3D(north, -east, 0)
-        for node in ["domeColumn", "domeCompassRose", "domeCompassRoseChar"]:
-            node = self.parent.entityModel.get(node)
+        for nodeItem in ["domeColumn", "domeCompassRose", "domeCompassRoseChar"]:
+            node = self.parent.entityModel.get(nodeItem)
             if node:
                 node["trans"].setTranslation(translation)
 

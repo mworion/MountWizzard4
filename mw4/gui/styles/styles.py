@@ -207,18 +207,15 @@ class Styles:
             if len(keyPair) != 2 or keyPair[0] not in gradients:
                 continue
             insertItem = gradients[keyPair[0]][self.colorSet]
-            if insertItem:
-                insertItem = insertItem.replace("#", keyPair[1])
-            else:
-                insertItem = keyPair[1]
+            insertItem = insertItem.replace("#", keyPair[1]) if insertItem else keyPair[1]
             line = line.replace(f"#{key}#", insertItem)
         return line
 
     def renderStyle(self, styleRaw: str) -> str:
         """ """
         style = ""
-        for line in styleRaw.split("\n"):
-            line = self.insertGradient(line)
+        for lineItem in styleRaw.split("\n"):
+            line = self.insertGradient(lineItem)
             line = self.replaceForm(line)
             line = self.replaceColor(line)
             style += line + "\n"

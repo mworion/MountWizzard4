@@ -31,13 +31,7 @@ class QCustomTableWidgetItem(QTableWidgetItem):
 
     def __lt__(self, other):
         selfData = self.data(Qt.ItemDataRole.EditRole)
-        if selfData == "":
-            selfDataValue = 99
-        else:
-            selfDataValue = float(selfData)
+        selfDataValue = 99 if selfData == "" else float(selfData)
         otherData = other.data(Qt.ItemDataRole.EditRole)
-        if otherData == "":
-            otherDataValue = 99
-        else:
-            otherDataValue = float(otherData)
+        otherDataValue = 99 if otherData == "" else float(otherData)
         return selfDataValue < otherDataValue

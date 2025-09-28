@@ -530,15 +530,10 @@ class MountSett(QObject):
         connectSync = self.ui.clockSync.isChecked()
         delta = self.app.mount.obsSite.timeDiff * 1000
         ui = self.ui.timeDeltaPC2Mount
-        if connectSync:
-            text = f"{delta:4.0f}"
-        else:
-            text = "-"
+        text = f"{delta:4.0f}" if connectSync else "-"
         ui.setText(text)
 
-        if not connectSync:
-            changeStyleDynamic(ui, "color", "")
-        elif abs(delta) < 100:
+        if not connectSync or abs(delta) < 100:
             changeStyleDynamic(ui, "color", "")
         elif abs(delta) < 500:
             changeStyleDynamic(ui, "color", "yellow")

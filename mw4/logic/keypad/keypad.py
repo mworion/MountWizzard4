@@ -201,10 +201,7 @@ class KeyPad:
 
     def convertChar(self, inChar: int) -> int:
         """ """
-        if inChar in self.charTrans:
-            outChar = self.charTrans[inChar]
-        else:
-            outChar = inChar
+        outChar = self.charTrans.get(inChar, inChar)
         return outChar
 
     def dispText(self, value: str) -> None:
@@ -256,10 +253,7 @@ class KeyPad:
             self.signals.cursorPos.emit(value[2] - 1, value[1] - 1)
         elif value[0] == 6:
             self.signals.clearCursor.emit()
-        elif value[0] == 11:
-            pass
-            # print('select 11')
-        elif value[0] == 12:
+        elif value[0] == 11 or value[0] == 12:
             pass
             # print('select 12')
 
@@ -357,9 +351,8 @@ class KeyPad:
             else:
                 if data[i] == 3:
                     started = False
-                    if len(result) > 1:
-                        if self.calcChecksum([2] + result[:-1]) == result[-1]:
-                            self.checkDispatch(result)
+                    if len(result) > 1 and self.calcChecksum([2] + result[:-1]) == result[-1]:
+                        self.checkDispatch(result)
                 else:
                     if started:
                         result.append(data[i])

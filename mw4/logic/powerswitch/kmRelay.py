@@ -181,10 +181,7 @@ class KMRelay:
         time.sleep(self.PULSEWIDTH)
         value2 = self.getRelay(f"/FFE0{byteOff:02X}")
 
-        if value1 is None or value2 is None:
-            self.log.warning(f"Relay:{relayNumber}")
-            return
-        elif value1.reason != "OK" or value2.reason != "OK":
+        if value1 is None or value2 is None or value1.reason != "OK" or value2.reason != "OK":
             self.log.warning(f"Relay:{relayNumber}")
             return
 
@@ -192,10 +189,7 @@ class KMRelay:
         """ """
         self.log.debug(f"Switch relay:{relayNumber}")
         value = self.getRelay(f"/relays.cgi?relay={relayNumber + 1:1d}")
-        if value is None:
-            self.log.warning(f"Relay:{relayNumber}")
-            return
-        elif value.reason != "OK":
+        if value is None or value.reason != "OK":
             self.log.warning(f"Relay:{relayNumber}")
             return
 

@@ -97,17 +97,13 @@ class DownloadPopup(MWidget):
     @staticmethod
     def unzipFile(downloadDest: str, dest: str) -> None:
         """ """
-        with gzip.open(downloadDest, "rb") as f_in:
-            with open(dest, "wb") as f_out:
-                shutil.copyfileobj(f_in, f_out)
+        with gzip.open(downloadDest, "rb") as f_in, open(dest, "wb") as f_out:
+            shutil.copyfileobj(f_in, f_out)
         os.remove(downloadDest)
 
     def downloadFileWorker(self, url: str, dest: str, unzip: bool = False) -> bool:
         """ """
-        if unzip:
-            downloadDest = os.path.dirname(dest) + os.path.basename(url)
-        else:
-            downloadDest = dest
+        downloadDest = os.path.dirname(dest) + os.path.basename(url) if unzip else dest
 
         try:
             self.signalStatus.emit(f"Downloading {os.path.basename(dest)}")

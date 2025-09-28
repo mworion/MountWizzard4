@@ -63,6 +63,6 @@ class Filter:
 
     def sendFilterNumber(self, filterNumber: int = 1) -> None:
         """ """
-        if self.framework not in self.run.keys():
+        if self.framework not in self.run:
             return
         self.run[self.framework].sendFilterNumber(filterNumber=filterNumber)

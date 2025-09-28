@@ -351,10 +351,7 @@ class ImageManage(QObject):
         if not ok:
             return
         isAlpaca = "FILTER_NAME.FILTER_SLOT_NAME_0" in data
-        if isAlpaca:
-            number = availNames.index(value)
-        else:
-            number = availNames.index(value) + 1
+        number = availNames.index(value) if isAlpaca else availNames.index(value) + 1
         self.app.filter.sendFilterNumber(filterNumber=number)
 
     def setCoolerOn(self) -> None:

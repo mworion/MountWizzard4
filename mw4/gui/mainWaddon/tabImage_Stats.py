@@ -106,10 +106,7 @@ class ImageStats(QObject):
             resolutionY = None
             self.scaleHint = None
 
-        if aperture:
-            speed = focalLength / aperture
-        else:
-            speed = None
+        speed = focalLength / aperture if aperture else None
 
         if aperture:
             dawes = 116 / aperture

@@ -127,10 +127,7 @@ class SettUpdate(QObject):
         self.mainW.log.info(f"Package Beta:   {verBeta[:10]}")
         self.mainW.log.info(f"Package Release:{verRelease[:10]}")
 
-        if self.ui.versionBeta.isChecked():
-            finalPackage = verBeta
-        else:
-            finalPackage = verRelease
+        finalPackage = verBeta if self.ui.versionBeta.isChecked() else verRelease
 
         if len(finalPackage) == 0:
             return None, None, None

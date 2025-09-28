@@ -171,9 +171,7 @@ class Watney:
         """ """
         self.appPath = appPath
 
-        if platform.system() == "Darwin":
-            program = self.appPath / "watney-solve"
-        elif platform.system() == "Linux":
+        if platform.system() == "Darwin" or platform.system() == "Linux":
             program = self.appPath / "watney-solve"
         elif platform.system() == "Windows":
             program = self.appPath / "watney-solve.exe"

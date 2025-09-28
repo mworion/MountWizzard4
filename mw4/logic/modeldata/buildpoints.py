@@ -41,10 +41,7 @@ def HaDecToAltAz(ha, dec, lat):
     value = (np.sin(dec) - np.sin(alt) * np.sin(lat)) / (np.cos(alt) * np.cos(lat))
     value = np.clip(value, -1.0, 1.0)
     A = np.arccos(value)
-    if np.sin(ha) >= 0.0:
-        az = 2 * np.pi - A
-    else:
-        az = A
+    az = 2 * np.pi - A if np.sin(ha) >= 0.0 else A
     az = np.degrees(az)
     alt = np.degrees(alt)
     return alt, az
@@ -339,10 +336,7 @@ class DataPoint:
         pointClose = horizonI[closest_index]
         val = np.sqrt(np.sum((pointRef - pointClose) ** 2))
 
-        if val < margin:
-            return True
-        else:
-            return False
+        return val < margin
 
     def isAboveHorizon(self, point):
         """ """
@@ -360,10 +354,7 @@ class DataPoint:
             yRef = [0]
 
         y = np.interp(x, xRef, yRef)
-        if point[0] > y[int(point[1])]:
-            return True
-        else:
-            return False
+        return point[0] > y[int(point[1])]
 
     def isCloseMeridian(self, point):
         """ """
@@ -377,10 +368,7 @@ class DataPoint:
         lower = 180 - value
         upper = 180 + value
 
-        if lower < point[1] < upper:
-            return True
-        else:
-            return False
+        return lower < point[1] < upper
 
     def deleteBelowHorizon(self):
         """ """
@@ -472,10 +460,7 @@ class DataPoint:
         with open(fullFileName) as handle:
             testLine = handle.readline()
 
-        if ";" in testLine:
-            delimiter = ";"
-        else:
-            delimiter = ","
+        delimiter = ";" if ";" in testLine else ","
 
         try:
             value = []
@@ -499,10 +484,7 @@ class DataPoint:
         if not all(isinstance(x, tuple) for x in value):
             return False
 
-        if not all(len(x) == 2 for x in value):
-            return False
-
-        return True
+        return all(len(x) == 2 for x in value)
 
     def loadBuildP(self, fullFileName, ext=".bpts", keep=False):
         """ """
@@ -780,10 +762,7 @@ class DataPoint:
         t, y = almanac.find_discrete(startTime, endTime, f)
 
         index = next((x for x in y if x == 1), None)
-        if index is None:
-            edgeDSO = int(ts.now().tt) - 0.5
-        else:
-            edgeDSO = t[index].tt
+        edgeDSO = int(ts.now().tt) - 0.5 if index is None else t[index].tt
 
         number = numberPoints
         buildPs = []

@@ -169,7 +169,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
     def drawShoreLine(self, plotItem: PlotWidget) -> None:
         """ """
-        for key in self.world.keys():
+        for key in self.world:
             shape = self.world[key]
             x = np.array(shape["xDeg"])
             y = np.array(shape["yDeg"])

@@ -144,10 +144,7 @@ class SimulatorBuildPoints:
         trans.setTranslation(QVector3D(x, y, z))
         entity.addComponent(mesh)
         entity.addComponent(trans)
-        if active:
-            mat = Materials().pointsActive
-        else:
-            mat = Materials().points
+        mat = Materials().pointsActive if active else Materials().points
 
         entity.addComponent(mat)
 
@@ -198,10 +195,7 @@ class SimulatorBuildPoints:
         trans2.setScale(0.15)
         e2.addComponent(mesh2)
         e2.addComponent(trans2)
-        if active:
-            mat2 = Materials().numbersActive
-        else:
-            mat2 = Materials().numbers
+        mat2 = Materials().numbersActive if active else Materials().numbers
         e2.addComponent(mat2)
 
         return (e1, trans1, e2, trans2, mesh2, mat2, e3, trans3)

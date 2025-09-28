@@ -148,10 +148,7 @@ class SeeingWeather:
             return True
 
         ageData = self.app.mount.obsSite.loader.days_old(fileName)
-        if ageData < hours / 24:
-            return False
-        else:
-            return True
+        return not ageData < hours / 24
 
     def pollSeeingData(self) -> None:
         """ """

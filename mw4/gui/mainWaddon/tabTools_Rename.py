@@ -150,9 +150,7 @@ class Rename(QObject):
             chunk = f"Bin{entry:1.0f}"
         elif fitsKey == "CCD-TEMP":
             chunk = f"Temp{entry:03.0f}"
-        elif fitsKey == "FRAME":
-            chunk = f"{entry}"
-        elif fitsKey == "FILTER":
+        elif fitsKey == "FRAME" or fitsKey == "FILTER":
             chunk = f"{entry}"
         elif fitsKey == "EXPTIME":
             chunk = f"Exp{entry:1.0f}s"
@@ -239,10 +237,7 @@ class Rename(QObject):
             self.msg.emit(2, "Tools", "Rename error", "No valid input directory given")
             return False
 
-        if includeSubdirs:
-            search = "**/*.fit*"
-        else:
-            search = "*.fit*"
+        search = "**/*.fit*" if includeSubdirs else "*.fit*"
 
         numberFiles = self.getNumberFiles(pathDir, search=search)
         if not numberFiles:

@@ -237,9 +237,7 @@ class Astrometry:
         """ """
         self.appPath = appPath
 
-        if platform.system() == "Darwin":
-            program = self.appPath / "solve-field"
-        elif platform.system() == "Linux":
+        if platform.system() == "Darwin" or platform.system() == "Linux":
             program = self.appPath / "solve-field"
         elif platform.system() == "Windows":
             program = Path("")

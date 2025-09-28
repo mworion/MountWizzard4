@@ -238,10 +238,7 @@ class MountDevice:
         else:
             self.statusAlert = False
 
-        if self.obsSite.flipped:
-            settleWait = self._waitTimeFlip
-        else:
-            settleWait = 0
+        settleWait = self._waitTimeFlip if self.obsSite.flipped else 0
 
         if self.obsSite.status not in [2, 6]:
             if not self.statusSlew:

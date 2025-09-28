@@ -347,10 +347,7 @@ class Geometry:
         else:
             checkPier = "E"
 
-        if pierside == checkPier:
-            value = -ha + 90
-        else:
-            value = -ha + 270
+        value = -ha + 90 if pierside == checkPier else -ha + 270
 
         T5 = np.dot(T4, self.transformRotX(value))
         P6 = np.dot(T5, P0)

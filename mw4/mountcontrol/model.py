@@ -166,10 +166,7 @@ class Model:
         """ """
         if not self._numberStars:
             return False
-        if self._numberStars == len(self._starList):
-            return True
-        else:
-            return False
+        return self._numberStars == len(self._starList)
 
     @property
     def nameList(self):
@@ -217,10 +214,7 @@ class Model:
         """ """
         if not self._numberNames:
             return False
-        if self._numberNames == len(self._nameList):
-            return True
-        else:
-            return False
+        return self._numberNames == len(self._nameList)
 
     def parseNames(self, response: list, numberOfChunks: int) -> bool:
         """ """

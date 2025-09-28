@@ -110,18 +110,18 @@ class SimulatorDome:
         scaleSlit = (1 + (width - 600) / 600 / 2) * 0.9
         shiftShutter = width / 2 / scale if isOpen else 0
 
-        for node in ["domeSlit1", "domeSlit2"]:
-            node = self.parent.entityModel.get(node)
+        for nodeItem in ["domeSlit1", "domeSlit2"]:
+            node = self.parent.entityModel.get(nodeItem)
             if node:
                 node["trans"].setScale3D(QVector3D(1, scaleSlit, 1))
 
-        for node in ["domeDoor1"]:
-            node = self.parent.entityModel.get(node)
+        for nodeItem in ["domeDoor1"]:
+            node = self.parent.entityModel.get(nodeItem)
             if node:
                 node["trans"].setTranslation(QVector3D(0, shiftShutter, 0))
 
-        for node in ["domeDoor2"]:
-            node = self.parent.entityModel.get(node)
+        for nodeItem in ["domeDoor2"]:
+            node = self.parent.entityModel.get(nodeItem)
             if node:
                 node["trans"].setTranslation(QVector3D(0, -shiftShutter, 0))
 

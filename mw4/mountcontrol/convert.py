@@ -182,10 +182,7 @@ def topoToAltAz(ha, dec, lat):
     A = np.degrees(A)
     alt = np.degrees(alt)
 
-    if np.sin(ha) >= 0.0:
-        az = 360.0 - A
-    else:
-        az = A
+    az = 360.0 - A if np.sin(ha) >= 0.0 else A
 
     return alt, az
 
@@ -220,10 +217,7 @@ def checkIsHours(value):
         return False
     if "+" in value:
         return False
-    if "-" in value:
-        return False
-
-    return True
+    return "-" not in value
 
 
 def convertToAngle(value, isHours=None):
@@ -320,14 +314,9 @@ def formatLatLonToAngle(value, pf):
     else:
         return None
 
-    if "N" in pf:
-        maxAbs = 90
-    else:
-        maxAbs = 180
+    maxAbs = 90 if "N" in pf else 180
 
-    if angle > maxAbs:
-        return None
-    elif angle < -maxAbs:
+    if angle > maxAbs or angle < -maxAbs:
         return None
 
     angle = Angle(degrees=angle)

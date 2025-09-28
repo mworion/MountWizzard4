@@ -167,7 +167,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
     def generateDataSets(self, modelJSON: dict) -> None:
         """ """
         model = {}
-        for key in modelJSON[0].keys():
+        for key in modelJSON[0]:
             model[key] = []
             for index in range(0, len(modelJSON)):
                 model[key].append(modelJSON[index][key])

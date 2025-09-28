@@ -254,9 +254,8 @@ class EnvironWeather(QObject):
         temp, press = self.movingAverageRefractionParameters()
         if self.ui.refracManual.isChecked():
             return
-        if self.ui.refracNoTrack.isChecked():
-            if self.app.mount.obsSite.status == 0:
-                return
+        if self.ui.refracNoTrack.isChecked() and self.app.mount.obsSite.status == 0:
+            return
 
         self.mainW.log.debug(f"Setting refrac temp:[{temp}], press:[{press}]")
         if not self.app.mount.setting.setRefractionParam(temperature=temp, pressure=press):

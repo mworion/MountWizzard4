@@ -330,10 +330,7 @@ class HemisphereDraw(MWidget, SlewInterface):
             self.ui.hemisphere.p[0].removeItem(textItem)
         self.modelPointsText = []
         isEdit = self.ui.editModeHem.isChecked()
-        if isEdit:
-            facFont = 1
-        else:
-            facFont = 0.85
+        facFont = 1 if isEdit else 0.85
         font = QFont(
             self.window().font().family(),
             int(self.window().font().pointSize() * facFont),

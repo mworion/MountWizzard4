@@ -161,7 +161,10 @@ def getMaterial(entity):
     for component in components:
         if isinstance(
             component,
-            Qt3DExtras.QMetalRoughMaterial | Qt3DExtras.QDiffuseSpecularMaterial | Qt3DExtras.QPhongAlphaMaterial | Qt3DExtras.QPhongMaterial,
+            Qt3DExtras.QMetalRoughMaterial
+            | Qt3DExtras.QDiffuseSpecularMaterial
+            | Qt3DExtras.QPhongAlphaMaterial
+            | Qt3DExtras.QPhongMaterial,
         ):
             return component
 

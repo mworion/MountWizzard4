@@ -99,9 +99,7 @@ def guiSetText(ui, formatElement, value=None):
         return
     if not formatElement:
         return
-    if value is None:
-        text = "-"
-    elif isinstance(value, list | np.ndarray) and len(value) == 0:
+    if value is None or isinstance(value, list | np.ndarray) and len(value) == 0:
         text = "-"
     elif formatElement.startswith("HSTR"):
         text = formatHstrToText(value)
@@ -118,10 +116,7 @@ def guiSetText(ui, formatElement, value=None):
     elif value == "W":
         text = "WEST"
     elif isinstance(value, bool):
-        if value:
-            text = "ON"
-        else:
-            text = "OFF"
+        text = "ON" if value else "OFF"
     else:
         formatStr = "{0:" + formatElement + "}"
         text = formatStr.format(value)
@@ -315,10 +310,7 @@ class MWidget(QWidget, Styles):
         reply = self.runDialog(msg)
 
         if buttons is None:
-            if reply != msg.StandardButton.Yes:
-                return False
-            else:
-                return True
+            return reply == msg.StandardButton.Yes
         else:
             return reply
 
@@ -332,10 +324,7 @@ class MWidget(QWidget, Styles):
         multiple=False,
     ):
         """ """
-        if multiple:
-            default = []
-        else:
-            default = Path("")
+        default = [] if multiple else Path("")
 
         if not window:
             return default

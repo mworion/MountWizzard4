@@ -43,15 +43,9 @@ def getImageHeader(imagePath: Path) -> fits.Header:
 
 def getCoordinatesFromHeader(header: fits.Header) -> [Angle, Angle]:
     """ """
-    if "RA" in header and "DEC" in header:
-        hasDecimal = True
-    else:
-        hasDecimal = False
+    hasDecimal = bool("RA" in header and "DEC" in header)
 
-    if "OBJCTRA" in header and "OBJCTDEC" in header:
-        hasSexagesimal = True
-    else:
-        hasSexagesimal = False
+    hasSexagesimal = bool("OBJCTRA" in header and "OBJCTDEC" in header)
 
     if hasDecimal:
         ra = convertToAngle(header["RA"], isHours=True)

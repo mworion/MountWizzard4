@@ -281,10 +281,7 @@ class Connection:
 
     def validCommand(self, command):
         """ """
-        for key in sorted(self.COMMANDS, reverse=True):
-            if command.startswith(key):
-                return True
-        return False
+        return any(command.startswith(key) for key in sorted(self.COMMANDS, reverse=True))
 
     def validCommandSet(self, commandString):
         """ """
@@ -415,9 +412,7 @@ class Connection:
                     break
 
                 response += chunk
-                if numberOfChunks == 0 and len(response) == minBytes:
-                    break
-                elif numberOfChunks != 0 and numberOfChunks == response.count("#"):
+                if numberOfChunks == 0 and len(response) == minBytes or numberOfChunks != 0 and numberOfChunks == response.count("#"):
                     break
 
         except TimeoutError:

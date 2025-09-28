@@ -540,7 +540,7 @@ class SatTrack(QObject, SatData):
             return False
 
         stat = obs.statusSat
-        statText = TLESCK[stat] if stat in TLESCK else ""
+        statText = TLESCK.get(stat, "")
         self.ui.startSatelliteTracking.setText(statText)
 
         azimuth = obs.Az.degrees

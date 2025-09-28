@@ -142,31 +142,16 @@ class ModelStar:
             return None
 
     def __gt__(self, other):
-        if other > self._errorRMS:
-            return True
-        else:
-            return False
+        return other > self._errorRMS
 
     def __ge__(self, other):
-        if other >= self._errorRMS:
-            return True
-        else:
-            return False
+        return other >= self._errorRMS
 
     def __lt__(self, other):
-        if other < self._errorRMS:
-            return True
-        else:
-            return False
+        return other < self._errorRMS
 
     def __le__(self, other):
-        if other <= self._errorRMS:
-            return True
-        else:
-            return False
+        return other <= self._errorRMS
 
     def __eq__(self, other):
-        if other == self._errorRMS:
-            return True
-        else:
-            return False
+        return other == self._errorRMS

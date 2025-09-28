@@ -190,20 +190,14 @@ class SatSearch(QObject, SatData):
         self.setSatListItem.emit(row, 5, entry)
 
         if isUp is not None:
-            if isUp[0]:
-                t = self.mainW.convertTime(isUp[1][0], "%H:%M")
-            else:
-                t = ""
+            t = self.mainW.convertTime(isUp[1][0], "%H:%M") if isUp[0] else ""
 
             entry = QTableWidgetItem(t)
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.setSatListItem.emit(row, 6, entry)
 
         if isSunlit is not None:
-            if isSunlit:
-                value = f"{appMag:1.1f}"
-            else:
-                value = ""
+            value = f"{appMag:1.1f}" if isSunlit else ""
 
             entry = QCustomTableWidgetItem(value)
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
@@ -243,10 +237,7 @@ class SatSearch(QObject, SatData):
             if not np.isnan(satParam[0]) and sat:
                 isSunlit = findSunlit(sat, eph, timeNow)
                 satRange = satParam[0]
-                if isSunlit:
-                    appMag = calcAppMag(sat, loc, eph, satRange, timeNow)
-                else:
-                    appMag = 99
+                appMag = calcAppMag(sat, loc, eph, satRange, timeNow) if isSunlit else 99
             else:
                 isSunlit = False
                 appMag = 99
@@ -268,10 +259,7 @@ class SatSearch(QObject, SatData):
             isUp = findSatUp(sat, loc, timeNow, timeNext, altMin)
             fitTwilight = checkTwilight(eph, loc, isUp)
             satRange = satParam[0]
-            if isSunlit:
-                appMag = calcAppMag(sat, loc, eph, satRange, timeNow)
-            else:
-                appMag = 99
+            appMag = calcAppMag(sat, loc, eph, satRange, timeNow) if isSunlit else 99
         else:
             fitTwilight = 4
             isSunlit = False

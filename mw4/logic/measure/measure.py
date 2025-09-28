@@ -142,10 +142,7 @@ class MeasureData:
         periodData = dat["status"][-period:]
         hasValidData = all(x is not None for x in periodData)
 
-        if hasValidData:
-            trackingIsStable = periodData.mean() == 0
-        else:
-            trackingIsStable = False
+        trackingIsStable = periodData.mean() == 0 if hasValidData else False
 
         if trackingIsStable:
             if self.raRef is None:

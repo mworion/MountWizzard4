@@ -516,9 +516,7 @@ class ObsSite:
 
     def pollSyncClock(self) -> bool:
         """ """
-        if platform.system() == "Windows":
-            corrTerm = -0.001
-        elif platform.system() == "Linux":
+        if platform.system() == "Windows" or platform.system() == "Linux":
             corrTerm = -0.001
         elif platform.system() == "Darwin":
             corrTerm = -0.011

@@ -383,11 +383,7 @@ def switchRule(value):
 
 def switchState(value):
     if isinstance(value, bool):
-        if value:
-            value = "On"
-
-        else:
-            value = "Off"
+        value = "On" if value else "Off"
 
     if value.lower() not in ["on", "off"]:
         log.error(value + " is not a valid switch state.")

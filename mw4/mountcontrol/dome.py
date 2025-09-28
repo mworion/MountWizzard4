@@ -43,11 +43,7 @@ class Dome:
     @shutterState.setter
     def shutterState(self, value):
         value = valueToInt(value)
-        if value is None:
-            self._shutterState = None
-        elif value < 0:
-            self._shutterState = None
-        elif value > 4:
+        if value is None or value < 0 or value > 4:
             self._shutterState = None
         else:
             self._shutterState = value
@@ -59,11 +55,7 @@ class Dome:
     @flapState.setter
     def flapState(self, value):
         value = valueToInt(value)
-        if value is None:
-            self._flapState = None
-        elif value < 0:
-            self._flapState = None
-        elif value > 4:
+        if value is None or value < 0 or value > 4:
             self._flapState = None
         else:
             self._flapState = value

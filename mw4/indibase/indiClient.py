@@ -175,7 +175,7 @@ class Client(QObject):
         :return: success for test purpose
         """
         for device in self.devices:
-            if not device == deviceName and deviceName:
+            if device != deviceName and deviceName:
                 continue
 
             self.signals.deviceDisconnected.emit(device)
@@ -481,10 +481,7 @@ class Client(QObject):
             self.log.trace(f"SendCmd: [{cmd.decode().lstrip('<').rstrip('/>')}]")
             number = self.socket.write(cmd + b"\n")
             self.socket.flush()
-            if number > 0:
-                return True
-            else:
-                return False
+            return number > 0
         else:
             return False
 
@@ -732,14 +729,22 @@ class Client(QObject):
 
         if isinstance(
             chunk,
-            indiXML.SetBLOBVector | indiXML.SetSwitchVector | indiXML.SetTextVector | indiXML.SetLightVector | indiXML.SetNumberVector,
+            indiXML.SetBLOBVector
+            | indiXML.SetSwitchVector
+            | indiXML.SetTextVector
+            | indiXML.SetLightVector
+            | indiXML.SetNumberVector,
         ):
             self._setProperty(chunk=chunk, device=device, deviceName=deviceName)
             return True
 
         if isinstance(
             chunk,
-            indiXML.DefBLOBVector | indiXML.DefSwitchVector | indiXML.DefTextVector | indiXML.DefLightVector | indiXML.DefNumberVector,
+            indiXML.DefBLOBVector
+            | indiXML.DefSwitchVector
+            | indiXML.DefTextVector
+            | indiXML.DefLightVector
+            | indiXML.DefNumberVector,
         ):
             self._defProperty(chunk=chunk, device=device, deviceName=deviceName)
             return True
@@ -750,14 +755,21 @@ class Client(QObject):
 
         if isinstance(
             chunk,
-            indiXML.NewBLOBVector | indiXML.NewSwitchVector | indiXML.NewTextVector | indiXML.NewNumberVector,
+            indiXML.NewBLOBVector
+            | indiXML.NewSwitchVector
+            | indiXML.NewTextVector
+            | indiXML.NewNumberVector,
         ):
             # todo: what to do with the "New" vector ?
             return True
 
         if isinstance(
             chunk,
-            indiXML.OneBLOB | indiXML.OneSwitch | indiXML.OneText | indiXML.OneNumber | indiXML.OneLight,
+            indiXML.OneBLOB
+            | indiXML.OneSwitch
+            | indiXML.OneText
+            | indiXML.OneNumber
+            | indiXML.OneLight,
         ):
             # todo: what to do with the "One" vector ?
             return True

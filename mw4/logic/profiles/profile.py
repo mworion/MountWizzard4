@@ -33,7 +33,7 @@ profileVersion = "4.2"
 def replaceKeys(oldDict: dict, keyDict: dict) -> dict:
     """ """
     newDict = {}
-    for key in oldDict.keys():
+    for key in oldDict:
         newKey = keyDict.get(key, key)
         if isinstance(oldDict[key], dict):
             newDict[newKey] = replaceKeys(oldDict[key], keyDict)
@@ -165,7 +165,7 @@ def defaultConfig() -> dict:
 def checkResetTabOrder(profile: dict) -> dict:
     """ """
     newDict = {}
-    for key in profile.keys():
+    for key in profile:
         if key.startswith("order"):
             continue
         if isinstance(profile[key], dict):

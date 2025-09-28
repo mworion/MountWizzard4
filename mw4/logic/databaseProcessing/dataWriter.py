@@ -147,10 +147,7 @@ class DataWriter:
         halfMonthOrder = designation[6]
         cycleText = designation[7:11]
 
-        if cycleText and cycleText.isdigit():
-            cycle = int(cycleText)
-        else:
-            cycle = 0
+        cycle = int(cycleText) if cycleText and cycleText.isdigit() else 0
 
         cycleText = self.generateCycleCountTextPacked(cycle)
 

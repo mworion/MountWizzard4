@@ -243,11 +243,7 @@ class Satellite:
             self.log.warning("wrong number of chunks")
             return False
 
-        for i in range(0, len(az)):
-            if response[i] == "E":
-                return False
-
-        return True
+        return all(response[i] != "E" for i in range(0, len(az)))
 
     def preCalcTrajectory(self, replay: bool = False) -> bool:
         """ """

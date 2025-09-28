@@ -85,7 +85,7 @@ exclude = ["mw4/gui/widgets/*"]
 
 [tool.ruff.lint]
 extend-select = [
-    "E4", "E7", "E9", "F", "T2", "UP", "I", "C"
+    "E", "T2", "UP", "I", "C", "LOG", "W", "SIM", "A"
 ]
 ignore = [
     ]
@@ -94,12 +94,18 @@ ignore = [
 max-complexity = 10
 
 [tool.ruff.lint.per-file-ignores]
+"mw4/mainApp.py" = ["C901"]
 "mw4/gui/utilities/gCustomViewBox.py" = ["C901"]
 "mw4/gui/utilities/toolsQtWidget.py" = ["C901"]
-"mw4/indibase/indiXML.py" = ["C901"]
-"mw4/gui/mainWaddon/tabEnviron_Seeing.py" = ["C901"]
 "mw4/gui/utilities/gNormalScatter.py" = ["C901"]
-"mw4/indibase/indiClient.py" = ["C901"]
+"mw4/gui/styles/gradients.py" = ["E501"]
+"mw4/gui/mainWaddon/tabEnviron_Seeing.py" = ["C901"]
+"mw4/gui/extWindows/simulator/tools.py" = ["E501"]
+"mw4/gui/extWindows/uploadPopupW.py" = ["SIM115"]
 "mw4/logic/powerswitch/pegasusUPBIndi.py" = ["C901"]
-"mw4/mainApp.py" = ["C901"]
+"mw4/logic/measure/measureCSV.py" = ["SIM115"]
+"mw4/indibase/indiXML.py" = ["C901", "E501"]
+"mw4/indibase/indiClient.py" = ["C901", "E501"]
 "mw4/mountcontrol/convert.py" = ["C901"]
+"mw4/mountcontrol/connection.py" = ["E501"]
+"mw4/resource/resources.py" = ["E501"]

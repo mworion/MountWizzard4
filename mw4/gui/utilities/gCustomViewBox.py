@@ -153,9 +153,7 @@ class CustomViewBox(pg.ViewBox):
         mousePoint = self.mapSceneToView(pos)
         x, y = mousePoint.x(), mousePoint.y()
         vr = self.viewRange()
-        if vr[0][0] < x < vr[0][1] and vr[1][0] < y < vr[1][1]:
-            return True
-        return False
+        return bool(vr[0][0] < x < vr[0][1] and vr[1][0] < y < vr[1][1])
 
     def rightMouseRange(self) -> None:
         """ """

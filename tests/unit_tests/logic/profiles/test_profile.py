@@ -258,7 +258,7 @@ def test_saveProfile_1():
     saveProfile(Path("tests/work/config/config.cfg"), config)
     assert os.path.isfile("tests/work/config/config.cfg")
     assert os.path.isfile("tests/work/config/profile")
-    with open("tests/work/config/profile", "r") as infile:
+    with open("tests/work/config/profile") as infile:
         name = infile.readline().strip()
     assert name == "config"
 
@@ -269,7 +269,7 @@ def test_saveProfile_2():
     saveProfile(Path("tests/work/config/config.cfg"), config)
     assert os.path.isfile("tests/work/config/config.cfg")
     assert os.path.isfile("tests/work/config/profile")
-    with open("tests/work/config/profile", "r") as infile:
+    with open("tests/work/config/profile") as infile:
         name = infile.readline().strip()
     assert name == "config"
 
@@ -280,7 +280,7 @@ def test_saveProfile_3():
     saveProfile(Path("tests/work/config/new.cfg"), config)
     assert os.path.isfile("tests/work/config/new.cfg")
     assert os.path.isfile("tests/work/config/profile")
-    with open("tests/work/config/profile", "r") as infile:
+    with open("tests/work/config/profile") as infile:
         name = infile.readline().strip()
     assert name == "new"
 
@@ -289,7 +289,7 @@ def test_saveProfile_4():
     saveProfile(Path("tests/work/config/config.cfg"), defaultConfig())
     assert os.path.isfile("tests/work/config/config.cfg")
     assert os.path.isfile("tests/work/config/profile")
-    with open("tests/work/config/profile", "r") as infile:
+    with open("tests/work/config/profile") as infile:
         name = infile.readline().strip()
     assert name == "config"
 
@@ -298,6 +298,6 @@ def test_saveProfile_5():
     saveProfile(Path("tests/work/config/new.cfg"), defaultConfig())
     assert os.path.isfile("tests/work/config/new.cfg")
     assert os.path.isfile("tests/work/config/profile")
-    with open("tests/work/config/profile", "r") as infile:
+    with open("tests/work/config/profile") as infile:
         name = infile.readline().strip()
     assert name == "new"

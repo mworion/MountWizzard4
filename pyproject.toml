@@ -83,3 +83,23 @@ namespaces = false
 line-length = 95
 indent-width = 4
 exclude = ["mw4/gui/widgets/*"]
+
+[tool.ruff.lint]
+extend-select = [
+    "T100", # https://docs.astral.sh/ruff/rules/#flake8-debugger-t10
+    "T2", # https://docs.astral.sh/ruff/rules/#flake8-print-t20
+    "UP", # https://docs.astral.sh/ruff/rules/#pyupgrade-up
+    "I", # https://docs.astral.sh/ruff/rules/#isort-i
+]
+ignore = [
+    "I001",
+    "UP004",
+    "UP009",
+    "UP030",
+    "UP032",
+    "UP035",
+    "UP038",
+    ]
+
+[tool.ruff.lint.per-file-ignores]
+    "mw4/loader.py" = ["E402"]

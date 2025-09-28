@@ -111,7 +111,7 @@ def version_doc(c):
     printMW("changing the version number to setup.py")
 
     # getting version of desired package
-    with open("setup.py", "r") as setup:
+    with open("setup.py") as setup:
         text = setup.readlines()
 
     for line in text:
@@ -119,7 +119,7 @@ def version_doc(c):
             _, number, _ = line.split('"')
 
     # reading configuration file
-    with open("./doc/conf.py", "r") as conf:
+    with open("./doc/conf.py") as conf:
         text = conf.readlines()
     textNew = list()
 
@@ -414,10 +414,6 @@ def build_mw(c):
         c,
         "cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz",
     )
-
-    with open("notes.txt") as f:
-        printMW(f.read())
-
     printMW("building dist mountwizzard4 finished\n")
     printMW("generating documentation")
 

@@ -192,7 +192,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
     def processModel(self, loadFilePath: Path) -> None:
         """ """
         try:
-            with open(loadFilePath, "r") as infile:
+            with open(loadFilePath) as infile:
                 modelJSON = json.load(infile)
         except Exception as e:
             self.log.warning(f"Cannot load model file: {[loadFilePath]}, error: {e}")

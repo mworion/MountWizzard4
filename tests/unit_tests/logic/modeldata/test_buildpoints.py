@@ -944,7 +944,7 @@ def test_saveHorizonP_12(function):
     suc = function.saveHorizonP(fileName="test_horizon_1")
     assert suc
     fileName = "tests/work/config/" + "test_horizon_1" + ".hpts"
-    with open(fileName, "r") as infile:
+    with open(fileName) as infile:
         value = json.load(infile)
         assert value[0] == [0, 1]
         assert value[-1] == [0, 2]

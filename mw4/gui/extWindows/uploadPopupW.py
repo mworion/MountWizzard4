@@ -168,7 +168,7 @@ class UploadPopup(MWidget):
             )
             files[self.dataNames[dataType]["attr"]] = (
                 self.dataNames[dataType]["file"],
-                open(fullDataFilePath, "r"),
+                open(fullDataFilePath),
             )
 
         self.log.debug(f"Data: {list(files.items())}")

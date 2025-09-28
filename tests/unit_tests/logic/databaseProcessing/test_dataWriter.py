@@ -79,9 +79,9 @@ def test_writeCometMPC_2(function):
     testData = [data[0]]
     function.writeCometMPC(datas=testData, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/work/temp/comets.mpc", "r") as f:
+    with open("tests/work/temp/comets.mpc") as f:
         testLine = f.readline()
-    with open("tests/testData/mpc_comet_test.txt", "r") as f:
+    with open("tests/testData/mpc_comet_test.txt") as f:
         refLine = f.readline()
     assert testLine == refLine
 
@@ -195,9 +195,9 @@ def test_writeAsteroidMPC_2(function):
     testData = [data[0]]
     function.writeAsteroidMPC(datas=testData, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/work/temp/asteroids.mpc", "r") as f:
+    with open("tests/work/temp/asteroids.mpc") as f:
         testLine = f.readline()
-    with open("tests/testData/mpc_asteroid_test.txt", "r") as f:
+    with open("tests/testData/mpc_asteroid_test.txt") as f:
         refLine = f.readline()
     assert testLine[:202] == refLine[:202]
 
@@ -208,9 +208,9 @@ def test_writeAsteroidMPC_3(function):
 
     function.writeAsteroidMPC(datas=data, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/work/temp/asteroids.mpc", "r") as f:
+    with open("tests/work/temp/asteroids.mpc") as f:
         testLines = f.readlines()
-    with open("tests/testData/mpc_asteroid_test.txt", "r") as f:
+    with open("tests/testData/mpc_asteroid_test.txt") as f:
         refLines = f.readlines()
     for test, ref in zip(testLines, refLines):
         assert test[0:8] == ref[0:8]
@@ -224,9 +224,9 @@ def test_writeAsteroidMPC_4(function):
     testData = [data[0]]
     function.writeAsteroidMPC(datas=testData, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/work/temp/asteroids.mpc", "r") as f:
+    with open("tests/work/temp/asteroids.mpc") as f:
         testLine = f.readline()
-    with open("tests/testData/nea_extended_test.txt", "r") as f:
+    with open("tests/testData/nea_extended_test.txt") as f:
         refLine = f.readline()
     assert testLine[:202] == refLine[:202]
 
@@ -238,9 +238,9 @@ def test_writeAsteroidMPC_5(function):
     with mock.patch.object(function, "generateEpochPacked", return_value=" 1985"):
         function.writeAsteroidMPC(datas=data, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/work/temp/asteroids.mpc", "r") as f:
+    with open("tests/work/temp/asteroids.mpc") as f:
         testLines = f.readlines()
-    with open("tests/testData/nea_extended_test.txt", "r") as f:
+    with open("tests/testData/nea_extended_test.txt") as f:
         refLines = f.readlines()
     for test, ref in zip(testLines, refLines):
         if ref[0:3] in ["PLS"]:
@@ -266,7 +266,7 @@ def test_writeSatelliteTLE_1(function):
     data = [EarthSatellite(tle[1], tle[2], name=tle[0])]
     function.writeSatelliteTLE(datas=data, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/work/temp/satellites.tle", "r") as f:
+    with open("tests/work/temp/satellites.tle") as f:
         refLines = f.readlines()
 
     assert tle[0] == refLines[0].strip("\n")
@@ -283,7 +283,7 @@ def t_writeSatelliteTLE_2(function):
     data = [EarthSatellite(tle[1], tle[2], name=tle[0])]
     function.writeSatelliteTLE(datas=data, dataFilePath=Path("tests/work/temp"))
 
-    with open("tests/work/temp/satellites.tle", "r") as f:
+    with open("tests/work/temp/satellites.tle") as f:
         refLines = f.readlines()
 
     assert tle[0] == refLines[0].strip("\n")

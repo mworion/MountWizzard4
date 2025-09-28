@@ -102,7 +102,7 @@ def loadModelsFromFile(modelFilesPath: list[Path]) -> (list[dict], str):
             return [], f"File {path} does not exist"
 
         try:
-            with open(path, "r") as infile:
+            with open(path) as infile:
                 model_part = json.load(infile)
                 model += model_part
         except Exception:
@@ -174,7 +174,7 @@ def compareFile(modelFilePath: Path, mountModelData: dict) -> (list, list):
     pointsIn = []
     pointsOut = []
 
-    with open(modelFilePath, "r") as inFile:
+    with open(modelFilePath) as inFile:
         try:
             fileModel = json.load(inFile)
             fileModelData = generateFileModelData(fileModel)

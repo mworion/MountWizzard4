@@ -113,7 +113,7 @@ class OnlineWeather:
             return False
 
         try:
-            with open(dataFile, "r") as f:
+            with open(dataFile) as f:
                 data = json.load(f)
         except Exception as e:
             self.log.warning(f"Cannot load data file, error: {e}")

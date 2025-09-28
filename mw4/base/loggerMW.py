@@ -68,7 +68,7 @@ def setupLogging() -> None:
         os.mkdir("./log")
 
     logging.Formatter.converter = time.gmtime
-    timeTag = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
+    timeTag = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d")
     logFile = f"./log/mw4-{timeTag}.log"
     logHandler = RotatingFileHandler(
         logFile,

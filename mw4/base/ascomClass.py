@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import platform
-from typing import Union
 
 if platform.system() == "Windows":
     from pythoncom import CoInitialize, CoUninitialize
@@ -80,7 +79,7 @@ class AscomClass(DriverData):
         self.cyclePollData.stop()
         self.cyclePollStatus.stop()
 
-    def getAscomProperty(self, valueProp: str) -> Union[str, float]:
+    def getAscomProperty(self, valueProp: str) -> str | float:
         """ """
         value = None
         if valueProp in self.propertyExceptions:
@@ -101,7 +100,7 @@ class AscomClass(DriverData):
                 self.log.trace(f"{self.deviceName}] property [{valueProp}]")
         return value
 
-    def setAscomProperty(self, valueProp: str, value: Union[str, float]) -> None:
+    def setAscomProperty(self, valueProp: str, value: str | float) -> None:
         """ """
         if valueProp in self.propertyExceptions:
             return

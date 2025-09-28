@@ -264,7 +264,7 @@ class TestConnection(unittest.TestCase):
     def test_connect_timeout(self):
         with mock.patch("socket.socket") as m_socket:
             m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
-            m_socket.return_value.connect.side_effect = socket.timeout
+            m_socket.return_value.connect.side_effect = TimeoutError
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#")
         self.assertEqual(False, suc)
@@ -272,7 +272,7 @@ class TestConnection(unittest.TestCase):
     def test_sendall_timeout(self):
         with mock.patch("socket.socket") as m_socket:
             m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
-            m_socket.return_value.sendall.side_effect = socket.timeout
+            m_socket.return_value.sendall.side_effect = TimeoutError
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#")
         self.assertEqual(False, suc)
@@ -280,7 +280,7 @@ class TestConnection(unittest.TestCase):
     def test_recv_timeout(self):
         with mock.patch("socket.socket") as m_socket:
             m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
-            m_socket.return_value.recv.side_effect = socket.timeout
+            m_socket.return_value.recv.side_effect = TimeoutError
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#")
         self.assertEqual(False, suc)
@@ -442,7 +442,7 @@ class TestConnection(unittest.TestCase):
         conn = Connection()
         with mock.patch.object(conn, "buildClient", return_value=None):
             with mock.patch.object(conn, "sendData", return_value=False):
-                with mock.patch.object(Test, "recv", side_effect=socket.timeout):
+                with mock.patch.object(Test, "recv", side_effect=TimeoutError):
                     suc = conn.communicateRaw("test")
                     assert not suc[0]
                     assert not suc[1]
@@ -465,7 +465,7 @@ class TestConnection(unittest.TestCase):
         conn = Connection()
         with mock.patch.object(conn, "buildClient", return_value=Test()):
             with mock.patch.object(conn, "sendData", return_value=False):
-                with mock.patch.object(Test, "recv", side_effect=socket.timeout):
+                with mock.patch.object(Test, "recv", side_effect=TimeoutError):
                     suc = conn.communicateRaw("test")
                     assert not suc[0]
                     assert not suc[1]

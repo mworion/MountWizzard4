@@ -359,7 +359,7 @@ class Connection(object):
         try:
             client.connect(self.host)
 
-        except socket.timeout:
+        except TimeoutError:
             self.closeClientHard(client)
             self.log.debug(f"[{self.id}] socket timeout")
             return None
@@ -421,7 +421,7 @@ class Connection(object):
                 elif numberOfChunks != 0 and numberOfChunks == response.count("#"):
                     break
 
-        except socket.timeout:
+        except TimeoutError:
             self.log.debug(f"[{self.id}] socket timeout")
             return False, response
 
@@ -474,7 +474,7 @@ class Connection(object):
         try:
             chunkRaw = client.recv(2048)
             val = chunkRaw.decode("ASCII")
-        except socket.timeout:
+        except TimeoutError:
             self.log.debug(f"[{self.id}] socket timeout")
             val = "Timeout"
             sucRec = False

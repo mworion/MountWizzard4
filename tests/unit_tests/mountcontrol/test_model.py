@@ -1280,7 +1280,7 @@ class TestConfigData(unittest.TestCase):
         filename = "tests/testData/test.model"
         import json
 
-        with open(filename, "r") as infile:
+        with open(filename) as infile:
             datas = json.load(infile)
 
         build = []

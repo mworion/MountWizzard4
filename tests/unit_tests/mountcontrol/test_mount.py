@@ -143,7 +143,7 @@ def test_startupMountData_4(function):
 
 
 def test_checkMountUp_1(function):
-    with mock.patch.object(socket.socket, "connect", side_effect=socket.timeout):
+    with mock.patch.object(socket.socket, "connect", side_effect=TimeoutError):
         function.checkMountUp()
         assert not function.mountUp
 

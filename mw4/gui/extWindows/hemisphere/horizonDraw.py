@@ -112,7 +112,7 @@ class HorizonDraw(MWidget):
         """ """
         folder = self.app.mwGlob["configDir"]
         fileTypes = "Terrain images (*.jpg)"
-        loadFilePath = self.openFile(self, "Open terrain image", folder, fileTypes)
+        loadFilePath = self.openFile(self.parent, "Open terrain image", folder, fileTypes)
         if not loadFilePath.is_file():
             return
 
@@ -132,7 +132,7 @@ class HorizonDraw(MWidget):
         """ """
         folder = self.app.mwGlob["configDir"]
         fileTypes = "Horizon mask files (*.hpts);; CSV Files (*.csv);; MW3 Files (*.txt)"
-        loadFilePath = self.openFile(self, "Open horizon mask file", folder, fileTypes)
+        loadFilePath = self.openFile(self.parent, "Open horizon mask file", folder, fileTypes)
         if not loadFilePath.is_file():
             return
 

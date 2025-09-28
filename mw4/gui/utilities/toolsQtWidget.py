@@ -171,7 +171,7 @@ class MWidget(QWidget, Styles):
     def saveWindowAsPNG(window):
         """ """
         name = window.windowTitle().replace(" ", "_")
-        timeTrigger = datetime.datetime.now(datetime.timezone.utc)
+        timeTrigger = datetime.datetime.now(datetime.UTC)
         timeTag = timeTrigger.strftime("%Y-%m-%d-%H-%M-%S")
         path = window.app.mwGlob["logDir"]
         fullFileName = f"{path}/{timeTag}-{name}.png"

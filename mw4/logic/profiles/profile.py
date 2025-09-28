@@ -179,7 +179,7 @@ def checkResetTabOrder(profile: dict) -> dict:
 def loadProfile(loadProfilePath: Path) -> dict:
     """ """
     try:
-        with open(loadProfilePath, "r") as configFile:
+        with open(loadProfilePath) as configFile:
             configData = json.load(configFile)
     except Exception as e:
         log.critical(f"Cannot parse: {loadProfilePath.name}, error: {e}")

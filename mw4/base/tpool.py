@@ -48,7 +48,7 @@ class Worker(QRunnable):
     """
 
     def __init__(self, fn, *args, **kwargs):
-        super(Worker, self).__init__()
+        super().__init__()
         self.log = logging.getLogger("MW4")
         self.fn = fn
         self.args = args

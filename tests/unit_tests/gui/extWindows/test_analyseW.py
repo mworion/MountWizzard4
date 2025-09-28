@@ -85,7 +85,7 @@ def test_writeGui_1(function):
 
 
 def test_generateDataSets(function):
-    with open("tests/testData/test.model", "r") as infile:
+    with open("tests/testData/test.model") as infile:
         modelJSON = json.load(infile)
 
     function.generateDataSets(modelJSON)

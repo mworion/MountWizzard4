@@ -432,7 +432,7 @@ class DataPoint(object):
             return None
 
         try:
-            with open(fullFileName, "r") as handle:
+            with open(fullFileName) as handle:
                 value = json.load(handle)
 
         except Exception as e:
@@ -453,7 +453,7 @@ class DataPoint(object):
             return None
 
         try:
-            with open(fullFileName, "r") as handle:
+            with open(fullFileName) as handle:
                 value = json.load(handle)
 
         except Exception as e:
@@ -470,7 +470,7 @@ class DataPoint(object):
         if not fullFileName.is_file():
             return None
 
-        with open(fullFileName, "r") as handle:
+        with open(fullFileName) as handle:
             testLine = handle.readline()
 
         if ";" in testLine:
@@ -480,7 +480,7 @@ class DataPoint(object):
 
         try:
             value = []
-            with open(fullFileName, "r", encoding="utf-8-sig") as csvFile:
+            with open(fullFileName, encoding="utf-8-sig") as csvFile:
                 reader = csv.reader(csvFile, delimiter=delimiter)
                 for row in reader:
                     value.append(tuple(float(val) for val in row))

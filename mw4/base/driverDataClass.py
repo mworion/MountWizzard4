@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import logging
-from typing import Union
 
 # external packages
 from PySide6.QtCore import Signal, QObject
@@ -33,7 +32,7 @@ class RemoteDeviceShutdown(QObject):
 class DriverData:
     log = logging.getLogger("MW4")
 
-    def storePropertyToData(self, value: Union[str, float], element: str) -> None:
+    def storePropertyToData(self, value: str | float, element: str) -> None:
         """ """
         if value is None and element in self.data:
             del self.data[element]

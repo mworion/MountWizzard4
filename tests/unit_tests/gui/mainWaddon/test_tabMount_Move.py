@@ -66,7 +66,7 @@ def test_stopMoveAll(function):
 
 
 def test_countDuration_1(function):
-    with mock.patch.object(gui.mainWaddon.tabMountMove, "sleepAndEvents"):
+    with mock.patch.object(gui.mainWaddon.tabMount_Move, "sleepAndEvents"):
         function.countDuration(10)
 
 

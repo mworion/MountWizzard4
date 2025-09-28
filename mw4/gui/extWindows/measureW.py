@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -416,7 +415,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
         x = data["time"].astype("datetime64[s]").astype("int")
 
-        noChart = all([x in ["No chart", None] for x in self.oldTitle])
+        noChart = all(x in ["No chart", None] for x in self.oldTitle)
 
         for i, v in enumerate(zip(self.mSetUI.keys(), self.ui.measure.p)):
             setName, plotItem = v

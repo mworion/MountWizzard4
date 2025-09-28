@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -32,7 +31,7 @@ from logic.fits.fitsFunction import (
 )
 
 
-class Watney(object):
+class Watney:
     """ """
 
     log = logging.getLogger("MW4")

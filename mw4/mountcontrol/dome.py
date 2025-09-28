@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -25,7 +24,7 @@ from mountcontrol.connection import Connection
 from mountcontrol.convert import valueToInt, valueToFloat
 
 
-class Dome(object):
+class Dome:
     """ """
 
     log = logging.getLogger("MW4")

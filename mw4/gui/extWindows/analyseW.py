@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -167,9 +166,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
     def generateDataSets(self, modelJSON: dict) -> None:
         """ """
-        model = dict()
+        model = {}
         for key in modelJSON[0].keys():
-            model[key] = list()
+            model[key] = []
             for index in range(0, len(modelJSON)):
                 model[key].append(modelJSON[index][key])
 
@@ -429,7 +428,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
     def linkViewsAltAz(self) -> None:
         """ """
         isLinked = self.ui.linkViews.isChecked()
-        views = list()
+        views = []
         views.append(self.ui.raRawErrors.p[0].getViewBox())
         views.append(self.ui.raErrors.p[0].getViewBox())
         views.append(self.ui.decRawErrors.p[0].getViewBox())
@@ -449,7 +448,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
     def linkViewsRa(self) -> None:
         """ """
         isLinked = self.ui.linkViews.isChecked()
-        views = list()
+        views = []
         views.append(self.ui.raRawErrorsRef.p[0].getViewBox())
         views.append(self.ui.raErrorsRef.p[0].getViewBox())
         for sourceView in views:
@@ -465,7 +464,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
     def linkViewsDec(self) -> None:
         """ """
         isLinked = self.ui.linkViews.isChecked()
-        views = list()
+        views = []
         views.append(self.ui.decRawErrorsRef.p[0].getViewBox())
         views.append(self.ui.decErrorsRef.p[0].getViewBox())
         for sourceView in views:

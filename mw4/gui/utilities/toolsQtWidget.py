@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -95,7 +94,7 @@ def guiSetText(ui, formatElement, value=None):
         return
     if value is None:
         text = "-"
-    elif isinstance(value, (list, np.ndarray)) and len(value) == 0:
+    elif isinstance(value, list | np.ndarray) and len(value) == 0:
         text = "-"
     elif formatElement.startswith("HSTR"):
         text = formatHstrToText(value)

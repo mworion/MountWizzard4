@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -377,7 +376,7 @@ class ModelManage(QObject):
     def runSingleRMS(self) -> None:
         """ """
         mount = self.app.mount
-        if all([star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList]):
+        if all(star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList):
             self.runningOptimize = False
         if mount.model.numberStars is None:
             numberStars = 0

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -25,7 +24,7 @@ import erfa
 from logic.modeldata.alignstars import generateAlignStars
 
 
-class Hipparcos(object):
+class Hipparcos:
     """
     The class Data inherits all information and handling of hipparcos data and
     other attributes. this includes data about the alignment stars defined in
@@ -38,9 +37,9 @@ class Hipparcos(object):
     def __init__(self, app=None):
         self.app = app
         self.lat = app.mount.obsSite.location.latitude.degrees
-        self.name = list()
-        self.alt = list()
-        self.az = list()
+        self.name = []
+        self.alt = []
+        self.az = []
         self.alignStars = generateAlignStars()
         self.calculateAlignStarPositionsAltAz()
 

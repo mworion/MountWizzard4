@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -32,7 +31,7 @@ from logic.fits.fitsFunction import (
 )
 
 
-class ASTAP(object):
+class ASTAP:
     """ """
 
     returnCodes = {

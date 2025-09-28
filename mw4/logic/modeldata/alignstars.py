@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -37,7 +36,7 @@ def generateAlignStars():
     [str, int, radians, radians, radians / year, radians/year, arc sec, km /s]
     """
 
-    star = dict()
+    star = {}
     star["Achernar"] = [
         0.42635506995907607,
         -0.9989698721359219,

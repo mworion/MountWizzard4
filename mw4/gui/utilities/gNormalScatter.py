@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -74,7 +73,7 @@ class NormalScatter(PlotBase):
 
         dataVal = kwargs.get("data", y)
         self.col = kwargs.get("color", self.M_PRIM)
-        if isinstance(self.col, (str, QColor)):
+        if isinstance(self.col, str | QColor):
             self.col = [self.col] * len(x)
 
         if "z" in kwargs:

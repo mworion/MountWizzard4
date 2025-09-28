@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -157,7 +156,7 @@ def blendProfile(config, configAdd):
 
 def defaultConfig() -> dict:
     """ """
-    config = dict()
+    config = {}
     config["profileName"] = "config"
     config["version"] = profileVersion
     return config

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -23,7 +22,7 @@ import logging
 from mountcontrol.convert import valueToFloat
 
 
-class TrajectoryParams(object):
+class TrajectoryParams:
     """
     The class TrajectoryParams inherits all information and handling of TLE tracking
     and managing attributes of the connected mount and provides the abstracted

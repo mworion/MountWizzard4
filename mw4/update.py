@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -20,7 +19,7 @@ import sys
 import logging
 import subprocess
 import platform
-from typing import Callable
+from collections.abc import Callable
 
 # external packages
 from PySide6.QtCore import Qt

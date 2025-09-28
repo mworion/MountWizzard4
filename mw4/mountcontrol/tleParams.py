@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -24,7 +23,7 @@ from skyfield.units import Angle
 from mountcontrol.convert import valueToAngle, valueToFloat
 
 
-class TLEParams(object):
+class TLEParams:
     """
     The class TLEParams inherits all information and handling of TLE tracking
     and managing attributes of the connected mount and provides the abstracted

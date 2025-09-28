@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -66,18 +65,18 @@ class ModelStatus(QObject):
         """ """
         if model.azimuthTurns is not None:
             if model.azimuthTurns > 0:
-                text = "{0:3.1f} revs left".format(abs(model.azimuthTurns))
+                text = f"{abs(model.azimuthTurns):3.1f} revs left"
             else:
-                text = "{0:3.1f} revs right".format(abs(model.azimuthTurns))
+                text = f"{abs(model.azimuthTurns):3.1f} revs right"
         else:
             text = "-"
 
         self.ui.azimuthTurns.setText(text)
         if model.altitudeTurns is not None:
             if model.altitudeTurns > 0:
-                text = "{0:3.1f} revs down".format(abs(model.altitudeTurns))
+                text = f"{abs(model.altitudeTurns):3.1f} revs down"
             else:
-                text = "{0:3.1f} revs up".format(abs(model.altitudeTurns))
+                text = f"{abs(model.altitudeTurns):3.1f} revs up"
         else:
             text = "-"
 

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,7 +16,7 @@
 # standard libraries
 import pickle
 from io import BytesIO
-from typing import Iterator
+from collections.abc import Iterator
 
 # external packages
 from PySide6.QtCore import QFile, Qt

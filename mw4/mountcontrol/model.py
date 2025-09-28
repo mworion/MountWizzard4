@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -31,15 +30,15 @@ from mountcontrol.progStar import ProgStar
 from mountcontrol.modelStar import ModelStar
 
 
-class Model(object):
+class Model:
     """ """
 
     log = logging.getLogger("MW4")
 
     def __init__(self, parent):
         self.parent = parent
-        self._starList = list()
-        self._nameList = list()
+        self._starList = []
+        self._nameList = []
         self._numberNames = 0
         self._numberStars = 0
         self._altitudeError = None
@@ -137,12 +136,12 @@ class Model(object):
     @starList.setter
     def starList(self, value):
         if not isinstance(value, list):
-            self._starList = list()
+            self._starList = []
             return
-        if all([isinstance(x, ModelStar) for x in value]):
+        if all(isinstance(x, ModelStar) for x in value):
             self._starList = value
         else:
-            self._starList = list()
+            self._starList = []
 
     @property
     def numberStars(self):
@@ -163,7 +162,7 @@ class Model(object):
         """ """
         value = valueToInt(value)
         if value < 0 or value > len(self._starList) - 1:
-            self.log.warning("invalid value: {0}".format(value))
+            self.log.warning(f"invalid value: {value}")
             return
         self._starList.pop(value)
 
@@ -183,12 +182,12 @@ class Model(object):
     @nameList.setter
     def nameList(self, value):
         if not isinstance(value, list):
-            self._nameList = list()
+            self._nameList = []
             return
-        if all([isinstance(x, str) for x in value]):
+        if all(isinstance(x, str) for x in value):
             self._nameList = value
         else:
-            self._nameList = list()
+            self._nameList = []
 
     @property
     def numberNames(self):
@@ -204,7 +203,7 @@ class Model(object):
     def addName(self, value: str) -> bool:
         """ """
         if not isinstance(value, str):
-            self.log.warning("malformed value: {0}".format(value))
+            self.log.warning(f"malformed value: {value}")
             return False
         self._nameList.insert(len(self._nameList), value)
         return True
@@ -213,7 +212,7 @@ class Model(object):
         """ """
         value = valueToInt(value)
         if value < 0 or value > len(self._nameList) - 1:
-            self.log.warning("invalid value: {0}".format(value))
+            self.log.warning(f"invalid value: {value}")
             return False
         self._nameList.pop(value)
         return True
@@ -265,13 +264,13 @@ class Model(object):
         conn = Connection(self.parent.host)
         commandString = ""
         for i in range(1, self.numberNames + 1):
-            commandString += ":modelnam{0:d}#".format(i)
+            commandString += f":modelnam{i:d}#"
 
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
 
-        self._nameList = list()
+        self._nameList = []
         suc = self.parseNames(response, numberOfChunks)
         return suc
 
@@ -340,13 +339,13 @@ class Model(object):
 
     def getStars(self) -> bool:
         """ """
-        self._starList = list()
+        self._starList = []
         if self.numberStars == 0:
             return True
 
         commandString = ""
         for i in range(1, self.numberStars + 1):
-            commandString += ":getalp{0:d}#".format(i)
+            commandString += f":getalp{i:d}#"
 
         conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -396,7 +395,7 @@ class Model(object):
             return False
 
         conn = Connection(self.parent.host)
-        commandString = ":delalst{0:d}#".format(number)
+        commandString = f":delalst{number:d}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 

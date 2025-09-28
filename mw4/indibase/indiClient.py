@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -65,7 +64,7 @@ class Client(QObject):
         self.signals = INDISignals()
         self.connected = False
         self.blobMode = "Never"
-        self.devices = dict()
+        self.devices = {}
         self.curDepth = 0
         self.parser = None
         self.socket = QTcpSocket()
@@ -91,7 +90,7 @@ class Client(QObject):
         """
         if not value:
             return None
-        if not isinstance(value, (tuple, str)):
+        if not isinstance(value, tuple | str):
             self.log.info(f"wrong host value: {value}")
             return None
         if isinstance(value, str):
@@ -284,7 +283,7 @@ class Client(QObject):
         :param driverInterface: binary value of driver interface type
         :return: list of knows devices of this type
         """
-        deviceList = list()
+        deviceList = []
         for deviceName in self.devices:
             typeCheck = self._getDriverInterface(deviceName) & driverInterface
             if typeCheck:
@@ -733,26 +732,14 @@ class Client(QObject):
 
         if isinstance(
             chunk,
-            (
-                indiXML.SetBLOBVector,
-                indiXML.SetSwitchVector,
-                indiXML.SetTextVector,
-                indiXML.SetLightVector,
-                indiXML.SetNumberVector,
-            ),
+            indiXML.SetBLOBVector | indiXML.SetSwitchVector | indiXML.SetTextVector | indiXML.SetLightVector | indiXML.SetNumberVector,
         ):
             self._setProperty(chunk=chunk, device=device, deviceName=deviceName)
             return True
 
         if isinstance(
             chunk,
-            (
-                indiXML.DefBLOBVector,
-                indiXML.DefSwitchVector,
-                indiXML.DefTextVector,
-                indiXML.DefLightVector,
-                indiXML.DefNumberVector,
-            ),
+            indiXML.DefBLOBVector | indiXML.DefSwitchVector | indiXML.DefTextVector | indiXML.DefLightVector | indiXML.DefNumberVector,
         ):
             self._defProperty(chunk=chunk, device=device, deviceName=deviceName)
             return True
@@ -763,25 +750,14 @@ class Client(QObject):
 
         if isinstance(
             chunk,
-            (
-                indiXML.NewBLOBVector,
-                indiXML.NewSwitchVector,
-                indiXML.NewTextVector,
-                indiXML.NewNumberVector,
-            ),
+            indiXML.NewBLOBVector | indiXML.NewSwitchVector | indiXML.NewTextVector | indiXML.NewNumberVector,
         ):
             # todo: what to do with the "New" vector ?
             return True
 
         if isinstance(
             chunk,
-            (
-                indiXML.OneBLOB,
-                indiXML.OneSwitch,
-                indiXML.OneText,
-                indiXML.OneNumber,
-                indiXML.OneLight,
-            ),
+            indiXML.OneBLOB | indiXML.OneSwitch | indiXML.OneText | indiXML.OneNumber | indiXML.OneLight,
         ):
             # todo: what to do with the "One" vector ?
             return True

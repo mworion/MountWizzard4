@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -24,7 +23,7 @@ from packaging.version import Version
 from mountcontrol.connection import Connection
 
 
-class Firmware(object):
+class Firmware:
     """ """
 
     log = logging.getLogger("MW4")

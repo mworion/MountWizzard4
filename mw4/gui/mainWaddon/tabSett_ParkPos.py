@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -35,19 +34,19 @@ class SettParkPos(QObject):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
 
-        self.posButtons = dict()
-        self.posTexts = dict()
-        self.posAlt = dict()
-        self.posAz = dict()
-        self.posSaveButtons = dict()
+        self.posButtons = {}
+        self.posTexts = {}
+        self.posAlt = {}
+        self.posAz = {}
+        self.posSaveButtons = {}
 
         for i in range(0, 10):
-            self.posButtons[i] = eval("self.ui.posButton{0:1d}".format(i))
-            self.posSaveButtons[i] = eval("self.ui.posSave{0:1d}".format(i))
+            self.posButtons[i] = eval(f"self.ui.posButton{i:1d}")
+            self.posSaveButtons[i] = eval(f"self.ui.posSave{i:1d}")
 
-            self.posTexts[i] = eval("self.ui.posText{0:1d}".format(i))
-            self.posAlt[i] = eval("self.ui.posAlt{0:1d}".format(i))
-            self.posAz[i] = eval("self.ui.posAz{0:1d}".format(i))
+            self.posTexts[i] = eval(f"self.ui.posText{i:1d}")
+            self.posAlt[i] = eval(f"self.ui.posAlt{i:1d}")
+            self.posAz[i] = eval(f"self.ui.posAz{i:1d}")
 
         for index in self.posTexts:
             self.posTexts[index].editingFinished.connect(self.updateParkPosButtonText)

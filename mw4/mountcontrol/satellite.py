@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -27,7 +26,7 @@ from mountcontrol.tleParams import TLEParams
 from mountcontrol.trajectoryParams import TrajectoryParams
 
 
-class Satellite(object):
+class Satellite:
     """ """
 
     log = logging.getLogger("MW4")

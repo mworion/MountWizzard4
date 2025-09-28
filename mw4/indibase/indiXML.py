@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -67,7 +66,7 @@ Notes:
 """
 
 
-class INDIBase(object):
+class INDIBase:
     """ """
 
     log = logging.getLogger("MW4")

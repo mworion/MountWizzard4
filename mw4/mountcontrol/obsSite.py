@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -34,7 +33,7 @@ from .convert import valueToAngle
 from .convert import sexagesimalizeToInt
 
 
-class ObsSite(object):
+class ObsSite:
     """
     The class Site inherits all information and handling of site data
     attributes of the connected mount and provides the abstracted interface
@@ -132,7 +131,7 @@ class ObsSite(object):
             self._location = value
             return
 
-        if not isinstance(value, (list, tuple)):
+        if not isinstance(value, list | tuple):
             self._location = None
             self.log.info(f"Malformed value: {value}")
             return
@@ -549,15 +548,15 @@ class ObsSite(object):
 
     def startSlewing(self, slewType: str = "normal"):
         """ """
-        slewTypes = dict(
-            normal=":MS#",
-            notrack=":MA#",
-            stop=":MaX#",
-            park=":PaX#",
-            polar=":MSap#",
-            ortho=":MSao#",
-            keep="",
-        )
+        slewTypes = {
+            "normal": ":MS#",
+            "notrack": ":MA#",
+            "stop": ":MaX#",
+            "park": ":PaX#",
+            "polar": ":MSap#",
+            "ortho": ":MSao#",
+            "keep": "",
+        }
 
         keepSlewType = ":MS#" if self.status == 0 else ":MA#"
         slewTypes["keep"] = keepSlewType

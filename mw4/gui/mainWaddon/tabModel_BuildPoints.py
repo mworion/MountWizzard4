@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -435,7 +434,7 @@ class BuildPoints(QObject):
 
     def sortDomeAzWorker(self, points, pierside=None):
         """ """
-        pointsNew = list()
+        pointsNew = []
         numbAll = len(points)
         ui = self.ui.autoSortGroup
         changeStyleDynamic(ui, "running", True)

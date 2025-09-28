@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -109,35 +108,28 @@ class ImageManage(QObject):
 
     def checkEnableCameraUI(self) -> None:
         """ """
-        coolerTemp = self.app.camera.data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
-        coolerPower = self.app.camera.data.get("CCD_COOLER_POWER.CCD_COOLER_VALUE")
-        gainCam = self.app.camera.data.get("CCD_GAIN.GAIN")
-        offsetCam = self.app.camera.data.get("CCD_OFFSET.OFFSET")
-        humidityCCD = self.app.camera.data.get("CCD_HUMIDITY.HUMIDITY")
-        coolerOn = self.app.camera.data.get("CCD_COOLER.COOLER_ON")
-        pixelX = self.app.camera.data.get("CCD_INFO.CCD_MAX_X")
+        coolerTemp = self.app.camera.data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", False)
+        coolerPower = self.app.camera.data.get("CCD_COOLER_POWER.CCD_COOLER_VALUE", False)
+        gainCam = self.app.camera.data.get("CCD_GAIN.GAIN", False)
+        offsetCam = self.app.camera.data.get("CCD_OFFSET.OFFSET", False)
+        humidityCCD = self.app.camera.data.get("CCD_HUMIDITY.HUMIDITY", False)
+        coolerOn = self.app.camera.data.get("CCD_COOLER.COOLER_ON", False)
+        pixelX = self.app.camera.data.get("CCD_INFO.CCD_MAX_X", False)
 
-        enable = coolerTemp is not None
-        self.ui.coolerTemp.setVisible(enable)
-        enable = coolerPower is not None
-        self.ui.coolerPower.setVisible(enable)
-        enable = gainCam is not None
-        self.ui.gainCam.setVisible(enable)
-        enable = offsetCam is not None
-        self.ui.offsetCam.setVisible(enable)
-        enable = humidityCCD is not None
-        self.ui.humidityCCD.setVisible(enable)
-        enable = coolerOn is not None
-        self.ui.coolerOn.setVisible(enable)
-        self.ui.coolerOff.setVisible(enable)
-        enable = pixelX is not None
-        self.ui.subFrame.setVisible(enable)
+        self.ui.coolerTemp.setVisible(coolerTemp)
+        self.ui.coolerPower.setVisible(coolerPower)
+        self.ui.gainCam.setVisible(gainCam)
+        self.ui.offsetCam.setVisible(offsetCam)
+        self.ui.humidityCCD.setVisible(humidityCCD)
+        self.ui.coolerOn.setVisible(coolerOn)
+        self.ui.coolerOff.setVisible(coolerOn)
+        self.ui.subFrame.setVisible(pixelX)
 
     def updateOffset(self) -> None:
         """ """
-        actValue = self.app.camera.data.get("CCD_OFFSET.OFFSET")
-        offsetList = self.app.camera.data.get("CCD_OFFSET.OFFSET_LIST")
-        if offsetList is not None and actValue is not None:
+        actValue = self.app.camera.data.get("CCD_OFFSET.OFFSET", False)
+        offsetList = self.app.camera.data.get("CCD_OFFSET.OFFSET_LIST", False)
+        if offsetList and actValue:
             offsetList = list(offsetList)
             self.mainW.log.debug(f"Index: [{actValue}], List: [{offsetList}]")
             if len(offsetList) == 0:
@@ -152,9 +144,9 @@ class ImageManage(QObject):
 
     def updateGain(self) -> None:
         """ """
-        actValue = self.app.camera.data.get("CCD_GAIN.GAIN")
-        gainList = self.app.camera.data.get("CCD_GAIN.GAIN_LIST")
-        if gainList is not None and actValue is not None:
+        actValue = self.app.camera.data.get("CCD_GAIN.GAIN", False)
+        gainList = self.app.camera.data.get("CCD_GAIN.GAIN_LIST", False)
+        if gainList and actValue:
             gainList = list(gainList)
             self.mainW.log.debug(f"Index: [{actValue}], List: [{gainList}]")
             if len(gainList) == 0:
@@ -321,7 +313,7 @@ class ImageManage(QObject):
             return
         actValue = int(actValue)
 
-        availNames = list(data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key)
+        availNames = [data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key]
         numberFilter = len(availNames)
         isAlpaca = "FILTER_NAME.FILTER_SLOT_NAME_0" in data
         if isAlpaca:
@@ -352,7 +344,7 @@ class ImageManage(QObject):
             return
         actValue = int(actValue)
 
-        availNames = list(data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key)
+        availNames = [data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key]
 
         dlg = QInputDialog()
         value, ok = dlg.getItem(self, "Set filter", "Filter Name: ", availNames, actValue - 1)

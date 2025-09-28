@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -60,5 +59,5 @@ def checkFormatMAC(value: str) -> str:
             ]:
                 return ""
 
-    value = "{0:2s}:{1:2s}:{2:2s}:{3:2s}:{4:2s}:{5:2s}".format(*value)
+    value = "{:2s}:{:2s}:{:2s}:{:2s}:{:2s}:{:2s}".format(*value)
     return value

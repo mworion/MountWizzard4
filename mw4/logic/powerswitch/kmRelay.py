@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -191,7 +190,7 @@ class KMRelay:
     def switch(self, relayNumber: int) -> None:
         """ """
         self.log.debug(f"Switch relay:{relayNumber}")
-        value = self.getRelay("/relays.cgi?relay={0:1d}".format(relayNumber + 1))
+        value = self.getRelay(f"/relays.cgi?relay={relayNumber + 1:1d}")
         if value is None:
             self.log.warning(f"Relay:{relayNumber}")
             return

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -24,7 +23,7 @@ import uuid
 # local imports
 
 
-class Connection(object):
+class Connection:
     """
     The class Connection provides the command and reply interface to a 10 micron
     mount. There should be all commands and their return values be sent to the

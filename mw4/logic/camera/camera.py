@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,7 +16,7 @@
 # standard libraries
 import logging
 import platform
-from typing import Callable
+from collections.abc import Callable
 from pathlib import Path
 
 # external packages

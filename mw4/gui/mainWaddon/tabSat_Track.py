@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -66,7 +65,7 @@ class SatTrack(QObject, SatData):
                 "date": self.ui.satDate_3,
             },
         }
-        self.satOrbits = dict()
+        self.satOrbits = {}
 
         msig = self.app.mount.signals
         msig.calcTLEdone.connect(self.updateSatelliteTrackGui)

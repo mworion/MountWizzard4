@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -25,7 +24,7 @@ from mountcontrol.convert import valueToFloat
 from mountcontrol.convert import valueToInt
 
 
-class Setting(object):
+class Setting:
     """ """
 
     log = logging.getLogger("MW4")
@@ -458,28 +457,28 @@ class Setting(object):
     def setRefraction(self, status: bool) -> bool:
         """ """
         conn = Connection(self.parent.host)
-        commandString = ":SREF{0:1d}#".format(1 if status else 0)
+        commandString = f":SREF{1 if status else 0:1d}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def setUnattendedFlip(self, status: bool) -> bool:
         """ """
         conn = Connection(self.parent.host)
-        commandString = ":Suaf{0:1d}#".format(1 if status else 0)
+        commandString = f":Suaf{1 if status else 0:1d}#"
         suc, _, _ = conn.communicate(commandString)
         return suc
 
     def setDualAxisTracking(self, status: bool) -> bool:
         """ """
         conn = Connection(self.parent.host)
-        commandString = ":Sdat{0:1d}#".format(1 if status else 0)
+        commandString = f":Sdat{1 if status else 0:1d}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def setWOL(self, status):
         """ """
         conn = Connection(self.parent.host)
-        commandString = ":SWOL{0:1d}#".format(1 if status else 0)
+        commandString = f":SWOL{1 if status else 0:1d}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
@@ -562,7 +561,7 @@ class Setting(object):
     def setWebInterface(self, status: bool) -> bool:
         """ """
         conn = Connection(self.parent.host)
-        commandString = ":NTSweb{0:1d}#".format(1 if status else 0)
+        commandString = f":NTSweb{1 if status else 0:1d}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 

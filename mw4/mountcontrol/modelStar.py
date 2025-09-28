@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -29,7 +28,7 @@ from mountcontrol.convert import valueToInt
 from mountcontrol.convert import topoToAltAz
 
 
-class ModelStar(object):
+class ModelStar:
     """
     The class ModelStar inherits all information and handling of one star in
     the alignment model used by the mount and the data in the mount and provides
@@ -68,7 +67,7 @@ class ModelStar(object):
     def coord(self, value):
         self._coord = None
 
-        if not isinstance(value, (tuple, list, Star)):
+        if not isinstance(value, tuple | list | Star):
             return
         if not self.obsSite:
             return
@@ -91,7 +90,7 @@ class ModelStar(object):
             dec = stringToDegree(dec)
 
             if ha is None or dec is None:
-                self.log.warning("Malformed value: {0}".format(value))
+                self.log.warning(f"Malformed value: {value}")
                 return
             self._coord = Star(ra_hours=ha, dec_degrees=dec)
 

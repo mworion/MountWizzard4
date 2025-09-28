@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -149,7 +148,7 @@ class ModelData(QObject):
             if not modelBuildPoint["success"]:
                 continue
 
-            modelSavePoint = dict()
+            modelSavePoint = {}
             modelSavePoint.update(modelBuildPoint)
             modelSavePoint["julianDate"] = modelSavePoint["julianDate"]
             modelSavePoint["version"] = self.version
@@ -170,7 +169,7 @@ class ModelData(QObject):
 
     def buildProgModel(self) -> None:
         """ """
-        self.modelProgData = list()
+        self.modelProgData = []
         for mPoint in self.modelBuildData:
             mCoord = Star(mPoint["raJNowM"], mPoint["decJNowM"])
             sCoord = Star(mPoint["raJNowS"], mPoint["decJNowS"])

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -128,21 +127,12 @@ class AlpacaClass(DriverData):
 
     def generateBaseUrl(self) -> str:
         """ """
-        val = "{0}://{1}:{2}/api/v{3}/{4}/{5}".format(
-            self.protocol,
-            self.host[0],
-            self.host[1],
-            self.apiVersion,
-            self.deviceType,
-            self.number,
-        )
+        val = f"{self.protocol}://{self.host[0]}:{self.host[1]}/api/v{self.apiVersion}/{self.deviceType}/{self.number}"
         return val
 
     def discoverAPIVersion(self) -> int:
         """ """
-        url = "{0}://{1}:{2}/management/apiversions".format(
-            self.protocol, self.host[0], self.host[1]
-        )
+        url = f"{self.protocol}://{self.host[0]}:{self.host[1]}/management/apiversions"
 
         uid = uuid.uuid4().int % 2**32
         data = {"ClientTransactionID": uid, "ClientID": self.CLIENT_ID}
@@ -168,9 +158,7 @@ class AlpacaClass(DriverData):
 
     def discoverAlpacaDevices(self) -> str:
         """ """
-        url = "{0}://{1}:{2}/management/v{3}/configureddevices".format(
-            self.protocol, self.host[0], self.host[1], self.apiVersion
-        )
+        url = f"{self.protocol}://{self.host[0]}:{self.host[1]}/management/v{self.apiVersion}/configureddevices"
 
         uid = uuid.uuid4().int % 2**32
         data = {"ClientTransactionID": uid, "ClientID": self.CLIENT_ID}

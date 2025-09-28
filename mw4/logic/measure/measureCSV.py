@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -121,7 +120,7 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         if not self.csvFile or not self.csvWriter:
             return
 
-        row = dict()
+        row = {}
         for key in self.data.keys():
             row[key] = self.data[key][0]
 

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -51,7 +50,7 @@ def HaDecToAltAz(ha, dec, lat):
     return alt, az
 
 
-class DataPoint(object):
+class DataPoint:
     """ """
 
     log = logging.getLogger("MW4")
@@ -185,8 +184,8 @@ class DataPoint(object):
     def __init__(self, app=None):
         self.app = app
         self.configDir = app.mwGlob["configDir"]
-        self._horizonP = list()
-        self._buildP = list()
+        self._horizonP = []
+        self._buildP = []
 
     @property
     def horizonP(self):
@@ -198,8 +197,8 @@ class DataPoint(object):
             self._horizonP.clear()
             return
 
-        if not all([isinstance(x, tuple) for x in value]):
-            self.log.info("Malformed value: {0}".format(value))
+        if not all(isinstance(x, tuple) for x in value):
+            self.log.info(f"Malformed value: {value}")
             self._horizonP.clear()
             return
 
@@ -213,12 +212,12 @@ class DataPoint(object):
     @buildP.setter
     def buildP(self, value):
         if not isinstance(value, list):
-            self._buildP = list()
+            self._buildP = []
             return
 
-        if not all([isinstance(x, tuple) for x in value]):
-            self.log.info("Malformed value: {0}".format(value))
-            self._buildP = list()
+        if not all(isinstance(x, tuple) for x in value):
+            self.log.info(f"Malformed value: {value}")
+            self._buildP = []
             return
 
         self._buildP = value
@@ -228,15 +227,15 @@ class DataPoint(object):
         if value is None:
             return False
         if not isinstance(value, tuple):
-            self.log.info("malformed value: {0}".format(value))
+            self.log.info(f"malformed value: {value}")
             return False
         if len(value) != 3:
-            self.log.info("malformed value: {0}".format(value))
+            self.log.info(f"malformed value: {value}")
             return False
         if position is None:
             position = len(self._buildP)
-        if not isinstance(position, (int, float)):
-            self.log.info("malformed position: {0}".format(position))
+        if not isinstance(position, int | float):
+            self.log.info(f"malformed position: {position}")
             return False
         if self.app.mount.setting.horizonLimitHigh is not None:
             high = self.app.mount.setting.horizonLimitHigh
@@ -261,13 +260,13 @@ class DataPoint(object):
 
     def delBuildP(self, position):
         """ """
-        if not isinstance(position, (int, float)):
-            self.log.info("malformed position: {0}".format(position))
+        if not isinstance(position, int | float):
+            self.log.info(f"malformed position: {position}")
             return False
 
         position = int(position)
         if position < 0 or position > len(self._buildP) - 1:
-            self.log.info("invalid position: {0}".format(position))
+            self.log.info(f"invalid position: {position}")
             return False
 
         self._buildP.pop(position)
@@ -294,15 +293,15 @@ class DataPoint(object):
         if value is None:
             return False
         if not isinstance(value, tuple):
-            self.log.info("malformed value: {0}".format(value))
+            self.log.info(f"malformed value: {value}")
             return False
         if len(value) != 2:
-            self.log.info("malformed value: {0}".format(value))
+            self.log.info(f"malformed value: {value}")
             return False
         if position is None:
             position = len(self.horizonP)
-        if not isinstance(position, (int, float)):
-            self.log.info("malformed position: {0}".format(position))
+        if not isinstance(position, int | float):
+            self.log.info(f"malformed position: {position}")
             return False
 
         position = int(position)
@@ -313,13 +312,13 @@ class DataPoint(object):
 
     def delHorizonP(self, position):
         """ """
-        if not isinstance(position, (int, float)):
-            self.log.info("malformed position: {0}".format(position))
+        if not isinstance(position, int | float):
+            self.log.info(f"malformed position: {position}")
             return False
 
         position = int(position)
         if position < 0 or position > len(self._horizonP):
-            self.log.info("invalid position: {0}".format(position))
+            self.log.info(f"invalid position: {position}")
             return False
 
         self._horizonP.pop(position)
@@ -436,7 +435,7 @@ class DataPoint(object):
                 value = json.load(handle)
 
         except Exception as e:
-            self.log.info("Cannot Model load: {0}, error: {1}".format(fullFileName, e))
+            self.log.info(f"Cannot Model load: {fullFileName}, error: {e}")
             value = None
 
         else:
@@ -457,7 +456,7 @@ class DataPoint(object):
                 value = json.load(handle)
 
         except Exception as e:
-            self.log.info("Cannot BPTS load: {0}, error: {1}".format(fullFileName, e))
+            self.log.info(f"Cannot BPTS load: {fullFileName}, error: {e}")
             value = None
 
         else:
@@ -486,7 +485,7 @@ class DataPoint(object):
                     value.append(tuple(float(val) for val in row))
 
         except Exception as e:
-            self.log.info("Cannot CSV load: {0}, error: {1}".format(fullFileName, e))
+            self.log.info(f"Cannot CSV load: {fullFileName}, error: {e}")
             return None
 
         else:
@@ -497,10 +496,10 @@ class DataPoint(object):
         if not isinstance(value, list):
             return False
 
-        if not all([isinstance(x, tuple) for x in value]):
+        if not all(isinstance(x, tuple) for x in value):
             return False
 
-        if not all([len(x) == 2 for x in value]):
+        if not all(len(x) == 2 for x in value):
             return False
 
         return True
@@ -727,7 +726,7 @@ class DataPoint(object):
 
     def generateCelestialEquator(self):
         """ """
-        celestialEquator = list()
+        celestialEquator = []
         if not self.app.mount.obsSite.location:
             return celestialEquator
 

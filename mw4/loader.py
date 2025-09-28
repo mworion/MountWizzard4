@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -156,7 +155,7 @@ def setupWorkDirs() -> dict:
             os.makedirs(mwGlob[dirPath])
 
         if not os.access(mwGlob[dirPath], os.W_OK):
-            log.warning("no write access to {0}".format(dirPath))
+            log.warning(f"no write access to {dirPath}")
 
     return mwGlob
 

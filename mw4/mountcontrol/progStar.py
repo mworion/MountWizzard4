@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -23,7 +22,7 @@ from skyfield.api import Angle, Star
 # local imports
 
 
-class ProgStar(object):
+class ProgStar:
     """ """
 
     log = logging.getLogger("MW4")

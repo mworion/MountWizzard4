@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -39,9 +38,9 @@ class SettMisc(QObject):
         self.ui = mainW.ui
         self.worker: Worker = None
 
-        self.audioSignalsSet = dict()
-        self.guiAudioList = dict()
-        self.gameControllerList = dict()
+        self.audioSignalsSet = {}
+        self.guiAudioList = {}
+        self.gameControllerList = {}
 
         self.uiTabs = {
             "Almanac": {"cb": self.ui.showTabAlmanac, "tab": self.ui.mainTabWidget},

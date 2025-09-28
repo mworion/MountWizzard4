@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -373,7 +372,7 @@ class IndiClass:
 
     def discoverDevices(self, deviceType: str) -> list:
         """ """
-        self.discoverList = list()
+        self.discoverList = []
         self.discoverType = self.INDI_TYPES.get(deviceType, 0)
         self.client.signals.defText.connect(self.addDiscoveredDevice)
         self.client.connectServer()

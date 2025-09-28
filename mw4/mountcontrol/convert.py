@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -259,7 +258,7 @@ def convertToDMS(dec):
     :param dec: declination as Angle
     :return: converted value as string
     """
-    if isinstance(dec, (float, int)):
+    if isinstance(dec, float | int):
         dec = Angle(degrees=dec)
     if isinstance(dec, str):
         return ""
@@ -278,7 +277,7 @@ def convertToHMS(ra):
     :param ra: right ascension as Angle
     :return: converted value as string
     """
-    if isinstance(ra, (float, int)):
+    if isinstance(ra, float | int):
         ra = Angle(hours=ra)
 
     if isinstance(ra, str):
@@ -383,7 +382,7 @@ def convertRaToAngle(value):
     """
     if value is None:
         return None
-    if isinstance(value, (float, int)):
+    if isinstance(value, float | int):
         value = str(value)
 
     isSexagesimal, isFloat, elements = parseRaToAngleString(value)
@@ -442,7 +441,7 @@ def convertDecToAngle(value):
     """
     if value is None:
         return None
-    if isinstance(value, (float, int)):
+    if isinstance(value, float | int):
         value = str(value)
 
     isSexagesimal, isFloat, elements = parseDecToAngleString(value)

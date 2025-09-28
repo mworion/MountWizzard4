@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -116,7 +115,7 @@ class Almanac(QObject):
         xLabels[0] = ""
         xTicks = [(x, y) for x, y in zip(xTicks, xLabels)]
         yTicks = [(x, y) for x, y in zip(self.Y_TICKS, self.Y_LABELS)]
-        penLine = pg.mkPen(color=self.mainW.M_PINK + "80", width=2)
+        penLine = pg.mkPen(color=self.mainW.M_PINK, width=2)
         plotItem = self.ui.twilight.p[0]
         plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
         plotItem.getViewBox().xRange = (0, 360)

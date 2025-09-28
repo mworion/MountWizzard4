@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -31,7 +30,7 @@ from logic.fits.fitsFunction import getHintFromImageFile
 from logic.fits.fitsFunction import updateImageFileHeaderWithSolution
 
 
-class Astrometry(object):
+class Astrometry:
     """ """
 
     log = logging.getLogger("MW4")

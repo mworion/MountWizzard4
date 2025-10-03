@@ -31,7 +31,6 @@ def qapp():
     myapp = MyApp([])
     yield myapp
     myapp.shutdown()
-    myapp.threadPool.waitForDone(10000)
 
 
 def test_logUserInterface_1(qapp):

@@ -19,12 +19,12 @@ import locale
 import logging
 import os
 import platform
+import resource.resources as res
 import socket
 import sys
 import traceback
 import warnings
 from pathlib import Path
-from resource import resources as res
 
 # external packages
 from astropy.utils import data, iers

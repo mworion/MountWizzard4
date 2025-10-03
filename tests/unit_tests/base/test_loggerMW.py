@@ -15,18 +15,18 @@
 #
 ###########################################################
 # standard libraries
-import os
-import pytest
 import logging
+import os
+from pathlib import Path
 from unittest import mock
 from unittest.mock import MagicMock
-from pathlib import Path
+
+import pytest
 
 # external packages
-
 # local import
-from mw4.base import loggerMW
-from mw4.base.loggerMW import setupLogging, LoggerWriter
+from base import loggerMW
+from base.loggerMW import LoggerWriter, setupLogging
 
 
 @pytest.fixture

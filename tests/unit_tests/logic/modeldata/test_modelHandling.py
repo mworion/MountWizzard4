@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,13 +16,14 @@
 # standard libraries
 import pytest
 
-# external packages
-from skyfield.api import Star, Angle
-from mountcontrol.modelStar import ModelStar
-from mountcontrol.model import Model
-
 # local import
 from logic.modelBuild.modelHandling import writeRetrofitData
+from mountcontrol.model import Model
+from mountcontrol.modelStar import ModelStar
+
+# external packages
+from skyfield.api import Angle, Star
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

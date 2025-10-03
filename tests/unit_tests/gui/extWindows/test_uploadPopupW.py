@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-import pytest
 import builtins
+import unittest.mock as mock
+
+import pytest
+import requests
+from gui.extWindows.uploadPopupW import UploadPopup
 
 # external packages
 from PySide6.QtWidgets import QWidget
-import requests
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.extWindows.uploadPopupW import UploadPopup
 
 
 @pytest.fixture(autouse=True, scope="module")

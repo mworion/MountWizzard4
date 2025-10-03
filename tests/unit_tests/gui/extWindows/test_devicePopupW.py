@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,21 +14,22 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-import pytest
 import logging
+import unittest.mock as mock
 from pathlib import Path
+
+import pytest
+from base.ascomClass import AscomClass
+from base.indiClass import IndiClass
+from base.signalsDevices import Signals
+from gui.extWindows.devicePopupW import DevicePopup
+from gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.devicePopupW import DevicePopup
-from base.indiClass import IndiClass
-from base.ascomClass import AscomClass
-from base.signalsDevices import Signals
 
 
 class Parent:

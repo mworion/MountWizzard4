@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,13 +15,13 @@
 ###########################################################
 # standard libraries
 import pytest
-
-# external packages
-from skyfield.api import wgs84, Star, Angle
+from mountcontrol import obsSite
 
 # local imports
 from mountcontrol.model import ModelStar
-from mountcontrol import obsSite
+
+# external packages
+from skyfield.api import Angle, Star, wgs84
 
 
 @pytest.fixture(autouse=True, scope="function")

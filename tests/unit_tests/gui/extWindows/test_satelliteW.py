@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,20 +14,20 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import unittest.mock as mock
 import pickle
+import unittest.mock as mock
+
+import pyqtgraph as pg
+import pytest
+from gui.extWindows.satelliteW import SatelliteWindow
+from gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent
-from skyfield.api import EarthSatellite
-from skyfield.api import Angle
-import pyqtgraph as pg
+from skyfield.api import Angle, EarthSatellite
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.satelliteW import SatelliteWindow
 
 
 @pytest.fixture(scope="module")

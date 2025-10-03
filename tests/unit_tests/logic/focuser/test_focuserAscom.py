@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,16 +14,16 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import unittest.mock as mock
 import platform
+import unittest.mock as mock
+
+import pytest
+from base.signalsDevices import Signals
+from logic.focuser.focuserAscom import FocuserAscom
 
 # external packages
-
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.focuser.focuserAscom import FocuserAscom
-from base.signalsDevices import Signals
 
 if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)

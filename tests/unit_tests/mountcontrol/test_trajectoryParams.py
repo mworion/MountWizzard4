@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,12 +16,13 @@
 # standard libraries
 import unittest
 
-# external packages
-from skyfield.api import load
+from base.loggerMW import setupLogging
 
 # local imports
 from mountcontrol.trajectoryParams import TrajectoryParams
-from base.loggerMW import setupLogging
+
+# external packages
+from skyfield.api import load
 
 setupLogging()
 

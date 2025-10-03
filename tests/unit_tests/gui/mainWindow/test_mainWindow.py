@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,11 +14,14 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-from unittest.mock import patch
-import pytest
 import shutil
+import unittest.mock as mock
 from pathlib import Path
+
+import gui.utilities.toolsQtWidget
+import pytest
+from base import packageConfig
+from gui.mainWindow.mainWindow import MainWindow
 
 # external packages
 from PySide6.QtGui import QCloseEvent
@@ -28,10 +30,6 @@ from skyfield.api import wgs84
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from base import packageConfig
-from assets import assetsData
-import gui.utilities.toolsQtWidget
-from gui.mainWindow.mainWindow import MainWindow
 
 resources.qInitResources()
 

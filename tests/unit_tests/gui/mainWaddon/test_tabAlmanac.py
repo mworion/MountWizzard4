@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,20 +14,21 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import threading
 from unittest import mock
+
+import numpy as np
+import pytest
+from gui.mainWaddon.tabAlmanac import Almanac
+from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtGui import QPixmap
 from skyfield.api import wgs84
-import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabAlmanac import Almanac
-from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")

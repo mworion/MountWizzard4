@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,15 +15,16 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
+
 import pytest
+from gui.mainWaddon.tabSett_Relay import SettRelay
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWaddon.tabSett_Relay import SettRelay
-from gui.widgets.main_ui import Ui_MainWindow
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -48,12 +48,12 @@ def test_storeConfig_1(function):
 
 
 def test_setupRelayGui(function):
-    assert 8 == len(function.relayDropDowns)
-    assert 8 == len(function.relayButtonTexts)
-    assert 8 == len(function.relayButtons)
+    assert len(function.relayDropDowns) == 8
+    assert len(function.relayButtonTexts) == 8
+    assert len(function.relayButtons) == 8
     for dropDown in function.relayDropDowns:
         val = dropDown.count()
-        assert 2 == val
+        assert val == 2
 
 
 def test_updateRelayButtonText_1(function):

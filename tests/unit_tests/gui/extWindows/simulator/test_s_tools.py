@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,22 +15,23 @@
 ###########################################################
 # standard libraries
 import pytest
+from gui.extWindows.simulator.materials import Materials
+
+# local import
+from gui.extWindows.simulator.tools import (
+    getLight,
+    getMaterial,
+    linkLight,
+    linkMaterial,
+    linkModel,
+    linkSource,
+    linkTransform,
+)
 
 # external packages
 from PySide6.Qt3DCore import Qt3DCore
-from PySide6.Qt3DRender import Qt3DRender
 from PySide6.Qt3DExtras import Qt3DExtras
-
-
-# local import
-from gui.extWindows.simulator.tools import linkModel
-from gui.extWindows.simulator.tools import linkMaterial
-from gui.extWindows.simulator.tools import linkSource
-from gui.extWindows.simulator.tools import linkTransform
-from gui.extWindows.simulator.tools import linkLight
-from gui.extWindows.simulator.tools import getMaterial
-from gui.extWindows.simulator.tools import getLight
-from gui.extWindows.simulator.materials import Materials
+from PySide6.Qt3DRender import Qt3DRender
 
 
 @pytest.fixture(autouse=True, scope="module")

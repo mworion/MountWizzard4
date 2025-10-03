@@ -14,17 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
+
+import pytest
+from base.signalsDevices import Signals
+from indibase.indiClient import Client
 
 # external packages
 from indibase.indiDevice import Device
-from indibase.indiClient import Client
+from logic.focuser.focuserIndi import FocuserIndi
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.focuser.focuserIndi import FocuserIndi
-from base.signalsDevices import Signals
 
 
 class Parent:

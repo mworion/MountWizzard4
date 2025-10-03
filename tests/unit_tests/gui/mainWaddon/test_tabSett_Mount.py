@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,19 +14,20 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-import pytest
 import socket
+import unittest.mock as mock
+
+import gui
+import pytest
 
 # external packages
 import wakeonlan
+from gui.mainWaddon.tabSett_Mount import SettMount
+from gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-import gui
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabSett_Mount import SettMount
 
 
 @pytest.fixture(autouse=True, scope="module")

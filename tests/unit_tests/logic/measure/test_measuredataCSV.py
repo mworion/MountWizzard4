@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,16 +14,16 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import unittest.mock as mock
 import csv
+import unittest.mock as mock
 
 # external packages
 import PySide6
+import pytest
+from logic.measure.measureCSV import MeasureDataCSV
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.measure.measureCSV import MeasureDataCSV
 
 
 @pytest.fixture(autouse=True, scope="function")

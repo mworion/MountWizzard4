@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -26,12 +25,12 @@ import traceback
 import unittest.mock as mock
 from pathlib import Path
 
+# local import
+import loader
+
 # external packages
 import pytest
-
-# local import
-from mw4 import loader
-from mw4.loader import (
+from loader import (
     checkIsAdmin,
     except_hook,
     extractDataFiles,

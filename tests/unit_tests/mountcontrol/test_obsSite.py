@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,19 +14,19 @@
 #
 ###########################################################
 # standard libraries
-import unittest
-import unittest.mock as mock
 import os
 import platform
+import unittest
+import unittest.mock as mock
 from pathlib import Path
-
-# external packages
-from skyfield.api import Angle, Timescale, wgs84, Loader
 
 # local imports
 import mountcontrol
-from mountcontrol.obsSite import ObsSite
 from base.loggerMW import setupLogging
+from mountcontrol.obsSite import ObsSite
+
+# external packages
+from skyfield.api import Angle, Loader, Timescale, wgs84
 
 setupLogging()
 

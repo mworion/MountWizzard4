@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,20 +14,22 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-import pytest
 import os
 import shutil
+import unittest.mock as mock
+
+import numpy as np
+import pytest
 
 # external packages
 from astropy.io import fits
-import numpy as np
+from gui.mainWaddon.tabTools_Rename import Rename
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabTools_Rename import Rename
+
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")

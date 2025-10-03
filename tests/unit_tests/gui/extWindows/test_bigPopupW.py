@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,15 +15,16 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
+
 import pytest
+from gui.extWindows.bigPopupW import BigPopup
+from gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.extWindows.bigPopupW import BigPopup
-from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")

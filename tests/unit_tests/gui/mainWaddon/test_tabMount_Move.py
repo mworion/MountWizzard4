@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,18 +15,18 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
-import pytest
 
+import gui.mainWaddon.tabMount
+import pytest
+from gui.mainWaddon.tabMount_Move import MountMove
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
-from PySide6.QtWidgets import QWidget, QInputDialog
+from PySide6.QtWidgets import QInputDialog, QWidget
 from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabMount_Move import MountMove
-import gui.mainWaddon.tabMount
 
 
 @pytest.fixture(autouse=True, scope="module")

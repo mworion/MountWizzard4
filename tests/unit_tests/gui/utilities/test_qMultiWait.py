@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,10 +16,9 @@
 # standard libraries
 
 # external packages
-from PySide6.QtCore import QObject, Signal
-
 # local import
 from gui.utilities.qMultiWait import QMultiWait
+from PySide6.QtCore import QObject, Signal
 
 
 def test_QMultiWait_1():

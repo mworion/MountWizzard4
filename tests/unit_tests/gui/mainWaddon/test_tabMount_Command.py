@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,17 +15,18 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
-import pytest
 import webbrowser
+
+import mountcontrol
+import pytest
+from gui.mainWaddon.tabMount_Command import MountCommand
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabMount_Command import MountCommand
-import mountcontrol
 
 
 @pytest.fixture(autouse=True, scope="module")

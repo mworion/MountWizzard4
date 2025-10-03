@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,15 +14,16 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 from unittest import mock
+
+import pytest
+
+# local import
+from logic.keypad.keypad import KeyPad
 
 # external packages
 from PySide6.QtCore import QObject, Signal
 from websocket import WebSocketApp
-
-# local import
-from logic.keypad.keypad import KeyPad
 
 
 @pytest.fixture(autouse=True, scope="function")

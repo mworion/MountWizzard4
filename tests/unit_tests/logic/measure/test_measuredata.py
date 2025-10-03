@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,16 +14,16 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
 
 # external packages
 import numpy as np
+import pytest
+from logic.measure.measure import MeasureData
 from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.measure.measure import MeasureData
 
 
 @pytest.fixture(autouse=True, scope="function")

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,11 +16,11 @@
 # standard libraries
 import unittest.mock as mock
 
-# external packages
+from base.loggerMW import setupLogging
 
+# external packages
 # local import
 from mw4 import update
-from base.loggerMW import setupLogging
 
 setupLogging()
 

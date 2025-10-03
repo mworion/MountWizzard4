@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,21 +14,21 @@
 #
 ###########################################################
 # standard libraries
-from unittest import mock
-import pytest
-import subprocess
-import os
 import glob
+import os
 import platform
+import subprocess
 from pathlib import Path
+from unittest import mock
 
-# external packages
-
-# local import
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 import logic
+import pytest
 from logic.plateSolve.plateSolve import PlateSolve
 from logic.plateSolve.watney import Watney
+
+# external packages
+# local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="function")

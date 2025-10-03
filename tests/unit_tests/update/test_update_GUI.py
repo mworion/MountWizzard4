@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-import sys
-import pytest
 import platform
+import sys
+import unittest.mock as mock
+
+import pytest
+from base.loggerMW import setupLogging
 
 # external packages
 from PySide6.QtWidgets import QWidget
 
 # local import
-from mw4.update import UpdateGUI, Update
-from base.loggerMW import setupLogging
+from update import Update, UpdateGUI
 
 setupLogging()
 

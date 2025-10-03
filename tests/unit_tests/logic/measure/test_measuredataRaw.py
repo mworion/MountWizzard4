@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,11 +14,11 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
 
 # external packages
 import PySide6
+import pytest
 
 # local import
 from logic.measure.measureRaw import MeasureDataRaw

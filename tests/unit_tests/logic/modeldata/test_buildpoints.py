@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,22 +14,22 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import os
-import json
 import binascii
+import json
+import os
 import unittest.mock as mock
 from pathlib import Path
 
+import numpy as np
+import pytest
+
 # external packages
 import skyfield.api
+from logic.modeldata.buildpoints import DataPoint, HaDecToAltAz
 from skyfield.api import wgs84
-import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.modeldata.buildpoints import DataPoint
-from logic.modeldata.buildpoints import HaDecToAltAz
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -71,20 +70,20 @@ def test_addBuildP1(function):
     function.buildP = []
     suc = function.addBuildP((10, 10, True))
     assert suc
-    assert 1 == len(function.buildP)
+    assert len(function.buildP) == 1
     suc = function.addBuildP((10, 10, True))
     assert suc
-    assert 2 == len(function.buildP)
+    assert len(function.buildP) == 2
     suc = function.addBuildP((10, 10, True))
     assert suc
-    assert 3 == len(function.buildP)
+    assert len(function.buildP) == 3
 
 
 def test_addBuildP2(function):
     function.buildP = []
     suc = function.addBuildP(10)
     assert not suc
-    assert 0 == len(function.buildP)
+    assert len(function.buildP) == 0
     function.app.mount.setting.horizonLimitLow = 0
     function.app.mount.setting.horizonLimitHigh = 90
 
@@ -93,7 +92,7 @@ def test_addBuildP3(function):
     function.buildP = []
     suc = function.addBuildP((10, 10, 10, True))
     assert not suc
-    assert 0 == len(function.buildP)
+    assert len(function.buildP) == 0
 
 
 def test_addBuildP4(function):
@@ -987,47 +986,47 @@ def test_genGrid7(function):
 
 def test_genGridData1(function):
     function.genGrid(minAlt=10, maxAlt=40, numbRows=4, numbCols=4)
-    assert 16 == len(function.buildP)
+    assert len(function.buildP) == 16
 
 
 def test_genGridData2(function):
     function.genGrid(minAlt=5, maxAlt=85, numbRows=4, numbCols=4)
-    assert 12 == len(function.buildP)
+    assert len(function.buildP) == 12
 
 
 def test_genGridData3(function):
     function.genGrid(minAlt=5, maxAlt=85, numbRows=8, numbCols=8)
-    assert 56 == len(function.buildP)
+    assert len(function.buildP) == 56
 
 
 def test_genGridData4(function):
     function.genGrid(minAlt=10, maxAlt=40, numbRows=6, numbCols=6)
-    assert 36 == len(function.buildP)
+    assert len(function.buildP) == 36
 
 
 def test_genGridData5(function):
     function.genGrid(minAlt=10, maxAlt=40, numbRows=6, numbCols=12)
-    assert 72 == len(function.buildP)
+    assert len(function.buildP) == 72
 
 
 def test_genGridData6(function):
     function.genGrid(minAlt=10, maxAlt=40, numbRows=1, numbCols=12)
-    assert 72 == len(function.buildP)
+    assert len(function.buildP) == 72
 
 
 def test_genGridData7(function):
     function.genGrid(minAlt=10, maxAlt=40, numbRows=5, numbCols=1)
-    assert 72 == len(function.buildP)
+    assert len(function.buildP) == 72
 
 
 def test_genGridData8(function):
     function.genGrid(minAlt=10, maxAlt=40, numbRows=10, numbCols=12)
-    assert 72 == len(function.buildP)
+    assert len(function.buildP) == 72
 
 
 def test_genGridData9(function):
     function.genGrid(minAlt=10, maxAlt=40, numbRows=6, numbCols=20)
-    assert 72 == len(function.buildP)
+    assert len(function.buildP) == 72
 
 
 def test_genAlign1(function):
@@ -1037,7 +1036,7 @@ def test_genAlign1(function):
         numberBase=5,
     )
     assert suc
-    assert 5 == len(function.buildP)
+    assert len(function.buildP) == 5
 
 
 def test_genAlign2(function):
@@ -1047,7 +1046,7 @@ def test_genAlign2(function):
         numberBase=5,
     )
     assert not suc
-    assert 5 == len(function.buildP)
+    assert len(function.buildP) == 5
 
 
 def test_genAlign3(function):
@@ -1057,7 +1056,7 @@ def test_genAlign3(function):
         numberBase=5,
     )
     assert not suc
-    assert 5 == len(function.buildP)
+    assert len(function.buildP) == 5
 
 
 def test_genAlign4(function):
@@ -1067,7 +1066,7 @@ def test_genAlign4(function):
         numberBase=2,
     )
     assert not suc
-    assert 5 == len(function.buildP)
+    assert len(function.buildP) == 5
 
 
 def test_genAlign5(function):
@@ -1077,7 +1076,7 @@ def test_genAlign5(function):
         numberBase=30,
     )
     assert not suc
-    assert 5 == len(function.buildP)
+    assert len(function.buildP) == 5
 
 
 def test_sort_1(function):

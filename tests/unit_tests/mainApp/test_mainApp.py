@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,20 +14,21 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import unittest.mock as mock
 import shutil
+import unittest.mock as mock
 from pathlib import Path
 
-# external packages
-from PySide6.QtCore import QTimer, QBasicTimer, QCoreApplication
-from PySide6.QtWidgets import QWidget
+import pytest
+from assets import assetsData as res
+from base.loggerMW import setupLogging
+from gui.mainWaddon.astroObjects import AstroObjects
 
 # local import
 from mainApp import MountWizzard4
-from gui.mainWaddon.astroObjects import AstroObjects
-from base.loggerMW import setupLogging
-from mw4.assets import assetsData as res
+
+# external packages
+from PySide6.QtCore import QBasicTimer, QCoreApplication, QTimer
+from PySide6.QtWidgets import QWidget
 
 res.qInitResources()
 setupLogging()

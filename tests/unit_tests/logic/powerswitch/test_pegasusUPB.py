@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,14 +14,14 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 from unittest import mock
 
-# external packages
+import pytest
+from logic.powerswitch.pegasusUPB import PegasusUPB
 
+# external packages
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.powerswitch.pegasusUPB import PegasusUPB
 
 
 @pytest.fixture(autouse=True, scope="function")

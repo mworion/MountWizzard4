@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
+
+import pytest
+from base.loggerMW import setupLogging
+from gui.extWindows.messageW import MessageWindow
+from gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.messageW import MessageWindow
-from base.loggerMW import setupLogging
 
 setupLogging()
 

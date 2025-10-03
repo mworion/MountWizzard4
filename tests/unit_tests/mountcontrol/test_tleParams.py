@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,12 +16,13 @@
 # standard libraries
 import unittest
 
-# external packages
-from skyfield.api import Angle, load
+from base.loggerMW import setupLogging
 
 # local imports
 from mountcontrol.tleParams import TLEParams
-from base.loggerMW import setupLogging
+
+# external packages
+from skyfield.api import Angle, load
 
 setupLogging()
 

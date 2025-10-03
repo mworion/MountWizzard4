@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,23 +15,24 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-import pytest
-import time
 import os
+import time
+import unittest.mock as mock
 from pathlib import Path
+
+import gui.mainWaddon
+import gui.mainWaddon.tabModel
+import pytest
+from gui.mainWaddon.tabModel import Model
+from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
+from logic.modelBuild.modelData import ModelData
 
 # external packages
 from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.modelBuild.modelData import ModelData
-from gui.mainWaddon.tabModel import Model
-import gui.mainWaddon.tabModel
-import gui.mainWaddon
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")

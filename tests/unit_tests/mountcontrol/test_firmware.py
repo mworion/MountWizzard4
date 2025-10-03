@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,12 +16,11 @@
 # standard libraries
 import unittest
 import unittest.mock as mock
-from packaging.version import Version
 
 # external packages
-
 # local imports
 from mountcontrol.firmware import Firmware
+from packaging.version import Version
 
 
 class TestConfigData(unittest.TestCase):

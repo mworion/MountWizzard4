@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,27 +14,28 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-import pytest
 import glob
 import json
-import shutil
 import os
+import shutil
+import unittest.mock as mock
 from pathlib import Path
+
+import gui
+import gui.mainWaddon.tabModel_Manage
 
 # external packages
 import PySide6
-from PySide6.QtCore import Qt
-from skyfield.api import Star, Angle
+import pytest
+from gui.mainWaddon.tabModel_Manage import ModelManage
+from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
 from mountcontrol.modelStar import ModelStar
+from PySide6.QtCore import Qt
+from skyfield.api import Angle, Star
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-import gui
-from gui.mainWaddon.tabModel_Manage import ModelManage
-import gui.mainWaddon.tabModel_Manage
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -84,7 +84,7 @@ def test_setNameList(function):
     value = ["Test1", "test2", "test3", "test4"]
     function.app.mount.model.nameList = value
     function.setNameList(function.app.mount.model)
-    assert 4 == function.ui.nameList.count()
+    assert function.ui.nameList.count() == 4
     function.app.mount.model.nameList = []
 
 

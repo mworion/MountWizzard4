@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -18,13 +17,14 @@
 import unittest
 import unittest.mock as mock
 
-# external packages
-from skyfield.api import Angle, load
+from base.loggerMW import setupLogging
+from mountcontrol.connection import Connection
 
 # local imports
 from mountcontrol.satellite import Satellite
-from mountcontrol.connection import Connection
-from base.loggerMW import setupLogging
+
+# external packages
+from skyfield.api import Angle, load
 
 setupLogging()
 

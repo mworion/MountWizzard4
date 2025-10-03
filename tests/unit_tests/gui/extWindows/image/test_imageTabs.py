@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,22 +15,22 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
+
+import numpy as np
+import pyqtgraph as pg
 import pytest
+from astropy import wcs
+from astropy.io import fits
+from gui.extWindows.image.imageTabs import ImageTabs
+from gui.extWindows.image.imageW import ImageWindow
+from logic.file.fileHandler import FileHandler
+from logic.photometry.photometry import Photometry
 
 # external packages
 from PySide6.QtCore import QRectF
-import pyqtgraph as pg
-from astropy import wcs
-import numpy as np
-from astropy.io import fits
-from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.extWindows.image.imageW import ImageWindow
-from gui.extWindows.image.imageTabs import ImageTabs
-from logic.photometry.photometry import Photometry
-from logic.file.fileHandler import FileHandler
 
 
 @pytest.fixture(autouse=True, scope="module")

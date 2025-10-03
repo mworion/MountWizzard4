@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,18 +14,19 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 from unittest import mock
+
+import gui
+import pytest
+from gui.mainWaddon.tabSett_Device import SettDevice
+from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QPushButton
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWaddon.tabSett_Device import SettDevice
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
-import gui
 
 
 @pytest.fixture(autouse=True, scope="module")

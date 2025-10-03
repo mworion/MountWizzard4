@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,20 +14,21 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 from unittest import mock
+
+import gui.mainWaddon.tabSett_Misc
+import hid
+import pytest
+from base.loggerMW import setupLogging
+from gui.mainWaddon.tabSett_Misc import SettMisc
+from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtMultimedia import QSoundEffect
-import hid
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWaddon.tabSett_Misc import SettMisc
-import gui.mainWaddon.tabSett_Misc
-from gui.widgets.main_ui import Ui_MainWindow
-from base.loggerMW import setupLogging
-from gui.utilities.toolsQtWidget import MWidget
 
 setupLogging()
 

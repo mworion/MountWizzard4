@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,20 +14,20 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-from unittest import mock
 import json
 import os
+from unittest import mock
+
+import pytest
+from gui.mainWaddon.tabAsteroid import Asteroid
+from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QTableWidgetItem
 
-
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabAsteroid import Asteroid
-from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")

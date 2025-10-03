@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,12 +15,11 @@
 ###########################################################
 # standard libraries
 import pytest
+from logic.modeldata.hipparcos import Hipparcos
 
 # external packages
-
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.modeldata.hipparcos import Hipparcos
 
 
 @pytest.fixture(autouse=True, scope="function")
@@ -47,7 +45,7 @@ def test_calculateAlignStarPositionsAltAz_1(function):
     function.alignStars = star
 
     function.calculateAlignStarPositionsAltAz()
-    assert ["Achernar"] == function.name
+    assert function.name == ["Achernar"]
 
 
 def test_calculateAlignStarPositionsAltAz_2(function):
@@ -71,7 +69,7 @@ def test_calculateAlignStarPositionsAltAz_2(function):
     function.alignStars = star
 
     function.calculateAlignStarPositionsAltAz()
-    assert ["Achernar", "Acrux"] == function.name
+    assert function.name == ["Achernar", "Acrux"]
 
 
 def test_calculateAlignStarPositionsAltAz_3(function):

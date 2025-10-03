@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,23 +14,25 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import unittest.mock as mock
 import platform
+import unittest.mock as mock
+
+import pytest
 
 if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 # external packages
-from astropy.io import fits
 import ctypes
+
+from astropy.io import fits
+from base.ascomClass import AscomClass
+from base.loggerMW import setupLogging
+from logic.camera.camera import Camera
+from logic.camera.cameraAscom import CameraAscom
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.camera.cameraAscom import CameraAscom
-from logic.camera.camera import Camera
-from base.ascomClass import AscomClass
-from base.loggerMW import setupLogging
 
 setupLogging()
 

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,14 +15,15 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
+
 import pytest
+from gui.utilities.slewInterface import SlewInterface
 
 # external packages
 from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.slewInterface import SlewInterface
 
 
 @pytest.fixture(autouse=True, scope="module")

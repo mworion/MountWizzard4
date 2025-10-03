@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,24 +14,33 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 from unittest import mock
+
+import logic
 
 # external packages
 import numpy as np
-from skyfield.api import EarthSatellite, Angle, wgs84
+import pytest
+from logic.satellites.satellite_calculations import (
+    addMeridianTransit,
+    calcAppMag,
+    calcPassEvents,
+    calcSatelliteMeridianTransit,
+    calcSatPasses,
+    calcSatSunPhase,
+    checkTwilight,
+    collectAllOrbits,
+    extractCorrectOrbits,
+    findRangeRate,
+    findSatUp,
+    findSunlit,
+    sortFlipEvents,
+)
+from skyfield.api import Angle, EarthSatellite, wgs84
 from skyfield.timelib import Time
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-import logic
-from logic.satellites.satellite_calculations import findSunlit, findSatUp
-from logic.satellites.satellite_calculations import checkTwilight, calcSatSunPhase
-from logic.satellites.satellite_calculations import findRangeRate, calcAppMag
-from logic.satellites.satellite_calculations import calcSatelliteMeridianTransit
-from logic.satellites.satellite_calculations import calcPassEvents, collectAllOrbits
-from logic.satellites.satellite_calculations import extractCorrectOrbits, sortFlipEvents
-from logic.satellites.satellite_calculations import addMeridianTransit, calcSatPasses
 
 
 @pytest.fixture(autouse=True, scope="function")

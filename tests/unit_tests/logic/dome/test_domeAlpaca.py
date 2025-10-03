@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,17 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
 
 # external packages
 import PySide6
+import pytest
+from base.alpacaClass import AlpacaClass
+from base.signalsDevices import Signals
+from logic.dome.domeAlpaca import DomeAlpaca
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.dome.domeAlpaca import DomeAlpaca
-from base.signalsDevices import Signals
-from base.alpacaClass import AlpacaClass
 
 
 class Parent:

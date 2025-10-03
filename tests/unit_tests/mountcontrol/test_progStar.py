@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,11 +16,11 @@
 # standard libraries
 import unittest
 
-# external packages
-from skyfield.api import Angle, Star
-
 # local imports
 from mountcontrol.progStar import ProgStar
+
+# external packages
+from skyfield.api import Angle, Star
 
 
 class TestConfigData(unittest.TestCase):

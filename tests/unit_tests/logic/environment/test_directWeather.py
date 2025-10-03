@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,12 +15,11 @@
 ###########################################################
 # standard libraries
 import pytest
+from logic.environment.directWeather import DirectWeather
 
 # external packages
-
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.environment.directWeather import DirectWeather
 
 
 @pytest.fixture(autouse=True, scope="function")

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,23 +14,25 @@
 #
 ###########################################################
 # standard libraries
-from unittest import mock
 import platform
+from unittest import mock
+
 import pytest
 
 if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 # external packages
+import base.ascomClass
 import PySide6
-from PySide6.QtCore import QTimer
 import win32com.client
 
 # local import
 from base.ascomClass import AscomClass
-import base.ascomClass
 from base.loggerMW import setupLogging
 from base.signalsDevices import Signals
+from PySide6.QtCore import QTimer
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

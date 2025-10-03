@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import os
 from pathlib import Path
+
+import pytest
+from base.loggerMW import setupLogging
+
+# local imports
+from mountcontrol.mount import MountDevice
 
 # external packages
 from PySide6.QtCore import QThreadPool
 from skyfield.api import Angle, wgs84
-
-# local imports
-from mountcontrol.mount import MountDevice
-from base.loggerMW import setupLogging
 
 setupLogging()
 

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -19,10 +18,11 @@
 # external packages
 
 # local import
-from logic.databaseProcessing.sourceURL import cometSourceURLs
-from logic.databaseProcessing.sourceURL import satSourceURLs
-from logic.databaseProcessing.sourceURL import asteroidSourceURLs
-
+from logic.databaseProcessing.sourceURL import (
+    asteroidSourceURLs,
+    cometSourceURLs,
+    satSourceURLs,
+)
 
 a = cometSourceURLs
 b = satSourceURLs

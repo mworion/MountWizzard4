@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,19 +14,20 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-from unittest import mock
 from pathlib import Path
+from unittest import mock
+
+import gui.utilities
+import pytest
+from gui.extWindows.uploadPopupW import UploadPopup
+from gui.mainWaddon.tabTools_IERSTime import IERSTime
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.extWindows.uploadPopupW import UploadPopup
-import gui.utilities
-from gui.mainWaddon.tabTools_IERSTime import IERSTime
 
 
 @pytest.fixture(autouse=True, scope="module")

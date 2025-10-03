@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
+
+import logic
+import numpy as np
+import pytest
 
 # external packages
 from astropy.io import fits
-import numpy as np
+from logic.camera.camera import Camera
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.camera.camera import Camera
-import logic
 
 
 @pytest.fixture(autouse=True, scope="module")

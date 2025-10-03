@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,13 +16,14 @@
 # standard libraries
 
 # external packages
-from PySide6.QtWidgets import QWidget
-from PySide6.QtGui import QPainter, QPixmap
-import pytest
 import unittest.mock as mock
+
+import pytest
 
 # local import
 from gui.utilities.splashScreen import SplashScreen
+from PySide6.QtGui import QPainter, QPixmap
+from PySide6.QtWidgets import QWidget
 
 
 @pytest.fixture(autouse=True, scope="function")

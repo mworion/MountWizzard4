@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,16 +16,17 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
+
 import pytest
+from gui.mainWaddon.tabModel_Status import ModelStatus
+from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtGui import QPixmap
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWaddon.tabModel_Status import ModelStatus
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -50,45 +50,45 @@ def test_updateAlignGui_numberStars(function):
     function.app.mount.model.starList = []
     function.app.mount.model.numberStars = 1
     function.updateAlignGUI(function.app.mount.model)
-    assert " 1" == function.ui.numberStars.text()
-    assert " 1" == function.ui.numberStars1.text()
+    assert function.ui.numberStars.text() == " 1"
+    assert function.ui.numberStars1.text() == " 1"
 
 
 def test_updateAlignGui_altitudeError_1(function):
     function.updateAlignGUI(function.app.mount.model)
-    assert "  0.0" == function.ui.altitudeError.text()
+    assert function.ui.altitudeError.text() == "  0.0"
 
 
 def test_updateAlignGui_errorRMS_1(function):
     function.app.mount.model.errorRMS = 1
     function.updateAlignGUI(function.app.mount.model)
-    assert "  1.0" == function.ui.errorRMS.text()
-    assert "  1.0" == function.ui.errorRMS1.text()
+    assert function.ui.errorRMS.text() == "  1.0"
+    assert function.ui.errorRMS1.text() == "  1.0"
 
 
 def test_updateAlignGui_azimuthError_1(function):
     function.updateAlignGUI(function.app.mount.model)
-    assert "  0.0" == function.ui.azimuthError.text()
+    assert function.ui.azimuthError.text() == "  0.0"
 
 
 def test_updateAlignGui_terms_1(function):
     function.updateAlignGUI(function.app.mount.model)
-    assert " 1" == function.ui.terms.text()
+    assert function.ui.terms.text() == " 1"
 
 
 def test_updateAlignGui_orthoError_1(function):
     function.updateAlignGUI(function.app.mount.model)
-    assert "    0" == function.ui.orthoError.text()
+    assert function.ui.orthoError.text() == "    0"
 
 
 def test_updateAlignGui_positionAngle_1(function):
     function.updateAlignGUI(function.app.mount.model)
-    assert "  0.0" == function.ui.positionAngle.text()
+    assert function.ui.positionAngle.text() == "  0.0"
 
 
 def test_updateAlignGui_polarError_1(function):
     function.updateAlignGUI(function.app.mount.model)
-    assert "    0" == function.ui.polarError.text()
+    assert function.ui.polarError.text() == "    0"
 
 
 def test_updateTurnKnobsGUI_1(function):
@@ -97,8 +97,8 @@ def test_updateTurnKnobsGUI_1(function):
         altitudeTurns = None
 
     function.updateTurnKnobsGUI(Test())
-    assert "-" == function.ui.altitudeTurns.text()
-    assert "-" == function.ui.azimuthTurns.text()
+    assert function.ui.altitudeTurns.text() == "-"
+    assert function.ui.azimuthTurns.text() == "-"
 
 
 def test_updateTurnKnobsGUI_2(function):
@@ -107,8 +107,8 @@ def test_updateTurnKnobsGUI_2(function):
         altitudeTurns = -1
 
     function.updateTurnKnobsGUI(Test())
-    assert "1.0 revs up" == function.ui.altitudeTurns.text()
-    assert "1.0 revs right" == function.ui.azimuthTurns.text()
+    assert function.ui.altitudeTurns.text() == "1.0 revs up"
+    assert function.ui.azimuthTurns.text() == "1.0 revs right"
 
 
 def test_updateTurnKnobsGUI_3(function):
@@ -117,5 +117,5 @@ def test_updateTurnKnobsGUI_3(function):
         altitudeTurns = 1
 
     function.updateTurnKnobsGUI(Test())
-    assert "1.0 revs down" == function.ui.altitudeTurns.text()
-    assert "1.0 revs left" == function.ui.azimuthTurns.text()
+    assert function.ui.altitudeTurns.text() == "1.0 revs down"
+    assert function.ui.azimuthTurns.text() == "1.0 revs left"

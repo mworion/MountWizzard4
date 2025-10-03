@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,12 +16,11 @@
 # standard libraries
 import pytest
 
-# external packages
-from skyfield.api import Angle
-from skyfield.api import wgs84
-
 # local import
 from base import transform
+
+# external packages
+from skyfield.api import Angle, wgs84
 
 
 @pytest.fixture(autouse=True, scope="function")

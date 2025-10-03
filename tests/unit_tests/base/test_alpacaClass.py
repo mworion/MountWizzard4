@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,17 +16,18 @@
 # standard libraries
 from unittest import mock
 
+# local import
+import base.alpacaClass
+
 # external packages
 import PySide6
 import pytest
-from PySide6.QtCore import QTimer
 import requests
-
-# local import
-import base.alpacaClass
 from base.alpacaClass import AlpacaClass
 from base.loggerMW import setupLogging
 from base.signalsDevices import Signals
+from PySide6.QtCore import QTimer
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,24 +14,25 @@
 #
 ###########################################################
 # standard libraries
-import sys
-import pytest
-from unittest import mock
 import logging
-import platform
 import os
+import platform
+import sys
 import webbrowser
+from unittest import mock
+
+import importlib_metadata
+import pytest
 
 # external packages
 import requests
-import importlib_metadata
+from base.loggerMW import setupLogging
+from gui.mainWaddon.tabSett_Update import SettUpdate
+from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWaddon.tabSett_Update import SettUpdate
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
-from base.loggerMW import setupLogging
 
 setupLogging()
 

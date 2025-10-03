@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,30 +14,31 @@
 #
 ###########################################################
 # standard libraries
-import shutil
-from pathlib import Path
-from datetime import datetime
-from unittest import mock
 import json
+import shutil
+from datetime import datetime
+from pathlib import Path
+from unittest import mock
 
-# external packages
-from skyfield.api import wgs84, Angle, load, Star
-
-# local import
-from mountcontrol.model import Model, ModelStar
-from mountcontrol import obsSite
+import logic.modelBuild.modelHandling
 from logic.modelBuild.modelHandling import (
-    writeRetrofitData,
-    loadModelsFromFile,
-    convertFloatToAngle,
+    compareFile,
     convertAngleToFloat,
+    convertFloatToAngle,
+    findFittingModel,
     findKeysFromSourceInDest,
     generateFileModelData,
     generateMountModelData,
-    compareFile,
-    findFittingModel,
+    loadModelsFromFile,
+    writeRetrofitData,
 )
-import logic.modelBuild.modelHandling
+from mountcontrol import obsSite
+
+# local import
+from mountcontrol.model import Model, ModelStar
+
+# external packages
+from skyfield.api import Angle, Star, load, wgs84
 
 obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 

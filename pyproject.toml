@@ -116,4 +116,4 @@ max-complexity = 10
 "mw4/indibase/indiClient.py" = ["C901", "E501"]
 "mw4/mountcontrol/convert.py" = ["C901"]
 "mw4/mountcontrol/connection.py" = ["E501"]
-"mw4/resource/resources.py" = ["E501"]
+"mw4/assets/assetData.py" = ["E501"]

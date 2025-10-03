@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,18 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
+import os
 import shutil
 import time
-import os
-import pytest
+import unittest.mock as mock
 
 # external packages
 import PySide6
+import pytest
+from base.loggerMW import setupLogging
 
 # local import
 from mainApp import MountWizzard4
-from base.loggerMW import setupLogging
 
 setupLogging()
 

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,25 +14,25 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-import pytest
 import os
 import shutil
+import unittest.mock as mock
 from pathlib import Path
+
+import cv2
+import numpy as np
+import pyqtgraph as pg
+import pytest
+from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
+from gui.extWindows.hemisphere.horizonDraw import HorizonDraw
+from gui.utilities.gCustomViewBox import CustomViewBox
 
 # external packages
 from PySide6.QtCore import QPointF
 from skyfield.api import Angle
-import pyqtgraph as pg
-import cv2
-import numpy as np
-
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
-from gui.extWindows.hemisphere.horizonDraw import HorizonDraw
-from gui.utilities.gCustomViewBox import CustomViewBox
 
 
 @pytest.fixture(autouse=True, scope="module")

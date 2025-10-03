@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,12 +14,12 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-import pytest
 import platform
+import unittest.mock as mock
+
+import pytest
 
 # external packages
-
 # local import
 from gui.styles.styles import Styles
 

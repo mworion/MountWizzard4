@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,10 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-import pytest
 import shutil
+import unittest.mock as mock
 from pathlib import Path
+
+import gui.extWindows.image.imageW
+import pytest
+from gui.extWindows.image.imageTabs import ImageTabs
+from gui.extWindows.image.imageW import ImageWindow
+from gui.utilities.slewInterface import SlewInterface
+from gui.utilities.toolsQtWidget import MWidget
+from logic.file.fileHandler import FileHandler
+from logic.photometry.photometry import Photometry
 
 # external packages
 from PySide6.QtGui import QCloseEvent
@@ -26,13 +33,6 @@ from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-import gui.extWindows.image.imageW
-from gui.utilities.toolsQtWidget import MWidget
-from gui.utilities.slewInterface import SlewInterface
-from gui.extWindows.image.imageW import ImageWindow
-from gui.extWindows.image.imageTabs import ImageTabs
-from logic.photometry.photometry import Photometry
-from logic.file.fileHandler import FileHandler
 
 
 @pytest.fixture(autouse=True, scope="module")

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,17 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
+
+import pytest
+from gui.extWindows.simulator.materials import Materials
+from gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 # external packages
 from PySide6.Qt3DCore import Qt3DCore
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.extWindows.simulator.simulatorW import SimulatorWindow
-
-from gui.extWindows.simulator.materials import Materials
 
 
 @pytest.fixture(autouse=True, scope="module")

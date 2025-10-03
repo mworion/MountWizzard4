@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,21 +14,22 @@
 #
 ###########################################################
 # standard libraries
-from unittest import mock
-import pytest
 import os
 import socket
 from pathlib import Path
+from unittest import mock
+
+import pytest
 
 # external packages
 import wakeonlan
-from PySide6.QtCore import QThreadPool, QTimer, Signal, QObject
-from skyfield.api import wgs84, Angle
+from base.loggerMW import setupLogging
+from mountcontrol.mount import MountDevice
 
 # local imports
 from mountcontrol.mountSignals import MountSignals
-from mountcontrol.mount import MountDevice
-from base.loggerMW import setupLogging
+from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
+from skyfield.api import Angle, wgs84
 
 setupLogging()
 

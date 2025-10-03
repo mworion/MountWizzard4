@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,20 +14,20 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-from unittest import mock
+import platform
 import shutil
 import webbrowser
-import platform
+from unittest import mock
+
+import pytest
+from base.loggerMW import setupLogging
+from gui.mainWaddon.tabEnviron_Seeing import EnvironSeeing
+from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
-
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWaddon.tabEnviron_Seeing import EnvironSeeing
-from gui.widgets.main_ui import Ui_MainWindow
-from base.loggerMW import setupLogging
-from gui.utilities.toolsQtWidget import MWidget
 
 setupLogging()
 

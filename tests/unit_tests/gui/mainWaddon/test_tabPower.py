@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,14 +14,15 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 from unittest import mock
+
+import pytest
+from gui.mainWaddon.tabPower import Power
+from gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QInputDialog, QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabPower import Power
 
 
 @pytest.fixture(autouse=True, scope="module")

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,17 +15,17 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
-import pytest
 
 # external packages
 import numpy as np
-from PySide6.QtGui import QCloseEvent
 import pyqtgraph as pg
+import pytest
+from gui.extWindows.measureW import MeasureWindow
+from gui.utilities.toolsQtWidget import MWidget
+from PySide6.QtGui import QCloseEvent
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.measureW import MeasureWindow
 
 
 @pytest.fixture(autouse=True, scope="function")

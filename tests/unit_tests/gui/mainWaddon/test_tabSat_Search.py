@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,21 +14,22 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 from unittest import mock
+
+import gui
+import numpy as np
+import pytest
+from gui.mainWaddon.tabSat_Search import SatSearch
+from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtCore import QRect
 from PySide6.QtWidgets import QTableWidgetItem
 from skyfield.api import EarthSatellite
-import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-import gui
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabSat_Search import SatSearch
-from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,17 @@
 #
 ###########################################################
 # standard libraries
+
 import pytest
-import unittest.mock as mock
+from assets import assetsData
 
 # external packages
-
 # local import
 from gui.mainWindow.mainWindowAddons import MainWindowAddons
-from gui.widgets.main_ui import Ui_MainWindow
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
-from assets import assetsData
+from gui.widgets.main_ui import Ui_MainWindow
+
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 assetsData.qInitResources()
 

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,23 +14,24 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-import pytest
 import os
 import shutil
+import unittest.mock as mock
+
+import numpy as np
+import pyqtgraph as pg
+import pytest
+from gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
+from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
+from gui.utilities.slewInterface import SlewInterface
+from mountcontrol.setting import Setting
 
 # external packages
 from PySide6.QtCore import QPointF
 from skyfield.api import Angle, wgs84
-import numpy as np
-import pyqtgraph as pg
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.slewInterface import SlewInterface
-from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
-from gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
-from mountcontrol.setting import Setting
 
 
 @pytest.fixture(autouse=True, scope="module")

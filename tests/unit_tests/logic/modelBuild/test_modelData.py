@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,19 +14,20 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import json
-from unittest import mock
-from pathlib import Path
 import builtins
+import json
+from pathlib import Path
+from unittest import mock
+
+import logic.modelBuild.modelData
+import pytest
+from logic.modelBuild.modelData import ModelData
 
 # external packages
 from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-import logic.modelBuild.modelData
-from logic.modelBuild.modelData import ModelData
 
 
 @pytest.fixture(autouse=True, scope="module")

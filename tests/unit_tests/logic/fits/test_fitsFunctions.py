@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,27 +14,32 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
+
+import logic
+import numpy as np
+import pytest
 
 # external packages
 from astropy.io import fits
-import numpy as np
+from logic.fits.fitsFunction import (
+    calcAngleScaleFromWCSHeader,
+    getCoordinatesFromHeader,
+    getCoordinatesFromWCSHeader,
+    getExposureFromHeader,
+    getHintFromImageFile,
+    getImageHeader,
+    getScaleFromHeader,
+    getSolutionFromWCSHeader,
+    getSQMFromHeader,
+    updateImageFileHeaderWithSolution,
+    writeHeaderCamera,
+    writeHeaderPointing,
+)
 from skyfield.units import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App, Camera
-import logic
-from logic.fits.fitsFunction import getImageHeader, getCoordinatesFromHeader
-from logic.fits.fitsFunction import getSQMFromHeader, getExposureFromHeader
-from logic.fits.fitsFunction import getScaleFromHeader, getHintFromImageFile
-from logic.fits.fitsFunction import (
-    getCoordinatesFromWCSHeader,
-    calcAngleScaleFromWCSHeader,
-)
-from logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
-from logic.fits.fitsFunction import updateImageFileHeaderWithSolution
-from logic.fits.fitsFunction import getSolutionFromWCSHeader
 
 
 @pytest.fixture(autouse=True, scope="module")

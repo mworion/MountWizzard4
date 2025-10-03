@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,18 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import unittest.mock as mock
 import platform
+import unittest.mock as mock
 
-# external packages
-
-# local import
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.filter.filterAscom import FilterAscom
-from base.signalsDevices import Signals
+import pytest
 from base.ascomClass import AscomClass
 from base.loggerMW import setupLogging
+from base.signalsDevices import Signals
+from logic.filter.filterAscom import FilterAscom
+
+# external packages
+# local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()
 

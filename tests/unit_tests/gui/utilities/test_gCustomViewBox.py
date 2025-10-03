@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,17 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import unittest.mock as mock
 import builtins
+import unittest.mock as mock
 
 # external packages
 import pyqtgraph as pg
-from PySide6.QtCore import QPointF, Qt, QEvent
+import pytest
 
 # local import
 from gui.utilities.gCustomViewBox import CustomViewBox
 from gui.utilities.gNormalScatter import NormalScatter
+from PySide6.QtCore import QEvent, QPointF, Qt
 
 
 @pytest.fixture(autouse=True, scope="module")

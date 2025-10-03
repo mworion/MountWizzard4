@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,17 +16,17 @@
 # standard libraries
 import unittest
 import unittest.mock as mock
+
+import mountcontrol
 import numpy
 
 # external packages
 import skyfield.api
-from skyfield.api import wgs84, Star, Angle
+from mountcontrol import obsSite
 
 # local imports
-from mountcontrol.model import ModelStar, ProgStar
-from mountcontrol.model import Model
-from mountcontrol import obsSite
-import mountcontrol
+from mountcontrol.model import Model, ModelStar, ProgStar
+from skyfield.api import Angle, Star, wgs84
 
 obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
@@ -403,10 +402,10 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
 
         for i in range(0, 10):
-            model.addName("this is the {0}.th name".format(i))
+            model.addName(f"this is the {i}.th name")
         self.assertEqual(len(model.nameList), 10)
         for i, name in enumerate(model.nameList):
-            self.assertEqual("this is the {0}.th name".format(i), name)
+            self.assertEqual(f"this is the {i}.th name", name)
 
     def test_StarList_checkNameListOK(self):
         class Parent:

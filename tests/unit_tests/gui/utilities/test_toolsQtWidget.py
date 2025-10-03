@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,26 +14,43 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-import pytest
-import os
 import logging
+import os
+import unittest.mock as mock
 from pathlib import Path
 
-# external packages
-from PySide6.QtWidgets import QMessageBox, QFileDialog, QWidget, QTabWidget
-from PySide6.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
-from PySide6.QtWidgets import QTableWidget
-from PySide6.QtCore import Qt, QPoint
-from PySide6.QtGui import QIcon, QPixmap, QPainterPath
-from PySide6.QtTest import QTest
-from skyfield.api import Angle, load
 import numpy as np
+import pytest
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents, changeStyleDynamic
-from gui.utilities.toolsQtWidget import findIndexValue, guiSetStyle, guiSetText, clickable
+from gui.utilities.toolsQtWidget import (
+    MWidget,
+    changeStyleDynamic,
+    clickable,
+    findIndexValue,
+    guiSetStyle,
+    guiSetText,
+    sleepAndEvents,
+)
 from gui.widgets.main_ui import Ui_MainWindow
+from PySide6.QtCore import QPoint, Qt
+from PySide6.QtGui import QIcon, QPainterPath, QPixmap
+from PySide6.QtTest import QTest
+
+# external packages
+from PySide6.QtWidgets import (
+    QComboBox,
+    QFileDialog,
+    QLineEdit,
+    QMessageBox,
+    QPushButton,
+    QTableWidget,
+    QTableWidgetItem,
+    QTabWidget,
+    QWidget,
+)
+from skyfield.api import Angle, load
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -18,9 +17,8 @@
 import pytest
 
 # external packages
-
 # local import
-from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
+from gui.extWindows.image.imageSignals import ImageWindowSignals
 
 
 @pytest.fixture(autouse=True, scope="module")

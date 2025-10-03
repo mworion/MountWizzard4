@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,19 +14,19 @@
 #
 ###########################################################
 # standard libraries
+import builtins
 import os
+import platform
+import subprocess
 import sys
 import unittest.mock as mock
+
 import pytest
-import subprocess
-import builtins
-import platform
+from base.loggerMW import setupLogging
 
 # external packages
-
 # local import
-from mw4.update import Update
-from base.loggerMW import setupLogging
+from update import Update
 
 setupLogging()
 

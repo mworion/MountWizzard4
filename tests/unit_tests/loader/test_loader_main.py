@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,10 +14,10 @@
 #
 ###########################################################
 # standard libraries
-import sys
-import unittest.mock as mock
 import glob
 import os
+import sys
+import unittest.mock as mock
 from pathlib import Path
 
 # external packages

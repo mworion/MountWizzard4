@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,20 +14,20 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-from unittest import mock
 from pathlib import Path
+from unittest import mock
+
+import gui
+import pytest
+from gui.mainWaddon.astroObjects import AstroObjects
+from gui.widgets.main_ui import Ui_MainWindow
+from PySide6.QtCore import QThreadPool
 
 # external packages
-from PySide6.QtWidgets import QWidget, QComboBox, QTableWidget, QGroupBox
-from PySide6.QtWidgets import QTableWidgetItem
-from PySide6.QtCore import QThreadPool
+from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem, QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWaddon.astroObjects import AstroObjects
-import gui
-from gui.widgets.main_ui import Ui_MainWindow
 
 satBaseUrl = "http://www.celestrak.org/NORAD/elements/gp.php?"
 satSourceURLs = {

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,19 +14,20 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
-import pytest
 import shutil
+import unittest.mock as mock
 from pathlib import Path
+
+import numpy as np
+import pytest
 
 # external packages
 from astropy.io import fits
-import numpy as np
-from xisf import XISF
-
 
 # local import
 from logic.file.fileHandler import FileHandler, FileHandlerSignals
+from xisf import XISF
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -19,7 +18,6 @@ import unittest
 import unittest.mock as mock
 
 # external packages
-
 # local imports
 from mountcontrol.setting import Setting
 

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,14 +14,14 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
 
-# external packages
+import pytest
+from logic.telescope.telescope import Telescope
 
+# external packages
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.telescope.telescope import Telescope
 
 
 @pytest.fixture(autouse=True, scope="function")

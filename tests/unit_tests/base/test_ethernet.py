@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -18,7 +17,6 @@
 import pytest
 
 # external packages
-
 # local import
 from base.ethernet import checkFormatMAC
 

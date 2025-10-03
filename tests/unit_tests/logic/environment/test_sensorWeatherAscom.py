@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,15 +14,15 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import platform
 
-# external packages
+import pytest
+from base.signalsDevices import Signals
+from logic.environment.sensorWeatherAscom import SensorWeatherAscom
 
+# external packages
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.environment.sensorWeatherAscom import SensorWeatherAscom
-from base.signalsDevices import Signals
 
 if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)

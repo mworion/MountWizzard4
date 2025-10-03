@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,17 @@
 #
 ###########################################################
 # standard libraries
-from unittest import mock
-import pytest
+import glob
 import os
 import shutil
-import glob
+from unittest import mock
+
+import pytest
+from logic.plateSolve.plateSolve import PlateSolve
 
 # external packages
-
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.plateSolve.plateSolve import PlateSolve
 
 
 @pytest.fixture(autouse=True, scope="module")

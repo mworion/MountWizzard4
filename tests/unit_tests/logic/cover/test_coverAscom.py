@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,18 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import unittest.mock as mock
 import platform
+import unittest.mock as mock
 
 # external packages
 import PySide6
+import pytest
+from base.loggerMW import setupLogging
+from base.signalsDevices import Signals
+from logic.cover.coverAscom import CoverAscom
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.cover.coverAscom import CoverAscom
-from base.signalsDevices import Signals
-from base.loggerMW import setupLogging
 
 setupLogging()
 

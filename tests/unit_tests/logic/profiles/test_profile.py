@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,20 +14,28 @@
 #
 ###########################################################
 # standard libraries
-import os
-import json
-import pytest
 import glob
+import json
+import os
 import unittest.mock as mock
 from pathlib import Path
 
-# external packages
+import pytest
 
+# external packages
 # local import
-from logic.profiles.profile import convertProfileData40to41, blendProfile
-from logic.profiles.profile import convertProfileData41to42, defaultConfig
-from logic.profiles.profile import loadProfile, saveProfile, loadProfileStart
-from logic.profiles.profile import convertKeyData, replaceKeys, checkResetTabOrder
+from logic.profiles.profile import (
+    blendProfile,
+    checkResetTabOrder,
+    convertKeyData,
+    convertProfileData40to41,
+    convertProfileData41to42,
+    defaultConfig,
+    loadProfile,
+    loadProfileStart,
+    replaceKeys,
+    saveProfile,
+)
 
 
 @pytest.fixture(autouse=True, scope="function")

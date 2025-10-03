@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,18 +14,19 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
+
+import pytest
+from base.indiClass import IndiClass
+from base.signalsDevices import Signals
+from indibase.indiClient import Client
 
 # external packages
 from indibase.indiDevice import Device
-from indibase.indiClient import Client
+from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
-from base.signalsDevices import Signals
-from base.indiClass import IndiClass
 
 
 class Parent:

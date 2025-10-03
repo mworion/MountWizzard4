@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,15 +15,16 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
+
 import pytest
+from gui.mainWaddon.tabMount import Mount
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabMount import Mount
 
 
 @pytest.fixture(autouse=True, scope="module")

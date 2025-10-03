@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -19,14 +18,15 @@ from unittest import mock
 
 # external packages
 import PySide6
-from PySide6.QtCore import QTimer
 import pytest
 import requests
+from base.loggerMW import setupLogging
 
 # local import
 from base.sgproClass import SGProClass
-from base.loggerMW import setupLogging
 from base.signalsDevices import Signals
+from PySide6.QtCore import QTimer
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

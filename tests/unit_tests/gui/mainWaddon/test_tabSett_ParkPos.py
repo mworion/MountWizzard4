@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 from unittest import mock
+
+import pytest
+from gui.mainWaddon.tabSett_ParkPos import SettParkPos
+from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWaddon.tabSett_ParkPos import SettParkPos
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -75,11 +75,11 @@ def test_setupIcons_1(function):
 
 
 def test_setupParkPosGui(function):
-    assert 10 == len(function.posButtons)
-    assert 10 == len(function.posTexts)
-    assert 10 == len(function.posAlt)
-    assert 10 == len(function.posAz)
-    assert 10 == len(function.posSaveButtons)
+    assert len(function.posButtons) == 10
+    assert len(function.posTexts) == 10
+    assert len(function.posAlt) == 10
+    assert len(function.posAz) == 10
+    assert len(function.posSaveButtons) == 10
 
 
 def test_parkAtPos_1(function):

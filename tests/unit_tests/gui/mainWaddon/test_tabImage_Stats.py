@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-from unittest import mock
 import webbrowser
+from unittest import mock
+
+import pytest
+from gui.mainWaddon.tabImage_Stats import ImageStats
+from gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWaddon.tabImage_Stats import ImageStats
-from gui.widgets.main_ui import Ui_MainWindow
 
 
 @pytest.fixture(autouse=True, scope="module")

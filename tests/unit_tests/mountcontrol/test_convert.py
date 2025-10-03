@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,35 +14,37 @@
 #
 ###########################################################
 # standard libraries
+import math
 import unittest
 import unittest.mock as mock
-import math
-
-# external packages
-from skyfield.api import Angle
 
 # local imports
 import mountcontrol
-from mountcontrol.convert import stringToDegree
-from mountcontrol.convert import stringToAngle
-from mountcontrol.convert import valueToFloat
-from mountcontrol.convert import valueToAngle
-from mountcontrol.convert import valueToInt
-from mountcontrol.convert import topoToAltAz
-from mountcontrol.convert import sexagesimalizeToInt
-from mountcontrol.convert import checkIsHours
-from mountcontrol.convert import convertToAngle
-from mountcontrol.convert import convertToHMS
-from mountcontrol.convert import convertToDMS
-from mountcontrol.convert import formatLatLonToAngle
-from mountcontrol.convert import convertLatToAngle
-from mountcontrol.convert import convertLonToAngle
-from mountcontrol.convert import convertRaToAngle
-from mountcontrol.convert import convertDecToAngle
-from mountcontrol.convert import formatHstrToText
-from mountcontrol.convert import formatDstrToText
-from mountcontrol.convert import formatLatToText
-from mountcontrol.convert import formatLonToText
+from mountcontrol.convert import (
+    checkIsHours,
+    convertDecToAngle,
+    convertLatToAngle,
+    convertLonToAngle,
+    convertRaToAngle,
+    convertToAngle,
+    convertToDMS,
+    convertToHMS,
+    formatDstrToText,
+    formatHstrToText,
+    formatLatLonToAngle,
+    formatLatToText,
+    formatLonToText,
+    sexagesimalizeToInt,
+    stringToAngle,
+    stringToDegree,
+    topoToAltAz,
+    valueToAngle,
+    valueToFloat,
+    valueToInt,
+)
+
+# external packages
+from skyfield.api import Angle
 
 
 class TestConfigData(unittest.TestCase):

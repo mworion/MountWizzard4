@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,15 +14,16 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
 
-# external packages
-from PySide6.QtWidgets import QWidget
 import numpy as np
+import pytest
 
 # local import
 from gui.utilities.gImageBar import ImageBar
+
+# external packages
+from PySide6.QtWidgets import QWidget
 
 
 @pytest.fixture(autouse=True, scope="module")

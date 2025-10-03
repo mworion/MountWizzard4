@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,19 +14,20 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-from unittest import mock
 from pathlib import Path
+from unittest import mock
+
+import pytest
 
 # external packages
 from astroquery.simbad import Simbad
+from gui.mainWaddon.tabModel_BuildPoints import BuildPoints
+from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
 from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabModel_BuildPoints import BuildPoints
-from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")

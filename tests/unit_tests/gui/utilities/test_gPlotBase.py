@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,16 +14,16 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
 
 # external packages
 import numpy as np
 import pyqtgraph as pg
-from PySide6.QtWidgets import QApplication
+import pytest
 
 # local import
 from gui.utilities.gPlotBase import PlotBase
+from PySide6.QtWidgets import QApplication
 
 
 @pytest.fixture(autouse=True, scope="module")

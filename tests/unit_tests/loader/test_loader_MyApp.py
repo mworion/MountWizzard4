@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -19,12 +18,12 @@ import unittest.mock as mock
 
 # external packages
 import pytest
-from PySide6.QtCore import QEvent, QPointF, Qt
-from PySide6.QtGui import QMouseEvent
-from PySide6 import QtWidgets
 
 # local import
-from mw4.loader import MyApp
+from loader import MyApp
+from PySide6 import QtWidgets
+from PySide6.QtCore import QEvent, QPointF, Qt
+from PySide6.QtGui import QMouseEvent
 
 
 @pytest.fixture(scope="module", autouse=True)

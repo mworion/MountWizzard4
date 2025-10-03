@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,12 +14,11 @@
 #
 ###########################################################
 # standard libraries
+import socket
 import unittest
 import unittest.mock as mock
-import socket
 
 # external packages
-
 # local imports
 from base.loggerMW import setupLogging
 
@@ -211,27 +209,27 @@ class TestConnection(unittest.TestCase):
 
     def test_ok(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#")
             m_socket.return_value.connect.assert_called_with(("localhost", 3492))
-            m_socket.return_value.sendall.assert_called_with(":GVN#".encode())
+            m_socket.return_value.sendall.assert_called_with(b":GVN#")
         self.assertEqual(True, suc)
         self.assertEqual("10micron GM1000HPS", response[0])
 
     def test_notok_response_check(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#", "0")
             m_socket.return_value.connect.assert_called_with(("localhost", 3492))
-            m_socket.return_value.sendall.assert_called_with(":GVN#".encode())
+            m_socket.return_value.sendall.assert_called_with(b":GVN#")
         self.assertEqual(False, suc)
         self.assertEqual("10micron GM1000HPS", response[0])
 
     def test_no_host_defined(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             conn = Connection()
             suc, response, chunks = conn.communicate(":GVN#")
         self.assertEqual(False, suc)
@@ -239,7 +237,7 @@ class TestConnection(unittest.TestCase):
 
     def test_no_port_defined(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             conn = Connection(host="localhost")
             suc, response, chunks = conn.communicate(":GVN#")
         self.assertEqual(False, suc)
@@ -247,7 +245,7 @@ class TestConnection(unittest.TestCase):
 
     def test_no_response(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate("")
         self.assertEqual(True, suc)
@@ -263,7 +261,7 @@ class TestConnection(unittest.TestCase):
 
     def test_connect_timeout(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             m_socket.return_value.connect.side_effect = TimeoutError
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#")
@@ -271,7 +269,7 @@ class TestConnection(unittest.TestCase):
 
     def test_sendall_timeout(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             m_socket.return_value.sendall.side_effect = TimeoutError
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#")
@@ -279,7 +277,7 @@ class TestConnection(unittest.TestCase):
 
     def test_recv_timeout(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             m_socket.return_value.recv.side_effect = TimeoutError
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#")
@@ -287,7 +285,7 @@ class TestConnection(unittest.TestCase):
 
     def test_connect_socket_error(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             m_socket.return_value.connect.side_effect = socket.error
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#")
@@ -295,7 +293,7 @@ class TestConnection(unittest.TestCase):
 
     def test_sendall_socket_error(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             m_socket.return_value.sendall.side_effect = socket.error
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#")
@@ -303,7 +301,7 @@ class TestConnection(unittest.TestCase):
 
     def test_recv_socket_error(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             m_socket.return_value.recv.side_effect = socket.error
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#")
@@ -311,7 +309,7 @@ class TestConnection(unittest.TestCase):
 
     def test_connect_exception(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             m_socket.return_value.connect.side_effect = Exception("Test")
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#")
@@ -319,7 +317,7 @@ class TestConnection(unittest.TestCase):
 
     def test_sendall_exception(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             m_socket.return_value.sendall.side_effect = Exception("Test")
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#")
@@ -327,7 +325,7 @@ class TestConnection(unittest.TestCase):
 
     def test_recv_exception(self):
         with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "10micron GM1000HPS#".encode()
+            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
             m_socket.return_value.recv.side_effect = Exception("Test")
             conn = Connection(host=("localhost", 3492))
             suc, response, chunks = conn.communicate(":GVN#")

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,17 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import unittest.mock as mock
 import os
+import unittest.mock as mock
 
-# external packages
-
-# local import
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
+import pytest
+from base.signalsDevices import Signals
 from logic.camera.camera import Camera
 from logic.camera.cameraSGPro import CameraSGPro
-from base.signalsDevices import Signals
+
+# external packages
+# local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 class Parent:

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,16 +14,17 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
+
+import numpy as np
+import pytest
+from logic.dome.dome import Dome
 
 # external packages
 from skyfield.api import Angle
-import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.dome.dome import Dome
 
 
 @pytest.fixture(autouse=True, scope="function")

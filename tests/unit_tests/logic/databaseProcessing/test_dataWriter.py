@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,19 +14,20 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import unittest.mock as mock
-import os
 import json
+import os
 import shutil
+import unittest.mock as mock
 from pathlib import Path
+
+import pytest
+from logic.databaseProcessing.dataWriter import DataWriter
 
 # external packages
 from skyfield.api import EarthSatellite
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.databaseProcessing.dataWriter import DataWriter
 
 
 @pytest.fixture(autouse=True, scope="function")

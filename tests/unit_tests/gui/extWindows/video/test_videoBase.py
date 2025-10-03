@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,20 +14,21 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
+
+import cv2
+import gui.extWindows.video.videoBase
+import numpy as np
+import pytest
+from gui.extWindows.video.videoBase import VideoWindowBase
+from gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent, QPixmap
 from PySide6.QtWidgets import QInputDialog
-import numpy as np
-import cv2
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.video.videoBase import VideoWindowBase
-import gui.extWindows.video.videoBase
 
 
 @pytest.fixture(autouse=True, scope="module")

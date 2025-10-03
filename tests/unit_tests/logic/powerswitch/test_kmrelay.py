@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,12 +14,12 @@
 #
 ###########################################################
 # standard libraries
-from unittest import mock
 import time
-import pytest
+from unittest import mock
 
 # external packages
 import PySide6
+import pytest
 import requests
 
 # local import
@@ -211,7 +210,7 @@ def test_status1(function):
             function.set(i, 0)
 
         function.cyclePolling()
-        assert [0, 0, 0, 0, 0, 0, 0, 0] == function.status
+        assert function.status == [0, 0, 0, 0, 0, 0, 0, 0]
 
 
 def test_status2(function):
@@ -240,7 +239,7 @@ def test_status2(function):
             function.set(i, 1)
 
         function.cyclePolling()
-        assert [1, 1, 1, 1, 1, 1, 1, 1] == function.status
+        assert function.status == [1, 1, 1, 1, 1, 1, 1, 1]
 
 
 def test_status3(function):
@@ -269,7 +268,7 @@ def test_status3(function):
             function.switch(i)
 
         function.cyclePolling()
-        assert [1, 1, 1, 1, 1, 1, 1, 1] == function.status
+        assert function.status == [1, 1, 1, 1, 1, 1, 1, 1]
 
 
 def test_status4(function):
@@ -299,7 +298,7 @@ def test_status4(function):
                 function.pulse(i)
 
             function.cyclePolling()
-            assert [0, 0, 0, 0, 0, 0, 0, 0] == function.status
+            assert function.status == [0, 0, 0, 0, 0, 0, 0, 0]
 
 
 def test_getRelay_1(function):

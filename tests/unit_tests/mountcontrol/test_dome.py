@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -18,11 +17,11 @@
 import unittest
 import unittest.mock as mock
 
-# external packages
-from skyfield.api import Angle
-
 # local imports
 from mountcontrol.dome import Dome
+
+# external packages
+from skyfield.api import Angle
 
 
 class TestConfigData(unittest.TestCase):

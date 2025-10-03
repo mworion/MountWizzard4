@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,17 +14,17 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import platform
 import unittest.mock as mock
 
-# external packages
+import pytest
+from base.loggerMW import setupLogging
+from base.signalsDevices import Signals
+from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
 
+# external packages
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
-from base.signalsDevices import Signals
-from base.loggerMW import setupLogging
 
 setupLogging()
 

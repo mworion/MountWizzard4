@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,24 +14,23 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 from unittest import mock
 
-# external packages
-from PySide6.QtWidgets import QTableWidgetItem, QTableWidget, QComboBox
-from PySide6.QtWidgets import QGroupBox
-from skyfield.api import EarthSatellite
-from skyfield.api import Angle
-from sgp4.exporter import export_tle
+import gui
 import numpy as np
+import pytest
+from gui.mainWaddon.astroObjects import AstroObjects
+from gui.mainWaddon.tabSat_Track import SatTrack
+from gui.utilities.toolsQtWidget import MWidget
+from gui.widgets.main_ui import Ui_MainWindow
+
+# external packages
+from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem
+from sgp4.exporter import export_tle
+from skyfield.api import Angle, EarthSatellite
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-import gui
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabSat_Track import SatTrack
-from gui.mainWaddon.astroObjects import AstroObjects
-from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope="module")

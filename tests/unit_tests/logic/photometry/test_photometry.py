@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,16 +15,16 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
-import pytest
-
-# external packages
-import numpy as np
-import sep
 
 # local import
 import logic.photometry.photometry
-from logic.photometry.photometry import PhotometrySignals
-from logic.photometry.photometry import Photometry
+
+# external packages
+import numpy as np
+import pytest
+import sep
+from logic.photometry.photometry import Photometry, PhotometrySignals
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

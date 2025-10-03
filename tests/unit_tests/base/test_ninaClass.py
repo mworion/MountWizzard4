@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,16 +16,18 @@
 # standard libraries
 from unittest import mock
 
+import PySide6
+
 # external packages
 import pytest
 import requests
-import PySide6
-from PySide6.QtCore import QTimer
+from base.loggerMW import setupLogging
 
 # local import
 from base.ninaClass import NINAClass
-from base.loggerMW import setupLogging
 from base.signalsDevices import Signals
+from PySide6.QtCore import QTimer
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

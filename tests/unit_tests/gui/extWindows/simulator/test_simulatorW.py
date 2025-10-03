@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,18 +14,19 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
+
+import pytest
+from gui.extWindows.simulator import tools
+from gui.extWindows.simulator.simulatorW import SimulatorWindow
+from gui.utilities.toolsQtWidget import MWidget
+from PySide6.Qt3DCore import Qt3DCore
 
 # external packages
 from PySide6.QtGui import QCloseEvent
-from PySide6.Qt3DCore import Qt3DCore
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.simulator.simulatorW import SimulatorWindow
-from gui.extWindows.simulator import tools
 
 
 @pytest.fixture(autouse=True, scope="module")

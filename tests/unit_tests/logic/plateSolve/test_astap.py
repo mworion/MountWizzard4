@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,22 +14,22 @@
 #
 ###########################################################
 # standard libraries
-from unittest import mock
-import pytest
-import subprocess
-import os
-import glob
-import platform
 import builtins
+import glob
+import os
+import platform
+import subprocess
 from pathlib import Path
+from unittest import mock
+
+import logic
+import pytest
+from logic.plateSolve.astap import ASTAP
+from logic.plateSolve.plateSolve import PlateSolve
 
 # external packages
-
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.plateSolve.plateSolve import PlateSolve
-import logic
-from logic.plateSolve.astap import ASTAP
 
 
 @pytest.fixture(autouse=True, scope="function")

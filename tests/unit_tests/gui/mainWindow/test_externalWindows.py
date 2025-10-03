@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,19 +15,18 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
-import pytest
-
-
-# external packages
-from PySide6.QtCore import QObject
-from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QPushButton, QWidget
 
 # local import
 import gui.utilities.toolsQtWidget
+import pytest
+from base import packageConfig
 from gui.mainWindow.externalWindows import ExternalWindows
 from gui.widgets.main_ui import Ui_MainWindow
-from base import packageConfig
+
+# external packages
+from PySide6.QtCore import QObject, Signal
+from PySide6.QtWidgets import QPushButton, QWidget
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

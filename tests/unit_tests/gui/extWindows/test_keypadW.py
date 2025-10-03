@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -16,17 +15,17 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
+
+import numpy as np
 import pytest
+from gui.extWindows.keypadW import KeypadWindow
+from gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent
-from PySide6.QtWidgets import QPushButton
-import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.keypadW import KeypadWindow
 
 
 @pytest.fixture(autouse=True, scope="module")

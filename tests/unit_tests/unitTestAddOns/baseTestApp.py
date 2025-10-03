@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,16 +14,17 @@
 #
 ###########################################################
 # standard libraries
-from queue import Queue
-from packaging.version import Version
 from pathlib import Path
+from queue import Queue
+
+import numpy as np
+from astropy import log as astropy_log
+from base.signalsDevices import Signals
+from packaging.version import Version
 
 # external packages
-from PySide6.QtCore import QObject, Signal, QThreadPool, QTimer
-from skyfield.api import wgs84, load, Loader, Angle, load_file
-import numpy as np
-from base.signalsDevices import Signals
-from astropy import log as astropy_log
+from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
+from skyfield.api import Angle, Loader, load, load_file, wgs84
 
 astropy_log.setLevel("ERROR")
 

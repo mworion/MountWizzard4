@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,19 +14,19 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import unittest.mock as mock
 import platform
+import unittest.mock as mock
 
 # external packages
 import PySide6
+import pytest
+from base.ascomClass import AscomClass
+from base.loggerMW import setupLogging
+from base.signalsDevices import Signals
+from logic.dome.domeAscom import DomeAscom
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.dome.domeAscom import DomeAscom
-from base.signalsDevices import Signals
-from base.ascomClass import AscomClass
-from base.loggerMW import setupLogging
 
 setupLogging()
 

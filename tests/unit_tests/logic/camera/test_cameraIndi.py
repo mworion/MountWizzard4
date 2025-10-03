@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,23 +14,23 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
 import zlib
 
+import pytest
+
 # external packages
 from astropy.io import fits
-from indibase.indiDevice import Device
+from base.indiClass import IndiClass
+from base.signalsDevices import Signals
 from indibase.indiClient import Client
+from indibase.indiDevice import Device
+from logic.camera.camera import Camera
+from logic.camera.cameraIndi import CameraIndi
 from PySide6.QtCore import QObject, Signal
-
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.camera.camera import Camera
-from logic.camera.cameraIndi import CameraIndi
-from base.indiClass import IndiClass
-from base.signalsDevices import Signals
 
 
 class Parent(QObject):

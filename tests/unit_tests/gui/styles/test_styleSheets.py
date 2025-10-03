@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -18,9 +17,8 @@
 import pytest
 
 # external packages
-
 # local import
-from gui.styles.styleSheets import MAC_STYLE, NON_MAC_STYLE, BASIC_STYLE
+from gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
 
 
 @pytest.fixture(autouse=True, scope="module")

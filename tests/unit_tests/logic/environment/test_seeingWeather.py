@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,19 +14,20 @@
 #
 ###########################################################
 # standard libraries
-import pytest
-import unittest.mock as mock
-import os
 import json
+import os
 import shutil
+import unittest.mock as mock
+
+import pytest
 
 # external packages
 import requests
+from base.loggerMW import setupLogging
+from logic.environment.seeingWeather import SeeingWeather
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.environment.seeingWeather import SeeingWeather
-from base.loggerMW import setupLogging
 
 setupLogging()
 

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,15 +14,16 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
+
+import pytest
+from base.loggerMW import setupLogging
+from indibase import indiXML
 
 # local import
 from indibase.indiClient import Client
 from indibase.indiDevice import Device
-from indibase import indiXML
 from indibase.indiXML import INDIBase
-from base.loggerMW import setupLogging
 from PySide6.QtNetwork import QTcpSocket
 
 setupLogging()
@@ -477,8 +477,8 @@ def test__sendCmd_1(function):
 
 def test__sendCmd_2(function):
     function.connected = True
-    cmd = INDIBase("<begin><end>".encode(encoding="UTF-8"), 0, {}, {})
-    with mock.patch.object(INDIBase, "toXML", return_value="test".encode()):
+    cmd = INDIBase(b"<begin><end>", 0, {}, {})
+    with mock.patch.object(INDIBase, "toXML", return_value=b"test"):
         with mock.patch.object(function.socket, "write", return_value=0):
             with mock.patch.object(function.socket, "flush"):
                 suc = function._sendCmd(cmd)
@@ -487,8 +487,8 @@ def test__sendCmd_2(function):
 
 def test__sendCmd_3(function):
     function.connected = True
-    cmd = INDIBase("<begin><end>".encode(encoding="UTF-8"), 0, {}, {})
-    with mock.patch.object(INDIBase, "toXML", return_value="test".encode()):
+    cmd = INDIBase(b"<begin><end>", 0, {}, {})
+    with mock.patch.object(INDIBase, "toXML", return_value=b"test"):
         with mock.patch.object(function.socket, "write", return_value=256):
             with mock.patch.object(function.socket, "flush"):
                 suc = function._sendCmd(cmd)

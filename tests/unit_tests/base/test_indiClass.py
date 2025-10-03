@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -15,18 +14,19 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 from unittest import mock
 
-# external packages
+import base.indiClass
+import pytest
+from base.indiClass import IndiClass
+from base.signalsDevices import Signals
+from indibase.indiDevice import Device
 
+# external packages
 # local import
 from PySide6.QtCore import QTimer
-from indibase.indiDevice import Device
-from base.indiClass import IndiClass
-import base.indiClass
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from base.signalsDevices import Signals
 
 host_ip = "127.0.0.1"
 

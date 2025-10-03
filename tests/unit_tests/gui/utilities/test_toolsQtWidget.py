@@ -64,7 +64,7 @@ def function(qapp):
 
 
 def test_sleepAndEvents(function):
-    sleepAndEvents(1)
+    sleepAndEvents(0)
 
 
 def test_changeStyleDynamic_1():

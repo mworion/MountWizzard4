@@ -38,7 +38,7 @@ def function(qapp):
         with mock.patch.object(DownloadPopup, "downloadFile"):
             window = DownloadPopup(parentWidget=widget, url="", dest="")
         yield window
-
+        window.threadPool.waitForDone(10000)
 
 @pytest.fixture
 def mocked_sleepAndEvents(monkeypatch, function):

@@ -79,7 +79,6 @@ exclude = ["tests*", "doc*"]
 namespaces = false
 
 [tool.pytest.ini_options]
-python_paths = ["mw4"]
 testpaths = ["tests"]
 addopts = [
     "--import-mode=importlib",
@@ -96,8 +95,7 @@ exclude = ["mw4/gui/widgets/*"]
 extend-select = [
     "E", "T2", "UP", "I", "C", "LOG", "W", "SIM", "A"
 ]
-ignore = [
-    ]
+ignore = ["SIM117"]
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10

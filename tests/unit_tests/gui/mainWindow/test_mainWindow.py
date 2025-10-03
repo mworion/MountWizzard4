@@ -34,7 +34,6 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def window(qapp):
-    packageConfig.isAvailable = True
     with mock.patch.object(MainWindow, "show"):
         window = MainWindow(app=App())
         yield window
@@ -47,7 +46,9 @@ def test_initConfig_1(window):
         with mock.patch.object(window, "smartTabGui"):
             with mock.patch.object(window, "enableTabsMovable"):
                 with mock.patch.object(window, "setupIcons"):
-                    window.initConfig()
+                    with mock.patch.object(window.externalWindows, "showExtendedWindows"):
+                        with mock.patch.object(window, "show"):
+                            window.initConfig()
 
 
 def test_storeConfig_1(window):

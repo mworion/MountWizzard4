@@ -180,6 +180,7 @@ def test_pauseBuild_2(function):
 def test_programModelToMountFinish_1(function):
     function.modelData = ModelData(App)
     function.modelData.name = "Test"
+    function.app.mount.signals.getModelDone.connect(function.programModelToMountFinish)
     with mock.patch.object(function.modelData, "generateSaveData"):
         with mock.patch.object(function.modelData, "saveModelData"):
             function.programModelToMountFinish()

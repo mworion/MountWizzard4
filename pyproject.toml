@@ -78,6 +78,14 @@ where = ["mw4"]
 exclude = ["tests*", "doc*"]
 namespaces = false
 
+[tool.pytest.ini_options]
+pythonpath = ["mw4"]
+testpaths = ["tests/unit_tests"]
+addopts = [
+    "--import-mode=importlib",
+]
+qt_api = "pyside6"
+
 [tool.ruff]
 line-length = 95
 indent-width = 4

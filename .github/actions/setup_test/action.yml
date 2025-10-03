@@ -28,7 +28,7 @@ runs:
     
     - name: install #0
       run: |
-        pip install -e .
+        python -m pip install -e .
         python -m pip install pip --upgrade
         python -m pip install cython wheel
         python -m pip install pytest

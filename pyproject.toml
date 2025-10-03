@@ -80,7 +80,7 @@ namespaces = false
 
 [tool.pytest.ini_options]
 pythonpath = ["mw4"]
-testpaths = ["tests/unit_tests"]
+testpaths = ["tests"]
 addopts = [
     "--import-mode=importlib",
 ]

@@ -79,12 +79,13 @@ exclude = ["tests*", "doc*"]
 namespaces = false
 
 [tool.pytest.ini_options]
-pythonpath = ["mw4"]
+python_paths = ["mw4"]
 testpaths = ["tests"]
 addopts = [
     "--import-mode=importlib",
 ]
 qt_api = "pyside6"
+filterwarnings = ["ignore::DeprecationWarning"]
 
 [tool.ruff]
 line-length = 95

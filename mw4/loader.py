@@ -24,6 +24,7 @@ import sys
 import traceback
 import warnings
 from pathlib import Path
+from resource import resources as res
 
 # external packages
 from astropy.utils import data, iers
@@ -47,8 +48,6 @@ from PySide6.QtWidgets import (
     QTabBar,
     QWidget,
 )
-
-import mw4.resource.resources as res
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 warnings.filterwarnings("ignore", category=FITSFixedWarning)

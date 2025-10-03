@@ -16,11 +16,10 @@
 # standard libraries
 import unittest.mock as mock
 
-from base.loggerMW import setupLogging
-
 # external packages
 # local import
-from mw4 import update
+import update
+from base.loggerMW import setupLogging
 
 setupLogging()
 

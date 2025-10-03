@@ -20,11 +20,11 @@ import sys
 import unittest.mock as mock
 from pathlib import Path
 
+# local import
+import loader
+
 # external packages
 import PySide6
-
-# local import
-from mw4 import loader
 
 
 def test_main_1():

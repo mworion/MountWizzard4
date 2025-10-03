@@ -31,8 +31,6 @@ from skyfield.api import wgs84
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
-resources.qInitResources()
-
 
 @pytest.fixture(autouse=True, scope="module")
 def window(qapp):

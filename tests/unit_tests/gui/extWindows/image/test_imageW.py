@@ -45,7 +45,8 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    function.initConfig()
+    with mock.patch.object(function, "positionWindow"):
+        function.initConfig()
 
 
 def test_storeConfig_1(function):

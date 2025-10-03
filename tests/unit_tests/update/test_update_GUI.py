@@ -38,7 +38,7 @@ def app():
             with mock.patch.object(update.app, "exec"):
                 yield update
                 update.app.shutdown()
-                del update.app
+                update.app.threadPool.waitForDone(10000)
 
 
 def test_updateGUI_1(app):

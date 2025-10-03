@@ -15,24 +15,32 @@
 #
 ###########################################################
 # standard libraries
-import traceback
-import sys
-import os
-import glob
-import unittest.mock as mock
-import socket
-import platform
-import json
 import ctypes
+import glob
+import json
+import os
+import platform
+import socket
+import sys
+import traceback
+import unittest.mock as mock
 from pathlib import Path
 
 # external packages
 import pytest
 
 # local import
-import mw4.loader
-from mw4.loader import except_hook, setupWorkDirs, writeSystemInfo, extractDataFiles
-from mw4.loader import getWindowPos, checkIsAdmin, extractFile, minimizeStartTerminal
+from mw4 import loader
+from mw4.loader import (
+    checkIsAdmin,
+    except_hook,
+    extractDataFiles,
+    extractFile,
+    getWindowPos,
+    minimizeStartTerminal,
+    setupWorkDirs,
+    writeSystemInfo,
+)
 
 
 @pytest.fixture(autouse=True, scope="function")
@@ -226,7 +234,7 @@ def test_extractFile_3():
 def test_extractDataFiles_1():
     mwGlob = dict()
     mwGlob["dataDir"] = Path("tests/work/data")
-    with mock.patch.object(mw4.loader, "extractFile"):
+    with mock.patch.object(loader, "extractFile"):
         extractDataFiles(mwGlob=mwGlob)
 
 

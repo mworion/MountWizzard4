@@ -19,7 +19,6 @@ import locale
 import logging
 import os
 import platform
-import resource.resources as res
 import socket
 import sys
 import traceback
@@ -48,6 +47,8 @@ from PySide6.QtWidgets import (
     QTabBar,
     QWidget,
 )
+
+import mw4.resource.resources as res
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 warnings.filterwarnings("ignore", category=FITSFixedWarning)

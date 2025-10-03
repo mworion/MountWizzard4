@@ -17,7 +17,7 @@
 import logging
 import os
 import platform
-import resource.resources as res
+import assets.assetsData as res
 import subprocess
 import sys
 from collections.abc import Callable

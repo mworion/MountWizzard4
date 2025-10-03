@@ -25,9 +25,9 @@ from gui.mainWindow.mainWindowAddons import MainWindowAddons
 from gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
-from resource import resources
+from assets import assetsData
 
-resources.qInitResources()
+assetsData.qInitResources()
 
 
 class Test:

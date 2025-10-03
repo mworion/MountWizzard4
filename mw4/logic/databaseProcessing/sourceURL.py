@@ -52,8 +52,8 @@ satSourceURLs = {
         "unzip": False,
     },
     "Earth Resources": {
-        "url": satBaseUrl + "GROUP=resource&FORMAT=tle",
-        "file": "resource.txt",
+        "url": satBaseUrl + "GROUP=assets&FORMAT=tle",
+        "file": "assets.txt",
         "unzip": False,
     },
     "TDRSS Tracking & Data Relay": {

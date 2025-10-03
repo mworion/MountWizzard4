@@ -24,10 +24,10 @@ from unittest import mock
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabSett_Dome import SettDome
-from resource import resources
+from assets import assetsData
 from gui.utilities.toolsQtWidget import MWidget
 
-resources.qInitResources()
+assetsData.qInitResources()
 
 
 @pytest.fixture(autouse=True, scope="module")

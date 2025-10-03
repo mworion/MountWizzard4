@@ -28,7 +28,7 @@ from PySide6.QtWidgets import QWidget
 from mainApp import MountWizzard4
 from gui.mainWaddon.astroObjects import AstroObjects
 from base.loggerMW import setupLogging
-from mw4.resource import resources as res
+from mw4.assets import assetsData as res
 
 res.qInitResources()
 setupLogging()

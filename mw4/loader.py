@@ -19,12 +19,13 @@ import locale
 import logging
 import os
 import platform
-import resource.resources as res
 import socket
 import sys
 import traceback
 import warnings
 from pathlib import Path
+
+from assets.assetsData import qInitResources
 
 # external packages
 from astropy.utils import data, iers
@@ -52,7 +53,7 @@ from PySide6.QtWidgets import (
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 warnings.filterwarnings("ignore", category=FITSFixedWarning)
 
-res.qInitResources()
+qInitResources()
 iers.conf.auto_download = False
 data.conf.allow_internet = False
 setupLogging()

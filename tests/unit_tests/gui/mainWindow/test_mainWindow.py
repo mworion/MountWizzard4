@@ -29,7 +29,7 @@ from skyfield.api import wgs84
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from base import packageConfig
-from resource import resources
+from assets import assetsData
 import gui.utilities.toolsQtWidget
 from gui.mainWindow.mainWindow import MainWindow
 

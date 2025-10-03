@@ -142,23 +142,23 @@ def version_doc(c):
 @task
 def update_builtins(c):
     printMW("updating builtins")
-    runMW(c, "cp ./work/data/de440_mw4.bsp ./mw4/resource/data/de440_mw4.bsp")
-    runMW(c, "cp ./work/data/finals2000A.all ./mw4/resource/data/finals2000A.all")
-    runMW(c, "cp ./work/data/finals.data ./mw4/resource/data/finals.data")
-    runMW(c, "cp ./work/data/CDFLeapSeconds.txt ./mw4/resource/data/CDFLeapSeconds.txt")
+    runMW(c, "cp ./work/data/de440_mw4.bsp ./mw4/assets/data/de440_mw4.bsp")
+    runMW(c, "cp ./work/data/finals2000A.all ./mw4/assets/data/finals2000A.all")
+    runMW(c, "cp ./work/data/finals.data ./mw4/assets/data/finals.data")
+    runMW(c, "cp ./work/data/CDFLeapSeconds.txt ./mw4/assets/data/CDFLeapSeconds.txt")
     printMW("updating builtins finished\n")
 
 
 @task
 def build_resource(c):
     printMW("building resources")
-    resourceDir = "./mw4/resource/"
+    resourceDir = "./mw4/assets/"
     with c.cd(resourceDir + "data"):
         with open(resourceDir + "data/content.txt", "w") as f:
             for file in glob.glob(resourceDir + "data/*.*"):
                 t = os.stat(file).st_mtime
                 f.write(f"{os.path.basename(file)} {t}\n")
-    runMW(c, f"pyside6-rcc -o {resourceDir}resources.py {resourceDir}resources.qrc")
+    runMW(c, f"pyside6-rcc -o {resourceDir}assetsData.py {resourceDir}assetData.qrc")
     printMW("building resources finished\n")
 
 

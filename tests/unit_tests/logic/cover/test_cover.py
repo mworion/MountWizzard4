@@ -15,14 +15,14 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
 
-# external packages
+import pytest
+from logic.cover.cover import Cover
 
+# external packages
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.cover.cover import Cover
 
 
 @pytest.fixture(autouse=True, scope="function")

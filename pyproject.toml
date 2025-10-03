@@ -89,7 +89,7 @@ filterwarnings = ["ignore::DeprecationWarning"]
 [tool.ruff]
 line-length = 95
 indent-width = 4
-exclude = ["mw4/gui/widgets/*"]
+exclude = ["mw4/gui/widgets/*", "mw4/assets/*"]
 
 [tool.ruff.lint]
 extend-select = [
@@ -116,3 +116,14 @@ max-complexity = 10
 "mw4/mountcontrol/convert.py" = ["C901"]
 "mw4/mountcontrol/connection.py" = ["E501"]
 "mw4/assets/assetData.py" = ["E501"]
+
+[tool.coverage.run]
+source = ["mw4/"]
+omit = ["mw4/assets/**", "mw4/gui/widgets/**"]
+branch = true
+
+[tool.coverage.paths]
+source = ["mw4/"]
+
+[tool.coverage.report]
+ignore_errors = true

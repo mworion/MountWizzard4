@@ -131,8 +131,6 @@ class ImageManage(QObject):
         if offsetList and actValue:
             offsetList = list(offsetList)
             self.mainW.log.debug(f"Index: [{actValue}], List: [{offsetList}]")
-            if len(offsetList) == 0:
-                offsetList = ["0"]
             if actValue > len(offsetList):
                 actValue = len(offsetList)
             elif actValue < 0:
@@ -148,8 +146,6 @@ class ImageManage(QObject):
         if gainList and actValue:
             gainList = list(gainList)
             self.mainW.log.debug(f"Index: [{actValue}], List: [{gainList}]")
-            if len(gainList) == 0:
-                gainList = ["1"]
             if actValue > len(gainList):
                 actValue = len(gainList)
             elif actValue < 0:

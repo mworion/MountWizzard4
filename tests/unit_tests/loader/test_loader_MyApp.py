@@ -24,7 +24,7 @@ from PySide6.QtGui import QMouseEvent
 from PySide6 import QtWidgets
 
 # local import
-from loader import MyApp
+from mw4.loader import MyApp
 
 
 @pytest.fixture(scope="module", autouse=True)

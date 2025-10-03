@@ -30,9 +30,9 @@ from pathlib import Path
 import pytest
 
 # local import
-import loader
-from loader import except_hook, setupWorkDirs, writeSystemInfo, extractDataFiles
-from loader import getWindowPos, checkIsAdmin, extractFile, minimizeStartTerminal
+import mw4.loader
+from mw4.loader import except_hook, setupWorkDirs, writeSystemInfo, extractDataFiles
+from mw4.loader import getWindowPos, checkIsAdmin, extractFile, minimizeStartTerminal
 
 
 @pytest.fixture(autouse=True, scope="function")
@@ -226,7 +226,7 @@ def test_extractFile_3():
 def test_extractDataFiles_1():
     mwGlob = dict()
     mwGlob["dataDir"] = Path("tests/work/data")
-    with mock.patch.object(loader, "extractFile"):
+    with mock.patch.object(mw4.loader, "extractFile"):
         extractDataFiles(mwGlob=mwGlob)
 
 

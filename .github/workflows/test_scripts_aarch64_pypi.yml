@@ -47,6 +47,7 @@ jobs:
         include:
           - arch: aarch64
             distro: bookworm
+            platform: linux/amd64/v3
 
     steps:
       - uses: actions/checkout@v4
@@ -63,6 +64,7 @@ jobs:
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}
+          platform: ${{ matrix.platform }}
 
           # Not required, but speeds up builds
           githubToken: ${{ github.token }}

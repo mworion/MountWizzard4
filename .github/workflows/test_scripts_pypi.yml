@@ -35,6 +35,7 @@ on:
 jobs:
   
   install_windows:
+    if: always()
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -53,12 +54,14 @@ jobs:
           target: .
       
       - name: MountWizzard4 Install
+        if: always()
         shell: cmd
         run: |
           python startup.pyz --no-start ${{ env.version }}
           dir
       
       - name: Run MountWizzard4
+        if: always()
         shell: cmd
         run: |
           touch test.run
@@ -66,6 +69,7 @@ jobs:
           dir
   
   install_ubuntu:
+    if: always()
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -95,17 +99,22 @@ jobs:
           target: .
           
       - name: MountWizzard4 Install
+        if: always()
         run: |
           python startup.pyz --no-start ${{ env.version }}
           ls -la
+          cat log/*.log
   
       - name: Run MountWizzard4
+        if: always()
         run: |
           touch test.run
           xvfb-run python3 startup.pyz ${{ env.version }}
           ls -la
+          cat log/*.log
           
   install_macOS:
+    if: always()
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -124,15 +133,18 @@ jobs:
           target: .
           
       - name: MountWizzard4 Install
+        if: always()
         run: |
           touch test.run
           python startup.pyz --no-start ${{ env.version }}
           ls -la
+          cat log/*.log
           
       - name: MountWizzard4 Run
-        continue-on-error: True
+        if: always()
         run: |
           touch test.run
           python startup.pyz ${{ env.version }}
           ls -la
+          cat log/*.log
           

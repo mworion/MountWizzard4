@@ -90,6 +90,7 @@ jobs:
         path: dist
         
   install_package_windows:
+    if: always()
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -132,6 +133,7 @@ jobs:
           dir
 
   install_package_ubuntu:
+    if: always()
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -170,20 +172,25 @@ jobs:
           target: dist/
           
       - name: MountWizzard4 Install
+        if: always()
         run: |
           cd dist
           python startup.pyz --no-start ${{ env.version }}
           ls -la
+          cat log/*.log
           
       - name: Run MountWizzard4
+        if: always()
         run: |
           cd dist
           touch test.run
           xvfb-run python3 startup.pyz ${{ env.version }}
           ls -la
+          cat log/*.log
 
 
   install_package_macOS:
+    if: always()
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -210,8 +217,9 @@ jobs:
           target: dist/
           
       - name: MountWizzard4 Install
+        if: always()
         run: |
           cd dist
           python startup.pyz --no-start ${{ env.version }}
           ls -la
-          
+          cat log/*.log

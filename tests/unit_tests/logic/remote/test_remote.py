@@ -17,7 +17,7 @@
 import unittest.mock as mock
 
 import pytest
-from logic.remote.remote import Remote
+from mw4.logic.remote.remote import Remote
 from PySide6 import QtNetwork
 
 # external packages

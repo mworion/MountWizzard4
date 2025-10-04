@@ -18,8 +18,8 @@ import unittest.mock as mock
 
 # external packages
 # local import
-import update
-from base.loggerMW import setupLogging
+import mw4.update
+from mw4.base.loggerMW import setupLogging
 
 setupLogging()
 
@@ -34,5 +34,5 @@ def test_main_2():
         def run():
             return
 
-    update.UpdateGUI = Test
-    update.main()
+    mw4.update.UpdateGUI = Test
+    mw4.update.main()

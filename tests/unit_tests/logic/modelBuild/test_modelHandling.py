@@ -20,8 +20,8 @@ from datetime import datetime
 from pathlib import Path
 from unittest import mock
 
-import logic.modelBuild.modelHandling
-from logic.modelBuild.modelHandling import (
+import mw4.logic.modelBuild.modelHandling
+from mw4.logic.modelBuild.modelHandling import (
     compareFile,
     convertAngleToFloat,
     convertFloatToAngle,
@@ -32,10 +32,10 @@ from logic.modelBuild.modelHandling import (
     loadModelsFromFile,
     writeRetrofitData,
 )
-from mountcontrol import obsSite
+from mw4.mountcontrol import obsSite
 
 # local import
-from mountcontrol.model import Model, ModelStar
+from mw4.mountcontrol.model import Model, ModelStar
 
 # external packages
 from skyfield.api import Angle, Star, load, wgs84
@@ -289,10 +289,10 @@ def test_compareFile_2():
 
 def test_findFittingModel_1():
     with mock.patch.object(
-        logic.modelBuild.modelHandling, "generateMountModelData", return_value={}
+        mw4.logic.modelBuild.modelHandling, "generateMountModelData", return_value={}
     ):
         with mock.patch.object(
-            logic.modelBuild.modelHandling, "compareFile", return_value=([1, 2, 3], [4])
+            mw4.logic.modelBuild.modelHandling, "compareFile", return_value=([1, 2, 3], [4])
         ):
             filePath, pointsOut = findFittingModel({}, Path("tests/testData"))
         assert pointsOut == [4]
@@ -301,10 +301,10 @@ def test_findFittingModel_1():
 
 def test_findFittingModel_2():
     with mock.patch.object(
-        logic.modelBuild.modelHandling, "generateMountModelData", return_value={}
+        mw4.logic.modelBuild.modelHandling, "generateMountModelData", return_value={}
     ):
         with mock.patch.object(
-            logic.modelBuild.modelHandling, "compareFile", return_value=([1], [4])
+            mw4.logic.modelBuild.modelHandling, "compareFile", return_value=([1], [4])
         ):
             filePath, pointsOut = findFittingModel({}, Path("tests/testData"))
         assert pointsOut == [4]

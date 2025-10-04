@@ -18,12 +18,12 @@ import json
 
 import requests
 
-# local imports
-from base.driverDataClass import DriverData, RemoteDeviceShutdown
-from base.tpool import Worker
-
 # external packages
 from PySide6.QtCore import QMutex, QTimer
+
+# local imports
+from mw4.base.driverDataClass import DriverData, RemoteDeviceShutdown
+from mw4.base.tpool import Worker
 
 
 class NINAClass(DriverData):

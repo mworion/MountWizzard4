@@ -18,13 +18,13 @@ import logging
 
 import numpy as np
 
-# local imports
-from base.signalsDevices import Signals
-from logic.measure.measureCSV import MeasureDataCSV
-from logic.measure.measureRaw import MeasureDataRaw
-
 # external packages
 from PySide6.QtCore import QMutex
+
+# local imports
+from mw4.base.signalsDevices import Signals
+from mw4.logic.measure.measureCSV import MeasureDataCSV
+from mw4.logic.measure.measureRaw import MeasureDataRaw
 
 
 class MeasureData:

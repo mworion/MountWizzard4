@@ -17,12 +17,13 @@
 
 # external packages
 import numpy as np
-from gui.extWindows.simulator.materials import Materials
-
-# local import
-from gui.extWindows.simulator.tools import linkModel
 from PySide6.QtGui import QVector3D
 from skyfield import functions
+
+from mw4.gui.extWindows.simulator.materials import Materials
+
+# local import
+from mw4.gui.extWindows.simulator.tools import linkModel
 
 
 class SimulatorLaser:

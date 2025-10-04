@@ -19,7 +19,7 @@ import unittest.mock as mock
 
 # external packages
 # local imports
-from mountcontrol.firmware import Firmware
+from mw4.mountcontrol.firmware import Firmware
 from packaging.version import Version
 
 
@@ -222,7 +222,7 @@ class TestConfigData(unittest.TestCase):
             "Q-TYPE2012",
         ]
 
-        with mock.patch("mountcontrol.firmware.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.firmware.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 5
             suc = fw.poll()
             self.assertTrue(suc)
@@ -241,7 +241,7 @@ class TestConfigData(unittest.TestCase):
             "Q-TYPE2012",
         ]
 
-        with mock.patch("mountcontrol.firmware.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.firmware.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, response, 5
             suc = fw.poll()
             self.assertFalse(suc)

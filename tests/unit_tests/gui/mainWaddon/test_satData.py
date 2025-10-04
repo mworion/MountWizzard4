@@ -18,7 +18,7 @@
 # external packages
 
 # local import
-from gui.mainWaddon.satData import SatData
+from mw4.gui.mainWaddon.satData import SatData
 
 
 def test_class_1():

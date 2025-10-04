@@ -25,17 +25,10 @@ import traceback
 import warnings
 from pathlib import Path
 
-from assets.assetsData import qInitResources
-
 # external packages
 from astropy.utils import data, iers
 from astropy.wcs import FITSFixedWarning
-
-# local import
-from base.loggerMW import setupLogging
-from gui.utilities.splashScreen import SplashScreen
 from importlib_metadata import version
-from mainApp import MountWizzard4
 from PySide6.QtCore import QEvent, QFile, __version__, qVersion
 from PySide6.QtGui import QIcon, QMouseEvent
 from PySide6.QtWidgets import (
@@ -49,6 +42,13 @@ from PySide6.QtWidgets import (
     QTabBar,
     QWidget,
 )
+
+from mw4.assets.assetsData import qInitResources
+
+# local import
+from mw4.base.loggerMW import setupLogging
+from mw4.gui.utilities.splashScreen import SplashScreen
+from mw4.mainApp import MountWizzard4
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 warnings.filterwarnings("ignore", category=FITSFixedWarning)

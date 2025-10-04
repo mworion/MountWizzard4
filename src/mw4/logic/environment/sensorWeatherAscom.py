@@ -18,7 +18,7 @@
 # external packages
 
 # local imports
-from base.ascomClass import AscomClass
+from mw4.base.ascomClass import AscomClass
 
 
 class SensorWeatherAscom(AscomClass):

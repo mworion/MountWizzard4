@@ -19,12 +19,12 @@ import platform
 
 # external packages
 # local imports
-from base.signalsDevices import Signals
-from logic.telescope.telescopeAlpaca import TelescopeAlpaca
-from logic.telescope.telescopeIndi import TelescopeIndi
+from mw4.base.signalsDevices import Signals
+from mw4.logic.telescope.telescopeAlpaca import TelescopeAlpaca
+from mw4.logic.telescope.telescopeIndi import TelescopeIndi
 
 if platform.system() == "Windows":
-    from logic.telescope.telescopeAscom import TelescopeAscom
+    from mw4.logic.telescope.telescopeAscom import TelescopeAscom
 
 
 class Telescope:

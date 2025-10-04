@@ -19,10 +19,11 @@
 # external packages
 from functools import partial
 
-# local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QListView
+
+# local import
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
 class SettRelay(QObject):

@@ -18,10 +18,11 @@
 # external packages
 from functools import partial
 
-# local import
-from mountcontrol.convert import valueToFloat
 from PySide6.QtCore import QObject
 from skyfield.api import Angle
+
+# local import
+from mw4.mountcontrol.convert import valueToFloat
 
 
 class SettParkPos(QObject):

@@ -17,7 +17,7 @@
 import unittest.mock as mock
 
 import pytest
-from logic.environment.sensorWeather import SensorWeather
+from mw4.logic.environment.sensorWeather import SensorWeather
 
 # external packages
 # local import

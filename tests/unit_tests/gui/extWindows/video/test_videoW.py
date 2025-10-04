@@ -17,8 +17,8 @@
 import unittest.mock as mock
 
 import pytest
-from gui.extWindows.video.videoW import VideoWindow
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.video.videoW import VideoWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent

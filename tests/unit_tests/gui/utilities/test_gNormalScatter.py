@@ -22,7 +22,7 @@ import pyqtgraph as pg
 import pytest
 
 # local import
-from gui.utilities.gNormalScatter import NormalScatter
+from mw4.gui.utilities.gNormalScatter import NormalScatter
 
 
 @pytest.fixture(autouse=True, scope="module")

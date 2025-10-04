@@ -18,9 +18,9 @@ import os
 
 # external packages
 # local imports
-from base.sgproClass import SGProClass
-from base.tpool import Worker
-from gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.base.sgproClass import SGProClass
+from mw4.base.tpool import Worker
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class CameraSGPro(SGProClass):

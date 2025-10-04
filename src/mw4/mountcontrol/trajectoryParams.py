@@ -18,7 +18,7 @@ import logging
 
 # external packages
 # local imports
-from mountcontrol.convert import valueToFloat
+from mw4.mountcontrol.convert import valueToFloat
 
 
 class TrajectoryParams:

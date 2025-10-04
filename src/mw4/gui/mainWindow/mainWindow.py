@@ -19,19 +19,19 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-# local import
-from base import packageConfig
-from gui.mainWindow.externalWindows import ExternalWindows
-from gui.mainWindow.mainWindowAddons import MainWindowAddons
-from gui.styles.styles import Styles
-from gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
-from gui.widgets.main_ui import Ui_MainWindow
-from logic.profiles.profile import blendProfile, loadProfile, saveProfile
-from mountcontrol.obsSite import ObsSite
-
 # external packages
 from PySide6.QtCore import Qt
 from skyfield.almanac import TWILIGHTS, dark_twilight_day
+
+# local import
+from mw4.base import packageConfig
+from mw4.gui.mainWindow.externalWindows import ExternalWindows
+from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
+from mw4.gui.styles.styles import Styles
+from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.logic.profiles.profile import blendProfile, loadProfile, saveProfile
+from mw4.mountcontrol.obsSite import ObsSite
 
 
 class MainWindow(MWidget):

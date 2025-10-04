@@ -21,7 +21,7 @@ import subprocess
 import time
 from pathlib import Path
 
-from logic.fits.fitsFunction import (
+from mw4.logic.fits.fitsFunction import (
     getHintFromImageFile,
     getImageHeader,
     getSolutionFromWCSHeader,
@@ -30,7 +30,7 @@ from logic.fits.fitsFunction import (
 
 # external packages
 # local imports
-from mountcontrol import convert
+from mw4.mountcontrol import convert
 
 
 class Astrometry:

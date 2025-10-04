@@ -18,7 +18,7 @@ import pytest
 
 # external packages
 # local import
-from gui.styles.forms import forms
+from mw4.gui.styles.forms import forms
 
 
 @pytest.fixture(autouse=True, scope="module")

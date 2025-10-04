@@ -18,7 +18,7 @@ import pytest
 
 # external packages
 # local import
-from indibase.indiXML import *
+from mw4.indibase.indiXML import *
 
 
 @pytest.fixture(autouse=True, scope="function")

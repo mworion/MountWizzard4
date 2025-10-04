@@ -18,7 +18,7 @@ import unittest
 import unittest.mock as mock
 
 # local imports
-from mountcontrol.dome import Dome
+from mw4.mountcontrol.dome import Dome
 
 # external packages
 from skyfield.api import Angle
@@ -160,7 +160,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome(parent=Parent())
         response = ["0", "0", "0", "1800"]
 
-        with mock.patch("mountcontrol.dome.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, response, 4
             suc = dome.poll()
             self.assertFalse(suc)
@@ -172,7 +172,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome(parent=Parent())
         response = ["0", "0", "0", "1800"]
 
-        with mock.patch("mountcontrol.dome.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 4
             suc = dome.poll()
             self.assertTrue(suc)
@@ -184,7 +184,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.dome.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = dome.openShutter()
             self.assertFalse(suc)
@@ -196,7 +196,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.dome.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.openShutter()
             self.assertTrue(suc)
@@ -208,7 +208,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.dome.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = dome.closeShutter()
             self.assertFalse(suc)
@@ -220,7 +220,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.dome.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.closeShutter()
             self.assertTrue(suc)
@@ -232,7 +232,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.dome.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = dome.openFlap()
             self.assertFalse(suc)
@@ -244,7 +244,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.dome.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.openFlap()
             self.assertTrue(suc)
@@ -256,7 +256,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.dome.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = dome.closeFlap()
             self.assertFalse(suc)
@@ -268,7 +268,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.dome.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.closeFlap()
             self.assertTrue(suc)
@@ -280,7 +280,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.dome.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = dome.slewDome(azimuth=Angle(degrees=100))
             self.assertFalse(suc)
@@ -292,7 +292,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.dome.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = dome.enableInternalDomeControl()
             self.assertFalse(suc)
@@ -304,7 +304,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome(parent=Parent())
 
         response = ["0"]
-        with mock.patch("mountcontrol.dome.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.enableInternalDomeControl()
             self.assertTrue(suc)

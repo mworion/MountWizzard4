@@ -21,7 +21,7 @@ import unittest.mock as mock
 from pathlib import Path
 
 import pytest
-from logic.databaseProcessing.dataWriter import DataWriter
+from mw4.logic.databaseProcessing.dataWriter import DataWriter
 
 # external packages
 from skyfield.api import EarthSatellite

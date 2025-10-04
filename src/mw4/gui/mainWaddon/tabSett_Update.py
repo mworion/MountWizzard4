@@ -24,11 +24,11 @@ import importlib_metadata
 # external packages
 import requests
 from astropy.utils import data, iers
-
-# local import
-from base.loggerMW import setCustomLoggingLevel
 from packaging.utils import Version
 from PySide6.QtCore import QObject
+
+# local import
+from mw4.base.loggerMW import setCustomLoggingLevel
 
 
 class SettUpdate(QObject):

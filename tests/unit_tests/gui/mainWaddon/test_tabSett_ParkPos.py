@@ -17,9 +17,9 @@
 from unittest import mock
 
 import pytest
-from gui.mainWaddon.tabSett_ParkPos import SettParkPos
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWaddon.tabSett_ParkPos import SettParkPos
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from skyfield.api import Angle

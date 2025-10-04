@@ -16,16 +16,16 @@
 # standard libraries
 from unittest import mock
 
-import base.indiClass
 import pytest
-from base.indiClass import IndiClass
-from base.signalsDevices import Signals
-from indibase.indiDevice import Device
 
 # external packages
 # local import
 from PySide6.QtCore import QTimer
 
+import mw4.base.indiClass
+from mw4.base.indiClass import IndiClass
+from mw4.base.signalsDevices import Signals
+from mw4.indibase.indiDevice import Device
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 host_ip = "127.0.0.1"
@@ -381,7 +381,7 @@ def test_addDiscoveredDevice_4(function):
     function.indiClass = IndiClass(parent=Parent())
     function.client.devices["telescope"] = device
     function.discoverType = None
-    function.discoverList = list()
+    function.discoverList = []
     with mock.patch.object(device, "getText", return_value={"DRIVER_INTERFACE": "0"}):
         function.addDiscoveredDevice("telescope", "DRIVER_INFO")
 
@@ -391,12 +391,12 @@ def test_addDiscoveredDevice_5(function):
     function.indiClass = IndiClass(parent=Parent())
     function.client.devices["telescope"] = device
     function.discoverType = 1
-    function.discoverList = list()
+    function.discoverList = []
     with mock.patch.object(device, "getText", return_value={"DRIVER_INTERFACE": 1}):
         function.addDiscoveredDevice("telescope", "DRIVER_INFO")
 
 
 def test_discoverDevices_1(function):
-    with mock.patch.object(base.indiClass, "sleepAndEvents"):
+    with mock.patch.object(mw4.base.indiClass, "sleepAndEvents"):
         val = function.discoverDevices("dome")
         assert val == []

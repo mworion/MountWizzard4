@@ -21,7 +21,7 @@ import pytest
 
 # external packages
 # local import
-from gui.styles.styles import Styles
+from mw4.gui.styles.styles import Styles
 
 
 @pytest.fixture(autouse=True, scope="module")

@@ -20,13 +20,14 @@ import os
 from pathlib import Path
 
 import requests
-from base.signalsDevices import Signals
-
-# local imports
-from base.tpool import Worker
 
 # external packages
 from PySide6.QtCore import Signal
+
+from mw4.base.signalsDevices import Signals
+
+# local imports
+from mw4.base.tpool import Worker
 
 
 class SeeingWeatherSignals(Signals):

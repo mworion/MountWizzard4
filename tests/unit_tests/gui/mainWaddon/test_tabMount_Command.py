@@ -17,10 +17,10 @@
 import unittest.mock as mock
 import webbrowser
 
-import mountcontrol
+import mw4.mountcontrol
 import pytest
-from gui.mainWaddon.tabMount_Command import MountCommand
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWaddon.tabMount_Command import MountCommand
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QWidget
@@ -90,7 +90,7 @@ def test_openMountDocumentation_3(function):
 
 def test_commandRaw_1(function):
     with mock.patch.object(
-        mountcontrol.connection.Connection,
+        mw4.mountcontrol.connection.Connection,
         "communicateRaw",
         return_value=(True, False, ""),
     ):
@@ -99,7 +99,7 @@ def test_commandRaw_1(function):
 
 def test_commandRaw_2(function):
     with mock.patch.object(
-        mountcontrol.connection.Connection,
+        mw4.mountcontrol.connection.Connection,
         "communicateRaw",
         return_value=(True, True, ""),
     ):

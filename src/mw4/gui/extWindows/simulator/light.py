@@ -18,7 +18,7 @@
 # external packages
 
 # local import
-from gui.extWindows.simulator.tools import linkModel
+from mw4.gui.extWindows.simulator.tools import linkModel
 
 
 class SimulatorLight:

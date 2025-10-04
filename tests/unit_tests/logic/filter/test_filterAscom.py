@@ -18,10 +18,10 @@ import platform
 import unittest.mock as mock
 
 import pytest
-from base.ascomClass import AscomClass
-from base.loggerMW import setupLogging
-from base.signalsDevices import Signals
-from logic.filter.filterAscom import FilterAscom
+from mw4.base.ascomClass import AscomClass
+from mw4.base.loggerMW import setupLogging
+from mw4.base.signalsDevices import Signals
+from mw4.logic.filter.filterAscom import FilterAscom
 
 # external packages
 # local import

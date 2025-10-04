@@ -17,11 +17,11 @@
 import unittest.mock as mock
 
 # local import
-import gui.utilities.toolsQtWidget
+import mw4.gui.utilities.toolsQtWidget
 import pytest
-from base import packageConfig
-from gui.mainWindow.externalWindows import ExternalWindows
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.base import packageConfig
+from mw4.gui.mainWindow.externalWindows import ExternalWindows
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtCore import QObject, Signal
@@ -150,7 +150,7 @@ def test_waitCloseExtendedWindows_1(function):
         "showMessageW": {"classObj": Test(), "button": QPushButton()},
         "showImageW": {"classObj": None, "button": QPushButton()},
     }
-    with mock.patch.object(gui.utilities.toolsQtWidget, "sleepAndEvents"):
+    with mock.patch.object(mw4.gui.utilities.toolsQtWidget, "sleepAndEvents"):
         suc = function.waitCloseExtendedWindows()
         assert suc
     function.uiWindows = test
@@ -159,7 +159,7 @@ def test_waitCloseExtendedWindows_1(function):
 def test_waitCloseExtendedWindows_2(function):
     test = function.uiWindows
     function.uiWindows = {"showMessageW": {"classObj": None, "button": QPushButton()}}
-    with mock.patch.object(gui.utilities.toolsQtWidget, "sleepAndEvents"):
+    with mock.patch.object(mw4.gui.utilities.toolsQtWidget, "sleepAndEvents"):
         suc = function.waitCloseExtendedWindows()
         assert suc
     function.uiWindows = test

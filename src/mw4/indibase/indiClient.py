@@ -17,14 +17,14 @@
 import logging
 import xml.etree.ElementTree as ETree
 
-# local import
-from indibase import indiXML
-from indibase.indiDevice import Device
-from indibase.indiSignals import INDISignals
-
 # external packages
 from PySide6.QtCore import QObject
 from PySide6.QtNetwork import QTcpSocket
+
+# local import
+from mw4.indibase import indiXML
+from mw4.indibase.indiDevice import Device
+from mw4.indibase.indiSignals import INDISignals
 
 
 class Client(QObject):

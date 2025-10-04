@@ -16,12 +16,12 @@
 # standard libraries
 from unittest import mock
 
-import logic
+import mw4.logic
 
 # external packages
 import numpy as np
 import pytest
-from logic.satellites.satellite_calculations import (
+from mw4.logic.satellites.satellite_calculations import (
     addMeridianTransit,
     calcAppMag,
     calcPassEvents,
@@ -150,7 +150,7 @@ def test_calcAppMag_1(function):
     phase = Angle(degrees=113)
     tEv = function.mount.obsSite.ts.now()
     with mock.patch.object(
-        logic.satellites.satellite_calculations, "calcSatSunPhase", return_value=phase
+        mw4.logic.satellites.satellite_calculations, "calcSatSunPhase", return_value=phase
     ):
         val = calcAppMag(sat, loc, ephemeris, satRange, tEv)
         assert round(val, 4) == -2.0456
@@ -428,18 +428,18 @@ def test_calcSatPasses_1(function):
     obsSite = function.mount.obsSite
     setting = function.mount.setting
     with mock.patch.object(
-        logic.satellites.satellite_calculations, "calcPassEvents", return_value=(1, 1)
+        mw4.logic.satellites.satellite_calculations, "calcPassEvents", return_value=(1, 1)
     ):
         with mock.patch.object(
-            logic.satellites.satellite_calculations, "collectAllOrbits", return_value=[]
+            mw4.logic.satellites.satellite_calculations, "collectAllOrbits", return_value=[]
         ):
             with mock.patch.object(
-                logic.satellites.satellite_calculations,
+                mw4.logic.satellites.satellite_calculations,
                 "extractCorrectOrbits",
                 return_value=[],
             ):
                 with mock.patch.object(
-                    logic.satellites.satellite_calculations,
+                    mw4.logic.satellites.satellite_calculations,
                     "addMeridianTransit",
                     return_value=[],
                 ):

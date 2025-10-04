@@ -17,15 +17,9 @@
 import logging
 import os
 import platform
-import assets.assetsData as res
 import subprocess
 import sys
 from collections.abc import Callable
-
-from base.loggerMW import setupLogging
-
-# local import
-from gui.styles.styles import Styles
 
 # external packages
 from PySide6.QtCore import Qt
@@ -39,6 +33,12 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
+import mw4.assets.assetsData as res
+from mw4.base.loggerMW import setupLogging
+
+# local import
+from mw4.gui.styles.styles import Styles
 
 res.qInitResources()
 

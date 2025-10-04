@@ -20,10 +20,10 @@ import webbrowser
 from unittest import mock
 
 import pytest
-from base.loggerMW import setupLogging
-from gui.mainWaddon.tabEnviron_Seeing import EnvironSeeing
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.base.loggerMW import setupLogging
+from mw4.gui.mainWaddon.tabEnviron_Seeing import EnvironSeeing
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 # local import

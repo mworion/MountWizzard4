@@ -19,8 +19,8 @@ import os
 from unittest import mock
 
 import pytest
-from gui.mainWaddon.tabComet import Comet, MWidget
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWaddon.tabComet import Comet, MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QTableWidgetItem

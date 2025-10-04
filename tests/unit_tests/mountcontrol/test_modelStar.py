@@ -15,10 +15,10 @@
 ###########################################################
 # standard libraries
 import pytest
-from mountcontrol import obsSite
+from mw4.mountcontrol import obsSite
 
 # local imports
-from mountcontrol.model import ModelStar
+from mw4.mountcontrol.model import ModelStar
 
 # external packages
 from skyfield.api import Angle, Star, wgs84

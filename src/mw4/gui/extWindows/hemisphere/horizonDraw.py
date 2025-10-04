@@ -20,11 +20,11 @@ import cv2
 import numpy as np
 import pyqtgraph as pg
 
-# local import
-from gui.utilities.toolsQtWidget import MWidget
-
 # external packages
 from PySide6.QtCore import QPointF
+
+# local import
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 
 class HorizonDraw(MWidget):

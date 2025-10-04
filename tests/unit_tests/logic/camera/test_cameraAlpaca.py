@@ -20,8 +20,8 @@ import pytest
 
 # external packages
 from astropy.io import fits
-from logic.camera.camera import Camera
-from logic.camera.cameraAlpaca import CameraAlpaca
+from mw4.logic.camera.camera import Camera
+from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

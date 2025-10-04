@@ -17,10 +17,10 @@
 from pathlib import Path
 from unittest import mock
 
-import gui
+import mw4.gui
 import pytest
-from gui.mainWaddon.astroObjects import AstroObjects
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWaddon.astroObjects import AstroObjects
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtCore import QThreadPool
 
 # external packages
@@ -95,14 +95,14 @@ def test_procSourceData_2(function):
 
 def test_runDownloadPopup_1(function):
     function.window.ui.isOnline.setChecked(True)
-    with mock.patch.object(gui.extWindows.downloadPopupW.DownloadPopup, "show"):
+    with mock.patch.object(mw4.gui.extWindows.downloadPopupW.DownloadPopup, "show"):
         with mock.patch.object(function.window.app.threadPool, "start"):
             function.runDownloadPopup("", False)
 
 
 def test_runDownloadPopup_2(function):
     function.window.ui.isOnline.setChecked(False)
-    with mock.patch.object(gui.extWindows.downloadPopupW.DownloadPopup, "show"):
+    with mock.patch.object(mw4.gui.extWindows.downloadPopupW.DownloadPopup, "show"):
         with mock.patch.object(function.window.app.threadPool, "start"):
             function.runDownloadPopup("", False)
 
@@ -159,7 +159,7 @@ def test_finishProgObjects_2(function):
 
 
 def test_runUploadPopup_1(function):
-    with mock.patch.object(gui.extWindows.uploadPopupW.UploadPopup, "show"):
+    with mock.patch.object(mw4.gui.extWindows.uploadPopupW.UploadPopup, "show"):
         with mock.patch.object(function.window.app.threadPool, "start"):
             function.runUploadPopup("")
 

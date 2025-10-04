@@ -17,8 +17,8 @@
 import unittest.mock as mock
 
 import pytest
-from gui.mainWaddon.tabMount import Mount
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWaddon.tabMount import Mount
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QWidget

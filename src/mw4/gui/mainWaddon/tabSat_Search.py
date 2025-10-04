@@ -17,23 +17,24 @@
 
 # external packages
 import numpy as np
-from base.tpool import Worker
+from PySide6.QtCore import QObject, QPoint, QRect, Qt, Signal
+from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
+
+from mw4.base.tpool import Worker
 
 # local import
-from gui.mainWaddon.astroObjects import AstroObjects
-from gui.mainWaddon.satData import SatData
-from gui.utilities.qCustomTableWidgetItem import QCustomTableWidgetItem
-from gui.utilities.toolsQtWidget import changeStyleDynamic
-from logic.databaseProcessing.sourceURL import satSourceURLs
-from logic.satellites.satellite_calculations import (
+from mw4.gui.mainWaddon.astroObjects import AstroObjects
+from mw4.gui.mainWaddon.satData import SatData
+from mw4.gui.utilities.qCustomTableWidgetItem import QCustomTableWidgetItem
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
+from mw4.logic.databaseProcessing.sourceURL import satSourceURLs
+from mw4.logic.satellites.satellite_calculations import (
     calcAppMag,
     checkTwilight,
     findRangeRate,
     findSatUp,
     findSunlit,
 )
-from PySide6.QtCore import QObject, QPoint, QRect, Qt, Signal
-from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 
 class SatSearch(QObject, SatData):

@@ -16,13 +16,13 @@
 # standard libraries
 from unittest import mock
 
-import gui.mainWaddon.tabSett_Misc
+import mw4.gui.mainWaddon.tabSett_Misc
 import hid
 import pytest
-from base.loggerMW import setupLogging
-from gui.mainWaddon.tabSett_Misc import SettMisc
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.base.loggerMW import setupLogging
+from mw4.gui.mainWaddon.tabSett_Misc import SettMisc
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtMultimedia import QSoundEffect
@@ -273,7 +273,7 @@ def test_workerGameController_3(function):
     function.ui.gameControllerList.setCurrentIndex(0)
     function.gameControllerList["test"] = {"vendorId": 1, "productId": 1}
     with mock.patch.object(hid, "device", return_value=Gamepad()):
-        with mock.patch.object(gui.mainWaddon.tabSett_Misc, "sleepAndEvents"):
+        with mock.patch.object(mw4.gui.mainWaddon.tabSett_Misc, "sleepAndEvents"):
             suc = function.workerGameController()
             assert suc
     function.readGameController = temp
@@ -305,7 +305,7 @@ def test_workerGameController_4(function):
     function.ui.gameControllerList.setCurrentIndex(0)
     function.gameControllerList["test"] = {"vendorId": 1, "productId": 1}
     with mock.patch.object(hid, "device", return_value=Gamepad()):
-        with mock.patch.object(gui.mainWaddon.tabSett_Misc, "sleepAndEvents"):
+        with mock.patch.object(mw4.gui.mainWaddon.tabSett_Misc, "sleepAndEvents"):
             with mock.patch.object(function, "sendGameControllerSignals"):
                 suc = function.workerGameController()
                 assert suc

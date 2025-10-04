@@ -17,15 +17,15 @@
 import unittest
 import unittest.mock as mock
 
-import mountcontrol
+import mw4.mountcontrol
 import numpy
 
 # external packages
 import skyfield.api
-from mountcontrol import obsSite
+from mw4.mountcontrol import obsSite
 
 # local imports
-from mountcontrol.model import Model, ModelStar, ProgStar
+from mw4.mountcontrol.model import Model, ModelStar, ProgStar
 from skyfield.api import Angle, Star, wgs84
 
 obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
@@ -705,7 +705,7 @@ class TestConfigData(unittest.TestCase):
 
         model = Model(parent=Parent())
         with mock.patch.object(
-            mountcontrol.model.Connection,
+            mw4.mountcontrol.model.Connection,
             "communicate",
             return_value=(False, ["100"], 1),
         ):
@@ -718,7 +718,7 @@ class TestConfigData(unittest.TestCase):
 
         model = Model(parent=Parent())
         with mock.patch.object(
-            mountcontrol.model.Connection,
+            mw4.mountcontrol.model.Connection,
             "communicate",
             return_value=(True, ["100"], 1),
         ):
@@ -732,7 +732,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
         model.numberNames = 1
         with mock.patch.object(
-            mountcontrol.model.Connection,
+            mw4.mountcontrol.model.Connection,
             "communicate",
             return_value=(False, ["100"], 1),
         ):
@@ -746,7 +746,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
         model.numberNames = 1
         with mock.patch.object(
-            mountcontrol.model.Connection,
+            mw4.mountcontrol.model.Connection,
             "communicate",
             return_value=(True, ["100"], 1),
         ):
@@ -901,7 +901,7 @@ class TestConfigData(unittest.TestCase):
 
         model = Model(parent=Parent())
         with mock.patch.object(
-            mountcontrol.model.Connection,
+            mw4.mountcontrol.model.Connection,
             "communicate",
             return_value=(False, ["100"], 1),
         ):
@@ -915,7 +915,7 @@ class TestConfigData(unittest.TestCase):
 
         model = Model(parent=Parent())
         with mock.patch.object(
-            mountcontrol.model.Connection,
+            mw4.mountcontrol.model.Connection,
             "communicate",
             return_value=(True, ["100"], 1),
         ):
@@ -929,7 +929,7 @@ class TestConfigData(unittest.TestCase):
 
         model = Model(parent=Parent())
         with mock.patch.object(
-            mountcontrol.model.Connection,
+            mw4.mountcontrol.model.Connection,
             "communicate",
             return_value=(True, ["100"], 1),
         ):
@@ -953,7 +953,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
         model.numberStars = 1
         with mock.patch.object(
-            mountcontrol.model.Connection,
+            mw4.mountcontrol.model.Connection,
             "communicate",
             return_value=(False, ["100"], 1),
         ):
@@ -968,7 +968,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
         model.numberStars = 1
         with mock.patch.object(
-            mountcontrol.model.Connection,
+            mw4.mountcontrol.model.Connection,
             "communicate",
             return_value=(True, ["21:52:58.95,+08*56:10.1,   5.7,201"], 1),
         ):
@@ -1016,7 +1016,7 @@ class TestConfigData(unittest.TestCase):
 
         model = Model(parent=Parent())
         with mock.patch.object(
-            mountcontrol.model.Connection,
+            mw4.mountcontrol.model.Connection,
             "communicate",
             return_value=(True, ["5", "6"], 2),
         ):
@@ -1031,7 +1031,7 @@ class TestConfigData(unittest.TestCase):
 
         model = Model(parent=Parent())
         with mock.patch.object(
-            mountcontrol.model.Connection,
+            mw4.mountcontrol.model.Connection,
             "communicate",
             return_value=(False, ["5", "6"], 2),
         ):
@@ -1044,7 +1044,7 @@ class TestConfigData(unittest.TestCase):
 
         model = Model(parent=Parent())
         with mock.patch.object(
-            mountcontrol.model.Connection,
+            mw4.mountcontrol.model.Connection,
             "communicate",
             return_value=(True, ["5", "6"], 3),
         ):
@@ -1057,7 +1057,7 @@ class TestConfigData(unittest.TestCase):
 
         model = Model(parent=Parent())
         with mock.patch.object(
-            mountcontrol.model.Connection,
+            mw4.mountcontrol.model.Connection,
             "communicate",
             return_value=(True, ["5", "6", "7"], 3),
         ):
@@ -1077,7 +1077,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
 
         response = [""]
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = model.clearModel()
             self.assertTrue(suc)
@@ -1089,7 +1089,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
 
         response = [""]
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = model.clearModel()
             self.assertFalse(suc)
@@ -1107,7 +1107,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
         model.numberStars = 5
         response = ["1"]
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = model.deletePoint(1)
             self.assertTrue(suc)
@@ -1119,7 +1119,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
         model.numberStars = 5
         response = ["1#"]
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = model.deletePoint(1)
             self.assertFalse(suc)
@@ -1131,7 +1131,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
         model.numberStars = 5
         response = ["1"]
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = model.deletePoint(10)
             self.assertFalse(suc)
@@ -1149,7 +1149,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
 
         response = ["1", "1"]
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = model.storeName("test")
             self.assertTrue(suc)
@@ -1161,7 +1161,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
 
         response = ["0", "1"]
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = model.storeName("Test")
             self.assertTrue(suc)
@@ -1179,7 +1179,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = model.loadName("test")
             self.assertTrue(suc)
@@ -1191,7 +1191,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = model.loadName("test")
             self.assertFalse(suc)
@@ -1209,7 +1209,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = model.deleteName("test")
             self.assertTrue(suc)
@@ -1221,7 +1221,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
 
         response = ["1"]
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = model.deleteName("test")
             self.assertFalse(suc)
@@ -1245,7 +1245,7 @@ class TestConfigData(unittest.TestCase):
             "e",
         )
         build = [aPoint]
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, ["1"], 1
             suc = model.programModelFromStarList(build)
             self.assertTrue(suc)
@@ -1257,7 +1257,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
 
         build = self.gatherData(1)
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, ["1"], 1
             suc = model.programModelFromStarList(build)
             self.assertTrue(suc)
@@ -1269,7 +1269,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
 
         build = self.gatherData(3)
-        with mock.patch("mountcontrol.model.Connection") as mConn:
+        with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, ["E"], 1
             suc = model.programModelFromStarList(build)
             self.assertTrue(suc)

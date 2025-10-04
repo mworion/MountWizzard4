@@ -21,7 +21,7 @@ import numpy as np
 import pytest
 
 # local import
-from gui.utilities.gPolarScatter import PolarScatter
+from mw4.gui.utilities.gPolarScatter import PolarScatter
 
 
 @pytest.fixture(autouse=True, scope="module")

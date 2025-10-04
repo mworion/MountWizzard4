@@ -17,7 +17,7 @@
 import unittest.mock as mock
 
 import pytest
-from logic.telescope.telescope import Telescope
+from mw4.logic.telescope.telescope import Telescope
 
 # external packages
 # local import

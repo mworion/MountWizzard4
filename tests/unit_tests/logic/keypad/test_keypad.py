@@ -19,7 +19,7 @@ from unittest import mock
 import pytest
 
 # local import
-from logic.keypad.keypad import KeyPad
+from mw4.logic.keypad.keypad import KeyPad
 
 # external packages
 from PySide6.QtCore import QObject, Signal

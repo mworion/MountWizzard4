@@ -17,7 +17,7 @@
 from unittest import mock
 
 import pytest
-from logic.focuser.focuser import Focuser
+from mw4.logic.focuser.focuser import Focuser
 
 # external packages
 # local import

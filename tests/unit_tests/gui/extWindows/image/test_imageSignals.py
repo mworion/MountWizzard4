@@ -18,7 +18,7 @@ import pytest
 
 # external packages
 # local import
-from gui.extWindows.image.imageSignals import ImageWindowSignals
+from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
 
 
 @pytest.fixture(autouse=True, scope="module")

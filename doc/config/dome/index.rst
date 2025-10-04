@@ -49,7 +49,7 @@ the dome center.
 
 If you have mor than one telescope mounted, you will experience a lateral
 displacement of the OTA you would like to use for reference. The measurement is
-taken from base plate of the mount to the OTA axis. Displacement to the right
+taken from mw4.base plate of the mount to the OTA axis. Displacement to the right
 (east) is treated positive.
 
 .. image:: image/lat.png

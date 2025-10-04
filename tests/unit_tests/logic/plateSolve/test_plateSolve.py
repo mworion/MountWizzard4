@@ -20,7 +20,7 @@ import shutil
 from unittest import mock
 
 import pytest
-from logic.plateSolve.plateSolve import PlateSolve
+from mw4.logic.plateSolve.plateSolve import PlateSolve
 
 # external packages
 # local import
@@ -43,7 +43,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         function.solveLoopRunning = False
 
-    monkeypatch.setattr("logic.plateSolve.plateSolve.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.logic.plateSolve.plateSolve.sleepAndEvents", test)
 
 
 @pytest.fixture
@@ -51,7 +51,7 @@ def mocked_processSolveQueue(monkeypatch, function):
     def test(a, b, c):
         function.solveLoopRunning = False
 
-    monkeypatch.setattr("logic.plateSolve.plateSolve.PlateSolve.processSolveQueue", test)
+    monkeypatch.setattr("mw4.logic.plateSolve.plateSolve.PlateSolve.processSolveQueue", test)
 
 
 def test_properties_1(function):

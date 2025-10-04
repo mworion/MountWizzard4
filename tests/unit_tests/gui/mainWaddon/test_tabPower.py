@@ -17,8 +17,8 @@
 from unittest import mock
 
 import pytest
-from gui.mainWaddon.tabPower import Power
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWaddon.tabPower import Power
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QInputDialog, QWidget
 
 # local import

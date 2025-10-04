@@ -17,8 +17,8 @@
 import unittest.mock as mock
 
 import pytest
-from base.signalsDevices import Signals
-from logic.focuser.focuserAlpaca import FocuserAlpaca
+from mw4.base.signalsDevices import Signals
+from mw4.logic.focuser.focuserAlpaca import FocuserAlpaca
 
 # external packages
 # local import

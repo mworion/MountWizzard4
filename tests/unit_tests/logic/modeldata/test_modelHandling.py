@@ -17,9 +17,9 @@
 import pytest
 
 # local import
-from logic.modelBuild.modelHandling import writeRetrofitData
-from mountcontrol.model import Model
-from mountcontrol.modelStar import ModelStar
+from mw4.logic.modelBuild.modelHandling import writeRetrofitData
+from mw4.mountcontrol.model import Model
+from mw4.mountcontrol.modelStar import ModelStar
 
 # external packages
 from skyfield.api import Angle, Star

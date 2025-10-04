@@ -19,8 +19,8 @@ import unittest.mock as mock
 
 import pyqtgraph as pg
 import pytest
-from gui.extWindows.satelliteW import SatelliteWindow
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.satelliteW import SatelliteWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent

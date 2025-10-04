@@ -18,8 +18,8 @@
 # external packages
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
-from gui.widgets.bigPopup_ui import Ui_BigPopup
+from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
+from mw4.gui.widgets.bigPopup_ui import Ui_BigPopup
 
 
 class BigPopup(MWidget):

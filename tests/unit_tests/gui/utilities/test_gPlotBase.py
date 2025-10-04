@@ -22,7 +22,7 @@ import pyqtgraph as pg
 import pytest
 
 # local import
-from gui.utilities.gPlotBase import PlotBase
+from mw4.gui.utilities.gPlotBase import PlotBase
 from PySide6.QtWidgets import QApplication
 
 

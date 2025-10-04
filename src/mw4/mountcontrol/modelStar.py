@@ -18,17 +18,17 @@ import logging
 
 import numpy
 
+# external packages
+from skyfield.api import Angle, Star
+
 # local imports
-from mountcontrol.convert import (
+from mw4.mountcontrol.convert import (
     stringToDegree,
     topoToAltAz,
     valueToAngle,
     valueToFloat,
     valueToInt,
 )
-
-# external packages
-from skyfield.api import Angle, Star
 
 
 class ModelStar:

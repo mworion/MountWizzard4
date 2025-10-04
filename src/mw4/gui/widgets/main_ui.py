@@ -23,9 +23,9 @@ from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QAbstract
     QSizePolicy, QSpacerItem, QTabWidget, QTableWidget,
     QTableWidgetItem, QTextBrowser, QVBoxLayout, QWidget)
 
-from gui.utilities.gNormalScatter import NormalScatter
-from gui.utilities.gPlotBase import PlotBase
-from gui.utilities.gPolarScatter import PolarScatter
+from mw4.gui.utilities.gNormalScatter import NormalScatter
+from mw4.gui.utilities.gPlotBase import PlotBase
+from mw4.gui.utilities.gPolarScatter import PolarScatter
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):

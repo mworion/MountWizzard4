@@ -21,13 +21,13 @@ import PySide6
 # external packages
 import pytest
 import requests
-from base.loggerMW import setupLogging
-
-# local import
-from base.ninaClass import NINAClass
-from base.signalsDevices import Signals
 from PySide6.QtCore import QTimer
 
+from mw4.base.loggerMW import setupLogging
+
+# local import
+from mw4.base.ninaClass import NINAClass
+from mw4.base.signalsDevices import Signals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

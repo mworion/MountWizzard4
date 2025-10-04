@@ -16,10 +16,10 @@
 # standard libraries
 import unittest.mock as mock
 
-import gui.mainWaddon.tabMount
+import mw4.gui.mainWaddon.tabMount
 import pytest
-from gui.mainWaddon.tabMount_Move import MountMove
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWaddon.tabMount_Move import MountMove
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QInputDialog, QWidget
@@ -65,7 +65,7 @@ def test_stopMoveAll(function):
 
 
 def test_countDuration_1(function):
-    with mock.patch.object(gui.mainWaddon.tabMount_Move, "sleepAndEvents"):
+    with mock.patch.object(mw4.gui.mainWaddon.tabMount_Move, "sleepAndEvents"):
         function.countDuration(10)
 
 

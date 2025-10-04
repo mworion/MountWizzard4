@@ -24,8 +24,8 @@ import pytest
 
 # external packages
 # local import
-from base import loggerMW
-from base.loggerMW import LoggerWriter, setupLogging
+from mw4.base import loggerMW
+from mw4.base.loggerMW import LoggerWriter, setupLogging
 
 
 @pytest.fixture

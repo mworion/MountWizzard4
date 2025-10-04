@@ -25,7 +25,7 @@ import pytest
 from astropy.io import fits
 
 # local import
-from logic.file.fileHandler import FileHandler, FileHandlerSignals
+from mw4.logic.file.fileHandler import FileHandler, FileHandlerSignals
 from xisf import XISF
 
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

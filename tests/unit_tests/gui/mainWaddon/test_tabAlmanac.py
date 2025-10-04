@@ -19,9 +19,9 @@ from unittest import mock
 
 import numpy as np
 import pytest
-from gui.mainWaddon.tabAlmanac import Almanac
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWaddon.tabAlmanac import Almanac
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtGui import QPixmap

@@ -18,8 +18,8 @@
 # external packages
 
 # local import
-from base.driverDataClass import DriverData
-from base.loggerMW import setupLogging
+from mw4.base.driverDataClass import DriverData
+from mw4.base.loggerMW import setupLogging
 
 setupLogging()
 

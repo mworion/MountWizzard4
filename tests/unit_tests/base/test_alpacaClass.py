@@ -17,15 +17,15 @@
 from unittest import mock
 
 # local import
-import base.alpacaClass
+import mw4.base.alpacaClass
 
 # external packages
 import PySide6
 import pytest
 import requests
-from base.alpacaClass import AlpacaClass
-from base.loggerMW import setupLogging
-from base.signalsDevices import Signals
+from mw4.base.alpacaClass import AlpacaClass
+from mw4.base.loggerMW import setupLogging
+from mw4.base.signalsDevices import Signals
 from PySide6.QtCore import QTimer
 
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -366,7 +366,7 @@ def test_getAndStoreAlpacaProperty(function):
 def test_workerConnectDevice_1(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(base.alpacaClass, "sleepAndEvents"):
+    with mock.patch.object(mw4.base.alpacaClass, "sleepAndEvents"):
         with mock.patch.object(function, "setAlpacaProperty"):
             with mock.patch.object(function, "getAlpacaProperty", return_value=False):
                 function.workerConnectDevice()
@@ -377,7 +377,7 @@ def test_workerConnectDevice_1(function):
 def test_workerConnectDevice_2(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(base.alpacaClass, "sleepAndEvents"):
+    with mock.patch.object(mw4.base.alpacaClass, "sleepAndEvents"):
         with mock.patch.object(function, "setAlpacaProperty"):
             with mock.patch.object(function, "getAlpacaProperty", return_value=True):
                 function.workerConnectDevice()

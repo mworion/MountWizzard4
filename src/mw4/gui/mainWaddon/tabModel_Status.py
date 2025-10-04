@@ -17,8 +17,9 @@
 
 # external packages
 # local import
-from gui.utilities.toolsQtWidget import guiSetText
 from PySide6.QtCore import QObject
+
+from mw4.gui.utilities.toolsQtWidget import guiSetText
 
 
 class ModelStatus(QObject):

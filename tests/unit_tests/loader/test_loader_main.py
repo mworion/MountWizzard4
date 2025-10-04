@@ -21,7 +21,7 @@ import unittest.mock as mock
 from pathlib import Path
 
 # local import
-import loader
+import mw4.loader
 
 # external packages
 import PySide6
@@ -65,13 +65,13 @@ def test_main_1():
     }
     with mock.patch.object(PySide6.QtCore.QBasicTimer, "start"):
         with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-            with mock.patch.object(loader, "QIcon"):
-                with mock.patch.object(loader, "MyApp", return_value=App()):
-                    with mock.patch.object(loader, "SplashScreen", return_value=Splash()):
-                        with mock.patch.object(loader, "MountWizzard4"):
+            with mock.patch.object(mw4.loader, "QIcon"):
+                with mock.patch.object(mw4.loader, "MyApp", return_value=App()):
+                    with mock.patch.object(mw4.loader, "SplashScreen", return_value=Splash()):
+                        with mock.patch.object(mw4.loader, "MountWizzard4"):
                             with mock.patch.object(
-                                loader, "setupWorkDirs", return_value=mwGlob
+                                mw4.loader, "setupWorkDirs", return_value=mwGlob
                             ):
                                 with mock.patch.object(sys, "exit"):
                                     with mock.patch.object(sys, "excepthook"):
-                                        loader.main()
+                                        mw4.loader.main()

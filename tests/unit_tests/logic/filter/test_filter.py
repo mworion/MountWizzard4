@@ -17,7 +17,7 @@
 import unittest.mock as mock
 
 import pytest
-from logic.filter.filter import Filter
+from mw4.logic.filter.filter import Filter
 
 # external packages
 # local import

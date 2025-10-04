@@ -19,12 +19,12 @@ import platform
 
 # external packages
 # local imports
-from base.signalsDevices import Signals
-from logic.cover.coverAlpaca import CoverAlpaca
-from logic.cover.coverIndi import CoverIndi
+from mw4.base.signalsDevices import Signals
+from mw4.logic.cover.coverAlpaca import CoverAlpaca
+from mw4.logic.cover.coverIndi import CoverIndi
 
 if platform.system() == "Windows":
-    from logic.cover.coverAscom import CoverAscom
+    from mw4.logic.cover.coverAscom import CoverAscom
 
 
 class Cover:

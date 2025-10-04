@@ -18,7 +18,7 @@
 # external packages
 
 # local import
-from logic.databaseProcessing.sourceURL import (
+from mw4.logic.databaseProcessing.sourceURL import (
     asteroidSourceURLs,
     cometSourceURLs,
     satSourceURLs,

@@ -20,8 +20,8 @@ import unittest.mock as mock
 
 import pyqtgraph as pg
 import pytest
-from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtCore import QPointF

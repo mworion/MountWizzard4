@@ -23,9 +23,9 @@ import cv2
 import numpy as np
 import pyqtgraph as pg
 import pytest
-from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
-from gui.extWindows.hemisphere.horizonDraw import HorizonDraw
-from gui.utilities.gCustomViewBox import CustomViewBox
+from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
+from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
+from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 
 # external packages
 from PySide6.QtCore import QPointF

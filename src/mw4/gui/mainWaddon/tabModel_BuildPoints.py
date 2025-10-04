@@ -17,17 +17,17 @@
 
 # external packages
 from astroquery.simbad import Simbad
+from PySide6.QtCore import QMutex, QObject
 
 # local import
-from base.tpool import Worker
-from gui.utilities.toolsQtWidget import changeStyleDynamic
-from mountcontrol.convert import (
+from mw4.base.tpool import Worker
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
+from mw4.mountcontrol.convert import (
     convertDecToAngle,
     convertRaToAngle,
     formatDstrToText,
     formatHstrToText,
 )
-from PySide6.QtCore import QMutex, QObject
 
 
 class BuildPoints(QObject):

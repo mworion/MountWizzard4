@@ -16,21 +16,22 @@
 # standard libraries
 from functools import partial
 
-from gui.extWindows.analyseW import AnalyseWindow
-from gui.extWindows.bigPopupW import BigPopup
-from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
-from gui.extWindows.image.imageW import ImageWindow
-from gui.extWindows.keypadW import KeypadWindow
-from gui.extWindows.measureW import MeasureWindow
-from gui.extWindows.messageW import MessageWindow
-from gui.extWindows.satelliteW import SatelliteWindow
-from gui.extWindows.simulator.simulatorW import SimulatorWindow
-from gui.extWindows.video.videoW import VideoWindow
+from PySide6.QtCore import QObject
+
+from mw4.gui.extWindows.analyseW import AnalyseWindow
+from mw4.gui.extWindows.bigPopupW import BigPopup
+from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
+from mw4.gui.extWindows.image.imageW import ImageWindow
+from mw4.gui.extWindows.keypadW import KeypadWindow
+from mw4.gui.extWindows.measureW import MeasureWindow
+from mw4.gui.extWindows.messageW import MessageWindow
+from mw4.gui.extWindows.satelliteW import SatelliteWindow
+from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
+from mw4.gui.extWindows.video.videoW import VideoWindow
 
 # external packages
 # local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic, sleepAndEvents
-from PySide6.QtCore import QObject
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, sleepAndEvents
 
 
 class ExternalWindows(QObject):

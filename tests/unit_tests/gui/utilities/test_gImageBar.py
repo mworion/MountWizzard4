@@ -20,7 +20,7 @@ import numpy as np
 import pytest
 
 # local import
-from gui.utilities.gImageBar import ImageBar
+from mw4.gui.utilities.gImageBar import ImageBar
 
 # external packages
 from PySide6.QtWidgets import QWidget

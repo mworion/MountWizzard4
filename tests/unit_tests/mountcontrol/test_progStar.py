@@ -17,7 +17,7 @@
 import unittest
 
 # local imports
-from mountcontrol.progStar import ProgStar
+from mw4.mountcontrol.progStar import ProgStar
 
 # external packages
 from skyfield.api import Angle, Star

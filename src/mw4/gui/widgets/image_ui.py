@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBo
     QLabel, QLineEdit, QPushButton, QSizePolicy,
     QSpacerItem, QTabWidget, QVBoxLayout, QWidget)
 
-from gui.utilities.gImageBar import ImageBar
+from mw4.gui.utilities.gImageBar import ImageBar
 
 class Ui_ImageDialog(object):
     def setupUi(self, ImageDialog):

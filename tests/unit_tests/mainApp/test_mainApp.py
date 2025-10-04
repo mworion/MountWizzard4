@@ -19,12 +19,12 @@ import unittest.mock as mock
 from pathlib import Path
 
 import pytest
-from assets import assetsData as res
-from base.loggerMW import setupLogging
-from gui.mainWaddon.astroObjects import AstroObjects
+from mw4.assets import assetsData as res
+from mw4.base.loggerMW import setupLogging
+from mw4.gui.mainWaddon.astroObjects import AstroObjects
 
 # local import
-from mainApp import MountWizzard4
+from mw4.mainApp import MountWizzard4
 
 # external packages
 from PySide6.QtCore import QBasicTimer, QCoreApplication, QTimer

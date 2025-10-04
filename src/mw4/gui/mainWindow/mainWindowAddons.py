@@ -18,33 +18,33 @@
 # external packages
 
 # local import
-from gui.mainWaddon.tabAlmanac import Almanac
-from gui.mainWaddon.tabAsteroid import Asteroid
-from gui.mainWaddon.tabComet import Comet
-from gui.mainWaddon.tabEnviron_Seeing import EnvironSeeing
-from gui.mainWaddon.tabEnviron_Weather import EnvironWeather
-from gui.mainWaddon.tabImage_Manage import ImageManage
-from gui.mainWaddon.tabImage_Stats import ImageStats
-from gui.mainWaddon.tabModel import Model
-from gui.mainWaddon.tabModel_BuildPoints import BuildPoints
-from gui.mainWaddon.tabModel_Manage import ModelManage
-from gui.mainWaddon.tabModel_Status import ModelStatus
-from gui.mainWaddon.tabMount import Mount
-from gui.mainWaddon.tabMount_Command import MountCommand
-from gui.mainWaddon.tabMount_Move import MountMove
-from gui.mainWaddon.tabMount_Sett import MountSett
-from gui.mainWaddon.tabPower import Power
-from gui.mainWaddon.tabSat_Search import SatSearch
-from gui.mainWaddon.tabSat_Track import SatTrack
-from gui.mainWaddon.tabSett_Device import SettDevice
-from gui.mainWaddon.tabSett_Dome import SettDome
-from gui.mainWaddon.tabSett_Misc import SettMisc
-from gui.mainWaddon.tabSett_Mount import SettMount
-from gui.mainWaddon.tabSett_ParkPos import SettParkPos
-from gui.mainWaddon.tabSett_Relay import SettRelay
-from gui.mainWaddon.tabSett_Update import SettUpdate
-from gui.mainWaddon.tabTools_IERSTime import IERSTime
-from gui.mainWaddon.tabTools_Rename import Rename
+from mw4.gui.mainWaddon.tabAlmanac import Almanac
+from mw4.gui.mainWaddon.tabAsteroid import Asteroid
+from mw4.gui.mainWaddon.tabComet import Comet
+from mw4.gui.mainWaddon.tabEnviron_Seeing import EnvironSeeing
+from mw4.gui.mainWaddon.tabEnviron_Weather import EnvironWeather
+from mw4.gui.mainWaddon.tabImage_Manage import ImageManage
+from mw4.gui.mainWaddon.tabImage_Stats import ImageStats
+from mw4.gui.mainWaddon.tabModel import Model
+from mw4.gui.mainWaddon.tabModel_BuildPoints import BuildPoints
+from mw4.gui.mainWaddon.tabModel_Manage import ModelManage
+from mw4.gui.mainWaddon.tabModel_Status import ModelStatus
+from mw4.gui.mainWaddon.tabMount import Mount
+from mw4.gui.mainWaddon.tabMount_Command import MountCommand
+from mw4.gui.mainWaddon.tabMount_Move import MountMove
+from mw4.gui.mainWaddon.tabMount_Sett import MountSett
+from mw4.gui.mainWaddon.tabPower import Power
+from mw4.gui.mainWaddon.tabSat_Search import SatSearch
+from mw4.gui.mainWaddon.tabSat_Track import SatTrack
+from mw4.gui.mainWaddon.tabSett_Device import SettDevice
+from mw4.gui.mainWaddon.tabSett_Dome import SettDome
+from mw4.gui.mainWaddon.tabSett_Misc import SettMisc
+from mw4.gui.mainWaddon.tabSett_Mount import SettMount
+from mw4.gui.mainWaddon.tabSett_ParkPos import SettParkPos
+from mw4.gui.mainWaddon.tabSett_Relay import SettRelay
+from mw4.gui.mainWaddon.tabSett_Update import SettUpdate
+from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
+from mw4.gui.mainWaddon.tabTools_Rename import Rename
 
 
 class MainWindowAddons:

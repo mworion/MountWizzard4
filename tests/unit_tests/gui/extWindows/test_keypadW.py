@@ -18,8 +18,8 @@ import unittest.mock as mock
 
 import numpy as np
 import pytest
-from gui.extWindows.keypadW import KeypadWindow
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.keypadW import KeypadWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent

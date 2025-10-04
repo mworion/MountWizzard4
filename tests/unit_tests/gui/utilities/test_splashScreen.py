@@ -21,7 +21,7 @@ import unittest.mock as mock
 import pytest
 
 # local import
-from gui.utilities.splashScreen import SplashScreen
+from mw4.gui.utilities.splashScreen import SplashScreen
 from PySide6.QtGui import QPainter, QPixmap
 from PySide6.QtWidgets import QWidget
 

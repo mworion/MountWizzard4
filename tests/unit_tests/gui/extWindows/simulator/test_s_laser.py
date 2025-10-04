@@ -18,7 +18,7 @@ from unittest import mock
 
 import numpy as np
 import pytest
-from gui.extWindows.simulator.simulatorW import SimulatorWindow
+from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 # external packages
 from PySide6.Qt3DCore import Qt3DCore

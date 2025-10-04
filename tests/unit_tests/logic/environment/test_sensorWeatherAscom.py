@@ -17,8 +17,8 @@
 import platform
 
 import pytest
-from base.signalsDevices import Signals
-from logic.environment.sensorWeatherAscom import SensorWeatherAscom
+from mw4.base.signalsDevices import Signals
+from mw4.logic.environment.sensorWeatherAscom import SensorWeatherAscom
 
 # external packages
 # local import

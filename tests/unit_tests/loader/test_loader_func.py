@@ -26,11 +26,11 @@ import unittest.mock as mock
 from pathlib import Path
 
 # local import
-import loader
+import mw4.loader
 
 # external packages
 import pytest
-from loader import (
+from mw4.loader import (
     checkIsAdmin,
     except_hook,
     extractDataFiles,
@@ -233,7 +233,7 @@ def test_extractFile_3():
 def test_extractDataFiles_1():
     mwGlob = dict()
     mwGlob["dataDir"] = Path("tests/work/data")
-    with mock.patch.object(loader, "extractFile"):
+    with mock.patch.object(mw4.loader, "extractFile"):
         extractDataFiles(mwGlob=mwGlob)
 
 

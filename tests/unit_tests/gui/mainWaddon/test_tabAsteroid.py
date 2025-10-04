@@ -19,9 +19,9 @@ import os
 from unittest import mock
 
 import pytest
-from gui.mainWaddon.tabAsteroid import Asteroid
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWaddon.tabAsteroid import Asteroid
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QTableWidgetItem

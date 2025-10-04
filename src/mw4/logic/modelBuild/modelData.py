@@ -19,15 +19,15 @@ import logging
 import time
 from pathlib import Path
 
-# local imports
-from base.transform import J2000ToJNow, JNowToJ2000
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from logic.modelBuild.modelHandling import convertAngleToFloat, writeRetrofitData
-from mountcontrol.progStar import ProgStar
-
 # external packages
 from PySide6.QtCore import QObject, Signal
 from skyfield.api import Angle, Star
+
+# local imports
+from mw4.base.transform import J2000ToJNow, JNowToJ2000
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.logic.modelBuild.modelHandling import convertAngleToFloat, writeRetrofitData
+from mw4.mountcontrol.progStar import ProgStar
 
 
 class ModelData(QObject):

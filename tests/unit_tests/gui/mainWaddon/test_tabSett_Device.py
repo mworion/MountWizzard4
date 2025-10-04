@@ -16,11 +16,11 @@
 # standard libraries
 from unittest import mock
 
-import gui
+import mw4.gui
 import pytest
-from gui.mainWaddon.tabSett_Device import SettDevice
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWaddon.tabSett_Device import SettDevice
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QPushButton
@@ -288,7 +288,7 @@ def test_callPopup_1(function):
     function.driversData = {"cover": {}}
     test = function.drivers
     function.drivers = {"cover": {"deviceType": "cover", "class": mock.Mock()}}
-    with mock.patch.object(gui.mainWaddon.tabSett_Device, "DevicePopup", return_value=Pop()):
+    with mock.patch.object(mw4.gui.mainWaddon.tabSett_Device, "DevicePopup", return_value=Pop()):
         function.callPopup("cover")
     function.drivers = test
 

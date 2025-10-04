@@ -16,22 +16,22 @@
 # standard libraries
 from pathlib import Path
 
-from base.transform import J2000ToJNow
-from gui.extWindows.image.imageSignals import ImageWindowSignals
-from gui.extWindows.image.imageTabs import ImageTabs
-from gui.mainWaddon.tabModel import Model
-from gui.utilities.slewInterface import SlewInterface
-from gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
-from gui.widgets import image_ui
-from logic.file.fileHandler import FileHandler
-from logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
-from logic.photometry.photometry import Photometry
-
-# local import
-from mountcontrol.convert import convertToDMS, convertToHMS
-
 # external packages
 from skyfield.api import Angle
+
+from mw4.base.transform import J2000ToJNow
+from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
+from mw4.gui.extWindows.image.imageTabs import ImageTabs
+from mw4.gui.mainWaddon.tabModel import Model
+from mw4.gui.utilities.slewInterface import SlewInterface
+from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
+from mw4.gui.widgets import image_ui
+from mw4.logic.file.fileHandler import FileHandler
+from mw4.logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
+from mw4.logic.photometry.photometry import Photometry
+
+# local import
+from mw4.mountcontrol.convert import convertToDMS, convertToHMS
 
 
 class ImageWindow(MWidget, SlewInterface):

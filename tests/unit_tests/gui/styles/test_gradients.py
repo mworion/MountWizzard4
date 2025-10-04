@@ -18,7 +18,7 @@ import pytest
 
 # external packages
 # local import
-from gui.styles.gradients import gradients
+from mw4.gui.styles.gradients import gradients
 
 
 @pytest.fixture(autouse=True, scope="module")

@@ -23,13 +23,13 @@ import numpy as np
 from astropy import wcs
 from astropy.io import fits
 
-# local import
-from base.tpool import Worker
-from mountcontrol.convert import valueToFloat
-
 # external packages
 from PySide6.QtCore import QObject, Signal
 from xisf import XISF
+
+# local import
+from mw4.base.tpool import Worker
+from mw4.mountcontrol.convert import valueToFloat
 
 
 class FileHandlerSignals(QObject):

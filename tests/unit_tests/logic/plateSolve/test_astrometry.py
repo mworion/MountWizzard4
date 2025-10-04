@@ -21,10 +21,10 @@ import subprocess
 from pathlib import Path
 from unittest import mock
 
-import logic
+import mw4.logic
 import pytest
-from logic.plateSolve.astrometry import Astrometry
-from logic.plateSolve.plateSolve import PlateSolve
+from mw4.logic.plateSolve.astrometry import Astrometry
+from mw4.logic.plateSolve.plateSolve import PlateSolve
 
 # external packages
 # local import
@@ -170,7 +170,7 @@ def test_solve_2(function):
         with mock.patch.object(function, "runSolveField", return_value=False):
             with mock.patch.object(Path, "is_file", return_value=False):
                 with mock.patch.object(
-                    logic.plateSolve.astrometry,
+                    mw4.logic.plateSolve.astrometry,
                     "getHintFromImageFile",
                     return_value=(0, 0, 0),
                 ):
@@ -183,7 +183,7 @@ def test_solve_3(function):
         with mock.patch.object(function, "runSolveField", return_value=True):
             with mock.patch.object(Path, "is_file", return_value=False):
                 with mock.patch.object(
-                    logic.plateSolve.astrometry,
+                    mw4.logic.plateSolve.astrometry,
                     "getHintFromImageFile",
                     return_value=(0, 0, 0),
                 ):
@@ -199,16 +199,16 @@ def test_solve_4(function):
             with mock.patch.object(Path, "is_file", return_value=True):
                 with mock.patch.object(os, "remove"):
                     with mock.patch.object(
-                        logic.plateSolve.astrometry,
+                        mw4.logic.plateSolve.astrometry,
                         "getHintFromImageFile",
                         return_value=(0, 0, 0),
                     ):
-                        with mock.patch.object(logic.plateSolve.astrometry, "getImageHeader"):
+                        with mock.patch.object(mw4.logic.plateSolve.astrometry, "getImageHeader"):
                             with mock.patch.object(
-                                logic.plateSolve.astrometry, "getSolutionFromWCSHeader"
+                                mw4.logic.plateSolve.astrometry, "getSolutionFromWCSHeader"
                             ):
                                 with mock.patch.object(
-                                    logic.plateSolve.astrometry,
+                                    mw4.logic.plateSolve.astrometry,
                                     "updateImageFileHeaderWithSolution",
                                 ):
                                     res = function.solve(

@@ -20,10 +20,15 @@ import logging
 
 # external packages
 # local imports
-from mountcontrol.connection import Connection
-from mountcontrol.convert import sexagesimalizeToInt, valueToAngle, valueToFloat, valueToInt
-from mountcontrol.modelStar import ModelStar
-from mountcontrol.progStar import ProgStar
+from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.convert import (
+    sexagesimalizeToInt,
+    valueToAngle,
+    valueToFloat,
+    valueToInt,
+)
+from mw4.mountcontrol.modelStar import ModelStar
+from mw4.mountcontrol.progStar import ProgStar
 
 
 class Model:

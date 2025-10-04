@@ -16,13 +16,13 @@
 # standard libraries
 import unittest.mock as mock
 
-import logic
+import mw4.logic
 import numpy as np
 import pytest
 
 # external packages
 from astropy.io import fits
-from logic.fits.fitsFunction import (
+from mw4.logic.fits.fitsFunction import (
     calcAngleScaleFromWCSHeader,
     getCoordinatesFromHeader,
     getCoordinatesFromWCSHeader,
@@ -209,14 +209,14 @@ def test_getScaleFromHeader_6():
 
 
 def test_getHintFromImageFile_1():
-    with mock.patch.object(logic.fits.fitsFunction, "getImageHeader"):
+    with mock.patch.object(mw4.logic.fits.fitsFunction, "getImageHeader"):
         with mock.patch.object(
-            logic.fits.fitsFunction,
+            mw4.logic.fits.fitsFunction,
             "getCoordinatesFromHeader",
             return_value=(Angle(hours=12), Angle(degrees=45)),
         ):
             with mock.patch.object(
-                logic.fits.fitsFunction, "getScaleFromHeader", return_value=1
+                mw4.logic.fits.fitsFunction, "getScaleFromHeader", return_value=1
             ):
                 ra, dec, scale = getHintFromImageFile("test")
                 assert ra.hours == 12.0

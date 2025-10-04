@@ -23,18 +23,19 @@ import numpy as np
 
 # external packages
 from astropy.io import fits
-from base.signalsDevices import Signals
+
+from mw4.base.signalsDevices import Signals
 
 # local imports
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from logic.camera.cameraAlpaca import CameraAlpaca
-from logic.camera.cameraIndi import CameraIndi
-from logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.logic.camera.cameraAlpaca import CameraAlpaca
+from mw4.logic.camera.cameraIndi import CameraIndi
+from mw4.logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
 
 if platform.system() == "Windows":
-    from logic.camera.cameraAscom import CameraAscom
-    from logic.camera.cameraNINA import CameraNINA
-    from logic.camera.cameraSGPro import CameraSGPro
+    from mw4.logic.camera.cameraAscom import CameraAscom
+    from mw4.logic.camera.cameraNINA import CameraNINA
+    from mw4.logic.camera.cameraSGPro import CameraSGPro
 
 
 class Camera:

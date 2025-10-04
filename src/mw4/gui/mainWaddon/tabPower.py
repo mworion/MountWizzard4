@@ -18,11 +18,12 @@
 # external packages
 from functools import partial
 
-# local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
-from mountcontrol.convert import valueToInt
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QInputDialog
+
+# local import
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
+from mw4.mountcontrol.convert import valueToInt
 
 
 class Power(QObject):

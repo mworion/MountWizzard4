@@ -21,9 +21,9 @@ import pytest
 
 # external packages
 from astroquery.simbad import Simbad
-from gui.mainWaddon.tabModel_BuildPoints import BuildPoints
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWaddon.tabModel_BuildPoints import BuildPoints
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 from skyfield.api import Angle
 
 # local import

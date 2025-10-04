@@ -22,7 +22,7 @@ import unittest.mock as mock
 # external packages
 import PySide6
 import pytest
-from base.loggerMW import setupLogging
+from mw4.base.loggerMW import setupLogging
 
 # local import
 from mainApp import MountWizzard4

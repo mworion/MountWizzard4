@@ -18,14 +18,15 @@
 # external packages
 import numpy as np
 import pyqtgraph as pg
-from base.transform import diffModulusAbs
-
-# local import
-from gui.utilities.slewInterface import SlewInterface
-from gui.utilities.toolsQtWidget import MWidget
-from mountcontrol.setting import Setting
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont
+
+from mw4.base.transform import diffModulusAbs
+
+# local import
+from mw4.gui.utilities.slewInterface import SlewInterface
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.mountcontrol.setting import Setting
 
 
 class HemisphereDraw(MWidget, SlewInterface):

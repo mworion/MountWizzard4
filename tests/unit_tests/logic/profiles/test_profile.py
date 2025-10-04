@@ -24,7 +24,7 @@ import pytest
 
 # external packages
 # local import
-from logic.profiles.profile import (
+from mw4.logic.profiles.profile import (
     blendProfile,
     checkResetTabOrder,
     convertKeyData,

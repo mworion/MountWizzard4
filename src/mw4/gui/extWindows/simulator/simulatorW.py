@@ -16,23 +16,24 @@
 # standard libraries
 
 # external packages
-from gui.extWindows.simulator.buildPoints import SimulatorBuildPoints
-from gui.extWindows.simulator.dome import SimulatorDome
-from gui.extWindows.simulator.horizon import SimulatorHorizon
-from gui.extWindows.simulator.laser import SimulatorLaser
-from gui.extWindows.simulator.light import SimulatorLight
-from gui.extWindows.simulator.pointer import SimulatorPointer
-from gui.extWindows.simulator.telescope import SimulatorTelescope
-from gui.extWindows.simulator.tools import linkModel
-from gui.extWindows.simulator.world import SimulatorWorld
-
-# local import
-from gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
-from gui.widgets import simulator_ui
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.QtGui import QColor, QVector3D
 from PySide6.QtWidgets import QWidget
+
+from mw4.gui.extWindows.simulator.buildPoints import SimulatorBuildPoints
+from mw4.gui.extWindows.simulator.dome import SimulatorDome
+from mw4.gui.extWindows.simulator.horizon import SimulatorHorizon
+from mw4.gui.extWindows.simulator.laser import SimulatorLaser
+from mw4.gui.extWindows.simulator.light import SimulatorLight
+from mw4.gui.extWindows.simulator.pointer import SimulatorPointer
+from mw4.gui.extWindows.simulator.telescope import SimulatorTelescope
+from mw4.gui.extWindows.simulator.tools import linkModel
+from mw4.gui.extWindows.simulator.world import SimulatorWorld
+
+# local import
+from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
+from mw4.gui.widgets import simulator_ui
 
 
 class SimulatorWindow(MWidget):

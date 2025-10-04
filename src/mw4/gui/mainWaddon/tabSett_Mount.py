@@ -17,15 +17,16 @@
 import socket
 
 import wakeonlan
-from base.ethernet import checkFormatMAC
-from gui.utilities.toolsQtWidget import guiSetText
-from mountcontrol.firmware import Firmware
-
-# local import
-from mountcontrol.setting import Setting
 
 # external packages
 from PySide6.QtCore import QObject
+
+from mw4.base.ethernet import checkFormatMAC
+from mw4.gui.utilities.toolsQtWidget import guiSetText
+from mw4.mountcontrol.firmware import Firmware
+
+# local import
+from mw4.mountcontrol.setting import Setting
 
 
 class SettMount(QObject):

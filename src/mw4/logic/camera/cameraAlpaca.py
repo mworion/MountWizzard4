@@ -19,8 +19,8 @@
 from astropy.io import fits
 
 # local imports
-from base.alpacaClass import AlpacaClass
-from base.tpool import Worker
+from mw4.base.alpacaClass import AlpacaClass
+from mw4.base.tpool import Worker
 
 
 class CameraAlpaca(AlpacaClass):

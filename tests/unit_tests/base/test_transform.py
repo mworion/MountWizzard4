@@ -16,11 +16,11 @@
 # standard libraries
 import pytest
 
-# local import
-from base import transform
-
 # external packages
 from skyfield.api import Angle, wgs84
+
+# local import
+from mw4.base import transform
 
 
 @pytest.fixture(autouse=True, scope="function")

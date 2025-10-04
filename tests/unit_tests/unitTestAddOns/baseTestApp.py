@@ -19,12 +19,13 @@ from queue import Queue
 
 import numpy as np
 from astropy import log as astropy_log
-from base.signalsDevices import Signals
 from packaging.version import Version
 
 # external packages
 from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
 from skyfield.api import Angle, Loader, load, load_file, wgs84
+
+from mw4.base.signalsDevices import Signals
 
 astropy_log.setLevel("ERROR")
 

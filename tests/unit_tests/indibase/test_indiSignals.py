@@ -18,7 +18,7 @@ import pytest
 
 # external packages
 # local import
-from indibase.indiSignals import INDISignals
+from mw4.indibase.indiSignals import INDISignals
 
 
 @pytest.fixture(autouse=True, scope="function")

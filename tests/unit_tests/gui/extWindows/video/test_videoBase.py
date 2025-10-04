@@ -17,11 +17,11 @@
 import unittest.mock as mock
 
 import cv2
-import gui.extWindows.video.videoBase
+import mw4.gui.extWindows.video.videoBase
 import numpy as np
 import pytest
-from gui.extWindows.video.videoBase import VideoWindowBase
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.video.videoBase import VideoWindowBase
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent, QPixmap
@@ -265,7 +265,7 @@ def test_stopVideoStream_1(function):
 def test_restartVideo(function):
     with mock.patch.object(function, "stopVideo"):
         with mock.patch.object(function, "startVideo"):
-            with mock.patch.object(gui.extWindows.video.videoBase, "sleepAndEvents"):
+            with mock.patch.object(mw4.gui.extWindows.video.videoBase, "sleepAndEvents"):
                 function.restartVideo()
 
 

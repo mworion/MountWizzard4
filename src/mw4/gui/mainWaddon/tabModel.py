@@ -19,13 +19,13 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-# local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic, sleepAndEvents
-from logic.modelBuild.modelData import ModelData
-from logic.modelBuild.modelHandling import loadModelsFromFile
-
 # external packages
 from PySide6.QtCore import QObject
+
+# local import
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, sleepAndEvents
+from mw4.logic.modelBuild.modelData import ModelData
+from mw4.logic.modelBuild.modelHandling import loadModelsFromFile
 
 
 class Model(QObject):

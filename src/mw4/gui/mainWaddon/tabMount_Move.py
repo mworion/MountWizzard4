@@ -16,21 +16,22 @@
 # standard libraries
 from functools import partial
 
-from gui.utilities.slewInterface import SlewInterface
+from PySide6.QtCore import QObject
+
+# external packages
+from PySide6.QtWidgets import QInputDialog, QLineEdit
+
+from mw4.gui.utilities.slewInterface import SlewInterface
 
 # local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, sleepAndEvents
-from mountcontrol.convert import (
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, sleepAndEvents
+from mw4.mountcontrol.convert import (
     convertDecToAngle,
     convertRaToAngle,
     formatDstrToText,
     formatHstrToText,
     valueToFloat,
 )
-from PySide6.QtCore import QObject
-
-# external packages
-from PySide6.QtWidgets import QInputDialog, QLineEdit
 
 
 class MountMove(QObject, SlewInterface):

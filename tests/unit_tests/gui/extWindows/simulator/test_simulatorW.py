@@ -17,9 +17,9 @@
 import unittest.mock as mock
 
 import pytest
-from gui.extWindows.simulator import tools
-from gui.extWindows.simulator.simulatorW import SimulatorWindow
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.simulator import tools
+from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
 from PySide6.Qt3DCore import Qt3DCore
 
 # external packages

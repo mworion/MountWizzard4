@@ -16,13 +16,13 @@
 # standard libraries
 from unittest import mock
 
-import gui
+import mw4.gui
 import numpy as np
 import pytest
-from gui.mainWaddon.astroObjects import AstroObjects
-from gui.mainWaddon.tabSat_Track import SatTrack
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWaddon.astroObjects import AstroObjects
+from mw4.gui.mainWaddon.tabSat_Track import SatTrack
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem
@@ -138,7 +138,7 @@ def test_showSatPasses_1(function):
     ]
     with mock.patch.object(function, "clearTrackingParameters"):
         with mock.patch.object(
-            gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
+            mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ):
             with mock.patch.object(function, "progTrajectoryToMount"):
                 suc = function.showSatPasses()
@@ -164,7 +164,7 @@ def test_showSatPasses_2(function):
     ]
     with mock.patch.object(function, "clearTrackingParameters"):
         with mock.patch.object(
-            gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
+            mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ):
             with mock.patch.object(function, "progTrajectoryToMount"):
                 suc = function.showSatPasses()
@@ -188,7 +188,7 @@ def test_showSatPasses_3(function):
     ]
     with mock.patch.object(function, "clearTrackingParameters"):
         with mock.patch.object(
-            gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
+            mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ):
             with mock.patch.object(function, "progTrajectoryToMount"):
                 suc = function.showSatPasses()

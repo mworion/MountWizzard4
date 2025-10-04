@@ -18,8 +18,8 @@ import platform
 import unittest.mock as mock
 
 import pytest
-from base.signalsDevices import Signals
-from logic.focuser.focuserAscom import FocuserAscom
+from mw4.base.signalsDevices import Signals
+from mw4.logic.focuser.focuserAscom import FocuserAscom
 
 # external packages
 # local import

@@ -19,8 +19,8 @@ import unittest
 import unittest.mock as mock
 
 # local imports
-import mountcontrol
-from mountcontrol.convert import (
+import mw4.mountcontrol
+from mw4.mountcontrol.convert import (
     checkIsHours,
     convertDecToAngle,
     convertLatToAngle,
@@ -452,13 +452,13 @@ def test_formatLatLonToAngle_2():
 
 
 def test_formatLat():
-    with mock.patch.object(mountcontrol.convert, "formatLatLonToAngle", return_value=10):
+    with mock.patch.object(mw4.mountcontrol.convert, "formatLatLonToAngle", return_value=10):
         angle = convertLatToAngle("12345")
         assert angle == 10
 
 
 def test_formatLon():
-    with mock.patch.object(mountcontrol.convert, "formatLatLonToAngle", return_value=10):
+    with mock.patch.object(mw4.mountcontrol.convert, "formatLatLonToAngle", return_value=10):
         angle = convertLonToAngle("12345")
         assert angle == 10
 

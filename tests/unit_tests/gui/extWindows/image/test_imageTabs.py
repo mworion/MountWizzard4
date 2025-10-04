@@ -21,10 +21,10 @@ import pyqtgraph as pg
 import pytest
 from astropy import wcs
 from astropy.io import fits
-from gui.extWindows.image.imageTabs import ImageTabs
-from gui.extWindows.image.imageW import ImageWindow
-from logic.file.fileHandler import FileHandler
-from logic.photometry.photometry import Photometry
+from mw4.gui.extWindows.image.imageTabs import ImageTabs
+from mw4.gui.extWindows.image.imageW import ImageWindow
+from mw4.logic.file.fileHandler import FileHandler
+from mw4.logic.photometry.photometry import Photometry
 
 # external packages
 from PySide6.QtCore import QRectF

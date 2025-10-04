@@ -21,18 +21,6 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-
-# local import
-from gui.utilities.toolsQtWidget import (
-    MWidget,
-    changeStyleDynamic,
-    clickable,
-    findIndexValue,
-    guiSetStyle,
-    guiSetText,
-    sleepAndEvents,
-)
-from gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtCore import QPoint, Qt
 from PySide6.QtGui import QIcon, QPainterPath, QPixmap
 from PySide6.QtTest import QTest
@@ -51,6 +39,17 @@ from PySide6.QtWidgets import (
 )
 from skyfield.api import Angle, load
 
+# local import
+from mw4.gui.utilities.toolsQtWidget import (
+    MWidget,
+    changeStyleDynamic,
+    clickable,
+    findIndexValue,
+    guiSetStyle,
+    guiSetText,
+    sleepAndEvents,
+)
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

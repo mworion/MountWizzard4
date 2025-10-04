@@ -17,9 +17,10 @@
 
 # external packages
 # local import
-from gui.styles.styles import Styles
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.QtGui import QColor
+
+from mw4.gui.styles.styles import Styles
 
 
 class Materials(Styles):

@@ -20,8 +20,8 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QDoubleSpinBox, QGridLay
     QPushButton, QRadioButton, QSizePolicy, QSpacerItem,
     QTabWidget, QVBoxLayout, QWidget)
 
-from gui.utilities.gHemisphere import Hemisphere
-from gui.utilities.gPlotBase import PlotBase
+from mw4.gui.utilities.gHemisphere import Hemisphere
+from mw4.gui.utilities.gPlotBase import PlotBase
 
 class Ui_HemisphereDialog(object):
     def setupUi(self, HemisphereDialog):

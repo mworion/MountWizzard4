@@ -17,13 +17,13 @@
 import unittest.mock as mock
 
 import pytest
-from base.loggerMW import setupLogging
-from indibase import indiXML
+from mw4.base.loggerMW import setupLogging
+from mw4.indibase import indiXML
 
 # local import
-from indibase.indiClient import Client
-from indibase.indiDevice import Device
-from indibase.indiXML import INDIBase
+from mw4.indibase.indiClient import Client
+from mw4.indibase.indiDevice import Device
+from mw4.indibase.indiXML import INDIBase
 from PySide6.QtNetwork import QTcpSocket
 
 setupLogging()

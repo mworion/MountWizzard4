@@ -19,12 +19,12 @@ import platform
 
 # external packages
 # local imports
-from base.signalsDevices import Signals
-from logic.focuser.focuserAlpaca import FocuserAlpaca
-from logic.focuser.focuserIndi import FocuserIndi
+from mw4.base.signalsDevices import Signals
+from mw4.logic.focuser.focuserAlpaca import FocuserAlpaca
+from mw4.logic.focuser.focuserIndi import FocuserIndi
 
 if platform.system() == "Windows":
-    from logic.focuser.focuserAscom import FocuserAscom
+    from mw4.logic.focuser.focuserAscom import FocuserAscom
 
 
 class Focuser:

@@ -16,11 +16,12 @@
 # standard libraries
 
 # external packages
-from gui.extWindows.simulator.materials import Materials
+from PySide6.QtGui import QVector3D
+
+from mw4.gui.extWindows.simulator.materials import Materials
 
 # local import
-from gui.extWindows.simulator.tools import linkModel
-from PySide6.QtGui import QVector3D
+from mw4.gui.extWindows.simulator.tools import linkModel
 
 
 class SimulatorDome:

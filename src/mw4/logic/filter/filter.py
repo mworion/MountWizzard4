@@ -19,12 +19,12 @@ import platform
 
 # external packages
 # local imports
-from base.signalsDevices import Signals
-from logic.filter.filterAlpaca import FilterAlpaca
-from logic.filter.filterIndi import FilterIndi
+from mw4.base.signalsDevices import Signals
+from mw4.logic.filter.filterAlpaca import FilterAlpaca
+from mw4.logic.filter.filterIndi import FilterIndi
 
 if platform.system() == "Windows":
-    from logic.filter.filterAscom import FilterAscom
+    from mw4.logic.filter.filterAscom import FilterAscom
 
 
 class Filter:

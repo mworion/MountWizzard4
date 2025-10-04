@@ -20,13 +20,13 @@ from unittest import mock
 import PySide6
 import pytest
 import requests
-from base.loggerMW import setupLogging
-
-# local import
-from base.sgproClass import SGProClass
-from base.signalsDevices import Signals
 from PySide6.QtCore import QTimer
 
+from mw4.base.loggerMW import setupLogging
+
+# local import
+from mw4.base.sgproClass import SGProClass
+from mw4.base.signalsDevices import Signals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

@@ -21,12 +21,12 @@ import random
 
 # external packages
 import numpy as np
-
-# local imports
-from base import transform
 from scipy.spatial import distance
 from skyfield import almanac
 from skyfield.api import Star
+
+# local imports
+from mw4.base import transform
 
 
 def HaDecToAltAz(ha, dec, lat):

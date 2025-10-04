@@ -18,10 +18,10 @@ from functools import partial
 
 # external packages
 import numpy as np
+from PySide6.QtCore import QObject
 
 # local import
-from gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
-from PySide6.QtCore import QObject
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
 
 
 class EnvironWeather(QObject):

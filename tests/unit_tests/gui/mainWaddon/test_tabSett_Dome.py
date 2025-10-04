@@ -17,10 +17,10 @@
 from unittest import mock
 
 import pytest
-from assets import assetsData
-from gui.mainWaddon.tabSett_Dome import SettDome
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.assets import assetsData
+from mw4.gui.mainWaddon.tabSett_Dome import SettDome
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 # local import

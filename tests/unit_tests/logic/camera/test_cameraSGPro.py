@@ -18,9 +18,9 @@ import os
 import unittest.mock as mock
 
 import pytest
-from base.signalsDevices import Signals
-from logic.camera.camera import Camera
-from logic.camera.cameraSGPro import CameraSGPro
+from mw4.base.signalsDevices import Signals
+from mw4.logic.camera.camera import Camera
+from mw4.logic.camera.cameraSGPro import CameraSGPro
 
 # external packages
 # local import
@@ -66,7 +66,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         pass
 
-    monkeypatch.setattr("logic.camera.cameraSGPro.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.logic.camera.cameraSGPro.sleepAndEvents", test)
 
 
 def test_sgGetCameraTemp_1(function):

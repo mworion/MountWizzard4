@@ -18,22 +18,23 @@ import logging
 import socket
 
 import wakeonlan
-from base.ethernet import checkFormatMAC
-from base.tpool import Worker
-from mountcontrol.dome import Dome
-from mountcontrol.firmware import Firmware
-from mountcontrol.geometry import Geometry
-from mountcontrol.model import Model
-
-# local imports
-from mountcontrol.mountSignals import MountSignals
-from mountcontrol.obsSite import ObsSite
-from mountcontrol.satellite import Satellite
-from mountcontrol.setting import Setting
 
 # external packages
 from PySide6.QtCore import QMutex, QTimer
 from skyfield.api import Angle
+
+from mw4.base.ethernet import checkFormatMAC
+from mw4.base.tpool import Worker
+from mw4.mountcontrol.dome import Dome
+from mw4.mountcontrol.firmware import Firmware
+from mw4.mountcontrol.geometry import Geometry
+from mw4.mountcontrol.model import Model
+
+# local imports
+from mw4.mountcontrol.mountSignals import MountSignals
+from mw4.mountcontrol.obsSite import ObsSite
+from mw4.mountcontrol.satellite import Satellite
+from mw4.mountcontrol.setting import Setting
 
 __all__ = ["MountDevice"]
 

@@ -22,10 +22,11 @@ from pathlib import Path
 # external packages
 import numpy as np
 import requests
-from base.signalsDevices import Signals
+
+from mw4.base.signalsDevices import Signals
 
 # local imports
-from base.tpool import Worker
+from mw4.base.tpool import Worker
 
 
 class OnlineWeather:

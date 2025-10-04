@@ -17,7 +17,7 @@
 import unittest.mock as mock
 
 import pytest
-from gui.utilities.slewInterface import SlewInterface
+from mw4.gui.utilities.slewInterface import SlewInterface
 
 # external packages
 from skyfield.api import Angle

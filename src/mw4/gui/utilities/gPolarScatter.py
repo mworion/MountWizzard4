@@ -20,7 +20,7 @@ import numpy as np
 import pyqtgraph as pg
 
 # local imports
-from gui.utilities.gNormalScatter import NormalScatter
+from mw4.gui.utilities.gNormalScatter import NormalScatter
 
 
 class PolarScatter(NormalScatter):

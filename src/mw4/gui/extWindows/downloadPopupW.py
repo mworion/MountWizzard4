@@ -19,14 +19,15 @@ import os
 import shutil
 
 import requests
-from base.tpool import Worker
-
-# local import
-from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
-from gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 
 # external packages
 from PySide6.QtCore import Qt, Signal
+
+from mw4.base.tpool import Worker
+
+# local import
+from mw4.gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
+from mw4.gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 
 
 class DownloadPopup(MWidget):

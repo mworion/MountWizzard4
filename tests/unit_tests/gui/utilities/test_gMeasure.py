@@ -18,7 +18,7 @@ import pytest
 
 # external packages
 # local import
-from gui.utilities.gMeasure import Measure
+from mw4.gui.utilities.gMeasure import Measure
 
 
 @pytest.fixture(autouse=True, scope="module")

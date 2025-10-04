@@ -18,9 +18,9 @@ import platform
 import unittest.mock as mock
 
 import pytest
-from base.loggerMW import setupLogging
-from base.signalsDevices import Signals
-from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
+from mw4.base.loggerMW import setupLogging
+from mw4.base.signalsDevices import Signals
+from mw4.logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
 
 # external packages
 # local import

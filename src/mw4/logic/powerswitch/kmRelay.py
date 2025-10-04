@@ -20,11 +20,11 @@ import time
 
 import requests
 
-# local imports
-from base.signalsDevices import Signals
-
 # external packages
 from PySide6.QtCore import QMutex, QTimer, Signal
+
+# local imports
+from mw4.base.signalsDevices import Signals
 
 
 class RelaySignals(Signals):

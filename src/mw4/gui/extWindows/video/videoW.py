@@ -18,7 +18,7 @@
 # external packages
 
 # local import
-from gui.extWindows.video.videoBase import VideoWindowBase
+from mw4.gui.extWindows.video.videoBase import VideoWindowBase
 
 
 class VideoWindow(VideoWindowBase):

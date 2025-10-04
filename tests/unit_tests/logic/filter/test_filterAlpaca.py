@@ -17,8 +17,8 @@
 import unittest.mock as mock
 
 import pytest
-from base.signalsDevices import Signals
-from logic.filter.filterAlpaca import FilterAlpaca
+from mw4.base.signalsDevices import Signals
+from mw4.logic.filter.filterAlpaca import FilterAlpaca
 
 # external packages
 # local import

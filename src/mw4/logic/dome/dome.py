@@ -23,13 +23,13 @@ import numpy as np
 import PySide6
 
 # local imports
-from base.signalsDevices import Signals
-from base.transform import diffModulusAbs
-from logic.dome.domeAlpaca import DomeAlpaca
-from logic.dome.domeIndi import DomeIndi
+from mw4.base.signalsDevices import Signals
+from mw4.base.transform import diffModulusAbs
+from mw4.logic.dome.domeAlpaca import DomeAlpaca
+from mw4.logic.dome.domeIndi import DomeIndi
 
 if platform.system() == "Windows":
-    from logic.dome.domeAscom import DomeAscom
+    from mw4.logic.dome.domeAscom import DomeAscom
 
 
 class Dome:

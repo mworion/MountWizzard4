@@ -20,7 +20,7 @@ import unittest.mock as mock
 import pytest
 
 # local import
-from loader import MyApp
+from mw4.loader import MyApp
 from PySide6 import QtWidgets
 from PySide6.QtCore import QEvent, QPointF, Qt
 from PySide6.QtGui import QMouseEvent

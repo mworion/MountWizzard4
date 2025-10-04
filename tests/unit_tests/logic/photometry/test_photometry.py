@@ -17,13 +17,13 @@
 import unittest.mock as mock
 
 # local import
-import logic.photometry.photometry
+import mw4.logic.photometry.photometry
 
 # external packages
 import numpy as np
 import pytest
 import sep
-from logic.photometry.photometry import Photometry, PhotometrySignals
+from mw4.logic.photometry.photometry import Photometry, PhotometrySignals
 
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -61,7 +61,7 @@ def test_workerGetRoundness(function):
         "b": np.random.rand(20, 1) + 1,
     }
     with mock.patch.object(
-        logic.photometry.photometry, "griddata", return_value=np.ones((20, 100))
+        mw4.logic.photometry.photometry, "griddata", return_value=np.ones((20, 100))
     ):
         function.workerGetRoundness()
         assert len(function.roundnessGrid) == 20

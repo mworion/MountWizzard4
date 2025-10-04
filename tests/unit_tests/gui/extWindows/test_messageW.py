@@ -17,9 +17,9 @@
 import unittest.mock as mock
 
 import pytest
-from base.loggerMW import setupLogging
-from gui.extWindows.messageW import MessageWindow
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.base.loggerMW import setupLogging
+from mw4.gui.extWindows.messageW import MessageWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent

@@ -17,18 +17,18 @@
 from functools import partial
 from pathlib import Path
 
-from base.alpacaClass import AlpacaClass
-from base.ascomClass import AscomClass
-
-# local import
-from base.indiClass import IndiClass
-from gui.utilities import toolsQtWidget
-from gui.utilities.toolsQtWidget import changeStyleDynamic, clickable
-from gui.widgets.devicePopup_ui import Ui_DevicePopup
-
 # external packages
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDoubleSpinBox, QLineEdit, QListView
+
+from mw4.base.alpacaClass import AlpacaClass
+from mw4.base.ascomClass import AscomClass
+
+# local import
+from mw4.base.indiClass import IndiClass
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable
+from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
 
 
 class DevicePopup(toolsQtWidget.MWidget):

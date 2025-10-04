@@ -18,8 +18,13 @@ import json
 from pathlib import Path
 
 import numpy as np
-from gui.utilities.toolsQtWidget import changeStyleDynamic
-from logic.modelBuild.modelHandling import (
+from PySide6.QtCore import QObject, Qt
+
+# external packages
+from PySide6.QtWidgets import QInputDialog, QLineEdit
+
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
+from mw4.logic.modelBuild.modelHandling import (
     convertAngleToFloat,
     convertFloatToAngle,
     findFittingModel,
@@ -27,11 +32,7 @@ from logic.modelBuild.modelHandling import (
 )
 
 # local import
-from mountcontrol.model import Model
-from PySide6.QtCore import QObject, Qt
-
-# external packages
-from PySide6.QtWidgets import QInputDialog, QLineEdit
+from mw4.mountcontrol.model import Model
 
 
 class ModelManage(QObject):

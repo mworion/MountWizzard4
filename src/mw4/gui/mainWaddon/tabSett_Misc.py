@@ -14,17 +14,18 @@
 #
 ###########################################################
 # standard libraries
-import base.packageConfig as pConf
+import mw4.base.packageConfig as pConf
 
 # external packages
 if pConf.isAvailable:
     from PySide6.QtMultimedia import QSoundEffect
 import hid
-from base.tpool import Worker
+from PySide6.QtCore import QObject
+
+from mw4.base.tpool import Worker
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from PySide6.QtCore import QObject
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class SettMisc(QObject):

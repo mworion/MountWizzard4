@@ -18,7 +18,7 @@
 # external packages
 
 # local import
-from gui.utilities.qCustomTableWidgetItem import QCustomTableWidgetItem
+from mw4.gui.utilities.qCustomTableWidgetItem import QCustomTableWidgetItem
 
 
 def test_QCustomTableWidgetItem_1():

@@ -18,14 +18,15 @@
 # external packages
 import cv2
 import qimage2ndarray
-from base.tpool import Worker
-
-# local import
-from gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic, sleepAndEvents
-from gui.widgets import video_ui
 from PySide6.QtCore import Signal
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QInputDialog, QLineEdit, QSizePolicy
+
+from mw4.base.tpool import Worker
+
+# local import
+from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic, sleepAndEvents
+from mw4.gui.widgets import video_ui
 
 
 class VideoWindowBase(MWidget):

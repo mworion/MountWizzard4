@@ -20,8 +20,8 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from gui.extWindows.analyseW import AnalyseWindow
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.analyseW import AnalyseWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent, QResizeEvent

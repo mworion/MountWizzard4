@@ -17,14 +17,15 @@
 import uuid
 
 import requests
-from base.driverDataClass import DriverData
-from base.tpool import Worker
-
-# local imports
-from gui.utilities.toolsQtWidget import sleepAndEvents
 
 # external packages
 from PySide6.QtCore import QTimer
+
+from mw4.base.driverDataClass import DriverData
+from mw4.base.tpool import Worker
+
+# local imports
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class AlpacaClass(DriverData):

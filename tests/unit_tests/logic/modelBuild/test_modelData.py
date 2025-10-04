@@ -19,9 +19,9 @@ import json
 from pathlib import Path
 from unittest import mock
 
-import logic.modelBuild.modelData
+import mw4.logic.modelBuild.modelData
 import pytest
-from logic.modelBuild.modelData import ModelData
+from mw4.logic.modelBuild.modelData import ModelData
 
 # external packages
 from skyfield.api import Angle
@@ -41,7 +41,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         function.pauseBatch = False
 
-    monkeypatch.setattr("logic.modelBuild.modelData.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.logic.modelBuild.modelData.sleepAndEvents", test)
 
 
 @pytest.fixture
@@ -49,7 +49,7 @@ def mocked_sleepAndEvents_2(monkeypatch, function):
     def test(a):
         function.cancelBatch = True
 
-    monkeypatch.setattr("logic.modelBuild.modelData.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.logic.modelBuild.modelData.sleepAndEvents", test)
 
 
 def test_setImageExposed(function):
@@ -158,10 +158,10 @@ def test_addMountModelToBuildModel_1(function):
     function.app.mount.model.starList = [1, 2, 3]
     function.modelSaveData = [1, 2, 3]
     with mock.patch.object(
-        logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]
+        mw4.logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]
     ):
         with mock.patch.object(
-            logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]
+            mw4.logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]
         ):
             function.addMountModelToBuildModel()
     assert len(function.modelSaveData) == 3
@@ -171,10 +171,10 @@ def test_addMountModelToBuildModel_2(function):
     function.app.mount.model.starList = [1, 2]
     function.modelSaveData = [1, 2, 3]
     with mock.patch.object(
-        logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]
+        mw4.logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]
     ):
         with mock.patch.object(
-            logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]
+            mw4.logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]
         ):
             function.addMountModelToBuildModel()
 

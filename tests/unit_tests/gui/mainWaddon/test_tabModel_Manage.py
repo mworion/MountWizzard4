@@ -21,16 +21,16 @@ import shutil
 import unittest.mock as mock
 from pathlib import Path
 
-import gui
-import gui.mainWaddon.tabModel_Manage
+import mw4.gui
+import mw4.gui.mainWaddon.tabModel_Manage
 
 # external packages
 import PySide6
 import pytest
-from gui.mainWaddon.tabModel_Manage import ModelManage
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
-from mountcontrol.modelStar import ModelStar
+from mw4.gui.mainWaddon.tabModel_Manage import ModelManage
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.mountcontrol.modelStar import ModelStar
 from PySide6.QtCore import Qt
 from skyfield.api import Angle, Star
 
@@ -300,7 +300,7 @@ def test_writeBuildModelOptimized_1(function):
 
 def test_writeBuildModelOptimized_2(function):
     function.fittedModelPath = Path("tests/work/model/test-opt.model")
-    with mock.patch.object(gui.mainWaddon.tabModel_Manage, "writeRetrofitData"):
+    with mock.patch.object(mw4.gui.mainWaddon.tabModel_Manage, "writeRetrofitData"):
         with mock.patch.object(
             json, "load", return_value=[{"errorIndex": 1}, {"errorIndex": 3}]
         ):
@@ -311,7 +311,7 @@ def test_writeBuildModelOptimized_2(function):
 def test_clearRefreshModel_1(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
     with mock.patch.object(
-        gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])
+        mw4.gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])
     ):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(function, "writeBuildModelOptimized"):
@@ -321,7 +321,7 @@ def test_clearRefreshModel_1(function):
 def test_clearRefreshModel_2(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
     with mock.patch.object(
-        gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])
+        mw4.gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])
     ):
         with mock.patch.object(Path, "is_file", return_value=False):
             with mock.patch.object(function, "sendAnalyseFileName"):

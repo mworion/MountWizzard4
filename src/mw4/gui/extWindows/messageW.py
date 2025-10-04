@@ -17,14 +17,15 @@
 import logging
 import time
 
-# local import
-from gui.utilities import toolsQtWidget
-from gui.widgets import message_ui
 from PySide6.QtCore import Qt
 
 # external packages
 from PySide6.QtGui import QBrush, QColor, QFont
 from PySide6.QtWidgets import QTableWidgetItem
+
+# local import
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.widgets import message_ui
 
 
 class MessageWindow(toolsQtWidget.MWidget):

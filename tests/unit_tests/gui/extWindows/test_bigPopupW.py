@@ -17,8 +17,8 @@
 import unittest.mock as mock
 
 import pytest
-from gui.extWindows.bigPopupW import BigPopup
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.bigPopupW import BigPopup
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent

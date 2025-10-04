@@ -18,7 +18,7 @@ import pytest
 
 # external packages
 # local import
-from gui.extWindows.simulator.materials import Materials
+from mw4.gui.extWindows.simulator.materials import Materials
 
 
 @pytest.fixture(autouse=True, scope="module")

@@ -20,13 +20,13 @@ import time
 import unittest.mock as mock
 from pathlib import Path
 
-import gui.mainWaddon
-import gui.mainWaddon.tabModel
+import mw4.gui.mainWaddon
+import mw4.gui.mainWaddon.tabModel
 import pytest
-from gui.mainWaddon.tabModel import Model
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
-from logic.modelBuild.modelData import ModelData
+from mw4.gui.mainWaddon.tabModel import Model
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.logic.modelBuild.modelData import ModelData
 
 # external packages
 from skyfield.api import Angle
@@ -252,7 +252,7 @@ def test_clearAlignAndBackup_1(function):
 def test_clearAlignAndBackup_2(function):
     with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
         with mock.patch.object(function.app.mount.model, "deleteName", return_value=False):
-            with mock.patch.object(gui.mainWaddon.tabModel, "sleepAndEvents"):
+            with mock.patch.object(mw4.gui.mainWaddon.tabModel, "sleepAndEvents"):
                 suc = function.clearAlignAndBackup()
                 assert suc
 
@@ -261,7 +261,7 @@ def test_clearAlignAndBackup_3(function):
     with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
         with mock.patch.object(function.app.mount.model, "deleteName", return_value=True):
             with mock.patch.object(function.app.mount.model, "storeName", return_value=False):
-                with mock.patch.object(gui.mainWaddon.tabModel, "sleepAndEvents"):
+                with mock.patch.object(mw4.gui.mainWaddon.tabModel, "sleepAndEvents"):
                     suc = function.clearAlignAndBackup()
                     assert suc
 
@@ -270,7 +270,7 @@ def test_clearAlignAndBackup_4(function):
     with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
         with mock.patch.object(function.app.mount.model, "deleteName", return_value=True):
             with mock.patch.object(function.app.mount.model, "storeName", return_value=True):
-                with mock.patch.object(gui.mainWaddon.tabModel, "sleepAndEvents"):
+                with mock.patch.object(mw4.gui.mainWaddon.tabModel, "sleepAndEvents"):
                     suc = function.clearAlignAndBackup()
                     assert suc
 
@@ -390,7 +390,7 @@ def test_runFileModel_2(function):
         with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
             with mock.patch.object(function.modelData, "buildProgModel"):
                 with mock.patch.object(
-                    gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val
+                    mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val
                 ):
                     with mock.patch.object(function.modelData, "buildProgModel"):
                         with mock.patch.object(function, "programModelToMount"):
@@ -410,7 +410,7 @@ def test_runFileModel_3(function):
                 function, "setupFilenamesAndDirectories", return_value=("m-test1-add", "")
             ):
                 with mock.patch.object(
-                    gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=([], "")
+                    mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=([], "")
                 ):
                     with mock.patch.object(function.modelData, "buildProgModel"):
                         with mock.patch.object(function, "programModelToMount"):

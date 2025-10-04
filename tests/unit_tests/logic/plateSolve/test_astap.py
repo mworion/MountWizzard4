@@ -22,10 +22,10 @@ import subprocess
 from pathlib import Path
 from unittest import mock
 
-import logic
+import mw4.logic
 import pytest
-from logic.plateSolve.astap import ASTAP
-from logic.plateSolve.plateSolve import PlateSolve
+from mw4.logic.plateSolve.astap import ASTAP
+from mw4.logic.plateSolve.plateSolve import PlateSolve
 
 # external packages
 # local import
@@ -128,10 +128,10 @@ def test_solve_3(function):
     with mock.patch.object(function, "runASTAP", return_value=(True, 0)):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(os, "remove"):
-                with mock.patch.object(logic.plateSolve.astap, "getImageHeader"):
-                    with mock.patch.object(logic.plateSolve.astap, "getSolutionFromWCSHeader"):
+                with mock.patch.object(mw4.logic.plateSolve.astap, "getImageHeader"):
+                    with mock.patch.object(mw4.logic.plateSolve.astap, "getSolutionFromWCSHeader"):
                         with mock.patch.object(
-                            logic.plateSolve.astap, "updateImageFileHeaderWithSolution"
+                            mw4.logic.plateSolve.astap, "updateImageFileHeaderWithSolution"
                         ):
                             res = function.solve(Path("tests/work/image/m51.fit"), True)
                             assert res["success"]

@@ -17,11 +17,12 @@
 
 # external packages
 # local import
-from gui.extWindows.downloadPopupW import DownloadPopup
-from gui.extWindows.uploadPopupW import UploadPopup
-from logic.databaseProcessing.dataWriter import DataWriter
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QListView
+
+from mw4.gui.extWindows.downloadPopupW import DownloadPopup
+from mw4.gui.extWindows.uploadPopupW import UploadPopup
+from mw4.logic.databaseProcessing.dataWriter import DataWriter
 
 
 class IERSTime(QObject):

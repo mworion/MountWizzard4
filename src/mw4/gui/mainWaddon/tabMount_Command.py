@@ -17,12 +17,13 @@
 import time
 import webbrowser
 
-# local import
-from mountcontrol.connection import Connection
 from PySide6.QtCore import QObject
 
 # external packages
 from PySide6.QtGui import QTextCursor
+
+# local import
+from mw4.mountcontrol.connection import Connection
 
 
 class MountCommand(QObject):

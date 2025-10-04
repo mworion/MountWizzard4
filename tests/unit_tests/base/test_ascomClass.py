@@ -23,14 +23,14 @@ if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 # external packages
-import base.ascomClass
+import mw4.base.ascomClass
 import PySide6
 import win32com.client
 
 # local import
-from base.ascomClass import AscomClass
-from base.loggerMW import setupLogging
-from base.signalsDevices import Signals
+from mw4.base.ascomClass import AscomClass
+from mw4.base.loggerMW import setupLogging
+from mw4.base.signalsDevices import Signals
 from PySide6.QtCore import QTimer
 
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -82,7 +82,7 @@ def test_getAscomProperty_1(function):
 def test_getAscomProperty_2(function):
     function.propertyExceptions = ["test"]
     function.deviceConnected = True
-    with mock.patch.object(base.ascomClass, "eval", side_effect=Exception):
+    with mock.patch.object(mw4.base.ascomClass, "eval", side_effect=Exception):
         val = function.getAscomProperty("Connected")
         assert val is None
         assert "Connected" in function.propertyExceptions
@@ -95,7 +95,7 @@ def test_getAscomProperty_3(function):
     function.client = Client()
     function.propertyExceptions = ["test"]
     function.deviceConnected = True
-    with mock.patch.object(base.ascomClass, "eval", return_value="1"):
+    with mock.patch.object(mw4.base.ascomClass, "eval", return_value="1"):
         val = function.getAscomProperty("Connected")
         assert val
 
@@ -108,7 +108,7 @@ def test_getAscomProperty_4(function):
     function.client = Client()
     function.propertyExceptions = ["test"]
     function.deviceConnected = True
-    with mock.patch.object(base.ascomClass, "eval", return_value="1"):
+    with mock.patch.object(mw4.base.ascomClass, "eval", return_value="1"):
         val = function.getAscomProperty("ImageArray")
         assert val
 
@@ -128,7 +128,7 @@ def test_setAscomProperty_1(function):
 def test_setAscomProperty_2(function):
     function.propertyExceptions = ["test"]
     function.deviceConnected = True
-    with mock.patch.object(base.ascomClass, "exec", side_effect=Exception):
+    with mock.patch.object(mw4.base.ascomClass, "exec", side_effect=Exception):
         function.setAscomProperty("Connected", True)
         assert "Connect" not in function.propertyExceptions
 
@@ -136,7 +136,7 @@ def test_setAscomProperty_2(function):
 def test_setAscomProperty_3(function):
     function.propertyExceptions = ["test"]
     function.deviceConnected = True
-    with mock.patch.object(base.ascomClass, "exec", side_effect=Exception):
+    with mock.patch.object(mw4.base.ascomClass, "exec", side_effect=Exception):
         function.setAscomProperty("Names", True)
         assert "Names" in function.propertyExceptions
 
@@ -159,7 +159,7 @@ def test_callAscomMethod_1(function):
 
 def test_callAscomMethod_2(function):
     function.propertyExceptions = ["Test"]
-    with mock.patch.object(base.ascomClass, "exec", side_effect=Exception):
+    with mock.patch.object(mw4.base.ascomClass, "exec", side_effect=Exception):
         function.callAscomMethod("Connected", True)
         assert "Connected" in function.propertyExceptions
 
@@ -170,7 +170,7 @@ def test_callAscomMethod_3(function):
 
     function.client = Client()
     function.propertyExceptions = ["Test"]
-    with mock.patch.object(base.ascomClass, "exec"):
+    with mock.patch.object(mw4.base.ascomClass, "exec"):
         function.callAscomMethod("Connected", True)
         assert function.client
 
@@ -184,7 +184,7 @@ def test_getAndStoreAscomProperty(function):
 def test_workerConnectDevice_1(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(base.ascomClass, "sleepAndEvents"):
+    with mock.patch.object(mw4.base.ascomClass, "sleepAndEvents"):
         with mock.patch.object(function, "setAscomProperty"):
             with mock.patch.object(function, "getAscomProperty", return_value=False):
                 function.workerConnectDevice()
@@ -195,7 +195,7 @@ def test_workerConnectDevice_1(function):
 def test_workerConnectDevice_2(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(base.ascomClass, "sleepAndEvents"):
+    with mock.patch.object(mw4.base.ascomClass, "sleepAndEvents"):
         with mock.patch.object(function, "setAscomProperty"):
             with mock.patch.object(function, "getAscomProperty", return_value=True):
                 function.workerConnectDevice()

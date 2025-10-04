@@ -15,7 +15,7 @@
 ###########################################################
 # standard libraries
 import pytest
-from logic.modeldata.hipparcos import Hipparcos
+from mw4.logic.modeldata.hipparcos import Hipparcos
 
 # external packages
 # local import

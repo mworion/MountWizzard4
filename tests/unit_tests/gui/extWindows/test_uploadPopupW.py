@@ -19,7 +19,7 @@ import unittest.mock as mock
 
 import pytest
 import requests
-from gui.extWindows.uploadPopupW import UploadPopup
+from mw4.gui.extWindows.uploadPopupW import UploadPopup
 
 # external packages
 from PySide6.QtWidgets import QWidget
@@ -43,7 +43,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         function.pollStatusRunState = False
 
-    monkeypatch.setattr("gui.extWindows.uploadPopupW.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.gui.extWindows.uploadPopupW.sleepAndEvents", test)
 
 
 def set_setIcon(function):

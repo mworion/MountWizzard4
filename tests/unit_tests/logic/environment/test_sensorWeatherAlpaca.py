@@ -17,8 +17,8 @@
 import unittest.mock as mock
 
 import pytest
-from base.signalsDevices import Signals
-from logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
+from mw4.base.signalsDevices import Signals
+from mw4.logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
 
 # external packages
 # local import

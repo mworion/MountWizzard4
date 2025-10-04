@@ -19,12 +19,12 @@ import platform
 
 import numpy as np
 
-# local imports
-from base.transform import diffModulusSign
-
 # external packages
 from skyfield.api import Angle, Loader, load, wgs84
 from skyfield.toposlib import GeographicPosition
+
+# local imports
+from mw4.base.transform import diffModulusSign
 
 from .connection import Connection
 from .convert import (

@@ -26,10 +26,10 @@ if not platform.system() == "Windows":
 import ctypes
 
 from astropy.io import fits
-from base.ascomClass import AscomClass
-from base.loggerMW import setupLogging
-from logic.camera.camera import Camera
-from logic.camera.cameraAscom import CameraAscom
+from mw4.base.ascomClass import AscomClass
+from mw4.base.loggerMW import setupLogging
+from mw4.logic.camera.camera import Camera
+from mw4.logic.camera.cameraAscom import CameraAscom
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

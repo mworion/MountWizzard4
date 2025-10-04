@@ -19,8 +19,8 @@ import unittest.mock as mock
 # external packages
 import PySide6
 import pytest
-from base.signalsDevices import Signals
-from logic.telescope.telescopeAlpaca import TelescopeAlpaca
+from mw4.base.signalsDevices import Signals
+from mw4.logic.telescope.telescopeAlpaca import TelescopeAlpaca
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

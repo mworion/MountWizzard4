@@ -22,10 +22,6 @@ from pathlib import Path
 import numpy as np
 from dateutil.tz import tzlocal
 
-# local imports
-from gui.styles.styles import Styles
-from mountcontrol.convert import formatDstrToText, formatHstrToText
-
 # external packages
 from PySide6.QtCore import QCoreApplication, QDir, QEvent, QObject, QSize, Qt, Signal
 from PySide6.QtGui import (
@@ -41,6 +37,10 @@ from PySide6.QtGui import (
 )
 from PySide6.QtWidgets import QAbstractItemView, QFileDialog, QMessageBox, QWidget
 from qimage2ndarray import array2qimage, rgb_view
+
+# local imports
+from mw4.gui.styles.styles import Styles
+from mw4.mountcontrol.convert import formatDstrToText, formatHstrToText
 
 
 def sleepAndEvents(value: int) -> None:

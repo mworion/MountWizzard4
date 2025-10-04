@@ -21,10 +21,10 @@ import unittest.mock as mock
 import numpy as np
 import pyqtgraph as pg
 import pytest
-from gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
-from gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
-from gui.utilities.slewInterface import SlewInterface
-from mountcontrol.setting import Setting
+from mw4.gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
+from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
+from mw4.gui.utilities.slewInterface import SlewInterface
+from mw4.mountcontrol.setting import Setting
 
 # external packages
 from PySide6.QtCore import QPointF

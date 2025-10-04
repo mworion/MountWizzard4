@@ -25,7 +25,7 @@ import pytest
 
 # external packages
 import skyfield.api
-from logic.modeldata.buildpoints import DataPoint, HaDecToAltAz
+from mw4.logic.modeldata.buildpoints import DataPoint, HaDecToAltAz
 from skyfield.api import wgs84
 
 # local import

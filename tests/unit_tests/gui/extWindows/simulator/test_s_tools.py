@@ -15,10 +15,10 @@
 ###########################################################
 # standard libraries
 import pytest
-from gui.extWindows.simulator.materials import Materials
+from mw4.gui.extWindows.simulator.materials import Materials
 
 # local import
-from gui.extWindows.simulator.tools import (
+from mw4.gui.extWindows.simulator.tools import (
     getLight,
     getMaterial,
     linkLight,

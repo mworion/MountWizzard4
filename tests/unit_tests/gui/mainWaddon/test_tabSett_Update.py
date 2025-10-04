@@ -26,10 +26,10 @@ import pytest
 
 # external packages
 import requests
-from base.loggerMW import setupLogging
-from gui.mainWaddon.tabSett_Update import SettUpdate
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.base.loggerMW import setupLogging
+from mw4.gui.mainWaddon.tabSett_Update import SettUpdate
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

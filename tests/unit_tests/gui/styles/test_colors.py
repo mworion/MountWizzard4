@@ -18,7 +18,7 @@ import pytest
 
 # external packages
 # local import
-from gui.styles.colors import colors
+from mw4.gui.styles.colors import colors
 
 
 @pytest.fixture(autouse=True, scope="module")

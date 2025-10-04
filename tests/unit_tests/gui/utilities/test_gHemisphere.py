@@ -18,7 +18,7 @@ import pytest
 
 # external packages
 # local import
-from gui.utilities.gHemisphere import Hemisphere
+from mw4.gui.utilities.gHemisphere import Hemisphere
 
 
 @pytest.fixture(autouse=True, scope="module")

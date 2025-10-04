@@ -101,7 +101,7 @@ def clean_mw(c):
     printMW("clean mountwizzard")
     runMW(c, "rm -rf .pytest_cache")
     runMW(c, "rm -rf mw4.egg-info")
-    runMW(c, 'find ./mountwizzard4 | grep -E "(__pycache__)" | xargs rm -rf')
+    runMW(c, 'find ./src/mw4 | grep -E "(__pycache__)" | xargs rm -rf')
     runMW(c, 'find ./tests | grep -E "(__pycache__)" | xargs rm -rf')
     printMW("clean mountwizzard finished\n")
 

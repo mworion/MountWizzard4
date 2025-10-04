@@ -16,11 +16,11 @@
 # standard libraries
 import logging
 
-# local imports
-from base.transform import J2000ToJNow
-
 # external packages
 from skyfield.api import Angle
+
+# local imports
+from mw4.base.transform import J2000ToJNow
 
 
 class SlewInterface:

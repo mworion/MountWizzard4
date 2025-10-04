@@ -17,12 +17,12 @@
 import unittest.mock as mock
 
 import pytest
-from base.signalsDevices import Signals
-from indibase.indiClient import Client
+from mw4.base.signalsDevices import Signals
+from mw4.indibase.indiClient import Client
 
 # external packages
-from indibase.indiDevice import Device
-from logic.focuser.focuserIndi import FocuserIndi
+from mw4.indibase.indiDevice import Device
+from mw4.logic.focuser.focuserIndi import FocuserIndi
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

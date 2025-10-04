@@ -16,13 +16,13 @@
 # standard libraries
 import unittest.mock as mock
 
-import logic
+import mw4.logic
 import numpy as np
 import pytest
 
 # external packages
 from astropy.io import fits
-from logic.camera.camera import Camera
+from mw4.logic.camera.camera import Camera
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -39,7 +39,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         function.exposing = False
 
-    monkeypatch.setattr("logic.camera.camera.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.logic.camera.camera.sleepAndEvents", test)
 
 
 def test_properties(function):
@@ -286,12 +286,12 @@ def test_retrieveImage_3(function):
 
 def test_writeImageFitsHeader_1(function):
     with mock.patch.object(fits, "open"):
-        with mock.patch.object(logic.camera.camera, "writeHeaderPointing"):
-            with mock.patch.object(logic.camera.camera, "writeHeaderCamera"):
+        with mock.patch.object(mw4.logic.camera.camera, "writeHeaderPointing"):
+            with mock.patch.object(mw4.logic.camera.camera, "writeHeaderCamera"):
                 function.writeImageFitsHeader()
 
 
 def test_updateImageFitsHeaderPointing_1(function):
     with mock.patch.object(fits, "open"):
-        with mock.patch.object(logic.camera.camera, "writeHeaderPointing"):
+        with mock.patch.object(mw4.logic.camera.camera, "writeHeaderPointing"):
             function.updateImageFitsHeaderPointing()

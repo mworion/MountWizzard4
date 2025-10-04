@@ -18,7 +18,7 @@ import pytest
 
 # external packages
 # local import
-from indibase.indiDevice import Device
+from mw4.indibase.indiDevice import Device
 
 
 @pytest.fixture(autouse=True, scope="function")

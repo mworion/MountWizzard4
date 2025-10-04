@@ -18,7 +18,7 @@ import unittest.mock as mock
 
 import numpy as np
 import pytest
-from logic.dome.dome import Dome
+from mw4.logic.dome.dome import Dome
 
 # external packages
 from skyfield.api import Angle

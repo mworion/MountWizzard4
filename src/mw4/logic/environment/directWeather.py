@@ -18,8 +18,8 @@ import logging
 
 # external packages
 # local imports
-from base.signalsDevices import Signals
-from mountcontrol.setting import Setting
+from mw4.base.signalsDevices import Signals
+from mw4.mountcontrol.setting import Setting
 
 
 class DirectWeather:

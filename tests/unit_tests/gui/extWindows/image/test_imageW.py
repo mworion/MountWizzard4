@@ -18,14 +18,14 @@ import shutil
 import unittest.mock as mock
 from pathlib import Path
 
-import gui.extWindows.image.imageW
+import mw4.gui.extWindows.image.imageW
 import pytest
-from gui.extWindows.image.imageTabs import ImageTabs
-from gui.extWindows.image.imageW import ImageWindow
-from gui.utilities.slewInterface import SlewInterface
-from gui.utilities.toolsQtWidget import MWidget
-from logic.file.fileHandler import FileHandler
-from logic.photometry.photometry import Photometry
+from mw4.gui.extWindows.image.imageTabs import ImageTabs
+from mw4.gui.extWindows.image.imageW import ImageWindow
+from mw4.gui.utilities.slewInterface import SlewInterface
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.logic.file.fileHandler import FileHandler
+from mw4.logic.photometry.photometry import Photometry
 
 # external packages
 from PySide6.QtGui import QCloseEvent
@@ -411,7 +411,7 @@ def test_syncModelToImage_3(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
     with mock.patch.object(
-        gui.extWindows.image.imageW, "getCoordinatesFromHeader", return_value=(None, None)
+        mw4.gui.extWindows.image.imageW, "getCoordinatesFromHeader", return_value=(None, None)
     ):
         with mock.patch.object(
             function.app.mount.obsSite, "syncPositionToTarget", return_value=False
@@ -423,7 +423,7 @@ def test_syncModelToImage_4(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
     with mock.patch.object(
-        gui.extWindows.image.imageW,
+        mw4.gui.extWindows.image.imageW,
         "getCoordinatesFromHeader",
         return_value=(Angle(hours=10), Angle(degrees=10)),
     ):
@@ -437,7 +437,7 @@ def test_syncModelToImage_5(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
     with mock.patch.object(
-        gui.extWindows.image.imageW,
+        mw4.gui.extWindows.image.imageW,
         "getCoordinatesFromHeader",
         return_value=(Angle(hours=10), Angle(degrees=10)),
     ):

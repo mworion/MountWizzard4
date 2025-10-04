@@ -21,7 +21,7 @@ import PySide6
 import pytest
 
 # local import
-from logic.measure.measureRaw import MeasureDataRaw
+from mw4.logic.measure.measureRaw import MeasureDataRaw
 
 
 @pytest.fixture(autouse=True, scope="function")

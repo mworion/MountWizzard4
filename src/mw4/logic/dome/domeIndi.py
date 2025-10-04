@@ -18,7 +18,7 @@
 # external packages
 
 # local imports
-from base.indiClass import IndiClass
+from mw4.base.indiClass import IndiClass
 
 
 class DomeIndi(IndiClass):

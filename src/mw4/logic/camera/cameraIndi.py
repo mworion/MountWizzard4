@@ -18,10 +18,11 @@ import zlib
 
 # external packages
 from astropy.io import fits
-from base.indiClass import IndiClass
+
+from mw4.base.indiClass import IndiClass
 
 # local imports
-from base.tpool import Worker
+from mw4.base.tpool import Worker
 
 
 class CameraIndi(IndiClass):

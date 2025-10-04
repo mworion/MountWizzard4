@@ -22,8 +22,8 @@ import pyqtgraph as pg
 import pytest
 
 # local import
-from gui.utilities.gCustomViewBox import CustomViewBox
-from gui.utilities.gNormalScatter import NormalScatter
+from mw4.gui.utilities.gCustomViewBox import CustomViewBox
+from mw4.gui.utilities.gNormalScatter import NormalScatter
 from PySide6.QtCore import QEvent, QPointF, Qt
 
 

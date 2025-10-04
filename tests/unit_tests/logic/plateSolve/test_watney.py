@@ -21,10 +21,10 @@ import subprocess
 from pathlib import Path
 from unittest import mock
 
-import logic
+import mw4.logic
 import pytest
-from logic.plateSolve.plateSolve import PlateSolve
-from logic.plateSolve.watney import Watney
+from mw4.logic.plateSolve.plateSolve import PlateSolve
+from mw4.logic.plateSolve.watney import Watney
 
 # external packages
 # local import
@@ -120,12 +120,12 @@ def test_solve_3(function):
     with mock.patch.object(function, "runWatney", return_value=(True, 0)):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(os, "remove", return_value=True):
-                with mock.patch.object(logic.plateSolve.watney, "getImageHeader"):
+                with mock.patch.object(mw4.logic.plateSolve.watney, "getImageHeader"):
                     with mock.patch.object(
-                        logic.plateSolve.watney, "getSolutionFromWCSHeader"
+                        mw4.logic.plateSolve.watney, "getSolutionFromWCSHeader"
                     ):
                         with mock.patch.object(
-                            logic.plateSolve.watney, "updateImageFileHeaderWithSolution"
+                            mw4.logic.plateSolve.watney, "updateImageFileHeaderWithSolution"
                         ):
                             res = function.solve(Path("tests/work/image/m51.fit"), True)
                             assert res["success"]

@@ -19,15 +19,15 @@ import os
 import queue
 from pathlib import Path
 
-from base.signalsDevices import Signals
+from mw4.base.signalsDevices import Signals
 
 # external packages
 # local imports
-from base.tpool import Worker
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from logic.plateSolve.astap import ASTAP
-from logic.plateSolve.astrometry import Astrometry
-from logic.plateSolve.watney import Watney
+from mw4.base.tpool import Worker
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.logic.plateSolve.astap import ASTAP
+from mw4.logic.plateSolve.astrometry import Astrometry
+from mw4.logic.plateSolve.watney import Watney
 
 
 class PlateSolve:

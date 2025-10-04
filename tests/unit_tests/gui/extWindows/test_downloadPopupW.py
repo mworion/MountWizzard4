@@ -21,7 +21,7 @@ import unittest.mock as mock
 
 import pytest
 import requests
-from gui.extWindows.downloadPopupW import DownloadPopup
+from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 
 # external packages
 from PySide6.QtWidgets import QWidget
@@ -45,7 +45,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         function.pollStatusRunState = False
 
-    monkeypatch.setattr("gui.extWindows.downloadPopupW.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.gui.extWindows.downloadPopupW.sleepAndEvents", test)
 
 
 def set_setIcon(function):

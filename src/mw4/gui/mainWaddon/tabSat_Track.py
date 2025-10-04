@@ -17,14 +17,14 @@
 
 # external packages
 import numpy as np
-
-# local import
-from gui.mainWaddon.satData import SatData
-from gui.utilities.toolsQtWidget import changeStyleDynamic
-from logic.satellites.satellite_calculations import calcSatPasses
 from PySide6.QtCore import QObject
 from sgp4.exporter import export_tle
 from skyfield.api import Angle
+
+# local import
+from mw4.gui.mainWaddon.satData import SatData
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
+from mw4.logic.satellites.satellite_calculations import calcSatPasses
 
 
 class SatTrack(QObject, SatData):

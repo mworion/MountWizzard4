@@ -18,10 +18,10 @@ import os
 from pathlib import Path
 
 import pytest
-from base.loggerMW import setupLogging
+from mw4.base.loggerMW import setupLogging
 
 # local imports
-from mountcontrol.mount import MountDevice
+from mw4.mountcontrol.mount import MountDevice
 
 # external packages
 from PySide6.QtCore import QThreadPool

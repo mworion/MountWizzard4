@@ -19,12 +19,12 @@ import platform
 
 # external packages
 # local imports
-from base.signalsDevices import Signals
-from logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
-from logic.environment.sensorWeatherIndi import SensorWeatherIndi
+from mw4.base.signalsDevices import Signals
+from mw4.logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
+from mw4.logic.environment.sensorWeatherIndi import SensorWeatherIndi
 
 if platform.system() == "Windows":
-    from logic.environment.sensorWeatherAscom import SensorWeatherAscom
+    from mw4.logic.environment.sensorWeatherAscom import SensorWeatherAscom
 
 
 class SensorWeather:

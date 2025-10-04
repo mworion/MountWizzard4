@@ -18,7 +18,7 @@ import pytest
 
 # external packages
 # local import
-from gui.utilities.gTimeMeasure import TimeMeasure
+from mw4.gui.utilities.gTimeMeasure import TimeMeasure
 
 
 @pytest.fixture(autouse=True, scope="module")

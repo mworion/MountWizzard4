@@ -16,12 +16,12 @@
 # standard libraries
 import logging
 
-# local imports
-from mountcontrol.connection import Connection
-from mountcontrol.convert import valueToFloat, valueToInt
-
 # external packages
 from skyfield.api import Angle
+
+# local imports
+from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.convert import valueToFloat, valueToInt
 
 
 class Dome:

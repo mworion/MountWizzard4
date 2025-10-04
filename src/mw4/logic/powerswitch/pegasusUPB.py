@@ -19,10 +19,10 @@ import platform
 
 # external packages
 # local imports
-from base.signalsDevices import Signals
-from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
-from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
-from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
+from mw4.base.signalsDevices import Signals
+from mw4.logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
+from mw4.logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
+from mw4.logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
 
 
 class PegasusUPB:

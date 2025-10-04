@@ -17,8 +17,8 @@
 import unittest.mock as mock
 
 import pytest
-from gui.extWindows.simulator.materials import Materials
-from gui.extWindows.simulator.simulatorW import SimulatorWindow
+from mw4.gui.extWindows.simulator.materials import Materials
+from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 # external packages
 from PySide6.Qt3DCore import Qt3DCore

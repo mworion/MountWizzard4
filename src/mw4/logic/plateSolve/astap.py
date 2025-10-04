@@ -23,7 +23,7 @@ from pathlib import Path
 
 # external packages
 # local imports
-from logic.fits.fitsFunction import (
+from mw4.logic.fits.fitsFunction import (
     getImageHeader,
     getSolutionFromWCSHeader,
     updateImageFileHeaderWithSolution,

@@ -18,7 +18,7 @@
 # external packages
 
 # local import
-from base import tpool
+from mw4.base import tpool
 
 
 def test_WorkerSignals():

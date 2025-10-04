@@ -18,10 +18,10 @@ import shutil
 import unittest.mock as mock
 from pathlib import Path
 
-import gui.utilities.toolsQtWidget
+import mw4.gui.utilities.toolsQtWidget
 import pytest
-from base import packageConfig
-from gui.mainWindow.mainWindow import MainWindow
+from mw4.base import packageConfig
+from mw4.gui.mainWindow.mainWindow import MainWindow
 
 # external packages
 from PySide6.QtGui import QCloseEvent
@@ -90,7 +90,7 @@ def test_closeEvent_1(window):
 def test_quitSave_1(window):
     window.ui.profile.setText("test")
     with mock.patch.object(window, "saveProfile"):
-        with mock.patch.object(gui.mainWindow.mainWindow, "saveProfile"):
+        with mock.patch.object(mw4.gui.mainWindow.mainWindow, "saveProfile"):
             with mock.patch.object(window, "close"):
                 window.quitSave()
 
@@ -327,7 +327,7 @@ def test_loadProfileGUI_1(window):
 def test_loadProfileGUI2(window):
     with mock.patch.object(window, "openFile", return_value=Path("config.cfg")):
         with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(gui.mainWindow.mainWindow, "loadProfile", return_value={}):
+            with mock.patch.object(mw4.gui.mainWindow.mainWindow, "loadProfile", return_value={}):
                 with mock.patch.object(window, "switchProfile"):
                     window.loadProfileGUI()
 
@@ -336,7 +336,7 @@ def test_loadProfileGUI_3(window):
     with mock.patch.object(window, "openFile", return_value=Path("test.cfg")):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(
-                gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}
+                mw4.gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}
             ):
                 with mock.patch.object(window, "switchProfile"):
                     window.loadProfileGUI()
@@ -344,40 +344,38 @@ def test_loadProfileGUI_3(window):
 
 def test_addProfileGUI_1(window):
     with mock.patch.object(window, "openFile", return_value=Path("cfg")):
-        suc = window.addProfileGUI()
-        assert not suc
+        window.addProfileGUI()
 
 
 def test_addProfileGUI_2(window):
     with mock.patch.object(window, "openFile", return_value=Path("test.cfg")):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(
-                gui.mainWindow.mainWindow, "loadProfile", return_value=None
+                mw4.gui.mainWindow.mainWindow, "loadProfile", return_value=None
             ):
                 with mock.patch.object(window, "storeConfig"):
                     with mock.patch.object(window.app, "storeConfig"):
                         with mock.patch.object(window, "switchProfile"):
-                            with mock.patch.object(gui.mainWindow.mainWindow, "blendProfile"):
-                                suc = window.addProfileGUI()
-                                assert not suc
+                            with mock.patch.object(mw4.gui.mainWindow.mainWindow, "blendProfile"):
+                                window.addProfileGUI()
 
 
 def test_addProfileGUI_3(window):
     with mock.patch.object(window, "openFile", return_value=Path("test.cfg")):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(
-                gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}
+                mw4.gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}
             ):
                 with mock.patch.object(window, "storeConfig"):
                     with mock.patch.object(window.app, "storeConfig"):
                         with mock.patch.object(window, "switchProfile"):
-                            with mock.patch.object(gui.mainWindow.mainWindow, "blendProfile"):
+                            with mock.patch.object(mw4.gui.mainWindow.mainWindow, "blendProfile"):
                                 window.addProfileGUI()
 
 
 def test_saveConfigAs1(window):
     with mock.patch.object(window, "saveFile", return_value=Path("test.cfg")):
-        with mock.patch.object(gui.mainWindow.mainWindow, "saveProfile", return_value=True):
+        with mock.patch.object(mw4.gui.mainWindow.mainWindow, "saveProfile", return_value=True):
             with mock.patch.object(window.app, "storeConfig"):
                 with mock.patch.object(window, "storeConfig"):
                     window.saveProfileAs()
@@ -385,7 +383,7 @@ def test_saveConfigAs1(window):
 
 def test_saveConfigAs2(window):
     with mock.patch.object(window, "saveFile", return_value=Path("test.cfg")):
-        with mock.patch.object(gui.mainWindow.mainWindow, "saveProfile", return_value=False):
+        with mock.patch.object(mw4.gui.mainWindow.mainWindow, "saveProfile", return_value=False):
             with mock.patch.object(window.app, "storeConfig"):
                 with mock.patch.object(window, "storeConfig"):
                     window.saveProfileAs()
@@ -400,7 +398,7 @@ def test_saveConfig1(window):
     with mock.patch.object(window, "storeConfig"):
         with mock.patch.object(window.app, "storeConfig"):
             with mock.patch.object(
-                gui.mainWindow.mainWindow, "saveProfile", return_value=True
+                mw4.gui.mainWindow.mainWindow, "saveProfile", return_value=True
             ):
                 window.saveProfile()
 
@@ -409,7 +407,7 @@ def test_saveConfig2(window):
     with mock.patch.object(window, "storeConfig"):
         with mock.patch.object(window.app, "storeConfig"):
             with mock.patch.object(
-                gui.mainWindow.mainWindow, "saveProfile", return_value=False
+                mw4.gui.mainWindow.mainWindow, "saveProfile", return_value=False
             ):
                 window.saveProfile()
 

@@ -17,10 +17,11 @@
 
 # external packages
 from astropy.io import fits
-from base.ascomClass import AscomClass
+
+from mw4.base.ascomClass import AscomClass
 
 # local imports
-from base.tpool import Worker
+from mw4.base.tpool import Worker
 
 
 class CameraAscom(AscomClass):

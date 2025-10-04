@@ -18,7 +18,7 @@
 # external packages
 
 # local import
-from base.packageConfig import excludedPlatforms
+from mw4.base.packageConfig import excludedPlatforms
 
 
 def test_config():

@@ -17,13 +17,13 @@
 import json
 import os
 
-# local import
-from gui.mainWaddon.astroObjects import AstroObjects
-from logic.databaseProcessing.sourceURL import asteroidSourceURLs
-
 # external packages
 from PySide6.QtCore import QObject, Qt
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
+
+# local import
+from mw4.gui.mainWaddon.astroObjects import AstroObjects
+from mw4.logic.databaseProcessing.sourceURL import asteroidSourceURLs
 
 
 class Asteroid(QObject):

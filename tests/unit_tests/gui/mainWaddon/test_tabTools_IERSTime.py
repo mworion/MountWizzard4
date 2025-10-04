@@ -17,11 +17,11 @@
 from pathlib import Path
 from unittest import mock
 
-import gui.utilities
+import mw4.gui.utilities
 import pytest
-from gui.extWindows.uploadPopupW import UploadPopup
-from gui.mainWaddon.tabTools_IERSTime import IERSTime
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.extWindows.uploadPopupW import UploadPopup
+from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QWidget
@@ -126,7 +126,7 @@ def test_finishLoadFinalsFromSourceURLs_1(function):
         returnValues = {"success": False}
 
     function.downloadPopup = Test()
-    with mock.patch.object(gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
+    with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
         suc = function.finishLoadFinalsFromSourceURLs()
         assert not suc
 
@@ -136,20 +136,20 @@ def test_finishLoadFinalsFromSourceURLs_2(function):
         returnValues = {"success": True}
 
     function.downloadPopup = Test()
-    with mock.patch.object(gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
+    with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
         suc = function.finishLoadFinalsFromSourceURLs()
         assert suc
 
 
 def test_loadTimeDataFromSourceURLs_1(function):
     function.ui.isOnline.setChecked(False)
-    with mock.patch.object(gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
+    with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
         suc = function.loadTimeDataFromSourceURLs()
         assert not suc
 
 
 def test_loadTimeDataFromSourceURLs_2(function):
     function.ui.isOnline.setChecked(True)
-    with mock.patch.object(gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
+    with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
         suc = function.loadTimeDataFromSourceURLs()
         assert suc

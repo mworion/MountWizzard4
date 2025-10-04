@@ -16,11 +16,11 @@
 # standard libraries
 import logging
 
-# local imports
-from mountcontrol.convert import valueToAngle, valueToFloat
-
 # external packages
 from skyfield.units import Angle
+
+# local imports
+from mw4.mountcontrol.convert import valueToAngle, valueToFloat
 
 
 class TLEParams:

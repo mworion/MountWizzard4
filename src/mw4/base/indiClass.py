@@ -16,14 +16,14 @@
 # standard libraries
 import logging
 
-from base.signalsDevices import Signals
-
-# local imports
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from indibase.indiClient import Client
-
 # external packages
 from PySide6.QtCore import QTimer
+
+from mw4.base.signalsDevices import Signals
+
+# local imports
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.indibase.indiClient import Client
 
 
 class IndiClass:

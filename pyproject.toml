@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=77.0.3", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0a26"
+version = "4.0.0a31"
 license = "Apache-2.0"
 description = "Tool for managing 10micron mounts"
 readme = "README.rst"
@@ -72,11 +72,6 @@ BugTracker = "https://github.com/mworion/mountwizzard4/issues"
 Discussions = "https://github.com/mworion/MountWizzard4/discussions"
 Channel = "https://www.youtube.com/user/orion49m/featured"
 Forum = "https://www.10micron.eu/forum/"
-
-[tool.setuptools.packages.find]
-where = ["mw4"]
-exclude = ["tests*", "doc*"]
-namespaces = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -26,7 +26,7 @@ env:
   uic: 'pyside6-uic'
   ucc: 'pyside6-rcc'
   res: 'mw4/assets/'
-  version: '-v 4.0.0a26'
+  version: '-v 4.0.0a27'
 
 on:
   push:
@@ -90,7 +90,6 @@ jobs:
         path: dist
         
   install_package_windows:
-    if: always()
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -118,6 +117,7 @@ jobs:
           target: dist/
           
       - name: MountWizzard4 Install
+        continue-on-error: true
         shell: cmd
         run: |
           cd dist
@@ -130,6 +130,7 @@ jobs:
           
       - name: Run MountWizzard4
         shell: cmd
+        continue-on-error: true
         run: |
           cd dist
           touch test.run

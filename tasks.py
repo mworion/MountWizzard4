@@ -101,7 +101,7 @@ def clean_mw(c):
     printMW("clean mountwizzard")
     runMW(c, "rm -rf .pytest_cache")
     runMW(c, "rm -rf mw4.egg-info")
-    runMW(c, 'find ./mw4 | grep -E "(__pycache__)" | xargs rm -rf')
+    runMW(c, 'find ./mountwizzard4 | grep -E "(__pycache__)" | xargs rm -rf')
     runMW(c, 'find ./tests | grep -E "(__pycache__)" | xargs rm -rf')
     printMW("clean mountwizzard finished\n")
 
@@ -142,30 +142,32 @@ def version_doc(c):
 @task
 def update_builtins(c):
     printMW("updating builtins")
-    runMW(c, "cp ./work/data/de440_mw4.bsp ./mw4/assets/data/de440_mw4.bsp")
-    runMW(c, "cp ./work/data/finals2000A.all ./mw4/assets/data/finals2000A.all")
-    runMW(c, "cp ./work/data/finals.data ./mw4/assets/data/finals.data")
-    runMW(c, "cp ./work/data/CDFLeapSeconds.txt ./mw4/assets/data/CDFLeapSeconds.txt")
+    runMW(c, "cp ./work/data/de440_mw4.bsp ./assets/data/de440_mw4.bsp")
+    runMW(c, "cp ./work/data/finals2000A.all ./assets/data/finals2000A.all")
+    runMW(c, "cp ./work/data/finals.data ./assets/data/finals.data")
+    runMW(c, "cp ./work/data/CDFLeapSeconds.txt ./assets/data/CDFLeapSeconds.txt")
     printMW("updating builtins finished\n")
 
 
 @task
 def build_resource(c):
     printMW("building resources")
-    resourceDir = "./mw4/assets/"
+    resourceDir = "./assets/"
+    resourceDestDir = "./src/mw4//assets/"
     with c.cd(resourceDir + "data"):
         with open(resourceDir + "data/content.txt", "w") as f:
             for file in glob.glob(resourceDir + "data/*.*"):
                 t = os.stat(file).st_mtime
                 f.write(f"{os.path.basename(file)} {t}\n")
-    runMW(c, f"pyside6-rcc -o {resourceDir}assetsData.py {resourceDir}assetData.qrc")
+    runMW(c, f"pyside6-rcc -o {resourceDestDir}assetsData.py {resourceDir}assetData.qrc")
     printMW("building resources finished\n")
 
 
 @task
 def build_widgets(c):
     printMW("building widgets")
-    widgetDir = "./mw4/gui/widgets/"
+    widgetDirIn = "./widgets/"
+    widgetDirOut = "./src/mw4/gui/widgets/"
     widgets = [
         "analyse",
         "devicePopup",
@@ -184,8 +186,9 @@ def build_widgets(c):
         "material",
     ]
     for widget in widgets:
-        name = widgetDir + widget
-        runMW(c, f"pyside6-uic {name}.ui > {name}_ui.py")
+        nameIn = widgetDirIn + widget
+        nameOut = widgetDirOut + widget
+        runMW(c, f"pyside6-uic {nameIn}.ui > {nameOut}_ui.py")
     printMW("building widgets finished\n")
 
 

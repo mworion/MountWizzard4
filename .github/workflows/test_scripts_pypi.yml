@@ -104,6 +104,7 @@ jobs:
           python startup.pyz --no-start ${{ env.version }}
         
       - name: Check Install
+        if: always()
         run: |
           ls -la
           cat log/*.log
@@ -115,6 +116,7 @@ jobs:
           xvfb-run python3 startup.pyz ${{ env.version }}
         
       - name: Check Run
+        if: always()
         run: |
           ls -la
           cat log/*.log
@@ -146,6 +148,7 @@ jobs:
           python startup.pyz --no-start ${{ env.version }}
         
       - name: Check Install
+        if: always()
         run: |
           ls -la
           cat log/*.log
@@ -157,6 +160,7 @@ jobs:
           python startup.pyz ${{ env.version }}
         
       - name: Check Run
+        if: always()
         run: |
           ls -la
           cat log/*.log

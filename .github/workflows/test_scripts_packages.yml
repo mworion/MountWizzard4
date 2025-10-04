@@ -176,6 +176,9 @@ jobs:
         run: |
           cd dist
           python startup.pyz --no-start ${{ env.version }}
+        
+      - name: Check Install
+        run: |
           ls -la
           cat log/*.log
           
@@ -185,6 +188,9 @@ jobs:
           cd dist
           touch test.run
           xvfb-run python3 startup.pyz ${{ env.version }}
+
+      - name: Check Run
+        run: |
           ls -la
           cat log/*.log
 
@@ -223,3 +229,9 @@ jobs:
           python startup.pyz --no-start ${{ env.version }}
           ls -la
           cat log/*.log
+        
+      - name: Check Install
+        run: |
+          ls -la
+          cat log/*.log
+

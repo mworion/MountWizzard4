@@ -102,6 +102,9 @@ jobs:
         if: always()
         run: |
           python startup.pyz --no-start ${{ env.version }}
+        
+      - name: Check Install
+        run: |
           ls -la
           cat log/*.log
   
@@ -110,8 +113,12 @@ jobs:
         run: |
           touch test.run
           xvfb-run python3 startup.pyz ${{ env.version }}
+        
+      - name: Check Run
+        run: |
           ls -la
           cat log/*.log
+
           
   install_macOS:
     if: always()
@@ -137,6 +144,9 @@ jobs:
         run: |
           touch test.run
           python startup.pyz --no-start ${{ env.version }}
+        
+      - name: Check Install
+        run: |
           ls -la
           cat log/*.log
           
@@ -145,6 +155,9 @@ jobs:
         run: |
           touch test.run
           python startup.pyz ${{ env.version }}
+        
+      - name: Check Run
+        run: |
           ls -la
           cat log/*.log
           

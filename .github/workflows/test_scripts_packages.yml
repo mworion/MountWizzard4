@@ -9,7 +9,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PySide6
 #
-# written in python3, (c) 2019-2025 by mworion
+# written in python3, (c) 2019-2026 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -74,7 +74,7 @@ jobs:
         ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.wid}}analyse_ui.py
         ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.wid}}simulator_ui.py
         # ${{env.uic}} ${{env.wid}}material.ui -o ${{env.wid}}material_ui.py
-        ${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
+        ${{env.ucc}} ${{env.res}}assets.qrc -o ${{env.res}}assets.py
 
     - name: build_package
       run: |

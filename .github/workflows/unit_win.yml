@@ -59,7 +59,15 @@ jobs:
         run: |
           pytest tests/unit_tests/loader ${{env.cov}}
           pytest tests/unit_tests/update ${{env.cov}}
+          
+      - name: rename_coveragefile
+        run: mv .coverage c0.dat
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c0
+          path: c0.dat
+          
   run_tests_windows_1:
     #
     needs: build_package

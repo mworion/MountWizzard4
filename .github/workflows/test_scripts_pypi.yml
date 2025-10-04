@@ -87,7 +87,6 @@ jobs:
       - name: Install Head
         run: |
           sudo apt-get update
-          sudo apt-get -y upgrade
           sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
           sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
           sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0

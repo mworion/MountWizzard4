@@ -15,6 +15,7 @@
 ###########################################################
 # standard libraries
 import pytest
+
 from mw4.logic.environment.directWeather import DirectWeather
 
 # external packages

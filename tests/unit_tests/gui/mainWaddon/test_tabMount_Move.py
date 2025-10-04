@@ -16,14 +16,15 @@
 # standard libraries
 import unittest.mock as mock
 
-import mw4.gui.mainWaddon.tabMount
 import pytest
-from mw4.gui.mainWaddon.tabMount_Move import MountMove
-from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QInputDialog, QWidget
 from skyfield.api import Angle
+
+import mw4.gui.mainWaddon.tabMount
+from mw4.gui.mainWaddon.tabMount_Move import MountMove
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

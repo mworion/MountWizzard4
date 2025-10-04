@@ -23,6 +23,7 @@ import pytest
 
 # external packages
 import requests
+
 from mw4.base.loggerMW import setupLogging
 from mw4.logic.environment.seeingWeather import SeeingWeather
 

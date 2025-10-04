@@ -23,13 +23,14 @@ import cv2
 import numpy as np
 import pyqtgraph as pg
 import pytest
-from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
-from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
-from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 
 # external packages
 from PySide6.QtCore import QPointF
 from skyfield.api import Angle
+
+from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
+from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
+from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

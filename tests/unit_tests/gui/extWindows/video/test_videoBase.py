@@ -17,15 +17,16 @@
 import unittest.mock as mock
 
 import cv2
-import mw4.gui.extWindows.video.videoBase
 import numpy as np
 import pytest
-from mw4.gui.extWindows.video.videoBase import VideoWindowBase
-from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent, QPixmap
 from PySide6.QtWidgets import QInputDialog
+
+import mw4.gui.extWindows.video.videoBase
+from mw4.gui.extWindows.video.videoBase import VideoWindowBase
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

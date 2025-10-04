@@ -20,16 +20,17 @@ import time
 import unittest.mock as mock
 from pathlib import Path
 
+import pytest
+
+# external packages
+from skyfield.api import Angle
+
 import mw4.gui.mainWaddon
 import mw4.gui.mainWaddon.tabModel
-import pytest
 from mw4.gui.mainWaddon.tabModel import Model
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.logic.modelBuild.modelData import ModelData
-
-# external packages
-from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

@@ -26,6 +26,7 @@ if not platform.system() == "Windows":
 import ctypes
 
 from astropy.io import fits
+
 from mw4.base.ascomClass import AscomClass
 from mw4.base.loggerMW import setupLogging
 from mw4.logic.camera.camera import Camera

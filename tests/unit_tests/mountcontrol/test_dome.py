@@ -17,11 +17,11 @@
 import unittest
 import unittest.mock as mock
 
-# local imports
-from mw4.mountcontrol.dome import Dome
-
 # external packages
 from skyfield.api import Angle
+
+# local imports
+from mw4.mountcontrol.dome import Dome
 
 
 class TestConfigData(unittest.TestCase):

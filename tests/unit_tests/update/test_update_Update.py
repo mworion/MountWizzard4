@@ -22,6 +22,7 @@ import sys
 import unittest.mock as mock
 
 import pytest
+
 from mw4.base.loggerMW import setupLogging
 
 # external packages

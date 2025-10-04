@@ -18,6 +18,9 @@ import math
 import unittest
 import unittest.mock as mock
 
+# external packages
+from skyfield.api import Angle
+
 # local imports
 import mw4.mountcontrol
 from mw4.mountcontrol.convert import (
@@ -42,9 +45,6 @@ from mw4.mountcontrol.convert import (
     valueToFloat,
     valueToInt,
 )
-
-# external packages
-from skyfield.api import Angle
 
 
 class TestConfigData(unittest.TestCase):

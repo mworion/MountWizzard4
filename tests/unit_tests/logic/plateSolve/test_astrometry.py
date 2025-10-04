@@ -21,8 +21,9 @@ import subprocess
 from pathlib import Path
 from unittest import mock
 
-import mw4.logic
 import pytest
+
+import mw4.logic
 from mw4.logic.plateSolve.astrometry import Astrometry
 from mw4.logic.plateSolve.plateSolve import PlateSolve
 

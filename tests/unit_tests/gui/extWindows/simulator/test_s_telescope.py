@@ -17,12 +17,13 @@
 from unittest import mock
 
 import pytest
-from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 # external packages
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from skyfield.api import Angle
+
+from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

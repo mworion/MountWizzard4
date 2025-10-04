@@ -26,6 +26,7 @@ import pytest
 
 # external packages
 import requests
+
 from mw4.base.loggerMW import setupLogging
 from mw4.gui.mainWaddon.tabSett_Update import SettUpdate
 from mw4.gui.utilities.toolsQtWidget import MWidget

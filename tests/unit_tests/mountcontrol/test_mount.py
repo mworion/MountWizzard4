@@ -23,13 +23,14 @@ import pytest
 
 # external packages
 import wakeonlan
+from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
+from skyfield.api import Angle, wgs84
+
 from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.mount import MountDevice
 
 # local imports
 from mw4.mountcontrol.mountSignals import MountSignals
-from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
-from skyfield.api import Angle, wgs84
 
 setupLogging()
 

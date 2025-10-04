@@ -17,14 +17,15 @@
 from pathlib import Path
 from unittest import mock
 
-import mw4.gui
 import pytest
-from mw4.gui.mainWaddon.astroObjects import AstroObjects
-from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtCore import QThreadPool
 
 # external packages
 from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem, QWidget
+
+import mw4.gui
+from mw4.gui.mainWaddon.astroObjects import AstroObjects
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

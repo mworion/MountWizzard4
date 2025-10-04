@@ -20,12 +20,13 @@ import unittest.mock as mock
 
 import pyqtgraph as pg
 import pytest
-from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
-from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtCore import QPointF
 from PySide6.QtGui import QCloseEvent
+
+from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

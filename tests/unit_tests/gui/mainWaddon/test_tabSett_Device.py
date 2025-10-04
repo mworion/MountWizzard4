@@ -16,14 +16,15 @@
 # standard libraries
 from unittest import mock
 
-import mw4.gui
 import pytest
-from mw4.gui.mainWaddon.tabSett_Device import SettDevice
-from mw4.gui.utilities.toolsQtWidget import MWidget
-from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QPushButton
+
+import mw4.gui
+from mw4.gui.mainWaddon.tabSett_Device import SettDevice
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

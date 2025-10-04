@@ -14,23 +14,22 @@
 #
 ###########################################################
 # standard libraries
-import os
 import glob
+import os
 import shutil
-from random import randint
 from pathlib import Path
+from random import randint
 
 # external packages
 import pytest
-from PySide6.QtCore import Qt
-from PySide6.QtCore import QThreadPool
-from PySide6.QtTest import QTest
+from loader import extractDataFiles
 
 # local import
 from mainApp import MountWizzard4
-from mw4.base.tpool import Worker
-from loader import extractDataFiles
+from PySide6.QtCore import Qt, QThreadPool
+from PySide6.QtTest import QTest
 
+from mw4.base.tpool import Worker
 
 mwglob = {
     "dataDir": Path("tests/work/data"),

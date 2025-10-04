@@ -20,11 +20,11 @@ import unittest.mock as mock
 # external packages
 import pyqtgraph as pg
 import pytest
+from PySide6.QtCore import QEvent, QPointF, Qt
 
 # local import
 from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 from mw4.gui.utilities.gNormalScatter import NormalScatter
-from PySide6.QtCore import QEvent, QPointF, Qt
 
 
 @pytest.fixture(autouse=True, scope="module")

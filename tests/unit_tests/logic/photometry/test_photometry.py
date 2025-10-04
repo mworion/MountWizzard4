@@ -16,15 +16,14 @@
 # standard libraries
 import unittest.mock as mock
 
-# local import
-import mw4.logic.photometry.photometry
-
 # external packages
 import numpy as np
 import pytest
 import sep
-from mw4.logic.photometry.photometry import Photometry, PhotometrySignals
 
+# local import
+import mw4.logic.photometry.photometry
+from mw4.logic.photometry.photometry import Photometry, PhotometrySignals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

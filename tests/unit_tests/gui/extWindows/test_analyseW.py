@@ -20,11 +20,12 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from mw4.gui.extWindows.analyseW import AnalyseWindow
-from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # external packages
 from PySide6.QtGui import QCloseEvent, QResizeEvent
+
+from mw4.gui.extWindows.analyseW import AnalyseWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

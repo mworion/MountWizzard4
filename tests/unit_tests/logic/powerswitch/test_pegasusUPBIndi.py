@@ -17,6 +17,7 @@
 import unittest.mock as mock
 
 import pytest
+
 from mw4.base.indiClass import IndiClass
 from mw4.base.signalsDevices import Signals
 from mw4.indibase.indiClient import Client

@@ -16,18 +16,17 @@
 # standard libraries
 from unittest import mock
 
-# local import
-import mw4.base.alpacaClass
-
 # external packages
 import PySide6
 import pytest
 import requests
+from PySide6.QtCore import QTimer
+
+# local import
+import mw4.base.alpacaClass
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
-from PySide6.QtCore import QTimer
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

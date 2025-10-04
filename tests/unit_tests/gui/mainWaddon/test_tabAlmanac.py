@@ -19,13 +19,14 @@ from unittest import mock
 
 import numpy as np
 import pytest
-from mw4.gui.mainWaddon.tabAlmanac import Almanac
-from mw4.gui.utilities.toolsQtWidget import MWidget
-from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtGui import QPixmap
 from skyfield.api import wgs84
+
+from mw4.gui.mainWaddon.tabAlmanac import Almanac
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

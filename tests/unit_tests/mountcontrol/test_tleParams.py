@@ -16,13 +16,13 @@
 # standard libraries
 import unittest
 
+# external packages
+from skyfield.api import Angle, load
+
 from mw4.base.loggerMW import setupLogging
 
 # local imports
 from mw4.mountcontrol.tleParams import TLEParams
-
-# external packages
-from skyfield.api import Angle, load
 
 setupLogging()
 

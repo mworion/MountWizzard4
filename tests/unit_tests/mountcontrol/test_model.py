@@ -17,16 +17,17 @@
 import unittest
 import unittest.mock as mock
 
-import mw4.mountcontrol
 import numpy
 
 # external packages
 import skyfield.api
+from skyfield.api import Angle, Star, wgs84
+
+import mw4.mountcontrol
 from mw4.mountcontrol import obsSite
 
 # local imports
 from mw4.mountcontrol.model import Model, ModelStar, ProgStar
-from skyfield.api import Angle, Star, wgs84
 
 obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 

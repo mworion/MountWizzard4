@@ -20,6 +20,7 @@ import webbrowser
 from unittest import mock
 
 import pytest
+
 from mw4.base.loggerMW import setupLogging
 from mw4.gui.mainWaddon.tabEnviron_Seeing import EnvironSeeing
 from mw4.gui.utilities.toolsQtWidget import MWidget

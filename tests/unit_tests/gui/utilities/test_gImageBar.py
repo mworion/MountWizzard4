@@ -19,11 +19,11 @@ import unittest.mock as mock
 import numpy as np
 import pytest
 
-# local import
-from mw4.gui.utilities.gImageBar import ImageBar
-
 # external packages
 from PySide6.QtWidgets import QWidget
+
+# local import
+from mw4.gui.utilities.gImageBar import ImageBar
 
 
 @pytest.fixture(autouse=True, scope="module")

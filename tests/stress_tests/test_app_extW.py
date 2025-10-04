@@ -14,21 +14,21 @@
 #
 ###########################################################
 # standard libraries
-import os
 import glob
-import pytest
+import os
 from pathlib import Path
 
+import pytest
+from loader import extractDataFiles
+from mainApp import MountWizzard4
+
 # external packages
-from PySide6.QtCore import Qt
-from PySide6.QtCore import QThreadPool
+from PySide6.QtCore import Qt, QThreadPool
+
+from mw4.base.tpool import Worker
 
 # local import
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
-from mainApp import MountWizzard4
-from mw4.base.tpool import Worker
-from loader import extractDataFiles
-
 
 mwglob = {
     "dataDir": Path("tests/work/data"),

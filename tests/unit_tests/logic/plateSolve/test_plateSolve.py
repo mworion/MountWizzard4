@@ -20,6 +20,7 @@ import shutil
 from unittest import mock
 
 import pytest
+
 from mw4.logic.plateSolve.plateSolve import PlateSolve
 
 # external packages

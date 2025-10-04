@@ -16,11 +16,13 @@
 # standard libraries
 from unittest import mock
 
-import mw4.logic
-
 # external packages
 import numpy as np
 import pytest
+from skyfield.api import Angle, EarthSatellite, wgs84
+from skyfield.timelib import Time
+
+import mw4.logic
 from mw4.logic.satellites.satellite_calculations import (
     addMeridianTransit,
     calcAppMag,
@@ -36,8 +38,6 @@ from mw4.logic.satellites.satellite_calculations import (
     findSunlit,
     sortFlipEvents,
 )
-from skyfield.api import Angle, EarthSatellite, wgs84
-from skyfield.timelib import Time
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

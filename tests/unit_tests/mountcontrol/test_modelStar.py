@@ -15,13 +15,14 @@
 ###########################################################
 # standard libraries
 import pytest
+
+# external packages
+from skyfield.api import Angle, Star, wgs84
+
 from mw4.mountcontrol import obsSite
 
 # local imports
 from mw4.mountcontrol.model import ModelStar
-
-# external packages
-from skyfield.api import Angle, Star, wgs84
 
 
 @pytest.fixture(autouse=True, scope="function")

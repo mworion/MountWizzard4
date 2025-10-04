@@ -19,6 +19,7 @@ import unittest.mock as mock
 # external packages
 import PySide6
 import pytest
+
 from mw4.base.signalsDevices import Signals
 from mw4.logic.cover.coverAlpaca import CoverAlpaca
 

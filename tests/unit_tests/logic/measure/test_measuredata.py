@@ -19,8 +19,9 @@ import unittest.mock as mock
 # external packages
 import numpy as np
 import pytest
-from mw4.logic.measure.measure import MeasureData
 from skyfield.api import Angle
+
+from mw4.logic.measure.measure import MeasureData
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

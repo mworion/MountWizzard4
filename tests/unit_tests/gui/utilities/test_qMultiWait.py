@@ -17,8 +17,9 @@
 
 # external packages
 # local import
-from mw4.gui.utilities.qMultiWait import QMultiWait
 from PySide6.QtCore import QObject, Signal
+
+from mw4.gui.utilities.qMultiWait import QMultiWait
 
 
 def test_QMultiWait_1():

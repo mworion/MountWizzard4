@@ -20,6 +20,7 @@ import unittest.mock as mock
 # external packages
 import PySide6
 import pytest
+
 from mw4.logic.measure.measureCSV import MeasureDataCSV
 
 # local import

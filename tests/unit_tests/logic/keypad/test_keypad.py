@@ -18,12 +18,12 @@ from unittest import mock
 
 import pytest
 
-# local import
-from mw4.logic.keypad.keypad import KeyPad
-
 # external packages
 from PySide6.QtCore import QObject, Signal
 from websocket import WebSocketApp
+
+# local import
+from mw4.logic.keypad.keypad import KeyPad
 
 
 @pytest.fixture(autouse=True, scope="function")

@@ -18,18 +18,19 @@ import shutil
 import unittest.mock as mock
 from pathlib import Path
 
-import mw4.gui.extWindows.image.imageW
 import pytest
+
+# external packages
+from PySide6.QtGui import QCloseEvent
+from skyfield.api import Angle
+
+import mw4.gui.extWindows.image.imageW
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
 from mw4.gui.extWindows.image.imageW import ImageWindow
 from mw4.gui.utilities.slewInterface import SlewInterface
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.logic.file.fileHandler import FileHandler
 from mw4.logic.photometry.photometry import Photometry
-
-# external packages
-from PySide6.QtGui import QCloseEvent
-from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

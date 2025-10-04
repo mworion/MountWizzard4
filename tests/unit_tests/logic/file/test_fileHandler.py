@@ -23,11 +23,10 @@ import pytest
 
 # external packages
 from astropy.io import fits
+from xisf import XISF
 
 # local import
 from mw4.logic.file.fileHandler import FileHandler, FileHandlerSignals
-from xisf import XISF
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

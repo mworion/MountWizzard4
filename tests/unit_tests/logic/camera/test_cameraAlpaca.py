@@ -20,6 +20,7 @@ import pytest
 
 # external packages
 from astropy.io import fits
+
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 

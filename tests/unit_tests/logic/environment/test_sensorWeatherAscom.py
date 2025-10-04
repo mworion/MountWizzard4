@@ -17,6 +17,7 @@
 import platform
 
 import pytest
+
 from mw4.base.signalsDevices import Signals
 from mw4.logic.environment.sensorWeatherAscom import SensorWeatherAscom
 

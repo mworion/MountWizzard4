@@ -17,6 +17,7 @@
 import unittest.mock as mock
 
 import pytest
+
 from mw4.logic.cover.cover import Cover
 
 # external packages

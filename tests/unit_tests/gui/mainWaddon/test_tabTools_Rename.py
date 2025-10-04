@@ -23,12 +23,12 @@ import pytest
 
 # external packages
 from astropy.io import fits
+
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
 
 # local import
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

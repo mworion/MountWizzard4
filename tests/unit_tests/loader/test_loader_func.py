@@ -25,11 +25,11 @@ import traceback
 import unittest.mock as mock
 from pathlib import Path
 
-# local import
-import mw4.loader
-
 # external packages
 import pytest
+
+# local import
+import mw4.loader
 from mw4.loader import (
     checkIsAdmin,
     except_hook,

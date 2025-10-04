@@ -18,14 +18,15 @@ import os
 from pathlib import Path
 
 import pytest
-from mw4.base.loggerMW import setupLogging
-
-# local imports
-from mw4.mountcontrol.mount import MountDevice
 
 # external packages
 from PySide6.QtCore import QThreadPool
 from skyfield.api import Angle, wgs84
+
+from mw4.base.loggerMW import setupLogging
+
+# local imports
+from mw4.mountcontrol.mount import MountDevice
 
 setupLogging()
 

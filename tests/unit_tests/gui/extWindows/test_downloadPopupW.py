@@ -21,10 +21,11 @@ import unittest.mock as mock
 
 import pytest
 import requests
-from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 
 # external packages
 from PySide6.QtWidgets import QWidget
+
+from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

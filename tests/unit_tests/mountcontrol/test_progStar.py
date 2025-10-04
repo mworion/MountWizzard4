@@ -16,11 +16,11 @@
 # standard libraries
 import unittest
 
-# local imports
-from mw4.mountcontrol.progStar import ProgStar
-
 # external packages
 from skyfield.api import Angle, Star
+
+# local imports
+from mw4.mountcontrol.progStar import ProgStar
 
 
 class TestConfigData(unittest.TestCase):

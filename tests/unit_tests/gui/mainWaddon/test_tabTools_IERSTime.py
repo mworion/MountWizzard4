@@ -17,14 +17,15 @@
 from pathlib import Path
 from unittest import mock
 
-import mw4.gui.utilities
 import pytest
-from mw4.gui.extWindows.uploadPopupW import UploadPopup
-from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
-from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtWidgets import QWidget
+
+import mw4.gui.utilities
+from mw4.gui.extWindows.uploadPopupW import UploadPopup
+from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

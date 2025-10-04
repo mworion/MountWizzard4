@@ -17,10 +17,11 @@
 import unittest
 import unittest.mock as mock
 
+from packaging.version import Version
+
 # external packages
 # local imports
 from mw4.mountcontrol.firmware import Firmware
-from packaging.version import Version
 
 
 class TestConfigData(unittest.TestCase):

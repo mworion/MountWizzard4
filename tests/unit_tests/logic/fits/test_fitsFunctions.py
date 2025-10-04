@@ -16,12 +16,14 @@
 # standard libraries
 import unittest.mock as mock
 
-import mw4.logic
 import numpy as np
 import pytest
 
 # external packages
 from astropy.io import fits
+from skyfield.units import Angle
+
+import mw4.logic
 from mw4.logic.fits.fitsFunction import (
     calcAngleScaleFromWCSHeader,
     getCoordinatesFromHeader,
@@ -36,7 +38,6 @@ from mw4.logic.fits.fitsFunction import (
     writeHeaderCamera,
     writeHeaderPointing,
 )
-from skyfield.units import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App, Camera

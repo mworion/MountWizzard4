@@ -16,17 +16,17 @@
 # standard libraries
 import unittest.mock as mock
 
-# local import
-import mw4.gui.utilities.toolsQtWidget
 import pytest
-from mw4.base import packageConfig
-from mw4.gui.mainWindow.externalWindows import ExternalWindows
-from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # external packages
 from PySide6.QtCore import QObject, Signal
 from PySide6.QtWidgets import QPushButton, QWidget
 
+# local import
+import mw4.gui.utilities.toolsQtWidget
+from mw4.base import packageConfig
+from mw4.gui.mainWindow.externalWindows import ExternalWindows
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

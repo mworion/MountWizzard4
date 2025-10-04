@@ -19,12 +19,13 @@ import json
 from pathlib import Path
 from unittest import mock
 
-import mw4.logic.modelBuild.modelData
 import pytest
-from mw4.logic.modelBuild.modelData import ModelData
 
 # external packages
 from skyfield.api import Angle
+
+import mw4.logic.modelBuild.modelData
+from mw4.logic.modelBuild.modelData import ModelData
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

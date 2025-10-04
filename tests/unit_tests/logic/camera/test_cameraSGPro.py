@@ -18,6 +18,7 @@ import os
 import unittest.mock as mock
 
 import pytest
+
 from mw4.base.signalsDevices import Signals
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraSGPro import CameraSGPro

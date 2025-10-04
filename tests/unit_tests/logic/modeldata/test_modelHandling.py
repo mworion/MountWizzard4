@@ -16,14 +16,13 @@
 # standard libraries
 import pytest
 
+# external packages
+from skyfield.api import Angle, Star
+
 # local import
 from mw4.logic.modelBuild.modelHandling import writeRetrofitData
 from mw4.mountcontrol.model import Model
 from mw4.mountcontrol.modelStar import ModelStar
-
-# external packages
-from skyfield.api import Angle, Star
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

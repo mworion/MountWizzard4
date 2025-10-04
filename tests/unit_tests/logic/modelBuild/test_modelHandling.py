@@ -20,6 +20,9 @@ from datetime import datetime
 from pathlib import Path
 from unittest import mock
 
+# external packages
+from skyfield.api import Angle, Star, load, wgs84
+
 import mw4.logic.modelBuild.modelHandling
 from mw4.logic.modelBuild.modelHandling import (
     compareFile,
@@ -36,9 +39,6 @@ from mw4.mountcontrol import obsSite
 
 # local import
 from mw4.mountcontrol.model import Model, ModelStar
-
-# external packages
-from skyfield.api import Angle, Star, load, wgs84
 
 obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 

@@ -17,6 +17,7 @@
 from unittest import mock
 
 import pytest
+
 from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
 
 # external packages

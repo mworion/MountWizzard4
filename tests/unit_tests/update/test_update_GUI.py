@@ -19,10 +19,11 @@ import sys
 import unittest.mock as mock
 
 import pytest
-from mw4.base.loggerMW import setupLogging
 
 # external packages
 from PySide6.QtWidgets import QWidget
+
+from mw4.base.loggerMW import setupLogging
 
 # local import
 from mw4.update import Update, UpdateGUI

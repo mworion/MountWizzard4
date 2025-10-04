@@ -17,6 +17,7 @@
 from unittest import mock
 
 import pytest
+
 from mw4.assets import assetsData
 from mw4.gui.mainWaddon.tabSett_Dome import SettDome
 from mw4.gui.utilities.toolsQtWidget import MWidget

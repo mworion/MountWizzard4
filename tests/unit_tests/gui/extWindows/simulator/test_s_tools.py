@@ -15,6 +15,12 @@
 ###########################################################
 # standard libraries
 import pytest
+
+# external packages
+from PySide6.Qt3DCore import Qt3DCore
+from PySide6.Qt3DExtras import Qt3DExtras
+from PySide6.Qt3DRender import Qt3DRender
+
 from mw4.gui.extWindows.simulator.materials import Materials
 
 # local import
@@ -27,11 +33,6 @@ from mw4.gui.extWindows.simulator.tools import (
     linkSource,
     linkTransform,
 )
-
-# external packages
-from PySide6.Qt3DCore import Qt3DCore
-from PySide6.Qt3DExtras import Qt3DExtras
-from PySide6.Qt3DRender import Qt3DRender
 
 
 @pytest.fixture(autouse=True, scope="module")

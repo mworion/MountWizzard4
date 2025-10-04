@@ -17,6 +17,7 @@
 from unittest import mock
 
 import pytest
+
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 # external packages

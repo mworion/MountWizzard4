@@ -74,7 +74,7 @@ jobs:
         ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.wid}}analyse_ui.py
         ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.wid}}simulator_ui.py
         # ${{env.uic}} ${{env.wid}}material.ui -o ${{env.wid}}material_ui.py
-        ${{env.ucc}} ${{env.res}}assets.qrc -o ${{env.res}}assets.py
+        ${{env.ucc}} ${{env.res}}assetData.qrc -o ${{env.res}}assetData.py
 
     - name: build_package
       run: |

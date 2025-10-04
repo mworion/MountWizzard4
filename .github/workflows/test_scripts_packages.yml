@@ -22,10 +22,12 @@ concurrency:
 
 env:
   gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
-  wid: 'mw4/gui/widgets/'
+  wid: 'widgets/'
+  widDest: 'src/mw4/gui/widgets/'
   uic: 'pyside6-uic'
   ucc: 'pyside6-rcc'
-  res: 'mw4/assets/'
+  res: 'assets/'
+  resDest: 'src/mw4/assets/'
   version: '-v 4.0.0a31'
 
 on:
@@ -61,20 +63,20 @@ jobs:
     - name: build_widgets_resource
       run: |
         python -m pip install PySide6
-        ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.wid}}devicePopup_ui.py
-        ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.wid}}downloadPopup_ui.py
-        ${{env.uic}} ${{env.wid}}uploadPopup.ui -o ${{env.wid}}uploadPopup_ui.py
-        ${{env.uic}} ${{env.wid}}hemisphere.ui -o ${{env.wid}}hemisphere_ui.py
-        ${{env.uic}} ${{env.wid}}image.ui -o ${{env.wid}}image_ui.py
-        ${{env.uic}} ${{env.wid}}keypad.ui -o ${{env.wid}}keypad_ui.py
-        ${{env.uic}} ${{env.wid}}main.ui -o ${{env.wid}}main_ui.py
-        ${{env.uic}} ${{env.wid}}measure.ui -o ${{env.wid}}measure_ui.py
-        ${{env.uic}} ${{env.wid}}message.ui -o ${{env.wid}}message_ui.py
-        ${{env.uic}} ${{env.wid}}satellite.ui -o ${{env.wid}}satellite_ui.py
-        ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.wid}}analyse_ui.py
-        ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.wid}}simulator_ui.py
-        # ${{env.uic}} ${{env.wid}}material.ui -o ${{env.wid}}material_ui.py
-        ${{env.ucc}} ${{env.res}}assetData.qrc -o ${{env.res}}assetData.py
+        ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.widDest}}devicePopup_ui.py
+        ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.widDest}}downloadPopup_ui.py
+        ${{env.uic}} ${{env.wid}}uploadPopup.ui -o ${{env.widDest}}uploadPopup_ui.py
+        ${{env.uic}} ${{env.wid}}hemisphere.ui -o ${{env.widDest}}hemisphere_ui.py
+        ${{env.uic}} ${{env.wid}}image.ui -o ${{env.widDest}}image_ui.py
+        ${{env.uic}} ${{env.wid}}keypad.ui -o ${{env.widDest}}keypad_ui.py
+        ${{env.uic}} ${{env.wid}}main.ui -o ${{env.widDest}}main_ui.py
+        ${{env.uic}} ${{env.wid}}measure.ui -o ${{env.widDest}}measure_ui.py
+        ${{env.uic}} ${{env.wid}}message.ui -o ${{env.widDest}}message_ui.py
+        ${{env.uic}} ${{env.wid}}satellite.ui -o ${{env.widDest}}satellite_ui.py
+        ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.widDest}}analyse_ui.py
+        ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.widDest}}simulator_ui.py
+        ${{env.uic}} ${{env.wid}}material.ui -o ${{env.widDest}}material_ui.py
+        ${{env.ucc}} ${{env.res}}assetData.qrc -o ${{env.resDest}}assetData.py
 
     - name: build_package
       run: |

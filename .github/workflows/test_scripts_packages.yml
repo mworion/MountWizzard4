@@ -114,7 +114,7 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1.6.0
         with:
-          url: ${{ env.gh }}startup.pyz ${{ env.version }}
+          url: ${{ env.gh }}startup.pyz
           target: dist/
           
       - name: MountWizzard4 Install
@@ -122,7 +122,11 @@ jobs:
         run: |
           cd dist
           python startup.pyz --no-start ${{ env.version }}
-          dir
+        
+      - name: Check Install
+        run: |
+          dir dist
+          type dist\log\*.log
           
       - name: Run MountWizzard4
         shell: cmd
@@ -130,7 +134,12 @@ jobs:
           cd dist
           touch test.run
           python startup.pyz
-          dir
+        
+      - name: Check Run
+        run: |
+          dir dist
+          type dist\log\*.log
+
 
   install_package_ubuntu:
     needs: [build_widgets_resource]
@@ -178,8 +187,8 @@ jobs:
         
       - name: Check Install
         run: |
-          ls -la
-          cat log/*.log
+          ls -la dist
+          cat dist/log/*.log
           
       - name: Run MountWizzard4
         continue-on-error: true
@@ -190,8 +199,8 @@ jobs:
 
       - name: Check Run
         run: |
-          ls -la
-          cat log/*.log
+          ls -la dist
+          cat dist/log/*.log
 
 
   install_package_macOS:
@@ -225,13 +234,11 @@ jobs:
         run: |
           cd dist
           python startup.pyz --no-start ${{ env.version }}
-          ls -la
-          cat log/*.log
         
       - name: Check Install
         run: |
-          ls -la
-          cat log/*.log
+          ls -la dist
+          cat dist/log/*.log
           
       - name: MountWizzard4 Run
         continue-on-error: true
@@ -241,6 +248,6 @@ jobs:
         
       - name: Check Run
         run: |
-          ls -la
-          cat log/*.log
+          ls -la dist
+          cat dist/log/*.log
 

@@ -56,14 +56,22 @@ jobs:
         shell: cmd
         run: |
           python startup.pyz --no-start ${{ env.version }}
+        
+      - name: Check Install
+        run: |
           dir
+          type log\*.log
       
       - name: Run MountWizzard4
         shell: cmd
         run: |
           touch test.run
           python startup.pyz ${{ env.version }}
+        
+      - name: Check Run
+        run: |
           dir
+          type log\*.log
   
   install_ubuntu:
     runs-on: ${{ matrix.os }}

@@ -25,7 +25,7 @@ env:
   wid: 'mw4/gui/widgets/'
   uic: 'pyside6-uic'
   ucc: 'pyside6-rcc'
-  res: 'mw4/resource/'
+  res: 'mw4/assets/'
   version: '-v 4.0.0a26'
 
 on:

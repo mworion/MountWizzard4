@@ -22,13 +22,13 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  cov: '--cov=mw4/ --cov-append'
+  cov: '--cov=src/mw4 --cov-append'
 
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - 'mw4/**'
+      - 'src/mw4/**'
       - 'tests/unit_tests/**'
       - 'pyproject.toml'
       - '.github/workflows/unit_win.yml'
@@ -59,14 +59,6 @@ jobs:
         run: |
           pytest tests/unit_tests/loader ${{env.cov}}
           pytest tests/unit_tests/update ${{env.cov}}
-          
-      - name: rename_coveragefile
-        run: mv .coverage c0.dat
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: c0
-          path: c0.dat
 
   run_tests_windows_1:
     #
@@ -206,7 +198,7 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: coverage.xml
+          file: .coverage
           flags: unittests
           name: codecov-umbrella
           env_vars: OS,PYTHON

@@ -24,7 +24,7 @@ on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - 'mw4/**'
+      - 'src/mw4/**'
       - 'tests/unit_tests/**'
       - 'pyproject.toml'
       - '.github/workflows/unit_ubuntu.yml'

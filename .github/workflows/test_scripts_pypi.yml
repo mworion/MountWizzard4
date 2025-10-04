@@ -29,8 +29,7 @@ on:
     # Run this action on the trigger event when specific files are touched
     paths:
       - '.github/workflows/test_scripts_pypi.yml'
-      - 'support/**'
-      - 'setup.py'
+      - 'pyproject.toml'
 
 jobs:
   

@@ -34,7 +34,7 @@ on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - 'setup.py'
+      - 'pyproject.toml'
       - 'support/**'
       - '.github/workflows/test_scripts_packages.yml'
 

@@ -23,7 +23,6 @@ from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 # local import
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
-from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.logic.databaseProcessing.sourceURL import cometSourceURLs
 
 
@@ -74,9 +73,9 @@ class Comet(QObject):
 
     def setupIcons(self) -> None:
         """ """
-        MWidget.wIcon(self.ui.progCometFull, "run")
-        MWidget.wIcon(self.ui.progCometFiltered, "run")
-        MWidget.wIcon(self.ui.progCometSelected, "run")
+        self.mainW.wIcon(self.ui.progCometFull, "run")
+        self.mainW.wIcon(self.ui.progCometFiltered, "run")
+        self.mainW.wIcon(self.ui.progCometSelected, "run")
 
     def prepareCometTable(self) -> None:
         """ """

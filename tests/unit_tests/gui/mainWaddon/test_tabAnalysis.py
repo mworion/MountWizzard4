@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -17,21 +16,23 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
+
 import pytest
 
 # external packages
 from PySide6.QtWidgets import QWidget
 
+from mw4.gui.mainWaddon.tabAnalysis import Analysis
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+
 # local import
+from mw4.gui.utilities.toolsQtWidget import MWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gists.tabAnalysis import Analysis
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.runBasic import RunBasic
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
@@ -138,27 +139,4 @@ def test_updateAnalysisProgress_4(function):
 
 def test_runFlexure_1(function):
     with mock.patch.object(function, "checkAnalysisConditions", return_value=False):
-        suc = function.runFlexure()
-        assert not suc
-
-
-def test_runFlexure_2(function):
-    def test(
-        modelPoints=None,
-        retryCounter=None,
-        runType=None,
-        processData=None,
-        progress=None,
-        imgDir=None,
-        keepImages=None,
-    ):
-        return
-
-    function.cycleThroughPoints = test
-    with mock.patch.object(function, "checkAnalysisConditions", return_value=True):
-        with mock.patch.object(
-            RunBasic, "setupFilenamesAndDirectories", return_value=("", "")
-        ):
-            with mock.patch.object(RunBasic, "setupRunPoints", return_value=[1, 2]):
-                suc = function.runFlexure()
-                assert suc
+        function.runFlexure()

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -19,10 +18,10 @@
 # external packages
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
-class Analysis(MWidget):
+class Analysis:
     """ """
 
     def __init__(self, mainW):
@@ -64,9 +63,9 @@ class Analysis(MWidget):
 
     def setupIcons(self):
         """ """
-        self.wIcon(self.ui.runFlexure, "start")
-        self.wIcon(self.ui.runHysteresis, "start")
-        self.wIcon(self.ui.cancelAnalysis, "cross-circle")
+        self.mainW.wIcon(self.ui.runFlexure, "start")
+        self.mainW.wIcon(self.ui.runHysteresis, "start")
+        self.mainW.wIcon(self.ui.cancelAnalysis, "cross-circle")
 
     def setAnalysisOperationMode(self, status):
         """ """
@@ -114,8 +113,8 @@ class Analysis(MWidget):
 
     def restoreAnalysisDefaultContextAndGuiStatus(self):
         """ """
-        self.changeStyleDynamic(self.ui.runFlexure, "running", False)
-        self.changeStyleDynamic(self.ui.runHysteresis, "running", False)
+        changeStyleDynamic(self.ui.runFlexure, "running", False)
+        changeStyleDynamic(self.ui.runHysteresis, "running", False)
         self.ui.cancelAnalysis.setEnabled(False)
         self.ui.analysisPoints.setText("-")
         self.ui.analysisProgress.setValue(0)

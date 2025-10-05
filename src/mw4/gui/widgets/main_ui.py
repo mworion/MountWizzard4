@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'main.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.2
+## Created by: Qt User Interface Compiler version 6.9.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -23,9 +23,9 @@ from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QAbstract
     QSizePolicy, QSpacerItem, QTabWidget, QTableWidget,
     QTableWidgetItem, QTextBrowser, QVBoxLayout, QWidget)
 
-from gui.utilities.gNormalScatter import NormalScatter
-from gui.utilities.gPlotBase import PlotBase
-from gui.utilities.gPolarScatter import PolarScatter
+from mw4.gui.utilities.gNormalScatter import NormalScatter
+from mw4.gui.utilities.gPlotBase import PlotBase
+from mw4.gui.utilities.gPolarScatter import PolarScatter
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -8514,7 +8514,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.mainTabWidget.setCurrentIndex(0)
-        self.mountTabWidget.setCurrentIndex(3)
+        self.mountTabWidget.setCurrentIndex(0)
         self.modelingTabWidget.setCurrentIndex(0)
         self.manageTabWidget.setCurrentIndex(0)
         self.imagingTabWidget.setCurrentIndex(0)

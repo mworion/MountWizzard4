@@ -141,7 +141,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The mount Computer Settings are peseisted thrugh the mount itself. MW4 only reads them and sets them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -32928,19 +32928,19 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <customwidget>
    <class>PlotBase</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.gPlotBase</header>
+   <header>mw4.gui.utilities.gPlotBase</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>NormalScatter</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.gNormalScatter</header>
+   <header>mw4.gui.utilities.gNormalScatter</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>PolarScatter</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.gPolarScatter</header>
+   <header>mw4.gui.utilities.gPolarScatter</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

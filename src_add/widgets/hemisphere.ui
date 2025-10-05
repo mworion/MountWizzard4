@@ -650,7 +650,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideNone</enum>
@@ -1160,13 +1160,13 @@
   <customwidget>
    <class>PlotBase</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.gPlotBase</header>
+   <header>mw4.gui.utilities.gPlotBase</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>Hemisphere</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.gHemisphere</header>
+   <header>mw4.gui.utilities.gHemisphere</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

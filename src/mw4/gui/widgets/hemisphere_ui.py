@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'hemisphere.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.2
+## Created by: Qt User Interface Compiler version 6.9.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -20,8 +20,8 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QDoubleSpinBox, QGridLay
     QPushButton, QRadioButton, QSizePolicy, QSpacerItem,
     QTabWidget, QVBoxLayout, QWidget)
 
-from gui.utilities.gHemisphere import Hemisphere
-from gui.utilities.gPlotBase import PlotBase
+from mw4.gui.utilities.gHemisphere import Hemisphere
+from mw4.gui.utilities.gPlotBase import PlotBase
 
 class Ui_HemisphereDialog(object):
     def setupUi(self, HemisphereDialog):
@@ -437,7 +437,7 @@ class Ui_HemisphereDialog(object):
 
         self.retranslateUi(HemisphereDialog)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(HemisphereDialog)

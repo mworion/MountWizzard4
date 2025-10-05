@@ -1,3 +1,17 @@
+############################################################
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# GUI with PyQT5 for python
+#
+# written in python3, (c) 2019-2025 by mworion
+# Licence APL2.0
+#
+###########################################################
 [build-system]
 requires = ["setuptools>=77.0.3", "wheel"]
 build-backend = "setuptools.build_meta"

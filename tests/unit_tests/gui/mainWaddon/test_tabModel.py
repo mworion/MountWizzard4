@@ -307,7 +307,7 @@ def test_setupModelInputData_1(function):
 def test_setupBatchData_1(function):
     function.modelData = ModelData(App)
     with mock.patch.object(
-        function, "setupFilenamesAndDirectories", return_value=(Path(""), "test")
+        function, "setupFilenamesAndDirectories", return_value=(Path(""))
     ):
         function.setupBatchData()
 
@@ -408,7 +408,7 @@ def test_runFileModel_3(function):
             MWidget, "openFile", return_value=[Path("test1.model"), Path("test2.model")]
         ):
             with mock.patch.object(
-                function, "setupFilenamesAndDirectories", return_value=("m-test1-add", "")
+                function, "setupFilenamesAndDirectories", return_value=(Path("m-test1-add"))
             ):
                 with mock.patch.object(
                     mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=([], "")
@@ -416,7 +416,7 @@ def test_runFileModel_3(function):
                     with mock.patch.object(function.modelData, "buildProgModel"):
                         with mock.patch.object(function, "programModelToMount"):
                             function.runFileModel()
-                            assert function.modelData.name == "m-test1-add"
+                            assert function.modelData.name == Path("m-test1-add")
 
 
 def test_runFileModel_4(function):
@@ -427,6 +427,6 @@ def test_runFileModel_4(function):
             MWidget, "openFile", return_value=[Path("test1.model"), Path("test2.model")]
         ):
             with mock.patch.object(
-                function, "setupFilenamesAndDirectories", return_value=("m-test1-add", "")
+                function, "setupFilenamesAndDirectories", return_value=(Path("m-test1-add"))
             ):
                 function.runFileModel()

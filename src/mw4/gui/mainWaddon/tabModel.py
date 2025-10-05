@@ -224,7 +224,7 @@ class Model(QObject):
 
     def setupFilenamesAndDirectories(
         self, prefix: str = "", postfix: str = ""
-    ) -> [Path, Path]:
+    ) -> Path:
         """ """
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         name = f"{prefix}-{nameTime}-{postfix}"
@@ -233,7 +233,7 @@ class Model(QObject):
         if not imageDir.is_dir():
             os.mkdir(imageDir)
 
-        return name, imageDir
+        return imageDir
 
     def showProgress(self, progressData):
         """ """
@@ -257,10 +257,10 @@ class Model(QObject):
 
     def setupBatchData(self) -> None:
         """ """
-        name, imageDir = self.setupFilenamesAndDirectories(prefix="m")
+        imageDir = self.setupFilenamesAndDirectories(prefix="m")
         self.modelData.progress.connect(self.showProgress)
         self.modelData.imageDir = imageDir
-        self.modelData.name = name
+        self.modelData.name = imageDir.stem
         self.modelData.numberRetries = self.ui.numberBuildRetries.value()
         self.modelData.version = f"{self.app.__version__}"
         self.modelData.profile = self.ui.profile.text()
@@ -307,7 +307,7 @@ class Model(QObject):
         )
         if len(modelFilesPath) > 1:
             self.msg.emit(0, "Model", "Run", "Combination of len(modelFilesPath) files")
-            self.modelData.name, _ = self.setupFilenamesAndDirectories(
+            self.modelData.name = self.setupFilenamesAndDirectories(
                 prefix="m", postfix="add"
             )
         elif len(modelFilesPath) == 1:

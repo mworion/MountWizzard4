@@ -2037,13 +2037,13 @@
   <customwidget>
    <class>NormalScatter</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.gNormalScatter</header>
+   <header>mw4.gui.utilities.gNormalScatter</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>PolarScatter</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.gPolarScatter</header>
+   <header>mw4.gui.utilities.gPolarScatter</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

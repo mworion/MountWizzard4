@@ -4,14 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0a31"
+version = "4.0.0a32"
 license = "Apache-2.0"
 description = "Tool for managing 10micron mounts"
 readme = "README.rst"
 authors = [
     {name = "Michael Wuertenberger", email = "michael@wuertenberger.org"}
 ]
-keywords = ["6.9.2"]
+keywords = ["6.9.3"]
 requires-python = ">=3.11,<3.14"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -61,7 +61,7 @@ dependencies = [
     "packaging==25.0",
     "lz4==4.4.4",
     "xisf==0.9.5",
-    "pyside6==6.9.2",
+    "pyside6==6.9.3",
     "pywin32==311; platform_system == 'Windows'",
 ]
 

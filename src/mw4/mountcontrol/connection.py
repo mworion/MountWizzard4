@@ -412,7 +412,12 @@ class Connection:
                     break
 
                 response += chunk
-                if numberOfChunks == 0 and len(response) == minBytes or numberOfChunks != 0 and numberOfChunks == response.count("#"):
+                if (
+                    numberOfChunks == 0
+                    and len(response) == minBytes
+                    or numberOfChunks != 0
+                    and numberOfChunks == response.count("#")
+                ):
                     break
 
         except TimeoutError:

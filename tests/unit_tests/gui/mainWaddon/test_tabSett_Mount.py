@@ -73,14 +73,18 @@ def test_mountShutdown_2(function):
 
 
 def test_bootRackComp_1(function):
-    with mock.patch.object(mw4.gui.mainWaddon.tabSett_Mount, "checkFormatMAC", return_value=False):
+    with mock.patch.object(
+        mw4.gui.mainWaddon.tabSett_Mount, "checkFormatMAC", return_value=False
+    ):
         with mock.patch.object(wakeonlan, "send_magic_packet", return_value=False):
             function.bootRackComp()
 
 
 def test_bootRackComp_2(function):
     function.ui.rackCompMAC.setText("00:00:00:00:00:xy")
-    with mock.patch.object(mw4.gui.mainWaddon.tabSett_Mount, "checkFormatMAC", return_value=True):
+    with mock.patch.object(
+        mw4.gui.mainWaddon.tabSett_Mount, "checkFormatMAC", return_value=True
+    ):
         with mock.patch.object(wakeonlan, "send_magic_packet", return_value=True):
             function.bootRackComp()
 

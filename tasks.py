@@ -142,18 +142,18 @@ def version_doc(c):
 @task
 def update_builtins(c):
     printMW("updating builtins")
-    runMW(c, "cp ./work/data/de440_mw4.bsp ./assets/data/de440_mw4.bsp")
-    runMW(c, "cp ./work/data/finals2000A.all ./assets/data/finals2000A.all")
-    runMW(c, "cp ./work/data/finals.data ./assets/data/finals.data")
-    runMW(c, "cp ./work/data/CDFLeapSeconds.txt ./assets/data/CDFLeapSeconds.txt")
+    runMW(c, "cp ./work/data/de440_mw4.bsp ./src_add/assets/data/de440_mw4.bsp")
+    runMW(c, "cp ./work/data/finals2000A.all ./src_add/assets/data/finals2000A.all")
+    runMW(c, "cp ./work/data/finals.data ./src_add/assets/data/finals.data")
+    runMW(c, "cp ./work/data/CDFLeapSeconds.txt ./src_add/assets/data/CDFLeapSeconds.txt")
     printMW("updating builtins finished\n")
 
 
 @task
 def build_resource(c):
     printMW("building resources")
-    resourceDir = "./assets/"
-    resourceDestDir = "./src/mw4//assets/"
+    resourceDir = "./src_add/assets/"
+    resourceDestDir = "./src/mw4/assets/"
     with c.cd(resourceDir + "data"):
         with open(resourceDir + "data/content.txt", "w") as f:
             for file in glob.glob(resourceDir + "data/*.*"):
@@ -166,7 +166,7 @@ def build_resource(c):
 @task
 def build_widgets(c):
     printMW("building widgets")
-    widgetDirIn = "./widgets/"
+    widgetDirIn = "./src_add/widgets/"
     widgetDirOut = "./src/mw4/gui/widgets/"
     widgets = [
         "analyse",

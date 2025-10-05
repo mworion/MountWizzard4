@@ -130,7 +130,9 @@ def test_solve_3(function):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(os, "remove"):
                 with mock.patch.object(mw4.logic.plateSolve.astap, "getImageHeader"):
-                    with mock.patch.object(mw4.logic.plateSolve.astap, "getSolutionFromWCSHeader"):
+                    with mock.patch.object(
+                        mw4.logic.plateSolve.astap, "getSolutionFromWCSHeader"
+                    ):
                         with mock.patch.object(
                             mw4.logic.plateSolve.astap, "updateImageFileHeaderWithSolution"
                         ):

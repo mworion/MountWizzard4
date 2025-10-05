@@ -41,6 +41,7 @@ def function(qapp):
         yield window
         window.threadPool.waitForDone(10000)
 
+
 @pytest.fixture
 def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):

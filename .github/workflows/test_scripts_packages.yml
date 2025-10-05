@@ -22,11 +22,11 @@ concurrency:
 
 env:
   gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
-  wid: 'widgets/'
+  wid: 'src_add/widgets/'
   widDest: 'src/mw4/gui/widgets/'
   uic: 'pyside6-uic'
   ucc: 'pyside6-rcc'
-  res: 'assets/'
+  res: 'src_add/assets/'
   resDest: 'src/mw4/assets/'
   version: '-v 4.0.0a31'
 

@@ -88,7 +88,6 @@ def test_setupWorkDirs_3():
 
 
 def test_checkIsAdmin_1():
-    @staticmethod
     def getiud():
         return 0
 
@@ -100,7 +99,6 @@ def test_checkIsAdmin_1():
 
 
 def test_checkIsAdmin_2():
-    @staticmethod
     def getiud():
         return 0
 
@@ -112,7 +110,6 @@ def test_checkIsAdmin_2():
 
 
 def test_checkIsAdmin_3():
-    @staticmethod
     def getiud():
         return 0
 

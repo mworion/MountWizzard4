@@ -28,7 +28,7 @@ env:
   ucc: 'pyside6-rcc'
   res: 'src_add/assets/'
   resDest: 'src/mw4/assets/'
-  version: '-v 4.0.0a31'
+  version: '-v 4.0.0a33'
 
 on:
   push:

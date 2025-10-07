@@ -18,7 +18,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0a35"
+version = "4.0.0a38"
 license = "Apache-2.0"
 description = "Tool for managing 10micron mounts"
 readme = "README.rst"
@@ -79,7 +79,7 @@ dependencies = [
     "pywin32==311; platform_system == 'Windows'",
 ]
 [project.scripts]
-mw4 = "mw4.loader:main"
+mw4 = "mw4.cli:app"
 
 [project.urls]
 Documentation = "https://mworion.github.io/MountWizzard4"

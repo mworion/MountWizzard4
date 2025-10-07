@@ -28,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.8b2',
+    version='3.2.8b8',
     packages=[
         'mw4',
         'mw4.base',
@@ -95,11 +95,7 @@ setup(
     + (['PyQt5==5.15.11'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.7'] if platform.machine() not in ['armv7l',
                                                         'aarch64'] else []),
-    entry_points={
-        'console_scripts': [
-          'mw4 = mw4.cli.py:app'
-        ]
-      },
+
     keywords=['5.15.11'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

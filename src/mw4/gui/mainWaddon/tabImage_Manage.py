@@ -109,21 +109,12 @@ class ImageManage(QObject):
     def checkEnableCameraUI(self) -> None:
         """ """
         coolerTemp = self.app.camera.data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", False)
-        coolerPower = self.app.camera.data.get("CCD_COOLER_POWER.CCD_COOLER_VALUE", False)
         gainCam = self.app.camera.data.get("CCD_GAIN.GAIN", False)
-        offsetCam = self.app.camera.data.get("CCD_OFFSET.OFFSET", False)
-        humidityCCD = self.app.camera.data.get("CCD_HUMIDITY.HUMIDITY", False)
-        coolerOn = self.app.camera.data.get("CCD_COOLER.COOLER_ON", False)
         pixelX = self.app.camera.data.get("CCD_INFO.CCD_MAX_X", False)
 
-        self.ui.coolerTemp.setVisible(coolerTemp)
-        self.ui.coolerPower.setVisible(coolerPower)
-        self.ui.gainCam.setVisible(gainCam)
-        self.ui.offsetCam.setVisible(offsetCam)
-        self.ui.humidityCCD.setVisible(humidityCCD)
-        self.ui.coolerOn.setVisible(coolerOn)
-        self.ui.coolerOff.setVisible(coolerOn)
-        self.ui.subFrame.setVisible(pixelX)
+        self.ui.GroupCooler.setVisible(coolerTemp)
+        self.ui.GroupCCD.setVisible(gainCam)
+        self.ui.GroupControlledCamera.setVisible(pixelX)
 
     def updateOffset(self) -> None:
         """ """
@@ -196,7 +187,6 @@ class ImageManage(QObject):
         maxBinY = self.app.camera.data.get("CCD_BINNING.HOR_BIN_MAX", 9)
         pixelX = self.app.camera.data.get("CCD_INFO.CCD_MAX_X", 0)
         pixelY = self.app.camera.data.get("CCD_INFO.CCD_MAX_Y", 0)
-        humidityCCD = self.app.camera.data.get("CCD_HUMIDITY.HUMIDITY")
 
         optimalBinningX = int(pixelX / 1750)
         optimalBinningY = int(pixelY / 1750)
@@ -214,7 +204,6 @@ class ImageManage(QObject):
         self.app.camera.subFrame = self.ui.subFrame.value()
         self.app.camera.fastDownload = True
         self.app.camera.focalLength = focalLength
-        guiSetText(self.ui.humidityCCD, "3.1f", humidityCCD)
         guiSetText(self.ui.optimalBinning, "1.0f", optimalBinning)
 
     def setCoolerTemp(self) -> None:

@@ -412,7 +412,7 @@ def test_mac15(c):
 def build_mw(c):
     printMW("building dist mountwizzard4")
     runMW(c, "rm -f dist/mountwizzard4*.tar.gz")
-    runMW(c, "python -m build")
+    runMW(c, "uv build")
     runMW(
         c,
         "cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz",

@@ -13,8 +13,15 @@
 #
 ###########################################################
 [build-system]
-requires = ["setuptools>=77.0.3", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.9.1"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "mw4"
+module-root = "src"
+
+# requires = ["setuptools>=77.0.3", "wheel"]
+# build-backend = "setuptools.build_meta"
 
 [project]
 name = "mountwizzard4"
@@ -68,14 +75,14 @@ dependencies = [
     "python-dateutil==2.9.0.post0",
     "wakeonlan==3.1.0",
     "pybase64==1.4.2",
-    "websocket-client==1.8.0",
+    "websocket-client==1.9.0",
     "hidapi==0.14.0.post4",
     "range-key-dict==1.1.0",
     "ndicts==0.3.0",
     "packaging==25.0",
     "lz4==4.4.4",
     "xisf==0.9.5",
-    "pyside6==6.9.3",
+    "pyside6==6.10.0",
     "pywin32==311; platform_system == 'Windows'",
 ]
 [project.scripts]

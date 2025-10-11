@@ -1,6 +1,7 @@
 import argparse
-import platform
 import os
+import platform
+
 from mw4.loader import main
 
 
@@ -35,7 +36,6 @@ def app():
     if platform.system() == "Windows":
         os.environ["QT_SCALE_FACTOR"] = f"{options.scale:2.1f}"
         os.environ["QT_FONT_DPI"] = f"{options.dpi:2.0f}"
-        print(options)
     main()
 
 

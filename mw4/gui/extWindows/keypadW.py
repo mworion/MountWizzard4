@@ -23,10 +23,10 @@ from qimage2ndarray import array2qimage
 import numpy as np
 
 # local import
-from gui.utilities import toolsQtWidget
-from gui.widgets import keypad_ui
-from base.tpool import Worker
-from logic.keypad.keypad import KeyPad
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.widgets import keypad_ui
+from mw4.base.tpool import Worker
+from mw4.logic.keypad.keypad import KeyPad
 
 
 class KeypadSignals(QObject):

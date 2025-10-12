@@ -23,8 +23,8 @@ from PyQt5.QtCore import QMutex
 import pyqtgraph as pg
 
 # local import
-from gui.utilities import toolsQtWidget
-from gui.widgets import measure_ui
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.widgets import measure_ui
 
 
 class MeasureWindow(toolsQtWidget.MWidget):

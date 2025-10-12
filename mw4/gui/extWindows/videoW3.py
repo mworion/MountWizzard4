@@ -20,7 +20,7 @@
 from PyQt5.QtCore import pyqtSignal
 
 # local import
-from gui.extWindows.videoW import VideoWindow
+from mw4.gui.extWindows.videoW import VideoWindow
 
 
 class VideoWindow3(VideoWindow):

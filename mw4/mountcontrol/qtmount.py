@@ -24,8 +24,8 @@ import wakeonlan
 import numpy as np
 
 # local imports
-from base.tpool import Worker
-import mountcontrol.mount
+from mw4.base.tpool import Worker
+import mw4.mountcontrol.mount
 
 
 __all__ = ['Mount',
@@ -62,7 +62,7 @@ class MountSignals(PyQt5.QtCore.QObject):
     alert = PyQt5.QtCore.pyqtSignal()
 
 
-class Mount(mountcontrol.mount.Mount):
+class Mount(mw4.mountcontrol.mount.Mount):
     """
     The Mount class is the main interface for interacting with the mount computer.
     The user could:

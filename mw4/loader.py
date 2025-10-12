@@ -45,11 +45,11 @@ import pyqtgraph as pg
 from importlib_metadata import version
 
 # local import
-from base.loggerMW import setupLogging
+from mw4.base.loggerMW import setupLogging
 setupLogging()
-from gui.utilities.splashScreen import SplashScreen
-from mainApp import MountWizzard4
-import resource.resources as res
+from mw4.gui.utilities.splashScreen import SplashScreen
+from mw4.mainApp import MountWizzard4
+import mw4.resource.resources as res
 res.qInitResources()
 astropy.utils.iers.conf.auto_download = False
 astropy.utils.data.conf.allow_internet = False
@@ -403,15 +403,6 @@ def getWindowPos():
             return x, y
 
 
-def minimizeStartTerminal():
-    """
-    :return:
-    """
-    if platform.system() == 'Windows':
-        import ctypes
-        ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
-
-
 def main():
     """
     main prepares the loading of mountwizzard application. it prepares a
@@ -424,8 +415,6 @@ def main():
     locale.setlocale(locale.LC_ALL, '')
     app = MyApp(sys.argv)
     # app = QApplication(sys.argv)
-
-    minimizeStartTerminal()
 
     x, y = getWindowPos()
     splashW = SplashScreen(application=app, x=x, y=y)
@@ -457,4 +446,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    minimizeStartTerminal()

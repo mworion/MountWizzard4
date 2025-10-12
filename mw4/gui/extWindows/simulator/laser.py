@@ -24,8 +24,8 @@ from skyfield import functions
 import numpy as np
 
 # local import
-from gui.extWindows.simulator.materials import Materials
-from gui.extWindows.simulator import tools
+from mw4.gui.extWindows.simulator.materials import Materials
+from mw4.gui.extWindows.simulator import tools
 
 
 class SimulatorLaser:

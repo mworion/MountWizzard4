@@ -21,38 +21,38 @@ import sys
 from queue import Queue
 
 # external packages
-from base.packageConfig import checkAutomation
+from mw4.base.packageConfig import checkAutomation
 if checkAutomation():
-    from logic.automation.automateWindows import AutomateWindows
+    from mw4.logic.automation.automateWindows import AutomateWindows
 
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
 from skyfield.api import wgs84
 from importlib_metadata import version
 
 # local import
-from base.loggerMW import setCustomLoggingLevel
-from mountcontrol import qtmount
-from gui.mainWindow.mainW import MainWindow
-from logic.powerswitch.kmRelay import KMRelay
-from logic.modeldata.buildpoints import DataPoint
-from logic.modeldata.hipparcos import Hipparcos
-from logic.dome.dome import Dome
-from logic.camera.camera import Camera
-from logic.filter.filter import Filter
-from logic.focuser.focuser import Focuser
-from logic.environment.sensorWeather import SensorWeather
-from logic.environment.skymeter import Skymeter
-from logic.environment.onlineWeather import OnlineWeather
-from logic.environment.seeingWeather import SeeingWeather
-from logic.environment.directWeather import DirectWeather
-from logic.environment.weatherUPB import WeatherUPB
-from logic.cover.cover import Cover
-from logic.telescope.telescope import Telescope
-from logic.powerswitch.pegasusUPB import PegasusUPB
-from logic.measure.measure import MeasureData
-from logic.remote.remote import Remote
-from logic.plateSolve.plateSolve import PlateSolve
-from logic.profiles.profile import loadProfile
+from mw4.base.loggerMW import setCustomLoggingLevel
+from mw4.mountcontrol import qtmount
+from mw4.gui.mainWindow.mainW import MainWindow
+from mw4.logic.powerswitch.kmRelay import KMRelay
+from mw4.logic.modeldata.buildpoints import DataPoint
+from mw4.logic.modeldata.hipparcos import Hipparcos
+from mw4.logic.dome.dome import Dome
+from mw4.logic.camera.camera import Camera
+from mw4.logic.filter.filter import Filter
+from mw4.logic.focuser.focuser import Focuser
+from mw4.logic.environment.sensorWeather import SensorWeather
+from mw4.logic.environment.skymeter import Skymeter
+from mw4.logic.environment.onlineWeather import OnlineWeather
+from mw4.logic.environment.seeingWeather import SeeingWeather
+from mw4.logic.environment.directWeather import DirectWeather
+from mw4.logic.environment.weatherUPB import WeatherUPB
+from mw4.logic.cover.cover import Cover
+from mw4.logic.telescope.telescope import Telescope
+from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
+from mw4.logic.measure.measure import MeasureData
+from mw4.logic.remote.remote import Remote
+from mw4.logic.plateSolve.plateSolve import PlateSolve
+from mw4.logic.profiles.profile import loadProfile
 
 
 class MountWizzard4(QObject):

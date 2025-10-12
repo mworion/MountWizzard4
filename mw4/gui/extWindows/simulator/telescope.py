@@ -22,8 +22,8 @@ from PyQt5.Qt3DCore import QEntity
 from PyQt5.Qt3DExtras import QCuboidMesh
 
 # local import
-from gui.extWindows.simulator.materials import Materials
-from gui.extWindows.simulator import tools
+from mw4.gui.extWindows.simulator.materials import Materials
+from mw4.gui.extWindows.simulator import tools
 
 
 class SimulatorTelescope:

@@ -22,9 +22,9 @@ from PyQt5.QtWidgets import QInputDialog, QLineEdit
 from skyfield.api import wgs84
 
 # local import
-from base import transform
-from mountcontrol.convert import convertLatToAngle, convertLonToAngle
-from mountcontrol.convert import formatLatToText, formatLonToText
+from mw4.base import transform
+from mw4.mountcontrol.convert import convertLatToAngle, convertLonToAngle
+from mw4.mountcontrol.convert import formatLatToText, formatLonToText
 
 
 class MountSett:

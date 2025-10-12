@@ -23,8 +23,8 @@ from PyQt5.QtWidgets import QTableWidgetItem
 from PyQt5.QtCore import Qt
 
 # local import
-from gui.utilities import toolsQtWidget
-from gui.widgets import message_ui
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.widgets import message_ui
 
 
 class MessageWindow(toolsQtWidget.MWidget):

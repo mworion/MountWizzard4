@@ -24,11 +24,11 @@ import cv2
 import pyqtgraph as pg
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
-from gui.utilities.slewInterface import SlewInterface
-from gui.widgets import hemisphere_ui
-from gui.extWindows.hemisphere.editHorizon import EditHorizon
-from base.transform import diffModulusAbs
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.slewInterface import SlewInterface
+from mw4.gui.widgets import hemisphere_ui
+from mw4.gui.extWindows.hemisphere.editHorizon import EditHorizon
+from mw4.base.transform import diffModulusAbs
 
 
 class HemisphereWindow(MWidget, EditHorizon, SlewInterface):

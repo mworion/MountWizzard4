@@ -21,13 +21,13 @@ import json
 from datetime import datetime
 
 # external packages
-from mountcontrol.alignStar import AlignStar
-from mountcontrol.convert import convertToHMS, convertToDMS
+from mw4.mountcontrol.alignStar import AlignStar
+from mw4.mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
-from base.transform import J2000ToJNow
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from logic.modeldata.modelHandling import writeRetrofitData
+from mw4.base.transform import J2000ToJNow
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.logic.modeldata.modelHandling import writeRetrofitData
 
 
 class Model:

@@ -19,7 +19,7 @@
 # external packages
 
 # local import
-from mountcontrol.convert import valueToFloat
+from mw4.mountcontrol.convert import valueToFloat
 
 
 class SettParkPos(object):

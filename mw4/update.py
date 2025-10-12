@@ -24,7 +24,7 @@ import platform
 # external packages
 
 # local import
-from base.loggerMW import setupLogging
+from mw4.base.loggerMW import setupLogging
 
 setupLogging(redirect=False)
 log = logging.getLogger()

@@ -22,11 +22,11 @@ from skyfield.api import Star, Angle
 import numpy
 
 # local imports
-from mountcontrol.convert import stringToDegree
-from mountcontrol.convert import valueToAngle
-from mountcontrol.convert import valueToFloat
-from mountcontrol.convert import valueToInt
-from mountcontrol.convert import topoToAltAz
+from mw4.mountcontrol.convert import stringToDegree
+from mw4.mountcontrol.convert import valueToAngle
+from mw4.mountcontrol.convert import valueToFloat
+from mw4.mountcontrol.convert import valueToInt
+from mw4.mountcontrol.convert import topoToAltAz
 
 
 class ModelStar(object):

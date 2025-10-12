@@ -27,7 +27,7 @@ import numpy as np
 from range_key_dict import RangeKeyDict
 
 # local import
-from base.tpool import Worker
+from mw4.base.tpool import Worker
 
 
 class Almanac:

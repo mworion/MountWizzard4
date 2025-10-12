@@ -27,48 +27,48 @@ from skyfield.almanac import dark_twilight_day, TWILIGHTS
 
 # local import
 if packageConfig.isAvailable:
-    from gui.extWindows.simulatorW import SimulatorWindow
+    from mw4.gui.extWindows.simulatorW import SimulatorWindow
 
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from gui.extWindows.keypadW import KeypadWindow
-from gui.utilities.stylesQtCss import Styles
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.messageW import MessageWindow
-from gui.extWindows.hemisphereW import HemisphereWindow
-from gui.extWindows.measureW import MeasureWindow
-from gui.extWindows.imageW import ImageWindow
-from gui.extWindows.satelliteW import SatelliteWindow
-from gui.extWindows.analyseW import AnalyseWindow
-from gui.extWindows.videoW1 import VideoWindow1
-from gui.extWindows.videoW2 import VideoWindow2
-from gui.extWindows.videoW3 import VideoWindow3
-from gui.extWindows.videoW4 import VideoWindow4
-from gui.extWindows.bigPopupW import BigPopup
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabMount import Mount
-from gui.mainWmixin.tabEnviron import Environ
-from gui.mainWmixin.tabAlmanac import Almanac
-from gui.mainWmixin.tabModel import Model
-from gui.mainWmixin.runBasic import BasicRun
-from gui.mainWmixin.tabBuildPoints import BuildPoints
-from gui.mainWmixin.tabManageModel import ManageModel
-from gui.mainWmixin.tabSat_Search import SatSearch
-from gui.mainWmixin.tabSat_Track import SatTrack
-from gui.mainWmixin.tabMinorPlanet import MinorPlanet
-from gui.mainWmixin.tabRelay import Relay
-from gui.mainWmixin.tabTools_Rename import Rename
-from gui.mainWmixin.tabTools_IERSTime import IERSTime
-from gui.mainWmixin.tabAnalysis import Analysis
-from gui.mainWmixin.tabPower import Power
-from gui.mainWmixin.tabSett_Device import SettDevice
-from gui.mainWmixin.tabSett_Mount import SettMount
-from gui.mainWmixin.tabSett_Dome import SettDome
-from gui.mainWmixin.tabSett_ParkPos import SettParkPos
-from gui.mainWmixin.tabSett_Relay import SettRelay
-from gui.mainWmixin.tabSett_Misc import SettMisc
-from gui.mainWmixin.tabImage_Manage import ImageManage
-from gui.mainWmixin.tabImage_Stats import ImagsStats
-from logic.profiles.profile import loadProfile, saveProfile, blendProfile
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.gui.extWindows.keypadW import KeypadWindow
+from mw4.gui.utilities.stylesQtCss import Styles
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.messageW import MessageWindow
+from mw4.gui.extWindows.hemisphereW import HemisphereWindow
+from mw4.gui.extWindows.measureW import MeasureWindow
+from mw4.gui.extWindows.imageW import ImageWindow
+from mw4.gui.extWindows.satelliteW import SatelliteWindow
+from mw4.gui.extWindows.analyseW import AnalyseWindow
+from mw4.gui.extWindows.videoW1 import VideoWindow1
+from mw4.gui.extWindows.videoW2 import VideoWindow2
+from mw4.gui.extWindows.videoW3 import VideoWindow3
+from mw4.gui.extWindows.videoW4 import VideoWindow4
+from mw4.gui.extWindows.bigPopupW import BigPopup
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWmixin.tabMount import Mount
+from mw4.gui.mainWmixin.tabEnviron import Environ
+from mw4.gui.mainWmixin.tabAlmanac import Almanac
+from mw4.gui.mainWmixin.tabModel import Model
+from mw4.gui.mainWmixin.runBasic import BasicRun
+from mw4.gui.mainWmixin.tabBuildPoints import BuildPoints
+from mw4.gui.mainWmixin.tabManageModel import ManageModel
+from mw4.gui.mainWmixin.tabSat_Search import SatSearch
+from mw4.gui.mainWmixin.tabSat_Track import SatTrack
+from mw4.gui.mainWmixin.tabMinorPlanet import MinorPlanet
+from mw4.gui.mainWmixin.tabRelay import Relay
+from mw4.gui.mainWmixin.tabTools_Rename import Rename
+from mw4.gui.mainWmixin.tabTools_IERSTime import IERSTime
+from mw4.gui.mainWmixin.tabAnalysis import Analysis
+from mw4.gui.mainWmixin.tabPower import Power
+from mw4.gui.mainWmixin.tabSett_Device import SettDevice
+from mw4.gui.mainWmixin.tabSett_Mount import SettMount
+from mw4.gui.mainWmixin.tabSett_Dome import SettDome
+from mw4.gui.mainWmixin.tabSett_ParkPos import SettParkPos
+from mw4.gui.mainWmixin.tabSett_Relay import SettRelay
+from mw4.gui.mainWmixin.tabSett_Misc import SettMisc
+from mw4.gui.mainWmixin.tabImage_Manage import ImageManage
+from mw4.gui.mainWmixin.tabImage_Stats import ImagsStats
+from mw4.logic.profiles.profile import loadProfile, saveProfile, blendProfile
 
 
 class MainWindow(

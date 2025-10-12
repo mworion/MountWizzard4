@@ -22,7 +22,7 @@ import numpy as np
 from skyfield.api import Angle
 
 # local imports
-from mountcontrol.convert import valueToFloat
+from mw4.mountcontrol.convert import valueToFloat
 
 
 class Geometry(object):

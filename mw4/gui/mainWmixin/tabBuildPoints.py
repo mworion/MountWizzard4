@@ -21,9 +21,9 @@ from PyQt5.QtCore import QMutex
 from astroquery.simbad import Simbad
 
 # local import
-from base.tpool import Worker
-from mountcontrol.convert import convertRaToAngle, convertDecToAngle
-from mountcontrol.convert import formatHstrToText, formatDstrToText
+from mw4.base.tpool import Worker
+from mw4.mountcontrol.convert import convertRaToAngle, convertDecToAngle
+from mw4.mountcontrol.convert import formatHstrToText, formatDstrToText
 
 
 class BuildPoints:

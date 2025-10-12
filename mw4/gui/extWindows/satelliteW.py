@@ -25,8 +25,8 @@ from skyfield.api import wgs84
 import pyqtgraph as pg
 
 # local import
-from gui.utilities import toolsQtWidget
-from gui.widgets import satellite_ui
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.widgets import satellite_ui
 
 
 class SatelliteWindowSignals(QObject):

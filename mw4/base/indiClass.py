@@ -21,9 +21,9 @@ import logging
 from PyQt5.QtCore import QTimer
 
 # local imports
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from indibase.indiBase import Client
-from base.driverDataClass import Signals
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.indibase.indiBase import Client
+from mw4.base.driverDataClass import Signals
 
 
 class IndiClass:

@@ -20,13 +20,13 @@ import logging
 # external packages
 
 # local imports
-from mountcontrol.firmware import Firmware
-from mountcontrol.dome import Dome
-from mountcontrol.setting import Setting
-from mountcontrol.obsSite import ObsSite
-from mountcontrol.model import Model
-from mountcontrol.satellite import Satellite
-from mountcontrol.geometry import Geometry
+from mw4.mountcontrol.firmware import Firmware
+from mw4.mountcontrol.dome import Dome
+from mw4.mountcontrol.setting import Setting
+from mw4.mountcontrol.obsSite import ObsSite
+from mw4.mountcontrol.model import Model
+from mw4.mountcontrol.satellite import Satellite
+from mw4.mountcontrol.geometry import Geometry
 
 
 __all__ = ['Mount']

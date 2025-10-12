@@ -21,8 +21,8 @@ import logging
 from skyfield.api import Angle
 
 # local imports
-from mountcontrol.connection import Connection
-from mountcontrol.convert import valueToInt, valueToFloat
+from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.convert import valueToInt, valueToFloat
 
 
 class Dome(object):

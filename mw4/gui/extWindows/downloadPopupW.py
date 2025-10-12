@@ -24,10 +24,10 @@ from PyQt5.QtCore import Qt, pyqtSignal
 import requests
 
 # local import
-from gui.utilities import toolsQtWidget
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from base.tpool import Worker
-from gui.widgets.downloadPopup_ui import Ui_DownloadPopup
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.base.tpool import Worker
+from mw4.gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 
 
 class DownloadPopup(toolsQtWidget.MWidget):

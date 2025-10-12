@@ -26,12 +26,12 @@ if platform.system() == 'Windows':
     import win32com.client
 
 # local import
-from base.indiClass import IndiClass
-from base.alpacaClass import AlpacaClass
-from base.sgproClass import SGProClass
-from base.ninaClass import NINAClass
-from gui.utilities import toolsQtWidget
-from gui.widgets.devicePopup_ui import Ui_DevicePopup
+from mw4.base.indiClass import IndiClass
+from mw4.base.alpacaClass import AlpacaClass
+from mw4.base.sgproClass import SGProClass
+from mw4.base.ninaClass import NINAClass
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
 
 
 class DevicePopup(toolsQtWidget.MWidget):

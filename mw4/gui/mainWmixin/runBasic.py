@@ -21,11 +21,11 @@ import os
 
 
 # external packages
-from mountcontrol.convert import convertToHMS, convertToDMS
+from mw4.mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
-from base.transform import JNowToJ2000, J2000ToJNow
-from gui.utilities.toolsQtWidget import QMultiWait, sleepAndEvents
+from mw4.base.transform import JNowToJ2000, J2000ToJNow
+from mw4.gui.utilities.toolsQtWidget import QMultiWait, sleepAndEvents
 
 
 class BasicRun:

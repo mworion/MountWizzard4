@@ -21,7 +21,7 @@ import logging
 from skyfield.api import Angle
 
 # local import
-from mountcontrol.convert import convertToAngle, convertRaToAngle, convertDecToAngle
+from mw4.mountcontrol.convert import convertToAngle, convertRaToAngle, convertDecToAngle
 
 __all__ = ['getCoordinates',
            'getSQM',

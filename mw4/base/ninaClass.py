@@ -23,9 +23,9 @@ from PyQt5.QtCore import QTimer, QObject
 import requests
 
 # local imports
-from base.driverDataClass import DriverData
-from base.driverDataClass import RemoteDeviceShutdown
-from base.tpool import Worker
+from mw4.base.driverDataClass import DriverData
+from mw4.base.driverDataClass import RemoteDeviceShutdown
+from mw4.base.tpool import Worker
 
 
 class NINAClass(DriverData, QObject):

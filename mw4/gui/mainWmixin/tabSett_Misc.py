@@ -14,7 +14,7 @@
 # Licence APL2.0
 #
 ###########################################################
-import base.packageConfig as pConf
+import mw4.base.packageConfig as pConf
 # standard libraries
 import os
 import sys
@@ -32,10 +32,10 @@ import hid
 import webbrowser
 
 # local import
-from base.loggerMW import setCustomLoggingLevel
-from base.packageConfig import checkAutomation
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from base.tpool import Worker
+from mw4.base.loggerMW import setCustomLoggingLevel
+from mw4.base.packageConfig import checkAutomation
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.base.tpool import Worker
 
 
 class SettMisc(object):

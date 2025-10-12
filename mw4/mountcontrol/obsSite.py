@@ -26,14 +26,14 @@ import skyfield.starlib as starlib
 import numpy as np
 
 # local imports
-from base.transform import diffModulusSign
-from .connection import Connection
-from .convert import stringToAngle
-from .convert import stringToDegree
-from .convert import valueToFloat
-from .convert import valueToInt
-from .convert import valueToAngle
-from .convert import sexagesimalizeToInt
+from mw4.base.transform import diffModulusSign
+from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.convert import stringToAngle
+from mw4.mountcontrol.convert import stringToDegree
+from mw4.mountcontrol.convert import valueToFloat
+from mw4.mountcontrol.convert import valueToInt
+from mw4.mountcontrol.convert import valueToAngle
+from mw4.mountcontrol.convert import sexagesimalizeToInt
 
 
 class ObsSite(object):

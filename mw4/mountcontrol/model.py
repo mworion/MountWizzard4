@@ -24,13 +24,13 @@ import logging
 import skyfield.api
 
 # local imports
-from mountcontrol.connection import Connection
-from mountcontrol.convert import valueToFloat
-from mountcontrol.convert import valueToInt
-from mountcontrol.convert import valueToAngle
-from mountcontrol.convert import sexagesimalizeToInt
-from mountcontrol.alignStar import AlignStar
-from mountcontrol.modelStar import ModelStar
+from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.convert import valueToFloat
+from mw4.mountcontrol.convert import valueToInt
+from mw4.mountcontrol.convert import valueToAngle
+from mw4.mountcontrol.convert import sexagesimalizeToInt
+from mw4.mountcontrol.alignStar import AlignStar
+from mw4.mountcontrol.modelStar import ModelStar
 
 
 class Model(object):

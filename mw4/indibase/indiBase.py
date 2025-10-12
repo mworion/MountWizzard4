@@ -24,7 +24,7 @@ from PyQt5.QtNetwork import QTcpSocket
 import xml.etree.ElementTree as ETree
 
 # local import
-from indibase import indiXML
+from mw4.indibase import indiXML
 
 
 class INDISignals(QObject):

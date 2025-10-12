@@ -18,7 +18,7 @@
 
 # external packages
 import PyQt5
-from mountcontrol.convert import valueToInt
+from mw4.mountcontrol.convert import valueToInt
 
 # local import
 

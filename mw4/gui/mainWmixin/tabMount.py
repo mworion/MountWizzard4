@@ -24,14 +24,14 @@ from PyQt5.QtGui import QTextCursor
 from skyfield.api import wgs84
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from gui.utilities.slewInterface import SlewInterface
-from gui.mainWmixin.tabMountSett import MountSett
-from mountcontrol.convert import convertLatToAngle, convertLonToAngle
-from mountcontrol.convert import convertRaToAngle, convertDecToAngle
-from mountcontrol.convert import formatHstrToText, formatDstrToText
-from mountcontrol.convert import valueToFloat
-from mountcontrol.connection import Connection
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.gui.utilities.slewInterface import SlewInterface
+from mw4.gui.mainWmixin.tabMountSett import MountSett
+from mw4.mountcontrol.convert import convertLatToAngle, convertLonToAngle
+from mw4.mountcontrol.convert import convertRaToAngle, convertDecToAngle
+from mw4.mountcontrol.convert import formatHstrToText, formatDstrToText
+from mw4.mountcontrol.convert import valueToFloat
+from mw4.mountcontrol.connection import Connection
 
 
 class Mount(SlewInterface, MountSett):

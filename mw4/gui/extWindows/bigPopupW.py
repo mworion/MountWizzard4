@@ -19,8 +19,8 @@
 # external packages
 
 # local import
-from gui.utilities import toolsQtWidget
-from gui.widgets.bigPopup_ui import Ui_BigPopup
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.widgets.bigPopup_ui import Ui_BigPopup
 
 
 class BigPopup(toolsQtWidget.MWidget):

@@ -26,7 +26,7 @@ from PyQt5.Qt3DCore import QEntity, QTransform
 from skyfield import functions
 
 # local import
-from gui.extWindows.simulator.materials import Materials
+from mw4.gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorBuildPoints:

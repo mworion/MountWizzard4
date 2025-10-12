@@ -21,7 +21,7 @@ import socket
 import wakeonlan
 
 # local import
-from mountcontrol.mount import checkFormatMAC
+from mw4.mountcontrol.mount import checkFormatMAC
 
 
 class SettMount(object):

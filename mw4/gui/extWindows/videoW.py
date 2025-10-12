@@ -24,10 +24,10 @@ import cv2
 import qimage2ndarray
 
 # local import
-from gui.utilities import toolsQtWidget
-from gui.widgets import video_ui
-from base.tpool import Worker
-from gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.widgets import video_ui
+from mw4.base.tpool import Worker
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class VideoWindow(toolsQtWidget.MWidget):

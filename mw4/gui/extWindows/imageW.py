@@ -24,15 +24,15 @@ from PyQt5.QtGui import QFont, QGuiApplication, QCursor
 from skyfield.api import Angle
 
 # local import
-from mountcontrol.convert import convertToDMS, convertToHMS
-from base.transform import JNowToJ2000
-from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
-from gui.utilities import toolsQtWidget
-from gui.utilities.slewInterface import SlewInterface
-from gui.widgets import image_ui
-from logic.file.fileHandler import FileHandler
-from logic.photometry.photometry import Photometry
-from gui.extWindows.image.imageTabs import ImageTabs
+from mw4.mountcontrol.convert import convertToDMS, convertToHMS
+from mw4.base.transform import JNowToJ2000
+from mw4.base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.utilities.slewInterface import SlewInterface
+from mw4.gui.widgets import image_ui
+from mw4.logic.file.fileHandler import FileHandler
+from mw4.logic.photometry.photometry import Photometry
+from mw4.gui.extWindows.image.imageTabs import ImageTabs
 
 
 class ImageWindowSignals(QObject):

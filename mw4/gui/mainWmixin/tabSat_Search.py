@@ -26,9 +26,9 @@ import numpy as np
 from skyfield import almanac
 
 # local import
-from base.tpool import Worker
-from logic.databaseProcessing.dataWriter import DataWriter
-from gui.utilities.toolsQtWidget import QCustomTableWidgetItem
+from mw4.base.tpool import Worker
+from mw4.logic.databaseProcessing.dataWriter import DataWriter
+from mw4.gui.utilities.toolsQtWidget import QCustomTableWidgetItem
 
 
 class SatSearch(object):

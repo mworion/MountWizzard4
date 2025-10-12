@@ -23,9 +23,9 @@ from PyQt5.QtCore import QTimer
 import requests
 
 # local imports
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from base.driverDataClass import DriverData
-from base.tpool import Worker
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.base.driverDataClass import DriverData
+from mw4.base.tpool import Worker
 
 
 class AlpacaClass(DriverData):

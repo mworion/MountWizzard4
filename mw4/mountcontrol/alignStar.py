@@ -21,8 +21,8 @@ import logging
 import skyfield.api
 
 # local imports
-from mountcontrol.convert import valueToAngle
-from mountcontrol.convert import stringToAngle
+from mw4.mountcontrol.convert import valueToAngle
+from mw4.mountcontrol.convert import stringToAngle
 
 
 class AlignStar(object):

@@ -22,7 +22,7 @@ from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
 from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
 
 # local import
-from gui.utilities.stylesQtCss import Styles
+from mw4.gui.utilities.stylesQtCss import Styles
 
 
 class Materials(Styles):

@@ -23,7 +23,7 @@ from PyQt5.Qt3DExtras import QCuboidMesh
 from PyQt5.Qt3DCore import QEntity, QTransform
 
 # local import
-from gui.extWindows.simulator.materials import Materials
+from mw4.gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorHorizon:

@@ -25,7 +25,7 @@ from PyQt5.QtCore import Qt
 import numpy as np
 
 # local import
-from logic.modeldata.modelHandling import writeRetrofitData
+from mw4.logic.modeldata.modelHandling import writeRetrofitData
 
 
 class ManageModel:

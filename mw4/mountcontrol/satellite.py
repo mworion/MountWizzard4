@@ -22,9 +22,9 @@ import skyfield.timelib
 from skyfield.api import Angle
 
 # local imports
-from mountcontrol.connection import Connection
-from mountcontrol.convert import valueToAngle
-from mountcontrol.convert import valueToFloat
+from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.convert import valueToAngle
+from mw4.mountcontrol.convert import valueToFloat
 
 
 class TLEParams(object):

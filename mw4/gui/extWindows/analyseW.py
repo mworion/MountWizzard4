@@ -22,9 +22,9 @@ import os
 import numpy as np
 
 # local import
-from gui.utilities import toolsQtWidget
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from gui.widgets import analyse_ui
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.gui.widgets import analyse_ui
 
 
 class AnalyseWindow(toolsQtWidget.MWidget):

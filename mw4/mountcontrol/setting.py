@@ -20,9 +20,9 @@ import logging
 # external packages
 
 # local imports
-from mountcontrol.connection import Connection
-from mountcontrol.convert import valueToFloat
-from mountcontrol.convert import valueToInt
+from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.convert import valueToFloat
+from mw4.mountcontrol.convert import valueToInt
 
 
 class Setting(object):

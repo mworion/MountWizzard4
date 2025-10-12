@@ -26,9 +26,9 @@ if platform.system() == 'Windows':
 from PyQt5.QtCore import QTimer, QMutex
 
 # local imports
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from base.tpool import Worker
-from base.driverDataClass import DriverData
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.base.tpool import Worker
+from mw4.base.driverDataClass import DriverData
 
 
 class AscomClass(DriverData):

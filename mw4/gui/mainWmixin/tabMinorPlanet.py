@@ -22,8 +22,8 @@ import os
 from PyQt5.QtWidgets import QListView
 
 # local import
-from logic.databaseProcessing.dataWriter import DataWriter
-from gui.extWindows.downloadPopupW import DownloadPopup
+from mw4.logic.databaseProcessing.dataWriter import DataWriter
+from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 
 
 class MinorPlanet:

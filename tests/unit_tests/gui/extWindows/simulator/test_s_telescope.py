@@ -22,11 +22,11 @@ from PyQt5.QtWidgets import QDoubleSpinBox
 from PyQt5.Qt3DCore import QEntity, QTransform
 from PyQt5.QtCore import QObject
 from PyQt5.Qt3DExtras import QCuboidMesh
-from mountcontrol.mount import Mount
+from mw4.mountcontrol.mount import Mount
 from skyfield.api import wgs84
 
 # local import
-from gui.extWindows.simulator.telescope import SimulatorTelescope
+from mw4.gui.extWindows.simulator.telescope import SimulatorTelescope
 
 
 @pytest.fixture(autouse=True, scope='function')

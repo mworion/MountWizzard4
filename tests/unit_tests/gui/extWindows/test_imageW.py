@@ -30,12 +30,12 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.utilities.slewInterface import SlewInterface
-from gui.extWindows.imageW import ImageWindow
-from logic.photometry.photometry import Photometry
-from logic.file.fileHandler import FileHandler
-from base.loggerMW import setupLogging
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.slewInterface import SlewInterface
+from mw4.gui.extWindows.imageW import ImageWindow
+from mw4.logic.photometry.photometry import Photometry
+from mw4.logic.file.fileHandler import FileHandler
+from mw4.base.loggerMW import setupLogging
 setupLogging()
 
 

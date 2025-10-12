@@ -25,7 +25,7 @@ from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
 
 # local import
-from base.tpool import Worker
+from mw4.base.tpool import Worker
 
 
 class PhotometrySignals(QObject):

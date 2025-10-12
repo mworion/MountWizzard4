@@ -22,8 +22,8 @@ import platform
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.environment.weatherUPBAscom import WeatherUPBAscom
-from base.driverDataClass import Signals
+from mw4.logic.environment.weatherUPBAscom import WeatherUPBAscom
+from mw4.base.driverDataClass import Signals
 
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)

@@ -26,7 +26,7 @@ from PyQt5.QtTest import QTest
 
 # local import
 from mainApp import MountWizzard4
-from base.tpool import Worker
+from mw4.base.tpool import Worker
 from loader import extractDataFiles
 
 

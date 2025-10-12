@@ -21,11 +21,11 @@ import platform
 # external packages
 
 # local imports
-from base.driverDataClass import Signals
-from logic.cover.coverIndi import CoverIndi
-from logic.cover.coverAlpaca import CoverAlpaca
+from mw4.base.driverDataClass import Signals
+from mw4.logic.cover.coverIndi import CoverIndi
+from mw4.logic.cover.coverAlpaca import CoverAlpaca
 if platform.system() == 'Windows':
-    from logic.cover.coverAscom import CoverAscom
+    from mw4.logic.cover.coverAscom import CoverAscom
 
 
 class Cover:

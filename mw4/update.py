@@ -163,7 +163,7 @@ class UpdateGUI:
         from PyQt5.QtWidgets import QHBoxLayout, QWidget, QTextBrowser, QLabel
         import resource.resources as res
         res.qInitResources()
-        from gui.utilities.stylesQtCss import Styles
+        from mw4.gui.utilities.stylesQtCss import Styles
 
         self.update = Update(runnable=runnable, writer=self.writeText)
 

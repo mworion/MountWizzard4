@@ -29,9 +29,9 @@ import pyqtgraph as pg
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.utilities.slewInterface import SlewInterface
-from gui.extWindows.hemisphereW import HemisphereWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.slewInterface import SlewInterface
+from mw4.gui.extWindows.hemisphereW import HemisphereWindow
 
 
 @pytest.fixture(scope='module')

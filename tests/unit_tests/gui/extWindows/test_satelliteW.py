@@ -27,8 +27,8 @@ import pyqtgraph as pg
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.satelliteW import SatelliteWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.satelliteW import SatelliteWindow
 
 
 @pytest.fixture(scope='module')

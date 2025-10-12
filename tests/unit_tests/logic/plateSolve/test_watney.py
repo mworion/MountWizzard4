@@ -29,9 +29,9 @@ from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.plateSolve.plateSolve import PlateSolve
-from logic.plateSolve.watney import Watney
-from base.loggerMW import setupLogging
+from mw4.logic.plateSolve.plateSolve import PlateSolve
+from mw4.logic.plateSolve.watney import Watney
+from mw4.base.loggerMW import setupLogging
 setupLogging()
 
 

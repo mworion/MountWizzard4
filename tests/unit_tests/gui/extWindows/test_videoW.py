@@ -26,8 +26,8 @@ import cv2
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.videoW import VideoWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.videoW import VideoWindow
 import gui.extWindows.videoW
 
 

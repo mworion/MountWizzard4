@@ -26,7 +26,7 @@ from xisf import XISF
 
 
 # local import
-from logic.file.fileHandler import FileHandler, FileHandlerSignals
+from mw4.logic.file.fileHandler import FileHandler, FileHandlerSignals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

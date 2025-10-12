@@ -24,9 +24,9 @@ from PyQt5.QtCore import QThreadPool
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.dome.domeAlpaca import DomeAlpaca
-from base.driverDataClass import Signals
-from base.alpacaClass import AlpacaClass
+from mw4.logic.dome.domeAlpaca import DomeAlpaca
+from mw4.base.driverDataClass import Signals
+from mw4.base.alpacaClass import AlpacaClass
 
 
 @pytest.fixture(autouse=True, scope='function')

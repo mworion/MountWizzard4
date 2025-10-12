@@ -22,7 +22,7 @@ import unittest.mock as mock
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.filter.filter import Filter
+from mw4.logic.filter.filter import Filter
 
 
 @pytest.fixture(autouse=True, scope='function')

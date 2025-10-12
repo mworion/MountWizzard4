@@ -22,7 +22,7 @@ import unittest.mock as mock
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.camera.camera import Camera
+from mw4.logic.camera.camera import Camera
 
 
 @pytest.fixture(autouse=True, scope='function')

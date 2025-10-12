@@ -21,7 +21,7 @@ import pytest
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.environment.directWeather import DirectWeather
+from mw4.logic.environment.directWeather import DirectWeather
 
 
 @pytest.fixture(autouse=True, scope='function')

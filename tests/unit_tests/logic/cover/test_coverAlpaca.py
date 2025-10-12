@@ -24,8 +24,8 @@ from PyQt5.QtCore import QThreadPool
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.cover.coverAlpaca import CoverAlpaca
-from base.driverDataClass import Signals
+from mw4.logic.cover.coverAlpaca import CoverAlpaca
+from mw4.base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -22,7 +22,7 @@ from PyQt5.QtCore import QObject
 from PyQt5 import QtNetwork
 
 # local imports
-from base.driverDataClass import Signals
+from mw4.base.driverDataClass import Signals
 
 
 class Remote(QObject):

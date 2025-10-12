@@ -25,8 +25,8 @@ import pyqtgraph as pg
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.measureW import MeasureWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.measureW import MeasureWindow
 
 
 @pytest.fixture(autouse=True, scope='function')

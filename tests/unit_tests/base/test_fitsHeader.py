@@ -20,8 +20,8 @@ import pytest
 # external packages
 
 # local import
-from base.loggerMW import setupLogging
-from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
+from mw4.base.loggerMW import setupLogging
+from mw4.base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
 setupLogging()
 
 

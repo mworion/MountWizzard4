@@ -26,10 +26,10 @@ import os
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWmixin.tabAnalysis import Analysis
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
-from base.loggerMW import setupLogging
+from mw4.gui.mainWmixin.tabAnalysis import Analysis
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.base.loggerMW import setupLogging
 setupLogging()
 
 

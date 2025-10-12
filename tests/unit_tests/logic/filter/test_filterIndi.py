@@ -24,8 +24,8 @@ from indibase.indiBase import Device, Client
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.filter.filterIndi import FilterIndi
-from base.driverDataClass import Signals
+from mw4.logic.filter.filterIndi import FilterIndi
+from mw4.base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')

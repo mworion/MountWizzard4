@@ -22,7 +22,7 @@ import numpy as np
 import erfa
 
 # local imports
-from logic.modeldata.alignstars import generateAlignStars
+from mw4.logic.modeldata.alignstars import generateAlignStars
 
 
 class Hipparcos(object):

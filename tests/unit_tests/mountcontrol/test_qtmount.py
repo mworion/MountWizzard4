@@ -25,9 +25,9 @@ import wakeonlan
 from PyQt5.QtCore import QThreadPool, QTimer
 
 # local imports
-from mountcontrol.qtmount import MountSignals
-from mountcontrol.qtmount import Mount
-from base.loggerMW import setupLogging
+from mw4.mountcontrol.qtmount import MountSignals
+from mw4.mountcontrol.qtmount import Mount
+from mw4.base.loggerMW import setupLogging
 
 setupLogging()
 

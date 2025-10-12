@@ -23,7 +23,7 @@ import pytest
 
 # local import
 from mw4.update import UpdateCLI, Update
-from base.loggerMW import setupLogging
+from mw4.base.loggerMW import setupLogging
 
 setupLogging()
 

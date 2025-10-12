@@ -27,9 +27,9 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabTools_Rename import Rename
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWmixin.tabTools_Rename import Rename
 
 
 @pytest.fixture(autouse=True, scope='function')

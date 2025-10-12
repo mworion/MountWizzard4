@@ -29,8 +29,8 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
-from logic.automation.automateWindows import AutomateWindows
-from logic.automation import automateWindows
+from mw4.logic.automation.automateWindows import AutomateWindows
+from mw4.logic.automation import automateWindows
 import winreg
 
 

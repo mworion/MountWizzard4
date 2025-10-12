@@ -23,8 +23,8 @@ from indibase.indiBase import Device, Client
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.telescope.telescopeIndi import TelescopeIndi
-from base.driverDataClass import Signals
+from mw4.logic.telescope.telescopeIndi import TelescopeIndi
+from mw4.base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')

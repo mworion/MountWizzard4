@@ -22,7 +22,7 @@ import unittest.mock as mock
 from skyfield.api import Angle
 
 # local imports
-from mountcontrol.dome import Dome
+from mw4.mountcontrol.dome import Dome
 
 
 class TestConfigData(unittest.TestCase):

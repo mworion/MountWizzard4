@@ -28,7 +28,7 @@ from skyfield import almanac
 from scipy.spatial import distance
 
 # local imports
-from base import transform
+from mw4.base import transform
 
 __all__ = ['HaDecToAltAz',
            'DataPoint',

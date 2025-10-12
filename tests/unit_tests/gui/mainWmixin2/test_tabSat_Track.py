@@ -31,11 +31,11 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabSat_Track import SatTrack
-from gui.mainWmixin.tabSat_Search import SatSearch
-from logic.databaseProcessing.dataWriter import DataWriter
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWmixin.tabSat_Track import SatTrack
+from mw4.gui.mainWmixin.tabSat_Search import SatSearch
+from mw4.logic.databaseProcessing.dataWriter import DataWriter
 
 
 @pytest.fixture(autouse=True, scope='module')

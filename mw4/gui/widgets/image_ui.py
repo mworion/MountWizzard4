@@ -669,7 +669,7 @@ class Ui_ImageDialog(object):
         self.groupMouseCoord.setTitle(_translate("ImageDialog", "Mouse Coords"))
         self.label_25.setText(_translate("ImageDialog", "RA [hours]"))
         self.label_26.setText(_translate("ImageDialog", "DEC [deg]"))
-from gui.utilities.tools4pyqtgraph import ImageBar
+from mw4.gui.utilities.tools4pyqtgraph import ImageBar
 
 
 if __name__ == "__main__":

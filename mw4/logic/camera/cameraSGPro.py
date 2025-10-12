@@ -20,10 +20,10 @@ import os
 # external packages
 
 # local imports
-from base.sgproClass import SGProClass
-from base.tpool import Worker
-from logic.camera.cameraSupport import CameraSupport
-from gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.base.sgproClass import SGProClass
+from mw4.base.tpool import Worker
+from mw4.logic.camera.cameraSupport import CameraSupport
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class CameraSGPro(SGProClass, CameraSupport):

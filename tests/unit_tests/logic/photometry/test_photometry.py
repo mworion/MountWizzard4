@@ -24,8 +24,8 @@ import sep as sep
 
 # local import
 import logic.photometry.photometry
-from logic.photometry.photometry import PhotometrySignals
-from logic.photometry.photometry import Photometry
+from mw4.logic.photometry.photometry import PhotometrySignals
+from mw4.logic.photometry.photometry import Photometry
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

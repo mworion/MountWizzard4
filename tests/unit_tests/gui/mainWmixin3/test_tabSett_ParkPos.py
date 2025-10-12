@@ -23,9 +23,9 @@ from PyQt5.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWmixin.tabSett_ParkPos import SettParkPos
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.mainWmixin.tabSett_ParkPos import SettParkPos
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')

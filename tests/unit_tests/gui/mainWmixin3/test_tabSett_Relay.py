@@ -22,9 +22,9 @@ import pytest
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWmixin.tabSett_Relay import SettRelay
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.mainWmixin.tabSett_Relay import SettRelay
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -24,9 +24,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QThreadPool
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mainApp import MountWizzard4
-from base.tpool import Worker
+from mw4.base.tpool import Worker
 from loader import extractDataFiles
 from resource import resources
 

@@ -22,12 +22,12 @@ from unittest import mock
 from PyQt5.Qt3DCore import QEntity, QTransform
 from PyQt5.Qt3DExtras import QExtrudedTextMesh
 from PyQt5.QtCore import QObject
-from mountcontrol.mount import Mount
+from mw4.mountcontrol.mount import Mount
 from skyfield.api import wgs84
 import numpy as np
 
 # local import
-from gui.extWindows.simulator.points import SimulatorBuildPoints
+from mw4.gui.extWindows.simulator.points import SimulatorBuildPoints
 
 
 @pytest.fixture(autouse=True, scope='function')

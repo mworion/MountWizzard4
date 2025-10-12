@@ -25,9 +25,9 @@ from PyQt5.QtCore import QThreadPool
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.telescope.telescopeAscom import TelescopeAscom
-from base.driverDataClass import Signals
-from base.ascomClass import AscomClass
+from mw4.logic.telescope.telescopeAscom import TelescopeAscom
+from mw4.base.driverDataClass import Signals
+from mw4.base.ascomClass import AscomClass
 
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)

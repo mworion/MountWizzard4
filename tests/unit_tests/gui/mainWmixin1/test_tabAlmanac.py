@@ -26,9 +26,9 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabAlmanac import Almanac
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWmixin.tabAlmanac import Almanac
 
 
 @pytest.fixture(autouse=True, scope='module')

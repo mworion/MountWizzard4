@@ -25,9 +25,9 @@ from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.simulatorW import SimulatorWindow
-from gui.extWindows.simulator import tools
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.simulatorW import SimulatorWindow
+from mw4.gui.extWindows.simulator import tools
 
 
 @pytest.fixture(autouse=True, scope='module')

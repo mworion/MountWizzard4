@@ -26,11 +26,11 @@ from PyQt5.QtCore import QThreadPool
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 import gui.utilities
-from gui.mainWmixin.tabMinorPlanet import MinorPlanet
-from logic.databaseProcessing.dataWriter import DataWriter
+from mw4.gui.mainWmixin.tabMinorPlanet import MinorPlanet
+from mw4.logic.databaseProcessing.dataWriter import DataWriter
 
 
 @pytest.fixture(autouse=True, scope='module')

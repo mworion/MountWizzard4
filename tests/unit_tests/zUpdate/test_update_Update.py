@@ -27,7 +27,7 @@ import platform
 
 # local import
 from mw4.update import Update
-from base.loggerMW import setupLogging
+from mw4.base.loggerMW import setupLogging
 
 setupLogging()
 

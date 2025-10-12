@@ -30,10 +30,10 @@ from skyfield.api import Angle, load
 import numpy as np
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
-from gui.utilities.toolsQtWidget import FileSortProxyModel
-from gui.utilities.toolsQtWidget import QMultiWait, QCustomTableWidgetItem
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
+from mw4.gui.utilities.toolsQtWidget import FileSortProxyModel
+from mw4.gui.utilities.toolsQtWidget import QMultiWait, QCustomTableWidgetItem
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

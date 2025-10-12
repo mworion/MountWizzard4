@@ -23,10 +23,10 @@ from unittest import mock
 # local import
 from PyQt5.QtCore import QTimer
 from indibase.indiBase import Device
-from base.indiClass import IndiClass
+from mw4.base.indiClass import IndiClass
 import base.indiClass
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from base.driverDataClass import Signals
+from mw4.base.driverDataClass import Signals
 
 host_ip = 'astro-mount.fritz.box'
 

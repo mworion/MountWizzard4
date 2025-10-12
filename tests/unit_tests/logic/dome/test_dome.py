@@ -24,7 +24,7 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.dome.dome import Dome
+from mw4.logic.dome.dome import Dome
 
 
 @pytest.fixture(autouse=True, scope='function')

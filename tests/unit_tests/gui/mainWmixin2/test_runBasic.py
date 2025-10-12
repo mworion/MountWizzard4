@@ -27,11 +27,11 @@ from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWmixin.runBasic import BasicRun
+from mw4.gui.mainWmixin.runBasic import BasicRun
 import gui.mainWmixin.tabModel
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
-from base.loggerMW import setupLogging
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.base.loggerMW import setupLogging
 setupLogging()
 
 

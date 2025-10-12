@@ -23,9 +23,9 @@ import os
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.camera.cameraNINA import CameraNINA
-from base.driverDataClass import Signals
-from base.loggerMW import setupLogging
+from mw4.logic.camera.cameraNINA import CameraNINA
+from mw4.base.driverDataClass import Signals
+from mw4.base.loggerMW import setupLogging
 setupLogging()
 
 

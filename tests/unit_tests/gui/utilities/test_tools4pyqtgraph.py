@@ -26,14 +26,14 @@ import numpy as np
 import pyqtgraph as pg
 
 # local import
-from gui.utilities.tools4pyqtgraph import PlotBase
-from gui.utilities.tools4pyqtgraph import PolarScatter
-from gui.utilities.tools4pyqtgraph import NormalScatter
-from gui.utilities.tools4pyqtgraph import ImageBar
-from gui.utilities.tools4pyqtgraph import Measure
-from gui.utilities.tools4pyqtgraph import TimeMeasure
-from gui.utilities.tools4pyqtgraph import CustomViewBox
-from gui.utilities.tools4pyqtgraph import Hemisphere
+from mw4.gui.utilities.tools4pyqtgraph import PlotBase
+from mw4.gui.utilities.tools4pyqtgraph import PolarScatter
+from mw4.gui.utilities.tools4pyqtgraph import NormalScatter
+from mw4.gui.utilities.tools4pyqtgraph import ImageBar
+from mw4.gui.utilities.tools4pyqtgraph import Measure
+from mw4.gui.utilities.tools4pyqtgraph import TimeMeasure
+from mw4.gui.utilities.tools4pyqtgraph import CustomViewBox
+from mw4.gui.utilities.tools4pyqtgraph import Hemisphere
 
 
 @pytest.fixture(autouse=True, scope='module')

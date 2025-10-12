@@ -22,9 +22,9 @@ import os
 import astropy.io.fits as fits
 
 # local imports
-from base.tpool import Worker
-from base.indiClass import IndiClass
-from logic.camera.cameraSupport import CameraSupport
+from mw4.base.tpool import Worker
+from mw4.base.indiClass import IndiClass
+from mw4.logic.camera.cameraSupport import CameraSupport
 
 
 class CameraIndi(IndiClass, CameraSupport):

@@ -19,9 +19,9 @@
 # external packages
 
 # local imports
-from base.alpacaClass import AlpacaClass
-from base.tpool import Worker
-from logic.camera.cameraSupport import CameraSupport
+from mw4.base.alpacaClass import AlpacaClass
+from mw4.base.tpool import Worker
+from mw4.logic.camera.cameraSupport import CameraSupport
 
 
 class CameraAlpaca(AlpacaClass, CameraSupport):

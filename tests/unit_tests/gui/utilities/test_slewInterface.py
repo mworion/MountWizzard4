@@ -23,7 +23,7 @@ from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.slewInterface import SlewInterface
+from mw4.gui.utilities.slewInterface import SlewInterface
 
 
 @pytest.fixture(autouse=True, scope='function')

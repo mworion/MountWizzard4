@@ -25,8 +25,8 @@ from skyfield.api import Angle, Timescale, wgs84, Star, Loader
 
 # local imports
 import mountcontrol
-from mountcontrol.obsSite import ObsSite
-from base.loggerMW import setupLogging
+from mw4.mountcontrol.obsSite import ObsSite
+from mw4.base.loggerMW import setupLogging
 setupLogging()
 
 

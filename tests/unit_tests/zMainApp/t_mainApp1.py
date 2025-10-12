@@ -27,7 +27,7 @@ import PyQt5
 
 # local import
 from mainApp import MountWizzard4
-from base.loggerMW import setupLogging
+from mw4.base.loggerMW import setupLogging
 
 setupLogging()
 

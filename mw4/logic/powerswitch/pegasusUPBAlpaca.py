@@ -19,7 +19,7 @@
 # external packages
 
 # local imports
-from base.alpacaClass import AlpacaClass
+from mw4.base.alpacaClass import AlpacaClass
 
 
 class PegasusUPBAlpaca(AlpacaClass):

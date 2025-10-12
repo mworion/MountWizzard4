@@ -27,9 +27,9 @@ import subprocess
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.plateSolve.astrometry import Astrometry
-from logic.plateSolve.plateSolve import PlateSolve
-from base.loggerMW import setupLogging
+from mw4.logic.plateSolve.astrometry import Astrometry
+from mw4.logic.plateSolve.plateSolve import PlateSolve
+from mw4.base.loggerMW import setupLogging
 setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')

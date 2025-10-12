@@ -22,8 +22,8 @@ import unittest.mock as mock
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.environment.weatherUPBAlpaca import WeatherUPBAlpaca
-from base.driverDataClass import Signals
+from mw4.logic.environment.weatherUPBAlpaca import WeatherUPBAlpaca
+from mw4.base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')

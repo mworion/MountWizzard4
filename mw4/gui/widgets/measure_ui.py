@@ -109,7 +109,7 @@ class Ui_MeasureDialog(object):
         self.label_4.setText(_translate("MeasureDialog", "Lower middle chart"))
         self.label.setText(_translate("MeasureDialog", "Upper chart"))
         self.label_5.setText(_translate("MeasureDialog", "Middle chart"))
-from gui.utilities.tools4pyqtgraph import Measure
+from mw4.gui.utilities.tools4pyqtgraph import Measure
 
 
 if __name__ == "__main__":

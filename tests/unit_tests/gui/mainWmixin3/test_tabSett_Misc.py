@@ -31,11 +31,11 @@ import hid
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWmixin.tabSett_Misc import SettMisc
+from mw4.gui.mainWmixin.tabSett_Misc import SettMisc
 import gui.mainWmixin.tabSett_Misc
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
-from base.loggerMW import setupLogging
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.base.loggerMW import setupLogging
 setupLogging()
 
 

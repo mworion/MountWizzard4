@@ -29,13 +29,13 @@ if platform.system() == 'Windows':
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.devicePopupW import DevicePopup
-from base.indiClass import IndiClass
-from base.alpacaClass import AlpacaClass
-from base.sgproClass import SGProClass
-from base.ninaClass import NINAClass
-from base.loggerMW import addLoggingLevel
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.devicePopupW import DevicePopup
+from mw4.base.indiClass import IndiClass
+from mw4.base.alpacaClass import AlpacaClass
+from mw4.base.sgproClass import SGProClass
+from mw4.base.ninaClass import NINAClass
+from mw4.base.loggerMW import addLoggingLevel
 
 
 @pytest.fixture(autouse=True, scope='function')

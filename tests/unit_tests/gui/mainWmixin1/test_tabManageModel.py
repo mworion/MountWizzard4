@@ -26,13 +26,13 @@ import os
 import PyQt5
 from PyQt5.QtWidgets import QWidget
 from skyfield.api import Star, Angle
-from mountcontrol.modelStar import ModelStar
+from mw4.mountcontrol.modelStar import ModelStar
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWmixin.tabManageModel import ManageModel
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.mainWmixin.tabManageModel import ManageModel
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='module')

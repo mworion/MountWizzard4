@@ -25,7 +25,7 @@ from PyQt5.QtCore import pyqtSignal
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.remote.remote import Remote
+from mw4.logic.remote.remote import Remote
 
 
 @pytest.fixture(autouse=True, scope='function')

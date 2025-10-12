@@ -26,9 +26,9 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.extWindows.imageW import ImageWindow
-from logic.photometry.photometry import Photometry
-from logic.file.fileHandler import FileHandler
+from mw4.gui.extWindows.imageW import ImageWindow
+from mw4.logic.photometry.photometry import Photometry
+from mw4.logic.file.fileHandler import FileHandler
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -12695,7 +12695,7 @@ class Ui_MainWindow(object):
         self.openV4.setToolTip(_translate("MainWindow", "Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.\n"
 "The keypad is a webbrowser showing the content from 10microns webservices directy."))
         self.openV4.setText(_translate("MainWindow", "V4"))
-from gui.utilities.tools4pyqtgraph import NormalScatter, PlotBase, PolarScatter
+from mw4.gui.utilities.tools4pyqtgraph import NormalScatter, PlotBase, PolarScatter
 
 
 if __name__ == "__main__":

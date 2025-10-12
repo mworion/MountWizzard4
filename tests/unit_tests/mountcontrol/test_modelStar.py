@@ -21,8 +21,8 @@ import pytest
 from skyfield.api import wgs84, Star, Angle
 
 # local imports
-from mountcontrol.model import ModelStar
-from mountcontrol import obsSite
+from mw4.mountcontrol.model import ModelStar
+from mw4.mountcontrol import obsSite
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -23,9 +23,9 @@ import platform
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.filter.filterAscom import FilterAscom
-from base.driverDataClass import Signals
-from base.ascomClass import AscomClass
+from mw4.logic.filter.filterAscom import FilterAscom
+from mw4.base.driverDataClass import Signals
+from mw4.base.ascomClass import AscomClass
 
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)

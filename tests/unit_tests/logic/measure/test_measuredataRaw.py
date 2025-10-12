@@ -22,7 +22,7 @@ import unittest.mock as mock
 import PyQt5
 
 # local import
-from logic.measure.measureRaw import MeasureDataRaw
+from mw4.logic.measure.measureRaw import MeasureDataRaw
 
 
 @pytest.fixture(autouse=True, scope='function')

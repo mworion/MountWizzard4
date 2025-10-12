@@ -23,12 +23,12 @@ import PyQt5
 import numpy as np
 
 # local imports
-from base.driverDataClass import Signals
-from base.transform import diffModulusAbs
-from logic.dome.domeIndi import DomeIndi
-from logic.dome.domeAlpaca import DomeAlpaca
+from mw4.base.driverDataClass import Signals
+from mw4.base.transform import diffModulusAbs
+from mw4.logic.dome.domeIndi import DomeIndi
+from mw4.logic.dome.domeAlpaca import DomeAlpaca
 if platform.system() == 'Windows':
-    from logic.dome.domeAscom import DomeAscom
+    from mw4.logic.dome.domeAscom import DomeAscom
 
 
 class Dome:

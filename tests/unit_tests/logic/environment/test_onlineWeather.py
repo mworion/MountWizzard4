@@ -26,8 +26,8 @@ import requests
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.environment.onlineWeather import OnlineWeather
-from base.loggerMW import setupLogging
+from mw4.logic.environment.onlineWeather import OnlineWeather
+from mw4.base.loggerMW import setupLogging
 setupLogging()
 
 

@@ -26,9 +26,9 @@ from skyfield.api import Angle, wgs84
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabMountSett import MountSett
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWmixin.tabMountSett import MountSett
 
 
 @pytest.fixture(autouse=True, scope='module')

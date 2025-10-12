@@ -23,8 +23,8 @@ from PyQt5.QtGui import QCloseEvent
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.videoW3 import VideoWindow3
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.videoW3 import VideoWindow3
 
 
 @pytest.fixture(autouse=True, scope='function')

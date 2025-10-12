@@ -21,7 +21,7 @@ import unittest.mock as mock
 # external packages
 
 # local imports
-from mountcontrol.firmware import Firmware
+from mw4.mountcontrol.firmware import Firmware
 
 
 class TestConfigData(unittest.TestCase):

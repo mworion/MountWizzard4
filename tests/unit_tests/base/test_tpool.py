@@ -20,7 +20,7 @@ import pytest
 # external packages
 
 # local import
-from base import tpool
+from mw4.base import tpool
 
 
 @pytest.fixture(autouse=True, scope='function')

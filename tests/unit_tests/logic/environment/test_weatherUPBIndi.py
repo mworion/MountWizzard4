@@ -24,8 +24,8 @@ from indibase.indiBase import Device, Client
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.environment.weatherUPBIndi import WeatherUPBIndi
-from base.driverDataClass import Signals
+from mw4.logic.environment.weatherUPBIndi import WeatherUPBIndi
+from mw4.base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -22,9 +22,9 @@ import unittest.mock as mock
 from skyfield.api import Angle, load
 
 # local imports
-from mountcontrol.satellite import Satellite, TLEParams, TrajectoryParams
-from mountcontrol.connection import Connection
-from base.loggerMW import setupLogging
+from mw4.mountcontrol.satellite import Satellite, TLEParams, TrajectoryParams
+from mw4.mountcontrol.connection import Connection
+from mw4.base.loggerMW import setupLogging
 
 setupLogging()
 

@@ -28,9 +28,9 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.modeldata.buildpoints import DataPoint
-from logic.modeldata.buildpoints import HaDecToAltAz
-from base import transform
+from mw4.logic.modeldata.buildpoints import DataPoint
+from mw4.logic.modeldata.buildpoints import HaDecToAltAz
+from mw4.base import transform
 
 
 @pytest.fixture(autouse=True, scope='function')

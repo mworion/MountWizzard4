@@ -22,7 +22,7 @@ import platform
 # external packages
 
 # local import
-from base.packageConfig import excludedPlatforms, checkAutomation
+from mw4.base.packageConfig import excludedPlatforms, checkAutomation
 
 
 def test_config():

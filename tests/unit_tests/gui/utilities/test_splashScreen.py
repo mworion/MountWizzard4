@@ -23,7 +23,7 @@ import pytest
 import unittest.mock as mock
 
 # local import
-from gui.utilities.splashScreen import SplashScreen
+from mw4.gui.utilities.splashScreen import SplashScreen
 
 
 @pytest.fixture(autouse=True, scope='function')

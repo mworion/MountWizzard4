@@ -24,7 +24,7 @@ import PyQt5
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.measure.measureCSV import MeasureDataCSV
+from mw4.logic.measure.measureCSV import MeasureDataCSV
 
 
 @pytest.fixture(autouse=True, scope='function')

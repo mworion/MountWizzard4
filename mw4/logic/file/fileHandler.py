@@ -27,8 +27,8 @@ from xisf import XISF
 from astropy import wcs
 
 # local import
-from base.tpool import Worker
-from mountcontrol.convert import valueToFloat
+from mw4.base.tpool import Worker
+from mw4.mountcontrol.convert import valueToFloat
 
 
 class FileHandlerSignals(QObject):

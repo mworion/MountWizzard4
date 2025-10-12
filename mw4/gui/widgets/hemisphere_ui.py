@@ -435,7 +435,7 @@ class Ui_HemisphereDialog(object):
         self.saveHorizonMaskAs.setText(_translate("HemisphereDialog", "Save as"))
         self.clearHorizonMask.setText(_translate("HemisphereDialog", "Clear "))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.HorizonTab), _translate("HemisphereDialog", "Define Horizon Mask and Terrain Image"))
-from gui.utilities.tools4pyqtgraph import Hemisphere, PlotBase
+from mw4.gui.utilities.tools4pyqtgraph import Hemisphere, PlotBase
 
 
 if __name__ == "__main__":

@@ -22,9 +22,9 @@ from PyQt5.QtCore import QMutex
 import numpy as np
 
 # local imports
-from base.driverDataClass import Signals
-from logic.measure.measureRaw import MeasureDataRaw
-from logic.measure.measureCSV import MeasureDataCSV
+from mw4.base.driverDataClass import Signals
+from mw4.logic.measure.measureRaw import MeasureDataRaw
+from mw4.logic.measure.measureCSV import MeasureDataCSV
 
 
 class MeasureData:

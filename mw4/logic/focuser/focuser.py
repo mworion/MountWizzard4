@@ -21,11 +21,11 @@ import platform
 # external packages
 
 # local imports
-from base.driverDataClass import Signals
-from logic.focuser.focuserIndi import FocuserIndi
-from logic.focuser.focuserAlpaca import FocuserAlpaca
+from mw4.base.driverDataClass import Signals
+from mw4.logic.focuser.focuserIndi import FocuserIndi
+from mw4.logic.focuser.focuserAlpaca import FocuserAlpaca
 if platform.system() == 'Windows':
-    from logic.focuser.focuserAscom import FocuserAscom
+    from mw4.logic.focuser.focuserAscom import FocuserAscom
 
 
 class Focuser:

@@ -24,7 +24,7 @@ from PyQt5.QtCore import pyqtSignal, QMutex, QTimer
 import requests
 
 # local imports
-from base.driverDataClass import Signals
+from mw4.base.driverDataClass import Signals
 
 
 class RelaySignals(Signals):

@@ -24,7 +24,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from indibase.indiBase import Client, Device
 from indibase import indiXML
 from indibase.indiXML import INDIBase
-from base.loggerMW import setupLogging
+from mw4.base.loggerMW import setupLogging
 setupLogging()
 
 

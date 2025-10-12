@@ -24,8 +24,8 @@ import numpy as np
 import requests
 
 # local imports
-from base.tpool import Worker
-from base.driverDataClass import Signals
+from mw4.base.tpool import Worker
+from mw4.base.driverDataClass import Signals
 
 
 class OnlineWeather():

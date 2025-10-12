@@ -19,8 +19,8 @@
 # external packages
 
 # local imports
-from base.ascomClass import AscomClass
-from logic.camera.cameraSupport import CameraSupport
+from mw4.base.ascomClass import AscomClass
+from mw4.logic.camera.cameraSupport import CameraSupport
 
 
 class CameraAscom(AscomClass, CameraSupport):

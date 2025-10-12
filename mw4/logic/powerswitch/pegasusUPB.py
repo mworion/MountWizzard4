@@ -21,10 +21,10 @@ import platform
 # external packages
 
 # local imports
-from base.driverDataClass import Signals
-from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
-from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
-from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
+from mw4.base.driverDataClass import Signals
+from mw4.logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
+from mw4.logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
+from mw4.logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
 
 
 class PegasusUPB:

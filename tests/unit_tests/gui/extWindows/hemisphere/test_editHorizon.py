@@ -26,8 +26,8 @@ from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.extWindows.hemisphereW import HemisphereWindow
-from gui.utilities.tools4pyqtgraph import CustomViewBox
+from mw4.gui.extWindows.hemisphereW import HemisphereWindow
+from mw4.gui.utilities.tools4pyqtgraph import CustomViewBox
 
 
 @pytest.fixture(autouse=True, scope='module')

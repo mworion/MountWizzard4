@@ -24,9 +24,9 @@ import unittest.mock as mock
 # external packages
 
 # local import
-from logic.profiles.profile import convertProfileData, blendProfile, defaultConfig
-from logic.profiles.profile import loadProfile, saveProfile
-from logic.profiles.profile import convertKeyData, replaceKeys, checkResetTabOrder
+from mw4.logic.profiles.profile import convertProfileData, blendProfile, defaultConfig
+from mw4.logic.profiles.profile import loadProfile, saveProfile
+from mw4.logic.profiles.profile import convertKeyData, replaceKeys, checkResetTabOrder
 
 
 @pytest.fixture(autouse=True, scope='function')

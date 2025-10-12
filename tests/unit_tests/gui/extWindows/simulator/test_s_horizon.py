@@ -22,7 +22,7 @@ from PyQt5.Qt3DCore import QEntity
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.extWindows.simulator.horizon import SimulatorHorizon
+from mw4.gui.extWindows.simulator.horizon import SimulatorHorizon
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -26,7 +26,7 @@ import platform
 from astropy.io import fits
 
 # local imports
-from mountcontrol import convert
+from mw4.mountcontrol import convert
 
 
 class Astrometry(object):

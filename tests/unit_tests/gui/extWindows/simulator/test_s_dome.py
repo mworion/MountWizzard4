@@ -22,7 +22,7 @@ from PyQt5.Qt3DCore import QEntity, QTransform
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.extWindows.simulator.dome import SimulatorDome
+from mw4.gui.extWindows.simulator.dome import SimulatorDome
 
 
 @pytest.fixture(autouse=True, scope='function')

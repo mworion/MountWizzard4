@@ -27,8 +27,8 @@ from astropy.io import fits
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.plateSolve.plateSolve import PlateSolve
-from base.loggerMW import setupLogging
+from mw4.logic.plateSolve.plateSolve import PlateSolve
+from mw4.base.loggerMW import setupLogging
 setupLogging()
 
 

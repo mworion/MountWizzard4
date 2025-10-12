@@ -24,7 +24,7 @@ from ndicts import NestedDict
 from packaging.utils import Version
 
 # local imports
-from base.loggerMW import setupLogging
+from mw4.base.loggerMW import setupLogging
 
 setupLogging()
 log = logging.getLogger()

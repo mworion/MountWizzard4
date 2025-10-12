@@ -23,8 +23,8 @@ import unittest.mock as mock
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
-from base.driverDataClass import Signals
+from mw4.logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
+from mw4.base.driverDataClass import Signals
 
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)

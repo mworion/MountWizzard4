@@ -24,8 +24,8 @@ import PyQt5
 import requests
 
 # local import
-from base.loggerMW import setupLogging
-from logic.powerswitch.kmRelay import KMRelay
+from mw4.base.loggerMW import setupLogging
+from mw4.logic.powerswitch.kmRelay import KMRelay
 setupLogging()
 
 

@@ -23,8 +23,8 @@ from skyfield.api import Angle, wgs84
 import numpy as np
 
 # local imports
-from mountcontrol.mount import Mount
-from base.loggerMW import setupLogging
+from mw4.mountcontrol.mount import Mount
+from mw4.base.loggerMW import setupLogging
 setupLogging()
 
 

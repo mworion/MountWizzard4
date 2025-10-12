@@ -27,9 +27,9 @@ from skyfield.api import Angle, wgs84
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabMount import Mount
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWmixin.tabMount import Mount
 import gui.mainWmixin.tabMount
 import mountcontrol
 

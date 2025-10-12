@@ -22,7 +22,7 @@ import unittest.mock as mock
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.cover.cover import Cover
+from mw4.logic.cover.cover import Cover
 
 
 @pytest.fixture(autouse=True, scope='function')

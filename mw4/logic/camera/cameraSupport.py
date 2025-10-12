@@ -23,8 +23,8 @@ from astropy.io import fits
 import numpy as np
 
 # local imports
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from mountcontrol.convert import formatDstrToText
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.mountcontrol.convert import formatDstrToText
 
 
 class CameraSupport:

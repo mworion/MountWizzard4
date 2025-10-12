@@ -21,11 +21,11 @@ from unittest import mock
 # external packages
 from PyQt5.Qt3DCore import QEntity, QTransform
 from PyQt5.QtCore import QObject
-from mountcontrol.mount import Mount
+from mw4.mountcontrol.mount import Mount
 from skyfield.api import wgs84
 
 # local import
-from gui.extWindows.simulator.pointer import SimulatorPointer
+from mw4.gui.extWindows.simulator.pointer import SimulatorPointer
 
 
 @pytest.fixture(autouse=True, scope='function')

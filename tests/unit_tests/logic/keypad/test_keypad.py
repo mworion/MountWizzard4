@@ -23,7 +23,7 @@ from PyQt5.QtCore import QObject, pyqtSignal
 from websocket import WebSocketApp
 
 # local import
-from logic.keypad.keypad import KeyPad
+from mw4.logic.keypad.keypad import KeyPad
 
 
 @pytest.fixture(autouse=True, scope='function')

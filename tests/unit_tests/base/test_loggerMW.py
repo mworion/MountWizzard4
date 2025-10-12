@@ -25,8 +25,8 @@ from unittest import mock
 # external packages
 
 # local import
-from base import loggerMW
-from base.loggerMW import LoggerWriter
+from mw4.base import loggerMW
+from mw4.base.loggerMW import LoggerWriter
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -25,9 +25,9 @@ from skyfield.api import Angle, load
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.camera.cameraIndi import CameraIndi
-from base.driverDataClass import Signals
-from base.indiClass import IndiClass
+from mw4.logic.camera.cameraIndi import CameraIndi
+from mw4.base.driverDataClass import Signals
+from mw4.base.indiClass import IndiClass
 
 
 @pytest.fixture(autouse=True, scope='function')

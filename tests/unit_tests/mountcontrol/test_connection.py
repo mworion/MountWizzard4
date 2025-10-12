@@ -22,9 +22,9 @@ import socket
 # external packages
 
 # local imports
-from base.loggerMW import setupLogging
+from mw4.base.loggerMW import setupLogging
 setupLogging()
-from mountcontrol.connection import Connection
+from mw4.mountcontrol.connection import Connection
 
 
 class TestConnection(unittest.TestCase):

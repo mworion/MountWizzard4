@@ -23,7 +23,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.focuser.focuser import Focuser
+from mw4.logic.focuser.focuser import Focuser
 
 
 @pytest.fixture(autouse=True, scope='function')

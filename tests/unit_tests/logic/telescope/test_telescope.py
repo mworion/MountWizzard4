@@ -22,7 +22,7 @@ import unittest.mock as mock
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.telescope.telescope import Telescope
+from mw4.logic.telescope.telescope import Telescope
 
 
 @pytest.fixture(autouse=True, scope='function')

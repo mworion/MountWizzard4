@@ -24,8 +24,8 @@ from PyQt5.QtGui import QCloseEvent
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 import gui.extWindows.bigPopupW
-from gui.extWindows.bigPopupW import BigPopup
-from gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.bigPopupW import BigPopup
+from mw4.gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')

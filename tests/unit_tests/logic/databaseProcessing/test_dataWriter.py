@@ -26,7 +26,7 @@ from skyfield.api import EarthSatellite
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.databaseProcessing.dataWriter import DataWriter
+from mw4.logic.databaseProcessing.dataWriter import DataWriter
 
 
 @pytest.fixture(autouse=True, scope='function')

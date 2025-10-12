@@ -24,9 +24,9 @@ import skyfield.api
 from skyfield.api import wgs84
 
 # local imports
-from mountcontrol.model import ModelStar, AlignStar
-from mountcontrol.model import Model
-from mountcontrol import obsSite
+from mw4.mountcontrol.model import ModelStar, AlignStar
+from mw4.mountcontrol.model import Model
+from mw4.mountcontrol import obsSite
 import mountcontrol
 
 obsSite.location = wgs84.latlon(latitude_degrees=0,

@@ -21,11 +21,11 @@ import platform
 # external packages
 
 # local imports
-from base.driverDataClass import Signals
-from logic.environment.weatherUPBIndi import WeatherUPBIndi
-from logic.environment.weatherUPBAlpaca import WeatherUPBAlpaca
+from mw4.base.driverDataClass import Signals
+from mw4.logic.environment.weatherUPBIndi import WeatherUPBIndi
+from mw4.logic.environment.weatherUPBAlpaca import WeatherUPBAlpaca
 if platform.system() == 'Windows':
-    from logic.environment.weatherUPBAscom import WeatherUPBAscom
+    from mw4.logic.environment.weatherUPBAscom import WeatherUPBAscom
 
 
 class WeatherUPB:

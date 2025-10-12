@@ -24,7 +24,7 @@ from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.measure.measure import MeasureData
+from mw4.logic.measure.measure import MeasureData
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -19,7 +19,7 @@ import unittest
 import unittest.mock as mock
 # external packages
 # local imports
-from mountcontrol.setting import Setting
+from mw4.mountcontrol.setting import Setting
 
 
 class TestConfigData(unittest.TestCase):

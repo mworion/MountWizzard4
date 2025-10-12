@@ -33,10 +33,10 @@ from skyfield.api import wgs84
 
 # local import
 import gui.utilities.toolsQtWidget
-from gui.mainWindow.mainW import MainWindow
-from gui.extWindows.imageW import ImageWindow
-from base.loggerMW import addLoggingLevel
-from base import packageConfig
+from mw4.gui.mainWindow.mainW import MainWindow
+from mw4.gui.extWindows.imageW import ImageWindow
+from mw4.base.loggerMW import addLoggingLevel
+from mw4.base import packageConfig
 from resource import resources
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 resources.qInitResources()

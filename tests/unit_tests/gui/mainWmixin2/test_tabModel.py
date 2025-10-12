@@ -27,15 +27,15 @@ import json
 # external packages
 import skyfield.api
 from skyfield.api import Angle
-from mountcontrol.modelStar import ModelStar
+from mw4.mountcontrol.modelStar import ModelStar
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWmixin.tabModel import Model
+from mw4.gui.mainWmixin.tabModel import Model
 import gui.mainWmixin
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
-from base.loggerMW import setupLogging
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.base.loggerMW import setupLogging
 setupLogging()
 
 

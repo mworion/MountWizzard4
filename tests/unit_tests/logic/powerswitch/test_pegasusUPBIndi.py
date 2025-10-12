@@ -23,9 +23,9 @@ from indibase.indiBase import Device, Client
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
-from base.driverDataClass import Signals
-from base.indiClass import IndiClass
+from mw4.logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
+from mw4.base.driverDataClass import Signals
+from mw4.base.indiClass import IndiClass
 
 
 @pytest.fixture(autouse=True, scope='function')

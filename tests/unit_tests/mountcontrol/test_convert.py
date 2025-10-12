@@ -24,26 +24,26 @@ from skyfield.api import Angle
 
 # local imports
 import mountcontrol
-from mountcontrol.convert import stringToDegree
-from mountcontrol.convert import stringToAngle
-from mountcontrol.convert import valueToFloat
-from mountcontrol.convert import valueToAngle
-from mountcontrol.convert import valueToInt
-from mountcontrol.convert import topoToAltAz
-from mountcontrol.convert import sexagesimalizeToInt
-from mountcontrol.convert import checkIsHours
-from mountcontrol.convert import convertToAngle
-from mountcontrol.convert import convertToHMS
-from mountcontrol.convert import convertToDMS
-from mountcontrol.convert import formatLatLonToAngle
-from mountcontrol.convert import convertLatToAngle
-from mountcontrol.convert import convertLonToAngle
-from mountcontrol.convert import convertRaToAngle
-from mountcontrol.convert import convertDecToAngle
-from mountcontrol.convert import formatHstrToText
-from mountcontrol.convert import formatDstrToText
-from mountcontrol.convert import formatLatToText
-from mountcontrol.convert import formatLonToText
+from mw4.mountcontrol.convert import stringToDegree
+from mw4.mountcontrol.convert import stringToAngle
+from mw4.mountcontrol.convert import valueToFloat
+from mw4.mountcontrol.convert import valueToAngle
+from mw4.mountcontrol.convert import valueToInt
+from mw4.mountcontrol.convert import topoToAltAz
+from mw4.mountcontrol.convert import sexagesimalizeToInt
+from mw4.mountcontrol.convert import checkIsHours
+from mw4.mountcontrol.convert import convertToAngle
+from mw4.mountcontrol.convert import convertToHMS
+from mw4.mountcontrol.convert import convertToDMS
+from mw4.mountcontrol.convert import formatLatLonToAngle
+from mw4.mountcontrol.convert import convertLatToAngle
+from mw4.mountcontrol.convert import convertLonToAngle
+from mw4.mountcontrol.convert import convertRaToAngle
+from mw4.mountcontrol.convert import convertDecToAngle
+from mw4.mountcontrol.convert import formatHstrToText
+from mw4.mountcontrol.convert import formatDstrToText
+from mw4.mountcontrol.convert import formatLatToText
+from mw4.mountcontrol.convert import formatLonToText
 
 
 class TestConfigData(unittest.TestCase):

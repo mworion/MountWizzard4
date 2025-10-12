@@ -21,11 +21,11 @@ import platform
 # external packages
 
 # local imports
-from base.driverDataClass import Signals
-from logic.environment.skymeterIndi import SkymeterIndi
-from logic.environment.skymeterAlpaca import SkymeterAlpaca
+from mw4.base.driverDataClass import Signals
+from mw4.logic.environment.skymeterIndi import SkymeterIndi
+from mw4.logic.environment.skymeterAlpaca import SkymeterAlpaca
 if platform.system() == 'Windows':
-    from logic.environment.skymeterAscom import SkymeterAscom
+    from mw4.logic.environment.skymeterAscom import SkymeterAscom
 
 
 class Skymeter:

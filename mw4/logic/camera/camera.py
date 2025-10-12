@@ -21,13 +21,13 @@ import platform
 # external packages
 
 # local imports
-from base.driverDataClass import Signals
-from logic.camera.cameraIndi import CameraIndi
-from logic.camera.cameraAlpaca import CameraAlpaca
+from mw4.base.driverDataClass import Signals
+from mw4.logic.camera.cameraIndi import CameraIndi
+from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 if platform.system() == 'Windows':
-    from logic.camera.cameraAscom import CameraAscom
-    from logic.camera.cameraSGPro import CameraSGPro
-    from logic.camera.cameraNINA import CameraNINA
+    from mw4.logic.camera.cameraAscom import CameraAscom
+    from mw4.logic.camera.cameraSGPro import CameraSGPro
+    from mw4.logic.camera.cameraNINA import CameraNINA
 
 
 class Camera:

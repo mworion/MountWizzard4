@@ -21,7 +21,7 @@ from skyfield.api import Angle
 from skyfield.api import wgs84
 
 # local import
-from base import transform
+from mw4.base import transform
 
 
 @pytest.fixture(autouse=True, scope='function')

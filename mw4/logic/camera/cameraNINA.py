@@ -19,10 +19,10 @@
 # external packages
 
 # local imports
-from base.ninaClass import NINAClass
-from base.tpool import Worker
-from logic.camera.cameraSupport import CameraSupport
-from gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.base.ninaClass import NINAClass
+from mw4.base.tpool import Worker
+from mw4.logic.camera.cameraSupport import CameraSupport
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class CameraNINA(NINAClass, CameraSupport):

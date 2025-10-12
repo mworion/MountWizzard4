@@ -29,7 +29,7 @@ import requests
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 import gui.extWindows.downloadPopupW
-from gui.extWindows.downloadPopupW import DownloadPopup
+from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 
 
 @pytest.fixture(autouse=True, scope='function')

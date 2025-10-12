@@ -26,8 +26,8 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.analyseW import AnalyseWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.analyseW import AnalyseWindow
 
 
 @pytest.fixture(autouse=True, scope='function')

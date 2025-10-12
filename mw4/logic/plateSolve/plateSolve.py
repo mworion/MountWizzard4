@@ -24,12 +24,12 @@ from astropy.io import fits
 import numpy as np
 
 # local imports
-from mountcontrol.convert import convertToAngle
-from base.fitsHeader import getCoordinates, getScale
-from base import tpool
-from logic.plateSolve.astrometry import Astrometry
-from logic.plateSolve.astap import ASTAP
-from logic.plateSolve.watney import Watney
+from mw4.mountcontrol.convert import convertToAngle
+from mw4.base.fitsHeader import getCoordinates, getScale
+from mw4.base import tpool
+from mw4.logic.plateSolve.astrometry import Astrometry
+from mw4.logic.plateSolve.astap import ASTAP
+from mw4.logic.plateSolve.watney import Watney
 
 
 class PlateSolveSignals(PyQt5.QtCore.QObject):

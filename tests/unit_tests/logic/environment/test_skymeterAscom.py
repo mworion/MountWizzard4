@@ -22,8 +22,8 @@ import platform
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.environment.skymeterAscom import SkymeterAscom
-from base.driverDataClass import Signals
+from mw4.logic.environment.skymeterAscom import SkymeterAscom
+from mw4.base.driverDataClass import Signals
 
 
 if not platform.system() == 'Windows':

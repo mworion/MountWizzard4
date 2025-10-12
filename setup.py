@@ -19,8 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- added: gui_scripts for use of uv package manager
 - improve: bugfixes and improvements from pyqt5 library
-
 """
 
 with open('notes.txt', 'w') as f:
@@ -28,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.8b8',
+    version='3.2.8b10',
     packages=[
         'mw4',
         'mw4.base',

@@ -21,7 +21,7 @@ import pytest
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.modeldata.hipparcos import Hipparcos
+from mw4.logic.modeldata.hipparcos import Hipparcos
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -20,11 +20,11 @@ import pytest
 # external packages
 
 # local import
-from gui.mainWmixin.tabSett_Relay import SettRelay
-from gui.mainWmixin.tabRelay import Relay
+from mw4.gui.mainWmixin.tabSett_Relay import SettRelay
+from mw4.gui.mainWmixin.tabRelay import Relay
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 
 @pytest.fixture(autouse=True, scope='module')

@@ -881,7 +881,7 @@ class Ui_AnalyseDialog(object):
         self.groupBox_19.setTitle(_translate("AnalyseDialog", "RA Error (with Model)"))
         self.groupBox_20.setTitle(_translate("AnalyseDialog", "DEC Error (with Model)"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.RaDec), _translate("AnalyseDialog", "RA / DEC Analyse"))
-from gui.utilities.tools4pyqtgraph import NormalScatter, PolarScatter
+from mw4.gui.utilities.tools4pyqtgraph import NormalScatter, PolarScatter
 
 
 if __name__ == "__main__":

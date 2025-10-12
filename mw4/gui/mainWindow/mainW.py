@@ -14,7 +14,7 @@
 # Licence APL2.0
 #
 ###########################################################
-from base import packageConfig
+from mw4.base import packageConfig
 
 # standard libraries
 from datetime import datetime

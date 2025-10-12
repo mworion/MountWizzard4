@@ -23,8 +23,8 @@ import os
 from skyfield.api import wgs84
 
 # local imports
-from mountcontrol.mount import Mount
-from mountcontrol.mount import checkFormatMAC
+from mw4.mountcontrol.mount import Mount
+from mw4.mountcontrol.mount import checkFormatMAC
 
 
 @pytest.fixture(autouse=True, scope='function')

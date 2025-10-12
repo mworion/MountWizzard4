@@ -267,7 +267,7 @@ class Ui_SatelliteDialog(object):
         self.groupEarth.setTitle(_translate("SatelliteDialog", "Satellite path over earth surface"))
         self.groupHorizon.setToolTip(_translate("SatelliteDialog", "Shows the visible track of the satellite when being observed from the position of the mount. "))
         self.groupHorizon.setTitle(_translate("SatelliteDialog", "Satellite path over horizon from observer location"))
-from gui.utilities.tools4pyqtgraph import PlotBase
+from mw4.gui.utilities.tools4pyqtgraph import PlotBase
 
 
 if __name__ == "__main__":

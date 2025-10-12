@@ -24,8 +24,8 @@ from PyQt5.QtCore import QThreadPool
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.telescope.telescopeAlpaca import TelescopeAlpaca
-from base.driverDataClass import Signals
+from mw4.logic.telescope.telescopeAlpaca import TelescopeAlpaca
+from mw4.base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')

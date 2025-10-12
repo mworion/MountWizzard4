@@ -27,11 +27,11 @@ from PyQt5.QtCore import QTimer, QBasicTimer, QCoreApplication
 from PyQt5.QtWidgets import QWidget
 
 # local import
-from base.packageConfig import checkAutomation
+from mw4.base.packageConfig import checkAutomation
 if checkAutomation():
-    from logic.automation.automateWindows import AutomateWindows
+    from mw4.logic.automation.automateWindows import AutomateWindows
 from mainApp import MountWizzard4
-from base.loggerMW import setupLogging
+from mw4.base.loggerMW import setupLogging
 import resource.resources as res
 res.qInitResources()
 setupLogging()

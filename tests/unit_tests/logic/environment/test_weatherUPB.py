@@ -22,7 +22,7 @@ import unittest.mock as mock
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.environment.weatherUPB import WeatherUPB
+from mw4.logic.environment.weatherUPB import WeatherUPB
 
 
 @pytest.fixture(autouse=True, scope='function')

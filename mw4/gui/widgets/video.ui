@@ -42,7 +42,6 @@
   </property>
   <property name="font">
    <font>
-    <family>Arial</family>
     <pointsize>10</pointsize>
    </font>
   </property>
@@ -204,6 +203,9 @@
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please enter source here. If you have and rtsp url, please leave rtsp:// out, but add the right port if needed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
        <property name="input" stdset="0">
         <bool>true</bool>
        </property>
@@ -211,9 +213,6 @@
      </item>
      <item row="0" column="6" rowspan="2" colspan="2">
       <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
        <property name="sizeHint" stdset="0">
         <size>
          <width>10</width>
@@ -264,9 +263,6 @@
    </item>
    <item>
     <widget class="Line" name="line">
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
-     </property>
      <property name="lineWidth">
       <number>2</number>
      </property>
@@ -274,7 +270,7 @@
       <number>1</number>
      </property>
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Vertical</enum>
      </property>
     </widget>
    </item>

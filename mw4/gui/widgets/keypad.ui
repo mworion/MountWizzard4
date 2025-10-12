@@ -42,7 +42,6 @@
   </property>
   <property name="font">
    <font>
-    <family>Arial</family>
     <pointsize>10</pointsize>
    </font>
   </property>
@@ -78,7 +77,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -119,7 +117,6 @@ INFO</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -159,7 +156,6 @@ INFO</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -200,7 +196,6 @@ DOWN</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -241,7 +236,6 @@ STAR</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -281,7 +275,6 @@ STAR</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -322,7 +315,6 @@ LIGHT</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -362,7 +354,6 @@ LIGHT</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -403,7 +394,6 @@ M</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -443,7 +433,6 @@ M</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -484,7 +473,6 @@ DISP</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -524,7 +512,6 @@ DISP</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -565,7 +552,6 @@ COORD</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -605,7 +591,6 @@ COORD</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -649,7 +634,6 @@ NGC</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -689,7 +673,6 @@ NGC</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -730,7 +713,6 @@ MORE</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -790,7 +772,6 @@ IC</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -831,7 +812,6 @@ UP</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -871,7 +851,6 @@ UP</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -892,6 +871,9 @@ PLANET</string>
      <height>25</height>
     </rect>
    </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
    <property name="readOnly">
     <bool>true</bool>
    </property>
@@ -907,6 +889,9 @@ PLANET</string>
      <width>256</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
    </property>
    <property name="readOnly">
     <bool>true</bool>
@@ -924,6 +909,9 @@ PLANET</string>
      <height>25</height>
     </rect>
    </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
    <property name="readOnly">
     <bool>true</bool>
    </property>
@@ -940,6 +928,9 @@ PLANET</string>
      <height>25</height>
     </rect>
    </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
    <property name="readOnly">
     <bool>true</bool>
    </property>
@@ -955,6 +946,9 @@ PLANET</string>
      <width>256</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
    </property>
    <property name="readOnly">
     <bool>true</bool>
@@ -988,9 +982,6 @@ PLANET</string>
      <height>3</height>
     </rect>
    </property>
-   <property name="frameShadow">
-    <enum>QFrame::Plain</enum>
-   </property>
    <property name="lineWidth">
     <number>3</number>
    </property>
@@ -998,7 +989,7 @@ PLANET</string>
     <number>0</number>
    </property>
    <property name="orientation">
-    <enum>Qt::Horizontal</enum>
+    <enum>Qt::Vertical</enum>
    </property>
   </widget>
   <zorder>label</zorder>

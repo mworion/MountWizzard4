@@ -42,7 +42,6 @@
   </property>
   <property name="font">
    <font>
-    <family>Arial</family>
     <pointsize>10</pointsize>
    </font>
   </property>
@@ -68,7 +67,7 @@
    <item>
     <layout class="QGridLayout" name="gridLayout" columnstretch="0,1">
      <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
+      <enum>QLayout::SetNoConstraint</enum>
      </property>
      <property name="leftMargin">
       <number>0</number>
@@ -233,9 +232,6 @@ Moves the camera so that entire scene is visible in the camera viewport.&lt;/p&g
         </item>
         <item>
          <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
@@ -287,7 +283,6 @@ Moves the camera so that entire scene is visible in the camera viewport.&lt;/p&g
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -309,7 +304,6 @@ Moves the camera so that entire scene is visible in the camera viewport.&lt;/p&g
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -347,7 +341,6 @@ Moves the camera so that entire scene is visible in the camera viewport.&lt;/p&g
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -369,7 +362,6 @@ Moves the camera so that entire scene is visible in the camera viewport.&lt;/p&g
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -391,7 +383,6 @@ Moves the camera so that entire scene is visible in the camera viewport.&lt;/p&g
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -413,7 +404,6 @@ Moves the camera so that entire scene is visible in the camera viewport.&lt;/p&g
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -427,9 +417,6 @@ Moves the camera so that entire scene is visible in the camera viewport.&lt;/p&g
         </item>
         <item>
          <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>

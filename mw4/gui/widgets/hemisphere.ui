@@ -42,7 +42,6 @@
   </property>
   <property name="font">
    <font>
-    <family>Arial</family>
     <pointsize>10</pointsize>
    </font>
   </property>
@@ -131,7 +130,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -162,7 +160,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -193,7 +190,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -254,7 +250,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -282,7 +277,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -310,7 +304,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -363,7 +356,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -391,7 +383,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -419,7 +410,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -450,7 +440,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -514,7 +503,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -546,8 +534,8 @@
             <height>20</height>
            </size>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
           </property>
          </widget>
         </item>
@@ -574,8 +562,8 @@
             <height>20</height>
            </size>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
           </property>
          </widget>
         </item>
@@ -601,7 +589,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -615,9 +602,6 @@
      </item>
      <item>
       <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
        <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
@@ -630,9 +614,6 @@
    </item>
    <item>
     <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
@@ -897,9 +878,6 @@
        </item>
        <item row="3" column="0">
         <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
@@ -957,7 +935,6 @@
             </property>
             <property name="font">
              <font>
-              <family>Arial</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -988,7 +965,6 @@
             </property>
             <property name="font">
              <font>
-              <family>Arial</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1148,13 +1124,13 @@
   <customwidget>
    <class>PlotBase</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.tools4pyqtgraph</header>
+   <header>mw4.gui.utilities.tools4pyqtgraph</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>Hemisphere</class>
    <extends>QWidget</extends>
-   <header>gui.utilities.tools4pyqtgraph</header>
+   <header>mw4.gui.utilities.tools4pyqtgraph</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

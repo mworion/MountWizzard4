@@ -16,7 +16,6 @@
 ###########################################################
 from setuptools import setup
 from pathlib import Path
-import platform
 
 releaseNotes = """
 - added: gui_scripts for use of uv package manager
@@ -28,7 +27,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.8b10',
+    version='3.2.8',
     packages=[
         'mw4',
         'mw4.base',
@@ -65,6 +64,8 @@ setup(
     ],
     python_requires='>=3.8.0, <3.11',
     install_requires=[
+        'PyQt3D==5.15.7; platform_machine != "aarch64"',
+        'PyQt5==5.15.11; platform_machine != "aarch64"',
         'numpy==1.24.2',
         'opencv-python-headless==4.6.0.66',
         'scipy==1.10.1',
@@ -89,12 +90,9 @@ setup(
         'packaging==23.2',
         'lz4==4.3.2',
         'xisf==0.9.3',
-    ]
-    + (['pywin32==306'] if platform.system() == "Windows" else [])
-    + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
-    + (['PyQt5==5.15.11'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt3D==5.15.7'] if platform.machine() not in ['armv7l',
-                                                        'aarch64'] else []),
+        'pywin32==306; platform_system=="Windows"',
+        'pywinauto==0.6.8; platform_system=="Windows"',
+    ],
     entry_points={
         'gui_scripts': ['mw4=mw4.cli:app'],
     },

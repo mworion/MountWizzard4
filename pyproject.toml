@@ -136,8 +136,8 @@ max-complexity = 10
 "src/mw4/assets/assetData.py" = ["E501"]
 
 [tool.coverage.run]
-source = ["src/mw4/*"]
-omit = ["src/mw4/assets/*", "src/mw4/gui/widgets/*"]
+source = ["src/mw4/**/*.py"]
+omit = ["src/mw4/assets/**/*.py", "src/mw4/gui/widgets/**/*.py"]
 branch = true
 
 [tool.coverage.report]

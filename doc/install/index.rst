@@ -18,7 +18,7 @@ do the following steps:
 
 - open a terminal window on your system
 - select from the install page your corresponding OS
-- copy and paste the install script and let it run
+- copy and paste the terminal command calls the install script and let it run
 
 After that, uv is installed. To move on, your terminal is not aware of the new
 features of uv. The simplest way to do get to this point is to close the terminal
@@ -27,6 +27,7 @@ windows and open a new one.
 Please check the presence of uv with the command
 
 .. code-block:: bash
+
     uv --version
 
 If you get the version number, everything is perfect.

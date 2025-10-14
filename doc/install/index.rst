@@ -104,8 +104,8 @@ Setting Qt DPI scale factor (+scale = +size, default=1)
 
 Getting this information.
 
-Install on RaspberryPi 4/5
-==========================
+Install on RaspberryPi (4, 5)
+-----------------------------
 
 .. hint::
     This is only necessary for v3. MountWizzard4 v4 brings all binaries directly.

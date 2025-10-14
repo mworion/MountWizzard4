@@ -29756,7 +29756,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QWidget" name="Profile">
       <attribute name="title">
-       <string>Profile and Audio</string>
+       <string>Profile, Log, Online, Audio</string>
       </attribute>
       <widget class="QGroupBox" name="addProfileGroup">
        <property name="enabled">
@@ -30266,155 +30266,11 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-     </widget>
-     <widget class="QWidget" name="Update">
-      <attribute name="title">
-       <string>Online, Logging</string>
-      </attribute>
-      <widget class="QGroupBox" name="InternetOnlineGroup">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>15</y>
-         <width>366</width>
-         <height>71</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Internet online connection</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QCheckBox" name="isOnline">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>331</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>When selected data fiels for weather, satellites and programm updates will be loaded over internet.</string>
-        </property>
-        <property name="text">
-         <string>Enable download data and program files</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_182">
-        <property name="geometry">
-         <rect>
-          <x>15</x>
-          <y>45</y>
-          <width>281</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Age of MPC / Sat databases before reload</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="ageDatabases">
-        <property name="geometry">
-         <rect>
-          <x>270</x>
-          <y>45</y>
-          <width>56</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>56</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>999.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_33">
-        <property name="geometry">
-         <rect>
-          <x>330</x>
-          <y>45</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>days</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="CopyrightGroup_2">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>280</y>
-         <width>366</width>
-         <height>111</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>MountWizzard4 (C) 2019-2025 MWORION</string>
-       </property>
-       <widget class="QTextBrowser" name="textBrowser_2">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>15</y>
-          <width>356</width>
-          <height>91</height>
-         </rect>
-        </property>
-        <property name="html">
-         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;astropy, deepdiff, hdiapi, importlib_metadata, PySide6, pywin32, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="LoglevelGroup">
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>95</y>
+         <x>400</x>
+         <y>340</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -30514,6 +30370,109 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>Level:</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="InternetOnlineGroup">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>320</y>
+         <width>366</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Internet online connection</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QCheckBox" name="isOnline">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>331</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>When selected data fiels for weather, satellites and programm updates will be loaded over internet.</string>
+        </property>
+        <property name="text">
+         <string>Enable download data and program files</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_182">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>45</y>
+          <width>281</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Age of MPC / Sat databases before reload</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="ageDatabases">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>45</y>
+          <width>56</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>999.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_33">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>45</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>days</string>
         </property>
        </widget>
       </widget>
@@ -31093,7 +31052,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Show only beta versions of MountWizzard4</string>
         </property>
         <property name="text">
-         <string>Show Profile and Audio</string>
+         <string>Show Profile, Log, Online, Audio</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -31155,6 +31114,42 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="checked">
          <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="CopyrightGroup_2">
+       <property name="geometry">
+        <rect>
+         <x>395</x>
+         <y>300</y>
+         <width>366</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>MountWizzard4 (C) 2019-2025 MWORION</string>
+       </property>
+       <widget class="QTextBrowser" name="textBrowser_2">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>15</y>
+          <width>356</width>
+          <height>91</height>
+         </rect>
+        </property>
+        <property name="html">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;astropy, deepdiff, hdiapi, importlib_metadata, PySide6, pywin32, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -32926,11 +32921,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>runHysteresis</tabstop>
   <tabstop>cancelAnalysis</tabstop>
   <tabstop>settingsTabWidget</tabstop>
-  <tabstop>isOnline</tabstop>
-  <tabstop>loglevelStandard</tabstop>
-  <tabstop>loglevelDebug</tabstop>
-  <tabstop>loglevelTrace</tabstop>
-  <tabstop>textBrowser_2</tabstop>
   <tabstop>cameraDevice</tabstop>
   <tabstop>cameraSetup</tabstop>
   <tabstop>filterDevice</tabstop>

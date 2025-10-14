@@ -41,6 +41,7 @@ Version 4.x
 - improve: rewrite of the online documentation
 - improve: no 10micron installer needed anymore for object data
 - remove: automation of 10micron installer
+- remove: updater for MW4 (use uv installer instead)
 - fix: typos
 
 

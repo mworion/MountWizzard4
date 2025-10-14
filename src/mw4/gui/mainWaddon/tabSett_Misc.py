@@ -154,7 +154,6 @@ class SettMisc(QObject):
 
     def setupIcons(self):
         """ """
-        self.mainW.wIcon(self.ui.installVersion, "world")
         pixmap = self.mainW.svg2pixmap(":/icon/controller.svg", self.mainW.M_PRIM)
         self.ui.controller1.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller2.setPixmap(pixmap.scaled(16, 16))

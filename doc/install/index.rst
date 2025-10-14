@@ -83,7 +83,7 @@ primary:
 Basically that's it.
 
 Command line options
-====================
+--------------------
 MountWizzard4 supports a number of command line options:
 
 .. code-block:: bash

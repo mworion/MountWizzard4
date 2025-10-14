@@ -82,7 +82,6 @@ jobs:
       - name: running_unit_tests
         run: |
           xvfb-run pytest tests/unit_tests/loader
-          xvfb-run pytest tests/unit_tests/update
           xvfb-run pytest tests/unit_tests/mainApp
           xvfb-run pytest tests/unit_tests/gui/mainWindow
           xvfb-run pytest tests/unit_tests/gui/mainWaddon

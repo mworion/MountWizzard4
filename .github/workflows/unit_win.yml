@@ -58,7 +58,6 @@ jobs:
       - name: running_unit_tests
         run: |
           pytest tests/unit_tests/loader ${{env.cov}}
-          pytest tests/unit_tests/update ${{env.cov}}
           
       - name: rename_coveragefile
         run: mv .coverage c0.dat

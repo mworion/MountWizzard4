@@ -26,7 +26,8 @@ windows and open a new one.
 
 Please check the presence of uv with the command
 
-uv --version
+.. code-block:: bash
+    uv --version
 
 If you get the version number, everything is perfect.
 
@@ -38,7 +39,8 @@ plays on python 3.8 - 3.10, so I would recommend to use the n ewest one 3.10. Fo
 installing, please choose a work folder for Mountwizzard4, open a terminal window
 and change directory to this work folder. the command
 
-uv venv -p 3.10
+.. code-block:: bash
+    uv venv -p 3.10
 
 does download the right python package (3.10) and installs a virtual environment
 in you work folder. The virtual environment is stored in a directory there called
@@ -48,7 +50,8 @@ Installing MountWizzard4
 ------------------------
 The installation is now a simple command:
 
-uv pip install mountwizzard4
+.. code-block:: bash
+    uv pip install mountwizzard4
 
 Installation will download the necessary packages (visible) and installs them in
 the virtual environment.
@@ -56,7 +59,8 @@ the virtual environment.
 If you want to have a dedicated version of MountWizzard4, just add the version
 number in the command line (e.g. 3.2.8) like
 
-uv pip install mountwizzard4==3.2.8
+.. code-block:: bash
+    uv pip install mountwizzard4==3.2.8
 
 Changing versions upgrade and downgrade work the same way just with the appropriate
 version numbers.
@@ -65,7 +69,8 @@ Run MountWizzard4
 -----------------
 Once everything installed running MountWizzard4 is also a simple command:
 
-uv run mw4
+.. code-block:: bash
+    uv run mw4
 
 If you would like some options please use the command line parameters
 MountWizzard4 supports. These are setting for the appearance sizes on windows
@@ -73,3 +78,32 @@ primary:
 
 Basically that's it.
 
+Command line options
+====================
+MountWizzard4 supports a number of command line options:
+
+.. code-block:: bash
+    '-d', '--dpi'
+
+Setting QT font DPI (+dpi = -fontsize, default=96)
+
+.. code-block:: bash
+    '-s', '--scale'
+
+Setting Qt DPI scale factor (+scale = +size, default=1)
+
+.. code-block:: bash
+    '-h', '--help'
+
+Getting this information.
+
+Install on RaspberryPi 4/5
+==========================
+If you want to install MountWizzard4 v3 to an Raspi or ARM64 based computer,
+please follow the installation process. of uv, python and virtual environment.
+Before installing MountWizzard4 v3 you need to install some precompiled packages
+as they were not available for the necessary python 3.8-3.10 versions. For that
+use the same terminal window pointing to you work folder and add the two following
+commands:
+
+.. code-block:: bash

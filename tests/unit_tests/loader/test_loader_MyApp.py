@@ -31,6 +31,7 @@ def qapp():
     myapp = MyApp([])
     yield myapp
     myapp.shutdown()
+    del myapp
 
 
 def test_logUserInterface_1(qapp):

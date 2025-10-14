@@ -184,6 +184,7 @@ def test_writeSystemInfo_1():
     mwGlob["modeldata"] = ""
     mwGlob["workDir"] = ""
     writeSystemInfo(mwGlob=mwGlob)
+    mwGlob["WorkDir"] = Path("tests/work")
 
 
 def test_writeSystemInfo_2():
@@ -192,6 +193,7 @@ def test_writeSystemInfo_2():
     mwGlob["workDir"] = ""
     with mock.patch.object(socket, "gethostbyname_ex", side_effect=Exception()):
         writeSystemInfo(mwGlob=mwGlob)
+    mwGlob["WorkDir"] = Path("tests/work")
 
 
 def test_extractFile_1():

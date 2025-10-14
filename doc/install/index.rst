@@ -40,6 +40,7 @@ installing, please choose a work folder for Mountwizzard4, open a terminal windo
 and change directory to this work folder. the command
 
 .. code-block:: bash
+
     uv venv -p 3.10
 
 does download the right python package (3.10) and installs a virtual environment
@@ -51,6 +52,7 @@ Installing MountWizzard4
 The installation is now a simple command:
 
 .. code-block:: bash
+
     uv pip install mountwizzard4
 
 Installation will download the necessary packages (visible) and installs them in
@@ -60,6 +62,7 @@ If you want to have a dedicated version of MountWizzard4, just add the version
 number in the command line (e.g. 3.2.8) like
 
 .. code-block:: bash
+
     uv pip install mountwizzard4==3.2.8
 
 Changing versions upgrade and downgrade work the same way just with the appropriate
@@ -70,6 +73,7 @@ Run MountWizzard4
 Once everything installed running MountWizzard4 is also a simple command:
 
 .. code-block:: bash
+
     uv run mw4
 
 If you would like some options please use the command line parameters
@@ -83,16 +87,19 @@ Command line options
 MountWizzard4 supports a number of command line options:
 
 .. code-block:: bash
+
     '-d', '--dpi'
 
 Setting QT font DPI (+dpi = -fontsize, default=96)
 
 .. code-block:: bash
+
     '-s', '--scale'
 
 Setting Qt DPI scale factor (+scale = +size, default=1)
 
 .. code-block:: bash
+
     '-h', '--help'
 
 Getting this information.

@@ -52,6 +52,7 @@ extensions = [
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.intersphinx",
     "sphinx.ext.githubpages",
+    "sphinx_copybutton",
     "sphinxcontrib.drawio",
     "sphinx_simplepdf",
 ]

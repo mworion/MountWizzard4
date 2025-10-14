@@ -30269,7 +30269,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QWidget" name="Update">
       <attribute name="title">
-       <string>Update, Logging</string>
+       <string>Online, Logging</string>
       </attribute>
       <widget class="QGroupBox" name="InternetOnlineGroup">
        <property name="geometry">
@@ -30374,275 +30374,6 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="UpdaterGroup">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>110</y>
-         <width>366</width>
-         <height>146</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Updater</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QPushButton" name="installVersion">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>264</x>
-          <y>20</y>
-          <width>91</width>
-          <height>46</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starting process for updating MountWizzard4 to selected version. MW4 will start an external updater programm. MW4 will be closed during this time. If you would like to keep your settings, please save first.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Start 
-Updater</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_23">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>121</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Actual version</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_38">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>45</y>
-          <width>121</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Available version</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="versionBeta">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>115</y>
-          <width>171</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Show only beta versions of MountWizzard4</string>
-        </property>
-        <property name="text">
-         <string>Show beta versions</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="versionRelease">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>90</y>
-          <width>146</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Show only release versions of MountWizzard4</string>
-        </property>
-        <property name="text">
-         <string>Show releases</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="versionActual">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>135</x>
-          <y>20</y>
-          <width>116</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::FocusPolicy::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>20</number>
-        </property>
-        <property name="frame">
-         <bool>false</bool>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="versionAvailable">
-        <property name="geometry">
-         <rect>
-          <x>135</x>
-          <y>45</y>
-          <width>116</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="inputMask">
-         <string/>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="maxLength">
-         <number>20</number>
-        </property>
-        <property name="frame">
-         <bool>false</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="versionReleaseNotes">
-        <property name="geometry">
-         <rect>
-          <x>185</x>
-          <y>90</y>
-          <width>146</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Show only beta versions of MountWizzard4</string>
-        </property>
-        <property name="text">
-         <string>Show release notes</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="Line" name="line_87">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>80</y>
-          <width>346</width>
-          <height>1</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <property name="lineWidth">
-         <number>1</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Orientation::Vertical</enum>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="openPDF">
-        <property name="geometry">
-         <rect>
-          <x>185</x>
-          <y>115</y>
-          <width>171</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the actual PDF documentation for MW4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Show documentation</string>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="CopyrightGroup_2">
        <property name="geometry">
         <rect>
@@ -30682,8 +30413,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <widget class="QGroupBox" name="LoglevelGroup">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>15</y>
+         <x>5</x>
+         <y>95</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -33199,12 +32930,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>loglevelStandard</tabstop>
   <tabstop>loglevelDebug</tabstop>
   <tabstop>loglevelTrace</tabstop>
-  <tabstop>versionAvailable</tabstop>
-  <tabstop>installVersion</tabstop>
-  <tabstop>versionRelease</tabstop>
-  <tabstop>versionReleaseNotes</tabstop>
-  <tabstop>versionBeta</tabstop>
-  <tabstop>openPDF</tabstop>
   <tabstop>textBrowser_2</tabstop>
   <tabstop>cameraDevice</tabstop>
   <tabstop>cameraSetup</tabstop>

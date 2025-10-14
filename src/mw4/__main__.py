@@ -14,5 +14,5 @@
 #
 ###########################################################
 if __name__ == "__main__":
-    from src.mw4.cli import app
+    from mw4.cli import app
     app()

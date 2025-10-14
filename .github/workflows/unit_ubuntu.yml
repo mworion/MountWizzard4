@@ -8,9 +8,9 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PyQT5 for python3
+# GUI with PySide6 for python3
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -24,10 +24,9 @@ on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - 'mw4/**'
+      - 'src/mw4/**'
       - 'tests/unit_tests/**'
-      - 'setup.py'
-      - 'tox.ini'
+      - 'pyproject.toml'
       - '.github/workflows/unit_ubuntu.yml'
       - '.github/actions/install_ubuntu_head/action.yml'
       - '.github/actions/build_package/action.yml'
@@ -64,6 +63,7 @@ jobs:
           xvfb-run pytest tests/unit_tests/mountcontrol
           xvfb-run pytest tests/unit_tests/indibase
           xvfb-run pytest tests/unit_tests/gui/utilities
+          xvfb-run pytest tests/unit_tests/gui/styles
         
   run_tests_ubuntu_2:
     #
@@ -87,3 +87,7 @@ jobs:
           xvfb-run pytest tests/unit_tests/gui/mainWindow
           xvfb-run pytest tests/unit_tests/gui/mainWaddon
           xvfb-run pytest tests/unit_tests/gui/extWindows
+          xvfb-run pytest tests/unit_tests/gui/extWindows/video
+          xvfb-run pytest tests/unit_tests/gui/extWindows/image
+          xvfb-run pytest tests/unit_tests/gui/extWindows/hemisphere
+          xvfb-run pytest tests/unit_tests/gui/extWindows/simulator

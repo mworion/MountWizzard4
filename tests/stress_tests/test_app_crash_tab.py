@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,63 +7,63 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
-import os
 import glob
+import os
 import random
+from pathlib import Path
 
 # external packages
 import pytest
-from PySide6.QtCore import Qt
-from PySide6.QtCore import QThreadPool
-from PySide6.QtTest import QTest
+from loader import extractDataFiles
 
 # local import
 from mainApp import MountWizzard4
-from base.tpool import Worker
-from loader import extractDataFiles
-from resource import resources
+from PySide6.QtCore import Qt, QThreadPool
+from PySide6.QtTest import QTest
+
+from mw4.base.tpool import Worker
+
+mwglob = {
+    "dataDir": Path("tests/work/data"),
+    "configDir": Path("tests/work/config"),
+    "workDir": Path("tests/work"),
+    "imageDir": Path("tests/work/image"),
+    "tempDir": Path("tests/work/temp"),
+    "measureDir": Path("tests/work/measure"),
+    "modelDir": Path("tests/work/model"),
+    "modelData": "4.0",
+}
 
 
-mwglob = {'dataDir': 'tests/workDir/data',
-          'configDir': 'tests/workDir/config',
-          'workDir': 'tests/workDir',
-          'imageDir': 'tests/workDir/image',
-          'tempDir': 'tests/workDir/temp',
-          'measureDir': 'tests/workDir/measure',
-          'modelDir': 'tests/workDir/model',
-          'modelData': '4.0'
-          }
-
-
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def module_setup_teardown():
     global tp
 
     tp = QThreadPool()
     for d in mwglob:
-        files = glob.glob(f'{mwglob[d]}/*.*')
-        if 'modelData' in d:
+        files = glob.glob(f"{mwglob[d]}/*.*")
+        if "modelData" in d:
             continue
         for f in files:
-            if 'empty' in f:
+            if "empty" in f:
                 continue
             print(f)
             os.remove(f)
     extractDataFiles(mwGlob=mwglob)
     yield
     for d in mwglob:
-        files = glob.glob(f'{mwglob[d]}/*.*')
-        if 'modelData' in d:
+        files = glob.glob(f"{mwglob[d]}/*.*")
+        if "modelData" in d:
             continue
         for f in files:
-            if 'empty' in f:
+            if "empty" in f:
                 continue
             os.remove(f)
     tp.waitForDone(1000)
@@ -95,8 +94,8 @@ def test_1(qtbot, qapp):
         app.mainW.ui.settingsTabWidget.setCurrentIndex(index)
         QTest.qWait(100)
     qtbot.mouseClick(app.mainW.ui.mountHost, Qt.LeftButton)
-    app.mainW.ui.mountHost.setText('192.168.2.15')
-    qtbot.keyPress(app.mainW.ui.mountHost, '\r')
+    app.mainW.ui.mountHost.setText("192.168.2.15")
+    qtbot.keyPress(app.mainW.ui.mountHost, "\r")
     for index in range(50):
         index = int(random.random() * app.mainW.ui.mainTabWidget.count())
         app.mainW.ui.mainTabWidget.setCurrentIndex(index)

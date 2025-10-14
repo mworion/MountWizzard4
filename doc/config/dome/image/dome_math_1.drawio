@@ -1,1 +1,82 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="741px" height="521px" viewBox="-0.5 -0.5 741 521" content="&lt;mxfile host=&quot;drawio-plugin&quot; modified=&quot;2021-07-18T11:06:38.777Z&quot; agent=&quot;5.0 (Macintosh; Intel Mac OS X 11_4_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&quot; etag=&quot;-ikpf2_Kwc9PR6uavrHg&quot; version=&quot;14.7.4&quot; type=&quot;embed&quot;&gt;&lt;diagram id=&quot;guI2_BKEFzkP6Yjw46xo&quot; name=&quot;Page-1&quot;&gt;7Vldk5owFP01vgNRdB/Xr+1LZzqzD20fI4mQaSBOiCvur28iQQIJFS27bde6M2s4+T7n5t4bHIFFWjxxuEs+M4TpKPBQMQLLURDMQCj/K+BYAqE3KYGYE1RCfg08k1esQU+je4Jw3mgoGKOC7JpgxLIMR6KBQc7Zodlsy2hz1h2MsQU8R5Da6FeCRKJRP3yoKz5hEid66lkwLStSWDXWO8kTiNjBgMBqBBacMVGW0mKBqeKu4qXst+6oPS+M40z06TArO7xAutd70+sSx2qzsoPkVT7MDwkR+HkHI1VzkMpKLBEplU++LMJ8V5K9JQWW48/txej1vWAucGFAenFPmKVY8KNsUpmK5kkbylg/HmrWJxWViUH4GYRa6fg8ck2GLGg+Osj0LpPD2T5DarNL7zJBW0LpglHGT33Beu3JzzA8BdMmUYFnMwWAg6lzw99iKhiYqSEYeWgxEjgY8R2M+OEQjPiXGel9sFp242+gj+XO57ng7Ac2ajwvXD2uVQ+WCQPfnj7D8Hq2omOLZ4NX15Ec5ESCHnaWsHSzz69m1fPUeRyGo3HY4sjht1yHEQzBUR+XnqFHFQblU0RhnpPoZE2QCxvucyoxasRLmxfTX7vctcY4plCQl2aUdZGhZ/jCiFzJmfZw0o4WLT5ztucR1r3MqHhhIMtJSqpiLKyBTtqct91LrqBHkDHkylimHAaCeXLypX5TIcsjzDz19w9oB8YdbuVa7doDWe58QO36OPk70M5KPm7Vrj3QW2rXI5Tcg3ah16QczG7UbnppoAG1C/9r59Lu5njX1s4aaEDtpg7tQpiq5Czb5OqrnEzJmeyFwFyWEJHZSSYTubbMMiETv5JTa2/mehqClMSZynSkuHIOMFfpHZF3/EddkRKEaFd23rzNdBpK/5QxnHYcH8OUfJctDZFXO18DNEWptSgX9HGFCDqC2bsI8XCFEK84I0qJOzgdQevS6YN3FKWa6w5vVFZCdmt2YGXlb5cdgOuy8mvkwgUR37RVq/J3A18WRsXy2LD9lppOxUsmzSD5x9KK1tuLsX+j6J0x7Q1EDyzRc4oPEqmyiZAqV7iRjjOMVanmwYsY5zgS0mH9zQ7U8pYOM+p+I9XK8IL3TC+AfddCchRbE03Wh1UhCCfNA+F4Jz2UCvKx/hmpPFH1b3Fg9RM=&lt;/diagram&gt;&lt;/mxfile&gt;"><defs/><g><ellipse cx="260" cy="260" rx="260" ry="260" fill="#ffffff" stroke="#000000" pointer-events="all"/><rect x="190" y="160" width="330" height="200" fill="#ff0000" stroke="#000000" pointer-events="all"/><rect x="210" y="180" width="310" height="160" fill="#ffffff" stroke="#000000" pointer-events="all"/><ellipse cx="260" cy="260" rx="10" ry="10" fill="#1ba1e2" stroke="#006eaf" pointer-events="all"/><path d="M 395 200 L 410 215 L 395 230 L 380 215 Z" fill="#00ff00" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><path d="M 570 353.63 L 570 166.37" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 570 358.88 L 566.5 351.88 L 570 353.63 L 573.5 351.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><path d="M 570 161.12 L 573.5 168.12 L 570 166.37 L 566.5 168.12 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><path d="M 260 250 L 260 120" fill="none" stroke="#808080" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="stroke"/><path d="M 190 250 L 190 120" fill="none" stroke="#808080" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="stroke"/><path d="M 520 340 L 620 340" fill="none" stroke="#808080" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="stroke"/><path d="M 520 360 L 620 360" fill="none" stroke="#808080" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="stroke"/><rect x="590" y="340" width="150" height="20" fill="none" stroke="none" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 148px; height: 1px; padding-top: 350px; margin-left: 591px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; "> target shutter distance</div></div></div></foreignObject><text x="665" y="354" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle"> target shutter distance</text></switch></g><rect x="540" y="250" width="150" height="20" fill="none" stroke="none" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 148px; height: 1px; padding-top: 260px; margin-left: 541px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; "> shutter width</div></div></div></foreignObject><text x="615" y="264" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle"> shutter width</text></switch></g><rect x="150" y="90" width="150" height="20" fill="none" stroke="none" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 148px; height: 1px; padding-top: 100px; margin-left: 151px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; "> shutter zenith distance</div></div></div></foreignObject><text x="225" y="104" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle"> shutter zenith distance</text></switch></g><path d="M 196.37 140 L 253.63 140" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 191.12 140 L 198.12 136.5 L 196.37 140 L 198.12 143.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><path d="M 258.88 140 L 251.88 143.5 L 253.63 140 L 251.88 136.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><path d="M 590 353.63 L 590 346.37" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 590 358.88 L 586.5 351.88 L 590 353.63 L 593.5 351.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><path d="M 590 341.12 L 593.5 348.12 L 590 346.37 L 586.5 348.12 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="320" y="240" width="150" height="20" fill="none" stroke="none" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 148px; height: 1px; padding-top: 250px; margin-left: 321px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">slew target<br />geometry corrected</div></div></div></foreignObject><text x="395" y="254" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">slew target...</text></switch></g><rect x="185" y="280" width="150" height="20" fill="none" stroke="none" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 148px; height: 1px; padding-top: 290px; margin-left: 186px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">dome<br />center</div></div></div></foreignObject><text x="260" y="294" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">dome...</text></switch></g></g><switch><g requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"/><a transform="translate(0,-5)" xlink:href="https://www.diagrams.net/doc/faq/svg-export-text-problems" target="_blank"><text text-anchor="middle" font-size="10px" x="50%" y="100%">Viewer does not support full SVG 1.1</text></a></switch></svg>
+<mxfile host="drawio-plugin" modified="2025-03-15T21:01:40.757Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="hiewgQ5PsLM1_dY6aDkh" version="22.1.22" type="embed">
+  <diagram id="guI2_BKEFzkP6Yjw46xo" name="Page-1">
+    <mxGraphModel dx="1512" dy="1004" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="8" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;labelBackgroundColor=none;" parent="1" vertex="1">
+          <mxGeometry x="80" y="40" width="520" height="520" as="geometry" />
+        </mxCell>
+        <mxCell id="10" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;" parent="1" vertex="1">
+          <mxGeometry x="270" y="200" width="330" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;" parent="1" vertex="1">
+          <mxGeometry x="290" y="220" width="310" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="" style="ellipse;whiteSpace=wrap;html=1;labelBackgroundColor=none;" parent="1" vertex="1">
+          <mxGeometry x="330" y="290" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="" style="rhombus;whiteSpace=wrap;html=1;labelBackgroundColor=none;" parent="1" vertex="1">
+          <mxGeometry x="460" y="240" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="18" value="" style="endArrow=classic;startArrow=classic;html=1;labelBackgroundColor=none;fontColor=default;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="650" y="400" as="sourcePoint" />
+            <mxPoint x="650" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="20" value="" style="endArrow=none;dashed=1;html=1;labelBackgroundColor=none;fontColor=default;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="340" y="290" as="sourcePoint" />
+            <mxPoint x="340" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="21" value="" style="endArrow=none;dashed=1;html=1;labelBackgroundColor=none;fontColor=default;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="270" y="290" as="sourcePoint" />
+            <mxPoint x="270" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="23" value="" style="endArrow=none;dashed=1;html=1;labelBackgroundColor=none;fontColor=default;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="380" as="sourcePoint" />
+            <mxPoint x="700" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="26" value="" style="endArrow=none;dashed=1;html=1;labelBackgroundColor=none;fontColor=default;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="400" as="sourcePoint" />
+            <mxPoint x="700" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="27" value="&amp;nbsp;target shutter distance" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;" parent="1" vertex="1">
+          <mxGeometry x="670" y="380" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="28" value="&amp;nbsp;shutter width" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;" parent="1" vertex="1">
+          <mxGeometry x="620" y="290" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="29" value="&amp;nbsp;shutter zenith distance" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;" parent="1" vertex="1">
+          <mxGeometry x="230" y="130" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="30" value="" style="endArrow=classic;startArrow=classic;html=1;labelBackgroundColor=none;fontColor=default;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="270" y="180" as="sourcePoint" />
+            <mxPoint x="340" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="31" value="" style="endArrow=classic;startArrow=classic;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="27" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="660" y="410" as="sourcePoint" />
+            <mxPoint x="670" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="32" value="slew target&lt;br&gt;geometry corrected" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;" parent="1" vertex="1">
+          <mxGeometry x="400" y="280" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="33" value="dome&lt;br&gt;center" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;" parent="1" vertex="1">
+          <mxGeometry x="265" y="320" width="150" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

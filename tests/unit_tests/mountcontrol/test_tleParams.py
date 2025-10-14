@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,9 +7,9 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -20,15 +19,15 @@ import unittest
 # external packages
 from skyfield.api import Angle, load
 
+from mw4.base.loggerMW import setupLogging
+
 # local imports
-from mountcontrol.tleParams import TLEParams
-from base.loggerMW import setupLogging
+from mw4.mountcontrol.tleParams import TLEParams
 
 setupLogging()
 
 
 class TestConfigData(unittest.TestCase):
-
     def setUp(self):
         pass
 
@@ -79,7 +78,7 @@ class TestConfigData(unittest.TestCase):
 
     def test_flip_2(self):
         tleParams = TLEParams()
-        tleParams.flip = 'F'
+        tleParams.flip = "F"
         assert tleParams.flip
 
     def test_jdStart_1(self):
@@ -93,7 +92,7 @@ class TestConfigData(unittest.TestCase):
             ts = load.timescale()
 
         tleParams = TLEParams(obsSite=ObsSite())
-        tleParams.jdStart = '100'
+        tleParams.jdStart = "100"
         assert tleParams.jdStart.tt == 169
 
     def test_jdEnd_1(self):
@@ -107,7 +106,7 @@ class TestConfigData(unittest.TestCase):
             ts = load.timescale()
 
         tleParams = TLEParams(obsSite=ObsSite())
-        tleParams.jdEnd = '100'
+        tleParams.jdEnd = "100"
         assert tleParams.jdEnd.tt == 169
 
     def test_message_1(self):
@@ -117,25 +116,25 @@ class TestConfigData(unittest.TestCase):
 
     def test_message_2(self):
         tleParams = TLEParams()
-        tleParams.message = 'test'
-        assert tleParams.message == 'test'
+        tleParams.message = "test"
+        assert tleParams.message == "test"
 
     def test_l0_1(self):
         tleParams = TLEParams()
-        tleParams.l0 = 'test'
-        assert tleParams.l0 == 'test'
+        tleParams.l0 = "test"
+        assert tleParams.l0 == "test"
 
     def test_l1_1(self):
         tleParams = TLEParams()
-        tleParams.l1 = 'test'
-        assert tleParams.l1 == 'test'
+        tleParams.l1 = "test"
+        assert tleParams.l1 == "test"
 
     def test_l2_1(self):
         tleParams = TLEParams()
-        tleParams.l2 = 'test'
-        assert tleParams.l2 == 'test'
+        tleParams.l2 = "test"
+        assert tleParams.l2 == "test"
 
     def test_name_1(self):
         tleParams = TLEParams()
-        tleParams.name = 'test'
-        assert tleParams.name == 'test'
+        tleParams.name = "test"
+        assert tleParams.name == "test"

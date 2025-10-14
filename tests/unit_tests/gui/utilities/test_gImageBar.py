@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,25 +7,26 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
-import pytest
 import unittest.mock as mock
+
+import numpy as np
+import pytest
 
 # external packages
 from PySide6.QtWidgets import QWidget
-import numpy as np
 
 # local import
-from gui.utilities.gImageBar import ImageBar
+from mw4.gui.utilities.gImageBar import ImageBar
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def module(qapp):
     yield
 
@@ -38,7 +38,7 @@ def test_ImageBar_constructPlot():
 
 def test_ImageBar_setColorMap():
     function = ImageBar()
-    suc = function.setColorMap('plasma')
+    suc = function.setColorMap("plasma")
     assert suc
 
 
@@ -72,15 +72,13 @@ def test_ImageBar_showCrosshair():
 
 def test_ImageBar_addEllipse():
     function = ImageBar()
-    with mock.patch.object(function.p[0],
-                           'addItem'):
+    with mock.patch.object(function.p[0], "addItem"):
         suc = function.addEllipse(0, 0, 1, 1, 0)
         assert suc
 
 
 def test_ImageBar_addValueAnnotation():
     function = ImageBar()
-    with mock.patch.object(function.p[0],
-                           'addItem'):
+    with mock.patch.object(function.p[0], "addItem"):
         suc = function.addValueAnnotation(0, 0, 10)
         assert suc

@@ -8,9 +8,9 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PyQT5 for python3
+# GUI with PySide6 for python3
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -22,14 +22,14 @@ on:
     # Run this action on the trigger event when specific files are touched
     paths:
       - 'doc/**'
-      - '.github/actions/documentation.yml'
+      - '.github/workflows/documentation.yml'
 
 permissions:
   contents: write
 
 jobs:
   documentation:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

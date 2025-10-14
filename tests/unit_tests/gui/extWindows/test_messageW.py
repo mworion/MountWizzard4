@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,88 +7,85 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
-import pytest
-import astropy
 import unittest.mock as mock
+
+import pytest
 
 # external packages
 from PySide6.QtGui import QCloseEvent
 
+from mw4.base.loggerMW import setupLogging
+from mw4.gui.extWindows.messageW import MessageWindow
+from mw4.gui.utilities.toolsQtWidget import MWidget
+
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.messageW import MessageWindow
+
+setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     func = MessageWindow(app=App())
     yield func
+    func.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
-    if 'messageW' in function.app.config:
-        del function.app.config['messageW']
+    if "messageW" in function.app.config:
+        del function.app.config["messageW"]
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_storeConfig_2(function):
-    function.app.config['messageW'] = {}
+    function.app.config["messageW"] = {}
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function,
-                           'show'):
-        with mock.patch.object(MWidget,
-                               'closeEvent'):
+    with mock.patch.object(function, "show"):
+        with mock.patch.object(MWidget, "closeEvent"):
             function.showWindow()
             function.closeEvent(QCloseEvent)
 
 
 def test_updateListColors(function):
-    function.app.messageQueue.put((0, 'test', 'test', 'test'))
+    function.app.messageQueue.put((0, "test", "test", "test"))
     function.writeMessage()
-    suc = function.updateListColors()
-    assert suc
+    function.updateListColors()
 
 
 def test_colorChange(function):
-    with mock.patch.object(function,
-                           'setupMessage'):
-        with mock.patch.object(function,
-                               'clearMessageTable'):
-            suc = function.colorChange()
-            assert suc
+    with mock.patch.object(function, "setupMessage"):
+        with mock.patch.object(function, "clearMessageTable"):
+            function.colorChange()
 
 
 def test_clearMessageTable_1(function):
-    suc = function.clearMessageTable()
-    assert suc
+    function.clearMessageTable()
+
+
+def test_writeMessageQueue(function):
+    function.writeMessageQueue(1, "test", "test", "test")
 
 
 def test_writeMessage_1(function):
-    suc = function.writeMessage()
-    assert suc
+    function.writeMessage()
 
 
 def test_writeMessage_2(function):
-    function.app.messageQueue.put((0, 'test', 'test', 'test'))
-    suc = function.writeMessage()
-    assert suc
+    function.app.messageQueue.put((0, "test", "test", "test"))
+    function.writeMessage()

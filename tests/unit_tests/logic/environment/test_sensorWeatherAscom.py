@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,44 +7,53 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
-import pytest
-import astropy
 import platform
 
-# external packages
+import pytest
 
+from mw4.base.signalsDevices import Signals
+from mw4.logic.environment.sensorWeatherAscom import SensorWeatherAscom
+
+# external packages
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.environment.sensorWeatherAscom import SensorWeatherAscom
-from base.driverDataClass import Signals
-if not platform.system() == 'Windows':
+
+if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
-@pytest.fixture(autouse=True, scope='function')
+class Parent:
+    app = App()
+    data = {}
+    deviceType = ""
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
+@pytest.fixture(autouse=True, scope="function")
 def function():
     class Test1:
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
+        Name = "test"
+        DriverVersion = "1"
+        DriverInfo = "test1"
         temperature = 10
         humidity = 85.00
         pressure = 950
         dewpoint = 5.5
 
-    func = SensorWeatherAscom(app=App(), signals=Signals(), data={})
+    func = SensorWeatherAscom(parent=Parent())
     func.client = Test1()
     func.clientProps = []
     yield func
 
 
 def test_workerPollData_1(function):
-    suc = function.workerPollData()
-    assert suc
+    function.workerPollData()

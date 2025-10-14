@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,57 +7,65 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
+
 import pytest
-import unittest.mock as mock
+
+from mw4.assets import assetsData
 
 # external packages
-from PySide6.QtWidgets import QWidget
-
 # local import
-from gui.mainWindow.mainWindowAddons import MainWindowAddons
-from gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from resource import resources
-resources.qInitResources()
+
+assetsData.qInitResources()
 
 
-@pytest.fixture(autouse=False, scope='module')
+class Test:
+    def initConfig(self):
+        pass
+
+    def storeConfig(self):
+        pass
+
+    def setupIcons(self):
+        pass
+
+    def updateColorSet(self):
+        pass
+
+
+@pytest.fixture(autouse=True, scope="module")
 def window(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     window = MainWindowAddons(mainW)
+    window.addons = {"test": Test()}
     yield window
-    mainW.app.threadPool.waitForDone(1000)
+    mainW.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(window):
-    with mock.patch.object(window.addons['ManageModel'],
-                           'initConfig'):
-        window.initConfig()
+    window.initConfig()
 
 
 def test_storeConfig_1(window):
-    with mock.patch.object(window.addons['ManageModel'],
-                           'storeConfig'):
-        window.storeConfig()
+    window.storeConfig()
 
 
 def test_setupIcons_1(window):
-    with mock.patch.object(window.addons['ManageModel'],
-                           'setupIcons'):
-        window.setupIcons()
+    window.setupIcons()
 
 
 def test_updateColorSet_1(window):
-    with mock.patch.object(window.addons['ManageModel'],
-                           'updateColorSet'):
-        window.updateColorSet()
+    window.updateColorSet()

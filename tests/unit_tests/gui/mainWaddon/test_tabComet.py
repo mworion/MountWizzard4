@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,32 +7,33 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
-import pytest
-import astropy
-from unittest import mock
 import json
 import os
+from unittest import mock
+
+import pytest
 
 # external packages
-from PySide6.QtWidgets import QTableWidgetItem, QWidget
+from PySide6.QtWidgets import QTableWidgetItem
+
+from mw4.gui.mainWaddon.tabComet import Comet
+from mw4.gui.widgets.main_ui import Ui_MainWindow
 
 # local import
+from mw4.gui.utilities.toolsQtWidget import MWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabComet import Comet
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
@@ -47,8 +47,7 @@ def test_initConfig_1(function):
 
 
 def test_initConfigDelayedComet_1(function):
-    with mock.patch.object(function.ui.cometSourceList,
-                           'setCurrentIndex'):
+    with mock.patch.object(function.ui.cometSourceList, "setCurrentIndex"):
         function.initConfigDelayedComet()
 
 
@@ -62,70 +61,55 @@ def test_prepareCometTable_1(function):
 
 def test_generateName_1(function):
     val = function.generateName({})
-    assert val == ''
+    assert val == ""
 
 
 def test_generateName_2(function):
-    mp = {'Designation_and_name': 'test'}
+    mp = {"Designation_and_name": "test"}
     val = function.generateName(mp)
-    assert val == 'test'
+    assert val == "test"
 
 
 def test_generateName_3(function):
-    mp = {'Name': 'test',
-          'Number': '123',
-          'Principal_desig': 'base'}
+    mp = {"Name": "test", "Number": "123", "Principal_desig": "base"}
     val = function.generateName(mp)
-    assert val == 'base - test 123'
+    assert val == "base - test 123"
 
 
 def test_generateName_4(function):
-    mp = {'Principal_desig': 'base'}
+    mp = {"Principal_desig": "base"}
     val = function.generateName(mp)
-    assert val == 'base'
+    assert val == "base"
 
 
 def test_generateName_5(function):
-    mp = {'Name': 'test',
-          'Number': '123'}
+    mp = {"Name": "test", "Number": "123"}
     val = function.generateName(mp)
-    assert val == 'test 123'
+    assert val == "test 123"
 
 
 def test_processCometSource_1(function):
-    function.comets.dest = 'tests/testData/mpc_comet_test.json'
-    with mock.patch.object(json,
-                           'load',
-                           return_value='',
-                           side_effect=Exception):
-        with mock.patch.object(os,
-                               'remove'):
+    function.comets.dest = "tests/testData/mpc_comet_test.json"
+    with mock.patch.object(json, "load", return_value="", side_effect=Exception):
+        with mock.patch.object(os, "remove"):
             function.processCometSource()
             assert function.comets.objects == {}
 
 
 def test_processCometSource_2(function):
-    function.comets.dest = 'tests/testData/mpc_comet_test.json'
-    with mock.patch.object(json,
-                           'load',
-                           return_value={'test': 'test'}):
-        with mock.patch.object(function,
-                               'generateName',
-                               return_value=''):
+    function.comets.dest = "tests/testData/mpc_comet_test.json"
+    with mock.patch.object(json, "load", return_value={"test": "test"}):
+        with mock.patch.object(function, "generateName", return_value=""):
             function.processCometSource()
             assert function.comets.objects == {}
 
 
 def test_processCometSource_3(function):
-    function.comets.dest = 'tests/testData/mpc_comet_test.json'
-    with mock.patch.object(json,
-                           'load',
-                           return_value={'test': 'test'}):
-        with mock.patch.object(function,
-                               'generateName',
-                               return_value='albert'):
+    function.comets.dest = "tests/testData/mpc_comet_test.json"
+    with mock.patch.object(json, "load", return_value={"test": "test"}):
+        with mock.patch.object(function, "generateName", return_value="albert"):
             function.processCometSource()
-            assert function.comets.objects == {'albert': 'test'}
+            assert function.comets.objects == {"albert": "test"}
 
 
 def test_filterListComets_1(function):
@@ -133,9 +117,9 @@ def test_filterListComets_1(function):
     function.ui.listComets.setRowCount(0)
     function.ui.listComets.setColumnCount(9)
     function.ui.listComets.insertRow(0)
-    entry = QTableWidgetItem('1234')
+    entry = QTableWidgetItem("1234")
     function.ui.listComets.setItem(0, 0, entry)
-    entry = QTableWidgetItem('NOAA 8')
+    entry = QTableWidgetItem("NOAA 8")
     function.ui.listComets.setItem(0, 1, entry)
     function.filterListComets()
 
@@ -143,7 +127,7 @@ def test_filterListComets_1(function):
 def test_fillCometListNames_1(function):
     function.ui.listComets.clear()
     function.comets.objects = {
-        'test': {
+        "test": {
             "Orbit_type": "C",
             "Provisional_packed_desig": "J71E010",
             "Year_of_perihelion": 1971,
@@ -160,7 +144,7 @@ def test_fillCometListNames_1(function):
             "H": 9.0,
             "G": 4.0,
             "Designation_and_name": "C/1971 E1 (Toba)",
-            "Ref": "83,   64"
+            "Ref": "83,   64",
         }
     }
     function.fillCometListName()

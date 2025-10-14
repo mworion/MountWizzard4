@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,9 +7,9 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -18,37 +17,36 @@
 import pytest
 
 # external packages
-from skyfield.api import wgs84, Star, Angle
+from skyfield.api import Angle, Star, wgs84
+
+from mw4.mountcontrol import obsSite
 
 # local imports
-from mountcontrol.model import ModelStar
-from mountcontrol import obsSite
+from mw4.mountcontrol.model import ModelStar
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
-    obsSite.location = wgs84.latlon(latitude_degrees=0,
-                                    longitude_degrees=0,
-                                    elevation_m=0)
+    obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
     modelStar = ModelStar(obsSite=obsSite)
     yield modelStar
 
 
 def test_properties_1(function):
-    function.coord = ('12:30:00.00', '+30*30:00.0', '+30*30:00.0')
+    function.coord = ("12:30:00.00", "+30*30:00.0", "+30*30:00.0")
     assert function.coord is None
     assert function.coord is None
 
 
 def test_properties_2(function):
-    function.coord = ('EE', 'EE')
+    function.coord = ("EE", "EE")
     assert function.coord is None
     assert function.coord is None
 
 
 def test_properties_3(function):
-    function.coord = ('12:30:00.00', '+30*30:00.0')
+    function.coord = ("12:30:00.00", "+30*30:00.0")
     assert function.coord.dec.degrees == 30.5
     assert function.coord.ra.hours == 12.5
     assert round(function.az.degrees, 2) == 12.49

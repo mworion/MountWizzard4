@@ -1,5 +1,5 @@
 Handling time
-=============
+-------------
 
 One basic definition is that MountWizzard4 will use at any time the clock of 
 the mount computer. Therefore MountWizzard4 polls julian date, difference 

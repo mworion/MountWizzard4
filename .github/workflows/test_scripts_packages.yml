@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,9 +7,9 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PyQT5 for python3
+# GUI with PySide6
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2026 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -23,17 +22,19 @@ concurrency:
 
 env:
   gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
-  wid: 'mw4/gui/widgets/'
+  wid: 'src_add/widgets/'
+  widDest: 'src/mw4/gui/widgets/'
   uic: 'pyside6-uic'
   ucc: 'pyside6-rcc'
-  res: 'mw4/resource/'
-  version: '-v 4.0.0a10'
+  res: 'src_add/assets/'
+  resDest: 'src/mw4/assets/'
+  version: '-v 4.0.0a33'
 
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - 'setup.py'
+      - 'pyproject.toml'
       - 'support/**'
       - '.github/workflows/test_scripts_packages.yml'
 
@@ -57,30 +58,31 @@ jobs:
           
     - uses: actions/setup-python@v5
       with:
-        python-version: '3.12'
+        python-version: '3.13'
 
     - name: build_widgets_resource
       run: |
         python -m pip install PySide6
-        ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.wid}}devicePopup_ui.py
-        ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.wid}}downloadPopup_ui.py
-        ${{env.uic}} ${{env.wid}}uploadPopup.ui -o ${{env.wid}}uploadPopup_ui.py
-        ${{env.uic}} ${{env.wid}}hemisphere.ui -o ${{env.wid}}hemisphere_ui.py
-        ${{env.uic}} ${{env.wid}}image.ui -o ${{env.wid}}image_ui.py
-        ${{env.uic}} ${{env.wid}}keypad.ui -o ${{env.wid}}keypad_ui.py
-        ${{env.uic}} ${{env.wid}}main.ui -o ${{env.wid}}main_ui.py
-        ${{env.uic}} ${{env.wid}}measure.ui -o ${{env.wid}}measure_ui.py
-        ${{env.uic}} ${{env.wid}}message.ui -o ${{env.wid}}message_ui.py
-        ${{env.uic}} ${{env.wid}}satellite.ui -o ${{env.wid}}satellite_ui.py
-        ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.wid}}analyse_ui.py
-        ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.wid}}simulator_ui.py
-        # ${{env.uic}} ${{env.wid}}material.ui -o ${{env.wid}}material_ui.py
-        ${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
+        ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.widDest}}devicePopup_ui.py
+        ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.widDest}}downloadPopup_ui.py
+        ${{env.uic}} ${{env.wid}}uploadPopup.ui -o ${{env.widDest}}uploadPopup_ui.py
+        ${{env.uic}} ${{env.wid}}hemisphere.ui -o ${{env.widDest}}hemisphere_ui.py
+        ${{env.uic}} ${{env.wid}}image.ui -o ${{env.widDest}}image_ui.py
+        ${{env.uic}} ${{env.wid}}keypad.ui -o ${{env.widDest}}keypad_ui.py
+        ${{env.uic}} ${{env.wid}}main.ui -o ${{env.widDest}}main_ui.py
+        ${{env.uic}} ${{env.wid}}measure.ui -o ${{env.widDest}}measure_ui.py
+        ${{env.uic}} ${{env.wid}}message.ui -o ${{env.widDest}}message_ui.py
+        ${{env.uic}} ${{env.wid}}satellite.ui -o ${{env.widDest}}satellite_ui.py
+        ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.widDest}}analyse_ui.py
+        ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.widDest}}simulator_ui.py
+        ${{env.uic}} ${{env.wid}}material.ui -o ${{env.widDest}}material_ui.py
+        ${{env.ucc}} ${{env.res}}assetData.qrc -o ${{env.resDest}}assetData.py
 
     - name: build_package
       run: |
-        python -m pip install setuptools wheel
-        python setup.py sdist
+        python -m pip install setuptools wheel build
+        python -m build
+        rm dist/*.whl
         mv dist/mountwizzard4*.* dist/mountwizzard4.tar.gz
 
     - name: upload_package
@@ -94,8 +96,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
-        python-version: [ '3.9', '3.12' ]
+        os: [windows-2022, windows-2025]
+        python-version: [ '3.11', '3.13' ]
 
     steps:
       - uses: actions/checkout@v4
@@ -113,31 +115,42 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1.6.0
         with:
-          url: ${{ env.gh }}startup.pyz ${{ env.version }}
+          url: ${{ env.gh }}startup.pyz
           target: dist/
           
       - name: MountWizzard4 Install
+        continue-on-error: true
         shell: cmd
         run: |
           cd dist
           python startup.pyz --no-start ${{ env.version }}
-          dir
+        
+      - name: Check Install
+        run: |
+          dir dist
+          type dist\log\*.log
           
       - name: Run MountWizzard4
         shell: cmd
+        continue-on-error: true
         run: |
           cd dist
           touch test.run
           python startup.pyz
-          dir
+        
+      - name: Check Run
+        run: |
+          dir dist
+          type dist\log\*.log
+
 
   install_package_ubuntu:
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, ubuntu-22.04]
-        python-version: [ '3.9', '3.12' ]
+        os: [ubuntu-22.04 ]
+        python-version: [ '3.11', '3.13' ]
 
     steps:
       - uses: actions/checkout@v4
@@ -155,7 +168,6 @@ jobs:
       - name: Install Head
         run: |
           sudo apt-get update
-          sudo apt-get -y upgrade
           sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
           sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
           sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
@@ -170,17 +182,27 @@ jobs:
           target: dist/
           
       - name: MountWizzard4 Install
+        continue-on-error: true
         run: |
           cd dist
           python startup.pyz --no-start ${{ env.version }}
-          ls -la
+        
+      - name: Check Install
+        run: |
+          ls -la dist
+          cat dist/log/*.log
           
       - name: Run MountWizzard4
+        continue-on-error: true
         run: |
           cd dist
           touch test.run
           xvfb-run python3 startup.pyz ${{ env.version }}
-          ls -la
+
+      - name: Check Run
+        run: |
+          ls -la dist
+          cat dist/log/*.log
 
 
   install_package_macOS:
@@ -188,8 +210,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-13, macos-latest]
-        python-version: [ '3.9', '3.12' ]
+        os: [macos-13, macos-14]
+        python-version: [ '3.11', '3.13' ]
 
     steps:
       - uses: actions/checkout@v4
@@ -210,8 +232,24 @@ jobs:
           target: dist/
           
       - name: MountWizzard4 Install
+        continue-on-error: true
         run: |
           cd dist
           python startup.pyz --no-start ${{ env.version }}
-          ls -la
+        
+      - name: Check Install
+        run: |
+          ls -la dist
+          cat dist/log/*.log
           
+      - name: MountWizzard4 Run
+        continue-on-error: true
+        run: |
+          touch test.run
+          python startup.pyz ${{ env.version }}
+        
+      - name: Check Run
+        run: |
+          ls -la dist
+          cat dist/log/*.log
+

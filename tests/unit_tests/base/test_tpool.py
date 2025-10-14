@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,19 +7,18 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
-import astropy
 
 # external packages
 
 # local import
-from base import tpool
+from mw4.base import tpool
 
 
 def test_WorkerSignals():
@@ -40,14 +38,15 @@ def test_clearPrintErrorStack():
 
 def test_Worker_1():
     def testFunc():
-        return 'test'
+        return "test"
+
     a = tpool.Worker(testFunc)
     assert a.signals
 
 
 def test_Worker_2(qtbot):
     def testFunc():
-        return 'test'
+        return "test"
 
     a = tpool.Worker(testFunc)
     with qtbot.waitSignal(a.signals.finished):
@@ -74,7 +73,7 @@ def test_Worker_4(qtbot):
 
 def test_Worker_5(qtbot):
     def testFunc():
-        raise Exception('Test')
+        raise Exception("Test")
 
     a = tpool.Worker(testFunc)
     with qtbot.waitSignal(a.signals.error):

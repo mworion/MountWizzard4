@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,114 +7,113 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
 import pytest
-import astropy
-import unittest.mock as mock
-import builtins
 
 # external packages
-import xml.etree.ElementTree as ETree
-
 # local import
-from indibase.indiXML import *
-from indibase import indiXML
+from mw4.indibase.indiXML import *
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
     yield function
 
 
 def test_INDIBase_1(function):
-    INDIBase('defLight', [], {'name': 'test'}, None)
+    INDIBase("defLight", [], {"name": "test"}, None)
 
 
 def test_INDIBase_2(function):
     class ET:
-        tag = 'testtag'
-        attrib = {'testtag': 'testattrib'}
-    INDIBase('defLight', [], None, ET())
+        tag = "testtag"
+        attrib = {"testtag": "testattrib"}
+
+    INDIBase("defLight", [], None, ET())
 
 
 def test_INDIBase_3(function):
-    INDIBase('defLight', [], None, None)
+    INDIBase("defLight", [], None, None)
 
 
 def test_INDIBase_4(function):
     class ET:
-        tag = 'testtag'
-        attrib = {'testtag': 'testattrib'}
+        tag = "testtag"
+        attrib = {"testtag": "testattrib"}
 
     test = INDIBase("defLight", [], None, ET())
-    f'{test}'
+    f"{test}"
 
 
 def test_INDIBase_5(function):
     class ET:
-        tag = 'testtag'
-        attrib = {'testtag': 'testattrib'}
+        tag = "testtag"
+        attrib = {"testtag": "testattrib"}
 
     test = INDIBase("defLight", [], None, ET())
-    test.attr = {'name': 'test',
-                 'device': 'test',
-                 'perm': 'test',
-                 'state': 'test',
-                 'timeout': '10'}
-    f'{test}'
+    test.attr = {
+        "name": "test",
+        "device": "test",
+        "perm": "test",
+        "state": "test",
+        "timeout": "10",
+    }
+    f"{test}"
 
 
 def test_INDIBase_6(function):
     class ET:
-        tag = 'testtag'
-        attrib = {'testtag': 'testattrib'}
+        tag = "testtag"
+        attrib = {"testtag": "testattrib"}
 
     test = INDIBase("defLight", [], None, ET())
-    test.addAttr('test', 'test')
-    val = test.getAttr('test')
-    assert val == 'test'
+    test.addAttr("test", "test")
+    val = test.getAttr("test")
+    assert val == "test"
 
 
 def test_INDIBase_7(function):
     class ET:
-        tag = 'testtag'
-        attrib = {'testtag': 'testattrib'}
+        tag = "testtag"
+        attrib = {"testtag": "testattrib"}
 
     test = INDIBase("defLight", [], None, ET())
-    test.addAttr('test', 'test')
-    test.delAttr('test')
-    assert 'test' not in test.attr
+    test.addAttr("test", "test")
+    test.delAttr("test")
+    assert "test" not in test.attr
 
 
 def test_INDIBase_8(function):
     class ET:
-        tag = 'testtag'
-        attrib = {'testtag': 'testattrib'}
+        tag = "testtag"
+        attrib = {"testtag": "testattrib"}
 
     test = INDIBase("defLight", [], None, ET())
-    test.addAttr('test', 'test')
-    test.setAttr('test', 'testnew')
-    val = test.getAttr('test')
-    assert val == 'testnew'
+    test.addAttr("test", "test")
+    test.setAttr("test", "testnew")
+    val = test.getAttr("test")
+    assert val == "testnew"
 
 
 def test_INDIBase_9(function):
     class ET:
-        tag = 'testtag'
-        attrib = {'testtag': 'testattrib'}
+        tag = "testtag"
+        attrib = {"testtag": "testattrib"}
 
     test = INDIBase("defLight", [], None, ET())
-    test.attr = {'name': 'test',
-                 'device': 'test',
-                 'perm': 'test',
-                 'state': 'test',
-                 'timeout': '10'}
+    test.attr = {
+        "name": "test",
+        "device": "test",
+        "perm": "test",
+        "state": "test",
+        "timeout": "10",
+    }
 
     test.toETree()
     test.toXML()
@@ -123,70 +121,78 @@ def test_INDIBase_9(function):
 
 def test_INDIElement_1(function):
     class ET:
-        tag = 'testtag'
-        attrib = {'testtag': 'testattrib'}
-        text = '  test value  '
+        tag = "testtag"
+        attrib = {"testtag": "testattrib"}
+        text = "  test value  "
 
-    a = {'name': 'test',
-         'device': 'test',
-         'perm': 'test',
-         'state': 'test',
-         'timeout': '10',
-         'label': 'label'}
+    a = {
+        "name": "test",
+        "device": "test",
+        "perm": "test",
+        "state": "test",
+        "timeout": "10",
+        "label": "label",
+    }
 
-    test = INDIElement("defLight", 'On', a, ET())
-    f'{test}'
+    test = INDIElement("defLight", "On", a, ET())
+    f"{test}"
 
 
 def test_INDIElement_2(function):
     class ET:
-        tag = 'testtag'
-        attrib = {'testtag': 'testattrib'}
+        tag = "testtag"
+        attrib = {"testtag": "testattrib"}
         text = None
 
-    a = {'name': 'test',
-         'device': 'test',
-         'perm': 'test',
-         'state': 'test',
-         'timeout': '10',
-         'label': 'label'}
+    a = {
+        "name": "test",
+        "device": "test",
+        "perm": "test",
+        "state": "test",
+        "timeout": "10",
+        "label": "label",
+    }
 
-    test = INDIElement("defLight", 'On', a, ET())
-    test.setValue('On')
+    test = INDIElement("defLight", "On", a, ET())
+    test.setValue("On")
     val = test.getValue()
-    assert val == 'On'
+    assert val == "On"
     test.toETree()
 
 
 def test_INDIVector_1(function):
     class ET:
-        tag = 'defLight'
-        attrib = {'testtag': 'testattrib'}
-        text = '  test value  '
+        tag = "defLight"
+        attrib = {"testtag": "testattrib"}
+        text = "  test value  "
 
-    a = {'name': 'test',
-         'device': 'test',
-         'perm': 'test',
-         'state': 'test',
-         'timeout': '10',
-         'label': 'label'}
+    a = {
+        "name": "test",
+        "device": "test",
+        "perm": "test",
+        "state": "test",
+        "timeout": "10",
+        "label": "label",
+    }
 
     test = INDIVector("defLight", [], a, [ET()])
-    f'{test}'
+    f"{test}"
 
 
 def test_INDIVector_2(function):
     class ET:
-        tag = 'defLight'
-        attrib = {'testtag': 'testattrib'}
-        text = '  test value  '
+        tag = "defLight"
+        attrib = {"testtag": "testattrib"}
+        text = "  test value  "
 
-    a = {'name': 'test',
-         'device': 'test',
-         'perm': 'test',
-         'state': 'test',
-         'timeout': '10',
-         'label': 'label'}
+    a = {
+        "name": "test",
+        "device": "test",
+        "perm": "test",
+        "state": "test",
+        "timeout": "10",
+        "label": "label",
+    }
 
     test = INDIVector("defLight", [], a, [ET()])
     test.getElt(0)
@@ -196,57 +202,63 @@ def test_INDIVector_2(function):
 
 def test_Message_1(function):
     class ET:
-        tag = 'defLight'
-        attrib = {'testtag': 'testattrib'}
-        text = '  test value  '
+        tag = "defLight"
+        attrib = {"testtag": "testattrib"}
+        text = "  test value  "
 
-    a = {'name': 'test',
-         'device': 'test',
-         'perm': 'test',
-         'state': 'test',
-         'timeout': '10',
-         'label': 'label'}
+    a = {
+        "name": "test",
+        "device": "test",
+        "perm": "test",
+        "state": "test",
+        "timeout": "10",
+        "label": "label",
+    }
 
     test = Message("defLight", None, a, ET())
-    assert f'{test}' == 'defLight (test, test, test, test, 10) - empty message'
+    assert f"{test}" == "defLight (test, test, test, test, 10) - empty message"
 
 
 def test_Message_2(function):
     class ET:
-        tag = 'defLight'
-        attrib = {'testtag': 'testattrib'}
-        text = '  test value  '
+        tag = "defLight"
+        attrib = {"testtag": "testattrib"}
+        text = "  test value  "
 
-    a = {'name': 'test',
-         'device': 'test',
-         'perm': 'test',
-         'state': 'test',
-         'timeout': '10',
-         'label': 'label',
-         'message': 'testmessage'}
+    a = {
+        "name": "test",
+        "device": "test",
+        "perm": "test",
+        "state": "test",
+        "timeout": "10",
+        "label": "label",
+        "message": "testmessage",
+    }
 
     test = Message("defLight", None, a, ET())
-    assert f'{test}' == 'defLight (test, test, test, test, 10) - testmessage'
+    assert f"{test}" == "defLight (test, test, test, test, 10) - testmessage"
 
 
 def test_OneBLOB_1(function):
     class ET:
-        tag = 'defLight'
-        attrib = {'testtag': 'testattrib'}
-        text = base64.standard_b64encode(b'AAAA')
+        tag = "defLight"
+        attrib = {"testtag": "testattrib"}
+        text = base64.standard_b64encode(b"AAAA")
 
-    a = {'name': 'test',
-         'device': 'test',
-         'perm': 'test',
-         'state': 'test',
-         'timeout': '10',
-         'label': 'label',
-         'size': '100',
-         'format': 'b64',
-         'message': 'testmessage'}
+    a = {
+        "name": "test",
+        "device": "test",
+        "perm": "test",
+        "state": "test",
+        "timeout": "10",
+        "label": "label",
+        "size": "100",
+        "format": "b64",
+        "message": "testmessage",
+    }
 
     test = OneBLOB("defBLOB", None, a, ET())
-    f'{test}'
+    f"{test}"
 
 
 def test_BLOBEnable(function):
@@ -300,7 +312,7 @@ def test_numberValue_1(function):
 
 
 def test_numberValue_2(function):
-    val = numberValue('a')
+    val = numberValue("a")
     assert val is None
 
 
@@ -321,16 +333,16 @@ def test_switchRule(function):
 
 def test_switchState_1(function):
     val = switchState(True)
-    assert val == 'On'
+    assert val == "On"
 
 
 def test_switchState_2(function):
     val = switchState(False)
-    assert val == 'Off'
+    assert val == "Off"
 
 
 def test_switchState_3(function):
-    val = switchState('test')
+    val = switchState("test")
     assert val is None
 
 
@@ -345,19 +357,19 @@ def test_textValue(function):
 
 
 def test_makeINDIFn_1(function):
-    makeINDIFn('test')
+    makeINDIFn("test")
 
 
 def test_makeINDIFn_2(function):
-    makeObj = makeINDIFn('defTextVector')
-    makeObj('device', 'test')
+    makeObj = makeINDIFn("defTextVector")
+    makeObj("device", "test")
 
 
 def test_makeINDIFn_3(function):
-    makeObj = makeINDIFn('defTextVector')
-    makeObj('device', {'device': 'test', 'name': 'test'})
+    makeObj = makeINDIFn("defTextVector")
+    makeObj("device", {"device": "test", "name": "test"})
 
 
 def test_makeINDIFn_4(function):
-    makeObj = makeINDIFn('defTextVector')
-    makeObj('test', {'device': 'test', 'test': 'test'})
+    makeObj = makeINDIFn("defTextVector")
+    makeObj("test", {"device": "test", "test": "test"})

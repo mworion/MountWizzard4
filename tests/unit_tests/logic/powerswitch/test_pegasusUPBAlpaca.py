@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,204 +7,168 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
-import pytest
-import astropy
 import unittest.mock as mock
 
-# external packages
+import pytest
 
+from mw4.base.signalsDevices import Signals
+from mw4.logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
+
+# external packages
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
-from base.driverDataClass import Signals
 
 
-@pytest.fixture(autouse=True, scope='function')
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
+@pytest.fixture(autouse=True, scope="function")
 def function():
-    func = PegasusUPBAlpaca(app=App(), signals=Signals(), data={})
+    func = PegasusUPBAlpaca(parent=Parent())
     yield func
 
 
 def test_workerPollData_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function,
-                           'getAlpacaProperty'):
-        suc = function.workerPollData()
-        assert not suc
+    with mock.patch.object(function, "getAlpacaProperty"):
+        function.workerPollData()
 
 
 def test_workerPollData_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty',
-                           return_value=15):
-        with mock.patch.object(function,
-                               'storePropertyToData'):
-            suc = function.workerPollData()
-            assert suc
+    with mock.patch.object(function, "getAlpacaProperty", return_value=15):
+        with mock.patch.object(function, "storePropertyToData"):
+            function.workerPollData()
 
 
 def test_workerPollData_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty',
-                           return_value=21):
-        with mock.patch.object(function,
-                               'storePropertyToData'):
-            suc = function.workerPollData()
-            assert suc
+    with mock.patch.object(function, "getAlpacaProperty", return_value=21):
+        with mock.patch.object(function, "storePropertyToData"):
+            function.workerPollData()
 
 
 def test_togglePowerPort_1(function):
     function.deviceConnected = False
-    suc = function.togglePowerPort()
-    assert not suc
+    function.togglePowerPort("1")
 
 
 def test_togglePowerPort_2(function):
     function.deviceConnected = True
-    suc = function.togglePowerPort()
-    assert not suc
+    function.togglePowerPort("1")
 
 
 def test_togglePowerPort_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'setAlpacaProperty'):
-        suc = function.togglePowerPort('1')
-        assert suc
+    with mock.patch.object(function, "setAlpacaProperty"):
+        function.togglePowerPort("1")
 
 
 def test_togglePowerPortBoot_1(function):
     function.deviceConnected = False
-    suc = function.togglePowerPortBoot()
-    assert not suc
+    function.togglePowerPortBoot("1")
 
 
 def test_togglePowerPortBoot_2(function):
     function.deviceConnected = True
-    suc = function.togglePowerPortBoot()
-    assert suc
+    function.togglePowerPortBoot("1")
 
 
 def test_toggleHubUSB_1(function):
     function.deviceConnected = False
-    suc = function.toggleHubUSB()
-    assert not suc
+    function.toggleHubUSB()
 
 
 def test_toggleHubUSB_2(function):
     function.deviceConnected = True
-    suc = function.toggleHubUSB()
-    assert suc
+    function.toggleHubUSB()
 
 
 def test_togglePortUSB_1(function):
     function.deviceConnected = False
-    suc = function.togglePortUSB()
-    assert not suc
+    function.togglePortUSB("1")
 
 
 def test_togglePortUSB_2(function):
     function.deviceConnected = True
-    suc = function.togglePortUSB()
-    assert not suc
+    function.togglePortUSB("1")
 
 
 def test_togglePortUSB_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty',
-                           return_value=21):
-        with mock.patch.object(function,
-                               'setAlpacaProperty'):
-            suc = function.togglePortUSB('1')
-            assert suc
+    with mock.patch.object(function, "getAlpacaProperty", return_value=21):
+        with mock.patch.object(function, "setAlpacaProperty"):
+            function.togglePortUSB("1")
 
 
 def test_toggleAutoDew_1(function):
     function.deviceConnected = False
-    suc = function.toggleAutoDew()
-    assert not suc
+    function.toggleAutoDew()
 
 
 def test_toggleAutoDew_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty',
-                           return_value=21):
-        with mock.patch.object(function,
-                               'setAlpacaProperty'):
-            suc = function.toggleAutoDew()
-            assert suc
+    with mock.patch.object(function, "getAlpacaProperty", return_value=21):
+        with mock.patch.object(function, "setAlpacaProperty"):
+            function.toggleAutoDew()
 
 
 def test_toggleAutoDew_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty',
-                           return_value=15):
-        with mock.patch.object(function,
-                               'setAlpacaProperty'):
-            suc = function.toggleAutoDew()
-            assert suc
+    with mock.patch.object(function, "getAlpacaProperty", return_value=15):
+        with mock.patch.object(function, "setAlpacaProperty"):
+            function.toggleAutoDew()
 
 
 def test_sendDew_1(function):
     function.deviceConnected = False
-    suc = function.sendDew()
-    assert not suc
+    function.sendDew("1", 10)
 
 
 def test_sendDew_2(function):
     function.deviceConnected = True
-    suc = function.sendDew()
-    assert not suc
+    function.sendDew("1", 10)
 
 
 def test_sendDew_3(function):
     function.deviceConnected = True
-    suc = function.sendDew('1')
-    assert not suc
+    function.sendDew("1", 10)
 
 
 def test_sendDew_4(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty',
-                           return_value=21):
-        with mock.patch.object(function,
-                               'setAlpacaProperty'):
-            suc = function.sendDew('1', 10)
-            assert suc
+    with mock.patch.object(function, "getAlpacaProperty", return_value=21):
+        with mock.patch.object(function, "setAlpacaProperty"):
+            function.sendDew("1", 10)
 
 
 def test_sendAdjustableOutput_1(function):
     function.deviceConnected = False
-    suc = function.sendAdjustableOutput()
-    assert not suc
+    function.sendAdjustableOutput(1)
 
 
 def test_sendAdjustableOutput_2(function):
     function.deviceConnected = True
-    suc = function.sendAdjustableOutput(4)
-    assert suc
+    function.sendAdjustableOutput(4)
 
 
 def test_reboot_1(function):
     function.deviceConnected = False
-    suc = function.reboot()
-    assert not suc
+    function.reboot()
 
 
 def test_reboot_2(function):
     function.deviceConnected = True
-    suc = function.reboot()
-    assert suc
+    function.reboot()

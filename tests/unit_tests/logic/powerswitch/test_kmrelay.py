@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,74 +7,64 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
-from unittest import mock
 import time
-import pytest
-import astropy
+from unittest import mock
 
 # external packages
 import PySide6
+import pytest
 import requests
 
 # local import
-from base.loggerMW import setupLogging
-from logic.powerswitch.kmRelay import KMRelay
+from mw4.base.loggerMW import setupLogging
+from mw4.logic.powerswitch.kmRelay import KMRelay
+
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
-    with mock.patch.object(PySide6.QtCore.QTimer,
-                           'start'):
+    with mock.patch.object(PySide6.QtCore.QTimer, "start"):
         func = KMRelay()
         yield func
 
 
 def test_startCommunication_1(function):
     function.host = None
-    with mock.patch.object(function.timerTask,
-                           'start'):
-        suc = function.startCommunication()
-        assert not suc
+    with mock.patch.object(function.timerTask, "start"):
+        function.startCommunication()
 
 
 def test_startCommunications_2(function):
-    function.hostaddress = 'localhost'
-    with mock.patch.object(function.timerTask,
-                           'start'):
-        suc = function.startCommunication()
-        assert suc
+    function.hostaddress = "localhost"
+    with mock.patch.object(function.timerTask, "start"):
+        function.startCommunication()
 
 
 def test_stopTimers_1(function):
-    with mock.patch.object(function.timerTask,
-                           'stop',):
-        suc = function.stopCommunication()
-        assert suc
-
-
-def test_debugOutput_1(function):
-    suc = function.debugOutput()
-    assert not suc
+    with mock.patch.object(
+        function.timerTask,
+        "stop",
+    ):
+        function.stopCommunication()
 
 
 def test_debugOutput_2(function):
     class Test:
-        reason = 'reason'
+        reason = "reason"
         status_code = 200
         elapsed = 1
-        text = 'test'
-        url = 'test'
+        text = "test"
+        url = "test"
 
-    suc = function.debugOutput(Test())
-    assert suc
+    function.debugOutput(Test())
 
 
 def test_getRelay_1(function):
@@ -85,7 +74,7 @@ def test_getRelay_1(function):
 
 
 def test_getRelay_2(function):
-    function.hostaddress = 'localhost'
+    function.hostaddress = "localhost"
     function.mutexPoll.lock()
     suc = function.getRelay()
     assert suc is None
@@ -93,38 +82,36 @@ def test_getRelay_2(function):
 
 
 def test_getRelay_3(function):
-    function.hostaddress = 'localhost'
-    with mock.patch.object(requests,
-                           'get',
-                           return_value=None,
-                           side_effect=requests.exceptions.Timeout):
-        suc = function.getRelay()
-        assert suc is None
+    function.hostaddress = "localhost"
+    with mock.patch.object(
+        requests, "get", return_value=None, side_effect=requests.exceptions.Timeout
+    ):
+        suc = function.getRelay("test", debug=True)
+        assert not suc
 
 
 def test_getRelay_4(function):
-    function.hostaddress = 'localhost'
-    with mock.patch.object(requests,
-                           'get',
-                           return_value=None,
-                           side_effect=requests.exceptions.ConnectionError):
-        suc = function.getRelay()
-        assert suc is None
+    function.hostaddress = "localhost"
+    with mock.patch.object(
+        requests,
+        "get",
+        return_value=None,
+        side_effect=requests.exceptions.ConnectionError,
+    ):
+        suc = function.getRelay("test", debug=True)
+        assert not suc
 
 
 def test_getRelay_5(function):
-    function.hostaddress = 'localhost'
-    with mock.patch.object(requests,
-                           'get',
-                           return_value=None,
-                           side_effect=Exception()):
-        suc = function.getRelay(debug=True)
-        assert suc is None
+    function.hostaddress = "localhost"
+    with mock.patch.object(requests, "get", return_value=None, side_effect=Exception()):
+        suc = function.getRelay("test", debug=True)
+        assert not suc
 
 
 def test_checkConnected_1(function):
     class Test:
-        reason = 'NotOk'
+        reason = "NotOk"
 
     function.deviceConnected = True
     suc = function.checkConnected(None)
@@ -134,7 +121,7 @@ def test_checkConnected_1(function):
 
 def test_checkConnected_2(function):
     class Test:
-        reason = 'OK'
+        reason = "OK"
 
     function.deviceConnected = False
     suc = function.checkConnected(Test())
@@ -144,7 +131,7 @@ def test_checkConnected_2(function):
 
 def test_checkConnected_3(function):
     class Test:
-        reason = 'NotOk'
+        reason = "NotOk"
 
     function.deviceConnected = False
     suc = function.checkConnected(None)
@@ -154,7 +141,7 @@ def test_checkConnected_3(function):
 
 def test_checkConnected_4(function):
     class Test:
-        reason = 'OK'
+        reason = "OK"
 
     function.deviceConnected = True
     suc = function.checkConnected(Test())
@@ -163,52 +150,38 @@ def test_checkConnected_4(function):
 
 
 def test_cyclePolling_1(function):
-    function.user = 'test'
-    function.password = 'test'
-    function.hostaddress = 'localhost'
-    with mock.patch.object(function,
-                           'getRelay'):
-        with mock.patch.object(function,
-                               'checkConnected',
-                               return_value=False):
-            suc = function.cyclePolling()
-            assert not suc
+    function.user = "test"
+    function.password = "test"
+    function.hostaddress = "localhost"
+    with mock.patch.object(function, "getRelay"):
+        with mock.patch.object(function, "checkConnected", return_value=False):
+            function.cyclePolling()
 
 
 def test_cyclePolling_2(function):
     class Test:
-        reason = 'NotOk'
-        text = 'test'
+        reason = "NotOk"
+        text = "test"
 
-    function.user = 'test'
-    function.password = 'test'
-    function.hostaddress = 'localhost'
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=Test()):
-        with mock.patch.object(function,
-                               'checkConnected',
-                               return_value=True):
-            suc = function.cyclePolling()
-            assert suc
+    function.user = "test"
+    function.password = "test"
+    function.hostaddress = "localhost"
+    with mock.patch.object(function, "getRelay", return_value=Test()):
+        with mock.patch.object(function, "checkConnected", return_value=True):
+            function.cyclePolling()
 
 
 def test_cyclePolling_3(function):
     class Test:
-        reason = 'OK'
-        text = 'test'
+        reason = "OK"
+        text = "test"
 
-    function.user = 'test'
-    function.password = 'test'
-    function.hostaddress = 'localhost'
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=Test()):
-        with mock.patch.object(function,
-                               'checkConnected',
-                               return_value=True):
-            suc = function.cyclePolling()
-            assert suc
+    function.user = "test"
+    function.password = "test"
+    function.hostaddress = "localhost"
+    with mock.patch.object(function, "getRelay", return_value=Test()):
+        with mock.patch.object(function, "checkConnected", return_value=True):
+            function.cyclePolling()
 
 
 def test_status1(function):
@@ -226,20 +199,18 @@ def test_status1(function):
 
     class Test:
         pass
+
     ret = Test()
     ret.text = returnValue
-    ret.reason = 'OK'
+    ret.reason = "OK"
     ret.status_code = 200
 
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=ret):
-
+    with mock.patch.object(function, "getRelay", return_value=ret):
         for i in range(0, 8):
             function.set(i, 0)
 
         function.cyclePolling()
-        assert [0, 0, 0, 0, 0, 0, 0, 0] == function.status
+        assert function.status == [0, 0, 0, 0, 0, 0, 0, 0]
 
 
 def test_status2(function):
@@ -257,20 +228,18 @@ def test_status2(function):
 
     class Test:
         pass
+
     ret = Test()
     ret.text = returnValue
-    ret.reason = 'OK'
+    ret.reason = "OK"
     ret.status_code = 200
 
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=ret):
-
+    with mock.patch.object(function, "getRelay", return_value=ret):
         for i in range(0, 8):
             function.set(i, 1)
 
         function.cyclePolling()
-        assert [1, 1, 1, 1, 1, 1, 1, 1] == function.status
+        assert function.status == [1, 1, 1, 1, 1, 1, 1, 1]
 
 
 def test_status3(function):
@@ -288,20 +257,18 @@ def test_status3(function):
 
     class Test:
         pass
+
     ret = Test()
     ret.text = returnValue
-    ret.reason = 'OK'
+    ret.reason = "OK"
     ret.status_code = 200
 
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=ret):
-
+    with mock.patch.object(function, "getRelay", return_value=ret):
         for i in range(0, 8):
             function.switch(i)
 
         function.cyclePolling()
-        assert [1, 1, 1, 1, 1, 1, 1, 1] == function.status
+        assert function.status == [1, 1, 1, 1, 1, 1, 1, 1]
 
 
 def test_status4(function):
@@ -319,33 +286,31 @@ def test_status4(function):
 
     class Test:
         pass
+
     ret = Test()
     ret.text = returnValue
-    ret.reason = 'OK'
+    ret.reason = "OK"
     ret.status_code = 200
 
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=ret):
-        with mock.patch.object(time,
-                               'sleep'):
+    with mock.patch.object(function, "getRelay", return_value=ret):
+        with mock.patch.object(time, "sleep"):
             for i in range(0, 8):
                 function.pulse(i)
 
             function.cyclePolling()
-            assert [0, 0, 0, 0, 0, 0, 0, 0] == function.status
+            assert function.status == [0, 0, 0, 0, 0, 0, 0, 0]
 
 
 def test_getRelay_1(function):
     function.mutexPoll.lock()
-    suc = function.getRelay()
+    suc = function.getRelay("test", debug=True)
     function.mutexPoll.unlock()
     assert not suc
 
 
 def test_getRelay_2(function):
     function.hostaddress = None
-    suc = function.getRelay()
+    suc = function.getRelay("test", debug=True)
     assert not suc
 
 
@@ -370,118 +335,94 @@ def test_getByte_2(function):
 def test_pulse_1(function):
     ret = None
 
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=ret):
-        with mock.patch.object(time,
-                               'sleep'):
-            suc = function.pulse(7)
-            assert not suc
+    with mock.patch.object(function, "getRelay", return_value=ret):
+        with mock.patch.object(time, "sleep"):
+            function.pulse(7)
 
 
 def test_pulse_2(function):
     class Test:
         pass
+
     ret = Test()
-    ret.reason = 'False'
+    ret.reason = "False"
     ret.status_code = 200
 
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=ret):
-        with mock.patch.object(time,
-                               'sleep'):
-            suc = function.pulse(7)
-            assert not suc
+    with mock.patch.object(function, "getRelay", return_value=ret):
+        with mock.patch.object(time, "sleep"):
+            function.pulse(7)
 
 
 def test_pulse_3(function):
     class Test:
         pass
+
     ret = Test()
-    ret.reason = 'OK'
+    ret.reason = "OK"
     ret.status_code = 200
 
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=ret):
-        with mock.patch.object(time,
-                               'sleep'):
-            suc = function.pulse(7)
-            assert suc
+    with mock.patch.object(function, "getRelay", return_value=ret):
+        with mock.patch.object(time, "sleep"):
+            function.pulse(7)
 
 
 def test_switch_1(function):
     ret = None
 
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=ret):
-        suc = function.switch(7)
-        assert not suc
+    with mock.patch.object(function, "getRelay", return_value=ret):
+        function.switch(7)
 
 
 def test_switch_2(function):
     class Test:
         pass
+
     ret = Test()
-    ret.reason = 'False'
+    ret.reason = "False"
     ret.status_code = 200
 
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=ret):
-        suc = function.switch(7)
-        assert not suc
+    with mock.patch.object(function, "getRelay", return_value=ret):
+        function.switch(7)
 
 
 def test_switch_3(function):
     class Test:
         pass
+
     ret = Test()
-    ret.reason = 'OK'
+    ret.reason = "OK"
     ret.status_code = 200
 
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=ret):
-        suc = function.switch(7)
-        assert suc
+    with mock.patch.object(function, "getRelay", return_value=ret):
+        function.switch(7)
 
 
 def test_set_1(function):
     ret = None
 
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=ret):
-        suc = function.set(7, True)
-        assert not suc
+    with mock.patch.object(function, "getRelay", return_value=ret):
+        function.set(7, True)
 
 
 def test_set_2(function):
     class Test:
         pass
+
     ret = Test()
-    ret.reason = 'False'
+    ret.reason = "False"
     ret.status_code = 200
 
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=ret):
-        suc = function.set(7, True)
-        assert not suc
+    with mock.patch.object(function, "getRelay", return_value=ret):
+        function.set(7, True)
 
 
 def test_set_3(function):
     class Test:
         pass
+
     ret = Test()
-    ret.reason = 'OK'
+    ret.reason = "OK"
     ret.status_code = 200
 
-    with mock.patch.object(function,
-                           'getRelay',
-                           return_value=ret):
-        suc = function.set(7, False)
-        assert suc
+    with mock.patch.object(function, "getRelay", return_value=ret):
+        function.set(7, False)

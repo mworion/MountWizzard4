@@ -1,0 +1,118 @@
+############################################################
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PySide
+#
+# written in python3, (c) 2019-2025 by mworion
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+import logging
+
+from PySide6 import QtNetwork
+
+# external packages
+from PySide6.QtCore import QObject
+
+# local imports
+from mw4.base.signalsDevices import Signals
+
+
+class Remote(QObject):
+    """ """
+
+    log = logging.getLogger("MW4")
+
+    def __init__(self, app=None):
+        super().__init__()
+        self.signals = Signals()
+        self.app = app
+        self.data = {}
+        self.defaultConfig = {
+            "framework": "",
+            "frameworks": {"tcp": {"deviceName": "TCP"}},
+        }
+        self.framework = ""
+        self.run = {"tcp": self}
+        self.deviceName = ""
+        self.clientConnection = None
+        self.tcpServer = None
+
+    def startCommunication(self) -> bool:
+        """ """
+        self.tcpServer = QtNetwork.QTcpServer(self)
+        hostAddress = QtNetwork.QHostAddress("localhost")
+        if not self.tcpServer.listen(hostAddress, 3490):
+            self.log.info("Port already in use")
+            self.tcpServer = None
+            return False
+        else:
+            self.log.info("Remote access enabled")
+            self.tcpServer.newConnection.connect(self.addConnection)
+            self.signals.deviceConnected.emit("TCP")
+            return True
+
+    def stopCommunication(self) -> None:
+        """ """
+        if self.tcpServer.isListening():
+            self.tcpServer.close()
+        self.signals.deviceDisconnected.emit("TCP")
+
+    def addConnection(self) -> None:
+        """ """
+        if self.tcpServer is None:
+            return
+
+        self.clientConnection = self.tcpServer.nextPendingConnection()
+        if not self.clientConnection:
+            self.log.warning("Cannot establish incoming connection")
+            return
+
+        self.clientConnection.nextBlockSize = 0
+        self.clientConnection.readyRead.connect(self.receiveMessage)
+        self.clientConnection.disconnected.connect(self.removeConnection)
+        self.clientConnection.error.connect(self.handleError)
+        connection = self.clientConnection.peerAddress().toString()
+        self.log.info(f"Connection to MountWizzard from {connection}")
+
+    def receiveMessage(self) -> bool:
+        """ """
+        if self.clientConnection.bytesAvailable() == 0:
+            return False
+
+        validCommands = [
+            "shutdown",
+            "shutdown mount",
+            "boot mount",
+        ]
+
+        connection = self.clientConnection.peerAddress().toString()
+        command = str(self.clientConnection.read(100), "ascii")
+        command = command.replace("\n", "")
+        command = command.replace("\r", "")
+
+        self.log.debug(f"Command {command} from {connection} received")
+        if command in validCommands:
+            self.app.remoteCommand.emit(command)
+        else:
+            self.log.warning(f"Unknown command {command} from {connection} received")
+
+        return True
+
+    def removeConnection(self) -> None:
+        """ """
+        connection = self.clientConnection.peerAddress().toString()
+        self.clientConnection.close()
+        self.log.debug(f"Connection from {connection} closed")
+
+    def handleError(self, socketError: QtNetwork.QAbstractSocket.SocketError) -> None:
+        """ """
+        connection = self.clientConnection.peerAddress().toString()
+        self.log.critical(f"Connection from {connection} failed, error: {socketError}")

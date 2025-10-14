@@ -1,5 +1,5 @@
 Precision of internal calculations
-==================================
+----------------------------------
 
 MountWizzard4 is using for all calculations the skyfield 
 (https://rhodesmill.org/skyfield/) from Brandon Rhodes. As for the new command 

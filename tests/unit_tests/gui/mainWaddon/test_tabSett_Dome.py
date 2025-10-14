@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,32 +7,32 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
-import pytest
-import astropy
 from unittest import mock
 
-# external packages
-from PySide6.QtWidgets import QWidget
+import pytest
 
+from mw4.assets import assetsData
+from mw4.gui.mainWaddon.tabSett_Dome import SettDome
+from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+
+# external packages
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWaddon.tabSett_Dome import SettDome
-from resource import resources
-resources.qInitResources()
+
+assetsData.qInitResources()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
@@ -79,16 +78,14 @@ def test_tab9(function):
 
 
 def test_initConfig_1(function):
-    function.app.config['mainW'] = {}
-    with mock.patch.object(function,
-                           'setUseGeometry'):
+    function.app.config["mainW"] = {}
+    with mock.patch.object(function, "setUseGeometry"):
         suc = function.initConfig()
         assert suc
 
 
 def test_initConfig_2(function):
-    with mock.patch.object(function,
-                           'setUseGeometry'):
+    with mock.patch.object(function, "setUseGeometry"):
         suc = function.initConfig()
         assert suc
 
@@ -132,8 +129,7 @@ def test_setUseGeometry_1(function):
 def test_setUseGeometry_2(function):
     function.ui.use10micronDef.setChecked(True)
     function.ui.automaticDome.setChecked(True)
-    with mock.patch.object(function,
-                           'updateDomeGeometryToGui'):
+    with mock.patch.object(function, "updateDomeGeometryToGui"):
         suc = function.setUseGeometry()
         assert suc
 

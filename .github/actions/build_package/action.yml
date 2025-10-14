@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python3
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -25,17 +25,14 @@ runs:
     - name: setup python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.12'
+        python-version: '3.13'
         
     - name: install #1
       run: |
-        python -m pip install setuptools wheel
-        python setup.py sdist
+        python -m pip install setuptools wheel build
+        python -m build
+        rm dist/*.whl
+        ls -la
+        ls -la dist
         mv dist/mountwizzard4*.* dist/mountwizzard4.tar.gz
       shell: bash
-
-    - name: upload package
-      uses: actions/upload-artifact@v4
-      with:
-        name: dist
-        path: dist

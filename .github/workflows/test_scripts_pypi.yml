@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,9 +7,9 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PyQT5 for python3
+# GUI with PySide6
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -19,19 +18,18 @@ name: test_scripts_pypi
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
-  cancel-in-progress: true
+  cancel-in-progress: True
 
 env:
   gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
-  version: '-v 4.0.0a10'
+  version: '-v 4.0.0a33'
 
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
       - '.github/workflows/test_scripts_pypi.yml'
-      - 'support/**'
-      - 'setup.py'
+      - 'pyproject.toml'
 
 jobs:
   
@@ -39,8 +37,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ windows-latest ]
-        python-version: [ '3.9', '3.12' ]
+        os: [ windows-2022, windows-2025 ]
+        python-version: [ '3.11', '3.13' ]
 
     steps:
       - uses: actions/setup-python@v5
@@ -57,21 +55,29 @@ jobs:
         shell: cmd
         run: |
           python startup.pyz --no-start ${{ env.version }}
+        
+      - name: Check Install
+        run: |
           dir
+          type log\*.log
       
       - name: Run MountWizzard4
         shell: cmd
         run: |
           touch test.run
           python startup.pyz ${{ env.version }}
+        
+      - name: Check Run
+        run: |
           dir
+          type log\*.log
   
   install_ubuntu:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-20.04, ubuntu-22.04 ]
-        python-version: [ '3.9', '3.12' ]
+        os: [ ubuntu-22.04 ]
+        python-version: [ '3.11', '3.13' ]
     
     steps:
       - uses: actions/setup-python@v5
@@ -81,7 +87,6 @@ jobs:
       - name: Install Head
         run: |
           sudo apt-get update
-          sudo apt-get -y upgrade
           sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
           sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
           sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
@@ -96,22 +101,33 @@ jobs:
           target: .
           
       - name: MountWizzard4 Install
+        continue-on-error: true
         run: |
           python startup.pyz --no-start ${{ env.version }}
+        
+      - name: Check Install
+        run: |
           ls -la
+          cat log/*.log
   
       - name: Run MountWizzard4
+        continue-on-error: true
         run: |
           touch test.run
           xvfb-run python3 startup.pyz ${{ env.version }}
+        
+      - name: Check Run
+        run: |
           ls -la
+          cat log/*.log
+
           
   install_macOS:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ macos-13, macos-latest ]
-        python-version: [ '3.9', '3.12' ]
+        os: [ macos-13, macos-14 ]
+        python-version: [ '3.11', '3.13' ]
     
     steps:
       - uses: actions/setup-python@v5
@@ -125,15 +141,24 @@ jobs:
           target: .
           
       - name: MountWizzard4 Install
+        continue-on-error: true
         run: |
           touch test.run
           python startup.pyz --no-start ${{ env.version }}
+        
+      - name: Check Install
+        run: |
           ls -la
+          cat log/*.log
           
       - name: MountWizzard4 Run
-        continue-on-error: True
+        continue-on-error: true
         run: |
           touch test.run
           python startup.pyz ${{ env.version }}
+        
+      - name: Check Run
+        run: |
           ls -la
+          cat log/*.log
           

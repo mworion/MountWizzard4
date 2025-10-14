@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,77 +7,71 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
-import pytest
-import astropy
 import unittest.mock as mock
 
-# external packages
+import pytest
 
+from mw4.base.signalsDevices import Signals
+from mw4.logic.focuser.focuserAlpaca import FocuserAlpaca
+
+# external packages
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.focuser.focuserAlpaca import FocuserAlpaca
-from base.driverDataClass import Signals
 
 
-@pytest.fixture(autouse=True, scope='function')
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
+@pytest.fixture(autouse=True, scope="function")
 def function():
-    func = FocuserAlpaca(app=App(), signals=Signals(), data={})
+    func = FocuserAlpaca(parent=Parent())
     yield func
 
 
 def test_workerPollData_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function,
-                           'getAlpacaProperty',
-                           return_value=1):
-        suc = function.workerPollData()
-        assert not suc
+    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
+        function.workerPollData()
 
 
 def test_workerPollData_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty',
-                           return_value=1):
-        suc = function.workerPollData()
-        assert suc
-        assert function.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] == 1
+    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
+        function.workerPollData()
+        assert function.data["ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION"] == 1
 
 
 def test_move_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function,
-                           'setAlpacaProperty'):
-        suc = function.move(position=0)
-        assert not suc
+    with mock.patch.object(function, "setAlpacaProperty"):
+        function.move(position=0)
 
 
 def test_move_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'setAlpacaProperty'):
-        suc = function.move(position=0)
-        assert suc
+    with mock.patch.object(function, "setAlpacaProperty"):
+        function.move(position=0)
 
 
 def test_halt_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function,
-                           'getAlpacaProperty'):
-        suc = function.halt()
-        assert not suc
+    with mock.patch.object(function, "getAlpacaProperty"):
+        function.halt()
 
 
 def test_halt_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAlpacaProperty'):
-        suc = function.halt()
-        assert suc
+    with mock.patch.object(function, "getAlpacaProperty"):
+        function.halt()

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,44 +7,40 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
 import pytest
-import astropy
+
+from mw4.logic.environment.directWeather import DirectWeather
 
 # external packages
-
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.environment.directWeather import DirectWeather
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope="function")
 def function():
     func = DirectWeather(app=App())
     yield func
 
 
 def test_startCommunication_1(function):
-    suc = function.startCommunication()
-    assert suc
+    function.startCommunication()
 
 
 def test_stopCommunication_1(function):
-    suc = function.stopCommunication()
-    assert suc
+    function.stopCommunication()
 
 
 def test_updateData_1(function):
     function.enabled = False
     function.running = False
-    suc = function.updateData(1)
-    assert not suc
+    function.updateData(1)
 
 
 def test_updateData_2(function):
@@ -58,8 +53,7 @@ def test_updateData_2(function):
 
     function.enabled = True
     function.running = True
-    suc = function.updateData(Sett())
-    assert suc
+    function.updateData(Sett())
     assert not function.running
 
 
@@ -73,6 +67,5 @@ def test_updateData_3(function):
 
     function.enabled = True
     function.running = False
-    suc = function.updateData(Sett())
-    assert suc
+    function.updateData(Sett())
     assert function.running

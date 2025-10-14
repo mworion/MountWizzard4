@@ -1,0 +1,569 @@
+############################################################
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PySide
+#
+# written in python3, (c) 2019-2025 by mworion
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+import logging
+
+# external packages
+# local imports
+from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.convert import valueToFloat, valueToInt
+
+
+class Setting:
+    """ """
+
+    log = logging.getLogger("MW4")
+
+    def __init__(self, parent=None):
+        self.parent = parent
+        self._slewRate = None
+        self._slewRateMin = None
+        self._slewRateMax = None
+        self._timeToFlip = None
+        self._meridianLimitTrack = None
+        self._meridianLimitSlew = None
+        self._refractionTemp = None
+        self._refractionPress = None
+        self._telescopeTempDEC = None
+        self._statusRefraction = None
+        self._statusUnattendedFlip = None
+        self._statusDualAxisTracking = None
+        self._horizonLimitHigh = None
+        self._horizonLimitLow = None
+        self._wakeOnLan = None
+        self._UTCValid = None
+        self._UTCExpire = None
+        self._gpsSynced = None
+        self._typeConnection = None
+        self._addressLanMAC = None
+        self._addressWirelessMAC = None
+        self._weatherStatus = None
+        self._weatherPressure = None
+        self._weatherTemperature = None
+        self._weatherHumidity = None
+        self._weatherDewPoint = None
+        self._weatherAge = None
+        self._trackingRate = None
+        self._webInterfaceStat = None
+        self._settleTime = None
+
+    @property
+    def slewRate(self):
+        return self._slewRate
+
+    @slewRate.setter
+    def slewRate(self, value):
+        self._slewRate = valueToFloat(value)
+
+    @property
+    def slewRateMin(self):
+        return self._slewRateMin
+
+    @slewRateMin.setter
+    def slewRateMin(self, value):
+        self._slewRateMin = valueToFloat(value)
+
+    @property
+    def slewRateMax(self):
+        return self._slewRateMax
+
+    @slewRateMax.setter
+    def slewRateMax(self, value):
+        self._slewRateMax = valueToFloat(value)
+
+    @property
+    def timeToFlip(self):
+        return self._timeToFlip
+
+    @timeToFlip.setter
+    def timeToFlip(self, value):
+        self._timeToFlip = valueToFloat(value)
+
+    @property
+    def meridianLimitTrack(self):
+        return self._meridianLimitTrack
+
+    @meridianLimitTrack.setter
+    def meridianLimitTrack(self, value):
+        self._meridianLimitTrack = valueToFloat(value)
+
+    @property
+    def meridianLimitSlew(self):
+        return self._meridianLimitSlew
+
+    @meridianLimitSlew.setter
+    def meridianLimitSlew(self, value):
+        self._meridianLimitSlew = valueToFloat(value)
+
+    def timeToMeridian(self):
+        if self._timeToFlip is not None and self._meridianLimitTrack is not None:
+            return int(self._timeToFlip - self._meridianLimitTrack * 4)
+        else:
+            return None
+
+    @property
+    def refractionTemp(self):
+        return self._refractionTemp
+
+    @refractionTemp.setter
+    def refractionTemp(self, value):
+        self._refractionTemp = valueToFloat(value)
+
+    @property
+    def refractionPress(self):
+        return self._refractionPress
+
+    @refractionPress.setter
+    def refractionPress(self, value):
+        self._refractionPress = valueToFloat(value)
+
+    @property
+    def telescopeTempDEC(self):
+        return self._telescopeTempDEC
+
+    @telescopeTempDEC.setter
+    def telescopeTempDEC(self, value):
+        self._telescopeTempDEC = valueToFloat(value)
+
+    @property
+    def statusRefraction(self):
+        return self._statusRefraction
+
+    @statusRefraction.setter
+    def statusRefraction(self, value):
+        self._statusRefraction = bool(value)
+
+    @property
+    def statusUnattendedFlip(self):
+        return self._statusUnattendedFlip
+
+    @statusUnattendedFlip.setter
+    def statusUnattendedFlip(self, value):
+        self._statusUnattendedFlip = bool(value)
+
+    @property
+    def statusDualAxisTracking(self):
+        return self._statusDualAxisTracking
+
+    @statusDualAxisTracking.setter
+    def statusDualAxisTracking(self, value):
+        self._statusDualAxisTracking = bool(value)
+
+    @property
+    def horizonLimitHigh(self):
+        return self._horizonLimitHigh
+
+    @horizonLimitHigh.setter
+    def horizonLimitHigh(self, value):
+        self._horizonLimitHigh = valueToFloat(value)
+
+    @property
+    def horizonLimitLow(self):
+        return self._horizonLimitLow
+
+    @horizonLimitLow.setter
+    def horizonLimitLow(self, value):
+        self._horizonLimitLow = valueToFloat(value)
+
+    @property
+    def UTCValid(self):
+        return self._UTCValid
+
+    @UTCValid.setter
+    def UTCValid(self, value):
+        self._UTCValid = bool(value)
+
+    @property
+    def UTCExpire(self):
+        return self._UTCExpire
+
+    @UTCExpire.setter
+    def UTCExpire(self, value):
+        if isinstance(value, str):
+            self._UTCExpire = value
+        else:
+            self._UTCExpire = None
+
+    @property
+    def typeConnection(self):
+        return self._typeConnection
+
+    @typeConnection.setter
+    def typeConnection(self, value):
+        value = valueToInt(value)
+        if value is None:
+            self._typeConnection = value
+        elif not 0 <= value <= 3:
+            value = None
+        self._typeConnection = value
+
+    @property
+    def gpsSynced(self):
+        return self._gpsSynced
+
+    @gpsSynced.setter
+    def gpsSynced(self, value):
+        self._gpsSynced = bool(value)
+
+    @property
+    def addressLanMAC(self):
+        return self._addressLanMAC
+
+    @addressLanMAC.setter
+    def addressLanMAC(self, value):
+        self._addressLanMAC = value.upper().replace(".", ":")
+
+    @property
+    def addressWirelessMAC(self):
+        return self._addressWirelessMAC
+
+    @addressWirelessMAC.setter
+    def addressWirelessMAC(self, value):
+        self._addressWirelessMAC = value.upper().replace(".", ":")
+
+    @property
+    def wakeOnLan(self):
+        return self._wakeOnLan
+
+    @wakeOnLan.setter
+    def wakeOnLan(self, value):
+        if value == "N":
+            self._wakeOnLan = "None"
+        elif value == "0":
+            self._wakeOnLan = "OFF"
+        elif value == "1":
+            self._wakeOnLan = "ON"
+        else:
+            self._wakeOnLan = None
+
+    @property
+    def weatherStatus(self):
+        return self._weatherStatus
+
+    @weatherStatus.setter
+    def weatherStatus(self, value):
+        value = valueToInt(value)
+        if value is None or 0 <= value <= 2:
+            self._weatherStatus = value
+        else:
+            self._weatherStatus = None
+
+    @property
+    def weatherPressure(self):
+        return self._weatherPressure
+
+    @weatherPressure.setter
+    def weatherPressure(self, value):
+        self._weatherPressure = valueToFloat(value)
+
+    @property
+    def weatherTemperature(self):
+        return self._weatherTemperature
+
+    @weatherTemperature.setter
+    def weatherTemperature(self, value):
+        self._weatherTemperature = valueToFloat(value)
+
+    @property
+    def weatherHumidity(self):
+        return self._weatherHumidity
+
+    @weatherHumidity.setter
+    def weatherHumidity(self, value):
+        self._weatherHumidity = valueToFloat(value)
+
+    @property
+    def weatherDewPoint(self):
+        return self._weatherDewPoint
+
+    @weatherDewPoint.setter
+    def weatherDewPoint(self, value):
+        self._weatherDewPoint = valueToFloat(value)
+
+    @property
+    def weatherAge(self):
+        return self._weatherAge
+
+    @weatherAge.setter
+    def weatherAge(self, value):
+        self._weatherAge = valueToInt(value)
+
+    @property
+    def trackingRate(self):
+        return self._trackingRate
+
+    @trackingRate.setter
+    def trackingRate(self, value):
+        self._trackingRate = valueToFloat(value)
+
+    @property
+    def webInterfaceStat(self):
+        return self._webInterfaceStat
+
+    @webInterfaceStat.setter
+    def webInterfaceStat(self, value):
+        value = valueToFloat(value)
+        if value is None:
+            self._webInterfaceStat = None
+        else:
+            self._webInterfaceStat = bool(value)
+
+    @property
+    def settleTime(self):
+        return self._settleTime
+
+    @settleTime.setter
+    def settleTime(self, value):
+        self._settleTime = valueToFloat(value)
+
+    def parseSetting(self, response: list, numberOfChunks: int) -> bool:
+        """ """
+        if len(response) != numberOfChunks:
+            self.log.warning("wrong number of chunks")
+            return False
+
+        self.slewRate = response[0]
+        self.slewRateMin = response[1]
+        self.slewRateMax = response[2]
+        self.timeToFlip = response[3]
+        self.meridianLimitTrack = response[4]
+        self.meridianLimitSlew = response[5]
+        self.refractionTemp = response[6]
+        self.refractionPress = response[7]
+        self.telescopeTempDEC = response[8]
+        self.statusRefraction = response[9][0] == "1"
+        self.statusUnattendedFlip = response[9][1] == "1"
+        self.statusDualAxisTracking = response[9][2] == "1"
+        self.horizonLimitHigh = response[9][3:6]
+        self.horizonLimitLow = response[10][0:3]
+        valid, expirationDate = response[11].split(",")
+        self.UTCValid = valid == "V"
+        self.UTCExpire = expirationDate
+        self.typeConnection = response[12]
+        self.gpsSynced = response[13] == "1"
+        self.addressLanMAC = response[14]
+        self.wakeOnLan = response[15]
+        self.weatherStatus = response[16]
+        if len(response[17].split(",")) > 1:
+            self.weatherAge = response[17].split(",")[1]
+        else:
+            self.weatherAge = ""
+        self.weatherPressure = response[17].split(",")[0]
+        self.weatherTemperature = response[18].split(",")[0]
+        self.weatherHumidity = response[19].split(",")[0]
+        self.weatherDewPoint = response[20].split(",")[0]
+        self.trackingRate = response[21]
+        self.webInterfaceStat = response[22]
+        self.settleTime = response[23]
+        return True
+
+    def pollSetting(self) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        cs1 = ":U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#"
+        cs2 = ":GREF#:Guaf#:Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#"
+        cs3 = ":WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#:Gstm#"
+        commandString = cs1 + cs2 + cs3
+        suc, response, numberOfChunks = conn.communicate(commandString)
+        if not suc:
+            return False
+        return self.parseSetting(response, numberOfChunks)
+
+    def setSlewRate(self, value: (int, float)) -> bool:
+        """ """
+        if value < 2 or value > 15:
+            return False
+        conn = Connection(self.parent.host)
+        commandString = f":Sw{value:02.0f}#:RMs{value:02.0f}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="10")
+        return suc
+
+    def setSlewSpeedMax(self) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        commandString = ":RC3#"
+        suc, _, _ = conn.communicate(commandString)
+        return suc
+
+    def setSlewSpeedHigh(self) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        commandString = ":RC2#"
+        suc, _, _ = conn.communicate(commandString)
+        return suc
+
+    def setSlewSpeedMed(self) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        centerSpeed = 255
+        commandString = f":Rc{centerSpeed:02.0f}#"
+        suc, _, _ = conn.communicate(commandString)
+        return suc
+
+    def setSlewSpeedLow(self) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        centerSpeed = 128
+        commandString = f":Rc{centerSpeed:02.0f}#"
+        suc, _, _ = conn.communicate(commandString)
+        return suc
+
+    def setRefractionParam(self, temperature: float, pressure: float) -> bool:
+        """ """
+        if temperature < -40 or temperature > 75:
+            return False
+        if pressure < 500 or pressure > 1300:
+            return False
+        conn = Connection(self.parent.host)
+        commandString = f":SRPRS{pressure:06.1f}#:SRTMP{temperature:+06.1f}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="11")
+        return suc
+
+    def setRefractionTemp(self, value: float) -> bool:
+        """ """
+        if value < -40 or value > 75:
+            return False
+        conn = Connection(self.parent.host)
+        commandString = f":SRTMP{value:+06.1f}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc
+
+    def setRefractionPress(self, value: float) -> bool:
+        """ """
+        if value < 500 or value > 1300:
+            return False
+        conn = Connection(self.parent.host)
+        commandString = f":SRPRS{value:06.1f}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc
+
+    def setRefraction(self, status: bool) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        commandString = f":SREF{1 if status else 0:1d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc
+
+    def setUnattendedFlip(self, status: bool) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        commandString = f":Suaf{1 if status else 0:1d}#"
+        suc, _, _ = conn.communicate(commandString)
+        return suc
+
+    def setDualAxisTracking(self, status: bool) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        commandString = f":Sdat{1 if status else 0:1d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc
+
+    def setWOL(self, status):
+        """ """
+        conn = Connection(self.parent.host)
+        commandString = f":SWOL{1 if status else 0:1d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc
+
+    def setMeridianLimitTrack(self, value: int) -> bool:
+        """ """
+        if value < 1 or value > 30:
+            return False
+        conn = Connection(self.parent.host)
+        commandString = f":Slmt{value:02d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc
+
+    def setMeridianLimitSlew(self, value: int) -> bool:
+        """ """
+        if value < 0 or value > 30:
+            return False
+        conn = Connection(self.parent.host)
+        commandString = f":Slms{value:02d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc
+
+    def setHorizonLimitHigh(self, value: int) -> bool:
+        """ """
+        if value < 0 or value > 90:
+            return False
+        conn = Connection(self.parent.host)
+        commandString = f":Sh+{value:02d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc
+
+    def setHorizonLimitLow(self, value: int) -> bool:
+        """ """
+        if value < -5 or value > 45:
+            return False
+        conn = Connection(self.parent.host)
+        commandString = f":So{value:+02d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc
+
+    def setDirectWeatherUpdateType(self, value: int) -> bool:
+        """ """
+        if value < 0 or value > 2:
+            return False
+
+        conn = Connection(self.parent.host)
+        commandString = f":WSS{value:1d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc
+
+    def checkRateLunar(self) -> bool:
+        """ """
+        return f"{self.trackingRate:2.1f}" == "62.4"
+
+    def checkRateSidereal(self) -> bool:
+        """ """
+        return f"{self.trackingRate:2.1f}" == "60.2"
+
+    def checkRateSolar(self) -> bool:
+        """ """
+        return f"{self.trackingRate:2.1f}" == "60.3"
+
+    def setLunarTracking(self) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        suc, _, _ = conn.communicate(":RT0#")
+        return suc
+
+    def setSiderealTracking(self) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        suc, _, _ = conn.communicate(":RT2#")
+        return suc
+
+    def setSolarTracking(self) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        suc, _, _ = conn.communicate(":RT1#")
+        return suc
+
+    def setWebInterface(self, status: bool) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        commandString = f":NTSweb{1 if status else 0:1d}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc
+
+    def setSettleTime(self, time: float) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        commandString = f":Sstm{time:08.3f}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc

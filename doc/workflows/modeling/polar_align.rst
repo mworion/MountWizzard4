@@ -1,5 +1,6 @@
-Polar align your mount
-----------------------
+Step 1: Polar alignment
+=======================
+
 All credits for explaining the following section go to 10micron and many experts
 using the mount.
 

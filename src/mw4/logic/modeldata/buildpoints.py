@@ -1,0 +1,801 @@
+############################################################
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PySide
+#
+# written in python3, (c) 2019-2025 by mworion
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+import csv
+import json
+import logging
+import random
+
+# external packages
+import numpy as np
+from scipy.spatial import distance
+from skyfield import almanac
+from skyfield.api import Star
+
+# local imports
+from mw4.base import transform
+
+
+def HaDecToAltAz(ha, dec, lat):
+    """
+    HaDecToAltAz is derived from http://www.stargazing.net/kepler/altaz.html
+    """
+    ha = (ha * 360 / 24 + 360.0) % 360.0
+    dec = np.radians(dec)
+    ha = np.radians(ha)
+    lat = np.radians(lat)
+    alt = np.arcsin(np.sin(dec) * np.sin(lat) + np.cos(dec) * np.cos(lat) * np.cos(ha))
+    value = (np.sin(dec) - np.sin(alt) * np.sin(lat)) / (np.cos(alt) * np.cos(lat))
+    value = np.clip(value, -1.0, 1.0)
+    A = np.arccos(value)
+    az = 2 * np.pi - A if np.sin(ha) >= 0.0 else A
+    az = np.degrees(az)
+    alt = np.degrees(alt)
+    return alt, az
+
+
+class DataPoint:
+    """ """
+
+    log = logging.getLogger("MW4")
+
+    DEC_N = {
+        "min": [-15, 0, 15, 30, 45, 60, 75],
+        "norm": [-15, 0, 15, 30, 45, 60, 75],
+        "med": [-15, -5, 5, 15, 25, 40, 55, 70, 85],
+        "max": [-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85],
+    }
+
+    DEC_S = {
+        "min": [-75, -60, -45, -30, -15, 0, 15],
+        "norm": [-75, -60, -45, -30, -15, 0, 15],
+        "med": [-85, -70, -55, -40, -25, -15, -5, 5, 15],
+        "max": [-85, -75, -65, -55, -45, -35, -25, -15, -5, 5, 15],
+    }
+
+    STEP_N = {
+        "min": [15, -15, 15, -15, 15, -30, 30],
+        "norm": [10, -10, 10, -10, 10, -20, 20],
+        "med": [10, -10, 10, -10, 10, -15, 15, -20, 20],
+        "max": [10, -10, 10, -10, 10, -10, 10, -20, 20, -30, 30],
+    }
+
+    STEP_S = {
+        "min": [30, -30, 15, -15, 15, -15, 15],
+        "norm": [20, -20, 10, -10, 10, -10, 10],
+        "med": [20, -20, 15, -15, 10, -10, 10, -10, 10],
+        "max": [30, -30, 20, -20, 10, -10, 10, -10, 10, -10, 10],
+    }
+    START = {
+        "min": [-120, -5, -120, -5, -120, -5, -120, 5, 120, 5, 120, 5, 120, 5],
+        "norm": [-120, -5, -120, -5, -120, -5, -120, 5, 120, 5, 120, 5, 120, 5],
+        "med": [
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            5,
+            120,
+            5,
+            120,
+            5,
+            120,
+            5,
+            120,
+            5,
+        ],
+        "max": [
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            -5,
+            -120,
+            5,
+            120,
+            5,
+            120,
+            5,
+            120,
+            5,
+            120,
+            5,
+            120,
+            5,
+        ],
+    }
+    STOP = {
+        "min": [0, -120, 0, -120, 0, -120, 0, 120, 0, 120, 0, 120, 0, 120],
+        "norm": [0, -120, 0, -120, 0, -120, 0, 120, 0, 120, 0, 120, 0, 120],
+        "med": [
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+        ],
+        "max": [
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            -120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+            120,
+            0,
+        ],
+    }
+
+    def __init__(self, app=None):
+        self.app = app
+        self.configDir = app.mwGlob["configDir"]
+        self._horizonP = []
+        self._buildP = []
+
+    @property
+    def horizonP(self):
+        return self._horizonP
+
+    @horizonP.setter
+    def horizonP(self, value):
+        if not isinstance(value, list):
+            self._horizonP.clear()
+            return
+
+        if not all(isinstance(x, tuple) for x in value):
+            self.log.info(f"Malformed value: {value}")
+            self._horizonP.clear()
+            return
+
+        self._horizonP.clear()
+        self._horizonP += value
+
+    @property
+    def buildP(self):
+        return self._buildP
+
+    @buildP.setter
+    def buildP(self, value):
+        if not isinstance(value, list):
+            self._buildP = []
+            return
+
+        if not all(isinstance(x, tuple) for x in value):
+            self.log.info(f"Malformed value: {value}")
+            self._buildP = []
+            return
+
+        self._buildP = value
+
+    def addBuildP(self, value=None, position=None):
+        """ """
+        if value is None:
+            return False
+        if not isinstance(value, tuple):
+            self.log.info(f"malformed value: {value}")
+            return False
+        if len(value) != 3:
+            self.log.info(f"malformed value: {value}")
+            return False
+        if position is None:
+            position = len(self._buildP)
+        if not isinstance(position, int | float):
+            self.log.info(f"malformed position: {position}")
+            return False
+        if self.app.mount.setting.horizonLimitHigh is not None:
+            high = self.app.mount.setting.horizonLimitHigh
+        else:
+            high = 90
+
+        if self.app.mount.setting.horizonLimitLow is not None:
+            low = self.app.mount.setting.horizonLimitLow
+        else:
+            low = 0
+
+        if value[0] > high:
+            return False
+        if value[0] < low:
+            return False
+
+        position = int(position)
+        position = min(len(self._buildP), position)
+        position = max(0, position)
+        self._buildP.insert(position, value)
+        return True
+
+    def delBuildP(self, position):
+        """ """
+        if not isinstance(position, int | float):
+            self.log.info(f"malformed position: {position}")
+            return False
+
+        position = int(position)
+        if position < 0 or position > len(self._buildP) - 1:
+            self.log.info(f"invalid position: {position}")
+            return False
+
+        self._buildP.pop(position)
+        return True
+
+    def clearBuildP(self):
+        """ """
+        self._buildP.clear()
+
+    def setStatusBuildP(self, number, status):
+        """ """
+        if number < 0:
+            return False
+        if number > len(self._buildP) - 1:
+            return False
+
+        alt = self._buildP[number][0]
+        az = self._buildP[number][1]
+        self._buildP[number] = (alt, az, status)
+        return True
+
+    def addHorizonP(self, value=None, position=None):
+        """ """
+        if value is None:
+            return False
+        if not isinstance(value, tuple):
+            self.log.info(f"malformed value: {value}")
+            return False
+        if len(value) != 2:
+            self.log.info(f"malformed value: {value}")
+            return False
+        if position is None:
+            position = len(self.horizonP)
+        if not isinstance(position, int | float):
+            self.log.info(f"malformed position: {position}")
+            return False
+
+        position = int(position)
+        position = min(len(self._horizonP), position)
+        position = max(0, position)
+        self._horizonP.insert(position, value)
+        return True
+
+    def delHorizonP(self, position):
+        """ """
+        if not isinstance(position, int | float):
+            self.log.info(f"malformed position: {position}")
+            return False
+
+        position = int(position)
+        if position < 0 or position > len(self._horizonP):
+            self.log.info(f"invalid position: {position}")
+            return False
+
+        self._horizonP.pop(position)
+        return True
+
+    def clearHorizonP(self):
+        """"""
+        self._horizonP.clear()
+
+    @staticmethod
+    def isCloseHorizonLine(point, margin, horizonI):
+        """
+        https://codereview.stackexchange.com/questions
+        /28207/finding-the-closest-point-to-a-list-of-points
+        """
+        pointRef = np.asarray([point[1], point[0]])
+        closest_index = distance.cdist([pointRef], horizonI).argmin()
+        pointClose = horizonI[closest_index]
+        val = np.sqrt(np.sum((pointRef - pointClose) ** 2))
+
+        return val < margin
+
+    def isAboveHorizon(self, point):
+        """ """
+        if point[1] > 360:
+            point = (point[0], 360)
+        if point[1] < 0:
+            point = (point[0], 0)
+
+        x = range(0, 361)
+        if self.horizonP:
+            xRef = [i[1] for i in self.horizonP]
+            yRef = [i[0] for i in self.horizonP]
+        else:
+            xRef = [0]
+            yRef = [0]
+
+        y = np.interp(x, xRef, yRef)
+        return point[0] > y[int(point[1])]
+
+    def isCloseMeridian(self, point):
+        """ """
+        slew = self.app.mount.setting.meridianLimitSlew
+        track = self.app.mount.setting.meridianLimitTrack
+
+        if slew is None or track is None:
+            return False
+
+        value = max(slew, track)
+        lower = 180 - value
+        upper = 180 + value
+
+        return lower < point[1] < upper
+
+    def deleteBelowHorizon(self):
+        """ """
+        self._buildP = [x for x in self._buildP if self.isAboveHorizon(x)]
+
+    def deleteCloseMeridian(self):
+        """ """
+        self._buildP = [x for x in self._buildP if not self.isCloseMeridian(x)]
+
+    def deleteCloseHorizonLine(self, m):
+        """ """
+        if not self.horizonP:
+            return
+
+        azH = [x[1] for x in self.horizonP]
+        altH = [x[0] for x in self.horizonP]
+        azI = range(0, 361, 1)
+        altI = np.interp(azI, azH, altH)
+        horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
+        self._buildP = [x for x in self._buildP if not self.isCloseHorizonLine(x, m, horizonI)]
+        return True
+
+    def sort(self, points=None, eastwest=False, highlow=False, sortDomeAz=None, pierside=None):
+        """ """
+        east = [x for x in points if x[1] <= 180]
+        west = [x for x in points if x[1] > 180]
+
+        if eastwest:
+            east = sorted(east, key=lambda x: -x[1])
+            west = sorted(west, key=lambda x: -x[1])
+        elif highlow:
+            east = sorted(east, key=lambda x: -x[0])
+            west = sorted(west, key=lambda x: -x[0])
+        elif sortDomeAz:
+            east = sorted(east, key=lambda x: -x[3])
+            west = sorted(west, key=lambda x: -x[3])
+
+        if pierside == "W" or pierside is None:
+            self.buildP = east + west
+        else:
+            self.buildP = west + east
+
+        return True
+
+    def loadModel(self, fullFileName):
+        """ """
+        if not fullFileName.is_file():
+            return None
+
+        try:
+            with open(fullFileName) as handle:
+                value = json.load(handle)
+
+        except Exception as e:
+            self.log.info(f"Cannot Model load: {fullFileName}, error: {e}")
+            value = None
+
+        else:
+            value = [(x["altitude"], x["azimuth"]) for x in value]
+
+        return value
+
+    def loadJSON(self, fullFileName):
+        """
+        :param fullFileName: name of file to be handled
+        :return: value: loaded data
+        """
+        if not fullFileName.is_file():
+            return None
+
+        try:
+            with open(fullFileName) as handle:
+                value = json.load(handle)
+
+        except Exception as e:
+            self.log.info(f"Cannot BPTS load: {fullFileName}, error: {e}")
+            value = None
+
+        else:
+            value = [tuple(x) for x in value]
+
+        return value
+
+    def loadCSV(self, fullFileName):
+        """ """
+        if not fullFileName.is_file():
+            return None
+
+        with open(fullFileName) as handle:
+            testLine = handle.readline()
+
+        delimiter = ";" if ";" in testLine else ","
+
+        try:
+            value = []
+            with open(fullFileName, encoding="utf-8-sig") as csvFile:
+                reader = csv.reader(csvFile, delimiter=delimiter)
+                for row in reader:
+                    value.append(tuple(float(val) for val in row))
+
+        except Exception as e:
+            self.log.info(f"Cannot CSV load: {fullFileName}, error: {e}")
+            return None
+
+        else:
+            return value
+
+    @staticmethod
+    def checkFormat(value):
+        if not isinstance(value, list):
+            return False
+
+        if not all(isinstance(x, tuple) for x in value):
+            return False
+
+        return all(len(x) == 2 for x in value)
+
+    def loadBuildP(self, fullFileName, ext=".bpts", keep=False):
+        """ """
+        if not fullFileName.is_file():
+            return False
+
+        value = None
+        if ext == ".csv":
+            value = self.loadCSV(fullFileName)
+        elif ext == ".bpts":
+            value = self.loadJSON(fullFileName)
+        elif ext == ".model":
+            value = self.loadModel(fullFileName)
+
+        if value is None:
+            return False
+
+        suc = self.checkFormat(value)
+        if not suc:
+            self.clearBuildP()
+            return False
+
+        points = [(x[0], x[1], 1) for x in value]
+
+        if keep:
+            self._buildP += points
+        else:
+            self._buildP = points
+
+        # backup solution
+        if ext in [".csv", ".model"]:
+            fileName = fullFileName.stem
+            self.saveBuildP(fileName=fileName)
+
+        return True
+
+    def saveBuildP(self, fileName):
+        """ """
+        if not fileName:
+            return False
+
+        fileName = self.configDir / (fileName + ".bpts")
+        points = [(x[0], x[1]) for x in self.buildP]
+        with open(fileName, "w") as handle:
+            json.dump(points, handle, indent=4)
+        return True
+
+    def loadHorizonP(self, fileName, ext=".hpts"):
+        """ """
+        fullFileName = self.configDir / (fileName + ext)
+        value = None
+        if ext == ".csv":
+            value = self.loadCSV(fullFileName)
+        elif ext == ".hpts":
+            value = self.loadJSON(fullFileName)
+
+        suc = self.checkFormat(value)
+        if not suc:
+            self.clearHorizonP()
+            return False
+
+        self.horizonP = value
+        self.horizonP.sort(key=lambda x: x[1])
+
+        # backup solution
+        if csv:
+            self.saveHorizonP(fileName=fileName)
+
+        return True
+
+    def saveHorizonP(self, fileName):
+        """ """
+        if not fileName:
+            return False
+
+        fileName = self.configDir / (fileName + ".hpts")
+
+        with open(fileName, "w") as handle:
+            json.dump(self.horizonP, handle, indent=4)
+
+        return True
+
+    def genHaDecParams(self, selection, lat):
+        """
+        genHaDecParams selects the parameters for generating the boundaries for
+        next step processing greater circles. the parameters are sorted for
+        different targets actually for minimum slew distance between the points.
+        defined is only the east side of data, the west side will be mirrored to
+        the east one.
+        """
+        if lat < 0:
+            DEC = self.DEC_S
+            STEP = self.STEP_S
+        else:
+            DEC = self.DEC_N
+            STEP = self.STEP_N
+
+        if selection not in DEC or selection not in STEP:
+            return
+
+        eastDec = DEC[selection]
+        westDec = list(reversed(eastDec))
+        decL = eastDec + westDec
+
+        eastStepL = STEP[selection]
+        westStepL = list(reversed(eastStepL))
+        stepL = eastStepL + westStepL
+        startL = self.START[selection]
+        stopL = self.STOP[selection]
+
+        yield from zip(decL, stepL, startL, stopL)
+
+    def genGreaterCircle(self, selection="norm", keep=False):
+        """
+        genGreaterCircle takes the generated boundaries for the rang routine and
+        transforms ha, dec to alt az. reasonable values for the alt az values
+        are 5 to 85 degrees.
+        """
+        if not self.app.mount.obsSite.location:
+            return False
+        if not keep:
+            self.clearBuildP()
+
+        lat = self.app.mount.obsSite.location.latitude.degrees
+        for dec, step, start, stop in self.genHaDecParams(selection, lat):
+            for ha in range(start, stop, step):
+                alt, az = HaDecToAltAz(ha / 10, dec, lat)
+
+                # only values with above horizon = 0
+                if 5 <= alt <= 85 and 2 < az < 358:
+                    self.addBuildP((alt, az, 1))
+        return True
+
+    @staticmethod
+    def genGridGenerator(eastAlt, westAlt, minAz, stepAz, maxAz):
+        """ """
+        for i, alt in enumerate(eastAlt):
+            if i % 2:
+                for az in range(minAz, 180, stepAz):
+                    yield (alt, az, 1)
+            else:
+                for az in range(180 - minAz, 0, -stepAz):
+                    yield (alt, az, 1)
+
+        for i, alt in enumerate(westAlt):
+            if i % 2:
+                for az in range(180 + minAz, 360, stepAz):
+                    yield (alt, az, 1)
+            else:
+                for az in range(maxAz, 180, -stepAz):
+                    yield (alt, az, 1)
+
+    def genGrid(self, minAlt=5, maxAlt=85, numbRows=5, numbCols=6, keep=False):
+        """
+        genGrid generates a grid of points and transforms ha, dec to alt az.
+        with given limits in alt, the min and max will be used as a hard
+        condition. on az there is not given limit, therefore a split over the
+        whole space (omitting the meridian) is done. the simplest way to avoid
+        hitting the meridian is to enforce the number of cols to be a factor of
+        2. reasonable values for the grid are 5 to 85 degrees. defined is only
+        the east side of data, the west side will be mirrored to the east one.
+            the number of rows is 2 < x < 8
+            the number of columns is 2 < x < 15
+        """
+        if not 5 <= minAlt <= 85:
+            return False
+        if not 5 <= maxAlt <= 85:
+            return False
+        if not maxAlt > minAlt:
+            return False
+        if not 1 < numbRows < 9:
+            return False
+        if not 1 < numbCols < 16:
+            return False
+        if numbCols % 2:
+            return False
+
+        minAlt = int(minAlt)
+        maxAlt = int(maxAlt)
+        numbCols = int(numbCols)
+        numbRows = int(numbRows)
+
+        stepAlt = int((maxAlt - minAlt) / (numbRows - 1))
+        eastAlt = list(range(minAlt, maxAlt + 1, stepAlt))
+        westAlt = list(reversed(eastAlt))
+
+        stepAz = int(360 / numbCols)
+        minAz = int(180 / numbCols)
+        maxAz = 360 - minAz
+
+        if not keep:
+            self.clearBuildP()
+
+        for point in self.genGridGenerator(eastAlt, westAlt, minAz, stepAz, maxAz):
+            self.addBuildP(point)
+
+        return True
+
+    def genAlign(self, altBase=30, azBase=10, numberBase=3, keep=False):
+        """ """
+        if not 5 <= altBase <= 85:
+            return False
+        if not 2 < numberBase < 13:
+            return False
+        if not 0 <= azBase < 360:
+            return False
+
+        stepAz = int(360 / numberBase)
+        altBase = int(altBase)
+        azBase = int(azBase) % stepAz
+        numberBase = int(numberBase)
+
+        if not keep:
+            self.clearBuildP()
+
+        for i in range(0, numberBase):
+            az = azBase + i * stepAz
+            self.addBuildP((altBase, az % 360, 1))
+
+        return True
+
+    def generateCelestialEquator(self):
+        """ """
+        celestialEquator = []
+        if not self.app.mount.obsSite.location:
+            return celestialEquator
+
+        lat = self.app.mount.obsSite.location.latitude.degrees
+
+        for dec in range(-75, 90, 15):
+            for ha in range(-119, 120, 2):
+                alt, az = HaDecToAltAz(ha / 10, dec, lat)
+                if alt > 0:
+                    celestialEquator.append((alt, az))
+
+        for ha in range(-115, 120, 10):
+            for dec in range(-90, 90, 2):
+                alt, az = HaDecToAltAz(ha / 10, dec, lat)
+                if alt > 0:
+                    celestialEquator.append((alt, az))
+
+        return celestialEquator
+
+    @staticmethod
+    def calcPath(ts, numberPoints, edgeDSO, ha, dec, location):
+        """ """
+        buildP = []
+        for i in range(numberPoints):
+            starTime = ts.tt_jd(edgeDSO + i / numberPoints)
+            az, alt = transform.J2000ToAltAz(ha, dec, starTime, location)
+            if alt.degrees > 0:
+                buildP.append((alt.degrees, az.degrees % 360, 1))
+        return buildP
+
+    def generateDSOPath(
+        self, ha=0, dec=0, timeJD=0, location=None, numberPoints=0, keep=False
+    ):
+        """ """
+        if numberPoints < 1:
+            return False
+        if location is None:
+            return False
+
+        numberPoints = int(numberPoints)
+        if not keep:
+            self.clearBuildP()
+
+        star = Star(ra=ha, dec=dec)
+        startTime = timeJD
+        ts = self.app.mount.obsSite.ts
+        endTime = ts.tt_jd(timeJD.tt + 1.1)
+        eph = self.app.ephemeris
+        f = almanac.risings_and_settings(eph, star, location)
+        f.step_days = 0.08
+        t, y = almanac.find_discrete(startTime, endTime, f)
+
+        index = next((x for x in y if x == 1), None)
+        edgeDSO = int(ts.now().tt) - 0.5 if index is None else t[index].tt
+
+        number = numberPoints
+        buildPs = []
+        while len(buildPs) < numberPoints:
+            buildPs = self.calcPath(ts, number, edgeDSO, ha, dec, location)
+            number += 1
+        for buildP in buildPs:
+            self.addBuildP(buildP)
+        return True
+
+    def generateGoldenSpiral(self, numberPoints, keep=False):
+        """
+        https://stackoverflow.com/questions/9600801/evenly-distributing-n-points-on-a-sphere
+        """
+        if not keep:
+            self.clearBuildP()
+
+        indices = np.arange(0, numberPoints, dtype=float) + 0.5
+        phi = np.arccos(1 - 2 * indices / numberPoints)
+        theta = np.pi * (1 + 5**0.5) * indices
+
+        altitude = 90 - np.degrees(phi)
+        azimuth = np.degrees(theta) % 360
+
+        for alt, az in zip(altitude, azimuth):
+            if alt > 0:
+                self.addBuildP((alt, az, 1))
+
+    def ditherPoints(self):
+        """ """
+        for i, point in enumerate(self.buildP):
+            alt = point[0]
+            az = point[1]
+            alt += random.uniform(-1, 1)
+            az += random.uniform(-1, 1)
+            self.buildP[i] = (alt, az, 1)

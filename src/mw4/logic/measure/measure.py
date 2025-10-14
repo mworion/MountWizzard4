@@ -1,0 +1,295 @@
+############################################################
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PySide
+#
+# written in python3, (c) 2019-2025 by mworion
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+import logging
+
+import numpy as np
+
+# external packages
+from PySide6.QtCore import QMutex
+
+# local imports
+from mw4.base.signalsDevices import Signals
+from mw4.logic.measure.measureCSV import MeasureDataCSV
+from mw4.logic.measure.measureRaw import MeasureDataRaw
+
+
+class MeasureData:
+    """ """
+
+    log = logging.getLogger("MW4")
+
+    # maximum size of measurement task
+    MAXSIZE = 48 * 60 * 60
+
+    def __init__(self, app):
+        super().__init__()
+        self.app = app
+        self.msg = app.msg
+        self.signals = Signals()
+        self.mutexMeasure = QMutex()
+
+        # internal calculations
+        self.shorteningStart = True
+        self.raRef = None
+        self.decRef = None
+        self.angularPosRaRef = None
+        self.angularPosDecRef = None
+        self.devices = {}
+        self.deviceName = ""
+
+        self.data = {}
+        self.defaultConfig = {"framework": "", "frameworks": {}}
+        self.run = {
+            "raw": MeasureDataRaw(self.app, self, self.data),
+            "csv": MeasureDataCSV(self.app, self, self.data),
+        }
+        for fw in self.run:
+            self.defaultConfig["frameworks"].update(self.run[fw].defaultConfig)
+        self.framework = ""
+
+    def startCommunication(self) -> None:
+        """ """
+        deviceStat = self.app.deviceStat
+        dItems = deviceStat.items()
+        self.devices = [key for key, value in dItems if deviceStat[key] is not None]
+        name = self.run[self.framework].deviceName
+        self.run[self.framework].startCommunication()
+        self.signals.deviceConnected.emit(name)
+
+    def stopCommunication(self) -> None:
+        """ """
+        self.run[self.framework].stopCommunication()
+        name = self.run[self.framework].deviceName
+        self.signals.serverDisconnected.emit({name: 0})
+        self.signals.deviceDisconnected.emit(name)
+        self.msg.emit(0, "System", "Measure device removed", f"{name}")
+
+    def setEmptyData(self) -> None:
+        """ """
+        self.data.clear()
+        self.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
+        self.data["deltaRaJNow"] = np.empty(shape=[0, 1])
+        self.data["deltaDecJNow"] = np.empty(shape=[0, 1])
+        self.data["errorAngularPosRA"] = np.empty(shape=[0, 1])
+        self.data["errorAngularPosDEC"] = np.empty(shape=[0, 1])
+        self.data["status"] = np.empty(shape=[0, 1])
+        for source in [
+            "sensor1Weather",
+            "sensor2Weather",
+            "sensor3Weather",
+            "onlineWeather",
+        ]:
+            for value in ["Temp", "Hum", "Press", "Dew", "Cloud", "Rain", "Sky"]:
+                self.data[source + value] = np.empty(shape=[0, 1])
+
+        self.data["directWeatherTemp"] = np.empty(shape=[0, 1])
+        self.data["directWeatherHum"] = np.empty(shape=[0, 1])
+        self.data["directWeatherPress"] = np.empty(shape=[0, 1])
+        self.data["directWeatherDew"] = np.empty(shape=[0, 1])
+
+        self.data["filterNumber"] = np.empty(shape=[0, 1])
+        self.data["focusPosition"] = np.empty(shape=[0, 1])
+        self.data["powCurr1"] = np.empty(shape=[0, 1])
+        self.data["powCurr2"] = np.empty(shape=[0, 1])
+        self.data["powCurr3"] = np.empty(shape=[0, 1])
+        self.data["powCurr4"] = np.empty(shape=[0, 1])
+        self.data["powVolt"] = np.empty(shape=[0, 1])
+        self.data["powCurr"] = np.empty(shape=[0, 1])
+        self.data["cameraTemp"] = np.empty(shape=[0, 1])
+        self.data["cameraPower"] = np.empty(shape=[0, 1])
+        self.data["timeDiff"] = np.empty(shape=[0, 1])
+
+    def calculateReference(self):
+        """
+        calculateReference run the states to get the calculation with references
+        for RaDec deviations better stable. it takes into account, when the mount
+        is tracking and when we calculate the offset (ref) to make the deviations
+        balanced to zero
+
+        :return: raJNow, decJNow
+        """
+        dat = self.data
+        obs = self.app.mount.obsSite
+        raJNow = 0
+        decJNow = 0
+        errAngPosRa = 0
+        errAngPosDec = 0
+
+        if obs.raJNow is None:
+            return raJNow, decJNow, errAngPosRa, errAngPosDec
+
+        length = len(dat["status"])
+        period = min(length, 10)
+        hasMean = length > 0 and period > 0
+
+        if not hasMean:
+            return raJNow, decJNow, errAngPosRa, errAngPosDec
+
+        periodData = dat["status"][-period:]
+        hasValidData = all(x is not None for x in periodData)
+
+        trackingIsStable = periodData.mean() == 0 if hasValidData else False
+
+        if trackingIsStable:
+            if self.raRef is None:
+                self.raRef = obs.raJNow._degrees
+            if self.decRef is None:
+                self.decRef = obs.decJNow.degrees
+
+            raJNow = (obs.raJNow._degrees - self.raRef) * 3600
+            decJNow = (obs.decJNow.degrees - self.decRef) * 3600
+        else:
+            self.raRef = None
+            self.decRef = None
+            self.angularPosRaRef = None
+            self.angularPosDecRef = None
+
+        errAngPosRa = obs.errorAngularPosRA.degrees * 3600
+        errAngPosDec = obs.errorAngularPosDEC.degrees * 3600
+        return raJNow, decJNow, errAngPosRa, errAngPosDec
+
+    def checkStart(self, lenData: int) -> None:
+        """ """
+        if self.shorteningStart and lenData > 2:
+            self.shorteningStart = False
+            for measure in self.data:
+                self.data[measure] = np.delete(self.data[measure], range(0, 2))
+
+    def checkSize(self, lenData: int) -> None:
+        """
+        checkSize keep tracking of memory usage of the measurement. if the measurement
+        get s too much data, it split the history by half and only keeps the latest only
+        for work.
+        if as well throws the first N measurements away, because they or not valid
+
+        :param lenData:
+        :return: True if splitting happens
+        """
+        if lenData < self.MAXSIZE:
+            return
+        for measure in self.data:
+            self.data[measure] = np.split(self.data[measure], 2)[1]
+
+    def getDirectWeather(self) -> tuple:
+        """ """
+        temp = self.app.mount.setting.weatherTemperature
+        if temp is None:
+            temp = 0
+        press = self.app.mount.setting.weatherPressure
+        if press is None:
+            press = 0
+        dew = self.app.mount.setting.weatherDewPoint
+        if dew is None:
+            dew = 0
+        hum = self.app.mount.setting.weatherHumidity
+        if hum is None:
+            hum = 0
+
+        return temp, press, dew, hum
+
+    def measureTask(self) -> None:
+        """
+        measureTask runs all necessary pre-processing and collecting task to
+        assemble a large dict of lists, where all measurement data is stored. the
+        intention later on would be to store and export this data. the time
+        object is related to the time held in mount computer and is in utc timezone.
+
+        data sources are:
+            environment
+            mount pointing position
+
+        :return: success
+        """
+        if not self.mutexMeasure.tryLock():
+            self.log.info("overrun in measure")
+            return
+
+        lenData = len(self.data["time"])
+        self.checkStart(lenData)
+        self.checkSize(lenData)
+        dat = self.data
+        # gathering all the necessary data
+        raJNowD, decJNowD, errAngPosRAD, errAngPosDECD = self.calculateReference()
+
+        timeStamp = self.app.mount.obsSite.timeJD.utc_datetime().replace(tzinfo=None)
+        dat["time"] = np.append(dat["time"], np.datetime64(timeStamp))
+        dat["deltaRaJNow"] = np.append(dat["deltaRaJNow"], raJNowD)
+        dat["deltaDecJNow"] = np.append(dat["deltaDecJNow"], decJNowD)
+        dat["errorAngularPosRA"] = np.append(dat["errorAngularPosRA"], errAngPosRAD)
+        dat["errorAngularPosDEC"] = np.append(dat["errorAngularPosDEC"], errAngPosDECD)
+        dat["status"] = np.append(dat["status"], self.app.mount.obsSite.status)
+
+        for source in [
+            "sensor1Weather",
+            "sensor2Weather",
+            "sensor3Weather",
+            "onlineWeather",
+        ]:
+            data = eval(f"self.app.{source}.data")
+            Temp = data.get("WEATHER_PARAMETERS.WEATHER_TEMPERATURE", 0)
+            Press = data.get("WEATHER_PARAMETERS.WEATHER_PRESSURE", 0)
+            Dew = data.get("WEATHER_PARAMETERS.WEATHER_DEWPOINT", 0)
+            Hum = data.get("WEATHER_PARAMETERS.WEATHER_HUMIDITY", 0)
+            Cloud = data.get("WEATHER_PARAMETERS.CloudCov", 0)
+            Rain = data.get("WEATHER_PARAMETERS.RainVol", 0)
+            Sky = data.get("SKY_QUALITY.SKY_BRIGHTNESS", 0)
+
+            dat[source + "Temp"] = np.append(dat[source + "Temp"], Temp)
+            dat[source + "Hum"] = np.append(dat[source + "Hum"], Hum)
+            dat[source + "Press"] = np.append(dat[source + "Press"], Press)
+            dat[source + "Dew"] = np.append(dat[source + "Dew"], Dew)
+            dat[source + "Cloud"] = np.append(dat[source + "Cloud"], Cloud)
+            dat[source + "Rain"] = np.append(dat[source + "Rain"], Rain)
+            dat[source + "Sky"] = np.append(dat[source + "Sky"], Sky)
+
+        temp, press, dew, hum = self.getDirectWeather()
+        dat["directWeatherTemp"] = np.append(dat["directWeatherTemp"], temp)
+        dat["directWeatherHum"] = np.append(dat["directWeatherHum"], hum)
+        dat["directWeatherPress"] = np.append(dat["directWeatherPress"], press)
+        dat["directWeatherDew"] = np.append(dat["directWeatherDew"], dew)
+
+        filterNo = self.app.filter.data.get("FILTER_SLOT.FILTER_SLOT_VALUE", 0)
+        dat["filterNumber"] = np.append(dat["filterNumber"], filterNo)
+
+        focus = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
+        dat["focusPosition"] = np.append(dat["focusPosition"], focus)
+
+        powCurr1 = self.app.power.data.get("POWER_CURRENT.POWER_CURRENT_1", 0)
+        powCurr2 = self.app.power.data.get("POWER_CURRENT.POWER_CURRENT_2", 0)
+        powCurr3 = self.app.power.data.get("POWER_CURRENT.POWER_CURRENT_3", 0)
+        powCurr4 = self.app.power.data.get("POWER_CURRENT.POWER_CURRENT_4", 0)
+        powVolt = self.app.power.data.get("POWER_SENSORS.SENSOR_VOLTAGE", 0)
+        powCurr = self.app.power.data.get("POWER_SENSORS.SENSOR_CURRENT", 0)
+
+        dat["powCurr1"] = np.append(dat["powCurr1"], powCurr1)
+        dat["powCurr2"] = np.append(dat["powCurr2"], powCurr2)
+        dat["powCurr3"] = np.append(dat["powCurr3"], powCurr3)
+        dat["powCurr4"] = np.append(dat["powCurr4"], powCurr4)
+        dat["powCurr"] = np.append(dat["powCurr"], powCurr)
+        dat["powVolt"] = np.append(dat["powVolt"], powVolt)
+
+        ccd = self.app.camera
+        temp = ccd.data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0)
+        dat["cameraTemp"] = np.append(dat["cameraTemp"], temp)
+        temp = ccd.data.get("CCD_COOLER_POWER.CCD_COOLER_VALUE", 0)
+        dat["cameraPower"] = np.append(dat["cameraPower"], temp)
+        delta = self.app.mount.obsSite.timeDiff * 1000
+        dat["timeDiff"] = np.append(dat["timeDiff"], delta)
+        if len(dat["timeDiff"]) == 31:
+            dat["timeDiff"][0:29].fill(dat["timeDiff"][30])
+
+        self.mutexMeasure.unlock()

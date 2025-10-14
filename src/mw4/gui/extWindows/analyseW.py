@@ -1,0 +1,489 @@
+############################################################
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PySide
+#
+# written in python3, (c) 2019-2025 by mworion
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+import json
+import os
+from pathlib import Path
+
+# external packages
+import numpy as np
+
+# local import
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.gui.widgets import analyse_ui
+
+
+class AnalyseWindow(toolsQtWidget.MWidget):
+    """ """
+
+    def __init__(self, app):
+        super().__init__()
+        self.app = app
+        self.ui = analyse_ui.Ui_AnalyseDialog()
+        self.ui.setupUi(self)
+
+        self.latitude = None
+        self.pierside = None
+        self.countSequence = None
+        self.index = None
+        self.scaleS = None
+        self.altitude = None
+        self.azimuth = None
+        self.errorAngle = None
+        self.errorRMS = None
+        self.errorRA_S = None
+        self.errorDEC_S = None
+        self.errorRA = None
+        self.errorDEC = None
+        self.angularPosRA = None
+        self.angularPosDEC = None
+
+        self.wIcon(self.ui.load, "load")
+        self.ui.load.clicked.connect(self.loadModel)
+        self.app.colorChange.connect(self.colorChange)
+        self.app.redrawHorizon.connect(self.drawHorizon)
+
+        self.charts = [
+            self.drawRaRawErrors,
+            self.drawDecRawErrors,
+            self.drawRaErrors,
+            self.drawDecError,
+            self.drawRaErrorsRef,
+            self.drawDecErrorsRef,
+            self.drawRaRawErrorsRef,
+            self.drawDecRawErrorsRef,
+            self.drawScaleImage,
+            self.drawModelPositions,
+            self.drawErrorAscending,
+            self.drawErrorDistribution,
+            self.drawHorizon,
+        ]
+
+    def initConfig(self) -> None:
+        """ """
+        config = self.app.config.get("analyseW", {})
+        self.positionWindow(config)
+        self.setTabAndIndex(self.ui.tabWidget, config, "orderMain")
+        self.ui.showHorizon.setChecked(config.get("showHorizon", False))
+        self.ui.showISO.setChecked(config.get("showISO", False))
+        self.ui.linkViews.setChecked(config.get("linkViews", False))
+        isMovable = self.app.config["mainW"].get("tabsMovable", False)
+        self.enableTabsMovable(isMovable)
+
+    def storeConfig(self) -> None:
+        """ """
+        configMain = self.app.config
+        configMain["analyseW"] = {}
+        config = configMain["analyseW"]
+
+        config["winPosX"] = max(self.pos().x(), 0)
+        config["winPosY"] = max(self.pos().y(), 0)
+        config["height"] = self.height()
+        config["width"] = self.width()
+        self.getTabAndIndex(self.ui.tabWidget, config, "orderMain")
+        config["showHorizon"] = self.ui.showHorizon.isChecked()
+        config["showISO"] = self.ui.showISO.isChecked()
+        config["linkViews"] = self.ui.linkViews.isChecked()
+
+    def enableTabsMovable(self, isMovable: bool) -> None:
+        """ """
+        self.ui.tabWidget.setMovable(isMovable)
+
+    def closeEvent(self, closeEvent) -> None:
+        """ """
+        self.storeConfig()
+        super().closeEvent(closeEvent)
+
+    def showWindow(self) -> None:
+        """ """
+        self.show()
+        self.app.showAnalyse.connect(self.showAnalyse)
+        self.app.tabsMovable.connect(self.enableTabsMovable)
+        self.ui.showHorizon.clicked.connect(self.drawAll)
+        self.ui.showISO.clicked.connect(self.drawAll)
+        self.ui.linkViews.clicked.connect(self.drawAll)
+
+    def colorChange(self) -> None:
+        """ """
+        self.wIcon(self.ui.load, "load")
+        self.setStyleSheet(self.mw4Style)
+        for plot in [
+            self.ui.raRawErrors,
+            self.ui.decRawErrors,
+            self.ui.raErrors,
+            self.ui.decErrors,
+            self.ui.raRawErrorsRef,
+            self.ui.decRawErrorsRef,
+            self.ui.raErrorsRef,
+            self.ui.decErrorsRef,
+            self.ui.scaleImage,
+            self.ui.modelPositions,
+            self.ui.errorAscending,
+            self.ui.errorDistribution,
+        ]:
+            plot.colorChange()
+        self.drawAll()
+
+    def writeGui(self, data: list, loadFilePath: Path) -> None:
+        """ """
+        d = data[0]
+        de = data[-1]
+
+        title = f"Analyse Model     {os.path.basename(loadFilePath)}"
+        self.setWindowTitle(title)
+        self.ui.exposureTime.setText(f"{d.get('exposureTime', '')}")
+        self.ui.solver.setText(d.get("plateSolveApp", ""))
+        self.ui.binning.setText(f"{d.get('binning', 0):1.0f}")
+        self.ui.time.setText(d.get("julianDate", "").replace("T", "  ").replace("Z", ""))
+        self.ui.subframe.setText(f"{d.get('subFrame', 0):3.0f}")
+        self.ui.modelTerms.setText(f"{d.get('modelTerms', 0):02.0f}")
+        self.ui.modelErrorRMS.setText(f"{d.get('modelErrorRMS', 0):5.1f}")
+        self.ui.modelOrthoError.setText(f"{d.get('modelOrthoError', 0):5.0f}")
+        self.ui.modelPolarError.setText(f"{d.get('modelPolarError', 0):5.0f}")
+        self.ui.focalLength.setText(f"{d.get('focalLength', 0):4.0f}")
+        self.ui.profile.setText(f"{d.get('profile', '')}")
+        self.ui.firmware.setText(f"{d.get('firmware', '')}")
+        self.ui.totalPoints.setText(f"{d.get('lenSequence', 0)}")
+        self.ui.goodPoints.setText(f"{de.get('errorIndex', 0)}")
+        app = de.get("astrometryApp", "").split("-")[0].strip()
+        self.ui.solver.setText(f"{app}")
+        version = d.get("version", "").lstrip("MountWizzard4 - v")
+        self.ui.version.setText(f"{version}")
+
+    def generateDataSets(self, modelJSON: dict) -> None:
+        """ """
+        model = {}
+        for key in modelJSON[0]:
+            model[key] = []
+            for index in range(0, len(modelJSON)):
+                model[key].append(modelJSON[index][key])
+
+        self.latitude = modelJSON[0].get("latitude")
+        self.pierside = np.array(model["pierside"])
+        self.countSequence = np.array(model["countSequence"], dtype=np.int64)
+        self.index = np.array(model["errorIndex"], dtype=np.int64) - 1
+        self.scaleS = np.array(model["scaleS"], dtype=np.float32)
+        self.altitude = np.array(model["altitude"], dtype=np.float32)
+        self.azimuth = np.array(model["azimuth"], dtype=np.float32)
+        self.errorAngle = np.array(model["errorAngle"], dtype=np.float32)
+        self.errorRMS = np.array(model["errorRMS"], dtype=np.float32)
+        self.errorRA_S = np.array(model["errorRA_S"], dtype=np.float32)
+        self.errorDEC_S = np.array(model["errorDEC_S"], dtype=np.float32)
+        self.errorRA = np.array(model["errorRA"], dtype=np.float32)
+        self.errorDEC = np.array(model["errorDEC"], dtype=np.float32)
+        self.angularPosRA = np.array(model["angularPosRA"], dtype=np.float32)
+        self.angularPosDEC = np.array(model["angularPosDEC"], dtype=np.float32)
+
+    def processModel(self, loadFilePath: Path) -> None:
+        """ """
+        try:
+            with open(loadFilePath) as infile:
+                modelJSON = json.load(infile)
+        except Exception as e:
+            self.log.warning(f"Cannot load model file: {[loadFilePath]}, error: {e}")
+            return
+
+        self.writeGui(modelJSON, loadFilePath)
+        self.generateDataSets(modelJSON)
+        self.drawAll()
+
+    def loadModel(self) -> None:
+        """ """
+        folder = self.app.mwGlob["modelDir"]
+        loadFilePath = self.openFile(self, "Open model file", folder, "Model files (*.model)")
+        if loadFilePath.is_file():
+            self.processModel(loadFilePath)
+
+    def showAnalyse(self, path: Path) -> None:
+        """ """
+        if path.is_file():
+            self.processModel(path)
+
+    def drawRaRawErrors(self) -> None:
+        """ """
+        hasISO = self.ui.showISO.isChecked()
+        isoLevels = 20 if hasISO else 0
+        self.ui.raRawErrors.p[0].setLabel("bottom", "Azimuth [deg]")
+        self.ui.raRawErrors.p[0].setLabel("left", "Altitude [deg]")
+        ticks = [(x, f"{x}") for x in range(30, 360, 30)]
+        self.ui.raRawErrors.p[0].getAxis("bottom").setTicks([ticks])
+        self.ui.raRawErrors.p[0].getAxis("top").setTicks([ticks])
+        self.ui.raRawErrors.plot(
+            self.azimuth,
+            self.altitude,
+            z=self.errorRA_S,
+            data=self.errorRA_S,
+            range={"xMin": 0, "yMin": 0, "xMax": 360, "yMax": 90},
+            tip="Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}".format,
+            isoLevels=isoLevels,
+        )
+
+    def drawDecRawErrors(self) -> None:
+        """ """
+        hasISO = self.ui.showISO.isChecked()
+        isoLevels = 20 if hasISO else 0
+        self.ui.decRawErrors.p[0].setLabel("bottom", "Azimuth [deg]")
+        self.ui.decRawErrors.p[0].setLabel("left", "Altitude [deg]")
+        ticks = [(x, f"{x}") for x in range(30, 360, 30)]
+        self.ui.decRawErrors.p[0].getAxis("bottom").setTicks([ticks])
+        self.ui.decRawErrors.p[0].getAxis("top").setTicks([ticks])
+        self.ui.decRawErrors.plot(
+            self.azimuth,
+            self.altitude,
+            z=self.errorDEC_S,
+            data=self.errorDEC_S,
+            range={"xMin": 0, "yMin": 0, "xMax": 360, "yMax": 90},
+            tip="Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}".format,
+            isoLevels=isoLevels,
+        )
+
+    def drawRaErrors(self) -> None:
+        """ """
+        hasISO = self.ui.showISO.isChecked()
+        isoLevels = 20 if hasISO else 0
+        self.ui.raErrors.p[0].setLabel("bottom", "Azimuth [deg]")
+        self.ui.raErrors.p[0].setLabel("left", "Altitude [deg]")
+        ticks = [(x, f"{x}") for x in range(30, 360, 30)]
+        self.ui.raErrors.p[0].getAxis("bottom").setTicks([ticks])
+        self.ui.raErrors.p[0].getAxis("top").setTicks([ticks])
+        self.ui.raErrors.plot(
+            self.azimuth,
+            self.altitude,
+            z=self.errorRA,
+            data=self.errorRA,
+            range={"xMin": 0, "yMin": 0, "xMax": 360, "yMax": 90},
+            tip="Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}".format,
+            isoLevels=isoLevels,
+        )
+
+    def drawDecError(self) -> None:
+        """ """
+        hasISO = self.ui.showISO.isChecked()
+        isoLevels = 20 if hasISO else 0
+        self.ui.decErrors.p[0].setLabel("bottom", "Azimuth [deg]")
+        self.ui.decErrors.p[0].setLabel("left", "Altitude [deg]")
+        ticks = [(x, f"{x}") for x in range(30, 360, 30)]
+        self.ui.decErrors.p[0].getAxis("bottom").setTicks([ticks])
+        self.ui.decErrors.p[0].getAxis("top").setTicks([ticks])
+        self.ui.decErrors.plot(
+            self.azimuth,
+            self.altitude,
+            z=self.errorDEC,
+            data=self.errorDEC,
+            range={"xMin": 0, "yMin": 0, "xMax": 360, "yMax": 90},
+            tip="Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}".format,
+            isoLevels=isoLevels,
+        )
+
+    def drawRaRawErrorsRef(self) -> None:
+        """ """
+        self.ui.raRawErrorsRef.p[0].setLabel("bottom", "RA Encoder Abs [deg]")
+        self.ui.raRawErrorsRef.p[0].setLabel("left", "Error per Star [arcsec]")
+        ticks = [(x, f"{x}") for x in range(30, 180, 30)]
+        self.ui.raRawErrorsRef.p[0].getAxis("bottom").setTicks([ticks])
+        self.ui.raRawErrorsRef.p[0].getAxis("top").setTicks([ticks])
+        color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
+        self.ui.raRawErrorsRef.plot(
+            self.angularPosRA,
+            self.errorRA_S,
+            color=color,
+            range={"xMin": 0, "xMax": 180},
+            data=self.pierside,
+            tip="AngularRA: {x:0.1f}\nErrorRa: {y:0.1f}\nPier: {data}".format,
+        )
+
+    def drawDecRawErrorsRef(self) -> None:
+        """ """
+        self.ui.decRawErrorsRef.p[0].setLabel("bottom", "DEC Encoder Abs [deg]")
+        self.ui.decRawErrorsRef.p[0].setLabel("left", "Error per Star [arcsec]")
+        ticks = [(x, f"{x}") for x in range(-80, 90, 20)]
+        self.ui.decRawErrorsRef.p[0].getAxis("bottom").setTicks([ticks])
+        self.ui.decRawErrorsRef.p[0].getAxis("top").setTicks([ticks])
+        y = [x if p == "W" else -x for x, p in zip(self.errorDEC_S, self.pierside)]
+        color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
+        self.ui.decRawErrorsRef.plot(
+            self.angularPosDEC,
+            y,
+            color=color,
+            range={"xMin": -90, "xMax": 90},
+            data=self.pierside,
+            tip="AngularDEC: {x:0.1f}\nErrorDec: {y:0.1f}\nPier: {data}".format,
+        )
+
+    def drawRaErrorsRef(self) -> None:
+        """ """
+        self.ui.raErrorsRef.p[0].setLabel("bottom", "RA Encoder Abs [deg]")
+        self.ui.raErrorsRef.p[0].setLabel("left", "Error per Star [arcsec]")
+        ticks = [(x, f"{x}") for x in range(30, 180, 30)]
+        self.ui.raErrorsRef.p[0].getAxis("bottom").setTicks([ticks])
+        self.ui.raErrorsRef.p[0].getAxis("top").setTicks([ticks])
+        color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
+        self.ui.raErrorsRef.plot(
+            self.angularPosRA,
+            self.errorRA,
+            color=color,
+            range={"xMin": 0, "xMax": 180},
+            data=self.pierside,
+            tip="AngularRA: {x:0.1f}\nErrorRA: {y:0.1f}\nPier: {data}".format,
+        )
+
+    def drawDecErrorsRef(self) -> None:
+        """ """
+        self.ui.decErrorsRef.p[0].setLabel("bottom", "DEC Encoder Abs [deg]")
+        self.ui.decErrorsRef.p[0].setLabel("left", "Error per Star [arcsec]")
+        ticks = [(x, f"{x}") for x in range(-80, 90, 20)]
+        self.ui.decErrorsRef.p[0].getAxis("bottom").setTicks([ticks])
+        self.ui.decErrorsRef.p[0].getAxis("top").setTicks([ticks])
+        y = [x if p == "W" else -x for x, p in zip(self.errorDEC, self.pierside)]
+        color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
+        self.ui.decErrorsRef.plot(
+            self.angularPosDEC,
+            y,
+            color=color,
+            range={"xMin": -90, "xMax": 90},
+            data=self.pierside,
+            tip="AngularDEC: {x:0.1f}\nErrorDec: {y:0.1f}\nPier: {data}".format,
+        )
+
+    def drawScaleImage(self) -> None:
+        """ """
+        self.ui.scaleImage.p[0].setLabel("bottom", "Star Number")
+        self.ui.scaleImage.p[0].setLabel("left", "Image Scale [arcsec/pix]")
+        color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
+        self.ui.scaleImage.plot(
+            self.index,
+            self.scaleS,
+            color=color,
+            data=self.pierside,
+            tip="PointNo: {x:0.0f}\nScale: {y:0.1f}\nPier: {data}".format,
+        )
+
+    def drawErrorAscending(self) -> None:
+        """ """
+        self.ui.errorAscending.p[0].setLabel("bottom", "Starcount")
+        self.ui.errorAscending.p[0].setLabel("left", "Error per Star [arcsec]")
+        temp = sorted(zip(self.errorRMS, self.pierside))
+        y = [x[0] for x in temp]
+        pierside = [x[1] for x in temp]
+        color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in pierside]
+        self.ui.errorAscending.plot(
+            self.index,
+            y,
+            color=color,
+            data=pierside,
+            tip="ErrorRMS: {y:0.1f}\nPier: {data}".format,
+        )
+
+    def drawModelPositions(self) -> None:
+        """ """
+        self.ui.modelPositions.barItem.setLabel("right", "Error [RMS]")
+        self.ui.modelPositions.plot(
+            self.azimuth,
+            self.altitude,
+            z=self.errorRMS,
+            ang=self.errorAngle,
+            range={"xMin": -91, "yMin": -91, "xMax": 91, "yMax": 91},
+            bar=True,
+            data=self.errorRMS,
+            reverse=True,
+            tip="ErrorRMS: {data:0.1f}".format,
+        )
+        self.ui.modelPositions.plotLoc(self.latitude)
+
+    def drawErrorDistribution(self) -> None:
+        """ """
+        color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
+        self.ui.errorDistribution.plot(
+            self.errorAngle,
+            self.errorRMS,
+            color=color,
+            data=self.pierside,
+            tip="ErrorRMS: {y:0.1f}\nPier: {data}".format,
+        )
+
+    def drawHorizon(self) -> None:
+        """ """
+        if not self.ui.showHorizon.isChecked():
+            return
+
+        self.ui.raErrors.drawHorizon(self.app.data.horizonP)
+        self.ui.decErrors.drawHorizon(self.app.data.horizonP)
+        self.ui.raRawErrors.drawHorizon(self.app.data.horizonP)
+        self.ui.decRawErrors.drawHorizon(self.app.data.horizonP)
+
+    def linkViewsAltAz(self) -> None:
+        """ """
+        isLinked = self.ui.linkViews.isChecked()
+        views = []
+        views.append(self.ui.raRawErrors.p[0].getViewBox())
+        views.append(self.ui.raErrors.p[0].getViewBox())
+        views.append(self.ui.decRawErrors.p[0].getViewBox())
+        views.append(self.ui.decErrors.p[0].getViewBox())
+        for sourceView in views:
+            for targetView in views:
+                if sourceView == targetView:
+                    continue
+                if isLinked:
+                    sourceView.setXLink(targetView)
+                    sourceView.setYLink(targetView)
+                else:
+                    sourceView.setXLink(None)
+                    sourceView.setYLink(None)
+            sourceView.rightMouseRange()
+
+    def linkViewsRa(self) -> None:
+        """ """
+        isLinked = self.ui.linkViews.isChecked()
+        views = []
+        views.append(self.ui.raRawErrorsRef.p[0].getViewBox())
+        views.append(self.ui.raErrorsRef.p[0].getViewBox())
+        for sourceView in views:
+            for targetView in views:
+                if sourceView == targetView:
+                    continue
+                if isLinked:
+                    sourceView.setXLink(targetView)
+                else:
+                    sourceView.setXLink(None)
+            sourceView.rightMouseRange()
+
+    def linkViewsDec(self) -> None:
+        """ """
+        isLinked = self.ui.linkViews.isChecked()
+        views = []
+        views.append(self.ui.decRawErrorsRef.p[0].getViewBox())
+        views.append(self.ui.decErrorsRef.p[0].getViewBox())
+        for sourceView in views:
+            for targetView in views:
+                if sourceView == targetView:
+                    continue
+                if isLinked:
+                    sourceView.setXLink(targetView)
+                else:
+                    sourceView.setXLink(None)
+            sourceView.rightMouseRange()
+
+    def drawAll(self) -> None:
+        """ """
+        if self.index is None:
+            return
+        for chart in self.charts:
+            chart()
+            sleepAndEvents(0)
+        self.linkViewsAltAz()
+        self.linkViewsRa()
+        self.linkViewsDec()

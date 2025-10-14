@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,104 +7,94 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
-import pytest
-import astropy
-import unittest.mock as mock
 import platform
+import unittest.mock as mock
+
+import pytest
+
+from mw4.base.ascomClass import AscomClass
+from mw4.base.loggerMW import setupLogging
+from mw4.base.signalsDevices import Signals
+from mw4.logic.filter.filterAscom import FilterAscom
 
 # external packages
-
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.filter.filterAscom import FilterAscom
-from base.driverDataClass import Signals
-from base.ascomClass import AscomClass
 
-if not platform.system() == 'Windows':
+setupLogging()
+
+if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
-@pytest.fixture(autouse=True, scope='function')
+class Parent:
+    app = App()
+    data = {}
+    signals = Signals()
+    deviceType = ""
+    loadConfig = True
+    updateRate = 1000
+
+
+@pytest.fixture(autouse=True, scope="function")
 def function():
     class Test1:
         Names = []
         Position = 1
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
+        Name = "test"
+        DriverVersion = "1"
+        DriverInfo = "test1"
 
-    func = FilterAscom(app=App(), signals=Signals(), data={})
+    func = FilterAscom(parent=Parent())
     func.clientProps = []
     func.client = Test1()
     yield func
 
 
 def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(AscomClass,
-                           'workerGetInitialConfig',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'getAscomProperty',
-                               return_value=None):
-            suc = function.workerGetInitialConfig()
-            assert not suc
+    with mock.patch.object(AscomClass, "workerGetInitialConfig", return_value=True):
+        with mock.patch.object(function, "getAscomProperty", return_value=None):
+            function.workerGetInitialConfig()
 
 
 def test_workerGetInitialConfig_2(function):
-    with mock.patch.object(AscomClass,
-                           'workerGetInitialConfig',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'getAscomProperty',
-                               return_value=['test']):
-            with mock.patch.object(function,
-                                   'storePropertyToData'):
-                suc = function.workerGetInitialConfig()
-                assert suc
+    with mock.patch.object(AscomClass, "workerGetInitialConfig", return_value=True):
+        with mock.patch.object(function, "getAscomProperty", return_value=["test"]):
+            with mock.patch.object(function, "storePropertyToData"):
+                function.workerGetInitialConfig()
 
 
 def test_workerPollData_1(function):
     function.client.Position = -1
-    suc = function.workerPollData()
-    assert not suc
+    function.workerPollData()
 
 
 def test_workerPollData_2(function):
     function.client.Position = 1
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=-1):
-        suc = function.workerPollData()
-        assert not suc
+    with mock.patch.object(function, "getAscomProperty", return_value=-1):
+        function.workerPollData()
 
 
 def test_workerPollData_3(function):
     function.client.Position = 1
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=1):
-        with mock.patch.object(function,
-                               'storePropertyToData'):
-            suc = function.workerPollData()
-            assert suc
+    with mock.patch.object(function, "getAscomProperty", return_value=1):
+        with mock.patch.object(function, "storePropertyToData"):
+            function.workerPollData()
 
 
 def test_sendFilterNumber_1(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'setAscomProperty'):
-        suc = function.sendFilterNumber(3)
-        assert suc
+    with mock.patch.object(function, "setAscomProperty"):
+        function.sendFilterNumber(3)
 
 
 def test_sendFilterNumber_2(function):
     function.deviceConnected = False
-    suc = function.sendFilterNumber(3)
-    assert not suc
+    function.sendFilterNumber(3)

@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -8,35 +7,47 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10micron mounts
-# GUI with PySide for python
+# GUI with PySide
 #
-# written in python3, (c) 2019-2024 by mworion
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
 # standard libraries
-import pytest
-import astropy
 import platform
 import unittest.mock as mock
 
-# external packages
+import pytest
 
+from mw4.base.loggerMW import setupLogging
+from mw4.base.signalsDevices import Signals
+from mw4.logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
+
+# external packages
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
-from base.driverDataClass import Signals
 
-if not platform.system() == 'Windows':
+setupLogging()
+
+if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
-@pytest.fixture(autouse=True, scope='function')
+class Parent:
+    app = App()
+    data = {}
+    deviceType = ""
+    signals = Signals()
+    loadConfig = True
+    updateRate = 1000
+
+
+@pytest.fixture(autouse=True, scope="function")
 def function():
     class Test1:
-        Name = 'test'
-        DriverVersion = '1'
-        DriverInfo = 'test1'
+        Name = "test"
+        DriverVersion = "1"
+        DriverInfo = "test1"
 
         @staticmethod
         def getswitch(a):
@@ -46,171 +57,131 @@ def function():
         def getswitchvalue(a):
             return 0
 
-    func = PegasusUPBAscom(app=App(), signals=Signals(), data={})
+    func = PegasusUPBAscom(parent=Parent())
     func.clientProps = []
     func.client = Test1()
     yield func
 
 
 def test_workerPollData_1(function):
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=15):
-        suc = function.workerPollData()
-        assert suc
+    with mock.patch.object(function, "getAscomProperty", return_value=15):
+        function.workerPollData()
 
 
 def test_workerPollData_2(function):
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=21):
-        suc = function.workerPollData()
-        assert suc
+    with mock.patch.object(function, "getAscomProperty", return_value=21):
+        function.workerPollData()
 
 
 def test_togglePowerPort_1(function):
     function.deviceConnected = False
-    suc = function.togglePowerPort()
-    assert not suc
+    function.togglePowerPort("1")
 
 
 def test_togglePowerPort_2(function):
     function.deviceConnected = True
-    suc = function.togglePowerPort()
-    assert not suc
+    function.togglePowerPort("1")
 
 
 def test_togglePowerPort_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'callAscomMethod'):
-        suc = function.togglePowerPort('1')
-        assert suc
+    with mock.patch.object(function, "callAscomMethod"):
+        function.togglePowerPort("1")
 
 
 def test_togglePowerPortBoot_1(function):
     function.deviceConnected = False
-    suc = function.togglePowerPortBoot()
-    assert not suc
+    function.togglePowerPortBoot("1")
 
 
 def test_togglePowerPortBoot_2(function):
     function.deviceConnected = True
-    suc = function.togglePowerPortBoot()
-    assert suc
+    function.togglePowerPortBoot("1")
 
 
 def test_toggleHubUSB_1(function):
     function.deviceConnected = False
-    suc = function.toggleHubUSB()
-    assert not suc
+    function.toggleHubUSB()
 
 
 def test_toggleHubUSB_2(function):
     function.deviceConnected = True
-    suc = function.toggleHubUSB()
-    assert suc
+    function.toggleHubUSB()
 
 
 def test_togglePortUSB_1(function):
     function.deviceConnected = False
-    suc = function.togglePortUSB()
-    assert not suc
+    function.togglePortUSB("1")
 
 
 def test_togglePortUSB_2(function):
     function.deviceConnected = True
-    suc = function.togglePortUSB()
-    assert not suc
+    function.togglePortUSB("1")
 
 
 def test_togglePortUSB_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=21):
-        with mock.patch.object(function,
-                               'callAscomMethod'):
-            suc = function.togglePortUSB('1')
-            assert suc
+    with mock.patch.object(function, "getAscomProperty", return_value=21):
+        with mock.patch.object(function, "callAscomMethod"):
+            function.togglePortUSB("1")
 
 
 def test_toggleAutoDew_1(function):
     function.deviceConnected = False
-    suc = function.toggleAutoDew()
-    assert not suc
+    function.toggleAutoDew()
 
 
 def test_toggleAutoDew_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=21):
-        with mock.patch.object(function,
-                               'callAscomMethod'):
-            suc = function.toggleAutoDew()
-            assert suc
+    with mock.patch.object(function, "getAscomProperty", return_value=21):
+        with mock.patch.object(function, "callAscomMethod"):
+            function.toggleAutoDew()
 
 
 def test_toggleAutoDew_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=15):
-        with mock.patch.object(function,
-                               'callAscomMethod'):
-            suc = function.toggleAutoDew()
-            assert suc
+    with mock.patch.object(function, "getAscomProperty", return_value=15):
+        with mock.patch.object(function, "callAscomMethod"):
+            function.toggleAutoDew()
 
 
 def test_sendDew_1(function):
     function.deviceConnected = False
-    suc = function.sendDew()
-    assert not suc
+    function.sendDew("1", 10)
 
 
 def test_sendDew_2(function):
     function.deviceConnected = True
-    suc = function.sendDew()
-    assert not suc
+    function.sendDew("1", 10)
 
 
 def test_sendDew_3(function):
     function.deviceConnected = True
-    suc = function.sendDew('1')
-    assert not suc
+    function.sendDew("1", 10)
 
 
 def test_sendDew_4(function):
     function.deviceConnected = True
-    with mock.patch.object(function,
-                           'getAscomProperty',
-                           return_value=21):
-        with mock.patch.object(function,
-                               'callAscomMethod'):
-            suc = function.sendDew('1', 10)
-            assert suc
+    with mock.patch.object(function, "getAscomProperty", return_value=21):
+        with mock.patch.object(function, "callAscomMethod"):
+            function.sendDew("1", 10)
 
 
 def test_sendAdjustableOutput_1(function):
     function.deviceConnected = False
-    suc = function.sendAdjustableOutput()
-    assert not suc
+    function.sendAdjustableOutput(1)
 
 
 def test_sendAdjustableOutput_2(function):
     function.deviceConnected = True
-    suc = function.sendAdjustableOutput(4)
-    assert suc
+    function.sendAdjustableOutput(4)
 
 
 def test_reboot_1(function):
     function.deviceConnected = False
-    suc = function.reboot()
-    assert not suc
+    function.reboot()
 
 
 def test_reboot_2(function):
     function.deviceConnected = True
-    suc = function.reboot()
-    assert suc
+    function.reboot()

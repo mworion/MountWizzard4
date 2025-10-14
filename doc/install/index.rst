@@ -104,8 +104,8 @@ Setting Qt DPI scale factor (+scale = +size, default=1)
 
 Getting this information.
 
-Install on RaspberryPi (4, 5)
------------------------------
+Additional for RaspberryPi (4, 5)
+---------------------------------
 
 .. hint::
     This is only necessary for v3. MountWizzard4 v4 brings all binaries directly.
@@ -113,7 +113,7 @@ Install on RaspberryPi (4, 5)
 
 If you want to install MountWizzard4 v3 to an Raspi or ARM64 based computer,
 please follow the installation process. of uv, python and virtual environment.
-Before installing MountWizzard4 v3 you need to install some precompiled packages
+Before starting MountWizzard4 v3 you need to install some precompiled packages
 as they were not available for the necessary python 3.8-3.10 versions. For that
 use the same terminal window pointing to you work folder and add the two following
 commands:
@@ -122,9 +122,5 @@ commands:
 
     uv pip install https://github.com/mworion/mountwizzard4/raw/main/wheels/PyQt5-5.15.9-cp38.cp39.cp310-abi3-manylinux_2_17_aarch64.whl
 
-.. code-block:: bash
-
-    uv pip install --find-links https://github.com/mworion/mountwizzard4/raw/main/wheels pyqt5-sip==12.11.1
-
-After that, please proceed with the installation of MountWizzard4 like described
+After that, please proceed with the use of MountWizzard4 like described
 above.

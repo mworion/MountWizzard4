@@ -35,5 +35,4 @@ runs:
         python -m pip install pytest-qt
         python -m pip install pytest-cov
         python -m pip install pytest-xvfb
-        python -m pip install pytest-pythonpath
       shell: bash

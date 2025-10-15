@@ -424,9 +424,7 @@ def build_mw(c):
 @task(pre=[version_doc, build_mw])
 def upload_mw(c):
     printMW("uploading dist mountwizzard4")
-    with open("changelog.txt") as f:
-        rn = f.read()
     with c.cd("./dist"):
-        print(f'twine upload mountwizzard4-*.tar.gz --verbose -r pypi -c "{rn}"')
-        runMW(c, f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
+        print(f'twine upload mountwizzard4-*.tar.gz')
+        runMW(c, f'twine upload mountwizzard4-*.tar.gz -r pypi')
     printMW("uploading dist mountwizzard4 finished\n")

@@ -40,10 +40,11 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     with mock.patch.object(ImageTabs, "setCrosshair"):
         with mock.patch.object(ImageTabs, "colorChange"):
-            with mock.patch.object(ImageTabs, "__init__", return_value=None):
-                func = ImageWindow(app=App())
-                yield func
-                func.app.threadPool.waitForDone(10000)
+            with mock.patch.object(Photometry, "__init__", return_value=None):
+                with mock.patch.object(ImageTabs, "__init__", return_value=None):
+                    func = ImageWindow(app=App())
+                    yield func
+                    func.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):
@@ -74,7 +75,6 @@ def test_enableTabsMovable(function):
 def test_closeEvent_1(function):
     with mock.patch.object(function, "show"):
         with mock.patch.object(MWidget, "closeEvent"):
-            function.showWindow()
             function.closeEvent(QCloseEvent)
 
 

@@ -125,3 +125,14 @@ commands:
 
 After that, please proceed with the use of MountWizzard4 like described
 above.
+
+Updating python in workdir
+--------------------------
+There might be some reasons for updating the python part due to security patches
+or simply to upgrade the version
+
+.. code-block:: bash
+
+    uv venv -p <new python version string> --allow-existing
+
+Please use the parameter --allow-existing to keep your current installations.

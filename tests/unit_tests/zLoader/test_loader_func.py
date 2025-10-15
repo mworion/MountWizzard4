@@ -29,9 +29,9 @@ import ctypes
 import pytest
 
 # local import
-import loader
-from loader import except_hook, setupWorkDirs, writeSystemInfo, extractDataFiles
-from loader import getWindowPos, checkIsAdmin, extractFile, minimizeStartTerminal
+import mw4.loader
+from mw4.loader import except_hook, setupWorkDirs, writeSystemInfo, extractDataFiles
+from mw4.loader import getWindowPos, checkIsAdmin, extractFile
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -315,7 +315,7 @@ def test_extractDataFiles_3():
 
     mwGlob = dict()
     mwGlob['dataDir'] = 'tests/workDir/data'
-    with mock.patch.object(loader,
+    with mock.patch.object(mw4.loader,
                            'extractFile'):
         suc = extractDataFiles(mwGlob=mwGlob, splashW=Splash())
         assert suc

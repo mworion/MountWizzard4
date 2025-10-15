@@ -23,7 +23,7 @@ import numpy as np
 import sep as sep
 
 # local import
-import logic.photometry.photometry
+import mw4.logic.photometry.photometry
 from mw4.logic.photometry.photometry import PhotometrySignals
 from mw4.logic.photometry.photometry import Photometry
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -62,7 +62,7 @@ def test_workerGetRoundness(function):
                      'y': np.linspace(0, 100, 20),
                      'a': np.random.rand(20, 1) + 1,
                      'b': np.random.rand(20, 1) + 1}
-    with mock.patch.object(logic.photometry.photometry,
+    with mock.patch.object(mw4.logic.photometry.photometry,
                            'griddata',
                            return_value=np.ones((20, 100))):
         suc = function.workerGetRoundness()

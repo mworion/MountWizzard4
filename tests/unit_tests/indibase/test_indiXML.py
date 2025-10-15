@@ -16,15 +16,11 @@
 ###########################################################
 # standard libraries
 import pytest
-import unittest.mock as mock
-import builtins
 
 # external packages
-import xml.etree.ElementTree as ETree
 
 # local import
-from indibase.indiXML import *
-from indibase import indiXML
+from mw4.indibase.indiXML import *
 
 
 @pytest.fixture(autouse=True, scope='function')

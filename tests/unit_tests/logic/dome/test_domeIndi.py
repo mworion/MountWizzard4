@@ -19,7 +19,7 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from indibase.indiBase import Device, Client
+from mw4.indibase.indiBase import Device, Client
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

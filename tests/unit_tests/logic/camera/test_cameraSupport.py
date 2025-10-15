@@ -26,7 +26,7 @@ import shutil
 
 # local import
 from mw4.logic.camera.cameraSupport import CameraSupport
-import logic.camera.cameraSupport
+import mw4.logic.camera.cameraSupport
 from mw4.logic.camera.cameraAscom import CameraAscom
 from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 from mw4.base.driverDataClass import Signals
@@ -297,7 +297,7 @@ def test_waitExposedAlpaca_4(function):
 def test_waitStart_1(function):
     function.data = {'Device.Message': 'test'}
     function.abortExpose = True
-    with mock.patch.object(logic.camera.cameraSupport,
+    with mock.patch.object(mw4.logic.camera.cameraSupport,
                            'sleepAndEvents'):
         suc = function.waitStart()
         assert suc
@@ -310,7 +310,7 @@ def test_waitStart_2(function):
         function.data = {'Device.Message': 'integrating'}
 
     function.abortExpose = False
-    logic.camera.cameraSupport.sleepAndEvents = func
+    mw4.logic.camera.cameraSupport.sleepAndEvents = func
     suc = function.waitStart()
     assert suc
 
@@ -318,7 +318,7 @@ def test_waitStart_2(function):
 def test_waitIntegrate_1(function):
     function.data = {'Device.Message': 'integrating'}
     function.abortExpose = True
-    with mock.patch.object(logic.camera.cameraSupport,
+    with mock.patch.object(mw4.logic.camera.cameraSupport,
                            'sleepAndEvents'):
         suc = function.waitExposedApp(1)
         assert suc
@@ -331,7 +331,7 @@ def test_waitIntegrate_2(function):
         function.data = {'Device.Message': 'test'}
 
     function.abortExpose = False
-    logic.camera.cameraSupport.sleepAndEvents = func
+    mw4.logic.camera.cameraSupport.sleepAndEvents = func
     suc = function.waitExposedApp(1)
     assert suc
 
@@ -343,7 +343,7 @@ def test_waitIntegrate_3(function):
         function.data = {'Device.Message': 'test'}
 
     function.abortExpose = False
-    logic.camera.cameraSupport.sleepAndEvents = func
+    mw4.logic.camera.cameraSupport.sleepAndEvents = func
     suc = function.waitExposedApp(0)
     assert suc
 
@@ -351,7 +351,7 @@ def test_waitIntegrate_3(function):
 def test_waitDownload_1(function):
     function.data = {'Device.Message': 'downloading'}
     function.abortExpose = True
-    with mock.patch.object(logic.camera.cameraSupport,
+    with mock.patch.object(mw4.logic.camera.cameraSupport,
                            'sleepAndEvents'):
         suc = function.waitDownload()
         assert suc
@@ -364,7 +364,7 @@ def test_waitDownload_2(function):
         function.data = {'Device.Message': 'test'}
 
     function.abortExpose = False
-    logic.camera.cameraSupport.sleepAndEvents = func
+    mw4.logic.camera.cameraSupport.sleepAndEvents = func
     suc = function.waitDownload()
     assert suc
 
@@ -372,7 +372,7 @@ def test_waitDownload_2(function):
 def test_waitSave_1(function):
     function.data = {'Device.Message': 'image is ready'}
     function.abortExpose = True
-    with mock.patch.object(logic.camera.cameraSupport,
+    with mock.patch.object(mw4.logic.camera.cameraSupport,
                            'sleepAndEvents'):
         suc = function.waitSave()
         assert suc
@@ -385,7 +385,7 @@ def test_waitSave_2(function):
         function.data = {'Device.Message': 'test'}
 
     function.abortExpose = False
-    logic.camera.cameraSupport.sleepAndEvents = func
+    mw4.logic.camera.cameraSupport.sleepAndEvents = func
     suc = function.waitSave()
     assert suc
 
@@ -398,7 +398,7 @@ def test_waitFinish_1(function):
         return function.start
 
     function.abortExpose = True
-    with mock.patch.object(logic.camera.cameraSupport,
+    with mock.patch.object(mw4.logic.camera.cameraSupport,
                            'sleepAndEvents'):
         suc = function.waitFinish(func, 0)
         assert suc
@@ -412,7 +412,7 @@ def test_waitFinish_2(function):
         return function.start
 
     function.abortExpose = False
-    with mock.patch.object(logic.camera.cameraSupport,
+    with mock.patch.object(mw4.logic.camera.cameraSupport,
                            'sleepAndEvents'):
         suc = function.waitFinish(func, 0)
         assert suc

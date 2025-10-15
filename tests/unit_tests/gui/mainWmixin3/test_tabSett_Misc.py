@@ -32,7 +32,7 @@ import hid
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mw4.gui.mainWmixin.tabSett_Misc import SettMisc
-import gui.mainWmixin.tabSett_Misc
+import mw4.gui.mainWmixin.tabSett_Misc
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.base.loggerMW import setupLogging
@@ -290,7 +290,7 @@ def test_workerGameController_3(function):
     with mock.patch.object(hid,
                            'device',
                            return_value=Gamepad()):
-        with mock.patch.object(gui.mainWmixin.tabSett_Misc,
+        with mock.patch.object(mw4.gui.mainWmixin.tabSett_Misc,
                                'sleepAndEvents'):
             suc = function.workerGameController()
             assert suc
@@ -325,7 +325,7 @@ def test_workerGameController_4(function):
     with mock.patch.object(hid,
                            'device',
                            return_value=Gamepad()):
-        with mock.patch.object(gui.mainWmixin.tabSett_Misc,
+        with mock.patch.object(mw4.gui.mainWmixin.tabSett_Misc,
                                'sleepAndEvents'):
             with mock.patch.object(function,
                                    'sendGameControllerSignals'):

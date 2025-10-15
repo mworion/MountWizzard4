@@ -24,7 +24,7 @@ from PyQt5.QtCore import QThreadPool, QTimer
 import requests
 
 # local import
-import base.alpacaClass
+import mw4.base.alpacaClass
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.loggerMW import setupLogging
 from mw4.base.driverDataClass import Signals
@@ -434,7 +434,7 @@ def test_getAndStoreAlpacaProperty(function):
 def test_workerConnectDevice_1(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(base.alpacaClass,
+    with mock.patch.object(mw4.base.alpacaClass,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'setAlpacaProperty'):
@@ -450,7 +450,7 @@ def test_workerConnectDevice_1(function):
 def test_workerConnectDevice_2(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(base.alpacaClass,
+    with mock.patch.object(mw4.base.alpacaClass,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'setAlpacaProperty'):

@@ -22,9 +22,9 @@ from unittest import mock
 
 # local import
 from PyQt5.QtCore import QTimer
-from indibase.indiBase import Device
+from mw4.indibase.indiBase import Device
 from mw4.base.indiClass import IndiClass
-import base.indiClass
+import mw4.base.indiClass
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mw4.base.driverDataClass import Signals
 
@@ -511,7 +511,7 @@ def test_addDiscoveredDevice_5(function):
 
 
 def test_discoverDevices_1(function):
-    with mock.patch.object(base.indiClass,
+    with mock.patch.object(mw4.base.indiClass,
                            'sleepAndEvents'):
         val = function.discoverDevices('dome')
         assert val == []

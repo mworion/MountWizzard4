@@ -457,7 +457,7 @@ def writeRFD(a, b):
     return {}
 
 
-@mock.patch('gui.mainWmixin.tabManageModel.writeRetrofitData', writeRFD)
+@mock.patch('mw4.gui.mainWmixin.tabManageModel.writeRetrofitData', writeRFD)
 def test_writeBuildModelOptimized_1(function):
     with mock.patch.object(json,
                            'load',
@@ -468,7 +468,7 @@ def test_writeBuildModelOptimized_1(function):
             assert suc
 
 
-@mock.patch('gui.mainWmixin.tabManageModel.writeRetrofitData', writeRFD)
+@mock.patch('mw4.gui.mainWmixin.tabManageModel.writeRetrofitData', writeRFD)
 def test_writeBuildModelOptimized_2(function):
     with mock.patch.object(json,
                            'load',

@@ -20,7 +20,7 @@ import unittest.mock as mock
 import zlib
 # external packages
 from astropy.io import fits
-from indibase.indiBase import Device, Client
+from mw4.indibase.indiBase import Device, Client
 from skyfield.api import Angle, load
 
 # local import

@@ -32,7 +32,7 @@ from mw4.mountcontrol.modelStar import ModelStar
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mw4.gui.mainWmixin.tabModel import Model
-import gui.mainWmixin
+import mw4.gui.mainWmixin
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.base.loggerMW import setupLogging
@@ -261,7 +261,7 @@ def writeRFD(a, b):
     return {}
 
 
-@mock.patch('gui.mainWmixin.tabManageModel.writeRetrofitData', writeRFD)
+@mock.patch('mw4.gui.mainWmixin.tabManageModel.writeRetrofitData', writeRFD)
 def test_retrofitModel_1(function):
     function.app.mount.model.starList = list()
 
@@ -496,7 +496,7 @@ def test_clearAlignAndBackup_2(function):
                                return_value=False):
             with mock.patch.object(function,
                                    'refreshModel'):
-                with mock.patch.object(gui.mainWmixin.tabModel,
+                with mock.patch.object(mw4.gui.mainWmixin.tabModel,
                                        'sleepAndEvents'):
                     suc = function.clearAlignAndBackup()
                     assert suc
@@ -514,7 +514,7 @@ def test_clearAlignAndBackup_3(function):
                 with mock.patch.object(function.app.mount.model,
                                        'storeName',
                                        return_value=False):
-                    with mock.patch.object(gui.mainWmixin.tabModel,
+                    with mock.patch.object(mw4.gui.mainWmixin.tabModel,
                                            'sleepAndEvents'):
                         suc = function.clearAlignAndBackup()
                         assert suc
@@ -532,7 +532,7 @@ def test_clearAlignAndBackup_4(function):
                                    return_value=True):
                 with mock.patch.object(function,
                                        'refreshModel'):
-                    with mock.patch.object(gui.mainWmixin.tabModel,
+                    with mock.patch.object(mw4.gui.mainWmixin.tabModel,
                                            'sleepAndEvents'):
                         suc = function.clearAlignAndBackup()
                         assert suc

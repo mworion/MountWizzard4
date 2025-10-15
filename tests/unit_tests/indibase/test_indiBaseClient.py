@@ -21,9 +21,9 @@ import unittest.mock as mock
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
-from indibase.indiBase import Client, Device
-from indibase import indiXML
-from indibase.indiXML import INDIBase
+from mw4.indibase.indiBase import Client, Device
+from mw4.indibase import indiXML
+from mw4.indibase.indiXML import INDIBase
 from mw4.base.loggerMW import setupLogging
 setupLogging()
 

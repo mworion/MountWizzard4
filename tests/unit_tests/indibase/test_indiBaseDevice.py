@@ -22,7 +22,7 @@ import unittest.mock as mock
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
-from indibase.indiBase import Device
+from mw4.indibase.indiBase import Device
 
 
 @pytest.fixture(autouse=True, scope='function')

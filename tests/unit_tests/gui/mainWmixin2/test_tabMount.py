@@ -30,8 +30,8 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.mainWmixin.tabMount import Mount
-import gui.mainWmixin.tabMount
-import mountcontrol
+import mw4.gui.mainWmixin.tabMount
+import mw4.mountcontrol
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -1125,7 +1125,7 @@ def test_openCommandProtocol_2(function):
 
 def test_moveDuration_1(function):
     function.ui.moveDuration.setCurrentIndex(1)
-    with mock.patch.object(gui.mainWmixin.tabMount,
+    with mock.patch.object(mw4.gui.mainWmixin.tabMount,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
@@ -1135,7 +1135,7 @@ def test_moveDuration_1(function):
 
 def test_moveDuration_2(function):
     function.ui.moveDuration.setCurrentIndex(2)
-    with mock.patch.object(gui.mainWmixin.tabMount,
+    with mock.patch.object(mw4.gui.mainWmixin.tabMount,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
@@ -1145,7 +1145,7 @@ def test_moveDuration_2(function):
 
 def test_moveDuration_3(function):
     function.ui.moveDuration.setCurrentIndex(3)
-    with mock.patch.object(gui.mainWmixin.tabMount,
+    with mock.patch.object(mw4.gui.mainWmixin.tabMount,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
@@ -1155,7 +1155,7 @@ def test_moveDuration_3(function):
 
 def test_moveDuration_4(function):
     function.ui.moveDuration.setCurrentIndex(4)
-    with mock.patch.object(gui.mainWmixin.tabMount,
+    with mock.patch.object(mw4.gui.mainWmixin.tabMount,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
@@ -1165,7 +1165,7 @@ def test_moveDuration_4(function):
 
 def test_moveDuration_5(function):
     function.ui.moveDuration.setCurrentIndex(0)
-    with mock.patch.object(gui.mainWmixin.tabMount,
+    with mock.patch.object(mw4.gui.mainWmixin.tabMount,
                            'sleepAndEvents'):
         suc = function.moveDuration()
         assert not suc
@@ -1518,7 +1518,7 @@ def test_moveRaDecAbsolute_6(function):
 
 
 def test_commandRaw_1(function):
-    with mock.patch.object(mountcontrol.connection.Connection,
+    with mock.patch.object(mw4.mountcontrol.connection.Connection,
                            'communicateRaw',
                            return_value=(True, False, '')):
         suc = function.commandRaw()
@@ -1526,7 +1526,7 @@ def test_commandRaw_1(function):
 
 
 def test_commandRaw_2(function):
-    with mock.patch.object(mountcontrol.connection.Connection,
+    with mock.patch.object(mw4.mountcontrol.connection.Connection,
                            'communicateRaw',
                            return_value=(True, True, '')):
         suc = function.commandRaw()

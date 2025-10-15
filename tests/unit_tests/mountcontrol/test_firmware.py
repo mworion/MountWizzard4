@@ -172,7 +172,7 @@ class TestConfigData(unittest.TestCase):
         response = ['Mar 19 2018', '2.15.14',
                     '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
 
-        with mock.patch('mountcontrol.firmware.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.firmware.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 5
             suc = fw.poll()
             self.assertEqual(True, suc)
@@ -183,7 +183,7 @@ class TestConfigData(unittest.TestCase):
         response = ['Mar 19 2018', '2.15.14',
                     '10micron GM1000HPS', '15:56:53', 'Q-TYPE2012']
 
-        with mock.patch('mountcontrol.firmware.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.firmware.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 5
             suc = fw.poll()
             self.assertEqual(False, suc)

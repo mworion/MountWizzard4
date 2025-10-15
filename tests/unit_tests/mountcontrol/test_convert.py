@@ -23,7 +23,7 @@ import math
 from skyfield.api import Angle
 
 # local imports
-import mountcontrol
+import mw4.mountcontrol
 from mw4.mountcontrol.convert import stringToDegree
 from mw4.mountcontrol.convert import stringToAngle
 from mw4.mountcontrol.convert import valueToFloat
@@ -452,7 +452,7 @@ def test_formatLatLonToAngle_2():
 
 
 def test_formatLat():
-    with mock.patch.object(mountcontrol.convert,
+    with mock.patch.object(mw4.mountcontrol.convert,
                            'formatLatLonToAngle',
                            return_value=10):
         angle = convertLatToAngle('12345')
@@ -460,7 +460,7 @@ def test_formatLat():
 
 
 def test_formatLon():
-    with mock.patch.object(mountcontrol.convert,
+    with mock.patch.object(mw4.mountcontrol.convert,
                            'formatLatLonToAngle',
                            return_value=10):
         angle = convertLonToAngle('12345')

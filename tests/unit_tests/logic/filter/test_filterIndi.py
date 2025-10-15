@@ -20,7 +20,7 @@ import unittest.mock as mock
 
 # external packages
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
-from indibase.indiBase import Device, Client
+from mw4.indibase.indiBase import Device, Client
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

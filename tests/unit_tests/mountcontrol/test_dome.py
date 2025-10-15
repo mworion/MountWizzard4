@@ -132,7 +132,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
         response = ['0', '0', '0', '1800']
 
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 4
             suc = dome.poll()
             self.assertEqual(False, suc)
@@ -141,7 +141,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
         response = ['0', '0', '0', '1800']
 
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 4
             suc = dome.poll()
             self.assertEqual(True, suc)
@@ -150,7 +150,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['1']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = dome.openShutter()
             self.assertEqual(False, suc)
@@ -159,7 +159,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['0']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.openShutter()
             self.assertEqual(False, suc)
@@ -168,7 +168,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['1']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.openShutter()
             self.assertEqual(True, suc)
@@ -177,7 +177,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['1']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = dome.closeShutter()
             self.assertEqual(False, suc)
@@ -186,7 +186,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['0']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.closeShutter()
             self.assertEqual(False, suc)
@@ -195,7 +195,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['1']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.closeShutter()
             self.assertEqual(True, suc)
@@ -204,7 +204,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['1']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = dome.openFlap()
             self.assertEqual(False, suc)
@@ -213,7 +213,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['0']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.openFlap()
             self.assertEqual(False, suc)
@@ -222,7 +222,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['1']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.openFlap()
             self.assertEqual(True, suc)
@@ -231,7 +231,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['1']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = dome.closeFlap()
             self.assertEqual(False, suc)
@@ -240,7 +240,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['0']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.closeFlap()
             self.assertEqual(False, suc)
@@ -249,7 +249,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['1']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.closeFlap()
             self.assertEqual(True, suc)
@@ -264,7 +264,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['1']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = dome.slewDome(azimuth=Angle(degrees=100))
             self.assertEqual(False, suc)
@@ -273,7 +273,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['0']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = dome.slewDome(azimuth=100)
             self.assertEqual(False, suc)
@@ -282,7 +282,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['1']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = dome.slewDome(azimuth=100)
             self.assertEqual(True, suc)
@@ -291,7 +291,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['1']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = dome.enableInternalDomeControl()
             self.assertEqual(False, suc)
@@ -300,7 +300,7 @@ class TestConfigData(unittest.TestCase):
         dome = Dome()
 
         response = ['0']
-        with mock.patch('mountcontrol.dome.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.dome.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = dome.enableInternalDomeControl()
             self.assertEqual(True, suc)

@@ -28,7 +28,7 @@ from PyQt5.QtCore import QThreadPool
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-import gui.utilities
+import mw4.gui.utilities
 from mw4.gui.mainWmixin.tabMinorPlanet import MinorPlanet
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
 
@@ -152,7 +152,7 @@ def test_setupMinorPlanetNameList_2(function):
 
 
 def test_processSourceData_1(function):
-    with mock.patch.object(gui.mainWmixin.tabMinorPlanet,
+    with mock.patch.object(mw4.gui.mainWmixin.tabMinorPlanet,
                            'DownloadPopup'):
         with mock.patch.object(os.path,
                                'isfile',
@@ -173,7 +173,7 @@ def test_processSourceData_1(function):
 
 
 def test_processSourceData_2(function):
-    with mock.patch.object(gui.mainWmixin.tabMinorPlanet,
+    with mock.patch.object(mw4.gui.mainWmixin.tabMinorPlanet,
                            'DownloadPopup'):
         with mock.patch.object(os.path,
                                'isfile',
@@ -194,7 +194,7 @@ def test_processSourceData_2(function):
 
 
 def test_processSourceData_3(function):
-    with mock.patch.object(gui.mainWmixin.tabMinorPlanet,
+    with mock.patch.object(mw4.gui.mainWmixin.tabMinorPlanet,
                            'DownloadPopup'):
         with mock.patch.object(os.path,
                                'isfile',
@@ -233,7 +233,7 @@ def test_loadMPCDataFromSourceURLs_2(function):
 
 
 def test_loadMPCDataFromSourceURLs_3(function):
-    with mock.patch.object(gui.mainWmixin.tabMinorPlanet,
+    with mock.patch.object(mw4.gui.mainWmixin.tabMinorPlanet,
                            'DownloadPopup'):
         with mock.patch.object(os.path,
                                'isfile',

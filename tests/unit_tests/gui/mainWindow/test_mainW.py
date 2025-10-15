@@ -32,12 +32,12 @@ from PyQt5.QtWidgets import QPushButton, QWidget
 from skyfield.api import wgs84
 
 # local import
-import gui.utilities.toolsQtWidget
+import mw4.gui.utilities.toolsQtWidget
 from mw4.gui.mainWindow.mainW import MainWindow
 from mw4.gui.extWindows.imageW import ImageWindow
 from mw4.base.loggerMW import addLoggingLevel
 from mw4.base import packageConfig
-from resource import resources
+from mw4.resource import resources
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 resources.qInitResources()
 
@@ -154,7 +154,7 @@ def test_quitSave_1(function):
     function.ui.profile.setText('test')
     with mock.patch.object(function,
                            'saveConfig'):
-        with mock.patch.object(gui.mainWindow.mainW,
+        with mock.patch.object(mw4.gui.mainWindow.mainW,
                                'saveProfile'):
             with mock.patch.object(function,
                                    'close'):
@@ -167,7 +167,7 @@ def test_setupIcons(function):
     assert suc
 
 
-@patch('base.packageConfig.isAvailable', True)
+@patch('mw4.base.packageConfig.isAvailable', True)
 def test_updateMountConnStat_1(function):
     suc = function.updateMountConnStat(True)
     assert suc
@@ -175,7 +175,7 @@ def test_updateMountConnStat_1(function):
     assert function.ui.mountConnected.text() == 'Mount 3D'
 
 
-@patch('base.packageConfig.isAvailable', False)
+@patch('mw4.base.packageConfig.isAvailable', False)
 def test_updateMountConnStat_2(function):
     suc = function.updateMountConnStat(True)
     assert suc
@@ -183,7 +183,7 @@ def test_updateMountConnStat_2(function):
     assert function.ui.mountConnected.text() == 'Mount'
 
 
-@patch('base.packageConfig.isAvailable', True)
+@patch('mw4.base.packageConfig.isAvailable', True)
 def test_updateMountConnStat_3(function):
     test = function.uiWindows
     function.uiWindows = {'showSimulatorW': {
@@ -198,6 +198,7 @@ def test_updateMountConnStat_3(function):
     assert not function.deviceStat['mount']
     assert suc
     function.uiWindows = test
+
 
 def test_updateMountWeatherStat_1(function):
     class S:
@@ -629,7 +630,7 @@ def test_waitClosedExtendedWindows_1(function):
                                            'button': QPushButton()},
                           'showImageW': {'classObj': None,
                                          'button': QPushButton()}}
-    with mock.patch.object(gui.utilities.toolsQtWidget,
+    with mock.patch.object(mw4.gui.utilities.toolsQtWidget,
                            'sleepAndEvents'):
         suc = function.waitClosedExtendedWindows()
         assert suc
@@ -640,7 +641,7 @@ def test_waitClosedExtendedWindows_2(function):
     test = function.uiWindows
     function.uiWindows = {'showMessageW': {'classObj': None,
                                            'button': QPushButton()}}
-    with mock.patch.object(gui.utilities.toolsQtWidget,
+    with mock.patch.object(mw4.gui.utilities.toolsQtWidget,
                            'sleepAndEvents'):
         suc = function.waitClosedExtendedWindows()
         assert suc
@@ -714,7 +715,7 @@ def test_saveConfig1(function):
                            'storeConfig'):
         with mock.patch.object(function.app,
                                'storeConfig'):
-            with mock.patch.object(gui.mainWindow.mainW,
+            with mock.patch.object(mw4.gui.mainWindow.mainW,
                                    'saveProfile',
                                    return_value=True):
                 suc = function.saveConfig()
@@ -726,7 +727,7 @@ def test_saveConfig2(function):
                            'storeConfig'):
         with mock.patch.object(function.app,
                                'storeConfig'):
-            with mock.patch.object(gui.mainWindow.mainW,
+            with mock.patch.object(mw4.gui.mainWindow.mainW,
                                    'saveProfile',
                                    return_value=False):
                 suc = function.saveConfig()
@@ -762,7 +763,7 @@ def test_loadProfileGUI2(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(gui.mainWindow.mainW,
+        with mock.patch.object(mw4.gui.mainWindow.mainW,
                                'loadProfile',
                                return_value={}):
             with mock.patch.object(function,
@@ -775,7 +776,7 @@ def test_loadProfileGUI_3(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(gui.mainWindow.mainW,
+        with mock.patch.object(mw4.gui.mainWindow.mainW,
                                'loadProfile',
                                return_value={'test': 1}):
             with mock.patch.object(function,
@@ -796,7 +797,7 @@ def test_addProfileGUI_2(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(gui.mainWindow.mainW,
+        with mock.patch.object(mw4.gui.mainWindow.mainW,
                                'loadProfile',
                                return_value={}):
             with mock.patch.object(function,
@@ -805,7 +806,7 @@ def test_addProfileGUI_2(function):
                                        'storeConfig'):
                     with mock.patch.object(function,
                                            'switchProfile'):
-                        with mock.patch.object(gui.mainWindow.mainW,
+                        with mock.patch.object(mw4.gui.mainWindow.mainW,
                                                'blendProfile'):
                             suc = function.addProfileGUI()
                             assert not suc
@@ -815,7 +816,7 @@ def test_addProfileGUI_3(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(gui.mainWindow.mainW,
+        with mock.patch.object(mw4.gui.mainWindow.mainW,
                                'loadProfile',
                                return_value={'test': 1}):
             with mock.patch.object(function,
@@ -824,7 +825,7 @@ def test_addProfileGUI_3(function):
                                        'storeConfig'):
                     with mock.patch.object(function,
                                            'switchProfile'):
-                        with mock.patch.object(gui.mainWindow.mainW,
+                        with mock.patch.object(mw4.gui.mainWindow.mainW,
                                                'blendProfile'):
                             suc = function.addProfileGUI()
                             assert suc
@@ -834,7 +835,7 @@ def test_saveConfigAs1(function):
     with mock.patch.object(function,
                            'saveFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(gui.mainWindow.mainW,
+        with mock.patch.object(mw4.gui.mainWindow.mainW,
                                'saveProfile',
                                return_value=True):
             with mock.patch.object(function.app,
@@ -849,7 +850,7 @@ def test_saveConfigAs2(function):
     with mock.patch.object(function,
                            'saveFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(gui.mainWindow.mainW,
+        with mock.patch.object(mw4.gui.mainWindow.mainW,
                                'saveProfile',
                                return_value=False):
             with mock.patch.object(function.app,

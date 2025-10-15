@@ -352,7 +352,7 @@ def test_callPopup_1(function):
             'deviceType': 'cover'
         }
     }
-    with mock.patch('gui.mainWmixin.tabSett_Device.DevicePopup',
+    with mock.patch('mw4.gui.mainWmixin.tabSett_Device.DevicePopup',
                     return_value=Pop()):
         suc = function.callPopup('cover')
         assert suc

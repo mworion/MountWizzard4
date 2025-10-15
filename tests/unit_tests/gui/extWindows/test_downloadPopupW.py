@@ -28,7 +28,7 @@ import requests
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-import gui.extWindows.downloadPopupW
+import mw4.gui.extWindows.downloadPopupW
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 
 
@@ -131,7 +131,7 @@ def test_downloadFileWorker_2(function):
                            'getFileFromUrl',
                            return_value=True,
                            side_effect=TimeoutError):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
+        with mock.patch.object(mw4.gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
             suc = function.downloadFileWorker(url='', dest='tests/workDir/temp/test.txt')
             assert not suc
@@ -142,7 +142,7 @@ def test_downloadFileWorker_3(function):
                            'getFileFromUrl',
                            return_value=True,
                            side_effect=TimeoutError):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
+        with mock.patch.object(mw4.gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
             suc = function.downloadFileWorker(url='',
                                               dest='test/workDir/temp/test.txt')
@@ -154,7 +154,7 @@ def test_downloadFileWorker_4(function):
                            'getFileFromUrl',
                            return_value=True,
                            side_effect=Exception):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
+        with mock.patch.object(mw4.gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
             suc = function.downloadFileWorker(url='',
                                               dest='test/workDir/temp/test.txt')
@@ -165,7 +165,7 @@ def test_downloadFileWorker_5(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
                            return_value=True):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
+        with mock.patch.object(mw4.gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
             suc = function.downloadFileWorker(url='',
                                               dest='test/workDir/temp/test.txt')
@@ -176,7 +176,7 @@ def test_downloadFileWorker_6(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
                            return_value=True,):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
+        with mock.patch.object(mw4.gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
             suc = function.downloadFileWorker(url='',
                                               dest='test/workDir/temp/test.txt',
@@ -188,7 +188,7 @@ def test_downloadFileWorker_7(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
                            return_value=True,):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
+        with mock.patch.object(mw4.gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
             with mock.patch.object(function,
                                    'unzipFile',
@@ -204,7 +204,7 @@ def test_downloadFileWorker_8(function):
                            return_value=True,):
         with mock.patch.object(function,
                                'unzipFile'):
-            with mock.patch.object(gui.extWindows.downloadPopupW,
+            with mock.patch.object(mw4.gui.extWindows.downloadPopupW,
                                    'sleepAndEvents'):
                 suc = function.downloadFileWorker(url='',
                                                   dest='test/workDir/temp/test.txt')
@@ -217,7 +217,7 @@ def test_downloadFileWorker_9(function):
                            return_value=False,):
         with mock.patch.object(function,
                                'unzipFile'):
-            with mock.patch.object(gui.extWindows.downloadPopupW,
+            with mock.patch.object(mw4.gui.extWindows.downloadPopupW,
                                    'sleepAndEvents'):
                 suc = function.downloadFileWorker(url='',
                                                   dest='test/workDir/temp/test.txt')

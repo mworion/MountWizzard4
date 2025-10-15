@@ -25,7 +25,7 @@ from PyQt5.QtCore import QThreadPool
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-import gui.utilities
+import mw4.gui.utilities
 from mw4.gui.mainWmixin.tabTools_IERSTime import IERSTime
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
 
@@ -161,7 +161,7 @@ def test_progEarthRotationData_4(function):
 
 def test_startProgEarthRotationDataToMount_1(function):
     function.ui.isOnline.setChecked(True)
-    with mock.patch.object(gui.mainWmixin.tabTools_IERSTime,
+    with mock.patch.object(mw4.gui.mainWmixin.tabTools_IERSTime,
                            'DownloadPopup'):
         suc = function.startProgEarthRotationDataToMount()
         assert suc
@@ -178,7 +178,7 @@ def test_startProgEarthRotationDataToMount_2(function):
 
 def test_loadTimeDataFromSourceURLs_1(function):
     function.ui.isOnline.setChecked(False)
-    with mock.patch.object(gui.mainWmixin.tabTools_IERSTime,
+    with mock.patch.object(mw4.gui.mainWmixin.tabTools_IERSTime,
                            'DownloadPopup'):
         suc = function.loadTimeDataFromSourceURLs()
         assert not suc
@@ -186,7 +186,7 @@ def test_loadTimeDataFromSourceURLs_1(function):
 
 def test_loadTimeDataFromSourceURLs_2(function):
     function.ui.isOnline.setChecked(True)
-    with mock.patch.object(gui.mainWmixin.tabTools_IERSTime,
+    with mock.patch.object(mw4.gui.mainWmixin.tabTools_IERSTime,
                            'DownloadPopup'):
         suc = function.loadTimeDataFromSourceURLs()
         assert suc

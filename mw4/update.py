@@ -161,7 +161,7 @@ class UpdateGUI:
         from PyQt5.QtGui import QIcon, QPixmap, QColor, QPainter
         from PyQt5.QtWidgets import QApplication, QPushButton, QVBoxLayout
         from PyQt5.QtWidgets import QHBoxLayout, QWidget, QTextBrowser, QLabel
-        import resource.resources as res
+        import mw4.resource.resources as res
         res.qInitResources()
         from mw4.gui.utilities.stylesQtCss import Styles
 

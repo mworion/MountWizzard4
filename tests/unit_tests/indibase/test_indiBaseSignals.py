@@ -22,7 +22,7 @@ import unittest.mock as mock
 from PyQt5.QtCore import QObject, pyqtSignal
 
 # local import
-from indibase.indiBase import INDISignals
+from mw4.indibase.indiBase import INDISignals
 
 
 @pytest.fixture(autouse=True, scope='function')

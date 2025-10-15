@@ -30,9 +30,9 @@ from PyQt5.QtWidgets import QWidget
 from mw4.base.packageConfig import checkAutomation
 if checkAutomation():
     from mw4.logic.automation.automateWindows import AutomateWindows
-from mainApp import MountWizzard4
+from mw4.mainApp import MountWizzard4
 from mw4.base.loggerMW import setupLogging
-import resource.resources as res
+import mw4.resource.resources as res
 res.qInitResources()
 setupLogging()
 

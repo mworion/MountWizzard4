@@ -23,7 +23,6 @@ from PyQt5.QtGui import QCloseEvent
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-import gui.extWindows.bigPopupW
 from mw4.gui.extWindows.bigPopupW import BigPopup
 from mw4.gui.utilities.toolsQtWidget import MWidget
 

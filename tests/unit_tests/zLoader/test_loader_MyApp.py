@@ -27,7 +27,7 @@ from PyQt5.QtGui import QMouseEvent
 from PyQt5 import QtWidgets
 
 # local import
-from loader import MyApp
+from  mw4.loader import MyApp
 
 
 @pytest.fixture(scope="session")

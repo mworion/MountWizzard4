@@ -370,7 +370,7 @@ class TestConfigData(unittest.TestCase):
                     '0', '987.0,0100', '+20,5', '90.4', '-13,5', '60.2', '1',
                     '00005.000']
 
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response,  24
             suc = sett.pollSetting()
             self.assertEqual(True, suc)
@@ -383,7 +383,7 @@ class TestConfigData(unittest.TestCase):
                     '0', '987.0,0100', '+20,5', '90.4', '-13,5', '60.2', '1',
                     '00005.000']
 
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response,  24
             suc = sett.pollSetting()
             self.assertEqual(True, suc)
@@ -396,7 +396,7 @@ class TestConfigData(unittest.TestCase):
                     '0', '987.0,0100', '+20,5', '90.4', '-13,5', '60.2', '1',
                     '00005.000']
 
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response,  24
             suc = sett.pollSetting()
             self.assertEqual(False, suc)
@@ -408,7 +408,7 @@ class TestConfigData(unittest.TestCase):
                     '101+90*', '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
                     '0', '987.0,0100', '+20,5', '90.4', '-13,5', '60.2', '1']
 
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 6
             suc = sett.pollSetting()
             self.assertEqual(False, suc)
@@ -423,7 +423,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setDualAxisTracking(1)
             self.assertEqual(True, suc)
@@ -432,7 +432,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setDualAxisTracking(1)
             self.assertEqual(False, suc)
@@ -441,7 +441,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setDualAxisTracking(1)
             self.assertEqual(False, suc)
@@ -450,7 +450,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setWOL(True)
             self.assertEqual(True, suc)
@@ -459,7 +459,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setWOL(True)
             self.assertEqual(False, suc)
@@ -468,7 +468,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setWOL(True)
             self.assertEqual(False, suc)
@@ -483,7 +483,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setMeridianLimitTrack(2)
             self.assertEqual(True, suc)
@@ -492,7 +492,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setMeridianLimitTrack(0)
             self.assertEqual(False, suc)
@@ -501,7 +501,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setMeridianLimitTrack(40)
             self.assertEqual(False, suc)
@@ -510,7 +510,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setMeridianLimitTrack(20)
             self.assertEqual(False, suc)
@@ -519,7 +519,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setMeridianLimitTrack(20)
             self.assertEqual(False, suc)
@@ -534,7 +534,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setMeridianLimitSlew(5)
             self.assertEqual(True, suc)
@@ -543,7 +543,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setMeridianLimitSlew(-10)
             self.assertEqual(False, suc)
@@ -552,7 +552,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setMeridianLimitSlew(50)
             self.assertEqual(False, suc)
@@ -561,7 +561,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setMeridianLimitSlew(5)
             self.assertEqual(False, suc)
@@ -570,7 +570,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setMeridianLimitSlew(5)
             self.assertEqual(False, suc)
@@ -585,7 +585,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setHorizonLimitLow(0)
             self.assertEqual(True, suc)
@@ -594,7 +594,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setHorizonLimitLow(0)
             self.assertEqual(False, suc)
@@ -603,7 +603,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setHorizonLimitLow(0)
             self.assertEqual(False, suc)
@@ -612,7 +612,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setHorizonLimitLow(-30)
             self.assertEqual(False, suc)
@@ -621,7 +621,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setHorizonLimitLow(50)
             self.assertEqual(False, suc)
@@ -636,7 +636,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setHorizonLimitHigh(80)
             self.assertEqual(True, suc)
@@ -645,7 +645,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setHorizonLimitHigh(80)
             self.assertEqual(False, suc)
@@ -654,7 +654,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setHorizonLimitHigh(80)
             self.assertEqual(False, suc)
@@ -663,7 +663,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setHorizonLimitHigh(-1)
             self.assertEqual(False, suc)
@@ -672,7 +672,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setHorizonLimitHigh(100)
             self.assertEqual(False, suc)
@@ -687,7 +687,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefractionTemp(5)
             self.assertEqual(True, suc)
@@ -696,7 +696,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefractionTemp(None)
             self.assertEqual(False, suc)
@@ -705,7 +705,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefractionTemp(5)
             self.assertEqual(False, suc)
@@ -714,7 +714,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setRefractionTemp(5)
             self.assertEqual(False, suc)
@@ -723,7 +723,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefractionTemp(-45)
             self.assertEqual(False, suc)
@@ -732,7 +732,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefractionTemp(85)
             self.assertEqual(False, suc)
@@ -741,7 +741,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefractionTemp(-0)
             self.assertEqual(True, suc)
@@ -756,7 +756,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefractionPress(1000)
             self.assertEqual(True, suc)
@@ -765,7 +765,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefractionPress(None)
             self.assertEqual(False, suc)
@@ -774,7 +774,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefractionPress(1000)
             self.assertEqual(False, suc)
@@ -783,7 +783,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setRefractionPress(1000)
             self.assertEqual(False, suc)
@@ -792,7 +792,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefractionPress(450)
             self.assertEqual(False, suc)
@@ -801,7 +801,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefractionPress(1400)
             self.assertEqual(False, suc)
@@ -816,7 +816,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefraction(1)
             self.assertEqual(True, suc)
@@ -825,7 +825,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setRefraction(1)
             self.assertEqual(False, suc)
@@ -834,7 +834,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setRefraction(1)
             self.assertEqual(False, suc)
@@ -849,7 +849,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['11']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setRefractionParam(temperature=5,
                                              pressure=800)
@@ -859,7 +859,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['01']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setRefractionParam(temperature=None,
                                              pressure=800)
@@ -869,7 +869,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['01']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setRefractionParam(temperature=5,
                                              pressure=None)
@@ -879,7 +879,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['01']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setRefractionParam(temperature=5,
                                              pressure=800)
@@ -889,7 +889,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['10']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setRefractionParam(temperature=5,
                                              pressure=800)
@@ -899,7 +899,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['11']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 2
             suc = setting.setRefractionParam(temperature=5,
                                              pressure=800)
@@ -909,7 +909,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['11']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setRefractionParam(temperature=-45,
                                              pressure=800)
@@ -919,7 +919,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['11']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setRefractionParam(temperature=85,
                                              pressure=800)
@@ -929,7 +929,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['11']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setRefractionParam(temperature=5,
                                              pressure=300)
@@ -939,7 +939,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['11']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setRefractionParam(temperature=5,
                                              pressure=1500)
@@ -955,7 +955,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['10']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setSlewRate(5)
             self.assertEqual(True, suc)
@@ -964,7 +964,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setSlewRate('E')
             self.assertEqual(False, suc)
@@ -973,7 +973,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setSlewRate(None)
             self.assertEqual(False, suc)
@@ -982,7 +982,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setSlewRate(5)
             self.assertEqual(False, suc)
@@ -991,7 +991,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['01']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setSlewRate(5)
             self.assertEqual(False, suc)
@@ -1000,7 +1000,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['11']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setSlewRate(5)
             self.assertEqual(False, suc)
@@ -1009,7 +1009,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['00']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setSlewRate(5)
             self.assertEqual(False, suc)
@@ -1018,7 +1018,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setSlewRate(5)
             self.assertEqual(False, suc)
@@ -1027,7 +1027,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setSlewRate(0)
             self.assertEqual(False, suc)
@@ -1036,7 +1036,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setSlewRate(25)
             self.assertEqual(False, suc)
@@ -1044,7 +1044,7 @@ class TestConfigData(unittest.TestCase):
     def test_setSlewSpeedMax_1(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setSlewSpeedMax()
             self.assertEqual(suc, True)
@@ -1052,7 +1052,7 @@ class TestConfigData(unittest.TestCase):
     def test_setSlewSpeedMax_2(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setSlewSpeedMax()
             self.assertEqual(suc, False)
@@ -1060,7 +1060,7 @@ class TestConfigData(unittest.TestCase):
     def test_setSlewSpeedHigh_1(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setSlewSpeedHigh()
             self.assertEqual(suc, True)
@@ -1068,7 +1068,7 @@ class TestConfigData(unittest.TestCase):
     def test_setSlewSpeedHigh_2(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setSlewSpeedHigh()
             self.assertEqual(suc, False)
@@ -1076,7 +1076,7 @@ class TestConfigData(unittest.TestCase):
     def test_setSlewSpeedMed_1(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setSlewSpeedMed()
             self.assertEqual(suc, True)
@@ -1084,7 +1084,7 @@ class TestConfigData(unittest.TestCase):
     def test_setSlewSpeedMed_2(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setSlewSpeedMed()
             self.assertEqual(suc, False)
@@ -1092,7 +1092,7 @@ class TestConfigData(unittest.TestCase):
     def test_setSlewSpeedLow_1(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setSlewSpeedLow()
             self.assertEqual(suc, True)
@@ -1100,7 +1100,7 @@ class TestConfigData(unittest.TestCase):
     def test_setSlewSpeedLow_2(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setSlewSpeedLow()
             self.assertEqual(suc, False)
@@ -1115,7 +1115,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setUnattendedFlip(1)
             self.assertEqual(True, suc)
@@ -1124,7 +1124,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = setting.setUnattendedFlip(1)
             self.assertEqual(False, suc)
@@ -1139,7 +1139,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setDirectWeatherUpdateType(0)
             self.assertEqual(suc, False)
@@ -1148,7 +1148,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setDirectWeatherUpdateType(0)
             self.assertEqual(suc, False)
@@ -1157,7 +1157,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setDirectWeatherUpdateType(0)
             self.assertEqual(suc, True)
@@ -1166,7 +1166,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setDirectWeatherUpdateType(-1)
             self.assertEqual(suc, False)
@@ -1175,7 +1175,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setDirectWeatherUpdateType(5)
             self.assertEqual(suc, False)
@@ -1189,7 +1189,7 @@ class TestConfigData(unittest.TestCase):
     def test_ObsSite_setLunarTracking_ok(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = setting.setLunarTracking()
             self.assertEqual(True, suc)
@@ -1197,7 +1197,7 @@ class TestConfigData(unittest.TestCase):
     def test_ObsSite_setLunarTracking_not_ok1(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = setting.setLunarTracking()
             self.assertEqual(False, suc)
@@ -1211,7 +1211,7 @@ class TestConfigData(unittest.TestCase):
     def test_ObsSite_setSiderealTracking_ok(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = setting.setSiderealTracking()
             self.assertEqual(True, suc)
@@ -1219,7 +1219,7 @@ class TestConfigData(unittest.TestCase):
     def test_ObsSite_setSiderealTracking_not_ok1(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = setting.setSiderealTracking()
             self.assertEqual(False, suc)
@@ -1233,7 +1233,7 @@ class TestConfigData(unittest.TestCase):
     def test_ObsSite_setSolarTracking_ok(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 0
             suc = setting.setSolarTracking()
             self.assertEqual(True, suc)
@@ -1241,7 +1241,7 @@ class TestConfigData(unittest.TestCase):
     def test_ObsSite_setSolarTracking_not_ok1(self):
         setting = Setting()
         response = []
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 0
             suc = setting.setSolarTracking()
             self.assertEqual(False, suc)
@@ -1283,7 +1283,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setWebInterface(True)
             self.assertEqual(True, suc)
@@ -1292,7 +1292,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setWebInterface(True)
             self.assertEqual(False, suc)
@@ -1301,7 +1301,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setWebInterface(True)
             self.assertEqual(False, suc)
@@ -1310,7 +1310,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setSettleTime(5)
             self.assertEqual(True, suc)
@@ -1319,7 +1319,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['1']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
             suc = setting.setSettleTime(5)
             self.assertEqual(False, suc)
@@ -1328,7 +1328,7 @@ class TestConfigData(unittest.TestCase):
         setting = Setting()
 
         response = ['0']
-        with mock.patch('mountcontrol.setting.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setSettleTime(5)
             self.assertEqual(False, suc)

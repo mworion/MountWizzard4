@@ -28,7 +28,7 @@ from skyfield.api import Angle
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mw4.gui.mainWmixin.runBasic import BasicRun
-import gui.mainWmixin.tabModel
+import mw4.gui.mainWmixin.tabModel
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.base.loggerMW import setupLogging
@@ -244,7 +244,7 @@ def test_runImage_2(function):
     def qWaitBreak(a):
         function.ui.pauseModel.setProperty('pause', False)
 
-    gui.mainWmixin.runBasic.sleepAndEvents = qWaitBreak
+    mw4.gui.mainWmixin.runBasic.sleepAndEvents = qWaitBreak
     function.ui.pauseModel.setProperty('pause', True)
     function
     mPoint = {'lenSequence': 3,
@@ -269,7 +269,7 @@ def test_runImage_3(function):
     def qWaitBreak(a):
         function.ui.pauseModel.setProperty('pause', False)
 
-    gui.mainWmixin.runBasic.sleepAndEvents = qWaitBreak
+    mw4.gui.mainWmixin.runBasic.sleepAndEvents = qWaitBreak
     function.ui.pauseModel.setProperty('pause', True)
     function
     mPoint = {'lenSequence': 3,

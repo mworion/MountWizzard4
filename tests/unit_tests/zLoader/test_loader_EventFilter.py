@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import QWidget
 import pyqtgraph as pg
 
 # local import
-from loader import QAwesomeTooltipEventFilter
+from mw4.loader import QAwesomeTooltipEventFilter
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -28,7 +28,7 @@ import cv2
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.extWindows.videoW import VideoWindow
-import gui.extWindows.videoW
+import mw4.gui.extWindows.videoW
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -301,7 +301,7 @@ def test_restartVideo(function):
                            'stopVideo'):
         with mock.patch.object(function,
                                'startVideo'):
-            with mock.patch.object(gui.extWindows.videoW,
+            with mock.patch.object(mw4.gui.extWindows.videoW,
                                    'sleepAndEvents'):
                 suc = function.restartVideo()
                 assert suc

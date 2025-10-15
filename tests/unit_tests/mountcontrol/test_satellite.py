@@ -276,7 +276,7 @@ class TestConfigData(unittest.TestCase):
         cont = '$0A'
         response = [t0 + cont + t1 + cont + t2 + cont]
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 1
 
             suc = sat.getTLE()
@@ -297,7 +297,7 @@ class TestConfigData(unittest.TestCase):
         cont = '$0A'
         response = [t0 + cont + t1 + cont + t2 + cont]
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
 
             suc = sat.getTLE()
@@ -318,7 +318,7 @@ class TestConfigData(unittest.TestCase):
         cont = '$0A'
         response = [t0 + cont + t1 + cont + t2 + cont]
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
 
             suc = sat.getTLE()
@@ -334,7 +334,7 @@ class TestConfigData(unittest.TestCase):
 
         sat = Satellite(parent=Parent())
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'E', 1
 
             suc = sat.getTLE()
@@ -350,7 +350,7 @@ class TestConfigData(unittest.TestCase):
 
         sat = Satellite(parent=Parent())
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, ['V', 'V'], 2
 
             suc = sat.getTLE()
@@ -366,7 +366,7 @@ class TestConfigData(unittest.TestCase):
 
         sat = Satellite(parent=Parent())
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'E', 1
 
             suc = sat.setTLE()
@@ -382,7 +382,7 @@ class TestConfigData(unittest.TestCase):
 
         sat = Satellite(parent=Parent())
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'E', 1
 
             suc = sat.setTLE()
@@ -398,7 +398,7 @@ class TestConfigData(unittest.TestCase):
 
         sat = Satellite(parent=Parent())
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'V', 1
 
             suc = sat.setTLE()
@@ -417,7 +417,7 @@ class TestConfigData(unittest.TestCase):
         t1 = '1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996'
         t2 = '2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407'
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'V', 1
 
             suc = sat.setTLE(line0=t0,
@@ -438,7 +438,7 @@ class TestConfigData(unittest.TestCase):
         t1 = '1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996'
         t2 = '2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407x'
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'V', 1
 
             suc = sat.setTLE(line0=t0,
@@ -459,7 +459,7 @@ class TestConfigData(unittest.TestCase):
         t1 = '1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996x'
         t2 = '2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407'
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'V', 1
 
             suc = sat.setTLE(line0=t0,
@@ -480,7 +480,7 @@ class TestConfigData(unittest.TestCase):
         t1 = '1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996'
         t2 = '2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407'
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'V', 1
 
             suc = sat.setTLE(line0=t0,
@@ -501,7 +501,7 @@ class TestConfigData(unittest.TestCase):
         t1 = '1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996'
         t2 = '2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407'
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'E', 1
 
             suc = sat.setTLE(line0=t0,
@@ -522,7 +522,7 @@ class TestConfigData(unittest.TestCase):
         t1 = '1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996'
         t2 = '2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407'
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'V', 2
 
             suc = sat.setTLE(line0=t0,
@@ -751,7 +751,7 @@ class TestConfigData(unittest.TestCase):
         ts = load.timescale()
         julD = ts.tt_jd(1234567.8)
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'E', 1
 
             suc = sat.calcTLE(julD=1234567.8)
@@ -769,7 +769,7 @@ class TestConfigData(unittest.TestCase):
         ts = load.timescale()
         julD = ts.tt_jd(1234567.8)
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'E', 1
 
             suc = sat.calcTLE(julD=julD)
@@ -785,7 +785,7 @@ class TestConfigData(unittest.TestCase):
 
         sat = Satellite(parent=Parent())
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'V', 1
 
             suc = sat.calcTLE(julD=1234567.8)
@@ -801,7 +801,7 @@ class TestConfigData(unittest.TestCase):
 
         sat = Satellite(parent=Parent())
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'V', 1
 
             suc = sat.calcTLE(julD=1234567.8)
@@ -821,7 +821,7 @@ class TestConfigData(unittest.TestCase):
         s2 = '12345678.1, 12345678.2, F'
         response = [s0, s1, s2]
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
 
             suc = sat.calcTLE(julD=1234567.8)
@@ -841,7 +841,7 @@ class TestConfigData(unittest.TestCase):
         s2 = '12345678.1, 12345678.2, F'
         response = [s0, s1, s2]
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 3
 
             suc = sat.calcTLE(julD=1234567.8)
@@ -861,7 +861,7 @@ class TestConfigData(unittest.TestCase):
         s2 = '12345678.1, 12345678.2, F'
         response = [s0, s1, s2]
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 3
 
             suc = sat.calcTLE()
@@ -881,7 +881,7 @@ class TestConfigData(unittest.TestCase):
         s2 = '12345678.1, 12345678.2, F'
         response = [s0, s1, s2]
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 3
 
             suc = sat.calcTLE(julD=1234567.8, duration=0)
@@ -911,7 +911,7 @@ class TestConfigData(unittest.TestCase):
         julD = ts.tt_jd(1234567.8)
 
         sat = Satellite(parent=Parent())
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'E', 1
 
             suc = sat.getCoordsFromTLE(julD=julD)
@@ -925,7 +925,7 @@ class TestConfigData(unittest.TestCase):
         class Parent:
             obsSite = ObsSite()
         sat = Satellite(parent=Parent())
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'E', 1
 
             suc = sat.getCoordsFromTLE(julD=1234567.8)
@@ -941,7 +941,7 @@ class TestConfigData(unittest.TestCase):
         sat = Satellite(parent=Parent())
         response = ['E', 'E']
         ret = (True, response, 2)
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = ret
 
             suc = sat.getCoordsFromTLE(julD=1234567.8)
@@ -957,7 +957,7 @@ class TestConfigData(unittest.TestCase):
         sat = Satellite(parent=Parent())
         response = ['10.0, 10.0', 'E']
         ret = (True, response, 2)
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = ret
 
             suc = sat.getCoordsFromTLE(julD=1234567.8)
@@ -973,7 +973,7 @@ class TestConfigData(unittest.TestCase):
         sat = Satellite(parent=Parent())
         response = ['10.0, 10.0', '10.0, 10.0']
         ret = (True, response, 2)
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = ret
 
             suc = sat.getCoordsFromTLE(julD=1234567.8)
@@ -987,7 +987,7 @@ class TestConfigData(unittest.TestCase):
         class Parent:
             obsSite = ObsSite()
         sat = Satellite(parent=Parent())
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'E', 1
 
             suc, mes = sat.slewTLE()
@@ -1001,7 +1001,7 @@ class TestConfigData(unittest.TestCase):
         class Parent:
             obsSite = ObsSite()
         sat = Satellite(parent=Parent())
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'X', 1
 
             suc, mes = sat.slewTLE()
@@ -1016,7 +1016,7 @@ class TestConfigData(unittest.TestCase):
         class Parent:
             obsSite = ObsSite()
         sat = Satellite(parent=Parent())
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'V', 1
 
             suc, mes = sat.slewTLE()
@@ -1031,7 +1031,7 @@ class TestConfigData(unittest.TestCase):
         class Parent:
             obsSite = ObsSite()
         sat = Satellite(parent=Parent())
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'V', 2
 
             suc, mes = sat.slewTLE()
@@ -1104,7 +1104,7 @@ class TestConfigData(unittest.TestCase):
             obsSite = None
         sat = Satellite(parent=Parent())
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, 'E', 1
 
             suc = sat.statTLE()
@@ -1120,7 +1120,7 @@ class TestConfigData(unittest.TestCase):
 
         sat = Satellite(parent=Parent())
 
-        with mock.patch('mountcontrol.satellite.Connection') as mConn:
+        with mock.patch('mw4.mountcontrol.satellite.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, 'E', 1
 
             suc = sat.statTLE()

@@ -799,7 +799,7 @@ def test_playSound_3(function):
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
 def test_setAutomationSpeed_1(function):
-    with mock.patch.object(gui.mainWmixin.tabSett_Misc,
+    with mock.patch.object(mw4.gui.mainWmixin.tabSett_Misc,
                            'checkAutomation',
                            return_value=False):
         suc = function.setAutomationSpeed()
@@ -808,7 +808,7 @@ def test_setAutomationSpeed_1(function):
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
 def test_setAutomationSpeed_2(function):
-    with mock.patch.object(gui.mainWmixin.tabSett_Misc,
+    with mock.patch.object(mw4.gui.mainWmixin.tabSett_Misc,
                            'checkAutomation',
                            return_value=True):
         suc = function.setAutomationSpeed()

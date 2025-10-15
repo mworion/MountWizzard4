@@ -172,7 +172,8 @@ def test_showTabImageSources(function):
 
     function.ui.showValues.setChecked(True)
     with mock.patch.object(function.ui.imageSource, "addEllipse", return_value=pg.PlotItem()):
-        function.showImageSources()
+        with mock.patch.object(function.ui.tabImage, "setTabEnabled"):
+            function.showImageSources()
 
 
 def test_showTabBackground(function):

@@ -40,9 +40,10 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     with mock.patch.object(ImageTabs, "setCrosshair"):
         with mock.patch.object(ImageTabs, "colorChange"):
-            func = ImageWindow(app=App())
-            yield func
-            func.app.threadPool.waitForDone(10000)
+            with mock.patch.object(ImageTabs, "__init__", return_value=None):
+                func = ImageWindow(app=App())
+                yield func
+                func.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):

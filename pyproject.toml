@@ -65,7 +65,7 @@ dependencies = [
     "pyerfa==2.0.1.5",
     "astroquery==0.4.11",
     "sep==1.4.1",
-    "pyqtgraph==0.13.7",
+    "pyqtgraph==0.14.0.dev0",
     "qimage2ndarray==1.10.0",
     "skyfield==1.53",
     "sgp4==2.25",

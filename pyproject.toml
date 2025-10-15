@@ -97,10 +97,9 @@ Channel = "https://www.youtube.com/user/orion49m/featured"
 Forum = "https://www.10micron.eu/forum/"
 
 [tool.pytest.ini_options]
+pythonpath = ["src"]
 testpaths = ["tests"]
-addopts = [
-    "--import-mode=importlib",
-]
+addopts = ["--import-mode=importlib"]
 qt_api = "pyside6"
 filterwarnings = ["ignore::DeprecationWarning"]
 
@@ -136,7 +135,7 @@ max-complexity = 10
 "src/mw4/assets/assetData.py" = ["E501"]
 
 [tool.coverage.run]
-source = ["src/mw4/**/*.py"]
+source = ["src"]
 omit = ["src/mw4/assets/**/*.py", "src/mw4/gui/widgets/**/*.py"]
 branch = true
 

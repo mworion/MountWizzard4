@@ -109,9 +109,15 @@ dev = [
 minversion = "6.0"
 pythonpath = ["src"]
 testpaths = ["tests"]
-addopts = ["--import-mode=importlib"]
+addopts = ["--import-mode=importlib",
+           "--cov-append",
+           "--cov=src/mw4",]
 qt_api = "pyside6"
 filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.coverage.run]
+source = ["src/mw4"]
+omit = ["src/mw4/assets/**/*.py", "src/mw4/gui/widgets/**/*.py"]
 
 [tool.ruff]
 line-length = 95

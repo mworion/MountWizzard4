@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  cov: '--cov=src/mw4/ --cov-append --cov-config=pyproject.toml'
+  cov: '--cov-config=pyproject.toml'
 
 on:
   push:

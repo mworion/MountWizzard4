@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  cov: '--cov=src/mw4/ --cov-append'
+  cov: '--cov=mw4/ --cov-append'
 
 on:
   push:

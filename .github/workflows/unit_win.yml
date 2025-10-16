@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  cov: '--cov=src/mw4 --cov-append'
+  cov: '--cov=src/mw4/ --cov-append'
 
 on:
   push:
@@ -34,6 +34,7 @@ on:
       - '.github/workflows/unit_win.yml'
       - '.github/actions/build_package/action.yml'
       - '.github/actions/setup_test/action.yml'
+      -
 jobs:
   build_package:
     #

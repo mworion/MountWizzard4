@@ -50,6 +50,7 @@ jobs:
     #
     needs: build_package
     runs-on: windows-latest
+    
     steps:
       - uses: actions/checkout@v4
       
@@ -59,11 +60,20 @@ jobs:
       - name: running_unit_tests
         run: |
           pytest tests/unit_tests/mainApp ${{env.cov}}
-          
+
+      - name: rename_coveragefile
+        run: mv .coverage c0.dat
+      
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c0
+          path: c0.dat
+  
   run_tests_windows_1:
     #
     needs: build_package
     runs-on: windows-latest
+    
     steps:
       - uses: actions/checkout@v4
       
@@ -74,10 +84,19 @@ jobs:
         run: |
           pytest tests/unit_tests/gui/mainWindow ${{env.cov}}
 
+      - name: rename_coveragefile
+        run: mv .coverage c1.dat
+      
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c1
+          path: c1.dat
+
   run_tests_windows_2:
     #
     needs: build_package
     runs-on: windows-latest
+    
     steps:
       - uses: actions/checkout@v4
       - name: install package
@@ -90,10 +109,19 @@ jobs:
           pytest tests/unit_tests/mountcontrol ${{env.cov}}
           pytest tests/unit_tests/indibase ${{env.cov}}
 
+      - name: rename_coveragefile
+        run: mv .coverage c2.dat
+      
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c2
+          path: c2.dat
+
   run_tests_windows_3:
     #
     needs: build_package
     runs-on: windows-latest
+    
     steps:
       - uses: actions/checkout@v4
   
@@ -107,10 +135,19 @@ jobs:
           pytest tests/unit_tests/gui/styles ${{env.cov}}
           pytest tests/unit_tests/gui/mainWaddon ${{env.cov}}
 
+      - name: rename_coveragefile
+        run: mv .coverage c3.dat
+      
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c3
+          path: c3.dat
+
   run_tests_windows_4:
     #
     needs: build_package
     runs-on: windows-latest
+    
     steps:
       - uses: actions/checkout@v4
   
@@ -123,6 +160,14 @@ jobs:
           pytest tests/unit_tests/gui/extWindows/image ${{env.cov}}
           pytest tests/unit_tests/gui/extWindows/hemisphere ${{env.cov}}
           pytest tests/unit_tests/gui/extWindows/simulator ${{env.cov}}
+
+      - name: rename_coveragefile
+        run: mv .coverage c4.dat
+      
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c4
+          path: c4.dat
           
   coverage:
     #
@@ -131,11 +176,39 @@ jobs:
              run_tests_windows_4]
     runs-on: windows-latest
     steps:
-      - name: upload
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: .coverage
-          flags: unittests
-          name: codecov-umbrella
-          env_vars: OS,PYTHON
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{env.branch}}
+        
+    - uses: actions/download-artifact@v4
+      with:
+        name: c0
+    - uses: actions/download-artifact@v4
+      with:
+        name: c1
+    - uses: actions/download-artifact@v4
+      with:
+        name: c2
+    - uses: actions/download-artifact@v4
+      with:
+        name: c3
+    - uses: actions/download-artifact@v4
+      with:
+        name: c4
+        
+    - name: combining_data
+      run: |
+        dir
+        python -m pip install coverage
+        python -m coverage combine c0.dat c1.dat c2.dat c3.dat c4.dat
+        python -m coverage xml
+
+    - name: upload
+      uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        env_vars: OS,PYTHON
+        override_branch: ${{env.branch}}

@@ -36,14 +36,12 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    with mock.patch.object(ImageTabs, "setCrosshair"):
-        with mock.patch.object(ImageTabs, "colorChange"):
-            parent = ImageWindow(app=App())
-            func = ImageTabs(parent)
-            yield func
-            parent.app.threadPool.waitForDone(10000)
+    parent = ImageWindow(app=App())
+    func = ImageTabs(parent)
+    yield func
+    parent.app.threadPool.waitForDone(10000)
     del parent
-    del func    
+    del func
 
 
 def test_colorChange(function):

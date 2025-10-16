@@ -116,7 +116,7 @@ qt_api = "pyside6"
 filterwarnings = ["ignore::DeprecationWarning"]
 
 [tool.coverage.run]
-source = ["src/mw4"]
+source = ["src/mw4/"]
 omit = ["src/mw4/assets/**/*.py", "src/mw4/gui/widgets/**/*.py"]
 
 [tool.ruff]

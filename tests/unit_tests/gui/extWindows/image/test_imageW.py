@@ -71,6 +71,16 @@ def test_enableTabsMovable(function):
     function.enableTabsMovable(True)
 
 
+def test_showWindow_1(function):
+    with mock.patch.object(function, "setAspectLocked"):
+        with mock.patch.object(function, "clearGui"):
+            with mock.patch.object(function, "setupIcons"):
+                with mock.patch.object(function, "colorChange"):
+                    with mock.patch.object(function, "show"):
+                        with mock.patch.object(function, "showCurrent"):
+                            function.showWindow()
+
+
 def test_closeEvent_1(function):
     with mock.patch.object(function, "show"):
         with mock.patch.object(MWidget, "closeEvent"):

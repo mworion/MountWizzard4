@@ -143,11 +143,3 @@ max-complexity = 10
 "src/mw4/mountcontrol/convert.py" = ["C901"]
 "src/mw4/mountcontrol/connection.py" = ["E501"]
 "src/mw4/assets/assetData.py" = ["E501"]
-
-[tool.coverage.run]
-source = ["src"]
-omit = ["src/mw4/assets/**/*.py", "src/mw4/gui/widgets/**/*.py"]
-branch = true
-
-[tool.coverage.report]
-ignore_errors = true

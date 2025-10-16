@@ -42,6 +42,8 @@ def function(qapp):
             func = ImageTabs(parent)
             yield func
             parent.app.threadPool.waitForDone(10000)
+    del parent
+    del func    
 
 
 def test_colorChange(function):

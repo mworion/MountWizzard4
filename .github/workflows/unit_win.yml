@@ -35,7 +35,7 @@ on:
       - '.github/actions/build_package/action.yml'
       - '.github/actions/setup_test/action.yml'
       - '.github/actions/setup_test_cov/action.yml'
-      -
+
 jobs:
   build_package:
     #

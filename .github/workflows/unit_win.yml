@@ -50,7 +50,6 @@ jobs:
     #
     needs: build_package
     runs-on: windows-latest
-    
     steps:
       - uses: actions/checkout@v4
       
@@ -65,7 +64,6 @@ jobs:
     #
     needs: build_package
     runs-on: windows-latest
-    
     steps:
       - uses: actions/checkout@v4
       
@@ -80,7 +78,6 @@ jobs:
     #
     needs: build_package
     runs-on: windows-latest
-    
     steps:
       - uses: actions/checkout@v4
       - name: install package
@@ -97,7 +94,6 @@ jobs:
     #
     needs: build_package
     runs-on: windows-latest
-    
     steps:
       - uses: actions/checkout@v4
   
@@ -115,7 +111,6 @@ jobs:
     #
     needs: build_package
     runs-on: windows-latest
-    
     steps:
       - uses: actions/checkout@v4
   
@@ -135,6 +130,7 @@ jobs:
              run_tests_windows_2, run_tests_windows_3,
              run_tests_windows_4]
     runs-on: windows-latest
+    steps:
       - name: upload
         uses: codecov/codecov-action@v3
         with:

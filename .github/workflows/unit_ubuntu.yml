@@ -81,11 +81,10 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/loader
-          xvfb-run pytest tests/unit_tests/mainApp
-          xvfb-run pytest tests/unit_tests/gui/mainWindow
-          xvfb-run pytest tests/unit_tests/gui/mainWaddon
-          xvfb-run pytest tests/unit_tests/gui/extWindows
+          xvfb-run pytest tests/unit_tests/gui/extWindows/video
+          xvfb-run pytest tests/unit_tests/gui/extWindows/image
+          xvfb-run pytest tests/unit_tests/gui/extWindows/hemisphere
+          xvfb-run pytest tests/unit_tests/gui/extWindows/simulator
         
   run_tests_ubuntu_3:
     #
@@ -103,7 +102,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/gui/extWindows/video
-          xvfb-run pytest tests/unit_tests/gui/extWindows/image
-          xvfb-run pytest tests/unit_tests/gui/extWindows/hemisphere
-          xvfb-run pytest tests/unit_tests/gui/extWindows/simulator
+          xvfb-run pytest tests/unit_tests/mainApp
+          xvfb-run pytest tests/unit_tests/gui/mainWindow
+          xvfb-run pytest tests/unit_tests/gui/mainWaddon
+          xvfb-run pytest tests/unit_tests/gui/extWindows

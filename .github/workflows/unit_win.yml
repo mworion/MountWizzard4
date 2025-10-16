@@ -59,7 +59,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/loader ${{env.cov}}
+          pytest tests/unit_tests/mainApp ${{env.cov}}
           
       - name: rename_coveragefile
         run: mv .coverage c0.dat
@@ -99,17 +99,19 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-      
       - name: install package
         uses: ./.github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/mainApp ${{env.cov}}
+          pytest tests/unit_tests/base ${{env.cov}}
+          pytest tests/unit_tests/logic ${{env.cov}}
+          pytest tests/unit_tests/mountcontrol ${{env.cov}}
+          pytest tests/unit_tests/indibase ${{env.cov}}
           
       - name: rename_coveragefile
         run: mv .coverage c2.dat
-
+        
       - uses: actions/upload-artifact@v4
         with:
           name: c2
@@ -122,16 +124,17 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
+  
       - name: install package
         uses: ./.github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/base ${{env.cov}}
-          pytest tests/unit_tests/logic ${{env.cov}}
-          pytest tests/unit_tests/mountcontrol ${{env.cov}}
-          pytest tests/unit_tests/indibase ${{env.cov}}
-          
+          pytest tests/unit_tests/gui/extWindows ${{env.cov}}
+          pytest tests/unit_tests/gui/utilities ${{env.cov}}
+          pytest tests/unit_tests/gui/styles ${{env.cov}}
+          pytest tests/unit_tests/gui/mainWaddon ${{env.cov}}
+         
       - name: rename_coveragefile
         run: mv .coverage c3.dat
         
@@ -153,10 +156,10 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/extWindows ${{env.cov}}
-          pytest tests/unit_tests/gui/utilities ${{env.cov}}
-          pytest tests/unit_tests/gui/styles ${{env.cov}}
-          pytest tests/unit_tests/gui/mainWaddon ${{env.cov}}
+          pytest tests/unit_tests/gui/extWindows/video ${{env.cov}}
+          pytest tests/unit_tests/gui/extWindows/image ${{env.cov}}
+          pytest tests/unit_tests/gui/extWindows/hemisphere ${{env.cov}}
+          pytest tests/unit_tests/gui/extWindows/simulator ${{env.cov}}
          
       - name: rename_coveragefile
         run: mv .coverage c4.dat
@@ -166,37 +169,11 @@ jobs:
           name: c4
           path: c4.dat
 
-  run_tests_windows_5:
-    #
-    needs: build_package
-    runs-on: windows-latest
-    
-    steps:
-      - uses: actions/checkout@v4
-  
-      - name: install package
-        uses: ./.github/actions/setup_test_cov
-  
-      - name: running_unit_tests
-        run: |
-          pytest tests/unit_tests/gui/extWindows/video ${{env.cov}}
-          pytest tests/unit_tests/gui/extWindows/image ${{env.cov}}
-          pytest tests/unit_tests/gui/extWindows/hemisphere ${{env.cov}}
-          pytest tests/unit_tests/gui/extWindows/simulator ${{env.cov}}
-         
-      - name: rename_coveragefile
-        run: mv .coverage c5.dat
-        
-      - uses: actions/upload-artifact@v4
-        with:
-          name: c5
-          path: c5.dat
-
   coverage:
     #
     needs: [ run_tests_windows_0, run_tests_windows_1,
              run_tests_windows_2, run_tests_windows_3,
-             run_tests_windows_4, run_tests_windows_5]
+             run_tests_windows_4]
     runs-on: windows-latest
     
     steps:
@@ -217,15 +194,12 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: c4
-      - uses: actions/download-artifact@v4
-        with:
-          name: c5
           
       - name: combining_data
         run: |
           dir
           python -m pip install coverage
-          python -m coverage combine c0.dat c1.dat c2.dat c3.dat c4.dat c5.dat
+          python -m coverage combine c0.dat c1.dat c2.dat c3.dat c4.dat
           python -m coverage xml
   
       - name: upload

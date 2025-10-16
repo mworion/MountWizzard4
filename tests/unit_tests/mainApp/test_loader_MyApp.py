@@ -26,11 +26,11 @@ from PySide6.QtGui import QMouseEvent
 from mw4.loader import MyApp
 
 
-@pytest.fixture(scope="function", autouse=False)
+@pytest.fixture(scope="module", autouse=True)
 def qapp():
     myapp = MyApp([])
     yield myapp
-    myapp.shutdown()
+    # myapp.shutdown()
 
 
 def test_logUserInterface_1(qapp):

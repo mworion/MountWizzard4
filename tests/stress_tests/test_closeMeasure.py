@@ -21,8 +21,8 @@ from random import randint
 
 import numpy as np
 import pytest
-from loader import extractDataFiles
-from mainApp import MountWizzard4
+from mw4.loader import extractDataFiles
+from mw4.mainApp import MountWizzard4
 
 # external packages
 from PySide6.QtCore import Qt, QThreadPool

@@ -24,7 +24,7 @@ import PySide6
 import pytest
 
 # local import
-from mainApp import MountWizzard4
+from mw4.mainApp import MountWizzard4
 
 from mw4.base.loggerMW import setupLogging
 

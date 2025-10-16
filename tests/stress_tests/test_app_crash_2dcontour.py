@@ -22,10 +22,10 @@ from random import randint
 
 # external packages
 import pytest
-from loader import extractDataFiles
+from mw4.loader import extractDataFiles
 
 # local import
-from mainApp import MountWizzard4
+from mw4.mainApp import MountWizzard4
 from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtTest import QTest
 

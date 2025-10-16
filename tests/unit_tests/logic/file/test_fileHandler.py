@@ -32,7 +32,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="function")
 def function(qapp):
-    func = FileHandler(App())
+    func = FileHandler(App(), Path())
     yield func
 
 

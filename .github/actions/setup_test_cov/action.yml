@@ -33,4 +33,5 @@ runs:
         python -m pip install comtypes==1.2.1
         python -m pip install pytest
         python -m pip install pytest-qt
+        python -m pip install pytest-cov
       shell: bash

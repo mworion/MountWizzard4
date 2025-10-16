@@ -50,12 +50,12 @@ class Photometry:
     SN = [30, 20, 15, 10, 10]
     SEP = [3.0, 3.0, 2.5, 2.5, 2.0]
 
-    def __init__(self, app, image=np.zeros((30, 30)), snSelector=0):
+    def __init__(self, app, image=None, snSelector=0):
         self.threadPool = app.threadPool
         self.signals = PhotometrySignals()
 
         self.image = image
-        self.aberrationImage = np.zeros((30, 30))
+        self.aberrationImage = image
         self.snTarget = self.SN[snSelector]
         self.sepThreshold = self.SEP[snSelector]
         self.lock = QMutex()

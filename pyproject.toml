@@ -96,7 +96,17 @@ Discussions = "https://github.com/mworion/MountWizzard4/discussions"
 Channel = "https://www.youtube.com/user/orion49m/featured"
 Forum = "https://www.10micron.eu/forum/"
 
+[dependency-groups]
+dev = [
+  "pytest",
+  "pytest-qt",
+  "pytest-cov",
+  "invoke",
+  "ruff",
+]
+
 [tool.pytest.ini_options]
+minversion = "6.0"
 pythonpath = ["src"]
 testpaths = ["tests"]
 addopts = ["--import-mode=importlib"]

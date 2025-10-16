@@ -43,7 +43,7 @@ class FileHandler:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, app, imagePath="", flipH=False, flipV=False):
+    def __init__(self, app, imagePath: Path, flipH: bool = False, flipV: bool = False):
         self.threadPool = app.threadPool
         self.signals = FileHandlerSignals()
         self.worker: Worker = None

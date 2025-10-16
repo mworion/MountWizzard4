@@ -40,11 +40,9 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     with mock.patch.object(ImageTabs, "setCrosshair"):
         with mock.patch.object(ImageTabs, "colorChange"):
-            with mock.patch.object(Photometry, "__init__", return_value=None):
-                with mock.patch.object(ImageTabs, "__init__", return_value=None):
-                    func = ImageWindow(app=App())
-                    yield func
-                    func.app.threadPool.waitForDone(10000)
+            func = ImageWindow(app=App())
+            yield func
+            func.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):
@@ -137,7 +135,8 @@ def test_updateWindowsStats_3(function):
 
 
 def test_selectImage_1(function):
-    with mock.patch.object(MWidget, "openFile", return_value=Path("test.fits")):
+    function.ui.autoSolve.setChecked(False)
+    with mock.patch.object(MWidget, "openFile", return_value=Path("xyz.fits")):
         function.selectImage()
 
 

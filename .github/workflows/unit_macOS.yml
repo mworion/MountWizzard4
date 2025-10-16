@@ -30,7 +30,7 @@ on:
       - '.github/workflows/unit_macOS.yml'
       - '.github/actions/build_package/action.yml'
       - '.github/actions/setup_test/action.yml'
-      -
+
 jobs:
   build_package:
     #

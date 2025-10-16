@@ -81,9 +81,9 @@ def test_setupIcons_1(function):
 
 
 def test_colorChange(function):
-    function.tabs = mock.MagicMock()
     with mock.patch.object(function, "showCurrent"):
-        function.colorChange()
+        with mock.patch.object(function.tabs, "colorChange"):
+            function.colorChange()
 
 
 def test_clearGui(function):

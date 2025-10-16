@@ -50,18 +50,15 @@ jobs:
   
       - name: install package
         uses: ./.github/actions/setup_test
-  
+
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/loader
-          pytest tests/unit_tests/mainApp
-          pytest tests/unit_tests/gui/mainWindow
-          pytest tests/unit_tests/gui/extWindows
-          pytest tests/unit_tests/gui/extWindows/video
-          pytest tests/unit_tests/gui/extWindows/image
-          pytest tests/unit_tests/gui/extWindows/hemisphere
-          pytest tests/unit_tests/gui/extWindows/simulator
-          pytest tests/unit_tests/gui/mainWaddon
+          pytest tests/unit_tests/base
+          pytest tests/unit_tests/logic/*
+          pytest tests/unit_tests/mountcontrol
+          pytest tests/unit_tests/indibase
+          pytest tests/unit_tests/gui/utilities
+          pytest tests/unit_tests/gui/styles
 
   run_tests_macos_2:
     #
@@ -73,12 +70,29 @@ jobs:
   
       - name: install package
         uses: ./.github/actions/setup_test
-
+  
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/base
-          pytest tests/unit_tests/logic/*
-          pytest tests/unit_tests/mountcontrol
-          pytest tests/unit_tests/indibase
-          pytest tests/unit_tests/gui/utilities
-          pytest tests/unit_tests/gui/styles
+          pytest tests/unit_tests/loader
+          pytest tests/unit_tests/mainApp
+          pytest tests/unit_tests/gui/mainWindow
+          pytest tests/unit_tests/gui/extWindows
+          pytest tests/unit_tests/gui/mainWaddon
+
+  run_tests_macos_3:
+    #
+    needs: build_package
+    runs-on: macos-13
+    
+    steps:
+      - uses: actions/checkout@v4
+  
+      - name: install package
+        uses: ./.github/actions/setup_test
+  
+      - name: running_unit_tests
+        run: |
+          pytest tests/unit_tests/gui/extWindows/video
+          pytest tests/unit_tests/gui/extWindows/image
+          pytest tests/unit_tests/gui/extWindows/hemisphere
+          pytest tests/unit_tests/gui/extWindows/simulator

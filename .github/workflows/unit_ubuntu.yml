@@ -54,7 +54,7 @@ jobs:
         uses: ./.github/actions/install_ubuntu_head
     
       - name: install package
-        uses: ./.github/actions/setup_test
+        uses: ./.github/actions/setup_test_cov
 
       - name: running_unit_tests
         run: |

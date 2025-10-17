@@ -13,6 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
+from mw4.cli import app
+
 if __name__ == "__main__":
-    from mw4.cli import app
     app()

@@ -119,6 +119,11 @@ filterwarnings = ["ignore::DeprecationWarning"]
 source = ["src/mw4/"]
 omit = ["src/mw4/assets/**/*.py", "src/mw4/gui/widgets/**/*.py"]
 
+[tool.coverage.report]
+exclude_also = [
+    "if __name__ == .__main__.:",
+]
+
 [tool.ruff]
 line-length = 95
 indent-width = 4

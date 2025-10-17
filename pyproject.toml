@@ -13,15 +13,12 @@
 #
 ###########################################################
 [build-system]
-requires = ["uv_build>=0.9.1"]
+requires = ["uv_build>=0.9.3"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
 module-name = "mw4"
 module-root = "src"
-
-# requires = ["setuptools>=77.0.3", "wheel"]
-# build-backend = "setuptools.build_meta"
 
 [project]
 name = "mountwizzard4"

@@ -35,8 +35,7 @@ def test_read_options(test_options):
 @mock.patch('argparse.ArgumentParser.parse_args', return_value=argparse.Namespace(dpi=96, scale=1))
 def test_app_1(test_options):
     with mock.patch.object(mw4.cli, "main"):
-        with mock.patch.object(mw4.cli, "read_options"):
-            app()
+        app()
 
 
 @mock.patch('argparse.ArgumentParser.parse_args', return_value=argparse.Namespace(dpi=96, scale=1))

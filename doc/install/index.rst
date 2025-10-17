@@ -10,6 +10,11 @@ activating and deactivating of virtual environments, installing and
 versioning MountWizzard4 an that all with only 3 commands across all supported
 platforms (Windows, Linux and MacOS).
 
+There are as well some videos to watch the installation process:
+
+- Windows11: https://www.youtube.com/watch?v=iKBfWjA5I0Q
+- RASPI: https://www.youtube.com/watch?v=7dPa8rjAssE
+
 Installing **uv**
 -----------------
 I strongly recommend to install uv as a standalone program. The description could
@@ -57,7 +62,8 @@ The installation is now a simple command:
     uv pip install mountwizzard4
 
 Installation will download the necessary packages (visible) and installs them in
-the virtual environment.
+the virtual environment. If you are using RASPI hardware, please check the RASPI
+information below as well!
 
 If you want to have a dedicated version of MountWizzard4, just add the version
 number in the command line (e.g. 3.2.8) like
@@ -107,7 +113,6 @@ Getting this information.
 
 Additional for RaspberryPi (4, 5)
 ---------------------------------
-
 .. hint::
     This is only necessary for v3. MountWizzard4 v4 brings all binaries directly.
     For v4 just proceed like above.

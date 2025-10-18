@@ -22,8 +22,8 @@ from unittest.mock import MagicMock
 import pytest
 
 # external packages
-from PySide6.QtCore import QBasicTimer, QCoreApplication, QTimer
-from PySide6.QtWidgets import QWidget
+from PySide6.QtCore import QBasicTimer, QTimer
+from PySide6.QtWidgets import QWidget, QApplication
 
 from mw4.assets import assetsData as res
 from mw4.base.loggerMW import setupLogging
@@ -170,6 +170,6 @@ def test_aboutToQuit_1(app):
 
 
 def test_quit_1(app):
-    with mock.patch.object(QCoreApplication, "quit"):
+    with mock.patch.object(QApplication, "quit"):
         with mock.patch.object(app.mount, "stopAllMountTimers"):
             app.quit()

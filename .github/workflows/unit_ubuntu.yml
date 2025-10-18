@@ -58,12 +58,12 @@ jobs:
 
       - name: running_unit_tests
         run: |
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/base
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/logic/*
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/mountcontrol
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/indibase
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/utilities
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/styles
+          xvfb-run --auto-servernum pytest tests/unit_tests/base
+          xvfb-run --auto-servernum pytest tests/unit_tests/logic/*
+          xvfb-run --auto-servernum pytest tests/unit_tests/mountcontrol
+          xvfb-run --auto-servernum pytest tests/unit_tests/indibase
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/utilities
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/styles
         
   run_tests_ubuntu_2:
     #
@@ -81,10 +81,10 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/extWindows/video
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/extWindows/image
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/extWindows/hemisphere
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/extWindows/simulator
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows/video
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows/image
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows/hemisphere
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows/simulator
 
   run_tests_ubuntu_3:
     #
@@ -102,9 +102,9 @@ jobs:
       
       - name: running_unit_tests
         run: |
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/mainWindow
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/mainWaddon
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/extWindows
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/mainWindow
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/mainWaddon
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows
         
   run_tests_ubuntu_4:
     #
@@ -122,4 +122,4 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run -e /dev/stdout pytest tests/unit_tests/mainApp
+          xvfb-run --auto-servernum pytest tests/unit_tests/mainApp

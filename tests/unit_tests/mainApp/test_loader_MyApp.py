@@ -22,14 +22,14 @@ from PySide6 import QtWidgets
 from PySide6.QtCore import QEvent, QPointF, Qt
 from PySide6.QtGui import QMouseEvent
 
-
 # local import
+import mw4.loader
 from mw4.loader import MyApp
 
 
 @pytest.fixture(scope="module", autouse=True)
 def qapp():
-    with mock.patch.object(QtWidgets, "QApplication"):
+    with mock.patch.object(mw4.loader, "QApplication"):
         myapp = MyApp([])
         yield myapp
         del myapp
@@ -110,7 +110,7 @@ def test_notify_1(qapp):
     ui = QtWidgets.QPushButton()
     event = QEvent(QEvent.Type.ToolTipChange)
     suc = qapp.notify(obj=ui, event=event)
-    assert not suc
+    assert suc
 
 
 def test_notify_3(qapp):

@@ -85,8 +85,28 @@ jobs:
           xvfb-run pytest tests/unit_tests/gui/extWindows/image
           xvfb-run pytest tests/unit_tests/gui/extWindows/hemisphere
           xvfb-run pytest tests/unit_tests/gui/extWindows/simulator
-        
+
   run_tests_ubuntu_3:
+    #
+    needs: build_package
+    runs-on: ubuntu-22.04
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: install package
+        uses: ./.github/actions/setup_test
+      
+      - name: install head
+        uses: ./.github/actions/install_ubuntu_head
+      
+      - name: running_unit_tests
+        run: |
+          xvfb-run pytest tests/unit_tests/gui/mainWindow
+          xvfb-run pytest tests/unit_tests/gui/mainWaddon
+          xvfb-run pytest tests/unit_tests/gui/extWindows
+        
+  run_tests_ubuntu_4:
     #
     needs: build_package
     runs-on: ubuntu-22.04
@@ -103,6 +123,3 @@ jobs:
       - name: running_unit_tests
         run: |
           xvfb-run pytest tests/unit_tests/mainApp
-          xvfb-run pytest tests/unit_tests/gui/mainWindow
-          xvfb-run pytest tests/unit_tests/gui/mainWaddon
-          xvfb-run pytest tests/unit_tests/gui/extWindows

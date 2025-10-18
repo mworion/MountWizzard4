@@ -27,6 +27,7 @@ __all__ = ["CustomViewBox"]
 
 class CustomViewBox(pg.ViewBox):
     def __init__(self, *args, **kwargs):
+        self._previousGeometry = None
         super().__init__(*args, **kwargs)
         self.plotDataItem = None
         self.dragOffset = None
@@ -35,7 +36,6 @@ class CustomViewBox(pg.ViewBox):
         self.epsilonCurve = 2
         self.epsilonFree = 360
         self.setOpts(*args, **kwargs)
-        self._previousGeometry = None
 
     def setPlotDataItem(self, plotDataItem: pg.PlotDataItem) -> None:
         """ """
@@ -208,7 +208,7 @@ class CustomViewBox(pg.ViewBox):
         self.updateData(x=x, y=y)
         event.accept()
 
-    def mouseClickEvent(self, event):
+    def mouseClickEvent(self, event) -> None:
         """ """
         if self.plotDataItem is None and event.button() == Qt.MouseButton.RightButton:
             self.rightMouseRange()
@@ -248,7 +248,7 @@ class CustomViewBox(pg.ViewBox):
         event.ignore()
         return
 
-    def mouseDoubleClickEvent(self, event, QGraphicsSceneMouseEvent=None):
+    def mouseDoubleClickEvent(self, event, QGraphicsSceneMouseEvent=None) -> None:
         """ """
         if self.plotDataItem is not None:
             return

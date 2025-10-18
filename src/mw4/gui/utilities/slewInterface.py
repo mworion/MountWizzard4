@@ -28,11 +28,8 @@ class SlewInterface:
 
     log = logging.getLogger("MW4")
 
-    def slewSelectedTargetWithDome(self, slewType="normal"):
-        """
-        :param slewType:
-        :return: success
-        """
+    def slewSelectedTargetWithDome(self, slewType: str = "normal") -> bool:
+        """ """
         azimuthT = self.app.mount.obsSite.AzTarget
         altitudeT = self.app.mount.obsSite.AltTarget
 
@@ -56,13 +53,8 @@ class SlewInterface:
             self.msg.emit(2, "Tools", "Slewing error", "Cannot slew to target")
         return suc
 
-    def slewTargetAltAz(self, alt, az, slewType="normal"):
-        """
-        :param alt:
-        :param az:
-        :param slewType:
-        :return:
-        """
+    def slewTargetAltAz(self, alt: float, az: float, slewType: str = "normal") -> bool:
+        """ """
         suc = self.app.mount.obsSite.setTargetAltAz(
             alt=Angle(degrees=alt), az=Angle(degrees=az)
         )
@@ -74,14 +66,10 @@ class SlewInterface:
         suc = self.slewSelectedTargetWithDome(slewType=slewType)
         return suc
 
-    def slewTargetRaDec(self, ra, dec, slewType="normal", epoch="J2000"):
-        """
-        :param ra:
-        :param dec:
-        :param slewType:
-        :param epoch:
-        :return:
-        """
+    def slewTargetRaDec(
+        self, ra: Angle, dec: Angle, slewType: str = "normal", epoch: str = "J2000"
+    ) -> bool:
+        """ """
         timeJD = self.app.mount.obsSite.timeJD
         if timeJD is None:
             return False

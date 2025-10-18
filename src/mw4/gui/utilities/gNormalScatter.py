@@ -34,13 +34,8 @@ class NormalScatter(PlotBase):
         self.col = None
         self.p[0].setVisible(True)
 
-    def plot(self, x, y, **kwargs):
-        """
-        :param x:
-        :param y:
-        :param kwargs:
-        :return:
-        """
+    def plot(self, x: int, y: int, **kwargs) -> None:
+        """ """
         self.p[0].clear()
         self.p[0].showAxes(True, showValues=True)
         self.scatterItem = pg.ScatterPlotItem(hoverable=True, hoverSize=10, hoverPen=self.pen)
@@ -114,4 +109,3 @@ class NormalScatter(PlotBase):
         isoLevels = kwargs.get("isoLevels", 0)
         if isoLevels != 0 and "z" in kwargs:
             self.addIsoItemHorizon(x, y, z, levels=isoLevels)
-        return True

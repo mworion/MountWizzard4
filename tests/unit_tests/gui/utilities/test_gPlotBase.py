@@ -134,8 +134,7 @@ def test_addIsoBasic_1():
     alt = np.random.uniform(low=15, high=85, size=(50,))
     err = np.random.uniform(low=5, high=15, size=(50,))
     with mock.patch.object(QApplication, "processEvents"):
-        suc = p.addIsoBasic(p.p[0], err, levels=1)
-        assert suc
+        p.addIsoBasic(p.p[0], err, levels=1)
 
 
 def test_addIsoItem_1():
@@ -144,23 +143,19 @@ def test_addIsoItem_1():
     alt = np.random.uniform(low=15, high=85, size=(50,))
     err = np.random.uniform(low=5, high=15, size=(50,))
     with mock.patch.object(p, "addIsoBasic"):
-        suc = p.addIsoItem(az, alt, err)
-        assert suc
+        p.addIsoItem(az, alt, err)
 
 
 def test_PlotBase_setGrid_0():
     p = PlotBase()
-    suc = p.setGrid(np.array([0, 1, 2]), plotItem=p.p[0])
-    assert suc
+    p.setGrid(np.array([0, 1, 2]), plotItem=p.p[0])
 
 
 def test_PlotBase_setGrid_1():
     p = PlotBase()
-    suc = p.setGrid(np.array([0, 1, 2]))
-    assert suc
+    p.setGrid(np.array([0, 1, 2]))
 
 
 def test_PlotBase_setGrid_2():
     p = PlotBase()
-    suc = p.setGrid(np.array([0, 1, 2]), reverse=True)
-    assert suc
+    p.setGrid(np.array([0, 1, 2]), reverse=True)

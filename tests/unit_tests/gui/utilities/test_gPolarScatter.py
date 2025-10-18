@@ -74,5 +74,4 @@ def test_PolarScatter_plot3():
 
 def test_PolarScatter_plotLoc():
     p = PolarScatter()
-    suc = p.plotLoc(47)
-    assert suc
+    p.plotLoc(47)

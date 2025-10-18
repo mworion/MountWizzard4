@@ -31,13 +31,8 @@ class PolarScatter(NormalScatter):
         self.p[0].setAspectLocked(True)
         self.addBarItem()
 
-    def plot(self, x, y, **kwargs):
-        """
-        :param x: azimuth
-        :param y: altitude
-        :param kwargs:
-        :return:
-        """
+    def plot(self, x: int, y: int, **kwargs) -> bool:
+        """ """
         x = np.radians(90 - x)
         if kwargs.get("reverse", False):
             posX = (90 - y) * np.cos(x)

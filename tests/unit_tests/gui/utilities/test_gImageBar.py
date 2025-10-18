@@ -38,8 +38,7 @@ def test_ImageBar_constructPlot():
 
 def test_ImageBar_setColorMap():
     function = ImageBar()
-    suc = function.setColorMap("plasma")
-    assert suc
+    function.setColorMap("plasma")
 
 
 def test_ImageBar_setImage_1():
@@ -66,8 +65,7 @@ def test_ImageBar_showCrosshair():
     function = ImageBar()
     function.lx = QWidget()
     function.ly = QWidget()
-    suc = function.showCrosshair(True)
-    assert suc
+    function.showCrosshair(True)
 
 
 def test_ImageBar_addEllipse():
@@ -80,5 +78,4 @@ def test_ImageBar_addEllipse():
 def test_ImageBar_addValueAnnotation():
     function = ImageBar()
     with mock.patch.object(function.p[0], "addItem"):
-        suc = function.addValueAnnotation(0, 0, 10)
-        assert suc
+        function.addValueAnnotation(0, 0, 10)

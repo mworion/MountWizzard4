@@ -40,6 +40,7 @@ Version 4.x
 - improve: don't delete message list when color change
 - improve: rewrite of the online documentation
 - improve: no 10micron installer needed anymore for object data
+- improve: schedule and threads in waiting times (slow machines)
 - remove: automation of 10micron installer
 - remove: updater for MW4 (use uv installer instead)
 - fix: typos
@@ -49,6 +50,14 @@ Released versions
 =================
 Version 3.x
 ^^^^^^^^^^^
+3.2.8
+
+- add: support for uv installer and easier starting
+
+3.2.7
+
+- - bugfixes
+
 3.2.6
 
 - add: support for INDI Pegasus Uranus Meteo sensor

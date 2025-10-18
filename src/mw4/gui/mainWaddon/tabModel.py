@@ -222,9 +222,7 @@ class Model(QObject):
             self.msg.emit(2, "Model", "Run error", t)
         return True
 
-    def setupFilenamesAndDirectories(
-        self, prefix: str = "", postfix: str = ""
-    ) -> Path:
+    def setupFilenamesAndDirectories(self, prefix: str = "", postfix: str = "") -> Path:
         """ """
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         name = f"{prefix}-{nameTime}-{postfix}"
@@ -307,9 +305,7 @@ class Model(QObject):
         )
         if len(modelFilesPath) > 1:
             self.msg.emit(0, "Model", "Run", "Combination of len(modelFilesPath) files")
-            self.modelData.name = self.setupFilenamesAndDirectories(
-                prefix="m", postfix="add"
-            )
+            self.modelData.name = self.setupFilenamesAndDirectories(prefix="m", postfix="add")
         elif len(modelFilesPath) == 1:
             self.modelData.name = modelFilesPath[0].stem
         else:

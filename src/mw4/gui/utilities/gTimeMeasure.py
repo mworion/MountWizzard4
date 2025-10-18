@@ -26,13 +26,8 @@ class TimeMeasure(pg.AxisItem):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def tickStrings(self, values, scale, spacing):
-        """
-        :param values:
-        :param scale:
-        :param spacing:
-        :return:
-        """
+    def tickStrings(self, values: [], scale: float, spacing: []) -> []:
+        """ """
         ticks = []
         for x in values:
             if x < 0:

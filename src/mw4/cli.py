@@ -24,8 +24,7 @@ def read_options() -> argparse.Namespace:
     """ """
     parser = argparse.ArgumentParser(
         prog=__name__,
-        description="Installs MountWizzard4 in Python virtual "
-        "environment in local workdir",
+        description="Installs MountWizzard4 in Python virtual environment in local workdir",
     )
     parser.add_argument(
         "-d",

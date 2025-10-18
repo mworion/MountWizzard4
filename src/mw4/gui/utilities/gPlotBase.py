@@ -54,10 +54,8 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.setupItems()
         self.colorChange()
 
-    def colorChange(self):
-        """
-        :return:
-        """
+    def colorChange(self) -> None:
+        """ """
         self.pen = pg.mkPen(color=self.M_PRIM, width=1)
         self.brush = pg.mkBrush(color=self.M_PRIM + "80")
         self.penGrid = pg.mkPen(color=self.M_SEC)
@@ -72,12 +70,9 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             if self.barItem:
                 self.barItem.getAxis(side).setPen(self.pen)
                 self.barItem.getAxis(side).setTextPen(self.pen)
-        return True
 
-    def setupItems(self):
-        """
-        :return:
-        """
+    def setupItems(self) -> None:
+        """ """
         for plotItem in self.p:
             plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
             plotItem.getViewBox().rbScaleBox.setPen(self.pen)
@@ -92,12 +87,8 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
                 plotItem.getAxis(side).setTextPen(self.pen)
                 plotItem.getAxis(side).setGrid(32)
 
-    def addBarItem(self, interactive=False, plotItem=None):
-        """
-        :param interactive:
-        :param plotItem:
-        :return:
-        """
+    def addBarItem(self, interactive: bool = False, plotItem: pg.PlotItem = None) -> None:
+        """ """
         if plotItem is None:
             plotItem = self.p[0]
         self.barItem = pg.ColorBarItem(width=15, interactive=interactive, rounding=0.025)
@@ -107,10 +98,9 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             self.barItem.getAxis(side).setTextPen(self.pen)
         plotItem.layout.addItem(self.barItem, 2, 5)
         plotItem.layout.setColumnFixedWidth(4, 5)
-        return True
 
     @staticmethod
-    def toPolar(az, alt):
+    def toPolar(az: [], alt: []) -> tuple:
         az = np.array(az)
         alt = np.array(alt)
         theta = np.radians(90 - az)
@@ -119,19 +109,16 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         return x, y
 
     @staticmethod
-    def findItemByName(plotItem, name):
+    def findItemByName(plotItem: pg.PlotItem, name: str) -> pg.GraphicsObject:
         for item in plotItem.items:
             if hasattr(item, "nameStr") and item.nameStr == name:
                 return item
         return None
 
-    def drawHorizon(self, horizonP, plotItem=None, polar=False):
-        """
-        :param horizonP:
-        :param plotItem:
-        :param polar:
-        :return:
-        """
+    def drawHorizon(
+        self, horizonP: [], plotItem: pg.PlotItem = None, polar: bool = False
+    ) -> bool:
+        """ """
         if plotItem is None:
             plotItem = self.p[0]
 
@@ -162,13 +149,8 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         plotItem.addItem(horItem)
         return True
 
-    def addIsoBasic(self, plotItem, zm, levels=10):
-        """
-        :param plotItem:
-        :param zm:
-        :param levels:
-        :return:
-        """
+    def addIsoBasic(self, plotItem: pg.PlotItem, zm: float, levels: int = 10) -> None:
+        """ """
         minE = np.min(zm)
         maxE = np.max(zm)
 
@@ -184,19 +166,18 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             pd.setPen(pg.mkPen(color=colorVal))
             plotItem.addItem(pd)
             QApplication.processEvents()
-        return True
 
-    def addIsoItem(self, x, y, z, plotItem=None, rangeX=None, rangeY=None, levels=20):
-        """
-        :param x:
-        :param y:
-        :param z:
-        :param plotItem:
-        :param rangeX:
-        :param rangeY:
-        :param levels:
-        :return:
-        """
+    def addIsoItem(
+        self,
+        x: int,
+        y: int,
+        z: int,
+        plotItem: pg.PlotItem = None,
+        rangeX: [] = None,
+        rangeY: [] = None,
+        levels: int = 20,
+    ) -> None:
+        """ """
         if plotItem is None:
             plotItem = self.p[0]
         if rangeX is None:
@@ -208,31 +189,19 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         zm = griddata((x, y), z, (xm, ym), method="linear", fill_value=np.min(z))
         zm = uniform_filter(zm, size=10)
         self.addIsoBasic(plotItem, zm, levels)
-        return True
 
-    def addIsoItemHorizon(self, x, y, z, plotItem=None, levels=20):
-        """
-        :param x:
-        :param y:
-        :param z:
-        :param plotItem:
-        :param levels:
-        :return:
-        """
+    def addIsoItemHorizon(
+        self, x: int, y: int, z: int, plotItem: pg.PlotItem = None, levels: int = 20
+    ) -> None:
+        """ """
         z = np.abs(z)
         az = np.concatenate([x - 360, x, x + 360])
         alt = np.concatenate([y, y, y])
         err = np.concatenate([z, z, z])
         self.addIsoItem(az, alt, err, plotItem=plotItem, levels=levels)
-        return True
 
-    def setGrid(self, y=0, plotItem=None, **kwargs):
-        """
-        :param y:
-        :param plotItem:
-        :param kwargs:
-        :return:
-        """
+    def setGrid(self, y: int = 0, plotItem: pg.PlotItem = None, **kwargs) -> None:
+        """ """
         if plotItem is None:
             plotItem = self.p[0]
         textAngle = np.radians(150)
@@ -275,14 +244,9 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             textItem.setFont(font)
             textItem.setPos(x, y)
             plotItem.addItem(textItem)
-        return True
 
-    def plotLoc(self, lat, plotItem=None):
-        """
-        :param lat:
-        :param plotItem:
-        :return:
-        """
+    def plotLoc(self, lat: float, plotItem: pg.PlotItem = None) -> None:
+        """ """
         if plotItem is None:
             plotItem = self.p[0]
         circle = pg.QtWidgets.QGraphicsEllipseItem(-2, -2, 4, 4)
@@ -298,4 +262,3 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         circle.setPen(self.pen)
         circle.setPos(0, 90 - lat)
         plotItem.addItem(circle)
-        return True

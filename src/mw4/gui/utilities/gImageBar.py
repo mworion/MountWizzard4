@@ -38,10 +38,8 @@ class ImageBar(PlotBase):
             self.p[0].getAxis(side).setGrid(0)
         self.defRange = {}
 
-    def constructPlot(self):
-        """
-        :return:
-        """
+    def constructPlot(self) -> None:
+        """ """
         self.p[0].clear()
         self.p[0].showAxes(True, showValues=True)
         self.imageItem = pg.ImageItem()
@@ -51,23 +49,14 @@ class ImageBar(PlotBase):
         self.ly = self.p[0].addLine(y=0, pen=pg.mkPen(color=self.M_YELLOW))
         self.lx.setVisible(False)
         self.ly.setVisible(False)
-        return True
 
-    def setColorMap(self, colorMap):
-        """
-        :param colorMap:
-        :return:
-        """
+    def setColorMap(self, colorMap: str) -> None:
+        """ """
         cMap = pg.colormap.get(colorMap)
         self.barItem.setColorMap(cMap)
-        return True
 
-    def setImage(self, imageDisp, updateGeometry=True):
-        """
-        :param imageDisp:
-        :param updateGeometry:
-        :return:
-        """
+    def setImage(self, imageDisp: np.array, updateGeometry: bool = True) -> bool:
+        """ """
         self.constructPlot()
         self.imageItem.setImage(imageDisp)
         if imageDisp is None:
@@ -90,21 +79,17 @@ class ImageBar(PlotBase):
         self.ly.setPos((0, yMax / 2))
         return True
 
-    def showCrosshair(self, value):
-        """
-        :param value:
-        :return:
-        """
+    def showCrosshair(self, show: bool) -> None:
+        """ """
         if self.lx:
-            self.lx.setVisible(value)
+            self.lx.setVisible(show)
         if self.ly:
-            self.ly.setVisible(value)
-        return True
+            self.ly.setVisible(show)
 
-    def addEllipse(self, x, y, a, b, theta):
-        """
-        :return:
-        """
+    def addEllipse(
+        self, x: int, y: int, a: int, b: int, theta: int
+    ) -> pg.QtWidgets.QGraphicsEllipseItem:
+        """ """
         ellipse = pg.QtWidgets.QGraphicsEllipseItem(-a, -b, 2 * a + 1, 2 * b + 1)
         ellipse.setPos(x, y)
         tr = QTransform()
@@ -114,17 +99,11 @@ class ImageBar(PlotBase):
         self.p[0].addItem(ellipse)
         return ellipse
 
-    def addValueAnnotation(self, x, y, value):
-        """
-        :param x:
-        :param y:
-        :param value:
-        :return:
-        """
+    def addValueAnnotation(self, x: int, y: int, value: str) -> None:
+        """ """
         d = 3
         posX = x + d
         posY = y + d
         text = pg.TextItem(text=f"{value:2.2f}", color=self.M_PRIM)
         text.setPos(posX, posY)
         self.p[0].addItem(text)
-        return True

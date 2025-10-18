@@ -35,6 +35,7 @@ class CustomViewBox(pg.ViewBox):
         self.epsilonCurve = 2
         self.epsilonFree = 360
         self.setOpts(*args, **kwargs)
+        self._previousGeometry = None
 
     def setPlotDataItem(self, plotDataItem: pg.PlotDataItem) -> None:
         """ """

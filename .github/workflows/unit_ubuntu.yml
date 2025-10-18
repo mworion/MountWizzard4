@@ -58,12 +58,12 @@ jobs:
 
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/base -e /dev/stdout
-          xvfb-run pytest tests/unit_tests/logic/* -e /dev/stdout
-          xvfb-run pytest tests/unit_tests/mountcontrol -e /dev/stdout
-          xvfb-run pytest tests/unit_tests/indibase -e /dev/stdout
-          xvfb-run pytest tests/unit_tests/gui/utilities -e /dev/stdout
-          xvfb-run pytest tests/unit_tests/gui/styles -e /dev/stdout
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/base
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/logic/*
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/mountcontrol
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/indibase
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/utilities
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/styles
         
   run_tests_ubuntu_2:
     #
@@ -81,10 +81,10 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/gui/extWindows/video -e /dev/stdout
-          xvfb-run pytest tests/unit_tests/gui/extWindows/image -e /dev/stdout
-          xvfb-run pytest tests/unit_tests/gui/extWindows/hemisphere -e /dev/stdout
-          xvfb-run pytest tests/unit_tests/gui/extWindows/simulator -e /dev/stdout
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/extWindows/video
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/extWindows/image
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/extWindows/hemisphere
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/extWindows/simulator
 
   run_tests_ubuntu_3:
     #
@@ -102,9 +102,9 @@ jobs:
       
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/gui/mainWindow -e /dev/stdout
-          xvfb-run pytest tests/unit_tests/gui/mainWaddon -e /dev/stdout
-          xvfb-run pytest tests/unit_tests/gui/extWindows -e /dev/stdout
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/mainWindow
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/mainWaddon
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/gui/extWindows
         
   run_tests_ubuntu_4:
     #
@@ -122,4 +122,4 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/mainApp -e /dev/stdout
+          xvfb-run -e /dev/stdout pytest tests/unit_tests/mainApp

@@ -43,7 +43,6 @@ def function(qapp):
             func = ImageWindow(app=App())
             yield func
             func.app.threadPool.waitForDone(10000)
-    del func
 
 
 def test_initConfig_1(function):

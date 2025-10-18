@@ -17,6 +17,7 @@
 import shutil
 import unittest.mock as mock
 from pathlib import Path
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -58,7 +59,7 @@ def app(qapp):
         with mock.patch.object(QTimer, "start"):
             with mock.patch.object(QBasicTimer, "start"):
                 with mock.patch.object(AstroObjects, "loadSourceUrl"):
-                    app = MountWizzard4(mwGlob=mwGlob, application=qapp)
+                    app = MountWizzard4(mwGlob=mwGlob, application=MagicMock())
                     app.update1s = Test()
                     yield app
                     app.threadPool.waitForDone(15000)

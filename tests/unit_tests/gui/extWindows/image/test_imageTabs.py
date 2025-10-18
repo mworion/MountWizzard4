@@ -32,16 +32,16 @@ from mw4.logic.photometry.photometry import Photometry
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
+    CustomViewBox._previousGeometry = None
     parent = ImageWindow(app=App())
     func = ImageTabs(parent)
     yield func
     parent.app.threadPool.waitForDone(10000)
-    del parent
-    del func
 
 
 def test_colorChange(function):

@@ -28,7 +28,6 @@ env:
   ucc: 'pyside6-rcc'
   res: 'src_add/assets/'
   resDest: 'src/mw4/assets/'
-  version: '-v 4.0.0a38'
 
 on:
   push:
@@ -111,7 +110,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-  
+          
+      - name: install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          python-version: ${{ matrix.python-version }}
+      
       - uses: actions/download-artifact@v4
         with:
           name: dist
@@ -120,7 +125,7 @@ jobs:
       - name: MountWizzard4 Install
         continue-on-error: true
         run: |
-          uv pip install mountwizzard4== ${{ env.version }}
+          uv pip install dist/mountwizzard4.tar.gz
           
       - name: Run MountWizzard4
         continue-on-error: true
@@ -159,11 +164,17 @@ jobs:
           sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
           sudo apt-get install -y libxcb-keysyms1 ffmpeg libsm6 libxext6
           sudo apt-get install -y libxcb-cursor0 libegl1-mesa
+          
+      - name: install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          python-version: ${{ matrix.python-version }}
   
       - name: MountWizzard4 Install
         continue-on-error: true
         run: |
-          uv pip install mountwizzard4== ${{ env.version }}
+          uv pip install dist/mountwizzard4.tar.gz
           
       - name: Run MountWizzard4
         continue-on-error: true
@@ -192,10 +203,16 @@ jobs:
           name: dist
           path: dist
           
+      - name: install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          python-version: ${{ matrix.python-version }}
+          
       - name: MountWizzard4 Install
         continue-on-error: true
         run: |
-          uv pip install mountwizzard4== ${{ env.version }}
+          uv pip install dist/mountwizzard4.tar.gz
           
       - name: MountWizzard4 Run
         continue-on-error: true

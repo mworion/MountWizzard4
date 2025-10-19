@@ -68,7 +68,7 @@ client = {
     "mac13": {
         "user": "mw@astro-mac-13.uranus",
         "work": "test",
-        "scp": "mw@astro-mac-v13.uranus:/Users/mw/test",
+        "scp": "mw@astro-mac-13.uranus:/Users/mw/test",
     },
     "mac14": {
         "user": "mw@astro-mac-14.uranus",
@@ -79,6 +79,11 @@ client = {
         "user": "mw@astro-mac-15.uranus",
         "work": "test",
         "scp": "mw@astro-mac-15.uranus:/Users/mw/test",
+    },
+    "mac26": {
+        "user": "mw@astro-mac-26.uranus",
+        "work": "test",
+        "scp": "mw@astro-mac-26.uranus:/Users/mw/test",
     },
 }
 
@@ -395,6 +400,16 @@ def test_mac15(c):
     scp = client["mac15"]["scp"]
     test_mac(c, user, work, scp)
     printMW("test mac15 install finished\n")
+
+
+@task(pre=[])
+def test_mac26(c):
+    printMW("test mac26 install")
+    user = client["mac26"]["user"]
+    work = client["mac26"]["work"]
+    scp = client["mac26"]["scp"]
+    test_mac(c, user, work, scp)
+    printMW("test mac26 install finished\n")
 
 
 @task(pre=[build_resource, build_widgets])

@@ -159,7 +159,7 @@ def build_resource(c):
             for file in glob.glob(resourceDir + "data/*.*"):
                 t = os.stat(file).st_mtime
                 f.write(f"{os.path.basename(file)} {t}\n")
-    runMW(c, f"pyside6-rcc -o {resourceDestDir}assetsData.py {resourceDir}assetData.qrc")
+    runMW(c, f"uv run pyside6-rcc -o {resourceDestDir}assetsData.py {resourceDir}assetData.qrc")
     printMW("building resources finished\n")
 
 
@@ -188,7 +188,7 @@ def build_widgets(c):
     for widget in widgets:
         nameIn = widgetDirIn + widget
         nameOut = widgetDirOut + widget
-        runMW(c, f"pyside6-uic {nameIn}.ui > {nameOut}_ui.py")
+        runMW(c, f"uv run pyside6-uic {nameIn}.ui > {nameOut}_ui.py")
     printMW("building widgets finished\n")
 
 
@@ -246,17 +246,12 @@ def test_windows(c, user, work, scp):
         runMW(c, f"scp -r mountwizzard4.tar.gz {scp}")
 
     runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
-    cmd = "curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip"
-    cmd += " -L -s -o startup_package.zip"
-    runMW(c, f'ssh {user} "cd {work} && {cmd}"')
-    runMW(c, f'ssh {user} "cd {work} && tar -xf startup_package.zip"')
-    runMW(c, f'ssh {user} "cd {work} && python startup.pyz --no-start"')
-    runMW(c, f'ssh {user} "cd {work} && python startup.pyz"')
+    runMW(c, f'ssh {user} "cd {work} && uv venv -p 3.13"')
+    runMW(c, f'ssh {user} "cd {work} && uv pip install mountwizzard4.tar.gz"')
+    runMW(c, f'ssh {user} "cd {work} && uv run mw4"')
 
 
 def test_ubuntu(c, user, work, scp):
-    # install on host first:
-    # sudo apt install libxcb-cursor0
     printMW("...delete test dir")
     runMW(c, f'ssh {user} "rm -rf {work}"')
     time.sleep(1)
@@ -269,12 +264,9 @@ def test_ubuntu(c, user, work, scp):
         runMW(c, f"scp -r mountwizzard4.tar.gz {scp}")
 
     runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
-    cmd = "curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip"
-    cmd += " -L -s -o startup_package.zip"
-    runMW(c, f'ssh {user} "cd {work} && {cmd}"')
-    runMW(c, f'ssh {user} "cd {work} && unzip startup_package.zip"')
-    runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz --no-start"')
-    runMW(c, f'ssh {user} "cd {work} && export DISPLAY=:0 && python3 startup.pyz"')
+    runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv venv -p 3.13"')
+    runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv pip install mountwizzard4.tar.gz"')
+    runMW(c, f'ssh {user} "cd {work} && export DISPLAY=:0 && ~/.local/bin/uv run mw4"')
 
 
 def test_mac(c, user, work, scp):
@@ -290,12 +282,9 @@ def test_mac(c, user, work, scp):
         runMW(c, f"scp -r mountwizzard4.tar.gz {scp}")
 
     runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
-    cmd = "curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip"
-    cmd += " -L -s -o startup_package.zip"
-    runMW(c, f'ssh {user} "cd {work} && {cmd}"')
-    runMW(c, f'ssh {user} "cd {work} && tar -xf startup_package.zip"')
-    runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz --no-start"')
-    runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz"')
+    runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv venv -p 3.13"')
+    runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv pip install mountwizzard4.tar.gz"')
+    runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv run mw4"')
 
 
 @task(pre=[])

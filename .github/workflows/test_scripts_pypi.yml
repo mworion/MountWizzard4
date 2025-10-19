@@ -41,10 +41,6 @@ jobs:
         python-version: [ '3.11', '3.13' ]
 
     steps:
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          
       - name: install uv
         uses: astral-sh/setup-uv@v6
         with:
@@ -71,10 +67,6 @@ jobs:
         python-version: [ '3.11', '3.13' ]
     
     steps:
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          
       - name: Install Head
         run: |
           sudo apt-get update
@@ -112,10 +104,6 @@ jobs:
         python-version: [ '3.11', '3.13' ]
     
     steps:
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          
       - name: install uv
         uses: astral-sh/setup-uv@v6
         with:

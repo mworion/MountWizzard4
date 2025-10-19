@@ -29,7 +29,7 @@ on:
       - 'pyproject.toml'
       - '.github/workflows/unit_ubuntu.yml'
       - '.github/actions/install_ubuntu_head/action.yml'
-      - '.github/actions/build_package/action.yml'
+      - '.github/actions/build_package_uv/action.yml'
       - '.github/actions/setup_test/action.yml'
 
 jobs:
@@ -40,7 +40,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: build package
-        uses: ./.github/actions/build_package
+        uses: ./.github/actions/build_package_uv
         
   run_tests_ubuntu_1:
     #

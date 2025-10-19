@@ -53,12 +53,15 @@ jobs:
      
       - name: MountWizzard4 Install
         continue-on-error: true
+        shell: cmd
         run: |
           uv pip install mountwizzard4==${{ env.version }}
        
       - name: Run MountWizzard4
+        shell: cmd
         run: |
           touch test.run
+          dir
           uv run mw4
   
   install_ubuntu:

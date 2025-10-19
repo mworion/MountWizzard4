@@ -82,6 +82,7 @@ dependencies = [
     "pyside6==6.10.0",
     "pywin32==311; platform_system == 'Windows'",
 ]
+
 [project.scripts]
 mw4 = "mw4.cli:app"
 

@@ -48,7 +48,6 @@ jobs:
       - name: install uv
         uses: astral-sh/setup-uv@v6
         with:
-          enable-cache: true
           python-version: ${{ matrix.python-version }}
      
       - name: MountWizzard4 Install
@@ -61,8 +60,8 @@ jobs:
         shell: cmd
         run: |
           touch test.run
-          dir
           uv run mw4
+          dir
   
   install_ubuntu:
     runs-on: ${{ matrix.os }}
@@ -89,7 +88,6 @@ jobs:
       - name: install uv
         uses: astral-sh/setup-uv@v6
         with:
-          enable-cache: true
           python-version: ${{ matrix.python-version }}
           
       - name: MountWizzard4 Install
@@ -103,6 +101,7 @@ jobs:
         run: |
           touch test.run
           xvfb-run uv run mw4
+          ls -la
  
           
   install_macOS:
@@ -120,7 +119,6 @@ jobs:
       - name: install uv
         uses: astral-sh/setup-uv@v6
         with:
-          enable-cache: true
           python-version: ${{ matrix.python-version }}
           
       - name: MountWizzard4 Install
@@ -134,4 +132,5 @@ jobs:
         run: |
           touch test.run
           uv run mw4
+          ls -la
           

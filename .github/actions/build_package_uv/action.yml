@@ -1,0 +1,27 @@
+name: build_package_with_uv
+description: build package
+
+runs:
+  using: 'composite'
+  
+  steps:
+    - uses: actions/checkout@v5
+
+    - name: setup pyhton
+      uses: actions/setup-python@v5
+
+    - name: install uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true
+        python-version: ${{ matrix.python-version }}
+
+    - name: build package
+      shell: bash
+      run: |
+        uv build
+        python -m build
+        rm dist/*.whl
+        ls -la
+        ls -la dist
+        mv dist/mountwizzard4*.* dist/mountwizzard4.tar.gz

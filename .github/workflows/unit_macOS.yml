@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: build package
-        uses: ./.github/actions/build_package
+        uses: ./.github/actions/build_package_uv
 
   run_tests_macos_1:
     #

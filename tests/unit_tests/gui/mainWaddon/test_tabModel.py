@@ -113,54 +113,6 @@ def test_setModelOperationMode_5(function):
     function.setModelOperationMode(4)
 
 
-def test_updateModelProgress_1(function):
-    function.timeStartModeling = time.time()
-    mPoint = {}
-    function.updateModelProgress(mPoint)
-
-
-def test_updateModelProgress_2(function):
-    function.timeStartModeling = time.time()
-    mPoint = {"lenSequence": 3, "countSequence": 2}
-    function.updateModelProgress(mPoint)
-
-
-def test_updateModelProgress_3(function):
-    function.timeStartModeling = time.time()
-    mPoint = {"lenSequence": 2, "countSequence": 3}
-    function.updateModelProgress(mPoint)
-
-
-def test_updateModelProgress_4(function):
-    mPoint = {"lenSequence": 0, "countSequence": 2}
-    function.updateModelProgress(mPoint)
-    function.timeStartModeling = time.time()
-
-
-def test_updateModelProgress_5(function):
-    function.timeStartModeling = time.time()
-    mPoint = {"lenSequence": 3, "countSequence": 1}
-    function.updateModelProgress(mPoint)
-
-
-def test_updateModelProgress_6(function):
-    function.timeStartModeling = time.time()
-    mPoint = {"lenSequence": 3, "countSequence": -1}
-    function.updateModelProgress(mPoint)
-
-
-def test_updateModelProgress_7(function):
-    function.timeStartModeling = time.time()
-    mPoint = {"lenSequence": 3, "countSequence": 2}
-    function.updateModelProgress(mPoint)
-
-
-def test_updateModelProgress_8(function):
-    function.timeStartModeling = time.time()
-    mPoint = {"lenSequence": 0, "countSequence": -1}
-    function.updateModelProgress(mPoint)
-
-
 def test_setupModelRunContextAndGuiStatus_1(function):
     function.app.uiWindows = {"showImageW": {"classObj": None}}
     function.setupModelRunContextAndGuiStatus()

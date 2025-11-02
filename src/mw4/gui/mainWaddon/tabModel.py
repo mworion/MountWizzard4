@@ -131,31 +131,6 @@ class Model(QObject):
             changeStyleDynamic(self.ui.endModel, "stop", False)
             changeStyleDynamic(self.ui.pauseModel, "pause", False)
 
-    def updateModelProgress(self, mPoint) -> None:
-        """ """
-        number = mPoint.get("lenSequence", 0)
-        count = mPoint.get("countSequence", 0)
-
-        if not 0 < count <= number:
-            return
-
-        fraction = count / number
-        modelPercent = int(100 * fraction)
-
-        secondsElapsed = time.time() - self.timeStartModeling
-        secondsBase = secondsElapsed / fraction
-        secondsEstimated = secondsBase * (1 - fraction)
-
-        timeElapsed = time.gmtime(secondsElapsed)
-        timeEstimated = time.gmtime(secondsEstimated)
-        timeFinished = time.localtime(time.time() + secondsEstimated)
-
-        self.ui.timeElapsed.setText(datetime(*timeElapsed[:6]).strftime("%H:%M:%S"))
-        self.ui.timeEstimated.setText(datetime(*timeEstimated[:6]).strftime("%H:%M:%S"))
-        self.ui.timeFinished.setText(datetime(*timeFinished[:6]).strftime("%H:%M:%S"))
-        self.ui.numberPoints.setText(f"{count} / {number}")
-        self.ui.modelProgress.setValue(modelPercent)
-
     def setupModelRunContextAndGuiStatus(self) -> None:
         """ """
         changeStyleDynamic(self.ui.runModel, "running", True)

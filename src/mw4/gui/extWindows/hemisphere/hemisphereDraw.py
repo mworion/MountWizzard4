@@ -88,6 +88,7 @@ class HemisphereDraw(MWidget, SlewInterface):
 
     def close(self) -> None:
         """ """
+        self.app.mount.signals.pointDone.disconnect(self.drawPointer)
         self.app.update3s.disconnect(self.drawAlignmentStars)
 
     def mouseMovedHemisphere(self, pos: QPointF) -> None:
@@ -314,7 +315,7 @@ class HemisphereDraw(MWidget, SlewInterface):
 
                 spot = item.scatter.points()[i]
                 spot.setPen(pg.mkPen(color=color, width=1.5))
-                spot.setBrush(pg.mkBrush(color=color + "40"))
+                spot.setBrush(pg.mkBrush(color=color + "80"))
                 spot.setSymbol(symbol)
 
     def drawModelText(self) -> None:

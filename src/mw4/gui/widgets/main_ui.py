@@ -8423,9 +8423,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainTabWidget.setCurrentIndex(0)
+        self.mainTabWidget.setCurrentIndex(3)
         self.mountTabWidget.setCurrentIndex(0)
-        self.modelingTabWidget.setCurrentIndex(0)
+        self.modelingTabWidget.setCurrentIndex(1)
         self.manageTabWidget.setCurrentIndex(0)
         self.imagingTabWidget.setCurrentIndex(0)
         self.satTabWidget.setCurrentIndex(0)
@@ -9373,7 +9373,6 @@ class Ui_MainWindow(object):
         self.cancelModel.setToolTip(QCoreApplication.translate("MainWindow", u"Cancels a model build.", None))
 #endif // QT_CONFIG(tooltip)
         self.cancelModel.setText(QCoreApplication.translate("MainWindow", u"Cancel", None))
-        self.cancelModel.setProperty(u"color", QCoreApplication.translate("MainWindow", u"red", None))
         self.label_35.setText(QCoreApplication.translate("MainWindow", u"Estimated time:", None))
 #if QT_CONFIG(tooltip)
         self.runModel.setToolTip(QCoreApplication.translate("MainWindow", u"Run a model build.", None))

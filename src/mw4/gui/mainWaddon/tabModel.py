@@ -96,6 +96,7 @@ class Model(QObject):
         if not self.modelData:
             return
         self.modelData.pauseBatch = not self.modelData.pauseBatch
+        changeStyleDynamic(self.ui.pauseModel, "pause", self.modelData.pauseBatch)
 
     def endBatch(self) -> None:
         """ """
@@ -106,22 +107,29 @@ class Model(QObject):
     def setModelOperationMode(self, status: int) -> None:
         """ """
         if status == self.STATUS_MODEL_BATCH:
-            self.ui.runModelGroup.setEnabled(False)
+            self.ui.runModelGroup.setEnabled(True)
             self.ui.dataModelGroup.setEnabled(False)
             self.ui.cancelModel.setEnabled(True)
             self.ui.endModel.setEnabled(True)
             self.ui.pauseModel.setEnabled(True)
+            changeStyleDynamic(self.ui.runModel, "run", True)
+            changeStyleDynamic(self.ui.cancelModel, "stop", True)
+            changeStyleDynamic(self.ui.endModel, "stop", True)
         elif status == self.STATUS_MODEL_FILE:
             self.ui.runModelGroup.setEnabled(False)
         elif status == self.STATUS_MODEL_SYNC:
-            self.ui.runModelGroup.setEnabled(True)
-            self.ui.dataModelGroup.setEnabled(True)
+            self.ui.runModelGroup.setEnabled(False)
+            self.ui.dataModelGroup.setEnabled(False)
             self.ui.cancelModel.setEnabled(False)
             self.ui.endModel.setEnabled(False)
             self.ui.pauseModel.setEnabled(False)
         else:
             self.ui.runModelGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)
+            changeStyleDynamic(self.ui.runModel, "run", False)
+            changeStyleDynamic(self.ui.cancelModel, "stop", False)
+            changeStyleDynamic(self.ui.endModel, "stop", False)
+            changeStyleDynamic(self.ui.pauseModel, "pause", False)
 
     def updateModelProgress(self, mPoint) -> None:
         """ """

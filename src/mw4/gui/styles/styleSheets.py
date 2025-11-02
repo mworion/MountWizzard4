@@ -349,10 +349,6 @@ BASIC_STYLE = """
     QPushButton:pressed {
         background-color: $M_PRIM$;
     }
-    QPushButton[running=true] {
-        border-color: $M_PRIM$;
-        background-color: #GRAD_1,$M_PRIM2$#;
-    }
     QPushButton:disabled {
         color: $M_SEC$;
         border-color: $M_SEC1$;
@@ -361,24 +357,20 @@ BASIC_STYLE = """
         background-color: #GRAD_1,$M_GRAY$#;
         color: $M_TER$;
     }
-    QPushButton[color='red'] {
-        background-color: #GRAD_1,$M_RED2$#;
-        border-color: $M_RED$;
-        color: $M_TER$;
-    }
-    QPushButton[color='yellow'] {
-        background-color: #GRAD_1,$M_YELLOW2$#;
-        border-color: $M_YELLOW$;
-        color: $M_TER$;
-    }
-    QPushButton[color='green'] {
+    QPushButton[run=true] {
         background-color: #GRAD_1,$M_GREEN2$#;
         border-color: $M_GREEN$;
         color: $M_TER$;
     }
     QPushButton[stop=true] {
-        color: $M_RED2$;
+        background-color: #GRAD_1,$M_RED2$#;
         border-color: $M_RED$;
+        color: $M_TER$;
+    }
+    QPushButton[pause=true] {
+        background-color: #GRAD_1,$M_YELLOW2$#;
+        border-color: $M_YELLOW$;
+        color: $M_TER$;
     }
 
     /* Message Boxes */

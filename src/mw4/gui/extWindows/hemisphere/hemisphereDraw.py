@@ -298,6 +298,8 @@ class HemisphereDraw(MWidget, SlewInterface):
 
         for index, plotItem in enumerate(self.ui.hemisphere.p):
             item = self.ui.hemisphere.findItemByName(plotItem, "model")
+            if not item:
+                continue
             if index == 1:
                 x, y = self.ui.hemisphere.toPolar(x, y)
             item.setData(x=x, y=y)

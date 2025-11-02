@@ -18,8 +18,11 @@ from setuptools import setup
 from pathlib import Path
 
 releaseNotes = """
+This is a transfer release without any additional changes !
+MountWizzard4 version 4 will be installed different !
+Please do not use the internal App Installer to upgrade further!
+
 - added: gui_scripts for use of uv package manager
-- improve: bugfixes and improvements from pyqt5 library
 """
 
 with open('notes.txt', 'w') as f:
@@ -27,7 +30,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.8',
+    version='3.2.8.1',
     packages=[
         'mw4',
         'mw4.base',
@@ -94,7 +97,7 @@ setup(
         'pywinauto==0.6.8; platform_system=="Windows"',
     ],
     entry_points={
-        'gui_scripts': ['mw4=mw4.cli:app'],
+        'gui_scripts': ['mw4=mw4.cli:app', 'mountwizzard4=mw4.cli:app'],
     },
     keywords=['5.15.11'],
     url='https://github.com/mworion/MountWizzard4',

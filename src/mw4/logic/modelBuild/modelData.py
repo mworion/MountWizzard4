@@ -174,6 +174,8 @@ class ModelData(QObject):
         """ """
         self.modelProgData = []
         for mPoint in self.modelBuildData:
+            if not mPoint["success"]:
+                continue
             mCoord = Star(mPoint["raJNowM"], mPoint["decJNowM"])
             sCoord = Star(mPoint["raJNowS"], mPoint["decJNowS"])
             sidereal = mPoint["siderealTime"]
@@ -232,7 +234,8 @@ class ModelData(QObject):
         modelPercent = int(100 * fraction)
 
         progressData = {
-            "count": len(self.modelBuildData),
+            "count": self.pointerResult + 1,
+            "number": len(self.modelBuildData),
             "modelPercent": modelPercent,
             "secondsElapsed": secondsElapsed,
             "secondsEstimated": secondsEstimated,

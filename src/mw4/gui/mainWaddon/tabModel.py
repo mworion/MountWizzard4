@@ -258,7 +258,7 @@ class Model(QObject):
         self.modelData.imageDir = imageDir
         self.modelData.name = imageDir.stem
         self.modelData.numberRetries = self.ui.numberBuildRetries.value()
-        self.modelData.retriesReverse = self.ui.retriesReverse.checked()
+        self.modelData.retriesReverse = self.ui.retriesReverse.isChecked()
         self.modelData.version = f"{self.app.__version__}"
         self.modelData.profile = self.ui.profile.text()
         self.modelData.firmware = self.ui.vString.text()

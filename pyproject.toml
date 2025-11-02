@@ -70,7 +70,7 @@ dependencies = [
     "requests_toolbelt==1.0.0",
     "importlib_metadata==8.7.0",
     "python-dateutil==2.9.0.post0",
-    "wakeonlan==3.1.0",‚
+    "wakeonlan==3.1.0",
     "pybase64==1.4.2",
     "websocket-client==1.9.0",
     "hidapi==0.14.0.post4",
@@ -99,6 +99,7 @@ dev = [
   "pytest",
   "pytest-qt",
   "pytest-cov",
+  "pytest-xdist",
   "invoke",
   "ruff",
 ]
@@ -107,9 +108,7 @@ dev = [
 minversion = "6.0"
 pythonpath = ["src"]
 testpaths = ["tests"]
-addopts = ["--import-mode=importlib",
-           "--cov-append",
-           "--cov=src/mw4",]
+addopts = ["--import-mode=importlib", "--cov-append", "--cov=src/mw4",]
 qt_api = "pyside6"
 filterwarnings = ["ignore::DeprecationWarning"]
 

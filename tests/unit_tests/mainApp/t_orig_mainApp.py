@@ -36,7 +36,7 @@ res.qInitResources()
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope="module")
+@pytest.fixture(autouse=True, scope="function")
 def app(qapp):
     mwGlob = {
         "configDir": Path("tests/work/config"),
@@ -47,8 +47,8 @@ def app(qapp):
         "workDir": Path("tests/work"),
     }
 
-    shutil.copy("tests/testData/de440_mw4.bsp", Path("tests/work/data/de440_mw4.bsp"))
-    shutil.copy("tests/testData/finals2000A.all", Path("tests/work/data/finals2000A.all"))
+    shutil.copy("tests/testData/de440_mw4.bsp", Path("./tests/work/data/de440_mw4.bsp"))
+    shutil.copy("tests/testData/finals2000A.all", Path("./tests/work/data/finals2000A.all"))
     shutil.copy("tests/testData/test.run", Path("tests/work/test.run"))
 
     class Test:
@@ -63,6 +63,8 @@ def app(qapp):
                     app.update1s = Test()
                     yield app
                     app.threadPool.waitForDone(15000)
+                    app.deleteLater()
+                    qapp.processEvents()
 
 
 def test_storeStatusOperationRunning(app):

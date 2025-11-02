@@ -17,6 +17,7 @@
 import logging
 import sys
 from queue import Queue
+from typing import Any
 
 from importlib_metadata import version
 from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
@@ -105,16 +106,16 @@ class MountWizzard4(QObject):
     start10s = Signal()
     start30s = Signal()
 
-    def __init__(self, mwGlob: dict, application: QApplication):
+    def __init__(self, mwGlob: dict[str, Any], application: QApplication) -> None:
         super().__init__()
         self.mwGlob = mwGlob
         self.application = application
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(30)
-        self.expireData = False
+        self.expireData: bool = False
         self.mainW = None
-        self.timerCounter = 0
-        self.statusOperationRunning = 0
+        self.timerCounter: int = 0
+        self.statusOperationRunning: bool = 0
         self.config = loadProfileStart(self.mwGlob["configDir"])
         self.deviceStat = {
             "dome": None,

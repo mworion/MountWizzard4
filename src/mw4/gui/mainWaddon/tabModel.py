@@ -124,8 +124,8 @@ class Model(QObject):
             self.ui.endModel.setEnabled(False)
             self.ui.pauseModel.setEnabled(False)
         else:
-            self.ui.runModelGroup.setEnabled(False)
-            self.ui.dataModelGroup.setEnabled(False)
+            self.ui.runModelGroup.setEnabled(True)
+            self.ui.dataModelGroup.setEnabled(True)
             changeStyleDynamic(self.ui.runModel, "run", False)
             changeStyleDynamic(self.ui.cancelModel, "stop", False)
             changeStyleDynamic(self.ui.endModel, "stop", False)

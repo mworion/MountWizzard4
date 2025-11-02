@@ -170,8 +170,8 @@ class Model(QObject):
         self.msg.emit(0, "Model", "Run", f"Writing model [{self.modelData.name}]")
         self.modelData.generateSaveData()
         modelPath = self.app.mwGlob["modelDir"] / (self.modelData.name + ".model")
-        self.modelData.saveModelData(modelPath)
-        self.app.mount.model.storeName("actual")
+        # self.modelData.saveModelData(modelPath)
+        # self.app.mount.model.storeName("actual")
 
     def programModelToMount(self) -> bool:
         """ """
@@ -253,7 +253,7 @@ class Model(QObject):
 
     def setupBatchData(self) -> None:
         """ """
-        imageDir = self.setupFilenamesAndDirectories(prefix="m")
+        imageDir = self.setupFilenamesAndDirectories(prefix="m", postfix="build")
         self.modelData.progress.connect(self.showProgress)
         self.modelData.imageDir = imageDir
         self.modelData.name = imageDir.stem

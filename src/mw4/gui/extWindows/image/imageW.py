@@ -240,7 +240,7 @@ class ImageWindow(MWidget, SlewInterface):
             self.msg.emit(0, "Image", "Loading", "No image selected")
             return
 
-        self.msg.emit(0, "Image", "Image selected", self.imageFileName.name)
+        self.msg.emit(0, "Image", "Image selected", self.imageFileName.stem)
         self.folder = self.imageFileName.parents[0]
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(self.imageFileName)
@@ -312,9 +312,9 @@ class ImageWindow(MWidget, SlewInterface):
 
         if not self.app.camera.expose(self.imageFileName, exposureTime, binning):
             self.abortExpose()
-            self.msg.emit(2, "Image", "Expose error", self.imageFileName.name)
+            self.msg.emit(2, "Image", "Expose error", self.imageFileName.stem)
             return
-        self.msg.emit(0, "Image", "Exposing", self.imageFileName.name)
+        self.msg.emit(0, "Image", "Exposing", self.imageFileName.stem)
 
     def exposeImageDone(self, imagePath: Path) -> None:
         """ """
@@ -401,7 +401,7 @@ class ImageWindow(MWidget, SlewInterface):
         self.app.plateSolve.signals.result.connect(self.solveDone)
         self.app.plateSolve.solve(imagePath, self.ui.embedData.isChecked())
         self.imagingDeviceStat["solve"] = True
-        self.msg.emit(0, "Image", "Solving", imagePath.name)
+        self.msg.emit(0, "Image", "Solving", imagePath.stem)
 
     def solveCurrent(self) -> None:
         """ """

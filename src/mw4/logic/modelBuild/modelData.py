@@ -42,6 +42,7 @@ class ModelData(QObject):
     def __init__(self, app):
         super().__init__()
         self.app = app
+        self.msg = app.msg
 
         self.cancelBatch: bool = False
         self.pauseBatch: bool = False
@@ -128,6 +129,7 @@ class ModelData(QObject):
         azimuth = item["azimuth"]
         self.mountSlewed = False
         self.domeSlewed = False
+        self.msg.emit(0, "Model", "Slewing", item["imagePath"].stem)
 
         if not self.app.mount.obsSite.setTargetAltAz(altitude, azimuth):
             return
@@ -218,6 +220,7 @@ class ModelData(QObject):
         exposureTime = item["exposureTime"] = cam.exposureTime1
         binning = item["binning"] = cam.binning1
         self.app.camera.expose(imagePath, exposureTime, binning)
+        self.msg.emit(0, "Model", "Exposing", imagePath.stem)
 
     def startNewPlateSolve(self) -> None:
         """ """
@@ -256,6 +259,8 @@ class ModelData(QObject):
             )
             item["raJNowS"] = raJNowS
             item["decJNowS"] = decJNowS
+
+        self.msg.emit(0, "Model", "Solving", item["imagePath"].stem)
 
         statusBuildPoint = 0 if item["success"] else 2
         self.app.data.setStatusBuildP(self.pointerResult, statusBuildPoint)

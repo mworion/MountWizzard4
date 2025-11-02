@@ -173,26 +173,25 @@ def test_programModelToMount_3(function):
 
 def test_checkModelRunConditions_1(function):
     function.app.data.buildP = [(0, 0, True)]
-    suc = function.checkModelRunConditions(False)
+    suc = function.checkModelRunConditions()
     assert not suc
 
 
 def test_checkModelRunConditions_2(function):
     function.app.data.buildP = [(0, 0, True)] * 100
-    suc = function.checkModelRunConditions(False)
+    suc = function.checkModelRunConditions()
     assert not suc
 
 
 def test_checkModelRunConditions_3(function):
     function.app.data.buildP = [(0, 0, True), (0, 0, True), (0, 0, False)]
-    function.ui.excludeDonePoints.setChecked(True)
-    suc = function.checkModelRunConditions(True)
+    suc = function.checkModelRunConditions()
     assert not suc
 
 
 def test_checkModelRunConditions_4(function):
     function.app.data.buildP = [(0, 0, True), (0, 0, True), (0, 0, True)]
-    suc = function.checkModelRunConditions(True)
+    suc = function.checkModelRunConditions()
     assert suc
 
 
@@ -253,7 +252,7 @@ def test_showProgress_1(function):
 
 def test_setupModelInputData_1(function):
     function.app.data.buildP = [(0, 0, True), (0, 0, False), (0, 0, True)]
-    function.setupModelInputData(True)
+    function.setupModelInputData()
 
 
 def test_setupBatchData_1(function):
@@ -334,6 +333,7 @@ def test_runFileModel_2(function):
             "raJNowM": Angle(hours=8.427692953132278),
             "siderealTime": Angle(hours=12.5),
             "subFrame": 100.0,
+            "success": False,
         },
     ]
 

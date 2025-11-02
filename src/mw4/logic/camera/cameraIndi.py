@@ -65,23 +65,23 @@ class CameraIndi(IndiClass):
         )
         self.log.info(f"Primary telescope [{deviceName}] success: [{suc}]")
 
-    def setExposureState(self) -> bool:
+    def setExposureState(self) -> None:
         """
         setExposureState rebuilds the state information integrated and download
-        as it is not explicit defined in the INDI spec. So downloaded is reached
+        as it is not explicitly defined in the INDI spec. So downloaded is reached
         when that INDI state for CCD_EXPOSURE goes to IDLE or OK -> Jasem Mutlaq.
-        Another definition is done by myself, when INDI state for CCD_EXPOSURE is
-        BUSY and the CCD_EXPOSURE_VALUE is not 0, then we should be on integration
+        I do another definition myself, when INDI state for CCD_EXPOSURE is
+        BUSY and the CCD_EXPOSURE_VALUE is not 0, then we should be on the integration
         side, else the download should be started. The whole stuff is made,
-        because on ALPACA and ASCOM side it's a step by step sequence, which has
-        very defined states for each step. I would like ta have a common
+        because on ALPACA and ASCOM side it's a step-by-step sequence, which has
+        very defined states for each step. I would like to have a common
         approach for all frameworks.
         """
         THRESHOLD = 0.00001
         value = self.data.get("CCD_EXPOSURE.CCD_EXPOSURE_VALUE")
         if self.device.CCD_EXPOSURE["state"] == "Busy":
             if value is None:
-                return False
+                return
             elif value <= THRESHOLD:
                 if not self.isDownloading:
                     self.signals.exposed.emit()
@@ -104,9 +104,7 @@ class CameraIndi(IndiClass):
             t = f"[{self.deviceName}] state: [{self.device.CCD_EXPOSURE['state']}]"
             self.log.warning(t)
 
-        return True
-
-    def updateNumber(self, deviceName: str, propertyName: str) -> bool:
+    def updateNumber(self, deviceName: str, propertyName: str) -> None:
         """ """
         if propertyName == "CCD_GAIN":
             elements = self.device.CCD_GAIN["elementList"]["GAIN"]
@@ -120,15 +118,13 @@ class CameraIndi(IndiClass):
                 self.data["CCD_OFFSET.OFFSET_MIN"] = elements.get("min", 0)
                 self.data["CCD_OFFSET.OFFSET_MAX"] = elements.get("max", 0)
 
-        if not super().updateNumber(deviceName, propertyName):
-            return False
+        super().updateNumber(deviceName, propertyName)
 
         if propertyName == "CCD_EXPOSURE":
             self.setExposureState()
 
         if propertyName == "CCD_TEMPERATURE":
             self.data["CAN_SET_CCD_TEMPERATURE"] = True
-        return True
 
     def workerSaveBLOB(self, data: dict) -> None:
         """ """
@@ -153,25 +149,23 @@ class CameraIndi(IndiClass):
         fits.writeto(self.parent.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
         self.parent.writeImageFitsHeader()
 
-    def updateBLOB(self, deviceName: str, propertyName: str) -> bool:
+    def updateBLOB(self, deviceName: str, propertyName: str) -> None:
         """ """
-        if not super().updateBLOB(deviceName, propertyName):
-            return False
+        super().updateBLOB(deviceName, propertyName)
 
         data = self.device.getBlob(propertyName)
         if "value" not in data:
-            return False
+            return
         if "name" not in data:
-            return False
+            return
         if "format" not in data:
-            return False
+            return
         if data.get("name", "") != "CCD1":
-            return False
+            return
 
         self.worker = Worker(self.workerSaveBLOB, data)
         self.worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(self.worker)
-        return True
 
     def sendDownloadMode(self) -> None:
         """ """

@@ -85,7 +85,7 @@ class ASTAP:
 
     def runASTAP(
         self, binPath: Path, imagePath: Path, tempPath: Path, options: list[str]
-    ) -> [bool, str]:
+    ) -> tuple[bool, str]:
         """ """
         runnable = [binPath, "-f", imagePath, "-o", tempPath, "-wcs"]
         runnable.extend(options)

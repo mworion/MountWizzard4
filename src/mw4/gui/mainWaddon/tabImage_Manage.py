@@ -112,9 +112,9 @@ class ImageManage(QObject):
         gainCam = self.app.camera.data.get("CCD_GAIN.GAIN", False)
         pixelX = self.app.camera.data.get("CCD_INFO.CCD_MAX_X", False)
 
-        self.ui.GroupCooler.setVisible(coolerTemp)
-        self.ui.GroupCCD.setVisible(gainCam)
-        self.ui.GroupControlledCamera.setVisible(pixelX)
+        self.ui.GroupCooler.setVisible(bool(coolerTemp))
+        self.ui.GroupCCD.setVisible(bool(gainCam))
+        self.ui.GroupControlledCamera.setVisible(bool(pixelX))
 
     def updateOffset(self) -> None:
         """ """

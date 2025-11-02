@@ -150,7 +150,7 @@ class Client(QObject):
     def connectServer(self):
         """
         Part of BASE CLIENT API of EKOS
-        connect starts the link to the indi server.
+        connected starts the link to the indi server.
 
         :return: success
         """

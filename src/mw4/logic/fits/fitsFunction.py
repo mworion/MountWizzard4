@@ -125,7 +125,7 @@ def calcAngleScaleFromWCSHeader(header: fits.Header) -> [Angle, float, bool]:
 
     mirrored = (CD11 * CD22 - CD12 * CD21) < 0
     angleRad = np.arctan2(CD12, CD11)
-    angle = Angle(radians=np.degrees(angleRad))
+    angle = Angle(radians=angleRad)
     scale = CD11 / np.cos(angleRad) * 3600
 
     return angle, scale, mirrored

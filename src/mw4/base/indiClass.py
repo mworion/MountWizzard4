@@ -220,11 +220,15 @@ class IndiClass:
             return
 
         self.client.connectServer()
+        self.signals.deviceConnected.emit(self.deviceName)
+        self.signals.serverConnected.emit()
 
     def startCommunication(self) -> None:
         """ """
         self.data.clear()
         self.timerRetry.start(self.RETRY_DELAY)
+        self.signals.deviceDisconnected.emit(self.deviceName)
+        self.signals.serverDisconnected.emit(self.deviceName)
 
     def stopCommunication(self) -> None:
         """ """

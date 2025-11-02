@@ -105,8 +105,7 @@ def test_setExposureState_1(function):
     setattr(function.device, "CCD_EXPOSURE", {"state": "Busy"})
     function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": 0.0000001}
     function.isDownloading = False
-    suc = function.setExposureState()
-    assert suc
+    function.setExposureState()
     assert function.isDownloading
 
 
@@ -115,8 +114,7 @@ def test_setExposureState_2(function):
     setattr(function.device, "CCD_EXPOSURE", {"state": "Busy"})
     function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": 0.0000001}
     function.isDownloading = True
-    suc = function.setExposureState()
-    assert suc
+    function.setExposureState()
     assert function.isDownloading
 
 
@@ -125,8 +123,7 @@ def test_setExposureState_3(function):
     setattr(function.device, "CCD_EXPOSURE", {"state": "Busy"})
     function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": 1}
     function.isDownloading = True
-    suc = function.setExposureState()
-    assert suc
+    function.setExposureState()
     assert function.isDownloading
 
 
@@ -135,8 +132,7 @@ def test_setExposureState_4(function):
     setattr(function.device, "CCD_EXPOSURE", {"state": "Busy"})
     function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": None}
     function.isDownloading = True
-    suc = function.setExposureState()
-    assert not suc
+    function.setExposureState()
     assert function.isDownloading
 
 
@@ -145,8 +141,7 @@ def test_setExposureState_5(function):
     setattr(function.device, "CCD_EXPOSURE", {"state": "Ok"})
     function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": None}
     function.isDownloading = True
-    suc = function.setExposureState()
-    assert suc
+    function.setExposureState()
     assert not function.isDownloading
 
 
@@ -155,8 +150,7 @@ def test_setExposureState_6(function):
     setattr(function.device, "CCD_EXPOSURE", {"state": "test"})
     function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": None}
     function.isDownloading = True
-    suc = function.setExposureState()
-    assert suc
+    function.setExposureState()
     assert function.isDownloading
 
 
@@ -165,8 +159,7 @@ def test_setExposureState_7(function):
     setattr(function.device, "CCD_EXPOSURE", {"state": "Alert"})
     function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": None}
     function.isDownloading = True
-    suc = function.setExposureState()
-    assert suc
+    function.setExposureState()
     assert not function.isDownloading
 
 
@@ -174,8 +167,7 @@ def test_sendDownloadMode_1(function):
     function.deviceName = "test"
     function.device = Device()
     with mock.patch.object(function.device, "getSwitch", return_value={"Test": 1}):
-        suc = function.sendDownloadMode()
-        assert not suc
+        function.sendDownloadMode()
 
 
 def test_updateNumber_2(function):
@@ -184,15 +176,13 @@ def test_updateNumber_2(function):
 
     function.data = {"AUTO_DEW.DEW_C": 1, "VERSION.UPB": 1}
     with mock.patch.object(IndiClass, "updateNumber", return_value=True):
-        suc = function.updateNumber("test", "CCD_EXPOSURE")
-        assert suc
+        function.updateNumber("test", "CCD_EXPOSURE")
 
 
 def test_updateNumber_3(function):
     function.data = {"AUTO_DEW.DEW_C": 1, "VERSION.UPB": 1}
     with mock.patch.object(IndiClass, "updateNumber", return_value=True):
-        suc = function.updateNumber("test", "CCD_TEMPERATURE")
-        assert suc
+        function.updateNumber("test", "CCD_TEMPERATURE")
 
 
 def test_updateNumber_4(function):
@@ -201,8 +191,7 @@ def test_updateNumber_4(function):
     setattr(function.device, "CCD_GAIN", data)
     with mock.patch.object(IndiClass, "updateNumber", return_value=True):
         with mock.patch.object(function, "setExposureState"):
-            suc = function.updateNumber("test", "CCD_GAIN")
-            assert suc
+            function.updateNumber("test", "CCD_GAIN")
 
 
 def test_updateNumber_5(function):
@@ -211,8 +200,7 @@ def test_updateNumber_5(function):
     setattr(function.device, "CCD_OFFSET", data)
     with mock.patch.object(IndiClass, "updateNumber", return_value=True):
         with mock.patch.object(function, "setExposureState"):
-            suc = function.updateNumber("test", "CCD_OFFSET")
-            assert suc
+            function.updateNumber("test", "CCD_OFFSET")
 
 
 def test_updateNumber_6(function):
@@ -221,8 +209,7 @@ def test_updateNumber_6(function):
     setattr(function.device, "CCD_OFFSET", data)
     with mock.patch.object(IndiClass, "updateNumber", return_value=False):
         with mock.patch.object(function, "setExposureState"):
-            suc = function.updateNumber("test", "CCD_OFFSET")
-            assert not suc
+            function.updateNumber("test", "CCD_OFFSET")
 
 
 def test_workerSaveBLOB_1(function):
@@ -273,24 +260,21 @@ def test_updateBLOB_1(function):
     function.device = Device()
     with mock.patch.object(IndiClass, "updateBLOB", return_value=False):
         with mock.patch.object(function.device, "getBlob", return_value={}):
-            suc = function.updateBLOB("test", "test")
-            assert not suc
+            function.updateBLOB("test", "test")
 
 
 def test_updateBLOB_2(function):
     function.device = Device()
     with mock.patch.object(IndiClass, "updateBLOB", return_value=True):
         with mock.patch.object(function.device, "getBlob", return_value={}):
-            suc = function.updateBLOB("test", "test")
-            assert not suc
+            function.updateBLOB("test", "test")
 
 
 def test_updateBLOB_3(function):
     function.device = Device()
     with mock.patch.object(IndiClass, "updateBLOB", return_value=True):
         with mock.patch.object(function.device, "getBlob", return_value={"value": 1}):
-            suc = function.updateBLOB("test", "test")
-            assert not suc
+            function.updateBLOB("test", "test")
 
 
 def test_updateBLOB_4(function):
@@ -299,8 +283,7 @@ def test_updateBLOB_4(function):
         with mock.patch.object(
             function.device, "getBlob", return_value={"value": 1, "name": "test"}
         ):
-            suc = function.updateBLOB("test", "test")
-            assert not suc
+            function.updateBLOB("test", "test")
 
 
 def test_updateBLOB_5(function):
@@ -311,8 +294,7 @@ def test_updateBLOB_5(function):
             "getBlob",
             return_value={"value": 1, "name": "CCD2", "format": "test"},
         ):
-            suc = function.updateBLOB("test", "test")
-            assert not suc
+            function.updateBLOB("test", "test")
 
 
 def test_updateBLOB_6(function):
@@ -324,8 +306,7 @@ def test_updateBLOB_6(function):
             return_value={"value": 1, "name": "CCD1", "format": "test"},
         ):
             with mock.patch.object(function.threadPool, "start"):
-                suc = function.updateBLOB("test", "test")
-                assert suc
+                function.updateBLOB("test", "test")
 
 
 def test_expose_2(function):

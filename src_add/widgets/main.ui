@@ -10297,7 +10297,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>55</y>
+          <y>60</y>
           <width>91</width>
           <height>21</height>
          </rect>
@@ -10333,7 +10333,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>80</y>
+          <y>85</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -10356,7 +10356,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>300</x>
-          <y>80</y>
+          <y>85</y>
           <width>61</width>
           <height>21</height>
          </rect>
@@ -10400,7 +10400,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>115</x>
-          <y>55</y>
+          <y>60</y>
           <width>61</width>
           <height>21</height>
          </rect>
@@ -10469,7 +10469,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>300</x>
-          <y>55</y>
+          <y>60</y>
           <width>61</width>
           <height>21</height>
          </rect>
@@ -10510,7 +10510,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>55</y>
+          <y>60</y>
           <width>91</width>
           <height>21</height>
          </rect>
@@ -10594,7 +10594,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>80</y>
+          <y>85</y>
           <width>91</width>
           <height>21</height>
          </rect>
@@ -10617,7 +10617,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>115</x>
-          <y>80</y>
+          <y>85</y>
           <width>61</width>
           <height>21</height>
          </rect>

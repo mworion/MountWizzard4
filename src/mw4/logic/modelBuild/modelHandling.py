@@ -13,6 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
+
 # standard libraries
 import json
 import logging
@@ -92,12 +93,12 @@ def convertAngleToFloat(model: list[dict]) -> list[dict]:
     return model
 
 
-def loadModelsFromFile(modelFilesPath: list[Path]) -> (list[dict], str):
+def loadModelsFromFile(modelFilesPath: list[Path]) -> tuple[list[dict], str]:
     """ """
     model = []
     for path in modelFilesPath:
         if not path.is_file():
-            return [], f"File {path} does not exist"
+            return model, f"File {path} does not exist"
 
         try:
             with open(path) as infile:
@@ -106,7 +107,7 @@ def loadModelsFromFile(modelFilesPath: list[Path]) -> (list[dict], str):
         except Exception:
             errText = f"Cannot load model json file: {path.name}"
             log.warning(errText)
-            return [], errText
+            return model, errText
 
     model = convertFloatToAngle(model)
 
@@ -116,7 +117,7 @@ def loadModelsFromFile(modelFilesPath: list[Path]) -> (list[dict], str):
     return model, "Model data loaded"
 
 
-def findKeysFromSourceInDest(buildModel: list[dict], refModel: list[dict]) -> (list, list):
+def findKeysFromSourceInDest(buildModel: list[dict], refModel: list[dict]) -> tuple[list, list]:
     """ """
     pointsIn = []
     pointsOut = []
@@ -167,7 +168,7 @@ def generateMountModelData(mountModel: Model) -> dict:
     return mountModelData
 
 
-def compareFile(modelFilePath: Path, mountModelData: dict) -> (list, list):
+def compareFile(modelFilePath: Path, mountModelData: dict) -> tuple[list, list]:
     """ """
     pointsIn = []
     pointsOut = []
@@ -184,7 +185,7 @@ def compareFile(modelFilePath: Path, mountModelData: dict) -> (list, list):
     return pointsIn, pointsOut
 
 
-def findFittingModel(mountModel: Model, modelPath: Path) -> (Path, list):
+def findFittingModel(mountModel: Model, modelPath: Path) -> tuple[Path, list]:
     """ """
     mountModelData = generateMountModelData(mountModel)
     fittedModelPath = Path()

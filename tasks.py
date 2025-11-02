@@ -430,5 +430,6 @@ def upload_mw(c):
     printMW("uploading dist mountwizzard4")
     with c.cd("./dist"):
         print(f'twine upload mountwizzard4-*.tar.gz')
-        runMW(c, f'twine upload mountwizzard4-*.tar.gz -r pypi')
+        rn = "New major release !\nPlease do not update via internal updater!"
+        runMW(c, f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
     printMW("uploading dist mountwizzard4 finished\n")

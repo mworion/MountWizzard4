@@ -29,7 +29,7 @@ from mw4.logic.modelBuild.modelHandling import loadModelsFromFile
 
 
 class Model(QObject):
-    """ """
+    """  """
 
     STATUS_IDLE = 0
     STATUS_MODEL_BATCH = 1
@@ -188,7 +188,7 @@ class Model(QObject):
         self.app.mount.signals.getModelDone.connect(self.programModelToMountFinish)
         self.app.refreshModel.emit()
 
-    def checkModelRunConditions(self, excludeDonePoints: bool) -> bool:
+    def checkModelRunConditions(self) -> bool:
         """ """
         if len(self.app.data.buildP) < 3:
             t = "No modeling start because less than 3 points"
@@ -200,7 +200,7 @@ class Model(QObject):
             self.msg.emit(2, "Model", "Run error", t)
             return False
 
-        if len([x for x in self.app.data.buildP if x[2]]) < 3 and excludeDonePoints:
+        if len([x for x in self.app.data.buildP if x[2]]) < 3:
             t = "No modeling start because less than 3 points"
             self.msg.emit(2, "Model", "Run error", t)
             return False
@@ -244,12 +244,10 @@ class Model(QObject):
         self.ui.modelProgress.setValue(progressData["modelPercent"])
         self.ui.numberPoints.setText(f"{progressData['count']} / {progressData['number']}")
 
-    def setupModelInputData(self, excludeDonePoints: bool) -> None:
+    def setupModelInputData(self) -> None:
         """ """
         data = []
         for point in self.app.data.buildP:
-            if excludeDonePoints and not point[2]:
-                continue
             data.append(point)
         self.modelData.modelInputData = data
 
@@ -260,6 +258,7 @@ class Model(QObject):
         self.modelData.imageDir = imageDir
         self.modelData.name = imageDir.stem
         self.modelData.numberRetries = self.ui.numberBuildRetries.value()
+        self.modelData.retriesReverse = self.ui.retriesReverse.checked()
         self.modelData.version = f"{self.app.__version__}"
         self.modelData.profile = self.ui.profile.text()
         self.modelData.firmware = self.ui.vString.text()
@@ -277,8 +276,7 @@ class Model(QObject):
 
     def runBatch(self) -> None:
         """ """
-        excludeDonePoints = self.ui.excludeDonePoints.isChecked()
-        if not self.checkModelRunConditions(excludeDonePoints):
+        if not self.checkModelRunConditions():
             return
         if not self.clearAlignAndBackup():
             return
@@ -288,13 +286,13 @@ class Model(QObject):
         self.setModelTiming()
         self.setupBatchData()
         self.msg.emit(1, "Model", "Run", f"Model {self.modelData.name}")
-        self.setupModelInputData(excludeDonePoints)
+        self.setupModelInputData()
         self.modelData.runModel()
         self.programModelToMount()
         self.app.playSound.emit("RunFinished")
         self.app.operationRunning.emit(self.STATUS_IDLE)
 
-    def runFileModel(self):
+    def runFileModel(self) -> None:
         """ """
         self.app.operationRunning.emit(self.STATUS_MODEL_FILE)
         self.modelData = ModelData(self.app)

@@ -104,7 +104,7 @@ def test_startNewSlew_1(function):
     function.cancelBatch = False
     function.endBatch = False
     function.pointerSlew = 0
-    function.modelBuildData = [{"altitude": 0, "azimuth": 0}]
+    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": False}]
 
     function.startNewSlew()
     assert function.mountSlewed
@@ -117,7 +117,7 @@ def test_startNewSlew_2(function):
     function.cancelBatch = True
     function.endBatch = True
     function.pointerSlew = -1
-    function.modelBuildData = [{"altitude": 0, "azimuth": 0}]
+    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": False}]
 
     function.startNewSlew()
     assert function.mountSlewed
@@ -130,7 +130,7 @@ def test_startNewSlew_3(function):
     function.cancelBatch = False
     function.endBatch = False
     function.pointerSlew = -1
-    function.modelBuildData = [{"altitude": 0, "azimuth": 0}]
+    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": False}]
 
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
         function.startNewSlew()
@@ -145,7 +145,25 @@ def test_startNewSlew_4(function):
     function.endBatch = False
     function.pointerSlew = -1
     function.app.deviceStat["dome"] = True
-    function.modelBuildData = [{"altitude": 0, "azimuth": 0}]
+    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": True},
+                               {"altitude": 0, "azimuth": 0, "success": False}]
+
+    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
+        with mock.patch.object(function.app.dome, "slewDome"):
+            with mock.patch.object(function.app.mount.obsSite, "startSlewing"):
+                function.startNewSlew()
+                assert not function.mountSlewed
+                assert not function.domeSlewed
+
+
+def test_startNewSlew_5(function):
+    function.domeSlewed = True
+    function.mountSlewed = True
+    function.cancelBatch = False
+    function.endBatch = False
+    function.pointerSlew = -1
+    function.app.deviceStat["dome"] = True
+    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": False}]
 
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
         with mock.patch.object(function.app.dome, "slewDome"):
@@ -335,14 +353,49 @@ def test_prepareModelBuildData_1(function):
         assert function.modelBuildData[0]["azimuth"].degrees == 0
 
 
-def test_run_1(function):
+def test_checkRetryNeeded_1(function):
+    function.modelBuildData = [{"success": True}, {"success": True}]
+    assert not function.checkRetryNeeded()
+
+
+def test_checkRetryNeeded_2(function):
+    function.modelBuildData = [{"success": True}, {"success": False}]
+    assert function.checkRetryNeeded()
+
+
+def test_runThroughModelBuildData_1(function, mocked_sleepAndEvents_2):
+    function.cancelBatch = False
+    function.endBatch = False
+    with mock.patch.object(function, "startNewSlew"):
+        function.runThroughModelBuildData()
+
+
+def test_runThroughModelBuildDataRetries_1(function):
+    function.numberRetries = 1
+    function.retriesReversed = False
+    with mock.patch.object(function, "runThroughModelBuildData"):
+        with mock.patch.object(function, "checkRetryNeeded", return_value=False):
+            function.runThroughModelBuildDataRetries()
+
+
+def test_runThroughModelBuildDataRetries_2(function):
+    function.numberRetries = 1
+    function.retriesReversed = True
+    with mock.patch.object(function, "runThroughModelBuildData"):
+        with mock.patch.object(function, "checkRetryNeeded", return_value=True):
+            function.runThroughModelBuildDataRetries()
+
+
+def test_runModel_1(function):
     function.modelInputData = []
     function.runModel()
 
 
-def test_run_2(function, mocked_sleepAndEvents_2):
+def test_runModel_2(function):
     function.modelInputData = [(0, 0, True)]
+    function.cancelBatch = False
+    function.endBatch = False
     with mock.patch.object(function, "prepareModelBuildData"):
-        with mock.patch.object(function, "startNewSlew"):
+        with mock.patch.object(function, "runThroughModelBuildDataRetries"):
             with mock.patch.object(function, "buildProgModel"):
                 function.runModel()

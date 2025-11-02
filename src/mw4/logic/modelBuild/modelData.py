@@ -61,6 +61,7 @@ class ModelData(QObject):
         self.exposureWaitTime: float = 0
         self.runTime: float = 0
         self.numberRetries: int = 0
+        self.retriesReversed: bool = False
 
         self.pointerSlew: int = 0
         self.pointerImage: int = 0
@@ -120,6 +121,8 @@ class ModelData(QObject):
             return
         if self.cancelBatch or self.endBatch:
             return
+        while self.modelBuildData[self.pointerSlew]["success"]:
+            self.pointerSlew += 1
         item = self.modelBuildData[self.pointerSlew]
         altitude = item["altitude"]
         azimuth = item["azimuth"]
@@ -242,26 +245,24 @@ class ModelData(QObject):
         self.pointerResult += 1
         item = self.modelBuildData[self.pointerResult]
         item.update(result)
-        solved = result["success"]
+        item["success"] = result["success"]
 
-        if solved:
+        if item["success"]:
             raJNowS, decJNowS = J2000ToJNow(
                 item["raJ2000S"], item["decJ2000S"], item["julianDate"]
             )
             item["raJNowS"] = raJNowS
             item["decJNowS"] = decJNowS
 
-        statusBuildPoint = 0 if solved else 2
+        statusBuildPoint = 0 if item["success"] else 2
         self.app.data.setStatusBuildP(self.pointerResult, statusBuildPoint)
         self.app.updatePointMarker.emit()
         self.sendModelProgress()
+        if self.pointerResult == len(self.modelBuildData) - 1:
+            self.endBatch = True
 
     def prepareModelBuildData(self) -> None:
         """ """
-        self.pointerSlew = -1
-        self.pointerImage = -1
-        self.pointerPlateSolve = -1
-        self.pointerResult = -1
         self.modelBuildData.clear()
         for index, point in enumerate(self.modelInputData):
             modelItem = {}
@@ -277,23 +278,43 @@ class ModelData(QObject):
             modelItem["plateSolveApp"] = self.plateSolveApp
             modelItem["focalLength"] = self.app.camera.focalLength
             modelItem["waitTime"] = self.exposureWaitTime
+            modelItem["index"] = index
+            modelItem["success"] = False
             self.modelBuildData.append(modelItem)
 
+    def checkRetryNeeded(self) -> None:
+        """ """
+        return not all([p["success"] for p in self.modelBuildData])
+
+    def runThroughModelBuildData(self) -> None:
+        """ """
+        self.pointerSlew = -1
+        self.pointerImage = -1
+        self.pointerPlateSolve = -1
+        self.pointerResult = -1
+
+        self.startNewSlew()
+        while not self.cancelBatch and not self.endBatch:
+            sleepAndEvents(500)
+
+    def runThroughModelBuildDataRetries(self) -> None:
+        """ """
+        while self.numberRetries >= 0:
+            self.runThroughModelBuildData()
+            if not self.checkRetryNeeded():
+                break
+            self.numberRetries -= 1
+            if self.retriesReversed:
+                self.modelBuildData.reverse()
+
     def runModel(self) -> None:
-        """
-        todo: implement retries
-        """
+        """ """
         if not self.modelInputData:
             return
 
         self.runTime = time.time()
         self.prepareModelBuildData()
-        self.startNewSlew()
-
-        notFinished = self.pointerResult < len(self.modelBuildData)
-        while not self.cancelBatch and notFinished and not self.endBatch:
-            sleepAndEvents(500)
-
+        self.runThroughModelBuildDataRetries()
         self.buildProgModel()
         modelSize = len(self.modelProgData)
         if modelSize < 3:

@@ -16,7 +16,7 @@ eggs/
 lib/
 lib64/
 parts/
-sdist/
+sdist/  q^4
 var/
 *.egg-info/
 .installed.cfg

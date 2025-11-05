@@ -27,7 +27,7 @@ import pytest
 import skyfield.api
 from skyfield.api import wgs84
 
-from mw4.logic.modeldata.buildpoints import DataPoint, HaDecToAltAz
+from mw4.logic.buildData.buildpoints import DataPoint, HaDecToAltAz
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

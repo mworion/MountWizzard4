@@ -20,13 +20,11 @@ from pathlib import Path
 from unittest import mock
 
 import pytest
-
 # external packages
 from skyfield.api import Angle
 
-import mw4.logic.modelBuild.modelData
-from mw4.logic.modelBuild.modelData import ModelData
-
+import mw4.logic.modelBuild.modelRun
+from mw4.logic.modelBuild.modelRun import ModelData
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -42,7 +40,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         function.pauseBatch = False
 
-    monkeypatch.setattr("mw4.logic.modelBuild.modelData.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.logic.modelBuild.modelRun.sleepAndEvents", test)
 
 
 @pytest.fixture
@@ -50,7 +48,7 @@ def mocked_sleepAndEvents_2(monkeypatch, function):
     def test(a):
         function.cancelBatch = True
 
-    monkeypatch.setattr("mw4.logic.modelBuild.modelData.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.logic.modelBuild.modelRun.sleepAndEvents", test)
 
 
 def test_setImageExposed(function):
@@ -177,10 +175,10 @@ def test_addMountModelToBuildModel_1(function):
     function.app.mount.model.starList = [1, 2, 3]
     function.modelSaveData = [1, 2, 3]
     with mock.patch.object(
-        mw4.logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]
+        mw4.logic.modelBuild.modelRun, "writeRetrofitData", return_value=[1, 2, 3]
     ):
         with mock.patch.object(
-            mw4.logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]
+            mw4.logic.modelBuild.modelRun, "convertAngleToFloat", return_value=[1, 2, 3]
         ):
             function.addMountModelToBuildModel()
     assert len(function.modelSaveData) == 3
@@ -190,10 +188,10 @@ def test_addMountModelToBuildModel_2(function):
     function.app.mount.model.starList = [1, 2]
     function.modelSaveData = [1, 2, 3]
     with mock.patch.object(
-        mw4.logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]
+        mw4.logic.modelBuild.modelRun, "writeRetrofitData", return_value=[1, 2, 3]
     ):
         with mock.patch.object(
-            mw4.logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]
+            mw4.logic.modelBuild.modelRun, "convertAngleToFloat", return_value=[1, 2, 3]
         ):
             function.addMountModelToBuildModel()
 

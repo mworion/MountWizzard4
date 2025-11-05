@@ -24,8 +24,8 @@ from PySide6.QtCore import QObject
 
 # local import
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, sleepAndEvents
-from mw4.logic.modelBuild.modelData import ModelData
-from mw4.logic.modelBuild.modelHandling import loadModelsFromFile
+from mw4.logic.modelBuild.modelRun import ModelData
+from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
 
 
 class Model(QObject):

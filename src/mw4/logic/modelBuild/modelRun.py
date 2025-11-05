@@ -26,7 +26,7 @@ from skyfield.api import Angle, Star
 # local imports
 from mw4.base.transform import J2000ToJNow, JNowToJ2000
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
-from mw4.logic.modelBuild.modelHandling import convertAngleToFloat, writeRetrofitData
+from mw4.logic.modelBuild.modelRunSupport import convertAngleToFloat, writeRetrofitData
 from mw4.mountcontrol.progStar import ProgStar
 
 
@@ -256,8 +256,6 @@ class ModelData(QObject):
             )
             item["raJNowS"] = raJNowS
             item["decJNowS"] = decJNowS
-
-        self.msg.emit(0, "Model", "Solving", item["imagePath"].stem)
 
         statusBuildPoint = 0 if item["success"] else 2
         self.app.data.setStatusBuildP(self.pointerResult, statusBuildPoint)

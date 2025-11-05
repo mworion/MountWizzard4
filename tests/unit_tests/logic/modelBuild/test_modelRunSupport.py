@@ -23,8 +23,8 @@ from unittest import mock
 # external packages
 from skyfield.api import Angle, Star, load, wgs84
 
-import mw4.logic.modelBuild.modelHandling
-from mw4.logic.modelBuild.modelHandling import (
+import mw4.logic.modelBuild.modelRunSupport
+from mw4.logic.modelBuild.modelRunSupport import (
     compareFile,
     convertAngleToFloat,
     convertFloatToAngle,
@@ -289,10 +289,10 @@ def test_compareFile_2():
 
 def test_findFittingModel_1():
     with mock.patch.object(
-        mw4.logic.modelBuild.modelHandling, "generateMountModelData", return_value={}
+        mw4.logic.modelBuild.modelRunSupport, "generateMountModelData", return_value={}
     ):
         with mock.patch.object(
-            mw4.logic.modelBuild.modelHandling, "compareFile", return_value=([1, 2, 3], [4])
+            mw4.logic.modelBuild.modelRunSupport, "compareFile", return_value=([1, 2, 3], [4])
         ):
             filePath, pointsOut = findFittingModel({}, Path("tests/testData"))
         assert pointsOut == [4]
@@ -301,10 +301,10 @@ def test_findFittingModel_1():
 
 def test_findFittingModel_2():
     with mock.patch.object(
-        mw4.logic.modelBuild.modelHandling, "generateMountModelData", return_value={}
+        mw4.logic.modelBuild.modelRunSupport, "generateMountModelData", return_value={}
     ):
         with mock.patch.object(
-            mw4.logic.modelBuild.modelHandling, "compareFile", return_value=([1], [4])
+            mw4.logic.modelBuild.modelRunSupport, "compareFile", return_value=([1], [4])
         ):
             filePath, pointsOut = findFittingModel({}, Path("tests/testData"))
         assert pointsOut == [4]

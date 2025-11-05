@@ -227,6 +227,19 @@ class Model(QObject):
         self.ui.modelProgress.setValue(progressData["modelPercent"])
         self.ui.numberPoints.setText(f"{progressData['count']} / {progressData['number']}")
 
+    def showStatusExposure(self, statusData: tuple) -> None:
+        """ """
+        t = f"Exposing {statusData[0]}, Duration {statusData[1]}s, Binning {statusData[2]} "
+        self.msg.emit(0, "Model", "Exposure", t)
+
+    def showStatusSolve(self, statusData: tuple) -> None:
+        """ """
+        if len(statusData) > 2:
+            t = f"Error solving {statusData[0]}, {statusData[1]}"
+        else:
+            t = f"Solved {statusData[0]}, Error {statusData[4]}, Angle {statusData[5]}"
+        self.msg.emit(0, "Model", "Solving", t)
+
     def setupModelInputData(self) -> None:
         """ """
         data = []
@@ -266,6 +279,8 @@ class Model(QObject):
 
         self.app.operationRunning.emit(self.STATUS_MODEL_BATCH)
         self.modelData = ModelData(self.app)
+        self.modelData.statusSolve.connect(self.showStatusSolve)
+        self.modelData.statusExpose.connect(self.showStatusExposure)
         self.setModelTiming()
         self.setupBatchData()
         self.msg.emit(1, "Model", "Run", f"Model {self.modelData.name}")

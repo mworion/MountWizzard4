@@ -38,7 +38,6 @@ class MeasureData:
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.msg = app.msg
         self.signals = Signals()
         self.mutexMeasure = QMutex()
 
@@ -76,7 +75,6 @@ class MeasureData:
         name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
-        self.msg.emit(0, "System", "Measure device removed", f"{name}")
 
     def setEmptyData(self) -> None:
         """ """

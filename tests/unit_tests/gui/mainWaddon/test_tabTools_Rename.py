@@ -54,6 +54,10 @@ def test_storeConfig_1(function):
     assert suc
 
 
+def test_setupIcons_1(function):
+    function.setupIcons()
+
+
 def test_setupGuiTools(function):
     suc = function.setupGuiTools()
     assert suc

@@ -60,6 +60,10 @@ def test_storeConfig_1(function):
     assert suc
 
 
+def test_setupIcons_1(function):
+    function.setupIcons()
+
+
 def test_setupIERSSourceURLsDropDown(function):
     suc = function.setupIERSSourceURLsDropDown()
     assert suc

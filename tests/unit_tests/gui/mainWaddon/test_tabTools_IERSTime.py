@@ -20,9 +20,9 @@ from unittest import mock
 import pytest
 
 # external packages
-from PySide6.QtWidgets import QWidget
 
 import mw4.gui.utilities
+from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
 from mw4.gui.widgets.main_ui import Ui_MainWindow
@@ -33,7 +33,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)

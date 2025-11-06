@@ -29,7 +29,7 @@ from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
 
 
 class Model(QObject):
-    """  """
+    """ """
 
     STATUS_IDLE = 0
     STATUS_MODEL_BATCH = 1
@@ -153,8 +153,8 @@ class Model(QObject):
         self.msg.emit(0, "Model", "Run", f"Writing model [{self.modelData.name}]")
         self.modelData.generateSaveData()
         modelPath = self.app.mwGlob["modelDir"] / (self.modelData.name + ".model")
-        # self.modelData.saveModelData(modelPath)
-        # self.app.mount.model.storeName("actual")
+        self.modelData.saveModelData(modelPath)
+        self.app.mount.model.storeName("actual")
 
     def programModelToMount(self) -> bool:
         """ """

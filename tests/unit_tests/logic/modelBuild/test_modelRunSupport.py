@@ -29,7 +29,7 @@ from mw4.logic.modelBuild.modelRunSupport import (
     convertAngleToFloat,
     convertFloatToAngle,
     findFittingModel,
-    findKeysFromSourceInDest,
+    findKeysSourceInDest,
     generateFileModelData,
     generateMountModelData,
     loadModelsFromFile,
@@ -221,7 +221,7 @@ def test_loadModelsFromFile_4():
 
 
 def test_findKeysFromSourceInDest_1():
-    val1, val2 = findKeysFromSourceInDest({}, {})
+    val1, val2 = findKeysSourceInDest({}, {})
     assert val1 == []
     assert val2 == []
 
@@ -229,7 +229,7 @@ def test_findKeysFromSourceInDest_1():
 def test_findKeysFromSourceInDest_2():
     source = {1: {"ha": 1, "dec": 2}, 2: {"ha": 4, "dec": 3}}
     dest = {1: {"ha": 2, "dec": 1}, 2: {"ha": 3, "dec": 4}}
-    val1, val2 = findKeysFromSourceInDest(source, dest)
+    val1, val2 = findKeysSourceInDest(source, dest)
     assert val1 == []
     assert 1 in val2
     assert 2 in val2
@@ -238,7 +238,7 @@ def test_findKeysFromSourceInDest_2():
 def test_findKeysFromSourceInDest_3():
     source = {1: {"ha": 1, "dec": 2}, 2: {"ha": 3, "dec": 4}}
     dest = {1: {"ha": 2, "dec": 1}, 2: {"ha": 3, "dec": 4}}
-    val1, val2 = findKeysFromSourceInDest(source, dest)
+    val1, val2 = findKeysSourceInDest(source, dest)
     assert 2 in val1
     assert 1 in val2
 

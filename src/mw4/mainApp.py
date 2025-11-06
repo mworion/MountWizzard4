@@ -29,6 +29,8 @@ from skyfield.api import wgs84
 # local import
 from mw4.base.loggerMW import setCustomLoggingLevel
 from mw4.gui.mainWindow.mainWindow import MainWindow
+from mw4.logic.buildData.buildpoints import DataPoint
+from mw4.logic.buildData.hipparcos import Hipparcos
 from mw4.logic.camera.camera import Camera
 from mw4.logic.cover.cover import Cover
 from mw4.logic.dome.dome import Dome
@@ -39,8 +41,6 @@ from mw4.logic.environment.sensorWeather import SensorWeather
 from mw4.logic.filter.filter import Filter
 from mw4.logic.focuser.focuser import Focuser
 from mw4.logic.measure.measure import MeasureData
-from mw4.logic.buildData.buildpoints import DataPoint
-from mw4.logic.buildData.hipparcos import Hipparcos
 from mw4.logic.plateSolve.plateSolve import PlateSolve
 from mw4.logic.powerswitch.kmRelay import KMRelay
 from mw4.logic.powerswitch.pegasusUPB import PegasusUPB

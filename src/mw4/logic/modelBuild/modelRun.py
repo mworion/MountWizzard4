@@ -260,9 +260,16 @@ class ModelData(QObject):
             )
             item["raJNowS"] = raJNowS
             item["decJNowS"] = decJNowS
-            self.statusSolve.emit([item["imagePath"].stem, item["success"],
-                                  item["raJ2000S"].hours, item["decJ2000S"].degrees,
-                                  item["angle"].degrees, item["error"]])
+            self.statusSolve.emit(
+                [
+                    item["imagePath"].stem,
+                    item["success"],
+                    item["raJ2000S"].hours,
+                    item["decJ2000S"].degrees,
+                    item["angle"].degrees,
+                    item["error"],
+                ]
+            )
 
         else:
             self.statusSolve.emit([item["imagePath"].stem, item["success"]])
@@ -297,7 +304,7 @@ class ModelData(QObject):
 
     def checkRetryNeeded(self) -> None:
         """ """
-        return not all([p["success"] for p in self.modelBuildData])
+        return not all(p["success"] for p in self.modelBuildData)
 
     def runThroughModelBuildData(self) -> None:
         """ """

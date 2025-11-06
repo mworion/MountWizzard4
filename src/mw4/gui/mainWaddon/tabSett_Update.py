@@ -14,17 +14,10 @@
 #
 ###########################################################
 # standard libraries
-import os
-import platform
-import sys
-import webbrowser
 
-import importlib_metadata
 
 # external packages
-import requests
 from astropy.utils import data, iers
-from packaging.utils import Version
 from PySide6.QtCore import QObject
 
 # local import

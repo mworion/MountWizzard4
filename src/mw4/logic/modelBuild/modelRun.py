@@ -221,7 +221,7 @@ class ModelData(QObject):
         exposureTime = item["exposureTime"] = cam.exposureTime1
         binning = item["binning"] = cam.binning1
         self.app.camera.expose(imagePath, exposureTime, binning)
-        self.statusExpose.emit(imagePath.stem, exposureTime, binning)
+        self.statusExpose.emit([imagePath.stem, exposureTime, binning])
 
     def startNewPlateSolve(self) -> None:
         """ """
@@ -260,12 +260,12 @@ class ModelData(QObject):
             )
             item["raJNowS"] = raJNowS
             item["decJNowS"] = decJNowS
-            self.statusSolve.emit(item["imagePath"].stem, item["success"],
+            self.statusSolve.emit([item["imagePath"].stem, item["success"],
                                   item["raJ2000S"].hours, item["decJ2000S"].degrees,
-                                  item["angle"].degrees, item["error"])
+                                  item["angle"].degrees, item["error"]])
 
         else:
-            self.statusSolve.emit(item["imagePath"].stem, item["success"])
+            self.statusSolve.emit([item["imagePath"].stem, item["success"]])
 
         statusBuildPoint = 0 if item["success"] else 2
         self.app.data.setStatusBuildP(self.pointerResult, statusBuildPoint)

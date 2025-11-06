@@ -250,6 +250,21 @@ def test_showProgress_1(function):
     )
 
 
+def test_showStatusExposure(function):
+    status = ["test", 5, 1]
+    function.showStatusExposure(status)
+
+
+def test_showStatusSolve_1(function):
+    status = ["test", "error"]
+    function.showStatusSolve(status)
+
+
+def test_showStatusSolve_2(function):
+    status = ["test", "True", 0, 0, 1.9, 85.0]
+    function.showStatusSolve(status)
+
+
 def test_setupModelInputData_1(function):
     function.app.data.buildP = [(0, 0, True), (0, 0, False), (0, 0, True)]
     function.setupModelInputData()

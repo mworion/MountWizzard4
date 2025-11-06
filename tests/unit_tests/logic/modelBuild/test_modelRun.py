@@ -332,7 +332,8 @@ def test_sendModelProgress_1(function):
 def test_collectPlateSolveResult_1(function):
     jd = function.app.mount.obsSite.timeJD
     function.modelBuildData = [
-        {"julianDate": jd, "raJ2000S": Angle(hours=0), "decJ2000S": Angle(degrees=0), "imagePath": Path("test")}
+        {"julianDate": jd, "raJ2000S": Angle(hours=0), "decJ2000S": Angle(degrees=0),
+         "imagePath": Path("test"), "angle": Angle(degrees=0), "error": 1},
     ]
     function.pointerResult = -1
     result = {"success": True, "raJNow": 0, "decJNow": 0}

@@ -234,7 +234,7 @@ class Model(QObject):
 
     def showStatusSolve(self, statusData: tuple) -> None:
         """ """
-        if len(statusData) > 2:
+        if len(statusData) == 2:
             t = f"Error solving {statusData[0]}, {statusData[1]}"
         else:
             t = f"Solved {statusData[0]}, Error {statusData[4]}, Angle {statusData[5]}"
@@ -242,10 +242,9 @@ class Model(QObject):
 
     def setupModelInputData(self) -> None:
         """ """
-        data = []
+        self.modelData.modelInputData = []
         for point in self.app.data.buildP:
-            data.append(point)
-        self.modelData.modelInputData = data
+            self.modelData.modelInputData.append(point)
 
     def setupBatchData(self) -> None:
         """ """
@@ -292,7 +291,6 @@ class Model(QObject):
 
     def runFileModel(self) -> None:
         """ """
-        self.app.operationRunning.emit(self.STATUS_MODEL_FILE)
         self.modelData = ModelData(self.app)
         self.msg.emit(1, "Model", "Run", "Model from file")
         folder = self.app.mwGlob["modelDir"]
@@ -306,13 +304,12 @@ class Model(QObject):
             self.modelData.name = modelFilesPath[0].stem
         else:
             self.msg.emit(1, "Model", "Run", "Model from file cancelled - no files selected")
-            self.app.operationRunning.emit(self.STATUS_IDLE)
             return
 
         if not self.clearAlignAndBackup():
-            self.app.operationRunning.emit(self.STATUS_IDLE)
             return
 
+        self.app.operationRunning.emit(self.STATUS_MODEL_FILE)
         self.modelData.modelBuildData, message = loadModelsFromFile(modelFilesPath)
         self.modelData.buildProgModel()
         if self.modelData.modelBuildData:

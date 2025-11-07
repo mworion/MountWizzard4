@@ -327,6 +327,11 @@ def test_wIcon_1(function):
     function.wIcon(ui, "load")
 
 
+def test_wIcon_2(function):
+    ui = QPushButton()
+    function.wIcon(None, "load")
+
+
 def test_renderStyle_1(function):
     inp = "12345$M_PRIM$12345"
     function.colorSet = 0

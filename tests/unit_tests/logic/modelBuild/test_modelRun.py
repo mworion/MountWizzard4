@@ -343,6 +343,20 @@ def test_collectPlateSolveResult_1(function):
             assert function.pointerResult == 0
 
 
+def test_collectPlateSolveResult_2(function):
+    jd = function.app.mount.obsSite.timeJD
+    function.modelBuildData = [
+        {"julianDate": jd, "raJ2000S": Angle(hours=0), "decJ2000S": Angle(degrees=0),
+         "imagePath": Path("test"), "angle": Angle(degrees=0), "error": 1},
+    ]
+    function.pointerResult = -1
+    result = {"success": False, "raJNow": 0, "decJNow": 0}
+    with mock.patch.object(function.app.data, "setStatusBuildP"):
+        with mock.patch.object(function, "sendModelProgress"):
+            function.collectPlateSolveResult(result)
+            assert function.pointerResult == 0
+
+
 def test_prepareModelBuildData_1(function):
     function.modelInputData = [(0, 0, True), (1, 1, True)]
     function.pointerResult = -1

@@ -22,7 +22,7 @@ import platform
 from packaging.utils import Version
 
 # external packages
-from pkg_resources import working_set
+import importlib.metadata
 if pConf.isAvailable:
     from PyQt5.QtMultimedia import QSound
 import requests
@@ -588,7 +588,9 @@ class SettMisc(object):
                           'MW4 not running in an virtual environment')
             return False
 
-        packages = sorted([f'{i.key}=={i.version}' for i in working_set])
+        packages = sorted(f"{p.metadata.json['name']}=={p.metadata.json['version']}" for p in (
+            importlib.metadata.distributions()))
+        # packages = sorted([f'{i.key}=={i.version}' for i in working_set])
         self.log.debug(f'Before update:  {packages}')
 
         versionPackage = self.ui.versionAvailable.text()

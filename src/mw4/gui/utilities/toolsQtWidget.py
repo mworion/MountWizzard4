@@ -108,7 +108,9 @@ def guiSetStyle(ui: QWidget, pStyle: str = "", value: object = None, pVals: [] =
 
 def guiSetText(ui: QLineEdit, formatElement: str, value: object) -> None:
     """ """
-    if isinstance(value, list | np.ndarray) and len(value) == 0:
+    if value is None:
+        text = "-"
+    elif isinstance(value, list | np.ndarray) and len(value) == 0:
         text = "-"
     elif formatElement.startswith("HSTR"):
         text = formatHstrToText(value)

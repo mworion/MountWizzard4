@@ -30,7 +30,7 @@ import mw4.gui.mainWaddon.tabModel
 from mw4.gui.mainWaddon.tabModel import Model
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.logic.modelBuild.modelData import ModelData
+from mw4.logic.modelBuild.modelRun import ModelData
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -250,6 +250,21 @@ def test_showProgress_1(function):
     )
 
 
+def test_showStatusExposure(function):
+    status = ["test", 5, 1]
+    function.showStatusExposure(status)
+
+
+def test_showStatusSolve_1(function):
+    status = ["test", "error"]
+    function.showStatusSolve(status)
+
+
+def test_showStatusSolve_2(function):
+    status = ["test", "True", 0, 0, 1.9, 85.0]
+    function.showStatusSolve(status)
+
+
 def test_setupModelInputData_1(function):
     function.app.data.buildP = [(0, 0, True), (0, 0, False), (0, 0, True)]
     function.setupModelInputData()
@@ -257,9 +272,7 @@ def test_setupModelInputData_1(function):
 
 def test_setupBatchData_1(function):
     function.modelData = ModelData(App)
-    with mock.patch.object(
-        function, "setupFilenamesAndDirectories", return_value=(Path(""))
-    ):
+    with mock.patch.object(function, "setupFilenamesAndDirectories", return_value=(Path(""))):
         function.setupBatchData()
 
 

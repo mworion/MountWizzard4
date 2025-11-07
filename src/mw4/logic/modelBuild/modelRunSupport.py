@@ -117,7 +117,7 @@ def loadModelsFromFile(modelFilesPath: list[Path]) -> tuple[list[dict], str]:
     return model, "Model data loaded"
 
 
-def findKeysFromSourceInDest(buildModel: list[dict], refModel: list[dict]) -> tuple[list, list]:
+def findKeysSourceInDest(buildModel: list[dict], refModel: list[dict]) -> tuple[list, list]:
     """ """
     pointsIn = []
     pointsOut = []
@@ -180,7 +180,7 @@ def compareFile(modelFilePath: Path, mountModelData: dict) -> tuple[list, list]:
         except Exception as e:
             log.warning(f"Cannot load model file: {[inFile]}, error: {e}")
         else:
-            pointsIn, pointsOut = findKeysFromSourceInDest(fileModelData, mountModelData)
+            pointsIn, pointsOut = findKeysSourceInDest(fileModelData, mountModelData)
 
     return pointsIn, pointsOut
 

@@ -24,8 +24,8 @@ import pytest
 # external packages
 from skyfield.api import Angle
 
-import mw4.logic.modelBuild.modelData
-from mw4.logic.modelBuild.modelData import ModelData
+import mw4.logic.modelBuild.modelRun
+from mw4.logic.modelBuild.modelRun import ModelData
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -42,7 +42,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         function.pauseBatch = False
 
-    monkeypatch.setattr("mw4.logic.modelBuild.modelData.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.logic.modelBuild.modelRun.sleepAndEvents", test)
 
 
 @pytest.fixture
@@ -50,7 +50,7 @@ def mocked_sleepAndEvents_2(monkeypatch, function):
     def test(a):
         function.cancelBatch = True
 
-    monkeypatch.setattr("mw4.logic.modelBuild.modelData.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.logic.modelBuild.modelRun.sleepAndEvents", test)
 
 
 def test_setImageExposed(function):
@@ -117,7 +117,9 @@ def test_startNewSlew_2(function):
     function.cancelBatch = True
     function.endBatch = True
     function.pointerSlew = -1
-    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}]
+    function.modelBuildData = [
+        {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}
+    ]
 
     function.startNewSlew()
     assert function.mountSlewed
@@ -130,7 +132,9 @@ def test_startNewSlew_3(function):
     function.cancelBatch = False
     function.endBatch = False
     function.pointerSlew = -1
-    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}]
+    function.modelBuildData = [
+        {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}
+    ]
 
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
         function.startNewSlew()
@@ -145,8 +149,10 @@ def test_startNewSlew_4(function):
     function.endBatch = False
     function.pointerSlew = -1
     function.app.deviceStat["dome"] = True
-    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": True, "imagePath": Path("test")},
-                               {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}]
+    function.modelBuildData = [
+        {"altitude": 0, "azimuth": 0, "success": True, "imagePath": Path("test")},
+        {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")},
+    ]
 
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
         with mock.patch.object(function.app.dome, "slewDome"):
@@ -163,7 +169,9 @@ def test_startNewSlew_5(function):
     function.endBatch = False
     function.pointerSlew = -1
     function.app.deviceStat["dome"] = True
-    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}]
+    function.modelBuildData = [
+        {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}
+    ]
 
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
         with mock.patch.object(function.app.dome, "slewDome"):
@@ -177,10 +185,10 @@ def test_addMountModelToBuildModel_1(function):
     function.app.mount.model.starList = [1, 2, 3]
     function.modelSaveData = [1, 2, 3]
     with mock.patch.object(
-        mw4.logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]
+        mw4.logic.modelBuild.modelRun, "writeRetrofitData", return_value=[1, 2, 3]
     ):
         with mock.patch.object(
-            mw4.logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]
+            mw4.logic.modelBuild.modelRun, "convertAngleToFloat", return_value=[1, 2, 3]
         ):
             function.addMountModelToBuildModel()
     assert len(function.modelSaveData) == 3
@@ -190,10 +198,10 @@ def test_addMountModelToBuildModel_2(function):
     function.app.mount.model.starList = [1, 2]
     function.modelSaveData = [1, 2, 3]
     with mock.patch.object(
-        mw4.logic.modelBuild.modelData, "writeRetrofitData", return_value=[1, 2, 3]
+        mw4.logic.modelBuild.modelRun, "writeRetrofitData", return_value=[1, 2, 3]
     ):
         with mock.patch.object(
-            mw4.logic.modelBuild.modelData, "convertAngleToFloat", return_value=[1, 2, 3]
+            mw4.logic.modelBuild.modelRun, "convertAngleToFloat", return_value=[1, 2, 3]
         ):
             function.addMountModelToBuildModel()
 
@@ -334,10 +342,37 @@ def test_sendModelProgress_1(function):
 def test_collectPlateSolveResult_1(function):
     jd = function.app.mount.obsSite.timeJD
     function.modelBuildData = [
-        {"julianDate": jd, "raJ2000S": Angle(hours=0), "decJ2000S": Angle(degrees=0), "imagePath": Path("test")}
+        {
+            "julianDate": jd,
+            "raJ2000S": Angle(hours=0),
+            "decJ2000S": Angle(degrees=0),
+            "imagePath": Path("test"),
+            "angle": Angle(degrees=0),
+            "error": 1,
+        },
     ]
     function.pointerResult = -1
     result = {"success": True, "raJNow": 0, "decJNow": 0}
+    with mock.patch.object(function.app.data, "setStatusBuildP"):
+        with mock.patch.object(function, "sendModelProgress"):
+            function.collectPlateSolveResult(result)
+            assert function.pointerResult == 0
+
+
+def test_collectPlateSolveResult_2(function):
+    jd = function.app.mount.obsSite.timeJD
+    function.modelBuildData = [
+        {
+            "julianDate": jd,
+            "raJ2000S": Angle(hours=0),
+            "decJ2000S": Angle(degrees=0),
+            "imagePath": Path("test"),
+            "angle": Angle(degrees=0),
+            "error": 1,
+        },
+    ]
+    function.pointerResult = -1
+    result = {"success": False, "raJNow": 0, "decJNow": 0}
     with mock.patch.object(function.app.data, "setStatusBuildP"):
         with mock.patch.object(function, "sendModelProgress"):
             function.collectPlateSolveResult(result)

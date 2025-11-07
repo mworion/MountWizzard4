@@ -24,7 +24,7 @@ from PySide6.QtCore import QObject, Qt
 from PySide6.QtWidgets import QInputDialog, QLineEdit
 
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
-from mw4.logic.modelBuild.modelHandling import (
+from mw4.logic.modelBuild.modelRunSupport import (
     convertAngleToFloat,
     convertFloatToAngle,
     findFittingModel,

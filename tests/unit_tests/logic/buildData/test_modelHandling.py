@@ -20,7 +20,7 @@ import pytest
 from skyfield.api import Angle, Star
 
 # local import
-from mw4.logic.modelBuild.modelHandling import writeRetrofitData
+from mw4.logic.modelBuild.modelRunSupport import writeRetrofitData
 from mw4.mountcontrol.model import Model
 from mw4.mountcontrol.modelStar import ModelStar
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

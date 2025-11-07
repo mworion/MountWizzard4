@@ -23,13 +23,13 @@ from unittest import mock
 # external packages
 from skyfield.api import Angle, Star, load, wgs84
 
-import mw4.logic.modelBuild.modelHandling
-from mw4.logic.modelBuild.modelHandling import (
+import mw4.logic.modelBuild.modelRunSupport
+from mw4.logic.modelBuild.modelRunSupport import (
     compareFile,
     convertAngleToFloat,
     convertFloatToAngle,
     findFittingModel,
-    findKeysFromSourceInDest,
+    findKeysSourceInDest,
     generateFileModelData,
     generateMountModelData,
     loadModelsFromFile,
@@ -221,7 +221,7 @@ def test_loadModelsFromFile_4():
 
 
 def test_findKeysFromSourceInDest_1():
-    val1, val2 = findKeysFromSourceInDest({}, {})
+    val1, val2 = findKeysSourceInDest({}, {})
     assert val1 == []
     assert val2 == []
 
@@ -229,7 +229,7 @@ def test_findKeysFromSourceInDest_1():
 def test_findKeysFromSourceInDest_2():
     source = {1: {"ha": 1, "dec": 2}, 2: {"ha": 4, "dec": 3}}
     dest = {1: {"ha": 2, "dec": 1}, 2: {"ha": 3, "dec": 4}}
-    val1, val2 = findKeysFromSourceInDest(source, dest)
+    val1, val2 = findKeysSourceInDest(source, dest)
     assert val1 == []
     assert 1 in val2
     assert 2 in val2
@@ -238,7 +238,7 @@ def test_findKeysFromSourceInDest_2():
 def test_findKeysFromSourceInDest_3():
     source = {1: {"ha": 1, "dec": 2}, 2: {"ha": 3, "dec": 4}}
     dest = {1: {"ha": 2, "dec": 1}, 2: {"ha": 3, "dec": 4}}
-    val1, val2 = findKeysFromSourceInDest(source, dest)
+    val1, val2 = findKeysSourceInDest(source, dest)
     assert 2 in val1
     assert 1 in val2
 
@@ -289,10 +289,10 @@ def test_compareFile_2():
 
 def test_findFittingModel_1():
     with mock.patch.object(
-        mw4.logic.modelBuild.modelHandling, "generateMountModelData", return_value={}
+        mw4.logic.modelBuild.modelRunSupport, "generateMountModelData", return_value={}
     ):
         with mock.patch.object(
-            mw4.logic.modelBuild.modelHandling, "compareFile", return_value=([1, 2, 3], [4])
+            mw4.logic.modelBuild.modelRunSupport, "compareFile", return_value=([1, 2, 3], [4])
         ):
             filePath, pointsOut = findFittingModel({}, Path("tests/testData"))
         assert pointsOut == [4]
@@ -301,10 +301,10 @@ def test_findFittingModel_1():
 
 def test_findFittingModel_2():
     with mock.patch.object(
-        mw4.logic.modelBuild.modelHandling, "generateMountModelData", return_value={}
+        mw4.logic.modelBuild.modelRunSupport, "generateMountModelData", return_value={}
     ):
         with mock.patch.object(
-            mw4.logic.modelBuild.modelHandling, "compareFile", return_value=([1], [4])
+            mw4.logic.modelBuild.modelRunSupport, "compareFile", return_value=([1], [4])
         ):
             filePath, pointsOut = findFittingModel({}, Path("tests/testData"))
         assert pointsOut == [4]

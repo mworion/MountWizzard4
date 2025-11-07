@@ -120,12 +120,12 @@ class ImageTabs:
         guiSetText(self.ui.dec, "DSTR", dec)
         guiSetText(self.ui.decFloat, "2.5f", dec.degrees)
         guiSetText(self.ui.scale, "5.3f", getScaleFromHeader(header=header))
-        guiSetText(self.ui.rotation, "6.2f", header.get("ANGLE"))
-        guiSetText(self.ui.ccdTemp, "4.1f", header.get("CCD-TEMP"))
+        guiSetText(self.ui.rotation, "6.2f", header.get("ANGLE", 0))
+        guiSetText(self.ui.ccdTemp, "4.1f", header.get("CCD-TEMP", 0))
         guiSetText(self.ui.exposureTime, "5.1f", getExposureFromHeader(header=header))
-        guiSetText(self.ui.filter, "s", header.get("FILTER"))
-        guiSetText(self.ui.binX, "1.0f", header.get("XBINNING"))
-        guiSetText(self.ui.binY, "1.0f", header.get("YBINNING"))
+        guiSetText(self.ui.filter, "s", header.get("FILTER", ""))
+        guiSetText(self.ui.binX, "1.0f", header.get("XBINNING", 0))
+        guiSetText(self.ui.binY, "1.0f", header.get("YBINNING", 0))
         guiSetText(self.ui.sqm, "5.2f", getSQMFromHeader(header=header))
 
     @staticmethod

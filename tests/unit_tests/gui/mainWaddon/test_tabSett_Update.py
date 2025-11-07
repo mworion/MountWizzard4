@@ -113,4 +113,3 @@ def test_setLoggingLevel3(function):
     function.setLoggingLevel()
     val = logging.getLogger("MW4").getEffectiveLevel()
     assert val == 5
-

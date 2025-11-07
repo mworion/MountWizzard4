@@ -40,7 +40,6 @@ class PlateSolve:
 
     def __init__(self, app):
         self.app = app
-        self.msg = app.msg
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.solveQueue = queue.Queue()

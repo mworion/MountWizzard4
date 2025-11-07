@@ -26,7 +26,7 @@ from skyfield.api import Angle, Star
 # local imports
 from mw4.base.transform import J2000ToJNow, JNowToJ2000
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
-from mw4.logic.modelBuild.modelHandling import convertAngleToFloat, writeRetrofitData
+from mw4.logic.modelBuild.modelRunSupport import convertAngleToFloat, writeRetrofitData
 from mw4.mountcontrol.progStar import ProgStar
 
 
@@ -39,10 +39,12 @@ class ModelData(QObject):
     NORMAL = 1
     CONSERVATIVE = 0
 
+    statusExpose = Signal(object)
+    statusSolve = Signal(object)
+
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.msg = app.msg
 
         self.cancelBatch: bool = False
         self.pauseBatch: bool = False
@@ -129,7 +131,6 @@ class ModelData(QObject):
         azimuth = item["azimuth"]
         self.mountSlewed = False
         self.domeSlewed = False
-        self.msg.emit(0, "Model", "Slewing", item["imagePath"].stem)
 
         if not self.app.mount.obsSite.setTargetAltAz(altitude, azimuth):
             return
@@ -220,7 +221,7 @@ class ModelData(QObject):
         exposureTime = item["exposureTime"] = cam.exposureTime1
         binning = item["binning"] = cam.binning1
         self.app.camera.expose(imagePath, exposureTime, binning)
-        self.msg.emit(0, "Model", "Exposing", imagePath.stem)
+        self.statusExpose.emit([imagePath.stem, exposureTime, binning])
 
     def startNewPlateSolve(self) -> None:
         """ """
@@ -259,8 +260,19 @@ class ModelData(QObject):
             )
             item["raJNowS"] = raJNowS
             item["decJNowS"] = decJNowS
+            self.statusSolve.emit(
+                [
+                    item["imagePath"].stem,
+                    item["success"],
+                    item["raJ2000S"].hours,
+                    item["decJ2000S"].degrees,
+                    item["angle"].degrees,
+                    item["error"],
+                ]
+            )
 
-        self.msg.emit(0, "Model", "Solving", item["imagePath"].stem)
+        else:
+            self.statusSolve.emit([item["imagePath"].stem, item["success"]])
 
         statusBuildPoint = 0 if item["success"] else 2
         self.app.data.setStatusBuildP(self.pointerResult, statusBuildPoint)
@@ -292,7 +304,7 @@ class ModelData(QObject):
 
     def checkRetryNeeded(self) -> None:
         """ """
-        return not all([p["success"] for p in self.modelBuildData])
+        return not all(p["success"] for p in self.modelBuildData)
 
     def runThroughModelBuildData(self) -> None:
         """ """

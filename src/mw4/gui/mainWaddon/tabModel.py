@@ -24,12 +24,12 @@ from PySide6.QtCore import QObject
 
 # local import
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, sleepAndEvents
-from mw4.logic.modelBuild.modelData import ModelData
-from mw4.logic.modelBuild.modelHandling import loadModelsFromFile
+from mw4.logic.modelBuild.modelRun import ModelData
+from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
 
 
 class Model(QObject):
-    """  """
+    """ """
 
     STATUS_IDLE = 0
     STATUS_MODEL_BATCH = 1
@@ -153,8 +153,8 @@ class Model(QObject):
         self.msg.emit(0, "Model", "Run", f"Writing model [{self.modelData.name}]")
         self.modelData.generateSaveData()
         modelPath = self.app.mwGlob["modelDir"] / (self.modelData.name + ".model")
-        # self.modelData.saveModelData(modelPath)
-        # self.app.mount.model.storeName("actual")
+        self.modelData.saveModelData(modelPath)
+        self.app.mount.model.storeName("actual")
 
     def programModelToMount(self) -> bool:
         """ """
@@ -227,12 +227,24 @@ class Model(QObject):
         self.ui.modelProgress.setValue(progressData["modelPercent"])
         self.ui.numberPoints.setText(f"{progressData['count']} / {progressData['number']}")
 
+    def showStatusExposure(self, statusData: tuple) -> None:
+        """ """
+        t = f"Exposing {statusData[0]}, Duration {statusData[1]}s, Binning {statusData[2]} "
+        self.msg.emit(0, "Model", "Exposure", t)
+
+    def showStatusSolve(self, statusData: tuple) -> None:
+        """ """
+        if len(statusData) == 2:
+            t = f"Error solving {statusData[0]}, {statusData[1]}"
+        else:
+            t = f"Solved {statusData[0]}, Error {statusData[4]}, Angle {statusData[5]}"
+        self.msg.emit(0, "Model", "Solving", t)
+
     def setupModelInputData(self) -> None:
         """ """
-        data = []
+        self.modelData.modelInputData = []
         for point in self.app.data.buildP:
-            data.append(point)
-        self.modelData.modelInputData = data
+            self.modelData.modelInputData.append(point)
 
     def setupBatchData(self) -> None:
         """ """
@@ -266,6 +278,8 @@ class Model(QObject):
 
         self.app.operationRunning.emit(self.STATUS_MODEL_BATCH)
         self.modelData = ModelData(self.app)
+        self.modelData.statusSolve.connect(self.showStatusSolve)
+        self.modelData.statusExpose.connect(self.showStatusExposure)
         self.setModelTiming()
         self.setupBatchData()
         self.msg.emit(1, "Model", "Run", f"Model {self.modelData.name}")
@@ -277,7 +291,6 @@ class Model(QObject):
 
     def runFileModel(self) -> None:
         """ """
-        self.app.operationRunning.emit(self.STATUS_MODEL_FILE)
         self.modelData = ModelData(self.app)
         self.msg.emit(1, "Model", "Run", "Model from file")
         folder = self.app.mwGlob["modelDir"]
@@ -291,13 +304,12 @@ class Model(QObject):
             self.modelData.name = modelFilesPath[0].stem
         else:
             self.msg.emit(1, "Model", "Run", "Model from file cancelled - no files selected")
-            self.app.operationRunning.emit(self.STATUS_IDLE)
             return
 
         if not self.clearAlignAndBackup():
-            self.app.operationRunning.emit(self.STATUS_IDLE)
             return
 
+        self.app.operationRunning.emit(self.STATUS_MODEL_FILE)
         self.modelData.modelBuildData, message = loadModelsFromFile(modelFilesPath)
         self.modelData.buildProgModel()
         if self.modelData.modelBuildData:

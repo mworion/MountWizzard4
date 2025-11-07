@@ -55,6 +55,10 @@ def test_storeConfig_1(function):
     function.storeConfig()
 
 
+def test_setupIcons_1(function):
+    function.setupIcons()
+
+
 def test_prepareAsteroidTable_1(function):
     function.prepareAsteroidTable()
 

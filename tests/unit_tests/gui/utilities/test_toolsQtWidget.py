@@ -144,26 +144,11 @@ def test_guiSetStyle_4():
 
 
 def test_guiSetText_1():
-    guiSetText(None, None)
-
-
-def test_guiSetText_2():
-    pb = QPushButton()
-    guiSetText(pb, None)
-
-
-def test_guiSetText_3():
-    pb = QPushButton()
-    guiSetText(pb, "3.5f")
-    assert pb.text() == "-"
-
-
-def test_guiSetText_3b():
     pb = QPushButton()
     guiSetText(pb, "3.5f", [])
 
 
-def test_guiSetText_3c():
+def test_guiSetText_2():
     pb = QPushButton()
     guiSetText(pb, "3.5f", np.array([]))
 
@@ -306,9 +291,7 @@ def test_img2pixmap_1(function):
 
 
 def test_img2pixmap_2(function):
-    img = function.img2pixmap(
-        os.getcwd() + "/tests/testData/altitude.png", "#202020", "#303030"
-    )
+    img = function.img2pixmap(os.getcwd() + "/tests/testData/altitude.png")
     assert isinstance(img, QPixmap)
 
 
@@ -346,11 +329,6 @@ def test_initUI_1(function):
 
 
 def test_prepareFileDialog_1(function):
-    suc = function.prepareFileDialog()
-    assert not suc
-
-
-def test_prepareFileDialog_2(function):
     window = QWidget()
     suc = function.prepareFileDialog(window=window)
     assert suc
@@ -402,29 +380,6 @@ def test_messageDialog_3(function):
                 assert suc
 
 
-def test_openFile_1(function):
-    full = function.openFile()
-    assert full == Path("")
-
-
-def test_openFile_2(function):
-    window = QWidget()
-    full = function.openFile(window=window)
-    assert full == Path("")
-
-
-def test_openFile_3(function):
-    window = QWidget()
-    full = function.openFile(window=window, title="title")
-    assert full == Path("")
-
-
-def test_openFile_4(function):
-    window = QWidget()
-    full = function.openFile(window=window, title="title", folder=Path(".text"))
-    assert full == Path("")
-
-
 def test_openFile_5(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=0):
@@ -462,29 +417,6 @@ def test_openFile_7(function):
             assert full == Path("test1")
 
 
-def test_saveFile_1(function):
-    full = function.saveFile()
-    assert full == Path("")
-
-
-def test_saveFile_2(function):
-    window = QWidget()
-    full = function.saveFile(window=window)
-    assert full == Path("")
-
-
-def test_saveFile_3(function):
-    window = QWidget()
-    full = function.saveFile(window=window, title="title")
-    assert full == Path("")
-
-
-def test_saveFile_4(function):
-    window = QWidget()
-    full = function.saveFile(window=window, title="title", folder=Path("."))
-    assert full == Path("")
-
-
 def test_saveFile_5(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=0):
@@ -501,23 +433,6 @@ def test_saveFile_6(function):
             QFileDialog, "selectedFiles", return_value=(["tests/test.txt"])
         ):
             function.saveFile(window=window, title="title", folder=Path("."), filterSet="*.*")
-
-
-def test_openDir_1(function):
-    full = function.openDir()
-    assert full == Path("")
-
-
-def test_openDir_2(function):
-    window = QWidget()
-    full = function.openDir(window=window)
-    assert full == Path("")
-
-
-def test_openDir_3(function):
-    window = QWidget()
-    full = function.openDir(window=window, title="title")
-    assert full == Path("")
 
 
 def test_openDir_4(function):
@@ -576,16 +491,14 @@ def test_positionWindow_1(function):
     config = {"winPosX": 100, "winPosY": 100, "height": 400, "width": 600}
     function.screenSizeX = 1000
     function.screenSizeY = 1000
-    suc = function.positionWindow(config)
-    assert suc
+    function.positionWindow(config)
 
 
 def test_positionWindow_2(function):
     config = {"winPosX": 900, "winPosY": 900, "height": 400, "width": 600}
     function.screenSizeX = 1000
     function.screenSizeY = 1000
-    suc = function.positionWindow(config)
-    assert suc
+    function.positionWindow(config)
 
 
 def test_getTabAndIndex(function):

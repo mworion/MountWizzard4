@@ -47,9 +47,9 @@ def app(qapp):
         "workDir": Path("tests/work"),
     }
 
-    shutil.copy("tests/testData/de440_mw4.bsp", Path("./tests/work/data/de440_mw4.bsp"))
-    shutil.copy("tests/testData/finals2000A.all", Path("./tests/work/data/finals2000A.all"))
-    shutil.copy("tests/testData/test.run", Path("tests/work/test.run"))
+    shutil.copy(Path("./tests/testData/de440_mw4.bsp"), Path("./tests/work/data/de440_mw4.bsp"))
+    shutil.copy(Path("./tests/testData/finals2000A.all"), Path("./tests/work/data/finals2000A.all"))
+    shutil.copy(Path("./tests/testData/test.run"), Path("tests/work/test.run"))
 
     class Test:
         def emit(self):

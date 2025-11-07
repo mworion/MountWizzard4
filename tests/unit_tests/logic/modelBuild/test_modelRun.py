@@ -20,11 +20,13 @@ from pathlib import Path
 from unittest import mock
 
 import pytest
+
 # external packages
 from skyfield.api import Angle
 
 import mw4.logic.modelBuild.modelRun
 from mw4.logic.modelBuild.modelRun import ModelData
+
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -115,7 +117,9 @@ def test_startNewSlew_2(function):
     function.cancelBatch = True
     function.endBatch = True
     function.pointerSlew = -1
-    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}]
+    function.modelBuildData = [
+        {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}
+    ]
 
     function.startNewSlew()
     assert function.mountSlewed
@@ -128,7 +132,9 @@ def test_startNewSlew_3(function):
     function.cancelBatch = False
     function.endBatch = False
     function.pointerSlew = -1
-    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}]
+    function.modelBuildData = [
+        {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}
+    ]
 
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
         function.startNewSlew()
@@ -143,8 +149,10 @@ def test_startNewSlew_4(function):
     function.endBatch = False
     function.pointerSlew = -1
     function.app.deviceStat["dome"] = True
-    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": True, "imagePath": Path("test")},
-                               {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}]
+    function.modelBuildData = [
+        {"altitude": 0, "azimuth": 0, "success": True, "imagePath": Path("test")},
+        {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")},
+    ]
 
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
         with mock.patch.object(function.app.dome, "slewDome"):
@@ -161,7 +169,9 @@ def test_startNewSlew_5(function):
     function.endBatch = False
     function.pointerSlew = -1
     function.app.deviceStat["dome"] = True
-    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}]
+    function.modelBuildData = [
+        {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}
+    ]
 
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
         with mock.patch.object(function.app.dome, "slewDome"):
@@ -332,8 +342,14 @@ def test_sendModelProgress_1(function):
 def test_collectPlateSolveResult_1(function):
     jd = function.app.mount.obsSite.timeJD
     function.modelBuildData = [
-        {"julianDate": jd, "raJ2000S": Angle(hours=0), "decJ2000S": Angle(degrees=0),
-         "imagePath": Path("test"), "angle": Angle(degrees=0), "error": 1},
+        {
+            "julianDate": jd,
+            "raJ2000S": Angle(hours=0),
+            "decJ2000S": Angle(degrees=0),
+            "imagePath": Path("test"),
+            "angle": Angle(degrees=0),
+            "error": 1,
+        },
     ]
     function.pointerResult = -1
     result = {"success": True, "raJNow": 0, "decJNow": 0}
@@ -346,8 +362,14 @@ def test_collectPlateSolveResult_1(function):
 def test_collectPlateSolveResult_2(function):
     jd = function.app.mount.obsSite.timeJD
     function.modelBuildData = [
-        {"julianDate": jd, "raJ2000S": Angle(hours=0), "decJ2000S": Angle(degrees=0),
-         "imagePath": Path("test"), "angle": Angle(degrees=0), "error": 1},
+        {
+            "julianDate": jd,
+            "raJ2000S": Angle(hours=0),
+            "decJ2000S": Angle(degrees=0),
+            "imagePath": Path("test"),
+            "angle": Angle(degrees=0),
+            "error": 1,
+        },
     ]
     function.pointerResult = -1
     result = {"success": False, "raJNow": 0, "decJNow": 0}

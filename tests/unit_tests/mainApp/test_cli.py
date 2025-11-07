@@ -62,8 +62,8 @@ def test_read_options_returns_namespace(monkeypatch):
     assert isinstance(opts, argparse.Namespace)
 
 
-@patch('mw4.cli.main')
-@patch('platform.system')
+@patch("mw4.cli.main")
+@patch("platform.system")
 def test_app_on_windows_sets_environment_variables(mock_platform, mock_main, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli", "--dpi", "120", "--scale", "1.5"])
     mock_platform.return_value = "Windows"
@@ -78,9 +78,11 @@ def test_app_on_windows_sets_environment_variables(mock_platform, mock_main, mon
     mock_main.assert_called_once()
 
 
-@patch('mw4.cli.main')
-@patch('platform.system')
-def test_app_on_linux_does_not_set_environment_variables(mock_platform, mock_main, monkeypatch):
+@patch("mw4.cli.main")
+@patch("platform.system")
+def test_app_on_linux_does_not_set_environment_variables(
+    mock_platform, mock_main, monkeypatch
+):
     monkeypatch.setattr(sys, "argv", ["mw4.cli", "--dpi", "120", "--scale", "1.5"])
     mock_platform.return_value = "Linux"
 
@@ -94,9 +96,11 @@ def test_app_on_linux_does_not_set_environment_variables(mock_platform, mock_mai
     mock_main.assert_called_once()
 
 
-@patch('mw4.cli.main')
-@patch('platform.system')
-def test_app_on_darwin_does_not_set_environment_variables(mock_platform, mock_main, monkeypatch):
+@patch("mw4.cli.main")
+@patch("platform.system")
+def test_app_on_darwin_does_not_set_environment_variables(
+    mock_platform, mock_main, monkeypatch
+):
     monkeypatch.setattr(sys, "argv", ["mw4.cli"])
     mock_platform.return_value = "Darwin"
 
@@ -105,8 +109,8 @@ def test_app_on_darwin_does_not_set_environment_variables(mock_platform, mock_ma
     mock_main.assert_called_once()
 
 
-@patch('mw4.cli.main')
-@patch('platform.system')
+@patch("mw4.cli.main")
+@patch("platform.system")
 def test_app_with_float_formatting(mock_platform, mock_main, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli", "--dpi", "96.7", "--scale", "1.25"])
     mock_platform.return_value = "Windows"
@@ -120,8 +124,8 @@ def test_app_with_float_formatting(mock_platform, mock_main, monkeypatch):
     assert os.environ["QT_FONT_DPI"] == "97"
 
 
-@patch('mw4.cli.main')
-@patch('platform.system')
+@patch("mw4.cli.main")
+@patch("platform.system")
 def test_app_calls_main_function(mock_platform, mock_main, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli"])
     mock_platform.return_value = "Linux"

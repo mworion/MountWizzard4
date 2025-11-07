@@ -272,9 +272,7 @@ def test_setupModelInputData_1(function):
 
 def test_setupBatchData_1(function):
     function.modelData = ModelData(App)
-    with mock.patch.object(
-        function, "setupFilenamesAndDirectories", return_value=(Path(""))
-    ):
+    with mock.patch.object(function, "setupFilenamesAndDirectories", return_value=(Path(""))):
         function.setupBatchData()
 
 

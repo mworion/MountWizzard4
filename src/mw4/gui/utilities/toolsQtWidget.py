@@ -18,6 +18,7 @@ import datetime
 import logging
 import time
 from pathlib import Path
+from skyfield.api import Time
 
 import numpy as np
 from dateutil.tz import tzlocal
@@ -34,8 +35,20 @@ from PySide6.QtGui import (
     QPalette,
     QPixmap,
     QTransform,
+    QMouseEvent,
+    QKeyEvent,
 )
-from PySide6.QtWidgets import QAbstractItemView, QFileDialog, QMessageBox, QWidget
+from PySide6.QtWidgets import (
+    QAbstractItemView,
+    QFileDialog,
+    QMessageBox,
+    QWidget,
+    QComboBox,
+    QLineEdit,
+    QPushButton,
+    QTableWidget,
+    QTabWidget,
+)
 from qimage2ndarray import array2qimage, rgb_view
 
 # local imports
@@ -60,7 +73,7 @@ def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str) -> None
     widget.style().polish(widget)
 
 
-def findIndexValue(ui, searchString, relaxed=False):
+def findIndexValue(ui: QComboBox, searchString: str, relaxed: bool = False) -> int:
     """ """
     for index in range(ui.model().rowCount()):
         modelIndex = ui.model().index(index, 0)
@@ -77,7 +90,7 @@ def findIndexValue(ui, searchString, relaxed=False):
     return 0
 
 
-def guiSetStyle(ui, pStyle="", value=None, pVals=None):
+def guiSetStyle(ui: QWidget, pStyle: str = "", value: object = None, pVals: [] = None) -> None:
     """ """
     if pVals is None:
         pVals = ["", "", ""]
@@ -93,13 +106,9 @@ def guiSetStyle(ui, pStyle="", value=None, pVals=None):
     changeStyleDynamic(ui, pStyle, pVal)
 
 
-def guiSetText(ui, formatElement, value=None):
+def guiSetText(ui: QLineEdit, formatElement: str, value: object) -> None:
     """ """
-    if not ui:
-        return
-    if not formatElement:
-        return
-    if value is None or isinstance(value, list | np.ndarray) and len(value) == 0:
+    if isinstance(value, list | np.ndarray) and len(value) == 0:
         text = "-"
     elif formatElement.startswith("HSTR"):
         text = formatHstrToText(value)
@@ -130,7 +139,7 @@ def clickable(widget: QWidget) -> Signal:
     class MouseClickEventFilter(QObject):
         clicked = Signal(object)
 
-        def eventFilter(self, obj, event):
+        def eventFilter(self, obj: QWidget, event: QMouseEvent):
             if event.type() == QEvent.Type.MouseButtonRelease:
                 if obj.rect().contains(event.pos()):
                     self.clicked.emit(widget)
@@ -167,9 +176,10 @@ class MWidget(QWidget, Styles):
         self.setWindowIcon(QIcon(":/icon/mw4.png"))
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.app = None
+        self.ui = None
 
     @staticmethod
-    def saveWindowAsPNG(window):
+    def saveWindowAsPNG(window) -> None:
         """ """
         name = window.windowTitle().replace(" ", "_")
         timeTrigger = datetime.datetime.now(datetime.UTC)
@@ -184,11 +194,10 @@ class MWidget(QWidget, Styles):
         windows = window.app.mainW.externalWindows.uiWindows
         self.saveWindowAsPNG(window)
         for window in windows:
-            obj = windows[window]["classObj"]
-            if obj:
-                self.saveWindowAsPNG(obj)
+            if windows[window]["classObj"]:
+                self.saveWindowAsPNG(windows[window]["classObj"])
 
-    def keyPressEvent(self, keyEvent):
+    def keyPressEvent(self, keyEvent: QKeyEvent) -> None:
         """
         Pressing F5 makes a screen copy of the actual window
         Pressing F6 makes a screen copy of all open windows
@@ -201,21 +210,18 @@ class MWidget(QWidget, Styles):
             return
         super().keyPressEvent(keyEvent)
 
-    def img2pixmap(self, img, detect=None, color=None):
+    @staticmethod
+    def img2pixmap(img: np.ndarray) -> QPixmap:
         """ """
         image = QImage(img)
         image.convertToFormat(QImage.Format.Format_RGB32)
         imgArr = rgb_view(image)
-        if detect is not None and color is not None:
-            detect = self.hex2rgb(detect)
-            target = self.hex2rgb(color)
-            imgArr[np.where((imgArr == detect).all(axis=2))] = target
         image = array2qimage(imgArr)
         pixmap = QPixmap().fromImage(image)
         return pixmap
 
     @staticmethod
-    def svg2pixmap(svg, color="black"):
+    def svg2pixmap(svg: object, color: str = "black") -> QPixmap:
         """ """
         img = QPixmap(svg)
         qp = QPainter(img)
@@ -224,16 +230,13 @@ class MWidget(QWidget, Styles):
         qp.end()
         return img
 
-    def svg2icon(self, svg, color="black"):
+    def svg2icon(self, svg: object, color: str = "black") -> QIcon:
         """ """
         img = self.svg2pixmap(svg, color)
         return QIcon(img)
 
-    def wIcon(self, gui=None, name=""):
+    def wIcon(self, gui: QPushButton, name: str) -> QIcon:
         """ """
-        if not gui or not name:
-            return
-
         icon = self.svg2icon(f":/icon/{name}.svg", self.M_TER)
         gui.setIcon(icon)
         gui.setIconSize(QSize(16, 16))
@@ -241,17 +244,14 @@ class MWidget(QWidget, Styles):
         gui.style().unpolish(gui)
         gui.style().polish(gui)
 
-    def initUI(self):
+    def initUI(self) -> None:
         """ """
         self.setStyleSheet(self.mw4Style)
         self.setMouseTracking(True)
         self.setWindowIcon(QIcon(":/mw4.ico"))
 
-    def prepareFileDialog(self, window=None, enableDir=False):
+    def prepareFileDialog(self, window: QWidget, enableDir: bool = False) -> QFileDialog:
         """ """
-        if not window:
-            return None
-
         dlg = QFileDialog()
         dlg.setOptions(QFileDialog.Option.DontUseNativeDialog)
         dlg.setWindowIcon(QIcon(":/mw4.ico"))
@@ -276,11 +276,18 @@ class MWidget(QWidget, Styles):
         return dlg
 
     @staticmethod
-    def runDialog(dlg):
+    def runDialog(dlg: QFileDialog) -> QMessageBox:
         """ """
         return dlg.exec()
 
-    def messageDialog(self, parentWidget, title, question, buttons=None, iconType=0):
+    def messageDialog(
+        self,
+        parentWidget: QWidget,
+        title: str,
+        question: int,
+        buttons: tuple[QPushButton] = None,
+        iconType: int = 0,
+    ) -> QMessageBox:
         """ """
         msg = QMessageBox()
         msg.setWindowModality(Qt.WindowModality.ApplicationModal)
@@ -316,25 +323,14 @@ class MWidget(QWidget, Styles):
 
     def openFile(
         self,
-        window=None,
-        title="",
-        folder=Path(""),
-        filterSet=None,
-        enableDir=False,
-        multiple=False,
+        window: QWidget,
+        title: str,
+        folder: Path,
+        filterSet: str,
+        enableDir: bool = False,
+        multiple: bool = False,
     ):
         """ """
-        default = [] if multiple else Path("")
-
-        if not window:
-            return default
-        if not title:
-            return default
-        if not folder.is_dir():
-            return default
-        if not filterSet:
-            return default
-
         dlg = self.prepareFileDialog(window=window, enableDir=enableDir)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         dlg.setWindowTitle(title)
@@ -348,14 +344,21 @@ class MWidget(QWidget, Styles):
 
         result = self.runDialog(dlg)
         if not result:
-            return default
+            return [] if multiple else Path("")
 
         if multiple:
             return [Path(f) for f in dlg.selectedFiles()]
         else:
             return Path(dlg.selectedFiles()[0])
 
-    def saveFile(self, window=None, title="", folder="", filterSet=None, enableDir=False):
+    def saveFile(
+        self,
+        window: QWidget,
+        title: str,
+        folder: Path,
+        filterSet: str,
+        enableDir: bool = False,
+    ):
         """ """
         if not window:
             return Path("")
@@ -377,15 +380,8 @@ class MWidget(QWidget, Styles):
 
         return Path(dlg.selectedFiles()[0])
 
-    def openDir(self, window=None, title="", folder=""):
+    def openDir(self, window: QWidget, title: str, folder: Path) -> Path:
         """ """
-        if not window:
-            return Path("")
-        if not title:
-            return Path("")
-        if not folder:
-            return Path("")
-
         dlg = self.prepareFileDialog(window=window, enableDir=True)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         dlg.setWindowTitle(title)
@@ -397,7 +393,7 @@ class MWidget(QWidget, Styles):
 
         return Path(dlg.selectedFiles()[0])
 
-    def convertTime(self, value, fString):
+    def convertTime(self, value: Time, fString: str) -> str:
         """ """
         isUTC = self.ui.unitTimeUTC.isChecked()
         if isUTC:
@@ -405,7 +401,7 @@ class MWidget(QWidget, Styles):
         else:
             return value.astimezone(tzlocal()).strftime(fString)
 
-    def timeZoneString(self):
+    def timeZoneString(self) -> str:
         """ """
         if self.ui.unitTimeUTC.isChecked():
             return "(time is UTC)"
@@ -413,7 +409,7 @@ class MWidget(QWidget, Styles):
             return "(time is local)"
 
     @staticmethod
-    def makePointer():
+    def makePointer() -> QPainterPath:
         """ """
         path = QPainterPath()
         path.moveTo(0, -1)
@@ -425,7 +421,7 @@ class MWidget(QWidget, Styles):
         return path
 
     @staticmethod
-    def makeSat():
+    def makeSat() -> QPainterPath:
         """ """
         path = QPainterPath()
         tr = QTransform()
@@ -443,7 +439,7 @@ class MWidget(QWidget, Styles):
         path.addEllipse(-0.05, -0.05, 0.1, 0.1)
         return path
 
-    def positionWindow(self, config):
+    def positionWindow(self, config: dict) -> None:
         """ """
         height = config.get("height", 600)
         width = config.get("width", 800)
@@ -458,23 +454,22 @@ class MWidget(QWidget, Styles):
         y = max(y, 0)
         if x != 0 and y != 0:
             self.move(x, y)
-        return True
 
     @staticmethod
-    def getTabIndex(tab, name):
+    def getTabIndex(tab: QTabWidget, name: str) -> int:
         """ """
         tabWidget = tab.findChild(QWidget, name)
         tabIndex = tab.indexOf(tabWidget)
         return tabIndex
 
     @staticmethod
-    def getTabAndIndex(tab, config, name):
+    def getTabAndIndex(tab: QTabWidget, config: dict, name: str) -> QTabWidget:
         """ """
         config[name] = {"index": tab.currentIndex()}
         for index in range(tab.count()):
             config[name][f"{index:02d}"] = tab.widget(index).objectName()
 
-    def setTabAndIndex(self, tab, config, name):
+    def setTabAndIndex(self, tab: QTabWidget, config: dict, name: str) -> None:
         """ """
         config = config.get(name, {})
         if not isinstance(config, dict):
@@ -488,7 +483,7 @@ class MWidget(QWidget, Styles):
         tab.setCurrentIndex(config.get("index", 0))
 
     @staticmethod
-    def positionCursorInTable(table, searchName):
+    def positionCursorInTable(table: QTableWidget, searchName: str) -> None:
         """ """
         result = table.findItems(searchName, Qt.MatchFlag.MatchExactly)
         if len(result) == 0:

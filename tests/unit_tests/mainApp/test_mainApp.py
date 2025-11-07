@@ -48,7 +48,9 @@ def app(qapp):
     }
 
     shutil.copy(Path("tests/testData/de440_mw4.bsp"), Path("tests/work/data/de440_mw4.bsp"))
-    shutil.copy(Path("tests/testData/finals2000A.all"), Path("tests/work/data/finals2000A.all"))
+    shutil.copy(
+        Path("tests/testData/finals2000A.all"), Path("tests/work/data/finals2000A.all")
+    )
     shutil.copy(Path("tests/testData/test.run"), Path("tests/work/test.run"))
 
     class Test:

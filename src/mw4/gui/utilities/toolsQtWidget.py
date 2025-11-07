@@ -362,15 +362,6 @@ class MWidget(QWidget, Styles):
         enableDir: bool = False,
     ):
         """ """
-        if not window:
-            return Path("")
-        if not title:
-            return Path("")
-        if not folder:
-            return Path("")
-        if not filterSet:
-            return Path("")
-
         dlg = self.prepareFileDialog(window, enableDir)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         dlg.setWindowTitle(title)

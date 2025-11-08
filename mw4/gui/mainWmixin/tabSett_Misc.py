@@ -436,7 +436,7 @@ class SettMisc(object):
             self.log.critical(f'Cannot determine package version: {e}')
             return None, None, None
 
-        vPackage = list(response['releases'].keys())
+        vPackage = list(p for p in response['releases'].keys() if not p.startswith('4'))
         vPackage.sort(key=Version, reverse=True)
 
         verBeta = [x for x in vPackage if 'b' in x]
@@ -590,7 +590,6 @@ class SettMisc(object):
 
         packages = sorted(f"{p.metadata.json['name']}=={p.metadata.json['version']}" for p in (
             importlib.metadata.distributions()))
-        # packages = sorted([f'{i.key}=={i.version}' for i in working_set])
         self.log.debug(f'Before update:  {packages}')
 
         versionPackage = self.ui.versionAvailable.text()

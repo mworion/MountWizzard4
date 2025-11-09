@@ -157,18 +157,18 @@ class HorizonDraw(MWidget):
     def saveHorizonMaskAs(self) -> None:
         """ """
         folder = self.app.mwGlob["configDir"]
-        saveFilePath, fileName, ext = self.saveFile(
+        saveFilePath = self.saveFile(
             self, "Save horizon mask file", folder, "Horizon mask files (*.hpts)"
         )
         if not saveFilePath:
             return
 
-        suc = self.app.data.saveHorizonP(fileName=fileName)
+        suc = self.app.data.saveHorizonP(fileName=saveFilePath.stem)
         if suc:
-            self.ui.horizonMaskFileName.setText(fileName)
-            self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{fileName}] saved")
+            self.ui.horizonMaskFileName.setText(saveFilePath.stem)
+            self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{saveFilePath.stem}] saved")
         else:
-            self.msg.emit(2, "Hemisphere", "Horizon", f"Mask [{fileName}] cannot no be saved")
+            self.msg.emit(2, "Hemisphere", "Horizon", f"Mask [{saveFilePath.stem}] cannot no be saved")
 
     def setOperationMode(self) -> None:
         """ """

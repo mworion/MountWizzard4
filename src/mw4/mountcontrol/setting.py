@@ -27,38 +27,38 @@ class Setting:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         self.parent = parent
-        self._slewRate = None
-        self._slewRateMin = None
-        self._slewRateMax = None
-        self._timeToFlip = None
-        self._meridianLimitTrack = None
-        self._meridianLimitSlew = None
-        self._refractionTemp = None
-        self._refractionPress = None
-        self._telescopeTempDEC = None
-        self._statusRefraction = None
-        self._statusUnattendedFlip = None
-        self._statusDualAxisTracking = None
-        self._horizonLimitHigh = None
-        self._horizonLimitLow = None
-        self._wakeOnLan = None
-        self._UTCValid = None
-        self._UTCExpire = None
-        self._gpsSynced = None
-        self._typeConnection = None
-        self._addressLanMAC = None
-        self._addressWirelessMAC = None
-        self._weatherStatus = None
-        self._weatherPressure = None
-        self._weatherTemperature = None
-        self._weatherHumidity = None
-        self._weatherDewPoint = None
-        self._weatherAge = None
-        self._trackingRate = None
-        self._webInterfaceStat = None
-        self._settleTime = None
+        self._slewRate = 0
+        self._slewRateMin = 0
+        self._slewRateMax = 99
+        self._timeToFlip = 0
+        self._meridianLimitTrack = 0
+        self._meridianLimitSlew = 0
+        self._refractionTemp = 0
+        self._refractionPress = 0
+        self._telescopeTempDEC = 0
+        self._statusRefraction = False
+        self._statusUnattendedFlip = False
+        self._statusDualAxisTracking = False
+        self._horizonLimitHigh = 0
+        self._horizonLimitLow = 0
+        self._wakeOnLan = False
+        self._UTCValid = False
+        self._UTCExpire = "2000-01-01"
+        self._gpsSynced = False
+        self._typeConnection = 0
+        self._addressLanMAC = ""
+        self._addressWirelessMAC = ""
+        self._weatherStatus = False
+        self._weatherPressure = 950
+        self._weatherTemperature = 0
+        self._weatherHumidity = 0
+        self._weatherDewPoint = 0
+        self._weatherAge = 0
+        self._trackingRate = 0
+        self._webInterfaceStat = ""
+        self._settleTime = 0
 
     @property
     def slewRate(self):

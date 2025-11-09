@@ -153,6 +153,7 @@ class HorizonDraw(MWidget):
             self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{fileName}] saved")
         else:
             self.msg.emit(2, "Hemisphere", "Horizon", f"Mask [{fileName}] cannot no be saved")
+        self.app.redrawHorizon.emit()
 
     def saveHorizonMaskAs(self) -> None:
         """ """
@@ -169,10 +170,12 @@ class HorizonDraw(MWidget):
             self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{saveFilePath.stem}] saved")
         else:
             self.msg.emit(2, "Hemisphere", "Horizon", f"Mask [{saveFilePath.stem}] cannot no be saved")
+        self.app.redrawHorizon.emit()
 
     def setOperationMode(self) -> None:
         """ """
         self.ui.addPositionToHorizon.setEnabled(self.ui.editModeHor.isChecked())
+        self.app.redrawHorizon.emit()
         self.drawTab()
 
     def updateDataHorizon(self, x: list, y: list) -> None:

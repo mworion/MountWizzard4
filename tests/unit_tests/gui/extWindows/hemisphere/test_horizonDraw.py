@@ -165,24 +165,24 @@ def test_saveHorizonMaskFile_2(function):
 
 def test_saveHorizonMaskFile_3(function):
     function.ui.horizonMaskFileName.setText("test")
-    with mock.patch.object(function, "saveFile", return_value=("build", "test", "bpts")):
+    with mock.patch.object(function, "saveFile", return_value=(Path("build.bpts"))):
         with mock.patch.object(function.app.data, "saveHorizonP", return_value=False):
             function.saveHorizonMask()
 
 
 def test_saveHorizonMaskFileAs_1(function):
-    with mock.patch.object(function, "saveFile", return_value=("build", "test", "bpts")):
+    with mock.patch.object(function, "saveFile", return_value=(Path("build.bpts"))):
         with mock.patch.object(function.app.data, "saveHorizonP", return_value=True):
             function.saveHorizonMaskAs()
 
 
 def test_saveHorizonMaskFileAs_2(function):
-    with mock.patch.object(function, "saveFile", return_value=("", "", "")):
+    with mock.patch.object(function, "saveFile", return_value=(Path(""))):
         function.saveHorizonMaskAs()
 
 
 def test_saveHorizonMaskFileAs_3(function):
-    with mock.patch.object(function, "saveFile", return_value=("build", "test", "bpts")):
+    with mock.patch.object(function, "saveFile", return_value=(Path("build.bpts"))):
         with mock.patch.object(function.app.data, "saveHorizonP", return_value=False):
             function.saveHorizonMaskAs()
 

@@ -99,7 +99,9 @@ def test_setOperationMode_2(function):
 
 
 def test_updateOnChangedParams_0(function):
-    sett = Setting()
+    class Parent:
+        host = None
+    sett = Setting(parent=Parent())
     sett.meridianLimitSlew = 0
     sett.meridianLimitTrack = 0
     sett.horizonLimitHigh = 0
@@ -114,7 +116,9 @@ def test_updateOnChangedParams_0(function):
 
 
 def test_updateOnChangedParams_1(function):
-    sett = Setting()
+    class Parent:
+        host = None
+    sett = Setting(parent=Parent())
     sett.meridianLimitSlew = 0
     sett.meridianLimitTrack = 0
     sett.horizonLimitHigh = 0
@@ -130,7 +134,9 @@ def test_updateOnChangedParams_1(function):
 
 
 def test_updateOnChangedParams_2(function):
-    sett = Setting()
+    class Parent:
+        host = None
+    sett = Setting(parent=Parent())
     sett.meridianLimitSlew = 0
     sett.meridianLimitTrack = 0
     sett.horizonLimitHigh = 1
@@ -147,7 +153,9 @@ def test_updateOnChangedParams_2(function):
 
 
 def test_updateOnChangedParams_3(function):
-    sett = Setting()
+    class Parent:
+        host = None
+    sett = Setting(parent=Parent())
     sett.meridianLimitSlew = 0
     sett.meridianLimitTrack = 1
     sett.horizonLimitHigh = 0
@@ -164,7 +172,9 @@ def test_updateOnChangedParams_3(function):
 
 
 def test_updateOnChangedParams_4(function):
-    sett = Setting()
+    class Parent:
+        host = None
+    sett = Setting(parent=Parent())
     sett.meridianLimitSlew = 1
     sett.meridianLimitTrack = 0
     sett.horizonLimitHigh = 0

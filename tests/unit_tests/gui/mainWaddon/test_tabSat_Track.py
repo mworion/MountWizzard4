@@ -348,10 +348,6 @@ def test_extractSatelliteData_5(function):
             function.extractSatelliteData(satName="NOAA 8")
 
 
-def test_programSatToMount_2(function):
-    function.programSatToMount(satName="test")
-
-
 def test_programSatToMount_3(function):
     tle = [
         "TIANGONG 1",
@@ -383,9 +379,8 @@ def test_chooseSatellite_1(function):
     satTab = function.ui.listSats
     function.app.deviceStat["mount"] = True
     with mock.patch.object(satTab, "item"):
-        with mock.patch.object(function, "extractSatelliteData"):
-            with mock.patch.object(function, "showSatPasses"):
-                function.chooseSatellite()
+        with mock.patch.object(function, "programSatToMount"):
+            function.chooseSatellite()
 
 
 def test_chooseSatellite_2(function):

@@ -89,6 +89,10 @@ class HemisphereDraw(MWidget, SlewInterface):
     def close(self) -> None:
         """ """
         self.app.mount.signals.pointDone.disconnect(self.drawPointer)
+        self.app.mount.signals.getModelDone.disconnect(self.drawTab)
+        self.app.mount.signals.settingDone.disconnect(self.updateOnChangedParams)
+
+        self.app.redrawHemisphere.disconnect(self.drawTab)
         self.app.update3s.disconnect(self.drawAlignmentStars)
 
     def mouseMovedHemisphere(self, pos: QPointF) -> None:

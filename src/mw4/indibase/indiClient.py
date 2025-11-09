@@ -196,7 +196,6 @@ class Client(QObject):
         self.connected = False
         self.clearParser()
         self.clearDevices(deviceName)
-        self.signals.serverDisconnected.emit(self.devices)
         self.socket.abort()
         return True
 
@@ -538,6 +537,7 @@ class Client(QObject):
 
             # send connected signals
             if name == "CONNECT" and elt.getValue() == "On" and chunk.attr["state"] == "Ok":
+                print(f"Device [{deviceName}] connected signal {chunk}")
                 self.signals.deviceConnected.emit(deviceName)
                 self.log.info(f"Device [{deviceName}] connected")
 

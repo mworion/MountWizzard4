@@ -109,12 +109,10 @@ class IndiClass:
         self.threadPool = parent.app.threadPool
         self.client = Client(host=None)
 
-        clientSig = self.client.signals
-        selfSig = self.signals
-        clientSig.deviceConnected.connect(selfSig.deviceConnected)
-        clientSig.deviceDisconnected.connect(selfSig.deviceDisconnected)
-        clientSig.serverConnected.connect(selfSig.serverConnected)
-        clientSig.serverDisconnected.connect(selfSig.serverDisconnected)
+        self.client.signals.deviceConnected.connect(self.chainDeviceConnected)
+        self.client.signals.deviceDisconnected.connect(self.chainDeviceDisconnected)
+        self.client.signals.serverConnected.connect(self.chainServerConnected)
+        self.client.signals.serverDisconnected.connect(self.chainServerDisconnected)
 
         self.deviceName = ""
         self.device = None
@@ -186,6 +184,22 @@ class IndiClass:
         self._port = int(value)
         self.client.host = (self._hostaddress, self._port)
 
+    def chainServerConnected(self):
+        """ """
+        self.signals.serverConnected.emit()
+
+    def chainServerDisconnected(self, deviceName):
+        """ """
+        self.signals.serverDisconnected.emit(deviceName)
+
+    def chainDeviceConnected(self, deviceName):
+        """ """
+        self.signals.deviceConnected.emit(deviceName)
+
+    def chainDeviceDisconnected(self, deviceName):
+        """ """
+        self.signals.deviceDisconnected.emit(deviceName)
+
     def serverConnected(self) -> None:
         """ """
         suc = self.client.watchDevice(self.deviceName)
@@ -220,15 +234,12 @@ class IndiClass:
             return
 
         self.client.connectServer()
-        self.signals.deviceConnected.emit(self.deviceName)
         self.signals.serverConnected.emit()
 
     def startCommunication(self) -> None:
         """ """
         self.data.clear()
         self.timerRetry.start(self.RETRY_DELAY)
-        self.signals.deviceDisconnected.emit(self.deviceName)
-        self.signals.serverDisconnected.emit(self.deviceName)
 
     def stopCommunication(self) -> None:
         """ """

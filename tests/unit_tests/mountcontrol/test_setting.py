@@ -615,7 +615,10 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_Setting_parse_not_ok4(self):
-        sett = Setting()
+        class Parent:
+            host = None
+
+        sett = Setting(parent=Parent())
         response = [
             "15",
             "1",

@@ -6,7 +6,7 @@
 #    #  ##  #  ##  ##    ######
 #   #   #   #  #   #       #
 #
-# Python-based Tool for interaction with the 10micron mounts
+# Python-based Tool for interaction with the 10_micron mounts
 # GUI with PySide for python !
 
 #

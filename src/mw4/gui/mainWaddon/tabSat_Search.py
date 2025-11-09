@@ -6,7 +6,7 @@
 #    #  ##  #  ##  ##    ######
 #   #   #   #  #   #       #
 #
-# Python-based Tool for interaction with the 10micron mounts
+# Python-based Tool for interaction with the 10_micron mounts
 # GUI with PySide
 #
 # written in python3, (c) 2019-2025 by mworion
@@ -69,10 +69,10 @@ class SatSearch(QObject, SatData):
         self.ui.satTwilight.activated.connect(self.filterListSats)
         self.ui.satUpTimeWindow.valueChanged.connect(self.filterListSats)
         self.setSatListItem.connect(self.setListSatsEntry)
-        self.app.update1s.connect(self.calcSatListDynamic)
         self.ui.progSatFull.clicked.connect(self.satellites.progFull)
         self.ui.progSatFiltered.clicked.connect(self.satellites.progFiltered)
         self.ui.progSatSelected.clicked.connect(self.satellites.progSelected)
+        self.app.update1s.connect(self.calcSatListDynamic)
 
     def initConfig(self) -> None:
         """ """
@@ -211,9 +211,8 @@ class SatSearch(QObject, SatData):
 
     def calcSatListDynamic(self):
         """ """
-        if self.ui.satTabWidget.currentIndex() != 0:
-            return
-        if self.ui.mainTabWidget.currentIndex() != 5:
+        # to optimize performance, we do not update if the tab is not visible
+        if self.ui.satTabWidget.currentIndex() != 0 or not self.ui.satTabWidget.isVisible():
             return
         if not self.satellites.dataValid:
             return
@@ -300,7 +299,7 @@ class SatSearch(QObject, SatData):
         self.ui.satSetupGroup.setTitle(title)
         self.worker = Worker(self.workerCalcSatList)
         self.worker.signals.finished.connect(self.filterListSats)
-        changeStyleDynamic(self.ui.satFilterGroup, "run", True)
+        changeStyleDynamic(self.ui.satFilterGroup, "running", True)
         self.app.threadPool.start(self.worker)
 
     def fillSatListName(self):

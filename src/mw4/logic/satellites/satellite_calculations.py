@@ -14,10 +14,13 @@
 #
 ###########################################################
 # standard libraries
+from collections import Callable
 
 # external packages
 import numpy as np
 from skyfield import almanac
+from skyfield.units import Angle
+
 
 # local import
 
@@ -33,7 +36,7 @@ def findSunlit(sat, ephemeris, tEvent) -> bool:
     return sunlit
 
 
-def findSatUp(sat, loc, tStart, tEnd, alt) -> [bool, list]:
+def findSatUp(sat, loc, tStart, tEnd, alt) -> tuple[bool, list]:
     """
     :param sat:
     :param loc:
@@ -66,7 +69,7 @@ def checkTwilight(ephemeris, loc, data) -> int:
     return twilight
 
 
-def findRangeRate(sat, loc, tEv) -> [float, float, float, float]:
+def findRangeRate(sat, loc, tEv) -> tuple[float, float, float, float]:
     """
     :param sat:
     :param loc:
@@ -83,7 +86,7 @@ def findRangeRate(sat, loc, tEv) -> [float, float, float, float]:
     )
 
 
-def calcSatSunPhase(sat, loc, ephemeris, tEv) -> float:
+def calcSatSunPhase(sat, loc, ephemeris, tEv) -> Angle:
     """
     https://stackoverflow.com/questions/19759501
         /calculating-the-phase-angle-between-the-sun-iss-and-an-observer-on-the
@@ -134,7 +137,7 @@ def calcAppMag(sat, loc, ephemeris, satRange, tEv) -> float:
     return appMag
 
 
-def calcSatelliteMeridianTransit(satellite, location, tolerance) -> callable:
+def calcSatelliteMeridianTransit(satellite, location, tolerance) -> Callable:
     """ """
     difference = satellite - location
 
@@ -147,7 +150,7 @@ def calcSatelliteMeridianTransit(satellite, location, tolerance) -> callable:
     return west_of_meridian_at
 
 
-def calcPassEvents(satellite, obsSite, minAlt=5) -> [list, list]:
+def calcPassEvents(satellite, obsSite, minAlt=5) -> tuple[list, list]:
     """ """
     if minAlt is None:
         minAlt = 5

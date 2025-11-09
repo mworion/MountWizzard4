@@ -357,6 +357,21 @@ BASIC_STYLE = """
         background-color: #GRAD_1,$M_GRAY$#;
         color: $M_TER$;
     }
+    QPushButton[color='green'] {
+        background-color: #GRAD_1,$M_GREEN2$#;
+        border-color: $M_GREEN$;
+        color: $M_TER$;
+    }
+    QPushButton[color='yellow'] {
+        background-color: #GRAD_1,$M_YELLOW2$#;
+        border-color: $M_YELLOW$;
+        color: $M_TER$;
+    }
+    QPushButton[color='red'] {
+        background-color: #GRAD_1,$M_RED2$#;
+        border-color: $M_RED$;
+        color: $M_TER$;
+    }
     QPushButton[run=true] {
         background-color: #GRAD_1,$M_GREEN2$#;
         border-color: $M_GREEN$;

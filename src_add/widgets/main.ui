@@ -31266,7 +31266,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </widget>
    <widget class="QPushButton" name="refractionConnected">
     <property name="enabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -31310,7 +31310,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </widget>
    <widget class="QPushButton" name="domeConnected">
     <property name="enabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -31398,7 +31398,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </widget>
    <widget class="QPushButton" name="cameraConnected">
     <property name="enabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -31530,7 +31530,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </widget>
    <widget class="QPushButton" name="plateSolveConnected">
     <property name="enabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>

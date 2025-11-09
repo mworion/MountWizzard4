@@ -291,9 +291,6 @@ class SatTrack(QObject, SatData):
 
     def programSatToMount(self, satName: str) -> None:
         """ """
-        if satName not in self.satellites.objects:
-            return
-
         satellite = self.app.mount.satellite
         self.msg.emit(0, "TLE", "Program", f"Upload to mount: [{satName}]")
         line1, line2 = export_tle(self.satellites.objects[satName].model)
@@ -307,9 +304,9 @@ class SatTrack(QObject, SatData):
         """ """
         satName = self.ui.listSats.item(self.ui.listSats.currentRow(), 1).text()
         if self.app.deviceStat["mount"]:
-            self.programSatToMount(satName=satName)
+            self.programSatToMount(satName)
         else:
-            self.extractSatelliteData(satName=satName)
+            self.extractSatelliteData(satName)
             self.showSatPasses()
 
         if self.ui.autoSwitchTrack.isChecked():
@@ -317,7 +314,7 @@ class SatTrack(QObject, SatData):
 
     def getSatelliteDataFromDatabase(self, tleParams: TLEParams) -> None:
         """ """
-        self.extractSatelliteData(satName=tleParams.name)
+        self.extractSatelliteData(tleParams.name)
         self.showSatPasses()
 
     def updateOrbit(self) -> None:

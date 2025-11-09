@@ -104,7 +104,7 @@ class SatTrack(QObject, SatData):
         self.ui.satAfterFlip.setChecked(config.get("satAfterFlip", True))
         self.ui.avoidHorizon.setChecked(config.get("avoidHorizon", False))
         self.ui.trackingReplay.setChecked(config.get("trackingReplay", False))
-        self.ui.unitTimeUTC.toggled.connect(self.showSatPasses)
+        self.ui.unitTimeUTC.toggled.connect(self.changeUnitTimeUTC)
 
     def storeConfig(self) -> None:
         """ """

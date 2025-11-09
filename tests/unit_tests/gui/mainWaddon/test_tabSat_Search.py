@@ -123,9 +123,9 @@ def test_calcSatListDynamic_2(function):
 
 
 def test_calcSatListDynamic_3(function):
-    function.ui.satTabWidget.setCurrentIndex(0)
     function.ui.mainTabWidget.setCurrentIndex(5)
-    function.calcSatListDynamic()
+    with mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True):
+        function.calcSatListDynamic()
 
 
 def test_calcSatListDynamic_4(function):
@@ -138,20 +138,20 @@ def test_calcSatListDynamic_4(function):
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     function.satellites.objects = {"NOAA 8": sat}
 
-    function.ui.satTabWidget.setCurrentIndex(0)
     function.ui.mainTabWidget.setCurrentIndex(5)
     function.ui.listSats.setRowCount(0)
     function.ui.listSats.insertRow(0)
     entry = QTableWidgetItem("test")
     function.ui.listSats.setItem(0, 0, entry)
-    with mock.patch.object(QRect, "intersects", return_value=False):
-        with mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10
-        ):
+    with mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True):
+        with mock.patch.object(QRect, "intersects", return_value=False):
             with mock.patch.object(
-                mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True
+                mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10
             ):
-                function.calcSatListDynamic()
+                with mock.patch.object(
+                    mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True
+                ):
+                    function.calcSatListDynamic()
 
 
 def test_calcSatListDynamic_5(function):
@@ -164,19 +164,19 @@ def test_calcSatListDynamic_5(function):
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     function.satellites.objects = {"NOAA 8": sat}
 
-    function.ui.satTabWidget.setCurrentIndex(0)
     function.ui.mainTabWidget.setCurrentIndex(5)
     function.ui.listSats.setRowCount(0)
     function.ui.listSats.insertRow(0)
     entry = QTableWidgetItem("test")
     function.ui.listSats.setItem(0, 0, entry)
     function.ui.listSats.setRowHidden(0, True)
-    with mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True):
-        with mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10
-        ):
-            with mock.patch.object(QRect, "intersects", return_value=True):
-                function.calcSatListDynamic()
+    with mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True):
+        with mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True):
+            with mock.patch.object(
+                mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10
+            ):
+                with mock.patch.object(QRect, "intersects", return_value=True):
+                    function.calcSatListDynamic()
 
 
 def test_calcSatListDynamic_6(function):
@@ -188,7 +188,6 @@ def test_calcSatListDynamic_6(function):
     ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
 
-    function.ui.satTabWidget.setCurrentIndex(0)
     function.ui.mainTabWidget.setCurrentIndex(5)
     function.ui.listSats.setRowCount(0)
     function.ui.listSats.setColumnCount(2)
@@ -197,15 +196,16 @@ def test_calcSatListDynamic_6(function):
     function.ui.listSats.setItem(0, 1, entry)
     function.ui.listSats.setRowHidden(0, False)
     function.satellites.objects = {"NOAA 8": sat}
-    with mock.patch.object(function, "updateListSats"):
-        with mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[1, 2, 3]
-        ):
+    with mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True):
+        with mock.patch.object(function, "updateListSats"):
             with mock.patch.object(
-                mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=False
+                mw4.gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[1, 2, 3]
             ):
-                with mock.patch.object(QRect, "intersects", return_value=True):
-                    function.calcSatListDynamic()
+                with mock.patch.object(
+                    mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=False
+                ):
+                    with mock.patch.object(QRect, "intersects", return_value=True):
+                        function.calcSatListDynamic()
 
 
 def test_calcSatListDynamic_7(function):
@@ -217,7 +217,6 @@ def test_calcSatListDynamic_7(function):
     ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
 
-    function.ui.satTabWidget.setCurrentIndex(0)
     function.ui.mainTabWidget.setCurrentIndex(5)
     function.ui.listSats.setRowCount(0)
     function.ui.listSats.setColumnCount(2)
@@ -226,18 +225,19 @@ def test_calcSatListDynamic_7(function):
     function.ui.listSats.setItem(0, 1, entry)
     function.ui.listSats.setRowHidden(0, False)
     function.satellites.objects = {"NOAA 8": sat}
-    with mock.patch.object(function, "updateListSats"):
-        with mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[1, 2, 3]
-        ):
+    with mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True):
+        with mock.patch.object(function, "updateListSats"):
             with mock.patch.object(
-                mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True
+                mw4.gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[1, 2, 3]
             ):
                 with mock.patch.object(
-                    mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10
+                    mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True
                 ):
-                    with mock.patch.object(QRect, "intersects", return_value=True):
-                        function.calcSatListDynamic()
+                    with mock.patch.object(
+                        mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10
+                    ):
+                        with mock.patch.object(QRect, "intersects", return_value=True):
+                            function.calcSatListDynamic()
 
 
 def test_calcSatListDynamic_8(function):
@@ -248,7 +248,6 @@ def test_calcSatListDynamic_8(function):
         "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
     ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
-    function.ui.satTabWidget.setCurrentIndex(0)
     function.ui.mainTabWidget.setCurrentIndex(5)
     function.ui.listSats.setRowCount(0)
     function.ui.listSats.setColumnCount(2)
@@ -257,18 +256,19 @@ def test_calcSatListDynamic_8(function):
     function.ui.listSats.setItem(0, 1, entry)
     function.ui.listSats.setRowHidden(0, False)
     function.satellites.objects = {"NOAA 8": sat}
-    with mock.patch.object(function, "updateListSats"):
-        with mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[np.nan, 2, 3]
-        ):
+    with mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True):
+        with mock.patch.object(function, "updateListSats"):
             with mock.patch.object(
-                mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True
+                mw4.gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[np.nan, 2, 3]
             ):
                 with mock.patch.object(
-                    mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10
+                    mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True
                 ):
-                    with mock.patch.object(QRect, "intersects", return_value=True):
-                        function.calcSatListDynamic()
+                    with mock.patch.object(
+                        mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10
+                    ):
+                        with mock.patch.object(QRect, "intersects", return_value=True):
+                            function.calcSatListDynamic()
 
 
 def test_checkSatOk_1(function):

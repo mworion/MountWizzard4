@@ -70,7 +70,7 @@ class MountWizzard4(QObject):
     buildPointsChanged = Signal()
     drawHorizonPoints = Signal()
     updateDomeSettings = Signal()
-    sendSatelliteData = Signal()
+    sendSatelliteData = Signal(object, object)
     refreshModel = Signal()
     refreshName = Signal()
     updateSatellite = Signal(object, object)

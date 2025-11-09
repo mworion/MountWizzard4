@@ -108,30 +108,31 @@ def guiSetStyle(ui: QWidget, pStyle: str = "", value: object = None, pVals: [] =
 
 def guiSetText(ui: QLineEdit, formatElement: str, value: object) -> None:
     """ """
-    if value is None:
-        text = "-"
-    elif isinstance(value, list | np.ndarray) and len(value) == 0:
-        text = "-"
-    elif formatElement.startswith("HSTR"):
-        text = formatHstrToText(value)
-    elif formatElement.startswith("DSTR"):
-        text = formatDstrToText(value)
-    elif formatElement.startswith("D"):
-        formatStr = "{0:" + formatElement.lstrip("D") + "}"
-        text = formatStr.format(value.degrees)
-    elif formatElement.startswith("H"):
-        formatStr = "{0:" + formatElement.lstrip("H") + "}"
-        text = formatStr.format(value.hours)
-    elif value == "E":
-        text = "EAST"
-    elif value == "W":
-        text = "WEST"
-    elif isinstance(value, bool):
-        text = "ON" if value else "OFF"
-    else:
-        formatStr = "{0:" + formatElement + "}"
-        text = formatStr.format(value)
-
+    text = "-"
+    match value:
+        case None:
+            pass
+        case list() | np.ndarray() if len(value) == 0:
+            pass
+        case _ if formatElement.startswith("HSTR"):
+            text = formatHstrToText(value)
+        case _ if formatElement.startswith("DSTR"):
+            text = formatDstrToText(value)
+        case _ if formatElement.startswith("D"):
+            formatStr = "{0:" + formatElement.lstrip("D") + "}"
+            text = formatStr.format(value.degrees)
+        case _ if formatElement.startswith("H"):
+            formatStr = "{0:" + formatElement.lstrip("H") + "}"
+            text = formatStr.format(value.hours)
+        case "E":
+            text = "EAST"
+        case "W":
+            text = "WEST"
+        case bool():
+            text = "ON" if value else "OFF"
+        case _:
+            formatStr = "{0:" + formatElement + "}"
+            text = formatStr.format(value)
     ui.setText(text)
 
 

@@ -103,32 +103,6 @@ def test_setListSatsEntry(function):
     function.setListSatsEntry(0, 0, entry)
 
 
-def test_updateListSats_1(function):
-    param = [1, 2, 3, 4]
-    function.updateListSats(0, param)
-
-
-def test_updateListSats_2(function):
-    param = [1, 2, 3, 4]
-    ts = function.app.mount.obsSite.ts.now()
-    isUp = (True, [ts])
-    function.updateListSats(0, param, isUp)
-
-
-def test_updateListSats_3(function):
-    param = [1, 2, 3, 4]
-    ts = function.app.mount.obsSite.ts.now()
-    isUp = (False, [ts])
-    function.updateListSats(0, param, isUp)
-
-
-def test_updateListSats_4(function):
-    param = [1, 2, 3, 4]
-    ts = function.app.mount.obsSite.ts.now()
-    isUp = (False, [ts])
-    function.updateListSats(0, param, isUp, True, 5)
-
-
 def test_updateListSats_5(function):
     param = [1, 2, 3, 4]
     ts = function.app.mount.obsSite.ts.now()

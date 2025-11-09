@@ -495,7 +495,8 @@ def test_runSingleRMS_1(function):
     function.app.mount.model.starList = [star1]
     function.app.mount.signals.getModelDone.connect(function.runSingleRMS)
     function.app.mount.model.errorRMS = 0.1
-    function.runSingleRMS()
+    with mock.patch.object(function.app.mount, "getModel"):
+        function.runSingleRMS()
 
 
 def test_runSingleRMS_2(function):

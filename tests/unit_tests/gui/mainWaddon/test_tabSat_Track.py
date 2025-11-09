@@ -65,14 +65,23 @@ def test_setupIcons_1(function):
 
 def test_enableGuiFunctions_1(function):
     with mock.patch.object(function.app.mount.firmware, "checkNewer", return_value=None):
-        suc = function.enableGuiFunctions()
-        assert not suc
+        function.enableGuiFunctions()
 
 
 def test_enableGuiFunctions_2(function):
     with mock.patch.object(function.app.mount.firmware, "checkNewer", return_value=True):
-        suc = function.enableGuiFunctions()
-        assert suc
+        function.enableGuiFunctions()
+
+
+def test_signalSatelliteData_2(function):
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
+    function.satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
+    function.satOrbits = 1
+    function.signalSatelliteData([], [])
 
 
 def test_clearTrackingParameters(function):
@@ -83,8 +92,7 @@ def test_updatePasses_1(function):
     function.app.mount.setting.meridianLimitTrack = 10
     function.lastMeridianLimit = 5
     with mock.patch.object(function, "showSatPasses"):
-        suc = function.updatePasses()
-        assert suc
+        function.updatePasses()
         assert function.lastMeridianLimit == 10
 
 
@@ -92,33 +100,69 @@ def test_updatePasses_2(function):
     function.app.mount.setting.meridianLimitTrack = None
     function.lastMeridianLimit = 5
     with mock.patch.object(function, "showSatPasses"):
-        suc = function.updatePasses()
-        assert not suc
+        function.updatePasses()
         assert function.lastMeridianLimit == 5
 
 
-def test_sendSatelliteData_1(function):
-    function.satellite = None
-    suc = function.signalSatelliteData()
-    assert not suc
+def test_calcTrajectoryData_1(function):
+    alt, az = function.calcTrajectoryData(100, 100)
+    assert len(alt) == 0
+    assert len(az) == 0
 
 
-def test_sendSatelliteData_3(function):
+def test_calcTrajectoryData_2(function):
     tle = [
         "NOAA 8",
         "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
         "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
     ]
+
     function.satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
-    function.satOrbits = 1
-    suc = function.signalSatelliteData()
-    assert suc
+    start = 2459215.0
+    alt, az = function.calcTrajectoryData(start, start + 2 / 86400)
+    assert len(alt)
+    assert len(az)
+
+
+def test_progTrajectoryToMount_1(function):
+    function.app.deviceStat["mount"] = True
+    function.ui.useInternalSatCalc.setChecked(True)
+    with mock.patch.object(function, "selectStartEnd", return_value=(0, 0)):
+        suc = function.progTrajectoryToMount()
+        assert not suc
+
+
+def test_progTrajectoryToMount_2(function):
+    function.app.deviceStat["mount"] = True
+    function.ui.useInternalSatCalc.setChecked(True)
+    with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
+        with mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)):
+            with mock.patch.object(function, "filterHorizon", return_value=(0, 0, 0, 0)):
+                with mock.patch.object(function, "signalSatelliteData"):
+                    function.progTrajectoryToMount()
+
+
+def test_progTrajectoryToMount_3(function):
+    function.app.deviceStat["mount"] = False
+    function.ui.useInternalSatCalc.setChecked(False)
+    with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
+        with mock.patch.object(function.app.mount, "calcTLE"):
+            with mock.patch.object(function, "signalSatelliteData"):
+                function.progTrajectoryToMount()
+
+
+def test_progTrajectoryToMount_4(function):
+    function.app.deviceStat["mount"] = True
+    function.ui.useInternalSatCalc.setChecked(False)
+    with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
+        with mock.patch.object(function.app.mount, "calcTLE"):
+            with mock.patch.object(function, "signalSatelliteData"):
+                function.progTrajectoryToMount()
 
 
 def test_showSatPasses_0(function):
     function.satellite = None
-    suc = function.showSatPasses()
-    assert not suc
+    function.showSatPasses()
 
 
 def test_showSatPasses_1(function):
@@ -142,8 +186,7 @@ def test_showSatPasses_1(function):
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ):
             with mock.patch.object(function, "progTrajectoryToMount"):
-                suc = function.showSatPasses()
-                assert suc
+                function.showSatPasses()
 
 
 def test_showSatPasses_2(function):
@@ -168,8 +211,7 @@ def test_showSatPasses_2(function):
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ):
             with mock.patch.object(function, "progTrajectoryToMount"):
-                suc = function.showSatPasses()
-                assert suc
+                function.showSatPasses()
 
 
 def test_showSatPasses_3(function):
@@ -192,8 +234,7 @@ def test_showSatPasses_3(function):
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ):
             with mock.patch.object(function, "progTrajectoryToMount"):
-                suc = function.showSatPasses()
-                assert suc
+                function.showSatPasses()
 
 
 def test_extractSatelliteData_0(function):
@@ -245,8 +286,7 @@ def test_extractSatelliteData_3(function):
         function.app.mount.obsSite.ts, "now", return_value=ts.tt_jd(2458925.404976551)
     ):
         with mock.patch.object(MWidget, "positionCursorInTable"):
-            suc = function.extractSatelliteData(satName="NOAA 8")
-            assert suc
+            function.extractSatelliteData(satName="NOAA 8")
 
 
 def test_extractSatelliteData_4(function):
@@ -273,8 +313,7 @@ def test_extractSatelliteData_4(function):
         function.app.mount.obsSite.ts, "now", return_value=ts.tt_jd(2458930.404976551)
     ):
         with mock.patch.object(MWidget, "positionCursorInTable"):
-            suc = function.extractSatelliteData(satName="NOAA 8")
-            assert suc
+            function.extractSatelliteData(satName="NOAA 8")
 
 
 def test_extractSatelliteData_5(function):
@@ -301,18 +340,11 @@ def test_extractSatelliteData_5(function):
         function.app.mount.obsSite.ts, "now", return_value=ts.tt_jd(2458950.404976551)
     ):
         with mock.patch.object(MWidget, "positionCursorInTable"):
-            suc = function.extractSatelliteData(satName="NOAA 8")
-            assert suc
-
-
-def test_programSatToMount_1(function):
-    suc = function.programSatToMount()
-    assert not suc
+            function.extractSatelliteData(satName="NOAA 8")
 
 
 def test_programSatToMount_2(function):
-    suc = function.programSatToMount(satName="test")
-    assert not suc
+    function.programSatToMount(satName="test")
 
 
 def test_programSatToMount_3(function):
@@ -325,8 +357,7 @@ def test_programSatToMount_3(function):
     function.satellites.objects = {"TIANGONG 2": EarthSatellite(tle[1], tle[2], name=tle[0])}
     function.app.mount.satellite.tleParams.name = "TIANGONG 2"
     with mock.patch.object(function.app.mount.satellite, "setTLE", return_value=False):
-        suc = function.programSatToMount(satName="TIANGONG 2")
-        assert not suc
+        function.programSatToMount(satName="TIANGONG 2")
 
 
 def test_programSatToMount_4(function):
@@ -340,8 +371,7 @@ def test_programSatToMount_4(function):
     function.app.mount.satellite.tleParams.name = "TIANGONG 2"
     with mock.patch.object(function.app.mount.satellite, "setTLE", return_value=True):
         with mock.patch.object(function.app.mount, "getTLE"):
-            suc = function.programSatToMount(satName="TIANGONG 2")
-            assert suc
+            function.programSatToMount(satName="TIANGONG 2")
 
 
 def test_chooseSatellite_1(function):
@@ -363,21 +393,6 @@ def test_chooseSatellite_2(function):
                 function.chooseSatellite()
 
 
-def test_getSatelliteDataFromDatabase_1(function):
-    class Name:
-        name = ""
-        jdStart = 1
-        jdEnd = 1
-        flip = False
-        message = ""
-        altitude = None
-        azimuth = None
-
-    function.app.mount.satellite.tleParams = Name()
-    suc = function.getSatelliteDataFromDatabase()
-    assert not suc
-
-
 def test_getSatelliteDataFromDatabase_2(function):
     class Name:
         name = ""
@@ -385,77 +400,25 @@ def test_getSatelliteDataFromDatabase_2(function):
     tleParams = Name()
     with mock.patch.object(function, "extractSatelliteData"):
         with mock.patch.object(function, "showSatPasses"):
-            suc = function.getSatelliteDataFromDatabase(tleParams=tleParams)
-            assert suc
+            function.getSatelliteDataFromDatabase(tleParams=tleParams)
 
 
 def test_updateOrbit_1(function):
     function.satellite = None
     function.satSourceValid = False
-    suc = function.updateOrbit()
-    assert not suc
+    function.updateOrbit()
 
 
 def test_updateOrbit_2(function):
     function.satellite = None
     function.satSourceValid = True
-    suc = function.updateOrbit()
-    assert not suc
+    function.updateOrbit()
 
 
 def test_updateOrbit_4(function):
     function.satSourceValid = True
     function.satellite = "test"
-    suc = function.updateOrbit()
-    assert suc
-
-
-def test_calcTrajectoryData_1(function):
-    alt, az = function.calcTrajectoryData(100, 100)
-    assert len(alt) == 0
-    assert len(az) == 0
-
-
-def test_calcTrajectoryData_2(function):
-    tle = [
-        "NOAA 8",
-        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
-    ]
-
-    function.satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
-    start = 2459215.0
-    alt, az = function.calcTrajectoryData(start, start + 2 / 86400)
-    assert len(alt)
-    assert len(az)
-
-
-def test_filterHorizon_1(function):
-    function.ui.avoidHorizon.setChecked(False)
-    start = 100 / 86400
-    end = 109 / 86400
-    alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
-    az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    function.app.data.horizonP = [(40, 40)]
-    start, end, alt, az = function.filterHorizon(start, end, alt, az)
-    assert alt == [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
-    assert az == [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    assert start == 100 / 86400
-    assert end == 109 / 86400
-
-
-def test_filterHorizon_2(function):
-    function.ui.avoidHorizon.setChecked(True)
-    start = 100 / 86400
-    end = 109 / 86400
-    alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
-    az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    function.app.data.horizonP = [(40, 40)]
-    start, end, alt, az = function.filterHorizon(start, end, alt, az)
-    assert np.array_equal(alt, [45, 46, 47, 48])
-    assert np.array_equal(az, [40, 50, 60, 70])
-    assert start == (100 + 3) / 86400
-    assert end == (109 - 3) / 86400
+    function.updateOrbit()
 
 
 def test_selectStartEnd_1(function):
@@ -562,43 +525,32 @@ def test_selectStartEnd_8(function):
     assert e == 2459215.7
 
 
-def test_progTrajectoryToMount_1(function):
-    function.app.deviceStat["mount"] = True
-    function.ui.useInternalSatCalc.setChecked(True)
-    with mock.patch.object(function, "selectStartEnd", return_value=(0, 0)):
-        suc = function.progTrajectoryToMount()
-        assert not suc
+def test_filterHorizon_1(function):
+    function.ui.avoidHorizon.setChecked(False)
+    start = 100 / 86400
+    end = 109 / 86400
+    alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
+    az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    function.app.data.horizonP = [(40, 40)]
+    start, end, alt, az = function.filterHorizon(start, end, alt, az)
+    assert alt == [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
+    assert az == [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    assert start == 100 / 86400
+    assert end == 109 / 86400
 
 
-def test_progTrajectoryToMount_2(function):
-    function.app.deviceStat["mount"] = True
-    function.ui.useInternalSatCalc.setChecked(True)
-    with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
-        with mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)):
-            with mock.patch.object(function, "filterHorizon", return_value=(0, 0, 0, 0)):
-                with mock.patch.object(function, "signalSatelliteData"):
-                    suc = function.progTrajectoryToMount()
-                    assert suc
-
-
-def test_progTrajectoryToMount_3(function):
-    function.app.deviceStat["mount"] = False
-    function.ui.useInternalSatCalc.setChecked(False)
-    with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
-        with mock.patch.object(function.app.mount, "calcTLE"):
-            with mock.patch.object(function, "signalSatelliteData"):
-                suc = function.progTrajectoryToMount()
-                assert suc
-
-
-def test_progTrajectoryToMount_4(function):
-    function.app.deviceStat["mount"] = True
-    function.ui.useInternalSatCalc.setChecked(False)
-    with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
-        with mock.patch.object(function.app.mount, "calcTLE"):
-            with mock.patch.object(function, "signalSatelliteData"):
-                suc = function.progTrajectoryToMount()
-                assert suc
+def test_filterHorizon_2(function):
+    function.ui.avoidHorizon.setChecked(True)
+    start = 100 / 86400
+    end = 109 / 86400
+    alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
+    az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    function.app.data.horizonP = [(40, 40)]
+    start, end, alt, az = function.filterHorizon(start, end, alt, az)
+    assert np.array_equal(alt, [45, 46, 47, 48])
+    assert np.array_equal(az, [40, 50, 60, 70])
+    assert start == (100 + 3) / 86400
+    assert end == (109 - 3) / 86400
 
 
 def test_startProg_1(function):
@@ -609,15 +561,13 @@ def test_startProg_1(function):
                     function, "filterHorizon", return_value=(0, 0, [1], [1])
                 ):
                     with mock.patch.object(function.app.mount, "progTrajectory"):
-                        suc = function.startProg()
-                        assert suc
+                        function.startProg()
 
 
 def test_startProg_2(function):
     with mock.patch.object(function, "clearTrackingParameters"):
         with mock.patch.object(function, "selectStartEnd", return_value=(0, 0)):
-            suc = function.startProg()
-            assert not suc
+            function.startProg()
 
 
 def test_startProg_3(function):
@@ -625,13 +575,13 @@ def test_startProg_3(function):
         with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
             with mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)):
                 with mock.patch.object(function, "filterHorizon", return_value=(0, 0, [], [])):
-                    suc = function.startProg()
-                    assert not suc
+                    function.startProg()
 
 
-def test_updateSatelliteTrackGui_1(function):
-    suc = function.updateSatelliteTrackGui()
-    assert not suc
+def test_changeUnitTimeUTC_1(function):
+    with mock.patch.object(function, "showSatPasses"):
+        with mock.patch.object(function, "updateSatelliteTrackGui"):
+            function.changeUnitTimeUTC()
 
 
 def test_updateSatelliteTrackGui_2(function):
@@ -653,8 +603,7 @@ def test_updateSatelliteTrackGui_2(function):
         }
     ]
 
-    suc = function.updateSatelliteTrackGui(Test())
-    assert suc
+    function.updateSatelliteTrackGui(Test())
 
 
 def test_updateSatelliteTrackGui_3(function):
@@ -676,13 +625,7 @@ def test_updateSatelliteTrackGui_3(function):
         }
     ]
 
-    suc = function.updateSatelliteTrackGui(Test())
-    assert suc
-
-
-def test_updateInternalTrackGui_1(function):
-    with mock.patch.object(function, "updateSatelliteTrackGui"):
-        function.updateInternalTrackGui()
+    function.updateSatelliteTrackGui(Test())
 
 
 def test_tle_export_1(function):
@@ -702,8 +645,7 @@ def test_tle_export_1(function):
 
 def test_startTrack_1(function):
     function.app.deviceStat["mount"] = False
-    suc = function.startTrack()
-    assert not suc
+    function.startTrack()
 
 
 def test_startTrack_2(function):
@@ -711,8 +653,7 @@ def test_startTrack_2(function):
     with mock.patch.object(
         function.app.mount.satellite, "slewTLE", return_value=(False, "test")
     ):
-        suc = function.startTrack()
-        assert not suc
+        function.startTrack()
 
 
 def test_startTrack_3(function):
@@ -720,8 +661,7 @@ def test_startTrack_3(function):
     with mock.patch.object(
         function.app.mount.satellite, "slewTLE", return_value=(False, "test")
     ):
-        suc = function.startTrack()
-        assert not suc
+        function.startTrack()
 
 
 def test_startTrack_4(function):
@@ -730,8 +670,7 @@ def test_startTrack_4(function):
     with mock.patch.object(
         function.app.mount.satellite, "slewTLE", return_value=(False, "test")
     ):
-        suc = function.startTrack()
-        assert not suc
+        function.startTrack()
 
 
 def test_startTrack_5(function):
@@ -740,8 +679,7 @@ def test_startTrack_5(function):
     with mock.patch.object(
         function.app.mount.satellite, "slewTLE", return_value=(True, "test")
     ):
-        suc = function.startTrack()
-        assert suc
+        function.startTrack()
 
 
 def test_startTrack_6(function):
@@ -751,8 +689,7 @@ def test_startTrack_6(function):
         function.app.mount.satellite, "slewTLE", return_value=(True, "test")
     ):
         with mock.patch.object(function.app.mount.obsSite, "unpark", return_value=True):
-            suc = function.startTrack()
-            assert suc
+            function.startTrack()
 
 
 def test_startTrack_7(function):
@@ -765,28 +702,24 @@ def test_startTrack_7(function):
             with mock.patch.object(
                 function.app.mount.satellite, "clearTrackingOffsets", return_value=True
             ):
-                suc = function.startTrack()
-                assert suc
+                function.startTrack()
 
 
 def test_stopTrack_1(function):
     function.app.deviceStat["mount"] = False
-    suc = function.stopTrack()
-    assert not suc
+    function.stopTrack()
 
 
 def test_stopTrack_2(function):
     function.app.deviceStat["mount"] = True
     with mock.patch.object(function.app.mount.obsSite, "startTracking", return_value=False):
-        suc = function.stopTrack()
-        assert not suc
+        function.stopTrack()
 
 
 def test_stopTrack_3(function):
     function.app.deviceStat["mount"] = True
     with mock.patch.object(function.app.mount.obsSite, "startTracking", return_value=True):
-        suc = function.stopTrack()
-        assert suc
+        function.stopTrack()
 
 
 def test_toggleTrackingOffset_1(function):
@@ -794,8 +727,7 @@ def test_toggleTrackingOffset_1(function):
         status = 10
 
     with mock.patch.object(function.app.mount.firmware, "checkNewer", return_value=True):
-        suc = function.toggleTrackingOffset(obs=OBS())
-        assert suc
+        function.toggleTrackingOffset(obs=OBS())
 
 
 def test_toggleTrackingOffset_2(function):
@@ -803,8 +735,7 @@ def test_toggleTrackingOffset_2(function):
         status = 1
 
     with mock.patch.object(function.app.mount.firmware, "checkNewer", return_value=True):
-        suc = function.toggleTrackingOffset(obs=OBS())
-        assert suc
+        function.toggleTrackingOffset(obs=OBS())
 
 
 def test_toggleTrackingOffset_3(function):
@@ -812,24 +743,21 @@ def test_toggleTrackingOffset_3(function):
         status = 1
 
     with mock.patch.object(function.app.mount.firmware, "checkNewer", return_value=False):
-        suc = function.toggleTrackingOffset(obs=OBS())
-        assert not suc
+        function.toggleTrackingOffset(obs=OBS())
 
 
 def test_followMount_1(function):
     obs = function.app.mount.obsSite
     function.ui.domeAutoFollowSat.setChecked(False)
     obs.status = 1
-    suc = function.followMount(obs)
-    assert not suc
+    function.followMount(obs)
 
 
 def test_followMount_2(function):
     obs = function.app.mount.obsSite
     obs.status = 10
     function.ui.domeAutoFollowSat.setChecked(False)
-    suc = function.followMount(obs)
-    assert not suc
+    function.followMount(obs)
 
 
 def test_followMount_3(function):
@@ -837,8 +765,7 @@ def test_followMount_3(function):
     obs.status = 10
     function.ui.domeAutoFollowSat.setChecked(True)
     function.app.deviceStat["dome"] = False
-    suc = function.followMount(obs)
-    assert not suc
+    function.followMount(obs)
 
 
 def test_followMount_4(function):
@@ -848,21 +775,18 @@ def test_followMount_4(function):
     function.app.deviceStat["dome"] = True
     obs.Az = Angle(degrees=1)
     obs.Alt = Angle(degrees=1)
-    suc = function.followMount(obs)
-    assert suc
+    function.followMount(obs)
 
 
 def test_setTrackingOffsets_1(function):
     with mock.patch.object(
         function.app.mount.satellite, "setTrackingOffsets", return_value=True
     ):
-        suc = function.setTrackingOffsets()
-        assert suc
+        function.setTrackingOffsets()
 
 
 def test_setTrackingOffsets_2(function):
     with mock.patch.object(
         function.app.mount.satellite, "setTrackingOffsets", return_value=False
     ):
-        suc = function.setTrackingOffsets()
-        assert not suc
+        function.setTrackingOffsets()

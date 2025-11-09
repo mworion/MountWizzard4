@@ -25,6 +25,9 @@ from skyfield.api import Angle
 from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 from mw4.logic.satellites.satellite_calculations import calcSatPasses
+from mw4.mountcontrol.tleParams import TLEParams
+from mw4.mountcontrol.obsSite import ObsSite
+from skyfield.api import EarthSatellite
 
 
 class SatTrack(QObject, SatData):
@@ -36,8 +39,7 @@ class SatTrack(QObject, SatData):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.satOrbits = None
-        self.satellite = {}
+        self.satellite: EarthSatellite = None
         self.satellitesRawTLE = {}
         self.nextSatPass = [None, None, None]
         self.lastMeridianLimit = None
@@ -86,15 +88,14 @@ class SatTrack(QObject, SatData):
         self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.progTrajectory.clicked.connect(self.startProg)
         self.ui.listSats.itemDoubleClicked.connect(self.chooseSatellite)
-        self.ui.unitTimeUTC.toggled.connect(self.showSatPasses)
-        self.ui.unitTimeUTC.toggled.connect(self.updateSatelliteTrackGui)
+        self.ui.unitTimeUTC.toggled.connect(self.changeUnitTimeUTC)
         self.ui.satOffTime.valueChanged.connect(self.setTrackingOffsets)
         self.ui.satOffRa.valueChanged.connect(self.setTrackingOffsets)
         self.ui.satOffDec.valueChanged.connect(self.setTrackingOffsets)
 
         self.app.update1s.connect(self.updateOrbit)
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         self.ui.domeAutoFollowSat.setChecked(config.get("domeAutoFollowSat", False))
@@ -105,7 +106,7 @@ class SatTrack(QObject, SatData):
         self.ui.trackingReplay.setChecked(config.get("trackingReplay", False))
         self.ui.unitTimeUTC.toggled.connect(self.showSatPasses)
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         config["domeAutoFollowSat"] = self.ui.domeAutoFollowSat.isChecked()
@@ -115,7 +116,7 @@ class SatTrack(QObject, SatData):
         config["avoidHorizon"] = self.ui.avoidHorizon.isChecked()
         config["trackingReplay"] = self.ui.trackingReplay.isChecked()
 
-    def setupIcons(self):
+    def setupIcons(self) -> None:
         """ """
         self.mainW.wIcon(self.ui.stopSatelliteTracking, "cross-circle")
         self.mainW.wIcon(self.ui.startSatelliteTracking, "start")
@@ -124,28 +125,26 @@ class SatTrack(QObject, SatData):
         self.mainW.wIcon(self.ui.progSatSelected, "run")
         self.mainW.wIcon(self.ui.progTrajectory, "run")
 
-    def enableGuiFunctions(self):
+    def enableGuiFunctions(self) -> None:
         """ """
         useInternal = self.ui.useInternalSatCalc.isChecked()
         availableInternal = self.app.mount.firmware.checkNewer("3")
         if availableInternal is None:
-            return False
+            return
 
         progAvailable = availableInternal and useInternal
         self.ui.trackingReplay.setEnabled(progAvailable)
         self.ui.progTrajectory.setEnabled(progAvailable)
-        return True
 
-    def signalSatelliteData(self, alt=[], az=[]):
+    def signalSatelliteData(self, alt: list, az: list) -> None:
         """ """
         if not self.satellite:
-            return False
+            return
 
         name = self.satellite.name
         self.app.showSatellite.emit(self.satellite, self.satOrbits, alt, az, name)
-        return True
 
-    def clearTrackingParameters(self):
+    def clearTrackingParameters(self) -> None:
         """ """
         self.ui.satTrajectoryStart.setText("-")
         self.ui.satTrajectoryEnd.setText("-")
@@ -155,18 +154,17 @@ class SatTrack(QObject, SatData):
         self.ui.startSatelliteTracking.setText("Start satellite tracking")
         changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
 
-    def updatePasses(self):
+    def updatePasses(self) -> None:
         """ """
         actMeridianLimit = self.app.mount.setting.meridianLimitTrack
         if actMeridianLimit is None:
-            return False
+            return
 
         if actMeridianLimit != self.lastMeridianLimit:
             self.showSatPasses()
             self.lastMeridianLimit = actMeridianLimit
-        return True
 
-    def calcTrajectoryData(self, start, end):
+    def calcTrajectoryData(self, start: int, end: int) -> tuple[list, list]:
         """ """
         duration = min(end - start, 900 / 86400)
         if duration < 1 / 86400:
@@ -185,14 +183,14 @@ class SatTrack(QObject, SatData):
         alt, az, _ = topocentric.altaz(pressure_mbar=press, temperature_C=temp)
         return alt.degrees, az.degrees
 
-    def progTrajectoryToMount(self):
+    def progTrajectoryToMount(self) -> None:
         """ """
         useInternal = self.ui.useInternalSatCalc.isChecked()
         isMount = self.app.deviceStat["mount"]
         start, end = self.selectStartEnd()
 
         if not start or not end:
-            return False
+            return
 
         if isMount and useInternal:
             alt, az = self.calcTrajectoryData(start, end)
@@ -205,15 +203,14 @@ class SatTrack(QObject, SatData):
             self.app.mount.calcTLE(start)
 
         self.signalSatelliteData(alt=alt, az=az)
-        return True
 
-    def showSatPasses(self):
+    def showSatPasses(self) -> None:
         """ """
         title = "Satellite passes " + self.mainW.timeZoneString()
         self.ui.satPassesGroup.setTitle(title)
 
         if not self.satellite:
-            return False
+            return
 
         self.clearTrackingParameters()
         obsSite = self.app.mount.obsSite
@@ -260,13 +257,12 @@ class SatTrack(QObject, SatData):
             self.passUI[i]["date"].setText(dateStr)
 
         self.progTrajectoryToMount()
-        return True
 
-    def extractSatelliteData(self, satName=""):
+    def extractSatelliteData(self, satName: str) -> None:
         """ """
         satTab = self.ui.listSats
         if satName not in self.satellites.objects:
-            return False
+            return
 
         self.mainW.positionCursorInTable(satTab, satName)
         self.satellite = self.satellites.objects[satName]
@@ -287,14 +283,13 @@ class SatTrack(QObject, SatData):
             changeStyleDynamic(self.ui.satelliteDataAge, "color", "")
 
         self.ui.satelliteNumber.setText(f"{self.satellite.model.satnum:5d}")
-        return True
 
-    def programSatToMount(self, satName=""):
+    def programSatToMount(self, satName: str) -> None:
         """ """
         if not satName:
-            return False
+            return
         if satName not in self.satellites.objects:
-            return False
+            return
 
         satellite = self.app.mount.satellite
         self.msg.emit(0, "TLE", "Program", f"Upload to mount: [{satName}]")
@@ -302,11 +297,10 @@ class SatTrack(QObject, SatData):
         suc = satellite.setTLE(line0=satName, line1=line1, line2=line2)
         if not suc:
             self.msg.emit(2, "TLE", "Program error", "Uploading error")
-            return False
+            return
         self.app.mount.getTLE()
-        return True
 
-    def chooseSatellite(self):
+    def chooseSatellite(self) -> None:
         """ """
         satName = self.ui.listSats.item(self.ui.listSats.currentRow(), 1).text()
         if self.app.deviceStat["mount"]:
@@ -318,29 +312,24 @@ class SatTrack(QObject, SatData):
         if self.ui.autoSwitchTrack.isChecked():
             self.ui.satTabWidget.setCurrentIndex(1)
 
-    def getSatelliteDataFromDatabase(self, tleParams=None):
+    def getSatelliteDataFromDatabase(self, tleParams: TLEParams) -> None:
         """ """
-        if tleParams is None:
-            return False
-
         self.extractSatelliteData(satName=tleParams.name)
         self.showSatPasses()
-        return True
 
-    def updateOrbit(self):
+    def updateOrbit(self) -> None:
         """ """
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
             self.ui.stopSatelliteTracking.setEnabled(False)
             changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
-            return False
+            return
 
         now = self.app.mount.obsSite.ts.now()
         location = self.app.mount.obsSite.location
         self.app.updateSatellite.emit(now, location)
-        return True
 
-    def selectStartEnd(self):
+    def selectStartEnd(self) -> tuple[int, int]:
         """ """
         if not self.satOrbits:
             return 0, 0
@@ -367,10 +356,12 @@ class SatTrack(QObject, SatData):
 
         return start, end
 
-    def filterHorizon(self, start, end, alt, az):
+    def filterHorizon(
+        self, start: int, end: int, alt: list, az: list
+    ) -> tuple[int, int, list, list]:
         """
         Filter horizon runs from starts on both sides of the track and tries to
-        determine, when a track is hidden behind horizon line. As a satellite
+         determine when a track is hidden behind the horizon line. As a satellite
         track has to be in one piece, the resulting vectors might have a shorter
         length and a different start and end time.
         """
@@ -399,7 +390,7 @@ class SatTrack(QObject, SatData):
 
         return start, end, alt, az
 
-    def startProg(self):
+    def startProg(self) -> None:
         """ """
         self.clearTrackingParameters()
         isReplay = self.ui.trackingReplay.isChecked()
@@ -407,14 +398,14 @@ class SatTrack(QObject, SatData):
         self.msg.emit(1, "TLE", "Program", f"Satellite track data {t}")
         start, end = self.selectStartEnd()
         if not start or not end:
-            return False
+            return
         alt, az = self.calcTrajectoryData(start, end)
         start, end, alt, az = self.filterHorizon(start, end, alt, az)
 
         if len(alt) == 0:
             text = "Program", "No track data (white), please revise settings"
             self.msg.emit(2, "TLE", "Error", text)
-            return False
+            return
 
         factor = int(len(alt) / 900)
         factor = 1 if factor < 1 else factor
@@ -425,57 +416,56 @@ class SatTrack(QObject, SatData):
         self.ui.progTrajectory.setEnabled(False)
         self.ui.progTrajectory.setText("Calculating")
         self.app.mount.progTrajectory(start, alt, az, replay=isReplay)
-        return True
 
-    def updateSatelliteTrackGui(self, params=None):
+    def changeUnitTimeUTC(self) -> None:
+        """ """
+        self.showSatPasses()
+        self.updateSatelliteTrackGui(self.app.mount.satellite.tleParams)
+
+    def updateSatelliteTrackGui(self, tleParams: TLEParams) -> None:
         """ """
         title = "Satellite tracking " + self.mainW.timeZoneString()
         self.ui.satTrackGroup.setTitle(title)
 
-        if params is None or isinstance(params, bool):
-            return False
-
-        if params.jdStart is not None and self.satOrbits:
-            t = self.mainW.convertTime(params.jdStart, "%d %b  %H:%M:%S")
+        if tleParams.jdStart is not None and self.satOrbits:
+            t = self.mainW.convertTime(tleParams.jdStart, "%d %b  %H:%M:%S")
             self.ui.satTrajectoryStart.setText(t)
         else:
             self.ui.satTrajectoryStart.setText("No transit")
 
-        if params.jdEnd is not None and self.satOrbits:
-            t = self.mainW.convertTime(params.jdEnd, "%d %b  %H:%M:%S")
+        if tleParams.jdEnd is not None and self.satOrbits:
+            t = self.mainW.convertTime(tleParams.jdEnd, "%d %b  %H:%M:%S")
             self.ui.satTrajectoryEnd.setText(t)
         else:
             self.ui.satTrajectoryEnd.setText("No transit")
 
-        if params.flip and self.satOrbits:
+        if tleParams.flip and self.satOrbits:
             self.ui.satTrajectoryFlip.setText("YES")
         else:
             self.ui.satTrajectoryFlip.setText("NO")
 
-        if params.message is not None:
-            self.msg.emit(0, "TLE", "Message", f"{params.message}")
+        if tleParams.message is not None:
+            self.msg.emit(0, "TLE", "Message", f"{tleParams.message}")
 
-        if params.jdStart is not None and self.satOrbits:
+        if tleParams.jdStart is not None and self.satOrbits:
             self.ui.stopSatelliteTracking.setEnabled(True)
             self.ui.startSatelliteTracking.setEnabled(True)
         else:
             self.ui.stopSatelliteTracking.setEnabled(False)
             self.ui.startSatelliteTracking.setEnabled(False)
 
-        return True
-
-    def updateInternalTrackGui(self, params=None):
+    def updateInternalTrackGui(self, tleParams: TLEParams) -> None:
         """ """
         self.ui.progTrajectory.setEnabled(True)
         self.ui.progTrajectory.setText("Program trajectory")
-        self.updateSatelliteTrackGui(params)
+        self.updateSatelliteTrackGui(tleParams)
         self.msg.emit(1, "TLE", "Program", "Satellite track data ready!")
 
-    def startTrack(self):
+    def startTrack(self) -> None:
         """ """
         if not self.app.deviceStat["mount"]:
             self.msg.emit(2, "TLE", "Program", "Mount is not online")
-            return False
+            return
 
         if self.app.mount.obsSite.status == 5:
             suc = self.app.mount.obsSite.unpark()
@@ -488,41 +478,38 @@ class SatTrack(QObject, SatData):
         suc, message = self.app.mount.satellite.slewTLE()
         if not suc:
             self.msg.emit(2, "TLE", "Command error", f"{message}")
-            return False
+            return
 
         changeStyleDynamic(self.ui.startSatelliteTracking, "running", True)
         self.msg.emit(0, "TLE", "Command ", f"{message}")
         self.app.mount.satellite.setTrackingOffsets()
-        return True
 
-    def stopTrack(self):
+    def stopTrack(self) -> None:
         """ """
         if not self.app.deviceStat["mount"]:
             self.msg.emit(2, "TLE", "Command", "Mount is not online")
-            return False
+            return
 
         suc = self.app.mount.obsSite.startTracking()
         if not suc:
             self.msg.emit(2, "TLE", "Command", "Cannot stop tracking")
-            return False
+            return
 
         self.ui.startSatelliteTracking.setText("Start satellite tracking")
         changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
         self.msg.emit(0, "TLE", "Command", "Stopped tracking")
-        return suc
 
-    def toggleTrackingOffset(self, obs):
+    def toggleTrackingOffset(self, obs: ObsSite) -> None:
         """ """
         if not self.app.mount.firmware.checkNewer("3"):
-            return False
+            return
 
         if obs.status == 10:
             self.ui.satOffGroup.setEnabled(True)
         else:
             self.ui.satOffGroup.setEnabled(False)
-        return True
 
-    def followMount(self, obs):
+    def followMount(self, obs: ObsSite) -> None:
         """ """
         TLESCK = {
             "V": "is slewing to transit start",
@@ -533,11 +520,11 @@ class SatTrack(QObject, SatData):
 
         status = obs.status
         if status != 10:
-            return False
+            return
         if not self.ui.domeAutoFollowSat.isChecked():
-            return False
+            return
         if not self.app.deviceStat["dome"]:
-            return False
+            return
 
         stat = obs.statusSat
         statText = TLESCK.get(stat, "")
@@ -546,9 +533,8 @@ class SatTrack(QObject, SatData):
         azimuth = obs.Az.degrees
         altitude = obs.Alt.degrees
         self.app.dome.slewDome(altitude=altitude, azimuth=azimuth, follow=True)
-        return True
 
-    def setTrackingOffsets(self):
+    def setTrackingOffsets(self) -> None:
         """ """
         valT = self.ui.satOffTime.value()
         valR = self.ui.satOffRa.value()
@@ -556,4 +542,3 @@ class SatTrack(QObject, SatData):
         suc = self.app.mount.satellite.setTrackingOffsets(Time=valT, RA=valR, DECcorr=valD)
         if not suc:
             self.msg.emit(2, "TLE", "Command error", "Cannot change offset")
-        return suc

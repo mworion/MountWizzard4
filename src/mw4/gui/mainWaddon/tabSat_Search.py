@@ -74,7 +74,7 @@ class SatSearch(QObject, SatData):
         self.ui.progSatFiltered.clicked.connect(self.satellites.progFiltered)
         self.ui.progSatSelected.clicked.connect(self.satellites.progSelected)
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         self.ui.satFilterText.setText(config.get("satFilterText"))
@@ -88,7 +88,7 @@ class SatSearch(QObject, SatData):
         self.ui.satAltitudeMin.setValue(config.get("satAltitudeMin", 30))
         self.ui.satSourceList.setCurrentIndex(config.get("satSource", 0))
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         config["satSource"] = self.ui.satSourceList.currentIndex()
@@ -102,7 +102,7 @@ class SatSearch(QObject, SatData):
         config["satUpTimeWindow"] = self.ui.satUpTimeWindow.value()
         config["satAltitudeMin"] = self.ui.satAltitudeMin.value()
 
-    def prepareSatTable(self):
+    def prepareSatTable(self) -> None:
         """ """
         self.ui.listSats.setColumnCount(9)
         hLabels = [
@@ -124,7 +124,7 @@ class SatSearch(QObject, SatData):
         self.ui.listSats.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.ui.listSats.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
-    def processSatelliteSource(self):
+    def processSatelliteSource(self) -> None:
         """ """
         self.ui.listSats.setRowCount(0)
         loader = self.app.mount.obsSite.loader
@@ -133,7 +133,7 @@ class SatSearch(QObject, SatData):
         for sat in satellites:
             self.satellites.objects[sat.name] = sat
 
-    def filterListSats(self):
+    def filterListSats(self) -> None:
         """ """
         filterStr = self.ui.satFilterText.text().lower()
         satIsUp = self.ui.satIsUp
@@ -166,7 +166,7 @@ class SatSearch(QObject, SatData):
         satName = self.ui.satelliteName.text()
         self.mainW.positionCursorInTable(self.ui.listSats, satName)
 
-    def setListSatsEntry(self, row, col, entry):
+    def setListSatsEntry(self, row: int, col: int, entry: str) -> None:
         """ """
         self.ui.listSats.setItem(row, col, entry)
 

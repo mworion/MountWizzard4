@@ -325,7 +325,10 @@ def test_renderStyle_2(function):
 
 
 def test_initUI_1(function):
-    function.initUI()
+    with mock.patch.object(function, "setStyleSheet"):
+        with mock.patch.object(function, "setMouseTracking"):
+            with mock.patch.object(function, "setWindowIcon"):
+                function.initUI()
 
 
 def test_prepareFileDialog_1(function):

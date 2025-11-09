@@ -137,17 +137,17 @@ class MountDevice:
 
     def startMountTimers(self):
         """ """
-        self.timerSetting.start(self.CYCLE_SETTING)
-        self.timerPointing.start(self.CYCLE_POINTING)
         self.timerMountUp.start(self.CYCLE_MOUNT_UP)
+        self.timerPointing.start(self.CYCLE_POINTING)
+        self.timerSetting.start(self.CYCLE_SETTING)
 
     def stopAllMountTimers(self):
         """ """
-        self.timerSetting.stop()
-        self.timerPointing.stop()
         self.timerMountUp.stop()
-        self.timerDome.stop()
+        self.timerPointing.stop()
         self.timerClock.stop()
+        self.timerDome.stop()
+        self.timerSetting.stop()
 
     def startDomeTimer(self):
         """ """
@@ -230,7 +230,7 @@ class MountDevice:
         self.workerMountUp.signals.finished.connect(self.clearCycleCheckMountUp)
         self.threadPool.start(self.workerMountUp)
 
-    def clearCyclePointing(self):
+    def clearCyclePointing(self, result: bool) -> None:
         """ """
         if self.obsSite.status in [1, 98, 99]:
             if not self.statusAlert:
@@ -248,7 +248,8 @@ class MountDevice:
         else:
             self.statusSlew = False
 
-        self.signals.pointDone.emit(self.obsSite)
+        if result:
+            self.signals.pointDone.emit(self.obsSite)
         self.mutexCyclePointing.unlock()
 
     def cyclePointing(self):
@@ -260,12 +261,13 @@ class MountDevice:
             return
 
         self.workerCyclePointing = Worker(self.obsSite.pollPointing)
-        self.workerCyclePointing.signals.finished.connect(self.clearCyclePointing)
+        self.workerCyclePointing.signals.result.connect(self.clearCyclePointing)
         self.threadPool.start(self.workerCyclePointing)
 
-    def clearCycleSetting(self):
+    def clearCycleSetting(self, result):
         """ """
-        self.signals.settingDone.emit(self.setting)
+        if result:
+            self.signals.settingDone.emit(self.setting)
         self.mutexCycleSetting.unlock()
 
     def cycleSetting(self):
@@ -277,7 +279,7 @@ class MountDevice:
             return
 
         self.workerCycleSetting = Worker(self.setting.pollSetting)
-        self.workerCycleSetting.signals.finished.connect(self.clearCycleSetting)
+        self.workerCycleSetting.signals.result.connect(self.clearCycleSetting)
         self.threadPool.start(self.workerCycleSetting)
 
     def clearGetModel(self):
@@ -396,9 +398,10 @@ class MountDevice:
             self.mountUp = False
         return suc
 
-    def clearDome(self):
+    def clearDome(self, result):
         """ """
-        self.signals.domeDone.emit(self.dome)
+        if result:
+            self.signals.domeDone.emit(self.dome)
 
     def cycleDome(self):
         """ """
@@ -406,7 +409,7 @@ class MountDevice:
             return
 
         self.workerCycleDome = Worker(self.dome.poll)
-        self.workerCycleDome.signals.finished.connect(self.clearDome)
+        self.workerCycleDome.signals.result.connect(self.clearDome)
         self.threadPool.start(self.workerCycleDome)
 
     def cycleClock(self):

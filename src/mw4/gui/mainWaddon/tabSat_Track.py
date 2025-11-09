@@ -260,20 +260,27 @@ class SatTrack(QObject, SatData):
 
     def extractSatelliteData(self, satName: str) -> None:
         """ """
-        satTab = self.ui.listSats
         if satName not in self.satellites.objects:
+            self.ui.satelliteNumber.setText("-----")
+            self.ui.satelliteDataAge.setText("-----")
+            self.ui.satelliteEpoch.setText("-----")
+            self.ui.satelliteName.setText(f"{satName}...not found...")
+            self.msg.emit(2, "Satellite", "Data", f"[{satName}] not found in database")
             return
 
-        self.mainW.positionCursorInTable(satTab, satName)
+        self.mainW.positionCursorInTable(self.ui.listSats, satName)
         self.satellite = self.satellites.objects[satName]
+        self.msg.emit(0, "Satellite", "Data", f"Actual satellite: [{satName}]")
+
         self.ui.satelliteName.setText(self.satellite.name)
+        self.ui.satelliteNumber.setText(f"{self.satellite.model.satnum:5d}")
+
         epochText = self.satellite.epoch.utc_strftime("%Y-%m-%d, %H:%M")
         self.ui.satelliteEpoch.setText(epochText)
 
         now = self.app.mount.obsSite.ts.now()
         days = now - self.satellite.epoch
         self.ui.satelliteDataAge.setText(f"{days:2.2f}")
-        self.msg.emit(0, "Satellite", "Data", f"Actual satellite: [{satName}]")
 
         if days > 10:
             changeStyleDynamic(self.ui.satelliteDataAge, "color", "red")
@@ -281,8 +288,6 @@ class SatTrack(QObject, SatData):
             changeStyleDynamic(self.ui.satelliteDataAge, "color", "yellow")
         else:
             changeStyleDynamic(self.ui.satelliteDataAge, "color", "")
-
-        self.ui.satelliteNumber.setText(f"{self.satellite.model.satnum:5d}")
 
     def programSatToMount(self, satName: str) -> None:
         """ """

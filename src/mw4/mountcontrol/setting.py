@@ -382,7 +382,7 @@ class Setting:
             return False
         return self.parseSetting(response, numberOfChunks)
 
-    def setSlewRate(self, value: (int, float)) -> bool:
+    def setSlewRate(self, value: int | float) -> bool:
         """ """
         if value < 2 or value > 15:
             return False

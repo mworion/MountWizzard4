@@ -184,35 +184,35 @@ def test_cycleCheckMountUp_3(function):
 
 def test_clearCyclePointing_1(function):
     function.obsSite.flipped = False
-    function.clearCyclePointing()
+    function.clearCyclePointing(True)
 
 
 def test_clearCyclePointing_2(function):
     function.obsSite.flipped = True
     function.obsSite.status = 1
     function.statusAlert = False
-    function.clearCyclePointing()
+    function.clearCyclePointing(True)
     assert function.statusAlert
 
 
 def test_clearCyclePointing_3(function):
     function.obsSite.status = 0
     function.statusAlert = False
-    function.clearCyclePointing()
+    function.clearCyclePointing(True)
     assert not function.statusAlert
 
 
 def test_clearCyclePointing_4(function):
     function.obsSite.status = 0
     function.statusSlew = False
-    function.clearCyclePointing()
+    function.clearCyclePointing(True)
     assert function.statusSlew
 
 
 def test_clearCyclePointing_5(function):
     function.obsSite.status = 2
     function.statusSlew = False
-    function.clearCyclePointing()
+    function.clearCyclePointing(True)
     assert not function.statusSlew
 
 
@@ -238,7 +238,7 @@ def test_cyclePointing_3(function):
 
 
 def test_clearCycleSetting_1(function):
-    function.clearCycleSetting()
+    function.clearCycleSetting(True)
 
 
 def test_cycleSetting_1(function):
@@ -426,7 +426,7 @@ def test_shutdown_2(function):
 
 
 def test_clearDome_1(function):
-    function.clearDome()
+    function.clearDome(True)
 
 
 def test_cycleDome_1(function):

@@ -169,35 +169,35 @@ class SimulatorWindow(MWidget):
         The position vector in not 0,0,0 as the precision leads to a black
         screen.
         """
-        changeStyleDynamic(self.ui.telescopeView, "running", False)
+        changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(0.001, 5.0, 0.001))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def topEastView(self):
         """ """
-        changeStyleDynamic(self.ui.telescopeView, "running", False)
+        changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.1, 1.5, 0.1))
         self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def topWestView(self):
         """ """
-        changeStyleDynamic(self.ui.telescopeView, "running", False)
+        changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def eastView(self):
         """ """
-        changeStyleDynamic(self.ui.telescopeView, "running", False)
+        changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def westView(self):
         """ """
-        changeStyleDynamic(self.ui.telescopeView, "running", False)
+        changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))

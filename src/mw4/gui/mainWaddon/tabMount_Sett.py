@@ -140,34 +140,34 @@ class MountSett(QObject):
 
         # todo: this might be a little bit too slow
         if self.app.mount.obsSite.status is None:
-            changeStyleDynamic(self.ui.followSat, "running", False)
-            changeStyleDynamic(self.ui.setLunarTracking, "running", False)
-            changeStyleDynamic(self.ui.setSiderealTracking, "running", False)
-            changeStyleDynamic(self.ui.setSolarTracking, "running", False)
+            changeStyleDynamic(self.ui.followSat, "run", False)
+            changeStyleDynamic(self.ui.setLunarTracking, "run", False)
+            changeStyleDynamic(self.ui.setSiderealTracking, "run", False)
+            changeStyleDynamic(self.ui.setSolarTracking, "run", False)
 
         elif self.app.mount.obsSite.status == 10:
-            changeStyleDynamic(self.ui.followSat, "running", True)
-            changeStyleDynamic(self.ui.setLunarTracking, "running", False)
-            changeStyleDynamic(self.ui.setSiderealTracking, "running", False)
-            changeStyleDynamic(self.ui.setSolarTracking, "running", False)
+            changeStyleDynamic(self.ui.followSat, "run", True)
+            changeStyleDynamic(self.ui.setLunarTracking, "run", False)
+            changeStyleDynamic(self.ui.setSiderealTracking, "run", False)
+            changeStyleDynamic(self.ui.setSolarTracking, "run", False)
 
         elif sett.checkRateLunar():
-            changeStyleDynamic(self.ui.followSat, "running", False)
-            changeStyleDynamic(self.ui.setLunarTracking, "running", True)
-            changeStyleDynamic(self.ui.setSiderealTracking, "running", False)
-            changeStyleDynamic(self.ui.setSolarTracking, "running", False)
+            changeStyleDynamic(self.ui.followSat, "run", False)
+            changeStyleDynamic(self.ui.setLunarTracking, "run", True)
+            changeStyleDynamic(self.ui.setSiderealTracking, "run", False)
+            changeStyleDynamic(self.ui.setSolarTracking, "run", False)
 
         elif sett.checkRateSidereal():
-            changeStyleDynamic(self.ui.followSat, "running", False)
-            changeStyleDynamic(self.ui.setLunarTracking, "running", False)
-            changeStyleDynamic(self.ui.setSiderealTracking, "running", True)
-            changeStyleDynamic(self.ui.setSolarTracking, "running", False)
+            changeStyleDynamic(self.ui.followSat, "run", False)
+            changeStyleDynamic(self.ui.setLunarTracking, "run", False)
+            changeStyleDynamic(self.ui.setSiderealTracking, "run", True)
+            changeStyleDynamic(self.ui.setSolarTracking, "run", False)
 
         elif sett.checkRateSolar():
-            changeStyleDynamic(self.ui.followSat, "running", False)
-            changeStyleDynamic(self.ui.setLunarTracking, "running", False)
-            changeStyleDynamic(self.ui.setSiderealTracking, "running", False)
-            changeStyleDynamic(self.ui.setSolarTracking, "running", True)
+            changeStyleDynamic(self.ui.followSat, "run", False)
+            changeStyleDynamic(self.ui.setLunarTracking, "run", False)
+            changeStyleDynamic(self.ui.setSiderealTracking, "run", False)
+            changeStyleDynamic(self.ui.setSolarTracking, "run", True)
 
     def updateLocGUI(self, obs):
         """ """

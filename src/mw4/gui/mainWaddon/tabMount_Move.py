@@ -155,7 +155,7 @@ class MountMove(QObject, SlewInterface):
     def stopMoveAll(self):
         """ """
         for uiR in self.setupMoveClassic:
-            changeStyleDynamic(self.setupMoveClassic[uiR]["button"], "running", False)
+            changeStyleDynamic(self.setupMoveClassic[uiR]["button"], "run", False)
         self.app.mount.obsSite.stopMoveAll()
 
     def countDuration(self, duration):
@@ -203,9 +203,9 @@ class MountMove(QObject, SlewInterface):
         """ """
         uiList = self.setupMoveClassic
         for key in uiList:
-            changeStyleDynamic(uiList[key]["button"], "running", False)
+            changeStyleDynamic(uiList[key]["button"], "run", False)
 
-        changeStyleDynamic(uiList[direction]["button"], "running", True)
+        changeStyleDynamic(uiList[direction]["button"], "run", True)
 
         coord = uiList[direction]["coord"]
         if coord[0] == 1:
@@ -237,7 +237,7 @@ class MountMove(QObject, SlewInterface):
         self.targetAlt = None
         self.targetAz = None
         for key in self.setupMoveAltAz:
-            changeStyleDynamic(self.setupMoveAltAz[key]["button"], "running", False)
+            changeStyleDynamic(self.setupMoveAltAz[key]["button"], "run", False)
         return True
 
     def moveAltAzGameController(self, value):
@@ -263,7 +263,7 @@ class MountMove(QObject, SlewInterface):
             return False
 
         uiList = self.setupMoveAltAz
-        changeStyleDynamic(uiList[direction]["button"], "running", True)
+        changeStyleDynamic(uiList[direction]["button"], "run", True)
 
         key = list(self.setupStepsizes)[self.ui.moveStepSizeAltAz.currentIndex()]
         step = self.setupStepsizes[key]

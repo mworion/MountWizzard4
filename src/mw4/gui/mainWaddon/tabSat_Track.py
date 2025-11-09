@@ -152,7 +152,7 @@ class SatTrack(QObject, SatData):
         self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setText("Start satellite tracking")
-        changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
+        changeStyleDynamic(self.ui.startSatelliteTracking, "run", False)
 
     def updatePasses(self) -> None:
         """ """
@@ -320,7 +320,7 @@ class SatTrack(QObject, SatData):
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
             self.ui.stopSatelliteTracking.setEnabled(False)
-            changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
+            changeStyleDynamic(self.ui.startSatelliteTracking, "run", False)
             return
 
         now = self.app.mount.obsSite.ts.now()
@@ -410,7 +410,7 @@ class SatTrack(QObject, SatData):
         alt = Angle(degrees=np.array_split(alt, factor)[0])
         az = Angle(degrees=np.array_split(az, factor)[0])
 
-        changeStyleDynamic(self.ui.progTrajectory, "running", True)
+        changeStyleDynamic(self.ui.progTrajectory, "run", True)
         self.ui.progTrajectory.setEnabled(False)
         self.ui.progTrajectory.setText("Calculating")
         self.app.mount.progTrajectory(start, alt, az, replay=isReplay)
@@ -478,7 +478,7 @@ class SatTrack(QObject, SatData):
             self.msg.emit(2, "TLE", "Command error", f"{message}")
             return
 
-        changeStyleDynamic(self.ui.startSatelliteTracking, "running", True)
+        changeStyleDynamic(self.ui.startSatelliteTracking, "run", True)
         self.msg.emit(0, "TLE", "Command ", f"{message}")
         self.app.mount.satellite.setTrackingOffsets()
 
@@ -494,7 +494,7 @@ class SatTrack(QObject, SatData):
             return
 
         self.ui.startSatelliteTracking.setText("Start satellite tracking")
-        changeStyleDynamic(self.ui.startSatelliteTracking, "running", False)
+        changeStyleDynamic(self.ui.startSatelliteTracking, "run", False)
         self.msg.emit(0, "TLE", "Command", "Stopped tracking")
 
     def toggleTrackingOffset(self, obs: ObsSite) -> None:

@@ -280,8 +280,8 @@ class MainWindow(MWidget):
         tabIndex = self.getTabIndex(self.ui.toolsTabWidget, "AnalyseFlexure")
         self.ui.toolsTabWidget.setTabVisible(tabIndex, packageConfig.isAnalyse)
 
-        # redraw tabs only when a change occurred. this is necessary, because
-        # enable and disable does not remove tabs
+        # redraw tabs only when a change occurred. this is necessary because
+        # enable and disable do not remove tabs
         if tabChanged:
             ui = self.ui.mainTabWidget
             ui.setStyleSheet(ui.styleSheet())
@@ -317,8 +317,9 @@ class MainWindow(MWidget):
                 changeStyleDynamic(ui, "color", "red")
 
         isMount = self.app.deviceStat.get("mount", False)
-        changeStyleDynamic(self.ui.mountOn, "running", isMount)
-        changeStyleDynamic(self.ui.mountOff, "running", not isMount)
+        changeStyleDynamic(self.ui.mountOn, "run", isMount)
+        changeStyleDynamic(self.ui.mountOff, "run", not isMount)
+        changeStyleDynamic(self.ui.mountConnected, "run", isMount)
 
     def updateMountConnStat(self, status: bool) -> None:
         """ """
@@ -377,19 +378,19 @@ class MainWindow(MWidget):
             self.ui.statusText.setText("-")
 
         if self.app.mount.obsSite.status == 0:
-            changeStyleDynamic(self.ui.tracking, "running", True)
+            changeStyleDynamic(self.ui.tracking, "run", True)
         else:
-            changeStyleDynamic(self.ui.tracking, "running", False)
+            changeStyleDynamic(self.ui.tracking, "run", False)
 
         if self.app.mount.obsSite.status == 5:
-            changeStyleDynamic(self.ui.park, "running", True)
+            changeStyleDynamic(self.ui.park, "run", True)
         else:
-            changeStyleDynamic(self.ui.park, "running", False)
+            changeStyleDynamic(self.ui.park, "run", False)
 
         if self.app.mount.obsSite.status == 1:
-            changeStyleDynamic(self.ui.stop, "running", True)
+            changeStyleDynamic(self.ui.stop, "run", True)
         else:
-            changeStyleDynamic(self.ui.stop, "running", False)
+            changeStyleDynamic(self.ui.stop, "run", False)
 
         if self.app.mount.obsSite.status == 10 and not self.satStatus:
             self.app.playSound.emit("SatStartTracking")

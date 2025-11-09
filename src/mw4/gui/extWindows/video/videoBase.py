@@ -67,7 +67,7 @@ class VideoWindowBase(MWidget):
         self.ui.authPopup.clicked.connect(self.authPopup)
         self.app.colorChange.connect(self.colorChange)
         self.app.update0_1s.connect(self.count)
-        changeStyleDynamic(self.ui.videoStop, "running", True)
+        changeStyleDynamic(self.ui.videoStop, "run", True)
         self.checkAuth()
         self.show()
 
@@ -133,16 +133,16 @@ class VideoWindowBase(MWidget):
 
         source = sources[sourceIndex]
         self.log.info(f"Video started: source [{source}]")
-        changeStyleDynamic(self.ui.videoStart, "running", True)
-        changeStyleDynamic(self.ui.videoStop, "running", False)
+        changeStyleDynamic(self.ui.videoStart, "run", True)
+        changeStyleDynamic(self.ui.videoStop, "run", False)
         self.running = True
         self.worker = Worker(self.workerVideo, source, frameRate)
         self.threadPool.start(self.worker)
 
     def stopVideo(self) -> None:
         """ """
-        changeStyleDynamic(self.ui.videoStart, "running", False)
-        changeStyleDynamic(self.ui.videoStop, "running", True)
+        changeStyleDynamic(self.ui.videoStart, "run", False)
+        changeStyleDynamic(self.ui.videoStop, "run", True)
         self.pixmapReady.emit(None)
         self.running = False
 
@@ -165,7 +165,7 @@ class VideoWindowBase(MWidget):
     def checkAuth(self) -> None:
         """ """
         hasAuth = self.user != "" and self.password != ""
-        changeStyleDynamic(self.ui.authPopup, "running", hasAuth)
+        changeStyleDynamic(self.ui.authPopup, "run", hasAuth)
 
     def authPopup(self) -> None:
         """ """

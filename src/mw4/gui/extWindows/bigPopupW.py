@@ -76,10 +76,10 @@ class BigPopup(MWidget):
     def updateDeviceStats(self) -> None:
         """ """
         isMount = self.app.deviceStat.get("mount", False)
-        changeStyleDynamic(self.ui.mountOn, "running", isMount)
-        changeStyleDynamic(self.ui.mountOff, "running", not isMount)
+        changeStyleDynamic(self.ui.mountOn, "run", isMount)
+        changeStyleDynamic(self.ui.mountOff, "run", not isMount)
 
     def updateStatus(self) -> None:
         """ """
         running = self.app.mount.obsSite.status == 1
-        changeStyleDynamic(self.ui.stop, "running", running)
+        changeStyleDynamic(self.ui.stop, "run", running)

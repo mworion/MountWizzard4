@@ -113,8 +113,8 @@ class Analysis:
 
     def restoreAnalysisDefaultContextAndGuiStatus(self):
         """ """
-        changeStyleDynamic(self.ui.runFlexure, "running", False)
-        changeStyleDynamic(self.ui.runHysteresis, "running", False)
+        changeStyleDynamic(self.ui.runFlexure, "run", False)
+        changeStyleDynamic(self.ui.runHysteresis, "run", False)
         self.ui.cancelAnalysis.setEnabled(False)
         self.ui.analysisPoints.setText("-")
         self.ui.analysisProgress.setValue(0)

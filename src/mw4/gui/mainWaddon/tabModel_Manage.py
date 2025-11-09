@@ -177,8 +177,8 @@ class ModelManage(QObject):
 
     def clearRefreshName(self) -> None:
         """ """
-        changeStyleDynamic(self.ui.refreshName, "running", False)
-        changeStyleDynamic(self.ui.modelNameGroup, "running", False)
+        changeStyleDynamic(self.ui.refreshName, "run", False)
+        changeStyleDynamic(self.ui.modelNameGroup, "run", False)
         self.ui.deleteName.setEnabled(True)
         self.ui.saveName.setEnabled(True)
         self.ui.loadName.setEnabled(True)
@@ -191,8 +191,8 @@ class ModelManage(QObject):
         self.ui.deleteName.setEnabled(False)
         self.ui.saveName.setEnabled(False)
         self.ui.loadName.setEnabled(False)
-        changeStyleDynamic(self.ui.refreshName, "running", True)
-        changeStyleDynamic(self.ui.modelNameGroup, "running", True)
+        changeStyleDynamic(self.ui.refreshName, "run", True)
+        changeStyleDynamic(self.ui.modelNameGroup, "run", True)
         self.app.mount.getNames()
 
     def loadName(self):
@@ -271,8 +271,8 @@ class ModelManage(QObject):
 
     def clearRefreshModel(self) -> None:
         """ """
-        changeStyleDynamic(self.ui.refreshModel, "running", False)
-        changeStyleDynamic(self.ui.modelGroup, "running", False)
+        changeStyleDynamic(self.ui.refreshModel, "run", False)
+        changeStyleDynamic(self.ui.modelGroup, "run", False)
         self.ui.deleteWorstPoint.setEnabled(True)
         self.ui.runOptimize.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
@@ -294,8 +294,8 @@ class ModelManage(QObject):
 
     def refreshModel(self) -> None:
         """ """
-        changeStyleDynamic(self.ui.refreshModel, "running", True)
-        changeStyleDynamic(self.ui.modelGroup, "running", True)
+        changeStyleDynamic(self.ui.refreshModel, "run", True)
+        changeStyleDynamic(self.ui.modelGroup, "run", True)
         self.app.mount.signals.getModelDone.connect(self.clearRefreshModel)
         self.ui.deleteWorstPoint.setEnabled(False)
         self.ui.runOptimize.setEnabled(False)
@@ -338,7 +338,7 @@ class ModelManage(QObject):
         else:
             self.app.mount.signals.getModelDone.disconnect(self.runSingleRMS)
 
-        changeStyleDynamic(self.ui.runOptimize, "running", False)
+        changeStyleDynamic(self.ui.runOptimize, "run", False)
         self.ui.deleteWorstPoint.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
         self.ui.refreshModel.setEnabled(True)
@@ -407,7 +407,7 @@ class ModelManage(QObject):
         self.ui.clearModel.setEnabled(False)
         self.ui.refreshModel.setEnabled(False)
         self.ui.cancelOptimize.setEnabled(True)
-        changeStyleDynamic(self.ui.runOptimize, "running", True)
+        changeStyleDynamic(self.ui.runOptimize, "run", True)
 
         if self.ui.optimizeOverall.isChecked():
             self.app.mount.signals.getModelDone.connect(self.runTargetRMS)

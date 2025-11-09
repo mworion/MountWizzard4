@@ -303,7 +303,7 @@ class BuildPoints(QObject):
         """ """
         self.lastGenerator = "spiral"
         numberTarget = int(self.ui.numberSpiral.value())
-        changeStyleDynamic(self.ui.genBuildSpiral, "running", True)
+        changeStyleDynamic(self.ui.genBuildSpiral, "run", True)
         numberPoints = 0
         numberFilter = 0
         while numberFilter < numberTarget:
@@ -312,7 +312,7 @@ class BuildPoints(QObject):
             self.autoDeletePoints()
             numberFilter = len(self.app.data.buildP)
         self.processPoints()
-        changeStyleDynamic(self.ui.genBuildSpiral, "running", False)
+        changeStyleDynamic(self.ui.genBuildSpiral, "run", False)
 
     def genModel(self):
         """ """
@@ -441,7 +441,7 @@ class BuildPoints(QObject):
         pointsNew = []
         numbAll = len(points)
         ui = self.ui.autoSortGroup
-        changeStyleDynamic(ui, "running", True)
+        changeStyleDynamic(ui, "run", True)
         for i, point in enumerate(points):
             t = f"Auto sort points: progress {(i + 1) / numbAll * 100:3.0f}%"
             ui.setTitle(t)
@@ -453,7 +453,7 @@ class BuildPoints(QObject):
             pointsNew.append((alt, az, True, domeAz.degrees))
         points = pointsNew
         ui.setTitle("Auto sort points")
-        changeStyleDynamic(ui, "running", False)
+        changeStyleDynamic(ui, "run", False)
         return points, pierside
 
     def sortDomeAz(self, points, pierside=None):

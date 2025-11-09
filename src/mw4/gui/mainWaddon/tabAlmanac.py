@@ -154,7 +154,7 @@ class Almanac(QObject):
             plotItem.addItem(rect)
         plotItem.addLine(x=xNow, pen=penLine)
 
-        changeStyleDynamic(self.ui.almanacGroup, "running", False)
+        changeStyleDynamic(self.ui.almanacGroup, "run", False)
 
     def listTwilightData(self, timeEvents, events):
         """ """
@@ -204,7 +204,7 @@ class Almanac(QObject):
         self.ui.almanacGroup.setTitle(t)
 
         ts = self.app.mount.obsSite.ts
-        changeStyleDynamic(self.ui.almanacGroup, "running", True)
+        changeStyleDynamic(self.ui.almanacGroup, "run", True)
         self.worker = Worker(self.workerCalcTwilightDataPlot, ts, location, timeWindow)
         self.worker.signals.result.connect(self.plotTwilightData)
         self.app.threadPool.start(self.worker)

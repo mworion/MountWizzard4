@@ -117,7 +117,7 @@ class Power(QObject):
         """ """
         for name, button in self.powerOnOFF.items():
             value = self.app.power.data.get(f"POWER_CONTROL.POWER_CONTROL_{name}", False)
-            changeStyleDynamic(button, "running", value)
+            changeStyleDynamic(button, "run", value)
 
         for name, button in self.powerBoot.items():
             value = self.app.power.data.get(f"POWER_ON_BOOT.POWER_PORT_{name}", False)
@@ -167,7 +167,7 @@ class Power(QObject):
         value3 = self.app.power.data.get("AUTO_DEW.DEW_B", False)
         value4 = self.app.power.data.get("AUTO_DEW.DEW_C", False)
         value = value1 or value2 or value3 or value4
-        changeStyleDynamic(self.ui.autoDew, "running", value)
+        changeStyleDynamic(self.ui.autoDew, "run", value)
 
         if self.app.power.data.get("FIRMWARE_INFO.VERSION", "1.4") > "1.4":
             value = self.app.power.data.get("ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE")
@@ -175,11 +175,11 @@ class Power(QObject):
 
             for name, button in self.portUSB.items():
                 value = self.app.power.data.get(f"USB_PORT_CONTROL.PORT_{name}", False)
-                changeStyleDynamic(button, "running", value)
+                changeStyleDynamic(button, "run", value)
 
         else:
             value = self.app.power.data.get("USB_HUB_CONTROL.INDI_ENABLED", False)
-            changeStyleDynamic(self.ui.hubUSB, "running", value)
+            changeStyleDynamic(self.ui.hubUSB, "run", value)
 
     def setDew(self, name: str) -> bool:
         """ """

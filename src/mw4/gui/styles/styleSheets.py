@@ -235,7 +235,7 @@ BASIC_STYLE = """
         background-color: $M_PRIM2$;
         image: url(:/icon/$checkmark$.svg);
     }
-    QGroupBox[running=true] {
+    QGroupBox[run=true] {
         color: $M_TER$;
         border-color: $M_YELLOW$;
     }

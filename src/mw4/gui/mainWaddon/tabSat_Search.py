@@ -292,7 +292,7 @@ class SatSearch(QObject, SatData):
 
         t = "Filter - processed: 100%"
         self.ui.satFilterGroup.setTitle(t)
-        changeStyleDynamic(self.ui.satFilterGroup, "running", False)
+        changeStyleDynamic(self.ui.satFilterGroup, "run", False)
 
     def calcSatList(self):
         """ """
@@ -300,7 +300,7 @@ class SatSearch(QObject, SatData):
         self.ui.satSetupGroup.setTitle(title)
         self.worker = Worker(self.workerCalcSatList)
         self.worker.signals.finished.connect(self.filterListSats)
-        changeStyleDynamic(self.ui.satFilterGroup, "running", True)
+        changeStyleDynamic(self.ui.satFilterGroup, "run", True)
         self.app.threadPool.start(self.worker)
 
     def fillSatListName(self):

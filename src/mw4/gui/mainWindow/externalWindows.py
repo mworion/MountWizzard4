@@ -137,9 +137,9 @@ class ExternalWindows(QObject):
             winObj = self.uiWindows[win]
 
             if winObj["classObj"]:
-                changeStyleDynamic(winObj["button"], "running", True)
+                changeStyleDynamic(winObj["button"], "run", True)
             else:
-                changeStyleDynamic(winObj["button"], "running", False)
+                changeStyleDynamic(winObj["button"], "run", False)
 
     def storeConfigExtendedWindows(self):
         """ """

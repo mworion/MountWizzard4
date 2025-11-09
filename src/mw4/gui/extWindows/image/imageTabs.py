@@ -138,7 +138,7 @@ class ImageTabs:
 
     def showImage(self) -> None:
         """ """
-        changeStyleDynamic(self.ui.headerGroup, "running", False)
+        changeStyleDynamic(self.ui.headerGroup, "run", False)
         tab = self.ui.tabImage
         tabIndex = self.parent.getTabIndex(tab, "Image")
         tab.setTabEnabled(tabIndex, True)

@@ -133,7 +133,7 @@ class Model(QObject):
 
     def setupModelRunContextAndGuiStatus(self) -> None:
         """ """
-        changeStyleDynamic(self.ui.runModel, "running", True)
+        changeStyleDynamic(self.ui.runModel, "run", True)
         self.ui.cancelModel.setEnabled(True)
         self.ui.endModel.setEnabled(True)
         self.ui.pauseModel.setEnabled(True)

@@ -145,6 +145,6 @@ class SettRelay(QObject):
         """ """
         for status, button in zip(self.app.relay.status, self.relayButtons.values()):
             if status:
-                changeStyleDynamic(button, "running", True)
+                changeStyleDynamic(button, "run", True)
             else:
-                changeStyleDynamic(button, "running", False)
+                changeStyleDynamic(button, "run", False)

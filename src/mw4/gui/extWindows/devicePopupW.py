@@ -277,9 +277,9 @@ class DevicePopup(toolsQtWidget.MWidget):
             device.hostaddress = self.discovers[framework]["hostaddress"].text()
             device.port = self.discovers[framework]["port"].text()
 
-        changeStyleDynamic(self.discovers[framework]["button"], "running", True)
+        changeStyleDynamic(self.discovers[framework]["button"], "run", True)
         deviceNames = device.discoverDevices(deviceType=self.deviceType)
-        changeStyleDynamic(self.discovers[framework]["button"], "running", False)
+        changeStyleDynamic(self.discovers[framework]["button"], "run", False)
 
         if not deviceNames:
             self.msg.emit(2, framework.upper(), "Device", "No devices found")

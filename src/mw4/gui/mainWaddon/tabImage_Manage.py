@@ -154,11 +154,11 @@ class ImageManage(QObject):
         guiSetText(self.ui.coolerTemp, "3.1f", coolerTemp)
         guiSetText(self.ui.coolerPower, "3.1f", coolerPower)
         if coolerOn:
-            changeStyleDynamic(self.ui.coolerOn, "running", True)
-            changeStyleDynamic(self.ui.coolerOff, "running", False)
+            changeStyleDynamic(self.ui.coolerOn, "run", True)
+            changeStyleDynamic(self.ui.coolerOff, "run", False)
         else:
-            changeStyleDynamic(self.ui.coolerOn, "running", False)
-            changeStyleDynamic(self.ui.coolerOff, "running", True)
+            changeStyleDynamic(self.ui.coolerOn, "run", False)
+            changeStyleDynamic(self.ui.coolerOff, "run", True)
 
     def updateFilter(self) -> None:
         """ """
@@ -352,14 +352,14 @@ class ImageManage(QObject):
         """ """
         value = self.app.cover.data.get("CAP_PARK.PARK", None)
         if value:
-            changeStyleDynamic(self.ui.coverPark, "running", True)
-            changeStyleDynamic(self.ui.coverUnpark, "running", False)
+            changeStyleDynamic(self.ui.coverPark, "run", True)
+            changeStyleDynamic(self.ui.coverUnpark, "run", False)
         elif value is None:
-            changeStyleDynamic(self.ui.coverPark, "running", False)
-            changeStyleDynamic(self.ui.coverUnpark, "running", False)
+            changeStyleDynamic(self.ui.coverPark, "run", False)
+            changeStyleDynamic(self.ui.coverUnpark, "run", False)
         else:
-            changeStyleDynamic(self.ui.coverPark, "running", False)
-            changeStyleDynamic(self.ui.coverUnpark, "running", True)
+            changeStyleDynamic(self.ui.coverPark, "run", False)
+            changeStyleDynamic(self.ui.coverUnpark, "run", True)
 
         value = self.app.cover.data.get("Status.Cover", "-")
         self.ui.coverStatusText.setText(value)
@@ -368,14 +368,14 @@ class ImageManage(QObject):
         """ """
         value = self.app.cover.data.get("FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON", None)
         if value:
-            changeStyleDynamic(self.ui.coverLightOn, "running", True)
-            changeStyleDynamic(self.ui.coverLightOff, "running", False)
+            changeStyleDynamic(self.ui.coverLightOn, "run", True)
+            changeStyleDynamic(self.ui.coverLightOff, "run", False)
         elif value is None:
-            changeStyleDynamic(self.ui.coverLightOn, "running", False)
-            changeStyleDynamic(self.ui.coverLightOff, "running", False)
+            changeStyleDynamic(self.ui.coverLightOn, "run", False)
+            changeStyleDynamic(self.ui.coverLightOff, "run", False)
         else:
-            changeStyleDynamic(self.ui.coverLightOn, "running", False)
-            changeStyleDynamic(self.ui.coverLightOff, "running", True)
+            changeStyleDynamic(self.ui.coverLightOn, "run", False)
+            changeStyleDynamic(self.ui.coverLightOff, "run", True)
 
         value = self.app.cover.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
         guiSetText(self.ui.coverLightIntensity, "3.0f", value)
@@ -447,15 +447,15 @@ class ImageManage(QObject):
         """ """
         value = self.app.dome.data.get("DOME_MOTION.DOME_CW", None)
         if value:
-            changeStyleDynamic(self.ui.domeSlewCW, "running", True)
+            changeStyleDynamic(self.ui.domeSlewCW, "run", True)
         else:
-            changeStyleDynamic(self.ui.domeSlewCW, "running", False)
+            changeStyleDynamic(self.ui.domeSlewCW, "run", False)
 
         value = self.app.dome.data.get("DOME_MOTION.DOME_CCW", None)
         if value:
-            changeStyleDynamic(self.ui.domeSlewCCW, "running", True)
+            changeStyleDynamic(self.ui.domeSlewCCW, "run", True)
         else:
-            changeStyleDynamic(self.ui.domeSlewCCW, "running", False)
+            changeStyleDynamic(self.ui.domeSlewCCW, "run", False)
 
         value = self.app.dome.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")
         guiSetText(self.ui.domeAzimuth, "3.0f", value)
@@ -464,14 +464,14 @@ class ImageManage(QObject):
         """ """
         value = self.app.dome.data.get("DOME_SHUTTER.SHUTTER_OPEN", None)
         if value is True:
-            changeStyleDynamic(self.ui.domeOpenShutter, "running", True)
-            changeStyleDynamic(self.ui.domeCloseShutter, "running", False)
+            changeStyleDynamic(self.ui.domeOpenShutter, "run", True)
+            changeStyleDynamic(self.ui.domeCloseShutter, "run", False)
         elif value is False:
-            changeStyleDynamic(self.ui.domeOpenShutter, "running", False)
-            changeStyleDynamic(self.ui.domeCloseShutter, "running", True)
+            changeStyleDynamic(self.ui.domeOpenShutter, "run", False)
+            changeStyleDynamic(self.ui.domeCloseShutter, "run", True)
         else:
-            changeStyleDynamic(self.ui.domeOpenShutter, "running", False)
-            changeStyleDynamic(self.ui.domeCloseShutter, "running", False)
+            changeStyleDynamic(self.ui.domeOpenShutter, "run", False)
+            changeStyleDynamic(self.ui.domeCloseShutter, "run", False)
 
         value = self.app.dome.data.get("Status.Shutter", None)
         if value:

@@ -7696,7 +7696,7 @@ class Ui_MainWindow(object):
         self.statusText.setAcceptDrops(False)
         self.statusText.setFrame(False)
         self.statusText.setReadOnly(True)
-        self.statusText.setProperty(u"running", False)
+        self.statusText.setProperty(u"run", False)
         self.refractionConnected = QPushButton(self.statusOnline)
         self.refractionConnected.setObjectName(u"refractionConnected")
         self.refractionConnected.setEnabled(True)

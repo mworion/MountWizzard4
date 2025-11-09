@@ -10958,7 +10958,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.loglevelStandard.setToolTip(QCoreApplication.translate("MainWindow", u"Minimum logging will be stored in log file.", None))
 #endif // QT_CONFIG(tooltip)
-        self.loglevelStandard.setText(QCoreApplication.translate("MainWindow", u"Standard", None))
+        self.loglevelStandard.setText(QCoreApplication.translate("MainWindow", u"Info", None))
 #if QT_CONFIG(tooltip)
         self.loglevelTrace.setToolTip(QCoreApplication.translate("MainWindow", u"Debug logging and communication will be stored in log file.", None))
 #endif // QT_CONFIG(tooltip)

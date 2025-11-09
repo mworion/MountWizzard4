@@ -61,7 +61,13 @@ def test_store_status_operation_running(app):
     assert app.statusOperationRunning == 1
 
 
+def test_sendStart(app):
+    for a in [10, 30, 50, 100, 300]:
+        app.timerCounter = a
+        app.sendStart()
+
+
 def test_send_cyclic(app):
-    app.timerCounter = 0
-    app.sendCyclic()
-    assert app.timerCounter == 1
+    for a in [0, 4, 19, 79, 274, 574, 1787, 5986, 17985, 35984]:
+        app.timerCounter = a
+        app.sendCyclic()

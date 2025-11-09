@@ -179,6 +179,7 @@ class MountWizzard4(QObject):
         self.timer0_1s = QTimer()
         self.timer0_1s.setSingleShot(False)
         self.timer0_1s.timeout.connect(self.sendCyclic)
+        self.timer0_1s.timeout.connect(self.sendStart)
         self.timer0_1s.start(100)
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
@@ -194,15 +195,7 @@ class MountWizzard4(QObject):
 
     def initConfig(self) -> wgs84:
         """ """
-        config = self.config.get("mainW", {})
-        if config.get("loglevelTrace", False):
-            level = "TRACE"
-        elif config.get("loglevelDebug", False):
-            level = "DEBUG"
-        else:
-            level = "INFO"
-        setCustomLoggingLevel(level)
-
+        setCustomLoggingLevel(self.config.get("loglevel", "DEBUG"))
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)
         elev = self.config.get("topoElev", 46)
@@ -212,6 +205,7 @@ class MountWizzard4(QObject):
 
     def storeConfig(self) -> None:
         """ """
+        self.config["loglevel"] = logging.getLevelName(self.log.level)
         location = self.mount.obsSite.location
         if location is not None:
             self.config["topoLat"] = location.latitude.degrees
@@ -254,7 +248,6 @@ class MountWizzard4(QObject):
             self.update30m.emit()
         if (self.timerCounter + 15) % 36000 == 0:
             self.update1h.emit()
-        self.sendStart()
 
     def aboutToQuit(self) -> None:
         """ """

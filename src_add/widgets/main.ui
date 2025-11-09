@@ -30295,7 +30295,7 @@ Next point in time when satellite settles.</string>
          <string>Minimum logging will be stored in log file.</string>
         </property>
         <property name="text">
-         <string>Standard</string>
+         <string>Info</string>
         </property>
         <property name="checked">
          <bool>false</bool>

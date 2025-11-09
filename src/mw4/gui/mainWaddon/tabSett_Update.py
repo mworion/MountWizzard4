@@ -14,7 +14,7 @@
 #
 ###########################################################
 # standard libraries
-
+import logging
 
 # external packages
 from astropy.utils import data, iers
@@ -26,6 +26,7 @@ from mw4.base.loggerMW import setCustomLoggingLevel
 
 class SettUpdate(QObject):
     """ """
+    log = logging.getLogger("MW4")
 
     def __init__(self, mainW):
         super().__init__()
@@ -44,9 +45,10 @@ class SettUpdate(QObject):
     def initConfig(self):
         """ """
         config = self.app.config["mainW"]
-        self.ui.loglevelTrace.setChecked(config.get("loglevelTrace", False))
-        self.ui.loglevelDebug.setChecked(config.get("loglevelDebug", True))
-        self.ui.loglevelStandard.setChecked(config.get("loglevelStandard", False))
+        loglevel = logging.getLevelName(self.log.level)
+        self.ui.loglevelTrace.setChecked(loglevel == "TRACE")
+        self.ui.loglevelDebug.setChecked(loglevel == "DEBUG")
+        self.ui.loglevelStandard.setChecked(loglevel == "INFO")
         self.ui.isOnline.setChecked(config.get("isOnline", False))
         self.ui.ageDatabases.setValue(config.get("ageDatabases", 1))
 
@@ -57,9 +59,6 @@ class SettUpdate(QObject):
     def storeConfig(self):
         """ """
         config = self.app.config["mainW"]
-        config["loglevelTrace"] = self.ui.loglevelTrace.isChecked()
-        config["loglevelDebug"] = self.ui.loglevelDebug.isChecked()
-        config["loglevelStandard"] = self.ui.loglevelStandard.isChecked()
         config["isOnline"] = self.ui.isOnline.isChecked()
         config["ageDatabases"] = self.ui.ageDatabases.value()
 

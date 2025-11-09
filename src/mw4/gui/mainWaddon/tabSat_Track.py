@@ -286,8 +286,6 @@ class SatTrack(QObject, SatData):
 
     def programSatToMount(self, satName: str) -> None:
         """ """
-        if not satName:
-            return
         if satName not in self.satellites.objects:
             return
 

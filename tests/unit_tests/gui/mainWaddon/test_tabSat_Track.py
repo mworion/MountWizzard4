@@ -73,6 +73,11 @@ def test_enableGuiFunctions_2(function):
         function.enableGuiFunctions()
 
 
+def test_signalSatelliteData_1(function):
+    function.satOrbits = 1
+    function.signalSatelliteData([], [])
+
+
 def test_signalSatelliteData_2(function):
     tle = [
         "NOAA 8",
@@ -641,6 +646,11 @@ def test_tle_export_1(function):
     assert tle[0] == satellite.name
     assert tle[1] == line1
     assert tle[2] == line2
+
+
+def test_updateInternalTrackGui_1(function):
+    with mock.patch.object(function, "updateSatelliteTrackGui"):
+        function.updateInternalTrackGui([])
 
 
 def test_startTrack_1(function):

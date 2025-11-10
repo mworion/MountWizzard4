@@ -57,6 +57,22 @@ def test_properties(function):
     assert function.port == 7624
 
 
+def test_chainServerConnected(function):
+    function.chainServerConnected()
+
+
+def test_chainServerDisconnected(function):
+    function.chainServerDisconnected("test")
+
+
+def test_chainDeviceConnected(function):
+    function.chainDeviceConnected("test")
+
+
+def test_chainDeviceDisconnected(function):
+    function.chainDeviceDisconnected("test")
+
+
 def test_serverConnected_1(function):
     function.deviceName = ""
     function.serverConnected()

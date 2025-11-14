@@ -14,12 +14,14 @@
 #
 ###########################################################
 # standard libraries
+from threading import Event
 
 # external packages
 import numpy as np
 import pyqtgraph as pg
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont
+from pyqtgraph.widgets.RemoteGraphicsView import MouseEvent
 
 from mw4.base.transform import diffModulusAbs
 
@@ -290,16 +292,28 @@ class HemisphereDraw(MWidget, SlewInterface):
             self.alignmentStarsText[i].setPos(az, alt)
             self.alignmentStarsText[i].setZValue(30)
 
+    def setModelPointsAppearanceInPlot(self, item, statusList) -> None:
+        """"""
+        isEdit = self.ui.editModeHem.isChecked()
+        for i, status in enumerate(statusList):
+            col = [self.M_TER, self.M_GREEN, self.M_RED]
+            colActive = col[status]
+            color = self.M_PINK if isEdit else colActive
+            sym = ["d", "o", "x"]
+            symbol = sym[status]
+
+            spot = item.scatter.points()[i]
+            spot.setPen(pg.mkPen(color=color, width=1.5))
+            spot.setBrush(pg.mkBrush(color=color + "80"))
+            spot.setSymbol(symbol)
+
     def drawModelPoints(self) -> None:
         """ """
         points = self.app.data.buildP
         if not points:
             return
 
-        x = [x[1] for x in points]
-        y = [x[0] for x in points]
-        act = [x[2] for x in points]
-
+        y, x, statusList = zip(*points)
         for index, plotItem in enumerate(self.ui.hemisphere.p):
             item = self.ui.hemisphere.findItemByName(plotItem, "model")
             if not item:
@@ -307,31 +321,13 @@ class HemisphereDraw(MWidget, SlewInterface):
             if index == 1:
                 x, y = self.ui.hemisphere.toPolar(x, y)
             item.setData(x=x, y=y)
-
-            isEdit = self.ui.editModeHem.isChecked()
-            for i in range(len(x)):
-                active = act[i]
-                col = [self.M_TER, self.M_GREEN, self.M_RED]
-                colActive = col[active]
-                color = self.M_PINK if isEdit else colActive
-                sym = ["d", "o", "x"]
-                symbol = sym[active]
-
-                spot = item.scatter.points()[i]
-                spot.setPen(pg.mkPen(color=color, width=1.5))
-                spot.setBrush(pg.mkBrush(color=color + "80"))
-                spot.setSymbol(symbol)
+            self.setModelPointsAppearanceInPlot(item, statusList)
 
     def drawModelText(self) -> None:
         """ """
         plotItem = self.ui.hemisphere.p[0]
-        points = self.app.data.buildP
-        if not points:
+        if not self.app.data.buildP:
             return
-        x = [x[1] for x in points]
-        y = [x[0] for x in points]
-        act = [x[2] for x in points]
-
         for textItem in self.modelPointsText:
             self.ui.hemisphere.p[0].removeItem(textItem)
         self.modelPointsText = []
@@ -341,14 +337,10 @@ class HemisphereDraw(MWidget, SlewInterface):
             self.window().font().family(),
             int(self.window().font().pointSize() * facFont),
         )
-        for i in range(len(x)):
-            az = x[i]
-            alt = y[i]
-            active = act[i]
+        for i, (alt, az, act) in enumerate(self.app.data.buildP):
             col = [self.M_TER, self.M_GREEN, self.M_RED]
-            colActive = col[active]
+            colActive = col[act]
             color = self.M_PINK if isEdit else colActive
-
             text = f"{i + 1}"
             textItem = pg.TextItem(anchor=(0.5, 1.1))
             textItem.setText(text)
@@ -451,7 +443,7 @@ class HemisphereDraw(MWidget, SlewInterface):
         self.pointerDome.setVisible(False)
         plotItem.addItem(self.pointerDome)
 
-    def drawDome(self, azimuth: float = None) -> None:
+    def drawDome(self, azimuth: float | None = None) -> None:
         """ """
         if not isinstance(azimuth, int | float):
             self.pointerDome.setVisible(False)
@@ -461,21 +453,14 @@ class HemisphereDraw(MWidget, SlewInterface):
         self.pointerDome.setRect(azimuth - 15, 1, 30, 88)
         self.pointerDome.setVisible(visible)
 
-    def getMountModelData(self) -> tuple:
+    def drawModelIsoCurve(self) -> None:
         """ """
         model = self.app.mount.model
         if len(model.starList) == 0:
-            return None, None, None
+            return
         alt = np.array([x.alt.degrees for x in model.starList])
         az = np.array([x.az.degrees for x in model.starList])
         err = np.array([x.errorRMS for x in model.starList])
-        return az, alt, err
-
-    def drawModelIsoCurve(self) -> None:
-        """ """
-        az, alt, err = self.getMountModelData()
-        if az is None or alt is None or err is None:
-            return
 
         self.ui.hemisphere.addIsoItemHorizon(az, alt, err)
 
@@ -530,7 +515,7 @@ class HemisphereDraw(MWidget, SlewInterface):
         self.msg.emit(1, "Hemisphere", "Align", t)
         self.slewTargetRaDec(ra, dec, slewType=alignType, epoch="JNow")
 
-    def mouseDoubleClick(self, ev, posView: QPointF) -> None:
+    def mouseDoubleClick(self, ev: MouseEvent, posView: QPointF) -> None:
         """ """
         if self.ui.alignmentModeHem.isChecked():
             self.slewStar(posView)

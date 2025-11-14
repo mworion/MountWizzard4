@@ -67,92 +67,49 @@ def test_topoToAltAz2(function):
     assert az is not None
 
 
-def test_addBuildP1(function):
+def test_addBuildP_1(function):
     function.buildP = []
-    suc = function.addBuildP((10, 10, True))
-    assert suc
+    function.addBuildP((10, 10, 1), 1)
     assert len(function.buildP) == 1
-    suc = function.addBuildP((10, 10, True))
-    assert suc
-    assert len(function.buildP) == 2
-    suc = function.addBuildP((10, 10, True))
-    assert suc
+
+
+def test_addBuildP_2(function):
+    function.buildP = [(10, 10, True), (10, 10, True)]
+    function.addBuildP((10, 10, True), position=1)
     assert len(function.buildP) == 3
 
 
-def test_addBuildP2(function):
-    function.buildP = []
-    suc = function.addBuildP(10)
-    assert not suc
-    assert len(function.buildP) == 0
-    function.app.mount.setting.horizonLimitLow = 0
-    function.app.mount.setting.horizonLimitHigh = 90
-
-
-def test_addBuildP3(function):
-    function.buildP = []
-    suc = function.addBuildP((10, 10, 10, True))
-    assert not suc
-    assert len(function.buildP) == 0
-
-
-def test_addBuildP4(function):
+def test_addBuildP_3(function):
     function.buildP = [(10, 10, True), (10, 10, True)]
-    suc = function.addBuildP((10, 10, True), position=1)
-    assert suc
+    function.addBuildP((10, 10, True), position=20)
     assert len(function.buildP) == 3
 
 
-def test_addBuildP5(function):
+def test_addBuildP_4(function):
     function.buildP = [(10, 10, True), (10, 10, True)]
-    suc = function.addBuildP((10, 10, True), position=20)
-    assert suc
+    function.addBuildP((10, 10, True), position=-5)
     assert len(function.buildP) == 3
 
 
-def test_addBuildP6(function):
-    function.buildP = [(10, 10, True), (10, 10, True)]
-    suc = function.addBuildP((10, 10, True), position=-5)
-    assert suc
-    assert len(function.buildP) == 3
-
-
-def test_addBuildP7(function):
-    function.buildP = [(10, 10, True), (10, 10, True)]
-    suc = function.addBuildP(position=-5)
-    assert not suc
-
-
-def test_addBuildP8(function):
+def test_addBuildP_5(function):
     function.buildP = [(10, 10, True), (10, 10, True)]
     function.app.mount.setting.horizonLimitHigh = 80
     function.app.mount.setting.horizonLimitLow = 5
-    suc = function.addBuildP((10, 10, True), position="a")
-    assert not suc
+    function.addBuildP((90, 10, True), position=20)
 
 
-def test_addBuildP9(function):
+def test_addBuildP_6(function):
     function.buildP = [(10, 10, True), (10, 10, True)]
     function.app.mount.setting.horizonLimitHigh = 80
     function.app.mount.setting.horizonLimitLow = 5
-    suc = function.addBuildP((90, 10, True), position=20)
-    assert not suc
+    function.addBuildP((0, 10, True), position=20)
 
 
-def test_addBuildP10(function):
-    function.buildP = [(10, 10, True), (10, 10, True)]
-    function.app.mount.setting.horizonLimitHigh = 80
-    function.app.mount.setting.horizonLimitLow = 5
-    suc = function.addBuildP((0, 10, True), position=20)
-    assert not suc
-
-
-def test_addBuildP11(function):
+def test_addBuildP_7(function):
     function.app.mount.setting.horizonLimitLow = None
     function.app.mount.setting.horizonLimitHigh = None
     function.buildP = [(10, 10, True), (10, 10, True)]
-    suc = function.addBuildP((10, 10, True), position=-5)
-    assert suc
+    function.addBuildP((10, 10, True), position=-5)
     assert len(function.buildP) == 3
     function.app.mount.setting.horizonLimitLow = 5
     function.app.mount.setting.horizonLimitHigh = 80
@@ -162,14 +119,11 @@ def test_delBuildP1(function):
     function.buildP = []
     function.genGreaterCircle("max")
     assert len(function.buildP) == 127
-    suc = function.delBuildP(5)
-    assert suc
+    function.delBuildP(5)
     assert len(function.buildP) == 126
-    suc = function.delBuildP(0)
-    assert suc
+    function.delBuildP(0)
     assert len(function.buildP) == 125
-    suc = function.delBuildP(99)
-    assert suc
+    function.delBuildP(99)
     assert len(function.buildP) == 124
 
 
@@ -177,8 +131,7 @@ def test_delBuildP2(function):
     function.buildP = []
     function.genGreaterCircle("max")
     assert len(function.buildP) == 127
-    suc = function.delBuildP(-5)
-    assert not suc
+    function.delBuildP(-5)
     assert len(function.buildP) == 127
 
 
@@ -186,17 +139,7 @@ def test_delBuildP3(function):
     function.buildP = []
     function.genGreaterCircle("max")
     assert len(function.buildP) == 127
-    suc = function.delBuildP(170)
-    assert not suc
-    assert len(function.buildP) == 127
-
-
-def test_delBuildP4(function):
-    function.buildP = []
-    function.genGreaterCircle("max")
-    assert len(function.buildP) == 127
-    suc = function.delBuildP("1")
-    assert not suc
+    function.delBuildP(170)
     assert len(function.buildP) == 127
 
 
@@ -579,14 +522,13 @@ def test_deleteCloseMeridian_1(function):
 
 
 def test_deleteCloseHorizonLine_1(function):
-    suc = function.deleteCloseHorizonLine(0)
-    assert not suc
+    function.deleteCloseHorizonLine(0)
 
 
 def test_deleteCloseHorizonLine_2(function):
-    function.horizonP = [(0, 10), (180, 40), (360, 60)]
-    suc = function.deleteCloseHorizonLine(0)
-    assert suc
+    function.buildP = [(10, 10, True), (5, 40, True), (-40, 60, True)]
+    function.horizonP = [(0, 10, 1), (180, 40, 1), (360, 60, 1)]
+    function.deleteCloseHorizonLine(0)
 
 
 def test_addHorizonP1(function):

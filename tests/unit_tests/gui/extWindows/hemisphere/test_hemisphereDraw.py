@@ -325,15 +325,22 @@ def test_drawAlignmentStars_4(function):
     function.drawAlignmentStars()
 
 
+def test_setModelPointsAppearanceInPlot_1(function):
+    statusList = [0, 1]
+    item = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol="o")
+    function.setModelPointsAppearanceInPlot(item, statusList)
+
+
 def test_drawModelPoints_1(function):
-    function.app.data.buildP = None
+    function.app.data.buildP = []
     function.drawModelPoints()
 
 
 def test_drawModelPoints_2(function):
     function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol="o")
     function.app.data.buildP = [(1, 1, True), (2, 2, False)]
-    function.drawModelPoints()
+    with mock.patch.object(function, "setModelPointsAppearanceInPlot"):
+        function.drawModelPoints()
 
 
 def test_drawModelText_1(function):
@@ -410,37 +417,20 @@ def test_drawDome_2(function):
     function.drawDome(azimuth=100)
 
 
-def test_getMountModelData_1(function):
-    val = function.getMountModelData()
-    assert val[0] is None
-    assert val[1] is None
-    assert val[2] is None
+def test_drawModelIsoCurve_1(function):
+    function.app.mount.model.starList = []
+    function.drawModelIsoCurve()
 
 
-def test_getMountModelData_2(function):
+def test_drawModelIsoCurve_2(function):
     class Star:
         alt = Angle(degrees=10)
         az = Angle(degrees=20)
         errorRMS = 5
 
     function.app.mount.model.starList = [Star()]
-    val = function.getMountModelData()
-    assert val[0][0] == 20
-    assert val[1][0] == 10
-    assert val[2][0] == 5
-
-
-def test_drawModelIsoCurve_1(function):
-    with mock.patch.object(function, "getMountModelData", return_value=(None, None, None)):
+    with mock.patch.object(function.ui.hemisphere, "addIsoItem", return_value=True):
         function.drawModelIsoCurve()
-
-
-def test_drawModelIsoCurve_2(function):
-    val = np.array([1])
-    data = (val, val, val)
-    with mock.patch.object(function, "getMountModelData", return_value=data):
-        with mock.patch.object(function.ui.hemisphere, "addIsoItem", return_value=True):
-            function.drawModelIsoCurve()
 
 
 def test_slewDirect_1(function):

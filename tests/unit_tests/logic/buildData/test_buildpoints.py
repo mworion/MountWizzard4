@@ -452,19 +452,19 @@ def test_isCloseHorizonLine_2(function):
 
 def test_isAboveHorizon_1(function):
     function.clearHorizonP()
-    suc = function.isAboveHorizon((10, 50))
+    suc = function.isAboveHorizon([10, 50])
     assert suc
-    suc = function.isAboveHorizon((10, 370))
+    suc = function.isAboveHorizon([10, 370])
     assert suc
-    suc = function.isAboveHorizon((10, -50))
+    suc = function.isAboveHorizon([10, -50])
     assert suc
-    suc = function.isAboveHorizon((-10, 50))
+    suc = function.isAboveHorizon([-10, 50])
     assert not suc
 
 
 def test_isAboveHorizon_2(function):
-    function.horizonP = [(1, 2), (2, 3)]
-    suc = function.isAboveHorizon((10, 50))
+    function.horizonP = [[1, 2], [2, 3]]
+    suc = function.isAboveHorizon([10, 50])
     assert suc
 
 

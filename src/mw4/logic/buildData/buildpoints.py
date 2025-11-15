@@ -568,7 +568,7 @@ class DataPoint:
         """
         genGrid generates a grid of points and transforms ha, dec to alt az.
         with given limits in alt, the min and max will be used as a hard
-        condition. on az there is no given limit, therefore, a split over the
+        condition. on az there is no given limit; therefore, a split over the
         whole space (omitting the meridian) is done. the simplest way to avoid
         hitting the meridian is to enforce the number of cols to be a factor of
         2. reasonable values for the grid are 5 to 85 degrees. defined is only

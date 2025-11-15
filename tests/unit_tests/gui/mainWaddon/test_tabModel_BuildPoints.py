@@ -168,65 +168,89 @@ def test_genBuildMin_3(function):
 def test_genBuildDSO_1(function):
     function.app.mount.obsSite.raJNow = None
     function.app.mount.obsSite.decJNow = None
-    suc = function.genBuildDSO()
-    assert not suc
+    function.genBuildDSO()
 
 
 def test_genBuildDSO_2(function):
+    def test():
+        function.app.data.buildP = [1] * 20
+
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.simbadRa = Angle(hours=0)
     function.simbadDec = Angle(degrees=0)
+    t = function.autoDeletePoints
+    function.autoDeletePoints = test
     with mock.patch.object(function.app.data, "generateDSOPath", return_value=False):
-        suc = function.genBuildDSO()
-        assert not suc
+        function.genBuildDSO()
+    function.autoDeletePoints = t
 
 
 def test_genBuildDSO_3(function):
+    def test():
+        function.app.data.buildP = [1] * 20
+
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.simbadRa = None
     function.simbadDec = None
+    t = function.autoDeletePoints
+    function.autoDeletePoints = test
     with mock.patch.object(function.app.data, "generateDSOPath", return_value=False):
-        suc = function.genBuildDSO()
-        assert not suc
+        function.genBuildDSO()
+    function.autoDeletePoints = t
 
 
 def test_genBuildDSO_4(function):
+    def test():
+        function.app.data.buildP = [1] * 20
+
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.simbadRa = None
     function.simbadDec = None
+    t = function.autoDeletePoints
+    function.autoDeletePoints = test
     with mock.patch.object(function.app.data, "generateDSOPath", return_value=False):
-        suc = function.genBuildDSO()
-        assert not suc
+        function.genBuildDSO()
+    function.autoDeletePoints = t
 
 
 def test_genBuildDSO_5(function):
+    def test():
+        function.app.data.buildP = [1] * 20
+
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.simbadRa = Angle(hours=0)
     function.simbadDec = Angle(degrees=0)
+    t = function.autoDeletePoints
+    function.autoDeletePoints = test
     with mock.patch.object(function.app.data, "generateDSOPath", return_value=True):
-        suc = function.genBuildDSO()
-        assert suc
+        function.genBuildDSO()
+    function.autoDeletePoints = t
 
 
 def test_genBuildDSO_6(function):
+    def test():
+        function.app.data.buildP = [1] * 20
+
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.ui.ditherBuildPoints.setChecked(True)
     function.simbadRa = Angle(hours=0)
     function.simbadDec = Angle(degrees=0)
+    t = function.autoDeletePoints
+    function.autoDeletePoints = test
     with mock.patch.object(function.app.data, "generateDSOPath", return_value=True):
         with mock.patch.object(function.app.data, "ditherPoints"):
-            suc = function.genBuildDSO()
-            assert suc
+            function.genBuildDSO()
+    function.autoDeletePoints = t
 
 
 def test_genBuildGoldenSpiral_1(function):
@@ -366,7 +390,7 @@ def test_sortDomeAzWorker_1(function):
         "calcMountAltAzToDomeAltAz",
         return_value=(0, Angle(degrees=10)),
     ):
-        suc = function.sortDomeAzWorker([(10, 10, True)])
+        suc = function.sortDomeAzWorker([(10, 10, True)], "E")
         assert suc
 
 
@@ -374,25 +398,25 @@ def test_sortDomeAzWorker_2(function):
     with mock.patch.object(
         function.app.mount, "calcMountAltAzToDomeAltAz", return_value=(None, None)
     ):
-        suc = function.sortDomeAzWorker([(10, 10, True)])
+        suc = function.sortDomeAzWorker([(10, 10, True)], "E")
         assert suc
 
 
 def test_sortDomeAz_1(function):
     with mock.patch.object(function.app.threadPool, "start"):
-        function.sortDomeAz([])
+        function.sortDomeAz([], "E")
         function.sortRunning.unlock()
 
 
 def test_sortDomeAz_2(function):
     function.sortRunning.lock()
     with mock.patch.object(function.app.threadPool, "start"):
-        function.sortDomeAz([])
+        function.sortDomeAz([], "E")
 
 
 def test_sortMountAz(function):
     with mock.patch.object(function.app.data, "sort"):
-        function.sortMountAz([])
+        function.sortMountAz([], False, False, "E" )
 
 
 def test_autoSortPoints_1(function):
@@ -465,13 +489,7 @@ def test_querySimbad_3(function):
 
 
 def test_querySimbad_4(function):
-    class Data2:
-        data = ["10 00 00"]
-
-    class Data:
-        value = Data2()
-
-    result = {"RA": Data(), "DEC": Data()}
+    result = {"ra": 1.0, "dec": 2.5}
 
     function.ui.isOnline.setChecked(True)
     function.ui.generateQuery.setText("m31")

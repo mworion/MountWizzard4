@@ -18,16 +18,11 @@
 # external packages
 from astroquery.simbad import Simbad
 from PySide6.QtCore import QMutex, QObject
+from skyfield.api import Angle
 
 # local import
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
-from mw4.mountcontrol.convert import (
-    convertDecToAngle,
-    convertRaToAngle,
-    formatDstrToText,
-    formatHstrToText,
-)
 
 
 class BuildPoints(QObject):
@@ -122,7 +117,6 @@ class BuildPoints(QObject):
         self.ui.altitudeMin.valueChanged.connect(self.genBuildGrid)
         self.ui.altitudeMax.valueChanged.connect(self.genBuildGrid)
         self.ui.numberDSOPoints.valueChanged.connect(self.genBuildDSO)
-        self.setupDsoGui()
 
     def storeConfig(self):
         """ """
@@ -160,18 +154,16 @@ class BuildPoints(QObject):
         self.ui.altitudeMin.setEnabled(False)
         self.ui.altitudeMax.setEnabled(False)
 
-        row = self.ui.numberGridPointsRow.value()
-        col = self.ui.numberGridPointsCol.value()
+        numbRows = int(self.ui.numberGridPointsRow.value())
+        numbCols = int(self.ui.numberGridPointsCol.value())
         # we only have equal cols
-        col = 2 * int(col / 2)
+        col = 2 * int(numbCols / 2)
         self.ui.numberGridPointsCol.setValue(col)
-        minAlt = self.ui.altitudeMin.value()
-        maxAlt = self.ui.altitudeMax.value()
+        minAlt = int(self.ui.altitudeMin.value())
+        maxAlt = int(self.ui.altitudeMax.value())
         keep = self.ui.keepGeneratedPoints.isChecked()
 
-        suc = self.app.data.genGrid(
-            minAlt=minAlt, maxAlt=maxAlt, numbRows=row, numbCols=col, keep=keep
-        )
+        suc = self.app.data.genGrid(minAlt, maxAlt, numbRows, numbCols, keep)
 
         if not suc:
             self.ui.numberGridPointsRow.setEnabled(True)
@@ -252,12 +244,8 @@ class BuildPoints(QObject):
             self.app.data.ditherPoints()
         self.processPoints()
 
-    def genBuildDSO(self):
-        """
-        genBuildDSO generates points along the actual tracking path
-
-        :return: success
-        """
+    def genBuildDSO(self) -> None:
+        """ """
         self.lastGenerator = "dso"
         ha = self.app.mount.obsSite.raJNow
         dec = self.app.mount.obsSite.decJNow
@@ -269,30 +257,33 @@ class BuildPoints(QObject):
             self.msg.emit(
                 2, "Model", "Buildpoints", "DSO Path cannot be generated - mount off"
             )
-            return False
+            return
 
         if self.simbadRa and self.simbadDec:
             ha = self.simbadRa
             dec = self.simbadDec
 
         self.ui.numberDSOPoints.setEnabled(False)
-        numberPoints = self.ui.numberDSOPoints.value()
+        self.ui.genBuildDSO.setEnabled(False)
+        changeStyleDynamic(self.ui.genBuildDSO, "run", True)
+        numberTarget = int(self.ui.numberDSOPoints.value())
         keep = self.ui.keepGeneratedPoints.isChecked()
-        self.app.data.generateDSOPath(
-            ha=ha,
-            dec=dec,
-            timeJD=timeJD,
-            location=location,
-            numberPoints=numberPoints,
-            keep=keep,
-        )
+        numberPoints = 0
+        numberFilter = 0
+        while numberFilter < numberTarget:
+            numberPoints = numberPoints + numberTarget - numberFilter
+            self.app.data.generateDSOPath(ha, dec, timeJD, location, numberPoints, keep)
+            self.autoDeletePoints()
+            numberFilter = len(self.app.data.buildP)
+
         if self.ui.ditherBuildPoints.isChecked():
             self.app.data.ditherPoints()
         self.processPoints()
+        self.ui.genBuildDSO.setEnabled(True)
         self.ui.numberDSOPoints.setEnabled(True)
-        return True
+        changeStyleDynamic(self.ui.genBuildDSO, "run", False)
 
-    def genBuildGoldenSpiral(self):
+    def genBuildGoldenSpiral(self) -> None:
         """ """
         self.lastGenerator = "spiral"
         numberTarget = int(self.ui.numberSpiral.value())
@@ -307,7 +298,7 @@ class BuildPoints(QObject):
         self.processPoints()
         changeStyleDynamic(self.ui.genBuildSpiral, "run", False)
 
-    def genModel(self):
+    def genModel(self) -> None:
         """ """
         self.lastGenerator = "model"
 
@@ -320,10 +311,8 @@ class BuildPoints(QObject):
             self.app.data.addBuildP((star.alt.degrees, star.az.degrees, True))
         self.processPoints()
 
-    def genBuildFile(self):
+    def genBuildFile(self) -> None:
         """
-        genBuildFile tries to load a give build point file and displays it for
-        usage.
         """
         self.lastGenerator = "file"
         fileName = self.ui.buildPFileName.text()
@@ -341,7 +330,7 @@ class BuildPoints(QObject):
             return
         self.processPoints()
 
-    def loadBuildFile(self):
+    def loadBuildFile(self) -> None:
         """ """
         folder = self.app.mwGlob["configDir"]
         fileTypes = "Build Point Files (*.bpts)"
@@ -369,7 +358,7 @@ class BuildPoints(QObject):
             )
         self.genBuildFile()
 
-    def saveBuildFile(self):
+    def saveBuildFile(self) -> None:
         """ """
         fileName = self.ui.buildPFileName.text()
         if not fileName:
@@ -379,7 +368,7 @@ class BuildPoints(QObject):
         self.app.data.saveBuildP(fileName)
         self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fileName}] saved")
 
-    def saveBuildFileAs(self):
+    def saveBuildFileAs(self) -> None:
         """ """
         folder = self.app.mwGlob["configDir"]
         saveFilePath = self.mainW.saveFile(
@@ -392,13 +381,13 @@ class BuildPoints(QObject):
         self.ui.buildPFileName.setText(saveFilePath.stem)
         self.msg.emit(0, "Model", "Buildpoints", f"Build file [{saveFilePath.stem}] saved")
 
-    def clearBuildP(self):
+    def clearBuildP(self) -> None:
         """ """
         self.app.data.clearBuildP()
         self.app.drawBuildPoints.emit()
         self.app.redrawHemisphere.emit()
 
-    def autoDeletePoints(self):
+    def autoDeletePoints(self) -> None:
         """ """
         if self.ui.autoDeleteHorizon.isChecked():
             self.app.data.deleteBelowHorizon()
@@ -408,15 +397,15 @@ class BuildPoints(QObject):
             value = self.ui.safetyMarginValue.value()
             self.app.data.deleteCloseHorizonLine(value)
 
-    def doSortDomeAzData(self, result):
+    def doSortDomeAzData(self, result: tuple) -> None:
         """ """
         points, pierside = result
-        self.app.data.sort(points=points, sortDomeAz=True, pierside=pierside)
+        self.app.data.sort(points, sortDomeAz=True, pierside=pierside)
         self.sortRunning.unlock()
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
 
-    def sortDomeAzWorker(self, points, pierside=None):
+    def sortDomeAzWorker(self, points: list, pierside: str) -> tuple[list[tuple[int, int]], str]:
         """ """
         pointsNew = []
         numbAll = len(points)
@@ -436,7 +425,7 @@ class BuildPoints(QObject):
         changeStyleDynamic(ui, "run", False)
         return points, pierside
 
-    def sortDomeAz(self, points, pierside=None):
+    def sortDomeAz(self, points: list, pierside: str) -> None:
         """ """
         if not self.sortRunning.tryLock():
             return
@@ -444,16 +433,14 @@ class BuildPoints(QObject):
         self.worker.signals.result.connect(self.doSortDomeAzData)
         self.app.threadPool.start(self.worker)
 
-    def sortMountAz(self, points, eastwest=None, highlow=None, pierside=None):
+    def sortMountAz(self, points: list, eastwest: bool, highlow: bool, pierside: str) -> None:
         """ """
         points = [(x[0], x[1], x[2], 0) for x in points]
-        self.app.data.sort(
-            points=points, eastwest=eastwest, highlow=highlow, pierside=pierside
-        )
+        self.app.data.sort(points, eastwest, highlow, pierside)
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
 
-    def autoSortPoints(self):
+    def autoSortPoints(self) -> None:
         """ """
         eastwest = self.ui.sortEW.isChecked()
         highlow = self.ui.sortHL.isChecked()
@@ -473,28 +460,26 @@ class BuildPoints(QObject):
             return
 
         if useDomeAz and enableDomeAz and eastwest:
-            self.sortDomeAz(points=points, pierside=pierside)
+            self.sortDomeAz(points, pierside)
         else:
-            self.sortMountAz(
-                points=points, eastwest=eastwest, highlow=highlow, pierside=pierside
-            )
+            self.sortMountAz(points, eastwest, highlow, pierside)
 
-    def buildPointsChanged(self):
+    def buildPointsChanged(self) -> None:
         """ """
         self.lastGenerator = "none"
 
-    def rebuildPoints(self):
+    def rebuildPoints(self) -> None:
         """ """
         if self.lastGenerator in self.sortedGenerators:
             self.sortedGenerators[self.lastGenerator]()
         self.processPoints()
 
-    def processPoints(self):
+    def processPoints(self) -> None:
         """ """
         self.autoDeletePoints()
         self.autoSortPoints()
 
-    def setupDsoGui(self):
+    def setupDsoGui(self) -> None:
         """ """
         isOnline = self.ui.isOnline.isChecked()
         self.ui.generateQuery.setEnabled(isOnline)
@@ -504,7 +489,7 @@ class BuildPoints(QObject):
         self.ui.generateRaText.setEnabled(isOnline)
         self.ui.generateDecText.setEnabled(isOnline)
 
-    def querySimbad(self):
+    def querySimbad(self) -> None:
         """ """
         if not self.ui.isOnline.isChecked():
             self.msg.emit(2, "Model", "Buildpoints", "MW4 is offline")
@@ -522,17 +507,15 @@ class BuildPoints(QObject):
         result = Simbad.query_object(ident)
 
         if not result:
-            self.msg.emit(2, "Model", "Buildpoints", f"No response from SIMBAD for {ident}")
+            self.msg.emit(2, "Model", "Buildpoints", f"Nox response from SIMBAD for {ident}")
             self.ui.generateRa.setText("")
             self.ui.generateDec.setText("")
             self.simbadRa = None
             self.simbadDec = None
             return
 
-        self.simbadRa = convertRaToAngle(result["RA"].value.data[0])
-        text = formatHstrToText(self.simbadRa)
-        self.ui.generateRa.setText(text)
+        self.simbadRa = Angle(degrees=float(result["ra"]))
+        self.ui.generateRa.setText(f"{self.simbadRa.degrees:.6f}")
 
-        self.simbadDec = convertDecToAngle(result["DEC"].value.data[0])
-        text = formatDstrToText(self.simbadDec)
-        self.ui.generateDec.setText(text)
+        self.simbadDec = Angle(degrees=float(result["dec"]))
+        self.ui.generateDec.setText(f"{self.simbadDec.degrees:.6f}")

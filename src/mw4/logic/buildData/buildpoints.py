@@ -350,7 +350,7 @@ class DataPoint:
         if not self.horizonP:
             return
 
-        altH, azH, _ = zip(*self._buildP)
+        altH, azH = zip(*self.horizonP)
         azI = range(0, 361, 1)
         altI = np.interp(azI, azH, altH)
         horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])

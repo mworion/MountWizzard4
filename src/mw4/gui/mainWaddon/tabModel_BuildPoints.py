@@ -270,8 +270,12 @@ class BuildPoints(QObject):
         keep = self.ui.keepGeneratedPoints.isChecked()
         numberPoints = 0
         numberFilter = 0
+        iteration = 20
         while numberFilter < numberTarget:
             numberPoints = numberPoints + numberTarget - numberFilter
+            iteration -= 1
+            if iteration <= 0:
+                break
             self.app.data.generateDSOPath(ha, dec, timeJD, location, numberPoints, keep)
             self.autoDeletePoints()
             numberFilter = len(self.app.data.buildP)
@@ -290,8 +294,12 @@ class BuildPoints(QObject):
         changeStyleDynamic(self.ui.genBuildSpiral, "run", True)
         numberPoints = 0
         numberFilter = 0
+        iteration = 20
         while numberFilter < numberTarget:
             numberPoints = numberPoints + numberTarget - numberFilter
+            iteration -= 1
+            if iteration <= 0:
+                break
             self.app.data.generateGoldenSpiral(numberPoints=numberPoints)
             self.autoDeletePoints()
             numberFilter = len(self.app.data.buildP)
@@ -394,7 +402,7 @@ class BuildPoints(QObject):
         if self.ui.autoDeleteMeridian.isChecked():
             self.app.data.deleteCloseMeridian()
         if self.ui.useSafetyMargin.isChecked():
-            value = self.ui.safetyMarginValue.value()
+            value = int(self.ui.safetyMarginValue.value())
             self.app.data.deleteCloseHorizonLine(value)
 
     def doSortDomeAzData(self, result: tuple) -> None:

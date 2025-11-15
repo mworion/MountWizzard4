@@ -472,6 +472,9 @@ class Power:
 class Data:
     buildP = []
     horizonP = []
+    SOLVED = 0
+    UNPROCESSED = 1
+    FAILED = 2
 
     @staticmethod
     def loadHorizonP(fileName=""):

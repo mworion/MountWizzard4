@@ -274,7 +274,7 @@ class ModelData(QObject):
         else:
             self.statusSolve.emit([item["imagePath"].stem, item["success"]])
 
-        statusBuildPoint = 0 if item["success"] else 2
+        statusBuildPoint = self.app.data.SOLVED if item["success"] else self.app.data.FAILED
         self.app.data.setStatusBuildP(self.pointerResult, statusBuildPoint)
         self.app.updatePointMarker.emit()
         self.sendModelProgress()

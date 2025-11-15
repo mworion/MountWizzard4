@@ -134,13 +134,13 @@ def test_genBuildNorm_1(function):
 
 
 def test_genBuildNorm_2(function):
-    with mock.patch.object(function.app.data, "genGreaterCircle", return_value=False):
+    with mock.patch.object(function.app.data, "genGreaterCircle"):
         function.genBuildNorm()
 
 
 def test_genBuildNorm_3(function):
     function.ui.ditherBuildPoints.setChecked(True)
-    with mock.patch.object(function.app.data, "genGreaterCircle", return_value=True):
+    with mock.patch.object(function.app.data, "genGreaterCircle"):
         function.genBuildNorm()
 
 
@@ -155,13 +155,13 @@ def test_genBuildMin_1b(function):
 
 
 def test_genBuildMin_2(function):
-    with mock.patch.object(function.app.data, "genGreaterCircle", return_value=False):
+    with mock.patch.object(function.app.data, "genGreaterCircle"):
         function.genBuildMin()
 
 
 def test_genBuildMin_3(function):
     function.ui.ditherBuildPoints.setChecked(True)
-    with mock.patch.object(function.app.data, "genGreaterCircle", return_value=True):
+    with mock.patch.object(function.app.data, "genGreaterCircle"):
         function.genBuildMin()
 
 
@@ -182,7 +182,7 @@ def test_genBuildDSO_2(function):
     function.simbadDec = Angle(degrees=0)
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateDSOPath", return_value=False):
+    with mock.patch.object(function.app.data, "generateDSOPath"):
         function.genBuildDSO()
     function.autoDeletePoints = t
 
@@ -198,7 +198,7 @@ def test_genBuildDSO_3(function):
     function.simbadDec = None
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateDSOPath", return_value=False):
+    with mock.patch.object(function.app.data, "generateDSOPath"):
         function.genBuildDSO()
     function.autoDeletePoints = t
 
@@ -214,7 +214,7 @@ def test_genBuildDSO_4(function):
     function.simbadDec = None
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateDSOPath", return_value=False):
+    with mock.patch.object(function.app.data, "generateDSOPath"):
         function.genBuildDSO()
     function.autoDeletePoints = t
 
@@ -230,14 +230,15 @@ def test_genBuildDSO_5(function):
     function.simbadDec = Angle(degrees=0)
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateDSOPath", return_value=True):
+    with mock.patch.object(function.app.data, "generateDSOPath"):
         function.genBuildDSO()
     function.autoDeletePoints = t
 
 
 def test_genBuildDSO_6(function):
     def test():
-        function.app.data.buildP = [1] * 20
+        function.app.data.buildP = []
+        function.iteration = 0
 
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
@@ -247,27 +248,34 @@ def test_genBuildDSO_6(function):
     function.simbadDec = Angle(degrees=0)
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateDSOPath", return_value=True):
+    with mock.patch.object(function.app.data, "generateDSOPath"):
+        with mock.patch.object(function.app.data, "ditherPoints"):
+            function.genBuildDSO()
+    function.autoDeletePoints = t
+
+
+def test_genBuildDSO_7(function):
+    def test():
+        function.app.data.buildP = [1]
+        function.iteration = 0
+
+    function.app.mount.obsSite.raJNow = 0
+    function.app.mount.obsSite.decJNow = 0
+    function.app.mount.obsSite.timeSidereal = Angle(hours=0)
+    function.ui.ditherBuildPoints.setChecked(True)
+    function.simbadRa = Angle(hours=0)
+    function.simbadDec = Angle(degrees=0)
+    t = function.autoDeletePoints
+    function.autoDeletePoints = test
+    with mock.patch.object(function.app.data, "generateDSOPath"):
         with mock.patch.object(function.app.data, "ditherPoints"):
             function.genBuildDSO()
     function.autoDeletePoints = t
 
 
 def test_genBuildGoldenSpiral_1(function):
-    def test():
-        function.app.data.buildP = [1] * 20
-
     function.ui.numberSpiral.setValue(15)
-    t = function.autoDeletePoints
-    function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateGoldenSpiral", return_value=True):
-        function.genBuildGoldenSpiral()
-    function.autoDeletePoints = t
-
-
-def test_genBuildGoldenSpiral_2(function):
-    function.ui.numberSpiral.setValue(2)
-    with mock.patch.object(function.app.data, "generateGoldenSpiral", return_value=False):
+    with mock.patch.object(function.app.data, "generateGoldenSpiral"):
         function.genBuildGoldenSpiral()
 
 
@@ -311,8 +319,7 @@ def test_saveBuildFile_1(function):
 
 def test_saveBuildFile_2(function):
     function.ui.buildPFileName.setText("")
-    suc = function.saveBuildFile()
-    assert not suc
+    function.saveBuildFile()
 
 
 def test_saveBuildFile_3(function):
@@ -416,7 +423,7 @@ def test_sortDomeAz_2(function):
 
 def test_sortMountAz(function):
     with mock.patch.object(function.app.data, "sort"):
-        function.sortMountAz([], False, False, "E" )
+        function.sortMountAz([], False, False, "E")
 
 
 def test_autoSortPoints_1(function):

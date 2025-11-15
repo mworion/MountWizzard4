@@ -182,7 +182,7 @@ class HorizonDraw(MWidget):
 
     def updateDataHorizon(self, x: list, y: list) -> None:
         """ """
-        hp = [(y, x) for y, x in zip(y, x)]
+        hp = [[y, x] for y, x in zip(y, x)]
         hp.sort(key=lambda x: x[1])
         y, x = zip(*hp)
         self.horizonPlot.setData(x=x, y=y)

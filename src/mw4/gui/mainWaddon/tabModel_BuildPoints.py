@@ -279,6 +279,8 @@ class BuildPoints(QObject):
             self.app.data.generateDSOPath(ha, dec, timeJD, location, numberPoints, keep)
             self.autoDeletePoints()
             numberFilter = len(self.app.data.buildP)
+            if numberFilter == 0:
+                break
 
         if self.ui.ditherBuildPoints.isChecked():
             self.app.data.ditherPoints()

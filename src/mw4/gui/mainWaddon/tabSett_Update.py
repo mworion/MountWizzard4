@@ -26,6 +26,7 @@ from mw4.base.loggerMW import setCustomLoggingLevel
 
 class SettUpdate(QObject):
     """ """
+
     log = logging.getLogger("MW4")
 
     def __init__(self, mainW):

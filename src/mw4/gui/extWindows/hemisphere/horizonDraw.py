@@ -169,7 +169,9 @@ class HorizonDraw(MWidget):
             self.ui.horizonMaskFileName.setText(saveFilePath.stem)
             self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{saveFilePath.stem}] saved")
         else:
-            self.msg.emit(2, "Hemisphere", "Horizon", f"Mask [{saveFilePath.stem}] cannot no be saved")
+            self.msg.emit(
+                2, "Hemisphere", "Horizon", f"Mask [{saveFilePath.stem}] cannot no be saved"
+            )
         self.app.redrawHorizon.emit()
 
     def setOperationMode(self) -> None:

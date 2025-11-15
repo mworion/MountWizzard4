@@ -278,7 +278,7 @@ class BuildPoints(QObject):
         self.ui.numberDSOPoints.setEnabled(False)
         numberPoints = self.ui.numberDSOPoints.value()
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.generateDSOPath(
+        self.app.data.generateDSOPath(
             ha=ha,
             dec=dec,
             timeJD=timeJD,
@@ -286,13 +286,6 @@ class BuildPoints(QObject):
             numberPoints=numberPoints,
             keep=keep,
         )
-        if not suc:
-            self.ui.numberDSOPoints.setEnabled(True)
-            self.msg.emit(
-                2, "Model", "Buildpoints", "DSO Path cannot be generated - calc error"
-            )
-            return False
-
         if self.ui.ditherBuildPoints.isChecked():
             self.app.data.ditherPoints()
         self.processPoints()
@@ -383,13 +376,8 @@ class BuildPoints(QObject):
             self.msg.emit(0, "Model", "Buildpoints", "Build points file name not given")
             return
 
-        suc = self.app.data.saveBuildP(fileName)
-        if suc:
-            self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fileName}] saved")
-        else:
-            self.msg.emit(
-                2, "Model", "Buildpoints", f"Build file [{fileName}] cannot be saved"
-            )
+        self.app.data.saveBuildP(fileName)
+        self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fileName}] saved")
 
     def saveBuildFileAs(self):
         """ """
@@ -400,17 +388,9 @@ class BuildPoints(QObject):
         if saveFilePath.is_dir():
             return
 
-        suc = self.app.data.saveBuildP(saveFilePath.stem)
-        if suc:
-            self.ui.buildPFileName.setText(saveFilePath.stem)
-            self.msg.emit(0, "Model", "Buildpoints", f"Build file [{saveFilePath.stem}] saved")
-        else:
-            self.msg.emit(
-                2,
-                "Model",
-                "Buildpoints",
-                f"Build file [{saveFilePath.stem}] cannot be saved",
-            )
+        self.app.data.saveBuildP(saveFilePath.stem)
+        self.ui.buildPFileName.setText(saveFilePath.stem)
+        self.msg.emit(0, "Model", "Buildpoints", f"Build file [{saveFilePath.stem}] saved")
 
     def clearBuildP(self):
         """ """

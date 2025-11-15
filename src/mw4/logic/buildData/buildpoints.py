@@ -18,12 +18,14 @@ import csv
 import json
 import logging
 import random
+from pathlib import Path
 
 # external packages
 import numpy as np
 from scipy.spatial import distance
 from skyfield import almanac
-from skyfield.api import Star
+from skyfield.api import Star, Angle, Timescale
+from skyfield.toposlib import GeographicPosition
 
 # local imports
 from mw4.base import transform
@@ -49,6 +51,7 @@ def HaDecToAltAz(ha, dec, lat):
 
 class DataPoint:
     """ """
+
     FAILED = 0
     UNPROCESSED = 1
     SOLVED = 2
@@ -197,7 +200,7 @@ class DataPoint:
             self._horizonP.clear()
             return
 
-        if not all(isinstance(x, tuple) for x in value):
+        if not all(isinstance(x, list) for x in value):
             self.log.info(f"Malformed value: {value}")
             self._horizonP.clear()
             return
@@ -215,7 +218,7 @@ class DataPoint:
             self._buildP = []
             return
 
-        if not all(isinstance(x, tuple) for x in value):
+        if not all(isinstance(x, list) for x in value):
             self.log.info(f"Malformed value: {value}")
             self._buildP = []
             return
@@ -241,7 +244,6 @@ class DataPoint:
         if value[0] < low:
             return
 
-        position = int(position)
         position = min(len(self._buildP), position)
         position = max(0, position)
         self._buildP.insert(position, value)
@@ -251,67 +253,47 @@ class DataPoint:
         if position < 0 or position > len(self._buildP) - 1:
             self.log.info(f"invalid position: {position}")
             return
-
         self._buildP.pop(position)
 
-    def clearBuildP(self):
+    def clearBuildP(self) -> None:
         """ """
         self._buildP.clear()
 
-    def setStatusBuildP(self, number, status):
+    def setStatusBuildP(self, number: int, status: int) -> None:
         """ """
-        if number < 0:
-            return False
-        if number > len(self._buildP) - 1:
-            return False
+        if 0 <= number < len(self._buildP):
+            self._buildP[number][2] = status
 
-        alt = self._buildP[number][0]
-        az = self._buildP[number][1]
-        self._buildP[number] = (alt, az, status)
-        return True
-
-    def addHorizonP(self, value=None, position=None):
+    def setStatusBuildPSolved(self, number: int) -> None:
         """ """
-        if value is None:
-            return False
-        if not isinstance(value, tuple):
-            self.log.info(f"malformed value: {value}")
-            return False
-        if len(value) != 2:
-            self.log.info(f"malformed value: {value}")
-            return False
+        self.setStatusBuildP(number, self.SOLVED)
+
+    def setStatusBuildPFailed(self, number: int) -> None:
+        """ """
+        self.setStatusBuildP(number, self.FAILED)
+
+    def addHorizonP(self, value: tuple[int, int], position: int | None = None) -> None:
+        """ """
         if position is None:
             position = len(self.horizonP)
-        if not isinstance(position, int | float):
-            self.log.info(f"malformed position: {position}")
-            return False
 
-        position = int(position)
         position = min(len(self._horizonP), position)
         position = max(0, position)
         self._horizonP.insert(position, value)
-        return True
 
-    def delHorizonP(self, position):
+    def delHorizonP(self, position: int) -> None:
         """ """
-        if not isinstance(position, int | float):
-            self.log.info(f"malformed position: {position}")
-            return False
+        if 0 <= position < len(self._horizonP):
+            self._horizonP.pop(position)
 
-        position = int(position)
-        if position < 0 or position > len(self._horizonP):
-            self.log.info(f"invalid position: {position}")
-            return False
-
-        self._horizonP.pop(position)
-        return True
-
-    def clearHorizonP(self):
+    def clearHorizonP(self) -> None:
         """"""
         self._horizonP.clear()
 
     @staticmethod
-    def isCloseHorizonLine(point, margin, horizonI):
+    def isCloseHorizonLine(
+        point: tuple[int, int], margin: int, horizonI: list[tuple[int, int]]
+    ) -> bool:
         """
         https://codereview.stackexchange.com/questions
         /28207/finding-the-closest-point-to-a-list-of-points
@@ -323,7 +305,7 @@ class DataPoint:
 
         return val < margin
 
-    def isAboveHorizon(self, point):
+    def isAboveHorizon(self, point: tuple[int, int]) -> bool:
         """ """
         if point[1] > 360:
             point = (point[0], 360)
@@ -341,7 +323,7 @@ class DataPoint:
         y = np.interp(x, xRef, yRef)
         return point[0] > y[int(point[1])]
 
-    def isCloseMeridian(self, point) -> bool:
+    def isCloseMeridian(self, point: tuple[int, int]) -> bool:
         """ """
         slew = self.app.mount.setting.meridianLimitSlew
         track = self.app.mount.setting.meridianLimitTrack
@@ -363,7 +345,7 @@ class DataPoint:
         """ """
         self._buildP = [x for x in self._buildP if not self.isCloseMeridian(x)]
 
-    def deleteCloseHorizonLine(self, m) -> None:
+    def deleteCloseHorizonLine(self, margin: int) -> None:
         """ """
         if not self.horizonP:
             return
@@ -372,9 +354,18 @@ class DataPoint:
         azI = range(0, 361, 1)
         altI = np.interp(azI, azH, altH)
         horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
-        self._buildP = [x for x in self._buildP if not self.isCloseHorizonLine(x, m, horizonI)]
+        self._buildP = [
+            x for x in self._buildP if not self.isCloseHorizonLine(x, margin, horizonI)
+        ]
 
-    def sort(self, points=None, eastwest=False, highlow=False, sortDomeAz=None, pierside=None):
+    def sort(
+        self,
+        points=list[tuple[int, int]],
+        eastwest: bool = False,
+        highlow: bool = False,
+        sortDomeAz: bool = None,
+        pierside: str = None,
+    ):
         """ """
         east = [x for x in points if x[1] <= 180]
         west = [x for x in points if x[1] > 180]
@@ -396,78 +387,50 @@ class DataPoint:
 
         return True
 
-    def loadModel(self, fullFileName):
+    def loadModel(self, fullFileName: Path) -> list[tuple[int, int]] | None:
         """ """
-        if not fullFileName.is_file():
-            return None
-
-        try:
-            with open(fullFileName) as handle:
-                value = json.load(handle)
-
-        except Exception as e:
-            self.log.info(f"Cannot Model load: {fullFileName}, error: {e}")
-            value = None
-
-        else:
-            value = [(x["altitude"], x["azimuth"]) for x in value]
-
-        return value
-
-    def loadJSON(self, fullFileName):
-        """
-        """
-        if not fullFileName.is_file():
-            return None
-
-        try:
-            with open(fullFileName) as handle:
-                value = json.load(handle)
-
-        except Exception as e:
-            self.log.info(f"Cannot BPTS load: {fullFileName}, error: {e}")
-            value = None
-
-        else:
-            value = [tuple(x) for x in value]
-
-        return value
-
-    def loadCSV(self, fullFileName):
-        """ """
-        if not fullFileName.is_file():
-            return None
-
         with open(fullFileName) as handle:
-            testLine = handle.readline()
+            try:
+                value = [[p["altitude"], p["azimuth"]] for p in json.load(handle)]
+            except Exception as e:
+                self.log.info(f"Cannot Model load: {fullFileName}, error: {e}")
+                value = None
+        return value
+
+    def loadBPTS(self, fullFileName: Path) -> list[tuple[int, int]] | None:
+        """ """
+        with open(fullFileName) as f:
+            try:
+                value = json.load(f)
+            except Exception as e:
+                self.log.info(f"Cannot BPTS load: {fullFileName}, error: {e}")
+                value = None
+        return value
+
+    def loadCSV(self, fullFileName: Path) -> list[tuple[int, int]] | None:
+        """ """
+        with open(fullFileName) as f:
+            testLine = f.readline()
 
         delimiter = ";" if ";" in testLine else ","
-
-        try:
-            value = []
-            with open(fullFileName, encoding="utf-8-sig") as csvFile:
+        with open(fullFileName, encoding="utf-8-sig") as csvFile:
+            try:
                 reader = csv.reader(csvFile, delimiter=delimiter)
-                for row in reader:
-                    value.append(tuple(float(val) for val in row))
-
-        except Exception as e:
-            self.log.info(f"Cannot CSV load: {fullFileName}, error: {e}")
-            return None
-
-        else:
-            return value
+                value = [[int(row[0]), int(row[1])] for row in reader]
+            except Exception as e:
+                self.log.info(f"Cannot CSV load: {fullFileName}, error: {e}")
+                value = None
+        return value
 
     @staticmethod
-    def checkFormat(value):
-        if not isinstance(value, list):
-            return False
-
-        if not all(isinstance(x, tuple) for x in value):
+    def checkFormat(value: tuple[float, float]) -> bool:
+        """ """
+        if not all(isinstance(x, list) for x in value):
             return False
 
         return all(len(x) == 2 for x in value)
 
-    def loadBuildP(self, fullFileName, ext=".bpts", keep=False):
+    def loadBuildP(self, fullFileName: Path, ext: str = ".bpts", keep: bool = False) -> bool:
         """ """
         if not fullFileName.is_file():
             return False
@@ -476,82 +439,57 @@ class DataPoint:
         if ext == ".csv":
             value = self.loadCSV(fullFileName)
         elif ext == ".bpts":
-            value = self.loadJSON(fullFileName)
+            value = self.loadBPTS(fullFileName)
         elif ext == ".model":
             value = self.loadModel(fullFileName)
 
         if value is None:
             return False
 
-        suc = self.checkFormat(value)
-        if not suc:
-            self.clearBuildP()
-            return False
-
-        points = [(x[0], x[1], 1) for x in value]
+        points = [(x[0], x[1], self.UNPROCESSED) for x in value]
 
         if keep:
             self._buildP += points
         else:
             self._buildP = points
-
-        # backup solution
-        if ext in [".csv", ".model"]:
-            fileName = fullFileName.stem
-            self.saveBuildP(fileName=fileName)
-
         return True
 
-    def saveBuildP(self, fileName):
+    def saveBuildP(self, fileName: str) -> None:
         """ """
-        if not fileName:
-            return False
-
         fileName = self.configDir / (fileName + ".bpts")
         points = [(x[0], x[1]) for x in self.buildP]
         with open(fileName, "w") as handle:
             json.dump(points, handle, indent=4)
-        return True
 
-    def loadHorizonP(self, fileName, ext=".hpts"):
+    def loadHorizonP(self, fileName: str, ext=".hpts") -> bool:
         """ """
         fullFileName = self.configDir / (fileName + ext)
+        if not fullFileName.is_file():
+            return False
+
         value = None
         if ext == ".csv":
             value = self.loadCSV(fullFileName)
         elif ext == ".hpts":
-            value = self.loadJSON(fullFileName)
+            value = self.loadBPTS(fullFileName)
 
-        suc = self.checkFormat(value)
-        if not suc:
-            self.clearHorizonP()
+        if value is None:
             return False
 
         self.horizonP = value
         self.horizonP.sort(key=lambda x: x[1])
-
-        # backup solution
-        if csv:
-            self.saveHorizonP(fileName=fileName)
-
         return True
 
-    def saveHorizonP(self, fileName):
+    def saveHorizonP(self, fileName: str) -> None:
         """ """
-        if not fileName:
-            return False
-
-        fileName = self.configDir / (fileName + ".hpts")
-
-        with open(fileName, "w") as handle:
+        fullFileName = self.configDir / (fileName + ".hpts")
+        with open(fullFileName, "w") as handle:
             json.dump(self.horizonP, handle, indent=4)
 
-        return True
-
-    def genHaDecParams(self, selection, lat):
+    def genHaDecParams(self, selection: str, lat: float) -> tuple[int, int, int, int]:
         """
         genHaDecParams selects the parameters for generating the boundaries for
-        next step processing greater circles. the parameters are sorted for
+         the next step processing greater circles. the parameters are sorted for
         different targets actually for minimum slew distance between the points.
         defined is only the east side of data, the west side will be mirrored to
         the east one.
@@ -578,9 +516,9 @@ class DataPoint:
 
         yield from zip(decL, stepL, startL, stopL)
 
-    def genGreaterCircle(self, selection="norm", keep=False):
+    def genGreaterCircle(self, selection: str = "norm", keep: bool = False) -> bool:
         """
-        genGreaterCircle takes the generated boundaries for the rang routine and
+        genGreaterCircle takes the generated boundaries for the range routine and
         transforms ha, dec to alt az. reasonable values for the alt az values
         are 5 to 85 degrees.
         """
@@ -594,35 +532,43 @@ class DataPoint:
             for ha in range(start, stop, step):
                 alt, az = HaDecToAltAz(ha / 10, dec, lat)
 
-                # only values with above horizon = 0
+                # only values with the above horizon = 0
                 if 5 <= alt <= 85 and 2 < az < 358:
-                    self.addBuildP((alt, az, 1))
+                    self.addBuildP([alt, az, self.UNPROCESSED])
         return True
 
-    @staticmethod
-    def genGridGenerator(eastAlt, westAlt, minAz, stepAz, maxAz):
+    def genGridGenerator(
+        self, eastAlt: int, westAlt: int, minAz: int, stepAz: int, maxAz: int
+    ) -> tuple[int, int, int]:
         """ """
         for i, alt in enumerate(eastAlt):
             if i % 2:
                 for az in range(minAz, 180, stepAz):
-                    yield (alt, az, 1)
+                    yield [alt, az, self.UNPROCESSED]
             else:
                 for az in range(180 - minAz, 0, -stepAz):
-                    yield (alt, az, 1)
+                    yield [alt, az, self.UNPROCESSED]
 
         for i, alt in enumerate(westAlt):
             if i % 2:
                 for az in range(180 + minAz, 360, stepAz):
-                    yield (alt, az, 1)
+                    yield [alt, az, self.UNPROCESSED]
             else:
                 for az in range(maxAz, 180, -stepAz):
-                    yield (alt, az, 1)
+                    yield [alt, az, self.UNPROCESSED]
 
-    def genGrid(self, minAlt=5, maxAlt=85, numbRows=5, numbCols=6, keep=False):
+    def genGrid(
+        self,
+        minAlt: int = 5,
+        maxAlt: int = 85,
+        numbRows: int = 5,
+        numbCols: int = 6,
+        keep: bool = False,
+    ) -> bool:
         """
         genGrid generates a grid of points and transforms ha, dec to alt az.
         with given limits in alt, the min and max will be used as a hard
-        condition. on az there is not given limit, therefore a split over the
+        condition. on az there is no given limit, therefore, a split over the
         whole space (omitting the meridian) is done. the simplest way to avoid
         hitting the meridian is to enforce the number of cols to be a factor of
         2. reasonable values for the grid are 5 to 85 degrees. defined is only
@@ -664,7 +610,9 @@ class DataPoint:
 
         return True
 
-    def genAlign(self, altBase=30, azBase=10, numberBase=3, keep=False):
+    def genAlign(
+        self, altBase: int = 30, azBase: int = 10, numberBase: int = 3, keep: bool = False
+    ) -> bool:
         """ """
         if not 5 <= altBase <= 85:
             return False
@@ -683,11 +631,11 @@ class DataPoint:
 
         for i in range(0, numberBase):
             az = azBase + i * stepAz
-            self.addBuildP((altBase, az % 360, 1))
+            self.addBuildP([altBase, az % 360, self.UNPROCESSED])
 
         return True
 
-    def generateCelestialEquator(self):
+    def generateCelestialEquator(self) -> list[tuple[int, int]]:
         """ """
         celestialEquator = []
         if not self.app.mount.obsSite.location:
@@ -709,27 +657,34 @@ class DataPoint:
 
         return celestialEquator
 
-    @staticmethod
-    def calcPath(ts, numberPoints, edgeDSO, ha, dec, location):
+    def calcPath(
+        self,
+        ts: Timescale,
+        numberPoints: int,
+        edgeDSO: float,
+        ha: Angle,
+        dec: Angle,
+        location: GeographicPosition,
+    ) -> list[tuple[int, int, int]]:
         """ """
         buildP = []
         for i in range(numberPoints):
             starTime = ts.tt_jd(edgeDSO + i / numberPoints)
             az, alt = transform.J2000ToAltAz(ha, dec, starTime, location)
             if alt.degrees > 0:
-                buildP.append((alt.degrees, az.degrees % 360, 1))
+                buildP.append([alt.degrees, az.degrees % 360, self.UNPROCESSED])
         return buildP
 
     def generateDSOPath(
-        self, ha=0, dec=0, timeJD=0, location=None, numberPoints=0, keep=False
-    ):
+        self,
+        ha: Angle,
+        dec: Angle,
+        timeJD: float,
+        location: GeographicPosition,
+        numberPoints: int,
+        keep: bool = False,
+    ) -> None:
         """ """
-        if numberPoints < 1:
-            return False
-        if location is None:
-            return False
-
-        numberPoints = int(numberPoints)
         if not keep:
             self.clearBuildP()
 
@@ -752,9 +707,8 @@ class DataPoint:
             number += 1
         for buildP in buildPs:
             self.addBuildP(buildP)
-        return True
 
-    def generateGoldenSpiral(self, numberPoints, keep=False):
+    def generateGoldenSpiral(self, numberPoints: int, keep: bool = False) -> None:
         """
         https://stackoverflow.com/questions/9600801/evenly-distributing-n-points-on-a-sphere
         """
@@ -770,13 +724,13 @@ class DataPoint:
 
         for alt, az in zip(altitude, azimuth):
             if alt > 0:
-                self.addBuildP((alt, az, 1))
+                self.addBuildP([alt, az, self.UNPROCESSED])
 
-    def ditherPoints(self):
+    def ditherPoints(self) -> None:
         """ """
         for i, point in enumerate(self.buildP):
             alt = point[0]
             az = point[1]
             alt += random.uniform(-1, 1)
             az += random.uniform(-1, 1)
-            self.buildP[i] = (alt, az, 1)
+            self.buildP[i] = [alt, az, self.UNPROCESSED]

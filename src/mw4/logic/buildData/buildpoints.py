@@ -24,7 +24,7 @@ from pathlib import Path
 import numpy as np
 from scipy.spatial import distance
 from skyfield import almanac
-from skyfield.api import Star, Angle, Timescale
+from skyfield.api import Angle, Star, Timescale
 from skyfield.toposlib import GeographicPosition
 
 # local imports
@@ -186,9 +186,9 @@ class DataPoint:
 
     def __init__(self, app):
         self.app = app
-        self.configDir = app.mwGlob["configDir"]
-        self._horizonP = []
-        self._buildP = []
+        self.configDir: Path = app.mwGlob["configDir"]
+        self._horizonP: list = []
+        self._buildP: list = []
 
     @property
     def horizonP(self):
@@ -225,19 +225,13 @@ class DataPoint:
 
         self._buildP = value
 
-    def addBuildP(self, value: tuple[float, float, int], position: int | None = None) -> None:
+    def addBuildP(self, value: tuple[int, int, int], position: int | None = None) -> None:
         """ """
         if position is None:
             position = len(self._buildP)
-        if self.app.mount.setting.horizonLimitHigh:
-            high = self.app.mount.setting.horizonLimitHigh
-        else:
-            high = 90
 
-        if self.app.mount.setting.horizonLimitLow:
-            low = self.app.mount.setting.horizonLimitLow
-        else:
-            low = 0
+        high = self.app.mount.setting.horizonLimitHigh or 90
+        low = self.app.mount.setting.horizonLimitLow or 0
 
         if value[0] > high:
             return
@@ -724,7 +718,7 @@ class DataPoint:
 
         for alt, az in zip(altitude, azimuth):
             if alt > 0:
-                self.addBuildP([alt, az, self.UNPROCESSED])
+                self.addBuildP([int(alt), int(az), self.UNPROCESSED])
 
     def ditherPoints(self) -> None:
         """ """

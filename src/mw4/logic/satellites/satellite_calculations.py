@@ -18,13 +18,13 @@ from collections.abc import Callable
 
 # external packages
 import numpy as np
-from mw4.mountcontrol.obsSite import ObsSite
-from mw4.mountcontrol.setting import Setting
 from skyfield import almanac
-from skyfield.units import Angle
 from skyfield.api import EarthSatellite, Time
 from skyfield.toposlib import GeographicPosition
+from skyfield.units import Angle
 
+from mw4.mountcontrol.obsSite import ObsSite
+from mw4.mountcontrol.setting import Setting
 
 # local import
 

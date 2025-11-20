@@ -14,14 +14,13 @@
 #
 ###########################################################
 # standard libraries
-from threading import Event
 
 # external packages
 import numpy as np
 import pyqtgraph as pg
+from pyqtgraph.widgets.RemoteGraphicsView import MouseEvent
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont
-from pyqtgraph.widgets.RemoteGraphicsView import MouseEvent
 
 from mw4.base.transform import diffModulusAbs
 

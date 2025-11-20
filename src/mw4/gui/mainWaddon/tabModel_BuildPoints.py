@@ -82,7 +82,7 @@ class BuildPoints(QObject):
         self.ui.generateQuery.editingFinished.connect(self.querySimbad)
         self.ui.isOnline.stateChanged.connect(self.setupDsoGui)
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
 
@@ -118,7 +118,7 @@ class BuildPoints(QObject):
         self.ui.altitudeMax.valueChanged.connect(self.genBuildGrid)
         self.ui.numberDSOPoints.valueChanged.connect(self.genBuildDSO)
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         config["buildPFileName"] = self.ui.buildPFileName.text()
@@ -140,13 +140,14 @@ class BuildPoints(QObject):
         config["keepGeneratedPoints"] = self.ui.keepGeneratedPoints.isChecked()
         config["ditherBuildPoints"] = self.ui.ditherBuildPoints.isChecked()
 
-    def setupIcons(self):
+    def setupIcons(self) -> None:
+        """ """
         self.mainW.wIcon(self.ui.loadBuildPoints, "load")
         self.mainW.wIcon(self.ui.saveBuildPoints, "save")
         self.mainW.wIcon(self.ui.saveBuildPointsAs, "save")
         self.mainW.wIcon(self.ui.clearBuildP, "trash")
 
-    def genBuildGrid(self):
+    def genBuildGrid(self) -> None:
         """ """
         self.lastGenerator = "grid"
         self.ui.numberGridPointsRow.setEnabled(False)
@@ -171,26 +172,23 @@ class BuildPoints(QObject):
             self.ui.altitudeMin.setEnabled(True)
             self.ui.altitudeMax.setEnabled(True)
             self.msg.emit(2, "Model", "Buildpoints", "Could not generate grid")
-            return False
+            return
 
         self.processPoints()
         self.ui.numberGridPointsRow.setEnabled(True)
         self.ui.numberGridPointsCol.setEnabled(True)
         self.ui.altitudeMin.setEnabled(True)
         self.ui.altitudeMax.setEnabled(True)
-        return True
 
-    def genBuildAlign(self):
+    def genBuildAlign(self) -> None:
         """ """
         self.lastGenerator = "align"
         keep = self.ui.keepGeneratedPoints.isChecked()
         suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=3, keep=keep)
         if not suc:
             self.msg.emit(2, "Model", "Buildpoints", "Could not generate 3 align stars")
-            return False
-
+            return
         self.processPoints()
-        return True
 
     def genBuildMax(self) -> None:
         """ """
@@ -312,18 +310,18 @@ class BuildPoints(QObject):
         """ """
         self.lastGenerator = "model"
 
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        if not keep:
+        if not self.ui.keepGeneratedPoints.isChecked():
             self.app.data.clearBuildP()
 
         model = self.app.mount.model
         for star in model.starList:
-            self.app.data.addBuildP((star.alt.degrees, star.az.degrees, True))
+            self.app.data.addBuildP(
+                [int(star.alt.degrees), int(star.az.degrees), self.app.data.UNPROCESSED]
+            )
         self.processPoints()
 
     def genBuildFile(self) -> None:
-        """
-        """
+        """ """
         self.lastGenerator = "file"
         fileName = self.ui.buildPFileName.text()
         if not fileName:
@@ -415,7 +413,9 @@ class BuildPoints(QObject):
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
 
-    def sortDomeAzWorker(self, points: list, pierside: str) -> tuple[list[tuple[int, int]], str]:
+    def sortDomeAzWorker(
+        self, points: list, pierside: str
+    ) -> tuple[list[tuple[int, int]], str]:
         """ """
         pointsNew = []
         numbAll = len(points)

@@ -18,7 +18,6 @@ import datetime
 import logging
 import time
 from pathlib import Path
-from skyfield.api import Time
 
 import numpy as np
 from dateutil.tz import tzlocal
@@ -30,26 +29,27 @@ from PySide6.QtGui import (
     QGuiApplication,
     QIcon,
     QImage,
+    QKeyEvent,
+    QMouseEvent,
     QPainter,
     QPainterPath,
     QPalette,
     QPixmap,
     QTransform,
-    QMouseEvent,
-    QKeyEvent,
 )
 from PySide6.QtWidgets import (
     QAbstractItemView,
-    QFileDialog,
-    QMessageBox,
-    QWidget,
     QComboBox,
+    QFileDialog,
     QLineEdit,
+    QMessageBox,
     QPushButton,
     QTableWidget,
     QTabWidget,
+    QWidget,
 )
 from qimage2ndarray import array2qimage, rgb_view
+from skyfield.api import Time
 
 # local imports
 from mw4.gui.styles.styles import Styles
@@ -109,9 +109,7 @@ def guiSetStyle(ui: QWidget, pStyle: str = "", value: object = None, pVals: [] =
 def guiSetText(ui: QLineEdit, formatElement: str, value: object) -> None:
     """ """
     text = "-"
-    if value is None:
-        pass
-    elif isinstance(value, list | np.ndarray) and len(value) == 0:
+    if value is None or isinstance(value, list | np.ndarray) and len(value) == 0:
         pass
     elif formatElement.startswith("HSTR"):
         text = formatHstrToText(value)

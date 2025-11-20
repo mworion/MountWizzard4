@@ -61,8 +61,7 @@ def test_genBuildGrid_1(function):
     function.ui.altitudeMin.setValue(10)
     function.ui.altitudeMax.setValue(60)
     with mock.patch.object(function.app.data, "genGrid", return_value=True):
-        suc = function.genBuildGrid()
-        assert suc
+        function.genBuildGrid()
 
 
 def test_genBuildGrid_2(function):
@@ -71,8 +70,7 @@ def test_genBuildGrid_2(function):
     function.ui.altitudeMin.setValue(10)
     function.ui.altitudeMax.setValue(60)
     with mock.patch.object(function.app.data, "genGrid", return_value=True):
-        suc = function.genBuildGrid()
-        assert suc
+        function.genBuildGrid()
 
 
 def test_genBuildGrid_3(function):
@@ -82,20 +80,17 @@ def test_genBuildGrid_3(function):
     function.ui.altitudeMax.setValue(60)
 
     with mock.patch.object(function.app.data, "genGrid", return_value=False):
-        suc = function.genBuildGrid()
-        assert not suc
+        function.genBuildGrid()
 
 
 def test_genBuildAlign_1(function):
     with mock.patch.object(function.app.data, "genAlign", return_value=False):
-        suc = function.genBuildAlign()
-        assert not suc
+        function.genBuildAlign()
 
 
 def test_genBuildAlign_2(function):
     with mock.patch.object(function.app.data, "genAlign", return_value=True):
-        suc = function.genBuildAlign()
-        assert suc
+        function.genBuildAlign()
 
 
 def test_genBuildMax_1(function):

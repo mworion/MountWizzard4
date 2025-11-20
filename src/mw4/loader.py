@@ -256,7 +256,7 @@ def extractDataFiles(mwGlob: dict) -> None:
         extractFile(filePath=filePath, file=file, fileTimeStamp=fileTimeStamp)
 
 
-def getWindowPos() -> [int, int]:
+def getWindowPos() -> tuple[int, int]:
     """ """
     configDir = Path(os.getcwd()) / "config"
     profile = configDir / "profile"

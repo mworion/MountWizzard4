@@ -112,39 +112,6 @@ def clean_mw(c):
 
 
 @task
-def version_doc(c):
-    printMW("changing the version number to setup.py")
-
-    # getting version of desired package
-    with open("pyproject.toml") as setup:
-        text = setup.readlines()
-
-    for line in text:
-        if line.strip().startswith("version"):
-            _, number, _ = line.split('"')
-
-    # reading configuration file
-    with open("./doc/conf.py") as conf:
-        text = conf.readlines()
-    textNew = list()
-
-    print(f"version is >{number}<")
-
-    # replacing the version number
-    for line in text:
-        if line.startswith("version"):
-            line = f"version = '{number}'\n"
-        if line.startswith("release"):
-            line = f"release = '{number}'\n"
-        textNew.append(line)
-
-    # writing configuration file
-    with open("./doc/conf.py", "w+") as conf:
-        conf.writelines(textNew)
-    printMW("changing the version number to setup.py finished\n")
-
-
-@task
 def update_builtins(c):
     printMW("updating builtins")
     runMW(c, "cp ./work/data/de440_mw4.bsp ./src_add/assets/data/de440_mw4.bsp")
@@ -197,6 +164,38 @@ def build_widgets(c):
         nameOut = widgetDirOut + widget
         runMW(c, f"uv run pyside6-uic {nameIn}.ui > {nameOut}_ui.py")
     printMW("building widgets finished\n")
+
+
+@task(pre=[build_resources, build_widgets, update_builtins])
+def build(c):
+    printMW("building dist mountwizzard4")
+    runMW(c, "rm -f dist/mountwizzard4.tar.gz")
+    runMW(c, "uv build")
+    runMW(
+        c,
+        "cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz",
+    )
+    printMW("building dist mountwizzard4 finished\n")
+
+
+@task(pre=[build])
+def build_test(c):
+    printMW("build mountwizzard4")
+    runMW(c, "rm -f dist/mountwizzard*.tar.gz")
+    runMW(c, "uv build")
+    runMW(
+        c,
+        "cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz",
+    )
+    printMW("build-test mountwizzard4 finished\n")
+
+
+@task(pre=[build])
+def publish(c):
+    printMW("publishing mountwizzard4")
+    runMW(c, 'rm -rf ./dist/mountwizzard*.*')
+    runMW(c, 'uvx uv-publish')
+    printMW("publishing mountwizzard4 finished\n")
 
 
 @task()
@@ -414,24 +413,3 @@ def test_mac26(c):
     printMW("test mac26 install finished\n")
 
 
-@task(pre=[build_resource, build_widgets])
-def build_mw(c):
-    printMW("building dist mountwizzard4")
-    runMW(c, "rm -f dist/mountwizzard4*.tar.gz")
-    runMW(c, "uv build")
-    runMW(
-        c,
-        "cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz",
-    )
-    printMW("building dist mountwizzard4 finished\n")
-    printMW("generating documentation")
-
-
-@task(pre=[version_doc, build_mw])
-def upload_mw(c):
-    printMW("uploading dist mountwizzard4")
-    with c.cd("./dist"):
-        print(f"twine upload mountwizzard4-*.tar.gz")
-        rn = "New major release !\nPlease do not update via internal updater!"
-        runMW(c, f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
-    printMW("uploading dist mountwizzard4 finished\n")

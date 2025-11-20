@@ -155,7 +155,7 @@ def update_builtins(c):
 
 
 @task
-def build_resource(c):
+def build_resources(c):
     printMW("building resources")
     resourceDir = "./src_add/assets/"
     resourceDestDir = "./src/mw4/assets/"

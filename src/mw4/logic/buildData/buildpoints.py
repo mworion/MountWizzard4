@@ -225,16 +225,16 @@ class DataPoint:
 
         self._buildP = value
 
-    def addBuildP(self, value: tuple[int, int, int], position: int | None = None) -> None:
+    def addBuildP(self, value: tuple[float, float, int], position: int | None = None) -> None:
         """ """
         if position is None:
             position = len(self._buildP)
-        if self.app.mount.setting.horizonLimitHigh is not None:
+        if self.app.mount.setting.horizonLimitHigh:
             high = self.app.mount.setting.horizonLimitHigh
         else:
             high = 90
 
-        if self.app.mount.setting.horizonLimitLow is not None:
+        if self.app.mount.setting.horizonLimitLow:
             low = self.app.mount.setting.horizonLimitLow
         else:
             low = 0

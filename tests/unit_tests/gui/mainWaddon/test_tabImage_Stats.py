@@ -92,3 +92,21 @@ def test_openAstrometryCatalog_1(function):
 def test_openAstrometryCatalog_2(function):
     with mock.patch.object(webbrowser, "open", return_value=False):
         function.openAstrometryCatalog()
+
+
+def test_updateTelescopeParametersToGui_1(function):
+    function.app.telescope.data["TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"] = 1
+    function.app.telescope.data["TELESCOPE_INFO.TELESCOPE_APERTURE"] = 1
+
+    function.updateTelescopeParametersToGui()
+
+
+def test_updateTelescopeParametersToGuiCyclic_1(function):
+    function.ui.automaticTelescope.setChecked(False)
+    function.updateTelescopeParametersToGuiCyclic()
+
+
+def test_updateTelescopeParametersToGuiCyclic_2(function):
+    function.ui.automaticTelescope.setChecked(True)
+    with mock.patch.object(function, "updateTelescopeParametersToGui"):
+        function.updateTelescopeParametersToGuiCyclic()

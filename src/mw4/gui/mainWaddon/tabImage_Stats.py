@@ -83,9 +83,20 @@ class ImageStats(QObject):
         self.ui.openWatneyCatalog.clicked.connect(self.openWatneyCatalog)
         self.ui.openASTAPCatalog.clicked.connect(self.openASTAPCatalog)
         self.ui.openAstrometryCatalog.clicked.connect(self.openAstrometryCatalog)
+        self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
         self.app.update1s.connect(self.updateImageStats)
         self.fovHint = None
         self.scaleHint = None
+
+    def initConfig(self) -> None:
+        """ """
+        config = self.app.config["mainW"]
+        self.ui.automaticTelescope.setChecked(config.get("automaticTelescope", False))
+
+    def storeConfig(self) -> None:
+        """ """
+        config = self.app.config["mainW"]
+        config["automaticTelescope"] = self.ui.automaticTelescope.isChecked()
 
     def updateImageStats(self) -> None:
         """ """

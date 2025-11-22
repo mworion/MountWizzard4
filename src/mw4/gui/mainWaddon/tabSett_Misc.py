@@ -92,7 +92,7 @@ class SettMisc(QObject):
             self.app.playSound.connect(self.playSound)
             self.setupAudioSignals()
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         self.setupAudioGui()
@@ -125,7 +125,7 @@ class SettMisc(QObject):
         self.setAddProfileGUI()
         self.ui.unitTimeUTC.toggled.emit(True)
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         config["tabsMovable"] = self.ui.tabsMovable.isChecked()
@@ -152,7 +152,7 @@ class SettMisc(QObject):
         config["gameControllerGroup"] = self.ui.gameControllerGroup.isChecked()
         config["gameControllerList"] = self.ui.gameControllerList.currentIndex()
 
-    def setupIcons(self):
+    def setupIcons(self) -> None:
         """ """
         pixmap = self.mainW.svg2pixmap(":/icon/controller.svg", self.mainW.M_PRIM)
         self.ui.controller1.setPixmap(pixmap.scaled(16, 16))
@@ -168,11 +168,8 @@ class SettMisc(QObject):
         self.ui.controller4.setEnabled(False)
         self.ui.controller5.setEnabled(False)
 
-    def sendGameControllerSignals(self, act, old):
+    def sendGameControllerSignals(self, act: list, old: list) -> None:
         """
-        :param act:
-        :param old:
-        :return:
         """
         if act[0] != old[0]:
             self.app.gameABXY.emit(act[0])
@@ -185,12 +182,9 @@ class SettMisc(QObject):
         if act[5] != old[5] or act[6] != old[6]:
             self.app.game_sR.emit(act[5], act[6])
         self.mainW.log.trace(f"GameController: {[act]}, {[old]}")
-        return True
 
-    def readGameController(self, gamepad):
+    def readGameController(self, gamepad: hid.device) -> list:
         """
-        :param gamepad:
-        :return:
         """
         result = []
         while self.mainW.gameControllerRunning:
@@ -206,11 +200,8 @@ class SettMisc(QObject):
             result = data
         return result
 
-    def convertData(self, name, iR):
+    def convertData(self, name: str, iR: list) -> list:
         """
-        :param name:
-        :param iR:
-        :return:
         """
         oR = [0, 0, 0, 0, 0, 0, 0]
         if len(iR) == 0:
@@ -233,11 +224,8 @@ class SettMisc(QObject):
         return oR
 
     @staticmethod
-    def isNewerData(act, old):
+    def isNewerData(act: list, old: list) -> bool:
         """
-        :param act:
-        :param old:
-        :return:
         """
         if len(act) == 0:
             return False
@@ -248,15 +236,14 @@ class SettMisc(QObject):
             return False
         return True
 
-    def workerGameController(self):
+    def workerGameController(self) -> None:
         """
-        :return:
         """
         gameControllerDevice = hid.device()
         name = self.ui.gameControllerList.currentText()
         gameController = self.gameControllerList.get(name)
         if gameController is None:
-            return False
+            return
 
         vendorId = gameController["vendorId"]
         productId = gameController["productId"]
@@ -275,21 +262,16 @@ class SettMisc(QObject):
             report = self.convertData(name, report)
             self.sendGameControllerSignals(report, reportOld)
             reportOld = report
-        return True
 
-    def startGameController(self):
+    def startGameController(self) -> None:
         """
-        :return:
         """
         self.worker = Worker(self.workerGameController)
         self.app.threadPool.start(self.worker)
-        return True
 
     @staticmethod
-    def isValidGameControllers(name):
+    def isValidGameControllers(name: str) -> bool:
         """
-        :param name:
-        :return:
         """
         validStrings = ["Controller", "Game"]
         for check in validStrings:
@@ -299,16 +281,15 @@ class SettMisc(QObject):
             return False
         return True
 
-    def populateGameControllerList(self):
+    def populateGameControllerList(self) -> None:
         """
-        :return:
         """
         isController = self.ui.gameControllerGroup.isChecked()
         if not isController:
             self.mainW.gameControllerRunning = False
-            return False
+            return
         if self.mainW.gameControllerRunning:
-            return False
+            return
 
         self.ui.gameControllerList.clear()
         self.gameControllerList.clear()
@@ -324,15 +305,13 @@ class SettMisc(QObject):
             self.msg.emit(0, "System", "GameController", f"Found {[name]}")
 
         if len(self.gameControllerList) == 0:
-            return False
+            return
 
         self.mainW.gameControllerRunning = True
         self.startGameController()
-        return True
 
-    def setupAudioGui(self):
+    def setupAudioGui(self) -> None:
         """
-        :return: True for test purpose
         """
         self.guiAudioList["MountSlew"] = self.ui.soundMountSlewFinished
         self.guiAudioList["DomeSlew"] = self.ui.soundDomeSlewFinished
@@ -353,12 +332,9 @@ class SettMisc(QObject):
             self.guiAudioList[itemKey].addItem("Pan2")
             self.guiAudioList[itemKey].addItem("Horn")
             self.guiAudioList[itemKey].addItem("Alarm")
-            self.guiAudioList[itemKey].addItem("Alert")
-        return True
 
-    def setupAudioSignals(self):
+    def setupAudioSignals(self) -> None:
         """
-        :return: True for test purpose
         """
         self.audioSignalsSet["Beep"] = ":/sound/beep.wav"
         self.audioSignalsSet["Beep1"] = ":/sound/beep1.wav"
@@ -369,42 +345,28 @@ class SettMisc(QObject):
         self.audioSignalsSet["Pan2"] = ":/sound/Pan2.wav"
         self.audioSignalsSet["Alert"] = ":/sound/alert.wav"
         self.audioSignalsSet["Alarm"] = ":/sound/alarm.wav"
-        return True
 
-    def playSound(self, value=""):
+    def playSound(self, value: str) -> None:
         """
-        :param value:
-        :return: success
         """
-        listEntry = self.guiAudioList.get(value, None)
-        if listEntry is None:
-            return False
-
+        listEntry = self.guiAudioList.get(value)
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
             QSoundEffect.play(self.audioSignalsSet[sound])
-            return True
 
-        else:
-            return False
-
-    def setAddProfileGUI(self):
+    def setAddProfileGUI(self) -> None:
         """
-        :return:
         """
         isEnabled = self.ui.addProfileGroup.isChecked()
         self.ui.addFrom.setEnabled(isEnabled)
         self.ui.addFrom.setVisible(isEnabled)
         self.ui.profileAdd.setEnabled(isEnabled)
         self.ui.profileAdd.setVisible(isEnabled)
-        return True
 
-    def minimizeGUI(self):
+    def minimizeGUI(self) -> None:
         """
-        :return:
         """
         for tab in self.uiTabs:
             isVisible = self.uiTabs[tab]["cb"].isChecked()
             tabIndex = self.mainW.getTabIndex(self.uiTabs[tab]["tab"], tab)
             self.uiTabs[tab]["tab"].setTabVisible(tabIndex, isVisible)
-        return True

@@ -379,6 +379,10 @@ def test_setupAudioSignals_1(function):
     function.setupAudioSignals()
 
 
+def test_playSound_0(function):
+    function.playSound('')
+
+
 def test_playSound_1(function):
     function.playSound('MountSlew')
 

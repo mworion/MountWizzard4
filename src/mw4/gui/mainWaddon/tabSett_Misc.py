@@ -349,6 +349,8 @@ class SettMisc(QObject):
     def playSound(self, value: str) -> None:
         """
         """
+        if value not in self.guiAudioList:
+            return
         listEntry = self.guiAudioList.get(value)
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:

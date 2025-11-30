@@ -49,6 +49,9 @@ def HaDecToAltAz(ha, dec, lat):
 
 class DataPoint:
     """ """
+    FAILED = 0
+    UNPROCESSED = 1
+    SOLVED = 2
 
     log = logging.getLogger("MW4")
 
@@ -178,7 +181,7 @@ class DataPoint:
         ],
     }
 
-    def __init__(self, app=None):
+    def __init__(self, app):
         self.app = app
         self.configDir = app.mwGlob["configDir"]
         self._horizonP = []
@@ -219,21 +222,10 @@ class DataPoint:
 
         self._buildP = value
 
-    def addBuildP(self, value=None, position=None):
+    def addBuildP(self, value: tuple[int, int, int], position: int | None = None) -> None:
         """ """
-        if value is None:
-            return False
-        if not isinstance(value, tuple):
-            self.log.info(f"malformed value: {value}")
-            return False
-        if len(value) != 3:
-            self.log.info(f"malformed value: {value}")
-            return False
         if position is None:
             position = len(self._buildP)
-        if not isinstance(position, int | float):
-            self.log.info(f"malformed position: {position}")
-            return False
         if self.app.mount.setting.horizonLimitHigh is not None:
             high = self.app.mount.setting.horizonLimitHigh
         else:
@@ -245,29 +237,22 @@ class DataPoint:
             low = 0
 
         if value[0] > high:
-            return False
+            return
         if value[0] < low:
-            return False
+            return
 
         position = int(position)
         position = min(len(self._buildP), position)
         position = max(0, position)
         self._buildP.insert(position, value)
-        return True
 
-    def delBuildP(self, position):
+    def delBuildP(self, position: int) -> None:
         """ """
-        if not isinstance(position, int | float):
-            self.log.info(f"malformed position: {position}")
-            return False
-
-        position = int(position)
         if position < 0 or position > len(self._buildP) - 1:
             self.log.info(f"invalid position: {position}")
-            return False
+            return
 
         self._buildP.pop(position)
-        return True
 
     def clearBuildP(self):
         """ """
@@ -356,7 +341,7 @@ class DataPoint:
         y = np.interp(x, xRef, yRef)
         return point[0] > y[int(point[1])]
 
-    def isCloseMeridian(self, point):
+    def isCloseMeridian(self, point) -> bool:
         """ """
         slew = self.app.mount.setting.meridianLimitSlew
         track = self.app.mount.setting.meridianLimitTrack
@@ -370,26 +355,24 @@ class DataPoint:
 
         return lower < point[1] < upper
 
-    def deleteBelowHorizon(self):
+    def deleteBelowHorizon(self) -> None:
         """ """
         self._buildP = [x for x in self._buildP if self.isAboveHorizon(x)]
 
-    def deleteCloseMeridian(self):
+    def deleteCloseMeridian(self) -> None:
         """ """
         self._buildP = [x for x in self._buildP if not self.isCloseMeridian(x)]
 
-    def deleteCloseHorizonLine(self, m):
+    def deleteCloseHorizonLine(self, m) -> None:
         """ """
         if not self.horizonP:
             return
 
-        azH = [x[1] for x in self.horizonP]
-        altH = [x[0] for x in self.horizonP]
+        altH, azH, _ = zip(*self._buildP)
         azI = range(0, 361, 1)
         altI = np.interp(azI, azH, altH)
         horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
         self._buildP = [x for x in self._buildP if not self.isCloseHorizonLine(x, m, horizonI)]
-        return True
 
     def sort(self, points=None, eastwest=False, highlow=False, sortDomeAz=None, pierside=None):
         """ """
@@ -433,8 +416,6 @@ class DataPoint:
 
     def loadJSON(self, fullFileName):
         """
-        :param fullFileName: name of file to be handled
-        :return: value: loaded data
         """
         if not fullFileName.is_file():
             return None

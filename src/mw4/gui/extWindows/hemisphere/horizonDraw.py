@@ -182,8 +182,7 @@ class HorizonDraw(MWidget):
         """ """
         hp = [(y, x) for y, x in zip(y, x)]
         hp.sort(key=lambda x: x[1])
-        x = [x[1] for x in hp]
-        y = [x[0] for x in hp]
+        y, x = zip(*hp)
         self.horizonPlot.setData(x=x, y=y)
         self.app.data.horizonP = hp
         self.drawTab()

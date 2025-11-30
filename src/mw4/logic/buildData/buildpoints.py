@@ -205,8 +205,7 @@ class DataPoint:
             self._horizonP.clear()
             return
 
-        self._horizonP.clear()
-        self._horizonP += value
+        self._horizonP = value
 
     @property
     def buildP(self):

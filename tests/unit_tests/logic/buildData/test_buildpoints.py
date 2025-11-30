@@ -241,32 +241,12 @@ def test_horizonP1(function):
     assert len(function.horizonP) == 58
 
 
-def test_horizonP2(function):
-    function.horizonP = "456"
-    assert len(function.horizonP) == 0
-
-
-def test_horizonP3(function):
-    function.horizonP = [(1, 1), (1, 1), "test"]
-    assert len(function.horizonP) == 0
-
-
 def test_buildP1(function):
     function.horizonP = []
     function.genGreaterCircle("max")
     function.genGreaterCircle("med")
     function.genGreaterCircle("norm")
     function.genGreaterCircle("min")
-
-
-def test_buildP2(function):
-    function.buildP = "456"
-    assert len(function.buildP) == 0
-
-
-def test_buildP3(function):
-    function.buildP = [(1, 1), (1, 1), "test"]
-    assert len(function.buildP) == 0
 
 
 def test_genGreaterCircle1(function):

@@ -195,16 +195,7 @@ class DataPoint:
         return self._horizonP
 
     @horizonP.setter
-    def horizonP(self, value):
-        if not isinstance(value, list):
-            self._horizonP.clear()
-            return
-
-        if not all(isinstance(x, list) for x in value):
-            self.log.info(f"Malformed value: {value}")
-            self._horizonP.clear()
-            return
-
+    def horizonP(self, value: list[list]):
         self._horizonP = value
 
     @property
@@ -212,16 +203,7 @@ class DataPoint:
         return self._buildP
 
     @buildP.setter
-    def buildP(self, value):
-        if not isinstance(value, list):
-            self._buildP = []
-            return
-
-        if not all(isinstance(x, list) for x in value):
-            self.log.info(f"Malformed value: {value}")
-            self._buildP = []
-            return
-
+    def buildP(self, value: list[list]):
         self._buildP = value
 
     def addBuildP(self, value: tuple[int, int, int], position: int | None = None) -> None:

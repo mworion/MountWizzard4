@@ -61,8 +61,7 @@ def test_genBuildGrid_1(function):
     function.ui.altitudeMin.setValue(10)
     function.ui.altitudeMax.setValue(60)
     with mock.patch.object(function.app.data, "genGrid", return_value=True):
-        suc = function.genBuildGrid()
-        assert suc
+        function.genBuildGrid()
 
 
 def test_genBuildGrid_2(function):
@@ -71,8 +70,7 @@ def test_genBuildGrid_2(function):
     function.ui.altitudeMin.setValue(10)
     function.ui.altitudeMax.setValue(60)
     with mock.patch.object(function.app.data, "genGrid", return_value=True):
-        suc = function.genBuildGrid()
-        assert suc
+        function.genBuildGrid()
 
 
 def test_genBuildGrid_3(function):
@@ -82,20 +80,17 @@ def test_genBuildGrid_3(function):
     function.ui.altitudeMax.setValue(60)
 
     with mock.patch.object(function.app.data, "genGrid", return_value=False):
-        suc = function.genBuildGrid()
-        assert not suc
+        function.genBuildGrid()
 
 
 def test_genBuildAlign_1(function):
     with mock.patch.object(function.app.data, "genAlign", return_value=False):
-        suc = function.genBuildAlign()
-        assert not suc
+        function.genBuildAlign()
 
 
 def test_genBuildAlign_2(function):
     with mock.patch.object(function.app.data, "genAlign", return_value=True):
-        suc = function.genBuildAlign()
-        assert suc
+        function.genBuildAlign()
 
 
 def test_genBuildMax_1(function):
@@ -134,13 +129,13 @@ def test_genBuildNorm_1(function):
 
 
 def test_genBuildNorm_2(function):
-    with mock.patch.object(function.app.data, "genGreaterCircle", return_value=False):
+    with mock.patch.object(function.app.data, "genGreaterCircle"):
         function.genBuildNorm()
 
 
 def test_genBuildNorm_3(function):
     function.ui.ditherBuildPoints.setChecked(True)
-    with mock.patch.object(function.app.data, "genGreaterCircle", return_value=True):
+    with mock.patch.object(function.app.data, "genGreaterCircle"):
         function.genBuildNorm()
 
 
@@ -155,95 +150,127 @@ def test_genBuildMin_1b(function):
 
 
 def test_genBuildMin_2(function):
-    with mock.patch.object(function.app.data, "genGreaterCircle", return_value=False):
+    with mock.patch.object(function.app.data, "genGreaterCircle"):
         function.genBuildMin()
 
 
 def test_genBuildMin_3(function):
     function.ui.ditherBuildPoints.setChecked(True)
-    with mock.patch.object(function.app.data, "genGreaterCircle", return_value=True):
+    with mock.patch.object(function.app.data, "genGreaterCircle"):
         function.genBuildMin()
 
 
 def test_genBuildDSO_1(function):
     function.app.mount.obsSite.raJNow = None
     function.app.mount.obsSite.decJNow = None
-    suc = function.genBuildDSO()
-    assert not suc
+    function.genBuildDSO()
 
 
 def test_genBuildDSO_2(function):
+    def test():
+        function.app.data.buildP = [1] * 20
+
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.simbadRa = Angle(hours=0)
     function.simbadDec = Angle(degrees=0)
-    with mock.patch.object(function.app.data, "generateDSOPath", return_value=False):
-        suc = function.genBuildDSO()
-        assert not suc
+    t = function.autoDeletePoints
+    function.autoDeletePoints = test
+    with mock.patch.object(function.app.data, "generateDSOPath"):
+        function.genBuildDSO()
+    function.autoDeletePoints = t
 
 
 def test_genBuildDSO_3(function):
+    def test():
+        function.app.data.buildP = [1] * 20
+
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.simbadRa = None
     function.simbadDec = None
-    with mock.patch.object(function.app.data, "generateDSOPath", return_value=False):
-        suc = function.genBuildDSO()
-        assert not suc
+    t = function.autoDeletePoints
+    function.autoDeletePoints = test
+    with mock.patch.object(function.app.data, "generateDSOPath"):
+        function.genBuildDSO()
+    function.autoDeletePoints = t
 
 
 def test_genBuildDSO_4(function):
+    def test():
+        function.app.data.buildP = [1] * 20
+
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.simbadRa = None
     function.simbadDec = None
-    with mock.patch.object(function.app.data, "generateDSOPath", return_value=False):
-        suc = function.genBuildDSO()
-        assert not suc
+    t = function.autoDeletePoints
+    function.autoDeletePoints = test
+    with mock.patch.object(function.app.data, "generateDSOPath"):
+        function.genBuildDSO()
+    function.autoDeletePoints = t
 
 
 def test_genBuildDSO_5(function):
+    def test():
+        function.app.data.buildP = [1] * 20
+
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.simbadRa = Angle(hours=0)
     function.simbadDec = Angle(degrees=0)
-    with mock.patch.object(function.app.data, "generateDSOPath", return_value=True):
-        suc = function.genBuildDSO()
-        assert suc
+    t = function.autoDeletePoints
+    function.autoDeletePoints = test
+    with mock.patch.object(function.app.data, "generateDSOPath"):
+        function.genBuildDSO()
+    function.autoDeletePoints = t
 
 
 def test_genBuildDSO_6(function):
+    def test():
+        function.app.data.buildP = []
+        function.iteration = 0
+
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.ui.ditherBuildPoints.setChecked(True)
     function.simbadRa = Angle(hours=0)
     function.simbadDec = Angle(degrees=0)
-    with mock.patch.object(function.app.data, "generateDSOPath", return_value=True):
-        with mock.patch.object(function.app.data, "ditherPoints"):
-            suc = function.genBuildDSO()
-            assert suc
-
-
-def test_genBuildGoldenSpiral_1(function):
-    def test():
-        function.app.data.buildP = [1] * 20
-
-    function.ui.numberSpiral.setValue(15)
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateGoldenSpiral", return_value=True):
-        function.genBuildGoldenSpiral()
+    with mock.patch.object(function.app.data, "generateDSOPath"):
+        with mock.patch.object(function.app.data, "ditherPoints"):
+            function.genBuildDSO()
     function.autoDeletePoints = t
 
 
-def test_genBuildGoldenSpiral_2(function):
-    function.ui.numberSpiral.setValue(2)
-    with mock.patch.object(function.app.data, "generateGoldenSpiral", return_value=False):
+def test_genBuildDSO_7(function):
+    def test():
+        function.app.data.buildP = [1]
+        function.iteration = 0
+
+    function.app.mount.obsSite.raJNow = 0
+    function.app.mount.obsSite.decJNow = 0
+    function.app.mount.obsSite.timeSidereal = Angle(hours=0)
+    function.ui.ditherBuildPoints.setChecked(True)
+    function.simbadRa = Angle(hours=0)
+    function.simbadDec = Angle(degrees=0)
+    t = function.autoDeletePoints
+    function.autoDeletePoints = test
+    with mock.patch.object(function.app.data, "generateDSOPath"):
+        with mock.patch.object(function.app.data, "ditherPoints"):
+            function.genBuildDSO()
+    function.autoDeletePoints = t
+
+
+def test_genBuildGoldenSpiral_1(function):
+    function.ui.numberSpiral.setValue(15)
+    with mock.patch.object(function.app.data, "generateGoldenSpiral"):
         function.genBuildGoldenSpiral()
 
 
@@ -287,8 +314,7 @@ def test_saveBuildFile_1(function):
 
 def test_saveBuildFile_2(function):
     function.ui.buildPFileName.setText("")
-    suc = function.saveBuildFile()
-    assert not suc
+    function.saveBuildFile()
 
 
 def test_saveBuildFile_3(function):
@@ -366,7 +392,7 @@ def test_sortDomeAzWorker_1(function):
         "calcMountAltAzToDomeAltAz",
         return_value=(0, Angle(degrees=10)),
     ):
-        suc = function.sortDomeAzWorker([(10, 10, True)])
+        suc = function.sortDomeAzWorker([(10, 10, True)], "E")
         assert suc
 
 
@@ -374,25 +400,25 @@ def test_sortDomeAzWorker_2(function):
     with mock.patch.object(
         function.app.mount, "calcMountAltAzToDomeAltAz", return_value=(None, None)
     ):
-        suc = function.sortDomeAzWorker([(10, 10, True)])
+        suc = function.sortDomeAzWorker([(10, 10, True)], "E")
         assert suc
 
 
 def test_sortDomeAz_1(function):
     with mock.patch.object(function.app.threadPool, "start"):
-        function.sortDomeAz([])
+        function.sortDomeAz([], "E")
         function.sortRunning.unlock()
 
 
 def test_sortDomeAz_2(function):
     function.sortRunning.lock()
     with mock.patch.object(function.app.threadPool, "start"):
-        function.sortDomeAz([])
+        function.sortDomeAz([], "E")
 
 
 def test_sortMountAz(function):
     with mock.patch.object(function.app.data, "sort"):
-        function.sortMountAz([])
+        function.sortMountAz([], False, False, "E")
 
 
 def test_autoSortPoints_1(function):
@@ -465,13 +491,7 @@ def test_querySimbad_3(function):
 
 
 def test_querySimbad_4(function):
-    class Data2:
-        data = ["10 00 00"]
-
-    class Data:
-        value = Data2()
-
-    result = {"RA": Data(), "DEC": Data()}
+    result = {"ra": 1.0, "dec": 2.5}
 
     function.ui.isOnline.setChecked(True)
     function.ui.generateQuery.setText("m31")

@@ -184,7 +184,7 @@ class MountSett(QObject):
     def setMeridianLimitTrack(self):
         """ """
         sett = self.app.mount.setting
-        actValue = 0 if sett.meridianLimitTrack is None else int(sett.meridianLimitTrack)
+        actValue = 0 if not sett.meridianLimitTrack else int(sett.meridianLimitTrack)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
             self.mainW, "Set Meridian Limit Track", "Value (1-30):", actValue, 1, 30, 1
@@ -202,7 +202,7 @@ class MountSett(QObject):
     def setMeridianLimitSlew(self):
         """ """
         sett = self.app.mount.setting
-        actValue = 0 if sett.meridianLimitSlew is None else int(sett.meridianLimitSlew)
+        actValue = 0 if not sett.meridianLimitSlew else int(sett.meridianLimitSlew)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
             self.mainW, "Set Meridian Limit Slew", "Value (0-30):", actValue, 0, 30, 1

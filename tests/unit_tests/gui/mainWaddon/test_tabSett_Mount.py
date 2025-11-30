@@ -222,21 +222,3 @@ def test_syncClock_6(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=True):
         function.syncClock()
-
-
-def test_updateTelescopeParametersToGui_1(function):
-    function.app.telescope.data["TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"] = 1
-    function.app.telescope.data["TELESCOPE_INFO.TELESCOPE_APERTURE"] = 1
-
-    function.updateTelescopeParametersToGui()
-
-
-def test_updateTelescopeParametersToGuiCyclic_1(function):
-    function.ui.automaticTelescope.setChecked(False)
-    function.updateTelescopeParametersToGuiCyclic()
-
-
-def test_updateTelescopeParametersToGuiCyclic_2(function):
-    function.ui.automaticTelescope.setChecked(True)
-    with mock.patch.object(function, "updateTelescopeParametersToGui"):
-        function.updateTelescopeParametersToGuiCyclic()

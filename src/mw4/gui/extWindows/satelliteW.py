@@ -88,6 +88,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.colorChange.connect(self.colorChange)
         self.app.sendSatelliteData.emit([], [])
+        self.drawHorizon()
         self.show()
 
     def colorChange(self) -> None:

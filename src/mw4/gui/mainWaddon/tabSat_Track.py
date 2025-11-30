@@ -19,15 +19,14 @@
 import numpy as np
 from PySide6.QtCore import QObject
 from sgp4.exporter import export_tle
-from skyfield.api import Angle
+from skyfield.api import Angle, EarthSatellite
 
 # local import
 from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 from mw4.logic.satellites.satellite_calculations import calcSatPasses
-from mw4.mountcontrol.tleParams import TLEParams
 from mw4.mountcontrol.obsSite import ObsSite
-from skyfield.api import EarthSatellite
+from mw4.mountcontrol.tleParams import TLEParams
 
 
 class SatTrack(QObject, SatData):

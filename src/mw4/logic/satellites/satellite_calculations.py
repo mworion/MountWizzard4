@@ -18,13 +18,13 @@ from collections.abc import Callable
 
 # external packages
 import numpy as np
-from mw4.mountcontrol.obsSite import ObsSite
-from mw4.mountcontrol.setting import Setting
 from skyfield import almanac
-from skyfield.units import Angle
 from skyfield.api import EarthSatellite, Time
 from skyfield.toposlib import GeographicPosition
+from skyfield.units import Angle
 
+from mw4.mountcontrol.obsSite import ObsSite
+from mw4.mountcontrol.setting import Setting
 
 # local import
 
@@ -40,7 +40,9 @@ def findSunlit(sat: EarthSatellite, ephemeris, tEvent: tuple) -> bool:
     return sunlit
 
 
-def findSatUp(sat: EarthSatellite, loc: GeographicPosition, tStart: float, tEnd: float, alt: float) -> tuple[bool, list]:
+def findSatUp(
+    sat: EarthSatellite, loc: GeographicPosition, tStart: float, tEnd: float, alt: float
+) -> tuple[bool, list]:
     """
     :param sat:
     :param loc:
@@ -73,7 +75,9 @@ def checkTwilight(ephemeris, loc: GeographicPosition, data: list) -> int:
     return twilight
 
 
-def findRangeRate(sat: EarthSatellite, loc: GeographicPosition, tEv: float) -> tuple[float, float, float, float]:
+def findRangeRate(
+    sat: EarthSatellite, loc: GeographicPosition, tEv: float
+) -> tuple[float, float, float, float]:
     """
     :param sat:
     :param loc:
@@ -90,7 +94,9 @@ def findRangeRate(sat: EarthSatellite, loc: GeographicPosition, tEv: float) -> t
     )
 
 
-def calcSatSunPhase(sat: EarthSatellite, loc: GeographicPosition, ephemeris, tEv: float) -> Angle:
+def calcSatSunPhase(
+    sat: EarthSatellite, loc: GeographicPosition, ephemeris, tEv: float
+) -> Angle:
     """
     https://stackoverflow.com/questions/19759501
         /calculating-the-phase-angle-between-the-sun-iss-and-an-observer-on-the
@@ -111,7 +117,9 @@ def calcSatSunPhase(sat: EarthSatellite, loc: GeographicPosition, ephemeris, tEv
     return phase
 
 
-def calcAppMag(sat: EarthSatellite, loc: GeographicPosition, ephemeris, satRange, tEv: float) -> float:
+def calcAppMag(
+    sat: EarthSatellite, loc: GeographicPosition, ephemeris, satRange, tEv: float
+) -> float:
     """
     solution base on the work from:
     https://astronomy.stackexchange.com/questions/28744
@@ -141,7 +149,9 @@ def calcAppMag(sat: EarthSatellite, loc: GeographicPosition, ephemeris, satRange
     return appMag
 
 
-def calcSatelliteMeridianTransit(sat: EarthSatellite, loc: GeographicPosition, tolerance: float) -> Callable:
+def calcSatelliteMeridianTransit(
+    sat: EarthSatellite, loc: GeographicPosition, tolerance: float
+) -> Callable:
     """ """
     difference = sat - loc
 
@@ -154,7 +164,9 @@ def calcSatelliteMeridianTransit(sat: EarthSatellite, loc: GeographicPosition, t
     return west_of_meridian_at
 
 
-def calcPassEvents(sat: EarthSatellite, obsSite: ObsSite, minAlt: float = 5) -> tuple[list, list]:
+def calcPassEvents(
+    sat: EarthSatellite, obsSite: ObsSite, minAlt: float = 5
+) -> tuple[list, list]:
     """ """
     if minAlt is None:
         minAlt = 5
@@ -210,7 +222,9 @@ def extractCorrectOrbits(times: list[Time], events: list[int], satOrbits: list[d
     return satOrbits
 
 
-def sortFlipEvents(satOrbit: list[dict], t0: list[Time], t1: list[Time], t2: list[Time]) -> dict:
+def sortFlipEvents(
+    satOrbit: list[dict], t0: list[Time], t1: list[Time], t2: list[Time]
+) -> dict:
     """ """
     settle = satOrbit["settle"]
     rise = satOrbit["rise"]
@@ -236,7 +250,9 @@ def sortFlipEvents(satOrbit: list[dict], t0: list[Time], t1: list[Time], t2: lis
     return satOrbit
 
 
-def addMeridianTransit(sat: EarthSatellite, satOrbits: list[dict], loc: GeographicPosition, setting: Setting) -> list[dict]:
+def addMeridianTransit(
+    sat: EarthSatellite, satOrbits: list[dict], loc: GeographicPosition, setting: Setting
+) -> list[dict]:
     """ """
     limit = setting.meridianLimitTrack
     if limit is None:

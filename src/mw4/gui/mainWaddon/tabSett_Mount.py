@@ -50,10 +50,8 @@ class SettMount(QObject):
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
         self.ui.waitTimeMountFlip.valueChanged.connect(self.setWaitTimeFlip)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
-        self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
         self.app.mount.signals.settingDone.connect(self.setMountMAC)
         self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
-        self.app.update3s.connect(self.updateTelescopeParametersToGuiCyclic)
         self.app.update30s.connect(self.syncClock)
 
     def initConfig(self) -> None:
@@ -69,7 +67,6 @@ class SettMount(QObject):
         self.ui.rackCompMAC.setText(config.get("rackCompMAC", ""))
         self.ui.waitTimeMountFlip.setValue(config.get("waitTimeFlip", 0))
         self.ui.waitTimeExposure.setValue(config.get("waitTimeExposure", 0))
-        self.ui.automaticTelescope.setChecked(config.get("automaticTelescope", False))
         self.ui.automaticWOL.setChecked(config.get("automaticWOL", False))
         self.ui.syncTimeNone.setChecked(config.get("syncTimeNone", True))
         self.ui.syncTimeCont.setChecked(config.get("syncTimeCont", False))
@@ -91,7 +88,6 @@ class SettMount(QObject):
         config["waitTimeFlip"] = self.ui.waitTimeMountFlip.value()
         config["waitTimeExposure"] = self.ui.waitTimeExposure.value()
         config["port3492"] = self.ui.port3492.isChecked()
-        config["automaticTelescope"] = self.ui.automaticTelescope.isChecked()
         config["automaticWOL"] = self.ui.automaticWOL.isChecked()
         config["syncTimeNone"] = self.ui.syncTimeNone.isChecked()
         config["syncTimeCont"] = self.ui.syncTimeCont.isChecked()
@@ -207,21 +203,3 @@ class SettMount(QObject):
             self.msg.emit(0, "System", "Clock", f"Correction: [{-delta} ms]")
         else:
             self.msg.emit(2, "System", "Clock", "Cannot adjust mount clock")
-
-    def updateTelescopeParametersToGui(self) -> None:
-        """ """
-        data = self.app.telescope.data
-        value = data.get("TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH", 0)
-        if value is not None:
-            value = float(value)
-            self.ui.focalLength.setValue(value)
-
-        value = data.get("TELESCOPE_INFO.TELESCOPE_APERTURE", 0)
-        if value is not None:
-            value = float(value)
-            self.ui.aperture.setValue(value)
-
-    def updateTelescopeParametersToGuiCyclic(self) -> None:
-        """ """
-        if self.ui.automaticTelescope.isChecked():
-            self.updateTelescopeParametersToGui()

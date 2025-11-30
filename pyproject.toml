@@ -13,7 +13,7 @@
 #
 ###########################################################
 [build-system]
-requires = ["uv_build>=0.9.7"]
+requires = ["uv_build>=0.9.10"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -22,7 +22,7 @@ module-root = "src"
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0a38"
+version = "4.0.0a39"
 license = "Apache-2.0"
 description = "Tool for managing 10_micron mounts"
 readme = "README.rst"
@@ -62,7 +62,7 @@ dependencies = [
     "pyerfa==2.0.1.5",
     "astroquery==0.4.11",
     "sep==1.4.1",
-    "pyqtgraph==0.13.7",
+    "pyqtgraph==0.14.0",
     "qimage2ndarray==1.10.0",
     "skyfield==1.53",
     "sgp4==2.25",
@@ -77,10 +77,12 @@ dependencies = [
     "range-key-dict==1.1.0",
     "ndicts==0.3.0",
     "packaging==25.0",
-    "lz4==4.4.4",
+    "lz4==4.4.5",
     "xisf==0.9.5",
     "pyside6==6.10.0",
     "pywin32==311; platform_system == 'Windows'",
+    "pytest>=8.4.2",
+    "ruff>=0.14.0",
 ]
 
 [project.scripts]
@@ -97,12 +99,13 @@ Forum = "https://www.10micron.eu/forum/"
 
 [dependency-groups]
 dev = [
-  "pytest",
-  "pytest-qt",
-  "pytest-cov",
-  "pytest-xdist",
-  "invoke",
-  "ruff",
+    "pytest",
+    "pytest-qt",
+    "pytest-cov",
+    "pytest-xdist",
+    "invoke",
+    "ruff",
+    "invoke",
 ]
 
 [tool.pytest.ini_options]

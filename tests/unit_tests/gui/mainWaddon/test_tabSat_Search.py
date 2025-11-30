@@ -171,7 +171,9 @@ def test_calcSatListDynamic_5(function):
     function.ui.listSats.setItem(0, 0, entry)
     function.ui.listSats.setRowHidden(0, True)
     with mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True):
-        with mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True):
+        with mock.patch.object(
+            mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True
+        ):
             with mock.patch.object(
                 mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10
             ):

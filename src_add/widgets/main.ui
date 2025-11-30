@@ -12131,8 +12131,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <widget class="QGroupBox" name="GroupFocuser">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>145</y>
+         <x>5</x>
+         <y>290</y>
          <width>366</width>
          <height>101</height>
         </rect>
@@ -12393,7 +12393,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <x>5</x>
          <y>10</y>
          <width>366</width>
-         <height>276</height>
+         <height>271</height>
         </rect>
        </property>
        <property name="title">
@@ -12871,7 +12871,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <property name="geometry">
           <rect>
            <x>5</x>
-           <y>5</y>
+           <y>0</y>
            <width>96</width>
            <height>21</height>
           </rect>
@@ -12894,7 +12894,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <property name="geometry">
           <rect>
            <x>245</x>
-           <y>5</y>
+           <y>0</y>
            <width>106</width>
            <height>21</height>
           </rect>
@@ -12947,7 +12947,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <property name="geometry">
           <rect>
            <x>200</x>
-           <y>5</y>
+           <y>0</y>
            <width>71</width>
            <height>21</height>
           </rect>
@@ -12970,7 +12970,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <property name="geometry">
           <rect>
            <x>65</x>
-           <y>5</y>
+           <y>0</y>
            <width>106</width>
            <height>21</height>
           </rect>
@@ -13250,7 +13250,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>10</y>
+         <y>115</y>
          <width>366</width>
          <height>81</height>
         </rect>
@@ -13691,8 +13691,8 @@ Slew</string>
       <widget class="QGroupBox" name="GroupFilterWheel">
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>340</y>
+         <x>400</x>
+         <y>230</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -13849,6 +13849,226 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="input" stdset="0">
          <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="GroupTelescopeReadout">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>10</y>
+         <width>366</width>
+         <height>76</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Telescope information readout</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_396">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>20</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>mm</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_394">
+        <property name="geometry">
+         <rect>
+          <x>205</x>
+          <y>20</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Aperture</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_395">
+        <property name="geometry">
+         <rect>
+          <x>335</x>
+          <y>20</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>mm</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="copyFromTelescopeDriver">
+        <property name="geometry">
+         <rect>
+          <x>225</x>
+          <y>50</y>
+          <width>131</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Data from Driver</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_387">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Focal length</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="focalLength">
+        <property name="geometry">
+         <rect>
+          <x>95</x>
+          <y>20</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>71</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Manual setting the focal length of the used telescope&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>10000.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>50.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>500.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="aperture">
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>20</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>71</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Manual setting of the aperture of the used telescope&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>10000.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>20.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>100.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="automaticTelescope">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>211</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, MW4 will use the driver settings for the actual telescope.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Automatic takeover from driver</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </widget>
@@ -24612,7 +24832,7 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="geometry">
          <rect>
-          <x>115</x>
+          <x>155</x>
           <y>75</y>
           <width>126</width>
           <height>21</height>
@@ -24662,7 +24882,7 @@ Next point in time when satellite settles.</string>
        <widget class="QRadioButton" name="port3492">
         <property name="geometry">
          <rect>
-          <x>190</x>
+          <x>225</x>
           <y>50</y>
           <width>56</width>
           <height>21</height>
@@ -24688,7 +24908,7 @@ Next point in time when satellite settles.</string>
        <widget class="QRadioButton" name="port3490">
         <property name="geometry">
          <rect>
-          <x>115</x>
+          <x>155</x>
           <y>50</y>
           <width>66</width>
           <height>21</height>
@@ -24774,7 +24994,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLineEdit" name="mountWolAddress">
         <property name="geometry">
          <rect>
-          <x>165</x>
+          <x>155</x>
           <y>125</y>
           <width>116</width>
           <height>21</height>
@@ -24827,7 +25047,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLineEdit" name="mountWolPort">
         <property name="geometry">
          <rect>
-          <x>165</x>
+          <x>155</x>
           <y>150</y>
           <width>116</width>
           <height>21</height>
@@ -24900,7 +25120,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>175</y>
+          <y>180</y>
           <width>211</width>
           <height>21</height>
          </rect>
@@ -25030,10 +25250,10 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="GroupRigComputer">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>330</y>
+         <x>5</x>
+         <y>285</y>
          <width>366</width>
-         <height>61</height>
+         <height>111</height>
         </rect>
        </property>
        <property name="title">
@@ -25065,9 +25285,9 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="bootRackComp">
         <property name="geometry">
          <rect>
-          <x>245</x>
+          <x>280</x>
           <y>25</y>
-          <width>116</width>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -25078,13 +25298,13 @@ Next point in time when satellite settles.</string>
          </size>
         </property>
         <property name="text">
-         <string>Boot / WOL</string>
+         <string>WOL</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="rackCompMAC">
         <property name="geometry">
          <rect>
-          <x>115</x>
+          <x>155</x>
           <y>25</y>
           <width>116</width>
           <height>21</height>
@@ -25106,12 +25326,158 @@ Next point in time when satellite settles.</string>
          <bool>true</bool>
         </property>
        </widget>
+       <widget class="QLineEdit" name="rackCompMACWolAddress">
+        <property name="geometry">
+         <rect>
+          <x>155</x>
+          <y>50</y>
+          <width>116</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default is 255.255.255.255. If you would like to send WOL packet acress subnets, this is the IP address of the brodcast host in the subnet, where the mount is located.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>255.255.255.255</string>
+        </property>
+        <property name="maxLength">
+         <number>50</number>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_mountMAC_8">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>151</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>WOL broadcast address</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="rackCompMACWolPort">
+        <property name="geometry">
+         <rect>
+          <x>155</x>
+          <y>75</y>
+          <width>116</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default is 9. If you would like to send WOL packet acress subnets, this is the port of the brodcast host in the subnet, where the mount is located.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>9</string>
+        </property>
+        <property name="maxLength">
+         <number>50</number>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_mountMAC_9">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>75</y>
+          <width>151</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>WOL broadcast port</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="GroupMountSettleTime">
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>145</y>
+         <y>180</y>
          <width>366</width>
          <height>71</height>
         </rect>
@@ -25636,231 +26002,11 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="GroupTelescopeReadout">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>230</y>
-         <width>366</width>
-         <height>76</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Telescope information readout</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_396">
-        <property name="geometry">
-         <rect>
-          <x>170</x>
-          <y>20</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>mm</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_394">
-        <property name="geometry">
-         <rect>
-          <x>205</x>
-          <y>20</y>
-          <width>56</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Aperture</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_395">
-        <property name="geometry">
-         <rect>
-          <x>335</x>
-          <y>20</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>mm</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="copyFromTelescopeDriver">
-        <property name="geometry">
-         <rect>
-          <x>225</x>
-          <y>50</y>
-          <width>131</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Data from Driver</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_387">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>76</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Focal length</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="focalLength">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>20</y>
-          <width>71</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>71</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Manual setting the focal length of the used telescope&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10000.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>50.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>500.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="aperture">
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>20</y>
-          <width>71</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>71</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Manual setting of the aperture of the used telescope&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10000.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>20.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>100.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="automaticTelescope">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>50</y>
-          <width>211</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, MW4 will use the driver settings for the actual telescope.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Automatic takeover from driver</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="GroupClockSync">
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>305</y>
+         <x>400</x>
+         <y>310</y>
          <width>366</width>
          <height>86</height>
         </rect>
@@ -32934,10 +33080,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>syncTimeNone</tabstop>
   <tabstop>syncTimeCont</tabstop>
   <tabstop>syncTimeNotTrack</tabstop>
-  <tabstop>focalLength</tabstop>
-  <tabstop>aperture</tabstop>
-  <tabstop>automaticTelescope</tabstop>
-  <tabstop>copyFromTelescopeDriver</tabstop>
   <tabstop>rackCompMAC</tabstop>
   <tabstop>bootRackComp</tabstop>
   <tabstop>domeNorthOffset</tabstop>

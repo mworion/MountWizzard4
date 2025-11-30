@@ -83,9 +83,21 @@ class ImageStats(QObject):
         self.ui.openWatneyCatalog.clicked.connect(self.openWatneyCatalog)
         self.ui.openASTAPCatalog.clicked.connect(self.openASTAPCatalog)
         self.ui.openAstrometryCatalog.clicked.connect(self.openAstrometryCatalog)
+        self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
         self.app.update1s.connect(self.updateImageStats)
+        self.app.update3s.connect(self.updateTelescopeParametersToGuiCyclic)
         self.fovHint = None
         self.scaleHint = None
+
+    def initConfig(self) -> None:
+        """ """
+        config = self.app.config["mainW"]
+        self.ui.automaticTelescope.setChecked(config.get("automaticTelescope", False))
+
+    def storeConfig(self) -> None:
+        """ """
+        config = self.app.config["mainW"]
+        config["automaticTelescope"] = self.ui.automaticTelescope.isChecked()
 
     def updateImageStats(self) -> None:
         """ """
@@ -192,3 +204,21 @@ class ImageStats(QObject):
         url = "http://data.astrometry.net/4200/"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "ImageStats", "Browser failed")
+
+    def updateTelescopeParametersToGui(self) -> None:
+        """ """
+        data = self.app.telescope.data
+        value = data.get("TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH", 0)
+        if value is not None:
+            value = float(value)
+            self.ui.focalLength.setValue(value)
+
+        value = data.get("TELESCOPE_INFO.TELESCOPE_APERTURE", 0)
+        if value is not None:
+            value = float(value)
+            self.ui.aperture.setValue(value)
+
+    def updateTelescopeParametersToGuiCyclic(self) -> None:
+        """ """
+        if self.ui.automaticTelescope.isChecked():
+            self.updateTelescopeParametersToGui()

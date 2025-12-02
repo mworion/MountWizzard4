@@ -589,7 +589,7 @@ def test_loadBPTS_2(function):
         outfile.writelines("[test, ]],[]}")
 
     val = function.loadBPTS(Path("tests/work/config/test.bpts"))
-    assert val is None
+    assert val == []
 
 
 def test_loadBPTS_3(function):
@@ -597,7 +597,7 @@ def test_loadBPTS_3(function):
         outfile.write(binascii.unhexlify("9f"))
 
     val = function.loadBPTS(Path("tests/work/config/test.bpts"))
-    assert val is None
+    assert val == []
 
 
 def test_loadBPTS_4(function):
@@ -614,7 +614,7 @@ def test_loadCSV_1(function):
         outfile.writelines("[test, ]],[]}\n")
 
     val = function.loadCSV(Path("tests/work/config/test.csv"))
-    assert val is None
+    assert val == []
 
 
 def test_loadCSV_2(function):
@@ -644,7 +644,7 @@ def test_loadBuildP_1(function):
 def test_loadBuildP_2(function):
     # path with not existent file given
     with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(function, "loadBPTS", return_value=None):
+        with mock.patch.object(function, "loadBPTS", return_value=[]):
             suc = function.loadBuildP(Path("tests/work/config/test.bpts"))
             assert not suc
 

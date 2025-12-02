@@ -692,7 +692,7 @@ def test_loadBuildP_4(function):
     with open(fileName, "w") as outfile:
         outfile.write("1, 1\n")
         outfile.write("2, 2\n")
-    suc = function.loadBuildP(Path("tests/work/config/test.csv"), ext=".csv", keep=True)
+    suc = function.loadBuildP(Path("tests/work/config/test.csv"), ext=".csv")
     assert suc
 
 
@@ -702,7 +702,7 @@ def test_loadBuildP_6(function):
     values = [{"azimuth": 1, "altitude": 1}, {"azimuth": 2, "altitude": 2}]
     with open("tests/work/config/test.model", "w") as outfile:
         json.dump(values, outfile, indent=4)
-    suc = function.loadBuildP(Path("tests/work/config/test.model"), ext=".model", keep=True)
+    suc = function.loadBuildP(Path("tests/work/config/test.model"), ext=".model")
     assert suc
 
 

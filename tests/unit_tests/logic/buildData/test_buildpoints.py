@@ -529,7 +529,7 @@ def test_addHorizonP6(function):
 
 
 def test_delHorizonP1(function):
-    function.horizonP = [[10, 10]*20]
+    function.horizonP = [[10, 10]] * 20
     assert len(function.horizonP) == 20
     function.delHorizonP(5)
     assert len(function.horizonP) == 19
@@ -540,14 +540,14 @@ def test_delHorizonP1(function):
 
 
 def test_delHorizonP2(function):
-    function.horizonP = [[10, 10]*20]
+    function.horizonP = [[10, 10]] * 20
     assert len(function.horizonP) == 20
     function.delHorizonP(-5)
     assert len(function.horizonP) == 20
 
 
 def test_delHorizonP3(function):
-    function.horizonP = [[10, 10]*20]
+    function.horizonP = [[10, 10]] * 20
     assert len(function.horizonP) == 20
     function.delHorizonP(170)
     assert len(function.horizonP) == 20
@@ -796,60 +796,70 @@ def test_genGrid7(function):
 
 
 def test_genGridData1(function):
+    function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=4, numbCols=4)
     assert len(function.buildP) == 16
 
 
 def test_genGridData2(function):
+    function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=5, maxAlt=85, numbRows=4, numbCols=4)
     assert len(function.buildP) == 12
 
 
 def test_genGridData3(function):
+    function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=5, maxAlt=85, numbRows=8, numbCols=8)
     assert len(function.buildP) == 56
 
 
 def test_genGridData4(function):
+    function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=6, numbCols=6)
     assert len(function.buildP) == 36
 
 
 def test_genGridData5(function):
+    function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=6, numbCols=12)
     assert len(function.buildP) == 72
 
 
 def test_genGridData6(function):
+    function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=1, numbCols=12)
     assert len(function.buildP) == 72
 
 
 def test_genGridData7(function):
+    function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=5, numbCols=1)
     assert len(function.buildP) == 72
 
 
 def test_genGridData8(function):
+    function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=10, numbCols=12)
     assert len(function.buildP) == 72
 
 
 def test_genGridData9(function):
+    function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=6, numbCols=20)
     assert len(function.buildP) == 72
 
 
 def test_genAlign1(function):
+    function.buildP = []
     function.horizonP = []
     suc = function.genAlign(
         altBase=30,
@@ -861,6 +871,7 @@ def test_genAlign1(function):
 
 
 def test_genAlign2(function):
+    function.buildP = []
     function.horizonP = []
     suc = function.genAlign(
         altBase=0,
@@ -872,6 +883,7 @@ def test_genAlign2(function):
 
 
 def test_genAlign3(function):
+    function.buildP = []
     function.horizonP = []
     suc = function.genAlign(
         altBase=30,
@@ -883,6 +895,7 @@ def test_genAlign3(function):
 
 
 def test_genAlign4(function):
+    function.buildP = []
     function.horizonP = []
     suc = function.genAlign(
         altBase=30,
@@ -894,6 +907,7 @@ def test_genAlign4(function):
 
 
 def test_genAlign5(function):
+    function.buildP = []
     function.horizonP = []
     suc = function.genAlign(
         altBase=30,

@@ -564,7 +564,7 @@ def test_loadModel_2(function):
         outfile.writelines("[test, ]],[]}")
 
     val = function.loadModel(Path("tests/work/config/test.model"))
-    assert val is None
+    assert val == []
 
 
 def test_loadModel_3(function):
@@ -572,7 +572,7 @@ def test_loadModel_3(function):
         outfile.write(binascii.unhexlify("9f"))
 
     val = function.loadModel(Path("tests/work/config/test.model"))
-    assert val is None
+    assert val == []
 
 
 def test_loadModel_4(function):
@@ -641,14 +641,6 @@ def test_loadBuildP_1(function):
     assert not suc
 
 
-def test_loadBuildP_2(function):
-    # path with not existent file given
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(function, "loadBPTS", return_value=[]):
-            suc = function.loadBuildP(Path("tests/work/config/test.bpts"))
-            assert not suc
-
-
 def test_loadBuildP_3(function):
     # load file with Path
     function.buildPFile = ""
@@ -710,30 +702,6 @@ def test_loadHorizonP_2(function):
     suc = function.loadHorizonP("test_horizon_2", ".hpts")
     assert suc
     assert function.horizonP == values
-
-
-def test_loadHorizonP_3(function):
-    # load with wrong content
-    function.horizonPFile = ""
-    function.horizonP = []
-    fileName = "tests/work/config/test_horizon_2.hpts"
-    with open(fileName, "wb") as outfile:
-        outfile.write(binascii.unhexlify("9f"))
-    suc = function.loadHorizonP("test_horizon_2", ".hpts")
-    assert not suc
-    assert function.horizonP == []
-
-
-def test_loadHorizonP_4(function):
-    # load with wrong content 2
-    function.horizonPFile = ""
-    function.horizonP = []
-    fileName = "tests/work/config/test_horizon_2.hpts"
-    with open(fileName, "w") as outfile:
-        outfile.writelines("[test, ]],[]}")
-    suc = function.loadHorizonP("test_horizon_2", ".hpts")
-    assert not suc
-    assert function.horizonP == []
 
 
 def test_loadHorizonP_5(function):

@@ -31,7 +31,7 @@ from skyfield.toposlib import GeographicPosition
 from mw4.base import transform
 
 
-def HaDecToAltAz(ha, dec, lat):
+def HaDecToAltAz(ha: float, dec: float, lat: float) -> float, float:
     """
     HaDecToAltAz is derived from http://www.stargazing.net/kepler/altaz.html
     """
@@ -405,7 +405,7 @@ class DataPoint:
 
         return all(len(x) == 2 for x in value)
 
-    def loadBuildP(self, fullFileName: Path, ext: str = ".bpts", keep: bool = False) -> bool:
+    def loadBuildP(self, fullFileName: Path, ext: str = ".bpts") -> bool:
         """ """
         if not fullFileName.is_file():
             return False
@@ -420,13 +420,10 @@ class DataPoint:
 
         if value is None:
             return False
-
+            
         points = [(x[0], x[1], self.UNPROCESSED) for x in value]
-
-        if keep:
-            self._buildP += points
-        else:
-            self._buildP = points
+        self._buildP = points 
+        self.saveBuildP(fullFileName.stem) 
         return True
 
     def saveBuildP(self, fileName: str) -> None:
@@ -491,7 +488,7 @@ class DataPoint:
 
         yield from zip(decL, stepL, startL, stopL)
 
-    def genGreaterCircle(self, selection: str = "norm", keep: bool = False) -> bool:
+    def genGreaterCircle(self, selection: str = "norm") -> bool:
         """
         genGreaterCircle takes the generated boundaries for the range routine and
         transforms ha, dec to alt az. reasonable values for the alt az values
@@ -499,8 +496,6 @@ class DataPoint:
         """
         if not self.app.mount.obsSite.location:
             return False
-        if not keep:
-            self.clearBuildP()
 
         lat = self.app.mount.obsSite.location.latitude.degrees
         for dec, step, start, stop in self.genHaDecParams(selection, lat):
@@ -538,7 +533,6 @@ class DataPoint:
         maxAlt: int = 85,
         numbRows: int = 5,
         numbCols: int = 6,
-        keep: bool = False,
     ) -> bool:
         """
         genGrid generates a grid of points and transforms ha, dec to alt az.
@@ -577,17 +571,13 @@ class DataPoint:
         minAz = int(180 / numbCols)
         maxAz = 360 - minAz
 
-        if not keep:
-            self.clearBuildP()
-
         for point in self.genGridGenerator(eastAlt, westAlt, minAz, stepAz, maxAz):
             self.addBuildP(point)
 
         return True
 
     def genAlign(
-        self, altBase: int = 30, azBase: int = 10, numberBase: int = 3, keep: bool = False
-    ) -> bool:
+        self, altBase: int = 30, azBase: int = 10, numberBase: int = 3) -> bool:
         """ """
         if not 5 <= altBase <= 85:
             return False
@@ -600,9 +590,6 @@ class DataPoint:
         altBase = int(altBase)
         azBase = int(azBase) % stepAz
         numberBase = int(numberBase)
-
-        if not keep:
-            self.clearBuildP()
 
         for i in range(0, numberBase):
             az = azBase + i * stepAz
@@ -683,13 +670,10 @@ class DataPoint:
         for buildP in buildPs:
             self.addBuildP(buildP)
 
-    def generateGoldenSpiral(self, numberPoints: int, keep: bool = False) -> None:
+    def generateGoldenSpiral(self, numberPoints: int) -> None:
         """
         https://stackoverflow.com/questions/9600801/evenly-distributing-n-points-on-a-sphere
         """
-        if not keep:
-            self.clearBuildP()
-
         indices = np.arange(0, numberPoints, dtype=float) + 0.5
         phi = np.arccos(1 - 2 * indices / numberPoints)
         theta = np.pi * (1 + 5**0.5) * indices

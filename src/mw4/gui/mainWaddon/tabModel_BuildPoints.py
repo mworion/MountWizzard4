@@ -183,8 +183,7 @@ class BuildPoints(QObject):
     def genBuildAlign(self) -> None:
         """ """
         self.lastGenerator = "align"
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=3, keep=keep)
+        suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=3)
         if not suc:
             self.msg.emit(2, "Model", "Buildpoints", "Could not generate 3 align stars")
             return
@@ -193,8 +192,7 @@ class BuildPoints(QObject):
     def genBuildMax(self) -> None:
         """ """
         self.lastGenerator = "max"
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genGreaterCircle(selection="max", keep=keep)
+        suc = self.app.data.genGreaterCircle(selection="max")
         if not suc:
             self.msg.emit(2, "Model", "Buildpoints", "Build points [max] cannot be generated")
             return
@@ -206,8 +204,7 @@ class BuildPoints(QObject):
     def genBuildMed(self) -> None:
         """ """
         self.lastGenerator = "med"
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genGreaterCircle(selection="med", keep=keep)
+        suc = self.app.data.genGreaterCircle(selection="med")
         if not suc:
             self.msg.emit(2, "Model", "Buildpoints", "Build points [med] cannot be generated")
             return
@@ -219,8 +216,7 @@ class BuildPoints(QObject):
     def genBuildNorm(self) -> None:
         """ """
         self.lastGenerator = "norm"
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genGreaterCircle(selection="norm", keep=keep)
+        suc = self.app.data.genGreaterCircle(selection="norm")
         if not suc:
             self.msg.emit(2, "Model", "Buildpoints", "Build points [norm] cannot be generated")
             return
@@ -232,8 +228,7 @@ class BuildPoints(QObject):
     def genBuildMin(self) -> None:
         """ """
         self.lastGenerator = "min"
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.genGreaterCircle(selection="min", keep=keep)
+        suc = self.app.data.genGreaterCircle(selection="min")
         if not suc:
             self.msg.emit(2, "Model", "Buildpoints", "Build points [min] cannot be generated")
             return
@@ -328,9 +323,8 @@ class BuildPoints(QObject):
             self.msg.emit(2, "Model", "Buildpoints", "Build points file name not given")
             return
 
-        keep = self.ui.keepGeneratedPoints.isChecked()
         fullFileName = self.app.mwGlob["configDir"] / fileName
-        suc = self.app.data.loadBuildP(fullFileName, keep=keep)
+        suc = self.app.data.loadBuildP(fullFileName)
 
         if not suc:
             text = f"Build points file [{fileName}] could not be loaded"
@@ -350,8 +344,7 @@ class BuildPoints(QObject):
         if not fullFileName.is_file():
             return
 
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.loadBuildP(fullFileName, ext=fullFileName.suffix, keep=keep)
+        suc = self.app.data.loadBuildP(fullFileName, ext=fullFileName.suffix)
         if suc:
             self.ui.buildPFileName.setText(fullFileName.name)
             self.msg.emit(

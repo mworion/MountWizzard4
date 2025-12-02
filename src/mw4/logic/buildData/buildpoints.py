@@ -31,7 +31,7 @@ from skyfield.toposlib import GeographicPosition
 from mw4.base import transform
 
 
-def HaDecToAltAz(ha: float, dec: float, lat: float) -> float, float:
+def HaDecToAltAz(ha: float, dec: float, lat: float) -> tuple[float, float]:
     """
     HaDecToAltAz is derived from http://www.stargazing.net/kepler/altaz.html
     """

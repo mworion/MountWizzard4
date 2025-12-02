@@ -22,7 +22,7 @@
 # local import
 
 
-def generateAlignStars():
+def generateAlignStars() -­> dict:
     """
     generateAlignStars is the function where the alignment stars which were
     present in the mount computer from hipparcos catalogue are stored. for a

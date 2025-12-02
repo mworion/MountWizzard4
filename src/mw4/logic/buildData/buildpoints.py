@@ -328,9 +328,9 @@ class DataPoint:
         altH, azH = zip(*self.horizonP)
         azI = range(0, 361, 1)
         altI = np.interp(azI, azH, altH)
-        horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
+        horizonInterpol = np.asarray([[x, y] for x, y in zip(azI, altI)])
         self._buildP = [
-            x for x in self._buildP if not self.isCloseHorizonLine(x, margin, horizonI)
+            x for x in self._buildP if not self.isCloseHorizonLine(x, margin, horizonInterpol)
         ]
 
     def sort(
@@ -356,33 +356,33 @@ class DataPoint:
             west = sorted(west, key=lambda x: -x[3])
 
         if pierside == "W" or pierside is None:
-            self.buildP = east + west
+            self._buildP = east + west
         else:
-            self.buildP = west + east
+            self._buildP = west + east
 
         return True
 
-    def loadModel(self, fullFileName: Path) -> list[tuple[int, int]] | None:
+    def loadModel(self, fullFileName: Path) -> list[tuple[int, int]]:
         """ """
         with open(fullFileName) as handle:
             try:
                 value = [[p["altitude"], p["azimuth"]] for p in json.load(handle)]
             except Exception as e:
                 self.log.info(f"Cannot Model load: {fullFileName}, error: {e}")
-                value = None
+                value = []
         return value
 
-    def loadBPTS(self, fullFileName: Path) -> list[tuple[int, int]] | None:
+    def loadBPTS(self, fullFileName: Path) -> list[tuple[int, int]]:
         """ """
         with open(fullFileName) as f:
             try:
                 value = json.load(f)
             except Exception as e:
                 self.log.info(f"Cannot BPTS load: {fullFileName}, error: {e}")
-                value = None
+                value = []
         return value
 
-    def loadCSV(self, fullFileName: Path) -> list[tuple[int, int]] | None:
+    def loadCSV(self, fullFileName: Path) -> list[tuple[int, int]]:
         """ """
         with open(fullFileName) as f:
             testLine = f.readline()
@@ -394,7 +394,7 @@ class DataPoint:
                 value = [[int(row[0]), int(row[1])] for row in reader]
             except Exception as e:
                 self.log.info(f"Cannot CSV load: {fullFileName}, error: {e}")
-                value = None
+                value = []
         return value
 
     @staticmethod
@@ -417,9 +417,6 @@ class DataPoint:
             value = self.loadBPTS(fullFileName)
         elif ext == ".model":
             value = self.loadModel(fullFileName)
-
-        if value is None:
-            return False
             
         points = [(x[0], x[1], self.UNPROCESSED) for x in value]
         self._buildP = points 
@@ -444,9 +441,6 @@ class DataPoint:
             value = self.loadCSV(fullFileName)
         elif ext == ".hpts":
             value = self.loadBPTS(fullFileName)
-
-        if value is None:
-            return False
 
         self.horizonP = value
         self.horizonP.sort(key=lambda x: x[1])

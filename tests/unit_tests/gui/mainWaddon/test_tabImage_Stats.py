@@ -40,6 +40,10 @@ def function(qapp):
     mainW.app.threadPool.waitForDone(1000)
 
 
+def test_storeConfig(function):
+    function.storeConfig()
+
+
 def test_updateImageStats_1(function):
     function.updateImageStats()
 

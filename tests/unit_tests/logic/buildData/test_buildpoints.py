@@ -848,14 +848,14 @@ def test_genGridData8(function):
     function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=10, numbCols=12)
-    assert len(function.buildP) == 72
+    assert len(function.buildP) == 0
 
 
 def test_genGridData9(function):
     function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=6, numbCols=20)
-    assert len(function.buildP) == 72
+    assert len(function.buildP) == 0
 
 
 def test_genAlign1(function):

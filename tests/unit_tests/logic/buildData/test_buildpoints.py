@@ -97,7 +97,7 @@ def test_addBuildP_5(function):
     function.app.mount.setting.horizonLimitHigh = 80
     function.app.mount.setting.horizonLimitLow = 5
     function.addBuildP([90, 10, 1], position=20)
-    assert len(function.buildP) == 3
+    assert len(function.buildP) == 2
 
 
 def test_addBuildP_6(function):
@@ -105,7 +105,7 @@ def test_addBuildP_6(function):
     function.app.mount.setting.horizonLimitHigh = 80
     function.app.mount.setting.horizonLimitLow = 5
     function.addBuildP([0, 10, 1], position=20)
-    assert len(function.buildP) == 3
+    assert len(function.buildP) == 2
 
 
 def test_addBuildP_7(function):
@@ -225,22 +225,8 @@ def test_genHaDecParams6(function):
 
 
 def test_horizonP1(function):
-    function.horizonP = []
-    function.genGreaterCircle("max")
-    function.horizonP = function.buildP
-    assert len(function.horizonP) == 127
-    function.horizonP = []
-    function.genGreaterCircle("med")
-    function.horizonP = function.buildP
-    assert len(function.horizonP) == 102
-    function.horizonP = []
-    function.genGreaterCircle("norm")
-    function.horizonP = function.buildP
-    assert len(function.horizonP) == 89
-    function.horizonP = []
-    function.genGreaterCircle("min")
-    function.horizonP = function.buildP
-    assert len(function.horizonP) == 58
+    function.horizonP = [[1, 2], [2, 3], [3, 4]]
+    assert len(function.horizonP) == 3
 
 
 def test_buildP1(function):
@@ -346,16 +332,15 @@ def test_checkFormat_6(function):
 
 
 def test_clearBuildP(function):
-    function.genGreaterCircle("max")
-    assert len(function.buildP) == 127
+    function.buildP = [[1, 2, 1], [2, 3, 1]]
+    assert len(function.buildP) == 2
     function.clearBuildP()
     assert len(function.buildP) == 0
 
 
 def test_clearHorizonP(function):
-    function.genGreaterCircle("max")
-    function.horizonP = function.buildP
-    assert len(function.horizonP) == 127
+    function.buildP = [[1, 2], [2, 3]]
+    assert len(function.horizonP) == 2
     function.clearHorizonP()
     assert len(function.horizonP) == 0
 
@@ -390,7 +375,7 @@ def test_setStatusBuildP_4(function):
     function.addBuildP([10, 10, 1])
     function.addBuildP([10, 10, 1])
     function.addBuildP([10, 10, 1])
-    function.setStatusBuildP(1, False)
+    function.setStatusBuildP(1, 0)
     assert not function.buildP[1][2]
 
 

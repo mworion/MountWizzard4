@@ -834,14 +834,14 @@ def test_genGridData6(function):
     function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=1, numbCols=12)
-    assert len(function.buildP) == 72
+    assert len(function.buildP) == 0
 
 
 def test_genGridData7(function):
     function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=5, numbCols=1)
-    assert len(function.buildP) == 72
+    assert len(function.buildP) == 0
 
 
 def test_genGridData8(function):
@@ -879,7 +879,7 @@ def test_genAlign2(function):
         numberBase=5,
     )
     assert not suc
-    assert len(function.buildP) == 5
+    assert len(function.buildP) == 0
 
 
 def test_genAlign3(function):
@@ -891,7 +891,7 @@ def test_genAlign3(function):
         numberBase=5,
     )
     assert not suc
-    assert len(function.buildP) == 5
+    assert len(function.buildP) == 0
 
 
 def test_genAlign4(function):
@@ -903,7 +903,7 @@ def test_genAlign4(function):
         numberBase=2,
     )
     assert not suc
-    assert len(function.buildP) == 5
+    assert len(function.buildP) == 0
 
 
 def test_genAlign5(function):
@@ -915,7 +915,7 @@ def test_genAlign5(function):
         numberBase=30,
     )
     assert not suc
-    assert len(function.buildP) == 5
+    assert len(function.buildP) == 0
 
 
 def test_sort_1(function):

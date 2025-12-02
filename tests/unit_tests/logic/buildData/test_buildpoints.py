@@ -97,6 +97,7 @@ def test_addBuildP_5(function):
     function.app.mount.setting.horizonLimitHigh = 80
     function.app.mount.setting.horizonLimitLow = 5
     function.addBuildP([90, 10, 1], position=20)
+    assert len(function.buildP) == 3
 
 
 def test_addBuildP_6(function):
@@ -104,6 +105,7 @@ def test_addBuildP_6(function):
     function.app.mount.setting.horizonLimitHigh = 80
     function.app.mount.setting.horizonLimitLow = 5
     function.addBuildP([0, 10, 1], position=20)
+    assert len(function.buildP) == 3
 
 
 def test_addBuildP_7(function):

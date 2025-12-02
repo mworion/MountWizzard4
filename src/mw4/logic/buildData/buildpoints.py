@@ -44,8 +44,8 @@ def HaDecToAltAz(ha: float, dec: float, lat: float) -> tuple[float, float]:
     value = np.clip(value, -1.0, 1.0)
     A = np.arccos(value)
     az = 2 * np.pi - A if np.sin(ha) >= 0.0 else A
-    az = np.degrees(az)
-    alt = np.degrees(alt)
+    az = float(np.degrees(az))
+    alt = float(np.degrees(alt))
     return alt, az
 
 

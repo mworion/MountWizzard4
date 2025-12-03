@@ -119,101 +119,21 @@ def test_addBuildP_7(function):
 
 
 def test_delBuildP1(function):
-    function.buildP = []
-    function.genGreaterCircle("max")
-    assert len(function.buildP) == 127
-    function.delBuildP(5)
-    assert len(function.buildP) == 126
+    function.buildP = [[10, 10, 1], [10, 10, 1], [10, 10, 1], [10, 10, 1], [10, 10, 1]]
+    assert len(function.buildP) == 5
+    function.delBuildP(1)
+    assert len(function.buildP) == 4
     function.delBuildP(0)
-    assert len(function.buildP) == 125
+    assert len(function.buildP) == 3
     function.delBuildP(99)
-    assert len(function.buildP) == 124
+    assert len(function.buildP) == 3
 
 
 def test_delBuildP2(function):
-    function.buildP = []
-    function.genGreaterCircle("max")
-    assert len(function.buildP) == 127
+    function.buildP = [[10, 10, 1], [10, 10, 1], [10, 10, 1], [10, 10, 1], [10, 10, 1]]
+    assert len(function.buildP) == 5
     function.delBuildP(-5)
-    assert len(function.buildP) == 127
-
-
-def test_delBuildP3(function):
-    function.buildP = []
-    function.genGreaterCircle("max")
-    assert len(function.buildP) == 127
-    function.delBuildP(170)
-    assert len(function.buildP) == 127
-
-
-def test_genHaDecParams1(function):
-    selection = "min"
-    length = len(function.DEC_N[selection])
-    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
-        if i > length - 1:
-            j = 2 * length - i - 1
-        else:
-            j = i
-        assert a == function.DEC_N[selection][j]
-        assert b == function.STEP_N[selection][j]
-        assert c == function.START[selection][i]
-        assert d == function.STOP[selection][i]
-
-
-def test_genHaDecParams2(function):
-    selection = "norm"
-    length = len(function.DEC_N[selection])
-    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
-        if i > length - 1:
-            j = 2 * length - i - 1
-        else:
-            j = i
-        assert a == function.DEC_N[selection][j]
-        assert b == function.STEP_N[selection][j]
-        assert c == function.START[selection][i]
-        assert d == function.STOP[selection][i]
-
-
-def test_genHaDecParams3(function):
-    selection = "med"
-    length = len(function.DEC_N[selection])
-    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
-        if i > length - 1:
-            j = 2 * length - i - 1
-        else:
-            j = i
-        assert a == function.DEC_N[selection][j]
-        assert b == function.STEP_N[selection][j]
-        assert c == function.START[selection][i]
-        assert d == function.STOP[selection][i]
-
-
-def test_genHaDecParams4(function):
-    selection = "max"
-    length = len(function.DEC_N[selection])
-    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
-        if i > length - 1:
-            j = 2 * length - i - 1
-        else:
-            j = i
-        assert a == function.DEC_N[selection][j]
-        assert b == function.STEP_N[selection][j]
-        assert c == function.START[selection][i]
-        assert d == function.STOP[selection][i]
-
-
-def test_genHaDecParams6(function):
-    selection = "max"
-    length = len(function.DEC_S[selection])
-    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, -50)):
-        if i > length - 1:
-            j = 2 * length - i - 1
-        else:
-            j = i
-        assert a == function.DEC_S[selection][j]
-        assert b == function.STEP_S[selection][j]
-        assert c == function.START[selection][i]
-        assert d == function.STOP[selection][i]
+    assert len(function.buildP) == 5
 
 
 def test_horizonP1(function):
@@ -221,15 +141,8 @@ def test_horizonP1(function):
     assert len(function.horizonP) == 3
 
 
-def test_buildP1(function):
-    function.horizonP = []
-    function.genGreaterCircle("max")
-    function.genGreaterCircle("med")
-    function.genGreaterCircle("norm")
-    function.genGreaterCircle("min")
-
-
 def test_genGreaterCircle1(function):
+    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
     function.horizonP = []
     selection = "min"
     function.genGreaterCircle(selection)
@@ -242,8 +155,9 @@ def test_genGreaterCircle1(function):
 
 
 def test_genGreaterCircle2(function):
+    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=-48, longitude_degrees=11)
     function.horizonP = []
-    selection = "norm"
+    selection = "min"
     function.genGreaterCircle(selection)
     for i, (alt, az, status) in enumerate(function.buildP):
         assert alt <= 90
@@ -251,40 +165,6 @@ def test_genGreaterCircle2(function):
         assert alt >= 0
         assert az >= 0
         assert status
-
-
-def test_genGreaterCircle3(function):
-    function.horizonP = []
-    selection = "med"
-    function.genGreaterCircle(selection)
-    for i, (alt, az, status) in enumerate(function.buildP):
-        assert alt <= 90
-        assert az <= 360
-        assert alt >= 0
-        assert az >= 0
-        assert status
-
-
-def test_genGreaterCircle4(function):
-    function.horizonP = []
-    selection = "max"
-    function.genGreaterCircle(selection)
-    for i, (alt, az, status) in enumerate(function.buildP):
-        assert alt <= 90
-        assert az <= 360
-        assert alt >= 0
-        assert az >= 0
-        assert status
-
-
-def test_genGreaterCircle5(function):
-    function.horizonP = []
-    temp = function.app.mount.obsSite.location
-    function.app.mount.obsSite.location = None
-    selection = "max"
-    suc = function.genGreaterCircle(selection)
-    assert not suc
-    function.app.mount.obsSite.location = temp
 
 
 def test_checkFormat_1(function):
@@ -667,11 +547,13 @@ def test_loadBuildP_6(function):
 
 
 def test_saveBuildP_1(function):
+    function.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
     function.genGreaterCircle("min")
     function.saveBuildP("")
 
 
 def test_saveBuildP_2(function):
+    function.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
     fileName = "tests/work/config/save_test.bpts"
     function.genGreaterCircle("min")
     function.saveBuildP("save_test")
@@ -1000,6 +882,7 @@ def test_sort_7(function):
 
 
 def test_generateCelestialEquator_1(function):
+    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
     value = function.generateCelestialEquator()
     assert len(value) == 1728
 

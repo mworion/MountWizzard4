@@ -51,138 +51,11 @@ def HaDecToAltAz(ha: float, dec: float, lat: float) -> tuple[float, float]:
 
 class DataPoint:
     """ """
-
     FAILED = 0
     UNPROCESSED = 1
     SOLVED = 2
 
     log = logging.getLogger("MW4")
-
-    DEC_N = {
-        "min": [-15, 0, 15, 30, 45, 60, 75],
-        "norm": [-15, 0, 15, 30, 45, 60, 75],
-        "med": [-15, -5, 5, 15, 25, 40, 55, 70, 85],
-        "max": [-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85],
-    }
-
-    DEC_S = {
-        "min": [-75, -60, -45, -30, -15, 0, 15],
-        "norm": [-75, -60, -45, -30, -15, 0, 15],
-        "med": [-85, -70, -55, -40, -25, -15, -5, 5, 15],
-        "max": [-85, -75, -65, -55, -45, -35, -25, -15, -5, 5, 15],
-    }
-
-    STEP_N = {
-        "min": [15, -15, 15, -15, 15, -30, 30],
-        "norm": [10, -10, 10, -10, 10, -20, 20],
-        "med": [10, -10, 10, -10, 10, -15, 15, -20, 20],
-        "max": [10, -10, 10, -10, 10, -10, 10, -20, 20, -30, 30],
-    }
-
-    STEP_S = {
-        "min": [30, -30, 15, -15, 15, -15, 15],
-        "norm": [20, -20, 10, -10, 10, -10, 10],
-        "med": [20, -20, 15, -15, 10, -10, 10, -10, 10],
-        "max": [30, -30, 20, -20, 10, -10, 10, -10, 10, -10, 10],
-    }
-    START = {
-        "min": [-120, -5, -120, -5, -120, -5, -120, 5, 120, 5, 120, 5, 120, 5],
-        "norm": [-120, -5, -120, -5, -120, -5, -120, 5, 120, 5, 120, 5, 120, 5],
-        "med": [
-            -120,
-            -5,
-            -120,
-            -5,
-            -120,
-            -5,
-            -120,
-            -5,
-            -120,
-            5,
-            120,
-            5,
-            120,
-            5,
-            120,
-            5,
-            120,
-            5,
-        ],
-        "max": [
-            -120,
-            -5,
-            -120,
-            -5,
-            -120,
-            -5,
-            -120,
-            -5,
-            -120,
-            -5,
-            -120,
-            5,
-            120,
-            5,
-            120,
-            5,
-            120,
-            5,
-            120,
-            5,
-            120,
-            5,
-        ],
-    }
-    STOP = {
-        "min": [0, -120, 0, -120, 0, -120, 0, 120, 0, 120, 0, 120, 0, 120],
-        "norm": [0, -120, 0, -120, 0, -120, 0, 120, 0, 120, 0, 120, 0, 120],
-        "med": [
-            0,
-            -120,
-            0,
-            -120,
-            0,
-            -120,
-            0,
-            -120,
-            0,
-            120,
-            0,
-            120,
-            0,
-            120,
-            0,
-            120,
-            0,
-            120,
-            0,
-        ],
-        "max": [
-            0,
-            -120,
-            0,
-            -120,
-            0,
-            -120,
-            0,
-            -120,
-            0,
-            -120,
-            0,
-            120,
-            0,
-            120,
-            0,
-            120,
-            0,
-            120,
-            0,
-            120,
-            0,
-            120,
-            0,
-        ],
-    }
 
     def __init__(self, app):
         self.app = app
@@ -450,49 +323,34 @@ class DataPoint:
         with open(fullFileName, "w") as handle:
             json.dump(self.horizonP, handle, indent=4)
 
-    def genHaDecParams(self, selection: str, lat: float) -> tuple[int, int, int, int]:
-        """
-        genHaDecParams selects the parameters for generating the boundaries for
-         the next step processing greater circles. the parameters are sorted for
-        different targets actually for minimum slew distance between the points.
-        defined is only the east side of data, the west side will be mirrored to
-        the east one.
-        """
-        if lat < 0:
-            DEC = self.DEC_S
-            STEP = self.STEP_S
-        else:
-            DEC = self.DEC_N
-            STEP = self.STEP_N
-
-        eastDec = DEC[selection]
-        westDec = list(reversed(eastDec))
-        decL = eastDec + westDec
-
-        eastStepL = STEP[selection]
-        westStepL = list(reversed(eastStepL))
-        stepL = eastStepL + westStepL
-        startL = self.START[selection]
-        stopL = self.STOP[selection]
-
-        yield from zip(decL, stepL, startL, stopL)
-
     def genGreaterCircle(self, selection: str = "norm") -> bool:
         """
         genGreaterCircle takes the generated boundaries for the range routine and
         transforms ha, dec to alt az. reasonable values for the alt az values
         are 5 to 85 degrees.
         """
-        if not self.app.mount.obsSite.location:
-            return False
-
         self.clearBuildP()
+        stepHA = 10
+        stepDec = 10
+        distFlip = 3
         lat = self.app.mount.obsSite.location.latitude.degrees
-        for dec, step, start, stop in self.genHaDecParams(selection, lat):
-            for ha in range(start, stop, step):
+        decList = list(range(-15, -15 + int(100 / stepDec) * stepDec, stepDec))
+        if lat < 0:
+            list(-x for x in decList)
+        haList = list(reversed(range(-distFlip, -distFlip - int(125 / stepHA) * stepHA, -stepHA)))
+        for i, dec in enumerate(decList):
+            haFinal = haList if i % 2 else reversed(haList)
+            for ha in haFinal:
                 alt, az = HaDecToAltAz(ha / 10, dec, lat)
+                if 5 <= alt <= 85 and 2 < az < 358:
+                    self.addBuildP([alt, az, self.UNPROCESSED])
 
-                # only values with the above horizon = 0
+        decList = reversed(decList)
+        haList = list(reversed(range(distFlip, distFlip + int(125 / stepHA) * stepHA, + stepHA)))
+        for i, dec in enumerate(decList):
+            haFinal = haList if i % 2 else reversed(haList)
+            for ha in haFinal:
+                alt, az = HaDecToAltAz(ha / 10, dec, lat)
                 if 5 <= alt <= 85 and 2 < az < 358:
                     self.addBuildP([alt, az, self.UNPROCESSED])
         return True

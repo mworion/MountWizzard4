@@ -230,7 +230,7 @@ class BuildPoints(QObject):
         timeJD = self.app.mount.obsSite.timeJD
         location = self.app.mount.obsSite.location
 
-        if ha is None or dec is None or location is None or lst is None:
+        if any(x is None for x in [ha, dec, location, lst]):
             self.msg.emit(
                 2, "Model", "Buildpoints", "DSO Path cannot be generated - mount off"
             )
@@ -246,17 +246,17 @@ class BuildPoints(QObject):
         numberTarget = int(self.ui.numberDSOPoints.value())
         keep = self.ui.keepGeneratedPoints.isChecked()
         numberPoints = 0
-        numberFilter = 0
+        numberFiltered = 0
         iteration = 20
-        while numberFilter < numberTarget:
-            numberPoints = numberPoints + numberTarget - numberFilter
+        while numberFiltered < numberTarget:
+            numberPoints = numberPoints + numberTarget - numberFiltered
             iteration -= 1
             if iteration <= 0:
                 break
             self.app.data.generateDSOPath(ha, dec, timeJD, location, numberPoints, keep)
             self.autoDeletePoints()
-            numberFilter = len(self.app.data.buildP)
-            if numberFilter == 0:
+            numberFiltered = len(self.app.data.buildP)
+            if numberFiltered == 0:
                 break
 
         if self.ui.ditherBuildPoints.isChecked():

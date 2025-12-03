@@ -901,8 +901,7 @@ def test_sort_1(function):
         [50, 290, 1],
         [40, 190, 1],
     ]
-    suc = function.sort(values, eastwest=True)
-    assert suc
+    function.sort(values, eastwest=True)
     assert function.buildP == result
 
 
@@ -921,8 +920,7 @@ def test_sort_2(function):
         [50, 290, 1],
         [40, 190, 1],
     ]
-    suc = function.sort(values, highlow=True)
-    assert suc
+    function.sort(values, highlow=True)
     assert function.buildP == result
 
 
@@ -941,8 +939,7 @@ def test_sort_3(function):
         [50, 290, 1],
         [40, 190, 1],
     ]
-    suc = function.sort(values, eastwest=True)
-    assert suc
+    function.sort(values, eastwest=True)
     assert function.buildP == result
 
 
@@ -961,8 +958,7 @@ def test_sort_4(function):
         [50, 290, 1],
         [40, 190, 1],
     ]
-    suc = function.sort(values, highlow=True)
-    assert suc
+    function.sort(values, highlow=True)
     assert function.buildP == result
 
 
@@ -981,8 +977,7 @@ def test_sort_5(function):
         [20, 20, 1],
         [10, 10, 1],
     ]
-    suc = function.sort(values, highlow=True, pierside="E")
-    assert suc
+    function.sort(values, highlow=True, pierside="E")
     assert function.buildP == result
 
 
@@ -1001,16 +996,14 @@ def test_sort_6(function):
         [50, 290, 1],
         [40, 190, 1],
     ]
-    suc = function.sort(values, highlow=True, pierside="W")
-    assert suc
+    function.sort(values, highlow=True, pierside="W")
     assert function.buildP == result
 
 
 def test_sort_7(function):
     values = [[30, 90, 1, 3], [20, 20, 1, 2], [50, 290, 1, 1]]
     result = [[30, 90, 1, 3], [20, 20, 1, 2], [50, 290, 1, 1]]
-    suc = function.sort(values, sortDomeAz=True)
-    assert suc
+    function.sort(values, sortDomeAz=True)
     assert function.buildP == result
 
 

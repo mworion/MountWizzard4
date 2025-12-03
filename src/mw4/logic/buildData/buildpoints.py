@@ -340,7 +340,7 @@ class DataPoint:
         highlow: bool = False,
         sortDomeAz: bool = None,
         pierside: str = None,
-    ):
+    ) -> None:
         """ """
         east = [x for x in points if x[1] <= 180]
         west = [x for x in points if x[1] > 180]
@@ -359,8 +359,6 @@ class DataPoint:
             self._buildP = east + west
         else:
             self._buildP = west + east
-
-        return True
 
     def loadModel(self, fullFileName: Path) -> list[tuple[int, int]]:
         """ """

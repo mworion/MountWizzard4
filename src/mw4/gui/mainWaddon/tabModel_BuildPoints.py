@@ -354,7 +354,7 @@ class BuildPoints(QObject):
         saveFilePath = self.mainW.saveFile(
             self.mainW, "Save build point file", folder, "Build point files (*.bpts)"
         )
-        if saveFilePath.is_dir():
+        if saveFilePath.is_dir() or not saveFilePath.stem:
             return
 
         self.app.data.saveBuildP(saveFilePath.stem)

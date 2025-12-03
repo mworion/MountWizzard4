@@ -123,14 +123,23 @@ def update_builtins(c):
 
 @task
 def build_resources(c):
+    files = [
+        "de440_mw4.bsp",
+        "CDFLeapSeconds.txt",
+        "tai-utc.dat",
+        "finals2000A.all",
+        "finals.data",
+    ]
     printMW("building resources")
     resourceDir = "./src_add/assets/"
     resourceDestDir = "./src/mw4/assets/"
     with c.cd(resourceDir + "data"):
         with open(resourceDir + "data/content.txt", "w") as f:
-            for file in glob.glob(resourceDir + "data/*.*"):
-                t = os.stat(file).st_mtime
-                f.write(f"{os.path.basename(file)} {t}\n")
+
+            for file in files:
+                filePath = resourceDir + "data/" + file
+                t = os.stat(filePath).st_mtime
+                f.write(f"{file} {t}\n")
     runMW(
         c, f"uv run pyside6-rcc -o {resourceDestDir}assetsData.py {resourceDir}assetData.qrc"
     )

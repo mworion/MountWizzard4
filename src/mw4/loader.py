@@ -212,14 +212,12 @@ def writeSystemInfo(mwGlob: dict = None) -> None:
     log.header("-" * 100)
 
 
-def extractFile(filePath: str, file: str, fileTimeStamp: str) -> None:
+def extractFile(filePath: Path, file: str, fileTimeStamp: str) -> None:
     """ """
-    fileExist = os.path.isfile(filePath)
-    if fileExist:
+    overwrite = False
+    if filePath.is_file():
         mtime = os.stat(filePath).st_mtime
         overwrite = mtime < fileTimeStamp
-    else:
-        overwrite = False
 
     if overwrite:
         log.info(f"Writing new file: [{file}]")
@@ -233,7 +231,7 @@ def extractFile(filePath: str, file: str, fileTimeStamp: str) -> None:
 
 def extractDataFiles(mwGlob: dict) -> None:
     """ """
-    files = {
+    filesTimes = {
         "de440_mw4.bsp": 0,
         "CDFLeapSeconds.txt": 0,
         "tai-utc.dat": 0,
@@ -241,19 +239,18 @@ def extractDataFiles(mwGlob: dict) -> None:
         "finals.data": 0,
     }
 
-    content = QFile(":/data/content.txt")
-    content.open(QFile.OpenModeFlag.ReadOnly)
-    lines = content.readAll().data().decode().splitlines()
-    content.close()
+    contentFile = QFile(":/data/content.txt")
+    contentFile.open(QFile.OpenModeFlag.ReadOnly)
+    lines = contentFile.readAll().data().decode().splitlines()
+    contentFile.close()
+
     for line in lines:
         name, date = line.split(" ")
-        if name in files:
-            files[name] = float(date)
+        filesTimes[name] = float(date)
 
-    for file in files:
+    for file in filesTimes:
         filePath = mwGlob["dataDir"] / file
-        fileTimeStamp = files[file]
-        extractFile(filePath=filePath, file=file, fileTimeStamp=fileTimeStamp)
+        extractFile(filePath, file, filesTimes[file])
 
 
 def getWindowPos() -> tuple[int, int]:
@@ -283,10 +280,10 @@ def getWindowPos() -> tuple[int, int]:
 
 def minimizeStartTerminal() -> None:
     """ """
-    if platform.system() == "Windows":
-        import ctypes
-
-        ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
+    if platform.system() != "Windows":
+        return
+    from ctypes.windll import user32, kernel32
+    user32.ShowWindow(kernel32.GetConsoleWindow(), 0)
 
 
 def main() -> None:

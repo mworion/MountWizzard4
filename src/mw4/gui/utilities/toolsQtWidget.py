@@ -90,22 +90,6 @@ def findIndexValue(ui: QComboBox, searchString: str, relaxed: bool = False) -> i
     return 0
 
 
-def guiSetStyle(ui: QWidget, pStyle: str = "", value: object = None, pVals: [] = None) -> None:
-    """ """
-    if pVals is None:
-        pVals = ["", "", ""]
-    if not pStyle:
-        return
-    if value is None:
-        pVal = pVals[0]
-    elif value:
-        pVal = pVals[1]
-    else:
-        pVal = pVals[2]
-
-    changeStyleDynamic(ui, pStyle, pVal)
-
-
 def guiSetText(ui: QLineEdit, formatElement: str, value: object) -> None:
     """ """
     text = "-"

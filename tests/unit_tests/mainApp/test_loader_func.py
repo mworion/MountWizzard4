@@ -201,7 +201,7 @@ def test_extractFile_1():
         st_mtime = 1000000000.0
 
     filePath = Path("tests/work/data/de440_mw4.bsp")
-    with mock.patch.object(os.path, "isfile", return_value=False):
+    with mock.patch.object(Path, "is_file", return_value=False):
         with mock.patch.object(os, "stat", return_value=MTime()):
             extractFile(filePath, "de440_mw4.bsp", 0)
 
@@ -211,7 +211,7 @@ def test_extractFile_2():
         st_mtime = 1000000000.0
 
     filePath = Path("tests/work/data/de440_mw4.bsp")
-    with mock.patch.object(os.path, "isfile", return_value=True):
+    with mock.patch.object(Path, "is_file", return_value=True):
         with mock.patch.object(os, "stat", return_value=MTime()):
             with mock.patch.object(os, "remove"):
                 with mock.patch.object(os, "chmod"):
@@ -223,7 +223,7 @@ def test_extractFile_3():
         st_mtime = 1000000000.0
 
     filePath = Path("tests/work/data/de440_mw4.bsp")
-    with mock.patch.object(os.path, "isfile", return_value=True):
+    with mock.patch.object(Path, "is_file", return_value=True):
         with mock.patch.object(os, "stat", return_value=MTime()):
             with mock.patch.object(os, "chmod"):
                 extractFile(filePath, "de440_mw4.bsp", 0)

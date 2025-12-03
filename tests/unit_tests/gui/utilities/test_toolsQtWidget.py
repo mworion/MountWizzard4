@@ -45,7 +45,6 @@ from mw4.gui.utilities.toolsQtWidget import (
     changeStyleDynamic,
     clickable,
     findIndexValue,
-    guiSetStyle,
     guiSetText,
     sleepAndEvents,
 )
@@ -121,26 +120,6 @@ def test_findIndexValue_5():
     ui = QComboBox()
     val = findIndexValue(ui=ui, searchString="indi")
     assert val == 0
-
-
-def test_guiSetStyle_1():
-    pb = QPushButton()
-    guiSetStyle(pb)
-
-
-def test_guiSetStyle_2():
-    pb = QPushButton()
-    guiSetStyle(pb, pStyle="color", value=None)
-
-
-def test_guiSetStyle_3():
-    pb = QPushButton()
-    guiSetStyle(pb, pStyle="color", value=True)
-
-
-def test_guiSetStyle_4():
-    pb = QPushButton()
-    guiSetStyle(pb, pStyle="color", value=False)
 
 
 def test_guiSetText_1():
@@ -325,10 +304,9 @@ def test_renderStyle_2(function):
 
 
 def test_initUI_1(function):
-    with mock.patch.object(function, "setStyleSheet"):
-        with mock.patch.object(function, "setMouseTracking"):
-            with mock.patch.object(function, "setWindowIcon"):
-                function.initUI()
+    with mock.patch.object(function, "setMouseTracking"):
+        with mock.patch.object(function, "setWindowIcon"):
+            function.initUI()
 
 
 def test_prepareFileDialog_1(function):

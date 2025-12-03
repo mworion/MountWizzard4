@@ -282,8 +282,8 @@ def minimizeStartTerminal() -> None:
     """ """
     if platform.system() != "Windows":
         return
-    from ctypes.windll import user32, kernel32
-    user32.ShowWindow(kernel32.GetConsoleWindow(), 0)
+    import ctypes
+    ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 
 def main() -> None:

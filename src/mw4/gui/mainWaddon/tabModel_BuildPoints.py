@@ -462,7 +462,7 @@ class BuildPoints(QObject):
             self.app.drawBuildPoints.emit()
             return
 
-        if useDomeAz and enableDomeAz and eastwest:
+        if useDomeAz and enableDomeAz:
             self.sortDomeAz(points, pierside)
         else:
             self.sortMountAz(points, eastwest, highlow, pierside)
@@ -498,27 +498,22 @@ class BuildPoints(QObject):
             self.msg.emit(2, "Model", "Buildpoints", "MW4 is offline")
             return
 
+        self.ui.generateRa.setText("")
+        self.ui.generateDec.setText("")
+        self.simbadRa = None
+        self.simbadDec = None
+
         ident = self.ui.generateQuery.text().strip()
         if not ident:
             self.msg.emit(2, "Model", "Buildpoints", "No query data given")
-            self.ui.generateRa.setText("")
-            self.ui.generateDec.setText("")
-            self.simbadRa = None
-            self.simbadDec = None
             return
 
         result = Simbad.query_object(ident)
-
         if not result:
             self.msg.emit(2, "Model", "Buildpoints", f"Nox response from SIMBAD for {ident}")
-            self.ui.generateRa.setText("")
-            self.ui.generateDec.setText("")
-            self.simbadRa = None
-            self.simbadDec = None
             return
 
         self.simbadRa = Angle(degrees=float(result["ra"]))
         self.ui.generateRa.setText(f"{self.simbadRa.degrees:.6f}")
-
         self.simbadDec = Angle(degrees=float(result["dec"]))
         self.ui.generateDec.setText(f"{self.simbadDec.degrees:.6f}")

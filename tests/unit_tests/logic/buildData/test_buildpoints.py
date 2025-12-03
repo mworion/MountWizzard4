@@ -202,14 +202,6 @@ def test_genHaDecParams4(function):
         assert d == function.STOP[selection][i]
 
 
-def test_genHaDecParams5(function):
-    selection = "test"
-    val = True
-    for i, (_, _, _, _) in enumerate(function.genHaDecParams(selection, 50)):
-        val = False
-    assert val
-
-
 def test_genHaDecParams6(function):
     selection = "max"
     length = len(function.DEC_S[selection])

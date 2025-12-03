@@ -408,7 +408,7 @@ class DataPoint:
         if not fullFileName.is_file():
             return False
 
-        value = None
+        value = []
         if ext == ".csv":
             value = self.loadCSV(fullFileName)
         elif ext == ".bpts":
@@ -464,9 +464,6 @@ class DataPoint:
         else:
             DEC = self.DEC_N
             STEP = self.STEP_N
-
-        if selection not in DEC or selection not in STEP:
-            return
 
         eastDec = DEC[selection]
         westDec = list(reversed(eastDec))

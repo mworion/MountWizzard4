@@ -308,11 +308,10 @@ class HemisphereDraw(MWidget, SlewInterface):
 
     def drawModelPoints(self) -> None:
         """ """
-        points = self.app.data.buildP
-        if not points:
+        if not self.app.data.buildP:
             return
 
-        y, x, statusList = zip(*points)
+        y, x, statusList = zip(*self.app.data.buildP)
         for index, plotItem in enumerate(self.ui.hemisphere.p):
             item = self.ui.hemisphere.findItemByName(plotItem, "model")
             if not item:
@@ -324,9 +323,10 @@ class HemisphereDraw(MWidget, SlewInterface):
 
     def drawModelText(self) -> None:
         """ """
-        plotItem = self.ui.hemisphere.p[0]
         if not self.app.data.buildP:
             return
+
+        plotItem = self.ui.hemisphere.p[0]
         for textItem in self.modelPointsText:
             self.ui.hemisphere.p[0].removeItem(textItem)
         self.modelPointsText = []

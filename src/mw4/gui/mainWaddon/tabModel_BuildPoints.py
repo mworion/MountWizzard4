@@ -37,8 +37,8 @@ class BuildPoints(QObject):
 
         self.sortRunning = QMutex()
         self.worker: Worker = None
-        self.lastGenerator = "none"
-        self.sortedGenerators = {
+        self.lastGenerator: str = "none"
+        self.sortedGenerators: dict = {
             "grid": self.genBuildGrid,
             "align": self.genBuildAlign,
             "max": self.genBuildMax,
@@ -49,8 +49,8 @@ class BuildPoints(QObject):
             "file": self.genBuildFile,
             "model": self.genModel,
         }
-        self.simbadRa = None
-        self.simbadDec = None
+        self.simbadRa: Angle = Angle(hours=0)
+        self.simbadDec: Angle = Angle(degrees=0)
 
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
         self.ui.genBuildAlign3.clicked.connect(self.genBuildAlign)
@@ -150,11 +150,6 @@ class BuildPoints(QObject):
     def genBuildGrid(self) -> None:
         """ """
         self.lastGenerator = "grid"
-        self.ui.numberGridPointsRow.setEnabled(False)
-        self.ui.numberGridPointsCol.setEnabled(False)
-        self.ui.altitudeMin.setEnabled(False)
-        self.ui.altitudeMax.setEnabled(False)
-
         numbRows = int(self.ui.numberGridPointsRow.value())
         numbCols = int(self.ui.numberGridPointsCol.value())
         # we only have equal cols
@@ -162,23 +157,12 @@ class BuildPoints(QObject):
         self.ui.numberGridPointsCol.setValue(col)
         minAlt = int(self.ui.altitudeMin.value())
         maxAlt = int(self.ui.altitudeMax.value())
-        keep = self.ui.keepGeneratedPoints.isChecked()
 
-        suc = self.app.data.genGrid(minAlt, maxAlt, numbRows, numbCols, keep)
-
-        if not suc:
-            self.ui.numberGridPointsRow.setEnabled(True)
-            self.ui.numberGridPointsCol.setEnabled(True)
-            self.ui.altitudeMin.setEnabled(True)
-            self.ui.altitudeMax.setEnabled(True)
+        if not self.app.data.genGrid(minAlt, maxAlt, numbRows, numbCols):
             self.msg.emit(2, "Model", "Buildpoints", "Could not generate grid")
             return
 
         self.processPoints()
-        self.ui.numberGridPointsRow.setEnabled(True)
-        self.ui.numberGridPointsCol.setEnabled(True)
-        self.ui.altitudeMin.setEnabled(True)
-        self.ui.altitudeMax.setEnabled(True)
 
     def genBuildAlign(self) -> None:
         """ """
@@ -304,10 +288,7 @@ class BuildPoints(QObject):
     def genModel(self) -> None:
         """ """
         self.lastGenerator = "model"
-
-        if not self.ui.keepGeneratedPoints.isChecked():
-            self.app.data.clearBuildP()
-
+        self.app.data.clearBuildP()
         model = self.app.mount.model
         for star in model.starList:
             self.app.data.addBuildP(
@@ -324,9 +305,7 @@ class BuildPoints(QObject):
             return
 
         fullFileName = self.app.mwGlob["configDir"] / fileName
-        suc = self.app.data.loadBuildP(fullFileName)
-
-        if not suc:
+        if not self.app.data.loadBuildP(fullFileName):
             text = f"Build points file [{fileName}] could not be loaded"
             self.msg.emit(2, "Model", "Buildpoints", text)
             return
@@ -500,8 +479,8 @@ class BuildPoints(QObject):
 
         self.ui.generateRa.setText("")
         self.ui.generateDec.setText("")
-        self.simbadRa = None
-        self.simbadDec = None
+        self.simbadRa = Angle(hours=0)
+        self.simbadDec = Angle(degrees=0)
 
         ident = self.ui.generateQuery.text().strip()
         if not ident:

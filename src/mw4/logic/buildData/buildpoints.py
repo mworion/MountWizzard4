@@ -491,6 +491,7 @@ class DataPoint:
         if not self.app.mount.obsSite.location:
             return False
 
+        self.clearBuildP()
         lat = self.app.mount.obsSite.location.latitude.degrees
         for dec, step, start, stop in self.genHaDecParams(selection, lat):
             for ha in range(start, stop, step):
@@ -565,6 +566,7 @@ class DataPoint:
         minAz = int(180 / numbCols)
         maxAz = 360 - minAz
 
+        self.clearBuildP()
         for point in self.genGridGenerator(eastAlt, westAlt, minAz, stepAz, maxAz):
             self.addBuildP(point)
 
@@ -585,6 +587,7 @@ class DataPoint:
         azBase = int(azBase) % stepAz
         numberBase = int(numberBase)
 
+        self.clearBuildP()
         for i in range(0, numberBase):
             az = azBase + i * stepAz
             self.addBuildP([altBase, az % 360, self.UNPROCESSED])
@@ -675,6 +678,7 @@ class DataPoint:
         altitude = 90 - np.degrees(phi)
         azimuth = np.degrees(theta) % 360
 
+        self.clearBuildP()
         for alt, az in zip(altitude, azimuth):
             if alt > 0:
                 self.addBuildP([int(alt), int(az), self.UNPROCESSED])

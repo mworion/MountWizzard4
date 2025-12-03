@@ -161,11 +161,9 @@ class HorizonDraw(MWidget):
         saveFilePath = self.saveFile(
             self, "Save horizon mask file", folder, "Horizon mask files (*.hpts)"
         )
-        if not saveFilePath:
+        if not saveFilePath.stem:
             return
-
-        suc = self.app.data.saveHorizonP(fileName=saveFilePath.stem)
-        if suc:
+        if self.app.data.saveHorizonP(fileName=saveFilePath.stem):
             self.ui.horizonMaskFileName.setText(saveFilePath.stem)
             self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{saveFilePath.stem}] saved")
         else:

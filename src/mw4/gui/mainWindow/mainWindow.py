@@ -442,6 +442,8 @@ class MainWindow(MWidget):
 
     def saveProfileBase(self, saveProfilePath: Path) -> None:
         """ """
+        if not saveProfilePath.stem:
+            return
         self.storeConfig()
         saveProfile(saveProfilePath, self.app.config)
         self.ui.profile.setText(saveProfilePath.stem)
@@ -454,8 +456,6 @@ class MainWindow(MWidget):
         saveProfilePath = self.saveFile(
             self, "Save config file", folder, "Config files (*.cfg)", enableDir=False
         )
-        if not saveProfilePath.name:
-            return
         self.saveProfileBase(saveProfilePath)
 
     def saveProfile(self) -> None:

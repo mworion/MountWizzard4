@@ -328,74 +328,28 @@ def test_autoDeletePoints(function):
     function.autoDeletePoints()
 
 
-def test_doSortDomeAzData_1(function):
-    function.sortRunning.lock()
-    with mock.patch.object(function.app.data, "sort"):
-        function.doSortDomeAzData((0, 1))
-
-
-def test_sortDomeAzWorker_1(function):
-    with mock.patch.object(
-        function.app.mount,
-        "calcMountAltAzToDomeAltAz",
-        return_value=(0, Angle(degrees=10)),
-    ):
-        suc = function.sortDomeAzWorker([(10, 10, True)], "E")
-        assert suc
-
-
-def test_sortDomeAzWorker_2(function):
-    with mock.patch.object(
-        function.app.mount, "calcMountAltAzToDomeAltAz", return_value=(None, None)
-    ):
-        suc = function.sortDomeAzWorker([(10, 10, True)], "E")
-        assert suc
-
-
-def test_sortDomeAz_1(function):
-    with mock.patch.object(function.app.threadPool, "start"):
-        function.sortDomeAz([], "E")
-        function.sortRunning.unlock()
-
-
-def test_sortDomeAz_2(function):
-    function.sortRunning.lock()
-    with mock.patch.object(function.app.threadPool, "start"):
-        function.sortDomeAz([], "E")
-
-
-def test_sortMountAz(function):
-    with mock.patch.object(function.app.data, "sort"):
-        function.sortMountAz([], False, False, "E")
-
-
 def test_autoSortPoints_1(function):
-    function.ui.sortEW.setChecked(False)
-    function.ui.sortHL.setChecked(False)
+    function.ui.sortAZ.setChecked(False)
+    function.ui.sortALT.setChecked(False)
     function.ui.avoidFlip.setChecked(False)
-    function.ui.useDomeAz.setChecked(False)
-    function.ui.useDomeAz.setEnabled(False)
+    function.ui.sortDomeAZ.setChecked(False)
     function.autoSortPoints()
 
 
 def test_autoSortPoints_2(function):
-    function.ui.sortEW.setChecked(True)
-    function.ui.sortHL.setChecked(False)
+    function.ui.sortAZ.setChecked(True)
+    function.ui.sortALT.setChecked(False)
     function.ui.avoidFlip.setChecked(False)
-    function.ui.useDomeAz.setChecked(True)
-    function.ui.useDomeAz.setEnabled(True)
-    with mock.patch.object(function, "sortDomeAz"):
-        function.autoSortPoints()
+    function.ui.sortDomeAZ.setChecked(True)
+    function.autoSortPoints()
 
 
 def test_autoSortPoints_3(function):
-    function.ui.sortEW.setChecked(False)
-    function.ui.sortHL.setChecked(False)
+    function.ui.sortAZ.setChecked(False)
+    function.ui.sortALT.setChecked(False)
     function.ui.avoidFlip.setChecked(True)
-    function.ui.useDomeAz.setChecked(False)
-    function.ui.useDomeAz.setEnabled(False)
-    with mock.patch.object(function, "sortMountAz"):
-        function.autoSortPoints()
+    function.ui.sortDomeAZ.setChecked(False)
+    function.autoSortPoints()
 
 
 def test_buildPointsChanged(function):

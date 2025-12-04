@@ -551,7 +551,7 @@ class Data:
         return
 
     @staticmethod
-    def sort():
+    def sortActualPierside():
         return
 
     @staticmethod
@@ -1106,6 +1106,7 @@ class App(QObject):
     colorChange = Signal()
     virtualStop = Signal()
     mountOff = Signal()
+    mountOn = Signal()
     mountOn = Signal()
     buildPointsChanged = Signal()
     playSound = Signal(object)

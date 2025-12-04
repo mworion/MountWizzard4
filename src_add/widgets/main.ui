@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -9134,7 +9134,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>125</y>
+         <y>130</y>
          <width>366</width>
          <height>91</height>
         </rect>
@@ -9282,9 +9282,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>240</y>
+         <y>255</y>
          <width>361</width>
-         <height>151</height>
+         <height>136</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -9296,12 +9296,12 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QRadioButton" name="sortHL">
+       <widget class="QRadioButton" name="sortALT">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>280</x>
           <y>20</y>
-          <width>111</width>
+          <width>71</width>
           <height>20</height>
          </rect>
         </property>
@@ -9316,15 +9316,15 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>Sorts the model points low to high altitude.</string>
         </property>
         <property name="text">
-         <string>High/Low ALT</string>
+         <string>Sort ALT</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="sortEW">
+       <widget class="QRadioButton" name="sortAZ">
         <property name="geometry">
          <rect>
-          <x>120</x>
+          <x>85</x>
           <y>20</y>
-          <width>111</width>
+          <width>66</width>
           <height>20</height>
          </rect>
         </property>
@@ -9339,15 +9339,15 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>Sorts the model points EAST / WEST side of pier.</string>
         </property>
         <property name="text">
-         <string>East/West AZ</string>
+         <string>Sort AZ</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="sortNothing">
+       <widget class="QRadioButton" name="noSort">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>20</y>
-          <width>101</width>
+          <width>61</width>
           <height>20</height>
          </rect>
         </property>
@@ -9372,7 +9372,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>65</y>
+          <y>50</y>
           <width>336</width>
           <height>20</height>
          </rect>
@@ -9395,7 +9395,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>85</y>
+          <y>70</y>
           <width>256</width>
           <height>20</height>
          </rect>
@@ -9414,37 +9414,11 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>Auto delete points within meridian limits</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="useDomeAz">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>120</x>
-          <y>40</y>
-          <width>106</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uses caclulated and geometry corrected dome azimuth values for azimuth sorting&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Use dome AZ</string>
-        </property>
-       </widget>
        <widget class="QCheckBox" name="autoDeleteHorizon">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>105</y>
+          <y>90</y>
           <width>256</width>
           <height>20</height>
          </rect>
@@ -9470,7 +9444,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>125</y>
+          <y>110</y>
           <width>271</width>
           <height>20</height>
          </rect>
@@ -9493,7 +9467,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>290</x>
-          <y>125</y>
+          <y>110</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -9534,7 +9508,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>335</x>
-          <y>125</y>
+          <y>110</y>
           <width>16</width>
           <height>20</height>
          </rect>
@@ -9551,6 +9525,29 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="sortDomeAZ">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>20</y>
+          <width>101</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Sorts the model points EAST / WEST side of pier.</string>
+        </property>
+        <property name="text">
+         <string>Sort Dome AZ</string>
         </property>
        </widget>
       </widget>
@@ -33021,14 +33018,13 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>ditherBuildPoints</tabstop>
   <tabstop>keepGeneratedPoints</tabstop>
   <tabstop>clearBuildP</tabstop>
-  <tabstop>sortNothing</tabstop>
-  <tabstop>sortEW</tabstop>
-  <tabstop>sortHL</tabstop>
+  <tabstop>noSort</tabstop>
+  <tabstop>sortAZ</tabstop>
+  <tabstop>sortALT</tabstop>
   <tabstop>avoidFlip</tabstop>
   <tabstop>autoDeleteMeridian</tabstop>
   <tabstop>autoDeleteHorizon</tabstop>
   <tabstop>useSafetyMargin</tabstop>
-  <tabstop>useDomeAz</tabstop>
   <tabstop>safetyMarginValue</tabstop>
   <tabstop>runModel</tabstop>
   <tabstop>pauseModel</tabstop>

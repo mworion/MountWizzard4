@@ -258,11 +258,6 @@ class MainWindow(MWidget):
             self.ui.progEarthRotationData.setEnabled(False)
             self.ui.use10micronDef.setEnabled(False)
 
-        if isDomeReady and isMountReady:
-            self.ui.useDomeAz.setEnabled(True)
-        else:
-            self.ui.useDomeAz.setEnabled(False)
-
     def smartTabGui(self) -> None:
         """ """
         tabChanged = False

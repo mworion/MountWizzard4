@@ -68,13 +68,15 @@ class BuildPoints(QObject):
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
         self.ui.genBuildSpiral.clicked.connect(self.genBuildGoldenSpiral)
         self.ui.clearBuildP.clicked.connect(self.clearBuildP)
-        self.ui.sortNothing.clicked.connect(self.rebuildPoints)
-        self.ui.sortEW.clicked.connect(self.rebuildPoints)
-        self.ui.sortHL.clicked.connect(self.rebuildPoints)
+        self.ui.noSort.clicked.connect(self.rebuildPoints)
+        self.ui.sortAZ.clicked.connect(self.rebuildPoints)
+        self.ui.sortDomeAZ.clicked.connect(self.rebuildPoints)
+        self.ui.sortALT.clicked.connect(self.rebuildPoints)
         self.ui.ditherBuildPoints.clicked.connect(self.rebuildPoints)
         self.ui.avoidFlip.clicked.connect(self.rebuildPoints)
         self.ui.autoDeleteMeridian.clicked.connect(self.rebuildPoints)
         self.ui.autoDeleteHorizon.clicked.connect(self.rebuildPoints)
+        self.ui.useSafetyMargin.clicked.connect(self.rebuildPoints)
         self.app.buildPointsChanged.connect(self.buildPointsChanged)
         self.ui.generateQuery.editingFinished.connect(self.querySimbad)
         self.ui.isOnline.stateChanged.connect(self.setupDsoGui)
@@ -87,8 +89,11 @@ class BuildPoints(QObject):
         self.ui.numberGridPointsRow.valueChanged.disconnect(self.genBuildGrid)
         self.ui.altitudeMin.valueChanged.disconnect(self.genBuildGrid)
         self.ui.altitudeMax.valueChanged.disconnect(self.genBuildGrid)
-        self.ui.numberDSOPoints.valueChanged.disconnect(self.genBuildDSO)
+        self.ui.numberCelestialStepHA.valueChanged.disconnect(self.genBuildCelestial)
+        self.ui.numberCelestialStepDEC.valueChanged.disconnect(self.genBuildCelestial)
+        self.ui.meridianDistanceFlip.valueChanged.disconnect(self.genBuildCelestial)
 
+        self.ui.numberDSOPoints.valueChanged.disconnect(self.genBuildDSO)
         self.ui.buildPFileName.setText(config.get("buildPFileName", ""))
         self.ui.numberGridPointsRow.setValue(config.get("numberGridPointsRow", 5))
         self.ui.numberGridPointsCol.setValue(config.get("numberGridPointsCol", 6))
@@ -99,16 +104,15 @@ class BuildPoints(QObject):
         self.ui.numberCelestialStepHA.setValue(config.get("numberCelestialStepHA", 15))
         self.ui.numberCelestialStepDEC.setValue(config.get("numberCelestialStepDEC", 15))
         self.ui.meridianDistanceFlip.setValue(config.get("meridianDistanceFlip", 5))
-
         self.ui.autoDeleteMeridian.setChecked(config.get("autoDeleteMeridian", False))
         self.ui.autoDeleteHorizon.setChecked(config.get("autoDeleteHorizon", True))
         self.ui.useSafetyMargin.setChecked(config.get("useSafetyMargin", False))
         self.ui.safetyMarginValue.setValue(config.get("safetyMarginValue", 0))
         self.ui.avoidFlip.setChecked(config.get("avoidFlip", False))
-        self.ui.sortNothing.setChecked(config.get("sortNothing", True))
-        self.ui.sortEW.setChecked(config.get("sortEW", False))
-        self.ui.useDomeAz.setChecked(config.get("useDomeAz", False))
-        self.ui.sortHL.setChecked(config.get("sortHL", False))
+        self.ui.noSort.setChecked(config.get("noSort", True))
+        self.ui.sortAZ.setChecked(config.get("sortAZ", False))
+        self.ui.sortDomeAZ.setChecked(config.get("sortDomeAZ", False))
+        self.ui.sortALT.setChecked(config.get("sortALT", False))
         self.ui.keepGeneratedPoints.setChecked(config.get("keepGeneratedPoints", False))
         self.ui.ditherBuildPoints.setChecked(config.get("ditherBuildPoints", False))
 
@@ -117,6 +121,9 @@ class BuildPoints(QObject):
         self.ui.altitudeMin.valueChanged.connect(self.genBuildGrid)
         self.ui.altitudeMax.valueChanged.connect(self.genBuildGrid)
         self.ui.numberDSOPoints.valueChanged.connect(self.genBuildDSO)
+        self.ui.numberCelestialStepHA.valueChanged.connect(self.genBuildCelestial)
+        self.ui.numberCelestialStepDEC.valueChanged.connect(self.genBuildCelestial)
+        self.ui.meridianDistanceFlip.valueChanged.connect(self.genBuildCelestial)
 
     def storeConfig(self) -> None:
         """ """
@@ -136,10 +143,10 @@ class BuildPoints(QObject):
         config["useSafetyMargin"] = self.ui.useSafetyMargin.isChecked()
         config["safetyMarginValue"] = self.ui.safetyMarginValue.value()
         config["avoidFlip"] = self.ui.avoidFlip.isChecked()
-        config["sortNothing"] = self.ui.sortNothing.isChecked()
-        config["sortEW"] = self.ui.sortEW.isChecked()
-        config["useDomeAz"] = self.ui.useDomeAz.isChecked()
-        config["sortHL"] = self.ui.sortHL.isChecked()
+        config["noSort"] = self.ui.noSort.isChecked()
+        config["sortAZ"] = self.ui.sortAZ.isChecked()
+        config["sortDomeAZ"] = self.ui.sortDomeAZ.isChecked()
+        config["sortALT"] = self.ui.sortALT.isChecked()
         config["keepGeneratedPoints"] = self.ui.keepGeneratedPoints.isChecked()
         config["ditherBuildPoints"] = self.ui.ditherBuildPoints.isChecked()
 
@@ -164,7 +171,6 @@ class BuildPoints(QObject):
         if not self.app.data.genGrid(minAlt, maxAlt, numbRows, numbCols):
             self.msg.emit(2, "Model", "Buildpoints", "Could not generate grid")
             return
-
         self.processPoints()
 
     def genBuildAlign(self) -> None:
@@ -347,74 +353,16 @@ class BuildPoints(QObject):
             value = int(self.ui.safetyMarginValue.value())
             self.app.data.deleteCloseHorizonLine(value)
 
-    def doSortDomeAzData(self, result: tuple) -> None:
-        """ """
-        points, pierside = result
-        self.app.data.sort(points, sortDomeAz=True, pierside=pierside)
-        self.sortRunning.unlock()
-        self.app.redrawHemisphere.emit()
-        self.app.drawBuildPoints.emit()
-
-    def sortDomeAzWorker(
-        self, points: list, pierside: str
-    ) -> tuple[list[tuple[int, int]], str]:
-        """ """
-        pointsNew = []
-        numbAll = len(points)
-        ui = self.ui.autoSortGroup
-        changeStyleDynamic(ui, "run", True)
-        for i, point in enumerate(points):
-            t = f"Auto sort points: progress {(i + 1) / numbAll * 100:3.0f}%"
-            ui.setTitle(t)
-            alt = point[0]
-            az = point[1]
-            _, domeAz = self.app.mount.calcMountAltAzToDomeAltAz(alt, az)
-            if domeAz is None:
-                continue
-            pointsNew.append([alt, az, self.app.data.UNPROCESSED, domeAz.degrees])
-        points = pointsNew
-        ui.setTitle("Auto sort points")
-        changeStyleDynamic(ui, "run", False)
-        return points, pierside
-
-    def sortDomeAz(self, points: list, pierside: str) -> None:
-        """ """
-        if not self.sortRunning.tryLock():
-            return
-        self.worker = Worker(self.sortDomeAzWorker, points, pierside)
-        self.worker.signals.result.connect(self.doSortDomeAzData)
-        self.app.threadPool.start(self.worker)
-
-    def sortMountAz(self, points: list, eastwest: bool, highlow: bool, pierside: str) -> None:
-        """ """
-        points = [[x[0], x[1], x[2], 0] for x in points]
-        self.app.data.sort(points, eastwest, highlow, pierside)
-        self.app.redrawHemisphere.emit()
-        self.app.drawBuildPoints.emit()
-
     def autoSortPoints(self) -> None:
         """ """
-        eastwest = self.ui.sortEW.isChecked()
-        highlow = self.ui.sortHL.isChecked()
-        avoidFlip = self.ui.avoidFlip.isChecked()
-        useDomeAz = self.ui.useDomeAz.isChecked()
-        enableDomeAz = self.ui.useDomeAz.isEnabled()
-        noSort = self.ui.sortNothing.isChecked()
-        pierside = self.app.mount.obsSite.pierside
-
-        if not avoidFlip:
-            pierside = None
-
-        points = self.app.data.buildP
-        if noSort and not avoidFlip:
-            self.app.redrawHemisphere.emit()
-            self.app.drawBuildPoints.emit()
-            return
-
-        if useDomeAz and enableDomeAz:
-            self.sortDomeAz(points, pierside)
-        else:
-            self.sortMountAz(points, eastwest, highlow, pierside)
+        if self.ui.sortALT.isChecked():
+            self.app.data.sortAlt()
+        if self.ui.sortAZ.isChecked():
+            self.app.data.sortAz()
+        if self.ui.sortDomeAZ.isChecked() and bool(self.app.deviceStat.get("dome")):
+            self.app.data.sortDomeAz()
+        if self.ui.avoidFlip.isChecked():
+            self.app.data.sortActualPierside()
 
     def buildPointsChanged(self) -> None:
         """ """
@@ -424,6 +372,8 @@ class BuildPoints(QObject):
         """ """
         self.autoDeletePoints()
         self.autoSortPoints()
+        self.app.redrawHemisphere.emit()
+        self.app.drawBuildPoints.emit()
 
     def rebuildPoints(self) -> None:
         """ """

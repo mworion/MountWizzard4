@@ -206,46 +206,31 @@ class DataPoint:
             x for x in self._buildP if not self.isCloseHorizonLine(x, margin, horizonInterpol)
         ]
 
-    def splitEastWest(self, points: tuple[int, int, int, int]) -> tuple[list, list]:
+    def sortAz(self) -> None:
         """ """
-        east = [x for x in points if x[1] <= 180]
-        west = [x for x in points if x[1] > 180]
-        return east, west
+        self._buildP = sorted(self._buildP, key=lambda x: -x[1])
 
-    def sortAz(self, point: tuple[int, int, int, int], sortDome: bool = False) -> None:
+    def sortDomeAz(self) -> None:
         """ """
-        east, west = self.splitEastWest(point)
-        east = sorted(east, key=lambda x: -x[1])
-        west = sorted(west, key=lambda x: -x[1])
+        pointsNew = []
+        for i, point in enumerate(self._buildP):
+            alt = point[0]
+            az = point[1]
+            _, domeAz = self.app.mount.calcMountAltAzToDomeAltAz(alt, az)
+            if domeAz is None:
+                continue
+            pointsNew.append([alt, az, self.app.data.UNPROCESSED, domeAz.degrees])
+        self._buildP = list(p[0:3] for p in sorted(pointsNew, key=lambda x: -x[3]))
 
-    def sortAlt(self, point: tuple[int, int, int, int]) -> None:
+    def sortAlt(self) -> None:
         """ """
-        east, west = self.splitEastWest(point)
-        east = sorted(east, key=lambda x: -x[0])
-        west = sorted(west, key=lambda x: -x[0])
+        self._buildP = sorted(self._buildP, key=lambda x: -x[0])
 
-    def sort(
-        self,
-        points=list[tuple[int, int, int, int]],
-        eastwest: bool = False,
-        highlow: bool = False,
-        sortDomeAz: bool = None,
-        pierside: str = None,
-    ) -> None:
+    def sortActualPierside(self) -> None:
         """ """
-        east, west = self.splitEastWest(points)
-
-        if eastwest:
-            east = sorted(east, key=lambda x: -x[1])
-            west = sorted(west, key=lambda x: -x[1])
-        elif highlow:
-            east = sorted(east, key=lambda x: -x[0])
-            west = sorted(west, key=lambda x: -x[0])
-        elif sortDomeAz:
-            east = sorted(east, key=lambda x: -x[3])
-            west = sorted(west, key=lambda x: -x[3])
-
-        if pierside == "W" or pierside is None:
+        east = [x for x in self._buildP if x[1] <= 180]
+        west = [x for x in self._buildP if x[1] > 180]
+        if self.app.mount.obsSite.pierside != "E":
             self._buildP = list(p[0:3] for p in east + west)
         else:
             self._buildP = list(p[0:3] for p in west + east)

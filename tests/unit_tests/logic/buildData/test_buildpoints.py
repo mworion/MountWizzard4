@@ -25,7 +25,7 @@ import pytest
 
 # external packages
 import skyfield.api
-from skyfield.api import wgs84
+from skyfield.api import wgs84, Angle
 import skyfield.almanac
 
 from mw4.logic.buildData.buildpoints import DataPoint, HaDecToAltAz
@@ -366,6 +366,56 @@ def test_deleteCloseHorizonLine_2(function):
     function.buildP = [[10, 10, 1], [5, 40, 1], [-40, 60, 1]]
     function.horizonP = [[0, 10], [180, 40], [360, 60]]
     function.deleteCloseHorizonLine(0)
+
+
+def test_sortAz_1(function):
+    function.buildP = [[10, 10, 1], [5, 40, 1], [350, 60, 1], [180, 20, 1]]
+    function.sortAz()
+    assert function.buildP[0] == [350, 60, 1]
+    assert function.buildP[1] == [5, 40, 1]
+    assert function.buildP[2] == [180, 20, 1]
+    assert function.buildP[3] == [10, 10, 1]
+
+
+def test_sortDomeAz_1(function):
+    function.buildP = [[10, 10, 1]]
+    with mock.patch.object(function.app.mount, "calcMountAltAzToDomeAltAz", return_value=(10, Angle(degrees=350))):
+        function.sortDomeAz()
+
+
+def test_sortDomeAz_2(function):
+    function.buildP = [[10, 10, 1]]
+    with mock.patch.object(function.app.mount, "calcMountAltAzToDomeAltAz", return_value=(10, None)):
+        function.sortDomeAz()
+
+
+def test_sortAlt_1(function):
+    function.buildP = [[10, 10, 1], [5, 40, 1], [350, 60, 1], [180, 20, 1]]
+    function.sortAlt()
+    assert function.buildP[0] == [350, 60, 1]
+    assert function.buildP[1] == [180, 20, 1]
+    assert function.buildP[2] == [10, 10, 1]
+    assert function.buildP[3] == [5, 40, 1]
+
+
+def test_sortActualPierside_1(function):
+    function.buildP = [[10, 10, 1], [5, 40, 1], [350, 60, 1], [180, 20, 1]]
+    function.app.mount.obsSite.pierside = "W"
+    function.sortActualPierside()
+    assert function.buildP[0] == [10, 10, 1]
+    assert function.buildP[1] == [5, 40, 1]
+    assert function.buildP[2] == [350, 60, 1]
+    assert function.buildP[3] == [180, 20, 1]
+
+
+def test_sortActualPierside_2(function):
+    function.buildP = [[10, 10, 1], [5, 40, 1], [350, 60, 1], [180, 20, 1]]
+    function.app.mount.obsSite.pierside = "E"
+    function.sortActualPierside()
+    assert function.buildP[0] == [10, 10, 1]
+    assert function.buildP[1] == [5, 40, 1]
+    assert function.buildP[2] == [350, 60, 1]
+    assert function.buildP[3] == [180, 20, 1]
 
 
 def test_addHorizonP1(function):
@@ -756,127 +806,6 @@ def test_genAlign5(function):
     )
     assert not suc
     assert len(function.buildP) == 0
-
-
-def test_sort_1(function):
-    values = [
-        [10, 10, 1],
-        [20, 20, 1],
-        [30, 90, 1],
-        [40, 190, 1],
-        [50, 290, 1],
-    ]
-    result = [
-        [30, 90, 1],
-        [20, 20, 1],
-        [10, 10, 1],
-        [50, 290, 1],
-        [40, 190, 1],
-    ]
-    function.sort(values, eastwest=True)
-    assert function.buildP == result
-
-
-def test_sort_2(function):
-    values = [
-        [10, 10, 1],
-        [20, 20, 1],
-        [30, 90, 1],
-        [40, 190, 1],
-        [50, 290, 1],
-    ]
-    result = [
-        [30, 90, 1],
-        [20, 20, 1],
-        [10, 10, 1],
-        [50, 290, 1],
-        [40, 190, 1],
-    ]
-    function.sort(values, highlow=True)
-    assert function.buildP == result
-
-
-def test_sort_3(function):
-    values = [
-        [30, 90, 1],
-        [50, 290, 1],
-        [20, 20, 1],
-        [10, 10, 1],
-        [40, 190, 1],
-    ]
-    result = [
-        [30, 90, 1],
-        [20, 20, 1],
-        [10, 10, 1],
-        [50, 290, 1],
-        [40, 190, 1],
-    ]
-    function.sort(values, eastwest=True)
-    assert function.buildP == result
-
-
-def test_sort_4(function):
-    values = [
-        [30, 90, 1],
-        [50, 290, 1],
-        [20, 20, 1],
-        [10, 10, 1],
-        [40, 190, 1],
-    ]
-    result = [
-        [30, 90, 1],
-        [20, 20, 1],
-        [10, 10, 1],
-        [50, 290, 1],
-        [40, 190, 1],
-    ]
-    function.sort(values, highlow=True)
-    assert function.buildP == result
-
-
-def test_sort_5(function):
-    values = [
-        [30, 90, 1],
-        [50, 290, 1],
-        [20, 20, 1],
-        [10, 10, 1],
-        [40, 190, 1],
-    ]
-    result = [
-        [50, 290, 1],
-        [40, 190, 1],
-        [30, 90, 1],
-        [20, 20, 1],
-        [10, 10, 1],
-    ]
-    function.sort(values, highlow=True, pierside="E")
-    assert function.buildP == result
-
-
-def test_sort_6(function):
-    values = [
-        [30, 90, 1],
-        [50, 290, 1],
-        [20, 20, 1],
-        [10, 10, 1],
-        [40, 190, 1],
-    ]
-    result = [
-        [30, 90, 1],
-        [20, 20, 1],
-        [10, 10, 1],
-        [50, 290, 1],
-        [40, 190, 1],
-    ]
-    function.sort(values, highlow=True, pierside="W")
-    assert function.buildP == result
-
-
-def test_sort_7(function):
-    values = [[30, 90, 1, 3], [20, 20, 1, 2], [50, 290, 1, 1]]
-    result = [[30, 90, 1], [20, 20, 1], [50, 290, 1]]
-    function.sort(values, sortDomeAz=True)
-    assert function.buildP == result
 
 
 def test_generateCelestialEquator_1(function):

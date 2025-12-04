@@ -93,71 +93,19 @@ def test_genBuildAlign_2(function):
         function.genBuildAlign()
 
 
-def test_genBuildMax_1(function):
-    function.ui.autoDeleteHorizon.setChecked(False)
-    function.genBuildMax()
+def test_genBuildCelestial_1(function):
+    function.genBuildCelestial()
 
 
-def test_genBuildMax_2(function):
+def test_genBuildCelestial_2(function):
     with mock.patch.object(function.app.data, "genGreaterCircle", return_value=False):
-        function.genBuildMax()
+        function.genBuildCelestial()
 
 
-def test_genBuildMax_3(function):
+def test_genBuildCelestial_3(function):
     function.ui.ditherBuildPoints.setChecked(True)
     with mock.patch.object(function.app.data, "genGreaterCircle", return_value=True):
-        function.genBuildMax()
-
-
-def test_genBuildMed_1(function):
-    function.genBuildMed()
-
-
-def test_genBuildMed_2(function):
-    with mock.patch.object(function.app.data, "genGreaterCircle", return_value=False):
-        function.genBuildMed()
-
-
-def test_genBuildMed_3(function):
-    function.ui.ditherBuildPoints.setChecked(True)
-    with mock.patch.object(function.app.data, "genGreaterCircle", return_value=True):
-        function.genBuildMed()
-
-
-def test_genBuildNorm_1(function):
-    function.genBuildNorm()
-
-
-def test_genBuildNorm_2(function):
-    with mock.patch.object(function.app.data, "genGreaterCircle"):
-        function.genBuildNorm()
-
-
-def test_genBuildNorm_3(function):
-    function.ui.ditherBuildPoints.setChecked(True)
-    with mock.patch.object(function.app.data, "genGreaterCircle"):
-        function.genBuildNorm()
-
-
-def test_genBuildMin_1(function):
-    function.ui.autoDeleteHorizon.setChecked(True)
-    function.genBuildMin()
-
-
-def test_genBuildMin_1b(function):
-    function.ui.autoDeleteHorizon.setChecked(False)
-    function.genBuildMin()
-
-
-def test_genBuildMin_2(function):
-    with mock.patch.object(function.app.data, "genGreaterCircle"):
-        function.genBuildMin()
-
-
-def test_genBuildMin_3(function):
-    function.ui.ditherBuildPoints.setChecked(True)
-    with mock.patch.object(function.app.data, "genGreaterCircle"):
-        function.genBuildMin()
+        function.genBuildCelestial()
 
 
 def test_genBuildDSO_1(function):

@@ -323,16 +323,9 @@ class DataPoint:
         with open(fullFileName, "w") as handle:
             json.dump(self.horizonP, handle, indent=4)
 
-    def genGreaterCircle(self, selection: str = "norm") -> bool:
-        """
-        genGreaterCircle takes the generated boundaries for the range routine and
-        transforms ha, dec to alt az. reasonable values for the alt az values
-        are 5 to 85 degrees.
-        """
+    def genGreaterCircle(self, stepHA: int, stepDec: int, distFlip: int ) -> bool:
+        """ """
         self.clearBuildP()
-        stepHA = 10
-        stepDec = 10
-        distFlip = 3
         lat = self.app.mount.obsSite.location.latitude.degrees
         decList = list(range(-15, -15 + int(100 / stepDec) * stepDec, stepDec))
         if lat < 0:

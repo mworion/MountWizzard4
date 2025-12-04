@@ -144,8 +144,7 @@ def test_horizonP1(function):
 def test_genGreaterCircle1(function):
     function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
     function.horizonP = []
-    selection = "min"
-    function.genGreaterCircle(selection)
+    function.genGreaterCircle(10, 10, 5)
     for i, (alt, az, status) in enumerate(function.buildP):
         assert alt <= 90
         assert az <= 360
@@ -157,8 +156,7 @@ def test_genGreaterCircle1(function):
 def test_genGreaterCircle2(function):
     function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=-48, longitude_degrees=11)
     function.horizonP = []
-    selection = "min"
-    function.genGreaterCircle(selection)
+    function.genGreaterCircle(10, 10, 5)
     for i, (alt, az, status) in enumerate(function.buildP):
         assert alt <= 90
         assert az <= 360
@@ -548,14 +546,14 @@ def test_loadBuildP_6(function):
 
 def test_saveBuildP_1(function):
     function.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
-    function.genGreaterCircle("min")
+    function.genGreaterCircle(10, 10, 5)
     function.saveBuildP("")
 
 
 def test_saveBuildP_2(function):
     function.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
     fileName = "tests/work/config/save_test.bpts"
-    function.genGreaterCircle("min")
+    function.genGreaterCircle(10, 10, 5)
     function.saveBuildP("save_test")
     assert os.path.isfile(fileName)
 

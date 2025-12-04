@@ -8651,7 +8651,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>90</y>
+         <y>85</y>
          <width>366</width>
          <height>81</height>
         </rect>
@@ -8847,47 +8847,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="numberGridPointsCol">
-        <property name="geometry">
-         <rect>
-          <x>120</x>
-          <y>25</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>41</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of coloms in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="buttonSymbols">
-         <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>2.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>2.000000000000000</double>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_180">
         <property name="geometry">
          <rect>
@@ -8960,6 +8919,47 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="maximum">
          <double>40.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="numberGridPointsCol">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>25</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>41</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of coloms in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>2.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>10.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>2.000000000000000</double>
         </property>
        </widget>
       </widget>
@@ -9831,9 +9831,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>190</y>
+         <y>180</y>
          <width>366</width>
-         <height>51</height>
+         <height>76</height>
         </rect>
        </property>
        <property name="title">
@@ -9842,69 +9842,220 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QPushButton" name="genBuildMax">
+       <widget class="QLabel" name="label_186">
+        <property name="geometry">
+         <rect>
+          <x>125</x>
+          <y>20</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Step DEC</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_197">
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>25</y>
-          <width>86</width>
+          <y>20</y>
+          <width>56</width>
           <height>21</height>
          </rect>
         </property>
-        <property name="toolTip">
-         <string>Generates a pointcloud with greater circles: maximal number of stars.</string>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
         </property>
         <property name="text">
-         <string>Maximal</string>
+         <string>Step HA</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="genBuildMed">
+       <widget class="QPushButton" name="genBuildCelestial">
         <property name="geometry">
          <rect>
-          <x>95</x>
-          <y>25</y>
-          <width>86</width>
+          <x>5</x>
+          <y>50</y>
+          <width>356</width>
           <height>21</height>
          </rect>
         </property>
         <property name="toolTip">
-         <string>Generates a pointcloud with greater circles: medium number of stars.</string>
+         <string>Generates a regular pattern with the given parameters.</string>
         </property>
         <property name="text">
-         <string>Medium</string>
+         <string>Generate</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="genBuildMin">
+       <widget class="QDoubleSpinBox" name="meridianDistanceFlip">
         <property name="geometry">
          <rect>
-          <x>275</x>
-          <y>25</y>
-          <width>86</width>
+          <x>310</x>
+          <y>20</y>
+          <width>41</width>
           <height>21</height>
          </rect>
         </property>
-        <property name="toolTip">
-         <string>Generates a pointcloud with greater circles: low number of stars.</string>
+        <property name="maximumSize">
+         <size>
+          <width>41</width>
+          <height>16777215</height>
+         </size>
         </property>
-        <property name="text">
-         <string>Minimal</string>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Model point start at minimum altitude.</string>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>10.000000000000000</double>
         </property>
        </widget>
-       <widget class="QPushButton" name="genBuildNorm">
+       <widget class="QLabel" name="label_213">
         <property name="geometry">
          <rect>
-          <x>185</x>
-          <y>25</y>
-          <width>86</width>
+          <x>255</x>
+          <y>20</y>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
-        <property name="toolTip">
-         <string>Generates a pointcloud with greater circles: medium number of stars.
-</string>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
         </property>
         <property name="text">
-         <string>Norm</string>
+         <string>Distance</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="numberCelestialStepHA">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>20</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>41</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of rows in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>30.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="numberCelestialStepDEC">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>20</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>41</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of coloms in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>30.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_221">
+        <property name="geometry">
+         <rect>
+          <x>355</x>
+          <y>20</y>
+          <width>16</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>°</string>
+        </property>
+        <property name="wordWrap">
+         <bool>false</bool>
         </property>
        </widget>
       </widget>
@@ -9912,7 +10063,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>265</y>
+         <y>270</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -32855,15 +33006,11 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>saveBuildPoints</tabstop>
   <tabstop>saveBuildPointsAs</tabstop>
   <tabstop>numberGridPointsRow</tabstop>
-  <tabstop>numberGridPointsCol</tabstop>
+  <tabstop>numberCelestialStepDEC</tabstop>
   <tabstop>altitudeMin</tabstop>
   <tabstop>altitudeMax</tabstop>
   <tabstop>genBuildGrid</tabstop>
   <tabstop>genBuildAlign3</tabstop>
-  <tabstop>genBuildMax</tabstop>
-  <tabstop>genBuildMed</tabstop>
-  <tabstop>genBuildNorm</tabstop>
-  <tabstop>genBuildMin</tabstop>
   <tabstop>genBuildSpiral</tabstop>
   <tabstop>genModel</tabstop>
   <tabstop>numberDSOPoints</tabstop>

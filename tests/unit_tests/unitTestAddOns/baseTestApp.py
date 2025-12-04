@@ -517,7 +517,7 @@ class Data:
         return
 
     @staticmethod
-    def genGreaterCircle(selection=None, keep=None):
+    def genGreaterCircle(stepHA, StepDEC, distFlip ):
         return
 
     @staticmethod

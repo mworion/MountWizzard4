@@ -41,10 +41,7 @@ class BuildPoints(QObject):
         self.sortedGenerators: dict = {
             "grid": self.genBuildGrid,
             "align": self.genBuildAlign,
-            "max": self.genBuildMax,
-            "med": self.genBuildMed,
-            "norm": self.genBuildNorm,
-            "min": self.genBuildMin,
+            "celestial": self.genBuildCelestial,
             "dso": self.genBuildDSO,
             "file": self.genBuildFile,
             "model": self.genModel,
@@ -58,10 +55,10 @@ class BuildPoints(QObject):
         self.ui.numberGridPointsRow.valueChanged.connect(self.genBuildGrid)
         self.ui.altitudeMin.valueChanged.connect(self.genBuildGrid)
         self.ui.altitudeMax.valueChanged.connect(self.genBuildGrid)
-        self.ui.genBuildMax.clicked.connect(self.genBuildMax)
-        self.ui.genBuildMed.clicked.connect(self.genBuildMed)
-        self.ui.genBuildNorm.clicked.connect(self.genBuildNorm)
-        self.ui.genBuildMin.clicked.connect(self.genBuildMin)
+        self.ui.genBuildCelestial.clicked.connect(self.genBuildCelestial)
+        self.ui.numberCelestialStepHA.valueChanged.connect(self.genBuildCelestial)
+        self.ui.numberCelestialStepDEC.valueChanged.connect(self.genBuildCelestial)
+        self.ui.meridianDistanceFlip.valueChanged.connect(self.genBuildCelestial)
         self.ui.genBuildFile.clicked.connect(self.genBuildFile)
         self.ui.genBuildDSO.clicked.connect(self.genBuildDSO)
         self.ui.genModel.clicked.connect(self.genModel)
@@ -99,6 +96,9 @@ class BuildPoints(QObject):
         self.ui.altitudeMax.setValue(config.get("altitudeMax", 75))
         self.ui.numberDSOPoints.setValue(config.get("numberDSOPoints", 15))
         self.ui.numberSpiral.setValue(config.get("numberSpiral", 30))
+        self.ui.numberCelestialStepHA.setValue(config.get("numberCelestialStepHA", 15))
+        self.ui.numberCelestialStepDEC.setValue(config.get("numberCelestialStepDEC", 15))
+        self.ui.meridianDistanceFlip.setValue(config.get("meridianDistanceFlip", 5))
 
         self.ui.autoDeleteMeridian.setChecked(config.get("autoDeleteMeridian", False))
         self.ui.autoDeleteHorizon.setChecked(config.get("autoDeleteHorizon", True))
@@ -128,6 +128,9 @@ class BuildPoints(QObject):
         config["altitudeMax"] = self.ui.altitudeMax.value()
         config["numberDSOPoints"] = self.ui.numberDSOPoints.value()
         config["numberSpiral"] = self.ui.numberSpiral.value()
+        config["numberCelestialStepHA"] = self.ui.numberCelestialStepHA.value()
+        config["numberCelestialStepDEC"] = self.ui.numberCelestialStepDEC.value()
+        config["meridianDistanceFlip"] = self.ui.meridianDistanceFlip.value()
         config["autoDeleteMeridian"] = self.ui.autoDeleteMeridian.isChecked()
         config["autoDeleteHorizon"] = self.ui.autoDeleteHorizon.isChecked()
         config["useSafetyMargin"] = self.ui.useSafetyMargin.isChecked()
@@ -173,48 +176,15 @@ class BuildPoints(QObject):
             return
         self.processPoints()
 
-    def genBuildMax(self) -> None:
+    def genBuildCelestial(self) -> None:
         """ """
-        self.lastGenerator = "max"
-        suc = self.app.data.genGreaterCircle(selection="max")
+        self.lastGenerator = "celestial"
+        stepHA = int(self.ui.numberCelestialStepHA.value())
+        stepDec = int(self.ui.numberCelestialStepDEC.value())
+        distFlip = int(self.ui.meridianDistanceFlip.value())
+        suc = self.app.data.genGreaterCircle(stepHA, stepDec, distFlip)
         if not suc:
-            self.msg.emit(2, "Model", "Buildpoints", "Build points [max] cannot be generated")
-            return
-
-        if self.ui.ditherBuildPoints.isChecked():
-            self.app.data.ditherPoints()
-        self.processPoints()
-
-    def genBuildMed(self) -> None:
-        """ """
-        self.lastGenerator = "med"
-        suc = self.app.data.genGreaterCircle(selection="med")
-        if not suc:
-            self.msg.emit(2, "Model", "Buildpoints", "Build points [med] cannot be generated")
-            return
-
-        if self.ui.ditherBuildPoints.isChecked():
-            self.app.data.ditherPoints()
-        self.processPoints()
-
-    def genBuildNorm(self) -> None:
-        """ """
-        self.lastGenerator = "norm"
-        suc = self.app.data.genGreaterCircle(selection="norm")
-        if not suc:
-            self.msg.emit(2, "Model", "Buildpoints", "Build points [norm] cannot be generated")
-            return
-
-        if self.ui.ditherBuildPoints.isChecked():
-            self.app.data.ditherPoints()
-        self.processPoints()
-
-    def genBuildMin(self) -> None:
-        """ """
-        self.lastGenerator = "min"
-        suc = self.app.data.genGreaterCircle(selection="min")
-        if not suc:
-            self.msg.emit(2, "Model", "Buildpoints", "Build points [min] cannot be generated")
+            self.msg.emit(2, "Model", "Buildpoints", "Build points celestial cannot be generated")
             return
 
         if self.ui.ditherBuildPoints.isChecked():

@@ -329,26 +329,22 @@ def test_autoDeletePoints(function):
 
 
 def test_autoSortPoints_1(function):
-    function.ui.sortAZ.setChecked(False)
-    function.ui.sortALT.setChecked(False)
-    function.ui.avoidFlip.setChecked(False)
-    function.ui.sortDomeAZ.setChecked(False)
+    function.ui.noSort.setChecked(True)
     function.autoSortPoints()
 
 
 def test_autoSortPoints_2(function):
     function.ui.sortAZ.setChecked(True)
-    function.ui.sortALT.setChecked(False)
-    function.ui.avoidFlip.setChecked(False)
-    function.ui.sortDomeAZ.setChecked(True)
     function.autoSortPoints()
 
 
 def test_autoSortPoints_3(function):
-    function.ui.sortAZ.setChecked(False)
-    function.ui.sortALT.setChecked(False)
-    function.ui.avoidFlip.setChecked(True)
-    function.ui.sortDomeAZ.setChecked(False)
+    function.ui.sortALT.setChecked(True)
+    function.autoSortPoints()
+
+
+def test_autoSortPoints_4(function):
+    function.ui.sortDomeAZ.setChecked(True)
     function.autoSortPoints()
 
 

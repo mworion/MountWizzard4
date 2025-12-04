@@ -555,6 +555,18 @@ class Data:
         return
 
     @staticmethod
+    def sortDomeAz():
+        return
+
+    @staticmethod
+    def sortAz():
+        return
+
+    @staticmethod
+    def sortAlt():
+        return
+
+    @staticmethod
     def setStatusBuildP(a, b):
         return
 

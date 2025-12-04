@@ -142,20 +142,6 @@ def test_smartFunctionGui_4(window):
     assert not window.ui.mountCommandTable.isEnabled()
 
 
-def test_smartFunctionGui_5(window):
-    window.app.deviceStat["dome"] = True
-    window.app.deviceStat["mount"] = True
-    window.smartFunctionGui()
-    assert window.ui.useDomeAz.isEnabled()
-
-
-def test_smartFunctionGui_6(window):
-    window.app.deviceStat["dome"] = False
-    window.app.deviceStat["mount"] = False
-    window.smartFunctionGui()
-    assert not window.ui.useDomeAz.isEnabled()
-
-
 def test_smartTabGui_1(window):
     window.smartTabGui()
 

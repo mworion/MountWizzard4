@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -9134,7 +9134,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>135</y>
+         <y>125</y>
          <width>366</width>
          <height>91</height>
         </rect>
@@ -9282,9 +9282,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>255</y>
+         <y>240</y>
          <width>361</width>
-         <height>136</height>
+         <height>151</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -9372,7 +9372,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
+          <y>65</y>
           <width>336</width>
           <height>20</height>
          </rect>
@@ -9395,7 +9395,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>70</y>
+          <y>85</y>
           <width>256</width>
           <height>20</height>
          </rect>
@@ -9420,8 +9420,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="geometry">
          <rect>
-          <x>240</x>
-          <y>50</y>
+          <x>120</x>
+          <y>40</y>
           <width>106</width>
           <height>20</height>
          </rect>
@@ -9444,7 +9444,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>90</y>
+          <y>105</y>
           <width>256</width>
           <height>20</height>
          </rect>
@@ -9470,7 +9470,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>110</y>
+          <y>125</y>
           <width>271</width>
           <height>20</height>
          </rect>
@@ -9493,7 +9493,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>290</x>
-          <y>110</y>
+          <y>125</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -9534,7 +9534,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>335</x>
-          <y>110</y>
+          <y>125</y>
           <width>16</width>
           <height>20</height>
          </rect>

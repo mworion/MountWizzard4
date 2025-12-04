@@ -874,7 +874,7 @@ def test_sort_6(function):
 
 def test_sort_7(function):
     values = [[30, 90, 1, 3], [20, 20, 1, 2], [50, 290, 1, 1]]
-    result = [[30, 90, 1, 3], [20, 20, 1, 2], [50, 290, 1, 1]]
+    result = [[30, 90, 1], [20, 20, 1], [50, 290, 1]]
     function.sort(values, sortDomeAz=True)
     assert function.buildP == result
 

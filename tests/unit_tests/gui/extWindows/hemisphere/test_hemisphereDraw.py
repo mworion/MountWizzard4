@@ -343,19 +343,19 @@ def test_drawModelPoints_1(function):
 
 def test_drawModelPoints_2(function):
     function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol="o")
-    function.app.data.buildP = [(1, 1, True), (2, 2, False)]
+    function.app.data.buildP = [(1, 1, 0), (2, 2, 0)]
     with mock.patch.object(function, "setModelPointsAppearanceInPlot"):
         function.drawModelPoints()
 
 
 def test_drawModelText_1(function):
-    function.app.data.buildP = None
+    function.app.data.buildP = []
     function.drawModelText()
 
 
 def test_drawModelText_2(function):
     function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol="o")
-    function.app.data.buildP = [(1, 1, True), (2, 2, False)]
+    function.app.data.buildP = [(1, 1, 1), (2, 2, 0)]
     function.ui.editModeHem.setChecked(True)
     function.modelPointsText.append(pg.TextItem())
     function.drawModelText()
@@ -363,7 +363,7 @@ def test_drawModelText_2(function):
 
 def test_drawModelText_3(function):
     function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol="o")
-    function.app.data.buildP = [(1, 1, True), (2, 2, False)]
+    function.app.data.buildP = [(1, 1, 1), (2, 2, 0)]
     function.ui.normalModeHem.setChecked(True)
     function.drawModelText()
 

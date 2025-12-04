@@ -371,7 +371,7 @@ class BuildPoints(QObject):
             _, domeAz = self.app.mount.calcMountAltAzToDomeAltAz(alt, az)
             if domeAz is None:
                 continue
-            pointsNew.append((alt, az, True, domeAz.degrees))
+            pointsNew.append([alt, az, self.app.data.UNPROCESSED, domeAz.degrees])
         points = pointsNew
         ui.setTitle("Auto sort points")
         changeStyleDynamic(ui, "run", False)
@@ -387,7 +387,7 @@ class BuildPoints(QObject):
 
     def sortMountAz(self, points: list, eastwest: bool, highlow: bool, pierside: str) -> None:
         """ """
-        points = [(x[0], x[1], x[2], 0) for x in points]
+        points = [[x[0], x[1], x[2], 0] for x in points]
         self.app.data.sort(points, eastwest, highlow, pierside)
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
@@ -420,16 +420,16 @@ class BuildPoints(QObject):
         """ """
         self.lastGenerator = "none"
 
+    def processPoints(self) -> None:
+        """ """
+        self.autoDeletePoints()
+        self.autoSortPoints()
+
     def rebuildPoints(self) -> None:
         """ """
         if self.lastGenerator in self.sortedGenerators:
             self.sortedGenerators[self.lastGenerator]()
         self.processPoints()
-
-    def processPoints(self) -> None:
-        """ """
-        self.autoDeletePoints()
-        self.autoSortPoints()
 
     def setupDsoGui(self) -> None:
         """ """

@@ -229,9 +229,9 @@ class DataPoint:
             west = sorted(west, key=lambda x: -x[3])
 
         if pierside == "W" or pierside is None:
-            self._buildP = east + west
+            self._buildP = list(p[0:3] for p in east + west)
         else:
-            self._buildP = west + east
+            self._buildP = list(p[0:3] for p in west + east)
 
     def loadModel(self, fullFileName: Path) -> list[tuple[int, int]]:
         """ """

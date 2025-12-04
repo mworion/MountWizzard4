@@ -352,7 +352,7 @@ class HemisphereDraw(MWidget, SlewInterface):
 
     def updateDataModel(self, x: float, y: float) -> None:
         """ """
-        bp = [(y, x, True) for y, x in zip(y, x)]
+        bp = [[y, x, self.app.data.UNPROCESSED] for y, x in zip(y, x)]
         self.app.data.buildP = bp
         self.drawModelPoints()
         self.drawModelText()

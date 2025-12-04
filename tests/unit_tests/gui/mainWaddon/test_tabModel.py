@@ -172,25 +172,25 @@ def test_programModelToMount_3(function):
 
 
 def test_checkModelRunConditions_1(function):
-    function.app.data.buildP = [(0, 0, True)]
+    function.app.data.buildP = [(0, 0, 1)]
     suc = function.checkModelRunConditions()
     assert not suc
 
 
 def test_checkModelRunConditions_2(function):
-    function.app.data.buildP = [(0, 0, True)] * 100
+    function.app.data.buildP = [[0, 0, 1]] * 100
     suc = function.checkModelRunConditions()
     assert not suc
 
 
 def test_checkModelRunConditions_3(function):
-    function.app.data.buildP = [(0, 0, True), (0, 0, True), (0, 0, False)]
+    function.app.data.buildP = [[0, 0, 1], [0, 0, 1], [0, 0, 0]]
     suc = function.checkModelRunConditions()
     assert not suc
 
 
 def test_checkModelRunConditions_4(function):
-    function.app.data.buildP = [(0, 0, True), (0, 0, True), (0, 0, True)]
+    function.app.data.buildP = [[0, 0, 1], [0, 0, 1], [0, 0, 1]]
     suc = function.checkModelRunConditions()
     assert suc
 
@@ -266,7 +266,7 @@ def test_showStatusSolve_2(function):
 
 
 def test_setupModelInputData_1(function):
-    function.app.data.buildP = [(0, 0, True), (0, 0, False), (0, 0, True)]
+    function.app.data.buildP = [[0, 0, 1], [0, 0, 1], [0, 0, 1]]
     function.setupModelInputData()
 
 

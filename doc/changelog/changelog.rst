@@ -19,6 +19,7 @@ Version 4.x
 - add: support for comet and asteroid data in extended downloads
 - add: age parameter for MPC SAT databases before auto download
 - add: new theme with 3d buttons for selection
+- add: new way of defining build point along celestial paths
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major PySide6

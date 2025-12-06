@@ -347,8 +347,8 @@ def test_collectPlateSolveResult_1(function):
             "raJ2000S": Angle(hours=0),
             "decJ2000S": Angle(degrees=0),
             "imagePath": Path("test"),
-            "angle": Angle(degrees=0),
-            "error": 1,
+            "angleS": Angle(degrees=0),
+            "errorRMS_S": 1,
         },
     ]
     function.pointerResult = -1
@@ -367,8 +367,8 @@ def test_collectPlateSolveResult_2(function):
             "raJ2000S": Angle(hours=0),
             "decJ2000S": Angle(degrees=0),
             "imagePath": Path("test"),
-            "angle": Angle(degrees=0),
-            "error": 1,
+            "angleS": Angle(degrees=0),
+            "errorRMS_S": 1,
         },
     ]
     function.pointerResult = -1

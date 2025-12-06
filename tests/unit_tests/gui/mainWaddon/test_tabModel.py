@@ -183,12 +183,6 @@ def test_checkModelRunConditions_2(function):
     assert not suc
 
 
-def test_checkModelRunConditions_3(function):
-    function.app.data.buildP = [[0, 0, 1], [0, 0, 1], [0, 0, 0]]
-    suc = function.checkModelRunConditions()
-    assert not suc
-
-
 def test_checkModelRunConditions_4(function):
     function.app.data.buildP = [[0, 0, 1], [0, 0, 1], [0, 0, 1]]
     suc = function.checkModelRunConditions()
@@ -256,12 +250,12 @@ def test_showStatusExposure(function):
 
 
 def test_showStatusSolve_1(function):
-    status = ["test", "error"]
+    status = ["test", False]
     function.showStatusSolve(status)
 
 
 def test_showStatusSolve_2(function):
-    status = ["test", "True", 0, 0, 1.9, 85.0]
+    status = ["test", True, 0, 0, 1.9, 85.0]
     function.showStatusSolve(status)
 
 

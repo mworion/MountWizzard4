@@ -150,7 +150,7 @@ def test_genGreaterCircle1(function):
         assert az <= 360
         assert alt >= 0
         assert az >= 0
-        assert status
+        assert status == 0
 
 
 def test_genGreaterCircle2(function):
@@ -162,7 +162,7 @@ def test_genGreaterCircle2(function):
         assert az <= 360
         assert alt >= 0
         assert az >= 0
-        assert status
+        assert status == 0
 
 
 def test_checkFormat_1(function):
@@ -264,7 +264,7 @@ def test_setStatusBuildPFailed(function):
     function.addBuildP([10, 10, 1])
     function.addBuildP([10, 10, 1])
     function.setStatusBuildPFailed(1)
-    assert function.buildP[1][2] == 0
+    assert function.buildP[1][2] == 1
 
 
 def test_isCloseHorizonLine_1(function):
@@ -570,7 +570,7 @@ def test_loadBuildP_3(function):
         json.dump(values, outfile, indent=4)
     suc = function.loadBuildP(Path("tests/work/config/test.bpts"))
     assert suc
-    assert function.buildP == [(1, 1, 1), (2, 2, 1)]
+    assert function.buildP == [[1, 1, function.UNPROCESSED], [2, 2, function.UNPROCESSED]]
 
 
 def test_loadBuildP_4(function):

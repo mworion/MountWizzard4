@@ -231,9 +231,9 @@ class DataPoint:
         east = [x for x in self._buildP if x[1] <= 180]
         west = [x for x in self._buildP if x[1] > 180]
         if self.app.mount.obsSite.pierside != "E":
-            self._buildP = [list(p[0:3] for p in east + west)]
+            self._buildP = [p[0:3] for p in east + west]
         else:
-            self._buildP = [list(p[0:3] for p in west + east)]
+            self._buildP = [p[0:3] for p in west + east]
 
     def loadModel(self, fullFileName: Path) -> list[tuple[int, int]]:
         """ """

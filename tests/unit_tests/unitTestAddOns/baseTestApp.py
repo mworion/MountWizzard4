@@ -570,6 +570,14 @@ class Data:
     def setStatusBuildP(a, b):
         return
 
+    @staticmethod
+    def setStatusBuildPSolved(a):
+        return
+
+    @staticmethod
+    def setStatusBuildPFailed(a):
+        return
+
     def isAboveHorizon(self, point):
         """
         isAboveHorizon calculates for a given point the relationship to the actual horizon

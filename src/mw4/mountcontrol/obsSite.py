@@ -443,8 +443,7 @@ class ObsSite:
         if self._status is None:
             return None
         reference = f"{self._status:d}"
-        if reference in self.STAT:
-            return self.STAT[reference] + f" ({self._statusSlew})"
+        return self.STAT.get(reference, 'Unknown Status')
 
     @property
     def statusSlew(self):

@@ -48,7 +48,7 @@ class MountDevice:
     CYCLE_MOUNT_UP = 2000
     CYCLE_SETTING = 3100
     DEFAULT_PORT = 3492
-    SOCKET_TIMEOUT = 0.5
+    SOCKET_TIMEOUT = 1.0
 
     log = logging.getLogger("MW4")
 
@@ -93,7 +93,7 @@ class MountDevice:
         self.mountUp: bool = False
         self.mountUpLastStatus: bool = False
         self.statusAlert: bool = False
-        self.statusSlew: bool = True
+        self.statusSlew: bool = False
 
         self.timerPointing = QTimer()
         self.timerPointing.setSingleShot(False)
@@ -129,10 +129,11 @@ class MountDevice:
 
     @waitTimeFlip.setter
     def waitTimeFlip(self, value):
-        self._waitTimeFlip = value * 1000
+        self._waitTimeFlip = int(value * 1000)
 
     def waitAfterSettlingAndEmit(self):
         """ """
+        print('add wait finished')
         self.signals.slewed.emit()
 
     def startMountTimers(self):
@@ -241,12 +242,12 @@ class MountDevice:
 
         settleWait = self._waitTimeFlip if self.obsSite.flipped else 0
 
-        if self.obsSite.status not in [2, 6]:
-            if not self.statusSlew:
-                self.settlingWait.start(int(settleWait))
+        if self.obsSite.statusSlew:
             self.statusSlew = True
         else:
-            self.statusSlew = False
+            if self.statusSlew and not self.obsSite.statusSlew:
+                self.statusSlew = False
+                self.settlingWait.start(settleWait)
 
         if result:
             self.signals.pointDone.emit(self.obsSite)

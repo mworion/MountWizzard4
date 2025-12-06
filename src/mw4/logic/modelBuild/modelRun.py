@@ -61,7 +61,7 @@ class ModelData(QObject):
         self.firmware: str = ""
         self.profile: str = ""
         self.plateSolveApp: str = ""
-        self.exposureWaitTime: float = 0
+        self.waitTimeExposure: float = 0
         self.runTime: float = 0
         self.numberRetries: int = 0
         self.retriesReversed: bool = False
@@ -191,6 +191,7 @@ class ModelData(QObject):
         """ """
         item = self.modelBuildData[self.pointerImage]
         obs = self.app.mount.obsSite
+        print(obs.raJNow, obs.decJNow)
         item["raJNowM"] = obs.raJNow
         item["decJNowM"] = obs.decJNow
         item["angularPosRA"] = obs.angularPosRA
@@ -198,6 +199,7 @@ class ModelData(QObject):
         item["siderealTime"] = obs.timeSidereal
         item["julianDate"] = obs.timeJD
         item["pierside"] = obs.pierside
+        return
         raJ2000M, decJ2000M = JNowToJ2000(
             item["raJNowM"], item["decJNowM"], item["julianDate"]
         )
@@ -210,7 +212,7 @@ class ModelData(QObject):
         if self.cancelBatch or self.endBatch:
             return
 
-        waitTime = self.exposureWaitTime
+        waitTime = self.waitTimeExposure
         while self.pauseBatch or waitTime > 0:
             sleepAndEvents(500)
             waitTime -= 1
@@ -300,7 +302,6 @@ class ModelData(QObject):
             modelItem["name"] = self.modelName
             modelItem["plateSolveApp"] = self.plateSolveApp
             modelItem["focalLength"] = self.app.camera.focalLength
-            modelItem["waitTime"] = self.exposureWaitTime
             modelItem["index"] = index
             modelItem["success"] = False
             self.modelBuildData.append(modelItem)

@@ -74,6 +74,7 @@ class ModelData(QObject):
         self.mountSlewed: bool = False
         self.domeSlewed: bool = False
 
+    def setupSignals(self) -> None:
         # Signals handling exposing
         self.app.camera.signals.exposed.connect(self.setImageExposed)
         self.app.camera.signals.downloaded.connect(self.setImageDownloaded)
@@ -84,6 +85,18 @@ class ModelData(QObject):
         # Signals handling plate solving
         self.app.camera.signals.saved.connect(self.startNewPlateSolve)
         self.app.plateSolve.signals.result.connect(self.collectPlateSolveResult)
+
+    def resetSignals(self) -> None:
+        # Signals handling exposing
+        self.app.camera.signals.exposed.disconnect(self.setImageExposed)
+        self.app.camera.signals.downloaded.disconnect(self.setImageDownloaded)
+        self.app.camera.signals.saved.disconnect(self.setImageSaved)
+        # Signals handling slewing
+        self.app.mount.signals.slewed.disconnect(self.setMountSlewed)
+        self.app.dome.signals.slewed.disconnect(self.setDomeSlewed)
+        # Signals handling plate solving
+        self.app.camera.signals.saved.disconnect(self.startNewPlateSolve)
+        self.app.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
     def setImageExposed(self) -> None:
         """ """
@@ -199,7 +212,6 @@ class ModelData(QObject):
         item["siderealTime"] = obs.timeSidereal
         item["julianDate"] = obs.timeJD
         item["pierside"] = obs.pierside
-        return
         raJ2000M, decJ2000M = JNowToJ2000(
             item["raJNowM"], item["decJNowM"], item["julianDate"]
         )
@@ -337,6 +349,7 @@ class ModelData(QObject):
             return
 
         self.runTime = time.time()
+        self.setupSignals()
         self.prepareModelBuildData()
         self.runThroughModelBuildDataRetries()
         self.buildProgModel()
@@ -344,3 +357,4 @@ class ModelData(QObject):
         if modelSize < 3:
             self.log.warning(f"Only {modelSize} points available")
             self.modelProgData = []
+        self.resetSignals()

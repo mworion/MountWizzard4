@@ -39,16 +39,16 @@ from .convert import (
 
 class ObsSite:
     """
-    The class Site inherits all information and handling of site data
+    The class Site inherits all information and handling site data
     attributes of the connected mount and provides the abstracted interface
-    to a 10 micron mount. as the mount's time base is julian date, we use this
-    value as time base as well. for that reason we should remind how the mount
-    calculates the julian date. it is derived from utc. to basically on the
+    to a 10-micron mount. As the mount's time base is julian date, we use this
+    value as time base as well. For that reason we should remind how the mount
+    calculates the julian date. It is derived from utc. To basically on the
     timeJD for skyfield we calculate julian date from ut1 based on julian date
     from mount based on utc and the value delta utc, ut1 also given from the
     mount.
 
-    The Site class needs as parameter a ts object from skyfield.api to
+    The Site class needs as a parameter a ts object from skyfield.api to
     be able to make all the necessary calculations about time from and to mount
     """
 
@@ -218,6 +218,8 @@ class ObsSite:
             self._raJNow = value
             return
         self._raJNow = valueToAngle(value, preference="hours")
+        if self._raJNow is None:
+            print('error in raJNow setter')
 
     @property
     def raJNowTarget(self):
@@ -235,7 +237,7 @@ class ObsSite:
         if self._timeSidereal is None or self._raJNow is None:
             return None
         else:
-            # ha is always positive between 0 and 24 hours
+            # ha, is always positive between 0 and 24 hours
             ha = (self._timeSidereal.hours - self._raJNow.hours + 24) % 24
             return Angle(hours=ha)
 
@@ -244,7 +246,7 @@ class ObsSite:
         if self._timeSidereal is None or self._raJNowTarget is None:
             return None
         else:
-            # ha is always positive between 0 and 24 hours
+            # ha, is always positive between 0 and 24 hours
             ha = (self._timeSidereal.hours - self._raJNowTarget.hours + 24) % 24
             return Angle(hours=ha)
 
@@ -682,7 +684,7 @@ class ObsSite:
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
-    def setElevation(self, elev: (int, float)) -> bool:
+    def setElevation(self, elev: tuple[int, float]) -> bool:
         """ """
         conn = Connection(self.parent.host)
         sign = "+" if elev > 0 else "-"

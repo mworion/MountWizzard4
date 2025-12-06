@@ -133,7 +133,6 @@ class MountDevice:
 
     def waitAfterSettlingAndEmit(self):
         """ """
-        print('add wait finished')
         self.signals.slewed.emit()
 
     def startMountTimers(self):

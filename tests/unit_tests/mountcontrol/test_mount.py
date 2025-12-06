@@ -203,15 +203,14 @@ def test_clearCyclePointing_3(function):
 
 
 def test_clearCyclePointing_4(function):
-    function.obsSite.status = 0
-    function.statusSlew = False
+    function.obsSite.statusSlew = True
     function.clearCyclePointing(True)
     assert function.statusSlew
 
 
 def test_clearCyclePointing_5(function):
-    function.obsSite.status = 2
-    function.statusSlew = False
+    function.obsSite.statusSlew = False
+    function.statusSlew = True
     function.clearCyclePointing(True)
     assert not function.statusSlew
 

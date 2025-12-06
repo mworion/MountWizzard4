@@ -244,7 +244,7 @@ class MountDevice:
         if self.obsSite.statusSlew:
             self.statusSlew = True
         else:
-            if self.statusSlew and not self.obsSite.statusSlew:
+            if self.statusSlew:
                 self.statusSlew = False
                 self.settlingWait.start(settleWait)
 

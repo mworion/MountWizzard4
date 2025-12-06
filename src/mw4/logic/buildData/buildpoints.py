@@ -110,7 +110,7 @@ class DataPoint:
     def setStatusBuildP(self, number: int, status: int) -> None:
         """ """
         if 0 <= number < len(self._buildP):
-            self._buildP[number][2] = status
+            self._buildP[number] = [self._buildP[0:2], status]
 
     def setStatusBuildPSolved(self, number: int) -> None:
         """ """

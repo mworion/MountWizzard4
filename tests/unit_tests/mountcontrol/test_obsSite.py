@@ -476,7 +476,7 @@ class TestConfigData(unittest.TestCase):
         obsSite = ObsSite(parent=Parent())
 
         obsSite.status = "1"
-        self.assertEqual("Stopped after STOP", obsSite.statusText())
+        self.assertEqual("stopped after STOP", obsSite.statusText())
 
     def test_Site_statusSlew(self):
         obsSite = ObsSite(parent=Parent())

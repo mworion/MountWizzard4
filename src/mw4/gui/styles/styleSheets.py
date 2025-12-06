@@ -39,11 +39,6 @@ MAC_STYLE = """
         font-weight: bold;
         font-size: 13pt;
     }
-    QTextBrowser {
-        font-family: Courier New;
-        font-weight: bold;
-        font-size: 13pt;
-    }
     QListWidget {
         font-family: Courier New;
         font-weight: bold;
@@ -82,11 +77,6 @@ NON_MAC_STYLE = """
     QGroupBox[large] {
         font-weight: bold;
         font-size: 10pt;
-    }
-    QTextBrowser {
-        font-family: Courier New;
-        font-weight: bold;
-        font-size: 9pt;
     }
     QListWidget {
         font-family: Courier New;
@@ -176,20 +166,6 @@ BASIC_STYLE = """
         border-style: outset;
         border-color: $M_RED$;
     }
-
-    /* text browser */
-    QTextBrowser {
-        color: $M_PRIM$;
-        background-color: $M_BACK1$;
-        border-radius: %ROUND%;
-        border-width: %WIDTH%;
-        margin: -5px;
-    }
-    QTextBrowser:disabled {
-        color: $M_PRIM3$;
-        background-color: $M_BACK1$;
-    }
-
     /* Group Box */
     QGroupBox {
         border-width: %WIDTH%;

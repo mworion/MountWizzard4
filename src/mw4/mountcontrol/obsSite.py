@@ -55,20 +55,20 @@ class ObsSite:
     log = logging.getLogger("MW4")
 
     STAT = {
-        "0": "Tracking",
-        "1": "Stopped after STOP",
-        "2": "Slewing to park position",
-        "3": "Unparking",
-        "4": "Slewing to home position",
-        "5": "Parked",
-        "6": "Slewing or going to stop",
-        "7": "Tracking Off no move",
-        "8": "Motor low temperature",
-        "9": "Tracking outside limits",
-        "10": "Following Satellite",
-        "11": "User OK Needed",
-        "98": "Unknown Status",
-        "99": "Error",
+        "0": "tracking",
+        "1": "stopped after STOP",
+        "2": "slewing park position",
+        "3": "unparking",
+        "4": "slewing home position",
+        "5": "parked",
+        "6": "slewing / going to stop",
+        "7": "tracking Off",
+        "8": "motor low temperature",
+        "9": "tracking outside limits",
+        "10": "following satellite",
+        "11": "user OK needed",
+        "98": "unknown status",
+        "99": "error",
     }
 
     def __init__(self, parent, verbose=False):
@@ -449,7 +449,7 @@ class ObsSite:
         if self._status in [2, 6]:
             return text
         else:
-            return text + " settling" if self.statusSlew else text
+            return text + " - settle" if self.statusSlew else text
 
     @property
     def statusSlew(self):

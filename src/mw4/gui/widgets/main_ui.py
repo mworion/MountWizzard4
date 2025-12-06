@@ -2633,14 +2633,14 @@ class Ui_MainWindow(object):
         self.picAZ.setFrameShape(QFrame.Shape.NoFrame)
         self.picAZ.setMidLineWidth(0)
         self.picAZ.setProperty(u"iconpicture", True)
-        self.textBrowser = QTextBrowser(self.groupBox_28)
-        self.textBrowser.setObjectName(u"textBrowser")
-        self.textBrowser.setGeometry(QRect(5, 200, 356, 46))
+        self.textBrowserPolarAlign = QTextBrowser(self.groupBox_28)
+        self.textBrowserPolarAlign.setObjectName(u"textBrowserPolarAlign")
+        self.textBrowserPolarAlign.setGeometry(QRect(5, 200, 356, 46))
         font4 = QFont()
         font4.setFamilies([u"Courier New"])
         font4.setPointSize(12)
         font4.setBold(False)
-        self.textBrowser.setFont(font4)
+        self.textBrowserPolarAlign.setFont(font4)
         self.runModelGroup = QGroupBox(self.ModelBuildProgram)
         self.runModelGroup.setObjectName(u"runModelGroup")
         self.runModelGroup.setGeometry(QRect(400, 5, 366, 166))
@@ -7727,10 +7727,15 @@ class Ui_MainWindow(object):
         self.CopyrightGroup_2 = QGroupBox(self.Gui)
         self.CopyrightGroup_2.setObjectName(u"CopyrightGroup_2")
         self.CopyrightGroup_2.setGeometry(QRect(395, 300, 366, 91))
-        self.textBrowser_2 = QTextBrowser(self.CopyrightGroup_2)
-        self.textBrowser_2.setObjectName(u"textBrowser_2")
-        self.textBrowser_2.setEnabled(True)
-        self.textBrowser_2.setGeometry(QRect(5, 15, 356, 91))
+        self.textBrowserCopyright = QTextBrowser(self.CopyrightGroup_2)
+        self.textBrowserCopyright.setObjectName(u"textBrowserCopyright")
+        self.textBrowserCopyright.setEnabled(True)
+        self.textBrowserCopyright.setGeometry(QRect(5, 15, 356, 91))
+        font6 = QFont()
+        font6.setFamilies([u"Arial"])
+        font6.setPointSize(12)
+        font6.setBold(False)
+        self.textBrowserCopyright.setFont(font6)
         self.settingsTabWidget.addTab(self.Gui, "")
         self.mainTabWidget.addTab(self.Settings, "")
         self.statusOnline = QGroupBox(MainWindow)
@@ -7913,11 +7918,11 @@ class Ui_MainWindow(object):
         self.timeComputer.setSizePolicy(sizePolicy4)
         self.timeComputer.setMinimumSize(QSize(0, 0))
         self.timeComputer.setMaximumSize(QSize(16777215, 16777215))
-        font6 = QFont()
-        font6.setFamilies([u"Arial"])
-        font6.setPointSize(28)
-        font6.setBold(False)
-        self.timeComputer.setFont(font6)
+        font7 = QFont()
+        font7.setFamilies([u"Arial"])
+        font7.setPointSize(28)
+        font7.setBold(False)
+        self.timeComputer.setFont(font7)
         self.timeComputer.setMouseTracking(False)
         self.timeComputer.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.timeComputer.setAcceptDrops(False)
@@ -8222,8 +8227,8 @@ class Ui_MainWindow(object):
         QWidget.setTabOrder(self.endModel, self.cancelModel)
         QWidget.setTabOrder(self.cancelModel, self.parkMountAfterModel)
         QWidget.setTabOrder(self.parkMountAfterModel, self.dataModel)
-        QWidget.setTabOrder(self.dataModel, self.textBrowser)
-        QWidget.setTabOrder(self.textBrowser, self.manageTabWidget)
+        QWidget.setTabOrder(self.dataModel, self.textBrowserPolarAlign)
+        QWidget.setTabOrder(self.textBrowserPolarAlign, self.manageTabWidget)
         QWidget.setTabOrder(self.manageTabWidget, self.deleteWorstPoint)
         QWidget.setTabOrder(self.deleteWorstPoint, self.clearModel)
         QWidget.setTabOrder(self.clearModel, self.refreshModel)
@@ -8483,15 +8488,15 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainTabWidget.setCurrentIndex(0)
+        self.mainTabWidget.setCurrentIndex(3)
         self.mountTabWidget.setCurrentIndex(0)
-        self.modelingTabWidget.setCurrentIndex(0)
+        self.modelingTabWidget.setCurrentIndex(1)
         self.manageTabWidget.setCurrentIndex(0)
         self.imagingTabWidget.setCurrentIndex(0)
         self.satTabWidget.setCurrentIndex(0)
         self.mpcTabWidget.setCurrentIndex(0)
         self.toolsTabWidget.setCurrentIndex(0)
-        self.settingsTabWidget.setCurrentIndex(0)
+        self.settingsTabWidget.setCurrentIndex(6)
         self.tabDomeExplain.setCurrentIndex(2)
 
 
@@ -9420,7 +9425,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.azimuthTurns.setText(QCoreApplication.translate("MainWindow", u"- turns", None))
         self.picAZ.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.textBrowser.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.textBrowserPolarAlign.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
@@ -11134,14 +11139,14 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.showTabEnviron.setText(QCoreApplication.translate("MainWindow", u"Show Environ", None))
         self.CopyrightGroup_2.setTitle(QCoreApplication.translate("MainWindow", u"MountWizzard4 (C) 2019-2025 MWORION", None))
-        self.textBrowser_2.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.textBrowserCopyright.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
 "li.unchecked::marker { content: \"\\2610\"; }\n"
 "li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'Arial'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">astropy, deepdiff, hdiapi, importlib_metadata, PySide6, pywin32, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4</p></body></html>", None))
+"</style></head><body style=\" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">astropy, deepdiff, hdiapi, importlib_metadata, PySide6, pywin32, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4</span></p></body></html>", None))
         self.settingsTabWidget.setTabText(self.settingsTabWidget.indexOf(self.Gui), QCoreApplication.translate("MainWindow", u"User Interface", None))
         self.mainTabWidget.setTabText(self.mainTabWidget.indexOf(self.Settings), QCoreApplication.translate("MainWindow", u"Settings", None))
         self.statusOnline.setTitle(QCoreApplication.translate("MainWindow", u"Status", None))

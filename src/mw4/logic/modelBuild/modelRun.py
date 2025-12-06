@@ -75,26 +75,22 @@ class ModelData(QObject):
         self.domeSlewed: bool = False
 
     def setupSignals(self) -> None:
-        # Signals handling exposing
+        """ """
         self.app.camera.signals.exposed.connect(self.setImageExposed)
         self.app.camera.signals.downloaded.connect(self.setImageDownloaded)
         self.app.camera.signals.saved.connect(self.setImageSaved)
-        # Signals handling slewing
         self.app.mount.signals.slewed.connect(self.setMountSlewed)
         self.app.dome.signals.slewed.connect(self.setDomeSlewed)
-        # Signals handling plate solving
         self.app.camera.signals.saved.connect(self.startNewPlateSolve)
         self.app.plateSolve.signals.result.connect(self.collectPlateSolveResult)
 
     def resetSignals(self) -> None:
-        # Signals handling exposing
+        """ """
         self.app.camera.signals.exposed.disconnect(self.setImageExposed)
         self.app.camera.signals.downloaded.disconnect(self.setImageDownloaded)
         self.app.camera.signals.saved.disconnect(self.setImageSaved)
-        # Signals handling slewing
         self.app.mount.signals.slewed.disconnect(self.setMountSlewed)
         self.app.dome.signals.slewed.disconnect(self.setDomeSlewed)
-        # Signals handling plate solving
         self.app.camera.signals.saved.disconnect(self.startNewPlateSolve)
         self.app.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
@@ -183,7 +179,6 @@ class ModelData(QObject):
 
     def saveModelData(self, modelPath: Path) -> None:
         """ """
-        return
         with open(modelPath, "w") as outfile:
             json.dump(self.modelSaveData, outfile, sort_keys=True, indent=4)
 
@@ -204,7 +199,7 @@ class ModelData(QObject):
         """ """
         item = self.modelBuildData[self.pointerImage]
         obs = self.app.mount.obsSite
-        print(obs.raJNow, obs.decJNow)
+        print(obs.raJNow, obs.decJNow, obs.timeSidereal)
         item["raJNowM"] = obs.raJNow
         item["decJNowM"] = obs.decJNow
         item["angularPosRA"] = obs.angularPosRA

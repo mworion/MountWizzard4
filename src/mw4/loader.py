@@ -280,10 +280,9 @@ def getWindowPos() -> tuple[int, int]:
 
 def minimizeStartTerminal() -> None:
     """ """
-    if platform.system() != "Windows":
-        return
-    import ctypes
-    ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
+    if platform.system() == "Windows":
+        import ctypes
+        ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 
 def main() -> None:

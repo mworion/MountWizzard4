@@ -478,6 +478,12 @@ class TestConfigData(unittest.TestCase):
         obsSite.status = "1"
         self.assertEqual("stopped after STOP", obsSite.statusText())
 
+    def test_Site_statusText_3(self):
+        obsSite = ObsSite(parent=Parent())
+
+        obsSite.status = "2"
+        self.assertEqual("slewing park position", obsSite.statusText())
+
     def test_Site_statusSlew(self):
         obsSite = ObsSite(parent=Parent())
 

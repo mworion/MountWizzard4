@@ -102,7 +102,7 @@ class Mount(mw4.mountcontrol.mount.Mount):
         self._waitTime = 0
         self._waitTimeFlip = 0
         self.statusAlert = False
-        self.statusSlew = True
+        self.statusSlew = False
         self.signals = MountSignals()
 
         self.timerPointing = PyQt5.QtCore.QTimer()
@@ -269,12 +269,12 @@ class Mount(mw4.mountcontrol.mount.Mount):
         else:
             settleWait = 0
 
-        if self.obsSite.status not in [2, 6]:
-            if not self.statusSlew:
-                self.settlingWait.start(int(settleWait))
+        if self.obsSite.statusSlew:
             self.statusSlew = True
         else:
-            self.statusSlew = False
+            if self.statusSlew:
+                self.statusSlew = False
+                self.settlingWait.start(settleWait)
 
         self.signals.pointDone.emit(self.obsSite)
         return True

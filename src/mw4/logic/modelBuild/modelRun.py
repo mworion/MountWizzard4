@@ -170,6 +170,7 @@ class ModelData(QObject):
 
     def saveModelData(self, modelPath: Path) -> None:
         """ """
+        return
         with open(modelPath, "w") as outfile:
             json.dump(self.modelSaveData, outfile, sort_keys=True, indent=4)
 

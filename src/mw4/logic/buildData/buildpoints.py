@@ -110,7 +110,7 @@ class DataPoint:
     def setStatusBuildP(self, number: int, status: int) -> None:
         """ """
         if 0 <= number < len(self._buildP):
-            self._buildP[number] = [self._buildP[0:2], status]
+            self._buildP[number][2] = status
 
     def setStatusBuildPSolved(self, number: int) -> None:
         """ """
@@ -231,9 +231,9 @@ class DataPoint:
         east = [x for x in self._buildP if x[1] <= 180]
         west = [x for x in self._buildP if x[1] > 180]
         if self.app.mount.obsSite.pierside != "E":
-            self._buildP = list(p[0:3] for p in east + west)
+            self._buildP = [list(p[0:3] for p in east + west)]
         else:
-            self._buildP = list(p[0:3] for p in west + east)
+            self._buildP = [list(p[0:3] for p in west + east)]
 
     def loadModel(self, fullFileName: Path) -> list[tuple[int, int]]:
         """ """
@@ -291,7 +291,7 @@ class DataPoint:
         elif ext == ".model":
             value = self.loadModel(fullFileName)
             
-        points = [(x[0], x[1], self.UNPROCESSED) for x in value]
+        points = [[x[0], x[1], self.UNPROCESSED] for x in value]
         self._buildP = points 
         self.saveBuildP(fullFileName.stem) 
         return True

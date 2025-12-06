@@ -266,8 +266,8 @@ class ModelData(QObject):
                     item["success"],
                     item["raJ2000S"].hours,
                     item["decJ2000S"].degrees,
-                    item["angle"].degrees,
-                    item["error"],
+                    item["angleS"].degrees,
+                    item["errorRMS_S"],
                 ]
             )
 

@@ -444,7 +444,7 @@ class ObsSite:
             return None
         reference = f"{self._status:d}"
         if reference in self.STAT:
-            return self.STAT[reference]
+            return self.STAT[reference] + f" ({self._statusSlew})"
 
     @property
     def statusSlew(self):

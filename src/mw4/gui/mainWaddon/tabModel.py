@@ -183,11 +183,6 @@ class Model(QObject):
             self.msg.emit(2, "Model", "Run error", t)
             return False
 
-        if len([x for x in self.app.data.buildP if x[2]]) < 3:
-            t = "No modeling start because less than 3 points"
-            self.msg.emit(2, "Model", "Run error", t)
-            return False
-
         return True
 
     def clearAlignAndBackup(self):
@@ -234,10 +229,10 @@ class Model(QObject):
 
     def showStatusSolve(self, statusData: tuple) -> None:
         """ """
-        if len(statusData) == 2:
-            t = f"Error solving {statusData[0]}, {statusData[1]}"
+        if statusData[1]:
+            t = f"Solved {statusData[0]}, Error {statusData[4]:.2f}, Angle {statusData[5]:.2f}"
         else:
-            t = f"Solved {statusData[0]}, Error {statusData[4]}, Angle {statusData[5]}"
+            t = f"Error solving {statusData[0]}, {statusData[1]}"
         self.msg.emit(0, "Model", "Solving", t)
 
     def setupModelInputData(self) -> None:

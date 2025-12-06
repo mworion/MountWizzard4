@@ -295,10 +295,10 @@ class HemisphereDraw(MWidget, SlewInterface):
         """"""
         isEdit = self.ui.editModeHem.isChecked()
         for i, status in enumerate(statusList):
-            col = [self.M_TER, self.M_GREEN, self.M_RED]
+            col = [self.M_GREEN, self.M_RED, self.M_TER]
             colActive = col[status]
             color = self.M_PINK if isEdit else colActive
-            sym = ["d", "o", "x"]
+            sym = ["o", "x", "d"]
             symbol = sym[status]
 
             spot = item.scatter.points()[i]
@@ -337,7 +337,7 @@ class HemisphereDraw(MWidget, SlewInterface):
             int(self.window().font().pointSize() * facFont),
         )
         for i, (alt, az, act) in enumerate(self.app.data.buildP):
-            col = [self.M_TER, self.M_GREEN, self.M_RED]
+            col = [self.M_GREEN, self.M_RED, self.M_TER]
             colActive = col[act]
             color = self.M_PINK if isEdit else colActive
             text = f"{i + 1}"

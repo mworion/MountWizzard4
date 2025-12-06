@@ -51,8 +51,8 @@ def HaDecToAltAz(ha: float, dec: float, lat: float) -> tuple[float, float]:
 
 class DataPoint:
     """ """
-    FAILED = 0
-    UNPROCESSED = 1
+    UNPROCESSED = 0
+    FAILED = 1
     SOLVED = 2
 
     log = logging.getLogger("MW4")

@@ -13,12 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-
-# external packages
-
-# local import
-
 
 class SatData:
     satellites = None

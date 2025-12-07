@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 import datetime
 import logging
 import os
@@ -21,11 +20,6 @@ import sys
 import time
 from functools import partial, partialmethod
 from logging.handlers import RotatingFileHandler
-
-# external packages
-
-# local imports
-import logging
 
 if not hasattr(logging.Logger, "_set_defaults"):
     def _set_defaults(self, *args, **kwargs):

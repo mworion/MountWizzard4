@@ -44,7 +44,6 @@ def getImageHeader(imagePath: Path) -> fits.Header:
 def getCoordinatesFromHeader(header: fits.Header) -> [Angle, Angle]:
     """ """
     hasDecimal = bool("RA" in header and "DEC" in header)
-
     hasSexagesimal = bool("OBJCTRA" in header and "OBJCTDEC" in header)
 
     if hasDecimal:

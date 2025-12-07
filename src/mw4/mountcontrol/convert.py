@@ -303,8 +303,7 @@ def convertRaToAngle(value):
     if angle >= 24 or angle < 0:
         angle = 0
 
-    Angle(hours=angle / 360 * 24) if isFloat else Angle(hours=angle)
-    return angle
+    return Angle(hours=angle / 360 * 24) if isFloat else Angle(hours=angle)
 
 
 def parseDecToAngleString(value: str) -> tuple[bool, bool, list[str]]:

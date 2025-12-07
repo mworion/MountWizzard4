@@ -16,7 +16,6 @@
 import argparse
 import os
 import platform
-
 from mw4.loader import main
 
 

@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import json
 import logging
 from pathlib import Path

@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
 from PySide6 import QtNetwork
 from PySide6.QtCore import QObject

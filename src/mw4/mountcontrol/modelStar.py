@@ -13,15 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
-
 import numpy
-
-
 from skyfield.api import Angle, Star
-
-
 from mw4.mountcontrol.convert import (
     stringToDegree,
     topoToAltAz,

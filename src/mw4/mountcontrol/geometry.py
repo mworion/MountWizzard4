@@ -13,14 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
-
-
 import numpy as np
 from skyfield.api import Angle
-
-
 from mw4.mountcontrol.convert import valueToFloat
 
 

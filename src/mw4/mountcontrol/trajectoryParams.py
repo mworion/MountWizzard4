@@ -13,10 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
-
-
 from mw4.mountcontrol.convert import valueToFloat
 
 

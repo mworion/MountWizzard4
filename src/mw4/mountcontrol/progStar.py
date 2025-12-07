@@ -13,10 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
-
-
 from skyfield.api import Angle, Star
 
 

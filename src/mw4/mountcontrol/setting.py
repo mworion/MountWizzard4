@@ -15,8 +15,6 @@
 ###########################################################
 
 import logging
-
-
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat, valueToInt
 

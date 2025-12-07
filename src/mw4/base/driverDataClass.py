@@ -12,8 +12,7 @@
 # written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
-###########################################################
-import logging
+###########################################################import logging
 from PySide6.QtCore import QObject, Signal
 
 

@@ -15,13 +15,8 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
-
-
 from skyfield.api import Angle
-
-
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import (
     sexagesimalizeToInt,

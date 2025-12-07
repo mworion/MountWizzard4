@@ -13,14 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
 import re
 from typing import Any
-
 import numpy as np
-
-
 from skyfield.api import Angle
 
 

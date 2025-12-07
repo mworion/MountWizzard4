@@ -13,12 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
-
 from packaging.version import Version
-
-
 from mw4.mountcontrol.connection import Connection
 
 

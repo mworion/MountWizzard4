@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 from collections.abc import Callable
 import numpy as np
 from skyfield import almanac

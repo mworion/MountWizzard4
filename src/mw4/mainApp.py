@@ -13,20 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
 import sys
 from queue import Queue
 from typing import Any
-
 from importlib_metadata import version
 from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
-
-
 from PySide6.QtWidgets import QApplication
 from skyfield.api import wgs84
-
-
 from mw4.base.loggerMW import setCustomLoggingLevel
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.logic.buildData.buildpoints import DataPoint

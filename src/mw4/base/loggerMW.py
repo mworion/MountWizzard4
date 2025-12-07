@@ -17,6 +17,7 @@
 import datetime
 import logging
 import os
+import sys
 import time
 from functools import partial, partialmethod
 from logging.handlers import RotatingFileHandler
@@ -24,6 +25,12 @@ from logging.handlers import RotatingFileHandler
 # external packages
 
 # local imports
+import logging
+
+if not hasattr(logging.Logger, "_set_defaults"):
+    def _set_defaults(self, *args, **kwargs):
+        return None
+    logging.Logger._set_defaults = _set_defaults
 
 
 class LoggerWriter:
@@ -56,8 +63,8 @@ class LoggerWriter:
 
 def redirectSTD() -> None:
     """ """
-    # sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
-    # sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT', sys.stdout)
+    sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
+    sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT', sys.stdout)
 
 
 def setupLogging() -> None:
@@ -87,7 +94,7 @@ def setupLogging() -> None:
         datefmt="%Y-%m-%d %H:%M:%S",
     )
 
-    # setting different log level for imported packages to avoid unnecessary data
+    # setting different log level for imported packages to avoid unnecessary data,
     # urllib3 is used by requests, so we have to add this as well
     logging.getLogger("PySide6").setLevel(logging.WARNING)
     logging.getLogger("requests").setLevel(logging.WARNING)

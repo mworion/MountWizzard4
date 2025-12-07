@@ -380,11 +380,11 @@ def test_setupAudioSignals_1(function):
 
 
 def test_playSound_0(function):
-    function.playSound('')
+    function.playSound("")
 
 
 def test_playSound_1(function):
-    function.playSound('MountSlew')
+    function.playSound("MountSlew")
 
 
 def test_playSound_2(function):

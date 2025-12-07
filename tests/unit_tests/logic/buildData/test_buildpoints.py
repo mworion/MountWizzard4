@@ -142,7 +142,9 @@ def test_horizonP1(function):
 
 
 def test_genGreaterCircle1(function):
-    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
+    function.app.mount.obsSite.location = wgs84.latlon(
+        latitude_degrees=48, longitude_degrees=11
+    )
     function.horizonP = []
     function.genGreaterCircle(10, 10, 5)
     for i, (alt, az, status) in enumerate(function.buildP):
@@ -154,7 +156,9 @@ def test_genGreaterCircle1(function):
 
 
 def test_genGreaterCircle2(function):
-    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=-48, longitude_degrees=11)
+    function.app.mount.obsSite.location = wgs84.latlon(
+        latitude_degrees=-48, longitude_degrees=11
+    )
     function.horizonP = []
     function.genGreaterCircle(10, 10, 5)
     for i, (alt, az, status) in enumerate(function.buildP):
@@ -379,13 +383,17 @@ def test_sortAz_1(function):
 
 def test_sortDomeAz_1(function):
     function.buildP = [[10, 10, 1]]
-    with mock.patch.object(function.app.mount, "calcMountAltAzToDomeAltAz", return_value=(10, Angle(degrees=350))):
+    with mock.patch.object(
+        function.app.mount, "calcMountAltAzToDomeAltAz", return_value=(10, Angle(degrees=350))
+    ):
         function.sortDomeAz()
 
 
 def test_sortDomeAz_2(function):
     function.buildP = [[10, 10, 1]]
-    with mock.patch.object(function.app.mount, "calcMountAltAzToDomeAltAz", return_value=(10, None)):
+    with mock.patch.object(
+        function.app.mount, "calcMountAltAzToDomeAltAz", return_value=(10, None)
+    ):
         function.sortDomeAz()
 
 
@@ -809,7 +817,9 @@ def test_genAlign5(function):
 
 
 def test_generateCelestialEquator_1(function):
-    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
+    function.app.mount.obsSite.location = wgs84.latlon(
+        latitude_degrees=48, longitude_degrees=11
+    )
     value = function.generateCelestialEquator()
     assert len(value) == 1728
 

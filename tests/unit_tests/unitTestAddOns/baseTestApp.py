@@ -18,6 +18,7 @@ from pathlib import Path
 from queue import Queue
 
 import numpy as np
+from astropy import log as astropy_log
 from packaging.version import Version
 
 # external packages
@@ -25,6 +26,8 @@ from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
 from skyfield.api import Angle, Loader, load, load_file, wgs84
 
 from mw4.base.signalsDevices import Signals
+
+astropy_log.setLevel("ERROR")
 
 # local import
 
@@ -867,7 +870,7 @@ class Mount(QObject):
         Az = Angle(degrees=0)
         haJNowTarget = Angle(hours=0)
         decJNowTarget = Angle(degrees=0)
-        piersideTarget = None
+        piersideTarget = "E"
         angularPosRA = Angle(degrees=0)
         angularPosDEC = Angle(degrees=0)
         errorAngularPosRA = Angle(degrees=0)

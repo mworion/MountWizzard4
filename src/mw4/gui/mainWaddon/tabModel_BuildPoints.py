@@ -14,6 +14,7 @@
 #
 ###########################################################
 # standard libraries
+import logging
 
 # external packages
 from astroquery.simbad import Simbad

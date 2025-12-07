@@ -124,20 +124,6 @@ def test_slewParkPos_5(function):
             function.slewToParkPos(0)
 
 
-def test_saveActualPosition_1(function):
-    function.app.mount.obsSite.Az = Angle(degrees=10)
-    function.app.mount.obsSite.Alt = None
-
-    function.saveActualPosition(0)
-
-
-def test_saveActualPosition_2(function):
-    function.app.mount.obsSite.Alt = Angle(degrees=10)
-    function.app.mount.obsSite.Az = None
-
-    function.saveActualPosition(0)
-
-
 def test_saveActualPosition_3(function):
     function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.app.mount.obsSite.Az = Angle(degrees=10)

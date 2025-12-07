@@ -15,7 +15,6 @@
 ###########################################################
 # standard libraries
 import logging
-from math import degrees
 
 import numpy
 

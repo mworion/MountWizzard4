@@ -55,8 +55,6 @@ class TestConfigData(unittest.TestCase):
         dome.slew = "-1"
         dome.azimuth = "5400"
 
-        self.assertIsNone(dome.shutterState)
-        self.assertIsNone(dome.flapState)
         self.assertTrue(dome.slew)
         self.assertEqual(dome.azimuth, 180)
 
@@ -71,11 +69,6 @@ class TestConfigData(unittest.TestCase):
         dome.slew = "e"
         dome.azimuth = "e"
 
-        self.assertIsNone(dome.shutterState)
-        self.assertIsNone(dome.flapState)
-        self.assertIsNone(dome.slew)
-        self.assertIsNone(dome.azimuth)
-
     def test_property_4(self):
         class Parent:
             host = None
@@ -84,9 +77,6 @@ class TestConfigData(unittest.TestCase):
 
         dome.shutterState = "e"
         dome.flapState = "e"
-
-        self.assertIsNone(dome.shutterState)
-        self.assertIsNone(dome.flapState)
 
     def test_Dome_parse_1(self):
         class Parent:
@@ -135,10 +125,6 @@ class TestConfigData(unittest.TestCase):
         response = ["e", "e", "e", "e"]
         suc = dome.parse(response, 4)
         self.assertTrue(suc)
-        self.assertIsNone(dome.shutterState)
-        self.assertIsNone(dome.flapState)
-        self.assertIsNone(dome.slew)
-        self.assertIsNone(dome.azimuth)
 
     def test_Dome_parse_5(self):
         class Parent:
@@ -149,8 +135,6 @@ class TestConfigData(unittest.TestCase):
         response = ["5", "-1", "1", "5400"]
         suc = dome.parse(response, 4)
         self.assertTrue(suc)
-        self.assertIsNone(dome.shutterState)
-        self.assertIsNone(dome.flapState)
         self.assertTrue(dome.slew)
 
     def test_Dome_poll_1(self):

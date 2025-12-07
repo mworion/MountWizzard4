@@ -19,6 +19,7 @@
 import logging
 
 # external packages
+from skyfield.api import Angle
 # local imports
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import (
@@ -38,19 +39,19 @@ class Model:
 
     def __init__(self, parent):
         self.parent = parent
-        self._starList = []
-        self._nameList = []
-        self._numberNames = 0
-        self._numberStars = 0
-        self._altitudeError = None
-        self._azimuthError = None
-        self._polarError = None
-        self._positionAngle = None
-        self._orthoError = None
-        self._altitudeTurns = None
-        self._azimuthTurns = None
-        self._terms = None
-        self._errorRMS = None
+        self._starList: list = []
+        self._nameList: list = []
+        self._numberNames: int = 0
+        self._numberStars: int = 0
+        self._altitudeError: Angle = Angle(degrees=0)
+        self._azimuthError: Angle = Angle(degrees=0)
+        self._polarError: Angle = Angle(degrees=0)
+        self._positionAngle: Angle = Angle(degrees=0)
+        self._orthoError: Angle = Angle(degrees=0)
+        self._altitudeTurns: float = 0
+        self._azimuthTurns: float = 0
+        self._terms: int = 0
+        self._errorRMS: float = 0
 
     @property
     def altitudeError(self):

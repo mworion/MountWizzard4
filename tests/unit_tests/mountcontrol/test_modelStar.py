@@ -15,6 +15,7 @@
 ###########################################################
 # standard libraries
 import pytest
+
 # external packages
 from skyfield.api import Angle, Star, wgs84
 
@@ -24,7 +25,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mw4.mountcontrol.model import ModelStar
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     app = App()
     obsSite = app.mount.obsSite

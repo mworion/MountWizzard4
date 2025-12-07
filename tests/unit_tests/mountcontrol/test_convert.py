@@ -438,12 +438,12 @@ def test_convertRaToAngle_1():
     values = [
         ["+12.5", 12.5],
         ["12,5", 12.5],
-        ["-12.5", None],
+        ["-12.5", 0],
         [12.5, 12.5],
-        ["-190.5", None],
-        ["190.5", None],
+        ["-190.5", 0],
+        ["190.5", 0],
         ["12H 30 30", 187.624999],
-        ["12D 30 30", None],
+        ["12D 30 30", 0],
         ["12 30 30", 187.624999],
         ["12H 30 30.55", 187.624999],
         ["12H:30:30.55", 187.624999],
@@ -456,11 +456,7 @@ def test_convertRaToAngle_1():
     ]
     for value in values:
         angle = convertRaToAngle(value[0])
-
-        if angle is None:
-            assert value[1] is None
-        else:
-            assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)
+        assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)
 
 
 def test_convertDecToAngle_1():

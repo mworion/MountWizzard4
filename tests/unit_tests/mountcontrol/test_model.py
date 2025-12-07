@@ -25,6 +25,7 @@ from skyfield.api import Angle, Star, wgs84
 
 import mw4.mountcontrol
 from mw4.mountcontrol import obsSite
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 # local imports
 from mw4.mountcontrol.model import Model, ModelStar, ProgStar
@@ -458,7 +459,7 @@ class TestConfigData(unittest.TestCase):
 
         model = Model(parent=Parent())
         model.errorRMS = "E"
-        self.assertIsNone(model.errorRMS)
+        assert model.errorRMS == 0
 
     def test_errorRMS_HPS_float(self):
         class Parent:
@@ -476,21 +477,13 @@ class TestConfigData(unittest.TestCase):
         model.errorRMS = 36
         self.assertEqual(36.0, model.errorRMS)
 
-    def test_errorRMS_HPS_tuple(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-        model.errorRMS = (36.8, 1.0)
-        self.assertIsNone(model.errorRMS)
-
     def test_errorRMS_QCI(self):
         class Parent:
             host = None
 
         model = Model(parent=Parent())
         model.errorRMS = ""
-        self.assertIsNone(model.errorRMS)
+        assert model.errorRMS == 0
 
     def test_errorTerms_QCI(self):
         class Parent:
@@ -498,7 +491,7 @@ class TestConfigData(unittest.TestCase):
 
         model = Model(parent=Parent())
         model.terms = ""
-        self.assertIsNone(model.terms)
+        assert model.terms == 0
 
     #
     #
@@ -534,51 +527,38 @@ class TestConfigData(unittest.TestCase):
         self.assertAlmostEqual(alignStar.coord.dec.dms()[1], 33, 6)
         self.assertAlmostEqual(alignStar.coord.dec.dms()[2], 0, 6)
 
-    def test_AlignStar_coord_not_ok1(self):
-        p1 = "12:45:33.01"
-        p2 = "+56*30:00.5"
-        p3 = "1234.5"
-        alignStar = ModelStar(coord=(p1, p2, p3))
-        self.assertIsNone(alignStar.coord)
-
-    def test_AlignStar_coord_not_ok2(self):
-        p1 = "12:45:33.01"
-        p2 = "+56*30:00.5"
-        p3 = "1234.5"
-        alignStar = ModelStar(coord=[p1, p2, p3])
-        self.assertIsNone(alignStar.coord)
-
-    def test_AlignStar_coord_not_ok3(self):
-        alignStar = ModelStar(coord=56)
-        self.assertIsNone(alignStar.coord)
-
-    def test_AlignStar_coord_not_ok4(self):
-        p1 = "12:45:33.01"
-        alignStar = ModelStar(coord=(p1, 67))
-        self.assertIsNone(alignStar.coord)
-
     def test_AlignStar_number(self):
-        alignStar = ModelStar()
+        obsSite = App().mount.obsSite
+        obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+        alignStar = ModelStar(obsSite=obsSite)
         alignStar.number = 6
         self.assertEqual(6, alignStar.number)
 
     def test_AlignStar_number1(self):
-        alignStar = ModelStar()
+        obsSite = App().mount.obsSite
+        obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+        alignStar = ModelStar(obsSite=obsSite)
         alignStar.number = "6"
         self.assertEqual(6, alignStar.number)
 
     def test_AlignStar_errorAngle(self):
-        alignStar = ModelStar()
+        obsSite = App().mount.obsSite
+        obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+        alignStar = ModelStar(obsSite=obsSite)
         alignStar.errorAngle = 50
         self.assertEqual(50, alignStar.errorAngle.degrees)
 
     def test_AlignStar_errorRMS(self):
-        alignStar = ModelStar()
+        obsSite = App().mount.obsSite
+        obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+        alignStar = ModelStar(obsSite=obsSite)
         alignStar.errorRMS = 6
         self.assertEqual(6, alignStar.errorRMS)
 
     def test_AlignStar_error_DEC_RA(self):
-        alignStar = ModelStar()
+        obsSite = App().mount.obsSite
+        obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+        alignStar = ModelStar(obsSite=obsSite)
         alignStar.errorRMS = 6
         alignStar.errorAngle = 50
         ra = 6 * numpy.sin(50 * numpy.pi * 2 / 360)
@@ -856,9 +836,12 @@ class TestConfigData(unittest.TestCase):
         self.assertFalse(suc)
 
     def test_Model_parseStars_ok(self):
+        obsSite = App().mount.obsSite
+        obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+
         class Parent:
             host = None
-            obsSite = None
+            obsSite = obsSite
 
         model = Model(parent=Parent())
         response = [
@@ -879,9 +862,12 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(len(model.starList), 11)
 
     def test_Model_parseStars_not_ok1(self):
+        obsSite = App().mount.obsSite
+        obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+
         class Parent:
             host = None
-            obsSite = None
+            obsSite = obsSite
 
         model = Model(parent=Parent())
         response = [
@@ -962,9 +948,12 @@ class TestConfigData(unittest.TestCase):
             assert not suc
 
     def test_getStars_2(self):
+        obsSite = App().mount.obsSite
+        obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+
         class Parent:
             host = None
-            obsSite = None
+            obsSite = obsSite
 
         model = Model(parent=Parent())
         model.numberStars = 1

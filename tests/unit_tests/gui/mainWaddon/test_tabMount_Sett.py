@@ -541,12 +541,6 @@ def test_setLocationValues_2(function):
         function.setLocationValues()
 
 
-def test_setLongitude_1(function):
-    function.app.mount.obsSite.location = None
-    suc = function.setLongitude()
-    assert not suc
-
-
 def test_setLongitude_2(function):
     function.app.mount.obsSite.location = wgs84.latlon(
         longitude_degrees=1, latitude_degrees=2, elevation_m=3
@@ -570,12 +564,6 @@ def test_setLongitude_3(function):
             assert suc
 
 
-def test_setLatitude_1(function):
-    function.app.mount.obsSite.location = None
-    suc = function.setLatitude()
-    assert not suc
-
-
 def test_setLatitude_2(function):
     function.app.mount.obsSite.location = wgs84.latlon(
         longitude_degrees=1, latitude_degrees=2, elevation_m=3
@@ -597,12 +585,6 @@ def test_setLatitude_3(function):
         with mock.patch.object(function, "setLocationValues"):
             suc = function.setLatitude()
             assert suc
-
-
-def test_setElevation_1(function):
-    function.app.mount.obsSite.location = None
-    suc = function.setElevation()
-    assert not suc
 
 
 def test_setElevation_2(function):

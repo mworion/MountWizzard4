@@ -43,7 +43,7 @@ class Setting:
         self._statusDualAxisTracking: bool = False
         self._horizonLimitHigh: float = 0
         self._horizonLimitLow: float = 0
-        self._wakeOnLan: str = "None"
+        self._wakeOnLan: str = "OFF"
         self._UTCValid: bool = False
         self._UTCExpire: str = "2000-01-01"
         self._gpsSynced: bool = False
@@ -204,10 +204,8 @@ class Setting:
     @typeConnection.setter
     def typeConnection(self, value):
         value = valueToInt(value)
-        if value is None:
-            self._typeConnection = value
-        elif not 0 <= value <= 3:
-            value = None
+        if 0 > value or value > 3:
+            value = 0
         self._typeConnection = value
 
     @property
@@ -256,10 +254,9 @@ class Setting:
     @weatherStatus.setter
     def weatherStatus(self, value):
         value = valueToInt(value)
-        if value is None or 0 <= value <= 2:
-            self._weatherStatus = value
-        else:
-            self._weatherStatus = None
+        if 0 > value or value > 2:
+            value = 0
+        self._weatherStatus = value
 
     @property
     def weatherPressure(self):

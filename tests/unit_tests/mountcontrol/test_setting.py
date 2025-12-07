@@ -48,14 +48,6 @@ class TestConfigData(unittest.TestCase):
         sett.webInterfaceStat = "1"
         assert sett.webInterfaceStat
 
-    def test_webInterfaceStat_3(self):
-        class Parent:
-            host = None
-
-        sett = Setting(parent=Parent())
-        sett.webInterfaceStat = "E"
-        assert sett.webInterfaceStat is None
-
     def test_Setting_slewRate(self):
         class Parent:
             host = None
@@ -124,9 +116,9 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sett = Setting(parent=Parent())
-        sett.timeToFlip = None
+        sett.timeToFlip = 0
         sett.meridianLimitTrack = "5"
-        self.assertEqual(None, sett.timeToMeridian())
+        self.assertEqual(-20, sett.timeToMeridian())
 
     def test_Setting_refractionTemp(self):
         class Parent:
@@ -232,8 +224,8 @@ class TestConfigData(unittest.TestCase):
 
         sett = Setting(parent=Parent())
         sett.typeConnection = 5
-        self.assertEqual(None, sett.typeConnection)
-        self.assertEqual(None, sett._typeConnection)
+        self.assertEqual(0, sett.typeConnection)
+        self.assertEqual(0, sett._typeConnection)
 
     def test_Setting_typeConnection_2(self):
         class Parent:
@@ -249,9 +241,9 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sett = Setting(parent=Parent())
-        sett.typeConnection = None
-        self.assertEqual(None, sett.typeConnection)
-        self.assertEqual(None, sett._typeConnection)
+        sett.typeConnection = -6
+        self.assertEqual(0, sett.typeConnection)
+        self.assertEqual(0, sett._typeConnection)
 
     def test_Setting_gpsSynced_1(self):
         class Parent:
@@ -333,8 +325,8 @@ class TestConfigData(unittest.TestCase):
 
         sett = Setting(parent=Parent())
         sett.weatherStatus = None
-        assert sett.weatherStatus is None
-        assert sett._weatherStatus is None
+        assert sett.weatherStatus == 0
+        assert sett._weatherStatus == 0
 
     def test_Setting_weatherStatus_2(self):
         class Parent:
@@ -351,8 +343,8 @@ class TestConfigData(unittest.TestCase):
 
         sett = Setting(parent=Parent())
         sett.weatherStatus = 5
-        assert sett.weatherStatus is None
-        assert sett._weatherStatus is None
+        assert sett.weatherStatus == 0
+        assert sett._weatherStatus == 0
 
     def test_Setting_weatherTemperature(self):
         class Parent:

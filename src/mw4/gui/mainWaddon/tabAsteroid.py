@@ -13,13 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import json
 import os
-from PySide6.QtCore import QObject, Qt
-from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.logic.databaseProcessing.sourceURL import asteroidSourceURLs
+from PySide6.QtCore import QObject, Qt
+from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 
 class Asteroid(QObject):

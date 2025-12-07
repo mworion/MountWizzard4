@@ -13,15 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import os
 import re
-from pathlib import Path
 import requests
-from PySide6.QtCore import Qt, Signal
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
 from mw4.gui.widgets.uploadPopup_ui import Ui_UploadPopup
+from pathlib import Path
+from PySide6.QtCore import Qt, Signal
 
 
 class UploadPopup(MWidget):

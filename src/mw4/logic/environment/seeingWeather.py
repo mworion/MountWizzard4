@@ -13,15 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import json
 import logging
 import os
-from pathlib import Path
 import requests
-from PySide6.QtCore import Signal
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker
+from pathlib import Path
+from PySide6.QtCore import Signal
 
 
 class SeeingWeatherSignals(Signals):

@@ -13,20 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
 import os
 import platform
 import subprocess
 import time
-from pathlib import Path
-
-
 from mw4.logic.fits.fitsFunction import (
     getImageHeader,
     getSolutionFromWCSHeader,
     updateImageFileHeaderWithSolution,
 )
+from pathlib import Path
 
 
 class Watney:

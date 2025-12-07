@@ -13,12 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
-from pathlib import Path
 import numpy as np
 from astropy.io import fits
-from skyfield.units import Angle
 from mw4.base.transform import JNowToJ2000
 from mw4.mountcontrol.convert import (
     convertDecToAngle,
@@ -27,6 +24,8 @@ from mw4.mountcontrol.convert import (
     formatLatToText,
     formatLonToText,
 )
+from pathlib import Path
+from skyfield.units import Angle
 
 log = logging.getLogger()
 

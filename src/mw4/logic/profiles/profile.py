@@ -15,10 +15,10 @@
 ###########################################################
 import json
 import logging
-from pathlib import Path
+from mw4.base.loggerMW import setupLogging
 from ndicts import NestedDict
 from packaging.utils import Version
-from mw4.base.loggerMW import setupLogging
+from pathlib import Path
 
 setupLogging()
 log = logging.getLogger()

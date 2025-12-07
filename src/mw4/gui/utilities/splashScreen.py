@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
 from PySide6.QtCore import QObject, QRectF, Qt
 from PySide6.QtGui import QColor, QPixmap

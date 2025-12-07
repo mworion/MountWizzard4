@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
 import platform
 from mw4.base.signalsDevices import Signals

@@ -13,12 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import json
 import requests
-from PySide6.QtCore import QMutex, QTimer
 from mw4.base.driverDataClass import DriverData, RemoteDeviceShutdown
 from mw4.base.tpool import Worker
+from PySide6.QtCore import QMutex, QTimer
 
 
 class NINAClass(DriverData):

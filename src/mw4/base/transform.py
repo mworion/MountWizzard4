@@ -13,14 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-
-import logging
 import erfa
+import logging
 import numpy as np
 from PySide6.QtCore import QMutex
 from skyfield.api import Angle
 from skyfield.toposlib import GeographicPosition
-
 
 __all__ = [
     "J2000ToJNow",

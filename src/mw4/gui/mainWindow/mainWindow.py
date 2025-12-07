@@ -13,13 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import shutil
 import time
 from datetime import datetime
-from pathlib import Path
-from PySide6.QtCore import Qt
-from skyfield.almanac import TWILIGHTS, dark_twilight_day
 from mw4.base import packageConfig
 from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
@@ -28,6 +24,9 @@ from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.logic.profiles.profile import blendProfile, loadProfile, saveProfile
 from mw4.mountcontrol.obsSite import ObsSite
+from pathlib import Path
+from PySide6.QtCore import Qt
+from skyfield.almanac import TWILIGHTS, dark_twilight_day
 
 
 class MainWindow(MWidget):

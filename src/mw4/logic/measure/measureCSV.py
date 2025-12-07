@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import csv
 import logging
 import PySide6

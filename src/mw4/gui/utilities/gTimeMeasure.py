@@ -13,9 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-
-from datetime import datetime as dt
 import pyqtgraph as pg
+from datetime import datetime as dt
 
 
 class TimeMeasure(pg.AxisItem):

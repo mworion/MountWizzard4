@@ -13,9 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
-from pathlib import Path
-from skyfield.api import Angle
 from mw4.base.transform import J2000ToJNow
 from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
@@ -27,6 +24,8 @@ from mw4.logic.file.fileHandler import FileHandler
 from mw4.logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
 from mw4.logic.photometry.photometry import Photometry
 from mw4.mountcontrol.convert import convertToDMS, convertToHMS
+from pathlib import Path
+from skyfield.api import Angle
 
 
 class ImageWindow(MWidget, SlewInterface):

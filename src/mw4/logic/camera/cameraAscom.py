@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 from astropy.io import fits
 from mw4.base.ascomClass import AscomClass
 from mw4.base.tpool import Worker

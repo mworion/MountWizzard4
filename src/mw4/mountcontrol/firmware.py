@@ -14,8 +14,8 @@
 #
 ###########################################################
 import logging
-from packaging.version import Version
 from mw4.mountcontrol.connection import Connection
+from packaging.version import Version
 
 
 class Firmware:

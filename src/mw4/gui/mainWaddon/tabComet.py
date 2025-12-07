@@ -16,10 +16,10 @@
 
 import json
 import os
-from PySide6.QtCore import QObject, Qt
-from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.logic.databaseProcessing.sourceURL import cometSourceURLs
+from PySide6.QtCore import QObject, Qt
+from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 
 class Comet(QObject):

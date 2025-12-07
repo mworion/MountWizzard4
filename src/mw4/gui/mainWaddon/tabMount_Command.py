@@ -13,12 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import time
 import webbrowser
+from mw4.mountcontrol.connection import Connection
 from PySide6.QtCore import QObject
 from PySide6.QtGui import QTextCursor
-from mw4.mountcontrol.connection import Connection
 
 
 class MountCommand(QObject):

@@ -13,15 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
 import pyqtgraph as pg
+from mw4.gui.styles.styles import Styles
+from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 from PySide6.QtGui import QFont, QPainterPath
 from PySide6.QtWidgets import QApplication
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
-from mw4.gui.styles.styles import Styles
-from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 
 
 class PlotBase(pg.GraphicsLayoutWidget, Styles):

@@ -13,12 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-import uuid
 import requests
-from PySide6.QtCore import QTimer
+import uuid
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from PySide6.QtCore import QTimer
 
 
 class AlpacaClass(DriverData):

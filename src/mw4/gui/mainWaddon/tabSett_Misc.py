@@ -13,15 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import mw4.base.packageConfig as pConf
 
 if pConf.isAvailable:
     from PySide6.QtMultimedia import QSoundEffect
 import hid
-from PySide6.QtCore import QObject
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from PySide6.QtCore import QObject
 
 
 class SettMisc(QObject):

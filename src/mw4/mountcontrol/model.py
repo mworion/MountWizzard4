@@ -16,7 +16,6 @@
 #
 ###########################################################
 import logging
-from skyfield.api import Angle
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import (
     sexagesimalizeToInt,
@@ -26,6 +25,7 @@ from mw4.mountcontrol.convert import (
 )
 from mw4.mountcontrol.modelStar import ModelStar
 from mw4.mountcontrol.progStar import ProgStar
+from skyfield.api import Angle
 
 
 class Model:

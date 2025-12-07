@@ -14,16 +14,16 @@
 #
 ###########################################################
 
+import numpy as np
 import pickle
+import pyqtgraph as pg
 from collections.abc import Iterator
 from io import BytesIO
-import numpy as np
-import pyqtgraph as pg
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.widgets import satellite_ui
 from pyqtgraph import PlotWidget
 from PySide6.QtCore import QFile, Qt
 from skyfield.api import Timescale, wgs84
-from mw4.gui.utilities import toolsQtWidget
-from mw4.gui.widgets import satellite_ui
 
 
 class SatelliteWindow(toolsQtWidget.MWidget):

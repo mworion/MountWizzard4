@@ -13,14 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import socket
 import wakeonlan
-from PySide6.QtCore import QObject
 from mw4.base.ethernet import checkFormatMAC
 from mw4.gui.utilities.toolsQtWidget import guiSetText
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.setting import Setting
+from PySide6.QtCore import QObject
 
 
 class SettMount(QObject):

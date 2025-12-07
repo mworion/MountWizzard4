@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import platform
 from mw4.gui.styles.colors import colors
 from mw4.gui.styles.forms import forms

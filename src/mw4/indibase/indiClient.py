@@ -13,18 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
 import xml.etree.ElementTree as ETree
-
-
-from PySide6.QtCore import QObject
-from PySide6.QtNetwork import QTcpSocket
-
-
 from mw4.indibase import indiXML
 from mw4.indibase.indiDevice import Device
 from mw4.indibase.indiSignals import INDISignals
+from PySide6.QtCore import QObject
+from PySide6.QtNetwork import QTcpSocket
 
 
 class Client(QObject):

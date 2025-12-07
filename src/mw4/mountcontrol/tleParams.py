@@ -14,8 +14,8 @@
 #
 ###########################################################
 import logging
-from skyfield.units import Angle
 from mw4.mountcontrol.convert import valueToAngle, valueToFloat
+from skyfield.units import Angle
 
 
 class TLEParams:

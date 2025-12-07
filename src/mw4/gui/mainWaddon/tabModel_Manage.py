@@ -13,12 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import json
-from pathlib import Path
 import numpy as np
-from PySide6.QtCore import QObject, Qt
-from PySide6.QtWidgets import QInputDialog, QLineEdit
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 from mw4.logic.modelBuild.modelRunSupport import (
     convertAngleToFloat,
@@ -26,9 +22,10 @@ from mw4.logic.modelBuild.modelRunSupport import (
     findFittingModel,
     writeRetrofitData,
 )
-
-
 from mw4.mountcontrol.model import Model
+from pathlib import Path
+from PySide6.QtCore import QObject, Qt
+from PySide6.QtWidgets import QInputDialog, QLineEdit
 
 
 class ModelManage(QObject):

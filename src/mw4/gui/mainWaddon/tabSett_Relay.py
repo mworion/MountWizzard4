@@ -13,11 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-
 from functools import partial
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QListView
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
 class SettRelay(QObject):

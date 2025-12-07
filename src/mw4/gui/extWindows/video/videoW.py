@@ -13,8 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
-
 from mw4.gui.extWindows.video.videoBase import VideoWindowBase
 
 

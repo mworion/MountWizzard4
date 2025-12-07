@@ -13,10 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
-import platform
 import numpy as np
+import platform
 import PySide6
 from mw4.base.signalsDevices import Signals
 from mw4.base.transform import diffModulusAbs

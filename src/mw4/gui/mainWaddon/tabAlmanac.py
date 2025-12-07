@@ -13,18 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
 import pyqtgraph as pg
 from dateutil.tz import tzlocal
+from mw4.base.tpool import Worker
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 from PySide6.QtCore import QObject, QPointF, Qt
 from PySide6.QtGui import QColor, QPainter, QPen, QPixmap
 from range_key_dict import RangeKeyDict
 from skyfield import almanac
 from skyfield.toposlib import GeographicPosition
 from skyfield.trigonometry import position_angle_of
-from mw4.base.tpool import Worker
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 
 
 class Almanac(QObject):

@@ -13,14 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
 import time
+from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.widgets import message_ui
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QBrush, QColor, QFont
 from PySide6.QtWidgets import QTableWidgetItem
-from mw4.gui.utilities import toolsQtWidget
-from mw4.gui.widgets import message_ui
 
 
 class MessageWindow(toolsQtWidget.MWidget):

@@ -28,14 +28,10 @@
 # based of the INDI protocol stack version 1.7
 #
 ###########################################################
-
 import base64
 import logging
 import numbers
-
-
 import xml.etree.ElementTree as ETree
-
 
 log = logging.getLogger()
 """

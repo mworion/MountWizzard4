@@ -13,11 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-
 from functools import partial
+from mw4.mountcontrol.convert import valueToFloat
 from PySide6.QtCore import QObject
 from skyfield.api import Angle
-from mw4.mountcontrol.convert import valueToFloat
 
 
 class SettParkPos(QObject):

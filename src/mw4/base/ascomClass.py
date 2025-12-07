@@ -18,10 +18,10 @@ import platform
 if platform.system() == "Windows":
     from pythoncom import CoInitialize, CoUninitialize
     from win32com import client
-from PySide6.QtCore import QMutex, QTimer
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from PySide6.QtCore import QMutex, QTimer
 
 
 class AscomClass(DriverData):

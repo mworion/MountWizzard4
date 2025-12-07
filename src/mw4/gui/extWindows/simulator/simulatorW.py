@@ -13,11 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
-from PySide6.Qt3DCore import Qt3DCore
-from PySide6.Qt3DExtras import Qt3DExtras
-from PySide6.QtGui import QColor, QVector3D
-from PySide6.QtWidgets import QWidget
 from mw4.gui.extWindows.simulator.buildPoints import SimulatorBuildPoints
 from mw4.gui.extWindows.simulator.dome import SimulatorDome
 from mw4.gui.extWindows.simulator.horizon import SimulatorHorizon
@@ -29,6 +24,10 @@ from mw4.gui.extWindows.simulator.tools import linkModel
 from mw4.gui.extWindows.simulator.world import SimulatorWorld
 from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
 from mw4.gui.widgets import simulator_ui
+from PySide6.Qt3DCore import Qt3DCore
+from PySide6.Qt3DExtras import Qt3DExtras
+from PySide6.QtGui import QColor, QVector3D
+from PySide6.QtWidgets import QWidget
 
 
 class SimulatorWindow(MWidget):

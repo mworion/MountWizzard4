@@ -58,7 +58,7 @@ dependencies = [
     "numpy==2.2.6",
     "opencv-python-headless==4.12.0.88",
     "scipy==1.16.3",
-    "astropy==7.1.1",
+    "astropy==7.2.0",
     "pyerfa==2.0.1.5",
     "astroquery==0.4.11",
     "sep==1.4.1",
@@ -71,7 +71,7 @@ dependencies = [
     "importlib_metadata==8.7.0",
     "python-dateutil==2.9.0.post0",
     "wakeonlan==3.1.0",
-    "pybase64==1.4.2",
+    "pybase64==1.4.3",
     "websocket-client==1.9.0",
     "hidapi==0.14.0.post4",
     "range-key-dict==1.1.0",
@@ -79,10 +79,8 @@ dependencies = [
     "packaging==25.0",
     "lz4==4.4.5",
     "xisf==0.9.5",
-    "pyside6==6.10.0",
+    "pyside6==6.10.1",
     "pywin32==311; platform_system == 'Windows'",
-    "pytest>=8.4.2",
-    "ruff>=0.14.0",
 ]
 
 [project.scripts]
@@ -99,13 +97,13 @@ Forum = "https://www.10micron.eu/forum/"
 
 [dependency-groups]
 dev = [
-    "pytest",
-    "pytest-qt",
-    "pytest-cov",
-    "pytest-xdist",
-    "invoke",
-    "ruff",
-    "invoke",
+    "pytest==9.0.2",
+    "pytest-qt==4.5.0",
+    "pytest-cov==7.0.0",
+    "pytest-xdist==3.8.0",
+    "invoke==2.2.1",
+    "ruff==0.14.8",
+    "coverage==7.12.0"
 ]
 
 [tool.pytest.ini_options]
@@ -135,6 +133,9 @@ extend-select = [
     "E", "T2", "UP", "I", "C", "LOG", "W", "SIM", "A"
 ]
 ignore = ["SIM117"]
+
+[tool.ruff.lint.isort]
+no-sections = true
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10

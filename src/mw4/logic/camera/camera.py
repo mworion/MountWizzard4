@@ -13,18 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
-import platform
-from collections.abc import Callable
-from pathlib import Path
 import numpy as np
+import platform
 from astropy.io import fits
+from collections.abc import Callable
 from mw4.base.signalsDevices import Signals
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.camera.cameraIndi import CameraIndi
 from mw4.logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
+from pathlib import Path
 
 if platform.system() == "Windows":
     from mw4.logic.camera.cameraAscom import CameraAscom

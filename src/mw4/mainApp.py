@@ -15,12 +15,7 @@
 ###########################################################
 import logging
 import sys
-from queue import Queue
-from typing import Any
 from importlib_metadata import version
-from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
-from PySide6.QtWidgets import QApplication
-from skyfield.api import wgs84
 from mw4.base.loggerMW import setCustomLoggingLevel
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.logic.buildData.buildpoints import DataPoint
@@ -42,6 +37,11 @@ from mw4.logic.profiles.profile import loadProfileStart
 from mw4.logic.remote.remote import Remote
 from mw4.logic.telescope.telescope import Telescope
 from mw4.mountcontrol.mount import MountDevice
+from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
+from PySide6.QtWidgets import QApplication
+from queue import Queue
+from skyfield.api import wgs84
+from typing import Any
 
 
 class MountWizzard4(QObject):

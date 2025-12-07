@@ -13,18 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import csv
 import json
 import logging
-import random
-from pathlib import Path
 import numpy as np
+import random
+from mw4.base import transform
+from pathlib import Path
 from scipy.spatial import distance
 from skyfield import almanac
 from skyfield.api import Angle, Star, Timescale
 from skyfield.toposlib import GeographicPosition
-from mw4.base import transform
 
 
 def HaDecToAltAz(ha: float, dec: float, lat: float) -> tuple[float, float]:

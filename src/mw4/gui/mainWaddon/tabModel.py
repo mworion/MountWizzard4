@@ -13,15 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import os
 import time
 from datetime import datetime
-from pathlib import Path
-from PySide6.QtCore import QObject
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, sleepAndEvents
 from mw4.logic.modelBuild.modelRun import ModelData
 from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
+from pathlib import Path
+from PySide6.QtCore import QObject
 
 
 class Model(QObject):

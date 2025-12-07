@@ -13,10 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
-from PySide6.QtGui import QVector3D
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import linkModel
+from PySide6.QtGui import QVector3D
 
 
 class SimulatorPointer:

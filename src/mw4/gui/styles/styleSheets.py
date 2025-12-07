@@ -13,8 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
-
 MAC_STYLE = """
     QWidget {
         background-color: $M_BACK$;

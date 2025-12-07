@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 from mw4.gui.utilities.gPlotBase import PlotBase
 

@@ -14,11 +14,11 @@
 #
 ###########################################################
 
-import webbrowser
 import numpy as np
+import webbrowser
+from mw4.gui.utilities.toolsQtWidget import guiSetText
 from PySide6.QtCore import QObject
 from range_key_dict import RangeKeyDict
-from mw4.gui.utilities.toolsQtWidget import guiSetText
 
 
 class ImageStats(QObject):

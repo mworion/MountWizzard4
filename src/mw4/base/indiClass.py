@@ -13,12 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
-from PySide6.QtCore import QTimer
 from mw4.base.signalsDevices import Signals
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.indibase.indiClient import Client
+from PySide6.QtCore import QTimer
 
 
 class IndiClass:

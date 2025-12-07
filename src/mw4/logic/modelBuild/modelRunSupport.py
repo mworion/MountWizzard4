@@ -13,13 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import json
 import logging
 from datetime import datetime
+from mw4.mountcontrol.model import Model
 from pathlib import Path
 from skyfield.api import Angle, load
-from mw4.mountcontrol.model import Model
 
 log = logging.getLogger("MW4")
 ts = load.timescale()

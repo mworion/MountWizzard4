@@ -14,12 +14,8 @@
 #
 ###########################################################
 import logging
-import platform
 import numpy as np
-from skyfield.api import Angle, Loader, load, wgs84
-from skyfield.timelib import Time, Timescale
-from skyfield.toposlib import GeographicPosition
-from mw4.base.transform import diffModulusSign
+import platform
 from .connection import Connection
 from .convert import (
     sexagesimalizeToInt,
@@ -29,6 +25,10 @@ from .convert import (
     valueToFloat,
     valueToInt,
 )
+from mw4.base.transform import diffModulusSign
+from skyfield.api import Angle, Loader, load, wgs84
+from skyfield.timelib import Time, Timescale
+from skyfield.toposlib import GeographicPosition
 
 
 class ObsSite:

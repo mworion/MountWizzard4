@@ -13,8 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
-
 satBaseUrl = "http://www.celestrak.org/NORAD/elements/gp.php?"
 satSourceURLs = {
     "100 brightest": {

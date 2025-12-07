@@ -13,12 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-#
-# this file is auto generated for the purpose of getting data prepared
-# to show the alignment stars in mountwizzard
-#
-
-
 def generateAlignStars() -> dict:
     """
     generateAlignStars is the function where the alignment stars which were

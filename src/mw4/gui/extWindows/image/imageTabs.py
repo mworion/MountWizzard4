@@ -13,11 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
 import pyqtgraph as pg
 from astropy.io import fits
-from PySide6.QtGui import QFont
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
 from mw4.logic.fits.fitsFunction import (
     getCoordinatesFromHeader,
@@ -25,6 +23,7 @@ from mw4.logic.fits.fitsFunction import (
     getScaleFromHeader,
     getSQMFromHeader,
 )
+from PySide6.QtGui import QFont
 
 
 class ImageTabs:

@@ -14,11 +14,10 @@
 #
 ###########################################################
 import logging
-import re
-from typing import Any
 import numpy as np
+import re
 from skyfield.api import Angle
-
+from typing import Any
 
 __all__ = [
     "stringToDegree",

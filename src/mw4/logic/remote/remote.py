@@ -14,9 +14,9 @@
 #
 ###########################################################
 import logging
+from mw4.base.signalsDevices import Signals
 from PySide6 import QtNetwork
 from PySide6.QtCore import QObject
-from mw4.base.signalsDevices import Signals
 
 
 class Remote(QObject):

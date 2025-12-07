@@ -13,11 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import datetime
-from PySide6.QtCore import QObject
-from PySide6.QtWidgets import QInputDialog, QLineEdit
-from skyfield.api import wgs84
 from mw4.base import transform
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
 from mw4.mountcontrol.convert import (
@@ -26,6 +22,9 @@ from mw4.mountcontrol.convert import (
     formatLatToText,
     formatLonToText,
 )
+from PySide6.QtCore import QObject
+from PySide6.QtWidgets import QInputDialog, QLineEdit
+from skyfield.api import wgs84
 
 
 class MountSett(QObject):

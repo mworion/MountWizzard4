@@ -13,15 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
 import pyqtgraph as pg
-from PySide6.QtCore import QPointF, Qt
-from PySide6.QtGui import QCursor, QGuiApplication
 from mw4.gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
 from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets import hemisphere_ui
+from PySide6.QtCore import QPointF, Qt
+from PySide6.QtGui import QCursor, QGuiApplication
 
 
 class HemisphereWindow(MWidget):

@@ -13,12 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
 import os
 import sys
 from PySide6.QtCore import QObject, QRunnable, Signal
-
 
 __all__ = ["Worker"]
 

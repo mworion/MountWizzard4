@@ -13,7 +13,5 @@
 # Licence APL2.0
 #
 ###########################################################
-
-
 class SatData:
     satellites = None

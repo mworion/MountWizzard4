@@ -13,13 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import datetime
 import logging
-import time
-from pathlib import Path
 import numpy as np
+import time
 from dateutil.tz import tzlocal
+from mw4.gui.styles.styles import Styles
+from mw4.mountcontrol.convert import formatDstrToText, formatHstrToText
+from pathlib import Path
 from PySide6.QtCore import QCoreApplication, QDir, QEvent, QObject, QSize, Qt, Signal
 from PySide6.QtGui import (
     QColor,
@@ -47,8 +48,6 @@ from PySide6.QtWidgets import (
 )
 from qimage2ndarray import array2qimage, rgb_view
 from skyfield.api import Time
-from mw4.gui.styles.styles import Styles
-from mw4.mountcontrol.convert import formatDstrToText, formatHstrToText
 
 
 def sleepAndEvents(value: int) -> None:

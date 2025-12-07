@@ -13,13 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
 import re
-import time
 import requests
-from PySide6.QtCore import QMutex, QTimer, Signal
+import time
 from mw4.base.signalsDevices import Signals
+from PySide6.QtCore import QMutex, QTimer, Signal
 
 
 class RelaySignals(Signals):

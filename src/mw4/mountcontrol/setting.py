@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat, valueToInt
@@ -201,7 +200,7 @@ class Setting:
     @typeConnection.setter
     def typeConnection(self, value):
         value = valueToInt(value)
-        if 0 > value or value > 3:
+        if value < 0 or value > 3:
             value = 0
         self._typeConnection = value
 
@@ -251,7 +250,7 @@ class Setting:
     @weatherStatus.setter
     def weatherStatus(self, value):
         value = valueToInt(value)
-        if 0 > value or value > 2:
+        if value < 0 or value > 2:
             value = 0
         self._weatherStatus = value
 

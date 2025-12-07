@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import os
 from mw4.base.sgproClass import SGProClass
 from mw4.base.tpool import Worker

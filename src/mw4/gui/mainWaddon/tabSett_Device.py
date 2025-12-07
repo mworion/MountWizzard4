@@ -13,12 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-
 from functools import partial
-from PySide6.QtCore import QObject
-from PySide6.QtWidgets import QListView
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, findIndexValue
+from PySide6.QtCore import QObject
+from PySide6.QtWidgets import QListView
 
 
 class SettDevice(QObject):

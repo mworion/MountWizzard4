@@ -13,12 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-
 from astroquery.simbad import Simbad
-from PySide6.QtCore import QMutex, QObject
-from skyfield.api import Angle
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
+from PySide6.QtCore import QMutex, QObject
+from skyfield.api import Angle
 
 
 class BuildPoints(QObject):

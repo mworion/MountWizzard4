@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import zlib
 from astropy.io import fits
 from mw4.base.indiClass import IndiClass

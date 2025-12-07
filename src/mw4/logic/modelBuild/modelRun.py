@@ -13,17 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import json
 import logging
 import time
-from pathlib import Path
-from PySide6.QtCore import QObject, Signal
-from skyfield.api import Angle, Star
 from mw4.base.transform import J2000ToJNow, JNowToJ2000
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.logic.modelBuild.modelRunSupport import convertAngleToFloat, writeRetrofitData
 from mw4.mountcontrol.progStar import ProgStar
+from pathlib import Path
+from PySide6.QtCore import QObject, Signal
+from skyfield.api import Angle, Star
 
 
 class ModelData(QObject):

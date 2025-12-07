@@ -13,10 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
-from PySide6.QtCore import QObject, QPoint, QRect, Qt, Signal
-from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.satData import SatData
@@ -30,6 +27,8 @@ from mw4.logic.satellites.satellite_calculations import (
     findSatUp,
     findSunlit,
 )
+from PySide6.QtCore import QObject, QPoint, QRect, Qt, Signal
+from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 
 class SatSearch(QObject, SatData):

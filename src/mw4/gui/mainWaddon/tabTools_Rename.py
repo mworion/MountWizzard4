@@ -13,10 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import os
-from pathlib import Path
 from astropy.io import fits
+from pathlib import Path
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QApplication, QListView
 

@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 from ast import Bytes
 from PySide6.QtCore import QObject
 

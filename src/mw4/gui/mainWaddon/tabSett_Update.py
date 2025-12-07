@@ -13,11 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
 from astropy.utils import data, iers
-from PySide6.QtCore import QObject
 from mw4.base.loggerMW import setCustomLoggingLevel
+from PySide6.QtCore import QObject
 
 
 class SettUpdate(QObject):

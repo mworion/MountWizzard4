@@ -13,14 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import json
-import os
-from pathlib import Path
 import numpy as np
+import os
 from mw4.gui.utilities import toolsQtWidget
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.gui.widgets import analyse_ui
+from pathlib import Path
 
 
 class AnalyseWindow(toolsQtWidget.MWidget):

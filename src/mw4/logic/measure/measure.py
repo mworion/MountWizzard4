@@ -13,13 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
 import numpy as np
-from PySide6.QtCore import QMutex
 from mw4.base.signalsDevices import Signals
 from mw4.logic.measure.measureCSV import MeasureDataCSV
 from mw4.logic.measure.measureRaw import MeasureDataRaw
+from PySide6.QtCore import QMutex
 
 
 class MeasureData:

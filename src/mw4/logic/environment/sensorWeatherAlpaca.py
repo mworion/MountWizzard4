@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 from mw4.base.alpacaClass import AlpacaClass
 
 

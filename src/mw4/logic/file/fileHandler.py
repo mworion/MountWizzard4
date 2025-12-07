@@ -13,18 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-
-import logging
-import os
-from pathlib import Path
 import cv2
+import logging
 import numpy as np
+import os
 from astropy import wcs
 from astropy.io import fits
-from PySide6.QtCore import QObject, Signal
-from xisf import XISF
 from mw4.base.tpool import Worker
 from mw4.mountcontrol.convert import valueToFloat
+from pathlib import Path
+from PySide6.QtCore import QObject, Signal
+from xisf import XISF
 
 
 class FileHandlerSignals(QObject):

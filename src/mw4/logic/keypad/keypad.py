@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
 import numpy as np
 import websocket

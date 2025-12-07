@@ -13,11 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
 import pyqtgraph as pg
-from PySide6.QtGui import QColor
 from mw4.gui.utilities.gPlotBase import PlotBase
+from PySide6.QtGui import QColor
 
 
 class NormalScatter(PlotBase):

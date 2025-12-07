@@ -13,17 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-
 from functools import partial
-
-from PySide6.QtCore import QObject
-
-
-from PySide6.QtWidgets import QInputDialog, QLineEdit
-
 from mw4.gui.utilities.slewInterface import SlewInterface
-
-
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, sleepAndEvents
 from mw4.mountcontrol.convert import (
     convertDecToAngle,
@@ -32,6 +23,8 @@ from mw4.mountcontrol.convert import (
     formatHstrToText,
     valueToFloat,
 )
+from PySide6.QtCore import QObject
+from PySide6.QtWidgets import QInputDialog, QLineEdit
 
 
 class MountMove(QObject, SlewInterface):

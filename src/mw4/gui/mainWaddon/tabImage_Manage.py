@@ -13,10 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QInputDialog
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
 
 
 class ImageManage(QObject):

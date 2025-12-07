@@ -13,11 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-
-from functools import partial
 import numpy as np
-from PySide6.QtCore import QObject
+from functools import partial
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
+from PySide6.QtCore import QObject
 
 
 class EnvironWeather(QObject):

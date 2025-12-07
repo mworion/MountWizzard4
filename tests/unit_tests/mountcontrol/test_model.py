@@ -156,8 +156,8 @@ class TestConfigData(unittest.TestCase):
 
         align = Model(parent=Parent())
         align.numberStars = None
-        self.assertEqual(None, align.numberStars)
-        self.assertEqual(None, align._numberStars)
+        self.assertEqual(0, align.numberStars)
+        self.assertEqual(0, align._numberStars)
 
     def test_Model_numberNames_1(self):
         class Parent:
@@ -174,8 +174,8 @@ class TestConfigData(unittest.TestCase):
 
         align = Model(parent=Parent())
         align.numberNames = None
-        self.assertEqual(None, align.numberNames)
-        self.assertEqual(None, align._numberNames)
+        self.assertEqual(0, align.numberNames)
+        self.assertEqual(0, align._numberNames)
 
     def test_Model_starList1(self):
         p1 = "12:45:33.01"
@@ -378,14 +378,6 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(len(model.nameList), 3)
         model.addName("the fourth one")
         self.assertEqual(len(model.nameList), 4)
-        model.delName(3)
-        self.assertEqual(len(model.nameList), 3)
-        model.delName(3)
-        self.assertEqual(len(model.nameList), 3)
-        model.delName(-1)
-        self.assertEqual(len(model.nameList), 3)
-        model.delName(1)
-        self.assertEqual(len(model.nameList), 2)
 
     def test_addName_not_ok(self):
         class Parent:
@@ -397,50 +389,9 @@ class TestConfigData(unittest.TestCase):
         model.addName(45)
         self.assertEqual(len(model.nameList), 0)
 
-    def test_NameList_iteration(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-
-        for i in range(0, 10):
-            model.addName(f"this is the {i}.th name")
-        self.assertEqual(len(model.nameList), 10)
-        for i, name in enumerate(model.nameList):
-            self.assertEqual(f"this is the {i}.th name", name)
-
-    def test_StarList_checkNameListOK(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-        self.assertEqual(len(model.starList), 0)
-        model.addName("12:45:33.01,+56*30:00.5,1234.5,90,1")
-        model.numberNames = 1
-        self.assertTrue(model.checkNameListOK())
-
-    def test_StarList_checkNameList_not_OK1(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-        self.assertEqual(len(model.starList), 0)
-        model.addName("12:45:33.01,+56*30:00.5,1234.5,90,1")
-        model.numberNames = 2
-        self.assertFalse(model.checkNameListOK())
-
-    def test_StarList_checkNameList_not_OK2(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-        self.assertEqual(len(model.starList), 0)
-        model.addName("12:45:33.01,+56*30:00.5,1234.5,90,1")
-        self.assertFalse(model.checkNameListOK())
-
     #
     #
-    # testing the specific QCI behaviour in Model class attributes
+    # testing the specific QCI behavior in Model class attributes
     #
     #
 
@@ -971,8 +922,7 @@ class TestConfigData(unittest.TestCase):
 
         model = Model(parent=Parent())
         with mock.patch.object(model, "getStarCount", return_value=False):
-            suc = model.pollStars()
-            assert not suc
+            model.pollStars()
 
     def test_pollStars_2(self):
         class Parent:
@@ -981,8 +931,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
         with mock.patch.object(model, "getStarCount", return_value=True):
             with mock.patch.object(model, "getStars", return_value=False):
-                suc = model.pollStars()
-            assert not suc
+                model.pollStars()
 
     def test_pollStars_3(self):
         class Parent:
@@ -991,68 +940,7 @@ class TestConfigData(unittest.TestCase):
         model = Model(parent=Parent())
         with mock.patch.object(model, "getStarCount", return_value=True):
             with mock.patch.object(model, "getStars", return_value=True):
-                suc = model.pollStars()
-            assert suc
-
-    #
-    #
-    # testing pollCount
-    #
-    #
-
-    def test_Model_pollCount_1(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-        with mock.patch.object(
-            mw4.mountcontrol.model.Connection,
-            "communicate",
-            return_value=(True, ["5", "6"], 2),
-        ):
-            suc = model.pollCount()
-            assert suc
-            assert model.numberNames == 5
-            assert model.numberStars == 6
-
-    def test_Model_pollCount_2(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-        with mock.patch.object(
-            mw4.mountcontrol.model.Connection,
-            "communicate",
-            return_value=(False, ["5", "6"], 2),
-        ):
-            suc = model.pollCount()
-            assert not suc
-
-    def test_Model_pollCount_3(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-        with mock.patch.object(
-            mw4.mountcontrol.model.Connection,
-            "communicate",
-            return_value=(True, ["5", "6"], 3),
-        ):
-            suc = model.pollCount()
-            assert not suc
-
-    def test_Model_pollCount_4(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-        with mock.patch.object(
-            mw4.mountcontrol.model.Connection,
-            "communicate",
-            return_value=(True, ["5", "6", "7"], 3),
-        ):
-            suc = model.pollCount()
-            assert not suc
+                model.pollStars()
 
     #
     #

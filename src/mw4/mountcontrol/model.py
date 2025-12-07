@@ -151,10 +151,7 @@ class Model:
 
     @numberStars.setter
     def numberStars(self, value):
-        if value is None:
-            self._numberStars = None
-        else:
-            self._numberStars = valueToInt(value)
+        self._numberStars = valueToInt(value)
 
     def addStar(self, value: ModelStar) -> None:
         """ """
@@ -170,8 +167,6 @@ class Model:
 
     def checkStarListOK(self):
         """ """
-        if not self._numberStars:
-            return False
         return self._numberStars == len(self._starList)
 
     @property
@@ -194,33 +189,14 @@ class Model:
 
     @numberNames.setter
     def numberNames(self, value):
-        if value is None:
-            self._numberNames = None
-        else:
-            self._numberNames = valueToInt(value)
+        self._numberNames = valueToInt(value)
 
-    def addName(self, value: str) -> bool:
+    def addName(self, value: str) -> None:
         """ """
         if not isinstance(value, str):
             self.log.warning(f"malformed value: {value}")
-            return False
+            return
         self._nameList.insert(len(self._nameList), value)
-        return True
-
-    def delName(self, value: int) -> bool:
-        """ """
-        value = valueToInt(value)
-        if value < 0 or value > len(self._nameList) - 1:
-            self.log.warning(f"invalid value: {value}")
-            return False
-        self._nameList.pop(value)
-        return True
-
-    def checkNameListOK(self) -> bool:
-        """ """
-        if not self._numberNames:
-            return False
-        return self._numberNames == len(self._nameList)
 
     def parseNames(self, response: list, numberOfChunks: int) -> bool:
         """ """
@@ -351,33 +327,11 @@ class Model:
         suc = self.parseStars(response, numberOfChunks)
         return suc
 
-    def pollStars(self):
+    def pollStars(self) -> None:
         """ """
         suc = self.getStarCount()
         if suc:
-            suc = self.getStars()
-        return suc
-
-    def pollCount(self) -> bool:
-        """ """
-        conn = Connection(self.parent.host)
-        commandString = ":modelcnt#:getalst#"
-
-        suc, response, numberOfChunks = conn.communicate(commandString)
-        if not suc:
-            return False
-
-        if len(response) != numberOfChunks:
-            self.log.warning("Wrong number of chunks")
-            return False
-
-        if len(response) != 2:
-            self.log.warning("Wrong number of chunks")
-            return False
-
-        self.numberNames = response[0]
-        self.numberStars = response[1]
-        return True
+            self.getStars()
 
     def clearModel(self) -> bool:
         """ """

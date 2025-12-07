@@ -126,10 +126,6 @@ class MeasureData:
         decJNow = 0
         errAngPosRa = 0
         errAngPosDec = 0
-
-        if obs.raJNow is None:
-            return raJNow, decJNow, errAngPosRa, errAngPosDec
-
         length = len(dat["status"])
         period = min(length, 10)
         hasMean = length > 0 and period > 0

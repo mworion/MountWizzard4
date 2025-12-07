@@ -110,17 +110,17 @@ class TestConfigData(unittest.TestCase):
     def test_stringToDegree_bad1(self):
         parameter = ""
         value = stringToDegree(parameter)
-        self.assertEqual(None, value)
+        self.assertEqual(0, value)
 
     def test_stringToDegree_bad2(self):
         parameter = "12:45:33:01.01"
         value = stringToDegree(parameter)
-        self.assertEqual(None, value)
+        self.assertEqual(0, value)
 
     def test_stringToDegree_bad3(self):
         parameter = "++56*30:00.0"
         value = stringToDegree(parameter)
-        self.assertAlmostEqual(None, value)
+        self.assertAlmostEqual(0, value)
 
     def test_stringToDegree_bad4(self):
         parameter = " 56*30:00.0"
@@ -130,17 +130,17 @@ class TestConfigData(unittest.TestCase):
     def test_stringToDegree_bad5(self):
         parameter = "--56*30:00.0"
         value = stringToDegree(parameter)
-        self.assertAlmostEqual(None, value)
+        self.assertAlmostEqual(0, value)
 
     def test_stringToDegree_bad6(self):
         parameter = "-56*dd:00.0"
         value = stringToDegree(parameter)
-        self.assertAlmostEqual(None, value)
+        self.assertAlmostEqual(0, value)
 
     def test_stringToDegree_bad7(self):
         parameter = "E"
         value = stringToDegree(parameter)
-        self.assertAlmostEqual(None, value)
+        self.assertAlmostEqual(0, value)
 
     def test_stringToAngle_ok(self):
         parameter = "+50*30:00.0"
@@ -182,11 +182,6 @@ class TestConfigData(unittest.TestCase):
         value = valueToAngle(parameter, preference="degrees")
         self.assertEqual(0, value.degrees)
 
-    def test_stringToAngle_not_ok1(self):
-        parameter = 178
-        value = stringToAngle(parameter)
-        self.assertEqual(None, value)
-
     def test_stringToAngle_1(self):
         parameter = "00:10:50.00"
         value = stringToAngle(parameter, preference="hours")
@@ -200,7 +195,7 @@ class TestConfigData(unittest.TestCase):
     def test_valueToInt_not_ok(self):
         parameter = "df"
         value = valueToInt(parameter)
-        self.assertEqual(None, value)
+        self.assertEqual(0, value)
 
     def test_valueToFloat_ok(self):
         parameter = "156"
@@ -210,17 +205,12 @@ class TestConfigData(unittest.TestCase):
     def test_valueToFloat_not_ok_1(self):
         parameter = "df"
         value = valueToFloat(parameter)
-        self.assertEqual(None, value)
+        self.assertEqual(0, value)
 
     def test_valueToFloat_not_ok_2(self):
         parameter = "E"
         value = valueToFloat(parameter)
-        self.assertEqual(None, value)
-
-    def test_topoToAltAz_ok1(self):
-        alt, az = topoToAltAz(0, 0, None)
-        self.assertEqual(None, alt)
-        self.assertEqual(None, az)
+        self.assertEqual(0, value)
 
     def test_topoToAltAz_ok2(self):
         alt, az = topoToAltAz(0, 0, 0)
@@ -311,7 +301,7 @@ class TestConfigData(unittest.TestCase):
 
     def test_convertToAngle(self):
         val = convertToAngle("E")
-        assert val is None
+        assert val.degrees == 0
 
     def test_convertToDMS_1(self):
         parameter = Angle(degrees=60)
@@ -322,11 +312,6 @@ class TestConfigData(unittest.TestCase):
         parameter = 60
         value = convertToDMS(parameter)
         assert value == "+60:00:00"
-
-    def test_convertToDMS_3(self):
-        parameter = "60"
-        value = convertToDMS(parameter)
-        assert value == ""
 
     def test_convertToDMS_4(self):
         value = Angle(degrees=90.0)
@@ -348,11 +333,6 @@ class TestConfigData(unittest.TestCase):
         value = convertToHMS(parameter)
         assert value == "12:00:00"
 
-    def test_convertToHMS_3(self):
-        parameter = "60"
-        value = convertToHMS(parameter)
-        assert value == ""
-
     def test_convertToHMS_4(self):
         value = Angle(hours=12.0)
         value = convertToHMS(value)
@@ -365,23 +345,23 @@ class TestConfigData(unittest.TestCase):
 
     def test_stringToDegree_1(self):
         value = stringToDegree(100)
-        assert value is None
+        assert value == 0
 
     def test_stringToDegree_2(self):
         value = stringToDegree("")
-        assert value is None
+        assert value == 0
 
     def test_stringToDegree_3(self):
         value = stringToDegree("++")
-        assert value is None
+        assert value == 0
 
     def test_stringToDegree_4(self):
         value = stringToDegree("--")
-        assert value is None
+        assert value == 0
 
     def test_stringToDegree_5(self):
         value = stringToDegree("55:66:ff")
-        assert value is None
+        assert value == 0
 
     def test_stringToDegree_6(self):
         value = stringToDegree("55:30")
@@ -411,44 +391,35 @@ def test_formatLatLonToAngle_1():
         ["12N 30 30.55", "SN", 12.508333],
         ["12N 30 30.5", "SN", 12.508333],
         ["12N 30 30,5", "SN", 12.508333],
-        ["12 30 30.5N", "SN", None],
-        ["12 30 30.5 N", "SN", None],
-        ["+12N 30 30.5", "SN", None],
+        ["12 30 30.5N", "SN", 0],
+        ["12 30 30.5 N", "SN", 0],
+        ["+12N 30 30.5", "SN", 0],
         ["12N 30 30", "SN", 12.508333],
         ["12S 30 30", "SN", -12.508333],
         ["12N 30", "SN", 12.5],
-        ["12NS 30", "SN", None],
-        ["12W ", "SN", None],
+        ["12NS 30", "SN", 0],
+        ["12W ", "SN", 0],
         ["12E 30 30.55", "WE", 12.508333],
         ["12E 30 30.5", "WE", 12.508333],
-        ["12 30 30.5E", "WE", None],
-        ["12 30 30.5 E", "WE", None],
-        ["+12E 30 30.5", "WE", None],
+        ["12 30 30.5E", "WE", 0],
+        ["12 30 30.5 E", "WE", 0],
+        ["+12E 30 30.5", "WE", 0],
         ["12E 30 30", "WE", 12.508333],
         ["12W 30 30", "WE", -12.508333],
         ["12E 30", "WE", 12.5],
-        ["12WE 30", "WE", None],
-        ["12N ", "WE", None],
-        ["99N ", "SN", None],
-        ["99S ", "SN", None],
-        ["190E ", "WE", None],
-        ["190W ", "WE", None],
+        ["12WE 30", "WE", 0],
+        ["12N ", "WE", 0],
+        ["99N ", "SN", 0],
+        ["99S ", "SN", 0],
+        ["190E ", "WE", 0],
+        ["190W ", "WE", 0],
         ["12N 30  30.5 ", "SN", 12.508333],
         ["12N  30 30.5", "SN", 12.508333],
         ["12N  30  30.5", "SN", 12.508333],
     ]
     for value in values:
         angle = formatLatLonToAngle(value[0], value[1])
-
-        if angle is None:
-            assert value[2] is None
-        else:
-            assert math.isclose(angle.degrees, value[2], abs_tol=0.000001)
-
-
-def test_formatLatLonToAngle_2():
-    val = formatLatLonToAngle(None, "NS")
-    assert val is None
+        assert math.isclose(angle.degrees, value[2], abs_tol=0.000001)
 
 
 def test_formatLat():
@@ -492,22 +463,17 @@ def test_convertRaToAngle_1():
             assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)
 
 
-def test_convertRaToAngle_2():
-    val = convertRaToAngle(None)
-    assert val is None
-
-
 def test_convertDecToAngle_1():
     values = [
         ["+12.5", 12.5],
         ["12,5", 12.5],
         [12.5, 12.5],
         ["-12.5", -12.5],
-        ["-90.5", None],
-        ["90.5", None],
+        ["-90.5", 0],
+        ["90.5", 0],
         ["12Deg 30 30", 12.508333],
         ["12Deg 30 30.55", 12.508333],
-        ["12H 30 30.55", None],
+        ["12H 30 30.55", 0],
         ["12 30 30.55", 12.508333],
         ["-12Deg 30 30.55", -12.508333],
         ["-12Deg:30:30.55", -12.508333],
@@ -522,16 +488,7 @@ def test_convertDecToAngle_1():
     ]
     for value in values:
         angle = convertDecToAngle(value[0])
-
-        if angle is None:
-            assert value[1] is None
-        else:
-            assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)
-
-
-def test_convertDecToAngle_2():
-    val = convertDecToAngle(None)
-    assert val is None
+        assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)
 
 
 def test_formatHstrToText():

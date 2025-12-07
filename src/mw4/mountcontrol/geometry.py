@@ -106,10 +106,6 @@ class Geometry:
     @offNorth.setter
     def offNorth(self, value):
         self._offNorth = valueToFloat(value)
-        if self.parent.obsSite.location is None:
-            self.log.debug("offVert called without lat")
-            return
-
         lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) + self.offBaseAltAxisX
         val += np.cos(abs(lat)) * self.offAltAxisGemX
@@ -123,10 +119,6 @@ class Geometry:
     @offNorthGEM.setter
     def offNorthGEM(self, value):
         self._offNorthGEM = valueToFloat(value)
-        if self.parent.obsSite.location is None:
-            self.log.debug("offVert called without lat")
-            return
-
         lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) - self.offBaseAltAxisX
         val -= np.cos(abs(lat)) * self.offAltAxisGemX
@@ -158,10 +150,6 @@ class Geometry:
     @offVert.setter
     def offVert(self, value):
         self._offVert = valueToFloat(value)
-        if self.parent.obsSite.location is None:
-            self.log.debug("offVert called without lat")
-            return
-
         lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) + self.offBaseAltAxisZ
         val += np.sin(abs(lat)) * self.offAltAxisGemX
@@ -175,10 +163,6 @@ class Geometry:
     @offVertGEM.setter
     def offVertGEM(self, value):
         self._offVertGEM = valueToFloat(value)
-        if self.parent.obsSite.location is None:
-            self.log.debug("offVertGEM called without lat")
-            return
-
         lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) - self.offBaseAltAxisZ
         val -= np.sin(abs(lat)) * self.offAltAxisGemX

@@ -190,7 +190,9 @@ class BuildPoints(QObject):
         distFlip = int(self.ui.meridianDistanceFlip.value())
         suc = self.app.data.genGreaterCircle(stepHA, stepDec, distFlip)
         if not suc:
-            self.msg.emit(2, "Model", "Buildpoints", "Build points celestial cannot be generated")
+            self.msg.emit(
+                2, "Model", "Buildpoints", "Build points celestial cannot be generated"
+            )
             return
 
         if self.ui.ditherBuildPoints.isChecked():

@@ -74,39 +74,34 @@ def test_moveDuration_1(function):
     function.ui.moveDuration.setCurrentIndex(1)
     with mock.patch.object(function, "countDuration"):
         with mock.patch.object(function, "stopMoveAll"):
-            suc = function.moveDuration()
-            assert suc
+            function.moveDuration()
 
 
 def test_moveDuration_2(function):
     function.ui.moveDuration.setCurrentIndex(2)
     with mock.patch.object(function, "countDuration"):
         with mock.patch.object(function, "stopMoveAll"):
-            suc = function.moveDuration()
-            assert suc
+            function.moveDuration()
 
 
 def test_moveDuration_3(function):
     function.ui.moveDuration.setCurrentIndex(3)
     with mock.patch.object(function, "countDuration"):
         with mock.patch.object(function, "stopMoveAll"):
-            suc = function.moveDuration()
-            assert suc
+            function.moveDuration()
 
 
 def test_moveDuration_4(function):
     function.ui.moveDuration.setCurrentIndex(4)
     with mock.patch.object(function, "countDuration"):
         with mock.patch.object(function, "stopMoveAll"):
-            suc = function.moveDuration()
-            assert suc
+            function.moveDuration()
 
 
 def test_moveDuration_5(function):
     function.ui.moveDuration.setCurrentIndex(0)
     with mock.patch.object(function, "countDuration"):
-        suc = function.moveDuration()
-        assert not suc
+        function.moveDuration()
 
 
 def test_moveClassicGameController_1(function):
@@ -144,60 +139,42 @@ def test_setSlewSpeed_1(function):
 
 
 def test_moveAltAzDefault(function):
-    suc = function.moveAltAzDefault()
-    assert suc
+    function.moveAltAzDefault()
 
 
 def test_moveAltAzGameController_1(function):
     with mock.patch.object(function, "moveAltAz"):
-        suc = function.moveAltAzGameController(0)
-        assert suc
+        function.moveAltAzGameController(0)
 
 
 def test_moveAltAzGameController_2(function):
     with mock.patch.object(function, "moveAltAz"):
-        suc = function.moveAltAzGameController(2)
-        assert suc
+        function.moveAltAzGameController(2)
 
 
 def test_moveAltAzGameController_3(function):
     with mock.patch.object(function, "moveAltAz"):
-        suc = function.moveAltAzGameController(4)
-        assert suc
+        function.moveAltAzGameController(4)
 
 
 def test_moveAltAzGameController_4(function):
     with mock.patch.object(function, "moveAltAz"):
-        suc = function.moveAltAzGameController(6)
-        assert suc
+        function.moveAltAzGameController(6)
 
 
 def test_moveAltAzGameController_5(function):
     with mock.patch.object(function, "moveAltAz"):
-        suc = function.moveAltAzGameController(99)
-        assert not suc
+        function.moveAltAzGameController(99)
 
 
 def test_moveAltAz_1(function):
     function.targetAlt = None
     function.targetAz = None
-    function.app.mount.obsSite.Alt = None
-    function.app.mount.obsSite.Az = Angle(degrees=10)
-
-    with mock.patch.object(function, "slewTargetAltAz", return_value=False):
-        suc = function.moveAltAz([1, 1])
-        assert not suc
-
-
-def test_moveAltAz_2(function):
-    function.targetAlt = None
-    function.targetAz = None
     function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.app.mount.obsSite.Az = Angle(degrees=10)
 
-    with mock.patch.object(function, "slewTargetAltAz", return_value=False):
-        suc = function.moveAltAz("NE")
-        assert not suc
+    with mock.patch.object(function, "slewTargetAltAz", return_value=True):
+        function.moveAltAz("NE")
 
 
 def test_moveAltAz_3(function):
@@ -207,58 +184,49 @@ def test_moveAltAz_3(function):
     function.app.mount.obsSite.Az = Angle(degrees=10)
 
     with mock.patch.object(function, "slewTargetAltAz", return_value=True):
-        suc = function.moveAltAz("NE")
-        assert suc
+        function.moveAltAz("NE")
 
 
 def test_setRA_1(function):
     with mock.patch.object(QInputDialog, "getText", return_value=("", False)):
-        suc = function.setRA()
-        assert not suc
+        function.setRA()
 
 
 def test_setRA_2(function):
     with mock.patch.object(QInputDialog, "getText", return_value=("", True)):
-        suc = function.setRA()
-        assert not suc
+        function.setRA()
 
 
 def test_setRA_3(function):
     with mock.patch.object(QInputDialog, "getText", return_value=("12H", True)):
-        suc = function.setRA()
-        assert suc
+        function.setRA()
 
 
 def test_setDEC_1(function):
     with mock.patch.object(QInputDialog, "getText", return_value=("", False)):
-        suc = function.setDEC()
-        assert not suc
+        function.setDEC()
 
 
 def test_setDEC_2(function):
     with mock.patch.object(QInputDialog, "getText", return_value=("", True)):
-        suc = function.setDEC()
-        assert not suc
+        function.setDEC()
 
 
 def test_setDEC_3(function):
     with mock.patch.object(QInputDialog, "getText", return_value=("12", True)):
-        suc = function.setDEC()
-        assert suc
+        function.setDEC()
 
 
 def test_moveAltAzAbsolute_1(function):
     function.ui.moveCoordinateAlt.setText("50h")
     function.ui.moveCoordinateAz.setText("50h")
-    suc = function.moveAltAzAbsolute()
-    assert not suc
+    function.moveAltAzAbsolute()
 
 
 def test_moveAltAzAbsolute_2(function):
     function.ui.moveCoordinateAlt.setText("50")
     function.ui.moveCoordinateAz.setText("50h")
-    suc = function.moveAltAzAbsolute()
-    assert not suc
+    function.moveAltAzAbsolute()
 
 
 def test_moveAltAzAbsolute_3(function):
@@ -267,8 +235,7 @@ def test_moveAltAzAbsolute_3(function):
     function.ui.moveCoordinateAlt.setText("50")
     function.ui.moveCoordinateAz.setText("50")
     with mock.patch.object(function, "slewTargetAltAz", return_value=False):
-        suc = function.moveAltAzAbsolute()
-        assert not suc
+        function.moveAltAzAbsolute()
 
 
 def test_moveAltAzAbsolute_4(function):
@@ -277,35 +244,30 @@ def test_moveAltAzAbsolute_4(function):
     function.ui.moveCoordinateAlt.setText("50")
     function.ui.moveCoordinateAz.setText("50")
     with mock.patch.object(function, "slewTargetAltAz", return_value=True):
-        suc = function.moveAltAzAbsolute()
-        assert suc
+        function.moveAltAzAbsolute()
 
 
 def test_moveRaDecAbsolute_1(function):
     function.ui.moveCoordinateRa.setText("asd")
     function.ui.moveCoordinateDec.setText("asd")
-    suc = function.moveRaDecAbsolute()
-    assert not suc
+    function.moveRaDecAbsolute()
 
 
 def test_moveRaDecAbsolute_2(function):
     function.ui.moveCoordinateRa.setText("12H")
     function.ui.moveCoordinateDec.setText("asd")
-    suc = function.moveRaDecAbsolute()
-    assert not suc
+    function.moveRaDecAbsolute()
 
 
 def test_moveRaDecAbsolute_3(function):
     function.ui.moveCoordinateRa.setText("12H")
     function.ui.moveCoordinateDec.setText("30 30")
     with mock.patch.object(function, "slewTargetRaDec", return_value=False):
-        suc = function.moveRaDecAbsolute()
-        assert not suc
+        function.moveRaDecAbsolute()
 
 
 def test_moveRaDecAbsolute_4(function):
     function.ui.moveCoordinateRa.setText("12H")
     function.ui.moveCoordinateDec.setText("30 30")
     with mock.patch.object(function, "slewTargetRaDec", return_value=True):
-        suc = function.moveRaDecAbsolute()
-        assert suc
+        function.moveRaDecAbsolute()

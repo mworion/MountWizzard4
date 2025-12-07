@@ -213,7 +213,6 @@ class MainWindow(MWidget):
     def smartFunctionGui(self) -> None:
         """ """
         isMountReady = bool(self.app.deviceStat.get("mount"))
-        isDomeReady = bool(self.app.deviceStat.get("dome"))
         isModelingReady = all(
             bool(self.app.deviceStat.get(x)) for x in ["mount", "camera", "plateSolve"]
         )
@@ -367,10 +366,7 @@ class MainWindow(MWidget):
 
     def updateStatusGUI(self, obs: ObsSite) -> None:
         """ """
-        if obs.statusText() is not None:
-            self.ui.statusText.setText(obs.statusText())
-        else:
-            self.ui.statusText.setText("-")
+        self.ui.statusText.setText(obs.statusText())
 
         if self.app.mount.obsSite.status == 0:
             changeStyleDynamic(self.ui.tracking, "run", True)

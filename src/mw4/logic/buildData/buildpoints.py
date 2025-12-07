@@ -9,7 +9,7 @@
 # Python-based Tool for interaction with the 10_micron mounts
 # GUI with PySide
 #
-# written in python3, (c) 2019-2025 by mworion 
+# written in python3, (c) 2019-2025 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -51,6 +51,7 @@ def HaDecToAltAz(ha: float, dec: float, lat: float) -> tuple[float, float]:
 
 class DataPoint:
     """ """
+
     UNPROCESSED = 0
     FAILED = 1
     SOLVED = 2
@@ -220,7 +221,7 @@ class DataPoint:
             if domeAz is None:
                 continue
             pointsNew.append([alt, az, self.app.data.UNPROCESSED, domeAz.degrees])
-        self._buildP = list(p[0:3] for p in sorted(pointsNew, key=lambda x: -x[3]))
+        self._buildP = [p[0:3] for p in sorted(pointsNew, key=lambda x: -x[3])]
 
     def sortAlt(self) -> None:
         """ """
@@ -290,10 +291,10 @@ class DataPoint:
             value = self.loadBPTS(fullFileName)
         elif ext == ".model":
             value = self.loadModel(fullFileName)
-            
+
         points = [[x[0], x[1], self.UNPROCESSED] for x in value]
-        self._buildP = points 
-        self.saveBuildP(fullFileName.stem) 
+        self._buildP = points
+        self.saveBuildP(fullFileName.stem)
         return True
 
     def saveBuildP(self, fileName: str) -> None:
@@ -325,14 +326,16 @@ class DataPoint:
         with open(fullFileName, "w") as handle:
             json.dump(self.horizonP, handle, indent=4)
 
-    def genGreaterCircle(self, stepHA: int, stepDec: int, distFlip: int ) -> bool:
+    def genGreaterCircle(self, stepHA: int, stepDec: int, distFlip: int) -> bool:
         """ """
         self.clearBuildP()
         lat = self.app.mount.obsSite.location.latitude.degrees
         decList = list(range(-15, -15 + int(100 / stepDec) * stepDec, stepDec))
         if lat < 0:
-            list(-x for x in decList)
-        haList = list(reversed(range(-distFlip, -distFlip - int(125 / stepHA) * stepHA, -stepHA)))
+            decList = [-x for x in decList]
+        haList = list(
+            reversed(range(-distFlip, -distFlip - int(125 / stepHA) * stepHA, -stepHA))
+        )
         for i, dec in enumerate(decList):
             haFinal = haList if i % 2 else reversed(haList)
             for ha in haFinal:
@@ -341,7 +344,9 @@ class DataPoint:
                     self.addBuildP([alt, az, self.UNPROCESSED])
 
         decList = reversed(decList)
-        haList = list(reversed(range(distFlip, distFlip + int(125 / stepHA) * stepHA, + stepHA)))
+        haList = list(
+            reversed(range(distFlip, distFlip + int(125 / stepHA) * stepHA, +stepHA))
+        )
         for i, dec in enumerate(decList):
             haFinal = haList if i % 2 else reversed(haList)
             for ha in haFinal:
@@ -420,8 +425,7 @@ class DataPoint:
 
         return True
 
-    def genAlign(
-        self, altBase: int = 30, azBase: int = 10, numberBase: int = 3) -> bool:
+    def genAlign(self, altBase: int = 30, azBase: int = 10, numberBase: int = 3) -> bool:
         """ """
         if not 5 <= altBase <= 85:
             return False

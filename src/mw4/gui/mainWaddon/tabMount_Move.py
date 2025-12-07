@@ -98,7 +98,6 @@ class MountMove(QObject, SlewInterface):
 
         self.targetAlt = None
         self.targetAz = None
-        self.slewSpeedSelected = None
         self.ui.stopMoveAll.clicked.connect(self.stopMoveAll)
         self.ui.moveAltAzAbsolute.clicked.connect(self.moveAltAzAbsolute)
         self.ui.moveRaDecAbsolute.clicked.connect(self.moveRaDecAbsolute)
@@ -113,7 +112,7 @@ class MountMove(QObject, SlewInterface):
         self.app.game_sR.connect(self.moveClassicGameController)
         self.setupGuiMount()
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """ """
         config = self.app.config.get("mainW", {})
         self.ui.slewSpeedMax.setChecked(config.get("slewSpeedMax", True))
@@ -123,7 +122,7 @@ class MountMove(QObject, SlewInterface):
         self.ui.moveDuration.setCurrentIndex(config.get("moveDuration", 0))
         self.ui.moveStepSizeAltAz.setCurrentIndex(config.get("moveStepSizeAltAz", 0))
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         config["slewSpeedMax"] = self.ui.slewSpeedMax.isChecked()
@@ -133,7 +132,7 @@ class MountMove(QObject, SlewInterface):
         config["moveDuration"] = self.ui.moveDuration.currentIndex()
         config["moveStepSizeAltAz"] = self.ui.moveStepSizeAltAz.currentIndex()
 
-    def setupGuiMount(self):
+    def setupGuiMount(self) -> None:
         """ """
         for direction in self.setupMoveClassic:
             self.setupMoveClassic[direction]["button"].clicked.connect(
@@ -152,20 +151,20 @@ class MountMove(QObject, SlewInterface):
         for text in self.setupStepsizes:
             self.ui.moveStepSizeAltAz.addItem(text)
 
-    def stopMoveAll(self):
+    def stopMoveAll(self) -> None:
         """ """
         for uiR in self.setupMoveClassic:
             changeStyleDynamic(self.setupMoveClassic[uiR]["button"], "run", False)
         self.app.mount.obsSite.stopMoveAll()
 
-    def countDuration(self, duration):
+    def countDuration(self, duration: int) -> None:
         """ """
         for t in range(duration * 10, -1, -1):
             self.ui.stopMoveAll.setText(f"{t / 10:.1f}s")
             sleepAndEvents(100)
         self.ui.stopMoveAll.setText("STOP")
 
-    def moveDuration(self):
+    def moveDuration(self) -> None:
         """ """
         if self.ui.moveDuration.currentIndex() == 1:
             self.countDuration(10)
@@ -176,11 +175,10 @@ class MountMove(QObject, SlewInterface):
         elif self.ui.moveDuration.currentIndex() == 4:
             self.countDuration(1)
         else:
-            return False
+            return
         self.stopMoveAll()
-        return True
 
-    def moveClassicGameController(self, decVal, raVal):
+    def moveClassicGameController(self, decVal: int, raVal: int) -> None:
         """ """
         dirRa = 0
         dirDec = 0
@@ -199,7 +197,7 @@ class MountMove(QObject, SlewInterface):
         else:
             self.moveClassic(direction)
 
-    def moveClassic(self, direction):
+    def moveClassic(self, direction: str) -> None:
         """ """
         uiList = self.setupMoveClassic
         for key in uiList:
@@ -230,17 +228,14 @@ class MountMove(QObject, SlewInterface):
         """ """
         self.slewSpeeds[speed]["func"]()
 
-    def moveAltAzDefault(self):
-        """
-        :return:
-        """
+    def moveAltAzDefault(self) -> None:
+        """ """
         self.targetAlt = None
         self.targetAz = None
         for key in self.setupMoveAltAz:
             changeStyleDynamic(self.setupMoveAltAz[key]["button"], "run", False)
-        return True
 
-    def moveAltAzGameController(self, value):
+    def moveAltAzGameController(self, value: int) -> None:
         """ """
         if value == 0b00000000:
             direction = "N"
@@ -251,17 +246,13 @@ class MountMove(QObject, SlewInterface):
         elif value == 0b00000110:
             direction = "S"
         else:
-            return False
+            return
         self.moveAltAz(direction)
-        return True
 
-    def moveAltAz(self, direction):
+    def moveAltAz(self, direction: str) -> None:
         """ """
         alt = self.app.mount.obsSite.Alt
         az = self.app.mount.obsSite.Az
-        if alt is None or az is None:
-            return False
-
         uiList = self.setupMoveAltAz
         changeStyleDynamic(uiList[direction]["button"], "run", True)
 
@@ -277,10 +268,9 @@ class MountMove(QObject, SlewInterface):
             targetAz = self.targetAz = self.targetAz + coord[1] * step
 
         targetAz = targetAz % 360
-        suc = self.slewTargetAltAz(targetAlt, targetAz)
-        return suc
+        self.slewTargetAltAz(targetAlt, targetAz)
 
-    def setRA(self):
+    def setRA(self) -> None:
         """ """
         dlg = QInputDialog()
         value, ok = dlg.getText(
@@ -291,19 +281,13 @@ class MountMove(QObject, SlewInterface):
             self.ui.moveCoordinateRa.text(),
         )
         if not ok:
-            return False
-
-        value = convertRaToAngle(value)
-        if value is None:
-            self.ui.moveCoordinateRaFloat.setText("")
-            return False
-
-        text = formatHstrToText(value)
+            return
+        valueFormat = convertRaToAngle(value)
+        text = formatHstrToText(valueFormat)
         self.ui.moveCoordinateRa.setText(text)
-        self.ui.moveCoordinateRaFloat.setText(f"{value.hours:2.4f}")
-        return True
+        self.ui.moveCoordinateRaFloat.setText(f"{valueFormat.hours:2.4f}")
 
-    def setDEC(self):
+    def setDEC(self) -> None:
         """ """
         dlg = QInputDialog()
         value, ok = dlg.getText(
@@ -314,45 +298,25 @@ class MountMove(QObject, SlewInterface):
             self.ui.moveCoordinateDec.text(),
         )
         if not ok:
-            return False
-
-        value = convertDecToAngle(value)
-        if value is None:
-            self.ui.moveCoordinateDecFloat.setText("")
-            return False
-
-        text = formatDstrToText(value)
+            return
+        valueFormat = convertDecToAngle(value)
+        text = formatDstrToText(valueFormat)
         self.ui.moveCoordinateDec.setText(text)
-        self.ui.moveCoordinateDecFloat.setText(f"{value.degrees:2.4f}")
-        return True
+        self.ui.moveCoordinateDecFloat.setText(f"{valueFormat.degrees:2.4f}")
 
-    def moveAltAzAbsolute(self):
+    def moveAltAzAbsolute(self) -> None:
         """ """
         alt = self.ui.moveCoordinateAlt.text()
         alt = valueToFloat(alt)
-        if alt is None:
-            return False
-
         az = self.ui.moveCoordinateAz.text()
         az = valueToFloat(az)
-        if az is None:
-            return False
-
         az = (az + 360) % 360
-        suc = self.slewTargetAltAz(alt, az)
-        return suc
+        self.slewTargetAltAz(alt, az)
 
-    def moveRaDecAbsolute(self):
+    def moveRaDecAbsolute(self) -> None:
         """ """
         value = self.ui.moveCoordinateRa.text()
         ra = convertRaToAngle(value)
-        if ra is None:
-            return False
-
         value = self.ui.moveCoordinateDec.text()
         dec = convertDecToAngle(value)
-        if dec is None:
-            return False
-
-        suc = self.slewTargetRaDec(ra, dec)
-        return suc
+        self.slewTargetRaDec(ra, dec)

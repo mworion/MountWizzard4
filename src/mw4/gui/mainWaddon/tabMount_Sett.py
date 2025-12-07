@@ -312,10 +312,6 @@ class MountSett(QObject):
 
     def setLongitude(self):
         """ """
-        obs = self.app.mount.obsSite
-        if obs.location is None:
-            return False
-
         dlg = QInputDialog()
         value, ok = dlg.getText(
             self.mainW,
@@ -333,10 +329,6 @@ class MountSett(QObject):
 
     def setLatitude(self):
         """ """
-        obs = self.app.mount.obsSite
-        if obs.location is None:
-            return False
-
         dlg = QInputDialog()
         value, ok = dlg.getText(
             self.mainW,
@@ -355,9 +347,6 @@ class MountSett(QObject):
     def setElevation(self):
         """ """
         obs = self.app.mount.obsSite
-        if obs.location is None:
-            return False
-
         dlg = QInputDialog()
         value, ok = dlg.getDouble(
             self.mainW,

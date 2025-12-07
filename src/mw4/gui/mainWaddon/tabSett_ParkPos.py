@@ -140,7 +140,5 @@ class SettParkPos(QObject):
     def saveActualPosition(self, index: int) -> None:
         """ """
         obs = self.app.mount.obsSite
-        if obs.Alt is None or obs.Az is None:
-            return
         self.posAlt[index].setValue(obs.Alt.degrees)
         self.posAz[index].setValue(obs.Az.degrees)

@@ -169,8 +169,7 @@ class SettMisc(QObject):
         self.ui.controller5.setEnabled(False)
 
     def sendGameControllerSignals(self, act: list, old: list) -> None:
-        """
-        """
+        """ """
         if act[0] != old[0]:
             self.app.gameABXY.emit(act[0])
         if act[1] != old[1]:
@@ -184,8 +183,7 @@ class SettMisc(QObject):
         self.mainW.log.trace(f"GameController: {[act]}, {[old]}")
 
     def readGameController(self, gamepad: hid.device) -> list:
-        """
-        """
+        """ """
         result = []
         while self.mainW.gameControllerRunning:
             try:
@@ -201,8 +199,7 @@ class SettMisc(QObject):
         return result
 
     def convertData(self, name: str, iR: list) -> list:
-        """
-        """
+        """ """
         oR = [0, 0, 0, 0, 0, 0, 0]
         if len(iR) == 0:
             return oR
@@ -225,8 +222,7 @@ class SettMisc(QObject):
 
     @staticmethod
     def isNewerData(act: list, old: list) -> bool:
-        """
-        """
+        """ """
         if len(act) == 0:
             return False
         for i, dataVal in enumerate(act):
@@ -237,8 +233,7 @@ class SettMisc(QObject):
         return True
 
     def workerGameController(self) -> None:
-        """
-        """
+        """ """
         gameControllerDevice = hid.device()
         name = self.ui.gameControllerList.currentText()
         gameController = self.gameControllerList.get(name)
@@ -264,15 +259,13 @@ class SettMisc(QObject):
             reportOld = report
 
     def startGameController(self) -> None:
-        """
-        """
+        """ """
         self.worker = Worker(self.workerGameController)
         self.app.threadPool.start(self.worker)
 
     @staticmethod
     def isValidGameControllers(name: str) -> bool:
-        """
-        """
+        """ """
         validStrings = ["Controller", "Game"]
         for check in validStrings:
             if check in name:
@@ -282,8 +275,7 @@ class SettMisc(QObject):
         return True
 
     def populateGameControllerList(self) -> None:
-        """
-        """
+        """ """
         isController = self.ui.gameControllerGroup.isChecked()
         if not isController:
             self.mainW.gameControllerRunning = False
@@ -311,8 +303,7 @@ class SettMisc(QObject):
         self.startGameController()
 
     def setupAudioGui(self) -> None:
-        """
-        """
+        """ """
         self.guiAudioList["MountSlew"] = self.ui.soundMountSlewFinished
         self.guiAudioList["DomeSlew"] = self.ui.soundDomeSlewFinished
         self.guiAudioList["MountAlert"] = self.ui.soundMountAlert
@@ -334,8 +325,7 @@ class SettMisc(QObject):
             self.guiAudioList[itemKey].addItem("Alarm")
 
     def setupAudioSignals(self) -> None:
-        """
-        """
+        """ """
         self.audioSignalsSet["Beep"] = ":/sound/beep.wav"
         self.audioSignalsSet["Beep1"] = ":/sound/beep1.wav"
         self.audioSignalsSet["Horn"] = ":/sound/horn.wav"
@@ -347,8 +337,7 @@ class SettMisc(QObject):
         self.audioSignalsSet["Alarm"] = ":/sound/alarm.wav"
 
     def playSound(self, value: str) -> None:
-        """
-        """
+        """ """
         if value not in self.guiAudioList:
             return
         listEntry = self.guiAudioList.get(value)
@@ -357,8 +346,7 @@ class SettMisc(QObject):
             QSoundEffect.play(self.audioSignalsSet[sound])
 
     def setAddProfileGUI(self) -> None:
-        """
-        """
+        """ """
         isEnabled = self.ui.addProfileGroup.isChecked()
         self.ui.addFrom.setEnabled(isEnabled)
         self.ui.addFrom.setVisible(isEnabled)
@@ -366,8 +354,7 @@ class SettMisc(QObject):
         self.ui.profileAdd.setVisible(isEnabled)
 
     def minimizeGUI(self) -> None:
-        """
-        """
+        """ """
         for tab in self.uiTabs:
             isVisible = self.uiTabs[tab]["cb"].isChecked()
             tabIndex = self.mainW.getTabIndex(self.uiTabs[tab]["tab"], tab)

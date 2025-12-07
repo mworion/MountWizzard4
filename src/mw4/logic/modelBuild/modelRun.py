@@ -199,7 +199,7 @@ class ModelData(QObject):
         """ """
         item = self.modelBuildData[self.pointerImage]
         obs = self.app.mount.obsSite
-        print(obs.raJNow, obs.decJNow, obs.timeSidereal)
+        self.log.debug(f"{obs.raJNow} {obs.decJNow} {obs.timeJD}")
         item["raJNowM"] = obs.raJNow
         item["decJNowM"] = obs.decJNow
         item["angularPosRA"] = obs.angularPosRA

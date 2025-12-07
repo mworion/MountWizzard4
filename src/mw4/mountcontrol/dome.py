@@ -43,8 +43,8 @@ class Dome:
     @shutterState.setter
     def shutterState(self, value):
         value = valueToInt(value)
-        if value is None or value < 0 or value > 4:
-            self._shutterState = None
+        if value < 0 or value > 4:
+            self._shutterState = 0
         else:
             self._shutterState = value
 
@@ -55,8 +55,8 @@ class Dome:
     @flapState.setter
     def flapState(self, value):
         value = valueToInt(value)
-        if value is None or value < 0 or value > 4:
-            self._flapState = None
+        if value < 0 or value > 4:
+            self._flapState = 0
         else:
             self._flapState = value
 
@@ -67,10 +67,7 @@ class Dome:
     @slew.setter
     def slew(self, value):
         value = valueToInt(value)
-        if value is None:
-            self._slew = None
-        else:
-            self._slew = bool(value)
+        self._slew = bool(value)
 
     @property
     def azimuth(self):
@@ -79,10 +76,7 @@ class Dome:
     @azimuth.setter
     def azimuth(self, value):
         value = valueToFloat(value)
-        if value is None:
-            self._azimuth = None
-        else:
-            self._azimuth = (value / 10) % 360.0
+        self._azimuth = (value / 10) % 360.0
 
     def parse(self, response: list, numberOfChunks: int) -> bool:
         """ """

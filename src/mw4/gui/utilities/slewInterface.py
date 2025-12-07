@@ -55,9 +55,7 @@ class SlewInterface:
 
     def slewTargetAltAz(self, alt: float, az: float, slewType: str = "normal") -> bool:
         """ """
-        suc = self.app.mount.obsSite.setTargetAltAz(
-            alt=Angle(degrees=alt), az=Angle(degrees=az)
-        )
+        suc = self.app.mount.obsSite.setTargetAltAz(Angle(degrees=alt), Angle(degrees=az))
         if not suc:
             t = f"Cannot slew to Az:[{az:3.1f}], Alt:[{alt:3.1f}]"
             self.msg.emit(2, "Tools", "Slewing error", t)
@@ -83,7 +81,7 @@ class SlewInterface:
             raJNow = Angle(hours=ra)
             decJNow = Angle(degrees=dec)
 
-        suc = self.app.mount.obsSite.setTargetRaDec(ra=raJNow, dec=decJNow)
+        suc = self.app.mount.obsSite.setTargetRaDec(raJNow, decJNow)
         if not suc:
             t = f"Cannot slew to RA:[{raJNow.hours:3.1f}], "
             t += f"DEC:[{decJNow.degrees:3.1f}]"

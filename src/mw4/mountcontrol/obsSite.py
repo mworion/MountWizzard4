@@ -21,6 +21,7 @@ import numpy as np
 
 # external packages
 from skyfield.api import Angle, Loader, load, wgs84
+from skyfield.timelib import Time, Timescale
 from skyfield.toposlib import GeographicPosition
 
 # local imports
@@ -71,43 +72,54 @@ class ObsSite:
         "99": "error",
     }
 
+    STAT_SAT = {
+        "V": "slewing to transit",
+        "P": "stopped, waiting sat",
+        "S": "slewing to catch sat",
+        "T": "tracking the sat",
+        "Q": "transit ended",
+        "E": "no slew requested",
+    }
+
     def __init__(self, parent, verbose=False):
         self.parent = parent
         self.pathToData = parent.pathToData
         self.verbose = verbose
-        self.loader = None
-        self.AzDirection = None
-        self.flipped = False
-        self.lastAz = None
-        self._location = None
-        self.ts = None
-        self._timeJD = None
-        self.timePC = None
+        self.loader: Loader = None
+        self.AzDirection: int = 1
+        self.flipped: bool = False
+        self.lastAz: float = 0
+        self._location: GeographicPosition = wgs84.latlon(
+            latitude_degrees=0, longitude_degrees=0, elevation_m=0
+        )
+        self.ts: Timescale = load.timescale(builtin=True)
+        self._timeJD: Time = self.ts.now()
+        self.timePC: Time = self.ts.now()
         self._timeDiff = np.full(25, 0.0)
-        self.ut1_utc = None
-        self._timeSidereal = None
-        self._raJNow = None
-        self._raJNowTarget = None
-        self._decJNow = None
-        self._decJNowTarget = None
-        self._haJNow = None
-        self._haJNowTarget = None
-        self._angularPosRA = None
-        self._angularPosDEC = None
-        self._errorAngularPosRA = None
-        self._errorAngularPosDEC = None
-        self._angularPosRATarget = None
-        self._angularPosDECTarget = None
-        self._pierside = None
-        self._piersideTarget = None
-        self._Alt = None
-        self._AltTarget = None
-        self._Az = None
-        self._AzTarget = None
-        self._status = None
-        self._statusSat = None
-        self._statusSlew = None
-        self.UTC2TT = None
+        self.ut1_utc: float = 0
+        self._timeSidereal: Angle | None = Angle(hours=0)
+        self._raJNow: Angle = Angle(hours=0)
+        self._raJNowTarget: Angle = Angle(hours=0)
+        self._decJNow: Angle = Angle(degrees=0)
+        self._decJNowTarget: Angle = Angle(degrees=0)
+        self._haJNow: Angle = Angle(hours=0)
+        self._haJNowTarget: Angle = Angle(degrees=0)
+        self._angularPosRA: Angle = Angle(degrees=0)
+        self._angularPosDEC: Angle = Angle(degrees=0)
+        self._errorAngularPosRA: Angle = Angle(degrees=0)
+        self._errorAngularPosDEC: Angle = Angle(degrees=0)
+        self._angularPosRATarget: Angle = Angle(degrees=0)
+        self._angularPosDECTarget: Angle = Angle(degrees=0)
+        self._pierside: str = "E"
+        self._piersideTarget: str = "E"
+        self._Alt: Angle = Angle(degrees=0)
+        self._AltTarget: Angle = Angle(degrees=0)
+        self._Az: Angle = Angle(degrees=0)
+        self._AzTarget: Angle = Angle(degrees=0)
+        self._status: int = 99
+        self._statusSat: str = "E"
+        self._statusSlew: bool = False
+        self.UTC2TT: float = 0
         self.setLoaderAndTimescale()
 
     def setLoaderAndTimescale(self) -> None:
@@ -136,12 +148,10 @@ class ObsSite:
             return
 
         if not isinstance(value, list | tuple):
-            self._location = None
             self.log.info(f"Malformed value: {value}")
             return
 
         if len(value) != 3:
-            self._location = None
             self.log.info(f"Malformed value: {value}")
             return
 
@@ -149,29 +159,18 @@ class ObsSite:
         lat = stringToDegree(lat)
         lon = stringToDegree(lon)
         elev = valueToFloat(elev)
-        if lat is None or lon is None or elev is None:
-            self._location = None
-            self.log.info(f"Malformed value: {value}")
-            return
-
         self._location = wgs84.latlon(
             latitude_degrees=lat, longitude_degrees=lon, elevation_m=elev
         )
 
     @property
     def timeJD(self):
-        if self._timeJD is None:
-            return self.ts.now()
-        else:
-            return self._timeJD
+        return self._timeJD
 
     @timeJD.setter
     def timeJD(self, value):
         value = valueToFloat(value)
-        if value:
-            self._timeJD = self.ts.tt_jd(value + self.UTC2TT)
-        else:
-            self._timeJD = None
+        self._timeJD = self.ts.tt_jd(value + self.UTC2TT)
 
     @property
     def timeDiff(self):
@@ -188,10 +187,7 @@ class ObsSite:
     @ut1_utc.setter
     def ut1_utc(self, value):
         value = valueToFloat(value)
-        if value is not None:
-            self._ut1_utc = value / 86400
-        else:
-            self._ut1_utc = None
+        self._ut1_utc = value / 86400
 
     @property
     def timeSidereal(self):
@@ -205,8 +201,6 @@ class ObsSite:
             self._timeSidereal = valueToAngle(value, preference="hours")
         elif isinstance(value, Angle):
             self._timeSidereal = value
-        else:
-            self._timeSidereal = None
 
     @property
     def raJNow(self):
@@ -218,8 +212,6 @@ class ObsSite:
             self._raJNow = value
             return
         self._raJNow = valueToAngle(value, preference="hours")
-        if self._raJNow is None:
-            print('error in raJNow setter')
 
     @property
     def raJNowTarget(self):
@@ -234,21 +226,15 @@ class ObsSite:
 
     @property
     def haJNow(self):
-        if self._timeSidereal is None or self._raJNow is None:
-            return None
-        else:
-            # ha, is always positive between 0 and 24 hours
-            ha = (self._timeSidereal.hours - self._raJNow.hours + 24) % 24
-            return Angle(hours=ha)
+        # ha, is always positive between 0 and 24 hours
+        ha = (self._timeSidereal.hours - self._raJNow.hours + 24) % 24
+        return Angle(hours=ha)
 
     @property
     def haJNowTarget(self):
-        if self._timeSidereal is None or self._raJNowTarget is None:
-            return None
-        else:
-            # ha, is always positive between 0 and 24 hours
-            ha = (self._timeSidereal.hours - self._raJNowTarget.hours + 24) % 24
-            return Angle(hours=ha)
+        # ha, is always positive between 0 and 24 hours
+        ha = (self._timeSidereal.hours - self._raJNowTarget.hours + 24) % 24
+        return Angle(hours=ha)
 
     @property
     def decJNow(self):
@@ -348,7 +334,6 @@ class ObsSite:
             value = value.capitalize()
             self._pierside = value
         else:
-            self._pierside = None
             self.log.info(f"Malformed value: {value}")
 
     @property
@@ -362,7 +347,7 @@ class ObsSite:
         elif value == "3":
             self._piersideTarget = "E"
         else:
-            self._piersideTarget = None
+            self._piersideTarget = "W"
             self.log.info(f"Malformed value: {value}")
 
     @property
@@ -398,16 +383,9 @@ class ObsSite:
         else:
             self._Az = valueToAngle(value, preference="degrees")
 
-        if self._Az is None:
-            self.AzDirection = 0
-            return
-
         az = self._Az.degrees
-        if self.lastAz is None:
-            self.AzDirection = 0
-        else:
-            direction = np.sign(diffModulusSign(self.lastAz, az, 360))
-            self.AzDirection = direction
+        direction = np.sign(diffModulusSign(self.lastAz, az, 360))
+        self.AzDirection = direction
         self.lastAz = az
 
     @property
@@ -429,27 +407,28 @@ class ObsSite:
     def status(self, value):
         self._status = valueToInt(value)
         if self._status not in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 98, 99]:
-            self._status = None
+            self._status = 99
+
+    def statusText(self):
+        reference = f"{self._status:d}"
+        text = self.STAT.get(reference, "unknown Status")
+        if self._status in [2, 6]:
+            return text
+        else:
+            return text + " - settle" if self.statusSlew else text
 
     @property
     def statusSat(self):
         return self._statusSat
 
     @statusSat.setter
-    def statusSat(self, value):
+    def statusSat(self, value: str):
         self._statusSat = value
         if self._statusSat not in ["V", "P", "S", "T", "Q", "E"]:
-            self._statusSat = None
+            self._statusSat = "E"
 
-    def statusText(self):
-        if self._status is None:
-            return None
-        reference = f"{self._status:d}"
-        text = self.STAT.get(reference, 'Unknown Status')
-        if self._status in [2, 6]:
-            return text
-        else:
-            return text + " - settle" if self.statusSlew else text
+    def statusSatText(self):
+        return self.STAT_SAT.get(self._statusSat, "error")
 
     @property
     def statusSlew(self):
@@ -535,8 +514,6 @@ class ObsSite:
 
         self.timePC = self.ts.now()
         timeMount = valueToFloat(response[0])
-        if timeMount is None:
-            return False
         timeMount = self.ts.tt_jd(timeMount + self.UTC2TT)
         self._timeDiff = np.roll(self._timeDiff, 1)
         delta = (self.timePC - timeMount) * 86400 + corrTerm
@@ -574,7 +551,7 @@ class ObsSite:
         suc, _, _ = conn.communicate(commandString, responseCheck="0")
         return suc
 
-    def setTargetAltAz(self, alt: Angle, az: Angle):
+    def setTargetAltAz(self, alt: Angle, az: Angle) -> bool:
         """ """
         sgn, h, m, s, frac = sexagesimalizeToInt(alt.degrees, 1)
         sign = "+" if sgn >= 0 else "-"

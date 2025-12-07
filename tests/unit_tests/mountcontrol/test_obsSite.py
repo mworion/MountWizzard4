@@ -122,15 +122,15 @@ class TestConfigData(unittest.TestCase):
         lon = "+160*30:45.5"
         lat = "+45*30:45.5"
         obsSite.location = (lat, lon)
-        self.assertEqual(None, obsSite.location)
-        self.assertEqual(None, obsSite._location)
+        self.assertEqual(0, obsSite.location.latitude.degrees)
+        self.assertEqual(0, obsSite._location.longitude.degrees)
 
     def test_Site_location_5(self):
         obsSite = ObsSite(parent=Parent())
 
         lat = "+45*30:45.5"
         obsSite.location = lat
-        self.assertEqual(None, obsSite.location)
+        self.assertEqual(0, obsSite.location.latitude.degrees)
 
     def test_Site_timeJD_1(self):
         obsSite = ObsSite(parent=Parent())
@@ -140,9 +140,6 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(2458240.123457949, obsSite.timeJD.ut1)
         obsSite.timeJD = 2458240.12345678
         self.assertEqual(2458240.123457949, obsSite.timeJD.ut1)
-        obsSite.timeJD = "2458240.a23e5678"
-        self.assertAlmostEqual(obsSite.ts.now(), obsSite.timeJD, 4)
-        self.assertEqual(None, obsSite._timeJD)
 
     def test_Site_timeJD_2(self):
         obsSite = ObsSite(parent=Parent())
@@ -166,7 +163,7 @@ class TestConfigData(unittest.TestCase):
         obsSite = ObsSite(parent=Parent())
 
         obsSite.ut1_utc = None
-        assert obsSite.ut1_utc is None
+        assert obsSite.ut1_utc == 0
 
     def test_Site_timeSidereal_1(self):
         obsSite = ObsSite(parent=Parent())
@@ -174,10 +171,10 @@ class TestConfigData(unittest.TestCase):
         obsSite.timeSidereal = "12:30:00.00"
         self.assertEqual(obsSite.timeSidereal.hours, 12.5)
         obsSite.timeSidereal = "12:aa:30.01"
-        self.assertEqual(None, obsSite.timeSidereal)
+        self.assertEqual(0, obsSite.timeSidereal.hours)
         obsSite.timeSidereal = ["12:aa:30.01"]
-        self.assertEqual(None, obsSite.timeSidereal)
-        self.assertEqual(None, obsSite._timeSidereal)
+        self.assertEqual(0, obsSite.timeSidereal.hours)
+        self.assertEqual(0, obsSite._timeSidereal.hours)
         obsSite.timeSidereal = 12.0
         self.assertEqual(obsSite.timeSidereal.hours, 12)
         obsSite.timeSidereal = Angle(hours=12.0)
@@ -194,7 +191,7 @@ class TestConfigData(unittest.TestCase):
         obsSite.raJNow = "34"
         self.assertEqual(34, obsSite.raJNow.hours)
         obsSite.raJNow = "34f"
-        self.assertEqual(None, obsSite.raJNow)
+        self.assertEqual(0, obsSite.raJNow.hours)
 
     def test_Site_dec(self):
         obsSite = ObsSite(parent=Parent())
@@ -207,7 +204,7 @@ class TestConfigData(unittest.TestCase):
         obsSite.decJNow = "34"
         self.assertEqual(34, obsSite.decJNow.degrees)
         obsSite.decJNow = "34f"
-        self.assertEqual(None, obsSite.decJNow)
+        self.assertEqual(0, obsSite.decJNow.degrees)
 
     def test_Site_alt(self):
         obsSite = ObsSite(parent=Parent())
@@ -220,7 +217,7 @@ class TestConfigData(unittest.TestCase):
         obsSite.Alt = "34"
         self.assertEqual(34, obsSite.Alt.degrees)
         obsSite.Alt = "34f"
-        self.assertEqual(None, obsSite.Alt)
+        self.assertEqual(0, obsSite.Alt.degrees)
 
     def test_Site_az(self):
         obsSite = ObsSite(parent=Parent())
@@ -233,7 +230,7 @@ class TestConfigData(unittest.TestCase):
         obsSite.Az = "34"
         self.assertEqual(34, obsSite.Az.degrees)
         obsSite.Az = "34f"
-        self.assertEqual(None, obsSite.Az)
+        self.assertEqual(0, obsSite.Az.degrees)
 
     def test_Site_pierside(self):
         obsSite = ObsSite(parent=Parent())
@@ -248,11 +245,11 @@ class TestConfigData(unittest.TestCase):
         obsSite.pierside = "W"
         self.assertEqual(obsSite.pierside, "W")
         obsSite.pierside = "WW"
-        self.assertEqual(obsSite.pierside, None)
+        self.assertEqual(obsSite.pierside, "W")
         obsSite.pierside = "12"
-        self.assertEqual(obsSite.pierside, None)
+        self.assertEqual(obsSite.pierside, "W")
         obsSite.pierside = 17
-        self.assertEqual(obsSite.pierside, None)
+        self.assertEqual(obsSite.pierside, "W")
 
     def test_Site_raTarget(self):
         obsSite = ObsSite(parent=Parent())
@@ -260,12 +257,12 @@ class TestConfigData(unittest.TestCase):
         obsSite.raJNowTarget = "*34:00:00.00"
         self.assertEqual(34, obsSite.raJNowTarget.hours)
         obsSite.raJNowTarget = 34
-        self.assertEqual(None, obsSite.raJNowTarget)
-        self.assertEqual(None, obsSite._raJNowTarget)
+        self.assertEqual(0, obsSite.raJNowTarget.hours)
+        self.assertEqual(0, obsSite._raJNowTarget.hours)
         obsSite.raJNowTarget = "34"
-        self.assertEqual(None, obsSite.raJNowTarget)
+        self.assertEqual(0, obsSite.raJNowTarget.hours)
         obsSite.raJNowTarget = "34f"
-        self.assertEqual(None, obsSite.raJNowTarget)
+        self.assertEqual(0, obsSite.raJNowTarget.hours)
         obsSite.raJNowTarget = Angle(hours=12)
         self.assertEqual(obsSite.raJNowTarget.hours, 12)
 
@@ -274,7 +271,7 @@ class TestConfigData(unittest.TestCase):
 
         obsSite.timeSidereal = 12
         obsSite.raJNow = Angle(hours=12)
-        obsSite.haJNow is None
+        obsSite.haJNow.hours == 0
 
     def test_Site_haJNow_2(self):
         obsSite = ObsSite(parent=Parent())
@@ -303,12 +300,12 @@ class TestConfigData(unittest.TestCase):
         obsSite.decJNowTarget = "*34:00:00.00"
         self.assertEqual(34, obsSite.decJNowTarget.degrees)
         obsSite.decJNowTarget = 34
-        self.assertEqual(None, obsSite.decJNowTarget)
-        self.assertEqual(None, obsSite._decJNowTarget)
+        self.assertEqual(0, obsSite.decJNowTarget.degrees)
+        self.assertEqual(0, obsSite._decJNowTarget.degrees)
         obsSite.decJNowTarget = "34"
-        self.assertEqual(None, obsSite.decJNowTarget)
+        self.assertEqual(0, obsSite.decJNowTarget.degrees)
         obsSite.decJNowTarget = "34f"
-        self.assertEqual(None, obsSite.decJNowTarget)
+        self.assertEqual(0, obsSite.decJNowTarget.degrees)
         obsSite.decJNowTarget = Angle(degrees=34)
         self.assertEqual(obsSite.decJNowTarget.degrees, 34)
 
@@ -318,14 +315,14 @@ class TestConfigData(unittest.TestCase):
         obsSite.AltTarget = "*34:00:00.00"
         self.assertEqual(34, obsSite.AltTarget.degrees)
         obsSite.AltTarget = 34
-        self.assertEqual(None, obsSite.AltTarget)
+        self.assertEqual(0, obsSite.AltTarget.degrees)
         obsSite.AltTarget = Angle(degrees=34)
         self.assertEqual(obsSite.AltTarget.degrees, 34)
         self.assertEqual(obsSite._AltTarget.degrees, 34)
         obsSite.AltTarget = "34"
-        self.assertEqual(None, obsSite.AltTarget)
+        self.assertEqual(0, obsSite.AltTarget.degrees)
         obsSite.AltTarget = "34f"
-        self.assertEqual(None, obsSite.AltTarget)
+        self.assertEqual(0, obsSite.AltTarget.degrees)
 
     def test_Site_azTarget(self):
         obsSite = ObsSite(parent=Parent())
@@ -333,14 +330,14 @@ class TestConfigData(unittest.TestCase):
         obsSite.AzTarget = "*34:00:00.00"
         self.assertEqual(34, obsSite.AzTarget.degrees)
         obsSite.AzTarget = 34
-        self.assertEqual(None, obsSite.AzTarget)
+        self.assertEqual(0, obsSite.AzTarget.degrees)
         obsSite.AzTarget = Angle(degrees=34)
         self.assertEqual(obsSite.AzTarget.degrees, 34)
         self.assertEqual(obsSite._AzTarget.degrees, 34)
         obsSite.AzTarget = "34"
-        self.assertEqual(None, obsSite.AzTarget)
+        self.assertEqual(0, obsSite.AzTarget.degrees)
         obsSite.AzTarget = "34f"
-        self.assertEqual(None, obsSite.AzTarget)
+        self.assertEqual(0, obsSite.AzTarget.degrees)
 
     def test_angularPosRA_1(self):
         obsSite = ObsSite(parent=Parent())
@@ -415,62 +412,43 @@ class TestConfigData(unittest.TestCase):
         obsSite.piersideTarget = "3"
         self.assertEqual(obsSite.piersideTarget, "E")
         obsSite.piersideTarget = "WW"
-        self.assertEqual(obsSite.piersideTarget, None)
+        self.assertEqual(obsSite.piersideTarget, "W")
         obsSite.piersideTarget = "12"
-        self.assertEqual(obsSite.piersideTarget, None)
+        self.assertEqual(obsSite.piersideTarget, "W")
         obsSite.piersideTarget = 0
-        self.assertEqual(obsSite.piersideTarget, None)
+        self.assertEqual(obsSite.piersideTarget, "W")
 
     def test_Site_status(self):
         obsSite = ObsSite(parent=Parent())
 
         obsSite.status = "1"
         self.assertEqual(1, obsSite.status)
-        obsSite.status = 1
-        self.assertEqual(1, obsSite.status)
-        self.assertEqual(1, obsSite._status)
         obsSite.status = "1d"
-        self.assertEqual(None, obsSite.status)
+        self.assertEqual(0, obsSite.status)
         obsSite.status = "1d"
-        self.assertEqual(None, obsSite.status)
+        self.assertEqual(0, obsSite.status)
         obsSite.status = "0"
         self.assertEqual(0, obsSite.status)
         obsSite.status = "100"
-        self.assertEqual(None, obsSite.status)
+        self.assertEqual(99, obsSite.status)
 
     def test_status_1(self):
         obsSite = ObsSite(parent=Parent())
 
         obsSite.status = None
-        self.assertEqual(None, obsSite.status)
+        self.assertEqual(0, obsSite.status)
 
     def test_status_2(self):
         obsSite = ObsSite(parent=Parent())
 
         obsSite.status = "E"
-        self.assertEqual(None, obsSite.status)
+        self.assertEqual(0, obsSite.status)
 
     def test_status_3(self):
         obsSite = ObsSite(parent=Parent())
 
         obsSite.status = "5"
         self.assertEqual(5, obsSite.status)
-
-    def test_statusSat_1(self):
-        obsSite = ObsSite(parent=Parent())
-        obsSite.statusSat = 1
-        self.assertEqual(obsSite.statusSat, None)
-
-    def test_statusSat_2(self):
-        obsSite = ObsSite(parent=Parent())
-        obsSite.statusSat = "V"
-        self.assertEqual(obsSite.statusSat, "V")
-
-    def test_Site_statusText_1(self):
-        obsSite = ObsSite(parent=Parent())
-
-        obsSite.status = None
-        self.assertEqual(None, obsSite.statusText())
 
     def test_Site_statusText_2(self):
         obsSite = ObsSite(parent=Parent())
@@ -483,6 +461,21 @@ class TestConfigData(unittest.TestCase):
 
         obsSite.status = "2"
         self.assertEqual("slewing park position", obsSite.statusText())
+
+    def test_statusSat_1(self):
+        obsSite = ObsSite(parent=Parent())
+        obsSite.statusSat = 1
+        self.assertEqual(obsSite.statusSat, "E")
+
+    def test_statusSat_2(self):
+        obsSite = ObsSite(parent=Parent())
+        obsSite.statusSat = "V"
+        self.assertEqual(obsSite.statusSat, "V")
+
+    def test_statusSatText_1(self):
+        obsSite = ObsSite(parent=Parent())
+        obsSite.statusSat = "V"
+        self.assertEqual(obsSite.statusSatText(), "slewing to transit")
 
     def test_Site_statusSlew(self):
         obsSite = ObsSite(parent=Parent())
@@ -716,7 +709,7 @@ class TestConfigData(unittest.TestCase):
                 return_value=(True, ["eee"], 1),
             ):
                 suc = obsSite.pollSyncClock()
-                assert not suc
+                assert suc
 
     def test_pollSyncClock_5(self):
         obsSite = ObsSite(parent=Parent())

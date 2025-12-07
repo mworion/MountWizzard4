@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import glob
 import os
 from pathlib import Path
@@ -22,12 +22,12 @@ import pytest
 from mw4.loader import extractDataFiles
 from mw4.mainApp import MountWizzard4
 
-# external packages
+
 from PySide6.QtCore import Qt, QThreadPool
 
 from mw4.base.tpool import Worker
 
-# local import
+
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 
 mwglob = {

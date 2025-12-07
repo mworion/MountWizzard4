@@ -13,17 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-import logging
 
-# external packages
+import logging
 from PySide6.QtCore import QObject, Signal
 from PySide6.QtWidgets import QListView
-
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
-
-# local import
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
 
 

@@ -13,14 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import platform
 import unittest.mock as mock
 
 import pytest
 
-# external packages
-# local import
+
+
 from mw4.gui.styles.styles import Styles
 
 

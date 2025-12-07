@@ -13,20 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
 import numpy as np
 from PySide6.QtCore import QObject, QRectF, Qt
 from PySide6.QtGui import QColor, QPixmap
 from PySide6.QtWidgets import QApplication, QSplashScreen
 
-# local import
-
 
 class SplashScreen(QObject):
     """
-    Splash screen show an icon with a progress bar and could send messages to the text
+    Splash screen shows an icon with a progress bar and could send messages to the text
     set in the progress bar. Need the app and the icon as parameter
 
     Part from Maurizio D'Addona <mauritiusdadd@gmail.com> under license APL2.0

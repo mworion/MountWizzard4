@@ -13,21 +13,21 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import pickle
 import unittest.mock as mock
 
 import pyqtgraph as pg
 import pytest
 
-# external packages
+
 from PySide6.QtGui import QCloseEvent
 from skyfield.api import Angle, EarthSatellite
 
 from mw4.gui.extWindows.satelliteW import SatelliteWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

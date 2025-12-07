@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import os
 import queue
@@ -21,8 +21,7 @@ from pathlib import Path
 
 from mw4.base.signalsDevices import Signals
 
-# external packages
-# local imports
+
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.logic.plateSolve.astap import ASTAP

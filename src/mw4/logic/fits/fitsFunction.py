@@ -13,16 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 from pathlib import Path
-
-# external packages
 import numpy as np
 from astropy.io import fits
 from skyfield.units import Angle
-
-# local import
 from mw4.base.transform import JNowToJ2000
 from mw4.mountcontrol.convert import (
     convertDecToAngle,

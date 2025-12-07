@@ -13,15 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
-
-# external packages
 from PySide6.QtCore import QTimer
-
 from mw4.base.signalsDevices import Signals
-
-# local imports
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.indibase.indiClient import Client
 

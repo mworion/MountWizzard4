@@ -13,15 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-import webbrowser
 
-# external packages
+import webbrowser
 import numpy as np
 from PySide6.QtCore import QObject
 from range_key_dict import RangeKeyDict
-
-# local import
 from mw4.gui.utilities.toolsQtWidget import guiSetText
 
 

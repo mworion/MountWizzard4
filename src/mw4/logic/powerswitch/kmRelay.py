@@ -13,17 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import re
 import time
-
 import requests
-
-# external packages
 from PySide6.QtCore import QMutex, QTimer, Signal
-
-# local imports
 from mw4.base.signalsDevices import Signals
 
 

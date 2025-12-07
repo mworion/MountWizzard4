@@ -13,19 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import json
 import logging
 import os
 from pathlib import Path
-
-# external packages
 import numpy as np
 import requests
-
 from mw4.base.signalsDevices import Signals
-
-# local imports
 from mw4.base.tpool import Worker
 
 

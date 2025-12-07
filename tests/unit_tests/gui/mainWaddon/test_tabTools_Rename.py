@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import os
 import shutil
 import unittest.mock as mock
@@ -21,12 +21,12 @@ import unittest.mock as mock
 import numpy as np
 import pytest
 
-# external packages
+
 from astropy.io import fits
 
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
 
-# local import
+
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

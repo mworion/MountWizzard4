@@ -13,18 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 import uuid
-
 import requests
-
-# external packages
 from PySide6.QtCore import QTimer
-
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
-
-# local imports
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 
 

@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import glob
 import json
 import os
@@ -22,8 +22,8 @@ from pathlib import Path
 
 import pytest
 
-# external packages
-# local import
+
+
 from mw4.logic.profiles.profile import (
     blendProfile,
     checkResetTabOrder,

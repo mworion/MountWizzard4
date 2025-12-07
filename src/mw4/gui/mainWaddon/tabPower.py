@@ -13,15 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
 from functools import partial
-
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QInputDialog
-
-# local import
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
 from mw4.mountcontrol.convert import valueToInt
 

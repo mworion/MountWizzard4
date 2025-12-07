@@ -13,19 +13,19 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 from unittest import mock
 
 import pytest
 
-# external packages
+
 from skyfield.api import Angle
 
 from mw4.gui.mainWaddon.tabSett_ParkPos import SettParkPos
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import json
 import locale
 import logging
@@ -25,7 +25,7 @@ import traceback
 import warnings
 from pathlib import Path
 
-# external packages
+
 from astropy.utils import data, iers
 from astropy.wcs import FITSFixedWarning
 from importlib_metadata import version
@@ -45,7 +45,7 @@ from PySide6.QtWidgets import (
 
 from mw4.assets.assetsData import qInitResources
 
-# local import
+
 from mw4.base.loggerMW import setupLogging
 from mw4.gui.utilities.splashScreen import SplashScreen
 from mw4.mainApp import MountWizzard4

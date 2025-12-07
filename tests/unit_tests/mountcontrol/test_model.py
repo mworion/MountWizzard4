@@ -13,21 +13,21 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest
 import unittest.mock as mock
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 import numpy
 
-# external packages
+
 import skyfield.api
 from skyfield.api import Angle, Star, wgs84
 
 import mw4.mountcontrol
 from mw4.mountcontrol import obsSite
 
-# local imports
+
 from mw4.mountcontrol.model import Model, ModelStar, ProgStar
 
 obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)

@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import glob
 import os
 import shutil
@@ -23,8 +23,8 @@ import pytest
 
 from mw4.logic.plateSolve.plateSolve import PlateSolve
 
-# external packages
-# local import
+
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

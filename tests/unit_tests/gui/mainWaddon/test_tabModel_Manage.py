@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import glob
 import json
 import os
@@ -21,7 +21,7 @@ import shutil
 import unittest.mock as mock
 from pathlib import Path
 
-# external packages
+
 import PySide6
 import pytest
 from PySide6.QtCore import Qt
@@ -34,7 +34,7 @@ from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.mountcontrol.modelStar import ModelStar
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

@@ -13,16 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 from unittest import mock
 
-# external packages
+
 import PySide6
 import pytest
 import requests
 from PySide6.QtCore import QTimer
 
-# local import
+
 import mw4.base.alpacaClass
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.loggerMW import setupLogging

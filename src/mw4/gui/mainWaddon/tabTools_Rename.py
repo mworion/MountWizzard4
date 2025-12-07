@@ -13,17 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import os
 from pathlib import Path
-
 from astropy.io import fits
 from PySide6.QtCore import QObject
-
-# external packages
 from PySide6.QtWidgets import QApplication, QListView
-
-# local import
 
 
 class Rename(QObject):

@@ -13,21 +13,21 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import json
 import os
 from unittest import mock
 
 import pytest
 
-# external packages
+
 from PySide6.QtWidgets import QTableWidgetItem
 
 from mw4.gui.mainWaddon.tabAsteroid import Asteroid
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

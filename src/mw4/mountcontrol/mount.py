@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import socket
 
 import wakeonlan
 
-# external packages
+
 from PySide6.QtCore import QMutex, QTimer
 from skyfield.api import Angle
 
@@ -30,7 +30,7 @@ from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.geometry import Geometry
 from mw4.mountcontrol.model import Model
 
-# local imports
+
 from mw4.mountcontrol.mountSignals import MountSignals
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.satellite import Satellite

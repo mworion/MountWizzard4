@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest
 
-# external packages
+
 from skyfield.api import Angle, Star
 
-# local imports
+
 from mw4.mountcontrol.progStar import ProgStar
 
 

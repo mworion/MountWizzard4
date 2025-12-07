@@ -13,18 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 from functools import partial
 from pathlib import Path
-
-# external packages
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDoubleSpinBox, QLineEdit, QListView
-
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.ascomClass import AscomClass
-
-# local import
 from mw4.base.indiClass import IndiClass
 from mw4.gui.utilities import toolsQtWidget
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable

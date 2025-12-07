@@ -13,20 +13,15 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import pickle
 from collections.abc import Iterator
 from io import BytesIO
-
 import numpy as np
 import pyqtgraph as pg
 from pyqtgraph import PlotWidget
-
-# external packages
 from PySide6.QtCore import QFile, Qt
 from skyfield.api import Timescale, wgs84
-
-# local import
 from mw4.gui.utilities import toolsQtWidget
 from mw4.gui.widgets import satellite_ui
 

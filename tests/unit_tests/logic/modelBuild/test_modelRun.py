@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import builtins
 import json
 from pathlib import Path
@@ -21,13 +21,13 @@ from unittest import mock
 
 import pytest
 
-# external packages
+
 from skyfield.api import Angle
 
 import mw4.logic.modelBuild.modelRun
 from mw4.logic.modelBuild.modelRun import ModelData
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

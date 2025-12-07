@@ -13,18 +13,18 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
 import numpy as np
 import pytest
 
-# external packages
+
 from skyfield.api import Angle
 
 from mw4.logic.dome.dome import Dome
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

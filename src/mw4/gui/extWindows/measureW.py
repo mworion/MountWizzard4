@@ -13,18 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import os
 from functools import partial
-
 import pyqtgraph as pg
 from PySide6.QtCore import QMutex
 from PySide6.QtGui import QCloseEvent
-
-# external packages
 from PySide6.QtWidgets import QListView
-
-# local import
 from mw4.gui.utilities import toolsQtWidget
 from mw4.gui.widgets import measure_ui
 

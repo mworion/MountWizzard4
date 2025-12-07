@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
 import pytest
@@ -22,11 +22,11 @@ from mw4.base.indiClass import IndiClass
 from mw4.base.signalsDevices import Signals
 from mw4.indibase.indiClient import Client
 
-# external packages
+
 from mw4.indibase.indiDevice import Device
 from mw4.logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

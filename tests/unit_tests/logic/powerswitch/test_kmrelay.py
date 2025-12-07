@@ -13,16 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import time
 from unittest import mock
 
-# external packages
+
 import PySide6
 import pytest
 import requests
 
-# local import
+
 from mw4.base.loggerMW import setupLogging
 from mw4.logic.powerswitch.kmRelay import KMRelay
 

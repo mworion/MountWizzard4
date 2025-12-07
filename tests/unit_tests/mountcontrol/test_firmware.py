@@ -13,14 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest
 import unittest.mock as mock
 
 from packaging.version import Version
 
-# external packages
-# local imports
+
+
 from mw4.mountcontrol.firmware import Firmware
 
 

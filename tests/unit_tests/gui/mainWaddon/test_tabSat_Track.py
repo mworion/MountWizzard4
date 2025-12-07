@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 from unittest import mock
 
 import numpy as np
 import pytest
 
-# external packages
+
 from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem
 from sgp4.exporter import export_tle
 from skyfield.api import Angle, EarthSatellite
@@ -30,7 +30,7 @@ from mw4.gui.mainWaddon.tabSat_Track import SatTrack
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

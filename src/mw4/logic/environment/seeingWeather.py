@@ -13,20 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import json
 import logging
 import os
 from pathlib import Path
-
 import requests
-
-# external packages
 from PySide6.QtCore import Signal
-
 from mw4.base.signalsDevices import Signals
-
-# local imports
 from mw4.base.tpool import Worker
 
 

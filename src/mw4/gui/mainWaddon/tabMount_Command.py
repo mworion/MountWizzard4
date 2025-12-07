@@ -13,16 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import time
 import webbrowser
-
 from PySide6.QtCore import QObject
-
-# external packages
 from PySide6.QtGui import QTextCursor
-
-# local import
 from mw4.mountcontrol.connection import Connection
 
 

@@ -13,15 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
-
 from PySide6 import QtNetwork
-
-# external packages
 from PySide6.QtCore import QObject
-
-# local imports
 from mw4.base.signalsDevices import Signals
 
 

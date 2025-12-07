@@ -22,8 +22,10 @@ from functools import partial, partialmethod
 from logging.handlers import RotatingFileHandler
 
 if not hasattr(logging.Logger, "_set_defaults"):
+
     def _set_defaults(self, *args, **kwargs):
         return None
+
     logging.Logger._set_defaults = _set_defaults
 
 
@@ -57,8 +59,8 @@ class LoggerWriter:
 
 def redirectSTD() -> None:
     """ """
-    sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
-    sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT', sys.stdout)
+    sys.stderr = LoggerWriter(logging.getLogger().error, "STDERR", sys.stderr)
+    sys.stdout = LoggerWriter(logging.getLogger().info, "STDOUT", sys.stdout)
 
 
 def setupLogging() -> None:

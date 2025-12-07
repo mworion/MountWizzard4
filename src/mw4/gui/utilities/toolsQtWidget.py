@@ -13,16 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import datetime
 import logging
 import time
 from pathlib import Path
-
 import numpy as np
 from dateutil.tz import tzlocal
-
-# external packages
 from PySide6.QtCore import QCoreApplication, QDir, QEvent, QObject, QSize, Qt, Signal
 from PySide6.QtGui import (
     QColor,
@@ -50,8 +47,6 @@ from PySide6.QtWidgets import (
 )
 from qimage2ndarray import array2qimage, rgb_view
 from skyfield.api import Time
-
-# local imports
 from mw4.gui.styles.styles import Styles
 from mw4.mountcontrol.convert import formatDstrToText, formatHstrToText
 

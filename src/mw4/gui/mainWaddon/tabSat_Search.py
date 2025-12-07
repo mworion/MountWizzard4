@@ -13,16 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
 import numpy as np
 from PySide6.QtCore import QObject, QPoint, QRect, Qt, Signal
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
-
 from mw4.base.tpool import Worker
-
-# local import
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.utilities.qCustomTableWidgetItem import QCustomTableWidgetItem

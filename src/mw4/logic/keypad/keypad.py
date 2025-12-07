@@ -13,15 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
-
 import numpy as np
-
-# external packages
 import websocket
-
-# local imports
 
 
 class KeyPad:

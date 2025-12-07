@@ -13,12 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
-
-# external packages
-
-# local import
 
 
 class Device:

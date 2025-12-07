@@ -13,15 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
 from functools import partial
-
 from PySide6.QtCore import QObject
 from skyfield.api import Angle
-
-# local import
 from mw4.mountcontrol.convert import valueToFloat
 
 

@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import ctypes
 import glob
 import json
@@ -25,10 +25,10 @@ import traceback
 import unittest.mock as mock
 from pathlib import Path
 
-# external packages
+
 import pytest
 
-# local import
+
 import mw4.loader
 from mw4.loader import (
     checkIsAdmin,

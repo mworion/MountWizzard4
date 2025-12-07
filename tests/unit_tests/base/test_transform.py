@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import pytest
 
-# external packages
+
 from skyfield.api import Angle, wgs84
 
-# local import
+
 from mw4.base import transform
 
 

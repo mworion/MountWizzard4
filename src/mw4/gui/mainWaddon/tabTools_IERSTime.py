@@ -13,13 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
-# local import
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QListView
-
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.logic.databaseProcessing.dataWriter import DataWriter

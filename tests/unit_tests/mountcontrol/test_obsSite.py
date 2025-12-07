@@ -13,17 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import os
 import platform
 import unittest
 import unittest.mock as mock
 from pathlib import Path
 
-# external packages
+
 from skyfield.api import Angle, Loader, Timescale, wgs84
 
-# local imports
+
 import mw4.mountcontrol
 from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.obsSite import ObsSite

@@ -13,17 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
 import numpy as np
 import pyqtgraph as pg
 from PySide6.QtGui import QFont, QPainterPath
 from PySide6.QtWidgets import QApplication
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
-
-# local imports
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 

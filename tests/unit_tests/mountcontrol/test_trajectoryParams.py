@@ -13,15 +13,15 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest
 
-# external packages
+
 from skyfield.api import load
 
 from mw4.base.loggerMW import setupLogging
 
-# local imports
+
 from mw4.mountcontrol.trajectoryParams import TrajectoryParams
 
 setupLogging()

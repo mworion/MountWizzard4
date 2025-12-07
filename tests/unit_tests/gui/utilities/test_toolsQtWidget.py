@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import os
 import unittest.mock as mock
@@ -25,7 +25,7 @@ from PySide6.QtCore import QPoint, Qt
 from PySide6.QtGui import QIcon, QPainterPath, QPixmap
 from PySide6.QtTest import QTest
 
-# external packages
+
 from PySide6.QtWidgets import (
     QComboBox,
     QFileDialog,
@@ -39,7 +39,7 @@ from PySide6.QtWidgets import (
 )
 from skyfield.api import Angle, load
 
-# local import
+
 from mw4.gui.utilities.toolsQtWidget import (
     MWidget,
     changeStyleDynamic,

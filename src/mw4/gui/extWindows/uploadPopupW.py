@@ -13,19 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import os
 import re
 from pathlib import Path
-
 import requests
-
-# external packages
 from PySide6.QtCore import Qt, Signal
-
 from mw4.base.tpool import Worker
-
-# local import
 from mw4.gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
 from mw4.gui.widgets.uploadPopup_ui import Ui_UploadPopup
 

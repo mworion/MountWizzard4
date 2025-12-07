@@ -13,14 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import pytest
 
-# external packages
+
 from skyfield.api import Angle, Star, wgs84
 
 
-# local imports
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mw4.mountcontrol.model import ModelStar
 

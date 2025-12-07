@@ -13,16 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
 import numpy as np
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.QtGui import QFont, QVector3D
 from skyfield import functions
-
-# local import
 from mw4.gui.extWindows.simulator.materials import Materials
 
 

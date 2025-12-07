@@ -13,16 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import datetime
-
 from PySide6.QtCore import QObject
-
-# external packages
 from PySide6.QtWidgets import QInputDialog, QLineEdit
 from skyfield.api import wgs84
-
-# local import
 from mw4.base import transform
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
 from mw4.mountcontrol.convert import (

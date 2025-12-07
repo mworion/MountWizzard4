@@ -13,17 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import glob
 import os
 import sys
 import unittest.mock as mock
 from pathlib import Path
 
-# external packages
+
 import PySide6
 
-# local import
+
 import mw4.loader
 
 

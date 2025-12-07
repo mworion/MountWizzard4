@@ -13,15 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
 import numpy as np
 from PySide6.QtCore import QObject
 from sgp4.exporter import export_tle
 from skyfield.api import Angle, EarthSatellite
-
-# local import
 from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 from mw4.logic.satellites.satellite_calculations import calcSatPasses

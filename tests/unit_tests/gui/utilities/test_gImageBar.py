@@ -13,16 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
 import numpy as np
 import pytest
 
-# external packages
+
 from PySide6.QtWidgets import QWidget
 
-# local import
+
 from mw4.gui.utilities.gImageBar import ImageBar
 
 

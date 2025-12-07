@@ -13,14 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import socket
 import uuid
-
-# external packages
-
-# local imports
 
 
 class Connection:

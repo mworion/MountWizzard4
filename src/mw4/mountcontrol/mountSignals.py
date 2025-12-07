@@ -13,12 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
+
 from PySide6.QtCore import QObject, Signal
-
-# local imports
 
 
 class MountSignals(QObject):

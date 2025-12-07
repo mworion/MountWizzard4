@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 import zlib
 
 import pytest
 
-# external packages
+
 from astropy.io import fits
 from PySide6.QtCore import QObject, Signal
 
@@ -30,7 +30,7 @@ from mw4.indibase.indiDevice import Device
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraIndi import CameraIndi
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

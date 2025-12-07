@@ -13,14 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import shutil
 import unittest.mock as mock
 from pathlib import Path
 
 import pytest
 
-# external packages
+
 from PySide6.QtGui import QCloseEvent
 from skyfield.api import Angle
 
@@ -32,7 +32,7 @@ from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.logic.file.fileHandler import FileHandler
 from mw4.logic.photometry.photometry import Photometry
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

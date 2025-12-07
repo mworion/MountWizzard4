@@ -13,21 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import os
 from pathlib import Path
-
 import cv2
 import numpy as np
 from astropy import wcs
 from astropy.io import fits
-
-# external packages
 from PySide6.QtCore import QObject, Signal
 from xisf import XISF
-
-# local import
 from mw4.base.tpool import Worker
 from mw4.mountcontrol.convert import valueToFloat
 

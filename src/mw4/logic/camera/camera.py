@@ -13,20 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import platform
 from collections.abc import Callable
 from pathlib import Path
-
 import numpy as np
-
-# external packages
 from astropy.io import fits
-
 from mw4.base.signalsDevices import Signals
-
-# local imports
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.camera.cameraIndi import CameraIndi

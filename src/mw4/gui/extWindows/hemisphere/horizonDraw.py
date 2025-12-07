@@ -13,17 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-from pathlib import Path
 
+from pathlib import Path
 import cv2
 import numpy as np
 import pyqtgraph as pg
-
-# external packages
 from PySide6.QtCore import QPointF
-
-# local import
 from mw4.gui.utilities.toolsQtWidget import MWidget
 
 

@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
 import numpy as np
@@ -22,7 +22,7 @@ import pytest
 from astropy import wcs
 from astropy.io import fits
 
-# external packages
+
 from PySide6.QtCore import QRectF
 
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
@@ -30,7 +30,7 @@ from mw4.gui.extWindows.image.imageW import ImageWindow
 from mw4.logic.file.fileHandler import FileHandler
 from mw4.logic.photometry.photometry import Photometry
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 

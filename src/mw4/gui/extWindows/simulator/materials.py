@@ -13,13 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
-# local import
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.QtGui import QColor
-
 from mw4.gui.styles.styles import Styles
 
 

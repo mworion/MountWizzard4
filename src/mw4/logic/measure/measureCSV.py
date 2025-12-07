@@ -13,14 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import csv
 import logging
-
-# external packages
 import PySide6
-
-# local imports
 
 
 class MeasureDataCSV(PySide6.QtCore.QObject):

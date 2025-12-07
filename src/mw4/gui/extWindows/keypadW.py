@@ -13,19 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
 from functools import partial
-
 import numpy as np
 from PySide6.QtCore import QMutex, QObject, Signal
 from PySide6.QtGui import QPixmap
 from qimage2ndarray import array2qimage
-
 from mw4.base.tpool import Worker
-
-# local import
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets import keypad_ui
 from mw4.logic.keypad.keypad import KeyPad

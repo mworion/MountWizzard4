@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import shutil
 import unittest.mock as mock
 from pathlib import Path
@@ -21,11 +21,11 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-# external packages
+
 from astropy.io import fits
 from xisf import XISF
 
-# local import
+
 from mw4.logic.file.fileHandler import FileHandler, FileHandlerSignals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 

@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 from unittest import mock
 
 import pytest
 
-# external packages
-# local import
+
+
 from PySide6.QtCore import QTimer
 
 import mw4.base.indiClass

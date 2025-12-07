@@ -13,12 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest
 import unittest.mock as mock
 
-# external packages
-# local imports
+
+
 from mw4.mountcontrol.setting import Setting
 
 

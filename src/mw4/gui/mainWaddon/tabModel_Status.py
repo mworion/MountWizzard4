@@ -13,12 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
-# local import
 from PySide6.QtCore import QObject
-
 from mw4.gui.utilities.toolsQtWidget import guiSetText
 
 

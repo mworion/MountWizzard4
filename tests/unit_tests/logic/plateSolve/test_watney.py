@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import glob
 import os
 import platform
@@ -27,8 +27,8 @@ import mw4.logic
 from mw4.logic.plateSolve.plateSolve import PlateSolve
 from mw4.logic.plateSolve.watney import Watney
 
-# external packages
-# local import
+
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

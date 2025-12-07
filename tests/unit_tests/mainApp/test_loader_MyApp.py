@@ -13,16 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
-# external packages
+
 import pytest
 from PySide6 import QtWidgets
 from PySide6.QtCore import QEvent, QPointF, Qt
 from PySide6.QtGui import QMouseEvent
 
-# local import
+
 import mw4.loader
 from mw4.loader import MyApp
 

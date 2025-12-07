@@ -13,16 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import builtins
 import unittest.mock as mock
 
-# external packages
+
 import pyqtgraph as pg
 import pytest
 from PySide6.QtCore import QEvent, QPointF, Qt
 
-# local import
+
 from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 from mw4.gui.utilities.gNormalScatter import NormalScatter
 

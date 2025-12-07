@@ -13,11 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
-
-# local import
 from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
 from mw4.gui.widgets.bigPopup_ui import Ui_BigPopup
 

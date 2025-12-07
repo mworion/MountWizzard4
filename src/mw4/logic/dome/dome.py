@@ -13,16 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import platform
-
 import numpy as np
-
-# external packages
 import PySide6
-
-# local imports
 from mw4.base.signalsDevices import Signals
 from mw4.base.transform import diffModulusAbs
 from mw4.logic.dome.domeAlpaca import DomeAlpaca

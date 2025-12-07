@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import builtins
 import glob
 import os
@@ -28,8 +28,8 @@ import mw4.logic
 from mw4.logic.plateSolve.astap import ASTAP
 from mw4.logic.plateSolve.plateSolve import PlateSolve
 
-# external packages
-# local import
+
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

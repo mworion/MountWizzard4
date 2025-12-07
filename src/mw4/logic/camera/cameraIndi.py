@@ -13,15 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import zlib
-
-# external packages
 from astropy.io import fits
-
 from mw4.base.indiClass import IndiClass
-
-# local imports
 from mw4.base.tpool import Worker
 
 

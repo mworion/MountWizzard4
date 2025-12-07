@@ -13,15 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
-
 import erfa
-
-# external packages
 import numpy as np
-
-# local imports
 from mw4.logic.buildData.alignstars import generateAlignStars
 
 

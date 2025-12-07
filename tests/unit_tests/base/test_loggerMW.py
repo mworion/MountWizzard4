@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import os
 from pathlib import Path
@@ -22,8 +22,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-# external packages
-# local import
+
+
 from mw4.base import loggerMW
 from mw4.base.loggerMW import LoggerWriter, setupLogging
 

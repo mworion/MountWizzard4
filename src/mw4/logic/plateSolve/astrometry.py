@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import os
 import platform
@@ -28,8 +28,7 @@ from mw4.logic.fits.fitsFunction import (
     updateImageFileHeaderWithSolution,
 )
 
-# external packages
-# local imports
+
 from mw4.mountcontrol import convert
 
 

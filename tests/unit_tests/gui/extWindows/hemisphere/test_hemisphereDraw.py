@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import os
 import shutil
 import unittest.mock as mock
@@ -22,7 +22,7 @@ import numpy as np
 import pyqtgraph as pg
 import pytest
 
-# external packages
+
 from PySide6.QtCore import QPointF
 from skyfield.api import Angle, wgs84
 
@@ -31,7 +31,7 @@ from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from mw4.gui.utilities.slewInterface import SlewInterface
 from mw4.mountcontrol.setting import Setting
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

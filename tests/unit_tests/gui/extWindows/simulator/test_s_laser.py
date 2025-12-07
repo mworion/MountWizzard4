@@ -13,18 +13,18 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 from unittest import mock
 
 import numpy as np
 import pytest
 
-# external packages
+
 from PySide6.Qt3DCore import Qt3DCore
 
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

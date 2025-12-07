@@ -13,11 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-
-# external packages
-
-# local imports
 
 
 def checkFormatMAC(value: str) -> str:

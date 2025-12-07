@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import platform
 import unittest.mock as mock
 
@@ -22,7 +22,7 @@ import pytest
 if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
-# external packages
+
 import ctypes
 
 from astropy.io import fits
@@ -32,7 +32,7 @@ from mw4.base.loggerMW import setupLogging
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraAscom import CameraAscom
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

@@ -13,17 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import os
 import shutil
 import time
 import unittest.mock as mock
 
-# external packages
+
 import PySide6
 import pytest
 
-# local import
+
 from mw4.mainApp import MountWizzard4
 
 from mw4.base.loggerMW import setupLogging

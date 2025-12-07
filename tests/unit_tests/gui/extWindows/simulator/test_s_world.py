@@ -13,15 +13,15 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 from unittest import mock
 
 import pytest
 
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
-# external packages
-# local import
+
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

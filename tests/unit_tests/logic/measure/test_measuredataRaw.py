@@ -13,14 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
-# external packages
+
 import PySide6
 import pytest
 
-# local import
+
 from mw4.logic.measure.measureRaw import MeasureDataRaw
 
 

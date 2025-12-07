@@ -13,16 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 from unittest import mock
 
 import pytest
 
-# external packages
+
 from PySide6.QtCore import QObject, Signal
 from websocket import WebSocketApp
 
-# local import
+
 from mw4.logic.keypad.keypad import KeyPad
 
 

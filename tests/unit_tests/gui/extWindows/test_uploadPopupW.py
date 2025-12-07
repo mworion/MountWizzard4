@@ -13,19 +13,19 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import builtins
 import unittest.mock as mock
 
 import pytest
 import requests
 
-# external packages
+
 from PySide6.QtWidgets import QWidget
 
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

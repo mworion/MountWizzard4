@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
 import numpy as np
 import pytest
 
-# external packages
+
 from astropy.io import fits
 from skyfield.units import Angle
 
@@ -39,7 +39,7 @@ from mw4.logic.fits.fitsFunction import (
     writeHeaderPointing,
 )
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App, Camera
 
 

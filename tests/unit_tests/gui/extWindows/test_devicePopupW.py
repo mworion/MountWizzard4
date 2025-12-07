@@ -13,14 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import unittest.mock as mock
 from pathlib import Path
 
 import pytest
 
-# external packages
+
 from PySide6.QtWidgets import QWidget
 
 from mw4.base.ascomClass import AscomClass
@@ -29,7 +29,7 @@ from mw4.base.signalsDevices import Signals
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.toolsQtWidget import MWidget
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

@@ -15,14 +15,14 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import pickle
 import numpy as np
 
-# external packages
+
 import shapefile
 
-# local import
+
 
 shapeFile = "ne_110m_land.shp"
 shape = shapefile.Reader(shapeFile)

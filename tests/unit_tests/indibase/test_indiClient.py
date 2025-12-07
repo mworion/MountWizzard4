@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
 import pytest
@@ -22,7 +22,7 @@ from PySide6.QtNetwork import QTcpSocket
 from mw4.base.loggerMW import setupLogging
 from mw4.indibase import indiXML
 
-# local import
+
 from mw4.indibase.indiClient import Client
 from mw4.indibase.indiDevice import Device
 from mw4.indibase.indiXML import INDIBase

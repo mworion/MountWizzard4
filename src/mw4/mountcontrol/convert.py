@@ -13,17 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import re
 from typing import Any
 
 import numpy as np
 
-# external packages
+
 from skyfield.api import Angle
 
-# local imports
 
 __all__ = [
     "stringToDegree",

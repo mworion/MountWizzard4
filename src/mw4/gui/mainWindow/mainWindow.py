@@ -13,17 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import shutil
 import time
 from datetime import datetime
 from pathlib import Path
-
-# external packages
 from PySide6.QtCore import Qt
 from skyfield.almanac import TWILIGHTS, dark_twilight_day
-
-# local import
 from mw4.base import packageConfig
 from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons

@@ -13,15 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import json
 import os
-
-# external packages
 from PySide6.QtCore import QObject, Qt
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
-
-# local import
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.logic.databaseProcessing.sourceURL import cometSourceURLs
 

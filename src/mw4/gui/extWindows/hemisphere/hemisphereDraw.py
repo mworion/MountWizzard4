@@ -13,18 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
 import numpy as np
 import pyqtgraph as pg
 from pyqtgraph.widgets.RemoteGraphicsView import MouseEvent
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont
-
 from mw4.base.transform import diffModulusAbs
-
-# local import
 from mw4.gui.utilities.slewInterface import SlewInterface
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.mountcontrol.setting import Setting

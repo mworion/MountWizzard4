@@ -13,15 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import shutil
 from pathlib import Path
-
-# external packages
 from sgp4.exporter import export_tle
-
-# local import
 
 
 class DataWriter:

@@ -13,18 +13,18 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
 import pytest
 
-# external packages
+
 from PySide6.QtGui import QCloseEvent
 
 from mw4.gui.extWindows.video.videoW import VideoWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

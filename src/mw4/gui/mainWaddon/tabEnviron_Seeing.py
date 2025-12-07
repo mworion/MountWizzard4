@@ -13,16 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import platform
 import webbrowser
-
-# external packages
 from PySide6.QtCore import QObject, Qt
 from PySide6.QtGui import QColor, QTransform
 from PySide6.QtWidgets import QTableWidgetItem
-
-# local import
 from mw4.gui.styles.colors import colors
 from mw4.gui.utilities.toolsQtWidget import clickable
 

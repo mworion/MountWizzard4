@@ -13,11 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
-
-# local imports
 from mw4.base.ascomClass import AscomClass
 
 

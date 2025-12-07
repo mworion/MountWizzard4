@@ -13,17 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
 import numpy as np
 import pyqtgraph as pg
 from astropy.io import fits
 from PySide6.QtGui import QFont
-
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
-
-# local import
 from mw4.logic.fits.fitsFunction import (
     getCoordinatesFromHeader,
     getExposureFromHeader,

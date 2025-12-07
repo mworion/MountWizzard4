@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 
-# external packages
+
 from skyfield.units import Angle
 
-# local imports
+
 from mw4.mountcontrol.convert import valueToAngle, valueToFloat
 
 

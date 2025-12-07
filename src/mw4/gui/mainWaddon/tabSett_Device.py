@@ -13,21 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-from functools import partial
 
-# external packages
+from functools import partial
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QListView
-
-# local import
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, findIndexValue
 
 
 class SettDevice(QObject):
     """
-    devices types in self.drivers are name related to ascom definitions
+    device types in self.drivers are name related to ascom definitions
 
     architecture:
     - all properties are stored in the config dict as main source.

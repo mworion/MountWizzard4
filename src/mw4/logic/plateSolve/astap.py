@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import os
 import platform
@@ -21,8 +21,7 @@ import subprocess
 import time
 from pathlib import Path
 
-# external packages
-# local imports
+
 from mw4.logic.fits.fitsFunction import (
     getImageHeader,
     getSolutionFromWCSHeader,

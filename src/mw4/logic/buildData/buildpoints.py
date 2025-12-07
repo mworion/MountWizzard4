@@ -13,21 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import csv
 import json
 import logging
 import random
 from pathlib import Path
-
-# external packages
 import numpy as np
 from scipy.spatial import distance
 from skyfield import almanac
 from skyfield.api import Angle, Star, Timescale
 from skyfield.toposlib import GeographicPosition
-
-# local imports
 from mw4.base import transform
 
 

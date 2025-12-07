@@ -13,16 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import json
 import logging
 from pathlib import Path
-
-# external libraries
 from ndicts import NestedDict
 from packaging.utils import Version
-
-# local imports
 from mw4.base.loggerMW import setupLogging
 
 setupLogging()

@@ -13,14 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import shutil
 import unittest.mock as mock
 from pathlib import Path
 
 import pytest
 
-# external packages
+
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QWidget
 from skyfield.api import wgs84
@@ -28,7 +28,7 @@ from skyfield.api import wgs84
 import mw4.gui.utilities.toolsQtWidget
 from mw4.gui.mainWindow.mainWindow import MainWindow
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

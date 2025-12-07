@@ -13,14 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
 import numpy as np
 import pyqtgraph as pg
 from PySide6.QtCore import QEvent, Qt
-
-# local imports
 
 __all__ = ["CustomViewBox"]
 

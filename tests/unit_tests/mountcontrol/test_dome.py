@@ -13,14 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest
 import unittest.mock as mock
 
-# external packages
+
 from skyfield.api import Angle
 
-# local imports
+
 from mw4.mountcontrol.dome import Dome
 
 

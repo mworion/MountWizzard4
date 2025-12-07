@@ -13,19 +13,19 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
 import numpy as np
 import pytest
 
-# external packages
+
 from astropy.io import fits
 
 import mw4.logic
 from mw4.logic.camera.camera import Camera
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

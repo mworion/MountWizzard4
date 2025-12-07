@@ -13,13 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
-
-# external packages
 import PySide6
-
-# local imports
 
 
 class MeasureDataRaw(PySide6.QtCore.QObject):

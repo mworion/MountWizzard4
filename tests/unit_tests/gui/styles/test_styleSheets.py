@@ -13,11 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import pytest
 
-# external packages
-# local import
+
+
 from mw4.gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
 
 

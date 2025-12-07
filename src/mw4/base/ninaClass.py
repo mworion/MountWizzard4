@@ -13,15 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import json
-
 import requests
-
-# external packages
 from PySide6.QtCore import QMutex, QTimer
-
-# local imports
 from mw4.base.driverDataClass import DriverData, RemoteDeviceShutdown
 from mw4.base.tpool import Worker
 

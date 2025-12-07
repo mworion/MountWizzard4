@@ -13,18 +13,18 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import platform
 
 import numpy as np
 
-# external packages
+
 from skyfield.api import Angle, Loader, load, wgs84
 from skyfield.timelib import Time, Timescale
 from skyfield.toposlib import GeographicPosition
 
-# local imports
+
 from mw4.base.transform import diffModulusSign
 
 from .connection import Connection

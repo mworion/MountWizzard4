@@ -13,11 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-import os
 
-# external packages
-# local imports
+import os
 from mw4.base.sgproClass import SGProClass
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents

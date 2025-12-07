@@ -13,11 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
-
-# local import
 from mw4.gui.mainWaddon.tabAlmanac import Almanac
 from mw4.gui.mainWaddon.tabAsteroid import Asteroid
 from mw4.gui.mainWaddon.tabComet import Comet

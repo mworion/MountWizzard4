@@ -13,16 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
-# external packages
+
 import numpy as np
 import pyqtgraph as pg
 import pytest
 from PySide6.QtWidgets import QApplication
 
-# local import
+
 from mw4.gui.utilities.gPlotBase import PlotBase
 
 

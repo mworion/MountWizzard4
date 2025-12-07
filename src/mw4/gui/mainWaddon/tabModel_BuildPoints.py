@@ -13,15 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-import logging
 
-# external packages
 from astroquery.simbad import Simbad
 from PySide6.QtCore import QMutex, QObject
 from skyfield.api import Angle
-
-# local import
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 

@@ -13,10 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 from unittest import mock
 
-# external packages
+
 import numpy as np
 import pytest
 from skyfield.api import Angle, EarthSatellite, wgs84
@@ -39,7 +39,7 @@ from mw4.logic.satellites.satellite_calculations import (
     sortFlipEvents,
 )
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

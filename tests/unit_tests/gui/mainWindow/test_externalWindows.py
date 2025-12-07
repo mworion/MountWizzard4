@@ -13,16 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
 import pytest
 
-# external packages
+
 from PySide6.QtCore import QObject, Signal
 from PySide6.QtWidgets import QPushButton, QWidget
 
-# local import
+
 import mw4.gui.utilities.toolsQtWidget
 from mw4.base import packageConfig
 from mw4.gui.mainWindow.externalWindows import ExternalWindows

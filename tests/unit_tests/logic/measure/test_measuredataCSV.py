@@ -13,17 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import csv
 import unittest.mock as mock
 
-# external packages
+
 import PySide6
 import pytest
 
 from mw4.logic.measure.measureCSV import MeasureDataCSV
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

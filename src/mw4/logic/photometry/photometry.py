@@ -13,17 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-import logging
 
-# external packages
+import logging
 import numpy as np
 import sep
 from PySide6.QtCore import QMutex, QObject, Signal
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
-
-# local import
 from mw4.base.tpool import Worker
 
 

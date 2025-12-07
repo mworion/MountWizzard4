@@ -13,11 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
-
-# local import
 from mw4.gui.extWindows.simulator.tools import linkModel
 
 

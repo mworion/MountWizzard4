@@ -13,12 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import platform
-
-# external packages
-# local imports
 from mw4.base.signalsDevices import Signals
 from mw4.logic.telescope.telescopeAlpaca import TelescopeAlpaca
 from mw4.logic.telescope.telescopeIndi import TelescopeIndi

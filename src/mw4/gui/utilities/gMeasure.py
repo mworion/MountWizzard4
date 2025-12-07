@@ -13,11 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
-
-# local imports
 from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 from mw4.gui.utilities.gPlotBase import PlotBase
 from mw4.gui.utilities.gTimeMeasure import TimeMeasure

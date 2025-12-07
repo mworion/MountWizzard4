@@ -13,11 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import datetime
 import unittest.mock as mock
 
-# external packages
+
 import PySide6
 import pytest
 from PySide6.QtWidgets import QWidget
@@ -26,7 +26,7 @@ from skyfield.api import Angle, wgs84
 from mw4.gui.mainWaddon.tabMount_Sett import MountSett
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

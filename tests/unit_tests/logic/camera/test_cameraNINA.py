@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import os
 import unittest.mock as mock
 
@@ -23,8 +23,8 @@ from mw4.base.signalsDevices import Signals
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraNINA import CameraNINA
 
-# external packages
-# local import
+
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

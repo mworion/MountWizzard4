@@ -14,16 +14,11 @@
 #
 ###########################################################
 
-# standard libraries
 import json
 import logging
 from datetime import datetime
 from pathlib import Path
-
-# external packages
 from skyfield.api import Angle, load
-
-# local packages
 from mw4.mountcontrol.model import Model
 
 log = logging.getLogger("MW4")

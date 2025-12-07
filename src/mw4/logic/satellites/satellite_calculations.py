@@ -13,20 +13,15 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-from collections.abc import Callable
 
-# external packages
+from collections.abc import Callable
 import numpy as np
 from skyfield import almanac
 from skyfield.api import EarthSatellite, Time
 from skyfield.toposlib import GeographicPosition
 from skyfield.units import Angle
-
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.setting import Setting
-
-# local import
 
 
 def findSunlit(sat: EarthSatellite, ephemeris, tEvent: tuple) -> bool:

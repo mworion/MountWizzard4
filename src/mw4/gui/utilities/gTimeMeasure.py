@@ -13,13 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 from datetime import datetime as dt
-
-# external packages
 import pyqtgraph as pg
-
-# local imports
 
 
 class TimeMeasure(pg.AxisItem):

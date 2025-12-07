@@ -13,12 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
 from astropy.io import fits
-
-# local imports
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.tpool import Worker
 

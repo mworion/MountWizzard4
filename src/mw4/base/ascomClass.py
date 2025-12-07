@@ -13,20 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 import platform
 
 if platform.system() == "Windows":
     from pythoncom import CoInitialize, CoUninitialize
     from win32com import client
-
-# external packages
 from PySide6.QtCore import QMutex, QTimer
-
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
-
-# local imports
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 
 

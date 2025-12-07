@@ -13,10 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 from unittest import mock
 
-# external packages
+
 import numpy as np
 import pytest
 
@@ -25,7 +25,7 @@ from mw4.gui.mainWaddon.tabEnviron_Weather import EnvironWeather
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

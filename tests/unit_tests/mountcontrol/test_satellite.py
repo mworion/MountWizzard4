@@ -13,17 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest
 import unittest.mock as mock
 
-# external packages
+
 from skyfield.api import Angle, load
 
 from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.connection import Connection
 
-# local imports
+
 from mw4.mountcontrol.satellite import Satellite
 
 setupLogging()

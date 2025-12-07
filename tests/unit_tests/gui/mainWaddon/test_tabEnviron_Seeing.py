@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import platform
 import shutil
 import webbrowser
@@ -26,8 +26,8 @@ from mw4.gui.mainWaddon.tabEnviron_Seeing import EnvironSeeing
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 
-# external packages
-# local import
+
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

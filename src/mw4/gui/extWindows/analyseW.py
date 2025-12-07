@@ -13,15 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import json
 import os
 from pathlib import Path
-
-# external packages
 import numpy as np
-
-# local import
 from mw4.gui.utilities import toolsQtWidget
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.gui.widgets import analyse_ui

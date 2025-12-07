@@ -13,19 +13,19 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import webbrowser
 from unittest import mock
 
 import pytest
 
-# external packages
+
 from PySide6.QtWidgets import QWidget
 
 from mw4.gui.mainWaddon.tabImage_Stats import ImageStats
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

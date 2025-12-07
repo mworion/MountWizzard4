@@ -13,11 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-import logging
 
-# external packages
-# local imports
+import logging
 from mw4.base.signalsDevices import Signals
 from mw4.mountcontrol.setting import Setting
 

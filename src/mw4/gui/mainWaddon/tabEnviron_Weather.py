@@ -13,14 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-from functools import partial
 
-# external packages
+from functools import partial
 import numpy as np
 from PySide6.QtCore import QObject
-
-# local import
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
 
 

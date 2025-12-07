@@ -14,11 +14,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import sys
 import os
 
-# external packages
+
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QTabWidget, QLabel, QLineEdit
 from PySide6.QtWidgets import QGridLayout, QPushButton, QFileDialog
 from PySide6.QtWidgets import QListWidget, QListWidgetItem, QApplication

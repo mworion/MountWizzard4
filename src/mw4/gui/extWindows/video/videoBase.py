@@ -13,9 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
+
 import cv2
 import qimage2ndarray
 from PySide6.QtCore import Signal
@@ -24,7 +23,7 @@ from PySide6.QtWidgets import QInputDialog, QLineEdit, QSizePolicy
 
 from mw4.base.tpool import Worker
 
-# local import
+
 from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic, sleepAndEvents
 from mw4.gui.widgets import video_ui
 

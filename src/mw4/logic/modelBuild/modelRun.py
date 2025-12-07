@@ -13,17 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import json
 import logging
 import time
 from pathlib import Path
-
-# external packages
 from PySide6.QtCore import QObject, Signal
 from skyfield.api import Angle, Star
-
-# local imports
 from mw4.base.transform import J2000ToJNow, JNowToJ2000
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.logic.modelBuild.modelRunSupport import convertAngleToFloat, writeRetrofitData

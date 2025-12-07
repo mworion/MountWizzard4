@@ -13,14 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-import logging
 
-# external packages
+import logging
 from astropy.utils import data, iers
 from PySide6.QtCore import QObject
-
-# local import
 from mw4.base.loggerMW import setCustomLoggingLevel
 
 

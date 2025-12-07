@@ -13,11 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
-import platform
 
-# external packages
-# local imports
+import platform
 from mw4.gui.styles.colors import colors
 from mw4.gui.styles.forms import forms
 from mw4.gui.styles.gradients import gradients

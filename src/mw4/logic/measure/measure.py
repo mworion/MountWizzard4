@@ -13,15 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
-
 import numpy as np
-
-# external packages
 from PySide6.QtCore import QMutex
-
-# local imports
 from mw4.base.signalsDevices import Signals
 from mw4.logic.measure.measureCSV import MeasureDataCSV
 from mw4.logic.measure.measureRaw import MeasureDataRaw

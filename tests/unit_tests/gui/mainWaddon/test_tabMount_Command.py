@@ -13,20 +13,20 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 import webbrowser
 
 import pytest
 
-# external packages
+
 from PySide6.QtWidgets import QWidget
 
 import mw4.mountcontrol
 from mw4.gui.mainWaddon.tabMount_Command import MountCommand
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

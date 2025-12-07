@@ -13,14 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
 
-# external packages
 from PySide6.QtGui import QVector3D
-
 from mw4.gui.extWindows.simulator.materials import Materials
-
-# local import
 from mw4.gui.extWindows.simulator.tools import linkModel
 
 

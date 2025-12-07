@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import binascii
 import json
 import os
@@ -23,14 +23,14 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-# external packages
+
 import skyfield.api
 from skyfield.api import wgs84, Angle
 import skyfield.almanac
 
 from mw4.logic.buildData.buildpoints import DataPoint, HaDecToAltAz
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

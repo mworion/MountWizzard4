@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import json
 import os
 import shutil
@@ -22,12 +22,12 @@ from pathlib import Path
 
 import pytest
 
-# external packages
+
 from skyfield.api import EarthSatellite
 
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

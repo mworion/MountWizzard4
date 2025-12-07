@@ -13,15 +13,15 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import math
 import unittest
 import unittest.mock as mock
 
-# external packages
+
 from skyfield.api import Angle
 
-# local imports
+
 import mw4.mountcontrol
 from mw4.mountcontrol.convert import (
     checkIsHours,

@@ -13,10 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
-# external packages
+
 import numpy as np
 import pyqtgraph as pg
 import pytest
@@ -25,7 +25,7 @@ from PySide6.QtGui import QCloseEvent
 from mw4.gui.extWindows.measureW import MeasureWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

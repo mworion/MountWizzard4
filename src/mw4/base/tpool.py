@@ -13,15 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import logging
 import os
 import sys
-
-# external packages
 from PySide6.QtCore import QObject, QRunnable, Signal
-
-# local imports
 
 
 __all__ = ["Worker"]

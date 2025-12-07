@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 from unittest import mock
 
 import numpy as np
 import pytest
 
-# external packages
+
 from PySide6.QtCore import QRect
 from PySide6.QtWidgets import QTableWidgetItem
 from skyfield.api import EarthSatellite
@@ -29,7 +29,7 @@ from mw4.gui.mainWaddon.tabSat_Search import SatSearch
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

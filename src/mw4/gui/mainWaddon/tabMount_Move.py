@@ -13,17 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 from functools import partial
 
 from PySide6.QtCore import QObject
 
-# external packages
+
 from PySide6.QtWidgets import QInputDialog, QLineEdit
 
 from mw4.gui.utilities.slewInterface import SlewInterface
 
-# local import
+
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, sleepAndEvents
 from mw4.mountcontrol.convert import (
     convertDecToAngle,

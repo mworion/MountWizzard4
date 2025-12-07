@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import socket
 import unittest
 import unittest.mock as mock
 
-# external packages
-# local imports
+
+
 from mw4.base.loggerMW import setupLogging
 
 setupLogging()

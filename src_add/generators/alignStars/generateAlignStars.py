@@ -24,9 +24,9 @@ HEADER = '''############################################################
 # this file is auto generated for the purpose of getting data prepared
 # to show the alignment stars in mountwizzard
 #
-# standard libraries
-# external packages
-# local import
+
+
+
 
 
 def generateAlignStars():

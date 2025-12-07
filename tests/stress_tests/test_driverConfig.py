@@ -13,16 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import glob
 import os
 from pathlib import Path
 
-# external packages
+
 import pytest
 from mw4.loader import extractDataFiles
 
-# local import
+
 from mw4.mainApp import MountWizzard4
 from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtTest import QTest

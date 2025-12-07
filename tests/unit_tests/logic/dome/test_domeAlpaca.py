@@ -13,10 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-# standard libraries
+
 import unittest.mock as mock
 
-# external packages
+
 import PySide6
 import pytest
 
@@ -24,7 +24,7 @@ from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.signalsDevices import Signals
 from mw4.logic.dome.domeAlpaca import DomeAlpaca
 
-# local import
+
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

@@ -105,10 +105,7 @@ class Setting:
         self._meridianLimitSlew = valueToFloat(value)
 
     def timeToMeridian(self):
-        if self._timeToFlip is not None and self._meridianLimitTrack is not None:
-            return int(self._timeToFlip - self._meridianLimitTrack * 4)
-        else:
-            return None
+        return int(self._timeToFlip - self._meridianLimitTrack * 4)
 
     @property
     def refractionTemp(self):
@@ -187,11 +184,8 @@ class Setting:
         return self._UTCExpire
 
     @UTCExpire.setter
-    def UTCExpire(self, value):
-        if isinstance(value, str):
-            self._UTCExpire = value
-        else:
-            self._UTCExpire = None
+    def UTCExpire(self, value: str):
+        self._UTCExpire = value
 
     @property
     def typeConnection(self):
@@ -200,7 +194,7 @@ class Setting:
     @typeConnection.setter
     def typeConnection(self, value):
         value = valueToInt(value)
-        if value < 0 or value > 3:
+        if value not in [0, 1, 2, 3]:
             value = 0
         self._typeConnection = value
 
@@ -241,7 +235,7 @@ class Setting:
         elif value == "1":
             self._wakeOnLan = "ON"
         else:
-            self._wakeOnLan = None
+            self._wakeOnLan = "None"
 
     @property
     def weatherStatus(self):
@@ -250,7 +244,7 @@ class Setting:
     @weatherStatus.setter
     def weatherStatus(self, value):
         value = valueToInt(value)
-        if value < 0 or value > 2:
+        if value not in [0, 1, 2]:
             value = 0
         self._weatherStatus = value
 

@@ -209,15 +209,6 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual("67", sett.UTCExpire)
         self.assertEqual("67", sett._UTCExpire)
 
-    def test_Setting_UTCExpire1(self):
-        class Parent:
-            host = None
-
-        sett = Setting(parent=Parent())
-        sett.UTCExpire = 67
-        self.assertEqual(None, sett.UTCExpire)
-        self.assertEqual(None, sett._UTCExpire)
-
     def test_Setting_typeConnection_1(self):
         class Parent:
             host = None
@@ -316,8 +307,8 @@ class TestConfigData(unittest.TestCase):
 
         sett = Setting(parent=Parent())
         sett.wakeOnLan = "E"
-        assert sett.wakeOnLan is None
-        assert sett._wakeOnLan is None
+        assert sett.wakeOnLan == "None"
+        assert sett._wakeOnLan == "None"
 
     def test_Setting_weatherStatus_1(self):
         class Parent:

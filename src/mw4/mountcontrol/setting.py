@@ -303,10 +303,7 @@ class Setting:
     @webInterfaceStat.setter
     def webInterfaceStat(self, value):
         value = valueToFloat(value)
-        if value is None:
-            self._webInterfaceStat = None
-        else:
-            self._webInterfaceStat = bool(value)
+        self._webInterfaceStat = bool(value)
 
     @property
     def settleTime(self):

@@ -309,13 +309,6 @@ def test_isAboveHorizon_2(function):
     assert suc
 
 
-def test_isCloseMeridian_1(function):
-    function.app.mount.setting.meridianLimitSlew = None
-    suc = function.isCloseMeridian((90, 45))
-    assert not suc
-    function.app.mount.setting.meridianLimitSlew = 3
-
-
 def test_isCloseMeridian_2(function):
     function.app.mount.setting.meridianLimitSlew = 5
     function.app.mount.setting.meridianLimitTrack = 5

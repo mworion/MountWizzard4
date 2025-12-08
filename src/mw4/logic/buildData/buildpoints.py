@@ -89,7 +89,7 @@ class DataPoint:
 
     def delBuildP(self, position: int) -> None:
         """ """
-        if 0 < position < len(self._buildP) - 1:
+        if 0 <= position <= len(self._buildP) - 1:
             self._buildP.pop(position)
 
     def clearBuildP(self) -> None:
@@ -235,9 +235,9 @@ class DataPoint:
         """ """
         with open(fullFileName, encoding="utf-8-sig") as csvFile:
             try:
-                delimiter = csv.Sniffer().sniff(csvFile.read(100))
+                dialect = csv.Sniffer().sniff(csvFile.read(1024), delimiters=[",", ";"])
                 csvFile.seek(0)
-                reader = csv.reader(csvFile, delimiter=delimiter)
+                reader = csv.reader(csvFile, delimiter=dialect.delimiter)
                 value = [[int(row[0]), int(row[1])] for row in reader]
             except Exception as e:
                 self.log.info(f"Cannot CSV load: {fullFileName}, error: {e}")

@@ -75,17 +75,12 @@ class DataPoint:
     def buildP(self, value: list[list]):
         self._buildP = value
 
-    def addBuildP(self, value: tuple[int, int, int], position: int | None = None) -> None:
+    def addBuildP(self, value: tuple[int, int, int], position: int = 999) -> None:
         """ """
-        if position is None:
-            position = len(self._buildP)
-
         high = self.app.mount.setting.horizonLimitHigh or 90
         low = self.app.mount.setting.horizonLimitLow or 0
 
-        if value[0] > high:
-            return
-        if value[0] < low:
+        if not low <= value[0] <= high:
             return
 
         position = min(len(self._buildP), position)
@@ -94,10 +89,8 @@ class DataPoint:
 
     def delBuildP(self, position: int) -> None:
         """ """
-        if position < 0 or position > len(self._buildP) - 1:
-            self.log.info(f"invalid position: {position}")
-            return
-        self._buildP.pop(position)
+        if 0 < position < len(self._buildP) - 1:
+            self._buildP.pop(position)
 
     def clearBuildP(self) -> None:
         """ """
@@ -116,13 +109,9 @@ class DataPoint:
         """ """
         self.setStatusBuildP(number, self.FAILED)
 
-    def addHorizonP(self, value: tuple[int, int], position: int | None = None) -> None:
+    def addHorizonP(self, value: tuple[int, int], position: int = 0) -> None:
         """ """
-        if position is None:
-            position = len(self.horizonP)
-
-        position = min(len(self._horizonP), position)
-        position = max(0, position)
+        position = max(0, min(len(self._horizonP), position))
         self._horizonP.insert(position, value)
 
     def delHorizonP(self, position: int) -> None:
@@ -151,11 +140,7 @@ class DataPoint:
 
     def isAboveHorizon(self, point: tuple[int, int]) -> bool:
         """ """
-        if point[1] > 360:
-            point = (point[0], 360)
-        if point[1] < 0:
-            point = (point[0], 0)
-
+        point[1] = min(max(point[1], 0), 360)
         x = range(0, 361)
         if self.horizonP:
             xRef = [i[1] for i in self.horizonP]
@@ -171,14 +156,9 @@ class DataPoint:
         """ """
         slew = self.app.mount.setting.meridianLimitSlew
         track = self.app.mount.setting.meridianLimitTrack
-
-        if slew is None or track is None:
-            return False
-
         value = max(slew, track)
         lower = 180 - value
         upper = 180 + value
-
         return lower < point[1] < upper
 
     def deleteBelowHorizon(self) -> None:
@@ -253,12 +233,10 @@ class DataPoint:
 
     def loadCSV(self, fullFileName: Path) -> list[tuple[int, int]]:
         """ """
-        with open(fullFileName) as f:
-            testLine = f.readline()
-
-        delimiter = ";" if ";" in testLine else ","
         with open(fullFileName, encoding="utf-8-sig") as csvFile:
             try:
+                delimiter = csv.Sniffer().sniff(csvFile.read(100))
+                csvFile.seek(0)
                 reader = csv.reader(csvFile, delimiter=delimiter)
                 value = [[int(row[0]), int(row[1])] for row in reader]
             except Exception as e:

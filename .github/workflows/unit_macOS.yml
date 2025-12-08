@@ -44,7 +44,7 @@ jobs:
   run_tests_macos_1:
     #
     needs: build_package
-    runs-on: macos-15
+    runs-on: macos-26
     
     steps:
       - uses: actions/checkout@v4
@@ -64,7 +64,7 @@ jobs:
   run_tests_macos_2:
     #
     needs: build_package
-    runs-on: macos-15
+    runs-on: macos-26
     
     steps:
       - uses: actions/checkout@v4
@@ -82,7 +82,7 @@ jobs:
   run_tests_macos_3:
     #
     needs: build_package
-    runs-on: macos-15
+    runs-on: macos-26
     
     steps:
       - uses: actions/checkout@v4
@@ -99,7 +99,7 @@ jobs:
   run_tests_macos_4:
     #
     needs: build_package
-    runs-on: macos-15
+    runs-on: macos-26
     
     steps:
       - uses: actions/checkout@v4

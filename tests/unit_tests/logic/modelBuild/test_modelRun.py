@@ -75,25 +75,27 @@ def test_setImageSaved(function):
 
 def test_setMountSlewed_1(function):
     function.mountSlewed = False
-    function.app.deviceStat["dome"] = False
-    with mock.patch.object(function, "startNewImageExposure"):
+    function.domeSlewed = False
+    function.app.deviceStat["dome"] = True
+    with mock.patch.object(function, "startExposureAfterSlew"):
         function.setMountSlewed()
         assert function.mountSlewed
+        assert not function.domeSlewed
 
 
 def test_setMountSlewed_2(function):
+    function.domeSlewed = False
     function.mountSlewed = False
-    function.domeSlewed = True
-    function.app.deviceStat["dome"] = True
-    with mock.patch.object(function, "startNewImageExposure"):
+    function.app.deviceStat["dome"] = False
+    with mock.patch.object(function, "startExposureAfterSlew"):
         function.setMountSlewed()
         assert function.mountSlewed
+        assert function.domeSlewed
 
 
 def test_setDomeSlewed_1(function):
     function.domeSlewed = False
-    function.mountSlewed = True
-    with mock.patch.object(function, "startNewImageExposure"):
+    with mock.patch.object(function, "startExposureAfterSlew"):
         function.setDomeSlewed()
         assert function.domeSlewed
 

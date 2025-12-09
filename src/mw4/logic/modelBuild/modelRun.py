@@ -106,20 +106,22 @@ class ModelData(QObject):
         if self.modelTiming == self.CONSERVATIVE:
             self.startNewSlew()
 
+    def startExposureAfterSlew(self) -> None:
+        """ """
+        if self.mountSlewed and self.domeSlewed:
+            self.startNewImageExposure()
+
     def setMountSlewed(self) -> None:
         """ """
         self.mountSlewed = True
         if not self.app.deviceStat["dome"]:
-            self.startNewImageExposure()
-            return
-        if self.domeSlewed:
-            self.startNewImageExposure()
+            self.domeSlewed = True
+        self.startExposureAfterSlew()
 
     def setDomeSlewed(self) -> None:
         """ """
         self.domeSlewed = True
-        if self.mountSlewed:
-            self.startNewImageExposure()
+        self.startExposureAfterSlew()
 
     def startNewSlew(self) -> None:
         """ """

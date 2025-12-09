@@ -25,11 +25,11 @@ class Firmware:
 
     def __init__(self, parent):
         self.parent = parent
-        self._product = None
-        self._vString = Version("0.0.0")
-        self._hardware = None
-        self._date = None
-        self._time = None
+        self._product: str = ""
+        self._vString: Version = Version("0.0.0")
+        self._hardware: str = ""
+        self._date: str = ""
+        self._time: str = ""
 
     @property
     def product(self):
@@ -44,11 +44,8 @@ class Firmware:
         return self._vString
 
     @vString.setter
-    def vString(self, value):
-        if isinstance(value, str):
-            self._vString = Version(value)
-        else:
-            self._vString = Version("0.0.0")
+    def vString(self, value:str):
+        self._vString = Version(value)
 
     @property
     def hardware(self):

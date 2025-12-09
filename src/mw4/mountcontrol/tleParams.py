@@ -106,10 +106,7 @@ class TLEParams:
     @jdStart.setter
     def jdStart(self, value):
         value = valueToFloat(value)
-        if value:
-            self._jdStart = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
-        else:
-            self._jdStart = None
+        self._jdStart = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
 
     @property
     def jdEnd(self):
@@ -118,10 +115,7 @@ class TLEParams:
     @jdEnd.setter
     def jdEnd(self, value):
         value = valueToFloat(value)
-        if value:
-            self._jdEnd = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
-        else:
-            self._jdEnd = None
+        self._jdEnd = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
 
     @property
     def message(self):
@@ -129,10 +123,7 @@ class TLEParams:
 
     @message.setter
     def message(self, value):
-        if value:
-            self._message = value
-        else:
-            self._message = None
+        self._message = value
 
     @property
     def l0(self):

@@ -26,10 +26,10 @@ class Dome:
 
     def __init__(self, parent):
         self.parent = parent
-        self._shutterState = 0
-        self._flapState = 0
-        self._slew = False
-        self._azimuth = None
+        self._shutterState: int = 0
+        self._flapState: int = 0
+        self._slew: bool = False
+        self._azimuth: float = 0
 
     @property
     def shutterState(self):
@@ -38,10 +38,9 @@ class Dome:
     @shutterState.setter
     def shutterState(self, value):
         value = valueToInt(value)
-        if value < 0 or value > 4:
-            self._shutterState = 0
-        else:
-            self._shutterState = value
+        if value not in [0, 1, 2, 3]:
+            value = 0
+        self._shutterState = value
 
     @property
     def flapState(self):
@@ -50,10 +49,9 @@ class Dome:
     @flapState.setter
     def flapState(self, value):
         value = valueToInt(value)
-        if value < 0 or value > 4:
-            self._flapState = 0
-        else:
-            self._flapState = value
+        if value not in [0, 1, 2, 3]:
+            value = 0
+        self._flapState = value
 
     @property
     def slew(self):

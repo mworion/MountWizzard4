@@ -82,9 +82,13 @@ class TestConfigData(unittest.TestCase):
         assert tleParams.flip
 
     def test_jdStart_1(self):
-        tleParams = TLEParams()
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        tleParams = TLEParams(obsSite=ObsSite())
         tleParams.jdStart = None
-        assert tleParams.jdStart is None
+        assert tleParams.jdStart.tt == 69
 
     def test_jdStart_2(self):
         class ObsSite:
@@ -96,9 +100,13 @@ class TestConfigData(unittest.TestCase):
         assert tleParams.jdStart.tt == 169
 
     def test_jdEnd_1(self):
-        tleParams = TLEParams()
+        class ObsSite:
+            UTC2TT = 69
+            ts = load.timescale()
+
+        tleParams = TLEParams(obsSite=ObsSite())
         tleParams.jdEnd = None
-        assert tleParams.jdEnd is None
+        assert tleParams.jdEnd.tt == 69
 
     def test_jdEnd_2(self):
         class ObsSite:

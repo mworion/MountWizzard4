@@ -110,76 +110,71 @@ def test_stopClockTimer(function):
         function.stopMountClockTimer()
 
 
-def test_resetData_1(function):
-    function.resetData()
-
-
 def test_startupMountData_1(function):
-    function.mountUpLastStatus = False
+    function.mountIsUpLastStatus = False
     with mock.patch.object(function, "cycleSetting"):
         with mock.patch.object(function, "getFW"):
             with mock.patch.object(function, "getLocation"):
                 with mock.patch.object(function, "getTLE"):
                     function.startupMountData(True)
-                    assert function.mountUpLastStatus
+                    assert function.mountIsUpLastStatus
 
 
 def test_startupMountData_2(function):
-    function.mountUpLastStatus = False
+    function.mountIsUpLastStatus = False
     function.startupMountData(False)
-    assert not function.mountUpLastStatus
+    assert not function.mountIsUpLastStatus
 
 
 def test_startupMountData_3(function):
-    function.mountUpLastStatus = True
-    with mock.patch.object(function, "resetData"):
-        function.startupMountData(False)
-        assert not function.mountUpLastStatus
+    function.mountIsUpLastStatus = True
+    function.startupMountData(False)
+    assert not function.mountIsUpLastStatus
 
 
 def test_startupMountData_4(function):
-    function.mountUpLastStatus = True
+    function.mountIsUpLastStatus = True
     function.startupMountData(True)
-    assert function.mountUpLastStatus
+    assert function.mountIsUpLastStatus
 
 
-def test_checkMountUp_1(function):
+def test_checkMountIsUp_1(function):
     with mock.patch.object(socket.socket, "connect", side_effect=TimeoutError):
-        function.checkMountUp()
-        assert not function.mountUp
+        function.checkMountIsUp()
+        assert not function.mountIsUp
 
 
-def test_checkMountUp_2(function):
+def test_checkMountIsUp_2(function):
     with mock.patch.object(socket.socket, "connect"):
         with mock.patch.object(socket.socket, "shutdown"):
             with mock.patch.object(socket.socket, "close"):
-                function.checkMountUp()
-                assert function.mountUp
+                function.checkMountIsUp()
+                assert function.mountIsUp
 
 
-def test_clearCycleCheckMountUp_1(function):
-    function.clearCycleCheckMountUp()
+def test_clearCycleCheckMountIsUp_1(function):
+    function.clearCycleCheckMountIsUp()
 
 
-def test_cycleCheckMountUp_1(function):
+def test_cycleCheckMountIsUp_1(function):
     function.host = ()
     with mock.patch.object(QThreadPool, "start"):
-        function.cycleCheckMountUp()
+        function.cycleCheckMountIsUp()
 
 
-def test_cycleCheckMountUp_2(function):
+def test_cycleCheckMountIsUp_2(function):
     function.host = ("localhost", 80)
-    function.mutexCycleMountUp.lock()
+    function.mutexCycleMountIsUp.lock()
     with mock.patch.object(function.threadPool, "start"):
-        function.cycleCheckMountUp()
-    function.mutexCycleMountUp.unlock()
+        function.cycleCheckMountIsUp()
+    function.mutexCycleMountIsUp.unlock()
 
 
-def test_cycleCheckMountUp_3(function):
+def test_cycleCheckMountIsUp_3(function):
     function.host = ("localhost", 80)
     with mock.patch.object(function.threadPool, "start"):
-        function.cycleCheckMountUp()
-    function.mutexCycleMountUp.unlock()
+        function.cycleCheckMountIsUp()
+    function.mutexCycleMountIsUp.unlock()
 
 
 def test_clearCyclePointing_1(function):
@@ -216,13 +211,13 @@ def test_clearCyclePointing_5(function):
 
 
 def test_cyclePointing_1(function):
-    function.mountUp = False
+    function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.cyclePointing()
 
 
 def test_cyclePointing_2(function):
-    function.mountUp = True
+    function.mountIsUp = True
     function.mutexCyclePointing.lock()
     with mock.patch.object(QThreadPool, "start"):
         function.cyclePointing()
@@ -230,7 +225,7 @@ def test_cyclePointing_2(function):
 
 
 def test_cyclePointing_3(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.cyclePointing()
     function.mutexCyclePointing.unlock()
@@ -241,13 +236,13 @@ def test_clearCycleSetting_1(function):
 
 
 def test_cycleSetting_1(function):
-    function.mountUp = False
+    function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.cycleSetting()
 
 
 def test_cycleSetting_2(function):
-    function.mountUp = True
+    function.mountIsUp = True
     function.mutexCycleSetting.lock()
     with mock.patch.object(QThreadPool, "start"):
         function.cycleSetting()
@@ -255,7 +250,7 @@ def test_cycleSetting_2(function):
 
 
 def test_cycleSetting_3(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.cycleSetting()
     function.mutexCycleSetting.unlock()
@@ -266,13 +261,13 @@ def test_clearGetModel_1(function):
 
 
 def test_getModel_1(function):
-    function.mountUp = False
+    function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.getModel()
 
 
 def test_getModel_2(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.getModel()
 
@@ -282,13 +277,13 @@ def test_clearGetNames_1(function):
 
 
 def test_GetNames_1(function):
-    function.mountUp = False
+    function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.getNames()
 
 
 def test_GetNames_2(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.getNames()
 
@@ -298,13 +293,13 @@ def test_clearGetFW_1(function):
 
 
 def test_GetFW_1(function):
-    function.mountUp = False
+    function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.getFW()
 
 
 def test_GetFW_2(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.getFW()
 
@@ -314,13 +309,13 @@ def test_clearGetLocation_1(function):
 
 
 def test_GetLocation_1(function):
-    function.mountUp = False
+    function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.getLocation()
 
 
 def test_GetLocation_2(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.getLocation()
 
@@ -330,13 +325,13 @@ def test_clearCalcTLE_1(function):
 
 
 def test_CalcTLE_1(function):
-    function.mountUp = False
+    function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.calcTLE(1234567)
 
 
 def test_CalcTLE_2(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.calcTLE(1234567)
 
@@ -346,13 +341,13 @@ def test_clearStatTLE_1(function):
 
 
 def test_StatTLE_1(function):
-    function.mountUp = False
+    function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.statTLE()
 
 
 def test_StatTLE_2(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.statTLE()
 
@@ -362,13 +357,13 @@ def test_clearGetTLE_1(function):
 
 
 def test_GetTLE_1(function):
-    function.mountUp = False
+    function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.getTLE()
 
 
 def test_GetTLE_2(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.getTLE()
 
@@ -409,19 +404,19 @@ def test_bootMount_5(function):
 
 
 def test_shutdown_1(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(function.obsSite, "shutdown", return_value=True):
         suc = function.shutdown()
         assert suc
-        assert not function.mountUp
+        assert not function.mountIsUp
 
 
 def test_shutdown_2(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(function.obsSite, "shutdown", return_value=False):
         suc = function.shutdown()
         assert not suc
-        assert function.mountUp
+        assert function.mountIsUp
 
 
 def test_clearDome_1(function):
@@ -429,13 +424,13 @@ def test_clearDome_1(function):
 
 
 def test_cycleDome_1(function):
-    function.mountUp = False
+    function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.cycleDome()
 
 
 def test_cycleDome_2(function):
-    function.mountUp = True
+    function.mountIsUp = True
     function.mutexCycleDome.lock()
     with mock.patch.object(QThreadPool, "start"):
         function.cycleDome()
@@ -443,20 +438,20 @@ def test_cycleDome_2(function):
 
 
 def test_cycleDome_3(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.cycleDome()
     function.mutexCycleDome.unlock()
 
 
 def test_cycleClock_1(function):
-    function.mountUp = False
+    function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.cycleClock()
 
 
 def test_cycleClock_2(function):
-    function.mountUp = True
+    function.mountIsUp = True
     function.mutexCycleClock.lock()
     with mock.patch.object(QThreadPool, "start"):
         function.cycleClock()
@@ -464,7 +459,7 @@ def test_cycleClock_2(function):
 
 
 def test_cycleClock_3(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.cycleClock()
     function.mutexCycleClock.unlock()
@@ -492,13 +487,13 @@ def test_clearProgTrajectory_1(function):
 
 
 def test_progTrajectory_1(function):
-    function.mountUp = True
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.progTrajectory(start=1, alt=[10], az=[10])
 
 
 def test_progTrajectory_2(function):
-    function.mountUp = False
+    function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.progTrajectory(start=1, alt=[10], az=[10])
 

@@ -65,7 +65,7 @@ class MountDevice:
         self.dome = Dome(parent=self)
         self.model = Model(parent=self)
 
-        self.workerMountUp: Worker = None
+        self.workerMountIsUp: Worker = None
         self.workerCycleClock: Worker = None
         self.workerCycleSetting: Worker = None
         self.workerCyclePointing: Worker = None
@@ -78,13 +78,13 @@ class MountDevice:
         self.workerGetNames: Worker = None
         self.workerTrajectory: Worker = None
         self.workerCycleDome: Worker = None
-        self.mutexCycleMountUp = QMutex()
+        self.mutexCycleMountIsUp = QMutex()
         self.mutexCycleClock = QMutex()
         self.mutexCycleDome = QMutex()
         self.mutexCycleSetting = QMutex()
         self.mutexCyclePointing = QMutex()
-        self.mountUp: bool = False
-        self.mountUpLastStatus: bool = False
+        self.mountIsUp: bool = False
+        self.mountIsUpLastStatus: bool = False
         self.statusAlert: bool = False
         self.statusSlew: bool = False
 
@@ -100,9 +100,9 @@ class MountDevice:
         self.timerSetting = QTimer()
         self.timerSetting.setSingleShot(False)
         self.timerSetting.timeout.connect(self.cycleSetting)
-        self.timerMountUp = QTimer()
-        self.timerMountUp.setSingleShot(False)
-        self.timerMountUp.timeout.connect(self.cycleCheckMountUp)
+        self.timerMountIsUp = QTimer()
+        self.timerMountIsUp.setSingleShot(False)
+        self.timerMountIsUp.timeout.connect(self.cycleCheckMountIsUp)
         self.settlingWait = QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
@@ -130,13 +130,13 @@ class MountDevice:
 
     def startMountTimers(self):
         """ """
-        self.timerMountUp.start(self.CYCLE_MOUNT_UP)
+        self.timerMountIsUp.start(self.CYCLE_MOUNT_UP)
         self.timerPointing.start(self.CYCLE_POINTING)
         self.timerSetting.start(self.CYCLE_SETTING)
 
     def stopAllMountTimers(self):
         """ """
-        self.timerMountUp.stop()
+        self.timerMountIsUp.stop()
         self.timerPointing.stop()
         self.timerClock.stop()
         self.timerDome.stop()
@@ -158,70 +158,55 @@ class MountDevice:
         """ """
         self.timerClock.stop()
 
-    def resetData(self):
+    def startupMountData(self, mountIsUp: bool) -> None:
         """ """
-        self.firmware = Firmware(parent=self)
-        self.dome = Dome(parent=self)
-        self.setting = Setting(parent=self)
-        self.model = Model(parent=self)
-        self.obsSite = ObsSite(parent=self, verbose=self.verbose)
-        self.satellite = Satellite(parent=self)
-        self.geometry = Geometry(parent=self)
-        self.signals.pointDone.emit(self.obsSite)
-        self.signals.settingDone.emit(self.setting)
-        self.signals.getModelDone.emit(self.model)
-        self.signals.namesDone.emit(self.model)
-        self.signals.firmwareDone.emit(self.firmware)
-        self.signals.locationDone.emit(self.obsSite)
-
-    def startupMountData(self, status: bool) -> None:
-        """ """
-        if status and not self.mountUpLastStatus:
-            self.mountUpLastStatus = True
+        if mountIsUp and not self.mountIsUpLastStatus:
+            self.mountIsUpLastStatus = True
             self.getFW()
             self.getLocation()
             self.app.refreshModel.emit()
             self.app.refreshName.emit()
             self.getTLE()
 
-        elif not status and self.mountUpLastStatus:
-            self.mountUpLastStatus = False
-            location = self.obsSite.location
-            self.resetData()
-            self.obsSite.location = location
+        elif not mountIsUp:
+            self.mountIsUpLastStatus = False
 
-    def checkMountUp(self):
+    def checkMountIsUp(self):
         """ """
         client = socket.socket()
         client.settimeout(self.SOCKET_TIMEOUT)
         try:
             client.connect(self.host)
             client.shutdown(socket.SHUT_RDWR)
-        except Exception:
-            self.mountUp = False
+        except socket.timeout:
+            self.mountIsUp = False
+            self.log.info("Mount connection timed out")
+        except Exception as e:
+            self.log.error(f"Mount {e}")
+            self.mountIsUp = False
         else:
-            self.mountUp = True
+            self.mountIsUp = True
         finally:
             client.close()
 
-    def clearCycleCheckMountUp(self):
+    def clearCycleCheckMountIsUp(self):
         """ """
-        self.startupMountData(self.mountUp)
-        self.signals.mountUp.emit(self.mountUp)
-        self.mutexCycleMountUp.unlock()
+        self.startupMountData(self.mountIsUp)
+        self.signals.mountIsUp.emit(self.mountIsUp)
+        self.mutexCycleMountIsUp.unlock()
 
-    def cycleCheckMountUp(self):
+    def cycleCheckMountIsUp(self):
         """ """
         if not self.host:
-            self.signals.mountUp.emit(False)
+            self.signals.mountIsUp.emit(False)
             return
 
-        if not self.mutexCycleMountUp.tryLock():
+        if not self.mutexCycleMountIsUp.tryLock():
             return
 
-        self.workerMountUp = Worker(self.checkMountUp)
-        self.workerMountUp.signals.finished.connect(self.clearCycleCheckMountUp)
-        self.threadPool.start(self.workerMountUp)
+        self.workerMountIsUp = Worker(self.checkMountIsUp)
+        self.workerMountIsUp.signals.finished.connect(self.clearCycleCheckMountIsUp)
+        self.threadPool.start(self.workerMountIsUp)
 
     def clearCyclePointing(self, result: bool) -> None:
         """ """
@@ -247,7 +232,7 @@ class MountDevice:
 
     def cyclePointing(self):
         """"""
-        if not self.mountUp:
+        if not self.mountIsUp:
             return
 
         if not self.mutexCyclePointing.tryLock():
@@ -265,7 +250,7 @@ class MountDevice:
 
     def cycleSetting(self):
         """ """
-        if not self.mountUp:
+        if not self.mountIsUp:
             return
 
         if not self.mutexCycleSetting.tryLock():
@@ -281,7 +266,7 @@ class MountDevice:
 
     def getModel(self):
         """ """
-        if not self.mountUp:
+        if not self.mountIsUp:
             return
         self.workerGetModel = Worker(self.model.pollStars)
         self.workerGetModel.signals.finished.connect(self.clearGetModel)
@@ -293,7 +278,7 @@ class MountDevice:
 
     def getNames(self):
         """ """
-        if not self.mountUp:
+        if not self.mountIsUp:
             return
 
         self.workerGetNames = Worker(self.model.pollNames)
@@ -312,7 +297,7 @@ class MountDevice:
 
     def getFW(self):
         """ """
-        if not self.mountUp:
+        if not self.mountIsUp:
             return
 
         self.workerGetFW = Worker(self.firmware.poll)
@@ -325,7 +310,7 @@ class MountDevice:
 
     def getLocation(self):
         """ """
-        if not self.mountUp:
+        if not self.mountIsUp:
             return
 
         self.workerGetLocation = Worker(self.obsSite.getLocation)
@@ -338,7 +323,7 @@ class MountDevice:
 
     def calcTLE(self, start):
         """ """
-        if not self.mountUp:
+        if not self.mountIsUp:
             return
 
         self.workerCalcTLE = Worker(self.satellite.calcTLE, start)
@@ -361,7 +346,7 @@ class MountDevice:
 
     def getTLE(self):
         """ """
-        if not self.mountUp:
+        if not self.mountIsUp:
             return
 
         self.workerGetTLE = Worker(self.satellite.getTLE)
@@ -388,7 +373,7 @@ class MountDevice:
         """ """
         suc = self.obsSite.shutdown()
         if suc:
-            self.mountUp = False
+            self.mountIsUp = False
         return suc
 
     def clearDome(self, result):
@@ -398,7 +383,7 @@ class MountDevice:
 
     def cycleDome(self):
         """ """
-        if not self.mountUp:
+        if not self.mountIsUp:
             return
 
         self.workerCycleDome = Worker(self.dome.poll)
@@ -407,7 +392,7 @@ class MountDevice:
 
     def cycleClock(self):
         """ """
-        if not self.mountUp:
+        if not self.mountIsUp:
             return
 
         if not self.mutexCycleClock.tryLock():
@@ -428,7 +413,7 @@ class MountDevice:
 
     def progTrajectory(self, start, alt, az, replay=False):
         """ """
-        if not self.mountUp:
+        if not self.mountIsUp:
             return
 
         self.satellite.startProgTrajectory(julD=start)

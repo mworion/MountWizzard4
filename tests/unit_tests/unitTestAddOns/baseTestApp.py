@@ -844,7 +844,7 @@ class Mount(QObject):
         locationDone = Signal()
         settingDone = Signal()
         pointDone = Signal()
-        mountUp = Signal()
+        mountIsUp = Signal()
         firmwareDone = Signal()
         calcTLEdone = Signal()
         getTLEdone = Signal()

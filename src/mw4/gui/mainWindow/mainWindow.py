@@ -74,7 +74,7 @@ class MainWindow(MWidget):
         }
 
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
-        self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
+        self.app.mount.signals.mountIsUp.connect(self.updateMountConnStat)
         self.app.remoteCommand.connect(self.remoteCommand)
         self.app.plateSolve.signals.message.connect(self.updatePlateSolveStatus)
         self.app.dome.signals.message.connect(self.updateDomeStatus)
@@ -239,6 +239,10 @@ class MainWindow(MWidget):
             self.ui.asteroidProgDatabaseGroup.setEnabled(True)
             self.ui.progEarthRotationData.setEnabled(True)
             self.ui.use10micronDef.setEnabled(True)
+            self.ui.mountTabWidget.setEnabled(True)
+            self.ui.telescopePointingGroup.setEnabled(True)
+            self.ui.trackingGroup.setEnabled(True)
+            self.ui.parkingGroup.setEnabled(True)
         else:
             self.ui.dsoGroup.setEnabled(False)
             self.ui.refractionGroup.setEnabled(False)
@@ -251,6 +255,10 @@ class MainWindow(MWidget):
             self.ui.asteroidProgDatabaseGroup.setEnabled(False)
             self.ui.progEarthRotationData.setEnabled(False)
             self.ui.use10micronDef.setEnabled(False)
+            self.ui.mountTabWidget.setEnabled(False)
+            self.ui.telescopePointingGroup.setEnabled(False)
+            self.ui.trackingGroup.setEnabled(False)
+            self.ui.parkingGroup.setEnabled(False)
 
     def smartTabGui(self) -> None:
         """ """

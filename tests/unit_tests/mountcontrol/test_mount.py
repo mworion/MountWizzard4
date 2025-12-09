@@ -139,12 +139,18 @@ def test_startupMountData_4(function):
 
 
 def test_checkMountIsUp_1(function):
-    with mock.patch.object(socket.socket, "connect", side_effect=TimeoutError):
+    with mock.patch.object(socket.socket, "connect", side_effect=OSError):
         function.checkMountIsUp()
         assert not function.mountIsUp
 
 
 def test_checkMountIsUp_2(function):
+    with mock.patch.object(socket.socket, "connect", side_effect=TimeoutError):
+        function.checkMountIsUp()
+        assert not function.mountIsUp
+
+
+def test_checkMountIsUp_3(function):
     with mock.patch.object(socket.socket, "connect"):
         with mock.patch.object(socket.socket, "shutdown"):
             with mock.patch.object(socket.socket, "close"):

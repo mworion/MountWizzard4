@@ -73,6 +73,13 @@ def test_setImageSaved(function):
         function.setImageSaved()
 
 
+def test_startExposureAfterSlew_1(function):
+    function.mountSlewed = True
+    function.domeSlewed = True
+    with mock.patch.object(function, "startNewImageExposure"):
+        function.setMountSlewed()
+
+
 def test_setMountSlewed_1(function):
     function.mountSlewed = False
     function.domeSlewed = False

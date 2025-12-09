@@ -59,7 +59,7 @@ class LoggerWriter:
 
 def redirectSTD() -> None:
     """ """
-    sys.stderr = LoggerWriter(logging.getLogger().error, "STDERR", sys.stderr)
+    # sys.stderr = LoggerWriter(logging.getLogger().error, "STDERR", sys.stderr)
     sys.stdout = LoggerWriter(logging.getLogger().info, "STDOUT", sys.stdout)
 
 

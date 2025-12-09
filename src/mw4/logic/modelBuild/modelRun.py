@@ -159,15 +159,11 @@ class ModelData(QObject):
         for modelBuildPoint in self.modelBuildData:
             if not modelBuildPoint["success"]:
                 continue
-
-            modelSavePoint = {}
-            modelSavePoint.update(modelBuildPoint)
-            modelSavePoint["julianDate"] = modelSavePoint["julianDate"]
-            modelSavePoint["version"] = self.version
-            modelSavePoint["profile"] = self.profile
-            modelSavePoint["firmware"] = self.firmware
-            modelSavePoint["latitude"] = self.latitude
-            self.modelSaveData.append(modelSavePoint)
+            self.modelSaveData.append(modelBuildPoint)
+            self.modelSaveData[-1]["version"] = self.version
+            self.modelSaveData[-1]["profile"] = self.profile
+            self.modelSaveData[-1]["firmware"] = self.firmware
+            self.modelSaveData[-1]["latitude"] = self.latitude
 
     def generateSaveData(self) -> None:
         """ """
@@ -277,7 +273,6 @@ class ModelData(QObject):
                     item["errorRMS_S"],
                 ]
             )
-
         else:
             self.statusSolve.emit([item["imagePath"].stem, item["success"]])
 

@@ -136,8 +136,7 @@ def test_convertFloatToAngle_1():
             "julianDate": "2019-06-08T08:57:57Z",
             "name": "m-file-2019-06-08-08-57-44",
             "lenSequence": 3,
-            "imagePath": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08"
-            "-57-44/image-000.fits",
+            "imagePath": Path("/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08-57-44/image-000.fits"),
             "pierside": "W",
             "raJNowS": 8.42882,
             "raJNowM": 8.427692953132278,
@@ -149,6 +148,7 @@ def test_convertFloatToAngle_1():
     alignModel = convertFloatToAngle(model)
     assert isinstance(alignModel[0]["decJNowS"], Angle)
     assert isinstance(alignModel[0]["raJNowS"], Angle)
+    assert isinstance(alignModel[0]["imagePath"], Path)
 
 
 def test_convertAngleToFloat_1():
@@ -182,6 +182,8 @@ def test_convertAngleToFloat_1():
     jsonModel = convertAngleToFloat(target)
     assert isinstance(jsonModel[0]["decJNowS"], float)
     assert isinstance(jsonModel[0]["raJNowS"], float)
+    assert isinstance(jsonModel[0]["imagePath"], str)
+
 
 
 def test_loadModelsFromFile_1():

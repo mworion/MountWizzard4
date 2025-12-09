@@ -71,6 +71,8 @@ def convertFloatToAngle(model: list[dict]) -> list[dict]:
                 mPoint[key] = Angle(degrees=mPoint[key])
             elif key == "julianDate":
                 mPoint[key] = ts.from_datetime(datetime.fromisoformat(mPoint[key]))
+            elif key == "imagePath":
+                mPoint[key] = Path(mPoint[key])
     return model
 
 
@@ -84,6 +86,8 @@ def convertAngleToFloat(model: list[dict]) -> list[dict]:
                 mPoint[key] = mPoint[key].degrees
             elif key == "julianDate":
                 mPoint[key] = mPoint[key].utc_iso()
+            elif key == "imagePath":
+                mPoint[key] = str(mPoint[key])
     return model
 
 

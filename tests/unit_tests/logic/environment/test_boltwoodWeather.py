@@ -43,16 +43,18 @@ def function():
 
 
 def test_startCommunication_1(function):
-    function.deviceConnected = False
+    function.enabled = False
     function.startCommunication()
-    assert function.deviceConnected  # as there is no real device
+    assert function.enabled  # as there is no real device
 
 
 def test_stopCommunication_1(function):
     function.data = {'test': 1}
+    function.enabled = True
     function.deviceConnected = True
     function.stopCommunication()
     assert not function.deviceConnected
+    assert not function.enabled
     assert function.data == {}
 
 
@@ -129,19 +131,26 @@ def test_processBoltwoodData_3(function):
 
 
 def test_pollBoltwoodData_1(function):
+    function.enabled = False
     function.deviceConnected = False
     function.pollBoltwoodData()
 
 
 def test_pollBoltwoodData_2(function):
     function.deviceConnected = True
+    function.enabled = True
     function.filePath = "tests/work/data/boltwood_testwrong.txt"
     with mock.patch.object(function, "processBoltwoodData", return_value=False):
         function.pollBoltwoodData()
+        assert not function.deviceConnected
+        assert not function.enabled
 
 
 def test_pollBoltwoodData_3(function):
-    function.deviceConnected = True
+    function.deviceConnected = False
+    function.enabled = True
     function.filePath = "tests/work/data/boltwood_testwrong.txt"
     with mock.patch.object(function, "processBoltwoodData", return_value=True):
         function.pollBoltwoodData()
+        assert function.deviceConnected
+        assert function.enabled

@@ -204,14 +204,18 @@ class EnvironWeather(QObject):
         self.setRefractionSourceGui()
         self.setRefractionUpdateType()
 
-    def updateFilterRefractionParameters(self) -> None:
+    def isValidRefractionSource(self) -> bool:
         """ """
-        if self.refractionSource not in [
+        return self.refractionSource in [
             "sensor1Weather",
             "sensor2Weather",
             "sensor3Weather",
             "onlineWeather",
-        ]:
+        ]
+
+    def updateFilterRefractionParameters(self) -> None:
+        """"""
+        if not self.isValidRefractionSource():
             return
 
         key = "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
@@ -225,13 +229,10 @@ class EnvironWeather(QObject):
         if all(i == 0 for i in self.filteredPressure):
             self.filteredPressure = np.full(60, press)
 
-        if temp is not None:
-            self.filteredTemperature = np.roll(self.filteredTemperature, 1)
-            self.filteredTemperature[0] = temp
-
-        if press is not None:
-            self.filteredPressure = np.roll(self.filteredPressure, 1)
-            self.filteredPressure[0] = press
+        self.filteredTemperature = np.roll(self.filteredTemperature, 1)
+        self.filteredTemperature[0] = temp
+        self.filteredPressure = np.roll(self.filteredPressure, 1)
+        self.filteredPressure[0] = press
 
     def movingAverageRefractionParameters(self) -> tuple:
         """ """
@@ -245,6 +246,8 @@ class EnvironWeather(QObject):
             return
         if not self.app.deviceStat["mount"]:
             return
+        if not self.isValidRefractionSource():
+            return
 
         temp, press = self.movingAverageRefractionParameters()
         if self.ui.refracManual.isChecked():
@@ -253,8 +256,10 @@ class EnvironWeather(QObject):
             return
 
         self.mainW.log.debug(f"Setting refrac temp:[{temp}], press:[{press}]")
-        if not self.app.mount.setting.setRefractionParam(temperature=temp, pressure=press):
-            self.msg.emit(2, "System", "Environment", "No refraction update")
+        if not self.app.mount.setting.setRefractionTemp(temp):
+            self.mainW.log.debug("No refraction temp update")
+        if not self.app.mount.setting.setRefractionPress(press):
+            self.mainW.log.debug("No refraction press update")
 
     def updateSourceGui(self) -> None:
         """ """

@@ -27,6 +27,7 @@ class SensorWeatherBoltwood:
         self.app = parent.app
         self.data = parent.data
         self.signals = parent.signals
+        self.enabled: bool = False
         self.filePath: str = ""
         self.deviceConnected: bool = False
         self.defaultConfig = {
@@ -37,12 +38,13 @@ class SensorWeatherBoltwood:
 
     def startCommunication(self) -> None:
         """ """
-        self.deviceConnected = True
+        self.enabled = True
 
     def stopCommunication(self) -> None:
         """ """
         self.data.clear()
         self.deviceConnected = False
+        self.enabled = False
         self.signals.deviceDisconnected.emit("SeeingWeather")
 
     @staticmethod
@@ -121,11 +123,13 @@ class SensorWeatherBoltwood:
 
     def pollBoltwoodData(self) -> None:
         """ """
-        if not self.deviceConnected:
+        if not self.enabled:
             return
         filePath = Path(self.filePath)
         if not self.processBoltwoodData(filePath):
             self.stopCommunication()
             return
-        self.signals.deviceConnected.emit("BoltwoodWeather")
+        if not self.deviceConnected:
+            self.deviceConnected = True
+            self.signals.deviceConnected.emit("BoltwoodWeather")
 

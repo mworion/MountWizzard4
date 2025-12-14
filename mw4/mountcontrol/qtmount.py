@@ -130,7 +130,7 @@ class Mount(mw4.mountcontrol.mount.Mount):
 
     @waitTimeFlip.setter
     def waitTimeFlip(self, value):
-        self._waitTimeFlip = value * 1000
+        self._waitTimeFlip = int(value * 1000)
 
     def waitAfterSettlingAndEmit(self):
         """

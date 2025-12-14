@@ -13,17 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
-
 from mw4.logic.environment.directWeather import DirectWeather
-
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     func = DirectWeather(app=App())
     yield func

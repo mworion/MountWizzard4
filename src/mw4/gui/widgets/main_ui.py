@@ -7730,12 +7730,8 @@ class Ui_MainWindow(object):
         self.textBrowserCopyright = QTextBrowser(self.CopyrightGroup_2)
         self.textBrowserCopyright.setObjectName(u"textBrowserCopyright")
         self.textBrowserCopyright.setEnabled(True)
-        self.textBrowserCopyright.setGeometry(QRect(5, 15, 356, 91))
-        font6 = QFont()
-        font6.setFamilies([u"Arial"])
-        font6.setPointSize(12)
-        font6.setBold(False)
-        self.textBrowserCopyright.setFont(font6)
+        self.textBrowserCopyright.setGeometry(QRect(5, 15, 356, 71))
+        self.textBrowserCopyright.setFont(font4)
         self.settingsTabWidget.addTab(self.Gui, "")
         self.mainTabWidget.addTab(self.Settings, "")
         self.statusOnline = QGroupBox(MainWindow)
@@ -7918,11 +7914,11 @@ class Ui_MainWindow(object):
         self.timeComputer.setSizePolicy(sizePolicy4)
         self.timeComputer.setMinimumSize(QSize(0, 0))
         self.timeComputer.setMaximumSize(QSize(16777215, 16777215))
-        font7 = QFont()
-        font7.setFamilies([u"Arial"])
-        font7.setPointSize(28)
-        font7.setBold(False)
-        self.timeComputer.setFont(font7)
+        font6 = QFont()
+        font6.setFamilies([u"Arial"])
+        font6.setPointSize(28)
+        font6.setBold(False)
+        self.timeComputer.setFont(font6)
         self.timeComputer.setMouseTracking(False)
         self.timeComputer.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.timeComputer.setAcceptDrops(False)
@@ -11145,8 +11141,8 @@ class Ui_MainWindow(object):
 "hr { height: 1px; border-width: 0; }\n"
 "li.unchecked::marker { content: \"\\2610\"; }\n"
 "li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">astropy, deepdiff, hdiapi, importlib_metadata, PySide6, pywin32, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4</span></p></body></html>", None))
+"</style></head><body style=\" font-family:'Courier New'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial'; font-size:10pt;\">astropy, deepdiff, hdiapi, importlib_metadata, PySide6, pywin32, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4</span></p></body></html>", None))
         self.settingsTabWidget.setTabText(self.settingsTabWidget.indexOf(self.Gui), QCoreApplication.translate("MainWindow", u"User Interface", None))
         self.mainTabWidget.setTabText(self.mainTabWidget.indexOf(self.Settings), QCoreApplication.translate("MainWindow", u"Settings", None))
         self.statusOnline.setTitle(QCoreApplication.translate("MainWindow", u"Status", None))

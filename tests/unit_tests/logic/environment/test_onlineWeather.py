@@ -13,27 +13,20 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import json
 import os
 import shutil
 import unittest.mock as mock
-
 import pytest
-
-
 import requests
-
 from mw4.base.loggerMW import setupLogging
 from mw4.logic.environment.onlineWeather import OnlineWeather
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     class Test1:
         status_code = 200

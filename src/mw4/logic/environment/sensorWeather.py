@@ -18,7 +18,7 @@ import platform
 from mw4.base.signalsDevices import Signals
 from mw4.logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
 from mw4.logic.environment.sensorWeatherIndi import SensorWeatherIndi
-from mw4.logic.environment.boltwoodWeather import BoltwoodWeather
+from mw4.logic.environment.sensorWeatherBoltwood import SensorWeatherBoltwood
 
 if platform.system() == "Windows":
     from mw4.logic.environment.sensorWeatherAscom import SensorWeatherAscom
@@ -42,7 +42,7 @@ class SensorWeather:
         self.run = {
             "indi": SensorWeatherIndi(self),
             "alpaca": SensorWeatherAlpaca(self),
-            "boltwood": BoltwoodWeather(self),
+            "boltwood": SensorWeatherBoltwood(self),
         }
 
         if platform.system() == "Windows":

@@ -13,16 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import unittest.mock as mock
-
 import pytest
-
 from mw4.base.signalsDevices import Signals
 from mw4.logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
-
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -34,7 +28,7 @@ class Parent:
     updateRate = 1000
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     func = SensorWeatherAlpaca(parent=Parent())
     yield func

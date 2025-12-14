@@ -25,17 +25,19 @@ class SettDevice(QObject):
     device types in self.drivers are name related to ascom definitions
 
     architecture:
-    - all properties are stored in the config dict as main source.
-    - when starting, all gui elements will be populated based on the entries of config
-    - all drivers were initialised with the content of config dict
-    - if we setup a new device, data of device is gathered for the popup from config
+    - all properties are stored in the config dict as the main source.
+    - when starting, all gui elements will be populated based on the entries of
+      config
+    - all drivers were initialized with the content of config dict
+    - if we set up a new device, data of a device is gathered for the popup from
+      config
     - when closing the popup, result data will be stored in config
-    - if there is no default data for a driver in config dict, it will be retrieved from the
-      driver
+    - if there is no default data for a driver in config dict, it will be
+      retrieved from the driver
 
     sequence standard:
         loading config dict
-        load driver default setup from driver if not present in config
+        load driver default setup from a driver if not present in config
         initialize gui
         initialize driver
         start drivers
@@ -52,9 +54,9 @@ class SettDevice(QObject):
     sequence dropdown:
         search driver
         if no driver -> finished
-        stop changed driver
+        stop changing a driver
         if driver = "device disabled" -> finished
-        start new driver
+        start a new driver
     """
 
     def __init__(self, mainW):

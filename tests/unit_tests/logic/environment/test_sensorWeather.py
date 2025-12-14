@@ -13,19 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import unittest.mock as mock
-
 import pytest
-
 from mw4.logic.environment.sensorWeather import SensorWeather
-
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     func = SensorWeather(app=App())
     yield func

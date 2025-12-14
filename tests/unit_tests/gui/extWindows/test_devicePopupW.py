@@ -299,3 +299,19 @@ def test_selectAscomDriver_1(function):
     with mock.patch.object(AscomClass, "selectAscomDriver", return_value="test"):
         function.selectAscomDriver()
         assert function.ui.ascomDevice.text() == "test"
+
+
+def test_selectBoltwoodPath_1(function):
+    function.ui.boltwoodPath.setText("")
+    with mock.patch.object(MWidget, "openFile", return_value=Path("/test/file.txt")):
+        with mock.patch.object(Path, "is_file", return_value=True):
+            function.selectBoltwoodPath()
+            assert function.ui.boltwoodPath.text() == "/test/file.txt"
+
+
+def test_selectBoltwoodPath_2(function):
+    function.ui.boltwoodPath.setText("")
+    with mock.patch.object(MWidget, "openFile", return_value=Path("/test/file.txt")):
+        with mock.patch.object(Path, "is_file", return_value=False):
+            function.selectBoltwoodPath()
+            assert function.ui.boltwoodPath.text() == ""

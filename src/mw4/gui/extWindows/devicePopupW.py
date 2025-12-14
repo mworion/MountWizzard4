@@ -70,6 +70,9 @@ class DevicePopup(toolsQtWidget.MWidget):
             "sgpro": {
                 "deviceList": self.ui.sgproDeviceList,
             },
+            "boltwood": {
+                "filePath": self.ui.boltwoodPath,
+            },
             "nina": {
                 "deviceList": self.ui.ninaDeviceList,
             },
@@ -165,6 +168,7 @@ class DevicePopup(toolsQtWidget.MWidget):
                 partial(self.checkIndex, framework)
             )
 
+        self.ui.selectBoltwoodPath.clicked.connect(self.selectBoltwoodPath)
         self.initConfig()
         self.show()
 
@@ -317,3 +321,11 @@ class DevicePopup(toolsQtWidget.MWidget):
         ascom = AscomClass(parent=self.parent)
         deviceName = ascom.selectAscomDriver(self.ui.ascomDevice.text())
         self.ui.ascomDevice.setText(deviceName)
+
+    def selectBoltwoodPath(self) -> None:
+        """ """
+        folder = Path(self.ui.boltwoodPath.text()).parent
+        boltwoodFilePath = self.openFile(self, "Select Boltwood Filepath", folder, "All Files (*)")
+        if not boltwoodFilePath.is_file():
+            return
+        self.framework2gui['boltwood']['filePath'].setText(str(boltwoodFilePath))

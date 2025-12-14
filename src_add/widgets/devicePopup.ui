@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
+    <width>500</width>
     <height>300</height>
    </rect>
   </property>
@@ -18,13 +18,13 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>460</width>
+    <width>500</width>
     <height>300</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>460</width>
+    <width>500</width>
     <height>300</height>
    </size>
   </property>
@@ -54,7 +54,7 @@
     <rect>
      <x>80</x>
      <y>5</y>
-     <width>371</width>
+     <width>406</width>
      <height>256</height>
     </rect>
    </property>
@@ -603,74 +603,6 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="sgpro">
-    <attribute name="title">
-     <string>SGPro</string>
-    </attribute>
-    <widget class="QLabel" name="label_mountIP_20">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>100</y>
-       <width>91</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Device Name</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="sgproDeviceList">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>100</y>
-       <width>201</width>
-       <height>21</height>
-      </rect>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="nina">
-    <attribute name="title">
-     <string>N.I.N.A.</string>
-    </attribute>
-    <widget class="QComboBox" name="ninaDeviceList">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>100</y>
-       <width>201</width>
-       <height>21</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_mountIP_21">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>100</y>
-       <width>91</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Device Name</string>
-     </property>
-    </widget>
-   </widget>
    <widget class="QWidget" name="indi">
     <attribute name="title">
      <string>INDI / INDIGO</string>
@@ -1020,6 +952,176 @@
      </property>
      <property name="value">
       <double>1000.000000000000000</double>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="boltwood">
+    <attribute name="title">
+     <string>Boltwood</string>
+    </attribute>
+    <widget class="QPushButton" name="selectBoltwoodPath">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>85</y>
+       <width>46</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>Select the directory of the astrometry.net index files</string>
+     </property>
+     <property name="text">
+      <string>Select</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="boltwoodPath">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>346</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="mouseTracking">
+      <bool>false</bool>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to astrometry.net index files. Where native installation or e.g. KStars put the files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LayoutDirection::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="maxLength">
+      <number>100</number>
+     </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+     <property name="dragEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_mountIP_28">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>85</y>
+       <width>146</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Boltwood II File</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="sgpro">
+    <attribute name="title">
+     <string>SGPro</string>
+    </attribute>
+    <widget class="QLabel" name="label_mountIP_20">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Device Name</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="sgproDeviceList">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>100</y>
+       <width>201</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="nina">
+    <attribute name="title">
+     <string>N.I.N.A.</string>
+    </attribute>
+    <widget class="QComboBox" name="ninaDeviceList">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>100</y>
+       <width>201</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_mountIP_21">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Device Name</string>
      </property>
     </widget>
    </widget>
@@ -2698,7 +2800,7 @@
   <widget class="QPushButton" name="ok">
    <property name="geometry">
     <rect>
-     <x>370</x>
+     <x>405</x>
      <y>270</y>
      <width>75</width>
      <height>21</height>
@@ -2711,7 +2813,7 @@
   <widget class="QPushButton" name="cancel">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>305</x>
      <y>270</y>
      <width>75</width>
      <height>21</height>

@@ -188,7 +188,7 @@ def test_draw_decRawErrorsRef(function):
 
 
 def test_draw_scaleImage(function):
-    function.index = [0, 1, 2]
+    function.errorIndex = [0, 1, 2]
     function.scaleS = [0, 0, 0]
     function.pierside = ["E", "W", "E"]
     function.drawScaleImage()
@@ -196,7 +196,7 @@ def test_draw_scaleImage(function):
 
 def test_draw_errorAscending(function):
     function.errorRMS = [0, 1, 2]
-    function.index = [0, 0, 0]
+    function.errorIndex = [0, 0, 0]
     function.pierside = ["E", "W", "E"]
     function.drawErrorAscending()
 
@@ -261,7 +261,7 @@ def test_drawAll_1(function):
     def test():
         pass
 
-    function.index = []
+    function.errorIndex = []
     function.charts = [test]
     with mock.patch.object(function, "linkViewsAltAz"):
         with mock.patch.object(function, "linkViewsRa"):
@@ -273,7 +273,7 @@ def test_drawAll_2(function):
     def test():
         pass
 
-    function.index = None
+    function.errorIndex = None
     function.charts = [test]
     with mock.patch.object(function, "linkViewsAltAz"):
         with mock.patch.object(function, "linkViewsRa"):

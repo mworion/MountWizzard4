@@ -20,13 +20,14 @@ Version 4.x
 - add: age parameter for MPC SAT databases before auto download
 - add: new theme with 3d buttons for selection
 - add: new way of defining build point along celestial paths
+- add: support for boltwood file reading
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major PySide6
 - change: moving libraries to latest
 - change: remove old windows automation
 - change: remove embedded documentation and replace with online link
-- refactor: environment devices (now 3 generic ones)
+- refactor: environment devices (now 4 generic ones), online and boltwood are generic
 - refactor: remove installer to separate repo (InstallerMW4)
 - refactor: optimizing code for better performance
 - refactor: plate solving features more reliable

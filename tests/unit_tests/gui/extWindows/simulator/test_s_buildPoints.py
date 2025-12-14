@@ -14,20 +14,14 @@
 #
 ###########################################################
 
-from unittest import mock
-
 import numpy as np
 import pytest
-
-
+from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from skyfield.api import Angle
-
-from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

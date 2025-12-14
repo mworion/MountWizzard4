@@ -14,21 +14,15 @@
 #
 ###########################################################
 
-from pathlib import Path
-from unittest import mock
-
-import pytest
-
-
-
 import mw4.gui.utilities
-from mw4.gui.utilities.toolsQtWidget import MWidget
+import pytest
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
+from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
-
+from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

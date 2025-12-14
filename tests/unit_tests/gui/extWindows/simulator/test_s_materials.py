@@ -15,9 +15,6 @@
 ###########################################################
 
 import pytest
-
-
-
 from mw4.gui.extWindows.simulator.materials import Materials
 
 

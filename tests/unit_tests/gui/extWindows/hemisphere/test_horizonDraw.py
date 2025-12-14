@@ -14,25 +14,19 @@
 #
 ###########################################################
 
-import os
-import shutil
-import unittest.mock as mock
-from pathlib import Path
-
 import cv2
 import numpy as np
+import os
 import pyqtgraph as pg
 import pytest
-
-
-from PySide6.QtCore import QPointF
-from skyfield.api import Angle
-
+import shutil
+import unittest.mock as mock
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
 from mw4.gui.utilities.gCustomViewBox import CustomViewBox
-
-
+from pathlib import Path
+from PySide6.QtCore import QPointF
+from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

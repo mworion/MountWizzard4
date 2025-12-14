@@ -15,11 +15,7 @@
 ###########################################################
 
 import pytest
-
 from mw4.logic.buildData.hipparcos import Hipparcos
-
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

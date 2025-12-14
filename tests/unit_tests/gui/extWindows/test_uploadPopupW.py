@@ -15,17 +15,11 @@
 ###########################################################
 
 import builtins
-import unittest.mock as mock
-
 import pytest
 import requests
-
-
-from PySide6.QtWidgets import QWidget
-
+import unittest.mock as mock
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
-
-
+from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

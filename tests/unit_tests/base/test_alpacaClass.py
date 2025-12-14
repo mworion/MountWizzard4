@@ -14,20 +14,16 @@
 #
 ###########################################################
 
-from unittest import mock
-
-
+import mw4.base.alpacaClass
 import PySide6
 import pytest
 import requests
-from PySide6.QtCore import QTimer
-
-
-import mw4.base.alpacaClass
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
+from PySide6.QtCore import QTimer
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 setupLogging()
 

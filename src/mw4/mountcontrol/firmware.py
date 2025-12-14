@@ -44,7 +44,7 @@ class Firmware:
         return self._vString
 
     @vString.setter
-    def vString(self, value:str):
+    def vString(self, value: str):
         self._vString = Version(value)
 
     @property

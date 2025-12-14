@@ -14,21 +14,15 @@
 #
 ###########################################################
 
-from unittest import mock
-
 import PySide6
-
-
 import pytest
 import requests
-from PySide6.QtCore import QTimer
-
 from mw4.base.loggerMW import setupLogging
-
-
 from mw4.base.ninaClass import NINAClass
 from mw4.base.signalsDevices import Signals
+from PySide6.QtCore import QTimer
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 setupLogging()
 

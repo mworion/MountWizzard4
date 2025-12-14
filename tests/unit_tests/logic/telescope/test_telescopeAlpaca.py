@@ -14,16 +14,11 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
-
 import PySide6
 import pytest
-
+import unittest.mock as mock
 from mw4.base.signalsDevices import Signals
 from mw4.logic.telescope.telescopeAlpaca import TelescopeAlpaca
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

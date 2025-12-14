@@ -14,21 +14,15 @@
 #
 ###########################################################
 
-from pathlib import Path
-from unittest import mock
-
 import pytest
-
-
 from astroquery.simbad import Simbad
-from skyfield.api import Angle
-
 from mw4.gui.mainWaddon.tabModel_BuildPoints import BuildPoints
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
-
+from pathlib import Path
+from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

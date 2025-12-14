@@ -14,17 +14,11 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
 import numpy as np
 import pytest
-
-
-from skyfield.api import Angle
-
+import unittest.mock as mock
 from mw4.logic.dome.dome import Dome
-
-
+from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

@@ -15,14 +15,9 @@
 ###########################################################
 
 import math
+import mw4.mountcontrol
 import unittest
 import unittest.mock as mock
-
-
-from skyfield.api import Angle
-
-
-import mw4.mountcontrol
 from mw4.mountcontrol.convert import (
     checkIsHours,
     convertDecToAngle,
@@ -45,6 +40,7 @@ from mw4.mountcontrol.convert import (
     valueToFloat,
     valueToInt,
 )
+from skyfield.api import Angle
 
 
 class TestConfigData(unittest.TestCase):

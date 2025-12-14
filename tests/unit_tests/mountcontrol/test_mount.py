@@ -15,22 +15,16 @@
 ###########################################################
 
 import os
-import socket
-from pathlib import Path
-from unittest import mock
-
 import pytest
-
-
+import socket
 import wakeonlan
-from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
-from skyfield.api import Angle, wgs84
-
 from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.mount import MountDevice
-
-
 from mw4.mountcontrol.mountSignals import MountSignals
+from pathlib import Path
+from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
+from skyfield.api import Angle, wgs84
+from unittest import mock
 
 setupLogging()
 

@@ -15,9 +15,6 @@
 ###########################################################
 
 import pytest
-
-
-
 from mw4.gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
 
 

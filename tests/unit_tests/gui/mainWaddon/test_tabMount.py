@@ -14,17 +14,11 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
 import pytest
-
-
-from PySide6.QtWidgets import QWidget
-
+import unittest.mock as mock
 from mw4.gui.mainWaddon.tabMount import Mount
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
-
+from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

@@ -16,9 +16,6 @@
 
 import unittest
 import unittest.mock as mock
-
-
-
 from mw4.mountcontrol.setting import Setting
 
 

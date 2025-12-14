@@ -15,18 +15,12 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
 import pytest
-
-
-from PySide6.QtGui import QPixmap
-
+import unittest.mock as mock
 from mw4.gui.mainWaddon.tabModel_Status import ModelStatus
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
-
+from PySide6.QtGui import QPixmap
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

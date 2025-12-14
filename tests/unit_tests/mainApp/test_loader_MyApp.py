@@ -14,17 +14,13 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
-
+import mw4.loader
 import pytest
+import unittest.mock as mock
+from mw4.loader import MyApp
 from PySide6 import QtWidgets
 from PySide6.QtCore import QEvent, QPointF, Qt
 from PySide6.QtGui import QMouseEvent
-
-
-import mw4.loader
-from mw4.loader import MyApp
 
 
 @pytest.fixture(scope="module", autouse=True)

@@ -16,16 +16,12 @@
 
 import logging
 import os
+import pytest
+from mw4.base import loggerMW
+from mw4.base.loggerMW import LoggerWriter, setupLogging
 from pathlib import Path
 from unittest import mock
 from unittest.mock import MagicMock
-
-import pytest
-
-
-
-from mw4.base import loggerMW
-from mw4.base.loggerMW import LoggerWriter, setupLogging
 
 
 @pytest.fixture

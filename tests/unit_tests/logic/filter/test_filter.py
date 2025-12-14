@@ -14,14 +14,9 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
 import pytest
-
+import unittest.mock as mock
 from mw4.logic.filter.filter import Filter
-
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

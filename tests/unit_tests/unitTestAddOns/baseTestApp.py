@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-from pathlib import Path
-from queue import Queue
 import numpy as np
-from packaging.version import Version
-from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
-from skyfield.api import Angle, Loader, load, load_file, wgs84
 from mw4.base.signalsDevices import Signals
+from packaging.version import Version
+from pathlib import Path
+from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
+from queue import Queue
+from skyfield.api import Angle, Loader, load, load_file, wgs84
 
 
 class PlateSolve:

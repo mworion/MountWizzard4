@@ -14,16 +14,12 @@
 #
 ###########################################################
 
-from unittest import mock
-
 import pytest
-from PySide6.QtWidgets import QInputDialog, QWidget
-
 from mw4.gui.mainWaddon.tabPower import Power
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
-
+from PySide6.QtWidgets import QInputDialog, QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

@@ -14,14 +14,9 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
 import pytest
-
+import unittest.mock as mock
 from mw4.logic.telescope.telescope import Telescope
-
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

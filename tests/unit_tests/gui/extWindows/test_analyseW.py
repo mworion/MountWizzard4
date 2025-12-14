@@ -15,19 +15,13 @@
 ###########################################################
 
 import json
-import unittest.mock as mock
-from pathlib import Path
-
 import numpy as np
 import pytest
-
-
-from PySide6.QtGui import QCloseEvent, QResizeEvent
-
+import unittest.mock as mock
 from mw4.gui.extWindows.analyseW import AnalyseWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
-
-
+from pathlib import Path
+from PySide6.QtGui import QCloseEvent, QResizeEvent
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -83,6 +77,14 @@ def test_colorChange(function):
 
 def test_writeGui_1(function):
     function.writeGui([{"a": 1}], "test")
+
+
+def test_list_to_array_replaces_none_and_nan(function):
+    src = [1.5, None, 3, float("nan"), "4.2", "x"]
+    arr = function.list2array(src, fill=0.0, dtype=np.float32)
+    expected = np.array([1.5, 0.0, 3.0, 0.0, 4.2, 0.0], dtype=np.float32)
+    for i, item in enumerate(src):
+        assert expected[i] == arr[i]
 
 
 def test_generateDataSets(function):

@@ -16,21 +16,15 @@
 
 import binascii
 import json
-import os
-import unittest.mock as mock
-from pathlib import Path
-
 import numpy as np
+import os
 import pytest
-
-
-import skyfield.api
-from skyfield.api import wgs84, Angle
 import skyfield.almanac
-
+import skyfield.api
+import unittest.mock as mock
 from mw4.logic.buildData.buildpoints import DataPoint, HaDecToAltAz
-
-
+from pathlib import Path
+from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

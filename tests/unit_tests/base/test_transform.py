@@ -15,12 +15,8 @@
 ###########################################################
 
 import pytest
-
-
-from skyfield.api import Angle, wgs84
-
-
 from mw4.base import transform
+from skyfield.api import Angle, wgs84
 
 
 @pytest.fixture(autouse=True, scope="function")

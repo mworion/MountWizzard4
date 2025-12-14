@@ -15,9 +15,6 @@
 ###########################################################
 
 
-
-
-
 from mw4.base.packageConfig import excludedPlatforms
 
 

@@ -14,19 +14,15 @@
 #
 ###########################################################
 
+import mw4.mountcontrol
 import os
 import platform
 import unittest
 import unittest.mock as mock
-from pathlib import Path
-
-
-from skyfield.api import Angle, Loader, Timescale, wgs84
-
-
-import mw4.mountcontrol
 from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.obsSite import ObsSite
+from pathlib import Path
+from skyfield.api import Angle, Loader, Timescale, wgs84
 
 setupLogging()
 

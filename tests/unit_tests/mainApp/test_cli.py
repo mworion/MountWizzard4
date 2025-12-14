@@ -13,12 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-import pytest
-import sys
-import os
 import argparse
-from unittest.mock import patch
 import mw4.cli as cli
+import os
+import sys
+from unittest.mock import patch
 
 
 def test_read_options_default_values(monkeypatch):

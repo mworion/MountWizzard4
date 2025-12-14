@@ -242,19 +242,18 @@ class EnvironWeather(QObject):
 
     def updateRefractionParameters(self) -> None:
         """ """
+        if not self.isValidRefractionSource():
+            return
         if self.refractionSource == "directWeather":
             return
         if not self.app.deviceStat["mount"]:
             return
-        if not self.isValidRefractionSource():
-            return
-
-        temp, press = self.movingAverageRefractionParameters()
         if self.ui.refracManual.isChecked():
             return
         if self.ui.refracNoTrack.isChecked() and self.app.mount.obsSite.status == 0:
             return
 
+        temp, press = self.movingAverageRefractionParameters()
         self.mainW.log.debug(f"Setting refrac temp:[{temp}], press:[{press}]")
         if not self.app.mount.setting.setRefractionTemp(temp):
             self.mainW.log.debug("No refraction temp update")

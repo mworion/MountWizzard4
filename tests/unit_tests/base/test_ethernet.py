@@ -15,9 +15,6 @@
 ###########################################################
 
 import pytest
-
-
-
 from mw4.base.ethernet import checkFormatMAC
 
 

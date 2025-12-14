@@ -17,9 +17,6 @@
 import socket
 import unittest
 import unittest.mock as mock
-
-
-
 from mw4.base.loggerMW import setupLogging
 
 setupLogging()

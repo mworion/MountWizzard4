@@ -1,14 +1,12 @@
-import shutil
-from pathlib import Path
-from unittest import mock
-from unittest.mock import MagicMock
-
 import pytest
-from PySide6.QtCore import QBasicTimer, QTimer
-from PySide6.QtWidgets import QWidget
-
+import shutil
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.mainApp import MountWizzard4
+from pathlib import Path
+from PySide6.QtCore import QBasicTimer, QTimer
+from PySide6.QtWidgets import QWidget
+from unittest import mock
+from unittest.mock import MagicMock
 
 
 @pytest.fixture(autouse=True, scope="module")

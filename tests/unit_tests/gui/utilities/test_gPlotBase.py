@@ -14,16 +14,12 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
-
 import numpy as np
 import pyqtgraph as pg
 import pytest
-from PySide6.QtWidgets import QApplication
-
-
+import unittest.mock as mock
 from mw4.gui.utilities.gPlotBase import PlotBase
+from PySide6.QtWidgets import QApplication
 
 
 @pytest.fixture(autouse=True, scope="module")

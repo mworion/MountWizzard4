@@ -15,14 +15,9 @@
 ###########################################################
 
 import unittest
-
-
-from skyfield.api import load
-
 from mw4.base.loggerMW import setupLogging
-
-
 from mw4.mountcontrol.trajectoryParams import TrajectoryParams
+from skyfield.api import load
 
 setupLogging()
 

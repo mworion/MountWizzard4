@@ -14,16 +14,10 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
 import pytest
-
-
-from PySide6.Qt3DCore import Qt3DCore
-
+import unittest.mock as mock
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
-
-
+from PySide6.Qt3DCore import Qt3DCore
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

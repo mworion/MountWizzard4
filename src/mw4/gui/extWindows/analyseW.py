@@ -20,6 +20,7 @@ from mw4.gui.utilities import toolsQtWidget
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.gui.widgets import analyse_ui
 from pathlib import Path
+from typing import Any, Iterable
 
 
 class AnalyseWindow(toolsQtWidget.MWidget):
@@ -159,6 +160,22 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         version = d.get("version", "").lstrip("MountWizzard4 - v")
         self.ui.version.setText(f"{version}")
 
+    @staticmethod
+    def list2array(values: Iterable[Any], fill: float = 0.0, dtype: np.dtype = np.float32) -> np.ndarray:
+        """ """
+        def _clean(v: Any) -> float:
+            if v is None:
+                return float(fill)
+            try:
+                f = float(v)
+            except Exception:
+                return float(fill)
+            if np.isnan(f):
+                return float(fill)
+            return f
+
+        return np.array([_clean(v) for v in values], dtype=dtype)
+
     def generateDataSets(self, modelJSON: dict) -> None:
         """ """
         model = {}
@@ -168,20 +185,20 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                 model[key].append(modelJSON[index][key])
 
         self.latitude = modelJSON[0].get("latitude")
-        self.pierside = np.array(model["pierside"])
-        self.countSequence = np.array(model["countSequence"], dtype=np.int64)
-        self.index = np.array(model["errorIndex"], dtype=np.int64) - 1
-        self.scaleS = np.array(model["scaleS"], dtype=np.float32)
-        self.altitude = np.array(model["altitude"], dtype=np.float32)
-        self.azimuth = np.array(model["azimuth"], dtype=np.float32)
-        self.errorAngle = np.array(model["errorAngle"], dtype=np.float32)
-        self.errorRMS = np.array(model["errorRMS"], dtype=np.float32)
-        self.errorRA_S = np.array(model["errorRA_S"], dtype=np.float32)
-        self.errorDEC_S = np.array(model["errorDEC_S"], dtype=np.float32)
-        self.errorRA = np.array(model["errorRA"], dtype=np.float32)
-        self.errorDEC = np.array(model["errorDEC"], dtype=np.float32)
-        self.angularPosRA = np.array(model["angularPosRA"], dtype=np.float32)
-        self.angularPosDEC = np.array(model["angularPosDEC"], dtype=np.float32)
+        self.pierside = self.list2array(model["pierside"])
+        self.countSequence = self.list2array(model["countSequence"], dtype=np.int64)
+        self.index = self.list2array(model["errorIndex"], dtype=np.int64) - 1
+        self.scaleS = self.list2array(model["scaleS"], dtype=np.float32)
+        self.altitude = self.list2array(model["altitude"], dtype=np.float32)
+        self.azimuth = self.list2array(model["azimuth"], dtype=np.float32)
+        self.errorAngle = self.list2array(model["errorAngle"], dtype=np.float32)
+        self.errorRMS = self.list2array(model["errorRMS"], dtype=np.float32)
+        self.errorRA_S = self.list2array(model["errorRA_S"], dtype=np.float32)
+        self.errorDEC_S = self.list2array(model["errorDEC_S"], dtype=np.float32)
+        self.errorRA = self.list2array(model["errorRA"], dtype=np.float32)
+        self.errorDEC = self.list2array(model["errorDEC"], dtype=np.float32)
+        self.angularPosRA = self.list2array(model["angularPosRA"], dtype=np.float32)
+        self.angularPosDEC = self.list2array(model["angularPosDEC"], dtype=np.float32)
 
     def processModel(self, loadFilePath: Path) -> None:
         """ """
@@ -423,11 +440,12 @@ class AnalyseWindow(toolsQtWidget.MWidget):
     def linkViewsAltAz(self) -> None:
         """ """
         isLinked = self.ui.linkViews.isChecked()
-        views = []
-        views.append(self.ui.raRawErrors.p[0].getViewBox())
-        views.append(self.ui.raErrors.p[0].getViewBox())
-        views.append(self.ui.decRawErrors.p[0].getViewBox())
-        views.append(self.ui.decErrors.p[0].getViewBox())
+        views = [
+            self.ui.raRawErrors.p[0].getViewBox(),
+            self.ui.raErrors.p[0].getViewBox(),
+            self.ui.decRawErrors.p[0].getViewBox(),
+            self.ui.decErrors.p[0].getViewBox(),
+        ]
         for sourceView in views:
             for targetView in views:
                 if sourceView == targetView:
@@ -443,9 +461,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
     def linkViewsRa(self) -> None:
         """ """
         isLinked = self.ui.linkViews.isChecked()
-        views = []
-        views.append(self.ui.raRawErrorsRef.p[0].getViewBox())
-        views.append(self.ui.raErrorsRef.p[0].getViewBox())
+        views = [
+            self.ui.raRawErrorsRef.p[0].getViewBox(),
+            self.ui.raErrorsRef.p[0].getViewBox(),
+        ]
         for sourceView in views:
             for targetView in views:
                 if sourceView == targetView:
@@ -459,9 +478,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
     def linkViewsDec(self) -> None:
         """ """
         isLinked = self.ui.linkViews.isChecked()
-        views = []
-        views.append(self.ui.decRawErrorsRef.p[0].getViewBox())
-        views.append(self.ui.decErrorsRef.p[0].getViewBox())
+        views = [
+            self.ui.decRawErrorsRef.p[0].getViewBox(),
+            self.ui.decErrorsRef.p[0].getViewBox(),
+        ]
         for sourceView in views:
             for targetView in views:
                 if sourceView == targetView:

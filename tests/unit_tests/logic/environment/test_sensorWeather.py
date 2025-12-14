@@ -13,8 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-import unittest.mock as mock
 import pytest
+import unittest.mock as mock
 from mw4.logic.environment.sensorWeather import SensorWeather
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 

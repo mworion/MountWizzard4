@@ -14,18 +14,13 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
-
 import numpy as np
 import pyqtgraph as pg
 import pytest
-from PySide6.QtGui import QCloseEvent
-
+import unittest.mock as mock
 from mw4.gui.extWindows.measureW import MeasureWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
-
-
+from PySide6.QtGui import QCloseEvent
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

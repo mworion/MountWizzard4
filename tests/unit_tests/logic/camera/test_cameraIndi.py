@@ -14,23 +14,17 @@
 #
 ###########################################################
 
+import pytest
 import unittest.mock as mock
 import zlib
-
-import pytest
-
-
 from astropy.io import fits
-from PySide6.QtCore import QObject, Signal
-
 from mw4.base.indiClass import IndiClass
 from mw4.base.signalsDevices import Signals
 from mw4.indibase.indiClient import Client
 from mw4.indibase.indiDevice import Device
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraIndi import CameraIndi
-
-
+from PySide6.QtCore import QObject, Signal
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

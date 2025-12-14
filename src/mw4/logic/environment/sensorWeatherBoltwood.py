@@ -64,27 +64,27 @@ class SensorWeatherBoltwood:
 
     def parseAndWriteBoltwoodData(self, rawData: str) -> bool:
         """
-            · File write date
-            · File write time
-            · Temperature scale (Celsius or Fahrenheit)
-            ·Wind speed scale (Mph or Knots)
-            ·Sky Temperature
-            ·Ambient Temperature
-            ·Sensor Temperature
-            ·Wind Speed
-            ·Humidity
-            ·Dew Point
-            ·Dew Heater Percentage
-            ·Rain Flag
-            ·Wet Flag
-            ·Elapsed time since last file write
-            ·Elapsed days since last write
-            ·Cloud/Clear flag (1=Clear,2=Light Clouds,3=Very Cloudy)
-            ·Wind Limit flag (1=Calm,2=Windy,3=Very Windy)
-            ·Rain flag (1=Dry,2=Damp,3=Rain)
-            ·Darkness flag (1=Dark,2=Dim,3=Daylight)
-            · Roof Close flag
-            · Alert flag (0=No Alert,1=Alert)
+        · File write date
+        · File write time
+        · Temperature scale (Celsius or Fahrenheit)
+        ·Wind speed scale (Mph or Knots)
+        ·Sky Temperature
+        ·Ambient Temperature
+        ·Sensor Temperature
+        ·Wind Speed
+        ·Humidity
+        ·Dew Point
+        ·Dew Heater Percentage
+        ·Rain Flag
+        ·Wet Flag
+        ·Elapsed time since last file write
+        ·Elapsed days since last write
+        ·Cloud/Clear flag (1=Clear,2=Light Clouds,3=Very Cloudy)
+        ·Wind Limit flag (1=Calm,2=Windy,3=Very Windy)
+        ·Rain flag (1=Dry,2=Damp,3=Rain)
+        ·Darkness flag (1=Dark,2=Dim,3=Daylight)
+        · Roof Close flag
+        · Alert flag (0=No Alert,1=Alert)
         """
         dataParts = rawData.split()
         if len(dataParts) != 21:
@@ -132,4 +132,3 @@ class SensorWeatherBoltwood:
         if not self.deviceConnected:
             self.deviceConnected = True
             self.signals.deviceConnected.emit("BoltwoodWeather")
-

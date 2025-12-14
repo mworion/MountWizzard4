@@ -14,20 +14,15 @@
 #
 ###########################################################
 
-import shutil
-import unittest.mock as mock
-from pathlib import Path
-
 import numpy as np
 import pytest
-
-
+import shutil
+import unittest.mock as mock
 from astropy.io import fits
-from xisf import XISF
-
-
 from mw4.logic.file.fileHandler import FileHandler, FileHandlerSignals
+from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from xisf import XISF
 
 
 @pytest.fixture(autouse=True, scope="function")

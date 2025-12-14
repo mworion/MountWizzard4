@@ -15,18 +15,13 @@
 ###########################################################
 
 import os
+import PySide6
+import pytest
 import shutil
 import time
 import unittest.mock as mock
-
-
-import PySide6
-import pytest
-
-
-from mw4.mainApp import MountWizzard4
-
 from mw4.base.loggerMW import setupLogging
+from mw4.mainApp import MountWizzard4
 
 setupLogging()
 

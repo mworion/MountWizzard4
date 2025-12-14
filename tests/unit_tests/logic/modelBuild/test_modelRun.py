@@ -16,19 +16,13 @@
 
 import builtins
 import json
-from pathlib import Path
-from unittest import mock
-
-import pytest
-
-
-from skyfield.api import Angle
-
 import mw4.logic.modelBuild.modelRun
+import pytest
 from mw4.logic.modelBuild.modelRun import ModelData
-
-
+from pathlib import Path
+from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

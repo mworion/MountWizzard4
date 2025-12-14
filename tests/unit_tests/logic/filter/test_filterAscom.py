@@ -15,17 +15,12 @@
 ###########################################################
 
 import platform
-import unittest.mock as mock
-
 import pytest
-
+import unittest.mock as mock
 from mw4.base.ascomClass import AscomClass
 from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
 from mw4.logic.filter.filterAscom import FilterAscom
-
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

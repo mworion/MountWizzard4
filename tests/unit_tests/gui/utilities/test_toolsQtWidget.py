@@ -15,17 +15,23 @@
 ###########################################################
 
 import logging
-import os
-import unittest.mock as mock
-from pathlib import Path
-
 import numpy as np
+import os
 import pytest
+import unittest.mock as mock
+from mw4.gui.utilities.toolsQtWidget import (
+    MWidget,
+    changeStyleDynamic,
+    clickable,
+    findIndexValue,
+    guiSetText,
+    sleepAndEvents,
+)
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from pathlib import Path
 from PySide6.QtCore import QPoint, Qt
 from PySide6.QtGui import QIcon, QPainterPath, QPixmap
 from PySide6.QtTest import QTest
-
-
 from PySide6.QtWidgets import (
     QComboBox,
     QFileDialog,
@@ -38,17 +44,6 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 from skyfield.api import Angle, load
-
-
-from mw4.gui.utilities.toolsQtWidget import (
-    MWidget,
-    changeStyleDynamic,
-    clickable,
-    findIndexValue,
-    guiSetText,
-    sleepAndEvents,
-)
-from mw4.gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

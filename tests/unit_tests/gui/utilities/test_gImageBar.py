@@ -14,16 +14,11 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
 import numpy as np
 import pytest
-
-
-from PySide6.QtWidgets import QWidget
-
-
+import unittest.mock as mock
 from mw4.gui.utilities.gImageBar import ImageBar
+from PySide6.QtWidgets import QWidget
 
 
 @pytest.fixture(autouse=True, scope="module")

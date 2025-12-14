@@ -15,15 +15,9 @@
 ###########################################################
 
 import json
+import mw4.logic.modelBuild.modelRunSupport
 import shutil
 from datetime import datetime
-from pathlib import Path
-from unittest import mock
-
-
-from skyfield.api import Angle, Star, load, wgs84
-
-import mw4.logic.modelBuild.modelRunSupport
 from mw4.logic.modelBuild.modelRunSupport import (
     compareFile,
     convertAngleToFloat,
@@ -36,9 +30,10 @@ from mw4.logic.modelBuild.modelRunSupport import (
     writeRetrofitData,
 )
 from mw4.mountcontrol import obsSite
-
-
 from mw4.mountcontrol.model import Model, ModelStar
+from pathlib import Path
+from skyfield.api import Angle, Star, load, wgs84
+from unittest import mock
 
 obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
@@ -136,7 +131,9 @@ def test_convertFloatToAngle_1():
             "julianDate": "2019-06-08T08:57:57Z",
             "name": "m-file-2019-06-08-08-57-44",
             "lenSequence": 3,
-            "imagePath": Path("/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08-57-44/image-000.fits"),
+            "imagePath": Path(
+                "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08-57-44/image-000.fits"
+            ),
             "pierside": "W",
             "raJNowS": 8.42882,
             "raJNowM": 8.427692953132278,
@@ -183,7 +180,6 @@ def test_convertAngleToFloat_1():
     assert isinstance(jsonModel[0]["decJNowS"], float)
     assert isinstance(jsonModel[0]["raJNowS"], float)
     assert isinstance(jsonModel[0]["imagePath"], str)
-
 
 
 def test_loadModelsFromFile_1():

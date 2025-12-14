@@ -15,24 +15,20 @@
 ###########################################################
 
 import platform
-from unittest import mock
-
 import pytest
+from unittest import mock
 
 if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
+import mw4.base.ascomClass
 import PySide6
 import win32com.client
-from PySide6.QtCore import QTimer
-
-import mw4.base.ascomClass
-
-
 from mw4.base.ascomClass import AscomClass
 from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
+from PySide6.QtCore import QTimer
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

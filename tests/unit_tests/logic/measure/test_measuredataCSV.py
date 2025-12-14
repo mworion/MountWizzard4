@@ -15,15 +15,10 @@
 ###########################################################
 
 import csv
-import unittest.mock as mock
-
-
 import PySide6
 import pytest
-
+import unittest.mock as mock
 from mw4.logic.measure.measureCSV import MeasureDataCSV
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

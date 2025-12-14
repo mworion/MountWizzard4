@@ -15,15 +15,11 @@
 ###########################################################
 
 
-
-import unittest.mock as mock
-
 import pytest
+import unittest.mock as mock
+from mw4.gui.utilities.splashScreen import SplashScreen
 from PySide6.QtGui import QPainter, QPixmap
 from PySide6.QtWidgets import QWidget
-
-
-from mw4.gui.utilities.splashScreen import SplashScreen
 
 
 @pytest.fixture(autouse=True, scope="module")

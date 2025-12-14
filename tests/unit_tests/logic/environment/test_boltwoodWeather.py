@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
+import pytest
 import shutil
 import unittest.mock as mock
-from pathlib import Path
-import pytest
 from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
 from mw4.logic.environment.sensorWeatherBoltwood import SensorWeatherBoltwood
+from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()
@@ -49,7 +49,7 @@ def test_startCommunication_1(function):
 
 
 def test_stopCommunication_1(function):
-    function.data = {'test': 1}
+    function.data = {"test": 1}
     function.enabled = True
     function.deviceConnected = True
     function.stopCommunication()
@@ -91,21 +91,21 @@ def test_convertFtoC_2(function):
 def test_parseAndWriteBoltwoodData_1(function):
     rawData = "2018-01-17 14:51:45.00 F M 35.9   78.1  78     10      45  56.1   000 0 0 00020 043117.61927 1 1 1 3 0 0"
     assert function.parseAndWriteBoltwoodData(rawData)
-    assert round(function.data['SKY_QUALITY.SKY_BRIGHTNESS'], 3) == 2.167
-    assert round(function.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'], 3) == 25.611
-    assert round(function.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'], 3) == 45.0
-    assert round(function.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'], 3) == 13.389
-    assert round(function.data['WEATHER_PARAMETERS.WIND_SPEED'], 3) == 16.093
+    assert round(function.data["SKY_QUALITY.SKY_BRIGHTNESS"], 3) == 2.167
+    assert round(function.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"], 3) == 25.611
+    assert round(function.data["WEATHER_PARAMETERS.WEATHER_HUMIDITY"], 3) == 45.0
+    assert round(function.data["WEATHER_PARAMETERS.WEATHER_DEWPOINT"], 3) == 13.389
+    assert round(function.data["WEATHER_PARAMETERS.WIND_SPEED"], 3) == 16.093
 
 
 def test_parseAndWriteBoltwoodData_2(function):
     rawData = "2018-01-17 14:51:45.00 C K 35.9   78.1  78     10      45  56.1   000 0 0 00020 043117.61927 1 1 1 3 0 0"
     assert function.parseAndWriteBoltwoodData(rawData)
-    assert round(function.data['SKY_QUALITY.SKY_BRIGHTNESS'], 3) == 35.9
-    assert round(function.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'], 3) == 78.1
-    assert round(function.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'], 3) == 45.0
-    assert round(function.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'], 3) == 56.1
-    assert round(function.data['WEATHER_PARAMETERS.WIND_SPEED'], 3) == 18.52
+    assert round(function.data["SKY_QUALITY.SKY_BRIGHTNESS"], 3) == 35.9
+    assert round(function.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"], 3) == 78.1
+    assert round(function.data["WEATHER_PARAMETERS.WEATHER_HUMIDITY"], 3) == 45.0
+    assert round(function.data["WEATHER_PARAMETERS.WEATHER_DEWPOINT"], 3) == 56.1
+    assert round(function.data["WEATHER_PARAMETERS.WIND_SPEED"], 3) == 18.52
 
 
 def test_parseAndWriteBoltwoodData_3(function):

@@ -17,19 +17,14 @@
 import ctypes
 import glob
 import json
+import mw4.loader
 import os
 import platform
+import pytest
 import socket
 import sys
 import traceback
 import unittest.mock as mock
-from pathlib import Path
-
-
-import pytest
-
-
-import mw4.loader
 from mw4.loader import (
     checkIsAdmin,
     except_hook,
@@ -40,6 +35,7 @@ from mw4.loader import (
     setupWorkDirs,
     writeSystemInfo,
 )
+from pathlib import Path
 
 
 @pytest.fixture(autouse=True, scope="function")

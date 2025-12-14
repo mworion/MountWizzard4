@@ -222,12 +222,13 @@ class Model(QObject):
         t = f"Exposing {statusData[0]}, Duration {statusData[1]}s, Binning {statusData[2]} "
         self.msg.emit(0, "Model", "Exposure", t)
 
-    def showStatusSolve(self, statusData: tuple) -> None:
+    def showStatusSolve(self, data: dict) -> None:
         """ """
-        if statusData[1]:
-            t = f"Solved {statusData[0]}, Error {statusData[4]:.2f}, Angle {statusData[5]:.2f}"
+        if data["success"]:
+            t = f"Solved {data['imagePath']}, Error {data['errorRMS_S']:.2f}"
+            t += f", Angle {data['angleS']:.2f}, Scale {data['scaleS']:.2f}"
         else:
-            t = f"Error solving {statusData[0]}, {statusData[1]}"
+            t = f"Error solving {data['imagePath']}, {data['message']}"
         self.msg.emit(0, "Model", "Solving", t)
 
     def setupModelInputData(self) -> None:

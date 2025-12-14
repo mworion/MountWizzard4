@@ -14,15 +14,9 @@
 #
 ###########################################################
 
-from unittest import mock
-
-
+import mw4.logic
 import numpy as np
 import pytest
-from skyfield.api import Angle, EarthSatellite, wgs84
-from skyfield.timelib import Time
-
-import mw4.logic
 from mw4.logic.satellites.satellite_calculations import (
     addMeridianTransit,
     calcAppMag,
@@ -38,9 +32,10 @@ from mw4.logic.satellites.satellite_calculations import (
     findSunlit,
     sortFlipEvents,
 )
-
-
+from skyfield.api import Angle, EarthSatellite, wgs84
+from skyfield.timelib import Time
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="function")

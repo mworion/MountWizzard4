@@ -14,15 +14,10 @@
 #
 ###########################################################
 
-from unittest import mock
-
 import pytest
-
 from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
-
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="function")

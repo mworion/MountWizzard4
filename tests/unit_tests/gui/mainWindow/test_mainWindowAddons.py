@@ -16,11 +16,7 @@
 
 
 import pytest
-
 from mw4.assets import assetsData
-
-
-
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow

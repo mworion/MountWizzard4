@@ -15,16 +15,12 @@
 ###########################################################
 
 import glob
+import mw4.loader
 import os
+import PySide6
 import sys
 import unittest.mock as mock
 from pathlib import Path
-
-
-import PySide6
-
-
-import mw4.loader
 
 
 def test_main_1():

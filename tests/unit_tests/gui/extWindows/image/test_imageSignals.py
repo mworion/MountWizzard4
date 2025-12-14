@@ -15,9 +15,6 @@
 ###########################################################
 
 import pytest
-
-
-
 from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
 
 

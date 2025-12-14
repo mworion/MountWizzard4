@@ -17,13 +17,8 @@
 import glob
 import json
 import os
-import unittest.mock as mock
-from pathlib import Path
-
 import pytest
-
-
-
+import unittest.mock as mock
 from mw4.logic.profiles.profile import (
     blendProfile,
     checkResetTabOrder,
@@ -36,6 +31,7 @@ from mw4.logic.profiles.profile import (
     replaceKeys,
     saveProfile,
 )
+from pathlib import Path
 
 
 @pytest.fixture(autouse=True, scope="function")

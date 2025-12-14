@@ -14,17 +14,13 @@
 #
 ###########################################################
 
-import time
-from unittest import mock
-
-
 import PySide6
 import pytest
 import requests
-
-
+import time
 from mw4.base.loggerMW import setupLogging
 from mw4.logic.powerswitch.kmRelay import KMRelay
+from unittest import mock
 
 setupLogging()
 

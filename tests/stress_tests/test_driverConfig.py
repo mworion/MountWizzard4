@@ -16,18 +16,13 @@
 
 import glob
 import os
-from pathlib import Path
-
-
 import pytest
+from mw4.base.tpool import Worker
 from mw4.loader import extractDataFiles
-
-
 from mw4.mainApp import MountWizzard4
+from pathlib import Path
 from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtTest import QTest
-
-from mw4.base.tpool import Worker
 
 mwglob = {
     "dataDir": Path("tests/work/data"),

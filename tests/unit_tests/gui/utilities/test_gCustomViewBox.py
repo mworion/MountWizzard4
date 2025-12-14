@@ -15,16 +15,12 @@
 ###########################################################
 
 import builtins
-import unittest.mock as mock
-
-
 import pyqtgraph as pg
 import pytest
-from PySide6.QtCore import QEvent, QPointF, Qt
-
-
+import unittest.mock as mock
 from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 from mw4.gui.utilities.gNormalScatter import NormalScatter
+from PySide6.QtCore import QEvent, QPointF, Qt
 
 
 @pytest.fixture(autouse=True, scope="module")

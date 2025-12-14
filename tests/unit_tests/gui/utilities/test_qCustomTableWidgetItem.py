@@ -15,9 +15,6 @@
 ###########################################################
 
 
-
-
-
 from mw4.gui.utilities.qCustomTableWidgetItem import QCustomTableWidgetItem
 
 

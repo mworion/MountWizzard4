@@ -36,7 +36,7 @@ def getImageHeader(imagePath: Path) -> fits.Header:
         return HDU[0].header
 
 
-def getCoordinatesFromHeader(header: fits.Header) -> [Angle, Angle]:
+def getCoordinatesFromHeader(header: fits.Header) -> tuple[Angle, Angle]:
     """ """
     hasDecimal = bool("RA" in header and "DEC" in header)
     hasSexagesimal = bool("OBJCTRA" in header and "OBJCTDEC" in header)
@@ -95,7 +95,7 @@ def getScaleFromHeader(header: fits.Header) -> float:
     return scale
 
 
-def getHintFromImageFile(imagePath: Path) -> [Angle, Angle, float]:
+def getHintFromImageFile(imagePath: Path) -> tuple[Angle, Angle, float]:
     """ """
     header = getImageHeader(imagePath)
     raHint, decHint = getCoordinatesFromHeader(header)
@@ -103,14 +103,14 @@ def getHintFromImageFile(imagePath: Path) -> [Angle, Angle, float]:
     return raHint, decHint, scaleHint
 
 
-def getCoordinatesFromWCSHeader(header: fits.Header) -> [Angle, Angle]:
+def getCoordinatesFromWCSHeader(header: fits.Header) -> tuple[Angle, Angle]:
     """ """
     ra = Angle(hours=float(header.get("CRVAL1", 0)) * 24 / 360)
     dec = Angle(degrees=float(header.get("CRVAL2", 0)))
     return ra, dec
 
 
-def calcAngleScaleFromWCSHeader(header: fits.Header) -> [Angle, float, bool]:
+def calcAngleScaleFromWCSHeader(header: fits.Header) -> tuple[Angle, float, bool]:
     """ """
     CD11 = header.get("CD1_1", 0)
     CD12 = header.get("CD1_2", 0)

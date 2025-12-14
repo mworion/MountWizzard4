@@ -14,19 +14,13 @@
 #
 ###########################################################
 
+import mw4.mountcontrol
+import pytest
 import unittest.mock as mock
 import webbrowser
-
-import pytest
-
-
-from PySide6.QtWidgets import QWidget
-
-import mw4.mountcontrol
 from mw4.gui.mainWaddon.tabMount_Command import MountCommand
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
-
+from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

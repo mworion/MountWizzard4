@@ -14,21 +14,15 @@
 #
 ###########################################################
 
+import mw4.gui.utilities.toolsQtWidget
+import pytest
 import shutil
 import unittest.mock as mock
+from mw4.gui.mainWindow.mainWindow import MainWindow
 from pathlib import Path
-
-import pytest
-
-
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QWidget
 from skyfield.api import wgs84
-
-import mw4.gui.utilities.toolsQtWidget
-from mw4.gui.mainWindow.mainWindow import MainWindow
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

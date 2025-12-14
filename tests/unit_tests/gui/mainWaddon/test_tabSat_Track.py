@@ -14,24 +14,18 @@
 #
 ###########################################################
 
-from unittest import mock
-
+import mw4.gui
 import numpy as np
 import pytest
-
-
-from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem
-from sgp4.exporter import export_tle
-from skyfield.api import Angle, EarthSatellite
-
-import mw4.gui
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
-
+from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem
+from sgp4.exporter import export_tle
+from skyfield.api import Angle, EarthSatellite
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

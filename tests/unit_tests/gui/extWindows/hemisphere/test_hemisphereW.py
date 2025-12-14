@@ -15,20 +15,14 @@
 ###########################################################
 
 import os
-import shutil
-import unittest.mock as mock
-
 import pyqtgraph as pg
 import pytest
-
-
-from PySide6.QtCore import QPointF
-from PySide6.QtGui import QCloseEvent
-
+import shutil
+import unittest.mock as mock
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
-
-
+from PySide6.QtCore import QPointF
+from PySide6.QtGui import QCloseEvent
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

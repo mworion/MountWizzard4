@@ -14,19 +14,14 @@
 #
 ###########################################################
 
-from unittest import mock
-
-
 import numpy as np
 import pytest
-
 from mw4.base.loggerMW import setupLogging
 from mw4.gui.mainWaddon.tabEnviron_Weather import EnvironWeather
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 setupLogging()
 
@@ -305,9 +300,15 @@ def test_updateRefractionParameters_6(function):
     function.ui.refracNoTrack.setChecked(True)
     function.app.mount.obsSite.status = 1
 
-    with mock.patch.object(function, "movingAverageRefractionParameters", return_value=(10, 10)):
-        with mock.patch.object(function.app.mount.setting, "setRefractionTemp", return_value=False):
-            with mock.patch.object(function.app.mount.setting, "setRefractionPress", return_value=False):
+    with mock.patch.object(
+        function, "movingAverageRefractionParameters", return_value=(10, 10)
+    ):
+        with mock.patch.object(
+            function.app.mount.setting, "setRefractionTemp", return_value=False
+        ):
+            with mock.patch.object(
+                function.app.mount.setting, "setRefractionPress", return_value=False
+            ):
                 function.updateRefractionParameters()
 
 
@@ -317,9 +318,15 @@ def test_updateRefractionParameters_7(function):
     function.ui.refracNoTrack.setChecked(True)
     function.app.mount.obsSite.status = 1
 
-    with mock.patch.object(function, "movingAverageRefractionParameters", return_value=(10, 10)):
-        with mock.patch.object(function.app.mount.setting, "setRefractionTemp", return_value=True):
-            with mock.patch.object(function.app.mount.setting, "setRefractionPress", return_value=True):
+    with mock.patch.object(
+        function, "movingAverageRefractionParameters", return_value=(10, 10)
+    ):
+        with mock.patch.object(
+            function.app.mount.setting, "setRefractionTemp", return_value=True
+        ):
+            with mock.patch.object(
+                function.app.mount.setting, "setRefractionPress", return_value=True
+            ):
                 function.updateRefractionParameters()
 
 

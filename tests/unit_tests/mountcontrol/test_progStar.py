@@ -15,12 +15,8 @@
 ###########################################################
 
 import unittest
-
-
-from skyfield.api import Angle, Star
-
-
 from mw4.mountcontrol.progStar import ProgStar
+from skyfield.api import Angle, Star
 
 
 class TestConfigData(unittest.TestCase):

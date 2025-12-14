@@ -325,7 +325,9 @@ class DevicePopup(toolsQtWidget.MWidget):
     def selectBoltwoodPath(self) -> None:
         """ """
         folder = Path(self.ui.boltwoodPath.text()).parent
-        boltwoodFilePath = self.openFile(self, "Select Boltwood Filepath", folder, "All Files (*)")
+        boltwoodFilePath = self.openFile(
+            self, "Select Boltwood Filepath", folder, "All Files (*)"
+        )
         if not boltwoodFilePath.is_file():
             return
-        self.framework2gui['boltwood']['filePath'].setText(str(boltwoodFilePath))
+        self.framework2gui["boltwood"]["filePath"].setText(str(boltwoodFilePath))

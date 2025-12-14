@@ -14,18 +14,12 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
+import mw4.logic
 import numpy as np
 import pytest
-
-
+import unittest.mock as mock
 from astropy.io import fits
-
-import mw4.logic
 from mw4.logic.camera.camera import Camera
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

@@ -14,16 +14,11 @@
 #
 ###########################################################
 
-from unittest import mock
-
 import pytest
-
-
-from PySide6.QtCore import QObject, Signal
-from websocket import WebSocketApp
-
-
 from mw4.logic.keypad.keypad import KeyPad
+from PySide6.QtCore import QObject, Signal
+from unittest import mock
+from websocket import WebSocketApp
 
 
 @pytest.fixture(autouse=True, scope="function")

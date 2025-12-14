@@ -16,18 +16,12 @@
 
 import builtins
 import os
-import shutil
-import unittest.mock as mock
-
 import pytest
 import requests
-
-
-from PySide6.QtWidgets import QWidget
-
+import shutil
+import unittest.mock as mock
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
-
-
+from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

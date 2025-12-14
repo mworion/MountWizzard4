@@ -14,13 +14,9 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
-
 import numpy as np
 import pytest
-
-
+import unittest.mock as mock
 from mw4.gui.utilities.gPolarScatter import PolarScatter
 
 

@@ -263,18 +263,7 @@ class ModelData(QObject):
             )
             item["raJNowS"] = raJNowS
             item["decJNowS"] = decJNowS
-            self.statusSolve.emit(
-                [
-                    item["imagePath"].stem,
-                    item["success"],
-                    item["raJ2000S"].hours,
-                    item["decJ2000S"].degrees,
-                    item["angleS"].degrees,
-                    item["errorRMS_S"],
-                ]
-            )
-        else:
-            self.statusSolve.emit([item["imagePath"].stem, item["success"]])
+        self.statusSolve.emit(item)
 
         if item["success"]:
             self.app.data.setStatusBuildPSolved(self.pointerResult)

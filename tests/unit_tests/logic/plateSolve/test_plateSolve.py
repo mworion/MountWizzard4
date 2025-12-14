@@ -16,16 +16,11 @@
 
 import glob
 import os
-import shutil
-from unittest import mock
-
 import pytest
-
+import shutil
 from mw4.logic.plateSolve.plateSolve import PlateSolve
-
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

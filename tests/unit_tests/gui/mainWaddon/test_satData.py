@@ -15,9 +15,6 @@
 ###########################################################
 
 
-
-
-
 from mw4.gui.mainWaddon.satData import SatData
 
 

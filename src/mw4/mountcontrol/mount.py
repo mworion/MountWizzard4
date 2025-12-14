@@ -178,7 +178,7 @@ class MountDevice:
         try:
             client.connect(self.host)
             client.shutdown(socket.SHUT_RDWR)
-        except socket.timeout:
+        except TimeoutError:
             self.mountIsUp = False
             self.log.info("Mount connection timed out")
         except Exception as e:

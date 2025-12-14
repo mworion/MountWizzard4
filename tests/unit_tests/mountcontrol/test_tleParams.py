@@ -15,14 +15,9 @@
 ###########################################################
 
 import unittest
-
-
-from skyfield.api import Angle, load
-
 from mw4.base.loggerMW import setupLogging
-
-
 from mw4.mountcontrol.tleParams import TLEParams
+from skyfield.api import Angle, load
 
 setupLogging()
 

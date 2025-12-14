@@ -14,23 +14,17 @@
 #
 ###########################################################
 
-from unittest import mock
-
+import mw4.gui
 import numpy as np
 import pytest
-
-
-from PySide6.QtCore import QRect
-from PySide6.QtWidgets import QTableWidgetItem
-from skyfield.api import EarthSatellite
-
-import mw4.gui
 from mw4.gui.mainWaddon.tabSat_Search import SatSearch
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
-
+from PySide6.QtCore import QRect
+from PySide6.QtWidgets import QTableWidgetItem
+from skyfield.api import EarthSatellite
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

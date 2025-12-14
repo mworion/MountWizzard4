@@ -15,24 +15,18 @@
 #
 ###########################################################
 
-import os
-import time
-import unittest.mock as mock
-from pathlib import Path
-
-import pytest
-
-
-from skyfield.api import Angle
-
 import mw4.gui.mainWaddon
 import mw4.gui.mainWaddon.tabModel
+import os
+import pytest
+import time
+import unittest.mock as mock
 from mw4.gui.mainWaddon.tabModel import Model
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.logic.modelBuild.modelRun import ModelData
-
-
+from pathlib import Path
+from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

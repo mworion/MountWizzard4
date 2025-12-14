@@ -16,25 +16,20 @@
 
 import glob
 import json
-import os
-import shutil
-import unittest.mock as mock
-from pathlib import Path
-
-
-import PySide6
-import pytest
-from PySide6.QtCore import Qt
-from skyfield.api import Angle, Star
-
 import mw4.gui
 import mw4.gui.mainWaddon.tabModel_Manage
+import os
+import PySide6
+import pytest
+import shutil
+import unittest.mock as mock
 from mw4.gui.mainWaddon.tabModel_Manage import ModelManage
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.mountcontrol.modelStar import ModelStar
-
-
+from pathlib import Path
+from PySide6.QtCore import Qt
+from skyfield.api import Angle, Star
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

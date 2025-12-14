@@ -14,19 +14,14 @@
 #
 ###########################################################
 
-from unittest import mock
-
-import pytest
-
-
-
-from PySide6.QtCore import QTimer
-
 import mw4.base.indiClass
+import pytest
 from mw4.base.indiClass import IndiClass
 from mw4.base.signalsDevices import Signals
 from mw4.indibase.indiDevice import Device
+from PySide6.QtCore import QTimer
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 host_ip = "127.0.0.1"
 

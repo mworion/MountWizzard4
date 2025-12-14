@@ -15,21 +15,15 @@
 ###########################################################
 
 import logging
-import unittest.mock as mock
-from pathlib import Path
-
 import pytest
-
-
-from PySide6.QtWidgets import QWidget
-
+import unittest.mock as mock
 from mw4.base.ascomClass import AscomClass
 from mw4.base.indiClass import IndiClass
 from mw4.base.signalsDevices import Signals
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.toolsQtWidget import MWidget
-
-
+from pathlib import Path
+from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

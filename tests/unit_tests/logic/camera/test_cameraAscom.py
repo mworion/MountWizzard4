@@ -15,24 +15,19 @@
 ###########################################################
 
 import platform
-import unittest.mock as mock
-
 import pytest
+import unittest.mock as mock
 
 if not platform.system() == "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
 import ctypes
-
 from astropy.io import fits
-
 from mw4.base.ascomClass import AscomClass
 from mw4.base.loggerMW import setupLogging
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraAscom import CameraAscom
-
-
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()

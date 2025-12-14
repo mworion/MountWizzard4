@@ -15,9 +15,6 @@
 ###########################################################
 
 
-
-
-
 from mw4.logic.databaseProcessing.sourceURL import (
     asteroidSourceURLs,
     cometSourceURLs,

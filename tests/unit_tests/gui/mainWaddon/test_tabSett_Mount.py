@@ -14,20 +14,14 @@
 #
 ###########################################################
 
+import mw4.gui
+import pytest
 import socket
 import unittest.mock as mock
-
-import pytest
-
-
 import wakeonlan
-from PySide6.QtWidgets import QWidget
-
-import mw4.gui
 from mw4.gui.mainWaddon.tabSett_Mount import SettMount
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
-
+from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

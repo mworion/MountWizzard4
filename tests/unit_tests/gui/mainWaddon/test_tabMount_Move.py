@@ -14,19 +14,13 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
-import pytest
-
-
-from PySide6.QtWidgets import QInputDialog, QWidget
-from skyfield.api import Angle
-
 import mw4.gui.mainWaddon.tabMount
+import pytest
+import unittest.mock as mock
 from mw4.gui.mainWaddon.tabMount_Move import MountMove
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
-
+from PySide6.QtWidgets import QInputDialog, QWidget
+from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

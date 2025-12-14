@@ -14,17 +14,11 @@
 #
 ###########################################################
 
-import unittest.mock as mock
-
 import pytest
-from PySide6 import QtNetwork
-
-
-from PySide6.QtCore import QObject, Signal
-
+import unittest.mock as mock
 from mw4.logic.remote.remote import Remote
-
-
+from PySide6 import QtNetwork
+from PySide6.QtCore import QObject, Signal
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

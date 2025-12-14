@@ -16,21 +16,16 @@
 
 import builtins
 import glob
+import mw4.logic
 import os
 import platform
-import subprocess
-from pathlib import Path
-from unittest import mock
-
 import pytest
-
-import mw4.logic
+import subprocess
 from mw4.logic.plateSolve.astap import ASTAP
 from mw4.logic.plateSolve.plateSolve import PlateSolve
-
-
-
+from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="function")

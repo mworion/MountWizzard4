@@ -15,18 +15,13 @@
 ###########################################################
 
 import datetime
-import unittest.mock as mock
-
-
 import PySide6
 import pytest
-from PySide6.QtWidgets import QWidget
-from skyfield.api import Angle, wgs84
-
+import unittest.mock as mock
 from mw4.gui.mainWaddon.tabMount_Sett import MountSett
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
-
+from PySide6.QtWidgets import QWidget
+from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

@@ -16,15 +16,10 @@
 
 import unittest
 import unittest.mock as mock
-
-
-from skyfield.api import Angle, load
-
 from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.connection import Connection
-
-
 from mw4.mountcontrol.satellite import Satellite
+from skyfield.api import Angle, load
 
 setupLogging()
 

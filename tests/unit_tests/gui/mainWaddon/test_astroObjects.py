@@ -14,21 +14,15 @@
 #
 ###########################################################
 
-from pathlib import Path
-from unittest import mock
-
-import pytest
-from PySide6.QtCore import QThreadPool
-
-
-from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem, QWidget
-
 import mw4.gui
+import pytest
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-
-
+from pathlib import Path
+from PySide6.QtCore import QThreadPool
+from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem, QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 satBaseUrl = "http://www.celestrak.org/NORAD/elements/gp.php?"
 satSourceURLs = {

@@ -244,12 +244,12 @@ def test_showStatusExposure(function):
 
 
 def test_showStatusSolve_1(function):
-    status = {"imagePath": "test", "success": False, "message": "Error"}
+    status = {"imagePath": Path("test"), "success": False, "message": "Error"}
     function.showStatusSolve(status)
 
 
 def test_showStatusSolve_2(function):
-    status = {"imagePath": "test", "success": True, "angleS": Angle(degrees=2.5),
+    status = {"imagePath": Path("test"), "success": True, "angleS": Angle(degrees=2.5),
               "errorRMS_S": 1, "scaleS": 1.25}
     function.showStatusSolve(status)
 

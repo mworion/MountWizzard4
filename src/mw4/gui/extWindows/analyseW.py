@@ -32,21 +32,21 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui = analyse_ui.Ui_AnalyseDialog()
         self.ui.setupUi(self)
 
-        self.latitude = None
-        self.pierside = None
-        self.countSequence = None
-        self.index = None
-        self.scaleS = None
-        self.altitude = None
-        self.azimuth = None
-        self.errorAngle = None
-        self.errorRMS = None
-        self.errorRA_S = None
-        self.errorDEC_S = None
-        self.errorRA = None
-        self.errorDEC = None
-        self.angularPosRA = None
-        self.angularPosDEC = None
+        self.latitude: list = []
+        self.pierside: list = []
+        self.countSequence: list = []
+        self.errorIndex: list = []
+        self.scaleS: list = []
+        self.altitude: list = []
+        self.azimuth: list = []
+        self.errorAngle: list = []
+        self.errorRMS: list = []
+        self.errorRA_S: list = []
+        self.errorDEC_S: list = []
+        self.errorRA: list = []
+        self.errorDEC: list = []
+        self.angularPosRA: list = []
+        self.angularPosDEC: list = []
 
         self.wIcon(self.ui.load, "load")
         self.ui.load.clicked.connect(self.loadModel)
@@ -187,7 +187,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.latitude = modelJSON[0].get("latitude")
         self.pierside = self.list2array(model["pierside"])
         self.countSequence = self.list2array(model["countSequence"], dtype=np.int64)
-        self.index = self.list2array(model["errorIndex"], dtype=np.int64) - 1
+        self.errorIndex = self.list2array(model["errorIndex"], dtype=np.int64) - 1
         self.scaleS = self.list2array(model["scaleS"], dtype=np.float32)
         self.altitude = self.list2array(model["altitude"], dtype=np.float32)
         self.azimuth = self.list2array(model["azimuth"], dtype=np.float32)
@@ -377,7 +377,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.scaleImage.p[0].setLabel("left", "Image Scale [arcsec/pix]")
         color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
         self.ui.scaleImage.plot(
-            self.index,
+            self.errorIndex,
             self.scaleS,
             color=color,
             data=self.pierside,
@@ -393,7 +393,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         pierside = [x[1] for x in temp]
         color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in pierside]
         self.ui.errorAscending.plot(
-            self.index,
+            self.errorIndex,
             y,
             color=color,
             data=pierside,
@@ -494,7 +494,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
     def drawAll(self) -> None:
         """ """
-        if self.index is None:
+        if self.errorIndex is None:
             return
         for chart in self.charts:
             chart()

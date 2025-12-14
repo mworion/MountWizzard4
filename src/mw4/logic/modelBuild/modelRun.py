@@ -290,7 +290,7 @@ class ModelData(QObject):
             modelItem["name"] = self.modelName
             modelItem["plateSolveApp"] = self.plateSolveApp
             modelItem["focalLength"] = self.app.camera.focalLength
-            modelItem["index"] = index
+            modelItem["countSequence"] = index
             modelItem["success"] = False
             self.modelBuildData.append(modelItem)
 

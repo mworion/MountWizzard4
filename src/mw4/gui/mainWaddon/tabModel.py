@@ -225,8 +225,8 @@ class Model(QObject):
     def showStatusSolve(self, data: dict) -> None:
         """ """
         if data["success"]:
-            t = f"Solved {data['imagePath']}, Error {data['errorRMS_S']:.2f}"
-            t += f", Angle {data['angleS']:.2f}, Scale {data['scaleS']:.2f}"
+            t = f"Solved   {data['imagePath'].stem}, Error {data['errorRMS_S']:.2f}"
+            t += f", Angle {data['angleS'].degrees:.2f}, Scale {data['scaleS']:.2f}"
         else:
             t = f"Error solving {data['imagePath']}, {data['message']}"
         self.msg.emit(0, "Model", "Solving", t)

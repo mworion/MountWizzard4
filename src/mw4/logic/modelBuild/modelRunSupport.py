@@ -41,6 +41,7 @@ degreeAngles = [
     "errorRA",
     "errorRA_S",
     "decMountModel",
+    "angleS",
 ]
 
 

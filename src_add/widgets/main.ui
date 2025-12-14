@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -8635,7 +8635,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -10283,6 +10283,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="frame">
          <bool>false</bool>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -10346,6 +10349,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="frame">
          <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -10534,6 +10540,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="frame">
          <bool>false</bool>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -10577,6 +10586,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="frame">
          <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -10646,6 +10658,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="frame">
          <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -10794,6 +10809,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="frame">
          <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -10976,6 +10994,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="frame">
          <bool>false</bool>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -11040,6 +11061,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="frame">
          <bool>false</bool>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -11083,6 +11107,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="frame">
          <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -11170,6 +11197,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="frame">
          <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -11298,6 +11328,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="frame">
          <bool>false</bool>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -11341,6 +11374,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="frame">
          <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -11409,6 +11445,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="frame">
          <bool>false</bool>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -11452,6 +11491,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="frame">
          <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -23750,7 +23792,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>

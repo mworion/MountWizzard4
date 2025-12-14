@@ -54,6 +54,10 @@ def test_setupIcons_1(function):
     function.setupIcons()
 
 
+def test_setWaitTimeFlip_1(function):
+    function.setWaitTimeFlip()
+
+
 def test_cancelBatch_1(function):
     function.modelData = None
     function.cancelBatch()

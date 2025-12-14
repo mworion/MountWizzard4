@@ -160,10 +160,6 @@ def test_updateFwGui_1(function):
     function.updateFwGui(function.app.mount.firmware)
 
 
-def test_setWaitTimeFlip_1(function):
-    function.setWaitTimeFlip()
-
-
 def test_toggleClockSync_1(function):
     function.ui.clockSync.setChecked(True)
     function.toggleClockSync()

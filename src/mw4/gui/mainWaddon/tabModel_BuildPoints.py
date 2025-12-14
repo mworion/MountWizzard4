@@ -87,7 +87,6 @@ class BuildPoints(QObject):
         self.ui.numberCelestialStepHA.valueChanged.disconnect(self.genBuildCelestial)
         self.ui.numberCelestialStepDEC.valueChanged.disconnect(self.genBuildCelestial)
         self.ui.meridianDistanceFlip.valueChanged.disconnect(self.genBuildCelestial)
-
         self.ui.numberDSOPoints.valueChanged.disconnect(self.genBuildDSO)
         self.ui.buildPFileName.setText(config.get("buildPFileName", ""))
         self.ui.numberGridPointsRow.setValue(config.get("numberGridPointsRow", 5))
@@ -110,7 +109,6 @@ class BuildPoints(QObject):
         self.ui.sortALT.setChecked(config.get("sortALT", False))
         self.ui.keepGeneratedPoints.setChecked(config.get("keepGeneratedPoints", False))
         self.ui.ditherBuildPoints.setChecked(config.get("ditherBuildPoints", False))
-
         self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
         self.ui.numberGridPointsRow.valueChanged.connect(self.genBuildGrid)
         self.ui.altitudeMin.valueChanged.connect(self.genBuildGrid)

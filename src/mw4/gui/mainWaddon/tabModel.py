@@ -51,6 +51,7 @@ class Model(QObject):
         self.ui.endModel.clicked.connect(self.endBatch)
         self.ui.dataModel.clicked.connect(self.runFileModel)
         self.app.operationRunning.connect(self.setModelOperationMode)
+        self.ui.waitTimeMountFlip.valueChanged.connect(self.setWaitTimeFlip)
 
     def initConfig(self) -> None:
         """ """
@@ -61,6 +62,8 @@ class Model(QObject):
         self.ui.progressiveTiming.setChecked(config.get("progressiveTiming", False))
         self.ui.normalTiming.setChecked(config.get("normalTiming", False))
         self.ui.conservativeTiming.setChecked(config.get("conservativeTiming", True))
+        self.ui.waitTimeMountFlip.setValue(config.get("waitTimeFlip", 0))
+        self.ui.waitTimeExposure.setValue(config.get("waitTimeExposure", 0))
 
     def storeConfig(self) -> None:
         """ """
@@ -71,6 +74,8 @@ class Model(QObject):
         config["progressiveTiming"] = self.ui.progressiveTiming.isChecked()
         config["normalTiming"] = self.ui.normalTiming.isChecked()
         config["conservativeTiming"] = self.ui.conservativeTiming.isChecked()
+        config["waitTimeFlip"] = self.ui.waitTimeMountFlip.value()
+        config["waitTimeExposure"] = self.ui.waitTimeExposure.value()
 
     def setupIcons(self) -> None:
         """ """
@@ -79,6 +84,10 @@ class Model(QObject):
         self.mainW.wIcon(self.ui.pauseModel, "pause")
         self.mainW.wIcon(self.ui.endModel, "stop_m")
         self.mainW.wIcon(self.ui.dataModel, "choose")
+
+    def setWaitTimeFlip(self) -> None:
+        """ """
+        self.app.mount.waitTimeFlip = self.ui.waitTimeMountFlip.value()
 
     def cancelBatch(self) -> None:
         """ """
@@ -219,17 +228,17 @@ class Model(QObject):
 
     def showStatusExposure(self, statusData: tuple) -> None:
         """ """
-        t = f"Exposing {statusData[0]}, Duration {statusData[1]}s, Binning {statusData[2]} "
+        t = f"Expose {statusData[0]}, Duration {statusData[1]}s, Binning {statusData[2]} "
         self.msg.emit(0, "Model", "Exposure", t)
 
     def showStatusSolve(self, data: dict) -> None:
         """ """
         if data["success"]:
-            t = f"Solved   {data['imagePath'].stem}, Error {data['errorRMS_S']:.2f}"
+            t = f"Solved {data['imagePath'].stem}, Error {data['errorRMS_S']:.2f}"
             t += f", Angle {data['angleS'].degrees:.2f}, Scale {data['scaleS']:.2f}"
         else:
-            t = f"Error solving {data['imagePath']}, {data['message']}"
-        self.msg.emit(0, "Model", "Solving", t)
+            t = f"Error {data['imagePath'].stem}, {data['message']}"
+        self.msg.emit(0, "Model", "Solving Error", t)
 
     def setupModelInputData(self) -> None:
         """ """

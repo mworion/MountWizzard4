@@ -41,7 +41,6 @@ class SettMount(QObject):
         self.ui.port3490.clicked.connect(self.mountHost)
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
-        self.ui.waitTimeMountFlip.valueChanged.connect(self.setWaitTimeFlip)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
         self.app.mount.signals.settingDone.connect(self.setMountMAC)
         self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
@@ -58,8 +57,6 @@ class SettMount(QObject):
         self.ui.mountWolAddress.setText(config.get("mountWolAddress", "255.255.255.255"))
         self.ui.mountWolPort.setText(config.get("mountWolPort", "9"))
         self.ui.rackCompMAC.setText(config.get("rackCompMAC", ""))
-        self.ui.waitTimeMountFlip.setValue(config.get("waitTimeFlip", 0))
-        self.ui.waitTimeExposure.setValue(config.get("waitTimeExposure", 0))
         self.ui.automaticWOL.setChecked(config.get("automaticWOL", False))
         self.ui.syncTimeNone.setChecked(config.get("syncTimeNone", True))
         self.ui.syncTimeCont.setChecked(config.get("syncTimeCont", False))
@@ -78,8 +75,6 @@ class SettMount(QObject):
         config["mountWolAddress"] = self.ui.mountWolAddress.text()
         config["mountWolPort"] = self.ui.mountWolPort.text()
         config["rackCompMAC"] = self.ui.rackCompMAC.text()
-        config["waitTimeFlip"] = self.ui.waitTimeMountFlip.value()
-        config["waitTimeExposure"] = self.ui.waitTimeExposure.value()
         config["port3492"] = self.ui.port3492.isChecked()
         config["automaticWOL"] = self.ui.automaticWOL.isChecked()
         config["syncTimeNone"] = self.ui.syncTimeNone.isChecked()
@@ -144,10 +139,6 @@ class SettMount(QObject):
 
         self.app.mount.MAC = sett.addressLanMAC
         self.ui.mountMAC.setText(self.app.mount.MAC)
-
-    def setWaitTimeFlip(self) -> None:
-        """ """
-        self.app.mount.waitTimeFlip = self.ui.waitTimeMountFlip.value()
 
     def updateFwGui(self, fw: Firmware) -> None:
         """ """

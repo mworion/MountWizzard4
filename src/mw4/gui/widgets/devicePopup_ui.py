@@ -743,7 +743,7 @@ class Ui_DevicePopup(object):
 
         self.retranslateUi(DevicePopup)
 
-        self.tab.setCurrentIndex(0)
+        self.tab.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(DevicePopup)

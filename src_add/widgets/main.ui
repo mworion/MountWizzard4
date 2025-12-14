@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -8635,7 +8635,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -10841,7 +10841,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>165</y>
+          <y>160</y>
           <width>291</width>
           <height>21</height>
          </rect>

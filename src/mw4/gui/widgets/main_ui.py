@@ -2746,7 +2746,7 @@ class Ui_MainWindow(object):
         self.label_69.setFont(font1)
         self.label_67 = QLabel(self.runModelGroup)
         self.label_67.setObjectName(u"label_67")
-        self.label_67.setGeometry(QRect(10, 165, 291, 21))
+        self.label_67.setGeometry(QRect(10, 160, 291, 21))
         self.label_67.setFont(font1)
         self.waitTimeExposure = QDoubleSpinBox(self.runModelGroup)
         self.waitTimeExposure.setObjectName(u"waitTimeExposure")
@@ -8494,9 +8494,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainTabWidget.setCurrentIndex(3)
+        self.mainTabWidget.setCurrentIndex(0)
         self.mountTabWidget.setCurrentIndex(0)
-        self.modelingTabWidget.setCurrentIndex(1)
+        self.modelingTabWidget.setCurrentIndex(0)
         self.manageTabWidget.setCurrentIndex(2)
         self.imagingTabWidget.setCurrentIndex(0)
         self.satTabWidget.setCurrentIndex(0)

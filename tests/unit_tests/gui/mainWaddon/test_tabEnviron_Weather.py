@@ -49,13 +49,13 @@ def test_smartEnvironGui_1(function):
     function.app.deviceStat["sensor1Weather"] = False
     function.app.deviceStat["sensor2Weather"] = False
     function.app.deviceStat["sensor3Weather"] = False
-    function.app.deviceStat["onlineWeather"] = False
+    function.app.deviceStat["sensor4Weather"] = False
     function.app.deviceStat["directWeather"] = False
     function.smartEnvironGui()
     assert not function.ui.sensor1Group.isEnabled()
     assert not function.ui.sensor2Group.isEnabled()
     assert not function.ui.sensor3Group.isEnabled()
-    assert not function.ui.onlineGroup.isEnabled()
+    assert not function.ui.sensor4Group.isEnabled()
     assert not function.ui.directGroup.isEnabled()
 
 
@@ -63,13 +63,13 @@ def test_smartEnvironGui_2(function):
     function.app.deviceStat["sensor1Weather"] = True
     function.app.deviceStat["sensor2Weather"] = True
     function.app.deviceStat["sensor3Weather"] = True
-    function.app.deviceStat["onlineWeather"] = True
+    function.app.deviceStat["sensor4Weather"] = True
     function.app.deviceStat["directWeather"] = True
     function.smartEnvironGui()
     assert function.ui.sensor1Group.isEnabled()
     assert function.ui.sensor2Group.isEnabled()
     assert function.ui.sensor3Group.isEnabled()
-    assert function.ui.onlineGroup.isEnabled()
+    assert function.ui.sensor4Group.isEnabled()
     assert function.ui.directGroup.isEnabled()
 
 
@@ -77,19 +77,19 @@ def test_smartEnvironGui_3(function):
     function.app.deviceStat["sensor1Weather"] = None
     function.app.deviceStat["sensor2Weather"] = None
     function.app.deviceStat["sensor3Weather"] = None
-    function.app.deviceStat["onlineWeather"] = None
+    function.app.deviceStat["sensor4Weather"] = None
     function.app.deviceStat["directWeather"] = False
     function.smartEnvironGui()
     assert not function.ui.sensor1Group.isEnabled()
     assert not function.ui.sensor2Group.isEnabled()
     assert not function.ui.sensor3Group.isEnabled()
-    assert not function.ui.onlineGroup.isEnabled()
+    assert not function.ui.sensor4Group.isEnabled()
     assert not function.ui.directGroup.isEnabled()
 
 
 def test_updateRefractionUpdateType_1(function):
     function.app.mount.setting.weatherStatus = 3
-    function.refractionSource = "onlineWeather"
+    function.refractionSource = "sensor4Weather"
     function.updateRefractionUpdateType()
 
 
@@ -178,23 +178,23 @@ def test_setRefractionSourceGui_2(function):
 
 
 def test_selectRefractionSource_1(function):
-    function.ui.onlineGroup.setChecked(False)
+    function.ui.sensor1Group.setChecked(False)
     function.refractionSource = "onlineWeather"
     with mock.patch.object(function, "setRefractionSourceGui"):
         with mock.patch.object(function, "setRefractionUpdateType"):
-            function.selectRefractionSource("onlineWeather")
+            function.selectRefractionSource("sensor1Weather")
 
 
 def test_selectRefractionSource_2(function):
-    function.ui.onlineGroup.setChecked(True)
+    function.ui.sensor1Group.setChecked(True)
     function.refractionSource = "directWeather"
     with mock.patch.object(function, "setRefractionSourceGui"):
         with mock.patch.object(function, "setRefractionUpdateType"):
-            function.selectRefractionSource("onlineWeather")
+            function.selectRefractionSource("sensor1Weather")
 
 
 def test_isValidRefractionSource_1(function):
-    function.refractionSource = "onlineWeather"
+    function.refractionSource = "sensor1Weather"
     assert function.isValidRefractionSource()
 
 
@@ -209,15 +209,15 @@ def test_updateFilterRefractionParameters_2(function):
 
 
 def test_updateFilterRefractionParameters_3(function):
-    function.refractionSource = "onlineWeather"
-    function.app.onlineWeather.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = 10
-    function.app.onlineWeather.data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = 1000
+    function.refractionSource = "sensor1Weather"
+    function.app.sensor1Weather.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = 10
+    function.app.sensor1Weather.data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = 1000
     function.updateFilterRefractionParameters()
 
 
 def test_updateFilterRefractionParameters_4(function):
     function.refractionSource = "sensor1Weather"
-    function.app.onlineWeather.data.clear()
+    function.app.sensor1Weather.data.clear()
     function.updateFilterRefractionParameters()
 
 

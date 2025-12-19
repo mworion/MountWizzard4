@@ -173,16 +173,17 @@ def test_setRefractionSourceGui_1(function):
 
 
 def test_setRefractionSourceGui_2(function):
-    function.refractionSource = "onlineWeather"
+    function.setRefractionSourceGui()
+    function.refractionSource = "sensor1Weather"
     function.setRefractionSourceGui()
 
 
 def test_selectRefractionSource_1(function):
     function.ui.sensor1Group.setChecked(False)
-    function.refractionSource = "onlineWeather"
+    function.refractionSource = "sensor1Weather"
     with mock.patch.object(function, "setRefractionSourceGui"):
         with mock.patch.object(function, "setRefractionUpdateType"):
-            function.selectRefractionSource("sensor1Weather")
+            function.selectRefractionSource("sensor2Weather")
 
 
 def test_selectRefractionSource_2(function):
@@ -203,32 +204,32 @@ def test_isValidRefractionSource_2(function):
     assert not function.isValidRefractionSource()
 
 
-def test_updateFilterRefractionParameters_2(function):
+def test_updateFilterRefractionParameters_1(function):
     function.refractionSource = "weather"
+    function.updateFilterRefractionParameters()
+
+
+def test_updateFilterRefractionParameters_2(function):
+    function.refractionSource = "sensor1Weather"
+    function.app.sensor1Weather.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = 10
+    function.app.sensor1Weather.data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = 1000
     function.updateFilterRefractionParameters()
 
 
 def test_updateFilterRefractionParameters_3(function):
     function.refractionSource = "sensor1Weather"
-    function.app.sensor1Weather.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = 10
-    function.app.sensor1Weather.data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = 1000
+    function.app.sensor1Weather.data.clear()
     function.updateFilterRefractionParameters()
 
 
 def test_updateFilterRefractionParameters_4(function):
     function.refractionSource = "sensor1Weather"
-    function.app.sensor1Weather.data.clear()
-    function.updateFilterRefractionParameters()
-
-
-def test_updateFilterRefractionParameters_5(function):
-    function.refractionSource = "sensor1Weather"
     function.app.sensor1Weather.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = 10
     function.app.sensor1Weather.data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = 1000
     function.updateFilterRefractionParameters()
 
 
-def test_updateFilterRefractionParameters_9(function):
+def test_updateFilterRefractionParameters_5(function):
     function.refractionSource = "sensor1Weather"
     function.filteredPressure = np.full(100, 1000)
     function.app.sensor1Weather.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = 10
@@ -244,72 +245,56 @@ def test_movingAverageRefractionParameters_2(function):
     assert v2 == 1000.0
 
 
-def test_updateRefractionParameters_0(function):
-    function.refractionSource = "directWeather"
-
-    function.updateRefractionParameters()
-
-
 def test_updateRefractionParameters_1(function):
-    function.refractionSource = "onlineWeather"
+    function.refractionSource = "sensor1Weather"
     function.app.deviceStat["mount"] = False
-
-    function.updateRefractionParameters()
+    with mock.patch.object(function, "isValidRefractionSource", return_value=False):
+        function.updateRefractionParameters()
 
 
 def test_updateRefractionParameters_2(function):
-    function.refractionSource = "test"
+    function.refractionSource = "directWeather"
     function.app.deviceStat["mount"] = True
-    function.updateRefractionParameters()
+    with mock.patch.object(function, "isValidRefractionSource", return_value=True):
+        function.updateRefractionParameters()
 
 
 def test_updateRefractionParameters_3(function):
-    function.refractionSource = "onlineWeather"
-    function.app.deviceStat["mount"] = True
-    with mock.patch.object(
-        function, "movingAverageRefractionParameters", return_value=(0, 950)
-    ):
-        function.updateRefractionParameters()
+    function.refractionSource = "sensor1Weather"
+    function.app.deviceStat["mount"] = False
+    with mock.patch.object(function, "isValidRefractionSource", return_value=True):
+        with mock.patch.object(
+            function, "movingAverageRefractionParameters", return_value=(0, 950)
+        ):
+            function.updateRefractionParameters()
 
 
 def test_updateRefractionParameters_4(function):
-    function.refractionSource = "onlineWeather"
+    function.refractionSource = "sensor1Weather"
     function.app.deviceStat["mount"] = True
-    function.ui.refracManual.setChecked(True)
-    function.app.mount.obsSite.status = 0
-    with mock.patch.object(
-        function, "movingAverageRefractionParameters", return_value=(10, 10)
-    ):
-        function.updateRefractionParameters()
+    with mock.patch.object(function, "isValidRefractionSource", return_value=True):
+        with mock.patch.object(function, "movingAverageRefractionParameters", return_value=(0, 950)):
+            function.updateRefractionParameters()
 
 
 def test_updateRefractionParameters_5(function):
     function.refractionSource = "onlineWeather"
     function.app.deviceStat["mount"] = True
-    function.ui.refracNoTrack.setChecked(True)
+    function.ui.refracManual.setChecked(True)
     function.app.mount.obsSite.status = 0
-    with mock.patch.object(
-        function, "movingAverageRefractionParameters", return_value=(10, 10)
-    ):
-        function.updateRefractionParameters()
+    with mock.patch.object(function, "isValidRefractionSource", return_value=True):
+        with mock.patch.object(function, "movingAverageRefractionParameters", return_value=(10, 10)):
+            function.updateRefractionParameters()
 
 
 def test_updateRefractionParameters_6(function):
     function.refractionSource = "onlineWeather"
     function.app.deviceStat["mount"] = True
     function.ui.refracNoTrack.setChecked(True)
-    function.app.mount.obsSite.status = 1
-
-    with mock.patch.object(
-        function, "movingAverageRefractionParameters", return_value=(10, 10)
-    ):
-        with mock.patch.object(
-            function.app.mount.setting, "setRefractionTemp", return_value=False
-        ):
-            with mock.patch.object(
-                function.app.mount.setting, "setRefractionPress", return_value=False
-            ):
-                function.updateRefractionParameters()
+    function.app.mount.obsSite.status = 0
+    with mock.patch.object(function, "isValidRefractionSource", return_value=True):
+        with mock.patch.object(function, "movingAverageRefractionParameters", return_value=(10, 10)):
+            function.updateRefractionParameters()
 
 
 def test_updateRefractionParameters_7(function):
@@ -318,16 +303,24 @@ def test_updateRefractionParameters_7(function):
     function.ui.refracNoTrack.setChecked(True)
     function.app.mount.obsSite.status = 1
 
-    with mock.patch.object(
-        function, "movingAverageRefractionParameters", return_value=(10, 10)
-    ):
-        with mock.patch.object(
-            function.app.mount.setting, "setRefractionTemp", return_value=True
-        ):
-            with mock.patch.object(
-                function.app.mount.setting, "setRefractionPress", return_value=True
-            ):
-                function.updateRefractionParameters()
+    with mock.patch.object(function, "isValidRefractionSource", return_value=True):
+        with mock.patch.object(function, "movingAverageRefractionParameters", return_value=(10, 10)):
+            with mock.patch.object(function.app.mount.setting, "setRefractionTemp", return_value=False):
+                with mock.patch.object(function.app.mount.setting, "setRefractionPress", return_value=False):
+                    function.updateRefractionParameters()
+
+
+def test_updateRefractionParameters_8(function):
+    function.refractionSource = "onlineWeather"
+    function.app.deviceStat["mount"] = True
+    function.ui.refracNoTrack.setChecked(True)
+    function.app.mount.obsSite.status = 1
+
+    with mock.patch.object(function, "isValidRefractionSource", return_value=True):
+        with mock.patch.object(function, "movingAverageRefractionParameters", return_value=(10, 10)):
+            with mock.patch.object(function.app.mount.setting, "setRefractionTemp", return_value=True):
+                with mock.patch.object(function.app.mount.setting, "setRefractionPress", return_value=True):
+                    function.updateRefractionParameters()
 
 
 def test_updateSourceGui_1(function):

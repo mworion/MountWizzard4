@@ -1139,7 +1139,7 @@ class App(QObject):
     sensor1Weather = SensorWeather()
     sensor2Weather = SensorWeather()
     sensor3Weather = SensorWeather()
-    onlineWeather = OnlineWeather()
+    sensor4Weather = SensorWeather()
     directWeather = DirectWeather()
     seeingWeather = SeeingWeather()
     power = Power()

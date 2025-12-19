@@ -34,8 +34,7 @@ class SettUpdate(QObject):
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelStandard.clicked.connect(self.setLoggingLevel)
-        self.ui.isOnline.clicked.connect(self.setWeatherOnline)
-        self.ui.isOnline.clicked.connect(self.setSeeingOnline)
+        self.ui.isOnline.clicked.connect(self.setOnlineMode)
         self.ui.isOnline.clicked.connect(self.setupIERS)
 
     def initConfig(self):
@@ -47,9 +46,7 @@ class SettUpdate(QObject):
         self.ui.loglevelStandard.setChecked(loglevel == "INFO")
         self.ui.isOnline.setChecked(config.get("isOnline", False))
         self.ui.ageDatabases.setValue(config.get("ageDatabases", 1))
-
-        self.setWeatherOnline()
-        self.setSeeingOnline()
+        self.setOnlineMode()
         self.setupIERS()
 
     def storeConfig(self):
@@ -58,21 +55,14 @@ class SettUpdate(QObject):
         config["isOnline"] = self.ui.isOnline.isChecked()
         config["ageDatabases"] = self.ui.ageDatabases.value()
 
-    def setWeatherOnline(self):
+    def setOnlineMode(self):
         """ """
-        weather = self.app.onlineWeather
-        if not weather:
-            return False
-        weather.online = self.ui.isOnline.isChecked()
-        return True
-
-    def setSeeingOnline(self):
-        """ """
-        seeing = self.app.seeingWeather
-        if not seeing:
-            return False
-        seeing.online = self.ui.isOnline.isChecked()
-        return True
+        isOnline = self.ui.isOnline.isChecked()
+        self.app.onlineMode = isOnline
+        if isOnline:
+            self.msg.emit(0, "System", "Online", "Online mode activated")
+        else:
+            self.msg.emit(0, "System", "Online", "Online mode deactivated")
 
     def setupIERS(self):
         """ """

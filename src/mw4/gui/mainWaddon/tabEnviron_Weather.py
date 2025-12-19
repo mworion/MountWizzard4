@@ -52,11 +52,11 @@ class EnvironWeather(QObject):
                 "signals": self.app.sensor3Weather.signals,
                 "uiPost": "3",
             },
-            "onlineWeather": {
-                "group": self.ui.onlineGroup,
-                "data": self.app.onlineWeather.data,
-                "signals": self.app.onlineWeather.signals,
-                "uiPost": "Online",
+            "sensor4Weather": {
+                "group": self.ui.sensor4Group,
+                "data": self.app.sensor4Weather.data,
+                "signals": self.app.sensor4Weather.signals,
+                "uiPost": "4",
             },
             "directWeather": {
                 "group": self.ui.directGroup,
@@ -210,7 +210,7 @@ class EnvironWeather(QObject):
             "sensor1Weather",
             "sensor2Weather",
             "sensor3Weather",
-            "onlineWeather",
+            "sensor4Weather",
         ]
 
     def updateFilterRefractionParameters(self) -> None:

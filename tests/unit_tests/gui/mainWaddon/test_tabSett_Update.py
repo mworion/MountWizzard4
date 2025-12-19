@@ -45,30 +45,16 @@ def test_storeConfig_1(function):
     function.storeConfig()
 
 
-def test_setWeatherOnline_1(function):
-    temp = function.app.onlineWeather
-    function.app.onlineWeather = None
-    suc = function.setWeatherOnline()
-    assert not suc
-    function.app.onlineWeather = temp
+def test_setOnlineMode_1(function):
+    function.ui.isOnline.setChecked(False)
+    function.setOnlineMode()
+    assert function.app.onlineMode is False
 
 
-def test_setWeatherOnline_2(function):
-    suc = function.setWeatherOnline()
-    assert suc
-
-
-def test_setSeeingOnline_1(function):
-    temp = function.app.seeingWeather
-    function.app.seeingWeather = None
-    suc = function.setSeeingOnline()
-    assert not suc
-    function.app.seeingWeather = temp
-
-
-def test_setSeeingOnline_2(function):
-    suc = function.setSeeingOnline()
-    assert suc
+def test_setOnlineMode_2(function):
+    function.ui.isOnline.setChecked(True)
+    function.setOnlineMode()
+    assert function.app.onlineMode is True
 
 
 def test_setupIERS_1(function):

@@ -65,7 +65,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideNone</enum>
@@ -2289,7 +2289,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="onlineWeather">
+   <widget class="QWidget" name="online">
     <attribute name="title">
      <string>Online Weather</string>
     </attribute>

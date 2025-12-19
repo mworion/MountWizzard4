@@ -7482,7 +7482,7 @@ no tracking</string>
        </widget>
       </item>
       <item row="0" column="5">
-       <widget class="QGroupBox" name="onlineGroup">
+       <widget class="QGroupBox" name="sensor4Group">
         <property name="minimumSize">
          <size>
           <width>75</width>
@@ -7502,7 +7502,7 @@ no tracking</string>
          <string>Select weather device as source for refraction updates.</string>
         </property>
         <property name="title">
-         <string>Online</string>
+         <string>Sens4</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -7543,7 +7543,7 @@ no tracking</string>
           </spacer>
          </item>
          <item row="5" column="0">
-          <widget class="QLineEdit" name="rainVolOnline">
+          <widget class="QLineEdit" name="rainVol4">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -7596,7 +7596,7 @@ no tracking</string>
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QLineEdit" name="dewPointOnline">
+          <widget class="QLineEdit" name="dewPoint4">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -7649,7 +7649,7 @@ no tracking</string>
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLineEdit" name="temperatureOnline">
+          <widget class="QLineEdit" name="temperature4">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -7702,7 +7702,7 @@ no tracking</string>
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLineEdit" name="pressureOnline">
+          <widget class="QLineEdit" name="pressure4">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -7755,7 +7755,7 @@ no tracking</string>
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QLineEdit" name="humidityOnline">
+          <widget class="QLineEdit" name="humidity4">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -7808,7 +7808,7 @@ no tracking</string>
           </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QLineEdit" name="cloudCoverOnline">
+          <widget class="QLineEdit" name="cloudCover4">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -7861,7 +7861,7 @@ no tracking</string>
           </widget>
          </item>
          <item row="6" column="0">
-          <widget class="QLineEdit" name="SQROnline">
+          <widget class="QLineEdit" name="SQR4">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -10980,41 +10980,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="dataModelGroup">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>355</y>
-         <width>366</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Using stored model datafiles</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QPushButton" name="dataModel">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>20</y>
-          <width>356</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Select on or more existing model data files and program them into the mount as a new mount model. Only existing models are used. It is ideal for combining multiple model runs, like adding a DSO path to an overall model.</string>
-        </property>
-        <property name="text">
-         <string>Choose model(s) from file and program to mount</string>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="groupBox_11">
        <property name="geometry">
         <rect>
@@ -11689,7 +11654,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>275</y>
+         <y>290</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -11812,7 +11777,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>225</y>
+         <y>230</y>
          <width>366</width>
          <height>46</height>
         </rect>
@@ -11871,6 +11836,25 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Progressive</string>
         </property>
        </widget>
+      </widget>
+      <widget class="QPushButton" name="dataModel">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>380</y>
+         <width>366</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>Select on or more existing model data files and program them into the mount as a new mount model. Only existing models are used. It is ideal for combining multiple model runs, like adding a DSO path to an overall model.</string>
+       </property>
+       <property name="text">
+        <string>Choose model(s) from file and program to mount</string>
+       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="ManageModels">
@@ -23954,7 +23938,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -24696,33 +24680,7 @@ Next point in time when satellite settles.</string>
          <string>Sensor 1</string>
         </property>
        </widget>
-       <widget class="QLabel" name="env_2">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>110</y>
-          <width>76</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>21</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Online</string>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="onlineWeatherDevice">
+       <widget class="QComboBox" name="sensor4WeatherDevice">
         <property name="geometry">
          <rect>
           <x>86</x>
@@ -24863,7 +24821,7 @@ Next point in time when satellite settles.</string>
          <string>Set</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="onlineWeatherSetup">
+       <widget class="QPushButton" name="sensor4WeatherSetup">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -24973,6 +24931,35 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="sky_3">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>110</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Sensor 4</string>
         </property>
        </widget>
       </widget>
@@ -33064,7 +33051,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>endModel</tabstop>
   <tabstop>cancelModel</tabstop>
   <tabstop>parkMountAfterModel</tabstop>
-  <tabstop>dataModel</tabstop>
   <tabstop>textBrowserPolarAlign</tabstop>
   <tabstop>manageTabWidget</tabstop>
   <tabstop>deleteWorstPoint</tabstop>
@@ -33227,8 +33213,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>sensor2WeatherSetup</tabstop>
   <tabstop>sensor3WeatherDevice</tabstop>
   <tabstop>sensor3WeatherSetup</tabstop>
-  <tabstop>onlineWeatherDevice</tabstop>
-  <tabstop>onlineWeatherSetup</tabstop>
+  <tabstop>sensor4WeatherDevice</tabstop>
+  <tabstop>sensor4WeatherSetup</tabstop>
   <tabstop>seeingWeatherDevice</tabstop>
   <tabstop>seeingWeatherSetup</tabstop>
   <tabstop>directWeatherDevice</tabstop>

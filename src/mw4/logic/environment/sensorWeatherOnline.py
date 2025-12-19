@@ -18,66 +18,42 @@ import logging
 import numpy as np
 import os
 import requests
-from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker
 from pathlib import Path
 
 
-class OnlineWeather:
+class SensorWeatherOnline:
     """ """
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, app=None):
-        super().__init__()
-        self.app = app
-        self.threadPool = app.threadPool
-        self.signals = Signals()
-        self.location = app.mount.obsSite.location
-
-        # minimum set for driver package built in
-        self.framework = ""
-        self.run = {"onlineWeather": self}
-        self.deviceName = ""
-        self.data = {}
+    def __init__(self, parent):
+        self.parent = parent
+        self.app = parent.app
+        self.data = parent.data
+        self.signals = parent.signals
+        self.location = parent.app.mount.obsSite.location
+        self.threadPool = parent.app.threadPool
         self.worker: Worker = None
-        self.defaultConfig = {
-            "framework": "",
-            "frameworks": {
-                "onlineWeather": {
+        self.running: bool = False
+        self.defaultConfig: dict = {
                     "deviceName": "OnlineWeather",
                     "apiKey": "",
                     "hostaddress": "api.openweathermap.org",
                 }
-            },
-        }
-        self.running = False
-        self.enabled = False
-        self.hostaddress = ""
-        self.apiKey = ""
-        self._online = False
-        self.app.update10s.connect(self.pollOpenWeatherMapData)
-
-    @property
-    def online(self) -> bool:
-        return self._online
-
-    @online.setter
-    def online(self, value: bool) -> None:
-        self._online = value
-        self.pollOpenWeatherMapData()
+        self.hostaddress: str = ""
+        self.apiKey: str = ""
 
     def startCommunication(self) -> None:
         """ """
-        self.enabled = True
-        self.pollOpenWeatherMapData()
+        self.app.update3s.connect(self.pollOpenWeatherMapData)
 
     def stopCommunication(self) -> None:
         """ """
-        self.enabled = False
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit("OnlineWeather")
+        self.app.update3s.disconnect(self.pollOpenWeatherMapData)
 
     @staticmethod
     def getDewPoint(tempAir: float, relativeHumidity: float) -> float:
@@ -99,19 +75,19 @@ class OnlineWeather:
         dewPoint = (B * alpha) / (A - alpha)
         return dewPoint
 
-    def processOpenWeatherMapData(self) -> bool:
+    def processOpenWeatherMapData(self) -> None:
         """ """
         dataFile = self.app.mwGlob["dataDir"] / "openweathermap.data"
         if not os.path.isfile(dataFile):
             self.log.info(f"{dataFile} not available")
-            return False
+            return
 
-        try:
-            with open(dataFile) as f:
+        with open(dataFile) as f:
+            try:
                 data = json.load(f)
-        except Exception as e:
-            self.log.warning(f"Cannot load data file, error: {e}")
-            return False
+            except Exception as e:
+                self.log.warning(f"Cannot load data file, error: {e}")
+                return
 
         if "main" in data:
             val = data["main"].get("temp", 273.15) - 273.15
@@ -126,9 +102,6 @@ class OnlineWeather:
             )
             self.data["WEATHER_PARAMETERS.WEATHER_DEWPOINT"] = val
 
-        else:
-            return False
-
         if "clouds" in data:
             self.data["WEATHER_PARAMETERS.CloudCover"] = data["clouds"].get("all", 0)
 
@@ -140,33 +113,40 @@ class OnlineWeather:
             self.data["WEATHER_PARAMETERS.RainVol"] = data["rain"].get("3h", 0)
         else:
             self.data["WEATHER_PARAMETERS.RainVol"] = 0
-        return True
 
-    def workerGetOpenWeatherMapData(self, url: Path) -> None:
+    def workerGetOpenWeatherMapData(self, url: Path) -> bool:
         """ """
+        if not self.app.onlineMode:
+            return False
         try:
             data = requests.get(url, timeout=30)
         except Exception as e:
             self.log.critical(f"[{url}] general exception: [{e}]")
-            return
+            return False
 
         if data.status_code != 200:
             self.log.warning(f"[{url}] status is not 200")
-            return
+            return False
 
         with open(self.app.mwGlob["dataDir"] / "openweathermap.data", "w+") as f:
             json.dump(data.json(), f, indent=4)
-            self.log.trace(data.json())
+        return True
 
     def sendStatus(self, status: bool) -> None:
         """ """
         if not status and self.running:
             self.signals.deviceDisconnected.emit("OnlineWeather")
+            self.running = False
         elif status and not self.running:
             self.signals.deviceConnected.emit("OnlineWeather")
+            self.running = True
 
     def getOpenWeatherMapData(self, url: Path) -> None:
         """ """
+        if not self.loadingFileNeeded("openweathermap.data", 1):
+            self.processOpenWeatherMapData()
+            self.sendStatus(True)
+            return
         self.worker = Worker(self.workerGetOpenWeatherMapData, url)
         self.worker.signals.finished.connect(self.processOpenWeatherMapData)
         self.worker.signals.result.connect(self.sendStatus)
@@ -175,7 +155,7 @@ class OnlineWeather:
     def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:
         """ """
         filePath = self.app.mwGlob["dataDir"] / fileName
-        if not os.path.isfile(filePath):
+        if not filePath.is_file():
             return True
 
         ageData = self.app.mount.obsSite.loader.days_old(fileName)
@@ -183,21 +163,7 @@ class OnlineWeather:
 
     def pollOpenWeatherMapData(self) -> None:
         """ """
-        if not self.enabled:
-            return
         if not self.apiKey:
-            return
-
-        if not self.online and self.running:
-            self.signals.deviceDisconnected.emit("OnlineWeather")
-            self.running = False
-            return
-        elif self.online and not self.running:
-            self.signals.deviceConnected.emit("OnlineWeather")
-            self.running = True
-
-        if not self.loadingFileNeeded("openweathermap.data", 1):
-            self.processOpenWeatherMapData()
             return
 
         lat = self.location.latitude.degrees

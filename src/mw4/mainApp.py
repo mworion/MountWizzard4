@@ -24,7 +24,6 @@ from mw4.logic.camera.camera import Camera
 from mw4.logic.cover.cover import Cover
 from mw4.logic.dome.dome import Dome
 from mw4.logic.environment.directWeather import DirectWeather
-from mw4.logic.environment.onlineWeather import OnlineWeather
 from mw4.logic.environment.seeingWeather import SeeingWeather
 from mw4.logic.environment.sensorWeather import SensorWeather
 from mw4.logic.filter.filter import Filter
@@ -107,6 +106,7 @@ class MountWizzard4(QObject):
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(30)
         self.expireData: bool = False
+        self.onlineMode: bool = False
         self.mainW = None
         self.timerCounter: int = 0
         self.statusOperationRunning: bool = 0
@@ -120,7 +120,7 @@ class MountWizzard4(QObject):
             "sensor1Weather": None,
             "sensor2Weather": None,
             "sensor3Weather": None,
-            "onlineWeather": None,
+            "sensor4Weather": None,
             "directWeather": None,
             "seeingWeather": None,
             "cover": None,
@@ -151,7 +151,7 @@ class MountWizzard4(QObject):
         self.sensor1Weather = SensorWeather(self)
         self.sensor2Weather = SensorWeather(self)
         self.sensor3Weather = SensorWeather(self)
-        self.onlineWeather = OnlineWeather(self)
+        self.sensor4Weather = SensorWeather(self)
         self.directWeather = DirectWeather(self)
         self.seeingWeather = SeeingWeather(self)
         self.cover = Cover(self)

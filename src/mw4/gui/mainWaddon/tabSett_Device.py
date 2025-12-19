@@ -116,10 +116,10 @@ class SettDevice(QObject):
                 "class": self.app.sensor3Weather,
                 "deviceType": "observingconditions",
             },
-            "onlineWeather": {
-                "uiDropDown": self.ui.onlineWeatherDevice,
-                "uiSetup": self.ui.onlineWeatherSetup,
-                "class": self.app.onlineWeather,
+            "sensor4Weather": {
+                "uiDropDown": self.ui.sensor4WeatherDevice,
+                "uiSetup": self.ui.sensor4WeatherSetup,
+                "class": self.app.sensor4Weather,
                 "deviceType": "observingconditions",
             },
             "directWeather": {

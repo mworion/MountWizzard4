@@ -97,7 +97,7 @@ class DevicePopup(toolsQtWidget.MWidget):
                 "appPath": self.ui.watneyAppPath,
                 "indexPath": self.ui.watneyIndexPath,
             },
-            "onlineWeather": {
+            "online": {
                 "apiKey": self.ui.onlineWeatherApiKey,
                 "hostaddress": self.ui.onlineWeatherHostAddress,
             },

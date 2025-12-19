@@ -18,6 +18,7 @@ import os
 import pytest
 import requests
 import shutil
+from pathlib import Path
 import unittest.mock as mock
 from mw4.base.loggerMW import setupLogging
 from mw4.logic.environment.seeingWeather import SeeingWeather
@@ -51,42 +52,45 @@ def test_properties(function):
 
 
 def test_startCommunication_(function):
-    function.enabled = False
     with mock.patch.object(function, "pollSeeingData"):
         function.startCommunication()
-        assert function.enabled
 
 
 def test_stopCommunication_1(function):
     function.running = True
-    function.enabled = True
     function.stopCommunication()
     assert not function.running
-    assert not function.enabled
 
 
 def test_processSeeingData_1(function):
     with mock.patch.object(os.path, "isfile", return_value=False):
-        suc = function.processSeeingData()
-        assert not suc
+        function.processSeeingData()
 
 
 def test_processSeeingData_2(function):
     with mock.patch.object(json, "load", return_value={}, side_effect=Exception):
-        suc = function.processSeeingData()
-        assert not suc
+        function.processSeeingData()
 
 
 def test_processSeeingData_3(function):
     with mock.patch.object(json, "load", return_value={}):
-        suc = function.processSeeingData()
-        assert suc
+        function.processSeeingData()
+
+
+def test_workerGetSeeingData_0(function):
+    class Test:
+        status_code = 300
+
+    function.app.onlineMode = False
+    with mock.patch.object(requests, "get", return_value=Test()):
+        function.workerGetSeeingData("http://localhost")
 
 
 def test_workerGetSeeingData_1(function):
     class Test:
         status_code = 300
 
+    function.app.onlineMode = True
     with mock.patch.object(requests, "get", return_value=Test()):
         function.workerGetSeeingData("http://localhost")
 
@@ -95,6 +99,7 @@ def test_workerGetSeeingData_3(function):
     class Test:
         status_code = 300
 
+    function.app.onlineMode = True
     with mock.patch.object(requests, "get", side_effect=Exception(), return_value=Test()):
         function.workerGetSeeingData("http://localhost")
 
@@ -103,6 +108,7 @@ def test_workerGetSeeingData_4(function):
     class Test:
         status_code = 300
 
+    function.app.onlineMode = True
     with mock.patch.object(requests, "get", side_effect=TimeoutError(), return_value=Test()):
         function.workerGetSeeingData("http://localhost")
 
@@ -115,6 +121,7 @@ def test_workerGetSeeingData_5(function):
         def json():
             return "test"
 
+    function.app.onlineMode = True
     with mock.patch.object(requests, "get", return_value=Test()):
         function.workerGetSeeingData("http://localhost")
 
@@ -129,73 +136,74 @@ def test_sendStatus_2(function):
     function.sendStatus(True)
 
 
-def test_getSeeingData(function):
-    with mock.patch.object(function.threadPool, "start"):
-        function.getSeeingData("test")
+def test_getSeeingData_1(function):
+    with mock.patch.object(function, "loadingFileNeeded", return_value=False):
+        with mock.patch.object(function, "processSeeingData"):
+            with mock.patch.object(function, "sendStatus"):
+                with mock.patch.object(function.threadPool, "start"):
+                    function.getSeeingData("test")
+
+
+def test_getSeeingData_2(function):
+    with mock.patch.object(function, "loadingFileNeeded", return_value=True):
+        with mock.patch.object(function, "processSeeingData"):
+            with mock.patch.object(function, "sendStatus"):
+                with mock.patch.object(function.threadPool, "start"):
+                    function.getSeeingData("test")
 
 
 def test_loadingFileNeeded_1(function):
-    with mock.patch.object(os.path, "isfile", return_value=False):
+    with mock.patch.object(Path, "is_file", return_value=False):
         suc = function.loadingFileNeeded("test", 1)
         assert suc
 
 
 def test_loadingFileNeeded_2(function):
-    with mock.patch.object(os.path, "isfile", return_value=True):
+    with mock.patch.object(Path, "is_file", return_value=True):
         with mock.patch.object(function.app.mount.obsSite.loader, "days_old", return_value=1):
             suc = function.loadingFileNeeded("test", 1)
             assert suc
 
 
 def test_loadingFileNeeded_3(function):
-    with mock.patch.object(os.path, "isfile", return_value=True):
+    with mock.patch.object(Path, "is_file", return_value=True):
         with mock.patch.object(function.app.mount.obsSite.loader, "days_old", return_value=1):
             suc = function.loadingFileNeeded("test", 25)
             assert not suc
 
 
 def test_pollSeeingData_1(function):
-    function.enabled = False
-    function.running = False
-    function.online = False
     function.apiKey = ""
     function.pollSeeingData()
 
 
 def test_pollSeeingData_2(function):
-    function.enabled = True
-    function.online = False
-    function.running = False
-    function.apiKey = ""
+    function.apiKey = "test"
+    function.b = "test"
+    function.app.onlineMode = False
+    function.running = True
     function.pollSeeingData()
 
 
 def test_pollSeeingData_3(function):
-    function.enabled = True
-    function.online = False
-    function.running = True
     function.apiKey = "test"
     function.b = "test"
+    function.app.onlineMode = True
     function.pollSeeingData()
-    assert not function.running
 
 
 def test_pollSeeingData_4(function):
-    function.enabled = True
-    function.online = True
-    function.running = False
     function.apiKey = "test"
     function.b = "test"
+    function.app.onlineMode = True
     with mock.patch.object(function, "loadingFileNeeded", return_value=False):
         function.pollSeeingData()
 
 
 def test_pollSeeingData_5(function):
-    function.enabled = True
-    function.online = True
-    function.running = True
     function.apiKey = "test"
     function.b = "test"
+    function.app.onlineMode = True
     with mock.patch.object(function, "loadingFileNeeded", return_value=True):
         with mock.patch.object(function, "getSeeingData"):
             function.pollSeeingData()

@@ -1163,6 +1163,7 @@ class App(QObject):
     uiWindows = {}
     mainW = MainW()
     threadPool = QThreadPool()
+    onlineMode = False
     __version__ = "test"
 
     @staticmethod

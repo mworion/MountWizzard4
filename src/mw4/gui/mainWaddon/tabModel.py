@@ -112,7 +112,7 @@ class Model(QObject):
         """ """
         if status == self.STATUS_MODEL_BATCH:
             self.ui.runModelGroup.setEnabled(True)
-            self.ui.dataModelGroup.setEnabled(False)
+            self.ui.dataModel.setEnabled(False)
             self.ui.cancelModel.setEnabled(True)
             self.ui.endModel.setEnabled(True)
             self.ui.pauseModel.setEnabled(True)
@@ -123,13 +123,13 @@ class Model(QObject):
             self.ui.runModelGroup.setEnabled(False)
         elif status == self.STATUS_MODEL_SYNC:
             self.ui.runModelGroup.setEnabled(False)
-            self.ui.dataModelGroup.setEnabled(False)
+            self.ui.dataModel.setEnabled(False)
             self.ui.cancelModel.setEnabled(False)
             self.ui.endModel.setEnabled(False)
             self.ui.pauseModel.setEnabled(False)
         else:
             self.ui.runModelGroup.setEnabled(True)
-            self.ui.dataModelGroup.setEnabled(True)
+            self.ui.dataModel.setEnabled(True)
             changeStyleDynamic(self.ui.runModel, "run", False)
             changeStyleDynamic(self.ui.cancelModel, "stop", False)
             changeStyleDynamic(self.ui.endModel, "stop", False)

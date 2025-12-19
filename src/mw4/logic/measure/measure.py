@@ -83,7 +83,7 @@ class MeasureData:
             "sensor1Weather",
             "sensor2Weather",
             "sensor3Weather",
-            "onlineWeather",
+            "sensor4Weather",
         ]:
             for value in ["Temp", "Hum", "Press", "Dew", "Cloud", "Rain", "Sky"]:
                 self.data[source + value] = np.empty(shape=[0, 1])
@@ -225,7 +225,7 @@ class MeasureData:
             "sensor1Weather",
             "sensor2Weather",
             "sensor3Weather",
-            "onlineWeather",
+            "sensor4Weather",
         ]:
             data = eval(f"self.app.{source}.data")
             Temp = data.get("WEATHER_PARAMETERS.WEATHER_TEMPERATURE", 0)

@@ -212,13 +212,7 @@ def test_measureTask_1(function):
 
 
 def test_measureTask_2(function):
-    function.devices = ["sensorWeather"]
-    function.setEmptyData()
-    function.measureTask()
-
-
-def test_measureTask_3(function):
-    function.devices = ["onlineWeather"]
+    function.devices = ["sensor1Weather"]
     function.setEmptyData()
     function.measureTask()
 

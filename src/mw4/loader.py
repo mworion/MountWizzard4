@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import json
 import locale
 import logging
 import os
@@ -30,7 +29,8 @@ from mw4.base.loggerMW import setupLogging
 from mw4.gui.utilities.splashScreen import SplashScreen
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
-from PySide6.QtCore import QEvent, QFile, __version__, qVersion
+import PySide6
+from PySide6.QtCore import QEvent, QFile, qVersion
 from PySide6.QtGui import QIcon, QMouseEvent
 from PySide6.QtWidgets import (
     QApplication,
@@ -187,7 +187,7 @@ def writeSystemInfo(mwGlob: dict = None) -> None:
     log.header(f"release          : {platform.release()}")
     log.header(f"python           : {platform.python_version()}")
     log.header(f"python runtime   : {platform.architecture()[0]}")
-    log.header(f"PySide6 / Qt     : {__version__} / {qVersion()}")
+    log.header(f"PySide6 / Qt     : {PySide6.QtCore.__version__} / {qVersion()}")
     log.header(f"node / hostname  : {platform.node()} / {socket.gethostname()}")
     log.header(f"run as admin     : {checkIsAdmin()}")
     log.header("-" * 100)

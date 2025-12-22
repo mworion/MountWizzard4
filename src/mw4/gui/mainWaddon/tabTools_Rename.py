@@ -137,10 +137,7 @@ class Rename(QObject):
                 if chunk:
                     newFilename += f"_{chunk}"
 
-            newFilename += ".fits"
-            dirName = os.path.dirname(fileName)
-            newFilename = Path(dirName, newFilename)
-            os.rename(fileName, newFilename)
+            fileName.rename(Path(newFilename).with_suffix(".fits"))
 
     def renameRunGUI(self) -> None:
         """ """

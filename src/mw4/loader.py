@@ -150,6 +150,7 @@ def setupWorkDirs(workDir: Path) -> dict:
     return mwGlob
 
 
+# noinspection PyUnresolvedReferences
 def checkIsAdmin() -> str:
     """ """
     if platform.system() == "Windows":
@@ -234,6 +235,7 @@ def extractDataFiles(mwGlob: dict) -> None:
         extractFile(filePath, file, filesTimes[file])
 
 
+# noinspection PyUnresolvedReferences
 def minimizeStartTerminal() -> None:
     """ """
     if platform.system() == "Windows":

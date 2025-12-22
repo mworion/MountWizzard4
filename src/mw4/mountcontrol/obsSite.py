@@ -169,10 +169,6 @@ class ObsSite:
     def timeDiff(self):
         return np.mean(self._timeDiff)
 
-    @timeDiff.setter
-    def timeDiff(self, value):
-        return
-
     @property
     def ut1_utc(self):
         return self._ut1_utc
@@ -513,12 +509,11 @@ class ObsSite:
         self._timeDiff[0] = delta
         return True
 
-    def adjustClock(self, delta: float) -> bool:
+    def adjustClock(self, delta: int) -> bool:
         """ """
         conn = Connection(self.parent.host)
         sign = "+" if delta >= 0 else "-"
         delta = abs(delta)
-        delta = min(delta, 999)
         commandString = f":NUtim{sign}{delta:03.0f}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc

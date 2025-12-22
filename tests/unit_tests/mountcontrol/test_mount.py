@@ -444,6 +444,11 @@ def test_cycleDome_3(function):
     function.mutexCycleDome.unlock()
 
 
+def test_clearCycleClock_1(function):
+    function.mutexCycleClock.lock()
+    function.clearCycleClock()
+
+
 def test_cycleClock_1(function):
     function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):

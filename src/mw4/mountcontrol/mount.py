@@ -390,6 +390,10 @@ class MountDevice:
         self.workerCycleDome.signals.result.connect(self.clearDome)
         self.threadPool.start(self.workerCycleDome)
 
+    def clearCycleClock(self):
+        """ """
+        self.mutexCycleClock.unlock()
+
     def cycleClock(self):
         """ """
         if not self.mountIsUp:
@@ -399,6 +403,7 @@ class MountDevice:
             return
 
         self.workerCycleClock = Worker(self.obsSite.pollSyncClock)
+        self.workerCycleClock.signals.finished.connect(self.clearCycleClock)
         self.threadPool.start(self.workerCycleClock)
 
     def clearProgTrajectory(self):

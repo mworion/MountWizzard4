@@ -163,8 +163,7 @@ class SettMount(QObject):
 
     def syncClock(self) -> None:
         """ """
-        syncTimeNone = self.ui.syncTimeNone.isChecked()
-        if syncTimeNone:
+        if self.ui.syncTimeNone.isChecked():
             return
         if not self.app.deviceStat["mount"]:
             return
@@ -178,12 +177,9 @@ class SettMount(QObject):
         if abs(delta) < 10:
             return
 
-        if delta > 999:
-            delta = 999
-        if delta < -999:
-            delta = -999
+        delta = int(max(min(delta, 999), -999))
 
-        if self.app.mount.obsSite.adjustClock(int(delta)):
+        if self.app.mount.obsSite.adjustClock(delta):
             self.msg.emit(0, "System", "Clock", f"Correction: [{-delta} ms]")
         else:
             self.msg.emit(2, "System", "Clock", "Cannot adjust mount clock")

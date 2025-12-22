@@ -14,7 +14,6 @@
 #
 ###########################################################
 import os
-from pathlib import Path
 from astropy.io import fits
 from pathlib import Path
 from PySide6.QtCore import QObject
@@ -112,8 +111,7 @@ class Rename(QObject):
         return chunk
 
     def processSelectors(self, fitsHeader: dict, selection: str) -> str:
-        """
-        """
+        """ """
         nameChunk = ""
         fitsKeywords = self.fitsHeaderKeywords[selection]
         for fitsKey in fitsKeywords:

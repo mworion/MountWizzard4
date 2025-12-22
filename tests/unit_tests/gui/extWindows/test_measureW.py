@@ -31,7 +31,6 @@ def function(qapp):
 
     value = np.datetime64("2014-12-12 20:20:20")
     func.app.measure.devices["sensorWeather"] = ""
-    func.app.measure.devices["onlineWeather"] = ""
     func.app.measure.devices["directWeather"] = ""
     func.app.measure.devices["power"] = ""
     func.app.measure.devices["skymeter"] = ""
@@ -42,10 +41,6 @@ def function(qapp):
         "sensorWeatherHum": np.array([1, 1, 1, 1, 1]),
         "sensorWeatherPress": np.array([1, 1, 1, 1, 1]),
         "sensorWeatherDew": np.array([1, 1, 1, 1, 1]),
-        "onlineWeatherTemp": np.array([1, 1, 1, 1, 1]),
-        "onlineWeatherHum": np.array([1, 1, 1, 1, 1]),
-        "onlineWeatherPress": np.array([1, 1, 1, 1, 1]),
-        "onlineWeatherDew": np.array([1, 1, 1, 1, 1]),
         "directWeatherTemp": np.array([1, 1, 1, 1, 1]),
         "directWeatherHum": np.array([1, 1, 1, 1, 1]),
         "directWeatherPress": np.array([1, 1, 1, 1, 1]),
@@ -126,7 +121,16 @@ def test_setTitle_2(function):
 
 
 def test_setupButtons(function):
-    function.setupButtons()
+    test = function.mSetUI
+    function.mSetUI = {
+        "set0": function.ui.set0,
+    }
+
+    with mock.patch.object(function.ui.set0, "clear"):
+        with mock.patch.object(function.ui.set0, "setView"):
+            with mock.patch.object(function.ui.set0, "addItem"):
+                function.setupButtons()
+    function.mSetUI = test
 
 
 def test_constructPlotItem_1(function):

@@ -37,10 +37,10 @@ class SensorWeatherOnline:
         self.worker: Worker = None
         self.running: bool = False
         self.defaultConfig: dict = {
-                    "deviceName": "OnlineWeather",
-                    "apiKey": "",
-                    "hostaddress": "api.openweathermap.org",
-                }
+            "deviceName": "OnlineWeather",
+            "apiKey": "",
+            "hostaddress": "api.openweathermap.org",
+        }
         self.hostaddress: str = ""
         self.apiKey: str = ""
 

@@ -23,7 +23,7 @@ def read_options() -> argparse.Namespace:
     """ """
     parser = argparse.ArgumentParser(
         prog=__name__,
-        description="Installs MountWizzard4 in Python virtual environment in local workdir",
+        description="MountWizzard4",
     )
     parser.add_argument(
         "-d",
@@ -41,6 +41,12 @@ def read_options() -> argparse.Namespace:
         dest="scale",
         help="Setting Qt DPI scale factor (+scale = +size, default=1)",
     )
+    parser.add_argument(
+        "-e",
+        action='store_true',
+        dest="efficient",
+        help="Efficient CPU mode",
+    )
     return parser.parse_args()
 
 
@@ -49,7 +55,7 @@ def app():
     if platform.system() == "Windows":
         os.environ["QT_SCALE_FACTOR"] = f"{options.scale:2.1f}"
         os.environ["QT_FONT_DPI"] = f"{options.dpi:2.0f}"
-    main()
+    main(efficient=options.efficient == 1)
 
 
 if __name__ == "__main__":

@@ -130,36 +130,23 @@ def except_hook(typeException, valueException, tbackException) -> None:
     sys.__excepthook__(typeException, valueException, tbackException)
 
 
-def setupWorkDirs() -> dict:
+def setupWorkDirs(workDir: Path) -> dict:
     """ """
     mwGlob = {
-        "modeldata": "4.0",
-        "workDir": Path(os.getcwd()),
+        "workDir": workDir,
+        "configDir": workDir / "config",
+        "dataDir": workDir / "data",
+        "imageDir": workDir / "image",
+        "tempDir": workDir / "temp",
+        "modelDir": workDir / "model",
+        "measureDir": workDir / "measure",
+        "logDir": workDir / "log",
     }
-    mwGlob["configDir"] = mwGlob["workDir"] / "config"
-    mwGlob["dataDir"] = mwGlob["workDir"] / "data"
-    mwGlob["imageDir"] = mwGlob["workDir"] / "image"
-    mwGlob["tempDir"] = mwGlob["workDir"] / "temp"
-    mwGlob["modelDir"] = mwGlob["workDir"] / "model"
-    mwGlob["measureDir"] = mwGlob["workDir"] / "measure"
-    mwGlob["logDir"] = mwGlob["workDir"] / "log"
 
-    for dirPath in [
-        "workDir",
-        "configDir",
-        "imageDir",
-        "dataDir",
-        "tempDir",
-        "modelDir",
-        "measureDir",
-        "logDir",
-    ]:
-        if not os.path.isdir(mwGlob[dirPath]):
-            os.makedirs(mwGlob[dirPath])
+    for dirPath in mwGlob:
+        mwGlob[dirPath].mkdir(parents=True, exist_ok=True)
 
-        if not os.access(mwGlob[dirPath], os.W_OK):
-            log.warning(f"no write access to {dirPath}")
-
+    mwGlob["modeldata"] = "4.0"
     return mwGlob
 
 
@@ -247,31 +234,6 @@ def extractDataFiles(mwGlob: dict) -> None:
         extractFile(filePath, file, filesTimes[file])
 
 
-def getWindowPos() -> tuple[int, int]:
-    """ """
-    configDir = Path(os.getcwd()) / "config"
-    profile = configDir / "profile"
-    if not os.path.isfile(profile):
-        return 0, 0
-
-    with open(profile) as f:
-        configName = f.readline()
-
-    configFile = configDir / (configName + ".cfg")
-    if not os.path.isfile(configFile):
-        return 0, 0
-
-    with open(configFile) as f:
-        try:
-            data = json.load(f)
-        except Exception:
-            return 0, 0
-        else:
-            x = data["mainW"].get("winPosX", 0)
-            y = data["mainW"].get("winPosY", 0)
-            return x, y
-
-
 def minimizeStartTerminal() -> None:
     """ """
     if platform.system() == "Windows":
@@ -280,16 +242,16 @@ def minimizeStartTerminal() -> None:
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 
-def main() -> None:
+def main(efficient: bool = False) -> None:
     """ """
     locale.setlocale(locale.LC_ALL, "")
-    app = MyApp(sys.argv)
+    app = QApplication(sys.argv) if efficient else MyApp(sys.argv)
     minimizeStartTerminal()
-    x, y = getWindowPos()
-    splashW = SplashScreen(application=app, x=x, y=y)
+    splashW = SplashScreen(application=app)
     splashW.showMessage("Start initialising")
     splashW.setValue(0)
-    mwGlob = setupWorkDirs()
+    workDir = Path.cwd() / "config"
+    mwGlob = setupWorkDirs(workDir)
 
     splashW.showMessage("Write system info to log")
     splashW.setValue(40)

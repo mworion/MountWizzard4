@@ -30,7 +30,6 @@ from mw4.loader import (
     except_hook,
     extractDataFiles,
     extractFile,
-    getWindowPos,
     minimizeStartTerminal,
     setupWorkDirs,
     writeSystemInfo,
@@ -59,28 +58,9 @@ def test_except_hook():
 
 
 def test_setupWorkDirs_1():
-    with mock.patch.object(os, "getcwd", return_value="."):
-        with mock.patch.object(os, "makedirs", return_value=True):
-            with mock.patch.object(os.path, "isdir", return_value=True):
-                val = setupWorkDirs()
-                assert val["modeldata"] == "4.0"
-
-
-def test_setupWorkDirs_2():
-    with mock.patch.object(os, "getcwd", return_value="."):
-        with mock.patch.object(os, "makedirs", return_value=True):
-            with mock.patch.object(os.path, "isdir", return_value=False):
-                val = setupWorkDirs()
-                assert val["modeldata"] == "4.0"
-
-
-def test_setupWorkDirs_3():
-    with mock.patch.object(os, "getcwd", return_value="."):
-        with mock.patch.object(os, "makedirs", return_value=True):
-            with mock.patch.object(os.path, "isdir", return_value=False):
-                with mock.patch.object(os, "access", return_value=False):
-                    val = setupWorkDirs()
-                    assert val["modeldata"] == "4.0"
+    with mock.patch.object(Path, "mkdir"):
+            val = setupWorkDirs(Path())
+            assert val["modeldata"] == "4.0"
 
 
 def test_checkIsAdmin_1():
@@ -230,49 +210,6 @@ def test_extractDataFiles_1():
     mwGlob["dataDir"] = Path("tests/work/data")
     with mock.patch.object(mw4.loader, "extractFile"):
         extractDataFiles(mwGlob=mwGlob)
-
-
-def test_getWindowPos_1():
-    test = "tests"
-    with mock.patch.object(os, "getcwd", return_value=test):
-        x, y = getWindowPos()
-        assert x == 0
-        assert y == 0
-
-
-def test_getWindowPos_2():
-    test = "tests/work"
-    with open(test + "/config/profile", "w+") as f:
-        f.write("config")
-    with mock.patch.object(os, "getcwd", return_value=test):
-        x, y = getWindowPos()
-        assert x == 0
-        assert y == 0
-
-
-def test_getWindowPos_3():
-    test = "tests/work"
-    with open(test + "/config/profile", "w+") as f:
-        f.write("config")
-    with open(test + "/config/config.cfg", "w+") as f:
-        f.write("this is a test")
-    with mock.patch.object(os, "getcwd", return_value=test):
-        x, y = getWindowPos()
-        assert x == 0
-        assert y == 0
-
-
-def test_getWindowPos_4():
-    test = "tests/work"
-    with open(test + "/config/profile", "w+") as f:
-        f.write("config")
-    with open(test + "/config/config.cfg", "w+") as f:
-        data = {"mainW": {"winPosX": 200, "winPosY": 100}}
-        json.dump(data, f)
-    with mock.patch.object(os, "getcwd", return_value=test):
-        x, y = getWindowPos()
-        assert x == 200
-        assert y == 100
 
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")

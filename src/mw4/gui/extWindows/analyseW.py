@@ -161,8 +161,11 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.version.setText(f"{version}")
 
     @staticmethod
-    def list2array(values: Iterable[Any], fill: float = 0.0, dtype: np.dtype = np.float32) -> np.ndarray:
+    def list2array(
+        values: Iterable[Any], fill: float = 0.0, dtype: np.dtype = np.float32
+    ) -> np.ndarray:
         """ """
+
         def _clean(v: Any) -> float:
             if v is None:
                 return float(fill)

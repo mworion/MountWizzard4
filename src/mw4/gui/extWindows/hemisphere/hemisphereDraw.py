@@ -438,7 +438,7 @@ class HemisphereDraw(MWidget, SlewInterface):
 
     def drawDome(self, azimuth: float | None = None) -> None:
         """ """
-        if not isinstance(azimuth, int | float):
+        if azimuth is None:
             self.pointerDome.setVisible(False)
             return
 

@@ -13,9 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import builtins
 import os
+from pathlib import Path
 import pytest
 import requests
 import shutil
@@ -113,14 +113,15 @@ def test_getFileFromUrl_3(function):
 
 def test_unzipFile(function):
     shutil.copy("tests/testData/test.json.gz", "tests/work/temp/test.json.gz")
-    function.unzipFile("tests/work/temp/test.json.gz", "tests/work/temp/test.json")
+    function.unzipFile(Path("tests/work/temp/test.json.gz"), Path("tests/work/temp/test.json"))
     assert os.path.isfile("tests/work/temp/test.json")
 
 
 def test_downloadFileWorker_2(function):
     shutil.copy("tests/testData/visual.txt", "tests/work/temp/test.txt")
     with mock.patch.object(function, "getFileFromUrl", return_value=False):
-        suc = function.downloadFileWorker(url="", dest="tests/work/temp/test.txt")
+        suc = function.downloadFileWorker(url=Path(),
+                                          dest=Path("tests/work/temp/test.txt"))
         assert not suc
 
 
@@ -128,7 +129,7 @@ def test_downloadFileWorker_3(function):
     with mock.patch.object(
         function, "getFileFromUrl", return_value=True, side_effect=TimeoutError
     ):
-        suc = function.downloadFileWorker(url="", dest="test/workDir/temp/test.txt")
+        suc = function.downloadFileWorker(url=Path(), dest=Path("tests/work/temp/test.txt"))
         assert not suc
 
 
@@ -136,14 +137,14 @@ def test_downloadFileWorker_4(function):
     with mock.patch.object(
         function, "getFileFromUrl", return_value=True, side_effect=Exception
     ):
-        suc = function.downloadFileWorker(url="", dest="test/workDir/temp/test.txt")
+        suc = function.downloadFileWorker(url=Path(), dest=Path("tests/work/temp/test.txt"))
         assert not suc
 
 
 def test_downloadFileWorker_5(function):
     with mock.patch.object(function, "getFileFromUrl", return_value=True):
         suc = function.downloadFileWorker(
-            url="", dest="test/workDir/temp/test.txt", unzip=True
+            url=Path(), dest=Path("tests/work/temp/test.txt"), unzip=True
         )
         assert not suc
 
@@ -155,7 +156,7 @@ def test_downloadFileWorker_6(function):
         return_value=True,
     ):
         suc = function.downloadFileWorker(
-            url="", dest="test/workDir/temp/test.txt", unzip=False
+            url=Path(), dest=Path("tests/work/temp/test.txt"), unzip=False
         )
         assert suc
 
@@ -168,7 +169,7 @@ def test_downloadFileWorker_7(function):
     ):
         with mock.patch.object(function, "unzipFile", side_effect=Exception):
             suc = function.downloadFileWorker(
-                url="", dest="test/workDir/temp/test.txt", unzip=True
+                url=Path(), dest=Path("tests/work/temp/test.txt"), unzip=True
             )
             assert not suc
 
@@ -181,7 +182,7 @@ def test_downloadFileWorker_8(function):
     ):
         with mock.patch.object(function, "unzipFile"):
             suc = function.downloadFileWorker(
-                url="", dest="test/workDir/temp/test.txt", unzip=True
+                url=Path(), dest=Path("tests/work/temp/test.txt"), unzip=True
             )
             assert suc
 
@@ -193,7 +194,7 @@ def test_downloadFileWorker_9(function, mocked_sleepAndEvents):
         return_value=False,
     ):
         with mock.patch.object(function, "unzipFile"):
-            suc = function.downloadFileWorker(url="", dest="test/workDir/temp/test.txt")
+            suc = function.downloadFileWorker(url="", dest=Path("tests/work/temp/test.txt"))
             assert not suc
 
 
@@ -212,10 +213,10 @@ def test_closePopup_2(function, mocked_sleepAndEvents):
 def test_downloadFile_1(function):
     function.callBack = 1
     with mock.patch.object(function.threadPool, "start"):
-        function.downloadFile("", "")
+        function.downloadFile("", Path())
 
 
 def test_downloadFile_2(function):
     function.callBack = None
     with mock.patch.object(function.threadPool, "start"):
-        function.downloadFile("", "")
+        function.downloadFile("", Path())

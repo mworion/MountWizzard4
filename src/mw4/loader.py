@@ -252,8 +252,7 @@ def main(efficient: bool = False) -> None:
     splashW = SplashScreen(application=app)
     splashW.showMessage("Start initialising")
     splashW.setValue(0)
-    workDir = Path.cwd() / "config"
-    mwGlob = setupWorkDirs(workDir)
+    mwGlob = setupWorkDirs(Path.cwd())
 
     splashW.showMessage("Write system info to log")
     splashW.setValue(40)

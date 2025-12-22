@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-
+from pathlib import Path
 import logging
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
@@ -44,10 +44,10 @@ class AstroObjects(QObject):
         self.window = window
         self.app = window.app
         self.msg = window.app.msg
-        self.dest = None
-        self.dataValid = False
+        self.dest: Path = Path()
+        self.dataValid: bool = False
         self.objectText = objectText
-        self.sourceUrls = sourceUrls
+        self.sourceUrls: dict = sourceUrls
         self.uiObjectList = uiObjectList
         self.uiSourceList = uiSourceList
         self.uiSourceGroup = uiSourceGroup

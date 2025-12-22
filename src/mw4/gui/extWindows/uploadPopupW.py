@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import os
 import re
 import requests
 from mw4.base.tpool import Worker
@@ -56,7 +55,7 @@ class UploadPopup(MWidget):
         },
     }
 
-    def __init__(self, parentWidget: MWidget, url: str, dataTypes: str, dataFilePath: str):
+    def __init__(self, parentWidget: MWidget, url: str, dataTypes: str, dataFilePath: Path):
         super().__init__()
         self.ui = Ui_UploadPopup()
         self.ui.setupUi(self)
@@ -156,9 +155,7 @@ class UploadPopup(MWidget):
         for dataType in self.dataTypes:
             if dataType not in self.dataNames:
                 return False
-            fullDataFilePath = os.path.join(
-                self.dataFilePath, self.dataNames[dataType]["file"]
-            )
+            fullDataFilePath = self.dataFilePath / self.dataNames[dataType]["file"]
             files[self.dataNames[dataType]["attr"]] = (
                 self.dataNames[dataType]["file"],
                 open(fullDataFilePath),

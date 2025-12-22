@@ -13,8 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-import gzip
 import os
+import gzip
+from pathlib import Path
 import requests
 import shutil
 from mw4.base.tpool import Worker
@@ -72,7 +73,7 @@ class DownloadPopup(MWidget):
         """ """
         self.ui.statusText.setText(statusText)
 
-    def getFileFromUrl(self, url: str, dest: str) -> bool:
+    def getFileFromUrl(self, url: Path, dest: Path) -> bool:
         """ """
         r = requests.get(url, stream=True, timeout=3)
         totalSizeBytes = int(r.headers.get("content-length", 1))
@@ -89,18 +90,18 @@ class DownloadPopup(MWidget):
         return True
 
     @staticmethod
-    def unzipFile(downloadDest: str, dest: str) -> None:
+    def unzipFile(downloadDest: Path, dest: Path) -> None:
         """ """
         with gzip.open(downloadDest, "rb") as f_in, open(dest, "wb") as f_out:
             shutil.copyfileobj(f_in, f_out)
-        os.remove(downloadDest)
+        downloadDest.unlink()
 
-    def downloadFileWorker(self, url: str, dest: str, unzip: bool = False) -> bool:
+    def downloadFileWorker(self, url: Path, dest: Path, unzip: bool = False) -> bool:
         """ """
-        downloadDest = os.path.dirname(dest) + os.path.basename(url) if unzip else dest
+        downloadDest = dest.parent / os.path.basename(url) if unzip else dest
 
         try:
-            self.signalStatus.emit(f"Downloading {os.path.basename(dest)}")
+            self.signalStatus.emit(f"Downloading {dest.stem}")
             suc = self.getFileFromUrl(url, downloadDest)
             if not suc:
                 return False
@@ -137,7 +138,7 @@ class DownloadPopup(MWidget):
         sleepAndEvents(500)
         self.close()
 
-    def downloadFile(self, url: str, dest: str, unzip: bool = False) -> None:
+    def downloadFile(self, url: str, dest: Path, unzip: bool = False) -> None:
         """ """
         self.worker = Worker(self.downloadFileWorker, url=url, dest=dest, unzip=unzip)
         self.worker.signals.result.connect(self.closePopup)

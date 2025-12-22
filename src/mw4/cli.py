@@ -43,7 +43,7 @@ def read_options() -> argparse.Namespace:
     )
     parser.add_argument(
         "-e",
-        action='store_true',
+        action="store_true",
         dest="efficient",
         help="Efficient CPU mode",
     )

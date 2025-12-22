@@ -14,6 +14,7 @@
 #
 ###########################################################
 import os
+from pathlib import Path
 from astropy.io import fits
 from pathlib import Path
 from PySide6.QtCore import QObject
@@ -29,6 +30,7 @@ class Rename(QObject):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
+        self.renameDir: Path = Path()
 
         self.selectorsDropDowns = {
             "rename1": self.ui.rename1,
@@ -51,33 +53,20 @@ class Rename(QObject):
         self.ui.renameStart.clicked.connect(self.renameRunGUI)
         self.ui.renameInputSelect.clicked.connect(self.chooseDir)
 
-    def initConfig(self):
-        """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
-        :return: True for test purpose
-        """
+    def initConfig(self) -> None:
+        """ """
         config = self.app.config["mainW"]
-        defaultDir = self.app.mwGlob["imageDir"]
-        self.ui.renameDir.setText(config.get("renameDir", str(defaultDir)))
+        defaultDir = str(self.app.mwGlob["imageDir"])
+        self.ui.renameDir.setText(config.get("renameDir", defaultDir))
         self.ui.newObjectName.setText(config.get("newObjectName", ""))
         self.ui.includeSubdirs.setChecked(config.get("includeSubdirs", False))
         for name, ui in self.selectorsDropDowns.items():
             ui.setCurrentIndex(config.get(name, 0))
 
         self.ui.renameProgress.setValue(0)
-        return True
 
-    def storeConfig(self):
-        """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
-        :return: True for test purpose
-        """
+    def storeConfig(self) -> None:
+        """ """
         config = self.app.config["mainW"]
         config["renameDir"] = self.ui.renameDir.text()
         config["newObjectName"] = self.ui.newObjectName.text()
@@ -85,57 +74,26 @@ class Rename(QObject):
         for name, ui in self.selectorsDropDowns.items():
             config[name] = ui.currentIndex()
 
-        return True
-
-    def setupIcons(self):
+    def setupIcons(self) -> None:
+        """ """
         self.mainW.wIcon(self.ui.renameStart, "start")
         self.mainW.wIcon(self.ui.renameInputSelect, "folder")
 
-    def setupGuiTools(self):
-        """
-        :return: success for test
-        """
+    def setupGuiTools(self) -> None:
+        """ """
         for name, selectorUI in self.selectorsDropDowns.items():
             selectorUI.clear()
             selectorUI.setView(QListView())
             for headerEntry in self.fitsHeaderKeywords:
                 selectorUI.addItem(headerEntry)
-        return True
+
+    def getNumberFiles(self, search: str) -> int:
+        """ """
+        return sum(1 for _ in self.renameDir.glob(search))
 
     @staticmethod
-    def getNumberFiles(pathDir="", search=""):
-        """
-        getNumberFiles counts the number of files to be valid for the renaming.
-
-        :param pathDir: path to root directory to be scanned
-        :param search: search string
-        :return: number of files found
-        """
-        if not pathDir:
-            return 0
-        if not os.path.isdir(pathDir):
-            return 0
-        if not search:
-            return 0
-
-        number = sum(1 for _ in Path(pathDir).glob(search))
-        return number
-
-    @staticmethod
-    def convertHeaderEntry(entry="", fitsKey=""):
-        """
-        convertHeaderEntry takes the fitsHeader entry and reformat it to a
-        reasonable string.
-
-        :param entry:
-        :param fitsKey:
-        :return:
-        """
-        if not fitsKey:
-            return ""
-        if not entry:
-            return ""
-
+    def convertHeaderEntry(entry: str, fitsKey: str) -> str:
+        """ """
         if fitsKey == "DATE-OBS":
             chunk = entry.replace(":", "-")
             chunk = chunk.replace("T", "_")
@@ -153,21 +111,9 @@ class Rename(QObject):
 
         return chunk
 
-    def processSelectors(self, fitsHeader=None, selection=""):
+    def processSelectors(self, fitsHeader: dict, selection: str) -> str:
         """
-        processSelectors takes the selection for a fileName chunk and runs through the
-        possible list of valid fits header keys. if there is more than one valid fitsKey,
-        it automatically selects only the first on for conversion.
-
-        :param fitsHeader:
-        :param selection: str entry from the drop-down selector
-        :return: nameChunk: part of the entry
         """
-        if fitsHeader is None:
-            return ""
-        if not selection:
-            return ""
-
         nameChunk = ""
         fitsKeywords = self.fitsHeaderKeywords[selection]
         for fitsKey in fitsKeywords:
@@ -177,38 +123,19 @@ class Rename(QObject):
             break
         return nameChunk
 
-    def renameFile(self, fileName=""):
-        """
-        renameFile opens the given FITS file and retrieves its header. if valid it
-        runs through selectors of the drop-down lists and checks all header keys to
-        get the new filename build. afterwards it renames the given file.
-
-        :param fileName: fits file to be renamed
-        :return: success
-        """
-        if not fileName:
-            return False
-        if not os.path.isfile(fileName):
-            return False
-
-        fileName = Path(fileName)
+    def renameFile(self, fileName: Path) -> None:
+        """ """
         with fits.open(name=fileName) as fd:
             fitsHeader = fd[0].header
-
-            # object should be in lower case. if not, it will be set
             newObjectName = self.ui.newObjectName.text().upper()
             if newObjectName:
                 newFilename = newObjectName
-
             else:
-                if "OBJECT" in fitsHeader:
-                    newFilename = fitsHeader["OBJECT"].upper()
-                else:
-                    newFilename = "UNKNOWN"
+                newFilename = fitsHeader.get("OBJECT", "UNKNOWN").upper()
 
             for _, selector in self.selectorsDropDowns.items():
                 selection = selector.currentText()
-                chunk = self.processSelectors(fitsHeader=fitsHeader, selection=selection)
+                chunk = self.processSelectors(fitsHeader, selection)
                 if chunk:
                     newFilename += f"_{chunk}"
 
@@ -216,53 +143,30 @@ class Rename(QObject):
             dirName = os.path.dirname(fileName)
             newFilename = Path(dirName, newFilename)
             os.rename(fileName, newFilename)
-        return True
 
-    def renameRunGUI(self):
-        """
-        renameRunGUI retrieves a full list of files to be renamed and renames
-        them on by one.
-
-        :return: True for test purpose
-        """
-        pathDir = self.ui.renameDir.text()
+    def renameRunGUI(self) -> None:
+        """ """
         includeSubdirs = self.ui.includeSubdirs.isChecked()
-        if not os.path.isdir(pathDir):
+        if not self.renameDir.is_dir():
             self.msg.emit(2, "Tools", "Rename error", "No valid input directory given")
-            return False
+            return
 
         search = "**/*.fit*" if includeSubdirs else "*.fit*"
-
-        numberFiles = self.getNumberFiles(pathDir, search=search)
+        numberFiles = self.getNumberFiles(search=search)
         if not numberFiles:
             self.msg.emit(2, "Tools", "Rename error", "No files to rename")
-            return False
+            return
 
-        for i, fileName in enumerate(Path(pathDir).glob(search)):
+        for i, fileName in enumerate(self.renameDir.glob(search)):
             self.ui.renameProgress.setValue(int(100 * (i + 1) / numberFiles))
             QApplication.processEvents()
-            suc = self.renameFile(fileName=fileName)
-            if not suc:
-                self.msg.emit(2, "Tools", "Rename error", f"{fileName} could not be renamed")
+            self.renameFile(fileName=fileName)
 
         self.msg.emit(0, "Tools", "Rename", f"{numberFiles:d} images were renamed")
 
-        return True
-
-    def chooseDir(self):
-        """
-        chooseDir selects the input directory and sets the default value for the
-        output directory as well
-
-        :return: True for test purpose
-        """
+    def chooseDir(self) -> None:
+        """ """
         folder = self.ui.renameDir.text()
-        pathDir, _, _ = self.mainW.openDir(
-            self.mainW,
-            "Choose Input Dir",
-            folder,
-        )
-        if pathDir:
-            self.ui.renameDir.setText(pathDir)
-            self.ui.renameProgress.setValue(0)
-        return True
+        self.renameDir = self.mainW.openDir(self.mainW, "Choose Input Dir", folder)
+        self.ui.renameDir.setText(str(self.renameDir))
+        self.ui.renameProgress.setValue(0)

@@ -142,41 +142,43 @@ def test_processSelectors_2(function):
     assert name == "2019-05-26_17-02-18"
 
 
-def test_renameFile_3(function):
-    shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
+def test_renameFile_1(function):
+    hdu = fits.PrimaryHDU(np.arange(100.0))
+    hduList = fits.HDUList([hdu])
+    hduList.writeto(Path("tests/work/image/m01.fit"), overwrite=True)
     with mock.patch.object(Path, "rename"):
-        function.renameFile(Path("tests/work/image/m51.fit"))
+        function.renameFile(Path("tests/work/image/m01.fit"))
+
+
+def test_renameFile_2(function):
+    hdu = fits.PrimaryHDU(np.arange(100.0))
+    hduList = fits.HDUList([hdu])
+    hduList.writeto(Path("tests/work/image/m02.fit"), overwrite=True)
+
+    with mock.patch.object(Path, "rename"):
+        function.renameFile(Path("tests/work/image/m02.fit"))
+
+
+def test_renameFile_3(function):
+    hdu = fits.PrimaryHDU(np.arange(100.0))
+    hduList = fits.HDUList([hdu])
+    function.ui.newObjectName.setText("test")
+    hduList.writeto(Path("tests/work/image/m03.fit"), overwrite=True)
+
+    with mock.patch.object(Path, "rename"):
+        function.renameFile(Path("tests/work/image/m03.fit"))
 
 
 def test_renameFile_4(function):
-    shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
-    function.ui.newObjectName.setText("test")
-
-    with mock.patch.object(Path, "rename"):
-        function.renameFile(Path("tests/work/image/m51.fit"))
-
-
-def test_renameFile_5(function):
-    hdu = fits.PrimaryHDU(np.arange(100.0))
-    hduList = fits.HDUList([hdu])
-    function.ui.newObjectName.setText("")
-    hduList.writeto(Path("tests/work/image/m51.fit"), overwrite=True)
-
-    with mock.patch.object(Path, "rename"):
-        function.renameFile(Path("tests/work/image/m51.fit"))
-
-
-def test_renameFile_6(function):
     hdu = fits.PrimaryHDU(np.arange(100.0))
     hdu.header["FILTER"] = "test"
     hduList = fits.HDUList([hdu])
-    hduList.writeto(Path("tests/work/image/m51.fit"), overwrite=True)
-
+    hduList.writeto(Path("tests/work/image/m04.fit"), overwrite=True)
     function.ui.rename1.clear()
     function.ui.rename1.addItem("Filter")
 
     with mock.patch.object(os, "rename"):
-        function.renameFile(Path("tests/work/image/m51.fit"))
+        function.renameFile(Path("tests/work/image/m04.fit"))
 
 
 def test_renameRunGUI_1(function):

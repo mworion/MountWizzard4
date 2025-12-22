@@ -74,7 +74,7 @@ class SeeingWeather:
     def processSeeingData(self) -> None:
         """ """
         dataFile = self.app.mwGlob["dataDir"] / "meteoblue.data"
-        if not dataFile.is_file(dataFile):
+        if not dataFile.is_file():
             self.log.info(f"{dataFile} not available")
             return
 

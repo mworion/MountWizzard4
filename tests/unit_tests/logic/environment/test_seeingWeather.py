@@ -14,7 +14,6 @@
 #
 ###########################################################
 import json
-import os
 import pytest
 import requests
 import shutil
@@ -63,18 +62,20 @@ def test_stopCommunication_1(function):
 
 
 def test_processSeeingData_1(function):
-    with mock.patch.object(os.path, "isfile", return_value=False):
+    with mock.patch.object(Path, "is_file", return_value=False):
         function.processSeeingData()
 
 
 def test_processSeeingData_2(function):
-    with mock.patch.object(json, "load", return_value={}, side_effect=Exception):
-        function.processSeeingData()
+    with mock.patch.object(Path, "is_file", return_value=True):
+        with mock.patch.object(json, "load", return_value={}, side_effect=Exception):
+            function.processSeeingData()
 
 
 def test_processSeeingData_3(function):
-    with mock.patch.object(json, "load", return_value={}):
-        function.processSeeingData()
+    with mock.patch.object(Path, "is_file", return_value=True):
+        with mock.patch.object(json, "load", return_value={}):
+            function.processSeeingData()
 
 
 def test_workerGetSeeingData_0(function):
@@ -173,11 +174,13 @@ def test_loadingFileNeeded_3(function):
 
 
 def test_pollSeeingData_1(function):
+    function.app.mwGlob["dataDir"] = Path("tests/work/data")
     function.apiKey = ""
     function.pollSeeingData()
 
 
 def test_pollSeeingData_2(function):
+    function.app.mwGlob["dataDir"] = Path("tests/work/data")
     function.apiKey = "test"
     function.b = "test"
     function.app.onlineMode = False
@@ -186,6 +189,7 @@ def test_pollSeeingData_2(function):
 
 
 def test_pollSeeingData_3(function):
+    function.app.mwGlob["dataDir"] = Path("tests/work/data")
     function.apiKey = "test"
     function.b = "test"
     function.app.onlineMode = True
@@ -193,6 +197,7 @@ def test_pollSeeingData_3(function):
 
 
 def test_pollSeeingData_4(function):
+    function.app.mwGlob["dataDir"] = Path("tests/work/data")
     function.apiKey = "test"
     function.b = "test"
     function.app.onlineMode = True
@@ -201,6 +206,7 @@ def test_pollSeeingData_4(function):
 
 
 def test_pollSeeingData_5(function):
+    function.app.mwGlob["dataDir"] = Path("tests/work/data")
     function.apiKey = "test"
     function.b = "test"
     function.app.onlineMode = True

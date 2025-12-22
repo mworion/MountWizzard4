@@ -13,7 +13,7 @@
 #
 ###########################################################
 [build-system]
-requires = ["uv_build>=0.9.17"]
+requires = ["uv_build"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -68,7 +68,7 @@ dependencies = [
     "sgp4==2.25",
     "requests==2.32.5",
     "requests_toolbelt==1.0.0",
-    "importlib_metadata==8.7.0",
+    "importlib_metadata==8.7.1",
     "python-dateutil==2.9.0.post0",
     "wakeonlan==3.1.0",
     "pybase64==1.4.3",
@@ -102,9 +102,9 @@ dev = [
     "pytest-cov==7.0.0",
     "pytest-xdist==3.8.0",
     "invoke==2.2.1",
-    "ruff==0.14.9",
+    "ruff==0.14.10",
     "coverage==7.13.0",
-    "uv-build==0.9.17"
+    "uv-build==0.9.18"
 ]
 
 [tool.pytest.ini_options]

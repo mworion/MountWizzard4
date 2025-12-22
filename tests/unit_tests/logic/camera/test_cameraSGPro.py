@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-
+from pathlib import Path
 import os
 import pytest
 import unittest.mock as mock
@@ -31,7 +31,7 @@ class Parent:
     updateRate = 1000
     binning = 1
     exposureTime = 1
-    imagePath = "tests/work/image/test.fit"
+    imagePath = Path("tests/work/image/test.fit")
     width = 100
     height = 100
     subframe = 100

@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-import os
+from pathlib import Path
 from mw4.base.sgproClass import SGProClass
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
@@ -104,10 +104,9 @@ class CameraSGPro(SGProClass):
         self.parent.waitFinish(self.sgGetImagePath, receipt)
 
         if not self.parent.exposing:
-            self.parent.imagePath = ""
+            self.parent.imagePath = Path()
         else:
-            pre, _ = os.path.splitext(self.parent.imagePath)
-            os.rename(pre + ".fit", self.parent.imagePath)
+            self.parent.imagePath.with_suffix(".fit")
             sleepAndEvents(500)
             self.parent.updateImageFitsHeaderPointing()
 

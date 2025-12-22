@@ -150,7 +150,7 @@ class FileHandler:
     def workerLoadImage(self, imagePath: Path) -> None:
         """ """
         self.imagePath = imagePath
-        _, ext = os.path.splitext(self.imagePath)
+        ext = self.imagePath.suffix
 
         if ext in [".fits", ".fit"]:
             self.loadFITS()

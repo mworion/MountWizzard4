@@ -157,14 +157,14 @@ def test_loadXSIF(function):
 
 
 def test_workerLoadImage_1(function):
-    imageFileName = "tests/work/image/m51.fit"
+    imageFileName = Path("tests/work/image/m51.fit")
     with mock.patch.object(function, "loadFITS"):
         with mock.patch.object(function, "checkValidImageFormat", return_value=False):
             function.workerLoadImage(imageFileName)
 
 
 def test_workerLoadImage_2(function):
-    imageFileName = "tests/work/image/m51.xisf"
+    imageFileName = Path("tests/work/image/m51.xisf")
     with mock.patch.object(function, "loadXISF"):
         with mock.patch.object(function, "checkValidImageFormat", return_value=False):
             function.workerLoadImage(imageFileName)

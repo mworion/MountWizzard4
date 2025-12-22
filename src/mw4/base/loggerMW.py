@@ -15,7 +15,7 @@
 ###########################################################
 import datetime
 import logging
-import os
+from pathlib import Path
 import sys
 import time
 from functools import partial, partialmethod
@@ -65,6 +65,7 @@ def redirectSTD() -> None:
 
 def setupLogging() -> None:
     """ """
+    Path.mkdir("./log", parents=True, exist_ok=True)
     logging.Formatter.converter = time.gmtime
     timeTag = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d")
     logFile = f"./log/mw4-{timeTag}.log"

@@ -89,7 +89,7 @@ def test_getDewPoint_5(function):
 
 
 def test_processOpenWeatherMapData_1(function):
-    with mock.patch.object(os.path, "isfile", return_value=False):
+    with mock.patch.object(Path, "is_file", return_value=False):
         function.processOpenWeatherMapData()
 
 

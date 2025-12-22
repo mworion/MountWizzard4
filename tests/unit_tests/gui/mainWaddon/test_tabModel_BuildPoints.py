@@ -323,7 +323,7 @@ def test_autoDeletePoints(function):
 
 
 def test_autoSortPoints_1(function):
-    function.ui.noSort.setChecked(True)
+    function.ui.avoidFlip.setChecked(True)
     function.autoSortPoints()
 
 
@@ -338,6 +338,7 @@ def test_autoSortPoints_3(function):
 
 
 def test_autoSortPoints_4(function):
+    function.app.deviceStat["dome"] = True
     function.ui.sortDomeAZ.setChecked(True)
     function.autoSortPoints()
 

@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-
+from pathlib import Path
 import glob
 import os
 import pytest
@@ -91,15 +91,15 @@ def test_init_1(function):
 
 
 def test_processSolveQueue_1(function):
-    with mock.patch.object(os.path, "isfile", return_value=False):
-        function.processSolveQueue("tests/work/image/m51.fit", False)
+    with mock.patch.object(Path, "is_file", return_value=False):
+        function.processSolveQueue(Path("tests/work/image/m51.fit"), False)
 
 
 def test_processSolveQueue_2(function):
     function.framework = "astap"
-    with mock.patch.object(os.path, "isfile", return_value=True):
+    with mock.patch.object(Path, "is_file", return_value=True):
         with mock.patch.object(function.run["astap"], "solve"):
-            function.processSolveQueue("tests/work/image/m51.fit", False)
+            function.processSolveQueue(Path("tests/work/image/m51.fit"), False)
 
 
 def test_workerSolveLoop_1(function, mocked_sleepAndEvents):

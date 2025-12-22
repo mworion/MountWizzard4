@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-
+from pathlib import Path
 import builtins
 import pytest
 import requests
@@ -28,7 +28,7 @@ def function(qapp):
     widget = QWidget()
     widget.app = App()
     with mock.patch.object(UploadPopup, "show"):
-        window = UploadPopup(parentWidget=widget, url="", dataTypes="", dataFilePath="")
+        window = UploadPopup(parentWidget=widget, url="", dataTypes="", dataFilePath=Path())
         yield window
         window.threadPool.waitForDone(10000)
 

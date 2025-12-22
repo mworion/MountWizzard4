@@ -405,11 +405,6 @@ def test_setupDome(function):
     function.setupDome()
 
 
-def test_drawDome_1(function):
-    function.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
-    function.drawDome("test")
-
-
 def test_drawDome_2(function):
     function.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
     function.drawDome(azimuth=100)

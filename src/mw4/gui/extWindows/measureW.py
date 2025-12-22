@@ -303,7 +303,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         """ """
         if self.app.measure.framework == "csv":
             imagePath = self.app.measure.run["csv"].csvFilename
-            title = f"Measuring:   {os.path.basename(imagePath)}"
+            title = f"Measuring:   {imagePath.stem}"
         else:
             title = "Measuring"
         self.setWindowTitle(title)

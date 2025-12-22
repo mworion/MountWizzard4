@@ -76,7 +76,7 @@ def test_colorChange(function):
 
 
 def test_writeGui_1(function):
-    function.writeGui([{"a": 1}], "test")
+    function.writeGui([{"a": 1}], Path("test"))
 
 
 def test_list_to_array_replaces_none_and_nan(function):

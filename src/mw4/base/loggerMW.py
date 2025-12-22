@@ -65,9 +65,6 @@ def redirectSTD() -> None:
 
 def setupLogging() -> None:
     """ """
-    if not os.path.isdir("./log"):
-        os.mkdir("./log")
-
     logging.Formatter.converter = time.gmtime
     timeTag = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d")
     logFile = f"./log/mw4-{timeTag}.log"

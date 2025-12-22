@@ -78,7 +78,7 @@ class SensorWeatherOnline:
     def processOpenWeatherMapData(self) -> None:
         """ """
         dataFile = self.app.mwGlob["dataDir"] / "openweathermap.data"
-        if not os.path.isfile(dataFile):
+        if not dataFile.is_file():
             self.log.info(f"{dataFile} not available")
             return
 

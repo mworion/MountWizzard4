@@ -139,7 +139,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         d = data[0]
         de = data[-1]
 
-        title = f"Analyse Model     {os.path.basename(loadFilePath)}"
+        title = f"Analyse Model     {loadFilePath.stem}"
         self.setWindowTitle(title)
         self.ui.exposureTime.setText(f"{d.get('exposureTime', '')}")
         self.ui.solver.setText(d.get("plateSolveApp", ""))

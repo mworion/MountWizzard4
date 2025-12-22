@@ -17,6 +17,7 @@
 import numpy as np
 import pyqtgraph as pg
 import pytest
+from pathlib import Path
 import unittest.mock as mock
 from mw4.gui.extWindows.measureW import MeasureWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
@@ -120,6 +121,7 @@ def test_setTitle_1(function):
 
 def test_setTitle_2(function):
     function.app.measure.framework = "csv"
+    function.app.measure.run["csv"].csvFilename = Path("csv")
     function.setTitle()
 
 

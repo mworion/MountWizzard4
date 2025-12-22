@@ -58,7 +58,7 @@ def test_finish():
 
 
 def test_init():
-    SplashScreen(QWidget(), 100, 100)
+    SplashScreen(QWidget())
 
 
 def test_finish():

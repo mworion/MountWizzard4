@@ -56,7 +56,7 @@ class PlateSolve:
 
     def processSolveQueue(self, imagePath: Path, updateHeader: bool = False) -> None:
         """ """
-        if not os.path.isfile(imagePath):
+        if not imagePath.is_file():
             result = {"success": False, "message": f"{imagePath} not found"}
         else:
             self.signals.message.emit("solving")

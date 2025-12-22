@@ -60,7 +60,7 @@ class Watney:
 
     def saveConfigFile(self) -> None:
         """ """
-        cfgFile = os.path.join(self.tempDir, "watney-solve-config.yml")
+        cfgFile = self.tempDir / "watney-solve-config.yml"
         with open(cfgFile, "w+") as outFile:
             outFile.write(f"quadDbPath: '{self.indexPath}'\n")
             outFile.write("defaultStarDetectionBgOffset: 1.0\n")

@@ -16,6 +16,7 @@
 import csv
 import logging
 import PySide6
+from pathlib import Path
 
 
 class MeasureDataCSV(PySide6.QtCore.QObject):
@@ -35,7 +36,7 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         self.parent = parent
         self.data = data
         self.deviceName = "CSV"
-        self.csvFilename = ""
+        self.csvFilename: Path = Path()
         self.defaultConfig = {
             "csv": {
                 "deviceName": "save to file",
@@ -52,7 +53,7 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
     def openCSV(self) -> None:
         """ """
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
-        self.csvFilename = f"{self.app.mwGlob['measureDir']}/measure-{nameTime}.csv"
+        self.csvFilename = self.app.mwGlob['measureDir'] / f"measure-{nameTime}.csv"
 
         self.csvFile = open(self.csvFilename, "w+")
         fieldnames = [

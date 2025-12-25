@@ -169,6 +169,10 @@ class ObsSite:
     def timeDiff(self):
         return np.mean(self._timeDiff)
 
+    @timeDiff.setter
+    def timeDiff(self, value):
+        return
+
     @property
     def ut1_utc(self):
         return self._ut1_utc

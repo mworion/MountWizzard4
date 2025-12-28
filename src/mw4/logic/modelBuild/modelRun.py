@@ -126,6 +126,7 @@ class ModelData(QObject):
     def startNewSlew(self) -> None:
         """ """
         self.pointerSlew += 1
+        self.log.debug(f"{'start slew':15s}: {self.pointerSlew:02i}")
         if self.pointerSlew >= len(self.modelBuildData):
             return
         if self.cancelBatch or self.endBatch:
@@ -137,8 +138,10 @@ class ModelData(QObject):
         azimuth = item["azimuth"]
         self.mountSlewed = False
         self.domeSlewed = False
+        self.log.debug(f"{'':15s}: {self.pointerSlew:02i}, {altitude:03.0f}, {azimut:03.0f}")
 
         if not self.app.mount.obsSite.setTargetAltAz(altitude, azimuth):
+            self.log.debug(f"{'':15s}: no target setting possible")
             return
         if self.app.deviceStat["dome"]:
             self.app.dome.slewDome(azimuth)
@@ -209,6 +212,7 @@ class ModelData(QObject):
     def startNewImageExposure(self) -> None:
         """ """
         self.pointerImage += 1
+        self.log.debug(f"{'start exposure':15s}: {self.pointerImage:02i}")
         if self.cancelBatch or self.endBatch:
             return
 
@@ -223,12 +227,14 @@ class ModelData(QObject):
         imagePath = item["imagePath"]
         exposureTime = item["exposureTime"] = cam.exposureTime1
         binning = item["binning"] = cam.binning1
+        self.log.debug(f"{'':15s}: {self.pointerImage:02i}, {imagePath.stem}, {exposureTime:3.0f}")
         self.app.camera.expose(imagePath, exposureTime, binning)
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
 
     def startNewPlateSolve(self) -> None:
         """ """
         self.pointerPlateSolve += 1
+        self.log.debug(f"{'start solve':15s}: {self.pointerPlateSolve:02i}")
         imagePath = self.modelBuildData[self.pointerPlateSolve]["imagePath"]
         self.app.plateSolve.solve(imagePath)
 

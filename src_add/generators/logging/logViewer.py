@@ -14,11 +14,8 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import sys
 import os
-
-
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QTabWidget, QLabel, QLineEdit
 from PySide6.QtWidgets import QGridLayout, QPushButton, QFileDialog
 from PySide6.QtWidgets import QListWidget, QListWidgetItem, QApplication
@@ -55,6 +52,7 @@ class Categories(QTabWidget):
             "Info": None,
             "Debug": None,
             "UI Trace": None,
+            "Model Trace": None,
             "Mount Trace": None,
             "INDI Trace": None,
             "ASCOM Trace": None,
@@ -111,6 +109,8 @@ class Categories(QTabWidget):
             listKey = "Warnings"
         elif "[I]" in line:
             listKey = "Info"
+        elif "[D]" in line and 'modelBuild' in line:
+            listKey = "Model Trace"
         elif "[D]" in line:
             listKey = "Debug"
         elif "[U]" in line:

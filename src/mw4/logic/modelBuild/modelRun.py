@@ -138,7 +138,7 @@ class ModelData(QObject):
         azimuth = item["azimuth"]
         self.mountSlewed = False
         self.domeSlewed = False
-        self.log.model(f"{'':15s}: {self.pointerSlew:02d}, {altitude:03.0f}, {azimut:03.0f}")
+        self.log.model(f"{'':15s}: {self.pointerSlew:02d}, {altitude:03.0f}, {azimuth:03.0f}")
 
         if not self.app.mount.obsSite.setTargetAltAz(altitude, azimuth):
             self.log.model(f"{'':15s}: no target setting possible")

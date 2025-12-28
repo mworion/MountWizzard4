@@ -306,7 +306,7 @@ class ModelData(QObject):
     def checkRetryNeeded(self) -> None:
         """ """
         retryNeeded = not all(p["success"] for p in self.modelBuildData)
-        self.log.debug(f"{'check retry':15s}: {retryNeeded}"
+        self.log.debug(f"{'check retry':15s}: {retryNeeded}")
         return retryNeeded
         
     def runThroughModelBuildData(self) -> None:

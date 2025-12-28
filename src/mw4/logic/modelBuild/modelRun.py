@@ -126,7 +126,7 @@ class ModelData(QObject):
     def startNewSlew(self) -> None:
         """ """
         self.pointerSlew += 1
-        self.log.debug(f"{'start slew':15s}: {self.pointerSlew:02d}")
+        self.log.model(f"{'start slew':15s}: {self.pointerSlew:02d}")
         if self.pointerSlew >= len(self.modelBuildData):
             return
         if self.cancelBatch or self.endBatch:
@@ -138,10 +138,10 @@ class ModelData(QObject):
         azimuth = item["azimuth"]
         self.mountSlewed = False
         self.domeSlewed = False
-        self.log.debug(f"{'':15s}: {self.pointerSlew:02d}, {altitude:03.0f}, {azimut:03.0f}")
+        self.log.model(f"{'':15s}: {self.pointerSlew:02d}, {altitude:03.0f}, {azimut:03.0f}")
 
         if not self.app.mount.obsSite.setTargetAltAz(altitude, azimuth):
-            self.log.debug(f"{'':15s}: no target setting possible")
+            self.log.model(f"{'':15s}: no target setting possible")
             return
         if self.app.deviceStat["dome"]:
             self.app.dome.slewDome(azimuth)
@@ -195,7 +195,7 @@ class ModelData(QObject):
         """ """
         item = self.modelBuildData[self.pointerImage]
         obs = self.app.mount.obsSite
-        self.log.debug(f"{obs.raJNow} {obs.decJNow} {obs.timeJD}")
+        self.log.model(f"{obs.raJNow} {obs.decJNow} {obs.timeJD}")
         item["raJNowM"] = obs.raJNow
         item["decJNowM"] = obs.decJNow
         item["angularPosRA"] = obs.angularPosRA
@@ -212,7 +212,7 @@ class ModelData(QObject):
     def startNewImageExposure(self) -> None:
         """ """
         self.pointerImage += 1
-        self.log.debug(f"{'start exposure':15s}: {self.pointerImage:02d}")
+        self.log.model(f"{'start exposure':15s}: {self.pointerImage:02d}")
         if self.cancelBatch or self.endBatch:
             return
 
@@ -227,14 +227,14 @@ class ModelData(QObject):
         imagePath = item["imagePath"]
         exposureTime = item["exposureTime"] = cam.exposureTime1
         binning = item["binning"] = cam.binning1
-        self.log.debug(f"{'':15s}: {self.pointerImage:02d}, {imagePath.stem}, {exposureTime:3.0f}")
+        self.log.model(f"{'':15s}: {self.pointerImage:02d}, {imagePath.stem}, {exposureTime:3.0f}")
         self.app.camera.expose(imagePath, exposureTime, binning)
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
 
     def startNewPlateSolve(self) -> None:
         """ """
         self.pointerPlateSolve += 1
-        self.log.debug(f"{'start solve':15s}: {self.pointerPlateSolve:02d}")
+        self.log.model(f"{'start solve':15s}: {self.pointerPlateSolve:02d}")
         imagePath = self.modelBuildData[self.pointerPlateSolve]["imagePath"]
         self.app.plateSolve.solve(imagePath)
 
@@ -259,7 +259,7 @@ class ModelData(QObject):
     def collectPlateSolveResult(self, result) -> None:
         """ """
         self.pointerResult += 1
-        self.log.debug(f"{'collect solve':15s}: {self.pointerResult:02d}")
+        self.log.model(f"{'collect solve':15s}: {self.pointerResult:02d}")
         item = self.modelBuildData[self.pointerResult]
         item.update(result)
         item["success"] = result["success"]
@@ -274,11 +274,11 @@ class ModelData(QObject):
         else:
             self.app.data.setStatusBuildPFailed(self.pointerResult)
          
-        self.log.debug(f"{'':15s}: {item}")
+        self.log.model(f"{'':15s}: {item}")
         self.statusSolve.emit(item)
         self.app.updatePointMarker.emit()
         self.sendModelProgress()
-        self.endBatch = self.pointerResult == len(self.modelBuildData) - 1:
+        self.endBatch = self.pointerResult == len(self.modelBuildData) - 1
 
     def prepareModelBuildData(self) -> None:
         """ """

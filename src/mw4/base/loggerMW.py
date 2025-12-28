@@ -103,7 +103,7 @@ def setupLogging() -> None:
 
     logging.MODEL = 25
     logging.addLevelName(25, "MODEL")
-    logging.Logger.trace = partialmethod(logging.Logger.log, logging.MODEL)
+    logging.Logger.model = partialmethod(logging.Logger.log, logging.MODEL)
     logging.model = partial(logging.log, logging.MODEL)
 
     logging.UI = 35

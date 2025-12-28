@@ -175,11 +175,13 @@ class ModelData(QObject):
 
     def saveModelData(self, modelPath: Path) -> None:
         """ """
+        self.log.debug(f"{'save model':15s}: {len(self.modelSaveData)}")
         with open(modelPath, "w") as outfile:
             json.dump(self.modelSaveData, outfile, sort_keys=True, indent=4)
 
     def buildProgModel(self) -> None:
         """ """
+        self.log.debug(f"{'build prog model':15s}: {len(self.modelBuildData)}")
         self.modelProgData = []
         for mPoint in self.modelBuildData:
             if not mPoint["success"]:
@@ -195,7 +197,7 @@ class ModelData(QObject):
         """ """
         item = self.modelBuildData[self.pointerImage]
         obs = self.app.mount.obsSite
-        self.log.debug(f"{obs.raJNow} {obs.decJNow} {obs.timeJD}")
+        self.log.debug(f"{'add mount data':15s}: {obs.raJNow} {obs.decJNow} {obs.timeJD}")
         item["raJNowM"] = obs.raJNow
         item["decJNowM"] = obs.decJNow
         item["angularPosRA"] = obs.angularPosRA
@@ -283,6 +285,7 @@ class ModelData(QObject):
     def prepareModelBuildData(self) -> None:
         """ """
         self.modelBuildData.clear()
+        self.log.debug(f"{'prepare model':15s}: {len(self.modelInputData)}, {self.app.camera.exposureTime:3.0f},{self.app.camera.focalLength:4.0f}")
         for index, point in enumerate(self.modelInputData):
             modelItem = {}
             imagePath = self.imageDir / f"image-{index + 1:03d}.fits"
@@ -302,8 +305,10 @@ class ModelData(QObject):
 
     def checkRetryNeeded(self) -> None:
         """ """
-        return not all(p["success"] for p in self.modelBuildData)
-
+        retryNeeded = not all(p["success"] for p in self.modelBuildData)
+        self.log.debug(f"{'check retry':15s}: {retryNeeded}"
+        return retryNeeded
+        
     def runThroughModelBuildData(self) -> None:
         """ """
         self.pointerSlew = -1
@@ -318,6 +323,7 @@ class ModelData(QObject):
     def runThroughModelBuildDataRetries(self) -> None:
         """ """
         while self.numberRetries >= 0:
+            self.log.debug(f"{'run retries':15s}: {self.numberRetries}")
             self.runThroughModelBuildData()
             if not self.checkRetryNeeded():
                 break
@@ -330,6 +336,7 @@ class ModelData(QObject):
         if not self.modelInputData:
             return
 
+        self.log.debug(f"{'start model':15s}")
         self.runTime = time.time()
         self.setupSignals()
         self.prepareModelBuildData()
@@ -339,4 +346,5 @@ class ModelData(QObject):
         if modelSize < 3:
             self.log.warning(f"Only {modelSize} points available")
             self.modelProgData = []
+        self.log.debug(f"{'finish model':15s}: {modelSize}")
         self.resetSignals()

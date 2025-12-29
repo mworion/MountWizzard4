@@ -313,13 +313,12 @@ class ModelManage(QObject):
         if not model.numberStars:
             return
 
-        wIndex = model.starList.index(max(model.starList))
-        wStar = model.starList[wIndex]
+        wStar = max(model.starList, key=lambda x: x.errorRMS)
         error = wStar.errorRMS
         if not model.deletePoint(wStar.number):
             self.msg.emit(2, "Model", "Manage error", "Worst point cannot be deleted")
             return
-        text = f"Point: {wIndex + 1:3.0f}, RMS of {error:5.1f}"
+        text = f"Point: {wStar.number + 1:3.0f}, RMS of {error:5.1f}"
         text += " arcsec deleted."
         self.msg.emit(0, "Model", "Manage", text)
         self.refreshModel()
@@ -347,8 +346,7 @@ class ModelManage(QObject):
         numberStars = 0 if mount.model.numberStars is None else mount.model.numberStars
 
         if self.runningOptimize and numberStars > 1:
-            wIndex = mount.model.starList.index(max(mount.model.starList))
-            wStar = mount.model.starList[wIndex]
+            wStar = max(mount.model.starList, key=lambda x: x.errorRMS)
             if not mount.model.deletePoint(wStar.number):
                 self.runningOptimize = False
                 self.msg.emit(
@@ -373,8 +371,8 @@ class ModelManage(QObject):
         numberStars = 0 if mount.model.numberStars is None else mount.model.numberStars
 
         if self.runningOptimize and numberStars > 1:
-            wIndex = mount.model.starList.index(max(mount.model.starList))
-            wStar = mount.model.starList[wIndex]
+            wStar = max(mount.model.starList, key=lambda x: x.errorRMS)
+
             suc = mount.model.deletePoint(wStar.number)
             if not suc:
                 self.runningOptimize = False

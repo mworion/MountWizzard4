@@ -55,8 +55,8 @@ def test_writeRetrofitData_2():
     mountModel = Model(parent=Parent())
     p1 = "12:45:33.01"
     p2 = "+56*30:00.5"
-    p3 = "1234.5"
-    p4 = "90"
+    p3 = 1234.5
+    p4 = Angle(degrees=90)
     p5 = obsSite
     modelStar1 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1, obsSite=p5)
 
@@ -75,8 +75,8 @@ def test_writeRetrofitData_3():
     mountModel = Model(parent=Parent())
     p1 = "12:45:33.01"
     p2 = "+56*30:00.5"
-    p3 = "1234.5"
-    p4 = "90"
+    p3 = 1234.5
+    p4 = Angle(degrees=90)
     p5 = obsSite
     modelStar1 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1, obsSite=p5)
 

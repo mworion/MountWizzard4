@@ -92,7 +92,7 @@ def test_showModelPosition_2(function):
     star = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=0,
-        errorAngle=0,
+        errorAngle=Angle(degrees=0),
         number=1,
         obsSite=function.app.mount.obsSite,
     )
@@ -104,7 +104,7 @@ def test_showErrorAscending_1(function):
     star = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=0,
-        errorAngle=0,
+        errorAngle=Angle(degrees=0),
         number=1,
         obsSite=function.app.mount.obsSite,
     )
@@ -134,7 +134,7 @@ def test_showErrorDistribution_1(function):
     star = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=0,
-        errorAngle=0,
+        errorAngle=Angle(degrees=0),
         number=1,
         obsSite=function.app.mount.obsSite,
     )
@@ -357,7 +357,7 @@ def test_deleteWorstPoint_2(function):
     star = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=0,
-        errorAngle=0,
+        errorAngle=Angle(degrees=0),
         number=1,
         obsSite=function.app.mount.obsSite,
     )
@@ -372,7 +372,7 @@ def test_deleteWorstPoint_3(function):
     star = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=0,
-        errorAngle=0,
+        errorAngle=Angle(degrees=0),
         number=1,
         obsSite=function.app.mount.obsSite,
     )
@@ -399,21 +399,21 @@ def test_runTargetRMS_2(function):
     star1 = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=5,
-        errorAngle=90,
+        errorAngle=Angle(degrees=90),
         number=1,
         obsSite=function.app.mount.obsSite,
     )
     star2 = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=4,
-        errorAngle=90,
+        errorAngle=Angle(degrees=90),
         number=2,
         obsSite=function.app.mount.obsSite,
     )
     star3 = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=3,
-        errorAngle=90,
+        errorAngle=Angle(degrees=90),
         number=3,
         obsSite=function.app.mount.obsSite,
     )
@@ -435,21 +435,21 @@ def test_runTargetRMS_3(function):
     star1 = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=5,
-        errorAngle=90,
+        errorAngle=Angle(degrees=90),
         number=1,
         obsSite=function.app.mount.obsSite,
     )
     star2 = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=4,
-        errorAngle=90,
+        errorAngle=Angle(degrees=90),
         number=2,
         obsSite=function.app.mount.obsSite,
     )
     star3 = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=3,
-        errorAngle=90,
+        errorAngle=Angle(degrees=90),
         number=3,
         obsSite=function.app.mount.obsSite,
     )
@@ -483,7 +483,7 @@ def test_runSingleRMS_1(function):
     star1 = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=0.1,
-        errorAngle=90,
+        errorAngle=Angle(degrees=90),
         number=1,
         obsSite=function.app.mount.obsSite,
     )
@@ -502,21 +502,21 @@ def test_runSingleRMS_2(function):
     star1 = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=5,
-        errorAngle=90,
+        errorAngle=Angle(degrees=90),
         number=1,
         obsSite=function.app.mount.obsSite,
     )
     star2 = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=4,
-        errorAngle=90,
+        errorAngle=Angle(degrees=90),
         number=2,
         obsSite=function.app.mount.obsSite,
     )
     star3 = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=3,
-        errorAngle=90,
+        errorAngle=Angle(degrees=90),
         number=3,
         obsSite=function.app.mount.obsSite,
     )
@@ -538,21 +538,21 @@ def test_runSingleRMS_3(function):
     star1 = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=5,
-        errorAngle=90,
+        errorAngle=Angle(degrees=90),
         number=1,
         obsSite=function.app.mount.obsSite,
     )
     star2 = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=4,
-        errorAngle=90,
+        errorAngle=Angle(degrees=90),
         number=2,
         obsSite=function.app.mount.obsSite,
     )
     star3 = ModelStar(
         Star(ra_hours=0, dec_degrees=0),
         errorRMS=3,
-        errorAngle=90,
+        errorAngle=Angle(degrees=90),
         number=3,
         obsSite=function.app.mount.obsSite,
     )

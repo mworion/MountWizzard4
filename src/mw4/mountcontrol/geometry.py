@@ -64,25 +64,25 @@ class Geometry:
         },
     }
 
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         self.parent = parent
-        self.offBaseAltAxisX = 0
-        self.offBaseAltAxisZ = 0
-        self.offAltAxisGemX = 0
-        self.offAltAxisGemZ = 0
-        self.offGemPlate = 0
-        self.altAdj = 0
-        self.azAdj = 0
-        self._offNorth = 0
-        self._offNorthGEM = 0
-        self._offEast = 0
-        self._offEastGEM = 0
-        self._offVert = 0
-        self._offVertGEM = 0
-        self._domeRadius = 1
-        self._offGEM = 0
-        self._offLAT = 0
-        self._offPlateOTA = 0
+        self.offBaseAltAxisX: float = 0
+        self.offBaseAltAxisZ: float = 0
+        self.offAltAxisGemX: float = 0
+        self.offAltAxisGemZ: float = 0
+        self.offGemPlate: float = 0
+        self.altAdj: float = 0
+        self.azAdj: float = 0
+        self._offNorth: float = 0
+        self._offNorthGEM: float = 0
+        self._offEast: float = 0
+        self._offEastGEM: float = 0
+        self._offVert: float = 0
+        self._offVertGEM: float = 0
+        self._domeRadius: float = 1
+        self._offGEM: float = 0
+        self._offLAT: float = 0
+        self._offPlateOTA: float = 0
         self.transMatrix = None
         self.transVector = None
 

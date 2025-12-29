@@ -25,19 +25,11 @@ class Firmware:
 
     def __init__(self, parent):
         self.parent = parent
-        self._product: str = ""
+        self.product: str = ""
         self._vString: Version = Version("0.0.0")
-        self._hardware: str = ""
-        self._date: str = ""
-        self._time: str = ""
-
-    @property
-    def product(self):
-        return self._product
-
-    @product.setter
-    def product(self, value):
-        self._product = value
+        self.hardware: str = ""
+        self.date: str = ""
+        self.time: str = ""
 
     @property
     def vString(self):
@@ -46,30 +38,6 @@ class Firmware:
     @vString.setter
     def vString(self, value: str):
         self._vString = Version(value)
-
-    @property
-    def hardware(self):
-        return self._hardware
-
-    @hardware.setter
-    def hardware(self, value):
-        self._hardware = value
-
-    @property
-    def date(self):
-        return self._date
-
-    @date.setter
-    def date(self, value):
-        self._date = value
-
-    @property
-    def time(self):
-        return self._time
-
-    @time.setter
-    def time(self, value):
-        self._time = value
 
     def checkNewer(self, compare: str) -> bool:
         """ """

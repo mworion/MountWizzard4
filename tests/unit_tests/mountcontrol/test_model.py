@@ -50,90 +50,80 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         align = Model(parent=Parent())
-        align.altitudeError = "67"
+        align.altitudeError = Angle(degrees=67)
         self.assertEqual(67, align.altitudeError.degrees)
-        self.assertEqual(67, align._altitudeError.degrees)
 
     def test_Model_azimuthError(self):
         class Parent:
             host = None
 
         align = Model(parent=Parent())
-        align.azimuthError = "67"
+        align.azimuthError = Angle(degrees=67)
         self.assertEqual(67, align.azimuthError.degrees)
-        self.assertEqual(67, align._azimuthError.degrees)
 
     def test_Model_polarError(self):
         class Parent:
             host = None
 
         align = Model(parent=Parent())
-        align.polarError = "67"
+        align.polarError = Angle(degrees=67)
         self.assertEqual(67, align.polarError.degrees)
-        self.assertEqual(67, align._polarError.degrees)
 
     def test_Model_positionAngle1(self):
         class Parent:
             host = None
 
         align = Model(parent=Parent())
-        align.positionAngle = "67"
+        align.positionAngle = Angle(degrees=67)
         self.assertEqual(67, align.positionAngle.degrees)
-        self.assertEqual(67, align._positionAngle.degrees)
 
     def test_Model_positionAngle2(self):
         class Parent:
             host = None
 
         align = Model(parent=Parent())
-        align.positionAngle = skyfield.api.Angle(degrees=67)
+        align.positionAngle = Angle(degrees=67)
         self.assertNotEqual(67, align.positionAngle)
-        self.assertNotEqual(67, align._positionAngle)
 
     def test_Model_orthoError(self):
         class Parent:
             host = None
 
         align = Model(parent=Parent())
-        align.orthoError = "67"
+        align.orthoError = Angle(degrees=67)
         self.assertEqual(67, align.orthoError.degrees)
-        self.assertEqual(67, align._orthoError.degrees)
 
     def test_Model_altitudeTurns(self):
         class Parent:
             host = None
 
         align = Model(parent=Parent())
-        align.altitudeTurns = "67"
+        align.altitudeTurns = 67
         self.assertEqual(67, align.altitudeTurns)
-        self.assertEqual(67, align._altitudeTurns)
 
     def test_Model_azimuthTurns(self):
         class Parent:
             host = None
 
         align = Model(parent=Parent())
-        align.azimuthTurns = "67"
+        align.azimuthTurns = 67
         self.assertEqual(67, align.azimuthTurns)
-        self.assertEqual(67, align._azimuthTurns)
 
     def test_Model_terms(self):
         class Parent:
             host = None
 
         align = Model(parent=Parent())
-        align.terms = "67"
+        align.terms = 67
         self.assertEqual(67, align.terms)
-        self.assertEqual(67, align._terms)
 
     def test_Model_errorRMS(self):
         class Parent:
             host = None
 
         align = Model(parent=Parent())
-        align.errorRMS = "67"
+        align.errorRMS = 67
         self.assertEqual(67, align.errorRMS)
-        self.assertEqual(67, align._errorRMS)
 
     def test_Model_numberStars_1(self):
         class Parent:
@@ -394,17 +384,8 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         model = Model(parent=Parent())
-        model.errorRMS = "36.8"
+        model.errorRMS = 36.8
         self.assertEqual(36.8, model.errorRMS)
-        self.assertEqual(36.8, model._errorRMS)
-
-    def test_errorRMS_HPS_empty(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-        model.errorRMS = "E"
-        assert model.errorRMS == 0
 
     def test_errorRMS_HPS_float(self):
         class Parent:
@@ -422,21 +403,6 @@ class TestConfigData(unittest.TestCase):
         model.errorRMS = 36
         self.assertEqual(36.0, model.errorRMS)
 
-    def test_errorRMS_QCI(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-        model.errorRMS = ""
-        assert model.errorRMS == 0
-
-    def test_errorTerms_QCI(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-        model.terms = ""
-        assert model.terms == 0
 
     #
     #

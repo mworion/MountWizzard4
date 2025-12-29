@@ -39,93 +39,15 @@ class Model:
         self._nameList: list = []
         self._numberNames: int = 0
         self._numberStars: int = 0
-        self._altitudeError: Angle = Angle(degrees=0)
-        self._azimuthError: Angle = Angle(degrees=0)
-        self._polarError: Angle = Angle(degrees=0)
-        self._positionAngle: Angle = Angle(degrees=0)
-        self._orthoError: Angle = Angle(degrees=0)
-        self._altitudeTurns: float = 0
-        self._azimuthTurns: float = 0
-        self._terms: int = 0
-        self._errorRMS: float = 0
-
-    @property
-    def altitudeError(self):
-        return self._altitudeError
-
-    @altitudeError.setter
-    def altitudeError(self, value):
-        self._altitudeError = valueToAngle(value)
-
-    @property
-    def azimuthError(self):
-        return self._azimuthError
-
-    @azimuthError.setter
-    def azimuthError(self, value):
-        self._azimuthError = valueToAngle(value)
-
-    @property
-    def polarError(self):
-        return self._polarError
-
-    @polarError.setter
-    def polarError(self, value):
-        self._polarError = valueToAngle(value)
-
-    @property
-    def positionAngle(self):
-        return self._positionAngle
-
-    @positionAngle.setter
-    def positionAngle(self, value):
-        self._positionAngle = valueToAngle(value)
-
-    @property
-    def orthoError(self):
-        return self._orthoError
-
-    @orthoError.setter
-    def orthoError(self, value):
-        self._orthoError = valueToAngle(value)
-
-    @property
-    def altitudeTurns(self):
-        return self._altitudeTurns
-
-    @altitudeTurns.setter
-    def altitudeTurns(self, value):
-        self._altitudeTurns = valueToFloat(value)
-
-    @property
-    def azimuthTurns(self):
-        return self._azimuthTurns
-
-    @azimuthTurns.setter
-    def azimuthTurns(self, value):
-        self._azimuthTurns = valueToFloat(value)
-
-    @property
-    def terms(self):
-        return self._terms
-
-    @terms.setter
-    def terms(self, value):
-        # qci mount don't deliver this value
-        if value == "":
-            self.log.warning("QCI mount does not provide terms")
-        self._terms = valueToFloat(value)
-
-    @property
-    def errorRMS(self):
-        return self._errorRMS
-
-    @errorRMS.setter
-    def errorRMS(self, value):
-        if value == "":
-            self.log.warning("QCI mount does not provide RMS")
-            return
-        self._errorRMS = valueToFloat(value)
+        self.altitudeError: Angle = Angle(degrees=0)
+        self.azimuthError: Angle = Angle(degrees=0)
+        self.polarError: Angle = Angle(degrees=0)
+        self.positionAngle: Angle = Angle(degrees=0)
+        self.orthoError: Angle = Angle(degrees=0)
+        self.altitudeTurns: float = 0
+        self.azimuthTurns: float = 0
+        self.terms: int = 0
+        self.errorRMS: float = 0
 
     @property
     def starList(self):
@@ -283,15 +205,15 @@ class Model:
             self.log.warning("Wrong number of chunks in getain")
             return False
 
-        self.azimuthError = responseSplit[0]
-        self.altitudeError = responseSplit[1]
-        self.polarError = responseSplit[2]
-        self.positionAngle = responseSplit[3]
-        self.orthoError = responseSplit[4]
-        self.azimuthTurns = responseSplit[5]
-        self.altitudeTurns = responseSplit[6]
-        self.terms = responseSplit[7]
-        self.errorRMS = responseSplit[8]
+        self.azimuthError = valueToAngle(responseSplit[0], preference="degrees")
+        self.altitudeError = valueToAngle(responseSplit[1], preference="degrees")
+        self.polarError = valueToAngle(responseSplit[2], preference="degrees")
+        self.positionAngle = valueToAngle(responseSplit[3], preference="degrees")
+        self.orthoError = valueToAngle(responseSplit[4], preference="degrees")
+        self.azimuthTurns = valueToFloat(responseSplit[5])
+        self.altitudeTurns = valueToFloat(responseSplit[6])
+        self.terms = valueToFloat(responseSplit[7])
+        self.errorRMS = valueToFloat(responseSplit[8])
         return True
 
     def getStarCount(self) -> bool:

@@ -14,90 +14,30 @@
 #
 ###########################################################
 import logging
-from mw4.mountcontrol.convert import valueToAngle, valueToFloat
 from skyfield.units import Angle
 
 
 class TLEParams:
     """
-    The class TLEParams inherits all information and handling of TLE tracking
-    and managing attributes of the connected mount and provides the abstracted
-    interface to a 10 micron mount.
     """
-
-    __all__ = ["TLEParams"]
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, obsSite=None):
+    def __init__(self, obsSite):
         self.obsSite = obsSite
-        self._azimuth = None
-        self._altitude = None
-        self._ra = None
-        self._dec = None
-        self._jdStart = None
-        self._jdEnd = None
-        self._flip = None
-        self._message = None
-        self._l0 = None
-        self._l1 = None
-        self._l2 = None
-        self._name = None
+        self.azimuth: Angle = Angle(degrees=0)
+        self.altitude: Angle = Angle(degrees=0)
+        self.ra: Angle = Angle(hours=0)
+        self.dec: Angle = Angle(degrees=0)
+        self._jdStart: float = 0
+        self._jdEnd: float = 0
+        self.flip: bool = False
 
-    @property
-    def azimuth(self):
-        return self._azimuth
-
-    @azimuth.setter
-    def azimuth(self, value):
-        if isinstance(value, Angle):
-            self._azimuth = value
-            return
-        self._azimuth = valueToAngle(value, preference="degrees")
-
-    @property
-    def altitude(self):
-        return self._altitude
-
-    @altitude.setter
-    def altitude(self, value):
-        if isinstance(value, Angle):
-            self._altitude = value
-            return
-        self._altitude = valueToAngle(value, preference="degrees")
-
-    @property
-    def ra(self):
-        return self._ra
-
-    @ra.setter
-    def ra(self, value):
-        if isinstance(value, Angle):
-            self._ra = value
-            return
-        self._ra = valueToAngle(value, preference="hours")
-
-    @property
-    def dec(self):
-        return self._dec
-
-    @dec.setter
-    def dec(self, value):
-        if isinstance(value, Angle):
-            self._dec = value
-            return
-        self._dec = valueToAngle(value, preference="degrees")
-
-    @property
-    def flip(self):
-        return self._flip
-
-    @flip.setter
-    def flip(self, value):
-        if isinstance(value, bool):
-            self._flip = value
-            return
-        self._flip = bool(value == "F")
+        self.message: str = ""
+        self.l0: str = ""
+        self.l1: str = ""
+        self.l2: str = ""
+        self.name: str = ""
 
     @property
     def jdStart(self):
@@ -105,7 +45,6 @@ class TLEParams:
 
     @jdStart.setter
     def jdStart(self, value):
-        value = valueToFloat(value)
         self._jdStart = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
 
     @property
@@ -114,45 +53,4 @@ class TLEParams:
 
     @jdEnd.setter
     def jdEnd(self, value):
-        value = valueToFloat(value)
         self._jdEnd = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
-
-    @property
-    def message(self):
-        return self._message
-
-    @message.setter
-    def message(self, value):
-        self._message = value
-
-    @property
-    def l0(self):
-        return self._l0
-
-    @l0.setter
-    def l0(self, value):
-        self._l0 = value
-
-    @property
-    def l1(self):
-        return self._l1
-
-    @l1.setter
-    def l1(self, value):
-        self._l1 = value
-
-    @property
-    def l2(self):
-        return self._l2
-
-    @l2.setter
-    def l2(self, value):
-        self._l2 = value
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        self._name = value

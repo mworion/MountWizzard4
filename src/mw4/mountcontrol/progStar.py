@@ -23,10 +23,10 @@ class ProgStar:
     log = logging.getLogger("MW4")
 
     def __init__(self, mCoord: Star, sCoord: Star, sidereal: Angle, pierside: str):
-        self.mCoord = mCoord
-        self.sCoord = sCoord
-        self.sidereal = sidereal
-        self.pierside = pierside
+        self.mCoord: Star = mCoord
+        self.sCoord: Star = sCoord
+        self.sidereal: Angle = sidereal
+        self.pierside: str = pierside
 
     @property
     def pierside(self):
@@ -38,5 +38,5 @@ class ProgStar:
             value = value.capitalize()
             self._pierside = value
         else:
-            self._pierside = None
+            self._pierside = "E"
             self.log.warning(f"Malformed value: {value}")

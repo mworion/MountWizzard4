@@ -15,10 +15,10 @@
 ###########################################################
 import logging
 from mw4.mountcontrol.connection import Connection
-from mw4.mountcontrol.convert import valueToFloat
 from mw4.mountcontrol.tleParams import TLEParams
 from mw4.mountcontrol.trajectoryParams import TrajectoryParams
 from skyfield.api import Angle
+from mw4.mountcontrol.convert import valueToAngle, valueToFloat
 
 
 class Satellite:
@@ -119,18 +119,18 @@ class Satellite:
             start, end, flip = value
         elif len(value) == 1:
             flip = value[0]
-            start = None
-            end = None
+            start = 0
+            end = 0
         else:
             return False
 
-        self.tleParams.altitude = alt
-        self.tleParams.azimuth = az
-        self.tleParams.ra = ra
-        self.tleParams.dec = dec
-        self.tleParams.flip = flip
-        self.tleParams.jdStart = start
-        self.tleParams.jdEnd = end
+        self.tleParams.altitude = valueToAngle(alt, preference="degrees")
+        self.tleParams.azimuth = valueToAngle(az, preference="degrees")
+        self.tleParams.ra = valueToAngle(ra, preference="hours")
+        self.tleParams.dec = valueToAngle(dec, preference="degrees")
+        self.tleParams.flip = bool(flip == "F")
+        self.tleParams.jdStart = valueToFloat(start)
+        self.tleParams.jdEnd = valueToFloat(end)
         return True
 
     def calcTLE(self, julD: float, duration: int = 1440) -> bool:
@@ -147,33 +147,6 @@ class Satellite:
         if not suc:
             return False
         return self.parseCalcTLE(response, numberOfChunks)
-
-    def getCoordsFromTLE(self, julD: float) -> bool:
-        """
-        need to do transformation UTC <-> TT time system
-        """
-        julD -= self.obsSite.UTC2TT
-
-        conn = Connection(self.parent.host)
-        command = f":TLEGAZ{julD}#:TLEGEQ{julD}#"
-        suc, response, _ = conn.communicate(command)
-        if not suc:
-            return False
-
-        value = response[0].split(",")
-        if len(value) != 2:
-            return False
-
-        alt, az = value
-        self.tleParams.altitude = alt
-        self.tleParams.azimuth = az
-
-        value = response[1].split(",")
-        if len(value) != 2:
-            return False
-
-        self.tleParams.ra, self.tleParams.dec = value
-        return True
 
     def slewTLE(self) -> tuple:
         """ """
@@ -242,23 +215,21 @@ class Satellite:
 
     def preCalcTrajectory(self, replay: bool = False) -> bool:
         """ """
-        self.trajectoryParams.flip = None
-        self.trajectoryParams.jdStart = None
-        self.trajectoryParams.jdEnd = None
+        self.trajectoryParams.flip = 0
+        self.trajectoryParams.jdStart = 0
+        self.trajectoryParams.jdEnd = 0
 
         cmd = ":TRREPLAY#" if replay else ":TRP#"
         conn = Connection(self.parent.host)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
             return False
-
         if len(response) != numberOfChunks:
             self.log.warning("wrong number of chunks")
             return False
         if len(response) != 1:
             self.log.warning("wrong number of chunks")
             return False
-
         # should be 'E' only , actually wrong 'N' in
         if response[0] in ["E", "N"]:
             return False
@@ -269,9 +240,9 @@ class Satellite:
         else:
             return False
 
-        self.trajectoryParams.flip = flip
-        self.trajectoryParams.jdStart = start
-        self.trajectoryParams.jdEnd = end
+        self.trajectoryParams.flip = bool(flip == "F")
+        self.trajectoryParams.jdStart = valueToFloat(start)
+        self.trajectoryParams.jdEnd = valueToFloat(end)
         return True
 
     def getTrackingOffsets(self) -> bool:
@@ -288,23 +259,10 @@ class Satellite:
         if len(response) != 4:
             self.log.warning("wrong number of chunks")
             return False
-
-        val = valueToFloat(response[0])
-        if val is not None:
-            self.trajectoryParams.offsetRA = val
-
-        val = valueToFloat(response[1])
-        if val is not None:
-            self.trajectoryParams.offsetDEC = val
-
-        val = valueToFloat(response[2])
-        if val is not None:
-            self.trajectoryParams.offsetDECcorr = val
-
-        val = valueToFloat(response[3])
-        if val is not None:
-            self.trajectoryParams.offsetTime = val
-
+        self.trajectoryParams.offsetRA = valueToFloat(response[0])
+        self.trajectoryParams.offsetDEC = valueToFloat(response[1])
+        self.trajectoryParams.offsetDECcorr = valueToFloat(response[2])
+        self.trajectoryParams.offsetTime = valueToFloat(response[3])
         return True
 
     def setTrackingFirst(self, first: Angle) -> bool:

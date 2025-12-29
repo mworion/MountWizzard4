@@ -14,7 +14,6 @@
 #
 ###########################################################
 import logging
-from mw4.mountcontrol.convert import valueToFloat
 
 
 class TrajectoryParams:
@@ -31,29 +30,15 @@ class TrajectoryParams:
     log = logging.getLogger("MW4")
 
     def __init__(self, obsSite=None):
-        self._jdStart = None
-        self._jdEnd = None
-        self._flip = None
-        self._message = None
         self.obsSite = obsSite
-        self.offsetRA = None
-        self.offsetDEC = None
-        self.offsetDECcorr = None
-        self.offsetTime = None
-
-    @property
-    def flip(self):
-        return self._flip
-
-    @flip.setter
-    def flip(self, value):
-        if value is None:
-            self._flip = None
-            return
-        elif isinstance(value, bool):
-            self._flip = value
-            return
-        self._flip = bool(value == "F")
+        self._jdStart: float = 0
+        self._jdEnd: float = 0
+        self.flip: bool = False
+        self.message: str = ""
+        self.offsetRA: float = 0
+        self.offsetDEC: float = 0
+        self.offsetDECcorr: float = 0
+        self.offsetTime: float = 0
 
     @property
     def jdStart(self):
@@ -61,11 +46,7 @@ class TrajectoryParams:
 
     @jdStart.setter
     def jdStart(self, value):
-        value = valueToFloat(value)
-        if value:
-            self._jdStart = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
-        else:
-            self._jdStart = None
+        self._jdStart = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
 
     @property
     def jdEnd(self):
@@ -73,19 +54,4 @@ class TrajectoryParams:
 
     @jdEnd.setter
     def jdEnd(self, value):
-        value = valueToFloat(value)
-        if value:
-            self._jdEnd = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
-        else:
-            self._jdEnd = None
-
-    @property
-    def message(self):
-        return self._message
-
-    @message.setter
-    def message(self, value):
-        if value:
-            self._message = value
-        else:
-            self._message = None
+        self._jdEnd = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)

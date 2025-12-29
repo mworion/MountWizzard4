@@ -25,167 +25,36 @@ class Setting:
 
     def __init__(self, parent):
         self.parent = parent
-        self._slewRate: float = 0
-        self._slewRateMin: float = 0
-        self._slewRateMax: float = 99
-        self._timeToFlip: float = 0
-        self._meridianLimitTrack: float = 0
-        self._meridianLimitSlew: float = 0
-        self._refractionTemp: float = 0
-        self._refractionPress: float = 0
-        self._telescopeTempDEC: float = 0
-        self._statusRefraction: bool = False
-        self._statusUnattendedFlip: bool = False
-        self._statusDualAxisTracking: bool = False
-        self._horizonLimitHigh: float = 0
-        self._horizonLimitLow: float = 0
-        self._wakeOnLan: str = "OFF"
-        self._UTCValid: bool = False
-        self._UTCExpire: str = "2000-01-01"
-        self._gpsSynced: bool = False
+        self.slewRate: float = 0
+        self.slewRateMin: float = 0
+        self.slewRateMax: float = 99
+        self.timeToFlip: float = 0
+        self.meridianLimitTrack: float = 0
+        self.meridianLimitSlew: float = 0
+        self.refractionTemp: float = 0
+        self.refractionPress: float = 0
+        self.telescopeTempDEC: float = 0
+        self.statusRefraction: bool = False
+        self.statusUnattendedFlip: bool = False
+        self.statusDualAxisTracking: bool = False
+        self.horizonLimitHigh: float = 0
+        self.horizonLimitLow: float = 0
+        self.UTCValid: bool = False
+        self.UTCExpire: str = "2000-01-01"
+        self.gpsSynced: bool = False
         self._typeConnection: int = 0
         self._addressLanMAC: str = ""
         self._addressWirelessMAC: str = ""
+        self.wakeOnLan: str = "OFF"
         self._weatherStatus: bool = False
-        self._weatherPressure: float = 950
-        self._weatherTemperature: float = 0
-        self._weatherHumidity: float = 0
-        self._weatherDewPoint: float = 0
-        self._weatherAge: int = 0
-        self._trackingRate: float = 0
-        self._webInterfaceStat: str = ""
-        self._settleTime: float = 0
-
-    @property
-    def slewRate(self):
-        return self._slewRate
-
-    @slewRate.setter
-    def slewRate(self, value):
-        self._slewRate = valueToFloat(value)
-
-    @property
-    def slewRateMin(self):
-        return self._slewRateMin
-
-    @slewRateMin.setter
-    def slewRateMin(self, value):
-        self._slewRateMin = valueToFloat(value)
-
-    @property
-    def slewRateMax(self):
-        return self._slewRateMax
-
-    @slewRateMax.setter
-    def slewRateMax(self, value):
-        self._slewRateMax = valueToFloat(value)
-
-    @property
-    def timeToFlip(self):
-        return self._timeToFlip
-
-    @timeToFlip.setter
-    def timeToFlip(self, value):
-        self._timeToFlip = valueToFloat(value)
-
-    @property
-    def meridianLimitTrack(self):
-        return self._meridianLimitTrack
-
-    @meridianLimitTrack.setter
-    def meridianLimitTrack(self, value):
-        self._meridianLimitTrack = valueToFloat(value)
-
-    @property
-    def meridianLimitSlew(self):
-        return self._meridianLimitSlew
-
-    @meridianLimitSlew.setter
-    def meridianLimitSlew(self, value):
-        self._meridianLimitSlew = valueToFloat(value)
-
-    def timeToMeridian(self):
-        return int(self._timeToFlip - self._meridianLimitTrack * 4)
-
-    @property
-    def refractionTemp(self):
-        return self._refractionTemp
-
-    @refractionTemp.setter
-    def refractionTemp(self, value):
-        self._refractionTemp = valueToFloat(value)
-
-    @property
-    def refractionPress(self):
-        return self._refractionPress
-
-    @refractionPress.setter
-    def refractionPress(self, value):
-        self._refractionPress = valueToFloat(value)
-
-    @property
-    def telescopeTempDEC(self):
-        return self._telescopeTempDEC
-
-    @telescopeTempDEC.setter
-    def telescopeTempDEC(self, value):
-        self._telescopeTempDEC = valueToFloat(value)
-
-    @property
-    def statusRefraction(self):
-        return self._statusRefraction
-
-    @statusRefraction.setter
-    def statusRefraction(self, value):
-        self._statusRefraction = bool(value)
-
-    @property
-    def statusUnattendedFlip(self):
-        return self._statusUnattendedFlip
-
-    @statusUnattendedFlip.setter
-    def statusUnattendedFlip(self, value):
-        self._statusUnattendedFlip = bool(value)
-
-    @property
-    def statusDualAxisTracking(self):
-        return self._statusDualAxisTracking
-
-    @statusDualAxisTracking.setter
-    def statusDualAxisTracking(self, value):
-        self._statusDualAxisTracking = bool(value)
-
-    @property
-    def horizonLimitHigh(self):
-        return self._horizonLimitHigh
-
-    @horizonLimitHigh.setter
-    def horizonLimitHigh(self, value):
-        self._horizonLimitHigh = valueToFloat(value)
-
-    @property
-    def horizonLimitLow(self):
-        return self._horizonLimitLow
-
-    @horizonLimitLow.setter
-    def horizonLimitLow(self, value):
-        self._horizonLimitLow = valueToFloat(value)
-
-    @property
-    def UTCValid(self):
-        return self._UTCValid
-
-    @UTCValid.setter
-    def UTCValid(self, value):
-        self._UTCValid = bool(value)
-
-    @property
-    def UTCExpire(self):
-        return self._UTCExpire
-
-    @UTCExpire.setter
-    def UTCExpire(self, value: str):
-        self._UTCExpire = value
+        self.weatherPressure: float = 950
+        self.weatherTemperature: float = 0
+        self.weatherHumidity: float = 0
+        self.weatherDewPoint: float = 0
+        self.weatherAge: int = 0
+        self.trackingRate: float = 0
+        self.webInterfaceStat: str = ""
+        self.settleTime: float = 0
 
     @property
     def typeConnection(self):
@@ -197,14 +66,6 @@ class Setting:
         if value not in [0, 1, 2, 3]:
             value = 0
         self._typeConnection = value
-
-    @property
-    def gpsSynced(self):
-        return self._gpsSynced
-
-    @gpsSynced.setter
-    def gpsSynced(self, value):
-        self._gpsSynced = bool(value)
 
     @property
     def addressLanMAC(self):
@@ -246,72 +107,10 @@ class Setting:
         value = valueToInt(value)
         if value not in [0, 1, 2]:
             value = 0
-        self._weatherStatus = value
 
-    @property
-    def weatherPressure(self):
-        return self._weatherPressure
-
-    @weatherPressure.setter
-    def weatherPressure(self, value):
-        self._weatherPressure = valueToFloat(value)
-
-    @property
-    def weatherTemperature(self):
-        return self._weatherTemperature
-
-    @weatherTemperature.setter
-    def weatherTemperature(self, value):
-        self._weatherTemperature = valueToFloat(value)
-
-    @property
-    def weatherHumidity(self):
-        return self._weatherHumidity
-
-    @weatherHumidity.setter
-    def weatherHumidity(self, value):
-        self._weatherHumidity = valueToFloat(value)
-
-    @property
-    def weatherDewPoint(self):
-        return self._weatherDewPoint
-
-    @weatherDewPoint.setter
-    def weatherDewPoint(self, value):
-        self._weatherDewPoint = valueToFloat(value)
-
-    @property
-    def weatherAge(self):
-        return self._weatherAge
-
-    @weatherAge.setter
-    def weatherAge(self, value):
-        self._weatherAge = valueToInt(value)
-
-    @property
-    def trackingRate(self):
-        return self._trackingRate
-
-    @trackingRate.setter
-    def trackingRate(self, value):
-        self._trackingRate = valueToFloat(value)
-
-    @property
-    def webInterfaceStat(self):
-        return self._webInterfaceStat
-
-    @webInterfaceStat.setter
-    def webInterfaceStat(self, value):
-        value = valueToFloat(value)
-        self._webInterfaceStat = bool(value)
-
-    @property
-    def settleTime(self):
-        return self._settleTime
-
-    @settleTime.setter
-    def settleTime(self, value):
-        self._settleTime = valueToFloat(value)
+    def timeToMeridian(self):
+        """"""
+        return int(self.timeToFlip - self.meridianLimitTrack * 4)
 
     def parseSetting(self, response: list, numberOfChunks: int) -> bool:
         """ """
@@ -319,15 +118,15 @@ class Setting:
             self.log.warning("wrong number of chunks")
             return False
 
-        self.slewRate = response[0]
-        self.slewRateMin = response[1]
-        self.slewRateMax = response[2]
-        self.timeToFlip = response[3]
-        self.meridianLimitTrack = response[4]
-        self.meridianLimitSlew = response[5]
-        self.refractionTemp = response[6]
-        self.refractionPress = response[7]
-        self.telescopeTempDEC = response[8]
+        self.slewRate = valueToFloat(response[0])
+        self.slewRateMin = valueToFloat(response[1])
+        self.slewRateMax = valueToFloat(response[2])
+        self.timeToFlip = valueToFloat(response[3])
+        self.meridianLimitTrack = valueToFloat(response[4])
+        self.meridianLimitSlew = valueToFloat(response[5])
+        self.refractionTemp = valueToFloat(response[6])
+        self.refractionPress = valueToFloat(response[7])
+        self.telescopeTempDEC = valueToFloat(response[8])
         self.statusRefraction = response[9][0] == "1"
         self.statusUnattendedFlip = response[9][1] == "1"
         self.statusDualAxisTracking = response[9][2] == "1"
@@ -342,16 +141,16 @@ class Setting:
         self.wakeOnLan = response[15]
         self.weatherStatus = response[16]
         if len(response[17].split(",")) > 1:
-            self.weatherAge = response[17].split(",")[1]
+            self.weatherAge = valueToInt(response[17].split(",")[1])
         else:
             self.weatherAge = ""
-        self.weatherPressure = response[17].split(",")[0]
-        self.weatherTemperature = response[18].split(",")[0]
-        self.weatherHumidity = response[19].split(",")[0]
-        self.weatherDewPoint = response[20].split(",")[0]
-        self.trackingRate = response[21]
-        self.webInterfaceStat = response[22]
-        self.settleTime = response[23]
+        self.weatherPressure = valueToFloat(response[17].split(",")[0])
+        self.weatherTemperature = valueToFloat(response[18].split(",")[0])
+        self.weatherHumidity = valueToFloat(response[19].split(",")[0])
+        self.weatherDewPoint = valueToFloat(response[20].split(",")[0])
+        self.trackingRate = valueToFloat(response[21])
+        self.webInterfaceStat = bool(valueToInt(response[22]))
+        self.settleTime = valueToFloat(response[23])
         return True
 
     def pollSetting(self) -> bool:

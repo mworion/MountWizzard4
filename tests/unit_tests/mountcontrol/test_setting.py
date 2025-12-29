@@ -34,7 +34,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sett = Setting(parent=Parent())
-        sett.webInterfaceStat = "0"
+        sett.webInterfaceStat = False
         assert not sett.webInterfaceStat
 
     def test_webInterfaceStat_2(self):
@@ -42,7 +42,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sett = Setting(parent=Parent())
-        sett.webInterfaceStat = "1"
+        sett.webInterfaceStat = True
         assert sett.webInterfaceStat
 
     def test_Setting_slewRate(self):
@@ -50,62 +50,56 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sett = Setting(parent=Parent())
-        sett.slewRate = "67"
+        sett.slewRate = 67
         self.assertEqual(67, sett.slewRate)
-        self.assertEqual(67, sett._slewRate)
 
     def test_Setting_slewRateMin(self):
         class Parent:
             host = None
 
         sett = Setting(parent=Parent())
-        sett.slewRateMin = "67"
+        sett.slewRateMin = 67
         self.assertEqual(67, sett.slewRateMin)
-        self.assertEqual(67, sett._slewRateMin)
 
     def test_Setting_slewRateMax(self):
         class Parent:
             host = None
 
         sett = Setting(parent=Parent())
-        sett.slewRateMax = "67"
+        sett.slewRateMax = 67
         self.assertEqual(67, sett.slewRateMax)
-        self.assertEqual(67, sett._slewRateMax)
 
     def test_Setting_timeToFlip(self):
         class Parent:
             host = None
 
         sett = Setting(parent=Parent())
-        sett.timeToFlip = "67"
+        sett.timeToFlip = 67
         self.assertEqual(67, sett.timeToFlip)
-        self.assertEqual(67, sett._timeToFlip)
 
     def test_Setting_meridianLimitTrack(self):
         class Parent:
             host = None
 
         sett = Setting(parent=Parent())
-        sett.meridianLimitTrack = "67"
+        sett.meridianLimitTrack = 67
         self.assertEqual(67, sett.meridianLimitTrack)
-        self.assertEqual(67, sett._meridianLimitTrack)
 
     def test_Setting_meridianLimitSlew(self):
         class Parent:
             host = None
 
         sett = Setting(parent=Parent())
-        sett.meridianLimitSlew = "67"
+        sett.meridianLimitSlew = 67
         self.assertEqual(67, sett.meridianLimitSlew)
-        self.assertEqual(67, sett._meridianLimitSlew)
 
     def test_Setting_timeToMeridian1(self):
         class Parent:
             host = None
 
         sett = Setting(parent=Parent())
-        sett.timeToFlip = "10"
-        sett.meridianLimitTrack = "5"
+        sett.timeToFlip = 10
+        sett.meridianLimitTrack = 5
         self.assertEqual(-10, sett.timeToMeridian())
 
     def test_Setting_timeToMeridian2(self):
@@ -114,7 +108,7 @@ class TestConfigData(unittest.TestCase):
 
         sett = Setting(parent=Parent())
         sett.timeToFlip = 0
-        sett.meridianLimitTrack = "5"
+        sett.meridianLimitTrack = 5
         self.assertEqual(-20, sett.timeToMeridian())
 
     def test_Setting_refractionTemp(self):
@@ -122,25 +116,23 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sett = Setting(parent=Parent())
-        sett.refractionTemp = "67"
+        sett.refractionTemp = 67
         self.assertEqual(67, sett.refractionTemp)
-        self.assertEqual(67, sett._refractionTemp)
 
     def test_Setting_refractionPress(self):
         class Parent:
             host = None
 
         sett = Setting(parent=Parent())
-        sett.refractionPress = "67"
+        sett.refractionPress = 67
         self.assertEqual(67, sett.refractionPress)
-        self.assertEqual(67, sett._refractionPress)
 
     def test_Setting_telescopeTempDEC(self):
         class Parent:
             host = None
 
         sett = Setting(parent=Parent())
-        sett.telescopeTempDEC = "67"
+        sett.telescopeTempDEC = 67
         self.assertEqual(67, sett.telescopeTempDEC)
 
     def test_Setting_statusRefraction(self):
@@ -150,7 +142,6 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.statusRefraction = 1
         self.assertEqual(True, sett.statusRefraction)
-        self.assertEqual(True, sett._statusRefraction)
 
     def test_Setting_statusUnattendedFlip(self):
         class Parent:
@@ -159,7 +150,6 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.statusUnattendedFlip = 1
         self.assertEqual(True, sett.statusUnattendedFlip)
-        self.assertEqual(True, sett._statusUnattendedFlip)
 
     def test_Setting_statusDualAxisTracking(self):
         class Parent:
@@ -168,25 +158,22 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.statusDualAxisTracking = 1
         self.assertEqual(True, sett.statusDualAxisTracking)
-        self.assertEqual(True, sett._statusDualAxisTracking)
 
     def test_Setting_horizonLimitHigh(self):
         class Parent:
             host = None
 
         sett = Setting(parent=Parent())
-        sett.horizonLimitHigh = "67"
+        sett.horizonLimitHigh = 67
         self.assertEqual(67, sett.horizonLimitHigh)
-        self.assertEqual(67, sett._horizonLimitHigh)
 
     def test_Setting_horizonLimitLow(self):
         class Parent:
             host = None
 
         sett = Setting(parent=Parent())
-        sett.horizonLimitLow = "67"
+        sett.horizonLimitLow = 67
         self.assertEqual(67, sett.horizonLimitLow)
-        self.assertEqual(67, sett._horizonLimitLow)
 
     def test_Setting_UTCValid(self):
         class Parent:
@@ -195,16 +182,14 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.UTCValid = 1
         self.assertEqual(True, sett.UTCValid)
-        self.assertEqual(True, sett._UTCValid)
 
     def test_Setting_UTCExpire(self):
         class Parent:
             host = None
 
         sett = Setting(parent=Parent())
-        sett.UTCExpire = "67"
-        self.assertEqual("67", sett.UTCExpire)
-        self.assertEqual("67", sett._UTCExpire)
+        sett.UTCExpire = 67
+        self.assertEqual(67, sett.UTCExpire)
 
     def test_Setting_typeConnection_1(self):
         class Parent:
@@ -213,7 +198,6 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.typeConnection = 5
         self.assertEqual(0, sett.typeConnection)
-        self.assertEqual(0, sett._typeConnection)
 
     def test_Setting_typeConnection_2(self):
         class Parent:
@@ -221,8 +205,6 @@ class TestConfigData(unittest.TestCase):
 
         sett = Setting(parent=Parent())
         sett.typeConnection = 3
-        self.assertEqual(3, sett.typeConnection)
-        self.assertEqual(3, sett._typeConnection)
 
     def test_Setting_typeConnection_3(self):
         class Parent:
@@ -231,25 +213,14 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.typeConnection = -6
         self.assertEqual(0, sett.typeConnection)
-        self.assertEqual(0, sett._typeConnection)
 
     def test_Setting_gpsSynced_1(self):
         class Parent:
             host = None
 
         sett = Setting(parent=Parent())
-        sett.gpsSynced = 5
+        sett.gpsSynced = True
         self.assertEqual(True, sett.gpsSynced)
-        self.assertEqual(True, sett._gpsSynced)
-
-    def test_Setting_gpsSynced_2(self):
-        class Parent:
-            host = None
-
-        sett = Setting(parent=Parent())
-        sett.gpsSynced = 0
-        self.assertEqual(False, sett.gpsSynced)
-        self.assertEqual(False, sett._gpsSynced)
 
     def test_Setting_addressLanMAC_1(self):
         class Parent:
@@ -259,7 +230,6 @@ class TestConfigData(unittest.TestCase):
         value = "00:00:00:00:00:00"
         sett.addressLanMAC = "00:00:00:00:00:00"
         self.assertEqual(value, sett.addressLanMAC)
-        self.assertEqual(value, sett._addressLanMAC)
 
     def test_Setting_addressWirelessMAC_1(self):
         class Parent:
@@ -269,7 +239,6 @@ class TestConfigData(unittest.TestCase):
         value = "00:00:00:00:00:00"
         sett.addressWirelessMAC = "00:00:00:00:00:00"
         self.assertEqual(value, sett.addressWirelessMAC)
-        self.assertEqual(value, sett._addressWirelessMAC)
 
     def test_Setting_wakeOnLan_1(self):
         class Parent:
@@ -278,7 +247,6 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.wakeOnLan = "N"
         self.assertEqual("None", sett.wakeOnLan)
-        self.assertEqual("None", sett._wakeOnLan)
 
     def test_Setting_wakeOnLan_2(self):
         class Parent:
@@ -287,7 +255,6 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.wakeOnLan = "0"
         self.assertEqual("OFF", sett.wakeOnLan)
-        self.assertEqual("OFF", sett._wakeOnLan)
 
     def test_Setting_wakeOnLan_3(self):
         class Parent:
@@ -296,7 +263,6 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.wakeOnLan = "1"
         self.assertEqual("ON", sett.wakeOnLan)
-        self.assertEqual("ON", sett._wakeOnLan)
 
     def test_Setting_wakeOnLan_4(self):
         class Parent:
@@ -305,7 +271,6 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.wakeOnLan = "E"
         assert sett.wakeOnLan == "None"
-        assert sett._wakeOnLan == "None"
 
     def test_Setting_weatherStatus_1(self):
         class Parent:
@@ -341,7 +306,6 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.weatherTemperature = 1
         self.assertEqual(1, sett.weatherTemperature)
-        self.assertEqual(1, sett._weatherTemperature)
 
     def test_Setting_weatherPressure(self):
         class Parent:
@@ -350,7 +314,6 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.weatherPressure = 1
         self.assertEqual(1, sett.weatherPressure)
-        self.assertEqual(1, sett._weatherPressure)
 
     def test_Setting_weatherHumidity(self):
         class Parent:
@@ -359,7 +322,6 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.weatherHumidity = 1
         self.assertEqual(1, sett.weatherHumidity)
-        self.assertEqual(1, sett._weatherHumidity)
 
     def test_Setting_weatherDewPoint(self):
         class Parent:
@@ -368,7 +330,6 @@ class TestConfigData(unittest.TestCase):
         sett = Setting(parent=Parent())
         sett.weatherDewPoint = 1
         self.assertEqual(1, sett.weatherDewPoint)
-        self.assertEqual(1, sett._weatherDewPoint)
 
     def test_Setting_weatherAge(self):
         class Parent:
@@ -384,9 +345,8 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         sett = Setting(parent=Parent())
-        sett.settleTime = "1"
+        sett.settleTime = 1
         self.assertEqual(1, sett.settleTime)
-        self.assertEqual(1, sett._settleTime)
 
     #
     #
@@ -1435,7 +1395,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         setting = Setting(parent=Parent())
-        setting.trackingRate = "62.4"
+        setting.trackingRate = 62.4
         self.assertEqual(True, setting.checkRateLunar())
         self.assertEqual(False, setting.checkRateSidereal())
         self.assertEqual(False, setting.checkRateSolar())
@@ -1445,7 +1405,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         setting = Setting(parent=Parent())
-        setting.trackingRate = "60.2"
+        setting.trackingRate = 60.2
         self.assertEqual(False, setting.checkRateLunar())
         self.assertEqual(True, setting.checkRateSidereal())
         self.assertEqual(False, setting.checkRateSolar())
@@ -1455,7 +1415,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         setting = Setting(parent=Parent())
-        setting.trackingRate = "60.3"
+        setting.trackingRate = 60.3
         self.assertEqual(False, setting.checkRateLunar())
         self.assertEqual(False, setting.checkRateSidereal())
         self.assertEqual(True, setting.checkRateSolar())
@@ -1465,7 +1425,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         setting = Setting(parent=Parent())
-        setting.trackingRate = "6"
+        setting.trackingRate = 6
         self.assertEqual(False, setting.checkRateLunar())
         self.assertEqual(False, setting.checkRateSidereal())
         self.assertEqual(False, setting.checkRateSolar())
@@ -1475,7 +1435,7 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         setting = Setting(parent=Parent())
-        setting.trackingRate = "67"
+        setting.trackingRate = 67
         self.assertEqual(67, setting.trackingRate)
 
     def test_setWebInterface_ok(self):

@@ -41,4 +41,4 @@ class TestConfigData(unittest.TestCase):
             "e",
         )
         aPoint.pierside = "x"
-        self.assertIsNone(aPoint.pierside)
+        self.assertEqual("E", aPoint.pierside)

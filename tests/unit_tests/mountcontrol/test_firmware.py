@@ -38,7 +38,6 @@ class TestConfigData(unittest.TestCase):
 
         fw.product = "Test"
         self.assertEqual("Test", fw.product)
-        self.assertEqual("Test", fw._product)
         fw.vString = "2.15.08"
         self.assertEqual(Version("2.15.08"), fw.vString)
         self.assertEqual(Version("2.15.08"), fw._vString)
@@ -50,13 +49,10 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(Version("3.0"), fw._vString)
         fw.hardware = "4.5"
         self.assertEqual("4.5", fw.hardware)
-        self.assertEqual("4.5", fw._hardware)
         fw.date = "2018-07-08"
         self.assertEqual("2018-07-08", fw.date)
-        self.assertEqual("2018-07-08", fw._date)
         fw.time = "14:50"
         self.assertEqual("14:50", fw.time)
-        self.assertEqual("14:50", fw._time)
 
     def test_Firmware_checkNewer_2(self):
         class Parent:

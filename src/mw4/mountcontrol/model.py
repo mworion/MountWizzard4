@@ -180,8 +180,8 @@ class Model:
             ha, dec, err, angle = starData.split(",")
             modelStar = ModelStar(obsSite=self.parent.obsSite)
             modelStar.coord = (ha, dec)
-            modelStar.errorRMS = err
-            modelStar.errorAngle = angle
+            modelStar.errorRMS = valueToFloat(err)
+            modelStar.errorAngle = valueToAngle(angle)
             modelStar.number = number + 1
             self.addStar(modelStar)
         return True

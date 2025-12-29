@@ -86,50 +86,8 @@ class ModelStar:
         self.alt = Angle(degrees=alt)
         self.az = Angle(degrees=az)
 
-    @property
-    def number(self):
-        return self._number
-
-    @number.setter
-    def number(self, value):
-        self._number = valueToInt(value)
-
-    @property
-    def errorRMS(self):
-        return self._errorRMS
-
-    @errorRMS.setter
-    def errorRMS(self, value):
-        self._errorRMS = valueToFloat(value)
-
-    @property
-    def errorAngle(self):
-        return self._errorAngle
-
-    @errorAngle.setter
-    def errorAngle(self, value):
-        if isinstance(value, Angle):
-            self._errorAngle = value
-        else:
-            self._errorAngle = valueToAngle(value)
-
     def errorRA(self):
-        return Angle(degrees=self._errorRMS * numpy.sin(self._errorAngle.radians))
+        return Angle(degrees=self.errorRMS * numpy.sin(self.errorAngle.radians))
 
     def errorDEC(self):
-        return Angle(degrees=self._errorRMS * numpy.cos(self._errorAngle.radians))
-
-    def __gt__(self, other):
-        return other > self._errorRMS
-
-    def __ge__(self, other):
-        return other >= self._errorRMS
-
-    def __lt__(self, other):
-        return other < self._errorRMS
-
-    def __le__(self, other):
-        return other <= self._errorRMS
-
-    def __eq__(self, other):
-        return other == self._errorRMS
+        return Angle(degrees=self.errorRMS * numpy.cos(self.errorAngle.radians))

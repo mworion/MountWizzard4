@@ -264,9 +264,9 @@ class TestConfigData(unittest.TestCase):
             model.addStar(
                 ModelStar(
                     coord=(p1, p2),
-                    errorRMS=str(i * i),
-                    errorAngle=str(i * i),
-                    number=str(i),
+                    errorRMS=i * i,
+                    errorAngle=Angle(degrees=i * i),
+                    number=i,
                     obsSite=obsSite,
                 )
             )
@@ -403,7 +403,6 @@ class TestConfigData(unittest.TestCase):
         model.errorRMS = 36
         self.assertEqual(36.0, model.errorRMS)
 
-
     #
     #
     # testing the class AlignStar and it's attribute setters
@@ -445,18 +444,11 @@ class TestConfigData(unittest.TestCase):
         alignStar.number = 6
         self.assertEqual(6, alignStar.number)
 
-    def test_AlignStar_number1(self):
-        obsSite = App().mount.obsSite
-        obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
-        alignStar = ModelStar(obsSite=obsSite)
-        alignStar.number = "6"
-        self.assertEqual(6, alignStar.number)
-
     def test_AlignStar_errorAngle(self):
         obsSite = App().mount.obsSite
         obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
         alignStar = ModelStar(obsSite=obsSite)
-        alignStar.errorAngle = 50
+        alignStar.errorAngle = Angle(degrees=50)
         self.assertEqual(50, alignStar.errorAngle.degrees)
 
     def test_AlignStar_errorRMS(self):
@@ -471,7 +463,7 @@ class TestConfigData(unittest.TestCase):
         obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
         alignStar = ModelStar(obsSite=obsSite)
         alignStar.errorRMS = 6
-        alignStar.errorAngle = 50
+        alignStar.errorAngle = Angle(degrees=50)
         ra = 6 * numpy.sin(50 * numpy.pi * 2 / 360)
         dec = 6 * numpy.cos(50 * numpy.pi * 2 / 360)
         self.assertAlmostEqual(ra, alignStar.errorRA().degrees)

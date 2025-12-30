@@ -14,6 +14,7 @@
 #
 ###########################################################
 import logging
+from skyfield.timelib import Time
 
 
 class TrajectoryParams:
@@ -31,8 +32,8 @@ class TrajectoryParams:
 
     def __init__(self, obsSite=None):
         self.obsSite = obsSite
-        self._jdStart: float = 0
-        self._jdEnd: float = 0
+        self._jdStart: Time = self.obsSite.ts.tt_jd(0)
+        self._jdEnd: Time = self.obsSite.ts.tt_jd(0)
         self.flip: bool = False
         self.message: str = ""
         self.offsetRA: float = 0

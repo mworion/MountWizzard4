@@ -44,10 +44,8 @@ class Categories(QTabWidget):
         layout = QVBoxLayout()
         self.qLists = {
             "Full Log": None,
-            "Startup": None,
             "Header": None,
-            "Critical": None,
-            "Errors": None,
+            "Critical/Error": None,
             "Warnings": None,
             "Info": None,
             "Debug": None,
@@ -57,8 +55,7 @@ class Categories(QTabWidget):
             "INDI Trace": None,
             "ASCOM Trace": None,
             "ALPACA Trace": None,
-            "NINA Trace": None,
-            "SGPro Trace": None,
+            "App Trace": None,
             "Other traces": None,
         }
 
@@ -99,12 +96,8 @@ class Categories(QTabWidget):
     def getListKey(line):
         if "[H]" in line and "startup" not in line:
             listKey = "Header"
-        elif "startup" in line:
-            listKey = "Startup"
-        elif "[C]" in line:
-            listKey = "Critical"
-        elif "[E]" in line:
-            listKey = "Errors"
+        elif "[C]" in line or "[E]" in line:
+            listKey = "Critical/Error"
         elif "[W]" in line:
             listKey = "Warnings"
         elif "[I]" in line:
@@ -129,10 +122,8 @@ class Categories(QTabWidget):
             listKey = "ASCOM Trace"
         elif "[T]" in line and "alpaca" in line:
             listKey = "ALPACA Trace"
-        elif "[T]" in line and "nina" in line:
-            listKey = "NINA Trace"
-        elif "[T]" in line and "sgpro" in line:
-            listKey = "SGPro Trace"
+        elif "[T]" in line and ("nina" in line or "sgpro" in line):
+            listKey = "App Trace"
         elif "[T]" in line:
             listKey = "Other traces"
         else:

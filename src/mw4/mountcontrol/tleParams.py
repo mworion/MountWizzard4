@@ -15,6 +15,7 @@
 ###########################################################
 import logging
 from skyfield.units import Angle
+from skyfield.timelib import Time
 
 
 class TLEParams:
@@ -29,8 +30,8 @@ class TLEParams:
         self.altitude: Angle = Angle(degrees=0)
         self.ra: Angle = Angle(hours=0)
         self.dec: Angle = Angle(degrees=0)
-        self._jdStart: float = 0
-        self._jdEnd: float = 0
+        self._jdStart: Time = self.obsSite.ts.tt_jd(0)
+        self._jdEnd: Time = self.obsSite.ts.tt_jd(0)
         self.flip: bool = False
 
         self.message: str = ""

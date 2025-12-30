@@ -15,11 +15,12 @@
 ###########################################################
 import json
 import numpy as np
+from collections.abc import Iterable
 from mw4.gui.utilities import toolsQtWidget
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.gui.widgets import analyse_ui
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 
 class AnalyseWindow(toolsQtWidget.MWidget):

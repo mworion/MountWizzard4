@@ -253,8 +253,13 @@ def test_showStatusSolve_1(function):
 
 
 def test_showStatusSolve_2(function):
-    status = {"imagePath": Path("test"), "success": True, "angleS": Angle(degrees=2.5),
-              "errorRMS_S": 1, "scaleS": 1.25}
+    status = {
+        "imagePath": Path("test"),
+        "success": True,
+        "angleS": Angle(degrees=2.5),
+        "errorRMS_S": 1,
+        "scaleS": 1.25,
+    }
     function.showStatusSolve(status)
 
 

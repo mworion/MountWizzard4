@@ -162,6 +162,13 @@ class Ui_SatelliteDialog(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer_7)
 
+        self.label_298 = QLabel(self.groupBox)
+        self.label_298.setObjectName(u"label_298")
+        self.label_298.setMinimumSize(QSize(0, 25))
+        self.label_298.setFont(font1)
+
+        self.horizontalLayout.addWidget(self.label_298)
+
         self.satAltitude = QLineEdit(self.groupBox)
         self.satAltitude.setObjectName(u"satAltitude")
         self.satAltitude.setEnabled(True)
@@ -176,13 +183,6 @@ class Ui_SatelliteDialog(object):
         self.satAltitude.setReadOnly(True)
 
         self.horizontalLayout.addWidget(self.satAltitude)
-
-        self.label_298 = QLabel(self.groupBox)
-        self.label_298.setObjectName(u"label_298")
-        self.label_298.setMinimumSize(QSize(0, 25))
-        self.label_298.setFont(font1)
-
-        self.horizontalLayout.addWidget(self.label_298)
 
         self.label_206 = QLabel(self.groupBox)
         self.label_206.setObjectName(u"label_206")
@@ -275,11 +275,11 @@ class Ui_SatelliteDialog(object):
 #endif // QT_CONFIG(tooltip)
         self.satAzimuth.setText(QCoreApplication.translate("SatelliteDialog", u"-", None))
         self.label_209.setText(QCoreApplication.translate("SatelliteDialog", u"\u00b0", None))
+        self.label_298.setText(QCoreApplication.translate("SatelliteDialog", u"Altitude", None))
 #if QT_CONFIG(tooltip)
         self.satAltitude.setToolTip(QCoreApplication.translate("SatelliteDialog", u"Actual altitude of the satelite from observers position.", None))
 #endif // QT_CONFIG(tooltip)
         self.satAltitude.setText(QCoreApplication.translate("SatelliteDialog", u"-", None))
-        self.label_298.setText(QCoreApplication.translate("SatelliteDialog", u"Altitude", None))
         self.label_206.setText(QCoreApplication.translate("SatelliteDialog", u"\u00b0", None))
 #if QT_CONFIG(tooltip)
         self.groupEarth.setToolTip(QCoreApplication.translate("SatelliteDialog", u"<html><head/><body><p>Shows the satellite path vertical over ground.</p></body></html>", None))

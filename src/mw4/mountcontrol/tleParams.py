@@ -14,13 +14,12 @@
 #
 ###########################################################
 import logging
-from skyfield.units import Angle
 from skyfield.timelib import Time
+from skyfield.units import Angle
 
 
 class TLEParams:
-    """
-    """
+    """ """
 
     log = logging.getLogger("MW4")
 

@@ -59,8 +59,8 @@ def test_except_hook():
 
 def test_setupWorkDirs_1():
     with mock.patch.object(Path, "mkdir"):
-            val = setupWorkDirs(Path())
-            assert val["modeldata"] == "4.0"
+        val = setupWorkDirs(Path())
+        assert val["modeldata"] == "4.0"
 
 
 def test_checkIsAdmin_1():

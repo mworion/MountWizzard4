@@ -14,12 +14,11 @@
 #
 ###########################################################
 import logging
-import platform
 import time
 from mw4.gui.utilities import toolsQtWidget
 from mw4.gui.widgets import message_ui
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QBrush, QColor, QFont, QFontDatabase
+from PySide6.QtGui import QBrush, QColor
 from PySide6.QtWidgets import QTableWidgetItem
 
 

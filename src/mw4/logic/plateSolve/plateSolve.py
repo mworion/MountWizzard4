@@ -14,7 +14,6 @@
 #
 ###########################################################
 import logging
-import os
 import queue
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker

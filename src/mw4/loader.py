@@ -17,6 +17,7 @@ import locale
 import logging
 import os
 import platform
+import PySide6
 import socket
 import sys
 import traceback
@@ -29,7 +30,6 @@ from mw4.base.loggerMW import setupLogging
 from mw4.gui.utilities.splashScreen import SplashScreen
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
-import PySide6
 from PySide6.QtCore import QEvent, QFile, qVersion
 from PySide6.QtGui import QIcon, QMouseEvent
 from PySide6.QtWidgets import (

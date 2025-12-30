@@ -270,7 +270,7 @@ class ModelManage(QObject):
         self.ui.runOptimize.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
         self.app.mount.signals.getModelDone.disconnect(self.clearRefreshModel)
-        self.msg.emit(0, "Model", "Manage", "Align model data refreshed")
+        self.msg.emit(0, "Model", "Manage", "Model data refreshed")
         self.fittedModelPath, pointsOut = findFittingModel(
             self.app.mount.model, self.app.mwGlob["modelDir"]
         )

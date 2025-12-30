@@ -729,8 +729,8 @@ class Mount(QObject):
         statusRefraction = False
         refractionTemp = 0
         refractionPress = 0
-        wakeOnLan = 'None'
-        autoPowerOn = 'None'
+        wakeOnLan = "None"
+        autoPowerOn = "None"
         typeConnection = 1
         trackingRate = 60.2
         slewRateMin = 0

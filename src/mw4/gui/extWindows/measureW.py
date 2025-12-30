@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import os
 import pyqtgraph as pg
 from functools import partial
 from mw4.gui.utilities import toolsQtWidget

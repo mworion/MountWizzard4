@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import os
 from astropy.io import fits
 from pathlib import Path
 from PySide6.QtCore import QObject
@@ -127,10 +126,7 @@ class Rename(QObject):
         with fits.open(name=fileName) as fd:
             fitsHeader = fd[0].header
             newObjectName = self.ui.newObjectName.text().upper()
-            if newObjectName:
-                newFileName = newObjectName
-            else:
-                newFileName = fitsHeader.get("OBJECT", "UNKNOWN").upper()
+            newFileName = newObjectName or fitsHeader.get("OBJECT", "UNKNOWN").upper()
 
             for _, selector in self.selectorsDropDowns.items():
                 selection = selector.currentText()

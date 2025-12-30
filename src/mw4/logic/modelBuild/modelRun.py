@@ -229,7 +229,9 @@ class ModelData(QObject):
         imagePath = item["imagePath"]
         exposureTime = item["exposureTime"] = cam.exposureTime1
         binning = item["binning"] = cam.binning1
-        self.log.debug(f"{'':15s}: {self.pointerImage:02d}, {imagePath.stem}, {exposureTime:3.0f}")
+        self.log.debug(
+            f"{'':15s}: {self.pointerImage:02d}, {imagePath.stem}, {exposureTime:3.0f}"
+        )
         self.app.camera.expose(imagePath, exposureTime, binning)
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
 
@@ -275,7 +277,7 @@ class ModelData(QObject):
             self.app.data.setStatusBuildPSolved(self.pointerResult)
         else:
             self.app.data.setStatusBuildPFailed(self.pointerResult)
-         
+
         self.log.debug(f"{'':15s}: {item}")
         self.statusSolve.emit(item)
         self.app.updatePointMarker.emit()
@@ -285,7 +287,7 @@ class ModelData(QObject):
     def prepareModelBuildData(self) -> None:
         """ """
         self.modelBuildData.clear()
-        self.log.debug(f"{'prepare model':15s}: {len(self.modelInputData)}, {self.app.camera.exposureTime:3.0f},{self.app.camera.focalLength:4.0f}")
+        self.log.debug(f"{'prepare model':15s}: {len(self.modelInputData)}")
         for index, point in enumerate(self.modelInputData):
             modelItem = {}
             imagePath = self.imageDir / f"image-{index + 1:03d}.fits"
@@ -308,7 +310,7 @@ class ModelData(QObject):
         retryNeeded = not all(p["success"] for p in self.modelBuildData)
         self.log.debug(f"{'check retry':15s}: {retryNeeded}")
         return retryNeeded
-        
+
     def runThroughModelBuildData(self) -> None:
         """ """
         self.pointerSlew = -1

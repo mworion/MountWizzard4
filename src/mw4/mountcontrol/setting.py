@@ -16,20 +16,20 @@
 import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat, valueToInt
-from packaging.version import Version
 
 
 class Setting:
     """ """
+
     CONFIG = {
-        'A': "altazimuth mount",
-        'E': 'equatorial mount',
-        'G': 'german mount',
-        'F': 'fork mount',
-        'N': 'northern hemisphere',
-        'S': 'southern hemisphere',
-        'H': 'homing present',
-        'h': 'no homing',
+        "A": "altazimuth mount",
+        "E": "equatorial mount",
+        "G": "german mount",
+        "F": "fork mount",
+        "N": "northern hemisphere",
+        "S": "southern hemisphere",
+        "H": "homing present",
+        "h": "no homing",
     }
     log = logging.getLogger("MW4")
 

@@ -120,8 +120,7 @@ def test_unzipFile(function):
 def test_downloadFileWorker_2(function):
     shutil.copy("tests/testData/visual.txt", "tests/work/temp/test.txt")
     with mock.patch.object(function, "getFileFromUrl", return_value=False):
-        suc = function.downloadFileWorker(url=Path(),
-                                          dest=Path("tests/work/temp/test.txt"))
+        suc = function.downloadFileWorker(url=Path(), dest=Path("tests/work/temp/test.txt"))
         assert not suc
 
 

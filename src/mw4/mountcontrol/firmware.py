@@ -20,6 +20,7 @@ from packaging.version import Version
 
 class Firmware:
     """ """
+
     log = logging.getLogger("MW4")
 
     def __init__(self, parent):

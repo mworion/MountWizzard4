@@ -15,11 +15,10 @@
 ###########################################################
 import datetime
 import logging
-from pathlib import Path
-import sys
 import time
 from functools import partial, partialmethod
 from logging.handlers import RotatingFileHandler
+from pathlib import Path
 
 if not hasattr(logging.Logger, "_set_defaults"):
 

@@ -129,7 +129,7 @@ def test_processSelectors_1(function):
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
     header.set("DATE-OBS", "2019-05-26T17:02:18.843")
-    name = function.processSelectors(header,"Frame")
+    name = function.processSelectors(header, "Frame")
     assert not name
 
 

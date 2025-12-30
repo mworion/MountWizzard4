@@ -15,7 +15,6 @@
 ###########################################################
 import json
 import logging
-import os
 import requests
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker

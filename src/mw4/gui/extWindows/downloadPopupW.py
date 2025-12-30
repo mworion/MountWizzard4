@@ -13,14 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-import os
 import gzip
-from pathlib import Path
+import os
 import requests
 import shutil
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
 from mw4.gui.widgets.downloadPopup_ui import Ui_DownloadPopup
+from pathlib import Path
 from PySide6.QtCore import Qt, Signal
 
 

@@ -286,7 +286,7 @@ class SatTrack(QObject, SatData):
     def programSatToMount(self, satName: str) -> None:
         """ """
         satellite = self.app.mount.satellite
-        self.msg.emit(0, "TLE", "Program", f"Upload to mount: [{satName}]")
+        self.msg.emit(0, "TLE", "Program", f"Upload satellite: [{satName}]")
         line1, line2 = export_tle(self.satellites.objects[satName].model)
         suc = satellite.setTLE(line0=satName, line1=line1, line2=line2)
         if not suc:
@@ -353,8 +353,7 @@ class SatTrack(QObject, SatData):
     def filterHorizon(
         self, start: int, end: int, alt: list, az: list
     ) -> tuple[int, int, list, list]:
-        """
-     """
+        """ """
         if not self.ui.avoidHorizon.isChecked():
             return start, end, alt, az
 

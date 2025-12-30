@@ -16,7 +16,6 @@
 import json
 import logging
 import numpy as np
-import os
 import requests
 from mw4.base.tpool import Worker
 from pathlib import Path

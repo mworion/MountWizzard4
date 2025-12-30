@@ -632,8 +632,7 @@ def test_updateSatelliteTrackGui_3(function):
         message = "e"
         altitude = 1
 
-    function.satOrbits = [
-    ]
+    function.satOrbits = []
 
     function.updateSatelliteTrackGui(Test())
 

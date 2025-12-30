@@ -18,9 +18,6 @@ import numpy
 from mw4.mountcontrol.convert import (
     stringToDegree,
     topoToAltAz,
-    valueToAngle,
-    valueToFloat,
-    valueToInt,
 )
 from skyfield.api import Angle, Star
 

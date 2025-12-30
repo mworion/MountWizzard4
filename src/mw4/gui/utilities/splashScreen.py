@@ -42,8 +42,8 @@ class SplashScreen(QObject):
 
         flags = Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.X11BypassWindowManagerHint
         self.qss = QSplashScreen(self._pxm, flags)
-        h = self.qss.height()
-        w = self.qss.width()
+        self.qss.height()
+        self.qss.width()
         self.msg = ""
         self.maxv = 100.0
         self.minv = 0.0

@@ -1241,4 +1241,3 @@ class TestConfigData(unittest.TestCase):
             mConn.return_value.communicate.return_value = True, response, 1
             suc = setting.setAutoPower(True)
             self.assertEqual(True, suc)
-

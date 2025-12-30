@@ -15,10 +15,10 @@
 ###########################################################
 import logging
 from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.convert import valueToAngle, valueToFloat
 from mw4.mountcontrol.tleParams import TLEParams
 from mw4.mountcontrol.trajectoryParams import TrajectoryParams
 from skyfield.api import Angle
-from mw4.mountcontrol.convert import valueToAngle, valueToFloat
 
 
 class Satellite:

@@ -578,6 +578,28 @@ def test_changeUnitTimeUTC_1(function):
             function.changeUnitTimeUTC()
 
 
+def test_updateSatelliteTrackGui_1(function):
+    ts = function.app.mount.obsSite.ts
+
+    class Test:
+        jdStart = ts.tt_jd(2459215.5)
+        jdEnd = ts.tt_jd(2459215.6)
+        flip = True
+        message = "e"
+        altitude = 1
+
+    function.satOrbits = [
+        {
+            "rise": ts.tt_jd(2459215.5),
+            "flip": ts.tt_jd(2459215.6),
+            "culminate": ts.tt_jd(2459215.6),
+            "settle": ts.tt_jd(2459215.7),
+        }
+    ]
+
+    function.updateSatelliteTrackGui(Test())
+
+
 def test_updateSatelliteTrackGui_2(function):
     ts = function.app.mount.obsSite.ts
 

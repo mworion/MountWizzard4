@@ -354,13 +354,8 @@ class SatTrack(QObject, SatData):
         self, start: int, end: int, alt: list, az: list
     ) -> tuple[int, int, list, list]:
         """
-        Filter horizon runs from starts on both sides of the track and tries to
-         determine when a track is hidden behind the horizon line. As a satellite
-        track has to be in one piece, the resulting vectors might have a shorter
-        length and a different start and end time.
-        """
-        useHorizon = self.ui.avoidHorizon.isChecked()
-        if not useHorizon:
+     """
+        if not self.ui.avoidHorizon.isChecked():
             return start, end, alt, az
 
         timeDelayStart = 0
@@ -421,32 +416,23 @@ class SatTrack(QObject, SatData):
         title = "Satellite tracking " + self.mainW.timeZoneString()
         self.ui.satTrackGroup.setTitle(title)
 
-        if tleParams.jdStart is not None and self.satOrbits:
+        if self.satOrbits:
             t = self.mainW.convertTime(tleParams.jdStart, "%d %b  %H:%M:%S")
             self.ui.satTrajectoryStart.setText(t)
-        else:
-            self.ui.satTrajectoryStart.setText("No transit")
-
-        if tleParams.jdEnd is not None and self.satOrbits:
             t = self.mainW.convertTime(tleParams.jdEnd, "%d %b  %H:%M:%S")
             self.ui.satTrajectoryEnd.setText(t)
+            self.ui.stopSatelliteTracking.setEnabled(True)
+            self.ui.startSatelliteTracking.setEnabled(True)
         else:
+            self.ui.satTrajectoryStart.setText("No transit")
             self.ui.satTrajectoryEnd.setText("No transit")
+            self.ui.stopSatelliteTracking.setEnabled(False)
+            self.ui.startSatelliteTracking.setEnabled(False)
 
         if tleParams.flip and self.satOrbits:
             self.ui.satTrajectoryFlip.setText("YES")
         else:
             self.ui.satTrajectoryFlip.setText("NO")
-
-        if tleParams.message is not None:
-            self.msg.emit(0, "TLE", "Message", f"{tleParams.message}")
-
-        if tleParams.jdStart is not None and self.satOrbits:
-            self.ui.stopSatelliteTracking.setEnabled(True)
-            self.ui.startSatelliteTracking.setEnabled(True)
-        else:
-            self.ui.stopSatelliteTracking.setEnabled(False)
-            self.ui.startSatelliteTracking.setEnabled(False)
 
     def updateInternalTrackGui(self, tleParams: TLEParams) -> None:
         """ """

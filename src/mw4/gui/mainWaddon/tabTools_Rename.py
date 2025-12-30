@@ -55,13 +55,14 @@ class Rename(QObject):
     def initConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
-        defaultDir = str(self.app.mwGlob["imageDir"])
-        self.ui.renameDir.setText(config.get("renameDir", defaultDir))
+        imageDir = self.app.mwGlob["imageDir"]
+        renameDir = config.get("renameDir", imageDir)
+        self.ui.renameDir.setText(renameDir)
+        self.renameDir = Path(renameDir)
         self.ui.newObjectName.setText(config.get("newObjectName", ""))
         self.ui.includeSubdirs.setChecked(config.get("includeSubdirs", False))
         for name, ui in self.selectorsDropDowns.items():
             ui.setCurrentIndex(config.get(name, 0))
-
         self.ui.renameProgress.setValue(0)
 
     def storeConfig(self) -> None:
@@ -127,17 +128,17 @@ class Rename(QObject):
             fitsHeader = fd[0].header
             newObjectName = self.ui.newObjectName.text().upper()
             if newObjectName:
-                newFilename = newObjectName
+                newFileName = newObjectName
             else:
-                newFilename = fitsHeader.get("OBJECT", "UNKNOWN").upper()
+                newFileName = fitsHeader.get("OBJECT", "UNKNOWN").upper()
 
             for _, selector in self.selectorsDropDowns.items():
                 selection = selector.currentText()
                 chunk = self.processSelectors(fitsHeader, selection)
                 if chunk:
-                    newFilename += f"_{chunk}"
-
-            fileName.rename(Path(newFilename).with_suffix(".fits"))
+                    newFileName += f"_{chunk}"
+            newFileName = (self.renameDir / newFileName).with_suffix(".fits")
+            fileName.rename(newFileName)
 
     def renameRunGUI(self) -> None:
         """ """
@@ -155,7 +156,7 @@ class Rename(QObject):
         for i, fileName in enumerate(self.renameDir.glob(search)):
             self.ui.renameProgress.setValue(int(100 * (i + 1) / numberFiles))
             QApplication.processEvents()
-            self.renameFile(fileName=fileName)
+            self.renameFile(fileName)
 
         self.msg.emit(0, "Tools", "Rename", f"{numberFiles:d} images were renamed")
 

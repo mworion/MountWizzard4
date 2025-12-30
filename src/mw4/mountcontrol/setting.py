@@ -51,7 +51,7 @@ class Setting:
         self.horizonLimitLow: float = 0
         self.UTCValid: bool = False
         self.UTCExpire: str = "2000-01-01"
-        self.gpsSynced: bool = False
+        self.gpsSynced: int = 0
         self._typeConnection: int = 0
         self._addressLanMAC: str = ""
         self._addressWirelessMAC: str = ""
@@ -162,7 +162,6 @@ class Setting:
         self.UTCValid = valid == "V"
         self.UTCExpire = expirationDate
         self.typeConnection = response[12]
-        self.gpsSynced = response[13] == "1"
         self.addressLanMAC = response[14]
         self.wakeOnLan = response[15]
         self.weatherStatus = response[16]
@@ -177,7 +176,8 @@ class Setting:
         self.trackingRate = valueToFloat(response[21])
         self.webInterfaceStat = bool(valueToInt(response[22]))
         self.settleTime = valueToFloat(response[23])
-        if not self.parent.firmware.checkNewer(Version("3.2.5")):
+        if not self.parent.firmware.checkNewer("3.2.5"):
+            self.gpsSynced = valueToInt(response[13])
             return True
         self.autoPowerOn = response[24]
         config = response[25].split(",")
@@ -185,6 +185,7 @@ class Setting:
         self.configGerman = self.CONFIG.get(config[1], "Unknown")
         self.configHemisphere = self.CONFIG.get(config[2], "Unknown")
         self.configHoming = self.CONFIG.get(config[3], "Unknown")
+        self.gpsSynced = valueToInt(response[26])
 
         return True
 
@@ -194,8 +195,8 @@ class Setting:
         cs1 = ":U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#"
         cs2 = ":GREF#:Guaf#:Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#"
         cs3 = ":WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#:Gstm#"
-        if self.parent.firmware.checkNewer(Version("3.2.5")):
-            cs3 += ":GAPO#:GCFG#"
+        if self.parent.firmware.checkNewer("3.2.5"):
+            cs3 += ":GAPO#:GCFG#:gtgpps#"
         commandString = cs1 + cs2 + cs3
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:

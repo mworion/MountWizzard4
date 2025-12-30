@@ -119,7 +119,8 @@ class MountSett:
         guiSetText(ui, "s", sett.statusRefraction)
 
         ui = self.ui.statusGPSSynced
-        guiSetText(ui, "s", sett.gpsSynced)
+        t = ['OFF', 'ON', 'PPS']
+        guiSetText(ui, "s", t[sett.gpsSynced])
 
         ui = self.ui.statusWOL
         guiSetText(ui, "s", sett.wakeOnLan)

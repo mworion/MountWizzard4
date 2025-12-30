@@ -16,7 +16,6 @@
 import cv2
 import logging
 import numpy as np
-import os
 from astropy import wcs
 from astropy.io import fits
 from mw4.base.tpool import Worker

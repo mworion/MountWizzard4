@@ -267,8 +267,9 @@ class TestConfigData(unittest.TestCase):
             "00005.000",
             "1",
             "A,G,N,H",
+            "1",
         ]
-        suc = sett.parseSetting(response, 26)
+        suc = sett.parseSetting(response, 27)
         self.assertEqual(True, suc)
 
     def test_Setting_parse_ok_1(self):
@@ -300,8 +301,9 @@ class TestConfigData(unittest.TestCase):
             "00005.000",
             "1",
             "A,G,N,H",
+            "1",
         ]
-        suc = sett.parseSetting(response, 26)
+        suc = sett.parseSetting(response, 27)
         self.assertEqual(True, suc)
 
     def test_Setting_parse_ok_2(self):
@@ -363,8 +365,9 @@ class TestConfigData(unittest.TestCase):
             "+20,5",
             "1",
             "A,G,N,H",
+            "1",
         ]
-        suc = sett.parseSetting(response, 26)
+        suc = sett.parseSetting(response, 27)
         self.assertEqual(False, suc)
 
     def test_Setting_parse_not_ok1(self):
@@ -396,8 +399,9 @@ class TestConfigData(unittest.TestCase):
             "00005.000",
             "1",
             "A,G,N,H",
+            "1",
         ]
-        suc = sett.parseSetting(response, 26)
+        suc = sett.parseSetting(response, 27)
         self.assertEqual(True, suc)
 
     def test_Setting_parse_not_ok2(self):
@@ -429,8 +433,9 @@ class TestConfigData(unittest.TestCase):
             "00005.000",
             "1",
             "A,G,N,H",
+            "1",
         ]
-        suc = sett.parseSetting(response, 26)
+        suc = sett.parseSetting(response, 27)
         self.assertEqual(True, suc)
 
     def test_Setting_parse_not_ok3(self):
@@ -462,9 +467,10 @@ class TestConfigData(unittest.TestCase):
             "00005.000",
             "1",
             "A,G,N,H",
+            "1",
         ]
 
-        suc = sett.parseSetting(response, 26)
+        suc = sett.parseSetting(response, 27)
         self.assertEqual(True, suc)
 
     def test_Setting_parse_not_ok4(self):
@@ -496,9 +502,10 @@ class TestConfigData(unittest.TestCase):
             "00005.000",
             "1",
             "A,G,N,H",
+            "1",
         ]
 
-        suc = sett.parseSetting(response, 26)
+        suc = sett.parseSetting(response, 27)
         self.assertEqual(True, suc)
 
     def test_Setting_poll_ok1(self):
@@ -531,10 +538,11 @@ class TestConfigData(unittest.TestCase):
             "00005.000",
             "1",
             "A,G,N,H",
+            "1",
         ]
 
         with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
-            mConn.return_value.communicate.return_value = True, response, 26
+            mConn.return_value.communicate.return_value = True, response, 27
             suc = sett.pollSetting()
             self.assertEqual(True, suc)
 
@@ -568,10 +576,11 @@ class TestConfigData(unittest.TestCase):
             "00005.000",
             "1",
             "A,G,N,H",
+            "1",
         ]
 
         with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
-            mConn.return_value.communicate.return_value = True, response, 26
+            mConn.return_value.communicate.return_value = True, response, 27
             suc = sett.pollSetting()
             self.assertEqual(True, suc)
 
@@ -605,10 +614,11 @@ class TestConfigData(unittest.TestCase):
             "00005.000",
             "1",
             "A,G,N,H",
+            "1",
         ]
 
         with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
-            mConn.return_value.communicate.return_value = False, response, 24
+            mConn.return_value.communicate.return_value = False, response, 27
             suc = sett.pollSetting()
             self.assertEqual(False, suc)
 
@@ -640,6 +650,7 @@ class TestConfigData(unittest.TestCase):
             "60.2",
             "1",
             "A,G,N,H",
+            "1",
         ]
 
         with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:

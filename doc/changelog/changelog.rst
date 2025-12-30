@@ -14,7 +14,7 @@ Version 4.x
 
 - add: support for python 3.11, 3.12 and 3.13, remove 3.7, 3.8, 3.9
 - add: native support for Macs with Apple silicon
-- add: support automation with 10micron webservices
+- add: comets / asteroids uploads now without 10micron installer
 - add: support uploading mechanism for databases for macos and linux
 - add: show free disk space of work dir in the status bar
 - add: support for comet and asteroid data in extended downloads
@@ -24,6 +24,7 @@ Version 4.x
 - add: support for boltwood file reading
 - add: support for new 2024 HW - disabling WOL if not supported
 - add: support for new 2024 HW - enabling auto power on setting if supported
+- add: support for status of GPS modul with PPS capability
 - add: start option -e for remove logging and get lower CPU load
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
@@ -49,7 +50,7 @@ Version 4.x
 - improve: rewrite of the online documentation
 - improve: no 10micron installer needed anymore for object data
 - improve: schedule and threads in waiting times (slow machines)
-- remove: automation of 10micron installer
+- remove: automation of 10micron installer, replaced with web interface
 - remove: updater for MW4 (use uv installer instead)
 - fix: typos
 

@@ -55,7 +55,7 @@ class Rename(QObject):
     def initConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
-        imageDir = self.app.mwGlob["imageDir"]
+        imageDir = str(self.app.mwGlob["imageDir"])
         renameDir = config.get("renameDir", imageDir)
         self.ui.renameDir.setText(renameDir)
         self.renameDir = Path(renameDir)

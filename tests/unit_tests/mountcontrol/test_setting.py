@@ -183,6 +183,26 @@ class TestConfigData(unittest.TestCase):
         sett.wakeOnLan = "E"
         assert sett.wakeOnLan == "None"
 
+    def test_Setting_autoPowerOn_1(self):
+        sett = Setting(App().mount)
+        sett.autoPowerOn = "N"
+        self.assertEqual("None", sett.autoPowerOn)
+
+    def test_Setting_autoPowerOn_2(self):
+        sett = Setting(App().mount)
+        sett.autoPowerOn = "0"
+        self.assertEqual("OFF", sett.autoPowerOn)
+
+    def test_Setting_autoPowerOn_3(self):
+        sett = Setting(App().mount)
+        sett.autoPowerOn = "1"
+        self.assertEqual("ON", sett.autoPowerOn)
+
+    def test_Setting_autoPowerOn_4(self):
+        sett = Setting(App().mount)
+        sett.autoPowerOn = "E"
+        assert sett.autoPowerOn == "None"
+
     def test_Setting_weatherStatus_1(self):
         sett = Setting(App().mount)
         sett.weatherStatus = None

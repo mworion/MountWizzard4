@@ -721,7 +721,8 @@ class Mount(QObject):
         statusRefraction = False
         refractionTemp = 0
         refractionPress = 0
-        wakeOnLan = False
+        wakeOnLan = 'None'
+        autoPowerOn = 'None'
         typeConnection = 1
         trackingRate = 60.2
         slewRateMin = 0
@@ -782,6 +783,10 @@ class Mount(QObject):
 
         @staticmethod
         def setWOL():
+            return True
+
+        @staticmethod
+        def setAutoPower():
             return True
 
         @staticmethod

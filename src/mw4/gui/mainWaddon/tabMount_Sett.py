@@ -22,12 +22,11 @@ from mw4.mountcontrol.convert import (
     formatLatToText,
     formatLonToText,
 )
-from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QInputDialog, QLineEdit
 from skyfield.api import wgs84
 
 
-class MountSett(QObject):
+class MountSett:
     """ """
 
     def __init__(self, mainW):
@@ -56,8 +55,22 @@ class MountSett(QObject):
         clickable(self.ui.statusUnattendedFlip).connect(self.setUnattendedFlip)
         clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
         clickable(self.ui.statusWOL).connect(self.setWOL)
+        clickable(self.ui.statusAPO).connect(self.setAPO)
         clickable(self.ui.statusRefraction).connect(self.setRefraction)
         clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
+        self.app.mount.signals.firmwareDone.connect(self.setWOLorAPO)
+
+    def setWOLorAPO(self, fw):
+        """ """
+        hasWOL = fw.hardware == "Q-TYPE2012"
+        self.ui.statusWOL.setEnabled(hasWOL)
+        self.ui.label_statusWOL.setEnabled(hasWOL)
+        self.ui.statusAPO.setEnabled(not hasWOL)
+        self.ui.label_statusAPO.setEnabled(not hasWOL)
+        self.ui.statusWOL.setVisible(hasWOL)
+        self.ui.label_statusWOL.setVisible(hasWOL)
+        self.ui.statusAPO.setVisible(not hasWOL)
+        self.ui.label_statusAPO.setVisible(not hasWOL)
 
     def updatePointGUI(self, obs):
         """ """
@@ -111,6 +124,9 @@ class MountSett(QObject):
 
         ui = self.ui.statusWOL
         guiSetText(ui, "s", sett.wakeOnLan)
+
+        ui = self.ui.statusAPO
+        guiSetText(ui, "s", sett.autoPowerOn)
 
         ui = self.ui.statusWebInterface
         guiSetText(ui, "s", sett.webInterfaceStat)
@@ -404,8 +420,9 @@ class MountSett(QObject):
         """ """
         sett = self.app.mount.setting
         dlg = QInputDialog()
+        act = 0 if sett.wakeOnLan == "ON" else 1
         value, ok = dlg.getItem(
-            self.mainW, "Set Wake On Lan", "Value: On / Off", ["ON", "OFF"], 0, False
+            self.mainW, "Set Wake On Lan", "Value: On / Off", ["ON", "OFF"], act, False
         )
         if not ok:
             return False
@@ -415,6 +432,24 @@ class MountSett(QObject):
             self.msg.emit(0, "Mount", "Setting", f"Wake On Lan: [{value}]")
         else:
             self.msg.emit(2, "Mount", "Setting", "Wake On Lan cannot be set")
+        return suc
+
+    def setAPO(self):
+        """ """
+        sett = self.app.mount.setting
+        dlg = QInputDialog()
+        act = 0 if sett.autoPowerOn else 1
+        value, ok = dlg.getItem(
+            self.mainW, "Set Auto Power On", "Value: On / Off", ["ON", "OFF"], act, False
+        )
+        if not ok:
+            return False
+
+        suc = sett.setAutoPower(value == "ON")
+        if suc:
+            self.msg.emit(0, "Mount", "Setting", f"AutoPowerOn: [{value}]")
+        else:
+            self.msg.emit(2, "Mount", "Setting", "AutoPowerOn cannot be set")
         return suc
 
     def setRefractionTemp(self):

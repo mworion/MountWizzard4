@@ -45,7 +45,8 @@ class Setting:
         self._typeConnection: int = 0
         self._addressLanMAC: str = ""
         self._addressWirelessMAC: str = ""
-        self.wakeOnLan: str = "OFF"
+        self._wakeOnLan: str = "None"
+        self._autoPowerOn: str = "None"
         self._weatherStatus: bool = False
         self.weatherPressure: float = 950
         self.weatherTemperature: float = 0
@@ -89,14 +90,25 @@ class Setting:
 
     @wakeOnLan.setter
     def wakeOnLan(self, value):
-        if value == "N":
-            self._wakeOnLan = "None"
-        elif value == "0":
+        if value == "0":
             self._wakeOnLan = "OFF"
         elif value == "1":
             self._wakeOnLan = "ON"
         else:
             self._wakeOnLan = "None"
+
+    @property
+    def autoPowerOn(self):
+        return self._autoPowerOn
+
+    @autoPowerOn.setter
+    def autoPowerOn(self, value):
+        if value == "0":
+            self._autoPowerOn = "OFF"
+        elif value == "1":
+            self._autoPowerOn = "ON"
+        else:
+            self._autoPowerOn = "None"
 
     @property
     def weatherStatus(self):
@@ -151,6 +163,7 @@ class Setting:
         self.trackingRate = valueToFloat(response[21])
         self.webInterfaceStat = bool(valueToInt(response[22]))
         self.settleTime = valueToFloat(response[23])
+        self.autoPowerOn = response[24]
         return True
 
     def pollSetting(self) -> bool:
@@ -158,7 +171,7 @@ class Setting:
         conn = Connection(self.parent.host)
         cs1 = ":U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#"
         cs2 = ":GREF#:Guaf#:Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#"
-        cs3 = ":WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#:Gstm#"
+        cs3 = ":WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#:Gstm#:GAPO#"
         commandString = cs1 + cs2 + cs3
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -348,5 +361,13 @@ class Setting:
         """ """
         conn = Connection(self.parent.host)
         commandString = f":Sstm{time:08.3f}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc
+
+    def setAutoPower(self, setOn: bool) -> bool:
+        """ """
+        value = 1 if setOn else 0
+        conn = Connection(self.parent.host)
+        commandString = f":SAPO{value:1d}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc

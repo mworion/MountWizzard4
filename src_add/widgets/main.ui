@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -903,56 +903,6 @@
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="statusWOL">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>415</x>
-         <y>160</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::FocusPolicy::NoFocus</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>Status of Wake On Lan WOL feature. When clicking the field, you could change the value.</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LayoutDirection::LeftToRight</enum>
-       </property>
-       <property name="inputMask">
-        <string/>
-       </property>
-       <property name="text">
-        <string>-</string>
-       </property>
-       <property name="frame">
-        <bool>false</bool>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-      </widget>
       <widget class="QLabel" name="clockOffsetMS">
        <property name="geometry">
         <rect>
@@ -1046,7 +996,7 @@
        <property name="geometry">
         <rect>
          <x>415</x>
-         <y>185</y>
+         <y>160</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -1705,26 +1655,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>Site Elev</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_151">
-       <property name="geometry">
-        <rect>
-         <x>295</x>
-         <y>160</y>
-         <width>116</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>WakeOnLan</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_34">
        <property name="geometry">
         <rect>
@@ -1769,7 +1699,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="geometry">
         <rect>
          <x>295</x>
-         <y>185</y>
+         <y>160</y>
          <width>106</width>
          <height>21</height>
         </rect>
@@ -2180,6 +2110,152 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>s</string>
        </property>
        <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="statusWOL">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>415</x>
+         <y>185</y>
+         <width>51</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::FocusPolicy::NoFocus</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows if the mount's webinterface is enabled (and virtual keyboard could be used)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
+       </property>
+       <property name="inputMask">
+        <string/>
+       </property>
+       <property name="text">
+        <string>-</string>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_statusWOL">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>295</x>
+         <y>185</y>
+         <width>106</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>WOL</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_statusAPO">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>295</x>
+         <y>185</y>
+         <width>106</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>AutoPowerOn</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="statusAPO">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>415</x>
+         <y>185</y>
+         <width>51</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::FocusPolicy::NoFocus</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows if the mount's webinterface is enabled (and virtual keyboard could be used)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
+       </property>
+       <property name="inputMask">
+        <string/>
+       </property>
+       <property name="text">
+        <string>-</string>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
         <bool>false</bool>
        </property>
       </widget>
@@ -23938,7 +24014,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -25330,14 +25406,14 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QGroupBox" name="GroupWOL">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
           <x>5</x>
           <y>125</y>
           <width>356</width>
-          <height>131</height>
+          <height>141</height>
          </rect>
         </property>
         <property name="title">
@@ -25475,7 +25551,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>5</x>
-           <y>100</y>
+           <y>105</y>
            <width>166</width>
            <height>26</height>
           </rect>
@@ -25569,7 +25645,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>185</x>
-           <y>100</y>
+           <y>105</y>
            <width>166</width>
            <height>26</height>
           </rect>

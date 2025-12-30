@@ -47,7 +47,7 @@ def test_storeConfig1(function):
 
 
 def test_setMountCapabilities_1(function):
-    function.setMountCapabilities()
+    function.setMountCapabilities(function.app.mount.firmware)
 
 
 def test_mountBoot_1(function):

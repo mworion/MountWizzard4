@@ -46,7 +46,7 @@ class Ui_BigPopup(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.mountOn = QPushButton(BigPopup)
         self.mountOn.setObjectName(u"mountOn")
-        self.mountOn.setEnabled(False)
+        self.mountOn.setEnabled(True)
         sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
@@ -57,7 +57,7 @@ class Ui_BigPopup(object):
 
         self.mountOff = QPushButton(BigPopup)
         self.mountOff.setObjectName(u"mountOff")
-        self.mountOff.setEnabled(False)
+        self.mountOff.setEnabled(True)
         sizePolicy1.setHeightForWidth(self.mountOff.sizePolicy().hasHeightForWidth())
         self.mountOff.setSizePolicy(sizePolicy1)
 

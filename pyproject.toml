@@ -103,8 +103,8 @@ dev = [
     "pytest-xdist==3.8.0",
     "invoke==2.2.1",
     "ruff==0.14.10",
-    "coverage==7.13.0",
-    "uv-build==0.9.18"
+    "coverage==7.13.1",
+    "uv-build==0.9.20"
 ]
 
 [tool.pytest.ini_options]

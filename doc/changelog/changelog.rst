@@ -21,6 +21,7 @@ Version 4.x
 - add: new theme with 3d buttons for selection
 - add: new way of defining build point along celestial paths
 - add: support for boltwood file reading
+- add: support for new HW - disabling WOL if not supported
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major PySide6

@@ -36,6 +36,10 @@ def function(qapp):
     mainW.app.threadPool.waitForDone(1000)
 
 
+def test_setWOLorAPO_1(function):
+    function.setWOLorAPO(function.app.mount.firmware)
+
+
 def test_updatePointGui_alt(function):
     obs = function.mainW.app.mount.obsSite
     obs.raJNow = Angle(hours=0)
@@ -672,7 +676,7 @@ def test_setDualAxisTracking_4(function):
 
 
 def test_setWOL_2(function):
-    function.app.mount.setting.statusWOL = "0"
+    function.app.mount.setting.wakeOnLan = "0"
     with mock.patch.object(
         PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", False)
     ):
@@ -681,7 +685,7 @@ def test_setWOL_2(function):
 
 
 def test_setWOL_3(function):
-    function.app.mount.setting.statusWOL = "0"
+    function.app.mount.setting.wakeOnLan = "0"
     with mock.patch.object(
         PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
     ):
@@ -691,12 +695,41 @@ def test_setWOL_3(function):
 
 
 def test_setWOL_4(function):
-    function.app.mount.setting.statusWOL = "0"
+    function.app.mount.setting.wakeOnLan = "0"
     with mock.patch.object(
         PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
     ):
         with mock.patch.object(function.app.mount.setting, "setWOL", return_value=True):
             suc = function.setWOL()
+            assert suc
+
+
+def test_setAPO_2(function):
+    function.app.mount.setting.autoPowerOn = "0"
+    with mock.patch.object(
+        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", False)
+    ):
+        suc = function.setAPO()
+        assert not suc
+
+
+def test_setAPO_3(function):
+    function.app.mount.setting.autoPowerOn = "0"
+    with mock.patch.object(
+        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
+    ):
+        with mock.patch.object(function.app.mount.setting, "setAutoPower", return_value=False):
+            suc = function.setAPO()
+            assert not suc
+
+
+def test_setAPO_4(function):
+    function.app.mount.setting.autoPowerOn = "0"
+    with mock.patch.object(
+        PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
+    ):
+        with mock.patch.object(function.app.mount.setting, "setAutoPower", return_value=True):
+            suc = function.setAPO()
             assert suc
 
 

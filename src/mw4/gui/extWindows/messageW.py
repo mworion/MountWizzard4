@@ -14,11 +14,12 @@
 #
 ###########################################################
 import logging
+import platform
 import time
 from mw4.gui.utilities import toolsQtWidget
 from mw4.gui.widgets import message_ui
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QBrush, QColor, QFont
+from PySide6.QtGui import QBrush, QColor, QFont, QFontDatabase
 from PySide6.QtWidgets import QTableWidgetItem
 
 
@@ -84,13 +85,6 @@ class MessageWindow(toolsQtWidget.MWidget):
             QBrush(QColor(self.M_YELLOW)),
             QBrush(QColor(self.M_RED)),
         ]
-        fontFam = self.window().font().family()
-        self.messFont = [
-            QFont(fontFam, weight=QFont.Weight.Normal),
-            QFont(fontFam, weight=QFont.Weight.Bold),
-            QFont(fontFam, weight=QFont.Weight.Normal),
-            QFont(fontFam, weight=QFont.Weight.Normal),
-        ]
 
     def updateListColors(self) -> None:
         """ """
@@ -98,7 +92,7 @@ class MessageWindow(toolsQtWidget.MWidget):
             for col in range(self.ui.messageTable.columnCount()):
                 item = self.ui.messageTable.item(row, col)
                 item.setForeground(self.messColor[0])
-                item.setFont(self.messFont[0])
+                item.setFont(self.messFont)
 
     def colorChange(self) -> None:
         """ """
@@ -134,24 +128,20 @@ class MessageWindow(toolsQtWidget.MWidget):
                     Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
                 )
                 item.setForeground(self.messColor[prio])
-                item.setFont(self.messFont[prio])
                 self.ui.messageTable.setItem(row, self.TEXT_NORMAL, item)
 
             item = QTableWidgetItem(f"{source}")
             item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-            item.setFont(self.messFont[prio])
             item.setForeground(self.messColor[prio])
             self.ui.messageTable.setItem(row, self.TEXT_HIGHLIGHT, item)
 
             item = QTableWidgetItem(f"{mType}")
             item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-            item.setFont(self.messFont[prio])
             item.setForeground(self.messColor[prio])
             self.ui.messageTable.setItem(row, self.TEXT_WARNING, item)
 
             item = QTableWidgetItem(f"{message}")
             item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-            item.setFont(self.messFont[prio])
             item.setForeground(self.messColor[prio])
             self.ui.messageTable.setItem(row, self.TEXT_ERROR, item)
 

@@ -85,8 +85,7 @@ class SettMount(QObject):
 
     def setMountCapabilities(self, fw) -> None:
         """ """
-        hasWOL = fw.hardware == "Q-TYPE2012"
-        self.ui.GroupWOL.setEnabled(hasWOL)
+        self.ui.GroupWOL.setEnabled(self.app.mount.firmware.isHW2012())
 
     def mountBoot(self) -> None:
         """ """

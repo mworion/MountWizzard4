@@ -16,11 +16,21 @@
 import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat, valueToInt
+from packaging.version import Version
 
 
 class Setting:
     """ """
-
+    CONFIG = {
+        'A': "altazimuth mount",
+        'E': 'equatorial mount',
+        'G': 'german mount',
+        'F': 'fork mount',
+        'N': 'northern hemisphere',
+        'S': 'southern hemisphere',
+        'H': 'homing present',
+        'h': 'no homing',
+    }
     log = logging.getLogger("MW4")
 
     def __init__(self, parent):
@@ -46,7 +56,6 @@ class Setting:
         self._addressLanMAC: str = ""
         self._addressWirelessMAC: str = ""
         self._wakeOnLan: str = "None"
-        self._autoPowerOn: str = "None"
         self._weatherStatus: bool = False
         self.weatherPressure: float = 950
         self.weatherTemperature: float = 0
@@ -56,6 +65,11 @@ class Setting:
         self.trackingRate: float = 0
         self.webInterfaceStat: str = ""
         self.settleTime: float = 0
+        self._autoPowerOn: str = "None"
+        self.configEquatorial: str = ""
+        self.configGerman: str = ""
+        self.configHemisphere: str = ""
+        self.configHoming: str = ""
 
     @property
     def typeConnection(self):
@@ -163,7 +177,15 @@ class Setting:
         self.trackingRate = valueToFloat(response[21])
         self.webInterfaceStat = bool(valueToInt(response[22]))
         self.settleTime = valueToFloat(response[23])
+        if not self.parent.firmware.checkNewer(Version("3.2.5")):
+            return True
         self.autoPowerOn = response[24]
+        config = response[25].split(",")
+        self.configEquatorial = self.CONFIG.get(config[0], "Unknown")
+        self.configGerman = self.CONFIG.get(config[1], "Unknown")
+        self.configHemisphere = self.CONFIG.get(config[2], "Unknown")
+        self.configHoming = self.CONFIG.get(config[3], "Unknown")
+
         return True
 
     def pollSetting(self) -> bool:
@@ -171,7 +193,9 @@ class Setting:
         conn = Connection(self.parent.host)
         cs1 = ":U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#"
         cs2 = ":GREF#:Guaf#:Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#"
-        cs3 = ":WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#:Gstm#:GAPO#"
+        cs3 = ":WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#:Gstm#"
+        if self.parent.firmware.checkNewer(Version("3.2.5")):
+            cs3 += ":GAPO#:GCFG#"
         commandString = cs1 + cs2 + cs3
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:

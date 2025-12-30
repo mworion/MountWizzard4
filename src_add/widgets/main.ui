@@ -2115,7 +2115,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows if the mount's webinterface is enabled (and virtual keyboard could be used)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows and sets the status of wake on lan&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2211,7 +2211,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows if the mount's webinterface is enabled (and virtual keyboard could be used)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows and sets the status of automatic power option &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::LayoutDirection::LeftToRight</enum>

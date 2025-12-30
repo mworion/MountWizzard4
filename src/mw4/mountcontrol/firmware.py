@@ -20,7 +20,6 @@ from packaging.version import Version
 
 class Firmware:
     """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(self, parent):
@@ -43,6 +42,14 @@ class Firmware:
         """ """
         return self.vString >= Version(compare)
 
+    def isHW2024(self) -> bool:
+        """ """
+        return self.hardware == "Q-TYPE2024"
+
+    def isHW2012(self) -> bool:
+        """ """
+        return self.hardware == "Q-TYPE2012"
+
     def parse(self, response: list, numberOfChunks: int) -> bool:
         """ """
         if len(response) != numberOfChunks:
@@ -58,7 +65,7 @@ class Firmware:
     def poll(self) -> bool:
         """ """
         conn = Connection(self.parent.host)
-        commandString = ":U2#:GVD#:GVN#:GVP#:GVT#:GVZ#"
+        commandString = ":U2#:GVD#:GVN#:GVP#:GVT#:GVZ#:GCFG#"
         suc, response, chunks = conn.communicate(commandString)
         if not suc:
             return False

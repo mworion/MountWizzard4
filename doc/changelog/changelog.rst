@@ -10,9 +10,10 @@ Version 4.x
 
 - this is a major release !
   please try out in a separate work folder for test!
+  for 2024 Hardware, please use the 3.2.5 or later firmware!
 
 - add: support for python 3.11, 3.12 and 3.13, remove 3.7, 3.8, 3.9
-- add native support for Macs with Apple silicon
+- add: native support for Macs with Apple silicon
 - add: support automation with 10micron webservices
 - add: support uploading mechanism for databases for macos and linux
 - add: show free disk space of work dir in the status bar
@@ -21,8 +22,9 @@ Version 4.x
 - add: new theme with 3d buttons for selection
 - add: new way of defining build point along celestial paths
 - add: support for boltwood file reading
-- add: support for new HW - disabling WOL if not supported
-- add: support for new HW - enabling auto power on setting if supported
+- add: support for new 2024 HW - disabling WOL if not supported
+- add: support for new 2024 HW - enabling auto power on setting if supported
+- add: start option -e for remove logging and get lower CPU load
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major PySide6
@@ -40,6 +42,8 @@ Version 4.x
 - improve: reduced size of app
 - improve: faster startup time
 - improve: faster database loading
+- improve: better visibility of editable fields
+- improve: better status information
 - improve: optimizing material look & feel fpr simulator
 - improve: don't delete message list when color change
 - improve: rewrite of the online documentation

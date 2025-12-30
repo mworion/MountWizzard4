@@ -62,15 +62,14 @@ class MountSett:
 
     def setWOLorAPO(self, fw):
         """ """
-        hasWOL = fw.hardware == "Q-TYPE2012"
-        self.ui.statusWOL.setEnabled(hasWOL)
-        self.ui.label_statusWOL.setEnabled(hasWOL)
-        self.ui.statusAPO.setEnabled(not hasWOL)
-        self.ui.label_statusAPO.setEnabled(not hasWOL)
-        self.ui.statusWOL.setVisible(hasWOL)
-        self.ui.label_statusWOL.setVisible(hasWOL)
-        self.ui.statusAPO.setVisible(not hasWOL)
-        self.ui.label_statusAPO.setVisible(not hasWOL)
+        self.ui.statusWOL.setEnabled(fw.isHW2012())
+        self.ui.label_statusWOL.setEnabled(fw.isHW2012())
+        self.ui.statusAPO.setEnabled(fw.isHW2024())
+        self.ui.label_statusAPO.setEnabled(fw.isHW2024())
+        self.ui.statusWOL.setVisible(fw.isHW2012())
+        self.ui.label_statusWOL.setVisible(fw.isHW2012())
+        self.ui.statusAPO.setVisible(fw.isHW2024())
+        self.ui.label_statusAPO.setVisible(fw.isHW2024())
 
     def updatePointGUI(self, obs):
         """ """

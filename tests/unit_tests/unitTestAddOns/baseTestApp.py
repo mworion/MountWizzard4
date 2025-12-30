@@ -698,6 +698,14 @@ class Mount(QObject):
         def checkNewer(a):
             return True
 
+        @staticmethod
+        def isHW2024():
+            return True
+
+        @staticmethod
+        def isHW2012():
+            return True
+
     class MountGeometry:
         offNorth = 0
         offEast = 0

@@ -130,8 +130,8 @@ class Setting:
         self.statusRefraction = response[9][0] == "1"
         self.statusUnattendedFlip = response[9][1] == "1"
         self.statusDualAxisTracking = response[9][2] == "1"
-        self.horizonLimitHigh = response[9][3:6]
-        self.horizonLimitLow = response[10][0:3]
+        self.horizonLimitHigh = valueToFloat(response[9][3:6])
+        self.horizonLimitLow = valueToFloat(response[10][0:3])
         valid, expirationDate = response[11].split(",")
         self.UTCValid = valid == "V"
         self.UTCExpire = expirationDate

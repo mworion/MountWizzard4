@@ -58,7 +58,7 @@
    <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>MountWizzard4 (C) MW 2024</string>
+   <string>MountWizzard4 (C) MW 2026</string>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
@@ -23938,7 +23938,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -25290,152 +25290,6 @@ Next point in time when satellite settles.</string>
          <string>Port</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_mountMAC_5">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>125</y>
-          <width>151</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>WOL broadcast address</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountMAC_6">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>150</y>
-          <width>151</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>WOL broadcast port</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="mountWolAddress">
-        <property name="geometry">
-         <rect>
-          <x>155</x>
-          <y>125</y>
-          <width>116</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>25</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default is 255.255.255.255. If you would like to send WOL packet acress subnets, this is the IP address of the brodcast host in the subnet, where the mount is located.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>255.255.255.255</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="frame">
-         <bool>false</bool>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="mountWolPort">
-        <property name="geometry">
-         <rect>
-          <x>155</x>
-          <y>150</y>
-          <width>116</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>25</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default is 9. If you would like to send WOL packet acress subnets, this is the port of the brodcast host in the subnet, where the mount is located.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>9</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="frame">
-         <bool>false</bool>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
-        </property>
-       </widget>
        <widget class="Line" name="line_88">
         <property name="geometry">
          <rect>
@@ -25453,117 +25307,6 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="orientation">
          <enum>Qt::Orientation::Vertical</enum>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="automaticWOL">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>180</y>
-          <width>211</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, MW4 will use the driver settings for the actual telescope.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Send WOL upon MW4 start </string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="mountOff">
-        <property name="geometry">
-         <rect>
-          <x>190</x>
-          <y>225</y>
-          <width>166</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Shuts the mount down.</string>
-        </property>
-        <property name="text">
-         <string>Off</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="mountOn">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>225</y>
-          <width>166</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
-        </property>
-        <property name="text">
-         <string>On</string>
         </property>
        </widget>
        <widget class="Line" name="line_90">
@@ -25584,6 +25327,285 @@ Next point in time when satellite settles.</string>
         <property name="orientation">
          <enum>Qt::Orientation::Vertical</enum>
         </property>
+       </widget>
+       <widget class="QGroupBox" name="GroupWOL">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>125</y>
+          <width>356</width>
+          <height>131</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+        <property name="frameless" stdset="0">
+         <bool>true</bool>
+        </property>
+        <widget class="QCheckBox" name="automaticWOL">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>55</y>
+           <width>211</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, MW4 will use the driver settings for the actual telescope.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>Send WOL upon MW4 start </string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_mountMAC_5">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>0</y>
+           <width>151</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>WOL broadcast address</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="mountWolPort">
+         <property name="geometry">
+          <rect>
+           <x>150</x>
+           <y>25</y>
+           <width>116</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="mouseTracking">
+          <bool>false</bool>
+         </property>
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default is 9. If you would like to send WOL packet acress subnets, this is the port of the brodcast host in the subnet, where the mount is located.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>9</string>
+         </property>
+         <property name="maxLength">
+          <number>50</number>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="dragEnabled">
+          <bool>true</bool>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+         <property name="input" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_mountMAC_6">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>25</y>
+           <width>151</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>WOL broadcast port</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="mountOn">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>100</y>
+           <width>166</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
+         </property>
+         <property name="text">
+          <string>On</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="mountWolAddress">
+         <property name="geometry">
+          <rect>
+           <x>150</x>
+           <y>0</y>
+           <width>116</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="mouseTracking">
+          <bool>false</bool>
+         </property>
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default is 255.255.255.255. If you would like to send WOL packet acress subnets, this is the IP address of the brodcast host in the subnet, where the mount is located.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>255.255.255.255</string>
+         </property>
+         <property name="maxLength">
+          <number>50</number>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="dragEnabled">
+          <bool>true</bool>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+         <property name="input" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="mountOff">
+         <property name="geometry">
+          <rect>
+           <x>185</x>
+           <y>100</y>
+           <width>166</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Shuts the mount down.</string>
+         </property>
+         <property name="text">
+          <string>Off</string>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QGroupBox" name="GroupRigComputer">
@@ -31947,7 +31969,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </widget>
    <widget class="QPushButton" name="mountConnected">
     <property name="enabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -31990,9 +32012,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </property>
     <property name="flat">
      <bool>false</bool>
-    </property>
-    <property name="color" stdset="0">
-     <string>gray</string>
     </property>
    </widget>
    <widget class="QPushButton" name="openHemisphereW">
@@ -33235,9 +33254,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>port3490</tabstop>
   <tabstop>port3492</tabstop>
   <tabstop>mountMAC</tabstop>
-  <tabstop>mountWolAddress</tabstop>
-  <tabstop>mountWolPort</tabstop>
-  <tabstop>automaticWOL</tabstop>
   <tabstop>clockSync</tabstop>
   <tabstop>syncTimeNone</tabstop>
   <tabstop>syncTimeCont</tabstop>

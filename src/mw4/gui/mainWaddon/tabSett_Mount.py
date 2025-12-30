@@ -43,6 +43,7 @@ class SettMount(QObject):
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
         self.app.mount.signals.settingDone.connect(self.setMountMAC)
+        self.app.mount.signals.settingDone.connect(self.setMountCapabilities)
         self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
         self.app.update30s.connect(self.syncClock)
 
@@ -81,6 +82,11 @@ class SettMount(QObject):
         config["syncTimeCont"] = self.ui.syncTimeCont.isChecked()
         config["syncTimeNotTrack"] = self.ui.syncTimeNotTrack.isChecked()
         config["clockSync"] = self.ui.clockSync.isChecked()
+
+    def setMountCapabilities(self) -> None:
+        """ """
+        canWOL = self.app.mount.firmware.hardware == "Q-TYPE2012"
+        self.ui.GroupWOL.setEnabled(canWOL)
 
     def mountBoot(self) -> None:
         """ """

@@ -46,6 +46,10 @@ def test_storeConfig1(function):
     function.storeConfig()
 
 
+def test_setMountCapabilities_1(function):
+    function.setMountCapabilities()
+
+
 def test_mountBoot_1(function):
     with mock.patch.object(function.app.mount, "bootMount", return_value=False):
         function.mountBoot()

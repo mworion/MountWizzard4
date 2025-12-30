@@ -140,7 +140,7 @@ BASIC_STYLE = """
         background-color: $M_BACK1$;
     }
     QLineEdit:disabled {
-        color: $M_PRIM3$;
+        color: $M_PRIM1$;
     }
     QLineEdit[keypad] {
         color: $M_PRIM$;
@@ -170,9 +170,7 @@ BASIC_STYLE = """
         margin-top: 6px;
         background-color: $M_BACK$;
     }
-    QGroupBox QLineEdit:disabled {
-        color: $M_PRIM$;
-    }
+
     QGroupBox::title {
         left: 5px;
         subcontrol-origin: margin;
@@ -320,10 +318,6 @@ BASIC_STYLE = """
     QPushButton:pressed {
         background-color: $M_PRIM$;
     }
-    QPushButton:disabled {
-        color: $M_SEC$;
-        border-color: $M_SEC1$;
-    }
     QPushButton[color='gray'] {
         background-color: #GRAD_1,$M_GRAY$#;
         color: $M_TER$;
@@ -357,6 +351,10 @@ BASIC_STYLE = """
         background-color: #GRAD_1,$M_YELLOW2$#;
         border-color: $M_YELLOW$;
         color: $M_TER$;
+    }
+    QPushButton:disabled {
+        color: $M_SEC$;
+        border-color: $M_SEC1$;
     }
 
     /* Message Boxes */

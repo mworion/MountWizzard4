@@ -45,20 +45,18 @@ class MainWindow(MWidget):
         self.ui.setupUi(self)
         self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
         self.activateWindow()
-
         self.externalWindows = ExternalWindows(self)
         self.mainWindowAddons = MainWindowAddons(self)
-
-        self.satStatus = False
-        self.gameControllerRunning = False
-        self.deviceStatGui = {
+        self.satStatus: bool = False
+        self.gameControllerRunning: bool = False
+        self.deviceStatGui: dict = {
             "dome": self.ui.domeConnected,
             "camera": self.ui.cameraConnected,
             "refraction": self.ui.refractionConnected,
             "plateSolve": self.ui.plateSolveConnected,
             "mount": self.ui.mountConnected,
         }
-        self.smartTabs = {
+        self.smartTabs: dict = {
             "Power": {
                 "statID": "power",
                 "tab": self.ui.toolsTabWidget,
@@ -116,7 +114,6 @@ class MainWindow(MWidget):
         self.setTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
         self.setTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
         self.setTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
-        changeStyleDynamic(self.ui.mountConnected, "color", "gray")
         self.mainWindowAddons.initConfig()
         self.smartTabGui()
         self.enableTabsMovable()
@@ -307,11 +304,13 @@ class MainWindow(MWidget):
         """ """
         for device, ui in self.deviceStatGui.items():
             if self.app.deviceStat.get(device) is None:
-                changeStyleDynamic(ui, "color", "gray")
+                ui.setEnabled(False)
             elif self.app.deviceStat[device]:
                 changeStyleDynamic(ui, "color", "green")
+                ui.setEnabled(True)
             else:
                 changeStyleDynamic(ui, "color", "red")
+                ui.setEnabled(True)
 
         isMount = self.app.deviceStat.get("mount", False)
         changeStyleDynamic(self.ui.mountOn, "run", isMount)

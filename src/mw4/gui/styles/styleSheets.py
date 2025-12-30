@@ -142,6 +142,11 @@ BASIC_STYLE = """
     QLineEdit:disabled {
         color: $M_PRIM1$;
     }
+    QLineEdit[readOnly='false'] {
+        border-width: 1px;
+        border-style: outset;
+        border-color: $M_PRIM2$;
+    }
     QLineEdit[keypad] {
         color: $M_PRIM$;
         border-width: 0px;

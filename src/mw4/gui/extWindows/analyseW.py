@@ -15,7 +15,6 @@
 ###########################################################
 import json
 import numpy as np
-import os
 from mw4.gui.utilities import toolsQtWidget
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.gui.widgets import analyse_ui
@@ -75,7 +74,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.positionWindow(config)
         self.setTabAndIndex(self.ui.tabWidget, config, "orderMain")
         self.ui.showHorizon.setChecked(config.get("showHorizon", False))
-        self.ui.showISO.setChecked(config.get("showISO", False))
         self.ui.linkViews.setChecked(config.get("linkViews", False))
         isMovable = self.app.config["mainW"].get("tabsMovable", False)
         self.enableTabsMovable(isMovable)
@@ -92,7 +90,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         config["width"] = self.width()
         self.getTabAndIndex(self.ui.tabWidget, config, "orderMain")
         config["showHorizon"] = self.ui.showHorizon.isChecked()
-        config["showISO"] = self.ui.showISO.isChecked()
         config["linkViews"] = self.ui.linkViews.isChecked()
 
     def enableTabsMovable(self, isMovable: bool) -> None:
@@ -102,6 +99,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
     def closeEvent(self, closeEvent) -> None:
         """ """
         self.storeConfig()
+        self.ui.showISO.setChecked(False)
         super().closeEvent(closeEvent)
 
     def showWindow(self) -> None:

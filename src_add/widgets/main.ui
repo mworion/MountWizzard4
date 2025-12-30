@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -385,9 +385,6 @@
        <property name="readOnly">
         <bool>false</bool>
        </property>
-       <property name="input" stdset="0">
-        <bool>true</bool>
-       </property>
       </widget>
       <widget class="QLabel" name="label_88">
        <property name="geometry">
@@ -459,10 +456,7 @@
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="readOnly">
-        <bool>true</bool>
-       </property>
-       <property name="input" stdset="0">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
       <widget class="QLabel" name="label_91">
@@ -581,10 +575,7 @@
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="readOnly">
-        <bool>true</bool>
-       </property>
-       <property name="input" stdset="0">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
       <widget class="QLabel" name="label_104">
@@ -833,9 +824,6 @@
        <property name="readOnly">
         <bool>false</bool>
        </property>
-       <property name="input" stdset="0">
-        <bool>true</bool>
-       </property>
       </widget>
       <widget class="QLabel" name="label_130">
        <property name="geometry">
@@ -1036,7 +1024,7 @@
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="readOnly">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
       <widget class="QLineEdit" name="meridianLimitTrack">
@@ -1089,10 +1077,7 @@
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="readOnly">
-        <bool>true</bool>
-       </property>
-       <property name="input" stdset="0">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
       <widget class="QLabel" name="label_4">
@@ -1423,10 +1408,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="readOnly">
-        <bool>true</bool>
-       </property>
-       <property name="input" stdset="0">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
       <widget class="QLabel" name="label_74">
@@ -1609,10 +1591,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="readOnly">
-        <bool>true</bool>
-       </property>
-       <property name="input" stdset="0">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
       <widget class="QLabel" name="label_242">
@@ -2005,13 +1984,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="readOnly">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="clearButtonEnabled">
         <bool>false</bool>
-       </property>
-       <property name="input" stdset="0">
-        <bool>true</bool>
        </property>
       </widget>
       <widget class="QLineEdit" name="settleTimeMount">
@@ -2065,9 +2041,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="readOnly">
         <bool>false</bool>
-       </property>
-       <property name="input" stdset="0">
-        <bool>true</bool>
        </property>
       </widget>
       <widget class="QLabel" name="label_mountMAC_7">

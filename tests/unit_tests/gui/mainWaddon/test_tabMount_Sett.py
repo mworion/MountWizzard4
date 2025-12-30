@@ -188,23 +188,23 @@ def test_updateSettingGUI_statusRefraction(function):
 
 def test_updateSettingGUI_1(function):
     sett = function.app.mount.setting
-    sett.gpsSynced = True
+    sett.gpsSynced = 1
     function.updateSettingGUI(sett)
     assert function.ui.statusGPSSynced.text() == "ON"
 
 
 def test_updateSettingGUI_2(function):
     sett = function.app.mount.setting
-    sett.gpsSynced = False
+    sett.gpsSynced = 0
     function.updateSettingGUI(sett)
     assert function.ui.statusGPSSynced.text() == "OFF"
 
 
 def test_updateSettingGUI_3(function):
     sett = function.app.mount.setting
-    sett.gpsSynced = None
+    sett.gpsSynced = 2
     function.updateSettingGUI(sett)
-    assert function.ui.statusGPSSynced.text() == "-"
+    assert function.ui.statusGPSSynced.text() == "PPS"
 
 
 def test_updateSettingGUI_4(function):

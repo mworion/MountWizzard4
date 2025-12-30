@@ -321,8 +321,8 @@ class Connection:
                         break
                 else:
                     chunksToReceive += 1
-        t = f"Analyse: minBytes: [{minBytes}], numOfChunks: [{chunksToReceive}]"
-        t += ", host: [{self.host}]"
+        t = f"Analyse  : minBytes: [{minBytes}], numOfChunks: [{chunksToReceive}]"
+        t += f", host: [{self.host}]"
         self.log.trace(t)
         return chunksToReceive, getData, minBytes
 
@@ -373,7 +373,7 @@ class Connection:
         client.
         """
         try:
-            self.log.trace(f"[{self.id}] sending  : {commandString}")
+            self.log.trace(f"Sending  [{self.id}]: {commandString}")
             client.sendall(commandString.encode())
 
         except Exception as e:
@@ -481,7 +481,7 @@ class Connection:
             val = "Exception"
             sucRec = False
         else:
-            self.log.trace(f"[{self.id}] response: [{val}]")
+            self.log.trace(f"Response [{self.id}]:  [{val}]")
             sucRec = True
 
         return sucSend, sucRec, val

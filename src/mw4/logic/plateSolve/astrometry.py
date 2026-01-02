@@ -16,22 +16,15 @@
 import logging
 import os
 import platform
-import subprocess
-import time
-from mw4.logic.fits.fitsFunction import (
-    getHintFromImageFile,
-    getImageHeader,
-    getSolutionFromWCSHeader,
-    updateImageFileHeaderWithSolution,
-)
+from mw4.logic.fits.fitsFunction import getHintFromImageFile
 from mw4.mountcontrol import convert
 from pathlib import Path
 
 
 class Astrometry:
     """ """
-
     log = logging.getLogger("MW4")
+    returnCodes: dict = {0: "No errors", 1: "solve-field error"}
 
     def __init__(self, parent=None):
         self.parent = parent
@@ -81,35 +74,29 @@ class Astrometry:
             outFile.write(f"add_path {self.indexPath}\n")
             outFile.write("autoindex\n")
 
-    def runImage2xy(self, binPath: Path, imagePath: Path, tempPath: Path) -> bool:
+    def solve(self, imagePath: Path, updateHeader: bool) -> dict:
         """ """
-        runnable = [binPath, "-O", "-o", tempPath, imagePath]
-        timeStart = time.time()
-        try:
-            self.process = subprocess.Popen(
-                args=runnable,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            stdout, _ = self.process.communicate(timeout=self.timeout)
+        tempPath = self.tempDir / "temp.xy"
+        configPath = self.tempDir / "astrometry.cfg"
+        wcsPath = self.tempDir / "temp.wcs"
+        wcsPath.unlink(missing_ok=True)
 
-        except subprocess.TimeoutExpired as e:
-            self.log.critical(e)
-            return False
+        runnable = [self.appPath / "image2xy", "-O", "-o", tempPath, imagePath]
 
-        except Exception as e:
-            self.log.critical(f"error: {e} happened")
-            return False
+        suc, msg = self.parent.runSolverBin(runnable)
+        if not suc:
+            self.log.warning(f"IMAGE2XY error in [{imagePath}]")
+            return {"success": False, "message": "image2xy failed"}
 
-        delta = time.time() - timeStart
-        stdoutText = stdout.decode().replace("\n", " ")
-        self.log.debug(f"Run {delta}s, {stdoutText}")
-        return self.process.returncode == 0
+        raHint, decHint, scaleHint = getHintFromImageFile(imagePath)
+        searchRatio = 1.1
+        ra = convert.convertToHMS(raHint)
+        dec = convert.convertToDMS(decHint)
+        scaleLow = scaleHint / searchRatio
+        scaleHigh = scaleHint * searchRatio
 
-    def runSolveField(self, binPath: Path, configPath: Path, tempPath: Path, options: list):
-        """ """
         runnable = [
-            binPath,
+            self.appPath / "solve-field",
             "--overwrite",
             "--no-remove-lines",
             "--no-plots",
@@ -127,57 +114,6 @@ class Astrometry:
             configPath,
             tempPath,
         ]
-
-        runnable += options
-
-        timeStart = time.time()
-        try:
-            self.process = subprocess.Popen(
-                args=runnable,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            stdout, _ = self.process.communicate(timeout=self.timeout)
-
-        except subprocess.TimeoutExpired as e:
-            self.log.critical(e)
-            return False
-
-        except Exception as e:
-            self.log.critical(f"error: {e} happened")
-            return False
-
-        delta = time.time() - timeStart
-        stdoutText = stdout.decode().replace("\n", " ")
-        self.log.debug(f"Run {delta}s, {stdoutText}")
-        return self.process.returncode == 0
-
-    def solve(self, imagePath: Path, updateHeader: bool) -> dict:
-        """ """
-        self.process = None
-        result = {"success": False, "message": "Internal error"}
-
-        tempPath = self.tempDir / "temp.xy"
-        configPath = self.tempDir / "astrometry.cfg"
-        wcsPath = self.tempDir / "temp.wcs"
-        binPathImage2xy = self.appPath / "image2xy"
-        binPathSolveField = self.appPath / "solve-field"
-
-        if wcsPath.is_file():
-            os.remove(wcsPath)
-
-        suc = self.runImage2xy(binPathImage2xy, imagePath, tempPath)
-        if not suc:
-            self.log.warning(f"IMAGE2XY error in [{imagePath}]")
-            self.result["message"] = "image2xy failed"
-            return result
-
-        raHint, decHint, scaleHint = getHintFromImageFile(imagePath)
-        searchRatio = 1.1
-        ra = convert.convertToHMS(raHint)
-        dec = convert.convertToDMS(decHint)
-        scaleLow = scaleHint / searchRatio
-        scaleHigh = scaleHint * searchRatio
         options = [
             "--scale-low",
             f"{scaleLow}",
@@ -190,43 +126,15 @@ class Astrometry:
             "--radius",
             f"{self.searchRadius:1.1f}",
         ]
-
         # split between ekos and cloudmakers as cloudmakers use an older version of
         # solve-field, which need the option '--no-fits2fits', whereas the actual
         # version used in KStars throws an error using this option.
         if "Astrometry.app" in str(self.appPath):
             options.append("--no-fits2fits")
 
-        suc = self.runSolveField(binPathSolveField, configPath, tempPath, options)
-        if not suc:
-            self.log.warning(f"SOLVE-FIELD error in [{imagePath}]")
-            result["message"] = "solve-field error"
-            return result
-
-        if not wcsPath.is_file():
-            self.log.warning(f"Solve files for [{wcsPath}] missing")
-            result["message"] = "solve failed"
-            return result
-
-        wcsHeader = getImageHeader(wcsPath)
-        imageHeader = getImageHeader(imagePath)
-        solution = getSolutionFromWCSHeader(wcsHeader, imageHeader)
-
-        if updateHeader:
-            updateImageFileHeaderWithSolution(imagePath, solution)
-
-        result["success"] = True
-        result["message"] = "Solved"
-        result.update(solution)
-        self.log.debug(f"Result: [{result}]")
-        return result
-
-    def abort(self) -> bool:
-        """ """
-        if self.process:
-            self.process.kill()
-            return True
-        return False
+        runnable.extend(options)
+        suc, msg = self.parent.runSolverBin(runnable)
+        return self.parent.prepareResult(suc, msg, imagePath, wcsPath, updateHeader)
 
     def checkAvailabilityProgram(self, appPath: Path) -> bool:
         """ """

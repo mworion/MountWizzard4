@@ -67,25 +67,25 @@ class MyApp(QApplication):
     def logUserInterface(self, obj: QWidget) -> bool:
         """ """
         if isinstance(obj, QTabBar):
-            self.log.ui(f"Click Tab     : [{obj.tabText(obj.currentIndex())}]")
+            self.log.ui(f"Click Tab    : [{obj.tabText(obj.currentIndex())}]")
         elif isinstance(obj, QComboBox):
-            self.log.ui(f"Click DropDown: [{obj.objectName()}]")
+            self.log.ui(f"Click DropDown:[{obj.objectName()}]")
         elif isinstance(obj, QPushButton):
             text = obj.objectName()
             if not text:
                 text = f"Popup - {obj.text()}"
-            self.log.ui(f"Click Button  : [{text}]")
+            self.log.ui(f"Click Button : [{text}]")
         elif isinstance(obj, QRadioButton):
             self.log.ui(
-                f"Click Radio   : [{obj.objectName()}], value: [{not obj.isChecked()}]"
+                f"Click Radio  : [{obj.objectName()}], value: [{not obj.isChecked()}]"
             )
         elif isinstance(obj, QGroupBox):
             self.log.ui(
-                f"Click Group   : [{obj.objectName()}], value: [{not obj.isChecked()}]"
+                f"Click Group  : [{obj.objectName()}], value: [{not obj.isChecked()}]"
             )
         elif isinstance(obj, QCheckBox):
             self.log.ui(
-                f"Click Checkbox: [{obj.objectName()}], value: [{not obj.isChecked()}]"
+                f"Click Checkbox:[{obj.objectName()}], value: [{not obj.isChecked()}]"
             )
         elif isinstance(obj, QLineEdit):
             self.log.ui(f"Click EditLine: [{obj.objectName()}]:{obj.text()}")

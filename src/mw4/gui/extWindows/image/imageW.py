@@ -59,7 +59,6 @@ class ImageWindow(MWidget, SlewInterface):
     def initConfig(self) -> None:
         """ """
         config = self.app.config.get("imageW", {})
-
         self.positionWindow(config)
         self.setTabAndIndex(self.ui.tabImage, config, "orderMain")
         self.ui.color.setCurrentIndex(config.get("color", 0))
@@ -87,7 +86,6 @@ class ImageWindow(MWidget, SlewInterface):
         configMain = self.app.config
         configMain["imageW"] = {}
         config = configMain["imageW"]
-
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)
         config["height"] = self.height()
@@ -176,10 +174,10 @@ class ImageWindow(MWidget, SlewInterface):
 
     def operationMode(self, status: int) -> None:
         """ """
-        if status == 0:
-            self.ui.groupImageActions.setEnabled(True)
-        elif status != 6:
+        if status == Model.STATUS_MODEL_BATCH:
             self.ui.groupImageActions.setEnabled(False)
+        elif status == Model.STATUS_IDLE:
+            self.ui.groupImageActions.setEnabled(True)
 
     def updateWindowsStats(self) -> None:
         """ """

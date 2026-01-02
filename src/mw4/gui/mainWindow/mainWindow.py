@@ -440,7 +440,7 @@ class MainWindow(MWidget):
         self.storeConfig()
         saveProfile(saveProfilePath, self.app.config)
         self.ui.profile.setText(saveProfilePath.stem)
-        self.msg.emit(1, "System", "Profile", f"saved {saveProfilePath.stem}")
+        self.msg.emit(1, "System", "Profile", f"Saved to [{saveProfilePath.stem}]")
         self.ui.profileAdd.setText("-")
 
     def saveProfileAs(self) -> None:

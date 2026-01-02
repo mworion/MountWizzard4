@@ -109,7 +109,7 @@ class MessageWindow(toolsQtWidget.MWidget):
 
     def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
         """ """
-        self.log.ui(f"Message window: [{source} - {mType} - {message}]")
+        self.log.ui(f"Message window:[{source} - {mType} - {message}]")
         self.app.messageQueue.put((prio, source, mType, message))
 
     def writeMessage(self) -> None:

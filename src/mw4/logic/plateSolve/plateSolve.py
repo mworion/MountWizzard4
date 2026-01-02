@@ -22,6 +22,13 @@ from mw4.logic.plateSolve.astap import ASTAP
 from mw4.logic.plateSolve.astrometry import Astrometry
 from mw4.logic.plateSolve.watney import Watney
 from pathlib import Path
+import subprocess
+import time
+from mw4.logic.fits.fitsFunction import (
+    getImageHeader,
+    getSolutionFromWCSHeader,
+    updateImageFileHeaderWithSolution,
+)
 
 
 class PlateSolve:
@@ -39,6 +46,7 @@ class PlateSolve:
         self.solveQueue = queue.Queue()
         self.solveLoopRunning: bool = False
         self.worker: Worker = None
+        self.process = None
 
         self.data: dict = {}
         self.defaultConfig: dict = {"framework": "", "frameworks": {}}
@@ -53,12 +61,71 @@ class PlateSolve:
 
         self.signals.serverConnected.connect(self.startSolveLoop)
 
+    def runSolverBin(self, runnable: list) -> tuple[bool, str]:
+        """ """
+        timeStart = time.time()
+        try:
+            self.process = subprocess.Popen(
+                args=runnable,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            timeout = self.run[self.framework].timeout
+            stdout, _ = self.process.communicate(timeout=timeout)
+
+        except subprocess.TimeoutExpired as e:
+            self.log.critical(e)
+            return False, "Timeout expired"
+
+        except Exception as e:
+            self.log.critical(f"Error: {e} happened")
+            return False, f"Exception {e} during process run"
+
+        delta = time.time() - timeStart
+        stdoutText = stdout.decode()
+        self.log.debug(f"Solve Runtime: [{delta:2.2f}s]")
+        for line in stdoutText.splitlines():
+            self.log.debug(f"Solver output: [{line}]")
+        rCode = int(self.process.returncode)
+        suc = rCode == 0
+        msg = self.run[self.framework].returnCodes.get(rCode, "Unknown code")
+        return suc, msg
+
+    def prepareResult(self, suc: dict, msg: str, imagePath: Path, wcsPath: Path, updateHeader: bool):
+        """"""
+        result = {"success": False, "message": "Internal error"}
+        if not suc:
+            self.log.warning(f"Error: [{imagePath.stem}], message: {msg}")
+            return result
+
+        if not wcsPath.is_file():
+            self.log.warning(f"Solve files for [{wcsPath.stem}] missing")
+            result["message"] = "Solve failed, no WCS file"
+            return result
+
+        wcsHeader = getImageHeader(wcsPath)
+        imageHeader = getImageHeader(imagePath)
+        solution = getSolutionFromWCSHeader(wcsHeader, imageHeader)
+
+        if updateHeader:
+            updateImageFileHeaderWithSolution(imagePath, solution)
+
+        result["success"] = True
+        result["message"] = "Solved"
+        result.update(solution)
+        self.log.debug(f"Solve result:  [{imagePath.stem:10s}], [{result}]")
+        return result
+
     def processSolveQueue(self, imagePath: Path, updateHeader: bool = False) -> None:
         """ """
         if not imagePath.is_file():
             result = {"success": False, "message": f"{imagePath} not found"}
         else:
             self.signals.message.emit("solving")
+            t = f"Solver start:  [{imagePath.stem}] with [{self.framework}], "
+            t += f"timeout: [{self.run[self.framework].timeout}], "
+            t += f"radius: [{self.run[self.framework].searchRadius}], "
+            self.log.debug(t)
             result = self.run[self.framework].solve(
                 imagePath=imagePath, updateHeader=updateHeader
             )
@@ -114,6 +181,9 @@ class PlateSolve:
         data = (imagePath, updateHeader)
         self.solveQueue.put(data)
 
-    def abort(self) -> None:
+    def abort(self) -> bool:
         """ """
-        self.run[self.framework].abort()
+        if self.process:
+            self.process.kill()
+            return True
+        return False

@@ -254,7 +254,7 @@ class EnvironWeather(QObject):
             return
 
         temp, press = self.movingAverageRefractionParameters()
-        self.mainW.log.debug(f"Setting refrac temp:[{temp}], press:[{press}]")
+        self.mainW.log.trace(f"Setting refrac temp:[{temp}], press:[{press}]")
         if not self.app.mount.setting.setRefractionTemp(temp):
             self.mainW.log.debug("No refraction temp update")
         if not self.app.mount.setting.setRefractionPress(press):

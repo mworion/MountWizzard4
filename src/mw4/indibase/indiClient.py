@@ -622,11 +622,6 @@ class Client(QObject):
         self._fillAttributes(
             deviceName=deviceName, chunk=chunk, elementList=elementList, defVector=False
         )
-
-        self.log.trace(
-            f"SET: Device:{device.name}, Property: {iProperty}, Elements: {elementList}"
-        )
-
         if isinstance(chunk, indiXML.SetBLOBVector):
             self.signals.newBLOB.emit(deviceName, iProperty)
         elif isinstance(chunk, indiXML.SetSwitchVector):
@@ -812,25 +807,19 @@ class Client(QObject):
 
     def handleConnected(self):
         """
-        :return:
         """
         self.connected = True
         self.signals.serverConnected.emit()
-        return True
 
     def handleDisconnected(self):
         """
-        :return: nothing
         """
         self.connected = False
         self.signals.serverDisconnected.emit(self.devices)
         self.log.info("INDI client disconnected")
-        return True
 
     def handleError(self, socketError):
         """
-        :param socketError: the error from socket library
-        :return: nothing
         """
         Refuse = QTcpSocket.SocketError.ConnectionRefusedError
         Unknown = QTcpSocket.SocketError.UnknownSocketError
@@ -840,4 +829,3 @@ class Client(QObject):
         else:
             self.log.debug(f"INDI error: [{socketError}]")
         self.disconnectServer()
-        return True

@@ -44,15 +44,15 @@ def getCoordinatesFromHeader(header: fits.Header) -> tuple[Angle, Angle]:
     if hasDecimal:
         ra = convertToAngle(header["RA"], isHours=True)
         dec = convertToAngle(header["DEC"], isHours=False)
-        log.debug("Decimal coordinates used")
+        log.debug("Fits header:   Decimal coordinates used [RA], [DEC]")
     elif hasSexagesimal:
         ra = convertRaToAngle(header["OBJCTRA"])
         dec = convertDecToAngle(header["OBJCTDEC"])
-        log.debug("Sexagesimal coordinates used")
+        log.debug("Fits header:   Sexagesimal coordinates used [OBJCTRA], [OBJCTDEC]")
     else:
         ra = Angle(hours=0)
         dec = Angle(degrees=0)
-        log.debug("No coordinates found")
+        log.debug("Fits header:   No coordinates found")
 
     return ra, dec
 

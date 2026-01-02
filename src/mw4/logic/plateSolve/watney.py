@@ -14,23 +14,13 @@
 #
 ###########################################################
 import logging
-import os
 import platform
-import subprocess
-import time
-from mw4.logic.fits.fitsFunction import (
-    getImageHeader,
-    getSolutionFromWCSHeader,
-    updateImageFileHeaderWithSolution,
-)
 from pathlib import Path
 
 
 class Watney:
     """ """
-
     log = logging.getLogger("MW4")
-
     returnCodes: dict = {0: "No errors", 1: "No solution"}
 
     def __init__(self, parent):
@@ -72,45 +62,14 @@ class Watney:
         self.indexPath = self.workDir / "watney-index"
         self.saveConfigFile()
 
-    def runWatney(self, runnable: list) -> [bool, str]:
-        """ """
-        timeStart = time.time()
-        try:
-            self.process = subprocess.Popen(
-                args=runnable, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-            )
-            stdout, _ = self.process.communicate(timeout=self.timeout)
-
-        except subprocess.TimeoutExpired:
-            self.log.error("Timeout happened")
-            return False, "Solving timed out"
-
-        except Exception as e:
-            self.log.critical(f"error: {e} happened")
-            return False, "Exception during solving"
-
-        delta = time.time() - timeStart
-        stdoutText = stdout.decode().replace("\n", " ")
-        self.log.debug(f"Run {delta}s, {stdoutText}")
-        rCode = int(self.process.returncode)
-        suc = rCode == 0
-        msg = self.returnCodes.get(rCode, "Unknown code")
-        return suc, msg
-
     def solve(self, imagePath: Path, updateHeader: bool) -> dict:
         """ """
-        self.process = None
-        result = {"success": False, "message": "Internal error"}
-
         isBlind = self.searchRadius == 180
         jsonPath = self.tempDir / "solve.json"
         wcsPath = self.tempDir / "temp.wcs"
-
-        if wcsPath.is_file():
-            os.remove(wcsPath)
+        wcsPath.unlink(missing_ok=True)
 
         runnable = [self.appPath / "watney-solve"]
-
         if isBlind:
             runnable += ["blind"]
             runnable += ["--min-radius", "0.15", "--max-radius", "16"]
@@ -118,7 +77,7 @@ class Watney:
             runnable += ["nearby", "-h"]
             runnable += ["-s", f"{self.searchRadius:1.1f}"]
 
-        runnable += [
+        options = [
             "-i",
             imagePath,
             "-o",
@@ -130,38 +89,9 @@ class Watney:
             "--extended",
             "True",
         ]
-
-        suc, retValue = self.runWatney(runnable)
-        if not suc:
-            text = self.returnCodes.get(retValue, "Unknown code")
-            result["message"] = f"Watney error: [{text}]"
-            self.log.warning(f"Watney error [{text}] in [{imagePath}]")
-            return result
-
-        if not wcsPath.is_file():
-            result["message"] = "Solve failed"
-            self.log.warning(f"Solve files for [{wcsPath}] missing")
-            return result
-
-        wcsHeader = getImageHeader(wcsPath)
-        imageHeader = getImageHeader(imagePath)
-        solution = getSolutionFromWCSHeader(wcsHeader, imageHeader)
-
-        if updateHeader:
-            updateImageFileHeaderWithSolution(imagePath, solution)
-
-        result["success"] = True
-        result["message"] = "Solved"
-        result.update(solution)
-        self.log.debug(f"Result: [{result}]")
-        return result
-
-    def abort(self) -> bool:
-        """ """
-        if self.process:
-            self.process.kill()
-            return True
-        return False
+        runnable.extend(options)
+        suc, msg = self.parent.runSolverBin(runnable)
+        return self.parent.prepareResult(suc, msg, imagePath, wcsPath, updateHeader)
 
     def checkAvailabilityProgram(self, appPath: Path) -> bool:
         """ """

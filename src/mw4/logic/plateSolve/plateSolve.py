@@ -91,7 +91,7 @@ class PlateSolve:
         msg = self.run[self.framework].returnCodes.get(rCode, "Unknown code")
         return suc, msg
 
-    def prepareResult(self, suc: dict, msg: str, imagePath: Path, wcsPath: Path, updateHeader: bool):
+    def prepareResult(self, suc: bool, msg: str, imagePath: Path, wcsPath: Path, updateHeader: bool):
         """"""
         result = {"success": False, "message": "Internal error"}
         if not suc:

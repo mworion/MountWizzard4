@@ -20,7 +20,7 @@ import mw4.logic
 import os
 import platform
 import pytest
-import subprocess
+
 from mw4.logic.plateSolve.astap import ASTAP
 from mw4.logic.plateSolve.plateSolve import PlateSolve
 from pathlib import Path
@@ -62,95 +62,11 @@ def test_setDefaultPath_3(function):
         assert function.appPath == Path("C:\\Program Files\\astap")
 
 
-def test_runASTAP_1(function):
-    class Test1:
-        @staticmethod
-        def decode():
-            return "decode"
-
-    class Test:
-        returncode = "1"
-        stderr = Test1()
-        stdout = Test1()
-
-        @staticmethod
-        def communicate(timeout=0):
-            return Test1(), Test1()
-
-    with mock.patch.object(subprocess, "Popen", return_value=Test()):
-        suc, ret = function.runASTAP("test", "test", "test", [])
-        assert ret == "No solution"
-        assert not suc
-
-
-def test_runASTAP_2(function):
-    with mock.patch.object(subprocess, "Popen", return_value=None):
-        with mock.patch.object(
-            subprocess.Popen,
-            "communicate",
-            return_value=("", ""),
-            side_effect=Exception(),
-        ):
-            suc, ret = function.runASTAP("test", "test", "test", [])
-            assert not suc
-
-
-def test_runASTAP_3(function):
-    with mock.patch.object(
-        subprocess.Popen,
-        "communicate",
-        return_value=("", ""),
-        side_effect=subprocess.TimeoutExpired("run", 1),
-    ):
-        suc, ret = function.runASTAP("test", "test", "test", [])
-        assert not suc
-
-
 def test_solve_1(function):
-    with mock.patch.object(function, "runASTAP", return_value=(False, 1)):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(os, "remove"):
-                res = function.solve(Path("tests/work/image/m51.fit"), False)
-                assert not res["success"]
-
-
-def test_solve_2(function):
-    with mock.patch.object(function, "runASTAP", return_value=(True, 0)):
-        res = function.solve(Path("tests/work/image/m51.fit"), False)
-        assert not res["success"]
-
-
-def test_solve_3(function):
-    with mock.patch.object(function, "runASTAP", return_value=(True, 0)):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(os, "remove"):
-                with mock.patch.object(mw4.logic.plateSolve.astap, "getImageHeader"):
-                    with mock.patch.object(
-                        mw4.logic.plateSolve.astap, "getSolutionFromWCSHeader"
-                    ):
-                        with mock.patch.object(
-                            mw4.logic.plateSolve.astap, "updateImageFileHeaderWithSolution"
-                        ):
-                            res = function.solve(Path("tests/work/image/m51.fit"), True)
-                            assert res["success"]
-
-
-def test_abort_1(function):
-    function.process = None
-    suc = function.abort()
-    assert not suc
-
-
-def test_abort_2(function):
-    class Test:
-        @staticmethod
-        def kill():
-            return True
-
-    function.framework = "ASTAP"
-    function.process = Test()
-    suc = function.abort()
-    assert suc
+    with mock.patch.object(function.parent, "runSolverBin", return_value=(0, "")):
+        with mock.patch.object(function.parent, "prepareResult"):
+            res = function.solve(Path("tests/work/image/m51.fit"), True)
+            assert res["success"]
 
 
 def test_checkAvailabilityProgram_1(function):

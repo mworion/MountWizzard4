@@ -265,22 +265,27 @@ class Satellite:
         self.trajectoryParams.offsetTime = valueToFloat(response[3])
         return True
 
-    def setTrackingOffsets(self, RA: float | None = None, DEC: float | None = None, DECcorr: float | None = None, Time: float | None = None) -> bool:
-        """
-        """
-        cmd = ''
+    def setTrackingOffsets(
+        self,
+        RA: float | None = None,
+        DEC: float | None = None,
+        DECcorr: float | None = None,
+        Time: float | None = None,
+    ) -> bool:
+        """ """
+        cmd = ""
         responseLen = 0
         if RA is not None:
-            cmd += f':TROFFSET1,{RA:+05.1f}#'
+            cmd += f":TROFFSET1,{RA:+05.1f}#"
             responseLen += 1
         if DEC is not None:
-            cmd += f':TROFFSET2,{DEC:+05.1f}#'
+            cmd += f":TROFFSET2,{DEC:+05.1f}#"
             responseLen += 1
         if DECcorr is not None:
-            cmd += f':TROFFSET3,{DECcorr:+05.1f}#'
+            cmd += f":TROFFSET3,{DECcorr:+05.1f}#"
             responseLen += 1
         if Time is not None:
-            cmd += f':TROFFSET4,{Time:+05.1f}#'
+            cmd += f":TROFFSET4,{Time:+05.1f}#"
             responseLen += 1
 
         conn = Connection(self.parent.host)
@@ -289,14 +294,14 @@ class Satellite:
             return False
 
         if len(response) != numberOfChunks:
-            self.log.warning('wrong number of chunks')
+            self.log.warning("wrong number of chunks")
             return False
         if len(response) != responseLen:
-            self.log.warning('wrong number of chunks')
+            self.log.warning("wrong number of chunks")
             return False
 
         for res in response:
-            if res == 'E':
+            if res == "E":
                 break
         else:
             return True

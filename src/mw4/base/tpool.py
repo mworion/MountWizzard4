@@ -16,7 +16,7 @@
 import logging
 import os
 import sys
-from PySide6.QtCore import QObject, QRunnable, Signal, QCoreApplication
+from PySide6.QtCore import QCoreApplication, QObject, QRunnable, Signal
 
 __all__ = ["Worker"]
 

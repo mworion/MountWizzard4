@@ -13,10 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-from traceback import print_tb
 
 import numpy as np
-from base.tpool import Worker
+from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 from mw4.logic.satellites.satellite_calculations import calcSatPasses
@@ -376,6 +375,7 @@ class SatTrack(QObject, SatData):
         isReplay = self.ui.trackingReplay.isChecked()
         t = "for simulation" if isReplay else ""
         self.msg.emit(1, "TLE", "Program", f"Satellite track data {t}")
+        self.msg.emit(1, "", "", f"This takes some time, please wait...")
         start, end = self.selectStartEnd()
         if not start or not end:
             return
@@ -393,7 +393,8 @@ class SatTrack(QObject, SatData):
         az = Angle(degrees=np.array_split(az, factor)[0])
 
         changeStyleDynamic(self.ui.progTrajectory, "run", True)
-        self.ui.progTrajectory.setEnabled(False)
+        self.ui.satTrackGroup.setEnabled(False)
+        changeStyleDynamic(self.ui.satTrackGroup, "run", True)
         self.ui.progTrajectory.setText("Calculating")
         self.app.mount.progTrajectory(start, alt, az, replay=isReplay)
 
@@ -427,7 +428,8 @@ class SatTrack(QObject, SatData):
 
     def updateInternalTrackGui(self, tleParams: TLEParams) -> None:
         """ """
-        self.ui.progTrajectory.setEnabled(True)
+        self.ui.satTrackGroup.setEnabled(True)
+        changeStyleDynamic(self.ui.satTrackGroup, "run", False)
         self.ui.progTrajectory.setText("Program trajectory")
         self.updateSatelliteTrackGui(tleParams)
         self.msg.emit(1, "TLE", "Program", "Satellite track data ready!")

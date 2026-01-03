@@ -16,8 +16,6 @@
 import logging
 import socket
 import wakeonlan
-
-from gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.base.ethernet import checkFormatMAC
 from mw4.base.tpool import Worker
 from mw4.mountcontrol.dome import Dome

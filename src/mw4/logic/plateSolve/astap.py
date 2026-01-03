@@ -20,6 +20,7 @@ from pathlib import Path
 
 class ASTAP:
     """ """
+
     returnCodes = {
         0: "No errors",
         1: "No solution",

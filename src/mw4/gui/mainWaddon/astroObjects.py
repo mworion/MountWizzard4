@@ -14,13 +14,13 @@
 #
 ###########################################################
 import logging
+from mw4.base.tpool import Worker
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
 from pathlib import Path
 from PySide6.QtCore import QObject, Signal
 from PySide6.QtWidgets import QListView
-from mw4.base.tpool import Worker
 
 
 class AstroObjects(QObject):

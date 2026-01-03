@@ -15,20 +15,20 @@
 ###########################################################
 import logging
 import queue
+import subprocess
+import time
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
-from mw4.logic.plateSolve.astap import ASTAP
-from mw4.logic.plateSolve.astrometry import Astrometry
-from mw4.logic.plateSolve.watney import Watney
-from pathlib import Path
-import subprocess
-import time
 from mw4.logic.fits.fitsFunction import (
     getImageHeader,
     getSolutionFromWCSHeader,
     updateImageFileHeaderWithSolution,
 )
+from mw4.logic.plateSolve.astap import ASTAP
+from mw4.logic.plateSolve.astrometry import Astrometry
+from mw4.logic.plateSolve.watney import Watney
+from pathlib import Path
 
 
 class PlateSolve:
@@ -91,7 +91,9 @@ class PlateSolve:
         msg = self.run[self.framework].returnCodes.get(rCode, "Unknown code")
         return suc, msg
 
-    def prepareResult(self, suc: bool, msg: str, imagePath: Path, wcsPath: Path, updateHeader: bool):
+    def prepareResult(
+        self, suc: bool, msg: str, imagePath: Path, wcsPath: Path, updateHeader: bool
+    ):
         """"""
         result = {"success": False, "message": "Internal error"}
         if not suc:

@@ -321,6 +321,7 @@ def test_GetLocation_2(function):
 
 
 def test_clearCalcTLE_1(function):
+    function.mutexCalcTLE.unlock()
     function.clearCalcTLE()
 
 
@@ -332,8 +333,16 @@ def test_CalcTLE_1(function):
 
 def test_CalcTLE_2(function):
     function.mountIsUp = True
+    function.mutexCalcTLE.lock()
+    function.calcTLE(1234567)
+    function.mutexCalcTLE.unlock()
+
+
+def test_CalcTLE_3(function):
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.calcTLE(1234567)
+    function.mutexCalcTLE.unlock()
 
 
 def test_clearStatTLE_1(function):
@@ -353,6 +362,7 @@ def test_StatTLE_2(function):
 
 
 def test_clearGetTLE_1(function):
+    function.mutexGetTLE.lock()
     function.clearGetTLE()
 
 
@@ -364,8 +374,16 @@ def test_GetTLE_1(function):
 
 def test_GetTLE_2(function):
     function.mountIsUp = True
+    function.mutexGetTLE.lock()
+    function.getTLE()
+    function.mutexGetTLE.unlock()
+
+
+def test_GetTLE_3(function):
+    function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.getTLE()
+    function.mutexGetTLE.unlock()
 
 
 def test_bootMount_1(function):

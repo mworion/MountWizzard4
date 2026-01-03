@@ -54,4 +54,3 @@ class TLEParams:
     @jdEnd.setter
     def jdEnd(self, value):
         self._jdEnd = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
-

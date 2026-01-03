@@ -87,22 +87,6 @@ def test_clearTrackingParameters(function):
     function.clearTrackingParameters()
 
 
-def test_updatePasses_1(function):
-    function.app.mount.setting.meridianLimitTrack = 10
-    function.lastMeridianLimit = 5
-    with mock.patch.object(function, "showSatPasses"):
-        function.updatePasses()
-        assert function.lastMeridianLimit == 10
-
-
-def test_updatePasses_2(function):
-    function.app.mount.setting.meridianLimitTrack = None
-    function.lastMeridianLimit = 5
-    with mock.patch.object(function, "showSatPasses"):
-        function.updatePasses()
-        assert function.lastMeridianLimit == 5
-
-
 def test_calcTrajectoryData_1(function):
     alt, az = function.calcTrajectoryData(100, 100)
     assert len(alt) == 0
@@ -123,45 +107,44 @@ def test_calcTrajectoryData_2(function):
     assert len(az)
 
 
-def test_progTrajectoryToMount_1(function):
+def test_calcTrajectoryAndShow_1(function):
     function.app.deviceStat["mount"] = True
     function.ui.useInternalSatCalc.setChecked(True)
     with mock.patch.object(function, "selectStartEnd", return_value=(0, 0)):
-        suc = function.progTrajectoryToMount()
-        assert not suc
+        function.calcTrajectoryAndShow()
 
 
-def test_progTrajectoryToMount_2(function):
+def test_calcTrajectoryAndShow_2(function):
     function.app.deviceStat["mount"] = True
     function.ui.useInternalSatCalc.setChecked(True)
     with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
         with mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)):
             with mock.patch.object(function, "filterHorizon", return_value=(0, 0, 0, 0)):
                 with mock.patch.object(function, "signalSatelliteData"):
-                    function.progTrajectoryToMount()
+                    function.calcTrajectoryAndShow()
 
 
-def test_progTrajectoryToMount_3(function):
+def test_calcTrajectoryAndShow_3(function):
     function.app.deviceStat["mount"] = False
     function.ui.useInternalSatCalc.setChecked(False)
     with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
         with mock.patch.object(function.app.mount, "calcTLE"):
             with mock.patch.object(function, "signalSatelliteData"):
-                function.progTrajectoryToMount()
+                function.calcTrajectoryAndShow()
 
 
-def test_progTrajectoryToMount_4(function):
+def test_calcTrajectoryAndShow_4(function):
     function.app.deviceStat["mount"] = True
     function.ui.useInternalSatCalc.setChecked(False)
     with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
         with mock.patch.object(function.app.mount, "calcTLE"):
             with mock.patch.object(function, "signalSatelliteData"):
-                function.progTrajectoryToMount()
+                function.calcTrajectoryAndShow()
 
 
-def test_showSatPasses_0(function):
+def test_workerShowSatPasses_0(function):
     function.satellite = None
-    function.showSatPasses()
+    function.workerShowSatPasses()
 
 
 def test_showSatPasses_1(function):
@@ -184,11 +167,11 @@ def test_showSatPasses_1(function):
         with mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ):
-            with mock.patch.object(function, "progTrajectoryToMount"):
-                function.showSatPasses()
+            with mock.patch.object(function, "calcTrajectoryAndShow"):
+                function.workerShowSatPasses()
 
 
-def test_showSatPasses_2(function):
+def test_workerShowSatPasses_2(function):
     ts = function.app.mount.obsSite.ts
     tle = [
         "NOAA 8",
@@ -209,11 +192,11 @@ def test_showSatPasses_2(function):
         with mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ):
-            with mock.patch.object(function, "progTrajectoryToMount"):
-                function.showSatPasses()
+            with mock.patch.object(function, "calcTrajectoryAndShow"):
+                function.workerShowSatPasses()
 
 
-def test_showSatPasses_3(function):
+def test_workerShowSatPasses_3(function):
     ts = function.app.mount.obsSite.ts
     tle = [
         "NOAA 8",
@@ -232,24 +215,27 @@ def test_showSatPasses_3(function):
         with mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ):
-            with mock.patch.object(function, "progTrajectoryToMount"):
-                function.showSatPasses()
+            with mock.patch.object(function, "calcTrajectoryAndShow"):
+                function.workerShowSatPasses()
+
+
+def test_showSatPasses_1(function):
+    with mock.patch.object(function.app.threadPool, "start"):
+        function.showSatPasses()
 
 
 def test_extractSatelliteData_0(function):
     function.satellites.objects = {"NOAA 8": "sat", "Test1": "sat"}
 
     function.satTableBaseValid = False
-    suc = function.extractSatelliteData(satName="Tjan")
-    assert not suc
+    function.extractSatelliteData(satName="Tjan")
 
 
 def test_extractSatelliteData_1(function):
     function.satellites.objects = {"NOAA 8": "sat", "Test1": "sat"}
 
     function.satTableBaseValid = True
-    suc = function.extractSatelliteData(satName="Tjan")
-    assert not suc
+    function.extractSatelliteData(satName="Tjan")
 
 
 def test_extractSatelliteData_2(function):
@@ -257,8 +243,7 @@ def test_extractSatelliteData_2(function):
     function.satellites.objects = {"Test0": "", "Test1": ""}
 
     function.satTableBaseValid = True
-    suc = function.extractSatelliteData(satName="NOAA 8")
-    assert not suc
+    function.extractSatelliteData(satName="NOAA 8")
 
 
 def test_extractSatelliteData_3(function):

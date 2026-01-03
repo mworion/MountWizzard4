@@ -16,6 +16,8 @@
 import logging
 import socket
 import wakeonlan
+
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.base.ethernet import checkFormatMAC
 from mw4.base.tpool import Worker
 from mw4.mountcontrol.dome import Dome
@@ -83,6 +85,8 @@ class MountDevice:
         self.mutexCycleDome = QMutex()
         self.mutexCycleSetting = QMutex()
         self.mutexCyclePointing = QMutex()
+        self.mutexGetTLE = QMutex()
+        self.mutexCalcTLE = QMutex()
         self.mountIsUp: bool = False
         self.mountIsUpLastStatus: bool = False
         self.statusAlert: bool = False
@@ -252,7 +256,6 @@ class MountDevice:
         """ """
         if not self.mountIsUp:
             return
-
         if not self.mutexCycleSetting.tryLock():
             return
 
@@ -319,11 +322,14 @@ class MountDevice:
 
     def clearCalcTLE(self):
         """ """
+        self.mutexCalcTLE.unlock()
         self.signals.calcTLEdone.emit(self.satellite.tleParams)
 
-    def calcTLE(self, start):
+    def calcTLE(self, start: float) -> None:
         """ """
         if not self.mountIsUp:
+            return
+        if not self.mutexCalcTLE.tryLock():
             return
 
         self.workerCalcTLE = Worker(self.satellite.calcTLE, start)
@@ -342,11 +348,14 @@ class MountDevice:
 
     def clearGetTLE(self):
         """ """
+        self.mutexGetTLE.unlock()
         self.signals.getTLEdone.emit(self.satellite.tleParams)
 
     def getTLE(self):
         """ """
         if not self.mountIsUp:
+            return
+        if not self.mutexGetTLE.tryLock():
             return
 
         self.workerGetTLE = Worker(self.satellite.getTLE)

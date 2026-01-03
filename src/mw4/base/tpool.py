@@ -16,7 +16,7 @@
 import logging
 import os
 import sys
-from PySide6.QtCore import QObject, QRunnable, Signal
+from PySide6.QtCore import QObject, QRunnable, Signal, QCoreApplication
 
 __all__ = ["Worker"]
 
@@ -73,6 +73,7 @@ class Worker(QRunnable):
 
         try:
             result = self.fn(*self.args, **self.kwargs)
+            QCoreApplication.processEvents()
 
         except Exception:
             # as we want to send a clear message to the log file

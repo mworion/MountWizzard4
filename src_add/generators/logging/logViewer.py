@@ -45,7 +45,7 @@ class Categories(QTabWidget):
         self.qLists = {
             "Full Log": None,
             "Header": None,
-            "Critical/Error": None,
+            "Error": None,
             "Warnings": None,
             "Info": None,
             "Debug": None,
@@ -96,8 +96,10 @@ class Categories(QTabWidget):
     def getListKey(line):
         if "[H]" in line and "startup" not in line:
             listKey = "Header"
-        elif "[C]" in line or "[E]" in line:
-            listKey = "Critical/Error"
+        elif "[C]" in line:
+            listKey = "Error"
+        elif "[E]" in line:
+            listKey = "Error"
         elif "[W]" in line:
             listKey = "Warnings"
         elif "[I]" in line:
@@ -144,7 +146,7 @@ class Categories(QTabWidget):
             qList = self.qLists[key]
             qList.insertItem(qList.count(), item)
 
-        resetFirst = "qtmount" in line and "[H]" in line
+        resetFirst = "10micron" in line and "[H]" in line
         return resetFirst
 
 

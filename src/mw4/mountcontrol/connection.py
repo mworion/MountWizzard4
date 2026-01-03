@@ -42,7 +42,7 @@ class Connection:
 
     # I don't want so wait to long for a response. In average, I see values
     # shorter than 0.5 sec, so 3 seconds should be good
-    SOCKET_TIMEOUT = 3
+    SOCKET_TIMEOUT = 10
 
     # complete used command list to be checked first if valid
     # these are the commands, which were used in mountcontrol so far
@@ -321,31 +321,29 @@ class Connection:
                         break
                 else:
                     chunksToReceive += 1
-        t = f"Analyse  : minBytes: [{minBytes}], numOfChunks: [{chunksToReceive}]"
+        t = f"Analyse  [{self.id}]: minBytes: [{minBytes}], numOfChunks: [{chunksToReceive}]"
         t += f", host: [{self.host}]"
         self.log.trace(t)
         return chunksToReceive, getData, minBytes
 
-    @staticmethod
-    def closeClientHard(client):
+    def closeClientHard(self, client):
         """ """
         if not client:
             return
-
         try:
             client.shutdown(socket.SHUT_RDWR)
             client.close()
-
         except Exception:
+            self.log.warning(f"Error    [{self.id}]: closing socket client")
             return
 
     def buildClient(self):
         """ """
         if not self.host:
-            self.log.info(f"[{self.id}] no host defined")
+            self.log.info(f"No host  [{self.id}]")
             return None
         if not isinstance(self.host, tuple):
-            self.log.info(f"[{self.id}] host entry malformed [{self.host}]")
+            self.log.info(f"Host     [{self.id}]: host entry malformed [{self.host}]")
             return None
 
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -356,12 +354,12 @@ class Connection:
 
         except TimeoutError:
             self.closeClientHard(client)
-            self.log.debug(f"[{self.id}] socket timeout")
+            self.log.debug(f"Timeout  [{self.id}]: socket timeout in build client")
             return None
 
         except Exception as e:
             self.closeClientHard(client)
-            self.log.debug(f"[{self.id}] socket general: [{e}]")
+            self.log.debug(f"Error    [{self.id}]: socket general: [{e}] in build client")
             return None
 
         else:
@@ -376,9 +374,14 @@ class Connection:
             self.log.trace(f"Sending  [{self.id}]: {commandString}")
             client.sendall(commandString.encode())
 
+        except TimeoutError:
+            self.closeClientHard(client)
+            self.log.trace(f"Timeout  [{self.id}]: socket timeout in send data")
+            return None
+
         except Exception as e:
             self.closeClientHard(client)
-            self.log.debug(f"[{self.id}] socket error: [{e}]")
+            self.log.trace(f"Error    [{self.id}]: socket error: [{e}] in send data")
             return False
 
         else:
@@ -404,7 +407,7 @@ class Connection:
                 try:
                     chunk = chunkRaw.decode("ASCII")
                 except Exception as e:
-                    self.log.warning(f"[{self.id}] error: [{e}], received: [{chunkRaw}]")
+                    self.log.warning(f"Error    [{self.id}]: error: [{e}], received: [{chunkRaw}]")
                     return False, ""
 
                 if not chunk:
@@ -420,11 +423,11 @@ class Connection:
                     break
 
         except TimeoutError:
-            self.log.debug(f"[{self.id}] socket timeout")
+            self.log.trace(f"Timeout  [{self.id}]: socket timeout in receive data")
             return False, response
 
         except Exception as e:
-            self.log.debug(f"[{self.id}] socket error: [{e}]")
+            self.log.trace(f"Error    [{self.id}]: socket error: [{e}] in receive data")
             return False, response
 
         else:
@@ -473,15 +476,15 @@ class Connection:
             chunkRaw = client.recv(2048)
             val = chunkRaw.decode("ASCII")
         except TimeoutError:
-            self.log.debug(f"[{self.id}] socket timeout")
+            self.log.trace(f"Timeout  [{self.id}]: socket timeout in communicate raw")
             val = "Timeout"
             sucRec = False
         except Exception as e:
-            self.log.debug(f"[{self.id}] socket error: [{e}]")
+            self.log.trace(f"Error    [{self.id}]: socket error: [{e}] in communicate raw")
             val = "Exception"
             sucRec = False
         else:
-            self.log.trace(f"Response [{self.id}]:  [{val}]")
+            self.log.trace(f"Response [{self.id}]:  [{val}] in communicate raw")
             sucRec = True
 
         return sucSend, sucRec, val

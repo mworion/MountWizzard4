@@ -253,7 +253,6 @@ class EnvironWeather(QObject):
             return
 
         temp, press = self.movingAverageRefractionParameters()
-        self.mainW.log.trace(f"Setting refrac temp:[{temp}], press:[{press}]")
         self.app.mount.setting.setRefractionParam(temp, press)
 
     def updateSourceGui(self) -> None:

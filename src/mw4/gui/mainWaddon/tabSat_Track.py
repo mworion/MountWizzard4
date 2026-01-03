@@ -13,7 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
+from traceback import print_tb
+
 import numpy as np
+from base.tpool import Worker
 from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 from mw4.logic.satellites.satellite_calculations import calcSatPasses
@@ -62,15 +65,12 @@ class SatTrack(QObject, SatData):
             },
         }
         self.satOrbits = {}
-
-        msig = self.app.mount.signals
-        msig.calcTLEdone.connect(self.updateSatelliteTrackGui)
-        msig.calcTrajectoryDone.connect(self.updateInternalTrackGui)
-        msig.getTLEdone.connect(self.getSatelliteDataFromDatabase)
-        msig.pointDone.connect(self.followMount)
-        msig.settingDone.connect(self.updatePasses)
-        msig.pointDone.connect(self.toggleTrackingOffset)
-        msig.firmwareDone.connect(self.enableGuiFunctions)
+        self.app.mount.signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
+        self.app.mount.signals.calcTrajectoryDone.connect(self.updateInternalTrackGui)
+        self.app.mount.signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
+        self.app.mount.signals.pointDone.connect(self.followMount)
+        self.app.mount.signals.pointDone.connect(self.toggleTrackingOffset)
+        self.app.mount.signals.firmwareDone.connect(self.enableGuiFunctions)
 
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
@@ -82,11 +82,9 @@ class SatTrack(QObject, SatData):
         self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.progTrajectory.clicked.connect(self.startProg)
         self.ui.listSats.itemDoubleClicked.connect(self.chooseSatellite)
-        self.ui.unitTimeUTC.toggled.connect(self.changeUnitTimeUTC)
         self.ui.satOffTime.valueChanged.connect(self.setTrackingOffsets)
         self.ui.satOffRa.valueChanged.connect(self.setTrackingOffsets)
         self.ui.satOffDec.valueChanged.connect(self.setTrackingOffsets)
-
         self.app.update1s.connect(self.updateOrbit)
 
     def initConfig(self) -> None:
@@ -98,7 +96,8 @@ class SatTrack(QObject, SatData):
         self.ui.satAfterFlip.setChecked(config.get("satAfterFlip", True))
         self.ui.avoidHorizon.setChecked(config.get("avoidHorizon", False))
         self.ui.trackingReplay.setChecked(config.get("trackingReplay", False))
-        self.ui.unitTimeUTC.toggled.connect(self.changeUnitTimeUTC)
+        self.ui.unitTimeUTC.clicked.connect(self.changeUnitTimeUTC)
+        self.ui.unitTimeLocal.clicked.connect(self.changeUnitTimeUTC)
 
     def storeConfig(self) -> None:
         """ """
@@ -148,16 +147,6 @@ class SatTrack(QObject, SatData):
         self.ui.startSatelliteTracking.setText("Start satellite tracking")
         changeStyleDynamic(self.ui.startSatelliteTracking, "run", False)
 
-    def updatePasses(self) -> None:
-        """ """
-        actMeridianLimit = self.app.mount.setting.meridianLimitTrack
-        if actMeridianLimit is None:
-            return
-
-        if actMeridianLimit != self.lastMeridianLimit:
-            self.showSatPasses()
-            self.lastMeridianLimit = actMeridianLimit
-
     def calcTrajectoryData(self, start: int, end: int) -> tuple[list, list]:
         """ """
         duration = min(end - start, 900 / 86400)
@@ -177,7 +166,7 @@ class SatTrack(QObject, SatData):
         alt, az, _ = topocentric.altaz(pressure_mbar=press, temperature_C=temp)
         return alt.degrees, az.degrees
 
-    def progTrajectoryToMount(self) -> None:
+    def calcTrajectoryAndShow(self) -> None:
         """ """
         useInternal = self.ui.useInternalSatCalc.isChecked()
         isMount = self.app.deviceStat["mount"]
@@ -195,10 +184,9 @@ class SatTrack(QObject, SatData):
 
         if isMount and not useInternal:
             self.app.mount.calcTLE(start)
-
         self.signalSatelliteData(alt=alt, az=az)
 
-    def showSatPasses(self) -> None:
+    def workerShowSatPasses(self) -> None:
         """ """
         title = "Satellite passes " + self.mainW.timeZoneString()
         self.ui.satPassesGroup.setTitle(title)
@@ -249,8 +237,12 @@ class SatTrack(QObject, SatData):
             self.passUI[i]["settle"].setText(settleStr)
             self.passUI[i]["flip"].setText(flipStr)
             self.passUI[i]["date"].setText(dateStr)
+        self.calcTrajectoryAndShow()
 
-        self.progTrajectoryToMount()
+    def showSatPasses(self) -> None:
+        """ """
+        worker = Worker(self.workerShowSatPasses)
+        self.app.threadPool.start(worker)
 
     def extractSatelliteData(self, satName: str) -> None:
         """ """

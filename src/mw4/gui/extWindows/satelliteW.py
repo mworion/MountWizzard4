@@ -364,7 +364,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.drawHorizon()
 
     def drawSatellite(
-        self, satellite, satOrbits, altitude: float, azimuth: float, name: str
+        self, satellite, satOrbits, altitude: list[float], azimuth: list[float], name: str
     ) -> None:
         """ """
         self.setWindowTitle(f"Satellite {name}")

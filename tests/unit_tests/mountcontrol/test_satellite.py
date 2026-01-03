@@ -603,6 +603,50 @@ class TestConfigData(unittest.TestCase):
             suc = sat.getTrackingOffsets()
             self.assertTrue(suc)
 
+    def test_setTrackingOffsets_1(self):
+        sat = Satellite(App().mount)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(False, [1, 2, 3, 4], 4)):
+            suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertFalse(suc)
+
+    def test_setTrackingOffsets_2(self):
+        sat = Satellite(App().mount)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, [1, 2, 3, 4], 1)):
+
+            suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertFalse(suc)
+
+    def test_setTrackingOffsets_3(self):
+        sat = Satellite(App().mount)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, ['E', 2, 3], 3)):
+
+            suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertFalse(suc)
+
+    def test_setTrackingOffsets_4(self):
+        sat = Satellite(App().mount)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, ['E', 2, 3, 4], 4)):
+
+            suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertFalse(suc)
+
+    def test_setTrackingOffsets_5(self):
+        sat = Satellite(App().mount)
+        with mock.patch.object(Connection,
+                               'communicate',
+                               return_value=(True, [1, 2, 3, 4], 4)):
+
+            suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
+            self.assertTrue(suc)
+
     def test_setTrackingFirst(self):
         sat = Satellite(App().mount)
         with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):

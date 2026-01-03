@@ -31,7 +31,7 @@ class TLEParams:
         self.dec: Angle = Angle(degrees=0)
         self._jdStart: Time = self.obsSite.ts.tt_jd(0)
         self._jdEnd: Time = self.obsSite.ts.tt_jd(0)
-        self.flip: bool = False
+        self._flip: bool = False
 
         self.message: str = ""
         self.l0: str = ""
@@ -54,3 +54,4 @@ class TLEParams:
     @jdEnd.setter
     def jdEnd(self, value):
         self._jdEnd = self.obsSite.ts.tt_jd(value + self.obsSite.UTC2TT)
+

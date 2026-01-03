@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -18268,7 +18268,7 @@ When clicking the button, you could change the value.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -20426,7 +20426,7 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="satOffTime">
         <property name="geometry">
          <rect>
-          <x>100</x>
+          <x>95</x>
           <y>45</y>
           <width>88</width>
           <height>21</height>
@@ -20445,7 +20445,7 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="satOffRa">
         <property name="geometry">
          <rect>
-          <x>100</x>
+          <x>95</x>
           <y>20</y>
           <width>88</width>
           <height>21</height>
@@ -20467,7 +20467,7 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="satOffDec">
         <property name="geometry">
          <rect>
-          <x>280</x>
+          <x>275</x>
           <y>20</y>
           <width>88</width>
           <height>21</height>
@@ -20502,7 +20502,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_126">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>205</x>
           <y>20</y>
           <width>71</width>
           <height>21</height>
@@ -23987,7 +23987,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>

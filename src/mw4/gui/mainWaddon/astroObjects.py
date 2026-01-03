@@ -20,6 +20,7 @@ from mw4.logic.databaseProcessing.dataWriter import DataWriter
 from pathlib import Path
 from PySide6.QtCore import QObject, Signal
 from PySide6.QtWidgets import QListView
+from mw4.base.tpool import Worker
 
 
 class AstroObjects(QObject):
@@ -43,6 +44,7 @@ class AstroObjects(QObject):
         super().__init__()
         self.window = window
         self.app = window.app
+        self.threadPool = window.app.threadPool
         self.msg = window.app.msg
         self.dest: Path = Path()
         self.dataValid: bool = False
@@ -53,6 +55,7 @@ class AstroObjects(QObject):
         self.uiSourceGroup = uiSourceGroup
         self.prepareTable = prepareTable
         self.processSource = processSource
+        self.worker = None
 
         self.objects = {}
         self.uploadPopup = None
@@ -84,13 +87,17 @@ class AstroObjects(QObject):
         t = f"{self.objectText} data - age: {age:2.1f}d"
         self.uiSourceGroup.setTitle(t)
 
+    def workerProcessSource(self) -> None:
+        self.processSource()
+        self.dataLoaded.emit()
+
     def procSourceData(self, direct: bool = False) -> None:
         """ """
         if not direct and not self.downloadPopup.returnValues["success"]:
             return
         self.dataValid = False
-        self.processSource()
-        self.dataLoaded.emit()
+        self.worker = Worker(self.workerProcessSource)
+        self.threadPool.start(self.worker)
 
     def runDownloadPopup(self, url: str, unzip: bool) -> None:
         """ """

@@ -20,11 +20,10 @@ from functools import partial, partialmethod
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
+
 if not hasattr(logging.Logger, "_set_defaults"):
-
     def _set_defaults(self, *args, **kwargs):
-        return None
-
+        return
     logging.Logger._set_defaults = _set_defaults
 
 

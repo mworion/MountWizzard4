@@ -28,10 +28,11 @@ class EnvironWeather(QObject):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.refractionSource = ""
-        self.filteredTemperature = np.full(60, -99)
-        self.filteredPressure = np.full(60, 0)
-        self.seeingEnabled = False
+        self.refractionSource: str = ""
+        self.filteredTemperature: np.array = np.full(60, -99)
+        self.filteredPressure: np.array = np.full(60, 0)
+        self.seeingEnabled: bool = False
+        self.refractionEnabled: bool = True
 
         self.refractionSources = {
             "sensor1Weather": {
@@ -225,10 +226,8 @@ class EnvironWeather(QObject):
 
         if all(i == -99 for i in self.filteredTemperature):
             self.filteredTemperature = np.full(60, temp)
-
         if all(i == 0 for i in self.filteredPressure):
             self.filteredPressure = np.full(60, press)
-
         self.filteredTemperature = np.roll(self.filteredTemperature, 1)
         self.filteredTemperature[0] = temp
         self.filteredPressure = np.roll(self.filteredPressure, 1)
@@ -255,10 +254,7 @@ class EnvironWeather(QObject):
 
         temp, press = self.movingAverageRefractionParameters()
         self.mainW.log.trace(f"Setting refrac temp:[{temp}], press:[{press}]")
-        if not self.app.mount.setting.setRefractionTemp(temp):
-            self.mainW.log.debug("No refraction temp update")
-        if not self.app.mount.setting.setRefractionPress(press):
-            self.mainW.log.debug("No refraction press update")
+        self.app.mount.setting.setRefractionParam(temp, press)
 
     def updateSourceGui(self) -> None:
         """ """

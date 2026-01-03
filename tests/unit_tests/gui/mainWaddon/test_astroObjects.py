@@ -71,6 +71,11 @@ def test_setAge_1(function):
     assert function.uiSourceGroup.title() == "test data - age: 0.0d"
 
 
+def test_workerProcessSource_1(function):
+    with mock.patch.object(function, "processSource"):
+        function.workerProcessSource()
+
+
 def test_procSourceData_1(function):
     class Test:
         returnValues = {"success": False}
@@ -84,7 +89,7 @@ def test_procSourceData_2(function):
         returnValues = {"success": True}
 
     function.downloadPopup = Test()
-    with mock.patch.object(function, "processSource"):
+    with mock.patch.object(function.threadPool, "start"):
         function.procSourceData(direct=True)
 
 

@@ -55,7 +55,7 @@ class Connection(object):
 
     # I don't want so wait to long for a response. In average, I see values
     # shorter than 0.5 sec, so 2 seconds should be good
-    SOCKET_TIMEOUT = 5
+    SOCKET_TIMEOUT = 2
 
     # complete used command list to be checked first if valid
     # these are the commands, which were used in mountcontrol so far

@@ -82,14 +82,14 @@ class Mount(mw4.mountcontrol.mount.Mount):
 
     """
 
-    CYCLE_POINTING = 500
+    CYCLE_POINTING = 750
     CYCLE_DOME = 950
     CYCLE_CLOCK = 1000
     CYCLE_MOUNT_UP = 2700
     CYCLE_SETTING = 3100
 
     # set timeout
-    SOCKET_TIMEOUT = 3.5
+    SOCKET_TIMEOUT = 2.5
 
     def __init__(self, host=None, MAC=None,
                  threadPool=None, pathToData=None, verbose=None):

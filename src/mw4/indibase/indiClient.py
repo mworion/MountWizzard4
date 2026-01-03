@@ -805,20 +805,20 @@ class Client(QObject):
 
         return True
 
-    def handleConnected(self):
+    def handleConnected(self) -> None:
         """
         """
         self.connected = True
         self.signals.serverConnected.emit()
 
-    def handleDisconnected(self):
+    def handleDisconnected(self) -> None:
         """
         """
         self.connected = False
         self.signals.serverDisconnected.emit(self.devices)
         self.log.info("INDI client disconnected")
 
-    def handleError(self, socketError):
+    def handleError(self, socketError) -> None:
         """
         """
         Refuse = QTcpSocket.SocketError.ConnectionRefusedError

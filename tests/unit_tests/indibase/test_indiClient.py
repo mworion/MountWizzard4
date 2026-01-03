@@ -933,27 +933,23 @@ def test_handleReadyRead_5(function):
 
 def test_handleConnected(function):
     function.connected = True
-    suc = function.handleConnected()
-    assert suc
+    function.handleConnected()
     assert function.connected
 
 
 def test_handleDisconnected(function):
     function.connected = True
-    suc = function.handleDisconnected()
-    assert suc
+    function.handleDisconnected()
     assert not function.connected
 
 
 def test_handleError_1(function):
     function.connected = True
     with mock.patch.object(function, "disconnectServer"):
-        suc = function.handleError("")
-        assert suc
+        function.handleError("")
 
 
 def test_handleError_2(function):
     function.connected = True
     with mock.patch.object(function, "disconnectServer"):
-        suc = function.handleError(QTcpSocket.RemoteHostClosedError)
-        assert suc
+        function.handleError(QTcpSocket.RemoteHostClosedError)

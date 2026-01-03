@@ -19,7 +19,7 @@ import unittest.mock as mock
 from mw4.base.loggerMW import setupLogging
 from mw4.gui.extWindows.messageW import MessageWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
-from PySide6.QtGui import QCloseEvent
+from PySide6.QtGui import QCloseEvent, QFont
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()
@@ -57,6 +57,7 @@ def test_closeEvent_1(function):
 
 
 def test_updateListColors(function):
+    function.messFont = QFont()
     function.app.messageQueue.put((0, "test", "test", "test"))
     function.writeMessage()
     function.updateListColors()

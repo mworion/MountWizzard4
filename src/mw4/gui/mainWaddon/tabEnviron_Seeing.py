@@ -31,7 +31,8 @@ class EnvironSeeing(QObject):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.seeingEnabled = False
+        self.seeingEnabled: bool = False
+
         signals = self.app.seeingWeather.signals
         signals.deviceDisconnected.connect(self.clearSeeingEntries)
         signals = self.app.seeingWeather.signals

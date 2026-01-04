@@ -23,9 +23,11 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    func = SlewInterface()
-    func.app = App()
-    func.msg = func.app.msg
+    class Parent:
+        app = App()
+        msg = app.msg
+
+    func = SlewInterface(Parent())
     yield func
 
 

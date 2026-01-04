@@ -31,7 +31,8 @@ class EnvironWeather(QObject):
         self.refractionSource: str = ""
         self.filteredTemperature: np.array = np.full(60, -99)
         self.filteredPressure: np.array = np.full(60, 0)
-        self.seeingEnabled: bool = False
+        self.tempLast: float = 0
+        self.pressLast: float = 0
         self.refractionEnabled: bool = True
 
         self.refractionSources = {
@@ -253,7 +254,10 @@ class EnvironWeather(QObject):
             return
 
         temp, press = self.movingAverageRefractionParameters()
-        self.app.mount.setting.setRefractionParam(temp, press)
+        if abs(temp - self.tempLast) > 0.1 or abs(press - self.pressLast) > 5:
+            self.app.mount.setting.setRefractionParam(temp, press)
+            self.tempLast = temp
+            self.pressLast = press
 
     def updateSourceGui(self) -> None:
         """ """

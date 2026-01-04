@@ -40,6 +40,8 @@ Version 4.x
 - refactor: satellite handling
 - refactor: database handling for MPC files
 - improve: faster calculation of satellite track using internal calculations
+- improve: optimized poll settings
+- improve: refraction update only when needed
 - improve: reduced size of app
 - improve: faster startup time
 - improve: faster database loading
@@ -52,6 +54,7 @@ Version 4.x
 - improve: schedule and threads in waiting times (slow machines)
 - remove: automation of 10micron installer, replaced with web interface
 - remove: updater for MW4 (use uv installer instead)
+- remove: blending profiles as it did not work so far.
 - fix: typos
 
 

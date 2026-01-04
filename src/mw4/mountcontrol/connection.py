@@ -371,7 +371,7 @@ class Connection:
         client.
         """
         try:
-            self.log.trace(f"Sending  [{self.id}]: {commandString}")
+            self.log.trace(f"Sending  [{self.id}]: [{commandString}]")
             client.sendall(commandString.encode())
 
         except TimeoutError:

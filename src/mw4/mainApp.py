@@ -168,7 +168,6 @@ class MountWizzard4(QObject):
         self.plateSolve = PlateSolve(self)
         self.mainW = MainWindow(self)
         self.mainW.initConfig()
-
         self.mount.startMountTimers()
         self.timer0_1s = QTimer()
         self.timer0_1s.setSingleShot(False)
@@ -193,7 +192,6 @@ class MountWizzard4(QObject):
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)
         elev = self.config.get("topoElev", 46)
-
         topo = wgs84.latlon(longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev)
         return topo
 

@@ -195,11 +195,13 @@ class ModelData(QObject):
             programmingPoint = ProgStar(mCoord, sCoord, sidereal, pierside)
             self.modelProgData.append(programmingPoint)
 
-    def addMountDataToModelBuildData(self) -> None:
+    def addMountDataToModelBuildData(self, index: int) -> None:
         """ """
         item = self.modelBuildData[self.pointerImage]
         obs = self.app.mount.obsSite
-        self.log.debug(f"{'Add mount data':15s}: ra:[{obs.raJNow}], dec:[{obs.decJNow}], jd:[{obs.timeJD}]")
+        self.log.debug(
+            f"{'Add mount data':15s}: [{index:02d}], ra:[{obs.raJNow}], dec:[{obs.decJNow}], jd:[{obs.timeJD}]"
+        )
         item["raJNowM"] = obs.raJNow
         item["decJNowM"] = obs.decJNow
         item["angularPosRA"] = obs.angularPosRA
@@ -225,7 +227,7 @@ class ModelData(QObject):
             waitTime -= 1
 
         item = self.modelBuildData[self.pointerImage]
-        self.addMountDataToModelBuildData()
+        self.addMountDataToModelBuildData(self.pointerImage)
         cam = self.app.camera
         imagePath = item["imagePath"]
         exposureTime = item["exposureTime"] = cam.exposureTime1
@@ -277,8 +279,9 @@ class ModelData(QObject):
             self.app.data.setStatusBuildPSolved(self.pointerResult)
         else:
             self.app.data.setStatusBuildPFailed(self.pointerResult)
-
-        self.log.debug(f"{'Collect solve':15s}: [{item}]")
+        textResult = "Solved" if item["success"] else "Failed"
+        t = f"{'Collect solve':15s}: [{self.pointerResult:02d}], [{textResult}], [{item}]"
+        self.log.debug(t)
         self.statusSolve.emit(item)
         self.app.updatePointMarker.emit()
         self.sendModelProgress()
@@ -290,7 +293,7 @@ class ModelData(QObject):
         self.log.debug(f"{'Prepare model':15s}: len:[{len(self.modelInputData)}]")
         for index, point in enumerate(self.modelInputData):
             modelItem = {}
-            imagePath = self.imageDir / f"image-{index + 1:03d}.fits"
+            imagePath = self.imageDir / f"image-{index:03d}.fits"
             modelItem["imagePath"] = imagePath
             modelItem["altitude"] = Angle(degrees=point[0])
             modelItem["azimuth"] = Angle(degrees=point[1])
@@ -326,7 +329,7 @@ class ModelData(QObject):
     def runThroughModelBuildDataRetries(self) -> None:
         """ """
         while self.numberRetries >= 0:
-            self.log.debug(f"{'Run retries':15s}: count:[{self.numberRetries:1d}]")
+            self.log.debug(f"{'Run retries':15s}: count:[{self.numberRetries:1.0f}]")
             self.runThroughModelBuildData()
             if not self.checkRetryNeeded():
                 break

@@ -45,14 +45,15 @@ class SensorWeatherOnline:
 
     def startCommunication(self) -> None:
         """ """
-        self.app.update3s.connect(self.pollOpenWeatherMapData)
+        self.pollOpenWeatherMapData()
+        self.app.update3m.connect(self.pollOpenWeatherMapData)
 
     def stopCommunication(self) -> None:
         """ """
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit("OnlineWeather")
-        self.app.update3s.disconnect(self.pollOpenWeatherMapData)
+        self.app.update3m.disconnect(self.pollOpenWeatherMapData)
 
     @staticmethod
     def getDewPoint(tempAir: float, relativeHumidity: float) -> float:

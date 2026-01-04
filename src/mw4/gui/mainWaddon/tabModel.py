@@ -162,7 +162,7 @@ class Model(QObject):
 
     def programModelToMount(self) -> bool:
         """ """
-        self.msg.emit(1, "Model", "Run", f"Programming {self.modelData.name}")
+        self.msg.emit(1, "Model", "Run", f"Programming [{self.modelData.name}]")
         if not self.modelData.modelProgData:
             self.msg.emit(3, "Model", "Run error", "No sufficient model data available")
             return
@@ -171,7 +171,7 @@ class Model(QObject):
             self.msg.emit(3, "Model", "Run error", "Programming to mount error")
             return
 
-        self.msg.emit(1, "Model", "Run", f"Programmed {self.modelData.name} with success")
+        self.msg.emit(1, "Model", "Run", f"Programmed [{self.modelData.name}] with success")
         self.app.mount.signals.getModelDone.connect(self.programModelToMountFinish)
         self.app.refreshModel.emit()
 
@@ -196,7 +196,7 @@ class Model(QObject):
             self.msg.emit(2, "", "", "Model build cancelled")
             return False
 
-        self.msg.emit(0, "Model", "Run", "Actual model clearing, waiting 1s")
+        self.msg.emit(1, "Model", "Run", "Actual model clearing, waiting 1s")
         sleepAndEvents(1000)
         self.msg.emit(0, "", "", "Actual model cleared")
         if not self.app.mount.model.storeName("backup"):
@@ -228,16 +228,16 @@ class Model(QObject):
 
     def showStatusExposure(self, statusData: tuple) -> None:
         """ """
-        t = f"Expose {statusData[0]}, Duration {statusData[1]}s, Binning {statusData[2]} "
+        t = f"Expose: [{statusData[0]}], Time: [{statusData[1]}s], Binning: [{statusData[2]}] "
         self.msg.emit(0, "Model", "Exposure", t)
 
     def showStatusSolve(self, data: dict) -> None:
         """ """
         if data["success"]:
-            t = f"Solved {data['imagePath'].stem}, Error {data['errorRMS_S']:.2f}"
-            t += f", Angle {data['angleS'].degrees:.2f}, Scale {data['scaleS']:.2f}"
+            t = f"Solved: [{data['imagePath'].stem}], Error: [{data['errorRMS_S']:.2f}]"
+            t += f", Angle: [{data['angleS'].degrees:.2f}], Scale: [{data['scaleS']:.2f}]"
         else:
-            t = f"Error {data['imagePath'].stem}, {data['message']}"
+            t = f"Error in: [{data['imagePath'].stem}], [{data['message']}]"
         self.msg.emit(0, "Model", "Solving result", t)
 
     def setupModelInputData(self) -> None:
@@ -283,7 +283,7 @@ class Model(QObject):
         self.modelData.statusExpose.connect(self.showStatusExposure)
         self.setModelTiming()
         self.setupBatchData()
-        self.msg.emit(1, "Model", "Run", f"Model {self.modelData.name}")
+        self.msg.emit(1, "Model", "Run", f"Model: [{self.modelData.name}]")
         self.setupModelInputData()
         self.modelData.runModel()
         self.programModelToMount()

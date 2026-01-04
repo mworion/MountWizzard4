@@ -121,7 +121,7 @@ def test_startNewSlew_2(function):
     function.endBatch = True
     function.pointerSlew = -1
     function.modelBuildData = [
-        {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}
+        {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": False, "imagePath": Path("test")}
     ]
 
     function.startNewSlew()
@@ -136,7 +136,7 @@ def test_startNewSlew_3(function):
     function.endBatch = False
     function.pointerSlew = -1
     function.modelBuildData = [
-        {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}
+        {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": False, "imagePath": Path("test")}
     ]
 
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
@@ -153,8 +153,8 @@ def test_startNewSlew_4(function):
     function.pointerSlew = -1
     function.app.deviceStat["dome"] = True
     function.modelBuildData = [
-        {"altitude": 0, "azimuth": 0, "success": True, "imagePath": Path("test")},
-        {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")},
+        {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": True, "imagePath": Path("test")},
+        {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": False, "imagePath": Path("test")},
     ]
 
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
@@ -173,7 +173,7 @@ def test_startNewSlew_5(function):
     function.pointerSlew = -1
     function.app.deviceStat["dome"] = True
     function.modelBuildData = [
-        {"altitude": 0, "azimuth": 0, "success": False, "imagePath": Path("test")}
+        {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": False, "imagePath": Path("test")}
     ]
 
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
@@ -339,7 +339,7 @@ def test_buildProgModel_3(function):
 def test_addMountDataToModelBuildData_1(function):
     function.pointerImage = 0
     function.modelBuildData = [{"altitude": 0, "azimuth": 0}]
-    function.addMountDataToModelBuildData()
+    function.addMountDataToModelBuildData(0)
     assert "raJ2000M" in function.modelBuildData[0]
     assert "decJ2000M" in function.modelBuildData[0]
     assert "raJNowM" in function.modelBuildData[0]

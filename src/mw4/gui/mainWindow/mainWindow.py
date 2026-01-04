@@ -149,7 +149,6 @@ class MainWindow(MWidget):
         """ """
         self.wIcon(self.ui.saveConfigAs, "save")
         self.wIcon(self.ui.loadFrom, "load")
-        self.wIcon(self.ui.addFrom, "load")
         self.wIcon(self.ui.saveConfig, "save")
         self.wIcon(self.ui.saveConfigQuit, "save")
         self.wIcon(self.ui.mountOn, "power-on")

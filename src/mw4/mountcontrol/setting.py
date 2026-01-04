@@ -133,6 +133,7 @@ class Setting:
         value = valueToInt(value)
         if value not in [0, 1, 2]:
             value = 0
+        self._weatherStatus = value
 
     def timeToMeridian(self):
         """"""

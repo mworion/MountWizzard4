@@ -203,6 +203,10 @@ class EnvironWeather(QObject):
         else:
             self.refractionSource = ""
 
+        self.filteredTemperature = np.full(60, -99)
+        self.tempLast = -99
+        self.filteredPressure = np.full(60, 0)
+        self.pressLast = 0
         self.setRefractionSourceGui()
         self.setRefractionUpdateType()
 

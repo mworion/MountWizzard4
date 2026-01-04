@@ -7971,17 +7971,6 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_5.addWidget(self.loadFrom)
 
-        self.addFrom = QPushButton(self.main)
-        self.addFrom.setObjectName(u"addFrom")
-        sizePolicy1.setHeightForWidth(self.addFrom.sizePolicy().hasHeightForWidth())
-        self.addFrom.setSizePolicy(sizePolicy1)
-        self.addFrom.setMinimumSize(QSize(0, 0))
-        self.addFrom.setMaximumSize(QSize(16777215, 25))
-        self.addFrom.setFont(font1)
-        self.addFrom.setStyleSheet(u"")
-
-        self.horizontalLayout_5.addWidget(self.addFrom)
-
         self.saveConfig = QPushButton(self.main)
         self.saveConfig.setObjectName(u"saveConfig")
         sizePolicy1.setHeightForWidth(self.saveConfig.sizePolicy().hasHeightForWidth())
@@ -11159,10 +11148,6 @@ class Ui_MainWindow(object):
         self.loadFrom.setToolTip(QCoreApplication.translate("MainWindow", u"Loads a profile from disk", None))
 #endif // QT_CONFIG(tooltip)
         self.loadFrom.setText(QCoreApplication.translate("MainWindow", u"Load", None))
-#if QT_CONFIG(tooltip)
-        self.addFrom.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>If you select an additional profile, all data from this profile, based on the selection settings under settings / profile will be imported and integrated in the main profile. When saving or quitting, the combined profile of both will be stored.</p></body></html>", None))
-#endif // QT_CONFIG(tooltip)
-        self.addFrom.setText(QCoreApplication.translate("MainWindow", u"Add", None))
 #if QT_CONFIG(tooltip)
         self.saveConfig.setToolTip(QCoreApplication.translate("MainWindow", u"Saves the actual profile to disk under the same name without closing the application.", None))
 #endif // QT_CONFIG(tooltip)

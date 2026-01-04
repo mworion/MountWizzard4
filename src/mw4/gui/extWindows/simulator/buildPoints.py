@@ -26,9 +26,8 @@ class SimulatorBuildPoints:
 
     LINE_RADIUS = 0.02
     POINT_SPHERE_RADIUS = 4
-    POINT_ACTIVE_RADIUS = 0.07
-    POINT_RADIUS = 0.05
-    FONT_SIZE = 40
+    POINT_RADIUS = 0.07
+    FONT_SIZE = 50
 
     def __init__(self, parent, app):
         super().__init__()
@@ -80,12 +79,6 @@ class SimulatorBuildPoints:
         Therefore, three transformations are made and the resulting vector has
         to be translated half the length, because is will be drawn symmetrically
         to the starting point.
-
-        :param parentEntity:
-        :param dx:
-        :param dy:
-        :param dz:
-        :return:
         """
         radius, alt, az = functions.to_spherical(np.array((dx, dy, dz)))
         az = np.degrees(az)
@@ -114,24 +107,15 @@ class SimulatorBuildPoints:
 
         return (e1, trans1, e2, trans2, e3, trans3, mesh3, mat3)
 
-    def createPoint(self, parentEntity, alt, az, active):
+    def createPoint(self, parentEntity, alt, az, status):
         """
         the point is located in a distance of radius meters from the ota axis
         and positioned in azimuth and altitude correctly. its representation
         is a small ball mesh.
-
-        :param parentEntity:
-        :param alt:
-        :param az:
-        :param active:
-        :return: entity, x, y, z coordinates
         """
         entity = Qt3DCore.QEntity(parentEntity)
         mesh = Qt3DExtras.QSphereMesh()
-        if active:
-            mesh.setRadius(self.POINT_ACTIVE_RADIUS)
-        else:
-            mesh.setRadius(self.POINT_RADIUS)
+        mesh.setRadius(self.POINT_RADIUS)
         mesh.setRings(30)
         mesh.setSlices(30)
         trans = Qt3DCore.QTransform()
@@ -139,13 +123,13 @@ class SimulatorBuildPoints:
         trans.setTranslation(QVector3D(x, y, z))
         entity.addComponent(mesh)
         entity.addComponent(trans)
-        mat = Materials().pointsActive if active else Materials().points
 
+        material = [Materials().points, Materials().pointsRed, Materials().pointsGreen]
+        mat = material[status]
         entity.addComponent(mat)
-
         return (entity, mesh, trans, mat), x, y, z
 
-    def createAnnotation(self, parentEntity, alt, az, text, active, faceIn=False):
+    def createAnnotation(self, parentEntity, alt, az, text, status, faceIn=False):
         """
         the annotation - basically the number of the point - is positioned
         relative to the build point in its local coordinate system. to face the
@@ -155,14 +139,6 @@ class SimulatorBuildPoints:
         this case relative to each other.
         faceIn changes the behaviour to have the text readable from inside or
         outside.
-
-        :param parentEntity:
-        :param alt:
-        :param az:
-        :param text:
-        :param active:
-        :param faceIn: direction of the text face (looking from inside or outside)
-        :return: entity
         """
         e1 = Qt3DCore.QEntity(parentEntity)
         trans1 = Qt3DCore.QTransform()
@@ -174,7 +150,7 @@ class SimulatorBuildPoints:
 
         e3 = Qt3DCore.QEntity(e1)
         trans3 = Qt3DCore.QTransform()
-        trans3.setTranslation(QVector3D(0.05, 0.0, 0.05))
+        trans3.setTranslation(QVector3D(0.08, 0.0, 0.08))
         e3.addComponent(trans3)
 
         e2 = Qt3DCore.QEntity(e3)
@@ -190,28 +166,27 @@ class SimulatorBuildPoints:
         trans2.setScale(0.15)
         e2.addComponent(mesh2)
         e2.addComponent(trans2)
-        mat2 = Materials().numbersActive if active else Materials().numbers
+        material = [Materials().points, Materials().pointsRed, Materials().pointsGreen]
+        mat2 = material[status]
         e2.addComponent(mat2)
 
         return (e1, trans1, e2, trans2, mesh2, mat2, e3, trans3)
 
     def loopCreate(self, buildPointEntity):
         """
-        :param buildPointEntity:
-        :return:
         """
         isNumber = self.parent.ui.showNumbers.isChecked()
         isSlewPath = self.parent.ui.showSlewPath.isChecked()
 
         for index, point in enumerate(self.app.data.buildP):
-            active = point[2]
+            status = point[2]
             e, x, y, z = self.createPoint(
-                buildPointEntity, np.radians(point[0]), np.radians(-point[1]), active
+                buildPointEntity, np.radians(point[0]), np.radians(-point[1]), status
             )
 
             if isNumber:
                 a = self.createAnnotation(
-                    e[0], point[0], -point[1], f"{index + 1:02d}", active
+                    e[0], point[0], -point[1], f"{index + 1:02d}", status
                 )
             else:
                 a = None
@@ -238,12 +213,9 @@ class SimulatorBuildPoints:
         clockwise, it's opposite to the right turning coordinate system (z is
         upwards), which means angle around z (which is azimuth) turns
         counterclockwise. so we have to set - azimuth for coordinate calculation
-
-        :return: success
         """
         if len(self.app.data.buildP) == 0:
             return False
-
         ref_fusion = self.parent.entityModel.get("ref_fusion")
         if not ref_fusion:
             return False
@@ -259,7 +231,6 @@ class SimulatorBuildPoints:
             "entity": buildPointEntity,
             "trans": buildPointTransform,
         }
-
         self.loopCreate(buildPointEntity)
         self.updatePositions()
         self.showEnable()

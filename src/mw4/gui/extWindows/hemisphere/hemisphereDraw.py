@@ -290,7 +290,7 @@ class HemisphereDraw(MWidget):
         """"""
         isEdit = self.ui.editModeHem.isChecked()
         for i, status in enumerate(statusList):
-            col = [self.M_GREEN, self.M_RED, self.M_TER]
+            col = [self.M_TER, self.M_RED, self.M_GREEN]
             colActive = col[status]
             color = self.M_PINK if isEdit else colActive
             sym = ["o", "x", "d"]
@@ -332,7 +332,7 @@ class HemisphereDraw(MWidget):
             int(self.window().font().pointSize() * facFont),
         )
         for i, (alt, az, act) in enumerate(self.app.data.buildP):
-            col = [self.M_GREEN, self.M_RED, self.M_TER]
+            col = [self.M_TER, self.M_RED, self.M_GREEN]
             colActive = col[act]
             color = self.M_PINK if isEdit else colActive
             text = f"{i + 1}"
@@ -357,7 +357,7 @@ class HemisphereDraw(MWidget):
         """ """
         for i, plotItem in enumerate(self.ui.hemisphere.p):
             if self.ui.showSlewPath.isChecked():
-                pen = pg.mkPen(color=self.M_GREEN, style=Qt.PenStyle.DashLine)
+                pen = pg.mkPen(color=self.M_TER, style=Qt.PenStyle.DashLine)
             else:
                 pen = None
 
@@ -377,8 +377,8 @@ class HemisphereDraw(MWidget):
                     vb.updateData = self.updateDataModel
             else:
                 pd = pg.PlotDataItem(
-                    symbolBrush=pg.mkBrush(color=self.M_GREEN + "40"),
-                    symbolPen=pg.mkPen(color=self.M_GREEN1, width=2),
+                    symbolBrush=pg.mkBrush(color=self.M_TER + "40"),
+                    symbolPen=pg.mkPen(color=self.M_TER1, width=2),
                     symbolSize=8,
                     symbol="o",
                     connect="all",

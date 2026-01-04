@@ -116,6 +116,7 @@ class Model(QObject):
             self.ui.cancelModel.setEnabled(True)
             self.ui.endModel.setEnabled(True)
             self.ui.pauseModel.setEnabled(True)
+            self.ui.runModel.setEnabled(False)
             changeStyleDynamic(self.ui.runModel, "run", True)
             changeStyleDynamic(self.ui.cancelModel, "stop", True)
             changeStyleDynamic(self.ui.endModel, "stop", True)
@@ -130,6 +131,7 @@ class Model(QObject):
         else:
             self.ui.runModelGroup.setEnabled(True)
             self.ui.dataModel.setEnabled(True)
+            self.ui.runModel.setEnabled(True)
             changeStyleDynamic(self.ui.runModel, "run", False)
             changeStyleDynamic(self.ui.cancelModel, "stop", False)
             changeStyleDynamic(self.ui.endModel, "stop", False)

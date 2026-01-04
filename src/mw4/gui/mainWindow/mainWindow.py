@@ -208,17 +208,15 @@ class MainWindow(MWidget):
         )
         isPause = self.ui.pauseModel.property("pause")
 
-        if isModelingReady and self.app.data.buildP and not isPause:
-            self.ui.runModel.setEnabled(True)
+        if isModelingReady and self.app.data.buildP:
+            self.ui.runModelGroup.setEnabled(True)
         else:
-            self.ui.runModel.setEnabled(False)
+            self.ui.runModelGroup.setEnabled(False)
 
         if isModelingReady:
-            self.ui.runModel.setEnabled(True)
             self.ui.runFlexure.setEnabled(True)
             self.ui.runHysteresis.setEnabled(True)
         else:
-            self.ui.runModel.setEnabled(False)
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)
 

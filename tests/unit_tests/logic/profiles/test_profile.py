@@ -24,6 +24,7 @@ from mw4.logic.profiles.profile import (
     convertKeyData,
     convertProfileData40to41,
     convertProfileData41to42,
+    convertProfileData42to43,
     defaultConfig,
     loadProfile,
     loadProfileStart,
@@ -131,10 +132,23 @@ def test_convertProfileData41to42_3():
     assert "sensor3Weather" in val["driversData"]
 
 
-def test_convertProfileData40to41_4():
-    data = {"mainW": "4.0"}
-    val = convertProfileData40to41(data)
-    assert val["mainW"] == "4.0"
+def test_convertProfileData42to43_1():
+    data = {"version": "4.2"}
+    val = convertProfileData42to43(data)
+    assert val["version"] == "4.2"
+
+
+def test_convertProfileData42to43_2():
+    data = {
+        "version": "4.2",
+        "driversData": {
+            "sensorWeather": {"frameworks": {"internal": {"deviceName": "Direct"}}},
+            "onlineWeather": {"frameworks": {"internal": {"deviceName": "Direct"}}},
+        },
+    }
+    val = convertProfileData42to43(data)
+    assert val["version"] == "4.3"
+    assert "sensor4Weather" in val["driversData"]
 
 
 def test_defaultConfig():

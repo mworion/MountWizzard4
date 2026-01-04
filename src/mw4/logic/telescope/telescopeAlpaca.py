@@ -26,9 +26,7 @@ class TelescopeAlpaca(AlpacaClass):
 
     def workerGetInitialConfig(self):
         """
-        :return: true for test purpose
         """
         super().workerGetInitialConfig()
         self.getAndStoreAlpacaProperty("aperturediameter", "TELESCOPE_INFO.TELESCOPE_APERTURE")
         self.getAndStoreAlpacaProperty("focallength", "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH")
-        return True

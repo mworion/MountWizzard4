@@ -25,7 +25,6 @@ class TelescopeAscom(AscomClass):
 
     def workerGetInitialConfig(self):
         """
-        :return: true for test purpose
         """
         super().workerGetInitialConfig()
 
@@ -40,4 +39,3 @@ class TelescopeAscom(AscomClass):
             value = value * 1000
 
         self.storePropertyToData(value, "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH")
-        return True

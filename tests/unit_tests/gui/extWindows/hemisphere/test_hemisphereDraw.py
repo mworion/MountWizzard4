@@ -21,7 +21,6 @@ import shutil
 import unittest.mock as mock
 from mw4.gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
-from mw4.gui.utilities.slewInterface import SlewInterface
 from mw4.mountcontrol.setting import Setting
 from PySide6.QtCore import QPointF
 from skyfield.api import Angle, wgs84
@@ -433,13 +432,13 @@ def test_slewDirect_1(function):
 
 def test_slewDirect_2(function):
     with mock.patch.object(function, "messageDialog", return_value=True):
-        with mock.patch.object(SlewInterface, "slewTargetAltAz", return_value=False):
+        with mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=False):
             function.slewDirect(QPointF(1, 1))
 
 
 def test_slewDirect_3(function):
     with mock.patch.object(function, "messageDialog", return_value=True):
-        with mock.patch.object(SlewInterface, "slewTargetAltAz", return_value=True):
+        with mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=True):
             function.slewDirect(QPointF(1, 1))
 
 
@@ -480,7 +479,7 @@ def test_slewStar_4(function):
             with mock.patch.object(
                 function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
             ):
-                with mock.patch.object(SlewInterface, "slewTargetRaDec", return_value=False):
+                with mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=False):
                     function.slewStar(QPointF(1, 1))
 
 
@@ -498,7 +497,7 @@ def test_slewStar_5(function):
             with mock.patch.object(
                 function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
             ):
-                with mock.patch.object(SlewInterface, "slewTargetRaDec", return_value=True):
+                with mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=True):
                     function.slewStar(QPointF(1, 1))
 
 

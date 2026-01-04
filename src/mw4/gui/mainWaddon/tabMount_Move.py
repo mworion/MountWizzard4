@@ -27,7 +27,7 @@ from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QInputDialog, QLineEdit
 
 
-class MountMove(QObject, SlewInterface):
+class MountMove(QObject):
     """ """
 
     def __init__(self, mainW):
@@ -36,6 +36,7 @@ class MountMove(QObject, SlewInterface):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
+        self.slewInterface = SlewInterface(self)
 
         self.slewSpeeds = {
             "max": {
@@ -261,7 +262,7 @@ class MountMove(QObject, SlewInterface):
             targetAz = self.targetAz = self.targetAz + coord[1] * step
 
         targetAz = targetAz % 360
-        self.slewTargetAltAz(targetAlt, targetAz)
+        self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
 
     def setRA(self) -> None:
         """ """
@@ -304,7 +305,7 @@ class MountMove(QObject, SlewInterface):
         az = self.ui.moveCoordinateAz.text()
         az = valueToFloat(az)
         az = (az + 360) % 360
-        self.slewTargetAltAz(alt, az)
+        self.slewInterface.slewTargetAltAz(alt, az)
 
     def moveRaDecAbsolute(self) -> None:
         """ """
@@ -312,4 +313,4 @@ class MountMove(QObject, SlewInterface):
         ra = convertRaToAngle(value)
         value = self.ui.moveCoordinateDec.text()
         dec = convertDecToAngle(value)
-        self.slewTargetRaDec(ra, dec)
+        self.slewInterface.slewTargetRaDec(ra, dec)

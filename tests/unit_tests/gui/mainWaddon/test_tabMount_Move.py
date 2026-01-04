@@ -167,7 +167,7 @@ def test_moveAltAz_1(function):
     function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.app.mount.obsSite.Az = Angle(degrees=10)
 
-    with mock.patch.object(function, "slewTargetAltAz", return_value=True):
+    with mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=True):
         function.moveAltAz("NE")
 
 
@@ -177,7 +177,7 @@ def test_moveAltAz_3(function):
     function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.app.mount.obsSite.Az = Angle(degrees=10)
 
-    with mock.patch.object(function, "slewTargetAltAz", return_value=True):
+    with mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=True):
         function.moveAltAz("NE")
 
 
@@ -228,7 +228,7 @@ def test_moveAltAzAbsolute_3(function):
     function.app.mount.setting.horizonLimitHigh = 70
     function.ui.moveCoordinateAlt.setText("50")
     function.ui.moveCoordinateAz.setText("50")
-    with mock.patch.object(function, "slewTargetAltAz", return_value=False):
+    with mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=False):
         function.moveAltAzAbsolute()
 
 
@@ -237,7 +237,7 @@ def test_moveAltAzAbsolute_4(function):
     function.app.mount.setting.horizonLimitHigh = 70
     function.ui.moveCoordinateAlt.setText("50")
     function.ui.moveCoordinateAz.setText("50")
-    with mock.patch.object(function, "slewTargetAltAz", return_value=True):
+    with mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=True):
         function.moveAltAzAbsolute()
 
 
@@ -256,12 +256,12 @@ def test_moveRaDecAbsolute_2(function):
 def test_moveRaDecAbsolute_3(function):
     function.ui.moveCoordinateRa.setText("12H")
     function.ui.moveCoordinateDec.setText("30 30")
-    with mock.patch.object(function, "slewTargetRaDec", return_value=False):
+    with mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=False):
         function.moveRaDecAbsolute()
 
 
 def test_moveRaDecAbsolute_4(function):
     function.ui.moveCoordinateRa.setText("12H")
     function.ui.moveCoordinateDec.setText("30 30")
-    with mock.patch.object(function, "slewTargetRaDec", return_value=True):
+    with mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=True):
         function.moveRaDecAbsolute()

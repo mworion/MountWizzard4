@@ -20,8 +20,12 @@ from skyfield.api import Angle
 
 class SlewInterface:
     """ """
-
     log = logging.getLogger("MW4")
+
+    def __init__(self, parent):
+        """ """
+        self.app = parent.app
+        self.msg = parent.msg
 
     def slewSelectedTargetWithDome(self, slewType: str = "normal") -> bool:
         """ """
@@ -83,5 +87,4 @@ class SlewInterface:
             self.msg.emit(2, "Tools", "Slewing error", t)
             return False
 
-        suc = self.slewSelectedTargetWithDome(slewType=slewType)
-        return suc
+        return self.slewSelectedTargetWithDome(slewType=slewType)

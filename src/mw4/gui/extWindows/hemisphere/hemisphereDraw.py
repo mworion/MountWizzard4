@@ -24,7 +24,7 @@ from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont
 
 
-class HemisphereDraw(MWidget, SlewInterface):
+class HemisphereDraw(MWidget):
     """ """
 
     def __init__(self, parent):
@@ -33,6 +33,7 @@ class HemisphereDraw(MWidget, SlewInterface):
         self.ui = parent.ui
         self.app = parent.app
         self.msg = parent.msg
+        self.slewInterface = SlewInterface(self)
 
         self.pointerDome = None
         self.modelPointsText = []
@@ -471,7 +472,7 @@ class HemisphereDraw(MWidget, SlewInterface):
         suc = self.messageDialog(self, "Slewing mount", question)
         if not suc:
             return
-        self.slewTargetAltAz(altitude, azimuth)
+        self.slewInterface.slewTargetAltAz(altitude, azimuth)
 
     def slewStar(self, posView: QPointF) -> None:
         """ """
@@ -506,7 +507,7 @@ class HemisphereDraw(MWidget, SlewInterface):
 
         t = f"Align [{alignType}] to [{name}]"
         self.msg.emit(1, "Hemisphere", "Align", t)
-        self.slewTargetRaDec(ra, dec, slewType=alignType, epoch="JNow")
+        self.slewInterface.slewTargetRaDec(ra, dec, slewType=alignType, epoch="JNow")
 
     def mouseDoubleClick(self, ev: MouseEvent, posView: QPointF) -> None:
         """ """

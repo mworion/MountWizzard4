@@ -20,7 +20,6 @@ import shutil
 import unittest.mock as mock
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
 from mw4.gui.extWindows.image.imageW import ImageWindow
-from mw4.gui.utilities.slewInterface import SlewInterface
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.logic.file.fileHandler import FileHandler
 from mw4.logic.photometry.photometry import Photometry
@@ -389,7 +388,7 @@ def test_slewDirect_2(function):
 def test_slewDirect_3(function):
     function.app.deviceStat["mount"] = True
     with mock.patch.object(function, "messageDialog", return_value=True):
-        with mock.patch.object(SlewInterface, "slewTargetRaDec", return_value=True):
+        with mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=True):
             function.slewDirect(Angle(hours=0), Angle(degrees=0))
 
 

@@ -28,7 +28,7 @@ from pathlib import Path
 from skyfield.api import Angle
 
 
-class ImageWindow(MWidget, SlewInterface):
+class ImageWindow(MWidget):
     """ """
 
     def __init__(self, app):
@@ -41,6 +41,7 @@ class ImageWindow(MWidget, SlewInterface):
         self.signals = ImageWindowSignals()
         self.photometry = Photometry(app=app)
         self.fileHandler = FileHandler(app=app)
+        self.slewInterface = SlewInterface(self)
         self.barItem = None
         self.imageItem = None
         self.imageFileName: Path = Path("")
@@ -417,7 +418,7 @@ class ImageWindow(MWidget, SlewInterface):
 
         if not self.messageDialog(self, "Slewing mount", question):
             return
-        self.slewTargetRaDec(ra, dec)
+        self.slewInterface.slewTargetRaDec(ra, dec)
 
     def slewCenter(self) -> None:
         """ """

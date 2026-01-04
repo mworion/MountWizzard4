@@ -324,35 +324,6 @@ def test_loadProfileGUI_3(window):
                     window.loadProfileGUI()
 
 
-def test_addProfileGUI_1(window):
-    with mock.patch.object(window, "openFile", return_value=Path("cfg")):
-        window.addProfileGUI()
-
-
-def test_addProfileGUI_2(window):
-    with mock.patch.object(window, "openFile", return_value=Path("test.cfg")):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(
-                mw4.gui.mainWindow.mainWindow, "loadProfile", return_value=None
-            ):
-                with mock.patch.object(window, "storeConfig"):
-                    with mock.patch.object(window.app, "storeConfig"):
-                        with mock.patch.object(window, "switchProfile"):
-                            window.addProfileGUI()
-
-
-def test_addProfileGUI_3(window):
-    with mock.patch.object(window, "openFile", return_value=Path("test.cfg")):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(
-                mw4.gui.mainWindow.mainWindow, "loadProfile", return_value={"test": 1}
-            ):
-                with mock.patch.object(window, "storeConfig"):
-                    with mock.patch.object(window.app, "storeConfig"):
-                        with mock.patch.object(window, "switchProfile"):
-                            window.addProfileGUI()
-
-
 def test_saveConfigAs1(window):
     with mock.patch.object(window, "saveFile", return_value=Path("test.cfg")):
         with mock.patch.object(

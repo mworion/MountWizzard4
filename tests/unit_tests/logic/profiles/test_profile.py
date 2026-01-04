@@ -140,7 +140,7 @@ def test_convertProfileData40to41_4():
 def test_defaultConfig():
     val = defaultConfig()
     assert val["profileName"] == "config"
-    assert val["version"] == "4.2"
+    assert val["version"] == "4.3"
 
 
 def test_checkResetTabOrder_1():
@@ -163,7 +163,7 @@ def test_checkResetTabOrder_2():
 
 def test_loadProfile_1():
     val = loadProfile(Path("tests/work/config"))
-    assert val == {"profileName": "config", "version": "4.2"}
+    assert val == {"profileName": "config", "version": "4.3"}
 
 
 def test_loadProfile_2():
@@ -176,7 +176,7 @@ def test_loadProfile_2():
         json.dump(config, outfile)
 
     val = loadProfile(Path("tests/work/config/config.cfg"))
-    assert val == {"profileName": "config", "version": "4.2", "mainW": {}}
+    assert val == {"profileName": "config", "version": "4.3", "mainW": {}}
 
 
 def test_loadProfile_3():
@@ -184,7 +184,7 @@ def test_loadProfile_3():
         outfile.write("config")
 
     val = loadProfile(Path("tests/work/config/config.cfg"))
-    assert val == {"profileName": "config", "version": "4.2"}
+    assert val == {"profileName": "config", "version": "4.3"}
 
 
 def test_loadProfile_4():
@@ -197,7 +197,7 @@ def test_loadProfile_4():
 
     with mock.patch.object(json, "load", side_effect=Exception()):
         val = loadProfile(Path("tests/work/config/config.cfg"))
-        assert val == {"profileName": "config", "version": "4.2"}
+        assert val == {"profileName": "config", "version": "4.3"}
 
 
 def test_loadProfile_5():
@@ -233,7 +233,7 @@ def test_loadProfileStart_2():
         json.dump(config, outfile)
 
     val = loadProfileStart(Path("tests/work/config"))
-    assert val == {"profileName": "config", "version": "4.2"}
+    assert val == {"profileName": "config", "version": "4.3"}
 
 
 def test_loadProfileStart_3():
@@ -246,7 +246,7 @@ def test_loadProfileStart_3():
         json.dump(config, outfile)
 
     val = loadProfileStart(Path("tests/work/config"))
-    assert val == {"profileName": "config", "version": "4.2", "mainW": {}}
+    assert val == {"profileName": "config", "version": "4.3", "mainW": {}}
 
 
 def test_saveProfile_1():

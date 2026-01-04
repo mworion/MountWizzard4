@@ -126,8 +126,8 @@ class ModelData(QObject):
     def startNewSlew(self) -> None:
         """ """
         self.pointerSlew += 1
-        self.log.debug(f"{'start slew':15s}: {self.pointerSlew:02d}")
         if self.pointerSlew >= len(self.modelBuildData):
+            self.log.debug(f"{'Start slew':15s}: length exceeded")
             return
         if self.cancelBatch or self.endBatch:
             return
@@ -138,7 +138,9 @@ class ModelData(QObject):
         azimuth = item["azimuth"]
         self.mountSlewed = False
         self.domeSlewed = False
-        self.log.debug(f"{'':15s}: {self.pointerSlew:02d}, {altitude:03.0f}, {azimuth:03.0f}")
+        t = f"{'Start slew':15s}: [{self.pointerSlew:02d}], "
+        t += f" alt:[{altitude.degrees:03.0f}], az:[{azimuth.degrees:03.0f}]"
+        self.log.debug(t)
 
         if not self.app.mount.obsSite.setTargetAltAz(altitude, azimuth):
             self.log.debug(f"{'':15s}: no target setting possible")
@@ -175,13 +177,13 @@ class ModelData(QObject):
 
     def saveModelData(self, modelPath: Path) -> None:
         """ """
-        self.log.debug(f"{'save model':15s}: {len(self.modelSaveData)}")
+        self.log.debug(f"{'Save model':15s}: len: [{len(self.modelSaveData)}]")
         with open(modelPath, "w") as outfile:
             json.dump(self.modelSaveData, outfile, sort_keys=True, indent=4)
 
     def buildProgModel(self) -> None:
         """ """
-        self.log.debug(f"{'build prog model':15s}: {len(self.modelBuildData)}")
+        self.log.debug(f"{'Build progmodel':15s}: len:[{len(self.modelBuildData)}]")
         self.modelProgData = []
         for mPoint in self.modelBuildData:
             if not mPoint["success"]:
@@ -197,7 +199,7 @@ class ModelData(QObject):
         """ """
         item = self.modelBuildData[self.pointerImage]
         obs = self.app.mount.obsSite
-        self.log.debug(f"{'add mount data':15s}: {obs.raJNow} {obs.decJNow} {obs.timeJD}")
+        self.log.debug(f"{'Add mount data':15s}: ra:[{obs.raJNow}], dec:[{obs.decJNow}], jd:[{obs.timeJD}]")
         item["raJNowM"] = obs.raJNow
         item["decJNowM"] = obs.decJNow
         item["angularPosRA"] = obs.angularPosRA
@@ -214,7 +216,6 @@ class ModelData(QObject):
     def startNewImageExposure(self) -> None:
         """ """
         self.pointerImage += 1
-        self.log.debug(f"{'start exposure':15s}: {self.pointerImage:02d}")
         if self.cancelBatch or self.endBatch:
             return
 
@@ -230,7 +231,7 @@ class ModelData(QObject):
         exposureTime = item["exposureTime"] = cam.exposureTime1
         binning = item["binning"] = cam.binning1
         self.log.debug(
-            f"{'':15s}: {self.pointerImage:02d}, {imagePath.stem}, {exposureTime:3.0f}"
+            f"{'Start exposure':15s}: [{self.pointerImage:02d}], file:[{imagePath.stem}], exp:[{exposureTime:3.0f}]"
         )
         self.app.camera.expose(imagePath, exposureTime, binning)
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
@@ -238,7 +239,7 @@ class ModelData(QObject):
     def startNewPlateSolve(self) -> None:
         """ """
         self.pointerPlateSolve += 1
-        self.log.debug(f"{'start solve':15s}: {self.pointerPlateSolve:02d}")
+        self.log.debug(f"{'Start solve':15s}: [{self.pointerPlateSolve:02d}]")
         imagePath = self.modelBuildData[self.pointerPlateSolve]["imagePath"]
         self.app.plateSolve.solve(imagePath)
 
@@ -263,7 +264,6 @@ class ModelData(QObject):
     def collectPlateSolveResult(self, result) -> None:
         """ """
         self.pointerResult += 1
-        self.log.debug(f"{'collect solve':15s}: {self.pointerResult:02d}")
         item = self.modelBuildData[self.pointerResult]
         item.update(result)
         item["success"] = result["success"]
@@ -278,7 +278,7 @@ class ModelData(QObject):
         else:
             self.app.data.setStatusBuildPFailed(self.pointerResult)
 
-        self.log.debug(f"{'':15s}: {item}")
+        self.log.debug(f"{'Collect solve':15s}: [{item}]")
         self.statusSolve.emit(item)
         self.app.updatePointMarker.emit()
         self.sendModelProgress()
@@ -287,7 +287,7 @@ class ModelData(QObject):
     def prepareModelBuildData(self) -> None:
         """ """
         self.modelBuildData.clear()
-        self.log.debug(f"{'prepare model':15s}: {len(self.modelInputData)}")
+        self.log.debug(f"{'Prepare model':15s}: len:[{len(self.modelInputData)}]")
         for index, point in enumerate(self.modelInputData):
             modelItem = {}
             imagePath = self.imageDir / f"image-{index + 1:03d}.fits"
@@ -308,7 +308,8 @@ class ModelData(QObject):
     def checkRetryNeeded(self) -> None:
         """ """
         retryNeeded = not all(p["success"] for p in self.modelBuildData)
-        self.log.debug(f"{'check retry':15s}: {retryNeeded}")
+        t = "retry needed" if retryNeeded else "no retry needed"
+        self.log.debug(f"{'Check retry':15s}: status:[{t}]")
         return retryNeeded
 
     def runThroughModelBuildData(self) -> None:
@@ -325,7 +326,7 @@ class ModelData(QObject):
     def runThroughModelBuildDataRetries(self) -> None:
         """ """
         while self.numberRetries >= 0:
-            self.log.debug(f"{'run retries':15s}: {self.numberRetries}")
+            self.log.debug(f"{'Run retries':15s}: count:[{self.numberRetries:1d}]")
             self.runThroughModelBuildData()
             if not self.checkRetryNeeded():
                 break
@@ -338,7 +339,7 @@ class ModelData(QObject):
         if not self.modelInputData:
             return
 
-        self.log.debug(f"{'start model':15s}")
+        self.log.debug(f"{'Start model':15s}")
         self.runTime = time.time()
         self.setupSignals()
         self.prepareModelBuildData()
@@ -348,5 +349,5 @@ class ModelData(QObject):
         if modelSize < 3:
             self.log.warning(f"Only {modelSize} points available")
             self.modelProgData = []
-        self.log.debug(f"{'finish model':15s}: {modelSize}")
+        self.log.debug(f"{'Finish model':15s}: [{modelSize}]")
         self.resetSignals()

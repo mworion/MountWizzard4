@@ -336,7 +336,6 @@ class SettMisc(QObject):
         if sound in self.audioSignalsSet:
             QSoundEffect.play(self.audioSignalsSet[sound])
 
-
     def minimizeGUI(self) -> None:
         """ """
         for tab in self.uiTabs:

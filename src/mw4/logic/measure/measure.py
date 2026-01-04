@@ -23,6 +23,7 @@ from PySide6.QtCore import QMutex
 
 class MeasureData:
     """ """
+
     log = logging.getLogger("MW4")
     MAXSIZE = 48 * 60 * 60
 
@@ -100,8 +101,7 @@ class MeasureData:
         self.data["timeDiff"] = np.empty(shape=[0, 1])
 
     def calculateReference(self):
-        """
-        """
+        """ """
         dat = self.data
         obs = self.app.mount.obsSite
         raJNow = 0
@@ -146,8 +146,7 @@ class MeasureData:
                 self.data[measure] = np.delete(self.data[measure], range(0, 2))
 
     def checkSize(self, lenData: int) -> None:
-        """
-        """
+        """ """
         if lenData < self.MAXSIZE:
             return
         for measure in self.data:
@@ -171,8 +170,7 @@ class MeasureData:
         return temp, press, dew, hum
 
     def measureTask(self) -> None:
-        """
-        """
+        """ """
         if not self.mutexMeasure.tryLock():
             self.log.info("overrun in measure")
             return

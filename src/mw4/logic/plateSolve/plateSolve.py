@@ -91,11 +91,9 @@ class PlateSolve:
         msg = self.run[self.framework].returnCodes.get(rCode, "Unknown code")
         return suc, msg
 
-    def prepareResult(
-        self, suc: bool, msg: str, imagePath: Path, wcsPath: Path, updateHeader: bool
-    ):
-        """"""
-        result = {"success": False, "message": "Internal error"}
+    def prepareResult(self, suc: bool, msg: str, imagePath: Path, wcsPath: Path, update: bool):
+        """ """
+        result = {"success": False, "message": msg}
         if not suc:
             self.log.warning(f"Error: [{imagePath.stem}], message: {msg}")
             return result
@@ -109,7 +107,7 @@ class PlateSolve:
         imageHeader = getImageHeader(imagePath)
         solution = getSolutionFromWCSHeader(wcsHeader, imageHeader)
 
-        if updateHeader:
+        if update:
             updateImageFileHeaderWithSolution(imagePath, solution)
 
         result["success"] = True

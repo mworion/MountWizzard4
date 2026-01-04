@@ -153,7 +153,7 @@ class HorizonDraw(MWidget):
         """ """
         folder = self.app.mwGlob["configDir"]
         saveFilePath = self.saveFile(
-            self, "Save horizon mask file", folder, "Horizon mask files (*.hpts)"
+            self.parent, "Save horizon mask file", folder, "Horizon mask files (*.hpts)"
         )
         if not saveFilePath.stem:
             return

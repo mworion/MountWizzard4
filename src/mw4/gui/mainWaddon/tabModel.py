@@ -154,7 +154,7 @@ class Model(QObject):
     def programModelToMountFinish(self) -> None:
         """ """
         self.app.mount.signals.getModelDone.disconnect(self.programModelToMountFinish)
-        self.msg.emit(0, "Model", "Run", f"Writing model [{self.modelData.name}]")
+        self.msg.emit(1, "Model", "Run", f"Writing model [{self.modelData.name}]")
         self.modelData.generateSaveData()
         modelPath = self.app.mwGlob["modelDir"] / (self.modelData.name + ".model")
         self.modelData.saveModelData(modelPath)
@@ -162,7 +162,7 @@ class Model(QObject):
 
     def programModelToMount(self) -> bool:
         """ """
-        self.msg.emit(0, "Model", "Run", f"Programming {self.modelData.name}")
+        self.msg.emit(1, "Model", "Run", f"Programming {self.modelData.name}")
         if not self.modelData.modelProgData:
             self.msg.emit(3, "Model", "Run error", "No sufficient model data available")
             return
@@ -171,7 +171,7 @@ class Model(QObject):
             self.msg.emit(3, "Model", "Run error", "Programming to mount error")
             return
 
-        self.msg.emit(0, "Model", "Run", f"Programmed {self.modelData.name} with success")
+        self.msg.emit(1, "Model", "Run", f"Programmed {self.modelData.name} with success")
         self.app.mount.signals.getModelDone.connect(self.programModelToMountFinish)
         self.app.refreshModel.emit()
 
@@ -238,7 +238,7 @@ class Model(QObject):
             t += f", Angle {data['angleS'].degrees:.2f}, Scale {data['scaleS']:.2f}"
         else:
             t = f"Error {data['imagePath'].stem}, {data['message']}"
-        self.msg.emit(0, "Model", "Solving Error", t)
+        self.msg.emit(0, "Model", "Solving result", t)
 
     def setupModelInputData(self) -> None:
         """ """

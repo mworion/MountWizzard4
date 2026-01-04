@@ -58,11 +58,6 @@ class SensorWeatherOnline:
     @staticmethod
     def getDewPoint(tempAir: float, relativeHumidity: float) -> float:
         """
-        Compute the dew point in degrees Celsius
-
-        :param tempAir: current ambient temperature in degrees Celsius
-        :param relativeHumidity: relative humidity in %
-        :return: the dew point in degrees Celsius
         """
         if tempAir < -40 or tempAir > 80:
             return 0
@@ -120,6 +115,7 @@ class SensorWeatherOnline:
             return False
         try:
             data = requests.get(url, timeout=30)
+            self.log.debug(f"Weather url: [{url}] response code: [{data.status_code}]")
         except Exception as e:
             self.log.critical(f"[{url}] general exception: [{e}]")
             return False
@@ -128,6 +124,7 @@ class SensorWeatherOnline:
             self.log.warning(f"[{url}] status is not 200")
             return False
 
+        self.log.debug(f"Data: [{data}]")
         with open(self.app.mwGlob["dataDir"] / "openweathermap.data", "w+") as f:
             json.dump(data.json(), f, indent=4)
         return True
@@ -172,4 +169,3 @@ class SensorWeatherOnline:
         webSite = f"http://{self.hostaddress}/data/2.5/weather"
         url = f"{webSite}?lat={lat:1.2f}&lon={lon:1.2f}"
         self.getOpenWeatherMapData(url=url + f"&APPID={self.apiKey}")
-        self.log.debug(f"{url}")

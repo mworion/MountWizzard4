@@ -23,10 +23,7 @@ from PySide6.QtCore import QMutex
 
 class MeasureData:
     """ """
-
     log = logging.getLogger("MW4")
-
-    # maximum size of measurement task
     MAXSIZE = 48 * 60 * 60
 
     def __init__(self, app):
@@ -34,25 +31,22 @@ class MeasureData:
         self.app = app
         self.signals = Signals()
         self.mutexMeasure = QMutex()
-
-        # internal calculations
-        self.shorteningStart = True
+        self.shorteningStart: bool = True
         self.raRef = None
         self.decRef = None
         self.angularPosRaRef = None
         self.angularPosDecRef = None
-        self.devices = {}
-        self.deviceName = ""
-
         self.data = {}
+        self.devices: dict = {}
+        self.deviceName: str = ""
         self.defaultConfig = {"framework": "", "frameworks": {}}
+        self.framework: str = ""
         self.run = {
             "raw": MeasureDataRaw(self.app, self, self.data),
             "csv": MeasureDataCSV(self.app, self, self.data),
         }
         for fw in self.run:
             self.defaultConfig["frameworks"].update(self.run[fw].defaultConfig)
-        self.framework = ""
 
     def startCommunication(self) -> None:
         """ """
@@ -107,12 +101,6 @@ class MeasureData:
 
     def calculateReference(self):
         """
-        calculateReference run the states to get the calculation with references
-        for RaDec deviations better stable. it takes into account, when the mount
-        is tracking and when we calculate the offset (ref) to make the deviations
-        balanced to zero
-
-        :return: raJNow, decJNow
         """
         dat = self.data
         obs = self.app.mount.obsSite
@@ -159,13 +147,6 @@ class MeasureData:
 
     def checkSize(self, lenData: int) -> None:
         """
-        checkSize keep tracking of memory usage of the measurement. if the measurement
-        get s too much data, it split the history by half and only keeps the latest only
-        for work.
-        if as well throws the first N measurements away, because they or not valid
-
-        :param lenData:
-        :return: True if splitting happens
         """
         if lenData < self.MAXSIZE:
             return
@@ -191,16 +172,6 @@ class MeasureData:
 
     def measureTask(self) -> None:
         """
-        measureTask runs all necessary pre-processing and collecting task to
-        assemble a large dict of lists, where all measurement data is stored. the
-        intention later on would be to store and export this data. the time
-        object is related to the time held in mount computer and is in utc timezone.
-
-        data sources are:
-            environment
-            mount pointing position
-
-        :return: success
         """
         if not self.mutexMeasure.tryLock():
             self.log.info("overrun in measure")

@@ -20,7 +20,6 @@ import os
 import pytest
 import unittest.mock as mock
 from mw4.logic.profiles.profile import (
-    blendProfile,
     checkResetTabOrder,
     convertKeyData,
     convertProfileData40to41,
@@ -136,11 +135,6 @@ def test_convertProfileData40to41_4():
     data = {"mainW": "4.0"}
     val = convertProfileData40to41(data)
     assert val["mainW"] == "4.0"
-
-
-def test_blendProfile():
-    conf = blendProfile({}, {})
-    assert conf == {}
 
 
 def test_defaultConfig():

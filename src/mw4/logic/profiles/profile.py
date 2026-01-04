@@ -22,7 +22,7 @@ from pathlib import Path
 
 setupLogging()
 log = logging.getLogger()
-profileVersion = "4.2"
+profileVersion = "4.3"
 
 
 def replaceKeys(oldDict: dict, keyDict: dict) -> dict:
@@ -144,16 +144,30 @@ def convertProfileData41to42(data: dict) -> dict:
     return data
 
 
-def blendProfile(config, configAdd):
+def convertProfileData42to43(data: dict) -> dict:
     """ """
-    return config
+    actVer = Version(data.get("version", "0.0"))
+    if actVer >= Version("4.3"):
+        return data
+
+    log.info(f"Conversion from [{data.get('version')}] to [4.3]")
+    d = NestedDict(data)
+    try:
+        if "onlineWeather" in d["driversData"]:
+            d["driversData", "sensor4Weather"] = d["driversData", "onlineWeather"]
+            del d["driversData"]["onlineWeather"]
+        d["version"] = "4.3"
+
+    except Exception as e:
+        log.error(f"Failed conversion, keep old structure: {e}")
+    else:
+        data = d.to_dict()
+    return data
 
 
 def defaultConfig() -> dict:
     """ """
-    config = {}
-    config["profileName"] = "config"
-    config["version"] = profileVersion
+    config = {"profileName": "config", "version": profileVersion}
     return config
 
 
@@ -182,6 +196,7 @@ def loadProfile(loadProfilePath: Path) -> dict:
     configData["profileName"] = loadProfilePath.stem
     profile = convertProfileData40to41(configData)
     profile = convertProfileData41to42(profile)
+    profile = convertProfileData42to43(profile)
     mainW = profile.get("mainW", {})
     resetOrder = mainW.get("resetTabOrder", False)
     if resetOrder:

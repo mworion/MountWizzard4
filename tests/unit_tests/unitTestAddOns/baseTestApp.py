@@ -27,7 +27,7 @@ class PlateSolve:
     framework = None
     run = {}
     deviceName = ""
-    defaultConfig = {"framework": "", "frameworks": {}}
+    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
 
     @staticmethod
     def solve(a, b):
@@ -65,8 +65,7 @@ class Camera:
     fastReadout = False
     data = {}
     framework = None
-    defaultConfig = {"framework": "", "frameworks": {}}
-
+    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
     run = {"indi": "dummy"}
 
     @staticmethod
@@ -126,7 +125,8 @@ class Cover:
     signals = CoverSignals()
     data = {}
     framework = None
-    defaultConfig = {"framework": "", "frameworks": {}}
+    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    run = {"indi": "dummy"}
 
     @staticmethod
     def closeCover():
@@ -172,7 +172,8 @@ class Dome:
     data = {}
     framework = None
     signals = DomeSignals()
-    defaultConfig = {"framework": "", "frameworks": {}}
+    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    run = {"indi": "dummy"}
 
     @staticmethod
     def slewDome(altitude=None, azimuth=None, piersideT=None, haT=None, decT=None, lat=None):
@@ -222,7 +223,8 @@ class SensorWeather:
     signals = SensorWeatherSignals()
     data = {}
     framework = None
-    defaultConfig = {"framework": "", "frameworks": {}}
+    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    run = {"indi": "dummy"}
 
 
 class OnlineWeather:
@@ -249,7 +251,8 @@ class DirectWeather:
     signals = DirectWeatherSignals()
     data = {}
     framework = None
-    defaultConfig = {"framework": "", "frameworks": {}}
+    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    run = {"indi": "dummy"}
 
 
 class SeeingWeather:
@@ -262,7 +265,8 @@ class SeeingWeather:
 
     signals = SeeingWeatherSignals()
     framework = None
-    defaultConfig = {"framework": "", "frameworks": {}}
+    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    run = {"indi": "dummy"}
     data = {}
 
 
@@ -277,7 +281,8 @@ class Filter:
     signals = FilterSignals()
     data = {}
     framework = None
-    defaultConfig = {"framework": "", "frameworks": {}}
+    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    run = {"indi": "dummy"}
 
     @staticmethod
     def sendFilterNumber(filterNumber=None):
@@ -299,7 +304,8 @@ class Focuser:
     signals = FocuserSignals()
     framework = None
     data = {}
-    defaultConfig = {"framework": "", "frameworks": {}}
+    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    run = {"indi": "dummy"}
 
     @staticmethod
     def move():
@@ -387,7 +393,7 @@ class Telescope:
     run = {"indi": Test()}
     focalLength = 100
     aperture = 100
-    defaultConfig = {"framework": "", "frameworks": {}}
+    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
 
     @staticmethod
     def stopCommunication():

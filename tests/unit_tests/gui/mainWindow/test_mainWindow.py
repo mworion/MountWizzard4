@@ -338,10 +338,7 @@ def test_addProfileGUI_2(window):
                 with mock.patch.object(window, "storeConfig"):
                     with mock.patch.object(window.app, "storeConfig"):
                         with mock.patch.object(window, "switchProfile"):
-                            with mock.patch.object(
-                                mw4.gui.mainWindow.mainWindow, "blendProfile"
-                            ):
-                                window.addProfileGUI()
+                            window.addProfileGUI()
 
 
 def test_addProfileGUI_3(window):
@@ -353,10 +350,7 @@ def test_addProfileGUI_3(window):
                 with mock.patch.object(window, "storeConfig"):
                     with mock.patch.object(window.app, "storeConfig"):
                         with mock.patch.object(window, "switchProfile"):
-                            with mock.patch.object(
-                                mw4.gui.mainWindow.mainWindow, "blendProfile"
-                            ):
-                                window.addProfileGUI()
+                            window.addProfileGUI()
 
 
 def test_saveConfigAs1(window):

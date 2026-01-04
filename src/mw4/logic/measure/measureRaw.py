@@ -19,12 +19,8 @@ import PySide6
 
 class MeasureDataRaw(PySide6.QtCore.QObject):
     """ """
-
     log = logging.getLogger("MW4")
-
-    # update rate to 1 seconds for setting indi server
     CYCLE_UPDATE_TASK = 1000
-    # maximum size of measurement task
     MAXSIZE = 24 * 60 * 60
 
     def __init__(self, app=None, parent=None, data=None):
@@ -39,8 +35,6 @@ class MeasureDataRaw(PySide6.QtCore.QObject):
                 "deviceName": "display only",
             }
         }
-
-        # time for measurement
         self.timerTask = PySide6.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)

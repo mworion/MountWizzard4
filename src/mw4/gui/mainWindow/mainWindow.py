@@ -22,7 +22,7 @@ from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.logic.profiles.profile import blendProfile, loadProfile, saveProfile
+from mw4.logic.profiles.profile import loadProfile, saveProfile
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
 from PySide6.QtCore import Qt
@@ -79,7 +79,6 @@ class MainWindow(MWidget):
         self.app.camera.signals.message.connect(self.updateCameraStatus)
         self.ui.saveConfigQuit.clicked.connect(self.quitSave)
         self.ui.loadFrom.clicked.connect(self.loadProfileGUI)
-        self.ui.addFrom.clicked.connect(self.addProfileGUI)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
         self.app.seeingWeather.b = self.ui.label_b.property("a")
@@ -414,25 +413,6 @@ class MainWindow(MWidget):
         self.ui.profile.setText(loadProfilePath.stem)
         self.msg.emit(1, "System", "Profile", f"{loadProfilePath.stem} loaded")
 
-    def addProfileGUI(self) -> None:
-        """ """
-        config = self.app.config
-        folder = self.app.mwGlob["configDir"]
-        loadProfilePath = self.openFile(
-            self, "Open add-on config file", folder, "Config files (*.cfg)"
-        )
-        if not loadProfilePath.is_file():
-            self.ui.profileAdd.setText("-")
-            return
-
-        configAdd = loadProfile(loadProfilePath)
-        config = blendProfile(config, configAdd)
-        self.switchProfile(config)
-        self.ui.profileAdd.setText(loadProfilePath.stem)
-        profile = self.ui.profile.text()
-        self.msg.emit(1, "System", "Profile", f"Base: {profile}")
-        self.msg.emit(1, "System", "Profile", f"Add : {loadProfilePath.name}")
-
     def saveProfileBase(self, saveProfilePath: Path) -> None:
         """ """
         if not saveProfilePath.stem:
@@ -441,7 +421,6 @@ class MainWindow(MWidget):
         saveProfile(saveProfilePath, self.app.config)
         self.ui.profile.setText(saveProfilePath.stem)
         self.msg.emit(1, "System", "Profile", f"Saved to [{saveProfilePath.stem}]")
-        self.ui.profileAdd.setText("-")
 
     def saveProfileAs(self) -> None:
         """ """

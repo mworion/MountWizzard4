@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -23987,7 +23987,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -30104,239 +30104,11 @@ Next point in time when satellite settles.</string>
       <attribute name="title">
        <string>Profile, Log, Online, Audio</string>
       </attribute>
-      <widget class="QGroupBox" name="addProfileGroup">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>15</y>
-         <width>366</width>
-         <height>206</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Add profile: data selection</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QCheckBox" name="profileDevices">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>25</y>
-          <width>351</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Show only beta versions of MountWizzard4</string>
-        </property>
-        <property name="text">
-         <string>Devices drivers data</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="profileHemisHorizon">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>50</y>
-          <width>351</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Show only beta versions of MountWizzard4</string>
-        </property>
-        <property name="text">
-         <string>Hemisphere and horizon data</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="profileVideo">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>75</y>
-          <width>351</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Show only beta versions of MountWizzard4</string>
-        </property>
-        <property name="text">
-         <string>Video window settings data</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="profileDome">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>100</y>
-          <width>351</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Show only beta versions of MountWizzard4</string>
-        </property>
-        <property name="text">
-         <string>Dome setting data</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="profileSatellite">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>125</y>
-          <width>351</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Show only beta versions of MountWizzard4</string>
-        </property>
-        <property name="text">
-         <string>Satellite setting data</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="profileImaging">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>150</y>
-          <width>351</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Show only beta versions of MountWizzard4</string>
-        </property>
-        <property name="text">
-         <string>Imaging data</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="profileModeling">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>175</y>
-          <width>351</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Show only beta versions of MountWizzard4</string>
-        </property>
-        <property name="text">
-         <string>Modelling data</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="AudioGroup">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>15</y>
+         <x>10</x>
+         <y>10</y>
          <width>366</width>
          <height>226</height>
         </rect>
@@ -30616,7 +30388,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>340</y>
+         <y>95</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -30722,8 +30494,8 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="InternetOnlineGroup">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>320</y>
+         <x>400</x>
+         <y>10</y>
          <width>366</width>
          <height>71</height>
         </rect>
@@ -31473,7 +31245,7 @@ Next point in time when satellite settles.</string>
         </rect>
        </property>
        <property name="title">
-        <string>MountWizzard4 (C) 2019-2025 MWORION</string>
+        <string>MountWizzard4 (C) 2019-2026 MWORION</string>
        </property>
        <widget class="QTextBrowser" name="textBrowserCopyright">
         <property name="enabled">
@@ -32676,7 +32448,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0">
+     <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1">
       <property name="spacing">
        <number>5</number>
       </property>
@@ -32690,59 +32462,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
         </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>91</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::FocusPolicy::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Shows the actual selected profile name.</string>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="frame">
-         <bool>false</bool>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="profileAdd">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>

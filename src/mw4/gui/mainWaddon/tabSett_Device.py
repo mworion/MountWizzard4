@@ -191,27 +191,38 @@ class SettDevice(QObject):
         self.ui.ascomConnect.clicked.connect(self.manualStartAllAscomDrivers)
         self.ui.ascomDisconnect.clicked.connect(self.manualStopAllAscomDrivers)
 
-    def setDefaultData(self, driver: str, config: dict) -> None:
+    def addMissingFrameworksData(self, driver: str, config: dict) -> dict:
         """ """
-        config[driver] = {}
-        defaultConfig = self.drivers[driver]["class"].defaultConfig
-        config[driver].update(defaultConfig)
+        for framework in self.drivers[driver]["class"].run:
+            if framework not in config[driver]["frameworks"]:
+                entry = self.drivers[driver]["class"].defaultConfig["frameworks"][framework]
+                config[driver]["frameworks"][framework] = entry
+        return config
+
+    def addMissingDefaultData(self, config: dict) -> dict:
+        """ """
+        for driver in self.drivers:
+            if driver not in config:
+                config[driver] = {}
+                defaultConfig = self.drivers[driver]["class"].defaultConfig
+                config[driver].update(defaultConfig)
+                continue
+            config = self.addMissingFrameworksData(driver, config)
+        return config
+
+    def removeUnknownDriversData(self, config: dict) -> dict:
+        """ """
+        for driver in list(config):
+            if driver not in self.drivers:
+                del config[driver]
+        return config
 
     def loadDriversDataFromConfig(self, config: dict) -> None:
         """ """
         config = config.get("driversData", {})
         self.driversData.clear()
-
-        # adding default for missing drivers
-        for driver in self.drivers:
-            if driver not in config:
-                self.setDefaultData(driver, config)
-
-        # remove unknown drivers from data
-        for driver in list(config):
-            if driver not in self.drivers:
-                del config[driver]
-
+        config = self.addMissingDefaultData(config)
+        config = self.removeUnknownDriversData(config)
         self.driversData.update(config)
 
     def initConfig(self) -> None:

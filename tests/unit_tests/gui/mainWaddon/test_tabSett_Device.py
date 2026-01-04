@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import mw4.gui
 import pytest
 from mw4.gui.mainWaddon.tabSett_Device import SettDevice
@@ -35,19 +34,30 @@ def function(qapp):
     mainW.app.threadPool.waitForDone(1000)
 
 
-def test_setDefaultData(function):
-    config = {"camera": {}}
-    function.setDefaultData("camera", config)
+def test_addMissingFrameworksData_1(function):
+    config = {"camera": {"frameworks": {"ascom": {}}}}
+    result = function.addMissingFrameworksData("camera", config)
+    assert result == {'camera': {'frameworks': {'ascom': {}, 'indi': {'dummy': {}}}}}
+
+
+def test_addMissingDefaultData_1(function):
+    config = {"camera": {"ascom": {}}}
+    with mock.patch.object(function, "addMissingFrameworksData"):
+        function.addMissingDefaultData(config)
+
+
+def test_removeUnknownDriversData_1(function):
+    config = {"driversData": {"test": {}}}
+    res = function.removeUnknownDriversData(config)
+    assert res == {}
 
 
 def test_loadDriversDataFromConfig_1(function):
     config = {}
-    function.loadDriversDataFromConfig(config)
-
-
-def test_loadDriversDataFromConfig_2(function):
-    config = {"driversData": {"test": ""}}
-    function.loadDriversDataFromConfig(config)
+    with mock.patch.object(function, "addMissingDefaultData"):
+        with mock.patch.object(function, "removeUnknownDriversData"):
+            function.loadDriversDataFromConfig(config)
+            assert not function.driversData
 
 
 def test_initConfig_1(function):

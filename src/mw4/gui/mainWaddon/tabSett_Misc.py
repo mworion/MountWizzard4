@@ -68,7 +68,6 @@ class SettMisc(QObject):
         }
         self.app.update3s.connect(self.populateGameControllerList)
         self.ui.gameControllerGroup.clicked.connect(self.populateGameControllerList)
-        self.ui.addProfileGroup.clicked.connect(self.setAddProfileGUI)
         self.ui.showTabAlmanac.clicked.connect(self.minimizeGUI)
         self.ui.showTabEnviron.clicked.connect(self.minimizeGUI)
         self.ui.showTabSatellite.clicked.connect(self.minimizeGUI)
@@ -95,7 +94,6 @@ class SettMisc(QObject):
         self.ui.resetTabOrder.setChecked(config.get("resetTabOrder", False))
         self.ui.unitTimeUTC.setChecked(config.get("unitTimeUTC", True))
         self.ui.unitTimeLocal.setChecked(config.get("unitTimeLocal", False))
-        self.ui.addProfileGroup.setChecked(config.get("addProfileGroup", False))
         self.ui.showTabAlmanac.setChecked(config.get("showTabAlmanac", True))
         self.ui.showTabEnviron.setChecked(config.get("showTabEnviron", True))
         self.ui.showTabSatellite.setChecked(config.get("showTabSatellite", True))
@@ -117,7 +115,6 @@ class SettMisc(QObject):
 
         self.minimizeGUI()
         self.populateGameControllerList()
-        self.setAddProfileGUI()
         self.ui.unitTimeUTC.toggled.emit(True)
 
     def storeConfig(self) -> None:
@@ -127,7 +124,6 @@ class SettMisc(QObject):
         config["resetTabOrder"] = self.ui.resetTabOrder.isChecked()
         config["unitTimeUTC"] = self.ui.unitTimeUTC.isChecked()
         config["unitTimeLocal"] = self.ui.unitTimeLocal.isChecked()
-        config["addProfileGroup"] = self.ui.addProfileGroup.isChecked()
         config["showTabAlmanac"] = self.ui.showTabAlmanac.isChecked()
         config["showTabEnviron"] = self.ui.showTabEnviron.isChecked()
         config["showTabSatellite"] = self.ui.showTabSatellite.isChecked()
@@ -340,13 +336,6 @@ class SettMisc(QObject):
         if sound in self.audioSignalsSet:
             QSoundEffect.play(self.audioSignalsSet[sound])
 
-    def setAddProfileGUI(self) -> None:
-        """ """
-        isEnabled = self.ui.addProfileGroup.isChecked()
-        self.ui.addFrom.setEnabled(isEnabled)
-        self.ui.addFrom.setVisible(isEnabled)
-        self.ui.profileAdd.setEnabled(isEnabled)
-        self.ui.profileAdd.setVisible(isEnabled)
 
     def minimizeGUI(self) -> None:
         """ """

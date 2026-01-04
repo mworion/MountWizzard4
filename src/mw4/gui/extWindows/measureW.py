@@ -86,9 +86,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
                     "name": "Sensor 3",
                     "pen": self.M_PINK,
                 },
-                "onlineWeatherTemp": {
+                "sensor4WeatherTemp": {
                     "pd": None,
-                    "name": "Online",
+                    "name": "Sensor 4",
                     "pen": self.M_YELLOW,
                 },
                 "directWeatherTemp": {"pd": None, "name": "Direct", "pen": self.M_PRIM},
@@ -130,9 +130,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
                     "name": "Sensor 3",
                     "pen": self.M_PINK,
                 },
-                "onlineWeatherDew": {
+                "sensor4WeatherDew": {
                     "pd": None,
-                    "name": "Online",
+                    "name": "Sensor 4",
                     "pen": self.M_YELLOW,
                 },
                 "directWeatherDew": {"pd": None, "name": "Direct", "pen": self.M_PRIM},
@@ -158,9 +158,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
                     "name": "Sensor 3",
                     "pen": self.M_PINK,
                 },
-                "onlineWeatherPress": {
+                "sensor4WeatherPress": {
                     "pd": None,
-                    "name": "Online",
+                    "name": "Sensor 4",
                     "pen": self.M_YELLOW,
                 },
                 "directWeatherPress": {
@@ -186,9 +186,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
                     "name": "Sensor 3",
                     "pen": self.M_PINK,
                 },
-                "onlineWeatherHum": {
+                "sensor4WeatherHum": {
                     "pd": None,
-                    "name": "Online",
+                    "name": "Sensor 4",
                     "pen": self.M_YELLOW,
                 },
                 "directWeatherHum": {"pd": None, "name": "Direct", "pen": self.M_PRIM},
@@ -214,9 +214,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
                     "name": "Sensor 3",
                     "pen": self.M_PINK,
                 },
-                "onlineWeatherHum": {
+                "sensor4WeatherSky": {
                     "pd": None,
-                    "name": "Online",
+                    "name": "Sensor 4",
                     "pen": self.M_YELLOW,
                 },
             },

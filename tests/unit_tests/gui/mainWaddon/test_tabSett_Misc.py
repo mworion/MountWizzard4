@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import hid
 import mw4.gui.mainWaddon.tabSett_Misc
 import pytest
@@ -398,10 +397,6 @@ def test_playSound_3(function):
 
     with mock.patch.object(QSoundEffect, "play"):
         function.playSound("MountSlew")
-
-
-def test_setAddProfileGUI(function):
-    function.setAddProfileGUI()
 
 
 def test_minimizeGUI(function):

@@ -337,7 +337,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         values["gen"]["leg"] = legend
         plotItem.setLimits(xMin=x[0])
 
-    def plotting(self, plotItem, values: dict, x: list[float]) -> bool:
+    def plotting(self, plotItem, values: dict, x: list[float]) -> None:
         """ """
         newPlot = values["gen"]["label"] != plotItem.getAxis("left").labelText
         newPlot = newPlot or values["gen"]["leg"] is None

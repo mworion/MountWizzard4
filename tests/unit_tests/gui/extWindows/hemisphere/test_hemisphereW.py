@@ -142,12 +142,12 @@ def test_staticHorizonLimits_2(function):
 
 
 def test_drawTerrainImage_1(function):
-    function.imageTerrain = None
+    function.horizonDraw.imageTerrain = None
     function.drawTerrainImage(pg.PlotItem())
 
 
 def test_drawTerrainImage_2(function):
-    function.imageTerrain = np.ones((1440, 360))
+    function.horizonDraw.imageTerrain = np.ones((1440, 360))
     with mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(cv2, "imread", return_value=np.array([[0, 0], [0, 0]])):

@@ -164,6 +164,7 @@ class MountDevice:
         """ """
         if mountIsUp and not self.mountIsUpLastStatus:
             self.mountIsUpLastStatus = True
+            self.obsSite.setHighPrecision()
             self.getFW()
             self.getLocation()
             self.app.refreshModel.emit()

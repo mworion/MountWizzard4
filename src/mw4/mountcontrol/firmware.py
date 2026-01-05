@@ -66,7 +66,7 @@ class Firmware:
     def poll(self) -> bool:
         """ """
         conn = Connection(self.parent.host)
-        commandString = ":U2#:GVD#:GVN#:GVP#:GVT#:GVZ#:GCFG#"
+        commandString = ":GVD#:GVN#:GVP#:GVT#:GVZ#:GCFG#"
         suc, response, chunks = conn.communicate(commandString)
         if not suc:
             return False

@@ -110,8 +110,9 @@ def test_startupMountData_1(function):
         with mock.patch.object(function, "getFW"):
             with mock.patch.object(function, "getLocation"):
                 with mock.patch.object(function, "getTLE"):
-                    function.startupMountData(True)
-                    assert function.mountIsUpLastStatus
+                    with mock.patch.object(function.obsSite, "setHighPrecision"):
+                        function.startupMountData(True)
+                        assert function.mountIsUpLastStatus
 
 
 def test_startupMountData_2(function):

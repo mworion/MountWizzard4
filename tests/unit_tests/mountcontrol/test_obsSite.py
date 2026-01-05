@@ -1260,3 +1260,19 @@ class TestConfigData(unittest.TestCase):
             mConn.return_value.communicate.return_value = True, response, 0
             suc = obsSite.syncPositionToTarget()
             self.assertEqual(suc, True)
+
+    def test_setHighPrecision_1(self):
+        obsSite = ObsSite(parent=Parent())
+        response = []
+        with mock.patch("mw4.mountcontrol.obsSite.Connection") as mConn:
+            mConn.return_value.communicate.return_value = False, response, 0
+            suc = obsSite.setHighPrecision()
+            self.assertEqual(suc, False)
+
+    def test_setHighPrecision_2(self):
+        obsSite = ObsSite(parent=Parent())
+        response = []
+        with mock.patch("mw4.mountcontrol.obsSite.Connection") as mConn:
+            mConn.return_value.communicate.return_value = True, response, 0
+            suc = obsSite.setHighPrecision()
+            self.assertEqual(suc, True)

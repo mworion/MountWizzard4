@@ -118,8 +118,6 @@ class Connection:
         ":NTSweb",
         ":NUtim",
         ":PO",
-        ":PO",
-        ":PO",
         ":PaX",
         ":PiP",
         ":Q",
@@ -207,7 +205,6 @@ class Connection:
     # Command list for commands which don't reply to anything
     COMMAND_A = [
         ":AP",
-        ":hP",
         ":Me",
         ":Mn",
         ":Ms",
@@ -365,56 +362,39 @@ class Connection:
         else:
             return client
 
-    def sendData(self, client=None, commandString=""):
+    def sendData(self, client: socket.socket, commandString: str) -> bool:
         """
-        sendData sends all data of the command string out to the given socket
-        client.
         """
         try:
             self.log.trace(f"Sending  [{self.id}]: [{commandString}]")
             client.sendall(commandString.encode())
-
         except TimeoutError:
             self.closeClientHard(client)
             self.log.trace(f"Timeout  [{self.id}]: socket timeout in send data")
-            return None
-
+            return False
         except Exception as e:
             self.closeClientHard(client)
             self.log.trace(f"Error    [{self.id}]: socket error: [{e}] in send data")
             return False
-
         else:
             return True
 
-    def receiveData(self, client=None, numberOfChunks=0, minBytes=0):
+    def receiveData(self, client: socket.socket, numberOfChunks: int, minBytes: int) -> tuple[bool, str]:
         """
         receive Data waits on the give socket client for a number of chunks to
         be received or a minimum set of bytes received. the chunks are delimited
         with #. the min bytes are necessary because the mount computer has
         commands which give a response without a delimiter. this is bad, but status.
-
-        :param client: socket client
-        :param numberOfChunks: number of data chunks
-        :param minBytes: minimum number of data bytes
-        :return: success and response data
         """
         response = ""
         receiving = True
+        chunkRaw = b""
         try:
             while receiving:
                 chunkRaw = client.recv(2048)
-                try:
-                    chunk = chunkRaw.decode("ASCII")
-                except Exception as e:
-                    self.log.warning(
-                        f"Error    [{self.id}]: error: [{e}], received: [{chunkRaw}]"
-                    )
-                    return False, ""
-
+                chunk = chunkRaw.decode("ASCII")
                 if not chunk:
                     break
-
                 response += chunk
                 if (
                     numberOfChunks == 0
@@ -427,53 +407,46 @@ class Connection:
         except TimeoutError:
             self.log.trace(f"Timeout  [{self.id}]: socket timeout in receive data")
             return False, response
-
         except Exception as e:
+            self.log.warning(f"Error    [{self.id}]: error: [{e}], received: [{chunkRaw}]")
             self.log.trace(f"Error    [{self.id}]: socket error: [{e}] in receive data")
             return False, response
-
         else:
             response = response.rstrip("#").split("#")
             self.log.trace(f"Response [{self.id}]: [{response}]")
             return True, response
 
-    def communicate(self, commandString, responseCheck=""):
+    def communicate(self, commandString: str, responseCheck: str = "") -> tuple[bool, str, int]:
         """
-        transfer open a socket to the mount, takes the command string for the
-        mount, analyses it, check validity and finally if valid sends it to the
-        mount. If a response is expected, wait for the response and return the data.
         """
         if not self.validCommandSet(commandString):
             return False, "", 0
 
-        numberOfChunks, getData, minBytes = self.analyseCommand(commandString)
         client = self.buildClient()
+        numberOfChunks, getData, minBytes = self.analyseCommand(commandString)
+
         if client is None:
             return False, "", numberOfChunks
-
-        if not self.sendData(client=client, commandString=commandString):
+        if not self.sendData(client, commandString):
             return False, "", numberOfChunks
-
         if not getData:
             self.closeClientHard(client)
             return True, "", numberOfChunks
 
-        suc, response = self.receiveData(
-            client=client, numberOfChunks=numberOfChunks, minBytes=minBytes
-        )
+        suc, response = self.receiveData(client, numberOfChunks, minBytes)
         self.closeClientHard(client)
+
         if responseCheck:
             suc = suc and response[0] == responseCheck
-
         return suc, response, numberOfChunks
 
-    def communicateRaw(self, commandString: str) -> tuple:
+    def communicateRaw(self, commandString: str) -> tuple[bool, bool, str]:
         """ """
         client = self.buildClient()
         if client is None:
             return False, False, "Socket error"
 
-        sucSend = self.sendData(client=client, commandString=commandString)
+        sucSend = self.sendData(client, commandString)
         try:
             chunkRaw = client.recv(2048)
             val = chunkRaw.decode("ASCII")

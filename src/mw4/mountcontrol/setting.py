@@ -193,7 +193,7 @@ class Setting:
     def pollSetting(self) -> bool:
         """ """
         conn = Connection(self.parent.host)
-        cs1 = ":U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#"
+        cs1 = ":GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#"
         cs2 = ":GREF#:Guaf#:Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#"
         cs3 = ":WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#:Gstm#"
         if self.parent.firmware.checkNewer("3.2.5"):

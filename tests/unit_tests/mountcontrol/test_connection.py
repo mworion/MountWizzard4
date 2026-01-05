@@ -135,7 +135,7 @@ class TestConnection(unittest.TestCase):
 
     def test_responses_real_analyseCommand(self):
         conn = Connection()
-        command = ":U2#:GTsid#:Ga#:Gz#:Gr#:Gd#:QaXa#:QaXb#"
+        command = ":GTsid#:Ga#:Gz#:Gr#:Gd#:QaXa#:QaXb#"
         chunksToReceive, getData, minBytes = conn.analyseCommand(command)
         self.assertEqual(True, getData)
         self.assertEqual(1, minBytes)

@@ -335,13 +335,12 @@ class ObsSite:
 
     @piersideTarget.setter
     def piersideTarget(self, value):
-        if value == "2":
+        if value == 2:
             self._piersideTarget = "W"
-        elif value == "3":
+        elif value == 3:
             self._piersideTarget = "E"
         else:
-            self._piersideTarget = "W"
-            self.log.info(f"Malformed value: {value}")
+            self._piersideTarget = "None"
 
     @property
     def Alt(self):
@@ -452,7 +451,7 @@ class ObsSite:
     def getLocation(self) -> bool:
         """ """
         conn = Connection(self.parent.host)
-        commandString = ":U2#:Gev#:Gg#:Gt#"
+        commandString = ":Gev#:Gg#:Gt#"
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
@@ -485,7 +484,7 @@ class ObsSite:
     def pollPointing(self) -> bool:
         """ """
         conn = Connection(self.parent.host)
-        commandString = ":U2#:GS#:GDUT#:TLESCK#:Ginfo#:GaE#"
+        commandString = ":GS#:GDUT#:TLESCK#:Ginfo#:GaE#"
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
@@ -537,7 +536,7 @@ class ObsSite:
         keepSlewType = ":MS#" if self.status == 0 else ":MA#"
         slewTypes["keep"] = keepSlewType
 
-        self.flipped = self._piersideTarget != self.pierside
+        self.flipped = self.piersideTarget != self.pierside
         conn = Connection(self.parent.host)
         commandString = ":PO#" + slewTypes[slewType]
         suc, _, _ = conn.communicate(commandString, responseCheck="0")
@@ -553,7 +552,7 @@ class ObsSite:
         sign = "+" if sgn >= 0 else "-"
         setAz = f":Sz{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#"
 
-        getTargetStatus = ":U2#:GTsid#:Ga#:Gz#:Gr#:Gd#"
+        getTargetStatus = ":GTsid#:Ga#:Gz#:Gr#:Gd#"
 
         conn = Connection(self.parent.host)
         commandString = setAlt + setAz + getTargetStatus
@@ -570,12 +569,12 @@ class ObsSite:
             self.log.debug(f"Missing return values: [{response}]")
             return False
 
-        self.piersideTarget = response[0][2]
+        self.piersideTarget = valueToInt(response[0][2])
         self.AltTarget = response[0][3:]
         self.AzTarget = response[1]
         self.raJNowTarget = response[2]
         self.decJNowTarget = response[3]
-        return suc
+        return suc and self.piersideTarget != 'None'
 
     def setTargetRaDec(self, ra: Angle, dec: Angle) -> bool:
         """ """
@@ -586,7 +585,7 @@ class ObsSite:
         sign = "+" if sgn >= 0 else "-"
         setDec = f":Sd{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#"
 
-        getTargetStatus = ":U2#:GTsid#:Ga#:Gz#:Gr#:Gd#"
+        getTargetStatus = ":GTsid#:Ga#:Gz#:Gr#:Gd#"
 
         conn = Connection(self.parent.host)
         commandString = setRa + setDec + getTargetStatus
@@ -603,12 +602,12 @@ class ObsSite:
             self.log.debug(f"Missing return values: [{response}]")
             return False
 
-        self.piersideTarget = response[0][2]
+        self.piersideTarget = valueToInt(response[0][2])
         self.AltTarget = response[0][3:]
         self.AzTarget = response[1]
         self.raJNowTarget = response[2]
         self.decJNowTarget = response[3]
-        return suc
+        return suc and self.piersideTarget != 'None'
 
     def shutdown(self) -> bool:
         """ """
@@ -765,3 +764,10 @@ class ObsSite:
         if not suc:
             return False
         return response[1].startswith("Coord")
+
+    def setHighPrecision(self) -> bool:
+        """ """
+        conn = Connection(self.parent.host)
+        commandString = ":U2#"
+        suc, _, _ = conn.communicate(commandString)
+        return suc

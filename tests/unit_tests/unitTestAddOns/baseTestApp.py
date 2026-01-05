@@ -501,7 +501,7 @@ class Data:
         return
 
     @staticmethod
-    def loadBuildP():
+    def loadBuildP(a):
         return
 
     @staticmethod

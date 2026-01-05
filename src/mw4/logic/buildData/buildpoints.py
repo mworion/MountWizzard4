@@ -252,17 +252,17 @@ class DataPoint:
 
         return all(len(x) == 2 for x in value)
 
-    def loadBuildP(self, fullFileName: Path, ext: str = ".bpts") -> bool:
+    def loadBuildP(self, fullFileName: Path) -> bool:
         """ """
         if not fullFileName.is_file():
             return False
 
         value = []
-        if ext == ".csv":
+        if fullFileName.suffix == ".csv":
             value = self.loadCSV(fullFileName)
-        elif ext == ".bpts":
+        elif fullFileName.suffix == ".bpts":
             value = self.loadBPTS(fullFileName)
-        elif ext == ".model":
+        elif fullFileName.suffix == ".model":
             value = self.loadModel(fullFileName)
 
         points = [[x[0], x[1], self.UNPROCESSED] for x in value]
@@ -277,20 +277,20 @@ class DataPoint:
         with open(fileName, "w") as handle:
             json.dump(points, handle, indent=4)
 
-    def loadHorizonP(self, fileName: str, ext=".hpts") -> bool:
+    def loadHorizonP(self, fullFileName: Path) -> bool:
         """ """
-        fullFileName = self.configDir / (fileName + ext)
         if not fullFileName.is_file():
             return False
 
         value = None
-        if ext == ".csv":
+        if fullFileName.suffix == ".csv":
             value = self.loadCSV(fullFileName)
-        elif ext == ".hpts":
+        elif fullFileName.suffix in [".hpts", ".txt"]:
             value = self.loadBPTS(fullFileName)
 
         self.horizonP = value
         self.horizonP.sort(key=lambda x: x[1])
+        self.saveHorizonP(fullFileName.stem)
         return True
 
     def saveHorizonP(self, fileName: str) -> None:

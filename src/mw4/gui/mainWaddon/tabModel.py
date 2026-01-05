@@ -233,6 +233,11 @@ class Model(QObject):
         t = f"Expose: [{statusData[0]}], Time: [{statusData[1]}s], Binning: [{statusData[2]}] "
         self.msg.emit(0, "Model", "Exposure", t)
 
+    def showStatusSlew(self, statusData: tuple) -> None:
+        """ """
+        t = f"Slew:   [{statusData[0]}], alt: [{statusData[1]:3.2f}], az: [{statusData[2]:3.2f}] "
+        self.msg.emit(0, "Model", "Slewing", t)
+
     def showStatusSolve(self, data: dict) -> None:
         """ """
         if data["success"]:
@@ -283,6 +288,7 @@ class Model(QObject):
         self.modelData = ModelData(self.app)
         self.modelData.statusSolve.connect(self.showStatusSolve)
         self.modelData.statusExpose.connect(self.showStatusExposure)
+        self.modelData.statusSlew.connect(self.showStatusSlew)
         self.setModelTiming()
         self.setupBatchData()
         self.msg.emit(1, "Model", "Run", f"Model: [{self.modelData.name}]")

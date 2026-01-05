@@ -275,7 +275,7 @@ class BuildPoints(QObject):
             self.msg.emit(2, "Model", "Buildpoints", "Build points file name not given")
             return
 
-        fullFileName = self.app.mwGlob["configDir"] / fileName
+        fullFileName = self.app.mwGlob["configDir"] / (fileName + ".bpts")
         if not self.app.data.loadBuildP(fullFileName):
             text = f"Build points file [{fileName}] could not be loaded"
             self.msg.emit(2, "Model", "Buildpoints", text)
@@ -291,12 +291,9 @@ class BuildPoints(QObject):
         fullFileName = self.mainW.openFile(
             self.mainW, "Open build point file", folder, fileTypes
         )
-        if not fullFileName.is_file():
-            return
-
-        suc = self.app.data.loadBuildP(fullFileName, ext=fullFileName.suffix)
+        suc = self.app.data.loadBuildP(fullFileName)
         if suc:
-            self.ui.buildPFileName.setText(fullFileName.name)
+            self.ui.buildPFileName.setText(fullFileName.stem)
             self.msg.emit(
                 0, "Model", "Buildpoints", f"Build file [{fullFileName.name}] loaded"
             )

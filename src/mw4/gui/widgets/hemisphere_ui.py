@@ -196,6 +196,7 @@ class Ui_HemisphereDialog(object):
         self.azimuth.setMaximumSize(QSize(50, 20))
         self.azimuth.setFrame(False)
         self.azimuth.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
+        self.azimuth.setReadOnly(True)
 
         self.gridLayout_2.addWidget(self.azimuth, 3, 1, 1, 1)
 
@@ -208,6 +209,7 @@ class Ui_HemisphereDialog(object):
         self.altitude.setMaximumSize(QSize(50, 20))
         self.altitude.setFrame(False)
         self.altitude.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
+        self.altitude.setReadOnly(True)
 
         self.gridLayout_2.addWidget(self.altitude, 0, 1, 1, 1)
 
@@ -294,6 +296,7 @@ class Ui_HemisphereDialog(object):
         self.terrainFileName.setObjectName(u"terrainFileName")
         self.terrainFileName.setMinimumSize(QSize(0, 21))
         self.terrainFileName.setFrame(False)
+        self.terrainFileName.setReadOnly(True)
 
         self.gridLayout_6.addWidget(self.terrainFileName, 2, 0, 1, 2)
 
@@ -418,6 +421,7 @@ class Ui_HemisphereDialog(object):
         self.horizonMaskFileName.setObjectName(u"horizonMaskFileName")
         self.horizonMaskFileName.setMinimumSize(QSize(0, 21))
         self.horizonMaskFileName.setFrame(False)
+        self.horizonMaskFileName.setReadOnly(True)
 
         self.verticalLayout_3.addWidget(self.horizonMaskFileName)
 
@@ -437,7 +441,7 @@ class Ui_HemisphereDialog(object):
 
         self.retranslateUi(HemisphereDialog)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(HemisphereDialog)

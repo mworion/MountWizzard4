@@ -247,6 +247,11 @@ def test_showStatusExposure(function):
     function.showStatusExposure(status)
 
 
+def test_showStatusSlew(function):
+    status = ["test", 5, 1]
+    function.showStatusSlew(status)
+
+
 def test_showStatusSolve_1(function):
     status = {"imagePath": Path("test"), "success": False, "message": "Error"}
     function.showStatusSolve(status)

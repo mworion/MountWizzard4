@@ -37,14 +37,16 @@ class HorizonDraw(MWidget):
     def initConfig(self) -> None:
         """ """
         config = self.app.config.get("hemisphereW", {})
-        fileName = Path(config.get("horizonMaskFileName", ""))
-        self.ui.horizonMaskFileName.setText(fileName.stem)
-        self.app.data.loadHorizonP(fileName=fileName.stem)
+        fileName = config.get("horizonMaskFileName", "")
+        self.ui.horizonMaskFileName.setText(fileName)
+        horizonFile = self.app.mwGlob["configDir"] / (
+            self.ui.horizonMaskFileName.text() + ".hpts"
+        )
+        self.app.data.loadHorizonP(horizonFile)
         fileName = config.get("terrainFileName", "")
         self.ui.terrainFileName.setText(fileName)
         terrainFile = self.app.mwGlob["configDir"] / self.ui.terrainFileName.text()
         self.loadTerrainImage(terrainFile)
-
         self.ui.saveHorizonMask.clicked.connect(self.saveHorizonMask)
         self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
         self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
@@ -116,7 +118,7 @@ class HorizonDraw(MWidget):
         if not loadFilePath.is_file():
             return
 
-        self.app.data.loadHorizonP(fileName=loadFilePath.stem, ext=loadFilePath.suffix)
+        self.app.data.loadHorizonP(loadFilePath)
         self.ui.horizonMaskFileName.setText(loadFilePath.stem)
         self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{loadFilePath.stem}] loaded")
         self.parent.redrawAll()
@@ -128,7 +130,7 @@ class HorizonDraw(MWidget):
             self.msg.emit(2, "Hemisphere", "Horizon", "Mask file name not given")
             return
 
-        suc = self.app.data.saveHorizonP(fileName=fileName)
+        suc = self.app.data.saveHorizonP(fileName)
         if suc:
             self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{fileName}] saved")
         else:
@@ -143,7 +145,7 @@ class HorizonDraw(MWidget):
         )
         if not saveFilePath.stem:
             return
-        if self.app.data.saveHorizonP(fileName=saveFilePath.stem):
+        if self.app.data.saveHorizonP(saveFilePath.stem):
             self.ui.horizonMaskFileName.setText(saveFilePath.stem)
             self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{saveFilePath.stem}] saved")
         else:

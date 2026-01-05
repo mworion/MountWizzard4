@@ -279,12 +279,13 @@ class Model(QObject):
 
     def runBatch(self) -> None:
         """ """
+        self.app.operationRunning.emit(self.STATUS_MODEL_BATCH)
         if not self.checkModelRunConditions():
+            self.app.operationRunning.emit(self.STATUS_IDLE)
             return
         if not self.clearAlignAndBackup():
+            self.app.operationRunning.emit(self.STATUS_IDLE)
             return
-
-        self.app.operationRunning.emit(self.STATUS_MODEL_BATCH)
         self.modelData = ModelData(self.app)
         self.modelData.statusSolve.connect(self.showStatusSolve)
         self.modelData.statusExpose.connect(self.showStatusExposure)

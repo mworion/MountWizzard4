@@ -120,26 +120,32 @@ class ModelData(QObject):
 
     def startNewSlew(self) -> None:
         """ """
-        self.pointerModel += 1
-        if self.pointerModel >= len(self.modelBuildData):
-            self.log.info(f"{'Start slew':15s}: last point done")
-            return
-        if self.cancelBatch or self.endBatch:
-            return
-        item = self.modelBuildData[self.pointerModel]
-        altitude = item["altitude"]
-        azimuth = item["azimuth"]
-        self.mountSlewed = False
-        self.domeSlewed = False
-        t = f"{'Start slew':15s}: [{self.pointerModel:02d}], "
-        t += f" alt:[{altitude.degrees:03.0f}], az:[{azimuth.degrees:03.0f}]"
-        self.log.debug(t)
-        if not self.app.mount.obsSite.setTargetAltAz(altitude, azimuth):
-            self.log.error(f"{'':15s}: no target setting possible - skipping point")
-        self.statusSlew.emit([item["imagePath"].stem, altitude.degrees, azimuth.degrees])
-        if self.app.deviceStat["dome"]:
-            self.app.dome.slewDome(azimuth)
-        self.app.mount.obsSite.startSlewing()
+        isPossibleTarget = False
+        while not isPossibleTarget:
+            self.pointerModel += 1
+            if self.pointerModel >= len(self.modelBuildData):
+                self.log.info(f"{'Start slew':15s}: last point done")
+                return
+            if self.cancelBatch or self.endBatch:
+                return
+            while self.modelBuildData[self.pointerModel]["success"]:
+                self.pointerModel += 1
+            item = self.modelBuildData[self.pointerModel]
+            altitude = item["altitude"]
+            azimuth = item["azimuth"]
+            self.mountSlewed = False
+            self.domeSlewed = False
+            t = f"{'Start slew':15s}: [{self.pointerModel:02d}], "
+            t += f" alt:[{altitude.degrees:03.0f}], az:[{azimuth.degrees:03.0f}]"
+            self.log.debug(t)
+            isPossibleTarget = self.app.mount.obsSite.setTargetAltAz(altitude, azimuth)
+            if not isPossibleTarget:
+                self.log.debug(f"{'Skip point':15s}: no target setting possible")
+                continue
+            self.statusSlew.emit([item["imagePath"].stem, altitude.degrees, azimuth.degrees])
+            if self.app.deviceStat["dome"]:
+                self.app.dome.slewDome(azimuth)
+            self.app.mount.obsSite.startSlewing()
 
     def addMountModelToBuildModel(self) -> None:
         """ """

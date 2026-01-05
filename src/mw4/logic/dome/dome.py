@@ -87,7 +87,7 @@ class Dome:
 
     def waitSettlingAndEmit(self) -> None:
         """ """
-        self.signals.slewed.emit()
+        self.signals.slewed.emit("")
         self.signals.message.emit("")
 
     def checkSlewingDome(self) -> None:
@@ -271,7 +271,7 @@ class Dome:
             self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
             self.signals.message.emit("slewing")
         else:
-            self.signals.slewed.emit()
+            self.signals.slewed.emit("")
         delta = azimuth - az
 
         return delta

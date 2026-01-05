@@ -161,19 +161,9 @@ def test_moveAltAzGameController_5(function):
         function.moveAltAzGameController(99)
 
 
-def test_moveAltAz_1(function):
-    function.targetAlt = None
-    function.targetAz = None
-    function.app.mount.obsSite.Alt = Angle(degrees=10)
-    function.app.mount.obsSite.Az = Angle(degrees=10)
-
-    with mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=True):
-        function.moveAltAz("NE")
-
-
 def test_moveAltAz_3(function):
-    function.targetAlt = 10
-    function.targetAz = 10
+    function.targetAlt = Angle(degrees=10)
+    function.targetAz = Angle(degrees=10)
     function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.app.mount.obsSite.Az = Angle(degrees=10)
 

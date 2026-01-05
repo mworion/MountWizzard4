@@ -31,13 +31,6 @@ def function(qapp):
     yield func
 
 
-def test_slewSelectedTargetWithDome_0(function):
-    function.app.mount.obsSite.AltTarget = None
-    function.app.deviceStat["dome"] = None
-    suc = function.slewSelectedTargetWithDome()
-    assert not suc
-
-
 def test_slewSelectedTargetWithDome_2(function):
     function.app.mount.obsSite.AltTarget = Angle(degrees=10)
     function.app.mount.obsSite.AzTarget = Angle(degrees=10)
@@ -69,21 +62,21 @@ def test_slewSelectedTargetWithDome_4(function):
 def test_slewTargetAltAz_1(function):
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
         with mock.patch.object(function, "slewSelectedTargetWithDome", return_value=False):
-            suc = function.slewTargetAltAz(100, 10)
+            suc = function.slewTargetAltAz(Angle(degrees=100), Angle(degrees=10))
             assert not suc
 
 
 def test_slewTargetAltAz_2(function):
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
         with mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True):
-            suc = function.slewTargetAltAz(-10, 10)
+            suc = function.slewTargetAltAz(Angle(degrees=-10), Angle(degrees=10))
             assert not suc
 
 
 def test_slewTargetAltAz_3(function):
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
         with mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True):
-            suc = function.slewTargetAltAz(100, 10)
+            suc = function.slewTargetAltAz(Angle(degrees=100), Angle(degrees=10))
             assert suc
 
 

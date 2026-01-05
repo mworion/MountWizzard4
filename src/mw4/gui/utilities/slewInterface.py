@@ -33,17 +33,11 @@ class SlewInterface:
         azimuthT = self.app.mount.obsSite.AzTarget
         altitudeT = self.app.mount.obsSite.AltTarget
 
-        if azimuthT is None or altitudeT is None:
-            return False
-
-        azimuthT = azimuthT.degrees
-        altitudeT = altitudeT.degrees
-
         if self.app.deviceStat["dome"]:
-            delta = self.app.dome.slewDome(altitude=altitudeT, azimuth=azimuthT)
+            delta = self.app.dome.slewDome(altitudeT.degrees, azimuthT.degrees)
             geoStat = "Geometry corrected" if delta else "Equal mount"
             text = f"{geoStat}"
-            text += ", az: {azimuthT:3.1f} delta: {delta:3.1f}"
+            text += f", az: {azimuthT.degrees:3.1f} delta: {delta:3.1f}"
             self.app.msg.emit(0, "Tools", "Slewing dome", text)
 
         suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
@@ -53,11 +47,11 @@ class SlewInterface:
             self.msg.emit(2, "Tools", "Slewing error", "Cannot slew to target")
         return suc
 
-    def slewTargetAltAz(self, alt: float, az: float, slewType: str = "normal") -> bool:
+    def slewTargetAltAz(self, alt: Angle, az: Angle, slewType: str = "normal") -> bool:
         """ """
-        suc = self.app.mount.obsSite.setTargetAltAz(Angle(degrees=alt), Angle(degrees=az))
+        suc = self.app.mount.obsSite.setTargetAltAz(alt, az)
         if not suc:
-            t = f"Cannot slew to Az:[{az:3.1f}], Alt:[{alt:3.1f}]"
+            t = f"Cannot slew to Az:[{az.degrees:3.1f}], Alt:[{alt.degrees:3.1f}]"
             self.msg.emit(2, "Tools", "Slewing error", t)
             return False
 

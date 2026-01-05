@@ -14,6 +14,7 @@
 #
 ###########################################################
 from functools import partial
+from skyfield.api import Angle
 from mw4.gui.utilities.slewInterface import SlewInterface
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, sleepAndEvents
 from mw4.mountcontrol.convert import (
@@ -21,7 +22,7 @@ from mw4.mountcontrol.convert import (
     convertRaToAngle,
     formatDstrToText,
     formatHstrToText,
-    valueToFloat,
+    valueToAngle,
 )
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QInputDialog, QLineEdit
@@ -254,14 +255,8 @@ class MountMove(QObject):
         step = self.setupStepsizes[key]
 
         coord = self.setupMoveAltAz[direction]["coord"]
-        if self.targetAlt is None or self.targetAz is None:
-            targetAlt = self.targetAlt = alt.degrees + coord[0] * step
-            targetAz = self.targetAz = az.degrees + coord[1] * step
-        else:
-            targetAlt = self.targetAlt = self.targetAlt + coord[0] * step
-            targetAz = self.targetAz = self.targetAz + coord[1] * step
-
-        targetAz = targetAz % 360
+        targetAlt = self.targetAlt = Angle(degrees=self.targetAlt.degrees + coord[0] * step)
+        targetAz = self.targetAz = Angle(degrees=(self.targetAz.degrees + coord[1] * step) % 360)
         self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
 
     def setRA(self) -> None:
@@ -301,10 +296,10 @@ class MountMove(QObject):
     def moveAltAzAbsolute(self) -> None:
         """ """
         alt = self.ui.moveCoordinateAlt.text()
-        alt = valueToFloat(alt)
+        alt = valueToAngle(alt, preference="degrees")
         az = self.ui.moveCoordinateAz.text()
-        az = valueToFloat(az)
-        az = (az + 360) % 360
+        az = valueToAngle(az, preference="degrees")
+        az = Angle(degrees=(az.degrees + 360) % 360)
         self.slewInterface.slewTargetAltAz(alt, az)
 
     def moveRaDecAbsolute(self) -> None:

@@ -52,7 +52,6 @@ class SensorWeather:
 
         for fw in self.run:
             self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
-        pass
 
     def startCommunication(self) -> None:
         """ """

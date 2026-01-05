@@ -19,6 +19,7 @@ from mw4.base.transform import diffModulusAbs
 from mw4.gui.utilities.slewInterface import SlewInterface
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.mountcontrol.setting import Setting
+from skyfield.api import Angle
 from pyqtgraph.widgets.RemoteGraphicsView import MouseEvent
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont
@@ -460,16 +461,16 @@ class HemisphereDraw(MWidget):
 
     def slewDirect(self, posView: QPointF) -> None:
         """ """
-        azimuth = int(posView.x() + 0.5)
-        altitude = int(posView.y() + 0.5)
+        azimuth = Angle(degrees=int(posView.x() + 0.5))
+        altitude = Angle(degrees=int(posView.y() + 0.5))
 
         question = "<b>Manual slewing to coordinate</b>"
         question += "<br><br>Selected coordinates are:<br>"
-        question += f"<font color={self.M_PRIM}> Altitude: {altitude:3.1f}°"
-        question += f"   Azimuth: {azimuth:3.1f}°</font>"
+        question += f"<font color={self.M_PRIM}> Altitude: {altitude.degrees:3.1f}°"
+        question += f"   Azimuth: {azimuth.degrees:3.1f}°</font>"
         question += "<br><br>Would you like to start slewing?<br>"
 
-        suc = self.messageDialog(self, "Slewing mount", question)
+        suc = self.messageDialog(self.parent, "Slewing mount", question)
         if not suc:
             return
         self.slewInterface.slewTargetAltAz(altitude, azimuth)
@@ -497,7 +498,7 @@ class HemisphereDraw(MWidget):
 
         buttons = ["Cancel", "Ortho Align", "Polar Align"]
         question = question + warning if isDAT else question
-        reply = self.messageDialog(self, "Slewing mount", question, buttons)
+        reply = self.messageDialog(self.parent, "Slewing mount", question, buttons)
         if reply == 0:
             return
         elif reply == 1:

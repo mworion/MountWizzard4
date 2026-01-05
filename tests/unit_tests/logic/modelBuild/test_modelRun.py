@@ -436,6 +436,7 @@ def test_runThroughModelBuildData_1(function, mocked_sleepAndEvents_2):
         function.runThroughModelBuildData()
 
 
+"""
 def test_runThroughModelBuildDataRetries_1(function):
     function.numberRetries = 1
     function.retriesReversed = False
@@ -450,6 +451,7 @@ def test_runThroughModelBuildDataRetries_2(function):
     with mock.patch.object(function, "runThroughModelBuildData"):
         with mock.patch.object(function, "checkRetryNeeded", return_value=True):
             function.runThroughModelBuildDataRetries()
+"""
 
 
 def test_runModel_1(function):
@@ -462,6 +464,6 @@ def test_runModel_2(function):
     function.cancelBatch = False
     function.endBatch = False
     with mock.patch.object(function, "prepareModelBuildData"):
-        with mock.patch.object(function, "runThroughModelBuildDataRetries"):
+        with mock.patch.object(function, "runThroughModelBuildData"):
             with mock.patch.object(function, "buildProgModel"):
                 function.runModel()

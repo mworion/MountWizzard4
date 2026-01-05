@@ -60,7 +60,6 @@ class ModelData(QObject):
         self.waitTimeExposure: float = 0
         self.runTime: float = 0
         self.numberRetries: int = 0
-        self.retriesReversed: bool = False
         self.pointerModel: int = 0
         self.mountSlewed: bool = False
         self.domeSlewed: bool = False
@@ -128,17 +127,6 @@ class ModelData(QObject):
                 return
             if self.cancelBatch or self.endBatch:
                 return
-            while self.modelBuildData[self.pointerModel]["success"]:
-                item = self.modelBuildData[self.pointerModel]
-                altitude = item["altitude"]
-                azimuth = item["azimuth"]
-                data = [
-                    self.modelBuildData[self.pointerModel]["imagePath"].stem,
-                    altitude.degrees, azimuth.degrees,
-                    "Point skipped - already solved",
-                ]
-                self.statusSlew.emit(data)
-                self.pointerModel += 1
             item = self.modelBuildData[self.pointerModel]
             altitude = item["altitude"]
             azimuth = item["azimuth"]
@@ -154,6 +142,7 @@ class ModelData(QObject):
             data += status
             self.statusSlew.emit(data)
             if not isPossibleTarget:
+                item["success"] = False
                 self.log.debug(f"{'Skip point':15s}: No target setting possible")
                 continue
             if self.app.deviceStat["dome"]:
@@ -328,10 +317,11 @@ class ModelData(QObject):
     def runThroughModelBuildData(self) -> None:
         """ """
         self.pointerModel = -1
+        self.endBatch = False
         self.startNewSlew()
         while not self.cancelBatch and not self.endBatch:
             sleepAndEvents(500)
-
+    """
     def runThroughModelBuildDataRetries(self) -> None:
         """ """
         while self.numberRetries >= 0:
@@ -340,8 +330,7 @@ class ModelData(QObject):
             if not self.checkRetryNeeded():
                 break
             self.numberRetries -= 1
-            if self.retriesReversed:
-                self.modelBuildData.reverse()
+    """
 
     def runModel(self) -> None:
         """ """
@@ -352,7 +341,7 @@ class ModelData(QObject):
         self.runTime = time.time()
         self.setupSignals()
         self.prepareModelBuildData()
-        self.runThroughModelBuildDataRetries()
+        self.runThroughModelBuildData()
         self.buildProgModel()
         modelSize = len(self.modelProgData)
         if modelSize < 3:

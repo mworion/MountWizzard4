@@ -230,22 +230,22 @@ class Model(QObject):
 
     def showStatusExposure(self, statusData: tuple) -> None:
         """ """
-        t = f"Expose: [{statusData[0]}], Time: [{statusData[1]}s], Binning: [{statusData[2]}] "
+        t = f"{'Expose:':10s} [{statusData[0]}], Time: [{statusData[1]}s], Binning: [{statusData[2]}] "
         self.msg.emit(0, "Model", "Exposure", t)
 
     def showStatusSlew(self, statusData: tuple) -> None:
         """ """
-        t = f"Slew:   [{statusData[0]}], Alt: [{statusData[1]:3.2f}], "
+        t = f"{'Slew:':10s} [{statusData[0]}], Alt: [{statusData[1]:3.2f}], "
         t += f"Az: [{statusData[2]:3.2f}], {statusData[3]}"
         self.msg.emit(0, "Model", "Slewing", t)
 
     def showStatusSolve(self, data: dict) -> None:
         """ """
         if data["success"]:
-            t = f"Solved: [{data['imagePath'].stem}], Error: [{data['errorRMS_S']:.2f}]"
+            t = f"{'Solved:':10s} [{data['imagePath'].stem}], Error: [{data['errorRMS_S']:.2f}]"
             t += f", Angle: [{data['angleS'].degrees:.2f}], Scale: [{data['scaleS']:.2f}]"
         else:
-            t = f"Error in: [{data['imagePath'].stem}], [{data['message']}]"
+            t = f"{'Error in:':10s} [{data['imagePath'].stem}], [{data['message']}]"
         self.msg.emit(0, "Model", "Solving result", t)
 
     def setupModelInputData(self) -> None:
@@ -293,7 +293,7 @@ class Model(QObject):
         self.modelData.statusSlew.connect(self.showStatusSlew)
         self.setModelTiming()
         self.setupBatchData()
-        self.msg.emit(1, "Model", "Run", f"Model: [{self.modelData.name}]")
+        self.msg.emit(1, "Model", "Run", f"{'Model:':10s} [{self.modelData.name}]")
         self.setupModelInputData()
         self.modelData.runModel()
         self.programModelToMount()

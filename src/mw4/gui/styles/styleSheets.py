@@ -50,6 +50,11 @@ MAC_STYLE = """
     QTabWidget:tab-bar {
         alignment: center;
     }
+    QWidget QTableWidget {
+        font-family: Courier New;
+        font-weight: demibold;
+        font-size: 13pt;
+    }
     """
 
 NON_MAC_STYLE = """
@@ -76,7 +81,12 @@ NON_MAC_STYLE = """
     QListWidget {
         font-family: Courier New;
         font-weight: bold;
-        font-size: 9pt;
+        font-size: 10pt;
+    }
+    QWidget QTableWidget {
+        font-family: Courier New;
+        font-weight: demibold;
+        font-size: 10pt;
     }
     QToolTip {
         font-size: 10pt;

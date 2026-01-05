@@ -605,30 +605,30 @@ def test_saveBuildP_2(function):
 
 def test_loadHorizonP_1(function):
     # path with not existent file given
-    fileName = "tests/work/config/test_load_horizon.hpts"
-    suc = function.loadHorizonP(fileName, ".hpts")
+    fileName = Path("tests/work/config/test_load_horizon.hpts")
+    suc = function.loadHorizonP(fileName)
     assert not suc
 
 
 def test_loadHorizonP_2(function):
     # load file with Path
-    fileName = "tests/work/config/test_horizon_2.hpts"
+    fileName = Path("tests/work/config/test_horizon_2.hpts")
     values = [[1, 1], [2, 2]]
     with open(fileName, "w") as outfile:
         json.dump(values, outfile, indent=4)
-    suc = function.loadHorizonP("test_horizon_2", ".hpts")
+    suc = function.loadHorizonP(fileName)
     assert suc
     assert function.horizonP == values
 
 
-def test_loadHorizonP_5(function):
+def test_loadHorizonP_3(function):
     # load file with Path
-    fileName = "tests/work/config/test_horizon_2.csv"
+    fileName = Path("tests/work/config/test_horizon_2.csv")
     values = [[1.0, 1.0], [2.0, 2.0]]
     with open(fileName, "w") as outfile:
         outfile.write("1,1\n2,2\n")
 
-    suc = function.loadHorizonP("test_horizon_2", ".csv")
+    suc = function.loadHorizonP(fileName)
     assert suc
     assert function.horizonP == values
 

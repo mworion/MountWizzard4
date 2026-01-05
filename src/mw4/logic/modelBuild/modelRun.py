@@ -125,29 +125,31 @@ class ModelData(QObject):
 
     def startNewSlew(self) -> None:
         """ """
-        self.pointerSlew += 1
-        if self.pointerSlew >= len(self.modelBuildData):
-            self.log.debug(f"{'Start slew':15s}: length exceeded")
-            return
-        if self.cancelBatch or self.endBatch:
-            return
-        while self.modelBuildData[self.pointerSlew]["success"]:
+        isPossibleTarget = False
+        while not isPossibleTarget:
             self.pointerSlew += 1
-        item = self.modelBuildData[self.pointerSlew]
-        altitude = item["altitude"]
-        azimuth = item["azimuth"]
-        self.mountSlewed = False
-        self.domeSlewed = False
-        t = f"{'Start slew':15s}: [{self.pointerSlew:02d}], "
-        t += f" alt:[{altitude.degrees:03.0f}], az:[{azimuth.degrees:03.0f}]"
-        self.log.debug(t)
-
-        if not self.app.mount.obsSite.setTargetAltAz(altitude, azimuth):
-            self.log.debug(f"{'':15s}: no target setting possible")
-            return
-        if self.app.deviceStat["dome"]:
-            self.app.dome.slewDome(azimuth)
-        self.app.mount.obsSite.startSlewing()
+            if self.pointerSlew >= len(self.modelBuildData):
+                self.log.info(f"{'Start slew':15s}: last point done")
+                return
+            if self.cancelBatch or self.endBatch:
+                return
+            while self.modelBuildData[self.pointerSlew]["success"]:
+                self.pointerSlew += 1
+            item = self.modelBuildData[self.pointerSlew]
+            altitude = item["altitude"]
+            azimuth = item["azimuth"]
+            self.mountSlewed = False
+            self.domeSlewed = False
+            t = f"{'Start slew':15s}: [{self.pointerSlew:02d}], "
+            t += f" alt:[{altitude.degrees:03.0f}], az:[{azimuth.degrees:03.0f}]"
+            self.log.debug(t)
+            isPossibleTarget = self.app.mount.obsSite.setTargetAltAz(altitude, azimuth)
+            if not isPossibleTarget:
+                self.log.debug(f"{'':15s}: no target setting possible - skipping point")
+                continue
+            if self.app.deviceStat["dome"]:
+                self.app.dome.slewDome(azimuth)
+            self.app.mount.obsSite.startSlewing()
 
     def addMountModelToBuildModel(self) -> None:
         """ """

@@ -339,8 +339,6 @@ class ObsSite:
             self._piersideTarget = "W"
         elif value == 3:
             self._piersideTarget = "E"
-        else:
-            self._piersideTarget = "None"
 
     @property
     def Alt(self):
@@ -574,7 +572,7 @@ class ObsSite:
         self.AzTarget = response[1]
         self.raJNowTarget = response[2]
         self.decJNowTarget = response[3]
-        return suc and self.piersideTarget != 'None'
+        return suc and valueToInt(response[0][2]) != 0
 
     def setTargetRaDec(self, ra: Angle, dec: Angle) -> bool:
         """ """
@@ -607,7 +605,7 @@ class ObsSite:
         self.AzTarget = response[1]
         self.raJNowTarget = response[2]
         self.decJNowTarget = response[3]
-        return suc and self.piersideTarget != 'None'
+        return suc and valueToInt(response[0][2]) != 0
 
     def shutdown(self) -> bool:
         """ """

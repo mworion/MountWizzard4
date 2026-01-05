@@ -398,21 +398,16 @@ class TestConfigData(unittest.TestCase):
     def test_Site_piersideTarget(self):
         obsSite = ObsSite(parent=Parent())
 
-        obsSite.piersideTarget = "2"
+        obsSite.piersideTarget = 2
         self.assertEqual(obsSite.piersideTarget, "W")
-        obsSite.piersideTarget = "3"
+        obsSite.piersideTarget = 3
         self.assertEqual(obsSite.piersideTarget, "E")
-        obsSite.piersideTarget = "3"
-        self.assertEqual(obsSite.piersideTarget, "E")
-        self.assertEqual(obsSite._piersideTarget, "E")
-        obsSite.piersideTarget = "3"
-        self.assertEqual(obsSite.piersideTarget, "E")
-        obsSite.piersideTarget = "WW"
-        self.assertEqual(obsSite.piersideTarget, "W")
-        obsSite.piersideTarget = "12"
-        self.assertEqual(obsSite.piersideTarget, "W")
         obsSite.piersideTarget = 0
+        self.assertEqual(obsSite.piersideTarget, "E")
+        obsSite.piersideTarget = 2
         self.assertEqual(obsSite.piersideTarget, "W")
+        obsSite.piersideTarget = 3
+        self.assertEqual(obsSite.piersideTarget, "E")
 
     def test_Site_status(self):
         obsSite = ObsSite(parent=Parent())

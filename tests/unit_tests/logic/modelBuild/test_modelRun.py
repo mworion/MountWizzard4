@@ -416,13 +416,16 @@ def test_collectPlateSolveResult_2(function):
 
 
 def test_prepareModelBuildData_1(function):
-    function.modelInputData = [(0, 0, True), (1, 1, True)]
+    function.modelInputData = [(5, 0, True), (20, 1, True)]
     function.pointerResult = -1
+    function.app.mount.setting.horizonLimitLow = 10
+    function.app.mount.setting.horizonLimitHigh = 90
+
     with mock.patch.object(function, "sendModelProgress"):
         function.prepareModelBuildData()
-        assert len(function.modelBuildData) == 2
-        assert function.modelBuildData[0]["altitude"].degrees == 0
-        assert function.modelBuildData[0]["azimuth"].degrees == 0
+        assert len(function.modelBuildData) == 1
+        assert function.modelBuildData[0]["altitude"].degrees == 20
+        assert function.modelBuildData[0]["azimuth"].degrees == 1
 
 
 def test_checkRetryNeeded_1(function):

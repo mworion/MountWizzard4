@@ -61,12 +61,10 @@ class ModelData(QObject):
         self.runTime: float = 0
         self.numberRetries: int = 0
         self.retriesReversed: bool = False
-
         self.pointerSlew: int = 0
         self.pointerImage: int = 0
         self.pointerPlateSolve: int = 0
         self.pointerResult: int = 0
-
         self.mountSlewed: bool = False
         self.domeSlewed: bool = False
 
@@ -295,6 +293,11 @@ class ModelData(QObject):
             modelItem["imagePath"] = imagePath
             modelItem["altitude"] = Angle(degrees=point[0])
             modelItem["azimuth"] = Angle(degrees=point[1])
+            altLow = self.app.mount.setting.horizonLimitLow
+            altHigh = self.app.mount.setting.horizonLimitHigh
+            if not altLow < modelItem["altitude"].degrees < altHigh:
+                self.log.debug(f"{'Skip point':15s}: [{index:02d}] - limit violation")
+                continue
             modelItem["exposureTime"] = self.app.camera.exposureTime
             modelItem["binning"] = self.app.camera.binning
             modelItem["subFrame"] = self.app.camera.subFrame

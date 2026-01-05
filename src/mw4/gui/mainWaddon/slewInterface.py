@@ -63,17 +63,11 @@ class SlewInterface:
     ) -> bool:
         """ """
         timeJD = self.app.mount.obsSite.timeJD
-        if timeJD is None:
-            return False
-
         if epoch == "J2000":
             raJNow, decJNow = J2000ToJNow(ra, dec, timeJD)
-        elif epoch != "J2000" and isinstance(ra, Angle):
+        else:
             raJNow = ra
             decJNow = dec
-        else:
-            raJNow = Angle(hours=ra)
-            decJNow = Angle(degrees=dec)
 
         suc = self.app.mount.obsSite.setTargetRaDec(raJNow, decJNow)
         if not suc:

@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-
+from mw4.gui.mainWaddon.slewInterface import SlewInterface
 import mw4.gui.mainWaddon.tabMount
 import pytest
 import unittest.mock as mock
@@ -206,7 +206,8 @@ def test_moveAltAzAbsolute_1(function):
     function.app.mount.obsSite.AzTarget = Angle(degrees=0)
     function.ui.moveCoordinateAlt.setText("50h")
     function.ui.moveCoordinateAz.setText("50h")
-    function.moveAltAzAbsolute()
+    with mock.patch.object(function.slewInterface, "slewTargetAltAz"):
+        function.moveAltAzAbsolute()
 
 
 def test_moveAltAzAbsolute_2(function):
@@ -214,7 +215,8 @@ def test_moveAltAzAbsolute_2(function):
     function.app.mount.obsSite.AzTarget = Angle(degrees=0)
     function.ui.moveCoordinateAlt.setText("50")
     function.ui.moveCoordinateAz.setText("50h")
-    function.moveAltAzAbsolute()
+    with mock.patch.object(function.slewInterface, "slewTargetAltAz"):
+        function.moveAltAzAbsolute()
 
 
 def test_moveAltAzAbsolute_3(function):
@@ -222,7 +224,7 @@ def test_moveAltAzAbsolute_3(function):
     function.app.mount.setting.horizonLimitHigh = 70
     function.ui.moveCoordinateAlt.setText("50")
     function.ui.moveCoordinateAz.setText("50")
-    with mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=False):
+    with mock.patch.object(function.slewInterface, "slewTargetAltAz"):
         function.moveAltAzAbsolute()
 
 
@@ -231,7 +233,7 @@ def test_moveAltAzAbsolute_4(function):
     function.app.mount.setting.horizonLimitHigh = 70
     function.ui.moveCoordinateAlt.setText("50")
     function.ui.moveCoordinateAz.setText("50")
-    with mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=True):
+    with mock.patch.object(function.slewInterface, "slewTargetAltAz"):
         function.moveAltAzAbsolute()
 
 
@@ -240,7 +242,8 @@ def test_moveRaDecAbsolute_1(function):
     function.app.mount.obsSite.decJNowTarget = Angle(degrees=0)
     function.ui.moveCoordinateRa.setText("asd")
     function.ui.moveCoordinateDec.setText("asd")
-    function.moveRaDecAbsolute()
+    with mock.patch.object(function.slewInterface, "slewTargetRaDec"):
+        function.moveRaDecAbsolute()
 
 
 def test_moveRaDecAbsolute_2(function):
@@ -248,18 +251,19 @@ def test_moveRaDecAbsolute_2(function):
     function.app.mount.obsSite.decJNowTarget = Angle(degrees=0)
     function.ui.moveCoordinateRa.setText("12H")
     function.ui.moveCoordinateDec.setText("asd")
-    function.moveRaDecAbsolute()
+    with mock.patch.object(function.slewInterface, "slewTargetRaDec"):
+        function.moveRaDecAbsolute()
 
 
 def test_moveRaDecAbsolute_3(function):
     function.ui.moveCoordinateRa.setText("12H")
     function.ui.moveCoordinateDec.setText("30 30")
-    with mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=False):
+    with mock.patch.object(function.slewInterface, "slewTargetRaDec"):
         function.moveRaDecAbsolute()
 
 
 def test_moveRaDecAbsolute_4(function):
     function.ui.moveCoordinateRa.setText("12H")
     function.ui.moveCoordinateDec.setText("30 30")
-    with mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=True):
+    with mock.patch.object(function.slewInterface, "slewTargetRaDec"):
         function.moveRaDecAbsolute()

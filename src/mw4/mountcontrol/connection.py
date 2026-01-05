@@ -25,27 +25,23 @@ class Connection:
     mount via IP and the responses.
 
     Define the number of chunks for the return bytes in case of not having them
-    in bulk mode this is needed, because the mount computer  doesn't support a
-    transaction base like number of chunks to be expected. It's just plain data
-    and I have to find out myself how much it is. there are three types of
+    in bulk mode this is needed, because the mount computer doesn't support a
+    transaction base like the number of chunks to be expected. It's just plain data,
+    and I have to find myself out how much it is. There are three types of
     commands:
 
           a) no reply               this is ok -> COMMAND_A
           b) reply without '#'      this is the bad part, don't like it -> COMMAND_B
           c) reply ended with '#'   this is normal feedback -> no special treatment
 
-    The class itself need parameters for the host and port to be able to interact
+    The class itself needs parameters for the host and port to be able to interact
     with the mount.
     """
-
     log = logging.getLogger("MW4")
-
-    # I don't want so wait to long for a response. In average, I see values
-    # shorter than 0.5 sec, so 3 seconds should be good
     SOCKET_TIMEOUT = 10
 
     # complete used command list to be checked first if valid
-    # these are the commands, which were used in mountcontrol so far
+    # these are the commands that were used in mountcontrol so far
     COMMANDS = [
         ":AP",
         ":CM",

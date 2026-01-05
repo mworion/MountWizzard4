@@ -18,7 +18,7 @@ import time
 from mw4.gui.utilities import toolsQtWidget
 from mw4.gui.widgets import message_ui
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QBrush, QColor
+from PySide6.QtGui import QBrush, QColor, QFont
 from PySide6.QtWidgets import QTableWidgetItem
 
 
@@ -37,8 +37,8 @@ class MessageWindow(toolsQtWidget.MWidget):
         self.app = app
         self.ui = message_ui.Ui_MessageDialog()
         self.ui.setupUi(self)
-        self.messFont = None
-        self.messColor = None
+        self.messFont: QFont = None
+        self.messColor: list = []
         self.setupMessage()
         self.app.msg.connect(self.writeMessageQueue)
 
@@ -69,7 +69,7 @@ class MessageWindow(toolsQtWidget.MWidget):
         mesTab.setColumnCount(4)
         hl = [" Time", " Source", " Type", "Message / Value"]
         mesTab.setHorizontalHeaderLabels(hl)
-        mesTab.setColumnWidth(0, 65)
+        mesTab.setColumnWidth(0, 75)
         mesTab.setColumnWidth(1, 85)
         mesTab.setColumnWidth(2, 150)
         mesTab.horizontalHeader().setDefaultAlignment(Qt.AlignmentFlag.AlignLeft)
@@ -91,7 +91,6 @@ class MessageWindow(toolsQtWidget.MWidget):
             for col in range(self.ui.messageTable.columnCount()):
                 item = self.ui.messageTable.item(row, col)
                 item.setForeground(self.messColor[0])
-                item.setFont(self.messFont)
 
     def colorChange(self) -> None:
         """ """

@@ -277,7 +277,7 @@ class ModelManage(QObject):
         self.writeBuildModelOptimized(pointsOut)
         if self.fittedModelPath.is_file():
             self.msg.emit(
-                0, "Model", "Manage", f"Found stored model:  [{self.fittedModelPath.stem}]"
+                0, "Model", "Manage", f"{'Found:':12s} [{self.fittedModelPath.stem}]"
             )
             self.ui.originalModel.setText(self.fittedModelPath.stem)
 

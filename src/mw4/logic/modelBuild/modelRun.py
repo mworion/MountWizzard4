@@ -246,7 +246,6 @@ class ModelData(QObject):
         secondsBase = secondsElapsed / fraction
         secondsEstimated = secondsBase * (1 - fraction)
         modelPercent = int(100 * fraction)
-
         progressData = {
             "count": pointerResult + 1,
             "number": len(self.modelBuildData),
@@ -285,7 +284,8 @@ class ModelData(QObject):
         """ """
         self.modelBuildData.clear()
         self.log.debug(f"{'Prepare model':15s}: Len: [{len(self.modelInputData)}]")
-        for index, point in enumerate(self.modelInputData):
+        index = 0
+        for point in self.modelInputData:
             modelItem = {}
             imagePath = self.imageDir / f"image-{index:03d}.fits"
             modelItem["imagePath"] = imagePath
@@ -304,6 +304,7 @@ class ModelData(QObject):
             modelItem["success"] = False
             if altLow < modelItem["altitude"].degrees < altHigh:
                 self.modelBuildData.append(modelItem)
+                index += 1
             else:
                 self.log.debug(f"{'Skip point':15s}: [{index:02d}] - Limit violation")
 

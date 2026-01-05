@@ -255,7 +255,7 @@ class SatTrack(QObject, SatData):
 
         self.mainW.positionCursorInTable(self.ui.listSats, satName)
         self.satellite = self.satellites.objects[satName]
-        self.msg.emit(0, "Satellite", "Data", f"Actual satellite: [{satName}]")
+        self.msg.emit(0, "Satellite", "Data", f"{'Actual Sat:':12s} [{satName}]")
 
         self.ui.satelliteName.setText(self.satellite.name)
         self.ui.satelliteNumber.setText(f"{self.satellite.model.satnum:5d}")

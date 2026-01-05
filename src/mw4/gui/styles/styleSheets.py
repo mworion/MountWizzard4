@@ -34,10 +34,10 @@ MAC_STYLE = """
         font-weight: bold;
         font-size: 13pt;
     }
-    QListWidget {
+    QWidget QTableWidget {
         font-family: Courier New;
-        font-weight: bold;
-        font-size: 13pt;
+        font-weight: demibold;
+        font-size: 11pt;
     }
     QToolTip {
         font-size: 13pt;
@@ -49,11 +49,6 @@ MAC_STYLE = """
     }
     QTabWidget:tab-bar {
         alignment: center;
-    }
-    QWidget QTableWidget {
-        font-family: Courier New;
-        font-weight: demibold;
-        font-size: 13pt;
     }
     """
 
@@ -75,11 +70,6 @@ NON_MAC_STYLE = """
         font-size: 8pt;
     }
     QGroupBox[large] {
-        font-weight: bold;
-        font-size: 10pt;
-    }
-    QListWidget {
-        font-family: Courier New;
         font-weight: bold;
         font-size: 10pt;
     }

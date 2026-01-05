@@ -137,9 +137,9 @@ class AstroObjects(QObject):
     def finishProgObjects(self) -> None:
         """ """
         if self.uploadPopup.returnValues["success"]:
-            self.msg.emit(1, self.objectText.capitalize(), "Program", "Successful uploaded")
+            self.msg.emit(1, self.objectText.capitalize(), "Program", f"{'Upload:':12s} Successful")
         else:
-            self.msg.emit(2, self.objectText.capitalize(), "Program", "Upload failed")
+            self.msg.emit(2, self.objectText.capitalize(), "Program", f"{'Upload:':12s} Failed")
 
     def runUploadPopup(self, url: str) -> None:
         """ """
@@ -153,11 +153,10 @@ class AstroObjects(QObject):
                 2,
                 self.objectText.capitalize(),
                 "Data error",
-                "No data to export - stopping",
+                f"{'Data export:':12s} No data to export - stopping",
             )
             return
         self.dbProcFuncs[self.objectText](objects, dataFilePath=self.tempDir)
-        self.msg.emit(0, self.objectText.capitalize(), "Program", "Uploading to mount")
         url = self.app.mount.host[0]
         self.runUploadPopup(url)
 
@@ -165,8 +164,7 @@ class AstroObjects(QObject):
         """ """
         source = self.uiSourceList.currentText()
         objectType = self.objectText.capitalize()
-        self.msg.emit(1, objectType, "Program", f"{text} from {source}")
-        self.msg.emit(1, "", "", "Exporting data")
+        self.msg.emit(1, objectType, "Program", f"{'Upload:':12s} [{text}] from [{source}]")
 
     def progSelected(self) -> None:
         """ """

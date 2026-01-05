@@ -202,12 +202,16 @@ def test_setDEC_3(function):
 
 
 def test_moveAltAzAbsolute_1(function):
+    function.app.mount.obsSite.AltTarget = Angle(degrees=0)
+    function.app.mount.obsSite.AzTarget = Angle(degrees=0)
     function.ui.moveCoordinateAlt.setText("50h")
     function.ui.moveCoordinateAz.setText("50h")
     function.moveAltAzAbsolute()
 
 
 def test_moveAltAzAbsolute_2(function):
+    function.app.mount.obsSite.AltTarget = Angle(degrees=0)
+    function.app.mount.obsSite.AzTarget = Angle(degrees=0)
     function.ui.moveCoordinateAlt.setText("50")
     function.ui.moveCoordinateAz.setText("50h")
     function.moveAltAzAbsolute()
@@ -232,12 +236,16 @@ def test_moveAltAzAbsolute_4(function):
 
 
 def test_moveRaDecAbsolute_1(function):
+    function.app.mount.obsSite.haJNowTarget = Angle(degrees=0)
+    function.app.mount.obsSite.decJNowTarget = Angle(degrees=0)
     function.ui.moveCoordinateRa.setText("asd")
     function.ui.moveCoordinateDec.setText("asd")
     function.moveRaDecAbsolute()
 
 
 def test_moveRaDecAbsolute_2(function):
+    function.app.mount.obsSite.haJNowTarget = Angle(degrees=0)
+    function.app.mount.obsSite.decJNowTarget = Angle(degrees=0)
     function.ui.moveCoordinateRa.setText("12H")
     function.ui.moveCoordinateDec.setText("asd")
     function.moveRaDecAbsolute()

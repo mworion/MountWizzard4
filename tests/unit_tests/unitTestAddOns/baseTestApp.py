@@ -879,7 +879,6 @@ class Mount(QObject):
         Az = Angle(degrees=0)
         haJNowTarget = Angle(hours=0)
         decJNowTarget = Angle(degrees=0)
-        piersideTarget = "E"
         angularPosRA = Angle(degrees=0)
         angularPosDEC = Angle(degrees=0)
         errorAngularPosRA = Angle(degrees=0)
@@ -890,6 +889,7 @@ class Mount(QObject):
         AzTarget = Angle(degrees=0)
         AltTarget = Angle(degrees=0)
         pierside = "E"
+        piersideTarget = "E"
         timeSidereal = Angle(hours=12)
         location = wgs84.latlon(latitude_degrees=20, longitude_degrees=10, elevation_m=500)
         ts = load.timescale(builtin=True)

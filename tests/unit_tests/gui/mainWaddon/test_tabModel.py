@@ -248,7 +248,7 @@ def test_showStatusExposure(function):
 
 
 def test_showStatusSlew(function):
-    status = ["test", 5, 1]
+    status = ["test", 5, 1, ""]
     function.showStatusSlew(status)
 
 

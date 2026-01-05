@@ -105,8 +105,8 @@ def test_startNewSlew_1(function):
     function.mountSlewed = True
     function.cancelBatch = False
     function.endBatch = False
-    function.pointerSlew = 0
-    function.modelBuildData = [{"altitude": 0, "azimuth": 0, "success": False}]
+    function.pointerModel = 0
+    function.modelBuildData = [{"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": False}]
 
     function.startNewSlew()
     assert function.mountSlewed
@@ -118,7 +118,7 @@ def test_startNewSlew_2(function):
     function.mountSlewed = True
     function.cancelBatch = True
     function.endBatch = True
-    function.pointerSlew = -1
+    function.pointerModel = -1
     function.modelBuildData = [
         {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": False, "imagePath": Path("test")}
     ]
@@ -414,9 +414,9 @@ def test_prepareModelBuildData_1(function):
 
     with mock.patch.object(function, "sendModelProgress"):
         function.prepareModelBuildData()
-        assert len(function.modelBuildData) == 1
-        assert function.modelBuildData[0]["altitude"].degrees == 20
-        assert function.modelBuildData[0]["azimuth"].degrees == 1
+        assert len(function.modelBuildData) == 2
+        assert function.modelBuildData[0]["altitude"].degrees == 5
+        assert function.modelBuildData[0]["azimuth"].degrees == 0
 
 
 def test_checkRetryNeeded_1(function):

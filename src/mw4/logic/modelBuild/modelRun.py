@@ -124,11 +124,20 @@ class ModelData(QObject):
         while not isPossibleTarget:
             self.pointerModel += 1
             if self.pointerModel >= len(self.modelBuildData):
-                self.log.info(f"{'Start slew':15s}: last point done")
+                self.log.info(f"{'Start slew':15s}: Last point done")
                 return
             if self.cancelBatch or self.endBatch:
                 return
             while self.modelBuildData[self.pointerModel]["success"]:
+                item = self.modelBuildData[self.pointerModel]
+                altitude = item["altitude"]
+                azimuth = item["azimuth"]
+                data = [
+                    self.modelBuildData[self.pointerModel]["imagePath"].stem,
+                    altitude.degrees, azimuth.degrees,
+                    "Point skipped - already solved",
+                ]
+                self.statusSlew.emit(data)
                 self.pointerModel += 1
             item = self.modelBuildData[self.pointerModel]
             altitude = item["altitude"]
@@ -136,13 +145,17 @@ class ModelData(QObject):
             self.mountSlewed = False
             self.domeSlewed = False
             t = f"{'Start slew':15s}: [{self.pointerModel:02d}], "
-            t += f" alt:[{altitude.degrees:03.0f}], az:[{azimuth.degrees:03.0f}]"
+            t += f" Alt: [{altitude.degrees:03.0f}], Az: [{azimuth.degrees:03.0f}]"
             self.log.debug(t)
             isPossibleTarget = self.app.mount.obsSite.setTargetAltAz(altitude, azimuth)
+            data = [self.modelBuildData[self.pointerModel]["imagePath"].stem]
+            data += [altitude.degrees, azimuth.degrees]
+            status = [""] if isPossibleTarget else ["Point skipped - slew not possible"]
+            data += status
+            self.statusSlew.emit(data)
             if not isPossibleTarget:
-                self.log.debug(f"{'Skip point':15s}: no target setting possible")
+                self.log.debug(f"{'Skip point':15s}: No target setting possible")
                 continue
-            self.statusSlew.emit([item["imagePath"].stem, altitude.degrees, azimuth.degrees])
             if self.app.deviceStat["dome"]:
                 self.app.dome.slewDome(azimuth)
             self.app.mount.obsSite.startSlewing()
@@ -175,13 +188,13 @@ class ModelData(QObject):
 
     def saveModelData(self, modelPath: Path) -> None:
         """ """
-        self.log.debug(f"{'Save model':15s}: len: [{len(self.modelSaveData)}]")
+        self.log.debug(f"{'Save model':15s}: Len: [{len(self.modelSaveData)}]")
         with open(modelPath, "w") as outfile:
             json.dump(self.modelSaveData, outfile, sort_keys=True, indent=4)
 
     def buildProgModel(self) -> None:
         """ """
-        self.log.debug(f"{'Build progmodel':15s}: len:[{len(self.modelBuildData)}]")
+        self.log.debug(f"{'Build progmodel':15s}: Len: [{len(self.modelBuildData)}]")
         self.modelProgData = []
         for mPoint in self.modelBuildData:
             if not mPoint["success"]:
@@ -197,8 +210,8 @@ class ModelData(QObject):
         """ """
         item = self.modelBuildData[pointerModel]
         obs = self.app.mount.obsSite
-        t = f"{'Add mount data':15s}: [{pointerModel:02d}], ra:[{obs.raJNow}], "
-        t += f"dec:[{obs.decJNow}], jd:[{obs.timeJD}]"
+        t = f"{'Add mount data':15s}: [{pointerModel:02d}], Ra: [{obs.raJNow}], "
+        t += f"Dec: [{obs.decJNow}], Jd: [{obs.timeJD}]"
         self.log.debug(t)
         item["raJNowM"] = obs.raJNow
         item["decJNowM"] = obs.decJNow
@@ -230,7 +243,7 @@ class ModelData(QObject):
         exposureTime = item["exposureTime"] = cam.exposureTime1
         binning = item["binning"] = cam.binning1
         t = f"{'Start exposure':15s}: [{self.pointerModel:02d}], "
-        t += f"file:[{imagePath.stem}], exp:[{exposureTime:3.0f}]"
+        t += f"File: [{imagePath.stem}], ExpTime: [{exposureTime:3.0f}]"
         self.log.debug(t)
         self.app.camera.expose(imagePath, exposureTime, binning)
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
@@ -287,18 +300,13 @@ class ModelData(QObject):
     def prepareModelBuildData(self) -> None:
         """ """
         self.modelBuildData.clear()
-        self.log.debug(f"{'Prepare model':15s}: len:[{len(self.modelInputData)}]")
+        self.log.debug(f"{'Prepare model':15s}: Len: [{len(self.modelInputData)}]")
         for index, point in enumerate(self.modelInputData):
             modelItem = {}
             imagePath = self.imageDir / f"image-{index:03d}.fits"
             modelItem["imagePath"] = imagePath
             modelItem["altitude"] = Angle(degrees=point[0])
             modelItem["azimuth"] = Angle(degrees=point[1])
-            altLow = self.app.mount.setting.horizonLimitLow
-            altHigh = self.app.mount.setting.horizonLimitHigh
-            if not altLow < modelItem["altitude"].degrees < altHigh:
-                self.log.debug(f"{'Skip point':15s}: [{index:02d}] - limit violation")
-                continue
             modelItem["exposureTime"] = self.app.camera.exposureTime
             modelItem["binning"] = self.app.camera.binning
             modelItem["subFrame"] = self.app.camera.subFrame
@@ -314,7 +322,7 @@ class ModelData(QObject):
         """ """
         retryNeeded = not all(p["success"] for p in self.modelBuildData)
         t = "retry needed" if retryNeeded else "no retry needed"
-        self.log.debug(f"{'Check retry':15s}: status:[{t}]")
+        self.log.debug(f"{'Check retry':15s}: Status: [{t}]")
         return retryNeeded
 
     def runThroughModelBuildData(self) -> None:
@@ -327,7 +335,7 @@ class ModelData(QObject):
     def runThroughModelBuildDataRetries(self) -> None:
         """ """
         while self.numberRetries >= 0:
-            self.log.debug(f"{'Run retries':15s}: count:[{self.numberRetries:1.0f}]")
+            self.log.debug(f"{'Run retries':15s}: Count: [{self.numberRetries:1.0f}]")
             self.runThroughModelBuildData()
             if not self.checkRetryNeeded():
                 break

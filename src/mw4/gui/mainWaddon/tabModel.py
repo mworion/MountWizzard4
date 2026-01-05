@@ -235,7 +235,8 @@ class Model(QObject):
 
     def showStatusSlew(self, statusData: tuple) -> None:
         """ """
-        t = f"Slew:   [{statusData[0]}], alt: [{statusData[1]:3.2f}], az: [{statusData[2]:3.2f}] "
+        t = f"Slew:   [{statusData[0]}], Alt: [{statusData[1]:3.2f}], "
+        t += f"Az: [{statusData[2]:3.2f}], {statusData[3]}"
         self.msg.emit(0, "Model", "Slewing", t)
 
     def showStatusSolve(self, data: dict) -> None:

@@ -119,35 +119,30 @@ class ModelData(QObject):
 
     def startNewSlew(self) -> None:
         """ """
-        isPossibleTarget = False
-        while not isPossibleTarget:
-            self.pointerModel += 1
-            if self.pointerModel >= len(self.modelBuildData):
-                self.log.info(f"{'Start slew':15s}: Last point done")
-                return
-            if self.cancelBatch or self.endBatch:
-                return
-            item = self.modelBuildData[self.pointerModel]
-            altitude = item["altitude"]
-            azimuth = item["azimuth"]
-            self.mountSlewed = False
-            self.domeSlewed = False
-            t = f"{'Start slew':15s}: [{self.pointerModel:02d}], "
-            t += f" Alt: [{altitude.degrees:03.0f}], Az: [{azimuth.degrees:03.0f}]"
-            self.log.debug(t)
-            isPossibleTarget = self.app.mount.obsSite.setTargetAltAz(altitude, azimuth)
-            data = [self.modelBuildData[self.pointerModel]["imagePath"].stem]
-            data += [altitude.degrees, azimuth.degrees]
-            status = [""] if isPossibleTarget else ["Point skipped - slew not possible"]
-            data += status
-            self.statusSlew.emit(data)
-            if not isPossibleTarget:
-                item["success"] = False
-                self.log.debug(f"{'Skip point':15s}: No target setting possible")
-                continue
-            if self.app.deviceStat["dome"]:
-                self.app.dome.slewDome(azimuth)
-            self.app.mount.obsSite.startSlewing()
+        self.pointerModel += 1
+        if self.pointerModel >= len(self.modelBuildData):
+            self.log.info(f"{'Start slew':15s}: Last point done")
+            return
+        if self.cancelBatch or self.endBatch:
+            return
+        item = self.modelBuildData[self.pointerModel]
+        altitude = item["altitude"]
+        azimuth = item["azimuth"]
+        self.mountSlewed = False
+        self.domeSlewed = False
+        t = f"{'Start slew':15s}: [{self.pointerModel:02d}], "
+        t += f" Alt: [{altitude.degrees:03.0f}], Az: [{azimuth.degrees:03.0f}]"
+        self.log.debug(t)
+        isPossibleTarget = self.app.mount.obsSite.setTargetAltAz(altitude, azimuth)
+        if not isPossibleTarget:
+            self.log.warning(f"Slew to Alt: {altitude.degrees}, Az: {azimuth.degrees} not possible")
+            return
+        data = [self.modelBuildData[self.pointerModel]["imagePath"].stem]
+        data += [altitude.degrees, azimuth.degrees]
+        self.statusSlew.emit(data)
+        if self.app.deviceStat["dome"]:
+            self.app.dome.slewDome(azimuth)
+        self.app.mount.obsSite.startSlewing()
 
     def addMountModelToBuildModel(self) -> None:
         """ """
@@ -296,6 +291,8 @@ class ModelData(QObject):
             modelItem["imagePath"] = imagePath
             modelItem["altitude"] = Angle(degrees=point[0])
             modelItem["azimuth"] = Angle(degrees=point[1])
+            altLow = self.app.mount.setting.horizonLimitLow
+            altHigh = self.app.mount.setting.horizonLimitHigh
             modelItem["exposureTime"] = self.app.camera.exposureTime
             modelItem["binning"] = self.app.camera.binning
             modelItem["subFrame"] = self.app.camera.subFrame
@@ -305,7 +302,10 @@ class ModelData(QObject):
             modelItem["focalLength"] = self.app.camera.focalLength
             modelItem["countSequence"] = index
             modelItem["success"] = False
-            self.modelBuildData.append(modelItem)
+            if altLow < modelItem["altitude"].degrees < altHigh:
+                self.modelBuildData.append(modelItem)
+            else:
+                self.log.debug(f"{'Skip point':15s}: [{index:02d}] - Limit violation")
 
     def checkRetryNeeded(self) -> None:
         """ """

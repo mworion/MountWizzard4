@@ -414,9 +414,9 @@ def test_prepareModelBuildData_1(function):
 
     with mock.patch.object(function, "sendModelProgress"):
         function.prepareModelBuildData()
-        assert len(function.modelBuildData) == 2
-        assert function.modelBuildData[0]["altitude"].degrees == 5
-        assert function.modelBuildData[0]["azimuth"].degrees == 0
+        assert len(function.modelBuildData) == 1
+        assert function.modelBuildData[0]["altitude"].degrees == 20
+        assert function.modelBuildData[0]["azimuth"].degrees == 1
 
 
 def test_checkRetryNeeded_1(function):

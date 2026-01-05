@@ -13,7 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
+import cv2
+import numpy as np
+from pathlib import Path
 import os
 import pyqtgraph as pg
 import pytest
@@ -125,6 +127,33 @@ def test_preparePolarItem_2(function):
     pd = pg.PlotItem()
     function.ui.showPolar.setChecked(True)
     function.preparePolarItem(pd)
+
+
+def test_drawMeridianLimits2(function):
+    function.app.mount.setting.meridianLimitSlew = 10
+    function.app.mount.setting.meridianLimitTrack = 10
+    function.drawMeridianLimits(pg.PlotItem())
+
+
+def test_staticHorizonLimits_2(function):
+    function.app.mount.setting.horizonLimitHigh = 90
+    function.app.mount.setting.horizonLimitLow = 10
+    function.drawHorizonLimits(pg.PlotItem())
+
+
+def test_drawTerrainImage_1(function):
+    function.imageTerrain = None
+    function.drawTerrainImage(pg.PlotItem())
+
+
+def test_drawTerrainImage_2(function):
+    function.imageTerrain = np.ones((1440, 360))
+    with mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")):
+        with mock.patch.object(Path, "is_file", return_value=True):
+            with mock.patch.object(cv2, "imread", return_value=np.array([[0, 0], [0, 0]])):
+                with mock.patch.object(cv2, "resize", return_value=np.ones((1440, 360))):
+                    with mock.patch.object(cv2, "flip", return_value=np.ones((360, 1440))):
+                        function.drawTerrainImage(pg.PlotItem())
 
 
 def test_redrawAll_1(function):

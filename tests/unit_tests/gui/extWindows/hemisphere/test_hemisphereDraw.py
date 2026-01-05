@@ -21,7 +21,6 @@ import shutil
 import unittest.mock as mock
 from mw4.gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
-from mw4.mountcontrol.setting import Setting
 from PySide6.QtCore import QPointF
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -90,103 +89,6 @@ def test_setOperationMode_2(function):
             function.setOperationMode()
 
 
-def test_updateOnChangedParams_0(function):
-    class Parent:
-        host = None
-
-    sett = Setting(parent=Parent())
-    sett.meridianLimitSlew = 0
-    sett.meridianLimitTrack = 0
-    sett.horizonLimitHigh = 0
-    sett.horizonLimitLow = 0
-
-    function.meridianSlew = 0
-    function.meridianTrack = 0
-    function.horizonLimitHigh = 0
-    function.horizonLimitLow = 0
-    suc = function.updateOnChangedParams(sett)
-    assert not suc
-
-
-def test_updateOnChangedParams_1(function):
-    class Parent:
-        host = None
-
-    sett = Setting(parent=Parent())
-    sett.meridianLimitSlew = 0
-    sett.meridianLimitTrack = 0
-    sett.horizonLimitHigh = 0
-    sett.horizonLimitLow = 1
-
-    function.meridianSlew = 0
-    function.meridianTrack = 0
-    function.horizonLimitHigh = 0
-    function.horizonLimitLow = 0
-    with mock.patch.object(function, "drawTab"):
-        suc = function.updateOnChangedParams(sett)
-        assert suc
-
-
-def test_updateOnChangedParams_2(function):
-    class Parent:
-        host = None
-
-    sett = Setting(parent=Parent())
-    sett.meridianLimitSlew = 0
-    sett.meridianLimitTrack = 0
-    sett.horizonLimitHigh = 1
-    sett.horizonLimitLow = 0
-
-    function.meridianSlew = 0
-    function.meridianTrack = 0
-    function.horizonLimitHigh = 0
-    function.horizonLimitLow = 0
-
-    with mock.patch.object(function, "drawTab"):
-        suc = function.updateOnChangedParams(sett)
-        assert suc
-
-
-def test_updateOnChangedParams_3(function):
-    class Parent:
-        host = None
-
-    sett = Setting(parent=Parent())
-    sett.meridianLimitSlew = 0
-    sett.meridianLimitTrack = 1
-    sett.horizonLimitHigh = 0
-    sett.horizonLimitLow = 0
-
-    function.meridianSlew = 0
-    function.meridianTrack = 0
-    function.horizonLimitHigh = 0
-    function.horizonLimitLow = 0
-
-    with mock.patch.object(function, "drawTab"):
-        suc = function.updateOnChangedParams(sett)
-        assert suc
-
-
-def test_updateOnChangedParams_4(function):
-    class Parent:
-        host = None
-
-    sett = Setting(parent=Parent())
-    sett.meridianLimitSlew = 1
-    sett.meridianLimitTrack = 0
-    sett.horizonLimitHigh = 0
-    sett.horizonLimitLow = 0
-
-    function.meridianSlew = 0
-    function.meridianTrack = 0
-    function.horizonLimitHigh = 0
-    function.horizonLimitLow = 0
-
-    with mock.patch.object(function, "drawTab"):
-        suc = function.updateOnChangedParams(sett)
-        assert suc
-
-
 def test_prepareView(function):
     function.prepareView()
 
@@ -205,30 +107,6 @@ def test_drawCelestialEquator_2(function):
 
 def test_drawHorizon(function):
     function.drawHorizon()
-
-
-def test_drawMeridianLimits_1(function):
-    function.app.mount.setting.meridianLimitSlew = None
-    function.app.mount.setting.meridianLimitTrack = None
-    function.drawMeridianLimits()
-
-
-def test_drawMeridianLimits2(function):
-    function.app.mount.setting.meridianLimitSlew = 10
-    function.app.mount.setting.meridianLimitTrack = 10
-    function.drawMeridianLimits()
-
-
-def test_staticHorizonLimits_1(function):
-    function.app.mount.setting.horizonLimitHigh = None
-    function.app.mount.setting.horizonLimitLow = None
-    function.drawHorizonLimits()
-
-
-def test_staticHorizonLimits_2(function):
-    function.app.mount.setting.horizonLimitHigh = 90
-    function.app.mount.setting.horizonLimitLow = 10
-    function.drawHorizonLimits()
 
 
 def test_setupAlignmentStars(function):
@@ -523,9 +401,9 @@ def test_drawTab_1(function):
     function.ui.showHorizon.setChecked(True)
     function.app.deviceStat["mount"] = True
     with mock.patch.object(function, "drawCelestialEquator"):
-        with mock.patch.object(function.parent.horizonDraw, "drawTerrainImage"):
-            with mock.patch.object(function, "drawMeridianLimits"):
-                with mock.patch.object(function, "drawHorizonLimits"):
+        with mock.patch.object(function.parent, "drawTerrainImage"):
+            with mock.patch.object(function.parent, "drawMeridianLimits"):
+                with mock.patch.object(function.parent, "drawHorizonLimits"):
                     with mock.patch.object(function, "drawModelIsoCurve"):
                         with mock.patch.object(function, "drawHorizon"):
                             function.drawTab()

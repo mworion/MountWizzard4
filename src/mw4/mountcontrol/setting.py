@@ -47,7 +47,7 @@ class Setting:
         self.statusRefraction: bool = False
         self.statusUnattendedFlip: bool = False
         self.statusDualAxisTracking: bool = False
-        self.horizonLimitHigh: float = 0
+        self.horizonLimitHigh: float = 90
         self.horizonLimitLow: float = 0
         self.UTCValid: bool = False
         self.UTCExpire: str = "2000-01-01"

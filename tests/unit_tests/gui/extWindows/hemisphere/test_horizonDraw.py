@@ -79,21 +79,6 @@ def test_mouseMovedHorizon_2(function):
         function.mouseMovedHorizon(pos=QPointF(0.5, 0.5))
 
 
-def test_drawTerrainImage_1(function):
-    function.imageTerrain = None
-    function.drawTerrainImage(pg.PlotItem())
-
-
-def test_drawTerrainImage_2(function):
-    function.imageTerrain = np.ones((1440, 360))
-    with mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(cv2, "imread", return_value=np.array([[0, 0], [0, 0]])):
-                with mock.patch.object(cv2, "resize", return_value=np.ones((1440, 360))):
-                    with mock.patch.object(cv2, "flip", return_value=np.ones((360, 1440))):
-                        function.drawTerrainImage(pg.PlotItem())
-
-
 def test_loadTerrainImage_1(function):
     with mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")):
         with mock.patch.object(Path, "is_file", return_value=True):
@@ -262,10 +247,13 @@ def test_setupView_2(function):
 def test_drawTab_1(function):
     function.ui.showTerrain.setChecked(True)
     function.ui.editModeHor.setChecked(True)
+    function.ui.showMountLimits.setChecked(True)
     with mock.patch.object(function, "prepareView"):
-        with mock.patch.object(function, "drawTerrainImage"):
+        with mock.patch.object(function.parent, "drawTerrainImage"):
             with mock.patch.object(function, "setupView"):
                 with mock.patch.object(function, "drawView"):
                     with mock.patch.object(function, "setupPointer"):
                         with mock.patch.object(function, "drawPointer"):
-                            function.drawTab()
+                            with mock.patch.object(function.parent, "drawMeridianLimits"):
+                                with mock.patch.object(function.parent, "drawHorizonLimits"):
+                                    function.drawTab()

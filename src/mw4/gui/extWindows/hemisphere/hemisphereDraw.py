@@ -18,7 +18,6 @@ import pyqtgraph as pg
 from mw4.base.transform import diffModulusAbs
 from mw4.gui.utilities.slewInterface import SlewInterface
 from mw4.gui.utilities.toolsQtWidget import MWidget
-from mw4.mountcontrol.setting import Setting
 from skyfield.api import Angle
 from pyqtgraph.widgets.RemoteGraphicsView import MouseEvent
 from PySide6.QtCore import QPointF, Qt
@@ -67,7 +66,7 @@ class HemisphereDraw(MWidget):
         self.ui.azimuthShift.valueChanged.connect(self.drawTab)
         self.ui.altitudeShift.valueChanged.connect(self.drawTab)
         self.ui.terrainAlpha.valueChanged.connect(self.drawTab)
-        self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
+        self.app.mount.signals.settingDone.connect(self.drawTab)
         self.ui.normalModeHem.clicked.connect(self.setOperationMode)
         self.ui.editModeHem.clicked.connect(self.setOperationMode)
         self.ui.alignmentModeHem.clicked.connect(self.setOperationMode)
@@ -77,18 +76,9 @@ class HemisphereDraw(MWidget):
         self.app.operationRunning.connect(self.enableOperationModeChange)
         self.ui.hemisphere.p[0].scene().sigMouseMoved.connect(self.mouseMovedHemisphere)
 
-        sett = self.app.mount.setting
-        self.meridianSlew = sett.meridianLimitSlew
-        self.meridianTrack = sett.meridianLimitTrack
-        self.horizonLimitHigh = sett.horizonLimitHigh
-        self.horizonLimitLow = sett.horizonLimitLow
-
     def close(self) -> None:
         """ """
         self.app.mount.signals.pointDone.disconnect(self.drawPointer)
-        self.app.mount.signals.getModelDone.disconnect(self.drawTab)
-        self.app.mount.signals.settingDone.disconnect(self.updateOnChangedParams)
-
         self.app.redrawHemisphere.disconnect(self.drawTab)
         self.app.update3s.disconnect(self.drawAlignmentStars)
 
@@ -111,25 +101,6 @@ class HemisphereDraw(MWidget):
             self.ui.showAlignStar.setChecked(True)
             self.app.data.clearBuildP()
         self.drawTab()
-
-    def updateOnChangedParams(self, sett: Setting) -> bool:
-        """ """
-        needRedraw = False
-        if self.meridianSlew != sett.meridianLimitSlew:
-            self.meridianSlew = sett.meridianLimitSlew
-            needRedraw = True
-        if self.meridianTrack != sett.meridianLimitTrack:
-            self.meridianTrack = sett.meridianLimitTrack
-            needRedraw = True
-        if self.horizonLimitHigh != sett.horizonLimitHigh:
-            self.horizonLimitHigh = sett.horizonLimitHigh
-            needRedraw = True
-        if self.horizonLimitLow != sett.horizonLimitLow:
-            self.horizonLimitLow = sett.horizonLimitLow
-            needRedraw = True
-        if needRedraw:
-            self.drawTab()
-        return needRedraw
 
     def prepareView(self) -> None:
         """ """
@@ -172,48 +143,6 @@ class HemisphereDraw(MWidget):
         p1 = self.ui.hemisphere.p[1]
         self.ui.hemisphere.drawHorizon(self.app.data.horizonP, plotItem=p0)
         self.ui.hemisphere.drawHorizon(self.app.data.horizonP, plotItem=p1, polar=True)
-
-    def drawMeridianLimits(self) -> None:
-        """ """
-        slew = self.app.mount.setting.meridianLimitSlew
-        track = self.app.mount.setting.meridianLimitTrack
-        if slew is None or track is None:
-            return
-
-        plotItem = self.ui.hemisphere.p[0]
-
-        mSlew = pg.QtWidgets.QGraphicsRectItem(180 - slew, 0, 2 * slew, 90)
-        mSlew.setPen(pg.mkPen(color=self.M_YELLOW1 + "40"))
-        mSlew.setBrush(pg.mkBrush(color=self.M_YELLOW + "40"))
-        mSlew.setZValue(10)
-        plotItem.addItem(mSlew)
-
-        mTrack = pg.QtWidgets.QGraphicsRectItem(180 - track, 0, 2 * track, 90)
-        mTrack.setPen(pg.mkPen(color=self.M_YELLOW1 + "40"))
-        mTrack.setBrush(pg.mkBrush(color=self.M_YELLOW + "40"))
-        mTrack.setZValue(20)
-        plotItem.addItem(mTrack)
-
-    def drawHorizonLimits(self) -> None:
-        """ """
-        plotItem = self.ui.hemisphere.p[0]
-        val = self.app.mount.setting.horizonLimitHigh
-        high = val if val is not None else 90
-
-        val = self.app.mount.setting.horizonLimitLow
-        low = val if val is not None else 0
-
-        hLow = pg.QtWidgets.QGraphicsRectItem(0, high, 360, 90 - high)
-        hLow.setPen(pg.mkPen(color=self.M_RED1 + "40"))
-        hLow.setBrush(pg.mkBrush(color=self.M_RED + "40"))
-        hLow.setZValue(0)
-        plotItem.addItem(hLow)
-
-        hHigh = pg.QtWidgets.QGraphicsRectItem(0, 0, 360, low)
-        hHigh.setPen(pg.mkPen(color=self.M_RED1 + "40"))
-        hHigh.setBrush(pg.mkBrush(color=self.M_RED + "40"))
-        hHigh.setZValue(0)
-        plotItem.addItem(hHigh)
 
     def setupAlignmentStars(self) -> None:
         """ """
@@ -529,10 +458,10 @@ class HemisphereDraw(MWidget):
         if self.ui.showCelestial.isChecked():
             self.drawCelestialEquator()
         if self.ui.showTerrain.isChecked():
-            self.parent.horizonDraw.drawTerrainImage(self.ui.hemisphere.p[0])
+            self.parent.drawTerrainImage(self.ui.hemisphere.p[0])
         if self.ui.showMountLimits.isChecked():
-            self.drawMeridianLimits()
-            self.drawHorizonLimits()
+            self.parent.drawMeridianLimits(self.ui.hemisphere.p[0])
+            self.parent.drawHorizonLimits(self.ui.hemisphere.p[0])
         if self.ui.showIsoModel.isChecked():
             self.drawModelIsoCurve()
         self.setupAlignmentStars()

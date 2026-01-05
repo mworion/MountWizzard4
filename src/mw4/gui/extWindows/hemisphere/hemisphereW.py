@@ -13,6 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
+import cv2
 import numpy as np
 import pyqtgraph as pg
 from mw4.gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
@@ -201,6 +202,61 @@ class HemisphereWindow(MWidget):
         self.ui.hemisphere.setGrid(plotItem=plotItem, reverse=True)
         lat = self.app.mount.obsSite.location.latitude.degrees
         self.ui.hemisphere.plotLoc(lat, plotItem=plotItem)
+
+    def drawTerrainImage(self, plotItem: pg.PlotItem) -> None:
+        """ """
+        if self.horizonDraw.imageTerrain is None:
+            return
+
+        shiftAz = (self.ui.azimuthShift.value() + 360) % 360
+        shiftAlt = self.ui.altitudeShift.value()
+        alpha = self.ui.terrainAlpha.value()
+        x1 = int(4 * shiftAz)
+        x2 = int(1440 + 4 * shiftAz)
+        y1 = int(60 + shiftAlt * 2)
+        y2 = int(420 + shiftAlt * 2)
+        img = self.horizonDraw.imageTerrain[y1:y2, x1:x2]
+        img = cv2.resize(img, (360, 90))
+        imgItem = pg.ImageItem(img)
+        cMap = pg.colormap.get("CET-L2")
+        imgItem.setColorMap(cMap)
+        imgItem.setOpts(opacity=alpha)
+        imgItem.setZValue(-10)
+        plotItem.addItem(imgItem)
+
+    def drawMeridianLimits(self, plotItem: pg.PlotItem) -> None:
+        """ """
+        slew = self.app.mount.setting.meridianLimitSlew
+        track = self.app.mount.setting.meridianLimitTrack
+
+        mSlew = pg.QtWidgets.QGraphicsRectItem(180 - slew, 0, 2 * slew, 90)
+        mSlew.setPen(pg.mkPen(color=self.M_YELLOW1 + "40"))
+        mSlew.setBrush(pg.mkBrush(color=self.M_YELLOW + "40"))
+        mSlew.setZValue(10)
+        plotItem.addItem(mSlew)
+
+        mTrack = pg.QtWidgets.QGraphicsRectItem(180 - track, 0, 2 * track, 90)
+        mTrack.setPen(pg.mkPen(color=self.M_YELLOW1 + "40"))
+        mTrack.setBrush(pg.mkBrush(color=self.M_YELLOW + "40"))
+        mTrack.setZValue(20)
+        plotItem.addItem(mTrack)
+
+    def drawHorizonLimits(self, plotItem: pg.PlotItem) -> None:
+        """ """
+        high = self.app.mount.setting.horizonLimitHigh
+        low = self.app.mount.setting.horizonLimitLow
+
+        hLow = pg.QtWidgets.QGraphicsRectItem(0, high, 360, 90 - high)
+        hLow.setPen(pg.mkPen(color=self.M_RED1 + "40"))
+        hLow.setBrush(pg.mkBrush(color=self.M_RED + "40"))
+        hLow.setZValue(0)
+        plotItem.addItem(hLow)
+
+        hHigh = pg.QtWidgets.QGraphicsRectItem(0, 0, 360, low)
+        hHigh.setPen(pg.mkPen(color=self.M_RED1 + "40"))
+        hHigh.setBrush(pg.mkBrush(color=self.M_RED + "40"))
+        hHigh.setZValue(0)
+        plotItem.addItem(hHigh)
 
     def redrawAll(self) -> None:
         """ """

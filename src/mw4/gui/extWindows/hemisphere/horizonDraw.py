@@ -59,32 +59,13 @@ class HorizonDraw(MWidget):
         self.ui.normalModeHor.clicked.connect(self.setOperationMode)
         self.ui.editModeHor.clicked.connect(self.setOperationMode)
         self.app.mount.signals.pointDone.connect(self.drawPointer)
+        self.app.mount.signals.settingDone.connect(self.drawTab)
+        self.ui.showMountLimits.clicked.connect(self.drawTab)
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
 
     def mouseMovedHorizon(self, pos: QPointF) -> None:
         """ """
         self.parent.mouseMoved(pos)
-
-    def drawTerrainImage(self, plotItem: pg.PlotItem) -> None:
-        """ """
-        if self.imageTerrain is None:
-            return
-
-        shiftAz = (self.ui.azimuthShift.value() + 360) % 360
-        shiftAlt = self.ui.altitudeShift.value()
-        alpha = self.ui.terrainAlpha.value()
-        x1 = int(4 * shiftAz)
-        x2 = int(1440 + 4 * shiftAz)
-        y1 = int(60 + shiftAlt * 2)
-        y2 = int(420 + shiftAlt * 2)
-        img = self.imageTerrain[y1:y2, x1:x2]
-        img = cv2.resize(img, (360, 90))
-        imgItem = pg.ImageItem(img)
-        cMap = pg.colormap.get("CET-L2")
-        imgItem.setColorMap(cMap)
-        imgItem.setOpts(opacity=alpha)
-        imgItem.setZValue(-10)
-        plotItem.addItem(imgItem)
 
     def loadTerrainImage(self, terrainFile: Path) -> None:
         """ """
@@ -276,7 +257,10 @@ class HorizonDraw(MWidget):
         """ """
         self.prepareView()
         if self.ui.showTerrain.isChecked():
-            self.drawTerrainImage(self.ui.horizon.p[0])
+            self.parent.drawTerrainImage(self.ui.horizon.p[0])
+        if self.ui.showMountLimits.isChecked():
+            self.parent.drawMeridianLimits(self.ui.horizon.p[0])
+            self.parent.drawHorizonLimits(self.ui.horizon.p[0])
         self.setupView()
         self.drawView()
         if self.ui.editModeHor.isChecked():

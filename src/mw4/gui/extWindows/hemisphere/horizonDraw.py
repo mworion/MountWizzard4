@@ -30,9 +30,9 @@ class HorizonDraw(MWidget):
         self.ui = parent.ui
         self.app = parent.app
         self.msg = parent.msg
-        self.horizonPlot = None
-        self.imageTerrain = None
-        self.pointerHor = None
+        self.horizonPlot: pg.PlotDataItem = None
+        self.imageTerrain: np.array = None
+        self.pointerHor: pg.ScatterPlotItem = None
 
     def initConfig(self) -> None:
         """ """
@@ -62,6 +62,11 @@ class HorizonDraw(MWidget):
         self.app.mount.signals.settingDone.connect(self.drawTab)
         self.ui.showMountLimits.clicked.connect(self.drawTab)
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
+
+    def close(self):
+        """"""
+        self.app.mount.signals.pointDone.disconnect(self.drawPointer)
+        self.app.mount.signals.settingDone.disconnect(self.drawTab)
 
     def mouseMovedHorizon(self, pos: QPointF) -> None:
         """ """

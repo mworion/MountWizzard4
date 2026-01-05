@@ -35,20 +35,13 @@ class HemisphereDraw(MWidget):
         self.msg = parent.msg
         self.slewInterface = SlewInterface(self)
 
-        self.pointerDome = None
-        self.modelPointsText = []
-        self.alignmentStars = None
-        self.alignmentStarsText = None
-        self.horizonLimitHigh = None
-        self.horizonLimitLow = None
-        self.meridianSlew = None
-        self.meridianTrack = None
-        self.hemMouse = None
+        self.pointerDome: pg.QtWidgets.QGraphicsRectItem = None
+        self.modelPointsText: list = []
+        self.alignmentStars: list = []
+        self.alignmentStarsText: list = []
 
     def initConfig(self) -> None:
         """ """
-        self.app.update3s.connect(self.drawAlignmentStars)
-
         self.app.mount.signals.pointDone.connect(self.drawPointer)
         self.app.dome.signals.azimuth.connect(self.drawDome)
         self.app.dome.signals.deviceDisconnected.connect(self.drawDome)
@@ -75,10 +68,15 @@ class HemisphereDraw(MWidget):
         self.app.redrawHorizon.connect(self.drawHorizon)
         self.app.operationRunning.connect(self.enableOperationModeChange)
         self.ui.hemisphere.p[0].scene().sigMouseMoved.connect(self.mouseMovedHemisphere)
+        self.app.update3s.connect(self.drawAlignmentStars)
 
     def close(self) -> None:
         """ """
+        self.app.mount.signals.settingDone.disconnect(self.drawTab)
+        self.app.mount.signals.getModelDone.disconnect(self.drawTab)
+        self.app.dome.signals.azimuth.disconnect(self.drawDome)
         self.app.mount.signals.pointDone.disconnect(self.drawPointer)
+        self.app.redrawHorizon.disconnect(self.drawHorizon)
         self.app.redrawHemisphere.disconnect(self.drawTab)
         self.app.update3s.disconnect(self.drawAlignmentStars)
 
@@ -110,8 +108,8 @@ class HemisphereDraw(MWidget):
         self.parent.preparePolarItem(polarItem)
         self.pointerDome = None
         self.modelPointsText = []
-        self.alignmentStars = None
-        self.alignmentStarsText = None
+        self.alignmentStars = []
+        self.alignmentStarsText = []
         plotItem.getViewBox().callbackMDC = self.mouseDoubleClick
 
     def drawCelestialEquator(self) -> None:
@@ -183,7 +181,7 @@ class HemisphereDraw(MWidget):
         """ """
         if not self.ui.showAlignStar.isChecked():
             return
-        if self.alignmentStars is None:
+        if not self.alignmentStars:
             return
 
         hip = self.app.hipparcos

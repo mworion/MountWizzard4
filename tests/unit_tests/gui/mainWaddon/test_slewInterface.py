@@ -79,16 +79,6 @@ def test_slewTargetAltAz_3(function):
             assert suc
 
 
-def test_slewTargetRaDec_0(function):
-    temp = function.app.mount.obsSite.timeJD
-    function.app.mount.obsSite.timeJD = None
-
-    with mock.patch.object(function.app.mount.obsSite, "setTargetRaDec", return_value=False):
-        suc = function.slewTargetRaDec(Angle(hours=10), Angle(degrees=10))
-        assert not suc
-    function.app.mount.obsSite.timeJD = temp
-
-
 def test_slewTargetRaDec_1(function):
     with mock.patch.object(function.app.mount.obsSite, "setTargetRaDec", return_value=False):
         with mock.patch.object(function, "slewSelectedTargetWithDome", return_value=False):

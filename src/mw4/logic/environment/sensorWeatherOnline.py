@@ -57,8 +57,7 @@ class SensorWeatherOnline:
 
     @staticmethod
     def getDewPoint(tempAir: float, relativeHumidity: float) -> float:
-        """
-        """
+        """ """
         if tempAir < -40 or tempAir > 80:
             return 0
         if relativeHumidity < 0 or relativeHumidity > 100:

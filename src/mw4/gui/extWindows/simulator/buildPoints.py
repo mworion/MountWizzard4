@@ -173,8 +173,7 @@ class SimulatorBuildPoints:
         return (e1, trans1, e2, trans2, mesh2, mat2, e3, trans3)
 
     def loopCreate(self, buildPointEntity):
-        """
-        """
+        """ """
         isNumber = self.parent.ui.showNumbers.isChecked()
         isSlewPath = self.parent.ui.showSlewPath.isChecked()
 

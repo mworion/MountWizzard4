@@ -13,10 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
 import unittest.mock as mock
-from gui.mainWaddon.slewInterface import SlewInterface
+from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 

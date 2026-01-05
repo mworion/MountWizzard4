@@ -15,13 +15,13 @@
 ###########################################################
 import numpy as np
 import pyqtgraph as pg
-from mw4.base.transform import diffModulusAbs
 from gui.mainWaddon.slewInterface import SlewInterface
+from mw4.base.transform import diffModulusAbs
 from mw4.gui.utilities.toolsQtWidget import MWidget
-from skyfield.api import Angle
 from pyqtgraph.widgets.RemoteGraphicsView import MouseEvent
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont
+from skyfield.api import Angle
 
 
 class HemisphereDraw(MWidget):

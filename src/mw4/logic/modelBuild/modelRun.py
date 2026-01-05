@@ -201,9 +201,9 @@ class ModelData(QObject):
         """ """
         item = self.modelBuildData[self.pointerImage]
         obs = self.app.mount.obsSite
-        self.log.debug(
-            f"{'Add mount data':15s}: [{index:02d}], ra:[{obs.raJNow}], dec:[{obs.decJNow}], jd:[{obs.timeJD}]"
-        )
+        t = f"{'Add mount data':15s}: [{index:02d}], ra:[{obs.raJNow}], "
+        t += f"dec:[{obs.decJNow}], jd:[{obs.timeJD}]"
+        self.log.debug(t)
         item["raJNowM"] = obs.raJNow
         item["decJNowM"] = obs.decJNow
         item["angularPosRA"] = obs.angularPosRA
@@ -234,9 +234,9 @@ class ModelData(QObject):
         imagePath = item["imagePath"]
         exposureTime = item["exposureTime"] = cam.exposureTime1
         binning = item["binning"] = cam.binning1
-        self.log.debug(
-            f"{'Start exposure':15s}: [{self.pointerImage:02d}], file:[{imagePath.stem}], exp:[{exposureTime:3.0f}]"
-        )
+        t = f"{'Start exposure':15s}: [{self.pointerImage:02d}], "
+        t += f"file:[{imagePath.stem}], exp:[{exposureTime:3.0f}]"
+        self.log.debug(t)
         self.app.camera.expose(imagePath, exposureTime, binning)
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
 

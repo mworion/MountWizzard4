@@ -37,6 +37,7 @@ class Connection:
     The class itself needs parameters for the host and port to be able to interact
     with the mount.
     """
+
     log = logging.getLogger("MW4")
     SOCKET_TIMEOUT = 10
 
@@ -359,8 +360,7 @@ class Connection:
             return client
 
     def sendData(self, client: socket.socket, commandString: str) -> bool:
-        """
-        """
+        """ """
         try:
             self.log.trace(f"Sending  [{self.id}]: [{commandString}]")
             client.sendall(commandString.encode())
@@ -375,7 +375,9 @@ class Connection:
         else:
             return True
 
-    def receiveData(self, client: socket.socket, numberOfChunks: int, minBytes: int) -> tuple[bool, str]:
+    def receiveData(
+        self, client: socket.socket, numberOfChunks: int, minBytes: int
+    ) -> tuple[bool, str]:
         """
         receive Data waits on the give socket client for a number of chunks to
         be received or a minimum set of bytes received. the chunks are delimited
@@ -412,9 +414,10 @@ class Connection:
             self.log.trace(f"Response [{self.id}]: [{response}]")
             return True, response
 
-    def communicate(self, commandString: str, responseCheck: str = "") -> tuple[bool, str, int]:
-        """
-        """
+    def communicate(
+        self, commandString: str, responseCheck: str = ""
+    ) -> tuple[bool, str, int]:
+        """ """
         if not self.validCommandSet(commandString):
             return False, "", 0
 

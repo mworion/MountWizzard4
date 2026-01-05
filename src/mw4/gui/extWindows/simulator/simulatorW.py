@@ -96,8 +96,7 @@ class SimulatorWindow(MWidget):
         config["showHorizon"] = self.ui.showHorizon.isChecked()
 
     def closeEvent(self, closeEvent):
-        """
-        """
+        """ """
         self.app.mount.signals.pointDone.disconnect(self.buildPoints.updatePositions)
         self.app.mount.signals.pointDone.disconnect(self.laser.updatePositions)
         self.app.mount.signals.pointDone.disconnect(self.pointer.updatePositions)
@@ -123,8 +122,7 @@ class SimulatorWindow(MWidget):
         self.colorChange()
 
     def setupCamera(self, parentEntity):
-        """
-        """
+        """ """
         self.camera = self.window3D.camera()
         self.camera.lens().setPerspectiveProjection(60, 16 / 9, 0.1, 10000)
         self.camera.setViewCenter(QVector3D(0, 1, 0))
@@ -155,8 +153,7 @@ class SimulatorWindow(MWidget):
         self.camera.setPosition(posNew)
 
     def topView(self):
-        """
-        """
+        """ """
         changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(0.001, 5.0, 0.001))

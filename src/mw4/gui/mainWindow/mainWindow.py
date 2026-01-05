@@ -206,7 +206,7 @@ class MainWindow(MWidget):
         isModelingReady = all(
             bool(self.app.deviceStat.get(x)) for x in ["mount", "camera", "plateSolve"]
         )
-        isPause = self.ui.pauseModel.property("pause")
+        self.ui.pauseModel.property("pause")
 
         if isModelingReady and self.app.data.buildP:
             self.ui.runModelGroup.setEnabled(True)

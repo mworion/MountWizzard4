@@ -375,7 +375,7 @@ class SatTrack(QObject, SatData):
         isReplay = self.ui.trackingReplay.isChecked()
         t = "for simulation" if isReplay else ""
         self.msg.emit(1, "TLE", "Program", f"Satellite track data {t}")
-        self.msg.emit(1, "", "", f"This takes some time, please wait...")
+        self.msg.emit(1, "", "", "This takes some time, please wait...")
         start, end = self.selectStartEnd()
         if not start or not end:
             return

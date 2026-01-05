@@ -14,7 +14,6 @@
 #
 ###########################################################
 from functools import partial
-from skyfield.api import Angle
 from gui.mainWaddon.slewInterface import SlewInterface
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, sleepAndEvents
 from mw4.mountcontrol.convert import (
@@ -26,6 +25,7 @@ from mw4.mountcontrol.convert import (
 )
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QInputDialog, QLineEdit
+from skyfield.api import Angle
 
 
 class MountMove(QObject):
@@ -246,8 +246,6 @@ class MountMove(QObject):
 
     def moveAltAz(self, direction: str) -> None:
         """ """
-        alt = self.app.mount.obsSite.Alt
-        az = self.app.mount.obsSite.Az
         uiList = self.setupMoveAltAz
         changeStyleDynamic(uiList[direction]["button"], "run", True)
 
@@ -256,7 +254,9 @@ class MountMove(QObject):
 
         coord = self.setupMoveAltAz[direction]["coord"]
         targetAlt = self.targetAlt = Angle(degrees=self.targetAlt.degrees + coord[0] * step)
-        targetAz = self.targetAz = Angle(degrees=(self.targetAz.degrees + coord[1] * step) % 360)
+        targetAz = self.targetAz = Angle(
+            degrees=(self.targetAz.degrees + coord[1] * step) % 360
+        )
         self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
 
     def setRA(self) -> None:

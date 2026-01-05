@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-
+from pathlib import Path
 from mw4.base.ninaClass import NINAClass
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
@@ -100,13 +100,14 @@ class CameraNINA(NINAClass):
 
         self.parent.waitStart()
         self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
-        self.signals.exposed.emit()
+        self.signals.exposed.emit(self.parent.imagePath)
         self.parent.waitDownload()
-        self.signals.downloaded.emit()
+        self.signals.downloaded.emit(self.parent.imagePath)
         self.parent.waitSave()
+        self.signals.saved.emit(self.parent.imagePath)
 
         if not self.parent.exposing:
-            self.parent.imagePath = ""
+            self.parent.imagePath = Path()
         else:
             sleepAndEvents(500)
             self.parent.updateImageFitsHeaderPointing()

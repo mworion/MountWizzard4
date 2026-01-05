@@ -97,11 +97,12 @@ class CameraSGPro(SGProClass):
 
         self.parent.waitStart()
         self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
-        self.signals.exposed.emit()
+        self.signals.exposed.emit(self.parent.imagePath)
         self.parent.waitDownload()
-        self.signals.downloaded.emit()
+        self.signals.downloaded.emit(self.parent.imagePath)
         self.parent.waitSave()
         self.parent.waitFinish(self.sgGetImagePath, receipt)
+        self.signals.saved.emit(self.parent.imagePath)
 
         if not self.parent.exposing:
             self.parent.imagePath = Path()

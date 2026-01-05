@@ -139,8 +139,6 @@ class Camera:
     def exposeFinished(self) -> bool:
         """ """
         self.exposing = False
-        self.signals.saved.emit(self.imagePath)
-        self.signals.exposed.emit()
         self.signals.message.emit("")
 
     def expose(self, imagePath: Path = "", exposureTime: float = 1, binning: int = 1) -> bool:

@@ -87,13 +87,14 @@ class CameraAlpaca(AlpacaClass):
         self.setAlpacaProperty("startexposure", Duration=self.parent.exposureTime, Light=True)
 
         self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
-        self.signals.exposed.emit()
+        self.signals.exposed.emit(self.parent.imagePath)
         data = self.parent.retrieveImage(self.getAlpacaProperty, "imagearray")
-        self.signals.downloaded.emit()
+        self.signals.downloaded.emit(self.parent.imagePath)
         self.signals.message.emit("saving")
         hdu = fits.PrimaryHDU(data=data)
         hdu.writeto(self.parent.imagePath, overwrite=True)
         self.parent.writeImageFitsHeader()
+        self.signals.saved.emit(self.parent.imagePath)
 
     def expose(self) -> None:
         """ """

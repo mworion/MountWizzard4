@@ -61,10 +61,7 @@ class ModelData(QObject):
         self.runTime: float = 0
         self.numberRetries: int = 0
         self.retriesReversed: bool = False
-        self.pointerSlew: int = 0
-        self.pointerImage: int = 0
-        self.pointerPlateSolve: int = 0
-        self.pointerResult: int = 0
+        self.pointerModel: int = 0
         self.mountSlewed: bool = False
         self.domeSlewed: bool = False
 
@@ -88,14 +85,13 @@ class ModelData(QObject):
         self.app.camera.signals.saved.disconnect(self.startNewPlateSolve)
         self.app.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
-    def setImageExposed(self) -> None:
+    def setImageExposed(self, imagePath) -> None:
         """ """
-        imagePath = self.modelBuildData[self.pointerImage]["imagePath"]
         self.app.showImage.emit(imagePath)
         if self.modelTiming == self.PROGRESSIVE:
             self.startNewSlew()
 
-    def setImageDownloaded(self):
+    def setImageDownloaded(self) -> None:
         """ """
         if self.modelTiming == self.NORMAL:
             self.startNewSlew()
@@ -124,18 +120,18 @@ class ModelData(QObject):
 
     def startNewSlew(self) -> None:
         """ """
-        self.pointerSlew += 1
-        if self.pointerSlew >= len(self.modelBuildData):
+        self.pointerModel += 1
+        if self.pointerModel >= len(self.modelBuildData):
             self.log.info(f"{'Start slew':15s}: last point done")
             return
         if self.cancelBatch or self.endBatch:
             return
-        item = self.modelBuildData[self.pointerSlew]
+        item = self.modelBuildData[self.pointerModel]
         altitude = item["altitude"]
         azimuth = item["azimuth"]
         self.mountSlewed = False
         self.domeSlewed = False
-        t = f"{'Start slew':15s}: [{self.pointerSlew:02d}], "
+        t = f"{'Start slew':15s}: [{self.pointerModel:02d}], "
         t += f" alt:[{altitude.degrees:03.0f}], az:[{azimuth.degrees:03.0f}]"
         self.log.debug(t)
         if not self.app.mount.obsSite.setTargetAltAz(altitude, azimuth):
@@ -191,11 +187,11 @@ class ModelData(QObject):
             programmingPoint = ProgStar(mCoord, sCoord, sidereal, pierside)
             self.modelProgData.append(programmingPoint)
 
-    def addMountDataToModelBuildData(self, index: int) -> None:
+    def addMountDataToModelBuildData(self, pointerModel: int) -> None:
         """ """
-        item = self.modelBuildData[self.pointerImage]
+        item = self.modelBuildData[pointerModel]
         obs = self.app.mount.obsSite
-        t = f"{'Add mount data':15s}: [{index:02d}], ra:[{obs.raJNow}], "
+        t = f"{'Add mount data':15s}: [{pointerModel:02d}], ra:[{obs.raJNow}], "
         t += f"dec:[{obs.decJNow}], jd:[{obs.timeJD}]"
         self.log.debug(t)
         item["raJNowM"] = obs.raJNow
@@ -213,7 +209,6 @@ class ModelData(QObject):
 
     def startNewImageExposure(self) -> None:
         """ """
-        self.pointerImage += 1
         if self.cancelBatch or self.endBatch:
             return
 
@@ -222,47 +217,47 @@ class ModelData(QObject):
             sleepAndEvents(500)
             waitTime -= 1
 
-        item = self.modelBuildData[self.pointerImage]
-        self.addMountDataToModelBuildData(self.pointerImage)
+        item = self.modelBuildData[self.pointerModel]
+        self.addMountDataToModelBuildData(self.pointerModel)
         cam = self.app.camera
         imagePath = item["imagePath"]
         exposureTime = item["exposureTime"] = cam.exposureTime1
         binning = item["binning"] = cam.binning1
-        t = f"{'Start exposure':15s}: [{self.pointerImage:02d}], "
+        t = f"{'Start exposure':15s}: [{self.pointerModel:02d}], "
         t += f"file:[{imagePath.stem}], exp:[{exposureTime:3.0f}]"
         self.log.debug(t)
         self.app.camera.expose(imagePath, exposureTime, binning)
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
 
-    def startNewPlateSolve(self) -> None:
+    def startNewPlateSolve(self, imagePath: Path) -> None:
         """ """
-        self.pointerPlateSolve += 1
-        self.log.debug(f"{'Start solve':15s}: [{self.pointerPlateSolve:02d}]")
-        imagePath = self.modelBuildData[self.pointerPlateSolve]["imagePath"]
+        pointerPlateSolve = int(imagePath.stem.split("-")[-1])
+        self.log.debug(f"{'Start solve':15s}: [{pointerPlateSolve:02d}]")
+        imagePath = self.modelBuildData[pointerPlateSolve]["imagePath"]
         self.app.plateSolve.solve(imagePath)
 
-    def sendModelProgress(self) -> None:
+    def sendModelProgress(self, pointerResult: int) -> None:
         """ """
-        fraction = (self.pointerResult + 1) / len(self.modelBuildData)
+        fraction = (pointerResult + 1) / len(self.modelBuildData)
         secondsElapsed = time.time() - self.runTime
         secondsBase = secondsElapsed / fraction
         secondsEstimated = secondsBase * (1 - fraction)
         modelPercent = int(100 * fraction)
 
         progressData = {
-            "count": self.pointerResult + 1,
+            "count": pointerResult + 1,
             "number": len(self.modelBuildData),
             "modelPercent": modelPercent,
             "secondsElapsed": secondsElapsed,
             "secondsEstimated": secondsEstimated,
-            "solved": self.pointerResult + 1,
+            "solved": pointerResult + 1,
         }
         self.progress.emit(progressData)
 
     def collectPlateSolveResult(self, result) -> None:
         """ """
-        self.pointerResult += 1
-        item = self.modelBuildData[self.pointerResult]
+        pointerResult = int(result["imagePath"].stem.split("-")[-1])
+        item = self.modelBuildData[pointerResult]
         item.update(result)
         item["success"] = result["success"]
 
@@ -272,16 +267,16 @@ class ModelData(QObject):
             )
             item["raJNowS"] = raJNowS
             item["decJNowS"] = decJNowS
-            self.app.data.setStatusBuildPSolved(self.pointerResult)
+            self.app.data.setStatusBuildPSolved(pointerResult)
         else:
-            self.app.data.setStatusBuildPFailed(self.pointerResult)
+            self.app.data.setStatusBuildPFailed(pointerResult)
         textResult = "Solved" if item["success"] else "Failed"
-        t = f"{'Collect solve':15s}: [{self.pointerResult:02d}], [{textResult}], [{item}]"
+        t = f"{'Collect solve':15s}: [{pointerResult:02d}], [{textResult}], [{item}]"
         self.log.debug(t)
         self.statusSolve.emit(item)
         self.app.updatePointMarker.emit()
-        self.sendModelProgress()
-        self.endBatch = self.pointerResult == len(self.modelBuildData) - 1
+        self.sendModelProgress(pointerResult)
+        self.endBatch = pointerResult == len(self.modelBuildData) - 1
 
     def prepareModelBuildData(self) -> None:
         """ """
@@ -318,11 +313,7 @@ class ModelData(QObject):
 
     def runThroughModelBuildData(self) -> None:
         """ """
-        self.pointerSlew = -1
-        self.pointerImage = -1
-        self.pointerPlateSolve = -1
-        self.pointerResult = -1
-
+        self.pointerModel = -1
         self.startNewSlew()
         while not self.cancelBatch and not self.endBatch:
             sleepAndEvents(500)

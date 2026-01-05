@@ -78,20 +78,20 @@ class CameraIndi(IndiClass):
                 return
             elif value <= THRESHOLD:
                 if not self.isDownloading:
-                    self.signals.exposed.emit()
+                    self.signals.exposed.emit(self.parent.imagePath)
                 self.isDownloading = True
                 self.signals.message.emit("download")
             else:
                 self.signals.message.emit(f"expose {value:2.0f} s")
         elif self.device.CCD_EXPOSURE["state"] in ["Idle", "Ok"]:
-            self.signals.downloaded.emit()
+            self.signals.downloaded.emit(self.parent.imagePath)
             self.signals.message.emit("")
             self.isDownloading = False
         elif self.device.CCD_EXPOSURE["state"] in ["Alert"]:
             self.isDownloading = False
-            self.signals.exposed.emit()
-            self.signals.downloaded.emit()
-            self.signals.saved.emit("")
+            self.signals.exposed.emit(self.parent.imagePath)
+            self.signals.downloaded.emit(self.parent.imagePath)
+            self.signals.saved.emit(self.parent.imagePath)
             self.abort()
             self.log.warning("INDI camera state alert")
         else:
@@ -122,8 +122,6 @@ class CameraIndi(IndiClass):
 
     def workerSaveBLOB(self, data: dict) -> None:
         """ """
-        self.signals.message.emit("saving")
-
         if data["format"] == ".fits.fz":
             HDU = fits.HDUList.fromstring(data["value"])
             self.log.info("Image BLOB is in FPacked format")
@@ -142,6 +140,7 @@ class CameraIndi(IndiClass):
 
         fits.writeto(self.parent.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
         self.parent.writeImageFitsHeader()
+        self.signals.saved.emit(self.parent.imagePath)
 
     def updateBLOB(self, deviceName: str, propertyName: str) -> None:
         """ """
@@ -157,6 +156,7 @@ class CameraIndi(IndiClass):
         if data.get("name", "") != "CCD1":
             return
 
+        self.signals.message.emit("saving")
         self.worker = Worker(self.workerSaveBLOB, data)
         self.worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(self.worker)

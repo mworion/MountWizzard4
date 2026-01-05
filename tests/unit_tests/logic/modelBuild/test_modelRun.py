@@ -49,10 +49,9 @@ def mocked_sleepAndEvents_2(monkeypatch, function):
 
 def test_setImageExposed(function):
     function.modelBuildData = [{"imagePath": "test"}]
-    function.pointerImage = 0
     function.modelTiming = 2
     with mock.patch.object(function, "startNewSlew"):
-        function.setImageExposed()
+        function.setImageExposed(Path("image-000.fits"))
 
 
 def test_setImageDownloaded(function):
@@ -134,7 +133,7 @@ def test_startNewSlew_3(function):
     function.mountSlewed = True
     function.cancelBatch = False
     function.endBatch = False
-    function.pointerSlew = -1
+    function.pointerModel = -1
     function.modelBuildData = [
         {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": False, "imagePath": Path("test")}
     ]
@@ -150,7 +149,7 @@ def test_startNewSlew_4(function):
     function.mountSlewed = True
     function.cancelBatch = False
     function.endBatch = False
-    function.pointerSlew = -1
+    function.pointerModel = -1
     function.app.deviceStat["dome"] = True
     function.modelBuildData = [
         {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": True, "imagePath": Path("test")},
@@ -170,7 +169,7 @@ def test_startNewSlew_5(function):
     function.mountSlewed = True
     function.cancelBatch = False
     function.endBatch = False
-    function.pointerSlew = -1
+    function.pointerModel = -1
     function.app.deviceStat["dome"] = True
     function.modelBuildData = [
         {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": False, "imagePath": Path("test")}
@@ -355,7 +354,6 @@ def test_startNewImageExposure_2(function, mocked_sleepAndEvents):
     function.pauseBatch = True
     function.cancelBatch = False
     function.exposureWaitTime = 1
-    function.pointerImage = -1
     function.modelBuildData = [{"imagePath": Path("test")}]
     with mock.patch.object(function, "addMountDataToModelBuildData"):
         with mock.patch.object(function.app.camera, "expose"):
@@ -363,16 +361,14 @@ def test_startNewImageExposure_2(function, mocked_sleepAndEvents):
 
 
 def test_startNewPlateSolve_1(function):
-    function.pointerPlateSolve = -1
     function.modelBuildData = [{"imagePath": "test"}]
     with mock.patch.object(function.app.plateSolve, "solve"):
-        function.startNewPlateSolve()
+        function.startNewPlateSolve(Path("image-000.fits"))
 
 
 def test_sendModelProgress_1(function):
     function.modelBuildData = [{"success": True}]
-    function.pointerResult = 0
-    function.sendModelProgress()
+    function.sendModelProgress(0)
 
 
 def test_collectPlateSolveResult_1(function):
@@ -387,12 +383,10 @@ def test_collectPlateSolveResult_1(function):
             "errorRMS_S": 1,
         },
     ]
-    function.pointerResult = -1
-    result = {"success": True, "raJNow": 0, "decJNow": 0}
+    result = {"success": True, "raJNow": 0, "decJNow": 0, "imagePath": Path("image-000.fits")}
     with mock.patch.object(function.app.data, "setStatusBuildP"):
         with mock.patch.object(function, "sendModelProgress"):
             function.collectPlateSolveResult(result)
-            assert function.pointerResult == 0
 
 
 def test_collectPlateSolveResult_2(function):
@@ -407,17 +401,14 @@ def test_collectPlateSolveResult_2(function):
             "errorRMS_S": 1,
         },
     ]
-    function.pointerResult = -1
-    result = {"success": False, "raJNow": 0, "decJNow": 0}
+    result = {"success": False, "raJNow": 0, "decJNow": 0, "imagePath": Path("image-000.fits")}
     with mock.patch.object(function.app.data, "setStatusBuildP"):
         with mock.patch.object(function, "sendModelProgress"):
             function.collectPlateSolveResult(result)
-            assert function.pointerResult == 0
 
 
 def test_prepareModelBuildData_1(function):
     function.modelInputData = [(5, 0, True), (20, 1, True)]
-    function.pointerResult = -1
     function.app.mount.setting.horizonLimitLow = 10
     function.app.mount.setting.horizonLimitHigh = 90
 

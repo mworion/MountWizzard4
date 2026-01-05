@@ -112,6 +112,7 @@ class PlateSolve:
 
         result["success"] = True
         result["message"] = "Solved"
+        result["imagePath"] = imagePath
         result.update(solution)
         self.log.debug(f"Solve result:  [{imagePath.stem:10s}], [{result}]")
         return result

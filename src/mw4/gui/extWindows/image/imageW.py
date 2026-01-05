@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-from gui.mainWaddon.slewInterface import SlewInterface
+from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.base.transform import J2000ToJNow
 from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
 from mw4.gui.extWindows.image.imageTabs import ImageTabs

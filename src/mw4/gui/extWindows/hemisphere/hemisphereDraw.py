@@ -15,7 +15,7 @@
 ###########################################################
 import numpy as np
 import pyqtgraph as pg
-from gui.mainWaddon.slewInterface import SlewInterface
+from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.base.transform import diffModulusAbs
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from pyqtgraph.widgets.RemoteGraphicsView import MouseEvent

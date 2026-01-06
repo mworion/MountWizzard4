@@ -25,6 +25,7 @@ from mw4.logic.fits.fitsFunction import (
     getSolutionFromWCSHeader,
     updateImageFileHeaderWithSolution,
 )
+from mw4.base.transform import J2000ToJNow
 from mw4.logic.plateSolve.astap import ASTAP
 from mw4.logic.plateSolve.astrometry import Astrometry
 from mw4.logic.plateSolve.watney import Watney
@@ -114,6 +115,9 @@ class PlateSolve:
         result["message"] = "Solved"
         result["imagePath"] = imagePath
         result.update(solution)
+        ra, dec = J2000ToJNow(result["raJ2000S"], result["decJ2000S"], self.app.mount.obsSite.timeJD)
+        result["raJNowS"] = ra
+        result["decJNowS"] = dec
         self.log.debug(f"Solve result:  [{imagePath.stem:10s}], [{result}]")
         return result
 

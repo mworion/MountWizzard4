@@ -196,9 +196,9 @@ class Model(QObject):
             self.msg.emit(2, "", "", "Model build cancelled")
             return False
 
-        self.msg.emit(1, "Model", "Run", f"{'Clear model:':12s} Waiting 1s")
+        self.msg.emit(1, "Model", "Clear model", "Waiting 1s ...")
         sleepAndEvents(1000)
-        self.msg.emit(1, "Model", "Run", f"{'Clear model:':12s} Actual model is cleared")
+        self.msg.emit(1, "Model", "Clear model", "Actual model is cleared")
         if not self.app.mount.model.storeName("backup"):
             t = "Cannot save backup model on mount, proceeding with model run"
             self.msg.emit(2, "Model", "Run error", t)

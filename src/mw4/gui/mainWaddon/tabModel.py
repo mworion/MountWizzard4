@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import os
 import time
 from datetime import datetime
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, sleepAndEvents
@@ -210,10 +209,7 @@ class Model(QObject):
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         name = f"{prefix}-{nameTime}-{postfix}"
         imageDir = self.app.mwGlob["imageDir"] / name
-
-        if not imageDir.is_dir():
-            os.mkdir(imageDir)
-
+        imageDir.mkdir(parents=True, exist_ok=True)
         return imageDir
 
     def showProgress(self, progressData):
@@ -229,22 +225,24 @@ class Model(QObject):
 
     def showStatusExposure(self, statusData: tuple) -> None:
         """ """
-        t = f"{'Expose:':12s} [{statusData[0]}], Time: [{statusData[1]}s], Binning: [{statusData[2]}] "
+        t = f"[{statusData[0]}], Time: [{statusData[1]}s], Binning: [{statusData[2]}] "
         self.msg.emit(0, "Model", "Exposure", t)
 
     def showStatusSlew(self, statusData: tuple) -> None:
         """ """
-        t = f"{'Slew:':12s} [{statusData[0]}], Alt: [{statusData[1]:3.2f}], Az: [{statusData[2]:3.2f}]"
+        t = f"[{statusData[0]}], Alt: [{statusData[1]:3.2f}], Az: [{statusData[2]:3.2f}]"
         self.msg.emit(0, "Model", "Slewing", t)
 
-    def showStatusSolve(self, data: dict) -> None:
+    def showStatusSolve(self, item: dict) -> None:
         """ """
-        if data["success"]:
-            t = f"{'Solved:':12s} [{data['imagePath'].stem}], Error: [{data['errorRMS_S']:.2f}]"
-            t += f", Angle: [{data['angleS'].degrees:.2f}], Scale: [{data['scaleS']:.2f}]"
+        if item["success"]:
+            t = f"[{item['imagePath'].stem}], Error: [{item['errorRMS_S']:.2f}]"
+            t += f", Angle: [{item['angleS'].degrees:.2f}], Scale: [{item['scaleS']:.2f}]"
+            title = "Solving result"
         else:
-            t = f"{'Error in:':12s} [{data['imagePath'].stem}], [{data['message']}]"
-        self.msg.emit(0, "Model", "Solving result", t)
+            t = f"[{item['imagePath'].stem}], [{item['message']}]"
+            title = "Solving error"
+        self.msg.emit(0, "Model", title, t)
 
     def setupModelInputData(self) -> None:
         """ """
@@ -291,7 +289,7 @@ class Model(QObject):
         self.modelData.statusSlew.connect(self.showStatusSlew)
         self.setModelTiming()
         self.setupBatchData()
-        self.msg.emit(1, "Model", "Run", f"{'Model:':12s} [{self.modelData.name}]")
+        self.msg.emit(1, "Model", "Run", f"[{self.modelData.name}]")
         self.setupModelInputData()
         self.modelData.runModel()
         self.programModelToMount()

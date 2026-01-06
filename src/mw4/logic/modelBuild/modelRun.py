@@ -16,7 +16,7 @@
 import json
 import logging
 import time
-from mw4.base.transform import J2000ToJNow, JNowToJ2000
+from mw4.base.transform import JNowToJ2000
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.logic.modelBuild.modelRunSupport import convertAngleToFloat, writeRetrofitData
 from mw4.mountcontrol.progStar import ProgStar
@@ -135,7 +135,10 @@ class ModelData(QObject):
         self.log.debug(t)
         isPossibleTarget = self.app.mount.obsSite.setTargetAltAz(altitude, azimuth)
         if not isPossibleTarget:
+            item["processed"] = True
+            result = {"success": False, "message": "Slew not possible", "imagePath": item["imagePath"]}
             self.log.warning(f"Slew to Alt: {altitude.degrees}, Az: {azimuth.degrees} not possible")
+            self.app.plateSolve.signals.result.emit(result)
             return
         data = [self.modelBuildData[self.pointerModel]["imagePath"].stem]
         data += [altitude.degrees, azimuth.degrees]
@@ -204,11 +207,9 @@ class ModelData(QObject):
         item["siderealTime"] = obs.timeSidereal
         item["julianDate"] = obs.timeJD
         item["pierside"] = obs.pierside
-        raJ2000M, decJ2000M = JNowToJ2000(
-            item["raJNowM"], item["decJNowM"], item["julianDate"]
-        )
-        item["raJ2000M"] = raJ2000M
-        item["decJ2000M"] = decJ2000M
+        ra, dec = JNowToJ2000(item["raJNowM"], item["decJNowM"], obs.timeJD)
+        item["raJ2000M"] = ra
+        item["decJ2000M"] = dec
 
     def startNewImageExposure(self) -> None:
         """ """
@@ -258,41 +259,35 @@ class ModelData(QObject):
 
     def collectPlateSolveResult(self, result) -> None:
         """ """
-        pointerResult = int(result["imagePath"].stem.split("-")[-1])
-        item = self.modelBuildData[pointerResult]
-        item.update(result)
-        item["success"] = result["success"]
-
-        if item["success"]:
-            raJNowS, decJNowS = J2000ToJNow(
-                item["raJ2000S"], item["decJ2000S"], item["julianDate"]
-            )
-            item["raJNowS"] = raJNowS
-            item["decJNowS"] = decJNowS
-            self.app.data.setStatusBuildPSolved(pointerResult)
+        index = int(result["imagePath"].stem.split("-")[-1])
+        item = self.modelBuildData[index]
+        if result["success"]:
+            self.app.data.setStatusBuildPSolved(index)
+            textResult = "Solved"
         else:
-            self.app.data.setStatusBuildPFailed(pointerResult)
-        textResult = "Solved" if item["success"] else "Failed"
-        t = f"{'Collect solve':15s}: [{pointerResult:02d}], [{textResult}], [{item}]"
+            self.app.data.setStatusBuildPFailed(index)
+            textResult = "Failed"
+        if item["processed"]:
+            textResult = "Skipped"
+        else:
+            item.update(result)
+            item["processed"] = True
+        t = f"{'Collect solve':15s}: [{index:02d}], [{textResult}], [{item}]"
+        self.app.updatePointMarker.emit()
+        self.sendModelProgress(index)
         self.log.debug(t)
         self.statusSolve.emit(item)
-        self.app.updatePointMarker.emit()
-        self.sendModelProgress(pointerResult)
-        self.endBatch = pointerResult == len(self.modelBuildData) - 1
 
     def prepareModelBuildData(self) -> None:
         """ """
         self.modelBuildData.clear()
         self.log.debug(f"{'Prepare model':15s}: Len: [{len(self.modelInputData)}]")
-        index = 0
-        for point in self.modelInputData:
+        for index, point in enumerate(self.modelInputData):
             modelItem = {}
             imagePath = self.imageDir / f"image-{index:03d}.fits"
             modelItem["imagePath"] = imagePath
             modelItem["altitude"] = Angle(degrees=point[0])
             modelItem["azimuth"] = Angle(degrees=point[1])
-            altLow = self.app.mount.setting.horizonLimitLow
-            altHigh = self.app.mount.setting.horizonLimitHigh
             modelItem["exposureTime"] = self.app.camera.exposureTime
             modelItem["binning"] = self.app.camera.binning
             modelItem["subFrame"] = self.app.camera.subFrame
@@ -302,25 +297,26 @@ class ModelData(QObject):
             modelItem["focalLength"] = self.app.camera.focalLength
             modelItem["countSequence"] = index
             modelItem["success"] = False
-            if altLow < modelItem["altitude"].degrees < altHigh:
-                self.modelBuildData.append(modelItem)
-                index += 1
-            else:
-                self.log.debug(f"{'Skip point':15s}: [{index:02d}] - Limit violation")
+            modelItem["processed"] = False
+            self.modelBuildData.append(modelItem)
 
-    def checkRetryNeeded(self) -> None:
+    def checkRetryNeeded(self) -> bool:
         """ """
         retryNeeded = not all(p["success"] for p in self.modelBuildData)
         t = "retry needed" if retryNeeded else "no retry needed"
         self.log.debug(f"{'Check retry':15s}: Status: [{t}]")
         return retryNeeded
 
+    def checkModelFinished(self) -> bool:
+        """ """
+        return all(p["processed"] for p in self.modelBuildData)
+
     def runThroughModelBuildData(self) -> None:
         """ """
         self.pointerModel = -1
-        self.endBatch = False
+        self.endBatch = self.cancelBatch = False
         self.startNewSlew()
-        while not self.cancelBatch and not self.endBatch:
+        while not self.cancelBatch and not self.endBatch and not self.checkModelFinished():
             sleepAndEvents(500)
     """
     def runThroughModelBuildDataRetries(self) -> None:
@@ -343,6 +339,10 @@ class ModelData(QObject):
         self.setupSignals()
         self.prepareModelBuildData()
         self.runThroughModelBuildData()
+        if self.cancelBatch:
+            self.log.info(f"{'Cancel model':15s}: by user")
+            self.resetSignals()
+            return
         self.buildProgModel()
         modelSize = len(self.modelProgData)
         if modelSize < 3:

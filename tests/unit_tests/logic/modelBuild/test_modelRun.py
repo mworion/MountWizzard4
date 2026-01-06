@@ -381,6 +381,7 @@ def test_collectPlateSolveResult_1(function):
             "imagePath": Path("test"),
             "angleS": Angle(degrees=0),
             "errorRMS_S": 1,
+            "processed": False,
         },
     ]
     result = {"success": True, "raJNow": 0, "decJNow": 0, "imagePath": Path("image-000.fits")}
@@ -399,6 +400,26 @@ def test_collectPlateSolveResult_2(function):
             "imagePath": Path("test"),
             "angleS": Angle(degrees=0),
             "errorRMS_S": 1,
+            "processed": False,
+        },
+    ]
+    result = {"success": False, "raJNow": 0, "decJNow": 0, "imagePath": Path("image-000.fits")}
+    with mock.patch.object(function.app.data, "setStatusBuildP"):
+        with mock.patch.object(function, "sendModelProgress"):
+            function.collectPlateSolveResult(result)
+
+
+def test_collectPlateSolveResult_3(function):
+    jd = function.app.mount.obsSite.timeJD
+    function.modelBuildData = [
+        {
+            "julianDate": jd,
+            "raJ2000S": Angle(hours=0),
+            "decJ2000S": Angle(degrees=0),
+            "imagePath": Path("test"),
+            "angleS": Angle(degrees=0),
+            "errorRMS_S": 1,
+            "processed": True,
         },
     ]
     result = {"success": False, "raJNow": 0, "decJNow": 0, "imagePath": Path("image-000.fits")}
@@ -429,11 +450,22 @@ def test_checkRetryNeeded_2(function):
     assert function.checkRetryNeeded()
 
 
+def test_checkModelFinished_1(function):
+    function.modelBuildData = [{"processed": True}, {"processed": True}]
+    assert function.checkModelFinished()
+
+
+def test_checkModelFinished_2(function):
+    function.modelBuildData = [{"processed": True}, {"processed": False}]
+    assert not function.checkModelFinished()
+
+
 def test_runThroughModelBuildData_1(function, mocked_sleepAndEvents_2):
     function.cancelBatch = False
     function.endBatch = False
     with mock.patch.object(function, "startNewSlew"):
-        function.runThroughModelBuildData()
+        with mock.patch.object(function, "checkModelFinished", return_value=False):
+            function.runThroughModelBuildData()
 
 
 """
@@ -462,8 +494,15 @@ def test_runModel_1(function):
 def test_runModel_2(function):
     function.modelInputData = [(0, 0, True)]
     function.cancelBatch = False
-    function.endBatch = False
     with mock.patch.object(function, "prepareModelBuildData"):
         with mock.patch.object(function, "runThroughModelBuildData"):
             with mock.patch.object(function, "buildProgModel"):
                 function.runModel()
+
+
+def test_runModel_3(function):
+    function.modelInputData = [(0, 0, True)]
+    function.cancelBatch = True
+    with mock.patch.object(function, "prepareModelBuildData"):
+        with mock.patch.object(function, "runThroughModelBuildData"):
+            function.runModel()

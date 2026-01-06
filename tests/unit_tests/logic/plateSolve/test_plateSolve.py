@@ -149,13 +149,18 @@ def test_prepareResult_2(function):
 
 
 def test_prepareResult_3(function):
+    solve = {
+        "raJ2000S": 1,
+        "decJ2000S": 1,
+    }
     with mock.patch.object(Path, "is_file", return_value=True):
         with mock.patch.object(mw4.logic.plateSolve.plateSolve, "getImageHeader"):
-            with mock.patch.object(mw4.logic.plateSolve.plateSolve, "getSolutionFromWCSHeader"):
+            with mock.patch.object(mw4.logic.plateSolve.plateSolve, "getSolutionFromWCSHeader", return_value=solve):
                 with mock.patch.object(mw4.logic.plateSolve.plateSolve, "updateImageFileHeaderWithSolution"):
-                    result = function.prepareResult(True, "test", Path("tests/work/image/m51.fit"), Path("test"), True)
-                    assert result["success"]
-                    assert result["message"] == "Solved"
+                    with mock.patch.object(mw4.logic.plateSolve.plateSolve, "J2000ToJNow", return_value=(1, 1)):
+                        result = function.prepareResult(True, "test", Path("tests/work/image/m51.fit"), Path("test"), True)
+                        assert result["success"]
+                        assert result["message"] == "Solved"
 
 
 def test_processSolveQueue_1(function):

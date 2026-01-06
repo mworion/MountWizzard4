@@ -263,7 +263,7 @@ class HemisphereDraw(MWidget):
             col = [self.M_TER, self.M_RED, self.M_GREEN]
             colActive = col[act]
             color = self.M_PINK if isEdit else colActive
-            text = f"{i + 1}"
+            text = f"{i:02d}"
             textItem = pg.TextItem(anchor=(0.5, 1.1))
             textItem.setText(text)
             textItem.setFont(font)

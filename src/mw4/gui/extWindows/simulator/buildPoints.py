@@ -64,18 +64,16 @@ class SimulatorBuildPoints:
             return
 
         _, _, _, PB, PD = self.app.mount.calcTransformationMatricesActual()
-
         if PB is None or PD is None:
             return
         PB[2] += 1
-
         node = self.parent.entityModel.get("buildPoints")
         if node:
             node["trans"].setTranslation(QVector3D(PB[0], PB[1], PB[2]))
 
     def createLine(self, parentEntity, dx, dy, dz):
         """
-        create line draw a line between two point or better along dx, dy, dz.
+        Create a line draw a line between two point or better along dx, dy, dz.
         Therefore, three transformations are made and the resulting vector has
         to be translated half the length, because is will be drawn symmetrically
         to the starting point.
@@ -169,7 +167,6 @@ class SimulatorBuildPoints:
         material = [Materials().points, Materials().pointsRed, Materials().pointsGreen]
         mat2 = material[status]
         e2.addComponent(mat2)
-
         return (e1, trans1, e2, trans2, mesh2, mat2, e3, trans3)
 
     def loopCreate(self, buildPointEntity):
@@ -182,14 +179,10 @@ class SimulatorBuildPoints:
             e, x, y, z = self.createPoint(
                 buildPointEntity, np.radians(point[0]), np.radians(-point[1]), status
             )
-
             if isNumber:
-                a = self.createAnnotation(
-                    e[0], point[0], -point[1], f"{index + 1:02d}", status
-                )
+                a = self.createAnnotation(e[0], point[0], -point[1], f"{index:02d}", status)
             else:
                 a = None
-
             if index and isSlewPath:
                 x0 = self.points[-1]["x"]
                 y0 = self.points[-1]["y"]
@@ -206,12 +199,12 @@ class SimulatorBuildPoints:
 
     def create(self):
         """
-        buildPointsCreate show the point in the sky if checked, in addition if
-        selected the slew path between the points and in addition if checked
+        Create show the point in the sky if checked, in addition if
+        selected the slew path between the points, and in addition if checked
         the point numbers as the azimuth (second element in tuple) is turning
         clockwise, it's opposite to the right turning coordinate system (z is
-        upwards), which means angle around z (which is azimuth) turns
-        counterclockwise. so we have to set - azimuth for coordinate calculation
+        upwards), which means an angle around z (which is azimuth) turns
+        counterclockwise. So we have to set - azimuth for coordinate calculation
         """
         if len(self.app.data.buildP) == 0:
             return False

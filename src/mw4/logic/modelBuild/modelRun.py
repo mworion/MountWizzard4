@@ -127,6 +127,10 @@ class ModelData(QObject):
         if self.cancelBatch or self.endBatch:
             return
         item = self.modelBuildData[self.pointerModel]
+        if item["success"]:
+            result = {"success": True, "message": "Skipped", "imagePath": item["imagePath"]}
+            self.app.plateSolve.signals.result.emit(result)
+            self.startSlew.emit()
         altitude = item["altitude"]
         azimuth = item["azimuth"]
         self.mountSlewed = False
@@ -134,20 +138,19 @@ class ModelData(QObject):
         t = f"{'Start slew':15s}: [{self.pointerModel:02d}], "
         t += f" Alt: [{altitude.degrees:03.0f}], Az: [{azimuth.degrees:03.0f}]"
         self.log.debug(t)
-        isPossibleTarget = self.app.mount.obsSite.setTargetAltAz(altitude, azimuth)
-        if not isPossibleTarget:
+        data = [self.modelBuildData[self.pointerModel]["imagePath"].stem]
+        data += [altitude.degrees, azimuth.degrees]
+        self.statusSlew.emit(data)
+        if not self.app.mount.obsSite.setTargetAltAz(altitude, azimuth):
             item["processed"] = True
             result = {"success": False, "message": "Slew not possible", "imagePath": item["imagePath"]}
             self.log.warning(f"Slew to Alt: {altitude.degrees}, Az: {azimuth.degrees} not possible")
             self.app.plateSolve.signals.result.emit(result)
             self.startSlew.emit()
-            return
-        data = [self.modelBuildData[self.pointerModel]["imagePath"].stem]
-        data += [altitude.degrees, azimuth.degrees]
-        self.statusSlew.emit(data)
-        if self.app.deviceStat["dome"]:
-            self.app.dome.slewDome(azimuth)
-        self.app.mount.obsSite.startSlewing()
+        else:
+            if self.app.deviceStat["dome"]:
+                self.app.dome.slewDome(azimuth)
+            self.app.mount.obsSite.startSlewing()
 
     def addMountModelToBuildModel(self) -> None:
         """ """
@@ -242,20 +245,22 @@ class ModelData(QObject):
         imagePath = self.modelBuildData[pointerPlateSolve]["imagePath"]
         self.app.plateSolve.solve(imagePath)
 
-    def sendModelProgress(self, pointerResult: int) -> None:
+    def sendModelProgress(self) -> None:
         """ """
-        fraction = (pointerResult + 1) / len(self.modelBuildData)
+        donePoints = sum(1 for p in self.modelBuildData["processed"] if p)
+        solvedPoints = sum(1 for p in self.modelBuildData["success"] if p)
+        fraction = donePoints / len(self.modelBuildData)
         secondsElapsed = time.time() - self.runTime
         secondsBase = secondsElapsed / fraction
         secondsEstimated = secondsBase * (1 - fraction)
         modelPercent = int(100 * fraction)
         progressData = {
-            "count": pointerResult + 1,
+            "count": donePoints,
             "number": len(self.modelBuildData),
             "modelPercent": modelPercent,
             "secondsElapsed": secondsElapsed,
             "secondsEstimated": secondsEstimated,
-            "solved": pointerResult + 1,
+            "solved": solvedPoints,
         }
         self.progress.emit(progressData)
 
@@ -269,8 +274,11 @@ class ModelData(QObject):
         else:
             self.app.data.setStatusBuildPFailed(index)
             textResult = "Failed"
-        textResult = "Skipped" if item["processed"] else textResult
+        if item["processed"]:
+            textResult = result["message"]
         item["processed"] = True
+        if result["message"] == "Skipped":
+            return
         item.update(result)
         t = f"{'Collect solve':15s}: [{index:02d}], [{textResult}], [{item}]"
         self.app.updatePointMarker.emit()

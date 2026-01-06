@@ -383,7 +383,7 @@ def test_collectPlateSolveResult_1(function):
             "processed": False,
         },
     ]
-    result = {"success": True, "raJNow": 0, "decJNow": 0, "imagePath": Path("image-000.fits")}
+    result = {"success": True, "raJNow": 0, "decJNow": 0, "imagePath": Path("image-000.fits"), "message": "Ok"}
     with mock.patch.object(function.app.data, "setStatusBuildP"):
         with mock.patch.object(function, "sendModelProgress"):
             function.collectPlateSolveResult(result)
@@ -402,7 +402,7 @@ def test_collectPlateSolveResult_2(function):
             "processed": False,
         },
     ]
-    result = {"success": False, "raJNow": 0, "decJNow": 0, "imagePath": Path("image-000.fits")}
+    result = {"success": False, "raJNow": 0, "decJNow": 0, "imagePath": Path("image-000.fits"), "message": "Ok"}
     with mock.patch.object(function.app.data, "setStatusBuildP"):
         with mock.patch.object(function, "sendModelProgress"):
             function.collectPlateSolveResult(result)
@@ -421,7 +421,26 @@ def test_collectPlateSolveResult_3(function):
             "processed": True,
         },
     ]
-    result = {"success": False, "raJNow": 0, "decJNow": 0, "imagePath": Path("image-000.fits")}
+    result = {"success": False, "raJNow": 0, "decJNow": 0, "imagePath": Path("image-000.fits"), "message": "Ok"}
+    with mock.patch.object(function.app.data, "setStatusBuildP"):
+        with mock.patch.object(function, "sendModelProgress"):
+            function.collectPlateSolveResult(result)
+
+
+def test_collectPlateSolveResult_4(function):
+    jd = function.app.mount.obsSite.timeJD
+    function.modelBuildData = [
+        {
+            "julianDate": jd,
+            "raJ2000S": Angle(hours=0),
+            "decJ2000S": Angle(degrees=0),
+            "imagePath": Path("test"),
+            "angleS": Angle(degrees=0),
+            "errorRMS_S": 1,
+            "processed": True,
+        },
+    ]
+    result = {"success": False, "raJNow": 0, "decJNow": 0, "imagePath": Path("image-000.fits"), "message": "Skipped"}
     with mock.patch.object(function.app.data, "setStatusBuildP"):
         with mock.patch.object(function, "sendModelProgress"):
             function.collectPlateSolveResult(result)

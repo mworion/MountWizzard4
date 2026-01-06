@@ -82,7 +82,7 @@ class Asteroid(QObject):
             "Aphelion\nDist [AU]",
             "Eccentr.",
         ]
-        hSet = [50, 205, 50, 85, 85, 65]
+        hSet = [50, 205, 70, 70, 70, 70]
 
         self.ui.listAsteroids.setColumnCount(len(hSet))
         self.ui.listAsteroids.setHorizontalHeaderLabels(hLabels)
@@ -161,7 +161,7 @@ class Asteroid(QObject):
                 self.ui.listAsteroids.setItem(row, 2, entry)
 
             if "Perihelion_dist" in self.asteroids.objects[name]:
-                pdist = f"{self.asteroids.objects[name]['Perihelion_dist']:8.6f}"
+                pdist = f"{self.asteroids.objects[name]['Perihelion_dist']:8.4f}"
                 entry = QTableWidgetItem(pdist)
                 entry.setTextAlignment(
                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
@@ -169,7 +169,7 @@ class Asteroid(QObject):
                 self.ui.listAsteroids.setItem(row, 3, entry)
 
             if "Aphelion_dist" in self.asteroids.objects[name]:
-                adist = f"{self.asteroids.objects[name]['Aphelion_dist']:8.6f}"
+                adist = f"{self.asteroids.objects[name]['Aphelion_dist']:8.4f}"
                 entry = QTableWidgetItem(adist)
                 entry.setTextAlignment(
                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
@@ -177,7 +177,7 @@ class Asteroid(QObject):
                 self.ui.listAsteroids.setItem(row, 4, entry)
 
             if "e" in self.asteroids.objects[name]:
-                e = f"{self.asteroids.objects[name]['e']:8.5f}"
+                e = f"{self.asteroids.objects[name]['e']:8.4f}"
                 entry = QTableWidgetItem(e)
                 entry.setTextAlignment(
                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter

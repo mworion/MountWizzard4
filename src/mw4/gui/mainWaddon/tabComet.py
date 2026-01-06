@@ -84,7 +84,7 @@ class Comet(QObject):
             "Perihelion\nDist [AU]",
             "Eccentr.",
         ]
-        hSet = [50, 205, 50, 85, 85, 65]
+        hSet = [50, 205, 50, 85, 75, 70]
         self.ui.listComets.setColumnCount(len(hSet))
         self.ui.listComets.setHorizontalHeaderLabels(hLabels)
         for i, hs in enumerate(hSet):
@@ -171,7 +171,7 @@ class Comet(QObject):
                 self.ui.listComets.setItem(row, 3, entry)
 
             if "Perihelion_dist" in self.comets.objects[name]:
-                dist = f"{self.comets.objects[name]['Perihelion_dist']:8.6f}"
+                dist = f"{self.comets.objects[name]['Perihelion_dist']:8.4f}"
                 entry = QTableWidgetItem(dist)
                 entry.setTextAlignment(
                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
@@ -179,7 +179,7 @@ class Comet(QObject):
                 self.ui.listComets.setItem(row, 4, entry)
 
             if "e" in self.comets.objects[name]:
-                e = f"{self.comets.objects[name]['e']:8.5f}"
+                e = f"{self.comets.objects[name]['e']:8.4f}"
                 entry = QTableWidgetItem(e)
                 entry.setTextAlignment(
                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter

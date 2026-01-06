@@ -109,7 +109,7 @@ class SatSearch(QObject, SatData):
             "Time\n[H:M]",
             "Sat\n[mag]",
         ]
-        hSet = [50, 205, 50, 50, 45, 45, 50, 45, 0]
+        hSet = [50, 200, 50, 50, 50, 50, 50, 45, 0]
         self.ui.listSats.setColumnCount(len(hSet))
         self.ui.listSats.setHorizontalHeaderLabels(hLabels)
         for i, hs in enumerate(hSet):

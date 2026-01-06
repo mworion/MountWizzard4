@@ -320,6 +320,16 @@ def test_runBatch_3(function):
                         function.runBatch()
 
 
+def test_runBatch_4(function):
+    function.modelData.cancelBatch = True
+    with mock.patch.object(function, "checkModelRunConditions", return_value=True):
+        with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
+            with mock.patch.object(function, "setupModelInputData"):
+                with mock.patch.object(function.modelData, "runModel"):
+                    with mock.patch.object(function, "programModelToMount"):
+                        function.runBatch()
+
+
 def test_runFileModel_1(function):
     with mock.patch.object(MWidget, "openFile", return_value=[]):
         function.runFileModel()

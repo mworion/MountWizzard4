@@ -142,7 +142,6 @@ class ImageWindow(MWidget):
         self.setupIcons()
         self.colorChange()
         self.show()
-        self.showCurrent()
 
     def closeEvent(self, closeEvent) -> None:
         """ """
@@ -284,7 +283,6 @@ class ImageWindow(MWidget):
         """ """
         if not imagePath.is_file():
             return
-
         changeStyleDynamic(self.ui.headerGroup, "run", True)
         self.setWindowTitle(f"Imaging:   {imagePath.name}")
         flipH = self.ui.flipH.isChecked()
@@ -317,7 +315,6 @@ class ImageWindow(MWidget):
 
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
-        self.app.showImage.emit(imagePath)
         self.imagingDeviceStat["expose"] = False
         self.app.operationRunning.emit(Model.STATUS_IDLE)
 
@@ -334,7 +331,6 @@ class ImageWindow(MWidget):
 
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
-        self.app.showImage.emit(imagePath)
         self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
 
     def exposeImageN(self) -> None:

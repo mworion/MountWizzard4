@@ -48,10 +48,9 @@ def mocked_sleepAndEvents_2(monkeypatch, function):
 
 
 def test_setImageExposed(function):
-    function.modelBuildData = [{"imagePath": "test"}]
     function.modelTiming = 2
     with mock.patch.object(function, "startNewSlew"):
-        function.setImageExposed(Path("image-000.fits"))
+        function.setImageExposed()
 
 
 def test_setImageDownloaded(function):

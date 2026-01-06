@@ -42,7 +42,7 @@ class Model(QObject):
         self.ui = mainW.ui
         self.timeStartModeling = None
         self.model: list = []
-        self.modelData: ModelData = None
+        self.modelData = ModelData(self.app)
 
         self.ui.runModel.clicked.connect(self.runBatch)
         self.ui.pauseModel.clicked.connect(self.pauseBatch)
@@ -51,6 +51,9 @@ class Model(QObject):
         self.ui.dataModel.clicked.connect(self.runFileModel)
         self.app.operationRunning.connect(self.setModelOperationMode)
         self.ui.waitTimeMountFlip.valueChanged.connect(self.setWaitTimeFlip)
+        self.modelData.statusSolve.connect(self.showStatusSolve)
+        self.modelData.statusExpose.connect(self.showStatusExposure)
+        self.modelData.statusSlew.connect(self.showStatusSlew)
 
     def initConfig(self) -> None:
         """ """
@@ -240,7 +243,7 @@ class Model(QObject):
             t += f", Angle: [{item['angleS'].degrees:.2f}], Scale: [{item['scaleS']:.2f}]"
             title = "Solving result"
         else:
-            t = f"[{item['imagePath'].stem}], [{item['message']}]"
+            t = f"[{item['imagePath'].stem}], {item['message']}"
             title = "Solving error"
         self.msg.emit(0, "Model", title, t)
 
@@ -283,22 +286,20 @@ class Model(QObject):
         if not self.clearAlignAndBackup():
             self.app.operationRunning.emit(self.STATUS_IDLE)
             return
-        self.modelData = ModelData(self.app)
-        self.modelData.statusSolve.connect(self.showStatusSolve)
-        self.modelData.statusExpose.connect(self.showStatusExposure)
-        self.modelData.statusSlew.connect(self.showStatusSlew)
         self.setModelTiming()
         self.setupBatchData()
         self.msg.emit(1, "Model", "Run", f"[{self.modelData.name}]")
         self.setupModelInputData()
         self.modelData.runModel()
-        self.programModelToMount()
+        if self.modelData.cancelBatch:
+            self.msg.emit(1, "Model", "Run", "Model build cancelled by user")
+        else:
+            self.programModelToMount()
         self.app.playSound.emit("RunFinished")
         self.app.operationRunning.emit(self.STATUS_IDLE)
 
     def runFileModel(self) -> None:
         """ """
-        self.modelData = ModelData(self.app)
         self.msg.emit(1, "Model", "Run", "Model from file")
         folder = self.app.mwGlob["modelDir"]
         modelFilesPath = self.mainW.openFile(
@@ -312,7 +313,6 @@ class Model(QObject):
         else:
             self.msg.emit(1, "Model", "Run", "Model from file cancelled - no files selected")
             return
-
         if not self.clearAlignAndBackup():
             return
 

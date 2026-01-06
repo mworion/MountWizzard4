@@ -37,6 +37,7 @@ class ModelData(QObject):
     statusExpose = Signal(object)
     statusSolve = Signal(object)
     statusSlew = Signal(object)
+    startSlew = Signal()
 
     def __init__(self, app):
         super().__init__()
@@ -63,6 +64,7 @@ class ModelData(QObject):
         self.pointerModel: int = 0
         self.mountSlewed: bool = False
         self.domeSlewed: bool = False
+        self.startSlew.connect(self.startNewSlew)
 
     def setupSignals(self) -> None:
         """ """
@@ -84,21 +86,20 @@ class ModelData(QObject):
         self.app.camera.signals.saved.disconnect(self.startNewPlateSolve)
         self.app.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
-    def setImageExposed(self, imagePath) -> None:
+    def setImageExposed(self) -> None:
         """ """
-        self.app.showImage.emit(imagePath)
         if self.modelTiming == self.PROGRESSIVE:
-            self.startNewSlew()
+            self.startSlew.emit()
 
     def setImageDownloaded(self) -> None:
         """ """
         if self.modelTiming == self.NORMAL:
-            self.startNewSlew()
+            self.startSlew.emit()
 
     def setImageSaved(self) -> None:
         """ """
         if self.modelTiming == self.CONSERVATIVE:
-            self.startNewSlew()
+            self.startSlew.emit()
 
     def startExposureAfterSlew(self) -> None:
         """ """
@@ -139,6 +140,7 @@ class ModelData(QObject):
             result = {"success": False, "message": "Slew not possible", "imagePath": item["imagePath"]}
             self.log.warning(f"Slew to Alt: {altitude.degrees}, Az: {azimuth.degrees} not possible")
             self.app.plateSolve.signals.result.emit(result)
+            self.startSlew.emit()
             return
         data = [self.modelBuildData[self.pointerModel]["imagePath"].stem]
         data += [altitude.degrees, azimuth.degrees]
@@ -267,11 +269,9 @@ class ModelData(QObject):
         else:
             self.app.data.setStatusBuildPFailed(index)
             textResult = "Failed"
-        if item["processed"]:
-            textResult = "Skipped"
-        else:
-            item.update(result)
-            item["processed"] = True
+        textResult = "Skipped" if item["processed"] else textResult
+        item["processed"] = True
+        item.update(result)
         t = f"{'Collect solve':15s}: [{index:02d}], [{textResult}], [{item}]"
         self.app.updatePointMarker.emit()
         self.sendModelProgress(index)
@@ -315,7 +315,7 @@ class ModelData(QObject):
         """ """
         self.pointerModel = -1
         self.endBatch = self.cancelBatch = False
-        self.startNewSlew()
+        self.startSlew.emit()
         while not self.cancelBatch and not self.endBatch and not self.checkModelFinished():
             sleepAndEvents(500)
     """

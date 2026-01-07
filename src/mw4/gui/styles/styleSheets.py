@@ -37,7 +37,7 @@ MAC_STYLE = """
     QWidget QTableWidget {
         font-family: Courier New;
         font-weight: demibold;
-        font-size: 12pt;
+        font-size: 13pt;
     }
     QToolTip {
         font-size: 13pt;

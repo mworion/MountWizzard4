@@ -104,9 +104,7 @@ def convertProfileData40to41(data: dict) -> dict:
     d["driversData", "directWeather", "frameworks", "directWeather"] = t
     del d["driversData"]["directWeather"]["frameworks"]["internal"]
 
-    d["driversData", "directWeather", "frameworks", "directWeather", "deviceName"] = (
-        "On Mount"
-    )
+    d["driversData", "directWeather", "frameworks", "directWeather", "deviceName"] = "On Mount"
     d["version"] = "4.1"
 
     return d.to_dict()

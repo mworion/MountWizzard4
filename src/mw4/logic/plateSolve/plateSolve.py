@@ -107,21 +107,15 @@ class PlateSolve:
         wcsHeader = getImageHeader(wcsPath)
         imageHeader = getImageHeader(imagePath)
         solution = getSolutionFromWCSHeader(wcsHeader, imageHeader)
-
         if update:
             updateImageFileHeaderWithSolution(imagePath, solution)
 
-        # import random
-        # result["success"] = bool(random.getrandbits(1))  # Placeholder for actual success logic
-        # result["message"] = "Fail introduced"
         result["success"] = True
         result["message"] = "Solved"
         result.update(solution)
-        ra, dec = J2000ToJNow(
+        result["raJNowS"], result["decJNowS"] = J2000ToJNow(
             result["raJ2000S"], result["decJ2000S"], self.app.mount.obsSite.timeJD
         )
-        result["raJNowS"] = ra
-        result["decJNowS"] = dec
         self.log.debug(f"Solve result:  [{imagePath.stem:10s}], [{result}]")
         return result
 

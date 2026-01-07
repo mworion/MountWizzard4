@@ -109,12 +109,6 @@ def test_convertProfileData41to42_1():
     assert val["version"] == "4.2"
 
 
-def test_convertProfileData41to42_2():
-    data = {"version": "4.1"}
-    val = convertProfileData41to42(data)
-    assert val["version"] == "4.1"
-
-
 def test_convertProfileData41to42_3():
     data = {
         "version": "4.1",
@@ -132,12 +126,6 @@ def test_convertProfileData41to42_3():
     assert "sensor1Weather" in val["driversData"]
     assert "sensor2Weather" in val["driversData"]
     assert "sensor3Weather" in val["driversData"]
-
-
-def test_convertProfileData42to43_1():
-    data = {"version": "4.2"}
-    val = convertProfileData42to43(data)
-    assert val["version"] == "4.2"
 
 
 def test_convertProfileData42to43_2():

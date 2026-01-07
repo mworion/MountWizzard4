@@ -66,7 +66,7 @@ NON_MAC_STYLE = """
     }
     QGroupBox {
         font-family: Arial;
-        font-weight: normal;
+        font-weight: demibold;
         font-size: 8pt;
     }
     QGroupBox[large] {
@@ -75,7 +75,7 @@ NON_MAC_STYLE = """
     }
     QWidget QTableWidget {
         font-family: Courier New;
-        font-weight: demibold;
+        font-weight: bold;
         font-size: 10pt;
     }
     QToolTip {

@@ -86,9 +86,9 @@ class IERSTime(QObject):
         :return:
         """
         if self.uploadPopup.returnValues["success"]:
-            self.msg.emit(1, "IERS", "Program", "Successfully uploaded")
+            self.msg.emit(1, "IERS", "Upload", "Successfully uploaded")
         else:
-            self.msg.emit(1, "IERS", "Program", "Upload failed")
+            self.msg.emit(2, "IERS", "Upload", "Upload failed")
         return True
 
     def progEarthRotationData(self):
@@ -96,7 +96,7 @@ class IERSTime(QObject):
         :return: success
         """
         self.msg.emit(1, "IERS", "Program", "Earth rotation data")
-        self.msg.emit(1, "", "", "finals.data, CDFLeapSeconds.txt")
+        self.msg.emit(0, "", "", "finals.data, CDFLeapSeconds.txt")
 
         suc = self.databaseProcessing.writeEarthRotationData(self.tempDir)
         if not suc:
@@ -105,7 +105,7 @@ class IERSTime(QObject):
 
         dataTypes = ["finalsdata", "leapsec"]
         url = self.app.mount.host[0]
-        self.msg.emit(0, "IERS", "Program", "Uploading to mount")
+        self.msg.emit(0, "IERS", "Uploading", "Upload to mount running")
         self.uploadPopup = UploadPopup(
             self.mainW, url=url, dataTypes=dataTypes, dataFilePath=self.tempDir
         )
@@ -119,10 +119,10 @@ class IERSTime(QObject):
         :return:
         """
         if self.downloadPopup.returnValues["success"]:
-            self.msg.emit(0, "IERS", "Program", "Downloaded finals.data")
-            self.msg.emit(1, "IERS", "Program", "Downloaded complete")
+            self.msg.emit(0, "IERS", "Download", "Received [finals.data]")
+            self.msg.emit(1, "IERS", "Download", "Downloaded complete")
         else:
-            self.msg.emit(1, "IERS", "Program", "Download failed")
+            self.msg.emit(2, "IERS", "Download", "Download failed")
         return True
 
     def finishLoadFinalsFromSourceURLs(self):
@@ -130,17 +130,17 @@ class IERSTime(QObject):
         :return:
         """
         if not self.downloadPopup.returnValues["success"]:
-            self.msg.emit(0, "IERS", "Program", "Download failed")
+            self.msg.emit(2, "IERS", "Download", "Download failed")
             return False
 
-        self.msg.emit(1, "IERS", "Program", "Downloaded finals2000A.all")
+        self.msg.emit(0, "IERS", "Download", "Received [finals2000A.all]")
+
         sourceURL = self.ui.iersSource.currentText()
         urlMain = self.iersSourceURLs[sourceURL]
 
         source = "finals.data"
         url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source
-        self.msg.emit(1, "IERS", "Download", f"File: {source}")
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
         self.downloadPopup.worker.signals.finished.connect(
             self.finishLoadTimeDataFromSourceURLs
@@ -158,10 +158,12 @@ class IERSTime(QObject):
         sourceURL = self.ui.iersSource.currentText()
         urlMain = self.iersSourceURLs[sourceURL]
 
+        self.msg.emit(1, "IERS", "Download", f"Source: [{sourceURL}]")
+
+
         source = "finals2000A.all"
         url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source
-        self.msg.emit(1, "IERS", "Download", f"File. {source}")
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
         self.downloadPopup.worker.signals.finished.connect(self.finishLoadFinalsFromSourceURLs)
         return True

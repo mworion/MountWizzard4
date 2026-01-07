@@ -252,6 +252,11 @@ def test_showStatusSlew(function):
     function.showStatusSlew(status)
 
 
+def test_showStatusRetry(function):
+    status = 3
+    function.showStatusRetry(status)
+
+
 def test_showStatusSolve_1(function):
     status = {"imagePath": Path("test"), "success": False, "message": "Error"}
     function.showStatusSolve(status)

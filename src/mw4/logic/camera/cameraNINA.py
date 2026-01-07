@@ -13,10 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-from pathlib import Path
 from mw4.base.ninaClass import NINAClass
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from pathlib import Path
 
 
 class CameraNINA(NINAClass):

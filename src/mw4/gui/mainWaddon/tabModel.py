@@ -54,6 +54,8 @@ class Model(QObject):
         self.modelData.statusSolve.connect(self.showStatusSolve)
         self.modelData.statusExpose.connect(self.showStatusExposure)
         self.modelData.statusSlew.connect(self.showStatusSlew)
+        self.modelData.statusRetry.connect(self.showStatusRetry)
+        self.modelData.progress.connect(self.showProgress)
 
     def initConfig(self) -> None:
         """ """
@@ -158,7 +160,7 @@ class Model(QObject):
     def programModelToMountFinish(self) -> None:
         """ """
         self.app.mount.signals.getModelDone.disconnect(self.programModelToMountFinish)
-        self.msg.emit(1, "Model", "Run", f"Writing model [{self.modelData.name}]")
+        self.msg.emit(1, "Model", "Writing model", f"[{self.modelData.name}]")
         self.modelData.generateSaveData()
         modelPath = self.app.mwGlob["modelDir"] / (self.modelData.name + ".model")
         self.modelData.saveModelData(modelPath)
@@ -173,8 +175,7 @@ class Model(QObject):
         if not suc:
             self.msg.emit(3, "Model", "Run error", f"{'Program':12s} Failed - error")
             return
-
-        self.msg.emit(1, "Model", "Run", f"{'Program:':12s} [{self.modelData.name}] with success")
+        self.msg.emit(1, "Model", "Program", f"[{self.modelData.name}] with success")
         self.app.mount.signals.getModelDone.connect(self.programModelToMountFinish)
         self.app.refreshModel.emit()
 
@@ -236,16 +237,20 @@ class Model(QObject):
         t = f"[{statusData[0]}], Alt: [{statusData[1]:3.2f}], Az: [{statusData[2]:3.2f}]"
         self.msg.emit(0, "Model", "Slewing", t)
 
+    def showStatusRetry(self, statusData) -> None:
+        """ """
+        t = f"Retry run # [{statusData:02d}] for model run"
+        self.msg.emit(1, "Model", "Retry start", t)
+
     def showStatusSolve(self, item: dict) -> None:
         """ """
         if item["success"]:
             t = f"[{item['imagePath'].stem}], Error: [{item['errorRMS_S']:.2f}]"
             t += f", Angle: [{item['angleS'].degrees:.2f}], Scale: [{item['scaleS']:.2f}]"
-            title = "Solving result"
+            self.msg.emit(0, "Model", "Solving result", t)
         else:
             t = f"[{item['imagePath'].stem}], {item['message']}"
-            title = "Solving error"
-        self.msg.emit(0, "Model", title, t)
+            self.msg.emit(2, "Model", "Solving error", t)
 
     def setupModelInputData(self) -> None:
         """ """
@@ -256,11 +261,10 @@ class Model(QObject):
     def setupBatchData(self) -> None:
         """ """
         imageDir = self.setupFilenamesAndDirectories(prefix="m", postfix="build")
-        self.modelData.progress.connect(self.showProgress)
         self.modelData.imageDir = imageDir
         self.modelData.name = imageDir.stem
         self.modelData.numberRetries = self.ui.numberBuildRetries.value()
-        self.modelData.retriesReversed = self.ui.retriesReverse.isChecked()
+        self.modelData.retriesReverse = self.ui.retriesReverse.isChecked()
         self.modelData.waitTimeExposure = self.ui.waitTimeExposure.value()
         self.modelData.version = f"{self.app.__version__}"
         self.modelData.profile = self.ui.profile.text()

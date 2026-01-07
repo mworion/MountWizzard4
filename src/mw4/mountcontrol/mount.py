@@ -41,7 +41,7 @@ class MountDevice:
     CYCLE_MOUNT_UP = 2000
     CYCLE_SETTING = 3100
     DEFAULT_PORT = 3492
-    SOCKET_TIMEOUT = 1.0
+    SOCKET_TIMEOUT = 2
 
     log = logging.getLogger("MW4")
 

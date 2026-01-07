@@ -19,13 +19,13 @@ import subprocess
 import time
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker
+from mw4.base.transform import J2000ToJNow
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.logic.fits.fitsFunction import (
     getImageHeader,
     getSolutionFromWCSHeader,
     updateImageFileHeaderWithSolution,
 )
-from mw4.base.transform import J2000ToJNow
 from mw4.logic.plateSolve.astap import ASTAP
 from mw4.logic.plateSolve.astrometry import Astrometry
 from mw4.logic.plateSolve.watney import Watney
@@ -111,11 +111,18 @@ class PlateSolve:
         if update:
             updateImageFileHeaderWithSolution(imagePath, solution)
 
-        result["success"] = True
-        result["message"] = "Solved"
+        import random
+
+        result["success"] = bool(random.getrandbits(1))  # Placeholder for actual success logic
+        result["message"] = "Fail introduced"
+
+        # result["success"] = True
+        # result["message"] = "Solved"
         result["imagePath"] = imagePath
         result.update(solution)
-        ra, dec = J2000ToJNow(result["raJ2000S"], result["decJ2000S"], self.app.mount.obsSite.timeJD)
+        ra, dec = J2000ToJNow(
+            result["raJ2000S"], result["decJ2000S"], self.app.mount.obsSite.timeJD
+        )
         result["raJNowS"] = ra
         result["decJNowS"] = dec
         self.log.debug(f"Solve result:  [{imagePath.stem:10s}], [{result}]")

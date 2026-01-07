@@ -13,10 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.base.transform import J2000ToJNow
 from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
+from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.gui.mainWaddon.tabModel import Model
 from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
 from mw4.gui.widgets import image_ui

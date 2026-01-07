@@ -153,7 +153,7 @@ class AstroObjects(QObject):
                 2,
                 self.objectText.capitalize(),
                 "Data export",
-                f"No data to export - stopping",
+                "No data to export - stopping",
             )
             return
         self.dbProcFuncs[self.objectText](objects, dataFilePath=self.tempDir)

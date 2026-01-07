@@ -11701,7 +11701,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       </widget>
       <widget class="QGroupBox" name="groupBoxCoordinateSystems_3">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -11739,7 +11739,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        </widget>
        <widget class="QDoubleSpinBox" name="numberBuildRetries">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>

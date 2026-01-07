@@ -236,6 +236,11 @@ BASIC_STYLE = """
     QCheckBox:disabled {
         color: $M_SEC$;
     }
+    QCheckBox::indicator:checked:disabled {
+        border-color: $M_PRIM2$;
+        background-color: $M_BACK$;
+        image: url(:/icon/$checkmark$.svg);
+    }
     QRadioButton {
         color: $M_TER$;
         spacing: 5px;
@@ -266,6 +271,9 @@ BASIC_STYLE = """
         border-style: outset;
         border-radius: %ROUND%;
         padding-left: 2px;
+    }
+    QDoubleSpinBox:disabled {
+        color: $M_SEC$;
     }
     QDoubleSpinBox::up-button {
         subcontrol-origin: border;

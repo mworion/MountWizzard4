@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -8684,7 +8684,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -10496,9 +10496,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <widget class="QLabel" name="label_35">
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>200</x>
           <y>55</y>
-          <width>91</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -10510,7 +10510,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </font>
         </property>
         <property name="text">
-         <string>Estimated time:</string>
+         <string>Time left</string>
         </property>
        </widget>
        <widget class="QPushButton" name="runModel">
@@ -10532,8 +10532,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <widget class="QLabel" name="label_29">
         <property name="geometry">
          <rect>
-          <x>195</x>
-          <y>80</y>
+          <x>5</x>
+          <y>55</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -10546,7 +10546,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </font>
         </property>
         <property name="text">
-         <string>Elapsed time:</string>
+         <string>Elapsed time</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="timeElapsed">
@@ -10555,8 +10555,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="geometry">
          <rect>
-          <x>300</x>
-          <y>80</y>
+          <x>120</x>
+          <y>55</y>
           <width>61</width>
           <height>21</height>
          </rect>
@@ -10602,8 +10602,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="geometry">
          <rect>
-          <x>115</x>
-          <y>55</y>
+          <x>120</x>
+          <y>80</y>
           <width>61</width>
           <height>21</height>
          </rect>
@@ -10647,7 +10647,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>135</y>
+          <y>130</y>
           <width>356</width>
           <height>21</height>
          </rect>
@@ -10719,7 +10719,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>55</y>
+          <y>80</y>
           <width>91</width>
           <height>21</height>
          </rect>
@@ -10732,7 +10732,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </font>
         </property>
         <property name="text">
-         <string>Finishing Time:</string>
+         <string>Finishing Time</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pauseModel">
@@ -10758,8 +10758,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>110</y>
-          <width>266</width>
+          <y>105</y>
+          <width>146</width>
           <height>21</height>
          </rect>
         </property>
@@ -10774,7 +10774,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When enabled MW4 issues a park command after a model run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Park mount after model build</string>
+         <string>Park mount after run</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -10802,8 +10802,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <widget class="QLabel" name="label_54">
         <property name="geometry">
          <rect>
-          <x>5</x>
-          <y>80</y>
+          <x>200</x>
+          <y>105</y>
           <width>91</width>
           <height>21</height>
          </rect>
@@ -10825,8 +10825,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="geometry">
          <rect>
-          <x>115</x>
-          <y>80</y>
+          <x>300</x>
+          <y>105</y>
           <width>61</width>
           <height>21</height>
          </rect>
@@ -11708,43 +11708,23 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <x>400</x>
          <y>290</y>
          <width>366</width>
-         <height>76</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="title">
-        <string>Modeling retry strategy</string>
+        <string>Modeling run retry strategy</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QLabel" name="label_59">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>25</y>
-          <width>141</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>If model points fail use</string>
-        </property>
-       </widget>
        <widget class="QDoubleSpinBox" name="numberBuildRetries">
         <property name="enabled">
          <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
-          <x>150</x>
-          <y>25</y>
+          <x>10</x>
+          <y>20</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -11782,7 +11762,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
+          <y>45</y>
           <width>346</width>
           <height>21</height>
          </rect>
@@ -11807,9 +11787,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <widget class="QLabel" name="label_36">
         <property name="geometry">
          <rect>
-          <x>200</x>
-          <y>25</y>
-          <width>141</width>
+          <x>60</x>
+          <y>20</y>
+          <width>261</width>
           <height>21</height>
          </rect>
         </property>
@@ -11821,7 +11801,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </font>
         </property>
         <property name="text">
-         <string>retry run(s) to recover</string>
+         <string>retries to recover failed model points</string>
         </property>
        </widget>
       </widget>

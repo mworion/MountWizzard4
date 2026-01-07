@@ -375,5 +375,5 @@ class ModelData(QObject):
         if modelSize < 3:
             self.log.warning(f"Only {modelSize} points available")
             self.modelProgData = []
-        self.log.debug(f"{'Finish model':15s}: [{modelSize}]")
+        self.log.debug(f"{'Finish model':15s}: len: [{modelSize}]")
         self.resetSignals()

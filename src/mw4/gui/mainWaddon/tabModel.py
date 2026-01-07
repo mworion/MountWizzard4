@@ -229,7 +229,7 @@ class Model(QObject):
 
     def showStatusExposure(self, statusData: tuple) -> None:
         """ """
-        t = f"[{statusData[0]}], Time: [{statusData[1]}s], Binning: [{statusData[2]}] "
+        t = f"[{statusData[0]}], ExpTime: [{statusData[1]}s], Binning: [{statusData[2]:1d}] "
         self.msg.emit(0, "Model", "Exposure", t)
 
     def showStatusSlew(self, statusData: tuple) -> None:

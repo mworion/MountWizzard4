@@ -90,31 +90,26 @@ def convertProfileData40to41(data: dict) -> dict:
         "indexPath": Path(""),
     }
     d = NestedDict(data)
-    try:
-        d["driversData"] = d["mainW", "driversData"]
-        del d["mainW"]["driversData"]
+    d["driversData"] = d["mainW", "driversData"]
+    del d["mainW"]["driversData"]
 
-        d["driversData", "plateSolve"] = d["driversData", "astrometry"]
-        del d["driversData"]["astrometry"]
+    d["driversData", "plateSolve"] = d["driversData", "astrometry"]
+    del d["driversData"]["astrometry"]
 
-        d["driversData", "plateSolve", "frameworks", "watney"] = watney
-        d["hemisphereW", "horizonMaskFileName"] = d["mainW", "horizonFileName"]
-        del d["mainW"]["horizonFileName"]
+    d["driversData", "plateSolve", "frameworks", "watney"] = watney
+    d["hemisphereW", "horizonMaskFileName"] = d["mainW", "horizonFileName"]
+    del d["mainW"]["horizonFileName"]
 
-        t = d["driversData", "directWeather", "frameworks", "internal"]
-        d["driversData", "directWeather", "frameworks", "directWeather"] = t
-        del d["driversData"]["directWeather"]["frameworks"]["internal"]
+    t = d["driversData", "directWeather", "frameworks", "internal"]
+    d["driversData", "directWeather", "frameworks", "directWeather"] = t
+    del d["driversData"]["directWeather"]["frameworks"]["internal"]
 
-        d["driversData", "directWeather", "frameworks", "directWeather", "deviceName"] = (
-            "On Mount"
-        )
-        d["version"] = "4.1"
+    d["driversData", "directWeather", "frameworks", "directWeather", "deviceName"] = (
+        "On Mount"
+    )
+    d["version"] = "4.1"
 
-    except Exception as e:
-        log.error(f"Failed conversion, keep old structure: {e}")
-    else:
-        data = d.to_dict()
-    return data
+    return d.to_dict()
 
 
 def convertProfileData41to42(data: dict) -> dict:
@@ -125,23 +120,17 @@ def convertProfileData41to42(data: dict) -> dict:
 
     log.info(f"Conversion from [{data.get('version')}] to [4.2]")
     d = NestedDict(data)
-    try:
-        if "sensorWeather" in d["driversData"]:
-            d["driversData", "sensor1Weather"] = d["driversData", "sensorWeather"]
-            del d["driversData"]["sensorWeather"]
-        if "powerWeather" in d["driversData"]:
-            d["driversData", "sensor2Weather"] = d["driversData", "powerWeather"]
-            del d["driversData"]["powerWeather"]
-        if "skymeter" in d["driversData"]:
-            d["driversData", "sensor3Weather"] = d["driversData", "skymeter"]
-            del d["driversData"]["skymeter"]
-        d["version"] = "4.2"
-
-    except Exception as e:
-        log.error(f"Failed conversion, keep old structure: {e}")
-    else:
-        data = d.to_dict()
-    return data
+    if "sensorWeather" in d["driversData"]:
+        d["driversData", "sensor1Weather"] = d["driversData", "sensorWeather"]
+        del d["driversData"]["sensorWeather"]
+    if "powerWeather" in d["driversData"]:
+        d["driversData", "sensor2Weather"] = d["driversData", "powerWeather"]
+        del d["driversData"]["powerWeather"]
+    if "skymeter" in d["driversData"]:
+        d["driversData", "sensor3Weather"] = d["driversData", "skymeter"]
+        del d["driversData"]["skymeter"]
+    d["version"] = "4.2"
+    return d.to_dict()
 
 
 def convertProfileData42to43(data: dict) -> dict:
@@ -152,17 +141,11 @@ def convertProfileData42to43(data: dict) -> dict:
 
     log.info(f"Conversion from [{data.get('version')}] to [4.3]")
     d = NestedDict(data)
-    try:
-        if "onlineWeather" in d["driversData"]:
-            d["driversData", "sensor4Weather"] = d["driversData", "onlineWeather"]
-            del d["driversData"]["onlineWeather"]
-        d["version"] = "4.3"
-
-    except Exception as e:
-        log.error(f"Failed conversion, keep old structure: {e}")
-    else:
-        data = d.to_dict()
-    return data
+    if "onlineWeather" in d["driversData"]:
+        d["driversData", "sensor4Weather"] = d["driversData", "onlineWeather"]
+        del d["driversData"]["onlineWeather"]
+    d["version"] = "4.3"
+    return d.to_dict()
 
 
 def defaultConfig() -> dict:

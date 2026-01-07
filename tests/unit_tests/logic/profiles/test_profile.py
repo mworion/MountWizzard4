@@ -13,12 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import glob
 import json
 import os
 import pytest
 import unittest.mock as mock
+
+from ndicts import NestedDict
+
 from mw4.logic.profiles.profile import (
     checkResetTabOrder,
     convertKeyData,

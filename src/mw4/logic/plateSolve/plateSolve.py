@@ -94,7 +94,7 @@ class PlateSolve:
 
     def prepareResult(self, suc: bool, msg: str, imagePath: Path, wcsPath: Path, update: bool):
         """ """
-        result = {"success": False, "message": msg}
+        result = {"success": False, "message": msg, "imagePath": imagePath}
         if not suc:
             self.log.warning(f"Error: [{imagePath.stem}], message: {msg}")
             return result
@@ -118,7 +118,6 @@ class PlateSolve:
 
         # result["success"] = True
         # result["message"] = "Solved"
-        result["imagePath"] = imagePath
         result.update(solution)
         ra, dec = J2000ToJNow(
             result["raJ2000S"], result["decJ2000S"], self.app.mount.obsSite.timeJD

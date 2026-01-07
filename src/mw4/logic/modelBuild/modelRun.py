@@ -163,10 +163,10 @@ class ModelData(QObject):
     def collectBuildModelResults(self) -> None:
         """ """
         self.modelSaveData.clear()
-        for modelBuildPoint in self.modelBuildData:
-            if not modelBuildPoint["success"]:
+        for key in self.modelBuildData:
+            if not self.modelBuildData[key]["success"]:
                 continue
-            self.modelSaveData.append(modelBuildPoint)
+            self.modelSaveData.append(self.modelBuildData[key])
             self.modelSaveData[-1]["version"] = self.version
             self.modelSaveData[-1]["profile"] = self.profile
             self.modelSaveData[-1]["firmware"] = self.firmware
@@ -272,10 +272,10 @@ class ModelData(QObject):
         item.update(result)
         t = f"{'Collect solve':15s}: [{key}], [{item['message']}], [{item}]"
         self.app.updatePointMarker.emit()
+        item["processed"] = True
         self.sendModelProgress()
         self.log.debug(t)
         self.statusSolve.emit(item)
-        item["processed"] = True
 
     def prepareModelBuildData(self) -> None:
         """ """
@@ -284,6 +284,7 @@ class ModelData(QObject):
         self.retries = 0
         self.log.debug(f"{'Prepare model':15s}: Len: [{len(self.modelInputData)}]")
         for index, point in enumerate(self.modelInputData):
+            self.app.data.setStatusBuildPUnprocessed(index)
             modelItem = {}
             imagePath = self.imageDir / f"image-{index:03d}.fits"
             modelItem["imagePath"] = imagePath
@@ -344,15 +345,16 @@ class ModelData(QObject):
 
     def runThroughModelBuildDataRetries(self) -> None:
         """ """
-        while self.retries < self.numberRetries:
+        while self.retries <= self.numberRetries:
+            if self.retries > 0:
+                self.statusRetry.emit(self.retries)
+            if self.cancelBatch or self.endBatch:
+                break
             self.generateRunIterator()
             self.runThroughModelBuildData()
             if not self.checkRetryNeeded():
                 break
-            if self.cancelBatch or self.endBatch:
-                break
             self.retries += 1
-            self.statusRetry.emit(self.retries)
 
     def runModel(self) -> None:
         """ """

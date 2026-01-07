@@ -192,26 +192,26 @@ def test_collectBuildModelResults_1(function):
 
 def test_collectBuildModelResults_2(function):
     jd = function.app.mount.obsSite.timeJD
-    function.modelBuildData = [
-        {
+    function.modelBuildData = {
+        'im-00': {
             "altitude": Angle(degrees=0),
             "azimuth": Angle(degrees=0),
             "julianDate": jd,
             "success": True,
         },
-        {
+        'im-01': {
             "altitude": Angle(degrees=1),
             "azimuth": Angle(degrees=1),
             "julianDate": jd,
             "success": False,
         },
-        {
+        'im-02': {
             "dec": Angle(degrees=0),
             "ra": Angle(hours=0),
             "julianDate": jd,
             "success": True,
         },
-    ]
+    }
     function.modelSaveData = [1, 2, 3]
 
     function.collectBuildModelResults()
@@ -423,10 +423,11 @@ def test_prepareModelBuildData_1(function):
     function.app.mount.setting.horizonLimitHigh = 90
 
     with mock.patch.object(function, "sendModelProgress"):
-        function.prepareModelBuildData()
-        assert len(function.modelBuildData) == 2
-        assert function.modelBuildData['image-000']["altitude"].degrees == 5
-        assert function.modelBuildData['image-000']["azimuth"].degrees == 0
+        with mock.patch.object(function.app.data, "setStatusBuildPUnprocessed"):
+            function.prepareModelBuildData()
+            assert len(function.modelBuildData) == 2
+            assert function.modelBuildData['image-000']["altitude"].degrees == 5
+            assert function.modelBuildData['image-000']["azimuth"].degrees == 0
 
 
 def test_checkRetryNeeded_1(function):
@@ -502,19 +503,36 @@ def test_generateRunIterator_2(function):
 
 
 def test_runThroughModelBuildDataRetries_1(function):
+    function.cancelBatch = False
+    function.endBatch = False
     function.retries = 1
     function.numberRetries = 2
-    with mock.patch.object(function, "runThroughModelBuildData"):
-        with mock.patch.object(function, "checkRetryNeeded", return_value=False):
-            function.runThroughModelBuildDataRetries()
+    with mock.patch.object(function, "generateRunIterator"):
+        with mock.patch.object(function, "runThroughModelBuildData"):
+            with mock.patch.object(function, "checkRetryNeeded", return_value=False):
+                function.runThroughModelBuildDataRetries()
 
 
 def test_runThroughModelBuildDataRetries_2(function):
+    function.cancelBatch = True
+    function.endBatch = True
     function.retries = 1
     function.numberRetries = 2
-    with mock.patch.object(function, "runThroughModelBuildData"):
-        with mock.patch.object(function, "checkRetryNeeded", return_value=True):
-            function.runThroughModelBuildDataRetries()
+    with mock.patch.object(function, "generateRunIterator"):
+        with mock.patch.object(function, "runThroughModelBuildData"):
+            with mock.patch.object(function, "checkRetryNeeded", return_value=True):
+                function.runThroughModelBuildDataRetries()
+
+
+def test_runThroughModelBuildDataRetries_3(function):
+    function.cancelBatch = False
+    function.endBatch = False
+    function.retries = 1
+    function.numberRetries = 2
+    with mock.patch.object(function, "generateRunIterator"):
+        with mock.patch.object(function, "runThroughModelBuildData"):
+            with mock.patch.object(function, "checkRetryNeeded", return_value=True):
+                function.runThroughModelBuildDataRetries()
 
 
 def test_runModel_1(function):

@@ -101,6 +101,10 @@ class DataPoint:
         if 0 <= number < len(self._buildP):
             self._buildP[number][2] = status
 
+    def setStatusBuildPUnprocessed(self, number: int) -> None:
+        """ """
+        self.setStatusBuildP(number, self.UNPROCESSED)
+
     def setStatusBuildPSolved(self, number: int) -> None:
         """ """
         self.setStatusBuildP(number, self.SOLVED)

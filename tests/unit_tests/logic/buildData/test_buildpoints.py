@@ -247,6 +247,15 @@ def test_setStatusBuildP_4(function):
     assert not function.buildP[1][2]
 
 
+def test_setStatusBuildPUnprocessed(function):
+    function.buildP = []
+    function.addBuildP([10, 10, 1])
+    function.addBuildP([10, 10, 1])
+    function.addBuildP([10, 10, 1])
+    function.setStatusBuildPUnprocessed(1)
+    assert function.buildP[1][2] == 0
+
+
 def test_setStatusBuildPSolved(function):
     function.buildP = []
     function.addBuildP([10, 10, 1])

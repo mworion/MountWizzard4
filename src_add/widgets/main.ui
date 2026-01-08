@@ -191,7 +191,7 @@
         <string/>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -261,7 +261,7 @@
         <string/>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -371,13 +371,13 @@
         <string/>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
        </property>
        <property name="cursorPosition">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -444,7 +444,7 @@
         <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="maxLength">
         <number>8</number>
@@ -563,13 +563,13 @@
         <string/>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
        </property>
        <property name="cursorPosition">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -696,7 +696,7 @@
         <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -763,7 +763,7 @@
         <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -813,7 +813,7 @@
         <string/>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -1015,7 +1015,7 @@
         <string/>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -1065,13 +1065,13 @@
         <string/>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
        </property>
        <property name="cursorPosition">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -1139,7 +1139,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string/>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -1246,7 +1246,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -1293,7 +1293,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -1343,7 +1343,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="maxLength">
         <number>18</number>
@@ -1396,7 +1396,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="maxLength">
         <number>8</number>
@@ -1466,7 +1466,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -1579,13 +1579,13 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string/>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
        </property>
        <property name="cursorPosition">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -1729,7 +1729,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -1846,7 +1846,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="maxLength">
         <number>32634</number>
@@ -1922,7 +1922,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string/>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -1972,7 +1972,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string/>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="maxLength">
         <number>32767</number>
@@ -2028,13 +2028,13 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string/>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
        </property>
        <property name="cursorPosition">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -2220,7 +2220,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string/>
        </property>
        <property name="text">
-        <string>-</string>
+        <string/>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -4493,7 +4493,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
       <property name="text">
-       <string>-</string>
+       <string/>
       </property>
       <property name="frame">
        <bool>false</bool>
@@ -4611,7 +4611,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
       <property name="text">
-       <string>-</string>
+       <string/>
       </property>
       <property name="frame">
        <bool>false</bool>
@@ -4699,7 +4699,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
       <property name="text">
-       <string>-</string>
+       <string/>
       </property>
       <property name="frame">
        <bool>false</bool>
@@ -5121,7 +5121,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -5174,7 +5174,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -5240,7 +5240,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -5293,7 +5293,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -5346,7 +5346,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -5399,7 +5399,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -5452,7 +5452,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6020,7 +6020,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6073,7 +6073,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6139,7 +6139,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6192,7 +6192,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6245,7 +6245,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6298,7 +6298,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6351,7 +6351,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6449,7 +6449,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6502,7 +6502,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6619,7 +6619,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6685,7 +6685,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6738,7 +6738,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6791,7 +6791,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6844,7 +6844,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6897,7 +6897,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -6950,7 +6950,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7057,7 +7057,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7123,7 +7123,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7176,7 +7176,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7229,7 +7229,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7282,7 +7282,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7335,7 +7335,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7388,7 +7388,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7631,7 +7631,7 @@ no tracking</string>
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7684,7 +7684,7 @@ no tracking</string>
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7737,7 +7737,7 @@ no tracking</string>
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7790,7 +7790,7 @@ no tracking</string>
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7843,7 +7843,7 @@ no tracking</string>
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7896,7 +7896,7 @@ no tracking</string>
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -7949,7 +7949,7 @@ no tracking</string>
             <enum>Qt::LayoutDirection::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>-</string>
+            <string/>
            </property>
            <property name="maxLength">
             <number>8</number>
@@ -12484,7 +12484,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -12605,18 +12605,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string/>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
         </property>
         <property name="cursorPosition">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="readOnly">
-         <bool>true</bool>
-        </property>
-        <property name="input" stdset="0">
          <bool>true</bool>
         </property>
        </widget>
@@ -13055,6 +13052,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
        </widget>
        <widget class="QGroupBox" name="GroupControlledCamera">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>4</x>
@@ -13215,6 +13215,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
        </widget>
        <widget class="QGroupBox" name="GroupCCD">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>5</x>
@@ -13234,7 +13237,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <widget class="QLabel" name="textGain">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -13257,7 +13260,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </widget>
         <widget class="QLineEdit" name="offsetCam">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -13293,24 +13296,21 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <string/>
          </property>
          <property name="text">
-          <string>-</string>
+          <string/>
          </property>
          <property name="frame">
           <bool>false</bool>
          </property>
          <property name="cursorPosition">
-          <number>1</number>
+          <number>0</number>
          </property>
          <property name="readOnly">
           <bool>false</bool>
          </property>
-         <property name="input" stdset="0">
-          <bool>true</bool>
-         </property>
         </widget>
         <widget class="QLabel" name="textOffset">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -13333,7 +13333,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </widget>
         <widget class="QLineEdit" name="gainCam">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -13369,23 +13369,23 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <string/>
          </property>
          <property name="text">
-          <string>-</string>
+          <string/>
          </property>
          <property name="frame">
           <bool>false</bool>
          </property>
          <property name="cursorPosition">
-          <number>1</number>
+          <number>0</number>
          </property>
          <property name="readOnly">
           <bool>false</bool>
          </property>
-         <property name="input" stdset="0">
-          <bool>true</bool>
-         </property>
         </widget>
        </widget>
        <widget class="QGroupBox" name="GroupCooler">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -13457,7 +13457,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </widget>
         <widget class="QLineEdit" name="coolerTemp">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -13493,19 +13493,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <string/>
          </property>
          <property name="text">
-          <string>-</string>
+          <string/>
          </property>
          <property name="frame">
           <bool>false</bool>
          </property>
          <property name="cursorPosition">
-          <number>1</number>
+          <number>0</number>
          </property>
          <property name="readOnly">
           <bool>false</bool>
-         </property>
-         <property name="input" stdset="0">
-          <bool>true</bool>
          </property>
         </widget>
         <widget class="QLabel" name="textCoolerTempUnit">
@@ -13550,7 +13547,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </widget>
         <widget class="QLineEdit" name="coolerPower">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -13583,7 +13580,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="text">
-          <string>-</string>
+          <string/>
          </property>
          <property name="frame">
           <bool>false</bool>
@@ -13667,7 +13664,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -13799,7 +13796,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -13881,7 +13878,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -13993,7 +13990,7 @@ Slew</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -14130,18 +14127,15 @@ When clicking the button, you could change the value.</string>
          <string/>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
         </property>
         <property name="cursorPosition">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="readOnly">
-         <bool>true</bool>
-        </property>
-        <property name="input" stdset="0">
          <bool>true</bool>
         </property>
        </widget>
@@ -14204,18 +14198,15 @@ When clicking the button, you could change the value.</string>
          <string/>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
         </property>
         <property name="cursorPosition">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="readOnly">
-         <bool>true</bool>
-        </property>
-        <property name="input" stdset="0">
          <bool>true</bool>
         </property>
        </widget>
@@ -14515,7 +14506,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -14608,7 +14599,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -14692,7 +14683,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -14736,7 +14727,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -14860,7 +14851,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -14904,7 +14895,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15004,7 +14995,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15088,7 +15079,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15132,7 +15123,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15176,7 +15167,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15300,7 +15291,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15344,7 +15335,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15448,7 +15439,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15492,7 +15483,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15556,7 +15547,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15640,7 +15631,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15764,7 +15755,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15808,7 +15799,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15888,7 +15879,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -15981,7 +15972,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -16074,7 +16065,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -16158,7 +16149,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -16202,7 +16193,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -16326,7 +16317,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -18553,9 +18544,6 @@ When clicking the button, you could change the value.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
-        </property>
        </widget>
        <widget class="QLabel" name="label_298">
         <property name="geometry">
@@ -20513,9 +20501,6 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
-        </property>
        </widget>
       </widget>
       <widget class="QGroupBox" name="cometSourceGroup">
@@ -20862,9 +20847,6 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
-        </property>
        </widget>
       </widget>
       <widget class="QGroupBox" name="asteroidSourceGroup">
@@ -21023,7 +21005,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -21496,9 +21478,6 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="frame">
          <bool>false</bool>
-        </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
         </property>
        </widget>
        <widget class="QComboBox" name="rename6">
@@ -21984,13 +21963,13 @@ Next point in time when satellite settles.</string>
          <string/>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
         </property>
         <property name="cursorPosition">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -22124,13 +22103,13 @@ Next point in time when satellite settles.</string>
          <string/>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
         </property>
         <property name="cursorPosition">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -22264,13 +22243,13 @@ Next point in time when satellite settles.</string>
          <string/>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
         </property>
         <property name="cursorPosition">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -22913,18 +22892,15 @@ Next point in time when satellite settles.</string>
          <string/>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
         </property>
         <property name="cursorPosition">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="readOnly">
-         <bool>true</bool>
-        </property>
-        <property name="input" stdset="0">
          <bool>true</bool>
         </property>
        </widget>
@@ -23783,7 +23759,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -25062,9 +25038,6 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
-        </property>
        </widget>
        <widget class="QLabel" name="label_mountIP">
         <property name="geometry">
@@ -25388,9 +25361,6 @@ Next point in time when satellite settles.</string>
          <property name="readOnly">
           <bool>false</bool>
          </property>
-         <property name="input" stdset="0">
-          <bool>true</bool>
-         </property>
         </widget>
         <widget class="QLabel" name="label_mountMAC_6">
          <property name="geometry">
@@ -25501,9 +25471,6 @@ Next point in time when satellite settles.</string>
          </property>
          <property name="readOnly">
           <bool>false</bool>
-         </property>
-         <property name="input" stdset="0">
-          <bool>true</bool>
          </property>
         </widget>
         <widget class="QPushButton" name="mountOff">
@@ -25624,9 +25591,6 @@ Next point in time when satellite settles.</string>
         <property name="frame">
          <bool>false</bool>
         </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
-        </property>
        </widget>
        <widget class="QLineEdit" name="rackCompMACWolAddress">
         <property name="geometry">
@@ -25676,9 +25640,6 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
-        </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_mountMAC_8">
@@ -25749,9 +25710,6 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
-        </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_mountMAC_9">
@@ -25825,7 +25783,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="maxLength">
          <number>8</number>
@@ -25932,7 +25890,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="maxLength">
          <number>25</number>
@@ -25979,7 +25937,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="maxLength">
          <number>25</number>
@@ -26046,7 +26004,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="maxLength">
          <number>25</number>
@@ -26113,7 +26071,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="maxLength">
          <number>8</number>
@@ -29419,9 +29377,6 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
-        </property>
        </widget>
        <widget class="QLineEdit" name="relayButtonText5">
         <property name="geometry">
@@ -29460,9 +29415,6 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
-        </property>
        </widget>
        <widget class="QLineEdit" name="relayButtonText7">
         <property name="geometry">
@@ -29500,9 +29452,6 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
-        </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
         </property>
        </widget>
        <widget class="QComboBox" name="relayFun6">
@@ -29632,9 +29581,6 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
-        </property>
        </widget>
        <widget class="QLineEdit" name="relayButtonText1">
         <property name="geometry">
@@ -29673,9 +29619,6 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
-        </property>
        </widget>
        <widget class="QLineEdit" name="relayButtonText6">
         <property name="geometry">
@@ -29713,9 +29656,6 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
-        </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_255">
@@ -29905,9 +29845,6 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
-        </property>
        </widget>
        <widget class="QLineEdit" name="relayButtonText0">
         <property name="geometry">
@@ -29945,9 +29882,6 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
-        </property>
-        <property name="input" stdset="0">
-         <bool>true</bool>
         </property>
        </widget>
        <widget class="QComboBox" name="relayFun0">
@@ -31301,16 +31235,13 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <string>Status feedback from mount </string>
     </property>
     <property name="text">
-     <string>-</string>
+     <string/>
     </property>
     <property name="frame">
      <bool>false</bool>
     </property>
     <property name="readOnly">
      <bool>true</bool>
-    </property>
-    <property name="running" stdset="0">
-     <bool>false</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="refractionConnected">
@@ -31873,9 +31804,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <property name="readOnly">
      <bool>true</bool>
     </property>
-    <property name="running" stdset="0">
-     <bool>false</bool>
-    </property>
    </widget>
    <widget class="QPushButton" name="openKeypadW">
     <property name="geometry">
@@ -32071,7 +31999,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual utc of site&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
-     <string>-</string>
+     <string/>
     </property>
     <property name="frame">
      <bool>false</bool>
@@ -32352,7 +32280,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
          <string>Shows the actual selected profile name.</string>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>

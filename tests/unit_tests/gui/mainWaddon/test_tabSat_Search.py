@@ -69,9 +69,6 @@ def test_processSatelliteSource(function):
 
 def test_filterListSats_1(function):
     function.ui.satFilterGroup.setEnabled(True)
-    function.ui.satIsUp.setEnabled(True)
-    function.ui.satIsUp.setChecked(True)
-    function.ui.satIsSunlit.setEnabled(True)
     function.ui.satIsSunlit.setChecked(True)
     function.ui.satRemoveSO.setChecked(True)
     function.ui.listSats.clear()
@@ -100,7 +97,7 @@ def test_setListSatsEntry(function):
 def test_updateListSats_5(function):
     param = [1, 2, 3, 4]
     ts = function.app.mount.obsSite.ts.now()
-    isUp = (False, [ts])
+    isUp = [ts]
     function.updateListSats(0, param, isUp, False, 5, 4)
 
 

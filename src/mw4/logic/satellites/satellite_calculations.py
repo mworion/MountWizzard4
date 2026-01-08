@@ -24,46 +24,25 @@ from skyfield.units import Angle
 
 
 def findSunlit(sat: EarthSatellite, ephemeris, tEvent: tuple) -> bool:
-    """
-    :param sat:
-    :param ephemeris:
-    :param tEvent:
-    :return:
-    """
+    """ """
     sunlit = sat.at(tEvent).is_sunlit(ephemeris)
     return sunlit
 
 
 def findSatUp(
     sat: EarthSatellite, loc: GeographicPosition, tStart: float, tEnd: float, alt: float
-) -> tuple[bool, list]:
-    """
-    :param sat:
-    :param loc:
-    :param tStart:
-    :param tEnd:
-    :param alt:
-    :return:
-    """
+) -> list:
+    """ """
     t, events = sat.find_events(loc, tStart, tEnd, altitude_degrees=alt)
-    if 1 in events:
-        return True, t[np.equal(events, 1)]
-    else:
-        return False, []
+    return t[np.equal(events, 1)][:1]
 
 
 def checkTwilight(ephemeris, loc: GeographicPosition, data: list) -> int:
-    """
-    :param ephemeris:
-    :param loc:
-    :param data:
-    :return:
-    """
-    isUp = data[0]
-    if not isUp:
-        return 4
+    """ """
+    if not len(data):
+        return 5
 
-    satTime = data[1][0]
+    satTime = data[0]
     f = almanac.dark_twilight_day(ephemeris, loc)
     twilight = int(f(satTime))
     return twilight
@@ -72,12 +51,7 @@ def checkTwilight(ephemeris, loc: GeographicPosition, data: list) -> int:
 def findRangeRate(
     sat: EarthSatellite, loc: GeographicPosition, tEv: float
 ) -> tuple[float, float, float, float]:
-    """
-    :param sat:
-    :param loc:
-    :param tEv:
-    :return:
-    """
+    """ """
     pos = (sat - loc).at(tEv)
     _, _, satRange, latRate, lonRate, radRate = pos.frame_latlon_and_rates(loc)
     return (
@@ -97,11 +71,6 @@ def calcSatSunPhase(
         -earth
     https://space.stackexchange.com/questions/26286
         /how-to-calculate-cone-angle-between-two-satellites-given-their-look-angles
-    :param sat:
-    :param loc:
-    :param ephemeris:
-    :param tEv:
-    :return:
     """
     earth = ephemeris["earth"]
 
@@ -123,14 +92,6 @@ def calcAppMag(
         /268194552_Large_phase_angle_observations_of_GEO_satellites
     https://amostech.com/TechnicalPapers/2013/POSTER/COGNION.pdf
     https://apps.dtic.mil/dtic/tr/fulltext/u2/785380.pdf
-
-    :param sat:
-    :param loc:
-    :param ephemeris:
-    :param sat:
-    :param satRange:
-    :param tEv:
-    :return:
     """
     phase = calcSatSunPhase(sat, loc, ephemeris, tEv).radians
     intMag = -1.3

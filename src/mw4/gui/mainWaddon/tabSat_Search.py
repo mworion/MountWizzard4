@@ -58,10 +58,8 @@ class SatSearch(QObject, SatData):
         self.satellites.dataLoaded.connect(self.fillSatListName)
         self.ui.satFilterText.textChanged.connect(self.filterListSats)
         self.ui.satIsSunlit.clicked.connect(self.filterListSats)
-        self.ui.satIsUp.clicked.connect(self.filterListSats)
         self.ui.satRemoveSO.clicked.connect(self.filterListSats)
         self.ui.satTwilight.activated.connect(self.filterListSats)
-        self.ui.satUpTimeWindow.valueChanged.connect(self.filterListSats)
         self.setSatListItem.connect(self.setListSatsEntry)
         self.ui.progSatFull.clicked.connect(self.satellites.progFull)
         self.ui.progSatFiltered.clicked.connect(self.satellites.progFiltered)
@@ -72,13 +70,10 @@ class SatSearch(QObject, SatData):
         """ """
         config = self.app.config["mainW"]
         self.ui.satFilterText.setText(config.get("satFilterText"))
-        self.ui.satTwilight.setCurrentIndex(config.get("satTwilight", 4))
-        self.ui.autoSwitchTrack.setChecked(config.get("autoSwitchTrack", False))
+        self.ui.satTwilight.setCurrentIndex(config.get("satTwilight", 5))
         self.ui.satCyclicUpdates.setChecked(config.get("satCyclicUpdates", False))
         self.ui.satIsSunlit.setChecked(config.get("satIsSunlit", False))
         self.ui.satRemoveSO.setChecked(config.get("satRemoveSO", False))
-        self.ui.satIsUp.setChecked(config.get("satIsUp", False))
-        self.ui.satUpTimeWindow.setValue(config.get("satUpTimeWindow", 2))
         self.ui.satAltitudeMin.setValue(config.get("satAltitudeMin", 30))
         self.ui.satSourceList.setCurrentIndex(config.get("satSource", 0))
 
@@ -88,12 +83,9 @@ class SatSearch(QObject, SatData):
         config["satSource"] = self.ui.satSourceList.currentIndex()
         config["satTwilight"] = self.ui.satTwilight.currentIndex()
         config["satFilterText"] = self.ui.satFilterText.text()
-        config["autoSwitchTrack"] = self.ui.autoSwitchTrack.isChecked()
         config["satCyclicUpdates"] = self.ui.satCyclicUpdates.isChecked()
         config["satIsSunlit"] = self.ui.satIsSunlit.isChecked()
         config["satRemoveSO"] = self.ui.satRemoveSO.isChecked()
-        config["satIsUp"] = self.ui.satIsUp.isChecked()
-        config["satUpTimeWindow"] = self.ui.satUpTimeWindow.value()
         config["satAltitudeMin"] = self.ui.satAltitudeMin.value()
 
     def prepareSatTable(self) -> None:
@@ -130,11 +122,7 @@ class SatSearch(QObject, SatData):
     def filterListSats(self) -> None:
         """ """
         filterStr = self.ui.satFilterText.text().lower()
-        satIsUp = self.ui.satIsUp
-        satIsSunlit = self.ui.satIsSunlit
-
-        checkIsUp = satIsUp.isChecked() and satIsUp.isEnabled()
-        checkIsSunlit = satIsSunlit.isChecked() and satIsSunlit.isEnabled()
+        checkIsSunlit = self.ui.satIsSunlit.isChecked()
         checkRemoveSO = self.ui.satRemoveSO.isChecked()
         selectTwilight = self.ui.satTwilight.currentIndex()
 
@@ -142,8 +130,6 @@ class SatSearch(QObject, SatData):
             name = self.ui.listSats.model().index(row, 1).data().lower()
             number = self.ui.listSats.model().index(row, 0).data().lower()
             show = filterStr in number + name
-            if checkIsUp:
-                show = show and self.ui.listSats.model().index(row, 6).data()
             if checkIsSunlit:
                 show = show and self.ui.listSats.model().index(row, 7).data()
             if checkRemoveSO:
@@ -151,9 +137,9 @@ class SatSearch(QObject, SatData):
                 show = show and "oneweb" not in name
                 show = show and "globalstar" not in name
                 show = show and "navstar" not in name
-            if selectTwilight < 4:
+            if selectTwilight < 5:
                 value = self.ui.listSats.model().index(row, 8).data()
-                actTwilight = int(value) if value is not None else 5
+                actTwilight = int(value) if value is not None else 6
                 show = show and actTwilight <= selectTwilight
 
             self.ui.listSats.setRowHidden(row, not show)
@@ -165,7 +151,7 @@ class SatSearch(QObject, SatData):
         self.ui.listSats.setItem(row, col, entry)
 
     def updateListSats(
-        self, row, satParam, isUp=None, isSunlit=None, appMag=None, twilight=None
+        self, row: int, satParam, isUp: list = [], isSunlit: bool = False, appMag: float|None = None, twilight: int | None = None
     ):
         """ """
         entry = QTableWidgetItem(f"{satParam[0]:5.0f}")
@@ -184,16 +170,14 @@ class SatSearch(QObject, SatData):
         entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.setSatListItem.emit(row, 5, entry)
 
-        if isUp is not None:
-            t = self.mainW.convertTime(isUp[1][0], "%H:%M") if isUp[0] else ""
-
+        if isUp:
+            t = self.mainW.convertTime(isUp[0], "%H:%M") if len(isUp) else ""
             entry = QTableWidgetItem(t)
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.setSatListItem.emit(row, 6, entry)
 
-        if isSunlit is not None:
+        if isSunlit:
             value = f"{appMag:1.1f}" if isSunlit else ""
-
             entry = QCustomTableWidgetItem(value)
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.setSatListItem.emit(row, 7, entry)
@@ -257,7 +241,7 @@ class SatSearch(QObject, SatData):
         else:
             fitTwilight = 4
             isSunlit = False
-            isUp = False, []
+            isUp = []
             appMag = 99
         self.updateListSats(row, satParam, isUp, isSunlit, appMag, fitTwilight)
 
@@ -267,12 +251,12 @@ class SatSearch(QObject, SatData):
         loc = self.app.mount.obsSite.location
         ts = self.app.mount.obsSite.ts
         timeNow = ts.now()
-        timeWin = self.ui.satUpTimeWindow.value()
-        timeNext = ts.tt_jd(timeNow.tt + timeWin * 3600 / 86400)
+        timeNext = ts.tt_jd(timeNow.tt + 1)
         altMin = self.ui.satAltitudeMin.value()
         eph = self.app.ephemeris
         numSats = satTab.rowCount()
 
+        changeStyleDynamic(self.ui.satFilterGroup, "run", True)
         for row in range(numSats):
             finished = (row + 1) / numSats * 100
             t = f"Filter - processed: {finished:3.0f}%"
@@ -283,7 +267,7 @@ class SatSearch(QObject, SatData):
                 continue
             self.calcSat(sat, row, loc, timeNow, timeNext, altMin, eph)
 
-        t = "Filter - processed: 100%"
+        t = "Filter - processed - 100%"
         self.ui.satFilterGroup.setTitle(t)
         changeStyleDynamic(self.ui.satFilterGroup, "run", False)
 

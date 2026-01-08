@@ -66,12 +66,11 @@ def test_findSatUp_1(function):
     class SAT:
         @staticmethod
         def find_events(x, y, z, altitude_degrees):
-            return [], []
+            return np.array([]), np.array([])
 
     sat = SAT()
     val = findSatUp(sat, 0, 0, 0, alt=0)
-    assert not val[0]
-    assert not len(val[1])
+    assert len(val) == 0
 
 
 def test_findSatUp_2(function):
@@ -82,23 +81,23 @@ def test_findSatUp_2(function):
 
     sat = SAT()
     val = findSatUp(sat, 0, 0, 0, alt=0)
-    assert val[0]
-    assert val[1] == [5]
+    assert len(val) == 1
+    assert val == [5]
 
 
 def test_checkTwilight_1(function):
     ephemeris = function.ephemeris
     loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
     tEv = function.mount.obsSite.ts.tt_jd(2459215.5)
-    val = checkTwilight(ephemeris, loc, [False, tEv])
-    assert val == 4
+    val = checkTwilight(ephemeris, loc, [])
+    assert val == 5
 
 
 def test_checkTwilight_2(function):
     ephemeris = function.ephemeris
     loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
     tEv = function.mount.obsSite.ts.tt_jd(2459215.5)
-    val = checkTwilight(ephemeris, loc, [True, [tEv]])
+    val = checkTwilight(ephemeris, loc, [tEv])
     assert val == 0
 
 

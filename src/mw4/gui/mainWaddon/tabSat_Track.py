@@ -294,9 +294,6 @@ class SatTrack(QObject, SatData):
             self.extractSatelliteData(satName)
             self.showSatPasses()
 
-        if self.ui.autoSwitchTrack.isChecked():
-            self.ui.satTabWidget.setCurrentIndex(1)
-
     def getSatelliteDataFromDatabase(self, tleParams: TLEParams) -> None:
         """ """
         self.extractSatelliteData(tleParams.name)

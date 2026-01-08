@@ -18251,7 +18251,7 @@ When clicking the button, you could change the value.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -18470,9 +18470,9 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>575</x>
-         <y>285</y>
+         <y>305</y>
          <width>191</width>
-         <height>61</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="title">
@@ -18489,8 +18489,8 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>10</x>
           <y>15</y>
-          <width>176</width>
-          <height>21</height>
+          <width>171</width>
+          <height>26</height>
          </rect>
         </property>
         <property name="toolTip">
@@ -18500,25 +18500,6 @@ When clicking the button, you could change the value.</string>
          <string>Do updates every 10min</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="autoSwitchTrack">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>35</y>
-          <width>176</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled as selection of a satellite (double click on an entry) will automatically switch to the next (tracking) tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Auto change to tracking</string>
-        </property>
-       </widget>
       </widget>
       <widget class="QGroupBox" name="satFilterGroup">
        <property name="geometry">
@@ -18526,7 +18507,7 @@ When clicking the button, you could change the value.</string>
          <x>575</x>
          <y>70</y>
          <width>191</width>
-         <height>201</height>
+         <height>221</height>
         </rect>
        </property>
        <property name="title">
@@ -18538,9 +18519,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="satFilterText">
         <property name="geometry">
          <rect>
-          <x>100</x>
-          <y>20</y>
-          <width>81</width>
+          <x>5</x>
+          <y>40</y>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
@@ -18603,7 +18584,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>105</y>
+          <y>165</y>
           <width>171</width>
           <height>21</height>
          </rect>
@@ -18615,25 +18596,6 @@ When clicking the button, you could change the value.</string>
          <string>Satellite is sunlit</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="satIsUp">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>55</y>
-          <width>171</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which were up (meaning above the selected altitude) within the selected time window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Satellite is up</string>
-        </property>
-       </widget>
        <widget class="QCheckBox" name="satRemoveSO">
         <property name="enabled">
          <bool>true</bool>
@@ -18641,7 +18603,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>125</y>
+          <y>190</y>
           <width>171</width>
           <height>21</height>
          </rect>
@@ -18656,15 +18618,15 @@ When clicking the button, you could change the value.</string>
        <widget class="QComboBox" name="satTwilight">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>80</y>
-          <width>171</width>
+          <x>5</x>
+          <y>130</y>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <item>
          <property name="text">
-          <string>Night</string>
+          <string>Full night state</string>
          </property>
         </item>
         <item>
@@ -18684,56 +18646,20 @@ When clicking the button, you could change the value.</string>
         </item>
         <item>
          <property name="text">
-          <string>24h visibility</string>
+          <string>During day</string>
          </property>
         </item>
-       </widget>
-       <widget class="QDoubleSpinBox" name="satUpTimeWindow">
-        <property name="geometry">
-         <rect>
-          <x>105</x>
-          <y>150</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>51</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of time window for which MW4 calculated the satellite data for isUp ans isSunlit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>24.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>2.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>24.000000000000000</double>
-        </property>
+        <item>
+         <property name="text">
+          <string>All satellites</string>
+         </property>
+        </item>
        </widget>
        <widget class="QDoubleSpinBox" name="satAltitudeMin">
         <property name="geometry">
          <rect>
           <x>105</x>
-          <y>175</y>
+          <y>70</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -18770,51 +18696,11 @@ When clicking the button, you could change the value.</string>
          <double>60.000000000000000</double>
         </property>
        </widget>
-       <widget class="QLabel" name="label_271">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>150</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Up within next</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_272">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>150</y>
-          <width>21</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>h</string>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_297">
         <property name="geometry">
          <rect>
           <x>160</x>
-          <y>175</y>
+          <y>70</y>
           <width>21</width>
           <height>21</height>
          </rect>
@@ -18834,7 +18720,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>175</y>
+          <y>70</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -18848,6 +18734,26 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>Altitude min</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_295">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>105</y>
+          <width>171</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Limit selection by visibility:</string>
         </property>
        </widget>
       </widget>
@@ -20526,7 +20432,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -20538,7 +20444,7 @@ Next point in time when satellite settles.</string>
          <x>575</x>
          <y>70</y>
          <width>191</width>
-         <height>186</height>
+         <height>221</height>
         </rect>
        </property>
        <property name="title">
@@ -20887,7 +20793,7 @@ Next point in time when satellite settles.</string>
          <x>575</x>
          <y>70</y>
          <width>191</width>
-         <height>186</height>
+         <height>221</height>
         </rect>
        </property>
        <property name="title">
@@ -32824,15 +32730,12 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>openAstrometryCatalog</tabstop>
   <tabstop>listSats</tabstop>
   <tabstop>satSourceList</tabstop>
-  <tabstop>satIsUp</tabstop>
   <tabstop>satTwilight</tabstop>
   <tabstop>satIsSunlit</tabstop>
   <tabstop>satRemoveSO</tabstop>
   <tabstop>satFilterText</tabstop>
-  <tabstop>satUpTimeWindow</tabstop>
   <tabstop>satAltitudeMin</tabstop>
   <tabstop>satCyclicUpdates</tabstop>
-  <tabstop>autoSwitchTrack</tabstop>
   <tabstop>progSatFull</tabstop>
   <tabstop>progSatFiltered</tabstop>
   <tabstop>satelliteName</tabstop>

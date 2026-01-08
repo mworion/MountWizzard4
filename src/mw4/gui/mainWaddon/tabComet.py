@@ -47,17 +47,12 @@ class Comet(QObject):
         self.ui.progCometSelected.clicked.connect(self.comets.progSelected)
         self.ui.progCometFiltered.clicked.connect(self.comets.progFiltered)
         self.ui.progCometFull.clicked.connect(self.comets.progFull)
-        self.app.start3s.connect(self.initConfigDelayedComet)
 
     def initConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         self.ui.cometFilterText.setText(config.get("cometFilterText"))
         self.ui.mpcTabWidget.setCurrentIndex(config.get("mpcTab", 0))
-
-    def initConfigDelayedComet(self) -> None:
-        """ """
-        config = self.app.config["mainW"]
         self.ui.cometSourceList.setCurrentIndex(config.get("cometSource", 0))
 
     def storeConfig(self) -> None:

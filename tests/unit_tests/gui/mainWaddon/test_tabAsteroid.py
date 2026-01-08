@@ -40,11 +40,6 @@ def test_initConfig_1(function):
     function.initConfig()
 
 
-def test_initConfigDelayedAsteroid_1(function):
-    with mock.patch.object(function.ui.asteroidSourceList, "setCurrentIndex"):
-        function.initConfigDelayedAsteroid()
-
-
 def test_storeConfig_1(function):
     function.storeConfig()
 

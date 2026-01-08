@@ -277,5 +277,5 @@ class EnvironWeather(QObject):
         """ """
         self.refractionSources[source]["data"].clear()
         self.ui.meteoblueIcon.setVisible(False)
-        self.ui.meteoblueSeeing.setVisible(False)
+        self.ui.seeing.setVisible(False)
         self.updateSourceGui()

@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -7982,7 +7982,7 @@ no tracking</string>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <widget class="QLabel" name="meteoblueIcon">
+     <widget class="QLabel" name="seeingIcon">
       <property name="geometry">
        <rect>
         <x>5</x>
@@ -7995,7 +7995,7 @@ no tracking</string>
        <string>TextLabel</string>
       </property>
      </widget>
-     <widget class="QTableWidget" name="meteoblueSeeing">
+     <widget class="QTableWidget" name="seeing">
       <property name="geometry">
        <rect>
         <x>50</x>
@@ -32646,7 +32646,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>refracManual</tabstop>
   <tabstop>refracCont</tabstop>
   <tabstop>refracNoTrack</tabstop>
-  <tabstop>meteoblueSeeing</tabstop>
+  <tabstop>seeing</tabstop>
   <tabstop>almanacCivil</tabstop>
   <tabstop>almanacNautical</tabstop>
   <tabstop>almanacAstronomical</tabstop>

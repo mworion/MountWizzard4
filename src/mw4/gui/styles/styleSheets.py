@@ -89,6 +89,11 @@ NON_MAC_STYLE = """
     """
 
 BASIC_STYLE = """
+    QTableCornerButton::section {
+        background: red;
+        color: red;
+        border: 2px outset red;
+    }
     QWidget {
         color: $M_TER$;
     }

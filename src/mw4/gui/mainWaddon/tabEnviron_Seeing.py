@@ -50,9 +50,9 @@ class EnvironSeeing(QObject):
         pixmap = self.mainW.svg2pixmap(":/icon/meteoblue.svg", "#124673")
         pixmap = pixmap.transformed(QTransform().rotate(-90))
         pixmap = pixmap.scaled(37, 128, Qt.AspectRatioMode.KeepAspectRatio)
-        self.ui.meteoblueIcon.setPixmap(pixmap)
-        self.ui.meteoblueIcon.setVisible(False)
-        self.ui.meteoblueSeeing.setVisible(False)
+        self.ui.seeingIcon.setPixmap(pixmap)
+        self.ui.seeingIcon.setVisible(False)
+        self.ui.seeing.setVisible(False)
 
     def addSkyfieldTimeObject(self, data: dict) -> None:
         """ """
@@ -89,7 +89,7 @@ class EnvironSeeing(QObject):
         colorPrim = colors["M_PRIM"][0]
         colorQuar = colors["M_BACK"][0]
         colorTer = colors["M_TER"][0]
-        seeTab = self.ui.meteoblueSeeing
+        seeTab = self.ui.seeing
         data = self.app.seeingWeather.data["hourly"]
         self.addSkyfieldTimeObject(data)
 
@@ -138,15 +138,15 @@ class EnvironSeeing(QObject):
 
     def clearSeeingEntries(self) -> None:
         """ """
-        self.ui.meteoblueSeeing.clear()
+        self.ui.seeing.clear()
         self.ui.meteoblueIcon.setVisible(False)
-        self.ui.meteoblueSeeing.setVisible(False)
+        self.ui.seeing.setVisible(False)
         self.seeingEnabled = False
 
     def enableSeeingEntries(self) -> None:
         """ """
         self.ui.meteoblueIcon.setVisible(self.seeingEnabled)
-        self.ui.meteoblueSeeing.setVisible(self.seeingEnabled)
+        self.ui.seeing.setVisible(self.seeingEnabled)
 
     def prepareSeeingTable(self) -> None:
         """ """
@@ -169,12 +169,13 @@ class EnvironSeeing(QObject):
 
         self.seeingEnabled = True
         self.enableSeeingEntries()
-        self.ui.meteoblueSeeing.setRowCount(14)
-        self.ui.meteoblueSeeing.setColumnCount(96)
-        self.ui.meteoblueSeeing.setVerticalHeaderLabels(vl)
-        self.ui.meteoblueSeeing.verticalHeader().setDefaultSectionSize(18)
+        self.ui.seeing.setRowCount(14)
+        self.ui.seeing.setColumnCount(96)
+        self.ui.seeing.setCornerButtonEnabled(False)
+        self.ui.seeing.setVerticalHeaderLabels(vl)
+        self.ui.seeing.verticalHeader().setDefaultSectionSize(18)
         self.updateSeeingEntries()
-        self.ui.meteoblueSeeing.resizeColumnsToContents()
+        self.ui.seeing.resizeColumnsToContents()
 
     def openMeteoblue(self) -> None:
         """ """

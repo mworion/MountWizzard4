@@ -82,6 +82,7 @@ class Comet(QObject):
         hSet = [50, 205, 50, 95, 75, 75]
         self.ui.listComets.setColumnCount(len(hSet))
         self.ui.listComets.setHorizontalHeaderLabels(hLabels)
+        self.ui.listComets.horizontalHeader().setSortIndicatorShown(False)
         for i, hs in enumerate(hSet):
             self.ui.listComets.setColumnWidth(i, hs)
         self.ui.listComets.verticalHeader().setDefaultSectionSize(16)

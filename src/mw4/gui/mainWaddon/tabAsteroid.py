@@ -79,6 +79,7 @@ class Asteroid(QObject):
         hSet = [50, 205, 70, 75, 75, 75]
 
         self.ui.listAsteroids.setColumnCount(len(hSet))
+        self.ui.listAsteroids.horizontalHeader().setSortIndicatorShown(False)
         self.ui.listAsteroids.setHorizontalHeaderLabels(hLabels)
         for i, hs in enumerate(hSet):
             self.ui.listAsteroids.setColumnWidth(i, hs)

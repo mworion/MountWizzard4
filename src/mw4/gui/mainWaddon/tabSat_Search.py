@@ -107,6 +107,7 @@ class SatSearch(QObject, SatData):
         for i, hs in enumerate(hSet):
             self.ui.listSats.setColumnWidth(i, hs)
         self.ui.listSats.verticalHeader().setDefaultSectionSize(16)
+        self.ui.listSats.horizontalHeader().setSortIndicatorShown(False)
         self.ui.listSats.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.ui.listSats.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 

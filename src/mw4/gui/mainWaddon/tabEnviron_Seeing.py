@@ -40,7 +40,7 @@ class EnvironSeeing(QObject):
 
         self.ui.unitTimeUTC.toggled.connect(self.updateSeeingEntries)
         self.app.seeingWeather.signals.update.connect(self.prepareSeeingTable)
-        clickable(self.ui.meteoblueIcon).connect(self.openMeteoblue)
+        clickable(self.ui.seeingIcon).connect(self.openWeb)
         self.app.start3s.connect(self.enableSeeingEntries)
         self.app.colorChange.connect(self.prepareSeeingTable)
         self.app.update30m.connect(self.updateSeeingEntries)
@@ -139,13 +139,13 @@ class EnvironSeeing(QObject):
     def clearSeeingEntries(self) -> None:
         """ """
         self.ui.seeing.clear()
-        self.ui.meteoblueIcon.setVisible(False)
+        self.ui.seeingIcon.setVisible(False)
         self.ui.seeing.setVisible(False)
         self.seeingEnabled = False
 
     def enableSeeingEntries(self) -> None:
         """ """
-        self.ui.meteoblueIcon.setVisible(self.seeingEnabled)
+        self.ui.seeingIcon.setVisible(self.seeingEnabled)
         self.ui.seeing.setVisible(self.seeingEnabled)
 
     def prepareSeeingTable(self) -> None:
@@ -177,7 +177,7 @@ class EnvironSeeing(QObject):
         self.updateSeeingEntries()
         self.ui.seeing.resizeColumnsToContents()
 
-    def openMeteoblue(self) -> None:
+    def openWeb(self) -> None:
         """ """
         url = "https://www.meteoblue.com/de/wetter/outdoorsports/seeing"
         if not webbrowser.open(url, new=0):

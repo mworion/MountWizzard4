@@ -136,11 +136,11 @@ def test_prepareSeeingTable_2(function):
         function.prepareSeeingTable()
 
 
-def test_openMeteoblue_1(function):
+def test_openWeb_1(function):
     with mock.patch.object(webbrowser, "open", return_value=True):
-        function.openMeteoblue()
+        function.openWeb()
 
 
-def test_openMeteoblue_2(function):
+def test_openWeb_2(function):
     with mock.patch.object(webbrowser, "open", return_value=False):
-        function.openMeteoblue()
+        function.openWeb()

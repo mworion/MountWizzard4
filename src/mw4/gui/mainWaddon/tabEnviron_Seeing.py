@@ -19,7 +19,7 @@ from mw4.gui.styles.colors import colors
 from mw4.gui.utilities.toolsQtWidget import clickable
 from PySide6.QtCore import QObject, Qt
 from PySide6.QtGui import QColor, QTransform
-from PySide6.QtWidgets import QTableWidgetItem
+from PySide6.QtWidgets import QTableWidgetItem, QLabel
 
 
 class EnvironSeeing(QObject):
@@ -173,6 +173,7 @@ class EnvironSeeing(QObject):
         self.ui.seeing.setColumnCount(96)
         self.ui.seeing.setCornerButtonEnabled(False)
         self.ui.seeing.setVerticalHeaderLabels(vl)
+        self.ui.seeing.setCornerWidget(QLabel())
         self.ui.seeing.verticalHeader().setDefaultSectionSize(18)
         self.updateSeeingEntries()
         self.ui.seeing.resizeColumnsToContents()

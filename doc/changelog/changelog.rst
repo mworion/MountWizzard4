@@ -40,6 +40,7 @@ Version 4.x
 - refactor: satellite handling
 - refactor: database handling for MPC files
 - improve: faster calculation of satellite track using internal calculations
+- improve: reworked filter set with clear behavior auf selections
 - improve: optimized poll settings
 - improve: refraction update only when needed
 - improve: reduced size of app

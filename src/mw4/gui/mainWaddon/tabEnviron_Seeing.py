@@ -165,22 +165,16 @@ class EnvironSeeing(QObject):
             "Bad Layers Bot [km]",
             "Bad Layers [K/100m]",
             "Jet stream [m/s]",
-            "",
         ]
 
         self.seeingEnabled = True
         self.enableSeeingEntries()
-        seeTab = self.ui.meteoblueSeeing
-        if platform.system() == "Darwin":
-            seeTab.setRowCount(15)
-        else:
-            seeTab.setRowCount(14)
-        seeTab.setColumnCount(96)
-        seeTab.setVerticalHeaderLabels(vl)
-        seeTab.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
-        seeTab.verticalHeader().setDefaultSectionSize(18)
+        self.ui.meteoblueSeeing.setRowCount(14)
+        self.ui.meteoblueSeeing.setColumnCount(96)
+        self.ui.meteoblueSeeing.setVerticalHeaderLabels(vl)
+        self.ui.meteoblueSeeing.verticalHeader().setDefaultSectionSize(18)
         self.updateSeeingEntries()
-        seeTab.resizeColumnsToContents()
+        self.ui.meteoblueSeeing.resizeColumnsToContents()
 
     def openMeteoblue(self) -> None:
         """ """

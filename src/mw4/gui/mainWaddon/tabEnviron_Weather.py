@@ -276,6 +276,6 @@ class EnvironWeather(QObject):
     def clearSourceGui(self, source: str, sender) -> None:
         """ """
         self.refractionSources[source]["data"].clear()
-        self.ui.meteoblueIcon.setVisible(False)
+        self.ui.seeingIcon.setVisible(False)
         self.ui.seeing.setVisible(False)
         self.updateSourceGui()

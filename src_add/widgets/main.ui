@@ -18658,9 +18658,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QDoubleSpinBox" name="satAltitudeMin">
         <property name="geometry">
          <rect>
-          <x>105</x>
+          <x>135</x>
           <y>70</y>
-          <width>51</width>
+          <width>41</width>
           <height>21</height>
          </rect>
         </property>
@@ -18696,32 +18696,12 @@ When clicking the button, you could change the value.</string>
          <double>60.000000000000000</double>
         </property>
        </widget>
-       <widget class="QLabel" name="label_297">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>70</y>
-          <width>21</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>deg</string>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_273">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>70</y>
-          <width>81</width>
+          <width>116</width>
           <height>21</height>
          </rect>
         </property>
@@ -18733,7 +18713,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>Altitude min</string>
+         <string>Satellite altitude min</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_295">
@@ -18754,6 +18734,29 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>Limit selection by visibility:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_113">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>70</y>
+          <width>16</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>°</string>
+        </property>
+        <property name="wordWrap">
+         <bool>false</bool>
         </property>
        </widget>
       </widget>

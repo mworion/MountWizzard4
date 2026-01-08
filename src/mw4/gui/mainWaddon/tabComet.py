@@ -84,7 +84,7 @@ class Comet(QObject):
             "Perihelion\nDist [AU]",
             "Eccentr.",
         ]
-        hSet = [50, 205, 50, 85, 75, 70]
+        hSet = [50, 205, 50, 95, 75, 75]
         self.ui.listComets.setColumnCount(len(hSet))
         self.ui.listComets.setHorizontalHeaderLabels(hLabels)
         for i, hs in enumerate(hSet):

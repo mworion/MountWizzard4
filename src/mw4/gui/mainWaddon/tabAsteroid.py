@@ -76,7 +76,7 @@ class Asteroid(QObject):
             "Aphelion\nDist [AU]",
             "Eccentr.",
         ]
-        hSet = [50, 205, 70, 70, 70, 70]
+        hSet = [50, 205, 70, 75, 75, 75]
 
         self.ui.listAsteroids.setColumnCount(len(hSet))
         self.ui.listAsteroids.setHorizontalHeaderLabels(hLabels)

@@ -5034,12 +5034,12 @@ class Ui_MainWindow(object):
         self.startSatelliteTracking = QPushButton(self.Tracking)
         self.startSatelliteTracking.setObjectName(u"startSatelliteTracking")
         self.startSatelliteTracking.setEnabled(False)
-        self.startSatelliteTracking.setGeometry(QRect(400, 370, 181, 26))
+        self.startSatelliteTracking.setGeometry(QRect(400, 370, 176, 31))
         self.startSatelliteTracking.setStyleSheet(u"")
         self.stopSatelliteTracking = QPushButton(self.Tracking)
         self.stopSatelliteTracking.setObjectName(u"stopSatelliteTracking")
         self.stopSatelliteTracking.setEnabled(False)
-        self.stopSatelliteTracking.setGeometry(QRect(585, 370, 181, 26))
+        self.stopSatelliteTracking.setGeometry(QRect(590, 370, 176, 31))
         self.stopSatelliteTracking.setStyleSheet(u"")
         self.satOffGroup = QGroupBox(self.Tracking)
         self.satOffGroup.setObjectName(u"satOffGroup")
@@ -8399,7 +8399,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainTabWidget.setCurrentIndex(1)
+        self.mainTabWidget.setCurrentIndex(0)
         self.mountTabWidget.setCurrentIndex(0)
         self.modelingTabWidget.setCurrentIndex(0)
         self.manageTabWidget.setCurrentIndex(0)

@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -20255,8 +20255,8 @@ Next point in time when satellite settles.</string>
         <rect>
          <x>400</x>
          <y>370</y>
-         <width>181</width>
-         <height>26</height>
+         <width>176</width>
+         <height>31</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -20275,10 +20275,10 @@ Next point in time when satellite settles.</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>585</x>
+         <x>590</x>
          <y>370</y>
-         <width>181</width>
-         <height>26</height>
+         <width>176</width>
+         <height>31</height>
         </rect>
        </property>
        <property name="toolTip">

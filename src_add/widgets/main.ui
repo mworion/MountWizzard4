@@ -18800,7 +18800,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -18864,7 +18864,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -18988,7 +18988,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19032,7 +19032,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19076,7 +19076,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19120,7 +19120,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19164,7 +19164,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19208,7 +19208,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19252,7 +19252,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19296,7 +19296,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19340,7 +19340,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19384,7 +19384,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19428,7 +19428,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19472,7 +19472,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19516,7 +19516,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19660,7 +19660,7 @@ Next point in time when satellite rises over horizon.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19722,7 +19722,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -19764,7 +19764,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -20065,7 +20065,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -20146,7 +20146,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -20187,7 +20187,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -20228,7 +20228,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="frame">
          <bool>false</bool>

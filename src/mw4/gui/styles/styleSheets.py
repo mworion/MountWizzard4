@@ -144,13 +144,14 @@ BASIC_STYLE = """
         text-align: right;
         background-color: $M_BACK1$;
     }
-    QLineEdit:disabled {
-        color: $M_PRIM1$;
-    }
     QLineEdit[readOnly='false'] {
         border-width: 1px;
         border-style: outset;
         border-color: $M_PRIM2$;
+    }
+    QLineEdit:disabled {
+        color: $M_PRIM2$;
+         border-color: $M_SEC$;
     }
     QLineEdit[keypad] {
         color: $M_PRIM$;
@@ -239,10 +240,9 @@ BASIC_STYLE = """
         image: url(:/icon/$checkmark$.svg);
     }
     QCheckBox:disabled {
-        color: $M_SEC$;
+        color: $M_PRIM2$;
     }
     QCheckBox::indicator:checked:disabled {
-        border-color: $M_PRIM2$;
         background-color: $M_BACK$;
         image: url(:/icon/$checkmark$.svg);
     }
@@ -251,7 +251,7 @@ BASIC_STYLE = """
         spacing: 5px;
     }
     QRadioButton:disabled {
-        color: $M_SEC$;
+        color: $M_PRIM2$;
     }
     QRadioButton::indicator {
         border-width: %WIDTH%;
@@ -278,7 +278,7 @@ BASIC_STYLE = """
         padding-left: 2px;
     }
     QDoubleSpinBox:disabled {
-        color: $M_SEC$;
+        color: $M_PRIM2$;
     }
     QDoubleSpinBox::up-button {
         subcontrol-origin: border;
@@ -371,7 +371,7 @@ BASIC_STYLE = """
         color: $M_TER$;
     }
     QPushButton:disabled {
-        color: $M_SEC$;
+        color: $M_PRIM2$;
         border-color: $M_SEC1$;
     }
 
@@ -440,7 +440,7 @@ BASIC_STYLE = """
         background-color: #GRAD_1,$M_BACK1$#;
     }
     QComboBox:disabled {
-        color: $M_SEC$;
+        color: $M_PRIM2$;
     }
     QComboBox[active=true] {
         border-color: $M_GREEN$;
@@ -607,6 +607,7 @@ BASIC_STYLE = """
     }
     QProgressBar:disabled {
         color: $M_SEC$;
+        border-color: $M_SEC$;
     }
     QProgressBar::chunk {
         border-radius: 2px;
@@ -626,7 +627,7 @@ BASIC_STYLE = """
         color: $M_PRIM$;
     }
     QFileDialog QListView:disabled {
-        color: $M_SEC$;
+        color: $M_PRIM2$;
     }
 
     QFileDialog QPushButton {

@@ -46,16 +46,11 @@ class Asteroid(QObject):
         self.ui.progAsteroidSelected.clicked.connect(self.asteroids.progSelected)
         self.ui.progAsteroidFiltered.clicked.connect(self.asteroids.progFiltered)
         self.ui.progAsteroidFull.clicked.connect(self.asteroids.progFull)
-        self.app.start3s.connect(self.initConfigDelayedAsteroid)
 
     def initConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
         self.ui.asteroidFilterText.setText(config.get("asteroidFilterText"))
-
-    def initConfigDelayedAsteroid(self):
-        """ """
-        config = self.app.config["mainW"]
         self.ui.asteroidSourceList.setCurrentIndex(config.get("asteroidSource", 0))
 
     def storeConfig(self) -> None:
@@ -63,7 +58,6 @@ class Asteroid(QObject):
         config = self.app.config["mainW"]
         config["asteroidSource"] = self.ui.asteroidSourceList.currentIndex()
         config["asteroidFilterText"] = self.ui.asteroidFilterText.text()
-        return True
 
     def setupIcons(self) -> None:
         """ """

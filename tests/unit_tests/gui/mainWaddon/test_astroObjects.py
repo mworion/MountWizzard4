@@ -63,7 +63,7 @@ def function(qapp):
 def test_buildSourceListDropdown_1(function):
     with mock.patch.object(function, "loadSourceUrl"):
         function.buildSourceListDropdown()
-        assert function.uiSourceList.count() == 1
+        assert function.uiSourceList.count() == 2
 
 
 def test_setAge_1(function):
@@ -109,7 +109,6 @@ def test_runDownloadPopup_2(function):
 
 def test_loadSourceUrl_1(function):
     function.uiSourceList.clear()
-
     function.loadSourceUrl()
 
 

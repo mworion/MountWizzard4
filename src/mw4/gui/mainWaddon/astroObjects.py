@@ -57,11 +57,11 @@ class AstroObjects(QObject):
         self.processSource = processSource
         self.worker = None
 
-        self.objects = {}
+        self.objects: dict = {}
         self.uploadPopup = None
         self.downloadPopup = None
-        self.tempDir = self.app.mwGlob["tempDir"]
-        self.dataDir = self.app.mwGlob["dataDir"]
+        self.tempDir: Path = self.app.mwGlob["tempDir"]
+        self.dataDir: Path = self.app.mwGlob["dataDir"]
         self.loader = self.app.mount.obsSite.loader
         self.dbProc = DataWriter(self.app)
         self.buildSourceListDropdown()
@@ -78,9 +78,10 @@ class AstroObjects(QObject):
         """ """
         self.uiSourceList.clear()
         self.uiSourceList.setView(QListView())
+        self.uiSourceList.addItem('Please select')
         for name in self.sourceUrls:
             self.uiSourceList.addItem(name)
-        self.uiSourceList.setCurrentIndex(-1)
+        self.uiSourceList.setCurrentIndex(0)
 
     def setAge(self, age: float) -> None:
         """ """
@@ -88,6 +89,7 @@ class AstroObjects(QObject):
         self.uiSourceGroup.setTitle(t)
 
     def workerProcessSource(self) -> None:
+        """ """
         self.processSource()
         self.dataLoaded.emit()
 
@@ -108,9 +110,8 @@ class AstroObjects(QObject):
 
     def loadSourceUrl(self) -> None:
         """ """
-
         entry = self.uiSourceList.currentText()
-        if not entry:
+        if entry == 'Please select' or entry == '':
             return
         url = self.sourceUrls[entry]["url"]
         fileName = self.sourceUrls[entry]["file"]

@@ -90,7 +90,6 @@ class SettMisc(QObject):
         """ """
         config = self.app.config["mainW"]
         self.setupAudioGui()
-        self.ui.tabsMovable.setChecked(config.get("tabsMovable", False))
         self.ui.unitTimeUTC.setChecked(config.get("unitTimeUTC", True))
         self.ui.unitTimeLocal.setChecked(config.get("unitTimeLocal", False))
         self.ui.showTabAlmanac.setChecked(config.get("showTabAlmanac", True))
@@ -118,7 +117,6 @@ class SettMisc(QObject):
     def storeConfig(self) -> None:
         """ """
         config = self.app.config["mainW"]
-        config["tabsMovable"] = self.ui.tabsMovable.isChecked()
         config["unitTimeUTC"] = self.ui.unitTimeUTC.isChecked()
         config["unitTimeLocal"] = self.ui.unitTimeLocal.isChecked()
         config["showTabAlmanac"] = self.ui.showTabAlmanac.isChecked()

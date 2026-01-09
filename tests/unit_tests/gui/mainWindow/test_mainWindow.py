@@ -38,11 +38,10 @@ def test_initConfig_1(window):
     del window.app.config["mainW"]
     with mock.patch.object(window.mainWindowAddons, "initConfig"):
         with mock.patch.object(window, "smartTabGui"):
-            with mock.patch.object(window, "enableTabsMovable"):
-                with mock.patch.object(window, "setupIcons"):
-                    with mock.patch.object(window.externalWindows, "showExtendedWindows"):
-                        with mock.patch.object(window, "show"):
-                            window.initConfig()
+            with mock.patch.object(window, "setupIcons"):
+                with mock.patch.object(window.externalWindows, "showExtendedWindows"):
+                    with mock.patch.object(window, "show"):
+                        window.initConfig()
 
 
 def test_storeConfig_1(window):
@@ -68,10 +67,6 @@ def test_updateColorSet_1(window):
         with mock.patch.object(window, "setupIcons"):
             with mock.patch.object(window.mainWindowAddons, "updateColorSet"):
                 window.updateColorSet()
-
-
-def test_enableTabsMovable(window):
-    window.enableTabsMovable()
 
 
 def test_closeEvent_1(window):

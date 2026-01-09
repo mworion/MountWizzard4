@@ -81,7 +81,6 @@ class MainWindow(MWidget):
         self.ui.saveConfig.clicked.connect(self.saveProfile)
         self.app.seeingWeather.b = self.ui.label_b.property("a")
         self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
-        self.ui.tabsMovable.clicked.connect(self.enableTabsMovable)
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateControllerStatus)
         self.app.update1s.connect(self.updateThreadAndOnlineStatus)
@@ -105,7 +104,6 @@ class MainWindow(MWidget):
         self.positionWindow(config)
         self.mainWindowAddons.initConfig()
         self.smartTabGui()
-        self.enableTabsMovable()
         self.setupIcons()
         self.show()
         self.externalWindows.showExtendedWindows()
@@ -152,19 +150,6 @@ class MainWindow(MWidget):
         self.setupIcons()
         self.mainWindowAddons.updateColorSet()
         self.app.colorChange.emit()
-
-    def enableTabsMovable(self) -> None:
-        """ """
-        isMovable = self.ui.tabsMovable.isChecked()
-        self.ui.mainTabWidget.setMovable(isMovable)
-        self.ui.mountTabWidget.setMovable(isMovable)
-        self.ui.imagingTabWidget.setMovable(isMovable)
-        self.ui.modelingTabWidget.setMovable(isMovable)
-        self.ui.manageTabWidget.setMovable(isMovable)
-        self.ui.settingsTabWidget.setMovable(isMovable)
-        self.ui.toolsTabWidget.setMovable(isMovable)
-        self.ui.satTabWidget.setMovable(isMovable)
-        self.app.tabsMovable.emit(isMovable)
 
     def closeEvent(self, closeEvent) -> None:
         """ """

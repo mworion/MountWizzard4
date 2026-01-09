@@ -55,6 +55,7 @@ Version 4.x
 - improve: schedule and threads in waiting times (slow machines)
 - remove: automation of 10micron installer, replaced with web interface
 - remove: updater for MW4 (use uv installer instead)
+- remove: automatic profile conversion from x.x to 4.x (too complex)
 - remove: blending profiles as it did not work so far.
 - fix: typos
 

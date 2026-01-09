@@ -40,10 +40,8 @@ def function(qapp):
 
 def test_initConfig_1(function):
     with mock.patch.object(function, "positionWindow"):
-        with mock.patch.object(function, "setTabAndIndex"):
-            with mock.patch.object(function, "enableTabsMovable"):
-                with mock.patch.object(function.tabs, "setCrosshair"):
-                    function.initConfig()
+        with mock.patch.object(function.tabs, "setCrosshair"):
+            function.initConfig()
 
 
 def test_storeConfig_1(function):
@@ -57,10 +55,6 @@ def test_storeConfig_2(function):
     function.app.config["imageW"] = {}
 
     function.storeConfig()
-
-
-def test_enableTabsMovable(function):
-    function.enableTabsMovable(True)
 
 
 def test_showWindow_1(function):

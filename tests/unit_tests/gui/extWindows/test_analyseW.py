@@ -49,10 +49,6 @@ def test_storeConfig_2(function):
     function.storeConfig()
 
 
-def test_enableTabsMovable(function):
-    function.enableTabsMovable(True)
-
-
 def test_closeEvent_1(function):
     with mock.patch.object(function, "show"):
         with mock.patch.object(MWidget, "closeEvent"):

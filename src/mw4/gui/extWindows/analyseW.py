@@ -73,11 +73,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """ """
         config = self.app.config.get("analyseW", {})
         self.positionWindow(config)
-        self.setTabAndIndex(self.ui.tabWidget, config, "orderMain")
         self.ui.showHorizon.setChecked(config.get("showHorizon", False))
         self.ui.linkViews.setChecked(config.get("linkViews", False))
-        isMovable = self.app.config["mainW"].get("tabsMovable", False)
-        self.enableTabsMovable(isMovable)
 
     def storeConfig(self) -> None:
         """ """
@@ -89,13 +86,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         config["winPosY"] = max(self.pos().y(), 0)
         config["height"] = self.height()
         config["width"] = self.width()
-        self.getTabAndIndex(self.ui.tabWidget, config, "orderMain")
         config["showHorizon"] = self.ui.showHorizon.isChecked()
         config["linkViews"] = self.ui.linkViews.isChecked()
-
-    def enableTabsMovable(self, isMovable: bool) -> None:
-        """ """
-        self.ui.tabWidget.setMovable(isMovable)
 
     def closeEvent(self, closeEvent) -> None:
         """ """
@@ -107,7 +99,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """ """
         self.show()
         self.app.showAnalyse.connect(self.showAnalyse)
-        self.app.tabsMovable.connect(self.enableTabsMovable)
         self.ui.showHorizon.clicked.connect(self.drawAll)
         self.ui.showISO.clicked.connect(self.drawAll)
         self.ui.linkViews.clicked.connect(self.drawAll)

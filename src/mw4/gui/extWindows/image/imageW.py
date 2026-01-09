@@ -61,7 +61,6 @@ class ImageWindow(MWidget):
         """ """
         config = self.app.config.get("imageW", {})
         self.positionWindow(config)
-        self.setTabAndIndex(self.ui.tabImage, config, "orderMain")
         self.ui.color.setCurrentIndex(config.get("color", 0))
         self.ui.snTarget.setCurrentIndex(config.get("snTarget", 0))
         self.ui.tabImage.setCurrentIndex(config.get("tabImage", 0))
@@ -79,7 +78,6 @@ class ImageWindow(MWidget):
         self.ui.offsetTiltAngle.setValue(config.get("offsetTiltAngle", 0))
         self.ui.timeTagImage.setChecked(config.get("timeTagImage", True))
         isMovable = self.app.config["mainW"].get("tabsMovable", False)
-        self.enableTabsMovable(isMovable)
         self.tabs.setCrosshair()
 
     def storeConfig(self) -> None:
@@ -107,10 +105,6 @@ class ImageWindow(MWidget):
         config["offsetTiltAngle"] = self.ui.offsetTiltAngle.value()
         config["timeTagImage"] = self.ui.timeTagImage.isChecked()
 
-    def enableTabsMovable(self, isMovable: bool) -> None:
-        """ """
-        self.ui.tabImage.setMovable(isMovable)
-
     def showWindow(self) -> None:
         """ """
         self.fileHandler.signals.imageLoaded.connect(self.processPhotometry)
@@ -134,7 +128,6 @@ class ImageWindow(MWidget):
         self.app.colorChange.connect(self.colorChange)
         self.app.showImage.connect(self.showImage)
         self.app.operationRunning.connect(self.operationMode)
-        self.app.tabsMovable.connect(self.enableTabsMovable)
         self.operationMode(self.app.statusOperationRunning)
         self.setAspectLocked()
         self.clearGui()

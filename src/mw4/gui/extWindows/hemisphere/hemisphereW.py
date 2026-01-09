@@ -54,7 +54,6 @@ class HemisphereWindow(MWidget):
         """ """
         config = self.app.config.get("hemisphereW", {})
         self.positionWindow(config)
-        self.setTabAndIndex(self.ui.tabWidget, config, "orderMain")
         self.ui.showSlewPath.setChecked(config.get("showSlewPath", False))
         self.ui.showMountLimits.setChecked(config.get("showMountLimits", False))
         self.ui.showCelestial.setChecked(config.get("showCelestial", False))
@@ -67,9 +66,6 @@ class HemisphereWindow(MWidget):
         self.ui.terrainAlpha.setValue(config.get("terrainAlpha", 0.35))
         self.ui.azimuthShift.setValue(config.get("azimuthShift", 0))
         self.ui.altitudeShift.setValue(config.get("altitudeShift", 0))
-        self.app.tabsMovable.connect(self.enableTabsMovable)
-        self.enableTabsMovable(self.app.config["mainW"].get("tabsMovable", False))
-
         self.horizonDraw.initConfig()
         self.hemisphereDraw.initConfig()
 
@@ -98,10 +94,6 @@ class HemisphereWindow(MWidget):
         config["azimuthShift"] = self.ui.azimuthShift.value()
         config["altitudeShift"] = self.ui.altitudeShift.value()
 
-    def enableTabsMovable(self, isMovable: bool) -> None:
-        """ """
-        self.ui.tabWidget.setMovable(isMovable)
-
     def closeEvent(self, closeEvent) -> None:
         """ """
         self.ui.normalModeHem.setChecked(True)
@@ -114,7 +106,6 @@ class HemisphereWindow(MWidget):
     def showWindow(self) -> None:
         """ """
         self.app.colorChange.connect(self.colorChange)
-        self.app.tabsMovable.connect(self.enableTabsMovable)
         self.hemisphereDraw.drawTab()
         self.horizonDraw.drawTab()
         self.setIcons()

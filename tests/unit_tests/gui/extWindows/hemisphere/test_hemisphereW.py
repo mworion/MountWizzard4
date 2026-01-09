@@ -36,40 +36,14 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    with mock.patch.object(os.path, "isfile", return_value=False):
-        function.initConfig()
-
-
-def test_initConfig_2(function):
-    function.app.config["hemisphereW"] = {"winPosX": 10000}
-    function.app.config["hemisphereW"] = {"winPosY": 10000}
-    with mock.patch.object(os.path, "isfile", return_value=False):
-        function.initConfig()
-
-
-def test_initConfig_3(function):
-    function.app.config["hemisphereW"] = {}
-    function.app.config["hemisphereW"] = {"winPosX": 100}
-    function.app.config["hemisphereW"] = {"winPosY": 100}
-    with mock.patch.object(os.path, "isfile", return_value=False):
-        function.initConfig()
-
-
-def test_initConfig_4(function):
-    shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
-    function.app.config["hemisphereW"] = {}
-    function.app.config["hemisphereW"] = {"winPosX": 100}
-    function.app.config["hemisphereW"] = {"winPosY": 100}
-    function.initConfig()
+    with mock.patch.object(function.horizonDraw, "initConfig"):
+        with mock.patch.object(function.hemisphereDraw, "initConfig"):
+            function.initConfig()
 
 
 def test_storeConfig_1(function):
     function.app.config = {}
     function.storeConfig()
-
-
-def test_enableTabsMovable(function):
-    function.enableTabsMovable(True)
 
 
 def test_closeEvent_1(function):

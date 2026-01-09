@@ -141,7 +141,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The mount Computer Settings are peseisted thrugh the mount itself. MW4 only reads them and sets them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -2235,7 +2235,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QWidget" name="PosCoordinates">
       <attribute name="title">
-       <string>ParkPos and Coordinates</string>
+       <string>Custom and Absolute Ra/Dec - Alt/az Slew</string>
       </attribute>
       <widget class="QGroupBox" name="groupBox_29">
        <property name="geometry">
@@ -2250,7 +2250,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <string>Slews and parks the mount to a preprogrammed position.</string>
        </property>
        <property name="title">
-        <string>Defined positions (slew &amp; park)</string>
+        <string>Custom positions</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -2602,7 +2602,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="geometry">
           <rect>
            <x>45</x>
-           <y>75</y>
+           <y>80</y>
            <width>111</width>
            <height>21</height>
           </rect>
@@ -2637,6 +2637,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
         </widget>
         <widget class="QPushButton" name="moveAltAzAbsolute">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="geometry">
           <rect>
            <x>5</x>
@@ -2726,7 +2729,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>75</y>
+           <y>80</y>
            <width>36</width>
            <height>21</height>
           </rect>
@@ -2745,7 +2748,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="geometry">
           <rect>
            <x>45</x>
-           <y>95</y>
+           <y>100</y>
            <width>106</width>
            <height>16</height>
           </rect>
@@ -2796,7 +2799,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="geometry">
           <rect>
            <x>45</x>
-           <y>75</y>
+           <y>80</y>
            <width>111</width>
            <height>21</height>
           </rect>
@@ -2923,7 +2926,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>75</y>
+           <y>80</y>
            <width>36</width>
            <height>21</height>
           </rect>
@@ -2945,7 +2948,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="geometry">
           <rect>
            <x>45</x>
-           <y>45</y>
+           <y>50</y>
            <width>111</width>
            <height>16</height>
           </rect>
@@ -2986,7 +2989,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="geometry">
           <rect>
            <x>45</x>
-           <y>95</y>
+           <y>105</y>
            <width>111</width>
            <height>16</height>
           </rect>
@@ -3025,7 +3028,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QWidget" name="SlewRaDec">
       <attribute name="title">
-       <string>Slew Ra/Dec and Alt/Az</string>
+       <string>Directional Ra/Dec - Alt/az Slew</string>
       </attribute>
       <widget class="QGroupBox" name="groupBox_37">
        <property name="geometry">

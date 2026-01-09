@@ -201,6 +201,28 @@ def test_setDEC_3(function):
         function.setDEC()
 
 
+def test_checkAltAzInputs_1(function):
+    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
+        function.checkAltAzInputs()
+        assert function.ui.moveAltAzAbsolute.isEnabled()
+
+
+def test_checkAltAzInputs_2(function):
+    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
+        function.checkAltAzInputs()
+        assert not function.ui.moveAltAzAbsolute.isEnabled()
+
+
+def test_setAz_1(function):
+    with mock.patch.object(function, "checkAltAzInputs"):
+        function.setAz()
+
+
+def test_setAlt_1(function):
+    with mock.patch.object(function, "checkAltAzInputs"):
+        function.setAlt()
+
+
 def test_moveAltAzAbsolute_1(function):
     function.app.mount.obsSite.AltTarget = Angle(degrees=0)
     function.app.mount.obsSite.AzTarget = Angle(degrees=0)

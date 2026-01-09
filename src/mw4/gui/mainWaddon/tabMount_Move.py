@@ -90,18 +90,17 @@ class MountMove(QObject):
             "Stepsize 10°": 10,
             "Stepsize 20°": 20,
         }
-
-        self.targetAlt = None
-        self.targetAz = None
+        self.targetAlt: Angle = Angle(degrees=0)
+        self.targetAz: Angle = Angle(degrees=0)
+        self.targetRa: Angle = Angle(hours=0)
+        self.targetDec: Angle = Angle(degrees=0)
         self.ui.stopMoveAll.clicked.connect(self.stopMoveAll)
         self.ui.moveAltAzAbsolute.clicked.connect(self.moveAltAzAbsolute)
         self.ui.moveRaDecAbsolute.clicked.connect(self.moveRaDecAbsolute)
         clickable(self.ui.moveCoordinateRa).connect(self.setRA)
-        self.ui.moveCoordinateRa.textEdited.connect(self.setRA)
-        self.ui.moveCoordinateRa.returnPressed.connect(self.setRA)
         clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
-        self.ui.moveCoordinateDec.textEdited.connect(self.setDEC)
-        self.ui.moveCoordinateDec.returnPressed.connect(self.setDEC)
+        self.ui.moveCoordinateAlt.textEdited.connect(self.setAlt)
+        self.ui.moveCoordinateAz.textEdited.connect(self.setAz)
         self.app.mount.signals.slewed.connect(self.moveAltAzDefault)
         self.app.gameDirection.connect(self.moveAltAzGameController)
         self.app.game_sR.connect(self.moveClassicGameController)
@@ -225,8 +224,6 @@ class MountMove(QObject):
 
     def moveAltAzDefault(self) -> None:
         """ """
-        self.targetAlt = None
-        self.targetAz = None
         for key in self.setupMoveAltAz:
             changeStyleDynamic(self.setupMoveAltAz[key]["button"], "run", False)
 
@@ -259,6 +256,11 @@ class MountMove(QObject):
         )
         self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
 
+    def checkRaDecInputs(self) -> None:
+        """ """
+        canSlew = self.app.mount.obsSite.setTargetRaDec(self.targetRa, self.targetDec)
+        self.ui.moveRaDecAbsolute.setEnabled(canSlew)
+
     def setRA(self) -> None:
         """ """
         dlg = QInputDialog()
@@ -275,6 +277,7 @@ class MountMove(QObject):
         text = formatHstrToText(valueFormat)
         self.ui.moveCoordinateRa.setText(text)
         self.ui.moveCoordinateRaFloat.setText(f"{valueFormat.hours:2.4f}")
+        self.checkRaDecInputs()
 
     def setDEC(self) -> None:
         """ """
@@ -292,20 +295,29 @@ class MountMove(QObject):
         text = formatDstrToText(valueFormat)
         self.ui.moveCoordinateDec.setText(text)
         self.ui.moveCoordinateDecFloat.setText(f"{valueFormat.degrees:2.4f}")
+        self.checkRaDecInputs()
+
+    def checkAltAzInputs(self) -> None:
+        """ """
+        canSlew = self.app.mount.obsSite.setTargetAltAz(self.targetAlt, self.targetAz)
+        self.ui.moveAltAzAbsolute.setEnabled(canSlew)
+
+    def setAlt(self) -> None:
+        """ """
+        alt = self.ui.moveCoordinateAlt.text()
+        self.targetAlt = valueToAngle(alt, preference="degrees")
+        self.checkAltAzInputs()
+
+    def setAz(self) -> None:
+        """ """
+        az = self.ui.moveCoordinateAz.text()
+        self.targetAz = valueToAngle(az, preference="degrees")
+        self.checkAltAzInputs()
 
     def moveAltAzAbsolute(self) -> None:
         """ """
-        alt = self.ui.moveCoordinateAlt.text()
-        alt = valueToAngle(alt, preference="degrees")
-        az = self.ui.moveCoordinateAz.text()
-        az = valueToAngle(az, preference="degrees")
-        az = Angle(degrees=(az.degrees + 360) % 360)
-        self.slewInterface.slewTargetAltAz(alt, az)
+        self.slewInterface.slewTargetAltAz(self.targetAlt, self.targetAz)
 
     def moveRaDecAbsolute(self) -> None:
         """ """
-        value = self.ui.moveCoordinateRa.text()
-        ra = convertRaToAngle(value)
-        value = self.ui.moveCoordinateDec.text()
-        dec = convertDecToAngle(value)
-        self.slewInterface.slewTargetRaDec(ra, dec)
+        self.slewInterface.slewTargetRaDec(self.targetRa, self.targetDec)

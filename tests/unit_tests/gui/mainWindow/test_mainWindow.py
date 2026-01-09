@@ -94,7 +94,6 @@ def test_smartFunctionGui_0(window):
     window.app.deviceStat["camera"] = True
     window.app.deviceStat["plateSolve"] = True
     window.app.data.buildP = []
-    window.ui.pauseModel.setProperty("pause", False)
     window.smartFunctionGui()
 
 

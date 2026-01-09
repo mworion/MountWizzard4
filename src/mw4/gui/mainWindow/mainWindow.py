@@ -188,7 +188,7 @@ class MainWindow(MWidget):
         isModelingReady = all(
             bool(self.app.deviceStat.get(x)) for x in ["mount", "camera", "plateSolve"]
         )
-        isModelRun = isModelingReady and self.app.data.buildP
+        isModelRun = bool(isModelingReady and self.app.data.buildP)
         self.ui.runModelGroup.setEnabled(isModelRun)
         self.ui.runFlexure.setEnabled(isModelingReady)
         self.ui.runHysteresis.setEnabled(isModelingReady)

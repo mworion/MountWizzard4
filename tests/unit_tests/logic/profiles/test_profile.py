@@ -55,11 +55,12 @@ def test_loadProfile_2():
 
     config = defaultConfig()
     config["mainW"] = {}
+    config["version"] = "4.0"
     with open("tests/work/config/config.cfg", "w") as outfile:
         json.dump(config, outfile)
 
     val = loadProfile(Path("tests/work/config/config.cfg"))
-    assert val == {"profileName": "config", "version": "4.3", "mainW": {}}
+    assert val == {"profileName": "config", "version": "4.3"}
 
 
 def test_loadProfile_3():

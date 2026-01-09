@@ -94,11 +94,11 @@ def test_setListSatsEntry(function):
     function.setListSatsEntry(0, 0, entry)
 
 
-def test_updateListSats_5(function):
+def test_updateListSats_1(function):
     param = [1, 2, 3, 4]
     ts = function.app.mount.obsSite.ts.now()
     isUp = [ts]
-    function.updateListSats(0, param, isUp, False, 5, 4)
+    function.updateListSats(0, param, isUp, True, 5, 4)
 
 
 def test_calcSatListDynamic_1(function):

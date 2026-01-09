@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -3783,7 +3783,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <rect>
          <x>5</x>
          <y>10</y>
-         <width>366</width>
+         <width>371</width>
          <height>201</height>
         </rect>
        </property>
@@ -3893,7 +3893,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QPushButton" name="mountCommandTable">
        <property name="geometry">
         <rect>
-         <x>385</x>
+         <x>425</x>
          <y>15</y>
          <width>256</width>
          <height>25</height>
@@ -3937,8 +3937,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QPushButton" name="mountUpdateTimeDelta">
        <property name="geometry">
         <rect>
-         <x>385</x>
-         <y>75</y>
+         <x>425</x>
+         <y>85</y>
          <width>256</width>
          <height>25</height>
         </rect>
@@ -3981,8 +3981,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QPushButton" name="mountUpdateFirmware">
        <property name="geometry">
         <rect>
-         <x>385</x>
-         <y>105</y>
+         <x>425</x>
+         <y>120</y>
          <width>256</width>
          <height>25</height>
         </rect>
@@ -4025,8 +4025,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QPushButton" name="mountDocumentation">
        <property name="geometry">
         <rect>
-         <x>385</x>
-         <y>45</y>
+         <x>425</x>
+         <y>50</y>
          <width>256</width>
          <height>25</height>
         </rect>
@@ -23855,7 +23855,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>

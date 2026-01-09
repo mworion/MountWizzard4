@@ -210,7 +210,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         else:
             maxR = int(np.max(y))
             steps = 7
-            gridLines = np.round(np.linspace(0, maxR, steps), 1)
+            gridLines = np.round(np.linspace(0, maxR, steps), 2)
 
         plotItem.addLine(x=0, pen=self.penGrid)
         plotItem.addLine(y=0, pen=self.penGrid)

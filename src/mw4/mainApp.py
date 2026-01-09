@@ -133,8 +133,8 @@ class MountWizzard4(QObject):
         profile = self.config.get("profileName", "-")
         workDir = self.mwGlob["workDir"]
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 started..."))
-        self.messageQueue.put((1, "System", "Workdir", f"{workDir}"))
-        self.messageQueue.put((1, "System", "Profile", f"Base: {profile}"))
+        self.messageQueue.put((1, "System", "Workdir", f"[{workDir}]"))
+        self.messageQueue.put((1, "System", "Profile", f"[{profile}]"))
         # initialize commands to mount
         self.mount = MountDevice(
             app=self,

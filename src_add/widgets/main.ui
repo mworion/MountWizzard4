@@ -141,7 +141,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The mount Computer Settings are peseisted thrugh the mount itself. MW4 only reads them and sets them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -4490,7 +4490,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Display of right ascention in decimals&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Display of right ascention in decimals&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4537,7 +4537,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display of altitude in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Display of altitude in degrees&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4608,7 +4608,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Display of declination in decimal&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Display of declination in decimal&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4696,7 +4696,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Display of hour angle in decimal&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Display of hour angle in decimal&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4789,7 +4789,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Display of right ascention in HH:MM:SS</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Display of right ascention in HH:MM:SS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4839,7 +4839,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display of hour angle in HH:MM:SS&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Display of hour angle in HH:MM:SS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4889,7 +4889,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display of azimuth in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Display of azimuth in degrees&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4939,7 +4939,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Display of declination in DD:MM:SS</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Display of declination in DD:MM:SS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -29931,13 +29931,13 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QWidget" name="Profile">
       <attribute name="title">
-       <string>Profile, Log, Online, Audio</string>
+       <string>Online, Audio, Log</string>
       </attribute>
       <widget class="QGroupBox" name="AudioGroup">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>10</y>
+         <y>175</y>
          <width>366</width>
          <height>226</height>
         </rect>
@@ -30217,9 +30217,9 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>95</y>
+         <y>10</y>
          <width>366</width>
-         <height>51</height>
+         <height>46</height>
         </rect>
        </property>
        <property name="title">
@@ -30323,7 +30323,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="InternetOnlineGroup">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>5</x>
          <y>10</y>
          <width>366</width>
          <height>71</height>
@@ -30434,7 +30434,7 @@ Next point in time when satellite settles.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>81</height>
+         <height>126</height>
         </rect>
        </property>
        <property name="title">
@@ -30493,7 +30493,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>55</y>
+          <y>95</y>
           <width>166</width>
           <height>21</height>
          </rect>
@@ -30508,8 +30508,8 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="big">
         <property name="geometry">
          <rect>
-          <x>5</x>
-          <y>55</y>
+          <x>190</x>
+          <y>60</y>
           <width>166</width>
           <height>21</height>
          </rect>
@@ -31873,7 +31873,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <bool>false</bool>
     </property>
     <property name="toolTip">
-     <string>Shows the actual time of the computer</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Shows the actual time of the computer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="layoutDirection">
      <enum>Qt::LayoutDirection::LeftToRight</enum>

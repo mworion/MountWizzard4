@@ -432,6 +432,26 @@ class MWidget(QWidget, Styles):
         return tabIndex
 
     @staticmethod
+    def getTabAndIndex(tab: QTabWidget, config: dict, name: str) -> QTabWidget:
+        """ """
+        config[name] = {"index": tab.currentIndex()}
+        for index in range(tab.count()):
+            config[name][f"{index:02d}"] = tab.widget(index).objectName()
+
+    def setTabAndIndex(self, tab: QTabWidget, config: dict, name: str) -> None:
+        """ """
+        config = config.get(name, {})
+        if not isinstance(config, dict):
+            config = {}
+        for index in reversed(range(tab.count())):
+            nameTab = config.get(f"{index:02d}", None)
+            if nameTab is None:
+                continue
+            tabIndex = self.getTabIndex(tab, nameTab)
+            tab.tabBar().moveTab(tabIndex, index)
+        tab.setCurrentIndex(config.get("index", 0))
+
+    @staticmethod
     def positionCursorInTable(table: QTableWidget, searchName: str) -> None:
         """ """
         result = table.findItems(searchName, Qt.MatchFlag.MatchExactly)

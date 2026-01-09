@@ -477,6 +477,20 @@ def test_positionWindow_2(function):
     function.positionWindow(config)
 
 
+def test_getTabAndIndex(function):
+    widget = QTabWidget()
+    w = QWidget()
+    w.setObjectName("test")
+    widget.addTab(w, "test")
+    w = QWidget()
+    w.setObjectName("test1")
+    widget.addTab(w, "test1")
+
+    config = {"test": 1}
+    function.getTabAndIndex(widget, config, "test1")
+    print(config)
+
+
 def test_getTabIndex(function):
     widget = QTabWidget()
     w = QWidget()
@@ -487,6 +501,20 @@ def test_getTabIndex(function):
     widget.addTab(w, "test1")
     index = function.getTabIndex(widget, "test1")
     assert index == 1
+
+
+def test_setTabAndIndex_1(function):
+    widget = QTabWidget()
+    config = {"test": 0}
+    function.setTabAndIndex(widget, config, "test")
+
+
+def test_setTabAndIndex_2(function):
+    widget = QTabWidget()
+    widget.addTab(QWidget(), "test")
+    widget.addTab(QWidget(), "tes1")
+    config = {"test": {"00": "test"}}
+    function.setTabAndIndex(widget, config, "test")
 
 
 def test_positionCursorInTable_1(function):

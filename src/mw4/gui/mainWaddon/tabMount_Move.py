@@ -109,10 +109,10 @@ class MountMove(QObject):
     def initConfig(self) -> None:
         """ """
         config = self.app.config.get("mainW", {})
-        self.ui.slewSpeedMax.setChecked(config.get("slewSpeedMax", True))
+        self.ui.slewSpeedMax.setChecked(config.get("slewSpeedMax", False))
         self.ui.slewSpeedHigh.setChecked(config.get("slewSpeedHigh", False))
         self.ui.slewSpeedMed.setChecked(config.get("slewSpeedMed", False))
-        self.ui.slewSpeedLow.setChecked(config.get("slewSpeedLow", False))
+        self.ui.slewSpeedLow.setChecked(config.get("slewSpeedLow", True))
         self.ui.moveDuration.setCurrentIndex(config.get("moveDuration", 0))
         self.ui.moveStepSizeAltAz.setCurrentIndex(config.get("moveStepSizeAltAz", 0))
 

@@ -55,7 +55,8 @@ class AstroObjects(QObject):
         self.uiSourceGroup = uiSourceGroup
         self.prepareTable = prepareTable
         self.processSource = processSource
-        self.worker = None
+        self.workerSource: Worker = None
+        self.workerTable: Worker = None
 
         self.objects: dict = {}
         self.uploadPopup = None
@@ -98,8 +99,8 @@ class AstroObjects(QObject):
         if not direct and not self.downloadPopup.returnValues["success"]:
             return
         self.dataValid = False
-        self.worker = Worker(self.workerProcessSource)
-        self.threadPool.start(self.worker)
+        self.workerSource = Worker(self.workerProcessSource)
+        self.threadPool.start(self.workerSource)
 
     def runDownloadPopup(self, url: str, unzip: bool) -> None:
         """ """

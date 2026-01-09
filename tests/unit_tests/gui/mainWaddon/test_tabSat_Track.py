@@ -39,7 +39,7 @@ def function(qapp):
     mainW.ui.setupUi(mainW)
     window = SatTrack(mainW)
     window.satellites = AstroObjects(
-        mainW, "satellite", [""], QTableWidget(), QComboBox(), QGroupBox(), test, test
+        mainW, "satellite", [""], QTableWidget(), QComboBox(), QGroupBox(), test
     )
     yield window
     mainW.app.threadPool.waitForDone(1000)

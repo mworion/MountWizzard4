@@ -83,7 +83,6 @@ class HemisphereWindow(MWidget):
         config["winPosY"] = max(self.pos().y(), 0)
         config["height"] = self.height()
         config["width"] = self.width()
-        self.getTabAndIndex(self.ui.tabWidget, config, "orderMain")
         config["showSlewPath"] = self.ui.showSlewPath.isChecked()
         config["showMountLimits"] = self.ui.showMountLimits.isChecked()
         config["showCelestial"] = self.ui.showCelestial.isChecked()

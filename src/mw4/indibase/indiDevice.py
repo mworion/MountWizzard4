@@ -23,8 +23,6 @@ class Device:
     data, properties and attributes are stored in a device dict.
     """
 
-    __all__ = ["Device"]
-
     log = logging.getLogger("MW4")
 
     def __init__(self, name=""):

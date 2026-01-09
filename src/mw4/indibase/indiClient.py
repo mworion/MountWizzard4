@@ -31,9 +31,7 @@ class Client(QObject):
     so for xml the xml.parse.feed() mechanism is used.
     """
 
-    __all__ = ["Client"]
     log = logging.getLogger("MW4")
-
     GENERAL_INTERFACE = 0
     TELESCOPE_INTERFACE = 1 << 0
     CCD_INTERFACE = 1 << 1

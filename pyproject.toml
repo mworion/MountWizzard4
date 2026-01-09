@@ -75,7 +75,6 @@ dependencies = [
     "websocket-client==1.9.0",
     "hidapi==0.15.0",
     "range-key-dict==1.1.0",
-    "ndicts==0.3.0",
     "packaging==25.0",
     "lz4==4.4.5",
     "xisf==0.9.5",

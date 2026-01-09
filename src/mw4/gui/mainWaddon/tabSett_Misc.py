@@ -91,7 +91,6 @@ class SettMisc(QObject):
         config = self.app.config["mainW"]
         self.setupAudioGui()
         self.ui.tabsMovable.setChecked(config.get("tabsMovable", False))
-        self.ui.resetTabOrder.setChecked(config.get("resetTabOrder", False))
         self.ui.unitTimeUTC.setChecked(config.get("unitTimeUTC", True))
         self.ui.unitTimeLocal.setChecked(config.get("unitTimeLocal", False))
         self.ui.showTabAlmanac.setChecked(config.get("showTabAlmanac", True))
@@ -112,7 +111,6 @@ class SettMisc(QObject):
         self.ui.soundSatStartTracking.setCurrentIndex(config.get("soundSatStartTracking", 0))
         self.ui.gameControllerGroup.setChecked(config.get("gameControllerGroup", False))
         self.ui.gameControllerList.setCurrentIndex(config.get("gameControllerList", 0))
-
         self.minimizeGUI()
         self.populateGameControllerList()
         self.ui.unitTimeUTC.toggled.emit(True)
@@ -121,7 +119,6 @@ class SettMisc(QObject):
         """ """
         config = self.app.config["mainW"]
         config["tabsMovable"] = self.ui.tabsMovable.isChecked()
-        config["resetTabOrder"] = self.ui.resetTabOrder.isChecked()
         config["unitTimeUTC"] = self.ui.unitTimeUTC.isChecked()
         config["unitTimeLocal"] = self.ui.unitTimeLocal.isChecked()
         config["showTabAlmanac"] = self.ui.showTabAlmanac.isChecked()

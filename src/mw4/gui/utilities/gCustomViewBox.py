@@ -17,8 +17,6 @@ import numpy as np
 import pyqtgraph as pg
 from PySide6.QtCore import QEvent, Qt
 
-__all__ = ["CustomViewBox"]
-
 
 class CustomViewBox(pg.ViewBox):
     def __init__(self, *args, **kwargs):

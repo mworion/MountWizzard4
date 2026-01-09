@@ -25,9 +25,6 @@ class TrajectoryParams:
 
         >>> trajectoryParams = TrajectoryParams(host='')
     """
-
-    __all__ = ["TrajectoryParams"]
-
     log = logging.getLogger("MW4")
 
     def __init__(self, obsSite=None):

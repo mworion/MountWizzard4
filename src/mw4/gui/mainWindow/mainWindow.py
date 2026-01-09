@@ -32,8 +32,6 @@ from skyfield.almanac import TWILIGHTS, dark_twilight_day
 class MainWindow(MWidget):
     """ """
 
-    __all__ = ["MainWindow"]
-
     def __init__(self, app):
         super().__init__()
         self.app = app
@@ -105,14 +103,6 @@ class MainWindow(MWidget):
         self.ui.profile.setText(config.get("profileName"))
         config = config["mainW"]
         self.positionWindow(config)
-        self.setTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
-        self.setTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
-        self.setTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")
-        self.setTabAndIndex(self.ui.modelingTabWidget, config, "orderModeling")
-        self.setTabAndIndex(self.ui.manageTabWidget, config, "orderManage")
-        self.setTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
-        self.setTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
-        self.setTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
         self.mainWindowAddons.initConfig()
         self.smartTabGui()
         self.enableTabsMovable()
@@ -133,14 +123,6 @@ class MainWindow(MWidget):
 
         config["winPosX"] = self.pos().x()
         config["winPosY"] = self.pos().y()
-        self.getTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
-        self.getTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
-        self.getTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")
-        self.getTabAndIndex(self.ui.modelingTabWidget, config, "orderModeling")
-        self.getTabAndIndex(self.ui.manageTabWidget, config, "orderManage")
-        self.getTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
-        self.getTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
-        self.getTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
         self.externalWindows.storeConfigExtendedWindows()
         self.mainWindowAddons.storeConfig()
         self.app.storeConfig()
@@ -206,52 +188,25 @@ class MainWindow(MWidget):
         isModelingReady = all(
             bool(self.app.deviceStat.get(x)) for x in ["mount", "camera", "plateSolve"]
         )
-        self.ui.pauseModel.property("pause")
-
-        if isModelingReady and self.app.data.buildP:
-            self.ui.runModelGroup.setEnabled(True)
-        else:
-            self.ui.runModelGroup.setEnabled(False)
-
-        if isModelingReady:
-            self.ui.runFlexure.setEnabled(True)
-            self.ui.runHysteresis.setEnabled(True)
-        else:
-            self.ui.runFlexure.setEnabled(False)
-            self.ui.runHysteresis.setEnabled(False)
-
-        if isMountReady:
-            self.ui.refractionGroup.setEnabled(True)
-            self.ui.dsoGroup.setEnabled(True)
-            self.ui.mountCommandTable.setEnabled(True)
-            self.ui.mountUpdateTimeDelta.setEnabled(True)
-            self.ui.mountUpdateFirmware.setEnabled(True)
-            self.ui.mountDocumentation.setEnabled(True)
-            self.ui.satProgDatabaseGroup.setEnabled(True)
-            self.ui.cometProgDatabaseGroup.setEnabled(True)
-            self.ui.asteroidProgDatabaseGroup.setEnabled(True)
-            self.ui.progEarthRotationData.setEnabled(True)
-            self.ui.use10micronDef.setEnabled(True)
-            self.ui.mountTabWidget.setEnabled(True)
-            self.ui.telescopePointingGroup.setEnabled(True)
-            self.ui.trackingGroup.setEnabled(True)
-            self.ui.parkingGroup.setEnabled(True)
-        else:
-            self.ui.dsoGroup.setEnabled(False)
-            self.ui.refractionGroup.setEnabled(False)
-            self.ui.mountCommandTable.setEnabled(False)
-            self.ui.mountUpdateTimeDelta.setEnabled(False)
-            self.ui.mountUpdateFirmware.setEnabled(False)
-            self.ui.mountDocumentation.setEnabled(False)
-            self.ui.satProgDatabaseGroup.setEnabled(False)
-            self.ui.cometProgDatabaseGroup.setEnabled(False)
-            self.ui.asteroidProgDatabaseGroup.setEnabled(False)
-            self.ui.progEarthRotationData.setEnabled(False)
-            self.ui.use10micronDef.setEnabled(False)
-            self.ui.mountTabWidget.setEnabled(False)
-            self.ui.telescopePointingGroup.setEnabled(False)
-            self.ui.trackingGroup.setEnabled(False)
-            self.ui.parkingGroup.setEnabled(False)
+        isModelRun = isModelingReady and self.app.data.buildP
+        self.ui.runModelGroup.setEnabled(isModelRun)
+        self.ui.runFlexure.setEnabled(isModelingReady)
+        self.ui.runHysteresis.setEnabled(isModelingReady)
+        self.ui.refractionGroup.setEnabled(isMountReady)
+        self.ui.dsoGroup.setEnabled(isMountReady)
+        self.ui.mountCommandTable.setEnabled(isMountReady)
+        self.ui.mountUpdateTimeDelta.setEnabled(isMountReady)
+        self.ui.mountUpdateFirmware.setEnabled(isMountReady)
+        self.ui.mountDocumentation.setEnabled(isMountReady)
+        self.ui.satProgDatabaseGroup.setEnabled(isMountReady)
+        self.ui.cometProgDatabaseGroup.setEnabled(isMountReady)
+        self.ui.asteroidProgDatabaseGroup.setEnabled(isMountReady)
+        self.ui.progEarthRotationData.setEnabled(isMountReady)
+        self.ui.use10micronDef.setEnabled(isMountReady)
+        self.ui.mountTabWidget.setEnabled(isMountReady)
+        self.ui.telescopePointingGroup.setEnabled(isMountReady)
+        self.ui.trackingGroup.setEnabled(isMountReady)
+        self.ui.parkingGroup.setEnabled(isMountReady)
 
     def smartTabGui(self) -> None:
         """ """
@@ -408,6 +363,7 @@ class MainWindow(MWidget):
         config = loadProfile(loadProfilePath)
         self.switchProfile(config)
         self.ui.profile.setText(loadProfilePath.stem)
+        self.saveProfile()
         self.msg.emit(1, "System", "Profile", f"{loadProfilePath.stem} loaded")
 
     def saveProfileBase(self, saveProfilePath: Path) -> None:

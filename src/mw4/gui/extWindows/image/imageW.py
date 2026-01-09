@@ -91,7 +91,6 @@ class ImageWindow(MWidget):
         config["winPosY"] = max(self.pos().y(), 0)
         config["height"] = self.height()
         config["width"] = self.width()
-        self.getTabAndIndex(self.ui.tabImage, config, "tabMain")
         config["color"] = self.ui.color.currentIndex()
         config["snTarget"] = self.ui.snTarget.currentIndex()
         config["tabImage"] = self.ui.tabImage.currentIndex()

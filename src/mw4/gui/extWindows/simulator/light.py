@@ -17,8 +17,7 @@ from mw4.gui.extWindows.simulator.tools import linkModel
 
 
 class SimulatorLight:
-    __all__ = ["SimulatorLight"]
-
+    """ """
     def __init__(self, parent, app):
         super().__init__()
         self.parent = parent

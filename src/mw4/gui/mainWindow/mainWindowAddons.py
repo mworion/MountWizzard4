@@ -44,9 +44,6 @@ from mw4.gui.mainWaddon.tabTools_Rename import Rename
 
 class MainWindowAddons:
     """ """
-
-    __all__ = ["MainWindowAddons"]
-
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app

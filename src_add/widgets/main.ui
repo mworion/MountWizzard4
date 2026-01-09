@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -23855,7 +23855,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -30431,7 +30431,7 @@ Next point in time when satellite settles.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>116</height>
+         <height>81</height>
         </rect>
        </property>
        <property name="title">
@@ -30502,75 +30502,17 @@ Next point in time when satellite settles.</string>
          <string>Collect Windows</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="tabsMovable">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>55</y>
-          <width>166</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will store custom made order of tabs in menue. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Tabs movable</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QPushButton" name="big">
         <property name="geometry">
          <rect>
-          <x>190</x>
-          <y>85</y>
+          <x>5</x>
+          <y>55</y>
           <width>166</width>
           <height>21</height>
          </rect>
         </property>
         <property name="text">
          <string>Show big buttons</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="resetTabOrder">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>85</y>
-          <width>166</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will restore ther default order at  next start.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Reset tab order @ start</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
         </property>
        </widget>
       </widget>
@@ -32864,7 +32806,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>posSave9</tabstop>
   <tabstop>colorSet</tabstop>
   <tabstop>collectWindows</tabstop>
-  <tabstop>tabsMovable</tabstop>
   <tabstop>almanacPrediction</tabstop>
   <tabstop>unitTimeUTC</tabstop>
   <tabstop>unitTimeLocal</tabstop>

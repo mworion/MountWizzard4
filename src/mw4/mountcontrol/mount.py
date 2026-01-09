@@ -29,8 +29,6 @@ from mw4.mountcontrol.setting import Setting
 from PySide6.QtCore import QMutex, QTimer
 from skyfield.api import Angle
 
-__all__ = ["MountDevice"]
-
 
 class MountDevice:
     """ """

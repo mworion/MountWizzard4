@@ -18,8 +18,6 @@ import os
 import sys
 from PySide6.QtCore import QCoreApplication, QObject, QRunnable, Signal
 
-__all__ = ["Worker"]
-
 
 class WorkerSignals(QObject):
     """

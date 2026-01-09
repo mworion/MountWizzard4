@@ -22,8 +22,6 @@ class INDISignals(QObject):
     by the IndiBase class to get signals for indi events.
     """
 
-    __all__ = ["INDISignals"]
-
     newDevice = Signal(str)
     removeDevice = Signal(str)
     newProperty = Signal(str, str)

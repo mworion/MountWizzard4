@@ -15,6 +15,7 @@
 ###########################################################
 import pyqtgraph as pg
 from functools import partial
+import numpy as np
 from mw4.gui.utilities import toolsQtWidget
 from mw4.gui.widgets import measure_ui
 from PySide6.QtCore import QMutex
@@ -48,204 +49,230 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.dataPlots = {
             "No chart": {},
             "Axis Stability": {
-                "gen": {"leg": None, "label": "Delta angle [arcsec]"},
-                "deltaRaJNow": {"pd": None, "name": "RA", "pen": self.M_GREEN},
-                "deltaDecJNow": {"pd": None, "name": "DEC", "pen": self.M_RED},
+                "template": {"legendRef": None, "label": "Delta angle [arcsec]"},
+                "lineItems": {
+                    "deltaRaJNow": {"plotItemRef": None, "name": "RA", "pen": self.M_GREEN},
+                    "deltaDecJNow": {"plotItemRef": None, "name": "DEC", "pen": self.M_RED},
+                }
             },
             "Angular Tracking": {
-                "gen": {"leg": None, "label": "Angle error [arcsec]"},
-                "errorAngularPosRA": {
-                    "pd": None,
-                    "name": "RA counter",
-                    "pen": self.M_GREEN,
-                },
-                "errorAngularPosDEC": {
-                    "pd": None,
-                    "name": "DEC counter",
-                    "pen": self.M_RED,
-                },
+                "template": {"legendRef": None, "label": "Angle error [arcsec]"},
+                "lineItems": {
+                    "errorAngularPosRA": {
+                        "plotItemRef": None,
+                        "name": "RA counter",
+                        "pen": self.M_GREEN,
+                    },
+                    "errorAngularPosDEC": {
+                        "plotItemRef": None,
+                        "name": "DEC counter",
+                        "pen": self.M_RED,
+                    },
+                }
             },
             "Temperature": {
-                "gen": {
+                "template": {
                     "range": (-20, 40, False),
-                    "leg": None,
+                    "legendRef": None,
                     "label": "Temperature [°C]",
                 },
-                "sensor1WeatherTemp": {
-                    "pd": None,
-                    "name": "Sensor 1",
-                    "pen": self.M_GREEN,
-                },
-                "sensor2WeatherTemp": {
-                    "pd": None,
-                    "name": "Sensor 2",
-                    "pen": self.M_RED,
-                },
-                "sensor3WeatherTemp": {
-                    "pd": None,
-                    "name": "Sensor 3",
-                    "pen": self.M_PINK,
-                },
-                "sensor4WeatherTemp": {
-                    "pd": None,
-                    "name": "Sensor 4",
-                    "pen": self.M_YELLOW,
-                },
-                "directWeatherTemp": {"pd": None, "name": "Direct", "pen": self.M_PRIM},
+                "lineItems": {
+                    "sensor1WeatherTemp": {
+                        "plotItemRef": None,
+                        "name": "Sensor 1",
+                        "pen": self.M_GREEN,
+                    },
+                    "sensor2WeatherTemp": {
+                        "plotItemRef": None,
+                        "name": "Sensor 2",
+                        "pen": self.M_RED,
+                    },
+                    "sensor3WeatherTemp": {
+                        "plotItemRef": None,
+                        "name": "Sensor 3",
+                        "pen": self.M_PINK,
+                    },
+                    "sensor4WeatherTemp": {
+                        "plotItemRef": None,
+                        "name": "Sensor 4",
+                        "pen": self.M_YELLOW,
+                    },
+                    "directWeatherTemp": {"plotItemRef": None, "name": "Direct", "pen": self.M_PRIM},
+                }
             },
             "Camera Temperature": {
-                "gen": {
+                "template": {
                     "range": (-20, 20, False),
-                    "leg": None,
+                    "legendRef": None,
                     "label": "Camera Temperature [°C]",
                 },
-                "cameraTemp": {"pd": None, "name": "Camera", "pen": self.M_PINK},
+                "lineItems": {
+                    "cameraTemp": {"plotItemRef": None, "name": "Camera", "pen": self.M_PINK},
+                }
             },
             "Camera Cooler Power": {
-                "gen": {
+                "template": {
                     "range": (-5, 105, True),
-                    "leg": None,
+                    "legendRef": None,
                     "label": "Camera Cooler Power [%]",
                 },
-                "cameraPower": {"pd": None, "name": "CoolerPower", "pen": self.M_PINK},
+                "lineItems": {
+                    "cameraPower": {"plotItemRef": None, "name": "CoolerPower", "pen": self.M_PINK},
+                }
             },
             "Dew Temperature": {
-                "gen": {
+                "template": {
                     "range": (-20, 40, False),
-                    "leg": None,
+                    "legendRef": None,
                     "label": "Dew Temperature [°C]",
                 },
-                "sensor1WeatherDew": {
-                    "pd": None,
-                    "name": "Sensor 1",
-                    "pen": self.M_GREEN,
-                },
-                "sensor2WeatherDew": {
-                    "pd": None,
-                    "name": "Sensor 2",
-                    "pen": self.M_RED,
-                },
-                "sensor3WeatherDew": {
-                    "pd": None,
-                    "name": "Sensor 3",
-                    "pen": self.M_PINK,
-                },
-                "sensor4WeatherDew": {
-                    "pd": None,
-                    "name": "Sensor 4",
-                    "pen": self.M_YELLOW,
-                },
-                "directWeatherDew": {"pd": None, "name": "Direct", "pen": self.M_PRIM},
+                "lineItems": {
+                    "sensor1WeatherDew": {
+                        "plotItemRef": None,
+                        "name": "Sensor 1",
+                        "pen": self.M_GREEN,
+                    },
+                    "sensor2WeatherDew": {
+                        "plotItemRef": None,
+                        "name": "Sensor 2",
+                        "pen": self.M_RED,
+                    },
+                    "sensor3WeatherDew": {
+                        "plotItemRef": None,
+                        "name": "Sensor 3",
+                        "pen": self.M_PINK,
+                    },
+                    "sensor4WeatherDew": {
+                        "plotItemRef": None,
+                        "name": "Sensor 4",
+                        "pen": self.M_YELLOW,
+                    },
+                    "directWeatherDew": {"plotItemRef": None, "name": "Direct", "pen": self.M_PRIM},
+                }
             },
             "Pressure": {
-                "gen": {
+                "template": {
                     "range": (900, 1050, False),
-                    "leg": None,
+                    "legendRef": None,
                     "label": "Pressure [hPa]",
                 },
-                "sensor1WeatherPress": {
-                    "pd": None,
-                    "name": "Sensor 1",
-                    "pen": self.M_GREEN,
-                },
-                "sensor2WeatherPress": {
-                    "pd": None,
-                    "name": "Sensor 2",
-                    "pen": self.M_RED,
-                },
-                "sensor3WeatherPress": {
-                    "pd": None,
-                    "name": "Sensor 3",
-                    "pen": self.M_PINK,
-                },
-                "sensor4WeatherPress": {
-                    "pd": None,
-                    "name": "Sensor 4",
-                    "pen": self.M_YELLOW,
-                },
-                "directWeatherPress": {
-                    "pd": None,
-                    "name": "Direct",
-                    "pen": self.M_PRIM,
-                },
+                "lineItems": {
+                    "sensor1WeatherPress": {
+                        "plotItemRef": None,
+                        "name": "Sensor 1",
+                        "pen": self.M_GREEN,
+                    },
+                    "sensor2WeatherPress": {
+                        "plotItemRef": None,
+                        "name": "Sensor 2",
+                        "pen": self.M_RED,
+                    },
+                    "sensor3WeatherPress": {
+                        "plotItemRef": None,
+                        "name": "Sensor 3",
+                        "pen": self.M_PINK,
+                    },
+                    "sensor4WeatherPress": {
+                        "plotItemRef": None,
+                        "name": "Sensor 4",
+                        "pen": self.M_YELLOW,
+                    },
+                    "directWeatherPress": {
+                        "plotItemRef": None,
+                        "name": "Direct",
+                        "pen": self.M_PRIM,
+                    },
+                }
             },
             "Humidity": {
-                "gen": {"range": (-5, 105, True), "leg": None, "label": "Humidity [%]"},
-                "sensor1WeatherHum": {
-                    "pd": None,
-                    "name": "Sensor 1",
-                    "pen": self.M_GREEN,
-                },
-                "sensor2WeatherHum": {
-                    "pd": None,
-                    "name": "Sensor 2",
-                    "pen": self.M_RED,
-                },
-                "sensor3WeatherHum": {
-                    "pd": None,
-                    "name": "Sensor 3",
-                    "pen": self.M_PINK,
-                },
-                "sensor4WeatherHum": {
-                    "pd": None,
-                    "name": "Sensor 4",
-                    "pen": self.M_YELLOW,
-                },
-                "directWeatherHum": {"pd": None, "name": "Direct", "pen": self.M_PRIM},
+                "template": {"range": (-5, 105, True), "legendRef": None, "label": "Humidity [%]"},
+                "lineItems": {
+                    "sensor1WeatherHum": {
+                        "plotItemRef": None,
+                        "name": "Sensor 1",
+                        "pen": self.M_GREEN,
+                    },
+                    "sensor2WeatherHum": {
+                        "plotItemRef": None,
+                        "name": "Sensor 2",
+                        "pen": self.M_RED,
+                    },
+                    "sensor3WeatherHum": {
+                        "plotItemRef": None,
+                        "name": "Sensor 3",
+                        "pen": self.M_PINK,
+                    },
+                    "sensor4WeatherHum": {
+                        "plotItemRef": None,
+                        "name": "Sensor 4",
+                        "pen": self.M_YELLOW,
+                    },
+                    "directWeatherHum": {"plotItemRef": None, "name": "Direct", "pen": self.M_PRIM},
+                }
             },
             "Sky Quality": {
-                "gen": {
+                "template": {
                     "range": (10, 22.5, False),
-                    "leg": None,
+                    "legendRef": None,
                     "label": "Sky Quality [mpas]",
                 },
-                "sensor1WeatherSky": {
-                    "pd": None,
-                    "name": "Sensor 1",
-                    "pen": self.M_GREEN,
-                },
-                "sensor2WeatherSky": {
-                    "pd": None,
-                    "name": "Sensor 2",
-                    "pen": self.M_RED,
-                },
-                "sensor3WeatherSky": {
-                    "pd": None,
-                    "name": "Sensor 3",
-                    "pen": self.M_PINK,
-                },
-                "sensor4WeatherSky": {
-                    "pd": None,
-                    "name": "Sensor 4",
-                    "pen": self.M_YELLOW,
-                },
+                "lineItems": {
+                    "sensor1WeatherSky": {
+                        "plotItemRef": None,
+                        "name": "Sensor 1",
+                        "pen": self.M_GREEN,
+                    },
+                    "sensor2WeatherSky": {
+                        "plotItemRef": None,
+                        "name": "Sensor 2",
+                        "pen": self.M_RED,
+                    },
+                    "sensor3WeatherSky": {
+                        "plotItemRef": None,
+                        "name": "Sensor 3",
+                        "pen": self.M_PINK,
+                    },
+                    "sensor4WeatherSky": {
+                        "plotItemRef": None,
+                        "name": "Sensor 4",
+                        "pen": self.M_YELLOW,
+                    },
+                }
             },
             "Voltage": {
-                "gen": {
+                "template": {
                     "range": (8, 15, False),
-                    "leg": None,
+                    "legendRef": None,
                     "label": "Supply Voltage [V]",
                 },
-                "powVolt": {"pd": None, "name": "Main Sensor", "pen": self.M_YELLOW},
+                "lineItems": {
+                    "powVolt": {"plotItemRef": None, "name": "Main Sensor", "pen": self.M_YELLOW},
+                }
             },
             "Current": {
-                "gen": {"range": (0, 5, False), "leg": None, "label": "Current [A]"},
-                "powCurr": {"pd": None, "name": "Sum", "pen": self.M_CYAN1},
-                "powCurr1": {"pd": None, "name": "Current 1", "pen": self.M_GREEN},
-                "powCurr2": {"pd": None, "name": "Current 2", "pen": self.M_PINK},
-                "powCurr3": {"pd": None, "name": "Current 3", "pen": self.M_RED},
-                "powCurr4": {"pd": None, "name": "Current 4", "pen": self.M_YELLOW},
+                "template": {"range": (0, 5, False), "legendRef": None, "label": "Current [A]"},
+                "lineItems": {
+                    "powCurr": {"plotItemRef": None, "name": "Sum", "pen": self.M_CYAN1},
+                    "powCurr1": {"plotItemRef": None, "name": "Current 1", "pen": self.M_GREEN},
+                    "powCurr2": {"plotItemRef": None, "name": "Current 2", "pen": self.M_PINK},
+                    "powCurr3": {"plotItemRef": None, "name": "Current 3", "pen": self.M_RED},
+                    "powCurr4": {"plotItemRef": None, "name": "Current 4", "pen": self.M_YELLOW},
+                }
             },
             "Time Diff Comp-Mount": {
-                "gen": {"leg": None, "label": "Time Difference [ms]"},
-                "timeDiff": {"pd": None, "name": "MountControl", "pen": self.M_YELLOW},
+                "template": {"legendRef": None, "label": "Time Difference [ms]"},
+                "lineItems": {
+                    "timeDiff": {"plotItemRef": None, "name": "MountControl", "pen": self.M_YELLOW},
+                }
             },
             "Focus Position": {
-                "gen": {"leg": None, "label": "Focus Position [units]"},
-                "focusPosition": {
-                    "pd": None,
-                    "name": "MountControl",
-                    "pen": self.M_YELLOW,
+                "template": {"legendRef": None, "label": "Focus Position [units]"},
+                "lineItems": {
+                    "focusPosition": {
+                        "plotItemRef": None,
+                        "name": "MountControl",
+                        "pen": self.M_YELLOW,
+                    }
                 },
             },
         }
@@ -318,12 +345,12 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def constructPlotItem(self, plotItem, values: dict, x: list[float]) -> None:
         """ """
-        yMin, yMax, fixed = values["gen"].get("range", (None, None, False))
+        yMin, yMax, fixed = values["template"].get("range", (None, None, False))
         if yMin is not None and yMax is not None:
             minYRange = (yMax - yMin) if fixed else (yMax - yMin) / 4
             maxYRange = yMax - yMin
             plotItem.setLimits(yMin=yMin, yMax=yMax, minYRange=minYRange, maxYRange=maxYRange)
-        label = values["gen"].get("label", "-")
+        label = values["template"].get("label", "-")
         plotItem.setLabel("left", label)
         legend = pg.LegendItem(
             pen=self.ui.measure.pen,
@@ -334,39 +361,37 @@ class MeasureWindow(toolsQtWidget.MWidget):
             brush=pg.mkBrush(color=self.M_BACK),
         )
         legend.setParentItem(plotItem)
-        values["gen"]["leg"] = legend
+        values["template"]["legendRef"] = legend
         plotItem.setLimits(xMin=x[0])
 
     def plotting(self, plotItem, values: dict, x: list[float]) -> None:
         """ """
-        newPlot = values["gen"]["label"] != plotItem.getAxis("left").labelText
-        newPlot = newPlot or values["gen"]["leg"] is None
+        newPlot = values["template"]["label"] != plotItem.getAxis("left").labelText
+        newPlot = newPlot or values["template"]["legendRef"] is None
         if newPlot:
             self.constructPlotItem(plotItem, values, x)
 
         data = self.app.measure.data
-        for value in values:
-            if value == "gen":
-                continue
-            pen = pg.mkPen(values[value].get("pen"), width=2)
-            name = values[value].get("name", value)
-            pd = values[value]["pd"]
+        for item in values["lineItems"]:
+            pen = pg.mkPen(values["lineItems"][item].get("pen"), width=2)
+            name = values["lineItems"][item].get("name", "")
+            pd = values["lineItems"][item]["plotItemRef"]
             if pd is None:
                 pd = plotItem.plot()
-                values[value]["pd"] = pd
-                if values["gen"]["leg"] is not None:
-                    values["gen"]["leg"].addItem(pd, name)
-            pd.setData(x=x[5:], y=data[value][5:], pen=pen, name=name)
+                values["lineItems"][item]["plotItemRef"] = pd
+                if values["template"]["legendRef"] is not None:
+                    values["template"]["legendRef"].addItem(pd, name)
+            pd.setData(x=x[5:], y=data[item][5:], pen=pen, name=name)
 
     @staticmethod
     def resetPlotItem(plotItem, values: dict) -> None:
         """ """
         plotItem.clear()
         for value in values:
-            if value == "gen":
-                values["gen"]["leg"] = None
+            if value == "template":
+                values["template"]["legendRef"] = None
             else:
-                values[value]["pd"] = None
+                values[value]["plotItemRef"] = None
 
     def triggerUpdate(self) -> None:
         """ """
@@ -399,18 +424,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
             self.inUseMessage()
         self.drawMeasure()
 
-    def drawMeasure(self) -> None:
+    def processDrawMeasure(self, x: np.array, noChart: bool) -> None:
         """ """
-        data = self.app.measure.data
-        if len(data.get("time", [])) < 5:
-            return
-        if not self.drawLock.tryLock():
-            return
-
-        x = data["time"].astype("datetime64[s]").astype("int")
-
-        noChart = all(x in ["No chart", None] for x in self.oldTitle)
-
         for i, v in enumerate(zip(self.mSetUI.keys(), self.ui.measure.p)):
             setName, plotItem = v
             title = self.mSetUI[setName].currentText()
@@ -429,4 +444,14 @@ class MeasureWindow(toolsQtWidget.MWidget):
                 plotItem.autoRange()
                 plotItem.enableAutoRange(x=True, y=True)
 
+    def drawMeasure(self) -> None:
+        """ """
+        data = self.app.measure.data
+        if len(data.get("time", [])) < 5:
+            return
+        if not self.drawLock.tryLock():
+            return
+        x = data["time"].astype("datetime64[s]").astype("int")
+        noChart = all(x in ["No chart", None] for x in self.oldTitle)
+        self.processDrawMeasure(x, noChart)
         self.drawLock.unlock()

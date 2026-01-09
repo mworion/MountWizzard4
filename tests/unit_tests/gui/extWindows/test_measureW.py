@@ -215,17 +215,20 @@ def test_changeChart_2(function):
 def test_drawMeasure_1(function):
     temp = function.app.measure.data["time"]
     function.app.measure.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
-    function.drawMeasure()
-    function.app.measure.data["time"] = temp
+    with mock.patch.object(function, "processDrawMeasure"):
+        function.drawMeasure()
+        function.app.measure.data["time"] = temp
 
 
 def test_drawMeasure_2(function):
     function.drawLock.tryLock()
-    function.drawMeasure()
-    function.drawLock.unlock()
+    with mock.patch.object(function, "processDrawMeasure"):
+        function.processDrawMeasure()
+        function.drawMeasure()
+        function.drawLock.unlock()
 
 
-def test_drawMeasure_3(function):
+def test_processDrawMeasure_1(function):
     function.ui.set0.clear()
     function.ui.set1.clear()
     function.ui.set2.clear()
@@ -242,13 +245,15 @@ def test_drawMeasure_3(function):
     function.ui.set3.setCurrentIndex(0)
     function.ui.set4.setCurrentIndex(0)
     function.oldTitle = [None, "Voltage", None, None, None]
+    function.app.measure.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
+    x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
     with mock.patch.object(function, "plotting"):
         with mock.patch.object(function, "resetPlotItem"):
             with mock.patch.object(function, "triggerUpdate"):
-                function.drawMeasure()
+                function.processDrawMeasure(x, True)
 
 
-def test_drawMeasure_4(function):
+def test_processDrawMeasure_2(function):
     function.ui.set0.clear()
     function.ui.set1.clear()
     function.ui.set2.clear()
@@ -265,7 +270,9 @@ def test_drawMeasure_4(function):
     function.ui.set3.setCurrentIndex(0)
     function.ui.set4.setCurrentIndex(0)
     function.oldTitle = [None, None, None, None, None]
+    function.app.measure.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
+    x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
     with mock.patch.object(function, "plotting"):
         with mock.patch.object(function, "resetPlotItem"):
             with mock.patch.object(function, "triggerUpdate"):
-                function.drawMeasure()
+                function.processDrawMeasure(x, False)

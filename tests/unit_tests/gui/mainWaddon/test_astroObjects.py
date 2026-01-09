@@ -52,7 +52,6 @@ def function(qapp):
             uiObjectList=QTableWidget(),
             uiSourceList=QComboBox(),
             uiSourceGroup=QGroupBox(),
-            prepareTable=test,
             processSource=test,
         )
         function.window.app = App()

@@ -38,10 +38,9 @@ class Comet(QObject):
             self.ui.listComets,
             self.ui.cometSourceList,
             self.ui.cometSourceGroup,
-            self.prepareCometTable,
             self.processCometSource,
         )
-
+        self.prepareCometTable()
         self.comets.dataLoaded.connect(self.fillCometListName)
         self.ui.cometFilterText.textChanged.connect(self.filterListComets)
         self.ui.progCometSelected.clicked.connect(self.comets.progSelected)

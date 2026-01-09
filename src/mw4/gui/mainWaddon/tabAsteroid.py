@@ -37,11 +37,11 @@ class Asteroid(QObject):
             self.ui.listAsteroids,
             self.ui.asteroidSourceList,
             self.ui.asteroidSourceGroup,
-            self.prepareAsteroidTable,
             self.processAsteroidSource,
         )
 
         self.asteroids.dataLoaded.connect(self.fillAsteroidListName)
+        self.prepareAsteroidTable()
         self.ui.asteroidFilterText.textChanged.connect(self.filterListAsteroids)
         self.ui.progAsteroidSelected.clicked.connect(self.asteroids.progSelected)
         self.ui.progAsteroidFiltered.clicked.connect(self.asteroids.progFiltered)

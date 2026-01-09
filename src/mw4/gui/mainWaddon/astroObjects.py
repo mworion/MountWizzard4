@@ -38,7 +38,6 @@ class AstroObjects(QObject):
         uiObjectList,
         uiSourceList,
         uiSourceGroup,
-        prepareTable,
         processSource,
     ):
         super().__init__()
@@ -53,7 +52,6 @@ class AstroObjects(QObject):
         self.uiObjectList = uiObjectList
         self.uiSourceList = uiSourceList
         self.uiSourceGroup = uiSourceGroup
-        self.prepareTable = prepareTable
         self.processSource = processSource
         self.workerSource: Worker = None
         self.workerTable: Worker = None
@@ -66,7 +64,6 @@ class AstroObjects(QObject):
         self.loader = self.app.mount.obsSite.loader
         self.dbProc = DataWriter(self.app)
         self.buildSourceListDropdown()
-        self.prepareTable()
         self.uiSourceList.currentIndexChanged.connect(self.loadSourceUrl)
 
         self.dbProcFuncs = {

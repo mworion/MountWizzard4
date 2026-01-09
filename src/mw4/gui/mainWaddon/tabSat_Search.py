@@ -51,11 +51,11 @@ class SatSearch(QObject, SatData):
             self.ui.listSats,
             self.ui.satSourceList,
             self.ui.satSourceGroup,
-            self.prepareSatTable,
             self.processSatelliteSource,
         )
 
         self.satellites.dataLoaded.connect(self.fillSatListName)
+        self.prepareSatTable()
         self.ui.satFilterText.textChanged.connect(self.filterListSats)
         self.ui.satIsSunlit.clicked.connect(self.filterListSats)
         self.ui.satRemoveSO.clicked.connect(self.filterListSats)

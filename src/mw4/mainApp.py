@@ -112,22 +112,23 @@ class MountWizzard4(QObject):
         self.statusOperationRunning: bool = 0
         self.config = loadProfileStart(self.mwGlob["configDir"])
         self.deviceStat = {
-            "dome": None,
             "mount": None,
-            "camera": None,
-            "plateSolve": None,
             "refraction": None,
+            "dome": None,
+            "cover": None,
+            "camera": None,
+            "filter": None,
             "sensor1Weather": None,
             "sensor2Weather": None,
             "sensor3Weather": None,
             "sensor4Weather": None,
             "directWeather": None,
             "seeingWeather": None,
-            "cover": None,
             "telescope": None,
             "power": None,
-            "remote": None,
             "relay": None,
+            "plateSolve": None,
+            "remote": None,
             "measure": None,
         }
         profile = self.config.get("profileName", "-")

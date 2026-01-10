@@ -133,7 +133,6 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
 
     def startCommunication(self) -> None:
         """ """
-        self.parent.setEmptyData()
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
         self.openCSV()
 
@@ -144,17 +143,11 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
 
     def measureTask(self) -> None:
         """
-        measureTask runs all necessary pre-processing and collecting task to
+        measureTask runs all necessary pre-processing and collecting tasks to
         assemble a large dict of lists, where all measurement data is stored.
         the intention later on would be to store and export this data.
-        the time object is related to the time held in mount computer and is
+        the time object is related to the time held in the mount computer and is
         in utc timezone.
-
-        data sources are:
-            environment
-            mount pointing position
-
-        :return: success
         """
         self.parent.measureTask()
         self.writeCSV()

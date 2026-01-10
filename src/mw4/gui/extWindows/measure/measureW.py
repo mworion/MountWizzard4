@@ -142,6 +142,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
         data = self.app.measure.data
         for item in values["lineItems"]:
+            if item not in data:
+                continue
             pen = pg.mkPen(values["lineItems"][item].get("pen"), width=2)
             name = values["lineItems"][item].get("name", "")
             pd = values["lineItems"][item]["plotItemRef"]

@@ -42,7 +42,6 @@ class MeasureDataRaw(PySide6.QtCore.QObject):
 
     def startCommunication(self) -> None:
         """ """
-        self.parent.setEmptyData()
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
 
     def stopCommunication(self) -> None:

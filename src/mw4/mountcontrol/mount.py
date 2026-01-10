@@ -106,6 +106,31 @@ class MountDevice:
         self.settlingWait = QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
+        self.app.update1s.connect(self.collectData)
+        self.app.start5s.connect(self.resetAfterStart)
+        self.data: dict = {}
+        self.raRef: float = 0.0
+        self.decRef: float = 0.0
+
+    def resetAfterStart(self):
+        """ """
+        self.raRef = self.obsSite.raJNow._degrees
+        self.decRef = self.obsSite.decJNow.degrees
+
+    def collectData(self):
+        """ """
+        if self.obsSite.statusSlew:
+            self.raRef = self.obsSite.raJNow._degrees
+            self.decRef = self.obsSite.decJNow.degrees
+
+        deltaRaJNow = (self.obsSite.raJNow._degrees - self.raRef) * 3600
+        deltaDecJNow = (self.obsSite.decJNow.degrees - self.decRef) * 3600
+        self.data["deltaRaJNow"] = deltaRaJNow
+        self.data["deltaDecJNow"] = deltaDecJNow
+        self.data["errorAngularPosRA"] = self.obsSite.errorAngularPosRA.degrees * 3600
+        self.data["errorAngularPosDEC"] = self.obsSite.errorAngularPosDEC.degrees * 3600
+        self.data["status"] = self.obsSite.status
+        self.data["timeDiff"] = self.obsSite.timeDiff * 1000
 
     @property
     def MAC(self):
@@ -219,7 +244,6 @@ class MountDevice:
             self.statusAlert = False
 
         settleWait = self._waitTimeFlip if self.obsSite.flipped else 0
-
         if self.obsSite.statusSlew:
             self.statusSlew = True
         else:
@@ -235,7 +259,6 @@ class MountDevice:
         """"""
         if not self.mountIsUp:
             return
-
         if not self.mutexCyclePointing.tryLock():
             return
 

@@ -143,37 +143,11 @@ jobs:
           name: c3
           path: c3.dat
 
-  run_tests_windows_4:
-    #
-    needs: build_package
-    runs-on: windows-latest
-    
-    steps:
-      - uses: actions/checkout@v4
-  
-      - name: install package
-        uses: ./.github/actions/setup_test_cov
-  
-      - name: running_unit_tests
-        run: |
-          pytest tests/unit_tests/gui/extWindows/video ${{env.cov}}
-          pytest tests/unit_tests/gui/extWindows/image ${{env.cov}}
-          pytest tests/unit_tests/gui/extWindows/hemisphere ${{env.cov}}
-          pytest tests/unit_tests/gui/extWindows/simulator ${{env.cov}}
-
-      - name: rename_coveragefile
-        run: mv .coverage c4.dat
-      
-      - uses: actions/upload-artifact@v4
-        with:
-          name: c4
-          path: c4.dat
           
   coverage:
     #
     needs: [ run_tests_windows_0, run_tests_windows_1,
-             run_tests_windows_2, run_tests_windows_3,
-             run_tests_windows_4]
+             run_tests_windows_2, run_tests_windows_3]
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
@@ -192,15 +166,12 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: c3
-    - uses: actions/download-artifact@v4
-      with:
-        name: c4
         
     - name: combining_data
       run: |
         dir
         python -m pip install coverage
-        python -m coverage combine c0.dat c1.dat c2.dat c3.dat c4.dat
+        python -m coverage combine c0.dat c1.dat c2.dat c3.dat
         python -m coverage xml
 
     - name: upload

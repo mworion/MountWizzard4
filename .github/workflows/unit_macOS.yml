@@ -55,7 +55,7 @@ jobs:
       - name: running_unit_tests
         run: |
           pytest tests/unit_tests/base
-          pytest tests/unit_tests/logic/*
+          pytest tests/unit_tests/logic
           pytest tests/unit_tests/mountcontrol
           pytest tests/unit_tests/indibase
           pytest tests/unit_tests/gui/utilities
@@ -75,10 +75,6 @@ jobs:
       - name: running_unit_tests
         run: |
           pytest tests/unit_tests/gui/extWindows
-          # pytest tests/unit_tests/gui/extWindows/video
-          # pytest tests/unit_tests/gui/extWindows/image
-          # pytest tests/unit_tests/gui/extWindows/hemisphere
-          # pytest tests/unit_tests/gui/extWindows/simulator
 
   run_tests_macos_3:
     #

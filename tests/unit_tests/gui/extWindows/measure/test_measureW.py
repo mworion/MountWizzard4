@@ -30,38 +30,13 @@ def function(qapp):
     func = MeasureWindow(app=App())
 
     value = np.datetime64("2014-12-12 20:20:20")
-    func.app.measure.devices["sensorWeather"] = ""
     func.app.measure.devices["directWeather"] = ""
-    func.app.measure.devices["power"] = ""
-    func.app.measure.devices["skymeter"] = ""
-    func.app.measure.devices["camera"] = ""
     func.app.measure.data = {
         "time": np.empty(shape=[0, 1], dtype="datetime64"),
-        "sensorWeatherTemp": np.array([1, 1, 1, 1, 1]),
-        "sensorWeatherHum": np.array([1, 1, 1, 1, 1]),
-        "sensorWeatherPress": np.array([1, 1, 1, 1, 1]),
-        "sensorWeatherDew": np.array([1, 1, 1, 1, 1]),
-        "directWeatherTemp": np.array([1, 1, 1, 1, 1]),
-        "directWeatherHum": np.array([1, 1, 1, 1, 1]),
-        "directWeatherPress": np.array([1, 1, 1, 1, 1]),
-        "directWeatherDew": np.array([1, 1, 1, 1, 1]),
-        "skySQR": np.array([1, 1, 1, 1, 1]),
-        "skyTemp": np.array([1, 1, 1, 1, 1]),
-        "deltaRaJNow": np.array([1, 1, 1, 1, 1]),
-        "deltaDecJNow": np.array([1, 1, 1, 1, 1]),
-        "errorAngularPosRA": np.array([1, 1, 1, 1, 1]),
-        "errorAngularPosDEC": np.array([1, 1, 1, 1, 1]),
-        "status": np.array([1, 1, 1, 1, 1]),
-        "powCurr1": np.array([1, 1, 1, 1, 1]),
-        "powCurr2": np.array([1, 1, 1, 1, 1]),
-        "powCurr3": np.array([1, 1, 1, 1, 1]),
-        "powCurr4": np.array([1, 1, 1, 1, 1]),
-        "powVolt": np.array([1, 1, 1, 1, 1]),
-        "powCurr": np.array([1, 1, 1, 1, 1]),
-        "powHum": np.array([1, 1, 1, 1, 1]),
-        "powTemp": np.array([1, 1, 1, 1, 1]),
-        "powDew": np.array([1, 1, 1, 1, 1]),
-        "cameraTemp": np.array([1, 1, 1, 1, 1]),
+        "directWeather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE": np.array([1, 1, 1, 1, 1]),
+        "directWeather-WEATHER_PARAMETERS.WEATHER_PRESSURE": np.array([1, 1, 1, 1, 1]),
+        "directWeather-WEATHER_PARAMETERS.WEATHER_DEWPOINT": np.array([1, 1, 1, 1, 1]),
+        "directWeather-WEATHER_PARAMETERS.WEATHER_HUMIDITY": np.array([1, 1, 1, 1, 1]),
     }
     func.app.measure.data["time"] = np.append(func.app.measure.data["time"], value)
     func.app.measure.data["time"] = np.append(func.app.measure.data["time"], value)
@@ -148,9 +123,16 @@ def test_plotting_1(function):
 
 
 def test_resetPlotItem(function):
+    class RemoveItem:
+        def removeItem(self, item):
+            pass
+
+    def scene():
+        return RemoveItem()
     plotItem = pg.PlotItem()
-    values = dataPlots["Axis Stability"]
-    function.resetPlotItem(plotItem, values)
+    plotItem.scene = scene
+    chart = dataPlots["Axis Stability"]
+    function.resetPlotItem(plotItem, chart)
 
 
 def test_triggerUpdate(function):
@@ -163,7 +145,7 @@ def test_inUseMessage(function):
 
 
 def test_checkInUse_1(function):
-    with mock.patch.object(function, "changeChart"):
+    with mock.patch.object(function, "messageDialog"):
         function.ui.set0.clear()
         function.ui.set0.addItem("No chart")
         function.ui.set0.addItem("test1")
@@ -179,7 +161,7 @@ def test_checkInUse_1(function):
 
 
 def test_checkInUse_2(function):
-    with mock.patch.object(function, "changeChart"):
+    with mock.patch.object(function, "messageDialog"):
         function.ui.set0.clear()
         function.ui.set0.addItem("No chart")
         function.ui.set0.addItem("test1")
@@ -195,87 +177,93 @@ def test_checkInUse_2(function):
 
 
 def test_changeChart_1(function):
-    function.ui.set4.clear()
-    function.ui.set4.addItem("No chart")
-    function.ui.set0.setCurrentIndex(0)
-    with mock.patch.object(function, "drawMeasure"):
-        with mock.patch.object(function, "checkInUse", return_value=False):
-            function.changeChart("set4", 0)
+    with mock.patch.object(function, "inUseMessage"):
+        function.ui.set4.clear()
+        function.ui.set4.addItem("No chart")
+        function.ui.set0.setCurrentIndex(0)
+        with mock.patch.object(function, "drawMeasure"):
+            with mock.patch.object(function, "checkInUse", return_value=False):
+                function.changeChart("set4", 0)
 
 
 def test_changeChart_2(function):
-    function.ui.set0.clear()
-    function.ui.set0.addItem("No chart")
-    function.ui.set0.addItem("Voltage")
-    function.ui.set0.setCurrentIndex(1)
-    with mock.patch.object(function, "drawMeasure"):
-        with mock.patch.object(function, "inUseMessage"):
-            with mock.patch.object(function, "checkInUse", return_value=True):
-                function.changeChart("set0", 1)
-        function.drawLock.unlock()
+    with mock.patch.object(function, "inUseMessage"):
+        function.ui.set0.clear()
+        function.ui.set0.addItem("No chart")
+        function.ui.set0.addItem("Voltage")
+        function.ui.set0.setCurrentIndex(1)
+        with mock.patch.object(function, "drawMeasure"):
+            with mock.patch.object(function, "inUseMessage"):
+                with mock.patch.object(function, "checkInUse", return_value=True):
+                    function.changeChart("set0", 1)
+                    function.drawLock.unlock()
 
 
 def test_processDrawMeasure_1(function):
-    function.ui.set0.clear()
-    function.ui.set1.clear()
-    function.ui.set2.clear()
-    function.ui.set3.clear()
-    function.ui.set4.clear()
-    function.ui.set0.addItem("No chart")
-    function.ui.set1.addItem("Current")
-    function.ui.set2.addItem("Temperature")
-    function.ui.set3.addItem("No chart")
-    function.ui.set4.addItem("No chart")
-    function.ui.set0.setCurrentIndex(0)
-    function.ui.set1.setCurrentIndex(0)
-    function.ui.set2.setCurrentIndex(0)
-    function.ui.set3.setCurrentIndex(0)
-    function.ui.set4.setCurrentIndex(0)
-    function.oldTitle = [None, "Voltage", None, None, None]
-    function.app.measure.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
-    x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
-    with mock.patch.object(function, "plotting"):
-        with mock.patch.object(function, "resetPlotItem"):
-            with mock.patch.object(function, "triggerUpdate"):
-                function.processDrawMeasure(x, True)
+    with mock.patch.object(function, "inUseMessage"):
+        function.ui.set0.clear()
+        function.ui.set1.clear()
+        function.ui.set2.clear()
+        function.ui.set3.clear()
+        function.ui.set4.clear()
+        function.ui.set0.addItem("No chart")
+        function.ui.set1.addItem("Current")
+        function.ui.set2.addItem("Temperature")
+        function.ui.set3.addItem("No chart")
+        function.ui.set4.addItem("No chart")
+        function.ui.set0.setCurrentIndex(0)
+        function.ui.set1.setCurrentIndex(0)
+        function.ui.set2.setCurrentIndex(0)
+        function.ui.set3.setCurrentIndex(0)
+        function.ui.set4.setCurrentIndex(0)
+        function.oldTitle = ["No chart", "Voltage", "No chart", "No chart", "No chart"]
+        function.app.measure.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
+        x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
+        with mock.patch.object(function, "plotting"):
+            with mock.patch.object(function, "resetPlotItem"):
+                with mock.patch.object(function, "triggerUpdate"):
+                    function.processDrawMeasure(x, True)
 
 
 def test_processDrawMeasure_2(function):
-    function.ui.set0.clear()
-    function.ui.set1.clear()
-    function.ui.set2.clear()
-    function.ui.set3.clear()
-    function.ui.set4.clear()
-    function.ui.set0.addItem("No chart")
-    function.ui.set1.addItem("No chart")
-    function.ui.set2.addItem("No chart")
-    function.ui.set3.addItem("No chart")
-    function.ui.set4.addItem("Temperature")
-    function.ui.set0.setCurrentIndex(0)
-    function.ui.set1.setCurrentIndex(0)
-    function.ui.set2.setCurrentIndex(0)
-    function.ui.set3.setCurrentIndex(0)
-    function.ui.set4.setCurrentIndex(0)
-    function.oldTitle = [None, None, None, None, None]
-    function.app.measure.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
-    x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
-    with mock.patch.object(function, "plotting"):
-        with mock.patch.object(function, "resetPlotItem"):
-            with mock.patch.object(function, "triggerUpdate"):
-                function.processDrawMeasure(x, False)
+    with mock.patch.object(function, "inUseMessage"):
+        function.ui.set0.clear()
+        function.ui.set1.clear()
+        function.ui.set2.clear()
+        function.ui.set3.clear()
+        function.ui.set4.clear()
+        function.ui.set0.addItem("No chart")
+        function.ui.set1.addItem("No chart")
+        function.ui.set2.addItem("No chart")
+        function.ui.set3.addItem("No chart")
+        function.ui.set4.addItem("Temperature")
+        function.ui.set0.setCurrentIndex(0)
+        function.ui.set1.setCurrentIndex(0)
+        function.ui.set2.setCurrentIndex(0)
+        function.ui.set3.setCurrentIndex(0)
+        function.ui.set4.setCurrentIndex(0)
+        function.oldTitle = ["No chart"] * 5
+        function.app.measure.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
+        x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
+        with mock.patch.object(function, "plotting"):
+            with mock.patch.object(function, "resetPlotItem"):
+                with mock.patch.object(function, "triggerUpdate"):
+                    function.processDrawMeasure(x, False)
 
 
 def test_drawMeasure_1(function):
     temp = function.app.measure.data["time"]
     function.app.measure.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
-    function.drawMeasure()
+    with mock.patch.object(function, "processDrawMeasure"):
+        function.drawMeasure()
     function.app.measure.data["time"] = temp
     function.drawLock.unlock()
 
 
 def test_drawMeasure_2(function):
     function.drawLock.tryLock()
-    function.drawMeasure()
+    with mock.patch.object(function, "processDrawMeasure"):
+        function.drawMeasure()
     function.drawLock.unlock()
 
 

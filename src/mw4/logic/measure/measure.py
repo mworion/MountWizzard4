@@ -34,11 +34,7 @@ class MeasureData:
         self.signals = Signals()
         self.mutexMeasure = QMutex()
         self.shorteningStart: bool = True
-        self.raRef = None
-        self.decRef = None
-        self.angularPosRaRef = None
-        self.angularPosDecRef = None
-        self.data = {}
+        self.data: dict = {}
         self.devices: dict = {}
         self.deviceName: str = ""
         self.defaultConfig = {"framework": "", "frameworks": {}}
@@ -64,7 +60,7 @@ class MeasureData:
             self.devices[device] = deviceDrivers[device]["class"]
         self.devices["mount"] = self.app.mount
 
-    def setEmptyData(self) -> None:
+    def clearData(self) -> None:
         """ """
         self.data.clear()
         self.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
@@ -78,7 +74,7 @@ class MeasureData:
     def startCommunication(self) -> None:
         """ """
         self.collectDataDevices()
-        self.setEmptyData()
+        self.clearData()
         name = self.run[self.framework].deviceName
         self.run[self.framework].startCommunication()
         self.signals.deviceConnected.emit(name)
@@ -90,16 +86,16 @@ class MeasureData:
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
 
-    def checkStart(self, lenData: int) -> None:
+    def checkStart(self) -> None:
         """ """
-        if self.shorteningStart and lenData > 2:
+        if self.shorteningStart and len(self.data['time']) > 2:
             self.shorteningStart = False
             for measure in self.data:
                 self.data[measure] = np.delete(self.data[measure], range(0, 2))
 
-    def checkSize(self, lenData: int) -> None:
+    def checkSize(self) -> None:
         """ """
-        if lenData < self.MAXSIZE:
+        if len(self.data["time"]) < self.MAXSIZE:
             return
         for measure in self.data:
             self.data[measure] = np.split(self.data[measure], 2)[1]
@@ -108,11 +104,8 @@ class MeasureData:
         """ """
         if not self.mutexMeasure.tryLock():
             return
-
-        lenData = len(self.data["time"])
-        self.checkStart(lenData)
-        self.checkSize(lenData)
-
+        self.checkStart()
+        self.checkSize()
         timeStamp = self.app.mount.obsSite.timeJD.utc_datetime().replace(tzinfo=None)
         self.data["time"] = np.append(self.data["time"], np.datetime64(timeStamp))
         for device in self.devices:

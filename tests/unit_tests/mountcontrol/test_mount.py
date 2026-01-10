@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import os
 import pytest
 import socket
@@ -22,21 +21,12 @@ from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.mount import MountDevice
 from mw4.mountcontrol.mountSignals import MountSignals
 from pathlib import Path
-from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
+from PySide6.QtCore import QThreadPool, QTimer
 from skyfield.api import Angle, wgs84
 from unittest import mock
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()
-
-
-class App(QObject):
-    refreshModel = Signal()
-    refreshName = Signal()
-
-    def __init__(self):
-        super().__init__()
-        self.threadPool = QThreadPool()
-        self.data = {}
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -55,22 +45,31 @@ def test_mountSignals(function):
     MountSignals()
 
 
-def test_properties(function):
+def test_properties_MAC(function):
     function.MAC = "00:00:00:00:00:00"
     assert function.MAC == "00:00:00:00:00:00"
 
 
-def test_waitTimeFlip_1(function):
+def test_properties_waitTimeFlip_1(function):
     function.waitTimeFlip = 1
     assert function._waitTimeFlip == 1000
 
 
-def test_waitTimeFlip_2(function):
+def test_properties_waitTimeFlip_2(function):
     function._waitTimeFlip = 2000
     assert function.waitTimeFlip == 2
 
 
-def test_waitSettlingTime(function):
+def test_resetAfterStart(function):
+    function.resetAfterStart()
+
+
+def test_collectData_1(function):
+    function.obsSite.statusSlew = True
+    function.collectData()
+
+
+def test_waitAfterSettlingAndEmit(function):
     function.waitAfterSettlingAndEmit()
 
 

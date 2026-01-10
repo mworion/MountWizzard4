@@ -112,6 +112,23 @@ class MountDevice:
         self.raRef: float = 0.0
         self.decRef: float = 0.0
 
+    @property
+    def MAC(self):
+        return self._MAC
+
+    @MAC.setter
+    def MAC(self, value):
+        value = checkFormatMAC(value)
+        self._MAC = value
+
+    @property
+    def waitTimeFlip(self):
+        return self._waitTimeFlip / 1000
+
+    @waitTimeFlip.setter
+    def waitTimeFlip(self, value):
+        self._waitTimeFlip = int(value * 1000)
+
     def resetAfterStart(self):
         """ """
         self.raRef = self.obsSite.raJNow._degrees
@@ -131,23 +148,6 @@ class MountDevice:
         self.data["errorAngularPosDEC"] = self.obsSite.errorAngularPosDEC.degrees * 3600
         self.data["status"] = self.obsSite.status
         self.data["timeDiff"] = self.obsSite.timeDiff * 1000
-
-    @property
-    def MAC(self):
-        return self._MAC
-
-    @MAC.setter
-    def MAC(self, value):
-        value = checkFormatMAC(value)
-        self._MAC = value
-
-    @property
-    def waitTimeFlip(self):
-        return self._waitTimeFlip / 1000
-
-    @waitTimeFlip.setter
-    def waitTimeFlip(self, value):
-        self._waitTimeFlip = int(value * 1000)
 
     def waitAfterSettlingAndEmit(self):
         """ """

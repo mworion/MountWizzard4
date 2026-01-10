@@ -156,7 +156,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     @staticmethod
     def resetPlotItem(plotItem, chart: dict) -> None:
-        """ """
+        """
+        Reset legend based on https://github.com/pyqtgraph/pyqtgraph/discussions/1930
+        """
         if not chart:
             return
         plotItem.scene().removeItem(chart["template"]["legendRef"])

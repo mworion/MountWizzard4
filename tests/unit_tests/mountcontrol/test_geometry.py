@@ -13,22 +13,15 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import os
 import pytest
 from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.mount import MountDevice
 from pathlib import Path
-from PySide6.QtCore import QThreadPool
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from skyfield.api import Angle, wgs84
 
 setupLogging()
-
-
-class App:
-    def __init__(self):
-        self.threadPool = QThreadPool()
-        self.data = {}
 
 
 @pytest.fixture(autouse=True, scope="function")

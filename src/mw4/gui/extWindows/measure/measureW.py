@@ -36,6 +36,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.ui = measure_ui.Ui_MeasureDialog()
         self.ui.setupUi(self)
         self.drawLock = QMutex()
+        self.dataPlots = dataPlots()
 
         self.mSetUI = {
             "set0": self.ui.set0,
@@ -71,7 +72,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def showWindow(self) -> None:
         """ """
-        for setName in self.mSetUI:
+        for i, setName in enumerate(self.mSetUI):
             self.mSetUI[setName].currentIndexChanged.connect(
                 partial(self.changeChart, setName)
             )
@@ -82,6 +83,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def closeEvent(self, closeEvent: QCloseEvent) -> None:
         """ """
+        self.app.update1s.disconnect(self.drawMeasure)
+        self.app.update1s.disconnect(self.setTitle)
         self.storeConfig()
         super().closeEvent(closeEvent)
 
@@ -90,7 +93,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.setStyleSheet(self.mw4Style)
         self.ui.measure.colorChange()
         for setName, plotItem in zip(self.mSetUI.keys(), self.ui.measure.p):
-            values = dataPlots.get(self.mSetUI[setName].currentText(), 0)
+            values = self.dataPlots.get(self.mSetUI[setName].currentText(), 0)
             self.resetPlotItem(plotItem, values)
         self.drawMeasure()
 
@@ -109,7 +112,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
             ui = self.mSetUI[setName]
             ui.clear()
             ui.setView(QListView())
-            for text in dataPlots:
+            for text in self.dataPlots:
                 ui.addItem(text)
 
     def constructPlotItem(self, plotItem, chart: dict, x: list[float]) -> None:
@@ -205,7 +208,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
             title = self.mSetUI[setName].currentText()
 
             if title != self.oldTitle[i]:
-                self.resetPlotItem(plotItem, dataPlots[self.oldTitle[i]])
+                self.resetPlotItem(plotItem, self.dataPlots[self.oldTitle[i]])
 
             self.oldTitle[i] = title
             isVisible = title != "No chart"
@@ -213,7 +216,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
             if not isVisible:
                 continue
 
-            self.plotting(plotItem, dataPlots[title], x)
+            self.plotting(plotItem, self.dataPlots[title], x)
             if noChart:
                 self.triggerUpdate()
                 plotItem.autoRange()

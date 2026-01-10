@@ -62,7 +62,7 @@ class SeeingWeather:
     def startCommunication(self) -> None:
         """ """
         self.pollSeeingData()
-        self.app.update3m.connect(self.pollSeeingData)
+        self.app.update3s.connect(self.pollSeeingData)
 
     def stopCommunication(self) -> None:
         """ """

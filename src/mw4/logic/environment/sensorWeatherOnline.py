@@ -46,7 +46,7 @@ class SensorWeatherOnline:
     def startCommunication(self) -> None:
         """ """
         self.pollOpenWeatherMapData()
-        self.app.update3m.connect(self.pollOpenWeatherMapData)
+        self.app.update3s.connect(self.pollOpenWeatherMapData)
 
     def stopCommunication(self) -> None:
         """ """

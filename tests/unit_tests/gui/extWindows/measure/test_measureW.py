@@ -110,14 +110,14 @@ def test_setupButtons(function):
 
 def test_constructPlotItem_1(function):
     plotItem = pg.PlotItem()
-    values = dataPlots["Current"]
+    values = function.dataPlots["Current"]
     x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
     function.constructPlotItem(plotItem, values, x)
 
 
 def test_plotting_1(function):
     plotItem = pg.PlotItem()
-    values = dataPlots["Current"]
+    values = function.dataPlots["Current"]
     x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
     function.plotting(plotItem, values, x)
 
@@ -131,7 +131,7 @@ def test_resetPlotItem(function):
         return RemoveItem()
     plotItem = pg.PlotItem()
     plotItem.scene = scene
-    chart = dataPlots["Axis Stability"]
+    chart = function.dataPlots["Axis Stability"]
     function.resetPlotItem(plotItem, chart)
 
 

@@ -13,14 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
 import pyqtgraph as pg
 import pytest
 from pathlib import Path
 import unittest.mock as mock
-from mw4.gui.extWindows.measureW import MeasureWindow
+from mw4.gui.extWindows.measure.measureW import MeasureWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.extWindows.measure.measureAddons import dataPlots
 from PySide6.QtGui import QCloseEvent
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -135,21 +135,21 @@ def test_setupButtons(function):
 
 def test_constructPlotItem_1(function):
     plotItem = pg.PlotItem()
-    values = function.dataPlots["Current"]
+    values = dataPlots["Current"]
     x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
     function.constructPlotItem(plotItem, values, x)
 
 
 def test_plotting_1(function):
     plotItem = pg.PlotItem()
-    values = function.dataPlots["Current"]
+    values = dataPlots["Current"]
     x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
     function.plotting(plotItem, values, x)
 
 
 def test_resetPlotItem(function):
     plotItem = pg.PlotItem()
-    values = function.dataPlots["Axis Stability"]
+    values = dataPlots["Axis Stability"]
     function.resetPlotItem(plotItem, values)
 
 
@@ -163,33 +163,35 @@ def test_inUseMessage(function):
 
 
 def test_checkInUse_1(function):
-    function.ui.set0.clear()
-    function.ui.set0.addItem("No chart")
-    function.ui.set0.addItem("test1")
-    function.ui.set0.addItem("test2")
-    function.ui.set0.setCurrentIndex(0)
-    function.ui.set1.clear()
-    function.ui.set1.addItem("No chart")
-    function.ui.set1.addItem("test1")
-    function.ui.set1.addItem("test2")
-    function.ui.set1.setCurrentIndex(0)
-    suc = function.checkInUse("set1", 1)
-    assert not suc
+    with mock.patch.object(function, "changeChart"):
+        function.ui.set0.clear()
+        function.ui.set0.addItem("No chart")
+        function.ui.set0.addItem("test1")
+        function.ui.set0.addItem("test2")
+        function.ui.set0.setCurrentIndex(0)
+        function.ui.set1.clear()
+        function.ui.set1.addItem("No chart")
+        function.ui.set1.addItem("test1")
+        function.ui.set1.addItem("test2")
+        function.ui.set1.setCurrentIndex(0)
+        suc = function.checkInUse("set1", 1)
+        assert not suc
 
 
 def test_checkInUse_2(function):
-    function.ui.set0.clear()
-    function.ui.set0.addItem("No chart")
-    function.ui.set0.addItem("test1")
-    function.ui.set0.addItem("test2")
-    function.ui.set0.setCurrentIndex(1)
-    function.ui.set1.clear()
-    function.ui.set1.addItem("No chart")
-    function.ui.set1.addItem("test1")
-    function.ui.set1.addItem("test2")
-    suc = function.checkInUse("set1", 1)
-    function.ui.set1.setCurrentIndex(0)
-    assert suc
+    with mock.patch.object(function, "changeChart"):
+        function.ui.set0.clear()
+        function.ui.set0.addItem("No chart")
+        function.ui.set0.addItem("test1")
+        function.ui.set0.addItem("test2")
+        function.ui.set0.setCurrentIndex(1)
+        function.ui.set1.clear()
+        function.ui.set1.addItem("No chart")
+        function.ui.set1.addItem("test1")
+        function.ui.set1.addItem("test2")
+        function.ui.set1.setCurrentIndex(0)
+        suc = function.checkInUse("set1", 1)
+        assert suc
 
 
 def test_changeChart_1(function):
@@ -210,21 +212,6 @@ def test_changeChart_2(function):
         with mock.patch.object(function, "inUseMessage"):
             with mock.patch.object(function, "checkInUse", return_value=True):
                 function.changeChart("set0", 1)
-
-
-def test_drawMeasure_1(function):
-    temp = function.app.measure.data["time"]
-    function.app.measure.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
-    with mock.patch.object(function, "processDrawMeasure"):
-        function.drawMeasure()
-        function.app.measure.data["time"] = temp
-
-
-def test_drawMeasure_2(function):
-    function.drawLock.tryLock()
-    with mock.patch.object(function, "processDrawMeasure"):
-        function.processDrawMeasure()
-        function.drawMeasure()
         function.drawLock.unlock()
 
 
@@ -276,3 +263,23 @@ def test_processDrawMeasure_2(function):
         with mock.patch.object(function, "resetPlotItem"):
             with mock.patch.object(function, "triggerUpdate"):
                 function.processDrawMeasure(x, False)
+
+
+def test_drawMeasure_1(function):
+    temp = function.app.measure.data["time"]
+    function.app.measure.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
+    function.drawMeasure()
+    function.app.measure.data["time"] = temp
+    function.drawLock.unlock()
+
+
+def test_drawMeasure_2(function):
+    function.drawLock.tryLock()
+    function.drawMeasure()
+    function.drawLock.unlock()
+
+
+def test_drawMeasure_3(function):
+    with mock.patch.object(function, "processDrawMeasure"):
+        function.drawMeasure()
+    function.drawLock.unlock()

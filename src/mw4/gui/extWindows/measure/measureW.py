@@ -44,7 +44,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
             "set3": self.ui.set3,
             "set4": self.ui.set4,
         }
-        self.oldTitle = [None] * len(self.mSetUI)
+        self.oldTitle = ["No chart"] * len(self.mSetUI)
 
     def initConfig(self) -> None:
         """ """
@@ -112,14 +112,14 @@ class MeasureWindow(toolsQtWidget.MWidget):
             for text in dataPlots:
                 ui.addItem(text)
 
-    def constructPlotItem(self, plotItem, values: dict, x: list[float]) -> None:
+    def constructPlotItem(self, plotItem, chart: dict, x: list[float]) -> None:
         """ """
-        yMin, yMax, fixed = values["template"].get("range", (None, None, False))
+        yMin, yMax, fixed = chart["template"].get("range", (None, None, False))
         if yMin is not None and yMax is not None:
             minYRange = (yMax - yMin) if fixed else (yMax - yMin) / 4
             maxYRange = yMax - yMin
             plotItem.setLimits(yMin=yMin, yMax=yMax, minYRange=minYRange, maxYRange=maxYRange)
-        label = values["template"].get("label", "-")
+        label = chart["template"].get("label", "-")
         plotItem.setLabel("left", label)
         legend = pg.LegendItem(
             pen=self.ui.measure.pen,
@@ -130,39 +130,40 @@ class MeasureWindow(toolsQtWidget.MWidget):
             brush=pg.mkBrush(color=self.M_BACK),
         )
         legend.setParentItem(plotItem)
-        values["template"]["legendRef"] = legend
+        chart["template"]["legendRef"] = legend
         plotItem.setLimits(xMin=x[0])
 
-    def plotting(self, plotItem, values: dict, x: list[float]) -> None:
+    def plotting(self, plotItem, chart: dict, x: list[float]) -> None:
         """ """
-        newPlot = values["template"]["label"] != plotItem.getAxis("left").labelText
-        newPlot = newPlot or values["template"]["legendRef"] is None
+        newPlot = chart["template"]["label"] != plotItem.getAxis("left").labelText
+        newPlot = newPlot or chart["template"]["legendRef"] is None
         if newPlot:
-            self.constructPlotItem(plotItem, values, x)
+            self.constructPlotItem(plotItem, chart, x)
 
         data = self.app.measure.data
-        for item in values["lineItems"]:
-            if item not in data:
+        for plot in chart["lineItems"]:
+            if plot not in data:
                 continue
-            pen = pg.mkPen(values["lineItems"][item].get("pen"), width=2)
-            name = values["lineItems"][item].get("name", "")
-            pd = values["lineItems"][item]["plotItemRef"]
+            pen = pg.mkPen(chart["lineItems"][plot].get("pen"), width=2)
+            name = chart["lineItems"][plot].get("name", "")
+            pd = chart["lineItems"][plot]["plotItemRef"]
             if pd is None:
                 pd = plotItem.plot()
-                values["lineItems"][item]["plotItemRef"] = pd
-                if values["template"]["legendRef"] is not None:
-                    values["template"]["legendRef"].addItem(pd, name)
-            pd.setData(x=x[5:], y=data[item][5:], pen=pen, name=name)
+                chart["lineItems"][plot]["plotItemRef"] = pd
+                if chart["template"]["legendRef"] is not None:
+                    chart["template"]["legendRef"].addItem(pd, name)
+            pd.setData(x=x[5:], y=data[plot][5:], pen=pen, name=name)
 
     @staticmethod
-    def resetPlotItem(plotItem, values: dict) -> None:
+    def resetPlotItem(plotItem, chart: dict) -> None:
         """ """
+        if not chart:
+            return
+        plotItem.scene().removeItem(chart["template"]["legendRef"])
+        chart["template"]["legendRef"] = None
         plotItem.clear()
-        for value in values:
-            if value == "template":
-                values["template"]["legendRef"] = None
-            else:
-                values[value]["plotItemRef"] = None
+        for plot in chart["lineItems"]:
+            chart["lineItems"][plot]["plotItemRef"] = None
 
     def triggerUpdate(self) -> None:
         """ """
@@ -200,7 +201,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
         for i, v in enumerate(zip(self.mSetUI.keys(), self.ui.measure.p)):
             setName, plotItem = v
             title = self.mSetUI[setName].currentText()
-            if title != self.oldTitle[i] and self.oldTitle[i] is not None:
+
+            if title != self.oldTitle[i]:
                 self.resetPlotItem(plotItem, dataPlots[self.oldTitle[i]])
 
             self.oldTitle[i] = title

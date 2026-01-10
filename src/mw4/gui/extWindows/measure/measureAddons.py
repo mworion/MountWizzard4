@@ -70,7 +70,8 @@ def dataPlots():
                     "name": "Sensor 4",
                     "pen": Styles().M_YELLOW,
                 },
-                "directWeatherTemp": {"plotItemRef": None, "name": "Direct", "pen": Styles().M_PRIM},
+                "directWeather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE":
+                    {"plotItemRef": None, "name": "Direct", "pen": Styles().M_PRIM},
             }
         },
         "Camera Temperature": {

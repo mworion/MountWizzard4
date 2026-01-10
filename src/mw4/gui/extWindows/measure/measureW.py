@@ -145,6 +145,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
         data = self.app.measure.data
         for plot in chart["lineItems"]:
+            print(plot)
             if plot not in data:
                 continue
             pen = pg.mkPen(chart["lineItems"][plot].get("pen"), width=2)

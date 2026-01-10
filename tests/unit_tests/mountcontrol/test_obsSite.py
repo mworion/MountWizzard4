@@ -129,7 +129,9 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(0, obsSite.location.latitude.degrees)
 
     def test_Site_timeJD_1(self):
-        obsSite = ObsSite(parent=Parent())
+        parent = Parent()
+        parent.mountIsUp = True
+        obsSite = ObsSite(parent)
 
         obsSite.ut1_utc = "0"
         obsSite.timeJD = "2458240.12345678"
@@ -138,7 +140,17 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(2458240.123457949, obsSite.timeJD.ut1)
 
     def test_Site_timeJD_2(self):
-        obsSite = ObsSite(parent=Parent())
+        parent = Parent()
+        parent.mountIsUp = True
+        obsSite = ObsSite(parent)
+
+        obsSite.timeJD = obsSite.ts.now().tt - 69.184 / 86400
+        self.assertAlmostEqual(obsSite.ts.now().tt, obsSite.timeJD.tt, 4)
+
+    def test_Site_timeJD_3(self):
+        parent = Parent()
+        parent.mountIsUp = False
+        obsSite = ObsSite(parent)
 
         obsSite.timeJD = obsSite.ts.now().tt - 69.184 / 86400
         self.assertAlmostEqual(obsSite.ts.now().tt, obsSite.timeJD.tt, 4)

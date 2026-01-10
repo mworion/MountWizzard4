@@ -158,7 +158,10 @@ class ObsSite:
 
     @property
     def timeJD(self):
-        return self._timeJD
+        if self.parent.mountIsUp:
+            return self._timeJD
+        else:
+            return self.ts.now()
 
     @timeJD.setter
     def timeJD(self, value):

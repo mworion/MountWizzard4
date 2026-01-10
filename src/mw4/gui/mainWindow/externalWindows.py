@@ -19,7 +19,7 @@ from mw4.gui.extWindows.bigPopupW import BigPopup
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from mw4.gui.extWindows.image.imageW import ImageWindow
 from mw4.gui.extWindows.keypadW import KeypadWindow
-from gui.extWindows.measure.measureW import MeasureWindow
+from mw4.gui.extWindows.measure.measureW import MeasureWindow
 from mw4.gui.extWindows.messageW import MessageWindow
 from mw4.gui.extWindows.satelliteW import SatelliteWindow
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow

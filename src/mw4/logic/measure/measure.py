@@ -57,6 +57,7 @@ class MeasureData:
         name = self.run[self.framework].deviceName
         self.run[self.framework].startCommunication()
         self.signals.deviceConnected.emit(name)
+        print(self.devices)
 
     def stopCommunication(self) -> None:
         """ """

@@ -229,9 +229,8 @@ def test_setUpdateConfig_3(function):
 
 
 def test_convertIndigoProperty_1(function):
-    function.INDIGO = {"test": "test1"}
-    val = function.convertIndigoProperty("test")
-    assert val == "test1"
+    val = function.convertIndigoProperty("SENSORS.AbsolutePressure")
+    assert val == "WEATHER_PARAMETERS.WEATHER_PRESSURE"
 
 
 def test_updateNumber_1(function):

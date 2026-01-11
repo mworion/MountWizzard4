@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from PySide6.Qt3DCore import Qt3DCore
@@ -31,12 +30,12 @@ def function(qapp):
 
 def test_setIntensity_1(function):
     function.parent.entityModel["main"] = {"entity": Qt3DCore.QEntity()}
-
     a = Qt3DCore.QEntity(function.parent.entityModel["main"]["entity"])
     l = Qt3DRender.QPointLight()
     a.addComponent(l)
     function.parent.entityModel["main"]["light"] = l
-    function.setIntensity()
+    with mock.patch.object( Qt3DRender.QPointLight, "setIntensity"):
+        function.setIntensity()
 
 
 def test_create_1(function):

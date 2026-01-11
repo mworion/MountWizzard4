@@ -32,14 +32,14 @@ class SimulatorHorizon:
         self.app = app
         self.parent.ui.showHorizon.checkStateChanged.connect(self.showEnable)
 
-    def showEnable(self):
+    def showEnable(self) -> None:
         """ """
         isVisible = self.parent.ui.showHorizon.isChecked()
         node = self.parent.entityModel.get("horizonRoot")
         if node:
             node["entity"].setEnabled(isVisible)
 
-    def clear(self):
+    def clear(self) -> None:
         """ """
         node = self.parent.entityModel.get("horizonRoot")
         if not node:
@@ -49,15 +49,8 @@ class SimulatorHorizon:
         del self.parent.entityModel["horizonRoot"]["entity"]
         del self.parent.entityModel["horizonRoot"]
 
-    def createWall(self, parentEntity, alt, az):
+    def createWall(self, parentEntity, alt, az) -> Qt3DCore.QEntity:
         """
-        createWall draw a plane in radius distance to show the horizon. spacing
-        is the angular spacing between this planes
-
-        :param parentEntity:
-        :param alt:
-        :param az:
-        :return: entity
         """
         e1 = Qt3DCore.QEntity()
         e1.setParent(parentEntity)
@@ -85,14 +78,11 @@ class SimulatorHorizon:
         e3.addComponent(Materials().horizon)
         return e3
 
-    def create(self):
+    def create(self) -> None:
         """
-        createHorizon draws a horizon "wall" by circling over the horizon points
-        and putting cuboid meshed around a circle with defined radius. the space
-        is the angle width of a plane in degrees
         """
         if not self.app.data.horizonP:
-            return False
+            return
 
         horizonAz = np.linspace(0, 360 - self.WALL_SPACE, int(360 / self.WALL_SPACE))
         alt = [x[0] for x in self.app.data.horizonP]
@@ -108,4 +98,3 @@ class SimulatorHorizon:
         for alt, az in zip(horizonAlt, horizonAz):
             self.createWall(horizonEntity, alt, az)
         self.showEnable()
-        return True

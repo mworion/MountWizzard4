@@ -17,6 +17,7 @@ import mw4.gui.extWindows.image.imageW
 import pytest
 import shutil
 import unittest.mock as mock
+import pyqtgraph as pg
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
 from mw4.gui.extWindows.image.imageW import ImageWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
@@ -124,7 +125,6 @@ def test_updateWindowsStats_3(function):
     function.app.deviceStat["plateSolve"] = False
     function.imagingDeviceStat["imaging"] = False
     function.imagingDeviceStat["plateSolve"] = False
-
     function.updateWindowsStats()
 
 
@@ -151,11 +151,13 @@ def test_selectImage_3(function):
 
 
 def test_copyLevels(function):
-    function.copyLevels()
+    with mock.patch.object(pg.ImageItem, "setLevels"):
+        function.copyLevels()
 
 
 def test_setAspectLocked(function):
-    function.setAspectLocked()
+    with mock.patch.object(pg.PlotItem, "setAspectLocked"):
+        function.setAspectLocked()
 
 
 def test_resultPhotometry_1(function):

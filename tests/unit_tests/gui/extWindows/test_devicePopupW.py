@@ -299,7 +299,7 @@ def test_selectBoltwoodPath_1(function):
     with mock.patch.object(MWidget, "openFile", return_value=Path("/test/file.txt")):
         with mock.patch.object(Path, "is_file", return_value=True):
             function.selectBoltwoodPath()
-            assert function.ui.boltwoodPath.text() == "/test/file.txt"
+            assert function.ui.boltwoodPath.text() == str(Path("/test/file.txt"))
 
 
 def test_selectBoltwoodPath_2(function):

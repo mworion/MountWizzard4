@@ -176,7 +176,7 @@ def test_processPhotometry_1(function):
     class App:
         threadPool = None
 
-    function.fileHandler = FileHandler(App())
+    function.fileHandler = FileHandler(function)
     function.ui.photometryGroup.setChecked(True)
     function.fileHandler.image = 1
     with mock.patch.object(function.photometry, "processPhotometry"):
@@ -187,7 +187,7 @@ def test_processPhotometry_2(function):
     class App:
         threadPool = None
 
-    function.fileHandler = FileHandler(App())
+    function.fileHandler = FileHandler(function)
     function.fileHandler.image = None
     with mock.patch.object(function, "clearGui"):
         function.processPhotometry()
@@ -386,7 +386,7 @@ def test_slewDirect_3(function):
 
 
 def test_slewCenter_1(function):
-    function.fileHandler = FileHandler(App())
+    function.fileHandler = FileHandler(function)
     function.fileHandler.header = {
         "RA": 10,
         "DEC": 10,

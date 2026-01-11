@@ -78,7 +78,7 @@ def test_clearImageTab(function):
 
 
 def test_showTabImage_1(function):
-    function.fileHandler = FileHandler(function)
+    function.fileHandler = FileHandler(function.parent)
     function.fileHandler.image = np.random.rand(100, 100) + 1
     function.fileHandler.wcs = wcs.WCS()
     with mock.patch.object(function, "setBarColor"):
@@ -88,14 +88,14 @@ def test_showTabImage_1(function):
 
 
 def test_showTabImage_2(function):
-    function.fileHandler = FileHandler(function)
+    function.fileHandler = FileHandler(function.parent)
     function.fileHandler.image = None
     function.showImage()
 
 
 def test_showTabHFR(function):
     function.ui.isoLayer.setChecked(True)
-    function.photometry = Photometry(function)
+    function.photometry = Photometry(function.parent)
     function.photometry.hfr = np.random.rand(100, 100) + 1
     function.photometry.hfrPercentile = 0
     function.photometry.hfrMedian = 0
@@ -104,7 +104,7 @@ def test_showTabHFR(function):
 
 
 def test_showTabTiltSquare(function):
-    function.photometry = Photometry(function)
+    function.photometry = FileHandler(function.parent)
     function.photometry.hfr = np.linspace(20, 30, 20)
     function.photometry.hfrMedian = 1
     function.photometry.hfrInner = 1
@@ -117,7 +117,7 @@ def test_showTabTiltSquare(function):
 
 
 def test_showTabTiltTriangle(function):
-    function.photometry = Photometry(function)
+    function.photometry = FileHandler(function.parent)
     function.photometry.hfr = np.linspace(20, 30, 20)
     function.photometry.hfrMedian = 1
     function.photometry.hfrInner = 1
@@ -131,7 +131,7 @@ def test_showTabTiltTriangle(function):
 
 def test_showTabRoundness(function):
     function.ui.isoLayer.setChecked(True)
-    function.photometry = Photometry(function)
+    function.photometry = FileHandler(function.parent)
     function.photometry.roundnessMin = 1
     function.photometry.roundnessMax = 10
     function.photometry.roundnessPercentile = 10
@@ -141,14 +141,16 @@ def test_showTabRoundness(function):
 
 
 def test_showTabAberrationInspect(function):
-    function.photometry = Photometry(function)
+    function.photometry = FileHandler(function.parent)
     function.photometry.image = np.random.rand(100, 100) + 1
+    function.photometry.aberrationImage = np.random.rand(100, 100) + 1
+    function.photometry.ABERRATION_SIZE = 1
     function.photometry.roundnessPercentile = 1
     function.showAberrationInspect()
 
 
 def test_showTabImageSources(function):
-    function.photometry = Photometry(function)
+    function.photometry = FileHandler(function.parent)
     function.imageSourceRange = QRectF(1, 2, 3, 4)
     function.photometry.objs = {
         "x": np.linspace(0, 50, 20),
@@ -172,12 +174,14 @@ def test_showTabImageSources(function):
 
 
 def test_showTabBackground(function):
-    function.photometry = Photometry(function)
+    function.photometry = FileHandler(function.parent)
+    function.photometry.backgroundMin = 0
+    function.photometry.backgroundMax = 1
     function.photometry.background = np.random.rand(100, 100) + 1
     function.showBackground()
 
 
 def test_showTabBackgroundRMS(function):
-    function.photometry = Photometry(function)
+    function.photometry = FileHandler(function.parent)
     function.photometry.backgroundRMS = np.random.rand(100, 100) + 1
     function.showBackgroundRMS()

@@ -41,7 +41,7 @@ jobs:
     #
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: build package
         uses: ./.github/actions/build_package_uv
@@ -52,7 +52,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: install package
         uses: ./.github/actions/setup_test_cov
@@ -64,7 +64,7 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c0.dat
       
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: c0
           path: c0.dat
@@ -75,7 +75,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: install package
         uses: ./.github/actions/setup_test_cov
@@ -87,7 +87,7 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c1.dat
       
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: c1
           path: c1.dat
@@ -98,7 +98,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: install package
         uses: ./.github/actions/setup_test_cov
   
@@ -112,7 +112,7 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c2.dat
       
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: c2
           path: c2.dat
@@ -123,7 +123,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
   
       - name: install package
         uses: ./.github/actions/setup_test_cov
@@ -131,42 +131,67 @@ jobs:
       - name: running_unit_tests
         run: |
           pytest tests/unit_tests/gui/extWindows ${{env.cov}}
+
+      - name: rename_coveragefile
+        run: mv .coverage c3.dat
+      
+      - uses: actions/upload-artifact@v6
+        with:
+          name: c3
+          path: c3.dat
+
+  run_tests_windows_4:
+    #
+    needs: build_package
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: install package
+        uses: ./.github/actions/setup_test_cov
+
+      - name: running_unit_tests
+        run: |
           pytest tests/unit_tests/gui/utilities ${{env.cov}}
           pytest tests/unit_tests/gui/styles ${{env.cov}}
           pytest tests/unit_tests/gui/mainWaddon ${{env.cov}}
 
       - name: rename_coveragefile
-        run: mv .coverage c3.dat
-      
-      - uses: actions/upload-artifact@v4
+        run: mv .coverage c4.dat
+
+      - uses: actions/upload-artifact@v6
         with:
-          name: c3
-          path: c3.dat
+          name: c4
+          path: c4.dat
 
           
   coverage:
     #
     needs: [ run_tests_windows_0, run_tests_windows_1,
-             run_tests_windows_2, run_tests_windows_3]
+             run_tests_windows_2, run_tests_windows_3, run_tests_windows_4]
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         ref: ${{env.branch}}
         
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v7
       with:
         name: c0
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v7
       with:
         name: c1
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v7
       with:
         name: c2
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v7
       with:
         name: c3
-        
+    - uses: actions/download-artifact@v7
+      with:
+        name: c4
+
     - name: combining_data
       run: |
         dir

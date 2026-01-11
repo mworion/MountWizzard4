@@ -5,7 +5,7 @@ runs:
   using: 'composite'
   
   steps:
-    - uses: actions/checkout@v7
+    - uses: download-artifact@v6
 
     - name: setup pyhton
       uses: actions/setup-python@v6

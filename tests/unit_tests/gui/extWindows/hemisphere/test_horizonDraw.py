@@ -65,6 +65,10 @@ def test_initConfig_4(function):
     function.initConfig()
 
 
+def test_close_1(function):
+    function.close()
+
+
 def test_mouseMovedHorizon_1(function):
     with mock.patch.object(
         function.ui.hemisphere.p[0].getViewBox(), "posInViewRange", return_value=False

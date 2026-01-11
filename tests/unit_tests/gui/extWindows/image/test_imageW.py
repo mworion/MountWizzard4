@@ -46,13 +46,11 @@ def test_initConfig_1(function):
 def test_storeConfig_1(function):
     if "imageW" in function.app.config:
         del function.app.config["imageW"]
-
     function.storeConfig()
 
 
 def test_storeConfig_2(function):
     function.app.config["imageW"] = {}
-
     function.storeConfig()
 
 
@@ -62,13 +60,12 @@ def test_showWindow_1(function):
             with mock.patch.object(function, "setupIcons"):
                 with mock.patch.object(function, "colorChange"):
                     with mock.patch.object(function, "show"):
-                        with mock.patch.object(function, "showCurrent"):
-                            function.showWindow()
+                        function.showWindow()
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function, "show"):
-        with mock.patch.object(MWidget, "closeEvent"):
+    with mock.patch.object(MWidget, "closeEvent"):
+        with mock.patch.object(function, "storeConfig"):
             function.closeEvent(QCloseEvent)
 
 
@@ -79,7 +76,8 @@ def test_setupIcons_1(function):
 def test_colorChange(function):
     with mock.patch.object(function, "showCurrent"):
         with mock.patch.object(function.tabs, "colorChange"):
-            function.colorChange()
+            with mock.patch.object(function, "setupIcons"):
+                function.colorChange()
 
 
 def test_clearGui(function):

@@ -41,10 +41,10 @@ jobs:
   build_widgets_resource:
     runs-on: 'ubuntu-22.04'
     steps:
-    - uses: actions/download-artifact@v6
+    - uses: actions/checkout@v6
     
     - name: install uv
-      uses: astral-sh/setup-uv@v7
+      uses: astral-sh/setup-uv@v6
       with:
         enable-cache: true
         python-version: '3.13'
@@ -52,7 +52,7 @@ jobs:
     - name: build_widgets_resource
       run: |
         uv venv
-        uv pip install PySide6==6.10.0
+        uv pip install PySide6
         ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.widDest}}devicePopup_ui.py
         ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.widDest}}downloadPopup_ui.py
         ${{env.uic}} ${{env.wid}}uploadPopup.ui -o ${{env.widDest}}uploadPopup_ui.py

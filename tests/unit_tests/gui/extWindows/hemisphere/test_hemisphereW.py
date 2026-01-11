@@ -47,8 +47,9 @@ def test_storeConfig_1(function):
 def test_closeEvent_1(function):
     with mock.patch.object(function, "storeConfig"):
         with mock.patch.object(function.hemisphereDraw, "close"):
-            with mock.patch.object(MWidget, "closeEvent"):
-                function.closeEvent(QCloseEvent)
+            with mock.patch.object(function.horizonDraw, "close"):
+                with mock.patch.object(MWidget, "closeEvent"):
+                    function.closeEvent(QCloseEvent)
 
 
 def test_showWindow_1(function):

@@ -37,21 +37,18 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
     assert function.tempDir == Path("tests/work/temp")
 
 
 def test_initConfig_2(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
     assert function.tempDir == Path("tests/work/temp")
 
 
 def test_storeConfig_1(function):
     function.thread = None
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_setupIcons_1(function):
@@ -59,8 +56,7 @@ def test_setupIcons_1(function):
 
 
 def test_setupIERSSourceURLsDropDown(function):
-    suc = function.setupIERSSourceURLsDropDown()
-    assert suc
+    function.setupIERSSourceURLsDropDown()
 
 
 def test_finishProgEarthRotationData_1(function):
@@ -68,8 +64,7 @@ def test_finishProgEarthRotationData_1(function):
         returnValues = {"success": False}
 
     function.uploadPopup = Test()
-    suc = function.finishProgEarthRotationData()
-    assert suc
+    function.finishProgEarthRotationData()
 
 
 def test_finishProgEarthRotationData_2(function):
@@ -77,8 +72,7 @@ def test_finishProgEarthRotationData_2(function):
         returnValues = {"success": True}
 
     function.uploadPopup = Test()
-    suc = function.finishProgEarthRotationData()
-    assert suc
+    function.finishProgEarthRotationData()
 
 
 def test_progEarthRotationData_1(function):
@@ -87,8 +81,7 @@ def test_progEarthRotationData_1(function):
         function.databaseProcessing, "writeEarthRotationData", return_value=False
     ):
         with mock.patch.object(UploadPopup, "show"):
-            suc = function.progEarthRotationData()
-            assert not suc
+            function.progEarthRotationData()
 
 
 def test_progEarthRotationData_2(function):
@@ -98,8 +91,7 @@ def test_progEarthRotationData_2(function):
     ):
         with mock.patch.object(UploadPopup, "show"):
             with mock.patch.object(UploadPopup, "show"):
-                suc = function.progEarthRotationData()
-                assert suc
+                function.progEarthRotationData()
 
 
 def test_finishLoadTimeDataFromSourceURLs_1(function):
@@ -107,8 +99,7 @@ def test_finishLoadTimeDataFromSourceURLs_1(function):
         returnValues = {"success": False}
 
     function.downloadPopup = Test()
-    suc = function.finishLoadTimeDataFromSourceURLs()
-    assert suc
+    function.finishLoadTimeDataFromSourceURLs()
 
 
 def test_finishLoadTimeDataFromSourceURLs_2(function):
@@ -116,8 +107,7 @@ def test_finishLoadTimeDataFromSourceURLs_2(function):
         returnValues = {"success": True}
 
     function.downloadPopup = Test()
-    suc = function.finishLoadTimeDataFromSourceURLs()
-    assert suc
+    function.finishLoadTimeDataFromSourceURLs()
 
 
 def test_finishLoadFinalsFromSourceURLs_1(function):
@@ -126,8 +116,7 @@ def test_finishLoadFinalsFromSourceURLs_1(function):
 
     function.downloadPopup = Test()
     with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
-        suc = function.finishLoadFinalsFromSourceURLs()
-        assert not suc
+        function.finishLoadFinalsFromSourceURLs()
 
 
 def test_finishLoadFinalsFromSourceURLs_2(function):
@@ -136,19 +125,16 @@ def test_finishLoadFinalsFromSourceURLs_2(function):
 
     function.downloadPopup = Test()
     with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
-        suc = function.finishLoadFinalsFromSourceURLs()
-        assert suc
+        function.finishLoadFinalsFromSourceURLs()
 
 
 def test_loadTimeDataFromSourceURLs_1(function):
     function.ui.isOnline.setChecked(False)
     with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
-        suc = function.loadTimeDataFromSourceURLs()
-        assert not suc
+        function.loadTimeDataFromSourceURLs()
 
 
 def test_loadTimeDataFromSourceURLs_2(function):
     function.ui.isOnline.setChecked(True)
     with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
-        suc = function.loadTimeDataFromSourceURLs()
-        assert suc
+        function.loadTimeDataFromSourceURLs()

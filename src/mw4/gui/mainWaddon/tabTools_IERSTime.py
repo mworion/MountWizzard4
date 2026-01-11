@@ -42,58 +42,42 @@ class IERSTime(QObject):
         self.ui.progEarthRotationData.clicked.connect(self.progEarthRotationData)
         self.ui.downloadIERS.clicked.connect(self.loadTimeDataFromSourceURLs)
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """
-        initConfig read the key out of the configuration dict and stores it to
-        the gui elements. if some initialisations have to be proceeded with the
-        loaded persistent data, they will be launched as well in this method.
-
-        :return: True for test purpose
         """
         config = self.app.config["mainW"]
         self.setupIERSSourceURLsDropDown()
         self.ui.iersSource.setCurrentIndex(config.get("iersSource", 0))
-        return True
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """
-        :return: True for test purpose
         """
         config = self.app.config["mainW"]
         config["iersSource"] = self.ui.iersSource.currentIndex()
-        return True
 
-    def setupIcons(self):
+    def setupIcons(self) -> None:
+        """ """
         self.mainW.wIcon(self.ui.progEarthRotationData, "run")
         self.mainW.wIcon(self.ui.downloadIERS, "run")
 
-    def setupIERSSourceURLsDropDown(self):
+    def setupIERSSourceURLsDropDown(self) -> None:
         """
-        setupMinorPlanetSourceURLsDropDown handles the dropdown list for the
-        satellite data online sources. therefore we add the necessary entries to
-        populate the list.
-
-        :return: success for test
         """
         self.ui.iersSource.clear()
         self.ui.iersSource.setView(QListView())
         for name in self.iersSourceURLs:
             self.ui.iersSource.addItem(name)
-        return True
 
-    def finishProgEarthRotationData(self):
+    def finishProgEarthRotationData(self) -> None:
         """
-        :return:
         """
         if self.uploadPopup.returnValues["success"]:
             self.msg.emit(1, "IERS", "Upload", "Successfully uploaded")
         else:
             self.msg.emit(2, "IERS", "Upload", "Upload failed")
-        return True
 
-    def progEarthRotationData(self):
+    def progEarthRotationData(self) -> None:
         """
-        :return: success
         """
         self.msg.emit(1, "IERS", "Program", "Earth rotation data")
         self.msg.emit(0, "", "", "finals.data, CDFLeapSeconds.txt")
@@ -101,7 +85,7 @@ class IERSTime(QObject):
         suc = self.databaseProcessing.writeEarthRotationData(self.tempDir)
         if not suc:
             self.msg.emit(2, "IERS", "Data error", "Data could not be exported - stopping")
-            return False
+            return
 
         dataTypes = ["finalsdata", "leapsec"]
         url = self.app.mount.host[0]
@@ -112,26 +96,22 @@ class IERSTime(QObject):
         self.uploadPopup.workerStatus.signals.finished.connect(
             self.finishProgEarthRotationData
         )
-        return True
 
-    def finishLoadTimeDataFromSourceURLs(self):
+    def finishLoadTimeDataFromSourceURLs(self) -> None:
         """
-        :return:
         """
         if self.downloadPopup.returnValues["success"]:
             self.msg.emit(0, "IERS", "Download", "Received [finals.data]")
             self.msg.emit(1, "IERS", "Download", "Downloaded complete")
         else:
             self.msg.emit(2, "IERS", "Download", "Download failed")
-        return True
 
-    def finishLoadFinalsFromSourceURLs(self):
+    def finishLoadFinalsFromSourceURLs(self) -> None:
         """
-        :return:
         """
         if not self.downloadPopup.returnValues["success"]:
             self.msg.emit(2, "IERS", "Download", "Download failed")
-            return False
+            return
 
         self.msg.emit(0, "IERS", "Download", "Received [finals2000A.all]")
 
@@ -145,24 +125,18 @@ class IERSTime(QObject):
         self.downloadPopup.worker.signals.finished.connect(
             self.finishLoadTimeDataFromSourceURLs
         )
-        return True
 
-    def loadTimeDataFromSourceURLs(self):
+    def loadTimeDataFromSourceURLs(self) -> None:
         """
-        :return: success
         """
-        isOnline = self.ui.isOnline.isChecked()
-        if not isOnline:
-            return False
+        if not self.ui.isOnline.isChecked():
+            return
 
         sourceURL = self.ui.iersSource.currentText()
         urlMain = self.iersSourceURLs[sourceURL]
-
         self.msg.emit(1, "IERS", "Download", f"Source: [{sourceURL}]")
-
         source = "finals2000A.all"
         url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
         self.downloadPopup.worker.signals.finished.connect(self.finishLoadFinalsFromSourceURLs)
-        return True

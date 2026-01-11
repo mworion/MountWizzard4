@@ -44,13 +44,19 @@ jobs:
       
       - name: Install python dependencies
         run: |
-          pip install sphinx==8.2.3 sphinx_rtd_theme alabaster sphinx-copybutton
+          pip install sphinx sphinx_rtd_theme alabaster sphinx-copybutton
           pip install setuptools sphinxcontrib-drawio sphinx-simplepdf
       
       - name: Sphinx build
         run: |
+          ls -la
+          ls -la doc
           sphinx-build doc doc/html
+          ls -la
+          ls -la doc
+          ls -la doc/html
           sphinx-build -M simplepdf doc doc/pdf
+          ls -la
           cp doc/pdf/simplepdf/*.pdf doc/html
           mv doc/pdf/simplepdf/*.pdf doc/html/mountwizzard4.pdf
           

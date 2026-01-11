@@ -139,6 +139,11 @@ def test_propSubFrame_5(function):
     assert function.height == 1000
 
 
+def test_propSubFrame_6(function):
+    function.subFrame = 100
+    assert function.subFrame == 100
+
+
 def test_setObsSite(function):
     function.setObsSite(function.app.mount.obsSite)
 

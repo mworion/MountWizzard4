@@ -22,14 +22,13 @@ module-root = "src"
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0a41"
+version = "4.0.0a42"
 license = "Apache-2.0"
 description = "Tool for managing 10_micron mounts"
 readme = "README.rst"
 authors = [
     {name = "Michael Wuertenberger", email = "michael@wuertenberger.org"}
 ]
-keywords = ["6.9.3"]
 requires-python = ">=3.11,<3.14"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -57,7 +56,7 @@ classifiers = [
 dependencies = [
     "numpy==2.2.6",
     "opencv-python-headless==4.12.0.88",
-    "scipy==1.16.3",
+    "scipy==1.17.0",
     "astropy==7.2.0",
     "pyerfa==2.0.1.5",
     "astroquery==0.4.11",
@@ -78,7 +77,7 @@ dependencies = [
     "packaging==25.0",
     "lz4==4.4.5",
     "xisf==0.9.5",
-    "pyside6==6.10.0",
+    "pyside6==6.10.1",
     "pywin32==311; platform_system == 'Windows'",
 ]
 
@@ -101,9 +100,9 @@ dev = [
     "pytest-cov==7.0.0",
     "pytest-xdist==3.8.0",
     "invoke==2.2.1",
-    "ruff==0.14.10",
+    "ruff==0.14.11",
     "coverage==7.13.1",
-    "uv-build==0.9.22",
+    "uv-build==0.9.2",
 ]
 
 [tool.pytest.ini_options]

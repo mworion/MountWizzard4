@@ -176,10 +176,6 @@ class Dome:
     run = {"indi": "dummy"}
 
     @staticmethod
-    def slewDome(altitude=None, azimuth=None, piersideT=None, haT=None, decT=None, lat=None):
-        return
-
-    @staticmethod
     def abortSlew():
         return
 
@@ -528,10 +524,6 @@ class Data:
 
     @staticmethod
     def generateCelestialEquator():
-        return
-
-    @staticmethod
-    def setStatusBuildP(a, b):
         return
 
     @staticmethod

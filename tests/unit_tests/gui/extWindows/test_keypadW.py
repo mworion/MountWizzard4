@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
 import pytest
 import unittest.mock as mock

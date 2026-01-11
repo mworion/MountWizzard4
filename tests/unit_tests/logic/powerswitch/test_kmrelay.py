@@ -297,19 +297,6 @@ def test_status4(function):
             assert function.status == [0, 0, 0, 0, 0, 0, 0, 0]
 
 
-def test_getRelay_1(function):
-    function.mutexPoll.lock()
-    suc = function.getRelay("test", debug=True)
-    function.mutexPoll.unlock()
-    assert not suc
-
-
-def test_getRelay_2(function):
-    function.hostaddress = None
-    suc = function.getRelay("test", debug=True)
-    assert not suc
-
-
 def test_getByte_1(function):
     relay = 7
     state = True

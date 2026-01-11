@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import cv2
 import mw4.gui.extWindows.video.videoBase
 import numpy as np

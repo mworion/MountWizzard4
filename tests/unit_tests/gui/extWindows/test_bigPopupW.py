@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
 import unittest.mock as mock
 from mw4.gui.extWindows.bigPopupW import BigPopup

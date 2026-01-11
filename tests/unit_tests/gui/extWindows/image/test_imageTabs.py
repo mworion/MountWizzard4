@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
 import pyqtgraph as pg
 import pytest

@@ -32,9 +32,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/download-artifact@v6
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: 3.12
+          python-version: 3.13
       
       - name: install drawio package
         run: |
@@ -44,7 +44,7 @@ jobs:
       
       - name: Install python dependencies
         run: |
-          pip install sphinx sphinx_rtd_theme alabaster sphinx-copybutton
+          pip install sphinx==8.2.3 sphinx_rtd_theme alabaster sphinx-copybutton
           pip install setuptools sphinxcontrib-drawio sphinx-simplepdf
       
       - name: Sphinx build

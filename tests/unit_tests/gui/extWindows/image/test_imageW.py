@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import mw4.gui.extWindows.image.imageW
 import pytest
 import shutil

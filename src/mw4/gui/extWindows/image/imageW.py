@@ -39,8 +39,8 @@ class ImageWindow(MWidget):
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
         self.signals = ImageWindowSignals()
-        self.photometry = Photometry(app=app)
-        self.fileHandler = FileHandler(app=app)
+        self.photometry = Photometry(self)
+        self.fileHandler = FileHandler(self)
         self.slewInterface = SlewInterface(self)
         self.barItem = None
         self.imageItem = None

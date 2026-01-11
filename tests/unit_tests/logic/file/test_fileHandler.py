@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
 import pytest
 import shutil
@@ -25,9 +24,13 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from xisf import XISF
 
 
+class Parent:
+    app = App()
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function(qapp):
-    func = FileHandler(App(), Path())
+    func = FileHandler(Parent(), Path())
     yield func
 
 

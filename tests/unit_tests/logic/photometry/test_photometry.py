@@ -23,9 +23,13 @@ from mw4.logic.photometry.photometry import Photometry, PhotometrySignals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
+class Parent:
+    app = App()
+
+
 @pytest.fixture(autouse=True, scope="function")
 def function(qapp):
-    func = Photometry(App())
+    func = Photometry(Parent())
     yield func
 
 

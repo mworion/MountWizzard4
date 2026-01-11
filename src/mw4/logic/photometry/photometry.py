@@ -45,8 +45,8 @@ class Photometry:
     SN = [30, 20, 15, 10, 10]
     SEP = [3.0, 3.0, 2.5, 2.5, 2.0]
 
-    def __init__(self, app, image=None, snSelector=0):
-        self.threadPool = app.threadPool
+    def __init__(self, parent, image: np.array = None, snSelector: int = 0):
+        self.threadPool = parent.app.threadPool
         self.signals = PhotometrySignals()
 
         self.image = image
@@ -66,12 +66,10 @@ class Photometry:
         self.w: int = 0
         self.filterConstW = None
         self.filterConstH = None
-
         self.roundnessGrid = None
         self.roundnessMin = None
         self.roundnessMax = None
         self.roundnessPercentile = None
-
         self.background = None
         self.backgroundMin = None
         self.backgroundMax = None

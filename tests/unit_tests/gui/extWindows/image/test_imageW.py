@@ -14,10 +14,10 @@
 #
 ###########################################################
 import mw4.gui.extWindows.image.imageW
+import pyqtgraph as pg
 import pytest
 import shutil
 import unittest.mock as mock
-import pyqtgraph as pg
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
 from mw4.gui.extWindows.image.imageW import ImageWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget

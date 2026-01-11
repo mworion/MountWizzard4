@@ -37,7 +37,7 @@ def function(qapp):
 def test_addMissingFrameworksData_1(function):
     config = {"camera": {"frameworks": {"ascom": {}}}}
     result = function.addMissingFrameworksData("camera", config)
-    assert result == {'camera': {'frameworks': {'ascom': {}, 'indi': {'dummy': {}}}}}
+    assert result == {"camera": {"frameworks": {"ascom": {}, "indi": {"dummy": {}}}}}
 
 
 def test_addMissingDefaultData_1(function):

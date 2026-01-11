@@ -27,7 +27,7 @@ class PlateSolve:
     framework = None
     run = {}
     deviceName = ""
-    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
 
     @staticmethod
     def solve(a, b):
@@ -65,7 +65,7 @@ class Camera:
     fastReadout = False
     data = {}
     framework = None
-    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
     run = {"indi": "dummy"}
 
     @staticmethod
@@ -125,7 +125,7 @@ class Cover:
     signals = CoverSignals()
     data = {}
     framework = None
-    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
     run = {"indi": "dummy"}
 
     @staticmethod
@@ -172,7 +172,7 @@ class Dome:
     data = {}
     framework = None
     signals = DomeSignals()
-    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
     run = {"indi": "dummy"}
 
     @staticmethod
@@ -223,7 +223,7 @@ class SensorWeather:
     signals = SensorWeatherSignals()
     data = {}
     framework = None
-    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
     run = {"indi": "dummy"}
 
 
@@ -251,7 +251,7 @@ class DirectWeather:
     signals = DirectWeatherSignals()
     data = {}
     framework = None
-    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
     run = {"indi": "dummy"}
 
 
@@ -265,7 +265,7 @@ class SeeingWeather:
 
     signals = SeeingWeatherSignals()
     framework = None
-    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
     run = {"indi": "dummy"}
     data = {}
 
@@ -281,7 +281,7 @@ class Filter:
     signals = FilterSignals()
     data = {}
     framework = None
-    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
     run = {"indi": "dummy"}
 
     @staticmethod
@@ -304,7 +304,7 @@ class Focuser:
     signals = FocuserSignals()
     framework = None
     data = {}
-    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
     run = {"indi": "dummy"}
 
     @staticmethod
@@ -393,7 +393,7 @@ class Telescope:
     run = {"indi": Test()}
     focalLength = 100
     aperture = 100
-    defaultConfig = {"framework": "", "frameworks": {'indi': {'dummy': {}}}}
+    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
 
     @staticmethod
     def stopCommunication():
@@ -605,11 +605,7 @@ class Data:
 
         y = np.interp(x, xRef, yRef)
 
-        if point[0] > y[int(point[1])]:
-            return True
-
-        else:
-            return False
+        return point[0] > y[int(point[1])]
 
 
 class Mount(QObject):

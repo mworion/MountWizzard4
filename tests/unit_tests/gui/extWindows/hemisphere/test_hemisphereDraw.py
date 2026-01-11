@@ -356,7 +356,9 @@ def test_slewStar_4(function):
             with mock.patch.object(
                 function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
             ):
-                with mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=False):
+                with mock.patch.object(
+                    function.slewInterface, "slewTargetRaDec", return_value=False
+                ):
                     function.slewStar(QPointF(1, 1))
 
 
@@ -374,7 +376,9 @@ def test_slewStar_5(function):
             with mock.patch.object(
                 function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
             ):
-                with mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=True):
+                with mock.patch.object(
+                    function.slewInterface, "slewTargetRaDec", return_value=True
+                ):
                     function.slewStar(QPointF(1, 1))
 
 

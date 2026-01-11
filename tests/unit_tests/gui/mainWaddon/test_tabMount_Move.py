@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-from mw4.gui.mainWaddon.slewInterface import SlewInterface
 import mw4.gui.mainWaddon.tabMount
 import pytest
 import unittest.mock as mock

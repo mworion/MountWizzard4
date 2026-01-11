@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-from pathlib import Path
 import os
 import pytest
 import unittest.mock as mock
 from mw4.base.signalsDevices import Signals
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraSGPro import CameraSGPro
+from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

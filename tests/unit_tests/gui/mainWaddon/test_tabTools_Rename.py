@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-from pathlib import Path
 import numpy as np
 import os
 import pytest
@@ -23,6 +22,7 @@ from astropy.io import fits
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
+from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

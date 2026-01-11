@@ -30,7 +30,7 @@ def function(qapp):
 
 
 def test_signals(function):
-    sig = PhotometrySignals()
+    PhotometrySignals()
 
 
 def test_workerGetHFR(function):

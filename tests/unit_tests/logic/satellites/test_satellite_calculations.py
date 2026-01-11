@@ -88,7 +88,7 @@ def test_findSatUp_2(function):
 def test_checkTwilight_1(function):
     ephemeris = function.ephemeris
     loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
-    tEv = function.mount.obsSite.ts.tt_jd(2459215.5)
+    function.mount.obsSite.ts.tt_jd(2459215.5)
     val = checkTwilight(ephemeris, loc, [])
     assert val == 5
 
@@ -283,9 +283,7 @@ def test_extractCorrectOrbits_1(function):
     events = np.array([1])
 
     satOrbits = collectAllOrbits(times, events, function.mount.obsSite)
-    print(satOrbits)
     satOrbits = extractCorrectOrbits(times, events, satOrbits)
-    print(satOrbits)
     assert len(satOrbits) == 1
 
 
@@ -299,9 +297,7 @@ def test_extractCorrectOrbits_2(function):
     events = [0, 1]
     satOrbits = collectAllOrbits(times, events, function.mount.obsSite)
 
-    print(satOrbits)
     satOrbits = extractCorrectOrbits(times, events, satOrbits)
-    print(satOrbits)
     assert len(satOrbits) == 0
 
 

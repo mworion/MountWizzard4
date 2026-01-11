@@ -488,7 +488,6 @@ def test_getTabAndIndex(function):
 
     config = {"test": 1}
     function.getTabAndIndex(widget, config, "test1")
-    print(config)
 
 
 def test_getTabIndex(function):

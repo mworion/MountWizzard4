@@ -265,7 +265,7 @@ def test_writeHeaderPointing():
 def test_updateImageFileHeaderWithSolution_1():
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
-    header = hdu[0].header
+    hdu[0].header
     solution = {
         "raJ2000S": Angle(hours=12),
         "decJ2000S": Angle(degrees=45),

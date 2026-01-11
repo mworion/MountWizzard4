@@ -111,8 +111,8 @@ def test_relayButtonPressed_2(function):
 
 
 def test_updateRelayGui(function):
-    function.relayButton = list()
-    function.relayDropDown = list()
-    function.relayText = list()
+    function.relayButton = []
+    function.relayDropDown = []
+    function.relayText = []
     function.app.relay.status = [0, 1, 0, 1, 0, 1, 0, 1]
     function.updateRelayGui()

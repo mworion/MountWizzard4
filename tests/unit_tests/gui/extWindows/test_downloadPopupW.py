@@ -15,12 +15,12 @@
 ###########################################################
 import builtins
 import os
-from pathlib import Path
 import pytest
 import requests
 import shutil
 import unittest.mock as mock
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
+from pathlib import Path
 from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 

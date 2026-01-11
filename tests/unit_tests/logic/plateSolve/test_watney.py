@@ -14,11 +14,9 @@
 #
 ###########################################################
 import glob
-import mw4.logic
 import os
 import platform
 import pytest
-import subprocess
 from mw4.logic.plateSolve.plateSolve import PlateSolve
 from mw4.logic.plateSolve.watney import Watney
 from pathlib import Path

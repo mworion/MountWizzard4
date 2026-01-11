@@ -19,7 +19,7 @@ from mw4.base.signalsDevices import Signals
 from mw4.logic.environment.sensorWeatherAscom import SensorWeatherAscom
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
-if not platform.system() == "Windows":
+if platform.system() != "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 

@@ -13,14 +13,14 @@
 # Licence APL2.0
 #
 ###########################################################
-from pathlib import Path
 import glob
+import mw4.logic.plateSolve.plateSolve
 import os
 import pytest
-import subprocess
 import shutil
-import mw4.logic.plateSolve.plateSolve
+import subprocess
 from mw4.logic.plateSolve.plateSolve import PlateSolve
+from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -108,7 +108,7 @@ def test_runSolverBin_1(function):
             return Test1(), Test1()
 
     with mock.patch.object(subprocess, "Popen", return_value=Test()):
-        suc, ret = function.runSolverBin(['test', 'test', 'test', 'test'])
+        suc, ret = function.runSolverBin(["test", "test", "test", "test"])
         assert ret == "No solution"
         assert not suc
 
@@ -121,7 +121,7 @@ def test_runSolverBin_2(function):
             return_value=("", ""),
             side_effect=Exception(),
         ):
-            suc, ret = function.runSolverBin(['test', 'test', 'test', 'test'])
+            suc, ret = function.runSolverBin(["test", "test", "test", "test"])
             assert not suc
 
 
@@ -132,18 +132,22 @@ def test_runSolverBin_3(function):
         return_value=("", ""),
         side_effect=subprocess.TimeoutExpired("run", 1),
     ):
-        suc, ret = function.runSolverBin(['test', 'test', 'test', 'test'])
+        suc, ret = function.runSolverBin(["test", "test", "test", "test"])
         assert not suc
 
 
 def test_prepareResult_1(function):
-    result = function.prepareResult(False, "test", Path("tests/work/image/m51.fit"), Path("test"), False)
+    result = function.prepareResult(
+        False, "test", Path("tests/work/image/m51.fit"), Path("test"), False
+    )
     assert not result["success"]
 
 
 def test_prepareResult_2(function):
     with mock.patch.object(Path, "is_file", return_value=False):
-        result = function.prepareResult(True, "test", Path("tests/work/image/m51.fit"), Path("test"), False)
+        result = function.prepareResult(
+            True, "test", Path("tests/work/image/m51.fit"), Path("test"), False
+        )
         assert not result["success"]
         assert result["message"] == "Solve failed, no WCS file"
 
@@ -155,10 +159,18 @@ def test_prepareResult_3(function):
     }
     with mock.patch.object(Path, "is_file", return_value=True):
         with mock.patch.object(mw4.logic.plateSolve.plateSolve, "getImageHeader"):
-            with mock.patch.object(mw4.logic.plateSolve.plateSolve, "getSolutionFromWCSHeader", return_value=solve):
-                with mock.patch.object(mw4.logic.plateSolve.plateSolve, "updateImageFileHeaderWithSolution"):
-                    with mock.patch.object(mw4.logic.plateSolve.plateSolve, "J2000ToJNow", return_value=(1, 1)):
-                        result = function.prepareResult(True, "test", Path("tests/work/image/m51.fit"), Path("test"), True)
+            with mock.patch.object(
+                mw4.logic.plateSolve.plateSolve, "getSolutionFromWCSHeader", return_value=solve
+            ):
+                with mock.patch.object(
+                    mw4.logic.plateSolve.plateSolve, "updateImageFileHeaderWithSolution"
+                ):
+                    with mock.patch.object(
+                        mw4.logic.plateSolve.plateSolve, "J2000ToJNow", return_value=(1, 1)
+                    ):
+                        result = function.prepareResult(
+                            True, "test", Path("tests/work/image/m51.fit"), Path("test"), True
+                        )
                         assert result["success"]
                         assert result["message"] == "Solved"
 
@@ -246,4 +258,3 @@ def test_abort_2(function):
     function.process = Test()
     suc = function.abort()
     assert suc
-

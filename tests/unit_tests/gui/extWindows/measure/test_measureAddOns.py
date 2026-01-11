@@ -17,4 +17,4 @@ from mw4.gui.extWindows.measure.measureAddons import dataPlots
 
 
 def test_dataPlots():
-    dp = dataPlots()
+    dataPlots()

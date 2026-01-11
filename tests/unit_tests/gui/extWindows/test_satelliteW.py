@@ -150,7 +150,7 @@ def test_updatePositions_7(function):
 def test_unlinkWrap(function):
     data = [1, 2, 3, 170, 180, -180, -100, 3, 4]
     for slc in function.unlinkWrap(data):
-        a = slc
+        pass
 
 
 def test_prepareEarth(function):

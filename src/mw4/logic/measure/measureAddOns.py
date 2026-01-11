@@ -15,7 +15,7 @@
 ###########################################################
 
 measure = {
-    'mount': [
+    "mount": [
         "deltaRaJNow",
         "deltaDecJNow",
         "errorAngularPosRA",

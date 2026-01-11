@@ -16,11 +16,10 @@
 import numpy as np
 import pyqtgraph as pg
 import pytest
-from pathlib import Path
 import unittest.mock as mock
 from mw4.gui.extWindows.measure.measureW import MeasureWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
-from mw4.gui.extWindows.measure.measureAddons import dataPlots
+from pathlib import Path
 from PySide6.QtGui import QCloseEvent
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -129,6 +128,7 @@ def test_resetPlotItem(function):
 
     def scene():
         return RemoveItem()
+
     plotItem = pg.PlotItem()
     plotItem.scene = scene
     chart = function.dataPlots["Axis Stability"]

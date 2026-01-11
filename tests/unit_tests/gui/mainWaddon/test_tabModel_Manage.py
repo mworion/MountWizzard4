@@ -84,7 +84,7 @@ def test_setNameList(function):
 
 
 def test_showModelPosition_1(function):
-    function.app.mount.model.starList = list()
+    function.app.mount.model.starList = []
     function.showModelPosition()
 
 
@@ -113,20 +113,20 @@ def test_showErrorAscending_1(function):
 
 
 def test_showErrorAscending_2(function):
-    function.app.mount.model.starList = list()
+    function.app.mount.model.starList = []
     function.showErrorAscending()
 
 
 def test_showErrorAscending_3(function):
     temp = function.app.mount.obsSite.location
     function.app.mount.obsSite.location = None
-    function.app.mount.model.starList = list()
+    function.app.mount.model.starList = []
     function.showErrorAscending()
     function.app.mount.obsSite.location = temp
 
 
 def test_showErrorAscending_4(function):
-    function.app.mount.model.starList = list()
+    function.app.mount.model.starList = []
     function.showErrorAscending()
 
 
@@ -143,20 +143,20 @@ def test_showErrorDistribution_1(function):
 
 
 def test_showErrorDistribution_2(function):
-    function.app.mount.model.starList = list()
+    function.app.mount.model.starList = []
     function.showErrorDistribution()
 
 
 def test_showErrorDistribution_3(function):
     temp = function.app.mount.obsSite.location
     function.app.mount.obsSite.location = None
-    function.app.mount.model.starList = list()
+    function.app.mount.model.starList = []
     function.showErrorDistribution()
     function.app.mount.obsSite.location = temp
 
 
 def test_showErrorDistribution_4(function):
-    function.app.mount.model.starList = list()
+    function.app.mount.model.starList = []
     function.showErrorDistribution()
 
 
@@ -684,7 +684,7 @@ def test_pointClicked_4(function):
 
     points = [Points()]
 
-    function.app.mount.model.starList = list()
+    function.app.mount.model.starList = []
     a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
     a.az = 0
@@ -714,7 +714,7 @@ def test_pointClicked_5(function):
             return [1, 1]
 
     points = [Points()]
-    function.app.mount.model.starList = list()
+    function.app.mount.model.starList = []
     a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
     a.az = 0
@@ -745,7 +745,7 @@ def test_pointClicked_6(function):
             return [1, 1]
 
     points = [Points()]
-    function.app.mount.model.starList = list()
+    function.app.mount.model.starList = []
     a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
     a.az = 0

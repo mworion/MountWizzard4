@@ -13,13 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-import platform
 import webbrowser
 from mw4.gui.styles.colors import colors
 from mw4.gui.utilities.toolsQtWidget import clickable
 from PySide6.QtCore import QObject, Qt
 from PySide6.QtGui import QColor, QTransform
-from PySide6.QtWidgets import QTableWidgetItem, QLabel
+from PySide6.QtWidgets import QLabel, QTableWidgetItem
 
 
 class EnvironSeeing(QObject):

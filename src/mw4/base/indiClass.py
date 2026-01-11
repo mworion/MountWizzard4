@@ -14,8 +14,8 @@
 #
 ###########################################################
 import logging
+from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO
 from mw4.base.signalsDevices import Signals
-from mw4.base.indiClassAddOns import INDIGO, INDI_TYPES
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.indibase.indiClient import Client
 from PySide6.QtCore import QTimer

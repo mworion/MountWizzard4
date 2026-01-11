@@ -107,9 +107,24 @@ def test_startNewSlew_1(function):
     function.modelRunKey = ""
     function.modelRunIterator = iter([])
     function.modelBuildData = {
-        'im-00': {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": True, "imagePath": Path("test")},
-        'im-01': {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": True, "imagePath": Path("test")},
-        'im-02': {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": True, "imagePath": Path("test")},
+        "im-00": {
+            "altitude": Angle(degrees=0),
+            "azimuth": Angle(degrees=0),
+            "success": True,
+            "imagePath": Path("test"),
+        },
+        "im-01": {
+            "altitude": Angle(degrees=0),
+            "azimuth": Angle(degrees=0),
+            "success": True,
+            "imagePath": Path("test"),
+        },
+        "im-02": {
+            "altitude": Angle(degrees=0),
+            "azimuth": Angle(degrees=0),
+            "success": True,
+            "imagePath": Path("test"),
+        },
     }
     function.startNewSlew()
     assert function.mountSlewed
@@ -121,11 +136,26 @@ def test_startNewSlew_3(function):
     function.mountSlewed = True
     function.cancelBatch = False
     function.endBatch = False
-    function.modelRunIterator = iter(['im-00', 'im-01', 'im-02'])
+    function.modelRunIterator = iter(["im-00", "im-01", "im-02"])
     function.modelBuildData = {
-        'im-00': {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": True, "imagePath": Path("test")},
-        'im-01': {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": True, "imagePath": Path("test")},
-        'im-02': {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": True, "imagePath": Path("test")},
+        "im-00": {
+            "altitude": Angle(degrees=0),
+            "azimuth": Angle(degrees=0),
+            "success": True,
+            "imagePath": Path("test"),
+        },
+        "im-01": {
+            "altitude": Angle(degrees=0),
+            "azimuth": Angle(degrees=0),
+            "success": True,
+            "imagePath": Path("test"),
+        },
+        "im-02": {
+            "altitude": Angle(degrees=0),
+            "azimuth": Angle(degrees=0),
+            "success": True,
+            "imagePath": Path("test"),
+        },
     }
 
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
@@ -140,11 +170,26 @@ def test_startNewSlew_4(function):
     function.cancelBatch = False
     function.endBatch = False
     function.app.deviceStat["dome"] = True
-    function.modelRunIterator = iter(['im-00', 'im-01', 'im-02'])
+    function.modelRunIterator = iter(["im-00", "im-01", "im-02"])
     function.modelBuildData = {
-        'im-00': {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": True, "imagePath": Path("test")},
-        'im-01': {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": True, "imagePath": Path("test")},
-        'im-02': {"altitude": Angle(degrees=0), "azimuth": Angle(degrees=0), "success": True, "imagePath": Path("test")},
+        "im-00": {
+            "altitude": Angle(degrees=0),
+            "azimuth": Angle(degrees=0),
+            "success": True,
+            "imagePath": Path("test"),
+        },
+        "im-01": {
+            "altitude": Angle(degrees=0),
+            "azimuth": Angle(degrees=0),
+            "success": True,
+            "imagePath": Path("test"),
+        },
+        "im-02": {
+            "altitude": Angle(degrees=0),
+            "azimuth": Angle(degrees=0),
+            "success": True,
+            "imagePath": Path("test"),
+        },
     }
 
     with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
@@ -193,19 +238,19 @@ def test_collectBuildModelResults_1(function):
 def test_collectBuildModelResults_2(function):
     jd = function.app.mount.obsSite.timeJD
     function.modelBuildData = {
-        'im-00': {
+        "im-00": {
             "altitude": Angle(degrees=0),
             "azimuth": Angle(degrees=0),
             "julianDate": jd,
             "success": True,
         },
-        'im-01': {
+        "im-01": {
             "altitude": Angle(degrees=1),
             "azimuth": Angle(degrees=1),
             "julianDate": jd,
             "success": False,
         },
-        'im-02': {
+        "im-02": {
             "dec": Angle(degrees=0),
             "ra": Angle(hours=0),
             "julianDate": jd,
@@ -241,7 +286,8 @@ def test_buildProgModel_1(function):
 
 
 def test_buildProgModel_2(function):
-    model = {'im-01': {
+    model = {
+        "im-01": {
             "altitude": 44.556745182012854,
             "azimuth": 37.194805194805184,
             "binning": 1.0,
@@ -274,7 +320,8 @@ def test_buildProgModel_2(function):
 
 
 def test_buildProgModel_3(function):
-    model = {'im-01': {
+    model = {
+        "im-01": {
             "altitude": 44.556745182012854,
             "azimuth": 37.194805194805184,
             "binning": 1.0,
@@ -306,13 +353,13 @@ def test_buildProgModel_3(function):
 
 
 def test_addMountDataToModelBuildData_1(function):
-    function.modelRunKey = 'im-00'
-    function.modelBuildData = {'im-00': {"altitude": 0, "azimuth": 0}}
+    function.modelRunKey = "im-00"
+    function.modelBuildData = {"im-00": {"altitude": 0, "azimuth": 0}}
     function.addMountDataToModelBuildData()
-    assert "raJ2000M" in function.modelBuildData['im-00']
-    assert "decJ2000M" in function.modelBuildData['im-00']
-    assert "raJNowM" in function.modelBuildData['im-00']
-    assert "decJNowM" in function.modelBuildData['im-00']
+    assert "raJ2000M" in function.modelBuildData["im-00"]
+    assert "decJ2000M" in function.modelBuildData["im-00"]
+    assert "raJNowM" in function.modelBuildData["im-00"]
+    assert "decJNowM" in function.modelBuildData["im-00"]
 
 
 def test_startNewImageExposure_1(function, mocked_sleepAndEvents):
@@ -324,7 +371,7 @@ def test_startNewImageExposure_2(function, mocked_sleepAndEvents):
     function.pauseBatch = True
     function.cancelBatch = False
     function.exposureWaitTime = 1
-    function.modelBuildData = {'im-00': {"imagePath": Path("test")}}
+    function.modelBuildData = {"im-00": {"imagePath": Path("test")}}
     with mock.patch.object(function, "addMountDataToModelBuildData"):
         with mock.patch.object(function.app.camera, "expose"):
             function.startNewImageExposure()
@@ -337,13 +384,16 @@ def test_startNewPlateSolve_1(function):
 
 
 def test_sendModelProgress_1(function):
-    function.modelBuildData = {'im-00': {"imagePath": Path("test"), "success": True, "processed": True}}
+    function.modelBuildData = {
+        "im-00": {"imagePath": Path("test"), "success": True, "processed": True}
+    }
     function.sendModelProgress()
 
 
 def test_collectPlateSolveResult_1(function):
     jd = function.app.mount.obsSite.timeJD
-    function.modelBuildData = {'im-00': {
+    function.modelBuildData = {
+        "im-00": {
             "julianDate": jd,
             "raJ2000S": Angle(hours=0),
             "decJ2000S": Angle(degrees=0),
@@ -354,7 +404,13 @@ def test_collectPlateSolveResult_1(function):
             "processed": False,
         },
     }
-    result = {"success": True, "raJNow": 0, "decJNow": 0, "imagePath": Path("im-00.fits"), "message": "Ok"}
+    result = {
+        "success": True,
+        "raJNow": 0,
+        "decJNow": 0,
+        "imagePath": Path("im-00.fits"),
+        "message": "Ok",
+    }
     with mock.patch.object(function.app.data, "setStatusBuildP"):
         with mock.patch.object(function, "sendModelProgress"):
             function.collectPlateSolveResult(result)
@@ -362,7 +418,8 @@ def test_collectPlateSolveResult_1(function):
 
 def test_collectPlateSolveResult_2(function):
     jd = function.app.mount.obsSite.timeJD
-    function.modelBuildData = {'im-00': {
+    function.modelBuildData = {
+        "im-00": {
             "julianDate": jd,
             "raJ2000S": Angle(hours=0),
             "decJ2000S": Angle(degrees=0),
@@ -373,7 +430,13 @@ def test_collectPlateSolveResult_2(function):
             "processed": False,
         },
     }
-    result = {"success": False, "raJNow": 0, "decJNow": 0, "imagePath": Path("im-00.fits"), "message": "Ok"}
+    result = {
+        "success": False,
+        "raJNow": 0,
+        "decJNow": 0,
+        "imagePath": Path("im-00.fits"),
+        "message": "Ok",
+    }
     with mock.patch.object(function.app.data, "setStatusBuildP"):
         with mock.patch.object(function, "sendModelProgress"):
             function.collectPlateSolveResult(result)
@@ -381,7 +444,8 @@ def test_collectPlateSolveResult_2(function):
 
 def test_collectPlateSolveResult_3(function):
     jd = function.app.mount.obsSite.timeJD
-    function.modelBuildData = {'im-00': {
+    function.modelBuildData = {
+        "im-00": {
             "julianDate": jd,
             "raJ2000S": Angle(hours=0),
             "decJ2000S": Angle(degrees=0),
@@ -392,7 +456,13 @@ def test_collectPlateSolveResult_3(function):
             "processed": True,
         },
     }
-    result = {"success": False, "raJNow": 0, "decJNow": 0, "imagePath": Path("im-00.fits"), "message": "Ok"}
+    result = {
+        "success": False,
+        "raJNow": 0,
+        "decJNow": 0,
+        "imagePath": Path("im-00.fits"),
+        "message": "Ok",
+    }
     with mock.patch.object(function.app.data, "setStatusBuildP"):
         with mock.patch.object(function, "sendModelProgress"):
             function.collectPlateSolveResult(result)
@@ -400,7 +470,8 @@ def test_collectPlateSolveResult_3(function):
 
 def test_collectPlateSolveResult_4(function):
     jd = function.app.mount.obsSite.timeJD
-    function.modelBuildData = {'im-00': {
+    function.modelBuildData = {
+        "im-00": {
             "julianDate": jd,
             "raJ2000S": Angle(hours=0),
             "decJ2000S": Angle(degrees=0),
@@ -411,7 +482,13 @@ def test_collectPlateSolveResult_4(function):
             "processed": True,
         },
     }
-    result = {"success": False, "raJNow": 0, "decJNow": 0, "imagePath": Path("im-00.fits"), "message": "Skipped"}
+    result = {
+        "success": False,
+        "raJNow": 0,
+        "decJNow": 0,
+        "imagePath": Path("im-00.fits"),
+        "message": "Skipped",
+    }
     with mock.patch.object(function.app.data, "setStatusBuildP"):
         with mock.patch.object(function, "sendModelProgress"):
             function.collectPlateSolveResult(result)
@@ -426,42 +503,50 @@ def test_prepareModelBuildData_1(function):
         with mock.patch.object(function.app.data, "setStatusBuildPUnprocessed"):
             function.prepareModelBuildData()
             assert len(function.modelBuildData) == 2
-            assert function.modelBuildData['image-000']["altitude"].degrees == 5
-            assert function.modelBuildData['image-000']["azimuth"].degrees == 0
+            assert function.modelBuildData["image-000"]["altitude"].degrees == 5
+            assert function.modelBuildData["image-000"]["azimuth"].degrees == 0
 
 
 def test_checkRetryNeeded_1(function):
     function.modelBuildData = {
-        'image-000': {"success": True, "imagePath": Path("test"), 'message': ''},
-        'image-001': {"success": True, "imagePath": Path("test"), 'message': ''},
-        'image0-02': {"success": True, "imagePath": Path("test"), 'message': ''},
+        "image-000": {"success": True, "imagePath": Path("test"), "message": ""},
+        "image-001": {"success": True, "imagePath": Path("test"), "message": ""},
+        "image0-02": {"success": True, "imagePath": Path("test"), "message": ""},
     }
     assert not function.checkRetryNeeded()
 
 
 def test_checkRetryNeeded_2(function):
     function.modelBuildData = {
-        'image-000': {"success": True, "imagePath": Path("test"), 'message': 'Slew not possible'},
-        'image-001': {"success": False, "imagePath": Path("test"), 'message': 'Slew not possible'},
-        'image0-02': {"success": False, "imagePath": Path("test"), 'message': ''},
+        "image-000": {
+            "success": True,
+            "imagePath": Path("test"),
+            "message": "Slew not possible",
+        },
+        "image-001": {
+            "success": False,
+            "imagePath": Path("test"),
+            "message": "Slew not possible",
+        },
+        "image0-02": {"success": False, "imagePath": Path("test"), "message": ""},
     }
     assert function.checkRetryNeeded()
 
 
 def test_checkModelFinished_1(function):
     function.modelBuildData = {
-        'image-000': {"processed": True},
-        'image-001': {"processed": True},
-        'image0-02': {"processed": True},
+        "image-000": {"processed": True},
+        "image-001": {"processed": True},
+        "image0-02": {"processed": True},
     }
     assert function.checkModelFinished()
 
 
 def test_checkModelFinished_2(function):
     function.modelBuildData = {
-        'image-000': {"processed": True},
-        'image-001': {"processed": False},
-        'image0-02': {"processed": True},
+        "image-000": {"processed": True},
+        "image-001": {"processed": False},
+        "image0-02": {"processed": True},
     }
     assert not function.checkModelFinished()
 
@@ -477,29 +562,37 @@ def test_runThroughModelBuildData_1(function, mocked_sleepAndEvents_2):
 def test_generateRunIterator_1(function):
     function.retriesReverse = False
     function.retries = 1
-    function.modelRunList = ['image-000', 'image-001', 'image-002', 'image-003']
+    function.modelRunList = ["image-000", "image-001", "image-002", "image-003"]
     function.modelBuildData = {
-        'image-000': {"success": False, "imagePath": Path("test"), 'message': ''},
-        'image-001': {"success": False, "imagePath": Path("test"), 'message': ''},
-        'image-002': {"success": True, "imagePath": Path("test"), 'message': ''},
-        'image-003': {"success": False, "imagePath": Path("test"), 'message': 'Slew not possible'},
+        "image-000": {"success": False, "imagePath": Path("test"), "message": ""},
+        "image-001": {"success": False, "imagePath": Path("test"), "message": ""},
+        "image-002": {"success": True, "imagePath": Path("test"), "message": ""},
+        "image-003": {
+            "success": False,
+            "imagePath": Path("test"),
+            "message": "Slew not possible",
+        },
     }
     function.generateRunIterator()
-    assert list(function.modelRunIterator) == ['image-000', 'image-001']
+    assert list(function.modelRunIterator) == ["image-000", "image-001"]
 
 
 def test_generateRunIterator_2(function):
     function.retriesReverse = True
     function.retries = 1
-    function.modelRunList = ['image-000', 'image-001', 'image-002', 'image-003']
+    function.modelRunList = ["image-000", "image-001", "image-002", "image-003"]
     function.modelBuildData = {
-        'image-000': {"success": False, "imagePath": Path("test"), 'message': ''},
-        'image-001': {"success": False, "imagePath": Path("test"), 'message': ''},
-        'image-002': {"success": True, "imagePath": Path("test"), 'message': ''},
-        'image-003': {"success": False, "imagePath": Path("test"), 'message': 'Slew not possible'},
+        "image-000": {"success": False, "imagePath": Path("test"), "message": ""},
+        "image-001": {"success": False, "imagePath": Path("test"), "message": ""},
+        "image-002": {"success": True, "imagePath": Path("test"), "message": ""},
+        "image-003": {
+            "success": False,
+            "imagePath": Path("test"),
+            "message": "Slew not possible",
+        },
     }
     function.generateRunIterator()
-    assert list(function.modelRunIterator) == ['image-001', 'image-000']
+    assert list(function.modelRunIterator) == ["image-001", "image-000"]
 
 
 def test_runThroughModelBuildDataRetries_1(function):

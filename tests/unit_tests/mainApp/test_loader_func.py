@@ -16,7 +16,6 @@
 
 import ctypes
 import glob
-import json
 import mw4.loader
 import os
 import platform
@@ -156,7 +155,7 @@ def test_checkIsAdmin_9():
 
 
 def test_writeSystemInfo_1():
-    mwGlob = dict()
+    mwGlob = {}
     mwGlob["modeldata"] = ""
     mwGlob["workDir"] = ""
     writeSystemInfo(mwGlob=mwGlob)
@@ -164,7 +163,7 @@ def test_writeSystemInfo_1():
 
 
 def test_writeSystemInfo_2():
-    mwGlob = dict()
+    mwGlob = {}
     mwGlob["modeldata"] = ""
     mwGlob["workDir"] = ""
     with mock.patch.object(socket, "gethostbyname_ex", side_effect=Exception()):
@@ -206,7 +205,7 @@ def test_extractFile_3():
 
 
 def test_extractDataFiles_1():
-    mwGlob = dict()
+    mwGlob = {}
     mwGlob["dataDir"] = Path("tests/work/data")
     with mock.patch.object(mw4.loader, "extractFile"):
         extractDataFiles(mwGlob=mwGlob)

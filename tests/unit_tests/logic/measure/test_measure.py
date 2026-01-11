@@ -50,9 +50,7 @@ def test_collectDataDevices(function):
         "camera": object(),
         "unknownDevice": object(),
     }
-    function.app.mainW.mainWindowAddons.addons = {
-        "SettDevice": mock.MagicMock()
-    }
+    function.app.mainW.mainWindowAddons.addons = {"SettDevice": mock.MagicMock()}
     function.app.mainW.mainWindowAddons.addons["SettDevice"].drivers = {
         "sensor1Weather": {"class": object()},
         "camera": {"class": object()},
@@ -64,8 +62,7 @@ def test_collectDataDevices(function):
 
 
 def test_clearData_1(function):
-    function.devices = {'directWeather': object(),
-                        'test': object()}
+    function.devices = {"directWeather": object(), "test": object()}
     function.clearData()
 
 
@@ -101,7 +98,9 @@ def test_checkStart_3(function):
 def test_checkSize_1(function):
     function.data.clear()
     function.data["time"] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
-    function.data["directWeather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    function.data["directWeather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = np.array(
+        [0, 0, 0, 0, 0, 0, 0, 0]
+    )
     function.MAXSIZE = 20
     function.checkSize()
 
@@ -109,7 +108,9 @@ def test_checkSize_1(function):
 def test_checkSize_2(function):
     function.data.clear()
     function.data["time"] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
-    function.data["directWeather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    function.data["directWeather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = np.array(
+        [0, 0, 0, 0, 0, 0, 0, 0]
+    )
     function.MAXSIZE = 5
     function.checkSize()
 
@@ -128,6 +129,7 @@ def test_measureTask_2(function):
             "WEATHER_PARAMETERS.WEATHER_DEWPOINT": 0,
             "WEATHER_PARAMETERS.WEATHER_HUMIDITY": 0,
         }
+
     function.devices = {"directWeather": Data()}
     function.clearData()
     with mock.patch.object(function, "checkStart"):

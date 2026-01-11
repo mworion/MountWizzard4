@@ -18,7 +18,6 @@ import json
 import os
 import pytest
 import unittest.mock as mock
-
 from mw4.logic.profiles.profile import (
     defaultConfig,
     loadProfile,

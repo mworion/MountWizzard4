@@ -39,7 +39,7 @@ def loadProfile(loadProfilePath: Path) -> dict:
         return defaultConfig()
 
     configData["profileName"] = loadProfilePath.stem
-    if configData.get('version', '') != profileVersion:
+    if configData.get("version", "") != profileVersion:
         return defaultConfig()
     return configData
 

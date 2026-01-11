@@ -137,7 +137,6 @@ def test_propSubFrame_5(function):
     assert function.posY == 0
     assert function.width == 1000
     assert function.height == 1000
-    temp = function.subFrame
 
 
 def test_setObsSite(function):

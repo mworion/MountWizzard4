@@ -23,8 +23,8 @@ from mw4.mountcontrol.mountSignals import MountSignals
 from pathlib import Path
 from PySide6.QtCore import QThreadPool, QTimer
 from skyfield.api import Angle, wgs84
-from unittest import mock
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 setupLogging()
 

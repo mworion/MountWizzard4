@@ -32,7 +32,7 @@ def function(qapp):
 
 
 def test_signals(function):
-    sig = FileHandlerSignals()
+    FileHandlerSignals()
 
 
 def test_debayerImage_1(function):

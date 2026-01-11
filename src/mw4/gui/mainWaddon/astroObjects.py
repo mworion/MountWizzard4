@@ -76,7 +76,7 @@ class AstroObjects(QObject):
         """ """
         self.uiSourceList.clear()
         self.uiSourceList.setView(QListView())
-        self.uiSourceList.addItem('Please select')
+        self.uiSourceList.addItem("Please select")
         for name in self.sourceUrls:
             self.uiSourceList.addItem(name)
         self.uiSourceList.setCurrentIndex(0)
@@ -109,7 +109,7 @@ class AstroObjects(QObject):
     def loadSourceUrl(self) -> None:
         """ """
         entry = self.uiSourceList.currentText()
-        if entry == 'Please select' or entry == '':
+        if entry == "Please select" or entry == "":
             return
         url = self.sourceUrls[entry]["url"]
         fileName = self.sourceUrls[entry]["file"]

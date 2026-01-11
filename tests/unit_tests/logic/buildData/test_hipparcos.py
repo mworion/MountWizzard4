@@ -30,7 +30,7 @@ def test_data_available(function):
 
 
 def test_calculateAlignStarPositionsAltAz_1(function):
-    star = dict()
+    star = {}
     star["Achernar"] = [
         0.42636313743386084,
         -0.9989721040992605,
@@ -46,7 +46,7 @@ def test_calculateAlignStarPositionsAltAz_1(function):
 
 
 def test_calculateAlignStarPositionsAltAz_2(function):
-    star = dict()
+    star = {}
     star["Achernar"] = [
         0.42636313743386084,
         -0.9989721040992605,
@@ -70,7 +70,7 @@ def test_calculateAlignStarPositionsAltAz_2(function):
 
 
 def test_calculateAlignStarPositionsAltAz_3(function):
-    star = dict()
+    star = {}
     star["Achernar"] = [
         0.42636313743386084,
         -0.9989721040992605,
@@ -96,7 +96,7 @@ def test_calculateAlignStarPositionsAltAz_3(function):
 
 
 def test_getAlignStarRaDecFromName_1(function):
-    star = dict()
+    star = {}
     star["Achernar"] = [
         0.42636313743386084,
         -0.9989721040992605,
@@ -120,7 +120,7 @@ def test_getAlignStarRaDecFromName_1(function):
 
 
 def test_getAlignStarRaDecFromName_2(function):
-    star = dict()
+    star = {}
     star["Achernar"] = [
         0.42636313743386084,
         -0.9989721040992605,

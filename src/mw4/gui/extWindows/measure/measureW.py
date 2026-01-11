@@ -13,15 +13,15 @@
 # Licence APL2.0
 #
 ###########################################################
+import numpy as np
 import pyqtgraph as pg
 from functools import partial
-import numpy as np
+from mw4.gui.extWindows.measure.measureAddons import dataPlots
 from mw4.gui.utilities import toolsQtWidget
 from mw4.gui.widgets import measure_ui
 from PySide6.QtCore import QMutex
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QListView
-from mw4.gui.extWindows.measure.measureAddons import dataPlots
 
 
 class MeasureWindow(toolsQtWidget.MWidget):
@@ -145,7 +145,6 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
         data = self.app.measure.data
         for plot in chart["lineItems"]:
-            print(plot)
             if plot not in data:
                 continue
             pen = pg.mkPen(chart["lineItems"][plot].get("pen"), width=2)

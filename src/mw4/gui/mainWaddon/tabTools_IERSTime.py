@@ -160,7 +160,6 @@ class IERSTime(QObject):
 
         self.msg.emit(1, "IERS", "Download", f"Source: [{sourceURL}]")
 
-
         source = "finals2000A.all"
         url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source

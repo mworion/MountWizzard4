@@ -15,14 +15,12 @@
 ###########################################################
 import cv2
 import numpy as np
-from pathlib import Path
-import os
 import pyqtgraph as pg
 import pytest
-import shutil
 import unittest.mock as mock
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
+from pathlib import Path
 from PySide6.QtCore import QPointF
 from PySide6.QtGui import QCloseEvent
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

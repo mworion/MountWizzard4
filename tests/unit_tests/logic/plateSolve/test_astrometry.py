@@ -19,7 +19,6 @@ import mw4.logic
 import os
 import platform
 import pytest
-import subprocess
 from mw4.logic.plateSolve.astrometry import Astrometry
 from mw4.logic.plateSolve.plateSolve import PlateSolve
 from pathlib import Path
@@ -78,7 +77,9 @@ def test_solve_2(function):
     function.appPath = Path("test/Astrometry.app")
     with mock.patch.object(function.parent, "runSolverBin", return_value=(True, "")):
         with mock.patch.object(function.parent, "prepareResult"):
-            with mock.patch.object(mw4.logic.plateSolve.astrometry, "getHintFromImageFile", return_value=(1, 1, 1)):
+            with mock.patch.object(
+                mw4.logic.plateSolve.astrometry, "getHintFromImageFile", return_value=(1, 1, 1)
+            ):
                 res = function.solve(Path("tests/work/image/m51.fit"), True)
                 assert res["success"]
 

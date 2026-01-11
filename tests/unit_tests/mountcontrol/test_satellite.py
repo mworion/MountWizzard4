@@ -13,13 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 import unittest
 import unittest.mock as mock
 from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.satellite import Satellite
 from skyfield.api import Angle, load
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()
 
@@ -297,7 +297,7 @@ class TestConfigData(unittest.TestCase):
     def test_calcTLE_0(self):
         sat = Satellite(App().mount)
         ts = load.timescale()
-        julD = ts.tt_jd(1234567.8)
+        ts.tt_jd(1234567.8)
 
         with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
             mConn.return_value.communicate.return_value = False, "E", 1
@@ -605,45 +605,39 @@ class TestConfigData(unittest.TestCase):
 
     def test_setTrackingOffsets_1(self):
         sat = Satellite(App().mount)
-        with mock.patch.object(Connection,
-                               'communicate',
-                               return_value=(False, [1, 2, 3, 4], 4)):
+        with mock.patch.object(
+            Connection, "communicate", return_value=(False, [1, 2, 3, 4], 4)
+        ):
             suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
             self.assertFalse(suc)
 
     def test_setTrackingOffsets_2(self):
         sat = Satellite(App().mount)
-        with mock.patch.object(Connection,
-                               'communicate',
-                               return_value=(True, [1, 2, 3, 4], 1)):
-
+        with mock.patch.object(
+            Connection, "communicate", return_value=(True, [1, 2, 3, 4], 1)
+        ):
             suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
             self.assertFalse(suc)
 
     def test_setTrackingOffsets_3(self):
         sat = Satellite(App().mount)
-        with mock.patch.object(Connection,
-                               'communicate',
-                               return_value=(True, ['E', 2, 3], 3)):
-
+        with mock.patch.object(Connection, "communicate", return_value=(True, ["E", 2, 3], 3)):
             suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
             self.assertFalse(suc)
 
     def test_setTrackingOffsets_4(self):
         sat = Satellite(App().mount)
-        with mock.patch.object(Connection,
-                               'communicate',
-                               return_value=(True, ['E', 2, 3, 4], 4)):
-
+        with mock.patch.object(
+            Connection, "communicate", return_value=(True, ["E", 2, 3, 4], 4)
+        ):
             suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
             self.assertFalse(suc)
 
     def test_setTrackingOffsets_5(self):
         sat = Satellite(App().mount)
-        with mock.patch.object(Connection,
-                               'communicate',
-                               return_value=(True, [1, 2, 3, 4], 4)):
-
+        with mock.patch.object(
+            Connection, "communicate", return_value=(True, [1, 2, 3, 4], 4)
+        ):
             suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
             self.assertTrue(suc)
 

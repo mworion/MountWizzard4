@@ -16,10 +16,10 @@
 import logging
 import numpy as np
 from mw4.base.signalsDevices import Signals
+from mw4.logic.measure.measureAddOns import measure
 from mw4.logic.measure.measureCSV import MeasureDataCSV
 from mw4.logic.measure.measureRaw import MeasureDataRaw
 from PySide6.QtCore import QMutex
-from mw4.logic.measure.measureAddOns import measure
 
 
 class MeasureData:
@@ -50,7 +50,7 @@ class MeasureData:
         """"""
         self.devices.clear()
         deviceStat = self.app.deviceStat
-        deviceDrivers = self.app.mainW.mainWindowAddons.addons['SettDevice'].drivers
+        deviceDrivers = self.app.mainW.mainWindowAddons.addons["SettDevice"].drivers
         devices = [device for device in deviceStat if deviceStat[device] is not None]
         for device in devices:
             if device not in measure:
@@ -88,7 +88,7 @@ class MeasureData:
 
     def checkStart(self) -> None:
         """ """
-        if self.shorteningStart and len(self.data['time']) > 2:
+        if self.shorteningStart and len(self.data["time"]) > 2:
             self.shorteningStart = False
             for measure in self.data:
                 self.data[measure] = np.delete(self.data[measure], range(0, 2))
@@ -97,8 +97,8 @@ class MeasureData:
         """ """
         if len(self.data["time"]) < self.MAXSIZE:
             return
-        for measure in self.data:
-            self.data[measure] = np.split(self.data[measure], 2)[1]
+        for item in self.data:
+            self.data[item] = np.split(self.data[item], 2)[1]
 
     def measureTask(self) -> None:
         """ """

@@ -152,7 +152,13 @@ class SatSearch(QObject, SatData):
         self.ui.listSats.setItem(row, col, entry)
 
     def updateListSats(
-        self, row: int, satParam, isUp: list = [], isSunlit: bool = False, appMag: float|None = None, twilight: int | None = None
+        self,
+        row: int,
+        satParam,
+        isUp: list = [],
+        isSunlit: bool = False,
+        appMag: float | None = None,
+        twilight: int | None = None,
     ):
         """ """
         entry = QTableWidgetItem(f"{satParam[0]:5.0f}")

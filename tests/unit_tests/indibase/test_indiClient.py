@@ -863,7 +863,6 @@ def test_parseCmd_9(function):
 
 def test_handleReadyRead_1(function):
     function.curDepth = 0
-    elem = ""
     with mock.patch.object(function.socket, "readAll"):
         with mock.patch.object(function.parser, "feed"):
             with mock.patch.object(function.parser, "read_events", side_effect=Exception):

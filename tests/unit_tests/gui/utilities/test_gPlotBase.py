@@ -126,8 +126,8 @@ def test_PlotBase_drawHorizon_4():
 
 def test_addIsoBasic_1():
     p = PlotBase()
-    az = np.random.uniform(low=10, high=350, size=(50,))
-    alt = np.random.uniform(low=15, high=85, size=(50,))
+    np.random.uniform(low=10, high=350, size=(50,))
+    np.random.uniform(low=15, high=85, size=(50,))
     err = np.random.uniform(low=5, high=15, size=(50,))
     with mock.patch.object(QApplication, "processEvents"):
         p.addIsoBasic(p.p[0], err, levels=1)

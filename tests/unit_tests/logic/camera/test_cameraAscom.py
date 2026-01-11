@@ -18,7 +18,7 @@ import platform
 import pytest
 import unittest.mock as mock
 
-if not platform.system() == "Windows":
+if platform.system() != "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 

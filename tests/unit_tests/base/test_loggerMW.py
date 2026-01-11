@@ -82,7 +82,6 @@ def test_setupLogging_configures_logging_format(clean_log_directory):
     assert isinstance(handler, logging.Handler), (
         "Handler should be an instance of logging.Handler."
     )
-    formatter = handler.formatter
 
 
 def test_setupLogging_configures_specific_log_levels(clean_log_directory):

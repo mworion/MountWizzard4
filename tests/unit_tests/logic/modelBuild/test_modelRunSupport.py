@@ -89,7 +89,7 @@ def test_writeRetrofitData_3():
 
 
 def test_convertFloatToAngle_1():
-    target = [
+    [
         {
             "altitude": Angle(degrees=44.556745182012854),
             "azimuth": Angle(degrees=37.194805194805184),

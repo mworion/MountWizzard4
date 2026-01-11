@@ -13,10 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-from packaging.version import Version
 import unittest
 import unittest.mock as mock
 from mw4.mountcontrol.setting import Setting
+from packaging.version import Version
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -925,7 +925,7 @@ class TestConfigData(unittest.TestCase):
         response = ["11"]
         with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
             mConn.return_value.communicate.return_value = True, response, 2
-            suc = setting.setRefractionParam(temperature=5, pressure=800)
+            setting.setRefractionParam(temperature=5, pressure=800)
 
     def test_Setting_setRefractionParam_not_ok4(self):
         setting = Setting(App().mount)

@@ -26,7 +26,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()
 
-if not platform.system() == "Windows":
+if platform.system() != "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 

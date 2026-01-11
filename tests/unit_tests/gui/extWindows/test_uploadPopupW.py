@@ -13,12 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-from pathlib import Path
 import builtins
 import pytest
 import requests
 import unittest.mock as mock
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
+from pathlib import Path
 from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 

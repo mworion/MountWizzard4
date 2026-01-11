@@ -21,8 +21,6 @@ import unittest.mock as mock
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
 from mw4.gui.extWindows.image.imageW import ImageWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
-from mw4.logic.file.fileHandler import FileHandler
-from mw4.logic.photometry.photometry import Photometry
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
 from skyfield.api import Angle
@@ -33,7 +31,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     with mock.patch.object(ImageTabs, "setCrosshair"):
         with mock.patch.object(ImageTabs, "colorChange"):
-            func = ImageWindow(app=App())
+            func = ImageWindow(App())
             yield func
             func.app.threadPool.waitForDone(10000)
 
@@ -161,22 +159,16 @@ def test_setAspectLocked(function):
 
 
 def test_resultPhotometry_1(function):
-    function.photometry = Photometry(function)
     function.photometry.objs = None
     function.resultPhotometry()
 
 
 def test_resultPhotometry_2(function):
-    function.photometry = Photometry(function)
     function.photometry.objs = 1
     function.resultPhotometry()
 
 
 def test_processPhotometry_1(function):
-    class App:
-        threadPool = None
-
-    function.fileHandler = FileHandler(function)
     function.ui.photometryGroup.setChecked(True)
     function.fileHandler.image = 1
     with mock.patch.object(function.photometry, "processPhotometry"):
@@ -184,10 +176,6 @@ def test_processPhotometry_1(function):
 
 
 def test_processPhotometry_2(function):
-    class App:
-        threadPool = None
-
-    function.fileHandler = FileHandler(function)
     function.fileHandler.image = None
     with mock.patch.object(function, "clearGui"):
         function.processPhotometry()
@@ -386,7 +374,6 @@ def test_slewDirect_3(function):
 
 
 def test_slewCenter_1(function):
-    function.fileHandler = FileHandler(function)
     function.fileHandler.header = {
         "RA": 10,
         "DEC": 10,

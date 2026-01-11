@@ -196,7 +196,7 @@ jobs:
       run: |
         dir
         python -m pip install coverage
-        python -m coverage combine c0.dat c1.dat c2.dat c3.dat
+        python -m coverage combine c0.dat c1.dat c2.dat c3.dat c4.dat
         python -m coverage xml
 
     - name: upload

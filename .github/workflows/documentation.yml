@@ -31,7 +31,7 @@ jobs:
   documentation:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/download-artifact@v6
+      - uses: actions/actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: 3.13
@@ -49,14 +49,8 @@ jobs:
       
       - name: Sphinx build
         run: |
-          ls -la
-          ls -la doc
           sphinx-build doc doc/html
-          ls -la
-          ls -la doc
-          ls -la doc/html
           sphinx-build -M simplepdf doc doc/pdf
-          ls -la
           cp doc/pdf/simplepdf/*.pdf doc/html
           mv doc/pdf/simplepdf/*.pdf doc/html/mountwizzard4.pdf
           

@@ -5,9 +5,9 @@ runs:
   using: 'composite'
   
   steps:
-    - uses: download-artifact@v6
+    - uses: actions/download-artifact@v6
 
-    - name: setup pyhton
+    - name: setup python
       uses: actions/setup-python@v6
       with:
         python-version: '3.13'

@@ -39,7 +39,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: download-artifact@v6
+      uses: actions/download-artifact@v6
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL

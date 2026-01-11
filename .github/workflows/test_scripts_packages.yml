@@ -41,7 +41,7 @@ jobs:
   build_widgets_resource:
     runs-on: 'ubuntu-22.04'
     steps:
-    - uses: download-artifact@v6
+    - uses: actions/download-artifact@v6
     
     - name: install uv
       uses: astral-sh/setup-uv@v7

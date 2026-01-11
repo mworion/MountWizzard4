@@ -146,6 +146,7 @@ jobs:
       - name: MountWizzard4 Install
         continue-on-error: true
         run: |
+          uv venv
           uv pip install dist/mountwizzard4.tar.gz
           
       - name: Run MountWizzard4
@@ -178,6 +179,7 @@ jobs:
       - name: MountWizzard4 Install
         continue-on-error: true
         run: |
+          uv venv
           uv pip install dist/mountwizzard4.tar.gz
           
       - name: MountWizzard4 Run

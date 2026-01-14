@@ -29,33 +29,33 @@ def defaultConfig() -> dict:
     return config
 
 
-def loadProfile(loadProfilePath: Path) -> dict:
+def loadProfile(loadConfigPath: Path) -> dict:
     """ """
-    with open(loadProfilePath) as configFile:
-        configData = yaml.safe_load(configFile)
-        if not configData:
+    with open(loadConfigPath) as configFile:
+        config = yaml.safe_load(configFile)
+        if not config:
             return defaultConfig()
 
-    configData["profileName"] = loadProfilePath.stem
-    if configData.get("version", "") != profileVersion:
+    config["profileName"] = loadConfigPath.stem
+    if config.get("version", "") != profileVersion:
         return defaultConfig()
-    return configData
+    return config
 
 
 def loadProfileStart(configDir: Path) -> dict:
     """ """
-    profile = defaultConfig()
+    config = defaultConfig()
     profilePath = configDir / "profile"
     if not profilePath.exists():
-        return profile
+        return config
 
     profileName = profilePath.read_text()
-    profilePath = configDir / (profileName + ".yaml")
-    if not profilePath.exists():
-        return profile
+    configPath = configDir / (profileName + ".yaml")
+    if not configPath.exists():
+        return config
 
-    profile = loadProfile(profilePath)
-    return profile
+    config = loadProfile(profilePath)
+    return config
 
 
 def saveProfile(saveProfilePath: Path, config: dict) -> None:

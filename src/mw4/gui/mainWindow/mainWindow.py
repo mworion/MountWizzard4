@@ -357,7 +357,7 @@ class MainWindow(MWidget):
         """ """
         folder = self.app.mwGlob["configDir"]
         loadProfilePath = self.openFile(
-            self, "Open config file", folder, "Config files (*.cfg)"
+            self, "Open config file", folder, "Config files (*.yaml)"
         )
         if not loadProfilePath.is_file():
             return
@@ -380,13 +380,13 @@ class MainWindow(MWidget):
         """ """
         folder = self.app.mwGlob["configDir"]
         saveProfilePath = self.saveFile(
-            self, "Save config file", folder, "Config files (*.cfg)", enableDir=False
+            self, "Save config file", folder, "Config files (*.yaml)", enableDir=False
         )
         self.saveProfileBase(saveProfilePath)
 
     def saveProfile(self) -> None:
         """ """
-        saveProfilePath = self.app.mwGlob["configDir"] / (self.ui.profile.text() + ".cfg")
+        saveProfilePath = self.app.mwGlob["configDir"] / (self.ui.profile.text() + ".yaml")
         self.saveProfileBase(saveProfilePath)
 
     def remoteCommand(self, command: str) -> None:

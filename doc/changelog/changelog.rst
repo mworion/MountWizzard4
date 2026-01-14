@@ -53,6 +53,7 @@ Version 4.x
 - improve: rewrite of the online documentation
 - improve: no 10micron installer needed anymore for object data
 - improve: schedule and threads in waiting times (slow machines)
+- improve: change von complicated json dump to YAML format for config file
 - remove: automation of 10micron installer, replaced with web interface
 - remove: updater for MW4 (use uv installer instead)
 - remove: automatic profile conversion from x.x to 4.x (too complex)

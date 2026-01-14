@@ -15,7 +15,6 @@
 #
 ###########################################################
 from invoke import task
-import glob
 import time
 import os
 
@@ -178,7 +177,7 @@ def build_widgets(c):
 @task(pre=[build_resources, build_widgets, update_builtins])
 def build(c):
     printMW("building dist mountwizzard4")
-    runMW(c, "rm -f dist/mountwizzard4.tar.gz")
+    runMW(c, "rm -f dist/*.tar.gz")
     runMW(c, "uv build")
     runMW(
         c,
@@ -190,7 +189,7 @@ def build(c):
 @task(pre=[build])
 def build_test(c):
     printMW("build mountwizzard4")
-    runMW(c, "rm -f dist/mountwizzard*.tar.gz")
+    runMW(c, "rm -f dist/*.tar.gz")
     runMW(c, "uv build")
     runMW(
         c,
@@ -202,7 +201,6 @@ def build_test(c):
 @task(pre=[build])
 def publish(c):
     printMW("publishing mountwizzard4")
-    runMW(c, 'rm -rf ./dist/mountwizzard*.*')
     runMW(c, 'uvx uv-publish')
     printMW("publishing mountwizzard4 finished\n")
 

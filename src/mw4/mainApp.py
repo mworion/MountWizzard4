@@ -201,9 +201,9 @@ class MountWizzard4(QObject):
         self.config["loglevel"] = logging.getLevelName(self.log.level)
         location = self.mount.obsSite.location
         if location is not None:
-            self.config["topoLat"] = location.latitude.degrees
-            self.config["topoLon"] = location.longitude.degrees
-            self.config["topoElev"] = location.elevation.m
+            self.config["topoLat"] = float(location.latitude.degrees)
+            self.config["topoLon"] = float(location.longitude.degrees)
+            self.config["topoElev"] = float(location.elevation.m)
 
     def sendStart(self):
         """ """

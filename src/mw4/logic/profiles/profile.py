@@ -13,10 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-import json
 import logging
 from mw4.base.loggerMW import setupLogging
 from pathlib import Path
+import yaml
 
 setupLogging()
 log = logging.getLogger()
@@ -31,12 +31,10 @@ def defaultConfig() -> dict:
 
 def loadProfile(loadProfilePath: Path) -> dict:
     """ """
-    try:
-        with open(loadProfilePath) as configFile:
-            configData = json.load(configFile)
-    except Exception as e:
-        log.critical(f"Cannot parse: {loadProfilePath.name}, error: {e}")
-        return defaultConfig()
+    with open(loadProfilePath) as configFile:
+        configData = yaml.safe_load(configFile)
+        if not configData:
+            return defaultConfig()
 
     configData["profileName"] = loadProfilePath.stem
     if configData.get("version", "") != profileVersion:
@@ -52,7 +50,7 @@ def loadProfileStart(configDir: Path) -> dict:
         return profile
 
     profileName = profilePath.read_text()
-    profilePath = configDir / (profileName + ".cfg")
+    profilePath = configDir / (profileName + ".yaml")
     if not profilePath.exists():
         return profile
 
@@ -65,7 +63,6 @@ def saveProfile(saveProfilePath: Path, config: dict) -> None:
     with open(saveProfilePath.parent / "profile", "w") as profile:
         profile.writelines(saveProfilePath.stem)
 
-    file = saveProfilePath.parent / (saveProfilePath.stem + ".cfg")
-    config["version"] = profileVersion
+    file = saveProfilePath.parent / (saveProfilePath.stem + ".yaml")
     with open(file, "w") as outfile:
-        json.dump(config, outfile, sort_keys=True, indent=4)
+        yaml.dump(config, outfile, default_flow_style=False)

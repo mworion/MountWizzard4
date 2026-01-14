@@ -78,6 +78,7 @@ dependencies = [
     "lz4==4.4.5",
     "xisf==0.9.5",
     "pyside6==6.10.0",
+    "pyyaml==6.0.3",
     "pywin32==311; platform_system == 'Windows'",
 ]
 
@@ -102,7 +103,7 @@ dev = [
     "invoke==2.2.1",
     "ruff==0.14.11",
     "coverage==7.13.1",
-    "uv-build==0.9.24",
+    "uv-build==0.9.25",
     "dotenv==0.9.9",
 ]
 

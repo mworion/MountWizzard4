@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Step 3: Running the model build &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=56c4699f" />
+    <script src="../../_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Workflows and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="step-3-running-the-model-build">
+<h1>Step 3: Running the model build<a class="headerlink" href="#step-3-running-the-model-build" title="Link to this heading">¶</a></h1>
+<p>After you have selected you build points, MountWizzard4 could automatically run
+through the points and generate the data to generate a model. These are steps
+you could basically all manual as the final model calculation itself is done in
+the mount computer! There are two different ways offered from 10micron to build
+a model:</p>
+<table class="hlist"><tr><td><ul class="simple">
+<li><p>Incremental</p></li>
+<li><p>Batch</p></li>
+</ul>
+</td></tr></table>
+<p>In incremental model build, each new point will start a recalculation of the
+model in the mount. This behavior is also called sync refine, as with each point
+the model is processed.</p>
+<p>In batch model build, a complete set of point and their data are transferred to
+the mount computer, which calculates from this data a new model.</p>
+<p>In result both variant will produce the same model with the same quality. The
+difference is the way and the context you are working in. MountWizzard4 uses
+the batch model build as there are advantages (not in the model quality) in the
+automatic handling of point data.</p>
+<a class="reference internal image-reference" href="../../_images/model_build.png"><img alt="../../_images/model_build.png" class="align-center" height="426" src="../../_images/model_build.png" width="568" />
+</a>
+<p>In the “model build and program” tab, that actual model spec from
+the mount computer is shown. If you are in an early stage of your setup, you might use
+some of the hints given to refine and tune your mechanical setup before building
+your final model for imaging.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All values which are show in these graphs were calculated by the
+mount computer itself and just read out and displayed by
+MountWizzard4. As the 10micron algorithm of the model optimizer is
+not know. The given hints are observations.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Any changes in your mechanical setup invalidates the model!</p>
+</div>
+<section id="explanation-model-build-process">
+<h2>Explanation model build process:<a class="headerlink" href="#explanation-model-build-process" title="Link to this heading">¶</a></h2>
+<p>The model correct for error. Some could be removed exactly, some not. The way is
+a mathematically optimization method. In max the mount could calculate 22 terms
+(which means two models of a set of 11 terms, one for WEST and one for EAST
+side). If you need 22 parameters for the model (for whatever reason the mount
+thinks), you have to have at minimum 22 alignment stars or more. Otherwise this
+will not result in 22 parameters. Again like in polar alignment: think of what
+is the goal of this task. For sure you would like to remove as much of the
+alignment error to be able to get unguided images.</p>
+</section>
+<section id="modeling-automatics">
+<h2>Modeling automatics<a class="headerlink" href="#modeling-automatics" title="Link to this heading">¶</a></h2>
+<p>The automation process is explained by the next drawing. It is quite simple, but
+there are some important topic, which you should care about.</p>
+<img alt="../../_images/model_process.svg" class="align-center drawio" src="../../_images/model_process.svg" />
+<p>MountWizzard4 tries to do as much steps at the same time as possible to reach
+the minimum model build time. So <strong>“Take an image”</strong> means that the signal to
+do the next slew to the point is already started when the camera sends image
+integration finished. During image download and image saving, slewing is already
+on the way. The same happens to image solve. MountWizzard4 does not wait until
+an image is plate solved, but manages as much images in the shortest time. If
+your plate solver is fast, your don’t see much of this asynchronous behavior, if
+you use a slower one or if you are running MountWizzard4 on a slower machine,
+you might experience a stack of plate solving tasks when the mount slewing and
+imaging is already finished.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the plate solver a starting Ra/Dec and scale hint is necessary
+for a successful plate solve. Please check your environment if INDI
+or INDIGO embeds this data in the FITS header of the image file.</p>
+</div>
+<p>You could <strong>“Pause”</strong> the model build at any time, but MountWizzard4 will finish
+after a sequence which allows safely to pause. It will not happen immediately.</p>
+<p>You also could <strong>“End”</strong> the model build process at any time. In this case
+MountWizzard4 will take all already existing data and tries to program a model
+to the mount.</p>
+<p>In addition you could <strong>“Cancel”</strong> a model build run. In this case all data is
+lost.</p>
+<p>MountWizzard4 offers a disabling of dual tracking during the model build run and
+restores this state afterwards or a mount park after a model build is finished.</p>
+<p>During a model build it might happen due to clouds or other events, that some
+of the images from model point could not be solved an therefore used for model
+build. For this situation you could enable a retry mechanism for the
+<strong>“missed”</strong> points. After running through all points, MountWizzard4 will retry
+the missed ones N times and will add their data if possible afterwards.</p>
+</section>
+<section id="using-model-datafiles">
+<h2>Using model datafiles<a class="headerlink" href="#using-model-datafiles" title="Link to this heading">¶</a></h2>
+<p>MountWizzard4 stores for each model build run all data (and some more for
+analyse) to build a mount model. With this data you could rebuild at any time
+you mount model from scratch if you for example deleted to much points during
+optimisation or other reasons.</p>
+<p>In addition you have the chance to combine multiple model runs to a single mount
+model! Please think of the maximum of 100 point the mount computer will handle
+to calculate a mount model.</p>
+<p>The warning about the invalidation of the model when mechanical changes are made
+are true for this step as well. Combining model data from different mechanical
+setups lead into an invalid model. Rebuilding a model from old data when
+mechanical changes were made result also in an incorrect model.</p>
+</section>
+<section id="fast-align">
+<h2>Fast Align<a class="headerlink" href="#fast-align" title="Link to this heading">¶</a></h2>
+<p>There is a way to adjust an existing model to a certain sphere position. If you
+choose fast align, MountWizzard4 will do for the actual position an image, plate
+solve it an align the model to the solved coordinates. This means the whole
+model is move in a way, that the actual pointing coordinates and solved
+coordinates are equal. But this changes model pointing for all other position in
+the sky as well without knowing if this shift really fits there.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Fast align is a step to adjust quickly a reasonable model to an
+actual pointing position. This action is not a model build process!
+You most probably loose the pointing accuracy of you model!</p>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/workflows/modeling/model_build.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

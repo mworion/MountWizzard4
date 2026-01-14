@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Satellite tracking &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=56c4699f" />
+    <script src="../../_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Tools for the Job" href="../tools/index.html" />
+    <link rel="prev" title="Profile handling" href="../profile/index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config/index.html">Configuration</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Workflows and functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../almanac/index.html">Almanac</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dome/index.html">Dome</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../environment/index.html">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imaging/index.html">Imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../minorplanets/index.html">Minor Planets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modeling/index.html">Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../profile/index.html">Profile handling</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Satellite tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/index.html">Tools for the Job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update/index.html">Updating the app</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Workflows and functions</a><ul>
+      <li>Previous: <a href="../profile/index.html" title="previous chapter">Profile handling</a></li>
+      <li>Next: <a href="../tools/index.html" title="next chapter">Tools for the Job</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="satellite-tracking">
+<h1>Satellite tracking<a class="headerlink" href="#satellite-tracking" title="Link to this heading">¶</a></h1>
+<p>MountWizzard4 supports the mount capability of tracking satellites. The planning
+is based on Two Line Elements (TLE), which are provided by organisations (e.g.
+<a class="reference external" href="http://www.celestrak.com">http://www.celestrak.com</a>) and deliver a set of orbital parameters for
+calculating the satellite track with regard to your location in Alt / Az
+coordinates. Since the introduction, 10micron does the calculation internally.
+Therefore it is needed to upload the satellite TLE data to the mount and let it
+calculate. Before FW 3.x this is the only possibility (using the internal
+satellite database works similar) to do tracking.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As the orbital elements of a satellite change over time, it is
+necessary to get most actual data for get a good tracking. Data
+which is older than 10 days is definitely outdated. MountWizzard4
+marks them red. Older than 3 days may work, MountWizzard4 marks them
+yellow. Ideal is to get them right in time.</p>
+</div>
+<p>You could select different databases on the right upper part of “Searching
+Database” tab {1}. Once selected and online enabled, MountWizzard4 will download
+the newest data and offers the list of included satellites. For finding the
+satellite of your choice you could use the search field (2) to reduce the list.
+The string is <em>not</em> case sensitive and will be stored persistent.</p>
+<a class="reference internal image-reference" href="../../_images/sat_classic.png"><img alt="../../_images/sat_classic.png" class="align-center" height="426" src="../../_images/sat_classic.png" width="568" />
+</a>
+<p>There are many more selection criteria available to filter the list of
+satellites with real-time calculations of some properties like velocity,
+distance and a glimpse of the apparent magnitude. This calculation takes some
+time and you will see a yellow frame and progress counter in the filter area.</p>
+<a class="reference internal image-reference" href="../../_images/sat_calc.png"><img alt="../../_images/sat_calc.png" class="align-center" height="426" src="../../_images/sat_calc.png" width="568" />
+</a>
+<p>Once you choose a satellite with double click, data is programmed to mount
+controller, parameters are displayed, MountWizzard4 calculated the next 3 orbits
+of the satellite with rise / culminate / settle and if it occurs the flip time
+when crossing the meridian.</p>
+<a class="reference internal image-reference" href="../../_images/sat_search.png"><img alt="../../_images/sat_search.png" class="align-center" height="426" src="../../_images/sat_search.png" width="568" />
+</a>
+<p>The selected satellite will also be shown in the <strong>Satellite</strong> window:</p>
+<a class="reference internal image-reference" href="../../_images/sat_selected.png"><img alt="../../_images/sat_selected.png" class="align-center" height="202" src="../../_images/sat_selected.png" width="568" />
+</a>
+<p>After the mount has done it’s calculations as well, the result will be shown in
+the <strong>Trajectory starts</strong> and <strong>Trajectory ends</strong> fields and a possible flip
+will be announced on the “Run Tracking” tab, MountWizzard4 offers now (need
+Firmware 3.x) some adjustments for centering the satellites in you imaging FOV.</p>
+<a class="reference internal image-reference" href="../../_images/sat_track1.png"><img alt="../../_images/sat_track1.png" class="align-center" height="426" src="../../_images/sat_track1.png" width="568" />
+</a>
+<p>As soon as a valid tracking path is present in the mount, the <strong>Start satellite
+tracking</strong> and <strong>Stop satellite tracking</strong> button are enabled. Once started,
+the mount will slew to the begin of the tracking path and wait for the satellite
+to rise. Selecting partial tracks and respecting constraints is not possible.</p>
+<p>Since FW 3.x the command protocol offers the programming of a custom satellite
+track. This offers the capability of takings care of avoiding flips, respect
+horizon and other constraints. The operation is different to the classic
+approach: Instead of programming TLE data to the mount, MountWizzard4 programs
+Alt / Az coordinates in a one second interval to the mount (max. 900s) which the
+mount after start tracking will follow. You could enable this feature with
+checking <strong>Use internal maths</strong> if the firmware is 3.x or higher. After
+enabling, additional elements will be enabled.</p>
+<a class="reference internal image-reference" href="../../_images/sat_new.png"><img alt="../../_images/sat_new.png" class="align-center" height="445" src="../../_images/sat_new.png" width="569" />
+</a>
+<p>As the calculation now happens outside the mount, we could take a look to the
+difference between tracks calculated by the 10micron mount and MountWizzard4
+based on the same satellite TLE data! You will find some comparison under the
+architecture / math section:
+<a class="reference internal" href="../../architecture/calculations.html"><span class="doc">precision of internal calculations</span></a>.</p>
+<p>If you are using the internal math as well as classic mode, you could open the
+satellite window. There you could see the next three orbits and for internal
+math the resulting satellite track with an white underlay. If you change any
+setup, MountWizzard4 will recalculate all data and updates the plots accordingly.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The solid line shows the track before meridian transit, the dotted
+line the track after meridian transit. The resulting white
+background shows the resulting track, which takes flip track
+tolerance into account. If you change settings in satellite (or
+even limits), MountWizzard4 will update the tracks path in plot
+accordingly and reset the prog state.</p>
+</div>
+<p>Select only a segment before a meridian transit (and therefore avoiding a flip
+during tracking):</p>
+<a class="reference internal image-reference" href="../../_images/sat_af.png"><img alt="../../_images/sat_af.png" class="align-center" height="445" src="../../_images/sat_af.png" width="569" />
+</a>
+<a class="reference internal image-reference" href="../../_images/sat_af_track.png"><img alt="../../_images/sat_af_track.png" class="align-center" height="445" src="../../_images/sat_af_track.png" width="569" />
+</a>
+<p>Select only a segment after a meridian transit (and therefore avoiding a flip
+during tracking):</p>
+<a class="reference internal image-reference" href="../../_images/sat_be.png"><img alt="../../_images/sat_be.png" class="align-center" height="445" src="../../_images/sat_be.png" width="569" />
+</a>
+<a class="reference internal image-reference" href="../../_images/sat_be_track.png"><img alt="../../_images/sat_be_track.png" class="align-center" height="445" src="../../_images/sat_be_track.png" width="569" />
+</a>
+<p>Select both segments of the meridian (this might cause a flip during tracking):</p>
+<a class="reference internal image-reference" href="../../_images/sat_be_af.png"><img alt="../../_images/sat_be_af.png" class="align-center" height="445" src="../../_images/sat_be_af.png" width="569" />
+</a>
+<a class="reference internal image-reference" href="../../_images/sat_be_af_track.png"><img alt="../../_images/sat_be_af_track.png" class="align-center" height="445" src="../../_images/sat_be_af_track.png" width="569" />
+</a>
+<p>Select respecting the horizon line. This filters out additional all segments,
+which are below the given horizon mask.</p>
+<a class="reference internal image-reference" href="../../_images/sat_hor.png"><img alt="../../_images/sat_hor.png" class="align-center" height="445" src="../../_images/sat_hor.png" width="569" />
+</a>
+<a class="reference internal image-reference" href="../../_images/sat_hor_track.png"><img alt="../../_images/sat_hor_track.png" class="align-center" height="445" src="../../_images/sat_hor_track.png" width="569" />
+</a>
+<p>MountWizzard4 will take into account the meridian track limits of your mount.
+Here set to 1 degree (which is close to meridian)</p>
+<a class="reference internal image-reference" href="../../_images/sat_lim_1.png"><img alt="../../_images/sat_lim_1.png" class="align-center" height="445" src="../../_images/sat_lim_1.png" width="569" />
+</a>
+<a class="reference internal image-reference" href="../../_images/sat_lim_1_track.png"><img alt="../../_images/sat_lim_1_track.png" class="align-center" height="445" src="../../_images/sat_lim_1_track.png" width="569" />
+</a>
+<p>MountWizzard4 will take into account the meridian track limits of your mount.
+Here set to 15 degrees (which could avoid a meridian flip or at least extend
+the tracking time)</p>
+<a class="reference internal image-reference" href="../../_images/sat_lim_15.png"><img alt="../../_images/sat_lim_15.png" class="align-center" height="445" src="../../_images/sat_lim_15.png" width="569" />
+</a>
+<a class="reference internal image-reference" href="../../_images/sat_lim_15_track.png"><img alt="../../_images/sat_lim_15_track.png" class="align-center" height="445" src="../../_images/sat_lim_15_track.png" width="569" />
+</a>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The meridian track limits have to be chosen carefully as the mount
+might hit your setup !</p>
+</div>
+<p>The biggest change in using satellite tracking with the new implementation is
+how the data is handled to the mount: whereas in classic mode only the TLE data
+has to be uploaded (which is quick) now the whole track coordinates have to be
+programmed . As this takes up to 10 seconds, MountWizzard4 does not
+automatically start the transfer. Once your setup (choice of segment, horizon
+etc.) is made, you have to start the programming by pushing the <strong>Prog</strong> button.</p>
+<a class="reference internal image-reference" href="../../_images/sat_prog.png"><img alt="../../_images/sat_prog.png" class="align-center" height="445" src="../../_images/sat_prog.png" width="569" />
+</a>
+<p>After a successful upload, the trajectory data is populated and the Start / Stop
+tracking buttons are enable like in classic mode.</p>
+<a class="reference internal image-reference" href="../../_images/sat_result.png"><img alt="../../_images/sat_result.png" class="align-center" height="445" src="../../_images/sat_result.png" width="569" />
+</a>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/workflows/satellite/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

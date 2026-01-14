@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Step 2: Selecting build points &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=56c4699f" />
+    <script src="../../_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Workflows and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="step-2-selecting-build-points">
+<h1>Step 2: Selecting build points<a class="headerlink" href="#step-2-selecting-build-points" title="Link to this heading">¶</a></h1>
+<p>The first step for building a model is the selection of the desired model
+points. Handling you horizon is an important step as MountWizzard4 helps you
+could in finding points, which were not covered through obstacles in your
+location defined by the horizon line.</p>
+<a class="reference internal image-reference" href="../../_images/build_points1.png"><img alt="../../_images/build_points1.png" class="align-center" height="426" src="../../_images/build_points1.png" width="568" />
+</a>
+<p>There were multiple ways of setting your model points within MountWizzard4:</p>
+<table class="hlist"><tr><td><ul class="simple">
+<li><p>From file</p></li>
+<li><p>In a generated alt/az grid</p></li>
+<li><p>First align points on defined alt</p></li>
+<li><p>Points along the celestial slew paths</p></li>
+<li><p>Equally distributed over the sphere (golden spiral)</p></li>
+<li><p>From the actual model (replicating tha actual one)</p></li>
+<li><p>Based on a DSO track of an object with define Ra/Dec</p></li>
+<li><p>Manually set point (in hemisphere window)</p></li>
+</ul>
+</td></tr></table>
+<p>There are multiple parameters or selections available to refine your point
+selection. the best way to find out is simplest to test them.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please think that you distribute the model points at the end over a
+sphere! Using alt/az is convenient, but might be misleading. You
+could enable the polar view in hemisphere window to get an image
+how the points are spread in a polar diagram.</p>
+</div>
+<p>It makes a lot of sense if you have discovered you favourite model points setup
+to store them in a file and reload them whenever you want. You could store as
+many files as you want.</p>
+<section id="sorting-build-points">
+<h2>Sorting build points<a class="headerlink" href="#sorting-build-points" title="Link to this heading">¶</a></h2>
+<p>MountWizzard4 does a default sorting for you. If the default does not fit to
+your setup, you could tweak the order and additional constraints like you want.
+These settings are stored persistent in your profile.</p>
+<table class="hlist"><tr><td><ul class="simple">
+<li><p>No sort point -&gt; default</p></li>
+<li><p>East / West: points from East coordinate to west coordinate (az)</p></li>
+<li><p>High / Low: point from high altitude to low altitude (good for domes)</p></li>
+<li><p>Avoid meridian flip: modeling start at the actual pier side</p></li>
+<li><p>Auto delete points within meridian limits</p></li>
+<li><p>Auto delete points below horizon</p></li>
+<li><p>Add safety distance: adds selected degrees safety margin to horizon</p></li>
+</ul>
+</td></tr></table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Regardless what you select, the 10micron mount computer could
+only handle a maximum of 100 points</p>
+</div>
+<p>If you are using a dome, you could select the option to sort the points to
+optimize the slewing of the dome. This will happen the following way:</p>
+<p>MountWizzard4 simulates a full model run, calculates the mount positions, calcs
+from mount the resulting dome azimuth with all geometry corrections and sorts
+afterwards the build points that you get ascending azimuth for the dome.</p>
+</section>
+<section id="build-points-specials">
+<h2>Build points specials<a class="headerlink" href="#build-points-specials" title="Link to this heading">¶</a></h2>
+<p>In addition you could also mix different types of model point generation by
+checking</p>
+<blockquote class="epigraph">
+<div><p><strong>keep points from existing generation</strong></p>
+</div></blockquote>
+<p>MountWizzard4 will not cleanup the point map before adding new point, but add
+them.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/workflows/modeling/build_points.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

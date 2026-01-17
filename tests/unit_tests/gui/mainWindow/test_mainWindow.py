@@ -77,10 +77,9 @@ def test_closeEvent_1(window):
 
 def test_quitSave_1(window):
     window.ui.profile.setText("test")
-    with mock.patch.object(window, "saveConfig"):
-        with mock.patch.object(mw4.gui.mainWindow.mainWindow, "saveConfig"):
-            with mock.patch.object(window, "close"):
-                window.quitSave()
+    with mock.patch.object(window, "saveProfile"):
+        with mock.patch.object(window, "close"):
+            window.quitSave()
 
 
 def test_smartFunctionGui_0(window):
@@ -304,7 +303,7 @@ def test_loadProfileGUI2(window):
                 mw4.gui.mainWindow.mainWindow, "loadConfig", return_value={}
             ):
                 with mock.patch.object(window, "switchProfile"):
-                    with mock.patch.object(window, "saveConfig"):
+                    with mock.patch.object(window, "saveProfile"):
                         window.loadProfileGUI()
 
 

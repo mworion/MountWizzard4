@@ -19,7 +19,6 @@ import mw4.mountcontrol
 import unittest
 import unittest.mock as mock
 from mw4.mountcontrol.convert import (
-    checkIsHours,
     convertDecToAngle,
     convertLatToAngle,
     convertLonToAngle,
@@ -256,51 +255,8 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(output[3], 59)
         self.assertEqual(output[4], 90)
 
-    def test_checkIsHours_1(self):
-        assert not checkIsHours(180)
-
-    def test_checkIsHours_2(self):
-        assert not checkIsHours(-180)
-
-    def test_checkIsHours_3(self):
-        assert not checkIsHours(12)
-
-    def test_checkIsHours_4(self):
-        assert not checkIsHours(0.0)
-
-    def test_checkIsHours_5(self):
-        assert not checkIsHours("+12*00:00.0")
-
-    def test_checkIsHours_6(self):
-        assert checkIsHours("12:00:00.0")
-
-    def test_checkIsHours_7(self):
-        suc = checkIsHours(0)
-        assert not suc
-
-    def test_checkIsHours_8(self):
-        suc = checkIsHours("*55:67:77")
-        assert not suc
-
-    def test_checkIsHours_9(self):
-        suc = checkIsHours("")
-        assert suc
-
-    def test_checkIsHours_10(self):
-        suc = checkIsHours("+12 00:00.0")
-        assert not suc
-
-    def test_checkIsHours_11(self):
-        suc = checkIsHours("-12 00:00.0")
-        assert not suc
-
     def test_convertToDMS_1(self):
         parameter = Angle(degrees=60)
-        value = convertToDMS(parameter)
-        assert value == "+60:00:00"
-
-    def test_convertToDMS_2(self):
-        parameter = 60
         value = convertToDMS(parameter)
         assert value == "+60:00:00"
 
@@ -316,11 +272,6 @@ class TestConfigData(unittest.TestCase):
 
     def test_convertToHMS_1(self):
         parameter = Angle(hours=12)
-        value = convertToHMS(parameter)
-        assert value == "12:00:00"
-
-    def test_convertToHMS_2(self):
-        parameter = 12
         value = convertToHMS(parameter)
         assert value == "12:00:00"
 

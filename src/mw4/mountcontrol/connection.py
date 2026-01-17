@@ -40,9 +40,6 @@ class Connection:
 
     log = logging.getLogger("MW4")
     SOCKET_TIMEOUT = 10
-
-    # complete used command list to be checked first if valid
-    # these are the commands that were used in mountcontrol so far
     COMMANDS = [
         ":AP",
         ":CM",

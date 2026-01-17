@@ -132,25 +132,8 @@ def sexagesimalizeToInt(value: float, decimals: int = 0) -> tuple[int, int, int,
     return sign, n, minutes, seconds, fraction
 
 
-def checkIsHours(value: str) -> bool:
+def convertToDMS(dec: Angle) -> str:
     """ """
-    if not isinstance(value, str):
-        return False
-    if "*" in value:
-        return False
-    if "+" in value:
-        return False
-    return "-" not in value
-
-
-def convertToDMS(dec: Angle | float | int) -> str:
-    """
-    takes the given DEC value, which should be in DMS format (but different
-    types) and convert it to solve-field readable string in sDD:MM:SS
-    """
-    if isinstance(dec, float | int):
-        dec = Angle(degrees=dec)
-
     t = Angle.signed_dms(dec)
     sign = "+" if dec.degrees > 0 else "-"
     value = f"{sign}{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}"
@@ -158,12 +141,7 @@ def convertToDMS(dec: Angle | float | int) -> str:
 
 
 def convertToHMS(ra: Angle | float | int) -> str:
-    """
-    takes the given RA value, which should be in HMS format (but different
-    types) and convert it to solve-field readable string in HH:MM:SS
-    """
-    if isinstance(ra, float | int):
-        ra = Angle(hours=ra)
+    """ """
     t = Angle.signed_hms(ra)
     value = f"{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}"
     return value

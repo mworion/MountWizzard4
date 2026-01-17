@@ -17,7 +17,7 @@ import logging
 import os
 import platform
 from mw4.logic.fits.fitsFunction import getHintFromImageFile
-from mw4.mountcontrol import convert
+from mw4.mountcontrol.convert import convertToDMS, convertToHMS
 from pathlib import Path
 
 
@@ -91,8 +91,8 @@ class Astrometry:
 
         raHint, decHint, scaleHint = getHintFromImageFile(imagePath)
         searchRatio = 1.1
-        ra = convert.convertToHMS(raHint)
-        dec = convert.convertToDMS(decHint)
+        ra = convertToHMS(raHint)
+        dec = convertToDMS(decHint)
         scaleLow = scaleHint / searchRatio
         scaleHigh = scaleHint * searchRatio
 

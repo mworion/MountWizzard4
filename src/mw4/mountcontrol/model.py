@@ -22,10 +22,12 @@ from mw4.mountcontrol.convert import (
     valueToAngle,
     valueToFloat,
     valueToInt,
+    stringToAngle,
+    topoToAltAz,
 )
 from mw4.mountcontrol.modelStar import ModelStar
 from mw4.mountcontrol.progStar import ProgStar
-from skyfield.api import Angle
+from skyfield.api import Angle, Star
 
 
 class Model:
@@ -54,14 +56,8 @@ class Model:
         return self._starList
 
     @starList.setter
-    def starList(self, value):
-        if not isinstance(value, list):
-            self._starList = []
-            return
-        if all(isinstance(x, ModelStar) for x in value):
-            self._starList = value
-        else:
-            self._starList = []
+    def starList(self, value: list[ModelStar]):
+        self._starList = value
 
     @property
     def numberStars(self):
@@ -73,9 +69,9 @@ class Model:
 
     def addStar(self, value: ModelStar) -> None:
         """ """
-        self._starList.insert(len(self._starList), value)
+        self._starList.append(value)
 
-    def delStar(self, value):
+    def delStar(self, value: int):
         """ """
         value = valueToInt(value)
         if value < 0 or value > len(self._starList) - 1:
@@ -177,12 +173,14 @@ class Model:
             self.log.warning("Wrong number of chunks")
             return False
         for number, starData in enumerate(response):
-            ha, dec, err, angle = starData.split(",")
-            modelStar = ModelStar(obsSite=self.parent.obsSite)
-            modelStar.coord = (ha, dec)
-            modelStar.errorRMS = valueToFloat(err)
-            modelStar.errorAngle = valueToAngle(angle)
-            modelStar.number = number + 1
+            ra, dec, err, angle = starData.split(",")
+            ra = stringToAngle(ra, preference="hours")
+            dec = stringToAngle(dec, preference="degrees")
+            coord = Star(ra=ra, dec=dec)
+            errorRMS = valueToFloat(err)
+            errorAngle = valueToAngle(angle)
+            alt, az = topoToAltAz(ra, dec, self.parent.obsSite.location.latitude)
+            modelStar = ModelStar(coord, errorRMS, errorAngle, number + 1, alt, az)
             self.addStar(modelStar)
         return True
 

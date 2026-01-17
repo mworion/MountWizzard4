@@ -16,11 +16,14 @@
 import logging
 import numpy as np
 from astropy.io import fits
+
+from mountcontrol.convert import valueToFloat
 from mw4.base.transform import JNowToJ2000
 from mw4.mountcontrol.convert import (
     convertDecToAngle,
     convertRaToAngle,
     convertToAngle,
+    valueToAngle,
     formatLatToText,
     formatLonToText,
 )
@@ -42,8 +45,8 @@ def getCoordinatesFromHeader(header: fits.Header) -> tuple[Angle, Angle]:
     hasSexagesimal = bool("OBJCTRA" in header and "OBJCTDEC" in header)
 
     if hasDecimal:
-        ra = convertToAngle(header["RA"], isHours=True)
-        dec = convertToAngle(header["DEC"], isHours=False)
+        ra = valueToAngle(valueToFloat(header["RA"]) * 24/360, preference="hours")
+        dec = valueToAngle(header["DEC"], preference="degrees")
         log.debug("Fits header:   Decimal coordinates used [RA], [DEC]")
     elif hasSexagesimal:
         ra = convertRaToAngle(header["OBJCTRA"])

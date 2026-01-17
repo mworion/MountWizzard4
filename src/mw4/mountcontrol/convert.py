@@ -74,16 +74,6 @@ def stringToAngle(value: str, preference: str = "degrees") -> Angle:
     return value
 
 
-def valueToAngle(value: Any, preference: str = "degrees") -> Angle:
-    """ """
-    value = valueToFloat(value)
-    if preference == "degrees":
-        value = Angle(degrees=value, preference="degrees")
-    else:
-        value = Angle(hours=value, preference="hours")
-    return value
-
-
 def valueToFloat(value: Any) -> float:
     """ """
     if value == "E":
@@ -92,6 +82,16 @@ def valueToFloat(value: Any) -> float:
         value = float(value)
     except Exception:
         value = 0
+    return value
+
+
+def valueToAngle(value: Any, preference: str = "degrees") -> Angle:
+    """ """
+    value = valueToFloat(value)
+    if preference == "degrees":
+        value = Angle(degrees=value, preference="degrees")
+    else:
+        value = Angle(hours=value, preference="hours")
     return value
 
 
@@ -115,9 +115,7 @@ def topoToAltAz(ha: Angle, dec: Angle, lat: Angle) -> tuple[Angle, Angle]:
     A = np.arccos(value)
     A = np.degrees(A)
     alt = np.degrees(alt)
-
     az = 360.0 - A if np.sin(ha) >= 0.0 else A
-
     return Angle(degrees=alt), Angle(degrees=az)
 
 

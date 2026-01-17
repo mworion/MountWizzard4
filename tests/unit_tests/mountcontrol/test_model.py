@@ -162,14 +162,10 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(0, align._numberNames)
 
     def test_Model_starList1(self):
-        p1 = "12:45:33.01"
-        p2 = "+56*30:00.5"
-        p3 = "1234.5"
-        p4 = "90"
-        p5 = obsSite
-        modelStar1 = ModelStar(
-            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1, obsSite=p5
-        )
+        p3 = 1234.5
+        p4 = Angle(degrees=90)
+        s = Star(ra_hours=12.7580583333, dec_degrees=56.5001388889)
+        modelStar1 = ModelStar(s, p3, p4, number=1)
 
         class Parent:
             host = None
@@ -180,43 +176,19 @@ class TestConfigData(unittest.TestCase):
         model.starList = [modelStar1]
         self.assertEqual(len(model.starList), 1)
 
-    def test_Model_starList2(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-
-        self.assertEqual(len(model.starList), 0)
-        model.starList = "67"
-        self.assertEqual(len(model.starList), 0)
-
-    def test_Model_starList3(self):
-        class Parent:
-            host = None
-
-        model = Model(parent=Parent())
-
-        self.assertEqual(len(model.starList), 0)
-        model.starList = ["67", "78"]
-        self.assertEqual(len(model.starList), 0)
-
     def test_add_del_Star(self):
         p1 = "12:45:33.01"
         p2 = "+56*30:00.5"
         p3 = "1234.5"
         p4 = "90"
         modelStar1 = ModelStar(
-            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1, obsSite=obsSite
-        )
+            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1)
         modelStar2 = ModelStar(
-            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=2, obsSite=obsSite
-        )
+            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=2)
         modelStar3 = ModelStar(
-            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=3, obsSite=obsSite
-        )
+            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=3)
         modelStar4 = ModelStar(
-            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=4, obsSite=obsSite
-        )
+            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=4)
 
         class Parent:
             host = None
@@ -252,24 +224,16 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(len(model.starList), 1)
 
     def test_StarList_iteration(self):
-        p1 = "12:45:33.01"
-        p2 = "+56*30:00.5"
-
         class Parent:
             host = None
 
         model = Model(parent=Parent())
+        p3 = 1234.5
+        p4 = Angle(degrees=90)
+        s = Star(ra_hours=12.7580583333, dec_degrees=56.5001388889)
 
         for i in range(0, 10):
-            model.addStar(
-                ModelStar(
-                    coord=(p1, p2),
-                    errorRMS=i * i,
-                    errorAngle=Angle(degrees=i * i),
-                    number=i,
-                    obsSite=obsSite,
-                )
-            )
+            model.addStar(ModelStar(s, i*i, p4, i))
 
         self.assertEqual(len(model.starList), 10)
         for i, star in enumerate(model.starList):
@@ -410,26 +374,22 @@ class TestConfigData(unittest.TestCase):
     #
 
     def test_AlignStar_coord1(self):
-        p1 = "12:45:33.01"
-        p2 = "+56*30:00.5"
-        p3 = "1234.5"
-        p4 = "90"
-        p5 = obsSite
-        alignStar = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1, obsSite=p5)
+        p3 = 1234.5
+        p4 = Angle(degrees=90)
+        s = Star(ra_hours=12.7580583333, dec_degrees=56.5001388889)
+        alignStar = ModelStar(s, p3, p4, number=1)
         self.assertAlmostEqual(alignStar.coord.ra.hms()[0], 12, 6)
         self.assertAlmostEqual(alignStar.coord.ra.hms()[1], 45, 6)
-        self.assertAlmostEqual(alignStar.coord.ra.hms()[2], 33.01, 6)
+        self.assertAlmostEqual(alignStar.coord.ra.hms()[2], 29.01, 6)
         self.assertAlmostEqual(alignStar.coord.dec.dms()[0], 56, 6)
         self.assertAlmostEqual(alignStar.coord.dec.dms()[1], 30, 6)
         self.assertAlmostEqual(alignStar.coord.dec.dms()[2], 0.5, 6)
 
     def test_AlignStar_coord2(self):
         star = skyfield.api.Star(ra_hours=12.55, dec_degrees=56.55)
-        p3 = "1234.5"
-        p4 = "90"
-        alignStar = ModelStar(
-            coord=star, errorRMS=p3, errorAngle=p4, number=1, obsSite=obsSite
-        )
+        p3 = 1234.5
+        p4 = Angle(degrees=90)
+        alignStar = ModelStar(coord=star, errorRMS=p3, errorAngle=p4, number=1)
         self.assertAlmostEqual(alignStar.coord.ra.hms()[0], 12, 6)
         self.assertAlmostEqual(alignStar.coord.ra.hms()[1], 33, 6)
         self.assertAlmostEqual(alignStar.coord.ra.hms()[2], 0, 6)
@@ -440,28 +400,28 @@ class TestConfigData(unittest.TestCase):
     def test_AlignStar_number(self):
         obsSite = App().mount.obsSite
         obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
-        alignStar = ModelStar(obsSite=obsSite)
+        alignStar = ModelStar()
         alignStar.number = 6
         self.assertEqual(6, alignStar.number)
 
     def test_AlignStar_errorAngle(self):
         obsSite = App().mount.obsSite
         obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
-        alignStar = ModelStar(obsSite=obsSite)
+        alignStar = ModelStar()
         alignStar.errorAngle = Angle(degrees=50)
         self.assertEqual(50, alignStar.errorAngle.degrees)
 
     def test_AlignStar_errorRMS(self):
         obsSite = App().mount.obsSite
         obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
-        alignStar = ModelStar(obsSite=obsSite)
+        alignStar = ModelStar()
         alignStar.errorRMS = 6
         self.assertEqual(6, alignStar.errorRMS)
 
     def test_AlignStar_error_DEC_RA(self):
         obsSite = App().mount.obsSite
         obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
-        alignStar = ModelStar(obsSite=obsSite)
+        alignStar = ModelStar()
         alignStar.errorRMS = 6
         alignStar.errorAngle = Angle(degrees=50)
         ra = 6 * numpy.sin(50 * numpy.pi * 2 / 360)

@@ -143,23 +143,6 @@ def checkIsHours(value: str) -> bool:
     return "-" not in value
 
 
-def convertToAngle(value: Any, isHours: bool = False) -> Angle:
-    """
-    convertToAngle ties to take any value, and converts is to the right form in
-    skyfield angles. if the value is a string, we convert it to a float value. in
-    the case of isHours, we should have already a string, which represents hours
-    inside. if the value is float, and we expect to have hours, the float value
-    is normally given in degrees, so we have to calculate the numbers in hours.
-    """
-    value = valueToFloat(value)
-    if isHours:
-        value *= 24 / 360
-        angle = Angle(hours=value)
-    else:
-        angle = Angle(degrees=value)
-    return angle
-
-
 def convertToDMS(dec: Angle | float | int) -> str:
     """
     takes the given DEC value, which should be in DMS format (but different
@@ -248,11 +231,8 @@ def parseRaToAngleString(value: str) -> tuple[bool, bool, list[str]]:
     return isSexagesimal, isFloat, elements
 
 
-def convertRaToAngle(value):
+def convertRaToAngle(value: str) -> Angle:
     """ """
-    if isinstance(value, float | int):
-        value = str(value)
-
     isSexagesimal, isFloat, elements = parseRaToAngleString(value)
 
     if isFloat:
@@ -293,11 +273,8 @@ def parseDecToAngleString(value: str) -> tuple[bool, bool, list[str]]:
     return isSexagesimal, isFloat, elements
 
 
-def convertDecToAngle(value: str | float | int) -> Angle:
+def convertDecToAngle(value: str) -> Angle:
     """ """
-    if isinstance(value, float | int):
-        value = str(value)
-
     isSexagesimal, isFloat, elements = parseDecToAngleString(value)
 
     if isFloat:

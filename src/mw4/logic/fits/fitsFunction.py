@@ -22,7 +22,6 @@ from mw4.base.transform import JNowToJ2000
 from mw4.mountcontrol.convert import (
     convertDecToAngle,
     convertRaToAngle,
-    convertToAngle,
     valueToAngle,
     formatLatToText,
     formatLonToText,
@@ -187,9 +186,8 @@ def getSolutionFromWCSHeader(wcsHeader: fits.Header, imageHeader: fits.Header) -
     CRVAL1 and CRVAL2 give the center coordinate as right ascension and
     declination or longitude and latitude in decimal degrees.
     """
-    raJ2000 = convertToAngle(wcsHeader.get("CRVAL1", 0), isHours=True)
-    decJ2000 = convertToAngle(wcsHeader.get("CRVAL2", 0), isHours=False)
-
+    raJ2000 = valueToAngle(valueToFloat(wcsHeader.get("CRVAL1", 0)) * 24 / 360, preference="hours")
+    decJ2000 = valueToAngle(wcsHeader.get("CRVAL2", 0), preference="degrees")
     angle, scale, mirrored = calcAngleScaleFromWCSHeader(header=wcsHeader)
     raMount, decMount = getCoordinatesFromHeader(header=imageHeader)
 

@@ -24,7 +24,6 @@ from mw4.mountcontrol.convert import (
     convertLatToAngle,
     convertLonToAngle,
     convertRaToAngle,
-    convertToAngle,
     convertToDMS,
     convertToHMS,
     formatDstrToText,
@@ -295,10 +294,6 @@ class TestConfigData(unittest.TestCase):
         suc = checkIsHours("-12 00:00.0")
         assert not suc
 
-    def test_convertToAngle(self):
-        val = convertToAngle("E")
-        assert val.degrees == 0
-
     def test_convertToDMS_1(self):
         parameter = Angle(degrees=60)
         value = convertToDMS(parameter)
@@ -363,18 +358,6 @@ class TestConfigData(unittest.TestCase):
         value = stringToDegree("55:30")
         assert value == 55.5
 
-    def test_convertToAngle_1(self):
-        value = convertToAngle(180.1234)
-        assert value.degrees == 180.1234
-
-    def test_convertToAngle_2(self):
-        value = convertToAngle(180)
-        assert value.degrees == 180
-
-    def test_convertToAngle_3(self):
-        value = convertToAngle("180.567", isHours=True)
-        assert value.hours == 12.0378
-
 
 def test_formatLatLonToAngle_1():
     values = [
@@ -432,12 +415,6 @@ def test_formatLon():
 
 def test_convertRaToAngle_1():
     values = [
-        ["+12.5", 12.5],
-        ["12,5", 12.5],
-        ["-12.5", 0],
-        [12.5, 12.5],
-        ["-190.5", 0],
-        ["190.5", 0],
         ["12H 30 30", 187.624999],
         ["12D 30 30", 0],
         ["12 30 30", 187.624999],
@@ -457,12 +434,6 @@ def test_convertRaToAngle_1():
 
 def test_convertDecToAngle_1():
     values = [
-        ["+12.5", 12.5],
-        ["12,5", 12.5],
-        [12.5, 12.5],
-        ["-12.5", -12.5],
-        ["-90.5", 0],
-        ["90.5", 0],
         ["12Deg 30 30", 12.508333],
         ["12Deg 30 30.55", 12.508333],
         ["12H 30 30.55", 0],

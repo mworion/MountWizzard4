@@ -17,12 +17,12 @@ import logging
 import numpy as np
 from astropy.io import fits
 
-from mountcontrol.convert import valueToFloat
 from mw4.base.transform import JNowToJ2000
 from mw4.mountcontrol.convert import (
     convertDecToAngle,
     convertRaToAngle,
     valueToAngle,
+    valueToFloat,
     formatLatToText,
     formatLonToText,
 )

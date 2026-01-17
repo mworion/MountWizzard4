@@ -20,9 +20,9 @@ import pytest
 import unittest.mock as mock
 from mw4.logic.profiles.profile import (
     defaultConfig,
-    loadProfile,
+    loadConfig,
     loadProfileStart,
-    saveProfile,
+    saveConfig,
 )
 import mw4.logic.profiles
 from pathlib import Path
@@ -56,7 +56,7 @@ def test_loadProfile_1():
         yaml.dump(config, outfile)
 
     with mock.patch.object(yaml, "safe_load", return_value={}):
-        val = loadProfile(Path("tests/work/config/config.yaml"))
+        val = loadConfig(Path("tests/work/config/config.yaml"))
         assert val == defaultConfig()
 
 
@@ -71,7 +71,7 @@ def test_loadProfile_2():
     with open("tests/work/config/config.yaml", "w") as outfile:
         yaml.dump(config, outfile)
 
-    val = loadProfile(Path("tests/work/config/config.yaml"))
+    val = loadConfig(Path("tests/work/config/config.yaml"))
     assert 'orderMain' in val['mainW']
 
 
@@ -87,7 +87,7 @@ def test_loadProfile_3():
     with open("tests/work/config/config.yaml", "w") as outfile:
         yaml.dump(config, outfile)
 
-    val = loadProfile(Path("tests/work/config/config.yaml"))
+    val = loadConfig(Path("tests/work/config/config.yaml"))
     assert 'mainW' not in val
 
 
@@ -118,7 +118,7 @@ def test_loadProfileStart_3():
     with open("tests/work/config/config.yaml", "w") as outfile:
         yaml.dump(config, outfile)
 
-    with mock.patch.object(mw4.logic.profiles.profile, "loadProfile", return_value={"profileName": "config"}):
+    with mock.patch.object(mw4.logic.profiles.profile, "loadConfig", return_value={"profileName": "config"}):
         val = loadProfileStart(Path("tests/work/config"))
     assert val == {"profileName": "config"}
 
@@ -126,7 +126,7 @@ def test_loadProfileStart_3():
 def test_saveProfile_1():
     config = {"profileName": "config"}
 
-    saveProfile(Path("tests/work/config/config.yaml"), config)
+    saveConfig(Path("tests/work/config/config.yaml"), config)
     assert os.path.isfile("tests/work/config/config.yaml")
     assert os.path.isfile("tests/work/config/profile")
     with open("tests/work/config/profile") as infile:
@@ -137,7 +137,7 @@ def test_saveProfile_1():
 def test_saveProfile_2():
     config = {"profileName": "config"}
 
-    saveProfile(Path("tests/work/config/config.yaml"), config)
+    saveConfig(Path("tests/work/config/config.yaml"), config)
     assert os.path.isfile("tests/work/config/config.yaml")
     assert os.path.isfile("tests/work/config/profile")
     with open("tests/work/config/profile") as infile:
@@ -148,7 +148,7 @@ def test_saveProfile_2():
 def test_saveProfile_3():
     config = {"profileName": "new"}
 
-    saveProfile(Path("tests/work/config/new.yaml"), config)
+    saveConfig(Path("tests/work/config/new.yaml"), config)
     assert os.path.isfile("tests/work/config/new.yaml")
     assert os.path.isfile("tests/work/config/profile")
     with open("tests/work/config/profile") as infile:
@@ -157,7 +157,7 @@ def test_saveProfile_3():
 
 
 def test_saveProfile_4():
-    saveProfile(Path("tests/work/config/config.yaml"), defaultConfig())
+    saveConfig(Path("tests/work/config/config.yaml"), defaultConfig())
     assert os.path.isfile("tests/work/config/config.yaml")
     assert os.path.isfile("tests/work/config/profile")
     with open("tests/work/config/profile") as infile:
@@ -166,7 +166,7 @@ def test_saveProfile_4():
 
 
 def test_saveProfile_5():
-    saveProfile(Path("tests/work/config/new.yaml"), defaultConfig())
+    saveConfig(Path("tests/work/config/new.yaml"), defaultConfig())
     assert os.path.isfile("tests/work/config/new.yaml")
     assert os.path.isfile("tests/work/config/profile")
     with open("tests/work/config/profile") as infile:

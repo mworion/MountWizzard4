@@ -29,7 +29,7 @@ def defaultConfig() -> dict:
     return config
 
 
-def loadProfile(loadConfigPath: Path) -> dict:
+def loadConfig(loadConfigPath: Path) -> dict:
     """ """
     with open(loadConfigPath) as configFile:
         config = yaml.safe_load(configFile)
@@ -54,11 +54,11 @@ def loadProfileStart(configDir: Path) -> dict:
     if not configPath.exists():
         return config
 
-    config = loadProfile(profilePath)
+    config = loadConfig(configPath)
     return config
 
 
-def saveProfile(saveProfilePath: Path, config: dict) -> None:
+def saveConfig(saveProfilePath: Path, config: dict) -> None:
     """ """
     with open(saveProfilePath.parent / "profile", "w") as profile:
         profile.writelines(saveProfilePath.stem)

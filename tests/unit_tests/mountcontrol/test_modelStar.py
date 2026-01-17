@@ -23,28 +23,8 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 @pytest.fixture(autouse=True, scope="module")
 def function():
     app = App()
-    obsSite = app.mount.obsSite
-    obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
-    modelStar = ModelStar(obsSite=obsSite)
+    modelStar = ModelStar()
     yield modelStar
-
-
-def test_properties_1(function):
-    function.coord = ("12:30:00.00", "+30*30:00.0")
-    assert function.coord.dec.degrees == 30.5
-    assert function.coord.ra.hours == 12.5
-
-
-def test_properties_2(function):
-    function.coord = ("EE", "EE")
-    assert function.coord.ra.hours == 0
-    assert function.coord.dec.degrees == 0
-
-
-def test_properties_3(function):
-    function.coord = ("12:30:00.00", "+30*30:00.0")
-    assert function.coord.dec.degrees == 30.5
-    assert function.coord.ra.hours == 12.5
 
 
 def test_properties_4(function):

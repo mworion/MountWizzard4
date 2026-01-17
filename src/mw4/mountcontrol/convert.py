@@ -104,24 +104,21 @@ def valueToInt(value: Any) -> int:
     return value
 
 
-def topoToAltAz(ha: float, dec: float, lat: float) -> tuple[float, float]:
+def topoToAltAz(ha: Angle, dec: Angle, lat: Angle) -> tuple[Angle, Angle]:
     """ """
-    ha = (ha * 360 / 24 + 360.0) % 360.0
-    dec = np.radians(dec)
-    ha = np.radians(ha)
-    lat = np.radians(lat)
+    ha = (ha.radians + 2 * np.pi) % (2 * np.pi)
+    dec = dec.radians
+    lat = lat.radians
     alt = np.arcsin(np.sin(dec) * np.sin(lat) + np.cos(dec) * np.cos(lat) * np.cos(ha))
     value = (np.sin(dec) - np.sin(alt) * np.sin(lat)) / (np.cos(alt) * np.cos(lat))
-
     value = np.clip(value, -1, 1)
-
     A = np.arccos(value)
     A = np.degrees(A)
     alt = np.degrees(alt)
 
     az = 360.0 - A if np.sin(ha) >= 0.0 else A
 
-    return alt, az
+    return Angle(degrees=alt), Angle(degrees=az)
 
 
 def sexagesimalizeToInt(value: float, decimals: int = 0) -> tuple[int, int, int, int, int]:

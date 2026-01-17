@@ -15,13 +15,10 @@
 ###########################################################
 import logging
 import numpy
-from mw4.mountcontrol.convert import (
-    stringToDegree,
-    topoToAltAz,
-)
+from dataclasses import dataclass
 from skyfield.api import Angle, Star
 
-
+@dataclass
 class ModelStar:
     """
     The class ModelStar inherits all information and handling of one star in
@@ -50,38 +47,15 @@ class ModelStar:
         errorRMS: float = 0,
         errorAngle: Angle = Angle(degrees=0),
         number: int = 0,
-        obsSite=None,
+        alt: Angle = Angle(degrees=0),
+        az: Angle = Angle(degrees=0),
     ):
-        self.obsSite = obsSite
         self.coord = coord
         self.errorRMS = errorRMS
         self.errorAngle = errorAngle
         self.number = number
-        self.alt = Angle(degrees=0)
-        self.az = Angle(degrees=0)
-
-    @property
-    def coord(self):
-        return self._coord
-
-    @coord.setter
-    def coord(self, value: tuple | Star):
-        loc = self.obsSite.location
-        if isinstance(value, Star):
-            self._coord = value
-            ha = self._coord.ra.hours
-            dec = self._coord.dec.degrees
-
-        else:
-            ha, dec = value
-            ha = stringToDegree(ha)
-            dec = stringToDegree(dec)
-            self._coord = Star(ra_hours=ha, dec_degrees=dec)
-
-        lat = loc.latitude.degrees
-        alt, az = topoToAltAz(ha, dec, lat)
-        self.alt = Angle(degrees=alt)
-        self.az = Angle(degrees=az)
+        self.alt = alt
+        self.az = az
 
     def errorRA(self):
         return Angle(degrees=self.errorRMS * numpy.sin(self.errorAngle.radians))

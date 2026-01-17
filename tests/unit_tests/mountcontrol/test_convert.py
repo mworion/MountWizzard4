@@ -209,29 +209,29 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(0, value)
 
     def test_topoToAltAz_ok2(self):
-        alt, az = topoToAltAz(0, 0, 0)
-        self.assertEqual(90, alt)
-        self.assertEqual(270, az)
+        alt, az = topoToAltAz(Angle(hours=0), Angle(degrees=0), Angle(degrees=0))
+        self.assertEqual(90, alt.degrees)
+        self.assertEqual(270, az.degrees)
 
     def test_topoToAltAz_ok3(self):
-        alt, az = topoToAltAz(12, 0, 0)
-        self.assertEqual(-90, alt)
-        self.assertEqual(270, az)
+        alt, az = topoToAltAz(Angle(hours=12), Angle(degrees=0), Angle(degrees=0))
+        self.assertEqual(-90, alt.degrees)
+        self.assertEqual(270, az.degrees)
 
     def test_topoToAltAz_ok4(self):
-        alt, az = topoToAltAz(12, 180, 0)
-        self.assertEqual(90, alt)
-        self.assertEqual(360, az)
+        alt, az = topoToAltAz(Angle(hours=12), Angle(degrees=180), Angle(degrees=0))
+        self.assertEqual(90, alt.degrees)
+        self.assertEqual(360, az.degrees)
 
     def test_topoToAltAz_ok5(self):
-        alt, az = topoToAltAz(-12, 0, 0)
-        self.assertEqual(-90, alt)
-        self.assertEqual(270, az)
+        alt, az = topoToAltAz(Angle(hours=-12), Angle(degrees=0), Angle(degrees=0))
+        self.assertEqual(-90, alt.degrees)
+        self.assertEqual(270, az.degrees)
 
     def test_topoToAltAz_ok6(self):
-        alt, az = topoToAltAz(23, 0, 0)
-        self.assertAlmostEqual(75, alt, 5)
-        self.assertAlmostEqual(90, az, 5)
+        alt, az = topoToAltAz(Angle(hours=23), Angle(degrees=0), Angle(degrees=0))
+        self.assertAlmostEqual(75, alt.degrees, 5)
+        self.assertAlmostEqual(90, az.degrees, 5)
 
     def test_sexagesimalizeToInt_1(self):
         output = sexagesimalizeToInt(45 / 60 + 59.99999 / 3600)

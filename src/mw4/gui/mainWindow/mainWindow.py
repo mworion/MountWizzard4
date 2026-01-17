@@ -22,7 +22,7 @@ from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.logic.profiles.profile import loadProfile, saveProfile
+from mw4.logic.profiles.profile import loadConfig, saveConfig
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
 from PySide6.QtCore import Qt
@@ -361,7 +361,7 @@ class MainWindow(MWidget):
         )
         if not loadProfilePath.is_file():
             return
-        config = loadProfile(loadProfilePath)
+        config = loadConfig(loadProfilePath)
         self.switchProfile(config)
         self.ui.profile.setText(loadProfilePath.stem)
         self.saveProfile()
@@ -372,7 +372,7 @@ class MainWindow(MWidget):
         if not saveProfilePath.stem:
             return
         self.storeConfig()
-        saveProfile(saveProfilePath, self.app.config)
+        saveConfig(saveProfilePath, self.app.config)
         self.ui.profile.setText(saveProfilePath.stem)
         self.msg.emit(1, "System", "Profile", f"Saved to [{saveProfilePath.stem}]")
 

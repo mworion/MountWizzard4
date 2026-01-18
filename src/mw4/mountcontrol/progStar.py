@@ -14,19 +14,19 @@
 #
 ###########################################################
 import logging
+from dataclasses import dataclass
 from skyfield.api import Angle, Star
 
 
+@dataclass
 class ProgStar:
     """ """
-
     log = logging.getLogger("MW4")
-
-    def __init__(self, mCoord: Star, sCoord: Star, sidereal: Angle, pierside: str):
-        self.mCoord: Star = mCoord
-        self.sCoord: Star = sCoord
-        self.sidereal: Angle = sidereal
-        self.pierside: str = pierside
+    mCoord: Star
+    sCoord: Star
+    sidereal: Angle
+    pierside: str
+    _pierside: str = "E"
 
     @property
     def pierside(self):

@@ -13,13 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-import logging
 import numpy as np
 import re
 from skyfield.api import Angle
 from typing import Any
-
-log = logging.getLogger()
 
 
 def stringToDegree(value: str) -> float:

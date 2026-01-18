@@ -13,31 +13,23 @@
 # Licence APL2.0
 #
 ###########################################################
-import logging
+from dataclasses import dataclass
 from skyfield.timelib import Time
+from mountcontrol.obsSite import ObsSite
 
 
+@dataclass
 class TrajectoryParams:
-    """
-    The class TrajectoryParams inherits all information and handling of TLE tracking
-    and managing attributes of the connected mount and provides the abstracted
-    interface to a 10 micron mount.
-
-        >>> trajectoryParams = TrajectoryParams(host='')
-    """
-
-    log = logging.getLogger("MW4")
-
-    def __init__(self, obsSite=None):
-        self.obsSite = obsSite
-        self._jdStart: Time = self.obsSite.ts.tt_jd(0)
-        self._jdEnd: Time = self.obsSite.ts.tt_jd(0)
-        self.flip: bool = False
-        self.message: str = ""
-        self.offsetRA: float = 0
-        self.offsetDEC: float = 0
-        self.offsetDECcorr: float = 0
-        self.offsetTime: float = 0
+    """ """
+    obsSite: ObsSite
+    _jdStart: Time = 0
+    _jdEnd: Time = 0
+    flip: bool = False
+    message: str = ""
+    offsetRA: float = 0
+    offsetDEC: float = 0
+    offsetDECcorr: float = 0
+    offsetTime: float = 0
 
     @property
     def jdStart(self):

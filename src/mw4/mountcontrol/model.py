@@ -32,7 +32,6 @@ from skyfield.api import Angle, Star
 
 class Model:
     """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(self, parent):

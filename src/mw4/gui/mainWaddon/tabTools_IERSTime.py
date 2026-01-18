@@ -16,9 +16,9 @@
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
+from pathlib import Path
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QListView
-from pathlib import Path
 
 
 class IERSTime(QObject):
@@ -43,15 +43,13 @@ class IERSTime(QObject):
         self.ui.downloadIERS.clicked.connect(self.loadTimeDataFromSourceURLs)
 
     def initConfig(self) -> None:
-        """
-        """
+        """ """
         config = self.app.config["mainW"]
         self.setupIERSSourceURLsDropDown()
         self.ui.iersSource.setCurrentIndex(config.get("iersSource", 0))
 
     def storeConfig(self) -> None:
-        """
-        """
+        """ """
         config = self.app.config["mainW"]
         config["iersSource"] = self.ui.iersSource.currentIndex()
 
@@ -61,24 +59,21 @@ class IERSTime(QObject):
         self.mainW.wIcon(self.ui.downloadIERS, "run")
 
     def setupIERSSourceURLsDropDown(self) -> None:
-        """
-        """
+        """ """
         self.ui.iersSource.clear()
         self.ui.iersSource.setView(QListView())
         for name in self.iersSourceURLs:
             self.ui.iersSource.addItem(name)
 
     def finishProgEarthRotationData(self) -> None:
-        """
-        """
+        """ """
         if self.uploadPopup.returnValues["success"]:
             self.msg.emit(1, "IERS", "Upload", "Successfully uploaded")
         else:
             self.msg.emit(2, "IERS", "Upload", "Upload failed")
 
     def progEarthRotationData(self) -> None:
-        """
-        """
+        """ """
         self.msg.emit(1, "IERS", "Program", "Earth rotation data")
         self.msg.emit(0, "", "", "finals.data, CDFLeapSeconds.txt")
 
@@ -98,8 +93,7 @@ class IERSTime(QObject):
         )
 
     def finishLoadTimeDataFromSourceURLs(self) -> None:
-        """
-        """
+        """ """
         if self.downloadPopup.returnValues["success"]:
             self.msg.emit(0, "IERS", "Download", "Received [finals.data]")
             self.msg.emit(1, "IERS", "Download", "Downloaded complete")
@@ -107,8 +101,7 @@ class IERSTime(QObject):
             self.msg.emit(2, "IERS", "Download", "Download failed")
 
     def finishLoadFinalsFromSourceURLs(self) -> None:
-        """
-        """
+        """ """
         if not self.downloadPopup.returnValues["success"]:
             self.msg.emit(2, "IERS", "Download", "Download failed")
             return
@@ -127,8 +120,7 @@ class IERSTime(QObject):
         )
 
     def loadTimeDataFromSourceURLs(self) -> None:
-        """
-        """
+        """ """
         if not self.ui.isOnline.isChecked():
             return
 

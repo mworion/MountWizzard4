@@ -181,14 +181,10 @@ class TestConfigData(unittest.TestCase):
         p2 = "+56*30:00.5"
         p3 = "1234.5"
         p4 = "90"
-        modelStar1 = ModelStar(
-            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1)
-        modelStar2 = ModelStar(
-            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=2)
-        modelStar3 = ModelStar(
-            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=3)
-        modelStar4 = ModelStar(
-            coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=4)
+        modelStar1 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=1)
+        modelStar2 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=2)
+        modelStar3 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=3)
+        modelStar4 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=4)
 
         class Parent:
             host = None
@@ -228,12 +224,11 @@ class TestConfigData(unittest.TestCase):
             host = None
 
         model = Model(parent=Parent())
-        p3 = 1234.5
         p4 = Angle(degrees=90)
         s = Star(ra_hours=12.7580583333, dec_degrees=56.5001388889)
 
         for i in range(0, 10):
-            model.addStar(ModelStar(s, i*i, p4, i))
+            model.addStar(ModelStar(s, i * i, p4, i))
 
         self.assertEqual(len(model.starList), 10)
         for i, star in enumerate(model.starList):

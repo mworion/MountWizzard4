@@ -50,8 +50,7 @@ class SimulatorHorizon:
         del self.parent.entityModel["horizonRoot"]
 
     def createWall(self, parentEntity, alt, az) -> Qt3DCore.QEntity:
-        """
-        """
+        """ """
         e1 = Qt3DCore.QEntity()
         e1.setParent(parentEntity)
         trans1 = Qt3DCore.QTransform()
@@ -79,8 +78,7 @@ class SimulatorHorizon:
         return e3
 
     def create(self) -> None:
-        """
-        """
+        """ """
         if not self.app.data.horizonP:
             return
 

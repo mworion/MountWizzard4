@@ -19,11 +19,11 @@ import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import (
     sexagesimalizeToInt,
+    stringToAngle,
+    topoToAltAz,
     valueToAngle,
     valueToFloat,
     valueToInt,
-    stringToAngle,
-    topoToAltAz,
 )
 from mw4.mountcontrol.modelStar import ModelStar
 from mw4.mountcontrol.progStar import ProgStar
@@ -32,6 +32,7 @@ from skyfield.api import Angle, Star
 
 class Model:
     """ """
+
     log = logging.getLogger("MW4")
 
     def __init__(self, parent):

@@ -49,7 +49,6 @@ def module_setup_teardown():
         for f in files:
             if "empty" in f:
                 continue
-            print(f)
             os.remove(f)
     extractDataFiles(mwGlob=mwglob)
     yield

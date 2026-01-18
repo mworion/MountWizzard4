@@ -14,9 +14,9 @@
 #
 ###########################################################
 import logging
+import yaml
 from mw4.base.loggerMW import setupLogging
 from pathlib import Path
-import yaml
 
 setupLogging()
 log = logging.getLogger()

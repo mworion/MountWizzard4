@@ -59,19 +59,20 @@ def test_debugOutput_2(function):
         elapsed = 1
         text = "test"
         url = "test"
+
     function.debugOutput(Test())
 
 
 def test_getRelay_1(function):
     function.hostaddress = None
-    suc = function.getRelay('test', True)
+    suc = function.getRelay("test", True)
     assert suc == ""
 
 
 def test_getRelay_2(function):
     function.hostaddress = "localhost"
     function.mutexPoll.lock()
-    suc = function.getRelay('test', True)
+    suc = function.getRelay("test", True)
     assert suc == ""
     function.mutexPoll.unlock()
 

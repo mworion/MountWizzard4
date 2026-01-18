@@ -16,15 +16,14 @@
 import logging
 import numpy as np
 from astropy.io import fits
-
 from mw4.base.transform import JNowToJ2000
 from mw4.mountcontrol.convert import (
     convertDecToAngle,
     convertRaToAngle,
-    valueToAngle,
-    valueToFloat,
     formatLatToText,
     formatLonToText,
+    valueToAngle,
+    valueToFloat,
 )
 from pathlib import Path
 from skyfield.units import Angle
@@ -44,7 +43,7 @@ def getCoordinatesFromHeader(header: fits.Header) -> tuple[Angle, Angle]:
     hasSexagesimal = bool("OBJCTRA" in header and "OBJCTDEC" in header)
 
     if hasDecimal:
-        ra = valueToAngle(valueToFloat(header["RA"]) * 24/360, preference="hours")
+        ra = valueToAngle(valueToFloat(header["RA"]) * 24 / 360, preference="hours")
         dec = valueToAngle(header["DEC"], preference="degrees")
         log.debug("Fits header:   Decimal coordinates used [RA], [DEC]")
     elif hasSexagesimal:
@@ -186,7 +185,9 @@ def getSolutionFromWCSHeader(wcsHeader: fits.Header, imageHeader: fits.Header) -
     CRVAL1 and CRVAL2 give the center coordinate as right ascension and
     declination or longitude and latitude in decimal degrees.
     """
-    raJ2000 = valueToAngle(valueToFloat(wcsHeader.get("CRVAL1", 0)) * 24 / 360, preference="hours")
+    raJ2000 = valueToAngle(
+        valueToFloat(wcsHeader.get("CRVAL1", 0)) * 24 / 360, preference="hours"
+    )
     decJ2000 = valueToAngle(wcsHeader.get("CRVAL2", 0), preference="degrees")
     angle, scale, mirrored = calcAngleScaleFromWCSHeader(header=wcsHeader)
     raMount, decMount = getCoordinatesFromHeader(header=imageHeader)

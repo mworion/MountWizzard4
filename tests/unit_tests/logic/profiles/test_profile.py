@@ -14,17 +14,17 @@
 #
 ###########################################################
 import glob
-import yaml
+import mw4.logic.profiles
 import os
 import pytest
 import unittest.mock as mock
+import yaml
 from mw4.logic.profiles.profile import (
     defaultConfig,
     loadConfig,
     loadProfileStart,
     saveConfig,
 )
-import mw4.logic.profiles
 from pathlib import Path
 
 
@@ -72,7 +72,7 @@ def test_loadProfile_2():
         yaml.dump(config, outfile)
 
     val = loadConfig(Path("tests/work/config/config.yaml"))
-    assert 'orderMain' in val['mainW']
+    assert "orderMain" in val["mainW"]
 
 
 def test_loadProfile_3():
@@ -88,7 +88,7 @@ def test_loadProfile_3():
         yaml.dump(config, outfile)
 
     val = loadConfig(Path("tests/work/config/config.yaml"))
-    assert 'mainW' not in val
+    assert "mainW" not in val
 
 
 def test_loadProfileStart_1():
@@ -118,7 +118,9 @@ def test_loadProfileStart_3():
     with open("tests/work/config/config.yaml", "w") as outfile:
         yaml.dump(config, outfile)
 
-    with mock.patch.object(mw4.logic.profiles.profile, "loadConfig", return_value={"profileName": "config"}):
+    with mock.patch.object(
+        mw4.logic.profiles.profile, "loadConfig", return_value={"profileName": "config"}
+    ):
         val = loadProfileStart(Path("tests/work/config"))
     assert val == {"profileName": "config"}
 

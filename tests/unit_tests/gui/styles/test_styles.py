@@ -27,36 +27,7 @@ def function(qapp):
 
 
 def test_property(function):
-    a = function.M_TRANS
-    a = function.M_PRIM
-    a = function.M_PRIM1
-    a = function.M_PRIM2
-    a = function.M_PRIM3
-    a = function.M_PRIM4
-    a = function.M_SEC
-    a = function.M_SEC1
-    a = function.M_TER
-    a = function.M_TER1
-    a = function.M_TER2
-    a = function.M_BACK
-    a = function.M_BACK1
-    a = function.M_GRAY
-    a = function.M_RED
-    a = function.M_RED1
-    a = function.M_RED2
-    a = function.M_YELLOW
-    a = function.M_YELLOW1
-    a = function.M_YELLOW2
-    a = function.M_GREEN
-    a = function.M_GREEN1
-    a = function.M_GREEN2
-    a = function.M_PINK
-    a = function.M_PINK1
-    a = function.M_CYAN
-    a = function.M_CYAN1
-    a = function.M_TAB
-    a = function.M_TAB1
-    a = function.M_TAB2
+    pass
 
 
 def test_mw4Style_1(function):

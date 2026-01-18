@@ -20,6 +20,7 @@ from skyfield.api import Angle
 
 class Dome:
     """ """
+
     def __init__(self, parent):
         self.parent = parent
         self._shutterState: int = 0

@@ -319,9 +319,7 @@ def test_loadProfileGUI_3(window):
 
 def test_saveConfigAs1(window):
     with mock.patch.object(window, "saveFile", return_value=Path("test.cfg")):
-        with mock.patch.object(
-            mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=True
-        ):
+        with mock.patch.object(mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=True):
             with mock.patch.object(window.app, "storeConfig"):
                 with mock.patch.object(window, "storeConfig"):
                     window.saveProfileAs()

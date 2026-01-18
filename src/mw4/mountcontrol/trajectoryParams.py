@@ -14,13 +14,14 @@
 #
 ###########################################################
 from dataclasses import dataclass
+from mw4.mountcontrol.obsSite import ObsSite
 from skyfield.timelib import Time
-from mountcontrol.obsSite import ObsSite
 
 
 @dataclass
 class TrajectoryParams:
     """ """
+
     obsSite: ObsSite
     _jdStart: Time = 0
     _jdEnd: Time = 0

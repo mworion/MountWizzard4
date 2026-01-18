@@ -21,6 +21,7 @@ from skyfield.api import Angle, Star
 @dataclass
 class ModelStar:
     """ """
+
     coord: Star = Star(ra_hours=0, dec_degrees=0)
     errorRMS: float = 0
     errorAngle: Angle = Angle(degrees=0)

@@ -172,7 +172,8 @@ def test_processPhotometry_1(function):
     function.ui.photometryGroup.setChecked(True)
     function.fileHandler.image = 1
     with mock.patch.object(function.photometry, "processPhotometry"):
-        function.processPhotometry()
+        with mock.patch.object(function, "clearGui"):
+            function.processPhotometry()
 
 
 def test_processPhotometry_2(function):

@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import mw4.mountcontrol
 import numpy
 import skyfield.api

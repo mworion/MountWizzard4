@@ -13,6 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
+import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat, valueToInt
 from skyfield.api import Angle
@@ -20,6 +21,7 @@ from skyfield.api import Angle
 
 class Dome:
     """ """
+    log = logging.getLogger("MW4")
 
     def __init__(self, parent):
         self.parent = parent

@@ -35,7 +35,7 @@ class Parent:
     updateRate = 1000
 
 
-@pytest.fixture(autouse=True, scope="module")
+@pytest.fixture(autouse=True, scope="function")
 def function(qapp):
     data = {
         "framework": "indi",

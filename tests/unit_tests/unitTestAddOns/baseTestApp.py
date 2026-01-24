@@ -1087,14 +1087,7 @@ class MainW:
 
 
 class App(QObject):
-    config = {"mainW": {}}
-    deviceStat = {
-        "dome": False,
-        "mount": False,
-        "camera": False,
-        "plateSolve": False,
-    }
-    statusOperationRunning = 0
+    __version__ = "test"
     tabsMovable = Signal(object)
     update10s = Signal()
     timer0_1s = QTimer()
@@ -1140,44 +1133,54 @@ class App(QObject):
     gameDirection = Signal(object)
     game_sL = Signal(object, object)
     game_sR = Signal(object, object)
-    messageQueue = Queue()
-    plateSolve = PlateSolve()
-    camera = Camera()
-    cover = Cover()
-    data = Data()
-    filter = Filter()
-    focuser = Focuser()
-    measure = Measure()
-    mount = Mount()
-    sensor1Weather = SensorWeather()
-    sensor2Weather = SensorWeather()
-    sensor3Weather = SensorWeather()
-    sensor4Weather = SensorWeather()
-    directWeather = DirectWeather()
-    seeingWeather = SeeingWeather()
-    power = Power()
-    dome = Dome()
-    relay = Relay()
-    remote = Remote()
-    telescope = Telescope()
-    hipparcos = Hipparcos()
 
-    ephemeris = load_file("tests/testData/de440_mw4.bsp")
-    mwGlob = {
-        "modelDir": Path("tests/work/model"),
-        "imageDir": Path("tests/work/image"),
-        "dataDir": Path("tests/work/data"),
-        "workDir": Path("tests/work"),
-        "measureDir": Path("tests/work/measure"),
-        "tempDir": Path("tests/work/temp"),
-        "configDir": Path("tests/work/config"),
-        "logDir": Path("tests/work/log"),
-    }
-    uiWindows = {}
-    mainW = MainW()
-    threadPool = QThreadPool()
-    onlineMode = False
-    __version__ = "test"
+    def __init__(self):
+        super().__init__()
+        self.config = {"mainW": {}}
+        self.deviceStat = {
+            "dome": False,
+            "mount": False,
+            "camera": False,
+            "plateSolve": False,
+        }
+        self.statusOperationRunning = 0
+        self.messageQueue = Queue()
+        self.plateSolve = PlateSolve()
+        self.camera = Camera()
+        self.cover = Cover()
+        self.data = Data()
+        self.filter = Filter()
+        self.focuser = Focuser()
+        self.measure = Measure()
+        self.mount = Mount()
+        self.sensor1Weather = SensorWeather()
+        self.sensor2Weather = SensorWeather()
+        self.sensor3Weather = SensorWeather()
+        self.sensor4Weather = SensorWeather()
+        self.directWeather = DirectWeather()
+        self.seeingWeather = SeeingWeather()
+        self.power = Power()
+        self.dome = Dome()
+        self.relay = Relay()
+        self.remote = Remote()
+        self.telescope = Telescope()
+        self.hipparcos = Hipparcos()
+
+        self.ephemeris = load_file("tests/testData/de440_mw4.bsp")
+        self.mwGlob = {
+            "modelDir": Path("tests/work/model"),
+            "imageDir": Path("tests/work/image"),
+            "dataDir": Path("tests/work/data"),
+            "workDir": Path("tests/work"),
+            "measureDir": Path("tests/work/measure"),
+            "tempDir": Path("tests/work/temp"),
+            "configDir": Path("tests/work/config"),
+            "logDir": Path("tests/work/log"),
+        }
+        self.uiWindows = {}
+        self.mainW = MainW()
+        self.threadPool = QThreadPool()
+        self.onlineMode = False
 
     @staticmethod
     def loadConfig():

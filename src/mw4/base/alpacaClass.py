@@ -38,7 +38,6 @@ class AlpacaClass(DriverData):
         self.updateRate: int = 1000
         self.loadConfig: bool = False
         self.propertyExceptions: list = []
-
         self._host: tuple = ("localhost", 11111)
         self._port: int = 11111
         self._hostaddress: str = "localhost"
@@ -70,7 +69,6 @@ class AlpacaClass(DriverData):
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
         self.cycleDevice.timeout.connect(self.pollStatus)
-
         self.cycleData = QTimer()
         self.cycleData.setSingleShot(False)
         self.cycleData.timeout.connect(self.pollData)

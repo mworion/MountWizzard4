@@ -33,7 +33,7 @@ def function(qapp):
     mainW.ui.setupUi(mainW)
     window = Asteroid(mainW)
     yield window
-    mainW.app.threadPool.waitForDone(1000)
+    mainW.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):

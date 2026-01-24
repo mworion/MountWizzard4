@@ -717,31 +717,32 @@ class Mount(QObject):
         domeRadius = 100
 
     class MountSetting:
-        meridianLimitSlew = 3
-        meridianLimitTrack = 4
-        horizonLimitHigh = 90
-        horizonLimitLow = 0
-        timeToFlip = 0
-        statusUnattendedFlip = False
-        statusDualAxisTracking = False
-        statusRefraction = False
-        refractionTemp = 0
-        refractionPress = 0
-        wakeOnLan = "None"
-        autoPowerOn = "None"
-        typeConnection = 1
-        trackingRate = 60.2
-        slewRateMin = 0
-        slewRateMax = 1
-        webInterfaceStat = True
-        UTCExpire = None
-        gpsSynced = True
-        weatherTemperature = 0.0
-        weatherPressure = 1000.0
-        weatherDewPoint = 0.0
-        weatherHumidity = 50
-        weatherAge = 1
-        settleTime = 0
+        def __init__(self):
+            self.meridianLimitSlew = 3
+            self.meridianLimitTrack = 4
+            self.horizonLimitHigh = 90
+            self.horizonLimitLow = 0
+            self.timeToFlip = 0
+            self.statusUnattendedFlip = False
+            self.statusDualAxisTracking = False
+            self.statusRefraction = False
+            self.refractionTemp = 0
+            self.refractionPress = 0
+            self.wakeOnLan = "None"
+            self.autoPowerOn = "None"
+            self.typeConnection = 1
+            self.trackingRate = 60.2
+            self.slewRateMin = 0
+            self.slewRateMax = 1
+            self.webInterfaceStat = True
+            self.UTCExpire = None
+            self.gpsSynced = True
+            self.weatherTemperature = 0.0
+            self.weatherPressure = 1000.0
+            self.weatherDewPoint = 0.0
+            self.weatherHumidity = 50
+            self.weatherAge = 1
+            self.settleTime = 0
 
         @staticmethod
         def timeToMeridian():
@@ -867,30 +868,31 @@ class Mount(QObject):
         calcProgress = Signal(object)
 
     class MountObsSite:
-        Alt = Angle(degrees=0)
-        Az = Angle(degrees=0)
-        haJNowTarget = Angle(hours=0)
-        decJNowTarget = Angle(degrees=0)
-        angularPosRA = Angle(degrees=0)
-        angularPosDEC = Angle(degrees=0)
-        errorAngularPosRA = Angle(degrees=0)
-        errorAngularPosDEC = Angle(degrees=0)
-        raJNow = Angle(hours=0)
-        decJNow = Angle(degrees=0)
-        haJNow = Angle(hours=0)
-        AzTarget = Angle(degrees=0)
-        AltTarget = Angle(degrees=0)
-        pierside = "E"
-        piersideTarget = "E"
-        timeSidereal = Angle(hours=12)
-        location = wgs84.latlon(latitude_degrees=20, longitude_degrees=10, elevation_m=500)
-        ts = load.timescale(builtin=True)
-        timeJD = ts.tt_jd(2459580.5)
-        timeDiff = 0
-        loader = Loader("tests/work/data", verbose=False)
-        status = 0
-        statusSat = "E"
-        UTC2TT = 69.184
+        def __init__(self):
+            self.Alt = Angle(degrees=0)
+            self.Az = Angle(degrees=0)
+            self.haJNowTarget = Angle(hours=0)
+            self.decJNowTarget = Angle(degrees=0)
+            self.angularPosRA = Angle(degrees=0)
+            self.angularPosDEC = Angle(degrees=0)
+            self.errorAngularPosRA = Angle(degrees=0)
+            self.errorAngularPosDEC = Angle(degrees=0)
+            self.raJNow = Angle(hours=0)
+            self.decJNow = Angle(degrees=0)
+            self.haJNow = Angle(hours=0)
+            self.AzTarget = Angle(degrees=0)
+            self.AltTarget = Angle(degrees=0)
+            self.pierside = "E"
+            self.piersideTarget = "E"
+            self.timeSidereal = Angle(hours=12)
+            self.location = wgs84.latlon(latitude_degrees=20, longitude_degrees=10, elevation_m=500)
+            self.ts = load.timescale(builtin=True)
+            self.timeJD = self.ts.tt_jd(2459580.5)
+            self.timeDiff = 0
+            self.loader = Loader("tests/work/data", verbose=False)
+            self.status = 0
+            self.statusSat = "E"
+            self.UTC2TT = 69.184
 
         @staticmethod
         def setLongitude(a):
@@ -1122,7 +1124,6 @@ class App(QObject):
     colorChange = Signal()
     virtualStop = Signal()
     mountOff = Signal()
-    mountOn = Signal()
     mountOn = Signal()
     buildPointsChanged = Signal()
     playSound = Signal(object)

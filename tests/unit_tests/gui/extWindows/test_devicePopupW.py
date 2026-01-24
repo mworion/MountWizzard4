@@ -27,12 +27,13 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 class Parent:
-    app = App()
-    data = {}
-    signals = Signals()
-    deviceType = "telescope"
-    loadConfig = True
-    updateRate = 1000
+    def __init__(self):
+        self.app = App()
+        self.data = {}
+        self.signals = Signals()
+        self.deviceType = "telescope"
+        self.loadConfig = True
+        self.updateRate = 1000
 
 
 @pytest.fixture(autouse=False, scope="module")

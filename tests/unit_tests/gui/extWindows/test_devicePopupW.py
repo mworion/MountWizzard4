@@ -35,13 +35,13 @@ class Parent:
     updateRate = 1000
 
 
-@pytest.fixture(autouse=True, scope="module")
+@pytest.fixture(autouse=False, scope="module")
 def function(qapp):
     data = {
         "framework": "indi",
         "frameworks": {"indi": {"deviceName": "test", "deviceList": ["1", "2"]}},
     }
-    widget = QWidget()
+    widget = MWidget()
     with mock.patch.object(DevicePopup, "show"):
         window = DevicePopup(
             widget, parent=Parent(), data=data, driver="telescope", deviceType="telescope"

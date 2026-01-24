@@ -29,11 +29,9 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     widget = QWidget()
     widget.app = App()
-    with mock.patch.object(DownloadPopup, "show"):
-        with mock.patch.object(DownloadPopup, "downloadFile"):
-            window = DownloadPopup(parentWidget=widget, url="", dest="")
-        yield window
-        window.threadPool.waitForDone(10000)
+    window = DownloadPopup(parentWidget=widget, url="", dest="")
+    yield window
+    window.threadPool.waitForDone(10000)
 
 
 @pytest.fixture
@@ -211,11 +209,15 @@ def test_closePopup_2(function, mocked_sleepAndEvents):
 
 def test_downloadFile_1(function):
     function.callBack = 1
+    function.url = ""
+    function.dest = Path()
     with mock.patch.object(function.threadPool, "start"):
-        function.downloadFile("", Path())
+        function.downloadFile()
 
 
 def test_downloadFile_2(function):
     function.callBack = None
+    function.url = ""
+    function.dest = Path()
     with mock.patch.object(function.threadPool, "start"):
-        function.downloadFile("", Path())
+        function.downloadFile()

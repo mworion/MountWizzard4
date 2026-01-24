@@ -70,6 +70,8 @@ def test_showWindow_1(function):
 
 
 def test_closeEvent_1(function):
+    function.app.update1s.connect(function.drawMeasure)
+    function.app.update1s.connect(function.setTitle)
     with mock.patch.object(function, "show"):
         with mock.patch.object(MWidget, "closeEvent"):
             function.closeEvent(QCloseEvent())

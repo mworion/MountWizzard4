@@ -26,7 +26,6 @@ from PySide6.QtCore import Qt, Signal
 
 class DownloadPopup(MWidget):
     """ """
-
     signalProgress = Signal(object)
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
@@ -37,22 +36,20 @@ class DownloadPopup(MWidget):
         self.msg = parentWidget.app.msg
         self.threadPool = parentWidget.app.threadPool
         self.worker: Worker = None
-
+        self.url = url
+        self.dest = dest
+        self.unzip = unzip
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self)
         self.setWindowTitle("Downloading from Web")
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
-
         self.returnValues = {"success": False}
         self.signalStatus.connect(self.setStatusTextToValue)
         self.signalProgress.connect(self.setProgressBarToValue)
         self.signalProgressBarColor.connect(self.setProgressBarColor)
-
         self.setIcon()
-        self.show()
-        self.downloadFile(url, dest, unzip=unzip)
 
     def setIcon(self) -> None:
         """ """
@@ -138,8 +135,8 @@ class DownloadPopup(MWidget):
         sleepAndEvents(500)
         self.close()
 
-    def downloadFile(self, url: str, dest: Path, unzip: bool = False) -> None:
+    def downloadFile(self) -> None:
         """ """
-        self.worker = Worker(self.downloadFileWorker, url=url, dest=dest, unzip=unzip)
+        self.worker = Worker(self.downloadFileWorker, self.url, self.dest, self.unzip)
         self.worker.signals.result.connect(self.closePopup)
         self.threadPool.start(self.worker)

@@ -325,6 +325,7 @@ class SettDevice(QObject):
         self.devicePopup = DevicePopup(
             self.mainW, parent=deviceClass, driver=driver, deviceType=deviceType, data=data
         )
+        self.devicePopup.initConfig()
         self.devicePopup.ui.ok.clicked.connect(self.processPopupResults)
 
     def stopDriver(self, driver: str) -> None:

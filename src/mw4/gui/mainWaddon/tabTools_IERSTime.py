@@ -88,6 +88,7 @@ class IERSTime(QObject):
         self.uploadPopup = UploadPopup(
             self.mainW, url=url, dataTypes=dataTypes, dataFilePath=self.tempDir
         )
+        self.uploadPopup.show()
         self.uploadPopup.workerStatus.signals.finished.connect(
             self.finishProgEarthRotationData
         )
@@ -115,6 +116,8 @@ class IERSTime(QObject):
         url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
+        self.downloadPopup.show()
+        self.downloadPopup.downloadFile()
         self.downloadPopup.worker.signals.finished.connect(
             self.finishLoadTimeDataFromSourceURLs
         )
@@ -131,4 +134,6 @@ class IERSTime(QObject):
         url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
+        self.downloadPopup.show()
+        self.downloadPopup.downloadFile()
         self.downloadPopup.worker.signals.finished.connect(self.finishLoadFinalsFromSourceURLs)

@@ -27,10 +27,9 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     widget = QWidget()
     widget.app = App()
-    with mock.patch.object(UploadPopup, "show"):
-        window = UploadPopup(parentWidget=widget, url="", dataTypes="", dataFilePath=Path())
-        yield window
-        window.threadPool.waitForDone(10000)
+    window = UploadPopup(parentWidget=widget, url="", dataTypes="", dataFilePath=Path())
+    yield window
+    window.threadPool.waitForDone(10000)
 
 
 @pytest.fixture

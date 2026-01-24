@@ -81,7 +81,6 @@ class UploadPopup(MWidget):
         self.signalProgress.connect(self.setProgressBarToValue)
         self.signalProgressBarColor.connect(self.setProgressBarColor)
         self.setIcon()
-        self.show()
         self.uploadFile()
 
     def setIcon(self) -> None:

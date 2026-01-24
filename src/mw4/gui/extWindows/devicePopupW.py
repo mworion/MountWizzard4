@@ -169,8 +169,6 @@ class DevicePopup(toolsQtWidget.MWidget):
             )
 
         self.ui.selectBoltwoodPath.clicked.connect(self.selectBoltwoodPath)
-        self.initConfig()
-        self.show()
 
     def initConfig(self) -> None:
         """ """
@@ -181,6 +179,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         if framework in self.platesolvers:
             self.checkApp(framework, self.platesolvers[framework]["appPath"].text())
             self.checkIndex(framework, self.platesolvers[framework]["indexPath"].text())
+        self.show()
 
     def storeConfig(self) -> None:
         """ """

@@ -36,26 +36,26 @@ class Parent:
         self.updateRate = 1000
 
 
-@pytest.fixture(autouse=False, scope="module")
+@pytest.fixture(autouse=False, scope="function")
 def function(qapp):
     data = {
         "framework": "indi",
         "frameworks": {"indi": {"deviceName": "test", "deviceList": ["1", "2"]}},
     }
     widget = MWidget()
-    with mock.patch.object(DevicePopup, "show"):
-        window = DevicePopup(
-            widget, parent=Parent(), data=data, driver="telescope", deviceType="telescope"
-        )
-        window.log = logging.getLogger()
-        yield window
-        window.app.threadPool.waitForDone(10000)
+    window = DevicePopup(
+        widget, parent=Parent(), data=data, driver="telescope", deviceType="telescope"
+    )
+    window.log = logging.getLogger()
+    yield window
+    window.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):
     with mock.patch.object(function, "populateTabs"):
         with mock.patch.object(function, "selectTabs"):
-            function.initConfig()
+            with mock.patch.object(function, "show"):
+                function.initConfig()
 
 
 def test_initConfig_2(function):
@@ -72,7 +72,8 @@ def test_initConfig_2(function):
         with mock.patch.object(function, "checkIndex"):
             with mock.patch.object(function, "populateTabs"):
                 with mock.patch.object(function, "selectTabs"):
-                    function.initConfig()
+                    with mock.patch.object(function, "show"):
+                        function.initConfig()
 
 
 def test_storeConfig_1(function):

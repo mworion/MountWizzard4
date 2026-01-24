@@ -23,11 +23,12 @@ from skyfield.api import Angle, Loader, load, load_file, wgs84
 
 
 class PlateSolve:
-    signals = Signals()
-    framework = None
-    run = {}
-    deviceName = ""
-    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
+    def __init__(self):
+        self.signals = Signals()
+        self.framework = None
+        self.run = {}
+        self.deviceName = ""
+        self.defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
 
     @staticmethod
     def solve(a, b):
@@ -42,31 +43,33 @@ class PlateSolve:
         return True, True
 
 
-class Camera:
-    class CameraSignals(QObject):
-        saved = Signal()
-        message = Signal(object)
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
-        deviceConnected = Signal(object)
-        deviceDisconnected = Signal(object)
-        exposed = Signal()
-        downloaded = Signal()
+class CameraSignals(QObject):
+    saved = Signal()
+    message = Signal(object)
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(object)
+    deviceDisconnected = Signal(object)
+    exposed = Signal()
+    downloaded = Signal()
 
-    signals = CameraSignals()
-    exposureTime = 0
-    exposureTime1 = 0
-    exposureTimeN = 0
-    binning = 1
-    binning1 = 1
-    binningN = 1
-    focalLength = 100
-    subFrame = 100
-    fastReadout = False
-    data = {}
-    framework = None
-    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
-    run = {"indi": "dummy"}
+
+class Camera:
+    def __init__(self):
+        self.signals = CameraSignals()
+        self.exposureTime = 0
+        self.exposureTime1 = 0
+        self.exposureTimeN = 0
+        self.binning = 1
+        self.binning1 = 1
+        self.binningN = 1
+        self.focalLength = 100
+        self.subFrame = 100
+        self.fastReadout = False
+        self.data = {}
+        self.framework = None
+        self.defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
+        self.run = {"indi": "dummy"}
 
     @staticmethod
     def expose(
@@ -114,19 +117,21 @@ class Camera:
         return
 
 
-class Cover:
-    class CoverSignals(QObject):
-        message = Signal(object)
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
-        deviceConnected = Signal(object)
-        deviceDisconnected = Signal(object)
+class CoverSignals(QObject):
+    message = Signal(object)
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(object)
+    deviceDisconnected = Signal(object)
 
-    signals = CoverSignals()
-    data = {}
-    framework = None
-    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
-    run = {"indi": "dummy"}
+
+class Cover:
+    def __init__(self):
+        self.signals = CoverSignals()
+        self.data = {}
+        self.framework = None
+        self.defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
+        self.run = {"indi": "dummy"}
 
     @staticmethod
     def closeCover():
@@ -153,27 +158,29 @@ class Cover:
         return
 
 
-class Dome:
-    class DomeSignals(QObject):
-        message = Signal(object)
-        azimuth = Signal()
-        slewed = Signal()
-        deviceDisconnected = Signal()
-        deviceConnected = Signal()
-        serverDisconnected = Signal()
+class DomeSignals(QObject):
+    message = Signal(object)
+    azimuth = Signal()
+    slewed = Signal()
+    deviceDisconnected = Signal()
+    deviceConnected = Signal()
+    serverDisconnected = Signal()
 
-    domeShutterWidth = 0.6
-    offGEM = 0
-    offLAT = 0
-    offNorth = 0
-    offEast = 0
-    domeRadius = 1.0
-    clearOpening = 1
-    data = {}
-    framework = None
-    signals = DomeSignals()
-    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
-    run = {"indi": "dummy"}
+
+class Dome:
+    def __init__(self):
+        self.domeShutterWidth = 0.6
+        self.offGEM = 0
+        self.offLAT = 0
+        self.offNorth = 0
+        self.offEast = 0
+        self.domeRadius = 1.0
+        self.clearOpening = 1
+        self.data = {}
+        self.framework = None
+        self.signals = DomeSignals()
+        self.defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
+        self.run = {"indi": "dummy"}
 
     @staticmethod
     def abortSlew():
@@ -208,77 +215,87 @@ class Dome:
         return
 
 
-class SensorWeather:
-    class SensorWeatherSignals(QObject):
-        message = Signal(object)
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
-        deviceConnected = Signal(object)
-        deviceDisconnected = Signal(object)
+class SensorWeatherSignals(QObject):
+    message = Signal(object)
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(object)
+    deviceDisconnected = Signal(object)
 
-    signals = SensorWeatherSignals()
-    data = {}
-    framework = None
-    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
-    run = {"indi": "dummy"}
+
+class SensorWeather:
+    def __init__(self):
+        self.signals = SensorWeatherSignals()
+        self.data = {}
+        self.framework = None
+        self.defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
+        self.run = {"indi": "dummy"}
+
+
+class OnlineWeatherSignals(QObject):
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(object)
+    deviceDisconnected = Signal(object)
 
 
 class OnlineWeather:
-    class OnlineWeatherSignals(QObject):
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
-        deviceConnected = Signal(object)
-        deviceDisconnected = Signal(object)
+    def __init__(self):
+        self.signals = OnlineWeatherSignals()
+        self.framework = None
+        self.defaultConfig = {"framework": "", "frameworks": {}}
+        self.data = {}
 
-    signals = OnlineWeatherSignals()
-    framework = None
-    defaultConfig = {"framework": "", "frameworks": {}}
-    data = {}
+
+class DirectWeatherSignals(QObject):
+    message = Signal(object)
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(object)
+    deviceDisconnected = Signal(object)
 
 
 class DirectWeather:
-    class DirectWeatherSignals(QObject):
-        message = Signal(object)
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
-        deviceConnected = Signal(object)
-        deviceDisconnected = Signal(object)
+    def __init__(self):
+        self.signals = DirectWeatherSignals()
+        self.data = {}
+        self.framework = None
+        self.defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
+        self.run = {"indi": "dummy"}
 
-    signals = DirectWeatherSignals()
-    data = {}
-    framework = None
-    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
-    run = {"indi": "dummy"}
+
+class SeeingWeatherSignals(QObject):
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(object)
+    deviceDisconnected = Signal(object)
+    update = Signal()
 
 
 class SeeingWeather:
-    class SeeingWeatherSignals(QObject):
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
-        deviceConnected = Signal(object)
-        deviceDisconnected = Signal(object)
-        update = Signal()
+    def __init__(self):
+        self.signals = SeeingWeatherSignals()
+        self.framework = None
+        self.defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
+        self.run = {"indi": "dummy"}
+        self.data = {}
 
-    signals = SeeingWeatherSignals()
-    framework = None
-    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
-    run = {"indi": "dummy"}
-    data = {}
+
+class FilterSignals(QObject):
+    message = Signal(object)
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(object)
+    deviceDisconnected = Signal(object)
 
 
 class Filter:
-    class FilterSignals(QObject):
-        message = Signal(object)
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
-        deviceConnected = Signal(object)
-        deviceDisconnected = Signal(object)
-
-    signals = FilterSignals()
-    data = {}
-    framework = None
-    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
-    run = {"indi": "dummy"}
+    def __init__(self):
+        self.signals = FilterSignals()
+        self.data = {}
+        self.framework = None
+        self.defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
+        self.run = {"indi": "dummy"}
 
     @staticmethod
     def sendFilterNumber(filterNumber=None):
@@ -289,19 +306,21 @@ class Filter:
         return
 
 
-class Focuser:
-    class FocuserSignals(QObject):
-        message = Signal(object)
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
-        deviceConnected = Signal(object)
-        deviceDisconnected = Signal(object)
+class FocuserSignals(QObject):
+    message = Signal(object)
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(object)
+    deviceDisconnected = Signal(object)
 
-    signals = FocuserSignals()
-    framework = None
-    data = {}
-    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
-    run = {"indi": "dummy"}
+
+class Focuser:
+    def __init__(self):
+        self.signals = FocuserSignals()
+        self.framework = None
+        self.data = {}
+        self.defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
+        self.run = {"indi": "dummy"}
 
     @staticmethod
     def move():
@@ -312,39 +331,44 @@ class Focuser:
         return
 
 
+class MeasureSignals(QObject):
+    message = Signal(object)
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(object)
+    deviceDisconnected = Signal(object)
+
+
+class CSV:
+    csvFilename = ""
+
+
 class Measure:
-    class MeasureSignals(QObject):
-        message = Signal(object)
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
-        deviceConnected = Signal(object)
-        deviceDisconnected = Signal(object)
+    def __init__(self):
+        self.signals = MeasureSignals()
+        self.data = {}
+        self.framework = None
+        self.devices = {}
+        self.defaultConfig = {"framework": "", "frameworks": {}}
+        self.run = {"csv": CSV()}
 
-    class CSV:
-        csvFilename = ""
 
-    signals = MeasureSignals()
-    data = {}
-    framework = None
-    devices = {}
-    defaultConfig = {"framework": "", "frameworks": {}}
-    run = {"csv": CSV()}
+class RelaySignals(QObject):
+    message = Signal(object)
+    statusReady = Signal()
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(object)
+    deviceDisconnected = Signal(object)
 
 
 class Relay:
-    class RelaySignals(QObject):
-        message = Signal(object)
-        statusReady = Signal()
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
-        deviceConnected = Signal(object)
-        deviceDisconnected = Signal(object)
-
-    signals = RelaySignals()
-    data = {}
-    framework = None
-    defaultConfig = {"framework": "", "frameworks": {}}
-    timerTask = QTimer()
+    def __init__(self):
+        self.signals = RelaySignals()
+        self.data = {}
+        self.framework = None
+        self.defaultConfig = {"framework": "", "frameworks": {}}
+        self.timerTask = QTimer()
 
     @staticmethod
     def getRelay():
@@ -359,17 +383,19 @@ class Relay:
         return
 
 
-class Remote:
-    class RemoteSignals(QObject):
-        message = Signal(object)
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
-        deviceConnected = Signal(object)
-        deviceDisconnected = Signal(object)
+class RemoteSignals(QObject):
+    message = Signal(object)
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(object)
+    deviceDisconnected = Signal(object)
 
-    signals = RemoteSignals()
-    framework = None
-    defaultConfig = {"framework": "", "frameworks": {}}
+
+class Remote:
+    def __init__(self):
+        self.signals = RemoteSignals()
+        self.framework = None
+        self.defaultConfig = {"framework": "", "frameworks": {}}
 
 
 class Telescope:
@@ -414,19 +440,21 @@ class Hipparcos:
         return
 
 
-class Power:
-    class PowerSignals(QObject):
-        version = Signal()
-        message = Signal(object)
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
-        deviceConnected = Signal(object)
-        deviceDisconnected = Signal(object)
+class PowerSignals(QObject):
+    version = Signal()
+    message = Signal(object)
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(object)
+    deviceDisconnected = Signal(object)
 
-    signals = PowerSignals()
-    data = {}
-    framework = None
-    defaultConfig = {"framework": "", "frameworks": {}}
+
+class Power:
+    def __init__(self):
+        self.signals = PowerSignals()
+        self.data = {}
+        self.framework = None
+        self.defaultConfig = {"framework": "", "frameworks": {}}
 
     @staticmethod
     def sendDew(port=None, value=None):
@@ -462,11 +490,13 @@ class Power:
 
 
 class Data:
-    buildP = []
-    horizonP = []
     SOLVED = 0
     UNPROCESSED = 1
     FAILED = 2
+
+    def __init__(self):
+        self.buildP = []
+        self.horizonP = []
 
     @staticmethod
     def loadHorizonP(fileName=""):
@@ -570,34 +600,9 @@ class Data:
     def setStatusBuildPUnprocessed(a):
         return
 
-    def isAboveHorizon(self, point):
-        """
-        isAboveHorizon calculates for a given point the relationship to the actual horizon
-        and determines if this point is above the horizon line. for that there will be a
-        linear interpolation for the horizon line points.
-
-        :param point:
-        :return:
-        """
-        if point[1] > 360:
-            point = (point[0], 360)
-
-        if point[1] < 0:
-            point = (point[0], 0)
-
-        x = range(0, 361)
-
-        if self.horizonP:
-            xRef = [i[1] for i in self.horizonP]
-            yRef = [i[0] for i in self.horizonP]
-
-        else:
-            xRef = [0]
-            yRef = [0]
-
-        y = np.interp(x, xRef, yRef)
-
-        return point[0] > y[int(point[1])]
+    @staticmethod
+    def isAboveHorizon(point):
+        return True
 
 
 class Name:
@@ -1074,27 +1079,30 @@ class Mount(QObject):
         return
 
 
+class CheckBox:
+    checked = False
+
+    def isChecked(self):
+        return self.checked
+
+    def setChecked(self, value):
+        self.checked = value
+
+
+class LineEdit:
+    valueFloat = 0
+
+    def value(self):
+        return self.valueFloat
+
+    def setValue(self, value):
+        self.valueFloat = value
+
+
 class Test(QObject):
-    class CheckBox:
-        checked = False
-
-        def isChecked(self):
-            return self.checked
-
-        def setChecked(self, value):
-            self.checked = value
-
-    class LineEdit:
-        valueFloat = 0
-
-        def value(self):
-            return self.valueFloat
-
-        def setValue(self, value):
-            self.valueFloat = value
-
-    tabsMovable = CheckBox()
-    offLAT = LineEdit()
+    def __init__(self):
+        self.tabsMovable = CheckBox()
+        self.offLAT = LineEdit()
 
 
 class MainW:

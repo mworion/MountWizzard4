@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-
+import shutil
 import mw4.gui
 import pytest
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
@@ -39,24 +39,24 @@ def function(qapp):
     def test():
         pass
 
-    with mock.patch.object(App().mount.obsSite.loader, "days_old", return_value=0):
-        parent = QWidget()
-        parent.ui = Ui_MainWindow()
-        parent.ui.setupUi(parent)
-        parent.app = App()
+    parent = QWidget()
+    parent.ui = Ui_MainWindow()
+    parent.ui.setupUi(parent)
+    parent.app = App()
+    shutil.copyfile("tests/testData/visual.txt", "tests/work/data/visual.txt")
 
-        function = AstroObjects(
-            window=parent,
-            objectText="test",
-            sourceUrls=satSourceURLs,
-            uiObjectList=QTableWidget(),
-            uiSourceList=QComboBox(),
-            uiSourceGroup=QGroupBox(),
-            processSource=test,
-        )
-        function.window.app = App()
-        function.window.threadPool = QThreadPool()
-        yield function
+    function = AstroObjects(
+        window=parent,
+        objectText="test",
+        sourceUrls=satSourceURLs,
+        uiObjectList=QTableWidget(),
+        uiSourceList=QComboBox(),
+        uiSourceGroup=QGroupBox(),
+        processSource=test,
+    )
+    function.window.app = App()
+    function.window.threadPool = QThreadPool()
+    yield function
 
 
 def test_buildSourceListDropdown_1(function):
@@ -94,16 +94,14 @@ def test_procSourceData_2(function):
 
 def test_runDownloadPopup_1(function):
     function.window.ui.isOnline.setChecked(True)
-    with mock.patch.object(mw4.gui.extWindows.downloadPopupW.DownloadPopup, "show"):
-        with mock.patch.object(function.window.app.threadPool, "start"):
-            function.runDownloadPopup("", False)
+    with mock.patch.object(function.window.app.threadPool, "start"):
+        function.runDownloadPopup("", False)
 
 
 def test_runDownloadPopup_2(function):
     function.window.ui.isOnline.setChecked(False)
-    with mock.patch.object(mw4.gui.extWindows.downloadPopupW.DownloadPopup, "show"):
-        with mock.patch.object(function.window.app.threadPool, "start"):
-            function.runDownloadPopup("", False)
+    with mock.patch.object(function.window.app.threadPool, "start"):
+        function.runDownloadPopup("", False)
 
 
 def test_loadSourceUrl_1(function):
@@ -157,9 +155,8 @@ def test_finishProgObjects_2(function):
 
 
 def test_runUploadPopup_1(function):
-    with mock.patch.object(mw4.gui.extWindows.uploadPopupW.UploadPopup, "show"):
-        with mock.patch.object(function.window.app.threadPool, "start"):
-            function.runUploadPopup("")
+    with mock.patch.object(function.window.app.threadPool, "start"):
+        function.runUploadPopup("")
 
 
 def test_progObjects_1(function):

@@ -33,7 +33,7 @@ def function(qapp):
     mainW.ui.setupUi(mainW)
     window = MountSett(mainW)
     yield window
-    mainW.app.threadPool.waitForDone(1000)
+    mainW.app.threadPool.waitForDone(10000)
 
 
 def test_setWOLorAPO_1(function):
@@ -868,19 +868,19 @@ def test_showOffset_1(function):
     function.showOffset()
 
 
-@mock.patch("tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff", 0.003)
 def test_showOffset_2(function):
+    function.app.mount.obsSite.timeDiff = 0.003
     function.ui.clockSync.setChecked(True)
     function.showOffset()
 
 
-@mock.patch("tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff", 0.3)
 def test_showOffset_3(function):
+    function.app.mount.obsSite.timeDiff = 0.3
     function.ui.clockSync.setChecked(True)
     function.showOffset()
 
 
-@mock.patch("tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff", 0.6)
 def test_showOffset_4(function):
+    function.app.mount.obsSite.timeDiff = 0.6
     function.ui.clockSync.setChecked(True)
     function.showOffset()

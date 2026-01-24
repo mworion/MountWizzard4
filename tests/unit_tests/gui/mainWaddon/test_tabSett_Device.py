@@ -31,7 +31,7 @@ def function(qapp):
     mainW.ui.setupUi(mainW)
     window = SettDevice(mainW)
     yield window
-    mainW.app.threadPool.waitForDone(1000)
+    mainW.app.threadPool.waitForDone(10000)
 
 
 def test_addMissingFrameworksData_1(function):
@@ -283,11 +283,8 @@ def test_callPopup_1(function):
                     @staticmethod
                     def connect(a):
                         return
-
                 clicked = Connect()
-
             ok = Clicked()
-
         ui = OK()
 
     function.driversData = {"cover": {}}

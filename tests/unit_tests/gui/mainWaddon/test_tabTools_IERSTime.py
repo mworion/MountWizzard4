@@ -80,8 +80,7 @@ def test_progEarthRotationData_1(function):
     with mock.patch.object(
         function.databaseProcessing, "writeEarthRotationData", return_value=False
     ):
-        with mock.patch.object(UploadPopup, "show"):
-            function.progEarthRotationData()
+        function.progEarthRotationData()
 
 
 def test_progEarthRotationData_2(function):
@@ -89,9 +88,7 @@ def test_progEarthRotationData_2(function):
     with mock.patch.object(
         function.databaseProcessing, "writeEarthRotationData", return_value=True
     ):
-        with mock.patch.object(UploadPopup, "show"):
-            with mock.patch.object(UploadPopup, "show"):
-                function.progEarthRotationData()
+        function.progEarthRotationData()
 
 
 def test_finishLoadTimeDataFromSourceURLs_1(function):

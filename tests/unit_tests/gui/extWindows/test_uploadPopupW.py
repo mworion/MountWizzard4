@@ -20,14 +20,16 @@ import unittest.mock as mock
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from pathlib import Path
 from PySide6.QtWidgets import QWidget
+
+from mw4.gui.utilities.toolsQtWidget import MWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    widget = QWidget()
+    widget = MWidget()
     widget.app = App()
-    window = UploadPopup(parentWidget=widget, url="", dataTypes="", dataFilePath=Path())
+    window = UploadPopup(widget, "", "", Path())
     yield window
     window.threadPool.waitForDone(10000)
 

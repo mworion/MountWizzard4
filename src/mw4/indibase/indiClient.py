@@ -18,11 +18,10 @@ import xml.etree.ElementTree as ETree
 from mw4.indibase import indiXML
 from mw4.indibase.indiDevice import Device
 from mw4.indibase.indiSignals import INDISignals
-from PySide6.QtCore import QObject
 from PySide6.QtNetwork import QTcpSocket
 
 
-class Client(QObject):
+class Client:
     """
     Client implements an INDI Base Client for INDI servers. it relies on PySide6
     and it's signalling scheme. there might be not all capabilities implemented
@@ -51,8 +50,6 @@ class Client(QObject):
     CONNECTION_TIMEOUT = 1000
 
     def __init__(self, host=None):
-        super().__init__()
-
         self.host = host
         self.signals = INDISignals()
         self.connected = False

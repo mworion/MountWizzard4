@@ -54,7 +54,7 @@ class SatSearch(QObject, SatData):
             self.processSatelliteSource,
         )
 
-        self.satellites.dataLoaded.connect(self.fillSatListName)
+        self.satellites.signals.dataLoaded.connect(self.fillSatListName)
         self.prepareSatTable()
         self.ui.satFilterText.textChanged.connect(self.filterListSats)
         self.ui.satIsSunlit.clicked.connect(self.filterListSats)

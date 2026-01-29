@@ -32,21 +32,21 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui = analyse_ui.Ui_AnalyseDialog()
         self.ui.setupUi(self)
 
-        self.latitude: list = []
-        self.pierside: list = []
-        self.countSequence: list = []
-        self.errorIndex: list = []
-        self.scaleS: list = []
-        self.altitude: list = []
-        self.azimuth: list = []
-        self.errorAngle: list = []
-        self.errorRMS: list = []
-        self.errorRA_S: list = []
-        self.errorDEC_S: list = []
-        self.errorRA: list = []
-        self.errorDEC: list = []
-        self.angularPosRA: list = []
-        self.angularPosDEC: list = []
+        self.latitude: np.ndarray = np.array([])
+        self.pierside: np.ndarray = np.array([])
+        self.countSequence: np.ndarray = np.array([])
+        self.errorIndex: np.ndarray = np.array([])
+        self.scaleS: np.ndarray = np.array([])
+        self.altitude: np.ndarray = np.array([])
+        self.azimuth: np.ndarray = np.array([])
+        self.errorAngle: np.ndarray = np.array([])
+        self.errorRMS: np.ndarray = np.array([])
+        self.errorRA_S: np.ndarray = np.array([])
+        self.errorDEC_S: np.ndarray = np.array([])
+        self.errorRA: np.ndarray = np.array([])
+        self.errorDEC: np.ndarray = np.array([])
+        self.angularPosRA: np.ndarray = np.array([])
+        self.angularPosDEC: np.ndarray = np.array([])
 
         self.wIcon(self.ui.load, "load")
         self.ui.load.clicked.connect(self.loadModel)

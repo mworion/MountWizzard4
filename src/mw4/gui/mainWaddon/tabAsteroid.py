@@ -39,7 +39,7 @@ class Asteroid:
             self.processAsteroidSource,
         )
 
-        self.asteroids.dataLoaded.connect(self.fillAsteroidListName)
+        self.asteroids.signals.dataLoaded.connect(self.fillAsteroidListName)
         self.prepareAsteroidTable()
         self.ui.asteroidFilterText.textChanged.connect(self.filterListAsteroids)
         self.ui.progAsteroidSelected.clicked.connect(self.asteroids.progSelected)

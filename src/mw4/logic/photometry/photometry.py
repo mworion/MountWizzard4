@@ -39,7 +39,6 @@ class Photometry:
     """ """
 
     log = logging.getLogger("MW4")
-
     ABERRATION_SIZE = 250
     FILTER_SCALE = 10
     SN = [30, 20, 15, 10, 10]

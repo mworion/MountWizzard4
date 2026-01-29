@@ -57,7 +57,7 @@ def sleepAndEvents(value: int) -> None:
         QCoreApplication.processEvents()
 
 
-def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str) -> None:
+def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str | bool) -> None:
     """ """
     if widget.property(widgetProperty) == value:
         return

@@ -43,7 +43,6 @@ class ModelData(QObject):
     def __init__(self, app):
         super().__init__()
         self.app = app
-
         self.cancelBatch: bool = False
         self.pauseBatch: bool = False
         self.endBatch: bool = False

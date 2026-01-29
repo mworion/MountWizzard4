@@ -47,9 +47,7 @@ class MountWizzard4(QObject):
     """ """
 
     __version__ = version("mountwizzard4")
-
     log = logging.getLogger("MW4")
-
     material = Signal(object, object)
     msg = Signal(object, object, object, object)
     messageQueue = Queue()
@@ -76,13 +74,11 @@ class MountWizzard4(QObject):
     virtualStop = Signal()
     mountOff = Signal()
     mountOn = Signal()
-
     gameABXY = Signal(object)
     gamePMH = Signal(object)
     gameDirection = Signal(object)
     game_sL = Signal(object, object)
     game_sR = Signal(object, object)
-
     update0_1s = Signal()
     update1s = Signal()
     update3s = Signal()
@@ -107,7 +103,6 @@ class MountWizzard4(QObject):
         self.threadPool.setMaxThreadCount(30)
         self.expireData: bool = False
         self.onlineMode: bool = False
-        self.mainW = None
         self.timerCounter: int = 0
         self.statusOperationRunning: bool = 0
         self.config = loadProfileStart(self.mwGlob["configDir"])

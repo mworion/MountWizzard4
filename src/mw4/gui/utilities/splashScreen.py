@@ -14,12 +14,12 @@
 #
 ###########################################################
 import numpy as np
-from PySide6.QtCore import QObject, QRectF, Qt
+from PySide6.QtCore import QRectF, Qt
 from PySide6.QtGui import QColor, QPixmap
 from PySide6.QtWidgets import QApplication, QSplashScreen
 
 
-class SplashScreen(QObject):
+class SplashScreen:
     """
     Splash screen shows an icon with a progress bar and could send messages to the text
     set in the progress bar. Need the app and the icon as parameter
@@ -35,8 +35,6 @@ class SplashScreen(QObject):
     """
 
     def __init__(self, application=None):
-        super().__init__()
-
         self._qapp = application
         self._pxm = QPixmap(":/icon/mw4.png")
 

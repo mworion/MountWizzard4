@@ -28,7 +28,7 @@ from PySide6.QtCore import QObject, Signal
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-class Parent(QObject):
+class Parent:
     app = App()
     data = {}
     signals = Signals()

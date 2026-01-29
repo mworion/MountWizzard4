@@ -17,7 +17,7 @@ from functools import partial
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.ascomClass import AscomClass
 from mw4.base.indiClass import IndiClass
-from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable
 from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
 from pathlib import Path
@@ -25,10 +25,10 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDoubleSpinBox, QLineEdit, QListView
 
 
-class DevicePopup(toolsQtWidget.MWidget):
+class DevicePopup(MWidget):
     """ """
 
-    def __init__(self, parentWidget, parent, driver=None, deviceType=None, data=None):
+    def __init__(self, parentWidget, parent, driver: str, deviceType: str, data: dict):
         super().__init__()
         self.parent = parent
         self.app = parent.app

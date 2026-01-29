@@ -23,11 +23,16 @@ from PySide6.QtCore import QObject, Signal
 from PySide6.QtWidgets import QListView
 
 
-class AstroObjects(QObject):
+class AstroObjectSignals(QObject):
+    """ """
+
+    dataLoaded = Signal()
+
+
+class AstroObjects:
     """ """
 
     log = logging.getLogger("MW4")
-    dataLoaded = Signal()
 
     def __init__(
         self,
@@ -39,11 +44,11 @@ class AstroObjects(QObject):
         uiSourceGroup,
         processSource,
     ):
-        super().__init__()
         self.window = window
         self.app = window.app
         self.threadPool = window.app.threadPool
         self.msg = window.app.msg
+        self.signals = AstroObjectSignals()
         self.dest: Path = Path()
         self.dataValid: bool = False
         self.objectText = objectText
@@ -52,8 +57,8 @@ class AstroObjects(QObject):
         self.uiSourceList = uiSourceList
         self.uiSourceGroup = uiSourceGroup
         self.processSource = processSource
-        self.workerSource: Worker = None
-        self.workerTable: Worker = None
+        self.workerSource: Worker | None = None
+        self.workerTable: Worker | None = None
 
         self.objects: dict = {}
         self.uploadPopup = None
@@ -88,7 +93,7 @@ class AstroObjects(QObject):
     def workerProcessSource(self) -> None:
         """ """
         self.processSource()
-        self.dataLoaded.emit()
+        self.signals.dataLoaded.emit()
 
     def procSourceData(self, direct: bool = False) -> None:
         """ """
@@ -98,11 +103,11 @@ class AstroObjects(QObject):
         self.workerSource = Worker(self.workerProcessSource)
         self.threadPool.start(self.workerSource)
 
-    def runDownloadPopup(self, url: str, unzip: bool) -> None:
+    def runDownloadPopup(self, url: Path, unzip: bool) -> None:
         """ """
         if not self.window.ui.isOnline.isChecked():
             return
-        self.downloadPopup = DownloadPopup(self.window, url=url, dest=self.dest, unzip=unzip)
+        self.downloadPopup = DownloadPopup(self.window, url, self.dest, unzip)
         self.downloadPopup.show()
         self.downloadPopup.downloadFile()
         self.downloadPopup.worker.signals.finished.connect(self.procSourceData)

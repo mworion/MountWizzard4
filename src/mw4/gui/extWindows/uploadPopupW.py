@@ -56,7 +56,7 @@ class UploadPopup(MWidget):
     }
 
     def __init__(
-        self, parentWidget: MWidget, url: str, dataTypes: list[str], dataFilePath: Path
+        self, parentWidget: MWidget, url: Path, dataTypes: list[str], dataFilePath: Path
     ):
         super().__init__()
         self.ui = Ui_UploadPopup()
@@ -65,9 +65,9 @@ class UploadPopup(MWidget):
         self.returnValues = {"success": False, "successMount": False}
         self.parentWidget = parentWidget
         self.threadPool = parentWidget.app.threadPool
-        self.worker: Worker = None
-        self.workerStatus: Worker = None
-        self.url: str = url
+        self.worker: Worker | None = None
+        self.workerStatus: Worker | None = None
+        self.url: Path = url
         self.dataTypes: list[str] = dataTypes
         self.dataFilePath: Path = dataFilePath
 
@@ -141,7 +141,7 @@ class UploadPopup(MWidget):
         self.signalStatus.emit("Uploading data to mount...")
         while self.pollStatusRunState:
             sleepAndEvents(250)
-            returnValues = requests.get(f"http://{self.url}/bin/uploadst", timeout=1)
+            returnValues = requests.get(f"http://{str(self.url)}/bin/uploadst", timeout=1)
             self.pollDispatcher(returnValues.text.strip("\n").split("\n"))
 
             if returnValues.status_code != 200:
@@ -163,7 +163,7 @@ class UploadPopup(MWidget):
             )
 
         self.log.debug(f"Data: {list(files.items())}")
-        url = f"http://{self.url}/bin/uploadst"
+        url = f"http://{str(self.url)}/bin/uploadst"
         returnValues = requests.delete(url)
         if returnValues.status_code != 200:
             self.log.debug(f"Error deleting files: {returnValues.status_code}")
@@ -171,7 +171,7 @@ class UploadPopup(MWidget):
 
         self.pollStatusRunState = True
         self.threadPool.start(self.workerStatus)
-        url = f"http://{self.url}/bin/upload"
+        url = f"http://{str(self.url)}/bin/upload"
         returnValues = requests.post(url, files=files)
         if returnValues.status_code != 202:
             self.log.debug(f"Error uploading data: {returnValues.status_code}")

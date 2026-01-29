@@ -37,7 +37,6 @@ class MainWindow(MWidget):
         self.app = app
         self.msg = app.msg
         self.threadPool = app.threadPool
-
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -68,7 +67,6 @@ class MainWindow(MWidget):
                 "tab": self.ui.settingsTabWidget,
             },
         }
-
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
         self.app.mount.signals.mountIsUp.connect(self.updateMountConnStat)
         self.app.remoteCommand.connect(self.remoteCommand)

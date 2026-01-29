@@ -16,16 +16,14 @@
 import logging
 from mw4.base.signalsDevices import Signals
 from PySide6 import QtNetwork
-from PySide6.QtCore import QObject
 
 
-class Remote(QObject):
+class Remote:
     """ """
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, app=None):
-        super().__init__()
+    def __init__(self, app):
         self.signals = Signals()
         self.app = app
         self.data = {}

@@ -40,7 +40,7 @@ class Comet:
             self.processCometSource,
         )
         self.prepareCometTable()
-        self.comets.dataLoaded.connect(self.fillCometListName)
+        self.comets.signals.dataLoaded.connect(self.fillCometListName)
         self.ui.cometFilterText.textChanged.connect(self.filterListComets)
         self.ui.progCometSelected.clicked.connect(self.comets.progSelected)
         self.ui.progCometFiltered.clicked.connect(self.comets.progFiltered)

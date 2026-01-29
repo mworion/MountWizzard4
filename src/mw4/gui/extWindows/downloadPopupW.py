@@ -14,7 +14,6 @@
 #
 ###########################################################
 import gzip
-import os
 import requests
 import shutil
 from mw4.base.tpool import Worker
@@ -31,12 +30,12 @@ class DownloadPopup(MWidget):
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
 
-    def __init__(self, parentWidget: MWidget, url: str, dest: str, unzip: bool = False):
+    def __init__(self, parentWidget: MWidget, url: Path, dest: Path, unzip: bool = False):
         super().__init__()
         self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
         self.threadPool = parentWidget.app.threadPool
-        self.worker: Worker = None
+        self.worker: Worker | None = None
         self.url = url
         self.dest = dest
         self.unzip = unzip
@@ -67,13 +66,13 @@ class DownloadPopup(MWidget):
         """ """
         self.ui.progressBar.setValue(progressPercent)
 
-    def setStatusTextToValue(self, statusText: str) -> bool:
+    def setStatusTextToValue(self, statusText: str) -> None:
         """ """
         self.ui.statusText.setText(statusText)
 
     def getFileFromUrl(self, url: Path, dest: Path) -> bool:
         """ """
-        r = requests.get(url, stream=True, timeout=3)
+        r = requests.get(str(url), stream=True, timeout=3)
         totalSizeBytes = int(r.headers.get("content-length", 1))
         if r.status_code != 200:
             return False
@@ -96,7 +95,7 @@ class DownloadPopup(MWidget):
 
     def downloadFileWorker(self, url: Path, dest: Path, unzip: bool = False) -> bool:
         """ """
-        downloadDest = dest.parent / os.path.basename(url) if unzip else dest
+        downloadDest = dest.parent / url.stem if unzip else dest
 
         try:
             self.signalStatus.emit(f"Downloading {dest.stem}")

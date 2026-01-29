@@ -25,14 +25,12 @@ from mw4.gui.extWindows.satelliteW import SatelliteWindow
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from mw4.gui.extWindows.video.videoW import VideoWindow
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, sleepAndEvents
-from PySide6.QtCore import QObject
 
 
-class ExternalWindows(QObject):
+class ExternalWindows:
     """ """
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
 

@@ -192,27 +192,27 @@ def test_syncClock_3(function):
     function.syncClock()
 
 
-@mock.patch("tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff", 0.005)
 def test_syncClock_4(function):
     function.ui.syncTimeCont.setChecked(True)
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 1
+    function.app.mount.obsSite.timeDiff = 1
     function.syncClock()
 
 
-@mock.patch("tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff", 1)
 def test_syncClock_5(function):
     function.ui.syncTimeCont.setChecked(False)
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 1
+    function.app.mount.obsSite.timeDiff = 11
     with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=False):
         function.syncClock()
 
 
-@mock.patch("tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff", -1)
 def test_syncClock_6(function):
     function.ui.syncTimeCont.setChecked(True)
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 1
+    function.app.mount.obsSite.timeDiff = 11
     with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=True):
         function.syncClock()

@@ -15,15 +15,13 @@
 ###########################################################
 from functools import partial
 from mw4.mountcontrol.convert import valueToFloat
-from PySide6.QtCore import QObject
 from skyfield.api import Angle
 
 
-class SettParkPos(QObject):
+class SettParkPos:
     """ """
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

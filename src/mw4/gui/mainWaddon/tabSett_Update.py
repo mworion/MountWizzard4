@@ -16,16 +16,14 @@
 import logging
 from astropy.utils import data, iers
 from mw4.base.loggerMW import setCustomLoggingLevel
-from PySide6.QtCore import QObject
 
 
-class SettUpdate(QObject):
+class SettUpdate:
     """ """
 
     log = logging.getLogger("MW4")
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

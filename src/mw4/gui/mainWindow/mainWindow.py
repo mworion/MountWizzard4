@@ -113,7 +113,6 @@ class MainWindow(MWidget):
         self.mainWindowAddons.initConfig()
         self.smartTabGui()
         self.setupIcons()
-        self.show()
         self.externalWindows.showExtendedWindows()
 
     def storeConfig(self) -> None:

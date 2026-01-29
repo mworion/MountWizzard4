@@ -16,11 +16,10 @@
 from functools import partial
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, findIndexValue
-from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QListView
 
 
-class SettDevice(QObject):
+class SettDevice:
     """
     device types in self.drivers are name related to ascom definitions
 
@@ -60,7 +59,6 @@ class SettDevice(QObject):
     """
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

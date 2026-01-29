@@ -20,14 +20,12 @@ if pConf.isAvailable:
 import hid
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
-from PySide6.QtCore import QObject
 
 
-class SettMisc(QObject):
+class SettMisc:
     """ """
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

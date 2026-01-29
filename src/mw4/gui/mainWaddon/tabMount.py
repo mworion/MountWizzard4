@@ -14,15 +14,12 @@
 #
 ###########################################################
 from ast import Bytes
-from PySide6.QtCore import QObject
 
 
-class Mount(QObject):
+class Mount:
     """ """
 
     def __init__(self, mainW):
-        super().__init__()
-
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

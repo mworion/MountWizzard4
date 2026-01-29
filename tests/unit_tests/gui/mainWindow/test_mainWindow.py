@@ -27,10 +27,9 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def window(qapp):
-    with mock.patch.object(MainWindow, "show"):
-        window = MainWindow(app=App())
-        yield window
-        window.app.threadPool.waitForDone(10000)
+    window = MainWindow(app=App())
+    yield window
+    window.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(window):
@@ -39,8 +38,7 @@ def test_initConfig_1(window):
         with mock.patch.object(window, "smartTabGui"):
             with mock.patch.object(window, "setupIcons"):
                 with mock.patch.object(window.externalWindows, "showExtendedWindows"):
-                    with mock.patch.object(window, "show"):
-                        window.initConfig()
+                    window.initConfig()
 
 
 def test_storeConfig_1(window):

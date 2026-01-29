@@ -14,14 +14,12 @@
 #
 ###########################################################
 from mw4.gui.utilities.toolsQtWidget import guiSetText
-from PySide6.QtCore import QObject
 
 
-class ModelStatus(QObject):
+class ModelStatus:
     """ """
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

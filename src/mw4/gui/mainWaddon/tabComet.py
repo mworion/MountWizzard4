@@ -18,15 +18,14 @@ import json
 import os
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.logic.databaseProcessing.sourceURL import cometSourceURLs
-from PySide6.QtCore import QObject, Qt
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 
-class Comet(QObject):
+class Comet:
     """ """
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.ui = mainW.ui

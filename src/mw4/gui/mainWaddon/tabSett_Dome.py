@@ -13,14 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-from PySide6.QtCore import QObject
 
 
-class SettDome(QObject):
+class SettDome:
     """ """
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

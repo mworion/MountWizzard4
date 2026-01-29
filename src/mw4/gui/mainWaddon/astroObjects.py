@@ -27,7 +27,6 @@ class AstroObjects(QObject):
     """ """
 
     log = logging.getLogger("MW4")
-
     dataLoaded = Signal()
 
     def __init__(

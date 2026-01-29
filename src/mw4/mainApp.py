@@ -169,6 +169,7 @@ class MountWizzard4(QObject):
         self.plateSolve = PlateSolve(self)
         self.mainW = MainWindow(self)
         self.mainW.initConfig()
+        self.mainW.show()
         self.mount.startMountTimers()
         self.timer0_1s = QTimer()
         self.timer0_1s.setSingleShot(False)

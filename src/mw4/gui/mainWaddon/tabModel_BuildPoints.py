@@ -16,15 +16,14 @@
 from astroquery.simbad import Simbad
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
-from PySide6.QtCore import QMutex, QObject
+from PySide6.QtCore import QMutex
 from skyfield.api import Angle
 
 
-class BuildPoints(QObject):
+class BuildPoints:
     """ """
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

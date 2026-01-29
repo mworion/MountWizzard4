@@ -14,15 +14,13 @@
 #
 ###########################################################
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
-from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QInputDialog
 
 
-class ImageManage(QObject):
+class ImageManage:
     """ """
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

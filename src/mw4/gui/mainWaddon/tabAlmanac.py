@@ -18,7 +18,7 @@ import pyqtgraph as pg
 from dateutil.tz import tzlocal
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
-from PySide6.QtCore import QObject, QPointF, Qt
+from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QPainter, QPen, QPixmap
 from range_key_dict import RangeKeyDict
 from skyfield import almanac
@@ -26,7 +26,7 @@ from skyfield.toposlib import GeographicPosition
 from skyfield.trigonometry import position_angle_of
 
 
-class Almanac(QObject):
+class Almanac:
     """ """
 
     phasesText = RangeKeyDict(
@@ -46,7 +46,6 @@ class Almanac(QObject):
     Y_LABELS = ["", "14", "16", "18", "20", "22", "24", "02", "04", "06", "08", "10", ""]
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.ui = mainW.ui

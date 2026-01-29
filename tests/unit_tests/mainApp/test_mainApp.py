@@ -26,17 +26,16 @@ def app(qapp):
 
     mock_emit = MagicMock()
 
-    with mock.patch.object(QWidget, "show"):
-        with mock.patch.object(QTimer, "start"):
-            with mock.patch.object(QBasicTimer, "start"):
-                with mock.patch.object(AstroObjects, "loadSourceUrl"):
-                    app_instance = MountWizzard4(mwGlob=mwGlob, application=qapp)
-                    app_instance.update1s = MagicMock(emit=mock_emit)
-                    yield app_instance
-                    app_instance.threadPool.waitForDone(15000)
-                    app_instance.aboutToQuit()
-                    app_instance.deleteLater()
-                    qapp.processEvents()
+    with mock.patch.object(QTimer, "start"):
+        with mock.patch.object(QBasicTimer, "start"):
+            with mock.patch.object(AstroObjects, "loadSourceUrl"):
+                app_instance = MountWizzard4(mwGlob=mwGlob, application=qapp)
+                app_instance.update1s = MagicMock(emit=mock_emit)
+                yield app_instance
+                app_instance.threadPool.waitForDone(15000)
+                app_instance.aboutToQuit()
+                app_instance.deleteLater()
+                qapp.processEvents()
 
 
 def test_init(app):

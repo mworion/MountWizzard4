@@ -13,15 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
 import webbrowser
 from mw4.gui.utilities.toolsQtWidget import guiSetText
-from PySide6.QtCore import QObject
 from range_key_dict import RangeKeyDict
 
 
-class ImageStats(QObject):
+class ImageStats:
     """ """
 
     WATNEY = RangeKeyDict(
@@ -69,7 +67,6 @@ class ImageStats(QObject):
     )
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

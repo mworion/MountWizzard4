@@ -26,6 +26,7 @@ from PySide6.QtCore import Qt, Signal
 
 class DownloadPopup(MWidget):
     """ """
+
     signalProgress = Signal(object)
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)

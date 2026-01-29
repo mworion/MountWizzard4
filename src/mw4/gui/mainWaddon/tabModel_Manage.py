@@ -24,15 +24,14 @@ from mw4.logic.modelBuild.modelRunSupport import (
 )
 from mw4.mountcontrol.model import Model
 from pathlib import Path
-from PySide6.QtCore import QObject, Qt
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QInputDialog, QLineEdit
 
 
-class ModelManage(QObject):
+class ModelManage:
     """ """
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

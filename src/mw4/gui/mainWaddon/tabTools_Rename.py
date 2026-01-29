@@ -15,15 +15,13 @@
 ###########################################################
 from astropy.io import fits
 from pathlib import Path
-from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QApplication, QListView
 
 
-class Rename(QObject):
+class Rename:
     """ """
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

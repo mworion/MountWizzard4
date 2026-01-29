@@ -17,15 +17,13 @@ from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
 from pathlib import Path
-from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QListView
 
 
-class IERSTime(QObject):
+class IERSTime:
     """ """
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

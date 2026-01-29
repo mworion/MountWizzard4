@@ -23,16 +23,14 @@ from mw4.mountcontrol.convert import (
     formatHstrToText,
     valueToAngle,
 )
-from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QInputDialog, QLineEdit
 from skyfield.api import Angle
 
 
-class MountMove(QObject):
+class MountMove:
     """ """
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

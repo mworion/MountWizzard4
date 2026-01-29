@@ -1,12 +1,14 @@
 import pytest
 import shutil
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
+from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
-from PySide6.QtCore import QBasicTimer, QTimer
-from PySide6.QtWidgets import QWidget
 from unittest import mock
 from unittest.mock import MagicMock
+from mw4.assets.assetsData import qInitResources
+
+qInitResources()
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -25,20 +27,14 @@ def app(qapp):
     shutil.copy("./tests/testData/test.run", Path("./tests/work/test.run"))
 
     mock_emit = MagicMock()
-
-    with mock.patch.object(AstroObjects, "loadSourceUrl"):
-        app_instance = MountWizzard4(mwGlob=mwGlob, application=qapp)
-        app_instance.update1s = MagicMock(emit=mock_emit)
-        yield app_instance
-        app_instance.threadPool.waitForDone(15000)
-        app_instance.aboutToQuit()
-        app_instance.deleteLater()
-        qapp.processEvents()
-
-
-def test_init(app):
-    assert app is not None
-    assert app.mount is not None
+    app_instance = MountWizzard4(mwGlob=mwGlob, application=qapp)
+    app_instance.update1s = MagicMock(emit=mock_emit)
+    app_instance.update3s = MagicMock(emit=mock_emit)
+    yield app_instance
+    app_instance.threadPool.waitForDone(15000)
+    app_instance.aboutToQuit()
+    app_instance.deleteLater()
+    qapp.processEvents()
 
 
 def test_init_config(app):

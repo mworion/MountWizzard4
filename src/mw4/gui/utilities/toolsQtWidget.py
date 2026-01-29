@@ -19,9 +19,10 @@ import numpy as np
 import time
 from dateutil.tz import tzlocal
 from mw4.gui.styles.styles import Styles
+from skyfield.api import Angle
 from mw4.mountcontrol.convert import formatDstrToText, formatHstrToText
 from pathlib import Path
-from PySide6.QtCore import QCoreApplication, QDir, QEvent, QObject, QSize, Qt, Signal
+from PySide6.QtCore import QCoreApplication, QDir, QEvent, QObject, QSize, Qt, Signal, SignalInstance
 from PySide6.QtGui import (
     QColor,
     QGuiApplication,
@@ -57,7 +58,7 @@ def sleepAndEvents(value: int) -> None:
         QCoreApplication.processEvents()
 
 
-def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str | bool) -> None:
+def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str) -> None:
     """ """
     if widget.property(widgetProperty) == value:
         return
@@ -84,7 +85,7 @@ def findIndexValue(ui: QComboBox, searchString: str, relaxed: bool = False) -> i
     return 0
 
 
-def guiSetText(ui: QLineEdit, formatElement: str, value: object) -> None:
+def guiSetText(ui: QLineEdit, formatElement: str, value: list | np.ndarray | Angle) -> None:
     """ """
     text = "-"
     if value is None or isinstance(value, list | np.ndarray) and len(value) == 0:
@@ -111,7 +112,7 @@ def guiSetText(ui: QLineEdit, formatElement: str, value: object) -> None:
     ui.setText(text)
 
 
-def clickable(widget: QWidget) -> Signal:
+def clickable(widget: QWidget) -> SignalInstance:
     """ """
 
     class MouseClickEventFilter(QObject):
@@ -189,9 +190,9 @@ class MWidget(QWidget, Styles):
         super().keyPressEvent(keyEvent)
 
     @staticmethod
-    def img2pixmap(img: np.ndarray) -> QPixmap:
+    def img2pixmap(imageFile: str) -> QPixmap:
         """ """
-        image = QImage(img)
+        image = QImage(imageFile)
         image.convertToFormat(QImage.Format.Format_RGB32)
         imgArr = rgb_view(image)
         image = array2qimage(imgArr)
@@ -199,21 +200,21 @@ class MWidget(QWidget, Styles):
         return pixmap
 
     @staticmethod
-    def svg2pixmap(svg: object, color: str = "black") -> QPixmap:
+    def svg2pixmap(svgFileName: str, color: str = "black") -> QPixmap:
         """ """
-        img = QPixmap(svg)
+        img = QPixmap(svgFileName)
         qp = QPainter(img)
         qp.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
         qp.fillRect(img.rect(), QColor(color))
         qp.end()
         return img
 
-    def svg2icon(self, svg: object, color: str = "black") -> QIcon:
+    def svg2icon(self, svgFileName: str, color: str = "black") -> QIcon:
         """ """
-        img = self.svg2pixmap(svg, color)
+        img = self.svg2pixmap(svgFileName, color)
         return QIcon(img)
 
-    def wIcon(self, gui: QPushButton, name: str) -> QIcon:
+    def wIcon(self, gui: QPushButton, name: str) -> None:
         """ """
         icon = self.svg2icon(f":/icon/{name}.svg", self.M_TER)
         gui.setIcon(icon)
@@ -254,7 +255,7 @@ class MWidget(QWidget, Styles):
         return dlg
 
     @staticmethod
-    def runDialog(dlg: QFileDialog) -> QMessageBox:
+    def runDialog(dlg: QMessageBox | QFileDialog) -> int:
         """ """
         return dlg.exec()
 
@@ -262,10 +263,10 @@ class MWidget(QWidget, Styles):
         self,
         parentWidget: QWidget,
         title: str,
-        question: int,
+        question: str,
         buttons: tuple[QPushButton] = None,
         iconType: int = 0,
-    ) -> QMessageBox:
+    ) -> int:
         """ """
         msg = QMessageBox()
         msg.setWindowModality(Qt.WindowModality.ApplicationModal)
@@ -432,7 +433,7 @@ class MWidget(QWidget, Styles):
         return tabIndex
 
     @staticmethod
-    def getTabAndIndex(tab: QTabWidget, config: dict, name: str) -> QTabWidget:
+    def getTabAndIndex(tab: QTabWidget, config: dict, name: str) -> None:
         """ """
         config[name] = {"index": tab.currentIndex()}
         for index in range(tab.count()):

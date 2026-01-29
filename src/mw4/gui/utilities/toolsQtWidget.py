@@ -19,10 +19,18 @@ import numpy as np
 import time
 from dateutil.tz import tzlocal
 from mw4.gui.styles.styles import Styles
-from skyfield.api import Angle
 from mw4.mountcontrol.convert import formatDstrToText, formatHstrToText
 from pathlib import Path
-from PySide6.QtCore import QCoreApplication, QDir, QEvent, QObject, QSize, Qt, Signal, SignalInstance
+from PySide6.QtCore import (
+    QCoreApplication,
+    QDir,
+    QEvent,
+    QObject,
+    QSize,
+    Qt,
+    Signal,
+    SignalInstance,
+)
 from PySide6.QtGui import (
     QColor,
     QGuiApplication,
@@ -48,7 +56,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 from qimage2ndarray import array2qimage, rgb_view
-from skyfield.api import Time
+from skyfield.api import Angle, Time
 
 
 def sleepAndEvents(value: int) -> None:

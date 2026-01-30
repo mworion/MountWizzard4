@@ -66,7 +66,7 @@ def sleepAndEvents(value: int) -> None:
         QCoreApplication.processEvents()
 
 
-def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str) -> None:
+def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str | bool) -> None:
     """ """
     if widget.property(widgetProperty) == value:
         return
@@ -93,7 +93,7 @@ def findIndexValue(ui: QComboBox, searchString: str, relaxed: bool = False) -> i
     return 0
 
 
-def guiSetText(ui: QLineEdit, formatElement: str, value: list | np.ndarray | Angle) -> None:
+def guiSetText(ui: QLineEdit, formatElement: str, value: list | np.ndarray | float | Angle) -> None:
     """ """
     text = "-"
     if value is None or isinstance(value, list | np.ndarray) and len(value) == 0:
@@ -272,7 +272,7 @@ class MWidget(QWidget, Styles):
         parentWidget: QWidget,
         title: str,
         question: str,
-        buttons: tuple[QPushButton] = None,
+        buttons: list[str] = None,
         iconType: int = 0,
     ) -> int:
         """ """

@@ -15,6 +15,7 @@
 ###########################################################
 import requests
 import uuid
+from typing import Any
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
@@ -28,8 +29,7 @@ class AlpacaClass(DriverData):
     CLIENT_ID = uuid.uuid4().int % 2**16
 
     def __init__(self, parent):
-        super().__init__()
-
+        super().__init__(parent.data)
         self.app = parent.app
         self.msg = parent.app.msg
         self.data = parent.data
@@ -60,11 +60,11 @@ class AlpacaClass(DriverData):
 
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
-        self.worker: Worker = None
-        self.workerGetConfig: Worker = None
-        self.workerStatus: Worker = None
-        self.workerData: Worker = None
-        self.workerConnect: Worker = None
+        self.worker: Worker | None = None
+        self.workerGetConfig: Worker | None = None
+        self.workerStatus: Worker | None = None
+        self.workerData: Worker | None = None
+        self.workerConnect: Worker | None = None
 
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
@@ -148,7 +148,7 @@ class AlpacaClass(DriverData):
         self.log.trace(f"Discover API response: [{response}]")
         return response["Value"]
 
-    def discoverAlpacaDevices(self) -> str:
+    def discoverAlpacaDevices(self) -> list:
         """ """
         url = f"{self.protocol}://{self.host[0]}:{self.host[1]}/management/v{self.apiVersion}/configureddevices"
 
@@ -160,26 +160,26 @@ class AlpacaClass(DriverData):
 
         except Exception as e:
             self.log.error(f"Search devices exception: [{e}]")
-            return ""
+            return []
 
         if response.status_code == 400 or response.status_code == 500:
             self.log.warning("Search devices stat 400/500]")
-            return ""
+            return []
 
         response = response.json()
         if response["ErrorNumber"] != 0:
             self.log.warning(f"Search devices response: [{response}]")
-            return ""
+            return []
 
         self.log.trace(f"Search devices response: [{response}]")
         return response["Value"]
 
-    def getAlpacaProperty(self, valueProp: str, **data) -> dict:
+    def getAlpacaProperty(self, valueProp: str, **data) -> Any:
         """ """
         if not self.deviceName:
-            return {}
+            return []
         if valueProp in self.propertyExceptions:
-            return {}
+            return []
 
         uid = uuid.uuid4().int % 2**32
         data["ClientTransactionID"] = uid
@@ -195,19 +195,19 @@ class AlpacaClass(DriverData):
         except Exception as e:
             t = f"[{self.deviceName}] [{uid:10d}] has exception: [{e}]"
             self.log.error(t)
-            return {}
+            return []
 
         if response.status_code == 400 or response.status_code == 500:
             t = f"[{self.deviceName}] [{uid:10d}], stat 400/500"
             self.log.warning(t)
-            return {}
+            return []
 
         response = response.json()
         if response["ErrorNumber"] != 0:
             t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
             self.log.warning(t)
             self.propertyExceptions.append(valueProp)
-            return {}
+            return []
 
         if valueProp != "imagearray":
             t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
@@ -279,7 +279,7 @@ class AlpacaClass(DriverData):
 
         if not suc:
             self.msg.emit(2, "ALPACA", "Connect error", f"{self.deviceName}")
-            return False
+            return
 
         if not self.serverConnected:
             self.serverConnected = True
@@ -291,7 +291,6 @@ class AlpacaClass(DriverData):
             self.msg.emit(0, "ALPACA", "Device found", f"{self.deviceName}")
             self.startAlpacaTimer()
             self.getInitialConfig()
-        return True
 
     def startAlpacaTimer(self) -> None:
         """ """

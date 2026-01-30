@@ -17,11 +17,12 @@ from PySide6.QtCore import QObject, Signal
 
 
 class Signals(QObject):
+    """ """
+
     serverConnected = Signal()
     serverDisconnected = Signal(object)
     deviceConnected = Signal(str)
     deviceDisconnected = Signal(str)
-
     exposed = Signal(object)
     downloaded = Signal(object)
     saved = Signal(object)

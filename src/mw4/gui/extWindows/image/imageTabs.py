@@ -28,7 +28,6 @@ from PySide6.QtGui import QFont
 
 class ImageTabs:
     """ """
-
     TILT = {
         "none": 5,
         "almost none": 10,
@@ -228,8 +227,8 @@ class ImageTabs:
                 [w3, -h3],
             ]
         )
-        best = np.min(corners)
-        worst = np.max(corners)
+        best = float(np.min(corners))
+        worst = float(np.max(corners))
 
         # calc vectors
         points = []
@@ -343,8 +342,8 @@ class ImageTabs:
             textItem.setPos(posX, posY)
             plotItem.addItem(textItem)
 
-        best = np.min(segData)
-        worst = np.max(segData)
+        best = float(np.min(segData))
+        worst = float(np.max(segData))
         tiltDiff = worst - best
         tiltPercent = 100 * tiltDiff / self.photometry.hfrMedian
 

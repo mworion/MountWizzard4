@@ -73,13 +73,13 @@ class Worker(QRunnable):
             result = self.fn(*self.args, **self.kwargs)
             QCoreApplication.processEvents()
 
-        except Exception:
+        except Exception as e:
             # as we want to send a clear message to the log file
             exc_type, exc_value, exc_traceback = sys.exc_info()
             tb = exc_traceback
 
             # moving toward the end of the trace
-            eStr = self.clearPrintErrorStack(tb)
+            eStr = f"{e} {self.clearPrintErrorStack(tb)}"
             while tb.tb_next is not None:
                 tb = tb.tb_next
                 eStr += self.clearPrintErrorStack(tb)

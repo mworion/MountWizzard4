@@ -21,10 +21,9 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 if not hasattr(logging.Logger, "_set_defaults"):
-
+    # noinspection PyUnusedLocal
     def _set_defaults(self, *args, **kwargs):
         return
-
     logging.Logger._set_defaults = _set_defaults
 
 
@@ -87,29 +86,26 @@ def setupLogging() -> None:
         handlers=[logHandler],
         datefmt="%Y-%m-%d %H:%M:%S",
     )
-
-    # setting different log level for imported packages to avoid unnecessary data,
-    # urllib3 is used by requests, so we have to add this as well
     logging.getLogger("PySide6").setLevel(logging.WARNING)
     logging.getLogger("requests").setLevel(logging.WARNING)
     logging.getLogger("urllib3").setLevel(logging.WARNING)
     logging.getLogger("astropy").setLevel(logging.WARNING)
     logging.getLogger("keyring").setLevel(logging.WARNING)
 
-    logging.TRACE = 5
-    logging.addLevelName(5, "TRACE")
-    logging.Logger.trace = partialmethod(logging.Logger.log, logging.TRACE)
-    logging.trace = partial(logging.log, logging.TRACE)
+    TRACE = 5
+    logging.addLevelName(TRACE, "TRACE")
+    logging.Logger.trace = partialmethod(logging.Logger.log, TRACE)
+    logging.trace = partial(logging.log, TRACE)
 
-    logging.UI = 35
-    logging.addLevelName(logging.UI, "UI")
-    logging.Logger.ui = partialmethod(logging.Logger.log, logging.UI)
-    logging.ui = partial(logging.log, logging.UI)
+    UI = 35
+    logging.addLevelName(UI, "UI")
+    logging.Logger.ui = partialmethod(logging.Logger.log, UI)
+    logging.ui = partial(logging.log, UI)
 
-    logging.HEADER = 55
-    logging.addLevelName(logging.HEADER, "HEADER")
-    logging.Logger.header = partialmethod(logging.Logger.log, logging.HEADER)
-    logging.header = partial(logging.log, logging.HEADER)
+    HEADER = 55
+    logging.addLevelName(HEADER, "HEADER")
+    logging.Logger.header = partialmethod(logging.Logger.log, HEADER)
+    logging.header = partial(logging.log, HEADER)
 
     redirectSTD()
 

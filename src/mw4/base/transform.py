@@ -18,13 +18,14 @@ import logging
 import numpy as np
 from PySide6.QtCore import QMutex
 from skyfield.api import Angle
+from skyfield.timelib import Time
 from skyfield.toposlib import GeographicPosition
 
 log = logging.getLogger()
 mutex = QMutex()
 
 
-def JNowToJ2000(ra: Angle, dec: Angle, timeJD: float) -> (Angle, Angle):
+def JNowToJ2000(ra: Angle, dec: Angle, timeJD: Time) -> tuple[Angle, Angle]:
     """ """
     mutex.lock()
     ra = ra.radians
@@ -37,7 +38,7 @@ def JNowToJ2000(ra: Angle, dec: Angle, timeJD: float) -> (Angle, Angle):
     return ra, dec
 
 
-def J2000ToJNow(ra: Angle, dec: Angle, timeJD: float) -> (Angle, Angle):
+def J2000ToJNow(ra: Angle, dec: Angle, timeJD: Time) -> tuple[Angle, Angle]:
     """ """
     mutex.lock()
     ra = ra.radians
@@ -51,8 +52,8 @@ def J2000ToJNow(ra: Angle, dec: Angle, timeJD: float) -> (Angle, Angle):
 
 
 def J2000ToAltAz(
-    ra: Angle, dec: Angle, timeJD: float, location: GeographicPosition
-) -> (Angle, Angle):
+    ra: Angle, dec: Angle, timeJD: Time, location: GeographicPosition
+) -> tuple[Angle, Angle]:
     """ """
     mutex.lock()
     ra = ra.radians

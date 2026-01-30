@@ -18,7 +18,7 @@ import pyqtgraph as pg
 from mw4.base.transform import diffModulusAbs
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.gui.utilities.toolsQtWidget import MWidget
-from pyqtgraph.widgets.RemoteGraphicsView import MouseEvent
+from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont
 from skyfield.api import Angle
@@ -35,9 +35,9 @@ class HemisphereDraw(MWidget):
         self.msg = parent.msg
         self.slewInterface = SlewInterface(self)
 
-        self.pointerDome: pg.QtWidgets.QGraphicsRectItem = None
+        self.pointerDome: pg.QtWidgets.QGraphicsRectItem | None = None
         self.modelPointsText: list = []
-        self.alignmentStars: list = []
+        self.alignmentStars: pg.ScatterPlotItem | None = None
         self.alignmentStarsText: list = []
 
     def initConfig(self) -> None:
@@ -108,7 +108,7 @@ class HemisphereDraw(MWidget):
         self.parent.preparePolarItem(polarItem)
         self.pointerDome = None
         self.modelPointsText = []
-        self.alignmentStars = []
+        self.alignmentStars = None
         self.alignmentStarsText = []
         plotItem.getViewBox().callbackMDC = self.mouseDoubleClick
 
@@ -226,7 +226,7 @@ class HemisphereDraw(MWidget):
 
             spot = item.scatter.points()[i]
             spot.setPen(pg.mkPen(color=color, width=1.5))
-            spot.setBrush(pg.mkBrush(color=color + "80"))
+            spot.setBrush(pg.mkBrush(color=f"{color}80"))
             spot.setSymbol(symbol)
 
     def drawModelPoints(self) -> None:
@@ -273,7 +273,7 @@ class HemisphereDraw(MWidget):
             self.modelPointsText.append(textItem)
             plotItem.addItem(textItem)
 
-    def updateDataModel(self, x: float, y: float) -> None:
+    def updateDataModel(self, x: list[float], y: list[float]) -> None:
         """ """
         bp = [[y, x, self.app.data.UNPROCESSED] for y, x in zip(y, x)]
         self.app.data.buildP = bp
@@ -437,7 +437,7 @@ class HemisphereDraw(MWidget):
         self.msg.emit(1, "Hemisphere", "Align", t)
         self.slewInterface.slewTargetRaDec(ra, dec, slewType=alignType, epoch="JNow")
 
-    def mouseDoubleClick(self, ev: MouseEvent, posView: QPointF) -> None:
+    def mouseDoubleClick(self, ev: MouseClickEvent, posView: QPointF) -> None:
         """ """
         if self.ui.alignmentModeHem.isChecked():
             self.slewStar(posView)

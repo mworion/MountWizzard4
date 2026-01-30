@@ -30,9 +30,9 @@ class HorizonDraw(MWidget):
         self.ui = parent.ui
         self.app = parent.app
         self.msg = parent.msg
-        self.horizonPlot: pg.PlotDataItem = None
-        self.imageTerrain: np.array = None
-        self.pointerHor: pg.ScatterPlotItem = None
+        self.horizonPlot: pg.PlotDataItem | None = None
+        self.imageTerrain: np.ndarray | None = None
+        self.pointerHor: pg.ScatterPlotItem | None = None
 
     def initConfig(self) -> None:
         """ """
@@ -163,7 +163,7 @@ class HorizonDraw(MWidget):
     def updateDataHorizon(self, x: list, y: list) -> None:
         """ """
         hp = [[y, x] for y, x in zip(y, x)]
-        hp.sort(key=lambda x: x[1])
+        hp.sort(key=lambda s: x[1])
         y, x = zip(*hp)
         self.horizonPlot.setData(x=x, y=y)
         self.app.data.horizonP = hp

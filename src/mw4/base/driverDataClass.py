@@ -26,6 +26,9 @@ class RemoteDeviceShutdown(QObject):
 class DriverData:
     log = logging.getLogger("MW4")
 
+    def __init__(self, data):
+        self.data = data
+
     def storePropertyToData(self, value: str | float, element: str) -> None:
         """ """
         if value is None and element in self.data:

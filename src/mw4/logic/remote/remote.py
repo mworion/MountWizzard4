@@ -15,11 +15,12 @@
 ###########################################################
 import logging
 from mw4.base.signalsDevices import Signals
-from PySide6.QtNetwork import QTcpServer, QHostAddress, QTcpSocket, QAbstractSocket
+from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSocket
 
 
 class Remote:
     """ """
+
     log = logging.getLogger("MW4")
 
     def __init__(self, app):

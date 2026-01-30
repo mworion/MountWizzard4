@@ -136,7 +136,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         chart["template"]["legendRef"] = legend
         plotItem.setLimits(xMin=x[0])
 
-    def plotting(self, plotItem, chart: dict, x: list[float]) -> None:
+    def plotting(self, plotItem, chart: dict, x: list[float] | np.ndarray) -> None:
         """ """
         newPlot = chart["template"]["label"] != plotItem.getAxis("left").labelText
         newPlot = newPlot or chart["template"]["legendRef"] is None
@@ -201,7 +201,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
             self.inUseMessage()
         self.drawMeasure()
 
-    def processDrawMeasure(self, x: np.array, noChart: bool) -> None:
+    def processDrawMeasure(self, x: np.ndarray, noChart: bool) -> None:
         """ """
         for i, v in enumerate(zip(self.mSetUI.keys(), self.ui.measure.p)):
             setName, plotItem = v

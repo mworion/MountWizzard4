@@ -14,7 +14,6 @@
 #
 ###########################################################
 import platform
-
 if platform.system() == "Windows":
     from pythoncom import CoInitialize, CoUninitialize
     from win32com import client
@@ -28,7 +27,7 @@ class AscomClass(DriverData):
     """ """
 
     def __init__(self, parent):
-        super().__init__()
+        super().__init__(parent.data)
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
@@ -39,11 +38,11 @@ class AscomClass(DriverData):
         self.updateRate = 3000
         self.loadConfig = False
         self.tM = QMutex()
-        self.worker: Worker = None
-        self.workerData: Worker = None
-        self.workerGetConfig: Worker = None
-        self.workerStatus: Worker = None
-        self.workerConnect: Worker = None
+        self.worker: Worker | None = None
+        self.workerData: Worker | None = None
+        self.workerGetConfig: Worker | None = None
+        self.workerStatus: Worker | None = None
+        self.workerConnect: Worker | None = None
 
         self.client = None
         self.propertyExceptions: list = []
@@ -73,7 +72,7 @@ class AscomClass(DriverData):
         self.cyclePollData.stop()
         self.cyclePollStatus.stop()
 
-    def getAscomProperty(self, valueProp: str) -> str | float:
+    def getAscomProperty(self, valueProp: str) -> str | float | bool | None:
         """ """
         value = None
         if valueProp in self.propertyExceptions:
@@ -111,22 +110,22 @@ class AscomClass(DriverData):
         t = f"[{self.deviceName}] property [{valueProp}] set to: [{value}]"
         self.log.trace(t)
 
-    def callAscomMethod(self, method: callable, param) -> None:
+    def callAscomMethod(self, methodString: str, param) -> None:
         """ """
-        if method in self.propertyExceptions:
+        if methodString in self.propertyExceptions:
             return
 
         paramStr = f"{param}".rstrip(")").lstrip("(")
-        cmd = "self.client." + method + f"({paramStr})"
+        cmd = "self.client." + methodString + f"({paramStr})"
         try:
             exec(cmd)
         except Exception as e:
-            t = f"[{self.deviceName}] [{cmd}], method [{method}] not implemented: {e}"
+            t = f"[{self.deviceName}] [{cmd}], method [{methodString}] not implemented: {e}"
             self.log.debug(t)
-            self.propertyExceptions.append(method)
+            self.propertyExceptions.append(methodString)
             return
 
-        t = f"[{self.deviceName}] method [{method}] called [{param}]"
+        t = f"[{self.deviceName}] method [{methodString}] called [{param}]"
         self.log.trace(t)
 
     def getAndStoreAscomProperty(self, valueProp: str, element: str) -> None:

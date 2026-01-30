@@ -31,7 +31,7 @@ class NINAClass(DriverData):
     DEVICE_TYPE = "Camera"
 
     def __init__(self, parent):
-        super().__init__()
+        super().__init__(parent.data)
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
@@ -49,9 +49,9 @@ class NINAClass(DriverData):
 
         self.deviceConnected = False
         self.serverConnected = False
-        self.workerData: Worker = None
-        self.workerGetConfig: Worker = None
-        self.workerStatus: Worker = None
+        self.workerData: Worker | None = None
+        self.workerGetConfig: Worker | None = None
+        self.workerStatus: Worker | None = None
         self.mutexPollStatus = QMutex()
 
         self.cycleDevice = QTimer()

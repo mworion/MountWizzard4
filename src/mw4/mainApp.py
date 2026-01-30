@@ -40,6 +40,7 @@ from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
 from PySide6.QtWidgets import QApplication
 from queue import Queue
 from skyfield.api import wgs84
+from skyfield.toposlib import Topos
 from typing import Any
 
 
@@ -104,7 +105,7 @@ class MountWizzard4(QObject):
         self.expireData: bool = False
         self.onlineMode: bool = False
         self.timerCounter: int = 0
-        self.statusOperationRunning: bool = 0
+        self.statusOperationRunning: int = 0
         self.config = loadProfileStart(self.mwGlob["configDir"])
         self.deviceStat = {
             "mount": None,
@@ -180,7 +181,7 @@ class MountWizzard4(QObject):
         """ """
         self.statusOperationRunning = status
 
-    def initConfig(self) -> wgs84:
+    def initConfig(self) -> Topos:
         """ """
         setCustomLoggingLevel(self.config.get("loglevel", "DEBUG"))
         lat = self.config.get("topoLat", 51.47)

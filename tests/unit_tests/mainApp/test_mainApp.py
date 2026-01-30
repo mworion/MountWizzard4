@@ -1,10 +1,7 @@
 import pytest
 import shutil
-from mw4.gui.mainWaddon.astroObjects import AstroObjects
-from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
-from unittest import mock
 from unittest.mock import MagicMock
 from mw4.assets.assetsData import qInitResources
 

@@ -124,7 +124,7 @@ CS Michel
     https://img.shields.io/github/issues-closed-raw/mworion/mountwizzard4
 
 .. |OPEN_PR| image::
-    https://img.shields.io/github/issues-raw/mworion/mountwizzard4
+    https://img.shields.io/github/issues-pr-raw/mworion/mountwizzard4
 
 .. |COMMITS_MAIN| image::
     https://img.shields.io/github/commits-since/mworion/mountwizzard4/3.2.0

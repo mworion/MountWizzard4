@@ -25,7 +25,7 @@ import warnings
 from astropy.utils import data, iers
 from astropy.wcs import FITSFixedWarning
 from importlib_metadata import version
-from mw4.assets.assetsData import qInitResources
+from mw4.assets import assetsData
 from mw4.base.loggerMW import setupLogging
 from mw4.gui.utilities.splashScreen import SplashScreen
 from mw4.mainApp import MountWizzard4
@@ -47,7 +47,7 @@ from PySide6.QtWidgets import (
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 warnings.filterwarnings("ignore", category=FITSFixedWarning)
 
-qInitResources()
+assetsData.qInitResources()
 iers.conf.auto_download = False
 data.conf.allow_internet = False
 setupLogging()
@@ -64,7 +64,7 @@ class MyApp(QApplication):
         self.last = None
 
     # noinspection PyUnresolvedReferences
-    def logUserInterface(self, obj: QWidget) -> bool:
+    def logUserInterface(self, obj: QWidget) -> None:
         """ """
         if isinstance(obj, QTabBar):
             self.log.ui(f"Click Tab    : [{obj.tabText(obj.currentIndex())}]")
@@ -139,8 +139,6 @@ def setupWorkDirs(workDir: Path) -> dict:
 
     for dirPath in mwGlob:
         mwGlob[dirPath].mkdir(parents=True, exist_ok=True)
-
-    mwGlob["modeldata"] = "4.0"
     return mwGlob
 
 
@@ -188,21 +186,21 @@ def writeSystemInfo(mwGlob: dict = None) -> None:
     log.header("-" * 100)
 
 
-def extractFile(filePath: Path, file: str, fileTimeStamp: str) -> None:
+def extractFile(filePath: Path, file: str, fileTimeStamp: float) -> None:
     """ """
     overwrite = False
     if filePath.is_file():
-        mtime = os.stat(filePath).st_mtime
+        mtime = filePath.stat().st_mtime
         overwrite = mtime < fileTimeStamp
 
     if overwrite:
         log.info(f"Writing new file: [{file}]")
-        os.remove(filePath)
+        filePath.unlink(missing_ok=True)
     else:
         log.info(f"Using existing: [{file}]")
 
     QFile.copy(f":/data/{file}", str(filePath))
-    os.chmod(filePath, 0o666)
+    filePath.chmod(0o666)
 
 
 def extractDataFiles(mwGlob: dict) -> None:
@@ -212,7 +210,7 @@ def extractDataFiles(mwGlob: dict) -> None:
         "CDFLeapSeconds.txt": 0,
         "tai-utc.dat": 0,
         "finals2000A.all": 0,
-        "finals.data": 0,
+        "finals.data": 0.0,
     }
 
     contentFile = QFile(":/data/content.txt")
@@ -238,7 +236,7 @@ def minimizeStartTerminal() -> None:
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 
-def main(efficient: bool = False) -> None:
+def main(efficient: bool = False, test: int = 0) -> None:
     """ """
     locale.setlocale(locale.LC_ALL, "")
     app = QApplication(sys.argv) if efficient else MyApp(sys.argv)
@@ -260,7 +258,7 @@ def main(efficient: bool = False) -> None:
     splashW.setValue(80)
     sys.excepthook = except_hook
     app.setWindowIcon(QIcon(":/icon/mw4.ico"))
-    MountWizzard4(mwGlob=mwGlob, application=app)
+    MountWizzard4(mwGlob, app, test)
 
     splashW.showMessage("Finishing loading")
     splashW.setValue(100)

@@ -96,7 +96,7 @@ class MountWizzard4(QObject):
     start10s = Signal()
     start30s = Signal()
 
-    def __init__(self, mwGlob: dict[str, Any], application: QApplication) -> None:
+    def __init__(self, mwGlob: dict[str, Any], application: QApplication, test:bool) -> None:
         super().__init__()
         self.mwGlob = mwGlob
         self.application = application
@@ -174,6 +174,9 @@ class MountWizzard4(QObject):
         self.timer0_1s.start(100)
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
+
+        if test:
+            self.update3s.connect(self.quit)
         if len(sys.argv) > 1:
             self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 

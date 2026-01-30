@@ -258,10 +258,9 @@ def test_windows(c, user, work, scp):
         printMW("...copy *.tar.gz to test dir")
         runMW(c, f"scp -r mountwizzard4.tar.gz {scp}")
 
-    runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
     runMW(c, f'ssh {user} "cd {work} && uv venv -p 3.13"')
     runMW(c, f'ssh {user} "cd {work} && uv pip install mountwizzard4.tar.gz"')
-    runMW(c, f'ssh {user} "cd {work} && uv run mw4"')
+    runMW(c, f'ssh {user} "cd {work} && uv run mw4 -t 1"')
 
 
 def test_ubuntu(c, user, work, scp):
@@ -276,10 +275,9 @@ def test_ubuntu(c, user, work, scp):
         printMW("...copy *.tar.gz to test dir")
         runMW(c, f"scp -r mountwizzard4.tar.gz {scp}")
 
-    runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
     runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv venv -p 3.13"')
     runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv pip install mountwizzard4.tar.gz"')
-    runMW(c, f'ssh {user} "cd {work} && export DISPLAY=:0 && ~/.local/bin/uv run mw4"')
+    runMW(c, f'ssh {user} "cd {work} && export DISPLAY=:0 && ~/.local/bin/uv run mw4 -t 1"')
 
 
 def test_mac(c, user, work, scp):
@@ -294,10 +292,9 @@ def test_mac(c, user, work, scp):
         printMW("...copy *.tar.gz to test dir")
         runMW(c, f"scp -r mountwizzard4.tar.gz {scp}")
 
-    runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
     runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv venv -p 3.13"')
     runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv pip install mountwizzard4.tar.gz"')
-    runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv run mw4"')
+    runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv run mw4 -t 1"')
 
 
 @task(pre=[])

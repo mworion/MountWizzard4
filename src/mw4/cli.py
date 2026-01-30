@@ -34,6 +34,13 @@ def read_options() -> argparse.Namespace:
         help="Setting QT font DPI (+dpi = -fontsize, default=96)",
     )
     parser.add_argument(
+        "-t",
+        "--test",
+        default=0,
+        type=int,
+        dest="test",
+    )
+    parser.add_argument(
         "-s",
         "--scale",
         default=1,
@@ -45,6 +52,8 @@ def read_options() -> argparse.Namespace:
         "-e",
         action="store_true",
         dest="efficient",
+        default=0,
+        type=int,
         help="Efficient CPU mode",
     )
     return parser.parse_args()
@@ -55,7 +64,7 @@ def app():
     if platform.system() == "Windows":
         os.environ["QT_SCALE_FACTOR"] = f"{options.scale:2.1f}"
         os.environ["QT_FONT_DPI"] = f"{options.dpi:2.0f}"
-    main(efficient=options.efficient == 1)
+    main(options.efficient == 1, options.test)
 
 
 if __name__ == "__main__":

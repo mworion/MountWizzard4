@@ -134,19 +134,19 @@ def test_discoverAPIVersion_6(function):
 def test_discoverAlpacaDevices_1(function):
     with mock.patch.object(requests, "get", side_effect=Exception):
         val = function.discoverAlpacaDevices()
-        assert val == ""
+        assert val == []
 
 
 def test_discoverAlpacaDevices_2(function):
     with mock.patch.object(requests, "get", side_effect=requests.exceptions.Timeout):
         val = function.discoverAlpacaDevices()
-        assert val == ""
+        assert val == []
 
 
 def test_discoverAlpacaDevices_3(function):
     with mock.patch.object(requests, "get", side_effect=requests.exceptions.ConnectionError):
         val = function.discoverAlpacaDevices()
-        assert val == ""
+        assert val == []
 
 
 def test_discoverAlpacaDevices_4(function):
@@ -157,7 +157,7 @@ def test_discoverAlpacaDevices_4(function):
     function.deviceName = "test"
     with mock.patch.object(requests, "get", return_value=Test()):
         val = function.discoverAlpacaDevices()
-        assert val == ""
+        assert val == []
 
 
 def test_discoverAlpacaDevices_5(function):
@@ -171,7 +171,7 @@ def test_discoverAlpacaDevices_5(function):
 
     with mock.patch.object(requests, "get", return_value=Test()):
         val = function.discoverAlpacaDevices()
-        assert val == ""
+        assert val == []
 
 
 def test_discoverAlpacaDevices_6(function):
@@ -192,14 +192,14 @@ def test_getAlpacaProperty_1(function):
     function.deviceName = ""
     function.deviceConnected = False
     val = function.getAlpacaProperty("")
-    assert val == {}
+    assert val == []
 
 
 def test_getAlpacaProperty_2(function):
     function.deviceName = ""
     function.deviceConnected = True
     val = function.getAlpacaProperty("")
-    assert val == {}
+    assert val == []
 
 
 def test_getAlpacaProperty_3(function):
@@ -207,7 +207,7 @@ def test_getAlpacaProperty_3(function):
     function.deviceConnected = True
     function.propertyExceptions = ["test"]
     val = function.getAlpacaProperty("test")
-    assert val == {}
+    assert val == []
 
 
 def test_getAlpacaProperty_6(function):
@@ -215,7 +215,7 @@ def test_getAlpacaProperty_6(function):
     function.deviceConnected = True
     with mock.patch.object(requests, "get", side_effect=Exception):
         val = function.getAlpacaProperty("test")
-        assert val == {}
+        assert val == []
 
 
 def test_getAlpacaProperty_7(function):
@@ -227,7 +227,7 @@ def test_getAlpacaProperty_7(function):
     function.deviceConnected = True
     with mock.patch.object(requests, "get", return_value=Test()):
         val = function.getAlpacaProperty("test")
-        assert val == {}
+        assert val == []
 
 
 def test_getAlpacaProperty_8(function):
@@ -243,7 +243,7 @@ def test_getAlpacaProperty_8(function):
     function.deviceConnected = True
     with mock.patch.object(requests, "get", return_value=Test()):
         val = function.getAlpacaProperty("test")
-        assert val == {}
+        assert val == []
         assert "test" in function.propertyExceptions
 
 

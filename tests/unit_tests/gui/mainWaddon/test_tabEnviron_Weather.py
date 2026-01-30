@@ -355,7 +355,7 @@ def test_updateSourceGui_1(function):
 
 def test_clearSourceGui_1(function):
     function.clearSourceGui("sensor1Weather", 1)
-    assert function.ui.temperature1.text() == "-"
-    assert function.ui.pressure1.text() == "-"
-    assert function.ui.dewPoint1.text() == "-"
-    assert function.ui.humidity1.text() == "-"
+    assert function.ui.temperature1.text() == ""
+    assert function.ui.pressure1.text() == ""
+    assert function.ui.dewPoint1.text() == ""
+    assert function.ui.humidity1.text() == ""

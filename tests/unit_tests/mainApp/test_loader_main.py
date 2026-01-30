@@ -57,7 +57,6 @@ def test_main_1():
         "imageDir": Path("tests/work/image"),
         "modelDir": Path("tests/work/model"),
         "workDir": Path("mw4/tests/work"),
-        "modeldata": "4.0",
     }
     with mock.patch.object(PySide6.QtCore.QBasicTimer, "start"):
         with mock.patch.object(PySide6.QtCore.QTimer, "start"):

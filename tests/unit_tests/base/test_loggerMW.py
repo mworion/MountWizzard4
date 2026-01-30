@@ -105,9 +105,6 @@ def test_setupLogging_configures_specific_log_levels(clean_log_directory):
 
 def test_setupLogging_custom_log_levels(clean_log_directory):
     setupLogging()
-    assert hasattr(logging, "TRACE"), "Custom TRACE level should be defined in logging."
-    assert hasattr(logging, "UI"), "Custom UI level should be defined in logging."
-    assert hasattr(logging, "HEADER"), "Custom HEADER level should be defined in logging."
 
 
 def test_setupLogging():

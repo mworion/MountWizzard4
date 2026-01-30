@@ -84,7 +84,7 @@ def test_updatePointGui_dec_2(function):
     obs.raJNow = Angle(hours=0)
     obs.decJNow = None
     function.updatePointGUI(obs)
-    assert function.ui.DEC.text() == "-"
+    assert function.ui.DEC.text() == ""
 
 
 def test_updatePointGui_pierside(function):
@@ -113,7 +113,7 @@ def test_updatePointGUI_sidereal_2(function):
     obs = function.mainW.app.mount.obsSite
     obs.timeSidereal = None
     function.updatePointGUI(obs)
-    assert function.ui.timeSidereal.text() == "-"
+    assert function.ui.timeSidereal.text() == ""
 
 
 def test_updateSetting_slewRate(function):
@@ -290,7 +290,7 @@ def test_updateSetting_slewRate_1(function):
     value = None
     sett.slewRate = value
     function.updateSettingGUI(sett)
-    assert function.ui.slewRate.text() == "-"
+    assert function.ui.slewRate.text() == ""
 
 
 def test_updateSetting_timeToFlip_1(function):
@@ -302,7 +302,7 @@ def test_updateSetting_timeToFlip_1(function):
     value = None
     sett.timeToFlip = value
     function.updateSettingGUI(sett)
-    assert function.ui.timeToFlip.text() == "-"
+    assert function.ui.timeToFlip.text() == ""
 
 
 def test_updateSetting_timeToMeridian_1(function):

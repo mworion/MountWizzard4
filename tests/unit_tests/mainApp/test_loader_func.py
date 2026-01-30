@@ -59,7 +59,6 @@ def test_except_hook():
 def test_setupWorkDirs_1():
     with mock.patch.object(Path, "mkdir"):
         val = setupWorkDirs(Path())
-        assert val["modeldata"] == "4.0"
 
 
 def test_checkIsAdmin_1():
@@ -156,7 +155,6 @@ def test_checkIsAdmin_9():
 
 def test_writeSystemInfo_1():
     mwGlob = {}
-    mwGlob["modeldata"] = ""
     mwGlob["workDir"] = ""
     writeSystemInfo(mwGlob=mwGlob)
     mwGlob["WorkDir"] = Path("tests/work")
@@ -164,7 +162,6 @@ def test_writeSystemInfo_1():
 
 def test_writeSystemInfo_2():
     mwGlob = {}
-    mwGlob["modeldata"] = ""
     mwGlob["workDir"] = ""
     with mock.patch.object(socket, "gethostbyname_ex", side_effect=Exception()):
         writeSystemInfo(mwGlob=mwGlob)

@@ -24,6 +24,7 @@ if not hasattr(logging.Logger, "_set_defaults"):
     # noinspection PyUnusedLocal
     def _set_defaults(self, *args, **kwargs):
         return
+
     logging.Logger._set_defaults = _set_defaults
 
 

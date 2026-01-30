@@ -15,11 +15,11 @@
 ###########################################################
 import requests
 import uuid
-from typing import Any
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from PySide6.QtCore import QTimer
+from typing import Any
 
 
 class AlpacaClass(DriverData):

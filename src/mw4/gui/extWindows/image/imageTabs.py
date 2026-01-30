@@ -28,6 +28,7 @@ from PySide6.QtGui import QFont
 
 class ImageTabs:
     """ """
+
     TILT = {
         "none": 5,
         "almost none": 10,

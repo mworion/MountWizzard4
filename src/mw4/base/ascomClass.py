@@ -14,6 +14,7 @@
 #
 ###########################################################
 import platform
+
 if platform.system() == "Windows":
     from pythoncom import CoInitialize, CoUninitialize
     from win32com import client

@@ -15,7 +15,6 @@
 ###########################################################
 import datetime
 import logging
-import numpy as np
 import time
 from dateutil.tz import tzlocal
 from mw4.gui.styles.styles import Styles
@@ -93,12 +92,9 @@ def findIndexValue(ui: QComboBox, searchString: str, relaxed: bool = False) -> i
     return 0
 
 
-def guiSetText(ui: QLineEdit, formatElement: str, value: list | np.ndarray | float | Angle) -> None:
+def guiSetText(ui: QLineEdit, formatElement: str, value: float | Angle) -> None:
     """ """
-    text = "-"
-    if value is None or isinstance(value, list | np.ndarray) and len(value) == 0:
-        pass
-    elif formatElement.startswith("HSTR"):
+    if formatElement.startswith("HSTR"):
         text = formatHstrToText(value)
     elif formatElement.startswith("DSTR"):
         text = formatDstrToText(value)

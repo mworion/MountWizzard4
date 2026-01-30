@@ -46,8 +46,8 @@ Versions, downloads:
 --------------------
 |PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth|
 
-Unit tests:
-^^^^^^^^^^^
+Code quality / tests:
+^^^^^^^^^^^^^^^^^^^^^
 |CODECOV| |PYTEST macOS| |PYTEST Windows| |PYTEST Ubuntu|
 
 Code changes:

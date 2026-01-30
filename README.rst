@@ -56,7 +56,7 @@ Unit tests:
 
 Test install / run scripts:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|TEST_SCRIPTS_PYPI| |TEST_SCRIPTS_PACKAGES| |TEST_SCRIPTS_AARCH64|
+|TEST_SCRIPTS_PYPI| |TEST_SCRIPTS_PACKAGES|
 
 Test coverage:
 ^^^^^^^^^^^^^^
@@ -132,9 +132,6 @@ CS Michel
 
 .. |TEST_SCRIPTS_PACKAGES| image::
     https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/test_scripts_packages.yml?branch=main&label=Packages
-
-.. |TEST_SCRIPTS_AARCH64| image::
-    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/test_scripts_aarch64_pypi.yml?branch=main&label=PyPI%20aarch64
 
 .. |PYPI_VERSION| image::
     https://img.shields.io/pypi/v/mountwizzard4.svg

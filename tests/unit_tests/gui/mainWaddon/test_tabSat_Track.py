@@ -510,7 +510,7 @@ def test_filterHorizon_1(function):
     alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
     az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     function.app.data.horizonP = [[40, 40]]
-    start, end, alt, az = function.filterHorizon(start, end, alt, az)
+    function.filterHorizon(start, end, alt, az)
 
 
 def test_filterHorizon_2(function):
@@ -520,9 +520,8 @@ def test_filterHorizon_2(function):
     alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
     az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     function.app.data.horizonP = [[40, 40]]
-    start, end, alt, az = function.filterHorizon(start, end, alt, az)
-    print("Filtered:")
-    print(start, end, alt, az)
+    with mock.patch.object(function.app.data, "isAboveHorizon", return_value=True):
+        function.filterHorizon(start, end, alt, az)
 
 
 def test_startProg_1(function):

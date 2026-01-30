@@ -337,8 +337,8 @@ class SatTrack(SatData):
         return start, end
 
     def filterHorizon(
-        self, start: int, end: int, alt: list, az: list
-    ) -> tuple[int, int, list, list]:
+        self, start: float, end: float, alt: list, az: list
+    ) -> tuple[float, float, list, list]:
         """ """
         if not self.ui.avoidHorizon.isChecked():
             return start, end, alt, az

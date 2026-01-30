@@ -196,7 +196,7 @@ def test_syncClock_4(function):
     function.ui.syncTimeCont.setChecked(True)
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 1
-    function.app.mount.obsSite.timeDiff = 1
+    function.app.mount.obsSite.timeDiff = 0
     function.syncClock()
 
 
@@ -204,7 +204,7 @@ def test_syncClock_5(function):
     function.ui.syncTimeCont.setChecked(False)
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 1
-    function.app.mount.obsSite.timeDiff = 11
+    function.app.mount.obsSite.timeDiff = 1
     with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=False):
         function.syncClock()
 
@@ -213,6 +213,6 @@ def test_syncClock_6(function):
     function.ui.syncTimeCont.setChecked(True)
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 1
-    function.app.mount.obsSite.timeDiff = 11
+    function.app.mount.obsSite.timeDiff = 1
     with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=True):
         function.syncClock()

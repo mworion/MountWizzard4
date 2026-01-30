@@ -24,7 +24,7 @@ def app(qapp):
     shutil.copy("./tests/testData/test.run", Path("./tests/work/test.run"))
 
     mock_emit = MagicMock()
-    app_instance = MountWizzard4(mwGlob, qapp, False)
+    app_instance = MountWizzard4(mwGlob, qapp, 0)
     app_instance.update1s = MagicMock(emit=mock_emit)
     app_instance.update3s = MagicMock(emit=mock_emit)
     yield app_instance

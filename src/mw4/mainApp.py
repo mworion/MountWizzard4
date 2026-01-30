@@ -96,7 +96,7 @@ class MountWizzard4(QObject):
     start10s = Signal()
     start30s = Signal()
 
-    def __init__(self, mwGlob: dict[str, Any], application: QApplication, test: bool) -> None:
+    def __init__(self, mwGlob: dict[str, Any], application: QApplication, test: int) -> None:
         super().__init__()
         self.mwGlob = mwGlob
         self.application = application

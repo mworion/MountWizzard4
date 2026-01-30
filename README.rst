@@ -46,13 +46,13 @@ Versions, downloads:
 --------------------
 |PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth|
 
-Code quality:
--------------
-|CODECOV| |OPEN_ISSUES| |CLOSED_ISSUES| |OPEN_PR|
-
 Unit tests:
 ^^^^^^^^^^^
-|PYTEST macOS| |PYTEST Windows| |PYTEST Ubuntu|
+|CODECOV| |PYTEST macOS| |PYTEST Windows| |PYTEST Ubuntu|
+
+Code changes:
+^^^^^^^^^^^^^
+|OPEN_ISSUES| |CLOSED_ISSUES| |OPEN_PR|
 
 Test install / run scripts:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

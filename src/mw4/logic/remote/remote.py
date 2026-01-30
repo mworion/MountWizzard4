@@ -15,12 +15,11 @@
 ###########################################################
 import logging
 from mw4.base.signalsDevices import Signals
-from PySide6 import QtNetwork
+from PySide6.QtNetwork import QTcpServer, QHostAddress, QTcpSocket, QAbstractSocket
 
 
 class Remote:
     """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(self, app):
@@ -31,16 +30,16 @@ class Remote:
             "framework": "",
             "frameworks": {"tcp": {"deviceName": "TCP"}},
         }
-        self.framework = ""
-        self.run = {"tcp": self}
-        self.deviceName = ""
-        self.clientConnection = None
-        self.tcpServer = None
+        self.framework: str = ""
+        self.run: dict = {"tcp": self}
+        self.deviceName: str = ""
+        self.clientConnection: QTcpSocket | None = None
+        self.tcpServer: QTcpServer | None = None
 
     def startCommunication(self) -> bool:
         """ """
-        self.tcpServer = QtNetwork.QTcpServer(self)
-        hostAddress = QtNetwork.QHostAddress("localhost")
+        self.tcpServer = QTcpServer()
+        hostAddress = QHostAddress("localhost")
         if not self.tcpServer.listen(hostAddress, 3490):
             self.log.info("Port already in use")
             self.tcpServer = None
@@ -70,7 +69,7 @@ class Remote:
         self.clientConnection.nextBlockSize = 0
         self.clientConnection.readyRead.connect(self.receiveMessage)
         self.clientConnection.disconnected.connect(self.removeConnection)
-        self.clientConnection.error.connect(self.handleError)
+        self.clientConnection.errorOccurred.connect(self.handleError)
         connection = self.clientConnection.peerAddress().toString()
         self.log.info(f"Connection to MountWizzard from {connection}")
 
@@ -86,7 +85,7 @@ class Remote:
         ]
 
         connection = self.clientConnection.peerAddress().toString()
-        command = str(self.clientConnection.read(100), "ascii")
+        command = self.clientConnection.read(100).toStdString()
         command = command.replace("\n", "")
         command = command.replace("\r", "")
 
@@ -104,7 +103,7 @@ class Remote:
         self.clientConnection.close()
         self.log.debug(f"Connection from {connection} closed")
 
-    def handleError(self, socketError: QtNetwork.QAbstractSocket.SocketError) -> None:
+    def handleError(self, socketError: QAbstractSocket.SocketError) -> None:
         """ """
         connection = self.clientConnection.peerAddress().toString()
         self.log.critical(f"Connection from {connection} failed, error: {socketError}")

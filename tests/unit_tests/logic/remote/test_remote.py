@@ -13,12 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
 import unittest.mock as mock
 from mw4.logic.remote.remote import Remote
 from PySide6 import QtNetwork
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import QObject, Signal, QByteArray
+from PySide6.QtNetwork import QTcpSocket, QAbstractSocket, QHostAddress
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -53,7 +53,7 @@ def test_addConnection_1(function):
 
 
 def test_addConnection_2(function):
-    function.tcpServer = QtNetwork.QTcpServer(function)
+    function.tcpServer = QtNetwork.QTcpServer()
     with mock.patch.object(function.tcpServer, "nextPendingConnection", return_value=0):
         function.addConnection()
 
@@ -63,7 +63,7 @@ def test_addConnection_3(function):
         nextBlockSize = 0
         readyRead = Signal()
         disconnected = Signal()
-        error = Signal()
+        errorOccurred = Signal()
 
         @staticmethod
         def peerAddress():
@@ -73,15 +73,15 @@ def test_addConnection_3(function):
         def toString():
             return "Test"
 
-    function.tcpServer = QtNetwork.QTcpServer(function)
+    function.tcpServer = QtNetwork.QTcpServer()
     with mock.patch.object(function.tcpServer, "nextPendingConnection", return_value=Test()):
         function.addConnection()
 
 
 def test_receiveMessage_1(function):
-    class Test:
+    class Test(QTcpSocket):
         @staticmethod
-        def bytesAvailable():
+        def bytesAvailable(**kwargs):
             return 0
 
     function.clientConnection = Test()
@@ -90,22 +90,22 @@ def test_receiveMessage_1(function):
 
 
 def test_receiveMessage_2(function):
-    class Test:
+    class Test(QTcpSocket):
         @staticmethod
-        def bytesAvailable():
+        def bytesAvailable(**kwargs):
             return 1
 
         @staticmethod
-        def peerAddress():
-            return Test()
+        def peerAddress(**kwargs):
+            return QHostAddress()
 
         @staticmethod
         def toString():
             return "Test"
 
         @staticmethod
-        def read(a):
-            return "Test".encode("ascii")
+        def read(a, **kwargs):
+            return QByteArray(b"Test")
 
     function.clientConnection = Test()
     suc = function.receiveMessage()
@@ -113,22 +113,22 @@ def test_receiveMessage_2(function):
 
 
 def test_receiveMessage_3(function):
-    class Test:
+    class Test(QTcpSocket):
         @staticmethod
-        def bytesAvailable():
+        def bytesAvailable(**kwargs):
             return 1
 
         @staticmethod
-        def peerAddress():
-            return Test()
+        def peerAddress(**kwargs):
+            return QHostAddress()
 
         @staticmethod
         def toString():
             return "Test"
 
         @staticmethod
-        def read(a):
-            return "shutdown".encode("ascii")
+        def read(a, **kwargs):
+            return QByteArray(b"shutdown")
 
     function.clientConnection = Test()
     suc = function.receiveMessage()
@@ -136,9 +136,9 @@ def test_receiveMessage_3(function):
 
 
 def test_removeConnection_1(function):
-    class Test:
+    class Test(QTcpSocket):
         @staticmethod
-        def peerAddress():
+        def peerAddress(**kwargs):
             return Test()
 
         @staticmethod
@@ -146,7 +146,7 @@ def test_removeConnection_1(function):
             return "Test"
 
         @staticmethod
-        def close():
+        def close(**kwargs):
             return
 
     function.clientConnection = Test()
@@ -154,9 +154,9 @@ def test_removeConnection_1(function):
 
 
 def test_handleError_1(function):
-    class Test:
+    class Test(QTcpSocket):
         @staticmethod
-        def peerAddress():
+        def peerAddress(**kwargs):
             return Test()
 
         @staticmethod
@@ -164,4 +164,4 @@ def test_handleError_1(function):
             return "Test"
 
     function.clientConnection = Test()
-    function.handleError("test")
+    function.handleError(QAbstractSocket.SocketError(0))

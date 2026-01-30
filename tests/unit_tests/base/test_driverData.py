@@ -13,14 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-
-
 from mw4.base.driverDataClass import DriverData
 from mw4.base.loggerMW import setupLogging
 
 setupLogging()
-
-app = DriverData()
+data = {}
+app = DriverData(data)
 
 
 def test_storeAscomProperty_1():

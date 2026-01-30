@@ -35,7 +35,6 @@ def read_options() -> argparse.Namespace:
     )
     parser.add_argument(
         "-t",
-        "--test",
         default=0,
         type=int,
         dest="test",
@@ -50,7 +49,6 @@ def read_options() -> argparse.Namespace:
     )
     parser.add_argument(
         "-e",
-        action="store_true",
         dest="efficient",
         default=0,
         type=int,

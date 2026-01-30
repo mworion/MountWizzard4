@@ -92,9 +92,11 @@ def findIndexValue(ui: QComboBox, searchString: str, relaxed: bool = False) -> i
     return 0
 
 
-def guiSetText(ui: QLineEdit, formatElement: str, value: float | Angle) -> None:
+def guiSetText(ui: QLineEdit, formatElement: str, value: float | Angle | None) -> None:
     """ """
-    if formatElement.startswith("HSTR"):
+    if value is None:
+        text = ""
+    elif formatElement.startswith("HSTR"):
         text = formatHstrToText(value)
     elif formatElement.startswith("DSTR"):
         text = formatDstrToText(value)

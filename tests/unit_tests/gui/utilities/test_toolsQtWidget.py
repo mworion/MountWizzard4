@@ -116,16 +116,10 @@ def test_findIndexValue_5():
     val = findIndexValue(ui=ui, searchString="indi")
     assert val == 0
 
-
 def test_guiSetText_1():
     pb = QPushButton()
-    guiSetText(pb, "3.5f", [])
-
-
-def test_guiSetText_2():
-    pb = QPushButton()
-    guiSetText(pb, "3.5f", np.array([]))
-
+    guiSetText(pb, "3.0f", None)
+    assert pb.text() == ""
 
 def test_guiSetText_4():
     pb = QPushButton()

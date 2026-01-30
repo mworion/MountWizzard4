@@ -48,7 +48,7 @@ Versions, downloads:
 
 Code quality:
 -------------
-|CODECOV| |OPEN_ISSUES|
+|CODECOV| |OPEN_ISSUES| |CLOSED_ISSUES| |OPEN_PR|
 
 Unit tests:
 ^^^^^^^^^^^
@@ -120,8 +120,14 @@ CS Michel
     https://img.shields.io/github/issues-raw/mworion/mountwizzard4
     :target: https://github.com/mworion/MountWizzard4/issues
 
+.. |CLOSED_ISSUES| image::
+    https://img.shields.io/github/issues-closed-raw/mworion/mountwizzard4
+
+.. |OPEN_PR| image::
+    https://img.shields.io/github/issues-raw/mworion/mountwizzard4
+
 .. |COMMITS_MAIN| image::
-    https://img.shields.io/github/commits-since/mworion/mountwizzard4/3.1.0
+    https://img.shields.io/github/commits-since/mworion/mountwizzard4/3.2.0
     :target: https://github.com/mworion/MountWizzard4/commits/main
 
 .. |COMMITS_WEEK| image::
@@ -136,8 +142,7 @@ CS Michel
 .. |PYPI_VERSION| image::
     https://img.shields.io/pypi/v/mountwizzard4.svg
     :target: https://pypi.python.org/pypi/mountwizzard4
-    :alt: MountWizzard4's PyPI Status
-    
+
 .. |DownLoadsAbs| image::
     https://static.pepy.tech/badge/mountwizzard4
     :target: https://pepy.tech/project/mountwizzard4

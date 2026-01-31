@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
 import pickle
 import pyqtgraph as pg
@@ -49,10 +48,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             self.pens.append(pg.mkPen(color=color, width=2, style=Qt.PenStyle.DotLine))
         self.penLocation = pg.mkPen(color=self.M_RED)
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
-        stream = QFile(":/data/worldmap.dat")
-        stream.open(QFile.OpenModeFlag.ReadOnly)
-        pickleData = stream.readAll()
-        stream.close()
+        file = QFile(":/data/worldmap.dat")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        pickleData = bytes(file.readAll())
+        file.close()
         self.world = pickle.load(BytesIO(pickleData))
         self.app.showSatellite.connect(self.drawSatellite)
         self.app.updateSatellite.connect(self.updatePositions)

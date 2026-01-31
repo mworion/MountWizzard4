@@ -15,15 +15,12 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pickle
 import numpy as np
-
-
 import shapefile
 
 
-shapeFile = "ne_110m_land.shp"
+shapeFile = "ne_110m_coastline.shp"
 shape = shapefile.Reader(shapeFile)
 worldmap = {}
 
@@ -33,8 +30,6 @@ for index, record in enumerate(shape.shapeRecords()):
     worldmap[index] = {}
     worldmap[index]["xDeg"] = x
     worldmap[index]["yDeg"] = y
-    worldmap[index]["xRad"] = np.radians(x)
-    worldmap[index]["yRad"] = np.radians(y)
 
 with open("worldmap.dat", "wb") as fd:
     pickle.dump(worldmap, fd)

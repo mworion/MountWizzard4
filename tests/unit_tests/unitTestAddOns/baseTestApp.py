@@ -901,7 +901,9 @@ class MountObsSite:
         self.pierside = "E"
         self.piersideTarget = "E"
         self.timeSidereal = Angle(hours=12)
-        self.location = wgs84.latlon(latitude_degrees=20, longitude_degrees=10, elevation_m=500)
+        self.location = wgs84.latlon(
+            latitude_degrees=20, longitude_degrees=10, elevation_m=500
+        )
         self.ts = load.timescale(builtin=True)
         self.timeJD = self.ts.tt_jd(2459580.5)
         self.timeDiff = 0

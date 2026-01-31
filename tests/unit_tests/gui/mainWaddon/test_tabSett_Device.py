@@ -283,10 +283,14 @@ def test_callPopup_1(function):
                     @staticmethod
                     def connect(a):
                         return
+
                 clicked = Connect()
+
             ok = Clicked()
+
         def initConfig(self):
             pass
+
         ui = OK()
 
     function.driversData = {"cover": {}}

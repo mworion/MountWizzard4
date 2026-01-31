@@ -134,7 +134,6 @@ def build_resources(c):
     resourceDestDir = "./src/mw4/assets/"
     with c.cd(resourceDir + "data"):
         with open(resourceDir + "data/content.txt", "w") as f:
-
             for file in files:
                 filePath = resourceDir + "data/" + file
                 t = os.stat(filePath).st_mtime
@@ -201,7 +200,7 @@ def build_test(c):
 @task(pre=[build])
 def publish(c):
     printMW("publishing mountwizzard4")
-    runMW(c, 'uvx uv-publish')
+    runMW(c, "uvx uv-publish")
     printMW("publishing mountwizzard4 finished\n")
 
 
@@ -415,5 +414,3 @@ def test_mac26(c):
     scp = client["mac26"]["scp"]
     test_mac(c, user, work, scp)
     printMW("test mac26 install finished\n")
-
-

@@ -23,7 +23,6 @@ import numpy as np
 import shapefile
 
 
-
 shapeFile = "ne_110m_land.shp"
 shape = shapefile.Reader(shapeFile)
 worldmap = {}

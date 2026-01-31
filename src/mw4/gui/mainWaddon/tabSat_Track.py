@@ -336,7 +336,7 @@ class SatTrack(SatData):
 
         return start, end
 
-    def filterHorizonForward(self, alt:list, az: list) -> tuple[list, list, int]:
+    def filterHorizonForward(self, alt: list, az: list) -> tuple[list, list, int]:
         """"""
         timeDelayStart = 0
         for altitude, azimuth in zip(alt, az):

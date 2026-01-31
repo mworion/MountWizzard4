@@ -17,8 +17,8 @@ import pytest
 import unittest.mock as mock
 from mw4.logic.remote.remote import Remote
 from PySide6 import QtNetwork
-from PySide6.QtCore import QObject, Signal, QByteArray
-from PySide6.QtNetwork import QTcpSocket, QAbstractSocket, QHostAddress
+from PySide6.QtCore import QByteArray, QObject, Signal
+from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpSocket
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

@@ -92,7 +92,9 @@ def findIndexValue(ui: QComboBox, searchString: str, relaxed: bool = False) -> i
     return 0
 
 
-def guiSetText(ui: QLineEdit, formatElement: str, value: float | Angle | None) -> None:
+def guiSetText(
+    ui: QLineEdit, formatElement: str, value: float | Angle | str | bool | None
+) -> None:
     """ """
     if value is None:
         text = ""
@@ -144,7 +146,6 @@ class MWidget(QWidget, Styles):
 
     def __init__(self):
         super().__init__()
-
         self.palette = QPalette()
         self.initUI()
         self.screenSizeX = QGuiApplication.primaryScreen().geometry().width()
@@ -352,7 +353,7 @@ class MWidget(QWidget, Styles):
         dlg.setDirectory(str(folder))
         result = self.runDialog(dlg)
         if not result:
-            return Path("")
+            return Path()
 
         return Path(dlg.selectedFiles()[0])
 
@@ -365,7 +366,7 @@ class MWidget(QWidget, Styles):
         dlg.setFileMode(QFileDialog.FileMode.Directory)
         result = self.runDialog(dlg)
         if not result:
-            return Path("")
+            return Path()
 
         return Path(dlg.selectedFiles()[0])
 

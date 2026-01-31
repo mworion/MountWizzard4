@@ -21,9 +21,6 @@
 #
 
 
-
-
-
 def generateAlignStars():
     """
     generateAlignStars is the function where the alignment stars which were

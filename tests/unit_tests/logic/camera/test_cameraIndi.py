@@ -24,7 +24,7 @@ from mw4.indibase.indiClient import Client
 from mw4.indibase.indiDevice import Device
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraIndi import CameraIndi
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import Signal
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

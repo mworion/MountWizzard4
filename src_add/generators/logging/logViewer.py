@@ -104,7 +104,7 @@ class Categories(QTabWidget):
             listKey = "Warnings"
         elif "[I]" in line:
             listKey = "Info"
-        elif "[D]" in line and 'modelRun' in line:
+        elif "[D]" in line and "modelRun" in line:
             listKey = "Model Trace"
         elif "[D]" in line:
             listKey = "Debug"

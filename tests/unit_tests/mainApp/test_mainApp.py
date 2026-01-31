@@ -1,10 +1,10 @@
 import pytest
-from unittest import mock
 import shutil
+from mw4.assets.assetsData import qInitResources
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
+from unittest import mock
 from unittest.mock import MagicMock
-from mw4.assets.assetsData import qInitResources
 
 qInitResources()
 

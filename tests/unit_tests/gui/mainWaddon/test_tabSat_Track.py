@@ -557,7 +557,7 @@ def test_filterHorizon_2(function):
         with mock.patch.object(function, "filterHorizonReverse", return_value=([], [], 1)):
             start, end, alt, az = function.filterHorizon(start, end, alt, az)
             assert start == 1 / 86400
-            assert end == - 1 / 86400
+            assert end == -1 / 86400
 
 
 def test_startProg_1(function):

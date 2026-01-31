@@ -13,9 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-import shutil
-import mw4.gui
 import pytest
+import shutil
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path

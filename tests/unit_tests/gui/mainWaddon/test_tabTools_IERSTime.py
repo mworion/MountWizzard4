@@ -16,7 +16,6 @@
 
 import mw4.gui.utilities
 import pytest
-from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow

@@ -60,6 +60,7 @@ def test_property(function):
     a += function.M_TAB2
     assert a != 0
 
+
 def test_mw4Style_1(function):
     with mock.patch.object(platform, "system", return_value="Darwin"):
         ret = function.mw4Style

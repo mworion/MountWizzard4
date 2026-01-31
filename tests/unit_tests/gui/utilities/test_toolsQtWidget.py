@@ -13,9 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import logging
-import numpy as np
 import os
 import pytest
 import unittest.mock as mock
@@ -116,10 +114,12 @@ def test_findIndexValue_5():
     val = findIndexValue(ui=ui, searchString="indi")
     assert val == 0
 
+
 def test_guiSetText_1():
     pb = QPushButton()
     guiSetText(pb, "3.0f", None)
     assert pb.text() == ""
+
 
 def test_guiSetText_4():
     pb = QPushButton()

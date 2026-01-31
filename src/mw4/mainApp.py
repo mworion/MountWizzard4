@@ -132,7 +132,6 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 started..."))
         self.messageQueue.put((1, "System", "Workdir", f"[{workDir}]"))
         self.messageQueue.put((1, "System", "Profile", f"[{profile}]"))
-        # initialize commands to mount
         self.mount = MountDevice(
             app=self,
             host=None,
@@ -140,7 +139,6 @@ class MountWizzard4(QObject):
             pathToData=self.mwGlob["dataDir"],
             verbose=True,
         )
-        # setting location to last know config
         topo = self.initConfig()
         self.mount.obsSite.location = topo
         self.ephemeris = self.mount.obsSite.loader("de440_mw4.bsp")
@@ -202,18 +200,19 @@ class MountWizzard4(QObject):
             self.config["topoLon"] = float(location.longitude.degrees)
             self.config["topoElev"] = float(location.elevation.m)
 
-    def sendStart(self):
+    def sendStart(self) -> None:
         """ """
-        if self.timerCounter == 10:
-            self.start1s.emit()
-        if self.timerCounter == 30:
-            self.start3s.emit()
-        if self.timerCounter == 50:
-            self.start5s.emit()
-        if self.timerCounter == 100:
-            self.start10s.emit()
-        if self.timerCounter == 300:
-            self.start30s.emit()
+        match self.timerCounter:
+            case 10:
+                self.start1s.emit()
+            case 30:
+                self.start3s.emit()
+            case 50:
+                self.start5s.emit()
+            case 100:
+                self.start10s.emit()
+            case 300:
+                self.start30s.emit()
 
     def sendCyclic(self) -> None:
         """ """

@@ -36,7 +36,7 @@ class Parent:
         self.updateRate = 1000
 
 
-@pytest.fixture(autouse=False, scope="function")
+@pytest.fixture(autouse=False, scope="module")
 def function(qapp):
     data = {
         "framework": "indi",
@@ -140,7 +140,7 @@ def test_readTabs_1(function):
         "framework": "indi",
         "frameworks": {
             "indi": {
-                "deviceName": "astap",
+                "deviceName": "telescope",
                 "deviceList": ["test", "test1"],
                 "updateRate": 30.0,
                 "hostaddress": "test",

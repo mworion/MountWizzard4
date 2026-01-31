@@ -142,10 +142,22 @@ def test_createAnnotation_3(function):
 
 
 def test_loopCreate_1(function):
+    function.app.data.buildP = [(0, 0, 1), (10, 10, 1)]
     function.parent.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
+    function.parent.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
     function.parent.ui.showNumbers.setChecked(True)
     function.parent.ui.showSlewPath.setChecked(True)
+    function.points = []
+    function.loopCreate(Qt3DCore.QEntity())
+    assert function.points
+
+
+def test_loopCreate_2(function):
     function.app.data.buildP = [(0, 0, 1), (10, 10, 1)]
+    function.parent.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
+    function.parent.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
+    function.parent.ui.showNumbers.setChecked(False)
+    function.parent.ui.showSlewPath.setChecked(True)
     function.points = []
     function.loopCreate(Qt3DCore.QEntity())
     assert function.points

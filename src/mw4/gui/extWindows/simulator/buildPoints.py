@@ -23,7 +23,6 @@ from skyfield import functions
 
 class SimulatorBuildPoints:
     """ """
-
     LINE_RADIUS = 0.02
     POINT_SPHERE_RADIUS = 4
     POINT_RADIUS = 0.07

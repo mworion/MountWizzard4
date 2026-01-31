@@ -336,6 +336,28 @@ class SatTrack(SatData):
 
         return start, end
 
+    def filterHorizonForward(self, alt:list, az: list) -> tuple[list, list, int]:
+        """"""
+        timeDelayStart = 0
+        for altitude, azimuth in zip(alt, az):
+            if self.app.data.isAboveHorizon([altitude, azimuth]):
+                break
+            timeDelayStart += 1
+            alt = np.delete(alt, 0)
+            az = np.delete(az, 0)
+        return alt, az, timeDelayStart
+
+    def filterHorizonReverse(self, alt: list, az: list) -> tuple[list, list, int]:
+        """"""
+        timeDelayEnd = 0
+        for altitude, azimuth in reversed(list(zip(alt, az))):
+            if self.app.data.isAboveHorizon([altitude, azimuth]):
+                break
+            timeDelayEnd += 1
+            alt = np.delete(alt, -1)
+            az = np.delete(az, -1)
+        return alt, az, timeDelayEnd
+
     def filterHorizon(
         self, start: float, end: float, alt: list, az: list
     ) -> tuple[float, float, list, list]:
@@ -343,22 +365,8 @@ class SatTrack(SatData):
         if not self.ui.avoidHorizon.isChecked():
             return start, end, alt, az
 
-        timeDelayStart = 0
-        for altitude, azimuth in list(zip(alt, az)):
-            if self.app.data.isAboveHorizon((altitude, azimuth)):
-                break
-            timeDelayStart += 1
-            alt = np.delete(alt, 0)
-            az = np.delete(az, 0)
-
-        timeDelayEnd = 0
-        for altitude, azimuth in reversed(list(zip(alt, az))):
-            if self.app.data.isAboveHorizon((altitude, azimuth)):
-                break
-            timeDelayEnd += 1
-            alt = np.delete(alt, -1)
-            az = np.delete(az, -1)
-
+        alt, az, timeDelayStart = self.filterHorizonForward(alt, az)
+        alt, az, timeDelayEnd = self.filterHorizonReverse(alt, az)
         start += timeDelayStart / 86400
         end -= timeDelayEnd / 86400
 

@@ -75,7 +75,7 @@ class MainWindowAddons:
             "SettMisc": SettMisc(mainW),
             "SettMount": SettMount(mainW),
             "SettParkPos": SettParkPos(mainW),
-            "SellRelay": SettRelay(mainW),
+            "SettRelay": SettRelay(mainW),
             "IERSTime": IERSTime(mainW),
         }
 

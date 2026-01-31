@@ -26,7 +26,6 @@ from PySide6.QtWidgets import QListView
 
 class MeasureWindow(toolsQtWidget.MWidget):
     """ """
-
     NUMBER_POINTS = 250
     NUMBER_XTICKS = 5
 
@@ -50,7 +49,6 @@ class MeasureWindow(toolsQtWidget.MWidget):
     def initConfig(self) -> None:
         """ """
         config = self.app.config.get("measureW", {})
-
         self.positionWindow(config)
         self.setupButtons()
         self.drawMeasure()

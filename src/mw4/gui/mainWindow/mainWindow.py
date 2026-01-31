@@ -25,7 +25,6 @@ from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.logic.profiles.profile import loadConfig, saveConfig
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
-from PySide6.QtCore import Qt
 from skyfield.almanac import TWILIGHTS, dark_twilight_day
 
 
@@ -37,7 +36,6 @@ class MainWindow(MWidget):
         self.app = app
         self.msg = app.msg
         self.threadPool = app.threadPool
-        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")

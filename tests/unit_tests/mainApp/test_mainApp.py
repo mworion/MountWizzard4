@@ -1,4 +1,5 @@
 import pytest
+from unittest import mock
 import shutil
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
@@ -26,7 +27,6 @@ def app(qapp):
     mock_emit = MagicMock()
     app_instance = MountWizzard4(mwGlob, qapp, 0)
     app_instance.update1s = MagicMock(emit=mock_emit)
-    app_instance.update3s = MagicMock(emit=mock_emit)
     yield app_instance
     app_instance.threadPool.waitForDone(15000)
     app_instance.aboutToQuit()
@@ -59,3 +59,9 @@ def test_send_cyclic(app):
     for a in [0, 4, 19, 79, 274, 574, 1787, 5986, 17985, 35984]:
         app.timerCounter = a
         app.sendCyclic()
+
+
+def test_quit(app):
+    with mock.patch.object(app, "aboutToQuit"):
+        with mock.patch.object(app.application, "quit"):
+            app.quit()

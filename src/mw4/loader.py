@@ -210,7 +210,7 @@ def extractDataFiles(mwGlob: dict) -> None:
         "CDFLeapSeconds.txt": 0,
         "tai-utc.dat": 0,
         "finals2000A.all": 0,
-        "finals.data": 0.0,
+        "finals.data": 0,
     }
 
     contentFile = QFile(":/data/content.txt")
@@ -250,7 +250,7 @@ def main(efficient: bool = False, test: int = 0) -> None:
     splashW.setValue(40)
     writeSystemInfo(mwGlob=mwGlob)
 
-    splashW.showMessage("Loading star and time data")
+    splashW.showMessage("Extracting ephemeris and time data")
     splashW.setValue(60)
     extractDataFiles(mwGlob=mwGlob)
 

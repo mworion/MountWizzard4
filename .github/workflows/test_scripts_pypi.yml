@@ -53,10 +53,8 @@ jobs:
           uv pip install mountwizzard4==${{ env.version }}
        
       - name: Run MountWizzard4
-        shell: cmd
         run: |
-          touch test.run
-          uv run mw4
+          uv run mw4 -t
           dir
   
   install_ubuntu:
@@ -84,15 +82,13 @@ jobs:
           
       - name: MountWizzard4 Install
         continue-on-error: true
-        shell: cmd
         run: |
           uv pip install mountwizzard4==${{ env.version }}
 
       - name: Run MountWizzard4
         continue-on-error: true
         run: |
-          touch test.run
-          xvfb-run uv run mw4
+          xvfb-run uv run mw4 -t 
           ls -la
  
           
@@ -111,14 +107,12 @@ jobs:
           
       - name: MountWizzard4 Install
         continue-on-error: true
-        shell: cmd
         run: |
           uv pip install mountwizzard4==${{ env.version }}
           
       - name: MountWizzard4 Run
         continue-on-error: true
         run: |
-          touch test.run
-          uv run mw4
+          uv run mw4 -t
           ls -la
           

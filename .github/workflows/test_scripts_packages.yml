@@ -109,8 +109,7 @@ jobs:
       - name: Run MountWizzard4
         continue-on-error: true
         run: |
-          touch test.run
-          uv run mw4
+          uv run mw4 -t
 
 
   install_package_ubuntu:
@@ -152,8 +151,7 @@ jobs:
       - name: Run MountWizzard4
         continue-on-error: true
         run: |
-          touch test.run
-          xvfb-run uv run mw4
+          xvfb-run uv run mw4 -t
 
 
   install_package_macOS:
@@ -185,6 +183,5 @@ jobs:
       - name: MountWizzard4 Run
         continue-on-error: true
         run: |
-          touch test.run
-          uv run mw4
+          uv run mw4 -t
  

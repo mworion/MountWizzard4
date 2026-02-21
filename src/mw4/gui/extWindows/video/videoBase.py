@@ -25,7 +25,6 @@ from PySide6.QtWidgets import QInputDialog, QLineEdit, QSizePolicy
 
 class VideoWindowBase(MWidget):
     """ """
-
     pixmapReady = Signal(object)
 
     def __init__(self, app):
@@ -85,8 +84,6 @@ class VideoWindowBase(MWidget):
 
     def workerVideo(self, source: str, frameRate: int) -> None:
         """ """
-        self.capture = cv2.VideoCapture()
-        self.capture.setExceptionMode(True)
         try:
             self.capture.open(source)
             if not self.capture.isOpened():
@@ -130,6 +127,8 @@ class VideoWindowBase(MWidget):
         changeStyleDynamic(self.ui.videoStart, "run", True)
         changeStyleDynamic(self.ui.videoStop, "run", False)
         self.running = True
+        self.capture = cv2.VideoCapture()
+        self.capture.setExceptionMode(True)
         self.worker = Worker(self.workerVideo, source, frameRate)
         self.threadPool.start(self.worker)
 

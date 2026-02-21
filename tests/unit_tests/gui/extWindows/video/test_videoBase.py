@@ -25,7 +25,7 @@ from PySide6.QtWidgets import QInputDialog
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     func = VideoWindowBase(app=App())
     with mock.patch.object(func, "show"):
@@ -50,38 +50,21 @@ def test_showWindow_1(function):
 
 
 def test_sendImage_1(function):
-    class Test:
-        @staticmethod
-        def retrieve():
-            return (True, np.ones((10, 10, 1)))
-
-    function.capture = Test()
+    function.capture = cv2.VideoCapture()
     function.running = False
     with mock.patch.object(cv2, "cvtColor", return_value=np.ones((10, 10, 1))):
         function.sendImage()
 
 
 def test_sendImage_2(function):
-    class Test:
-        @staticmethod
-        def retrieve():
-            return (True, np.ones((10, 10, 1)))
-
-    function.capture = Test()
+    function.capture = cv2.VideoCapture()
     function.running = False
-    with mock.patch.object(
-        cv2, "cvtColor", return_value=np.ones((10, 10, 1)), side_effect=cv2.error
-    ):
+    with mock.patch.object(cv2, "cvtColor", return_value=np.ones((10, 10, 1)), side_effect=cv2.error):
         function.sendImage()
 
 
 def test_sendImage_3(function):
-    class Test:
-        @staticmethod
-        def retrieve():
-            return (True, np.ones((10, 10, 1)))
-
-    function.capture = Test()
+    function.capture = cv2.VideoCapture()
     function.running = True
     with mock.patch.object(cv2, "cvtColor", return_value=np.ones((10, 10, 1))):
         function.sendImage()
@@ -100,6 +83,10 @@ def test_workerVideoStream_0(function):
             return True
 
         @staticmethod
+        def open(a):
+            return
+
+        @staticmethod
         def grab():
             return False
 
@@ -108,18 +95,14 @@ def test_workerVideoStream_0(function):
             return
 
         @staticmethod
-        def open(a):
-            return
-
-        @staticmethod
         def setExceptionMode(a):
             return
 
+    function.capture = Test()
     function.running = True
-    with mock.patch.object(cv2, "VideoCapture", return_value=Test()):
-        with mock.patch.object(Test, "open", side_effect=cv2.error):
-            function.workerVideo("test", 1)
-            assert not function.running
+    with mock.patch.object(function.capture, "open", side_effect=cv2.error):
+        function.workerVideo("test", 1)
+        assert not function.running
 
 
 def test_workerVideoStream_1(function):
@@ -144,8 +127,9 @@ def test_workerVideoStream_1(function):
         def setExceptionMode(a):
             return
 
+    function.capture = Test()
     function.running = True
-    with mock.patch.object(cv2, "VideoCapture", return_value=Test()):
+    with mock.patch.object(function.capture, "open", side_effect=cv2.error):
         with mock.patch.object(Test, "open", side_effect=Exception):
             function.workerVideo("test", 1)
             assert not function.running
@@ -173,8 +157,9 @@ def test_workerVideoStream_2(function):
         def setExceptionMode(a):
             return
 
+    function.capture = Test()
     function.running = True
-    with mock.patch.object(cv2, "VideoCapture", return_value=Test()):
+    with mock.patch.object(function.capture, "open", side_effect=cv2.error):
         function.workerVideo("test", 1)
         assert not function.running
 

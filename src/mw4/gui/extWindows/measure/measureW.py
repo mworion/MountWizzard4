@@ -26,6 +26,7 @@ from PySide6.QtWidgets import QListView
 
 class MeasureWindow(toolsQtWidget.MWidget):
     """ """
+
     NUMBER_POINTS = 250
     NUMBER_XTICKS = 5
 

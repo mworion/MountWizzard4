@@ -14,7 +14,6 @@
 #
 ###########################################################
 from PySide6.QtGui import QPainterPath, QTransform
-from PySide6.QtCore import QPoint
 
 
 def makePointer() -> QPainterPath:

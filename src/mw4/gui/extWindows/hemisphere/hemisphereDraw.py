@@ -17,12 +17,12 @@ import numpy as np
 import pyqtgraph as pg
 from mw4.base.transform import diffModulusAbs
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
+from mw4.gui.utilities.generateSprites import makePointer
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont
 from skyfield.api import Angle
-from mw4.gui.utilities.generateSprites import makePointer
 
 
 class HemisphereDraw(MWidget):

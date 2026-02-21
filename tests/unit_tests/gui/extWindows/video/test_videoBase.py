@@ -35,7 +35,6 @@ def function(qapp):
 def test_closeEvent_1(function):
     with mock.patch.object(function, "stopVideo"):
         with mock.patch.object(MWidget, "closeEvent"):
-            function.showWindow()
             function.closeEvent(QCloseEvent)
 
 
@@ -58,7 +57,9 @@ def test_sendImage_1(function):
 def test_sendImage_2(function):
     function.capture = cv2.VideoCapture()
     function.running = False
-    with mock.patch.object(cv2, "cvtColor", return_value=np.ones((10, 10, 1)), side_effect=cv2.error):
+    with mock.patch.object(
+        cv2, "cvtColor", return_value=np.ones((10, 10, 1)), side_effect=cv2.error
+    ):
         function.sendImage()
 
 

@@ -419,7 +419,7 @@ class MWidget(QWidget, Styles):
         if not isinstance(config, dict):
             config = {}
         for index in reversed(range(tab.count())):
-            nameTab = config.get(f"{index:02d}", None)
+            nameTab = config.get(f"{index:02d}")
             if nameTab is None:
                 continue
             tabIndex = self.getTabIndex(tab, nameTab)

@@ -101,7 +101,7 @@ CS Michel
     https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/unit_macOS.yml?branch=main&label=macOS
 
 .. |PYTEST Windows| image::
-    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/unit_windows.yml?branch=main&label=windows
+    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/unit_win.yml?branch=main&label=windows
 
 .. |PYTEST Ubuntu| image::
     https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/unit_ubuntu.yml?branch=main&label=ubuntu

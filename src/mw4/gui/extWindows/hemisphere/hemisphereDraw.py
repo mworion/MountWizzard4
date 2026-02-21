@@ -22,6 +22,7 @@ from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont
 from skyfield.api import Angle
+from mw4.gui.utilities.generateSprites import makePointer
 
 
 class HemisphereDraw(MWidget):
@@ -325,7 +326,7 @@ class HemisphereDraw(MWidget):
     def setupPointer(self) -> None:
         """ """
         for plotItem in self.ui.hemisphere.p:
-            symbol = self.makePointer()
+            symbol = makePointer()
             pd = pg.ScatterPlotItem(symbol=symbol, size=40)
             pd.setData(x=[0], y=[0])
             pd.setPen(pg.mkPen(color=self.M_PINK))

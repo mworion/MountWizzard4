@@ -23,6 +23,7 @@ from mw4.gui.widgets import satellite_ui
 from pyqtgraph import PlotWidget
 from PySide6.QtCore import QFile, Qt
 from skyfield.api import Timescale, wgs84
+from mw4.gui.utilities.generateSprites import makePointer, makeSat
 
 
 class SatelliteWindow(toolsQtWidget.MWidget):
@@ -193,10 +194,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         pd = pg.PlotDataItem(
             x=x,
             y=y,
-            symbol=self.makeSat(),
-            symbolSize=35,
-            symbolPen=pg.mkPen(color=self.M_TER),
-            symbolBrush=pg.mkBrush(color=self.M_PINK + "80"),
+            symbol=makeSat(),
+            symbolSize=45,
+            symbolPen=pg.mkPen(color=self.M_TER, width=1),
+            symbolBrush=pg.mkBrush(color=self.M_TER2 + "80"),
         )
         return pd
 
@@ -301,7 +302,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         pd = pg.PlotDataItem(
             x=[180],
             y=[45],
-            symbol=self.makePointer(),
+            symbol=makePointer(),
             symbolSize=40,
             symbolPen=pg.mkPen(color=self.M_PINK),
             symbolBrush=pg.mkBrush(color=self.M_PINK + "20"),

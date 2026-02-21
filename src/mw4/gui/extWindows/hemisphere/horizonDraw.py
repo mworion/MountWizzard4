@@ -19,7 +19,7 @@ import pyqtgraph as pg
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from pathlib import Path
 from PySide6.QtCore import QPointF
-
+from mw4.gui.utilities.generateSprites import makePointer
 
 class HorizonDraw(MWidget):
     """ """
@@ -207,7 +207,7 @@ class HorizonDraw(MWidget):
     def setupPointer(self) -> None:
         """ """
         plotItem = self.ui.horizon.p[0]
-        symbol = self.makePointer()
+        symbol = makePointer()
         self.pointerHor = pg.ScatterPlotItem(symbol=symbol, size=40)
         self.pointerHor.setData(x=[0], y=[45])
         self.pointerHor.setPen(pg.mkPen(color=self.M_PINK))

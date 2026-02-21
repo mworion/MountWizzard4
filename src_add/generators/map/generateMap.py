@@ -20,7 +20,7 @@ import numpy as np
 import shapefile
 
 
-shapeFile = "ne_110m_coastline.shp"
+shapeFile = "ne_50m_land.shp"
 shape = shapefile.Reader(shapeFile)
 worldmap = {}
 

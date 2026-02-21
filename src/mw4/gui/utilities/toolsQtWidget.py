@@ -38,10 +38,8 @@ from PySide6.QtGui import (
     QKeyEvent,
     QMouseEvent,
     QPainter,
-    QPainterPath,
     QPalette,
     QPixmap,
-    QTransform,
 )
 from PySide6.QtWidgets import (
     QAbstractItemView,
@@ -384,37 +382,6 @@ class MWidget(QWidget, Styles):
             return "(time is UTC)"
         else:
             return "(time is local)"
-
-    @staticmethod
-    def makePointer() -> QPainterPath:
-        """ """
-        path = QPainterPath()
-        path.moveTo(0, -1)
-        path.lineTo(0, 1)
-        path.moveTo(-1, 0)
-        path.lineTo(1, 0)
-        path.addEllipse(-0.1, -0.1, 0.2, 0.2)
-        path.addEllipse(-0.3, -0.3, 0.6, 0.6)
-        return path
-
-    @staticmethod
-    def makeSat() -> QPainterPath:
-        """ """
-        path = QPainterPath()
-        tr = QTransform()
-        path.addRect(-0.35, -0.15, 0.1, 0.3)
-        path.addRect(-0.2, -0.15, 0.1, 0.3)
-        path.moveTo(-0.1, -0.15)
-        path.lineTo(-0.1, -0.15)
-        path.lineTo(0, 0)
-        path.lineTo(-0.1, 0.15)
-        path.lineTo(-0.1, 0.15)
-        tr.rotate(180)
-        path.addPath(tr.map(path))
-        tr.rotate(45)
-        path = tr.map(path)
-        path.addEllipse(-0.05, -0.05, 0.1, 0.1)
-        return path
 
     def positionWindow(self, config: dict) -> None:
         """ """

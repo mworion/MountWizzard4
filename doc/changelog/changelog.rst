@@ -29,8 +29,8 @@ Version 4.x
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major PySide6
-- change: moving libraries to latest
-- change: remove old windows automation
+- change: moving libraries to latest versions
+- change: remove old windows automation as it is not needed anymore
 - change: remove embedded documentation and replace with online link
 - refactor: environment devices (now 4 generic ones), online and boltwood are generic
 - refactor: remove installer to separate repo (InstallerMW4)
@@ -54,6 +54,7 @@ Version 4.x
 - improve: no 10micron installer needed anymore for object data
 - improve: schedule and threads in waiting times (slow machines)
 - improve: change von complicated json dump to YAML format for config file
+- improve: more detailed earth map in satellite view
 - remove: automation of 10micron installer, replaced with web interface
 - remove: updater for MW4 (use uv installer instead)
 - remove: automatic profile conversion from x.x to 4.x (too complex)

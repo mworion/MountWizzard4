@@ -447,16 +447,6 @@ def test_timeZoneString_2(function):
     assert val == "(time is local)"
 
 
-def test_makePointer(function):
-    val = function.makePointer()
-    assert isinstance(val, QPainterPath)
-
-
-def test_makeSat(function):
-    val = function.makeSat()
-    assert isinstance(val, QPainterPath)
-
-
 def test_positionWindow_1(function):
     config = {"winPosX": 100, "winPosY": 100, "height": 400, "width": 600}
     function.screenSizeX = 1000

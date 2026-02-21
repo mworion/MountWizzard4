@@ -102,8 +102,7 @@ class VideoWindowBase(MWidget):
 
         self.runningCounter = 0
         while self.running:
-            suc = self.capture.grab()
-            if not suc:
+            if not self.capture.grab():
                 break
             if self.runningCounter % frameRate == 0:
                 self.sendImage()

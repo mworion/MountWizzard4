@@ -129,10 +129,9 @@ def test_workerVideoStream_1(function):
 
     function.capture = Test()
     function.running = True
-    with mock.patch.object(function.capture, "open", side_effect=cv2.error):
-        with mock.patch.object(Test, "open", side_effect=Exception):
-            function.workerVideo("test", 1)
-            assert not function.running
+    with mock.patch.object(function.capture, "open", side_effect=Exception):
+        function.workerVideo("test", 1)
+        assert not function.running
 
 
 def test_workerVideoStream_2(function):
@@ -159,7 +158,7 @@ def test_workerVideoStream_2(function):
 
     function.capture = Test()
     function.running = True
-    with mock.patch.object(function.capture, "open", side_effect=cv2.error):
+    with mock.patch.object(function.capture, "isOpened", return_value=False):
         function.workerVideo("test", 1)
         assert not function.running
 
@@ -187,9 +186,9 @@ def test_workerVideoStream_3(function):
             return
 
     function.running = True
-    with mock.patch.object(cv2, "VideoCapture", return_value=Test()):
-        with mock.patch.object(function, "sendImage"):
-            function.workerVideo("test", 1)
+    function.capture = Test()
+    with mock.patch.object(function, "sendImage"):
+        function.workerVideo("test", 1)
 
 
 def test_workerVideoStream_4(function):
@@ -216,9 +215,9 @@ def test_workerVideoStream_4(function):
             return
 
     function.running = True
-    with mock.patch.object(cv2, "VideoCapture", return_value=Test()):
-        with mock.patch.object(function, "sendImage"):
-            function.workerVideo("test", 1)
+    function.capture = Test()
+    with mock.patch.object(function, "sendImage"):
+        function.workerVideo("test", 1)
 
 
 def test_startVideoStream_1(function):

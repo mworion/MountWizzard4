@@ -25,11 +25,12 @@ from PySide6.QtWidgets import QInputDialog
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="module")
+@pytest.fixture(autouse=True, scope="function")
 def function(qapp):
     func = VideoWindowBase(app=App())
-    yield func
-    func.app.threadPool.waitForDone(10000)
+    with mock.patch.object(func, "show"):
+        yield func
+        func.app.threadPool.waitForDone(10000)
 
 
 def test_closeEvent_1(function):

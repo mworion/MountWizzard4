@@ -98,13 +98,13 @@ CS Michel
     https://img.shields.io/pypi/pyversions/mountwizzard4.svg
 
 .. |PYTEST macOS| image::
-    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/unit_macOS.yml?branch=main
+    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/unit_macOS.yml?branch=main?label=macOS
 
 .. |PYTEST Windows| image::
-    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/unit_win.yml?branch=main
+    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/unit_win.yml?branch=main?label=windows
 
 .. |PYTEST Ubuntu| image::
-    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/unit_ubuntu.yml?branch=main
+    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/unit_ubuntu.yml?branch=main?label=ubuntu
 
 .. |CODECOV| image::
     https://codecov.io/gh/mworion/MountWizzard4/branch/main/graph/badge.svg

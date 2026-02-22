@@ -21,7 +21,8 @@ from mw4.gui.extWindows.image.imageW import ImageWindow
 from mw4.gui.extWindows.keypadW import KeypadWindow
 from mw4.gui.extWindows.measure.measureW import MeasureWindow
 from mw4.gui.extWindows.messageW import MessageWindow
-from mw4.gui.extWindows.satelliteW import SatelliteWindow
+from mw4.gui.extWindows.satelliteHorW import SatelliteHorizonWindow
+from mw4.gui.extWindows.satelliteMapW import SatelliteMapWindow
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from mw4.gui.extWindows.video.videoW import VideoWindow
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, sleepAndEvents
@@ -59,11 +60,17 @@ class ExternalWindows:
                 "name": "MeasureDialog",
                 "class": MeasureWindow,
             },
-            "showSatelliteW": {
-                "button": self.mainW.ui.openSatelliteW,
+            "showSatelliteMapW": {
+                "button": self.mainW.ui.openSatelliteMapW,
                 "classObj": None,
-                "name": "SatelliteDialog",
-                "class": SatelliteWindow,
+                "name": "SatelliteMapDialog",
+                "class": SatelliteMapWindow,
+            },
+            "showSatelliteHorizonW": {
+                "button": self.mainW.ui.openSatelliteHorizonW,
+                "classObj": None,
+                "name": "SatelliteHorizonDialog",
+                "class": SatelliteHorizonWindow,
             },
             "showAnalyseW": {
                 "button": self.mainW.ui.openAnalyseW,

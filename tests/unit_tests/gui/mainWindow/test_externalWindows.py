@@ -79,8 +79,8 @@ def test_buildWindow_1(function):
         def showWindow():
             return
 
-    function.uiWindows["showSatelliteW"]["class"] = Test
-    function.buildWindow("showSatelliteW")
+    function.uiWindows["showSatelliteMapW"]["class"] = Test
+    function.buildWindow("showSatelliteMapW")
 
 
 def test_toggleWindow_1(function):

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Installation &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56c4699f" />
+    <script src="../_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configuration" href="../config/index.html" />
+    <link rel="prev" title="Features" href="../features.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../features.html">Features</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installing-uv">Installing <strong>uv</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-python-and-the-virtual-environment">Installing python and the virtual environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-mountwizzard4">Installing MountWizzard4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-mountwizzard4">Run MountWizzard4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-options">Command line options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-for-raspberrypi-4-5">Additional for RaspberryPi (4, 5)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-python-in-workdir">Updating python in workdir</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflows/index.html">Workflows and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../features.html" title="previous chapter">Features</a></li>
+      <li>Next: <a href="../config/index.html" title="next chapter">Configuration</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>MountWizzard4 version 4 is a major release with many new features
+and improvements. Please check the changelog for details:
+<a class="reference external" href="https://mworion.github.io/MountWizzard4/changelog/changelog.html">https://mworion.github.io/MountWizzard4/changelog/changelog.html</a>.
+Actually this is a beta version ! Please check the known limitations
+and report any issues you find. Install it to a new workdir and do not
+overwrite your existing v3 installation. You can have both versions
+installed at the same time.</p>
+</div>
+<p>MountWizzard4 v4 (and also valid for v3) will change the way of installation. As
+it relies on python and uses a virtual environment the whole process got to
+complicated to maintain and was not easy for the users to follow. Therefore
+installation changes to an overall public free solution called <strong>uv</strong>.</p>
+<p><strong>uv</strong> is able to handle python installations and versioning,
+activating and deactivating of virtual environments, installing and
+versioning MountWizzard4 an that all with only 3 commands across all supported
+platforms (Windows, Linux and MacOS).</p>
+<p>There are as well some videos to watch the installation process:</p>
+<ul class="simple">
+<li><p>Windows11: <a class="reference external" href="https://www.youtube.com/watch?v=iKBfWjA5I0Q">https://www.youtube.com/watch?v=iKBfWjA5I0Q</a></p></li>
+<li><p>RASPI: <a class="reference external" href="https://www.youtube.com/watch?v=7dPa8rjAssE">https://www.youtube.com/watch?v=7dPa8rjAssE</a></p></li>
+</ul>
+<section id="installing-uv">
+<h2>Installing <strong>uv</strong><a class="headerlink" href="#installing-uv" title="Link to this heading">¶</a></h2>
+<p>I strongly recommend to install uv as a standalone program. The description could
+be found here: <a class="reference external" href="https://docs.astral.sh/uv/getting-started/installation/">https://docs.astral.sh/uv/getting-started/installation/</a>. To install
+do the following steps:</p>
+<ul class="simple">
+<li><p>open a terminal window on your system</p></li>
+<li><p>select from the install page your corresponding OS</p></li>
+<li><p>copy and paste the terminal command calls the install script and let it run</p></li>
+</ul>
+<p>After that, uv is installed. To move on, your terminal is not aware of the new
+features of uv. The simplest way to do get to this point is to close the terminal
+windows and open a new one.</p>
+<p>Please check the presence of uv with the command</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>--version
+</pre></div>
+</div>
+<p>If you get the version number, everything is perfect.</p>
+</section>
+<section id="installing-python-and-the-virtual-environment">
+<h2>Installing python and the virtual environment<a class="headerlink" href="#installing-python-and-the-virtual-environment" title="Link to this heading">¶</a></h2>
+<p>There is no need to have python installed on the forehand and there no dependency
+to any python installation already present with the use of uv. Mountwizzard4 v3
+plays on python 3.8 - 3.10, so I would recommend to use the n ewest one 3.10. For
+installing, please choose a work folder for Mountwizzard4, open a terminal window
+and change directory to this work folder. the command</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>venv<span class="w"> </span>-p<span class="w"> </span><span class="m">3</span>.10
+</pre></div>
+</div>
+<p>does download the right python package (3.10) and installs a virtual environment
+in you work folder. The virtual environment is stored in a directory there called
+“.venv”. If you go for testing the new v4 version, please install python 3.13 with
+the command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>venv<span class="w"> </span>-p<span class="w"> </span><span class="m">3</span>.13
+</pre></div>
+</div>
+</section>
+<section id="installing-mountwizzard4">
+<h2>Installing MountWizzard4<a class="headerlink" href="#installing-mountwizzard4" title="Link to this heading">¶</a></h2>
+<p>The installation is now a simple command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>mountwizzard4
+</pre></div>
+</div>
+<p>Installation will download the necessary packages (visible) and installs them in
+the virtual environment. If you are using RASPI hardware, please check the RASPI
+information below as well!</p>
+<p>If you want to have a dedicated version of MountWizzard4, just add the version
+number in the command line (e.g. 3.2.8) like</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">mountwizzard4</span><span class="o">==</span><span class="m">3</span>.2.8
+</pre></div>
+</div>
+<p>Changing versions upgrade and downgrade work the same way just with the appropriate
+version numbers.</p>
+</section>
+<section id="run-mountwizzard4">
+<h2>Run MountWizzard4<a class="headerlink" href="#run-mountwizzard4" title="Link to this heading">¶</a></h2>
+<p>Once everything installed running MountWizzard4 is also a simple command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>mw4
+</pre></div>
+</div>
+<p>If you would like some options please use the command line parameters
+MountWizzard4 supports. These are setting for the appearance sizes on windows
+primary:</p>
+<p>Basically that’s it.</p>
+</section>
+<section id="command-line-options">
+<h2>Command line options<a class="headerlink" href="#command-line-options" title="Link to this heading">¶</a></h2>
+<p>MountWizzard4 supports a number of command line options:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;-d&#39;</span>,<span class="w"> </span><span class="s1">&#39;--dpi&#39;</span>
+</pre></div>
+</div>
+<p>Setting QT font DPI (+dpi = -fontsize, default=96)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;-s&#39;</span>,<span class="w"> </span><span class="s1">&#39;--scale&#39;</span>
+</pre></div>
+</div>
+<p>Setting Qt DPI scale factor (+scale = +size, default=1)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;-h&#39;</span>,<span class="w"> </span><span class="s1">&#39;--help&#39;</span>
+</pre></div>
+</div>
+<p>Getting this information.</p>
+</section>
+<section id="additional-for-raspberrypi-4-5">
+<h2>Additional for RaspberryPi (4, 5)<a class="headerlink" href="#additional-for-raspberrypi-4-5" title="Link to this heading">¶</a></h2>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>This is only necessary for v3. MountWizzard4 v4 brings all binaries directly.
+For v4 just proceed like above.</p>
+</div>
+<p>If you want to install MountWizzard4 v3 to an Raspi or ARM64 based computer,
+please follow the installation process. of uv, python and virtual environment.
+Before starting MountWizzard4 v3 you need to install some precompiled packages
+as they were not available for the necessary python 3.8-3.10 versions. For that
+use the same terminal window pointing to you work folder and add the two following
+commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>https://github.com/mworion/mountwizzard4/raw/main/wheels/PyQt5-5.15.9-cp38.cp39.cp310-abi3-manylinux_2_17_aarch64.whl
+</pre></div>
+</div>
+<p>After that, please proceed with the use of MountWizzard4 like described
+above.</p>
+</section>
+<section id="updating-python-in-workdir">
+<h2>Updating python in workdir<a class="headerlink" href="#updating-python-in-workdir" title="Link to this heading">¶</a></h2>
+<p>There might be some reasons for updating the python part due to security patches
+or simply to upgrade the version</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>venv<span class="w"> </span>-p<span class="w"> </span>&lt;new<span class="w"> </span>python<span class="w"> </span>version<span class="w"> </span>string&gt;<span class="w"> </span>--allow-existing
+</pre></div>
+</div>
+<p>Please use the parameter –allow-existing to keep your current installations.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/install/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

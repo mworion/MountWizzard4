@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Adding the camera &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=56c4699f" />
+    <script src="../../_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Dome geometry" href="../dome/index.html" />
+    <link rel="prev" title="Configuration" href="../index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Configuration</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Adding the camera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-sgpro-or-n-i-n-a-as-camera">Using SGPro or N.I.N.A. as camera</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sgpro-controlled-mode">SGPro controlled mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#n-i-n-a-controlled-mode">N.I.N.A. controlled mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#preparation-for-using-nina-3-x-as-remote-camera">Preparation for using NINA 3.x as remote camera</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#preparation-for-using-nina-2-x-as-remote-camera">Preparation for using NINA 2.x as remote camera</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dome/index.html">Dome geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui/index.html">GUI adaptations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imaging/index.html">Imaging setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mount/index.html">Mount setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../parkpos/index.html">Park Positions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../terrain/index.html">Terrain image &amp; horizon mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../themes/index.html">Themes selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflows/index.html">Workflows and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Configuration</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Configuration</a></li>
+      <li>Next: <a href="../dome/index.html" title="next chapter">Dome geometry</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="adding-the-camera">
+<h1>Adding the camera<a class="headerlink" href="#adding-the-camera" title="Link to this heading">¶</a></h1>
+<p>For adding devices like the camera select the Sett. / Conf. tab in the main menu
+and there select the devices tab. For the following explanation we would like to
+connect a camera, a filter and adding a link to the mount as well. The mount link
+is only used for reading the parameters of the mount driver of your setup (e.g.
+focal length, aperture).</p>
+<a class="reference internal image-reference" href="../../_images/camera_01.png"><img alt="../../_images/camera_01.png" class="align-center" height="445" src="../../_images/camera_01.png" width="570" />
+</a>
+<p>In core devices select Setup für Camera. A popup shows up. Please fill in the ip
+address of the INDI or ALPACA server, where your devices are connected to.</p>
+<a class="reference internal image-reference" href="../../_images/camera_02.png"><img alt="../../_images/camera_02.png" class="align-center" height="445" src="../../_images/camera_02.png" width="570" />
+</a>
+<p>If you are using INDI, you search for INDI camera devices by clicking on the
+search button. Once you finished searching by pressing OK button, a list of
+available devices will be populated. From the list choose the device and finish
+the setup with OK button.</p>
+<a class="reference internal image-reference" href="../../_images/camera_03.png"><img alt="../../_images/camera_03.png" class="align-center" height="445" src="../../_images/camera_03.png" width="570" />
+</a>
+<p>The selected camera will be highlighted green in the drop down menu and in the
+status as well. Once you configured the camera, the selection list will be stored
+for later use. If you want to disable the camera, please select device disabled
+in the menu.</p>
+<a class="reference internal image-reference" href="../../_images/camera_04.png"><img alt="../../_images/camera_04.png" class="align-center" height="445" src="../../_images/camera_04.png" width="570" />
+</a>
+<p>MountWizzard4 will now try to connect to the device and show green light
+whenever a connection is established.</p>
+<p>Do the steps 1 - 5 for all devices you need to configure. All configuration are
+save when leaving MountWizzard4 with Save/Quit button or just when saving the
+profile. You can add or change any config later on at any time.</p>
+<section id="using-sgpro-or-n-i-n-a-as-camera">
+<h2>Using SGPro or N.I.N.A. as camera<a class="headerlink" href="#using-sgpro-or-n-i-n-a-as-camera" title="Link to this heading">¶</a></h2>
+<p>In addition to the standard frameworks to interface to devices, MountWizzard4
+could use Sequence Generator Pro (SGPro) an Nighttime Imaging (N.I.N.A.) as a
+camera driver for devices attached to them. Unfortunately they support only a
+minimum set of devices through their API and only with a limited feature set.
+But the provided basic API is sufficient to do the modeling job.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>MountWizzard4 uses all necessary data from the FITS of the images
+taken by the external apps. Please make sure, that the FITS header
+contains this information, especially the focal length, the pixel
+size. Otherwise plate solving will fail. As both applications do not
+transfer their images to MountWizzard4, you have to ensure that the
+FITS files are stored on your local disk and MountWizzard4 has access.</p>
+</div>
+<p>Basically MountWizzard4 interface these apps and let them control the devices.
+Selection and connecting the devices have to be done manually in the regarding
+application. MountWizzard4 just recognizes of a device is connected or not and
+if connected uses it as is.</p>
+</section>
+<section id="sgpro-controlled-mode">
+<h2>SGPro controlled mode<a class="headerlink" href="#sgpro-controlled-mode" title="Link to this heading">¶</a></h2>
+<p>First in camera driver setup you choose to use the SGPro controlled mode:</p>
+<a class="reference internal image-reference" href="../../_images/driver_sgpro_controlled.png"><img alt="../../_images/driver_sgpro_controlled.png" class="align-center" height="213" src="../../_images/driver_sgpro_controlled.png" width="327" />
+</a>
+<p>You recognize the setting in device tab:</p>
+<a class="reference internal image-reference" href="../../_images/imaging_sgpro_controlled.png"><img alt="../../_images/imaging_sgpro_controlled.png" class="align-center" height="426" src="../../_images/imaging_sgpro_controlled.png" width="568" />
+</a>
+<p>Once you connect a camera in SGPro</p>
+<a class="reference internal image-reference" href="../../_images/imaging_sgpro_controlled_connected.png"><img alt="../../_images/imaging_sgpro_controlled_connected.png" class="align-center" height="426" src="../../_images/imaging_sgpro_controlled_connected.png" width="568" />
+</a>
+<p>the status in MountWizzard4 will change to connected as well.</p>
+</section>
+<section id="n-i-n-a-controlled-mode">
+<h2>N.I.N.A. controlled mode<a class="headerlink" href="#n-i-n-a-controlled-mode" title="Link to this heading">¶</a></h2>
+<p>First in camera driver setup you choose to use the N.I.N.A. controlled mode, you
+recognize the setting in device tab:</p>
+<a class="reference internal image-reference" href="../../_images/driver_nina_controlled.png"><img alt="../../_images/driver_nina_controlled.png" class="align-center" height="213" src="../../_images/driver_nina_controlled.png" width="327" />
+</a>
+<p>Once you connect a camera in N.I.N.A.</p>
+<a class="reference internal image-reference" href="../../_images/imaging_nina_controlled_connected.png"><img alt="../../_images/imaging_nina_controlled_connected.png" class="align-center" height="426" src="../../_images/imaging_nina_controlled_connected.png" width="568" />
+</a>
+<p>the status in MountWizzard4 will change to connected as well.</p>
+</section>
+<section id="preparation-for-using-nina-3-x-as-remote-camera">
+<h2>Preparation for using NINA 3.x as remote camera<a class="headerlink" href="#preparation-for-using-nina-3-x-as-remote-camera" title="Link to this heading">¶</a></h2>
+<p>N.I.N.A. 3.x realizes this feature in a separate plugin. The plugin is called
+SGPro server emulator:</p>
+<a class="reference internal image-reference" href="../../_images/sgpro-control.png"><img alt="../../_images/sgpro-control.png" class="align-center" height="449" src="../../_images/sgpro-control.png" width="569" />
+</a>
+<p>Pleas install this plugin first and enable server mode.</p>
+</section>
+<section id="preparation-for-using-nina-2-x-as-remote-camera">
+<h2>Preparation for using NINA 2.x as remote camera<a class="headerlink" href="#preparation-for-using-nina-2-x-as-remote-camera" title="Link to this heading">¶</a></h2>
+<p>In N.I.N.A. 2.x you have to enable server mode directly in main program:</p>
+<a class="reference internal image-reference" href="../../_images/server_setting_nina.png"><img alt="../../_images/server_setting_nina.png" class="align-center" height="251" src="../../_images/server_setting_nina.png" width="425" />
+</a>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/config/camera/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

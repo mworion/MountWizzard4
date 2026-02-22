@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Step 1: Polar alignment &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=56c4699f" />
+    <script src="../../_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Workflows and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="step-1-polar-alignment">
+<h1>Step 1: Polar alignment<a class="headerlink" href="#step-1-polar-alignment" title="Link to this heading">¶</a></h1>
+<p>All credits for explaining the following section go to 10micron and many experts
+using the mount.</p>
+<section id="initial-alignment">
+<h2>Initial alignment<a class="headerlink" href="#initial-alignment" title="Link to this heading">¶</a></h2>
+<p>Initial three star alignment insufficient to get a good polar alignment error
+(PAE) value. A two star alignment can only give a poor PAE estimate as the cone
+error correction is missing, can be many arc minutes off true value Minimum that
+can be used is 3 stars but they recommend at least 5 and ideally 10 points
+(ideally based on experiments say that 12 to 20 points have better convergence
+without spending too much effort).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>20 points in MountWizzard4 using the fast ASTAP plate solver will do
+20 points in around 7 minutes - not too onerous for a good PAE
+measurement.</p>
+</div>
+<p>Pay attention also that the stars are not near to the same maximum circle (i.e.
+not all near the same right ascension, or all near the same azimuth, etc.). When
+using few stars, how the stars are chosen is critical.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>MountWizzard4 helps here by automating the spread of points to avoid
+the problems listed through its various point layout patterns.</p>
+</div>
+<a class="reference internal image-reference" href="../../_images/polar_align.png"><img alt="../../_images/polar_align.png" class="align-center" height="426" src="../../_images/polar_align.png" width="568" />
+</a>
+<p>The hemisphere window is showing different colors and sizes for selecting the
+right stars once the Polar/Ortho mode is selected. You need a valid first model
+in the mount to use this feature!</p>
+<p>As you add stars, more and more model terms will be added um of either
+(# points - 1) or 11 terms for a single all sky model - 11 terms meaning all
+required terms have a solution. Note that this may be split into two models for
+east side and west side in which case the number of terms shown by the mount is
+doubled.</p>
+<p>A polar alignment error less than maybe one arcminute will be possible.
+If you are using Dual Axis Tracking it sorts all this out for you. (A 10 minute
+exposure with a 10 arc minute (1/6 degree) PAE will not show field rotation on a
+large full frame sensor up to latitude 60 north or south)</p>
+</section>
+<section id="how-polar-align-works">
+<h2>How polar align works<a class="headerlink" href="#how-polar-align-works" title="Link to this heading">¶</a></h2>
+<p>The polar align function works in a really easy way. It removes the polar axis
+error from the model before pointing at the star, so when you center the star
+with the azimuth/altitude movements the right ascension axis will be
+automatically aligned with the celestial pole.</p>
+<p>Choosing location in the sky of the star to use to do the polar alignment
+correction is critical. The choice of the star is made so you avoid the zones
+where the manual movements have no effect. Avoid the zenith (this is where the
+azimuth knob has no effect). Avoid the East-West axis (this is where the
+altitude adjustment knob has no effect)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>MountWizzard4 will help you selecting the right location by marking
+the right regions and tight stars. In addition you don’t need to use
+the handpad for selecting the stars: in MountWizzard4 you could
+select the reference star with a mouse click and start the polar
+alignment.</p>
+</div>
+<p>In MountWizzard4 the polar alignment works by changing the mode to polar/ortho
+alignment. In this mode, you could select a star in the hemisphere window with
+a mouse click and start slew the mount to the reference star. All you need is
+to center the selected reference star in you image.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For centering a star you could use the image window, select for
+continuous exposure and enable the crosshair. You could also magnify
+the region around the crosshair center to improve the precision.</p>
+</div>
+</section>
+<section id="should-i-deactivate-the-dual-axis-tracking">
+<h2>Should I deactivate the dual axis tracking?<a class="headerlink" href="#should-i-deactivate-the-dual-axis-tracking" title="Link to this heading">¶</a></h2>
+<p>If you have the dual axis tracking active, the mount will track using the model
+built in the initial phase (the initial 3 points generates a minimum model with
+2 terms - its not a good model).</p>
+<p>You will not be getting the correct tracking rate while you adjust the alt/az
+knobs. So if you wait too much before centering the star and giving confirmation
+to the mount controller, or if the initial error is very large, there will be a
+drift. Therefore you must turn off dual tracking while performing the PA
+procedure.</p>
+<a class="reference internal image-reference" href="../../_images/model_disable_dat.png"><img alt="../../_images/model_disable_dat.png" class="align-center" height="447" src="../../_images/model_disable_dat.png" width="571" />
+</a>
+</section>
+<section id="effects-of-polar-misalignment">
+<h2>Effects of polar misalignment<a class="headerlink" href="#effects-of-polar-misalignment" title="Link to this heading">¶</a></h2>
+<p>Even if your mount is wildly away from a correct polar alignment, when you make
+a model the correction of the polar misalignment will be performed exactly when
+Dual Axis Tracking is activated. This means that the pointing error and the
+tracking error will be the same - if you make a model with the same number of
+stars and the same accuracy - whether the mount is aligned with the celestial
+pole or not. When dual axis tracking is deactivated, the mount will track like
+a normal equatorial mount, by moving the right ascension axis at a constant
+sidereal speed.</p>
+<p>The only important thing that will change with increasing PAE is the field
+rotation.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/workflows/modeling/polar_align.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

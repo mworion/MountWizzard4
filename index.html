@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Welcome to MountWizzard4! &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=56c4699f" />
+    <script src="_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Features" href="features.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="#">
+    <img class="logo" src="_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows/index.html">Workflows and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="features.html" title="next chapter">Features</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="welcome-to-mountwizzard4">
+<h1>Welcome to MountWizzard4!<a class="headerlink" href="#welcome-to-mountwizzard4" title="Link to this heading">¶</a></h1>
+<p>MountWizzard4 is a general utility for 10micron users for improving the workflow
+for astronomy work. It runs on Windows11, Windows10, Mac OSX (beginning from
+10.12 to 26.x) and Linux (Ubuntu from 16.04 to 24.04). If you have some knowledge
+around Raspberry Pi’s and other SOC, you might be able to install MountWizzard4 on
+a RPi4 or RPi5.</p>
+<p>The PDF version of the documentation could be found here: <a class="reference external" href="https://mworion.github.io/MountWizzard4/mountwizzard4.pdf">https://mworion.github.io/MountWizzard4/mountwizzard4.pdf</a></p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>MountWizzard4 version 4 is a major release with many new features
+and improvements. Please check the changelog for details:
+<a class="reference external" href="https://mworion.github.io/MountWizzard4/changelog/changelog.html">https://mworion.github.io/MountWizzard4/changelog/changelog.html</a>.
+Actually this is a beta version ! Please check the known limitations
+and report any issues you find. Install it to a new workdir and do not
+overwrite your existing v3 installation. You can have both versions
+installed at the same time.</p>
+</div>
+<section id="before-starting">
+<h2>Before starting<a class="headerlink" href="#before-starting" title="Link to this heading">¶</a></h2>
+<p>First let us have a look to the basic architecture: MountWizzard4 is an application
+installed on your external computer which is connected to the mount computer via
+an IP connection. The best choice is to use a wired connection. As the 10micron
+mounts also support a serial line, please be reminded MountWizzard4 does not!
+Many of the features are handled on the mount computer itself and MountWizzard4
+does the GUI frontend for the user by using the command protocol provided by
+10micron.</p>
+<img alt="_images/overview.svg" class="align-center drawio" src="_images/overview.svg" />
+<p>The basic idea is that MountWizzard4 will try to generate “digital twin” for
+the mount. All parameter changes for the mount will be sent to it and changes
+of it’s state are polled to make status visible in MountWizzard4. Therefore
+regular polling of data is needed.</p>
+</section>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>Beside this documentation there is a youtube channel available with descriptions,
+previews, explanations:</p>
+<p><a class="reference external" href="https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA">https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA</a></p>
+<p>For full operation MountWizzard4 supports several frameworks: INDI / INDIGO,
+ASCOM, Alpaca and in addition Sequence Generator Pro and N.I.N.A. as camera device.</p>
+</section>
+<section id="known-limitations">
+<h2>Known limitations<a class="headerlink" href="#known-limitations" title="Link to this heading">¶</a></h2>
+<p>MountWizzard4 v4 does support python 3.11 - 3.13 right now. The reason for that
+is the lack of precompiled packages. Some features are limited to windows as
+they need the original 10micron updater program for execution. As python moves
+with its releases forward, also MountWizzard4 will follow.</p>
+<p>On windows please check if you are working in a 32bit or 64bit environment. You
+need to choose the ASCOM setup (drivers etc.) and the python install accordingly.</p>
+<p>If you are using the 10micron updater features on windows, MountWizzard4 remote
+controls the updater application. Please do not interrupt this automation.</p>
+</section>
+<section id="reporting-issues">
+<h2>Reporting issues<a class="headerlink" href="#reporting-issues" title="Link to this heading">¶</a></h2>
+<p>To have an eye on your setup here are some topics which you could check:</p>
+<ul class="simple">
+<li><p>Mount connection available and stable. Wifi might have performance problems.
+Look for right network settings in mount and local setup.</p></li>
+<li><p>Good counter check is review settings, status bars, message window if something
+is going wrong.</p></li>
+</ul>
+<p>To improve quality and usability any feedback is highly welcome! To maintain a
+good transparency and professional work for my, please respect the following
+recommendations how to feed back.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please report issues / bugs here:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/issues">https://github.com/mworion/MountWizzard4/issues</a>.</p>
+<p>And if you have feature requests discussions or for all other topics of
+interest there is a good place to start here:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/discussions">https://github.com/mworion/MountWizzard4/discussions</a></p>
+</div>
+<p>In case of a bug report please have a good description (maybe a screenshot if it‘s
+related to GUI) and add the log file(s). Normally you just could drop the log file
+(or PNG in case of a screen shot) directly to the webpage issues on GitHub. In
+some cases GitHub does not accept the file format (unfortunately for example FITs
+files). I this case, please zip them and drop the zipped file. This will work. If
+you have multiple files, please don‘t zip them to one file! I need them separated
+and zipped causes more work.</p>
+<p>If changes are made due to a feedback, new releases will have a link to the closed
+issues on GitHub.</p>
+</section>
+<section id="table-of-contents">
+<h2>Table of contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install/index.html#installing-uv">Installing <strong>uv</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="install/index.html#installing-python-and-the-virtual-environment">Installing python and the virtual environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install/index.html#installing-mountwizzard4">Installing MountWizzard4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install/index.html#run-mountwizzard4">Run MountWizzard4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install/index.html#command-line-options">Command line options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install/index.html#additional-for-raspberrypi-4-5">Additional for RaspberryPi (4, 5)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install/index.html#updating-python-in-workdir">Updating python in workdir</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config/index.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config/camera/index.html">Adding the camera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="config/camera/index.html#using-sgpro-or-n-i-n-a-as-camera">Using SGPro or N.I.N.A. as camera</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config/camera/index.html#sgpro-controlled-mode">SGPro controlled mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config/camera/index.html#n-i-n-a-controlled-mode">N.I.N.A. controlled mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config/camera/index.html#preparation-for-using-nina-3-x-as-remote-camera">Preparation for using NINA 3.x as remote camera</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config/camera/index.html#preparation-for-using-nina-2-x-as-remote-camera">Preparation for using NINA 2.x as remote camera</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="config/dome/index.html">Dome geometry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="config/dome/index.html#area-1-dome-geometry-parameters">Area 1: dome geometry parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config/dome/index.html#area-2-dome-settle-time">Area 2: dome settle time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config/dome/index.html#area-3-dome-geometry-help">Area 3: dome geometry help</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config/dome/index.html#dome-dynamic-follow">Dome dynamic follow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="config/gui/index.html">GUI adaptations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config/imaging/index.html">Imaging setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config/mount/index.html">Mount setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="config/mount/index.html#basic-connectivity">Basic connectivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config/mount/index.html#settling-time-waiting-time">Settling Time / Waiting Time</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="config/parkpos/index.html">Park Positions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config/terrain/index.html">Terrain image &amp; horizon mask</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="config/terrain/index.html#using-terrain-image-from-teleport-360-app">Using terrain image from Teleport: 360 app</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="config/themes/index.html">Themes selection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="config/themes/index.html#main-theme">Main theme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config/themes/index.html#red-night-theme">Red night theme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config/themes/index.html#light-day-theme">Light day theme</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="workflows/index.html">Workflows and functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="workflows/almanac/index.html">Almanac</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflows/dome/index.html">Dome</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflows/environment/index.html">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflows/imaging/index.html">Imaging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflows/imaging/index.html#area-1-image-exposing-and-solving">Area 1: Image exposing and solving</a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows/imaging/index.html#area-2-fits-header-entries">Area 2: FITS Header entries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows/imaging/index.html#area-3-image-attributes">Area 3: Image attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows/imaging/index.html#area-4-image-display">Area 4: Image display</a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows/imaging/index.html#area-5-view-options">Area 5: View options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows/imaging/index.html#some-examples-for-the-windows">Some examples for the windows</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="workflows/minorplanets/index.html">Minor Planets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflows/modeling/index.html">Modeling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflows/modeling/index.html#step-1-polar-alignment">Step 1: Polar alignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows/modeling/index.html#step-2-selecting-build-points">Step 2: Selecting build points</a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows/modeling/index.html#step-3-running-the-model-build">Step 3: Running the model build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows/modeling/index.html#step-4-managing-mount-models">Step 4: Managing mount models</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="workflows/profile/index.html">Profile handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflows/satellite/index.html">Satellite tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflows/tools/index.html">Tools for the Job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflows/update/index.html">Updating the app</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="help/index.html">Troubleshooting Q&amp;A and hints</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="help/index.html#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="help/index.html#python">Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="help/index.html#mountwizzard4-app">MountWizzard4 App</a></li>
+<li class="toctree-l3"><a class="reference internal" href="help/index.html#mountwizzard4-updating-does-fail">MountWizzard4 Updating does fail</a></li>
+<li class="toctree-l3"><a class="reference internal" href="help/index.html#scripts">Scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="help/index.html#mount-connectivity">Mount connectivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="help/index.html#device-connectivity">Device connectivity</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="help/index.html#ascom-device-does-not-work-connect">ASCOM Device does not work / connect</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="help/index.html#model-building">Model building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="help/index.html#updating-iers-sat-mpc-data">Updating IERS/SAT/MPC data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="help/index.html#data-could-not-be-fetched-from-internet">Data could not be fetched from internet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="help/index.html#tracking-satellites">Tracking satellites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="help/index.html#logfiles-and-reports">Logfiles and reports</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="help/index.html#where-could-i-change-the-log-level">Where could I change the log level ?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture/index.html">Architectural topics and math</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture/index.html#handling-time">Handling time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture/index.html#precision-of-internal-calculations">Precision of internal calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog/changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog/changelog.html#beta-versions">Beta versions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog/changelog.html#version-4-x">Version 4.x</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog/changelog.html#released-versions">Released versions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog/changelog.html#version-3-x">Version 3.x</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog/changelog.html#version-2-x">Version 2.x</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog/changelog.html#version-1-x">Version 1.x</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

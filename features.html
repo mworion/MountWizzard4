@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Features &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=56c4699f" />
+    <script src="_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="install/index.html" />
+    <link rel="prev" title="Welcome to MountWizzard4!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows/index.html">Workflows and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to MountWizzard4!</a></li>
+      <li>Next: <a href="install/index.html" title="next chapter">Installation</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="features">
+<h1>Features<a class="headerlink" href="#features" title="Link to this heading">¶</a></h1>
+<p>For being fully operational, MountWizzard4 needs either:</p>
+<ul class="simple">
+<li><p>INDI server(s) (see: <a class="reference external" href="https://indilib.org">https://indilib.org</a>) where your devices are connected
+to.</p></li>
+<li><p>INDIGO server(s) (see: <a class="reference external" href="http://www.indigo-astronomy.org">http://www.indigo-astronomy.org</a>) where your devices
+are connected to.</p></li>
+<li><p>ASCOM Alpaca remote server (see: <a class="reference external" href="https://ascom-standards.org/FAQs/Index.htm">https://ascom-standards.org/FAQs/Index.htm</a>)
+abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if
+you want to connect over IP with your environment.</p></li>
+<li><p>Running versions of Sequence Generator Pro or N.I.N.A. as frontend for camera
+device.</p></li>
+<li><p>For the core devices there is native ASCOM support (Windows platform only).
+Please be reminded, that ASCOM has 32bit and 64bit driver implementations
+and MountWizzard4 could also be installed in 32bit or 64 bit python
+environment. They must be not be mixed! 32bit python supports only 32bit
+drivers and vice versa. Normally this should not be an issue. I strongly
+recommend to use 64bit python and 64bit ASCOM drivers.</p></li>
+<li><p>In addition an internet connection is used for some services which might be
+very helpful.</p></li>
+</ul>
+<p>It is recommended to use mount firmware 3.x or later as some of the functions
+don’t work with older firmware versions. It should not be a problem using older
+versions. A HW pre2012 might also have some issues. MountWizzard4 supports also
+older firmwares from 2.x onwards, but with limited features and untested.</p>
+<p>It is recommended to use mount firmware 2.16 or later as some of the functions
+don’t work with older firmware versions.</p>
+<p>Here is an overview of the functionality available in MountWizzard4:</p>
+<ul class="simple">
+<li><p>Many settings and features of the mount can be shown and changed.</p></li>
+<li><p>Control movement of the mount as well as tracking speeds.</p></li>
+<li><p>Coordinates in J2000 as well as in JNow.</p></li>
+<li><p>Virtual keypad</p></li>
+<li><p>Model building with different model setups and model generating capabilities.
+Sorting points for effective slew paths or dome situations.</p></li>
+<li><p>Model building is done in parallel threads (imaging, plate solving, slewing)
+to reduce time.</p></li>
+<li><p>Show the actual model and alignment error. Give hints on how to improve the
+raw polar alignment.</p></li>
+<li><p>Model optimisation: deleting points, automatic removing point for target RMS
+etc.</p></li>
+<li><p>Manage models stored in the mount (save, load, delete).</p></li>
+<li><p>Dome geometry integration (MountWizzard4 knows about target flip side and
+slews dome correctly as well as any geometrical constraints).</p></li>
+<li><p>Environment data: MountWizzard4 shows data from OpenWeatherMap, ClearOutside,
+External Sensors like MBox, Stickstation, UniHedronSQR as well as direct
+linked sensors like MGBox.</p></li>
+<li><p>Refraction handling external / internal from the above sources.</p></li>
+<li><p>Satellite: searching, displaying, programming, updating tracking.</p></li>
+<li><p>Tools: FITS Header renaming, Park positions, etc.</p></li>
+<li><p>Remote shutdown of MountWizzard4 and Mount via IP commands.</p></li>
+<li><p>Measurements and CSV saving for most environment and mount data</p></li>
+<li><p>Imaging: control of connected camera / cooler / filter.</p></li>
+<li><p>WOL (wake on LAN) boot for mount. MountWizzard4 catches MAC address
+automatically on first manual start.</p></li>
+<li><p>Audio signals for different events (end slew, finished modeling, alert, etc.)</p></li>
+<li><p>Updater for all MountWizzard4 functions.</p></li>
+<li><p>Generate / load / save as many profiles as you would like.</p></li>
+<li><p>Show alignment stars. Choose and automatically center for polar or orthogonal
+adjustments.</p></li>
+<li><p>Imaging: expose one or N images, auto solve or auto stack these images.</p></li>
+<li><p>Imaging: show distortion grid, astrometric calculations (flux, roundness,
+sharpness)</p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/features.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

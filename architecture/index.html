@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Architectural topics and math &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56c4699f" />
+    <script src="../_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Changelog" href="../changelog/changelog.html" />
+    <link rel="prev" title="Troubleshooting Q&amp;A and hints" href="../help/index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflows/index.html">Workflows and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Architectural topics and math</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#handling-time">Handling time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#precision-of-internal-calculations">Precision of internal calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../help/index.html" title="previous chapter">Troubleshooting Q&amp;A and hints</a></li>
+      <li>Next: <a href="../changelog/changelog.html" title="next chapter">Changelog</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="architectural-topics-and-math">
+<h1>Architectural topics and math<a class="headerlink" href="#architectural-topics-and-math" title="Link to this heading">¶</a></h1>
+<p>Within these pages I would explain how and why I made the architecture decisions
+for linking it with the 10micron mount computer. This might help for setting up or
+just explain the behavior you experience when using MountWizzard4. I do this also
+as my development documentation. There might be some faults and error in it. If
+you find one, please let me know. I would like to get MountWizzard4 from it’s
+technical base as clean as possible.</p>
+<section id="handling-time">
+<h2>Handling time<a class="headerlink" href="#handling-time" title="Link to this heading">¶</a></h2>
+<p>One basic definition is that MountWizzard4 will use at any time the clock of
+the mount computer. Therefore MountWizzard4 polls julian date, difference
+utc - ut1, time sidereal. This allows full sync for any calculation to be made.
+No time from computer to mount is necessary, but could be done at any time
+(except during model build run). The mount mostly use the julian date
+representation except for model build where a local sidereal time (LST) is
+used. In this case MountWizzard4 just stores the value and feed it back when
+the model is programmed. That’s the reason why you should not change time
+during model run.</p>
+<img alt="../_images/time.svg" class="align-center drawio" src="../_images/time.svg" />
+<p>One important difference between MountWizzard4 and Mount exists. As I use
+skyfield as on of the frameworks with it’s units for Angle, Coords, Time etc.
+I have to take the time definition of skyfield into account. Skyfield chooses
+TT (Terrestrial Time) as it’s basic concept, whereas the mount uses UTC
+(Coordinated Universal Time) as reference. TT is a modern astronomical time
+standard defined by the International Astronomical Union. TT is distinct
+from the time scale often used as a basis for civil purposes, UTC. TT is
+indirectly the basis of UTC, via International Atomic Time (TAI).</p>
+</section>
+<section id="precision-of-internal-calculations">
+<h2>Precision of internal calculations<a class="headerlink" href="#precision-of-internal-calculations" title="Link to this heading">¶</a></h2>
+<p>MountWizzard4 is using for all calculations the skyfield
+(<a class="reference external" href="https://rhodesmill.org/skyfield/">https://rhodesmill.org/skyfield/</a>) from Brandon Rhodes. As for the new command
+set offered with 10microns FW3.x it needs to calculate the alt/az coordinates
+for a satellite track each second for the entire track. As you would like to
+follow the as precise as possible I made some comparisons between the internal
+calculations done in 10micron mount and the results provided by skyfield.</p>
+<p>In skyfield there is a chapter about satellite calculations and precision:
+<a class="reference external" href="https://rhodesmill.org/skyfield/earth-satellites.html#avoid-calling-the-observe-method">https://rhodesmill.org/skyfield/earth-satellites.html#avoid-calling-the-observe-method</a>
+Despite the fact that the observe method is expensive the difference in calculation
+time for a 900 step track is on my computer 120ms (using more precise observe
+method) to 7ms (using the less precise difference).</p>
+<p>Brandon writes about it:</p>
+<blockquote class="epigraph">
+<div><p>While satellite positions are only accurate to about a kilometer anyway,
+accounting for light travel time only affected the position in this case by
+less than an additional tenth of a kilometer. This difference is not
+meaningful when compared to the uncertainty that is inherent in satellite
+positions to begin with, so you should neglect it and simply subtract
+GCRS-centered vectors instead as detailed above.</p>
+</div></blockquote>
+<p>Here the charts for NOAA 15 [B] at julian date JD=2459333.26498 for the transit
+happening. The used TLE data was:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">NOAA</span> <span class="mi">15</span> <span class="p">[</span><span class="n">B</span><span class="p">]</span>
+<span class="mi">1</span> <span class="mi">25338</span><span class="n">U</span> <span class="mi">98030</span><span class="n">A</span>   <span class="mf">21104.44658620</span>  <span class="mf">.00000027</span>  <span class="mi">00000</span><span class="o">-</span><span class="mi">0</span>  <span class="mi">29723</span><span class="o">-</span><span class="mi">4</span> <span class="mi">0</span>  <span class="mi">9990</span>
+<span class="mi">2</span> <span class="mi">25338</span>  <span class="mf">98.6888</span> <span class="mf">133.5239</span> <span class="mi">0011555</span> <span class="mf">106.3612</span> <span class="mf">253.8839</span> <span class="mf">14.26021970192127</span>
+</pre></div>
+</div>
+<p>You could see the alt/az of the sat track.</p>
+<img alt="../_images/sat_track.png" class="align-center" src="../_images/sat_track.png" />
+<p>the difference for altitude between 10micron and skyfield</p>
+<img alt="../_images/sat_altitude.png" class="align-center" src="../_images/sat_altitude.png" />
+<p>the difference for azimuth between 10micron and skyfield</p>
+<img alt="../_images/sat_azimuth.png" class="align-center" src="../_images/sat_azimuth.png" />
+<p>the difference for right ascension between 10micron and skyfield</p>
+<img alt="../_images/sat_ra.png" class="align-center" src="../_images/sat_ra.png" />
+<p>the difference for declination between 10micron and skyfield</p>
+<img alt="../_images/sat_dec.png" class="align-center" src="../_images/sat_dec.png" />
+<p>There is a set of plots for another satellite, which shows the same behavior. The
+used TLE data was:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RAAVANA</span><span class="o">-</span><span class="mi">1</span>
+<span class="mi">1</span> <span class="mi">44329</span><span class="n">U</span> <span class="mi">98067</span><span class="n">QE</span>  <span class="mf">21134.29933328</span>  <span class="mf">.00044698</span>  <span class="mi">00000</span><span class="o">-</span><span class="mi">0</span>  <span class="mi">30736</span><span class="o">-</span><span class="mi">3</span> <span class="mi">0</span>  <span class="mi">9995</span>
+<span class="mi">2</span> <span class="mi">44329</span>  <span class="mf">51.6342</span> <span class="mf">100.9674</span> <span class="mi">0004554</span> <span class="mf">122.3279</span> <span class="mf">237.8162</span> <span class="mf">15.74179130108776</span>
+</pre></div>
+</div>
+<p>You could see the alt/az of the sat track.</p>
+<img alt="../_images/sat2_track.png" class="align-center" src="../_images/sat2_track.png" />
+<p>the difference for altitude between 10micron and skyfield</p>
+<img alt="../_images/sat2_altitude.png" class="align-center" src="../_images/sat2_altitude.png" />
+<p>the difference for azimuth between 10micron and skyfield</p>
+<img alt="../_images/sat2_azimuth.png" class="align-center" src="../_images/sat2_azimuth.png" />
+<p>the difference for right ascension between 10micron and skyfield</p>
+<img alt="../_images/sat2_ra.png" class="align-center" src="../_images/sat2_ra.png" />
+<p>the difference for declination between 10micron and skyfield</p>
+<img alt="../_images/sat2_dec.png" class="align-center" src="../_images/sat2_dec.png" />
+<p>For all calculations is valid:</p>
+<ul class="simple">
+<li><p>they are using refraction correction with the same values.</p></li>
+<li><p>the coordinates from 10micron are gathered with :TLEGEQJD#, :TLEGAZJD# commands</p></li>
+<li><p>julian date is in UTC time system</p></li>
+<li><p>10micron firmware 3.0.4</p></li>
+<li><p>skyfield version 1.39</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/architecture/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

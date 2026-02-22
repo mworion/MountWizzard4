@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Terrain image &amp; horizon mask &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=56c4699f" />
+    <script src="../../_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Themes selection" href="../themes/index.html" />
+    <link rel="prev" title="Park Positions" href="../parkpos/index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../camera/index.html">Adding the camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dome/index.html">Dome geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui/index.html">GUI adaptations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imaging/index.html">Imaging setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mount/index.html">Mount setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../parkpos/index.html">Park Positions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Terrain image &amp; horizon mask</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-terrain-image-from-teleport-360-app">Using terrain image from Teleport: 360 app</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../themes/index.html">Themes selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflows/index.html">Workflows and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Configuration</a><ul>
+      <li>Previous: <a href="../parkpos/index.html" title="previous chapter">Park Positions</a></li>
+      <li>Next: <a href="../themes/index.html" title="next chapter">Themes selection</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="terrain-image-horizon-mask">
+<h1>Terrain image &amp; horizon mask<a class="headerlink" href="#terrain-image-horizon-mask" title="Link to this heading">¶</a></h1>
+<p>For an optimal use of model points, slew path etc. it is necessary to define a
+horizon mask for the use in MountWizzard4. There are several way to define and
+use a mask based on your actual environment</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>See also on youtube: <a class="reference external" href="https://youtu.be/EqDNNMNMS0w">https://youtu.be/EqDNNMNMS0w</a></p>
+</div>
+<section id="using-terrain-image-from-teleport-360-app">
+<h2>Using terrain image from Teleport: 360 app<a class="headerlink" href="#using-terrain-image-from-teleport-360-app" title="Link to this heading">¶</a></h2>
+<p>Please use Teleport: 360 app to generate a 360 degrees image around your mount
+rig. You can save as a .jpeg then rename it to terrain.jpg. I then had to adjust
+the azimuth paying attention to high points using compass readings.</p>
+<a class="reference internal image-reference" href="../../_images/teleport360.png"><img alt="../../_images/teleport360.png" class="align-center" height="235" src="../../_images/teleport360.png" width="219" />
+</a>
+<p>If you finished the image and transferred it to you computer it might look like:</p>
+<a class="reference internal image-reference" href="../../_images/terrain.png"><img alt="../../_images/terrain.png" class="align-center" height="284" src="../../_images/terrain.png" width="568" />
+</a>
+<p>Please put this image to you config dir in your MountWizzard4 working folder.
+The file format output from streetview is 4096 X 2048 pixel color as JPG. The
+horizon for altitude 0 degree cuts the image in an upper and lower half.
+MountWizzard4 uses only the upper half of the image as it expects the image to
+be taken at the height of the horizon line.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The image file has to be named to: <strong>terrain.jpg</strong> and should be in
+JPG format.</p>
+</div>
+<p>MountWizzard4 will use the image as greyscale image. You could play around how
+you prepare the image before you copy it to the config directory. Good ideas of
+improving the image are: make the sky transparent, equalize gamma / lightness
+settings to avoid highlights in the image, etc. Once you open the hemisphere
+window you see the setups for the terrain background.</p>
+<a class="reference internal image-reference" href="../../_images/terrain_setup.png"><img alt="../../_images/terrain_setup.png" class="align-center" height="443" src="../../_images/terrain_setup.png" width="571" />
+</a>
+<p>After <strong>use terrain</strong> is checked and a terrain.jpg image is available in config
+directory, the image will be shown as background of hemisphere.</p>
+<a class="reference internal image-reference" href="../../_images/terrain_hemisphere.png"><img alt="../../_images/terrain_hemisphere.png" class="align-center" height="443" src="../../_images/terrain_hemisphere.png" width="571" />
+</a>
+<p>The image will also show up in polar diagram!</p>
+<a class="reference internal image-reference" href="../../_images/terrain_hemisphere_polar.png"><img alt="../../_images/terrain_hemisphere_polar.png" class="align-center" height="443" src="../../_images/terrain_hemisphere_polar.png" width="571" />
+</a>
+<p>Two adjustments could be changed to make the image fit for use: Most important
+the azimuth adjustment.</p>
+<ul class="simple">
+<li><p>You shift the image by a number of degrees (0 - 359) to get your image fit to
+the cardinal points of the hemisphere.</p></li>
+<li><p>You could change the alpha channel of the image to get a nice view on your
+screen.</p></li>
+</ul>
+<p>Then you could add the horizon mask quite easily:</p>
+<a class="reference internal image-reference" href="../../_images/terrain_hemisphere_mask.png"><img alt="../../_images/terrain_hemisphere_mask.png" class="align-center" height="443" src="../../_images/terrain_hemisphere_mask.png" width="571" />
+</a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The horizon line (altitude = 0) is set within streetview. Please try
+to shoot the image at the height of your mount to make it fit. Still
+there might be some deviations from “real life”.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>All calculations which respect a horizon mask reference to a given
+mask not the image itself. So even if you have an image set, you
+need to define horizon mask points!</p>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/config/terrain/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

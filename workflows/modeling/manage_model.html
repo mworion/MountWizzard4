@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Step 4: Managing mount models &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=56c4699f" />
+    <script src="../../_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Workflows and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="step-4-managing-mount-models">
+<h1>Step 4: Managing mount models<a class="headerlink" href="#step-4-managing-mount-models" title="Link to this heading">¶</a></h1>
+<p>Managing your models is a central task especially if you image in a mobile
+environment. MountWizzard4 supports this in the Manage Model Tab in the main
+window. All functions there are related to the actual mount model or the models
+stored in the mount.</p>
+<p>Three graphs are available for checking the model:</p>
+<table class="hlist"><tr><td><ul class="simple">
+<li><p>Model Positions</p></li>
+<li><p>Error ascending</p></li>
+<li><p>Error Distribution</p></li>
+</ul>
+</td></tr></table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All values which are show in these graphs were calculated by the
+mount computer itself and just read out and displayed by
+MountWizzard4. As the 10micron algorithm of the model optimizer is
+not know. The given hints are observations.</p>
+</div>
+<p>The Model Positions graph shows in a polar plot how the model point were
+distributed over the hemisphere and how large the errors of each point is in a
+color scheme. If necessary you could check “Show error values” and numerical
+values will label each point.</p>
+<a class="reference internal image-reference" href="../../_images/manage_model_1.png"><img alt="../../_images/manage_model_1.png" class="align-center" height="426" src="../../_images/manage_model_1.png" width="568" />
+</a>
+<p>In the give example you see the western point are in general better than the
+eastern ones, so in the setup there might be differences in setup depending on
+the pier side.</p>
+<p>The Error Ascending graph show all model points sorted by ascending error values.
+You might see some outside points which differ a lot from other ones or
+recognize an elbow type of curve which also might lead to some issues with you
+setup.</p>
+<a class="reference internal image-reference" href="../../_images/manage_model_2.png"><img alt="../../_images/manage_model_2.png" class="align-center" height="426" src="../../_images/manage_model_2.png" width="568" />
+</a>
+<p>The Error Distribution graph shows in a polar plot how the error values (higher
+values on outer rings) and the polar angle of the error value.</p>
+<a class="reference internal image-reference" href="../../_images/manage_model_3.png"><img alt="../../_images/manage_model_3.png" class="align-center" height="426" src="../../_images/manage_model_3.png" width="568" />
+</a>
+<p>In all graphs you will see the pink lines which show the value of the Target
+(RMS) setting in the “Optimize actual model” box. This helps in adjusting a
+cut-off value for automatic model point removal.</p>
+<section id="optimizing-the-model">
+<h2>Optimizing the model<a class="headerlink" href="#optimizing-the-model" title="Link to this heading">¶</a></h2>
+<p>I some cases you will discover that some model points and their errors are
+outside a reasonable area. In that case three different model optimization
+scenarios come into place. The first and the obvious one is to remove manually
+the worst point of the model (1).</p>
+<a class="reference internal image-reference" href="../../_images/target_rms_01.png"><img alt="../../_images/target_rms_01.png" class="align-center" height="445" src="../../_images/target_rms_01.png" width="570" />
+</a>
+<p>If you have more than a single point to remove, the second and third come into
+place, an automation process within MountWizzard4. With setting the checkbox
+“Optimize overall Target RMS” (3) and starting the optimization run (6),
+MountWizzard4 will delete as many point until the Model RMS (2) is below the
+selected threshold (5).</p>
+<a class="reference internal image-reference" href="../../_images/target_rms_02.png"><img alt="../../_images/target_rms_02.png" class="align-center" height="445" src="../../_images/target_rms_02.png" width="570" />
+</a>
+<p>Checking “Delete point above Target RMS” (4) and run (6) the optimization,
+MountWizzard4 will delete all points where their individual Error is above the
+selected threshold (5). Please note that this will lead to a different Model
+RMS (2).</p>
+</section>
+<section id="explanation-of-optimization-of-process">
+<h2>Explanation of optimization of process:<a class="headerlink" href="#explanation-of-optimization-of-process" title="Link to this heading">¶</a></h2>
+<p>Yes you could remove bad points from the model. But does it help ? Again from
+mathematics: you bend an error curve like a metal plate over a rough surface to
+equalize it. If the is a single stone under this plate -&gt; approximation might be
+bad. So removing this stone might help in getting a better approximation for the
+rest of the surface. But it is not good to remove the gravel under the plate to
+improve just numbers in RMS! If I see large outliers in alignment errors within
+an area which shows good numbers around, I remove that single point. But not to
+much. In average I remove 2-5 points from a 60 point model max. Yes if you
+remove a point the over RMS could rise ! That’s because the whole model is newly
+calculated and that’s no subtraction of a bad point.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/workflows/modeling/manage_model.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

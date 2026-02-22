@@ -6,9 +6,15 @@ for astronomy work. It runs on Windows11, Windows10, Mac OSX (beginning from
 around Raspberry Pi's and other SOC, you might be able to install MountWizzard4 on
 a RPi4 or RPi5.
 
-PDF Documentation:
+The PDF version of the documentation could be found here: https://mworion.github.io/MountWizzard4/mountwizzard4.pdf
 
-https://mworion.github.io/MountWizzard4/mountwizzard4.pdf
+.. hint::   MountWizzard4 version 4 is a major release with many new features
+            and improvements. Please check the changelog for details:
+            https://mworion.github.io/MountWizzard4/changelog/changelog.html.
+            Actually this is a beta version ! Please check the known limitations
+            and report any issues you find. Install it to a new workdir and do not
+            overwrite your existing v3 installation. You can have both versions
+            installed at the same time.
 
 Before starting
 ===============

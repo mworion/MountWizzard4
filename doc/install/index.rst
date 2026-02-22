@@ -1,5 +1,13 @@
 Installation
 ============
+.. hint::   MountWizzard4 version 4 is a major release with many new features
+            and improvements. Please check the changelog for details:
+            https://mworion.github.io/MountWizzard4/changelog/changelog.html.
+            Actually this is a beta version ! Please check the known limitations
+            and report any issues you find. Install it to a new workdir and do not
+            overwrite your existing v3 installation. You can have both versions
+            installed at the same time.
+
 MountWizzard4 v4 (and also valid for v3) will change the way of installation. As
 it relies on python and uses a virtual environment the whole process got to
 complicated to maintain and was not easy for the users to follow. Therefore
@@ -51,7 +59,13 @@ and change directory to this work folder. the command
 
 does download the right python package (3.10) and installs a virtual environment
 in you work folder. The virtual environment is stored in a directory there called
-".venv".
+".venv". If you go for testing the new v4 version, please install python 3.13 with
+the command:
+
+.. code-block:: bash
+
+    uv venv -p 3.13
+
 
 Installing MountWizzard4
 ------------------------

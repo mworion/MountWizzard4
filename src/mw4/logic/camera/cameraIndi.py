@@ -134,6 +134,13 @@ class CameraIndi(IndiClass):
             HDU = fits.HDUList.fromstring(data["value"])
             self.log.info("Image BLOB is uncompressed fits format")
 
+        elif data["format"] == ".xisf":
+            self.parent.imagePath = self.parent.imagePath.with_suffix('.xisf')
+            with open(self.parent.imagePath, 'wb') as fw:
+                fw.write(data["value"])
+            self.signals.saved.emit(self.parent.imagePath)
+            return
+
         else:
             self.log.info("Image BLOB is not supported")
             return

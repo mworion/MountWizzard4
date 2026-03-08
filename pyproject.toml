@@ -56,7 +56,7 @@ classifiers = [
 dependencies = [
     "numpy==2.4.2",
     "opencv-python-headless==4.13.0.92",
-    "scipy==1.17.0",
+    "scipy==1.17.1",
     "astropy==7.2.0",
     "pyerfa==2.0.1.5",
     "astroquery==0.4.11",
@@ -80,12 +80,13 @@ dependencies = [
     "pyside6==6.10.2",
     "pyyaml==6.0.3",
     "pywin32==311; platform_system == 'Windows'",
-    "scipy-stubs~=1.17.0",
 ]
 
 [project.scripts]
 mw4 = "mw4.cli:app"
+MW4 = "mw4.cli:app"
 mountwizzard4 = "mw4.cli:app"
+MountWizzard4 = "mw4.cli:app"
 
 [project.urls]
 Documentation = "https://mworion.github.io/MountWizzard4"
@@ -102,8 +103,9 @@ dev = [
     "pytest-cov==7.0.0",
     "pytest-xdist==3.8.0",
     "invoke==2.2.1",
-    "ruff==0.15.2",
+    "ruff==0.15.5",
     "coverage==7.13.4",
+    "scipy-stubs~=1.17.1.0",
 ]
 
 [tool.pytest.ini_options]

@@ -103,6 +103,32 @@ primary:
 
 Basically that's it.
 
+Update MountWizzard4
+--------------------
+Once everything installed running MountWizzard4 is also a simple command:
+
+.. code-block:: bash
+
+    uv pip install mountwizzard4 --upgrade
+
+to update MountWizzard4 to the latest version. If you already have installed v3
+of MountWizzard with uv, please do not use the internal update anymore. It will
+be removed in v4. UV handles the update / downgrade and the relations to python
+versions better the my (limited) attempt. As MountWizzard4 will follow newer
+libraries and therefore also python versions, you will have to update this in
+parallel in the old setup, but uv will manage this for you out of the box.
+
+Use MountWizzard4 beta versions
+-------------------------------
+If you would like to tryout beta versions (or any dedicated version) of
+MountWizzard4, please use the standard install method. For the latest beta
+you just can add the following parameter:
+
+.. code-block:: bash
+
+    uv pip install mountwizzard4 --pre
+.
+
 Command line options
 --------------------
 MountWizzard4 supports a number of command line options:

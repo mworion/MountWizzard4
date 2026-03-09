@@ -179,7 +179,9 @@ https://github.com/mworion/MountWizzard4/tree/main/support_install
 These are some support for starting MountWizzard4 with a desktop icon
 and some other features. Please check this website for further information
 to customize the content of the mountwizzard4.desktop file to your needs and
-how to install it.
+how to install it:
+
+https://itsfoss.gitlab.io/post/how-to-install-and-edit-desktop-files-on-linux-desktop-entries/
 
 Integrating MountWizzard4 Windows system
 ----------------------------------------

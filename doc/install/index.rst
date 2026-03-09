@@ -169,6 +169,25 @@ Setting Qt DPI scale factor (+scale = +size, default=1)
 
 Getting this information.
 
+Integrating MountWizzard4 linux system
+--------------------------------------
+If you plan to run MountWizzard4 on a linux system, you can use the
+additional files for linux in the support_install folder.
+
+https://github.com/mworion/MountWizzard4/tree/main/support_install
+
+These are some support for starting MountWizzard4 with a desktop icon
+and some other features. Please check this website for further information
+to customize the content of the mountwizzard4.desktop file to your needs and
+how to install it.
+
+Integrating MountWizzard4 Windows system
+----------------------------------------
+If you plan to run MountWizzard4 on a windows system, you can use the
+additional files for windows in the support_install folder for setting up
+a link with an icon to start MountWizzard4 with a double click.
+
+
 Additional for RaspberryPi (4, 5)
 ---------------------------------
 .. hint::

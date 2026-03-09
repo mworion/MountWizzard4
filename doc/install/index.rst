@@ -66,6 +66,17 @@ the command:
 
     uv venv -p 3.13
 
+The resulting virtual environment is only for this work folder and does not
+interfere with any other python installation on your system. You can have as many
+virtual environments as you like on your system, but they are all separated from
+each other. This is the main advantage of using uv and virtual environments in general.
+In you work folder it should now be a new folder called ".venv" with the virtual
+environment:
+
+.. image:: image/installed_venv.png
+    :align: center
+    :scale: 71%
+
 
 Installing MountWizzard4
 ------------------------
@@ -99,13 +110,20 @@ Once everything installed running MountWizzard4 is also a simple command:
 
 If you would like some options please use the command line parameters
 MountWizzard4 supports. These are setting for the appearance sizes on windows
-primary:
+primary. If you look after the first run, your work folder should now contain
+new folders:
+
+.. image:: image/new_folders.png
+    :align: center
+    :scale: 71%
 
 Basically that's it.
 
 Update MountWizzard4
 --------------------
-Once everything installed running MountWizzard4 is also a simple command:
+Once everything installed running MountWizzard4 is also a simple command. You
+should run the command from the root of your work folder where the virtual
+environment is located. Run the command
 
 .. code-block:: bash
 

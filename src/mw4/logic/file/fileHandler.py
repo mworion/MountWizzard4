@@ -41,7 +41,7 @@ class FileHandler:
     ):
         self.threadPool = parent.app.threadPool
         self.signals = FileHandlerSignals()
-        self.worker: Worker = None
+        self.worker: Worker | None = None
         self.imagePath = imagePath
         self.flipH = flipH
         self.flipV = flipV
@@ -133,6 +133,9 @@ class FileHandler:
             if key in ["SIMPLE", "EXTEND", "NAXIS", "NAXIS1", "NAXIS2"]:
                 continue
             value = fitHeaderXisf[key][0].get("value", "")
+            #
+            # ToDo: doing a correct conversion also for strings !
+            #
             valueFloat = valueToFloat(value)
             value = value if valueFloat is None else valueFloat
             comment = fitHeaderXisf[key][0].get("comment", "")
@@ -142,7 +145,7 @@ class FileHandler:
     def loadXISF(self) -> None:
         """ """
         header = {}
-        self.image = XISF.read(self.imagePath, image_metadata=header)[:, :, -1]
+        self.image = XISF.read(str(self.imagePath), image_metadata=header)[:, :, -1]
         self.header = self.convHeaderXISF2FITS(header)
 
     def workerLoadImage(self, imagePath: Path) -> None:

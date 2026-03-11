@@ -54,7 +54,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "numpy==2.4.2",
+    "numpy==2.4.3",
     "opencv-python-headless==4.13.0.92",
     "scipy==1.17.1",
     "astropy==7.2.0",
@@ -103,9 +103,9 @@ dev = [
     "pytest-cov==7.0.0",
     "pytest-xdist==3.8.0",
     "invoke==2.2.1",
-    "ruff==0.15.4",
+    "ruff==0.15.5",
     "coverage==7.13.4",
-    "scipy-stubs~=1.17.1.0",
+    "scipy-stubs~=1.17.1.1",
 ]
 
 [tool.pytest.ini_options]

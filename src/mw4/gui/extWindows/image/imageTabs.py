@@ -107,6 +107,7 @@ class ImageTabs:
 
     def writeHeaderDataToGUI(self, header: fits.Header) -> None:
         """ """
+        return
         guiSetText(self.ui.object, "s", header.get("OBJECT", "").upper())
         ra, dec = getCoordinatesFromHeader(header=header)
         guiSetText(self.ui.ra, "HSTR", ra)

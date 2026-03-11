@@ -62,7 +62,8 @@ jobs:
         ${{env.uic}} ${{env.wid}}main.ui -o ${{env.widDest}}main_ui.py
         ${{env.uic}} ${{env.wid}}measure.ui -o ${{env.widDest}}measure_ui.py
         ${{env.uic}} ${{env.wid}}message.ui -o ${{env.widDest}}message_ui.py
-        ${{env.uic}} ${{env.wid}}satellite.ui -o ${{env.widDest}}satellite_ui.py
+        ${{env.uic}} ${{env.wid}}satelliteHor.ui -o ${{env.widDest}}satelliteHor_ui.py
+        ${{env.uic}} ${{env.wid}}satelliteMap.ui -o ${{env.widDest}}satelliteMap_ui.py
         ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.widDest}}analyse_ui.py
         ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.widDest}}simulator_ui.py
         ${{env.uic}} ${{env.wid}}material.ui -o ${{env.widDest}}material_ui.py

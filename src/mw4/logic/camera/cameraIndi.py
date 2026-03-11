@@ -14,6 +14,7 @@
 #
 ###########################################################
 import zlib
+from io import BytesIO
 from astropy.io import fits
 from mw4.base.indiClass import IndiClass
 from mw4.base.tpool import Worker
@@ -137,7 +138,7 @@ class CameraIndi(IndiClass):
         elif data["format"] == ".xisf":
             self.parent.imagePath = self.parent.imagePath.with_suffix('.xisf')
             with open(self.parent.imagePath, 'wb') as fw:
-                fw.write(data["value"])
+                fw.write(BytesIO(data["value"]).getbuffer())
             self.signals.saved.emit(self.parent.imagePath)
             return
 

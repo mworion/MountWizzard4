@@ -166,7 +166,6 @@ class CameraIndi(IndiClass):
             case _:
                 self.log.info("Image BLOB is not supported")
                 return
-
         if data["format"] == ".xisf":
             with open(self.parent.imagePath, "wb") as fw:
                 fw.write(BytesIO(data["value"]).getbuffer())
@@ -174,6 +173,7 @@ class CameraIndi(IndiClass):
         else:
             HDU.writeto(self.parent.imagePath, overwrite=True)
             self.parent.writeImageFitsHeader()
+        self.parent.exposeFinished()
         self.signals.saved.emit(self.parent.imagePath)
 
     def updateBLOB(self, deviceName: str, propertyName: str) -> None:
@@ -192,7 +192,6 @@ class CameraIndi(IndiClass):
 
         self.signals.message.emit("saving")
         self.worker = Worker(self.workerSaveBLOB, data)
-        self.worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(self.worker)
 
     def sendDownloadMode(self) -> None:

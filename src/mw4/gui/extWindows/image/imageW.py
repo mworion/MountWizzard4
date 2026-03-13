@@ -295,7 +295,6 @@ class ImageWindow(MWidget):
 
         if not self.app.camera.expose(self.imageFileName, exposureTime, binning):
             self.abortExpose()
-            self.msg.emit(2, "Image", "Expose error", self.imageFileName.stem)
             return
         self.msg.emit(0, "Image", "Exposing", self.imageFileName.stem)
 

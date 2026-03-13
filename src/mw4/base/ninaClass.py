@@ -23,7 +23,7 @@ from PySide6.QtCore import QMutex, QTimer
 class NINAClass(DriverData):
     """ """
 
-    NINA_TIMEOUT = 3
+    NINA_TIMEOUT = 1
     HOST_ADDR = "localhost"
     PORT = 59590
     PROTOCOL = "http"
@@ -144,7 +144,7 @@ class NINAClass(DriverData):
         if not self.deviceConnected:
             return
         self.workerData = Worker(self.workerPollData)
-        self.workerData.signals.result.connect(self.processPolledData)
+        self.workerData.signals.finished.connect(self.processPolledData)
         self.threadPool.start(self.workerData)
 
     def workerGetInitialConfig(self) -> None:
@@ -197,6 +197,7 @@ class NINAClass(DriverData):
             return
 
         self.workerStatus = Worker(self.workerPollStatus)
+        self.workerStatus.signals.finished.connect(self.clearPollStatus)
         self.threadPool.start(self.workerStatus)
 
     def startCommunication(self) -> None:

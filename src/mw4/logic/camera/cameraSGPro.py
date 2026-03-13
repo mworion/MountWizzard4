@@ -82,7 +82,7 @@ class CameraSGPro(SGProClass):
         params = {
             "BinningMode": self.parent.binning,
             "ExposureLength": max(self.parent.exposureTime, 1),
-            "Path": self.parent.imagePath,
+            "Path": str(self.parent.imagePath),
         }
 
         suc, response = self.sgCaptureImage(params=params)
@@ -117,7 +117,7 @@ class CameraSGPro(SGProClass):
         self.worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(self.worker)
 
-    def abort(self) -> None:
+    def abort(self) -> bool:
         """ """
         return self.sgAbortImage()
 

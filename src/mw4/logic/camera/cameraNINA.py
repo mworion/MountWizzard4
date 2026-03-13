@@ -85,7 +85,7 @@ class CameraNINA(NINAClass):
         params = {
             "BinningMode": self.parent.binning,
             "ExposureLength": max(self.parent.exposureTime, 1),
-            "Path": self.parent.imagePath,
+            "Path": str(self.parent.imagePath),
         }
 
         suc, response = self.captureImage(params=params)

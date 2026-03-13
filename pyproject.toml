@@ -13,7 +13,7 @@
 #
 ###########################################################
 [build-system]
-requires = ["uv_build"]
+requires = ["uv_build<0.10.9"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]

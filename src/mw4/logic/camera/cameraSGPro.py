@@ -29,9 +29,9 @@ class CameraSGPro(SGProClass):
         super().__init__(parent=parent)
         self.threadPool = parent.threadPool
         self.signals = parent.signals
-        self.worker: Worker = None
+        self.worker: Worker | None = None
 
-    def sgGetCameraTemp(self) -> [bool, dict]:
+    def sgGetCameraTemp(self) -> tuple[bool, dict]:
         """ """
         response = self.requestProperty("cameratemp")
         return response.get("Success", False), response
@@ -41,7 +41,7 @@ class CameraSGPro(SGProClass):
         response = self.requestProperty(f"setcameratemp/{temperature}")
         return response.get("Success", False)
 
-    def sgCaptureImage(self, params: dict) -> [bool, dict]:
+    def sgCaptureImage(self, params: dict) -> tuple[bool, dict]:
         """ """
         response = self.requestProperty("image", params=params)
         return response.get("Success", False), response
@@ -56,7 +56,7 @@ class CameraSGPro(SGProClass):
         response = self.requestProperty(f"imagepath/{receipt}")
         return response.get("Success", False)
 
-    def sgGetCameraProps(self) -> [bool, dict]:
+    def sgGetCameraProps(self) -> tuple[bool, dict]:
         """ """
         response = self.requestProperty("cameraprops")
         return response.get("Success", False), response

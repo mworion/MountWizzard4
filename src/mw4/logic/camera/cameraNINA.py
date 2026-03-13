@@ -29,22 +29,22 @@ class CameraNINA(NINAClass):
         self.data = parent.data
         self.signals = parent.signals
         self.threadPool = parent.threadPool
-        self.worker: Worker = None
+        self.worker: Worker | None = None
 
-    def getCameraTemp(self) -> [bool, dict]:
+    def getCameraTemp(self) -> tuple[bool, dict]:
         """ """
         response = self.requestProperty("cameratemp")
         if not response:
             return False, {}
 
-        return response.get("Success", ""), response
+        return response.get("Success", False), response
 
     def setCameraTemp(self, temperature: float) -> bool:
         """ """
         response = self.requestProperty(f"setcameratemp/{temperature}")
         return response.get("Success", False)
 
-    def captureImage(self, params: dict) -> [bool, dict]:
+    def captureImage(self, params: dict) -> tuple[bool, dict]:
         """ """
         response = self.requestProperty("image", params=params)
         return response.get("Success", False), response
@@ -59,7 +59,7 @@ class CameraNINA(NINAClass):
         response = self.requestProperty(f"imagepath/{receipt}")
         return response.get("Success", False)
 
-    def getCameraProps(self) -> [bool, dict]:
+    def getCameraProps(self) -> tuple[bool, dict]:
         """ """
         response = self.requestProperty("cameraprops")
         return response.get("Success", False), response

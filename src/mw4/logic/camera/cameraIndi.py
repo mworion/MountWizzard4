@@ -146,6 +146,10 @@ class CameraIndi(IndiClass):
             self.log.info("Image BLOB is not supported")
             return
 
+        #
+        # ToDo: refactor that same functions and data write for xsif files
+        #       and a better readability how to handle this.
+        #
         fits.writeto(self.parent.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
         self.parent.writeImageFitsHeader()
         self.signals.saved.emit(self.parent.imagePath)

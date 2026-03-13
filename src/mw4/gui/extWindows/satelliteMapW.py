@@ -18,8 +18,8 @@ import pickle
 import pyqtgraph as pg
 from collections.abc import Iterator
 from io import BytesIO
-from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.utilities.generateSprites import makeSat
+from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets import satelliteMap_ui
 from pyqtgraph import PlotWidget
 from PySide6.QtCore import QFile, Qt

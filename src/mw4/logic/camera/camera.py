@@ -136,7 +136,7 @@ class Camera:
         """ """
         self.run[self.framework].stopCommunication()
 
-    def exposeFinished(self) -> bool:
+    def exposeFinished(self) -> None:
         """ """
         self.exposing = False
         self.signals.message.emit("")
@@ -215,7 +215,7 @@ class Camera:
         while self.exposing and not function(param):
             sleepAndEvents(100)
 
-    def retrieveImage(self, function: Callable, param: dict) -> np.array:
+    def retrieveImage(self, function: Callable, param: dict) -> np.ndarray:
         """ """
         if not self.exposing:
             return np.array([], dtype=np.uint16)

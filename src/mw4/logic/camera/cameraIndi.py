@@ -14,10 +14,12 @@
 #
 ###########################################################
 import zlib
-from io import BytesIO
 from astropy.io import fits
+from astropy.io.fits import HDUList
+from io import BytesIO
 from mw4.base.indiClass import IndiClass
 from mw4.base.tpool import Worker
+from xisf import XISF
 
 
 class CameraIndi(IndiClass):
@@ -29,7 +31,7 @@ class CameraIndi(IndiClass):
         self.app = parent.app
         self.data = parent.data
         self.signals = parent.signals
-        self.worker: Worker = None
+        self.worker: Worker | None = None
         self.isDownloading: bool = False
         self.loadConfig: bool = True
 
@@ -121,37 +123,57 @@ class CameraIndi(IndiClass):
         if propertyName == "CCD_TEMPERATURE":
             self.data["CAN_SET_CCD_TEMPERATURE"] = True
 
+    def writeImageXisfHeader(self) -> None:
+        """ """
+        xisf = XISF(self.parent.imagePath)
+        file_meta = xisf.get_file_metadata()
+        ims_meta = xisf.get_images_metadata()
+        im_data = xisf.read_image(0)
+        ims_meta[0]["FITSKeywords"]["OBJECT"] = [
+            {"value": "SKY_OBJECT", "comment": "default name from MW4"}
+        ]
+        ims_meta[0]["FITSKeywords"]["AUTHOR"] = [
+            {"value": "MountWizzard4", "comment": "default name from MW4"}
+        ]
+        ims_meta[0]["FITSKeywords"]["FRAME"] = [
+            {"value": "Light", "comment": "Modeling works with light frames"}
+        ]
+        XISF.write(
+            self.parent.imagePath,
+            im_data,
+            creator_app="MountWizzard4",
+            image_metadata=ims_meta[0],
+            xisf_metadata=file_meta,
+            codec="lz4hc",
+            shuffle=True,
+        )
+
     def workerSaveBLOB(self, data: dict) -> None:
         """ """
-        if data["format"] == ".fits.fz":
-            HDU = fits.HDUList.fromstring(data["value"])
-            self.log.info("Image BLOB is in FPacked format")
+        match data["format"]:
+            case ".fits.fz":
+                HDU: HDUList = fits.HDUList.fromstring(data["value"])
+                self.log.info("Image BLOB is in FPacked format")
+            case ".fits.z":
+                HDU: HDUList = fits.HDUList.fromstring(zlib.decompress(data["value"]))
+                self.log.info("Image BLOB is compressed fits format")
+            case ".fits":
+                HDU: HDUList = fits.HDUList.fromstring(data["value"])
+                self.log.info("Image BLOB is uncompressed fits format")
+            case ".xisf":
+                self.parent.imagePath = self.parent.imagePath.with_suffix(".xisf")
+                self.log.info("Image BLOB is xisf format")
+            case _:
+                self.log.info("Image BLOB is not supported")
+                return
 
-        elif data["format"] == ".fits.z":
-            HDU = fits.HDUList.fromstring(zlib.decompress(data["value"]))
-            self.log.info("Image BLOB is compressed fits format")
-
-        elif data["format"] == ".fits":
-            HDU = fits.HDUList.fromstring(data["value"])
-            self.log.info("Image BLOB is uncompressed fits format")
-
-        elif data["format"] == ".xisf":
-            self.parent.imagePath = self.parent.imagePath.with_suffix('.xisf')
-            with open(self.parent.imagePath, 'wb') as fw:
+        if data["format"] == ".xisf":
+            with open(self.parent.imagePath, "wb") as fw:
                 fw.write(BytesIO(data["value"]).getbuffer())
-            self.signals.saved.emit(self.parent.imagePath)
-            return
-
+            self.writeImageXisfHeader()
         else:
-            self.log.info("Image BLOB is not supported")
-            return
-
-        #
-        # ToDo: refactor that same functions and data write for xsif files
-        #       and a better readability how to handle this.
-        #
-        fits.writeto(self.parent.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
-        self.parent.writeImageFitsHeader()
+            HDU.writeto(self.parent.imagePath, overwrite=True)
+            self.parent.writeImageFitsHeader()
         self.signals.saved.emit(self.parent.imagePath)
 
     def updateBLOB(self, deviceName: str, propertyName: str) -> None:

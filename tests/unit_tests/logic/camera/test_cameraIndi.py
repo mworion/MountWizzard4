@@ -13,9 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
 import unittest.mock as mock
+from pathlib import Path
 import zlib
 from astropy.io import fits
 from mw4.base.indiClass import IndiClass
@@ -25,6 +25,7 @@ from mw4.indibase.indiDevice import Device
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraIndi import CameraIndi
 from PySide6.QtCore import Signal
+from xisf import XISF
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -41,7 +42,7 @@ class Parent:
     height = 1000
     exposureTime = 1
     exposeFinished = Signal()
-    imagePath = "tests/work/image/test.fit"
+    imagePath = Path("tests/testData/image/test.fit")
 
     def writeImageFitsHeader(self, hdu, data):
         """Mock method to simulate writing FITS header."""
@@ -206,6 +207,15 @@ def test_updateNumber_6(function):
             function.updateNumber("test", "CCD_OFFSET")
 
 
+def test_writeImageXisfHeader(function):
+    function.parent.imagePath = Path("tests/testData/test.xisf")
+    with mock.patch.object(XISF, "get_file_metadata"):
+        with mock.patch.object(XISF, "get_images_metadata", return_value=[{"FITSKeywords": {}}]):
+            with mock.patch.object(XISF, "read_image"):
+                with mock.patch.object(XISF, "write", return_value=True):
+                    function.writeImageXisfHeader()
+
+
 def test_workerSaveBLOB_1(function):
     function.imagePath = "tests/work/image/test.fit"
     hdu = fits.HDUList()
@@ -248,6 +258,14 @@ def test_workerSaveBLOB_4(function):
         with mock.patch.object(fits.HDUList, "writeto"):
             with mock.patch.object(function.parent, "writeImageFitsHeader"):
                 function.workerSaveBLOB(data)
+
+
+def test_workerSaveBLOB_5(function):
+    with open("tests/testData/test.xisf", "rb") as f:
+        xisf = f.read()
+    data = {"value": xisf, "name": "CCD1", "format": ".xisf"}
+    with mock.patch.object(function, "writeImageXisfHeader"):
+        function.workerSaveBLOB(data)
 
 
 def test_updateBLOB_1(function):

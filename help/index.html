@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Troubleshooting Q&amp;A and hints &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56c4699f" />
+    <script src="../_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Architectural topics and math" href="../architecture/index.html" />
+    <link rel="prev" title="Updating the app" href="../workflows/update/index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflows/index.html">Workflows and functions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting Q&amp;A and hints</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#python">Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mountwizzard4-app">MountWizzard4 App</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mountwizzard4-updating-does-fail">MountWizzard4 Updating does fail</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scripts">Scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mount-connectivity">Mount connectivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#device-connectivity">Device connectivity</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ascom-device-does-not-work-connect">ASCOM Device does not work / connect</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#model-building">Model building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-iers-sat-mpc-data">Updating IERS/SAT/MPC data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#data-could-not-be-fetched-from-internet">Data could not be fetched from internet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tracking-satellites">Tracking satellites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logfiles-and-reports">Logfiles and reports</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#where-could-i-change-the-log-level">Where could I change the log level ?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../workflows/update/index.html" title="previous chapter">Updating the app</a></li>
+      <li>Next: <a href="../architecture/index.html" title="next chapter">Architectural topics and math</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="troubleshooting-q-a-and-hints">
+<h1>Troubleshooting Q&amp;A and hints<a class="headerlink" href="#troubleshooting-q-a-and-hints" title="Link to this heading">¶</a></h1>
+<p>Based on many feedbacks and solved issues, please check first if your question
+already has some answers or at least some hints how to improve the situation.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<p>Despite MountWizzard4 will run on many platforms, your setup might have some
+special constrains which need to taken into account. In the following I try to
+refer to the important ones.</p>
+<section id="python">
+<h3>Python<a class="headerlink" href="#python" title="Link to this heading">¶</a></h3>
+<p>MountWizzard4 version 4 runs on python 3.10 - 3.13. On other versions scripts
+will fail and MountWizzard4 will not run.</p>
+<p>On windows, you need to select if you are using 32bit or 64bit python depending
+on drivers you are using for your devices. 32bit and 64bit could not be mixed !</p>
+<p>Normally you will use a preinstalled python version (if that fits) or use a python
+version from python.org. Please do not use other sources.</p>
+<p>As MountWizzard4 lives in a virtual environment, updating python does not
+automatically update the virtual environment. If you need to update python for
+any reason there are two possibilities: New install of MountWizzard4 in a new work
+dir or deleting the venv folder in your actual work dir and running the install
+script again.</p>
+</section>
+<section id="mountwizzard4-app">
+<h3>MountWizzard4 App<a class="headerlink" href="#mountwizzard4-app" title="Link to this heading">¶</a></h3>
+<p>There is no need for running MountWizzard4 with admin rights. If so, something
+is wrong. MountWizzard4 will run in a virtual environment. Please do not try to
+install MountWizzard4 as a system application as this might interfere with other
+installations.</p>
+<p>MountWizzard4 does not behave as expected: please post a log and describe the
+procedure in steps. If you could add screen shots this helps a lot.</p>
+</section>
+<section id="mountwizzard4-updating-does-fail">
+<h3>MountWizzard4 Updating does fail<a class="headerlink" href="#mountwizzard4-updating-does-fail" title="Link to this heading">¶</a></h3>
+<p>Since v2 MountWizzard4 should be able to handle all updates / downgrades with
+the internal updater. From v1 to v2 windows needs the MountWizzard4_Update.bat
+script as the internal updater can’t free used windows libraries. MacOSx and
+Linux should be fine.</p>
+</section>
+<section id="scripts">
+<h3>Scripts<a class="headerlink" href="#scripts" title="Link to this heading">¶</a></h3>
+<p>Installation does not need admin rights. If so, please check the folder locations.
+In windows10 desktop and some other folder are not writable for applications.</p>
+<p>The scripts do nothing special, you could use for many topics manual commands as
+well. Unfortunately the scripts could not manage all special setups, but feel
+free to change them accordingly.</p>
+</section>
+</section>
+<section id="mount-connectivity">
+<h2>Mount connectivity<a class="headerlink" href="#mount-connectivity" title="Link to this heading">¶</a></h2>
+<p>MountWizzard4 only supports IP links. As data latency is a critical topic, please
+use a wired connection to the mount. Wireless connection might have some drops in
+connections (you will see this with mount button switching red / green multiple
+times)</p>
+<p>Please check your IP settings, gateways if first connections fail.</p>
+<p>If your WOL does not work, please check MAC address, WOL being enabled. If you
+switched your mount manual off and cut the power supply, sometimes WOL does not
+work the first time. You need a redundant path if you are in a remote site!</p>
+<p>Basically multiple instances of MountWizzard4 could be up and running, but
+MountWizzard4 take up to 6 parallel connections to the mount. The documentation
+allows in total 10 connection each of the two ports (3490, 3492). This might
+overload the 10 micron system.</p>
+</section>
+<section id="device-connectivity">
+<h2>Device connectivity<a class="headerlink" href="#device-connectivity" title="Link to this heading">¶</a></h2>
+<section id="ascom-device-does-not-work-connect">
+<h3>ASCOM Device does not work / connect<a class="headerlink" href="#ascom-device-does-not-work-connect" title="Link to this heading">¶</a></h3>
+<p>ASCOM uses different types of drivers for the devices. Some of them need an
+environment in 32bit or 64bit like you application. So if you are using an 64bit
+application for imaging your drivers will be 64bit compatible. In this case the
+python installation also needs to be 64bit. Otherwise the connection will fail.</p>
+<p>Modern CMOS cameras with large sensors normally work on 64bit mode.</p>
+<p>Many device driver only support one connection at the same time. So if you imaging
+application already <em>took</em> a device, MountWizzard4 might be not able to connect
+anymore.</p>
+<p>Please test your setup running with ASCOM suite (included in ASCOM platform
+installation) or any other programs you good know to test device functions
+outside MountWizzard4.</p>
+</section>
+</section>
+<section id="model-building">
+<h2>Model building<a class="headerlink" href="#model-building" title="Link to this heading">¶</a></h2>
+</section>
+<section id="updating-iers-sat-mpc-data">
+<h2>Updating IERS/SAT/MPC data<a class="headerlink" href="#updating-iers-sat-mpc-data" title="Link to this heading">¶</a></h2>
+<section id="data-could-not-be-fetched-from-internet">
+<h3>Data could not be fetched from internet<a class="headerlink" href="#data-could-not-be-fetched-from-internet" title="Link to this heading">¶</a></h3>
+<p>You need an internet connection and set MountWizzard4 in online mode to download
+new data for upload.</p>
+</section>
+</section>
+<section id="tracking-satellites">
+<h2>Tracking satellites<a class="headerlink" href="#tracking-satellites" title="Link to this heading">¶</a></h2>
+</section>
+<section id="logfiles-and-reports">
+<h2>Logfiles and reports<a class="headerlink" href="#logfiles-and-reports" title="Link to this heading">¶</a></h2>
+<section id="where-could-i-change-the-log-level">
+<h3>Where could I change the log level ?<a class="headerlink" href="#where-could-i-change-the-log-level" title="Link to this heading">¶</a></h3>
+<p>The log level could be changed under settings misc. The default setting is warning.
+If you need analyzes, please go to debug. If a driver or mount connectivity is
+related as well, please go to trace. Please be aware that log file especially in
+trace mode could become big.</p>
+<a class="reference internal image-reference" href="../_images/log_level.png"><img alt="../_images/log_level.png" class="align-center" height="1051" src="../_images/log_level.png" width="1295" />
+</a>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/help/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

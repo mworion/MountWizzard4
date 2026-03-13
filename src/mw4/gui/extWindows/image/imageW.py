@@ -318,8 +318,6 @@ class ImageWindow(MWidget):
 
     def exposeImageNDone(self, imagePath: Path) -> None:
         """ """
-        self.msg.emit(0, "Image", "Exposed n", imagePath.stem)
-
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
         self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
@@ -327,6 +325,7 @@ class ImageWindow(MWidget):
     def exposeImageN(self) -> None:
         """ """
         self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
+        self.msg.emit(1, "Image", "Expose", "Continuous start")
         self.imagingDeviceStat["exposeN"] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
         self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)

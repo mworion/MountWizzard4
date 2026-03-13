@@ -39,6 +39,7 @@ class Camera:
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
+        self.obsSite = app.mount.obsSite
         self.signals = Signals()
         self.data: dict = {}
         self.loadConfig: bool = True
@@ -55,8 +56,6 @@ class Camera:
         self.focalLength: int = 1
         self.framework: str = ""
         self.defaultConfig: dict = {"framework": "", "frameworks": {}}
-        self.obsSite = None
-
         self._binning: int = 1
         self._subFrame: int = 100
         self.posX: int = 0

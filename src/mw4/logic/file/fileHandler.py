@@ -115,9 +115,13 @@ class FileHandler:
 
     def loadFITS(self) -> None:
         """ """
-        with fits.open(self.imagePath) as fitsHandle:
-            self.image = fitsHandle[0].data
-            self.header = fitsHandle[0].header
+        with fits.open(self.imagePath) as HDUList:
+            for hdu in HDUList:
+                if hdu.data is None:
+                    continue
+                self.image = hdu.data
+                self.header = hdu.header
+                break
 
     @staticmethod
     def convHeaderXISF2FITS(header: dict) -> fits.Header:

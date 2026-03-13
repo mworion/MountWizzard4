@@ -123,7 +123,7 @@ def test_loadFITS_1(function):
         data = np.random.rand(100, 100)
         header = None
 
-    class FitsHandle:
+    class HDUList:
         @staticmethod
         def __enter__():
             return [Data(), Data()]
@@ -132,7 +132,25 @@ def test_loadFITS_1(function):
         def __exit__(a, b, c):
             return
 
-    with mock.patch.object(fits, "open", return_value=FitsHandle()):
+    with mock.patch.object(fits, "open", return_value=HDUList()):
+        function.loadFITS()
+
+
+def test_loadFITS_2(function):
+    class Data:
+        data = None
+        header = None
+
+    class HDUList:
+        @staticmethod
+        def __enter__():
+            return [Data(), Data()]
+
+        @staticmethod
+        def __exit__(a, b, c):
+            return
+
+    with mock.patch.object(fits, "open", return_value=HDUList()):
         function.loadFITS()
 
 

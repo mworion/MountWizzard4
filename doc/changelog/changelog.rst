@@ -27,7 +27,8 @@ Version 4.x
 - add: support for status of GPS modul with PPS capability
 - add: start option -e for remove logging and get lower CPU load
 - add: split Satellite window into satellite world map and satellite horizon view
-- add: support fort xisf files for image display (simple versions)
+- add: support for compressed / uncompressed xisf files for image display (simple versions)
+- add: support for compressed fits files for image display (gzip, bzip2)
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major PySide6

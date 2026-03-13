@@ -128,17 +128,13 @@ class FileHandler:
         fitsHeaderNew["NAXIS1"] = header["geometry"][0]
         fitsHeaderNew["NAXIS2"] = header["geometry"][1]
 
-        fitHeaderXisf = header["FITSKeywords"]
-        for key in fitHeaderXisf:
+        fitsHeaderXisf = header["FITSKeywords"]
+        for key in fitsHeaderXisf:
             if key in ["SIMPLE", "EXTEND", "NAXIS", "NAXIS1", "NAXIS2"]:
                 continue
-            value = fitHeaderXisf[key][0].get("value", "")
-            #
-            # ToDo: doing a correct conversion also for strings !
-            #
-            valueFloat = valueToFloat(value)
-            value = value if valueFloat is None else valueFloat
-            comment = fitHeaderXisf[key][0].get("comment", "")
+            value = fitsHeaderXisf[key][0].get("value", "")
+            value = valueToFloat(value) if value.isdigit() else value
+            comment = fitsHeaderXisf[key][0].get("comment", "")
             fitsHeaderNew.append((key, value, comment))
         return fitsHeaderNew
 

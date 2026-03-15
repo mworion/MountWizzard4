@@ -41,7 +41,9 @@ class Parent:
     width = 1000
     height = 1000
     exposureTime = 1
-    exposeFinished = Signal()
+    def exposeFinished(self):
+        return
+
     imagePath = Path("tests/testData/image/test.fit")
 
     def writeImageFitsHeader(self, hdu, data):

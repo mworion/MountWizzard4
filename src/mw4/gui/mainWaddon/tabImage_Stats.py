@@ -24,7 +24,7 @@ class ImageStats:
 
     WATNEY = RangeKeyDict(
         {
-            (0, 0.2): "Passes 14 (watneyqdb-14-20)",
+            (0.001, 0.2): "Passes 14 (watneyqdb-14-20)",
             (0.2, 0.3): "Passes 12-13 (watneyqdb-12-13)",
             (0.3, 0.5): "Passes 10-11 (watneyqdb-10-11)",
             (0.5, 0.8): "Passes 8-9 (watneyqdb-08-09)",
@@ -33,7 +33,7 @@ class ImageStats:
     )
     ASTAP = RangeKeyDict(
         {
-            (0, 0.25): "D50, H18 (exp. 10s - 20s)",
+            (0.001, 0.25): "D50, H18 (exp. 10s - 20s)",
             (0.25, 0.5): "D20, H18 (exp. 10s - 20s)",
             (0.5, 1): "D05, H18 (exp. 10s - 20s)",
             (1, 10): "D05, H18, H17 (exp. 3s - 10s)",
@@ -79,8 +79,7 @@ class ImageStats:
         self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
         self.app.update1s.connect(self.updateImageStats)
         self.app.update3s.connect(self.updateTelescopeParametersToGuiCyclic)
-        self.fovHint = None
-        self.scaleHint = None
+        self.fovHint: float = 0
 
     def initConfig(self) -> None:
         """ """
@@ -105,11 +104,9 @@ class ImageStats:
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
             resolutionY = pixelSizeY / focalLength * 206.265
-            self.scaleHint = np.sqrt(resolutionX * resolutionX + resolutionY * resolutionY)
         else:
             resolutionX = None
             resolutionY = None
-            self.scaleHint = None
 
         speed = focalLength / aperture if aperture else None
 
@@ -129,7 +126,7 @@ class ImageStats:
         else:
             FOVX = None
             FOVY = None
-            self.fovHint = None
+            self.fovHint = 0
 
         if pixelSizeX and speed:
             focusCCD = speed * pixelSizeX
@@ -162,20 +159,12 @@ class ImageStats:
         guiSetText(self.ui.focusBlue, "3.0f", focusBlue)
         guiSetText(self.ui.focusCCD, "3.0f", focusCCD)
 
-        hasFovHint = self.fovHint is not None
-        if hasFovHint:
-            watneyText = self.WATNEY.get(self.fovHint, 'Out of Range')
-            astapText = self.ASTAP.get(self.fovHint, 'Out of Range')
-            astrometryText = self.ASTROMETRY.get(self.fovHint, 'Out of Range')
-        else:
-            watneyText = None
-            astapText = None
-            astrometryText = None
-
-        self.ui.openWatneyCatalog.setEnabled(hasFovHint)
-        self.ui.openASTAPCatalog.setEnabled(hasFovHint)
-        self.ui.openAstrometryCatalog.setEnabled(hasFovHint)
-
+        watneyText = self.WATNEY.get(self.fovHint, "Out of Range")
+        astapText = self.ASTAP.get(self.fovHint, "Out of Range")
+        astrometryText = self.ASTROMETRY.get(self.fovHint, "Out of Range")
+        self.ui.openWatneyCatalog.setEnabled(watneyText != "Out of Range")
+        self.ui.openASTAPCatalog.setEnabled(astapText != "Out of Range")
+        self.ui.openAstrometryCatalog.setEnabled(astrometryText != "Out of Range")
         guiSetText(self.ui.watneyIndex, "s", watneyText)
         guiSetText(self.ui.astapIndex, "s", astapText)
         guiSetText(self.ui.astrometryIndex, "s", astrometryText)

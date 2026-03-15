@@ -144,7 +144,6 @@ class Camera:
     def expose(self, imagePath: Path = "", exposureTime: float = 1, binning: int = 1) -> bool:
         """ """
         if self.exposing:
-            print('running')
             return False
 
         self.imagePath = imagePath

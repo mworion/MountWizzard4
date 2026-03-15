@@ -164,9 +164,9 @@ class ImageStats:
 
         hasFovHint = self.fovHint is not None
         if hasFovHint:
-            watneyText = self.WATNEY[self.fovHint]
-            astapText = self.ASTAP[self.fovHint]
-            astrometryText = self.ASTROMETRY[self.fovHint]
+            watneyText = self.WATNEY.get(self.fovHint, 'Out of Range')
+            astapText = self.ASTAP.get(self.fovHint, 'Out of Range')
+            astrometryText = self.ASTROMETRY.get(self.fovHint, 'Out of Range')
         else:
             watneyText = None
             astapText = None

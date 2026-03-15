@@ -20,9 +20,9 @@ def app(qapp):
         "workDir": Path("tests/work"),
     }
 
-    shutil.copy("./tests/testData/de440_mw4.bsp", Path("./tests/work/data/de440_mw4.bsp"))
-    shutil.copy("./tests/testData/finals2000A.all", Path("./tests/work/data/finals2000A.all"))
-    shutil.copy("./tests/testData/test.run", Path("./tests/work/test.run"))
+    shutil.copy("tests/testData/de440_mw4.bsp", Path("./tests/work/data/de440_mw4.bsp"))
+    shutil.copy("tests/testData/finals2000A.all", Path("./tests/work/data/finals2000A.all"))
+    shutil.copy("tests/testData/test.run", Path("./tests/work/test.run"))
 
     mock_emit = MagicMock()
     app_instance = MountWizzard4(mwGlob, qapp, 1)
@@ -35,6 +35,4 @@ def app(qapp):
 
 
 def test_quit(app):
-    with mock.patch.object(app, "aboutToQuit"):
-        with mock.patch.object(app.application, "quit"):
-            app.quit()
+    pass

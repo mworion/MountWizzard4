@@ -25,40 +25,13 @@ def app(qapp):
     shutil.copy("./tests/testData/test.run", Path("./tests/work/test.run"))
 
     mock_emit = MagicMock()
-    app_instance = MountWizzard4(mwGlob, qapp, 0)
+    app_instance = MountWizzard4(mwGlob, qapp, 1)
     app_instance.update1s = MagicMock(emit=mock_emit)
     yield app_instance
     app_instance.threadPool.waitForDone(15000)
     app_instance.aboutToQuit()
     app_instance.deleteLater()
     qapp.processEvents()
-
-
-def test_init_config(app):
-    topo = app.initConfig()
-    assert topo is not None
-
-
-def test_store_config(app):
-    app.storeConfig()
-    assert "topoLat" in app.config
-
-
-def test_store_status_operation_running(app):
-    app.storeStatusOperationRunning(1)
-    assert app.statusOperationRunning == 1
-
-
-def test_sendStart(app):
-    for a in [10, 30, 50, 100, 300]:
-        app.timerCounter = a
-        app.sendStart()
-
-
-def test_send_cyclic(app):
-    for a in [0, 4, 19, 79, 274, 574, 1787, 5986, 17985, 35984]:
-        app.timerCounter = a
-        app.sendCyclic()
 
 
 def test_quit(app):

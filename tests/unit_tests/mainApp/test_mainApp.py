@@ -29,9 +29,6 @@ def app(qapp):
     app_instance.update1s = MagicMock(emit=mock_emit)
     yield app_instance
     app_instance.threadPool.waitForDone(15000)
-    app_instance.aboutToQuit()
-    app_instance.deleteLater()
-    qapp.processEvents()
 
 
 def test_init_config(app):

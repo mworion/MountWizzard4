@@ -106,6 +106,7 @@ jobs:
         run: |
           pytest tests/unit_tests/base ${{env.cov}}
           pytest tests/unit_tests/logic ${{env.cov}}
+          pytest tests/unit_tests/logic_new ${{env.cov}}
           pytest tests/unit_tests/mountcontrol ${{env.cov}}
           pytest tests/unit_tests/indibase ${{env.cov}}
 

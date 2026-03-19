@@ -36,7 +36,7 @@ def function(qapp):
 
 @pytest.fixture
 def mocked_sleepAndEvents(monkeypatch, function):
-    def test(a):
+    def test(_):
         function.pollStatusRunState = False
 
     monkeypatch.setattr("mw4.gui.extWindows.downloadPopupW.sleepAndEvents", test)
@@ -67,13 +67,13 @@ def test_getFileFromUrl_1(function):
         status_code = 200
 
         @staticmethod
-        def iter_content(a):
+        def iter_content(_):
             return [b"s" * 512]
 
     function.cancel = False
     with mock.patch.object(requests, "get", return_value=Response()):
         with mock.patch.object(builtins, "open"):
-            suc = function.getFileFromUrl("http://local", "tests/work/temp/test.txt")
+            suc = function.getFileFromUrl(Path("http://local"), Path("tests/work/temp/test.txt"))
             assert suc
 
 
@@ -84,12 +84,12 @@ def test_getFileFromUrl_2(function):
         status_code = 200
 
         @staticmethod
-        def iter_content(a):
+        def iter_content(_):
             return [b"s" * 512]
 
     with mock.patch.object(requests, "get", return_value=Response()):
         with mock.patch.object(builtins, "open"):
-            suc = function.getFileFromUrl("http://local", "tests/work/temp/test.txt")
+            suc = function.getFileFromUrl(Path("http://local"), Path("tests/work/temp/test.txt"))
             assert suc
 
 
@@ -100,12 +100,12 @@ def test_getFileFromUrl_3(function):
         status_code = 500
 
         @staticmethod
-        def iter_content(a):
+        def iter_content(_):
             return [b"s" * 512]
 
     with mock.patch.object(requests, "get", return_value=Response()):
         with mock.patch.object(builtins, "open"):
-            suc = function.getFileFromUrl("http://local", "tests/work/temp/test.txt")
+            suc = function.getFileFromUrl(Path("http://local"), Path("tests/work/temp/test.txt"))
             assert not suc
 
 
@@ -191,7 +191,7 @@ def test_downloadFileWorker_9(function, mocked_sleepAndEvents):
         return_value=False,
     ):
         with mock.patch.object(function, "unzipFile"):
-            suc = function.downloadFileWorker(url="", dest=Path("tests/work/temp/test.txt"))
+            suc = function.downloadFileWorker(url=Path(), dest=Path("tests/work/temp/test.txt"))
             assert not suc
 
 

@@ -20,18 +20,15 @@ def app(qapp):
         "workDir": Path("tests/work"),
     }
 
-    shutil.copy("tests/testData/de440_mw4.bsp", Path("./tests/work/data/de440_mw4.bsp"))
-    shutil.copy("tests/testData/finals2000A.all", Path("./tests/work/data/finals2000A.all"))
-    shutil.copy("tests/testData/test.run", Path("./tests/work/test.run"))
+    shutil.copy("tests/testData/de440_mw4.bsp", Path("tests/work/data/de440_mw4.bsp"))
+    shutil.copy("tests/testData/finals2000A.all", Path("tests/work/data/finals2000A.all"))
+    shutil.copy("tests/testData/test.run", Path("tests/work/test.run"))
 
     mock_emit = MagicMock()
     app_instance = MountWizzard4(mwGlob, qapp, 1)
     app_instance.update1s = MagicMock(emit=mock_emit)
     yield app_instance
     app_instance.threadPool.waitForDone(15000)
-    app_instance.aboutToQuit()
-    app_instance.deleteLater()
-    qapp.processEvents()
 
 
 def test_init_config(app):

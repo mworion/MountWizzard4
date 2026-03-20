@@ -21,15 +21,15 @@ import shutil
 import unittest.mock as mock
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 from pathlib import Path
-from PySide6.QtWidgets import QWidget
+from mw4.gui.utilities.toolsQtWidget import MWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    widget = QWidget()
+    widget = MWidget()
     widget.app = App()
-    window = DownloadPopup(parentWidget=widget, url="", dest="")
+    window = DownloadPopup(parentWidget=widget, url=Path(), dest=Path())
     yield window
     window.threadPool.waitForDone(10000)
 

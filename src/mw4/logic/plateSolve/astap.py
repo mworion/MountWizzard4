@@ -20,6 +20,26 @@ from pathlib import Path
 
 class ASTAP:
     """ """
+    apps = {
+        "Darwin": {
+            "gui": "astap",
+            "cli": "astap_cli",
+            "appPath": Path("/Applications/ASTAP.app/Contents/MacOS"),
+            "indexPath": Path("/usr/local/opt/astap"),
+        },
+        "Linux": {
+            "gui": "astap",
+            "cli": "astap_cli",
+            "appPath": Path("/opt/astap"),
+            "indexPath": Path("/opt/astap"),
+        },
+        "Windows": {
+            "gui": "astap.exe",
+            "cli": "astap_cli.exe",
+            "appPath": Path("C:\\Program Files\\astap"),
+            "indexPath": Path("C:\\Program Files\\astap"),
+        },
+    }
 
     returnCodes = {
         0: "No errors",
@@ -39,8 +59,9 @@ class ASTAP:
 
         self.result: dict = {"success": False}
         self.process = None
-        self.indexPath = Path("")
-        self.appPath = Path("")
+        self.indexPath: Path = Path()
+        self.appPath: Path = Path()
+        self.binPath: Path = Path()
         self.setDefaultPath()
         self.deviceName: str = "ASTAP"
         self.timeout: int = 30
@@ -58,26 +79,18 @@ class ASTAP:
 
     def setDefaultPath(self) -> None:
         """ """
-        if platform.system() == "Darwin":
-            self.appPath = Path("/Applications/ASTAP.app/Contents/MacOS")
-            self.indexPath = Path("/usr/local/opt/astap")
+        self.appPath = self.apps[platform.system()]["appPath"]
+        self.indexPath = self.apps[platform.system()]["indexPath"]
+        self.binPath = self.appPath / self.apps[platform.system()]["gui"]
 
-        elif platform.system() == "Linux":
-            self.appPath = Path("/opt/astap")
-            self.indexPath = Path("/opt/astap")
-
-        elif platform.system() == "Windows":
-            self.appPath = Path("C:\\Program Files\\astap")
-            self.indexPath = Path("C:\\Program Files\\astap")
 
     def solve(self, imagePath: Path, updateHeader: bool) -> dict:
         """ """
         tempPath = self.tempDir / "temp"
-        binPath = self.appPath / "astap"
         wcsPath = self.tempDir / "temp.wcs"
         wcsPath.unlink(missing_ok=True)
 
-        runnable = [binPath, "-f", imagePath, "-o", tempPath, "-wcs"]
+        runnable = [self.binPath, "-f", imagePath, "-o", tempPath, "-wcs"]
         options = [
             "-r",
             f"{self.searchRadius:1.1f}",
@@ -96,13 +109,14 @@ class ASTAP:
         """ """
         self.appPath = appPath
 
-        if platform.system() == "Darwin" or platform.system() == "Linux":
-            program = self.appPath / "astap"
-        elif platform.system() == "Windows":
-            program = self.appPath / "astap.exe"
-        else:
-            return False
-        return program.is_file()
+        bin1 = self.appPath / self.apps[platform.system()]["gui"]
+        bin2 = self.appPath / self.apps[platform.system()]["cli"]
+
+        if bin1.is_file() or bin2.is_file():
+            self.binPath = bin1 if bin1.is_file() else bin2
+            return True
+
+        return False
 
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
         """ """

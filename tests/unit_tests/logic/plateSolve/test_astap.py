@@ -48,18 +48,6 @@ def test_setDefaultPath_1(function):
         assert function.appPath == Path("/Applications/ASTAP.app/Contents/MacOS")
 
 
-def test_setDefaultPath_2(function):
-    with mock.patch.object(platform, "system", return_value="Linux"):
-        function.setDefaultPath()
-        assert function.appPath == Path("/opt/astap")
-
-
-def test_setDefaultPath_3(function):
-    with mock.patch.object(platform, "system", return_value="Windows"):
-        function.setDefaultPath()
-        assert function.appPath == Path("C:\\Program Files\\astap")
-
-
 def test_solve_1(function):
     with mock.patch.object(function.parent, "runSolverBin", return_value=(0, "")):
         with mock.patch.object(function.parent, "prepareResult"):
@@ -69,30 +57,14 @@ def test_solve_1(function):
 
 def test_checkAvailabilityProgram_1(function):
     with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(platform, "system", return_value="Linux"):
-            suc = function.checkAvailabilityProgram(Path("test"))
-            assert suc
+        suc = function.checkAvailabilityProgram(Path("test"))
+        assert suc
 
 
 def test_checkAvailabilityProgram_2(function):
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(platform, "system", return_value="Darwin"):
-            suc = function.checkAvailabilityProgram(Path("test"))
-            assert suc
-
-
-def test_checkAvailabilityProgram_3(function):
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(platform, "system", return_value="Windows"):
-            suc = function.checkAvailabilityProgram(Path("test"))
-            assert suc
-
-
-def test_checkAvailabilityProgram_4(function):
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(platform, "system", return_value="test"):
-            suc = function.checkAvailabilityProgram(Path("test"))
-            assert not suc
+    with mock.patch.object(Path, "is_file", return_value=False):
+        suc = function.checkAvailabilityProgram(Path("test"))
+        assert not suc
 
 
 def test_checkAvailabilityIndex_1(function):

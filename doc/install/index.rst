@@ -210,6 +210,15 @@ commands:
 After that, please proceed with the use of MountWizzard4 like described
 above.
 
+
+Installing on StellarMate
+-------------------------
+A good option to run MountWizzard4 on a linux based system is the use of StellarMate.
+The installation process is similar to the one described above, but there are some
+specific steps to follow. Please check the following link for detailed instructions:
+https://stellarmate.com/support/faq/stellarmate/how-to-install-mw4-on-sm-os-2-0.html
+
+
 Updating python in workdir
 --------------------------
 There might be some reasons for updating the python part due to security patches

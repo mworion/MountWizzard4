@@ -20,8 +20,11 @@ from pathlib import Path
 
 class ASTAP:
     """ """
+    log = logging.getLogger("MW4")
     GUI = "astap"
     CLI = "astap_cli"
+    indexes = ["g17*.290", "g18*.290", "h17*.1476", "h18*.1476",
+               "d80*.1476", "d50*.1476", "d20*.1476", "d05*.1476"]
     apps = {
         "Darwin": {
             "appPath": Path("/Applications/ASTAP.app/Contents/MacOS"),
@@ -36,7 +39,6 @@ class ASTAP:
             "indexPath": Path("C:\\Program Files\\astap"),
         },
     }
-
     returnCodes = {
         0: "No errors",
         1: "No solution",
@@ -46,7 +48,6 @@ class ASTAP:
         33: "Error reading star database",
         -9: "Process aborted",
     }
-    log = logging.getLogger("MW4")
 
     def __init__(self, parent):
         self.parent = parent
@@ -117,5 +118,4 @@ class ASTAP:
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
         """ """
         self.indexPath = indexPath
-        indexes = ["g17*.290", "g18*.290", "h17*.1476", "h18*.1476", "d80*.1476", "d50*.1476", "d20*.1476", "d05*.1476"]
-        return any([len(list(self.indexPath.glob(i))) > 0 for i in indexes])
+        return any([len(list(self.indexPath.glob(i))) > 0 for i in self.indexes])

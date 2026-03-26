@@ -23,9 +23,23 @@ from pathlib import Path
 
 class Astrometry:
     """ """
-
     log = logging.getLogger("MW4")
     returnCodes: dict = {0: "No errors", 1: "solve-field error"}
+    home = os.environ.get("HOME", "")
+    apps = {
+        "Darwin": {
+            "appPath": Path("/Applications/KStars.app/Contents/MacOS/astrometry/bin"),
+            "indexPath": Path(f"{home}/Library/Application Support/Astrometry"),
+        },
+        "Linux": {
+            "appPath": Path("/usr/bin"),
+            "indexPath": Path("/usr/share/astrometry"),
+        },
+        "Windows": {
+            "appPath": Path(),
+            "indexPath": Path(),
+        },
+    }
 
     def __init__(self, parent=None):
         self.parent = parent
@@ -53,18 +67,8 @@ class Astrometry:
 
     def setDefaultPath(self) -> None:
         """ """
-        if platform.system() == "Darwin":
-            home = os.environ.get("HOME", "")
-            self.appPath = Path("/Applications/KStars.app/Contents/MacOS/astrometry/bin")
-            self.indexPath = Path(home + "/Library/Application Support/Astrometry")
-
-        elif platform.system() == "Linux":
-            self.appPath = Path("/usr/bin")
-            self.indexPath = Path("/usr/share/astrometry")
-
-        elif platform.system() == "Windows":
-            self.appPath = Path("")
-            self.indexPath = Path("")
+        self.appPath = self.apps[platform.system()]["appPath"]
+        self.indexPath = self.apps[platform.system()]["indexPath"]
         self.saveConfigFile()
 
     def saveConfigFile(self):
@@ -143,8 +147,6 @@ class Astrometry:
 
         if platform.system() == "Darwin" or platform.system() == "Linux":
             program = self.appPath / "solve-field"
-        elif platform.system() == "Windows":
-            program = Path("")
         else:
             return False
         return program.is_file()

@@ -104,7 +104,7 @@ def test_checkAvailabilityProgram_3(function):
     with mock.patch.object(Path, "is_file", return_value=True):
         with mock.patch.object(platform, "system", return_value="Windows"):
             suc = function.checkAvailabilityProgram(Path("test"))
-            assert suc
+            assert not suc
 
 
 def test_checkAvailabilityProgram_4(function):

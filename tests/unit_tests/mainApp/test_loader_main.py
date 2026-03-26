@@ -13,14 +13,15 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import glob
+import pytest
 import mw4.loader
 import os
 import PySide6
 import sys
 import unittest.mock as mock
 from pathlib import Path
+
 
 
 def test_main_1():
@@ -56,7 +57,7 @@ def test_main_1():
         "tempDir": Path("tests/work/temp"),
         "imageDir": Path("tests/work/image"),
         "modelDir": Path("tests/work/model"),
-        "workDir": Path("mw4/tests/work"),
+        "workDir": Path("tests/work"),
     }
     with mock.patch.object(PySide6.QtCore.QBasicTimer, "start"):
         with mock.patch.object(PySide6.QtCore.QTimer, "start"):
@@ -69,4 +70,4 @@ def test_main_1():
                             ):
                                 with mock.patch.object(sys, "exit"):
                                     with mock.patch.object(sys, "excepthook"):
-                                        mw4.loader.main()
+                                        mw4.loader.main(efficient=False)

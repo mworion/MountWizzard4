@@ -20,22 +20,18 @@ from pathlib import Path
 
 class ASTAP:
     """ """
+    GUI = "astap"
+    CLI = "astap_cli"
     apps = {
         "Darwin": {
-            "gui": "astap",
-            "cli": "astap_cli",
             "appPath": Path("/Applications/ASTAP.app/Contents/MacOS"),
             "indexPath": Path("/usr/local/opt/astap"),
         },
         "Linux": {
-            "gui": "astap",
-            "cli": "astap_cli",
             "appPath": Path("/opt/astap"),
             "indexPath": Path("/opt/astap"),
         },
         "Windows": {
-            "gui": "astap.exe",
-            "cli": "astap_cli.exe",
             "appPath": Path("C:\\Program Files\\astap"),
             "indexPath": Path("C:\\Program Files\\astap"),
         },
@@ -81,7 +77,7 @@ class ASTAP:
         """ """
         self.appPath = self.apps[platform.system()]["appPath"]
         self.indexPath = self.apps[platform.system()]["indexPath"]
-        self.binPath = self.appPath / self.apps[platform.system()]["gui"]
+        self.binPath = self.appPath / self.GUI
 
 
     def solve(self, imagePath: Path, updateHeader: bool) -> dict:
@@ -109,8 +105,8 @@ class ASTAP:
         """ """
         self.appPath = appPath
 
-        bin1 = self.appPath / self.apps[platform.system()]["gui"]
-        bin2 = self.appPath / self.apps[platform.system()]["cli"]
+        bin1 = self.appPath / self.GUI
+        bin2 = self.appPath / self.CLI
 
         if bin1.is_file() or bin2.is_file():
             self.binPath = bin1 if bin1.is_file() else bin2
@@ -121,22 +117,5 @@ class ASTAP:
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
         """ """
         self.indexPath = indexPath
-
-        g17 = "g17*.290"
-        g18 = "g18*.290"
-        h17 = "h17*.1476"
-        h18 = "h18*.1476"
-        d80 = "d80*.1476"
-        d50 = "d50*.1476"
-        d20 = "d20*.1476"
-        d05 = "d05*.1476"
-
-        isG17 = len(list(self.indexPath.glob(g17))) > 0
-        isG18 = len(list(self.indexPath.glob(g18))) > 0
-        isH17 = len(list(self.indexPath.glob(h17))) > 0
-        isH18 = len(list(self.indexPath.glob(h18))) > 0
-        isD80 = len(list(self.indexPath.glob(d80))) > 0
-        isD50 = len(list(self.indexPath.glob(d50))) > 0
-        isD20 = len(list(self.indexPath.glob(d20))) > 0
-        isD05 = len(list(self.indexPath.glob(d05))) > 0
-        return any((isG17, isG18, isH17, isH18, isD05, isD20, isD50, isD80))
+        indexes = ["g17*.290", "g18*.290", "h17*.1476", "h18*.1476", "d80*.1476", "d50*.1476", "d20*.1476", "d05*.1476"]
+        return any([len(list(self.indexPath.glob(i))) > 0 for i in indexes])

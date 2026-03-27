@@ -65,7 +65,7 @@ dependencies = [
     "qimage2ndarray==1.10.0",
     "skyfield==1.54",
     "sgp4==2.25",
-    "requests==2.32.5",
+    "requests==2.33.0",
     "requests_toolbelt==1.0.0",
     "importlib_metadata==8.7.1",
     "python-dateutil==2.9.0.post0",

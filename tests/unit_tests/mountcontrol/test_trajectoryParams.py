@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import unittest
 from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.trajectoryParams import TrajectoryParams

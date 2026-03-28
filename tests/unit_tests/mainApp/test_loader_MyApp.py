@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import mw4.loader
 import pytest
 import unittest.mock as mock

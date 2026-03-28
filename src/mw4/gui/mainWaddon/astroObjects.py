@@ -146,7 +146,7 @@ class AstroObjects:
         else:
             self.msg.emit(2, self.objectText.capitalize(), "Mount upload", "Failed")
 
-    def runUploadPopup(self, url: str) -> None:
+    def runUploadPopup(self, url: Path) -> None:
         """ """
         self.uploadPopup = UploadPopup(self.window, url, [self.objectText], self.tempDir)
         self.uploadPopup.show()
@@ -163,7 +163,7 @@ class AstroObjects:
             )
             return
         self.dbProcFuncs[self.objectText](objects, dataFilePath=self.tempDir)
-        url = self.app.mount.host[0]
+        url = Path(self.app.mount.host[0])
         self.runUploadPopup(url)
 
     def progGUI(self, text: str) -> None:

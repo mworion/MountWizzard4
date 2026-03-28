@@ -108,7 +108,6 @@ class CameraNINA(NINAClass):
         if not self.parent.exposing:
             self.parent.imagePath = Path()
         else:
-            # sleepAndEvents(500)
             self.parent.updateImageFitsHeaderPointing()
 
     def expose(self) -> None:

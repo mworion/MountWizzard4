@@ -139,6 +139,7 @@ class Camera:
         """ """
         self.exposing = False
         self.signals.message.emit("")
+        self.signals.saved.emit(self.imagePath)
         self.app.showImage.emit(self.imagePath)
 
     def expose(self, imagePath: Path = "", exposureTime: float = 1, binning: int = 1) -> bool:

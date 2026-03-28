@@ -94,7 +94,6 @@ class CameraAlpaca(AlpacaClass):
         hdu = fits.PrimaryHDU(data=data)
         hdu.writeto(self.parent.imagePath, overwrite=True)
         self.parent.writeImageFitsHeader()
-        self.signals.saved.emit(self.parent.imagePath)
 
     def expose(self) -> None:
         """ """

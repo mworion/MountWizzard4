@@ -174,7 +174,6 @@ class CameraIndi(IndiClass):
             HDU.writeto(self.parent.imagePath, overwrite=True)
             self.parent.writeImageFitsHeader()
         self.parent.exposeFinished()
-        self.signals.saved.emit(self.parent.imagePath)
 
     def updateBLOB(self, deviceName: str, propertyName: str) -> None:
         """ """

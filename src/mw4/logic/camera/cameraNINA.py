@@ -104,12 +104,11 @@ class CameraNINA(NINAClass):
         self.parent.waitDownload()
         self.signals.downloaded.emit(self.parent.imagePath)
         self.parent.waitSave()
-        self.signals.saved.emit(self.parent.imagePath)
 
         if not self.parent.exposing:
             self.parent.imagePath = Path()
         else:
-            sleepAndEvents(500)
+            # sleepAndEvents(500)
             self.parent.updateImageFitsHeaderPointing()
 
     def expose(self) -> None:

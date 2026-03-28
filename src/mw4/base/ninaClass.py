@@ -19,6 +19,8 @@ from mw4.base.driverDataClass import DriverData, RemoteDeviceShutdown
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QTimer
 
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+
 
 class NINAClass(DriverData):
     """ """
@@ -38,17 +40,17 @@ class NINAClass(DriverData):
         self.msg = parent.app.msg
         self.signals = parent.signals
         self.threadPool = parent.app.threadPool
-        self.updateRate = 1000
-        self.loadConfig = False
-        self._deviceName = ""
+        self.updateRate: int = 1000
+        self.loadConfig: bool = False
+        self._deviceName: str = ""
         self.defaultConfig = {
             "deviceList": ["N.I.N.A."],
             "deviceName": "N.I.N.A.",
         }
         self.signalRS = RemoteDeviceShutdown()
 
-        self.deviceConnected = False
-        self.serverConnected = False
+        self.deviceConnected: bool = False
+        self.serverConnected: bool = False
         self.workerData: Worker | None = None
         self.workerGetConfig: Worker | None = None
         self.workerStatus: Worker | None = None
@@ -57,7 +59,6 @@ class NINAClass(DriverData):
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
         self.cycleDevice.timeout.connect(self.pollStatus)
-
         self.cycleData = QTimer()
         self.cycleData.setSingleShot(False)
         self.cycleData.timeout.connect(self.pollData)
@@ -107,12 +108,14 @@ class NINAClass(DriverData):
         devName = self.deviceName.replace(" ", "%20")
         prop = f"connectdevice/{self.DEVICE_TYPE}/{devName}"
         response = self.requestProperty(prop)
+        print("connect", response)
         return response.get("Success", False)
 
     def disconnectDevice(self) -> bool:
         """ """
         prop = f"disconnectdevice/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
+        print("disconnect", response)
         return response.get("Success", False)
 
     def enumerateDevice(self) -> list:
@@ -211,8 +214,6 @@ class NINAClass(DriverData):
     def stopCommunication(self) -> None:
         """ """
         self.stopNINATimer()
-        if self.deviceName != "N.I.N.A. controlled":
-            self.disconnectDevice()
         self.deviceConnected = False
         self.serverConnected = False
         self.signals.deviceDisconnected.emit(f"{self.deviceName}")

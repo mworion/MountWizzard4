@@ -38,9 +38,9 @@ class SGProClass(DriverData):
         self.msg = parent.app.msg
         self.signals = parent.signals
         self.threadPool = parent.app.threadPool
-        self.updateRate = 1000
-        self.loadConfig = False
-        self._deviceName = ""
+        self.updateRate: int = 1000
+        self.loadConfig: bool = False
+        self._deviceName: str = ""
         self.defaultConfig = {
             "deviceList": ["SGPro"],
             "deviceName": "SGPro",
@@ -57,7 +57,6 @@ class SGProClass(DriverData):
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
         self.cycleDevice.timeout.connect(self.pollStatus)
-
         self.cycleData = QTimer()
         self.cycleData.setSingleShot(False)
         self.cycleData.timeout.connect(self.pollData)
@@ -201,8 +200,6 @@ class SGProClass(DriverData):
     def stopCommunication(self) -> None:
         """ """
         self.stopSGProTimer()
-        if self.deviceName != "SGPro controlled":
-            self.sgDisconnectDevice()
         self.deviceConnected = False
         self.serverConnected = False
         self.signals.deviceDisconnected.emit(f"{self.deviceName}")

@@ -32,8 +32,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui = analyse_ui.Ui_AnalyseDialog()
         self.ui.setupUi(self)
 
-        self.latitude: np.ndarray = np.array([])
-        self.pierside: np.ndarray = np.array([])
+        self.latitude: float = 0
+        self.pierside: list[str] = []
         self.countSequence: np.ndarray = np.array([])
         self.errorIndex: np.ndarray = np.array([])
         self.scaleS: np.ndarray = np.array([])
@@ -178,7 +178,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                 model[key].append(modelJSON[index][key])
 
         self.latitude = modelJSON[0].get("latitude")
-        self.pierside = self.list2array(model["pierside"])
+        self.pierside = model["pierside"]
         self.countSequence = self.list2array(model["countSequence"], dtype=np.int64)
         self.errorIndex = self.list2array(model["errorIndex"], dtype=np.int64) - 1
         self.scaleS = self.list2array(model["scaleS"], dtype=np.float32)
@@ -487,8 +487,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
     def drawAll(self) -> None:
         """ """
-        if self.errorIndex is None:
-            return
         for chart in self.charts:
             chart()
             sleepAndEvents(0)

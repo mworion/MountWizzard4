@@ -20,7 +20,7 @@ import unittest.mock as mock
 from mw4.gui.extWindows.satelliteHorW import SatelliteHorizonWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from PySide6.QtGui import QCloseEvent
-from skyfield.api import Angle, EarthSatellite, wgs84
+from skyfield.api import Angle, EarthSatellite
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -95,7 +95,8 @@ def test_updatePointerAltAz_4(function):
 
 def test_updatePositions_1(function):
     function.satellite = None
-    function.updatePositions("t", "loc")
+    ts = function.app.mount.obsSite.ts
+    function.updatePositions(ts, "loc")
 
 
 def test_updatePositions_2(function):
@@ -142,15 +143,15 @@ def test_unlinkWrap(function):
 
 
 def test_prepareHorizon(function):
-    function.prepareHorizon(pg.PlotItem())
+    function.prepareHorizon(pg.PlotWidget())
 
 
 def test_prepareHorizonSatellite(function):
-    function.prepareHorizonSatellite(pg.PlotItem())
+    function.prepareHorizonSatellite(pg.PlotWidget())
 
 
 def test_preparePointer(function):
-    function.preparePointer(pg.PlotItem())
+    function.preparePointer(pg.PlotWidget())
 
 
 def test_drawHorizonTrajectory_1(function):
@@ -174,7 +175,7 @@ def test_drawHorizonTrajectory_1(function):
         {"rise": t3, "culminate": t3, "flip": t3, "settle": t4},
     ]
     function.satOrbits = satOrbits
-    function.drawHorizonTrajectory(pg.PlotItem(), [], [])
+    function.drawHorizonTrajectory(pg.PlotWidget(), [], [])
 
 
 def test_drawHorizon(function):
@@ -187,14 +188,14 @@ def test_drawHorizonView_1(function):
             with mock.patch.object(function, "prepareHorizonSatellite"):
                 with mock.patch.object(function, "preparePointer"):
                     with mock.patch.object(function, "drawHorizon"):
-                        function.drawHorizonView(1, 1)
+                        function.drawHorizonView([1], [1])
 
 
 def test_drawSatellite_1(function):
     with mock.patch.object(function, "drawHorizonView"):
-        function.drawSatellite(1, None, 1, 1, "")
+        function.drawSatellite(1, None, [1], [1], "")
 
 
 def test_drawSatellite_2(function):
     with mock.patch.object(function, "drawHorizonView"):
-        function.drawSatellite(1, [1], 1, 1, "")
+        function.drawSatellite(1, [1], [1], [1], "")

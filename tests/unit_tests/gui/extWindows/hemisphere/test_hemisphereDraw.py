@@ -18,9 +18,9 @@ import pyqtgraph as pg
 import pytest
 import shutil
 import unittest.mock as mock
+from PySide6.QtCore import QPointF
 from mw4.gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
-from PySide6.QtCore import QPointF
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -386,14 +386,14 @@ def test_mouseDoubleClick_1(function):
     function.ui.alignmentModeHem.setChecked(True)
     function.ui.normalModeHem.setChecked(False)
     with mock.patch.object(function, "slewStar"):
-        function.mouseDoubleClick(1, 2)
+        function.mouseDoubleClick(1, QPointF(1, 1))
 
 
 def test_mouseDoubleClick_2(function):
     function.ui.alignmentModeHem.setChecked(False)
     function.ui.normalModeHem.setChecked(True)
     with mock.patch.object(function, "slewDirect"):
-        function.mouseDoubleClick(1, 2)
+        function.mouseDoubleClick(1, QPointF(1, 1))
 
 
 def test_drawTab_1(function):

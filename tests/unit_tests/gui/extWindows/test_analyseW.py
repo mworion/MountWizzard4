@@ -56,11 +56,6 @@ def test_closeEvent_1(function):
             function.closeEvent(QCloseEvent)
 
 
-def test_resizeEvent(function):
-    with mock.patch.object(MWidget, "resizeEvent"):
-        function.resizeEvent(QResizeEvent)
-
-
 def test_showWindow(function):
     with mock.patch.object(function, "show"):
         function.showWindow()
@@ -124,75 +119,75 @@ def test_showAnalyse_1(function):
 
 
 def test_draw_raRawErrors(function):
-    function.errorRA_S = [0, 1, 2]
-    function.errorDEC_S = [0, 1, 2]
-    function.azimuth = [0, 1, 2]
-    function.altitude = [0, 1, 2]
+    function.errorRA_S = np.array([0, 1, 2])
+    function.errorDEC_S = np.array([0, 1, 2])
+    function.azimuth = np.array([0, 1, 2])
+    function.altitude = np.array([0, 1, 2])
     function.drawRaRawErrors()
 
 
 def test_draw_decRawErrors(function):
-    function.errorRA_S = [0, 1, 2]
-    function.errorDEC_S = [0, 1, 2]
-    function.azimuth = [0, 1, 2]
-    function.altitude = [0, 1, 2]
+    function.errorRA_S = np.array([0, 1, 2])
+    function.errorDEC_S = np.array([0, 1, 2])
+    function.azimuth = np.array([0, 1, 2])
+    function.altitude = np.array([0, 1, 2])
     function.drawDecRawErrors()
 
 
 def test_draw_raErrors(function):
-    function.errorRA = [0, 1, 2]
-    function.errorDEC = [0, 1, 2]
-    function.azimuth = [0, 1, 2]
-    function.altitude = [0, 1, 2]
+    function.errorRA = np.array([0, 1, 2])
+    function.errorDEC = np.array([0, 1, 2])
+    function.azimuth = np.array([0, 1, 2])
+    function.altitude = np.array([0, 1, 2])
     function.drawRaErrors()
 
 
 def test_draw_decErrors(function):
-    function.errorRA = [0, 1, 2]
-    function.errorDEC = [0, 1, 2]
-    function.azimuth = [0, 1, 2]
-    function.altitude = [0, 1, 2]
+    function.errorRA = np.array([0, 1, 2])
+    function.errorDEC = np.array([0, 1, 2])
+    function.azimuth = np.array([0, 1, 2])
+    function.altitude = np.array([0, 1, 2])
     function.drawDecError()
 
 
 def test_draw_raErrorsRef(function):
-    function.angularPosRA = [0, 1, 2]
-    function.errorRA = [0, 0, 0]
+    function.angularPosRA = np.array([0, 1, 2])
+    function.errorRA = np.array([0, 0, 0])
     function.pierside = ["E", "W", "E"]
     function.drawRaErrorsRef()
 
 
 def test_draw_decErrorsRef(function):
-    function.angularPosDEC = [0, 0, 0]
-    function.errorDEC = [0, 0, 0]
+    function.angularPosDEC = np.array([0, 0, 0])
+    function.errorDEC = np.array([0, 0, 0])
     function.pierside = ["E", "W", "E"]
     function.drawDecErrorsRef()
 
 
 def test_draw_raRawErrorsRef(function):
-    function.angularPosRA = [0, 1, 2]
-    function.errorRA_S = [0, 0, 0]
+    function.angularPosRA = np.array([0, 1, 2])
+    function.errorRA_S = np.array([0, 0, 0])
     function.pierside = ["E", "W", "E"]
     function.drawRaRawErrorsRef()
 
 
 def test_draw_decRawErrorsRef(function):
-    function.errorDEC_S = [0, 0, 0]
-    function.angularPosDEC = [0, 0, 0]
+    function.errorDEC_S = np.array([0, 0, 0])
+    function.angularPosDEC = np.array([0, 0, 0])
     function.pierside = ["E", "W", "E"]
     function.drawDecRawErrorsRef()
 
 
 def test_draw_scaleImage(function):
-    function.errorIndex = [0, 1, 2]
-    function.scaleS = [0, 0, 0]
+    function.errorIndex = np.array([0, 1, 2])
+    function.scaleS = np.array([0, 0, 0])
     function.pierside = ["E", "W", "E"]
     function.drawScaleImage()
 
 
 def test_draw_errorAscending(function):
-    function.errorRMS = [0, 1, 2]
-    function.errorIndex = [0, 0, 0]
+    function.errorRMS = np.array([0, 1, 2])
+    function.errorIndex = np.array([0, 0, 0])
     function.pierside = ["E", "W", "E"]
     function.drawErrorAscending()
 
@@ -257,19 +252,7 @@ def test_drawAll_1(function):
     def test():
         pass
 
-    function.errorIndex = []
-    function.charts = [test]
-    with mock.patch.object(function, "linkViewsAltAz"):
-        with mock.patch.object(function, "linkViewsRa"):
-            with mock.patch.object(function, "linkViewsDec"):
-                function.drawAll()
-
-
-def test_drawAll_2(function):
-    def test():
-        pass
-
-    function.errorIndex = None
+    function.errorIndex = np.array([])
     function.charts = [test]
     with mock.patch.object(function, "linkViewsAltAz"):
         with mock.patch.object(function, "linkViewsRa"):

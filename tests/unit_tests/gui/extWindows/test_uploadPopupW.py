@@ -27,7 +27,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     widget = MWidget()
     widget.app = App()
-    window = UploadPopup(widget, "", "", Path())
+    window = UploadPopup(widget, Path(), [""], Path())
     yield window
     window.threadPool.waitForDone(10000)
 

@@ -20,7 +20,7 @@ import unittest.mock as mock
 from mw4.gui.extWindows.satelliteMapW import SatelliteMapWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from PySide6.QtGui import QCloseEvent
-from skyfield.api import Angle, EarthSatellite, wgs84
+from skyfield.api import Angle, EarthSatellite
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -95,7 +95,8 @@ def test_updatePointerAltAz_4(function):
 
 def test_updatePositions_1(function):
     function.satellite = None
-    function.updatePositions("t", "loc")
+    ts = function.app.mount.obsSite.ts
+    function.updatePositions(ts, "loc")
 
 
 def test_updatePositions_2(function):
@@ -142,16 +143,16 @@ def test_unlinkWrap(function):
 
 
 def test_prepareEarth(function):
-    function.prepareEarth(pg.PlotItem())
+    function.prepareEarth(pg.PlotWidget())
 
 
 def test_drawShoreLine(function):
     function.world = {"1": {"xDeg": [0], "yDeg": [0]}}
-    function.drawShoreLine(pg.PlotItem())
+    function.drawShoreLine(pg.PlotWidget())
 
 
 def test_drawPosition(function):
-    function.drawPosition(pg.PlotItem())
+    function.drawPosition(pg.PlotWidget())
 
 
 def test_prepareSatellite(function):
@@ -159,7 +160,7 @@ def test_prepareSatellite(function):
 
 
 def test_prepareEarthSatellite(function):
-    function.prepareEarthSatellite(pg.PlotItem())
+    function.prepareEarthSatellite(pg.PlotWidget())
 
 
 def test_drawEarthTrajectory_1(function):
@@ -183,7 +184,7 @@ def test_drawEarthTrajectory_1(function):
         {"rise": t3, "culminate": t3, "flip": t3, "settle": t4},
     ]
     function.satOrbits = satOrbits
-    function.drawEarthTrajectory(pg.PlotItem())
+    function.drawEarthTrajectory(pg.PlotWidget())
 
 
 def test_drawEarth_1(function):
@@ -194,9 +195,9 @@ def test_drawEarth_1(function):
 
 def test_drawSatellite_1(function):
     with mock.patch.object(function, "drawEarth"):
-        function.drawSatellite(1, None, 1, 1, "")
+        function.drawSatellite(1, None, [1], [1], "")
 
 
 def test_drawSatellite_2(function):
     with mock.patch.object(function, "drawEarth"):
-        function.drawSatellite(1, [1], 1, 1, "")
+        function.drawSatellite(1, [1], [1], [1], "")

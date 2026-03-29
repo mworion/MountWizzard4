@@ -23,7 +23,8 @@ from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets import satelliteMap_ui
 from pyqtgraph import PlotWidget
 from PySide6.QtCore import QFile, Qt
-from skyfield.api import Timescale, wgs84
+from skyfield.api import Timescale
+from skyfield.toposlib import wgs84
 
 
 class SatelliteMapWindow(MWidget):

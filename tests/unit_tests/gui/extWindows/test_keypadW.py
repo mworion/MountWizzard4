@@ -57,7 +57,7 @@ def test_closeEvent_1(function):
 
 
 def test_keyPressEvent_1(function):
-    class KeyEvent:
+    class QKeyEvent:
         @staticmethod
         def key():
             return 0
@@ -68,11 +68,11 @@ def test_keyPressEvent_1(function):
 
     function.inputActive = True
     with mock.patch.object(MWidget, "keyPressEvent"):
-        function.keyPressEvent(KeyEvent())
+        function.keyPressEvent(QKeyEvent())
 
 
 def test_keyPressEvent_2(function):
-    class KeyEvent:
+    class QKeyEvent:
         @staticmethod
         def key():
             return 0
@@ -83,11 +83,11 @@ def test_keyPressEvent_2(function):
 
     function.inputActive = False
     with mock.patch.object(MWidget, "keyPressEvent"):
-        function.keyPressEvent(KeyEvent())
+        function.keyPressEvent(QKeyEvent())
 
 
 def test_keyPressEvent_3(function):
-    class KeyEvent:
+    class QKeyEvent:
         @staticmethod
         def key():
             return 16777216
@@ -98,11 +98,11 @@ def test_keyPressEvent_3(function):
 
     function.inputActive = False
     with mock.patch.object(MWidget, "keyPressEvent"):
-        function.keyPressEvent(KeyEvent())
+        function.keyPressEvent(QKeyEvent())
 
 
 def test_keyPressEvent_4(function):
-    class KeyEvent:
+    class QKeyEvent:
         @staticmethod
         def key():
             return 16777220
@@ -113,11 +113,11 @@ def test_keyPressEvent_4(function):
 
     function.inputActive = False
     with mock.patch.object(MWidget, "keyPressEvent"):
-        function.keyPressEvent(KeyEvent())
+        function.keyPressEvent(QKeyEvent())
 
 
 def test_keyPressEvent_5(function):
-    class KeyEvent:
+    class QKeyEvent:
         @staticmethod
         def key():
             return 16777249
@@ -128,7 +128,7 @@ def test_keyPressEvent_5(function):
 
     function.inputActive = False
     with mock.patch.object(MWidget, "keyPressEvent"):
-        function.keyPressEvent(KeyEvent())
+        function.keyPressEvent(QKeyEvent())
 
 
 def test_showWindow_1(function):

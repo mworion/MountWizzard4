@@ -87,6 +87,7 @@ class IERSTime:
             self.mainW, url=url, dataTypes=dataTypes, dataFilePath=self.tempDir
         )
         self.uploadPopup.show()
+        self.uploadPopup.uploadFile()
         self.uploadPopup.workerStatus.signals.finished.connect(
             self.finishProgEarthRotationData
         )

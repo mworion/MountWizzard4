@@ -130,7 +130,7 @@ class UploadPopup(MWidget):
         elif multiple and text[-1].split()[-1] in ["saved.", "updated."]:
             self.pollDispatcherHelper(text[-1])
             self.returnValues["successMount"] = True
-            self.returnValues["success"] = True
+            self.pollStatusRunState = False
 
         elif multiple and text[-1][0].isdigit():
             self.sendProgressValue(text[-1])
@@ -177,7 +177,7 @@ class UploadPopup(MWidget):
     def deleteHostData(self) -> bool:
         """ """
         returnValues = requests.delete(self.generateURL())
-        if returnValues.status_code != 200:
+        if returnValues.status_code not in [200, 204]:
             self.log.debug(f"Error deleting files: {returnValues.status_code}")
             return False
         return True
@@ -190,13 +190,15 @@ class UploadPopup(MWidget):
             return False
         return True
 
-    def uploadFileWorker(self) -> None:
+    def uploadFileWorker(self) -> bool:
         """ """
-        self.deleteHostData()
+        if not self.deleteHostData():
+            return False
         files = self.prepareFiles()
         self.pollStatusRunState = True
         self.threadPool.start(self.workerStatus)
-        self.postHostData(files)
+        return self.postHostData(files)
+
 
     def closePopup(self, result: bool) -> None:
         """ """

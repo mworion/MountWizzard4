@@ -22,7 +22,7 @@ from PySide6.QtCore import QEvent, QPointF, Qt
 from PySide6.QtGui import QMouseEvent
 
 
-@pytest.fixture(scope="module", autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def qapp():
     with mock.patch.object(mw4.loader, "QApplication"):
         myapp = MyApp([])

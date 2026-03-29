@@ -1,16 +1,31 @@
+############################################################
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10_micron mounts
+# GUI with PySide
+#
+# written in python3, (c) 2019-2026 by mworion
+# Licence APL2.0
+#
+###########################################################
 import pytest
 import shutil
-import os
 from mw4.assets import assetsData
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from unittest import mock
 from unittest.mock import MagicMock
+from mw4.gui.mainWindow.mainWindow import MainWindow
 
 assetsData.qInitResources()
 
-
 @pytest.fixture(autouse=True, scope="module")
+@mock.patch("mw4.gui.mainWindow.mainWindow.MainWindow")
 def app(qapp):
     mwGlob = {
         "configDir": Path("tests/work/config"),
@@ -27,8 +42,13 @@ def app(qapp):
     if not Path("tests/work/test.run").is_file():
         shutil.copy2("tests/testData/test.run", Path("tests/work/test.run"))
 
+    if not qapp.instance():
+        application = qapp()
+    else:
+        application = qapp.instance()
+
     mock_emit = MagicMock()
-    app_instance = MountWizzard4(mwGlob, qapp, 1)
+    app_instance = MountWizzard4(mwGlob, application, 1)
     app_instance.update1s = MagicMock(emit=mock_emit)
     yield app_instance
     app_instance.threadPool.waitForDone(15000)

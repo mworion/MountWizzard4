@@ -54,7 +54,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "numpy==2.4.3",
+    "numpy==2.4.4",
     "opencv-python-headless==4.13.0.92",
     "scipy==1.17.1",
     "astropy==7.2.0",

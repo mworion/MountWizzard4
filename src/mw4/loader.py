@@ -61,7 +61,6 @@ class MyApp(QApplication):
 
     def __init__(self, *argv):
         super().__init__(*argv)
-        self.last = None
 
     # noinspection PyUnresolvedReferences
     def logUserInterface(self, obj: QWidget) -> None:

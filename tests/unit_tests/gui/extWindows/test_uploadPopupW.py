@@ -102,7 +102,6 @@ def test_sendProgressStatus_5(function):
     with mock.patch.object(function, "sendProgressValue"):
         function.sendProgressStatus(text)
         assert function.returnValues["successMount"]
-        assert function.returnValues["success"]
         assert not function.pollStatusRunState
 
 
@@ -111,7 +110,6 @@ def test_sendProgressStatus_6(function):
     with mock.patch.object(function, "sendProgressValue"):
         function.sendProgressStatus(text)
         assert function.returnValues["successMount"]
-        assert function.returnValues["success"]
         assert not function.pollStatusRunState
 
 

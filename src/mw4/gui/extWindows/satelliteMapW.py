@@ -67,7 +67,6 @@ class SatelliteMapWindow(MWidget):
         configMain = self.app.config
         configMain["satelliteMapW"] = {}
         config = configMain["satelliteMapW"]
-
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)
         config["height"] = self.height()

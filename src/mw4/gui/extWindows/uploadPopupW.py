@@ -113,7 +113,7 @@ class UploadPopup(MWidget):
         self.signalStatus.emit(text)
         self.pollStatusRunState = False
 
-    def pollDispatcher(self, text: list) -> None:
+    def sendProgressStatus(self, text: list) -> None:
         """ """
         if text == [""]:
             return
@@ -136,19 +136,26 @@ class UploadPopup(MWidget):
         elif multiple and text[-1][0].isdigit():
             self.sendProgressValue(text[-1])
 
+    def generateURLStatus(self) -> str:
+        """ """
+        return f"http://{str(self.url)}/bin/uploadst"
+
+    def getStatus(self) -> list[str]:
+        """ """
+        returnValues = requests.get(self.generateURLStatus(), timeout=1)
+        self.returnValues["successMount"] = True
+        if returnValues.status_code != 200:
+            self.log.debug(f"Error status: {returnValues.status_code}")
+            self.pollStatusRunState = False
+            self.returnValues["successMount"] = False
+        return returnValues.text.strip("\n").split("\n")
+
     def pollStatus(self) -> None:
         """ """
         self.signalStatus.emit("Uploading data to mount...")
         while self.pollStatusRunState:
-            sleepAndEvents(250)
-            returnValues = requests.get(f"http://{str(self.url)}/bin/uploadst", timeout=1)
-            self.pollDispatcher(returnValues.text.strip("\n").split("\n"))
-
-            if returnValues.status_code != 200:
-                self.log.debug(f"Error status: {returnValues.status_code}")
-                self.pollStatusRunState = False
-                self.returnValues["successMount"] = False
-                break
+            text = self.getStatus()
+            self.sendProgressStatus(text)
 
     def prepareFiles(self) -> dict:
         """ """
@@ -166,8 +173,7 @@ class UploadPopup(MWidget):
 
     def generateURL(self) -> str:
         """ """
-        url = f"http://{str(self.url)}/bin/upload"
-        return url
+        return f"http://{str(self.url)}/bin/upload"
 
     def deleteHostData(self) -> bool:
         """ """

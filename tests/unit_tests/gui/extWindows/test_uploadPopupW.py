@@ -132,80 +132,107 @@ def test_pollDispatcherHelper(function):
     assert not function.pollStatusRunState
 
 
-def test_pollDispatcher_0(function):
+def test_sendProgressStatus_0(function):
     text = [""]
-    function.pollDispatcher(text)
+    function.sendProgressStatus(text)
 
 
-def test_pollDispatcher_1(function):
+def test_sendProgressStatus_1(function):
     text = ["Uploading"]
-    function.pollDispatcher(text)
+    function.sendProgressStatus(text)
 
 
-def test_pollDispatcher_2(function):
+def test_sendProgressStatus_2(function):
     text = ["Processing"]
-    function.pollDispatcher(text)
+    function.sendProgressStatus(text)
 
 
-def test_pollDispatcher_3(function):
+def test_sendProgressStatus_3(function):
     text = ["Processing", "elements file."]
     with mock.patch.object(function, "sendProgressValue"):
-        function.pollDispatcher(text)
+        function.sendProgressStatus(text)
         assert not function.returnValues["successMount"]
 
 
-def test_pollDispatcher_4(function):
+def test_sendProgressStatus_4(function):
     text = ["Processing", "file failed"]
     with mock.patch.object(function, "sendProgressValue"):
-        function.pollDispatcher(text)
+        function.sendProgressStatus(text)
         assert not function.returnValues["successMount"]
 
 
-def test_pollDispatcher_5(function):
+def test_sendProgressStatus_5(function):
     text = ["Processing", "elements saved."]
     with mock.patch.object(function, "sendProgressValue"):
-        function.pollDispatcher(text)
+        function.sendProgressStatus(text)
         assert function.returnValues["successMount"]
         assert function.returnValues["success"]
         assert not function.pollStatusRunState
 
 
-def test_pollDispatcher_6(function):
+def test_sendProgressStatus_6(function):
     text = ["Processing", "data updated."]
     with mock.patch.object(function, "sendProgressValue"):
-        function.pollDispatcher(text)
+        function.sendProgressStatus(text)
         assert function.returnValues["successMount"]
         assert function.returnValues["success"]
         assert not function.pollStatusRunState
 
 
-def test_pollDispatcher_7(function):
+def test_sendProgressStatus_7(function):
     text = ["Processing", "90"]
     with mock.patch.object(function, "sendProgressValue"):
-        function.pollDispatcher(text)
+        function.sendProgressStatus(text)
 
 
-def test_pollDispatcher_8(function):
+def test_sendProgressStatus_8(function):
     text = ["test"]
-    function.pollDispatcher(text)
+    function.sendProgressStatus(text)
 
 
-def test_pollStatus_1(function):
-    function.pollStatusRunState = False
-    function.pollStatus()
+def test_generateURLStatus_1(function):
+    val = function.generateURLStatus()
+    assert "http://" in val
+    assert "/bin/uploadst" in val
 
 
-def test_pollStatus_2(function):
+def test_getStatus_1(function):
     class Test:
         status_code = 202
         text = "test"
 
     function.pollStatusRunState = True
     with mock.patch.object(requests, "get", return_value=Test()):
-        function.pollStatus()
+        function.getStatus()
         assert not function.pollStatusRunState
         assert not function.returnValues["successMount"]
-        assert not function.returnValues["successMount"]
+
+
+def test_getStatus_2(function):
+    class Test:
+        status_code = 200
+        text = "test"
+
+    function.pollStatusRunState = True
+    with mock.patch.object(requests, "get", return_value=Test()):
+        function.getStatus()
+        assert function.pollStatusRunState
+        assert function.returnValues["successMount"]
+
+
+
+def test_pollStatus_1(function):
+    def getStatus():
+        function.pollStatusRunState = False
+
+    function.pollStatusRunState = True
+    temp = function.getStatus
+    function.getStatus = getStatus
+
+    with mock.patch.object(function, "sendProgressStatus"):
+        function.pollStatus()
+
+    function.getStatus = temp
 
 
 def test_closePopup_1(function, mocked_sleepAndEvents):

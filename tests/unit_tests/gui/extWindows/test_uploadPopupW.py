@@ -58,53 +58,68 @@ def test_setStatusTextToValue(function):
     assert function.ui.statusText.text() == "test"
 
 
+def test_prepareFiles_1(function):
+    function.dataTypes = ["comet"]
+    with mock.patch.object(builtins, "open"):
+        val = function.prepareFiles()
+        assert val
+
+
+def test_prepareFiles_2(function):
+    function.dataTypes = ["test"]
+    with mock.patch.object(builtins, "open"):
+        val = function.prepareFiles()
+        assert not val
+
+def test_generateURL(function):
+    val = function.generateURL()
+    assert "http://" in val
+    assert "/bin/upload" in val
+
+
+def test_deleteHostData_1(function):
+    class Test:
+        status_code = 200
+
+    with mock.patch.object(requests, "delete", return_value=Test()):
+        val = function.deleteHostData()
+        assert val
+
+
+def test_deleteHostData_2(function):
+    class Test:
+        status_code = 400
+
+    with mock.patch.object(requests, "delete", return_value=Test()):
+        val = function.deleteHostData()
+        assert not val
+
+
+def test_postHostData_1(function):
+    class Test:
+        status_code = 202
+
+    with mock.patch.object(requests, "post", return_value=Test()):
+        val = function.postHostData({})
+        assert val
+
+
+def test_postHostData_2(function):
+    class Test:
+        status_code = 400
+
+    with mock.patch.object(requests, "post", return_value=Test()):
+        val = function.postHostData({})
+        assert not val
+
+
 def test_uploadFileWorker_1(function):
     function.dataTypes = ["test"]
-    suc = function.uploadFileWorker()
-    assert not suc
-
-
-def test_uploadFileWorker_2(function):
-    class Test:
-        status_code = 202
-
-    function.dataTypes = ["comet"]
-    with mock.patch.object(builtins, "open"):
-        with mock.patch.object(requests, "delete", return_value=Test()):
-            suc = function.uploadFileWorker()
-            assert not suc
-
-
-def test_uploadFileWorker_3(function):
-    class Test:
-        status_code = 200
-
-    class Test1:
-        status_code = 404
-
-    function.dataTypes = ["comet"]
-    with mock.patch.object(builtins, "open"):
-        with mock.patch.object(requests, "delete", return_value=Test()):
+    with mock.patch.object(function, "deleteHostData"):
+        with mock.patch.object(function, "prepareFiles"):
             with mock.patch.object(function.threadPool, "start"):
-                with mock.patch.object(requests, "post", return_value=Test1()):
-                    suc = function.uploadFileWorker()
-                    assert not suc
-
-
-def test_uploadFileWorker_4(function):
-    class Test:
-        status_code = 200
-
-    class Test1:
-        status_code = 202
-
-    function.dataTypes = ["comet"]
-    with mock.patch.object(builtins, "open"):
-        with mock.patch.object(requests, "delete", return_value=Test()):
-            with mock.patch.object(function.threadPool, "start"):
-                with mock.patch.object(requests, "post", return_value=Test1()):
-                    suc = function.uploadFileWorker()
-                    assert suc
+                with mock.patch.object(function, "postHostData"):
+                    function.uploadFileWorker()
 
 
 def test_sendProgressValue(function):

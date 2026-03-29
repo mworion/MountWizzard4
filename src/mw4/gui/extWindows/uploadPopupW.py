@@ -150,33 +150,48 @@ class UploadPopup(MWidget):
                 self.returnValues["successMount"] = False
                 break
 
-    def uploadFileWorker(self) -> bool:
+    def prepareFiles(self) -> dict:
         """ """
         files = {}
         for dataType in self.dataTypes:
             if dataType not in self.dataNames:
-                return False
+                return {}
             fullDataFilePath = self.dataFilePath / self.dataNames[dataType]["file"]
             files[self.dataNames[dataType]["attr"]] = (
                 self.dataNames[dataType]["file"],
                 open(fullDataFilePath),
             )
-
         self.log.debug(f"Data: {list(files.items())}")
-        url = f"http://{str(self.url)}/bin/uploadst"
-        returnValues = requests.delete(url)
+        return files
+
+    def generateURL(self) -> str:
+        """ """
+        url = f"http://{str(self.url)}/bin/upload"
+        return url
+
+    def deleteHostData(self) -> bool:
+        """ """
+        returnValues = requests.delete(self.generateURL())
         if returnValues.status_code != 200:
             self.log.debug(f"Error deleting files: {returnValues.status_code}")
             return False
+        return True
 
-        self.pollStatusRunState = True
-        self.threadPool.start(self.workerStatus)
-        url = f"http://{str(self.url)}/bin/upload"
-        returnValues = requests.post(url, files=files)
+    def postHostData(self, files: dict) -> bool:
+        """ """
+        returnValues = requests.post(self.generateURL(), files=files)
         if returnValues.status_code != 202:
             self.log.debug(f"Error uploading data: {returnValues.status_code}")
             return False
         return True
+
+    def uploadFileWorker(self) -> None:
+        """ """
+        self.deleteHostData()
+        files = self.prepareFiles()
+        self.pollStatusRunState = True
+        self.threadPool.start(self.workerStatus)
+        self.postHostData(files)
 
     def closePopup(self, result: bool) -> None:
         """ """

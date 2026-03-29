@@ -78,7 +78,7 @@ class ObsSite:
         self.parent = parent
         self.pathToData = parent.pathToData
         self.verbose = verbose
-        self.loader: Loader = None
+        self.loader: Loader | None = None
         self.AzDirection: int = 1
         self.flipped: bool = False
         self.lastAz: float = 0

@@ -23,7 +23,7 @@ from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets import satelliteHor_ui
 from pyqtgraph import PlotWidget
 from PySide6.QtCore import QFile, Qt
-from skyfield.api import Timescale, wgs84
+from skyfield.api import Timescale, wgs84, EarthSatellite
 
 
 class SatelliteHorizonWindow(MWidget):
@@ -38,9 +38,9 @@ class SatelliteHorizonWindow(MWidget):
         self.ui.setupUi(self)
         self.satellite = None
         self.satOrbits = None
-        self.plotSatPosHorizon = None
-        self.plotSatPosEarth = None
-        self.pointerAltAz = None
+        self.plotSatPosHorizon: pg.PlotDataItem | None = None
+        self.plotSatPosEarth: pg.PlotDataItem | None = None
+        self.pointerAltAz: pg.PlotDataItem | None = None
 
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
         self.pens = []
@@ -239,12 +239,10 @@ class SatelliteHorizonWindow(MWidget):
         self.drawHorizon()
 
     def drawSatellite(
-        self, satellite, satOrbits, altitude: list[float], azimuth: list[float], name: str
+        self, satellite: EarthSatellite, satOrbits: dict, altitude: list[float], azimuth: list[float], name: str
     ) -> None:
         """ """
         self.setWindowTitle(f"Satellite {name}")
         self.satellite = satellite
         self.satOrbits = satOrbits
-        if satOrbits is None or self.obsSite is None:
-            return
         self.drawHorizonView(altitude, azimuth)

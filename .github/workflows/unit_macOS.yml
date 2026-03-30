@@ -89,8 +89,8 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWindow
           pytest tests/unit_tests/gui/mainWaddon
+          pytest tests/unit_tests/gui/mainWindow
 
   run_tests_macos_4:
     #

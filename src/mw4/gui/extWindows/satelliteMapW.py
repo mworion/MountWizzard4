@@ -23,7 +23,7 @@ from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets import satelliteMap_ui
 from pyqtgraph import PlotWidget
 from PySide6.QtCore import QFile, Qt
-from skyfield.api import Timescale, wgs84
+from skyfield.api import Timescale, wgs84, EarthSatellite
 from skyfield.toposlib import GeographicPosition
 
 
@@ -37,11 +37,9 @@ class SatelliteMapWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = satelliteMap_ui.Ui_SatelliteMapDialog()
         self.ui.setupUi(self)
-        self.satellite = None
-        self.satOrbits = None
-        self.plotSatPosHorizon = None
-        self.plotSatPosEarth = None
-        self.pointerAltAz = None
+        self.satellite: EarthSatellite | None = None
+        self.satOrbits: dict = {}
+        self.plotSatPosHorizon: pg.PlotDataItem | None = None
 
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
         self.pens = []
@@ -250,7 +248,7 @@ class SatelliteMapWindow(MWidget):
         self.drawEarthTrajectory(plotWidget)
 
     def drawSatellite(
-        self, satellite, satOrbits, altitude: list[float], azimuth: list[float], name: str
+        self, satellite: EarthSatellite, satOrbits: dict, altitude: list[float], azimuth: list[float], name: str
     ) -> None:
         """ """
         self.setWindowTitle(f"Satellite {name}")

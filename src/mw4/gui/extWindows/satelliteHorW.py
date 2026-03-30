@@ -14,16 +14,14 @@
 #
 ###########################################################
 import numpy as np
-import pickle
 import pyqtgraph as pg
 from collections.abc import Iterator
-from io import BytesIO
 from skyfield.toposlib import GeographicPosition
 from mw4.gui.utilities.generateSprites import makePointer, makeSat
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets import satelliteHor_ui
 from pyqtgraph import PlotWidget
-from PySide6.QtCore import QFile, Qt
+from PySide6.QtCore import Qt
 from skyfield.api import Timescale, EarthSatellite
 
 
@@ -37,9 +35,8 @@ class SatelliteHorizonWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = satelliteHor_ui.Ui_SatelliteHorizonDialog()
         self.ui.setupUi(self)
-        self.satellite = None
-        self.satOrbits = None
-        self.plotSatPosHorizon: pg.PlotDataItem | None = None
+        self.satellite: EarthSatellite | None = None
+        self.satOrbits: dict = {}
         self.plotSatPosEarth: pg.PlotDataItem | None = None
         self.pointerAltAz: pg.PlotDataItem | None = None
 
@@ -50,11 +47,6 @@ class SatelliteHorizonWindow(MWidget):
             self.pens.append(pg.mkPen(color=color, width=2, style=Qt.PenStyle.DotLine))
         self.penLocation = pg.mkPen(color=self.M_RED)
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
-        file = QFile(":/data/worldmap.dat")
-        file.open(QFile.OpenModeFlag.ReadOnly)
-        pickleData = bytes(file.readAll())
-        file.close()
-        self.world = pickle.load(BytesIO(pickleData))
         self.app.showSatellite.connect(self.drawSatellite)
         self.app.updateSatellite.connect(self.updatePositions)
         self.app.redrawHorizon.connect(self.drawHorizon)
@@ -232,11 +224,11 @@ class SatelliteHorizonWindow(MWidget):
 
     def drawHorizonView(self, altitude: list[float], azimuth: list[float]) -> None:
         """ """
-        plotItem = self.ui.satHorizon.p[0]
-        self.prepareHorizon(plotItem)
-        self.drawHorizonTrajectory(plotItem, altitude, azimuth)
-        self.plotSatPosHorizon = self.prepareHorizonSatellite(plotItem)
-        self.pointerAltAz = self.preparePointer(plotItem)
+        plotWidget = self.ui.satHorizon.p[0]
+        self.prepareHorizon(plotWidget)
+        self.drawHorizonTrajectory(plotWidget, altitude, azimuth)
+        self.plotSatPosHorizon = self.prepareHorizonSatellite(plotWidget)
+        self.pointerAltAz = self.preparePointer(plotWidget)
         self.drawHorizon()
 
     def drawSatellite(

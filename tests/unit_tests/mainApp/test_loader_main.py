@@ -62,7 +62,7 @@ def test_main_1():
     with mock.patch.object(PySide6.QtCore.QBasicTimer, "start"):
         with mock.patch.object(PySide6.QtCore.QTimer, "start"):
             with mock.patch.object(mw4.loader, "QIcon"):
-                with mock.patch.object(mw4.loader, "MyApp", return_value=App()):
+                with mock.patch.object(mw4.loader, "QApplication", return_value=App()):
                     with mock.patch.object(mw4.loader, "SplashScreen", return_value=Splash()):
                         with mock.patch.object(mw4.loader, "MountWizzard4"):
                             with mock.patch.object(
@@ -70,4 +70,4 @@ def test_main_1():
                             ):
                                 with mock.patch.object(sys, "exit"):
                                     with mock.patch.object(sys, "excepthook"):
-                                        mw4.loader.main(efficient=False)
+                                        mw4.loader.main()

@@ -259,7 +259,8 @@ def test_deleteName_3(function):
     with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
         with mock.patch.object(MWidget, "messageDialog", return_value=True):
             with mock.patch.object(function.app.mount.model, "deleteName", return_value=True):
-                function.deleteName()
+                with mock.patch.object(function, "refreshName", return_value=True):
+                    function.deleteName()
 
 
 def test_deleteName_4(function):

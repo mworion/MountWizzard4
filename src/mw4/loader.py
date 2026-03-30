@@ -31,18 +31,8 @@ from mw4.gui.utilities.splashScreen import SplashScreen
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtCore import QEvent, QFile, qVersion
-from PySide6.QtGui import QIcon, QMouseEvent
-from PySide6.QtWidgets import (
-    QApplication,
-    QCheckBox,
-    QComboBox,
-    QGroupBox,
-    QLineEdit,
-    QPushButton,
-    QRadioButton,
-    QTabBar,
-    QWidget,
-)
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 warnings.filterwarnings("ignore", category=FITSFixedWarning)
@@ -52,62 +42,6 @@ iers.conf.auto_download = False
 data.conf.allow_internet = False
 setupLogging()
 log = logging.getLogger("MW4")
-
-
-class MyApp(QApplication):
-    """ """
-
-    log = logging.getLogger("MW4")
-
-    def __init__(self, *argv):
-        super().__init__(*argv)
-
-    # noinspection PyUnresolvedReferences
-    def logUserInterface(self, obj: QWidget) -> None:
-        """ """
-        if isinstance(obj, QTabBar):
-            self.log.ui(f"Click Tab    : [{obj.tabText(obj.currentIndex())}]")
-        elif isinstance(obj, QComboBox):
-            self.log.ui(f"Click DropDown:[{obj.objectName()}]")
-        elif isinstance(obj, QPushButton):
-            text = obj.objectName()
-            if not text:
-                text = f"Popup - {obj.text()}"
-            self.log.ui(f"Click Button : [{text}]")
-        elif isinstance(obj, QRadioButton):
-            self.log.ui(f"Click Radio  : [{obj.objectName()}], value: [{not obj.isChecked()}]")
-        elif isinstance(obj, QGroupBox):
-            self.log.ui(f"Click Group  : [{obj.objectName()}], value: [{not obj.isChecked()}]")
-        elif isinstance(obj, QCheckBox):
-            self.log.ui(f"Click Checkbox:[{obj.objectName()}], value: [{not obj.isChecked()}]")
-        elif isinstance(obj, QLineEdit):
-            self.log.ui(f"Click EditLine: [{obj.objectName()}]:{obj.text()}")
-        else:
-            if obj.objectName() not in [
-                "qt_scrollarea_viewport",
-                "QComboBoxPrivateContainerClassWindow",
-                "",
-            ]:
-                self.log.ui(f"Click Object  : [{obj.objectName()}]")
-
-    def handleButtons(self, obj: QWidget, returnValue: bool) -> bool:
-        """ """
-        if "Window" not in obj.objectName():
-            self.logUserInterface(obj)
-        return returnValue
-
-    def notify(self, obj: QWidget, event: QEvent) -> bool:
-        """ """
-        returnValue = QApplication.notify(self, obj, event)
-
-        if not isinstance(event, QMouseEvent):
-            return returnValue
-        if not event.button():
-            return returnValue
-        if event.type() == QEvent.Type.MouseButtonRelease:
-            return returnValue
-        returnValue = self.handleButtons(obj, returnValue)
-        return returnValue
 
 
 def except_hook(typeException, valueException, tbackException) -> None:
@@ -205,11 +139,11 @@ def extractFile(filePath: Path, file: str, fileTimeStamp: float) -> None:
 def extractDataFiles(mwGlob: dict) -> None:
     """ """
     filesTimes = {
-        "de440_mw4.bsp": 0,
-        "CDFLeapSeconds.txt": 0,
-        "tai-utc.dat": 0,
-        "finals2000A.all": 0,
-        "finals.data": 0,
+        "de440_mw4.bsp": 0.0,
+        "CDFLeapSeconds.txt": 0.0,
+        "tai-utc.dat": 0.0,
+        "finals2000A.all": 0.0,
+        "finals.data": 0.0,
     }
 
     contentFile = QFile(":/data/content.txt")
@@ -235,10 +169,10 @@ def minimizeStartTerminal() -> None:
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 
-def main(efficient: bool = False, test: int = 0) -> None:
+def main(test: int = 0) -> None:
     """ """
     locale.setlocale(locale.LC_ALL, "")
-    app = QApplication(sys.argv) if efficient else MyApp(sys.argv)
+    app = QApplication(sys.argv)
     minimizeStartTerminal()
     splashW = SplashScreen(application=app)
     splashW.showMessage("Start initialising")

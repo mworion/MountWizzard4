@@ -192,10 +192,20 @@ def test_drawHorizonView_1(function):
 
 
 def test_drawSatellite_1(function):
+    tle = [
+        "CALSPHERE 1",
+        "1 00900U 64063C   21307.74429300  .00000461  00000-0  48370-3 0  9996",
+        "2 00900  90.1716  36.8626 0025754 343.8320 164.5583 13.73613883839670",
+    ]
     with mock.patch.object(function, "drawHorizonView"):
-        function.drawSatellite(1, None, [1], [1], "")
+        function.drawSatellite(EarthSatellite(*tle[1:3], name=tle[0]), {}, [1], [1], "")
 
 
 def test_drawSatellite_2(function):
+    tle = [
+        "CALSPHERE 1",
+        "1 00900U 64063C   21307.74429300  .00000461  00000-0  48370-3 0  9996",
+        "2 00900  90.1716  36.8626 0025754 343.8320 164.5583 13.73613883839670",
+    ]
     with mock.patch.object(function, "drawHorizonView"):
-        function.drawSatellite(1, [1], [1], [1], "")
+        function.drawSatellite(EarthSatellite(*tle[1:3], name=tle[0]), {}, [1], [1], "")

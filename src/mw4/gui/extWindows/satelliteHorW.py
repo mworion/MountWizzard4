@@ -18,12 +18,13 @@ import pickle
 import pyqtgraph as pg
 from collections.abc import Iterator
 from io import BytesIO
+from skyfield.toposlib import GeographicPosition
 from mw4.gui.utilities.generateSprites import makePointer, makeSat
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets import satelliteHor_ui
 from pyqtgraph import PlotWidget
 from PySide6.QtCore import QFile, Qt
-from skyfield.api import Timescale, wgs84, EarthSatellite
+from skyfield.api import Timescale, EarthSatellite
 
 
 class SatelliteHorizonWindow(MWidget):
@@ -104,7 +105,7 @@ class SatelliteHorizonWindow(MWidget):
         az = self.obsSite.Az.degrees
         self.pointerAltAz.setData(x=[az], y=[alt])
 
-    def updatePositions(self, now: Timescale, location: wgs84) -> None:
+    def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
         """ """
         if self.satellite is None or self.plotSatPosHorizon is None:
             return
@@ -163,16 +164,16 @@ class SatelliteHorizonWindow(MWidget):
         plotItem.setMouseEnabled(x=True, y=True)
         plotItem.clear()
 
-    def prepareHorizonSatellite(self, plotItem: PlotWidget) -> pg.PlotDataItem:
+    def prepareHorizonSatellite(self, plotWidget: PlotWidget) -> pg.PlotDataItem:
         """ """
         alt, az, _ = (self.satellite - self.obsSite.location).at(self.obsSite.ts.now()).altaz()
         pd = self.prepareSatellite([az.degrees], [alt.degrees])
         pd.setVisible(False)
         pd.setZValue(10)
-        plotItem.addItem(pd)
+        plotWidget.addItem(pd)
         return pd
 
-    def preparePointer(self, plotItem: PlotWidget) -> pg.PlotDataItem:
+    def preparePointer(self, plotWidget: PlotWidget) -> pg.PlotDataItem:
         """ """
         pd = pg.PlotDataItem(
             x=[180],
@@ -184,10 +185,10 @@ class SatelliteHorizonWindow(MWidget):
         )
         pd.setVisible(False)
         pd.setZValue(10)
-        plotItem.addItem(pd)
+        plotWidget.addItem(pd)
         return pd
 
-    def drawHorizonTrajectory(self, plotItem: PlotWidget, altitude, azimuth):
+    def drawHorizonTrajectory(self, plotWidget: PlotWidget, altitude, azimuth):
         """ """
         ts = self.obsSite.ts
         for i, satOrbit in enumerate(self.satOrbits):
@@ -207,7 +208,7 @@ class SatelliteHorizonWindow(MWidget):
                 pd = pg.PlotDataItem(
                     x=az.degrees[slc], y=alt.degrees[slc], pen=self.pens[2 * i]
                 )
-                plotItem.addItem(pd)
+                plotWidget.addItem(pd)
 
             vector = np.arange(flip, settle, step)
             vecT = ts.tt_jd(vector)
@@ -216,14 +217,14 @@ class SatelliteHorizonWindow(MWidget):
                 pd = pg.PlotDataItem(
                     x=az.degrees[slc], y=alt.degrees[slc], pen=self.pens[2 * i + 1]
                 )
-                plotItem.addItem(pd)
+                plotWidget.addItem(pd)
 
         for slc in self.unlinkWrap(azimuth):
             pd = pg.PlotDataItem(
                 x=azimuth[slc], y=altitude[slc], pen=pg.mkPen(width=5, color=self.M_TER)
             )
             pd.setZValue(-5)
-            plotItem.addItem(pd)
+            plotWidget.addItem(pd)
 
     def drawHorizon(self) -> None:
         """ """

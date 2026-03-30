@@ -37,7 +37,7 @@ class SatelliteHorizonWindow(MWidget):
         self.ui.setupUi(self)
         self.satellite: EarthSatellite | None = None
         self.satOrbits: dict = {}
-        self.plotSatPosEarth: pg.PlotDataItem | None = None
+        self.plotSatPosHorizon: pg.PlotDataItem | None = None
         self.pointerAltAz: pg.PlotDataItem | None = None
 
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]

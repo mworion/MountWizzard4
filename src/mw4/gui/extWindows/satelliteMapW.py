@@ -39,8 +39,8 @@ class SatelliteMapWindow(MWidget):
         self.ui.setupUi(self)
         self.satellite: EarthSatellite | None = None
         self.satOrbits: dict = {}
-        self.plotSatPosHorizon: pg.PlotDataItem | None = None
-
+        self.plotSatPosEarth: pg.PlotDataItem | None = None
+        self.pointerAltAz: pg.PlotDataItem | None = None
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
         self.pens = []
         for color in self.colors:
@@ -58,6 +58,7 @@ class SatelliteMapWindow(MWidget):
 
     def initConfig(self) -> None:
         """ """
+        return
         self.positionWindow(self.app.config.get("satelliteMapW", {}))
 
     def storeConfig(self) -> None:
@@ -254,6 +255,4 @@ class SatelliteMapWindow(MWidget):
         self.setWindowTitle(f"Satellite {name}")
         self.satellite = satellite
         self.satOrbits = satOrbits
-        if satOrbits is None or self.obsSite is None:
-            return
         self.drawEarth()

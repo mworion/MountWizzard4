@@ -69,7 +69,7 @@ def test_workerGetRoundness(function):
 def test_workerCalcTiltValuesSquare(function):
     function.w = 1000
     function.h = 1000
-    function.objs = {"x": np.linspace(0, 100, 20), "y": np.linspace(0, 100, 20)}
+    function.objs = {"x": np.linspace(0, 1000, 20), "y": np.linspace(0, 1000, 20)}
     function.image = np.random.rand(1000, 1000) + 1
     function.hfr = np.linspace(20, 30, 20)
     function.workerCalcTiltValuesSquare()
@@ -123,7 +123,7 @@ def test_showTabBackgroundRMS(function):
 
 
 def test_baseCalcs(function):
-    function.objs = {"x": np.linspace(0, 50, 20), "y": np.linspace(50, 100, 20)}
+    function.objs = {"x": np.linspace(0, 1000, 20), "y": np.linspace(0, 1000, 20)}
     function.hfr = np.linspace(20, 30, 20)
     function.image = np.random.rand(1000, 1000) + 1
     function.baseCalcs()

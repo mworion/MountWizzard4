@@ -50,7 +50,7 @@ class NormalScatter(PlotBase):
                     minXRange=(xMax - xMin) / 4,
                     maxXRange=(xMax - xMin),
                 )
-                self.p[0].setXRange(xMin, xMax - xMin)
+                self.p[0].setXRange(xMin, xMax)
             if yMin is not None and yMax is not None:
                 self.p[0].setLimits(
                     yMin=yMin,
@@ -58,7 +58,7 @@ class NormalScatter(PlotBase):
                     minYRange=(yMax - yMin) / 4,
                     maxYRange=(yMax - yMin),
                 )
-                self.p[0].setYRange(yMin, yMax - yMin)
+                self.p[0].setYRange(yMin, yMax)
         self.p[0].getViewBox().rightMouseRange()
 
         dataVal = kwargs.get("data", y)

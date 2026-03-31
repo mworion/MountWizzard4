@@ -21,7 +21,6 @@ from io import BytesIO
 from mw4.gui.utilities.generateSprites import makeSat
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets import satelliteMap_ui
-from pyqtgraph import PlotWidget
 from PySide6.QtCore import QFile, Qt
 from skyfield.api import Timescale, wgs84, EarthSatellite
 from skyfield.toposlib import GeographicPosition
@@ -40,7 +39,6 @@ class SatelliteMapWindow(MWidget):
         self.satellite: EarthSatellite | None = None
         self.satOrbits: dict = {}
         self.plotSatPosEarth: pg.PlotDataItem | None = None
-        self.pointerAltAz: pg.PlotDataItem | None = None
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
         self.pens = []
         for color in self.colors:
@@ -58,7 +56,6 @@ class SatelliteMapWindow(MWidget):
 
     def initConfig(self) -> None:
         """ """
-        return
         self.positionWindow(self.app.config.get("satelliteMapW", {}))
 
     def storeConfig(self) -> None:
@@ -78,7 +75,6 @@ class SatelliteMapWindow(MWidget):
 
     def showWindow(self) -> None:
         """ """
-        self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.colorChange.connect(self.colorChange)
         self.app.sendSatelliteData.emit([], [])
         self.show()
@@ -88,19 +84,6 @@ class SatelliteMapWindow(MWidget):
         self.setStyleSheet(self.mw4Style)
         self.ui.satEarth.colorChange()
         self.app.sendSatelliteData.emit([], [])
-
-    def updatePointerAltAz(self) -> None:
-        """ """
-        if self.pointerAltAz is None:
-            return
-        if self.obsSite.Alt is None or self.obsSite.Az is None:
-            self.pointerAltAz.setVisible(False)
-            return
-
-        self.pointerAltAz.setVisible(True)
-        alt = self.obsSite.Alt.degrees
-        az = self.obsSite.Az.degrees
-        self.pointerAltAz.setData(x=[az], y=[alt])
 
     def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
         """ """
@@ -129,7 +112,7 @@ class SatelliteMapWindow(MWidget):
         yield slice(lastIndex, len(dat))
 
     @staticmethod
-    def prepareEarth(plotItem: PlotWidget) -> None:
+    def prepareEarth(plotItem: pg.PlotItem) -> None:
         """ """
         plotItem.showAxes(True, showValues=True)
         plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
@@ -147,7 +130,7 @@ class SatelliteMapWindow(MWidget):
         plotItem.setMouseEnabled(x=True, y=True)
         plotItem.clear()
 
-    def drawShoreLine(self, plotItem: PlotWidget) -> None:
+    def drawShoreLine(self, plotItem: pg.PlotItem) -> None:
         """ """
         for key in self.world:
             shape = self.world[key]
@@ -159,7 +142,7 @@ class SatelliteMapWindow(MWidget):
             poly.setBrush(self.ui.satEarth.brushHorizon)
             plotItem.addItem(poly)
 
-    def drawPosition(self, plotItem: PlotWidget) -> None:
+    def drawPosition(self, plotItem: pg.PlotItem) -> None:
         """ """
         lat = self.obsSite.location.latitude.degrees
         lon = self.obsSite.location.longitude.degrees
@@ -185,18 +168,18 @@ class SatelliteMapWindow(MWidget):
         )
         return pd
 
-    def prepareEarthSatellite(self, plotWidget: PlotWidget) -> pg.PlotDataItem:
+    def prepareEarthSatellite(self, plotItem: pg.PlotItem) -> pg.PlotDataItem:
         """ """
         subPoint = wgs84.subpoint_of(self.satellite.at(self.obsSite.ts.now()))
         lat = subPoint.latitude.degrees
         lon = subPoint.longitude.degrees
-        pd = self.prepareSatellite([lat], [lon])
+        pd = self.prepareSatellite(lon, lat)
         pd.setVisible(False)
         pd.setZValue(10)
-        plotWidget.addItem(pd)
+        plotItem.addItem(pd)
         return pd
 
-    def drawEarthTrajectory(self, plotWidget: PlotWidget) -> None:
+    def drawEarthTrajectory(self, plotItem: pg.PlotItem) -> None:
         """ """
         for i, satOrbit in enumerate(self.satOrbits):
             rise = satOrbit["rise"].tt
@@ -213,7 +196,7 @@ class SatelliteMapWindow(MWidget):
             lon = subPoints.longitude.degrees
             for slc in self.unlinkWrap(lon):
                 pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=self.pens[2 * i])
-                plotWidget.addItem(pd)
+                plotItem.addItem(pd)
 
             vector = np.arange(flip, settle, step)
             vecT = self.obsSite.ts.tt_jd(vector)
@@ -222,7 +205,7 @@ class SatelliteMapWindow(MWidget):
             lon = subPoints.longitude.degrees
             for slc in self.unlinkWrap(lon):
                 pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=self.pens[2 * i + 1])
-                plotWidget.addItem(pd)
+                plotItem.addItem(pd)
 
         rise = self.satOrbits[0]["rise"].tt
         settle = self.satOrbits[-1]["settle"].tt
@@ -237,16 +220,16 @@ class SatelliteMapWindow(MWidget):
                 x=lon[slc], y=lat[slc], pen=pg.mkPen(width=1, color=self.M_TER1 + "80")
             )
             pd.setZValue(-10)
-            plotWidget.addItem(pd)
+            plotItem.addItem(pd)
 
     def drawEarth(self) -> None:
         """ """
-        plotWidget = self.ui.satEarth.p[0]
-        self.prepareEarth(plotWidget)
-        self.drawShoreLine(plotWidget)
-        self.drawPosition(plotWidget)
-        self.plotSatPosEarth = self.prepareEarthSatellite(plotWidget)
-        self.drawEarthTrajectory(plotWidget)
+        plotItem = self.ui.satEarth.p[0]
+        self.prepareEarth(plotItem)
+        self.drawShoreLine(plotItem)
+        self.drawPosition(plotItem)
+        self.plotSatPosEarth = self.prepareEarthSatellite(plotItem)
+        self.drawEarthTrajectory(plotItem)
 
     def drawSatellite(
         self, satellite: EarthSatellite, satOrbits: dict, altitude: list[float], azimuth: list[float], name: str
@@ -255,4 +238,6 @@ class SatelliteMapWindow(MWidget):
         self.setWindowTitle(f"Satellite {name}")
         self.satellite = satellite
         self.satOrbits = satOrbits
+        if satOrbits is None or self.obsSite is None:
+            return
         self.drawEarth()

@@ -111,7 +111,7 @@ class Almanac:
         yTicks = [(x, y) for x, y in zip(self.Y_TICKS, self.Y_LABELS)]
         penLine = pg.mkPen(color=self.mainW.M_PINK, width=2)
         plotItem = self.ui.twilight.p[0]
-        plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
+        plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
         plotItem.setXRange(0, 360)
         plotItem.setYRange(0, 90)
         plotItem.showAxes(True, showValues=True)

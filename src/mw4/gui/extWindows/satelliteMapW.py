@@ -173,7 +173,7 @@ class SatelliteMapWindow(MWidget):
         subPoint = wgs84.subpoint_of(self.satellite.at(self.obsSite.ts.now()))
         lat = subPoint.latitude.degrees
         lon = subPoint.longitude.degrees
-        pd = self.prepareSatellite(lon, lat)
+        pd = self.prepareSatellite([lon], [lat])
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)

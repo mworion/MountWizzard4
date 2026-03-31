@@ -36,9 +36,9 @@ class HemisphereDraw(MWidget):
         self.msg = parent.msg
         self.slewInterface = SlewInterface(self)
 
-        self.pointerDome: pg.QtWidgets.QGraphicsRectItem | None = None
+        self.pointerDome: pg.QtWidgets.QGraphicsRectItem = pg.QtWidgets.QGraphicsRectItem()
         self.modelPointsText: list = []
-        self.alignmentStars: pg.ScatterPlotItem | None = None
+        self.alignmentStars: pg.ScatterPlotItem = pg.ScatterPlotItem()
         self.alignmentStarsText: list = []
 
     def initConfig(self) -> None:
@@ -107,9 +107,7 @@ class HemisphereDraw(MWidget):
         self.parent.preparePlotItem(plotItem)
         polarItem = self.ui.hemisphere.p[1]
         self.parent.preparePolarItem(polarItem)
-        self.pointerDome = None
         self.modelPointsText = []
-        self.alignmentStars = None
         self.alignmentStarsText = []
         plotItem.getViewBox().callbackMDC = self.mouseDoubleClick
 
@@ -159,10 +157,7 @@ class HemisphereDraw(MWidget):
 
     def calculateRelevance(self, alt: float, az: float) -> float:
         """ """
-        if self.app.mount.obsSite.location is None:
-            isNorth = True
-        else:
-            isNorth = self.app.mount.obsSite.location.latitude.degrees > 0
+        isNorth = self.app.mount.obsSite.location.latitude.degrees > 0
         altFak = 1 - np.minimum(np.abs(alt - 30), 35) / 35
         if isNorth:
             azFak = 1 - np.minimum(diffModulusAbs(0, az - 180, 360), 75) / 75
@@ -181,8 +176,6 @@ class HemisphereDraw(MWidget):
     def drawAlignmentStars(self) -> None:
         """ """
         if not self.ui.showAlignStar.isChecked():
-            return
-        if not self.alignmentStars:
             return
 
         hip = self.app.hipparcos

@@ -31,9 +31,9 @@ class HorizonDraw(MWidget):
         self.ui = parent.ui
         self.app = parent.app
         self.msg = parent.msg
-        self.horizonPlot: pg.PlotDataItem | None = None
-        self.imageTerrain: np.ndarray | None = None
-        self.pointerHor: pg.ScatterPlotItem | None = None
+        self.horizonPlot: pg.PlotDataItem = pg.PlotDataItem()
+        self.imageTerrain: np.ndarray = np.zeros((0, 0))
+        self.pointerHor: pg.ScatterPlotItem = pg.ScatterPlotItem()
 
     def initConfig(self) -> None:
         """ """
@@ -78,10 +78,10 @@ class HorizonDraw(MWidget):
     def loadTerrainImage(self, terrainFile: Path) -> None:
         """ """
         if not terrainFile.is_file():
-            self.imageTerrain = None
+            self.imageTerrain = np.ones((480, 2880)) * 128
             return
 
-        img = cv2.imread(terrainFile, cv2.IMREAD_GRAYSCALE)
+        img = np.array(cv2.imread(terrainFile, cv2.IMREAD_GRAYSCALE))
         h, w = img.shape
         h2 = int(h / 2)
         img = img[0:h2, 0:w]
@@ -181,8 +181,6 @@ class HorizonDraw(MWidget):
         vb = self.ui.horizon.p[0].getViewBox()
         az = self.app.mount.obsSite.Az
         alt = self.app.mount.obsSite.Alt
-        if alt is None and az is None:
-            return
         az = az.degrees
         alt = alt.degrees
         index = vb.getNearestPointIndex(QPointF(az, alt))
@@ -193,7 +191,6 @@ class HorizonDraw(MWidget):
         """ """
         plotItem = self.ui.horizon.p[0]
         self.parent.preparePlotItem(plotItem)
-        self.pointerHor = None
 
     def drawView(self) -> None:
         """ """
@@ -218,14 +215,7 @@ class HorizonDraw(MWidget):
 
     def drawPointer(self) -> None:
         """ """
-        if self.pointerHor is None:
-            return
-
         obsSite = self.app.mount.obsSite
-        if obsSite.Alt is None or obsSite.Az is None:
-            self.pointerHor.setVisible(False)
-            return
-
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         self.pointerHor.setData(x=[az], y=[alt])

@@ -59,8 +59,8 @@ class Photometry:
         self.objsAll = None
         self.bkg = None
 
-        self.xm: int = 0
-        self.ym: int = 0
+        self.xm: np.ndarray = np.array([])
+        self.ym: np.ndarray = np.array([])
         self.h: int = 0
         self.w: int = 0
         self.filterConstW: int = 1
@@ -247,8 +247,8 @@ class Photometry:
             )
         except Exception as e:
             self.log.error(e)
-            self.objs = None
-            self.objsAll = None
+            self.objs = np.array([])
+            self.objsAll = np.array([])
             self.hfr = np.zeros(0)
             self.hfrAll = np.zeros(0)
             return

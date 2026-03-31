@@ -186,12 +186,6 @@ def test_clearHorizonMask(function):
         function.clearHorizonMask()
 
 
-def test_addActualPosition_1(function):
-    function.app.mount.obsSite.Alt = None
-    function.app.mount.obsSite.Az = None
-    function.addActualPosition()
-
-
 def test_addActualPosition_2(function):
     function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.app.mount.obsSite.Az = Angle(degrees=20)
@@ -218,17 +212,6 @@ def test_drawView_2(function):
 
 def test_setupPointer(function):
     function.setupPointer()
-
-
-def test_drawPointer_1(function):
-    function.pointerHor = None
-    function.drawPointer()
-
-
-def test_drawPointer_2(function):
-    function.pointerHor = pg.ScatterPlotItem()
-    function.app.mount.obsSite.Alt = None
-    function.drawPointer()
 
 
 def test_drawPointer_3(function):

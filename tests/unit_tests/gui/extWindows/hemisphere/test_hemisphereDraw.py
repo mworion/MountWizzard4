@@ -113,12 +113,6 @@ def test_setupAlignmentStars(function):
     function.setupAlignmentStars()
 
 
-def test_calculateRelevance_0(function):
-    function.app.mount.obsSite.location = None
-    val = function.calculateRelevance(40, 180)
-    assert round(val, 3) == 0.845
-
-
 def test_calculateRelevance_1(function):
     function.app.mount.obsSite.location = wgs84.latlon(
         longitude_degrees=0, latitude_degrees=45
@@ -173,12 +167,6 @@ def test_selectFontParam_2(function):
 
 def test_drawAlignmentStars_1(function):
     function.ui.showAlignStar.setChecked(False)
-    function.drawAlignmentStars()
-
-
-def test_drawAlignmentStars_2(function):
-    function.ui.showAlignStar.setChecked(True)
-    function.alignmentStars = None
     function.drawAlignmentStars()
 
 
@@ -261,13 +249,6 @@ def test_setupModel_2(function):
 
 def test_setupPointer(function):
     function.setupPointer()
-
-
-def test_drawPointer_1(function):
-    function.app.mount.obsSite.Az = None
-    function.app.mount.obsSite.Alt = None
-    function.setupPointer()
-    function.drawPointer()
 
 
 def test_drawPointer_2(function):

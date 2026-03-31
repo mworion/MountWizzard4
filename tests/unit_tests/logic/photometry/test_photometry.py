@@ -29,7 +29,7 @@ class Parent:
 
 @pytest.fixture(autouse=True, scope="function")
 def function(qapp):
-    func = Photometry(Parent())
+    func = Photometry(Parent(), np.zeros((1, 1)))
     yield func
 
 
@@ -70,7 +70,7 @@ def test_workerCalcTiltValuesSquare(function):
     function.w = 1000
     function.h = 1000
     function.objs = {"x": np.linspace(0, 1000, 20), "y": np.linspace(0, 1000, 20)}
-    function.image = np.random.rand(1000, 1000) + 1
+    function.image = np.array(np.random.rand(1000, 1000) + 1)
     function.hfr = np.linspace(20, 30, 20)
     function.workerCalcTiltValuesSquare()
 
@@ -79,7 +79,7 @@ def test_workerCalcTiltValuesTriangle(function):
     function.w = 10
     function.h = 10
     function.objs = {"x": np.linspace(0, 100, 20), "y": np.linspace(0, 100, 20)}
-    function.image = np.random.rand(100, 100) + 1
+    function.image = np.array(np.random.rand(1000, 1000) + 1)
     function.hfr = np.linspace(20, 30, 20)
     function.workerCalcTiltValuesTriangle()
 
@@ -87,7 +87,7 @@ def test_workerCalcTiltValuesTriangle(function):
 def test_calcAberrationInspectView_1(function):
     function.w = 1000
     function.h = 1000
-    function.image = np.random.rand(1000, 1000) + 1
+    function.image = np.array(np.random.rand(1000, 1000) + 1)
     function.calcAberrationInspectView()
     h, w = function.aberrationImage.shape
     assert w == function.ABERRATION_SIZE * 3
@@ -97,7 +97,7 @@ def test_calcAberrationInspectView_1(function):
 def test_calcAberrationInspectView_2(function):
     function.w = 100
     function.h = 100
-    function.image = np.random.rand(100, 100) + 1
+    function.image = np.array(np.random.rand(100, 100) + 1)
     function.calcAberrationInspectView()
     h, w = function.aberrationImage.shape
     assert w == function.image.shape[0]
@@ -125,12 +125,12 @@ def test_showTabBackgroundRMS(function):
 def test_baseCalcs(function):
     function.objs = {"x": np.linspace(0, 1000, 20), "y": np.linspace(0, 1000, 20)}
     function.hfr = np.linspace(20, 30, 20)
-    function.image = np.random.rand(1000, 1000) + 1
+    function.image = np.array(np.random.rand(1000, 1000) + 1)
     function.baseCalcs()
 
 
 def test_runCalcs_1(function):
-    function.hfr = [1, 2, 3]
+    function.hfr = np.array([1, 2, 3])
     with mock.patch.object(function, "baseCalcs"):
         with mock.patch.object(function, "workerGetHFR"):
             with mock.patch.object(function, "workerCalcTiltValuesSquare"):
@@ -143,7 +143,7 @@ def test_runCalcs_1(function):
 
 
 def test_runCalcs_2(function):
-    function.hfr = [1] * 20
+    function.hfr = np.array([1] * 20)
     with mock.patch.object(function, "baseCalcs"):
         with mock.patch.object(function, "workerGetHFR"):
             with mock.patch.object(function, "workerCalcTiltValuesSquare"):
@@ -156,7 +156,7 @@ def test_runCalcs_2(function):
 
 
 def test_workerCalcPhotometry_1(function):
-    function.image = np.random.rand(100, 100) + 1
+    function.image = np.array(np.random.rand(100, 100) + 1)
     function.image[50][50] = 100
     function.image[51][50] = 50
     function.image[50][51] = 50
@@ -170,7 +170,7 @@ def test_workerCalcPhotometry_1(function):
 
 
 def test_workerCalcPhotometry_2(function):
-    function.image = np.random.rand(100, 100) + 1
+    function.image = np.array(np.random.rand(100, 100) + 1)
     function.image[50][50] = 100
     function.image[51][50] = 50
     function.image[50][51] = 50
@@ -178,12 +178,12 @@ def test_workerCalcPhotometry_2(function):
     function.image[49][50] = 50
     with mock.patch.object(sep, "extract", side_effect=Exception):
         function.workerCalcPhotometry()
-        assert function.hfr is None
-        assert function.objs is None
+        assert not function.hfr.size > 0
+        assert not function.objs.size > 0
 
 
 def test_workerCalcPhotometry_3(function):
-    function.image = np.random.rand(100, 100) + 1
+    function.image = np.array(np.random.rand(100, 100) + 1)
     function.image[40:60, 40:60] = 100
     with mock.patch.object(function, "runCalcs"):
         function.workerCalcPhotometry()
@@ -196,12 +196,12 @@ def test_unlockPhotometry(function):
 
 def test_processPhotometry_2(function):
     function.lock.lock()
-    function.processPhotometry(np.random.rand(100, 100) + 1, 0)
+    function.processPhotometry(np.array(np.random.rand(100, 100) + 1), 0)
     function.lock.unlock()
 
 
 def test_processPhotometry_3(function):
-    function.image = np.random.rand(100, 100) + 1
+    function.image = np.array(np.random.rand(100, 100) + 1)
     with mock.patch.object(function.threadPool, "start"):
-        function.processPhotometry(np.random.rand(100, 100) + 1, 0)
+        function.processPhotometry(np.array(np.random.rand(100, 100) + 1), 0)
     function.lock.unlock()

@@ -101,8 +101,10 @@ class Photometry:
         radius = np.sqrt(x * x + y * y)
         maskOuter = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.75 < radius
         maskInner = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.25 > radius
-        self.hfrOuter = np.median(self.hfr[maskOuter])
-        self.hfrInner = np.median(self.hfr[maskInner])
+        outerHFR = self.hfr[maskOuter]
+        innerHFR = self.hfr[maskInner]
+        self.hfrOuter = float(np.median(outerHFR)) if len(outerHFR) > 0 else np.nan
+        self.hfrInner = float(np.median(innerHFR)) if len(innerHFR) > 0 else np.nan
         self.hfrPercentile = np.percentile(self.hfr, 90)
         self.hfrMedian = np.median(self.hfr)
 
@@ -157,8 +159,8 @@ class Photometry:
                 yMin = yRange[iy]
                 yMax = yRange[iy + 1]
                 hfr = self.hfr[(x > xMin) & (x < xMax) & (y > yMin) & (y < yMax)]
-                med_hfr = np.median(hfr)
-                segHFR[ix][iy] = med_hfr
+                if len(hfr) > 0:
+                    segHFR[ix][iy] = np.median(hfr)
         self.hfrSegSquare = segHFR
         self.signals.hfrSquare.emit()
 

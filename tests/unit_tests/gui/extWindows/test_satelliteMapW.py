@@ -67,12 +67,6 @@ def test_colorChange(function):
         function.colorChange()
 
 
-def test_updatePositions_1(function):
-    function.satellite = None
-    ts = function.app.mount.obsSite.ts
-    function.updatePositions(ts, "loc")
-
-
 def test_updatePositions_2(function):
     tle = [
         "CALSPHERE 1",

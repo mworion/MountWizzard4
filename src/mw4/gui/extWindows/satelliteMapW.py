@@ -87,9 +87,6 @@ class SatelliteMapWindow(MWidget):
 
     def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
         """ """
-        if self.satellite is None or self.plotSatPosEarth is None:
-            return
-
         observe = self.satellite.at(now)
         subPoint = wgs84.subpoint_of(observe)
         self.ui.satLatitude.setText(f"{subPoint.latitude.degrees:3.2f}")

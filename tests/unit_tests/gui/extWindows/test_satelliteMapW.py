@@ -51,7 +51,6 @@ def test_storeConfig_2(function):
 
 
 def test_closeEvent_1(function):
-    function.app.mount.signals.pointDone.connect(function.updatePointerAltAz)
     function.app.colorChange.connect(function.colorChange)
     with mock.patch.object(function, "show"):
         with mock.patch.object(MWidget, "closeEvent"):
@@ -66,32 +65,6 @@ def test_showWindow(function):
 def test_colorChange(function):
     with mock.patch.object(function, "drawSatellite"):
         function.colorChange()
-
-
-def test_updatePointerAltAz_1(function):
-    function.pointerAltAz = None
-    function.updatePointerAltAz()
-
-
-def test_updatePointerAltAz_2(function):
-    function.pointerAltAz = pg.PlotDataItem()
-    function.app.mount.obsSite.Alt = Angle(degrees=80)
-    function.app.mount.obsSite.Az = None
-    function.updatePointerAltAz()
-
-
-def test_updatePointerAltAz_3(function):
-    function.pointerAltAz = pg.PlotDataItem()
-    function.app.mount.obsSite.Alt = None
-    function.app.mount.obsSite.Az = Angle(degrees=80)
-    function.updatePointerAltAz()
-
-
-def test_updatePointerAltAz_4(function):
-    function.pointerAltAz = pg.PlotDataItem()
-    function.app.mount.obsSite.Alt = Angle(degrees=80)
-    function.app.mount.obsSite.Az = Angle(degrees=80)
-    function.updatePointerAltAz()
 
 
 def test_updatePositions_1(function):

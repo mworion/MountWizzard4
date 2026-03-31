@@ -24,6 +24,7 @@ from mw4.logic.fits.fitsFunction import (
     getSQMFromHeader,
 )
 from PySide6.QtGui import QFont
+from PySide6.QtCore import QRectF
 
 
 class ImageTabs:
@@ -52,7 +53,7 @@ class ImageTabs:
         self.fontText = QFont(self.parent.window().font().family(), 16)
         self.fontAnno = QFont(self.parent.window().font().family(), 10, italic=True)
         self.fontText.setBold(True)
-        self.imageSourceRange = None
+        self.imageSourceRange: QRectF = QRectF()
         self.fileHandler.signals.imageLoaded.connect(self.showImage)
         self.photometry.signals.hfr.connect(self.showHFR)
         self.photometry.signals.hfrSquare.connect(self.showTiltSquare)
@@ -142,7 +143,7 @@ class ImageTabs:
             return
 
         self.ui.slewCenter.setEnabled(self.fileHandler.hasCelestial)
-        self.imageSourceRange = None
+        self.imageSourceRange = QRectF()
         self.ui.image.setImage(
             imageDisp=self.fileHandler.image,
             updateGeometry=not self.imagingDeviceStat["exposeN"],
@@ -283,7 +284,7 @@ class ImageTabs:
         segHFR = self.photometry.hfrSegTriangle
         w = self.photometry.w
         h = self.photometry.h
-        r = min(h, w) / 2
+        r = min([h, w]) / 2
         cx = w / 2
         cy = h / 2
         r25 = 0.25 * r

@@ -44,14 +44,12 @@ class ImageWindow(MWidget):
         self.photometry = Photometry(self, np.zeros((1, 1)))
         self.fileHandler = FileHandler(self)
         self.slewInterface = SlewInterface(self)
-        self.barItem = None
-        self.imageItem = None
         self.imageFileName: Path = Path("")
         self.imageFileNameOld: Path = Path("")
         self.exposureTime: float = 1
         self.binning: int = 1
         self.folder: Path = Path()
-        self.result: dict
+        self.result: dict = {}
         self.imagingDeviceStat = {
             "expose": False,
             "exposeN": False,

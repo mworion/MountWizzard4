@@ -27,13 +27,11 @@ from xisf import XISF
 
 class FileHandlerSignals(QObject):
     """ """
-
     imageLoaded = Signal()
 
 
 class FileHandler:
     """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(
@@ -41,7 +39,7 @@ class FileHandler:
     ):
         self.threadPool = parent.app.threadPool
         self.signals = FileHandlerSignals()
-        self.worker: Worker | None = None
+        self.worker: Worker = Worker(self.workerLoadImage)
         self.imagePath: Path = imagePath
         self.flipH: bool = flipH
         self.flipV: bool = flipV

@@ -130,7 +130,7 @@ class HemisphereDraw(MWidget):
                 x=az,
                 y=alt,
                 symbol="o",
-                pen=pg.mkPen(color=self.M_TER1, size=0.9),
+                pen=pg.mkPen(color=self.M_TER1, width=0.9),
                 brush=pg.mkBrush(color=self.M_TER),
                 size=0.9,
             )

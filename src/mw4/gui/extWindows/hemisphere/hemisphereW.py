@@ -148,7 +148,7 @@ class HemisphereWindow(MWidget):
         """ """
         plotItem.clear()
         plotItem.showAxes(True, showValues=True)
-        plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        plotItem.getViewBox().setMouseMode(pg.ViewBox.PanMode)
         xTicks = [(x, f"{x:0.0f}") for x in np.arange(30, 331, 30)]
         plotItem.getAxis("bottom").setTicks([xTicks])
         plotItem.getAxis("top").setTicks([xTicks])
@@ -186,7 +186,7 @@ class HemisphereWindow(MWidget):
         self.ui.hemisphere.ci.layout.setColumnStretchFactor(1, 10)
         plotItem.showAxes(False, showValues=False)
         plotItem.setMouseEnabled(x=False, y=False)
-        plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        plotItem.getViewBox().setMouseMode(pg.ViewBox.PanMode)
         plotItem.setXRange(-90, 90)
         plotItem.setYRange(-90, 90)
         plotItem.disableAutoRange()

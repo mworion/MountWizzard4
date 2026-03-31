@@ -135,7 +135,7 @@ class SatelliteHorizonWindow(MWidget):
     @staticmethod
     def prepareHorizon(plotItem: pg.PlotItem) -> None:
         """ """
-        plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        plotItem.getViewBox().setMouseMode(pg.ViewBox.PanMode)
         plotItem.showAxes(True, showValues=True)
         xTicks = [(x, f"{x:0.0f}") for x in np.arange(30, 360, 30)]
         yTicks = [(x, f"{x:0.0f}") for x in np.arange(10, 90, 10)]

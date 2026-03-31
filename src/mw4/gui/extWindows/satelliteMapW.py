@@ -115,7 +115,7 @@ class SatelliteMapWindow(MWidget):
     def prepareEarth(plotItem: pg.PlotItem) -> None:
         """ """
         plotItem.showAxes(True, showValues=True)
-        plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        plotItem.getViewBox().setMouseMode(pg.ViewBox.PanMode)
         xTicks = [(x, f"{x:0.0f}") for x in np.arange(-135, 136, 45)]
         plotItem.getAxis("bottom").setTicks([xTicks])
         plotItem.getAxis("top").setTicks([xTicks])

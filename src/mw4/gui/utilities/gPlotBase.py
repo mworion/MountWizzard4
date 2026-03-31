@@ -69,7 +69,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
     def setupItems(self) -> None:
         """ """
         for plotItem in self.p:
-            plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
+            plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
             plotItem.getViewBox().rbScaleBox.setPen(self.pen)
             plotItem.getViewBox().rbScaleBox.setBrush(self.brushGrid)
             plotItem.getViewBox().setMenuEnabled(False)
@@ -120,7 +120,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         plotItem.removeItem(self.findItemByName(plotItem, "horizon"))
         if len(horizonP) == 0:
             return False
-        if not self.p[0].items:
+        if not plotItem.items:
             return False
 
         alt, az = zip(*horizonP)

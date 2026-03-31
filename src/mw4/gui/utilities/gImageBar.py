@@ -53,9 +53,9 @@ class ImageBar(PlotBase):
     def setImage(self, imageDisp: np.array, updateGeometry: bool = True) -> bool:
         """ """
         self.constructPlot()
-        self.imageItem.setImage(imageDisp)
         if imageDisp is None:
             return False
+        self.imageItem.setImage(imageDisp)
         yMax, xMax = imageDisp.shape
         xMinR = max(xMax / 100, 100)
         yMinR = max(yMax / 100, 100)

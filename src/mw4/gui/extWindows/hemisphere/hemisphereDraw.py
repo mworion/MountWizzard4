@@ -35,7 +35,6 @@ class HemisphereDraw(MWidget):
         self.app = parent.app
         self.msg = parent.msg
         self.slewInterface = SlewInterface(self)
-
         self.pointerDome: pg.QtWidgets.QGraphicsRectItem = pg.QtWidgets.QGraphicsRectItem()
         self.modelPointsText: list = []
         self.alignmentStars: pg.ScatterPlotItem = pg.ScatterPlotItem()

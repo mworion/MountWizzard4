@@ -13,8 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
-import ctypes
 import glob
 import mw4.loader
 import os
@@ -25,7 +23,6 @@ import sys
 import traceback
 import unittest.mock as mock
 from mw4.loader import (
-    checkIsAdmin,
     except_hook,
     extractDataFiles,
     extractFile,
@@ -59,98 +56,6 @@ def test_except_hook():
 def test_setupWorkDirs_1():
     with mock.patch.object(Path, "mkdir"):
         setupWorkDirs(Path())
-
-
-def test_checkIsAdmin_1():
-    def getiud():
-        return 0
-
-    os.getuid = getiud
-    with mock.patch.object(platform, "system", return_value="Darwin"):
-        with mock.patch.object(os, "getuid", return_value=0, side_effect=Exception):
-            val = checkIsAdmin()
-            assert val == "unknown"
-
-
-def test_checkIsAdmin_2():
-    def getiud():
-        return 0
-
-    os.getuid = getiud
-    with mock.patch.object(platform, "system", return_value="Darwin"):
-        with mock.patch.object(os, "getuid", return_value=0):
-            val = checkIsAdmin()
-            assert val == "yes"
-
-
-def test_checkIsAdmin_3():
-    def getiud():
-        return 0
-
-    os.getuid = getiud
-    with mock.patch.object(platform, "system", return_value="Darwin"):
-        with mock.patch.object(os, "getuid", return_value=1):
-            val = checkIsAdmin()
-            assert val == "no"
-
-
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
-def test_checkIsAdmin_4():
-    import ctypes
-
-    with mock.patch.object(platform, "system", return_value="Windows"):
-        with mock.patch.object(ctypes.windll.shell32, "IsUserAnAdmin", side_effect=Exception):
-            val = checkIsAdmin()
-            assert val == "unknown"
-
-
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
-def test_checkIsAdmin_5():
-    import ctypes
-
-    with mock.patch.object(platform, "system", return_value="Windows"):
-        with mock.patch.object(ctypes.windll.shell32, "IsUserAnAdmin", return_value=1):
-            val = checkIsAdmin()
-            assert val == "yes"
-
-
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
-def test_checkIsAdmin_6():
-    import ctypes
-
-    with mock.patch.object(platform, "system", return_value="Windows"):
-        with mock.patch.object(ctypes.windll.shell32, "IsUserAnAdmin", return_value=0):
-            val = checkIsAdmin()
-            assert val == "no"
-
-
-@pytest.mark.skipif(platform.system() != "Windows", reason="need windows")
-def test_checkIsAdmin_7():
-    with mock.patch.object(platform, "system", return_value="Windows"):
-        with mock.patch.object(
-            ctypes.windll.shell32,
-            "IsUserAnAdmin",
-            return_value=0,
-            side_effect=Exception,
-        ):
-            val = checkIsAdmin()
-            assert val == "unknown"
-
-
-@pytest.mark.skipif(platform.system() != "Windows", reason="need windows")
-def test_checkIsAdmin_8():
-    with mock.patch.object(platform, "system", return_value="Windows"):
-        with mock.patch.object(ctypes.windll.shell32, "IsUserAnAdmin", return_value=1):
-            val = checkIsAdmin()
-            assert val == "yes"
-
-
-@pytest.mark.skipif(platform.system() != "Windows", reason="need windows")
-def test_checkIsAdmin_9():
-    with mock.patch.object(platform, "system", return_value="Windows"):
-        with mock.patch.object(ctypes.windll.shell32, "IsUserAnAdmin", return_value=0):
-            val = checkIsAdmin()
-            assert val == "no"
 
 
 def test_writeSystemInfo_1():

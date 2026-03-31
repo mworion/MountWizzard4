@@ -76,31 +76,6 @@ def setupWorkDirs(workDir: Path) -> dict:
 
 
 # noinspection PyUnresolvedReferences
-def checkIsAdmin() -> str:
-    """ """
-    if platform.system() == "Windows":
-        import ctypes
-
-        try:
-            state = ctypes.windll.shell32.IsUserAnAdmin() == 1
-        except Exception as e:
-            log.error(f"Check admin error: [{e}]")
-            state = None
-    else:
-        try:
-            state = os.getuid() == 0
-        except Exception as e:
-            log.error(f"Check admin error: [{e}]")
-            state = None
-    if state is None:
-        return "unknown"
-    elif state:
-        return "yes"
-    else:
-        return "no"
-
-
-# noinspection PyUnresolvedReferences
 def writeSystemInfo(mwGlob: dict = None) -> None:
     """ """
     log.header("-" * 100)
@@ -115,7 +90,6 @@ def writeSystemInfo(mwGlob: dict = None) -> None:
     log.header(f"python runtime   : {platform.architecture()[0]}")
     log.header(f"PySide6 / Qt     : {PySide6.QtCore.__version__} / {qVersion()}")
     log.header(f"node / hostname  : {platform.node()} / {socket.gethostname()}")
-    log.header(f"run as admin     : {checkIsAdmin()}")
     log.header("-" * 100)
 
 

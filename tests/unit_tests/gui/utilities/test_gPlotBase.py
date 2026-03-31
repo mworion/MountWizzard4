@@ -124,6 +124,17 @@ def test_PlotBase_drawHorizon_4():
         assert suc
 
 
+def test_PlotBase_drawHorizon_5():
+    """drawHorizon must check plotItem.items, not always self.p[0].items."""
+    p = PlotBase()
+    p2 = PlotBase()
+    target = p2.p[0]
+    target.addItem(pg.PlotDataItem())   # target has items; p.p[0] has none
+    with mock.patch.object(p, "show"):
+        suc = p.drawHorizon([(0, 0), (1, 1)], plotItem=target)
+        assert suc   # must succeed because target has items, not p.p[0]
+
+
 def test_addIsoBasic_1():
     p = PlotBase()
     np.random.uniform(low=10, high=350, size=(50,))
@@ -131,6 +142,17 @@ def test_addIsoBasic_1():
     err = np.random.uniform(low=5, high=15, size=(50,))
     with mock.patch.object(QApplication, "processEvents"):
         p.addIsoBasic(p.p[0], err, levels=1)
+
+
+def test_addIsoBasic_nameStr():
+    """nameStr must be set on the IsocurveItem (pd), not on the pg module."""
+    p = PlotBase()
+    err = np.random.uniform(low=5, high=15, size=(10, 10))
+    with mock.patch.object(QApplication, "processEvents"):
+        p.addIsoBasic(p.p[0], err, levels=1)
+    item = p.findItemByName(p.p[0], "iso")
+    assert item is not None
+    assert not hasattr(pg, "nameStr")
 
 
 def test_addIsoItem_1():

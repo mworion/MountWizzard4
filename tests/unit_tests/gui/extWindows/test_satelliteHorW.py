@@ -109,12 +109,10 @@ def test_updatePositions_2(function):
     now = ts.tt_jd(2459523.2430)
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
-    function.plotSatPosEarth = pg.PlotDataItem(x=[1, 0], y=[1, 0])
     function.plotSatPosHorizon = pg.PlotDataItem(x=[1, 0], y=[1, 0])
     location = function.app.mount.obsSite.location
-    with mock.patch.object(function.plotSatPosEarth, "setData"):
-        with mock.patch.object(function.plotSatPosHorizon, "setData"):
-            function.updatePositions(now, location)
+    with mock.patch.object(function.plotSatPosHorizon, "setData"):
+        function.updatePositions(now, location)
 
 
 def test_updatePositions_3(function):
@@ -128,12 +126,10 @@ def test_updatePositions_3(function):
 
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
-    function.plotSatPosEarth = pg.PlotDataItem(x=[1, 0], y=[1, 0])
     function.plotSatPosHorizon = pg.PlotDataItem(x=[1, 0], y=[1, 0])
     location = function.app.mount.obsSite.location
-    with mock.patch.object(function.plotSatPosEarth, "setData"):
-        with mock.patch.object(function.plotSatPosHorizon, "setData"):
-            function.updatePositions(now, location)
+    with mock.patch.object(function.plotSatPosHorizon, "setData"):
+        function.updatePositions(now, location)
 
 
 def test_unlinkWrap(function):
@@ -143,15 +139,15 @@ def test_unlinkWrap(function):
 
 
 def test_prepareHorizon(function):
-    function.prepareHorizon(pg.PlotWidget())
+    function.prepareHorizon(pg.PlotItem())
 
 
 def test_prepareHorizonSatellite(function):
-    function.prepareHorizonSatellite(pg.PlotWidget())
+    function.prepareHorizonSatellite(pg.PlotItem())
 
 
 def test_preparePointer(function):
-    function.preparePointer(pg.PlotWidget())
+    function.preparePointer(pg.PlotItem())
 
 
 def test_drawHorizonTrajectory_1(function):
@@ -175,7 +171,7 @@ def test_drawHorizonTrajectory_1(function):
         {"rise": t3, "culminate": t3, "flip": t3, "settle": t4},
     ]
     function.satOrbits = satOrbits
-    function.drawHorizonTrajectory(pg.PlotWidget(), [], [])
+    function.drawHorizonTrajectory(pg.PlotItem(), [], [])
 
 
 def test_drawHorizon(function):

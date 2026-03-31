@@ -84,11 +84,9 @@ def test_updatePositions_2(function):
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
     function.plotSatPosEarth = pg.PlotDataItem(x=[1, 0], y=[1, 0])
-    function.plotSatPosHorizon = pg.PlotDataItem(x=[1, 0], y=[1, 0])
     location = function.app.mount.obsSite.location
     with mock.patch.object(function.plotSatPosEarth, "setData"):
-        with mock.patch.object(function.plotSatPosHorizon, "setData"):
-            function.updatePositions(now, location)
+        function.updatePositions(now, location)
 
 
 def test_updatePositions_3(function):
@@ -103,11 +101,9 @@ def test_updatePositions_3(function):
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
     function.plotSatPosEarth = pg.PlotDataItem(x=[1, 0], y=[1, 0])
-    function.plotSatPosHorizon = pg.PlotDataItem(x=[1, 0], y=[1, 0])
     location = function.app.mount.obsSite.location
     with mock.patch.object(function.plotSatPosEarth, "setData"):
-        with mock.patch.object(function.plotSatPosHorizon, "setData"):
-            function.updatePositions(now, location)
+        function.updatePositions(now, location)
 
 
 def test_unlinkWrap(function):
@@ -117,16 +113,16 @@ def test_unlinkWrap(function):
 
 
 def test_prepareEarth(function):
-    function.prepareEarth(pg.PlotWidget())
+    function.prepareEarth(pg.PlotItem())
 
 
 def test_drawShoreLine(function):
     function.world = {"1": {"xDeg": [0], "yDeg": [0]}}
-    function.drawShoreLine(pg.PlotWidget())
+    function.drawShoreLine(pg.PlotItem())
 
 
 def test_drawPosition(function):
-    function.drawPosition(pg.PlotWidget())
+    function.drawPosition(pg.PlotItem())
 
 
 def test_prepareSatellite(function):
@@ -134,7 +130,7 @@ def test_prepareSatellite(function):
 
 
 def test_prepareEarthSatellite(function):
-    function.prepareEarthSatellite(pg.PlotWidget())
+    function.prepareEarthSatellite(pg.PlotItem())
 
 
 def test_drawEarthTrajectory_1(function):
@@ -158,7 +154,7 @@ def test_drawEarthTrajectory_1(function):
         {"rise": t3, "culminate": t3, "flip": t3, "settle": t4},
     ]
     function.satOrbits = satOrbits
-    function.drawEarthTrajectory(pg.PlotWidget())
+    function.drawEarthTrajectory(pg.PlotItem())
 
 
 def test_drawEarth_1(function):

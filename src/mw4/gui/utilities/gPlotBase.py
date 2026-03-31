@@ -157,7 +157,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             pd = pg.IsocurveItem()
             pd.setData(zm, level)
             pd.setZValue(10)
-            pg.nameStr = "iso"
+            pd.nameStr = "iso"
             pd.setPen(pg.mkPen(color=colorVal))
             plotItem.addItem(pd)
             QApplication.processEvents()

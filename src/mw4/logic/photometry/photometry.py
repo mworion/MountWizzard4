@@ -44,16 +44,16 @@ class Photometry:
     SN = [30, 20, 15, 10, 10]
     SEP = [3.0, 3.0, 2.5, 2.5, 2.0]
 
-    def __init__(self, parent, image: np.array = None, snSelector: int = 0):
+    def __init__(self, parent, image: np.ndarray, snSelector: int = 0):
         self.threadPool = parent.app.threadPool
         self.signals = PhotometrySignals()
 
-        self.image = image
-        self.aberrationImage = image
+        self.image: np.ndarray = image
+        self.aberrationImage: np.ndarray = image
         self.snTarget = self.SN[snSelector]
         self.sepThreshold = self.SEP[snSelector]
         self.lock = QMutex()
-        self.worker: Worker = None
+        self.worker: Worker = Worker(self.workerCalcPhotometry)
 
         self.objs = None
         self.objsAll = None
@@ -63,21 +63,21 @@ class Photometry:
         self.ym: int = 0
         self.h: int = 0
         self.w: int = 0
-        self.filterConstW = None
-        self.filterConstH = None
-        self.roundnessGrid = None
-        self.roundnessMin = None
-        self.roundnessMax = None
-        self.roundnessPercentile = None
-        self.background = None
-        self.backgroundMin = None
-        self.backgroundMax = None
-        self.backgroundRMS = None
-        self.backSignal = None
-        self.backRMS = None
+        self.filterConstW: int = 1
+        self.filterConstH: int = 1
+        self.roundnessGrid: np.ndarray = np.zeros(0)
+        self.roundnessMin: float = 0
+        self.roundnessMax: float = 1
+        self.roundnessPercentile: float = 1
+        self.background: np.ndarray = np.zeros(0)
+        self.backgroundMin: float = 0
+        self.backgroundMax: float = 1
+        self.backgroundRMS: np.ndarray = np.zeros(0)
+        self.backSignal: np.ndarray = np.zeros(0)
+        self.backRMS: np.ndarray = np.zeros(0)
 
-        self.hfr: np.array = np.zeros(30)
-        self.hfrAll: np.array = np.zeros(30)
+        self.hfr: np.ndarray = np.zeros(30)
+        self.hfrAll: np.ndarray = np.zeros(30)
         self.hfrMin: float = 1
         self.hfrMax: float = 1
         self.hfrPercentile: float = 1
@@ -202,8 +202,8 @@ class Photometry:
 
     def calcBackground(self) -> None:
         """ """
-        maxB = np.max(self.backSignal) / self.bkg.globalback
-        minB = np.min(self.backSignal) / self.bkg.globalback
+        maxB = float(np.max(self.backSignal)) / self.bkg.globalback
+        minB = float(np.min(self.backSignal)) / self.bkg.globalback
         img = self.backSignal / self.bkg.globalback
         self.background = uniform_filter(img, size=[self.filterConstH, self.filterConstW])
         self.backgroundMin = minB
@@ -249,8 +249,8 @@ class Photometry:
             self.log.error(e)
             self.objs = None
             self.objsAll = None
-            self.hfr = None
-            self.hfrAll = None
+            self.hfr = np.zeros(0)
+            self.hfrAll = np.zeros(0)
             return
 
         objsRaw = len(objs)
@@ -339,7 +339,7 @@ class Photometry:
         """ """
         self.lock.unlock()
 
-    def processPhotometry(self, image: object, snTarget: float) -> None:
+    def processPhotometry(self, image: np.ndarray, snTarget: int) -> None:
         """ """
         self.image = image
         self.snTarget = self.SN[snTarget]
@@ -348,7 +348,6 @@ class Photometry:
         if not self.lock.tryLock():
             return
 
-        self.worker = Worker(self.workerCalcPhotometry)
         self.worker.signals.result.connect(lambda: self.signals.sepFinished.emit())
         self.worker.signals.finished.connect(self.unlockPhotometry)
         self.threadPool.start(self.worker)

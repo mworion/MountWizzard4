@@ -50,7 +50,7 @@ class ImageBar(PlotBase):
         cMap = pg.colormap.get(colorMap)
         self.barItem.setColorMap(cMap)
 
-    def setImage(self, imageDisp: np.array, updateGeometry: bool = True) -> bool:
+    def setImage(self, imageDisp: np.ndarray, updateGeometry: bool = True) -> bool:
         """ """
         self.constructPlot()
         if imageDisp is None:

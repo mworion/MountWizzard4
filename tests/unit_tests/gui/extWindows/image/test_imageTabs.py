@@ -95,8 +95,8 @@ def test_showTabImage_2(function):
 
 def test_showTabHFR(function):
     function.ui.isoLayer.setChecked(True)
-    function.photometry = Photometry(function.parent)
-    function.photometry.hfr = np.random.rand(100, 100) + 1
+    function.photometry = Photometry(function.parent, np.zeros((1, 1)))
+    function.photometry.hfr = np.array(np.random.rand(100, 100) + 1)
     function.photometry.hfrPercentile = 0
     function.photometry.hfrMedian = 0
     with mock.patch.object(function.ui.hfr, "addIsoBasic"):
@@ -112,7 +112,7 @@ def test_showTabTiltSquare(function):
     function.photometry.w = 100
     function.photometry.h = 100
     function.photometry.hfrSegSquare = np.ones((3, 3))
-    function.photometry.image = np.random.rand(100, 100) + 1
+    function.photometry.image = np.array(np.random.rand(100, 100) + 1)
     function.showTiltSquare()
 
 
@@ -125,7 +125,7 @@ def test_showTabTiltTriangle(function):
     function.photometry.w = 100
     function.photometry.h = 100
     function.photometry.hfrSegTriangle = np.ones(72)
-    function.image = np.random.rand(100, 100) + 1
+    function.photometry.image = np.array(np.random.rand(100, 100) + 1)
     function.showTiltTriangle()
 
 
@@ -142,8 +142,8 @@ def test_showTabRoundness(function):
 
 def test_showTabAberrationInspect(function):
     function.photometry = FileHandler(function.parent)
-    function.photometry.image = np.random.rand(100, 100) + 1
-    function.photometry.aberrationImage = np.random.rand(100, 100) + 1
+    function.photometry.image = np.array(np.random.rand(100, 100) + 1)
+    function.photometry.aberrationImage = np.array(np.random.rand(100, 100) + 1)
     function.photometry.ABERRATION_SIZE = 1
     function.photometry.roundnessPercentile = 1
     function.showAberrationInspect()
@@ -159,7 +159,7 @@ def test_showTabImageSources(function):
         "a": np.random.rand(20, 1) + 10,
         "b": np.random.rand(20, 1) + 10,
     }
-    function.photometry.image = np.random.rand(100, 100) + 1
+    function.photometry.image = np.array(np.random.rand(100, 100) + 1)
     function.photometry.hfr = (
         np.random.rand(
             20,

@@ -27,8 +27,8 @@ class EnvironWeather:
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.refractionSource: str = ""
-        self.filteredTemperature: np.array = np.full(60, -99)
-        self.filteredPressure: np.array = np.full(60, 0)
+        self.filteredTemperature: np.ndarray = np.full(60, -99)
+        self.filteredPressure: np.ndarray = np.full(60, 0)
         self.tempLast: float = 0
         self.pressLast: float = 0
         self.refractionEnabled: bool = True

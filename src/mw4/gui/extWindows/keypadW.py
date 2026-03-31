@@ -240,7 +240,7 @@ class KeypadWindow(MWidget):
         pixmap = QPixmap().fromImage(image).scaled(256, 128)
         self.ui.graphics.setPixmap(pixmap)
 
-    def buildGraphics(self, imgArr: np.array, yPos: int, xPos: int) -> None:
+    def buildGraphics(self, imgArr: np.ndarray, yPos: int, xPos: int) -> None:
         """ """
         dy, dx, _ = imgArr.shape
         self.graphics[yPos : yPos + dy, xPos : xPos + dx] = imgArr

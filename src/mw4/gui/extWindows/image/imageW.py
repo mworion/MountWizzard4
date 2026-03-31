@@ -13,6 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
+import numpy as np
+
 from mw4.base.transform import J2000ToJNow
 from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
@@ -39,7 +41,7 @@ class ImageWindow(MWidget):
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
         self.signals = ImageWindowSignals()
-        self.photometry = Photometry(self)
+        self.photometry = Photometry(self, np.zeros((1, 1)))
         self.fileHandler = FileHandler(self)
         self.slewInterface = SlewInterface(self)
         self.barItem = None

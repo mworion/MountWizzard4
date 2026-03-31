@@ -98,11 +98,6 @@ def setupLogging() -> None:
     logging.Logger.trace = partialmethod(logging.Logger.log, TRACE)
     logging.trace = partial(logging.log, TRACE)
 
-    UI = 35
-    logging.addLevelName(UI, "UI")
-    logging.Logger.ui = partialmethod(logging.Logger.log, UI)
-    logging.ui = partial(logging.log, UI)
-
     HEADER = 55
     logging.addLevelName(HEADER, "HEADER")
     logging.Logger.header = partialmethod(logging.Logger.log, HEADER)

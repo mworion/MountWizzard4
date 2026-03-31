@@ -20,7 +20,6 @@ from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from unittest import mock
 from unittest.mock import MagicMock
-from mw4.gui.mainWindow.mainWindow import MainWindow
 
 assetsData.qInitResources()
 
@@ -42,7 +41,9 @@ def app(qapp):
         shutil.copy2("tests/testData/test.run", Path("tests/work/test.run"))
 
     mock_emit = MagicMock()
-    app_instance = MountWizzard4(mwGlob, qapp, 1)
+    with mock.patch("mw4.mainApp.MainWindow") as mock_main_window:
+        mock_main_window.return_value = MagicMock()
+        app_instance = MountWizzard4(mwGlob, qapp, 1)
     app_instance.update1s = MagicMock(emit=mock_emit)
     yield app_instance
     app_instance.threadPool.waitForDone(15000)

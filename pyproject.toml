@@ -106,7 +106,6 @@ dev = [
     "ruff==0.15.8",
     "coverage==7.13.5",
     "scipy-stubs~=1.17.1.3",
-    "mypy>=1.19.1",
 ]
 
 [tool.pytest.ini_options]
@@ -150,7 +149,6 @@ max-complexity = 10
 "src/mw4/gui/utilities/gNormalScatter.py" = ["C901"]
 "src/mw4/gui/styles/gradients.py" = ["E501"]
 "src/mw4/gui/mainWaddon/tabEnviron_Seeing.py" = ["C901"]
-"src/mw4/gui/extWindows/simulator/tools.py" = ["E501"]
 "src/mw4/gui/extWindows/uploadPopupW.py" = ["SIM115"]
 "src/mw4/logic/powerswitch/pegasusUPBIndi.py" = ["C901"]
 "src/mw4/logic/measure/measureCSV.py" = ["SIM115"]

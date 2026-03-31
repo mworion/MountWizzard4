@@ -130,7 +130,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/extWindows ${{env.cov}}
+          pytest tests/unit_tests/gui/extWindows --forked ${{env.cov}}
 
       - name: rename_coveragefile
         run: mv .coverage c3.dat
@@ -155,7 +155,7 @@ jobs:
         run: |
           pytest tests/unit_tests/gui/utilities ${{env.cov}}
           pytest tests/unit_tests/gui/styles ${{env.cov}}
-          pytest tests/unit_tests/gui/mainWaddon ${{env.cov}}
+          pytest tests/unit_tests/gui/mainWaddon --forked ${{env.cov}}
 
       - name: rename_coveragefile
         run: mv .coverage c4.dat

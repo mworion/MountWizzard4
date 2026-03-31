@@ -81,10 +81,10 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows/video --forked
-          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows/image --forked
-          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows/hemisphere --forked
-          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows/simulator --forked
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows/video
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows/image
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows/hemisphere
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows/simulator
 
   run_tests_ubuntu_3:
     #
@@ -103,7 +103,7 @@ jobs:
       - name: running_unit_tests
         run: |
           xvfb-run --auto-servernum pytest tests/unit_tests/gui/mainWaddon
-          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows --forked
+          xvfb-run --auto-servernum pytest tests/unit_tests/gui/extWindows
           xvfb-run --auto-servernum pytest tests/unit_tests/gui/mainWindow
 
   run_tests_ubuntu_4:

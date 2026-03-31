@@ -34,10 +34,10 @@ class SatelliteHorizonWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = satelliteHor_ui.Ui_SatelliteHorizonDialog()
         self.ui.setupUi(self)
-        self.satellite: EarthSatellite | None = None
+        self.satellite: EarthSatellite = EarthSatellite("", "", "")
         self.satOrbits: dict = {}
-        self.plotSatPosHorizon: pg.PlotDataItem | None = None
-        self.pointerAltAz: pg.PlotDataItem | None = None
+        self.plotSatPosHorizon: pg.PlotDataItem = pg.PlotDataItem()
+        self.pointerAltAz: pg.PlotDataItem = pg.PlotDataItem()
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
         self.pens = []
         for color in self.colors:

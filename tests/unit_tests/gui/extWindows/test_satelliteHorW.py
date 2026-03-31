@@ -143,6 +143,12 @@ def test_prepareHorizon(function):
 
 
 def test_prepareHorizonSatellite(function):
+    tle = [
+        "CALSPHERE 1",
+        "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
+        "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231",
+    ]
+    function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
     function.prepareHorizonSatellite(pg.PlotItem())
 
 

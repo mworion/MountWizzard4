@@ -14,11 +14,9 @@
 #
 ###########################################################
 
-import mw4.gui.utilities
+import mw4.gui.mainWaddon.tabTools_IERSTime
 import pytest
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
-from mw4.gui.utilities.toolsQtWidget import MWidget
-from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
@@ -26,13 +24,21 @@ from unittest import mock
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = MWidget()
+    mainW = mock.MagicMock()
     mainW.app = App()
-    mainW.ui = Ui_MainWindow()
-    mainW.ui.setupUi(mainW)
+    mainW.ui.iersSource.currentText.return_value = "Datacenter from IERS"
+
+    patcher_dl = mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup")
+    patcher_ul = mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup")
+    patcher_dl.start()
+    patcher_ul.start()
+
     window = IERSTime(mainW)
     yield window
+
     mainW.app.threadPool.waitForDone(1000)
+    patcher_dl.stop()
+    patcher_ul.stop()
 
 
 def test_initConfig_1(function):

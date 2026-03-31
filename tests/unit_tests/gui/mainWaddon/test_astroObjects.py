@@ -16,10 +16,9 @@
 import pytest
 import shutil
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
-from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
 from PySide6.QtCore import QThreadPool
-from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem, QWidget
+from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -38,11 +37,15 @@ def function(qapp):
     def test():
         pass
 
-    parent = QWidget()
-    parent.ui = Ui_MainWindow()
-    parent.ui.setupUi(parent)
+    parent = mock.MagicMock()
     parent.app = App()
+    parent.ui.ageDatabases.value.return_value = 0
     shutil.copyfile("tests/testData/visual.txt", "tests/work/data/visual.txt")
+
+    patcher_dl = mock.patch("mw4.gui.mainWaddon.astroObjects.DownloadPopup")
+    patcher_ul = mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup")
+    patcher_dl.start()
+    patcher_ul.start()
 
     function = AstroObjects(
         window=parent,
@@ -56,6 +59,9 @@ def function(qapp):
     function.window.app = App()
     function.window.threadPool = QThreadPool()
     yield function
+
+    patcher_dl.stop()
+    patcher_ul.stop()
 
 
 def test_buildSourceListDropdown_1(function):

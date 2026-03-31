@@ -25,7 +25,6 @@ Version 4.x
 - add: support for new 2024 HW - disabling WOL if not supported
 - add: support for new 2024 HW - enabling auto power on setting if supported
 - add: support for status of GPS modul with PPS capability
-- add: start option -e for remove logging and get lower CPU load
 - add: split Satellite window into satellite world map and satellite horizon view
 - add: support for compressed / uncompressed xisf files for image display (simple versions)
 - add: support for compressed fits files for image display (gzip, bzip2)

@@ -24,7 +24,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     m = MountDevice(
         app=App(),

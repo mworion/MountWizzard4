@@ -65,8 +65,8 @@ class UploadPopup(MWidget):
         self.returnValues = {"success": False, "successMount": False}
         self.parentWidget = parentWidget
         self.threadPool = parentWidget.app.threadPool
-        self.worker: Worker | None = None
-        self.workerStatus: Worker | None = None
+        self.worker: Worker = Worker(self.uploadFileWorker)
+        self.workerStatus: Worker = Worker(self.pollStatus)
         self.url: Path = url
         self.dataTypes: list[str] = dataTypes
         self.dataFilePath: Path = dataFilePath
@@ -219,7 +219,5 @@ class UploadPopup(MWidget):
 
     def uploadFile(self) -> None:
         """ """
-        self.worker = Worker(self.uploadFileWorker)
         self.worker.signals.result.connect(self.closePopup)
         self.threadPool.start(self.worker)
-        self.workerStatus = Worker(self.pollStatus)

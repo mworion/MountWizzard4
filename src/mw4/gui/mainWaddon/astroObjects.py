@@ -69,7 +69,6 @@ class AstroObjects:
         self.dbProc = DataWriter(self.app)
         self.buildSourceListDropdown()
         self.uiSourceList.currentIndexChanged.connect(self.loadSourceUrl)
-
         self.dbProcFuncs = {
             "satellite": self.dbProc.writeSatelliteTLE,
             "asteroid": self.dbProc.writeAsteroidMPC,
@@ -84,6 +83,7 @@ class AstroObjects:
         for name in self.sourceUrls:
             self.uiSourceList.addItem(name)
         self.uiSourceList.setCurrentIndex(0)
+
 
     def setAge(self, age: float) -> None:
         """ """
@@ -112,23 +112,29 @@ class AstroObjects:
         self.downloadPopup.downloadFile()
         self.downloadPopup.worker.signals.finished.connect(self.procSourceData)
 
+    def checkFileAgeOK(self, fileName: Path) -> bool:
+        """ """
+        if not fileName.is_file():
+            return False
+        daysOld = self.loader.days_old(fileName)
+        self.setAge(daysOld)
+        return daysOld < self.window.ui.ageDatabases.value()
+
     def loadSourceUrl(self) -> None:
         """ """
         entry = self.uiSourceList.currentText()
-        if entry == "Please select" or entry == "":
+        if entry == "Please select":
             return
+
         url = self.sourceUrls[entry]["url"]
-        fileName = self.sourceUrls[entry]["file"]
         unzip = self.sourceUrls[entry]["unzip"]
+        fileName = self.sourceUrls[entry]["file"]
         self.dest = self.dataDir / fileName
 
-        if self.dest.is_file():
-            daysOld = self.loader.days_old(fileName)
-            self.setAge(daysOld)
-            if daysOld < self.window.ui.ageDatabases.value():
-                self.procSourceData(direct=True)
-                self.log.info(f"Using local source data for {self.objectText}")
-                return
+        if self.checkFileAgeOK(self.dest):
+            self.procSourceData(direct=True)
+            self.log.info(f"Using local source data for {self.objectText}")
+            return
 
         if not self.window.ui.isOnline.isChecked():
             self.msg.emit(2, self.objectText.capitalize(), "Download", "Offline mode active")

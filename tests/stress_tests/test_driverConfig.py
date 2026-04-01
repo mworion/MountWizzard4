@@ -38,7 +38,7 @@ mwglob = {
 tp = QThreadPool()
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def module_setup_teardown():
     global tp
 
@@ -64,20 +64,18 @@ def module_setup_teardown():
                 continue
             os.remove(f)
 
-    tp.waitForDone(3000)
-
 
 def test_configAlpaca(qtbot, qapp):
     def run():
         qapp.exec_()
 
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
+    app = MountWizzard4(mwGlob=mwglob, application=qapp, test=1)
 
     worker = Worker(run)
     tp.start(worker)
     qtbot.waitExposed(app.mainW, timeout=1000)
 
-    qtbot.mouseClick(app.mainW.ui.cameraSetup, Qt.LeftButton)
+    qtbot.mouseClick(app.mainW.ui.cameraSetup, Qt.MouseButton.LeftButton)
     popup = app.mainW.popupUi
     qtbot.waitExposed(popup, timeout=1000)
     popup.ui.tab.setCurrentIndex(0)
@@ -86,8 +84,8 @@ def test_configAlpaca(qtbot, qapp):
     popup.ui.alpacaHostAddress.setText("192.168.2.211")
     popup.ui.alpacaPort.setText("11111")
     popup.ui.alpacaCopyConfig.setChecked(True)
-    qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
+    qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.MouseButton.LeftButton)
     QTest.qWait(1000)
-    qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
+    qtbot.mouseClick(popup.ui.ok, Qt.MouseButton.LeftButton)
 
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
+    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.MouseButton.LeftButton)

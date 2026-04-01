@@ -18,34 +18,52 @@ import shutil
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from pathlib import Path
 from PySide6.QtCore import QThreadPool
-from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem
+from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem, QCheckBox, QSpinBox
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
-
-satBaseUrl = "http://www.celestrak.org/NORAD/elements/gp.php?"
-satSourceURLs = {
-    "100 brightest": {
-        "url": satBaseUrl + "GROUP=visual&FORMAT=tle",
-        "file": "visual.txt",
-        "unzip": False,
-    },
-}
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
+    class TestUI:
+        isOnline = QCheckBox()
+        ageDatabases = QSpinBox ()
+
+    class Test:
+        app = App()
+        ui = TestUI()
+        @staticmethod
+        def x():
+            return 0
+        @staticmethod
+        def y():
+            return 0
+        @staticmethod
+        def height():
+            return 0
+        @staticmethod
+        def width():
+            return 0
+
     def test():
         pass
 
-    parent = mock.MagicMock()
-    parent.app = App()
-    parent.ui.ageDatabases.value.return_value = 0
-    shutil.copyfile("tests/testData/visual.txt", "tests/work/data/visual.txt")
+    satBaseUrl = "http://www.celestrak.org/NORAD/elements/gp.php?"
+    satSourceURLs = {
+        "100 brightest": {
+            "url": satBaseUrl + "GROUP=visual&FORMAT=tle",
+            "file": "visual.txt",
+            "unzip": False,
+        },
+        "": {
+            "url": "",
+            "file": "",
+            "unzip": True,
+        }
+    }
 
-    patcher_dl = mock.patch("mw4.gui.mainWaddon.astroObjects.DownloadPopup")
-    patcher_ul = mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup")
-    patcher_dl.start()
-    patcher_ul.start()
+    parent = Test()
+    shutil.copyfile("tests/testData/visual.txt", "tests/work/data/visual.txt")
 
     function = AstroObjects(
         window=parent,
@@ -58,16 +76,14 @@ def function(qapp):
     )
     function.window.app = App()
     function.window.threadPool = QThreadPool()
+    function.uiSourceList.currentIndexChanged.disconnect(function.loadSourceUrl)
     yield function
-
-    patcher_dl.stop()
-    patcher_ul.stop()
 
 
 def test_buildSourceListDropdown_1(function):
     with mock.patch.object(function, "loadSourceUrl"):
         function.buildSourceListDropdown()
-        assert function.uiSourceList.count() == 2
+        assert function.uiSourceList.count() == 3
 
 
 def test_setAge_1(function):
@@ -100,17 +116,41 @@ def test_procSourceData_2(function):
 def test_runDownloadPopup_1(function):
     function.window.ui.isOnline.setChecked(True)
     with mock.patch.object(function.window.app.threadPool, "start"):
-        function.runDownloadPopup("", False)
+        function.runDownloadPopup(Path(), False)
 
 
 def test_runDownloadPopup_2(function):
     function.window.ui.isOnline.setChecked(False)
     with mock.patch.object(function.window.app.threadPool, "start"):
-        function.runDownloadPopup("", False)
+        function.runDownloadPopup(Path(), False)
+
+
+def test_checkFileAgeOK_1(function):
+    function.window.ui.ageDatabases.setValue(3)
+    with mock.patch.object(Path, "is_file", return_value=False):
+        val = function.checkFileAgeOK(Path())
+        assert not val
+
+
+def test_checkFileAgeOK_2(function):
+    function.window.ui.ageDatabases.setValue(3)
+    with mock.patch.object(Path, "is_file", return_value=True):
+        with mock.patch.object(function.loader, "days_old", return_value=1):
+            val = function.checkFileAgeOK(Path())
+            assert val
+
+
+def test_checkFileAgeOK_3(function):
+    function.window.ui.ageDatabases.setValue(3)
+    with mock.patch.object(Path, "is_file", return_value=True):
+        with mock.patch.object(function.loader, "days_old", return_value=5):
+            val = function.checkFileAgeOK(Path())
+            assert not val
 
 
 def test_loadSourceUrl_1(function):
     function.uiSourceList.clear()
+    function.uiSourceList.addItem("Please select")
     function.loadSourceUrl()
 
 
@@ -118,7 +158,7 @@ def test_loadSourceUrl_2(function):
     function.uiSourceList.clear()
     function.uiSourceList.addItem("100 brightest")
 
-    with mock.patch.object(Path, "is_file", return_value=True):
+    with mock.patch.object(function, "checkFileAgeOK", return_value=True):
         with mock.patch.object(function, "procSourceData"):
             function.loadSourceUrl()
 
@@ -128,9 +168,8 @@ def test_loadSourceUrl_3(function):
     function.uiSourceList.addItem("100 brightest")
 
     function.window.ui.isOnline.setChecked(False)
-    with mock.patch.object(Path, "is_file", return_value=False):
-        with mock.patch.object(function, "runDownloadPopup"):
-            function.loadSourceUrl()
+    with mock.patch.object(function, "checkFileAgeOK", return_value=False):
+        function.loadSourceUrl()
 
 
 def test_loadSourceUrl_4(function):
@@ -138,7 +177,7 @@ def test_loadSourceUrl_4(function):
     function.uiSourceList.addItem("100 brightest")
 
     function.window.ui.isOnline.setChecked(True)
-    with mock.patch.object(Path, "is_file", return_value=False):
+    with mock.patch.object(function, "checkFileAgeOK", return_value=False):
         with mock.patch.object(function, "runDownloadPopup"):
             function.loadSourceUrl()
 

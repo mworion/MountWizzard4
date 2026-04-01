@@ -16,6 +16,7 @@
 import pickle
 import pyqtgraph as pg
 import pytest
+import gc
 import unittest.mock as mock
 from mw4.gui.extWindows.satelliteMapW import SatelliteMapWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget

@@ -16,6 +16,7 @@
 import numpy as np
 import pyqtgraph as pg
 import pytest
+import gc
 import unittest.mock as mock
 from astropy import wcs
 from astropy.io import fits
@@ -36,6 +37,9 @@ def function(qapp):
     func = ImageTabs(parent)
     yield func
     QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
+
 
 
 def test_colorChange(function):

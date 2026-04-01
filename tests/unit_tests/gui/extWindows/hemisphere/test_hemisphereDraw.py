@@ -16,6 +16,7 @@
 import os
 import pyqtgraph as pg
 import pytest
+import gc
 import shutil
 import unittest.mock as mock
 from PySide6.QtCore import QPointF
@@ -32,6 +33,9 @@ def function(qapp):
     func = HemisphereDraw(parent=HemisphereWindow(app=App()))
     yield func
     QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
+
 
 
 def test_initConfig_1(function):

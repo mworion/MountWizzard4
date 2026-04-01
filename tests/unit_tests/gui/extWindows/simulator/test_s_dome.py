@@ -14,6 +14,7 @@
 #
 ###########################################################
 import pytest
+import gc
 import unittest.mock as mock
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow

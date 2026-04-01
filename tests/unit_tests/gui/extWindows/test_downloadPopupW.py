@@ -16,6 +16,7 @@
 import builtins
 import os
 import pytest
+import gc
 import requests
 import shutil
 import unittest.mock as mock
@@ -33,6 +34,9 @@ def function(qapp):
     window = DownloadPopup(parentWidget=widget, url=Path(), dest=Path())
     yield window
     QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
+
 
 
 @pytest.fixture

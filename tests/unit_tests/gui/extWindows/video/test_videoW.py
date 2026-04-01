@@ -14,6 +14,7 @@
 #
 ###########################################################
 import pytest
+import gc
 import unittest.mock as mock
 from mw4.gui.extWindows.video.videoW import VideoWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget

@@ -16,6 +16,7 @@
 import json
 import numpy as np
 import pytest
+import gc
 import unittest.mock as mock
 from mw4.gui.extWindows.analyseW import AnalyseWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
@@ -30,6 +31,9 @@ def function(qapp):
     func = AnalyseWindow(app=App())
     yield func
     QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
+
 
 
 def test_initConfig_1(function):

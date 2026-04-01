@@ -14,6 +14,7 @@
 #
 ###########################################################
 import pytest
+import gc
 import unittest.mock as mock
 from mw4.base.loggerMW import setupLogging
 from mw4.gui.extWindows.messageW import MessageWindow
@@ -30,6 +31,9 @@ def function(qapp):
     func = MessageWindow(app=App())
     yield func
     QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
+
 
 
 def test_initConfig_1(function):

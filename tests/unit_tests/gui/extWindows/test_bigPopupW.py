@@ -14,6 +14,7 @@
 #
 ###########################################################
 import pytest
+import gc
 import unittest.mock as mock
 from mw4.gui.extWindows.bigPopupW import BigPopup
 from mw4.gui.utilities.toolsQtWidget import MWidget
@@ -27,6 +28,9 @@ def function(qapp):
     window = BigPopup(App())
     yield window
     QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
+
 
 
 

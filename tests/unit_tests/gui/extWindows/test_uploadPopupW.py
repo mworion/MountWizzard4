@@ -15,6 +15,7 @@
 ###########################################################
 import builtins
 import pytest
+import gc
 import requests
 import unittest.mock as mock
 from PySide6.QtWidgets import QApplication
@@ -31,6 +32,9 @@ def function(qapp):
     window = UploadPopup(widget, Path(), [""], Path())
     yield window
     QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
+
 
 
 @pytest.fixture

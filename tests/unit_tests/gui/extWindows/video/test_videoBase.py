@@ -17,6 +17,7 @@ import cv2
 import mw4.gui.extWindows.video.videoBase
 import numpy as np
 import pytest
+import gc
 import unittest.mock as mock
 from mw4.gui.extWindows.video.videoBase import VideoWindowBase
 from mw4.gui.utilities.toolsQtWidget import MWidget
@@ -31,6 +32,9 @@ def function(qapp):
     func = VideoWindowBase(app=App())
     yield func
     QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
+
 
 
 def test_closeEvent_1(function):

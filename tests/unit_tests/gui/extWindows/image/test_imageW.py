@@ -16,6 +16,7 @@
 import mw4.gui.extWindows.image.imageW
 import pyqtgraph as pg
 import pytest
+import gc
 import shutil
 import unittest.mock as mock
 from mw4.gui.extWindows.image.imageTabs import ImageTabs

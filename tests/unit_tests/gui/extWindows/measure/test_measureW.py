@@ -21,6 +21,7 @@ from mw4.gui.extWindows.measure.measureW import MeasureWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
+from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -43,7 +44,7 @@ def function(qapp):
     func.app.measure.data["time"] = np.append(func.app.measure.data["time"], value)
     func.app.measure.data["time"] = np.append(func.app.measure.data["time"], value)
     yield func
-    qapp.processEvents()
+    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

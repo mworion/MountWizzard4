@@ -17,6 +17,7 @@ import pytest
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DRender import Qt3DRender
+from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -26,7 +27,7 @@ def function(qapp):
     func = SimulatorWindow(app=App())
     with mock.patch.object(func, "show"):
         yield func.light
-        qapp.processEvents()
+        QApplication.processEvents()
 
 
 def test_setIntensity_1(function):

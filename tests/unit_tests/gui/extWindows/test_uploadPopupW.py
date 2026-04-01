@@ -17,19 +17,20 @@ import builtins
 import pytest
 import requests
 import unittest.mock as mock
+from PySide6.QtWidgets import QApplication
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     widget = MWidget()
     widget.app = App()
     window = UploadPopup(widget, Path(), [""], Path())
     yield window
-    qapp.processEvents()
+    QApplication.processEvents()
 
 
 @pytest.fixture

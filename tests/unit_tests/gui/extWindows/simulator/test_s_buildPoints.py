@@ -13,12 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import numpy as np
 import pytest
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
+from PySide6.QtWidgets import QApplication
 from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
@@ -30,7 +30,7 @@ def function(qapp):
     func.app.data.buildP = []
     with mock.patch.object(func, "show"):
         yield func.buildPoints
-        qapp.processEvents()
+        QApplication.processEvents()
 
 
 def test_showEnable_1(function):

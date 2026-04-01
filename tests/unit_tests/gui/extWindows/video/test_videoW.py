@@ -18,6 +18,7 @@ import unittest.mock as mock
 from mw4.gui.extWindows.video.videoW import VideoWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from PySide6.QtGui import QCloseEvent
+from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -26,7 +27,7 @@ def function(qapp):
     func = VideoWindow(app=App())
     with mock.patch.object(func, "show"):
         yield func
-        qapp.processEvents()
+        QApplication.processEvents()
 
 
 def test_initConfig_1(function):

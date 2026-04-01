@@ -22,6 +22,7 @@ from mw4.gui.extWindows.image.imageTabs import ImageTabs
 from mw4.gui.extWindows.image.imageW import ImageWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from pathlib import Path
+from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QCloseEvent
 from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -33,7 +34,7 @@ def function(qapp):
         with mock.patch.object(ImageTabs, "colorChange"):
             func = ImageWindow(App())
             yield func
-            qapp.processEvents()
+            QApplication.processEvents()
 
 
 def test_initConfig_1(function):

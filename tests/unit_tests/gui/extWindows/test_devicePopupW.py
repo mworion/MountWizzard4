@@ -23,6 +23,7 @@ from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from pathlib import Path
 from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -48,7 +49,7 @@ def function(qapp):
     )
     window.log = logging.getLogger()
     yield window
-    qapp.processEvents()
+    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

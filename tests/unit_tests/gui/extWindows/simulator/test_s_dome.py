@@ -13,11 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
 import unittest.mock as mock
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
+from PySide6.QtWidgets import QApplication
 from PySide6.Qt3DCore import Qt3DCore
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -27,7 +27,7 @@ def function(qapp):
     func = SimulatorWindow(app=App())
     with mock.patch.object(func, "show"):
         yield func.dome
-        qapp.processEvents()
+        QApplication.processEvents()
 
 
 def test_setTransparency_1(function):

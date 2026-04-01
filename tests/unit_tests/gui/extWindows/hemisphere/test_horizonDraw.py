@@ -25,6 +25,7 @@ from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
 from mw4.gui.utilities.gCustomViewBox import CustomViewBox
 from pathlib import Path
 from PySide6.QtCore import QPointF
+from PySide6.QtWidgets import QApplication
 from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -34,7 +35,7 @@ def function(qapp):
     shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
     func = HorizonDraw(parent=HemisphereWindow(app=App()))
     yield func
-    qapp.processEvents()
+    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

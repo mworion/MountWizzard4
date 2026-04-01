@@ -13,8 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
+from PySide6.QtWidgets import QApplication
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
@@ -25,7 +25,7 @@ def function(qapp):
     func = SimulatorWindow(app=App())
     with mock.patch.object(func, "show"):
         yield func.world
-        qapp.processEvents()
+        QApplication.processEvents()
 
 
 def test_updatePositions_1(function):

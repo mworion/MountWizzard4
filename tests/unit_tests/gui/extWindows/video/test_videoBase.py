@@ -22,6 +22,7 @@ from mw4.gui.extWindows.video.videoBase import VideoWindowBase
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from PySide6.QtGui import QCloseEvent, QPixmap
 from PySide6.QtWidgets import QInputDialog
+from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -29,7 +30,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     func = VideoWindowBase(app=App())
     yield func
-    qapp.processEvents()
+    QApplication.processEvents()
 
 
 def test_closeEvent_1(function):

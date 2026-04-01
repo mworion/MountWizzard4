@@ -19,6 +19,7 @@ import pytest
 import shutil
 import unittest.mock as mock
 from PySide6.QtCore import QPointF
+from PySide6.QtWidgets import QApplication
 from mw4.gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from skyfield.api import Angle, wgs84
@@ -30,7 +31,7 @@ def function(qapp):
     shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
     func = HemisphereDraw(parent=HemisphereWindow(app=App()))
     yield func
-    qapp.processEvents()
+    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

@@ -22,7 +22,6 @@ from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
 def function():
     func = ImageWindowSignals()
     yield func
-    qapp.processEvents()
 
 
 def test_init(function):

@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import json
 import numpy as np
 import pytest
@@ -21,7 +20,8 @@ import unittest.mock as mock
 from mw4.gui.extWindows.analyseW import AnalyseWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from pathlib import Path
-from PySide6.QtGui import QCloseEvent, QResizeEvent
+from PySide6.QtGui import QCloseEvent
+from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -29,7 +29,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     func = AnalyseWindow(app=App())
     yield func
-    qapp.processEvents()
+    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

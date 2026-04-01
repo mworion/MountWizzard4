@@ -27,5 +27,6 @@ runs:
         sudo apt-get install libpulse-dev ffmpeg libsm6 libxext6
       shell: bash
       
-    - name: install #2
-      uses: tlambert03/setup-qt-libs@v1.8
+    - uses: pyvista/setup-headless-display-action@v4
+      with:
+        qt: true

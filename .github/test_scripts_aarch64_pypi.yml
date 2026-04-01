@@ -51,7 +51,7 @@ jobs:
             distro: ubuntu24.04
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1.6.0

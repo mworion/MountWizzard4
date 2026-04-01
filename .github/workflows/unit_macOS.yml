@@ -47,7 +47,7 @@ jobs:
     runs-on: macos-15
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
   
       - name: install package
         uses: ./.github/actions/setup_test
@@ -67,7 +67,7 @@ jobs:
     runs-on: macos-15
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
   
       - name: install package
         uses: ./.github/actions/setup_test
@@ -82,7 +82,7 @@ jobs:
     runs-on: macos-15
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
   
       - name: install package
         uses: ./.github/actions/setup_test
@@ -98,7 +98,7 @@ jobs:
     runs-on: macos-15
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
   
       - name: install package
         uses: ./.github/actions/setup_test

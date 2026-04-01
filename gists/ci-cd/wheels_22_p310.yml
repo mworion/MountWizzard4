@@ -41,7 +41,7 @@ jobs:
             distro: ubuntu22.04
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: uraimo/run-on-arch-action@v2
         name: build_artifact
         id: build

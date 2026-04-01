@@ -84,12 +84,6 @@ class SatelliteHorizonWindow(MWidget):
 
     def updatePointerAltAz(self) -> None:
         """ """
-        if self.pointerAltAz is None:
-            return
-        if self.obsSite.Alt is None or self.obsSite.Az is None:
-            self.pointerAltAz.setVisible(False)
-            return
-
         self.pointerAltAz.setVisible(True)
         alt = self.obsSite.Alt.degrees
         az = self.obsSite.Az.degrees
@@ -135,8 +129,8 @@ class SatelliteHorizonWindow(MWidget):
         """ """
         plotItem.getViewBox().setMouseMode(pg.ViewBox.PanMode)
         plotItem.showAxes(True, showValues=True)
-        xTicks = [(x, f"{x:0.0f}") for x in np.arange(30, 360, 30)]
-        yTicks = [(x, f"{x:0.0f}") for x in np.arange(10, 90, 10)]
+        xTicks = [(float(x), f"{x:0.0f}") for x in np.arange(30, 360, 30)]
+        yTicks = [(float(x), f"{x:0.0f}") for x in np.arange(10, 90, 10)]
         plotItem.getAxis("bottom").setTicks([xTicks])
         plotItem.getAxis("top").setTicks([xTicks])
         plotItem.getAxis("left").setTicks([yTicks])

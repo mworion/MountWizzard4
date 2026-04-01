@@ -25,7 +25,8 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     window = BigPopup(App())
     yield window
-    window.app.threadPool.waitForDone(10000)
+    qapp.processEvents()
+
 
 
 def test_initConfig_1(function):

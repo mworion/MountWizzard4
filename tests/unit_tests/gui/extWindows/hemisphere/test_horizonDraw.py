@@ -34,7 +34,7 @@ def function(qapp):
     shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
     func = HorizonDraw(parent=HemisphereWindow(app=App()))
     yield func
-    func.app.threadPool.waitForDone(10000)
+    qapp.processEvents()
 
 
 def test_initConfig_1(function):

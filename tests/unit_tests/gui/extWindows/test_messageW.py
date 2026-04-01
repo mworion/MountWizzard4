@@ -28,7 +28,7 @@ setupLogging()
 def function(qapp):
     func = MessageWindow(app=App())
     yield func
-    func.app.threadPool.waitForDone(10000)
+    qapp.processEvents()
 
 
 def test_initConfig_1(function):

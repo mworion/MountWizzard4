@@ -31,7 +31,7 @@ def function(qapp):
     widget.app = App()
     window = DownloadPopup(parentWidget=widget, url=Path(), dest=Path())
     yield window
-    window.threadPool.waitForDone(10000)
+    qapp.processEvents()
 
 
 @pytest.fixture

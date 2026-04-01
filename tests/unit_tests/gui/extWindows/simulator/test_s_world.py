@@ -25,6 +25,7 @@ def function(qapp):
     func = SimulatorWindow(app=App())
     with mock.patch.object(func, "show"):
         yield func.world
+        qapp.processEvents()
 
 
 def test_updatePositions_1(function):

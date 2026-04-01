@@ -27,6 +27,7 @@ def function(qapp):
     func = SimulatorWindow(app=App())
     with mock.patch.object(func, "show"):
         yield func.laser
+        qapp.processEvents()
 
 
 def test_showEnable_1(function):

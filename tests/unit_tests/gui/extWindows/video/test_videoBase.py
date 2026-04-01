@@ -29,7 +29,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     func = VideoWindowBase(app=App())
     yield func
-    func.app.threadPool.waitForDone(10000)
+    qapp.processEvents()
 
 
 def test_closeEvent_1(function):

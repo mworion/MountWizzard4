@@ -26,6 +26,7 @@ def function(qapp):
     func = SimulatorWindow(app=App())
     with mock.patch.object(func, "show"):
         yield func.light
+        qapp.processEvents()
 
 
 def test_setIntensity_1(function):

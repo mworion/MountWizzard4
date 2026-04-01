@@ -27,6 +27,7 @@ def function(qapp):
     func = SimulatorWindow(app=App())
     with mock.patch.object(func, "show"):
         yield func.dome
+        qapp.processEvents()
 
 
 def test_setTransparency_1(function):

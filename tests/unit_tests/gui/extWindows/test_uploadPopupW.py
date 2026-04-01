@@ -29,7 +29,7 @@ def function(qapp):
     widget.app = App()
     window = UploadPopup(widget, Path(), [""], Path())
     yield window
-    window.threadPool.waitForDone(10000)
+    qapp.processEvents()
 
 
 @pytest.fixture

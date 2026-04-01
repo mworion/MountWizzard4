@@ -26,7 +26,7 @@ def function(qapp):
     func = SimulatorWindow(app=App())
     with mock.patch.object(func, "show"):
         yield func.horizon
-
+        qapp.processEvents()
 
 def test_showEnable_1(function):
     function.parent.entityModel["horizonRoot"] = {"entity": Qt3DCore.QEntity()}

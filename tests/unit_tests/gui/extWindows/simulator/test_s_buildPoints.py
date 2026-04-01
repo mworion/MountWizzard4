@@ -30,6 +30,7 @@ def function(qapp):
     func.app.data.buildP = []
     with mock.patch.object(func, "show"):
         yield func.buildPoints
+        qapp.processEvents()
 
 
 def test_showEnable_1(function):

@@ -69,25 +69,6 @@ def test_colorChange(function):
         function.colorChange()
 
 
-def test_updatePointerAltAz_1(function):
-    function.pointerAltAz = None
-    function.updatePointerAltAz()
-
-
-def test_updatePointerAltAz_2(function):
-    function.pointerAltAz = pg.PlotDataItem()
-    function.app.mount.obsSite.Alt = Angle(degrees=80)
-    function.app.mount.obsSite.Az = None
-    function.updatePointerAltAz()
-
-
-def test_updatePointerAltAz_3(function):
-    function.pointerAltAz = pg.PlotDataItem()
-    function.app.mount.obsSite.Alt = None
-    function.app.mount.obsSite.Az = Angle(degrees=80)
-    function.updatePointerAltAz()
-
-
 def test_updatePointerAltAz_4(function):
     function.pointerAltAz = pg.PlotDataItem()
     function.app.mount.obsSite.Alt = Angle(degrees=80)

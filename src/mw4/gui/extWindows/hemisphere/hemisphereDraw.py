@@ -68,6 +68,7 @@ class HemisphereDraw(MWidget):
         self.app.redrawHorizon.connect(self.drawHorizon)
         self.app.operationRunning.connect(self.enableOperationModeChange)
         self.ui.hemisphere.p[0].scene().sigMouseMoved.connect(self.mouseMovedHemisphere)
+        self.app.mount.signals.mountIsUp.connect(self.setPointerVisibility)
         self.app.update3s.connect(self.drawAlignmentStars)
 
     def close(self) -> None:
@@ -79,6 +80,16 @@ class HemisphereDraw(MWidget):
         self.app.redrawHorizon.disconnect(self.drawHorizon)
         self.app.redrawHemisphere.disconnect(self.drawTab)
         self.app.update3s.disconnect(self.drawAlignmentStars)
+
+    def setPointerVisibility(self, status) -> None:
+        """ """
+        items = []
+        for plotItem in self.ui.hemisphere.p:
+            item = self.ui.hemisphere.findItemByName(plotItem, "pointer")
+            if item:
+                items.append(item)
+        for item in items:
+            item.setVisible(status)
 
     def mouseMovedHemisphere(self, pos: QPointF) -> None:
         """ """

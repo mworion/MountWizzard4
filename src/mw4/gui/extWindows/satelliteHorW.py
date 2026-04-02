@@ -48,6 +48,7 @@ class SatelliteHorizonWindow(MWidget):
         self.app.showSatellite.connect(self.drawSatellite)
         self.app.updateSatellite.connect(self.updatePositions)
         self.app.redrawHorizon.connect(self.drawHorizon)
+        self.app.mount.signals.mountIsUp.connect(self.setPointerVisibility)
 
     def initConfig(self) -> None:
         """ """
@@ -82,9 +83,12 @@ class SatelliteHorizonWindow(MWidget):
         self.ui.satHorizon.colorChange()
         self.app.sendSatelliteData.emit([], [])
 
+    def setPointerVisibility(self, status) -> None:
+        """ """
+        self.pointerAltAz.setVisible(status)
+
     def updatePointerAltAz(self) -> None:
         """ """
-        self.pointerAltAz.setVisible(True)
         alt = self.obsSite.Alt.degrees
         az = self.obsSite.Az.degrees
         self.pointerAltAz.setData(x=[az], y=[alt])

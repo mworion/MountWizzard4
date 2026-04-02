@@ -70,6 +70,13 @@ def test_close_1(function):
     function.close()
 
 
+def test_setPointerVisibility(function):
+    function.app.mount.obsSite.Az = Angle(degrees=10)
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.setupPointer()
+    function.setPointerVisibility(True)
+
+
 def test_mouseMoved_1(function):
     with mock.patch.object(function.parent, "mouseMoved"):
         function.mouseMovedHemisphere(pos=QPointF(1, 1))

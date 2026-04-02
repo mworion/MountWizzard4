@@ -69,6 +69,10 @@ def test_colorChange(function):
         function.colorChange()
 
 
+def test_setPointerVisibility(function):
+    function.setPointerVisibility(True)
+
+
 def test_updatePointerAltAz_4(function):
     function.pointerAltAz = pg.PlotDataItem()
     function.app.mount.obsSite.Alt = Angle(degrees=80)

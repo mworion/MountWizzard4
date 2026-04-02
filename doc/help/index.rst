@@ -90,6 +90,16 @@ Please test your setup running with ASCOM suite (included in ASCOM platform
 installation) or any other programs you good know to test device functions
 outside MountWizzard4.
 
+
+INDI Device does not work / connect
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MountWizzard4 does not talk directly to any device. This is also true for USB
+devices used together with INDI. It talks to a device driver. INDI provides the
+driver interface by running an INDI server in the background. This could be done
+when with starting KStars - as it has a device server build in  - or a dedicated
+server running in the background without having KStars installed and running.
+This server is called INDI WebManager.
+
 Model building
 --------------
 

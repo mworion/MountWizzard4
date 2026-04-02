@@ -99,8 +99,8 @@ class HemisphereWindow(MWidget):
         self.ui.normalModeHem.setChecked(True)
         self.ui.normalModeHor.setChecked(True)
         self.storeConfig()
-        self.hemisphereDraw.close()
-        self.horizonDraw.close()
+        self.hemisphereDraw.closeTab()
+        self.horizonDraw.closeTab()
         super().closeEvent(closeEvent)
 
     def showWindow(self) -> None:

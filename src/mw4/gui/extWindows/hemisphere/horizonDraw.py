@@ -67,10 +67,11 @@ class HorizonDraw(MWidget):
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
         self.app.mount.signals.mountIsUp.connect(self.setPointerVisibility)
 
-    def close(self):
+    def closeTab(self):
         """"""
         self.app.mount.signals.pointDone.disconnect(self.drawPointer)
         self.app.mount.signals.settingDone.disconnect(self.drawTab)
+        self.app.mount.signals.mountIsUp.disconnect(self.setPointerVisibility)
 
     def setPointerVisibility(self, status) -> None:
         """ """

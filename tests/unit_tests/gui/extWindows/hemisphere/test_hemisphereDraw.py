@@ -66,8 +66,8 @@ def test_initConfig_4(function):
     function.initConfig()
 
 
-def test_close_1(function):
-    function.close()
+def test_closeTab_1(function):
+    function.closeTab()
 
 
 def test_setPointerVisibility(function):

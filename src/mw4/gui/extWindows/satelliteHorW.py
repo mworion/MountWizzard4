@@ -68,6 +68,7 @@ class SatelliteHorizonWindow(MWidget):
     def closeEvent(self, closeEvent) -> None:
         """ """
         self.storeConfig()
+        self.app.mount.signals.mountIsUp.connect(self.setPointerVisibility)
         super().closeEvent(closeEvent)
 
     def showWindow(self) -> None:

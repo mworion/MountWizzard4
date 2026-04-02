@@ -23,8 +23,8 @@ class TrajectoryParams:
     """ """
 
     obsSite: ObsSite
-    _jdStart: Time = 0
-    _jdEnd: Time = 0
+    _jdStart: Time = obsSite.ts.tt_jd(0)
+    _jdEnd: Time = obsSite.ts.tt_jd(0)
     flip: bool = False
     message: str = ""
     offsetRA: float = 0

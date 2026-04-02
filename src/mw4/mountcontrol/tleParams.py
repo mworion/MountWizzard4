@@ -28,8 +28,8 @@ class TLEParams:
     altitude: Angle = Angle(degrees=0)
     ra: Angle = Angle(hours=0)
     dec: Angle = Angle(degrees=0)
-    _jdStart: Time =  obsSite.ts.tt_jd(0)
-    _jdEnd: Time = obsSite.ts.tt_jd(0)
+    _jdStart: Time =  Time
+    _jdEnd: Time = Time
     _flip: bool = False
     message: str = ""
     l0: str = ""

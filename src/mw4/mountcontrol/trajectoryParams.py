@@ -21,10 +21,7 @@ from skyfield.timelib import Time
 @dataclass
 class TrajectoryParams:
     """ """
-
     obsSite: ObsSite
-    _jdStart: Time = Time
-    _jdEnd: Time = Time
     flip: bool = False
     message: str = ""
     offsetRA: float = 0

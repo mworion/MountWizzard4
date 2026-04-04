@@ -16,7 +16,8 @@
 import logging
 import os
 import sys
-from PySide6.QtCore import QCoreApplication, QObject, QRunnable, Signal
+from PySide6.QtCore import QObject, QRunnable, Signal
+from PySide6.QtWidgets import QApplication
 
 
 class WorkerSignals(QObject):
@@ -25,7 +26,6 @@ class WorkerSignals(QObject):
     by the Worker class to get signals for error, finished and result to be
     transferred to the caller back
     """
-
     finished = Signal()
     error = Signal(object)
     result = Signal(object)
@@ -37,7 +37,6 @@ class Worker(QRunnable):
     The Worker class offers a generic interface to allow any function to be
     executed as a thread in a threadpool
     """
-
     def __init__(self, fn, *args, **kwargs):
         super().__init__()
         self.log = logging.getLogger("MW4")
@@ -68,10 +67,9 @@ class Worker(QRunnable):
 
         :return: nothing, but sends results and status as signals
         """
-
         try:
             result = self.fn(*self.args, **self.kwargs)
-            QCoreApplication.processEvents()
+            QApplication.processEvents()
 
         except Exception as e:
             # as we want to send a clear message to the log file

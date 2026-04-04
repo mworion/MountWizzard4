@@ -231,5 +231,4 @@ class SimulatorWindow(MWidget):
         self.horizon.create()
         self.laser.create()
         self.pointer.create()
-        self.horizon.create()
         self.buildPoints.create()

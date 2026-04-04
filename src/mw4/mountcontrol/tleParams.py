@@ -22,14 +22,11 @@ from skyfield.units import Angle
 @dataclass
 class TLEParams:
     """ """
-
     obsSite: ObsSite
     azimuth: Angle = Angle(degrees=0)
     altitude: Angle = Angle(degrees=0)
     ra: Angle = Angle(hours=0)
     dec: Angle = Angle(degrees=0)
-    _jdStart: Time =  Time
-    _jdEnd: Time = Time
     _flip: bool = False
     message: str = ""
     l0: str = ""

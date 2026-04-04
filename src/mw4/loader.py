@@ -15,7 +15,6 @@
 ###########################################################
 import locale
 import logging
-import os
 import platform
 import PySide6
 import socket
@@ -42,7 +41,6 @@ iers.conf.auto_download = False
 data.conf.allow_internet = False
 setupLogging()
 log = logging.getLogger("MW4")
-
 
 def except_hook(typeException, valueException, tbackException) -> None:
     """ """
@@ -107,7 +105,7 @@ def extractFile(filePath: Path, file: str, fileTimeStamp: float) -> None:
         log.info(f"Using existing: [{file}]")
 
     QFile.copy(f":/data/{file}", str(filePath))
-    filePath.chmod(0o666)
+    # filePath.chmod(0o666)
 
 
 def extractDataFiles(mwGlob: dict) -> None:
@@ -119,7 +117,6 @@ def extractDataFiles(mwGlob: dict) -> None:
         "finals2000A.all": 0.0,
         "finals.data": 0.0,
     }
-
     contentFile = QFile(":/data/content.txt")
     contentFile.open(QFile.OpenModeFlag.ReadOnly)
     lines = contentFile.readAll().data().decode().splitlines()
@@ -139,7 +136,6 @@ def minimizeStartTerminal() -> None:
     """ """
     if platform.system() == "Windows":
         import ctypes
-
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 
@@ -165,8 +161,7 @@ def main(test: int = 0) -> None:
     splashW.setValue(80)
     sys.excepthook = except_hook
     app.setWindowIcon(QIcon(":/icon/mw4.ico"))
-    MountWizzard4(mwGlob, app, test)
-
+    mainApp = MountWizzard4(mwGlob, app, test)
     splashW.showMessage("Finishing loading")
     splashW.setValue(100)
     splashW.close()

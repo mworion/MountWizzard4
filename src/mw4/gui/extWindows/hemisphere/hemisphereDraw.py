@@ -73,13 +73,17 @@ class HemisphereDraw(MWidget):
 
     def closeTab(self) -> None:
         """ """
-        self.app.mount.signals.settingDone.disconnect(self.drawTab)
-        self.app.mount.signals.getModelDone.disconnect(self.drawTab)
-        self.app.dome.signals.azimuth.disconnect(self.drawDome)
         self.app.mount.signals.pointDone.disconnect(self.drawPointer)
+        self.app.mount.signals.getModelDone.disconnect(self.drawTab)
+        self.app.mount.signals.settingDone.disconnect(self.drawTab)
         self.app.mount.signals.mountIsUp.disconnect(self.setPointerVisibility)
-        self.app.redrawHorizon.disconnect(self.drawHorizon)
+        self.app.dome.signals.azimuth.disconnect(self.drawDome)
+        self.app.dome.signals.deviceDisconnected.disconnect(self.drawDome)
+        self.app.dome.signals.serverDisconnected.disconnect(self.drawDome)
+        self.app.updatePointMarker.disconnect(self.setupModel)
         self.app.redrawHemisphere.disconnect(self.drawTab)
+        self.app.redrawHorizon.disconnect(self.drawHorizon)
+        self.app.operationRunning.disconnect(self.enableOperationModeChange)
         self.app.update3s.disconnect(self.drawAlignmentStars)
 
     def setPointerVisibility(self, status) -> None:

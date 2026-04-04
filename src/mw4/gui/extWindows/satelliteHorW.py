@@ -68,7 +68,12 @@ class SatelliteHorizonWindow(MWidget):
     def closeEvent(self, closeEvent) -> None:
         """ """
         self.storeConfig()
-        self.app.mount.signals.mountIsUp.connect(self.setPointerVisibility)
+        self.app.showSatellite.disconnect(self.drawSatellite)
+        self.app.updateSatellite.disconnect(self.updatePositions)
+        self.app.redrawHorizon.disconnect(self.drawHorizon)
+        self.app.mount.signals.mountIsUp.disconnect(self.setPointerVisibility)
+        self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
+        self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
     def showWindow(self) -> None:

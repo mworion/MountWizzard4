@@ -69,7 +69,6 @@ class Worker(QRunnable):
         """
         try:
             result = self.fn(*self.args, **self.kwargs)
-            QApplication.processEvents()
 
         except Exception as e:
             # as we want to send a clear message to the log file

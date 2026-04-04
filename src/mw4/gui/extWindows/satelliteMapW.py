@@ -71,6 +71,8 @@ class SatelliteMapWindow(MWidget):
     def closeEvent(self, closeEvent) -> None:
         """ """
         self.storeConfig()
+        self.app.showSatellite.disconnect(self.drawSatellite)
+        self.app.updateSatellite.disconnect(self.updatePositions)
         super().closeEvent(closeEvent)
 
     def showWindow(self) -> None:

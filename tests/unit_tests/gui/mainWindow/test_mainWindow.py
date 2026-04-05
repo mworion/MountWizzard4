@@ -63,21 +63,22 @@ def test_updateColorSet_1(window):
     with mock.patch.object(window, "setStyleSheet"):
         with mock.patch.object(window, "setupIcons"):
             with mock.patch.object(window.mainWindowAddons, "updateColorSet"):
-                window.updateColorSet()
+                with mock.patch.object(window.mainWindowAddons, "setupIcons"):
+                    window.updateColorSet()
 
 
 def test_closeEvent_1(window):
     with mock.patch.object(window.externalWindows, "closeExtendedWindows"):
-        with mock.patch.object(window.mainWindowAddons.addons["SettDevice"], "stopDrivers"):
-            with mock.patch.object(window.threadPool, "waitForDone"):
-                window.closeEvent(QCloseEvent())
+        with mock.patch.object(window.threadPool, "waitForDone"):
+            window.closeEvent(QCloseEvent())
 
 
 def test_quitSave_1(window):
     window.ui.profile.setText("test")
     with mock.patch.object(window, "saveProfile"):
         with mock.patch.object(window, "close"):
-            window.quitSave()
+            with mock.patch.object(window.mainWindowAddons.addons["SettDevice"], "stopDrivers"):
+                window.quitSave()
 
 
 def test_smartFunctionGui_0(window):

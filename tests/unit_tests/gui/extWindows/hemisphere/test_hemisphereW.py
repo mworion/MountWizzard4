@@ -120,7 +120,7 @@ def test_staticHorizonLimits_2(function):
 
 
 def test_drawTerrainImage_1(function):
-    function.horizonDraw.imageTerrain = None
+    function.horizonDraw.imageTerrain = np.ones((0, 0))
     function.drawTerrainImage(pg.PlotItem())
 
 

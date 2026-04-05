@@ -40,8 +40,8 @@ class MainWindow(MWidget):
         self.ui.setupUi(self)
         self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
         self.activateWindow()
-        self.externalWindows = ExternalWindows(self)
-        self.mainWindowAddons = MainWindowAddons(self)
+        # self.externalWindows = ExternalWindows(self)
+        # self.mainWindowAddons = MainWindowAddons(self)
         self.satStatus: bool = False
         self.gameControllerRunning: bool = False
         self.deviceStatGui: dict = {
@@ -106,10 +106,10 @@ class MainWindow(MWidget):
         self.setTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
         self.setTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
         self.setTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
-        self.mainWindowAddons.initConfig()
+        #self.mainWindowAddons.initConfig()
+        #self.externalWindows.showExtendedWindows()
         self.smartTabGui()
         self.setupIcons()
-        self.externalWindows.showExtendedWindows()
 
     def storeConfig(self) -> None:
         """ """
@@ -132,8 +132,8 @@ class MainWindow(MWidget):
         self.getTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
         self.getTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
         self.getTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
-        self.externalWindows.storeConfigExtendedWindows()
-        self.mainWindowAddons.storeConfig()
+        #self.externalWindows.storeConfigExtendedWindows()
+        #self.mainWindowAddons.storeConfig()
         self.app.storeConfig()
 
     def setupIcons(self) -> None:
@@ -152,14 +152,14 @@ class MainWindow(MWidget):
         self.wIcon(self.ui.setLunarTracking, "lunar")
         self.wIcon(self.ui.setSolarTracking, "solar")
         self.wIcon(self.ui.park, "park")
-        self.mainWindowAddons.setupIcons()
+        #self.mainWindowAddons.setupIcons()
 
     def updateColorSet(self) -> None:
         """ """
         Styles.colorSet = self.ui.colorSet.currentIndex()
         self.setStyleSheet(self.mw4Style)
         self.setupIcons()
-        self.mainWindowAddons.updateColorSet()
+        #self.mainWindowAddons.updateColorSet()
         self.app.colorChange.emit()
 
     def closeEvent(self, closeEvent) -> None:
@@ -167,8 +167,8 @@ class MainWindow(MWidget):
         self.gameControllerRunning = False
         self.app.timer0_1s.stop()
         changeStyleDynamic(self.ui.pauseModel, "pause", False)
-        self.externalWindows.closeExtendedWindows()
-        self.mainWindowAddons.addons["SettDevice"].stopDrivers()
+        #self.externalWindows.closeExtendedWindows()
+        #self.mainWindowAddons.addons["SettDevice"].stopDrivers()
         self.threadPool.waitForDone(10000)
         super().closeEvent(closeEvent)
         self.app.quit()

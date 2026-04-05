@@ -196,17 +196,17 @@ class HemisphereWindow(MWidget):
 
     def drawTerrainImage(self, plotItem: pg.PlotItem) -> None:
         """ """
-        if self.horizonDraw.imageTerrain is None:
+        if self.horizonDraw.imageTerrain.shape[0] == 0:
             return
 
-        shiftAz = (self.ui.azimuthShift.value() + 360) % 360
-        shiftAlt = self.ui.altitudeShift.value()
+        shiftAz = int((self.ui.azimuthShift.value() + 360) % 360)
+        shiftAlt = int(self.ui.altitudeShift.value())
         alpha = self.ui.terrainAlpha.value()
-        x1 = int(4 * shiftAz)
-        x2 = int(1440 + 4 * shiftAz)
-        y1 = int(60 + shiftAlt * 2)
-        y2 = int(420 + shiftAlt * 2)
-        img = self.horizonDraw.imageTerrain[y1:y2, x1:x2]
+        y1 = shiftAz
+        y2 = 360 + shiftAz
+        x1 = 30 + shiftAlt
+        x2 = 120 + shiftAlt
+        img = self.horizonDraw.imageTerrain[x1:x2, y1:y2]
         img = cv2.resize(img, (360, 90))
         imgItem = pg.ImageItem(img)
         cMap = pg.colormap.get("CET-L2")

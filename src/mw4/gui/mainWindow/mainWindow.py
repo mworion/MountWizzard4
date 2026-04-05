@@ -40,7 +40,7 @@ class MainWindow(MWidget):
         self.ui.setupUi(self)
         self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
         self.activateWindow()
-        # self.externalWindows = ExternalWindows(self)
+        self.externalWindows = ExternalWindows(self)
         # self.mainWindowAddons = MainWindowAddons(self)
         self.satStatus: bool = False
         self.gameControllerRunning: bool = False
@@ -107,7 +107,7 @@ class MainWindow(MWidget):
         self.setTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
         self.setTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
         #self.mainWindowAddons.initConfig()
-        #self.externalWindows.showExtendedWindows()
+        self.externalWindows.showExtendedWindows()
         self.smartTabGui()
         self.setupIcons()
 
@@ -132,7 +132,7 @@ class MainWindow(MWidget):
         self.getTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
         self.getTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
         self.getTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
-        #self.externalWindows.storeConfigExtendedWindows()
+        self.externalWindows.storeConfigExtendedWindows()
         #self.mainWindowAddons.storeConfig()
         self.app.storeConfig()
 
@@ -167,7 +167,7 @@ class MainWindow(MWidget):
         self.gameControllerRunning = False
         self.app.timer0_1s.stop()
         changeStyleDynamic(self.ui.pauseModel, "pause", False)
-        #self.externalWindows.closeExtendedWindows()
+        self.externalWindows.closeExtendedWindows()
         #self.mainWindowAddons.addons["SettDevice"].stopDrivers()
         self.threadPool.waitForDone(10000)
         super().closeEvent(closeEvent)

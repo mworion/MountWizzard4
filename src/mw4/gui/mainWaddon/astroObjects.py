@@ -84,7 +84,6 @@ class AstroObjects:
             self.uiSourceList.addItem(name)
         self.uiSourceList.setCurrentIndex(0)
 
-
     def setAge(self, age: float) -> None:
         """ """
         t = f"{self.objectText} data - age: {age:2.1f}d"

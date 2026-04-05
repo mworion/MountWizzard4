@@ -23,8 +23,8 @@ from mw4.logic.fits.fitsFunction import (
     getScaleFromHeader,
     getSQMFromHeader,
 )
-from PySide6.QtGui import QFont
 from PySide6.QtCore import QRectF
+from PySide6.QtGui import QFont
 
 
 class ImageTabs:

@@ -22,7 +22,7 @@ from mw4.gui.utilities.generateSprites import makeSat
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets import satelliteMap_ui
 from PySide6.QtCore import QFile, Qt
-from skyfield.api import Timescale, wgs84, EarthSatellite
+from skyfield.api import EarthSatellite, Timescale, wgs84
 from skyfield.toposlib import GeographicPosition
 
 
@@ -231,7 +231,12 @@ class SatelliteMapWindow(MWidget):
         self.drawEarthTrajectory(plotItem)
 
     def drawSatellite(
-        self, satellite: EarthSatellite, satOrbits: dict, altitude: list[float], azimuth: list[float], name: str
+        self,
+        satellite: EarthSatellite,
+        satOrbits: dict,
+        altitude: list[float],
+        azimuth: list[float],
+        name: str,
     ) -> None:
         """ """
         self.setWindowTitle(f"Satellite {name}")

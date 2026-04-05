@@ -14,7 +14,6 @@
 #
 ###########################################################
 import numpy as np
-
 from mw4.base.transform import J2000ToJNow
 from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
 from mw4.gui.extWindows.image.imageTabs import ImageTabs

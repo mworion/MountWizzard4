@@ -20,11 +20,20 @@ from pathlib import Path
 
 class ASTAP:
     """ """
+
     log = logging.getLogger("MW4")
     GUI = "astap"
     CLI = "astap_cli"
-    indexes = ["g17*.290", "g18*.290", "h17*.1476", "h18*.1476",
-               "d80*.1476", "d50*.1476", "d20*.1476", "d05*.1476"]
+    indexes = [
+        "g17*.290",
+        "g18*.290",
+        "h17*.1476",
+        "h18*.1476",
+        "d80*.1476",
+        "d50*.1476",
+        "d20*.1476",
+        "d05*.1476",
+    ]
     apps = {
         "Darwin": {
             "appPath": Path("/Applications/ASTAP.app/Contents/MacOS"),
@@ -80,7 +89,6 @@ class ASTAP:
         self.indexPath = self.apps[platform.system()]["indexPath"]
         self.binPath = self.appPath / self.GUI
 
-
     def solve(self, imagePath: Path, updateHeader: bool) -> dict:
         """ """
         tempPath = self.tempDir / "temp"
@@ -118,4 +126,4 @@ class ASTAP:
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
         """ """
         self.indexPath = indexPath
-        return any([len(list(self.indexPath.glob(i))) > 0 for i in self.indexes])
+        return any(len(list(self.indexPath.glob(i))) > 0 for i in self.indexes)

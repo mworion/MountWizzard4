@@ -16,12 +16,12 @@
 import numpy as np
 import pyqtgraph as pg
 from collections.abc import Iterator
-from skyfield.toposlib import GeographicPosition
 from mw4.gui.utilities.generateSprites import makePointer, makeSat
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets import satelliteHor_ui
 from PySide6.QtCore import Qt
-from skyfield.api import Timescale, EarthSatellite
+from skyfield.api import EarthSatellite, Timescale
+from skyfield.toposlib import GeographicPosition
 
 
 class SatelliteHorizonWindow(MWidget):
@@ -231,7 +231,12 @@ class SatelliteHorizonWindow(MWidget):
         self.drawHorizon()
 
     def drawSatellite(
-        self, satellite: EarthSatellite, satOrbits: dict, altitude: list[float], azimuth: list[float], name: str
+        self,
+        satellite: EarthSatellite,
+        satOrbits: dict,
+        altitude: list[float],
+        azimuth: list[float],
+        name: str,
     ) -> None:
         """ """
         self.setWindowTitle(f"Satellite {name}")

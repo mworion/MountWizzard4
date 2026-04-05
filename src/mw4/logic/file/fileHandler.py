@@ -27,11 +27,13 @@ from xisf import XISF
 
 class FileHandlerSignals(QObject):
     """ """
+
     imageLoaded = Signal()
 
 
 class FileHandler:
     """ """
+
     log = logging.getLogger("MW4")
 
     def __init__(
@@ -43,7 +45,7 @@ class FileHandler:
         self.imagePath: Path = imagePath
         self.flipH: bool = flipH
         self.flipV: bool = flipV
-        self.image: np.ndarray = np.zeros((0,0))
+        self.image: np.ndarray = np.zeros((0, 0))
         self.header: fits.Header = fits.Header()
         self.wcs: wcs.WCS = wcs.WCS(fits.Header())
         self.hasCelestial: bool = False
@@ -97,16 +99,16 @@ class FileHandler:
         """ """
         if self.image is None or len(self.image) == 0:
             self.log.debug("No image data in FITS")
-            self.image = np.zeros((0,0))
+            self.image = np.zeros((0, 0))
             self.header = fits.Header()
             return False
         if self.header is None:
             self.log.debug("No header data in FITS")
-            self.image = np.zeros((0,0))
+            self.image = np.zeros((0, 0))
             return False
         if self.header.get("NAXIS") != 2:
             self.log.debug("Incompatible format in FITS")
-            self.image = np.zeros((0,0))
+            self.image = np.zeros((0, 0))
             self.header = fits.Header()
             return False
         return True
@@ -179,7 +181,7 @@ class FileHandler:
         if not imagePath.is_file():
             return
 
-        self.image = np.zeros((0,0))
+        self.image = np.zeros((0, 0))
         self.imagePath = imagePath
         self.flipH = flipH
         self.flipV = flipV

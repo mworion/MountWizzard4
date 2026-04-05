@@ -46,6 +46,7 @@ from typing import Any
 
 class MountWizzard4(QObject):
     """ """
+
     __version__ = version("mountwizzard4")
     log = logging.getLogger("MW4")
 

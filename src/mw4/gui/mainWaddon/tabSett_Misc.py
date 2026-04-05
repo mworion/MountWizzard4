@@ -30,7 +30,7 @@ class SettMisc:
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.worker: Worker = None
+        self.worker: Worker = Worker(self.workerGameController)
 
         self.audioSignalsSet = {}
         self.guiAudioList = {}
@@ -76,13 +76,13 @@ class SettMisc:
         self.ui.showTabProfile.clicked.connect(self.minimizeGUI)
 
         if pConf.isAvailable:
+            self.setupAudioSignals()
             self.app.mount.signals.alert.connect(lambda: self.playSound("MountAlert"))
             self.app.dome.signals.slewed.connect(lambda: self.playSound("DomeSlew"))
             self.app.mount.signals.slewed.connect(lambda: self.playSound("MountSlew"))
             self.app.camera.signals.saved.connect(lambda: self.playSound("ImageSaved"))
             self.app.plateSolve.signals.result.connect(lambda: self.playSound("ImageSolved"))
             self.app.playSound.connect(self.playSound)
-            self.setupAudioSignals()
 
     def initConfig(self) -> None:
         """ """
@@ -108,9 +108,9 @@ class SettMisc:
         self.ui.soundSatStartTracking.setCurrentIndex(config.get("soundSatStartTracking", 0))
         self.ui.gameControllerGroup.setChecked(config.get("gameControllerGroup", False))
         self.ui.gameControllerList.setCurrentIndex(config.get("gameControllerList", 0))
-        self.minimizeGUI()
         self.populateGameControllerList()
         self.ui.unitTimeUTC.toggled.emit(True)
+        # self.minimizeGUI()
 
     def storeConfig(self) -> None:
         """ """
@@ -244,7 +244,6 @@ class SettMisc:
 
     def startGameController(self) -> None:
         """ """
-        self.worker = Worker(self.workerGameController)
         self.app.threadPool.start(self.worker)
 
     @staticmethod
@@ -324,8 +323,10 @@ class SettMisc:
         """ """
         if value not in self.guiAudioList:
             return
-        listEntry = self.guiAudioList.get(value)
-        sound = listEntry.currentText()
+        if value not in self.guiAudioList:
+            return
+
+        sound = self.guiAudioList[value].currentText()
         if sound in self.audioSignalsSet:
             QSoundEffect.play(self.audioSignalsSet[sound])
 

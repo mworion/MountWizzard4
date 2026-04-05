@@ -19,8 +19,6 @@ from mw4.base.driverDataClass import DriverData, RemoteDeviceShutdown
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QTimer
 
-from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
-
 
 class NINAClass(DriverData):
     """ """
@@ -108,14 +106,12 @@ class NINAClass(DriverData):
         devName = self.deviceName.replace(" ", "%20")
         prop = f"connectdevice/{self.DEVICE_TYPE}/{devName}"
         response = self.requestProperty(prop)
-        print("connect", response)
         return response.get("Success", False)
 
     def disconnectDevice(self) -> bool:
         """ """
         prop = f"disconnectdevice/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
-        print("disconnect", response)
         return response.get("Success", False)
 
     def enumerateDevice(self) -> list:

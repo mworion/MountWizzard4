@@ -199,7 +199,6 @@ class UploadPopup(MWidget):
         self.threadPool.start(self.workerStatus)
         return self.postHostData(files)
 
-
     def closePopup(self, result: bool) -> None:
         """ """
         self.returnValues["success"] = result

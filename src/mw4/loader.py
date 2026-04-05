@@ -29,7 +29,7 @@ from mw4.base.loggerMW import setupLogging
 from mw4.gui.utilities.splashScreen import SplashScreen
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
-from PySide6.QtCore import QEvent, QFile, qVersion
+from PySide6.QtCore import QFile, qVersion
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
@@ -41,6 +41,7 @@ iers.conf.auto_download = False
 data.conf.allow_internet = False
 setupLogging()
 log = logging.getLogger("MW4")
+
 
 def except_hook(typeException, valueException, tbackException) -> None:
     """ """
@@ -105,7 +106,7 @@ def extractFile(filePath: Path, file: str, fileTimeStamp: float) -> None:
         log.info(f"Using existing: [{file}]")
 
     QFile.copy(f":/data/{file}", str(filePath))
-    # filePath.chmod(0o666)
+    filePath.chmod(0o666)
 
 
 def extractDataFiles(mwGlob: dict) -> None:
@@ -136,6 +137,7 @@ def minimizeStartTerminal() -> None:
     """ """
     if platform.system() == "Windows":
         import ctypes
+
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 
@@ -161,7 +163,7 @@ def main(test: int = 0) -> None:
     splashW.setValue(80)
     sys.excepthook = except_hook
     app.setWindowIcon(QIcon(":/icon/mw4.ico"))
-    mainApp = MountWizzard4(mwGlob, app, test)
+    MountWizzard4(mwGlob, app, test)
     splashW.showMessage("Finishing loading")
     splashW.setValue(100)
     splashW.close()

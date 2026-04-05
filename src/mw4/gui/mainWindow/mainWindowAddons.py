@@ -70,13 +70,13 @@ class MainWindowAddons:
             "Rename": Rename(mainW),
             "SatSearch": SatSearch(mainW),
             "SatTrack": SatTrack(mainW),
-            "SettDevice": SettDevice(mainW),
             "SettDome": SettDome(mainW),
             "SettMisc": SettMisc(mainW),
             "SettMount": SettMount(mainW),
             "SettParkPos": SettParkPos(mainW),
             "SettRelay": SettRelay(mainW),
             "IERSTime": IERSTime(mainW),
+            "SettDevice": SettDevice(mainW),
         }
 
     def initConfig(self) -> None:

@@ -24,6 +24,8 @@ from PySide6.QtCore import QPointF
 
 class HorizonDraw(MWidget):
     """ """
+    RESOLUTION_AZ = 360
+    RESOLUTION_ALT = 90
 
     def __init__(self, parent):
         super().__init__()
@@ -87,15 +89,19 @@ class HorizonDraw(MWidget):
             self.imageTerrain = np.ones((480, 2880)) * 128
             return
 
-        img = np.array(cv2.imread(terrainFile, cv2.IMREAD_GRAYSCALE))
+        img = cv2.imread(terrainFile, cv2.IMREAD_GRAYSCALE)
         h, w = img.shape
-        h2 = int(h / 2)
-        img = img[0:h2, 0:w]
-        img = cv2.resize(img, (1440, 360))
-        img = cv2.flip(img, 0)
-        self.imageTerrain = np.ones((480, 2880)) * 128
-        self.imageTerrain[60:420, 0:1440] = img
-        self.imageTerrain[60:420, 1440:2880] = img
+        if 2 * h != w:
+            self.msg.emit(0, "Hemisphere", "Terrain", "Wrong aspect ration of image, should be 2:1")
+            return
+
+        img = cv2.resize(img, (self.RESOLUTION_AZ, self.RESOLUTION_ALT))
+        img = img[0:int(self.RESOLUTION_AZ / 2), 0:self.RESOLUTION_ALT]
+        # img = cv2.flip(img, 0)
+        self.imageTerrain = np.ones((2 * self.RESOLUTION_AZ,
+                                     self.RESOLUTION_ALT + 120)) * 128
+        #self.imageTerrain[60:420, 0:1440] = img
+        #self.imageTerrain[60:420, 1440:2880] = img
 
     def selectTerrainFile(self) -> None:
         """ """

@@ -107,7 +107,6 @@ class CameraSGPro(SGProClass):
             self.parent.imagePath = Path()
         else:
             self.parent.imagePath.with_suffix(".fit")
-            sleepAndEvents(500)
             self.parent.updateImageFitsHeaderPointing()
 
     def expose(self) -> None:

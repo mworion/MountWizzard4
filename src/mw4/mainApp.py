@@ -175,7 +175,7 @@ class MountWizzard4(QObject):
         self.operationRunning.connect(self.storeStatusOperationRunning)
 
         if test:
-            self.update3s.connect(self.quit)
+            self.update10s.connect(self.quit)
         if len(sys.argv) > 1:
             self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 

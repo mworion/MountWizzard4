@@ -102,7 +102,7 @@ dev = [
     "pytest-qt==4.5.0",
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
-    "invoke==2.2.1",
+    "invoke==3.0.0",
     "ruff==0.15.9",
     "coverage==7.13.5",
     "scipy-stubs~=1.17.1.3",
@@ -145,7 +145,6 @@ max-complexity = 10
 [tool.ruff.lint.per-file-ignores]
 "src/mw4/mainApp.py" = ["C901"]
 "src/mw4/gui/utilities/gCustomViewBox.py" = ["C901"]
-"src/mw4/gui/utilities/toolsQtWidget.py" = ["C901"]
 "src/mw4/gui/utilities/gNormalScatter.py" = ["C901"]
 "src/mw4/gui/styles/gradients.py" = ["E501"]
 "src/mw4/gui/mainWaddon/tabEnviron_Seeing.py" = ["C901"]
@@ -154,6 +153,4 @@ max-complexity = 10
 "src/mw4/logic/measure/measureCSV.py" = ["SIM115"]
 "src/mw4/indibase/indiXML.py" = ["C901", "E501"]
 "src/mw4/indibase/indiClient.py" = ["C901", "E501"]
-"src/mw4/mountcontrol/convert.py" = ["C901"]
-"src/mw4/mountcontrol/connection.py" = ["E501"]
 "src/mw4/assets/assetData.py" = ["E501"]

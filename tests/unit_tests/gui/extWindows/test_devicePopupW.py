@@ -55,7 +55,6 @@ def function(qapp):
     QApplication.processEvents()
 
 
-
 def test_initConfig_1(function):
     with mock.patch.object(function, "populateTabs"):
         with mock.patch.object(function, "selectTabs"):

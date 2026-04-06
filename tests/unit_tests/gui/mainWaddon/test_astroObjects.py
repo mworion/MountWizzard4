@@ -18,7 +18,14 @@ import shutil
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from pathlib import Path
 from PySide6.QtCore import QThreadPool
-from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem, QCheckBox, QSpinBox
+from PySide6.QtWidgets import (
+    QComboBox,
+    QGroupBox,
+    QTableWidget,
+    QTableWidgetItem,
+    QCheckBox,
+    QSpinBox,
+)
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -27,20 +34,24 @@ from unittest import mock
 def function(qapp):
     class TestUI:
         isOnline = QCheckBox()
-        ageDatabases = QSpinBox ()
+        ageDatabases = QSpinBox()
 
     class Test:
         app = App()
         ui = TestUI()
+
         @staticmethod
         def x():
             return 0
+
         @staticmethod
         def y():
             return 0
+
         @staticmethod
         def height():
             return 0
+
         @staticmethod
         def width():
             return 0
@@ -59,7 +70,7 @@ def function(qapp):
             "url": "",
             "file": "",
             "unzip": True,
-        }
+        },
     }
 
     parent = Test()

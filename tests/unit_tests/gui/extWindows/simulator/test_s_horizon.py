@@ -29,6 +29,7 @@ def function(qapp):
         yield func.horizon
         QApplication.processEvents()
 
+
 def test_showEnable_1(function):
     function.parent.entityModel["horizonRoot"] = {"entity": Qt3DCore.QEntity()}
     function.showEnable()

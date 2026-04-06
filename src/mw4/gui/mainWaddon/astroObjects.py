@@ -96,6 +96,7 @@ class AstroObjects:
 
     def procSourceData(self, direct: bool = False) -> None:
         """ """
+        # self.downloadPopup.worker.signals.finished.disconnect(self.procSourceData)
         if not direct and not self.downloadPopup.returnValues["success"]:
             return
         self.dataValid = False

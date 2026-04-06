@@ -14,13 +14,13 @@
 #
 ###########################################################
 import platform
+import time
 
 if platform.system() == "Windows":
     from pythoncom import CoInitialize, CoUninitialize
     from win32com import client
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
-from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from PySide6.QtCore import QMutex, QTimer
 
 
@@ -39,11 +39,11 @@ class AscomClass(DriverData):
         self.updateRate = 3000
         self.loadConfig = False
         self.tM = QMutex()
-        self.worker: Worker | None = None
-        self.workerData: Worker | None = None
+        self.worker: Worker = Worker(self)
+        self.workerData: Worker = Worker(self.workerPollData)
         self.workerGetConfig: Worker | None = None
-        self.workerStatus: Worker | None = None
-        self.workerConnect: Worker | None = None
+        self.workerStatus: Worker = Worker(self.workerPollStatus)
+        self.workerConnect: Worker = Worker(self)
 
         self.client = None
         self.propertyExceptions: list = []
@@ -150,7 +150,7 @@ class AscomClass(DriverData):
             else:
                 t = f"[{self.deviceName}] connection retry: [{retry}]"
                 self.log.info(t)
-                sleepAndEvents(250)
+                time.sleep(0.2)
         else:
             suc = False
 
@@ -236,13 +236,11 @@ class AscomClass(DriverData):
 
     def pollData(self) -> None:
         """ """
-        self.workerData = Worker(self.workerPollData)
         self.workerData.signals.result.connect(self.processPolledData)
         self.threadPool.start(self.workerData)
 
     def pollStatus(self) -> None:
         """ """
-        self.workerStatus = Worker(self.workerPollStatus)
         self.threadPool.start(self.workerStatus)
 
     def getInitialConfig(self) -> None:

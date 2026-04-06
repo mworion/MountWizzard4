@@ -32,8 +32,6 @@ def function(qapp):
     QApplication.processEvents()
 
 
-
-
 def test_initConfig_1(function):
     function.initConfig()
 

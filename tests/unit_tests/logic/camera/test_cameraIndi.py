@@ -41,6 +41,7 @@ class Parent:
     width = 1000
     height = 1000
     exposureTime = 1
+
     def exposeFinished(self):
         return
 
@@ -212,7 +213,9 @@ def test_updateNumber_6(function):
 def test_writeImageXisfHeader(function):
     function.parent.imagePath = Path("tests/testData/test.xisf")
     with mock.patch.object(XISF, "get_file_metadata"):
-        with mock.patch.object(XISF, "get_images_metadata", return_value=[{"FITSKeywords": {}}]):
+        with mock.patch.object(
+            XISF, "get_images_metadata", return_value=[{"FITSKeywords": {}}]
+        ):
             with mock.patch.object(XISF, "read_image"):
                 with mock.patch.object(XISF, "write", return_value=True):
                     function.writeImageXisfHeader()

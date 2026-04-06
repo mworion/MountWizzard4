@@ -38,7 +38,6 @@ def function(qapp):
     QApplication.processEvents()
 
 
-
 @pytest.fixture
 def mocked_sleepAndEvents(monkeypatch, function):
     def test(_):
@@ -78,7 +77,9 @@ def test_getFileFromUrl_1(function):
     function.cancel = False
     with mock.patch.object(requests, "get", return_value=Response()):
         with mock.patch.object(builtins, "open"):
-            suc = function.getFileFromUrl(Path("http://local"), Path("tests/work/temp/test.txt"))
+            suc = function.getFileFromUrl(
+                Path("http://local"), Path("tests/work/temp/test.txt")
+            )
             assert suc
 
 
@@ -94,7 +95,9 @@ def test_getFileFromUrl_2(function):
 
     with mock.patch.object(requests, "get", return_value=Response()):
         with mock.patch.object(builtins, "open"):
-            suc = function.getFileFromUrl(Path("http://local"), Path("tests/work/temp/test.txt"))
+            suc = function.getFileFromUrl(
+                Path("http://local"), Path("tests/work/temp/test.txt")
+            )
             assert suc
 
 
@@ -110,7 +113,9 @@ def test_getFileFromUrl_3(function):
 
     with mock.patch.object(requests, "get", return_value=Response()):
         with mock.patch.object(builtins, "open"):
-            suc = function.getFileFromUrl(Path("http://local"), Path("tests/work/temp/test.txt"))
+            suc = function.getFileFromUrl(
+                Path("http://local"), Path("tests/work/temp/test.txt")
+            )
             assert not suc
 
 
@@ -196,7 +201,9 @@ def test_downloadFileWorker_9(function, mocked_sleepAndEvents):
         return_value=False,
     ):
         with mock.patch.object(function, "unzipFile"):
-            suc = function.downloadFileWorker(url=Path(), dest=Path("tests/work/temp/test.txt"))
+            suc = function.downloadFileWorker(
+                url=Path(), dest=Path("tests/work/temp/test.txt")
+            )
             assert not suc
 
 

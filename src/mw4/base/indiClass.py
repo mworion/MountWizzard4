@@ -14,9 +14,9 @@
 #
 ###########################################################
 import logging
+import time
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO
 from mw4.base.signalsDevices import Signals
-from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.indibase.indiClient import Client
 from PySide6.QtCore import QTimer
 
@@ -321,7 +321,7 @@ class IndiClass:
         self.discoverType = INDI_TYPES.get(deviceType, 0)
         self.client.signals.defText.connect(self.addDiscoveredDevice)
         self.client.connectServer()
-        sleepAndEvents(2000)
+        time.sleep(2.0)
         self.client.signals.defText.disconnect(self.addDiscoveredDevice)
         self.client.disconnectServer()
         return self.discoverList

@@ -14,10 +14,10 @@
 #
 ###########################################################
 import requests
+import time
 import uuid
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
-from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from PySide6.QtCore import QTimer
 from typing import Any
 
@@ -60,11 +60,11 @@ class AlpacaClass(DriverData):
 
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
-        self.worker: Worker | None = None
-        self.workerGetConfig: Worker | None = None
-        self.workerStatus: Worker | None = None
-        self.workerData: Worker | None = None
-        self.workerConnect: Worker | None = None
+        self.worker: Worker = Worker(self)
+        self.workerGetConfig: Worker = Worker(self.workerGetInitialConfig)
+        self.workerStatus: Worker = Worker(self.workerPollStatus)
+        self.workerData: Worker = Worker(self.workerPollData)
+        self.workerConnect: Worker = Worker(self.workerConnectDevice)
 
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
@@ -275,7 +275,7 @@ class AlpacaClass(DriverData):
             else:
                 t = f" [{self.deviceName}] Connection retry: [{retry}]"
                 self.log.info(t)
-                sleepAndEvents(250)
+                time.sleep(0.2)
 
         if not suc:
             self.msg.emit(2, "ALPACA", "Connect error", f"{self.deviceName}")
@@ -331,8 +331,6 @@ class AlpacaClass(DriverData):
         """ """
         if not self.deviceConnected:
             return
-
-        self.workerData = Worker(self.workerPollData)
         self.workerData.signals.result.connect(self.processPolledData)
         self.threadPool.start(self.workerData)
 
@@ -340,22 +338,17 @@ class AlpacaClass(DriverData):
         """ """
         if not self.deviceConnected:
             return
-
-        self.workerStatus = Worker(self.workerPollStatus)
         self.threadPool.start(self.workerStatus)
 
     def getInitialConfig(self) -> None:
         """ """
         if not self.deviceConnected:
             return
-
-        self.workerGetConfig = Worker(self.workerGetInitialConfig)
         self.threadPool.start(self.workerGetConfig)
 
     def startCommunication(self) -> None:
         """ """
         self.data.clear()
-        self.workerConnect = Worker(self.workerConnectDevice)
         self.threadPool.start(self.workerConnect)
 
     def stopCommunication(self) -> None:

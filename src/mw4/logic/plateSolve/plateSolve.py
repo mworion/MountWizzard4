@@ -20,7 +20,6 @@ import time
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker
 from mw4.base.transform import J2000ToJNow
-from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.logic.fits.fitsFunction import (
     getImageHeader,
     getSolutionFromWCSHeader,
@@ -46,7 +45,7 @@ class PlateSolve:
         self.signals = Signals()
         self.solveQueue = queue.Queue()
         self.solveLoopRunning: bool = False
-        self.worker: Worker = None
+        self.worker = Worker(self.workerSolveLoop)
         self.process = None
 
         self.data: dict = {}
@@ -139,7 +138,7 @@ class PlateSolve:
         """ """
         while self.solveLoopRunning:
             if self.solveQueue.empty():
-                sleepAndEvents(500)
+                time.sleep(0.5)
                 continue
             imagePath, updateHeader = self.solveQueue.get()
             self.processSolveQueue(imagePath, updateHeader)
@@ -148,7 +147,6 @@ class PlateSolve:
     def startSolveLoop(self) -> None:
         """ """
         self.solveLoopRunning = True
-        self.worker = Worker(self.workerSolveLoop)
         self.threadPool.start(self.worker)
 
     def checkAvailabilityProgram(self, framework: str) -> bool:

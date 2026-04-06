@@ -23,7 +23,6 @@ import unittest.mock as mock
 from pathlib import Path
 
 
-
 def test_main_1():
     class App:
         @staticmethod

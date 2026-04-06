@@ -36,7 +36,6 @@ def function(qapp):
     QApplication.processEvents()
 
 
-
 def test_closeEvent_1(function):
     with mock.patch.object(function, "stopVideo"):
         with mock.patch.object(MWidget, "closeEvent"):

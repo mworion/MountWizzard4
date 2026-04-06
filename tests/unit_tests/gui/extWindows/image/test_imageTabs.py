@@ -41,7 +41,6 @@ def function(qapp):
     QApplication.processEvents()
 
 
-
 def test_colorChange(function):
     function.colorChange()
 
@@ -173,7 +172,9 @@ def test_showTabImageSources(function):
     )
 
     function.ui.showValues.setChecked(True)
-    with mock.patch.object(function.ui.imageSource, "addEllipse", return_value=pg.QtWidgets.QGraphicsEllipseItem()):
+    with mock.patch.object(
+        function.ui.imageSource, "addEllipse", return_value=pg.QtWidgets.QGraphicsEllipseItem()
+    ):
         with mock.patch.object(function.ui.tabImage, "setTabEnabled"):
             function.showImageSources()
 

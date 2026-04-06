@@ -36,7 +36,6 @@ def function(qapp):
     QApplication.processEvents()
 
 
-
 @pytest.fixture
 def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
@@ -159,7 +158,6 @@ def test_getStatus_2(function):
         assert function.returnValues["successMount"]
 
 
-
 def test_pollStatus_1(function):
     def getStatus():
         function.pollStatusRunState = False
@@ -186,6 +184,7 @@ def test_prepareFiles_2(function):
     with mock.patch.object(builtins, "open"):
         val = function.prepareFiles()
         assert not val
+
 
 def test_generateURL(function):
     val = function.generateURL()

@@ -23,6 +23,7 @@ from unittest.mock import MagicMock
 
 assetsData.qInitResources()
 
+
 @pytest.fixture(autouse=True, scope="module")
 def app(qapp):
     mwGlob = {

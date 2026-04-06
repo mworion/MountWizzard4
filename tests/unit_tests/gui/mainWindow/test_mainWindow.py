@@ -77,7 +77,9 @@ def test_quitSave_1(window):
     window.ui.profile.setText("test")
     with mock.patch.object(window, "saveProfile"):
         with mock.patch.object(window, "close"):
-            with mock.patch.object(window.mainWindowAddons.addons["SettDevice"], "stopDrivers"):
+            with mock.patch.object(
+                window.mainWindowAddons.addons["SettDevice"], "stopDrivers"
+            ):
                 window.quitSave()
 
 

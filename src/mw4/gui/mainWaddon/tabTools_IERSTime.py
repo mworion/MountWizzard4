@@ -65,6 +65,9 @@ class IERSTime:
 
     def finishProgEarthRotationData(self) -> None:
         """ """
+        self.uploadPopup.workerStatus.signals.finished.disconnect(
+            self.finishProgEarthRotationData
+        )
         if self.uploadPopup.returnValues["success"]:
             self.msg.emit(1, "IERS", "Upload", "Successfully uploaded")
         else:
@@ -94,6 +97,9 @@ class IERSTime:
 
     def finishLoadTimeDataFromSourceURLs(self) -> None:
         """ """
+        self.downloadPopup.worker.signals.finished.disconnect(
+            self.finishLoadTimeDataFromSourceURLs
+        )
         if self.downloadPopup.returnValues["success"]:
             self.msg.emit(0, "IERS", "Download", "Received [finals.data]")
             self.msg.emit(1, "IERS", "Download", "Downloaded complete")
@@ -102,6 +108,9 @@ class IERSTime:
 
     def finishLoadFinalsFromSourceURLs(self) -> None:
         """ """
+        self.downloadPopup.worker.signals.finished.disconnect(
+            self.finishLoadFinalsFromSourceURLs
+        )
         if not self.downloadPopup.returnValues["success"]:
             self.msg.emit(2, "IERS", "Download", "Download failed")
             return
@@ -112,7 +121,7 @@ class IERSTime:
         urlMain = self.iersSourceURLs[sourceURL]
 
         source = "finals.data"
-        url = urlMain + source
+        url = Path(urlMain + source)
         dest = self.app.mwGlob["dataDir"] / source
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
         self.downloadPopup.show()
@@ -130,7 +139,7 @@ class IERSTime:
         urlMain = self.iersSourceURLs[sourceURL]
         self.msg.emit(1, "IERS", "Download", f"Source: [{sourceURL}]")
         source = "finals2000A.all"
-        url = urlMain + source
+        url = Path(urlMain + source)
         dest = self.app.mwGlob["dataDir"] / source
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
         self.downloadPopup.show()

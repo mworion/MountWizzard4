@@ -15,13 +15,11 @@
 ###########################################################
 import datetime
 import logging
-import time
 from dateutil.tz import tzlocal
 from mw4.gui.styles.styles import Styles
 from mw4.mountcontrol.convert import formatDstrToText, formatHstrToText
 from pathlib import Path
 from PySide6.QtCore import (
-    QCoreApplication,
     QDir,
     QEvent,
     QObject,
@@ -41,6 +39,7 @@ from PySide6.QtGui import (
     QPalette,
     QPixmap,
 )
+from PySide6.QtTest import QTest
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QComboBox,
@@ -58,9 +57,7 @@ from skyfield.api import Angle, Time
 
 def sleepAndEvents(value: int) -> None:
     """ """
-    for _ in range(value):
-        time.sleep(0.001)
-        QCoreApplication.processEvents()
+    QTest.qWait(value)
 
 
 def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str | bool) -> None:
@@ -134,6 +131,9 @@ def clickable(widget: QWidget) -> SignalInstance:
 
     clickEventFilter = MouseClickEventFilter(widget)
     widget.installEventFilter(clickEventFilter)
+    if not hasattr(widget, "clickFilters"):
+        widget.clickFilters = []
+    widget.clickFilters.append(clickEventFilter)
     return clickEventFilter.clicked
 
 
@@ -148,7 +148,6 @@ class MWidget(QWidget, Styles):
         self.initUI()
         self.screenSizeX = QGuiApplication.primaryScreen().geometry().width()
         self.screenSizeY = QGuiApplication.primaryScreen().geometry().height()
-        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
 
         newFlag = Qt.WindowType.CustomizeWindowHint | Qt.WindowType.WindowSystemMenuHint
         newFlag = (
@@ -161,6 +160,14 @@ class MWidget(QWidget, Styles):
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.app = None
         self.ui = None
+
+    def closeEvent(self, event) -> None:
+        """Schedule C++ deletion after close so that `destroyed` fires and any
+        signal connections to this widget are cleaned up before the Qt event
+        loop delivers further events to it."""
+        super().closeEvent(event)
+        if event.isAccepted():
+            self.deleteLater()
 
     @staticmethod
     def saveWindowAsPNG(window) -> None:

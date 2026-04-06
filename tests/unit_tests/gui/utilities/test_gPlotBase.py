@@ -129,10 +129,10 @@ def test_PlotBase_drawHorizon_5():
     p = PlotBase()
     p2 = PlotBase()
     target = p2.p[0]
-    target.addItem(pg.PlotDataItem())   # target has items; p.p[0] has none
+    target.addItem(pg.PlotDataItem())  # target has items; p.p[0] has none
     with mock.patch.object(p, "show"):
         suc = p.drawHorizon([(0, 0), (1, 1)], plotItem=target)
-        assert suc   # must succeed because target has items, not p.p[0]
+        assert suc  # must succeed because target has items, not p.p[0]
 
 
 def test_addIsoBasic_1():

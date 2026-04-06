@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import platform
 import pytest
 from unittest import mock
@@ -24,6 +23,7 @@ if platform.system() != "Windows":
 
 import mw4.base.ascomClass
 import PySide6
+import time
 import win32com.client
 from mw4.base.ascomClass import AscomClass
 from mw4.base.loggerMW import setupLogging
@@ -180,7 +180,7 @@ def test_getAndStoreAscomProperty(function):
 def test_workerConnectDevice_1(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(mw4.base.ascomClass, "sleepAndEvents"):
+    with mock.patch.object(time, "sleep"):
         with mock.patch.object(function, "setAscomProperty"):
             with mock.patch.object(function, "getAscomProperty", return_value=False):
                 function.workerConnectDevice()
@@ -191,7 +191,7 @@ def test_workerConnectDevice_1(function):
 def test_workerConnectDevice_2(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(mw4.base.ascomClass, "sleepAndEvents"):
+    with mock.patch.object(time, "sleep"):
         with mock.patch.object(function, "setAscomProperty"):
             with mock.patch.object(function, "getAscomProperty", return_value=True):
                 function.workerConnectDevice()

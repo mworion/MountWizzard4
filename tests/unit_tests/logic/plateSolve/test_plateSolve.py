@@ -41,7 +41,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         function.solveLoopRunning = False
 
-    monkeypatch.setattr("mw4.logic.plateSolve.plateSolve.sleepAndEvents", test)
+    monkeypatch.setattr("time.sleep", test)
 
 
 @pytest.fixture

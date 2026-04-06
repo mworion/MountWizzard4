@@ -13,9 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-
-import mw4.base.indiClass
 import pytest
+import time
 from mw4.base.indiClass import IndiClass
 from mw4.base.signalsDevices import Signals
 from mw4.indibase.indiDevice import Device
@@ -407,6 +406,6 @@ def test_addDiscoveredDevice_5(function):
 
 
 def test_discoverDevices_1(function):
-    with mock.patch.object(mw4.base.indiClass, "sleepAndEvents"):
+    with mock.patch.object(time, "sleep"):
         val = function.discoverDevices("dome")
         assert val == []

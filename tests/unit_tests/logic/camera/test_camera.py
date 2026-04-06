@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import mw4.logic
 import numpy as np
 import pytest
@@ -34,7 +33,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         function.exposing = False
 
-    monkeypatch.setattr("mw4.logic.camera.camera.sleepAndEvents", test)
+    monkeypatch.setattr("time.sleep", test)
 
 
 def test_properties(function):

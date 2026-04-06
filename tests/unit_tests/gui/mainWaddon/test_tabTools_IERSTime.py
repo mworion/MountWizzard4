@@ -67,6 +67,7 @@ def test_setupIERSSourceURLsDropDown(function):
 def test_finishProgEarthRotationData_1(function):
     class Test:
         returnValues = {"success": False}
+        workerStatus = mock.MagicMock()
 
     function.uploadPopup = Test()
     function.finishProgEarthRotationData()
@@ -75,6 +76,7 @@ def test_finishProgEarthRotationData_1(function):
 def test_finishProgEarthRotationData_2(function):
     class Test:
         returnValues = {"success": True}
+        workerStatus = mock.MagicMock()
 
     function.uploadPopup = Test()
     function.finishProgEarthRotationData()
@@ -99,6 +101,7 @@ def test_progEarthRotationData_2(function):
 def test_finishLoadTimeDataFromSourceURLs_1(function):
     class Test:
         returnValues = {"success": False}
+        worker = mock.MagicMock()
 
     function.downloadPopup = Test()
     function.finishLoadTimeDataFromSourceURLs()
@@ -107,6 +110,7 @@ def test_finishLoadTimeDataFromSourceURLs_1(function):
 def test_finishLoadTimeDataFromSourceURLs_2(function):
     class Test:
         returnValues = {"success": True}
+        worker = mock.MagicMock()
 
     function.downloadPopup = Test()
     function.finishLoadTimeDataFromSourceURLs()
@@ -115,6 +119,7 @@ def test_finishLoadTimeDataFromSourceURLs_2(function):
 def test_finishLoadFinalsFromSourceURLs_1(function):
     class Test:
         returnValues = {"success": False}
+        worker = mock.MagicMock()
 
     function.downloadPopup = Test()
     with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
@@ -124,6 +129,7 @@ def test_finishLoadFinalsFromSourceURLs_1(function):
 def test_finishLoadFinalsFromSourceURLs_2(function):
     class Test:
         returnValues = {"success": True}
+        worker = mock.MagicMock()
 
     function.downloadPopup = Test()
     with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):

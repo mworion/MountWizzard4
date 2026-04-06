@@ -13,8 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
-import mw4.base.alpacaClass
 import PySide6
 import pytest
 import requests
@@ -24,6 +22,7 @@ from mw4.base.signalsDevices import Signals
 from PySide6.QtCore import QTimer
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
+import time
 
 setupLogging()
 
@@ -47,7 +46,7 @@ def test_properties_1(function):
     function.deviceName = "test"
     function.deviceName = "test:2"
     function.apiVersion = 1
-    function.protocol = 1
+    function.protocol = "1"
 
 
 def test_properties_2(function):
@@ -361,7 +360,7 @@ def test_getAndStoreAlpacaProperty(function):
 def test_workerConnectDevice_1(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(mw4.base.alpacaClass, "sleepAndEvents"):
+    with mock.patch.object(time, "sleep"):
         with mock.patch.object(function, "setAlpacaProperty"):
             with mock.patch.object(function, "getAlpacaProperty", return_value=False):
                 function.workerConnectDevice()
@@ -372,7 +371,7 @@ def test_workerConnectDevice_1(function):
 def test_workerConnectDevice_2(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(mw4.base.alpacaClass, "sleepAndEvents"):
+    with mock.patch.object(time, "sleep"):
         with mock.patch.object(function, "setAlpacaProperty"):
             with mock.patch.object(function, "getAlpacaProperty", return_value=True):
                 function.workerConnectDevice()

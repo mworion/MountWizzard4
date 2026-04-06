@@ -43,7 +43,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(_):
         function.pollStatusRunState = False
 
-    monkeypatch.setattr("mw4.gui.extWindows.downloadPopupW.sleepAndEvents", test)
+    monkeypatch.setattr("time.sleep", test)
 
 
 def set_setIcon(function):

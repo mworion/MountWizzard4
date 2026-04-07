@@ -16,13 +16,12 @@
 import pickle
 import pyqtgraph as pg
 import pytest
-import gc
 import unittest.mock as mock
 from mw4.gui.extWindows.satelliteMapW import SatelliteMapWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication
-from skyfield.api import Angle, EarthSatellite
+from skyfield.api import EarthSatellite
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -30,7 +29,6 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     func = SatelliteMapWindow(app=App())
     yield func
-    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

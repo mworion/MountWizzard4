@@ -13,8 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-from PySide6.QtGui import QPainterPath
 from mw4.gui.utilities.generateSprites import makePointer, makeSat
+from PySide6.QtGui import QPainterPath
 
 
 def test_makePointer():

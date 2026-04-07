@@ -19,12 +19,12 @@ from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from pathlib import Path
 from PySide6.QtCore import QThreadPool
 from PySide6.QtWidgets import (
+    QCheckBox,
     QComboBox,
     QGroupBox,
+    QSpinBox,
     QTableWidget,
     QTableWidgetItem,
-    QCheckBox,
-    QSpinBox,
 )
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock

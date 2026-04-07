@@ -14,10 +14,10 @@
 #
 ###########################################################
 import cv2
+import gc
 import numpy as np
 import pyqtgraph as pg
 import pytest
-import gc
 import unittest.mock as mock
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
@@ -32,9 +32,6 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     func = HemisphereWindow(app=App())
     yield func
-    QApplication.processEvents()
-    gc.collect()
-    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

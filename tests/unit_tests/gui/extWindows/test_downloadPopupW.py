@@ -14,15 +14,15 @@
 #
 ###########################################################
 import builtins
+import gc
 import os
 import pytest
-import gc
 import requests
 import shutil
 import unittest.mock as mock
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
-from pathlib import Path
 from mw4.gui.utilities.toolsQtWidget import MWidget
+from pathlib import Path
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -33,9 +33,6 @@ def function(qapp):
     widget.app = App()
     window = DownloadPopup(parentWidget=widget, url=Path(), dest=Path())
     yield window
-    QApplication.processEvents()
-    gc.collect()
-    QApplication.processEvents()
 
 
 @pytest.fixture

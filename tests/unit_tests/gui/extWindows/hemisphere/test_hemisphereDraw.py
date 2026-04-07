@@ -13,16 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
+import gc
 import os
 import pyqtgraph as pg
 import pytest
-import gc
 import shutil
 import unittest.mock as mock
-from PySide6.QtCore import QPointF
-from PySide6.QtWidgets import QApplication
 from mw4.gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
+from PySide6.QtCore import QPointF
+from PySide6.QtWidgets import QApplication
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -32,9 +32,6 @@ def function(qapp):
     shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
     func = HemisphereDraw(parent=HemisphereWindow(app=App()))
     yield func
-    QApplication.processEvents()
-    gc.collect()
-    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

@@ -13,10 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
+import gc
 import numpy as np
 import pyqtgraph as pg
 import pytest
-import gc
 import unittest.mock as mock
 from mw4.gui.extWindows.measure.measureW import MeasureWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
@@ -45,9 +45,6 @@ def function(qapp):
     func.app.measure.data["time"] = np.append(func.app.measure.data["time"], value)
     func.app.measure.data["time"] = np.append(func.app.measure.data["time"], value)
     yield func
-    QApplication.processEvents()
-    gc.collect()
-    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

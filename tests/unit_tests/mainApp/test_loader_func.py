@@ -14,7 +14,6 @@
 #
 ###########################################################
 import glob
-import mw4.loader
 import os
 import platform
 import pytest

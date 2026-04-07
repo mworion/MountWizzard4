@@ -14,16 +14,15 @@
 #
 ###########################################################
 import cv2
+import gc
 import mw4.gui.extWindows.video.videoBase
 import numpy as np
 import pytest
-import gc
 import unittest.mock as mock
 from mw4.gui.extWindows.video.videoBase import VideoWindowBase
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from PySide6.QtGui import QCloseEvent, QPixmap
-from PySide6.QtWidgets import QInputDialog
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QInputDialog
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -31,9 +30,6 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     func = VideoWindowBase(app=App())
     yield func
-    QApplication.processEvents()
-    gc.collect()
-    QApplication.processEvents()
 
 
 def test_closeEvent_1(function):

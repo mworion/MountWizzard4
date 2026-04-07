@@ -13,9 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
+import gc
 import logging
 import pytest
-import gc
 import unittest.mock as mock
 from mw4.base.ascomClass import AscomClass
 from mw4.base.indiClass import IndiClass
@@ -23,8 +23,7 @@ from mw4.base.signalsDevices import Signals
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from pathlib import Path
-from PySide6.QtWidgets import QWidget
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -50,9 +49,6 @@ def function(qapp):
     )
     window.log = logging.getLogger()
     yield window
-    QApplication.processEvents()
-    gc.collect()
-    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

@@ -15,7 +15,7 @@
 ###########################################################
 import pytest
 import unittest.mock as mock
-from importlib.resources import files, as_file
+from importlib.resources import as_file, files
 from mw4.gui.utilities.splashScreen import SplashScreen
 from PySide6.QtGui import QPainter, QPixmap
 from PySide6.QtWidgets import QWidget

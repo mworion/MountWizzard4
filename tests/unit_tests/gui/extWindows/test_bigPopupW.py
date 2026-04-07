@@ -13,8 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-import pytest
 import gc
+import pytest
 import unittest.mock as mock
 from mw4.gui.extWindows.bigPopupW import BigPopup
 from mw4.gui.utilities.toolsQtWidget import MWidget
@@ -27,9 +27,6 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     window = BigPopup(App())
     yield window
-    QApplication.processEvents()
-    gc.collect()
-    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

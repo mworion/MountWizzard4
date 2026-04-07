@@ -14,7 +14,6 @@
 #
 ###########################################################
 import glob
-import pytest
 import mw4.loader
 import os
 import PySide6

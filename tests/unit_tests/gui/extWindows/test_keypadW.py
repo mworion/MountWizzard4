@@ -15,7 +15,6 @@
 ###########################################################
 import numpy as np
 import pytest
-import gc
 import unittest.mock as mock
 from mw4.gui.extWindows.keypadW import KeypadWindow
 from mw4.gui.utilities.toolsQtWidget import MWidget
@@ -29,7 +28,6 @@ def function(qapp):
     func = KeypadWindow(app=App())
     with mock.patch.object(func, "show"):
         yield func
-        QApplication.processEvents()
 
 
 def test_initConfig_1(function):

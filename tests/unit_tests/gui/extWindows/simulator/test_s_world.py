@@ -14,9 +14,8 @@
 #
 ###########################################################
 import pytest
-import gc
-from PySide6.QtWidgets import QApplication
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
+from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 

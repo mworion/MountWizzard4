@@ -28,7 +28,7 @@ from mw4.gui.utilities.toolsQtWidget import (
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
 from PySide6.QtCore import QPoint, Qt
-from PySide6.QtGui import QIcon, QPainterPath, QPixmap
+from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import (
     QComboBox,

@@ -15,7 +15,6 @@
 ###########################################################
 import pytest
 import unittest.mock as mock
-from pathlib import Path
 import zlib
 from astropy.io import fits
 from mw4.base.indiClass import IndiClass
@@ -24,9 +23,9 @@ from mw4.indibase.indiClient import Client
 from mw4.indibase.indiDevice import Device
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraIndi import CameraIndi
-from PySide6.QtCore import Signal
-from xisf import XISF
+from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from xisf import XISF
 
 
 class Parent:

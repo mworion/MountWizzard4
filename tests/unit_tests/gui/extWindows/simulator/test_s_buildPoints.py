@@ -15,7 +15,6 @@
 ###########################################################
 import numpy as np
 import pytest
-import gc
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras

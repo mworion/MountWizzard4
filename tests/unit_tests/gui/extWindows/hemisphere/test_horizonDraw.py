@@ -14,11 +14,11 @@
 #
 ###########################################################
 import cv2
+import gc
 import numpy as np
 import os
 import pyqtgraph as pg
 import pytest
-import gc
 import shutil
 import unittest.mock as mock
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
@@ -36,9 +36,6 @@ def function(qapp):
     shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
     func = HorizonDraw(parent=HemisphereWindow(app=App()))
     yield func
-    QApplication.processEvents()
-    gc.collect()
-    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

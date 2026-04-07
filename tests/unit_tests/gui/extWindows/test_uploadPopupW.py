@@ -14,14 +14,14 @@
 #
 ###########################################################
 import builtins
-import pytest
 import gc
+import pytest
 import requests
 import unittest.mock as mock
-from PySide6.QtWidgets import QApplication
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from pathlib import Path
+from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -31,9 +31,6 @@ def function(qapp):
     widget.app = App()
     window = UploadPopup(widget, Path(), [""], Path())
     yield window
-    QApplication.processEvents()
-    gc.collect()
-    QApplication.processEvents()
 
 
 @pytest.fixture

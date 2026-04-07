@@ -16,6 +16,7 @@
 import datetime
 import logging
 from dateutil.tz import tzlocal
+from importlib.resources import as_file, files
 from mw4.gui.styles.styles import Styles
 from mw4.mountcontrol.convert import formatDstrToText, formatHstrToText
 from pathlib import Path
@@ -156,7 +157,7 @@ class MWidget(QWidget, Styles):
             | Qt.WindowType.WindowMaximizeButtonHint
         )
         self.setWindowFlags(self.windowFlags() | newFlag)
-        self.setWindowIcon(QIcon(":/icon/mw4.png"))
+        self.setWindowIcon(self.mwIcon)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.app = None
         self.ui = None
@@ -202,9 +203,10 @@ class MWidget(QWidget, Styles):
         super().keyPressEvent(keyEvent)
 
     @staticmethod
-    def img2pixmap(imageFile: str) -> QPixmap:
+    def img2pixmap(imageFilePath: str) -> QPixmap:
         """ """
-        image = QImage(imageFile)
+        with as_file(files("mw4").joinpath(imageFilePath)) as imageFile:
+            image = QImage(str(imageFile))
         image.convertToFormat(QImage.Format.Format_RGB32)
         imgArr = rgb_view(image)
         image = array2qimage(imgArr)
@@ -214,7 +216,8 @@ class MWidget(QWidget, Styles):
     @staticmethod
     def svg2pixmap(svgFileName: str, color: str = "black") -> QPixmap:
         """ """
-        img = QPixmap(svgFileName)
+        with as_file(files("mw4").joinpath(svgFileName)) as image:
+            img = QPixmap(image)
         qp = QPainter(img)
         qp.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
         qp.fillRect(img.rect(), QColor(color))
@@ -228,7 +231,7 @@ class MWidget(QWidget, Styles):
 
     def wIcon(self, gui: QPushButton, name: str) -> None:
         """ """
-        icon = self.svg2icon(f":/icon/{name}.svg", self.M_TER)
+        icon = self.svg2icon(f"data/icon/{name}.svg", self.M_TER)
         gui.setIcon(icon)
         gui.setIconSize(QSize(16, 16))
         gui.setProperty("alignLeft", True)
@@ -239,13 +242,13 @@ class MWidget(QWidget, Styles):
         """ """
         self.setStyleSheet(self.mw4Style)
         self.setMouseTracking(True)
-        self.setWindowIcon(QIcon(":/mw4.ico"))
+        self.setWindowIcon(self.mwIcon)
 
     def prepareFileDialog(self, window: QWidget, enableDir: bool = False) -> QFileDialog:
         """ """
         dlg = QFileDialog()
         dlg.setOptions(QFileDialog.Option.DontUseNativeDialog)
-        dlg.setWindowIcon(QIcon(":/mw4.ico"))
+        dlg.setWindowIcon(self.mwIcon)
         dlg.setStyleSheet(self.mw4Style)
         dlg.setViewMode(QFileDialog.ViewMode.List)
         dlg.setModal(True)
@@ -286,10 +289,10 @@ class MWidget(QWidget, Styles):
         msg.setTextFormat(Qt.TextFormat.AutoText)
         msg.setWindowTitle(title)
         icons = [
-            ":/icon/question.svg",
-            ":/icon/information.svg",
-            ":/icon/warning.svg",
-            ":/icon/question.svg",
+            "data/icon/question.svg",
+            "data/icon/information.svg",
+            "data/icon/warning.svg",
+            "data/icon/question.svg",
         ]
         pixmap = QPixmap(icons[iconType]).scaled(64, 64)
         msg.setIconPixmap(pixmap)

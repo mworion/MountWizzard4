@@ -84,7 +84,7 @@ class UploadPopup(MWidget):
 
     def setIcon(self) -> None:
         """ """
-        pixmap = self.svg2pixmap(":/icon/upload_pop.svg", self.M_PRIM)
+        pixmap = self.svg2pixmap("data/icon/upload_pop.svg", self.M_PRIM)
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
 

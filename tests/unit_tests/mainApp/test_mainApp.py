@@ -15,13 +15,10 @@
 ###########################################################
 import pytest
 import shutil
-from mw4.assets import assetsData
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from unittest import mock
 from unittest.mock import MagicMock
-
-assetsData.qInitResources()
 
 
 @pytest.fixture(autouse=True, scope="module")

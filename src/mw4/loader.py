@@ -13,27 +13,26 @@
 # Licence APL2.0
 #
 ###########################################################
+import faulthandler
 import locale
 import logging
-import platform
-import shutil
 import os
+import platform
 import PySide6
+import shutil
 import socket
 import sys
 import traceback
 import warnings
-import faulthandler
 from astropy.utils import data, iers
 from astropy.wcs import FITSFixedWarning
 from importlib.metadata import version
-from importlib.resources import files, as_file
-from mw4.assets import assetsData
+from importlib.resources import as_file, files
 from mw4.base.loggerMW import setupLogging
 from mw4.gui.utilities.splashScreen import SplashScreen
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
-from PySide6.QtCore import QFile, qVersion
+from PySide6.QtCore import qVersion
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
@@ -41,7 +40,6 @@ faulthandler.enable()
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 warnings.filterwarnings("ignore", category=FITSFixedWarning)
 
-assetsData.qInitResources()
 iers.conf.auto_download = False
 data.conf.allow_internet = False
 setupLogging()
@@ -103,17 +101,19 @@ def extractDataFiles(mwGlob: dict) -> None:
     for file in copyFiles:
         with as_file(file) as src:
             dest = mwGlob["dataDir"] / file.name
-            if dest.is_file():
-                if os.stat(src).st_mtime - os.stat(dest).st_mtime < 1:
-                    continue
+            if dest.is_file() and os.stat(src).st_mtime - os.stat(dest).st_mtime < 1:
+                continue
             shutil.copy2(src, dest)
 
     pass
 
+
+# noinspection PyUnresolvedReferences
 def minimizeStartTerminal() -> None:
     """ """
     if platform.system() == "Windows":
         import ctypes
+
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 
@@ -138,7 +138,8 @@ def main(test: int = 0) -> None:
     splashW.showMessage("Initialize Application")
     splashW.setValue(80)
     sys.excepthook = except_hook
-    app.setWindowIcon(QIcon(":/icon/mw4.ico"))
+    with as_file(files("mw4").joinpath("data/icon/mw4.ico")) as iconFile:
+        app.setWindowIcon(QIcon(str(iconFile)))
     MountWizzard4(mwGlob, app, test)
     splashW.showMessage("Finishing loading")
     splashW.setValue(100)

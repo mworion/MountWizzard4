@@ -13,16 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-
-
 import pytest
-from mw4.assets import assetsData
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-
-assetsData.qInitResources()
 
 
 class Test:

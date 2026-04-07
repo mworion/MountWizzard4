@@ -45,7 +45,7 @@ class EnvironSeeing:
 
     def setupIcons(self) -> None:
         """ """
-        pixmap = self.mainW.svg2pixmap(":/icon/meteoblue.svg", "#124673")
+        pixmap = self.mainW.svg2pixmap("data/icon/meteoblue.svg", "#124673")
         pixmap = pixmap.transformed(QTransform().rotate(-90))
         pixmap = pixmap.scaled(37, 128, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.seeingIcon.setPixmap(pixmap)

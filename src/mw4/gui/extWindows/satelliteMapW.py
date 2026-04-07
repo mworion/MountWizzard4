@@ -17,11 +17,12 @@ import numpy as np
 import pickle
 import pyqtgraph as pg
 from collections.abc import Iterator
+from importlib.resources import as_file, files
 from io import BytesIO
 from mw4.gui.utilities.generateSprites import makeSat
 from mw4.gui.utilities.toolsQtWidget import MWidget
 from mw4.gui.widgets import satelliteMap_ui
-from PySide6.QtCore import QFile, Qt
+from PySide6.QtCore import Qt
 from skyfield.api import EarthSatellite, Timescale, wgs84
 from skyfield.toposlib import GeographicPosition
 
@@ -41,21 +42,18 @@ class SatelliteMapWindow(MWidget):
         self.plotSatPosEarth: pg.PlotDataItem = pg.PlotDataItem()
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
         self.pens = []
+        self.world: bytes = b""
         for color in self.colors:
             self.pens.append(pg.mkPen(color=color, width=2))
             self.pens.append(pg.mkPen(color=color, width=2, style=Qt.PenStyle.DotLine))
         self.penLocation = pg.mkPen(color=self.M_RED)
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
-        file = QFile(":/data/worldmap.dat")
-        file.open(QFile.OpenModeFlag.ReadOnly)
-        pickleData = bytes(file.readAll())
-        file.close()
-        self.world = pickle.load(BytesIO(pickleData))
         self.app.showSatellite.connect(self.drawSatellite)
         self.app.updateSatellite.connect(self.updatePositions)
 
     def initConfig(self) -> None:
         """ """
+        self.world: bytes = self.loadMap()
         self.positionWindow(self.app.config.get("satelliteMapW", {}))
 
     def storeConfig(self) -> None:
@@ -86,6 +84,13 @@ class SatelliteMapWindow(MWidget):
         self.setStyleSheet(self.mw4Style)
         self.ui.satEarth.colorChange()
         self.app.sendSatelliteData.emit([], [])
+
+    @staticmethod
+    def loadMap() -> bytes:
+        """ """
+        with as_file(files("mw4").joinpath("data/config/worldmap.dat")) as mapFile:
+            pickleData = mapFile.read_bytes()
+        return pickle.load(BytesIO(pickleData))
 
     def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
         """ """

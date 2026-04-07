@@ -14,6 +14,7 @@
 #
 ###########################################################
 import numpy as np
+from importlib.resources import as_file, files
 from PySide6.QtCore import QRectF, Qt
 from PySide6.QtGui import QColor, QPixmap
 from PySide6.QtWidgets import QApplication, QSplashScreen
@@ -36,7 +37,8 @@ class SplashScreen:
 
     def __init__(self, application=None):
         self._qapp = application
-        self._pxm = QPixmap(":/icon/mw4.png")
+        with as_file(files("mw4").joinpath("data/icon/mw4.png")) as imageFile:
+            self._pxm = QPixmap(str(imageFile))
 
         flags = Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.X11BypassWindowManagerHint
         self.qss = QSplashScreen(self._pxm, flags)

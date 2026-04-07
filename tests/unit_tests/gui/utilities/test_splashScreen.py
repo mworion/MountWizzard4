@@ -13,10 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
-
 import pytest
 import unittest.mock as mock
+from importlib.resources import files, as_file
 from mw4.gui.utilities.splashScreen import SplashScreen
 from PySide6.QtGui import QPainter, QPixmap
 from PySide6.QtWidgets import QWidget
@@ -29,12 +28,14 @@ def module_setup_teardown():
 
 
 def test_icon_1():
-    value = QPixmap(":/icon/mw4.ico")
+    with as_file(files("mw4").joinpath("icon/mw4.ico")) as imageFile:
+        value = QPixmap(str(imageFile))
     assert isinstance(value, QPixmap)
 
 
 def test_icon_2():
-    value = QPixmap(":/icon/mw4.ico")
+    with as_file(files("mw4").joinpath("icon/mw4.ico")) as imageFile:
+        value = QPixmap(str(imageFile))
     assert isinstance(value, QPixmap)
 
 

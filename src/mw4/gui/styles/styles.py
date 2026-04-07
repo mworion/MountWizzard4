@@ -14,10 +14,12 @@
 #
 ###########################################################
 import platform
+from importlib.resources import as_file, files
 from mw4.gui.styles.colors import colors
 from mw4.gui.styles.forms import forms
 from mw4.gui.styles.gradients import gradients
 from mw4.gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
+from PySide6.QtGui import QIcon
 
 
 class Styles:
@@ -150,6 +152,11 @@ class Styles:
         else:
             styleRaw = NON_MAC_STYLE + BASIC_STYLE
         return self.renderStyle(styleRaw)
+
+    def __init__(self):
+        super().__init__()
+        with as_file(files("mw4").joinpath("data/icon/mw4.ico")) as icon:
+            self.mwIcon = QIcon(str(icon))
 
     @staticmethod
     def hex2rgb(val: str) -> list[int]:

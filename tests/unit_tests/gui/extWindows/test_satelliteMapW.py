@@ -28,15 +28,15 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(scope="module")
 def function(qapp):
-    with mock.patch.object(pickle, "load"):
-        func = SatelliteMapWindow(app=App())
-        yield func
-        QApplication.processEvents()
+    func = SatelliteMapWindow(app=App())
+    yield func
+    QApplication.processEvents()
 
 
 def test_initConfig_1(function):
     with mock.patch.object(function, "positionWindow"):
-        function.initConfig()
+        with mock.patch.object(function, "loadMap"):
+            function.initConfig()
 
 
 def test_storeConfig_1(function):
@@ -48,7 +48,6 @@ def test_storeConfig_1(function):
 
 def test_storeConfig_2(function):
     function.app.config["satelliteW"] = {}
-
     function.storeConfig()
 
 
@@ -67,6 +66,11 @@ def test_showWindow(function):
 def test_colorChange(function):
     with mock.patch.object(function, "drawSatellite"):
         function.colorChange()
+
+
+def test_loadMap_1(function):
+    with mock.patch.object(pickle, "load"):
+        function.loadMap()
 
 
 def test_updatePositions_2(function):

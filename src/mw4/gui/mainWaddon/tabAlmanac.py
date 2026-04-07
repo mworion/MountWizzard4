@@ -16,6 +16,7 @@
 import numpy as np
 import pyqtgraph as pg
 from dateutil.tz import tzlocal
+from importlib.resources import as_file, files
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
 from PySide6.QtCore import QPointF, Qt
@@ -363,7 +364,8 @@ class Almanac:
             self.ui.nodeEvents.insertPlainText(text)
             text = "\n"
 
-        moon = QPixmap(":/pics/moon.png")
+        with as_file(files("mw4").joinpath("data/pics/moon.png")) as imageFile:
+            moon = QPixmap(str(imageFile))
         moonMask = self.generateMoonMask(moon, mpDegree)
 
         m = QPainter(moon)

@@ -103,7 +103,7 @@ dev = [
     "pytest-qt==4.5.0",
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
-    "invoke==3.0.0",
+    "invoke==3.0.2",
     "ruff==0.15.9",
     "coverage==7.13.5",
     "scipy-stubs~=1.17.1.3",

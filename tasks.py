@@ -121,30 +121,6 @@ def update_builtins(c):
 
 
 @task
-def build_resources(c):
-    files = [
-        "de440_mw4.bsp",
-        "CDFLeapSeconds.txt",
-        "tai-utc.dat",
-        "finals2000A.all",
-        "finals.data",
-    ]
-    printMW("building resources")
-    resourceDir = "./src_add/assets/"
-    resourceDestDir = "./src/mw4/assets/"
-    with c.cd(resourceDir + "data"):
-        with open(resourceDir + "data/content.txt", "w") as f:
-            for file in files:
-                filePath = resourceDir + "data/" + file
-                t = os.stat(filePath).st_mtime
-                f.write(f"{file} {t}\n")
-    runMW(
-        c, f"uv run pyside6-rcc -o {resourceDestDir}assetsData.py {resourceDir}assetData.qrc"
-    )
-    printMW("building resources finished\n")
-
-
-@task
 def build_widgets(c):
     printMW("building widgets")
     widgetDirIn = "./src_add/widgets/"
@@ -174,7 +150,7 @@ def build_widgets(c):
     printMW("building widgets finished\n")
 
 
-@task(pre=[build_resources, build_widgets, update_builtins])
+@task(pre=[build_widgets, update_builtins])
 def build(c):
     printMW("building dist mountwizzard4")
     runMW(c, "rm -f dist/*.tar.gz")

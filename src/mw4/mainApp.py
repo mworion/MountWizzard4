@@ -15,7 +15,7 @@
 ###########################################################
 import logging
 import sys
-from importlib_metadata import version
+from importlib.metadata import version
 from mw4.base.loggerMW import setCustomLoggingLevel
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.logic.buildData.buildpoints import DataPoint

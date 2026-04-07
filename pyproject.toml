@@ -13,16 +13,18 @@
 #
 ###########################################################
 [build-system]
-requires = ["uv_build<0.10.9"]
+requires = ["uv_build"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
+src-layout = true
 module-name = "mw4"
 module-root = "src"
+package-data = ["data/**/*.*"]
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0b2"
+version = "4.0.0b3"
 license = "Apache-2.0"
 description = "Tool for managing 10_micron mounts"
 readme = "README.rst"
@@ -67,7 +69,6 @@ dependencies = [
     "sgp4==2.25",
     "requests==2.33.1",
     "requests_toolbelt==1.0.0",
-    "importlib_metadata==9.0.0",
     "python-dateutil==2.9.0.post0",
     "wakeonlan==3.1.0",
     "pybase64==1.4.3",

@@ -25,7 +25,6 @@ import unittest.mock as mock
 from mw4.loader import (
     except_hook,
     extractDataFiles,
-    extractFile,
     minimizeStartTerminal,
     setupWorkDirs,
     writeSystemInfo,
@@ -71,43 +70,9 @@ def test_writeSystemInfo_2():
     mwGlob["WorkDir"] = Path("tests/work")
 
 
-def test_extractFile_1():
-    class MTime:
-        st_mtime = 1000000000.0
-
-    filePath = Path("tests/work/data/de440_mw4.bsp")
-    with mock.patch.object(Path, "is_file", return_value=False):
-        with mock.patch.object(os, "stat", return_value=MTime()):
-            extractFile(filePath, "de440_mw4.bsp", 0)
-
-
-def test_extractFile_2():
-    class MTime:
-        st_mtime = 1000000000.0
-
-    filePath = Path("tests/work/data/de440_mw4.bsp")
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(os, "stat", return_value=MTime()):
-            with mock.patch.object(os, "remove"):
-                with mock.patch.object(os, "chmod"):
-                    extractFile(filePath, "de440_mw4.bsp", 2000000000.0)
-
-
-def test_extractFile_3():
-    class MTime:
-        st_mtime = 1000000000.0
-
-    filePath = Path("tests/work/data/de440_mw4.bsp")
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(os, "stat", return_value=MTime()):
-            with mock.patch.object(os, "chmod"):
-                extractFile(filePath, "de440_mw4.bsp", 0)
-
-
 def test_extractDataFiles_1():
     mwGlob = {"dataDir": Path("tests/work/data")}
-    with mock.patch.object(mw4.loader, "extractFile"):
-        extractDataFiles(mwGlob=mwGlob)
+    extractDataFiles(mwGlob=mwGlob)
 
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")

@@ -16,14 +16,18 @@
 import locale
 import logging
 import platform
+import shutil
+import os
 import PySide6
 import socket
 import sys
 import traceback
 import warnings
+import faulthandler
 from astropy.utils import data, iers
 from astropy.wcs import FITSFixedWarning
-from importlib_metadata import version
+from importlib.metadata import version
+from importlib.resources import files, as_file
 from mw4.assets import assetsData
 from mw4.base.loggerMW import setupLogging
 from mw4.gui.utilities.splashScreen import SplashScreen
@@ -33,6 +37,7 @@ from PySide6.QtCore import QFile, qVersion
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
+faulthandler.enable()
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 warnings.filterwarnings("ignore", category=FITSFixedWarning)
 
@@ -92,52 +97,23 @@ def writeSystemInfo(mwGlob: dict = None) -> None:
     log.header("-" * 100)
 
 
-def extractFile(filePath: Path, file: str, fileTimeStamp: float) -> None:
-    """ """
-    overwrite = False
-    if filePath.is_file():
-        mtime = filePath.stat().st_mtime
-        overwrite = mtime < fileTimeStamp
-
-    if overwrite:
-        log.info(f"Writing new file: [{file}]")
-        filePath.unlink(missing_ok=True)
-    else:
-        log.info(f"Using existing: [{file}]")
-
-    QFile.copy(f":/data/{file}", str(filePath))
-    filePath.chmod(0o666)
-
-
 def extractDataFiles(mwGlob: dict) -> None:
     """ """
-    filesTimes = {
-        "de440_mw4.bsp": 0.0,
-        "CDFLeapSeconds.txt": 0.0,
-        "tai-utc.dat": 0.0,
-        "finals2000A.all": 0.0,
-        "finals.data": 0.0,
-    }
-    contentFile = QFile(":/data/content.txt")
-    contentFile.open(QFile.OpenModeFlag.ReadOnly)
-    lines = contentFile.readAll().data().decode().splitlines()
-    contentFile.close()
+    copyFiles = files("mw4").joinpath("data/config").glob("*.*")
+    for file in copyFiles:
+        with as_file(file) as src:
+            dest = mwGlob["dataDir"] / file.name
+            if dest.is_file():
+                if os.stat(src).st_mtime - os.stat(dest).st_mtime < 1:
+                    continue
+            shutil.copy2(src, dest)
 
-    for line in lines:
-        name, date = line.split(" ")
-        filesTimes[name] = float(date)
+    pass
 
-    for file in filesTimes:
-        filePath = mwGlob["dataDir"] / file
-        extractFile(filePath, file, filesTimes[file])
-
-
-# noinspection PyUnresolvedReferences
 def minimizeStartTerminal() -> None:
     """ """
     if platform.system() == "Windows":
         import ctypes
-
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 

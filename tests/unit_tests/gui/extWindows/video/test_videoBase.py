@@ -30,6 +30,9 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     func = VideoWindowBase(app=App())
     yield func
+    QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
 
 
 def test_closeEvent_1(function):

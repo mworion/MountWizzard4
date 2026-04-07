@@ -34,7 +34,7 @@ def function(qapp):
         with mock.patch.object(ImageTabs, "colorChange"):
             func = ImageWindow(App())
             yield func
-
+            QApplication.processEvents()
 
 def test_initConfig_1(function):
     with mock.patch.object(function, "positionWindow"):

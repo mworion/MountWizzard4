@@ -27,7 +27,7 @@ def function(qapp):
     func = VideoWindow(app=App())
     with mock.patch.object(func, "show"):
         yield func
-
+        QApplication.processEvents()
 
 def test_initConfig_1(function):
     function.initConfig()

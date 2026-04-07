@@ -30,6 +30,7 @@ def function(qapp):
     with mock.patch.object(pickle, "load"):
         func = SatelliteHorizonWindow(app=App())
         yield func
+        QApplication.processEvents()
 
 
 def test_initConfig_1(function):

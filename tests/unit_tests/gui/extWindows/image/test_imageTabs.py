@@ -36,7 +36,9 @@ def function(qapp):
     parent = ImageWindow(app=App())
     func = ImageTabs(parent)
     yield func
-
+    QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
 
 def test_colorChange(function):
     function.colorChange()

@@ -36,7 +36,9 @@ def function(qapp):
     shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
     func = HorizonDraw(parent=HemisphereWindow(app=App()))
     yield func
-
+    QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
 
 def test_initConfig_1(function):
     with mock.patch.object(os.path, "isfile", return_value=False):

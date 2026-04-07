@@ -33,6 +33,9 @@ def function(qapp):
     widget.app = App()
     window = DownloadPopup(parentWidget=widget, url=Path(), dest=Path())
     yield window
+    QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
 
 
 @pytest.fixture

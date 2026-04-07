@@ -31,6 +31,9 @@ def function(qapp):
     widget.app = App()
     window = UploadPopup(widget, Path(), [""], Path())
     yield window
+    QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
 
 
 @pytest.fixture

@@ -49,6 +49,9 @@ def function(qapp):
     )
     window.log = logging.getLogger()
     yield window
+    QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

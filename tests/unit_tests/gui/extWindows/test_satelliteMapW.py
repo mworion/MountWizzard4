@@ -29,6 +29,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     func = SatelliteMapWindow(app=App())
     yield func
+    QApplication.processEvents()
 
 
 def test_initConfig_1(function):

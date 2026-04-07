@@ -45,7 +45,9 @@ def function(qapp):
     func.app.measure.data["time"] = np.append(func.app.measure.data["time"], value)
     func.app.measure.data["time"] = np.append(func.app.measure.data["time"], value)
     yield func
-
+    QApplication.processEvents()
+    gc.collect()
+    QApplication.processEvents()
 
 def test_initConfig_1(function):
     with mock.patch.object(function, "setupButtons"):

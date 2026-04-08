@@ -323,9 +323,6 @@ class SettMisc:
         """ """
         if value not in self.guiAudioList:
             return
-        if value not in self.guiAudioList:
-            return
-
         sound = self.guiAudioList[value].currentText()
         if sound in self.audioSignalsSet:
             QSoundEffect.play(self.audioSignalsSet[sound])

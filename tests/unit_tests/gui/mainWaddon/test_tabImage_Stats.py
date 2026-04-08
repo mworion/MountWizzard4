@@ -34,6 +34,10 @@ def function(qapp):
     mainW.app.threadPool.waitForDone(1000)
 
 
+def test_initConfig(function):
+    function.initConfig()
+
+
 def test_storeConfig(function):
     function.storeConfig()
 

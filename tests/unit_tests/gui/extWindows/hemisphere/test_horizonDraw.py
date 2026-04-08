@@ -94,8 +94,8 @@ def test_loadTerrainImage_1(function):
     with mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(cv2, "imread", return_value=np.array([[0, 0], [0, 0]])):
-                with mock.patch.object(cv2, "resize", return_value=np.ones((1440, 360))):
-                    with mock.patch.object(cv2, "flip", return_value=np.ones((360, 1440))):
+                with mock.patch.object(cv2, "resize", return_value=np.ones((360, 180))):
+                    with mock.patch.object(cv2, "flip", return_value=np.ones((90, 360))):
                         function.loadTerrainImage(Path("terrain.jpg"))
 
 
@@ -103,8 +103,8 @@ def test_loadTerrainImage_2(function):
     with mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(cv2, "imread", return_value=np.array([[0, 0, 0 , 0], [0, 0, 0, 0]])):
-                with mock.patch.object(cv2, "resize", return_value=np.ones((1440, 360))):
-                    with mock.patch.object(cv2, "flip", return_value=np.ones((360, 1440))):
+                with mock.patch.object(cv2, "resize", return_value=np.ones((360, 180))):
+                    with mock.patch.object(cv2, "flip", return_value=np.ones((90, 360))):
                         function.loadTerrainImage(Path("terrain.jpg"))
 
 

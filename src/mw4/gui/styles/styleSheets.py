@@ -306,7 +306,7 @@ BASIC_STYLE = """
         background-color: $M_BACK1$;
    }
     QDoubleSpinBox::down-arrow {
-        image: url(assets/icon/$arrow-down$.svg);
+        image: url($arrow-down$);
         width: 10px;
         height: 10px;
     }

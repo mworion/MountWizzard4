@@ -68,7 +68,6 @@ dependencies = [
     "skyfield==1.54",
     "sgp4==2.25",
     "requests==2.33.1",
-    "requests_toolbelt==1.0.0",
     "python-dateutil==2.9.0.post0",
     "wakeonlan==3.1.0",
     "pybase64==1.4.3",
@@ -99,11 +98,11 @@ Forum = "https://www.10micron.eu/forum/"
 
 [dependency-groups]
 dev = [
-    "pytest==9.0.2",
+    "pytest==9.0.3",
     "pytest-qt==4.5.0",
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
-    "invoke==3.0.2",
+    "invoke==3.0.3",
     "ruff==0.15.9",
     "coverage==7.13.5",
     "scipy-stubs~=1.17.1.3",

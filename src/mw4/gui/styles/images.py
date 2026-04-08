@@ -13,17 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-forms = {
-    "ROUND": [
-        "2px",
-        "5px",
-        "2px",
-        "2px",
+images = {
+    "arrow-down": [
     ],
-    "WIDTH": [
-        "1px",
-        "2px",
-        "1px",
-        "1px",
+    "arrow-up": [
+    ],
+    "checkmark": [
+    ],
+    "radio": [
     ],
 }

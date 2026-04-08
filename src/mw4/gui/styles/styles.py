@@ -17,6 +17,7 @@ import platform
 from importlib.resources import as_file, files
 from mw4.gui.styles.colors import colors
 from mw4.gui.styles.forms import forms
+from mw4.gui.styles.
 from mw4.gui.styles.gradients import gradients
 from mw4.gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
 from PySide6.QtGui import QIcon
@@ -187,6 +188,15 @@ class Styles:
             keys.append(line[start + 1 : end])
         return keys
 
+    def replaceImages(self, line: str) -> str:
+        """ """
+        for key in self.findKeysInLine(line, "$"):
+            if key not in images:
+                continue
+            with as_file(files("mw4").joinpath(f"data/icon/{key}.svg")) as imageFile:
+                line = line.replace(f"${key}$", imageFile)
+        return line
+
     def replaceColor(self, line: str) -> str:
         """ """
         for key in self.findKeysInLine(line, "$"):
@@ -220,6 +230,7 @@ class Styles:
         for lineItem in styleRaw.split("\n"):
             line = self.insertGradient(lineItem)
             line = self.replaceForm(line)
+            line = self.replaceImage(line)
             line = self.replaceColor(line)
             style += line + "\n"
         return style

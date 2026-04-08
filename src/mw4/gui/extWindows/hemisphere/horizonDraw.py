@@ -133,7 +133,7 @@ class HorizonDraw(MWidget):
         self.app.data.loadHorizonP(loadFilePath)
         self.ui.horizonMaskFileName.setText(loadFilePath.stem)
         self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{loadFilePath.stem}] loaded")
-        self.parent.redrawAll()
+        self.app.redrawHorizon.emit()
 
     def saveHorizonMask(self) -> None:
         """ """
@@ -170,7 +170,6 @@ class HorizonDraw(MWidget):
         """ """
         self.ui.addPositionToHorizon.setEnabled(self.ui.editModeHor.isChecked())
         self.app.redrawHorizon.emit()
-        self.drawTab()
 
     def updateDataHorizon(self, x: list, y: list) -> None:
         """ """
@@ -185,7 +184,7 @@ class HorizonDraw(MWidget):
         """ """
         self.app.data.horizonP = []
         self.ui.horizonMaskFileName.setText("")
-        self.parent.redrawAll()
+        self.app.redrawHorizon.emit()
 
     def addActualPosition(self) -> None:
         """ """

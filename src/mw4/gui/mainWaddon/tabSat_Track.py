@@ -168,13 +168,10 @@ class SatTrack(SatData):
         useInternal = self.ui.useInternalSatCalc.isChecked()
         isMount = self.app.deviceStat["mount"]
         start, end = self.selectStartEnd()
-
-        if not start or not end:
-            return
-
         if isMount and useInternal:
             alt, az = self.calcTrajectoryData(start, end)
             start, end, alt, az = self.filterHorizon(start, end, alt, az)
+            #start, end, alt, az = self.filterHorizon(0, 0, alt, az)
         else:
             alt = []
             az = []

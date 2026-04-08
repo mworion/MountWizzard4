@@ -114,7 +114,7 @@ class HemisphereDraw(MWidget):
         elif self.ui.alignmentModeHem.isChecked():
             self.ui.showAlignStar.setChecked(True)
             self.app.data.clearBuildP()
-        self.drawTab()
+        self.app.redrawHemisphere.emit()
 
     def prepareView(self) -> None:
         """ """

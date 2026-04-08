@@ -25,9 +25,6 @@ env:
   wid: 'src_add/widgets/'
   widDest: 'src/mw4/gui/widgets/'
   uic: 'uv run pyside6-uic'
-  ucc: 'uv run pyside6-rcc'
-  res: 'src_add/assets/'
-  resDest: 'src/mw4/assets/'
 
 on:
   push:
@@ -67,7 +64,6 @@ jobs:
         ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.widDest}}analyse_ui.py
         ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.widDest}}simulator_ui.py
         ${{env.uic}} ${{env.wid}}material.ui -o ${{env.widDest}}material_ui.py
-        ${{env.ucc}} ${{env.res}}assetData.qrc -o ${{env.resDest}}assetData.py
 
     - name: build_package
       run: |

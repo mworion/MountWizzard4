@@ -229,11 +229,27 @@ def test_postHostData_2(function):
 
 
 def test_uploadFileWorker_1(function):
-    with mock.patch.object(function, "deleteHostData"):
+    with mock.patch.object(function, "deleteHostData", return_value=False):
         with mock.patch.object(function, "prepareFiles"):
             with mock.patch.object(function.threadPool, "start"):
                 with mock.patch.object(function, "postHostData"):
-                    function.uploadFileWorker()
+                    assert not function.uploadFileWorker()
+
+
+def test_uploadFileWorker_2(function):
+    with mock.patch.object(function, "deleteHostData", return_value=True):
+        with mock.patch.object(function, "prepareFiles"):
+            with mock.patch.object(function.threadPool, "start"):
+                with mock.patch.object(function, "postHostData", return_value=False):
+                    assert not function.uploadFileWorker()
+
+
+def test_uploadFileWorker_3(function):
+    with mock.patch.object(function, "deleteHostData", return_value=True):
+        with mock.patch.object(function, "prepareFiles"):
+            with mock.patch.object(function.threadPool, "start"):
+                with mock.patch.object(function, "postHostData", return_value=True):
+                    assert function.uploadFileWorker()
 
 
 def test_closePopup_1(function, mocked_sleepAndEvents):

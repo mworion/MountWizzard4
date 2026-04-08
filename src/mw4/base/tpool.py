@@ -21,6 +21,7 @@ from PySide6.QtCore import QObject, QRunnable, Signal, Slot
 
 class WorkerSignals(QObject):
     """ """
+
     finished = Signal()
     error = Signal(object)
     result = Signal(object)
@@ -28,6 +29,7 @@ class WorkerSignals(QObject):
 
 class Worker(QRunnable):
     """ """
+
     def __init__(self, fn, *args, **kwargs):
         super().__init__()
         self.setAutoDelete(False)
@@ -41,7 +43,7 @@ class Worker(QRunnable):
         """Build a formatted string for a single traceback frame."""
         file = os.path.basename(tb.tb_frame.f_code.co_filename)
         line = tb.tb_lineno
-        fnName = getattr(self.fn, '__name__', repr(self.fn))
+        fnName = getattr(self.fn, "__name__", repr(self.fn))
         eStr = f"fn: [{fnName}], file: [{file}], line: {line} "
         return eStr
 

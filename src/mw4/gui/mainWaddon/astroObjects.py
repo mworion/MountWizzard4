@@ -25,11 +25,13 @@ from PySide6.QtWidgets import QListView
 
 class AstroObjectSignals(QObject):
     """ """
+
     dataLoaded = Signal()
 
 
 class AstroObjects:
     """ """
+
     log = logging.getLogger("MW4")
 
     def __init__(

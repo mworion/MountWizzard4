@@ -17,8 +17,8 @@ import platform
 from importlib.resources import as_file, files
 from mw4.gui.styles.colors import colors
 from mw4.gui.styles.forms import forms
-from mw4.gui.styles.images import images
 from mw4.gui.styles.gradients import gradients
+from mw4.gui.styles.images import images
 from mw4.gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
 from PySide6.QtGui import QIcon
 

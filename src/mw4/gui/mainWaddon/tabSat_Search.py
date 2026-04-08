@@ -33,6 +33,7 @@ from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 class SatSearch(QObject, SatData):
     """ """
+
     setSatListItem = Signal(int, int, object)
 
     def __init__(self, mainW):

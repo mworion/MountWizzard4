@@ -61,10 +61,10 @@ class AlpacaClass(DriverData):
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
         self.worker: Worker = Worker(self)
-        self.workerGetConfig: Worker = Worker(self.workerGetInitialConfig)
-        self.workerStatus: Worker = Worker(self.workerPollStatus)
-        self.workerData: Worker = Worker(self.workerPollData)
-        self.workerConnect: Worker = Worker(self.workerConnectDevice)
+        self.workerGetConfig: Worker = Worker(self)
+        self.workerStatus: Worker = Worker(self)
+        self.workerData: Worker = Worker(self)
+        self.workerConnect: Worker = Worker(self)
 
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)
@@ -331,24 +331,28 @@ class AlpacaClass(DriverData):
         """ """
         if not self.deviceConnected:
             return
-        self.workerData.signals.result.connect(self.processPolledData)
-        self.threadPool.start(self.workerData)
+        self.workerPollData = Worker(self.workerPollData)
+        self.workerPollData.signals.result.connect(self.processPolledData)
+        self.threadPool.start(self.workerPollData)
 
     def pollStatus(self) -> None:
         """ """
         if not self.deviceConnected:
             return
+        self.workerStatus = Worker(self.workerPollStatus)
         self.threadPool.start(self.workerStatus)
 
     def getInitialConfig(self) -> None:
         """ """
         if not self.deviceConnected:
             return
+        self.workerGetConfig = Worker(self.workerGetInitialConfig)
         self.threadPool.start(self.workerGetConfig)
 
     def startCommunication(self) -> None:
         """ """
         self.data.clear()
+        self.workerConnect = Worker(self.workerConnectDevice)
         self.threadPool.start(self.workerConnect)
 
     def stopCommunication(self) -> None:

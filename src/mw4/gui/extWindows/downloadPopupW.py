@@ -35,7 +35,7 @@ class DownloadPopup(MWidget):
         self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
         self.threadPool = parentWidget.app.threadPool
-        self.worker: Worker = Worker(self.downloadFileWorker)
+        self.worker: Worker = Worker(self)
         self.url = url
         self.dest = dest
         self.unzip = unzip

@@ -167,18 +167,17 @@ class SatTrack(SatData):
         """ """
         useInternal = self.ui.useInternalSatCalc.isChecked()
         isMount = self.app.deviceStat["mount"]
+        if not isMount:
+            return
+
         start, end = self.selectStartEnd()
-        if isMount and useInternal:
+        if useInternal:
             alt, az = self.calcTrajectoryData(start, end)
             start, end, alt, az = self.filterHorizon(start, end, alt, az)
-            #start, end, alt, az = self.filterHorizon(0, 0, alt, az)
+            self.signalSatelliteData(alt=alt, az=az)
         else:
-            alt = []
-            az = []
-
-        if isMount and not useInternal:
             self.app.mount.calcTLE(start)
-        self.signalSatelliteData(alt=alt, az=az)
+            self.signalSatelliteData(alt=[], az=[])
 
     def workerShowSatPasses(self) -> None:
         """ """
@@ -407,7 +406,6 @@ class SatTrack(SatData):
         """ """
         title = "Satellite tracking " + self.mainW.timeZoneString()
         self.ui.satTrackGroup.setTitle(title)
-
         if self.satOrbits:
             t = self.mainW.convertTime(tleParams.jdStart, "%d %b  %H:%M:%S")
             self.ui.satTrajectoryStart.setText(t)

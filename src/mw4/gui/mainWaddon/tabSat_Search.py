@@ -33,7 +33,6 @@ from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 class SatSearch(QObject, SatData):
     """ """
-
     setSatListItem = Signal(int, int, object)
 
     def __init__(self, mainW):
@@ -42,7 +41,7 @@ class SatSearch(QObject, SatData):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.worker: Worker = None
+        self.worker: Worker = Worker(self)
 
         SatData.satellites = AstroObjects(
             self.mainW,

@@ -16,7 +16,7 @@
 import logging
 import os
 import sys
-from PySide6.QtCore import QObject, QRunnable, Signal
+from PySide6.QtCore import QObject, QRunnable, Signal, Slot
 
 
 class WorkerSignals(QObject):
@@ -63,6 +63,7 @@ class Worker(QRunnable):
         eStr = f"fn: [{fnName}], file: [{file}], line: {line} "
         return eStr
 
+    @Slot()
     def run(self):
         """
         runs an arbitrary methods with its parameters and catches the result

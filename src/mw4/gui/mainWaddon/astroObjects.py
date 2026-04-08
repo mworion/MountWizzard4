@@ -25,13 +25,11 @@ from PySide6.QtWidgets import QListView
 
 class AstroObjectSignals(QObject):
     """ """
-
     dataLoaded = Signal()
 
 
 class AstroObjects:
     """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(
@@ -57,8 +55,8 @@ class AstroObjects:
         self.uiSourceList = uiSourceList
         self.uiSourceGroup = uiSourceGroup
         self.processSource = processSource
-        self.workerSource: Worker | None = None
-        self.workerTable: Worker | None = None
+        self.workerSource: Worker = Worker(self)
+        self.workerTable: Worker = Worker(self)
 
         self.objects: dict = {}
         self.uploadPopup = None

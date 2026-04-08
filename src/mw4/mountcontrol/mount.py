@@ -32,7 +32,6 @@ from skyfield.api import Angle
 
 class MountDevice:
     """ """
-
     CYCLE_POINTING = 500
     CYCLE_DOME = 950
     CYCLE_CLOCK = 1000
@@ -40,7 +39,6 @@ class MountDevice:
     CYCLE_SETTING = 3100
     DEFAULT_PORT = 3492
     SOCKET_TIMEOUT = 2
-
     log = logging.getLogger("MW4")
 
     def __init__(self, app, host, MAC, pathToData, verbose):
@@ -63,19 +61,19 @@ class MountDevice:
         self.dome = Dome(parent=self)
         self.model = Model(parent=self)
 
-        self.workerMountIsUp: Worker = None
-        self.workerCycleClock: Worker = None
-        self.workerCycleSetting: Worker = None
-        self.workerCyclePointing: Worker = None
-        self.workerGetLocation: Worker = None
-        self.workerGetFW: Worker = None
-        self.workerGetTLE: Worker = None
-        self.workerCalcTLE: Worker = None
-        self.workerStatTLE: Worker = None
-        self.workerGetModel: Worker = None
-        self.workerGetNames: Worker = None
-        self.workerTrajectory: Worker = None
-        self.workerCycleDome: Worker = None
+        self.workerMountIsUp: Worker = Worker(self)
+        self.workerCycleClock: Worker = Worker(self)
+        self.workerCycleSetting: Worker = Worker(self)
+        self.workerCyclePointing: Worker = Worker(self)
+        self.workerGetLocation: Worker = Worker(self)
+        self.workerGetFW: Worker = Worker(self)
+        self.workerGetTLE: Worker = Worker(self)
+        self.workerCalcTLE: Worker = Worker(self)
+        self.workerStatTLE: Worker = Worker(self)
+        self.workerGetModel: Worker = Worker(self)
+        self.workerGetNames: Worker = Worker(self)
+        self.workerTrajectory: Worker = Worker(self)
+        self.workerCycleDome: Worker = Worker(self)
         self.mutexCycleMountIsUp = QMutex()
         self.mutexCycleClock = QMutex()
         self.mutexCycleDome = QMutex()
@@ -342,16 +340,19 @@ class MountDevice:
 
     def clearCalcTLE(self):
         """ """
+        print("clearCalcTLE")
         self.mutexCalcTLE.unlock()
         self.signals.calcTLEdone.emit(self.satellite.tleParams)
 
     def calcTLE(self, start: float) -> None:
         """ """
+        print("called", start)
         if not self.mountIsUp:
             return
         if not self.mutexCalcTLE.tryLock():
             return
 
+        print("calc TLE")
         self.workerCalcTLE = Worker(self.satellite.calcTLE, start)
         self.workerCalcTLE.signals.finished.connect(self.clearCalcTLE)
         self.threadPool.start(self.workerCalcTLE)

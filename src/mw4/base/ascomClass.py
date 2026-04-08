@@ -40,9 +40,9 @@ class AscomClass(DriverData):
         self.loadConfig = False
         self.tM = QMutex()
         self.worker: Worker = Worker(self)
-        self.workerData: Worker = Worker(self.workerPollData)
+        self.workerData: Worker = Worker(self)
         self.workerGetConfig: Worker | None = None
-        self.workerStatus: Worker = Worker(self.workerPollStatus)
+        self.workerStatus: Worker = Worker(self)
         self.workerConnect: Worker = Worker(self)
 
         self.client = None
@@ -236,11 +236,13 @@ class AscomClass(DriverData):
 
     def pollData(self) -> None:
         """ """
+        self.workerData = Worker(self.workerPollData)
         self.workerData.signals.result.connect(self.processPolledData)
         self.threadPool.start(self.workerData)
 
     def pollStatus(self) -> None:
         """ """
+        self.workerStatus = Worker(self.workerPollStatus)
         self.threadPool.start(self.workerStatus)
 
     def getInitialConfig(self) -> None:

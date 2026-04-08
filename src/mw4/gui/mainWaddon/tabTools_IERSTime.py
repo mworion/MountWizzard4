@@ -28,7 +28,6 @@ class IERSTime:
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-
         self.tempDir: Path = self.app.mwGlob["tempDir"]
         self.uploadPopup = None
         self.downloadPopup = None

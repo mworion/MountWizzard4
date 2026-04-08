@@ -37,6 +37,7 @@ class SatTrack(SatData):
         self.satellitesRawTLE = {}
         self.nextSatPass = [None, None, None]
         self.lastMeridianLimit = None
+        self.workerPasses = Worker(self)
 
         self.passUI = {
             0: {
@@ -230,12 +231,12 @@ class SatTrack(SatData):
             self.passUI[i]["settle"].setText(settleStr)
             self.passUI[i]["flip"].setText(flipStr)
             self.passUI[i]["date"].setText(dateStr)
-        self.calcTrajectoryAndShow()
 
     def showSatPasses(self) -> None:
         """ """
-        worker = Worker(self.workerShowSatPasses)
-        self.app.threadPool.start(worker)
+        self.workerPasses = Worker(self.workerShowSatPasses)
+        self.workerPasses.signals.finished.connect(self.calcTrajectoryAndShow)
+        self.app.threadPool.start(self.workerPasses)
 
     def extractSatelliteData(self, satName: str) -> None:
         """ """

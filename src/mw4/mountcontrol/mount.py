@@ -191,7 +191,6 @@ class MountDevice:
             self.app.refreshModel.emit()
             self.app.refreshName.emit()
             self.getTLE()
-
         elif not mountIsUp:
             self.mountIsUpLastStatus = False
 
@@ -224,7 +223,6 @@ class MountDevice:
         if not self.host:
             self.signals.mountIsUp.emit(False)
             return
-
         if not self.mutexCycleMountIsUp.tryLock():
             return
 
@@ -340,19 +338,16 @@ class MountDevice:
 
     def clearCalcTLE(self):
         """ """
-        print("clearCalcTLE")
         self.mutexCalcTLE.unlock()
         self.signals.calcTLEdone.emit(self.satellite.tleParams)
 
     def calcTLE(self, start: float) -> None:
         """ """
-        print("called", start)
         if not self.mountIsUp:
             return
         if not self.mutexCalcTLE.tryLock():
             return
 
-        print("calc TLE")
         self.workerCalcTLE = Worker(self.satellite.calcTLE, start)
         self.workerCalcTLE.signals.finished.connect(self.clearCalcTLE)
         self.threadPool.start(self.workerCalcTLE)

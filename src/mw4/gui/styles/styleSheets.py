@@ -213,7 +213,7 @@ BASIC_STYLE = """
         border-width: %WIDTH%;
         border-color: $M_PRIM$;
         background-color: $M_PRIM2$;
-        image: url(assets/icon/$checkmark$.svg);
+        image: url($checkmark$);
     }
     QGroupBox[run=true] {
         color: $M_TER$;
@@ -237,14 +237,14 @@ BASIC_STYLE = """
     QCheckBox::indicator:checked {
         border-color: $M_PRIM$;
         background-color: $M_PRIM2$;
-        image: url(assets/icon/$checkmark$.svg);
+        image: url($checkmark$);
     }
     QCheckBox:disabled {
         color: $M_PRIM2$;
     }
     QCheckBox::indicator:checked:disabled {
         background-color: $M_BACK$;
-        image: url(assets/icon/$checkmark$.svg);
+        image: url($checkmark$);
     }
     QRadioButton {
         color: $M_TER$;
@@ -265,7 +265,7 @@ BASIC_STYLE = """
     QRadioButton::indicator:checked {
         border-color: $M_PRIM$;
         background-color: $M_PRIM2$;
-        image: url(assets/icon/$radio$.svg);
+        image: url($radio$);
     }
     /* Spin Boxes */
     QDoubleSpinBox {
@@ -291,7 +291,7 @@ BASIC_STYLE = """
         background-color: $M_BACK1$;
     }
     QDoubleSpinBox::up-arrow {
-        image: url(assets/icon/$arrow-up$.svg);
+        image: url($arrow-up$);
         width: 10px;
         height: 10px;
     }
@@ -460,7 +460,7 @@ BASIC_STYLE = """
             border-color: $M_GREEN$;
         }
     QComboBox::down-arrow {
-        image: url(assets/icon/$arrow-down$.svg);
+        image: url($arrow-down$);
         width: 16px;
         height: 16px;
         background-color: #GRAD_1,$M_BACK1$#;

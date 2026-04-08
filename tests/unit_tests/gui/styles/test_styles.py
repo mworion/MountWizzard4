@@ -123,6 +123,14 @@ def test_replaceForm_1(function):
     assert val == "12345 2px;"
 
 
+def test_replaceImage_1(function):
+    inStyle = "12345 $checkmark$;"
+    function.colorSet = 0
+    val = function.replaceImage(inStyle)
+    assert val.startswith("12345 ")
+    assert val.endswith(".svg;")
+
+
 def test_insertGradient_1(function):
     inStyle = "12345 #GRAD_1,$M_PRIM$#;"
     function.colorSet = 0

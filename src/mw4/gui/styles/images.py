@@ -14,12 +14,28 @@
 #
 ###########################################################
 images = {
-    "arrow-down": [
+    "checkmark": [
+        "checkmark0",
+        "checkmark0",
+        "checkmark1",
+        "checkmark2",
     ],
     "arrow-up": [
+        "arrow-up0",
+        "arrow-up0",
+        "arrow-up1",
+        "arrow-up2",
     ],
-    "checkmark": [
+    "arrow-down": [
+        "arrow-down0",
+        "arrow-down0",
+        "arrow-down1",
+        "arrow-down2",
     ],
     "radio": [
+        "radio0",
+        "radio0",
+        "radio1",
+        "radio2",
     ],
 }

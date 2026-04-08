@@ -31,9 +31,9 @@ class ModelStatus:
 
     def setupIcons(self) -> None:
         """ """
-        pixmap = self.mainW.img2pixmap("data/pics/azimuth.png").scaled(140, 140)
+        pixmap = self.mainW.img2pixmap("assets/pics/azimuth.png").scaled(140, 140)
         self.ui.picAZ.setPixmap(pixmap)
-        pixmap = self.mainW.img2pixmap("data/pics/altitude.png").scaled(140, 140)
+        pixmap = self.mainW.img2pixmap("assets/pics/altitude.png").scaled(140, 140)
         self.ui.picALT.setPixmap(pixmap)
 
     def updateAlignGUI(self, model):

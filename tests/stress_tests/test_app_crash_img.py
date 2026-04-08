@@ -26,7 +26,7 @@ from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtTest import QTest
 
 mwglob = {
-    "dataDir": Path("tests/work/data"),
+    "dataDir": Path("tests/work/assets"),
     "configDir": Path("tests/work/config"),
     "workDir": Path("tests/work"),
     "imageDir": Path("tests/work/image"),

@@ -88,7 +88,7 @@ class SatelliteMapWindow(MWidget):
     @staticmethod
     def loadMap() -> bytes:
         """ """
-        with as_file(files("mw4").joinpath("data/config/worldmap.dat")) as mapFile:
+        with as_file(files("mw4").joinpath("assets/data/worldmap.dat")) as mapFile:
             pickleData = mapFile.read_bytes()
         return pickle.load(BytesIO(pickleData))
 

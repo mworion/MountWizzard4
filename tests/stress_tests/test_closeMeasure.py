@@ -27,7 +27,7 @@ from PySide6.QtCore import Qt, QThreadPool
 from random import randint
 
 mwglob = {
-    "dataDir": Path("tests/work/data"),
+    "dataDir": Path("tests/work/assets"),
     "configDir": Path("tests/work/config"),
     "workDir": Path("tests/work"),
     "imageDir": Path("tests/work/image"),

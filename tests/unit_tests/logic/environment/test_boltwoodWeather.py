@@ -139,7 +139,7 @@ def test_pollBoltwoodData_1(function):
 def test_pollBoltwoodData_2(function):
     function.deviceConnected = True
     function.enabled = True
-    function.filePath = "tests/work/data/boltwood_testwrong.txt"
+    function.filePath = "tests/work/assets/boltwood_testwrong.txt"
     with mock.patch.object(function, "processBoltwoodData", return_value=False):
         function.pollBoltwoodData()
         assert not function.deviceConnected
@@ -149,7 +149,7 @@ def test_pollBoltwoodData_2(function):
 def test_pollBoltwoodData_3(function):
     function.deviceConnected = False
     function.enabled = True
-    function.filePath = "tests/work/data/boltwood_testwrong.txt"
+    function.filePath = "tests/work/assets/boltwood_testwrong.txt"
     with mock.patch.object(function, "processBoltwoodData", return_value=True):
         function.pollBoltwoodData()
         assert function.deviceConnected

@@ -605,7 +605,7 @@ class Client:
 
     def _setProperty(self, chunk=None, device=None, deviceName=None):
         """
-        _sefProperty generate and write all data to device class for SefVector
+        _sefProperty generate and write all assets to device class for SefVector
         chunks
 
         :param chunk:   xml element from INDI
@@ -632,7 +632,7 @@ class Client:
 
     def _defProperty(self, chunk=None, device=None, deviceName=None):
         """
-        _defProperty generate and write all data to device class for DefVector
+        _defProperty generate and write all assets to device class for DefVector
         chunks
 
         :param chunk:   xml element from INDI
@@ -682,8 +682,8 @@ class Client:
 
     def _parseCmd(self, chunk):
         """
-        _parseCmd parses the incoming indi XL data and builds up a dictionary
-        of devices in device class which holds all the data transferred through
+        _parseCmd parses the incoming indi XL assets and builds up a dictionary
+        of devices in device class which holds all the assets transferred through
         INDI protocol.
 
         :param chunk: raw indi XML element
@@ -763,9 +763,9 @@ class Client:
 
     def handleReadyRead(self):
         """
-        _handleReadyRead gets the date in buffer signal and starts to read data
-        from the network. as long as data is streaming, it feeds to the xml
-        parser. with this construct you don't have to put the whole data set into
+        _handleReadyRead gets the date in buffer signal and starts to read assets
+        from the network. as long as assets is streaming, it feeds to the xml
+        parser. with this construct you don't have to put the whole assets set into
         the parser at once, but doing the work step be step.
 
         :return: nothing

@@ -37,7 +37,7 @@ class SplashScreen:
 
     def __init__(self, application=None):
         self._qapp = application
-        with as_file(files("mw4").joinpath("data/icon/mw4.png")) as imageFile:
+        with as_file(files("mw4").joinpath("assets/icon/mw4.png")) as imageFile:
             self._pxm = QPixmap(str(imageFile))
 
         flags = Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.X11BypassWindowManagerHint

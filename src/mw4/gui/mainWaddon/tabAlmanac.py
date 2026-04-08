@@ -364,7 +364,7 @@ class Almanac:
             self.ui.nodeEvents.insertPlainText(text)
             text = "\n"
 
-        with as_file(files("mw4").joinpath("data/pics/moon.png")) as imageFile:
+        with as_file(files("mw4").joinpath("assets/pics/moon.png")) as imageFile:
             moon = QPixmap(str(imageFile))
         moonMask = self.generateMoonMask(moon, mpDegree)
 

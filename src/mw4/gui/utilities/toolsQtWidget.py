@@ -231,7 +231,7 @@ class MWidget(QWidget, Styles):
 
     def wIcon(self, gui: QPushButton, name: str) -> None:
         """ """
-        icon = self.svg2icon(f"data/icon/{name}.svg", self.M_TER)
+        icon = self.svg2icon(f"assets/icon/{name}.svg", self.M_TER)
         gui.setIcon(icon)
         gui.setIconSize(QSize(16, 16))
         gui.setProperty("alignLeft", True)
@@ -289,10 +289,10 @@ class MWidget(QWidget, Styles):
         msg.setTextFormat(Qt.TextFormat.AutoText)
         msg.setWindowTitle(title)
         icons = [
-            "data/icon/question.svg",
-            "data/icon/information.svg",
-            "data/icon/warning.svg",
-            "data/icon/question.svg",
+            "assets/icon/question.svg",
+            "assets/icon/information.svg",
+            "assets/icon/warning.svg",
+            "assets/icon/question.svg",
         ]
         pixmap = QPixmap(icons[iconType]).scaled(64, 64)
         msg.setIconPixmap(pixmap)

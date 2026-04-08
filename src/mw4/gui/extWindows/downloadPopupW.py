@@ -53,7 +53,7 @@ class DownloadPopup(MWidget):
 
     def setIcon(self) -> None:
         """ """
-        pixmap = self.svg2pixmap("data/icon/download_pop.svg", self.M_PRIM)
+        pixmap = self.svg2pixmap("assets/icon/download_pop.svg", self.M_PRIM)
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
 

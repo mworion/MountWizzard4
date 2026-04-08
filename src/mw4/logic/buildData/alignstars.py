@@ -21,7 +21,7 @@ def generateAlignStars() -> dict:
     ra and dec, the parallax and the radial velocity as the stars move over time.
     the data is calculated from the hipparcos catalogue using skyfield library
 
-    the data is written in
+    the assdataets is written in
     [name, hip no, ra, dec, ra proper motion, dec proper motion, parallax,
     radial velocity] based on J2000 epoch. the units are fitting erfa needs:
     [str, int, radians, radians, radians / year, radians/year, arc sec, km /s]

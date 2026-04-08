@@ -119,7 +119,7 @@ filterwarnings = ["ignore::DeprecationWarning"]
 
 [tool.coverage.run]
 source = ["src/mw4/"]
-omit = ["src/mw4/assets/**/*.py", "src/mw4/gui/widgets/**/*.py"]
+omit = ["src/mw4/gui/widgets/**/*.py"]
 
 [tool.coverage.report]
 exclude_also = [
@@ -129,7 +129,7 @@ exclude_also = [
 [tool.ruff]
 line-length = 95
 indent-width = 4
-exclude = ["src/mw4/gui/widgets/*", "src/mw4/assets/*"]
+exclude = ["src/mw4/gui/widgets/*"]
 
 [tool.ruff.lint]
 extend-select = [
@@ -154,4 +154,3 @@ max-complexity = 10
 "src/mw4/logic/measure/measureCSV.py" = ["SIM115"]
 "src/mw4/indibase/indiXML.py" = ["C901", "E501"]
 "src/mw4/indibase/indiClient.py" = ["C901", "E501"]
-"src/mw4/assets/assetData.py" = ["E501"]

@@ -82,7 +82,7 @@ WORK_DIR = Path("tests/work")
 mwglob = {
     "workDir":    WORK_DIR,
     "configDir":  WORK_DIR / "config",
-    "dataDir":    WORK_DIR / "data",
+    "dataDir":    WORK_DIR / "assets",
     "imageDir":   WORK_DIR / "image",
     "tempDir":    WORK_DIR / "temp",
     "modelDir":   WORK_DIR / "model",
@@ -98,7 +98,7 @@ _SKIP_CLEAN = {"workDir", "configDir", "logDir", "imageDir", "dataDir"}
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_work_dirs():
-    """Create directories and extract ephemeris / time data once per module."""
+    """Create directories and extract ephemeris / time assets once per module."""
     for path in mwglob.values():
         path.mkdir(parents=True, exist_ok=True)
     extractDataFiles(mwGlob=mwglob)
@@ -108,7 +108,7 @@ def setup_work_dirs():
 @pytest.fixture(autouse=True)
 def clean_work_dirs():
     """
-    Before each test: re-extract data files so every cycle starts clean.
+    Before each test: re-extract assets files so every cycle starts clean.
     When MOUNT_HOST is set, write it into the config so that
     SettMount.initConfig() picks it up and mount.host is set for the TCP
     connectivity check (cycleCheckMountIsUp).

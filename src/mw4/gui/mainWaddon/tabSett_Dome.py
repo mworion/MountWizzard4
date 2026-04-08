@@ -135,34 +135,34 @@ class SettDome:
         """
         :return:
         """
-        pixmap = self.mainW.img2pixmap("data/dome/radius.png")
+        pixmap = self.mainW.img2pixmap("assets/dome/radius.png")
         self.ui.picDome1.setPixmap(pixmap)
 
         is10Micron = self.ui.use10micronDef.isChecked()
         if is10Micron:
-            pixmap = self.mainW.img2pixmap("data/dome/north.png")
+            pixmap = self.mainW.img2pixmap("assets/dome/north.png")
             self.ui.picDome2.setPixmap(pixmap)
-            pixmap = self.mainW.img2pixmap("data/dome/east.png")
+            pixmap = self.mainW.img2pixmap("assets/dome/east.png")
             self.ui.picDome3.setPixmap(pixmap)
-            pixmap = self.mainW.img2pixmap("data/dome/vert.png")
+            pixmap = self.mainW.img2pixmap("assets/dome/vert.png")
             self.ui.picDome4.setPixmap(pixmap)
         else:
-            pixmap = self.mainW.img2pixmap("data/dome/northGEM.png")
+            pixmap = self.mainW.img2pixmap("assets/dome/northGEM.png")
             self.ui.picDome2.setPixmap(pixmap)
-            pixmap = self.mainW.img2pixmap("data/dome/eastGEM.png")
+            pixmap = self.mainW.img2pixmap("assets/dome/eastGEM.png")
             self.ui.picDome3.setPixmap(pixmap)
-            pixmap = self.mainW.img2pixmap("data/dome/vertGEM.png")
+            pixmap = self.mainW.img2pixmap("assets/dome/vertGEM.png")
             self.ui.picDome4.setPixmap(pixmap)
 
-        pixmap = self.mainW.img2pixmap("data/dome/gem.png")
+        pixmap = self.mainW.img2pixmap("assets/dome/gem.png")
         self.ui.picDome5.setPixmap(pixmap)
-        pixmap = self.mainW.img2pixmap("data/dome/lat.png")
+        pixmap = self.mainW.img2pixmap("assets/dome/lat.png")
         self.ui.picDome6.setPixmap(pixmap)
-        pixmap = self.mainW.img2pixmap("data/dome/shutter.png")
+        pixmap = self.mainW.img2pixmap("assets/dome/shutter.png")
         self.ui.picDome7.setPixmap(pixmap)
-        pixmap = self.mainW.img2pixmap("data/dome/hysteresis.png")
+        pixmap = self.mainW.img2pixmap("assets/dome/hysteresis.png")
         self.ui.picDome8.setPixmap(pixmap)
-        pixmap = self.mainW.img2pixmap("data/dome/zenith.png")
+        pixmap = self.mainW.img2pixmap("assets/dome/zenith.png")
         self.ui.picDome9.setPixmap(pixmap)
 
         self.mainW.wIcon(self.ui.copyFromDomeDriver, "copy")

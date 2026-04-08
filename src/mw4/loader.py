@@ -97,7 +97,7 @@ def writeSystemInfo(mwGlob: dict = None) -> None:
 
 def extractDataFiles(mwGlob: dict) -> None:
     """ """
-    copyFiles = files("mw4").joinpath("data/data").glob("*.*")
+    copyFiles = files("mw4").joinpath("assets/data").glob("*.*")
     for file in copyFiles:
         with as_file(file) as src:
             dest = mwGlob["dataDir"] / file.name

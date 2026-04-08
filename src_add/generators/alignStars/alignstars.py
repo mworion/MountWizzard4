@@ -16,7 +16,7 @@
 #
 ###########################################################
 #
-# this file is auto generated for the purpose of getting data prepared
+# this file is auto generated for the purpose of getting assets prepared
 # to show the alignment stars in mountwizzard
 #
 
@@ -27,9 +27,9 @@ def generateAlignStars():
     present in the mount computer from hipparcos catalogue are stored. for a
     correct calculation we need beside the J2000 coordinated the proper motion in
     ra and dec, the parallax and the radial velocity as the stars move over time.
-    the data is calculated from the hipparcos catalogue using skyfield library
+    the assets is calculated from the hipparcos catalogue using skyfield library
 
-    the data is written in
+    the assets is written in
     [name, hip no, ra, dec, ra proper motion, dec proper motion, parallax,
     radial velocity] based on J2000 epoch. the units are fitting erfa needs:
     [str, int, radians, radians, radians / year, radians/year, arc sec, km /s]

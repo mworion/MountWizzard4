@@ -42,7 +42,7 @@ class DevicePopup(MWidget):
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
-        pixmap = self.svg2pixmap("data/icon/cogs.svg", self.M_PRIM)
+        pixmap = self.svg2pixmap("assets/icon/cogs.svg", self.M_PRIM)
         self.ui.iconPixmap.setPixmap(pixmap)
 
         self.returnValues = {"close": "cancel"}

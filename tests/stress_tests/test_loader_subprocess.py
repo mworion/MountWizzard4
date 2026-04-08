@@ -112,7 +112,7 @@ MOUNT_PORT_3492 = True   # True → port 3492, False → port 3490
 HEADLESS      = os.environ.get("MW4_TEST_HEADLESS", "0") == "1"
 
 # ── sub-directories that survive between cycles ─────────────────────────────────
-_KEEP_SUBDIRS = {"config", "log", "data", "image"}
+_KEEP_SUBDIRS = {"config", "log", "assets", "image"}
 
 # ── how many bytes to tail from the mw4 log on failure ─────────────────────────
 LOG_TAIL_BYTES = 8_000
@@ -124,7 +124,7 @@ LOG_TAIL_BYTES = 8_000
 
 def _ensure_dirs() -> None:
     """Create the WORK_DIR sub-tree (mirrors ``loader.setupWorkDirs``)."""
-    for sub in ("config", "data", "image", "temp", "model", "measure", "log"):
+    for sub in ("config", "assets", "image", "temp", "model", "measure", "log"):
         (WORK_DIR / sub).mkdir(parents=True, exist_ok=True)
 
 
@@ -300,7 +300,7 @@ def test_loader_subprocess_cycles():
 
        Inside the subprocess:
          * ``loader.setupWorkDirs(Path.cwd())`` → WORK_DIR work-tree
-         * ``loader.extractDataFiles()`` extracts ephemeris / IERS data
+         * ``loader.extractDataFiles()`` extracts ephemeris / IERS assets
          * ``MountWizzard4(..., test=1)`` wires ``update10s → quit()``
          * 100-ms cyclic timer runs for ≈ 8 s until ``update10s`` fires
          * ``quit()`` → ``application.quit()`` → ``app.exec()`` returns 0

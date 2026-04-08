@@ -175,13 +175,13 @@ def test_loadingFileNeeded_3(function):
 
 
 def test_pollSeeingData_1(function):
-    function.app.mwGlob["dataDir"] = Path("tests/work/data")
+    function.app.mwGlob["dataDir"] = Path("tests/work/assets")
     function.apiKey = ""
     function.pollSeeingData()
 
 
 def test_pollSeeingData_2(function):
-    function.app.mwGlob["dataDir"] = Path("tests/work/data")
+    function.app.mwGlob["dataDir"] = Path("tests/work/assets")
     function.apiKey = "test"
     function.b = "test"
     function.app.onlineMode = False
@@ -190,7 +190,7 @@ def test_pollSeeingData_2(function):
 
 
 def test_pollSeeingData_3(function):
-    function.app.mwGlob["dataDir"] = Path("tests/work/data")
+    function.app.mwGlob["dataDir"] = Path("tests/work/assets")
     function.apiKey = "test"
     function.b = "test"
     function.app.onlineMode = True
@@ -198,7 +198,7 @@ def test_pollSeeingData_3(function):
 
 
 def test_pollSeeingData_4(function):
-    function.app.mwGlob["dataDir"] = Path("tests/work/data")
+    function.app.mwGlob["dataDir"] = Path("tests/work/assets")
     function.apiKey = "test"
     function.b = "test"
     function.app.onlineMode = True
@@ -207,7 +207,7 @@ def test_pollSeeingData_4(function):
 
 
 def test_pollSeeingData_5(function):
-    function.app.mwGlob["dataDir"] = Path("tests/work/data")
+    function.app.mwGlob["dataDir"] = Path("tests/work/assets")
     function.apiKey = "test"
     function.b = "test"
     function.app.onlineMode = True

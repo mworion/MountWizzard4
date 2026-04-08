@@ -155,7 +155,7 @@ class Styles:
 
     def __init__(self):
         super().__init__()
-        with as_file(files("mw4").joinpath("data/icon/mw4.ico")) as icon:
+        with as_file(files("mw4").joinpath("assets/icon/mw4.ico")) as icon:
             self.mwIcon = QIcon(str(icon))
 
     @staticmethod

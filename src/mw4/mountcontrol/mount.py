@@ -264,9 +264,9 @@ class MountDevice:
 
     def clearCycleSetting(self, result):
         """ """
+        self.mutexCycleSetting.unlock()
         if result:
             self.signals.settingDone.emit(self.setting)
-        self.mutexCycleSetting.unlock()
 
     def cycleSetting(self):
         """ """

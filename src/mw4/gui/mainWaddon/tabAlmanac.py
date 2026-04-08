@@ -57,7 +57,7 @@ class Almanac:
         self.twilightTime = None
         self.twilightEvents = None
         self.colors = None
-        self.worker: Worker = None
+        self.worker: Worker = Worker(self)
         self.setColors()
         self.app.update1h.connect(self.showMoonPhase)
         self.app.colorChange.connect(self.updateColorSet)

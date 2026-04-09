@@ -212,7 +212,7 @@ def test_finishProgObjects_2(function):
 
 
 def test_runUploadPopup_1(function):
-    with mock.patch.object(UploadPopup, "show"):
+    with mock.patch.object(function.window.app.threadPool, "start"):
         function.runUploadPopup(Path())
         function.uploadPopup = None
 

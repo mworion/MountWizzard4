@@ -15,7 +15,7 @@
 ###########################################################
 import webbrowser
 from mw4.gui.styles.colors import colors
-from mw4.gui.utilities.toolsQtWidget import clickable
+from mw4.gui.utilities.toolsQtWidget import clickable, svg2pixmap
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QTransform
 from PySide6.QtWidgets import QLabel, QTableWidgetItem
@@ -45,7 +45,7 @@ class EnvironSeeing:
 
     def setupIcons(self) -> None:
         """ """
-        pixmap = self.mainW.svg2pixmap("assets/icon/meteoblue.svg", "#124673")
+        pixmap = svg2pixmap("assets/icon/meteoblue.svg", "#124673")
         pixmap = pixmap.transformed(QTransform().rotate(-90))
         pixmap = pixmap.scaled(37, 128, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.seeingIcon.setPixmap(pixmap)

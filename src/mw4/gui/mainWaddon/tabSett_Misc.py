@@ -19,7 +19,7 @@ if pConf.isAvailable:
     from PySide6.QtMultimedia import QSoundEffect
 import hid
 from mw4.base.tpool import Worker
-from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents, svg2pixmap
 
 
 class SettMisc:
@@ -138,13 +138,13 @@ class SettMisc:
 
     def setupIcons(self) -> None:
         """ """
-        pixmap = self.mainW.svg2pixmap("assets/icon/controller.svg", self.mainW.M_PRIM)
+        pixmap = svg2pixmap("assets/icon/controller.svg", self.mainW.M_PRIM)
         self.ui.controller1.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller2.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller3.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller4.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller5.setPixmap(pixmap.scaled(16, 16))
-        pixmap = self.mainW.svg2pixmap("assets/icon/controllerNew.svg", self.mainW.M_PRIM)
+        pixmap = svg2pixmap("assets/icon/controllerNew.svg", self.mainW.M_PRIM)
         self.ui.controllerOverview.setPixmap(pixmap)
         self.ui.controller1.setEnabled(False)
         self.ui.controller2.setEnabled(False)

@@ -24,6 +24,9 @@ from mw4.gui.utilities.toolsQtWidget import (
     findIndexValue,
     guiSetText,
     sleepAndEvents,
+    svg2pixmap,
+    svg2icon,
+    img2pixmap,
 )
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
@@ -34,8 +37,8 @@ from PySide6.QtWidgets import (
     QComboBox,
     QFileDialog,
     QLineEdit,
-    QMessageBox,
     QPushButton,
+    QMessageBox,
     QTableWidget,
     QTableWidgetItem,
     QTabWidget,
@@ -59,11 +62,11 @@ def test_sleepAndEvents(function):
 
 
 def test_changeStyleDynamic_1():
-    changeStyleDynamic(QPushButton(), "color", "red")
+    changeStyleDynamic(QLineEdit(), "color", "red")
 
 
 def test_changeStyleDynamic_2():
-    butt = QPushButton()
+    butt = QLineEdit()
     changeStyleDynamic(butt, "color", "red")
     changeStyleDynamic(butt, "color", "red")
 
@@ -116,61 +119,61 @@ def test_findIndexValue_5():
 
 
 def test_guiSetText_1():
-    pb = QPushButton()
+    pb = QLineEdit()
     guiSetText(pb, "3.0f", None)
     assert pb.text() == ""
 
 
 def test_guiSetText_4():
-    pb = QPushButton()
+    pb = QLineEdit()
     guiSetText(pb, "3.0f", 100)
     assert pb.text() == "100"
 
 
 def test_guiSetText_5():
-    pb = QPushButton()
+    pb = QLineEdit()
     guiSetText(pb, "HSTR", Angle(hours=10))
     assert pb.text() == "10:00:00"
 
 
 def test_guiSetText_6():
-    pb = QPushButton()
+    pb = QLineEdit()
     guiSetText(pb, "DSTR", Angle(degrees=90))
     assert pb.text() == "+90:00:00"
 
 
 def test_guiSetText_7():
-    pb = QPushButton()
+    pb = QLineEdit()
     guiSetText(pb, "H2.2f", Angle(hours=12))
     assert pb.text() == "12.00"
 
 
 def test_guiSetText_8():
-    pb = QPushButton()
+    pb = QLineEdit()
     guiSetText(pb, "D+2.2f", Angle(degrees=90))
     assert pb.text() == "+90.00"
 
 
 def test_guiSetText_9():
-    pb = QPushButton()
+    pb = QLineEdit()
     guiSetText(pb, "s", "E")
     assert pb.text() == "EAST"
 
 
 def test_guiSetText_10():
-    pb = QPushButton()
+    pb = QLineEdit()
     guiSetText(pb, "s", "W")
     assert pb.text() == "WEST"
 
 
 def test_guiSetText_11():
-    pb = QPushButton()
+    pb = QLineEdit()
     guiSetText(pb, "s", True)
     assert pb.text() == "ON"
 
 
 def test_guiSetText_12():
-    pb = QPushButton()
+    pb = QLineEdit()
     guiSetText(pb, "s", False)
     assert pb.text() == "OFF"
 
@@ -196,6 +199,26 @@ def test_clickable_5():
     widget = QLineEdit()
     clickable(widget=widget)
     QTest.mouseMove(widget, pos=QPoint(0, 0))
+
+
+def test_img2pixmap_1(function):
+    img = img2pixmap(os.getcwd() + "/tests/testData/altitude.png")
+    assert isinstance(img, QPixmap)
+
+
+def test_img2pixmap_2(function):
+    img = img2pixmap(os.getcwd() + "/tests/testData/altitude.png")
+    assert isinstance(img, QPixmap)
+
+
+def test_svg2pixmap(function):
+    img = svg2pixmap(os.getcwd() + "/tests/testData/choose.svg")
+    assert isinstance(img, QPixmap)
+
+
+def test_svg2icon_1(function):
+    val = svg2icon(os.getcwd() + "/tests/testData/choose.svg")
+    assert isinstance(val, QIcon)
 
 
 def test_saveWindowAsPNG(function):
@@ -251,26 +274,6 @@ def test_keyPressEvent_3(function):
 
     with mock.patch.object(QWidget, "keyPressEvent"):
         function.keyPressEvent(Key())
-
-
-def test_img2pixmap_1(function):
-    img = function.img2pixmap(os.getcwd() + "/tests/testData/altitude.png")
-    assert isinstance(img, QPixmap)
-
-
-def test_img2pixmap_2(function):
-    img = function.img2pixmap(os.getcwd() + "/tests/testData/altitude.png")
-    assert isinstance(img, QPixmap)
-
-
-def test_svg2pixmap(function):
-    img = function.svg2pixmap(os.getcwd() + "/tests/testData/choose.svg")
-    assert isinstance(img, QPixmap)
-
-
-def test_svg2icon_1(function):
-    val = function.svg2icon(os.getcwd() + "/tests/testData/choose.svg")
-    assert isinstance(val, QIcon)
 
 
 def test_wIcon_1(function):

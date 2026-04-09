@@ -166,6 +166,45 @@ def svg2icon(svgFileName: str, color: str = "black") -> QIcon:
     return QIcon(img)
 
 
+def getTabIndex(tab: QTabWidget, name: str) -> int:
+    """ """
+    tabWidget = tab.findChild(QWidget, name)
+    tabIndex = tab.indexOf(tabWidget)
+    return tabIndex
+
+
+def getTabAndIndex(tab: QTabWidget, config: dict, name: str) -> None:
+    """ """
+    config[name] = {"index": tab.currentIndex()}
+    for index in range(tab.count()):
+        config[name][f"{index:02d}"] = tab.widget(index).objectName()
+
+
+def setTabAndIndex(tab: QTabWidget, config: dict, name: str) -> None:
+    """ """
+    config = config.get(name, {})
+    if not isinstance(config, dict):
+        config = {}
+    for index in reversed(range(tab.count())):
+        nameTab = config.get(f"{index:02d}", "")
+        if nameTab is None:
+            continue
+        tabIndex = getTabIndex(tab, nameTab)
+        tab.tabBar().moveTab(tabIndex, index)
+    tab.setCurrentIndex(config.get("index", 0))
+
+
+def positionCursorInTable(table: QTableWidget, searchName: str) -> None:
+    """ """
+    result = table.findItems(searchName, Qt.MatchFlag.MatchExactly)
+    if len(result) == 0:
+        return
+    item = result[0]
+    index = table.row(item)
+    table.selectRow(index)
+    table.scrollToItem(item, QAbstractItemView.ScrollHint.EnsureVisible)
+
+
 class MWidget(QWidget, Styles):
     """ """
 
@@ -232,7 +271,7 @@ class MWidget(QWidget, Styles):
 
     def wIcon(self, gui: QPushButton, name: str) -> None:
         """ """
-        icon = self.svg2icon(f"assets/icon/{name}.svg", self.M_TER)
+        icon = svg2icon(f"assets/icon/{name}.svg", self.M_TER)
         gui.setIcon(icon)
         gui.setIconSize(QSize(16, 16))
         gui.setProperty("alignLeft", True)
@@ -409,41 +448,3 @@ class MWidget(QWidget, Styles):
         y = max(y, 0)
         if x != 0 and y != 0:
             self.move(x, y)
-
-    @staticmethod
-    def getTabIndex(tab: QTabWidget, name: str) -> int:
-        """ """
-        tabWidget = tab.findChild(QWidget, name)
-        tabIndex = tab.indexOf(tabWidget)
-        return tabIndex
-
-    @staticmethod
-    def getTabAndIndex(tab: QTabWidget, config: dict, name: str) -> None:
-        """ """
-        config[name] = {"index": tab.currentIndex()}
-        for index in range(tab.count()):
-            config[name][f"{index:02d}"] = tab.widget(index).objectName()
-
-    def setTabAndIndex(self, tab: QTabWidget, config: dict, name: str) -> None:
-        """ """
-        config = config.get(name, {})
-        if not isinstance(config, dict):
-            config = {}
-        for index in reversed(range(tab.count())):
-            nameTab = config.get(f"{index:02d}")
-            if nameTab is None:
-                continue
-            tabIndex = self.getTabIndex(tab, nameTab)
-            tab.tabBar().moveTab(tabIndex, index)
-        tab.setCurrentIndex(config.get("index", 0))
-
-    @staticmethod
-    def positionCursorInTable(table: QTableWidget, searchName: str) -> None:
-        """ """
-        result = table.findItems(searchName, Qt.MatchFlag.MatchExactly)
-        if len(result) == 0:
-            return
-        item = result[0]
-        index = table.row(item)
-        table.selectRow(index)
-        table.scrollToItem(item, QAbstractItemView.ScrollHint.EnsureVisible)

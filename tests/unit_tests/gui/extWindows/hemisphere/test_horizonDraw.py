@@ -243,7 +243,7 @@ def test_setupView_1(function):
 
 
 def test_setupView_2(function):
-    function.ui.editModeHor.setChecked(False)
+    function.ui.normalModeHor.setChecked(True)
     function.setupView()
 
 

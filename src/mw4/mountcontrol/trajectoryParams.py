@@ -28,6 +28,8 @@ class TrajectoryParams:
     offsetDEC: float = 0
     offsetDECcorr: float = 0
     offsetTime: float = 0
+    _jdStart: float = 0
+    _jdEnd: float = 0
 
     @property
     def jdStart(self):

@@ -145,7 +145,7 @@ class ImageWindow(MWidget):
 
     def colorChange(self) -> None:
         """ """
-        self.setStyleSheet(self.mw4Style)
+        #self.setStyleSheet(self.mw4Style)
         self.tabs.colorChange()
         self.setupIcons()
         self.showCurrent()

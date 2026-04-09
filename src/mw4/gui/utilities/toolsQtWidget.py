@@ -17,6 +17,9 @@ import datetime
 import logging
 from dateutil.tz import tzlocal
 from importlib.resources import as_file, files
+
+from qt_material import QtStyleTools
+
 from mw4.gui.styles.styles import Styles
 from mw4.mountcontrol.convert import formatDstrToText, formatHstrToText
 from pathlib import Path
@@ -51,6 +54,7 @@ from PySide6.QtWidgets import (
     QTableWidget,
     QTabWidget,
     QWidget,
+    QMainWindow,
 )
 from qimage2ndarray import array2qimage, rgb_view
 from skyfield.api import Angle, Time
@@ -138,7 +142,7 @@ def clickable(widget: QWidget) -> SignalInstance:
     return clickEventFilter.clicked
 
 
-class MWidget(QWidget, Styles):
+class MWidget(QMainWindow, Styles):
     """ """
 
     log = logging.getLogger("MW4")
@@ -149,7 +153,6 @@ class MWidget(QWidget, Styles):
         self.initUI()
         self.screenSizeX = QGuiApplication.primaryScreen().geometry().width()
         self.screenSizeY = QGuiApplication.primaryScreen().geometry().height()
-
         newFlag = Qt.WindowType.CustomizeWindowHint | Qt.WindowType.WindowSystemMenuHint
         newFlag = (
             newFlag
@@ -240,7 +243,7 @@ class MWidget(QWidget, Styles):
 
     def initUI(self) -> None:
         """ """
-        self.setStyleSheet(self.mw4Style)
+        # self.setStyleSheet(self.mw4Style)
         self.setMouseTracking(True)
         self.setWindowIcon(self.mwIcon)
 
@@ -249,7 +252,7 @@ class MWidget(QWidget, Styles):
         dlg = QFileDialog()
         dlg.setOptions(QFileDialog.Option.DontUseNativeDialog)
         dlg.setWindowIcon(self.mwIcon)
-        dlg.setStyleSheet(self.mw4Style)
+        #dlg.setStyleSheet(self.mw4Style)
         dlg.setViewMode(QFileDialog.ViewMode.List)
         dlg.setModal(True)
         if enableDir:
@@ -285,7 +288,7 @@ class MWidget(QWidget, Styles):
         """ """
         msg = QMessageBox()
         msg.setWindowModality(Qt.WindowModality.ApplicationModal)
-        msg.setStyleSheet(self.mw4Style)
+        #msg.setStyleSheet(self.mw4Style)
         msg.setTextFormat(Qt.TextFormat.AutoText)
         msg.setWindowTitle(title)
         icons = [

@@ -85,7 +85,7 @@ class SatelliteHorizonWindow(MWidget):
 
     def colorChange(self) -> None:
         """ """
-        self.setStyleSheet(self.mw4Style)
+        #self.setStyleSheet(self.mw4Style)
         self.ui.satHorizon.colorChange()
         self.app.sendSatelliteData.emit([], [])
 

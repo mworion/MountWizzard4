@@ -89,7 +89,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     def colorChange(self) -> None:
         """ """
-        self.setStyleSheet(self.mw4Style)
+        #self.setStyleSheet(self.mw4Style)
         self.ui.measure.colorChange()
         for setName, plotItem in zip(self.mSetUI.keys(), self.ui.measure.p):
             values = self.dataPlots.get(self.mSetUI[setName].currentText(), 0)

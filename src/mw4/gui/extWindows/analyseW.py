@@ -106,7 +106,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
     def colorChange(self) -> None:
         """ """
         self.wIcon(self.ui.load, "load")
-        self.setStyleSheet(self.mw4Style)
+        #self.setStyleSheet(self.mw4Style)
         for plot in [
             self.ui.raRawErrors,
             self.ui.decRawErrors,

@@ -49,7 +49,8 @@ class VideoWindowBase(MWidget):
 
     def colorChange(self) -> None:
         """ """
-        self.setStyleSheet(self.mw4Style)
+        pass
+        #self.setStyleSheet(self.mw4Style)
 
     def showWindow(self) -> None:
         """ """

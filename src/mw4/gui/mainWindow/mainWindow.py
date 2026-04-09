@@ -27,8 +27,9 @@ from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
 from skyfield.almanac import TWILIGHTS, dark_twilight_day
 
+from qt_material import QtStyleTools
 
-class MainWindow(MWidget):
+class MainWindow(MWidget, QtStyleTools):
     """ """
 
     def __init__(self, app):
@@ -38,6 +39,8 @@ class MainWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        self.show_dock_theme(self)
         self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
         self.activateWindow()
         self.externalWindows = ExternalWindows(self)
@@ -94,7 +97,7 @@ class MainWindow(MWidget):
         colSet = config.get("colorSet", 0)
         Styles.colorSet = colSet
         self.ui.colorSet.setCurrentIndex(colSet)
-        self.setStyleSheet(self.mw4Style)
+        #self.setStyleSheet(self.mw4Style)
         self.ui.profile.setText(config.get("profileName"))
         config = config["mainW"]
         self.positionWindow(config)
@@ -156,7 +159,7 @@ class MainWindow(MWidget):
     def updateColorSet(self) -> None:
         """ """
         Styles.colorSet = self.ui.colorSet.currentIndex()
-        self.setStyleSheet(self.mw4Style)
+        #self.setStyleSheet(self.mw4Style)
         self.setupIcons()
         self.mainWindowAddons.setupIcons()
         self.mainWindowAddons.updateColorSet()

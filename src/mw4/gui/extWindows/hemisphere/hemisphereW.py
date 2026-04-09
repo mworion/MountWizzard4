@@ -136,7 +136,7 @@ class HemisphereWindow(MWidget):
 
     def colorChange(self) -> None:
         """ """
-        self.setStyleSheet(self.mw4Style)
+        #self.setStyleSheet(self.mw4Style)
         self.ui.hemisphere.colorChange()
         self.ui.horizon.colorChange()
         self.hemisphereDraw.drawTab()

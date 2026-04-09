@@ -81,7 +81,7 @@ class SatelliteMapWindow(MWidget):
 
     def colorChange(self) -> None:
         """ """
-        self.setStyleSheet(self.mw4Style)
+        #self.setStyleSheet(self.mw4Style)
         self.ui.satEarth.colorChange()
         self.app.sendSatelliteData.emit([], [])
 

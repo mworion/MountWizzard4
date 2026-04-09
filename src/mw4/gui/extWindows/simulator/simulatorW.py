@@ -138,7 +138,7 @@ class SimulatorWindow(MWidget):
         We change the color of the background and the style of the window but
         not for the 3D scene itself during runtime.
         """
-        self.setStyleSheet(self.mw4Style)
+        #self.setStyleSheet(self.mw4Style)
         self.window3D.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
 
     def limitPositionZ(self):

@@ -144,7 +144,7 @@ class KeypadWindow(MWidget):
 
     def colorChange(self) -> None:
         """ """
-        self.setStyleSheet(self.mw4Style)
+        #self.setStyleSheet(self.mw4Style)
         for row in self.rows:
             row.setStyleSheet(f"background-color: {self.M_BACK};")
         self.clearGraphics()

@@ -94,7 +94,7 @@ class MessageWindow(toolsQtWidget.MWidget):
 
     def colorChange(self) -> None:
         """ """
-        self.setStyleSheet(self.mw4Style)
+        #self.setStyleSheet(self.mw4Style)
         self.setupMessage()
         self.updateListColors()
 

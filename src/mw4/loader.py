@@ -35,6 +35,7 @@ from pathlib import Path
 from PySide6.QtCore import qVersion
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
+from qt_material import apply_stylesheet
 
 faulthandler.enable()
 warnings.filterwarnings("ignore", category=RuntimeWarning)
@@ -121,6 +122,10 @@ def main(test: int = 0) -> None:
     """ """
     locale.setlocale(locale.LC_ALL, "")
     app = QApplication(sys.argv)
+    extra = {
+        'density_scale': '-4',  # Lower density (more compact layout)
+    }
+    apply_stylesheet(app, theme="dark_teal.xml", extra=extra)
     minimizeStartTerminal()
     splashW = SplashScreen(application=app)
     splashW.showMessage("Start initialising")

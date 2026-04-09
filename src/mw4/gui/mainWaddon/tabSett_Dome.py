@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-
+from mw4.gui.utilities.toolsQtWidget import img2pixmap
 
 class SettDome:
     """ """
@@ -135,34 +135,34 @@ class SettDome:
         """
         :return:
         """
-        pixmap = self.mainW.img2pixmap("assets/dome/radius.png")
+        pixmap = img2pixmap("assets/dome/radius.png")
         self.ui.picDome1.setPixmap(pixmap)
 
         is10Micron = self.ui.use10micronDef.isChecked()
         if is10Micron:
-            pixmap = self.mainW.img2pixmap("assets/dome/north.png")
+            pixmap = img2pixmap("assets/dome/north.png")
             self.ui.picDome2.setPixmap(pixmap)
-            pixmap = self.mainW.img2pixmap("assets/dome/east.png")
+            pixmap = img2pixmap("assets/dome/east.png")
             self.ui.picDome3.setPixmap(pixmap)
-            pixmap = self.mainW.img2pixmap("assets/dome/vert.png")
+            pixmap = img2pixmap("assets/dome/vert.png")
             self.ui.picDome4.setPixmap(pixmap)
         else:
-            pixmap = self.mainW.img2pixmap("assets/dome/northGEM.png")
+            pixmap = img2pixmap("assets/dome/northGEM.png")
             self.ui.picDome2.setPixmap(pixmap)
-            pixmap = self.mainW.img2pixmap("assets/dome/eastGEM.png")
+            pixmap = img2pixmap("assets/dome/eastGEM.png")
             self.ui.picDome3.setPixmap(pixmap)
-            pixmap = self.mainW.img2pixmap("assets/dome/vertGEM.png")
+            pixmap = img2pixmap("assets/dome/vertGEM.png")
             self.ui.picDome4.setPixmap(pixmap)
 
-        pixmap = self.mainW.img2pixmap("assets/dome/gem.png")
+        pixmap = img2pixmap("assets/dome/gem.png")
         self.ui.picDome5.setPixmap(pixmap)
-        pixmap = self.mainW.img2pixmap("assets/dome/lat.png")
+        pixmap = img2pixmap("assets/dome/lat.png")
         self.ui.picDome6.setPixmap(pixmap)
-        pixmap = self.mainW.img2pixmap("assets/dome/shutter.png")
+        pixmap = img2pixmap("assets/dome/shutter.png")
         self.ui.picDome7.setPixmap(pixmap)
-        pixmap = self.mainW.img2pixmap("assets/dome/hysteresis.png")
+        pixmap = img2pixmap("assets/dome/hysteresis.png")
         self.ui.picDome8.setPixmap(pixmap)
-        pixmap = self.mainW.img2pixmap("assets/dome/zenith.png")
+        pixmap = img2pixmap("assets/dome/zenith.png")
         self.ui.picDome9.setPixmap(pixmap)
 
         self.mainW.wIcon(self.ui.copyFromDomeDriver, "copy")

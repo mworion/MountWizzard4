@@ -138,6 +138,34 @@ def clickable(widget: QWidget) -> SignalInstance:
     return clickEventFilter.clicked
 
 
+def img2pixmap(imageFilePath: str) -> QPixmap:
+    """ """
+    with as_file(files("mw4").joinpath(imageFilePath)) as imageFile:
+        image = QImage(str(imageFile))
+    image.convertToFormat(QImage.Format.Format_RGB32)
+    imgArr = rgb_view(image)
+    image = array2qimage(imgArr)
+    pixmap = QPixmap().fromImage(image)
+    return pixmap
+
+
+def svg2pixmap(svgFileName: str, color: str = "black") -> QPixmap:
+    """ """
+    with as_file(files("mw4").joinpath(svgFileName)) as image:
+        img = QPixmap(image)
+    qp = QPainter(img)
+    qp.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
+    qp.fillRect(img.rect(), QColor(color))
+    qp.end()
+    return img
+
+
+def svg2icon(svgFileName: str, color: str = "black") -> QIcon:
+    """ """
+    img = svg2pixmap(svgFileName, color)
+    return QIcon(img)
+
+
 class MWidget(QWidget, Styles):
     """ """
 
@@ -201,33 +229,6 @@ class MWidget(QWidget, Styles):
             self.saveAllWindowsAsPNG(self)
             return
         super().keyPressEvent(keyEvent)
-
-    @staticmethod
-    def img2pixmap(imageFilePath: str) -> QPixmap:
-        """ """
-        with as_file(files("mw4").joinpath(imageFilePath)) as imageFile:
-            image = QImage(str(imageFile))
-        image.convertToFormat(QImage.Format.Format_RGB32)
-        imgArr = rgb_view(image)
-        image = array2qimage(imgArr)
-        pixmap = QPixmap().fromImage(image)
-        return pixmap
-
-    @staticmethod
-    def svg2pixmap(svgFileName: str, color: str = "black") -> QPixmap:
-        """ """
-        with as_file(files("mw4").joinpath(svgFileName)) as image:
-            img = QPixmap(image)
-        qp = QPainter(img)
-        qp.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
-        qp.fillRect(img.rect(), QColor(color))
-        qp.end()
-        return img
-
-    def svg2icon(self, svgFileName: str, color: str = "black") -> QIcon:
-        """ """
-        img = self.svg2pixmap(svgFileName, color)
-        return QIcon(img)
 
     def wIcon(self, gui: QPushButton, name: str) -> None:
         """ """

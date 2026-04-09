@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-from mw4.gui.utilities.toolsQtWidget import guiSetText
+from mw4.gui.utilities.toolsQtWidget import guiSetText, img2pixmap
 
 
 class ModelStatus:
@@ -31,9 +31,9 @@ class ModelStatus:
 
     def setupIcons(self) -> None:
         """ """
-        pixmap = self.mainW.img2pixmap("assets/pics/azimuth.png").scaled(140, 140)
+        pixmap = img2pixmap("assets/pics/azimuth.png").scaled(140, 140)
         self.ui.picAZ.setPixmap(pixmap)
-        pixmap = self.mainW.img2pixmap("assets/pics/altitude.png").scaled(140, 140)
+        pixmap = img2pixmap("assets/pics/altitude.png").scaled(140, 140)
         self.ui.picALT.setPixmap(pixmap)
 
     def updateAlignGUI(self, model):

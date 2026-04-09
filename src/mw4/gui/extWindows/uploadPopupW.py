@@ -16,7 +16,7 @@
 import re
 import requests
 from mw4.base.tpool import Worker
-from mw4.gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
+from mw4.gui.utilities.toolsQtWidget import MWidget, sleepAndEvents, svg2pixmap
 from mw4.gui.widgets.uploadPopup_ui import Ui_UploadPopup
 from pathlib import Path
 from PySide6.QtCore import Qt, Signal
@@ -84,7 +84,7 @@ class UploadPopup(MWidget):
 
     def setIcon(self) -> None:
         """ """
-        pixmap = self.svg2pixmap("assets/icon/upload_pop.svg", self.M_PRIM)
+        pixmap = svg2pixmap("assets/icon/upload_pop.svg", self.M_PRIM)
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
 

@@ -17,7 +17,7 @@ from functools import partial
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.ascomClass import AscomClass
 from mw4.base.indiClass import IndiClass
-from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic, clickable, svg2pixmap
+from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic, clickable, svg2pixmap, getTabIndex
 from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
 from pathlib import Path
 from PySide6.QtCore import Qt
@@ -197,7 +197,7 @@ class DevicePopup(MWidget):
         if not framework:
             framework = firstFramework
 
-        tabIndex = self.getTabIndex(self.ui.tab, framework)
+        tabIndex = getTabIndex(self.ui.tab, framework)
         self.ui.tab.setCurrentIndex(tabIndex)
 
         for index in range(0, self.ui.tab.count()):

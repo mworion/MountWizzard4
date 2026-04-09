@@ -16,7 +16,7 @@
 import numpy as np
 import pyqtgraph as pg
 from astropy.io import fits
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText, getTabIndex
 from mw4.logic.fits.fitsFunction import (
     getCoordinatesFromHeader,
     getExposureFromHeader,
@@ -135,7 +135,7 @@ class ImageTabs:
         """ """
         changeStyleDynamic(self.ui.headerGroup, "run", False)
         tab = self.ui.tabImage
-        tabIndex = self.parent.getTabIndex(tab, "Image")
+        tabIndex = getTabIndex(tab, "Image")
         tab.setTabEnabled(tabIndex, True)
 
         if self.fileHandler.image is None:
@@ -162,7 +162,7 @@ class ImageTabs:
         if self.ui.isoLayer.isChecked():
             self.ui.hfr.addIsoBasic(self.ui.hfr.p[0], self.photometry.hfrGrid, levels=20)
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.parent.getTabIndex(tab, "HFR"), True)
+        tab.setTabEnabled(getTabIndex(tab, "HFR"), True)
 
     def showTiltSquare(self):
         """ """
@@ -276,7 +276,7 @@ class ImageTabs:
         self.ui.squareMedianHFR.setText(f"{self.photometry.hfrMedian:1.2f}")
         self.ui.squareNumberStars.setText(f"{len(self.photometry.hfr):1.0f}")
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.parent.getTabIndex(tab, "TiltSquare"), True)
+        tab.setTabEnabled(getTabIndex(tab, "TiltSquare"), True)
         return True
 
     def showTiltTriangle(self):
@@ -380,7 +380,7 @@ class ImageTabs:
         self.ui.triangleMedianHFR.setText(f"{self.photometry.hfrMedian:1.2f}")
         self.ui.triangleNumberStars.setText(f"{len(self.photometry.hfr):1.0f}")
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.parent.getTabIndex(tab, "TiltTriangle"), True)
+        tab.setTabEnabled(getTabIndex(tab, "TiltTriangle"), True)
 
     def showRoundness(self):
         """ """
@@ -396,7 +396,7 @@ class ImageTabs:
                 self.ui.roundness.p[0], self.photometry.roundnessGrid, levels=20
             )
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.parent.getTabIndex(tab, "Roundness"), True)
+        tab.setTabEnabled(getTabIndex(tab, "Roundness"), True)
 
     def showAberrationInspect(self):
         """ """
@@ -420,7 +420,7 @@ class ImageTabs:
             self.ui.aberration.p[0].addItem(lineItem)
 
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.parent.getTabIndex(tab, "Aberration"), True)
+        tab.setTabEnabled(getTabIndex(tab, "Aberration"), True)
         self.ui.aberration.p[0].getViewBox().rightMouseRange()
 
     def showImageSources(self):
@@ -446,7 +446,7 @@ class ImageTabs:
                 item.setFont(self.fontAnno)
                 item.setParentItem(eItem)
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.parent.getTabIndex(tab, "Sources"), True)
+        tab.setTabEnabled(getTabIndex(tab, "Sources"), True)
 
     def showBackground(self):
         """ """
@@ -455,10 +455,10 @@ class ImageTabs:
             (self.photometry.backgroundMin, self.photometry.backgroundMax)
         )
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.parent.getTabIndex(tab, "Back"), True)
+        tab.setTabEnabled(getTabIndex(tab, "Back"), True)
 
     def showBackgroundRMS(self):
         """ """
         self.ui.backgroundRMS.setImage(imageDisp=self.photometry.backgroundRMS)
         tab = self.ui.tabImage
-        tab.setTabEnabled(self.parent.getTabIndex(tab, "BackRMS"), True)
+        tab.setTabEnabled(getTabIndex(tab, "BackRMS"), True)

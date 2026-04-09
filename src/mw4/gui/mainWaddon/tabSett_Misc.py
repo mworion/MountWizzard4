@@ -19,7 +19,7 @@ if pConf.isAvailable:
     from PySide6.QtMultimedia import QSoundEffect
 import hid
 from mw4.base.tpool import Worker
-from mw4.gui.utilities.toolsQtWidget import sleepAndEvents, svg2pixmap
+from mw4.gui.utilities.toolsQtWidget import sleepAndEvents, svg2pixmap, getTabIndex
 
 
 class SettMisc:
@@ -331,5 +331,5 @@ class SettMisc:
         """ """
         for tab in self.uiTabs:
             isVisible = self.uiTabs[tab]["cb"].isChecked()
-            tabIndex = self.mainW.getTabIndex(self.uiTabs[tab]["tab"], tab)
+            tabIndex = getTabIndex(self.uiTabs[tab]["tab"], tab)
             self.uiTabs[tab]["tab"].setTabVisible(tabIndex, isVisible)

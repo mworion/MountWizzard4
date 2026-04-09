@@ -18,7 +18,7 @@ from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.utilities.qCustomTableWidgetItem import QCustomTableWidgetItem
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
+from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, positionCursorInTable
 from mw4.logic.databaseProcessing.sourceURL import satSourceURLs
 from mw4.logic.satellites.satellite_calculations import (
     calcAppMag,
@@ -145,7 +145,7 @@ class SatSearch(QObject, SatData):
 
             self.ui.listSats.setRowHidden(row, not show)
         satName = self.ui.satelliteName.text()
-        self.mainW.positionCursorInTable(self.ui.listSats, satName)
+        positionCursorInTable(self.ui.listSats, satName)
 
     def setListSatsEntry(self, row: int, col: int, entry: str) -> None:
         """ """

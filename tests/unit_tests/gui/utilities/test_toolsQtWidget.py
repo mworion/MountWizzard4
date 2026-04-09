@@ -27,6 +27,10 @@ from mw4.gui.utilities.toolsQtWidget import (
     svg2pixmap,
     svg2icon,
     img2pixmap,
+    getTabIndex,
+    getTabAndIndex,
+    setTabAndIndex,
+    positionCursorInTable,
 )
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
@@ -219,6 +223,71 @@ def test_svg2pixmap(function):
 def test_svg2icon_1(function):
     val = svg2icon(os.getcwd() + "/tests/testData/choose.svg")
     assert isinstance(val, QIcon)
+
+
+def test_getTabAndIndex(function):
+    widget = QTabWidget()
+    w = QWidget()
+    w.setObjectName("test")
+    widget.addTab(w, "test")
+    w = QWidget()
+    w.setObjectName("test1")
+    widget.addTab(w, "test1")
+
+    config = {"test": 1}
+    getTabAndIndex(widget, config, "test1")
+
+
+def test_getTabIndex(function):
+    widget = QTabWidget()
+    w = QWidget()
+    w.setObjectName("test")
+    widget.addTab(w, "test")
+    w = QWidget()
+    w.setObjectName("test1")
+    widget.addTab(w, "test1")
+    index = getTabIndex(widget, "test1")
+    assert index == 1
+
+
+def test_setTabAndIndex_1(function):
+    widget = QTabWidget()
+    config = {"test": 0}
+    setTabAndIndex(widget, config, "test")
+
+
+def test_setTabAndIndex_2(function):
+    widget = QTabWidget()
+    widget.addTab(QWidget(), "test")
+    widget.addTab(QWidget(), "tes1")
+    config = {"test": {"00": "test"}}
+    setTabAndIndex(widget, config, "test")
+
+
+def test_positionCursorInTable_1(function):
+    widget = QTableWidget()
+    widget.setColumnCount(2)
+    widget.setRowCount(2)
+    widget.setItem(0, 0, QTableWidgetItem("test"))
+    widget.setItem(1, 0, QTableWidgetItem("test1"))
+    widget.setItem(0, 1, QTableWidgetItem("test2"))
+    widget.setItem(1, 1, QTableWidgetItem("test3"))
+    positionCursorInTable(widget, "test")
+    assert widget.currentRow() == 0
+    assert widget.currentColumn() == 0
+
+
+def test_positionCursorInTable_2(function):
+    widget = QTableWidget()
+    widget.setColumnCount(2)
+    widget.setRowCount(2)
+    widget.setItem(0, 0, QTableWidgetItem("test"))
+    widget.setItem(1, 0, QTableWidgetItem("test1"))
+    widget.setItem(0, 1, QTableWidgetItem("test2"))
+    widget.setItem(1, 1, QTableWidgetItem("test3"))
+    positionCursorInTable(widget, "asdf")
+    assert widget.currentRow() == -1
+    assert widget.currentColumn() == -1
 
 
 def test_saveWindowAsPNG(function):
@@ -462,68 +531,3 @@ def test_positionWindow_2(function):
     function.screenSizeX = 1000
     function.screenSizeY = 1000
     function.positionWindow(config)
-
-
-def test_getTabAndIndex(function):
-    widget = QTabWidget()
-    w = QWidget()
-    w.setObjectName("test")
-    widget.addTab(w, "test")
-    w = QWidget()
-    w.setObjectName("test1")
-    widget.addTab(w, "test1")
-
-    config = {"test": 1}
-    function.getTabAndIndex(widget, config, "test1")
-
-
-def test_getTabIndex(function):
-    widget = QTabWidget()
-    w = QWidget()
-    w.setObjectName("test")
-    widget.addTab(w, "test")
-    w = QWidget()
-    w.setObjectName("test1")
-    widget.addTab(w, "test1")
-    index = function.getTabIndex(widget, "test1")
-    assert index == 1
-
-
-def test_setTabAndIndex_1(function):
-    widget = QTabWidget()
-    config = {"test": 0}
-    function.setTabAndIndex(widget, config, "test")
-
-
-def test_setTabAndIndex_2(function):
-    widget = QTabWidget()
-    widget.addTab(QWidget(), "test")
-    widget.addTab(QWidget(), "tes1")
-    config = {"test": {"00": "test"}}
-    function.setTabAndIndex(widget, config, "test")
-
-
-def test_positionCursorInTable_1(function):
-    widget = QTableWidget()
-    widget.setColumnCount(2)
-    widget.setRowCount(2)
-    widget.setItem(0, 0, QTableWidgetItem("test"))
-    widget.setItem(1, 0, QTableWidgetItem("test1"))
-    widget.setItem(0, 1, QTableWidgetItem("test2"))
-    widget.setItem(1, 1, QTableWidgetItem("test3"))
-    function.positionCursorInTable(widget, "test")
-    assert widget.currentRow() == 0
-    assert widget.currentColumn() == 0
-
-
-def test_positionCursorInTable_2(function):
-    widget = QTableWidget()
-    widget.setColumnCount(2)
-    widget.setRowCount(2)
-    widget.setItem(0, 0, QTableWidgetItem("test"))
-    widget.setItem(1, 0, QTableWidgetItem("test1"))
-    widget.setItem(0, 1, QTableWidgetItem("test2"))
-    widget.setItem(1, 1, QTableWidgetItem("test3"))
-    function.positionCursorInTable(widget, "asdf")
-    assert widget.currentRow() == -1
-    assert widget.currentColumn() == -1

@@ -20,7 +20,7 @@ from mw4.base import packageConfig
 from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.styles.styles import Styles
-from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
+from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic, getTabIndex
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.logic.profiles.profile import loadConfig, saveConfig
 from mw4.mountcontrol.obsSite import ObsSite
@@ -208,7 +208,7 @@ class MainWindow(MWidget):
         """ """
         tabChanged = False
         for key, tab in self.smartTabs.items():
-            tabIndex = self.getTabIndex(self.smartTabs[key]["tab"], key)
+            tabIndex = getTabIndex(self.smartTabs[key]["tab"], key)
             tabStatus = self.smartTabs[key]["tab"].isTabVisible(tabIndex)
 
             stat = bool(self.app.deviceStat.get(self.smartTabs[key]["statID"]))
@@ -216,9 +216,9 @@ class MainWindow(MWidget):
             actChanged = tabStatus != stat
             tabChanged = tabChanged or actChanged
 
-        tabIndex = self.getTabIndex(self.ui.imagingTabWidget, "reference")
+        tabIndex = getTabIndex(self.ui.imagingTabWidget, "reference")
         self.ui.imagingTabWidget.setTabVisible(tabIndex, packageConfig.isReference)
-        tabIndex = self.getTabIndex(self.ui.toolsTabWidget, "AnalyseFlexure")
+        tabIndex = getTabIndex(self.ui.toolsTabWidget, "AnalyseFlexure")
         self.ui.toolsTabWidget.setTabVisible(tabIndex, packageConfig.isAnalyse)
 
         # redraw tabs only when a change occurred. this is necessary because

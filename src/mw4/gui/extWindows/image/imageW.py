@@ -19,7 +19,7 @@ from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.gui.mainWaddon.tabModel import Model
-from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
+from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic, getTabIndex
 from mw4.gui.widgets import image_ui
 from mw4.logic.file.fileHandler import FileHandler
 from mw4.logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
@@ -157,7 +157,7 @@ class ImageWindow(MWidget):
         self.ui.numberStars.setText("")
         self.ui.aspectRatioPercentile.setText("")
         tab = self.ui.tabImage
-        tabIndex = self.getTabIndex(tab, "Image")
+        tabIndex = getTabIndex(tab, "Image")
         for i in range(0, self.ui.tabImage.count()):
             if i == tabIndex:
                 continue

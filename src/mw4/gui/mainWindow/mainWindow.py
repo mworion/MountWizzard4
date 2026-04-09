@@ -20,7 +20,13 @@ from mw4.base import packageConfig
 from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.styles.styles import Styles
-from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic, getTabIndex
+from mw4.gui.utilities.toolsQtWidget import (
+    MWidget,
+    changeStyleDynamic,
+    getTabIndex,
+    setTabAndIndex,
+    getTabAndIndex,
+)
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.logic.profiles.profile import loadConfig, saveConfig
 from mw4.mountcontrol.obsSite import ObsSite
@@ -98,14 +104,14 @@ class MainWindow(MWidget):
         self.ui.profile.setText(config.get("profileName"))
         config = config["mainW"]
         self.positionWindow(config)
-        self.setTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
-        self.setTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
-        self.setTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")
-        self.setTabAndIndex(self.ui.modelingTabWidget, config, "orderModeling")
-        self.setTabAndIndex(self.ui.manageTabWidget, config, "orderManage")
-        self.setTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
-        self.setTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
-        self.setTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
+        setTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
+        setTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
+        setTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")
+        setTabAndIndex(self.ui.modelingTabWidget, config, "orderModeling")
+        setTabAndIndex(self.ui.manageTabWidget, config, "orderManage")
+        setTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
+        setTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
+        setTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
         self.mainWindowAddons.initConfig()
         self.externalWindows.showExtendedWindows()
         self.smartTabGui()
@@ -124,14 +130,14 @@ class MainWindow(MWidget):
 
         config["winPosX"] = self.pos().x()
         config["winPosY"] = self.pos().y()
-        self.getTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
-        self.getTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
-        self.getTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")
-        self.getTabAndIndex(self.ui.modelingTabWidget, config, "orderModeling")
-        self.getTabAndIndex(self.ui.manageTabWidget, config, "orderManage")
-        self.getTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
-        self.getTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
-        self.getTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
+        getTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
+        getTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
+        getTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")
+        getTabAndIndex(self.ui.modelingTabWidget, config, "orderModeling")
+        getTabAndIndex(self.ui.manageTabWidget, config, "orderManage")
+        getTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
+        getTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
+        getTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
         self.externalWindows.storeConfigExtendedWindows()
         self.mainWindowAddons.storeConfig()
         self.app.storeConfig()

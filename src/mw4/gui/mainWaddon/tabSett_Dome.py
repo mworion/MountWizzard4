@@ -15,6 +15,7 @@
 ###########################################################
 from mw4.gui.utilities.toolsQtWidget import img2pixmap
 
+
 class SettDome:
     """ """
 

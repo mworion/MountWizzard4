@@ -100,7 +100,8 @@ BASIC_STYLE = """
     QToolTip {
         border-width: %WIDTH%;
         border-style: outset;
-        border-color: $M_SEC$;
+        border-color: $M_TER$;
+        background-color: $M_BACK1$;
         color: $M_PRIM$;
         padding: 5px;
         max-width: 500px;

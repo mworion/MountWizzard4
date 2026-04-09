@@ -204,16 +204,8 @@ class MountWizzard4(QObject):
     def sendStart(self) -> None:
         """ """
         match self.timerCounter:
-            case 10:
-                self.start1s.emit()
             case 30:
                 self.start3s.emit()
-            case 50:
-                self.start5s.emit()
-            case 100:
-                self.start10s.emit()
-            case 300:
-                self.start30s.emit()
 
     def sendCyclic(self) -> None:
         """ """
@@ -224,20 +216,12 @@ class MountWizzard4(QObject):
             self.update1s.emit()
         if (self.timerCounter + 10) % 30 == 0:
             self.update3s.emit()
-        if (self.timerCounter + 20) % 100 == 0:
-            self.update10s.emit()
         if (self.timerCounter + 25) % 300 == 0:
             self.update30s.emit()
-        if (self.timerCounter + 25) % 600 == 0:
-            self.update60s.emit()
         if (self.timerCounter + 12) % 1800 == 0:
             self.update3m.emit()
-        if (self.timerCounter + 13) % 6000 == 0:
-            self.update10m.emit()
-        if (self.timerCounter + 14) % 18000 == 0:
-            self.update30m.emit()
         if (self.timerCounter + 15) % 36000 == 0:
-            self.update1h.emit()
+            self.update30m.emit()
 
     def aboutToQuit(self) -> None:
         """ """

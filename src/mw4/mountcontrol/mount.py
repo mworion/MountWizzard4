@@ -106,7 +106,7 @@ class MountDevice:
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
         self.app.update1s.connect(self.collectData)
-        self.app.start5s.connect(self.resetAfterStart)
+        self.app.start3s.connect(self.resetAfterStart)
         self.data: dict = {}
         self.raRef: float = 0.0
         self.decRef: float = 0.0

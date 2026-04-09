@@ -113,10 +113,10 @@ def clean_mw(c):
 @task
 def update_builtins(c):
     printMW("updating builtins")
-    runMW(c, "cp ./work/data/de440_mw4.bsp ./src/mw4/data/data/de440_mw4.bsp")
-    runMW(c, "cp ./work/data/finals2000A.all ./src/mw4/data/data/finals2000A.all")
-    runMW(c, "cp ./work/data/finals.data ./src/mw4/data/data/finals.data")
-    runMW(c, "cp ./work/data/CDFLeapSeconds.txt ./src/mw4/data/data/CDFLeapSeconds.txt")
+    runMW(c, "cp ./work/data/de440_mw4.bsp ./src/mw4/assets/data/de440_mw4.bsp")
+    runMW(c, "cp ./work/data/finals2000A.all ./src/mw4/assets/data/finals2000A.all")
+    runMW(c, "cp ./work/data/finals.data ./src/mw4/assets/data/finals.data")
+    runMW(c, "cp ./work/data/CDFLeapSeconds.txt ./src/mw4/assets/data/CDFLeapSeconds.txt")
     printMW("updating builtins finished\n")
 
 

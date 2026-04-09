@@ -25,10 +25,8 @@ from PySide6.QtCore import Qt, Signal
 
 class UploadPopup(MWidget):
     """ """
-
     PROGRESS_DONE = 100
     CYCLES_WAIT = 20
-
     signalProgress = Signal(object)
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
@@ -66,8 +64,8 @@ class UploadPopup(MWidget):
         self.returnValues = {"success": False, "successMount": False}
         self.parentWidget = parentWidget
         self.threadPool = parentWidget.app.threadPool
-        self.worker: Worker = Worker(self)
-        self.workerStatus: Worker = Worker(self)
+        self.worker: Worker | None = None
+        self.workerStatus: Worker | None = None
         self.url: Path = url
         self.dataTypes: list[str] = dataTypes
         self.dataFilePath: Path = dataFilePath
@@ -197,7 +195,6 @@ class UploadPopup(MWidget):
             return False
         files = self.prepareFiles()
         self.pollStatusRunState = True
-        self.workerStatus = Worker(self.pollStatus)
         self.threadPool.start(self.workerStatus)
         return self.postHostData(files)
 
@@ -221,5 +218,6 @@ class UploadPopup(MWidget):
     def uploadFile(self) -> None:
         """ """
         self.worker = Worker(self.uploadFileWorker)
+        self.workerStatus = Worker(self.pollStatus)
         self.worker.signals.result.connect(self.closePopup)
         self.threadPool.start(self.worker)

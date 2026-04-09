@@ -49,9 +49,9 @@ class NINAClass(DriverData):
 
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
-        self.workerData: Worker = Worker(self)
-        self.workerGetConfig: Worker = Worker(self)
-        self.workerStatus: Worker = Worker(self)
+        self.workerData: Worker | None = None
+        self.workerGetConfig: Worker | None = None
+        self.workerStatus: Worker | None = None
         self.mutexPollStatus = QMutex()
 
         self.cycleDevice = QTimer()

@@ -57,8 +57,8 @@ class AstroObjects:
         self.uiSourceList = uiSourceList
         self.uiSourceGroup = uiSourceGroup
         self.processSource = processSource
-        self.workerSource: Worker = Worker(self)
-        self.workerTable: Worker = Worker(self)
+        self.workerSource: Worker | None = None
+        self.workerTable: Worker | None = None
 
         self.objects: dict = {}
         self.uploadPopup = None
@@ -96,7 +96,6 @@ class AstroObjects:
 
     def procSourceData(self, direct: bool = False) -> None:
         """ """
-        # self.downloadPopup.worker.signals.finished.disconnect(self.procSourceData)
         if not direct and not self.downloadPopup.returnValues["success"]:
             return
         self.dataValid = False

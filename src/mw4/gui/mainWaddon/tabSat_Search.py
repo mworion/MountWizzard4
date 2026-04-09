@@ -42,7 +42,7 @@ class SatSearch(QObject, SatData):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.worker: Worker = Worker(self)
+        self.worker: Worker | None = None
 
         SatData.satellites = AstroObjects(
             self.mainW,

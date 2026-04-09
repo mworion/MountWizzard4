@@ -71,7 +71,6 @@ def setupWorkDirs(workDir: Path) -> dict:
         "measureDir": workDir / "measure",
         "logDir": workDir / "log",
     }
-
     for dirPath in mwGlob:
         mwGlob[dirPath].mkdir(parents=True, exist_ok=True)
     return mwGlob
@@ -104,8 +103,6 @@ def extractDataFiles(mwGlob: dict) -> None:
             if dest.is_file() and os.stat(src).st_mtime - os.stat(dest).st_mtime < 1:
                 continue
             shutil.copy2(src, dest)
-
-    pass
 
 
 # noinspection PyUnresolvedReferences

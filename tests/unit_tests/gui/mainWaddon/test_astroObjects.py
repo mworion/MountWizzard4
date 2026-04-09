@@ -15,6 +15,9 @@
 ###########################################################
 import pytest
 import shutil
+
+from gui.extWindows.uploadPopupW import UploadPopup
+from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from pathlib import Path
 from PySide6.QtCore import QThreadPool
@@ -210,7 +213,7 @@ def test_finishProgObjects_2(function):
 
 
 def test_runUploadPopup_1(function):
-    with mock.patch.object(function.window.app.threadPool, "start"):
+    with mock.patch.object(UploadPopup, "uploadFile"):
         function.runUploadPopup(Path())
         function.uploadPopup = None
 

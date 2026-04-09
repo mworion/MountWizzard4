@@ -62,19 +62,19 @@ class MountDevice:
         self.dome = Dome(parent=self)
         self.model = Model(parent=self)
 
-        self.workerMountIsUp: Worker = Worker(self)
-        self.workerCycleClock: Worker = Worker(self)
-        self.workerCycleSetting: Worker = Worker(self)
-        self.workerCyclePointing: Worker = Worker(self)
-        self.workerGetLocation: Worker = Worker(self)
-        self.workerGetFW: Worker = Worker(self)
-        self.workerGetTLE: Worker = Worker(self)
-        self.workerCalcTLE: Worker = Worker(self)
-        self.workerStatTLE: Worker = Worker(self)
-        self.workerGetModel: Worker = Worker(self)
-        self.workerGetNames: Worker = Worker(self)
-        self.workerTrajectory: Worker = Worker(self)
-        self.workerCycleDome: Worker = Worker(self)
+        self.workerMountIsUp: Worker | None = None
+        self.workerCycleClock: Worker | None = None
+        self.workerCycleSetting: Worker | None = None
+        self.workerCyclePointing: Worker | None = None
+        self.workerGetLocation: Worker | None = None
+        self.workerGetFW: Worker | None = None
+        self.workerGetTLE: Worker | None = None
+        self.workerCalcTLE: Worker | None = None
+        self.workerStatTLE: Worker | None = None
+        self.workerGetModel: Worker | None = None
+        self.workerGetNames: Worker | None = None
+        self.workerTrajectory: Worker | None = None
+        self.workerCycleDome: Worker | None = None
         self.mutexCycleMountIsUp = QMutex()
         self.mutexCycleClock = QMutex()
         self.mutexCycleDome = QMutex()

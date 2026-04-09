@@ -30,7 +30,7 @@ class BuildPoints:
         self.ui = mainW.ui
 
         self.sortRunning = QMutex()
-        self.worker: Worker = Worker(self)
+        self.worker: Worker | None = None
         self.lastGenerator: str = "none"
         self.sortedGenerators: dict = {
             "grid": self.genBuildGrid,

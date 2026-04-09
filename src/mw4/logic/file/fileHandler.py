@@ -41,7 +41,7 @@ class FileHandler:
     ):
         self.threadPool = parent.app.threadPool
         self.signals = FileHandlerSignals()
-        self.worker: Worker = Worker(self.workerLoadImage)
+        self.worker: Worker | None = None
         self.imagePath: Path = imagePath
         self.flipH: bool = flipH
         self.flipV: bool = flipV

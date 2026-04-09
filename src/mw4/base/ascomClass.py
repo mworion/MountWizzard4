@@ -39,11 +39,11 @@ class AscomClass(DriverData):
         self.updateRate = 3000
         self.loadConfig = False
         self.tM = QMutex()
-        self.worker: Worker = Worker(self)
-        self.workerData: Worker = Worker(self)
+        self.worker: Worker | None = None
+        self.workerData: Worker | None = None
         self.workerGetConfig: Worker | None = None
-        self.workerStatus: Worker = Worker(self)
-        self.workerConnect: Worker = Worker(self)
+        self.workerStatus: Worker | None = None
+        self.workerConnect: Worker | None = None
 
         self.client = None
         self.propertyExceptions: list = []

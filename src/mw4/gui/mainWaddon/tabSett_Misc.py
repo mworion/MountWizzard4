@@ -30,7 +30,7 @@ class SettMisc:
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.worker: Worker = Worker(self.workerGameController)
+        self.worker: Worker | None = None
 
         self.audioSignalsSet = {}
         self.guiAudioList = {}
@@ -244,6 +244,7 @@ class SettMisc:
 
     def startGameController(self) -> None:
         """ """
+        self.worker = Worker(self.workerGameController)
         self.app.threadPool.start(self.worker)
 
     @staticmethod

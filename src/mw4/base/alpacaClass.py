@@ -60,11 +60,11 @@ class AlpacaClass(DriverData):
 
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
-        self.worker: Worker = Worker(self)
-        self.workerGetConfig: Worker = Worker(self)
-        self.workerStatus: Worker = Worker(self)
-        self.workerData: Worker = Worker(self)
-        self.workerConnect: Worker = Worker(self)
+        self.worker: Worker | None = None
+        self.workerGetConfig: Worker | None = None
+        self.workerStatus: Worker | None = None
+        self.workerData: Worker | None = None
+        self.workerConnect: Worker | None = None
 
         self.cycleDevice = QTimer()
         self.cycleDevice.setSingleShot(False)

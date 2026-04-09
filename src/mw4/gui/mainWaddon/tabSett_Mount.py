@@ -16,7 +16,7 @@
 import socket
 import wakeonlan
 from mw4.base.ethernet import checkFormatMAC
-from mw4.gui.utilities.toolsQtWidget import guiSetText
+from mw4.gui.utilities.qtHelpers import guiSetText
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.setting import Setting
 

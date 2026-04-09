@@ -16,7 +16,8 @@
 import re
 import requests
 from mw4.base.tpool import Worker
-from mw4.gui.utilities.toolsQtWidget import MWidget, sleepAndEvents, svg2pixmap
+from mw4.gui.utilities.qtHelpers import sleepAndEvents, svg2pixmap
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.uploadPopup_ui import Ui_UploadPopup
 from pathlib import Path
 from PySide6.QtCore import Qt, Signal

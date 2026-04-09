@@ -17,8 +17,8 @@
 import pytest
 import unittest.mock as mock
 from mw4.gui.mainWaddon.tabModel_Status import ModelStatus
-from mw4.gui.utilities.toolsQtWidget import MWidget
-import mw4.gui.utilities.toolsQtWidget
+from mw4.gui.utilities.qtMain import MWidget
+import mw4.gui.utilities.qtMain
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtGui import QPixmap
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -37,7 +37,7 @@ def function(qapp):
 
 def test_setupIcons(function):
     pm = QPixmap()
-    with mock.patch.object(mw4.gui.utilities.toolsQtWidget, "img2pixmap", return_value=pm):
+    with mock.patch.object(mw4.gui.utilities.qtHelpers, "img2pixmap", return_value=pm):
         function.setupIcons()
 
 

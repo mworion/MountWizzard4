@@ -20,7 +20,7 @@ from collections.abc import Iterator
 from importlib.resources import as_file, files
 from io import BytesIO
 from mw4.gui.utilities.generateSprites import makeSat
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import satelliteMap_ui
 from PySide6.QtCore import Qt
 from skyfield.api import EarthSatellite, Timescale, wgs84

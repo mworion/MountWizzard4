@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
 from PySide6.QtWidgets import QInputDialog
 
 

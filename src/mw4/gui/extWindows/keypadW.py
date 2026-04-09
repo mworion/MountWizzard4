@@ -16,7 +16,7 @@
 import numpy as np
 from functools import partial
 from mw4.base.tpool import Worker
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import keypad_ui
 from mw4.logic.keypad.keypad import KeyPad
 from PySide6.QtCore import QMutex, QObject, Signal

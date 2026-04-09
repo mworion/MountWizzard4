@@ -15,7 +15,7 @@
 ###########################################################
 import numpy as np
 import webbrowser
-from mw4.gui.utilities.toolsQtWidget import guiSetText
+from mw4.gui.utilities.qtHelpers import guiSetText
 from range_key_dict import RangeKeyDict
 
 

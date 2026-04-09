@@ -15,7 +15,7 @@
 ###########################################################
 import webbrowser
 from mw4.gui.styles.colors import colors
-from mw4.gui.utilities.toolsQtWidget import clickable, svg2pixmap
+from mw4.gui.utilities.qtHelpers import clickable, svg2pixmap
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QTransform
 from PySide6.QtWidgets import QLabel, QTableWidgetItem

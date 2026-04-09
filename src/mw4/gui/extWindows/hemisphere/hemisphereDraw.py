@@ -18,7 +18,7 @@ import pyqtgraph as pg
 from mw4.base.transform import diffModulusAbs
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.gui.utilities.generateSprites import makePointer
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont

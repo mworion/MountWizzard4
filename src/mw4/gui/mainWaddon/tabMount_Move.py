@@ -15,7 +15,7 @@
 ###########################################################
 from functools import partial
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, sleepAndEvents
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, sleepAndEvents
 from mw4.mountcontrol.convert import (
     convertDecToAngle,
     convertRaToAngle,

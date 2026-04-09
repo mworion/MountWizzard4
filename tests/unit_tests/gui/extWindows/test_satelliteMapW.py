@@ -18,7 +18,7 @@ import pyqtgraph as pg
 import pytest
 import unittest.mock as mock
 from mw4.gui.extWindows.satelliteMapW import SatelliteMapWindow
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication
 from skyfield.api import EarthSatellite

@@ -24,7 +24,7 @@ import pytest
 import shutil
 import unittest.mock as mock
 from mw4.gui.mainWaddon.tabModel_Manage import ModelManage
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.mountcontrol.modelStar import ModelStar
 from pathlib import Path

@@ -19,7 +19,7 @@ if pConf.isAvailable:
     from PySide6.QtMultimedia import QSoundEffect
 import hid
 from mw4.base.tpool import Worker
-from mw4.gui.utilities.toolsQtWidget import sleepAndEvents, svg2pixmap, getTabIndex
+from mw4.gui.utilities.qtHelpers import getTabIndex, sleepAndEvents, svg2pixmap
 
 
 class SettMisc:

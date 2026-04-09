@@ -18,7 +18,7 @@ import numpy as np
 import pytest
 import threading
 from mw4.gui.mainWaddon.tabAlmanac import Almanac
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtGui import QPixmap
 from skyfield.api import wgs84

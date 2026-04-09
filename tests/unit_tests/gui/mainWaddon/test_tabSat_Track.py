@@ -17,8 +17,8 @@ import mw4.gui
 import pytest
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
-from mw4.gui.utilities.toolsQtWidget import MWidget
-import mw4.gui.utilities.toolsQtWidget
+from mw4.gui.utilities.qtMain import MWidget
+import mw4.gui.utilities.qtMain
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem
 from sgp4.exporter import export_tle
@@ -268,7 +268,7 @@ def test_extractSatelliteData_3(function):
     with mock.patch.object(
         function.app.mount.obsSite.ts, "now", return_value=ts.tt_jd(2458925.404976551)
     ):
-        with mock.patch.object(mw4.gui.utilities.toolsQtWidget, "positionCursorInTable"):
+        with mock.patch.object(mw4.gui.utilities.qtHelpers, "positionCursorInTable"):
             function.extractSatelliteData(satName="NOAA 8")
 
 
@@ -295,7 +295,7 @@ def test_extractSatelliteData_4(function):
     with mock.patch.object(
         function.app.mount.obsSite.ts, "now", return_value=ts.tt_jd(2458930.404976551)
     ):
-        with mock.patch.object(mw4.gui.utilities.toolsQtWidget, "positionCursorInTable"):
+        with mock.patch.object(mw4.gui.utilities.qtHelpers, "positionCursorInTable"):
             function.extractSatelliteData(satName="NOAA 8")
 
 
@@ -322,7 +322,7 @@ def test_extractSatelliteData_5(function):
     with mock.patch.object(
         function.app.mount.obsSite.ts, "now", return_value=ts.tt_jd(2458950.404976551)
     ):
-        with mock.patch.object(mw4.gui.utilities.toolsQtWidget, "positionCursorInTable"):
+        with mock.patch.object(mw4.gui.utilities.qtHelpers, "positionCursorInTable"):
             function.extractSatelliteData(satName="NOAA 8")
 
 

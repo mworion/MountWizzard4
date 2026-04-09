@@ -18,7 +18,7 @@ import pyqtgraph as pg
 from dateutil.tz import tzlocal
 from importlib.resources import as_file, files
 from mw4.base.tpool import Worker
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QPainter, QPen, QPixmap
 from range_key_dict import RangeKeyDict

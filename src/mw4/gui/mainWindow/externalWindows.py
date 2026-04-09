@@ -25,7 +25,7 @@ from mw4.gui.extWindows.satelliteHorW import SatelliteHorizonWindow
 from mw4.gui.extWindows.satelliteMapW import SatelliteMapWindow
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from mw4.gui.extWindows.video.videoW import VideoWindow
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, sleepAndEvents
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, sleepAndEvents
 
 
 class ExternalWindows:

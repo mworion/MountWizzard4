@@ -16,7 +16,7 @@
 import numpy as np
 from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.satData import SatData
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, positionCursorInTable
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, positionCursorInTable
 from mw4.logic.satellites.satellite_calculations import calcSatPasses
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.tleParams import TLEParams

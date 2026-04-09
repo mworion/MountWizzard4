@@ -20,7 +20,7 @@ import shutil
 import unittest.mock as mock
 from astropy.io import fits
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

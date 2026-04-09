@@ -17,7 +17,7 @@ import cv2
 import numpy as np
 import pyqtgraph as pg
 from mw4.gui.utilities.generateSprites import makePointer
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
 from PySide6.QtCore import QPointF
 

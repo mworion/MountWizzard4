@@ -16,7 +16,7 @@
 
 import pytest
 from mw4.gui.mainWaddon.tabSett_ParkPos import SettParkPos
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

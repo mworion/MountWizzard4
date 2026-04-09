@@ -15,7 +15,7 @@
 ###########################################################
 import numpy as np
 from functools import partial
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, guiSetText
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
 
 
 class EnvironWeather:

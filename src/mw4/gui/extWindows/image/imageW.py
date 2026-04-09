@@ -19,7 +19,8 @@ from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.gui.mainWaddon.tabModel import Model
-from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic, getTabIndex
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import image_ui
 from mw4.logic.file.fileHandler import FileHandler
 from mw4.logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader

@@ -27,12 +27,14 @@ class TLEParams:
     altitude: Angle = Angle(degrees=0)
     ra: Angle = Angle(hours=0)
     dec: Angle = Angle(degrees=0)
-    _flip: bool = False
+    flip: bool = False
     message: str = ""
     l0: str = ""
     l1: str = ""
     l2: str = ""
     name: str = ""
+    _jdStart: float = 0
+    _jdEnd: float = 0
 
     @property
     def jdStart(self):

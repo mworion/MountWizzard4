@@ -17,7 +17,7 @@ import mw4.gui
 import numpy as np
 import pytest
 from mw4.gui.mainWaddon.tabSat_Search import SatSearch
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtCore import QRect
 from PySide6.QtWidgets import QTableWidgetItem

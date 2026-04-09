@@ -15,7 +15,7 @@
 ###########################################################
 from astroquery.simbad import Simbad
 from mw4.base.tpool import Worker
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from PySide6.QtCore import QMutex
 from skyfield.api import Angle
 

@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-import mw4.gui.utilities.toolsQtWidget
+import mw4.gui.utilities.qtMain
 import pytest
 import shutil
 import unittest.mock as mock

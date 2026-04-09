@@ -14,7 +14,7 @@
 #
 ###########################################################
 from functools import partial
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from PySide6.QtWidgets import QListView
 
 

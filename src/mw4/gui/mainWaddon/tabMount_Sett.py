@@ -15,7 +15,7 @@
 ###########################################################
 import datetime
 from mw4.base import transform
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
 from mw4.mountcontrol.convert import (
     convertLatToAngle,
     convertLonToAngle,

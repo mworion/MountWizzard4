@@ -18,7 +18,7 @@ import logging
 import pytest
 from mw4.base.loggerMW import setupLogging
 from mw4.gui.mainWaddon.tabSett_Update import SettUpdate
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 

@@ -15,7 +15,7 @@
 ###########################################################
 from functools import partial
 from mw4.gui.extWindows.devicePopupW import DevicePopup
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, findIndexValue
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, findIndexValue
 from PySide6.QtWidgets import QListView
 
 

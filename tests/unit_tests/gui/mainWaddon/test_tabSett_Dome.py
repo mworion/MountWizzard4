@@ -15,7 +15,7 @@
 ###########################################################
 import pytest
 from mw4.gui.mainWaddon.tabSett_Dome import SettDome
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock

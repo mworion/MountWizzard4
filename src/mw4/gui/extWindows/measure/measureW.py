@@ -17,14 +17,14 @@ import numpy as np
 import pyqtgraph as pg
 from functools import partial
 from mw4.gui.extWindows.measure.measureAddons import dataPlots
-from mw4.gui.utilities import toolsQtWidget
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import measure_ui
 from PySide6.QtCore import QMutex
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QListView
 
 
-class MeasureWindow(toolsQtWidget.MWidget):
+class MeasureWindow(MWidget):
     """ """
 
     NUMBER_POINTS = 250

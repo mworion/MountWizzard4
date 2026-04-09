@@ -17,7 +17,7 @@ import numpy as np
 import pyqtgraph as pg
 from collections.abc import Iterator
 from mw4.gui.utilities.generateSprites import makePointer, makeSat
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import satelliteHor_ui
 from PySide6.QtCore import Qt
 from skyfield.api import EarthSatellite, Timescale

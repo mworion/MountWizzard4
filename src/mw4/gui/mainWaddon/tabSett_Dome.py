@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-from mw4.gui.utilities.toolsQtWidget import img2pixmap
+from mw4.gui.utilities.qtHelpers import img2pixmap
 
 
 class SettDome:

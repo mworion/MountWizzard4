@@ -20,13 +20,13 @@ from mw4.base import packageConfig
 from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.styles.styles import Styles
-from mw4.gui.utilities.toolsQtWidget import (
-    MWidget,
+from mw4.gui.utilities.qtHelpers import (
     changeStyleDynamic,
+    getTabAndIndex,
     getTabIndex,
     setTabAndIndex,
-    getTabAndIndex,
 )
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.logic.profiles.profile import loadConfig, saveConfig
 from mw4.mountcontrol.obsSite import ObsSite

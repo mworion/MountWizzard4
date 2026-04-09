@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 
 
 class Analysis:

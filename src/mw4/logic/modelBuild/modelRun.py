@@ -17,7 +17,7 @@ import json
 import logging
 import time
 from mw4.base.transform import JNowToJ2000
-from mw4.gui.utilities.toolsQtWidget import sleepAndEvents
+from mw4.gui.utilities.qtHelpers import sleepAndEvents
 from mw4.logic.modelBuild.modelRunSupport import convertAngleToFloat, writeRetrofitData
 from mw4.mountcontrol.progStar import ProgStar
 from pathlib import Path

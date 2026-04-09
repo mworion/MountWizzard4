@@ -14,7 +14,7 @@
 #
 ###########################################################
 from functools import partial
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic, clickable, guiSetText
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
 from mw4.mountcontrol.convert import valueToInt
 from PySide6.QtWidgets import QInputDialog
 

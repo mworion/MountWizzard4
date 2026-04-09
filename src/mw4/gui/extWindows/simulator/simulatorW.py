@@ -22,7 +22,8 @@ from mw4.gui.extWindows.simulator.pointer import SimulatorPointer
 from mw4.gui.extWindows.simulator.telescope import SimulatorTelescope
 from mw4.gui.extWindows.simulator.tools import linkModel
 from mw4.gui.extWindows.simulator.world import SimulatorWorld
-from mw4.gui.utilities.toolsQtWidget import MWidget, changeStyleDynamic
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import simulator_ui
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras

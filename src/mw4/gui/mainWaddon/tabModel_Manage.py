@@ -15,7 +15,7 @@
 ###########################################################
 import json
 import numpy as np
-from mw4.gui.utilities.toolsQtWidget import changeStyleDynamic
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.modelBuild.modelRunSupport import (
     convertAngleToFloat,
     convertFloatToAngle,

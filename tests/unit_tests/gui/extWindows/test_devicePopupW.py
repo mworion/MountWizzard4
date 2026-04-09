@@ -21,7 +21,7 @@ from mw4.base.ascomClass import AscomClass
 from mw4.base.indiClass import IndiClass
 from mw4.base.signalsDevices import Signals
 from mw4.gui.extWindows.devicePopupW import DevicePopup
-from mw4.gui.utilities.toolsQtWidget import MWidget
+from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

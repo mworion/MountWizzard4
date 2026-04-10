@@ -1,6 +1,8 @@
 name: Clean_Workflow_Logs
 
 on:
+  schedule:
+    - cron: "0 3 * * 0"
   workflow_dispatch:
     inputs:
       runs_older_than:
@@ -9,7 +11,7 @@ on:
         required: false
       runs_to_keep:
         description: "The amount of latest workflows runs to keep"
-        default: "10"
+        default: "5"
         required: false
 
 jobs:
@@ -20,5 +22,5 @@ jobs:
     steps:
       - uses: igorjs/gh-actions-clean-workflow@v6
         with:
-          runs_older_than: ${{ github.event.inputs.runs_older_than }} # optional
-          runs_to_keep: ${{ github.event.inputs.runs_to_keep }} # optional
+          runs_older_than: ${{ github.event.inputs.runs_older_than || '28' }}
+          runs_to_keep: ${{ github.event.inputs.runs_to_keep || '5' }}

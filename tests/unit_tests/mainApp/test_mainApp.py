@@ -74,6 +74,15 @@ def test_send_cyclic(app):
         app.timerMgr.emitCyclic()
 
 
+def test_aboutToQuit(app):
+    """aboutToQuit must stop the timer manager and all mount timers."""
+    with mock.patch.object(app.timerMgr, "stop") as mockStop:
+        with mock.patch.object(app.mount, "stopAllMountTimers") as mockStopMount:
+            app.aboutToQuit()
+    mockStop.assert_called_once()
+    mockStopMount.assert_called_once()
+
+
 def test_quit(app):
     with mock.patch.object(app, "aboutToQuit"):
         with mock.patch.object(app.application, "quit"):

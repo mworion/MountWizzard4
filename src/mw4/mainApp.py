@@ -98,6 +98,7 @@ class MountWizzard4(QObject):
     update0_1s = Signal()
     update1s = Signal()
     update3s = Signal()
+    update10s = Signal()
     update30s = Signal()
     update3m = Signal()
     update30m = Signal()

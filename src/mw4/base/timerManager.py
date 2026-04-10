@@ -24,6 +24,7 @@ CYCLIC_SCHEDULE: list[tuple[int, int, str]] = [
     (1, 0, "update0_1s"),
     (1 * 10, 5, "update1s"),
     (3 * 10, 10, "update3s"),
+    (10 * 10, 20, "update10s"),
     (30 * 10, 25, "update30s"),
     (3 * 60 * 10, 12, "update3m"),
     (30 * 60 * 10, 15, "update30m"),

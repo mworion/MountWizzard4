@@ -15,51 +15,51 @@
 ###########################################################
 import platform
 import time
+from typing import Any, Callable
 
 if platform.system() == "Windows":
     from pythoncom import CoInitialize, CoUninitialize
     from win32com import client
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
-from PySide6.QtCore import QMutex, QTimer
+from PySide6.QtCore import QMutex, QThreadPool, QTimer
 
 
 class AscomClass(DriverData):
     """ """
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
-        self.parent = parent
-        self.app = parent.app
-        self.data = parent.data
-        self.signals = parent.signals
-        self.msg = parent.app.msg
-        self.deviceType = parent.deviceType
-        self.threadPool = parent.app.threadPool
-        self.updateRate = 3000
-        self.loadConfig = False
-        self.tM = QMutex()
+        self.parent: Any = parent
+        self.app: Any = parent.app
+        self.data: dict = parent.data
+        self.signals: Any = parent.signals
+        self.msg: Any = parent.app.msg
+        self.deviceType: str = parent.deviceType
+        self.threadPool: QThreadPool = parent.app.threadPool
+        self.updateRate: int = 3000
+        self.loadConfig: bool = False
+        self.tM: QMutex = QMutex()
         self.worker: Worker | None = None
         self.workerData: Worker | None = None
         self.workerGetConfig: Worker | None = None
         self.workerStatus: Worker | None = None
         self.workerConnect: Worker | None = None
-
-        self.client = None
-        self.propertyExceptions: list = []
+        self.client: Any = None
+        self.propertyExceptions: list[str] = []
         self.deviceName: str = ""
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
 
-        self.defaultConfig = {
+        self.defaultConfig: dict[str, Any] = {
             "deviceName": "",
         }
 
-        self.cyclePollStatus = QTimer()
+        self.cyclePollStatus: QTimer = QTimer()
         self.cyclePollStatus.setSingleShot(False)
         self.cyclePollStatus.timeout.connect(self.pollStatus)
 
-        self.cyclePollData = QTimer()
+        self.cyclePollData: QTimer = QTimer()
         self.cyclePollData.setSingleShot(False)
         self.cyclePollData.timeout.connect(self.pollData)
 
@@ -107,7 +107,7 @@ class AscomClass(DriverData):
         t = f"[{self.deviceName}] property [{valueProp}] set to: [{value}]"
         self.log.trace(t)
 
-    def callAscomMethod(self, methodString: str, param) -> None:
+    def callAscomMethod(self, methodString: str, param: Any) -> None:
         if methodString in self.propertyExceptions:
             return
 
@@ -181,12 +181,12 @@ class AscomClass(DriverData):
             self.msg.emit(0, "ASCOM ", "Device found", f"{self.deviceName}")
 
     @staticmethod
-    def callerInitUnInit(fn, *args, **kwargs) -> None:
+    def callerInitUnInit(fn: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
         CoInitialize()
         fn(*args, **kwargs)
         CoUninitialize()
 
-    def callMethodThreaded(self, fn, *args, cb_res=None, cb_fin=None, **kwargs) -> None:
+    def callMethodThreaded(self, fn: Callable[..., Any], *args: Any, cb_res: Callable | None = None, cb_fin: Callable | None = None, **kwargs: Any) -> None:
         """
         callMethodThreaded is done mainly for ASCOM ctypes interfaces which take
         longer to end and should not slow down the gui thread itself. All called

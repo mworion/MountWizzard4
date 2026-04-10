@@ -16,6 +16,8 @@
 import logging
 import os
 import sys
+from types import TracebackType
+from typing import Any, Callable
 from PySide6.QtCore import QObject, QRunnable, Signal, Slot
 
 
@@ -30,7 +32,7 @@ class WorkerSignals(QObject):
 class Worker(QRunnable):
     """ """
 
-    def __init__(self, fn, *args, **kwargs):
+    def __init__(self, fn: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
         super().__init__()
         self.setAutoDelete(False)
         self.log = logging.getLogger("MW4")
@@ -39,7 +41,7 @@ class Worker(QRunnable):
         self.kwargs = kwargs
         self.signals = WorkerSignals()
 
-    def formatTbFrame(self, tb):
+    def formatTbFrame(self, tb: TracebackType) -> str:
         """Build a formatted string for a single traceback frame."""
         file = os.path.basename(tb.tb_frame.f_code.co_filename)
         line = tb.tb_lineno
@@ -48,7 +50,7 @@ class Worker(QRunnable):
         return eStr
 
     @Slot()
-    def run(self):
+    def run(self) -> None:
         try:
             result = self.fn(*self.args, **self.kwargs)
 

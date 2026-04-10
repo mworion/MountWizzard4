@@ -18,27 +18,27 @@ import time
 import uuid
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QThreadPool, QTimer
 from typing import Any
 
 
 class AlpacaClass(DriverData):
     """ """
 
-    ALPACA_TIMEOUT = 3
-    CLIENT_ID = uuid.uuid4().int % 2**16
+    ALPACA_TIMEOUT: int = 3
+    CLIENT_ID: int = uuid.uuid4().int % 2**16
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
-        self.app = parent.app
-        self.msg = parent.app.msg
-        self.data = parent.data
-        self.signals = parent.signals
-        self.threadPool = parent.app.threadPool
+        self.app: Any = parent.app
+        self.msg: Any = parent.app.msg
+        self.data: dict = parent.data
+        self.signals: Any = parent.signals
+        self.threadPool: QThreadPool = parent.app.threadPool
         self.updateRate: int = 1000
         self.loadConfig: bool = False
-        self.propertyExceptions: list = []
-        self._host: tuple = ("localhost", 11111)
+        self.propertyExceptions: list[str] = []
+        self._host: tuple[str, int] = ("localhost", 11111)
         self._port: int = 11111
         self._hostaddress: str = "localhost"
         self.protocol: str = "http"
@@ -47,7 +47,7 @@ class AlpacaClass(DriverData):
         self.deviceType: str = ""
         self.number: int = 0
 
-        self.defaultConfig: dict = {
+        self.defaultConfig: dict[str, Any] = {
             "deviceName": "",
             "deviceList": [],
             "hostaddress": "localhost",
@@ -66,56 +66,55 @@ class AlpacaClass(DriverData):
         self.workerData: Worker | None = None
         self.workerConnect: Worker | None = None
 
-        self.cycleDevice = QTimer()
+        self.cycleDevice: QTimer = QTimer()
         self.cycleDevice.setSingleShot(False)
         self.cycleDevice.timeout.connect(self.pollStatus)
-        self.cycleData = QTimer()
+        self.cycleData: QTimer = QTimer()
         self.cycleData.setSingleShot(False)
         self.cycleData.timeout.connect(self.pollData)
 
     @property
-    def host(self):
+    def host(self) -> tuple[str, int]:
         return self._host
 
     @host.setter
-    def host(self, value):
+    def host(self, value: tuple[str, int]) -> None:
         self._host = value
 
     @property
-    def hostaddress(self):
+    def hostaddress(self) -> str:
         return self._hostaddress
 
     @hostaddress.setter
-    def hostaddress(self, value):
+    def hostaddress(self, value: str) -> None:
         self._hostaddress = value
         self._host = (self._hostaddress, self._port)
 
     @property
-    def port(self):
+    def port(self) -> int:
         return self._port
 
     @port.setter
-    def port(self, value):
+    def port(self, value: int | str) -> None:
         self._port = int(value)
         self._host = (self._hostaddress, self._port)
 
     @property
-    def baseUrl(self):
+    def baseUrl(self) -> str:
         return self.generateBaseUrl()
 
     @property
-    def deviceName(self):
+    def deviceName(self) -> str:
         return self._deviceName
 
     @deviceName.setter
-    def deviceName(self, value):
+    def deviceName(self, value: str) -> None:
         self._deviceName = value
         valueSplit = value.split(":")
         if len(valueSplit) != 3:
             return
         self.deviceType = valueSplit[1].strip()
-        self.number = valueSplit[2].strip()
-        self.number = int(self.number)
+        self.number = int(valueSplit[2].strip())
 
     def generateBaseUrl(self) -> str:
         val = f"{self.protocol}://{self.host[0]}:{self.host[1]}/api/v{self.apiVersion}/{self.deviceType}/{self.number}"
@@ -310,10 +309,10 @@ class AlpacaClass(DriverData):
             self.signals.deviceConnected.emit(f"{self.deviceName}")
             self.msg.emit(0, "ALPACA", "Device found", f"{self.deviceName}")
 
-    def processPolledData(self):
+    def processPolledData(self) -> None:
         pass
 
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         pass
 
     def pollData(self) -> None:

@@ -16,8 +16,8 @@
 """Cyclic timer management with named interval constants."""
 from PySide6.QtCore import QObject, QTimer
 
-TICK_INTERVAL_MS = 100
-TICKS_PER_SECOND = TICK_INTERVAL_MS // 100
+TICK_INTERVAL_MS: int = 100
+TICKS_PER_SECOND: int = TICK_INTERVAL_MS // 100
 
 # Cyclic schedule: (interval_in_ticks, phase_offset, signal_attribute_name)
 # A signal is emitted when ``(counter + offset) % interval == 0``.
@@ -42,9 +42,9 @@ class CyclicTimerManager(QObject):
 
     def __init__(self, app: QObject, parent: QObject | None = None) -> None:
         super().__init__(parent)
-        self._app = app
+        self._app: QObject = app
         self.counter: int = 0
-        self._timer = QTimer(self)
+        self._timer: QTimer = QTimer(self)
         self._timer.setSingleShot(False)
         self._timer.timeout.connect(self._onTick)
 

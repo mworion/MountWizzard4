@@ -21,8 +21,8 @@ from skyfield.api import Angle
 from skyfield.timelib import Time
 from skyfield.toposlib import GeographicPosition
 
-log = logging.getLogger()
-mutex = QMutex()
+log: logging.Logger = logging.getLogger()
+mutex: QMutex = QMutex()
 
 
 def JNowToJ2000(ra: Angle, dec: Angle, timeJD: Time) -> tuple[Angle, Angle]:

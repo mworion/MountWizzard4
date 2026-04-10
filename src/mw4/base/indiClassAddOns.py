@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-INDIGO = {
+INDIGO: dict[str, str] = {
     # numbers
     "WEATHER_PARAMETERS.WEATHER_BAROMETER": "WEATHER_PARAMETERS.WEATHER_PRESSURE",
     # SQM device
@@ -64,7 +64,7 @@ INDIGO = {
     "CLOUDS.CloudSkyTemperature": "SKY_QUALITY.SKY_TEMPERATURE",
     "SKYQUALITY.MPAS": "SKY_QUALITY.SKY_BRIGHTNESS",
 }
-INDI_TYPES = {
+INDI_TYPES: dict[str, int] = {
     "telescope": (1 << 0),
     "camera": (1 << 1),
     "guider": (1 << 2),

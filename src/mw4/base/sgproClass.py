@@ -15,62 +15,63 @@
 ###########################################################
 import json
 import requests
+from typing import Any
 from mw4.base.driverDataClass import DriverData, RemoteDeviceShutdown
 from mw4.base.tpool import Worker
-from PySide6.QtCore import QMutex, QTimer
+from PySide6.QtCore import QMutex, QThreadPool, QTimer
 
 
 class SGProClass(DriverData):
     """ """
 
-    SGPRO_TIMEOUT = 3
-    HOST_ADDR = "localhost"
-    PORT = 59590
-    PROTOCOL = "http"
-    BASE_URL = f"{PROTOCOL}://{HOST_ADDR}:{PORT}"
-    DEVICE_TYPE = "Camera"
+    SGPRO_TIMEOUT: int = 3
+    HOST_ADDR: str = "localhost"
+    PORT: int = 59590
+    PROTOCOL: str = "http"
+    BASE_URL: str = f"{PROTOCOL}://{HOST_ADDR}:{PORT}"
+    DEVICE_TYPE: str = "Camera"
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
-        self.parent = parent
-        self.app = parent.app
-        self.data = parent.data
-        self.msg = parent.app.msg
-        self.signals = parent.signals
-        self.threadPool = parent.app.threadPool
+        self.parent: Any = parent
+        self.app: Any = parent.app
+        self.data: dict = parent.data
+        self.msg: Any = parent.app.msg
+        self.signals: Any = parent.signals
+        self.threadPool: QThreadPool = parent.app.threadPool
         self.updateRate: int = 1000
         self.loadConfig: bool = False
         self._deviceName: str = ""
-        self.defaultConfig = {
+        self.defaultConfig: dict[str, Any] = {
             "deviceList": ["SGPro"],
             "deviceName": "SGPro",
         }
-        self.signalRS = RemoteDeviceShutdown()
+        self.signalRS: RemoteDeviceShutdown = RemoteDeviceShutdown()
 
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
         self.workerData: Worker | None = None
         self.workerGetConfig: Worker | None = None
         self.workerStatus: Worker | None = None
-        self.mutexPollStatus = QMutex()
+        self.mutexPollStatus: QMutex = QMutex()
 
-        self.cycleDevice = QTimer()
+        self.cycleDevice: QTimer = QTimer()
         self.cycleDevice.setSingleShot(False)
         self.cycleDevice.timeout.connect(self.pollStatus)
-        self.cycleData = QTimer()
+        self.cycleData: QTimer = QTimer()
         self.cycleData.setSingleShot(False)
         self.cycleData.timeout.connect(self.pollData)
         self.signalRS.signalRemoteShutdown.connect(self.stopCommunication)
 
     @property
-    def deviceName(self):
+    def deviceName(self) -> str:
         return self._deviceName
 
     @deviceName.setter
-    def deviceName(self, value):
+    def deviceName(self, value: str) -> None:
         self._deviceName = value
 
-    def requestProperty(self, valueProp, params: dict = None) -> dict:
+    def requestProperty(self, valueProp: str, params: dict | None = None) -> dict:
         try:
             t = f"SGPro: [{self.BASE_URL}/{valueProp}?format=json]"
             if params:

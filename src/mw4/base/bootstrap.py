@@ -33,7 +33,7 @@ from mw4.base.loggerMW import setupLogging
 from pathlib import Path
 from PySide6.QtCore import qVersion
 
-log = logging.getLogger("MW4")
+log: logging.Logger = logging.getLogger("MW4")
 
 
 def configureEnvironment() -> None:

@@ -19,6 +19,7 @@ import time
 from functools import partial, partialmethod
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
+from typing import Callable
 
 if not hasattr(logging.Logger, "_set_defaults"):
     # noinspection PyUnusedLocal
@@ -35,10 +36,10 @@ class LoggerWriter:
     how-to-redirect-stdout-and-stderr-to-logger-in-python
     """
 
-    def __init__(self, level, mode, std):
-        self.level = level
-        self.mode = mode
-        self.standard = std
+    def __init__(self, level: Callable[[str], None], mode: str, std: object) -> None:
+        self.level: Callable[[str], None] = level
+        self.mode: str = mode
+        self.standard: object = std
 
     def write(self, message: str) -> None:
         first = True

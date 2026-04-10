@@ -14,44 +14,45 @@
 #
 ###########################################################
 import logging
+from typing import Any
 from mw4.gui.utilities.qtHelpers import sleepAndEvents
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO
 from mw4.indibase.indiClient import Client
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QThreadPool, QTimer
 
 
 class IndiClass:
     log = logging.getLogger("MW4")
-    RETRY_DELAY = 1500
-    NUMBER_RETRY = 5
+    RETRY_DELAY: int = 1500
+    NUMBER_RETRY: int = 5
 
-    def __init__(self, parent):
-        self.parent = parent
-        self.app = parent.app
-        self.msg = parent.app.msg
-        self.data = parent.data
-        self.signals = parent.signals
-        self.loadConfig = parent.loadConfig
-        self.updateRate = parent.updateRate
-        self.threadPool = parent.app.threadPool
-        self.client = Client(host=None)
+    def __init__(self, parent: Any) -> None:
+        self.parent: Any = parent
+        self.app: Any = parent.app
+        self.msg: Any = parent.app.msg
+        self.data: dict = parent.data
+        self.signals: Any = parent.signals
+        self.loadConfig: bool = parent.loadConfig
+        self.updateRate: int = parent.updateRate
+        self.threadPool: QThreadPool = parent.app.threadPool
+        self.client: Client = Client(host=None)
         self.client.signals.deviceConnected.connect(self.chainDeviceConnected)
         self.client.signals.deviceDisconnected.connect(self.chainDeviceDisconnected)
         self.client.signals.serverConnected.connect(self.chainServerConnected)
         self.client.signals.serverDisconnected.connect(self.chainServerDisconnected)
 
-        self.deviceName = ""
-        self.device = None
-        self.deviceConnected = False
-        self._hostaddress = None
-        self._host = None
-        self._port = None
-        self.discoverType = None
-        self.discoverList = None
-        self.isINDIGO = False
-        self.messages = False
+        self.deviceName: str = ""
+        self.device: Any = None
+        self.deviceConnected: bool = False
+        self._hostaddress: str | None = None
+        self._host: tuple[str, int] | None = None
+        self._port: int | None = None
+        self.discoverType: int | None = None
+        self.discoverList: list[str] = []
+        self.isINDIGO: bool = False
+        self.messages: bool = False
 
-        self.defaultConfig = {
+        self.defaultConfig: dict[str, Any] = {
             "deviceName": "",
             "deviceList": [],
             "hostaddress": "localhost",
@@ -61,7 +62,7 @@ class IndiClass:
             "updateRate": 1000,
         }
 
-        self.timerRetry = QTimer()
+        self.timerRetry: QTimer = QTimer()
         self.timerRetry.setSingleShot(True)
         self.timerRetry.timeout.connect(self.startRetry)
         self.client.signals.newDevice.connect(self.newDevice)
@@ -83,42 +84,42 @@ class IndiClass:
         self.client.signals.newMessage.connect(self.updateMessage)
 
     @property
-    def host(self):
+    def host(self) -> tuple[str, int] | None:
         return self._host
 
     @host.setter
-    def host(self, value):
+    def host(self, value: tuple[str, int] | None) -> None:
         self._host = value
         self.client.host = value
 
     @property
-    def hostaddress(self):
+    def hostaddress(self) -> str | None:
         return self._hostaddress
 
     @hostaddress.setter
-    def hostaddress(self, value):
+    def hostaddress(self, value: str | None) -> None:
         self._hostaddress = value
         self.client.host = (self._hostaddress, self._port)
 
     @property
-    def port(self):
+    def port(self) -> int | None:
         return self._port
 
     @port.setter
-    def port(self, value):
+    def port(self, value: int | str) -> None:
         self._port = int(value)
         self.client.host = (self._hostaddress, self._port)
 
-    def chainServerConnected(self):
+    def chainServerConnected(self) -> None:
         self.signals.serverConnected.emit()
 
-    def chainServerDisconnected(self, deviceName):
+    def chainServerDisconnected(self, deviceName: str) -> None:
         self.signals.serverDisconnected.emit(deviceName)
 
-    def chainDeviceConnected(self, deviceName):
+    def chainDeviceConnected(self, deviceName: str) -> None:
         self.signals.deviceConnected.emit(deviceName)
 
-    def chainDeviceDisconnected(self, deviceName):
+    def chainDeviceDisconnected(self, deviceName: str) -> None:
         self.signals.deviceDisconnected.emit(deviceName)
 
     def serverConnected(self) -> None:
@@ -289,7 +290,7 @@ class IndiClass:
         if interface & self.discoverType:
             self.discoverList.append(deviceName)
 
-    def discoverDevices(self, deviceType: str) -> list:
+    def discoverDevices(self, deviceType: str) -> list[str]:
         self.discoverList = []
         self.discoverType = INDI_TYPES.get(deviceType, 0)
         self.client.signals.defText.connect(self.addDiscoveredDevice)

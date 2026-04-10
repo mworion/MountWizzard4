@@ -25,7 +25,7 @@ from mw4.base.bootstrap import (
     setupWorkDirs,
     writeSystemInfo,
 )
-from mw4.gui.utilities.splashScreen import SplashScreen
+from mw4.gui.extWindows.splashScreen import SplashScreen
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtGui import QIcon

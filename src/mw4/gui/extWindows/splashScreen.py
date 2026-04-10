@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-import numpy as np
+"""Splash screen with progress bar shown during application startup."""
 from importlib.resources import as_file, files
 from PySide6.QtCore import QRectF, Qt
 from PySide6.QtGui import QColor, QPixmap
@@ -42,13 +42,10 @@ class SplashScreen:
 
         flags = Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.X11BypassWindowManagerHint
         self.qss = QSplashScreen(self._pxm, flags)
-        self.qss.height()
-        self.qss.width()
         self.msg = ""
         self.maxv = 100.0
         self.minv = 0.0
         self.cval = 0.0
-        self.qss.__drawContents__ = self.qss.drawContents
         self.qss.drawContents = self.drawContents
         self.qss.show()
         self.qss.raise_()
@@ -59,9 +56,14 @@ class SplashScreen:
         self.qss.close()
 
     def setValue(self, val):
-        for i in np.arange(self.cval, val, self.maxv / 5.0):
-            self.cval = i
+        step = self.maxv / 5.0
+        v = self.cval
+        while v < val:
+            self.cval = v
             self.update()
+            v += step
+        self.cval = val
+        self.update()
 
     def showMessage(self, msg):
         self.msg = msg
@@ -72,9 +74,9 @@ class SplashScreen:
         QApplication.processEvents()
 
     def drawContents(self, painter):
-        view_port = painter.viewport()
-        w = view_port.right()
-        h = view_port.bottom()
+        viewPort = painter.viewport()
+        w = viewPort.right()
+        h = viewPort.bottom()
 
         painter.setPen(QColor(43, 192, 255))
         painter.setBrush(QColor(0, 0, 0, 128))
@@ -96,3 +98,4 @@ class SplashScreen:
 
     def finish(self, qwid):
         self.qss.finish(qwid)
+

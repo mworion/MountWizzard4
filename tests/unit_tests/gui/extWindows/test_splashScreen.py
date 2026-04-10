@@ -16,7 +16,7 @@
 import pytest
 import unittest.mock as mock
 from importlib.resources import as_file, files
-from mw4.gui.utilities.splashScreen import SplashScreen
+from mw4.gui.extWindows.splashScreen import SplashScreen
 from PySide6.QtGui import QPainter, QPixmap
 from PySide6.QtWidgets import QWidget
 
@@ -55,18 +55,13 @@ def test_drawContents():
 
 def test_finish():
     app = SplashScreen(QWidget())
-    app.finish(QWidget())
+    with mock.patch.object(app, "update"):
+        with mock.patch.object(app.qss, "finish"):
+            app.finish(QWidget())
 
 
 def test_init():
     SplashScreen(QWidget())
-
-
-def test_finish():
-    app = SplashScreen(QWidget())
-    with mock.patch.object(app, "update"):
-        with mock.patch.object(app.qss, "finish"):
-            app.finish(QWidget())
 
 
 def test_close():
@@ -74,3 +69,4 @@ def test_close():
     with mock.patch.object(app, "update"):
         with mock.patch.object(app.qss, "close"):
             app.close()
+

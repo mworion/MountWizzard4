@@ -47,20 +47,15 @@ def mgr(mock_app):
 
 def test_init(mgr):
     assert mgr.counter == 0
-    assert mgr.timer is not None
-    assert not mgr.timer.isActive()
+    assert mgr._timer is not None
+    assert not mgr._timer.isActive()
 
 
 def test_start_stop(mgr):
     mgr.start()
-    assert mgr.timer.isActive()
+    assert mgr._timer.isActive()
     mgr.stop()
-    assert not mgr.timer.isActive()
-
-
-def test_timer_property_returns_qtimer(mgr):
-    timer = mgr.timer
-    assert timer is mgr._timer
+    assert not mgr._timer.isActive()
 
 
 def test_counter_read_write(mgr):

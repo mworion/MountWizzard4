@@ -118,10 +118,6 @@ class KeypadWindow(MWidget):
         super().keyPressEvent(keyEvent)
 
     def showWindow(self) -> None:
-        if not self.app.mount.setting.webInterfaceStat:
-            self.msg.emit(0, "System", "Mount", "Enable webinterface")
-            if not self.app.mount.setting.setWebInterface(True):
-                self.msg.emit(2, "System", "Mount", "Could not enable webinterface")
         self.app.colorChange.connect(self.colorChange)
         self.app.hostChanged.connect(self.hostChanged)
         self.signals.textRow.connect(self.writeTextRow)

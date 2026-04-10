@@ -36,10 +36,10 @@ class MountDevice:
     CYCLE_POINTING = 500
     CYCLE_DOME = 950
     CYCLE_CLOCK = 1000
-    CYCLE_MOUNT_UP = 2000
+    CYCLE_MOUNT_UP = 1000
     CYCLE_SETTING = 3100
     DEFAULT_PORT = 3492
-    SOCKET_TIMEOUT = 2
+    SOCKET_TIMEOUT = 1
     log = logging.getLogger("MW4")
 
     def __init__(self, app, host, MAC, pathToData, verbose):

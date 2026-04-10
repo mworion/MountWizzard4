@@ -22,8 +22,6 @@ from mw4.mountcontrol.setting import Setting
 
 
 class SettMount:
-    """ """
-
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app

@@ -19,8 +19,6 @@ from PySide6.QtGui import QVector3D
 
 
 class SimulatorDome:
-    """ """
-
     def __init__(self, parent, app):
         super().__init__()
         self.parent = parent

@@ -23,8 +23,6 @@ from PySide6.QtWidgets import QTableWidgetItem
 
 
 class MessageWindow(MWidget):
-    """ """
-
     log = logging.getLogger("MW4")
 
     TEXT_NORMAL = 0

@@ -23,8 +23,6 @@ from mw4.gui.utilities.qtHelpers import getTabIndex, sleepAndEvents, svg2pixmap
 
 
 class SettMisc:
-    """ """
-
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app

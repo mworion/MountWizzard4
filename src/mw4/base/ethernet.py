@@ -31,24 +31,7 @@ def checkFormatMAC(value: str) -> str:
             return ""
 
         for char in chunk:
-            if char not in [
-                "0",
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "7",
-                "8",
-                "9",
-                "A",
-                "B",
-                "C",
-                "D",
-                "E",
-                "F",
-            ]:
+            if char.upper() not in "0123456789ABCDEF":
                 return ""
 
     value = "{:2s}:{:2s}:{:2s}:{:2s}:{:2s}:{:2s}".format(*value)

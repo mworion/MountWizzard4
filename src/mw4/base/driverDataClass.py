@@ -18,8 +18,6 @@ from PySide6.QtCore import QObject, Signal
 
 
 class RemoteDeviceShutdown(QObject):
-    """ """
-
     signalRemoteShutdown = Signal()
 
 

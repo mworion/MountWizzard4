@@ -17,7 +17,6 @@
 from PySide6.QtCore import QObject, QTimer
 
 TICK_INTERVAL_MS: int = 100
-TICKS_PER_SECOND: int = TICK_INTERVAL_MS // 100
 
 # Cyclic schedule: (interval_in_ticks, phase_offset, signal_attribute_name)
 # A signal is emitted when ``(counter + offset) % interval == 0``.
@@ -27,7 +26,7 @@ CYCLIC_SCHEDULE: list[tuple[int, int, str]] = [
     (3 * 10, 10, "update3s"),
     (30 * 10, 25, "update30s"),
     (3 * 60 * 10, 12, "update3m"),
-    (60 * 60 * 10, 15, "update30m"),
+    (30 * 60 * 10, 15, "update30m"),
 ]
 
 # Start schedule: (tick_count, signal_attribute_name)

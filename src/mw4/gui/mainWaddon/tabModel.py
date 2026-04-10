@@ -22,8 +22,6 @@ from pathlib import Path
 
 
 class Model:
-    """ """
-
     STATUS_IDLE = 0
     STATUS_MODEL_BATCH = 1
     STATUS_MODEL_FILE = 2

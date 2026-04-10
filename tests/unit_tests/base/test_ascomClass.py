@@ -76,37 +76,36 @@ def test_getAscomProperty_1(function):
 
 
 def test_getAscomProperty_2(function):
+    # Force getattr to fail by using a client with no matching attribute
     function.propertyExceptions = ["test"]
     function.deviceConnected = True
-    with mock.patch.object(mw4.base.ascomClass, "eval", side_effect=Exception):
-        val = function.getAscomProperty("Connected")
-        assert val is None
-        assert "Connected" in function.propertyExceptions
+    function.client = None  # getattr(None, "Connected") raises AttributeError
+    val = function.getAscomProperty("Connected")
+    assert val is None
+    assert "Connected" in function.propertyExceptions
 
 
 def test_getAscomProperty_3(function):
     class Client:
-        connect = True
+        Connected = True
 
     function.client = Client()
     function.propertyExceptions = ["test"]
     function.deviceConnected = True
-    with mock.patch.object(mw4.base.ascomClass, "eval", return_value="1"):
-        val = function.getAscomProperty("Connected")
-        assert val
+    val = function.getAscomProperty("Connected")
+    assert val
 
 
 def test_getAscomProperty_4(function):
     class Client:
-        connect = True
-        imagearray = None
+        Connected = True
+        ImageArray = "data"
 
     function.client = Client()
     function.propertyExceptions = ["test"]
     function.deviceConnected = True
-    with mock.patch.object(mw4.base.ascomClass, "eval", return_value="1"):
-        val = function.getAscomProperty("ImageArray")
-        assert val
+    val = function.getAscomProperty("ImageArray")
+    assert val
 
 
 def test_setAscomProperty_0(function):
@@ -122,19 +121,20 @@ def test_setAscomProperty_1(function):
 
 
 def test_setAscomProperty_2(function):
+    # Force setattr to fail by using None as the client
     function.propertyExceptions = ["test"]
     function.deviceConnected = True
-    with mock.patch.object(mw4.base.ascomClass, "exec", side_effect=Exception):
-        function.setAscomProperty("Connected", True)
-        assert "Connect" not in function.propertyExceptions
+    function.client = None  # setattr(None, ...) raises TypeError
+    function.setAscomProperty("Connected", True)
+    assert "Connected" not in function.propertyExceptions
 
 
 def test_setAscomProperty_3(function):
     function.propertyExceptions = ["test"]
     function.deviceConnected = True
-    with mock.patch.object(mw4.base.ascomClass, "exec", side_effect=Exception):
-        function.setAscomProperty("Names", True)
-        assert "Names" in function.propertyExceptions
+    function.client = None  # setattr(None, ...) raises TypeError
+    function.setAscomProperty("Names", True)
+    assert "Names" in function.propertyExceptions
 
 
 def test_setAscomProperty_4(function):
@@ -154,21 +154,23 @@ def test_callAscomMethod_1(function):
 
 
 def test_callAscomMethod_2(function):
+    # Force getattr to fail by using None as the client
     function.propertyExceptions = ["Test"]
-    with mock.patch.object(mw4.base.ascomClass, "exec", side_effect=Exception):
-        function.callAscomMethod("Connected", True)
-        assert "Connected" in function.propertyExceptions
+    function.client = None
+    function.callAscomMethod("Connected", True)
+    assert "Connected" in function.propertyExceptions
 
 
 def test_callAscomMethod_3(function):
     class Client:
-        Connect = False
+        @staticmethod
+        def Connected(val):
+            pass
 
     function.client = Client()
     function.propertyExceptions = ["Test"]
-    with mock.patch.object(mw4.base.ascomClass, "exec"):
-        function.callAscomMethod("Connected", True)
-        assert function.client
+    function.callAscomMethod("Connected", True)
+    assert function.client
 
 
 def test_getAndStoreAscomProperty(function):

@@ -22,16 +22,12 @@ from PySide6.QtCore import QObject, QRunnable, Signal, Slot
 
 
 class WorkerSignals(QObject):
-    """ """
-
     finished = Signal()
     error = Signal(object)
     result = Signal(object)
 
 
 class Worker(QRunnable):
-    """ """
-
     def __init__(self, fn: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
         super().__init__()
         self.setAutoDelete(False)

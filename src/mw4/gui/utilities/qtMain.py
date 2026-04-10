@@ -36,8 +36,6 @@ from skyfield.api import Time
 
 
 class MWidget(QWidget, Styles):
-    """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(self):
@@ -56,6 +54,7 @@ class MWidget(QWidget, Styles):
         self.setWindowFlags(self.windowFlags() | newFlag)
         self.setWindowIcon(self.mwIcon)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.app = None
         self.ui = None
 
@@ -81,10 +80,10 @@ class MWidget(QWidget, Styles):
         Pressing F5 makes a screen copy of the actual window
         Pressing F6 makes a screen copy of all open windows
         """
-        if keyEvent.key() == 16777268:
+        if keyEvent.key() == Qt.Key.Key_F5:
             self.saveWindowAsPNG(self)
             return
-        elif keyEvent.key() == 16777269:
+        elif keyEvent.key() == Qt.Key.Key_F6:
             self.saveAllWindowsAsPNG(self)
             return
         super().keyPressEvent(keyEvent)

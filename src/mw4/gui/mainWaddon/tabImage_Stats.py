@@ -20,8 +20,6 @@ from range_key_dict import RangeKeyDict
 
 
 class ImageStats:
-    """ """
-
     WATNEY = RangeKeyDict(
         {
             (0.001, 0.2): "Passes 14 (watneyqdb-14-20)",

@@ -18,8 +18,6 @@ from mw4.base.indiClass import IndiClass
 
 
 class CoverIndi(IndiClass):
-    """ """
-
     def __init__(self, parent):
         super().__init__(parent=parent)
         self.signals = parent.signals

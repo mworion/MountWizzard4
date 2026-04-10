@@ -16,10 +16,10 @@
 import logging
 import numpy as np
 import platform
-import time
 from astropy.io import fits
 from collections.abc import Callable
 from mw4.base.signalsDevices import Signals
+from mw4.gui.utilities.qtHelpers import sleepAndEvents
 from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.camera.cameraIndi import CameraIndi
 from mw4.logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
@@ -32,8 +32,6 @@ if platform.system() == "Windows":
 
 
 class Camera:
-    """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(self, app):
@@ -174,7 +172,7 @@ class Camera:
         timeLeft = exposureTime
         while self.exposing and func():
             text = f"expose {timeLeft:3.0f} s"
-            time.sleep(0.2)
+            sleepAndEvents(200)
             self.signals.message.emit(text)
             if timeLeft >= 0.1:
                 timeLeft -= 0.1
@@ -183,21 +181,21 @@ class Camera:
 
     def waitStart(self) -> None:
         while self.exposing and "integrating" not in self.data.get("Device.Message"):
-            time.sleep(0.2)
+            sleepAndEvents(200)
 
     def waitDownload(self) -> None:
         self.signals.message.emit("download")
         while self.exposing and "downloading" in self.data.get("Device.Message"):
-            time.sleep(0.2)
+            sleepAndEvents(200)
 
     def waitSave(self) -> None:
         self.signals.message.emit("saving")
         while self.exposing and "image is ready" in self.data.get("Device.Message"):
-            time.sleep(0.2)
+            sleepAndEvents(200)
 
     def waitFinish(self, function: Callable, param: dict) -> None:
         while self.exposing and not function(param):
-            time.sleep(0.2)
+            sleepAndEvents(200)
 
     def retrieveImage(self, function: Callable, param: dict) -> np.ndarray:
         if not self.exposing:

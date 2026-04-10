@@ -19,8 +19,6 @@ from mw4.gui.utilities.gNormalScatter import NormalScatter
 
 
 class PolarScatter(NormalScatter):
-    """ """
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.p[0].setAspectLocked(True)

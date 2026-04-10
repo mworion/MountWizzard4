@@ -26,14 +26,10 @@ from xisf import XISF
 
 
 class FileHandlerSignals(QObject):
-    """ """
-
     imageLoaded = Signal()
 
 
 class FileHandler:
-    """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(

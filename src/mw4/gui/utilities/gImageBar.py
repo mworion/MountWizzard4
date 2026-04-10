@@ -20,8 +20,6 @@ from PySide6.QtGui import QTransform
 
 
 class ImageBar(PlotBase):
-    """ """
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.lx = None

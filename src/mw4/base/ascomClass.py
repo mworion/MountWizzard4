@@ -26,7 +26,15 @@ from PySide6.QtCore import QMutex, QThreadPool, QTimer
 
 
 class AscomClass(DriverData):
-    """ """
+    """ASCOM driver adapter.
+
+    Wraps a win32com dispatch object and exposes a uniform
+    startCommunication / stopCommunication / poll lifecycle that is
+    compatible with AlpacaClass and NINAClass.  All COM calls that may
+    block are dispatched through the shared QThreadPool via Worker.
+    CoInitialize / CoUninitialize are handled per-thread by
+    callerInitUnInit.
+    """
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
@@ -76,11 +84,10 @@ class AscomClass(DriverData):
         if valueProp in self.propertyExceptions:
             return value
 
-        cmd = "self.client." + valueProp
         try:
-            value = eval(cmd)
+            value = getattr(self.client, valueProp)
         except Exception as e:
-            t = f"[{self.deviceName}] [{cmd}], property [{valueProp}] not implemented: {e}"
+            t = f"[{self.deviceName}] property [{valueProp}] not implemented: {e}"
             self.log.debug(t)
             self.propertyExceptions.append(valueProp)
         else:
@@ -95,11 +102,10 @@ class AscomClass(DriverData):
         if valueProp in self.propertyExceptions:
             return
 
-        cmd = "self.client." + valueProp + " = value"
         try:
-            exec(cmd)
+            setattr(self.client, valueProp, value)
         except Exception as e:
-            t = f"[{self.deviceName}] [{cmd}], property [{valueProp}] not implemented: {e}"
+            t = f"[{self.deviceName}] property [{valueProp}] not implemented: {e}"
             self.log.debug(t)
             if valueProp != "Connected":
                 self.propertyExceptions.append(valueProp)
@@ -111,12 +117,11 @@ class AscomClass(DriverData):
         if methodString in self.propertyExceptions:
             return
 
-        paramStr = f"{param}".rstrip(")").lstrip("(")
-        cmd = "self.client." + methodString + f"({paramStr})"
+        args = param if isinstance(param, tuple) else (param,)
         try:
-            exec(cmd)
+            getattr(self.client, methodString)(*args)
         except Exception as e:
-            t = f"[{self.deviceName}] [{cmd}], method [{methodString}] not implemented: {e}"
+            t = f"[{self.deviceName}] method [{methodString}] not implemented: {e}"
             self.log.debug(t)
             self.propertyExceptions.append(methodString)
             return

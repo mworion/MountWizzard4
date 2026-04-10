@@ -23,8 +23,6 @@ from PySide6.QtCore import QMutex
 
 
 class MeasureData:
-    """ """
-
     log = logging.getLogger("MW4")
     MAXSIZE = 48 * 60 * 60
 
@@ -49,7 +47,7 @@ class MeasureData:
     def collectDataDevices(self) -> None:
         self.devices.clear()
         deviceStat = self.app.deviceStat
-        deviceDrivers = self.app.mainW.mainWindowAddons.addons["SettDevice"].drivers
+        deviceDrivers = self.app.getActiveDrivers()
         devices = [device for device in deviceStat if deviceStat[device] is not None]
         for device in devices:
             if device not in measure:

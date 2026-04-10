@@ -24,8 +24,6 @@ if platform.system() == "Windows":
 
 
 class Cover:
-    """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(self, app):

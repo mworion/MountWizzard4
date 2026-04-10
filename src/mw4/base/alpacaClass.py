@@ -23,8 +23,6 @@ from typing import Any
 
 
 class AlpacaClass(DriverData):
-    """ """
-
     ALPACA_TIMEOUT: int = 3
     CLIENT_ID: int = uuid.uuid4().int % 2**16
 
@@ -320,7 +318,7 @@ class AlpacaClass(DriverData):
             return
         self.workerData = Worker(self.workerPollData)
         self.workerData.signals.result.connect(self.processPolledData)
-        self.threadPool.start(self.workerPollData)
+        self.threadPool.start(self.workerData)
 
     def pollStatus(self) -> None:
         if not self.deviceConnected:

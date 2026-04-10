@@ -22,8 +22,6 @@ from PySide6.QtCore import QMutex, QThreadPool, QTimer
 
 
 class SGProClass(DriverData):
-    """ """
-
     SGPRO_TIMEOUT: int = 3
     HOST_ADDR: str = "localhost"
     PORT: int = 59590

@@ -25,8 +25,6 @@ from skyfield.api import Angle, EarthSatellite
 
 
 class SatTrack(SatData):
-    """ """
-
     def __init__(self, mainW):
         super().__init__()
         self.mainW = mainW

@@ -19,8 +19,6 @@ import websocket
 
 
 class KeyPad:
-    """ """
-
     log = logging.getLogger("MW4")
 
     keyCodesA = {

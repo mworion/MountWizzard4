@@ -24,8 +24,6 @@ from scipy.ndimage import uniform_filter
 
 
 class PlotBase(pg.GraphicsLayoutWidget, Styles):
-    """ """
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs, show=True)
         pg.setConfigOptions(antialias=True, imageAxisOrder="row-major")

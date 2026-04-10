@@ -21,8 +21,6 @@ from skyfield import functions
 
 
 class SimulatorLaser:
-    """ """
-
     def __init__(self, parent, app):
         super().__init__()
         self.parent = parent

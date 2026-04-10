@@ -45,8 +45,6 @@ def HaDecToAltAz(ha: float, dec: float, lat: float) -> tuple[float, float]:
 
 
 class DataPoint:
-    """ """
-
     UNPROCESSED = 0
     FAILED = 1
     SOLVED = 2

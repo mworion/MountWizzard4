@@ -27,8 +27,6 @@ from skyfield.api import wgs84
 
 
 class MountSett:
-    """ """
-
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app

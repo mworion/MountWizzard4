@@ -25,8 +25,6 @@ from skyfield.toposlib import GeographicPosition
 
 
 class SatelliteHorizonWindow(MWidget):
-    """ """
-
     def __init__(self, app):
         super().__init__()
         self.app = app

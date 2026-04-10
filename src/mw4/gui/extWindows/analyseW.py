@@ -24,8 +24,6 @@ from typing import Any
 
 
 class AnalyseWindow(MWidget):
-    """ """
-
     def __init__(self, app):
         super().__init__()
         self.app = app

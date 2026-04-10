@@ -25,8 +25,6 @@ from qimage2ndarray import array2qimage
 
 
 class KeypadSignals(QObject):
-    """ """
-
     textRow = Signal(object, object)
     imgChunk = Signal(object, object, object)
     keyPressed = Signal(object)
@@ -39,8 +37,6 @@ class KeypadSignals(QObject):
 
 
 class KeypadWindow(MWidget):
-    """ """
-
     def __init__(self, app):
         super().__init__()
         self.app = app

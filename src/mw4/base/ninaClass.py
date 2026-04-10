@@ -22,8 +22,6 @@ from PySide6.QtCore import QMutex, QThreadPool, QTimer
 
 
 class NINAClass(DriverData):
-    """ """
-
     NINA_TIMEOUT: int = 1
     HOST_ADDR: str = "localhost"
     PORT: int = 59590

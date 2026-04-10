@@ -17,8 +17,6 @@ from ast import Bytes
 
 
 class Mount:
-    """ """
-
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app

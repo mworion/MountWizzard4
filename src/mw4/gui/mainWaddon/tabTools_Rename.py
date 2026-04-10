@@ -19,8 +19,6 @@ from PySide6.QtWidgets import QApplication, QListView
 
 
 class Rename:
-    """ """
-
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app

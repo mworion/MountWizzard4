@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import mw4.gui.utilities.qtMain
 import pytest
 import unittest.mock as mock
 from mw4.base import packageConfig
@@ -132,43 +131,15 @@ def test_showExtendedWindows_3(function):
     function.uiWindows = test
 
 
-def test_waitCloseExtendedWindows_1(function):
-    class Test:
-        @staticmethod
-        def close():
-            function.uiWindows["showMessageW"]["classObj"] = None
-            return
-
-    test = function.uiWindows
-    function.uiWindows = {
-        "showMessageW": {"classObj": Test(), "button": QPushButton()},
-        "showImageW": {"classObj": None, "button": QPushButton()},
-    }
-    with mock.patch.object(mw4.gui.utilities.qtHelpers, "sleepAndEvents"):
-        suc = function.waitCloseExtendedWindows()
-        assert suc
-    function.uiWindows = test
-
-
-def test_waitCloseExtendedWindows_2(function):
-    test = function.uiWindows
-    function.uiWindows = {"showMessageW": {"classObj": None, "button": QPushButton()}}
-    with mock.patch.object(mw4.gui.utilities.qtHelpers, "sleepAndEvents"):
-        suc = function.waitCloseExtendedWindows()
-        assert suc
-    function.uiWindows = test
-
-
 def test_closeExtendedWindows_1(function):
     class Test:
         @staticmethod
         def close():
-            function.uiWindows["showMessageW"]["classObj"] = None
             return
 
     test = function.uiWindows
     function.uiWindows = {"showMessageW": {"classObj": Test(), "button": QPushButton()}}
-    with mock.patch.object(function, "waitCloseExtendedWindows"):
+    with mock.patch("mw4.gui.mainWindow.externalWindows.sleepAndEvents"):
         function.closeExtendedWindows()
     function.uiWindows = test
 
@@ -176,19 +147,18 @@ def test_closeExtendedWindows_1(function):
 def test_closeExtendedWindows_2(function):
     test = function.uiWindows
     function.uiWindows = {"showMessageW": {"classObj": None, "button": QPushButton()}}
-    with mock.patch.object(function, "waitCloseExtendedWindows"):
-        function.closeExtendedWindows()
+    function.closeExtendedWindows()
     function.uiWindows = test
 
 
 def test_collectWindows(function):
     class Test:
         @staticmethod
-        def resize(a, b):
+        def resize(a):
             return
 
         @staticmethod
-        def move(a, b):
+        def move(a):
             return
 
         @staticmethod

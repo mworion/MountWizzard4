@@ -17,8 +17,6 @@ from mw4.base.alpacaClass import AlpacaClass
 
 
 class FilterAlpaca(AlpacaClass):
-    """ """
-
     def __init__(self, parent):
         super().__init__(parent=parent)
         self.signals = parent.signals

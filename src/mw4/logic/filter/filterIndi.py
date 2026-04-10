@@ -17,8 +17,6 @@ from mw4.base.indiClass import IndiClass
 
 
 class FilterIndi(IndiClass):
-    """ """
-
     UPDATE_RATE = 1
 
     def __init__(self, parent):

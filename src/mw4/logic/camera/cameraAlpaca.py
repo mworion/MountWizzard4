@@ -19,8 +19,6 @@ from mw4.base.tpool import Worker
 
 
 class CameraAlpaca(AlpacaClass):
-    """ """
-
     def __init__(self, parent):
         self.parent = parent
         self.app = parent.app

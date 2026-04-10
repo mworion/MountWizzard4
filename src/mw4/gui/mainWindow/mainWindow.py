@@ -35,8 +35,6 @@ from skyfield.almanac import TWILIGHTS, dark_twilight_day
 
 
 class MainWindow(MWidget):
-    """ """
-
     def __init__(self, app):
         super().__init__()
         self.app = app

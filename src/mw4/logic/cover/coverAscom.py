@@ -17,8 +17,6 @@ from mw4.base.ascomClass import AscomClass
 
 
 class CoverAscom(AscomClass):
-    """ """
-
     coverStates = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
 
     def __init__(self, parent) -> None:

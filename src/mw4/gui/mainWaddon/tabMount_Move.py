@@ -28,8 +28,6 @@ from skyfield.api import Angle
 
 
 class MountMove:
-    """ """
-
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app

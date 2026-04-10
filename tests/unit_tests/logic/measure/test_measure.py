@@ -33,13 +33,6 @@ def test_property(function):
 
 
 def test_collectDataDevices(function):
-    class Drivers:
-        drivers = {}
-
-    class MainWindowAddOns:
-        addons = {"SettDevice": Drivers()}
-
-    function.app.mainW.mainWindowAddons = MainWindowAddOns()
     function.app.deviceStat = {
         "sensor1Weather": object(),
         "directWeather": object(),
@@ -50,15 +43,15 @@ def test_collectDataDevices(function):
         "camera": object(),
         "unknownDevice": object(),
     }
-    function.app.mainW.mainWindowAddons.addons = {"SettDevice": mock.MagicMock()}
-    function.app.mainW.mainWindowAddons.addons["SettDevice"].drivers = {
+    activeDrivers = {
         "sensor1Weather": {"class": object()},
         "camera": {"class": object()},
     }
-    function.collectDataDevices()
-    assert "sensor1Weather" in function.devices
-    assert "camera" in function.devices
-    assert "focuser" not in function.devices
+    with mock.patch.object(function.app, "getActiveDrivers", return_value=activeDrivers):
+        function.collectDataDevices()
+        assert "sensor1Weather" in function.devices
+        assert "camera" in function.devices
+        assert "focuser" not in function.devices
 
 
 def test_clearData_1(function):

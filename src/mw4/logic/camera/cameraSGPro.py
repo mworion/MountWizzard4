@@ -19,8 +19,6 @@ from pathlib import Path
 
 
 class CameraSGPro(SGProClass):
-    """ """
-
     def __init__(self, parent):
         self.parent = parent
         self.app = parent.app

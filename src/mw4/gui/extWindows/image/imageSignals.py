@@ -17,6 +17,4 @@ from PySide6.QtCore import QObject, Signal
 
 
 class ImageWindowSignals(QObject):
-    """ """
-
     solveImage = Signal(object)

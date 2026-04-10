@@ -20,8 +20,6 @@ from PySide6.QtGui import QColor
 
 
 class NormalScatter(PlotBase):
-    """ """
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupItems()

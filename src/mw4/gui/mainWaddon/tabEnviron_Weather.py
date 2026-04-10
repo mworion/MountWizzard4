@@ -19,8 +19,6 @@ from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
 
 
 class EnvironWeather:
-    """ """
-
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app

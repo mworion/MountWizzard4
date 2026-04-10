@@ -18,8 +18,6 @@ from mw4.gui.utilities.gPlotBase import PlotBase
 
 
 class Hemisphere(PlotBase):
-    """ """
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.p.append(self.addPlot(viewBox=CustomViewBox()))

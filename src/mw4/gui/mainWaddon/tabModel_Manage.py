@@ -29,8 +29,6 @@ from PySide6.QtWidgets import QInputDialog, QLineEdit
 
 
 class ModelManage:
-    """ """
-
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app

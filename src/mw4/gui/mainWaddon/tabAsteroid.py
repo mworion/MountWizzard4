@@ -22,8 +22,6 @@ from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 
 class Asteroid:
-    """ """
-
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app

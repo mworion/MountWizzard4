@@ -32,6 +32,20 @@ from importlib.resources import as_file, files
 from mw4.base.loggerMW import setupLogging
 from pathlib import Path
 from PySide6.QtCore import qVersion
+from typing import TypedDict
+
+
+class MwGlob(TypedDict):
+    """Typed mapping for the application's standard directory structure."""
+
+    workDir: Path
+    configDir: Path
+    dataDir: Path
+    imageDir: Path
+    tempDir: Path
+    modelDir: Path
+    measureDir: Path
+    logDir: Path
 
 log: logging.Logger = logging.getLogger("MW4")
 
@@ -57,9 +71,9 @@ def exceptHook(
     sys.__excepthook__(exc_type, exc_value, exc_tb)
 
 
-def setupWorkDirs(workDir: Path) -> dict:
+def setupWorkDirs(workDir: Path) -> MwGlob:
     """Create and return the standard directory structure."""
-    mwGlob = {
+    mwGlob: MwGlob = {
         "workDir": workDir,
         "configDir": workDir / "config",
         "dataDir": workDir / "data",

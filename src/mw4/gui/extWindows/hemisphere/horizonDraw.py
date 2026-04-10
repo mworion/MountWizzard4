@@ -23,8 +23,6 @@ from PySide6.QtCore import QPointF
 
 
 class HorizonDraw(MWidget):
-    """ """
-
     def __init__(self, parent):
         super().__init__()
         self.parent = parent

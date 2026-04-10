@@ -21,8 +21,6 @@ from PySide6.QtGui import QVector3D
 
 
 class SimulatorHorizon:
-    """ """
-
     WALL_RADIUS = 4
     WALL_SPACE = 5
 

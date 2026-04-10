@@ -19,8 +19,6 @@ from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSoc
 
 
 class Remote:
-    """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(self, app):

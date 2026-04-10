@@ -27,8 +27,6 @@ if platform.system() == "Windows":
 
 
 class Dome:
-    """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(self, app):

@@ -19,8 +19,6 @@ from mw4.base.tpool import Worker
 
 
 class CameraAscom(AscomClass):
-    """ """
-
     def __init__(self, parent):
         self.parent = parent
         self.app = parent.app

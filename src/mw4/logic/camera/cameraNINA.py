@@ -19,8 +19,6 @@ from pathlib import Path
 
 
 class CameraNINA(NINAClass):
-    """ """
-
     def __init__(self, parent):
         super().__init__(parent=parent)
         self.parent = parent

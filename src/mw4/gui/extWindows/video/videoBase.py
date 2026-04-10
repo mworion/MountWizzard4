@@ -25,8 +25,6 @@ from PySide6.QtWidgets import QInputDialog, QLineEdit, QSizePolicy
 
 
 class VideoWindowBase(MWidget):
-    """ """
-
     pixmapReady = Signal(object)
 
     def __init__(self, app):

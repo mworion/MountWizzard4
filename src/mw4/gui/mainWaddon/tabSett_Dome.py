@@ -17,8 +17,6 @@ from mw4.gui.utilities.qtHelpers import img2pixmap
 
 
 class SettDome:
-    """ """
-
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app

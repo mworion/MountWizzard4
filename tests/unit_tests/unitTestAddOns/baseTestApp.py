@@ -1229,5 +1229,10 @@ class App(QObject):
         return
 
     @staticmethod
+    def getActiveDrivers() -> dict:
+        """Return an empty driver mapping (overridden per test as needed)."""
+        return {}
+
+    @staticmethod
     def quit():
         return

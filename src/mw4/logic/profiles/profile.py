@@ -15,10 +15,8 @@
 ###########################################################
 import logging
 import yaml
-from mw4.base.loggerMW import setupLogging
 from pathlib import Path
 
-setupLogging()
 log = logging.getLogger()
 profileVersion = "4.3"
 

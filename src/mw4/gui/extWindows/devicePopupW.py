@@ -26,8 +26,6 @@ from PySide6.QtWidgets import QCheckBox, QComboBox, QDoubleSpinBox, QLineEdit, Q
 
 
 class DevicePopup(MWidget):
-    """ """
-
     def __init__(self, parentWidget, parent, driver: str, deviceType: str, data: dict):
         super().__init__()
         self.parent = parent

@@ -20,8 +20,6 @@ from mw4.gui.utilities.gTimeMeasure import TimeMeasure
 
 
 class Measure(PlotBase):
-    """ """
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.nextRow()

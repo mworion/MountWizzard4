@@ -17,8 +17,6 @@ from mw4.base.ascomClass import AscomClass
 
 
 class DomeAscom(AscomClass):
-    """ """
-
     shutterStates = ["Open", "Closed", "Opening", "Closing", "Error"]
 
     def __init__(self, parent):

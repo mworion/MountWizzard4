@@ -28,8 +28,6 @@ from skyfield.toposlib import GeographicPosition
 
 
 class SatelliteMapWindow(MWidget):
-    """ """
-
     def __init__(self, app):
         super().__init__()
         self.app = app

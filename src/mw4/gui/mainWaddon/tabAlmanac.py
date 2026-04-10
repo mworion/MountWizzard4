@@ -28,8 +28,6 @@ from skyfield.trigonometry import position_angle_of
 
 
 class Almanac:
-    """ """
-
     phasesText = RangeKeyDict(
         {
             (0, 1): "New moon",

@@ -23,8 +23,6 @@ from xisf import XISF
 
 
 class CameraIndi(IndiClass):
-    """ """
-
     def __init__(self, parent):
         super().__init__(parent=parent)
         self.parent = parent

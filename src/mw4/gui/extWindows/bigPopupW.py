@@ -19,8 +19,6 @@ from mw4.gui.widgets.bigPopup_ui import Ui_BigPopup
 
 
 class BigPopup(MWidget):
-    """ """
-
     def __init__(self, app):
         super().__init__()
         self.app = app

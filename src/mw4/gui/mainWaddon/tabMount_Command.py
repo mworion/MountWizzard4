@@ -20,8 +20,6 @@ from PySide6.QtGui import QTextCursor
 
 
 class MountCommand:
-    """ """
-
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app

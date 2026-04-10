@@ -14,6 +14,7 @@
 #
 ###########################################################
 from functools import partial
+from PySide6.QtCore import QPoint, QSize
 from mw4.gui.extWindows.analyseW import AnalyseWindow
 from mw4.gui.extWindows.bigPopupW import BigPopup
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
@@ -29,8 +30,6 @@ from mw4.gui.utilities.qtHelpers import changeStyleDynamic, sleepAndEvents
 
 
 class ExternalWindows:
-    """ """
-
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app
@@ -126,7 +125,6 @@ class ExternalWindows:
             self.uiWindows[window]["button"].clicked.connect(
                 partial(self.toggleWindow, window)
             )
-
         self.app.update1s.connect(self.updateWindowsStats)
         self.mainW.ui.collectWindows.clicked.connect(self.collectWindows)
 
@@ -169,31 +167,19 @@ class ExternalWindows:
         else:
             self.uiWindows[windowName]["classObj"].close()
 
-    def waitCloseExtendedWindows(self) -> bool:
-        waitDeleted = True
-        while waitDeleted:
-            for window in self.uiWindows:
-                if self.uiWindows[window]["classObj"]:
-                    continue
-
-                waitDeleted = False
-            sleepAndEvents(100)
-        return True
-
     def closeExtendedWindows(self) -> None:
         for window in self.uiWindows:
             if not self.uiWindows[window]["classObj"]:
                 continue
-
             self.uiWindows[window]["classObj"].close()
-        self.waitCloseExtendedWindows()
+            sleepAndEvents(100)
 
     def collectWindows(self) -> None:
         i = 0
         for i, window in enumerate(self.uiWindows):
             if self.uiWindows[window]["classObj"]:
-                self.uiWindows[window]["classObj"].resize(800, 600)
-                self.uiWindows[window]["classObj"].move(i * 50 + 10, i * 50 + 10)
+                self.uiWindows[window]["classObj"].resize(QSize(800, 600))
+                self.uiWindows[window]["classObj"].move(QPoint(i * 50 + 10, i * 50 + 10))
                 self.uiWindows[window]["classObj"].activateWindow()
         self.mainW.move(i * 50 + 10, i * 50 + 10)
         self.mainW.activateWindow()

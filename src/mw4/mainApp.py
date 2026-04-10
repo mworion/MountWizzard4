@@ -16,6 +16,7 @@
 import logging
 import sys
 from importlib.metadata import version
+from mw4.base.bootstrap import MwGlob
 from mw4.base.loggerMW import setCustomLoggingLevel
 from mw4.base.timerManager import CyclicTimerManager
 from mw4.gui.mainWindow.mainWindow import MainWindow
@@ -97,26 +98,18 @@ class MountWizzard4(QObject):
     update0_1s = Signal()
     update1s = Signal()
     update3s = Signal()
-    update10s = Signal()
     update30s = Signal()
-    update60s = Signal()
     update3m = Signal()
-    update10m = Signal()
     update30m = Signal()
-    update1h = Signal()
 
     # --- Startup signals (emitted once by CyclicTimerManager) ---
-    start1s = Signal()
     start3s = Signal()
-    start5s = Signal()
-    start10s = Signal()
-    start30s = Signal()
 
     messageQueue = Queue()
 
     def __init__(
         self,
-        mwGlob: dict[str, Any],
+        mwGlob: MwGlob,
         application: QApplication,
         test: int = 0,
     ) -> None:
@@ -133,7 +126,7 @@ class MountWizzard4(QObject):
     # ------------------------------------------------------------------
 
     def _initCore(
-        self, mwGlob: dict[str, Any], application: QApplication
+        self, mwGlob: MwGlob, application: QApplication
     ) -> None:
         """Set up global references, thread pool, flags, and profile."""
         self.mwGlob = mwGlob
@@ -259,6 +252,15 @@ class MountWizzard4(QObject):
             self.config["topoLat"] = float(location.latitude.degrees)
             self.config["topoLon"] = float(location.longitude.degrees)
             self.config["topoElev"] = float(location.elevation.m)
+
+    def getActiveDrivers(self) -> dict[str, Any]:
+        """Return the live driver-class mapping from the settings GUI.
+
+        Centralises the single point of GUI/logic coupling so that
+        logic-layer modules (e.g. MeasureData) never need to navigate
+        the widget tree directly.
+        """
+        return self.mainW.mainWindowAddons.addons["SettDevice"].drivers
 
     # ------------------------------------------------------------------
     # Lifecycle

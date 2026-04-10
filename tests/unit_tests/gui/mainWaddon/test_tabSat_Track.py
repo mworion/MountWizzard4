@@ -67,6 +67,7 @@ def test_enableGuiFunctions_2(function):
 
 
 def test_signalSatelliteData_1(function):
+    function.satellite = None
     function.satOrbits = 1
     function.signalSatelliteData([], [])
 
@@ -146,7 +147,7 @@ def test_workerShowSatPasses_0(function):
     function.workerShowSatPasses()
 
 
-def test_showSatPasses_1(function):
+def test_workerShowSatPasses_1(function):
     ts = function.app.mount.obsSite.ts
     tle = [
         "NOAA 8",
@@ -685,9 +686,11 @@ def test_startTrack_2(function):
 
 
 def test_startTrack_3(function):
+    """Mount online, status != 5, slewTLE succeeds → full success path."""
     function.app.deviceStat["mount"] = True
+    function.app.mount.obsSite.status = 1
     with mock.patch.object(
-        function.app.mount.satellite, "slewTLE", return_value=(False, "test")
+        function.app.mount.satellite, "slewTLE", return_value=(True, "test")
     ):
         function.startTrack()
 

@@ -35,7 +35,7 @@ class SatTrack(SatData):
         self.satellitesRawTLE = {}
         self.nextSatPass = [None, None, None]
         self.lastMeridianLimit = None
-        self.workerPasses = Worker(self)
+        self.workerPasses: Worker | None = None
 
         self.passUI = {
             0: {
@@ -157,10 +157,6 @@ class SatTrack(SatData):
 
     def calcTrajectoryAndShow(self) -> None:
         useInternal = self.ui.useInternalSatCalc.isChecked()
-        isMount = self.app.deviceStat["mount"]
-        if not isMount:
-            return
-
         start, end = self.selectStartEnd()
         if useInternal:
             alt, az = self.calcTrajectoryData(start, end)

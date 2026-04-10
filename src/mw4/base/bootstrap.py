@@ -89,7 +89,7 @@ def setupWorkDirs(workDir: Path) -> MwGlob:
 
 
 # noinspection PyUnresolvedReferences
-def writeSystemInfo(mwGlob: dict) -> None:
+def writeSystemInfo(mwGlob: MwGlob) -> None:
     """Write system and version information to the log header."""
     log.header("-" * 100)
     log.header(f"mountwizzard4    : {version('mountwizzard4')}")
@@ -110,7 +110,7 @@ def writeSystemInfo(mwGlob: dict) -> None:
     log.header("-" * 100)
 
 
-def extractDataFiles(mwGlob: dict) -> None:
+def extractDataFiles(mwGlob: MwGlob) -> None:
     """Copy bundled asset data files to the work data directory if newer."""
     sourceFiles = files("mw4").joinpath("assets/data").glob("*.*")
     for file in sourceFiles:

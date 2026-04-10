@@ -18,6 +18,7 @@ from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.Qt3DRender import Qt3DRender
 from PySide6.QtCore import QUrl
 from PySide6.QtGui import QColor, QFont, QVector3D
+from importlib.resources import as_file, files
 
 
 def linkLight(node):
@@ -50,7 +51,9 @@ def linkSource(node):
     if source:
         if isinstance(source, str):
             mesh = Qt3DRender.QMesh()
-            mesh.setSource(QUrl(f"qrc:/model3D/{source}"))
+            sourceFile = files("mw4").joinpath(f"assets/model3D/{source}")
+            with as_file(sourceFile) as file:
+                mesh.setSource(QUrl.fromLocalFile(file))
             mesh.setMeshName(source)
 
         elif source[0] == "cuboid":

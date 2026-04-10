@@ -171,7 +171,7 @@ class MainWindow(MWidget):
     def closeEvent(self, closeEvent) -> None:
         """ """
         self.gameControllerRunning = False
-        self.app.timer0_1s.stop()
+        self.app.timerMgr.stop()
         changeStyleDynamic(self.ui.pauseModel, "pause", False)
         self.externalWindows.closeExtendedWindows()
         self.threadPool.waitForDone(10000)

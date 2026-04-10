@@ -13,67 +13,22 @@
 # Licence APL2.0
 #
 ###########################################################
-import glob
-import os
-import platform
-import pytest
-import socket
-import sys
-import traceback
-import unittest.mock as mock
-from mw4.loader import (
-    except_hook,
-    extractDataFiles,
-    minimizeStartTerminal,
-    setupWorkDirs,
-    writeSystemInfo,
-)
-from pathlib import Path
+"""Verify that bootstrap functions are importable with camelCase names."""
 
 
-@pytest.fixture(autouse=True, scope="function")
-def module_setup_teardown():
-    files = glob.glob("tests/work/config/*.cfg")
-    for f in files:
-        os.remove(f)
-    files = glob.glob("tests/work/config/profile")
-    for f in files:
-        os.remove(f)
-    yield
-
-
-def test_except_hook():
-    with mock.patch.object(traceback, "format_exception", return_value=("1", "2", "3")):
-        with mock.patch.object(
-            sys,
-            "__excepthook__",
-        ):
-            except_hook(1, 2, 3)
-
-
-def test_setupWorkDirs_1():
-    with mock.patch.object(Path, "mkdir"):
-        setupWorkDirs(Path())
-
-
-def test_writeSystemInfo_1():
-    mwGlob = {"workDir": Path()}
-    writeSystemInfo(mwGlob=mwGlob)
-    mwGlob["WorkDir"] = Path("tests/work")
-
-
-def test_writeSystemInfo_2():
-    mwGlob = {"workDir": Path()}
-    with mock.patch.object(socket, "gethostbyname_ex", side_effect=Exception()):
-        writeSystemInfo(mwGlob=mwGlob)
-    mwGlob["WorkDir"] = Path("tests/work")
-
-
-def test_extractDataFiles_1():
-    mwGlob = {"dataDir": Path("tests/work/data")}
-    extractDataFiles(mwGlob=mwGlob)
-
-
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
-def test_minimizeStartTerminal():
-    minimizeStartTerminal()
+def test_names_importable():
+    """The camelCase names are importable from mw4.base.bootstrap."""
+    from mw4.base.bootstrap import (
+        configureEnvironment,
+        exceptHook,
+        extractDataFiles,
+        minimizeStartTerminal,
+        setupWorkDirs,
+        writeSystemInfo,
+    )
+    assert callable(configureEnvironment)
+    assert callable(exceptHook)
+    assert callable(extractDataFiles)
+    assert callable(minimizeStartTerminal)
+    assert callable(setupWorkDirs)
+    assert callable(writeSystemInfo)

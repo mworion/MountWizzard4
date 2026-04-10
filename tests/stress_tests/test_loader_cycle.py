@@ -53,13 +53,11 @@ import gc
 import glob
 import json
 import os
-import time
-from pathlib import Path
-
 import pytest
-
-from mw4.loader import extractDataFiles
+import time
+from mw4.base.bootstrap import extractDataFiles
 from mw4.mainApp import MountWizzard4
+from pathlib import Path
 
 # ── enable low-level crash handler ────────────────────────────────────────────
 faulthandler.enable()
@@ -76,7 +74,7 @@ MAX_CYCLE_S = 25.0          # per-cycle assertion: full cycle faster than this
 MOUNT_HOST = "mount.uranus"             # e.g. "192.168.2.15"  – injected into profile config
 MOUNT_PORT_3492 = True      # True → port 3492, False → port 3490
 
-# ── work directory layout (mirrors loader.setupWorkDirs) ──────────────────────
+# ── work directory layout (mirrors bootstrap.setupWorkDirs) ──────────────────
 WORK_DIR = Path("tests/work")
 
 mwglob = {

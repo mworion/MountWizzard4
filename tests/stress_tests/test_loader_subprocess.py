@@ -17,7 +17,7 @@
 Cyclic startup stress test – subprocess edition.
 
 Each cycle spawns  ``python -m mw4.cli -t 1``  as a fresh OS process
-with ``cwd=WORK_DIR``.  ``loader.setupWorkDirs(Path.cwd())`` therefore
+with ``cwd=WORK_DIR``.  ``bootstrap.setupWorkDirs(Path.cwd())`` therefore
 resolves to the test work-tree, so every cycle is completely isolated
 from the test runner process.
 
@@ -84,12 +84,11 @@ import faulthandler
 import glob
 import json
 import os
+import pytest
 import subprocess
 import sys
 import time
 from pathlib import Path
-
-import pytest
 
 # ── crash handler in the TEST process ─────────────────────────────────────────
 faulthandler.enable()
@@ -123,7 +122,7 @@ LOG_TAIL_BYTES = 8_000
 # ──────────────────────────────────────────────────────────────────────────────
 
 def _ensure_dirs() -> None:
-    """Create the WORK_DIR sub-tree (mirrors ``loader.setupWorkDirs``)."""
+    """Create the WORK_DIR sub-tree (mirrors ``bootstrap.setupWorkDirs``)."""
     for sub in ("config", "assets", "image", "temp", "model", "measure", "log"):
         (WORK_DIR / sub).mkdir(parents=True, exist_ok=True)
 
@@ -299,8 +298,8 @@ def test_loader_subprocess_cycles():
     3. Spawn:  ``python -m mw4.cli -t 1``  with ``cwd=WORK_DIR``.
 
        Inside the subprocess:
-         * ``loader.setupWorkDirs(Path.cwd())`` → WORK_DIR work-tree
-         * ``loader.extractDataFiles()`` extracts ephemeris / IERS assets
+         * ``bootstrap.setupWorkDirs(Path.cwd())`` → WORK_DIR work-tree
+         * ``bootstrap.extractDataFiles()`` extracts ephemeris / IERS assets
          * ``MountWizzard4(..., test=1)`` wires ``update10s → quit()``
          * 100-ms cyclic timer runs for ≈ 8 s until ``update10s`` fires
          * ``quit()`` → ``application.quit()`` → ``app.exec()`` returns 0

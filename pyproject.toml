@@ -143,7 +143,6 @@ no-sections = true
 max-complexity = 10
 
 [tool.ruff.lint.per-file-ignores]
-"src/mw4/mainApp.py" = ["C901"]
 "src/mw4/gui/utilities/gCustomViewBox.py" = ["C901"]
 "src/mw4/gui/utilities/gNormalScatter.py" = ["C901"]
 "src/mw4/gui/styles/gradients.py" = ["E501"]

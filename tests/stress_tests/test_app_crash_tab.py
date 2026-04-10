@@ -18,8 +18,8 @@ import glob
 import os
 import pytest
 import random
+from mw4.base.bootstrap import extractDataFiles
 from mw4.base.tpool import Worker
-from mw4.loader import extractDataFiles
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtCore import Qt, QThreadPool

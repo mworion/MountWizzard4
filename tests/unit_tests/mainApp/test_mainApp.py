@@ -64,14 +64,14 @@ def test_store_status_operation_running(app):
 
 def test_sendStart(app):
     for a in [10, 30, 50, 100, 300]:
-        app.timerCounter = a
-        app.sendStart()
+        app.timerMgr.counter = a
+        app.timerMgr.emitStart()
 
 
 def test_send_cyclic(app):
     for a in [0, 4, 19, 79, 274, 574, 1787, 5986, 17985, 35984]:
-        app.timerCounter = a
-        app.sendCyclic()
+        app.timerMgr.counter = a
+        app.timerMgr.emitCyclic()
 
 
 def test_quit(app):

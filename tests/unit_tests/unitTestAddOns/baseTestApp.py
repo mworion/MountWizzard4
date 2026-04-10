@@ -1117,7 +1117,7 @@ class App(QObject):
     __version__ = "test"
     tabsMovable = Signal(object)
     update10s = Signal()
-    timer0_1s = QTimer()
+    timerMgr = QTimer()
     update0_1s = Signal()
     update1s = Signal()
     update3s = Signal()

@@ -131,7 +131,6 @@ class ExternalWindows:
         self.mainW.ui.collectWindows.clicked.connect(self.collectWindows)
 
     def updateWindowsStats(self) -> None:
-        """ """
         for win in self.uiWindows:
             winObj = self.uiWindows[win]
 
@@ -141,7 +140,6 @@ class ExternalWindows:
                 changeStyleDynamic(winObj["button"], "run", False)
 
     def storeConfigExtendedWindows(self):
-        """ """
         config = self.app.config
         for window in self.uiWindows:
             config[window] = bool(self.uiWindows[window]["classObj"])
@@ -149,11 +147,9 @@ class ExternalWindows:
                 self.uiWindows[window]["classObj"].storeConfig()
 
     def deleteWindowResource(self, window: str) -> None:
-        """"""
         self.uiWindows[window]["classObj"] = None
 
     def buildWindow(self, window: str) -> None:
-        """ """
         self.uiWindows[window]["classObj"] = self.uiWindows[window]["class"](self.app)
         self.uiWindows[window]["classObj"].destroyed.connect(
             partial(self.deleteWindowResource, window)
@@ -162,21 +158,18 @@ class ExternalWindows:
         self.uiWindows[window]["classObj"].showWindow()
 
     def showExtendedWindows(self) -> None:
-        """ """
         for window in self.uiWindows:
             if not self.app.config.get(window, False):
                 continue
             self.buildWindow(window)
 
     def toggleWindow(self, windowName) -> None:
-        """ """
         if not self.uiWindows[windowName]["classObj"]:
             self.buildWindow(windowName)
         else:
             self.uiWindows[windowName]["classObj"].close()
 
     def waitCloseExtendedWindows(self) -> bool:
-        """ """
         waitDeleted = True
         while waitDeleted:
             for window in self.uiWindows:
@@ -188,7 +181,6 @@ class ExternalWindows:
         return True
 
     def closeExtendedWindows(self) -> None:
-        """ """
         for window in self.uiWindows:
             if not self.uiWindows[window]["classObj"]:
                 continue
@@ -197,7 +189,6 @@ class ExternalWindows:
         self.waitCloseExtendedWindows()
 
     def collectWindows(self) -> None:
-        """ """
         i = 0
         for i, window in enumerate(self.uiWindows):
             if self.uiWindows[window]["classObj"]:

@@ -31,7 +31,6 @@ class CameraNINA(NINAClass):
         self.worker: Worker | None = None
 
     def getCameraTemp(self) -> tuple[bool, dict]:
-        """ """
         response = self.requestProperty("cameratemp")
         if not response:
             return False, {}
@@ -39,48 +38,38 @@ class CameraNINA(NINAClass):
         return response.get("Success", False), response
 
     def setCameraTemp(self, temperature: float) -> bool:
-        """ """
         response = self.requestProperty(f"setcameratemp/{temperature}")
         return response.get("Success", False)
 
     def captureImage(self, params: dict) -> tuple[bool, dict]:
-        """ """
         response = self.requestProperty("image", params=params)
         return response.get("Success", False), response
 
     def abortImage(self) -> bool:
-        """ """
         response = self.requestProperty("abortimage")
         return response.get("Success", False)
 
     def getImagePath(self, receipt: str) -> bool:
-        """ """
         response = self.requestProperty(f"imagepath/{receipt}")
         return response.get("Success", False)
 
     def getCameraProps(self) -> tuple[bool, dict]:
-        """ """
         response = self.requestProperty("cameraprops")
         return response.get("Success", False), response
 
     def workerGetInitialConfig(self) -> None:
-        """ """
         self.storePropertyToData(1, "CCD_BINNING.HOR_BIN")
 
     def workerPollData(self) -> None:
-        """ """
         pass
 
     def sendDownloadMode(self) -> None:
-        """ """
         pass
 
     def waitFunc(self) -> bool:
-        """ """
         return "integrating" in self.data.get("Device.Message")
 
     def workerExpose(self) -> None:
-        """ """
         params = {
             "BinningMode": self.parent.binning,
             "ExposureLength": max(self.parent.exposureTime, 1),
@@ -110,27 +99,21 @@ class CameraNINA(NINAClass):
             self.parent.updateImageFitsHeaderPointing()
 
     def expose(self) -> None:
-        """ """
         self.worker = Worker(self.workerExpose)
         self.worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(self.worker)
 
     def abort(self) -> bool:
-        """ """
         return self.abortImage()
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        """ """
         pass
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
-        """ """
         pass
 
     def sendOffset(self, offset: int = 0) -> None:
-        """ """
         pass
 
     def sendGain(self, gain: int = 0) -> None:
-        """ """
         pass

@@ -51,7 +51,6 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         self.timerTask.timeout.connect(self.measureTask)
 
     def openCSV(self) -> None:
-        """ """
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         self.csvFilename = self.app.mwGlob["measureDir"] / f"measure-{nameTime}.csv"
 
@@ -112,7 +111,6 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         self.csvWriter.writeheader()
 
     def writeCSV(self) -> None:
-        """ """
         if not self.csvFile or not self.csvWriter:
             return
 
@@ -123,7 +121,6 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         self.csvWriter.writerow(row)
 
     def closeCSV(self) -> None:
-        """ """
         if not self.csvFile or not self.csvWriter:
             return
 
@@ -132,12 +129,10 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         self.csvFile = None
 
     def startCommunication(self) -> None:
-        """ """
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
         self.openCSV()
 
     def stopCommunication(self) -> None:
-        """ """
         self.closeCSV()
         self.timerTask.stop()
 

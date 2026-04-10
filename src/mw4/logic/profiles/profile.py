@@ -24,13 +24,11 @@ profileVersion = "4.3"
 
 
 def defaultConfig() -> dict:
-    """ """
     config = {"profileName": "config", "version": profileVersion}
     return config
 
 
 def loadConfig(loadConfigPath: Path) -> dict:
-    """ """
     with open(loadConfigPath) as configFile:
         config = yaml.safe_load(configFile)
         if not config:
@@ -43,7 +41,6 @@ def loadConfig(loadConfigPath: Path) -> dict:
 
 
 def loadProfileStart(configDir: Path) -> dict:
-    """ """
     config = defaultConfig()
     profilePath = configDir / "profile"
     if not profilePath.exists():
@@ -59,7 +56,6 @@ def loadProfileStart(configDir: Path) -> dict:
 
 
 def saveConfig(saveProfilePath: Path, config: dict) -> None:
-    """ """
     with open(saveProfilePath.parent / "profile", "w") as profile:
         profile.writelines(saveProfilePath.stem)
 

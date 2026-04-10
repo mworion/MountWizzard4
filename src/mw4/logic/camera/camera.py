@@ -124,26 +124,21 @@ class Camera:
             self.posYASCOM = 0
 
     def setObsSite(self, obsSite):
-        """ """
         self.obsSite = obsSite
 
     def startCommunication(self) -> None:
-        """ """
         self.run[self.framework].startCommunication()
 
     def stopCommunication(self) -> None:
-        """ """
         self.run[self.framework].stopCommunication()
 
     def exposeFinished(self) -> None:
-        """ """
         self.exposing = False
         self.signals.message.emit("")
         self.signals.saved.emit(self.imagePath)
         self.app.showImage.emit(self.imagePath)
 
     def expose(self, imagePath: Path = "", exposureTime: float = 1, binning: int = 1) -> bool:
-        """ """
         if self.exposing:
             return False
 
@@ -156,33 +151,26 @@ class Camera:
         return True
 
     def abort(self) -> None:
-        """ """
         self.signals.message.emit("")
         self.exposing = False
         self.run[self.framework].abort()
 
     def sendDownloadMode(self) -> None:
-        """ """
         self.run[self.framework].sendDownloadMode()
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        """ """
         self.run[self.framework].sendCoolerSwitch(coolerOn=coolerOn)
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
-        """ """
         self.run[self.framework].sendCoolerTemp(temperature=temperature)
 
     def sendOffset(self, offset: int = 0) -> None:
-        """ """
         self.run[self.framework].sendOffset(offset=offset)
 
     def sendGain(self, gain: int = 0) -> None:
-        """ """
         self.run[self.framework].sendGain(gain=gain)
 
     def waitExposed(self, exposureTime: float, func: Callable) -> None:
-        """ """
         timeLeft = exposureTime
         while self.exposing and func():
             text = f"expose {timeLeft:3.0f} s"
@@ -194,29 +182,24 @@ class Camera:
                 timeLeft = 0
 
     def waitStart(self) -> None:
-        """ """
         while self.exposing and "integrating" not in self.data.get("Device.Message"):
             time.sleep(0.2)
 
     def waitDownload(self) -> None:
-        """ """
         self.signals.message.emit("download")
         while self.exposing and "downloading" in self.data.get("Device.Message"):
             time.sleep(0.2)
 
     def waitSave(self) -> None:
-        """ """
         self.signals.message.emit("saving")
         while self.exposing and "image is ready" in self.data.get("Device.Message"):
             time.sleep(0.2)
 
     def waitFinish(self, function: Callable, param: dict) -> None:
-        """ """
         while self.exposing and not function(param):
             time.sleep(0.2)
 
     def retrieveImage(self, function: Callable, param: dict) -> np.ndarray:
-        """ """
         if not self.exposing:
             return np.array([], dtype=np.uint16)
 
@@ -230,14 +213,12 @@ class Camera:
         return data
 
     def writeImageFitsHeader(self) -> None:
-        """ """
         with fits.open(self.imagePath, mode="update", output_verify="silentfix") as HDU:
             header = writeHeaderCamera(HDU[0].header, self)
             header = writeHeaderPointing(header, self)
             HDU[0].header = header
 
     def updateImageFitsHeaderPointing(self) -> None:
-        """ """
         with fits.open(self.imagePath, mode="update", output_verify="silentfix") as HDU:
             header = writeHeaderPointing(HDU[0].header, self)
             HDU[0].header = header

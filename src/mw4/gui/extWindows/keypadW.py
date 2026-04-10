@@ -52,7 +52,7 @@ class KeypadWindow(MWidget):
         self.keypad = KeyPad(self.signals)
         self.inputActive: bool = False
         self.websocketMutex = QMutex()
-        self.worker: Worker | None = None
+        self.worker: Worker = Worker(self)
 
         self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
         self.buttons = {
@@ -86,12 +86,10 @@ class KeypadWindow(MWidget):
         ]
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config.get("keypadW", {})
         self.positionWindow(config)
 
     def storeConfig(self) -> None:
-        """ """
         configMain = self.app.config
         configMain["keypadW"] = {}
         config = configMain["keypadW"]
@@ -102,13 +100,11 @@ class KeypadWindow(MWidget):
         config["width"] = self.width()
 
     def closeEvent(self, closeEvent) -> None:
-        """ """
         self.storeConfig()
         self.keypad.closeWebsocket()
         super().closeEvent(closeEvent)
 
     def keyPressEvent(self, keyEvent) -> None:
-        """ """
         key = keyEvent.key()
         if key == 16777216:
             key = 27
@@ -126,7 +122,6 @@ class KeypadWindow(MWidget):
         super().keyPressEvent(keyEvent)
 
     def showWindow(self) -> None:
-        """ """
         if not self.app.mount.setting.webInterfaceStat:
             self.msg.emit(0, "System", "Mount", "Enable webinterface")
             if not self.app.mount.setting.setWebInterface(True):
@@ -143,24 +138,20 @@ class KeypadWindow(MWidget):
         self.startKeypad()
 
     def colorChange(self) -> None:
-        """ """
         self.setStyleSheet(self.mw4Style)
         for row in self.rows:
             row.setStyleSheet(f"background-color: {self.M_BACK};")
         self.clearGraphics()
 
     def setupButtons(self) -> None:
-        """ """
         for button in self.buttons:
             self.buttons[button].pressed.connect(partial(self.buttonPressed, button))
             self.buttons[button].released.connect(partial(self.buttonReleased, button))
 
     def websocketClear(self) -> None:
-        """ """
         self.websocketMutex.unlock()
 
     def startKeypad(self) -> None:
-        """ """
         if not self.websocketMutex.tryLock():
             return
 
@@ -171,21 +162,17 @@ class KeypadWindow(MWidget):
         self.threadPool.start(self.worker)
 
     def hostChanged(self) -> None:
-        """ """
         self.keypad.closeWebsocket()
         self.websocketMutex.unlock()
         self.startKeypad()
 
     def buttonPressed(self, button: str) -> None:
-        """ """
         self.signals.mousePressed.emit(button)
 
     def buttonReleased(self, button: str) -> None:
-        """ """
         self.signals.mouseReleased.emit(button)
 
     def writeTextRow(self, row: int, text: str) -> None:
-        """ """
         if not -1 < row < 5:
             return
 
@@ -197,12 +184,10 @@ class KeypadWindow(MWidget):
             self.clearGraphics()
 
     def clearGraphics(self) -> None:
-        """ """
         self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
         self.drawGraphics()
 
     def clearDisplay(self) -> None:
-        """ """
         for row in range(5):
             self.writeTextRow(row, "")
         self.clearGraphics()
@@ -210,12 +195,10 @@ class KeypadWindow(MWidget):
         self.inputActive = False
 
     def clearCursor(self):
-        """ """
         self.inputActive = False
         self.ui.cursor.setVisible(False)
 
     def setCursorPos(self, row: int, col: int) -> None:
-        """ """
         self.inputActive = True
         x = self.rows[row].x()
         y = self.rows[row].y()
@@ -227,7 +210,6 @@ class KeypadWindow(MWidget):
         self.ui.cursor.move(x + 16 * col, y + height)
 
     def drawGraphics(self) -> None:
-        """ """
         color = self.hex2rgb(self.M_PRIM)
         back = self.hex2rgb(self.M_BACK)
         pColor = [255, 255, 255]
@@ -241,6 +223,5 @@ class KeypadWindow(MWidget):
         self.ui.graphics.setPixmap(pixmap)
 
     def buildGraphics(self, imgArr: np.ndarray, yPos: int, xPos: int) -> None:
-        """ """
         dy, dx, _ = imgArr.shape
         self.graphics[yPos : yPos + dy, xPos : xPos + dx] = imgArr

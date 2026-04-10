@@ -14,26 +14,23 @@
 #
 ###########################################################
 import logging
-import time
+from mw4.gui.utilities.qtHelpers import sleepAndEvents
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO
-from mw4.base.signalsDevices import Signals
 from mw4.indibase.indiClient import Client
 from PySide6.QtCore import QTimer
 
 
 class IndiClass:
-    """ """
-
     log = logging.getLogger("MW4")
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5
-    signals = Signals()
 
     def __init__(self, parent):
         self.parent = parent
         self.app = parent.app
         self.msg = parent.app.msg
         self.data = parent.data
+        self.signals = parent.signals
         self.loadConfig = parent.loadConfig
         self.updateRate = parent.updateRate
         self.threadPool = parent.app.threadPool
@@ -113,33 +110,26 @@ class IndiClass:
         self.client.host = (self._hostaddress, self._port)
 
     def chainServerConnected(self):
-        """ """
         self.signals.serverConnected.emit()
 
     def chainServerDisconnected(self, deviceName):
-        """ """
         self.signals.serverDisconnected.emit(deviceName)
 
     def chainDeviceConnected(self, deviceName):
-        """ """
         self.signals.deviceConnected.emit(deviceName)
 
     def chainDeviceDisconnected(self, deviceName):
-        """ """
         self.signals.deviceDisconnected.emit(deviceName)
 
     def serverConnected(self) -> None:
-        """ """
         suc = self.client.watchDevice(self.deviceName)
         self.log.info(f"INDI watch: [{self.deviceName}], result: [{suc}]")
 
     def serverDisconnected(self, devices: str) -> None:
-        """ """
         t = f"INDI server for [{self.deviceName}:{devices}] disconnected"
         self.log.info(t)
 
     def newDevice(self, deviceName: str) -> None:
-        """ """
         if deviceName == self.deviceName:
             self.device = self.client.getDevice(deviceName)
             self.msg.emit(0, "INDI", "Device found", f"{deviceName}")
@@ -147,14 +137,12 @@ class IndiClass:
             self.log.info(f"INDI device snoop: [{deviceName}]")
 
     def removeDevice(self, deviceName: str) -> None:
-        """ """
         if deviceName == self.deviceName:
             self.msg.emit(0, "INDI", "Device removed", f"{deviceName}")
             self.device = None
             self.data.clear()
 
     def startRetry(self) -> None:
-        """ """
         self.timerRetry.start(self.RETRY_DELAY)
         if not self.deviceName:
             return
@@ -165,18 +153,15 @@ class IndiClass:
         self.signals.serverConnected.emit()
 
     def startCommunication(self) -> None:
-        """ """
         self.data.clear()
         self.timerRetry.start(self.RETRY_DELAY)
 
     def stopCommunication(self) -> None:
-        """ """
         self.client.disconnectServer(self.deviceName)
         self.deviceName = ""
         self.deviceConnected = False
 
     def connectDevice(self, deviceName: str, propertyName: str) -> None:
-        """ """
         if propertyName != "CONNECTION":
             return
 
@@ -184,7 +169,6 @@ class IndiClass:
             self.client.connectDevice(deviceName=deviceName)
 
     def loadIndiConfig(self, deviceName: str) -> None:
-        """ """
         loadObject = self.device.getSwitch("CONFIG_PROCESS")
         loadObject["CONFIG_LOAD"] = True
         suc = self.client.sendNewSwitch(
@@ -194,7 +178,6 @@ class IndiClass:
         self.log.info(t)
 
     def setUpdateConfig(self, deviceName: str) -> None:
-        """ """
         if deviceName != self.deviceName:
             return
         if self.device is None:
@@ -213,13 +196,11 @@ class IndiClass:
 
     @staticmethod
     def convertIndigoProperty(key: str) -> str:
-        """ """
         if key in INDIGO:
             key = INDIGO.get(key)
         return key
 
     def updateNumber(self, deviceName: str, propertyName: str) -> None:
-        """ """
         if self.device is None:
             return
         if deviceName != self.deviceName:
@@ -230,7 +211,6 @@ class IndiClass:
             self.data[key] = float(value)
 
     def updateSwitch(self, deviceName: str, propertyName: str) -> None:
-        """ """
         if self.device is None:
             return
         if deviceName != self.deviceName:
@@ -243,7 +223,6 @@ class IndiClass:
             self.data[key] = value == "On"
 
     def updateText(self, deviceName: str, propertyName: str) -> None:
-        """ """
         if self.device is None:
             return
         if deviceName != self.deviceName:
@@ -254,7 +233,6 @@ class IndiClass:
             self.data[key] = value
 
     def updateLight(self, deviceName: str, propertyName: str) -> None:
-        """ """
         if self.device is None:
             return
         if deviceName != self.deviceName:
@@ -265,7 +243,6 @@ class IndiClass:
             self.data[key] = value
 
     def updateBLOB(self, deviceName: str, propertyName: str) -> None:
-        """ """
         if self.device is None:
             return
         if deviceName != self.deviceName:
@@ -273,13 +250,11 @@ class IndiClass:
 
     @staticmethod
     def removePrefix(text: str, prefix: str) -> str:
-        """ """
         value = text[text.startswith(prefix) and len(prefix) :]
         value = value.strip()
         return value
 
     def updateMessage(self, device: str, text: str) -> None:
-        """ """
         if self.messages:
             if text.startswith("[WARNING]"):
                 text = self.removePrefix(text, "[WARNING]")
@@ -294,7 +269,6 @@ class IndiClass:
                 self.msg.emit(0, "INDI", "Device message", f"{device:15s} {text}")
 
     def addDiscoveredDevice(self, deviceName: str, propertyName: str) -> None:
-        """ """
         if propertyName != "DRIVER_INFO":
             return
 
@@ -316,12 +290,11 @@ class IndiClass:
             self.discoverList.append(deviceName)
 
     def discoverDevices(self, deviceType: str) -> list:
-        """ """
         self.discoverList = []
         self.discoverType = INDI_TYPES.get(deviceType, 0)
         self.client.signals.defText.connect(self.addDiscoveredDevice)
         self.client.connectServer()
-        time.sleep(2.0)
+        sleepAndEvents(2000)
         self.client.signals.defText.disconnect(self.addDiscoveredDevice)
         self.client.disconnectServer()
         return self.discoverList

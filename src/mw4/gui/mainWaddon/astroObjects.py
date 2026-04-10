@@ -76,7 +76,6 @@ class AstroObjects:
         }
 
     def buildSourceListDropdown(self) -> None:
-        """ """
         self.uiSourceList.clear()
         self.uiSourceList.setView(QListView())
         self.uiSourceList.addItem("Please select")
@@ -85,17 +84,14 @@ class AstroObjects:
         self.uiSourceList.setCurrentIndex(0)
 
     def setAge(self, age: float) -> None:
-        """ """
         t = f"{self.objectText} data - age: {age:2.1f}d"
         self.uiSourceGroup.setTitle(t)
 
     def workerProcessSource(self) -> None:
-        """ """
         self.processSource()
         self.signals.dataLoaded.emit()
 
     def procSourceData(self, direct: bool = False) -> None:
-        """ """
         if not direct and not self.downloadPopup.returnValues["success"]:
             return
         self.dataValid = False
@@ -103,7 +99,6 @@ class AstroObjects:
         self.threadPool.start(self.workerSource)
 
     def runDownloadPopup(self, url: Path, unzip: bool) -> None:
-        """ """
         if not self.window.ui.isOnline.isChecked():
             return
         self.downloadPopup = DownloadPopup(self.window, url, self.dest, unzip)
@@ -112,7 +107,6 @@ class AstroObjects:
         self.downloadPopup.worker.signals.finished.connect(self.procSourceData)
 
     def checkFileAgeOK(self, fileName: Path) -> bool:
-        """ """
         if not fileName.is_file():
             return False
         daysOld = self.loader.days_old(fileName)
@@ -120,7 +114,6 @@ class AstroObjects:
         return daysOld < self.window.ui.ageDatabases.value()
 
     def loadSourceUrl(self) -> None:
-        """ """
         entry = self.uiSourceList.currentText()
         if entry == "Please select":
             return
@@ -145,21 +138,18 @@ class AstroObjects:
         self.runDownloadPopup(url, unzip)
 
     def finishProgObjects(self) -> None:
-        """ """
         if self.uploadPopup.returnValues["success"]:
             self.msg.emit(1, self.objectText.capitalize(), "Mount upload", "Successful")
         else:
             self.msg.emit(2, self.objectText.capitalize(), "Mount upload", "Failed")
 
     def runUploadPopup(self, url: Path) -> None:
-        """ """
         self.uploadPopup = UploadPopup(self.window, url, [self.objectText], self.tempDir)
         self.uploadPopup.show()
         self.uploadPopup.uploadFile()
         self.uploadPopup.workerStatus.signals.finished.connect(self.finishProgObjects)
 
     def progObjects(self, objects: list) -> None:
-        """ """
         if len(objects) == 0:
             self.msg.emit(
                 2,
@@ -173,13 +163,11 @@ class AstroObjects:
         self.runUploadPopup(url)
 
     def progGUI(self, text: str) -> None:
-        """ """
         source = self.uiSourceList.currentText()
         objectType = self.objectText.capitalize()
         self.msg.emit(1, objectType, "Mount upload", f"[{text}] from [{source}]")
 
     def progSelected(self) -> None:
-        """ """
         self.progGUI("Selected")
         selectedItems = self.uiObjectList.selectedItems()
         selectedObjects = []
@@ -191,7 +179,6 @@ class AstroObjects:
         self.progObjects(selectedObjects)
 
     def progFiltered(self) -> None:
-        """ """
         self.progGUI("Filtered")
         filteredObjects = []
         for row in range(self.uiObjectList.model().rowCount()):
@@ -203,7 +190,6 @@ class AstroObjects:
         self.progObjects(filteredObjects)
 
     def progFull(self) -> None:
-        """ """
         self.progGUI("All")
         fullObjects = [self.objects.get(name) for name in self.objects]
         self.progObjects(fullObjects)

@@ -24,7 +24,6 @@ class SensorWeatherAscom(AscomClass):
         self.signals = parent.signals
 
     def workerPollData(self) -> None:
-        """ """
         self.getAndStoreAscomProperty("temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE")
         self.getAndStoreAscomProperty("pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE")
         self.getAndStoreAscomProperty("dewpoint", "WEATHER_PARAMETERS.WEATHER_DEWPOINT")

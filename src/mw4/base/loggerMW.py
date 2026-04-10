@@ -57,14 +57,12 @@ class LoggerWriter:
 
 
 def redirectSTD() -> None:
-    """ """
     pass
     # sys.stderr = LoggerWriter(logging.getLogger().error, "STDERR", sys.stderr)
     # sys.stdout = LoggerWriter(logging.getLogger().info, "STDOUT", sys.stdout)
 
 
 def setupLogging() -> None:
-    """ """
     Path.mkdir(Path("./log"), parents=True, exist_ok=True)
     logging.Formatter.converter = time.gmtime
     timeTag = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d")
@@ -107,5 +105,4 @@ def setupLogging() -> None:
 
 
 def setCustomLoggingLevel(level: str = "WARN") -> None:
-    """ """
     logging.getLogger("MW4").setLevel(level)

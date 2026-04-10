@@ -24,12 +24,10 @@ class SlewInterface:
     log = logging.getLogger("MW4")
 
     def __init__(self, parent):
-        """ """
         self.app = parent.app
         self.msg = parent.msg
 
     def slewSelectedTargetWithDome(self, slewType: str = "normal") -> bool:
-        """ """
         azimuthT = self.app.mount.obsSite.AzTarget
         altitudeT = self.app.mount.obsSite.AltTarget
 
@@ -48,7 +46,6 @@ class SlewInterface:
         return suc
 
     def slewTargetAltAz(self, alt: Angle, az: Angle, slewType: str = "normal") -> bool:
-        """ """
         suc = self.app.mount.obsSite.setTargetAltAz(alt, az)
         if not suc:
             t = f"Cannot slew to Az:[{az.degrees:3.1f}], Alt:[{alt.degrees:3.1f}]"
@@ -61,7 +58,6 @@ class SlewInterface:
     def slewTargetRaDec(
         self, ra: Angle, dec: Angle, slewType: str = "normal", epoch: str = "J2000"
     ) -> bool:
-        """ """
         timeJD = self.app.mount.obsSite.timeJD
         if epoch == "J2000":
             raJNow, decJNow = J2000ToJNow(ra, dec, timeJD)

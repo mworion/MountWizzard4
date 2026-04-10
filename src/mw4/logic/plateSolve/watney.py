@@ -50,7 +50,6 @@ class Watney:
         }
 
     def saveConfigFile(self) -> None:
-        """ """
         cfgFile = self.tempDir / "watney-solve-config.yml"
         with open(cfgFile, "w+") as outFile:
             outFile.write(f"quadDbPath: '{self.indexPath}'\n")
@@ -58,13 +57,11 @@ class Watney:
             outFile.write("defaultLowerDensityOffset: 3\n")
 
     def setDefaultPath(self) -> None:
-        """ """
         self.appPath = self.workDir / "watney-cli"
         self.indexPath = self.workDir / "watney-index"
         self.saveConfigFile()
 
     def solve(self, imagePath: Path, updateHeader: bool) -> dict:
-        """ """
         isBlind = self.searchRadius == 180
         jsonPath = self.tempDir / "solve.json"
         wcsPath = self.tempDir / "temp.wcs"
@@ -95,7 +92,6 @@ class Watney:
         return self.parent.prepareResult(suc, msg, imagePath, wcsPath, updateHeader)
 
     def checkAvailabilityProgram(self, appPath: Path) -> bool:
-        """ """
         self.appPath = appPath
 
         if platform.system() == "Darwin" or platform.system() == "Linux":
@@ -107,7 +103,6 @@ class Watney:
         return program.is_file()
 
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
-        """ """
         self.indexPath = indexPath
         self.saveConfigFile()
 

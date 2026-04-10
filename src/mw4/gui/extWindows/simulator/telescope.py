@@ -103,7 +103,6 @@ class SimulatorTelescope:
             node["trans"].setRotationZ(-angDEC.degrees)
 
     def create(self):
-        """ """
         lat = self.app.mount.obsSite.location.latitude.degrees
         model = {
             "mountRoot": {

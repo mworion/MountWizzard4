@@ -30,7 +30,6 @@ class DriverData:
         self.data = data
 
     def storePropertyToData(self, value: str | float, element: str) -> None:
-        """ """
         if value is None and element in self.data:
             del self.data[element]
         else:

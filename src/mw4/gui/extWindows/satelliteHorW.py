@@ -51,11 +51,9 @@ class SatelliteHorizonWindow(MWidget):
         self.app.mount.signals.mountIsUp.connect(self.setPointerVisibility)
 
     def initConfig(self) -> None:
-        """ """
         self.positionWindow(self.app.config.get("satelliteHorW", {}))
 
     def storeConfig(self) -> None:
-        """ """
         configMain = self.app.config
         configMain["satelliteHorW"] = {}
         config = configMain["satelliteHorW"]
@@ -66,7 +64,6 @@ class SatelliteHorizonWindow(MWidget):
         config["width"] = self.width()
 
     def closeEvent(self, closeEvent) -> None:
-        """ """
         self.storeConfig()
         self.app.showSatellite.disconnect(self.drawSatellite)
         self.app.updateSatellite.disconnect(self.updatePositions)
@@ -77,30 +74,25 @@ class SatelliteHorizonWindow(MWidget):
         super().closeEvent(closeEvent)
 
     def showWindow(self) -> None:
-        """ """
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.colorChange.connect(self.colorChange)
         self.app.sendSatelliteData.emit([], [])
         self.show()
 
     def colorChange(self) -> None:
-        """ """
         self.setStyleSheet(self.mw4Style)
         self.ui.satHorizon.colorChange()
         self.app.sendSatelliteData.emit([], [])
 
     def setPointerVisibility(self, status) -> None:
-        """ """
         self.pointerAltAz.setVisible(status)
 
     def updatePointerAltAz(self) -> None:
-        """ """
         alt = self.obsSite.Alt.degrees
         az = self.obsSite.Az.degrees
         self.pointerAltAz.setData(x=[az], y=[alt])
 
     def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
-        """ """
         difference = self.satellite - location
         alt, az, _ = difference.at(now).altaz()
         self.ui.satAltitude.setText(f"{alt.degrees:3.2f}")
@@ -112,7 +104,6 @@ class SatelliteHorizonWindow(MWidget):
 
     @staticmethod
     def unlinkWrap(dat) -> Iterator[slice]:
-        """ """
         limits = (-180, 180)
         thresh = 0.97
         jump = np.nonzero(np.abs(np.diff(dat)) > ((limits[1] - limits[0]) * thresh))[0]
@@ -123,7 +114,6 @@ class SatelliteHorizonWindow(MWidget):
         yield slice(lastIndex, len(dat))
 
     def prepareSatellite(self, x, y) -> pg.PlotDataItem:
-        """ """
         pd = pg.PlotDataItem(
             x=x,
             y=y,
@@ -136,7 +126,6 @@ class SatelliteHorizonWindow(MWidget):
 
     @staticmethod
     def prepareHorizon(plotItem: pg.PlotItem) -> None:
-        """ """
         plotItem.getViewBox().setMouseMode(pg.ViewBox.PanMode)
         plotItem.showAxes(True, showValues=True)
         xTicks = [(float(x), f"{x:0.0f}") for x in np.arange(30, 360, 30)]
@@ -156,7 +145,6 @@ class SatelliteHorizonWindow(MWidget):
         plotItem.clear()
 
     def prepareHorizonSatellite(self, plotItem: pg.PlotItem) -> pg.PlotDataItem:
-        """ """
         alt, az, _ = (self.satellite - self.obsSite.location).at(self.obsSite.ts.now()).altaz()
         pd = self.prepareSatellite([az.degrees], [alt.degrees])
         pd.setVisible(False)
@@ -165,7 +153,6 @@ class SatelliteHorizonWindow(MWidget):
         return pd
 
     def preparePointer(self, plotItem: pg.PlotItem) -> pg.PlotDataItem:
-        """ """
         pd = pg.PlotDataItem(
             x=[180],
             y=[45],
@@ -180,7 +167,6 @@ class SatelliteHorizonWindow(MWidget):
         return pd
 
     def drawHorizonTrajectory(self, plotItem: pg.PlotItem, altitude, azimuth):
-        """ """
         ts = self.obsSite.ts
         for i, satOrbit in enumerate(self.satOrbits):
             rise = satOrbit["rise"].tt
@@ -218,11 +204,9 @@ class SatelliteHorizonWindow(MWidget):
             plotItem.addItem(pd)
 
     def drawHorizon(self) -> None:
-        """ """
         self.ui.satHorizon.drawHorizon(self.app.data.horizonP)
 
     def drawHorizonView(self, altitude: list[float], azimuth: list[float]) -> None:
-        """ """
         plotItem = self.ui.satHorizon.p[0]
         self.prepareHorizon(plotItem)
         self.drawHorizonTrajectory(plotItem, altitude, azimuth)
@@ -238,7 +222,6 @@ class SatelliteHorizonWindow(MWidget):
         azimuth: list[float],
         name: str,
     ) -> None:
-        """ """
         self.setWindowTitle(f"Satellite {name}")
         self.satellite = satellite
         self.satOrbits = satOrbits

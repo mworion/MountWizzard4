@@ -71,7 +71,6 @@ class SGProClass(DriverData):
         self._deviceName = value
 
     def requestProperty(self, valueProp, params: dict = None) -> dict:
-        """ """
         try:
             t = f"SGPro: [{self.BASE_URL}/{valueProp}?format=json]"
             if params:
@@ -102,31 +101,26 @@ class SGProClass(DriverData):
         return response
 
     def sgConnectDevice(self) -> bool:
-        """ """
         devName = self.deviceName.replace(" ", "%20")
         prop = f"connectdevice/{self.DEVICE_TYPE}/{devName}"
         response = self.requestProperty(prop)
         return response.get("Success", False)
 
     def sgDisconnectDevice(self) -> bool:
-        """ """
         prop = f"disconnectdevice/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
         return response.get("Success", False)
 
     def sgEnumerateDevice(self) -> list:
-        """ """
         prop = f"enumdevices/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
         return response.get("Devices", [])
 
     def startSGProTimer(self) -> None:
-        """ """
         self.cycleData.start(self.updateRate)
         self.cycleDevice.start(self.updateRate)
 
     def stopSGProTimer(self) -> None:
-        """ """
         self.cycleData.stop()
         self.cycleDevice.stop()
 
@@ -137,7 +131,6 @@ class SGProClass(DriverData):
         pass
 
     def pollData(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.workerData = Worker(self.workerPollData)
@@ -148,12 +141,10 @@ class SGProClass(DriverData):
         pass
 
     def getInitialConfig(self) -> None:
-        """ """
         self.workerGetConfig = Worker(self.workerGetInitialConfig)
         self.threadPool.start(self.workerGetConfig)
 
     def workerPollStatus(self) -> None:
-        """ """
         prop = f"devicestatus/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
 
@@ -177,11 +168,9 @@ class SGProClass(DriverData):
                 self.msg.emit(0, "SGPRO", "Device found", f"{self.deviceName}")
 
     def clearPollStatus(self) -> None:
-        """ """
         self.mutexPollStatus.unlock()
 
     def pollStatus(self) -> None:
-        """ """
         if not self.mutexPollStatus.tryLock():
             return
 
@@ -190,7 +179,6 @@ class SGProClass(DriverData):
         self.threadPool.start(self.workerStatus)
 
     def startCommunication(self) -> None:
-        """ """
         self.data.clear()
         if not self.serverConnected:
             self.serverConnected = True
@@ -198,7 +186,6 @@ class SGProClass(DriverData):
         self.startSGProTimer()
 
     def stopCommunication(self) -> None:
-        """ """
         self.stopSGProTimer()
         self.deviceConnected = False
         self.serverConnected = False
@@ -207,7 +194,6 @@ class SGProClass(DriverData):
         self.msg.emit(0, "SGPRO", "Device remove", f"{self.deviceName}")
 
     def discoverDevices(self, deviceType: str) -> list:
-        """ """
         discoverList = self.sgEnumerateDevice()
         self.log.debug(f"[Type: {deviceType}: {discoverList}]")
         return discoverList

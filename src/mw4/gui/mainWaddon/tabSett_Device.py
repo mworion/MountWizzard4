@@ -190,7 +190,6 @@ class SettDevice:
         self.ui.ascomDisconnect.clicked.connect(self.manualStopAllAscomDrivers)
 
     def addMissingFrameworksData(self, driver: str, config: dict) -> dict:
-        """ """
         for framework in self.drivers[driver]["class"].run:
             if framework not in config[driver]["frameworks"]:
                 entry = self.drivers[driver]["class"].defaultConfig["frameworks"][framework]
@@ -198,7 +197,6 @@ class SettDevice:
         return config
 
     def addMissingDefaultData(self, config: dict) -> dict:
-        """ """
         for driver in self.drivers:
             if driver not in config:
                 config[driver] = {}
@@ -209,14 +207,12 @@ class SettDevice:
         return config
 
     def removeUnknownDriversData(self, config: dict) -> dict:
-        """ """
         for driver in list(config):
             if driver not in self.drivers:
                 del config[driver]
         return config
 
     def loadDriversDataFromConfig(self, config: dict) -> None:
-        """ """
         config = config.get("driversData", {})
         self.driversData.clear()
         config = self.addMissingDefaultData(config)
@@ -224,7 +220,6 @@ class SettDevice:
         self.driversData.update(config)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.loadDriversDataFromConfig(self.app.config)
         self.ui.autoConnectASCOM.setChecked(config.get("autoConnectASCOM", False))
@@ -232,13 +227,11 @@ class SettDevice:
         self.startDrivers()
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.app.config["driversData"] = self.driversData
         config["autoConnectASCOM"] = self.ui.autoConnectASCOM.isChecked()
 
     def setupIcons(self) -> None:
-        """ """
         for driver in self.drivers:
             if self.drivers[driver]["uiSetup"] is not None:
                 ui = self.drivers[driver]["uiSetup"]
@@ -248,7 +241,6 @@ class SettDevice:
         self.mainW.wIcon(self.ui.ascomDisconnect, "unlink")
 
     def setupDeviceGui(self) -> None:
-        """ """
         dropDowns = [self.drivers[driver]["uiDropDown"] for driver in self.drivers]
         for dropDown in dropDowns:
             dropDown.clear()
@@ -272,7 +264,6 @@ class SettDevice:
             self.drivers[driver]["uiDropDown"].setCurrentIndex(index)
 
     def processPopupResults(self) -> None:
-        """ """
         self.devicePopup.ui.ok.clicked.disconnect(self.processPopupResults)
         driver = self.devicePopup.returnValues.get("driver")
         if self.devicePopup.returnValues.get("indiCopyConfig", False):
@@ -295,7 +286,6 @@ class SettDevice:
         self.startDriver(driver, True)
 
     def copyConfig(self, driverOrig: str, framework: str) -> None:
-        """ """
         for driverDest in self.drivers:
             if driverDest == driverOrig:
                 continue
@@ -316,7 +306,6 @@ class SettDevice:
                 self.driversData[driverDest]["frameworks"][framework][param] = source
 
     def callPopup(self, driver: str) -> None:
-        """ """
         data = self.driversData[driver]
         deviceType = self.drivers[driver]["deviceType"]
         deviceClass = self.drivers[driver]["class"]
@@ -327,7 +316,6 @@ class SettDevice:
         self.devicePopup.ui.ok.clicked.connect(self.processPopupResults)
 
     def stopDriver(self, driver: str) -> None:
-        """ """
         self.app.deviceStat[driver] = None
         framework = self.drivers[driver]["class"].framework
         if framework not in self.drivers[driver]["class"].run:
@@ -344,12 +332,10 @@ class SettDevice:
         self.app.deviceStat[driver] = None
 
     def stopDrivers(self) -> None:
-        """ """
         for driver in self.drivers:
             self.stopDriver(driver=driver)
 
     def configDriver(self, driver: str) -> None:
-        """ """
         self.app.deviceStat[driver] = False
         framework = self.driversData[driver]["framework"]
         if framework not in self.drivers[driver]["class"].run:
@@ -361,7 +347,6 @@ class SettDevice:
             setattr(driverClass, attribute, frameworkConfig[attribute])
 
     def startDriver(self, driver: str, autoStart: bool = False) -> None:
-        """ """
         data = self.driversData[driver]
         framework = data["framework"]
         if framework not in self.drivers[driver]["class"].run:
@@ -381,7 +366,6 @@ class SettDevice:
         self.msg.emit(0, "Driver", f"{framework.upper()} enabled", f"{driver}")
 
     def startDrivers(self) -> None:
-        """ """
         for driver in self.drivers:
             if driver not in self.driversData:
                 continue
@@ -394,7 +378,6 @@ class SettDevice:
             self.startDriver(driver, autostart)
 
     def manualStopAllAscomDrivers(self) -> None:
-        """ """
         for driver in self.drivers:
             if driver not in self.driversData:
                 continue
@@ -403,7 +386,6 @@ class SettDevice:
                 self.stopDriver(driver)
 
     def manualStartAllAscomDrivers(self) -> None:
-        """ """
         for driver in self.drivers:
             if driver not in self.driversData:
                 continue
@@ -412,7 +394,6 @@ class SettDevice:
                 self.startDriver(driver, True)
 
     def dispatchDriverDropdown(self, driver: str, position: int) -> None:
-        """ """
         dropDownEntry = self.drivers[driver]["uiDropDown"].currentText()
         isDisabled = position == 0
         framework = "" if isDisabled else dropDownEntry.split("-")[0].rstrip()
@@ -423,11 +404,9 @@ class SettDevice:
             self.startDriver(driver, True)
 
     def serverDisconnected(self, driver: str, deviceList: list) -> None:
-        """ """
         self.msg.emit(0, "Driver", "Server disconnected", f"{driver}")
 
     def deviceConnected(self, driver: str, deviceName: str) -> None:
-        """ """
         changeStyleDynamic(self.drivers[driver]["uiDropDown"], "active", True)
         self.app.deviceStat[driver] = True
         self.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{driver}")
@@ -438,7 +417,6 @@ class SettDevice:
             self.msg.emit(0, "Driver", "Config loaded", f"{deviceName}::{driver}")
 
     def deviceDisconnected(self, driver: str, deviceName: str) -> None:
-        """ """
         changeStyleDynamic(self.drivers[driver]["uiDropDown"], "active", False)
         self.app.deviceStat[driver] = False
         self.msg.emit(0, "Driver", "Device disconnected", f"{deviceName}::{driver}")

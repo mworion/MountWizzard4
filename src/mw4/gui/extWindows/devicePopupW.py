@@ -171,7 +171,6 @@ class DevicePopup(MWidget):
         self.ui.selectBoltwoodPath.clicked.connect(self.selectBoltwoodPath)
 
     def initConfig(self) -> None:
-        """ """
         self.setWindowTitle(f"Setup driver for {self.deviceType}")
         self.populateTabs()
         self.selectTabs()
@@ -182,7 +181,6 @@ class DevicePopup(MWidget):
         self.show()
 
     def storeConfig(self) -> None:
-        """ """
         self.readFramework()
         self.readTabs()
         self.returnValues["indiCopyConfig"] = self.ui.indiCopyConfig.isChecked()
@@ -192,7 +190,6 @@ class DevicePopup(MWidget):
         self.close()
 
     def selectTabs(self) -> None:
-        """ """
         firstFramework = next(iter(self.data["frameworks"]))
         framework = self.data.get("framework")
         if not framework:
@@ -206,7 +203,6 @@ class DevicePopup(MWidget):
             self.ui.tab.setTabVisible(index, isVisible)
 
     def populateTabs(self) -> None:
-        """ """
         frameworks = self.data["frameworks"]
         for fw in frameworks:
             frameworkElements = frameworks[fw]
@@ -231,7 +227,6 @@ class DevicePopup(MWidget):
                     ui.setValue(frameworks[fw][element])
 
     def readTabs(self) -> None:
-        """ """
         framework = self.data["framework"]
         frameworkData = self.data["frameworks"][framework]
 
@@ -255,7 +250,6 @@ class DevicePopup(MWidget):
                 frameworkData[element] = ui.value()
 
     def readFramework(self) -> None:
-        """ """
         index = self.ui.tab.currentIndex()
         framework = self.ui.tab.widget(index).objectName()
         self.data["framework"] = framework
@@ -267,7 +261,6 @@ class DevicePopup(MWidget):
             self.discovers[framework]["deviceList"].addItem(deviceName)
 
     def discoverDevices(self, framework: str, widget) -> None:
-        """ """
         device = self.discovers[framework]["class"](parent=self.parent)
 
         if framework in ["indi", "alpaca"]:
@@ -288,41 +281,35 @@ class DevicePopup(MWidget):
         self.updateDeviceNameList(framework, deviceNames)
 
     def checkApp(self, framework: str, folder: str = "") -> None:
-        """ """
         frameworkClass = self.app.plateSolve.run[framework]
         sucApp = frameworkClass.checkAvailabilityProgram(Path(folder))
         colorP = "green" if sucApp else "red"
         changeStyleDynamic(self.platesolvers[framework]["appPath"], "color", colorP)
 
     def checkIndex(self, framework: str, folder: str = "") -> None:
-        """ """
         frameworkClass = self.app.plateSolve.run[framework]
         sucIndex = frameworkClass.checkAvailabilityIndex(Path(folder))
         colorI = "green" if sucIndex else "red"
         changeStyleDynamic(self.platesolvers[framework]["indexPath"], "color", colorI)
 
     def selectAppPath(self, framework: str, folder: str = "") -> None:
-        """ """
         appFolderPath = self.openDir(self, "Select App Path", Path(folder))
         if not appFolderPath.is_dir():
             return
         self.platesolvers[framework]["appPath"].setText(str(appFolderPath))
 
     def selectIndexPath(self, framework: str, folder: str = "") -> None:
-        """ """
         indexFolderPath = self.openDir(self, "Select Index Path", Path(folder))
         if not indexFolderPath.is_dir():
             return
         self.platesolvers[framework]["indexPath"].setText(str(indexFolderPath))
 
     def selectAscomDriver(self) -> None:
-        """ """
         ascom = AscomClass(parent=self.parent)
         deviceName = ascom.selectAscomDriver(self.ui.ascomDevice.text())
         self.ui.ascomDevice.setText(deviceName)
 
     def selectBoltwoodPath(self) -> None:
-        """ """
         folder = Path(self.ui.boltwoodPath.text()).parent
         boltwoodFilePath = self.openFile(
             self, "Select Boltwood Filepath", folder, "All Files (*)"

@@ -14,7 +14,6 @@
 #
 ###########################################################
 def checkFormatMAC(value: str) -> str:
-    """ """
     if not value:
         return ""
 

@@ -36,7 +36,6 @@ class SettUpdate:
         self.ui.isOnline.clicked.connect(self.setupIERS)
 
     def initConfig(self):
-        """ """
         config = self.app.config["mainW"]
         loglevel = logging.getLevelName(self.log.level)
         self.ui.loglevelTrace.setChecked(loglevel == "TRACE")
@@ -48,13 +47,11 @@ class SettUpdate:
         self.setupIERS()
 
     def storeConfig(self):
-        """ """
         config = self.app.config["mainW"]
         config["isOnline"] = self.ui.isOnline.isChecked()
         config["ageDatabases"] = self.ui.ageDatabases.value()
 
     def setOnlineMode(self):
-        """ """
         isOnline = self.ui.isOnline.isChecked()
         self.app.onlineMode = isOnline
         if isOnline:
@@ -63,7 +60,6 @@ class SettUpdate:
             self.msg.emit(0, "System", "Online", "Online mode deactivated")
 
     def setupIERS(self):
-        """ """
         isOnline = self.ui.isOnline.isChecked()
         if isOnline:
             iers.conf.auto_download = True
@@ -76,7 +72,6 @@ class SettUpdate:
             data.conf.allow_internet = False
 
     def setLoggingLevel(self):
-        """ """
         if self.ui.loglevelTrace.isChecked():
             setCustomLoggingLevel("TRACE")
         elif self.ui.loglevelDebug.isChecked():

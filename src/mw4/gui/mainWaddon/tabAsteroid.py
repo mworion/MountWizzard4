@@ -47,25 +47,21 @@ class Asteroid:
         self.ui.progAsteroidFull.clicked.connect(self.asteroids.progFull)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.ui.asteroidFilterText.setText(config.get("asteroidFilterText"))
         self.ui.asteroidSourceList.setCurrentIndex(config.get("asteroidSource", 0))
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["asteroidSource"] = self.ui.asteroidSourceList.currentIndex()
         config["asteroidFilterText"] = self.ui.asteroidFilterText.text()
 
     def setupIcons(self) -> None:
-        """ """
         self.mainW.wIcon(self.ui.progAsteroidFull, "run")
         self.mainW.wIcon(self.ui.progAsteroidFiltered, "run")
         self.mainW.wIcon(self.ui.progAsteroidSelected, "run")
 
     def prepareAsteroidTable(self) -> None:
-        """ """
         self.ui.listAsteroids.setRowCount(0)
         hLabels = [
             "Num",
@@ -92,7 +88,6 @@ class Asteroid:
 
     @staticmethod
     def generateName(mp: dict) -> str:
-        """ """
         if "Designation_and_name" in mp:
             name = f"{mp['Designation_and_name']}"
         elif "Name" in mp and "Principal_desig" in mp:
@@ -106,7 +101,6 @@ class Asteroid:
         return name
 
     def processAsteroidSource(self) -> None:
-        """ """
         self.ui.listAsteroids.setRowCount(0)
         with open(self.asteroids.dest) as inFile:
             try:
@@ -124,7 +118,6 @@ class Asteroid:
             self.asteroids.objects[text] = asteroid
 
     def filterListAsteroids(self) -> None:
-        """ """
         filterStr = self.ui.asteroidFilterText.text().lower()
 
         for row in range(self.ui.listAsteroids.model().rowCount()):
@@ -134,7 +127,6 @@ class Asteroid:
             self.ui.listAsteroids.setRowHidden(row, not show)
 
     def fillAsteroidListName(self) -> None:
-        """ """
         self.ui.listAsteroids.setRowCount(0)
         for number, name in enumerate(self.asteroids.objects):
             row = self.ui.listAsteroids.rowCount()

@@ -44,16 +44,13 @@ class VideoWindowBase(MWidget):
         self.worker: Worker | None = None
 
     def closeEvent(self, closeEvent) -> None:
-        """ """
         self.stopVideo()
         super().closeEvent(closeEvent)
 
     def colorChange(self) -> None:
-        """ """
         self.setStyleSheet(self.mw4Style)
 
     def showWindow(self) -> None:
-        """ """
         self.pixmapReady.connect(self.receivedImage)
         self.ui.videoStart.clicked.connect(self.startVideo)
         self.ui.videoStop.clicked.connect(self.stopVideo)
@@ -67,7 +64,6 @@ class VideoWindowBase(MWidget):
         self.show()
 
     def sendImage(self) -> None:
-        """ """
         try:
             _, frame = self.capture.retrieve()
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -81,11 +77,9 @@ class VideoWindowBase(MWidget):
         self.pixmapReady.emit(QPixmap.fromImage(image))
 
     def count(self) -> None:
-        """ """
         self.runningCounter += 1
 
     def workerVideo(self, source: str, frameRate: int) -> None:
-        """ """
         try:
             self.capture.open(source)
             if not self.capture.isOpened():
@@ -111,7 +105,6 @@ class VideoWindowBase(MWidget):
         self.capture.release()
 
     def startVideo(self) -> None:
-        """ """
         auth = f"{self.user}:{self.password}@" if self.user and self.password else ""
         url = f"{auth}{self.ui.videoURL.text()}"
         sources = ["rtsp://" + url, "http://" + url, "https://" + url, url, 0, 1, 2, 3]
@@ -134,20 +127,17 @@ class VideoWindowBase(MWidget):
         self.threadPool.start(self.worker)
 
     def stopVideo(self) -> None:
-        """ """
         changeStyleDynamic(self.ui.videoStart, "run", False)
         changeStyleDynamic(self.ui.videoStop, "run", True)
         self.pixmapReady.emit(None)
         self.running = False
 
     def restartVideo(self) -> None:
-        """ """
         self.stopVideo()
         sleepAndEvents(1000)
         self.startVideo()
 
     def receivedImage(self, pixmap: QPixmap) -> None:
-        """ """
         if not self.running or pixmap is None:
             self.ui.video.clear()
             return
@@ -157,12 +147,10 @@ class VideoWindowBase(MWidget):
         self.ui.video.setPixmap(pixmap)
 
     def checkAuth(self) -> None:
-        """ """
         hasAuth = self.user != "" and self.password != ""
         changeStyleDynamic(self.ui.authPopup, "run", hasAuth)
 
     def authPopup(self) -> None:
-        """ """
         dlg = QInputDialog()
         value1, ok1 = dlg.getText(
             self,

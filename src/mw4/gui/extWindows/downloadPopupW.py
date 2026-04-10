@@ -53,26 +53,21 @@ class DownloadPopup(MWidget):
         self.setIcon()
 
     def setIcon(self) -> None:
-        """ """
         pixmap = svg2pixmap("assets/icon/download_pop.svg", self.M_PRIM)
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
 
     def setProgressBarColor(self, color: str) -> None:
-        """ """
         css = "QProgressBar::chunk {background-color: " + color + ";}"
         self.ui.progressBar.setStyleSheet(css)
 
     def setProgressBarToValue(self, progressPercent: int) -> None:
-        """ """
         self.ui.progressBar.setValue(progressPercent)
 
     def setStatusTextToValue(self, statusText: str) -> None:
-        """ """
         self.ui.statusText.setText(statusText)
 
     def getFileFromUrl(self, url: Path, dest: Path) -> bool:
-        """ """
         r = requests.get(str(url), stream=True, timeout=3)
         totalSizeBytes = int(r.headers.get("content-length", 1))
         if r.status_code != 200:
@@ -89,13 +84,11 @@ class DownloadPopup(MWidget):
 
     @staticmethod
     def unzipFile(downloadDest: Path, dest: Path) -> None:
-        """ """
         with gzip.open(downloadDest, "rb") as f_in, open(dest, "wb") as f_out:
             shutil.copyfileobj(f_in, f_out)
         downloadDest.unlink()
 
     def downloadFileWorker(self, url: Path, dest: Path, unzip: bool = False) -> bool:
-        """ """
         downloadDest = dest.parent / "temp.zip" if unzip else dest
 
         try:
@@ -123,7 +116,6 @@ class DownloadPopup(MWidget):
         return True
 
     def closePopup(self, result: bool) -> None:
-        """ """
         self.signalProgress.emit(100)
         if result:
             self.signalProgressBarColor.emit("green")
@@ -136,7 +128,6 @@ class DownloadPopup(MWidget):
         self.close()
 
     def downloadFile(self) -> None:
-        """ """
         self.worker = Worker(self.downloadFileWorker, self.url, self.dest, self.unzip)
         self.worker.signals.result.connect(self.closePopup)
         self.threadPool.start(self.worker)

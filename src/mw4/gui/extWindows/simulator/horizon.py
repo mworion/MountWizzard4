@@ -33,14 +33,12 @@ class SimulatorHorizon:
         self.parent.ui.showHorizon.checkStateChanged.connect(self.showEnable)
 
     def showEnable(self) -> None:
-        """ """
         isVisible = self.parent.ui.showHorizon.isChecked()
         node = self.parent.entityModel.get("horizonRoot")
         if node:
             node["entity"].setEnabled(isVisible)
 
     def clear(self) -> None:
-        """ """
         node = self.parent.entityModel.get("horizonRoot")
         if not node:
             return
@@ -50,7 +48,6 @@ class SimulatorHorizon:
         del self.parent.entityModel["horizonRoot"]
 
     def createWall(self, parentEntity, alt, az) -> Qt3DCore.QEntity:
-        """ """
         e1 = Qt3DCore.QEntity()
         e1.setParent(parentEntity)
         trans1 = Qt3DCore.QTransform()
@@ -78,7 +75,6 @@ class SimulatorHorizon:
         return e3
 
     def create(self) -> None:
-        """ """
         if not self.app.data.horizonP:
             return
 

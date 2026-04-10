@@ -31,12 +31,10 @@ class BigPopup(MWidget):
         self.setWindowTitle("Big buttons")
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config.get("bigPopupW", {})
         self.positionWindow(config)
 
     def storeConfig(self) -> None:
-        """ """
         configMain = self.app.config
         configMain["bigPopupW"] = {}
         config = configMain["bigPopupW"]
@@ -47,16 +45,13 @@ class BigPopup(MWidget):
         config["width"] = self.width()
 
     def closeEvent(self, closeEvent) -> None:
-        """ """
         self.storeConfig()
         super().closeEvent(closeEvent)
 
     def colorChange(self) -> None:
-        """ """
         self.setStyleSheet(self.mw4Style)
 
     def showWindow(self) -> None:
-        """ """
         self.wIcon(self.ui.mountOn, "power-on")
         self.wIcon(self.ui.mountOff, "power-off")
         self.wIcon(self.ui.stop, "hand")
@@ -70,7 +65,6 @@ class BigPopup(MWidget):
         self.show()
 
     def updateDeviceStats(self) -> None:
-        """ """
         isMount = self.app.deviceStat.get("mount", False)
         changeStyleDynamic(self.ui.mountOn, "run", isMount)
         changeStyleDynamic(self.ui.mountOff, "run", not isMount)
@@ -79,6 +73,5 @@ class BigPopup(MWidget):
         self.ui.mountOff.setEnabled(canWOL)
 
     def updateStatus(self) -> None:
-        """ """
         running = self.app.mount.obsSite.status == 1
         changeStyleDynamic(self.ui.stop, "run", running)

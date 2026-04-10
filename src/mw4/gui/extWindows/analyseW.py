@@ -70,14 +70,12 @@ class AnalyseWindow(MWidget):
         ]
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config.get("analyseW", {})
         self.positionWindow(config)
         self.ui.showHorizon.setChecked(config.get("showHorizon", False))
         self.ui.linkViews.setChecked(config.get("linkViews", False))
 
     def storeConfig(self) -> None:
-        """ """
         configMain = self.app.config
         configMain["analyseW"] = {}
         config = configMain["analyseW"]
@@ -90,13 +88,11 @@ class AnalyseWindow(MWidget):
         config["linkViews"] = self.ui.linkViews.isChecked()
 
     def closeEvent(self, closeEvent) -> None:
-        """ """
         self.storeConfig()
         self.ui.showISO.setChecked(False)
         super().closeEvent(closeEvent)
 
     def showWindow(self) -> None:
-        """ """
         self.show()
         self.app.showAnalyse.connect(self.showAnalyse)
         self.ui.showHorizon.clicked.connect(self.drawAll)
@@ -104,7 +100,6 @@ class AnalyseWindow(MWidget):
         self.ui.linkViews.clicked.connect(self.drawAll)
 
     def colorChange(self) -> None:
-        """ """
         self.wIcon(self.ui.load, "load")
         self.setStyleSheet(self.mw4Style)
         for plot in [
@@ -125,7 +120,6 @@ class AnalyseWindow(MWidget):
         self.drawAll()
 
     def writeGui(self, data: list, loadFilePath: Path) -> None:
-        """ """
         d = data[0]
         de = data[-1]
 
@@ -170,7 +164,6 @@ class AnalyseWindow(MWidget):
         return np.array([_clean(v) for v in values], dtype=dtype)
 
     def generateDataSets(self, modelJSON: dict) -> None:
-        """ """
         model = {}
         for key in modelJSON[0]:
             model[key] = []
@@ -194,7 +187,6 @@ class AnalyseWindow(MWidget):
         self.angularPosDEC = self.list2array(model["angularPosDEC"], dtype=np.float32)
 
     def processModel(self, loadFilePath: Path) -> None:
-        """ """
         try:
             with open(loadFilePath) as infile:
                 modelJSON = json.load(infile)
@@ -207,19 +199,16 @@ class AnalyseWindow(MWidget):
         self.drawAll()
 
     def loadModel(self) -> None:
-        """ """
         folder = self.app.mwGlob["modelDir"]
         loadFilePath = self.openFile(self, "Open model file", folder, "Model files (*.model)")
         if loadFilePath.is_file():
             self.processModel(loadFilePath)
 
     def showAnalyse(self, path: Path) -> None:
-        """ """
         if path.is_file():
             self.processModel(path)
 
     def drawRaRawErrors(self) -> None:
-        """ """
         hasISO = self.ui.showISO.isChecked()
         isoLevels = 20 if hasISO else 0
         self.ui.raRawErrors.p[0].setLabel("bottom", "Azimuth [deg]")
@@ -238,7 +227,6 @@ class AnalyseWindow(MWidget):
         )
 
     def drawDecRawErrors(self) -> None:
-        """ """
         hasISO = self.ui.showISO.isChecked()
         isoLevels = 20 if hasISO else 0
         self.ui.decRawErrors.p[0].setLabel("bottom", "Azimuth [deg]")
@@ -257,7 +245,6 @@ class AnalyseWindow(MWidget):
         )
 
     def drawRaErrors(self) -> None:
-        """ """
         hasISO = self.ui.showISO.isChecked()
         isoLevels = 20 if hasISO else 0
         self.ui.raErrors.p[0].setLabel("bottom", "Azimuth [deg]")
@@ -276,7 +263,6 @@ class AnalyseWindow(MWidget):
         )
 
     def drawDecError(self) -> None:
-        """ """
         hasISO = self.ui.showISO.isChecked()
         isoLevels = 20 if hasISO else 0
         self.ui.decErrors.p[0].setLabel("bottom", "Azimuth [deg]")
@@ -295,7 +281,6 @@ class AnalyseWindow(MWidget):
         )
 
     def drawRaRawErrorsRef(self) -> None:
-        """ """
         self.ui.raRawErrorsRef.p[0].setLabel("bottom", "RA Encoder Abs [deg]")
         self.ui.raRawErrorsRef.p[0].setLabel("left", "Error per Star [arcsec]")
         ticks = [(x, f"{x}") for x in range(30, 180, 30)]
@@ -312,7 +297,6 @@ class AnalyseWindow(MWidget):
         )
 
     def drawDecRawErrorsRef(self) -> None:
-        """ """
         self.ui.decRawErrorsRef.p[0].setLabel("bottom", "DEC Encoder Abs [deg]")
         self.ui.decRawErrorsRef.p[0].setLabel("left", "Error per Star [arcsec]")
         ticks = [(x, f"{x}") for x in range(-80, 90, 20)]
@@ -330,7 +314,6 @@ class AnalyseWindow(MWidget):
         )
 
     def drawRaErrorsRef(self) -> None:
-        """ """
         self.ui.raErrorsRef.p[0].setLabel("bottom", "RA Encoder Abs [deg]")
         self.ui.raErrorsRef.p[0].setLabel("left", "Error per Star [arcsec]")
         ticks = [(x, f"{x}") for x in range(30, 180, 30)]
@@ -347,7 +330,6 @@ class AnalyseWindow(MWidget):
         )
 
     def drawDecErrorsRef(self) -> None:
-        """ """
         self.ui.decErrorsRef.p[0].setLabel("bottom", "DEC Encoder Abs [deg]")
         self.ui.decErrorsRef.p[0].setLabel("left", "Error per Star [arcsec]")
         ticks = [(x, f"{x}") for x in range(-80, 90, 20)]
@@ -365,7 +347,6 @@ class AnalyseWindow(MWidget):
         )
 
     def drawScaleImage(self) -> None:
-        """ """
         self.ui.scaleImage.p[0].setLabel("bottom", "Star Number")
         self.ui.scaleImage.p[0].setLabel("left", "Image Scale [arcsec/pix]")
         color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
@@ -378,7 +359,6 @@ class AnalyseWindow(MWidget):
         )
 
     def drawErrorAscending(self) -> None:
-        """ """
         self.ui.errorAscending.p[0].setLabel("bottom", "Starcount")
         self.ui.errorAscending.p[0].setLabel("left", "Error per Star [arcsec]")
         temp = sorted(zip(self.errorRMS, self.pierside))
@@ -394,7 +374,6 @@ class AnalyseWindow(MWidget):
         )
 
     def drawModelPositions(self) -> None:
-        """ """
         self.ui.modelPositions.barItem.setLabel("right", "Error [RMS]")
         self.ui.modelPositions.plot(
             self.azimuth,
@@ -410,7 +389,6 @@ class AnalyseWindow(MWidget):
         self.ui.modelPositions.plotLoc(self.latitude)
 
     def drawErrorDistribution(self) -> None:
-        """ """
         color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
         self.ui.errorDistribution.plot(
             self.errorAngle,
@@ -421,7 +399,6 @@ class AnalyseWindow(MWidget):
         )
 
     def drawHorizon(self) -> None:
-        """ """
         if not self.ui.showHorizon.isChecked():
             return
 
@@ -431,7 +408,6 @@ class AnalyseWindow(MWidget):
         self.ui.decRawErrors.drawHorizon(self.app.data.horizonP)
 
     def linkViewsAltAz(self) -> None:
-        """ """
         isLinked = self.ui.linkViews.isChecked()
         views = [
             self.ui.raRawErrors.p[0].getViewBox(),
@@ -452,7 +428,6 @@ class AnalyseWindow(MWidget):
             sourceView.rightMouseRange()
 
     def linkViewsRa(self) -> None:
-        """ """
         isLinked = self.ui.linkViews.isChecked()
         views = [
             self.ui.raRawErrorsRef.p[0].getViewBox(),
@@ -469,7 +444,6 @@ class AnalyseWindow(MWidget):
             sourceView.rightMouseRange()
 
     def linkViewsDec(self) -> None:
-        """ """
         isLinked = self.ui.linkViews.isChecked()
         views = [
             self.ui.decRawErrorsRef.p[0].getViewBox(),
@@ -486,7 +460,6 @@ class AnalyseWindow(MWidget):
             sourceView.rightMouseRange()
 
     def drawAll(self) -> None:
-        """ """
         for chart in self.charts:
             chart()
             sleepAndEvents(0)

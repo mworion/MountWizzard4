@@ -24,7 +24,6 @@ from skyfield.units import Angle
 
 
 def findSunlit(sat: EarthSatellite, ephemeris, tEvent: tuple) -> bool:
-    """ """
     sunlit = sat.at(tEvent).is_sunlit(ephemeris)
     return sunlit
 
@@ -32,13 +31,11 @@ def findSunlit(sat: EarthSatellite, ephemeris, tEvent: tuple) -> bool:
 def findSatUp(
     sat: EarthSatellite, loc: GeographicPosition, tStart: float, tEnd: float, alt: float
 ) -> list:
-    """ """
     t, events = sat.find_events(loc, tStart, tEnd, altitude_degrees=alt)
     return t[np.equal(events, 1)][:1]
 
 
 def checkTwilight(ephemeris, loc: GeographicPosition, data: list) -> int:
-    """ """
     if not len(data):
         return 5
 
@@ -51,7 +48,6 @@ def checkTwilight(ephemeris, loc: GeographicPosition, data: list) -> int:
 def findRangeRate(
     sat: EarthSatellite, loc: GeographicPosition, tEv: float
 ) -> tuple[float, float, float, float]:
-    """ """
     pos = (sat - loc).at(tEv)
     _, _, satRange, latRate, lonRate, radRate = pos.frame_latlon_and_rates(loc)
     return (
@@ -107,7 +103,6 @@ def calcAppMag(
 def calcSatelliteMeridianTransit(
     sat: EarthSatellite, loc: GeographicPosition, tolerance: float
 ) -> Callable:
-    """ """
     difference = sat - loc
 
     def west_of_meridian_at(t):
@@ -122,7 +117,6 @@ def calcSatelliteMeridianTransit(
 def calcPassEvents(
     sat: EarthSatellite, obsSite: ObsSite, minAlt: float = 5
 ) -> tuple[list, list]:
-    """ """
     if minAlt is None:
         minAlt = 5
     if minAlt < 5:
@@ -137,7 +131,6 @@ def calcPassEvents(
 
 
 def collectAllOrbits(times: list, events: list, obsSite: ObsSite) -> list:
-    """ """
     counter = 0
     satOrbits = []
     for ti, event in zip(times, events):
@@ -165,7 +158,6 @@ def collectAllOrbits(times: list, events: list, obsSite: ObsSite) -> list:
 
 
 def extractCorrectOrbits(times: list[Time], events: list[int], satOrbits: list[dict]) -> list:
-    """ """
     if not satOrbits and np.all(events == 1) and len(events) > 0:
         satOrbits.append({"rise": times[0]})
         satOrbits[0]["culminate"] = times[0] + 0.5
@@ -180,7 +172,6 @@ def extractCorrectOrbits(times: list[Time], events: list[int], satOrbits: list[d
 def sortFlipEvents(
     satOrbit: list[dict], t0: list[Time], t1: list[Time], t2: list[Time]
 ) -> dict:
-    """ """
     settle = satOrbit["settle"]
     rise = satOrbit["rise"]
     if t0:
@@ -208,7 +199,6 @@ def sortFlipEvents(
 def addMeridianTransit(
     sat: EarthSatellite, satOrbits: list[dict], loc: GeographicPosition, setting: Setting
 ) -> list[dict]:
-    """ """
     limit = setting.meridianLimitTrack
     if limit is None:
         limit = 0
@@ -227,7 +217,6 @@ def addMeridianTransit(
 
 
 def calcSatPasses(sat: EarthSatellite, obsSite: ObsSite, setting: Setting) -> list[dict]:
-    """ """
     times, events = calcPassEvents(sat, obsSite, setting.horizonLimitLow)
     satOrbits = collectAllOrbits(times, events, obsSite)
     satOrbits = extractCorrectOrbits(times, events, satOrbits)

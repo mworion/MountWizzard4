@@ -52,12 +52,10 @@ class SatelliteMapWindow(MWidget):
         self.app.updateSatellite.connect(self.updatePositions)
 
     def initConfig(self) -> None:
-        """ """
         self.world: bytes = self.loadMap()
         self.positionWindow(self.app.config.get("satelliteMapW", {}))
 
     def storeConfig(self) -> None:
-        """ """
         configMain = self.app.config
         configMain["satelliteMapW"] = {}
         config = configMain["satelliteMapW"]
@@ -67,33 +65,28 @@ class SatelliteMapWindow(MWidget):
         config["width"] = self.width()
 
     def closeEvent(self, closeEvent) -> None:
-        """ """
         self.storeConfig()
         self.app.showSatellite.disconnect(self.drawSatellite)
         self.app.updateSatellite.disconnect(self.updatePositions)
         super().closeEvent(closeEvent)
 
     def showWindow(self) -> None:
-        """ """
         self.app.colorChange.connect(self.colorChange)
         self.app.sendSatelliteData.emit([], [])
         self.show()
 
     def colorChange(self) -> None:
-        """ """
         self.setStyleSheet(self.mw4Style)
         self.ui.satEarth.colorChange()
         self.app.sendSatelliteData.emit([], [])
 
     @staticmethod
     def loadMap() -> bytes:
-        """ """
         with as_file(files("mw4").joinpath("assets/data/worldmap.dat")) as mapFile:
             pickleData = mapFile.read_bytes()
         return pickle.load(BytesIO(pickleData))
 
     def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
-        """ """
         observe = self.satellite.at(now)
         subPoint = wgs84.subpoint_of(observe)
         self.ui.satLatitude.setText(f"{subPoint.latitude.degrees:3.2f}")
@@ -105,7 +98,6 @@ class SatelliteMapWindow(MWidget):
 
     @staticmethod
     def unlinkWrap(dat) -> Iterator[slice]:
-        """ """
         limits = (-180, 180)
         thresh = 0.97
         jump = np.nonzero(np.abs(np.diff(dat)) > ((limits[1] - limits[0]) * thresh))[0]
@@ -117,7 +109,6 @@ class SatelliteMapWindow(MWidget):
 
     @staticmethod
     def prepareEarth(plotItem: pg.PlotItem) -> None:
-        """ """
         plotItem.showAxes(True, showValues=True)
         plotItem.getViewBox().setMouseMode(pg.ViewBox.PanMode)
         xTicks = [(x, f"{x:0.0f}") for x in np.arange(-135, 136, 45)]
@@ -135,7 +126,6 @@ class SatelliteMapWindow(MWidget):
         plotItem.clear()
 
     def drawShoreLine(self, plotItem: pg.PlotItem) -> None:
-        """ """
         for key in self.world:
             shape = self.world[key]
             x = np.array(shape["xDeg"])
@@ -147,7 +137,6 @@ class SatelliteMapWindow(MWidget):
             plotItem.addItem(poly)
 
     def drawPosition(self, plotItem: pg.PlotItem) -> None:
-        """ """
         lat = self.obsSite.location.latitude.degrees
         lon = self.obsSite.location.longitude.degrees
         pd = pg.PlotDataItem(
@@ -161,7 +150,6 @@ class SatelliteMapWindow(MWidget):
         plotItem.addItem(pd)
 
     def prepareSatellite(self, x, y) -> pg.PlotDataItem:
-        """ """
         pd = pg.PlotDataItem(
             x=x,
             y=y,
@@ -173,7 +161,6 @@ class SatelliteMapWindow(MWidget):
         return pd
 
     def prepareEarthSatellite(self, plotItem: pg.PlotItem) -> pg.PlotDataItem:
-        """ """
         subPoint = wgs84.subpoint_of(self.satellite.at(self.obsSite.ts.now()))
         lat = subPoint.latitude.degrees
         lon = subPoint.longitude.degrees
@@ -184,7 +171,6 @@ class SatelliteMapWindow(MWidget):
         return pd
 
     def drawEarthTrajectory(self, plotItem: pg.PlotItem) -> None:
-        """ """
         for i, satOrbit in enumerate(self.satOrbits):
             rise = satOrbit["rise"].tt
             settle = satOrbit["settle"].tt
@@ -227,7 +213,6 @@ class SatelliteMapWindow(MWidget):
             plotItem.addItem(pd)
 
     def drawEarth(self) -> None:
-        """ """
         plotItem = self.ui.satEarth.p[0]
         self.prepareEarth(plotItem)
         self.drawShoreLine(plotItem)
@@ -243,7 +228,6 @@ class SatelliteMapWindow(MWidget):
         azimuth: list[float],
         name: str,
     ) -> None:
-        """ """
         self.setWindowTitle(f"Satellite {name}")
         self.satellite = satellite
         self.satOrbits = satOrbits

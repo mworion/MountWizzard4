@@ -36,7 +36,6 @@ class Analysis:
         self.app.operationRunning.connect(self.setAnalysisOperationMode)
 
     def initConfig(self):
-        """ """
         config = self.app.config["mainW"]
         self.ui.flexureAlt.setValue(config.get("flexureAlt", 45))
         self.ui.flexureAz.setValue(config.get("flexureAz", 45))
@@ -46,7 +45,6 @@ class Analysis:
         self.ui.hysteresisRuns.setValue(config.get("hysteresisRuns", 1))
 
     def storeConfig(self):
-        """ """
         config = self.app.config["mainW"]
         config["flexureAlt"] = self.ui.flexureAlt.value()
         config["flexureAz"] = self.ui.flexureAz.value()
@@ -56,13 +54,11 @@ class Analysis:
         config["hysteresisRuns"] = self.ui.hysteresisRuns.value()
 
     def setupIcons(self):
-        """ """
         self.mainW.wIcon(self.ui.runFlexure, "start")
         self.mainW.wIcon(self.ui.runHysteresis, "start")
         self.mainW.wIcon(self.ui.cancelAnalysis, "cross-circle")
 
     def setAnalysisOperationMode(self, status):
-        """ """
         if status == 4:
             self.ui.cancelAnalysis.setEnabled(True)
             self.ui.runHysteresis.setEnabled(False)
@@ -79,7 +75,6 @@ class Analysis:
             self.ui.cancelAnalysis.setEnabled(False)
 
     def checkAnalysisConditions(self):
-        """ """
         if self.ui.plateSolveDevice.currentText().startswith("No device"):
             self.msg.emit(2, "Analysis", "Run error", "No plate solver selected")
             return False
@@ -93,7 +88,6 @@ class Analysis:
         return True
 
     def setupFlexurePoints(self):
-        """ """
         alt = self.ui.flexureAlt.value()
         az = self.ui.flexureAz.value()
         waitTime = self.ui.flexureTime.value()
@@ -106,7 +100,6 @@ class Analysis:
         return data, waitTime
 
     def restoreAnalysisDefaultContextAndGuiStatus(self):
-        """ """
         changeStyleDynamic(self.ui.runFlexure, "run", False)
         changeStyleDynamic(self.ui.runHysteresis, "run", False)
         self.ui.cancelAnalysis.setEnabled(False)
@@ -117,15 +110,12 @@ class Analysis:
         self.app.operationRunning.emit(0)
 
     def cancelAnalysis(self):
-        """ """
         self.restoreAnalysisDefaultContextAndGuiStatus()
 
     def processAnalysisData(self):
-        """ """
         self.restoreAnalysisDefaultContextAndGuiStatus()
 
     def updateAnalysisProgress(self, mPoint):
-        """ """
         number = mPoint.get("lenSequence", 0)
         count = mPoint.get("countSequence", 0)
         if not 0 < count <= number:
@@ -138,5 +128,4 @@ class Analysis:
         return True
 
     def runFlexure(self):
-        """ """
         pass

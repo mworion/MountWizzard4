@@ -49,7 +49,6 @@ class SettParkPos:
             self.posButtons[index].clicked.connect(partial(self.saveActualPosition, index))
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         for index in self.posTexts:
             keyConfig = f"posText{index:1d}"
@@ -68,7 +67,6 @@ class SettParkPos:
         self.ui.parkMountAfterSlew.setChecked(config.get("parkMountAfterSlew", False))
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         for index in self.posTexts:
             keyConfig = f"posText{index:1d}"
@@ -82,7 +80,6 @@ class SettParkPos:
         config["parkMountAfterSlew"] = self.ui.parkMountAfterSlew.isChecked()
 
     def setupIcons(self) -> None:
-        """ """
         self.mainW.wIcon(self.ui.posSave0, "download")
         self.mainW.wIcon(self.ui.posSave1, "download")
         self.mainW.wIcon(self.ui.posSave2, "download")
@@ -95,20 +92,17 @@ class SettParkPos:
         self.mainW.wIcon(self.ui.posSave9, "download")
 
     def updateParkPosButtonText(self) -> None:
-        """ """
         for index in self.posButtons:
             text = self.posTexts[index].text()
             self.posButtons[index].setText(text)
             self.posButtons[index].setEnabled(text.strip() != "")
 
     def parkAtPos(self) -> None:
-        """ """
         self.app.mount.signals.slewed.disconnect(self.parkAtPos)
         if not self.app.mount.obsSite.parkOnActualPosition():
             self.msg.emit(2, "Mount", "Command", "Cannot park at current position")
 
     def slewToParkPos(self, index: int) -> None:
-        """ """
         altValue = self.posAlt[index].value()
         azValue = self.posAz[index].value()
         posTextValue = self.posTexts[index].text()
@@ -130,7 +124,6 @@ class SettParkPos:
         self.app.mount.signals.slewed.connect(self.parkAtPos)
 
     def saveActualPosition(self, index: int) -> None:
-        """ """
         obs = self.app.mount.obsSite
         self.posAlt[index].setValue(obs.Alt.degrees)
         self.posAz[index].setValue(obs.Az.degrees)

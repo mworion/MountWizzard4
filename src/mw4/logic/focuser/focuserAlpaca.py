@@ -25,7 +25,6 @@ class FocuserAlpaca(AlpacaClass):
         self.data = parent.data
 
     def workerPollData(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.getAndStoreAlpacaProperty(
@@ -33,13 +32,11 @@ class FocuserAlpaca(AlpacaClass):
         )
 
     def move(self, position: int) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.setAlpacaProperty("move", Position=position)
 
     def halt(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.getAlpacaProperty("halt")

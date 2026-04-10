@@ -26,7 +26,6 @@ class PegasusUPBAlpaca(AlpacaClass):
         self.data = parent.data
 
     def workerPollData(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
 
@@ -153,11 +152,9 @@ class PegasusUPBAlpaca(AlpacaClass):
         self.setAlpacaProperty("setswitchvalue", Id=switchNumber, Value=not val)
 
     def togglePowerPortBoot(self, port: str):
-        """ """
         pass
 
     def toggleHubUSB(self) -> None:
-        """ """
         pass
 
     def togglePortUSB(self, port: str) -> None:
@@ -193,9 +190,7 @@ class PegasusUPBAlpaca(AlpacaClass):
             self.setAlpacaProperty("setswitchvalue", Id=switchNumber, Value=val)
 
     def sendAdjustableOutput(self, value: float) -> None:
-        """ """
         pass
 
     def reboot(self) -> None:
-        """ """
         pass

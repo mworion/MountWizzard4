@@ -270,11 +270,9 @@ class Connection:
         self.id = str(uuid.uuid4())[:8]
 
     def validCommand(self, command):
-        """ """
         return any(command.startswith(key) for key in sorted(self.COMMANDS, reverse=True))
 
     def validCommandSet(self, commandString):
-        """ """
         commandSet = commandString.split("#")[:-1]
         for command in commandSet:
             if not self.validCommand(command):
@@ -318,7 +316,6 @@ class Connection:
         return chunksToReceive, getData, minBytes
 
     def closeClientHard(self, client):
-        """ """
         if not client:
             return
         try:
@@ -329,7 +326,6 @@ class Connection:
             return
 
     def buildClient(self):
-        """ """
         if not self.host:
             self.log.info(f"No host  [{self.id}]")
             return None
@@ -357,7 +353,6 @@ class Connection:
             return client
 
     def sendData(self, client: socket.socket, commandString: str) -> bool:
-        """ """
         try:
             self.log.trace(f"Sending  [{self.id}]: [{commandString}]")
             client.sendall(commandString.encode())
@@ -414,7 +409,6 @@ class Connection:
     def communicate(
         self, commandString: str, responseCheck: str = ""
     ) -> tuple[bool, str, int]:
-        """ """
         if not self.validCommandSet(commandString):
             return False, "", 0
 
@@ -437,7 +431,6 @@ class Connection:
         return suc, response, numberOfChunks
 
     def communicateRaw(self, commandString: str) -> tuple[bool, bool, str]:
-        """ """
         client = self.buildClient()
         if client is None:
             return False, False, "Socket error"

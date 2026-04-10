@@ -47,7 +47,6 @@ class SimulatorWorld:
             node["trans"].setScale3D(QVector3D(1, 1, scale))
 
     def create(self):
-        """ """
         model = {
             "environRoot": {
                 "parent": "ref_fusion_m",

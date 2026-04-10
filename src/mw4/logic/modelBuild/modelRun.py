@@ -26,10 +26,8 @@ from skyfield.api import Angle, Star
 
 
 class ModelData(QObject):
-    """ """
-
     log = logging.getLogger("MW4")
-    progress = Signal(object)
+    progress = Signal(dict)
     PROGRESSIVE = 2
     NORMAL = 1
     CONSERVATIVE = 0
@@ -71,7 +69,6 @@ class ModelData(QObject):
         self.startSlew.connect(self.startNewSlew)
 
     def setupSignals(self) -> None:
-        """ """
         self.app.camera.signals.exposed.connect(self.setImageExposed)
         self.app.camera.signals.downloaded.connect(self.setImageDownloaded)
         self.app.camera.signals.saved.connect(self.setImageSaved)
@@ -81,7 +78,6 @@ class ModelData(QObject):
         self.app.plateSolve.signals.result.connect(self.collectPlateSolveResult)
 
     def resetSignals(self) -> None:
-        """ """
         self.app.camera.signals.exposed.disconnect(self.setImageExposed)
         self.app.camera.signals.downloaded.disconnect(self.setImageDownloaded)
         self.app.camera.signals.saved.disconnect(self.setImageSaved)
@@ -91,39 +87,32 @@ class ModelData(QObject):
         self.app.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
     def setImageExposed(self) -> None:
-        """ """
         if self.modelTiming == self.PROGRESSIVE:
             self.startSlew.emit()
 
     def setImageDownloaded(self) -> None:
-        """ """
         if self.modelTiming == self.NORMAL:
             self.startSlew.emit()
 
     def setImageSaved(self) -> None:
-        """ """
         if self.modelTiming == self.CONSERVATIVE:
             self.startSlew.emit()
 
     def startExposureAfterSlew(self) -> None:
-        """ """
         if self.mountSlewed and self.domeSlewed:
             self.startNewImageExposure()
 
     def setMountSlewed(self) -> None:
-        """ """
         self.mountSlewed = True
         if not self.app.deviceStat["dome"]:
             self.domeSlewed = True
         self.startExposureAfterSlew()
 
     def setDomeSlewed(self) -> None:
-        """ """
         self.domeSlewed = True
         self.startExposureAfterSlew()
 
     def startNewSlew(self) -> None:
-        """ """
         self.modelRunKey = next(self.modelRunIterator, False)
         if self.cancelBatch or self.endBatch or not self.modelRunKey:
             return
@@ -151,7 +140,6 @@ class ModelData(QObject):
             self.log.debug(t)
 
     def addMountModelToBuildModel(self) -> None:
-        """ """
         if len(self.app.mount.model.starList) == len(self.modelSaveData):
             self.modelSaveData = writeRetrofitData(self.app.mount.model, self.modelSaveData)
             self.modelSaveData = convertAngleToFloat(self.modelSaveData)
@@ -160,7 +148,6 @@ class ModelData(QObject):
             self.modelSaveData = []
 
     def collectBuildModelResults(self) -> None:
-        """ """
         self.modelSaveData.clear()
         for key in self.modelBuildData:
             if not self.modelBuildData[key]["success"]:
@@ -172,18 +159,15 @@ class ModelData(QObject):
             self.modelSaveData[-1]["latitude"] = self.latitude
 
     def generateSaveData(self) -> None:
-        """ """
         self.collectBuildModelResults()
         self.addMountModelToBuildModel()
 
     def saveModelData(self, modelPath: Path) -> None:
-        """ """
         self.log.debug(f"{'Save model':15s}: Len: [{len(self.modelSaveData)}]")
         with open(modelPath, "w") as outfile:
             json.dump(self.modelSaveData, outfile, sort_keys=True, indent=4)
 
     def buildProgModel(self) -> None:
-        """ """
         self.log.debug(f"{'Build progmodel':15s}: Len: [{len(self.modelBuildData)}]")
         self.modelProgData = []
         for key in self.modelBuildData:
@@ -198,7 +182,6 @@ class ModelData(QObject):
             self.modelProgData.append(programmingPoint)
 
     def addMountDataToModelBuildData(self) -> None:
-        """ """
         item = self.modelBuildData[self.modelRunKey]
         obs = self.app.mount.obsSite
         t = f"{'Add mount data':15s}: [{self.modelRunKey}], Ra: [{obs.raJNow}], "
@@ -216,7 +199,6 @@ class ModelData(QObject):
         item["decJ2000M"] = dec
 
     def startNewImageExposure(self) -> None:
-        """ """
         if self.cancelBatch or self.endBatch:
             return
 
@@ -237,12 +219,10 @@ class ModelData(QObject):
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
 
     def startNewPlateSolve(self, imagePath: Path) -> None:
-        """ """
         self.log.debug(f"{'Start solve':15s}: [{imagePath.stem}]")
         self.app.plateSolve.solve(imagePath)
 
     def sendModelProgress(self) -> None:
-        """ """
         donePoints = sum(
             1 for key in self.modelBuildData if self.modelBuildData[key]["processed"]
         )
@@ -262,7 +242,6 @@ class ModelData(QObject):
         self.progress.emit(progressData)
 
     def collectPlateSolveResult(self, result) -> None:
-        """ """
         key = result["imagePath"].stem
         item = self.modelBuildData[key]
         if result["success"]:
@@ -278,7 +257,6 @@ class ModelData(QObject):
         self.statusSolve.emit(item)
 
     def prepareModelBuildData(self) -> None:
-        """ """
         self.modelBuildData.clear()
         self.modelRunList.clear()
         self.retries = 0
@@ -305,7 +283,6 @@ class ModelData(QObject):
             self.modelRunList.append(imagePath.stem)
 
     def checkRetryNeeded(self) -> bool:
-        """ """
         retryNeeded = not all(
             self.modelBuildData[key]["success"]
             and not self.modelBuildData[key]["message"].startswith("Slew not possible")
@@ -316,11 +293,9 @@ class ModelData(QObject):
         return retryNeeded
 
     def checkModelFinished(self) -> bool:
-        """ """
         return all(self.modelBuildData[key]["processed"] for key in self.modelRunList)
 
     def runThroughModelBuildData(self) -> None:
-        """ """
         self.endBatch = self.cancelBatch = False
         for key in self.modelRunList:
             self.modelBuildData[key]["processed"] = False
@@ -329,7 +304,6 @@ class ModelData(QObject):
             sleepAndEvents(500)
 
     def generateRunIterator(self):
-        """ """
         nextList = []
         self.log.debug(f"{'Run retries':15s}: Count: [{self.numberRetries:1.0f}]")
         for key in self.modelRunList:
@@ -344,7 +318,6 @@ class ModelData(QObject):
         self.modelRunIterator = iter(self.modelRunList)
 
     def runThroughModelBuildDataRetries(self) -> None:
-        """ """
         while self.retries <= self.numberRetries:
             if self.retries > 0:
                 self.statusRetry.emit(self.retries)
@@ -357,7 +330,6 @@ class ModelData(QObject):
             self.retries += 1
 
     def runModel(self) -> None:
-        """ """
         if not self.modelInputData:
             return
 

@@ -76,7 +76,6 @@ class DataPoint:
         self._buildP = value
 
     def addBuildP(self, value: tuple[int, int, int], position: int = 999) -> None:
-        """ """
         high = self.app.mount.setting.horizonLimitHigh or 90
         low = self.app.mount.setting.horizonLimitLow or 0
 
@@ -88,43 +87,34 @@ class DataPoint:
         self._buildP.insert(position, value)
 
     def delBuildP(self, position: int) -> None:
-        """ """
         if 0 <= position <= len(self._buildP) - 1:
             self._buildP.pop(position)
 
     def clearBuildP(self) -> None:
-        """ """
         self._buildP.clear()
 
     def setStatusBuildP(self, number: int, status: int) -> None:
-        """ """
         if 0 <= number < len(self._buildP):
             self._buildP[number][2] = status
 
     def setStatusBuildPUnprocessed(self, number: int) -> None:
-        """ """
         self.setStatusBuildP(number, self.UNPROCESSED)
 
     def setStatusBuildPSolved(self, number: int) -> None:
-        """ """
         self.setStatusBuildP(number, self.SOLVED)
 
     def setStatusBuildPFailed(self, number: int) -> None:
-        """ """
         self.setStatusBuildP(number, self.FAILED)
 
     def addHorizonP(self, value: tuple[int, int], position: int = 0) -> None:
-        """ """
         position = max(0, min(len(self._horizonP), position))
         self._horizonP.insert(position, value)
 
     def delHorizonP(self, position: int) -> None:
-        """ """
         if 0 <= position < len(self._horizonP):
             self._horizonP.pop(position)
 
     def clearHorizonP(self) -> None:
-        """"""
         self._horizonP.clear()
 
     @staticmethod
@@ -143,7 +133,6 @@ class DataPoint:
         return val < margin
 
     def isAboveHorizon(self, point: tuple[int, int]) -> bool:
-        """ """
         point[1] = min(max(point[1], 0), 360)
         x = range(0, 361)
         if self.horizonP:
@@ -157,7 +146,6 @@ class DataPoint:
         return point[0] > y[int(point[1])]
 
     def isCloseMeridian(self, point: tuple[int, int]) -> bool:
-        """ """
         slew = self.app.mount.setting.meridianLimitSlew
         track = self.app.mount.setting.meridianLimitTrack
         value = max(slew, track)
@@ -166,15 +154,12 @@ class DataPoint:
         return lower < point[1] < upper
 
     def deleteBelowHorizon(self) -> None:
-        """ """
         self._buildP = [x for x in self._buildP if self.isAboveHorizon(x)]
 
     def deleteCloseMeridian(self) -> None:
-        """ """
         self._buildP = [x for x in self._buildP if not self.isCloseMeridian(x)]
 
     def deleteCloseHorizonLine(self, margin: int) -> None:
-        """ """
         if not self.horizonP:
             return
 
@@ -187,11 +172,9 @@ class DataPoint:
         ]
 
     def sortAz(self) -> None:
-        """ """
         self._buildP = sorted(self._buildP, key=lambda x: -x[1])
 
     def sortDomeAz(self) -> None:
-        """ """
         pointsNew = []
         for i, point in enumerate(self._buildP):
             alt = point[0]
@@ -203,11 +186,9 @@ class DataPoint:
         self._buildP = [p[0:3] for p in sorted(pointsNew, key=lambda x: -x[3])]
 
     def sortAlt(self) -> None:
-        """ """
         self._buildP = sorted(self._buildP, key=lambda x: -x[0])
 
     def sortActualPierside(self) -> None:
-        """ """
         east = [x for x in self._buildP if x[1] <= 180]
         west = [x for x in self._buildP if x[1] > 180]
         if self.app.mount.obsSite.pierside != "E":
@@ -216,7 +197,6 @@ class DataPoint:
             self._buildP = [p[0:3] for p in west + east]
 
     def loadModel(self, fullFileName: Path) -> list[tuple[int, int]]:
-        """ """
         with open(fullFileName) as handle:
             try:
                 value = [[p["altitude"], p["azimuth"]] for p in json.load(handle)]
@@ -226,7 +206,6 @@ class DataPoint:
         return value
 
     def loadBPTS(self, fullFileName: Path) -> list[tuple[int, int]]:
-        """ """
         with open(fullFileName) as f:
             try:
                 value = json.load(f)
@@ -236,7 +215,6 @@ class DataPoint:
         return value
 
     def loadCSV(self, fullFileName: Path) -> list[tuple[int, int]]:
-        """ """
         with open(fullFileName, encoding="utf-8-sig") as csvFile:
             try:
                 dialect = csv.Sniffer().sniff(csvFile.read(1024), delimiters=[",", ";"])
@@ -250,14 +228,12 @@ class DataPoint:
 
     @staticmethod
     def checkFormat(value: tuple[float, float]) -> bool:
-        """ """
         if not all(isinstance(x, list) for x in value):
             return False
 
         return all(len(x) == 2 for x in value)
 
     def loadBuildP(self, fullFileName: Path) -> bool:
-        """ """
         if not fullFileName.is_file():
             return False
 
@@ -275,14 +251,12 @@ class DataPoint:
         return True
 
     def saveBuildP(self, fileName: str) -> None:
-        """ """
         fileName = self.configDir / (fileName + ".bpts")
         points = [(x[0], x[1]) for x in self.buildP]
         with open(fileName, "w") as handle:
             json.dump(points, handle, indent=4)
 
     def loadHorizonP(self, fullFileName: Path) -> bool:
-        """ """
         if not fullFileName.is_file():
             return False
 
@@ -298,13 +272,11 @@ class DataPoint:
         return True
 
     def saveHorizonP(self, fileName: str) -> None:
-        """ """
         fullFileName = self.configDir / (fileName + ".hpts")
         with open(fullFileName, "w") as handle:
             json.dump(self.horizonP, handle, indent=4)
 
     def genGreaterCircle(self, stepHA: int, stepDec: int, distFlip: int) -> bool:
-        """ """
         self.clearBuildP()
         lat = self.app.mount.obsSite.location.latitude.degrees
         decList = list(range(-15, -15 + int(100 / stepDec) * stepDec, stepDec))
@@ -335,7 +307,6 @@ class DataPoint:
     def genGridGenerator(
         self, eastAlt: int, westAlt: int, minAz: int, stepAz: int, maxAz: int
     ) -> tuple[int, int, int]:
-        """ """
         for i, alt in enumerate(eastAlt):
             if i % 2:
                 for az in range(minAz, 180, stepAz):
@@ -403,7 +374,6 @@ class DataPoint:
         return True
 
     def genAlign(self, altBase: int = 30, azBase: int = 10, numberBase: int = 3) -> bool:
-        """ """
         if not 5 <= altBase <= 85:
             return False
         if not 2 < numberBase < 13:
@@ -424,7 +394,6 @@ class DataPoint:
         return True
 
     def generateCelestialEquator(self) -> list[tuple[int, int]]:
-        """ """
         celestialEquator = []
         if not self.app.mount.obsSite.location:
             return celestialEquator
@@ -454,7 +423,6 @@ class DataPoint:
         dec: Angle,
         location: GeographicPosition,
     ) -> list[tuple[int, int, int]]:
-        """ """
         buildP = []
         for i in range(numberPoints):
             starTime = ts.tt_jd(edgeDSO + i / numberPoints)
@@ -472,7 +440,6 @@ class DataPoint:
         numberPoints: int,
         keep: bool = False,
     ) -> None:
-        """ """
         if not keep:
             self.clearBuildP()
 
@@ -513,7 +480,6 @@ class DataPoint:
                 self.addBuildP([int(alt), int(az), self.UNPROCESSED])
 
     def ditherPoints(self) -> None:
-        """ """
         for i, point in enumerate(self.buildP):
             alt = point[0]
             az = point[1]

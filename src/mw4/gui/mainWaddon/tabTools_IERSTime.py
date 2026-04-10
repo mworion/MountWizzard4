@@ -40,30 +40,25 @@ class IERSTime:
         self.ui.downloadIERS.clicked.connect(self.loadTimeDataFromSourceURLs)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.setupIERSSourceURLsDropDown()
         self.ui.iersSource.setCurrentIndex(config.get("iersSource", 0))
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["iersSource"] = self.ui.iersSource.currentIndex()
 
     def setupIcons(self) -> None:
-        """ """
         self.mainW.wIcon(self.ui.progEarthRotationData, "run")
         self.mainW.wIcon(self.ui.downloadIERS, "run")
 
     def setupIERSSourceURLsDropDown(self) -> None:
-        """ """
         self.ui.iersSource.clear()
         self.ui.iersSource.setView(QListView())
         for name in self.iersSourceURLs:
             self.ui.iersSource.addItem(name)
 
     def finishProgEarthRotationData(self) -> None:
-        """ """
         self.uploadPopup.workerStatus.signals.finished.disconnect(
             self.finishProgEarthRotationData
         )
@@ -73,7 +68,6 @@ class IERSTime:
             self.msg.emit(2, "IERS", "Upload", "Upload failed")
 
     def progEarthRotationData(self) -> None:
-        """ """
         self.msg.emit(1, "IERS", "Program", "Earth rotation data")
         self.msg.emit(0, "", "", "finals.data, CDFLeapSeconds.txt")
 
@@ -95,7 +89,6 @@ class IERSTime:
         )
 
     def finishLoadTimeDataFromSourceURLs(self) -> None:
-        """ """
         self.downloadPopup.worker.signals.finished.disconnect(
             self.finishLoadTimeDataFromSourceURLs
         )
@@ -106,7 +99,6 @@ class IERSTime:
             self.msg.emit(2, "IERS", "Download", "Download failed")
 
     def finishLoadFinalsFromSourceURLs(self) -> None:
-        """ """
         self.downloadPopup.worker.signals.finished.disconnect(
             self.finishLoadFinalsFromSourceURLs
         )
@@ -130,7 +122,6 @@ class IERSTime:
         )
 
     def loadTimeDataFromSourceURLs(self) -> None:
-        """ """
         if not self.ui.isOnline.isChecked():
             return
 

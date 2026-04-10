@@ -82,17 +82,14 @@ class ImageStats:
         self.fovHint: float = 0
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.ui.automaticTelescope.setChecked(config.get("automaticTelescope", False))
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["automaticTelescope"] = self.ui.automaticTelescope.isChecked()
 
     def updateImageStats(self) -> None:
-        """ """
         focalLength = self.ui.focalLength.value()
         aperture = self.ui.aperture.value()
         pixelSizeX = self.app.camera.data.get("CCD_INFO.CCD_PIXEL_SIZE_X", 0)
@@ -170,25 +167,21 @@ class ImageStats:
         guiSetText(self.ui.astrometryIndex, "s", astrometryText)
 
     def openWatneyCatalog(self) -> None:
-        """ """
         url = "https://github.com/Jusas/WatneyAstrometry/releases/tag/watneyqdb3"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "ImageStats", "Browser failed")
 
     def openASTAPCatalog(self) -> None:
-        """ """
         url = "https://www.hnsky.org/astap.htm"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "ImageStats", "Browser failed")
 
     def openAstrometryCatalog(self) -> None:
-        """ """
         url = "http://data.astrometry.net/4200/"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "ImageStats", "Browser failed")
 
     def updateTelescopeParametersToGui(self) -> None:
-        """ """
         data = self.app.telescope.data
         value = data.get("TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH", 0)
         if value is not None:
@@ -201,6 +194,5 @@ class ImageStats:
             self.ui.aperture.setValue(value)
 
     def updateTelescopeParametersToGuiCyclic(self) -> None:
-        """ """
         if self.ui.automaticTelescope.isChecked():
             self.updateTelescopeParametersToGui()

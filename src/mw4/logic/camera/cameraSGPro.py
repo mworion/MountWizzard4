@@ -31,53 +31,42 @@ class CameraSGPro(SGProClass):
         self.worker: Worker | None = None
 
     def sgGetCameraTemp(self) -> tuple[bool, dict]:
-        """ """
         response = self.requestProperty("cameratemp")
         return response.get("Success", False), response
 
     def sgSetCameraTemp(self, temperature: float) -> bool:
-        """ """
         response = self.requestProperty(f"setcameratemp/{temperature}")
         return response.get("Success", False)
 
     def sgCaptureImage(self, params: dict) -> tuple[bool, dict]:
-        """ """
         response = self.requestProperty("image", params=params)
         return response.get("Success", False), response
 
     def sgAbortImage(self) -> bool:
-        """ """
         response = self.requestProperty("abortimage")
         return response.get("Success", False)
 
     def sgGetImagePath(self, receipt: str) -> bool:
-        """ """
         response = self.requestProperty(f"imagepath/{receipt}")
         return response.get("Success", False)
 
     def sgGetCameraProps(self) -> tuple[bool, dict]:
-        """ """
         response = self.requestProperty("cameraprops")
         return response.get("Success", False), response
 
     def workerGetInitialConfig(self) -> None:
-        """ """
         self.storePropertyToData(1, "CCD_BINNING.HOR_BIN")
 
     def workerPollData(self) -> None:
-        """ """
         pass
 
     def sendDownloadMode(self) -> None:
-        """ """
         pass
 
     def waitFunc(self) -> bool:
-        """ """
         return "integrating" in self.data.get("Device.Message")
 
     def workerExpose(self) -> None:
-        """ """
         params = {
             "BinningMode": self.parent.binning,
             "ExposureLength": max(self.parent.exposureTime, 1),
@@ -109,27 +98,21 @@ class CameraSGPro(SGProClass):
             self.parent.updateImageFitsHeaderPointing()
 
     def expose(self) -> None:
-        """ """
         self.worker = Worker(self.workerExpose)
         self.worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(self.worker)
 
     def abort(self) -> bool:
-        """ """
         return self.sgAbortImage()
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        """ """
         pass
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
-        """ """
         pass
 
     def sendOffset(self, offset: int = 0) -> None:
-        """ """
         pass
 
     def sendGain(self, gain: int = 0) -> None:
-        """ """
         pass

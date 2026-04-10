@@ -30,7 +30,6 @@ class NormalScatter(PlotBase):
         self.p[0].setVisible(True)
 
     def plot(self, x: int, y: int, **kwargs) -> None:
-        """ """
         self.p[0].clear()
         self.p[0].showAxes(True, showValues=True)
         self.scatterItem = pg.ScatterPlotItem(hoverable=True, hoverSize=10, hoverPen=self.pen)

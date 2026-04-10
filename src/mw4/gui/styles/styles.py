@@ -161,7 +161,6 @@ class Styles:
 
     @staticmethod
     def hex2rgb(val: str) -> list[int]:
-        """ """
         val = val.lstrip("#")
         r = int(val[0:2], 16)
         g = int(val[2:4], 16)
@@ -169,14 +168,12 @@ class Styles:
         return [r, g, b]
 
     def calcHexColor(self, val: list[int], f: float) -> str:
-        """ """
         rgb = self.hex2rgb(val)
         rgb = [int(x * f) for x in rgb]
         return f"#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}"
 
     @staticmethod
     def findKeysInLine(line: str, keyChar: chr) -> list:
-        """ """
         keys = []
         start = 0
         end = 0
@@ -189,7 +186,6 @@ class Styles:
         return keys
 
     def replaceImage(self, line: str) -> str:
-        """ """
         for key in self.findKeysInLine(line, "$"):
             if key not in images:
                 continue
@@ -199,7 +195,6 @@ class Styles:
         return line
 
     def replaceColor(self, line: str) -> str:
-        """ """
         for key in self.findKeysInLine(line, "$"):
             if key not in colors:
                 continue
@@ -207,7 +202,6 @@ class Styles:
         return line
 
     def replaceForm(self, line: str) -> str:
-        """ """
         for key in self.findKeysInLine(line, "%"):
             if key not in forms:
                 continue
@@ -215,7 +209,6 @@ class Styles:
         return line
 
     def insertGradient(self, line: str) -> str:
-        """ """
         for key in self.findKeysInLine(line, "#"):
             keyPair = key.split(",")
             if len(keyPair) != 2 or keyPair[0] not in gradients:
@@ -226,7 +219,6 @@ class Styles:
         return line
 
     def renderStyle(self, styleRaw: str) -> str:
-        """ """
         style = ""
         for lineItem in styleRaw.split("\n"):
             line = self.insertGradient(lineItem)

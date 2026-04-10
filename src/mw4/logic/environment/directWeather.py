@@ -41,12 +41,10 @@ class DirectWeather:
         self.app.mount.signals.settingDone.connect(self.updateData)
 
     def startCommunication(self) -> None:
-        """ """
         self.enabled = True
         self.app.deviceStat["directWeather"] = False
 
     def stopCommunication(self) -> None:
-        """ """
         self.enabled = False
         self.running = False
         self.app.deviceStat["directWeather"] = None
@@ -54,7 +52,6 @@ class DirectWeather:
         self.signals.deviceDisconnected.emit("DirectWeather")
 
     def updateData(self, sett: Setting) -> None:
-        """ """
         if not self.enabled:
             return False
 

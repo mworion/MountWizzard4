@@ -31,15 +31,12 @@ class CustomViewBox(pg.ViewBox):
         self.setOpts(*args, **kwargs)
 
     def setPlotDataItem(self, plotDataItem: pg.PlotDataItem) -> None:
-        """ """
         self.plotDataItem = plotDataItem
 
     def setOpts(self, *args, **kwargs):
-        """ """
         self.enableLimitX = kwargs.get("enableLimitX", False)
 
     def updateData(self, x: int, y: int) -> None:
-        """ """
         self.plotDataItem.setData(x=x, y=y)
 
     @staticmethod
@@ -48,16 +45,13 @@ class CustomViewBox(pg.ViewBox):
 
     @staticmethod
     def distance(a: (int, int), b: (int, int)) -> float:
-        """ """
         return np.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
 
     def isBetween(self, a: int, b: int, c: int) -> float:
-        """ """
         d = self.distance(a, c) + self.distance(c, b) - self.distance(a, b)
         return np.abs(d)
 
     def getCurveIndex(self, pos: pg.Point) -> int:
-        """ """
         data = self.plotDataItem.curve.getData()
         curve = [(x, y) for x, y in zip(data[0], data[1])]
         for index in range(0, len(curve) - 1):
@@ -69,7 +63,6 @@ class CustomViewBox(pg.ViewBox):
         return index + 1
 
     def getNearestPointIndex(self, pos: pg.Point) -> int:
-        """ """
         data = self.plotDataItem.getData()
         if data[0] is None or data[1] is None:
             return 0
@@ -82,7 +75,6 @@ class CustomViewBox(pg.ViewBox):
         return index + 1
 
     def addUpdate(self, index: int, pos: pg.Point) -> None:
-        """ """
         data = self.plotDataItem.getData()
         x = data[0]
         y = data[1]
@@ -95,7 +87,6 @@ class CustomViewBox(pg.ViewBox):
         self.updateData(x=x, y=y)
 
     def delUpdate(self, index: int) -> bool:
-        """ """
         data = self.plotDataItem.getData()
         x = data[0]
         y = data[1]
@@ -109,7 +100,6 @@ class CustomViewBox(pg.ViewBox):
     def checkLimits(
         self, data: (float, float), index: int, pos: pg.Point
     ) -> (np.array, np.array):
-        """ """
         xRange = self.state["limits"]["xLimits"]
         yRange = self.state["limits"]["yLimits"]
         px = pos.x()
@@ -150,7 +140,6 @@ class CustomViewBox(pg.ViewBox):
         return bool(vr[0][0] < x < vr[0][1] and vr[1][0] < y < vr[1][1])
 
     def rightMouseRange(self) -> None:
-        """ """
         xRange = self.state["limits"]["xLimits"]
         yRange = self.state["limits"]["yLimits"]
         if None in xRange or any(np.abs(xRange) > 1e300):
@@ -163,7 +152,6 @@ class CustomViewBox(pg.ViewBox):
             self.setYRange(yRange[0], yRange[1], update=True)
 
     def mouseDragEvent(self, event: QEvent(QEvent.Type.DragEnter), axis=None) -> None:
-        """ """
         if self.plotDataItem is None:
             super().mouseDragEvent(event)
             return
@@ -202,7 +190,6 @@ class CustomViewBox(pg.ViewBox):
         event.accept()
 
     def mouseClickEvent(self, event) -> None:
-        """ """
         if self.plotDataItem is None and event.button() == Qt.MouseButton.RightButton:
             self.rightMouseRange()
             event.accept()
@@ -242,7 +229,6 @@ class CustomViewBox(pg.ViewBox):
         return
 
     def mouseDoubleClickEvent(self, event, QGraphicsSceneMouseEvent=None) -> None:
-        """ """
         if self.plotDataItem is not None:
             return
         posScene = event.scenePos()

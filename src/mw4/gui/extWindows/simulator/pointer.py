@@ -28,14 +28,12 @@ class SimulatorPointer:
         self.parent.ui.showPointer.checkStateChanged.connect(self.showEnable)
 
     def showEnable(self):
-        """ """
         isVisible = self.parent.ui.showPointer.isChecked()
         node = self.parent.entityModel.get("pointerRoot")
         if node:
             node["entity"].setEnabled(isVisible)
 
     def updatePositions(self):
-        """ """
         if not self.app.deviceStat["mount"]:
             return
 
@@ -53,7 +51,6 @@ class SimulatorPointer:
             node["trans"].setTranslation(vec)
 
     def create(self):
-        """ """
         model = {
             "pointerRoot": {
                 "parent": "ref_fusion_m",

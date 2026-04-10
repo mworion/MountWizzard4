@@ -50,7 +50,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.colorChange()
 
     def colorChange(self) -> None:
-        """ """
         self.pen = pg.mkPen(color=self.M_PRIM, width=1)
         self.brush = pg.mkBrush(color=self.M_PRIM + "80")
         self.penGrid = pg.mkPen(color=self.M_SEC)
@@ -67,7 +66,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
                 self.barItem.getAxis(side).setTextPen(self.pen)
 
     def setupItems(self) -> None:
-        """ """
         for plotItem in self.p:
             plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
             plotItem.getViewBox().rbScaleBox.setPen(self.pen)
@@ -83,7 +81,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
                 plotItem.getAxis(side).setGrid(32)
 
     def addBarItem(self, interactive: bool = False, plotItem: pg.PlotItem = None) -> None:
-        """ """
         if plotItem is None:
             plotItem = self.p[0]
         self.barItem = pg.ColorBarItem(width=15, interactive=interactive, rounding=0.025)
@@ -113,7 +110,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
     def drawHorizon(
         self, horizonP: [], plotItem: pg.PlotItem = None, polar: bool = False
     ) -> bool:
-        """ """
         if plotItem is None:
             plotItem = self.p[0]
 
@@ -145,7 +141,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         return True
 
     def addIsoBasic(self, plotItem: pg.PlotItem, zm: float, levels: int = 10) -> None:
-        """ """
         minE = np.min(zm)
         maxE = np.max(zm)
 
@@ -172,7 +167,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         rangeY: [] = None,
         levels: int = 20,
     ) -> None:
-        """ """
         if plotItem is None:
             plotItem = self.p[0]
         if rangeX is None:
@@ -188,7 +182,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
     def addIsoItemHorizon(
         self, x: int, y: int, z: int, plotItem: pg.PlotItem = None, levels: int = 20
     ) -> None:
-        """ """
         z = np.abs(z)
         az = np.concatenate([x - 360, x, x + 360])
         alt = np.concatenate([y, y, y])
@@ -196,7 +189,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.addIsoItem(az, alt, err, plotItem=plotItem, levels=levels)
 
     def setGrid(self, y: int = 0, plotItem: pg.PlotItem = None, **kwargs) -> None:
-        """ """
         if plotItem is None:
             plotItem = self.p[0]
         textAngle = np.radians(150)
@@ -241,7 +233,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             plotItem.addItem(textItem)
 
     def plotLoc(self, lat: float, plotItem: pg.PlotItem = None) -> None:
-        """ """
         if plotItem is None:
             plotItem = self.p[0]
         circle = pg.QtWidgets.QGraphicsEllipseItem(-2, -2, 4, 4)

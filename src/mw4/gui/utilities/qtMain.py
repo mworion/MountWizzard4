@@ -61,7 +61,6 @@ class MWidget(QWidget, Styles):
 
     @staticmethod
     def saveWindowAsPNG(window) -> None:
-        """ """
         name = window.windowTitle().replace(" ", "_")
         timeTrigger = datetime.datetime.now(datetime.UTC)
         timeTag = timeTrigger.strftime("%Y-%m-%d-%H-%M-%S")
@@ -71,7 +70,6 @@ class MWidget(QWidget, Styles):
         window.grab().save(fullFileName)
 
     def saveAllWindowsAsPNG(self, window):
-        """ """
         windows = window.app.mainW.externalWindows.uiWindows
         self.saveWindowAsPNG(window)
         for window in windows:
@@ -92,7 +90,6 @@ class MWidget(QWidget, Styles):
         super().keyPressEvent(keyEvent)
 
     def wIcon(self, gui: QPushButton, name: str) -> None:
-        """ """
         icon = svg2icon(f"assets/icon/{name}.svg", self.M_TER)
         gui.setIcon(icon)
         gui.setIconSize(QSize(16, 16))
@@ -101,13 +98,11 @@ class MWidget(QWidget, Styles):
         gui.style().polish(gui)
 
     def initUI(self) -> None:
-        """ """
         self.setStyleSheet(self.mw4Style)
         self.setMouseTracking(True)
         self.setWindowIcon(self.mwIcon)
 
     def prepareFileDialog(self, window: QWidget, enableDir: bool = False) -> QFileDialog:
-        """ """
         dlg = QFileDialog()
         dlg.setOptions(QFileDialog.Option.DontUseNativeDialog)
         dlg.setWindowIcon(self.mwIcon)
@@ -133,7 +128,6 @@ class MWidget(QWidget, Styles):
 
     @staticmethod
     def runDialog(dlg: QMessageBox | QFileDialog) -> int:
-        """ """
         return dlg.exec()
 
     def messageDialog(
@@ -144,7 +138,6 @@ class MWidget(QWidget, Styles):
         buttons: list[str] = None,
         iconType: int = 0,
     ) -> int:
-        """ """
         msg = QMessageBox()
         msg.setWindowModality(Qt.WindowModality.ApplicationModal)
         msg.setStyleSheet(self.mw4Style)
@@ -186,7 +179,6 @@ class MWidget(QWidget, Styles):
         enableDir: bool = False,
         multiple: bool = False,
     ):
-        """ """
         dlg = self.prepareFileDialog(window=window, enableDir=enableDir)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         dlg.setWindowTitle(title)
@@ -215,7 +207,6 @@ class MWidget(QWidget, Styles):
         filterSet: str,
         enableDir: bool = False,
     ):
-        """ """
         dlg = self.prepareFileDialog(window, enableDir)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         dlg.setWindowTitle(title)
@@ -228,7 +219,6 @@ class MWidget(QWidget, Styles):
         return Path(dlg.selectedFiles()[0])
 
     def openDir(self, window: QWidget, title: str, folder: Path) -> Path:
-        """ """
         dlg = self.prepareFileDialog(window=window, enableDir=True)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         dlg.setWindowTitle(title)
@@ -241,7 +231,6 @@ class MWidget(QWidget, Styles):
         return Path(dlg.selectedFiles()[0])
 
     def convertTime(self, value: Time, fString: str) -> str:
-        """ """
         isUTC = self.ui.unitTimeUTC.isChecked()
         if isUTC:
             return value.utc_strftime(fString)
@@ -249,14 +238,12 @@ class MWidget(QWidget, Styles):
             return value.astimezone(tzlocal()).strftime(fString)
 
     def timeZoneString(self) -> str:
-        """ """
         if self.ui.unitTimeUTC.isChecked():
             return "(time is UTC)"
         else:
             return "(time is local)"
 
     def positionWindow(self, config: dict) -> None:
-        """ """
         height = config.get("height", 600)
         width = config.get("width", 800)
         self.resize(width, height)

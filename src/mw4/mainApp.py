@@ -143,6 +143,7 @@ class MountWizzard4(QObject):
         self.expireData: bool = False
         self.onlineMode: bool = False
         self.statusOperationRunning: int = 0
+        self.messageQueue: Queue = Queue()
         self.config = loadProfileStart(self.mwGlob["configDir"])
         self.deviceStat: dict[str, bool | None] = {
             "mount": None,
@@ -181,7 +182,7 @@ class MountWizzard4(QObject):
         self.mount = MountDevice(
             app=self,
             host=None,
-            MAC="00.c0.08.87.35.db",
+            MAC="00.00.00.00.00.00",
             pathToData=self.mwGlob["dataDir"],
             verbose=True,
         )
@@ -227,6 +228,7 @@ class MountWizzard4(QObject):
         """Wire up application-level signal connections."""
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
+
         if test:
             self.update10s.connect(self.quit)
         if len(sys.argv) > 1:

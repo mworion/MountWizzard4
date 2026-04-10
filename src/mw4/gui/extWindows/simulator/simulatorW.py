@@ -62,7 +62,6 @@ class SimulatorWindow(MWidget):
         self.setupCamera(self.entityModel["root"]["entity"])
 
     def initConfig(self):
-        """ """
         config = self.app.config.get("simulatorW", {})
 
         self.positionWindow(config)
@@ -75,7 +74,6 @@ class SimulatorWindow(MWidget):
         self.ui.showHorizon.setChecked(config.get("showHorizon", False))
 
     def storeConfig(self):
-        """ """
         configMain = self.app.config
         configMain["simulatorW"] = {}
         config = configMain["simulatorW"]
@@ -97,7 +95,6 @@ class SimulatorWindow(MWidget):
         config["showHorizon"] = self.ui.showHorizon.isChecked()
 
     def closeEvent(self, closeEvent):
-        """ """
         self.app.mount.signals.pointDone.disconnect(self.buildPoints.updatePositions)
         self.app.mount.signals.pointDone.disconnect(self.laser.updatePositions)
         self.app.mount.signals.pointDone.disconnect(self.pointer.updatePositions)
@@ -107,7 +104,6 @@ class SimulatorWindow(MWidget):
         super().closeEvent(closeEvent)
 
     def showWindow(self):
-        """ """
         self.ui.topView.clicked.connect(self.topView)
         self.ui.topEastView.clicked.connect(self.topEastView)
         self.ui.topWestView.clicked.connect(self.topWestView)
@@ -123,7 +119,6 @@ class SimulatorWindow(MWidget):
         self.colorChange()
 
     def setupCamera(self, parentEntity):
-        """ """
         self.camera = self.window3D.camera()
         self.camera.lens().setPerspectiveProjection(60, 16 / 9, 0.1, 10000)
         self.camera.setViewCenter(QVector3D(0, 1, 0))
@@ -154,35 +149,30 @@ class SimulatorWindow(MWidget):
         self.camera.setPosition(posNew)
 
     def topView(self):
-        """ """
         changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(0.001, 5.0, 0.001))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def topEastView(self):
-        """ """
         changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.1, 1.5, 0.1))
         self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def topWestView(self):
-        """ """
         changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def eastView(self):
-        """ """
         changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def westView(self):
-        """ """
         changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))

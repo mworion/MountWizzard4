@@ -32,13 +32,11 @@ log = logging.getLogger()
 
 
 def getImageHeader(imagePath: Path) -> fits.Header:
-    """ """
     with fits.open(imagePath) as HDU:
         return HDU[0].header
 
 
 def getCoordinatesFromHeader(header: fits.Header) -> tuple[Angle, Angle]:
-    """ """
     hasDecimal = bool("RA" in header and "DEC" in header)
     hasSexagesimal = bool("OBJCTRA" in header and "OBJCTDEC" in header)
 
@@ -59,7 +57,6 @@ def getCoordinatesFromHeader(header: fits.Header) -> tuple[Angle, Angle]:
 
 
 def getSQMFromHeader(header: fits.Header) -> float:
-    """ """
     for key in ["SQM", "SKY-QLTY", "MPSAS"]:
         value = header.get(key)
         if value is not None:
@@ -68,7 +65,6 @@ def getSQMFromHeader(header: fits.Header) -> float:
 
 
 def getExposureFromHeader(header: fits.Header) -> float:
-    """ """
     for key in ["EXPOSURE", "EXPTIME"]:
         value = header.get(key)
         if value is None:
@@ -80,7 +76,6 @@ def getExposureFromHeader(header: fits.Header) -> float:
 
 
 def getScaleFromHeader(header: fits.Header) -> float:
-    """ """
     hasScale = "SCALE" in header
     focalLength = float(header.get("FOCALLEN", 0))
     binning = float(header.get("XBINNING", 0))
@@ -97,7 +92,6 @@ def getScaleFromHeader(header: fits.Header) -> float:
 
 
 def getHintFromImageFile(imagePath: Path) -> tuple[Angle, Angle, float]:
-    """ """
     header = getImageHeader(imagePath)
     raHint, decHint = getCoordinatesFromHeader(header)
     scaleHint = getScaleFromHeader(header)
@@ -105,14 +99,12 @@ def getHintFromImageFile(imagePath: Path) -> tuple[Angle, Angle, float]:
 
 
 def getCoordinatesFromWCSHeader(header: fits.Header) -> tuple[Angle, Angle]:
-    """ """
     ra = Angle(hours=float(header.get("CRVAL1", 0)) * 24 / 360)
     dec = Angle(degrees=float(header.get("CRVAL2", 0)))
     return ra, dec
 
 
 def calcAngleScaleFromWCSHeader(header: fits.Header) -> tuple[Angle, float, bool]:
-    """ """
     CD11 = header.get("CD1_1", 0)
     CD12 = header.get("CD1_2", 0)
     CD21 = header.get("CD2_1", 0)
@@ -127,7 +119,6 @@ def calcAngleScaleFromWCSHeader(header: fits.Header) -> tuple[Angle, float, bool
 
 
 def writeHeaderCamera(header: fits.Header, camera) -> fits.Header:
-    """ """
     data = camera.data
     header.append(("OBJECT", "SKY_OBJECT", "default name from MW4"))
     header.append(("AUTHOR", "MountWizzard4", "default name from MW4"))
@@ -156,7 +147,6 @@ def writeHeaderCamera(header: fits.Header, camera) -> fits.Header:
 
 
 def writeHeaderPointing(header: fits.Header, camera) -> fits.Header:
-    """ """
     ra, dec = JNowToJ2000(camera.obsSite.raJNow, camera.obsSite.decJNow, camera.obsSite.timeJD)
     header.append(("RA", ra._degrees, "Float value in degree"))
     header.append(("DEC", dec.degrees, "Float value in degree"))
@@ -164,7 +154,6 @@ def writeHeaderPointing(header: fits.Header, camera) -> fits.Header:
 
 
 def writeSolutionToHeader(header: fits.Header, solution: dict) -> fits.Header:
-    """ """
     header.append(("RA", solution["raJ2000S"]._degrees, "MW4 - processed"))
     header.append(("DEC", solution["decJ2000S"].degrees, "MW4 - processed"))
     header.append(("SCALE", solution["scaleS"], "MW4 - processed"))
@@ -175,7 +164,6 @@ def writeSolutionToHeader(header: fits.Header, solution: dict) -> fits.Header:
 
 
 def updateImageFileHeaderWithSolution(imagePath: Path, solution: dict) -> None:
-    """ """
     with fits.open(imagePath, mode="update", output_verify="silentfix+warn") as HDU:
         HDU[0].header = writeSolutionToHeader(HDU[0].header, solution)
 

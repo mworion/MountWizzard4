@@ -44,7 +44,6 @@ class EnvironSeeing:
         self.app.update30m.connect(self.updateSeeingEntries)
 
     def setupIcons(self) -> None:
-        """ """
         pixmap = svg2pixmap("assets/icon/meteoblue.svg", "#124673")
         pixmap = pixmap.transformed(QTransform().rotate(-90))
         pixmap = pixmap.scaled(37, 128, Qt.AspectRatioMode.KeepAspectRatio)
@@ -53,7 +52,6 @@ class EnvironSeeing:
         self.ui.seeing.setVisible(False)
 
     def addSkyfieldTimeObject(self, data: dict) -> None:
-        """ """
         ts = self.app.mount.obsSite.ts
         data["time"] = []
 
@@ -62,7 +60,6 @@ class EnvironSeeing:
             data["time"].append(ts.utc(int(y), int(m), int(d), hour, 0, 0))
 
     def updateSeeingEntries(self) -> None:
-        """ """
         if "hourly" not in self.app.seeingWeather.data:
             return
 
@@ -135,19 +132,16 @@ class EnvironSeeing:
         seeTab.selectColumn(columnCenter + 10)
 
     def clearSeeingEntries(self) -> None:
-        """ """
         self.ui.seeing.clear()
         self.ui.seeingIcon.setVisible(False)
         self.ui.seeing.setVisible(False)
         self.seeingEnabled = False
 
     def enableSeeingEntries(self) -> None:
-        """ """
         self.ui.seeingIcon.setVisible(self.seeingEnabled)
         self.ui.seeing.setVisible(self.seeingEnabled)
 
     def prepareSeeingTable(self) -> None:
-        """ """
         vl = [
             "Date [dd mon]",
             "Hour [hh:mm]",
@@ -177,7 +171,6 @@ class EnvironSeeing:
         self.ui.seeing.resizeColumnsToContents()
 
     def openWeb(self) -> None:
-        """ """
         url = "https://www.meteoblue.com/de/wetter/outdoorsports/seeing"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "Environment", "Browser failed")

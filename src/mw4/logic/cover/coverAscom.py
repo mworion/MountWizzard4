@@ -28,7 +28,6 @@ class CoverAscom(AscomClass):
         self.data = parent.data
 
     def workerPollData(self) -> None:
-        """ """
         state = self.getAscomProperty("CoverState")
         stateText = self.coverStates[state]
         self.storePropertyToData(stateText, "Status.Cover")
@@ -42,25 +41,21 @@ class CoverAscom(AscomClass):
         )
 
     def closeCover(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.callMethodThreaded(self.client.CloseCover)
 
     def openCover(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.callMethodThreaded(self.client.OpenCover)
 
     def haltCover(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.callMethodThreaded(self.client.HaltCover)
 
     def lightOn(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
         maxBrightness = self.app.cover.data.get(
@@ -70,13 +65,11 @@ class CoverAscom(AscomClass):
         self.callMethodThreaded(self.client.CalibratorOn, brightness)
 
     def lightOff(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.callMethodThreaded(self.client.CalibratorOff)
 
     def lightIntensity(self, value: float) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.callMethodThreaded(self.client.CalibratorOn, value)

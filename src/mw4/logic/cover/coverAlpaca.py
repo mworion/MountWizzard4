@@ -26,7 +26,6 @@ class CoverAlpaca(AlpacaClass):
         self.data = parent.data
 
     def workerPollData(self) -> None:
-        """ """
         states = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
         if not self.deviceConnected:
             return
@@ -44,25 +43,21 @@ class CoverAlpaca(AlpacaClass):
         )
 
     def closeCover(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.getAlpacaProperty("closecover")
 
     def openCover(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.getAlpacaProperty("opencover")
 
     def haltCover(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.getAlpacaProperty("haltcover")
 
     def lightOn(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
         maxBrightness = self.app.cover.data.get(
@@ -72,13 +67,11 @@ class CoverAlpaca(AlpacaClass):
         self.setAlpacaProperty("calibratoron", Brightness=brightness)
 
     def lightOff(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.getAlpacaProperty("calibratoroff")
 
     def lightIntensity(self, value: float) -> None:
-        """ """
         if not self.deviceConnected:
             return
         self.setAlpacaProperty("calibratoron", Brightness=value)

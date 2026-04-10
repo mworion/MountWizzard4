@@ -17,8 +17,10 @@ from importlib.resources import as_file, files
 from mw4.mountcontrol.convert import formatDstrToText, formatHstrToText
 from PySide6.QtCore import (
     QEvent,
+    QEventLoop,
     QObject,
     Qt,
+    QTimer,
     Signal,
     SignalInstance,
 )
@@ -30,7 +32,6 @@ from PySide6.QtGui import (
     QPainter,
     QPixmap,
 )
-from PySide6.QtTest import QTest
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QComboBox,
@@ -44,12 +45,13 @@ from skyfield.api import Angle
 
 
 def sleepAndEvents(value: int) -> None:
-    """ """
-    QTest.qWait(value)
+    """Pause for *value* milliseconds while processing all pending Qt events."""
+    loop = QEventLoop()
+    QTimer.singleShot(value, loop.quit)
+    loop.exec()
 
 
 def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str | bool) -> None:
-    """ """
     if widget.property(widgetProperty) == value:
         return
 
@@ -59,7 +61,6 @@ def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str | bool) 
 
 
 def findIndexValue(ui: QComboBox, searchString: str, relaxed: bool = False) -> int:
-    """ """
     for index in range(ui.model().rowCount()):
         modelIndex = ui.model().index(index, 0)
         indexValue = ui.model().data(modelIndex)
@@ -78,7 +79,6 @@ def findIndexValue(ui: QComboBox, searchString: str, relaxed: bool = False) -> i
 def guiSetText(
     ui: QLineEdit, formatElement: str, value: float | Angle | str | bool | None
 ) -> None:
-    """ """
     if value is None:
         text = ""
     elif formatElement.startswith("HSTR"):
@@ -126,7 +126,6 @@ def clickable(widget: QWidget) -> SignalInstance:
 
 
 def img2pixmap(imageFilePath: str) -> QPixmap:
-    """ """
     with as_file(files("mw4").joinpath(imageFilePath)) as imageFile:
         image = QImage(str(imageFile))
     image.convertToFormat(QImage.Format.Format_RGB32)
@@ -137,7 +136,6 @@ def img2pixmap(imageFilePath: str) -> QPixmap:
 
 
 def svg2pixmap(svgFileName: str, color: str = "black") -> QPixmap:
-    """ """
     with as_file(files("mw4").joinpath(svgFileName)) as image:
         img = QPixmap(image)
     qp = QPainter(img)
@@ -148,27 +146,23 @@ def svg2pixmap(svgFileName: str, color: str = "black") -> QPixmap:
 
 
 def svg2icon(svgFileName: str, color: str = "black") -> QIcon:
-    """ """
     img = svg2pixmap(svgFileName, color)
     return QIcon(img)
 
 
 def getTabIndex(tab: QTabWidget, name: str) -> int:
-    """ """
     tabWidget = tab.findChild(QWidget, name)
     tabIndex = tab.indexOf(tabWidget)
     return tabIndex
 
 
 def getTabAndIndex(tab: QTabWidget, config: dict, name: str) -> None:
-    """ """
     config[name] = {"index": tab.currentIndex()}
     for index in range(tab.count()):
         config[name][f"{index:02d}"] = tab.widget(index).objectName()
 
 
 def setTabAndIndex(tab: QTabWidget, config: dict, name: str) -> None:
-    """ """
     config = config.get(name, {})
     if not isinstance(config, dict):
         config = {}
@@ -182,7 +176,6 @@ def setTabAndIndex(tab: QTabWidget, config: dict, name: str) -> None:
 
 
 def positionCursorInTable(table: QTableWidget, searchName: str) -> None:
-    """ """
     result = table.findItems(searchName, Qt.MatchFlag.MatchExactly)
     if len(result) == 0:
         return

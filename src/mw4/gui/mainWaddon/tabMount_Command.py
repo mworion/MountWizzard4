@@ -35,7 +35,6 @@ class MountCommand:
         self.ui.mountDocumentation.clicked.connect(self.openMountDocumentation)
 
     def openCommandProtocol(self) -> None:
-        """ """
         url = "http://" + self.ui.mountHost.text() + "/manuals/command-protocol.pdf"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "Mount", "Browser failed")
@@ -43,7 +42,6 @@ class MountCommand:
             self.msg.emit(0, "System", "Mount", "command protocol opened")
 
     def openUpdateTimeDelta(self) -> None:
-        """ """
         url = "http://" + self.ui.mountHost.text() + "/updatetime.html"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "Mount", "Browser failed")
@@ -51,7 +49,6 @@ class MountCommand:
             self.msg.emit(0, "System", "Mount", "update time delta opened")
 
     def openUpdateFirmware(self) -> None:
-        """ """
         url = "http://" + self.ui.mountHost.text() + "/updatefirmware.html"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "Mount", "Browser failed")
@@ -59,7 +56,6 @@ class MountCommand:
             self.msg.emit(0, "System", "Mount", "update firmware opened")
 
     def openMountDocumentation(self) -> None:
-        """ """
         mountStrings = self.app.mount.firmware.product.split()
         if len(mountStrings) != 2:
             self.msg.emit(2, "System", "Mount", "Browser failed")
@@ -73,7 +69,6 @@ class MountCommand:
             self.msg.emit(0, "System", "Mount", "mount manual opened")
 
     def commandRaw(self) -> None:
-        """ """
         host = self.app.mount.host
         conn = Connection(host)
         cmd = self.ui.commandInput.text()

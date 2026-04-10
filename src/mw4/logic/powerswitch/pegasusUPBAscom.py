@@ -24,7 +24,6 @@ class PegasusUPBAscom(AscomClass):
         self.signals = parent.signals
 
     def workerPollData(self) -> None:
-        """ """
         maxSwitch = self.getAscomProperty("MaxSwitch")
         model = "UPB" if maxSwitch == 15 else "UPBv2"
 
@@ -68,7 +67,6 @@ class PegasusUPBAscom(AscomClass):
             self.getAndStoreAscomProperty("getswitchvalue(19)", "POWER_SENSORS.SENSOR_POWER")
 
     def togglePowerPort(self, port: str) -> None:
-        """"""
         if not self.deviceConnected:
             return False
 
@@ -77,15 +75,12 @@ class PegasusUPBAscom(AscomClass):
         self.callAscomMethod("setswitch", (switchNumber, not val))
 
     def togglePowerPortBoot(self, port: str) -> None:
-        """"""
         pass
 
     def toggleHubUSB(self) -> None:
-        """"""
         pass
 
     def togglePortUSB(self, port: str):
-        """"""
         if not self.deviceConnected:
             return
 
@@ -97,7 +92,6 @@ class PegasusUPBAscom(AscomClass):
             self.callAscomMethod("setswitch", (switchNumber, not val))
 
     def toggleAutoDew(self) -> None:
-        """"""
         if not self.deviceConnected:
             return
 
@@ -112,7 +106,6 @@ class PegasusUPBAscom(AscomClass):
             self.callAscomMethod("setswitch", (13, not val))
 
     def sendDew(self, port: str, value: float) -> None:
-        """"""
         if not self.deviceConnected:
             return
 
@@ -125,9 +118,7 @@ class PegasusUPBAscom(AscomClass):
             self.callAscomMethod("setswitchvalue", (switchNumber, val))
 
     def sendAdjustableOutput(self, value: float) -> None:
-        """"""
         pass
 
     def reboot(self) -> None:
-        """"""
         pass

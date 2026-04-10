@@ -46,7 +46,6 @@ class SettMount:
         self.app.update30s.connect(self.syncClock)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.ui.mountHost.setText(config.get("mountHost", ""))
         self.ui.port3492.setChecked(config.get("port3492", True))
@@ -67,7 +66,6 @@ class SettMount:
             self.mountBoot()
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["mountHost"] = self.ui.mountHost.text()
         config["mountMAC"] = self.ui.mountMAC.text()
@@ -82,11 +80,9 @@ class SettMount:
         config["clockSync"] = self.ui.clockSync.isChecked()
 
     def setMountCapabilities(self, fw) -> None:
-        """ """
         self.ui.GroupWOL.setEnabled(self.app.mount.firmware.isHW2012())
 
     def mountBoot(self) -> None:
-        """ """
         bAddress = self.ui.mountWolAddress.text().strip()
         bPort = self.ui.mountWolPort.text().strip()
         bPort = int(bPort) if bPort else 0
@@ -96,7 +92,6 @@ class SettMount:
             self.msg.emit(2, "Mount", "Command", "Mount cannot be booted")
 
     def mountShutdown(self) -> None:
-        """ """
         self.app.deviceStat["mount"] = False
         if self.app.mount.shutdown():
             self.msg.emit(0, "Mount", "Command", "Shutting mount down")
@@ -104,7 +99,6 @@ class SettMount:
             self.msg.emit(2, "Mount", "Command", "Mount cannot be shutdown")
 
     def bootRackComp(self) -> None:
-        """ """
         MAC = checkFormatMAC(self.ui.rackCompMAC.text())
         if MAC:
             wakeonlan.send_magic_packet(MAC)
@@ -113,7 +107,6 @@ class SettMount:
             self.msg.emit(2, "Rack", "Command", "Rack computer cannot be booted")
 
     def mountHost(self) -> None:
-        """ """
         port = 3492 if self.ui.port3492.isChecked() else 3490
         host = self.ui.mountHost.text()
         if not host:
@@ -128,11 +121,9 @@ class SettMount:
         self.app.hostChanged.emit()
 
     def mountMAC(self) -> None:
-        """ """
         self.app.mount.MAC = self.ui.mountMAC.text()
 
     def setMountMAC(self, sett: Setting = None) -> None:
-        """ """
         if sett is None:
             return
         if sett.addressLanMAC is None:
@@ -144,7 +135,6 @@ class SettMount:
         self.ui.mountMAC.setText(self.app.mount.MAC)
 
     def updateFwGui(self, fw: Firmware) -> None:
-        """ """
         guiSetText(self.ui.product, "s", fw.product)
         guiSetText(self.ui.vString, "s", fw.vString.public)
         guiSetText(self.ui.fwdate, "s", fw.date)
@@ -152,7 +142,6 @@ class SettMount:
         guiSetText(self.ui.hardware, "s", fw.hardware)
 
     def toggleClockSync(self) -> None:
-        """ """
         enableSyncTimer = self.ui.clockSync.isChecked()
         self.ui.syncTimeNone.setEnabled(enableSyncTimer)
         self.ui.syncTimeCont.setEnabled(enableSyncTimer)
@@ -165,7 +154,6 @@ class SettMount:
             self.app.mount.stopMountClockTimer()
 
     def syncClock(self) -> None:
-        """ """
         if self.ui.syncTimeNone.isChecked():
             return
         if not self.app.deviceStat["mount"]:

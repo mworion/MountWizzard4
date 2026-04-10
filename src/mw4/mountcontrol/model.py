@@ -68,11 +68,9 @@ class Model:
         self._numberStars = valueToInt(value)
 
     def addStar(self, value: ModelStar) -> None:
-        """ """
         self._starList.append(value)
 
     def delStar(self, value: int):
-        """ """
         value = valueToInt(value)
         if value < 0 or value > len(self._starList) - 1:
             self.log.warning(f"invalid value: {value}")
@@ -80,7 +78,6 @@ class Model:
         self._starList.pop(value)
 
     def checkStarListOK(self):
-        """ """
         return self._numberStars == len(self._starList)
 
     @property
@@ -106,14 +103,12 @@ class Model:
         self._numberNames = valueToInt(value)
 
     def addName(self, value: str) -> None:
-        """ """
         if not isinstance(value, str):
             self.log.warning(f"malformed value: {value}")
             return
         self._nameList.insert(len(self._nameList), value)
 
     def parseNames(self, response: list, numberOfChunks: int) -> bool:
-        """ """
         if len(response) != numberOfChunks:
             self.log.warning("wrong number of chunks")
             return False
@@ -124,7 +119,6 @@ class Model:
         return True
 
     def parseNumberNames(self, response: list, numberOfChunks: int) -> bool:
-        """ """
         if len(response) != numberOfChunks:
             self.log.warning("wrong number of chunks")
             return False
@@ -135,7 +129,6 @@ class Model:
         return True
 
     def getNameCount(self) -> bool:
-        """ """
         conn = Connection(self.parent.host)
         commandString = ":modelcnt#"
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -146,7 +139,6 @@ class Model:
         return suc
 
     def getNames(self) -> bool:
-        """ """
         conn = Connection(self.parent.host)
         commandString = ""
         for i in range(1, self.numberNames + 1):
@@ -161,14 +153,12 @@ class Model:
         return suc
 
     def pollNames(self) -> bool:
-        """ """
         suc = self.getNameCount()
         if suc:
             suc = self.getNames()
         return suc
 
     def parseStars(self, response: list, numberOfChunks: int) -> bool:
-        """ """
         if len(response) != numberOfChunks:
             self.log.warning("Wrong number of chunks")
             return False
@@ -185,7 +175,6 @@ class Model:
         return True
 
     def parseNumberStars(self, response: list, numberOfChunks: int) -> bool:
-        """ """
         if len(response) != numberOfChunks or len(response) == 0:
             self.log.warning("Wrong number of chunks")
             return False
@@ -215,7 +204,6 @@ class Model:
         return True
 
     def getStarCount(self) -> bool:
-        """ """
         conn = Connection(self.parent.host)
         commandString = ":getalst#:getain#"
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -226,7 +214,6 @@ class Model:
         return suc
 
     def getStars(self) -> bool:
-        """ """
         self._starList = []
         if self.numberStars == 0:
             return True
@@ -244,19 +231,16 @@ class Model:
         return suc
 
     def pollStars(self) -> None:
-        """ """
         suc = self.getStarCount()
         if suc:
             self.getStars()
 
     def clearModel(self) -> bool:
-        """ """
         conn = Connection(self.parent.host)
         suc, _, _ = conn.communicate(":delalig#", responseCheck="")
         return suc
 
     def deletePoint(self, number: int) -> bool:
-        """ """
         if number < 1 or number > self._numberStars:
             return False
 
@@ -266,28 +250,24 @@ class Model:
         return suc
 
     def storeName(self, name: str) -> bool:
-        """ """
         conn = Connection(self.parent.host)
         commandString = f":modeldel0{name[:15]}#:modelsv0{name[:15]}#"
         suc, response, _ = conn.communicate(commandString)
         return suc and response[1] == "1"
 
     def loadName(self, name: str) -> bool:
-        """ """
         conn = Connection(self.parent.host)
         commandString = f":modelld0{name[:15]}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def deleteName(self, name: str) -> bool:
-        """ """
         conn = Connection(self.parent.host)
         commandString = f":modeldel0{name[:15]}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def programModelFromStarList(self, build: list[ProgStar]) -> bool:
-        """ """
         commandString = ":newalig#"
         for aPoint in build:
             sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.mCoord.ra.hours, 1)

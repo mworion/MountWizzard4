@@ -25,7 +25,6 @@ class CoverIndi(IndiClass):
         self.signals = parent.signals
 
     def updateText(self, deviceName: str, propertyName: str) -> None:
-        """ """
         for element, value in self.device.getText(propertyName).items():
             if element == "Cover":
                 value = value.strip().upper()
@@ -42,7 +41,6 @@ class CoverIndi(IndiClass):
                     self.data["CAP_PARK.PARK"] = None
 
     def closeCover(self) -> None:
-        """ """
         if self.device is None:
             return
         cover = self.device.getSwitch("CAP_PARK")
@@ -58,7 +56,6 @@ class CoverIndi(IndiClass):
         )
 
     def openCover(self) -> None:
-        """ """
         if self.device is None:
             return
         cover = self.device.getSwitch("CAP_PARK")
@@ -75,11 +72,9 @@ class CoverIndi(IndiClass):
 
     @staticmethod
     def haltCover() -> None:
-        """ """
         pass
 
     def lightOn(self) -> None:
-        """ """
         if self.device is None:
             return
         light = self.device.getSwitch("FLAT_LIGHT_CONTROL")
@@ -95,7 +90,6 @@ class CoverIndi(IndiClass):
         )
 
     def lightOff(self) -> None:
-        """ """
         if self.device is None:
             return
         light = self.device.getSwitch("FLAT_LIGHT_CONTROL")
@@ -111,7 +105,6 @@ class CoverIndi(IndiClass):
         )
 
     def lightIntensity(self, value: float) -> None:
-        """ """
         if self.device is None:
             return
         light = self.device.getNumber("FLAT_LIGHT_INTENSITY")

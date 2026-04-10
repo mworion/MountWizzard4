@@ -60,19 +60,16 @@ class SeeingWeather:
         self.apiKey: str = ""
 
     def startCommunication(self) -> None:
-        """ """
         self.pollSeeingData()
         self.app.update3s.connect(self.pollSeeingData)
 
     def stopCommunication(self) -> None:
-        """ """
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit("SeeingWeather")
         self.app.update3m.disconnect(self.pollSeeingData)
 
     def processSeeingData(self) -> None:
-        """ """
         dataFile = self.app.mwGlob["dataDir"] / "meteoblue.data"
         if not dataFile.is_file():
             self.log.info(f"{dataFile} not available")
@@ -88,7 +85,6 @@ class SeeingWeather:
         self.signals.update.emit()
 
     def workerGetSeeingData(self, url: Path) -> bool:
-        """ """
         if not self.app.onlineMode:
             return False
         try:
@@ -108,7 +104,6 @@ class SeeingWeather:
         return True
 
     def sendStatus(self, status: bool) -> None:
-        """ """
         if not status and self.running:
             self.signals.deviceDisconnected.emit("SeeingWeather")
             self.running = False
@@ -117,7 +112,6 @@ class SeeingWeather:
             self.running = True
 
     def getSeeingData(self, url: Path) -> None:
-        """ """
         if not self.loadingFileNeeded("meteoblue.data", 0.5):
             self.processSeeingData()
             self.sendStatus(True)
@@ -128,7 +122,6 @@ class SeeingWeather:
         self.threadPool.start(self.worker)
 
     def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:
-        """ """
         filePath = self.app.mwGlob["dataDir"] / fileName
         if not filePath.is_file():
             return True
@@ -137,7 +130,6 @@ class SeeingWeather:
         return not ageData < hours / 24
 
     def pollSeeingData(self) -> None:
-        """ """
         if not self.apiKey or not self.b:
             return
 

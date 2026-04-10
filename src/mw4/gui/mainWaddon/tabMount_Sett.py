@@ -60,7 +60,6 @@ class MountSett:
         self.app.mount.signals.firmwareDone.connect(self.setWOLorAPO)
 
     def setWOLorAPO(self, fw):
-        """ """
         self.ui.statusWOL.setEnabled(fw.isHW2012())
         self.ui.label_statusWOL.setEnabled(fw.isHW2012())
         self.ui.statusAPO.setEnabled(fw.isHW2024())
@@ -71,7 +70,6 @@ class MountSett:
         self.ui.label_statusAPO.setVisible(fw.isHW2024())
 
     def updatePointGUI(self, obs):
-        """ """
         isJ2000 = self.ui.coordsJ2000.isChecked()
         isValid = obs.raJNow is not None
         isValid = isValid and obs.decJNow is not None
@@ -94,7 +92,6 @@ class MountSett:
         guiSetText(self.ui.timeSidereal, "HSTR", obs.timeSidereal)
 
     def updateSettingGUI(self, sett):
-        """ """
         ui = self.ui.UTCExpire
         guiSetText(ui, "s", sett.UTCExpire)
         if sett.UTCExpire is not None:
@@ -179,7 +176,6 @@ class MountSett:
             changeStyleDynamic(self.ui.setSolarTracking, "run", True)
 
     def updateLocGUI(self, obs):
-        """ """
         if obs is None:
             return
         location = obs.location
@@ -191,7 +187,6 @@ class MountSett:
         self.ui.siteElevation.setText(str(location.elevation.m))
 
     def setMeridianLimitTrack(self):
-        """ """
         sett = self.app.mount.setting
         actValue = 0 if not sett.meridianLimitTrack else int(sett.meridianLimitTrack)
         dlg = QInputDialog()
@@ -209,7 +204,6 @@ class MountSett:
             return False
 
     def setMeridianLimitSlew(self):
-        """ """
         sett = self.app.mount.setting
         actValue = 0 if not sett.meridianLimitSlew else int(sett.meridianLimitSlew)
         dlg = QInputDialog()
@@ -227,7 +221,6 @@ class MountSett:
             return False
 
     def setHorizonLimitHigh(self):
-        """ """
         sett = self.app.mount.setting
         actValue = 0 if sett.horizonLimitHigh is None else int(sett.horizonLimitHigh)
         dlg = QInputDialog()
@@ -245,7 +238,6 @@ class MountSett:
             return False
 
     def setHorizonLimitLow(self):
-        """ """
         sett = self.app.mount.setting
         actValue = 0 if sett.horizonLimitLow is None else int(sett.horizonLimitLow)
         dlg = QInputDialog()
@@ -269,7 +261,6 @@ class MountSett:
             return False
 
     def setSlewRate(self):
-        """ """
         sett = self.app.mount.setting
         actValue = 0 if sett.slewRate is None else int(sett.slewRate)
         minRate = 0 if sett.slewRateMin is None else int(sett.slewRateMin)
@@ -295,7 +286,6 @@ class MountSett:
             return False
 
     def setLocationValues(self, lat=None, lon=None, elev=None):
-        """ """
         obs = self.app.mount.obsSite
         loc = obs.location
         lat = loc.latitude if lat is None else lat
@@ -320,7 +310,6 @@ class MountSett:
         self.msg.emit(0, "Mount", "Setting", t)
 
     def setLongitude(self):
-        """ """
         dlg = QInputDialog()
         value, ok = dlg.getText(
             self.mainW,
@@ -337,7 +326,6 @@ class MountSett:
         return True
 
     def setLatitude(self):
-        """ """
         dlg = QInputDialog()
         value, ok = dlg.getText(
             self.mainW,
@@ -354,7 +342,6 @@ class MountSett:
         return True
 
     def setElevation(self):
-        """ """
         obs = self.app.mount.obsSite
         dlg = QInputDialog()
         value, ok = dlg.getDouble(
@@ -373,7 +360,6 @@ class MountSett:
         return True
 
     def setUnattendedFlip(self):
-        """ """
         sett = self.app.mount.setting
         dlg = QInputDialog()
         value, ok = dlg.getItem(
@@ -394,7 +380,6 @@ class MountSett:
         return suc
 
     def setDualAxisTracking(self):
-        """ """
         sett = self.app.mount.setting
         dlg = QInputDialog()
         value, ok = dlg.getItem(
@@ -416,7 +401,6 @@ class MountSett:
         return suc
 
     def setWOL(self):
-        """ """
         sett = self.app.mount.setting
         dlg = QInputDialog()
         act = 0 if sett.wakeOnLan == "ON" else 1
@@ -434,7 +418,6 @@ class MountSett:
         return suc
 
     def setAPO(self):
-        """ """
         sett = self.app.mount.setting
         dlg = QInputDialog()
         act = 0 if sett.autoPowerOn else 1
@@ -452,7 +435,6 @@ class MountSett:
         return suc
 
     def setRefractionTemp(self):
-        """ """
         sett = self.app.mount.setting
         actValue = 0 if sett.refractionTemp is None else sett.refractionTemp
         minVal = -40
@@ -478,7 +460,6 @@ class MountSett:
             return False
 
     def setRefractionPress(self):
-        """ """
         sett = self.app.mount.setting
         actValue = 0 if sett.refractionPress is None else sett.refractionPress
         minVal = 500
@@ -504,7 +485,6 @@ class MountSett:
             return False
 
     def setRefraction(self):
-        """ """
         sett = self.app.mount.setting
         dlg = QInputDialog()
         value, ok = dlg.getItem(
@@ -526,7 +506,6 @@ class MountSett:
         return suc
 
     def setSettleTimeMount(self):
-        """ """
         sett = self.app.mount.setting
         actValue = 0 if sett.settleTime is None else int(sett.settleTime)
         dlg = QInputDialog()
@@ -544,7 +523,6 @@ class MountSett:
             return False
 
     def showOffset(self):
-        """ """
         connectSync = self.ui.clockSync.isChecked()
         delta = self.app.mount.obsSite.timeDiff * 1000
         ui = self.ui.timeDeltaPC2Mount

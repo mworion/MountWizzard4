@@ -40,19 +40,15 @@ class Firmware:
         self._vString = Version(value)
 
     def checkNewer(self, compare: str) -> bool:
-        """ """
         return self.vString >= Version(compare)
 
     def isHW2024(self) -> bool:
-        """ """
         return self.hardware == "Q-TYPE2024"
 
     def isHW2012(self) -> bool:
-        """ """
         return self.hardware == "Q-TYPE2012"
 
     def parse(self, response: list, numberOfChunks: int) -> bool:
-        """ """
         if len(response) != numberOfChunks:
             self.log.warning("wrong number of chunks")
             return False
@@ -64,7 +60,6 @@ class Firmware:
         return True
 
     def poll(self) -> bool:
-        """ """
         conn = Connection(self.parent.host)
         commandString = ":GVD#:GVN#:GVP#:GVT#:GVZ#:GCFG#"
         suc, response, chunks = conn.communicate(commandString)

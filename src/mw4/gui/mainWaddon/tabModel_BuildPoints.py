@@ -76,7 +76,6 @@ class BuildPoints:
         self.ui.isOnline.stateChanged.connect(self.setupDsoGui)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
 
         self.ui.numberGridPointsCol.valueChanged.disconnect(self.genBuildGrid)
@@ -118,7 +117,6 @@ class BuildPoints:
         self.ui.meridianDistanceFlip.valueChanged.connect(self.genBuildCelestial)
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["buildPFileName"] = self.ui.buildPFileName.text()
         config["numberGridPointsRow"] = self.ui.numberGridPointsRow.value()
@@ -143,14 +141,12 @@ class BuildPoints:
         config["ditherBuildPoints"] = self.ui.ditherBuildPoints.isChecked()
 
     def setupIcons(self) -> None:
-        """ """
         self.mainW.wIcon(self.ui.loadBuildPoints, "load")
         self.mainW.wIcon(self.ui.saveBuildPoints, "save")
         self.mainW.wIcon(self.ui.saveBuildPointsAs, "save")
         self.mainW.wIcon(self.ui.clearBuildP, "trash")
 
     def genBuildGrid(self) -> None:
-        """ """
         self.lastGenerator = "grid"
         numbRows = int(self.ui.numberGridPointsRow.value())
         numbCols = int(self.ui.numberGridPointsCol.value())
@@ -166,7 +162,6 @@ class BuildPoints:
         self.processPoints()
 
     def genBuildAlign(self) -> None:
-        """ """
         self.lastGenerator = "align"
         suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=3)
         if not suc:
@@ -175,7 +170,6 @@ class BuildPoints:
         self.processPoints()
 
     def genBuildCelestial(self) -> None:
-        """ """
         self.lastGenerator = "celestial"
         stepHA = int(self.ui.numberCelestialStepHA.value())
         stepDec = int(self.ui.numberCelestialStepDEC.value())
@@ -192,7 +186,6 @@ class BuildPoints:
         self.processPoints()
 
     def genBuildDSO(self) -> None:
-        """ """
         self.lastGenerator = "dso"
         ha = self.app.mount.obsSite.raJNow
         dec = self.app.mount.obsSite.decJNow
@@ -237,7 +230,6 @@ class BuildPoints:
         changeStyleDynamic(self.ui.genBuildDSO, "run", False)
 
     def genBuildGoldenSpiral(self) -> None:
-        """ """
         self.lastGenerator = "spiral"
         numberTarget = int(self.ui.numberSpiral.value())
         changeStyleDynamic(self.ui.genBuildSpiral, "run", True)
@@ -256,7 +248,6 @@ class BuildPoints:
         changeStyleDynamic(self.ui.genBuildSpiral, "run", False)
 
     def genModel(self) -> None:
-        """ """
         self.lastGenerator = "model"
         self.app.data.clearBuildP()
         model = self.app.mount.model
@@ -267,7 +258,6 @@ class BuildPoints:
         self.processPoints()
 
     def genBuildFile(self) -> None:
-        """ """
         self.lastGenerator = "file"
         fileName = self.ui.buildPFileName.text()
         if not fileName:
@@ -282,7 +272,6 @@ class BuildPoints:
         self.processPoints()
 
     def loadBuildFile(self) -> None:
-        """ """
         folder = self.app.mwGlob["configDir"]
         fileTypes = "Build Point Files (*.bpts)"
         fileTypes += ";; CSV Files (*.csv)"
@@ -306,7 +295,6 @@ class BuildPoints:
         self.genBuildFile()
 
     def saveBuildFile(self) -> None:
-        """ """
         fileName = self.ui.buildPFileName.text()
         if not fileName:
             self.msg.emit(0, "Model", "Buildpoints", "Build points file name not given")
@@ -316,7 +304,6 @@ class BuildPoints:
         self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fileName}] saved")
 
     def saveBuildFileAs(self) -> None:
-        """ """
         folder = self.app.mwGlob["configDir"]
         saveFilePath = self.mainW.saveFile(
             self.mainW, "Save build point file", folder, "Build point files (*.bpts)"
@@ -329,13 +316,11 @@ class BuildPoints:
         self.msg.emit(0, "Model", "Buildpoints", f"Build file [{saveFilePath.stem}] saved")
 
     def clearBuildP(self) -> None:
-        """ """
         self.app.data.clearBuildP()
         self.app.drawBuildPoints.emit()
         self.app.redrawHemisphere.emit()
 
     def autoDeletePoints(self) -> None:
-        """ """
         if self.ui.autoDeleteHorizon.isChecked():
             self.app.data.deleteBelowHorizon()
         if self.ui.autoDeleteMeridian.isChecked():
@@ -345,7 +330,6 @@ class BuildPoints:
             self.app.data.deleteCloseHorizonLine(value)
 
     def autoSortPoints(self) -> None:
-        """ """
         if self.ui.sortALT.isChecked():
             self.app.data.sortAlt()
         if self.ui.sortAZ.isChecked():
@@ -356,24 +340,20 @@ class BuildPoints:
             self.app.data.sortActualPierside()
 
     def buildPointsChanged(self) -> None:
-        """ """
         self.lastGenerator = "none"
 
     def processPoints(self) -> None:
-        """ """
         self.autoDeletePoints()
         self.autoSortPoints()
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
 
     def rebuildPoints(self) -> None:
-        """ """
         if self.lastGenerator in self.sortedGenerators:
             self.sortedGenerators[self.lastGenerator]()
         self.processPoints()
 
     def setupDsoGui(self) -> None:
-        """ """
         isOnline = self.ui.isOnline.isChecked()
         self.ui.generateQuery.setEnabled(isOnline)
         self.ui.generateRa.setEnabled(isOnline)
@@ -383,7 +363,6 @@ class BuildPoints:
         self.ui.generateDecText.setEnabled(isOnline)
 
     def querySimbad(self) -> None:
-        """ """
         if not self.ui.isOnline.isChecked():
             self.msg.emit(2, "Model", "Buildpoints", "MW4 is offline")
             return

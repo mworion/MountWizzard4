@@ -37,11 +37,9 @@ class SensorWeatherBoltwood:
         self.app.update3s.connect(self.pollBoltwoodData)
 
     def startCommunication(self) -> None:
-        """ """
         self.enabled = True
 
     def stopCommunication(self) -> None:
-        """ """
         self.data.clear()
         self.deviceConnected = False
         self.enabled = False
@@ -49,17 +47,14 @@ class SensorWeatherBoltwood:
 
     @staticmethod
     def convert_knots2kmh(knots: float) -> float:
-        """ """
         return knots * 1.852
 
     @staticmethod
     def convert_mph2kmh(mph: float) -> float:
-        """ """
         return mph * 1.609344
 
     @staticmethod
     def convertFtoC(tempF: float) -> float:
-        """ """
         return (tempF - 32) * 5.0 / 9.0
 
     def parseAndWriteBoltwoodData(self, rawData: str) -> bool:
@@ -113,7 +108,6 @@ class SensorWeatherBoltwood:
         return True
 
     def processBoltwoodData(self, filePath: Path) -> bool:
-        """ """
         if not filePath.is_file():
             self.log.warning("Boltwood file path invalid")
             return False
@@ -122,7 +116,6 @@ class SensorWeatherBoltwood:
         return self.parseAndWriteBoltwoodData(rawData)
 
     def pollBoltwoodData(self) -> None:
-        """ """
         if not self.enabled:
             return
         filePath = Path(self.filePath)

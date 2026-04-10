@@ -41,7 +41,6 @@ class HemisphereDraw(MWidget):
         self.alignmentStarsText: list = []
 
     def initConfig(self) -> None:
-        """ """
         self.app.mount.signals.pointDone.connect(self.drawPointer)
         self.app.dome.signals.azimuth.connect(self.drawDome)
         self.app.dome.signals.deviceDisconnected.connect(self.drawDome)
@@ -72,7 +71,6 @@ class HemisphereDraw(MWidget):
         self.app.update3s.connect(self.drawAlignmentStars)
 
     def closeTab(self) -> None:
-        """ """
         self.app.mount.signals.pointDone.disconnect(self.drawPointer)
         self.app.mount.signals.getModelDone.disconnect(self.drawTab)
         self.app.mount.signals.settingDone.disconnect(self.drawTab)
@@ -87,7 +85,6 @@ class HemisphereDraw(MWidget):
         self.app.update3s.disconnect(self.drawAlignmentStars)
 
     def setPointerVisibility(self, status) -> None:
-        """ """
         items = []
         for plotItem in self.ui.hemisphere.p:
             item = self.ui.hemisphere.findItemByName(plotItem, "pointer")
@@ -97,18 +94,15 @@ class HemisphereDraw(MWidget):
             item.setVisible(status)
 
     def mouseMovedHemisphere(self, pos: QPointF) -> None:
-        """ """
         self.parent.mouseMoved(pos)
 
     def enableOperationModeChange(self, status: int) -> None:
-        """ """
         isRunning = status != 0
         if isRunning:
             self.ui.normalModeHem.setChecked(True)
         self.ui.operationModeGroup.setEnabled(not isRunning)
 
     def setOperationMode(self) -> None:
-        """ """
         if self.ui.editModeHem.isChecked():
             self.drawModelPoints()
         elif self.ui.alignmentModeHem.isChecked():
@@ -117,7 +111,6 @@ class HemisphereDraw(MWidget):
         self.app.redrawHemisphere.emit()
 
     def prepareView(self) -> None:
-        """ """
         plotItem = self.ui.hemisphere.p[0]
         self.parent.preparePlotItem(plotItem)
         polarItem = self.ui.hemisphere.p[1]
@@ -127,7 +120,6 @@ class HemisphereDraw(MWidget):
         plotItem.getViewBox().callbackMDC = self.mouseDoubleClick
 
     def drawCelestialEquator(self) -> None:
-        """ """
         celestial = self.app.data.generateCelestialEquator()
         if not celestial:
             return
@@ -150,14 +142,12 @@ class HemisphereDraw(MWidget):
             plotItem.addItem(pd)
 
     def drawHorizon(self) -> None:
-        """ """
         p0 = self.ui.hemisphere.p[0]
         p1 = self.ui.hemisphere.p[1]
         self.ui.hemisphere.drawHorizon(self.app.data.horizonP, plotItem=p0)
         self.ui.hemisphere.drawHorizon(self.app.data.horizonP, plotItem=p1, polar=True)
 
     def setupAlignmentStars(self) -> None:
-        """ """
         plotItem = self.ui.hemisphere.p[0]
         hip = self.app.hipparcos
         self.alignmentStarsText = []
@@ -171,7 +161,6 @@ class HemisphereDraw(MWidget):
             plotItem.addItem(textItem)
 
     def calculateRelevance(self, alt: float, az: float) -> float:
-        """ """
         isNorth = self.app.mount.obsSite.location.latitude.degrees > 0
         altFak = 1 - np.minimum(np.abs(alt - 30), 35) / 35
         if isNorth:
@@ -182,14 +171,12 @@ class HemisphereDraw(MWidget):
         return sumFak
 
     def selectFontParam(self, relevance: float) -> tuple:
-        """ """
         cMap = pg.ColorMap([0, 0.6, 1.0], [self.M_RED, self.M_YELLOW, self.M_GREEN])
         color = cMap[float(relevance)]
         size = 8 + int(relevance * 5)
         return color, size
 
     def drawAlignmentStars(self) -> None:
-        """ """
         if not self.ui.showAlignStar.isChecked():
             return
 
@@ -224,7 +211,6 @@ class HemisphereDraw(MWidget):
             self.alignmentStarsText[i].setZValue(30)
 
     def setModelPointsAppearanceInPlot(self, item, statusList) -> None:
-        """"""
         isEdit = self.ui.editModeHem.isChecked()
         for i, status in enumerate(statusList):
             col = [self.M_TER, self.M_RED, self.M_GREEN]
@@ -239,7 +225,6 @@ class HemisphereDraw(MWidget):
             spot.setSymbol(symbol)
 
     def drawModelPoints(self) -> None:
-        """ """
         if not self.app.data.buildP:
             return
 
@@ -254,7 +239,6 @@ class HemisphereDraw(MWidget):
             self.setModelPointsAppearanceInPlot(item, statusList)
 
     def drawModelText(self) -> None:
-        """ """
         if not self.app.data.buildP:
             return
 
@@ -283,7 +267,6 @@ class HemisphereDraw(MWidget):
             plotItem.addItem(textItem)
 
     def updateDataModel(self, x: list[float], y: list[float]) -> None:
-        """ """
         bp = [[y, x, self.app.data.UNPROCESSED] for y, x in zip(y, x)]
         self.app.data.buildP = bp
         self.drawModelPoints()
@@ -291,7 +274,6 @@ class HemisphereDraw(MWidget):
         self.app.buildPointsChanged.emit()
 
     def setupModel(self) -> None:
-        """ """
         for i, plotItem in enumerate(self.ui.hemisphere.p):
             if self.ui.showSlewPath.isChecked():
                 pen = pg.mkPen(color=self.M_TER, style=Qt.PenStyle.DashLine)
@@ -332,7 +314,6 @@ class HemisphereDraw(MWidget):
         self.drawModelText()
 
     def setupPointer(self) -> None:
-        """ """
         for plotItem in self.ui.hemisphere.p:
             symbol = makePointer()
             pd = pg.ScatterPlotItem(symbol=symbol, size=40)
@@ -344,7 +325,6 @@ class HemisphereDraw(MWidget):
             plotItem.addItem(pd)
 
     def drawPointer(self) -> None:
-        """ """
         items = []
         for plotItem in self.ui.hemisphere.p:
             item = self.ui.hemisphere.findItemByName(plotItem, "pointer")
@@ -359,7 +339,6 @@ class HemisphereDraw(MWidget):
         items[1].setData(x=x, y=y)
 
     def setupDome(self) -> None:
-        """ """
         plotItem = self.ui.hemisphere.p[0]
         self.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
         self.pointerDome.setPen(pg.mkPen(color=self.M_SEC))
@@ -368,7 +347,6 @@ class HemisphereDraw(MWidget):
         plotItem.addItem(self.pointerDome)
 
     def drawDome(self, azimuth: float | None = None) -> None:
-        """ """
         if azimuth is None:
             self.pointerDome.setVisible(False)
             return
@@ -378,7 +356,6 @@ class HemisphereDraw(MWidget):
         self.pointerDome.setVisible(visible)
 
     def drawModelIsoCurve(self) -> None:
-        """ """
         model = self.app.mount.model
         if len(model.starList) == 0:
             return
@@ -389,7 +366,6 @@ class HemisphereDraw(MWidget):
         self.ui.hemisphere.addIsoItemHorizon(az, alt, err)
 
     def slewDirect(self, posView: QPointF) -> None:
-        """ """
         azimuth = Angle(degrees=int(posView.x() + 0.5))
         altitude = Angle(degrees=int(posView.y() + 0.5))
 
@@ -405,7 +381,6 @@ class HemisphereDraw(MWidget):
         self.slewInterface.slewTargetAltAz(altitude, azimuth)
 
     def slewStar(self, posView: QPointF) -> None:
-        """ """
         spot = self.alignmentStars.pointsAt(posView)
         if len(spot) == 0:
             return
@@ -440,14 +415,12 @@ class HemisphereDraw(MWidget):
         self.slewInterface.slewTargetRaDec(ra, dec, slewType=alignType, epoch="JNow")
 
     def mouseDoubleClick(self, ev: MouseClickEvent, posView: QPointF) -> None:
-        """ """
         if self.ui.alignmentModeHem.isChecked():
             self.slewStar(posView)
         elif self.ui.normalModeHem.isChecked():
             self.slewDirect(posView)
 
     def drawTab(self) -> None:
-        """ """
         hasModel = bool(self.app.mount.model.numberStars)
         self.ui.alignmentModeHem.setEnabled(hasModel)
         self.ui.showIsoModel.setEnabled(hasModel)

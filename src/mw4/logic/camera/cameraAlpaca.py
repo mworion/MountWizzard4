@@ -30,7 +30,6 @@ class CameraAlpaca(AlpacaClass):
         super().__init__(parent=parent)
 
     def workerGetInitialConfig(self) -> None:
-        """ """
         super().workerGetInitialConfig()
         self.getAndStoreAlpacaProperty("cameraxsize", "CCD_INFO.CCD_MAX_X")
         self.getAndStoreAlpacaProperty("cameraysize", "CCD_INFO.CCD_MAX_Y")
@@ -53,7 +52,6 @@ class CameraAlpaca(AlpacaClass):
         self.log.debug(f"Initial data: {self.data}")
 
     def workerPollData(self) -> None:
-        """ """
         self.getAndStoreAlpacaProperty("binx", "CCD_BINNING.HOR_BIN")
         self.getAndStoreAlpacaProperty("biny", "CCD_BINNING.VERT_BIN")
         self.getAndStoreAlpacaProperty("camerastate", "CAMERA.STATE")
@@ -67,16 +65,13 @@ class CameraAlpaca(AlpacaClass):
         self.getAndStoreAlpacaProperty("coolerpower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
 
     def sendDownloadMode(self) -> None:
-        """ """
         if self.data.get("CAN_FAST", False):
             self.setAlpacaProperty("fastreadout", FastReadout=self.parent.fastReadout)
 
     def waitFunc(self) -> bool:
-        """ """
         return not self.getAlpacaProperty("imageready")
 
     def workerExpose(self) -> None:
-        """ """
         self.sendDownloadMode()
         self.setAlpacaProperty("binx", BinX=self.parent.binning)
         self.setAlpacaProperty("biny", BinY=self.parent.binning)
@@ -96,30 +91,24 @@ class CameraAlpaca(AlpacaClass):
         self.parent.writeImageFitsHeader()
 
     def expose(self) -> None:
-        """ """
         self.worker = Worker(self.workerExpose)
         self.worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(self.worker)
 
     def abort(self) -> bool:
-        """ """
         if self.data.get("CAN_ABORT", False):
             self.getAlpacaProperty("stopexposure")
         return True
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        """ """
         self.setAlpacaProperty("cooleron", CoolerOn=coolerOn)
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
-        """ """
         if self.data.get("CAN_SET_CCD_TEMPERATURE", False):
             self.setAlpacaProperty("setccdtemperature", SetCCDTemperature=temperature)
 
     def sendOffset(self, offset: int = 0) -> None:
-        """ """
         self.setAlpacaProperty("offset", Offset=offset)
 
     def sendGain(self, gain: int = 0) -> None:
-        """ """
         self.setAlpacaProperty("gain", Gain=gain)

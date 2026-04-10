@@ -38,7 +38,6 @@ class Remote:
         self.tcpServer: QTcpServer | None = None
 
     def startCommunication(self) -> bool:
-        """ """
         self.tcpServer = QTcpServer()
         hostAddress = QHostAddress("localhost")
         if not self.tcpServer.listen(hostAddress, 3490):
@@ -52,13 +51,11 @@ class Remote:
             return True
 
     def stopCommunication(self) -> None:
-        """ """
         if self.tcpServer.isListening():
             self.tcpServer.close()
         self.signals.deviceDisconnected.emit("TCP")
 
     def addConnection(self) -> None:
-        """ """
         if self.tcpServer is None:
             return
 
@@ -75,7 +72,6 @@ class Remote:
         self.log.info(f"Connection to MountWizzard from {connection}")
 
     def receiveMessage(self) -> bool:
-        """ """
         if self.clientConnection.bytesAvailable() == 0:
             return False
 
@@ -99,12 +95,10 @@ class Remote:
         return True
 
     def removeConnection(self) -> None:
-        """ """
         connection = self.clientConnection.peerAddress().toString()
         self.clientConnection.close()
         self.log.debug(f"Connection from {connection} closed")
 
     def handleError(self, socketError: QAbstractSocket.SocketError) -> None:
-        """ """
         connection = self.clientConnection.peerAddress().toString()
         self.log.critical(f"Connection from {connection} failed, error: {socketError}")

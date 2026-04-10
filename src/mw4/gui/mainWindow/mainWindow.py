@@ -92,7 +92,6 @@ class MainWindow(MWidget):
         self.app.update1s.connect(self.updateDeviceStats)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config
         if "mainW" not in config:
             config["mainW"] = {}
@@ -118,7 +117,6 @@ class MainWindow(MWidget):
         self.setupIcons()
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config
         config["colorSet"] = self.ui.colorSet.currentIndex()
         config["profileName"] = self.ui.profile.text()
@@ -143,7 +141,6 @@ class MainWindow(MWidget):
         self.app.storeConfig()
 
     def setupIcons(self) -> None:
-        """ """
         self.wIcon(self.ui.saveConfigAs, "save")
         self.wIcon(self.ui.loadFrom, "load")
         self.wIcon(self.ui.saveConfig, "save")
@@ -160,7 +157,6 @@ class MainWindow(MWidget):
         self.wIcon(self.ui.park, "park")
 
     def updateColorSet(self) -> None:
-        """ """
         Styles.colorSet = self.ui.colorSet.currentIndex()
         self.setStyleSheet(self.mw4Style)
         self.setupIcons()
@@ -169,7 +165,6 @@ class MainWindow(MWidget):
         self.app.colorChange.emit()
 
     def closeEvent(self, closeEvent) -> None:
-        """ """
         self.gameControllerRunning = False
         self.app.timerMgr.stop()
         changeStyleDynamic(self.ui.pauseModel, "pause", False)
@@ -179,13 +174,11 @@ class MainWindow(MWidget):
         self.app.quit()
 
     def quitSave(self) -> None:
-        """ """
         self.mainWindowAddons.addons["SettDevice"].stopDrivers()
         self.saveProfile()
         self.close()
 
     def smartFunctionGui(self) -> None:
-        """ """
         isMountReady = bool(self.app.deviceStat.get("mount"))
         isModelingReady = all(
             bool(self.app.deviceStat.get(x)) for x in ["mount", "camera", "plateSolve"]
@@ -211,7 +204,6 @@ class MainWindow(MWidget):
         self.ui.parkingGroup.setEnabled(isMountReady)
 
     def smartTabGui(self) -> None:
-        """ """
         tabChanged = False
         for key, tab in self.smartTabs.items():
             tabIndex = getTabIndex(self.smartTabs[key]["tab"], key)
@@ -236,7 +228,6 @@ class MainWindow(MWidget):
             ui.setStyleSheet(ui.styleSheet())
 
     def setEnvironDeviceStats(self) -> None:
-        """ """
         refracOn = self.app.mount.setting.statusRefraction == 1
         isManual = self.ui.refracManual.isChecked()
         isTabEnabled = self.ui.showTabEnviron.isChecked()
@@ -254,7 +245,6 @@ class MainWindow(MWidget):
             self.app.deviceStat["refraction"] = isSource
 
     def updateDeviceStats(self) -> None:
-        """ """
         for device, ui in self.deviceStatGui.items():
             if self.app.deviceStat.get(device) is None:
                 ui.setEnabled(False)
@@ -271,23 +261,18 @@ class MainWindow(MWidget):
         changeStyleDynamic(self.ui.mountConnected, "run", isMount)
 
     def updateMountConnStat(self, status: bool) -> None:
-        """ """
         self.app.deviceStat["mount"] = status
 
     def updatePlateSolveStatus(self, text: str) -> None:
-        """ """
         self.ui.plateSolveText.setText(text)
 
     def updateDomeStatus(self, text: str) -> None:
-        """ """
         self.ui.domeText.setText(text)
 
     def updateCameraStatus(self, text: str) -> None:
-        """ """
         self.ui.cameraText.setText(text)
 
     def updateControllerStatus(self) -> None:
-        """ """
         gcStatus = self.gameControllerRunning
         self.ui.controller1.setEnabled(gcStatus)
         self.ui.controller2.setEnabled(gcStatus)
@@ -296,7 +281,6 @@ class MainWindow(MWidget):
         self.ui.controller5.setEnabled(gcStatus)
 
     def updateThreadAndOnlineStatus(self) -> None:
-        """ """
         mode = "Online" if self.ui.isOnline.isChecked() else "Offline"
         moon = self.ui.moonPhaseIllumination.text()
 
@@ -313,14 +297,12 @@ class MainWindow(MWidget):
         self.ui.statusOnline.setTitle(t)
 
     def updateTime(self) -> None:
-        """ """
         self.ui.timeComputer.setText(datetime.now().strftime("%H:%M:%S"))
         tzT = time.tzname[1] if time.daylight else time.tzname[0]
         t = f"TZ: {tzT}"
         self.ui.statusTime.setTitle(t)
 
     def updateStatusGUI(self, obs: ObsSite) -> None:
-        """ """
         self.ui.statusText.setText(obs.statusText())
 
         if self.app.mount.obsSite.status == 0:
@@ -345,7 +327,6 @@ class MainWindow(MWidget):
             self.satStatus = False
 
     def switchProfile(self, config: dict) -> None:
-        """ """
         self.externalWindows.closeExtendedWindows()
         self.mainWindowAddons.addons["SettDevice"].stopDrivers()
         self.threadPool.waitForDone(10000)
@@ -355,7 +336,6 @@ class MainWindow(MWidget):
         self.initConfig()
 
     def loadProfileGUI(self) -> None:
-        """ """
         folder = self.app.mwGlob["configDir"]
         loadProfilePath = self.openFile(
             self, "Open config file", folder, "Config files (*.yaml)"
@@ -369,7 +349,6 @@ class MainWindow(MWidget):
         self.msg.emit(1, "System", "Profile", f"{loadProfilePath.stem} loaded")
 
     def saveProfileBase(self, saveProfilePath: Path) -> None:
-        """ """
         if not saveProfilePath.stem:
             return
         self.storeConfig()
@@ -378,7 +357,6 @@ class MainWindow(MWidget):
         self.msg.emit(1, "System", "Profile", f"Saved to [{saveProfilePath.stem}]")
 
     def saveProfileAs(self) -> None:
-        """ """
         folder = self.app.mwGlob["configDir"]
         saveProfilePath = self.saveFile(
             self, "Save config file", folder, "Config files (*.yaml)", enableDir=False
@@ -386,12 +364,10 @@ class MainWindow(MWidget):
         self.saveProfileBase(saveProfilePath)
 
     def saveProfile(self) -> None:
-        """ """
         saveProfilePath = self.app.mwGlob["configDir"] / (self.ui.profile.text() + ".yaml")
         self.saveProfileBase(saveProfilePath)
 
     def remoteCommand(self, command: str) -> None:
-        """ """
         if command == "shutdown":
             self.quitSave()
             self.msg.emit(2, "System", "Remote", "Shutdown MW4 remotely")

@@ -47,41 +47,31 @@ class PegasusUPB:
             self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
     def startCommunication(self) -> None:
-        """ """
         self.run[self.framework].startCommunication()
 
     def stopCommunication(self) -> None:
-        """ """
         self.run[self.framework].stopCommunication()
 
     def togglePowerPort(self, port: str) -> None:
-        """ """
         self.run[self.framework].togglePowerPort(port=port)
 
     def togglePowerPortBoot(self, port: str) -> None:
-        """ """
         self.run[self.framework].togglePowerPortBoot(port=port)
 
     def toggleHubUSB(self) -> None:
-        """ """
         self.run[self.framework].toggleHubUSB()
 
     def togglePortUSB(self, port: str) -> None:
-        """ """
         self.run[self.framework].togglePortUSB(port=port)
 
     def toggleAutoDew(self) -> None:
-        """ """
         self.run[self.framework].toggleAutoDew()
 
     def sendDew(self, port: str, value: float) -> None:
-        """ """
         self.run[self.framework].sendDew(port=port, value=value)
 
     def sendAdjustableOutput(self, value: float) -> None:
-        """ """
         self.run[self.framework].sendAdjustableOutput(value=value)
 
     def reboot(self) -> None:
-        """ """
         self.run[self.framework].reboot()

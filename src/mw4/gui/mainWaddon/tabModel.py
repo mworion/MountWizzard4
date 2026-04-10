@@ -56,7 +56,6 @@ class Model:
         self.modelData.progress.connect(self.showProgress)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.ui.retriesReverse.setChecked(config.get("retriesReverse", False))
         self.ui.parkMountAfterModel.setChecked(config.get("parkMountAfterModel", False))
@@ -68,7 +67,6 @@ class Model:
         self.ui.waitTimeExposure.setValue(config.get("waitTimeExposure", 0))
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["retriesReverse"] = self.ui.retriesReverse.isChecked()
         config["parkMountAfterModel"] = self.ui.parkMountAfterModel.isChecked()
@@ -80,7 +78,6 @@ class Model:
         config["waitTimeExposure"] = self.ui.waitTimeExposure.value()
 
     def setupIcons(self) -> None:
-        """ """
         self.mainW.wIcon(self.ui.cancelModel, "cross-circle")
         self.mainW.wIcon(self.ui.runModel, "start")
         self.mainW.wIcon(self.ui.pauseModel, "pause")
@@ -88,30 +85,25 @@ class Model:
         self.mainW.wIcon(self.ui.dataModel, "choose")
 
     def setWaitTimeFlip(self) -> None:
-        """ """
         self.app.mount.waitTimeFlip = self.ui.waitTimeMountFlip.value()
 
     def cancelBatch(self) -> None:
-        """ """
         if not self.modelData:
             return
         self.modelData.cancelBatch = True
 
     def pauseBatch(self) -> None:
-        """ """
         if not self.modelData:
             return
         self.modelData.pauseBatch = not self.modelData.pauseBatch
         changeStyleDynamic(self.ui.pauseModel, "pause", self.modelData.pauseBatch)
 
     def endBatch(self) -> None:
-        """ """
         if not self.modelData:
             return
         self.modelData.endBatch = True
 
     def setModelOperationMode(self, status: int) -> None:
-        """ """
         if status == self.STATUS_MODEL_BATCH:
             self.ui.runModelGroup.setEnabled(True)
             self.ui.dataModel.setEnabled(False)
@@ -140,14 +132,12 @@ class Model:
             changeStyleDynamic(self.ui.pauseModel, "pause", False)
 
     def setupModelRunContextAndGuiStatus(self) -> None:
-        """ """
         changeStyleDynamic(self.ui.runModel, "run", True)
         self.ui.cancelModel.setEnabled(True)
         self.ui.endModel.setEnabled(True)
         self.ui.pauseModel.setEnabled(True)
 
     def pauseBuild(self) -> None:
-        """ """
         if not self.ui.pauseModel.property("pause"):
             changeStyleDynamic(self.ui.pauseModel, "color", "yellow")
             changeStyleDynamic(self.ui.pauseModel, "pause", True)
@@ -156,7 +146,6 @@ class Model:
             changeStyleDynamic(self.ui.pauseModel, "pause", False)
 
     def programModelToMountFinish(self) -> None:
-        """ """
         self.app.mount.signals.getModelDone.disconnect(self.programModelToMountFinish)
         self.msg.emit(1, "Model", "Writing model", f"[{self.modelData.name}]")
         self.modelData.generateSaveData()
@@ -164,13 +153,11 @@ class Model:
         self.modelData.saveModelData(modelPath)
         self.app.mount.model.storeName("actual")
 
-    def programModelToMount(self) -> bool:
-        """ """
+    def programModelToMount(self) -> None:
         if not self.modelData.modelProgData:
             self.msg.emit(3, "Model", "Run error", "No sufficient model data available")
             return
-        suc = self.app.mount.model.programModelFromStarList(self.modelData.modelProgData)
-        if not suc:
+        if not self.app.mount.model.programModelFromStarList(self.modelData.modelProgData):
             self.msg.emit(3, "Model", "Run error", f"{'Program':12s} Failed - error")
             return
         self.msg.emit(1, "Model", "Program", f"[{self.modelData.name}] with success")
@@ -178,21 +165,17 @@ class Model:
         self.app.refreshModel.emit()
 
     def checkModelRunConditions(self) -> bool:
-        """ """
         if len(self.app.data.buildP) < 3:
             t = "No modeling start because less than 3 points"
             self.msg.emit(2, "Model", "Run error", t)
             return False
-
         if len(self.app.data.buildP) > 99:
             t = "No modeling start because more than 99 points"
             self.msg.emit(2, "Model", "Run error", t)
             return False
-
         return True
 
     def clearAlignAndBackup(self):
-        """ """
         if not self.app.mount.model.clearModel():
             self.msg.emit(2, "Model", "Run error", "Actual model cannot be cleared")
             self.msg.emit(2, "", "", "Model build cancelled")
@@ -207,15 +190,13 @@ class Model:
         return True
 
     def setupFilenamesAndDirectories(self, prefix: str = "", postfix: str = "") -> Path:
-        """ """
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         name = f"{prefix}-{nameTime}-{postfix}"
         imageDir = self.app.mwGlob["imageDir"] / name
         imageDir.mkdir(parents=True, exist_ok=True)
         return imageDir
 
-    def showProgress(self, progressData):
-        """ """
+    def showProgress(self, progressData: dict):
         timeElapsed = time.gmtime(progressData["secondsElapsed"])
         timeEstimated = time.gmtime(progressData["secondsEstimated"])
         timeFinished = time.localtime(time.time() + progressData["secondsEstimated"])
@@ -226,22 +207,18 @@ class Model:
         self.ui.numberPoints.setText(f"{progressData['count']} / {progressData['number']}")
 
     def showStatusExposure(self, statusData: tuple) -> None:
-        """ """
         t = f"[{statusData[0]}], ExpTime: [{statusData[1]}s], Binning: [{statusData[2]:1d}] "
         self.msg.emit(0, "Model", "Exposure", t)
 
     def showStatusSlew(self, statusData: tuple) -> None:
-        """ """
         t = f"[{statusData[0]}], Alt: [{statusData[1]:3.2f}], Az: [{statusData[2]:3.2f}]"
         self.msg.emit(0, "Model", "Slewing", t)
 
     def showStatusRetry(self, statusData) -> None:
-        """ """
         t = f"Retry run # [{statusData:02d}] for model run"
         self.msg.emit(1, "Model", "Retry start", t)
 
     def showStatusSolve(self, item: dict) -> None:
-        """ """
         if item["success"]:
             t = f"[{item['imagePath'].stem}], Error: [{item['errorRMS_S']:.2f}]"
             t += f", Angle: [{item['angleS'].degrees:.2f}], Scale: [{item['scaleS']:.2f}]"
@@ -251,13 +228,11 @@ class Model:
             self.msg.emit(2, "Model", "Solving error", t)
 
     def setupModelInputData(self) -> None:
-        """ """
         self.modelData.modelInputData = []
         for point in self.app.data.buildP:
             self.modelData.modelInputData.append(point)
 
     def setupBatchData(self) -> None:
-        """ """
         imageDir = self.setupFilenamesAndDirectories(prefix="m", postfix="build")
         self.modelData.imageDir = imageDir
         self.modelData.name = imageDir.stem
@@ -271,7 +246,6 @@ class Model:
         self.modelData.plateSolveApp = self.ui.plateSolveDevice.currentText()
 
     def setModelTiming(self) -> None:
-        """ """
         if self.ui.progressiveTiming.isChecked():
             self.modelData.timing = self.modelData.PROGRESSIVE
         elif self.ui.normalTiming.isChecked():
@@ -280,7 +254,6 @@ class Model:
             self.modelData.timing = self.modelData.CONSERVATIVE
 
     def runBatch(self) -> None:
-        """ """
         self.app.operationRunning.emit(self.STATUS_MODEL_BATCH)
         if not self.checkModelRunConditions():
             self.app.operationRunning.emit(self.STATUS_IDLE)
@@ -301,7 +274,6 @@ class Model:
         self.app.operationRunning.emit(self.STATUS_IDLE)
 
     def runFileModel(self) -> None:
-        """ """
         self.msg.emit(1, "Model", "Run", "Model from file")
         folder = self.app.mwGlob["modelDir"]
         modelFilesPath = self.mainW.openFile(

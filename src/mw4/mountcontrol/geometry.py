@@ -191,7 +191,6 @@ class Geometry:
         self._offGEM = self._offPlateOTA + self.offGemPlate
 
     def initializeGeometry(self, mountType):
-        """ """
         if mountType not in self.geometryData:
             self.log.error(f"[{mountType}] not in database")
             return False
@@ -206,7 +205,6 @@ class Geometry:
 
     @staticmethod
     def transformRotX(rotX: float) -> np.ndarray:
-        """ """
         rot = np.radians(rotX)
         tCos = np.cos(rot)
         tSin = np.sin(rot)
@@ -216,7 +214,6 @@ class Geometry:
 
     @staticmethod
     def transformRotY(rotY: float) -> np.ndarray:
-        """ """
         rot = np.radians(rotY)
         tCos = np.cos(rot)
         tSin = np.sin(rot)
@@ -226,7 +223,6 @@ class Geometry:
 
     @staticmethod
     def transformRotZ(rotZ: float) -> np.ndarray:
-        """ """
         rot = np.radians(rotZ)
         tCos = np.cos(rot)
         tSin = np.sin(rot)
@@ -236,7 +232,6 @@ class Geometry:
 
     @staticmethod
     def transformTranslate(vector: list) -> np.ndarray:
-        """ """
         T = np.array(
             [
                 [1, 0, 0, vector[0]],
@@ -250,7 +245,6 @@ class Geometry:
     def calcTransformationMatrices(
         self, ha: Angle, dec: Angle, lat: Angle, pierside="W"
     ) -> tuple:
-        """ """
         text = f"HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, "
         text += f"pierside:{pierside} ,"
         text += f"offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, "

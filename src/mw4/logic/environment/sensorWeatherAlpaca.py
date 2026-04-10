@@ -25,7 +25,6 @@ class SensorWeatherAlpaca(AlpacaClass):
         self.data = parent.data
 
     def workerPollData(self) -> None:
-        """ """
         if not self.deviceConnected:
             return
 

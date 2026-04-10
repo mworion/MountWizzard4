@@ -47,27 +47,23 @@ class Comet:
         self.ui.progCometFull.clicked.connect(self.comets.progFull)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.ui.cometFilterText.setText(config.get("cometFilterText"))
         self.ui.mpcTabWidget.setCurrentIndex(config.get("mpcTab", 0))
         self.ui.cometSourceList.setCurrentIndex(config.get("cometSource", 0))
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["cometSource"] = self.ui.cometSourceList.currentIndex()
         config["cometFilterText"] = self.ui.cometFilterText.text()
         config["mpcTab"] = self.ui.mpcTabWidget.currentIndex()
 
     def setupIcons(self) -> None:
-        """ """
         self.mainW.wIcon(self.ui.progCometFull, "run")
         self.mainW.wIcon(self.ui.progCometFiltered, "run")
         self.mainW.wIcon(self.ui.progCometSelected, "run")
 
     def prepareCometTable(self) -> None:
-        """ """
         self.ui.listComets.setRowCount(0)
         hLabels = [
             "Num",
@@ -89,7 +85,6 @@ class Comet:
 
     @staticmethod
     def generateName(mp: dict) -> str:
-        """ """
         if "Designation_and_name" in mp:
             name = f"{mp['Designation_and_name']}"
         elif "Name" in mp and "Principal_desig" in mp:
@@ -103,7 +98,6 @@ class Comet:
         return name
 
     def processCometSource(self) -> None:
-        """ """
         self.ui.listComets.setRowCount(0)
         with open(self.comets.dest) as inFile:
             try:
@@ -121,7 +115,6 @@ class Comet:
             self.comets.objects[text] = comet
 
     def filterListComets(self) -> None:
-        """ """
         filterStr = self.ui.cometFilterText.text().lower()
         model = self.ui.listComets.model()
 
@@ -132,7 +125,6 @@ class Comet:
             self.ui.listComets.setRowHidden(row, not show)
 
     def fillCometListName(self) -> None:
-        """ """
         self.ui.listComets.setRowCount(0)
         for number, name in enumerate(self.comets.objects):
             row = self.ui.listComets.rowCount()

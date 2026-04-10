@@ -26,7 +26,6 @@ class SimulatorLight:
         self.parent.ui.lightIntensity.valueChanged.connect(self.setIntensity)
 
     def setIntensity(self) -> None:
-        """ """
         intensity = self.parent.ui.lightIntensity.value()
         for node in ["main", "dir", "spot"]:
             nodeL = self.parent.entityModel.get(node)
@@ -34,7 +33,6 @@ class SimulatorLight:
                 nodeL["light"].setIntensity(intensity)
 
     def create(self) -> None:
-        """ """
         model = {
             "lightRoot": {
                 "parent": "root",

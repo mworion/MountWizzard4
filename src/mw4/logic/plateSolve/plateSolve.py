@@ -62,7 +62,6 @@ class PlateSolve:
         self.signals.serverConnected.connect(self.startSolveLoop)
 
     def runSolverBin(self, runnable: list) -> tuple[bool, str]:
-        """ """
         timeStart = time.time()
         try:
             self.process = subprocess.Popen(
@@ -92,7 +91,6 @@ class PlateSolve:
         return suc, msg
 
     def prepareResult(self, suc: bool, msg: str, imagePath: Path, wcsPath: Path, update: bool):
-        """ """
         result = {"success": False, "message": msg, "imagePath": imagePath}
         if not suc:
             self.log.warning(f"Error: [{imagePath.stem}], message: {msg}")
@@ -119,7 +117,6 @@ class PlateSolve:
         return result
 
     def processSolveQueue(self, imagePath: Path, updateHeader: bool = False) -> None:
-        """ """
         if not imagePath.is_file():
             result = {"success": False, "message": f"{imagePath} not found"}
         else:
@@ -135,7 +132,6 @@ class PlateSolve:
         self.signals.result.emit(result)
 
     def workerSolveLoop(self) -> None:
-        """ """
         while self.solveLoopRunning:
             if self.solveQueue.empty():
                 time.sleep(0.5)
@@ -145,22 +141,18 @@ class PlateSolve:
             self.solveQueue.task_done()
 
     def startSolveLoop(self) -> None:
-        """ """
         self.solveLoopRunning = True
         self.threadPool.start(self.worker)
 
     def checkAvailabilityProgram(self, framework: str) -> bool:
-        """ """
         appPath = Path(self.run[framework].appPath)
         return self.run[framework].checkAvailabilityProgram(appPath=appPath)
 
     def checkAvailabilityIndex(self, framework: str) -> bool:
-        """ """
         indexPath = Path(self.run[framework].indexPath)
         return self.run[framework].checkAvailabilityIndex(indexPath=indexPath)
 
     def startCommunication(self) -> None:
-        """ """
         sucProgram = self.checkAvailabilityProgram(self.framework)
         sucIndex = self.checkAvailabilityIndex(self.framework)
         name = self.run[self.framework].deviceName
@@ -171,19 +163,16 @@ class PlateSolve:
         self.signals.serverConnected.emit()
 
     def stopCommunication(self) -> None:
-        """ """
         self.solveLoopRunning = False
         name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
 
     def solve(self, imagePath: Path, updateHeader: bool = False) -> None:
-        """ """
         data = (imagePath, updateHeader)
         self.solveQueue.put(data)
 
     def abort(self) -> bool:
-        """ """
         if self.process:
             self.process.kill()
             return True

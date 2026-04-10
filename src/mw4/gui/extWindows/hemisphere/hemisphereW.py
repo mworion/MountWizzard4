@@ -51,7 +51,6 @@ class HemisphereWindow(MWidget):
         self.hemisphereDraw = HemisphereDraw(self)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config.get("hemisphereW", {})
         self.positionWindow(config)
         self.ui.showSlewPath.setChecked(config.get("showSlewPath", False))
@@ -70,7 +69,6 @@ class HemisphereWindow(MWidget):
         self.hemisphereDraw.initConfig()
 
     def storeConfig(self) -> None:
-        """ """
         configMain = self.app.config
         configMain["hemisphereW"] = {}
         config = configMain["hemisphereW"]
@@ -95,7 +93,6 @@ class HemisphereWindow(MWidget):
         config["altitudeShift"] = self.ui.altitudeShift.value()
 
     def closeEvent(self, closeEvent) -> None:
-        """ """
         self.ui.normalModeHem.setChecked(True)
         self.ui.normalModeHor.setChecked(True)
         self.storeConfig()
@@ -104,7 +101,6 @@ class HemisphereWindow(MWidget):
         super().closeEvent(closeEvent)
 
     def showWindow(self) -> None:
-        """ """
         self.app.colorChange.connect(self.colorChange)
         self.hemisphereDraw.drawTab()
         self.horizonDraw.drawTab()
@@ -112,7 +108,6 @@ class HemisphereWindow(MWidget):
         self.show()
 
     def setIcons(self) -> None:
-        """ """
         self.wIcon(self.ui.loadTerrainFile, "load")
         self.wIcon(self.ui.clearTerrainFile, "trash")
         self.wIcon(self.ui.loadHorizonMask, "load")
@@ -121,7 +116,6 @@ class HemisphereWindow(MWidget):
         self.wIcon(self.ui.clearHorizonMask, "trash")
 
     def mouseMoved(self, pos: QPointF) -> None:
-        """ """
         viewBox = self.ui.hemisphere.p[0].getViewBox()
         mousePoint = viewBox.mapSceneToView(pos)
 
@@ -135,7 +129,6 @@ class HemisphereWindow(MWidget):
             QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.ArrowCursor))
 
     def colorChange(self) -> None:
-        """ """
         self.setStyleSheet(self.mw4Style)
         self.ui.hemisphere.colorChange()
         self.ui.horizon.colorChange()
@@ -145,7 +138,6 @@ class HemisphereWindow(MWidget):
 
     @staticmethod
     def preparePlotItem(plotItem) -> None:
-        """ """
         plotItem.clear()
         plotItem.showAxes(True, showValues=True)
         plotItem.getViewBox().setMouseMode(pg.ViewBox.PanMode)
@@ -172,7 +164,6 @@ class HemisphereWindow(MWidget):
         plotItem.disableAutoRange()
 
     def preparePolarItem(self, plotItem) -> None:
-        """ """
         plotItem.clear()
         showPolar = self.ui.showPolar.isChecked()
         if not showPolar:
@@ -195,7 +186,6 @@ class HemisphereWindow(MWidget):
         self.ui.hemisphere.plotLoc(lat, plotItem=plotItem)
 
     def drawTerrainImage(self, plotItem: pg.PlotItem) -> None:
-        """ """
         if self.horizonDraw.imageTerrain.shape[0] == 0:
             return
 
@@ -216,7 +206,6 @@ class HemisphereWindow(MWidget):
         plotItem.addItem(imgItem)
 
     def drawMeridianLimits(self, plotItem: pg.PlotItem) -> None:
-        """ """
         slew = self.app.mount.setting.meridianLimitSlew
         track = self.app.mount.setting.meridianLimitTrack
 
@@ -233,7 +222,6 @@ class HemisphereWindow(MWidget):
         plotItem.addItem(mTrack)
 
     def drawHorizonLimits(self, plotItem: pg.PlotItem) -> None:
-        """ """
         high = self.app.mount.setting.horizonLimitHigh
         low = self.app.mount.setting.horizonLimitLow
 
@@ -250,6 +238,5 @@ class HemisphereWindow(MWidget):
         plotItem.addItem(hHigh)
 
     def redrawAll(self) -> None:
-        """ """
         self.hemisphereDraw.drawTab()
         self.horizonDraw.drawTab()

@@ -36,7 +36,6 @@ class HorizonDraw(MWidget):
         self.pointerHor: pg.ScatterPlotItem = pg.ScatterPlotItem()
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config.get("hemisphereW", {})
         fileName = config.get("horizonMaskFileName", "")
         self.ui.horizonMaskFileName.setText(fileName)
@@ -68,21 +67,17 @@ class HorizonDraw(MWidget):
         self.app.mount.signals.mountIsUp.connect(self.setPointerVisibility)
 
     def closeTab(self):
-        """"""
         self.app.mount.signals.pointDone.disconnect(self.drawPointer)
         self.app.mount.signals.settingDone.disconnect(self.drawTab)
         self.app.mount.signals.mountIsUp.disconnect(self.setPointerVisibility)
 
     def setPointerVisibility(self, status) -> None:
-        """ """
         self.pointerHor.setVisible(status)
 
     def mouseMovedHorizon(self, pos: QPointF) -> None:
-        """ """
         self.parent.mouseMoved(pos)
 
     def loadTerrainImage(self, terrainFile: Path) -> None:
-        """ """
         if not terrainFile.is_file():
             self.imageTerrain = np.ones((240, 720)) * 128
             return
@@ -103,7 +98,6 @@ class HorizonDraw(MWidget):
         self.imageTerrain[30:120, 360:720] = imgLoad
 
     def selectTerrainFile(self) -> None:
-        """ """
         folder = self.app.mwGlob["configDir"]
         fileTypes = "Terrain images (*.jpg)"
         loadFilePath = self.openFile(self.parent, "Open terrain image", folder, fileTypes)
@@ -117,13 +111,11 @@ class HorizonDraw(MWidget):
         self.parent.redrawAll()
 
     def clearTerrainFile(self) -> None:
-        """ """
         self.ui.terrainFileName.setText("")
         self.ui.showTerrain.setChecked(False)
         self.parent.redrawAll()
 
     def loadHorizonMask(self) -> None:
-        """ """
         folder = self.app.mwGlob["configDir"]
         fileTypes = "Horizon mask files (*.hpts);; CSV Files (*.csv);; MW3 Files (*.txt)"
         loadFilePath = self.openFile(self.parent, "Open horizon mask file", folder, fileTypes)
@@ -136,7 +128,6 @@ class HorizonDraw(MWidget):
         self.app.redrawHorizon.emit()
 
     def saveHorizonMask(self) -> None:
-        """ """
         fileName = self.ui.horizonMaskFileName.text()
         if not fileName:
             self.msg.emit(2, "Hemisphere", "Horizon", "Mask file name not given")
@@ -150,7 +141,6 @@ class HorizonDraw(MWidget):
         self.app.redrawHorizon.emit()
 
     def saveHorizonMaskAs(self) -> None:
-        """ """
         folder = self.app.mwGlob["configDir"]
         saveFilePath = self.saveFile(
             self.parent, "Save horizon mask file", folder, "Horizon mask files (*.hpts)"
@@ -167,12 +157,10 @@ class HorizonDraw(MWidget):
         self.app.redrawHorizon.emit()
 
     def setOperationMode(self) -> None:
-        """ """
         self.ui.addPositionToHorizon.setEnabled(self.ui.editModeHor.isChecked())
         self.app.redrawHorizon.emit()
 
     def updateDataHorizon(self, x: list, y: list) -> None:
-        """ """
         hp = [[y, x] for y, x in zip(y, x)]
         hp.sort(key=lambda s: x[1]) if len(x) > 1 else x
         y, x = zip(*hp)
@@ -181,13 +169,11 @@ class HorizonDraw(MWidget):
         self.drawTab()
 
     def clearHorizonMask(self) -> None:
-        """ """
         self.app.data.horizonP = []
         self.ui.horizonMaskFileName.setText("")
         self.app.redrawHorizon.emit()
 
     def addActualPosition(self) -> None:
-        """ """
         vb = self.ui.horizon.p[0].getViewBox()
         az = self.app.mount.obsSite.Az
         alt = self.app.mount.obsSite.Alt
@@ -198,12 +184,10 @@ class HorizonDraw(MWidget):
             vb.addUpdate(index, QPointF(az, alt))
 
     def prepareView(self) -> None:
-        """ """
         plotItem = self.ui.horizon.p[0]
         self.parent.preparePlotItem(plotItem)
 
     def drawView(self) -> None:
-        """ """
         hp = self.app.data.horizonP
         if len(hp) == 0:
             return
@@ -213,7 +197,6 @@ class HorizonDraw(MWidget):
         self.horizonPlot.setData(x=az, y=alt)
 
     def setupPointer(self) -> None:
-        """ """
         plotItem = self.ui.horizon.p[0]
         symbol = makePointer()
         self.pointerHor = pg.ScatterPlotItem(symbol=symbol, size=40)
@@ -224,7 +207,6 @@ class HorizonDraw(MWidget):
         plotItem.addItem(self.pointerHor)
 
     def drawPointer(self) -> None:
-        """ """
         obsSite = self.app.mount.obsSite
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
@@ -232,7 +214,6 @@ class HorizonDraw(MWidget):
         self.pointerHor.setVisible(True)
 
     def setupView(self) -> None:
-        """ """
         plotItem = self.ui.horizon.p[0]
         if self.ui.editModeHor.isChecked():
             self.horizonPlot = pg.PlotDataItem(
@@ -262,7 +243,6 @@ class HorizonDraw(MWidget):
             plotItem.addItem(self.horizonPlot)
 
     def drawTab(self) -> None:
-        """ """
         self.prepareView()
         if self.ui.showTerrain.isChecked():
             self.parent.drawTerrainImage(self.ui.horizon.p[0])

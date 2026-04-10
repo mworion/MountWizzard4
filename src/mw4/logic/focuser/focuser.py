@@ -50,17 +50,13 @@ class Focuser:
             self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
     def startCommunication(self) -> None:
-        """ """
         self.run[self.framework].startCommunication()
 
     def stopCommunication(self) -> None:
-        """ """
         self.run[self.framework].stopCommunication()
 
     def move(self, position: int) -> None:
-        """ """
         self.run[self.framework].move(position=position)
 
     def halt(self) -> None:
-        """ """
         self.run[self.framework].halt()

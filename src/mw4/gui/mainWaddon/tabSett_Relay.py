@@ -90,7 +90,6 @@ class SettRelay:
             self.relayButtons[button].clicked.connect(partial(self.relayButtonPressed, button))
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         for button, key in zip(self.relayButtonTexts, self.relayButtonTextKeys):
             button.setText(config.get(key, ""))
@@ -99,7 +98,6 @@ class SettRelay:
         self.updateRelayButtonText()
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         for button, key in zip(self.relayButtonTexts, self.relayButtonTextKeys):
             config[key] = button.text()
@@ -115,12 +113,10 @@ class SettRelay:
             dropDown.addItem("Pulse 0.5 sec")
 
     def updateRelayButtonText(self) -> None:
-        """ """
         for button, textField in zip(self.relayButtons.values(), self.relayButtonTexts):
             button.setText(textField.text())
 
     def doRelayAction(self, relayIndex: int) -> bool:
-        """ """
         action = self.relayDropDowns[relayIndex].currentIndex()
         if action == 0:
             return self.app.relay.switch(relayIndex)
@@ -128,12 +124,10 @@ class SettRelay:
             return self.app.relay.pulse(relayIndex)
 
     def relayButtonPressed(self, buttonIndex: int) -> None:
-        """ """
         if not self.doRelayAction(buttonIndex):
             self.msg.emit(2, "System", "Relay", "Action cannot be done")
 
     def updateRelayGui(self) -> None:
-        """ """
         for status, button in zip(self.app.relay.status, self.relayButtons.values()):
             if status:
                 changeStyleDynamic(button, "run", True)

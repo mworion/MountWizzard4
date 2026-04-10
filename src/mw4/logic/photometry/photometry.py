@@ -89,7 +89,6 @@ class Photometry:
         self.hfrSegSquare = np.zeros((3, 3))
 
     def baseCalcs(self) -> None:
-        """ """
         self.h, self.w = self.image.shape
         self.filterConstW = int(self.w / (self.FILTER_SCALE * 3))
         self.filterConstH = int(self.h / (self.FILTER_SCALE * 3))
@@ -109,7 +108,6 @@ class Photometry:
         self.hfrMedian = np.median(self.hfr)
 
     def workerGetHFR(self) -> None:
-        """ """
         img = griddata(
             (self.objs["x"], self.objs["y"]),
             self.hfr,
@@ -124,7 +122,6 @@ class Photometry:
         self.signals.hfr.emit()
 
     def workerGetRoundness(self) -> None:
-        """ """
         a = self.objs["a"]
         b = self.objs["b"]
         aspectRatio = np.maximum(a / b, b / a)
@@ -143,7 +140,6 @@ class Photometry:
         self.signals.roundness.emit()
 
     def workerCalcTiltValuesSquare(self) -> None:
-        """ """
         stepY = int(self.h / 3)
         stepX = int(self.w / 3)
 
@@ -165,7 +161,6 @@ class Photometry:
         self.signals.hfrSquare.emit()
 
     def workerCalcTiltValuesTriangle(self) -> None:
-        """ """
         x = self.objs["x"] - self.w / 2
         y = self.objs["y"] - self.h / 2
         radius = min(self.h / 2, self.w / 2)
@@ -184,7 +179,6 @@ class Photometry:
         self.signals.hfrTriangle.emit()
 
     def calcAberrationInspectView(self) -> None:
-        """ """
         size = self.ABERRATION_SIZE
         if self.w < 3 * size or self.h < 3 * size:
             self.aberrationImage = self.image
@@ -201,7 +195,6 @@ class Photometry:
         self.signals.aberration.emit()
 
     def calcBackground(self) -> None:
-        """ """
         maxB = float(np.max(self.backSignal)) / self.bkg.globalback
         minB = float(np.min(self.backSignal)) / self.bkg.globalback
         img = self.backSignal / self.bkg.globalback
@@ -211,14 +204,12 @@ class Photometry:
         self.signals.background.emit()
 
     def calcBackgroundRMS(self) -> None:
-        """ """
         self.backgroundRMS = uniform_filter(
             self.backRMS, size=[self.filterConstH, self.filterConstW]
         )
         self.signals.backgroundRMS.emit()
 
     def runCalcs(self) -> None:
-        """ """
         if len(self.hfr) < 10:
             return
         self.baseCalcs()
@@ -231,7 +222,6 @@ class Photometry:
         self.calcBackgroundRMS()
 
     def workerCalcPhotometry(self) -> None:
-        """ """
         self.bkg = sep.Background(self.image, bw=32, bh=32)
         image_sub = self.image - self.bkg
         self.backRMS = self.bkg.rms()
@@ -336,11 +326,9 @@ class Photometry:
         self.log.info(f"Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, HFR:{objsHFR}")
 
     def unlockPhotometry(self) -> None:
-        """ """
         self.lock.unlock()
 
     def processPhotometry(self, image: np.ndarray, snTarget: int) -> None:
-        """ """
         self.image = image
         self.snTarget = self.SN[snTarget]
         self.sepThreshold = self.SEP[snTarget]

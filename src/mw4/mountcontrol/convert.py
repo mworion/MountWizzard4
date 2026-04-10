@@ -62,7 +62,6 @@ def stringToDegree(value: str) -> float:
 
 
 def stringToAngle(value: str, preference: str = "degrees") -> Angle:
-    """ """
     value = stringToDegree(value)
     if preference == "degrees":
         value = Angle(degrees=value, preference="degrees")
@@ -72,7 +71,6 @@ def stringToAngle(value: str, preference: str = "degrees") -> Angle:
 
 
 def valueToFloat(value: Any) -> float:
-    """ """
     if value == "E":
         return 0
     try:
@@ -83,7 +81,6 @@ def valueToFloat(value: Any) -> float:
 
 
 def valueToAngle(value: Any, preference: str = "degrees") -> Angle:
-    """ """
     value = valueToFloat(value)
     if preference == "degrees":
         value = Angle(degrees=value, preference="degrees")
@@ -93,7 +90,6 @@ def valueToAngle(value: Any, preference: str = "degrees") -> Angle:
 
 
 def valueToInt(value: Any) -> int:
-    """ """
     try:
         value = int(value)
     except Exception:
@@ -102,7 +98,6 @@ def valueToInt(value: Any) -> int:
 
 
 def topoToAltAz(ha: Angle, dec: Angle, lat: Angle) -> tuple[Angle, Angle]:
-    """ """
     ha = (ha.radians + 2 * np.pi) % (2 * np.pi)
     dec = dec.radians
     lat = lat.radians
@@ -117,7 +112,6 @@ def topoToAltAz(ha: Angle, dec: Angle, lat: Angle) -> tuple[Angle, Angle]:
 
 
 def sexagesimalizeToInt(value: float, decimals: int = 0) -> tuple[int, int, int, int, int]:
-    """ """
     sign = int(np.sign(value))
     value = abs(value)
     power = 10**decimals
@@ -130,7 +124,6 @@ def sexagesimalizeToInt(value: float, decimals: int = 0) -> tuple[int, int, int,
 
 
 def convertToDMS(dec: Angle) -> str:
-    """ """
     t = Angle.signed_dms(dec)
     sign = "+" if dec.degrees > 0 else "-"
     value = f"{sign}{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}"
@@ -138,14 +131,12 @@ def convertToDMS(dec: Angle) -> str:
 
 
 def convertToHMS(ra: Angle | float | int) -> str:
-    """ """
     t = Angle.signed_hms(ra)
     value = f"{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}"
     return value
 
 
 def formatLatLonToAngle(value: str, pf: str) -> float:
-    """ """
     value = value.strip()
     p1 = re.compile(r"(\d{1,3})([" + pf + r"])\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?")
     p2 = re.compile(r"([-+]?)(\d{1,3})[.,]?(\d*)?")
@@ -176,17 +167,14 @@ def formatLatLonToAngle(value: str, pf: str) -> float:
 
 
 def convertLatToAngle(value: str) -> float:
-    """ """
     return formatLatLonToAngle(value, "SN")
 
 
 def convertLonToAngle(value: str) -> float:
-    """ """
     return formatLatLonToAngle(value, "WE")
 
 
 def parseRaToAngleString(value: str) -> tuple[bool, bool, list[str]]:
-    """ """
     value = value.strip()
     p1 = re.compile(r"([+-]?)(\d{1,3})H[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
     p2 = re.compile(r"([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
@@ -207,7 +195,6 @@ def parseRaToAngleString(value: str) -> tuple[bool, bool, list[str]]:
 
 
 def convertRaToAngle(value: str) -> Angle:
-    """ """
     isSexagesimal, isFloat, elements = parseRaToAngleString(value)
 
     if isFloat:
@@ -228,7 +215,6 @@ def convertRaToAngle(value: str) -> Angle:
 
 
 def parseDecToAngleString(value: str) -> tuple[bool, bool, list[str]]:
-    """ """
     value = value.strip()
     p1 = re.compile(r"([+-]?)(\d{1,3})Deg[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
     p2 = re.compile(r"([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
@@ -249,7 +235,6 @@ def parseDecToAngleString(value: str) -> tuple[bool, bool, list[str]]:
 
 
 def convertDecToAngle(value: str) -> Angle:
-    """ """
     isSexagesimal, isFloat, elements = parseDecToAngleString(value)
 
     if isFloat:
@@ -273,19 +258,16 @@ def convertDecToAngle(value: str) -> Angle:
 
 
 def formatHstrToText(angle: Angle) -> str:
-    """ """
     formatStr = "{1:02}:{2:02}:{3:02}"
     return angle.hstr(format=formatStr)
 
 
 def formatDstrToText(angle: Angle) -> str:
-    """ """
     formatStr = "{0:+>1}{1:02}:{2:02}:{3:02}"
     return angle.dstr(format=formatStr)
 
 
 def formatLatToText(angle: Angle) -> str:
-    """ """
     sgn, h, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
     sign = "N" if sgn >= 0 else "S"
     text = f"{h:02d}{sign} {m:02d} {s:02d}"
@@ -293,7 +275,6 @@ def formatLatToText(angle: Angle) -> str:
 
 
 def formatLonToText(angle: Angle) -> str:
-    """ """
     sgn, h, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
     sign = "E" if sgn >= 0 else "W"
     text = f"{h:03d}{sign} {m:02d} {s:02d}"

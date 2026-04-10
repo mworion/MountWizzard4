@@ -80,25 +80,21 @@ class MainWindowAddons:
         }
 
     def initConfig(self) -> None:
-        """ """
         for addon in self.addons:
             if hasattr(self.addons[addon], "initConfig"):
                 self.addons[addon].initConfig()
 
     def storeConfig(self) -> None:
-        """ """
         for addon in self.addons:
             if hasattr(self.addons[addon], "storeConfig"):
                 self.addons[addon].storeConfig()
 
     def setupIcons(self) -> None:
-        """ """
         for addon in self.addons:
             if hasattr(self.addons[addon], "setupIcons"):
                 self.addons[addon].setupIcons()
 
     def updateColorSet(self) -> None:
-        """ """
         for addon in self.addons:
             if hasattr(self.addons[addon], "updateColorSet"):
                 self.addons[addon].updateColorSet()

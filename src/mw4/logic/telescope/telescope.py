@@ -49,9 +49,7 @@ class Telescope:
             self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
     def startCommunication(self) -> None:
-        """ """
         self.run[self.framework].startCommunication()
 
     def stopCommunication(self) -> None:
-        """ """
         self.run[self.framework].stopCommunication()

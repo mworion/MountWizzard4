@@ -26,7 +26,6 @@ class FilterIndi(IndiClass):
         self.signals = parent.signals
 
     def sendFilterNumber(self, filterNumber: int = 1) -> None:
-        """ """
         if self.device is None:
             return
 

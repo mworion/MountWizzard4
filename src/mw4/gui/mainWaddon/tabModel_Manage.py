@@ -65,7 +65,6 @@ class ModelManage:
         self.app.refreshName.connect(self.refreshName)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.ui.targetRMS.setValue(config.get("targetRMS", 10))
         self.ui.optimizeOverall.setChecked(config.get("optimizeOverall", True))
@@ -75,14 +74,12 @@ class ModelManage:
         self.showErrorDistribution()
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["targetRMS"] = self.ui.targetRMS.value()
         config["optimizeOverall"] = self.ui.optimizeOverall.isChecked()
         config["optimizeSingle"] = self.ui.optimizeSingle.isChecked()
 
     def setupIcons(self) -> None:
-        """ """
         self.mainW.wIcon(self.ui.runOptimize, "start")
         self.mainW.wIcon(self.ui.cancelOptimize, "cross-circle")
         self.mainW.wIcon(self.ui.deleteWorstPoint, "circle-minus")
@@ -95,7 +92,6 @@ class ModelManage:
         self.mainW.wIcon(self.ui.refreshModel, "reload")
 
     def updateColorSet(self) -> None:
-        """ """
         for plot in [
             self.ui.modelPositions,
             self.ui.errorDistribution,
@@ -107,14 +103,12 @@ class ModelManage:
         self.showErrorDistribution()
 
     def setNameList(self, model: Model) -> None:
-        """ """
         self.ui.nameList.clear()
         for name in model.nameList:
             self.ui.nameList.addItem(name)
         self.ui.nameList.sortItems()
 
     def showModelPosition(self) -> None:
-        """ """
         model = self.app.mount.model
         if model.numberStars == 0 or len(model.starList) == 0:
             self.ui.modelPositions.p[0].clear()
@@ -140,7 +134,6 @@ class ModelManage:
         self.ui.modelPositions.scatterItem.sigClicked.connect(self.pointClicked)
 
     def showErrorAscending(self) -> None:
-        """ """
         model = self.app.mount.model
         error = np.array([star.errorRMS for star in model.starList])
         if len(error) == 0:
@@ -156,7 +149,6 @@ class ModelManage:
         )
 
     def showErrorDistribution(self) -> None:
-        """ """
         model = self.app.mount.model
         error = np.array([x.errorRMS for x in model.starList])
         if len(error) == 0:
@@ -168,7 +160,6 @@ class ModelManage:
         )
 
     def clearRefreshName(self) -> None:
-        """ """
         changeStyleDynamic(self.ui.refreshName, "run", False)
         changeStyleDynamic(self.ui.modelNameGroup, "run", False)
         self.ui.deleteName.setEnabled(True)
@@ -178,7 +169,6 @@ class ModelManage:
         self.msg.emit(0, "Model", "Manage", "Model names refreshed")
 
     def refreshName(self) -> None:
-        """"""
         self.app.mount.signals.namesDone.connect(self.clearRefreshName)
         self.ui.deleteName.setEnabled(False)
         self.ui.saveName.setEnabled(False)
@@ -188,7 +178,6 @@ class ModelManage:
         self.app.mount.getNames()
 
     def loadName(self):
-        """ """
         if self.ui.nameList.currentItem() is None:
             self.msg.emit(2, "Model", "Manage error", "No model name selected")
             return
@@ -200,7 +189,6 @@ class ModelManage:
         self.refreshModel()
 
     def saveName(self) -> None:
-        """ """
         dlg = QInputDialog()
         modelName, ok = dlg.getText(
             self.mainW, "Save model", "New model name", QLineEdit.EchoMode.Normal, ""
@@ -216,7 +204,6 @@ class ModelManage:
         self.refreshName()
 
     def deleteName(self) -> None:
-        """ """
         if self.ui.nameList.currentItem() is None:
             self.msg.emit(2, "Model", "Manage error", "No model name selected")
             return
@@ -234,7 +221,6 @@ class ModelManage:
         self.refreshName()
 
     def writeBuildModelOptimized(self, pointsOut) -> None:
-        """ """
         if not pointsOut or self.fittedModelPath.is_dir():
             return
         newName = self.fittedModelPath.stem.replace("-opt", "") + "-opt"
@@ -262,7 +248,6 @@ class ModelManage:
         self.fittedModelPath = newPath
 
     def clearRefreshModel(self) -> None:
-        """ """
         changeStyleDynamic(self.ui.refreshModel, "run", False)
         changeStyleDynamic(self.ui.modelGroup, "run", False)
         self.ui.deleteWorstPoint.setEnabled(True)
@@ -285,7 +270,6 @@ class ModelManage:
         self.sendAnalyseFileName()
 
     def refreshModel(self) -> None:
-        """ """
         changeStyleDynamic(self.ui.refreshModel, "run", True)
         changeStyleDynamic(self.ui.modelGroup, "run", True)
         self.app.mount.signals.getModelDone.connect(self.clearRefreshModel)
@@ -295,7 +279,6 @@ class ModelManage:
         self.app.mount.getModel()
 
     def clearModel(self) -> None:
-        """ """
         if not self.mainW.messageDialog(
             self.mainW, "Clear model", "Clear actual alignment model"
         ):
@@ -307,7 +290,6 @@ class ModelManage:
         self.refreshModel()
 
     def deleteWorstPoint(self) -> None:
-        """ """
         model = self.app.mount.model
         if not model.numberStars:
             return
@@ -338,7 +320,6 @@ class ModelManage:
         self.refreshModel()
 
     def runTargetRMS(self) -> None:
-        """ """
         mount = self.app.mount
         if mount.model.errorRMS < self.ui.targetRMS.value():
             self.runningOptimize = False
@@ -363,7 +344,6 @@ class ModelManage:
             self.finishOptimize()
 
     def runSingleRMS(self) -> None:
-        """ """
         mount = self.app.mount
         if all(star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList):
             self.runningOptimize = False
@@ -390,7 +370,6 @@ class ModelManage:
             self.finishOptimize()
 
     def runOptimize(self) -> None:
-        """ """
         self.msg.emit(1, "Model", "Manage", "Start optimizing model")
         self.runningOptimize = True
         self.ui.deleteWorstPoint.setEnabled(False)
@@ -407,17 +386,14 @@ class ModelManage:
             self.runSingleRMS()
 
     def cancelOptimize(self) -> None:
-        """ """
         self.runningOptimize = False
 
     def sendAnalyseFileName(self) -> None:
-        """ """
         if not self.fittedModelPath.is_file():
             return
         self.app.showAnalyse.emit(self.fittedModelPath)
 
     def pointClicked(self, scatterPlotItem, points, event) -> None:
-        """ """
         if event.double() or event.button() != Qt.MouseButton.LeftButton:
             return
         if len(points[0].data()) == 0:

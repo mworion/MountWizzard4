@@ -41,11 +41,9 @@ class MeasureDataRaw(PySide6.QtCore.QObject):
         self.timerTask.timeout.connect(self.measureTask)
 
     def startCommunication(self) -> None:
-        """ """
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
 
     def stopCommunication(self) -> None:
-        """ """
         self.timerTask.stop()
 
     def measureTask(self) -> None:

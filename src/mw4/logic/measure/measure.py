@@ -47,7 +47,6 @@ class MeasureData:
             self.defaultConfig["frameworks"].update(self.run[fw].defaultConfig)
 
     def collectDataDevices(self) -> None:
-        """"""
         self.devices.clear()
         deviceStat = self.app.deviceStat
         deviceDrivers = self.app.mainW.mainWindowAddons.addons["SettDevice"].drivers
@@ -61,7 +60,6 @@ class MeasureData:
         self.devices["mount"] = self.app.mount
 
     def clearData(self) -> None:
-        """ """
         self.data.clear()
         self.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
         for device in self.devices:
@@ -72,7 +70,6 @@ class MeasureData:
                 self.data[item] = np.empty(shape=[0, 1])
 
     def startCommunication(self) -> None:
-        """ """
         self.collectDataDevices()
         self.clearData()
         name = self.run[self.framework].deviceName
@@ -80,28 +77,24 @@ class MeasureData:
         self.signals.deviceConnected.emit(name)
 
     def stopCommunication(self) -> None:
-        """ """
         self.run[self.framework].stopCommunication()
         name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
 
     def checkStart(self) -> None:
-        """ """
         if self.shorteningStart and len(self.data["time"]) > 2:
             self.shorteningStart = False
             for measure in self.data:
                 self.data[measure] = np.delete(self.data[measure], range(0, 2))
 
     def checkSize(self) -> None:
-        """ """
         if len(self.data["time"]) < self.MAXSIZE:
             return
         for item in self.data:
             self.data[item] = np.split(self.data[item], 2)[1]
 
     def measureTask(self) -> None:
-        """ """
         if not self.mutexMeasure.tryLock():
             return
         self.checkStart()

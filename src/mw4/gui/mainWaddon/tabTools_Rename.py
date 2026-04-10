@@ -50,7 +50,6 @@ class Rename:
         self.ui.renameInputSelect.clicked.connect(self.chooseDir)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         imageDir = str(self.app.mwGlob["imageDir"])
         renameDir = config.get("renameDir", imageDir)
@@ -63,7 +62,6 @@ class Rename:
         self.ui.renameProgress.setValue(0)
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["renameDir"] = self.ui.renameDir.text()
         config["newObjectName"] = self.ui.newObjectName.text()
@@ -72,12 +70,10 @@ class Rename:
             config[name] = ui.currentIndex()
 
     def setupIcons(self) -> None:
-        """ """
         self.mainW.wIcon(self.ui.renameStart, "start")
         self.mainW.wIcon(self.ui.renameInputSelect, "folder")
 
     def setupGuiTools(self) -> None:
-        """ """
         for name, selectorUI in self.selectorsDropDowns.items():
             selectorUI.clear()
             selectorUI.setView(QListView())
@@ -85,12 +81,10 @@ class Rename:
                 selectorUI.addItem(headerEntry)
 
     def getNumberFiles(self, search: str) -> int:
-        """ """
         return sum(1 for _ in self.renameDir.glob(search))
 
     @staticmethod
     def convertHeaderEntry(entry: str, fitsKey: str) -> str:
-        """ """
         if fitsKey == "DATE-OBS":
             chunk = entry.replace(":", "-")
             chunk = chunk.replace("T", "_")
@@ -109,7 +103,6 @@ class Rename:
         return chunk
 
     def processSelectors(self, fitsHeader: dict, selection: str) -> str:
-        """ """
         nameChunk = ""
         fitsKeywords = self.fitsHeaderKeywords[selection]
         for fitsKey in fitsKeywords:
@@ -120,7 +113,6 @@ class Rename:
         return nameChunk
 
     def renameFile(self, fileName: Path) -> None:
-        """ """
         with fits.open(name=fileName) as fd:
             fitsHeader = fd[0].header
             newObjectName = self.ui.newObjectName.text().upper()
@@ -135,7 +127,6 @@ class Rename:
             fileName.rename(newFileName)
 
     def renameRunGUI(self) -> None:
-        """ """
         includeSubdirs = self.ui.includeSubdirs.isChecked()
         if not self.renameDir.is_dir():
             self.msg.emit(2, "Tools", "Rename error", "No valid input directory given")
@@ -155,7 +146,6 @@ class Rename:
         self.msg.emit(0, "Tools", "Rename", f"{numberFiles:d} images were renamed")
 
     def chooseDir(self) -> None:
-        """ """
         folder = self.ui.renameDir.text()
         self.renameDir = self.mainW.openDir(self.mainW, "Choose Input Dir", folder)
         self.ui.renameDir.setText(str(self.renameDir))

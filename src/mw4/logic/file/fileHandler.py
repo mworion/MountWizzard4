@@ -53,7 +53,6 @@ class FileHandler:
         self.sizeY: int = 0
 
     def debayerImage(self, pattern: str) -> bool:
-        """ """
         if pattern == "GBRG":
             R = self.image[1::2, 0::2]
             B = self.image[0::2, 1::2]
@@ -88,7 +87,6 @@ class FileHandler:
         return True
 
     def cleanImageFormat(self) -> None:
-        """ """
         if not self.flipV:
             self.image = np.flipud(self.image)
         if self.flipH:
@@ -96,7 +94,6 @@ class FileHandler:
         self.image = (self.image / np.max(self.image) * 65536.0).astype("float32")
 
     def checkValidImageFormat(self) -> bool:
-        """ """
         if self.image is None or len(self.image) == 0:
             self.log.debug("No image data in FITS")
             self.image = np.zeros((0, 0))
@@ -114,7 +111,6 @@ class FileHandler:
         return True
 
     def loadFITS(self) -> None:
-        """ """
         with fits.open(self.imagePath) as HDUList:
             for hdu in HDUList:
                 if hdu.data is None:
@@ -125,7 +121,6 @@ class FileHandler:
 
     @staticmethod
     def convHeaderXISF2FITS(header: dict) -> fits.Header:
-        """ """
         hdu = fits.PrimaryHDU()
         fitsHeaderNew = hdu.header
         fitsHeaderNew["NAXIS"] = 2
@@ -143,13 +138,11 @@ class FileHandler:
         return fitsHeaderNew
 
     def loadXISF(self) -> None:
-        """ """
         headerXISF = {}
         self.image = XISF.read(str(self.imagePath), image_metadata=headerXISF)[:, :, -1]
         self.header = self.convHeaderXISF2FITS(headerXISF)
 
     def workerLoadImage(self, imagePath: Path) -> None:
-        """ """
         self.imagePath = imagePath
         ext = self.imagePath.suffix
 
@@ -177,7 +170,6 @@ class FileHandler:
     def loadImage(
         self, imagePath: Path = Path(), flipH: bool = False, flipV: bool = False
     ) -> None:
-        """ """
         if not imagePath.is_file():
             return
 

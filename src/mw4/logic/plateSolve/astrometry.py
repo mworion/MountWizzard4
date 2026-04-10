@@ -67,13 +67,11 @@ class Astrometry:
         }
 
     def setDefaultPath(self) -> None:
-        """ """
         self.appPath = self.apps[platform.system()]["appPath"]
         self.indexPath = self.apps[platform.system()]["indexPath"]
         self.saveConfigFile()
 
     def saveConfigFile(self):
-        """ """
         cfgFile = self.tempDir / "astrometry.cfg"
         with open(cfgFile, "w+") as outFile:
             outFile.write("cpulimit 300\n")
@@ -81,7 +79,6 @@ class Astrometry:
             outFile.write("autoindex\n")
 
     def solve(self, imagePath: Path, updateHeader: bool) -> dict:
-        """ """
         tempPath = self.tempDir / "temp.xy"
         configPath = self.tempDir / "astrometry.cfg"
         wcsPath = self.tempDir / "temp.wcs"
@@ -143,7 +140,6 @@ class Astrometry:
         return self.parent.prepareResult(suc, msg, imagePath, wcsPath, updateHeader)
 
     def checkAvailabilityProgram(self, appPath: Path) -> bool:
-        """ """
         self.appPath = appPath
 
         if platform.system() == "Darwin" or platform.system() == "Linux":
@@ -153,7 +149,6 @@ class Astrometry:
         return program.is_file()
 
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
-        """ """
         self.indexPath = indexPath
         self.saveConfigFile()
 

@@ -41,14 +41,12 @@ class SimulatorBuildPoints:
         self.app.drawBuildPoints.connect(self.create)
 
     def showEnable(self):
-        """ """
         isVisible = self.parent.ui.showBuildPoints.isChecked()
         node = self.parent.entityModel.get("buildPoints")
         if node:
             node["entity"].setEnabled(isVisible)
 
     def clear(self):
-        """ """
         node = self.parent.entityModel.get("buildPoints")
         if not node:
             return
@@ -59,7 +57,6 @@ class SimulatorBuildPoints:
         self.points = []
 
     def updatePositions(self):
-        """ """
         if not self.app.mount.obsSite.haJNow:
             return
 
@@ -170,7 +167,6 @@ class SimulatorBuildPoints:
         return (e1, trans1, e2, trans2, mesh2, mat2, e3, trans3)
 
     def loopCreate(self, buildPointEntity):
-        """ """
         isNumber = self.parent.ui.showNumbers.isChecked()
         isSlewPath = self.parent.ui.showSlewPath.isChecked()
 

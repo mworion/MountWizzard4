@@ -44,12 +44,10 @@ class SensorWeatherOnline:
         self.apiKey: str = ""
 
     def startCommunication(self) -> None:
-        """ """
         self.pollOpenWeatherMapData()
         self.app.update3s.connect(self.pollOpenWeatherMapData)
 
     def stopCommunication(self) -> None:
-        """ """
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit("OnlineWeather")
@@ -57,7 +55,6 @@ class SensorWeatherOnline:
 
     @staticmethod
     def getDewPoint(tempAir: float, relativeHumidity: float) -> float:
-        """ """
         if tempAir < -40 or tempAir > 80:
             return 0
         if relativeHumidity < 0 or relativeHumidity > 100:
@@ -70,7 +67,6 @@ class SensorWeatherOnline:
         return dewPoint
 
     def processOpenWeatherMapData(self) -> None:
-        """ """
         dataFile = self.app.mwGlob["dataDir"] / "openweathermap.data"
         if not dataFile.is_file():
             self.log.info(f"{dataFile} not available")
@@ -109,7 +105,6 @@ class SensorWeatherOnline:
             self.data["WEATHER_PARAMETERS.RainVol"] = 0
 
     def workerGetOpenWeatherMapData(self, url: Path) -> bool:
-        """ """
         if not self.app.onlineMode:
             return False
         try:
@@ -129,7 +124,6 @@ class SensorWeatherOnline:
         return True
 
     def sendStatus(self, status: bool) -> None:
-        """ """
         if not status and self.running:
             self.signals.deviceDisconnected.emit("OnlineWeather")
             self.running = False
@@ -138,7 +132,6 @@ class SensorWeatherOnline:
             self.running = True
 
     def getOpenWeatherMapData(self, url: Path) -> None:
-        """ """
         if not self.loadingFileNeeded("openweathermap.data", 1):
             self.processOpenWeatherMapData()
             self.sendStatus(True)
@@ -149,7 +142,6 @@ class SensorWeatherOnline:
         self.threadPool.start(self.worker)
 
     def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:
-        """ """
         filePath = self.app.mwGlob["dataDir"] / fileName
         if not filePath.is_file():
             return True
@@ -158,7 +150,6 @@ class SensorWeatherOnline:
         return ageData > hours / 24
 
     def pollOpenWeatherMapData(self) -> None:
-        """ """
         if not self.apiKey:
             return
 

@@ -801,18 +801,15 @@ class Client:
         return True
 
     def handleConnected(self) -> None:
-        """ """
         self.connected = True
         self.signals.serverConnected.emit()
 
     def handleDisconnected(self) -> None:
-        """ """
         self.connected = False
         self.signals.serverDisconnected.emit(self.devices)
         self.log.info("INDI client disconnected")
 
     def handleError(self, socketError) -> None:
-        """ """
         Refuse = QTcpSocket.SocketError.ConnectionRefusedError
         Unknown = QTcpSocket.SocketError.UnknownSocketError
         RemoteClosed = QTcpSocket.SocketError.RemoteHostClosedError

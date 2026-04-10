@@ -84,13 +84,11 @@ class ASTAP:
         }
 
     def setDefaultPath(self) -> None:
-        """ """
         self.appPath = self.apps[platform.system()]["appPath"]
         self.indexPath = self.apps[platform.system()]["indexPath"]
         self.binPath = self.appPath / self.GUI
 
     def solve(self, imagePath: Path, updateHeader: bool) -> dict:
-        """ """
         tempPath = self.tempDir / "temp"
         wcsPath = self.tempDir / "temp.wcs"
         wcsPath.unlink(missing_ok=True)
@@ -111,7 +109,6 @@ class ASTAP:
         return self.parent.prepareResult(suc, msg, imagePath, wcsPath, updateHeader)
 
     def checkAvailabilityProgram(self, appPath: Path) -> bool:
-        """ """
         self.appPath = appPath
 
         bin1 = self.appPath / self.GUI
@@ -124,6 +121,5 @@ class ASTAP:
         return False
 
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
-        """ """
         self.indexPath = indexPath
         return any(len(list(self.indexPath.glob(i))) > 0 for i in self.indexes)

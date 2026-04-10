@@ -67,7 +67,6 @@ class SatSearch(QObject, SatData):
         self.app.update3s.connect(self.calcSatListDynamic)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.ui.satFilterText.setText(config.get("satFilterText"))
         self.ui.satTwilight.setCurrentIndex(config.get("satTwilight", 5))
@@ -78,7 +77,6 @@ class SatSearch(QObject, SatData):
         self.ui.satSourceList.setCurrentIndex(config.get("satSource", 0))
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["satSource"] = self.ui.satSourceList.currentIndex()
         config["satTwilight"] = self.ui.satTwilight.currentIndex()
@@ -89,7 +87,6 @@ class SatSearch(QObject, SatData):
         config["satAltitudeMin"] = self.ui.satAltitudeMin.value()
 
     def prepareSatTable(self) -> None:
-        """ """
         self.ui.listSats.setColumnCount(9)
         hLabels = [
             "Num",
@@ -112,7 +109,6 @@ class SatSearch(QObject, SatData):
         self.ui.listSats.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
     def processSatelliteSource(self) -> None:
-        """ """
         self.ui.listSats.setRowCount(0)
         loader = self.app.mount.obsSite.loader
         satellites = loader.tle_file(str(self.satellites.dest))
@@ -121,7 +117,6 @@ class SatSearch(QObject, SatData):
             self.satellites.objects[sat.name] = sat
 
     def filterListSats(self) -> None:
-        """ """
         filterStr = self.ui.satFilterText.text().lower()
         checkIsSunlit = self.ui.satIsSunlit.isChecked()
         checkRemoveSO = self.ui.satRemoveSO.isChecked()
@@ -148,7 +143,6 @@ class SatSearch(QObject, SatData):
         positionCursorInTable(self.ui.listSats, satName)
 
     def setListSatsEntry(self, row: int, col: int, entry: str) -> None:
-        """ """
         self.ui.listSats.setItem(row, col, entry)
 
     def updateListSats(
@@ -160,7 +154,6 @@ class SatSearch(QObject, SatData):
         appMag: float | None = None,
         twilight: int | None = None,
     ):
-        """ """
         entry = QTableWidgetItem(f"{satParam[0]:5.0f}")
         entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.setSatListItem.emit(row, 2, entry)
@@ -195,7 +188,6 @@ class SatSearch(QObject, SatData):
             self.setSatListItem.emit(row, 8, entry)
 
     def calcSatListDynamic(self):
-        """ """
         # to optimize performance, we do not update if the tab is not visible
         if self.ui.satTabWidget.currentIndex() != 0 or not self.ui.satTabWidget.isVisible():
             return
@@ -229,7 +221,6 @@ class SatSearch(QObject, SatData):
             self.updateListSats(row, satParam, isSunlit=isSunlit, appMag=appMag)
 
     def checkSatOk(self, sat, tEnd):
-        """ """
         msg = sat.at(tEnd).message
         if msg:
             self.mainW.log.warning(f"{sat.name} caused SGP4: [{msg}]")
@@ -237,7 +228,6 @@ class SatSearch(QObject, SatData):
         return True
 
     def calcSat(self, sat, row, loc, timeNow, timeNext, altMin, eph):
-        """ """
         satParam = findRangeRate(sat, loc, timeNow)
         if not np.isnan(satParam).any():
             isSunlit = findSunlit(sat, eph, timeNow)
@@ -253,7 +243,6 @@ class SatSearch(QObject, SatData):
         self.updateListSats(row, satParam, isUp, isSunlit, appMag, fitTwilight)
 
     def workerCalcSatList(self):
-        """ """
         satTab = self.ui.listSats
         loc = self.app.mount.obsSite.location
         ts = self.app.mount.obsSite.ts
@@ -279,7 +268,6 @@ class SatSearch(QObject, SatData):
         changeStyleDynamic(self.ui.satFilterGroup, "run", False)
 
     def calcSatList(self):
-        """ """
         title = "Setup " + self.mainW.timeZoneString()
         self.ui.satSetupGroup.setTitle(title)
         self.worker = Worker(self.workerCalcSatList)
@@ -288,7 +276,6 @@ class SatSearch(QObject, SatData):
         self.app.threadPool.start(self.worker)
 
     def fillSatListName(self):
-        """ """
         self.ui.listSats.setRowCount(0)
         for name in self.satellites.objects:
             number = self.satellites.objects[name].model.satnum

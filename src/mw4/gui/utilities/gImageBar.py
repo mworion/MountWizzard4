@@ -34,7 +34,6 @@ class ImageBar(PlotBase):
         self.defRange = {}
 
     def constructPlot(self) -> None:
-        """ """
         self.p[0].clear()
         self.p[0].showAxes(True, showValues=True)
         self.imageItem = pg.ImageItem()
@@ -46,12 +45,10 @@ class ImageBar(PlotBase):
         self.ly.setVisible(False)
 
     def setColorMap(self, colorMap: str) -> None:
-        """ """
         cMap = pg.colormap.get(colorMap)
         self.barItem.setColorMap(cMap)
 
     def setImage(self, imageDisp: np.ndarray, updateGeometry: bool = True) -> bool:
-        """ """
         self.constructPlot()
         if imageDisp is None:
             return False
@@ -75,7 +72,6 @@ class ImageBar(PlotBase):
         return True
 
     def showCrosshair(self, show: bool) -> None:
-        """ """
         if self.lx:
             self.lx.setVisible(show)
         if self.ly:
@@ -84,7 +80,6 @@ class ImageBar(PlotBase):
     def addEllipse(
         self, x: int, y: int, a: int, b: int, theta: int
     ) -> pg.QtWidgets.QGraphicsEllipseItem:
-        """ """
         ellipse = pg.QtWidgets.QGraphicsEllipseItem(-a, -b, 2 * a + 1, 2 * b + 1)
         ellipse.setPos(x, y)
         tr = QTransform()
@@ -95,7 +90,6 @@ class ImageBar(PlotBase):
         return ellipse
 
     def addValueAnnotation(self, x: int, y: int, value: str) -> None:
-        """ """
         d = 3
         posX = x + d
         posY = y + d

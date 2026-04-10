@@ -17,7 +17,6 @@ from PySide6.QtGui import QPainterPath, QTransform
 
 
 def makePointer() -> QPainterPath:
-    """ """
     path = QPainterPath()
     path.moveTo(0, -1)
     path.lineTo(0, 1)
@@ -29,7 +28,6 @@ def makePointer() -> QPainterPath:
 
 
 def makeSat() -> QPainterPath:
-    """ """
     pathPaddles = QPainterPath()
     tr = QTransform()
     pathPaddles.addRect(-0.4, -0.15, 0.1, 0.3)

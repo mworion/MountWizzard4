@@ -86,7 +86,6 @@ class SatTrack(SatData):
         self.app.update1s.connect(self.updateOrbit)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.ui.domeAutoFollowSat.setChecked(config.get("domeAutoFollowSat", False))
         self.ui.useInternalSatCalc.setChecked(config.get("useInternalSatCalc", False))
@@ -98,7 +97,6 @@ class SatTrack(SatData):
         self.ui.unitTimeLocal.clicked.connect(self.changeUnitTimeUTC)
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["domeAutoFollowSat"] = self.ui.domeAutoFollowSat.isChecked()
         config["useInternalSatCalc"] = self.ui.useInternalSatCalc.isChecked()
@@ -108,7 +106,6 @@ class SatTrack(SatData):
         config["trackingReplay"] = self.ui.trackingReplay.isChecked()
 
     def setupIcons(self) -> None:
-        """ """
         self.mainW.wIcon(self.ui.stopSatelliteTracking, "cross-circle")
         self.mainW.wIcon(self.ui.startSatelliteTracking, "start")
         self.mainW.wIcon(self.ui.progSatFull, "run")
@@ -117,7 +114,6 @@ class SatTrack(SatData):
         self.mainW.wIcon(self.ui.progTrajectory, "run")
 
     def enableGuiFunctions(self) -> None:
-        """ """
         useInternal = self.ui.useInternalSatCalc.isChecked()
         availableInternal = self.app.mount.firmware.checkNewer("3")
         if availableInternal is None:
@@ -128,7 +124,6 @@ class SatTrack(SatData):
         self.ui.progTrajectory.setEnabled(progAvailable)
 
     def signalSatelliteData(self, alt: list, az: list) -> None:
-        """ """
         if not self.satellite:
             return
 
@@ -136,7 +131,6 @@ class SatTrack(SatData):
         self.app.showSatellite.emit(self.satellite, self.satOrbits, alt, az, name)
 
     def clearTrackingParameters(self) -> None:
-        """ """
         self.ui.satTrajectoryStart.setText("-")
         self.ui.satTrajectoryEnd.setText("-")
         self.ui.satTrajectoryFlip.setText("-")
@@ -146,7 +140,6 @@ class SatTrack(SatData):
         changeStyleDynamic(self.ui.startSatelliteTracking, "run", False)
 
     def calcTrajectoryData(self, start: int, end: int) -> tuple[list, list]:
-        """ """
         duration = min(end - start, 900 / 86400)
         if duration < 1 / 86400:
             return [], []
@@ -165,7 +158,6 @@ class SatTrack(SatData):
         return alt.degrees, az.degrees
 
     def calcTrajectoryAndShow(self) -> None:
-        """ """
         useInternal = self.ui.useInternalSatCalc.isChecked()
         isMount = self.app.deviceStat["mount"]
         if not isMount:
@@ -181,7 +173,6 @@ class SatTrack(SatData):
             self.signalSatelliteData(alt=[], az=[])
 
     def workerShowSatPasses(self) -> None:
-        """ """
         title = "Satellite passes " + self.mainW.timeZoneString()
         self.ui.satPassesGroup.setTitle(title)
 
@@ -233,13 +224,11 @@ class SatTrack(SatData):
             self.passUI[i]["date"].setText(dateStr)
 
     def showSatPasses(self) -> None:
-        """ """
         self.workerPasses = Worker(self.workerShowSatPasses)
         self.workerPasses.signals.finished.connect(self.calcTrajectoryAndShow)
         self.app.threadPool.start(self.workerPasses)
 
     def extractSatelliteData(self, satName: str) -> None:
-        """ """
         if satName not in self.satellites.objects:
             self.ui.satelliteNumber.setText("-----")
             self.ui.satelliteDataAge.setText("-----")
@@ -270,7 +259,6 @@ class SatTrack(SatData):
             changeStyleDynamic(self.ui.satelliteDataAge, "color", "")
 
     def programSatToMount(self, satName: str) -> None:
-        """ """
         satellite = self.app.mount.satellite
         self.msg.emit(0, "TLE", "Program", f"Upload satellite: [{satName}]")
         line1, line2 = export_tle(self.satellites.objects[satName].model)
@@ -281,7 +269,6 @@ class SatTrack(SatData):
         self.app.mount.getTLE()
 
     def chooseSatellite(self) -> None:
-        """ """
         satName = self.ui.listSats.item(self.ui.listSats.currentRow(), 1).text()
         if self.app.deviceStat["mount"]:
             self.programSatToMount(satName)
@@ -290,12 +277,10 @@ class SatTrack(SatData):
             self.showSatPasses()
 
     def getSatelliteDataFromDatabase(self, tleParams: TLEParams) -> None:
-        """ """
         self.extractSatelliteData(tleParams.name)
         self.showSatPasses()
 
     def updateOrbit(self) -> None:
-        """ """
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
             self.ui.stopSatelliteTracking.setEnabled(False)
@@ -307,7 +292,6 @@ class SatTrack(SatData):
         self.app.updateSatellite.emit(now, location)
 
     def selectStartEnd(self) -> tuple[int, int]:
-        """ """
         if not self.satOrbits:
             return 0, 0
         if "rise" not in self.satOrbits[0]:
@@ -334,7 +318,6 @@ class SatTrack(SatData):
         return start, end
 
     def filterHorizonForward(self, alt: list, az: list) -> tuple[list, list, int]:
-        """"""
         timeDelayStart = 0
         for altitude, azimuth in zip(alt, az):
             if self.app.data.isAboveHorizon([altitude, azimuth]):
@@ -345,7 +328,6 @@ class SatTrack(SatData):
         return alt, az, timeDelayStart
 
     def filterHorizonReverse(self, alt: list, az: list) -> tuple[list, list, int]:
-        """"""
         timeDelayEnd = 0
         for altitude, azimuth in reversed(list(zip(alt, az))):
             if self.app.data.isAboveHorizon([altitude, azimuth]):
@@ -358,7 +340,6 @@ class SatTrack(SatData):
     def filterHorizon(
         self, start: float, end: float, alt: list, az: list
     ) -> tuple[float, float, list, list]:
-        """ """
         if not self.ui.avoidHorizon.isChecked():
             return start, end, alt, az
 
@@ -370,7 +351,6 @@ class SatTrack(SatData):
         return start, end, alt, az
 
     def startProg(self) -> None:
-        """ """
         self.clearTrackingParameters()
         isReplay = self.ui.trackingReplay.isChecked()
         t = "for simulation" if isReplay else ""
@@ -399,12 +379,10 @@ class SatTrack(SatData):
         self.app.mount.progTrajectory(start, alt, az, replay=isReplay)
 
     def changeUnitTimeUTC(self) -> None:
-        """ """
         self.showSatPasses()
         self.updateSatelliteTrackGui(self.app.mount.satellite.tleParams)
 
     def updateSatelliteTrackGui(self, tleParams: TLEParams) -> None:
-        """ """
         title = "Satellite tracking " + self.mainW.timeZoneString()
         self.ui.satTrackGroup.setTitle(title)
         if self.satOrbits:
@@ -426,7 +404,6 @@ class SatTrack(SatData):
             self.ui.satTrajectoryFlip.setText("NO")
 
     def updateInternalTrackGui(self, tleParams: TLEParams) -> None:
-        """ """
         self.ui.satTrackGroup.setEnabled(True)
         changeStyleDynamic(self.ui.satTrackGroup, "run", False)
         self.ui.progTrajectory.setText("Program trajectory")
@@ -434,7 +411,6 @@ class SatTrack(SatData):
         self.msg.emit(1, "TLE", "Program", "Satellite track data ready!")
 
     def startTrack(self) -> None:
-        """ """
         if not self.app.deviceStat["mount"]:
             self.msg.emit(2, "TLE", "Program", "Mount is not online")
             return
@@ -457,7 +433,6 @@ class SatTrack(SatData):
         self.app.mount.satellite.setTrackingOffsets()
 
     def stopTrack(self) -> None:
-        """ """
         if not self.app.deviceStat["mount"]:
             self.msg.emit(2, "TLE", "Command", "Mount is not online")
             return
@@ -472,7 +447,6 @@ class SatTrack(SatData):
         self.msg.emit(0, "TLE", "Command", "Stopped tracking")
 
     def toggleTrackingOffset(self, obs: ObsSite) -> None:
-        """ """
         if not self.app.mount.firmware.checkNewer("3"):
             return
 
@@ -482,7 +456,6 @@ class SatTrack(SatData):
             self.ui.satOffGroup.setEnabled(False)
 
     def followMount(self, obs: ObsSite) -> None:
-        """ """
         TLESCK = {
             "V": "is slewing to transit start",
             "P": "is waiting for satellite",
@@ -507,7 +480,6 @@ class SatTrack(SatData):
         self.app.dome.slewDome(altitude=altitude, azimuth=azimuth, follow=True)
 
     def setTrackingOffsets(self) -> None:
-        """ """
         valT = self.ui.satOffTime.value()
         valR = self.ui.satOffRa.value()
         valD = self.ui.satOffDec.value()

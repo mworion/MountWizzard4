@@ -26,7 +26,6 @@ mutex = QMutex()
 
 
 def JNowToJ2000(ra: Angle, dec: Angle, timeJD: Time) -> tuple[Angle, Angle]:
-    """ """
     mutex.lock()
     ra = ra.radians
     dec = dec.radians
@@ -39,7 +38,6 @@ def JNowToJ2000(ra: Angle, dec: Angle, timeJD: Time) -> tuple[Angle, Angle]:
 
 
 def J2000ToJNow(ra: Angle, dec: Angle, timeJD: Time) -> tuple[Angle, Angle]:
-    """ """
     mutex.lock()
     ra = ra.radians
     dec = dec.radians
@@ -54,7 +52,6 @@ def J2000ToJNow(ra: Angle, dec: Angle, timeJD: Time) -> tuple[Angle, Angle]:
 def J2000ToAltAz(
     ra: Angle, dec: Angle, timeJD: Time, location: GeographicPosition
 ) -> tuple[Angle, Angle]:
-    """ """
     mutex.lock()
     ra = ra.radians
     dec = dec.radians

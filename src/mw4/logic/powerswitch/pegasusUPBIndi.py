@@ -25,7 +25,6 @@ class PegasusUPBIndi(IndiClass):
         self.modelVersion = 0
 
     def setUpdateConfig(self, deviceName: str) -> None:
-        """ """
         update = self.device.getNumber("POLLING")
         update["PERIOD"] = self.updateRate
         self.client.sendNewNumber(
@@ -33,7 +32,6 @@ class PegasusUPBIndi(IndiClass):
         )
 
     def updateText(self, deviceName: str, propertyName: str) -> None:
-        """ """
         if not super().updateText(deviceName, propertyName):
             return
         if propertyName != "DRIVER_INFO" and propertyName != "FIRMWARE_INFO":
@@ -59,7 +57,6 @@ class PegasusUPBIndi(IndiClass):
                 self.modelVersion = 2
 
     def togglePowerPort(self, port: str) -> None:
-        """ """
         if self.device is None:
             return
         if self.isINDIGO:
@@ -86,7 +83,6 @@ class PegasusUPBIndi(IndiClass):
         )
 
     def togglePowerPortBoot(self, port: str) -> None:
-        """ """
         if self.device is None:
             return
         if self.isINDIGO:
@@ -111,7 +107,6 @@ class PegasusUPBIndi(IndiClass):
         )
 
     def toggleHubUSB(self) -> None:
-        """ """
         if self.device is None:
             return
         if self.isINDIGO:
@@ -135,7 +130,6 @@ class PegasusUPBIndi(IndiClass):
         )
 
     def togglePortUSB(self, port: str) -> None:
-        """ """
         if self.device is None:
             return
         if self.isINDIGO:
@@ -162,7 +156,6 @@ class PegasusUPBIndi(IndiClass):
         )
 
     def toggleAutoDew(self) -> None:
-        """ """
         if self.device is None:
             return
         if self.isINDIGO:
@@ -207,7 +200,6 @@ class PegasusUPBIndi(IndiClass):
         )
 
     def sendDew(self, port: str, value=float) -> None:
-        """ """
         if self.device is None:
             return
         if self.isINDIGO:
@@ -231,7 +223,6 @@ class PegasusUPBIndi(IndiClass):
         )
 
     def sendAdjustableOutput(self, value: float) -> None:
-        """ """
         if self.device is None:
             return
         if self.isINDIGO:
@@ -251,7 +242,6 @@ class PegasusUPBIndi(IndiClass):
         )
 
     def reboot(self) -> None:
-        """ """
         if self.device is None:
             return
         if self.isINDIGO:

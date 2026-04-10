@@ -45,8 +45,7 @@ degreeAngles = [
 ]
 
 
-def writeRetrofitData(mountModel: Model, buildModel: list[dict]) -> dict:
-    """ """
+def writeRetrofitData(mountModel: Model, buildModel: list[dict]) -> list:
     for i, mPoint in enumerate(buildModel):
         mPoint["errorRMS"] = mountModel.starList[i].errorRMS
         mPoint["errorAngle"] = mountModel.starList[i].errorAngle
@@ -63,7 +62,6 @@ def writeRetrofitData(mountModel: Model, buildModel: list[dict]) -> dict:
 
 
 def convertFloatToAngle(model: list[dict]) -> list[dict]:
-    """ """
     for mPoint in model:
         for key in mPoint:
             if key in hourAngles:
@@ -78,7 +76,6 @@ def convertFloatToAngle(model: list[dict]) -> list[dict]:
 
 
 def convertAngleToFloat(model: list[dict]) -> list[dict]:
-    """ """
     for mPoint in model:
         for key in mPoint:
             if key in hourAngles:
@@ -93,7 +90,6 @@ def convertAngleToFloat(model: list[dict]) -> list[dict]:
 
 
 def loadModelsFromFile(modelFilesPath: list[Path]) -> tuple[list[dict], str]:
-    """ """
     model = []
     for path in modelFilesPath:
         if not path.is_file():
@@ -117,7 +113,6 @@ def loadModelsFromFile(modelFilesPath: list[Path]) -> tuple[list[dict], str]:
 
 
 def findKeysSourceInDest(buildModel: list[dict], refModel: list[dict]) -> tuple[list, list]:
-    """ """
     pointsIn = []
     pointsOut = []
     for buildPoint in buildModel:
@@ -140,7 +135,6 @@ def findKeysSourceInDest(buildModel: list[dict], refModel: list[dict]) -> tuple[
 
 
 def generateFileModelData(fileModel: Model) -> dict:
-    """"""
     fileModelData = {}
 
     for star in fileModel:
@@ -155,7 +149,6 @@ def generateFileModelData(fileModel: Model) -> dict:
 
 
 def generateMountModelData(mountModel: Model) -> dict:
-    """ """
     mountModelData = {}
 
     for star in mountModel.starList:
@@ -168,7 +161,6 @@ def generateMountModelData(mountModel: Model) -> dict:
 
 
 def compareFile(modelFilePath: Path, mountModelData: dict) -> tuple[list, list]:
-    """ """
     pointsIn = []
     pointsOut = []
 
@@ -185,7 +177,6 @@ def compareFile(modelFilePath: Path, mountModelData: dict) -> tuple[list, list]:
 
 
 def findFittingModel(mountModel: Model, modelPath: Path) -> tuple[Path, list]:
-    """ """
     mountModelData = generateMountModelData(mountModel)
     fittedModelPath = Path()
 

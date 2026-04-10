@@ -64,17 +64,14 @@ class AscomClass(DriverData):
         self.cyclePollData.timeout.connect(self.pollData)
 
     def startAscomTimer(self) -> None:
-        """ """
         self.cyclePollData.start(self.updateRate)
         self.cyclePollStatus.start(self.updateRate)
 
     def stopAscomTimer(self) -> None:
-        """ """
         self.cyclePollData.stop()
         self.cyclePollStatus.stop()
 
     def getAscomProperty(self, valueProp: str) -> str | float | bool | None:
-        """ """
         value = None
         if valueProp in self.propertyExceptions:
             return value
@@ -95,7 +92,6 @@ class AscomClass(DriverData):
         return value
 
     def setAscomProperty(self, valueProp: str, value: str | float) -> None:
-        """ """
         if valueProp in self.propertyExceptions:
             return
 
@@ -112,7 +108,6 @@ class AscomClass(DriverData):
         self.log.trace(t)
 
     def callAscomMethod(self, methodString: str, param) -> None:
-        """ """
         if methodString in self.propertyExceptions:
             return
 
@@ -130,12 +125,10 @@ class AscomClass(DriverData):
         self.log.trace(t)
 
     def getAndStoreAscomProperty(self, valueProp: str, element: str) -> None:
-        """ """
         value = self.getAscomProperty(valueProp)
         self.storePropertyToData(value, element)
 
     def workerConnectDevice(self) -> None:
-        """ """
         self.propertyExceptions = []
         self.deviceConnected = False
         self.serverConnected = False
@@ -170,13 +163,11 @@ class AscomClass(DriverData):
             self.getInitialConfig()
 
     def workerGetInitialConfig(self) -> None:
-        """ """
         self.getAndStoreAscomProperty("Name", "DRIVER_INFO.DRIVER_NAME")
         self.getAndStoreAscomProperty("DriverVersion", "DRIVER_INFO.DRIVER_VERSION")
         self.getAndStoreAscomProperty("DriverInfo", "DRIVER_INFO.DRIVER_EXEC")
 
     def workerPollStatus(self) -> None:
-        """ """
         suc = self.getAscomProperty("Connected")
 
         if self.deviceConnected and not suc:
@@ -191,7 +182,6 @@ class AscomClass(DriverData):
 
     @staticmethod
     def callerInitUnInit(fn, *args, **kwargs) -> None:
-        """ """
         CoInitialize()
         fn(*args, **kwargs)
         CoUninitialize()
@@ -227,31 +217,25 @@ class AscomClass(DriverData):
         self.threadPool.start(self.worker)
 
     def processPolledData(self) -> None:
-        """ """
         pass
 
     def workerPollData(self) -> None:
-        """ """
         pass
 
     def pollData(self) -> None:
-        """ """
         self.workerData = Worker(self.workerPollData)
         self.workerData.signals.result.connect(self.processPolledData)
         self.threadPool.start(self.workerData)
 
     def pollStatus(self) -> None:
-        """ """
         self.workerStatus = Worker(self.workerPollStatus)
         self.threadPool.start(self.workerStatus)
 
     def getInitialConfig(self) -> None:
-        """ """
         self.workerGetConfig = Worker(self.workerGetInitialConfig)
         self.threadPool.start(self.workerGetConfig)
 
     def startCommunication(self) -> None:
-        """ """
         self.data.clear()
         if not self.deviceName:
             return
@@ -268,7 +252,6 @@ class AscomClass(DriverData):
         self.threadPool.start(self.workerConnect)
 
     def stopCommunication(self) -> None:
-        """ """
         self.stopAscomTimer()
         if self.client:
             self.setAscomProperty("Connected", False)
@@ -281,7 +264,6 @@ class AscomClass(DriverData):
         self.msg.emit(0, "ALPACA", "Device  remove", f"{self.deviceName}")
 
     def selectAscomDriver(self, deviceName: str) -> str:
-        """ """
         try:
             chooser = client.Dispatch("ASCOM.Utilities.Chooser")
             chooser.DeviceType = self.deviceType

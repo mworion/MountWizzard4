@@ -49,7 +49,6 @@ class Worker(QRunnable):
 
     @Slot()
     def run(self):
-        """ """
         try:
             result = self.fn(*self.args, **self.kwargs)
 

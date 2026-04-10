@@ -30,7 +30,6 @@ class CameraAscom(AscomClass):
         super().__init__(parent=parent)
 
     def workerGetInitialConfig(self) -> None:
-        """ """
         super().workerGetInitialConfig()
         self.getAndStoreAscomProperty("CameraXSize", "CCD_INFO.CCD_MAX_X")
         self.getAndStoreAscomProperty("CameraYSize", "CCD_INFO.CCD_MAX_Y")
@@ -53,7 +52,6 @@ class CameraAscom(AscomClass):
         self.log.debug(f"Initial data: {self.data}")
 
     def workerPollData(self) -> None:
-        """ """
         self.getAndStoreAscomProperty("BinX", "CCD_BINNING.HOR_BIN")
         self.getAndStoreAscomProperty("BinY", "CCD_BINNING.VERT_BIN")
         self.getAndStoreAscomProperty("CameraState", "CAMERA.STATE")
@@ -67,16 +65,13 @@ class CameraAscom(AscomClass):
         self.getAndStoreAscomProperty("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
 
     def sendDownloadMode(self) -> None:
-        """ """
         if self.data.get("CAN_FAST", False):
             self.setAscomProperty("FastReadout", self.parent.fastReadout)
 
     def waitFunc(self) -> bool:
-        """ """
         return not self.getAscomProperty("ImageReady")
 
     def workerExpose(self) -> None:
-        """ """
         self.sendDownloadMode()
         self.setAscomProperty("BinX", self.parent.binning)
         self.setAscomProperty("BinY", self.parent.binning)
@@ -95,30 +90,24 @@ class CameraAscom(AscomClass):
         self.parent.writeImageFitsHeader()
 
     def expose(self) -> None:
-        """ """
         self.worker = Worker(self.callerInitUnInit, self.workerExpose)
         self.worker.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(self.worker)
 
     def abort(self) -> bool:
-        """ """
         if self.data.get("CAN_ABORT", False):
             self.callMethodThreaded(self.client.StopExposure)
         return True
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        """ """
         self.setAscomProperty("CoolerOn", coolerOn)
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
-        """ """
         if self.data.get("CAN_SET_CCD_TEMPERATURE", False):
             self.setAscomProperty("SetCCDTemperature", temperature)
 
     def sendOffset(self, offset: int = 0) -> None:
-        """ """
         self.setAscomProperty("Offset", offset)
 
     def sendGain(self, gain: int = 0) -> None:
-        """ """
         self.setAscomProperty("Gain", gain)

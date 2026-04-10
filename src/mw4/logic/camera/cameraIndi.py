@@ -36,7 +36,6 @@ class CameraIndi(IndiClass):
         self.loadConfig: bool = True
 
     def setUpdateConfig(self, deviceName: str) -> None:
-        """ """
         suc = self.client.setBlobMode(blobHandling="Also", deviceName=deviceName)
         self.log.info(f"Blob mode [{deviceName}] success: [{suc}]")
 
@@ -102,7 +101,6 @@ class CameraIndi(IndiClass):
             self.log.warning(t)
 
     def updateNumber(self, deviceName: str, propertyName: str) -> None:
-        """ """
         if propertyName == "CCD_GAIN":
             elements = self.device.CCD_GAIN["elementList"]["GAIN"]
             if "min" in elements and "max" in elements:
@@ -124,7 +122,6 @@ class CameraIndi(IndiClass):
             self.data["CAN_SET_CCD_TEMPERATURE"] = True
 
     def writeImageXisfHeader(self) -> None:
-        """ """
         xisf = XISF(self.parent.imagePath)
         file_meta = xisf.get_file_metadata()
         ims_meta = xisf.get_images_metadata()
@@ -149,7 +146,6 @@ class CameraIndi(IndiClass):
         )
 
     def workerSaveBLOB(self, data: dict) -> None:
-        """ """
         match data["format"]:
             case ".fits.fz":
                 HDU: HDUList = fits.HDUList.fromstring(data["value"])
@@ -176,7 +172,6 @@ class CameraIndi(IndiClass):
         self.parent.exposeFinished()
 
     def updateBLOB(self, deviceName: str, propertyName: str) -> None:
-        """ """
         super().updateBLOB(deviceName, propertyName)
 
         data = self.device.getBlob(propertyName)
@@ -194,7 +189,6 @@ class CameraIndi(IndiClass):
         self.threadPool.start(self.worker)
 
     def sendDownloadMode(self) -> None:
-        """ """
         quality = self.device.getSwitch("READOUT_QUALITY")
         quality["QUALITY_LOW"] = "On"
         quality["QUALITY_HIGH"] = "Off"
@@ -203,7 +197,6 @@ class CameraIndi(IndiClass):
         )
 
     def expose(self) -> bool:
-        """ """
         self.sendDownloadMode()
         indiCmd = self.device.getNumber("CCD_BINNING")
         indiCmd["HOR_BIN"] = self.parent.binning
@@ -228,7 +221,6 @@ class CameraIndi(IndiClass):
         )
 
     def abort(self) -> bool:
-        """ """
         indiCmd = self.device.getSwitch("CCD_ABORT_EXPOSURE")
         if "ABORT" not in indiCmd:
             return False
@@ -241,7 +233,6 @@ class CameraIndi(IndiClass):
         )
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        """ """
         cooler = self.device.getSwitch("CCD_COOLER")
         cooler["COOLER_ON"] = "On" if coolerOn else "Off"
         cooler["COOLER_OFF"] = "Off" if coolerOn else "On"
@@ -250,7 +241,6 @@ class CameraIndi(IndiClass):
         )
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
-        """ """
         element = self.device.getNumber("CCD_TEMPERATURE")
         if "CCD_TEMPERATURE_VALUE" not in element:
             return
@@ -261,7 +251,6 @@ class CameraIndi(IndiClass):
         )
 
     def sendOffset(self, offset: int = 0) -> None:
-        """ """
         element = self.device.getNumber("CCD_OFFSET")
         if "OFFSET" not in element:
             return
@@ -272,7 +261,6 @@ class CameraIndi(IndiClass):
         )
 
     def sendGain(self, gain: int = 0) -> None:
-        """ """
         element = self.device.getNumber("CCD_GAIN")
         if "GAIN" not in element:
             return

@@ -93,7 +93,6 @@ class Power:
         self.app.update1s.connect(self.updatePowerGui)
 
     def setGuiVersion(self, version=1) -> None:
-        """ """
         if version == 1:
             self.ui.groupDewC.setVisible(False)
             self.ui.groupPortUSB.setVisible(False)
@@ -106,7 +105,6 @@ class Power:
             self.ui.groupAdjustableOutput.setVisible(True)
 
     def updatePowerGui(self) -> None:
-        """ """
         for name, button in self.powerOnOFF.items():
             value = self.app.power.data.get(f"POWER_CONTROL.POWER_CONTROL_{name}", False)
             changeStyleDynamic(button, "run", value)
@@ -174,7 +172,6 @@ class Power:
             changeStyleDynamic(self.ui.hubUSB, "run", value)
 
     def setDew(self, name: str) -> bool:
-        """ """
         actValue = valueToInt(self.dew[name].text())
         dlg = QInputDialog()
         value, ok = dlg.getInt(
@@ -191,27 +188,21 @@ class Power:
         return self.app.power.sendDew(name, value)
 
     def togglePowerPort(self, name: str) -> bool:
-        """ """
         return self.app.power.togglePowerPort(name)
 
     def togglePowerBootPort(self, name: str) -> bool:
-        """ """
         return self.app.power.togglePowerPortBoot(name)
 
     def toggleHubUSB(self) -> bool:
-        """ """
         return self.app.power.toggleHubUSB()
 
     def togglePortUSB(self, name: str) -> bool:
-        """ """
         return self.app.power.togglePortUSB(name)
 
     def toggleAutoDew(self) -> bool:
-        """ """
         return self.app.power.toggleAutoDew()
 
     def setAdjustableOutput(self) -> bool:
-        """ """
         actValue = float(self.ui.adjustableOutput.text())
         dlg = QInputDialog()
         value, ok = dlg.getDouble(
@@ -224,5 +215,4 @@ class Power:
         return self.app.power.sendAdjustableOutput(value=value)
 
     def rebootUPB(self) -> bool:
-        """ """
         return self.app.power.reboot()

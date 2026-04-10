@@ -29,7 +29,7 @@ from mw4.gui.utilities.qtHelpers import (
     setTabAndIndex,
     positionCursorInTable,
 )
-from PySide6.QtCore import QPoint, Qt
+from PySide6.QtCore import QPoint, QTimer, Qt
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import (
@@ -48,7 +48,19 @@ def function(qapp):
 
 
 def test_sleepAndEvents():
+    """sleepAndEvents must process pending events during the wait period."""
+    called = []
+    QTimer.singleShot(0, lambda: called.append(True))
+    sleepAndEvents(50)
+    assert called, "Event loop did not process pending events during sleepAndEvents"
+
+
+def test_sleepAndEvents_zeroMs():
+    """sleepAndEvents(0) must still flush the event queue."""
+    called = []
+    QTimer.singleShot(0, lambda: called.append(True))
     sleepAndEvents(0)
+    assert called, "Event loop did not process pending events for sleepAndEvents(0)"
 
 
 def test_changeStyleDynamic_1():

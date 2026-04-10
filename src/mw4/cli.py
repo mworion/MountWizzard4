@@ -20,7 +20,6 @@ from mw4.loader import main
 
 
 def read_options() -> argparse.Namespace:
-    """ """
     parser = argparse.ArgumentParser(
         prog=__name__,
         description="MountWizzard4",

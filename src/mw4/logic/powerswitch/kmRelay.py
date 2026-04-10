@@ -67,7 +67,6 @@ class KMRelay:
         self.timerTask.timeout.connect(self.cyclePolling)
 
     def startCommunication(self) -> None:
-        """ """
         if not self.hostaddress:
             return
 
@@ -75,12 +74,10 @@ class KMRelay:
         self.timerTask.start(self.CYCLE_POLLING)
 
     def stopCommunication(self) -> None:
-        """ """
         self.timerTask.stop()
         self.deviceConnected = False
 
     def debugOutput(self, result: object) -> None:
-        """ """
         if not result:
             self.log.info("No valid result")
             return
@@ -93,7 +90,6 @@ class KMRelay:
         self.log.trace(f"Result: {url}, {reason}, {status}, {elapsed}, {text}")
 
     def getRelay(self, url: str, debug: bool) -> str:
-        """ """
         if self.hostaddress is None:
             return ""
         if not self.mutexPoll.tryLock():
@@ -136,7 +132,6 @@ class KMRelay:
                 return False
 
     def cyclePolling(self) -> None:
-        """ """
         value = self.getRelay("/status.xml", debug=False)
         if not self.checkConnected(value):
             return
@@ -152,7 +147,6 @@ class KMRelay:
         self.signals.statusReady.emit()
 
     def getByte(self, relayNumber: int, state: bool) -> bool:
-        """ """
         byteStat = 0b0
         for i, status in enumerate(self.status):
             if status:
@@ -167,7 +161,6 @@ class KMRelay:
             return byteOff
 
     def pulse(self, relayNumber: int) -> None:
-        """ """
         self.log.debug(f"Pulse relay:{relayNumber}")
         byteOn = self.getByte(relayNumber=relayNumber, state=True)
         byteOff = self.getByte(relayNumber=relayNumber, state=False)
@@ -180,7 +173,6 @@ class KMRelay:
             return
 
     def switch(self, relayNumber: int) -> None:
-        """ """
         self.log.debug(f"Switch relay:{relayNumber}")
         value = self.getRelay(f"/relays.cgi?relay={relayNumber + 1:1d}")
         if value is None or value.reason != "OK":
@@ -188,7 +180,6 @@ class KMRelay:
             return
 
     def set(self, relayNumber: int, value: bool) -> None:
-        """ """
         self.log.debug(f"Set relay:{relayNumber}")
         byteOn = self.getByte(relayNumber=relayNumber, state=value)
         value = self.getRelay(f"/FFE0{byteOn:02X}")

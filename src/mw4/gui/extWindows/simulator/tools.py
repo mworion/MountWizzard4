@@ -21,7 +21,6 @@ from PySide6.QtGui import QColor, QFont, QVector3D
 
 
 def linkLight(node):
-    """ """
     light = node.get("light")
     if light:
         if light[0] == "point":
@@ -47,7 +46,6 @@ def linkLight(node):
 
 
 def linkSource(node):
-    """ """
     source = node.get("source")
     if source:
         if isinstance(source, str):
@@ -85,7 +83,6 @@ def linkSource(node):
 
 
 def linkTransform(node):
-    """ """
     trans = node.get("trans")
     rot = node.get("rot")
     scale = node.get("scale")
@@ -110,13 +107,11 @@ def linkTransform(node):
 
 
 def linkMaterial(node):
-    """ """
     mat = node.get("mat")
     return mat
 
 
 def linkModel(model, entityModel):
-    """ """
     for node in model:
         parent = model[node].get("parent")
         if parent is None:
@@ -148,7 +143,6 @@ def linkModel(model, entityModel):
 
 
 def getMaterial(entity):
-    """ """
     if entity is None:
         return None
 
@@ -165,7 +159,6 @@ def getMaterial(entity):
 
 
 def getLight(entity):
-    """ """
     if entity is None:
         return None
 

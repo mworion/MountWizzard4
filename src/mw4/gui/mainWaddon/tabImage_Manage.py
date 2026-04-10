@@ -65,7 +65,6 @@ class ImageManage:
         self.app.update1s.connect(self.updateShutterStatGui)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.ui.exposureTime1.setValue(config.get("exposureTime1", 1))
         self.ui.binning1.setValue(config.get("binning1", 1))
@@ -78,7 +77,6 @@ class ImageManage:
         self.ui.focuserSteps.setValue(config.get("focuserSteps", 100))
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["exposureTime1"] = self.ui.exposureTime1.value()
         config["binning1"] = self.ui.binning1.value()
@@ -91,7 +89,6 @@ class ImageManage:
         config["focuserSteps"] = self.ui.focuserSteps.value()
 
     def setupIcons(self) -> None:
-        """ """
         self.mainW.wIcon(self.ui.copyFromTelescopeDriver, "copy")
         self.mainW.wIcon(self.ui.haltFocuser, "bolt-alt")
         self.mainW.wIcon(self.ui.moveFocuserIn, "exit-down")
@@ -100,7 +97,6 @@ class ImageManage:
         self.mainW.wIcon(self.ui.coverUnpark, "exit-up")
 
     def checkEnableCameraUI(self) -> None:
-        """ """
         coolerTemp = self.app.camera.data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", False)
         gainCam = self.app.camera.data.get("CCD_GAIN.GAIN", False)
         pixelX = self.app.camera.data.get("CCD_INFO.CCD_MAX_X", False)
@@ -110,7 +106,6 @@ class ImageManage:
         self.ui.GroupControlledCamera.setEnabled(bool(pixelX))
 
     def updateOffset(self) -> None:
-        """ """
         actValue = self.app.camera.data.get("CCD_OFFSET.OFFSET", False)
         offsetList = self.app.camera.data.get("CCD_OFFSET.OFFSET_LIST", False)
         if offsetList and actValue:
@@ -125,7 +120,6 @@ class ImageManage:
             guiSetText(self.ui.offsetCam, "3.0f", actValue)
 
     def updateGain(self) -> None:
-        """ """
         actValue = self.app.camera.data.get("CCD_GAIN.GAIN", False)
         gainList = self.app.camera.data.get("CCD_GAIN.GAIN_LIST", False)
         if gainList and actValue:
@@ -140,7 +134,6 @@ class ImageManage:
             guiSetText(self.ui.gainCam, "3.0f", actValue)
 
     def updateCooler(self) -> None:
-        """ """
         coolerTemp = self.app.camera.data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0)
         coolerPower = self.app.camera.data.get("CCD_COOLER_POWER.CCD_COOLER_VALUE", 0)
         coolerOn = self.app.camera.data.get("CCD_COOLER.COOLER_ON", False)
@@ -154,7 +147,6 @@ class ImageManage:
             changeStyleDynamic(self.ui.coolerOff, "run", True)
 
     def updateFilter(self) -> None:
-        """ """
         filterNumber = self.app.filter.data.get("FILTER_SLOT.FILTER_SLOT_VALUE", 1)
         key = f"FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}"
         filterName = self.app.filter.data.get(key, "not found")
@@ -162,12 +154,10 @@ class ImageManage:
         guiSetText(self.ui.filterName, "s", filterName)
 
     def updateFocuser(self) -> None:
-        """ """
         focus = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         guiSetText(self.ui.focuserPosition, "6.0f", focus)
 
     def updateImagingParam(self) -> None:
-        """ """
         self.checkEnableCameraUI()
         self.updateOffset()
         self.updateGain()
@@ -200,7 +190,6 @@ class ImageManage:
         guiSetText(self.ui.optimalBinning, "1.0f", optimalBinning)
 
     def setCoolerTemp(self) -> None:
-        """ """
         canSetCCDTemp = self.app.camera.data.get("CAN_SET_CCD_TEMPERATURE", False)
         if not canSetCCDTemp:
             return
@@ -218,7 +207,6 @@ class ImageManage:
             self.app.camera.sendCoolerTemp(temperature=value)
 
     def setOffset(self) -> None:
-        """ """
         actValue = self.app.camera.data.get("CCD_OFFSET.OFFSET", None)
         if actValue is None:
             return
@@ -251,7 +239,6 @@ class ImageManage:
             self.app.camera.sendOffset(offset=value)
 
     def setGain(self) -> None:
-        """ """
         actValue = self.app.camera.data.get("CCD_GAIN.GAIN", None)
         if actValue is None:
             return
@@ -284,7 +271,6 @@ class ImageManage:
             self.app.camera.sendGain(gain=value)
 
     def setFilterNumber(self) -> None:
-        """ """
         data = self.app.filter.data
         actValue = data.get("FILTER_SLOT.FILTER_SLOT_VALUE")
         if actValue is None:
@@ -315,7 +301,6 @@ class ImageManage:
             self.app.filter.sendFilterNumber(filterNumber=value)
 
     def setFilterName(self) -> None:
-        """ """
         data = self.app.filter.data
         actValue = data.get("FILTER_SLOT.FILTER_SLOT_VALUE")
         if actValue is None:
@@ -334,15 +319,12 @@ class ImageManage:
         self.app.filter.sendFilterNumber(filterNumber=number)
 
     def setCoolerOn(self) -> None:
-        """ """
         self.app.camera.sendCoolerSwitch(coolerOn=True)
 
     def setCoolerOff(self) -> None:
-        """ """
         self.app.camera.sendCoolerSwitch(coolerOn=False)
 
     def updateCoverStatGui(self) -> None:
-        """ """
         value = self.app.cover.data.get("CAP_PARK.PARK", None)
         if value:
             changeStyleDynamic(self.ui.coverPark, "run", True)
@@ -358,7 +340,6 @@ class ImageManage:
         self.ui.coverStatusText.setText(value)
 
     def updateCoverLightGui(self) -> None:
-        """ """
         value = self.app.cover.data.get("FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON", None)
         if value:
             changeStyleDynamic(self.ui.coverLightOn, "run", True)
@@ -374,45 +355,36 @@ class ImageManage:
         guiSetText(self.ui.coverLightIntensity, "3.0f", value)
 
     def setCoverPark(self) -> None:
-        """ """
         self.app.cover.closeCover()
 
     def setCoverUnpark(self) -> None:
-        """ """
         self.app.cover.openCover()
 
     def setCoverHalt(self) -> None:
-        """ """
         self.app.cover.haltCover()
 
     def moveFocuserIn(self) -> None:
-        """ """
         pos = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         step = self.ui.focuserSteps.value()
         newPos = pos - step
         self.app.focuser.move(position=newPos)
 
     def moveFocuserOut(self) -> None:
-        """ """
         pos = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         step = self.ui.focuserSteps.value()
         newPos = pos + step
         self.app.focuser.move(position=newPos)
 
     def haltFocuser(self) -> None:
-        """ """
         self.app.focuser.halt()
 
     def switchLightOn(self) -> None:
-        """ """
         self.app.cover.lightOn()
 
     def switchLightOff(self) -> None:
-        """ """
         self.app.cover.lightOff()
 
     def setLightIntensity(self) -> None:
-        """ """
         actValue = self.app.cover.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE", 0
         )
@@ -437,7 +409,6 @@ class ImageManage:
         self.app.cover.lightIntensity(value)
 
     def updateDomeGui(self) -> None:
-        """ """
         value = self.app.dome.data.get("DOME_MOTION.DOME_CW", None)
         if value:
             changeStyleDynamic(self.ui.domeSlewCW, "run", True)
@@ -454,7 +425,6 @@ class ImageManage:
         guiSetText(self.ui.domeAzimuth, "3.0f", value)
 
     def updateShutterStatGui(self) -> None:
-        """ """
         value = self.app.dome.data.get("DOME_SHUTTER.SHUTTER_OPEN", None)
         if value is True:
             changeStyleDynamic(self.ui.domeOpenShutter, "run", True)
@@ -471,37 +441,31 @@ class ImageManage:
             self.ui.domeShutterStatusText.setText(value)
 
     def domeSlewCW(self) -> None:
-        """ """
         if not self.app.deviceStat["dome"]:
             return
         self.app.dome.slewCW()
 
     def domeSlewCCW(self) -> None:
-        """ """
         if not self.app.deviceStat["dome"]:
             return
         self.app.dome.slewCCW()
 
     def domeAbortSlew(self) -> None:
-        """ """
         if not self.app.deviceStat["dome"]:
             return
         self.app.dome.abortSlew()
 
     def domeOpenShutter(self) -> None:
-        """ """
         if not self.app.deviceStat["dome"]:
             return
         self.app.dome.openShutter()
 
     def domeCloseShutter(self) -> None:
-        """ """
         if not self.app.deviceStat["dome"]:
             return
         self.app.dome.closeShutter()
 
     def domeMoveGameController(self, turnVal: int, openVal: int) -> None:
-        """ """
         if not self.app.deviceStat["dome"]:
             return
 

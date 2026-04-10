@@ -43,12 +43,10 @@ class MessageWindow(MWidget):
         self.app.msg.connect(self.writeMessageQueue)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config.get("messageW", {})
         self.positionWindow(config)
 
     def storeConfig(self) -> None:
-        """ """
         configMain = self.app.config
         configMain["messageW"] = {}
         config = configMain["messageW"]
@@ -58,12 +56,10 @@ class MessageWindow(MWidget):
         config["height"] = self.height()
 
     def closeEvent(self, closeEvent) -> None:
-        """ """
         self.storeConfig()
         super().closeEvent(closeEvent)
 
     def clearMessageTable(self) -> None:
-        """ """
         mesTab = self.ui.messageTable
         mesTab.setRowCount(0)
         mesTab.setColumnCount(4)
@@ -77,7 +73,6 @@ class MessageWindow(MWidget):
         mesTab.verticalHeader().setDefaultSectionSize(16)
 
     def setupMessage(self) -> None:
-        """ """
         self.messColor = [
             QBrush(QColor(self.M_PRIM)),
             QBrush(QColor(self.M_TER)),
@@ -86,20 +81,17 @@ class MessageWindow(MWidget):
         ]
 
     def updateListColors(self) -> None:
-        """ """
         for row in range(self.ui.messageTable.rowCount()):
             for col in range(self.ui.messageTable.columnCount()):
                 item = self.ui.messageTable.item(row, col)
                 item.setForeground(self.messColor[0])
 
     def colorChange(self) -> None:
-        """ """
         self.setStyleSheet(self.mw4Style)
         self.setupMessage()
         self.updateListColors()
 
     def showWindow(self) -> None:
-        """ """
         self.ui.clear.clicked.connect(self.clearMessageTable)
         self.clearMessageTable()
         self.app.update1s.connect(self.writeMessage)
@@ -107,12 +99,10 @@ class MessageWindow(MWidget):
         self.show()
 
     def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
-        """ """
         self.log.debug(f"Message window:[{source} - {mType} - {message}]")
         self.app.messageQueue.put((prio, source, mType, message))
 
     def writeMessage(self) -> None:
-        """ """
         while not self.app.messageQueue.empty():
             prio, source, mType, message = self.app.messageQueue.get()
 

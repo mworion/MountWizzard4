@@ -30,14 +30,12 @@ class ModelStatus:
         ms.getModelDone.connect(self.updateTurnKnobsGUI)
 
     def setupIcons(self) -> None:
-        """ """
         pixmap = img2pixmap("assets/pics/azimuth.png").scaled(140, 140)
         self.ui.picAZ.setPixmap(pixmap)
         pixmap = img2pixmap("assets/pics/altitude.png").scaled(140, 140)
         self.ui.picALT.setPixmap(pixmap)
 
     def updateAlignGUI(self, model):
-        """ """
         guiSetText(self.ui.numberStars, "2.0f", model.numberStars)
         guiSetText(self.ui.numberStars1, "2.0f", model.numberStars)
         guiSetText(self.ui.errorRMS, "5.1f", model.errorRMS)
@@ -55,7 +53,6 @@ class ModelStatus:
         guiSetText(self.ui.altitudeError, "5.1f", val)
 
     def updateTurnKnobsGUI(self, model):
-        """ """
         if model.azimuthTurns is not None:
             if model.azimuthTurns > 0:
                 text = f"{abs(model.azimuthTurns):3.1f} revs left"

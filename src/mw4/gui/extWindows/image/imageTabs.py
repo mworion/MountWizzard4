@@ -71,7 +71,6 @@ class ImageTabs:
         self.ui.showCrosshair.clicked.connect(self.setCrosshair)
 
     def colorChange(self) -> None:
-        """ """
         self.ui.image.colorChange()
         self.ui.imageSource.colorChange()
         self.ui.background.colorChange()
@@ -84,12 +83,10 @@ class ImageTabs:
         self.pen = pg.mkPen(color=self.parent.M_PRIM)
 
     def getImageSourceRange(self) -> None:
-        """ """
         vb = self.ui.imageSource.p[0].getViewBox()
         self.imageSourceRange = vb.viewRect()
 
     def setBarColor(self) -> None:
-        """ """
         cMap = ["CET-L2", "plasma", "cividis", "magma", "CET-D1A"]
         colorMap = cMap[self.ui.color.currentIndex()]
         self.ui.image.setColorMap(colorMap)
@@ -103,11 +100,9 @@ class ImageTabs:
         self.ui.aberration.setColorMap(colorMap)
 
     def setCrosshair(self) -> None:
-        """ """
         self.ui.image.showCrosshair(self.ui.showCrosshair.isChecked())
 
     def writeHeaderDataToGUI(self, header: fits.Header) -> None:
-        """ """
         guiSetText(self.ui.object, "s", header.get("OBJECT", "").upper())
         ra, dec = getCoordinatesFromHeader(header=header)
         guiSetText(self.ui.ra, "HSTR", ra)
@@ -125,14 +120,12 @@ class ImageTabs:
 
     @staticmethod
     def clearImageTab(imageWidget) -> None:
-        """ """
         imageWidget.p[0].clear()
         imageWidget.p[0].showAxes(False, showValues=False)
         imageWidget.p[0].setMouseEnabled(x=False, y=False)
         imageWidget.barItem.setVisible(False)
 
     def showImage(self) -> None:
-        """ """
         changeStyleDynamic(self.ui.headerGroup, "run", False)
         tab = self.ui.tabImage
         tabIndex = getTabIndex(tab, "Image")
@@ -153,7 +146,6 @@ class ImageTabs:
         self.writeHeaderDataToGUI(self.fileHandler.header)
 
     def showHFR(self):
-        """ """
         self.ui.hfr.setImage(imageDisp=self.photometry.hfrGrid)
         self.ui.hfr.barItem.setLevels((self.photometry.hfrMin, self.photometry.hfrMax))
         self.ui.hfrPercentile.setText(f"{self.photometry.hfrPercentile:1.1f}")
@@ -165,7 +157,6 @@ class ImageTabs:
         tab.setTabEnabled(getTabIndex(tab, "HFR"), True)
 
     def showTiltSquare(self):
-        """ """
         segHFR = self.photometry.hfrSegSquare
         w = self.photometry.w
         h = self.photometry.h
@@ -280,7 +271,6 @@ class ImageTabs:
         return True
 
     def showTiltTriangle(self):
-        """ """
         segHFR = self.photometry.hfrSegTriangle
         w = self.photometry.w
         h = self.photometry.h
@@ -383,7 +373,6 @@ class ImageTabs:
         tab.setTabEnabled(getTabIndex(tab, "TiltTriangle"), True)
 
     def showRoundness(self):
-        """ """
         self.ui.roundness.setImage(imageDisp=self.photometry.roundnessGrid)
         self.ui.roundness.p[0].showAxes(False, showValues=False)
         self.ui.roundness.p[0].setMouseEnabled(x=False, y=False)
@@ -399,7 +388,6 @@ class ImageTabs:
         tab.setTabEnabled(getTabIndex(tab, "Roundness"), True)
 
     def showAberrationInspect(self):
-        """ """
         self.ui.aberration.barItem.setVisible(False)
         self.ui.aberration.p[0].clear()
         self.ui.aberration.p[0].setAspectLocked(True)
@@ -424,7 +412,6 @@ class ImageTabs:
         self.ui.aberration.p[0].getViewBox().rightMouseRange()
 
     def showImageSources(self):
-        """ """
         temp = self.imageSourceRange
         self.ui.imageSource.setImage(imageDisp=self.photometry.image)
         self.ui.imageSource.p[0].getViewBox().sigRangeChanged.connect(self.getImageSourceRange)
@@ -449,7 +436,6 @@ class ImageTabs:
         tab.setTabEnabled(getTabIndex(tab, "Sources"), True)
 
     def showBackground(self):
-        """ """
         self.ui.background.setImage(imageDisp=self.photometry.background)
         self.ui.background.barItem.setLevels(
             (self.photometry.backgroundMin, self.photometry.backgroundMax)
@@ -458,7 +444,6 @@ class ImageTabs:
         tab.setTabEnabled(getTabIndex(tab, "Back"), True)
 
     def showBackgroundRMS(self):
-        """ """
         self.ui.backgroundRMS.setImage(imageDisp=self.photometry.backgroundRMS)
         tab = self.ui.tabImage
         tab.setTabEnabled(getTabIndex(tab, "BackRMS"), True)

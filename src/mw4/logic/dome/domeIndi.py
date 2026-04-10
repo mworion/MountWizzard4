@@ -26,7 +26,6 @@ class DomeIndi(IndiClass):
         self.app.update1s.connect(self.updateStatus)
 
     def updateStatus(self) -> None:
-        """ """
         if not self.client.connected:
             return
 
@@ -34,7 +33,6 @@ class DomeIndi(IndiClass):
         self.signals.azimuth.emit(azimuth)
 
     def updateNumber(self, deviceName: str, propertyName: str) -> None:
-        """ """
         for element, value in self.device.getNumber(propertyName).items():
             if element == "DOME_ABSOLUTE_POSITION":
                 azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0)
@@ -50,7 +48,6 @@ class DomeIndi(IndiClass):
                     self.data["Shutter.Status"] = "-"
 
     def slewToAltAz(self, altitude: float, azimuth: float) -> None:
-        """ """
         if self.device is None:
             return
         if self.deviceName is None or not self.deviceName:
@@ -68,7 +65,6 @@ class DomeIndi(IndiClass):
         )
 
     def openShutter(self) -> None:
-        """ """
         if self.device is None:
             return
         if self.deviceName is None or not self.deviceName:
@@ -85,7 +81,6 @@ class DomeIndi(IndiClass):
         )
 
     def closeShutter(self) -> None:
-        """ """
         if self.device is None:
             return
         if self.deviceName is None or not self.deviceName:
@@ -102,7 +97,6 @@ class DomeIndi(IndiClass):
         )
 
     def slewCW(self) -> None:
-        """ """
         if self.device is None:
             return
         if self.deviceName is None or not self.deviceName:
@@ -119,7 +113,6 @@ class DomeIndi(IndiClass):
         )
 
     def slewCCW(self) -> None:
-        """ """
         if self.device is None:
             return
         if self.deviceName is None or not self.deviceName:
@@ -136,7 +129,6 @@ class DomeIndi(IndiClass):
         )
 
     def abortSlew(self) -> None:
-        """ """
         if self.device is None:
             return
         if self.deviceName is None or not self.deviceName:

@@ -25,7 +25,6 @@ class SensorWeatherIndi(IndiClass):
         self.loadConfig: bool = True
 
     def setUpdateConfig(self, deviceName: str) -> None:
-        """ """
         update = self.device.getNumber("POLLING_PERIOD")
         update["PERIOD_MS"] = self.updateRate
         self.client.sendNewNumber(

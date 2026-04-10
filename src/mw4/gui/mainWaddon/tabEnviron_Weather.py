@@ -119,7 +119,6 @@ class EnvironWeather:
         self.app.update1s.connect(self.updateRefractionParameters)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.ui.refracManual.setChecked(config.get("refracManual", False))
         self.ui.refracCont.setChecked(config.get("refracCont", False))
@@ -128,7 +127,6 @@ class EnvironWeather:
         self.setRefractionSourceGui()
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["refracManual"] = self.ui.refracManual.isChecked()
         config["refracCont"] = self.ui.refracCont.isChecked()
@@ -136,7 +134,6 @@ class EnvironWeather:
         config["refractionSource"] = self.refractionSource
 
     def smartEnvironGui(self) -> None:
-        """ """
         for source in self.refractionSources:
             stat = self.app.deviceStat.get(source, None)
             group = self.refractionSources[source]["group"]
@@ -151,7 +148,6 @@ class EnvironWeather:
                 group.setEnabled(False)
 
     def updateRefractionUpdateType(self) -> None:
-        """ """
         if self.refractionSource != "directWeather":
             return
 
@@ -164,7 +160,6 @@ class EnvironWeather:
             self.ui.refracCont.setChecked(True)
 
     def setRefractionUpdateType(self) -> None:
-        """ """
         if not self.ui.showTabEnviron.isChecked():
             return
         if self.refractionSource != "directWeather":
@@ -183,7 +178,6 @@ class EnvironWeather:
             self.app.mount.setting.setDirectWeatherUpdateType(2)
 
     def setRefractionSourceGui(self) -> None:
-        """ """
         for source in self.refractionSources:
             if self.refractionSource == source:
                 changeStyleDynamic(self.refractionSources[source]["group"], "refraction", True)
@@ -195,7 +189,6 @@ class EnvironWeather:
                 self.refractionSources[source]["group"].setChecked(False)
 
     def selectRefractionSource(self, source: str) -> None:
-        """ """
         if self.refractionSources[source]["group"].isChecked():
             self.refractionSource = source
         else:
@@ -209,7 +202,6 @@ class EnvironWeather:
         self.setRefractionUpdateType()
 
     def isValidRefractionSource(self) -> bool:
-        """ """
         return self.refractionSource in [
             "sensor1Weather",
             "sensor2Weather",
@@ -218,7 +210,6 @@ class EnvironWeather:
         ]
 
     def updateFilterRefractionParameters(self) -> None:
-        """"""
         if not self.isValidRefractionSource():
             return
 
@@ -237,13 +228,11 @@ class EnvironWeather:
         self.filteredPressure[0] = press
 
     def movingAverageRefractionParameters(self) -> tuple:
-        """ """
         temp = np.mean(self.filteredTemperature)
         press = np.mean(self.filteredPressure)
         return temp, press
 
     def updateRefractionParameters(self) -> None:
-        """ """
         if not self.isValidRefractionSource():
             return
         if self.refractionSource == "directWeather":
@@ -262,7 +251,6 @@ class EnvironWeather:
             self.pressLast = press
 
     def updateSourceGui(self) -> None:
-        """ """
         for source in self.refractionSources:
             data = self.refractionSources[source]["data"]
             uiPost = self.refractionSources[source]["uiPost"]
@@ -272,7 +260,6 @@ class EnvironWeather:
                 guiSetText(ui, self.envFields[field]["format"], value)
 
     def clearSourceGui(self, source: str, sender) -> None:
-        """ """
         self.refractionSources[source]["data"].clear()
         self.ui.seeingIcon.setVisible(False)
         self.ui.seeing.setVisible(False)

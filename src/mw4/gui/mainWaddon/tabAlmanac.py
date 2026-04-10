@@ -66,18 +66,15 @@ class Almanac:
         self.ui.unitTimeUTC.toggled.connect(self.showMoonPhase)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         self.ui.almanacPrediction.currentIndexChanged.connect(self.showTwilightDataPlot)
         self.ui.almanacPrediction.setCurrentIndex(config.get("almanacPrediction", 0))
 
     def storeConfig(self) -> None:
-        """ """
         config = self.app.config["mainW"]
         config["almanacPrediction"] = self.ui.almanacPrediction.currentIndex()
 
     def setColors(self) -> None:
-        """ """
         self.ui.almanacCivil.setStyleSheet(f"background-color: {self.mainW.M_PRIM1};")
         self.ui.almanacNautical.setStyleSheet(f"background-color: {self.mainW.M_PRIM2};")
         self.ui.almanacAstronomical.setStyleSheet(f"background-color: {self.mainW.M_PRIM3};")
@@ -91,7 +88,6 @@ class Almanac:
         ]
 
     def updateColorSet(self) -> None:
-        """ """
         self.setColors()
         self.ui.twilight.colorChange()
         self.showTwilightDataList()
@@ -99,7 +95,6 @@ class Almanac:
         self.showMoonPhase()
 
     def plotTwilightData(self, result) -> None:
-        """ """
         ts, t, e = result
         xMin = int(t[0].tt) + 1
         xMax = int(t[-1].tt) - 1
@@ -152,7 +147,6 @@ class Almanac:
         changeStyleDynamic(self.ui.almanacGroup, "run", False)
 
     def listTwilightData(self, timeEvents, events):
-        """ """
         text = ""
         self.ui.twilightEvents.clear()
         self.ui.twilightEvents.setTextColor(QColor(self.mainW.M_PRIM))
@@ -168,7 +162,6 @@ class Almanac:
     def calcTwilightData(
         self, ts, location: GeographicPosition, tWinL: int, tWinH: int
     ) -> (list, list):
-        """ """
         timeJD = self.app.mount.obsSite.timeJD
         t0 = ts.tt_jd(int(timeJD.tt) - tWinL)
         t1 = ts.tt_jd(int(timeJD.tt) + tWinH + 1)
@@ -180,12 +173,10 @@ class Almanac:
     def workerCalcTwilightDataPlot(
         self, ts, location: GeographicPosition, timeWindow
     ) -> (list, list, list):
-        """ """
         t, e = self.calcTwilightData(ts, location, timeWindow, timeWindow)
         return ts, t, e
 
     def showTwilightDataPlot(self) -> None:
-        """ """
         timeWindowParam = [17, 32, 47, 92, 182]
         location = self.app.mount.obsSite.location
         if location is None:
@@ -205,7 +196,6 @@ class Almanac:
         self.app.threadPool.start(self.worker)
 
     def showTwilightDataList(self) -> None:
-        """ """
         location = self.app.mount.obsSite.location
         if location is None:
             return
@@ -216,7 +206,6 @@ class Almanac:
         self.listTwilightData(self.twilightTime[:8], self.twilightEvents[:8])
 
     def calcMoonPhase(self) -> list:
-        """ """
         ephemeris = self.app.ephemeris
         sun = ephemeris["sun"]
         moon = ephemeris["moon"]
@@ -266,7 +255,6 @@ class Almanac:
         return retVal
 
     def generateMoonMask(self, pixmap: QPixmap, mpDegree: float) -> QPixmap:
-        """ """
         colCover = QColor(self.mainW.M_BACK)
         colFree = QColor("transparent")
         colFrame = QColor(self.mainW.M_SEC1)
@@ -330,7 +318,6 @@ class Almanac:
         return moonMask
 
     def showMoonPhase(self) -> None:
-        """ """
         calcMoon = self.calcMoonPhase()
 
         mpIllumination, mpDegree, mpPercent, moonAngle = calcMoon[0:4]

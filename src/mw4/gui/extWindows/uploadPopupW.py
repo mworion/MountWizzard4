@@ -24,7 +24,6 @@ from PySide6.QtCore import Qt, Signal
 
 
 class UploadPopup(MWidget):
-    """ """
     PROGRESS_DONE = 100
     CYCLES_WAIT = 20
     signalProgress = Signal(object)
@@ -82,22 +81,18 @@ class UploadPopup(MWidget):
         self.setIcon()
 
     def setIcon(self) -> None:
-        """ """
         pixmap = svg2pixmap("assets/icon/upload_pop.svg", self.M_PRIM)
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
 
     def setProgressBarColor(self, colorstr: str) -> None:
-        """ """
         css = "QProgressBar::chunk {background-color: " + colorstr + ";}"
         self.ui.progressBar.setStyleSheet(css)
 
     def setProgressBarToValue(self, progressPercent: int) -> None:
-        """ """
         self.ui.progressBar.setValue(progressPercent)
 
     def setStatusTextToValue(self, statusText: str) -> None:
-        """ """
         self.ui.statusText.setText(statusText)
 
     def sendProgressValue(self, text: str) -> None:
@@ -106,13 +101,11 @@ class UploadPopup(MWidget):
         self.signalProgress.emit(progressValue)
 
     def pollDispatcherHelper(self, text: str) -> None:
-        """ """
         self.sendProgressValue("100")
         self.signalStatus.emit(text)
         self.pollStatusRunState = False
 
     def sendProgressStatus(self, text: list) -> None:
-        """ """
         if text == [""]:
             return
 
@@ -135,11 +128,9 @@ class UploadPopup(MWidget):
             self.sendProgressValue(text[-1])
 
     def generateURLStatus(self) -> str:
-        """ """
         return f"http://{str(self.url)}/bin/uploadst"
 
     def getStatus(self) -> list[str]:
-        """ """
         returnValues = requests.get(self.generateURLStatus(), timeout=1)
         self.returnValues["successMount"] = True
         if returnValues.status_code != 200:
@@ -149,14 +140,12 @@ class UploadPopup(MWidget):
         return returnValues.text.strip("\n").split("\n")
 
     def pollStatus(self) -> None:
-        """ """
         self.signalStatus.emit("Uploading data to mount...")
         while self.pollStatusRunState:
             text = self.getStatus()
             self.sendProgressStatus(text)
 
     def prepareFiles(self) -> dict:
-        """ """
         files = {}
         for dataType in self.dataTypes:
             if dataType not in self.dataNames:
@@ -170,11 +159,9 @@ class UploadPopup(MWidget):
         return files
 
     def generateURL(self) -> str:
-        """ """
         return f"http://{str(self.url)}/bin/upload"
 
     def deleteHostData(self) -> bool:
-        """ """
         returnValues = requests.delete(self.generateURL())
         if returnValues.status_code not in [200, 204]:
             self.log.debug(f"Error deleting files: {returnValues.status_code}")
@@ -182,7 +169,6 @@ class UploadPopup(MWidget):
         return True
 
     def postHostData(self, files: dict) -> bool:
-        """ """
         returnValues = requests.post(self.generateURL(), files=files)
         if returnValues.status_code != 202:
             self.log.debug(f"Error uploading data: {returnValues.status_code}")
@@ -190,7 +176,6 @@ class UploadPopup(MWidget):
         return True
 
     def uploadFileWorker(self) -> bool:
-        """ """
         if not self.deleteHostData():
             return False
         files = self.prepareFiles()
@@ -199,7 +184,6 @@ class UploadPopup(MWidget):
         return self.postHostData(files)
 
     def closePopup(self, result: bool) -> None:
-        """ """
         self.returnValues["success"] = result
         if not result:
             self.pollStatusRunState = False
@@ -216,7 +200,6 @@ class UploadPopup(MWidget):
         self.close()
 
     def uploadFile(self) -> None:
-        """ """
         self.worker = Worker(self.uploadFileWorker)
         self.workerStatus = Worker(self.pollStatus)
         self.worker.signals.result.connect(self.closePopup)

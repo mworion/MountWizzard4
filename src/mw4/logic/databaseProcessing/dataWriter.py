@@ -29,7 +29,6 @@ class DataWriter:
         self.app = app
 
     def writeEarthRotationData(self, dataFilePath: Path) -> bool:
-        """ """
         sourceDir = self.app.mwGlob["dataDir"]
         destDir = dataFilePath
         if destDir == sourceDir:
@@ -110,7 +109,6 @@ class DataWriter:
         return resultChar
 
     def generateCycleCountTextPacked(self, cycle: int) -> str:
-        """ """
         digit1Value = cycle % 10
         digit2Value = int(cycle / 10)
         cycleChar1 = f"{digit1Value:1d}"
@@ -121,7 +119,6 @@ class DataWriter:
 
     @staticmethod
     def generateCenturyPacked(century: str) -> str:
-        """ """
         centConvert = {"18": "I", "19": "J", "20": "K", "21": "L"}
         return centConvert.get(century, " ")
 
@@ -178,7 +175,6 @@ class DataWriter:
         return epochPackedText
 
     def generateOldDesignationPacked(self, numberText: str) -> str:
-        """ """
         if not numberText:
             return "xxxxxxx"
 

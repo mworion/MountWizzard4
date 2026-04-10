@@ -58,7 +58,6 @@ class ImageWindow(MWidget):
         self.tabs = ImageTabs(self)
 
     def initConfig(self) -> None:
-        """ """
         config = self.app.config.get("imageW", {})
         self.positionWindow(config)
         self.ui.color.setCurrentIndex(config.get("color", 0))
@@ -81,7 +80,6 @@ class ImageWindow(MWidget):
         self.tabs.setCrosshair()
 
     def storeConfig(self) -> None:
-        """ """
         configMain = self.app.config
         configMain["imageW"] = {}
         config = configMain["imageW"]
@@ -106,7 +104,6 @@ class ImageWindow(MWidget):
         config["timeTagImage"] = self.ui.timeTagImage.isChecked()
 
     def showWindow(self) -> None:
-        """ """
         self.fileHandler.signals.imageLoaded.connect(self.processPhotometry)
         self.photometry.signals.sepFinished.connect(self.resultPhotometry)
         self.app.update1s.connect(self.updateWindowsStats)
@@ -136,23 +133,19 @@ class ImageWindow(MWidget):
         self.show()
 
     def closeEvent(self, closeEvent) -> None:
-        """ """
         self.storeConfig()
         super().closeEvent(closeEvent)
 
     def setupIcons(self) -> None:
-        """ """
         self.wIcon(self.ui.load, "load")
 
     def colorChange(self) -> None:
-        """ """
         self.setStyleSheet(self.mw4Style)
         self.tabs.colorChange()
         self.setupIcons()
         self.showCurrent()
 
     def clearGui(self) -> None:
-        """ """
         self.ui.medianHFR.setText("")
         self.ui.hfrPercentile.setText("")
         self.ui.numberStars.setText("")
@@ -165,14 +158,12 @@ class ImageWindow(MWidget):
             self.ui.tabImage.setTabEnabled(i, False)
 
     def operationMode(self, status: int) -> None:
-        """ """
         if status == Model.STATUS_MODEL_BATCH:
             self.ui.groupImageActions.setEnabled(False)
         elif status == Model.STATUS_IDLE:
             self.ui.groupImageActions.setEnabled(True)
 
     def updateWindowsStats(self) -> None:
-        """ """
         if self.imagingDeviceStat.get("expose", False):
             self.ui.exposeN.setEnabled(False)
             self.ui.load.setEnabled(False)
@@ -212,7 +203,6 @@ class ImageWindow(MWidget):
             changeStyleDynamic(self.ui.solve, "run", False)
 
     def selectImage(self) -> None:
-        """ """
         self.imageFileName = self.openFile(
             self,
             "Select image file",
@@ -231,7 +221,6 @@ class ImageWindow(MWidget):
         self.app.showImage.emit(self.imageFileName)
 
     def copyLevels(self) -> None:
-        """ """
         level = self.ui.image.barItem.levels()
         self.ui.tiltSquare.barItem.setLevels(level)
         self.ui.tiltTriangle.barItem.setLevels(level)
@@ -239,7 +228,6 @@ class ImageWindow(MWidget):
         self.ui.imageSource.barItem.setLevels(level)
 
     def setAspectLocked(self) -> None:
-        """ """
         isLocked = self.ui.aspectLocked.isChecked()
         self.ui.image.p[0].setAspectLocked(isLocked)
         self.ui.imageSource.p[0].setAspectLocked(isLocked)
@@ -251,7 +239,6 @@ class ImageWindow(MWidget):
         self.ui.roundness.p[0].setAspectLocked(isLocked)
 
     def resultPhotometry(self) -> None:
-        """ """
         changeStyleDynamic(self.ui.photometryGroup, "run", False)
         if self.photometry.objs is None:
             self.msg.emit(2, "Image", "Photometry error", "Too low pixel stack")
@@ -259,7 +246,6 @@ class ImageWindow(MWidget):
             self.msg.emit(0, "Image", "Photometry", "SEP done")
 
     def processPhotometry(self) -> None:
-        """ """
         isPhotometry = self.ui.photometryGroup.isChecked()
         self.clearGui()
         if self.fileHandler.image is None or not isPhotometry:
@@ -272,7 +258,6 @@ class ImageWindow(MWidget):
         self.photometry.processPhotometry(self.fileHandler.image, snTarget)
 
     def showImage(self, imagePath: Path) -> None:
-        """ """
         if not imagePath.is_file():
             return
         changeStyleDynamic(self.ui.headerGroup, "run", True)
@@ -282,11 +267,9 @@ class ImageWindow(MWidget):
         self.fileHandler.loadImage(imagePath, flipH, flipV)
 
     def showCurrent(self) -> None:
-        """ """
         self.showImage(self.imageFileName)
 
     def exposeRaw(self, exposureTime: float, binning: int) -> None:
-        """ """
         timeString = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         if self.ui.timeTagImage.isChecked():
             self.imageFileName = self.app.mwGlob["imageDir"] / (timeString + "-exposure.fits")
@@ -299,7 +282,6 @@ class ImageWindow(MWidget):
         self.msg.emit(0, "Image", "Exposing", self.imageFileName.stem)
 
     def exposeImageDone(self, imagePath: Path) -> None:
-        """ """
         self.app.camera.signals.saved.disconnect(self.exposeImageDone)
         self.msg.emit(0, "Image", "Exposed", imagePath.stem)
         self.imageFileName = imagePath
@@ -310,20 +292,17 @@ class ImageWindow(MWidget):
         self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def exposeImage(self) -> None:
-        """ """
         self.app.operationRunning.emit(Model.STATUS_EXPOSE_1)
         self.imagingDeviceStat["expose"] = True
         self.app.camera.signals.saved.connect(self.exposeImageDone)
         self.exposeRaw(self.app.camera.exposureTime1, self.app.camera.binning1)
 
     def exposeImageNDone(self, imagePath: Path) -> None:
-        """ """
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
         self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
 
     def exposeImageN(self) -> None:
-        """ """
         self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
         self.msg.emit(1, "Image", "Expose", "Continuous start")
         self.imagingDeviceStat["exposeN"] = True
@@ -331,7 +310,6 @@ class ImageWindow(MWidget):
         self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
 
     def abortExpose(self) -> None:
-        """ """
         self.app.camera.abort()
         if self.imagingDeviceStat["expose"]:
             self.app.camera.signals.saved.disconnect(self.exposeImageDone)
@@ -345,7 +323,6 @@ class ImageWindow(MWidget):
         self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def solveDone(self, result: dict) -> None:
-        """ """
         self.imagingDeviceStat["solve"] = False
         self.app.plateSolve.signals.result.disconnect(self.solveDone)
 
@@ -372,7 +349,6 @@ class ImageWindow(MWidget):
         self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def solveImage(self, imagePath: Path) -> None:
-        """ """
         if not imagePath.is_file():
             return
 
@@ -383,16 +359,13 @@ class ImageWindow(MWidget):
         self.msg.emit(0, "Image", "Solving", imagePath.stem)
 
     def solveCurrent(self) -> None:
-        """ """
         self.signals.solveImage.emit(self.imageFileName)
 
     def abortSolve(self) -> None:
-        """ """
         self.app.plateSolve.abort()
         self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def slewDirect(self, ra: Angle, dec: Angle) -> None:
-        """ """
         if not self.app.deviceStat["mount"]:
             self.msg.emit(2, "Image", "Mount", "Mount is not connected")
             return
@@ -407,12 +380,10 @@ class ImageWindow(MWidget):
         self.slewInterface.slewTargetRaDec(ra, dec)
 
     def slewCenter(self) -> None:
-        """ """
         ra, dec = getCoordinatesFromHeader(self.fileHandler.header)
         self.slewDirect(ra, dec)
 
     def syncModelToImage(self) -> None:
-        """ """
         if not self.app.deviceStat["mount"]:
             self.msg.emit(2, "Image", "Mount", "Mount is not connected")
             return

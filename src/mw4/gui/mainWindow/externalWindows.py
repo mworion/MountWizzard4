@@ -172,7 +172,7 @@ class ExternalWindows:
             if not self.uiWindows[window]["classObj"]:
                 continue
             self.uiWindows[window]["classObj"].close()
-            sleepAndEvents(100)
+            sleepAndEvents(50)
 
     def collectWindows(self) -> None:
         i = 0

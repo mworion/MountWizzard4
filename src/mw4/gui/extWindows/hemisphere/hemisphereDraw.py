@@ -320,6 +320,7 @@ class HemisphereDraw(MWidget):
             pd.setBrush(pg.mkBrush(color=self.M_PINK + "20"))
             pd.setZValue(60)
             pd.nameStr = "pointer"
+            pd.setVisible(False)
             plotItem.addItem(pd)
 
     def drawPointer(self) -> None:

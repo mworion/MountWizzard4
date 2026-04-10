@@ -29,6 +29,7 @@ class MockApp(QObject):
     update0_1s = Signal()
     update1s = Signal()
     update3s = Signal()
+    update10s = Signal()
     update30s = Signal()
     update3m = Signal()
     update30m = Signal()
@@ -116,6 +117,15 @@ def test_emit_cyclic_update3s(mock_app, mgr):
 
     emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 21)
     assert "update3s" not in emitted
+
+
+def test_emit_cyclic_update10s(mock_app, mgr):
+    """update10s fires when (counter + 20) % 100 == 0, i.e. counter = 80,180,..."""
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 80)
+    assert "update10s" in emitted
+
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 81)
+    assert "update10s" not in emitted
 
 
 def test_emit_cyclic_update30s(mock_app, mgr):

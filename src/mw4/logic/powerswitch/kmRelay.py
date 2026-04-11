@@ -19,6 +19,7 @@ import requests
 import time
 from mw4.base.signalsDevices import Signals
 from PySide6.QtCore import QMutex, QTimer, Signal
+from typing import Any
 
 
 class RelaySignals(Signals):
@@ -37,12 +38,12 @@ class KMRelay:
     TIMEOUT = 0.5
     PULSEWIDTH = 0.5
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.signals = RelaySignals()
-        self.framework = ""
-        self.data = {}
-        self.defaultConfig = {
+        self.framework: str = ""
+        self.data: dict[str, Any] = {}
+        self.defaultConfig: dict[str, Any] = {
             "framework": "",
             "frameworks": {
                 "relay": {
@@ -53,15 +54,15 @@ class KMRelay:
                 }
             },
         }
-        self.run = {"relay": self}
+        self.run: dict[str, Any] = {"relay": self}
 
         self.mutexPoll = QMutex()
-        self.deviceName = ""
-        self.hostaddress = ""
-        self.user = ""
-        self.password = ""
-        self.status = [0] * 8
-        self.deviceConnected = False
+        self.deviceName: str = ""
+        self.hostaddress: str = ""
+        self.user: str = ""
+        self.password: str = ""
+        self.status: list[int] = [0] * 8
+        self.deviceConnected: bool = False
         self.timerTask = QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.cyclePolling)
@@ -77,7 +78,7 @@ class KMRelay:
         self.timerTask.stop()
         self.deviceConnected = False
 
-    def debugOutput(self, result: object) -> None:
+    def debugOutput(self, result: Any) -> None:
         if not result:
             self.log.info("No valid result")
             return
@@ -89,7 +90,7 @@ class KMRelay:
         elapsed = result.elapsed
         self.log.trace(f"Result: {url}, {reason}, {status}, {elapsed}, {text}")
 
-    def getRelay(self, url: str, debug: bool) -> str:
+    def getRelay(self, url: str, debug: bool = False) -> Any:
         if self.hostaddress is None:
             return ""
         if not self.mutexPoll.tryLock():
@@ -110,7 +111,7 @@ class KMRelay:
         self.mutexPoll.unlock()
         return result
 
-    def checkConnected(self, value: object) -> bool:
+    def checkConnected(self, value: Any) -> bool:
         """
         :return: success
         """

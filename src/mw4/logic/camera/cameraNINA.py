@@ -16,10 +16,11 @@
 from mw4.base.ninaClass import NINAClass
 from mw4.base.tpool import Worker
 from pathlib import Path
+from typing import Any
 
 
 class CameraNINA(NINAClass):
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.parent = parent
         self.app = parent.app

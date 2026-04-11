@@ -15,12 +15,13 @@
 ###########################################################
 
 from mw4.base.alpacaClass import AlpacaClass
+from typing import Any
 
 
 class PegasusUPBAlpaca(AlpacaClass):
     """ """
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.signals = parent.signals
         self.data = parent.data
@@ -151,7 +152,7 @@ class PegasusUPBAlpaca(AlpacaClass):
         val = self.data.get(f"POWER_CONTROL.POWER_CONTROL_{port}", True)
         self.setAlpacaProperty("setswitchvalue", Id=switchNumber, Value=not val)
 
-    def togglePowerPortBoot(self, port: str):
+    def togglePowerPortBoot(self, port: str) -> None:
         pass
 
     def toggleHubUSB(self) -> None:

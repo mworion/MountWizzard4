@@ -19,6 +19,7 @@ from datetime import datetime
 from mw4.mountcontrol.model import Model
 from pathlib import Path
 from skyfield.api import Angle, load
+from typing import Any
 
 log = logging.getLogger("MW4")
 ts = load.timescale()
@@ -45,7 +46,9 @@ degreeAngles = [
 ]
 
 
-def writeRetrofitData(mountModel: Model, buildModel: list[dict]) -> list:
+def writeRetrofitData(
+    mountModel: Model, buildModel: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
     for i, mPoint in enumerate(buildModel):
         mPoint["errorRMS"] = mountModel.starList[i].errorRMS
         mPoint["errorAngle"] = mountModel.starList[i].errorAngle
@@ -61,7 +64,7 @@ def writeRetrofitData(mountModel: Model, buildModel: list[dict]) -> list:
     return buildModel
 
 
-def convertFloatToAngle(model: list[dict]) -> list[dict]:
+def convertFloatToAngle(model: list[dict[str, Any]]) -> list[dict[str, Any]]:
     for mPoint in model:
         for key in mPoint:
             if key in hourAngles:
@@ -75,7 +78,7 @@ def convertFloatToAngle(model: list[dict]) -> list[dict]:
     return model
 
 
-def convertAngleToFloat(model: list[dict]) -> list[dict]:
+def convertAngleToFloat(model: list[dict[str, Any]]) -> list[dict[str, Any]]:
     for mPoint in model:
         for key in mPoint:
             if key in hourAngles:
@@ -89,7 +92,7 @@ def convertAngleToFloat(model: list[dict]) -> list[dict]:
     return model
 
 
-def loadModelsFromFile(modelFilesPath: list[Path]) -> tuple[list[dict], str]:
+def loadModelsFromFile(modelFilesPath: list[Path]) -> tuple[list[dict[str, Any]], str]:
     model = []
     for path in modelFilesPath:
         if not path.is_file():
@@ -134,7 +137,7 @@ def findKeysSourceInDest(buildModel: list[dict], refModel: list[dict]) -> tuple[
     return pointsIn, pointsOut
 
 
-def generateFileModelData(fileModel: Model) -> dict:
+def generateFileModelData(fileModel: list[dict[str, Any]]) -> dict[int, dict[str, Any]]:
     fileModelData = {}
 
     for star in fileModel:
@@ -148,7 +151,7 @@ def generateFileModelData(fileModel: Model) -> dict:
     return fileModelData
 
 
-def generateMountModelData(mountModel: Model) -> dict:
+def generateMountModelData(mountModel: Model) -> dict[int, dict[str, float]]:
     mountModelData = {}
 
     for star in mountModel.starList:
@@ -160,7 +163,9 @@ def generateMountModelData(mountModel: Model) -> dict:
     return mountModelData
 
 
-def compareFile(modelFilePath: Path, mountModelData: dict) -> tuple[list, list]:
+def compareFile(
+    modelFilePath: Path, mountModelData: dict[int, dict[str, float]]
+) -> tuple[list, list]:
     pointsIn = []
     pointsOut = []
 

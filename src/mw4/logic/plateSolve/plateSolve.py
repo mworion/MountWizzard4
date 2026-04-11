@@ -30,6 +30,7 @@ from mw4.logic.plateSolve.astap import ASTAP
 from mw4.logic.plateSolve.astrometry import Astrometry
 from mw4.logic.plateSolve.watney import Watney
 from pathlib import Path
+from typing import Any
 
 
 class PlateSolve:
@@ -40,14 +41,14 @@ class PlateSolve:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
-        self.solveQueue = queue.Queue()
+        self.solveQueue: queue.Queue = queue.Queue()
         self.solveLoopRunning: bool = False
-        self.worker = Worker(self.workerSolveLoop)
-        self.process = None
+        self.worker: Worker = Worker(self.workerSolveLoop)
+        self.process: subprocess.Popen | None = None
 
         self.data: dict = {}
         self.defaultConfig: dict = {"framework": "", "frameworks": {}}
@@ -62,7 +63,7 @@ class PlateSolve:
 
         self.signals.serverConnected.connect(self.startSolveLoop)
 
-    def runSolverBin(self, runnable: list) -> tuple[bool, str]:
+    def runSolverBin(self, runnable: list[Any]) -> tuple[bool, str]:
         timeStart = time.time()
         try:
             self.process = subprocess.Popen(
@@ -91,7 +92,9 @@ class PlateSolve:
         msg = self.run[self.framework].returnCodes.get(rCode, "Unknown code")
         return suc, msg
 
-    def prepareResult(self, suc: bool, msg: str, imagePath: Path, wcsPath: Path, update: bool):
+    def prepareResult(
+        self, suc: bool, msg: str, imagePath: Path, wcsPath: Path, update: bool
+    ) -> dict[str, Any]:
         result = {"success": False, "message": msg, "imagePath": imagePath}
         if not suc:
             self.log.warning(f"Error: [{imagePath.stem}], message: {msg}")

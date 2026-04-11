@@ -22,6 +22,7 @@ from mw4.base.tpool import Worker
 from mw4.mountcontrol.convert import valueToFloat
 from pathlib import Path
 from PySide6.QtCore import QObject, Signal
+from typing import Any
 from xisf import XISF
 
 
@@ -33,8 +34,8 @@ class FileHandler:
     log = logging.getLogger("MW4")
 
     def __init__(
-        self, parent, imagePath: Path = Path(), flipH: bool = False, flipV: bool = False
-    ):
+        self, parent: Any, imagePath: Path = Path(), flipH: bool = False, flipV: bool = False
+    ) -> None:
         self.threadPool = parent.app.threadPool
         self.signals = FileHandlerSignals()
         self.worker: Worker | None = None
@@ -116,7 +117,7 @@ class FileHandler:
                 break
 
     @staticmethod
-    def convHeaderXISF2FITS(header: dict) -> fits.Header:
+    def convHeaderXISF2FITS(header: dict[str, Any]) -> fits.Header:
         hdu = fits.PrimaryHDU()
         fitsHeaderNew = hdu.header
         fitsHeaderNew["NAXIS"] = 2

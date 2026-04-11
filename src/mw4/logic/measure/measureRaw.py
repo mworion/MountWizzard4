@@ -15,6 +15,7 @@
 ###########################################################
 import logging
 import PySide6
+from typing import Any
 
 
 class MeasureDataRaw(PySide6.QtCore.QObject):
@@ -24,14 +25,14 @@ class MeasureDataRaw(PySide6.QtCore.QObject):
     CYCLE_UPDATE_TASK = 1000
     MAXSIZE = 24 * 60 * 60
 
-    def __init__(self, app=None, parent=None, data=None):
+    def __init__(self, app: Any = None, parent: Any = None, data: Any = None) -> None:
         super().__init__()
 
         self.app = app
         self.parent = parent
         self.data = data
-        self.deviceName = "RAW"
-        self.defaultConfig = {
+        self.deviceName: str = "RAW"
+        self.defaultConfig: dict[str, Any] = {
             "raw": {
                 "deviceName": "display only",
             }

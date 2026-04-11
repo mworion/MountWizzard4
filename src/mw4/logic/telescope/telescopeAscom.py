@@ -14,16 +14,17 @@
 #
 ###########################################################
 from mw4.base.ascomClass import AscomClass
+from typing import Any
 
 
 class TelescopeAscom(AscomClass):
     """ """
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.signals = parent.signals
 
-    def workerGetInitialConfig(self):
+    def workerGetInitialConfig(self) -> None:
         super().workerGetInitialConfig()
 
         value = self.getAscomProperty("ApertureDiameter")

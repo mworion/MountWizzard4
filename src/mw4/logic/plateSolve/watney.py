@@ -16,6 +16,7 @@
 import logging
 import platform
 from pathlib import Path
+from typing import Any
 
 
 class Watney:
@@ -24,14 +25,14 @@ class Watney:
     log = logging.getLogger("MW4")
     returnCodes: dict = {0: "No errors", 1: "No solution"}
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         self.parent = parent
-        self.data = parent.data
-        self.tempDir = parent.app.mwGlob["tempDir"]
-        self.workDir = parent.app.mwGlob["workDir"]
+        self.data: dict[str, Any] = parent.data
+        self.tempDir: Path = parent.app.mwGlob["tempDir"]
+        self.workDir: Path = parent.app.mwGlob["workDir"]
 
-        self.result: dict = {"success": False}
-        self.process = None
+        self.result: dict[str, Any] = {"success": False}
+        self.process: Any = None
         self.deviceName: str = "Watney"
         self.indexPath = Path("")
         self.appPath = Path("")
@@ -61,7 +62,7 @@ class Watney:
         self.indexPath = self.workDir / "watney-index"
         self.saveConfigFile()
 
-    def solve(self, imagePath: Path, updateHeader: bool) -> dict:
+    def solve(self, imagePath: Path, updateHeader: bool) -> dict[str, Any]:
         isBlind = self.searchRadius == 180
         jsonPath = self.tempDir / "solve.json"
         wcsPath = self.tempDir / "temp.wcs"

@@ -19,6 +19,7 @@ import platform
 from mw4.logic.fits.fitsFunction import getHintFromImageFile
 from mw4.mountcontrol.convert import convertToDMS, convertToHMS
 from pathlib import Path
+from typing import Any
 
 
 class Astrometry:
@@ -42,12 +43,12 @@ class Astrometry:
         },
     }
 
-    def __init__(self, parent=None):
+    def __init__(self, parent: Any = None) -> None:
         self.parent = parent
-        self.data = parent.data
-        self.tempDir = parent.app.mwGlob["tempDir"]
-        self.result = {"success": False}
-        self.process = None
+        self.data: dict[str, Any] = parent.data
+        self.tempDir: Path = parent.app.mwGlob["tempDir"]
+        self.result: dict[str, Any] = {"success": False}
+        self.process: Any = None
         self.indexPath = Path("")
         self.appPath = Path("")
         self.setDefaultPath()
@@ -71,14 +72,14 @@ class Astrometry:
         self.indexPath = self.apps[platform.system()]["indexPath"]
         self.saveConfigFile()
 
-    def saveConfigFile(self):
+    def saveConfigFile(self) -> None:
         cfgFile = self.tempDir / "astrometry.cfg"
         with open(cfgFile, "w+") as outFile:
             outFile.write("cpulimit 300\n")
             outFile.write(f"add_path {self.indexPath}\n")
             outFile.write("autoindex\n")
 
-    def solve(self, imagePath: Path, updateHeader: bool) -> dict:
+    def solve(self, imagePath: Path, updateHeader: bool) -> dict[str, Any]:
         tempPath = self.tempDir / "temp.xy"
         configPath = self.tempDir / "astrometry.cfg"
         wcsPath = self.tempDir / "temp.wcs"

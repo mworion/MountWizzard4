@@ -16,15 +16,16 @@
 from astropy.io import fits
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.tpool import Worker
+from typing import Any
 
 
 class CameraAlpaca(AlpacaClass):
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
         self.signals = parent.signals
-        self.worker: Worker = None
+        self.worker: Worker | None = None
         super().__init__(parent=parent)
 
     def workerGetInitialConfig(self) -> None:

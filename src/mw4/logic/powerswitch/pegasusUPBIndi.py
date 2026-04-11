@@ -14,15 +14,16 @@
 #
 ###########################################################
 from mw4.base.indiClass import IndiClass
+from typing import Any
 
 
 class PegasusUPBIndi(IndiClass):
     """ """
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.signals = parent.signals
-        self.modelVersion = 0
+        self.modelVersion: int = 0
 
     def setUpdateConfig(self, deviceName: str) -> None:
         update = self.device.getNumber("POLLING")

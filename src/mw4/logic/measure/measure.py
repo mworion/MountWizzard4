@@ -20,24 +20,25 @@ from mw4.logic.measure.measureAddOns import measure
 from mw4.logic.measure.measureCSV import MeasureDataCSV
 from mw4.logic.measure.measureRaw import MeasureDataRaw
 from PySide6.QtCore import QMutex
+from typing import Any
 
 
 class MeasureData:
     log = logging.getLogger("MW4")
     MAXSIZE = 48 * 60 * 60
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
         self.signals = Signals()
         self.mutexMeasure = QMutex()
         self.shorteningStart: bool = True
-        self.data: dict = {}
-        self.devices: dict = {}
+        self.data: dict[str, Any] = {}
+        self.devices: dict[str, Any] = {}
         self.deviceName: str = ""
-        self.defaultConfig = {"framework": "", "frameworks": {}}
+        self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
         self.framework: str = ""
-        self.run = {
+        self.run: dict[str, Any] = {
             "raw": MeasureDataRaw(self.app, self, self.data),
             "csv": MeasureDataCSV(self.app, self, self.data),
         }

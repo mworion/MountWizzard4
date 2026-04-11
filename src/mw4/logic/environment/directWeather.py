@@ -16,6 +16,7 @@
 import logging
 from mw4.base.signalsDevices import Signals
 from mw4.mountcontrol.setting import Setting
+from typing import Any
 
 
 class DirectWeather:
@@ -23,21 +24,21 @@ class DirectWeather:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, app=None):
+    def __init__(self, app: Any = None) -> None:
         self.app = app
         self.signals = Signals()
 
         # minimum set for driver package built in
-        self.framework = ""
-        self.run = {"directWeather": self}
-        self.deviceName = ""
-        self.data = {}
-        self.defaultConfig = {
+        self.framework: str = ""
+        self.run: dict[str, Any] = {"directWeather": self}
+        self.deviceName: str = ""
+        self.data: dict[str, Any] = {}
+        self.defaultConfig: dict[str, Any] = {
             "framework": "",
             "frameworks": {"directWeather": {"deviceName": "On Mount"}},
         }
-        self.running = False
-        self.enabled = False
+        self.running: bool = False
+        self.enabled: bool = False
         self.app.mount.signals.settingDone.connect(self.updateData)
 
     def startCommunication(self) -> None:
@@ -53,7 +54,7 @@ class DirectWeather:
 
     def updateData(self, sett: Setting) -> None:
         if not self.enabled:
-            return False
+            return
 
         value1 = sett.weatherTemperature
         value2 = sett.weatherPressure

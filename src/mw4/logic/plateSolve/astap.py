@@ -16,6 +16,7 @@
 import logging
 import platform
 from pathlib import Path
+from typing import Any
 
 
 class ASTAP:
@@ -58,13 +59,13 @@ class ASTAP:
         -9: "Process aborted",
     }
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         self.parent = parent
-        self.data = parent.data
-        self.tempDir = parent.app.mwGlob["tempDir"]
+        self.data: dict[str, Any] = parent.data
+        self.tempDir: Path = parent.app.mwGlob["tempDir"]
 
-        self.result: dict = {"success": False}
-        self.process = None
+        self.result: dict[str, Any] = {"success": False}
+        self.process: Any = None
         self.indexPath: Path = Path()
         self.appPath: Path = Path()
         self.binPath: Path = Path()
@@ -88,7 +89,7 @@ class ASTAP:
         self.indexPath = self.apps[platform.system()]["indexPath"]
         self.binPath = self.appPath / self.GUI
 
-    def solve(self, imagePath: Path, updateHeader: bool) -> dict:
+    def solve(self, imagePath: Path, updateHeader: bool) -> dict[str, Any]:
         tempPath = self.tempDir / "temp"
         wcsPath = self.tempDir / "temp.wcs"
         wcsPath.unlink(missing_ok=True)

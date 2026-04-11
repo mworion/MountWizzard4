@@ -20,6 +20,7 @@ from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker
 from pathlib import Path
 from PySide6.QtCore import Signal
+from typing import Any
 
 
 class SeeingWeatherSignals(Signals):
@@ -33,19 +34,19 @@ class SeeingWeather:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, app=None):
+    def __init__(self, app: Any = None) -> None:
         super().__init__()
         self.app = app
         self.threadPool = app.threadPool
         self.signals = SeeingWeatherSignals()
         self.location = app.mount.obsSite.location
-        self.b = ""
-        self.framework = ""
-        self.run = {"seeing": self}
-        self.deviceName = ""
-        self.data = {}
-        self.worker: Worker = None
-        self.defaultConfig = {
+        self.b: str = ""
+        self.framework: str = ""
+        self.run: dict[str, Any] = {"seeing": self}
+        self.deviceName: str = ""
+        self.data: dict[str, Any] = {}
+        self.worker: Worker | None = None
+        self.defaultConfig: dict[str, Any] = {
             "framework": "",
             "frameworks": {
                 "seeing": {

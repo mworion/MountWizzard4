@@ -14,12 +14,13 @@
 #
 ###########################################################
 from mw4.base.ascomClass import AscomClass
+from typing import Any
 
 
 class SensorWeatherAscom(AscomClass):
     """ """
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.signals = parent.signals
 

@@ -17,6 +17,7 @@ import csv
 import logging
 import PySide6
 from pathlib import Path
+from typing import Any
 
 
 class MeasureDataCSV(PySide6.QtCore.QObject):
@@ -29,21 +30,21 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
     # maximum size of measurement task
     MAXSIZE = 24 * 60 * 60
 
-    def __init__(self, app=None, parent=None, data=None):
+    def __init__(self, app: Any = None, parent: Any = None, data: Any = None) -> None:
         super().__init__()
 
         self.app = app
         self.parent = parent
         self.data = data
-        self.deviceName = "CSV"
+        self.deviceName: str = "CSV"
         self.csvFilename: Path = Path()
-        self.defaultConfig = {
+        self.defaultConfig: dict[str, Any] = {
             "csv": {
                 "deviceName": "save to file",
             }
         }
-        self.csvFile = None
-        self.csvWriter = None
+        self.csvFile: Any = None
+        self.csvWriter: Any = None
 
         # time for measurement
         self.timerTask = PySide6.QtCore.QTimer()

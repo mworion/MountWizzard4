@@ -14,10 +14,11 @@
 #
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
+from typing import Any
 
 
 class CoverAlpaca(AlpacaClass):
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.parent = parent
         self.alpacaSignals = parent.signals

@@ -14,13 +14,14 @@
 #
 ###########################################################
 from mw4.base.indiClass import IndiClass
+from typing import Any
 
 
 class DomeIndi(IndiClass):
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.signals = parent.signals
-        self.lastAzimuth = None
+        self.lastAzimuth: float | None = None
         self.app.update1s.connect(self.updateStatus)
 
     def updateStatus(self) -> None:
@@ -118,7 +119,7 @@ class DomeIndi(IndiClass):
 
         position = self.device.getSwitch("DOME_MOTION")
         if "DOME_CW" not in position:
-            return False
+            return
 
         position["DOME_CW"] = "Off"
         position["DOME_CCW"] = "On"

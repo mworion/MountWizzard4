@@ -14,10 +14,11 @@
 #
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
+from typing import Any
 
 
 class FilterAlpaca(AlpacaClass):
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.signals = parent.signals
         self.data = parent.data

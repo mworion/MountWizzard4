@@ -21,12 +21,12 @@ log = logging.getLogger()
 profileVersion = "4.3"
 
 
-def defaultConfig() -> dict:
+def defaultConfig() -> dict[str, str]:
     config = {"profileName": "config", "version": profileVersion}
     return config
 
 
-def loadConfig(loadConfigPath: Path) -> dict:
+def loadConfig(loadConfigPath: Path) -> dict[str, str]:
     with open(loadConfigPath) as configFile:
         config = yaml.safe_load(configFile)
         if not config:
@@ -38,7 +38,7 @@ def loadConfig(loadConfigPath: Path) -> dict:
     return config
 
 
-def loadProfileStart(configDir: Path) -> dict:
+def loadProfileStart(configDir: Path) -> dict[str, str]:
     config = defaultConfig()
     profilePath = configDir / "profile"
     if not profilePath.exists():

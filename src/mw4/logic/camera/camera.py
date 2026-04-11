@@ -24,6 +24,7 @@ from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.camera.cameraIndi import CameraIndi
 from mw4.logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
 from pathlib import Path
+from typing import Any
 
 if platform.system() == "Windows":
     from mw4.logic.camera.cameraAscom import CameraAscom
@@ -34,7 +35,7 @@ if platform.system() == "Windows":
 class Camera:
     log = logging.getLogger("MW4")
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.obsSite = app.mount.obsSite
@@ -80,11 +81,11 @@ class Camera:
         self.app.mount.signals.pointDone.connect(self.setObsSite)
 
     @property
-    def binning(self):
+    def binning(self) -> int:
         return self._binning
 
     @binning.setter
-    def binning(self, value: int):
+    def binning(self, value: int) -> None:
         value = int(value)
         if (1 <= value <= 4) and "CCD_BINNING.HOR_BIN" in self.data:
             self._binning = value
@@ -93,11 +94,11 @@ class Camera:
         self.subFrame = self._subFrame
 
     @property
-    def subFrame(self):
+    def subFrame(self) -> int:
         return self._subFrame
 
     @subFrame.setter
-    def subFrame(self, value: int):
+    def subFrame(self, value: int) -> None:
         maxX = int(self.data.get("CCD_INFO.CCD_MAX_X", 0))
         maxY = int(self.data.get("CCD_INFO.CCD_MAX_Y", 0))
         if 10 <= value < 100:
@@ -121,7 +122,7 @@ class Camera:
             self.posXASCOM = 0
             self.posYASCOM = 0
 
-    def setObsSite(self, obsSite):
+    def setObsSite(self, obsSite: Any) -> None:
         self.obsSite = obsSite
 
     def startCommunication(self) -> None:
@@ -168,7 +169,7 @@ class Camera:
     def sendGain(self, gain: int = 0) -> None:
         self.run[self.framework].sendGain(gain=gain)
 
-    def waitExposed(self, exposureTime: float, func: Callable) -> None:
+    def waitExposed(self, exposureTime: float, func: Callable[[], bool]) -> None:
         timeLeft = exposureTime
         while self.exposing and func():
             text = f"expose {timeLeft:3.0f} s"
@@ -193,11 +194,11 @@ class Camera:
         while self.exposing and "image is ready" in self.data.get("Device.Message"):
             sleepAndEvents(200)
 
-    def waitFinish(self, function: Callable, param: dict) -> None:
+    def waitFinish(self, function: Callable[..., bool], param: Any) -> None:
         while self.exposing and not function(param):
             sleepAndEvents(200)
 
-    def retrieveImage(self, function: Callable, param: dict) -> np.ndarray:
+    def retrieveImage(self, function: Callable[..., Any], param: Any) -> np.ndarray:
         if not self.exposing:
             return np.array([], dtype=np.uint16)
 

@@ -13,8 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-satBaseUrl = "http://www.celestrak.org/NORAD/elements/gp.php?"
-satSourceURLs = {
+satBaseUrl: str = "http://www.celestrak.org/NORAD/elements/gp.php?"
+satSourceURLs: dict[str, dict[str, str | bool]] = {
     "100 brightest": {
         "url": satBaseUrl + "GROUP=visual&FORMAT=tle",
         "file": "visual.txt",
@@ -87,8 +87,8 @@ satSourceURLs = {
     },
 }
 
-mpcBaseUrl = "https://www.minorplanetcenter.net/Extended_Files/"
-cometSourceURLs = {
+mpcBaseUrl: str = "https://www.minorplanetcenter.net/Extended_Files/"
+cometSourceURLs: dict[str, dict[str, str | bool]] = {
     "Comets Current": {
         "url": mpcBaseUrl + "cometels.json.gz",
         "file": "cometels.json",
@@ -96,7 +96,7 @@ cometSourceURLs = {
     },
 }
 
-asteroidSourceURLs = {
+asteroidSourceURLs: dict[str, dict[str, str | bool]] = {
     "Asteroids Daily": {
         "url": mpcBaseUrl + "nea_extended.json.gz",
         "file": "nea_extended.json",

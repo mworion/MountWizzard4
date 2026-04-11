@@ -19,6 +19,7 @@ from mw4.base.signalsDevices import Signals
 from mw4.logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
 from mw4.logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
 from mw4.logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
+from typing import Any
 
 
 class PegasusUPB:
@@ -26,17 +27,17 @@ class PegasusUPB:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
-        self.data = {}
+        self.data: dict[str, Any] = {}
         self.loadConfig: bool = True
         self.updateRate: int = 1000
         self.deviceType: str = ""
-        self.defaultConfig = {"framework": "", "frameworks": {}}
-        self.framework = ""
-        self.run = {
+        self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
+        self.framework: str = ""
+        self.run: dict[str, Any] = {
             "indi": PegasusUPBIndi(self),
             "alpaca": PegasusUPBAlpaca(self),
         }

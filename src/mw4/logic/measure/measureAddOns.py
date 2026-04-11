@@ -14,7 +14,7 @@
 #
 ###########################################################
 
-measure = {
+measure: dict[str, list[str]] = {
     "mount": [
         "deltaRaJNow",
         "deltaDecJNow",

@@ -16,10 +16,11 @@
 from mw4.base.sgproClass import SGProClass
 from mw4.base.tpool import Worker
 from pathlib import Path
+from typing import Any
 
 
 class CameraSGPro(SGProClass):
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         self.parent = parent
         self.app = parent.app
         self.data = parent.data

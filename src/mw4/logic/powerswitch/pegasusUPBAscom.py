@@ -14,12 +14,13 @@
 #
 ###########################################################
 from mw4.base.ascomClass import AscomClass
+from typing import Any
 
 
 class PegasusUPBAscom(AscomClass):
     """ """
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.signals = parent.signals
 
@@ -68,7 +69,7 @@ class PegasusUPBAscom(AscomClass):
 
     def togglePowerPort(self, port: str) -> None:
         if not self.deviceConnected:
-            return False
+            return
 
         switchNumber = int(port) - 1
         val = self.data.get(f"POWER_CONTROL.POWER_CONTROL_{port}", True)
@@ -80,7 +81,7 @@ class PegasusUPBAscom(AscomClass):
     def toggleHubUSB(self) -> None:
         pass
 
-    def togglePortUSB(self, port: str):
+    def togglePortUSB(self, port: str) -> None:
         if not self.deviceConnected:
             return
 

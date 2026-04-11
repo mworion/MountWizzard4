@@ -21,6 +21,7 @@ from skyfield import almanac
 from skyfield.api import EarthSatellite, Time
 from skyfield.toposlib import GeographicPosition
 from skyfield.units import Angle
+from typing import Any
 
 
 def findSunlit(sat: EarthSatellite, ephemeris, tEvent: tuple) -> bool:
@@ -30,12 +31,12 @@ def findSunlit(sat: EarthSatellite, ephemeris, tEvent: tuple) -> bool:
 
 def findSatUp(
     sat: EarthSatellite, loc: GeographicPosition, tStart: float, tEnd: float, alt: float
-) -> list:
+) -> list[Time]:
     t, events = sat.find_events(loc, tStart, tEnd, altitude_degrees=alt)
     return t[np.equal(events, 1)][:1]
 
 
-def checkTwilight(ephemeris, loc: GeographicPosition, data: list) -> int:
+def checkTwilight(ephemeris: Any, loc: GeographicPosition, data: list[Time]) -> int:
     if not len(data):
         return 5
 
@@ -59,7 +60,7 @@ def findRangeRate(
 
 
 def calcSatSunPhase(
-    sat: EarthSatellite, loc: GeographicPosition, ephemeris, tEv: float
+    sat: EarthSatellite, loc: GeographicPosition, ephemeris: Any, tEv: float
 ) -> Angle:
     """
     https://stackoverflow.com/questions/19759501
@@ -77,7 +78,7 @@ def calcSatSunPhase(
 
 
 def calcAppMag(
-    sat: EarthSatellite, loc: GeographicPosition, ephemeris, satRange, tEv: float
+    sat: EarthSatellite, loc: GeographicPosition, ephemeris: Any, satRange: float, tEv: float
 ) -> float:
     """
     solution base on the work from:
@@ -130,7 +131,9 @@ def calcPassEvents(
     return times, events
 
 
-def collectAllOrbits(times: list, events: list, obsSite: ObsSite) -> list:
+def collectAllOrbits(
+    times: list[Time], events: list[int], obsSite: ObsSite
+) -> list[dict[str, Time]]:
     counter = 0
     satOrbits = []
     for ti, event in zip(times, events):

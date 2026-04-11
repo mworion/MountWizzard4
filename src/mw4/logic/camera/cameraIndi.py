@@ -19,11 +19,12 @@ from astropy.io.fits import HDUList
 from io import BytesIO
 from mw4.base.indiClass import IndiClass
 from mw4.base.tpool import Worker
+from typing import Any
 from xisf import XISF
 
 
 class CameraIndi(IndiClass):
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.parent = parent
         self.app = parent.app

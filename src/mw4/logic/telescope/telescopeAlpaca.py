@@ -14,17 +14,18 @@
 #
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
+from typing import Any
 
 
 class TelescopeAlpaca(AlpacaClass):
     """ """
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.signals = parent.signals
         self.data = parent.data
 
-    def workerGetInitialConfig(self):
+    def workerGetInitialConfig(self) -> None:
         super().workerGetInitialConfig()
         self.getAndStoreAlpacaProperty("aperturediameter", "TELESCOPE_INFO.TELESCOPE_APERTURE")
         self.getAndStoreAlpacaProperty("focallength", "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH")

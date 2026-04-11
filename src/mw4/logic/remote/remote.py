@@ -16,21 +16,22 @@
 import logging
 from mw4.base.signalsDevices import Signals
 from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSocket
+from typing import Any
 
 
 class Remote:
     log = logging.getLogger("MW4")
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         self.signals = Signals()
         self.app = app
-        self.data = {}
-        self.defaultConfig = {
+        self.data: dict[str, Any] = {}
+        self.defaultConfig: dict[str, Any] = {
             "framework": "",
             "frameworks": {"tcp": {"deviceName": "TCP"}},
         }
         self.framework: str = ""
-        self.run: dict = {"tcp": self}
+        self.run: dict[str, Any] = {"tcp": self}
         self.deviceName: str = ""
         self.clientConnection: QTcpSocket | None = None
         self.tcpServer: QTcpServer | None = None

@@ -20,6 +20,7 @@ from mw4.logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
 from mw4.logic.environment.sensorWeatherBoltwood import SensorWeatherBoltwood
 from mw4.logic.environment.sensorWeatherIndi import SensorWeatherIndi
 from mw4.logic.environment.sensorWeatherOnline import SensorWeatherOnline
+from typing import Any
 
 if platform.system() == "Windows":
     from mw4.logic.environment.sensorWeatherAscom import SensorWeatherAscom
@@ -30,17 +31,17 @@ class SensorWeather:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
-        self.data = {}
+        self.data: dict[str, Any] = {}
         self.loadConfig: bool = True
         self.updateRate: int = 1000
         self.deviceType: str = ""
-        self.defaultConfig = {"framework": "", "frameworks": {}}
-        self.framework = ""
-        self.run = {
+        self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
+        self.framework: str = ""
+        self.run: dict[str, Any] = {
             "indi": SensorWeatherIndi(self),
             "alpaca": SensorWeatherAlpaca(self),
             "boltwood": SensorWeatherBoltwood(self),

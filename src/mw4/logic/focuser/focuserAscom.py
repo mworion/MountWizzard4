@@ -14,14 +14,15 @@
 #
 ###########################################################
 from mw4.base.ascomClass import AscomClass
+from typing import Any
 
 
 class FocuserAscom(AscomClass):
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.signals = parent.signals
 
-    def workerPollData(self):
+    def workerPollData(self) -> None:
         self.getAndStoreAscomProperty("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
 
     def move(self, position: int) -> None:

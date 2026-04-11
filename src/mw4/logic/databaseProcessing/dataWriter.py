@@ -17,6 +17,7 @@ import logging
 import shutil
 from pathlib import Path
 from sgp4.exporter import export_tle
+from typing import Any
 
 
 class DataWriter:
@@ -24,7 +25,7 @@ class DataWriter:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
 
@@ -41,7 +42,7 @@ class DataWriter:
         return True
 
     @staticmethod
-    def writeCometMPC(datas: list, dataFilePath: Path) -> None:
+    def writeCometMPC(datas: list[dict[str, Any]], dataFilePath: Path) -> None:
         """
         data format of json and file description in
         https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
@@ -184,7 +185,7 @@ class DataWriter:
 
         return designationPacked
 
-    def writeAsteroidMPC(self, datas: list, dataFilePath: Path) -> None:
+    def writeAsteroidMPC(self, datas: list[dict[str, Any]], dataFilePath: Path) -> None:
         """
         data format of json and file description in
         https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
@@ -276,7 +277,7 @@ class DataWriter:
                 f.write(line)
 
     @staticmethod
-    def writeSatelliteTLE(datas: list, dataFilePath: Path) -> None:
+    def writeSatelliteTLE(datas: list[Any], dataFilePath: Path) -> None:
         """
         data format of TLE and file description in
         """

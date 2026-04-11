@@ -17,10 +17,12 @@ import logging
 import numpy as np
 import platform
 import PySide6
+from collections.abc import Callable
 from mw4.base.signalsDevices import Signals
 from mw4.base.transform import diffModulusAbs
 from mw4.logic.dome.domeAlpaca import DomeAlpaca
 from mw4.logic.dome.domeIndi import DomeIndi
+from typing import Any
 
 if platform.system() == "Windows":
     from mw4.logic.dome.domeAscom import DomeAscom
@@ -29,19 +31,19 @@ if platform.system() == "Windows":
 class Dome:
     log = logging.getLogger("MW4")
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.loadConfig: bool = True
         self.updateRate: int = 1000
         self.deviceType: str = ""
-        self.data = {
+        self.data: dict[str, Any] = {
             "Slewing": False,
         }
-        self.defaultConfig = {"framework": "", "frameworks": {}}
-        self.framework = ""
-        self.run = {
+        self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
+        self.framework: str = ""
+        self.run: dict[str, Any] = {
             "indi": DomeIndi(self),
             "alpaca": DomeAlpaca(self),
         }
@@ -52,19 +54,19 @@ class Dome:
         for fw in self.run:
             self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
-        self.useGeometry = False
-        self.useDynamicFollowing = False
-        self.isSlewing = False
-        self.overshoot = None
-        self.domeStarted = False
-        self.lastFinalAz = None
-        self.avoidFirstSlewOvershoot = True
-        self.openingHysteresis = None
-        self.clearanceZenith = None
-        self.radius = None
-        self.clearOpening = None
-        self.counterStartSlewing = -1
-        self.settlingTime = 0
+        self.useGeometry: bool = False
+        self.useDynamicFollowing: bool = False
+        self.isSlewing: bool = False
+        self.overshoot: float | None = None
+        self.domeStarted: bool = False
+        self.lastFinalAz: float | None = None
+        self.avoidFirstSlewOvershoot: bool = True
+        self.openingHysteresis: float | None = None
+        self.clearanceZenith: float | None = None
+        self.radius: float | None = None
+        self.clearOpening: float | None = None
+        self.counterStartSlewing: int = -1
+        self.settlingTime: float = 0
         self.settlingWait = PySide6.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
@@ -182,7 +184,7 @@ class Dome:
         self.log.debug(f"Slew needed: [{slewNeeded}]")
         return slewNeeded
 
-    def calcSlewTarget(self, altitude: float, azimuth: float, func: callable) -> tuple:
+    def calcSlewTarget(self, altitude: float, azimuth: float, func: Callable) -> tuple:
         if self.useGeometry:
             alt, az, intersect, _, _ = func()
 

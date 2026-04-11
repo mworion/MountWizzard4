@@ -14,12 +14,13 @@
 #
 ###########################################################
 from mw4.base.ascomClass import AscomClass
+from typing import Any
 
 
 class CoverAscom(AscomClass):
     coverStates = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
 
-    def __init__(self, parent) -> None:
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
 
         self.signals = parent.signals

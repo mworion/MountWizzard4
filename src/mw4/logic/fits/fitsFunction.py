@@ -27,6 +27,7 @@ from mw4.mountcontrol.convert import (
 )
 from pathlib import Path
 from skyfield.units import Angle
+from typing import Any
 
 log = logging.getLogger()
 
@@ -118,7 +119,7 @@ def calcAngleScaleFromWCSHeader(header: fits.Header) -> tuple[Angle, float, bool
     return angle, scale, mirrored
 
 
-def writeHeaderCamera(header: fits.Header, camera) -> fits.Header:
+def writeHeaderCamera(header: fits.Header, camera: Any) -> fits.Header:
     data = camera.data
     header.append(("OBJECT", "SKY_OBJECT", "default name from MW4"))
     header.append(("AUTHOR", "MountWizzard4", "default name from MW4"))
@@ -146,14 +147,14 @@ def writeHeaderCamera(header: fits.Header, camera) -> fits.Header:
     return header
 
 
-def writeHeaderPointing(header: fits.Header, camera) -> fits.Header:
+def writeHeaderPointing(header: fits.Header, camera: Any) -> fits.Header:
     ra, dec = JNowToJ2000(camera.obsSite.raJNow, camera.obsSite.decJNow, camera.obsSite.timeJD)
     header.append(("RA", ra._degrees, "Float value in degree"))
     header.append(("DEC", dec.degrees, "Float value in degree"))
     return header
 
 
-def writeSolutionToHeader(header: fits.Header, solution: dict) -> fits.Header:
+def writeSolutionToHeader(header: fits.Header, solution: dict[str, Any]) -> fits.Header:
     header.append(("RA", solution["raJ2000S"]._degrees, "MW4 - processed"))
     header.append(("DEC", solution["decJ2000S"].degrees, "MW4 - processed"))
     header.append(("SCALE", solution["scaleS"], "MW4 - processed"))
@@ -163,12 +164,14 @@ def writeSolutionToHeader(header: fits.Header, solution: dict) -> fits.Header:
     return header
 
 
-def updateImageFileHeaderWithSolution(imagePath: Path, solution: dict) -> None:
+def updateImageFileHeaderWithSolution(imagePath: Path, solution: dict[str, Any]) -> None:
     with fits.open(imagePath, mode="update", output_verify="silentfix+warn") as HDU:
         HDU[0].header = writeSolutionToHeader(HDU[0].header, solution)
 
 
-def getSolutionFromWCSHeader(wcsHeader: fits.Header, imageHeader: fits.Header) -> dict:
+def getSolutionFromWCSHeader(
+    wcsHeader: fits.Header, imageHeader: fits.Header
+) -> dict[str, Any]:
     """
     CRVAL1 and CRVAL2 give the center coordinate as right ascension and
     declination or longitude and latitude in decimal degrees.

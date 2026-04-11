@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-def generateAlignStars() -> dict:
+def generateAlignStars() -> dict[str, list[float]]:
     """
     generateAlignStars is the function where the alignment stars which were
     present in the mount computer from hipparcos catalogue are stored. for a

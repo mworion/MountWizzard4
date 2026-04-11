@@ -15,6 +15,7 @@
 ###########################################################
 import logging
 from pathlib import Path
+from typing import Any
 
 
 class SensorWeatherBoltwood:
@@ -22,15 +23,15 @@ class SensorWeatherBoltwood:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         self.parent = parent
         self.app = parent.app
-        self.data = parent.data
+        self.data: dict[str, Any] = parent.data
         self.signals = parent.signals
         self.enabled: bool = False
         self.filePath: str = ""
         self.deviceConnected: bool = False
-        self.defaultConfig = {
+        self.defaultConfig: dict[str, Any] = {
             "deviceName": "Boltwood II",
             "filePath": "",
         }

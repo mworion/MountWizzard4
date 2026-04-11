@@ -19,6 +19,7 @@ import numpy as np
 import requests
 from mw4.base.tpool import Worker
 from pathlib import Path
+from typing import Any
 
 
 class SensorWeatherOnline:
@@ -26,16 +27,16 @@ class SensorWeatherOnline:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         self.parent = parent
         self.app = parent.app
-        self.data = parent.data
+        self.data: dict[str, Any] = parent.data
         self.signals = parent.signals
         self.location = parent.app.mount.obsSite.location
         self.threadPool = parent.app.threadPool
-        self.worker: Worker = None
+        self.worker: Worker | None = None
         self.running: bool = False
-        self.defaultConfig: dict = {
+        self.defaultConfig: dict[str, Any] = {
             "deviceName": "OnlineWeather",
             "apiKey": "",
             "hostaddress": "api.openweathermap.org",

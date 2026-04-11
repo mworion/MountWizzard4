@@ -14,6 +14,7 @@
 #
 ###########################################################
 from mw4.base.ascomClass import AscomClass
+from typing import Any
 
 
 class FilterAscom(AscomClass):
@@ -21,7 +22,7 @@ class FilterAscom(AscomClass):
 
     CYCLE_POLL_DATA = 1000
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.signals = parent.signals
 

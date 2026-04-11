@@ -18,6 +18,7 @@ import platform
 from mw4.base.signalsDevices import Signals
 from mw4.logic.telescope.telescopeAlpaca import TelescopeAlpaca
 from mw4.logic.telescope.telescopeIndi import TelescopeIndi
+from typing import Any
 
 if platform.system() == "Windows":
     from mw4.logic.telescope.telescopeAscom import TelescopeAscom
@@ -26,17 +27,17 @@ if platform.system() == "Windows":
 class Telescope:
     log = logging.getLogger("MW4")
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
-        self.data = {}
+        self.data: dict[str, Any] = {}
         self.loadConfig: bool = True
         self.updateRate: int = 10000
         self.deviceType: str = ""
-        self.framework = ""
-        self.defaultConfig = {"framework": "", "frameworks": {}}
-        self.run = {
+        self.framework: str = ""
+        self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
+        self.run: dict[str, Any] = {
             "indi": TelescopeIndi(self),
             "alpaca": TelescopeAlpaca(self),
         }

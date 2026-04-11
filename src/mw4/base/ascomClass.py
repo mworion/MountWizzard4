@@ -15,7 +15,8 @@
 ###########################################################
 import platform
 import time
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 if platform.system() == "Windows":
     from pythoncom import CoInitialize, CoUninitialize
@@ -191,7 +192,14 @@ class AscomClass(DriverData):
         fn(*args, **kwargs)
         CoUninitialize()
 
-    def callMethodThreaded(self, fn: Callable[..., Any], *args: Any, cb_res: Callable | None = None, cb_fin: Callable | None = None, **kwargs: Any) -> None:
+    def callMethodThreaded(
+        self,
+        fn: Callable[..., Any],
+        *args: Any,
+        cb_res: Callable | None = None,
+        cb_fin: Callable | None = None,
+        **kwargs: Any,
+    ) -> None:
         """
         callMethodThreaded is done mainly for ASCOM ctypes interfaces which take
         longer to end and should not slow down the gui thread itself. All called

@@ -319,7 +319,9 @@ class KeyPad:
         message = message + [3]
         self.send(message)
 
-    def on_data(self, ws: websocket.WebSocketApp, data: list, typeOpcode: int, cont: bool) -> None:
+    def on_data(
+        self, ws: websocket.WebSocketApp, data: list, typeOpcode: int, cont: bool
+    ) -> None:
         result = []
         started = False
         for i in range(len(data)):
@@ -335,7 +337,9 @@ class KeyPad:
                     if started:
                         result.append(data[i])
 
-    def on_close(self, ws: websocket.WebSocketApp, close_status_code: int | None, close_msg: str | None) -> None:
+    def on_close(
+        self, ws: websocket.WebSocketApp, close_status_code: int | None, close_msg: str | None
+    ) -> None:
         self.ws = None
 
     def workerWebsocket(self, host: tuple) -> None:

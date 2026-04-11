@@ -14,6 +14,7 @@
 #
 ###########################################################
 """Splash screen with progress bar shown during application startup."""
+
 from importlib.resources import as_file, files
 from PySide6.QtCore import QRectF, Qt
 from PySide6.QtGui import QColor, QPixmap
@@ -98,4 +99,3 @@ class SplashScreen:
 
     def finish(self, qwid):
         self.qss.finish(qwid)
-

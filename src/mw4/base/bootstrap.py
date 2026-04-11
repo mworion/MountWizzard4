@@ -14,6 +14,7 @@
 #
 ###########################################################
 """Bootstrap utilities for MountWizzard4 application startup."""
+
 import faulthandler
 import logging
 import os
@@ -46,6 +47,7 @@ class MwGlob(TypedDict):
     modelDir: Path
     measureDir: Path
     logDir: Path
+
 
 log: logging.Logger = logging.getLogger("MW4")
 
@@ -101,12 +103,8 @@ def writeSystemInfo(mwGlob: MwGlob) -> None:
     log.header(f"release          : {platform.release()}")
     log.header(f"python           : {platform.python_version()}")
     log.header(f"python runtime   : {platform.architecture()[0]}")
-    log.header(
-        f"PySide6 / Qt     : {PySide6.QtCore.__version__} / {qVersion()}"
-    )
-    log.header(
-        f"node / hostname  : {platform.node()} / {socket.gethostname()}"
-    )
+    log.header(f"PySide6 / Qt     : {PySide6.QtCore.__version__} / {qVersion()}")
+    log.header(f"node / hostname  : {platform.node()} / {socket.gethostname()}")
     log.header("-" * 100)
 
 
@@ -116,10 +114,7 @@ def extractDataFiles(mwGlob: MwGlob) -> None:
     for file in sourceFiles:
         with as_file(file) as src:
             dest = mwGlob["dataDir"] / file.name
-            if (
-                dest.is_file()
-                and os.stat(src).st_mtime - os.stat(dest).st_mtime < 1
-            ):
+            if dest.is_file() and os.stat(src).st_mtime - os.stat(dest).st_mtime < 1:
                 continue
             shutil.copy2(src, dest)
 
@@ -129,7 +124,4 @@ def minimizeStartTerminal() -> None:
     if platform.system() == "Windows":
         import ctypes
 
-        ctypes.windll.user32.ShowWindow(
-            ctypes.windll.kernel32.GetConsoleWindow(), 0
-        )
-
+        ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)

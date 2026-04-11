@@ -14,6 +14,7 @@
 #
 ###########################################################
 """Entry point for the MountWizzard4 application."""
+
 import locale
 import sys
 from importlib.resources import as_file, files

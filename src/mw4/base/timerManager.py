@@ -14,6 +14,7 @@
 #
 ###########################################################
 """Cyclic timer management with named interval constants."""
+
 from PySide6.QtCore import QObject, QTimer
 
 TICK_INTERVAL_MS: int = 100
@@ -47,7 +48,6 @@ class CyclicTimerManager(QObject):
         self._timer: QTimer = QTimer(self)
         self._timer.setSingleShot(False)
         self._timer.timeout.connect(self._onTick)
-
 
     def start(self) -> None:
         """Start the cyclic timer."""

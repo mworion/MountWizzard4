@@ -126,9 +126,7 @@ class MountWizzard4(QObject):
     # Initialisation phases
     # ------------------------------------------------------------------
 
-    def _initCore(
-        self, mwGlob: MwGlob, application: QApplication
-    ) -> None:
+    def _initCore(self, mwGlob: MwGlob, application: QApplication) -> None:
         """Set up global references, thread pool, flags, and profile."""
         self.mwGlob = mwGlob
         self.application = application
@@ -165,9 +163,7 @@ class MountWizzard4(QObject):
         """Push initial lifecycle messages into the message queue."""
         profile = self.config.get("profileName", "-")
         workDir = self.mwGlob["workDir"]
-        self.messageQueue.put(
-            (1, "System", "Lifecycle", "MountWizzard4 started...")
-        )
+        self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 started..."))
         self.messageQueue.put((1, "System", "Workdir", f"[{workDir}]"))
         self.messageQueue.put((1, "System", "Profile", f"[{profile}]"))
 
@@ -226,9 +222,7 @@ class MountWizzard4(QObject):
         if test:
             self.update10s.connect(self.quit)
         if len(sys.argv) > 1:
-            self.messageQueue.put(
-                (1, "System", "Arguments", sys.argv[1])
-            )
+            self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 
     # ------------------------------------------------------------------
     # Configuration
@@ -240,9 +234,7 @@ class MountWizzard4(QObject):
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)
         elev = self.config.get("topoElev", 46)
-        topo = wgs84.latlon(
-            longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev
-        )
+        topo = wgs84.latlon(longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev)
         return topo
 
     def storeConfig(self) -> None:
@@ -280,7 +272,5 @@ class MountWizzard4(QObject):
         """Gracefully shut down the application."""
         self.deviceStat["mount"] = False
         self.aboutToQuit()
-        self.messageQueue.put(
-            (1, "System", "Lifecycle", "MountWizzard4 manual stopped")
-        )
+        self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 manual stopped"))
         self.application.quit()

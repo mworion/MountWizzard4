@@ -16,10 +16,10 @@
 import datetime
 import logging
 import time
+from collections.abc import Callable
 from functools import partial, partialmethod
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
-from typing import Callable
 
 if not hasattr(logging.Logger, "_set_defaults"):
     # noinspection PyUnusedLocal

@@ -14,7 +14,6 @@
 #
 ###########################################################
 from functools import partial
-from PySide6.QtCore import QPoint, QSize
 from mw4.gui.extWindows.analyseW import AnalyseWindow
 from mw4.gui.extWindows.bigPopupW import BigPopup
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
@@ -27,6 +26,7 @@ from mw4.gui.extWindows.satelliteMapW import SatelliteMapWindow
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from mw4.gui.extWindows.video.videoW import VideoWindow
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, sleepAndEvents
+from PySide6.QtCore import QPoint, QSize
 
 
 class ExternalWindows:

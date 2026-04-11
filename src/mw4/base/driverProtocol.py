@@ -21,6 +21,7 @@ checkers verify that the strategy dicts used in device logic classes
 (``Camera.run``, ``Dome.run``, etc.) are properly typed without
 introducing a concrete inheritance hierarchy.
 """
+
 from typing import Any, Protocol, runtime_checkable
 
 
@@ -60,4 +61,3 @@ class DriverProtocol(Protocol):
     def getInitialConfig(self) -> None:
         """Read and store driver metadata after first connection."""
         ...
-

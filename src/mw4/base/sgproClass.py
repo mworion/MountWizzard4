@@ -15,10 +15,10 @@
 ###########################################################
 import json
 import requests
-from typing import Any
 from mw4.base.driverDataClass import DriverData, RemoteDeviceShutdown
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QThreadPool, QTimer
+from typing import Any
 
 
 class SGProClass(DriverData):

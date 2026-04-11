@@ -28,11 +28,13 @@ class TrajectoryParams:
     offsetDEC: float = 0
     offsetDECcorr: float = 0
     offsetTime: float = 0
-    _jdStart: float = 0
-    _jdEnd: float = 0
+    _jdStart: object = None
+    _jdEnd: object = None
 
     @property
     def jdStart(self):
+        if self._jdStart is None:
+            return self.obsSite.ts.now()
         return self._jdStart
 
     @jdStart.setter
@@ -41,6 +43,8 @@ class TrajectoryParams:
 
     @property
     def jdEnd(self):
+        if self._jdEnd is None:
+            return self.obsSite.ts.now()
         return self._jdEnd
 
     @jdEnd.setter

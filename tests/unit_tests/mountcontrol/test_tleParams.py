@@ -31,72 +31,82 @@ class TestConfigData(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_azimuth_2(self):
+    def testAzimuth(self):
         tleParams = TLEParams(ObsSite())
         tleParams.azimuth = Angle(degrees=10)
         assert tleParams.azimuth.degrees == 10
 
-    def test_altitude_2(self):
+    def testAltitude(self):
         tleParams = TLEParams(ObsSite())
         tleParams.altitude = Angle(degrees=10)
         assert tleParams.altitude.degrees == 10
 
-    def test_ra_2(self):
+    def testRa(self):
         tleParams = TLEParams(ObsSite())
         tleParams.ra = Angle(hours=10)
         assert tleParams.ra.hours == 10
 
-    def test_dec_2(self):
+    def testDec(self):
         tleParams = TLEParams(ObsSite())
         tleParams.dec = Angle(degrees=10)
         assert tleParams.dec.degrees == 10
 
-    def test_flip_1(self):
+    def testFlip(self):
         tleParams = TLEParams(ObsSite())
         tleParams.flip = True
         assert tleParams.flip
 
-    def test_jdStart_1(self):
+    def testJdStartDefault(self):
+        tleParams = TLEParams(ObsSite())
+        result = tleParams.jdStart
+        assert result is not None
+
+    def testJdStartZero(self):
         tleParams = TLEParams(ObsSite())
         tleParams.jdStart = 0
         assert tleParams.jdStart.tt == 69
 
-    def test_jdStart_2(self):
+    def testJdStartValue(self):
         tleParams = TLEParams(ObsSite())
         tleParams.jdStart = 100
         assert tleParams.jdStart.tt == 169
 
-    def test_jdEnd_1(self):
+    def testJdEndDefault(self):
+        tleParams = TLEParams(ObsSite())
+        result = tleParams.jdEnd
+        assert result is not None
+
+    def testJdEndZero(self):
         tleParams = TLEParams(ObsSite())
         tleParams.jdEnd = 0
         assert tleParams.jdEnd.tt == 69
 
-    def test_jdEnd_2(self):
+    def testJdEndValue(self):
         tleParams = TLEParams(ObsSite())
         tleParams.jdEnd = 100
         assert tleParams.jdEnd.tt == 169
 
-    def test_message_2(self):
+    def testMessage(self):
         tleParams = TLEParams(ObsSite())
         tleParams.message = "test"
         assert tleParams.message == "test"
 
-    def test_l0_1(self):
+    def testL0(self):
         tleParams = TLEParams(ObsSite())
         tleParams.l0 = "test"
         assert tleParams.l0 == "test"
 
-    def test_l1_1(self):
+    def testL1(self):
         tleParams = TLEParams(ObsSite())
         tleParams.l1 = "test"
         assert tleParams.l1 == "test"
 
-    def test_l2_1(self):
+    def testL2(self):
         tleParams = TLEParams(ObsSite())
         tleParams.l2 = "test"
         assert tleParams.l2 == "test"
 
-    def test_name_1(self):
+    def testName(self):
         tleParams = TLEParams(ObsSite())
         tleParams.name = "test"
         assert tleParams.name == "test"

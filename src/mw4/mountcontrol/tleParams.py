@@ -33,11 +33,13 @@ class TLEParams:
     l1: str = ""
     l2: str = ""
     name: str = ""
-    _jdStart: float = 0
-    _jdEnd: float = 0
+    _jdStart: object = None
+    _jdEnd: object = None
 
     @property
     def jdStart(self):
+        if self._jdStart is None:
+            return self.obsSite.ts.now()
         return self._jdStart
 
     @jdStart.setter
@@ -46,6 +48,8 @@ class TLEParams:
 
     @property
     def jdEnd(self):
+        if self._jdEnd is None:
+            return self.obsSite.ts.now()
         return self._jdEnd
 
     @jdEnd.setter

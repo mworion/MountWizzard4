@@ -30,22 +30,67 @@ class TestConfigData(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_TP_flip_4(self):
+    def testFlipFalse(self):
         trajectoryParams = TrajectoryParams(ObsSite())
         trajectoryParams.flip = False
         assert not trajectoryParams.flip
 
-    def test_TP_jdStart_2(self):
+    def testFlipTrue(self):
+        trajectoryParams = TrajectoryParams(ObsSite())
+        trajectoryParams.flip = True
+        assert trajectoryParams.flip
+
+    def testMessage(self):
+        trajectoryParams = TrajectoryParams(ObsSite())
+        trajectoryParams.message = "test"
+        assert trajectoryParams.message == "test"
+
+    def testOffsetRA(self):
+        trajectoryParams = TrajectoryParams(ObsSite())
+        trajectoryParams.offsetRA = 1.5
+        assert trajectoryParams.offsetRA == 1.5
+
+    def testOffsetDEC(self):
+        trajectoryParams = TrajectoryParams(ObsSite())
+        trajectoryParams.offsetDEC = 2.5
+        assert trajectoryParams.offsetDEC == 2.5
+
+    def testOffsetDECcorr(self):
+        trajectoryParams = TrajectoryParams(ObsSite())
+        trajectoryParams.offsetDECcorr = 3.5
+        assert trajectoryParams.offsetDECcorr == 3.5
+
+    def testOffsetTime(self):
+        trajectoryParams = TrajectoryParams(ObsSite())
+        trajectoryParams.offsetTime = 4.5
+        assert trajectoryParams.offsetTime == 4.5
+
+    def testJdStartDefault(self):
+        trajectoryParams = TrajectoryParams(ObsSite())
+        result = trajectoryParams.jdStart
+        assert result is not None
+
+    def testJdStartZero(self):
+        trajectoryParams = TrajectoryParams(ObsSite())
+        trajectoryParams.jdStart = 0
+        assert trajectoryParams.jdStart.tt == 69
+
+    def testJdStartValue(self):
         trajectoryParams = TrajectoryParams(ObsSite())
         trajectoryParams.jdStart = 100
         assert trajectoryParams.jdStart.tt == 169
 
-    def test_TP_jdEnd_2(self):
+    def testJdEndDefault(self):
+        trajectoryParams = TrajectoryParams(ObsSite())
+        result = trajectoryParams.jdEnd
+        assert result is not None
+
+    def testJdEndZero(self):
+        trajectoryParams = TrajectoryParams(ObsSite())
+        trajectoryParams.jdEnd = 0
+        assert trajectoryParams.jdEnd.tt == 69
+
+    def testJdEndValue(self):
         trajectoryParams = TrajectoryParams(ObsSite())
         trajectoryParams.jdEnd = 100
         assert trajectoryParams.jdEnd.tt == 169
-
-    def test_TR_message_2(self):
-        trajectoryParams = TrajectoryParams(ObsSite())
-        trajectoryParams.message = "test"
-        assert trajectoryParams.message == "test"

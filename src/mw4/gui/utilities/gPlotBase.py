@@ -37,12 +37,12 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.brushHorizon = pg.mkBrush(color=self.M_PRIM2 + "40")
         self.setBackground(self.M_BACK)
         self.cMapGYR = pg.ColorMap([0, 0.6, 1.0], [self.M_GREEN, self.M_YELLOW, self.M_RED])
-        self.defRange = {}
-        self.scatterItem = None
-        self.imageItem = None
-        self.barItem = None
+        self.defRange: dict = {}
+        self.scatterItem: pg.ScatterPlotItem | None = None
+        self.imageItem: pg.ImageItem | None = None
+        self.barItem: pg.BarGraphItem | None = None
         self.horizon = None
-        self.p = []
+        self.p: list = []
         self.p.append(self.addPlot(viewBox=CustomViewBox()))
         self.setupItems()
         self.colorChange()
@@ -53,7 +53,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.penGrid = pg.mkPen(color=self.M_SEC)
         self.brushGrid = pg.mkBrush(color=self.M_SEC + "80")
         self.penHorizon = pg.mkPen(color=self.M_PRIM + "80", width=1)
-        self.brushHorizon = pg.mkBrush(color=self.M_PRIM2 + "40")
+        self.brushHorizon = pg.mkBrush(color=self.M_PRIM2 + "80")
         self.setBackground(self.M_BACK)
         for side in ("left", "top", "right", "bottom"):
             for plotItem in self.p:

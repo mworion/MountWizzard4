@@ -167,7 +167,7 @@ class KeyPad:
 
     def __init__(self, signals: Any) -> None:
         self.signals = signals
-        self.ws = None
+        self.ws: websocket.WebSocketApp | None = None
         self.signals.keyPressed.connect(self.keyPressed)
         self.signals.keyUp.connect(self.keyUp)
         self.signals.keyDown.connect(self.keyDown)
@@ -175,7 +175,7 @@ class KeyPad:
         self.signals.mouseReleased.connect(self.mouseReleased)
 
     @staticmethod
-    def expand7to8(value: int, fill: bool = False) -> list:
+    def expand7to8(value: list[int], fill: bool = False) -> list:
         result = []
         n = 0
         o = 0
@@ -195,15 +195,15 @@ class KeyPad:
         outChar = self.charTrans.get(inChar, inChar)
         return outChar
 
-    def dispText(self, value: str) -> None:
-        row = np.zeros(16, dtype=np.uint8)
+    def dispText(self, value: list[int]) -> None:
+        row = [0] * 16
         for i in range(value[3]):
             if value[4 + i] != 0:
                 row[value[1] + i - 1] = self.convertChar(value[4 + i])
         text = "".join([chr(x) for x in row])
         self.signals.textRow.emit(value[2] - 1, text)
 
-    def drawPixel(self, value: int) -> None:
+    def drawPixel(self, value: list[int]) -> None:
         imaArr = np.zeros([8, 8, 3], dtype=np.uint8)
         for i in range(8):
             for j in range(8):
@@ -214,7 +214,7 @@ class KeyPad:
                     imaArr[i, j] = [0, 0, 0]
         self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1), 8 * (value[1] - 1))
 
-    def deletePixel(self, value: int) -> None:
+    def deletePixel(self, value: list[int]) -> None:
         imaArr = np.zeros([8, 12, 3], dtype=np.uint8)
         for i in range(12):
             for j in range(8):
@@ -225,7 +225,7 @@ class KeyPad:
                     imaArr[j, i] = [0, 0, 0]
         self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1), 12 * (value[1] - 1))
 
-    def dispatch(self, value: int) -> None:
+    def dispatch(self, value: list[int]) -> None:
         value = self.expand7to8(value, False)
         if len(value) <= 0:
             return
@@ -244,12 +244,12 @@ class KeyPad:
             pass
             # print('select 12')
 
-    def checkDispatch(self, value: int) -> None:
+    def checkDispatch(self, value: list[int]) -> None:
         if value[0] == 0:
             self.dispatch(value[1:])
 
     @staticmethod
-    def calcChecksum(value: int) -> int:
+    def calcChecksum(value: list[int]) -> int:
         checksum = 0
         for i in range(len(value)):
             checksum = checksum ^ value[i]
@@ -257,47 +257,48 @@ class KeyPad:
             checksum = checksum + 10
         return checksum
 
-    def send(self, message: str) -> None:
+    def send(self, message: list[int]) -> None:
         if self.ws is None:
             return
-        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
+        messageToSend = str(message)
+        self.ws.send(messageToSend, websocket.ABNF.OPCODE_BINARY)
 
     def mousePressed(self, key: str) -> None:
-        key = self.buttonCodes.get(key, None)
-        if key is None:
+        keyUsed = self.buttonCodes.get(key, None)
+        if keyUsed is None:
             return
 
-        message = [2, 6, key]
+        message = [2, 6, keyUsed]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
         self.send(message)
 
     def mouseReleased(self, key: str) -> None:
-        key = self.buttonCodes.get(key, None)
-        if key is None:
+        keyUsed = self.buttonCodes.get(key, None)
+        if keyUsed is None:
             return
 
-        message = [2, 5, key]
+        message = [2, 5, keyUsed]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
         self.send(message)
 
     def keyDown(self, key: int) -> None:
-        key = self.keyCodesA.get(key, None)
-        if key is None:
+        keyUsed = self.keyCodesA.get(key, None)
+        if keyUsed is None:
             return
 
-        message = [2, 6, key]
+        message = [2, 6, keyUsed]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
         self.send(message)
 
     def keyUp(self, key: int) -> None:
-        key = self.keyCodesA.get(key, None)
-        if key is None:
+        keyUsed = self.keyCodesA.get(key, None)
+        if keyUsed is None:
             return
 
-        message = [2, 5, key]
+        message = [2, 5, keyUsed]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
         self.send(message)
@@ -306,15 +307,15 @@ class KeyPad:
         if key > 255:
             return
 
-        key = self.keyCodesB.get(chr(key), None)
-        if key is None:
+        keyUsed = self.keyCodesB.get(chr(key), None)
+        if keyUsed is None:
             return
 
-        message = [2, 6, key]
+        message = [2, 6, keyUsed]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
         self.send(message)
-        message = [2, 5, key]
+        message = [2, 5, keyUsed]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
         self.send(message)

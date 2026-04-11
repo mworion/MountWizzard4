@@ -25,15 +25,11 @@ class SimulatorDome:
         self.app = app
         self.app.dome.signals.deviceConnected.connect(lambda: self.showEnable(True))
         self.app.dome.signals.deviceDisconnected.connect(lambda: self.showEnable(False))
-        self.app.updateDomeSettings.connect(self.updateSize)
         self.app.update1s.connect(self.updateAzimuth)
         self.app.update1s.connect(self.updateShutter)
         self.parent.ui.domeTransparent.checkStateChanged.connect(self.setTransparency)
 
     def setTransparency(self):
-        """
-        :return:
-        """
         showTransparent = self.parent.ui.domeTransparent.isChecked()
         alpha = 0.5 if showTransparent else 1
         for node in [
@@ -49,21 +45,18 @@ class SimulatorDome:
                 nodeM["material"].setAlpha(alpha)
 
     def showEnable(self, show):
-        """
-        :param show:
-        :return:
-        """
         node = self.parent.entityModel.get("domeRoot")
         if node:
             node["entity"].setEnabled(show)
+            self.app.updateDomeSettings.connect(self.updateSize)
+        else:
+            self.app.updateDomeSettings.disconnect(self.updateSize)
 
     def updateSize(self):
         """
         updateSettings resize parts depending on the setting made in the dome tab.
         likewise some transformations have to be reverted as they are propagated
         through entity linking.
-
-        :return:
         """
         radius = self.app.mount.geometry.domeRadius * 1000
         scale = 1 + (radius - 1250) / 1250
@@ -78,9 +71,6 @@ class SimulatorDome:
         nodeT.setTranslation(QVector3D(0, 0, corrZ))
 
     def updateAzimuth(self):
-        """
-        :return: success
-        """
         if "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION" not in self.app.dome.data:
             return
 
@@ -90,9 +80,6 @@ class SimulatorDome:
             node["trans"].setRotationZ(-az)
 
     def updateShutter(self):
-        """
-        :return:
-        """
         if "DOME_SHUTTER.SHUTTER_OPEN" not in self.app.dome.data:
             return
 
@@ -119,9 +106,6 @@ class SimulatorDome:
                 node["trans"].setTranslation(QVector3D(0, -shiftShutter, 0))
 
     def create(self):
-        """
-        :return:
-        """
         model = {
             "domeRoot": {
                 "parent": "ref_fusion_m",

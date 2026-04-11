@@ -20,6 +20,7 @@ from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QObject, Signal
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
+from typing import Any
 
 
 class PhotometrySignals(QObject):
@@ -44,7 +45,7 @@ class Photometry:
     SN = [30, 20, 15, 10, 10]
     SEP = [3.0, 3.0, 2.5, 2.5, 2.0]
 
-    def __init__(self, parent, image: np.ndarray, snSelector: int = 0):
+    def __init__(self, parent: Any, image: np.ndarray, snSelector: int = 0) -> None:
         self.threadPool = parent.app.threadPool
         self.signals = PhotometrySignals()
 
@@ -55,9 +56,9 @@ class Photometry:
         self.lock = QMutex()
         self.worker: Worker | None = None
 
-        self.objs = None
-        self.objsAll = None
-        self.bkg = None
+        self.objs: Any = None
+        self.objsAll: Any = None
+        self.bkg: Any = None
 
         self.xm: np.ndarray = np.array([])
         self.ym: np.ndarray = np.array([])

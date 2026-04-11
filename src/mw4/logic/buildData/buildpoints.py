@@ -24,6 +24,7 @@ from scipy.spatial import distance
 from skyfield import almanac
 from skyfield.api import Angle, Star, Timescale
 from skyfield.toposlib import GeographicPosition
+from typing import Any
 
 
 def HaDecToAltAz(ha: float, dec: float, lat: float) -> tuple[float, float]:
@@ -51,29 +52,29 @@ class DataPoint:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         self.app = app
         self.configDir: Path = app.mwGlob["configDir"]
-        self._horizonP: list = []
-        self._buildP: list = []
+        self._horizonP: list[list[float]] = []
+        self._buildP: list[tuple[float, float, int]] = []
 
     @property
-    def horizonP(self):
+    def horizonP(self) -> list[list[float]]:
         return self._horizonP
 
     @horizonP.setter
-    def horizonP(self, value: list[list]):
+    def horizonP(self, value: list[list[float]]) -> None:
         self._horizonP = value
 
     @property
-    def buildP(self):
+    def buildP(self) -> list[tuple[float, float, int]]:
         return self._buildP
 
     @buildP.setter
-    def buildP(self, value: list[list]):
+    def buildP(self, value: list[tuple[float, float, int]]) -> None:
         self._buildP = value
 
-    def addBuildP(self, value: tuple[int, int, int], position: int = 999) -> None:
+    def addBuildP(self, value: tuple[float, float, int], position: int = 999) -> None:
         high = self.app.mount.setting.horizonLimitHigh or 90
         low = self.app.mount.setting.horizonLimitLow or 0
 

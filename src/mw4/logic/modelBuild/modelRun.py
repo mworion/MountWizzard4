@@ -16,6 +16,7 @@
 import json
 import logging
 import time
+from collections.abc import Iterator
 from mw4.base.transform import JNowToJ2000
 from mw4.gui.utilities.qtHelpers import sleepAndEvents
 from mw4.logic.modelBuild.modelRunSupport import convertAngleToFloat, writeRetrofitData
@@ -23,6 +24,7 @@ from mw4.mountcontrol.progStar import ProgStar
 from pathlib import Path
 from PySide6.QtCore import QObject, Signal
 from skyfield.api import Angle, Star
+from typing import Any
 
 
 class ModelData(QObject):
@@ -38,19 +40,19 @@ class ModelData(QObject):
     statusRetry = Signal(object)
     startSlew = Signal()
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
         self.cancelBatch: bool = False
         self.pauseBatch: bool = False
         self.endBatch: bool = False
         self.modelTiming: int = self.CONSERVATIVE
-        self.modelInputData: list = []
-        self.modelBuildData: dict = {}
-        self.modelRunList: list = []
-        self.modelRunIterator = None
+        self.modelInputData: list[tuple[float, float]] = []
+        self.modelBuildData: dict[str, dict[str, Any]] = {}
+        self.modelRunList: list[str] = []
+        self.modelRunIterator: Iterator[str] | None = None
         self.modelRunKey: str = ""
-        self.modelProgData: list = []
+        self.modelProgData: list[ProgStar] = []
         self.modelSaveData: list = []
         self.modelName: str = ""
         self.imageDir: Path = Path("")
@@ -241,7 +243,7 @@ class ModelData(QObject):
         }
         self.progress.emit(progressData)
 
-    def collectPlateSolveResult(self, result) -> None:
+    def collectPlateSolveResult(self, result: dict[str, Any]) -> None:
         key = result["imagePath"].stem
         item = self.modelBuildData[key]
         if result["success"]:
@@ -303,7 +305,7 @@ class ModelData(QObject):
         while not self.cancelBatch and not self.endBatch and not self.checkModelFinished():
             sleepAndEvents(500)
 
-    def generateRunIterator(self):
+    def generateRunIterator(self) -> None:
         nextList = []
         self.log.debug(f"{'Run retries':15s}: Count: [{self.numberRetries:1.0f}]")
         for key in self.modelRunList:

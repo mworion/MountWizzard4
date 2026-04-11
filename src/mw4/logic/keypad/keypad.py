@@ -16,12 +16,13 @@
 import logging
 import numpy as np
 import websocket
+from typing import Any
 
 
 class KeyPad:
     log = logging.getLogger("MW4")
 
-    keyCodesA = {
+    keyCodesA: dict[int, int] = {
         48: 82,
         49: 92,
         50: 94,
@@ -45,7 +46,7 @@ class KeyPad:
         8: 118,
     }
 
-    keyCodesB = {
+    keyCodesB: dict[str, int] = {
         "a": 13,
         "b": 15,
         "c": 16,
@@ -137,7 +138,7 @@ class KeyPad:
         "-": 46,
     }
 
-    buttonCodes = {
+    buttonCodes: dict[str, int] = {
         "key_0": 82,
         "key_1": 92,
         "key_2": 94,
@@ -160,11 +161,11 @@ class KeyPad:
         "key_right": 18,
     }
 
-    charTrans = {
+    charTrans: dict[int, int] = {
         223: 176,
     }
 
-    def __init__(self, signals):
+    def __init__(self, signals: Any) -> None:
         self.signals = signals
         self.ws = None
         self.signals.keyPressed.connect(self.keyPressed)
@@ -318,7 +319,7 @@ class KeyPad:
         message = message + [3]
         self.send(message)
 
-    def on_data(self, ws: websocket.WebSocketApp, data: list, typeOpcode, cont) -> None:
+    def on_data(self, ws: websocket.WebSocketApp, data: list, typeOpcode: int, cont: bool) -> None:
         result = []
         started = False
         for i in range(len(data)):
@@ -334,7 +335,7 @@ class KeyPad:
                     if started:
                         result.append(data[i])
 
-    def on_close(self, ws: websocket.WebSocketApp, close_status_code, close_msg) -> None:
+    def on_close(self, ws: websocket.WebSocketApp, close_status_code: int | None, close_msg: str | None) -> None:
         self.ws = None
 
     def workerWebsocket(self, host: tuple) -> None:

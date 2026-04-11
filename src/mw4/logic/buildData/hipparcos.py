@@ -17,6 +17,7 @@ import erfa
 import logging
 import numpy as np
 from mw4.logic.buildData.alignstars import generateAlignStars
+from typing import Any
 
 
 class Hipparcos:
@@ -29,16 +30,16 @@ class Hipparcos:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, app=None):
+    def __init__(self, app: Any = None) -> None:
         self.app = app
-        self.lat = app.mount.obsSite.location.latitude.degrees
-        self.name = []
-        self.alt = []
-        self.az = []
-        self.alignStars = generateAlignStars()
+        self.lat: float = app.mount.obsSite.location.latitude.degrees
+        self.name: list[str] = []
+        self.alt: list[float] = []
+        self.az: list[float] = []
+        self.alignStars: dict[str, list[float]] = generateAlignStars()
         self.calculateAlignStarPositionsAltAz()
 
-    def calculateAlignStarPositionsAltAz(self):
+    def calculateAlignStarPositionsAltAz(self) -> bool:
         """
         calculateAlignStarPositionsAltAz does calculate the star coordinates
         from give data out of generated star list. calculation routines are from
@@ -86,7 +87,7 @@ class Hipparcos:
         self.alt = 90.0 - zob * 360 / 2 / np.pi
         return True
 
-    def getAlignStarRaDecFromName(self, name):
+    def getAlignStarRaDecFromName(self, name: str) -> tuple[float | None, float | None]:
         """
         getAlignStarRaDecFromName does calculate the star coordinates from give
         data out of generated star list. calculation routines are from astropy

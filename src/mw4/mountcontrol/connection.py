@@ -265,14 +265,14 @@ class Connection:
         ":SWOL",
     ]
 
-    def __init__(self, host=None):
+    def __init__(self, host: tuple | None = None) -> None:
         self.host = host
         self.id = str(uuid.uuid4())[:8]
 
-    def validCommand(self, command):
+    def validCommand(self, command: str) -> bool:
         return any(command.startswith(key) for key in sorted(self.COMMANDS, reverse=True))
 
-    def validCommandSet(self, commandString):
+    def validCommandSet(self, commandString: str) -> bool:
         commandSet = commandString.split("#")[:-1]
         for command in commandSet:
             if not self.validCommand(command):
@@ -280,7 +280,7 @@ class Connection:
                 return False
         return True
 
-    def analyseCommand(self, commandString):
+    def analyseCommand(self, commandString: str) -> tuple[int, bool, int]:
         """
         analyseCommand parses the provided commandString against the two command
         types A and B to evaluate if a response is expected and how many chunks of
@@ -315,7 +315,7 @@ class Connection:
         self.log.trace(t)
         return chunksToReceive, getData, minBytes
 
-    def closeClientHard(self, client):
+    def closeClientHard(self, client: socket.socket | None) -> None:
         if not client:
             return
         try:
@@ -325,7 +325,7 @@ class Connection:
             self.log.warning(f"Error    [{self.id}]: closing socket client")
             return
 
-    def buildClient(self):
+    def buildClient(self) -> socket.socket | None:
         if not self.host:
             self.log.info(f"No host  [{self.id}]")
             return None

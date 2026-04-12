@@ -17,6 +17,7 @@ import logging
 import numpy as np
 from mw4.mountcontrol.convert import valueToFloat
 from skyfield.api import Angle
+from typing import Any
 
 
 class Geometry:
@@ -64,7 +65,7 @@ class Geometry:
         },
     }
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         self.parent = parent
         self.offBaseAltAxisX: float = 0
         self.offBaseAltAxisZ: float = 0
@@ -87,19 +88,19 @@ class Geometry:
         self.transVector = None
 
     @property
-    def domeRadius(self):
+    def domeRadius(self) -> float:
         return self._domeRadius
 
     @domeRadius.setter
-    def domeRadius(self, value):
+    def domeRadius(self, value: Any) -> None:
         self._domeRadius = valueToFloat(value)
 
     @property
-    def offNorth(self):
+    def offNorth(self) -> float:
         return self._offNorth
 
     @offNorth.setter
-    def offNorth(self, value):
+    def offNorth(self, value: Any) -> None:
         self._offNorth = valueToFloat(value)
         lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) + self.offBaseAltAxisX
@@ -108,11 +109,11 @@ class Geometry:
         self._offNorthGEM = val
 
     @property
-    def offNorthGEM(self):
+    def offNorthGEM(self) -> float:
         return self._offNorthGEM
 
     @offNorthGEM.setter
-    def offNorthGEM(self, value):
+    def offNorthGEM(self, value: Any) -> None:
         self._offNorthGEM = valueToFloat(value)
         lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) - self.offBaseAltAxisX
@@ -121,29 +122,29 @@ class Geometry:
         self._offNorth = val
 
     @property
-    def offEast(self):
+    def offEast(self) -> float:
         return self._offEast
 
     @offEast.setter
-    def offEast(self, value):
+    def offEast(self, value: Any) -> None:
         self._offEast = valueToFloat(value)
         self._offEastGEM = valueToFloat(value)
 
     @property
-    def offEastGEM(self):
+    def offEastGEM(self) -> float:
         return self._offEastGEM
 
     @offEastGEM.setter
-    def offEastGEM(self, value):
+    def offEastGEM(self, value: Any) -> None:
         self._offEastGEM = valueToFloat(value)
         self._offEast = valueToFloat(value)
 
     @property
-    def offVert(self):
+    def offVert(self) -> float:
         return self._offVert
 
     @offVert.setter
-    def offVert(self, value):
+    def offVert(self, value: Any) -> None:
         self._offVert = valueToFloat(value)
         lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) + self.offBaseAltAxisZ
@@ -152,11 +153,11 @@ class Geometry:
         self._offVertGEM = val
 
     @property
-    def offVertGEM(self):
+    def offVertGEM(self) -> float:
         return self._offVertGEM
 
     @offVertGEM.setter
-    def offVertGEM(self, value):
+    def offVertGEM(self, value: Any) -> None:
         self._offVertGEM = valueToFloat(value)
         lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) - self.offBaseAltAxisZ
@@ -165,32 +166,32 @@ class Geometry:
         self._offVert = val
 
     @property
-    def offGEM(self):
+    def offGEM(self) -> float:
         return self._offGEM
 
     @offGEM.setter
-    def offGEM(self, value):
+    def offGEM(self, value: Any) -> None:
         self._offGEM = valueToFloat(value)
         self._offPlateOTA = self._offGEM - self.offGemPlate
 
     @property
-    def offLAT(self):
+    def offLAT(self) -> float:
         return self._offLAT
 
     @offLAT.setter
-    def offLAT(self, value):
+    def offLAT(self, value: Any) -> None:
         self._offLAT = valueToFloat(value)
 
     @property
-    def offPlateOTA(self):
+    def offPlateOTA(self) -> float:
         return self._offPlateOTA
 
     @offPlateOTA.setter
-    def offPlateOTA(self, value):
+    def offPlateOTA(self, value: Any) -> None:
         self._offPlateOTA = valueToFloat(value)
         self._offGEM = self._offPlateOTA + self.offGemPlate
 
-    def initializeGeometry(self, mountType):
+    def initializeGeometry(self, mountType: str) -> bool:
         if mountType not in self.geometryData:
             self.log.error(f"[{mountType}] not in database")
             return False
@@ -243,8 +244,14 @@ class Geometry:
         return T
 
     def calcTransformationMatrices(
-        self, ha: Angle, dec: Angle, lat: Angle, pierside="W"
-    ) -> tuple:
+        self, ha: Angle, dec: Angle, lat: Angle, pierside: str = "W"
+    ) -> tuple[
+        Angle | None,
+        Angle | None,
+        np.ndarray | None,
+        np.ndarray | None,
+        np.ndarray | None,
+    ]:
         text = f"HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, "
         text += f"pierside:{pierside} ,"
         text += f"offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, "

@@ -16,6 +16,7 @@
 import logging
 from mw4.mountcontrol.connection import Connection
 from packaging.version import Version
+from typing import Any
 
 
 class Firmware:
@@ -23,7 +24,7 @@ class Firmware:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         self.parent = parent
         self.product: str = ""
         self._vString: Version = Version("0.0.0")
@@ -32,11 +33,11 @@ class Firmware:
         self.time: str = ""
 
     @property
-    def vString(self):
+    def vString(self) -> Version:
         return self._vString
 
     @vString.setter
-    def vString(self, value: str):
+    def vString(self, value: str) -> None:
         self._vString = Version(value)
 
     def checkNewer(self, compare: str) -> bool:

@@ -16,6 +16,7 @@
 import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat, valueToInt
+from typing import Any
 
 
 class Setting:
@@ -33,7 +34,7 @@ class Setting:
     }
     log = logging.getLogger("MW4")
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         self.parent = parent
         self.slewRate: float = 0
         self.slewRateMin: float = 0
@@ -72,38 +73,38 @@ class Setting:
         self.configHoming: str = ""
 
     @property
-    def typeConnection(self):
+    def typeConnection(self) -> int:
         return self._typeConnection
 
     @typeConnection.setter
-    def typeConnection(self, value):
+    def typeConnection(self, value: Any) -> None:
         value = valueToInt(value)
         if value not in [0, 1, 2, 3]:
             value = 0
         self._typeConnection = value
 
     @property
-    def addressLanMAC(self):
+    def addressLanMAC(self) -> str:
         return self._addressLanMAC
 
     @addressLanMAC.setter
-    def addressLanMAC(self, value):
+    def addressLanMAC(self, value: str) -> None:
         self._addressLanMAC = value.upper().replace(".", ":")
 
     @property
-    def addressWirelessMAC(self):
+    def addressWirelessMAC(self) -> str:
         return self._addressWirelessMAC
 
     @addressWirelessMAC.setter
-    def addressWirelessMAC(self, value):
+    def addressWirelessMAC(self, value: str) -> None:
         self._addressWirelessMAC = value.upper().replace(".", ":")
 
     @property
-    def wakeOnLan(self):
+    def wakeOnLan(self) -> str:
         return self._wakeOnLan
 
     @wakeOnLan.setter
-    def wakeOnLan(self, value):
+    def wakeOnLan(self, value: str) -> None:
         if value == "0":
             self._wakeOnLan = "OFF"
         elif value == "1":
@@ -112,11 +113,11 @@ class Setting:
             self._wakeOnLan = "None"
 
     @property
-    def autoPowerOn(self):
+    def autoPowerOn(self) -> str:
         return self._autoPowerOn
 
     @autoPowerOn.setter
-    def autoPowerOn(self, value):
+    def autoPowerOn(self, value: str) -> None:
         if value == "0":
             self._autoPowerOn = "OFF"
         elif value == "1":
@@ -125,17 +126,17 @@ class Setting:
             self._autoPowerOn = "None"
 
     @property
-    def weatherStatus(self):
+    def weatherStatus(self) -> int:
         return self._weatherStatus
 
     @weatherStatus.setter
-    def weatherStatus(self, value):
+    def weatherStatus(self, value: Any) -> None:
         value = valueToInt(value)
         if value not in [0, 1, 2]:
             value = 0
         self._weatherStatus = value
 
-    def timeToMeridian(self):
+    def timeToMeridian(self) -> int:
         return int(self.timeToFlip - self.meridianLimitTrack * 4)
 
     def parseSetting(self, response: list, numberOfChunks: int) -> bool:
@@ -279,7 +280,7 @@ class Setting:
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
-    def setWOL(self, status):
+    def setWOL(self, status: bool) -> bool:
         conn = Connection(self.parent.host)
         commandString = f":SWOL{1 if status else 0:1d}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")

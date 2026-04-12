@@ -28,6 +28,7 @@ from mw4.mountcontrol.convert import (
 from mw4.mountcontrol.modelStar import ModelStar
 from mw4.mountcontrol.progStar import ProgStar
 from skyfield.api import Angle, Star
+from typing import Any
 
 
 class Model:
@@ -35,7 +36,7 @@ class Model:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         self.parent = parent
         self._starList: list = []
         self._nameList: list = []
@@ -52,40 +53,40 @@ class Model:
         self.errorRMS: float = 0
 
     @property
-    def starList(self):
+    def starList(self) -> list[ModelStar]:
         return self._starList
 
     @starList.setter
-    def starList(self, value: list[ModelStar]):
+    def starList(self, value: list[ModelStar]) -> None:
         self._starList = value
 
     @property
-    def numberStars(self):
+    def numberStars(self) -> int:
         return self._numberStars
 
     @numberStars.setter
-    def numberStars(self, value):
+    def numberStars(self, value: Any) -> None:
         self._numberStars = valueToInt(value)
 
     def addStar(self, value: ModelStar) -> None:
         self._starList.append(value)
 
-    def delStar(self, value: int):
+    def delStar(self, value: int) -> None:
         value = valueToInt(value)
         if value < 0 or value > len(self._starList) - 1:
             self.log.warning(f"invalid value: {value}")
             return
         self._starList.pop(value)
 
-    def checkStarListOK(self):
+    def checkStarListOK(self) -> bool:
         return self._numberStars == len(self._starList)
 
     @property
-    def nameList(self):
+    def nameList(self) -> list[str]:
         return self._nameList
 
     @nameList.setter
-    def nameList(self, value):
+    def nameList(self, value: Any) -> None:
         if not isinstance(value, list):
             self._nameList = []
             return
@@ -95,11 +96,11 @@ class Model:
             self._nameList = []
 
     @property
-    def numberNames(self):
+    def numberNames(self) -> int:
         return self._numberNames
 
     @numberNames.setter
-    def numberNames(self, value):
+    def numberNames(self, value: Any) -> None:
         self._numberNames = valueToInt(value)
 
     def addName(self, value: str) -> None:

@@ -26,8 +26,10 @@ from mw4.mountcontrol.mountSignals import MountSignals
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.satellite import Satellite
 from mw4.mountcontrol.setting import Setting
+from pathlib import Path
 from PySide6.QtCore import QMutex, QTimer
 from skyfield.api import Angle
+from typing import Any
 
 
 class MountDevice:
@@ -42,7 +44,9 @@ class MountDevice:
     SOCKET_TIMEOUT = 1
     log = logging.getLogger("MW4")
 
-    def __init__(self, app, host, MAC, pathToData, verbose):
+    def __init__(
+        self, app: Any, host: tuple, MAC: str, pathToData: Path, verbose: bool
+    ) -> None:
         self._waitTime = 0
         self._waitTimeFlip = 0
 
@@ -112,27 +116,27 @@ class MountDevice:
         self.decRef: float = 0.0
 
     @property
-    def MAC(self):
+    def MAC(self) -> str | None:
         return self._MAC
 
     @MAC.setter
-    def MAC(self, value):
+    def MAC(self, value: Any) -> None:
         value = checkFormatMAC(value)
         self._MAC = value
 
     @property
-    def waitTimeFlip(self):
+    def waitTimeFlip(self) -> float:
         return self._waitTimeFlip / 1000
 
     @waitTimeFlip.setter
-    def waitTimeFlip(self, value):
+    def waitTimeFlip(self, value: float) -> None:
         self._waitTimeFlip = int(value * 1000)
 
-    def resetAfterStart(self):
+    def resetAfterStart(self) -> None:
         self.raRef = self.obsSite.raJNow._degrees
         self.decRef = self.obsSite.decJNow.degrees
 
-    def collectData(self):
+    def collectData(self) -> None:
         if self.obsSite.statusSlew:
             self.raRef = self.obsSite.raJNow._degrees
             self.decRef = self.obsSite.decJNow.degrees
@@ -146,31 +150,31 @@ class MountDevice:
         self.data["status"] = self.obsSite.status
         self.data["timeDiff"] = self.obsSite.timeDiff * 1000
 
-    def waitAfterSettlingAndEmit(self):
+    def waitAfterSettlingAndEmit(self) -> None:
         self.signals.slewed.emit()
 
-    def startMountTimers(self):
+    def startMountTimers(self) -> None:
         self.timerMountIsUp.start(self.CYCLE_MOUNT_UP)
         self.timerPointing.start(self.CYCLE_POINTING)
         self.timerSetting.start(self.CYCLE_SETTING)
 
-    def stopAllMountTimers(self):
+    def stopAllMountTimers(self) -> None:
         self.timerMountIsUp.stop()
         self.timerPointing.stop()
         self.timerClock.stop()
         self.timerDome.stop()
         self.timerSetting.stop()
 
-    def startDomeTimer(self):
+    def startDomeTimer(self) -> None:
         self.timerDome.start(self.CYCLE_DOME)
 
-    def stopDomeTimer(self):
+    def stopDomeTimer(self) -> None:
         self.timerDome.stop()
 
-    def startMountClockTimer(self):
+    def startMountClockTimer(self) -> None:
         self.timerClock.start(self.CYCLE_CLOCK)
 
-    def stopMountClockTimer(self):
+    def stopMountClockTimer(self) -> None:
         self.timerClock.stop()
 
     def startupMountData(self, mountIsUp: bool) -> None:
@@ -185,7 +189,7 @@ class MountDevice:
         elif not mountIsUp:
             self.mountIsUpLastStatus = False
 
-    def checkMountIsUp(self):
+    def checkMountIsUp(self) -> None:
         client = socket.socket()
         client.settimeout(self.SOCKET_TIMEOUT)
         try:
@@ -202,12 +206,12 @@ class MountDevice:
         finally:
             client.close()
 
-    def clearCycleCheckMountIsUp(self):
+    def clearCycleCheckMountIsUp(self) -> None:
         self.startupMountData(self.mountIsUp)
         self.signals.mountIsUp.emit(self.mountIsUp)
         self.mutexCycleMountIsUp.unlock()
 
-    def cycleCheckMountIsUp(self):
+    def cycleCheckMountIsUp(self) -> None:
         if not self.host:
             self.signals.mountIsUp.emit(False)
             return
@@ -238,7 +242,7 @@ class MountDevice:
             self.signals.pointDone.emit(self.obsSite)
         self.mutexCyclePointing.unlock()
 
-    def cyclePointing(self):
+    def cyclePointing(self) -> None:
         if not self.mountIsUp:
             return
         if not self.mutexCyclePointing.tryLock():
@@ -248,12 +252,12 @@ class MountDevice:
         self.workerCyclePointing.signals.result.connect(self.clearCyclePointing)
         self.threadPool.start(self.workerCyclePointing)
 
-    def clearCycleSetting(self, result):
+    def clearCycleSetting(self, result: bool) -> None:
         self.mutexCycleSetting.unlock()
         if result:
             self.signals.settingDone.emit(self.setting)
 
-    def cycleSetting(self):
+    def cycleSetting(self) -> None:
         if not self.mountIsUp:
             return
         if not self.mutexCycleSetting.tryLock():
@@ -263,20 +267,20 @@ class MountDevice:
         self.workerCycleSetting.signals.result.connect(self.clearCycleSetting)
         self.threadPool.start(self.workerCycleSetting)
 
-    def clearGetModel(self):
+    def clearGetModel(self) -> None:
         self.signals.getModelDone.emit(self.model)
 
-    def getModel(self):
+    def getModel(self) -> None:
         if not self.mountIsUp:
             return
         self.workerGetModel = Worker(self.model.pollStars)
         self.workerGetModel.signals.finished.connect(self.clearGetModel)
         self.threadPool.start(self.workerGetModel)
 
-    def clearGetNames(self):
+    def clearGetNames(self) -> None:
         self.signals.namesDone.emit(self.model)
 
-    def getNames(self):
+    def getNames(self) -> None:
         if not self.mountIsUp:
             return
 
@@ -284,7 +288,7 @@ class MountDevice:
         self.workerGetNames.signals.finished.connect(self.clearGetNames)
         self.threadPool.start(self.workerGetNames)
 
-    def clearGetFW(self):
+    def clearGetFW(self) -> None:
         self.log.header("-" * 100)
         self.log.header(f"10micron product : {self.firmware.product}")
         self.log.header(f"10micron firmware: {self.firmware.vString}")
@@ -293,7 +297,7 @@ class MountDevice:
         self.geometry.initializeGeometry(self.firmware.product)
         self.signals.firmwareDone.emit(self.firmware)
 
-    def getFW(self):
+    def getFW(self) -> None:
         if not self.mountIsUp:
             return
 
@@ -301,10 +305,10 @@ class MountDevice:
         self.workerGetFW.signals.finished.connect(self.clearGetFW)
         self.threadPool.start(self.workerGetFW)
 
-    def clearGetLocation(self):
+    def clearGetLocation(self) -> None:
         self.signals.locationDone.emit(self.obsSite)
 
-    def getLocation(self):
+    def getLocation(self) -> None:
         if not self.mountIsUp:
             return
 
@@ -312,7 +316,7 @@ class MountDevice:
         self.workerGetLocation.signals.finished.connect(self.clearGetLocation)
         self.threadPool.start(self.workerGetLocation)
 
-    def clearCalcTLE(self):
+    def clearCalcTLE(self) -> None:
         self.mutexCalcTLE.unlock()
         self.signals.calcTLEdone.emit(self.satellite.tleParams)
 
@@ -326,19 +330,19 @@ class MountDevice:
         self.workerCalcTLE.signals.finished.connect(self.clearCalcTLE)
         self.threadPool.start(self.workerCalcTLE)
 
-    def clearStatTLE(self):
+    def clearStatTLE(self) -> None:
         self.signals.statTLEdone.emit(self.satellite.tleParams)
 
-    def statTLE(self):
+    def statTLE(self) -> None:
         self.workerStatTLE = Worker(self.satellite.statTLE)
         self.workerStatTLE.signals.finished.connect(self.clearStatTLE)
         self.threadPool.start(self.workerStatTLE)
 
-    def clearGetTLE(self):
+    def clearGetTLE(self) -> None:
         self.mutexGetTLE.unlock()
         self.signals.getTLEdone.emit(self.satellite.tleParams)
 
-    def getTLE(self):
+    def getTLE(self) -> None:
         if not self.mountIsUp:
             return
         if not self.mutexGetTLE.tryLock():
@@ -348,7 +352,7 @@ class MountDevice:
         self.workerGetTLE.signals.finished.connect(self.clearGetTLE)
         self.threadPool.start(self.workerGetTLE)
 
-    def bootMount(self, bAddress="", bPort=0):
+    def bootMount(self, bAddress: str = "", bPort: int = 0) -> bool:
         t = f"MAC: [{self.MAC}], broadcast address: [{bAddress}], port: [{bPort}]"
         self.log.debug(t)
         if self.MAC is None:
@@ -363,17 +367,17 @@ class MountDevice:
             return False
         return True
 
-    def shutdown(self):
+    def shutdown(self) -> bool:
         suc = self.obsSite.shutdown()
         if suc:
             self.mountIsUp = False
         return suc
 
-    def clearDome(self, result):
+    def clearDome(self, result: bool) -> None:
         if result:
             self.signals.domeDone.emit(self.dome)
 
-    def cycleDome(self):
+    def cycleDome(self) -> None:
         if not self.mountIsUp:
             return
 
@@ -381,10 +385,10 @@ class MountDevice:
         self.workerCycleDome.signals.result.connect(self.clearDome)
         self.threadPool.start(self.workerCycleDome)
 
-    def clearCycleClock(self):
+    def clearCycleClock(self) -> None:
         self.mutexCycleClock.unlock()
 
-    def cycleClock(self):
+    def cycleClock(self) -> None:
         if not self.mountIsUp:
             return
 
@@ -395,15 +399,17 @@ class MountDevice:
         self.workerCycleClock.signals.finished.connect(self.clearCycleClock)
         self.threadPool.start(self.workerCycleClock)
 
-    def clearProgTrajectory(self):
+    def clearProgTrajectory(self) -> None:
         self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
 
-    def workerProgTrajectory(self, alt, az, replay=False):
+    def workerProgTrajectory(self, alt: Angle, az: Angle, replay: bool = False) -> bool:
         self.satellite.addTrajectoryPoint(alt, az)
         self.satellite.preCalcTrajectory(replay=replay)
         return replay
 
-    def progTrajectory(self, start, alt, az, replay=False):
+    def progTrajectory(
+        self, start: float, alt: Angle, az: Angle, replay: bool = False
+    ) -> None:
         if not self.mountIsUp:
             return
 
@@ -412,21 +418,27 @@ class MountDevice:
         self.workerTrajectory.signals.result.connect(self.clearProgTrajectory)
         self.threadPool.start(self.workerTrajectory)
 
-    def calcTransformationMatricesTarget(self):
+    def calcTransformationMatricesTarget(
+        self,
+    ) -> tuple[Angle | None, Angle | None, Any, Any, Any]:
         ha = self.obsSite.haJNowTarget
         dec = self.obsSite.decJNowTarget
         lat = self.obsSite.location.latitude
         pierside = self.obsSite.piersideTarget
         return self.geometry.calcTransformationMatrices(ha, dec, lat, pierside)
 
-    def calcTransformationMatricesActual(self):
+    def calcTransformationMatricesActual(
+        self,
+    ) -> tuple[Angle | None, Angle | None, Any, Any, Any]:
         ha = self.obsSite.haJNow
         dec = self.obsSite.decJNow
         lat = self.obsSite.location.latitude
         pierside = self.obsSite.pierside
         return self.geometry.calcTransformationMatrices(ha, dec, lat, pierside)
 
-    def calcMountAltAzToDomeAltAz(self, alt, az):
+    def calcMountAltAzToDomeAltAz(
+        self, alt: float, az: float
+    ) -> tuple[Angle | None, Angle | None]:
         suc = self.obsSite.setTargetAltAz(alt=Angle(degrees=alt), az=Angle(degrees=az))
         if not suc:
             return None, None

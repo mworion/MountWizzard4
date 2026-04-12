@@ -136,7 +136,7 @@ def convertToHMS(ra: Angle | float | int) -> str:
     return value
 
 
-def formatLatLonToAngle(value: str, pf: str) -> float:
+def formatLatLonToAngle(value: str, pf: str) -> Angle:
     value = value.strip()
     p1 = re.compile(r"(\d{1,3})([" + pf + r"])\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?")
     p2 = re.compile(r"([-+]?)(\d{1,3})[.,]?(\d*)?")
@@ -166,15 +166,15 @@ def formatLatLonToAngle(value: str, pf: str) -> float:
     return Angle(degrees=angle)
 
 
-def convertLatToAngle(value: str) -> float:
+def convertLatToAngle(value: str) -> Angle:
     return formatLatLonToAngle(value, "SN")
 
 
-def convertLonToAngle(value: str) -> float:
+def convertLonToAngle(value: str) -> Angle:
     return formatLatLonToAngle(value, "WE")
 
 
-def parseRaToAngleString(value: str) -> tuple[bool, bool, list[str]]:
+def parseRaToAngleString(value: str) -> tuple[bool, bool, list[str] | str]:
     value = value.strip()
     p1 = re.compile(r"([+-]?)(\d{1,3})H[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
     p2 = re.compile(r"([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
@@ -214,7 +214,7 @@ def convertRaToAngle(value: str) -> Angle:
     return Angle(hours=angle / 360 * 24) if isFloat else Angle(hours=angle)
 
 
-def parseDecToAngleString(value: str) -> tuple[bool, bool, list[str]]:
+def parseDecToAngleString(value: str) -> tuple[bool, bool, list[str] | str]:
     value = value.strip()
     p1 = re.compile(r"([+-]?)(\d{1,3})Deg[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
     p2 = re.compile(r"([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")

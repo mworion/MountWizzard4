@@ -29,8 +29,8 @@ class ModelStar:
     alt: Angle = Angle(degrees=0)
     az: Angle = Angle(degrees=0)
 
-    def errorRA(self):
+    def errorRA(self) -> Angle:
         return Angle(degrees=self.errorRMS * numpy.sin(self.errorAngle.radians))
 
-    def errorDEC(self):
+    def errorDEC(self) -> Angle:
         return Angle(degrees=self.errorRMS * numpy.cos(self.errorAngle.radians))

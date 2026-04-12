@@ -17,6 +17,7 @@ import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat, valueToInt
 from skyfield.api import Angle
+from typing import Any
 
 
 class Dome:
@@ -24,7 +25,7 @@ class Dome:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         self.parent = parent
         self._shutterState: int = 0
         self._flapState: int = 0
@@ -32,42 +33,42 @@ class Dome:
         self._azimuth: float = 0
 
     @property
-    def shutterState(self):
+    def shutterState(self) -> int:
         return self._shutterState
 
     @shutterState.setter
-    def shutterState(self, value):
+    def shutterState(self, value: Any) -> None:
         value = valueToInt(value)
         if value not in [0, 1, 2, 3]:
             value = 0
         self._shutterState = value
 
     @property
-    def flapState(self):
+    def flapState(self) -> int:
         return self._flapState
 
     @flapState.setter
-    def flapState(self, value):
+    def flapState(self, value: Any) -> None:
         value = valueToInt(value)
         if value not in [0, 1, 2, 3]:
             value = 0
         self._flapState = value
 
     @property
-    def slew(self):
+    def slew(self) -> bool:
         return self._slew
 
     @slew.setter
-    def slew(self, value):
+    def slew(self, value: Any) -> None:
         value = valueToInt(value)
         self._slew = bool(value)
 
     @property
-    def azimuth(self):
+    def azimuth(self) -> float:
         return self._azimuth
 
     @azimuth.setter
-    def azimuth(self, value):
+    def azimuth(self, value: Any) -> None:
         value = valueToFloat(value)
         self._azimuth = (value / 10) % 360.0
 

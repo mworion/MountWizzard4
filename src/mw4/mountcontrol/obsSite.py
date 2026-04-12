@@ -29,6 +29,7 @@ from mw4.base.transform import diffModulusSign
 from skyfield.api import Angle, Loader, load, wgs84
 from skyfield.timelib import Time, Timescale
 from skyfield.toposlib import GeographicPosition
+from typing import Any
 
 
 class ObsSite:
@@ -74,7 +75,7 @@ class ObsSite:
         "E": "no slew requested",
     }
 
-    def __init__(self, parent, verbose=False):
+    def __init__(self, parent: Any, verbose: bool = False) -> None:
         self.parent = parent
         self.pathToData = parent.pathToData
         self.verbose = verbose
@@ -130,11 +131,11 @@ class ObsSite:
         self.UTC2TT = (t.delta_t + t.dut1) / 86400
 
     @property
-    def location(self):
+    def location(self) -> GeographicPosition:
         return self._location
 
     @location.setter
-    def location(self, value):
+    def location(self, value: Any) -> None:
         if isinstance(value, GeographicPosition):
             self._location = value
             return
@@ -156,40 +157,40 @@ class ObsSite:
         )
 
     @property
-    def timeJD(self):
+    def timeJD(self) -> Time:
         if self.parent.mountIsUp:
             return self._timeJD
         else:
             return self.ts.now()
 
     @timeJD.setter
-    def timeJD(self, value):
+    def timeJD(self, value: Any) -> None:
         value = valueToFloat(value)
         self._timeJD = self.ts.tt_jd(value + self.UTC2TT)
 
     @property
-    def timeDiff(self):
+    def timeDiff(self) -> float:
         return np.mean(self._timeDiff)
 
     @timeDiff.setter
-    def timeDiff(self, value):
+    def timeDiff(self, value: Any) -> None:
         return
 
     @property
-    def ut1_utc(self):
+    def ut1_utc(self) -> float:
         return self._ut1_utc
 
     @ut1_utc.setter
-    def ut1_utc(self, value):
+    def ut1_utc(self, value: Any) -> None:
         value = valueToFloat(value)
         self._ut1_utc = value / 86400
 
     @property
-    def timeSidereal(self):
+    def timeSidereal(self) -> Angle | None:
         return self._timeSidereal
 
     @timeSidereal.setter
-    def timeSidereal(self, value):
+    def timeSidereal(self, value: Any) -> None:
         if isinstance(value, str):
             self._timeSidereal = stringToAngle(value, preference="hours")
         elif isinstance(value, float):
@@ -198,133 +199,133 @@ class ObsSite:
             self._timeSidereal = value
 
     @property
-    def raJNow(self):
+    def raJNow(self) -> Angle:
         return self._raJNow
 
     @raJNow.setter
-    def raJNow(self, value):
+    def raJNow(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._raJNow = value
             return
         self._raJNow = valueToAngle(value, preference="hours")
 
     @property
-    def raJNowTarget(self):
+    def raJNowTarget(self) -> Angle:
         return self._raJNowTarget
 
     @raJNowTarget.setter
-    def raJNowTarget(self, value):
+    def raJNowTarget(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._raJNowTarget = value
             return
         self._raJNowTarget = stringToAngle(value, preference="hours")
 
     @property
-    def haJNow(self):
+    def haJNow(self) -> Angle:
         # ha, is always positive between 0 and 24 hours
         ha = (self._timeSidereal.hours - self._raJNow.hours + 24) % 24
         return Angle(hours=ha)
 
     @property
-    def haJNowTarget(self):
+    def haJNowTarget(self) -> Angle:
         # ha, is always positive between 0 and 24 hours
         ha = (self._timeSidereal.hours - self._raJNowTarget.hours + 24) % 24
         return Angle(hours=ha)
 
     @property
-    def decJNow(self):
+    def decJNow(self) -> Angle:
         return self._decJNow
 
     @decJNow.setter
-    def decJNow(self, value):
+    def decJNow(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._decJNow = value
             return
         self._decJNow = valueToAngle(value, preference="degrees")
 
     @property
-    def decJNowTarget(self):
+    def decJNowTarget(self) -> Angle:
         return self._decJNowTarget
 
     @decJNowTarget.setter
-    def decJNowTarget(self, value):
+    def decJNowTarget(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._decJNowTarget = value
             return
         self._decJNowTarget = stringToAngle(value, preference="degrees")
 
     @property
-    def angularPosRA(self):
+    def angularPosRA(self) -> Angle:
         return self._angularPosRA
 
     @angularPosRA.setter
-    def angularPosRA(self, value):
+    def angularPosRA(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._angularPosRA = value
             return
         self._angularPosRA = valueToAngle(value, preference="degrees")
 
     @property
-    def angularPosDEC(self):
+    def angularPosDEC(self) -> Angle:
         return self._angularPosDEC
 
     @angularPosDEC.setter
-    def angularPosDEC(self, value):
+    def angularPosDEC(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._angularPosDEC = value
             return
         self._angularPosDEC = valueToAngle(value, preference="degrees")
 
     @property
-    def errorAngularPosRA(self):
+    def errorAngularPosRA(self) -> Angle:
         return self._errorAngularPosRA
 
     @errorAngularPosRA.setter
-    def errorAngularPosRA(self, value):
+    def errorAngularPosRA(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._errorAngularPosRA = value
             return
         self._errorAngularPosRA = valueToAngle(value, preference="degrees")
 
     @property
-    def errorAngularPosDEC(self):
+    def errorAngularPosDEC(self) -> Angle:
         return self._errorAngularPosDEC
 
     @errorAngularPosDEC.setter
-    def errorAngularPosDEC(self, value):
+    def errorAngularPosDEC(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._errorAngularPosDEC = value
             return
         self._errorAngularPosDEC = valueToAngle(value, preference="degrees")
 
     @property
-    def angularPosRATarget(self):
+    def angularPosRATarget(self) -> Angle:
         return self._angularPosRATarget
 
     @angularPosRATarget.setter
-    def angularPosRATarget(self, value):
+    def angularPosRATarget(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._angularPosRATarget = value
             return
         self._angularPosRATarget = valueToAngle(value, preference="degrees")
 
     @property
-    def angularPosDECTarget(self):
+    def angularPosDECTarget(self) -> Angle:
         return self._angularPosDECTarget
 
     @angularPosDECTarget.setter
-    def angularPosDECTarget(self, value):
+    def angularPosDECTarget(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._angularPosDECTarget = value
             return
         self._angularPosDECTarget = valueToAngle(value, preference="degrees")
 
     @property
-    def pierside(self):
+    def pierside(self) -> str:
         return self._pierside
 
     @pierside.setter
-    def pierside(self, value):
+    def pierside(self, value: Any) -> None:
         if value in ["E", "W", "e", "w"]:
             value = value.capitalize()
             self._pierside = value
@@ -332,44 +333,44 @@ class ObsSite:
             self.log.info(f"Malformed value: {value}")
 
     @property
-    def piersideTarget(self):
+    def piersideTarget(self) -> str:
         return self._piersideTarget
 
     @piersideTarget.setter
-    def piersideTarget(self, value):
+    def piersideTarget(self, value: Any) -> None:
         if value == 2:
             self._piersideTarget = "W"
         elif value == 3:
             self._piersideTarget = "E"
 
     @property
-    def Alt(self):
+    def Alt(self) -> Angle:
         return self._Alt
 
     @Alt.setter
-    def Alt(self, value):
+    def Alt(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._Alt = value
             return
         self._Alt = valueToAngle(value, preference="degrees")
 
     @property
-    def AltTarget(self):
+    def AltTarget(self) -> Angle:
         return self._AltTarget
 
     @AltTarget.setter
-    def AltTarget(self, value):
+    def AltTarget(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._AltTarget = value
             return
         self._AltTarget = stringToAngle(value, preference="degrees")
 
     @property
-    def Az(self):
+    def Az(self) -> Angle:
         return self._Az
 
     @Az.setter
-    def Az(self, value):
+    def Az(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._Az = value
         else:
@@ -381,27 +382,27 @@ class ObsSite:
         self.lastAz = az
 
     @property
-    def AzTarget(self):
+    def AzTarget(self) -> Angle:
         return self._AzTarget
 
     @AzTarget.setter
-    def AzTarget(self, value):
+    def AzTarget(self, value: Any) -> None:
         if isinstance(value, Angle):
             self._AzTarget = value
             return
         self._AzTarget = stringToAngle(value, preference="degrees")
 
     @property
-    def status(self):
+    def status(self) -> int:
         return self._status
 
     @status.setter
-    def status(self, value):
+    def status(self, value: Any) -> None:
         self._status = valueToInt(value)
         if self._status not in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 98, 99]:
             self._status = 99
 
-    def statusText(self):
+    def statusText(self) -> str:
         reference = f"{self._status:d}"
         text = self.STAT.get(reference, "unknown Status")
         if self._status in [2, 6]:
@@ -410,24 +411,24 @@ class ObsSite:
             return text + " - settle" if self.statusSlew else text
 
     @property
-    def statusSat(self):
+    def statusSat(self) -> str:
         return self._statusSat
 
     @statusSat.setter
-    def statusSat(self, value: str):
+    def statusSat(self, value: str) -> None:
         self._statusSat = value
         if self._statusSat not in ["V", "P", "S", "T", "Q", "E"]:
             self._statusSat = "E"
 
-    def statusSatText(self):
+    def statusSatText(self) -> str:
         return self.STAT_SAT.get(self._statusSat, "error")
 
     @property
-    def statusSlew(self):
+    def statusSlew(self) -> bool:
         return self._statusSlew
 
     @statusSlew.setter
-    def statusSlew(self, value):
+    def statusSlew(self, value: Any) -> None:
         self._statusSlew = bool(value)
 
     def parseLocation(self, response: list, numberOfChunks: int) -> bool:
@@ -516,7 +517,7 @@ class ObsSite:
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
-    def startSlewing(self, slewType: str = "normal"):
+    def startSlewing(self, slewType: str = "normal") -> bool:
         slewTypes = {
             "normal": ":MS#",
             "notrack": ":MA#",
@@ -712,7 +713,7 @@ class ObsSite:
         suc, _, _ = conn.communicate(":Qn#")
         return suc
 
-    def stopMoveEast(self):
+    def stopMoveEast(self) -> bool:
         conn = Connection(self.parent.host)
         suc, _, _ = conn.communicate(":Qe#")
         return suc

@@ -1,7 +1,7 @@
 MountWizzard4
 =============
 
-.. note:: MountWizzard4 Version3 move to a new repository:
+.. note:: MountWizzard4 Version3 moved to a new repository
           https://github.com/mworion/MountWizzard4v3
           Only in case of interests in version 3, please
           refer to this repo. From now on MountWizzard4 repo

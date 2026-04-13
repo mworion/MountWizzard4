@@ -14,11 +14,22 @@
 #
 ###########################################################
 from astropy.io import fits
+from collections.abc import Callable
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QListView
 
 
 class Rename:
+    HEADER_FORMATTERS: dict[str, Callable[[str | float], str]] = {
+        "DATE-OBS": lambda e: str(e).replace(":", "-").replace("T", "_").split(".")[0],
+        "XBINNING": lambda e: f"Bin{e:1.0f}",
+        "CCD-TEMP": lambda e: f"Temp{e:03.0f}",
+        "FRAME": str,
+        "IMAGETYP": str,
+        "FILTER": str,
+        "EXPTIME": lambda e: f"Exp{e:1.0f}s",
+    }
+
     def __init__(self, mainW):
         self.mainW = mainW
         self.app = mainW.app
@@ -40,7 +51,7 @@ class Rename:
             "Frame": ["FRAME", "IMAGETYP"],
             "Filter": ["FILTER"],
             "Binning": ["XBINNING"],
-            "Exp Time": ["exposureTime"],
+            "Exp Time": ["EXPTIME"],
             "CCD Temp": ["CCD-TEMP"],
         }
         self.setupGuiTools()
@@ -81,24 +92,11 @@ class Rename:
     def getNumberFiles(self, search: str) -> int:
         return sum(1 for _ in self.renameDir.glob(search))
 
-    @staticmethod
-    def convertHeaderEntry(entry: str, fitsKey: str) -> str:
-        if fitsKey == "DATE-OBS":
-            chunk = entry.replace(":", "-")
-            chunk = chunk.replace("T", "_")
-            chunk = chunk.split(".")[0]
-        elif fitsKey == "XBINNING":
-            chunk = f"Bin{entry:1.0f}"
-        elif fitsKey == "CCD-TEMP":
-            chunk = f"Temp{entry:03.0f}"
-        elif fitsKey == "FRAME" or fitsKey == "FILTER":
-            chunk = f"{entry}"
-        elif fitsKey == "EXPTIME":
-            chunk = f"Exp{entry:1.0f}s"
-        else:
-            chunk = ""
-
-        return chunk
+    def convertHeaderEntry(self, entry: str | float, fitsKey: str) -> str:
+        formatter = self.HEADER_FORMATTERS.get(fitsKey)
+        if formatter is None:
+            return ""
+        return formatter(entry)
 
     def processSelectors(self, fitsHeader: dict, selection: str) -> str:
         nameChunk = ""

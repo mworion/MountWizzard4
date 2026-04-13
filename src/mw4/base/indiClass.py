@@ -15,7 +15,7 @@
 ###########################################################
 import logging
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO
-from mw4.gui.utilities.qtHelpers import sleepAndEvents
+from mw4.base.threadUtils import mainThreadSleep
 from mw4.indibase.indiClient import Client
 from PySide6.QtCore import Qt, QThreadPool, QTimer
 from typing import Any
@@ -297,7 +297,7 @@ class IndiClass:
             self.addDiscoveredDevice, Qt.UniqueConnection
         )
         self.client.connectServer()
-        sleepAndEvents(2000)
+        mainThreadSleep(2000)
         self.client.signals.defText.disconnect(self.addDiscoveredDevice)
         self.client.disconnectServer()
         return self.discoverList

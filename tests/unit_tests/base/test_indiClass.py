@@ -406,6 +406,18 @@ def test_addDiscoveredDevice_5(function):
 
 
 def test_discoverDevices_1(function):
+    function.discoverMutex.lock()
     with mock.patch("mw4.base.indiClass.mainThreadSleep"):
         val = function.discoverDevices("dome")
         assert val == []
+    function.discoverMutex.unlock()
+
+
+def test_discoverDevices_2(function):
+    with mock.patch("mw4.base.indiClass.mainThreadSleep"):
+        with mock.patch.object(function.client, "connectServer"):
+            with mock.patch.object(function.client, "disconnectServer"):
+                function.client.signals = mock.MagicMock()
+                val = function.discoverDevices("dome")
+                assert val == []
+    function.discoverMutex.unlock()

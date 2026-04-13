@@ -17,7 +17,7 @@ import logging
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.indibase.indiClient import Client
-from PySide6.QtCore import Qt, QThreadPool, QTimer
+from PySide6.QtCore import Qt, QThreadPool, QTimer, QMutex
 from typing import Any
 
 
@@ -35,6 +35,7 @@ class IndiClass:
         self.loadConfig: bool = parent.loadConfig
         self.updateRate: int = parent.updateRate
         self.threadPool: QThreadPool = parent.app.threadPool
+        self.discoverMutex: QMutex = QMutex()
         self.client: Client = Client(host=None)
         self.client.signals.deviceConnected.connect(self.chainDeviceConnected)
         self.client.signals.deviceDisconnected.connect(self.chainDeviceDisconnected)
@@ -292,10 +293,10 @@ class IndiClass:
 
     def discoverDevices(self, deviceType: str) -> list[str]:
         self.discoverList = []
+        if not self.discoverMutex.tryLock():
+            return self.discoverList
         self.discoverType = INDI_TYPES.get(deviceType, 0)
-        self.client.signals.defText.connect(
-            self.addDiscoveredDevice, Qt.UniqueConnection
-        )
+        self.client.signals.defText.connect(self.addDiscoveredDevice)
         self.client.connectServer()
         mainThreadSleep(2000)
         self.client.signals.defText.disconnect(self.addDiscoveredDevice)

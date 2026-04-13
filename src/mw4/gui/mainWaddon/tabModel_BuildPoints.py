@@ -18,10 +18,11 @@ from mw4.base.tpool import Worker
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from PySide6.QtCore import QMutex
 from skyfield.api import Angle
+from typing import Any
 
 
 class BuildPoints:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

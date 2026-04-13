@@ -26,10 +26,11 @@ from mw4.mountcontrol.convert import (
 )
 from PySide6.QtWidgets import QInputDialog, QLineEdit
 from skyfield.api import Angle
+from typing import Any
 
 
 class MountMove:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
@@ -100,7 +101,7 @@ class MountMove:
         self.ui.moveCoordinateAz.textEdited.connect(self.setAz)
         self.app.mount.signals.slewed.connect(self.moveAltAzDefault)
         self.app.gameDirection.connect(self.moveAltAzGameController)
-        self.app.game_sR.connect(self.moveClassicGameController)
+        self.app.gameSR.connect(self.moveClassicGameController)
         self.setupGuiMount()
 
     def initConfig(self) -> None:

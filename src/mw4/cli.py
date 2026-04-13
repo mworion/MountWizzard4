@@ -19,7 +19,7 @@ import platform
 from mw4.loader import main
 
 
-def read_options() -> argparse.Namespace:
+def readOptions() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog=__name__,
         description="MountWizzard4",
@@ -50,7 +50,7 @@ def read_options() -> argparse.Namespace:
 
 
 def app():
-    options = read_options()
+    options = readOptions()
     if platform.system() == "Windows":
         os.environ["QT_SCALE_FACTOR"] = f"{options.scale:2.1f}"
         os.environ["QT_FONT_DPI"] = f"{options.dpi:2.0f}"

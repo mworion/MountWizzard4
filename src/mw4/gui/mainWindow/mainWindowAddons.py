@@ -40,10 +40,11 @@ from mw4.gui.mainWaddon.tabSett_Relay import SettRelay
 from mw4.gui.mainWaddon.tabSett_Update import SettUpdate
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
+from typing import Any
 
 
 class MainWindowAddons:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
 
@@ -55,7 +56,7 @@ class MainWindowAddons:
             "Comet": Comet(mainW),
             "EnvironWeather": EnvironWeather(mainW),
             "EnvironSeeing": EnvironSeeing(mainW),
-            "ImageMange": ImageManage(mainW),
+            "ImageManage": ImageManage(mainW),
             "ImageStats": ImageStats(mainW),
             "ManageModel": ModelManage(mainW),
             "Model": Model(mainW),

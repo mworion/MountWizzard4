@@ -20,44 +20,44 @@ import sys
 from unittest.mock import patch
 
 
-def test_read_options_default_values(monkeypatch):
+def test_readOptions_defaultValues(monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli"])
-    opts = cli.read_options()
+    opts = cli.readOptions()
     assert opts.dpi == 96
     assert opts.scale == 1
 
 
-def test_read_options_with_dpi_argument(monkeypatch):
+def test_readOptions_withDpiArgument(monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli", "--dpi", "120"])
-    opts = cli.read_options()
+    opts = cli.readOptions()
     assert opts.dpi == 120.0
     assert opts.scale == 1
 
 
-def test_read_options_with_scale_argument(monkeypatch):
+def test_readOptions_withScaleArgument(monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli", "--scale", "1.5"])
-    opts = cli.read_options()
+    opts = cli.readOptions()
     assert opts.dpi == 96
     assert opts.scale == 1.5
 
 
-def test_read_options_with_both_arguments(monkeypatch):
+def test_readOptions_withBothArguments(monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli", "-d", "144", "-s", "2.0"])
-    opts = cli.read_options()
+    opts = cli.readOptions()
     assert opts.dpi == 144.0
     assert opts.scale == 2.0
 
 
-def test_read_options_short_flags(monkeypatch):
+def test_readOptions_shortFlags(monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli", "-d", "72", "-s", "0.8"])
-    opts = cli.read_options()
+    opts = cli.readOptions()
     assert opts.dpi == 72.0
     assert opts.scale == 0.8
 
 
-def test_read_options_returns_namespace(monkeypatch):
+def test_readOptions_returnsNamespace(monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli"])
-    opts = cli.read_options()
+    opts = cli.readOptions()
     assert isinstance(opts, argparse.Namespace)
 
 
@@ -134,8 +134,8 @@ def test_app_calls_main_function(mock_platform, mock_main, monkeypatch):
     mock_main.assert_called_once()
 
 
-def test_read_options_with_negative_values(monkeypatch):
+def test_readOptions_withNegativeValues(monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli", "--dpi", "-1", "--scale", "-0.5"])
-    opts = cli.read_options()
+    opts = cli.readOptions()
     assert opts.dpi == -1.0
     assert opts.scale == -0.5

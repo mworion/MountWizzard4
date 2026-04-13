@@ -14,10 +14,11 @@
 #
 ###########################################################
 from mw4.gui.utilities.qtHelpers import img2pixmap
+from typing import Any
 
 
 class SettDome:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

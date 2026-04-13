@@ -16,10 +16,11 @@
 from functools import partial
 from mw4.mountcontrol.convert import valueToFloat
 from skyfield.api import Angle
+from typing import Any
 
 
 class SettParkPos:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

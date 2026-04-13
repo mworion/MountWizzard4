@@ -17,10 +17,11 @@ from functools import partial
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
 from mw4.mountcontrol.convert import valueToInt
 from PySide6.QtWidgets import QInputDialog
+from typing import Any
 
 
 class Power:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

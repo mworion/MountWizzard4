@@ -17,10 +17,11 @@ import time
 import webbrowser
 from mw4.mountcontrol.connection import Connection
 from PySide6.QtGui import QTextCursor
+from typing import Any
 
 
 class MountCommand:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

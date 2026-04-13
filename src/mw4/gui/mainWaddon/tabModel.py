@@ -20,6 +20,7 @@ from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.modelBuild.modelRun import ModelData
 from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
 from pathlib import Path
+from typing import Any
 
 
 class Model:
@@ -32,7 +33,7 @@ class Model:
     STATUS_EXPOSE_N = 6
     STATUS_SOLVE = 7
 
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
@@ -174,7 +175,7 @@ class Model:
             return False
         return True
 
-    def clearAlignAndBackup(self):
+    def clearAlignAndBackup(self) -> bool:
         if not self.app.mount.model.clearModel():
             self.msg.emit(2, "Model", "Run error", "Actual model cannot be cleared")
             self.msg.emit(2, "", "", "Model build cancelled")

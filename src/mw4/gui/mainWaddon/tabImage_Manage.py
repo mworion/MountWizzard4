@@ -15,10 +15,11 @@
 ###########################################################
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
 from PySide6.QtWidgets import QInputDialog
+from typing import Any
 
 
 class ImageManage:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
@@ -55,7 +56,7 @@ class ImageManage:
         self.ui.haltFocuser.clicked.connect(self.haltFocuser)
         self.ui.moveFocuserIn.clicked.connect(self.moveFocuserIn)
         self.ui.moveFocuserOut.clicked.connect(self.moveFocuserOut)
-        self.app.game_sL.connect(self.domeMoveGameController)
+        self.app.gameSL.connect(self.domeMoveGameController)
 
         self.app.update1s.connect(self.updateCoverStatGui)
         self.app.update1s.connect(self.updateCoverLightGui)

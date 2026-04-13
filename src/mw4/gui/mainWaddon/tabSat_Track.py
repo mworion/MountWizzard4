@@ -22,10 +22,11 @@ from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.tleParams import TLEParams
 from sgp4.exporter import export_tle
 from skyfield.api import Angle, EarthSatellite
+from typing import Any
 
 
 class SatTrack(SatData):
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         super().__init__()
         self.mainW = mainW
         self.app = mainW.app

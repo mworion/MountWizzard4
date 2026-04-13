@@ -19,10 +19,11 @@ from mw4.gui.utilities.qtHelpers import clickable, svg2pixmap
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QTransform
 from PySide6.QtWidgets import QLabel, QTableWidgetItem
+from typing import Any
 
 
 class EnvironSeeing:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

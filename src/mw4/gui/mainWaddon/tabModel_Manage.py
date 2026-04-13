@@ -26,10 +26,11 @@ from mw4.mountcontrol.model import Model
 from pathlib import Path
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QInputDialog, QLineEdit
+from typing import Any
 
 
 class ModelManage:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

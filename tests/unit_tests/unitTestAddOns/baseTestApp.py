@@ -1157,8 +1157,8 @@ class App(QObject):
     gameABXY = Signal(object)
     gamePMH = Signal(object)
     gameDirection = Signal(object)
-    game_sL = Signal(object, object)
-    game_sR = Signal(object, object)
+    gameSL = Signal(object, object)
+    gameSR = Signal(object, object)
 
     def __init__(self):
         super().__init__()

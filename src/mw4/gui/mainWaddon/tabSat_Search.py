@@ -29,12 +29,13 @@ from mw4.logic.satellites.satellite_calculations import (
 )
 from PySide6.QtCore import QObject, QPoint, QRect, Qt, Signal
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
+from typing import Any
 
 
 class SatSearch(QObject, SatData):
     setSatListItem = Signal(int, int, object)
 
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         super().__init__()
         self.mainW = mainW
         self.app = mainW.app

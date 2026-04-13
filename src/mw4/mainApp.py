@@ -91,8 +91,8 @@ class MountWizzard4(QObject):
     gameABXY = Signal(object)
     gamePMH = Signal(object)
     gameDirection = Signal(object)
-    game_sL = Signal(object, object)
-    game_sR = Signal(object, object)
+    gameSL = Signal(object, object)
+    gameSR = Signal(object, object)
 
     # --- Cyclic update signals (emitted by CyclicTimerManager) ---
     update0_1s = Signal()
@@ -107,6 +107,9 @@ class MountWizzard4(QObject):
     start3s = Signal()
 
     messageQueue = Queue()
+
+    # --- Thread pool configuration ---
+    MAX_THREAD_COUNT: int = 30  # allows concurrent device polling + model workers
 
     def __init__(
         self,
@@ -131,7 +134,7 @@ class MountWizzard4(QObject):
         self.mwGlob = mwGlob
         self.application = application
         self.threadPool = QThreadPool()
-        self.threadPool.setMaxThreadCount(30)
+        self.threadPool.setMaxThreadCount(self.MAX_THREAD_COUNT)
         self.expireData: bool = False
         self.onlineMode: bool = False
         self.statusOperationRunning: int = 0

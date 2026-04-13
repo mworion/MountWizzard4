@@ -21,10 +21,11 @@ import hid
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.qtHelpers import getTabIndex, svg2pixmap
+from typing import Any
 
 
 class SettMisc:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
@@ -156,9 +157,9 @@ class SettMisc:
         if act[2] != old[2]:
             self.app.gameDirection.emit(act[2])
         if act[3] != old[3] or act[4] != old[4]:
-            self.app.game_sL.emit(act[3], act[4])
+            self.app.gameSL.emit(act[3], act[4])
         if act[5] != old[5] or act[6] != old[6]:
-            self.app.game_sR.emit(act[5], act[6])
+            self.app.gameSR.emit(act[5], act[6])
         self.mainW.log.trace(f"GameController: {[act]}, {[old]}")
 
     def readGameController(self, gamepad: hid.device) -> list:

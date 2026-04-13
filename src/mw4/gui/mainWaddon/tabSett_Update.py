@@ -16,12 +16,13 @@
 import logging
 from astropy.utils import data, iers
 from mw4.base.loggerMW import setCustomLoggingLevel
+from typing import Any
 
 
 class SettUpdate:
     log = logging.getLogger("MW4")
 
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

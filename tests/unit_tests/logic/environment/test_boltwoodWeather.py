@@ -58,23 +58,23 @@ def test_stopCommunication_1(function):
     assert function.data == {}
 
 
-def test_convert_knots2kmh_1(function):
-    speedKmh = function.convert_knots2kmh(10)
+def test_convertKnots2Kmh_1(function):
+    speedKmh = function.convertKnots2Kmh(10)
     assert round(speedKmh, 3) == 18.52
 
 
-def test_convert_knots2kmh_2(function):
-    speedKmh = function.convert_knots2kmh(0)
+def test_convertKnots2Kmh_2(function):
+    speedKmh = function.convertKnots2Kmh(0)
     assert round(speedKmh, 3) == 0.0
 
 
-def test_convert_mph2kmh_1(function):
-    speedKmh = function.convert_mph2kmh(10)
+def test_convertMph2Kmh_1(function):
+    speedKmh = function.convertMph2Kmh(10)
     assert round(speedKmh, 3) == 16.093
 
 
-def test_convert_mph2kmh_2(function):
-    speedKmh = function.convert_mph2kmh(0)
+def test_convertMph2Kmh_2(function):
+    speedKmh = function.convertMph2Kmh(0)
     assert round(speedKmh, 3) == 0.0
 
 

@@ -25,6 +25,7 @@ from range_key_dict import RangeKeyDict
 from skyfield import almanac
 from skyfield.toposlib import GeographicPosition
 from skyfield.trigonometry import position_angle_of
+from typing import Any
 
 
 class Almanac:
@@ -44,7 +45,7 @@ class Almanac:
     Y_TICKS = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]
     Y_LABELS = ["", "14", "16", "18", "20", "22", "24", "02", "04", "06", "08", "10", ""]
 
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.ui = mainW.ui

@@ -16,10 +16,11 @@
 import numpy as np
 from functools import partial
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
+from typing import Any
 
 
 class EnvironWeather:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

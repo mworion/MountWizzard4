@@ -45,11 +45,11 @@ class SensorWeatherBoltwood:
         self.signals.deviceDisconnected.emit("SeeingWeather")
 
     @staticmethod
-    def convert_knots2kmh(knots: float) -> float:
+    def convertKnots2Kmh(knots: float) -> float:
         return knots * 1.852
 
     @staticmethod
-    def convert_mph2kmh(mph: float) -> float:
+    def convertMph2Kmh(mph: float) -> float:
         return mph * 1.609344
 
     @staticmethod
@@ -95,9 +95,9 @@ class SensorWeatherBoltwood:
             dewPoint = float(dataParts[9])
 
         if dataParts[3] == "K":
-            windSpeed = self.convert_knots2kmh(float(dataParts[7]))
+            windSpeed = self.convertKnots2Kmh(float(dataParts[7]))
         else:
-            windSpeed = self.convert_mph2kmh(float(dataParts[7]))
+            windSpeed = self.convertMph2Kmh(float(dataParts[7]))
 
         self.data["SKY_QUALITY.SKY_BRIGHTNESS"] = skyTemp
         self.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = ambientTemp

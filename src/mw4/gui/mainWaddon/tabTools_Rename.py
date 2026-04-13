@@ -17,6 +17,7 @@ from astropy.io import fits
 from collections.abc import Callable
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QListView
+from typing import Any
 
 
 class Rename:
@@ -30,7 +31,7 @@ class Rename:
         "EXPTIME": lambda e: f"Exp{e:1.0f}s",
     }
 
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

@@ -17,6 +17,7 @@ import numpy as np
 import webbrowser
 from mw4.gui.utilities.qtHelpers import guiSetText
 from range_key_dict import RangeKeyDict
+from typing import Any
 
 
 class ImageStats:
@@ -64,7 +65,7 @@ class ImageStats:
         }
     )
 
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

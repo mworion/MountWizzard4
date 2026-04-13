@@ -106,13 +106,13 @@ def calcSatelliteMeridianTransit(
 ) -> Callable:
     difference = sat - loc
 
-    def west_of_meridian_at(t):
+    def westOfMeridianAt(t):
         alt, az, _ = difference.at(t).altaz()
         delta = (az.degrees + tolerance + 360) % 360 - 180
         return delta < 0
 
-    west_of_meridian_at.step_days = 0.4
-    return west_of_meridian_at
+    westOfMeridianAt.step_days = 0.4
+    return westOfMeridianAt
 
 
 def calcPassEvents(

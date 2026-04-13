@@ -19,10 +19,11 @@ from mw4.base.ethernet import checkFormatMAC
 from mw4.gui.utilities.qtHelpers import guiSetText
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.setting import Setting
+from typing import Any
 
 
 class SettMount:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

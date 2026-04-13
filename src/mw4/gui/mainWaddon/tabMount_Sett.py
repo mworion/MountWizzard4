@@ -24,10 +24,11 @@ from mw4.mountcontrol.convert import (
 )
 from PySide6.QtWidgets import QInputDialog, QLineEdit
 from skyfield.api import wgs84
+from typing import Any
 
 
 class MountSett:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

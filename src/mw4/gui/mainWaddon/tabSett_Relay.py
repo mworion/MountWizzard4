@@ -16,10 +16,11 @@
 from functools import partial
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from PySide6.QtWidgets import QListView
+from typing import Any
 
 
 class SettRelay:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = self.app.msg

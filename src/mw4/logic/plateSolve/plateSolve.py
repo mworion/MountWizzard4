@@ -176,8 +176,6 @@ class PlateSolve:
         data = (imagePath, updateHeader)
         self.solveQueue.put(data)
 
-    def abort(self) -> bool:
+    def abort(self) -> None:
         if self.process:
             self.process.kill()
-            return True
-        return False

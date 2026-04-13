@@ -19,8 +19,6 @@ from typing import Any
 
 
 class SensorWeatherBoltwood:
-    """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(self, parent: Any) -> None:

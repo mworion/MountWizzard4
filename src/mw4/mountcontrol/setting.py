@@ -19,8 +19,6 @@ from mw4.mountcontrol.convert import valueToFloat, valueToInt
 
 
 class Setting:
-    """ """
-
     CONFIG = {
         "A": "altazimuth mount",
         "E": "equatorial mount",

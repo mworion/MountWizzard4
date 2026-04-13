@@ -31,8 +31,6 @@ from skyfield.api import Angle
 
 
 class MountDevice:
-    """ """
-
     CYCLE_POINTING = 500
     CYCLE_DOME = 950
     CYCLE_CLOCK = 1000

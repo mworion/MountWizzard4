@@ -20,8 +20,6 @@ from skyfield.api import Angle, Star
 
 @dataclass
 class ProgStar:
-    """ """
-
     log = logging.getLogger("MW4")
     mCoord: Star
     sCoord: Star

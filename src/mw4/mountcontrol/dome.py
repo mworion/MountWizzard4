@@ -20,8 +20,6 @@ from skyfield.api import Angle
 
 
 class Dome:
-    """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(self, parent):

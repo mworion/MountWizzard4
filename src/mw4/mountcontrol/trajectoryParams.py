@@ -19,8 +19,6 @@ from mw4.mountcontrol.obsSite import ObsSite
 
 @dataclass
 class TrajectoryParams:
-    """ """
-
     obsSite: ObsSite
     flip: bool = False
     message: str = ""

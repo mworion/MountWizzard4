@@ -137,13 +137,15 @@ class PlateSolve:
     def workerSolveLoop(self) -> None:
         while self.solveLoopRunning:
             if self.solveQueue.empty():
-                time.sleep(0.5)
+                time.sleep(0.1)
                 continue
             imagePath, updateHeader = self.solveQueue.get()
             self.processSolveQueue(imagePath, updateHeader)
             self.solveQueue.task_done()
 
     def startSolveLoop(self) -> None:
+        if self.solveLoopRunning:
+            return
         self.solveLoopRunning = True
         self.threadPool.start(self.worker)
 

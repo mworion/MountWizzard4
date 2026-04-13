@@ -228,7 +228,6 @@ class ModelData(QObject):
         donePoints = sum(
             1 for key in self.modelBuildData if self.modelBuildData[key]["processed"]
         )
-        sum(1 for key in self.modelBuildData if self.modelBuildData[key]["success"])
         fraction = donePoints / len(self.modelBuildData)
         secondsElapsed = time.time() - self.runTime
         secondsBase = secondsElapsed / fraction

@@ -199,8 +199,17 @@ def test_workerSolveLoop_2(function, mocked_processSolveQueue):
 
 
 def test_startSolveLoop_1(function):
+    function.solveLoopRunning = False
     with mock.patch.object(function.threadPool, "start"):
         function.startSolveLoop()
+    assert function.solveLoopRunning
+
+
+def test_startSolveLoop_2(function):
+    function.solveLoopRunning = True
+    with mock.patch.object(function.threadPool, "start"):
+        function.startSolveLoop()
+    assert function.solveLoopRunning
 
 
 def test_checkAvailabilityProgram_1(function):

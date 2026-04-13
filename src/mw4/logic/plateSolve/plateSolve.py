@@ -20,7 +20,6 @@ import time
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker
 from mw4.base.transform import J2000ToJNow
-from mw4.gui.utilities.qtHelpers import sleepAndEvents
 from mw4.logic.fits.fitsFunction import (
     getImageHeader,
     getSolutionFromWCSHeader,
@@ -138,7 +137,7 @@ class PlateSolve:
     def workerSolveLoop(self) -> None:
         while self.solveLoopRunning:
             if self.solveQueue.empty():
-                sleepAndEvents(500)
+                time.sleep(0.5)
                 continue
             imagePath, updateHeader = self.solveQueue.get()
             self.processSolveQueue(imagePath, updateHeader)

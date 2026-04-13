@@ -293,7 +293,7 @@ class IndiClass:
     def discoverDevices(self, deviceType: str) -> list[str]:
         self.discoverList = []
         self.discoverType = INDI_TYPES.get(deviceType, 0)
-        self.client.signals.defText.connect(self.addDiscoveredDevice)
+        self.client.signals.defText.connect(self.addDiscoveredDevice, QtCore.Qt.UniqueConnection)
         self.client.connectServer()
         sleepAndEvents(2000)
         self.client.signals.defText.disconnect(self.addDiscoveredDevice)

@@ -184,23 +184,19 @@ class Camera:
         while self.exposing and "integrating" not in self.data.get("Device.Message"):
             time.sleep(0.2)
 
-
     def waitDownload(self) -> None:
         self.signals.message.emit("download")
         while self.exposing and "downloading" in self.data.get("Device.Message"):
             time.sleep(0.2)
-
 
     def waitSave(self) -> None:
         self.signals.message.emit("saving")
         while self.exposing and "image is ready" in self.data.get("Device.Message"):
             time.sleep(0.2)
 
-
     def waitFinish(self, function: Callable[..., bool], param: Any) -> None:
         while self.exposing and not function(param):
             time.sleep(0.2)
-
 
     def retrieveImage(self, function: Callable[..., Any], param: Any) -> np.ndarray:
         if not self.exposing:

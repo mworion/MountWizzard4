@@ -14,8 +14,9 @@
 #
 ###########################################################
 from functools import partial
+from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
-from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, sleepAndEvents
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable
 from mw4.mountcontrol.convert import (
     convertDecToAngle,
     convertRaToAngle,
@@ -146,7 +147,7 @@ class MountMove:
     def countDuration(self, duration: int) -> None:
         for t in range(duration * 10, -1, -1):
             self.ui.stopMoveAll.setText(f"{t / 10:.1f}s")
-            sleepAndEvents(100)
+            mainThreadSleep(100)
         self.ui.stopMoveAll.setText("STOP")
 
     def moveDuration(self) -> None:

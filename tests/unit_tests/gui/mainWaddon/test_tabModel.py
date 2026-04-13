@@ -196,7 +196,7 @@ def test_clearAlignAndBackup_1(function):
 def test_clearAlignAndBackup_2(function):
     with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
         with mock.patch.object(function.app.mount.model, "deleteName", return_value=False):
-            with mock.patch.object(mw4.gui.mainWaddon.tabModel, "sleepAndEvents"):
+            with mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"):
                 suc = function.clearAlignAndBackup()
                 assert suc
 
@@ -205,7 +205,7 @@ def test_clearAlignAndBackup_3(function):
     with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
         with mock.patch.object(function.app.mount.model, "deleteName", return_value=True):
             with mock.patch.object(function.app.mount.model, "storeName", return_value=False):
-                with mock.patch.object(mw4.gui.mainWaddon.tabModel, "sleepAndEvents"):
+                with mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"):
                     suc = function.clearAlignAndBackup()
                     assert suc
 
@@ -214,7 +214,7 @@ def test_clearAlignAndBackup_4(function):
     with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
         with mock.patch.object(function.app.mount.model, "deleteName", return_value=True):
             with mock.patch.object(function.app.mount.model, "storeName", return_value=True):
-                with mock.patch.object(mw4.gui.mainWaddon.tabModel, "sleepAndEvents"):
+                with mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"):
                     suc = function.clearAlignAndBackup()
                     assert suc
 

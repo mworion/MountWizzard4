@@ -139,7 +139,7 @@ def test_closeExtendedWindows_1(function):
 
     test = function.uiWindows
     function.uiWindows = {"showMessageW": {"classObj": Test(), "button": QPushButton()}}
-    with mock.patch("mw4.gui.mainWindow.externalWindows.sleepAndEvents"):
+    with mock.patch("mw4.gui.mainWindow.externalWindows.mainThreadSleep"):
         function.closeExtendedWindows()
     function.uiWindows = test
 

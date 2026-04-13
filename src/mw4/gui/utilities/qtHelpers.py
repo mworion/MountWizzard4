@@ -44,13 +44,6 @@ from qimage2ndarray import array2qimage, rgb_view
 from skyfield.api import Angle
 
 
-def sleepAndEvents(value: int) -> None:
-    """Pause for *value* milliseconds while processing all pending Qt events."""
-    loop = QEventLoop()
-    QTimer.singleShot(value, loop.quit)
-    loop.exec()
-
-
 def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str | bool) -> None:
     if widget.property(widgetProperty) == value:
         return

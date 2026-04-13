@@ -36,7 +36,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         function.pauseBatch = False
 
-    monkeypatch.setattr("mw4.logic.modelBuild.modelRun.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.logic.modelBuild.modelRun.mainThreadSleep", test)
 
 
 @pytest.fixture
@@ -44,7 +44,7 @@ def mocked_sleepAndEvents_2(monkeypatch, function):
     def test(a):
         function.cancelBatch = True
 
-    monkeypatch.setattr("mw4.logic.modelBuild.modelRun.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.logic.modelBuild.modelRun.mainThreadSleep", test)
 
 
 def test_setImageExposed(function):

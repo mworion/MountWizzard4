@@ -18,8 +18,9 @@ import mw4.base.packageConfig as pConf
 if pConf.isAvailable:
     from PySide6.QtMultimedia import QSoundEffect
 import hid
+from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
-from mw4.gui.utilities.qtHelpers import getTabIndex, sleepAndEvents, svg2pixmap
+from mw4.gui.utilities.qtHelpers import getTabIndex, svg2pixmap
 
 
 class SettMisc:
@@ -224,7 +225,7 @@ class SettMisc:
 
         reportOld = [0] * 16
         while self.mainW.gameControllerRunning:
-            sleepAndEvents(100)
+            mainThreadSleep(100)
             report = self.readGameController(gameControllerDevice)
             if not self.isNewerData(report, reportOld):
                 continue

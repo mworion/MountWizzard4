@@ -406,6 +406,6 @@ def test_addDiscoveredDevice_5(function):
 
 
 def test_discoverDevices_1(function):
-    with mock.patch.object(time, "sleep"):
+    with mock.patch("mw4.base.indiClass.mainThreadSleep"):
         val = function.discoverDevices("dome")
         assert val == []

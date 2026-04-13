@@ -15,7 +15,8 @@
 ###########################################################
 import time
 from datetime import datetime
-from mw4.gui.utilities.qtHelpers import changeStyleDynamic, sleepAndEvents
+from mw4.base.threadUtils import mainThreadSleep
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.modelBuild.modelRun import ModelData
 from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
 from pathlib import Path
@@ -180,7 +181,7 @@ class Model:
             return False
 
         self.msg.emit(1, "Model", "Clear model", "Waiting 1s ...")
-        sleepAndEvents(1000)
+        mainThreadSleep(1000)
         self.msg.emit(1, "Model", "Clear model", "Actual model is cleared")
         if not self.app.mount.model.storeName("backup"):
             t = "Cannot save backup model on mount, proceeding with model run"

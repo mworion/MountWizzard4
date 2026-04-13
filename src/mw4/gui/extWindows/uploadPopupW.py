@@ -15,8 +15,9 @@
 ###########################################################
 import re
 import requests
+from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
-from mw4.gui.utilities.qtHelpers import sleepAndEvents, svg2pixmap
+from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.uploadPopup_ui import Ui_UploadPopup
 from pathlib import Path
@@ -190,13 +191,13 @@ class UploadPopup(MWidget):
             self.signalProgressBarColor.emit("red")
         else:
             while self.pollStatusRunState:
-                sleepAndEvents(250)
+                mainThreadSleep(250)
             if self.returnValues["successMount"]:
                 self.signalProgressBarColor.emit("green")
             else:
                 self.signalProgressBarColor.emit("red")
 
-        sleepAndEvents(1500)
+        mainThreadSleep(1500)
         self.close()
 
     def uploadFile(self) -> None:

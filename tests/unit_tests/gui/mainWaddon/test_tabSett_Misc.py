@@ -264,7 +264,7 @@ def test_workerGameController_3(function):
     function.ui.gameControllerList.setCurrentIndex(0)
     function.gameControllerList["test"] = {"vendorId": 1, "productId": 1}
     with mock.patch.object(hid, "device", return_value=Gamepad()):
-        with mock.patch.object(mw4.gui.mainWaddon.tabSett_Misc, "sleepAndEvents"):
+        with mock.patch.object(mw4.gui.mainWaddon.tabSett_Misc, "mainThreadSleep"):
             function.workerGameController()
     function.readGameController = temp
 
@@ -295,7 +295,7 @@ def test_workerGameController_4(function):
     function.ui.gameControllerList.setCurrentIndex(0)
     function.gameControllerList["test"] = {"vendorId": 1, "productId": 1}
     with mock.patch.object(hid, "device", return_value=Gamepad()):
-        with mock.patch.object(mw4.gui.mainWaddon.tabSett_Misc, "sleepAndEvents"):
+        with mock.patch.object(mw4.gui.mainWaddon.tabSett_Misc, "mainThreadSleep"):
             with mock.patch.object(function, "sendGameControllerSignals"):
                 function.workerGameController()
     function.readGameController = temp

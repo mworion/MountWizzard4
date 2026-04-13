@@ -20,7 +20,6 @@ from mw4.gui.utilities.qtHelpers import (
     clickable,
     findIndexValue,
     guiSetText,
-    sleepAndEvents,
     svg2pixmap,
     svg2icon,
     img2pixmap,
@@ -45,22 +44,6 @@ from skyfield.api import Angle
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     yield
-
-
-def test_sleepAndEvents():
-    """sleepAndEvents must process pending events during the wait period."""
-    called = []
-    QTimer.singleShot(0, lambda: called.append(True))
-    sleepAndEvents(50)
-    assert called, "Event loop did not process pending events during sleepAndEvents"
-
-
-def test_sleepAndEvents_zeroMs():
-    """sleepAndEvents(0) must still flush the event queue."""
-    called = []
-    QTimer.singleShot(0, lambda: called.append(True))
-    sleepAndEvents(0)
-    assert called, "Event loop did not process pending events for sleepAndEvents(0)"
 
 
 def test_changeStyleDynamic_1():

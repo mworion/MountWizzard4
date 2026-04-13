@@ -33,7 +33,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
         function.exposing = False
 
-    monkeypatch.setattr("mw4.logic.camera.camera.sleepAndEvents", test)
+    monkeypatch.setattr("mw4.logic.camera.camera.time.sleep", test)
 
 
 def test_properties(function):

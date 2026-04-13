@@ -57,14 +57,6 @@ def function():
     yield func
 
 
-@pytest.fixture
-def mocked_sleepAndEvents(monkeypatch, function):
-    def test(a):
-        pass
-
-    monkeypatch.setattr("mw4.logic.camera.cameraSGPro.sleepAndEvents", test)
-
-
 def test_sgGetCameraTemp_1(function):
     with mock.patch.object(function, "requestProperty", return_value={}):
         suc, val = function.sgGetCameraTemp()

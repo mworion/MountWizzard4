@@ -15,8 +15,9 @@
 ###########################################################
 import cv2
 import qimage2ndarray
+from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
-from mw4.gui.utilities.qtHelpers import changeStyleDynamic, sleepAndEvents
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import video_ui
 from PySide6.QtCore import Signal
@@ -132,7 +133,7 @@ class VideoWindowBase(MWidget):
 
     def restartVideo(self) -> None:
         self.stopVideo()
-        sleepAndEvents(1000)
+        mainThreadSleep(1000)
         self.startVideo()
 
     def receivedImage(self, pixmap: QPixmap) -> None:

@@ -246,7 +246,7 @@ def test_stopVideoStream_1(function):
 def test_restartVideo(function):
     with mock.patch.object(function, "stopVideo"):
         with mock.patch.object(function, "startVideo"):
-            with mock.patch.object(mw4.gui.extWindows.video.videoBase, "sleepAndEvents"):
+            with mock.patch.object(mw4.gui.extWindows.video.videoBase, "mainThreadSleep"):
                 function.restartVideo()
 
 

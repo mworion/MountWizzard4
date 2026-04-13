@@ -16,7 +16,7 @@
 import json
 import numpy as np
 from collections.abc import Iterable
-from mw4.gui.utilities.qtHelpers import sleepAndEvents
+from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import analyse_ui
 from pathlib import Path
@@ -459,7 +459,7 @@ class AnalyseWindow(MWidget):
     def drawAll(self) -> None:
         for chart in self.charts:
             chart()
-            sleepAndEvents(0)
+            mainThreadSleep(0)
         self.linkViewsAltAz()
         self.linkViewsRa()
         self.linkViewsDec()

@@ -273,11 +273,9 @@ class IndiClass:
     def addDiscoveredDevice(self, deviceName: str, propertyName: str) -> None:
         if propertyName != "DRIVER_INFO":
             return
-
         device = self.client.devices.get(deviceName)
         if not device:
             return
-
         interface = device.getText(propertyName).get("DRIVER_INTERFACE", None)
         if interface is None:
             return
@@ -296,9 +294,10 @@ class IndiClass:
         if not self.discoverMutex.tryLock():
             return self.discoverList
         self.discoverType = INDI_TYPES.get(deviceType, 0)
-        self.client.signals.defText.connect(self.addDiscoveredDevice)
+        self.client.signals.defText.connect(self.addDiscoveredDevice, Qt.ConnectionType.UniqueConnection)
         self.client.connectServer()
         mainThreadSleep(2000)
         self.client.signals.defText.disconnect(self.addDiscoveredDevice)
         self.client.disconnectServer()
+        self.discoverMutex.unlock()
         return self.discoverList

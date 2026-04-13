@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import mw4.gui.mainWaddon.tabTools_IERSTime
 import pytest
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
@@ -42,18 +41,15 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    function.initConfig()
-    assert function.tempDir == Path("tests/work/temp")
-
-
-def test_initConfig_2(function):
+    function.app.config["mainW"] = {}
     function.initConfig()
     assert function.tempDir == Path("tests/work/temp")
 
 
 def test_storeConfig_1(function):
-    function.thread = None
+    function.app.config["mainW"] = {}
     function.storeConfig()
+    assert "iersSource" in function.app.config["mainW"]
 
 
 def test_setupIcons_1(function):
@@ -137,12 +133,11 @@ def test_finishLoadFinalsFromSourceURLs_2(function):
 
 
 def test_loadTimeDataFromSourceURLs_1(function):
-    function.ui.isOnline.setChecked(False)
-    with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
-        function.loadTimeDataFromSourceURLs()
+    function.ui.isOnline.isChecked.return_value = False
+    function.loadTimeDataFromSourceURLs()
 
 
 def test_loadTimeDataFromSourceURLs_2(function):
-    function.ui.isOnline.setChecked(True)
+    function.ui.isOnline.isChecked.return_value = True
     with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
         function.loadTimeDataFromSourceURLs()

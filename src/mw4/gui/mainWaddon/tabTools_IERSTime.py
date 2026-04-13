@@ -18,22 +18,24 @@ from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
 from pathlib import Path
 from PySide6.QtWidgets import QListView
+from typing import Any
 
 
 class IERSTime:
-    def __init__(self, mainW):
+    iersSourceURLs: dict[str, str] = {
+        "Datacenter from IERS": "https://datacenter.iers.org/products/eop/rapid/standard/",
+        "Maia from usno.navy.mil": "https://maia.usno.navy.mil/ser7/",
+    }
+
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.tempDir: Path = self.app.mwGlob["tempDir"]
-        self.uploadPopup = None
-        self.downloadPopup = None
+        self.uploadPopup: Any = None
+        self.downloadPopup: Any = None
         self.databaseProcessing = DataWriter(self.app)
-        self.iersSourceURLs = {
-            "Datacenter from IERS": "https://datacenter.iers.org/products/eop/rapid/standard/",
-            "Maia from usno.navy.mil": "https://maia.usno.navy.mil/ser7/",
-        }
         self.ui.progEarthRotationData.clicked.connect(self.progEarthRotationData)
         self.ui.downloadIERS.clicked.connect(self.loadTimeDataFromSourceURLs)
 

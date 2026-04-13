@@ -242,19 +242,20 @@ def test_solve_1(function):
     function.solve(imagePath=file)
 
 
-def test_abort_1(function):
+def test_abort_no_process(function):
     function.process = None
-    suc = function.abort()
-    assert not suc
+    function.abort()
 
 
-def test_abort_2(function):
-    class Test:
-        @staticmethod
-        def kill():
-            return True
+def test_abort_with_process(function):
+    class FakeProcess:
+        killed = False
 
-    function.framework = "ASTAP"
-    function.process = Test()
-    suc = function.abort()
-    assert suc
+        def kill(self):
+            self.killed = True
+
+    fake = FakeProcess()
+    function.process = fake
+    function.abort()
+    assert fake.killed
+

@@ -119,6 +119,11 @@ def test_convertHeaderEntry_9(function):
     assert chunk == "Exp14s"
 
 
+def test_convertHeaderEntry_imagetyp(function):
+    chunk = function.convertHeaderEntry(entry="Light", fitsKey="IMAGETYP")
+    assert chunk == "Light"
+
+
 def test_convertHeaderEntry_11(function):
     chunk = function.convertHeaderEntry(entry="12354", fitsKey="XXX")
     assert not chunk
@@ -140,6 +145,24 @@ def test_processSelectors_2(function):
     header.set("DATE-OBS", "2019-05-26T17:02:18.843")
     name = function.processSelectors(header, "Datetime")
     assert name == "2019-05-26_17-02-18"
+
+
+def test_processSelectors_exptime(function):
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header.set("EXPTIME", 30)
+    name = function.processSelectors(header, "Exp Time")
+    assert name == "Exp30s"
+
+
+def test_processSelectors_imagetyp(function):
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header.set("IMAGETYP", "Light Frame")
+    name = function.processSelectors(header, "Frame")
+    assert name == "Light Frame"
 
 
 def test_renameFile_1(function):

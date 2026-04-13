@@ -18,8 +18,6 @@ from typing import Any
 
 
 class FilterAscom(AscomClass):
-    """ """
-
     CYCLE_POLL_DATA = 1000
 
     def __init__(self, parent: Any) -> None:

@@ -19,8 +19,6 @@ from typing import Any
 
 
 class MeasureDataRaw(PySide6.QtCore.QObject):
-    """ """
-
     log = logging.getLogger("MW4")
     CYCLE_UPDATE_TASK = 1000
     MAXSIZE = 24 * 60 * 60

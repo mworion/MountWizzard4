@@ -20,8 +20,6 @@ from skyfield.timelib import Time
 
 @dataclass
 class TrajectoryParams:
-    """ """
-
     obsSite: ObsSite
     flip: bool = False
     message: str = ""

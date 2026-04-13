@@ -22,8 +22,6 @@ from skyfield.api import Angle
 
 
 class Satellite:
-    """ """
-
     log = logging.getLogger("MW4")
 
     TLES = {

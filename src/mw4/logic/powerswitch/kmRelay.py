@@ -23,14 +23,10 @@ from typing import Any
 
 
 class RelaySignals(Signals):
-    """ """
-
     statusReady = Signal()
 
 
 class KMRelay:
-    """ """
-
     log = logging.getLogger("MW4")
 
     CYCLE_POLLING = 1000

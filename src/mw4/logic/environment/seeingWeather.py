@@ -24,14 +24,10 @@ from typing import Any
 
 
 class SeeingWeatherSignals(Signals):
-    """ """
-
     update = Signal()
 
 
 class SeeingWeather:
-    """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(self, app: Any = None) -> None:

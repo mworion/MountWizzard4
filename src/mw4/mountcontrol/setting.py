@@ -20,8 +20,6 @@ from typing import Any
 
 
 class Setting:
-    """ """
-
     CONFIG = {
         "A": "altazimuth mount",
         "E": "equatorial mount",

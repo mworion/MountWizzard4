@@ -21,8 +21,6 @@ from typing import Any
 
 
 class DataWriter:
-    """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(self, app: Any) -> None:

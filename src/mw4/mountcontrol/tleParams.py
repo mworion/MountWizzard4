@@ -21,8 +21,6 @@ from skyfield.units import Angle
 
 @dataclass
 class TLEParams:
-    """ """
-
     obsSite: ObsSite
     azimuth: Angle = Angle(degrees=0)
     altitude: Angle = Angle(degrees=0)

@@ -20,8 +20,6 @@ from typing import Any
 
 
 class Watney:
-    """ """
-
     log = logging.getLogger("MW4")
     returnCodes: dict = {0: "No errors", 1: "No solution"}
 

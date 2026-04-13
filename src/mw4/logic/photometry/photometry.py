@@ -24,8 +24,6 @@ from typing import Any
 
 
 class PhotometrySignals(QObject):
-    """ """
-
     hfr = Signal()
     hfrSquare = Signal()
     hfrTriangle = Signal()
@@ -37,8 +35,6 @@ class PhotometrySignals(QObject):
 
 
 class Photometry:
-    """ """
-
     log = logging.getLogger("MW4")
     ABERRATION_SIZE = 250
     FILTER_SCALE = 10

@@ -20,8 +20,6 @@ from typing import Any
 
 
 class ASTAP:
-    """ """
-
     log = logging.getLogger("MW4")
     GUI = "astap"
     CLI = "astap_cli"

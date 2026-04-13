@@ -17,8 +17,6 @@ from PySide6.QtCore import QObject, Signal
 
 
 class MountSignals(QObject):
-    """ """
-
     pointDone = Signal(object)
     domeDone = Signal(object)
     settingDone = Signal(object)

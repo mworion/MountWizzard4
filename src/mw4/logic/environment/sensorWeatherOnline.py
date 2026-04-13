@@ -23,8 +23,6 @@ from typing import Any
 
 
 class SensorWeatherOnline:
-    """ """
-
     log = logging.getLogger("MW4")
 
     def __init__(self, parent: Any) -> None:

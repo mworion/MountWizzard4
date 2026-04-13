@@ -13,15 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-import time
+from PySide6.QtCore import QEventLoop, QTimer
 
 
-def mainThreadSleep(ms: int) -> None:
-    """Pause for *ms* milliseconds.
+def mainThreadSleep(value: int) -> None:
+    loop = QEventLoop()
+    QTimer.singleShot(value, loop.quit)
+    loop.exec()
 
-    Thread-safe alternative to ``sleepAndEvents`` for use inside
-    ``QThreadPool`` worker functions.  Unlike ``sleepAndEvents`` this
-    function does **not** create any Qt objects, so it is safe to call
-    from any thread.
-    """
-    time.sleep(ms / 1000.0)
+

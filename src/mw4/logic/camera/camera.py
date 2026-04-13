@@ -137,7 +137,7 @@ class Camera:
         self.signals.saved.emit(self.imagePath)
         self.app.showImage.emit(self.imagePath)
 
-    def expose(self, imagePath: Path = "", exposureTime: float = 1, binning: int = 1) -> bool:
+    def expose(self, imagePath: Path = Path(),  exposureTime: float = 1, binning: int = 1) -> bool:
         if self.exposing:
             return False
 
@@ -173,7 +173,7 @@ class Camera:
         timeLeft = exposureTime
         while self.exposing and func():
             text = f"expose {timeLeft:3.0f} s"
-            time.sleep(0.2)
+            time.sleep(0.1)
             self.signals.message.emit(text)
             if timeLeft >= 0.1:
                 timeLeft -= 0.1
@@ -182,21 +182,21 @@ class Camera:
 
     def waitStart(self) -> None:
         while self.exposing and "integrating" not in self.data.get("Device.Message"):
-            time.sleep(0.2)
+            time.sleep(0.1)
 
     def waitDownload(self) -> None:
         self.signals.message.emit("download")
         while self.exposing and "downloading" in self.data.get("Device.Message"):
-            time.sleep(0.2)
+            time.sleep(0.1)
 
     def waitSave(self) -> None:
         self.signals.message.emit("saving")
         while self.exposing and "image is ready" in self.data.get("Device.Message"):
-            time.sleep(0.2)
+            time.sleep(0.1)
 
     def waitFinish(self, function: Callable[..., bool], param: Any) -> None:
         while self.exposing and not function(param):
-            time.sleep(0.2)
+            time.sleep(0.1)
 
     def retrieveImage(self, function: Callable[..., Any], param: Any) -> np.ndarray:
         if not self.exposing:

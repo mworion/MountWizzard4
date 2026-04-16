@@ -17,11 +17,9 @@ import logging
 from queue import Queue
 import time
 
-from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO
-from mw4.base.threadUtils import mainThreadSleep
 from indipyclient.queclient import runqueclient
 from mw4.base.tpool import Worker
-from PySide6.QtCore import Qt, QThreadPool, QTimer, QMutex
+from PySide6.QtCore import QThreadPool, QMutex
 from typing import Any
 
 
@@ -101,21 +99,21 @@ class IndiClassNew:
                 time.sleep(0.1)
                 continue
             rxItem = self.rxQueue.get()
-            if rxItem.snapshot.get("CCD Simulator") is None:
+            if rxItem.snapshot.get(self.deviceName) is None:
                 continue
-            #print(rxItem.snapshot.get("CCD Simulator"))
-            if rxItem.snapshot["CCD Simulator"].get("DRIVER_INFO") is None:
+            if not rxItem.snapshot[self.deviceName].get("CONNECTION"):
                 continue
-            dev = int(rxItem.snapshot["CCD Simulator"]["DRIVER_INFO"]["DRIVER_INTERFACE"])
-            #print(dev)
+            else:
+                if rxItem.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "On":
+                    self.signals.deviceConnected.emit(self.deviceName)
+                if rxItem.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "Off":
+                    self.signals.deviceDisconnected.emit(self.deviceName)
+            if rxItem.snapshot[self.deviceName].get("DRIVER_INFO") is None:
+                continue
+            dev = int(rxItem.snapshot[self.deviceName]["DRIVER_INFO"]["DRIVER_INTERFACE"])
             if (dev & (1 << 1)) != 1 << 1:
                 continue
-            print(rxItem.snapshot["CCD Simulator"])
-            if rxItem.timestamp:
-                timestr = rxItem.timestamp.astimezone(tz=None).strftime('%H:%M:%S')
-            else:
-                timestr = "No timestamp"
-            #print(f"{timestr}")
+            print(rxItem.snapshot[self.deviceName])
 
     def cleanupStop(self):
         self.clientMutex.unlock()
@@ -127,7 +125,7 @@ class IndiClassNew:
         if not self.clientMutex.tryLock():
             return
         self.commandRunning = True
-        self.deviceName = "TEST"
+        self.deviceName = "CCD Simulator"
         self.data.clear()
         self.workerIndiQueue = Worker(runqueclient, self.txQueue, self.rxQueue, indihost=self.hostaddress, indiport=self.port)
         self.workerIndiQueue.signals.finished.connect(self.cleanupStop)

@@ -103,11 +103,11 @@ class IndiClassNew:
             rxItem = self.rxQueue.get()
             if rxItem.snapshot.get("CCD Simulator") is None:
                 continue
-            print(rxItem.snapshot.get("CCD Simulator"))
+            #print(rxItem.snapshot.get("CCD Simulator"))
             if rxItem.snapshot["CCD Simulator"].get("DRIVER_INFO") is None:
                 continue
             dev = int(rxItem.snapshot["CCD Simulator"]["DRIVER_INFO"]["DRIVER_INTERFACE"])
-            print(dev)
+            #print(dev)
             if (dev & (1 << 1)) != 1 << 1:
                 continue
             print(rxItem.snapshot["CCD Simulator"])
@@ -115,17 +115,19 @@ class IndiClassNew:
                 timestr = rxItem.timestamp.astimezone(tz=None).strftime('%H:%M:%S')
             else:
                 timestr = "No timestamp"
-            print(f"{timestr}")
+            #print(f"{timestr}")
 
     def cleanupStop(self):
         self.clientMutex.unlock()
         self.commandRunning = False
-        print("stopped")
+        print("stopped thread")
 
     def startCommunication(self) -> None:
+        print("start")
         if not self.clientMutex.tryLock():
             return
         self.commandRunning = True
+        self.deviceName = "TEST"
         self.data.clear()
         self.workerIndiQueue = Worker(runqueclient, self.txQueue, self.rxQueue, indihost=self.hostaddress, indiport=self.port)
         self.workerIndiQueue.signals.finished.connect(self.cleanupStop)
@@ -136,9 +138,11 @@ class IndiClassNew:
 
 
     def stopCommunication(self) -> None:
+        print("stopped command")
         self.txQueue.put(None)
         self.deviceName = ""
         self.deviceConnected = False
+        self.commandRunning = False
 
     def connectDevice(self, deviceName: str, propertyName: str) -> None:
         if propertyName != "CONNECTION":

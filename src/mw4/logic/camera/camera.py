@@ -22,6 +22,7 @@ from collections.abc import Callable
 from mw4.base.signalsDevices import Signals
 from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.camera.cameraIndi import CameraIndi
+from mw4.logic.camera.cameraIndiNew import CameraIndiNew
 from mw4.logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
 from pathlib import Path
 from typing import Any
@@ -67,7 +68,8 @@ class Camera:
         self.heightASCOM: int = 100
 
         self.run = {
-            "indi": CameraIndi(self),
+            # "indi": CameraIndi(self),
+            "indi": CameraIndiNew(self),
             "alpaca": CameraAlpaca(self),
         }
         if platform.system() == "Windows":

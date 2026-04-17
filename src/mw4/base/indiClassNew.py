@@ -24,6 +24,18 @@ from typing import Any
 
 
 class IndiClassNew:
+    INDI_TYPES: dict[str, int] = {
+        "telescope": (1 << 0),
+        "camera": (1 << 1),
+        "guider": (1 << 2),
+        "focuser": (1 << 3),
+        "filterwheel": (1 << 4),
+        "dome": (1 << 5),
+        "observingconditions": (1 << 7) | (1 << 15),
+        "skymeter": (1 << 15) | (1 << 19),
+        "covercalibrator": (1 << 9) | (1 << 10),
+        "switch": (1 << 7) | (1 << 3) | (1 << 15) | (1 << 18),
+    }
     log = logging.getLogger("MW4")
     RETRY_DELAY: int = 1500
     NUMBER_RETRY: int = 5
@@ -40,12 +52,11 @@ class IndiClassNew:
         self.clientMutex: QMutex = QMutex()
 
         self.deviceName: str = ""
-        self.device: Any = None
+        self.deviceType: int = 0
         self.deviceConnected: bool = False
         self._hostaddress: str | None = None
         self._host: tuple[str, int] | None = None
         self._port: int | None = None
-        self.discoverType: int | None = None
         self.discoverList: list[str] = []
         self.isINDIGO: bool = False
         self.messages: bool = False
@@ -67,7 +78,7 @@ class IndiClassNew:
 
     @property
     def host(self) -> tuple[str, int] | None:
-        return ("127.0.0.1", 7624)
+        return "127.0.0.1", 7624
         return self._host
 
     @host.setter
@@ -93,27 +104,27 @@ class IndiClassNew:
     def port(self, value: int | str) -> None:
         self._port = int(value)
 
+    def setStatusDeviceConnected(self, status: bool) -> None:
+        if status and not self.deviceConnected:
+            self.signals.deviceConnected.emit(self.deviceName)
+        if not status and self.deviceConnected:
+            self.signals.deviceDisconnected.emit(self.deviceName)
+        self.deviceConnected = status
+
     def manageResults(self) -> None:
         while self.commandRunning:
             if self.rxQueue.empty():
                 time.sleep(0.1)
                 continue
             rxItem = self.rxQueue.get()
+            print("Data: ", rxItem.eventtype, rxItem.devicename, rxItem.vectorname)
             if rxItem.snapshot.get(self.deviceName) is None:
                 continue
-            if not rxItem.snapshot[self.deviceName].get("CONNECTION"):
-                continue
-            else:
-                if rxItem.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "On":
-                    self.signals.deviceConnected.emit(self.deviceName)
-                if rxItem.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "Off":
-                    self.signals.deviceDisconnected.emit(self.deviceName)
+            if rxItem.snapshot[self.deviceName].get("CONNECTION"):
+                self.setStatusDeviceConnected(rxItem.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "On")
             if rxItem.snapshot[self.deviceName].get("DRIVER_INFO") is None:
                 continue
-            dev = int(rxItem.snapshot[self.deviceName]["DRIVER_INFO"]["DRIVER_INTERFACE"])
-            if (dev & (1 << 1)) != 1 << 1:
-                continue
-            print(rxItem.snapshot[self.deviceName])
+            print(rxItem)
 
     def cleanupStop(self):
         self.clientMutex.unlock()
@@ -126,6 +137,7 @@ class IndiClassNew:
             return
         self.commandRunning = True
         self.deviceName = "CCD Simulator"
+        self.deviceType = self.INDI_TYPES["camera"]
         self.data.clear()
         self.workerIndiQueue = Worker(runqueclient, self.txQueue, self.rxQueue, indihost=self.hostaddress, indiport=self.port)
         self.workerIndiQueue.signals.finished.connect(self.cleanupStop)

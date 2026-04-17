@@ -117,12 +117,12 @@ class IndiClassNew:
                 time.sleep(0.1)
                 continue
             rxItem = self.rxQueue.get()
-            print("Data: ", rxItem.eventtype, rxItem.devicename, rxItem.vectorname)
+            # print("Data: ", rxItem.eventtype, rxItem.devicename, rxItem.vectorname)
             if rxItem.snapshot.get(self.deviceName) is None:
                 continue
             if rxItem.snapshot[self.deviceName].get("CONNECTION"):
                 self.setStatusDeviceConnected(rxItem.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "On")
-            if rxItem.snapshot[self.deviceName].get("DRIVER_INFO") is None:
+            if rxItem.devicename != self.deviceName:
                 continue
             print(rxItem)
 
@@ -144,7 +144,6 @@ class IndiClassNew:
         self.threadPool.start(self.workerIndiQueue)
         self.workerIndiCommand = Worker(self.manageResults)
         self.threadPool.start(self.workerIndiCommand)
-        self.txQueue.put((None, None, "snapshot"))
 
 
     def stopCommunication(self) -> None:

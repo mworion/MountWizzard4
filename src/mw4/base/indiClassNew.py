@@ -24,6 +24,57 @@ from typing import Any
 
 
 class IndiClassNew:
+    INDIGO_CONVERSION: dict[str, str] = {
+        # numbers
+        "WEATHER_PARAMETERS.WEATHER_BAROMETER": "WEATHER_PARAMETERS.WEATHER_PRESSURE",
+        # SQM device
+        "AUX_INFO.X_AUX_SKY_BRIGHTNESS": "SKY_QUALITY.SKY_BRIGHTNESS",
+        "AUX_INFO.X_AUX_SKY_TEMPERATURE": "SKY_QUALITY.SKY_TEMPERATURE",
+        # UPB device
+        "AUX_INFO.X_AUX_AVERAGE": "POWER_CONSUMPTION.CONSUMPTION_AVG_AMPS",
+        "AUX_INFO.X_AUX_AMP_HOUR": "POWER_CONSUMPTION.CONSUMPTION_AMP_HOURS",
+        "AUX_INFO.X_AUX_WATT_HOUR": "POWER_CONSUMPTION.CONSUMPTION_WATT_HOURS",
+        "AUX_INFO.X_AUX_VOLTAGE": "POWER_SENSORS.SENSOR_VOLTAGE",
+        "AUX_INFO.X_AUX_CURRENT": "POWER_SENSORS.SENSOR_CURRENT",
+        "AUX_INFO.X_AUX_POWER_OUTLET": "POWER_SENSORS.SENSOR_POWER",
+        "AUX_POWER_OUTLET_CURRENT.OUTLET_1": "POWER_CURRENT.POWER_CURRENT_1",
+        "AUX_POWER_OUTLET_CURRENT.OUTLET_2": "POWER_CURRENT.POWER_CURRENT_2",
+        "AUX_POWER_OUTLET_CURRENT.OUTLET_3": "POWER_CURRENT.POWER_CURRENT_3",
+        "AUX_POWER_OUTLET_CURRENT.OUTLET_4": "POWER_CURRENT.POWER_CURRENT_4",
+        "AUX_HEATER_OUTLET_CURRENT.OUTLET_1": "DEW_CURRENT.DEW_CURRENT_A",
+        "AUX_HEATER_OUTLET_CURRENT.OUTLET_2": "DEW_CURRENT.DEW_CURRENT_B",
+        "AUX_HEATER_OUTLET_CURRENT.OUTLET_3": "DEW_CURRENT.DEW_CURRENT_C",
+        "AUX_HEATER_OUTLET.OUTLET_1": "DEW_PWM.DEW_A",
+        "AUX_HEATER_OUTLET.OUTLET_2": "DEW_PWM.DEW_B",
+        "AUX_HEATER_OUTLET.OUTLET_3": "DEW_PWM.DEW_C",
+        "X_AUX_VARIABLE_POWER_OUTLET.OUTLET_1": "ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE",
+        # switches
+        # UPB device
+        "AUX_POWER_OUTLET.OUTLET_1": "POWER_CONTROL.POWER_CONTROL_1",
+        "AUX_POWER_OUTLET.OUTLET_2": "POWER_CONTROL.POWER_CONTROL_2",
+        "AUX_POWER_OUTLET.OUTLET_3": "POWER_CONTROL.POWER_CONTROL_3",
+        "AUX_POWER_OUTLET.OUTLET_4": "POWER_CONTROL.POWER_CONTROL_4",
+        "AUX_USB_PORT.PORT_1": "USB_PORT_CONTROL.PORT_1",
+        "AUX_USB_PORT.PORT_2": "USB_PORT_CONTROL.PORT_2",
+        "AUX_USB_PORT.PORT_3": "USB_PORT_CONTROL.PORT_3",
+        "AUX_USB_PORT.PORT_4": "USB_PORT_CONTROL.PORT_4",
+        "AUX_USB_PORT.PORT_5": "USB_PORT_CONTROL.PORT_5",
+        "AUX_USB_PORT.PORT_6": "USB_PORT_CONTROL.PORT_6",
+        "AUX_DEW_CONTROL.MANUAL": "AUTO_DEW.INDI_DISABLED",
+        "AUX_DEW_CONTROL.AUTOMATIC": "AUTO_DEW.INDI_ENABLED",
+        "X_AUX_REBOOT.REBOOT": "REBOOT_DEVICE.REBOOT",
+        # text
+        # UPB device
+        "X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_1": "POWER_CONTROL_LABEL.POWER_LABEL_1",
+        "X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_2": "POWER_CONTROL_LABEL.POWER_LABEL_2",
+        "X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_3": "POWER_CONTROL_LABEL.POWER_LABEL_3",
+        "X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_4": "POWER_CONTROL_LABEL.POWER_LABEL_4",
+        # Uranus Meteo device
+        "SENSORS.AbsolutePressure": "WEATHER_PARAMETERS.WEATHER_PRESSURE",
+        "SENSORS.DewPoint": "WEATHER_PARAMETERS.WEATHER_DEWPOINT",
+        "CLOUDS.CloudSkyTemperature": "SKY_QUALITY.SKY_TEMPERATURE",
+        "SKYQUALITY.MPAS": "SKY_QUALITY.SKY_BRIGHTNESS",
+    }
     INDI_TYPES: dict[str, int] = {
         "telescope": (1 << 0),
         "camera": (1 << 1),
@@ -111,13 +162,27 @@ class IndiClassNew:
             self.signals.deviceDisconnected.emit(self.deviceName)
         self.deviceConnected = status
 
+    def writeDeviceData(self, rxVector: dict) -> None:
+        for vector, vectorItem in rxVector.items():
+            print(vectorItem)
+            vectorName = vectorItem["name"]
+            vectorType = vectorItem["vectortype"]
+            for member, memberItem in vectorItem["members"].items():
+                if vectorType == "NumberVector":
+                    value = float(memberItem["value"])
+                else:
+                    value = memberItem["value"]
+                entry = f"{vectorName}.{member}"
+                if self.isINDIGO:
+                    entry = self.INDIGO_CONVERSION.get(entry, entry)
+                self.data[entry] = value
+
     def manageResults(self) -> None:
         while self.commandRunning:
             if self.rxQueue.empty():
                 time.sleep(0.1)
                 continue
             rxItem = self.rxQueue.get()
-            # print("Data: ", rxItem.eventtype, rxItem.devicename, rxItem.vectorname)
             if rxItem.snapshot.get(self.deviceName) is None:
                 continue
             if rxItem.snapshot[self.deviceName].get("CONNECTION"):
@@ -126,17 +191,7 @@ class IndiClassNew:
                 continue
             rxVector = rxItem.snapshot[self.deviceName].dictdump().get("vectors")
             if rxVector:
-                for vector, vectorItem in rxVector.items():
-                    vectorName = vectorItem["name"]
-                    vectorType = vectorItem["vectortype"]
-                    for member, memberItem in vectorItem["members"].items():
-                        if vectorType == "NumberVector":
-                            value = float(memberItem["value"])
-                        else:
-                            value = memberItem["value"]
-                        entry = f"{vectorName}.{member}"
-                        self.data[entry] = value
-                        print(f"{vectorName}.{member}", value)
+                self.writeDeviceData(rxVector)
 
     def cleanupStop(self):
         self.clientMutex.unlock()

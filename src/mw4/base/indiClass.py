@@ -14,14 +14,78 @@
 #
 ###########################################################
 import logging
-from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO
-from mw4.base.threadUtils import mainThreadSleep
-from mw4.indibase.indiClient import Client
-from PySide6.QtCore import Qt, QThreadPool, QTimer, QMutex
+from queue import Queue
+import time
+from indipyclient.queclient import runqueclient
+from mw4.base.tpool import Worker
+from PySide6.QtCore import QThreadPool, QMutex
 from typing import Any
 
 
 class IndiClass:
+    INDIGO_CONV: dict[str, str] = {
+        # numbers
+        "WEATHER_PARAMETERS.WEATHER_BAROMETER": "WEATHER_PARAMETERS.WEATHER_PRESSURE",
+        # SQM device
+        "AUX_INFO.X_AUX_SKY_BRIGHTNESS": "SKY_QUALITY.SKY_BRIGHTNESS",
+        "AUX_INFO.X_AUX_SKY_TEMPERATURE": "SKY_QUALITY.SKY_TEMPERATURE",
+        # UPB device
+        "AUX_INFO.X_AUX_AVERAGE": "POWER_CONSUMPTION.CONSUMPTION_AVG_AMPS",
+        "AUX_INFO.X_AUX_AMP_HOUR": "POWER_CONSUMPTION.CONSUMPTION_AMP_HOURS",
+        "AUX_INFO.X_AUX_WATT_HOUR": "POWER_CONSUMPTION.CONSUMPTION_WATT_HOURS",
+        "AUX_INFO.X_AUX_VOLTAGE": "POWER_SENSORS.SENSOR_VOLTAGE",
+        "AUX_INFO.X_AUX_CURRENT": "POWER_SENSORS.SENSOR_CURRENT",
+        "AUX_INFO.X_AUX_POWER_OUTLET": "POWER_SENSORS.SENSOR_POWER",
+        "AUX_POWER_OUTLET_CURRENT.OUTLET_1": "POWER_CURRENT.POWER_CURRENT_1",
+        "AUX_POWER_OUTLET_CURRENT.OUTLET_2": "POWER_CURRENT.POWER_CURRENT_2",
+        "AUX_POWER_OUTLET_CURRENT.OUTLET_3": "POWER_CURRENT.POWER_CURRENT_3",
+        "AUX_POWER_OUTLET_CURRENT.OUTLET_4": "POWER_CURRENT.POWER_CURRENT_4",
+        "AUX_HEATER_OUTLET_CURRENT.OUTLET_1": "DEW_CURRENT.DEW_CURRENT_A",
+        "AUX_HEATER_OUTLET_CURRENT.OUTLET_2": "DEW_CURRENT.DEW_CURRENT_B",
+        "AUX_HEATER_OUTLET_CURRENT.OUTLET_3": "DEW_CURRENT.DEW_CURRENT_C",
+        "AUX_HEATER_OUTLET.OUTLET_1": "DEW_PWM.DEW_A",
+        "AUX_HEATER_OUTLET.OUTLET_2": "DEW_PWM.DEW_B",
+        "AUX_HEATER_OUTLET.OUTLET_3": "DEW_PWM.DEW_C",
+        "X_AUX_VARIABLE_POWER_OUTLET.OUTLET_1": "ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE",
+        # switches
+        # UPB device
+        "AUX_POWER_OUTLET.OUTLET_1": "POWER_CONTROL.POWER_CONTROL_1",
+        "AUX_POWER_OUTLET.OUTLET_2": "POWER_CONTROL.POWER_CONTROL_2",
+        "AUX_POWER_OUTLET.OUTLET_3": "POWER_CONTROL.POWER_CONTROL_3",
+        "AUX_POWER_OUTLET.OUTLET_4": "POWER_CONTROL.POWER_CONTROL_4",
+        "AUX_USB_PORT.PORT_1": "USB_PORT_CONTROL.PORT_1",
+        "AUX_USB_PORT.PORT_2": "USB_PORT_CONTROL.PORT_2",
+        "AUX_USB_PORT.PORT_3": "USB_PORT_CONTROL.PORT_3",
+        "AUX_USB_PORT.PORT_4": "USB_PORT_CONTROL.PORT_4",
+        "AUX_USB_PORT.PORT_5": "USB_PORT_CONTROL.PORT_5",
+        "AUX_USB_PORT.PORT_6": "USB_PORT_CONTROL.PORT_6",
+        "AUX_DEW_CONTROL.MANUAL": "AUTO_DEW.INDI_DISABLED",
+        "AUX_DEW_CONTROL.AUTOMATIC": "AUTO_DEW.INDI_ENABLED",
+        "X_AUX_REBOOT.REBOOT": "REBOOT_DEVICE.REBOOT",
+        # text
+        # UPB device
+        "X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_1": "POWER_CONTROL_LABEL.POWER_LABEL_1",
+        "X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_2": "POWER_CONTROL_LABEL.POWER_LABEL_2",
+        "X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_3": "POWER_CONTROL_LABEL.POWER_LABEL_3",
+        "X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_4": "POWER_CONTROL_LABEL.POWER_LABEL_4",
+        # Uranus Meteo device
+        "SENSORS.AbsolutePressure": "WEATHER_PARAMETERS.WEATHER_PRESSURE",
+        "SENSORS.DewPoint": "WEATHER_PARAMETERS.WEATHER_DEWPOINT",
+        "CLOUDS.CloudSkyTemperature": "SKY_QUALITY.SKY_TEMPERATURE",
+        "SKYQUALITY.MPAS": "SKY_QUALITY.SKY_BRIGHTNESS",
+    }
+    INDI_TYPES: dict[str, int] = {
+        "telescope": (1 << 0),
+        "camera": (1 << 1),
+        "guider": (1 << 2),
+        "focuser": (1 << 3),
+        "filterwheel": (1 << 4),
+        "dome": (1 << 5),
+        "observingconditions": (1 << 7) | (1 << 15),
+        "skymeter": (1 << 15) | (1 << 19),
+        "covercalibrator": (1 << 9) | (1 << 10),
+        "switch": (1 << 7) | (1 << 3) | (1 << 15) | (1 << 18),
+    }
     log = logging.getLogger("MW4")
     RETRY_DELAY: int = 1500
     NUMBER_RETRY: int = 5
@@ -35,23 +99,22 @@ class IndiClass:
         self.loadConfig: bool = parent.loadConfig
         self.updateRate: int = parent.updateRate
         self.threadPool: QThreadPool = parent.app.threadPool
+        self.clientMutex: QMutex = QMutex()
         self.discoverMutex: QMutex = QMutex()
-        self.client: Client = Client(host=None)
-        self.client.signals.deviceConnected.connect(self.chainDeviceConnected)
-        self.client.signals.deviceDisconnected.connect(self.chainDeviceDisconnected)
-        self.client.signals.serverConnected.connect(self.chainServerConnected)
-        self.client.signals.serverDisconnected.connect(self.chainServerDisconnected)
 
         self.deviceName: str = ""
-        self.device: Any = None
         self.deviceConnected: bool = False
         self._hostaddress: str | None = None
         self._host: tuple[str, int] | None = None
         self._port: int | None = None
-        self.discoverType: int | None = None
         self.discoverList: list[str] = []
         self.isINDIGO: bool = False
         self.messages: bool = False
+        self.commandRunning: bool = False
+        self.rxQueue: Queue = Queue()
+        self.txQueue: Queue = Queue()
+        self.workerIndiQueue: Worker | None = None
+        self.workerIndiCommand: Worker | None = None
 
         self.defaultConfig: dict[str, Any] = {
             "deviceName": "",
@@ -62,27 +125,6 @@ class IndiClass:
             "messages": False,
             "updateRate": 1000,
         }
-
-        self.timerRetry: QTimer = QTimer()
-        self.timerRetry.setSingleShot(True)
-        self.timerRetry.timeout.connect(self.startRetry)
-        self.client.signals.newDevice.connect(self.newDevice)
-        self.client.signals.removeDevice.connect(self.removeDevice)
-        self.client.signals.newProperty.connect(self.connectDevice)
-        self.client.signals.newNumber.connect(self.updateNumber)
-        self.client.signals.defNumber.connect(self.updateNumber)
-        self.client.signals.newSwitch.connect(self.updateSwitch)
-        self.client.signals.defSwitch.connect(self.updateSwitch)
-        self.client.signals.newText.connect(self.updateText)
-        self.client.signals.defText.connect(self.updateText)
-        self.client.signals.newLight.connect(self.updateLight)
-        self.client.signals.defLight.connect(self.updateLight)
-        self.client.signals.newBLOB.connect(self.updateBLOB)
-        self.client.signals.defBLOB.connect(self.updateBLOB)
-        self.client.signals.deviceConnected.connect(self.setUpdateConfig)
-        self.client.signals.serverConnected.connect(self.serverConnected)
-        self.client.signals.serverDisconnected.connect(self.serverDisconnected)
-        self.client.signals.newMessage.connect(self.updateMessage)
 
     @property
     def host(self) -> tuple[str, int] | None:
@@ -100,7 +142,6 @@ class IndiClass:
     @hostaddress.setter
     def hostaddress(self, value: str | None) -> None:
         self._hostaddress = value
-        self.client.host = (self._hostaddress, self._port)
 
     @property
     def port(self) -> int | None:
@@ -109,195 +150,89 @@ class IndiClass:
     @port.setter
     def port(self, value: int | str) -> None:
         self._port = int(value)
-        self.client.host = (self._hostaddress, self._port)
 
-    def chainServerConnected(self) -> None:
-        self.signals.serverConnected.emit()
+    def setStatusDeviceConnected(self, status: bool) -> None:
+        if status and not self.deviceConnected:
+            self.signals.deviceConnected.emit(self.deviceName)
+        if not status and self.deviceConnected:
+            self.signals.deviceDisconnected.emit(self.deviceName)
+        self.deviceConnected = status
 
-    def chainServerDisconnected(self, deviceName: str) -> None:
-        self.signals.serverDisconnected.emit(deviceName)
+    def writeDeviceData(self, rxVector: dict) -> None:
+        for vector, vectorItem in rxVector.items():
+            vectorName = vectorItem["name"]
+            for member, memberItem in vectorItem["members"].items():
+                value = memberItem.get("floatvalue", memberItem["value"])
+                entry = f"{vectorName}.{member}"
+                # entry = self.INDIGO_CONV.get(entry, entry) if self.isINDIGO else entry
+                self.data[entry] = value
+                # print(entry, value)
 
-    def chainDeviceConnected(self, deviceName: str) -> None:
-        self.signals.deviceConnected.emit(deviceName)
+    def manageResults(self) -> None:
+        while self.commandRunning:
+            if self.rxQueue.empty():
+                time.sleep(0.1)
+                continue
+            rxItem = self.rxQueue.get()
+            if rxItem.snapshot.get(self.deviceName) is None:
+                continue
+            if rxItem.snapshot[self.deviceName].get("CONNECTION"):
+                self.setStatusDeviceConnected(rxItem.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "On")
+            if rxItem.devicename != self.deviceName:
+                continue
+            rxVector = rxItem.snapshot[self.deviceName].dictdump().get("vectors")
+            if rxVector:
+                self.writeDeviceData(rxVector)
 
-    def chainDeviceDisconnected(self, deviceName: str) -> None:
-        self.signals.deviceDisconnected.emit(deviceName)
-
-    def serverConnected(self) -> None:
-        suc = self.client.watchDevice(self.deviceName)
-        self.log.info(f"INDI watch: [{self.deviceName}], result: [{suc}]")
-
-    def serverDisconnected(self, devices: str) -> None:
-        t = f"INDI server for [{self.deviceName}:{devices}] disconnected"
-        self.log.info(t)
-
-    def newDevice(self, deviceName: str) -> None:
-        if deviceName == self.deviceName:
-            self.device = self.client.getDevice(deviceName)
-            self.msg.emit(0, "INDI", "Device found", f"{deviceName}")
-        else:
-            self.log.info(f"INDI device snoop: [{deviceName}]")
-
-    def removeDevice(self, deviceName: str) -> None:
-        if deviceName == self.deviceName:
-            self.msg.emit(0, "INDI", "Device removed", f"{deviceName}")
-            self.device = None
-            self.data.clear()
-
-    def startRetry(self) -> None:
-        self.timerRetry.start(self.RETRY_DELAY)
-        if not self.deviceName:
-            return
-        if self.client.connected:
-            return
-
-        self.client.connectServer()
-        self.signals.serverConnected.emit()
+    def cleanupStop(self):
+        self.clientMutex.unlock()
+        self.commandRunning = False
 
     def startCommunication(self) -> None:
+        if not self.clientMutex.tryLock():
+            return
+        self.txQueue.queue.clear()
+        self.rxQueue.queue.clear()
         self.data.clear()
-        self.timerRetry.start(self.RETRY_DELAY)
+        self.commandRunning = True
+        self.workerIndiQueue = Worker(runqueclient, self.txQueue, self.rxQueue,
+                                      indihost=self.hostaddress, indiport=self.port)
+        self.workerIndiQueue.signals.finished.connect(self.cleanupStop)
+        self.threadPool.start(self.workerIndiQueue)
+        self.workerIndiCommand = Worker(self.manageResults)
+        self.threadPool.start(self.workerIndiCommand)
 
     def stopCommunication(self) -> None:
-        self.client.disconnectServer(self.deviceName)
+        self.txQueue.put(None)
         self.deviceName = ""
         self.deviceConnected = False
-
-    def connectDevice(self, deviceName: str, propertyName: str) -> None:
-        if propertyName != "CONNECTION":
-            return
-
-        if deviceName == self.deviceName:
-            self.client.connectDevice(deviceName=deviceName)
+        self.commandRunning = False
 
     def loadIndiConfig(self, deviceName: str) -> None:
-        loadObject = self.device.getSwitch("CONFIG_PROCESS")
-        loadObject["CONFIG_LOAD"] = True
-        suc = self.client.sendNewSwitch(
-            deviceName=deviceName, propertyName="CONFIG_PROCESS", elements=loadObject
-        )
-        t = f"Config load [{deviceName}] success: [{suc}], value: [True]"
-        self.log.info(t)
-
-    def setUpdateConfig(self, deviceName: str) -> None:
-        if deviceName != self.deviceName:
-            return
-        if self.device is None:
-            return
-
-        if self.loadConfig:
-            self.loadIndiConfig(deviceName=deviceName)
-
-        update = self.device.getNumber("POLLING_PERIOD")
-        update["PERIOD_MS"] = int(self.updateRate)
-        suc = self.client.sendNewNumber(
-            deviceName=deviceName, propertyName="POLLING_PERIOD", elements=update
-        )
-        t = f"Polling [{deviceName}] success: [{suc}], value:[{update['PERIOD_MS']}]"
-        self.log.info(t)
-
-    @staticmethod
-    def convertIndigoProperty(key: str) -> str:
-        if key in INDIGO:
-            key = INDIGO.get(key)
-        return key
-
-    def updateNumber(self, deviceName: str, propertyName: str) -> None:
-        if self.device is None:
-            return
-        if deviceName != self.deviceName:
-            return
-
-        for element, value in self.device.getNumber(propertyName).items():
-            key = self.convertIndigoProperty(propertyName + "." + element)
-            self.data[key] = float(value)
-
-    def updateSwitch(self, deviceName: str, propertyName: str) -> None:
-        if self.device is None:
-            return
-        if deviceName != self.deviceName:
-            return
-
-        for element, value in self.device.getSwitch(propertyName).items():
-            if propertyName == "PROFILE":
-                self.isINDIGO = True
-            key = self.convertIndigoProperty(propertyName + "." + element)
-            self.data[key] = value == "On"
-
-    def updateText(self, deviceName: str, propertyName: str) -> None:
-        if self.device is None:
-            return
-        if deviceName != self.deviceName:
-            return
-
-        for element, value in self.device.getText(propertyName).items():
-            key = self.convertIndigoProperty(propertyName + "." + element)
-            self.data[key] = value
-
-    def updateLight(self, deviceName: str, propertyName: str) -> None:
-        if self.device is None:
-            return
-        if deviceName != self.deviceName:
-            return
-
-        for element, value in self.device.getLight(propertyName).items():
-            key = self.convertIndigoProperty(propertyName + "." + element)
-            self.data[key] = value
-
-    def updateBLOB(self, deviceName: str, propertyName: str) -> None:
-        if self.device is None:
-            return
-        if deviceName != self.deviceName:
-            return
-
-    @staticmethod
-    def removePrefix(text: str, prefix: str) -> str:
-        value = text[text.startswith(prefix) and len(prefix) :]
-        value = value.strip()
-        return value
-
-    def updateMessage(self, device: str, text: str) -> None:
-        if self.messages:
-            if text.startswith("[WARNING]"):
-                text = self.removePrefix(text, "[WARNING]")
-                self.msg.emit(0, "INDI", "Device warning", f"{device:15s} {text}")
-            elif text.startswith("[INFO]"):
-                text = self.removePrefix(text, "[INFO]")
-                self.msg.emit(0, "INDI", "Device info", f"{device:15s} {text}")
-            elif text.startswith("[ERROR]"):
-                text = self.removePrefix(text, "[ERROR]")
-                self.msg.emit(2, "INDI", "Device error", f"{device:15s} {text}")
-            else:
-                self.msg.emit(0, "INDI", "Device message", f"{device:15s} {text}")
-
-    def addDiscoveredDevice(self, deviceName: str, propertyName: str) -> None:
-        if propertyName != "DRIVER_INFO":
-            return
-        device = self.client.devices.get(deviceName)
-        if not device:
-            return
-        interface = device.getText(propertyName).get("DRIVER_INTERFACE", None)
-        if interface is None:
-            return
-        if interface == "0":
-            interface = 0xFFFF
-        if self.discoverType is None:
-            return
-
-        self.log.debug(f"Found: [{deviceName}], interface: [{interface}]")
-        interface = int(interface)
-        if interface & self.discoverType:
-            self.discoverList.append(deviceName)
+        self.txQueue.put((self.deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))
 
     def discoverDevices(self, deviceType: str) -> list[str]:
-        self.discoverList = []
         if not self.discoverMutex.tryLock():
-            return self.discoverList
-        self.discoverType = INDI_TYPES.get(deviceType, 0)
-        self.client.signals.defText.connect(self.addDiscoveredDevice, Qt.ConnectionType.UniqueConnection)
-        self.client.connectServer()
-        mainThreadSleep(2000)
-        self.client.signals.defText.disconnect(self.addDiscoveredDevice)
-        self.client.disconnectServer()
+            return []
+        n = 0
+        txque = Queue()
+        rxque = Queue()
+        discoverSet = set()
+        worker = Worker(runqueclient, txque, rxque, indihost=self.hostaddress, indiport=self.port)
+        self.threadPool.start(worker)
+        while n < 40:
+            if rxque.empty():
+                time.sleep(0.05)
+                continue
+            item = rxque.get()
+            if item is None:
+                continue
+            n = n + 1
+            if item.eventtype == "Define" and item.devicename:
+                driver = item.snapshot[item.devicename].get("DRIVER_INFO")
+                if driver:
+                    if self.INDI_TYPES[deviceType] & int(driver["DRIVER_INTERFACE"]):
+                        discoverSet.add(item.devicename)
+        txque.put(None)
         self.discoverMutex.unlock()
-        return self.discoverList
+        return list(discoverSet)

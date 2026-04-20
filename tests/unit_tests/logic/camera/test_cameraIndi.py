@@ -17,12 +17,12 @@ import pytest
 import unittest.mock as mock
 import zlib
 from astropy.io import fits
-from mw4.base.indiClass import IndiClass
+from mw4.base.indiClassOld import IndiClass
 from mw4.base.signalsDevices import Signals
 from mw4.indibase.indiClient import Client
 from mw4.indibase.indiDevice import Device
 from mw4.logic.camera.camera import Camera
-from mw4.logic.camera.cameraIndi import CameraIndi
+from mw4.logic.camera.cameraIndiOld import CameraIndi
 from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from xisf import XISF

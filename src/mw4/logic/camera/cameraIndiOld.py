@@ -17,13 +17,13 @@ import zlib
 from astropy.io import fits
 from astropy.io.fits import HDUList
 from io import BytesIO
-from mw4.base.indiClassNew import IndiClassNew
+from mw4.base.indiClassOld import IndiClass
 from mw4.base.tpool import Worker
 from typing import Any
 from xisf import XISF
 
 
-class CameraIndiNew(IndiClassNew):
+class CameraIndi(IndiClass):
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.parent = parent
@@ -110,7 +110,7 @@ class CameraIndiNew(IndiClassNew):
             elements = self.device.CCD_OFFSET["elementList"]["OFFSET"]
             if "min" in elements and "max" in elements:
                 self.data["CCD_OFFSET.OFFSET_MIN"] = elements.get("min", 0)
-                self.data["CCD_OFFSET.OFFSET_MAX"] = elements.get("max", 0)
+                self.data["CCD_OFFSET.OFFSET_MIN"] = elements.get("max", 0)
 
         super().updateNumber(deviceName, propertyName)
 

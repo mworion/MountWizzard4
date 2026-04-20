@@ -13,17 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-import zlib
-from astropy.io import fits
-from astropy.io.fits import HDUList
-from io import BytesIO
 from mw4.base.indiClass import IndiClass
 from mw4.base.tpool import Worker
 from typing import Any
-from xisf import XISF
 
 
 class CameraIndi(IndiClass):
+    THRESHOLD = 0.00001
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.parent = parent
@@ -31,240 +27,84 @@ class CameraIndi(IndiClass):
         self.data = parent.data
         self.signals = parent.signals
         self.worker: Worker | None = None
-        self.isDownloading: bool = False
-        self.loadConfig: bool = True
 
     def setUpdateConfig(self, deviceName: str) -> None:
-        suc = self.client.setBlobMode(blobHandling="Also", deviceName=deviceName)
-        self.log.info(f"Blob mode [{deviceName}] success: [{suc}]")
+        self.txQueue.put((deviceName, "FITS_HEADER", {"FITS_OBJECT": "Skymodel"}))
+        self.txQueue.put((deviceName, "FITS_HEADER", {"FITS_OBSERVER": "MountWizzard4"}))
+        self.txQueue.put((deviceName, "ACTIVE_DEVICES", {"ACTIVE_TELESCOPE": "LX200 10micron"}))
+        self.txQueue.put((deviceName, "TELESCOPE_TYPE", {"TELESCOPE_PRIMARY": "On"}))
+        # toDo: Blob management detail
 
-        objectName = self.device.getText("FITS_HEADER")
-        objectName["FITS_OBJECT"] = "Skymodel"
-        objectName["FITS_OBSERVER"] = "MountWizzard4"
-        suc = self.client.sendNewText(
-            deviceName=deviceName, propertyName="FITS_HEADER", elements=objectName
-        )
-        self.log.info(f"Fits Header [{deviceName}] success: [{suc}]")
-
-        telescope = self.device.getText("ACTIVE_DEVICES")
-        telescope["ACTIVE_TELESCOPE"] = "LX200 10micron"
-        suc = self.client.sendNewText(
-            deviceName=deviceName, propertyName="ACTIVE_DEVICES", elements=telescope
-        )
-        self.log.info(f"Active telescope [{deviceName}] success: [{suc}]")
-
-        telescope = self.device.getSwitch("TELESCOPE_TYPE")
-        telescope["TELESCOPE_PRIMARY"] = "On"
-        suc = self.client.sendNewSwitch(
-            deviceName=deviceName, propertyName="TELESCOPE_TYPE", elements=telescope
-        )
-        self.log.info(f"Primary telescope [{deviceName}] success: [{suc}]")
-
-    def setExposureStatesetExposureState(self) -> None:
-        """
-        setExposureState rebuilds the state information integrated and download
-        as it is not explicitly defined in the INDI spec. So downloaded is reached
-        when that INDI state for CCD_EXPOSURE goes to IDLE or OK -> Jasem Mutlaq.
-        I do another definition myself, when INDI state for CCD_EXPOSURE is
-        BUSY and the CCD_EXPOSURE_VALUE is not 0, then we should be on the integration
-        side, else the download should be started. The whole stuff is made,
-        because on ALPACA and ASCOM side it's a step-by-step sequence, which has
-        very defined states for each step. I would like to have a common
-        approach for all frameworks.
-        """
-        THRESHOLD = 0.00001
-        value = self.data.get("CCD_EXPOSURE.CCD_EXPOSURE_VALUE")
-        if self.device.CCD_EXPOSURE["state"] == "Busy":
-            if value is None:
-                return
-            elif value <= THRESHOLD:
-                if not self.isDownloading:
-                    self.signals.exposed.emit(self.parent.imagePath)
-                self.isDownloading = True
-                self.signals.message.emit("download")
-            else:
-                self.signals.message.emit(f"expose {value:2.0f} s")
-        elif self.device.CCD_EXPOSURE["state"] in ["Idle", "Ok"]:
+    def setExposureState(self, rxVector: dict) -> None:
+        if not rxVector.get("CCD_EXPOSURE"):
+            return
+        value = rxVector["CCD_EXPOSURE"]["members"]["CCD_EXPOSURE_VALUE"]["floatvalue"]
+        state = rxVector["CCD_EXPOSURE"]["state"]
+        print("setExposureState", value, state)
+        if state == "Busy" and value > 0:
+            self.signals.message.emit(f"expose {value:2.0f} s")
+        elif state == "Busy" and value == 0:
+            self.signals.exposed.emit(self.parent.imagePath)
+        elif state == "Ok" and value == 0:
             self.signals.downloaded.emit(self.parent.imagePath)
             self.signals.message.emit("")
-            self.isDownloading = False
-        elif self.device.CCD_EXPOSURE["state"] in ["Alert"]:
-            self.isDownloading = False
+        elif state in ["Alert"]:
             self.signals.exposed.emit(self.parent.imagePath)
             self.signals.downloaded.emit(self.parent.imagePath)
             self.signals.saved.emit(self.parent.imagePath)
+            self.signals.message.emit("")
             self.abort()
             self.log.warning("INDI camera state alert")
-        else:
-            t = f"[{self.deviceName}] state: [{self.device.CCD_EXPOSURE['state']}]"
-            self.log.warning(t)
 
-    def updateNumber(self, deviceName: str, propertyName: str) -> None:
-        if propertyName == "CCD_GAIN":
-            elements = self.device.CCD_GAIN["elementList"]["GAIN"]
-            if "min" in elements and "max" in elements:
-                self.data["CCD_GAIN.GAIN_MIN"] = elements.get("min", 0)
-                self.data["CCD_GAIN.GAIN_MAX"] = elements.get("max", 0)
-
-        if propertyName == "CCD_OFFSET":
-            elements = self.device.CCD_OFFSET["elementList"]["OFFSET"]
-            if "min" in elements and "max" in elements:
-                self.data["CCD_OFFSET.OFFSET_MIN"] = elements.get("min", 0)
-                self.data["CCD_OFFSET.OFFSET_MAX"] = elements.get("max", 0)
-
-        super().updateNumber(deviceName, propertyName)
-
-        if propertyName == "CCD_EXPOSURE":
-            self.setExposureState()
-
-        if propertyName == "CCD_TEMPERATURE":
+    def setCanTemperature(self, rxVector: dict) -> None:
+        if rxVector.get("CCD_TEMPERATURE"):
             self.data["CAN_SET_CCD_TEMPERATURE"] = True
 
-    def writeImageXisfHeader(self) -> None:
-        xisf = XISF(self.parent.imagePath)
-        file_meta = xisf.get_file_metadata()
-        ims_meta = xisf.get_images_metadata()
-        im_data = xisf.read_image(0)
-        ims_meta[0]["FITSKeywords"]["OBJECT"] = [
-            {"value": "SKY_OBJECT", "comment": "default name from MW4"}
-        ]
-        ims_meta[0]["FITSKeywords"]["AUTHOR"] = [
-            {"value": "MountWizzard4", "comment": "default name from MW4"}
-        ]
-        ims_meta[0]["FITSKeywords"]["FRAME"] = [
-            {"value": "Light", "comment": "Modeling works with light frames"}
-        ]
-        XISF.write(
-            self.parent.imagePath,
-            im_data,
-            creator_app="MountWizzard4",
-            image_metadata=ims_meta[0],
-            xisf_metadata=file_meta,
-            codec="lz4hc",
-            shuffle=True,
-        )
+    def addGainLimits(self, rxVector: dict) -> None:
+        gain = rxVector.get("CCD_GAIN")
+        if not gain:
+            return
+        self.data["CCD_GAIN.GAIN_MIN"] = gain["members"].get("min", 0)
+        self.data["CCD_GAIN.GAIN_MAX"] = gain["members"].get("max", 0)
+
+    def addOffsetLimits(self, rxVector: dict) -> None:
+        offset = rxVector.get("CCD_OFFSET")
+        if not offset:
+            return
+        self.data["CCD_OFFSET.OFFSET_MIN"] = offset["members"].get("min", 0)
+        self.data["CCD_OFFSET.OFFSET_MAX"] = offset["members"].get("max", 0)
+
+    def writeDeviceData(self, rxVector: dict) -> None:
+        super().writeDeviceData(rxVector)
+        self.addGainLimits(rxVector)
+        self.addOffsetLimits(rxVector)
+        self.setCanTemperature(rxVector)
+        self.setExposureState(rxVector)
 
     def workerSaveBLOB(self, data: dict) -> None:
-        match data["format"]:
-            case ".fits.fz":
-                HDU: HDUList = fits.HDUList.fromstring(data["value"])
-                self.log.info("Image BLOB is in FPacked format")
-            case ".fits.z":
-                HDU: HDUList = fits.HDUList.fromstring(zlib.decompress(data["value"]))
-                self.log.info("Image BLOB is compressed fits format")
-            case ".fits":
-                HDU: HDUList = fits.HDUList.fromstring(data["value"])
-                self.log.info("Image BLOB is uncompressed fits format")
-            case ".xisf":
-                self.parent.imagePath = self.parent.imagePath.with_suffix(".xisf")
-                self.log.info("Image BLOB is xisf format")
-            case _:
-                self.log.info("Image BLOB is not supported")
-                return
-        if data["format"] == ".xisf":
-            with open(self.parent.imagePath, "wb") as fw:
-                fw.write(BytesIO(data["value"]).getbuffer())
-            self.writeImageXisfHeader()
-        else:
-            HDU.writeto(self.parent.imagePath, overwrite=True)
-            self.parent.writeImageFitsHeader()
         self.parent.exposeFinished()
 
-    def updateBLOB(self, deviceName: str, propertyName: str) -> None:
-        super().updateBLOB(deviceName, propertyName)
-
-        data = self.device.getBlob(propertyName)
-        if "value" not in data:
-            return
-        if "name" not in data:
-            return
-        if "format" not in data:
-            return
-        if data.get("name", "") != "CCD1":
-            return
-
-        self.signals.message.emit("saving")
-        self.worker = Worker(self.workerSaveBLOB, data)
-        self.threadPool.start(self.worker)
-
-    def sendDownloadMode(self) -> None:
-        quality = self.device.getSwitch("READOUT_QUALITY")
-        quality["QUALITY_LOW"] = "On"
-        quality["QUALITY_HIGH"] = "Off"
-        self.client.sendNewSwitch(
-            deviceName=self.deviceName, propertyName="READOUT_QUALITY", elements=quality
-        )
-
     def expose(self) -> bool:
-        self.sendDownloadMode()
-        indiCmd = self.device.getNumber("CCD_BINNING")
-        indiCmd["HOR_BIN"] = self.parent.binning
-        indiCmd["VER_BIN"] = self.parent.binning
-        self.client.sendNewNumber(
-            deviceName=self.deviceName, propertyName="CCD_BINNING", elements=indiCmd
-        )
-
-        indiCmd = self.device.getNumber("CCD_FRAME")
-        indiCmd["X"] = self.parent.posX
-        indiCmd["Y"] = self.parent.posY
-        indiCmd["WIDTH"] = self.parent.width
-        indiCmd["HEIGHT"] = self.parent.height
-        self.client.sendNewNumber(
-            deviceName=self.deviceName, propertyName="CCD_FRAME", elements=indiCmd
-        )
-
-        indiCmd = self.device.getNumber("CCD_EXPOSURE")
-        indiCmd["CCD_EXPOSURE_VALUE"] = self.parent.exposureTime
-        return self.client.sendNewNumber(
-            deviceName=self.deviceName, propertyName="CCD_EXPOSURE", elements=indiCmd
-        )
+        self.txQueue.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
+        self.txQueue.put((self.deviceName, "CCD_BINNING", {"HOR_BIN": self.parent.binning,
+                                                           "VER_BIN": self.parent.binning}))
+        self.txQueue.put((self.deviceName, "CCD_FRAME", {"X": self.parent.posX,
+                                                         "Y": self.parent.posY,
+                                                         "WIDTH": self.parent.width,
+                                                         "HEIGHT": self.parent.height}))
+        self.txQueue.put((self.deviceName, "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": self.parent.exposureTime}))
 
     def abort(self) -> bool:
-        indiCmd = self.device.getSwitch("CCD_ABORT_EXPOSURE")
-        if "ABORT" not in indiCmd:
-            return False
-
-        indiCmd["ABORT"] = "On"
-        return self.client.sendNewSwitch(
-            deviceName=self.deviceName,
-            propertyName="CCD_ABORT_EXPOSURE",
-            elements=indiCmd,
-        )
+        self.txQueue.put((self.deviceName, "CCD_ABORT_EXPOSURE", {"ABORT": "On"}))
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        cooler = self.device.getSwitch("CCD_COOLER")
-        cooler["COOLER_ON"] = "On" if coolerOn else "Off"
-        cooler["COOLER_OFF"] = "Off" if coolerOn else "On"
-        self.client.sendNewSwitch(
-            deviceName=self.deviceName, propertyName="CCD_COOLER", elements=cooler
-        )
+        self.txQueue.put((self.deviceName, "CCD_COOLER", {"COOLER_ON": "On" if coolerOn else "Off"}))
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
-        element = self.device.getNumber("CCD_TEMPERATURE")
-        if "CCD_TEMPERATURE_VALUE" not in element:
-            return
-
-        element["CCD_TEMPERATURE_VALUE"] = temperature
-        self.client.sendNewNumber(
-            deviceName=self.deviceName, propertyName="CCD_TEMPERATURE", elements=element
-        )
+        self.txQueue.put((self.deviceName, "CCD_TEMPERATURE", {"CCD_TEMPERATURE_VALUE": temperature}))
 
     def sendOffset(self, offset: int = 0) -> None:
-        element = self.device.getNumber("CCD_OFFSET")
-        if "OFFSET" not in element:
-            return
-
-        element["OFFSET"] = offset
-        self.client.sendNewNumber(
-            deviceName=self.deviceName, propertyName="CCD_OFFSET", elements=element
-        )
+        self.txQueue.put((self.deviceName, "CCD_OFFSET", {"OFFSET": offset}))
 
     def sendGain(self, gain: int = 0) -> None:
-        element = self.device.getNumber("CCD_GAIN")
-        if "GAIN" not in element:
-            return
-
-        element["GAIN"] = gain
-        self.client.sendNewNumber(
-            deviceName=self.deviceName, propertyName="CCD_GAIN", elements=element
-        )
+        self.txQueue.put((self.deviceName, "CCD_GAIN", {"GAIN": gain}))

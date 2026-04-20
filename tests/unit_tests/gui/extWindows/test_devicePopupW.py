@@ -18,7 +18,7 @@ import logging
 import pytest
 import unittest.mock as mock
 from mw4.base.ascomClass import AscomClass
-from mw4.base.indiClass import IndiClass
+from mw4.base.indiClassOld import IndiClass
 from mw4.base.signalsDevices import Signals
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.qtMain import MWidget

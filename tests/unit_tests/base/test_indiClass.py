@@ -15,7 +15,7 @@
 ###########################################################
 import pytest
 import time
-from mw4.base.indiClass import IndiClass
+from mw4.base.indiClassOld import IndiClass
 from mw4.base.signalsDevices import Signals
 from mw4.indibase.indiDevice import Device
 from PySide6.QtCore import QTimer

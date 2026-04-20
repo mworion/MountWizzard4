@@ -32,7 +32,7 @@ The codebase is well-structured and the project conventions are broadly followed
 
 I re-ran a repository inspection (static reads of source and tests). Several of the issues called out in the previous report have already been addressed in the codebase; a smaller set of correctness and threading items remain and should be actioned. Notable changes since the previous report:
 
-- The problematic GUI-only helper `sleepAndEvents` is no longer used by core/logic modules; a thread-safe helper `mainThreadSleep` exists in `src/mw4/base/threadUtils.py` and is imported where a plain sleep is required.
+ - The project provides a helper `mainThreadSleep` in `src/mw4/base/threadUtils.py`, but it is implemented using `QEventLoop`/`QTimer` (not a plain `time.sleep`). That means code importing `mainThreadSleep` still depends on Qt event-loop objects; calling it from worker threads would be unsafe. Several modules (including `src/mw4/base/indiClass.py` and `src/mw4/logic/modelBuild/modelRun.py`) import `mainThreadSleep`.
 - Most naming / style items mentioned (camelCase signal/function names and the `ImageManage` typo) have been fixed.
 - Missing unit tests that were previously flagged (alignstars, measureAddOns, mountSignals, signalsDevices, indiClassAddOns) are present in `tests/unit_tests/`.
 - `MAX_THREAD_COUNT` constant is present in `mainApp.py`.
@@ -54,10 +54,12 @@ The rest of the document below updates the earlier findings to the current proje
 1.1 Removal / migration of GUI-only sleep helper
 
 What changed:
-- The project no longer exposes a `sleepAndEvents` helper from `gui.utilities.qtHelpers` to core modules. Instead `src/mw4/base/threadUtils.py` provides `mainThreadSleep(ms: int)` which wraps `time.sleep(ms / 1000.0)`. Core/logic modules import `mainThreadSleep` or use `time.sleep` directly.
+- The original GUI helper `sleepAndEvents` has been removed from direct use in logic modules, and a helper named `mainThreadSleep` was added under `src/mw4/base/threadUtils.py`. However, `mainThreadSleep` itself creates a `QEventLoop` and a `QTimer` (see `src/mw4/base/threadUtils.py`) and therefore is a GUI-style helper, not a plain-thread helper. Several modules import it from `base.threadUtils` and call it from the main thread; this preserves the coupling to Qt event-loop objects.
 
 Impact / recommendation:
-- This eliminates the Qt-object creation-on-worker-thread safety issue previously reported. Continue to reserve any Qt event-loop helpers for GUI code; use `time.sleep` / `threading.Event.wait()` inside worker threads.
+- Because `mainThreadSleep` uses Qt objects, it is unsafe to call from worker threads. To resolve the architectural and safety issue you should either:
+  - Replace `mainThreadSleep` with a worker-safe `workerSleep(ms)` implemented as `time.sleep(ms / 1000.0)` and import that from `base` for use in worker threads; and move the current Qt-based helper into `gui.utilities` (rename it to `mainThreadWait` with a clear docstring), or
+  - Leave `mainThreadSleep` in `gui.utilities` and ensure only main-thread code calls it; provide a separate worker-only helper for non-GUI sleeps.
 
 1.2 Long-running model build still runs on the main thread (action required)
 
@@ -66,7 +68,7 @@ Location:
 - `src/mw4/logic/modelBuild/modelRun.py::runModel()` / `runThroughModelBuildData()` loop using `mainThreadSleep(500)`.
 
 Why this matters:
-- Even though `mainThreadSleep` is a plain time.sleep helper, calling it on the main (GUI) thread blocks the event loop. The previous nested event-loop workaround was removed, but the blocking behavior remains and will make the GUI unresponsive during model runs.
+- Because `mainThreadSleep` is implemented with Qt event-loop objects it is not a drop-in replacement for `time.sleep` in non-GUI contexts. If code running in a `QThreadPool` worker ever calls it, Qt objects will be constructed on a worker thread (unsafe). Also, if `mainThreadSleep` is called on the main thread it will block the event loop for the requested interval; long-running model runs that call it from the GUI thread will still cause unresponsiveness.
 
 Recommendation:
 - Move the model run to a `Worker` (QThreadPool) and use signals for progress and status. Do not call blocking sleeps on the main thread.
@@ -117,7 +119,7 @@ Recommendation:
 3.1 Cross-layer imports
 
 Status:
-- Import of GUI utilities from logic/base has been removed for the `sleepAndEvents` case (migrated to `base/threadUtils`). The one-way dependency between GUI ← logic/base is preserved.
+- Import of a sleep helper still exists across layers: `mainThreadSleep` lives in `src/mw4/base/threadUtils.py` but is implemented using Qt objects. Several logic and base modules import it (see `indiClass.py`, `modelRun.py`, `uploadPopupW.py`, `tabModel.py`, and others). This placement keeps GUI-event-loop behavior reachable from non-GUI modules and should be corrected.
 
 Recommendation:
 - Keep GUI-only helpers in `gui/` and non-GUI helpers in `base/` or `logic/` as appropriate.

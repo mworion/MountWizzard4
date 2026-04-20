@@ -167,6 +167,7 @@ class IndiClassNew:
             print(vectorItem)
             vectorName = vectorItem["name"]
             vectorType = vectorItem["vectortype"]
+            # todo: check element type better, because also Hexadecimal could work
             for member, memberItem in vectorItem["members"].items():
                 if vectorType == "NumberVector":
                     value = float(memberItem["value"])

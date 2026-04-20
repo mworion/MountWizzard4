@@ -124,7 +124,19 @@ class IndiClassNew:
                 self.setStatusDeviceConnected(rxItem.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "On")
             if rxItem.devicename != self.deviceName:
                 continue
-            print(rxItem)
+            rxVector = rxItem.snapshot[self.deviceName].dictdump().get("vectors")
+            if rxVector:
+                for vector, vectorItem in rxVector.items():
+                    vectorName = vectorItem["name"]
+                    vectorType = vectorItem["vectortype"]
+                    for member, memberItem in vectorItem["members"].items():
+                        if vectorType == "NumberVector":
+                            value = float(memberItem["value"])
+                        else:
+                            value = memberItem["value"]
+                        entry = f"{vectorName}.{member}"
+                        self.data[entry] = value
+                        print(f"{vectorName}.{member}", value)
 
     def cleanupStop(self):
         self.clientMutex.unlock()

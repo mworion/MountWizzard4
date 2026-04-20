@@ -164,19 +164,17 @@ class IndiClassNew:
 
     def writeDeviceData(self, rxVector: dict) -> None:
         for vector, vectorItem in rxVector.items():
-            print(vectorItem)
             vectorName = vectorItem["name"]
-            vectorType = vectorItem["vectortype"]
-            # todo: check element type better, because also Hexadecimal could work
+            if vectorName == "CCD_RESOLUTION":
+                pass
+                # print(vector, vectorItem)
             for member, memberItem in vectorItem["members"].items():
-                if vectorType == "NumberVector":
-                    value = float(memberItem["value"])
-                else:
-                    value = memberItem["value"]
+                value = memberItem.get("floatvalue", memberItem["value"])
                 entry = f"{vectorName}.{member}"
                 if self.isINDIGO:
                     entry = self.INDIGO_CONVERSION.get(entry, entry)
                 self.data[entry] = value
+                print(entry, value)
 
     def manageResults(self) -> None:
         while self.commandRunning:

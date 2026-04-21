@@ -17,78 +17,15 @@ import logging
 from queue import Queue
 import time
 from indipyclient.queclient import runqueclient
+from mw4.base.indiClassAddOns import INDIGO_CONV, INDI_TYPES
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QThreadPool, QMutex
 from typing import Any
 
 
 class IndiClass:
-    INDIGO_CONV: dict[str, str] = {
-        # numbers
-        "WEATHER_PARAMETERS.WEATHER_BAROMETER": "WEATHER_PARAMETERS.WEATHER_PRESSURE",
-        # SQM device
-        "AUX_INFO.X_AUX_SKY_BRIGHTNESS": "SKY_QUALITY.SKY_BRIGHTNESS",
-        "AUX_INFO.X_AUX_SKY_TEMPERATURE": "SKY_QUALITY.SKY_TEMPERATURE",
-        # UPB device
-        "AUX_INFO.X_AUX_AVERAGE": "POWER_CONSUMPTION.CONSUMPTION_AVG_AMPS",
-        "AUX_INFO.X_AUX_AMP_HOUR": "POWER_CONSUMPTION.CONSUMPTION_AMP_HOURS",
-        "AUX_INFO.X_AUX_WATT_HOUR": "POWER_CONSUMPTION.CONSUMPTION_WATT_HOURS",
-        "AUX_INFO.X_AUX_VOLTAGE": "POWER_SENSORS.SENSOR_VOLTAGE",
-        "AUX_INFO.X_AUX_CURRENT": "POWER_SENSORS.SENSOR_CURRENT",
-        "AUX_INFO.X_AUX_POWER_OUTLET": "POWER_SENSORS.SENSOR_POWER",
-        "AUX_POWER_OUTLET_CURRENT.OUTLET_1": "POWER_CURRENT.POWER_CURRENT_1",
-        "AUX_POWER_OUTLET_CURRENT.OUTLET_2": "POWER_CURRENT.POWER_CURRENT_2",
-        "AUX_POWER_OUTLET_CURRENT.OUTLET_3": "POWER_CURRENT.POWER_CURRENT_3",
-        "AUX_POWER_OUTLET_CURRENT.OUTLET_4": "POWER_CURRENT.POWER_CURRENT_4",
-        "AUX_HEATER_OUTLET_CURRENT.OUTLET_1": "DEW_CURRENT.DEW_CURRENT_A",
-        "AUX_HEATER_OUTLET_CURRENT.OUTLET_2": "DEW_CURRENT.DEW_CURRENT_B",
-        "AUX_HEATER_OUTLET_CURRENT.OUTLET_3": "DEW_CURRENT.DEW_CURRENT_C",
-        "AUX_HEATER_OUTLET.OUTLET_1": "DEW_PWM.DEW_A",
-        "AUX_HEATER_OUTLET.OUTLET_2": "DEW_PWM.DEW_B",
-        "AUX_HEATER_OUTLET.OUTLET_3": "DEW_PWM.DEW_C",
-        "X_AUX_VARIABLE_POWER_OUTLET.OUTLET_1": "ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE",
-        # switches
-        # UPB device
-        "AUX_POWER_OUTLET.OUTLET_1": "POWER_CONTROL.POWER_CONTROL_1",
-        "AUX_POWER_OUTLET.OUTLET_2": "POWER_CONTROL.POWER_CONTROL_2",
-        "AUX_POWER_OUTLET.OUTLET_3": "POWER_CONTROL.POWER_CONTROL_3",
-        "AUX_POWER_OUTLET.OUTLET_4": "POWER_CONTROL.POWER_CONTROL_4",
-        "AUX_USB_PORT.PORT_1": "USB_PORT_CONTROL.PORT_1",
-        "AUX_USB_PORT.PORT_2": "USB_PORT_CONTROL.PORT_2",
-        "AUX_USB_PORT.PORT_3": "USB_PORT_CONTROL.PORT_3",
-        "AUX_USB_PORT.PORT_4": "USB_PORT_CONTROL.PORT_4",
-        "AUX_USB_PORT.PORT_5": "USB_PORT_CONTROL.PORT_5",
-        "AUX_USB_PORT.PORT_6": "USB_PORT_CONTROL.PORT_6",
-        "AUX_DEW_CONTROL.MANUAL": "AUTO_DEW.INDI_DISABLED",
-        "AUX_DEW_CONTROL.AUTOMATIC": "AUTO_DEW.INDI_ENABLED",
-        "X_AUX_REBOOT.REBOOT": "REBOOT_DEVICE.REBOOT",
-        # text
-        # UPB device
-        "X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_1": "POWER_CONTROL_LABEL.POWER_LABEL_1",
-        "X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_2": "POWER_CONTROL_LABEL.POWER_LABEL_2",
-        "X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_3": "POWER_CONTROL_LABEL.POWER_LABEL_3",
-        "X_AUX_OUTLET_NAMES.POWER_OUTLET_NAME_4": "POWER_CONTROL_LABEL.POWER_LABEL_4",
-        # Uranus Meteo device
-        "SENSORS.AbsolutePressure": "WEATHER_PARAMETERS.WEATHER_PRESSURE",
-        "SENSORS.DewPoint": "WEATHER_PARAMETERS.WEATHER_DEWPOINT",
-        "CLOUDS.CloudSkyTemperature": "SKY_QUALITY.SKY_TEMPERATURE",
-        "SKYQUALITY.MPAS": "SKY_QUALITY.SKY_BRIGHTNESS",
-    }
-    INDI_TYPES: dict[str, int] = {
-        "telescope": (1 << 0),
-        "camera": (1 << 1),
-        "guider": (1 << 2),
-        "focuser": (1 << 3),
-        "filterwheel": (1 << 4),
-        "dome": (1 << 5),
-        "observingconditions": (1 << 7) | (1 << 15),
-        "skymeter": (1 << 15) | (1 << 19),
-        "covercalibrator": (1 << 9) | (1 << 10),
-        "switch": (1 << 7) | (1 << 3) | (1 << 15) | (1 << 18),
-    }
     log = logging.getLogger("MW4")
-    RETRY_DELAY: int = 1500
-    NUMBER_RETRY: int = 5
+    MAX_SEARCH = 40
 
     def __init__(self, parent: Any) -> None:
         self.parent: Any = parent
@@ -111,10 +48,10 @@ class IndiClass:
         self.isINDIGO: bool = False
         self.messages: bool = False
         self.commandRunning: bool = False
-        self.rxQueue: Queue = Queue()
-        self.txQueue: Queue = Queue()
-        self.workerIndiQueue: Worker | None = None
-        self.workerIndiCommand: Worker | None = None
+        self.receiveQ: Queue = Queue()
+        self.sendQ: Queue = Queue()
+        self.workerIndiQueueClient: Worker | None = None
+        self.workerProcessRxQueue: Worker | None = None
 
         self.defaultConfig: dict[str, Any] = {
             "deviceName": "",
@@ -158,31 +95,31 @@ class IndiClass:
             self.signals.deviceDisconnected.emit(self.deviceName)
         self.deviceConnected = status
 
-    def writeDeviceData(self, rxVector: dict) -> None:
-        for vector, vectorItem in rxVector.items():
+    def writeVectorsToData(self, vectors: dict) -> None:
+        for vector, vectorItem in vectors.items():
             vectorName = vectorItem["name"]
             for member, memberItem in vectorItem["members"].items():
                 value = memberItem.get("floatvalue", memberItem["value"])
                 entry = f"{vectorName}.{member}"
-                # entry = self.INDIGO_CONV.get(entry, entry) if self.isINDIGO else entry
+                entry = INDIGO_CONV.get(entry, entry) if self.isINDIGO else entry
                 self.data[entry] = value
                 # print(entry, value)
 
-    def manageResults(self) -> None:
+    def processRxQueue(self) -> None:
         while self.commandRunning:
-            if self.rxQueue.empty():
+            if self.receiveQ.empty():
                 time.sleep(0.1)
                 continue
-            rxItem = self.rxQueue.get()
-            if rxItem.snapshot.get(self.deviceName) is None:
+            item = self.receiveQ.get()
+            if item.snapshot.get(self.deviceName) is None:
                 continue
-            if rxItem.snapshot[self.deviceName].get("CONNECTION"):
-                self.setStatusDeviceConnected(rxItem.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "On")
-            if rxItem.devicename != self.deviceName:
+            if item.snapshot[self.deviceName].get("CONNECTION"):
+                self.setStatusDeviceConnected(item.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "On")
+            if item.devicename != self.deviceName:
                 continue
-            rxVector = rxItem.snapshot[self.deviceName].dictdump().get("vectors")
-            if rxVector:
-                self.writeDeviceData(rxVector)
+            vectors = item.snapshot[self.deviceName].dictdump().get("vectors")
+            if vectors:
+                self.writeVectorsToData(vectors)
 
     def cleanupStop(self):
         self.clientMutex.unlock()
@@ -191,48 +128,48 @@ class IndiClass:
     def startCommunication(self) -> None:
         if not self.clientMutex.tryLock():
             return
-        self.txQueue.queue.clear()
-        self.rxQueue.queue.clear()
+        self.sendQ.queue.clear()
+        self.receiveQ.queue.clear()
         self.data.clear()
         self.commandRunning = True
-        self.workerIndiQueue = Worker(runqueclient, self.txQueue, self.rxQueue,
+        self.workerIndiQueueClient = Worker(runqueclient, self.sendQ, self.receiveQ,
                                       indihost=self.hostaddress, indiport=self.port)
-        self.workerIndiQueue.signals.finished.connect(self.cleanupStop)
-        self.threadPool.start(self.workerIndiQueue)
-        self.workerIndiCommand = Worker(self.manageResults)
-        self.threadPool.start(self.workerIndiCommand)
+        self.workerIndiQueueClient.signals.finished.connect(self.cleanupStop)
+        self.threadPool.start(self.workerIndiQueueClient)
+        self.workerProcessRxQueue = Worker(self.processRxQueue)
+        self.threadPool.start(self.workerProcessRxQueue)
 
     def stopCommunication(self) -> None:
-        self.txQueue.put(None)
+        self.sendQ.put(None)
         self.deviceName = ""
         self.deviceConnected = False
         self.commandRunning = False
 
     def loadIndiConfig(self, deviceName: str) -> None:
-        self.txQueue.put((self.deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))
+        self.sendQ.put((self.deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))
 
     def discoverDevices(self, deviceType: str) -> list[str]:
         if not self.discoverMutex.tryLock():
             return []
-        n = 0
-        txque = Queue()
-        rxque = Queue()
+        n = self.MAX_SEARCH
+        txQ = Queue()
+        rxQ = Queue()
         discoverSet = set()
-        worker = Worker(runqueclient, txque, rxque, indihost=self.hostaddress, indiport=self.port)
+        worker = Worker(runqueclient, txQ, rxQ, indihost=self.hostaddress, indiport=self.port)
         self.threadPool.start(worker)
-        while n < 40:
-            if rxque.empty():
+        while n > 0:
+            if rxQ.empty():
                 time.sleep(0.05)
                 continue
-            item = rxque.get()
+            item = rxQ.get()
             if item is None:
                 continue
             n = n + 1
             if item.eventtype == "Define" and item.devicename:
                 driver = item.snapshot[item.devicename].get("DRIVER_INFO")
                 if driver:
-                    if self.INDI_TYPES[deviceType] & int(driver["DRIVER_INTERFACE"]):
+                    if INDI_TYPES[deviceType] & int(driver["DRIVER_INTERFACE"]):
                         discoverSet.add(item.devicename)
-        txque.put(None)
+        txQ.put(None)
         self.discoverMutex.unlock()
         return list(discoverSet)

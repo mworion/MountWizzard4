@@ -15,31 +15,29 @@
 ###########################################################
 from mw4.base.indiClass import IndiClass
 from mw4.base.tpool import Worker
+from pathlib import Path
 from typing import Any
 
 
 class CameraIndi(IndiClass):
-    THRESHOLD = 0.00001
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
         self.signals = parent.signals
-        self.worker: Worker | None = None
 
     def setUpdateConfig(self, deviceName: str) -> None:
-        self.txQueue.put((deviceName, "FITS_HEADER", {"FITS_OBJECT": "Skymodel"}))
-        self.txQueue.put((deviceName, "FITS_HEADER", {"FITS_OBSERVER": "MountWizzard4"}))
-        self.txQueue.put((deviceName, "ACTIVE_DEVICES", {"ACTIVE_TELESCOPE": "LX200 10micron"}))
-        self.txQueue.put((deviceName, "TELESCOPE_TYPE", {"TELESCOPE_PRIMARY": "On"}))
-        # toDo: Blob management detail
+        self.sendQ.put((deviceName, "FITS_HEADER", {"FITS_OBJECT": "Skymodel"}))
+        self.sendQ.put((deviceName, "FITS_HEADER", {"FITS_OBSERVER": "MountWizzard4"}))
+        self.sendQ.put((deviceName, "ACTIVE_DEVICES", {"ACTIVE_TELESCOPE": "LX200 10micron"}))
+        self.sendQ.put((deviceName, "TELESCOPE_TYPE", {"TELESCOPE_PRIMARY": "On"}))
 
-    def setExposureState(self, rxVector: dict) -> None:
-        if not rxVector.get("CCD_EXPOSURE"):
+    def setExposureState(self, vectors: dict) -> None:
+        if not vectors.get("CCD_EXPOSURE"):
             return
-        value = rxVector["CCD_EXPOSURE"]["members"]["CCD_EXPOSURE_VALUE"]["floatvalue"]
-        state = rxVector["CCD_EXPOSURE"]["state"]
+        value = vectors["CCD_EXPOSURE"]["members"]["CCD_EXPOSURE_VALUE"]["floatvalue"]
+        state = vectors["CCD_EXPOSURE"]["state"]
         print("setExposureState", value, state)
         if state == "Busy" and value > 0:
             self.signals.message.emit(f"expose {value:2.0f} s")
@@ -49,62 +47,69 @@ class CameraIndi(IndiClass):
             self.signals.downloaded.emit(self.parent.imagePath)
             self.signals.message.emit("")
         elif state in ["Alert"]:
-            self.signals.exposed.emit(self.parent.imagePath)
-            self.signals.downloaded.emit(self.parent.imagePath)
-            self.signals.saved.emit(self.parent.imagePath)
-            self.signals.message.emit("")
+            self.signals.exposed.emit(Path())
+            self.signals.downloaded.emit(Path())
+            self.parent.exposeFinished()
             self.abort()
             self.log.warning("INDI camera state alert")
 
-    def setCanTemperature(self, rxVector: dict) -> None:
-        if rxVector.get("CCD_TEMPERATURE"):
+    def setCanTemperature(self, vectors: dict) -> None:
+        if vectors.get("CCD_TEMPERATURE"):
             self.data["CAN_SET_CCD_TEMPERATURE"] = True
 
-    def addGainLimits(self, rxVector: dict) -> None:
-        gain = rxVector.get("CCD_GAIN")
+    def addGainLimits(self, vector: dict) -> None:
+        gain = vectors.get("CCD_GAIN")
         if not gain:
             return
         self.data["CCD_GAIN.GAIN_MIN"] = gain["members"].get("min", 0)
-        self.data["CCD_GAIN.GAIN_MAX"] = gain["members"].get("max", 0)
+        self.data["CCD_GAIN.GAIN_MAX"] = gain["members"].get("max", 1)
 
-    def addOffsetLimits(self, rxVector: dict) -> None:
-        offset = rxVector.get("CCD_OFFSET")
+    def addOffsetLimits(self, vectors: dict) -> None:
+        offset = vectors.get("CCD_OFFSET")
         if not offset:
             return
         self.data["CCD_OFFSET.OFFSET_MIN"] = offset["members"].get("min", 0)
-        self.data["CCD_OFFSET.OFFSET_MAX"] = offset["members"].get("max", 0)
+        self.data["CCD_OFFSET.OFFSET_MAX"] = offset["members"].get("max", 1)
 
-    def writeDeviceData(self, rxVector: dict) -> None:
-        super().writeDeviceData(rxVector)
-        self.addGainLimits(rxVector)
-        self.addOffsetLimits(rxVector)
-        self.setCanTemperature(rxVector)
-        self.setExposureState(rxVector)
-
-    def workerSaveBLOB(self, data: dict) -> None:
+    def saveBLOB(vectors) -> None:
+        # todo: check if abort still send a blob
+        blob = vectors.get("CCD1")
+        if not blob:
+            return 
+        # todo: move file to traget directory
+        self.parent.writeImageFitsHeader()
+        # todo: check if XISF will work
         self.parent.exposeFinished()
 
+    def writeVectorsToData(self, vectors: dict) -> None:
+        super().writeVectorsToData(vectors)
+        self.addGainLimits(vectors)
+        self.addOffsetLimits(vectors)
+        self.setCanTemperature(vectors)
+        self.setExposureState(vectors)
+        self.saveBLOB(vectors)
+
     def expose(self) -> bool:
-        self.txQueue.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
-        self.txQueue.put((self.deviceName, "CCD_BINNING", {"HOR_BIN": self.parent.binning,
+        self.sendQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
+        self.sendQ.put((self.deviceName, "CCD_BINNING", {"HOR_BIN": self.parent.binning,
                                                            "VER_BIN": self.parent.binning}))
-        self.txQueue.put((self.deviceName, "CCD_FRAME", {"X": self.parent.posX,
-                                                         "Y": self.parent.posY,
-                                                         "WIDTH": self.parent.width,
-                                                         "HEIGHT": self.parent.height}))
-        self.txQueue.put((self.deviceName, "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": self.parent.exposureTime}))
+        self.sendQ.put((self.deviceName, "CCD_FRAME", {"X": self.parent.posX,
+                                                       "Y": self.parent.posY,
+                                                       "WIDTH": self.parent.width,
+                                                       "HEIGHT": self.parent.height}))
+        self.sendQ.put((self.deviceName, "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": self.parent.exposureTime}))
 
     def abort(self) -> bool:
-        self.txQueue.put((self.deviceName, "CCD_ABORT_EXPOSURE", {"ABORT": "On"}))
+        self.sendQ.put((self.deviceName, "CCD_ABORT_EXPOSURE", {"ABORT": "On"}))
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        self.txQueue.put((self.deviceName, "CCD_COOLER", {"COOLER_ON": "On" if coolerOn else "Off"}))
+        self.sendQ.put((self.deviceName, "CCD_COOLER", {"COOLER_ON": "On" if coolerOn else "Off"}))
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
-        self.txQueue.put((self.deviceName, "CCD_TEMPERATURE", {"CCD_TEMPERATURE_VALUE": temperature}))
+        self.sendQ.put((self.deviceName, "CCD_TEMPERATURE", {"CCD_TEMPERATURE_VALUE": temperature}))
 
     def sendOffset(self, offset: int = 0) -> None:
-        self.txQueue.put((self.deviceName, "CCD_OFFSET", {"OFFSET": offset}))
+        self.sendQ.put((self.deviceName, "CCD_OFFSET", {"OFFSET": offset}))
 
-    def sendGain(self, gain: int = 0) -> None:
-        self.txQueue.put((self.deviceName, "CCD_GAIN", {"GAIN": gain}))
+    def sendGain(self, gain: int = 1) -> None:
+        self.sendQ.put((self.deviceName, "CCD_GAIN", {"GAIN": gain}))

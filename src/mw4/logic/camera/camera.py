@@ -46,7 +46,7 @@ class Camera:
         self.deviceType: str = ""
         self.exposing: bool = False
         self.fastReadout: bool = False
-        self.imagePath: Path = Path("")
+        self.imagePath: Path = Path()
         self.exposureTime: float = 1
         self.exposureTime1: float = 1
         self.exposureTimeN: float = 1
@@ -137,14 +137,14 @@ class Camera:
         self.signals.saved.emit(self.imagePath)
         self.app.showImage.emit(self.imagePath)
 
-    def expose(self, imagePath: Path = Path(),  exposureTime: float = 1, binning: int = 1) -> bool:
+    def expose(self, imagePath: Path,  exposureTime: float = 1, binning: int = 1) -> bool:
         if self.exposing:
             return False
 
+        self.exposing = True
         self.imagePath = imagePath
         self.exposureTime = exposureTime
         self.binning = binning
-        self.exposing = True
         self.signals.message.emit("exposing")
         self.run[self.framework].expose()
         return True

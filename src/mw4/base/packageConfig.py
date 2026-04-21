@@ -15,11 +15,6 @@
 ###########################################################
 import platform
 
-excludedPlatforms: list[str] = ["armv7l"]
-isAvailable: bool = platform.machine() not in excludedPlatforms
 isAnalyse: bool = False
 isReference: bool = False
 isSimulationMount: bool = False
-isWindows: bool = platform.system() == "Windows"
-isLinux: bool = platform.system() == "Linux"
-isMac: bool = platform.system() == "Darwin"

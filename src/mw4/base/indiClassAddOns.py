@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-INDIGO: dict[str, str] = {
+INDIGO_CONV: dict[str, str] = {
     # numbers
     "WEATHER_PARAMETERS.WEATHER_BAROMETER": "WEATHER_PARAMETERS.WEATHER_PRESSURE",
     # SQM device

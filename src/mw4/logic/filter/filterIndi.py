@@ -13,12 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-from mw4.base.indiClassOld import IndiClass
+from mw4.base.indiClass import IndiClass
 from typing import Any
 
 
 class FilterIndi(IndiClass):
-    UPDATE_RATE = 1
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)

@@ -13,7 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
-from mw4.base.indiClassOld import IndiClass
+from mw4.base.indiClass import IndiClass
 from typing import Any
 
 

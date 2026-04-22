@@ -20,8 +20,6 @@ from typing import Any
 
 class MeasureDataRaw(PySide6.QtCore.QObject):
     log = logging.getLogger("MW4")
-    CYCLE_UPDATE_TASK = 1000
-    MAXSIZE = 24 * 60 * 60
 
     def __init__(self, app: Any = None, parent: Any = None, data: Any = None) -> None:
         super().__init__()
@@ -40,7 +38,7 @@ class MeasureDataRaw(PySide6.QtCore.QObject):
         self.timerTask.timeout.connect(self.measureTask)
 
     def startCommunication(self) -> None:
-        self.timerTask.start(self.CYCLE_UPDATE_TASK)
+        self.timerTask.start(self.parent.CYCLE_UPDATE_TASK)
 
     def stopCommunication(self) -> None:
         self.timerTask.stop()

@@ -26,6 +26,7 @@ from typing import Any
 class MeasureData:
     log = logging.getLogger("MW4")
     MAXSIZE = 48 * 60 * 60
+    CYCLE_UPDATE_TASK = 1000
 
     def __init__(self, app: Any) -> None:
         super().__init__()

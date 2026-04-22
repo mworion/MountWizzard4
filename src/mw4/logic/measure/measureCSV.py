@@ -23,11 +23,6 @@ from typing import Any
 class MeasureDataCSV(PySide6.QtCore.QObject):
     log = logging.getLogger("MW4")
 
-    # update rate to 1 seconds for setting indi server
-    CYCLE_UPDATE_TASK = 1000
-    # maximum size of measurement task
-    MAXSIZE = 24 * 60 * 60
-
     def __init__(self, app: Any = None, parent: Any = None, data: Any = None) -> None:
         super().__init__()
 
@@ -128,7 +123,7 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         self.csvFile = None
 
     def startCommunication(self) -> None:
-        self.timerTask.start(self.CYCLE_UPDATE_TASK)
+        self.timerTask.start(self.parent.CYCLE_UPDATE_TASK)
         self.openCSV()
 
     def stopCommunication(self) -> None:

@@ -14,7 +14,6 @@
 #
 ###########################################################
 from mw4.base.indiClass import IndiClass
-from mw4.base.tpool import Worker
 from pathlib import Path
 from typing import Any
 
@@ -57,26 +56,26 @@ class CameraIndi(IndiClass):
         if vectors.get("CCD_TEMPERATURE"):
             self.data["CAN_SET_CCD_TEMPERATURE"] = True
 
-    def addGainLimits(self, vector: dict) -> None:
-        gain = vectors.get("CCD_GAIN")
+    def addGainLimits(self, vectors: dict) -> None:
+        gain = vectors.get("CCD_GAIN", {})
         if not gain:
             return
         self.data["CCD_GAIN.GAIN_MIN"] = gain["members"].get("min", 0)
         self.data["CCD_GAIN.GAIN_MAX"] = gain["members"].get("max", 1)
 
     def addOffsetLimits(self, vectors: dict) -> None:
-        offset = vectors.get("CCD_OFFSET")
+        offset = vectors.get("CCD_OFFSET", {})
         if not offset:
             return
         self.data["CCD_OFFSET.OFFSET_MIN"] = offset["members"].get("min", 0)
         self.data["CCD_OFFSET.OFFSET_MAX"] = offset["members"].get("max", 1)
 
-    def saveBLOB(vectors) -> None:
+    def saveBLOB(self, vectors:dict) -> None:
         # todo: check if abort still send a blob
-        blob = vectors.get("CCD1")
+        blob = vectors.get("CCD1", {})
         if not blob:
             return 
-        # todo: move file to traget directory
+        # todo: move file to target directory
         self.parent.writeImageFitsHeader()
         # todo: check if XISF will work
         self.parent.exposeFinished()
@@ -89,7 +88,7 @@ class CameraIndi(IndiClass):
         self.setExposureState(vectors)
         self.saveBLOB(vectors)
 
-    def expose(self) -> bool:
+    def expose(self) -> None:
         self.sendQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
         self.sendQ.put((self.deviceName, "CCD_BINNING", {"HOR_BIN": self.parent.binning,
                                                            "VER_BIN": self.parent.binning}))
@@ -99,7 +98,7 @@ class CameraIndi(IndiClass):
                                                        "HEIGHT": self.parent.height}))
         self.sendQ.put((self.deviceName, "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": self.parent.exposureTime}))
 
-    def abort(self) -> bool:
+    def abort(self) -> None:
         self.sendQ.put((self.deviceName, "CCD_ABORT_EXPOSURE", {"ABORT": "On"}))
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:

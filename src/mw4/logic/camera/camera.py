@@ -40,7 +40,7 @@ class Camera:
         self.threadPool = app.threadPool
         self.obsSite = app.mount.obsSite
         self.signals = Signals()
-        self.data: dict = {}
+        self.data: dict[str, Any] = {}
         self.loadConfig: bool = True
         self.updateRate: int = 1000
         self.deviceType: str = ""

@@ -14,54 +14,32 @@
 #
 ###########################################################
 import pytest
-import unittest.mock as mock
-from mw4.base.signalsDevices import Signals
-from mw4.indibase.indiClient import Client
-from mw4.indibase.indiDevice import Device
+from queue import Queue
+
+from mw4.logic.environment.sensorWeather import SensorWeather
 from mw4.logic.environment.sensorWeatherIndi import SensorWeatherIndi
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-class Parent:
-    app = App()
-    data = {}
-    signals = Signals()
-    loadConfig = True
-    updateRate = 1000
-
-
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    func = SensorWeatherIndi(parent=Parent())
+    weather = SensorWeather(App())
+    func = SensorWeatherIndi(parent=weather)
     yield func
+    func.app.threadPool.waitForDone(5000)
 
 
-def test_setUpdateConfig_3(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        function.setUpdateConfig("test")
+# ---------------------------------------------------------------------------
+# setUpdateConfig
+# ---------------------------------------------------------------------------
 
-
-def test_setUpdateConfig_4(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = Device()
-    function.client = Client()
-    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=False):
-            function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_5(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = Device()
-    function.client = Client()
-    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.setUpdateConfig("test")
+def test_setUpdateConfig(function):
+    """setUpdateConfig() puts POLLING_PERIOD with updateRate into sendQ."""
+    function.sendQ = Queue()
+    function.deviceName = "test_weather"
+    function.updateRate = 2000
+    function.setUpdateConfig("ignored_param")
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_weather", "POLLING_PERIOD", {"PERIOD_MS": 2000}
+    )

@@ -15,92 +15,42 @@
 ###########################################################
 
 import pytest
-import unittest.mock as mock
-from mw4.base.signalsDevices import Signals
-from mw4.indibase.indiClient import Client
-from mw4.indibase.indiDevice import Device
+from queue import Queue
+
+from mw4.logic.filter.filter import Filter
 from mw4.logic.filter.filterIndi import FilterIndi
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-class Parent:
-    app = App()
-    data = {}
-    signals = Signals()
-    loadConfig = True
-    updateRate = 1000
-
-
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
-    func = FilterIndi(parent=Parent())
+    filt = Filter(App())
+    func = FilterIndi(parent=filt)
     yield func
+    func.app.threadPool.waitForDone(5000)
 
 
-def test_setUpdateConfig_1(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = ""
-    function.setUpdateConfig("test")
+# ---------------------------------------------------------------------------
+# sendFilterNumber
+# ---------------------------------------------------------------------------
 
-
-def test_setUpdateConfig_2(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = None
-    function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_3(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_4(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = Device()
-    function.client = Client()
-    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=False):
-            function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_5(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = Device()
-    function.client = Client()
-    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.setUpdateConfig("test")
-
-
-def test_sendFilterNumber_1(function):
-    function.deviceName = "test"
-    function.device = None
+def test_sendFilterNumber_default(function):
+    """sendFilterNumber() with default value queues filter slot 1."""
+    function.sendQ = Queue()
+    function.deviceName = "test_filter"
     function.sendFilterNumber()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_filter", "FILTER_SLOT", {"FILTER_SLOT_VALUE": 1}
+    )
 
 
-def test_sendFilterNumber_2(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        function.sendFilterNumber()
-
-
-def test_sendFilterNumber_3(function):
-    function.deviceName = "test"
-    function.device = Device()
-    function.client = Client()
-    function.UPDATE_RATE = 0
-    with mock.patch.object(function.device, "getNumber", return_value={"FILTER_SLOT": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.sendFilterNumber()
+def test_sendFilterNumber_explicit(function):
+    """sendFilterNumber(n) queues the given filter number."""
+    function.sendQ = Queue()
+    function.deviceName = "test_filter"
+    function.sendFilterNumber(filterNumber=5)
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_filter", "FILTER_SLOT", {"FILTER_SLOT_VALUE": 5}
+    )

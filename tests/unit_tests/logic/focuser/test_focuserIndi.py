@@ -15,119 +15,40 @@
 ###########################################################
 
 import pytest
-import unittest.mock as mock
-from mw4.base.signalsDevices import Signals
-from mw4.indibase.indiClient import Client
-from mw4.indibase.indiDevice import Device
+from queue import Queue
+
+from mw4.logic.focuser.focuser import Focuser
 from mw4.logic.focuser.focuserIndi import FocuserIndi
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-class Parent:
-    app = App()
-    data = {}
-    signals = Signals()
-    loadConfig = True
-    updateRate = 1000
-
-
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
-    func = FocuserIndi(parent=Parent())
+    focuser = Focuser(App())
+    func = FocuserIndi(parent=focuser)
     yield func
+    func.app.threadPool.waitForDone(5000)
 
 
-def test_setUpdateConfig_1(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = ""
-    function.setUpdateConfig("test")
+# ---------------------------------------------------------------------------
+# move
+# ---------------------------------------------------------------------------
+
+def test_move(function):
+    """move(position) puts ABS_FOCUS_POSITION command into sendQ."""
+    function.sendQ = Queue()
+    function.deviceName = "test_focuser"
+    function.move(position=12500)
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_focuser", "ABS_FOCUS_POSITION", {"FOCUS_ABSOLUTE_POSITION": 12500}
+    )
 
 
-def test_setUpdateConfig_2(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = None
-    function.setUpdateConfig("test")
+# ---------------------------------------------------------------------------
+# halt
+# ---------------------------------------------------------------------------
 
-
-def test_setUpdateConfig_3(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_4(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = Device()
-    function.client = Client()
-    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=False):
-            function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_5(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = Device()
-    function.client = Client()
-    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.setUpdateConfig("test")
-
-
-def test_move_1(function):
-    function.deviceName = "test"
-    function.device = None
-    function.move(1000)
-
-
-def test_move_2(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        function.move(1000)
-
-
-def test_move_3(function):
-    function.deviceName = "test"
-    function.device = Device()
-    function.client = Client()
-    function.UPDATE_RATE = 0
-    with mock.patch.object(
-        function.device, "getNumber", return_value={"ABS_FOCUS_POSITION": 1}
-    ):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.move(1000)
-
-
-def test_halt_1(function):
-    function.deviceName = "test"
-    function.device = None
-    function.halt()
-
-
-def test_halt_2(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        function.halt()
-
-
-def test_halt_3(function):
-    function.deviceName = "test"
-    function.device = Device()
-    function.client = Client()
-    function.UPDATE_RATE = 0
-    with mock.patch.object(
-        function.device, "getNumber", return_value={"ABS_FOCUS_POSITION": 1}
-    ):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.halt()
+def test_halt(function):
+    """halt() is a no-op (pass)."""
+    function.halt()  # must not raise

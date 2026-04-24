@@ -14,410 +14,585 @@
 #
 ###########################################################
 import pytest
+import threading
 import time
-from mw4.base.indiClassOld import IndiClass
+from mw4.base.indiClass import IndiClass
 from mw4.base.signalsDevices import Signals
-from mw4.indibase.indiDevice import Device
-from PySide6.QtCore import QTimer
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
-host_ip = "127.0.0.1"
-
 
 class Parent:
-    app = App()
-    data = {}
-    signals = Signals()
-    loadConfig = True
-    updateRate = 1000
+    def __init__(self) -> None:
+        self.app = App()
+        self.data: dict = {}
+        self.signals = Signals()
+        self.loadConfig = True
+        self.updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    with mock.patch.object(QTimer, "start"):
-        func = IndiClass(parent=Parent())
-        yield func
+    func = IndiClass(parent=Parent())
+    yield func
 
 
-def test_properties(function):
-    function.deviceName = "test"
-    assert function.deviceName == "test"
-    function.host = ("localhost", 7624)
-    assert function.host == ("localhost", 7624)
-    function.hostaddress = "localhost"
-    assert function.hostaddress == "localhost"
+# ─── Properties ──────────────────────────────────────────────────────────────
+
+
+def test_properties_hostaddress(function):
+    function.hostaddress = "192.168.1.1"
+    assert function.hostaddress == "192.168.1.1"
+    function.hostaddress = None
+    assert function.hostaddress is None
+
+
+def test_properties_port_int(function):
     function.port = 7624
     assert function.port == 7624
 
 
-def test_chainServerConnected(function):
-    function.chainServerConnected()
+def test_properties_port_str(function):
+    function.port = "8080"
+    assert function.port == 8080
 
 
-def test_chainServerDisconnected(function):
-    function.chainServerDisconnected("test")
+def test_properties_host_getter(function):
+    function._host = ("localhost", 7624)
+    assert function.host == ("localhost", 7624)
 
 
-def test_chainDeviceConnected(function):
-    function.chainDeviceConnected("test")
+def test_properties_host_setter(function):
+    function.host = ("localhost", 7624)
+    assert function._host == ("localhost", 7624)
 
 
-def test_chainDeviceDisconnected(function):
-    function.chainDeviceDisconnected("test")
+def test_defaultConfig(function):
+    assert function.defaultConfig["hostaddress"] == "localhost"
+    assert function.defaultConfig["port"] == 7624
+    assert function.defaultConfig["loadConfig"] is False
+    assert function.defaultConfig["messages"] is False
+    assert function.defaultConfig["updateRate"] == 1000
 
 
-def test_serverConnected_1(function):
-    function.deviceName = ""
-    function.serverConnected()
+# ─── setStatusDeviceConnected ─────────────────────────────────────────────────
 
 
-def test_serverConnected_2(function):
-    function.deviceName = "test"
-    with mock.patch.object(function.client, "watchDevice", return_value=True) as call:
-        function.serverConnected()
-        call.assert_called_with("test")
+def test_setStatusDeviceConnected_becomeConnected(function):
+    function.deviceConnected = False
+    function.deviceName = "telescope"
+    received = []
+    function.signals.deviceConnected.connect(lambda name: received.append(name))
+    function.setStatusDeviceConnected(True)
+    assert received == ["telescope"]
+    assert function.deviceConnected is True
 
 
-def test_serverDisconnected(function):
-    function.serverDisconnected({"test": "test"})
+def test_setStatusDeviceConnected_becomeDisconnected(function):
+    function.deviceConnected = True
+    function.deviceName = "telescope"
+    received = []
+    function.signals.deviceDisconnected.connect(lambda name: received.append(name))
+    function.setStatusDeviceConnected(False)
+    assert received == ["telescope"]
+    assert function.deviceConnected is False
 
 
-def test_newDevice_1(function):
-    function.deviceName = "false"
-    with mock.patch.object(function.client, "getDevice", return_value=None):
-        function.newDevice("test")
-        assert None is function.device
+def test_setStatusDeviceConnected_stayConnected(function):
+    function.deviceConnected = True
+    function.deviceName = "telescope"
+    received = []
+    function.signals.deviceConnected.connect(lambda name: received.append(name))
+    function.setStatusDeviceConnected(True)
+    assert received == []
+    assert function.deviceConnected is True
 
 
-def test_newDevice_2(function):
-    function.deviceName = "test"
-    with mock.patch.object(function.client, "getDevice", return_value=Device()):
-        function.newDevice("test")
-        assert function.device is not None
+def test_setStatusDeviceConnected_stayDisconnected(function):
+    function.deviceConnected = False
+    function.deviceName = "telescope"
+    received = []
+    function.signals.deviceDisconnected.connect(lambda name: received.append(name))
+    function.setStatusDeviceConnected(False)
+    assert received == []
+    assert function.deviceConnected is False
 
 
-def test_removeDevice_1(function):
-    function.deviceName = "test"
-    function.device = Device()
-    function.data = {"test": 1}
-    function.removeDevice("foo")
+# ─── writeVectorsToData ───────────────────────────────────────────────────────
 
 
-def test_removeDevice_2(function):
-    function.deviceName = "test"
-    function.device = Device()
-    function.data = {"test": 1}
-    function.removeDevice("test")
+def test_writeVectorsToData_value(function):
+    function.isINDIGO = False
+    function.data = {}
+    vectors = {
+        "v1": {
+            "name": "TEST_VECTOR",
+            "members": {"MEMBER": {"value": "hello"}},
+        }
+    }
+    function.writeVectorsToData(vectors)
+    assert function.data["TEST_VECTOR.MEMBER"] == "hello"
+
+
+def test_writeVectorsToData_floatvalue(function):
+    function.isINDIGO = False
+    function.data = {}
+    vectors = {
+        "v1": {
+            "name": "TEST_VECTOR",
+            "members": {"MEMBER": {"floatvalue": 3.14, "value": "ignored"}},
+        }
+    }
+    function.writeVectorsToData(vectors)
+    assert function.data["TEST_VECTOR.MEMBER"] == 3.14
+
+
+def test_writeVectorsToData_indigoConversion(function):
+    function.isINDIGO = True
+    function.data = {}
+    vectors = {
+        "v1": {
+            "name": "SENSORS",
+            "members": {"AbsolutePressure": {"value": 1013.0}},
+        }
+    }
+    function.writeVectorsToData(vectors)
+    assert function.data.get("WEATHER_PARAMETERS.WEATHER_PRESSURE") == 1013.0
+
+
+def test_writeVectorsToData_indigoNoConversion(function):
+    function.isINDIGO = True
+    function.data = {}
+    vectors = {
+        "v1": {
+            "name": "UNKNOWN_VECTOR",
+            "members": {"MEMBER": {"value": 42}},
+        }
+    }
+    function.writeVectorsToData(vectors)
+    assert function.data["UNKNOWN_VECTOR.MEMBER"] == 42
+
+
+# ─── processRxQueue ──────────────────────────────────────────────────────────
+
+
+def _make_snap_val(connection=None, vectors=None):
+    """Build a mock snapshot device value with optional CONNECTION and vectors."""
+    snap_val = mock.MagicMock()
+    snap_val.get.side_effect = lambda k: connection if k == "CONNECTION" else None
+    if connection is not None:
+        snap_val.__getitem__.return_value = connection
+    snap_val.dictdump.return_value = {"vectors": vectors}
+    return snap_val
+
+
+def test_processRxQueue_commandNotRunning(function):
+    function.commandRunning = False
+    function.processRxQueue()
+
+
+def test_processRxQueue_emptyQueueThenStop(function):
+    function.commandRunning = True
+
+    def stopper():
+        time.sleep(0.15)
+        function.commandRunning = False
+
+    t = threading.Thread(target=stopper)
+    t.start()
+    function.processRxQueue()
+    t.join()
+
+
+def test_processRxQueue_deviceNotInSnapshot(function):
+    function.commandRunning = True
+    function.deviceName = "MyDevice"
+
+    item = mock.MagicMock()
+    item.snapshot = {}  # deviceName not present → .get() returns None → continue
+    function.receiveQ.put(item)
+
+    def stopper():
+        time.sleep(0.15)
+        function.commandRunning = False
+
+    t = threading.Thread(target=stopper)
+    t.start()
+    function.processRxQueue()
+    t.join()
+
+
+def test_processRxQueue_connectionOn(function):
+    function.commandRunning = True
+    function.deviceName = "MyDevice"
+    function.deviceConnected = False
+
+    conn_data = mock.MagicMock()
+    conn_data.get.return_value = "On"
+    snap_val = _make_snap_val(connection=conn_data, vectors=None)
+
+    item = mock.MagicMock()
+    item.snapshot = {"MyDevice": snap_val}
+    item.devicename = "MyDevice"
+    function.receiveQ.put(item)
+
+    def stopper():
+        time.sleep(0.15)
+        function.commandRunning = False
+
+    t = threading.Thread(target=stopper)
+    t.start()
+    function.processRxQueue()
+    t.join()
+    assert function.deviceConnected is True
+
+
+def test_processRxQueue_connectionOff(function):
+    function.commandRunning = True
+    function.deviceName = "MyDevice"
+    function.deviceConnected = True
+
+    conn_data = mock.MagicMock()
+    conn_data.get.return_value = "Off"
+    snap_val = _make_snap_val(connection=conn_data, vectors=None)
+
+    item = mock.MagicMock()
+    item.snapshot = {"MyDevice": snap_val}
+    item.devicename = "MyDevice"
+    function.receiveQ.put(item)
+
+    def stopper():
+        time.sleep(0.15)
+        function.commandRunning = False
+
+    t = threading.Thread(target=stopper)
+    t.start()
+    function.processRxQueue()
+    t.join()
+    assert function.deviceConnected is False
+
+
+def test_processRxQueue_devicenameMismatch(function):
+    """item.devicename != deviceName → continue before vector processing."""
+    function.commandRunning = True
+    function.deviceName = "MyDevice"
+
+    snap_val = _make_snap_val(connection=None, vectors=None)
+    item = mock.MagicMock()
+    item.snapshot = {"MyDevice": snap_val}
+    item.devicename = "OtherDevice"
+    function.receiveQ.put(item)
+
+    def stopper():
+        time.sleep(0.15)
+        function.commandRunning = False
+
+    t = threading.Thread(target=stopper)
+    t.start()
+    function.processRxQueue()
+    t.join()
+
+
+def test_processRxQueue_withVectors(function):
+    function.commandRunning = True
+    function.deviceName = "MyDevice"
+    function.data = {}
+
+    vectors = {
+        "v1": {
+            "name": "TEST_VECTOR",
+            "members": {"M1": {"value": 99}},
+        }
+    }
+    snap_val = _make_snap_val(connection=None, vectors=vectors)
+
+    item = mock.MagicMock()
+    item.snapshot = {"MyDevice": snap_val}
+    item.devicename = "MyDevice"
+    function.receiveQ.put(item)
+
+    def stopper():
+        time.sleep(0.15)
+        function.commandRunning = False
+
+    t = threading.Thread(target=stopper)
+    t.start()
+    function.processRxQueue()
+    t.join()
+    assert function.data["TEST_VECTOR.M1"] == 99
+
+
+def test_processRxQueue_noVectors(function):
+    """vectors is falsy → writeVectorsToData is NOT called."""
+    function.commandRunning = True
+    function.deviceName = "MyDevice"
+    function.data = {}
+
+    snap_val = _make_snap_val(connection=None, vectors=None)
+
+    item = mock.MagicMock()
+    item.snapshot = {"MyDevice": snap_val}
+    item.devicename = "MyDevice"
+    function.receiveQ.put(item)
+
+    def stopper():
+        time.sleep(0.15)
+        function.commandRunning = False
+
+    t = threading.Thread(target=stopper)
+    t.start()
+    function.processRxQueue()
+    t.join()
     assert function.data == {}
-    assert function.device is None
 
 
-def test_startRetry_1(function):
-    function.deviceName = ""
-    function.startRetry()
+# ─── cleanupStop ─────────────────────────────────────────────────────────────
 
 
-def test_startRetry_2(function):
-    function.deviceName = "test"
-    function.device = Device()
-    function.client.connected = True
-    with mock.patch.object(function.client, "connectServer", return_value=True):
-        function.startRetry()
+def test_cleanupStop(function):
+    function.clientMutex.lock()
+    function.commandRunning = True
+    function.cleanupStop()
+    assert function.commandRunning is False
+    # Verify mutex was unlocked by successfully locking it again
+    assert function.clientMutex.tryLock() is True
+    function.clientMutex.unlock()
 
 
-def test_startRetry_3(function):
-    function.deviceName = "test"
-    function.device = Device()
-    function.client.connected = False
-    with mock.patch.object(function.client, "connectServer", return_value=True):
-        function.startRetry()
+# ─── startCommunication ──────────────────────────────────────────────────────
 
 
-def test_startCommunication_1(function):
-    function.data = {}
-    with mock.patch.object(function.client, "connectServer", return_value=False):
-        with mock.patch.object(function.timerRetry, "start"):
+def test_startCommunication_mutexAlreadyLocked(function):
+    function.clientMutex.lock()
+    function.startCommunication()
+    assert function.commandRunning is False
+    function.clientMutex.unlock()
+
+
+def test_startCommunication_success(function):
+    with mock.patch("mw4.base.indiClass.Worker") as mock_worker_cls:
+        mock_worker_instance = mock.MagicMock()
+        mock_worker_cls.return_value = mock_worker_instance
+        with mock.patch.object(function.threadPool, "start"):
             function.startCommunication()
+    assert function.commandRunning is True
+    assert function.workerIndiQueueClient is mock_worker_instance
+    assert function.workerProcessRxQueue is mock_worker_instance
+    function.clientMutex.unlock()
 
 
-def test_startCommunication_2(function):
-    function.data = {}
-    with mock.patch.object(function.client, "connectServer", return_value=True):
-        with mock.patch.object(function.timerRetry, "start"):
-            function.startCommunication()
+# ─── stopCommunication ───────────────────────────────────────────────────────
 
 
-def test_stopCommunication_1(function):
-    with mock.patch.object(function.client, "disconnectServer", return_value=False):
-        function.stopCommunication()
-
-
-def test_stopCommunication_2(function):
-    with mock.patch.object(function.client, "disconnectServer", return_value=True):
-        function.stopCommunication()
-
-
-def test_connectDevice1(function):
-    with mock.patch.object(function.client, "connectDevice", return_value=False):
-        function.connectDevice("test", "test")
-
-
-def test_connectDevice2(function):
-    with mock.patch.object(function.client, "connectDevice", return_value=False):
-        function.connectDevice("test", "CONNECTION")
-
-
-def test_connectDevice3(function):
-    function.deviceName = "test"
-    with mock.patch.object(function.client, "connectDevice", return_value=True):
-        function.connectDevice("test", "CONNECTION")
-
-
-def test_connectDevice4(function):
-    function.deviceName = "test"
-    with mock.patch.object(function.client, "connectDevice", return_value=False):
-        function.connectDevice("test", "CONNECTION")
-
-
-def test_loadDefaultConfig_1(function):
-    function.loadIndiConfigFlag = False
-    function.device = Device()
-    with mock.patch.object(function.device, "getSwitch", return_value={"test": 1}):
-        function.loadIndiConfig("test")
-
-
-def test_loadDefaultConfig_2(function):
-    function.loadIndiConfigFlag = True
-    function.device = Device()
-    with mock.patch.object(function.device, "getSwitch", return_value={"test": 1}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
-            function.loadIndiConfig("test")
-
-
-def test_loadDefaultConfig_3(function):
-    function.loadIndiConfigFlag = True
-    function.device = Device()
-    with mock.patch.object(function.device, "getSwitch", return_value={"test": 1}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            function.loadIndiConfig("test")
-
-
-def test_setUpdateConfig_1(function):
-    function.deviceName = ""
-    function.loadConfig = True
-    with mock.patch.object(function, "loadIndiConfig"):
-        function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_2(function):
-    function.deviceName = "test"
-    function.loadConfig = True
-    with mock.patch.object(function, "loadIndiConfig"):
-        function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_3(function):
-    function.deviceName = "test"
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.device = Device()
-    with mock.patch.object(function, "loadIndiConfig"):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.setUpdateConfig("test")
-
-
-def test_convertIndigoProperty_1(function):
-    val = function.convertIndigoProperty("SENSORS.AbsolutePressure")
-    assert val == "WEATHER_PARAMETERS.WEATHER_PRESSURE"
-
-
-def test_updateNumber_1(function):
-    function.updateNumber("telescope", "test")
-
-
-def test_updateNumber_2(function):
-    function.device = Device()
-    function.updateNumber("telescope", "test")
-
-
-def test_updateNumber_3(function):
-    function.data = {}
-    function.device = Device()
+def test_stopCommunication(function):
     function.deviceName = "telescope"
-    with mock.patch.object(function.device, "getNumber", return_value={"test": 1}):
-        function.updateNumber("telescope", "test")
+    function.deviceConnected = True
+    function.commandRunning = True
+    function.stopCommunication()
+    assert function.deviceName == ""
+    assert function.deviceConnected is False
+    assert function.commandRunning is False
+    assert not function.sendQ.empty()
+    assert function.sendQ.get() is None
 
 
-def test_updateText_1(function):
-    function.updateText("telescope", "test")
+# ─── loadIndiConfig ──────────────────────────────────────────────────────────
 
 
-def test_updateText_2(function):
-    function.device = Device()
-    function.updateText("telescope", "test")
+def test_loadIndiConfig(function):
+    function.deviceName = "TestDevice"
+    function.loadIndiConfig("TestDevice")
+    item = function.sendQ.get_nowait()
+    assert item == ("TestDevice", "CONFIG_PROCESS", {"CONFIG_PROCESS": True})
 
 
-def test_updateText_3(function):
-    function.data = {}
-    function.device = Device()
-    function.deviceName = "telescope"
-    with mock.patch.object(function.device, "getText", return_value={"test": 1}):
-        function.updateText("telescope", "test")
+# ─── discoverDevices ─────────────────────────────────────────────────────────
 
 
-def test_updateSwitch_1(function):
-    function.updateSwitch("telescope", "test")
-
-
-def test_updateSwitch_2(function):
-    function.device = Device()
-    function.updateSwitch("telescope", "test")
-
-
-def test_updateSwitch_3(function):
-    function.data = {}
-    function.device = Device()
-    function.deviceName = "telescope"
-    with mock.patch.object(function.device, "getSwitch", return_value={"test": 1}):
-        function.updateSwitch("telescope", "test")
-
-
-def test_updateSwitch_4(function):
-    function.data = {}
-    function.device = Device()
-    function.deviceName = "telescope"
-    with mock.patch.object(function.device, "getSwitch", return_value={"test": 1}):
-        function.updateSwitch("telescope", "PROFILE")
-
-
-def test_updateLight_1(function):
-    function.updateLight("telescope", "test")
-
-
-def test_updateLight_2(function):
-    function.device = Device()
-    function.updateLight("telescope", "test")
-
-
-def test_updateLight_3(function):
-    function.data = {}
-    function.device = Device()
-    function.deviceName = "telescope"
-    with mock.patch.object(function.device, "getLight", return_value={"test": 1}):
-        function.updateLight("telescope", "test")
-
-
-def test_updateBLOB_1(function):
-    function.updateBLOB("telescope", "test")
-
-
-def test_updateBLOB_2(function):
-    function.device = Device()
-    function.updateBLOB("telescope", "test")
-
-
-def test_updateBLOB_3(function):
-    function.device = Device()
-    function.deviceName = "telescope"
-    function.updateBLOB("telescope", "test")
-
-
-def test_removePrefix_1(function):
-    value = function.removePrefix("", "")
-    assert value == ""
-
-
-def test_removePrefix_2(function):
-    value = function.removePrefix("NOT should not be shown", "NOT")
-    assert value == "should not be shown"
-
-
-def test_updateMessage_1(function):
-    function.messages = False
-    function.updateMessage("test", "text")
-
-
-def test_updateMessage_2(function):
-    function.messages = True
-    function.updateMessage("test", "text")
-
-
-def test_updateMessage_3(function):
-    function.messages = True
-    function.updateMessage("test", "[WARNING] should not be shown")
-
-
-def test_updateMessage_4(function):
-    function.messages = True
-    function.updateMessage("test", "[ERROR] should not be shown")
-
-
-def test_updateMessage_5(function):
-    function.messages = True
-    function.updateMessage("test", "NOT should not be shown")
-
-
-def test_updateMessage_6(function):
-    function.messages = True
-    function.updateMessage("test", "[INFO] should not be shown")
-
-
-def test_addDiscoveredDevice_1(function):
-    device = Device()
-    function.indiClass = IndiClass(parent=Parent())
-    with mock.patch.object(device, "getText", return_value={"DRIVER_INTERFACE": None}):
-        function.addDiscoveredDevice("telescope", "test")
-
-
-def test_addDiscoveredDevice_2(function):
-    function.indiClass = IndiClass(parent=Parent())
-    function.indiClass.client.devices["telescope"] = {}
-    function.addDiscoveredDevice("telescope", "DRIVER_INFO")
-
-
-def test_addDiscoveredDevice_3(function):
-    device = Device()
-    function.indiClass = IndiClass(parent=Parent())
-    function.client.devices["telescope"] = device
-    function.discoverType = None
-    with mock.patch.object(device, "getText", return_value={}):
-        function.addDiscoveredDevice("telescope", "DRIVER_INFO")
-
-
-def test_addDiscoveredDevice_4(function):
-    device = Device()
-    function.indiClass = IndiClass(parent=Parent())
-    function.client.devices["telescope"] = device
-    function.discoverType = None
-    function.discoverList = []
-    with mock.patch.object(device, "getText", return_value={"DRIVER_INTERFACE": "0"}):
-        function.addDiscoveredDevice("telescope", "DRIVER_INFO")
-
-
-def test_addDiscoveredDevice_5(function):
-    device = Device()
-    function.indiClass = IndiClass(parent=Parent())
-    function.client.devices["telescope"] = device
-    function.discoverType = 1
-    function.discoverList = []
-    with mock.patch.object(device, "getText", return_value={"DRIVER_INTERFACE": 1}):
-        function.addDiscoveredDevice("telescope", "DRIVER_INFO")
-
-
-def test_discoverDevices_1(function):
+def test_discoverDevices_mutexLocked(function):
     function.discoverMutex.lock()
-    with mock.patch("mw4.base.indiClass.mainThreadSleep"):
-        val = function.discoverDevices("dome")
-        assert val == []
+    result = function.discoverDevices("dome")
+    assert result == []
     function.discoverMutex.unlock()
 
 
-def test_discoverDevices_2(function):
-    with mock.patch("mw4.base.indiClass.mainThreadSleep"):
-        with mock.patch.object(function.client, "connectServer"):
-            with mock.patch.object(function.client, "disconnectServer"):
-                function.client.signals = mock.MagicMock()
-                val = function.discoverDevices("dome")
-                assert val == []
+def test_discoverDevices_maxSearchZero(function, monkeypatch):
+    """Loop never entered when MAX_SEARCH == 0; verifies setup/teardown path."""
+    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 0)
+    with mock.patch("mw4.base.indiClass.Worker"):
+        with mock.patch.object(function.threadPool, "start"):
+            result = function.discoverDevices("dome")
+    assert result == []
+
+
+def test_discoverDevices_loopEmptyQueue(function, monkeypatch):
+    """Loop branch: queue is empty → time.sleep is called."""
+    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
+    with mock.patch("mw4.base.indiClass.Worker"):
+        with mock.patch.object(function.threadPool, "start"):
+            with mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls:
+                mock_txQ = mock.MagicMock()
+                mock_rxQ = mock.MagicMock()
+                mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+                mock_rxQ.empty.return_value = True  # always empty → sleep branch
+                with mock.patch("mw4.base.indiClass.time") as mock_time:
+                    mock_time.sleep.side_effect = StopIteration
+                    with pytest.raises(StopIteration):
+                        function.discoverDevices("dome")
+    function.discoverMutex.unlock()
+
+
+def test_discoverDevices_loopNoneItem(function, monkeypatch):
+    """Loop branch: rxQ yields None → continue without incrementing n."""
+    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
+    with mock.patch("mw4.base.indiClass.Worker"):
+        with mock.patch.object(function.threadPool, "start"):
+            with mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls:
+                mock_txQ = mock.MagicMock()
+                mock_rxQ = mock.MagicMock()
+                mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+
+                call_count = [0]
+
+                def empty_se():
+                    call_count[0] += 1
+                    return call_count[0] != 1  # first call: not empty; rest: empty
+
+                mock_rxQ.empty.side_effect = empty_se
+                mock_rxQ.get.return_value = None  # None item → continue
+                with mock.patch("mw4.base.indiClass.time") as mock_time:
+                    mock_time.sleep.side_effect = StopIteration
+                    with pytest.raises(StopIteration):
+                        function.discoverDevices("dome")
+    function.discoverMutex.unlock()
+
+
+def test_discoverDevices_loopDefineEventMatch(function, monkeypatch):
+    """Loop branch: Define event with matching device type → added to result."""
+    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
+    driver_info = {"DRIVER_INTERFACE": str(1 << 5)}  # dome interface bit
+    snap = mock.MagicMock()
+    snap.get.return_value = driver_info
+
+    item = mock.MagicMock()
+    item.eventtype = "Define"
+    item.devicename = "TestDome"
+    item.snapshot = {"TestDome": snap}
+
+    with mock.patch("mw4.base.indiClass.Worker"):
+        with mock.patch.object(function.threadPool, "start"):
+            with mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls:
+                mock_txQ = mock.MagicMock()
+                mock_rxQ = mock.MagicMock()
+                mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+
+                call_count = [0]
+
+                def empty_se():
+                    call_count[0] += 1
+                    return call_count[0] != 1
+
+                mock_rxQ.empty.side_effect = empty_se
+                mock_rxQ.get.return_value = item
+                with mock.patch("mw4.base.indiClass.time") as mock_time:
+                    mock_time.sleep.side_effect = StopIteration
+                    with pytest.raises(StopIteration):
+                        function.discoverDevices("dome")
+    function.discoverMutex.unlock()
+
+
+def test_discoverDevices_loopDefineEventNoDriver(function, monkeypatch):
+    """Loop branch: Define event but DRIVER_INFO is None → device not added."""
+    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
+    snap = mock.MagicMock()
+    snap.get.return_value = None  # no DRIVER_INFO
+
+    item = mock.MagicMock()
+    item.eventtype = "Define"
+    item.devicename = "TestDome"
+    item.snapshot = {"TestDome": snap}
+
+    with mock.patch("mw4.base.indiClass.Worker"):
+        with mock.patch.object(function.threadPool, "start"):
+            with mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls:
+                mock_txQ = mock.MagicMock()
+                mock_rxQ = mock.MagicMock()
+                mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+
+                call_count = [0]
+
+                def empty_se():
+                    call_count[0] += 1
+                    return call_count[0] != 1
+
+                mock_rxQ.empty.side_effect = empty_se
+                mock_rxQ.get.return_value = item
+                with mock.patch("mw4.base.indiClass.time") as mock_time:
+                    mock_time.sleep.side_effect = StopIteration
+                    with pytest.raises(StopIteration):
+                        function.discoverDevices("dome")
+    function.discoverMutex.unlock()
+
+
+def test_discoverDevices_loopDefineEventNoTypeMatch(function, monkeypatch):
+    """Loop branch: Define event but interface bits don't match device type."""
+    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
+    driver_info = {"DRIVER_INTERFACE": str(1 << 1)}  # camera bit, not dome
+
+    snap = mock.MagicMock()
+    snap.get.return_value = driver_info
+
+    item = mock.MagicMock()
+    item.eventtype = "Define"
+    item.devicename = "TestCamera"
+    item.snapshot = {"TestCamera": snap}
+
+    with mock.patch("mw4.base.indiClass.Worker"):
+        with mock.patch.object(function.threadPool, "start"):
+            with mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls:
+                mock_txQ = mock.MagicMock()
+                mock_rxQ = mock.MagicMock()
+                mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+
+                call_count = [0]
+
+                def empty_se():
+                    call_count[0] += 1
+                    return call_count[0] != 1
+
+                mock_rxQ.empty.side_effect = empty_se
+                mock_rxQ.get.return_value = item
+                with mock.patch("mw4.base.indiClass.time") as mock_time:
+                    mock_time.sleep.side_effect = StopIteration
+                    with pytest.raises(StopIteration):
+                        function.discoverDevices("dome")
+    function.discoverMutex.unlock()
+
+
+def test_discoverDevices_loopNonDefineEvent(function, monkeypatch):
+    """Loop branch: non-Define event → device not added."""
+    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
+    item = mock.MagicMock()
+    item.eventtype = "Remove"
+    item.devicename = "TestDome"
+
+    with mock.patch("mw4.base.indiClass.Worker"):
+        with mock.patch.object(function.threadPool, "start"):
+            with mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls:
+                mock_txQ = mock.MagicMock()
+                mock_rxQ = mock.MagicMock()
+                mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+
+                call_count = [0]
+
+                def empty_se():
+                    call_count[0] += 1
+                    return call_count[0] != 1
+
+                mock_rxQ.empty.side_effect = empty_se
+                mock_rxQ.get.return_value = item
+                with mock.patch("mw4.base.indiClass.time") as mock_time:
+                    mock_time.sleep.side_effect = StopIteration
+                    with pytest.raises(StopIteration):
+                        function.discoverDevices("dome")
     function.discoverMutex.unlock()

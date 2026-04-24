@@ -70,7 +70,6 @@ class IndiClass:
     @host.setter
     def host(self, value: tuple[str, int] | None) -> None:
         self._host = value
-        self.client.host = value
 
     @property
     def hostaddress(self) -> str | None:
@@ -146,7 +145,7 @@ class IndiClass:
         self.commandRunning = False
 
     def loadIndiConfig(self, deviceName: str) -> None:
-        self.sendQ.put((self.deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))
+        self.sendQ.put((deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))
 
     def discoverDevices(self, deviceType: str) -> list[str]:
         if not self.discoverMutex.tryLock():

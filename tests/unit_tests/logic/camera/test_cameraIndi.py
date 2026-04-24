@@ -15,416 +15,358 @@
 ###########################################################
 import pytest
 import unittest.mock as mock
-import zlib
-from astropy.io import fits
-from mw4.base.indiClassOld import IndiClass
-from mw4.base.signalsDevices import Signals
-from mw4.indibase.indiClient import Client
-from mw4.indibase.indiDevice import Device
+from queue import Queue
+
+from mw4.base.indiClass import IndiClass
 from mw4.logic.camera.camera import Camera
-from mw4.logic.camera.cameraIndiOld import CameraIndi
-from pathlib import Path
+from mw4.logic.camera.cameraIndi import CameraIndi
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from xisf import XISF
-
-
-class Parent:
-    app = App()
-    data = {}
-    signals = Signals()
-    loadConfig = True
-    updateRate = 1000
-    binning = 1
-    posX = 0
-    posY = 0
-    width = 1000
-    height = 1000
-    exposureTime = 1
-
-    def exposeFinished(self):
-        return
-
-    imagePath = Path("tests/testData/image/test.fit")
-
-    def writeImageFitsHeader(self, hdu, data):
-        """Mock method to simulate writing FITS header."""
-        pass
-
-    def writePointingFitsHeader(self, hdu, data):
-        """Mock method to simulate writing pointing FITS header."""
-        pass
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
     camera = Camera(App())
     camera.exposureTime = 1
-    camera.binning = 1
     camera.focalLength = 1
-    func = CameraIndi(parent=Parent())
+    func = CameraIndi(parent=camera)
     yield func
     func.app.threadPool.waitForDone(5000)
 
 
-def test_setUpdateConfig_3(function):
-    function.deviceName = "test"
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_4(function):
-    function.deviceName = "test"
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.device = Device()
-    function.client = Client()
-    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD_MS": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=False):
-            function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_5(function):
-    function.deviceName = "test"
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.device = Device()
-    function.client = Client()
-    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD_MS": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.setUpdateConfig("test")
-
-
-def test_setExposureState_1(function):
-    function.device = Device()
-    setattr(function.device, "CCD_EXPOSURE", {"state": "Busy"})
-    function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": 0.0000001}
-    function.isDownloading = False
-    function.setExposureState()
-    assert function.isDownloading
-
-
-def test_setExposureState_2(function):
-    function.device = Device()
-    setattr(function.device, "CCD_EXPOSURE", {"state": "Busy"})
-    function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": 0.0000001}
-    function.isDownloading = True
-    function.setExposureState()
-    assert function.isDownloading
-
-
-def test_setExposureState_3(function):
-    function.device = Device()
-    setattr(function.device, "CCD_EXPOSURE", {"state": "Busy"})
-    function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": 1}
-    function.isDownloading = True
-    function.setExposureState()
-    assert function.isDownloading
-
-
-def test_setExposureState_4(function):
-    function.device = Device()
-    setattr(function.device, "CCD_EXPOSURE", {"state": "Busy"})
-    function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": None}
-    function.isDownloading = True
-    function.setExposureState()
-    assert function.isDownloading
-
-
-def test_setExposureState_5(function):
-    function.device = Device()
-    setattr(function.device, "CCD_EXPOSURE", {"state": "Ok"})
-    function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": None}
-    function.isDownloading = True
-    function.setExposureState()
-    assert not function.isDownloading
-
-
-def test_setExposureState_6(function):
-    function.device = Device()
-    setattr(function.device, "CCD_EXPOSURE", {"state": "test"})
-    function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": None}
-    function.isDownloading = True
-    function.setExposureState()
-    assert function.isDownloading
-
-
-def test_setExposureState_7(function):
-    function.device = Device()
-    setattr(function.device, "CCD_EXPOSURE", {"state": "Alert"})
-    function.data = {"CCD_EXPOSURE.CCD_EXPOSURE_VALUE": None}
-    function.isDownloading = True
-    function.setExposureState()
-    assert not function.isDownloading
-
-
-def test_sendDownloadMode_1(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getSwitch", return_value={"Test": 1}):
-        function.sendDownloadMode()
-
-
-def test_updateNumber_2(function):
-    function.device = Device()
-    setattr(function.device, "CCD_EXPOSURE", {"state": "Busy"})
-
-    function.data = {"AUTO_DEW.DEW_C": 1, "VERSION.UPB": 1}
-    with mock.patch.object(IndiClass, "updateNumber", return_value=True):
-        function.updateNumber("test", "CCD_EXPOSURE")
-
-
-def test_updateNumber_3(function):
-    function.data = {"AUTO_DEW.DEW_C": 1, "VERSION.UPB": 1}
-    with mock.patch.object(IndiClass, "updateNumber", return_value=True):
-        function.updateNumber("test", "CCD_TEMPERATURE")
-
-
-def test_updateNumber_4(function):
-    function.device = Device()
-    data = {"elementList": {"GAIN": {"min": 1, "max": 1}}}
-    setattr(function.device, "CCD_GAIN", data)
-    with mock.patch.object(IndiClass, "updateNumber", return_value=True):
-        with mock.patch.object(function, "setExposureState"):
-            function.updateNumber("test", "CCD_GAIN")
-
-
-def test_updateNumber_5(function):
-    function.device = Device()
-    data = {"elementList": {"OFFSET": {"min": 1, "max": 1}}}
-    setattr(function.device, "CCD_OFFSET", data)
-    with mock.patch.object(IndiClass, "updateNumber", return_value=True):
-        with mock.patch.object(function, "setExposureState"):
-            function.updateNumber("test", "CCD_OFFSET")
-
-
-def test_updateNumber_6(function):
-    function.device = Device()
-    data = {"elementList": {"OFFSET": {"min": 1, "max": 1}}}
-    setattr(function.device, "CCD_OFFSET", data)
-    with mock.patch.object(IndiClass, "updateNumber", return_value=False):
-        with mock.patch.object(function, "setExposureState"):
-            function.updateNumber("test", "CCD_OFFSET")
-
-
-def test_writeImageXisfHeader(function):
-    function.parent.imagePath = Path("tests/testData/test.xisf")
-    with mock.patch.object(XISF, "get_file_metadata"):
-        with mock.patch.object(
-            XISF, "get_images_metadata", return_value=[{"FITSKeywords": {}}]
-        ):
-            with mock.patch.object(XISF, "read_image"):
-                with mock.patch.object(XISF, "write", return_value=True):
-                    function.writeImageXisfHeader()
-
-
-def test_workerSaveBLOB_1(function):
-    function.imagePath = "tests/work/image/test.fit"
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    data = {"value": "1", "name": "CCD1", "format": ".fits.fz"}
-    with mock.patch.object(fits.HDUList, "fromstring", return_value=hdu):
-        with mock.patch.object(fits.HDUList, "writeto"):
-            with mock.patch.object(function.parent, "writeImageFitsHeader"):
-                function.workerSaveBLOB(data)
-
-
-def test_workerSaveBLOB_2(function):
-    function.imagePath = "tests/work/image/test.fit"
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    data = {"value": zlib.compress(b"1"), "name": "CCD1", "format": ".fits.z"}
-    with mock.patch.object(fits.HDUList, "fromstring", return_value=hdu):
-        with mock.patch.object(fits.HDUList, "writeto"):
-            with mock.patch.object(function.parent, "writeImageFitsHeader"):
-                function.workerSaveBLOB(data)
-
-
-def test_workerSaveBLOB_3(function):
-    function.imagePath = "tests/work/image/test.fit"
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    data = {"value": "1", "name": "CCD1", "format": ".fits"}
-    with mock.patch.object(fits.HDUList, "fromstring", return_value=hdu):
-        with mock.patch.object(fits.HDUList, "writeto"):
-            with mock.patch.object(function.parent, "writeImageFitsHeader"):
-                function.workerSaveBLOB(data)
-
-
-def test_workerSaveBLOB_4(function):
-    function.imagePath = "tests/work/image/test.fit"
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    data = {"value": "1", "name": "CCD1", "format": ".test"}
-    with mock.patch.object(fits.HDUList, "fromstring", return_value=hdu):
-        with mock.patch.object(fits.HDUList, "writeto"):
-            with mock.patch.object(function.parent, "writeImageFitsHeader"):
-                function.workerSaveBLOB(data)
-
-
-def test_workerSaveBLOB_5(function):
-    with open("tests/testData/test.xisf", "rb") as f:
-        xisf = f.read()
-    data = {"value": xisf, "name": "CCD1", "format": ".xisf"}
-    with mock.patch.object(function, "writeImageXisfHeader"):
-        function.workerSaveBLOB(data)
-
-
-def test_updateBLOB_1(function):
-    function.device = Device()
-    with mock.patch.object(IndiClass, "updateBLOB", return_value=False):
-        with mock.patch.object(function.device, "getBlob", return_value={}):
-            function.updateBLOB("test", "test")
-
-
-def test_updateBLOB_2(function):
-    function.device = Device()
-    with mock.patch.object(IndiClass, "updateBLOB", return_value=True):
-        with mock.patch.object(function.device, "getBlob", return_value={}):
-            function.updateBLOB("test", "test")
-
-
-def test_updateBLOB_3(function):
-    function.device = Device()
-    with mock.patch.object(IndiClass, "updateBLOB", return_value=True):
-        with mock.patch.object(function.device, "getBlob", return_value={"value": 1}):
-            function.updateBLOB("test", "test")
-
-
-def test_updateBLOB_4(function):
-    function.device = Device()
-    with mock.patch.object(IndiClass, "updateBLOB", return_value=True):
-        with mock.patch.object(
-            function.device, "getBlob", return_value={"value": 1, "name": "test"}
-        ):
-            function.updateBLOB("test", "test")
-
-
-def test_updateBLOB_5(function):
-    function.device = Device()
-    with mock.patch.object(IndiClass, "updateBLOB", return_value=True):
-        with mock.patch.object(
-            function.device,
-            "getBlob",
-            return_value={"value": 1, "name": "CCD2", "format": "test"},
-        ):
-            function.updateBLOB("test", "test")
-
-
-def test_updateBLOB_6(function):
-    function.device = Device()
-    with mock.patch.object(IndiClass, "updateBLOB", return_value=True):
-        with mock.patch.object(
-            function.device,
-            "getBlob",
-            return_value={"value": 1, "name": "CCD1", "format": "test"},
-        ):
-            with mock.patch.object(function.threadPool, "start"):
-                function.updateBLOB("test", "test")
-
-
-def test_expose_2(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function, "sendDownloadMode", return_value=False):
-        suc = function.expose()
-        assert not suc
-
-
-def test_expose_3(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=False):
-            suc = function.expose()
-            assert not suc
-
-
-def test_expose_4(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            suc = function.expose()
-            assert suc
-
-
-def test_abort_2(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getSwitch", return_value={"Test": 1}):
-        suc = function.abort()
-        assert not suc
-
-
-def test_abort_3(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getSwitch", return_value={"ABORT": 1}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            suc = function.abort()
-            assert suc
-
-
-def test_sendCoolerSwitch_2(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getSwitch", return_value={"Test": 1}):
-        function.sendCoolerSwitch()
-
-
-def test_sendCoolerSwitch_3(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getSwitch", return_value={"COOLER_ON": True}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            function.sendCoolerSwitch(True)
-
-
-def test_sendCoolerTemp_2(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        function.sendCoolerTemp()
-
-
-def test_sendCoolerTemp_3(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(
-        function.device, "getNumber", return_value={"CCD_TEMPERATURE_VALUE": 1}
-    ):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.sendCoolerTemp()
-
-
-def test_sendOffset_2(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        function.sendOffset()
-
-
-def test_sendOffset_3(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"OFFSET": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.sendOffset()
-
-
-def test_sendGain_2(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        function.sendGain()
-
-
-def test_sendGain_3(function):
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"GAIN": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.sendGain()
+# ---------------------------------------------------------------------------
+# setUpdateConfig
+# ---------------------------------------------------------------------------
+
+def test_setUpdateConfig(function):
+    function.sendQ = Queue()
+    function.setUpdateConfig("test_device")
+    assert function.sendQ.qsize() == 4
+    assert function.sendQ.get() == ("test_device", "FITS_HEADER", {"FITS_OBJECT": "Skymodel"})
+    assert function.sendQ.get() == (
+        "test_device", "FITS_HEADER", {"FITS_OBSERVER": "MountWizzard4"}
+    )
+    assert function.sendQ.get() == (
+        "test_device", "ACTIVE_DEVICES", {"ACTIVE_TELESCOPE": "LX200 10micron"}
+    )
+    assert function.sendQ.get() == (
+        "test_device", "TELESCOPE_TYPE", {"TELESCOPE_PRIMARY": "On"}
+    )
+
+
+# ---------------------------------------------------------------------------
+# setExposureState
+# ---------------------------------------------------------------------------
+
+def test_setExposureState_no_ccd_exposure(function):
+    """No 'CCD_EXPOSURE' key → early return, no signals emitted."""
+    slot = mock.MagicMock()
+    function.signals.message.connect(slot)
+    function.setExposureState({})
+    slot.assert_not_called()
+    function.signals.message.disconnect(slot)
+
+
+def test_setExposureState_busy_value_gt_0(function):
+    """State 'Busy' and value > 0 → message signal with remaining time."""
+    vectors = {
+        "CCD_EXPOSURE": {
+            "state": "Busy",
+            "members": {"CCD_EXPOSURE_VALUE": {"floatvalue": 5.0}},
+        }
+    }
+    slot = mock.MagicMock()
+    function.signals.message.connect(slot)
+    function.setExposureState(vectors)
+    slot.assert_called_once_with("expose  5 s")
+    function.signals.message.disconnect(slot)
+
+
+def test_setExposureState_busy_value_zero(function):
+    """State 'Busy' and value == 0 → exposed signal with imagePath."""
+    vectors = {
+        "CCD_EXPOSURE": {
+            "state": "Busy",
+            "members": {"CCD_EXPOSURE_VALUE": {"floatvalue": 0.0}},
+        }
+    }
+    slot = mock.MagicMock()
+    function.signals.exposed.connect(slot)
+    function.setExposureState(vectors)
+    slot.assert_called_once_with(function.parent.imagePath)
+    function.signals.exposed.disconnect(slot)
+
+
+def test_setExposureState_ok_value_zero(function):
+    """State 'Ok' and value == 0 → downloaded signal + empty message."""
+    vectors = {
+        "CCD_EXPOSURE": {
+            "state": "Ok",
+            "members": {"CCD_EXPOSURE_VALUE": {"floatvalue": 0.0}},
+        }
+    }
+    dl_slot = mock.MagicMock()
+    msg_slot = mock.MagicMock()
+    function.signals.downloaded.connect(dl_slot)
+    function.signals.message.connect(msg_slot)
+    function.setExposureState(vectors)
+    dl_slot.assert_called_once_with(function.parent.imagePath)
+    msg_slot.assert_called_once_with("")
+    function.signals.downloaded.disconnect(dl_slot)
+    function.signals.message.disconnect(msg_slot)
+
+
+def test_setExposureState_alert(function):
+    """State 'Alert' → exposed(Path()), downloaded(Path()), exposeFinished and abort called."""
+    vectors = {
+        "CCD_EXPOSURE": {
+            "state": "Alert",
+            "members": {"CCD_EXPOSURE_VALUE": {"floatvalue": 0.0}},
+        }
+    }
+    with mock.patch.object(function.parent, "exposeFinished") as mock_finished:
+        with mock.patch.object(function, "abort") as mock_abort:
+            function.setExposureState(vectors)
+            mock_finished.assert_called_once()
+            mock_abort.assert_called_once()
+
+
+def test_setExposureState_unknown_state(function):
+    """Unrecognised state → no branch taken, no side effects."""
+    vectors = {
+        "CCD_EXPOSURE": {
+            "state": "Idle",
+            "members": {"CCD_EXPOSURE_VALUE": {"floatvalue": 5.0}},
+        }
+    }
+    slot = mock.MagicMock()
+    function.signals.message.connect(slot)
+    function.setExposureState(vectors)
+    slot.assert_not_called()
+    function.signals.message.disconnect(slot)
+
+
+# ---------------------------------------------------------------------------
+# setCanTemperature
+# ---------------------------------------------------------------------------
+
+def test_setCanTemperature_absent(function):
+    """No 'CCD_TEMPERATURE' in vectors → data key not set."""
+    function.data.pop("CAN_SET_CCD_TEMPERATURE", None)
+    function.setCanTemperature({})
+    assert "CAN_SET_CCD_TEMPERATURE" not in function.data
+
+
+def test_setCanTemperature_present(function):
+    """'CCD_TEMPERATURE' present → data['CAN_SET_CCD_TEMPERATURE'] = True."""
+    function.data.pop("CAN_SET_CCD_TEMPERATURE", None)
+    function.setCanTemperature({"CCD_TEMPERATURE": {"state": "Ok", "members": {}}})
+    assert function.data["CAN_SET_CCD_TEMPERATURE"] is True
+
+
+# ---------------------------------------------------------------------------
+# addGainLimits
+# ---------------------------------------------------------------------------
+
+def test_addGainLimits_absent(function):
+    """No 'CCD_GAIN' → data unchanged."""
+    function.data.pop("CCD_GAIN.GAIN_MIN", None)
+    function.data.pop("CCD_GAIN.GAIN_MAX", None)
+    function.addGainLimits({})
+    assert "CCD_GAIN.GAIN_MIN" not in function.data
+    assert "CCD_GAIN.GAIN_MAX" not in function.data
+
+
+def test_addGainLimits_with_limits(function):
+    """'CCD_GAIN' with min/max → data populated."""
+    vectors = {"CCD_GAIN": {"state": "Ok", "members": {"min": 0, "max": 255}}}
+    function.addGainLimits(vectors)
+    assert function.data["CCD_GAIN.GAIN_MIN"] == 0
+    assert function.data["CCD_GAIN.GAIN_MAX"] == 255
+
+
+def test_addGainLimits_without_min_max(function):
+    """'CCD_GAIN' without min/max keys → default values applied."""
+    vectors = {"CCD_GAIN": {"state": "Ok", "members": {}}}
+    function.addGainLimits(vectors)
+    assert function.data["CCD_GAIN.GAIN_MIN"] == 0
+    assert function.data["CCD_GAIN.GAIN_MAX"] == 1
+
+
+# ---------------------------------------------------------------------------
+# addOffsetLimits
+# ---------------------------------------------------------------------------
+
+def test_addOffsetLimits_absent(function):
+    """No 'CCD_OFFSET' → data unchanged."""
+    function.data.pop("CCD_OFFSET.OFFSET_MIN", None)
+    function.data.pop("CCD_OFFSET.OFFSET_MAX", None)
+    function.addOffsetLimits({})
+    assert "CCD_OFFSET.OFFSET_MIN" not in function.data
+    assert "CCD_OFFSET.OFFSET_MAX" not in function.data
+
+
+def test_addOffsetLimits_with_limits(function):
+    """'CCD_OFFSET' with min/max → data populated."""
+    vectors = {"CCD_OFFSET": {"state": "Ok", "members": {"min": 10, "max": 100}}}
+    function.addOffsetLimits(vectors)
+    assert function.data["CCD_OFFSET.OFFSET_MIN"] == 10
+    assert function.data["CCD_OFFSET.OFFSET_MAX"] == 100
+
+
+def test_addOffsetLimits_without_min_max(function):
+    """'CCD_OFFSET' without min/max keys → default values applied."""
+    vectors = {"CCD_OFFSET": {"state": "Ok", "members": {}}}
+    function.addOffsetLimits(vectors)
+    assert function.data["CCD_OFFSET.OFFSET_MIN"] == 0
+    assert function.data["CCD_OFFSET.OFFSET_MAX"] == 1
+
+
+# ---------------------------------------------------------------------------
+# saveBLOB
+# ---------------------------------------------------------------------------
+
+def test_saveBLOB_absent(function):
+    """No 'CCD1' in vectors → writeImageFitsHeader/exposeFinished not called."""
+    with mock.patch.object(function.parent, "writeImageFitsHeader") as mock_hdr:
+        with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
+            function.saveBLOB({})
+            mock_hdr.assert_not_called()
+            mock_fin.assert_not_called()
+
+
+def test_saveBLOB_present(function):
+    """'CCD1' present → writeImageFitsHeader and exposeFinished are called."""
+    vectors = {"CCD1": {"name": "CCD1", "members": {}}}
+    with mock.patch.object(function.parent, "writeImageFitsHeader") as mock_hdr:
+        with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
+            function.saveBLOB(vectors)
+            mock_hdr.assert_called_once()
+            mock_fin.assert_called_once()
+
+
+# ---------------------------------------------------------------------------
+# writeVectorsToData
+# ---------------------------------------------------------------------------
+
+def test_writeVectorsToData(function):
+    """All delegate methods and super() are called with the vectors dict."""
+    vectors = {}
+    with mock.patch.object(IndiClass, "writeVectorsToData") as mock_super:
+        with mock.patch.object(function, "addGainLimits") as mock_gain:
+            with mock.patch.object(function, "addOffsetLimits") as mock_offset:
+                with mock.patch.object(function, "setCanTemperature") as mock_temp:
+                    with mock.patch.object(function, "setExposureState") as mock_exp:
+                        with mock.patch.object(function, "saveBLOB") as mock_blob:
+                            function.writeVectorsToData(vectors)
+                            mock_super.assert_called_once_with(vectors)
+                            mock_gain.assert_called_once_with(vectors)
+                            mock_offset.assert_called_once_with(vectors)
+                            mock_temp.assert_called_once_with(vectors)
+                            mock_exp.assert_called_once_with(vectors)
+                            mock_blob.assert_called_once_with(vectors)
+
+
+# ---------------------------------------------------------------------------
+# expose
+# ---------------------------------------------------------------------------
+
+def test_expose(function):
+    """expose() puts 4 correctly structured items into the sendQ."""
+    function.sendQ = Queue()
+    function.deviceName = "test_cam"
+    function.parent._binning = 2
+    function.parent.posX = 10
+    function.parent.posY = 20
+    function.parent.width = 800
+    function.parent.height = 600
+    function.parent.exposureTime = 3.0
+    function.expose()
+    assert function.sendQ.qsize() == 4
+    assert function.sendQ.get() == ("test_cam", "READOUT_QUALITY", {"QUALITY_LOW": "On"})
+    assert function.sendQ.get() == (
+        "test_cam", "CCD_BINNING", {"HOR_BIN": 2, "VER_BIN": 2}
+    )
+    assert function.sendQ.get() == (
+        "test_cam", "CCD_FRAME", {"X": 10, "Y": 20, "WIDTH": 800, "HEIGHT": 600}
+    )
+    assert function.sendQ.get() == (
+        "test_cam", "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": 3.0}
+    )
+
+
+# ---------------------------------------------------------------------------
+# abort
+# ---------------------------------------------------------------------------
+
+def test_abort(function):
+    """abort() puts one abort command into the sendQ."""
+    function.sendQ = Queue()
+    function.deviceName = "test_cam"
+    function.abort()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_cam", "CCD_ABORT_EXPOSURE", {"ABORT": "On"}
+    )
+
+
+# ---------------------------------------------------------------------------
+# sendCoolerSwitch
+# ---------------------------------------------------------------------------
+
+def test_sendCoolerSwitch_off(function):
+    """sendCoolerSwitch(False) → queues COOLER_ON='Off'."""
+    function.sendQ = Queue()
+    function.deviceName = "test_cam"
+    function.sendCoolerSwitch(coolerOn=False)
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == ("test_cam", "CCD_COOLER", {"COOLER_ON": "Off"})
+
+
+def test_sendCoolerSwitch_on(function):
+    """sendCoolerSwitch(True) → queues COOLER_ON='On'."""
+    function.sendQ = Queue()
+    function.deviceName = "test_cam"
+    function.sendCoolerSwitch(coolerOn=True)
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == ("test_cam", "CCD_COOLER", {"COOLER_ON": "On"})
+
+
+# ---------------------------------------------------------------------------
+# sendCoolerTemp
+# ---------------------------------------------------------------------------
+
+def test_sendCoolerTemp(function):
+    """sendCoolerTemp() queues the target CCD temperature."""
+    function.sendQ = Queue()
+    function.deviceName = "test_cam"
+    function.sendCoolerTemp(temperature=-10.5)
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_cam", "CCD_TEMPERATURE", {"CCD_TEMPERATURE_VALUE": -10.5}
+    )
+
+
+# ---------------------------------------------------------------------------
+# sendOffset
+# ---------------------------------------------------------------------------
+
+def test_sendOffset(function):
+    """sendOffset() queues the offset value."""
+    function.sendQ = Queue()
+    function.deviceName = "test_cam"
+    function.sendOffset(offset=50)
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == ("test_cam", "CCD_OFFSET", {"OFFSET": 50})
+
+
+# ---------------------------------------------------------------------------
+# sendGain
+# ---------------------------------------------------------------------------
+
+def test_sendGain(function):
+    """sendGain() queues the gain value."""
+    function.sendQ = Queue()
+    function.deviceName = "test_cam"
+    function.sendGain(gain=200)
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == ("test_cam", "CCD_GAIN", {"GAIN": 200})

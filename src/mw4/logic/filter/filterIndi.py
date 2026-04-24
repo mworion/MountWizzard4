@@ -24,13 +24,4 @@ class FilterIndi(IndiClass):
         self.signals = parent.signals
 
     def sendFilterNumber(self, filterNumber: int = 1) -> None:
-        if self.device is None:
-            return
-
-        filterNo = self.device.getNumber("FILTER_SLOT")
-        filterNo["FILTER_SLOT_VALUE"] = filterNumber
-        self.client.sendNewNumber(
-            deviceName=self.deviceName,
-            propertyName="FILTER_SLOT",
-            elements=filterNo,
-        )
+        self.sendQ.put((self.deviceName, "FILTER_SLOT", {"FILTER_SLOT_VALUE": filterNumber}))

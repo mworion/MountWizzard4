@@ -13,8 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import platform
-
 isAnalyse: bool = False
 isReference: bool = False
-isSimulationMount: bool = False
+

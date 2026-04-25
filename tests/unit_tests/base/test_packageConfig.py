@@ -13,10 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-
-
-from mw4.base.packageConfig import excludedPlatforms
+from mw4.base.packageConfig import isAnalyse
 
 
 def test_config():
-    assert "armv7l" in excludedPlatforms
+    assert isAnalyse is False

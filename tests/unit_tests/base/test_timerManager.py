@@ -48,15 +48,15 @@ def mgr(mock_app):
 
 def test_init(mgr):
     assert mgr.counter == 0
-    assert mgr._timer is not None
-    assert not mgr._timer.isActive()
+    assert mgr.timer is not None
+    assert not mgr.timer.isActive()
 
 
 def test_start_stop(mgr):
     mgr.start()
-    assert mgr._timer.isActive()
+    assert mgr.timer.isActive()
     mgr.stop()
-    assert not mgr._timer.isActive()
+    assert not mgr.timer.isActive()
 
 
 def test_counter_read_write(mgr):
@@ -71,16 +71,16 @@ def test_tick_interval():
 
 def test_on_tick_increments_counter(mgr):
     assert mgr.counter == 0
-    mgr._onTick()
+    mgr.onTick()
     assert mgr.counter == 1
-    mgr._onTick()
+    mgr.onTick()
     assert mgr.counter == 2
 
 
 def _collect_emitted(mock_app, mgr, method_name, counter_value):
     """Set the counter and call the named method, returning emitted signal names."""
     emitted = []
-    for _, _, sig_name in CYCLIC_SCHEDULE:
+    for _, sig_name in CYCLIC_SCHEDULE:
         getattr(mock_app, sig_name).connect(
             lambda name=sig_name: emitted.append(name)
         )
@@ -102,47 +102,47 @@ def test_emit_cyclic_always_fires_update0_1s(mock_app, mgr):
 
 
 def test_emit_cyclic_update1s(mock_app, mgr):
-    """update1s fires when (counter + 5) % 10 == 0, i.e. counter = 5,15,25..."""
-    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 5)
+    """update1s fires when counter % 10 == 0, i.e. counter = 10,20,30..."""
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 10)
     assert "update1s" in emitted
 
-    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 6)
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 11)
     assert "update1s" not in emitted
 
 
 def test_emit_cyclic_update3s(mock_app, mgr):
-    """update3s fires when (counter + 10) % 30 == 0, i.e. counter = 20,50,80..."""
-    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 20)
+    """update3s fires when counter % 30 == 0, i.e. counter = 30,60,90..."""
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 30)
     assert "update3s" in emitted
 
-    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 21)
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 31)
     assert "update3s" not in emitted
 
 
 def test_emit_cyclic_update10s(mock_app, mgr):
-    """update10s fires when (counter + 20) % 100 == 0, i.e. counter = 80,180,..."""
-    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 80)
+    """update10s fires when counter % 100 == 0, i.e. counter = 100,200,..."""
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 100)
     assert "update10s" in emitted
 
-    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 81)
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 101)
     assert "update10s" not in emitted
 
 
 def test_emit_cyclic_update30s(mock_app, mgr):
-    """update30s fires when (counter + 25) % 300 == 0, i.e. counter = 275..."""
-    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 275)
+    """update30s fires when counter % 300 == 0, i.e. counter = 300,600..."""
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 300)
     assert "update30s" in emitted
 
 
 def test_emit_cyclic_update3m(mock_app, mgr):
-    """update3m fires when (counter + 12) % 1800 == 0, i.e. counter = 1788..."""
-    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 1788)
+    """update3m fires when counter % 1800 == 0, i.e. counter = 1800,3600..."""
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 1800)
     assert "update3m" in emitted
 
 
 def test_emit_cyclic_update30m(mock_app, mgr):
-    """update30m fires when (counter + 15) % 36000 == 0, i.e. counter = 35985..."""
-    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 35985)
+    """update30m fires when counter % 36000 == 0, i.e. counter = 36000..."""
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 36000)
     assert "update30m" in emitted
 
 
@@ -167,10 +167,10 @@ def test_emit_start_does_not_fire_at_other_ticks(mock_app, mgr):
 
 
 def test_on_tick_emits_signals(mock_app, mgr):
-    """_onTick should increment the counter and emit cyclic + start signals."""
+    """onTick should increment the counter and emit cyclic + start signals."""
     emitted = []
     mock_app.update0_1s.connect(lambda: emitted.append("update0_1s"))
-    mgr._onTick()
+    mgr.onTick()
     assert mgr.counter == 1
     assert "update0_1s" in emitted
 

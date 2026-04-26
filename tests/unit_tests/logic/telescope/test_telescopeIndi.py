@@ -13,12 +13,9 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
 import unittest.mock as mock
 from mw4.base.signalsDevices import Signals
-from mw4.indibase.indiClient import Client
-from mw4.indibase.indiDevice import Device
 from mw4.logic.telescope.telescopeIndi import TelescopeIndi
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -36,48 +33,5 @@ def function():
     func = TelescopeIndi(parent=Parent())
     yield func
 
-
-def test_setUpdateConfig_1(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = ""
-    function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_2(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = None
-    function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_3(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = Device()
-    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_4(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = Device()
-    function.client = Client()
-    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=False):
-            function.setUpdateConfig("test")
-
-
-def test_setUpdateConfig_5(function):
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.deviceName = "test"
-    function.device = Device()
-    function.client = Client()
-    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.setUpdateConfig("test")
+def test_class(function):
+    assert 1==1

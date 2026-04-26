@@ -13,12 +13,12 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
 import unittest.mock as mock
+from queue import Queue
+
+from mw4.base.indiClass import IndiClass
 from mw4.base.signalsDevices import Signals
-from mw4.indibase.indiClient import Client
-from mw4.indibase.indiDevice import Device
 from mw4.logic.dome.domeIndi import DomeIndi
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -37,359 +37,211 @@ def function():
     yield func
 
 
-def test_setUpdateConfig_1(function):
-    function.deviceName = ""
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.setUpdateConfig("test")
+# ---------------------------------------------------------------------------
+# __init__
+# ---------------------------------------------------------------------------
+
+def test_init_lastAzimuth(function):
+    """DomeIndi initialises lastAzimuth to None."""
+    assert function.lastAzimuth is None
 
 
-def test_setUpdateConfig_2(function):
-    function.deviceName = "test"
-    function.device = None
-    function.loadConfig = True
-    function.updateRate = 1000
-    function.setUpdateConfig("test")
+# ---------------------------------------------------------------------------
+# sendDomePosition
+# ---------------------------------------------------------------------------
+
+def test_sendDomePosition_absent(function):
+    """No ABS_DOME_POSITION key → early return, no crash."""
+    function.sendDomePosition({})
 
 
-def test_setUpdateConfig_3(function):
-    function.deviceName = "test"
-    function.device = Device()
-    function.loadConfig = True
-    function.updateRate = 1000
-    with mock.patch.object(function.device, "getNumber", return_value={"Test": 1}):
-        function.setUpdateConfig("test")
+def test_sendDomePosition_no_member(function):
+    """ABS_DOME_POSITION present but DOME_ABSOLUTE_POSITION missing → early return."""
+    vectors = {
+        "ABS_DOME_POSITION": {
+            "state": "Ok",
+            "members": {},
+        }
+    }
+    slot = mock.MagicMock()
+    function.signals.azimuth.connect(slot)
+    function.sendDomePosition(vectors)
+    slot.assert_not_called()
+    function.signals.azimuth.disconnect(slot)
 
 
-def test_setUpdateConfig_4(function):
-    function.deviceName = "test"
-    function.device = Device()
-    function.client = Client()
-    function.loadConfig = True
-    function.updateRate = 1000
-    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD_MS": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=False):
-            function.setUpdateConfig("test")
+def test_sendDomePosition_busy(function):
+    """ABS_DOME_POSITION with state Busy → Slewing=True, azimuth emitted."""
+    vectors = {
+        "ABS_DOME_POSITION": {
+            "state": "Busy",
+            "members": {
+                "DOME_ABSOLUTE_POSITION": {"value": "180.0", "floatvalue": 180.0}
+            },
+        }
+    }
+    slot = mock.MagicMock()
+    function.signals.azimuth.connect(slot)
+    function.sendDomePosition(vectors)
+    assert function.data["Slewing"] is True
+    slot.assert_called_once_with(180.0)
+    function.signals.azimuth.disconnect(slot)
 
 
-def test_setUpdateConfig_5(function):
-    function.deviceName = "test"
-    function.device = Device()
-    function.client = Client()
-    function.loadConfig = True
-    function.updateRate = 1000
-    with mock.patch.object(function.device, "getNumber", return_value={"PERIOD_MS": 1}):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.setUpdateConfig("test")
+def test_sendDomePosition_ok(function):
+    """ABS_DOME_POSITION with state Ok → Slewing=False, azimuth emitted."""
+    vectors = {
+        "ABS_DOME_POSITION": {
+            "state": "Ok",
+            "members": {
+                "DOME_ABSOLUTE_POSITION": {"value": "90.0", "floatvalue": 90.0}
+            },
+        }
+    }
+    slot = mock.MagicMock()
+    function.signals.azimuth.connect(slot)
+    function.sendDomePosition(vectors)
+    assert function.data["Slewing"] is False
+    slot.assert_called_once_with(90.0)
+    function.signals.azimuth.disconnect(slot)
 
 
-def test_updateStatus_1(function):
-    function.device = Device()
-    function.client = Client()
-    function.client.connected = False
+# ---------------------------------------------------------------------------
+# addShutterStatus
+# ---------------------------------------------------------------------------
 
-    function.updateStatus()
-
-
-def test_updateStatus_2(function):
-    function.device = Device()
-    function.client = Client()
-    function.client.connected = True
-
-    function.updateStatus()
+def test_addShutterStatus_absent(function):
+    """No DOME_SHUTTER key → early return, Shutter.Status not set."""
+    function.data.pop("Shutter.Status", None)
+    function.addShutterStatus({})
+    assert "Shutter.Status" not in function.data
 
 
-def test_updateNumber_2(function):
-    function.device = Device()
-    function.deviceName = "test"
-    setattr(function.device, "ABS_DOME_POSITION", {"state": "Busy"})
-    with mock.patch.object(
-        function.device,
-        "getNumber",
-        return_value={"TEST": 1, "DOME_ABSOLUTE_POSITION": 2},
-    ):
-        function.updateNumber("test", "ABS_DOME_POSITION")
+def test_addShutterStatus_busy(function):
+    """DOME_SHUTTER state Busy → Shutter.Status = 'Moving'."""
+    vectors = {
+        "DOME_SHUTTER": {
+            "state": "Busy",
+            "members": {},
+        }
+    }
+    function.addShutterStatus(vectors)
+    assert function.data["Shutter.Status"] == "Moving"
 
 
-def test_updateNumber_3(function):
-    function.device = Device()
-    function.deviceName = "test"
-    setattr(function.device, "DOME_SHUTTER", {"state": "Busy"})
-    with mock.patch.object(
-        function.device, "getNumber", return_value={"TEST": 1, "SHUTTER_OPEN": 2}
-    ):
-        function.updateNumber("test", "SHUTTER_OPEN")
+def test_addShutterStatus_ok(function):
+    """DOME_SHUTTER state Ok → Shutter.Status = '-'."""
+    vectors = {
+        "DOME_SHUTTER": {
+            "state": "Ok",
+            "members": {},
+        }
+    }
+    function.addShutterStatus(vectors)
+    assert function.data["Shutter.Status"] == "-"
 
 
-def test_updateNumber_4(function):
-    function.device = Device()
-    function.deviceName = "test"
-    setattr(function.device, "DOME_SHUTTER", {"state": "test"})
-    with mock.patch.object(
-        function.device, "getNumber", return_value={"TEST": 1, "SHUTTER_OPEN": 2}
-    ):
-        function.updateNumber("test", "SHUTTER_OPEN")
+# ---------------------------------------------------------------------------
+# writeVectorsToData
+# ---------------------------------------------------------------------------
+
+def test_writeVectorsToData(function):
+    """super(), sendDomePosition and addShutterStatus are all called."""
+    vectors = {}
+    with mock.patch.object(IndiClass, "writeVectorsToData") as mock_super:
+        with mock.patch.object(function, "sendDomePosition") as mock_pos:
+            with mock.patch.object(function, "addShutterStatus") as mock_shut:
+                function.writeVectorsToData(vectors)
+                mock_super.assert_called_once_with(vectors)
+                mock_pos.assert_called_once_with(vectors)
+                mock_shut.assert_called_once_with(vectors)
 
 
-def test_slewToAltAz_1(function):
-    function.slewToAltAz(azimuth=0, altitude=0)
+# ---------------------------------------------------------------------------
+# slewToAltAz
+# ---------------------------------------------------------------------------
+
+def test_slewToAltAz(function):
+    """slewToAltAz puts DOME_ABSOLUTE_POSITION with azimuth into sendQ."""
+    function.sendQ = Queue()
+    function.deviceName = "test_dome"
+    function.slewToAltAz(altitude=30, azimuth=180)
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_dome", "ABS_DOME_POSITION", {"DOME_ABSOLUTE_POSITION": 180}
+    )
 
 
-def test_slewToAltAz_2(function):
-    function.device = Device()
-    function.slewToAltAz(azimuth=0, altitude=0)
+# ---------------------------------------------------------------------------
+# openShutter
+# ---------------------------------------------------------------------------
 
-
-def test_slewToAltAz_3(function):
-    function.device = Device()
-    function.deviceName = "test"
-    function.slewToAltAz(azimuth=0, altitude=0)
-
-
-def test_slewToAltAz_4(function):
-    function.device = Device()
-    function.deviceName = "test"
-
-    with mock.patch.object(
-        function.device, "getNumber", return_value={"DOME_ABSOLUTE_POSITION": 1}
-    ):
-        function.slewToAltAz(azimuth=0, altitude=0)
-
-
-def test_slewToAltAz_5(function):
-    function.device = Device()
-    function.client = Client()
-    function.deviceName = "test"
-
-    with mock.patch.object(
-        function.device, "getNumber", return_value={"DOME_ABSOLUTE_POSITION": 1}
-    ):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=False):
-            function.slewToAltAz(azimuth=0, altitude=0)
-
-
-def test_slewToAltAz_6(function):
-    function.device = Device()
-    function.client = Client()
-    function.deviceName = "test"
-
-    with mock.patch.object(
-        function.device, "getNumber", return_value={"DOME_ABSOLUTE_POSITION": 1}
-    ):
-        with mock.patch.object(function.client, "sendNewNumber", return_value=True):
-            function.slewToAltAz(azimuth=0, altitude=0)
-
-
-def test_openShutter_1(function):
+def test_openShutter(function):
+    """openShutter puts SHUTTER_OPEN=On into sendQ."""
+    function.sendQ = Queue()
+    function.deviceName = "test_dome"
     function.openShutter()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_dome", "DOME_SHUTTER", {"SHUTTER_OPEN": "On"}
+    )
 
 
-def test_openShutter_2(function):
-    function.device = Device()
-    function.openShutter()
+# ---------------------------------------------------------------------------
+# closeShutter
+# ---------------------------------------------------------------------------
 
-
-def test_openShutter_3(function):
-    function.device = Device()
-    function.deviceName = "test"
-    function.openShutter()
-
-
-def test_openShutter_4(function):
-    function.device = Device()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_OPEN": 1}):
-        function.openShutter()
-
-
-def test_openShutter_5(function):
-    function.device = Device()
-    function.client = Client()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_OPEN": 1}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
-            function.openShutter()
-
-
-def test_openShutter_6(function):
-    function.device = Device()
-    function.client = Client()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_OPEN": 1}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            function.openShutter()
-
-
-def test_closeShutter_1(function):
+def test_closeShutter(function):
+    """closeShutter puts SHUTTER_CLOSE=On into sendQ."""
+    function.sendQ = Queue()
+    function.deviceName = "test_dome"
     function.closeShutter()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_dome", "DOME_SHUTTER", {"SHUTTER_CLOSE": "On"}
+    )
 
 
-def test_closeShutter_2(function):
-    function.device = Device()
-    function.closeShutter()
+# ---------------------------------------------------------------------------
+# slewCW
+# ---------------------------------------------------------------------------
 
-
-def test_closeShutter_3(function):
-    function.device = Device()
-    function.deviceName = "test"
-    function.closeShutter()
-
-
-def test_closeShutter_4(function):
-    function.device = Device()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_CLOSE": 1}):
-        function.closeShutter()
-
-
-def test_closeShutter_5(function):
-    function.device = Device()
-    function.client = Client()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_CLOSE": 1}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
-            function.closeShutter()
-
-
-def test_closeShutter_6(function):
-    function.device = Device()
-    function.client = Client()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"SHUTTER_CLOSE": 1}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            function.closeShutter()
-
-
-def test_slewCW_1(function):
+def test_slewCW(function):
+    """slewCW puts DOME_CW=On into sendQ."""
+    function.sendQ = Queue()
+    function.deviceName = "test_dome"
     function.slewCW()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_dome", "DOME_MOTION", {"DOME_CW": "On"}
+    )
 
 
-def test_slewCW_2(function):
-    function.device = Device()
-    function.slewCW()
+# ---------------------------------------------------------------------------
+# slewCCW
+# ---------------------------------------------------------------------------
 
-
-def test_slewCW_3(function):
-    function.device = Device()
-    function.deviceName = "test"
-    function.slewCW()
-
-
-def test_slewCW_4(function):
-    function.device = Device()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"DOME_CW": 1}):
-        function.slewCW()
-
-
-def test_slewCW_5(function):
-    function.device = Device()
-    function.client = Client()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"DOME_CW": 1}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
-            function.slewCW()
-
-
-def test_slewCW_6(function):
-    function.device = Device()
-    function.client = Client()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"DOME_CW": 1}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            function.slewCW()
-
-
-def test_slewCCW_1(function):
+def test_slewCCW(function):
+    """slewCCW puts DOME_CCW=On into sendQ."""
+    function.sendQ = Queue()
+    function.deviceName = "test_dome"
     function.slewCCW()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_dome", "DOME_MOTION", {"DOME_CCW": "On"}
+    )
 
 
-def test_slewCCW_2(function):
-    function.device = Device()
-    function.slewCCW()
+# ---------------------------------------------------------------------------
+# abortSlew
+# ---------------------------------------------------------------------------
 
-
-def test_slewCCW_3(function):
-    function.device = Device()
-    function.deviceName = "test"
-    function.slewCCW()
-
-
-def test_slewCCW_4(function):
-    function.device = Device()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"DOME_CW": 1}):
-        function.slewCCW()
-
-
-def test_slewCCW_5(function):
-    function.device = Device()
-    function.client = Client()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"DOME_CW": 1}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
-            function.slewCCW()
-
-
-def test_slewCCW_6(function):
-    function.device = Device()
-    function.client = Client()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"DOME_CW": 1}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            function.slewCCW()
-
-
-def test_abortSlew_1(function):
+def test_abortSlew(function):
+    """abortSlew puts ABORT=On into sendQ."""
+    function.sendQ = Queue()
+    function.deviceName = "test_dome"
     function.abortSlew()
-
-
-def test_abortSlew_2(function):
-    function.device = Device()
-    function.abortSlew()
-
-
-def test_abortSlew_3(function):
-    function.device = Device()
-    function.deviceName = "test"
-    function.abortSlew()
-
-
-def test_abortSlew_4(function):
-    function.device = Device()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"ABORT": 1}):
-        function.abortSlew()
-
-
-def test_abortSlew_5(function):
-    function.device = Device()
-    function.client = Client()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"ABORT": 1}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=False):
-            function.abortSlew()
-
-
-def test_abortSlew_6(function):
-    function.device = Device()
-    function.client = Client()
-    function.deviceName = "test"
-
-    with mock.patch.object(function.device, "getSwitch", return_value={"ABORT": 1}):
-        with mock.patch.object(function.client, "sendNewSwitch", return_value=True):
-            function.abortSlew()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_dome", "DOME_ABORT_MOTION", {"ABORT": "On"}
+    )

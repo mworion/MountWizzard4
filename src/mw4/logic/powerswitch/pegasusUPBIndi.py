@@ -89,106 +89,41 @@ class PegasusUPBIndi(IndiClass):
         if self.device is None:
             return
         if self.isINDIGO:
-            propertyName = "AUX_DEW_CONTROL"
-            autoDew = self.device.getSwitch(propertyName)
-
-            if autoDew["MANUAL"] == "On":
-                autoDew["MANUAL"] = "Off"
-                autoDew["AUTOMATIC"] = "On"
-            else:
-                autoDew["MANUAL"] = "On"
-                autoDew["AUTOMATIC"] = "Off"
+            value = "On" if self.data[f"AUX_DEW_CONTROL.MANUAL"] == "Off" else "Off"
+            self.sendQ.put((self.deviceName, "AUX_DEW_CONTROL", {"MANUAL": value}))
+            value = "On" if self.data[f"AUX_DEW_CONTROL.MANUAL"] == "On" else "Off"
+            self.sendQ.put((self.deviceName, "AUX_DEW_CONTROL", {"AUTOMATIC": value}))
         else:
-            propertyName = "AUTO_DEW"
-            autoDew = self.device.getSwitch(propertyName)
-
             if self.modelVersion == 1:
-                if "INDI_ENABLED" not in autoDew:
+                if "AUTO_DEW.INDI_ENABLED" not in self.data:
                     return
-                if autoDew["INDI_ENABLED"] == "On":
-                    autoDew["INDI_ENABLED"] = "Off"
-                    autoDew["INDI_DISABLED"] = "On"
-                else:
-                    autoDew["INDI_ENABLED"] = "Off"
-                    autoDew["INDI_DISABLED"] = "On"
+                value = "On" if self.data[f"AUTO_DEW.INDI_ENABLED"] == "Off" else "Off"
+                self.sendQ.put((self.deviceName, "AUTO_DEW", {"INDI_ENABLED": value}))
             else:
-                if "DEW_A" not in autoDew:
-                    return False
-                if autoDew["DEW_A"] == "On":
-                    autoDew["DEW_A"] = "Off"
-                    autoDew["DEW_B"] = "Off"
-                    autoDew["DEW_C"] = "Off"
-                else:
-                    autoDew["DEW_A"] = "On"
-                    autoDew["DEW_B"] = "On"
-                    autoDew["DEW_C"] = "On"
+                if "AUTO_DEW.DEW_A" not in self.data:
+                    return
+                value = "On" if self.data[f"AUTO_DEW.DEW_A"] == "Off" else "Off"
+                self.sendQ.put((self.deviceName, "AUTO_DEW", {"DEW_A": value}))
+                self.sendQ.put((self.deviceName, "AUTO_DEW", {"DEW_B": value}))
+                self.sendQ.put((self.deviceName, "AUTO_DEW", {"DEW_C": value}))
 
-        self.client.sendNewSwitch(
-            deviceName=self.deviceName,
-            propertyName=propertyName,
-            elements=autoDew,
-        )
-
-    def sendDew(self, port: str, value=float) -> None:
-        if self.device is None:
-            return
+    def sendDew(self, port: str, value: float) -> None:
         if self.isINDIGO:
             conv = {"A": "1", "B": "2", "C": "3"}
-            propertyName = "AUX_HEATER_OUTLET"
-            dew = self.device.getNumber(propertyName)
-            portName = f"OUTLET_{conv[port]}"
+            self.sendQ.put((self.deviceName, "AUX_HEATER_OUTLET", {f"OUTLET_{conv[port]}": value}))
         else:
-            propertyName = "DEW_PWM"
-            dew = self.device.getNumber(propertyName)
-            portName = f"DEW_{port}"
-
-        if portName not in dew:
-            return
-
-        dew[portName] = value
-        self.client.sendNewNumber(
-            deviceName=self.deviceName,
-            propertyName=propertyName,
-            elements=dew,
-        )
+            self.sendQ.put((self.deviceName, "DEW_PWM", {f"DEW_{port}": value}))
 
     def sendAdjustableOutput(self, value: float) -> None:
-        if self.device is None:
-            return
         if self.isINDIGO:
-            propertyName = "X_AUX_VARIABLE_POWER_OUTLET"
-            output = self.device.getNumber(propertyName)
-            portName = "OUTLET_1"
+            self.sendQ.put((self.deviceName, "X_AUX_VARIABLE_POWER_OUTLET", {"OUTLET_1": value}))
         else:
-            propertyName = "ADJUSTABLE_VOLTAGE"
-            output = self.device.getNumber(propertyName)
-            portName = "ADJUSTABLE_VOLTAGE_VALUE"
-
-        output[portName] = value
-        self.client.sendNewNumber(
-            deviceName=self.deviceName,
-            propertyName=propertyName,
-            elements=output,
-        )
+            self.sendQ.put((self.deviceName, "ADJUSTABLE_VOLTAGE", {"ADJUSTABLE_VOLTAGE_VALUE": value}))
 
     def reboot(self) -> None:
         if self.device is None:
             return
         if self.isINDIGO:
-            propertyName = "X_AUX_REBOOT"
-            output = self.device.getSwitch(propertyName)
-            portName = "REBOOT"
+            self.sendQ.put((self.deviceName, "X_AUX_REBOOT", {"REBOOT": "On"}))
         else:
-            propertyName = "REBOOT_DEVICE"
-            output = self.device.getSwitch(propertyName)
-            portName = "REBOOT"
-
-        if portName not in output:
-            return
-
-        output[portName] = "On"
-        self.client.sendNewSwitch(
-            deviceName=self.deviceName,
-            propertyName=propertyName,
-            elements=output,
-        )
+            self.sendQ.put((self.deviceName, "REBOOT_DEVICE", {"REBOOT": "On"}))

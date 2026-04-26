@@ -88,7 +88,11 @@ class CameraIndi(IndiClass):
         self.setExposureState(vectors)
         self.saveBLOB(vectors)
 
+    def sendDownloadMode(self) -> None:
+        self.sendQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
+
     def expose(self) -> None:
+        self.sendDownloadMode()
         self.sendQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
         self.sendQ.put((self.deviceName, "CCD_BINNING", {"HOR_BIN": self.parent.binning,
                                                            "VER_BIN": self.parent.binning}))

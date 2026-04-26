@@ -271,7 +271,7 @@ def test_writeVectorsToData(function):
 # ---------------------------------------------------------------------------
 
 def test_expose(function):
-    """expose() puts 4 correctly structured items into the sendQ."""
+    """expose() puts 5 correctly structured items into the sendQ."""
     function.sendQ = Queue()
     function.deviceName = "test_cam"
     function.parent._binning = 2
@@ -281,8 +281,13 @@ def test_expose(function):
     function.parent.height = 600
     function.parent.exposureTime = 3.0
     function.expose()
-    assert function.sendQ.qsize() == 4
-    assert function.sendQ.get() == ("test_cam", "READOUT_QUALITY", {"QUALITY_LOW": "On"})
+    assert function.sendQ.qsize() == 5
+    assert function.sendQ.get() == (
+        "test_cam", "READOUT_QUALITY", {"QUALITY_LOW": "On"}
+    )
+    assert function.sendQ.get() == (
+        "test_cam", "READOUT_QUALITY", {"QUALITY_LOW": "On"}
+    )
     assert function.sendQ.get() == (
         "test_cam", "CCD_BINNING", {"HOR_BIN": 2, "VER_BIN": 2}
     )

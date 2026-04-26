@@ -25,6 +25,8 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 @pytest.fixture(autouse=True, scope="function")
 def function():
     class Test1:
+        CYCLE_UPDATE_TASK = 1000
+
         @staticmethod
         def setEmptyData():
             return

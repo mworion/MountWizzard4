@@ -26,7 +26,12 @@ def function():
     yield func
 
 
+# ---------------------------------------------------------------------------
+# properties
+# ---------------------------------------------------------------------------
+
 def test_properties(function):
+    """host, deviceName, updateRate and loadConfig round-trip correctly."""
     function.framework = "indi"
     function.host = ("localhost", 7624)
     assert function.host == ("localhost", 7624)
@@ -34,76 +39,133 @@ def test_properties(function):
     function.deviceName = "test"
     assert function.deviceName == "test"
 
-
-def test_properties_2(function):
     function.updateRate = 1000
     function.loadConfig = True
-    function.framework = "indi"
     assert function.updateRate == 1000
     assert function.loadConfig
 
 
-def test_startCommunication_2(function):
+# ---------------------------------------------------------------------------
+# startCommunication / stopCommunication
+# ---------------------------------------------------------------------------
+
+def test_startCommunication(function):
+    """startCommunication() delegates to the active framework adapter."""
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
         function.startCommunication()
 
 
-def test_stopCommunication_2(function):
+def test_stopCommunication(function):
+    """stopCommunication() delegates to the active framework adapter."""
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "stopCommunication", return_value=True):
         function.stopCommunication()
 
 
-def test_togglePowerPort_2(function):
+# ---------------------------------------------------------------------------
+# togglePowerPort
+# ---------------------------------------------------------------------------
+
+def test_togglePowerPort(function):
+    """togglePowerPort() delegates to the active framework adapter."""
     function.framework = "indi"
-    function.togglePowerPort("1")
+    with mock.patch.object(function.run["indi"], "togglePowerPort") as mock_toggle:
+        function.togglePowerPort("1")
+        mock_toggle.assert_called_once_with(port="1")
 
 
-def test_togglePowerPortBoot_2(function):
+# ---------------------------------------------------------------------------
+# togglePowerPortBoot
+# ---------------------------------------------------------------------------
+
+def test_togglePowerPortBoot(function):
+    """togglePowerPortBoot() delegates to the active framework adapter."""
     function.framework = "indi"
-    function.togglePowerPortBoot("1")
+    with mock.patch.object(function.run["indi"], "togglePowerPortBoot") as mock_toggle:
+        function.togglePowerPortBoot("1")
+        mock_toggle.assert_called_once_with(port="1")
 
 
-def test_toggleHubUSB_2(function):
+# ---------------------------------------------------------------------------
+# toggleHubUSB
+# ---------------------------------------------------------------------------
+
+def test_toggleHubUSB(function):
+    """toggleHubUSB() delegates to the active framework adapter."""
     function.framework = "indi"
-    function.toggleHubUSB()
+    with mock.patch.object(function.run["indi"], "toggleHubUSB") as mock_toggle:
+        function.toggleHubUSB()
+        mock_toggle.assert_called_once()
 
 
-def test_togglePortUSB_2(function):
+# ---------------------------------------------------------------------------
+# togglePortUSB
+# ---------------------------------------------------------------------------
+
+def test_togglePortUSB(function):
+    """togglePortUSB() delegates to the active framework adapter."""
     function.framework = "indi"
-    function.togglePortUSB("1")
+    with mock.patch.object(function.run["indi"], "togglePortUSB") as mock_toggle:
+        function.togglePortUSB("1")
+        mock_toggle.assert_called_once_with(port="1")
 
 
-def test_toggleAutoDew_2(function):
+# ---------------------------------------------------------------------------
+# toggleAutoDew
+# ---------------------------------------------------------------------------
+
+def test_toggleAutoDew(function):
+    """toggleAutoDew() delegates to the active framework adapter."""
     function.framework = "indi"
-    function.toggleAutoDew()
+    with mock.patch.object(function.run["indi"], "toggleAutoDew") as mock_toggle:
+        function.toggleAutoDew()
+        mock_toggle.assert_called_once()
 
 
-def test_sendDew_2(function):
+# ---------------------------------------------------------------------------
+# sendDew
+# ---------------------------------------------------------------------------
+
+def test_sendDew(function):
+    """sendDew() delegates port and value to the active framework adapter."""
     function.framework = "indi"
-    function.sendDew("1", 100)
+    with mock.patch.object(function.run["indi"], "sendDew") as mock_send:
+        function.sendDew("1", 100)
+        mock_send.assert_called_once_with(port="1", value=100)
 
 
-def test_sendAdjustableOutput_2(function):
+# ---------------------------------------------------------------------------
+# sendAdjustableOutput
+# ---------------------------------------------------------------------------
+
+def test_sendAdjustableOutput_returns_false(function):
+    """sendAdjustableOutput() delegates even when adapter returns False."""
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "sendAdjustableOutput", return_value=False):
         function.sendAdjustableOutput(1)
 
 
-def test_sendAdjustableOutput_3(function):
+def test_sendAdjustableOutput_returns_true(function):
+    """sendAdjustableOutput() delegates even when adapter returns True."""
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "sendAdjustableOutput", return_value=True):
         function.sendAdjustableOutput(1)
 
 
-def test_reboot_2(function):
+# ---------------------------------------------------------------------------
+# reboot
+# ---------------------------------------------------------------------------
+
+def test_reboot_returns_false(function):
+    """reboot() delegates even when adapter returns False."""
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "reboot", return_value=False):
         function.reboot()
 
 
-def test_reboot_3(function):
+def test_reboot_returns_true(function):
+    """reboot() delegates even when adapter returns True."""
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "reboot", return_value=True):
         function.reboot()

@@ -22,124 +22,47 @@ class DomeIndi(IndiClass):
         super().__init__(parent=parent)
         self.signals = parent.signals
         self.lastAzimuth: float | None = None
-        self.app.update1s.connect(self.updateStatus)
 
-    def updateStatus(self) -> None:
-        if not self.client.connected:
+    def sendDomePosition(self, vectors: dict) -> None:
+        position = vectors.get("ABS_DOME_POSITION", {})
+        if not position:
             return
-
-        azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0)
+        member = position.get("members", {}).get("DOME_ABSOLUTE_POSITION")
+        if member is None:
+            return
+        azimuth = member["floatvalue"]
+        slewing = position["state"] == "Busy"
+        self.data["Slewing"] = slewing
         self.signals.azimuth.emit(azimuth)
 
-    def updateNumber(self, deviceName: str, propertyName: str) -> None:
-        for element, value in self.device.getNumber(propertyName).items():
-            if element == "DOME_ABSOLUTE_POSITION":
-                azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0)
-                self.signals.azimuth.emit(azimuth)
-                slewing = self.device.ABS_DOME_POSITION["state"] == "Busy"
-                self.data["Slewing"] = slewing
+    def addShutterStatus(self, vectors: dict) -> None:
+        shutterState = vectors.get("DOME_SHUTTER", {})
+        if not shutterState:
+            return
+        if shutterState["state"] == "Busy":
+            self.data["Shutter.Status"] = "Moving"
+        else:
+            self.data["Shutter.Status"] = "-"
 
-            if element == "SHUTTER_OPEN":
-                moving = self.device.DOME_SHUTTER["state"] == "Busy"
-                if moving:
-                    self.data["Shutter.Status"] = "Moving"
-                else:
-                    self.data["Shutter.Status"] = "-"
+    def writeVectorsToData(self, vectors: dict) -> None:
+        super().writeVectorsToData(vectors)
+        self.sendDomePosition(vectors)
+        self.addShutterStatus(vectors)
 
     def slewToAltAz(self, altitude: float, azimuth: float) -> None:
-        if self.device is None:
-            return
-        if self.deviceName is None or not self.deviceName:
-            return
-
-        position = self.device.getNumber("ABS_DOME_POSITION")
-        if "DOME_ABSOLUTE_POSITION" not in position:
-            return
-
-        position["DOME_ABSOLUTE_POSITION"] = azimuth
-        self.client.sendNewNumber(
-            deviceName=self.deviceName,
-            propertyName="ABS_DOME_POSITION",
-            elements=position,
-        )
+        self.sendQ.put((self.deviceName, "ABS_DOME_POSITION", {"DOME_ABSOLUTE_POSITION": azimuth}))
 
     def openShutter(self) -> None:
-        if self.device is None:
-            return
-        if self.deviceName is None or not self.deviceName:
-            return
-
-        position = self.device.getSwitch("DOME_SHUTTER")
-        if "SHUTTER_OPEN" not in position:
-            return
-
-        position["SHUTTER_OPEN"] = "On"
-        position["SHUTTER_CLOSE"] = "Off"
-        self.client.sendNewSwitch(
-            deviceName=self.deviceName, propertyName="DOME_SHUTTER", elements=position
-        )
+        self.sendQ.put((self.deviceName, "DOME_SHUTTER", {"SHUTTER_OPEN": "On"}))
 
     def closeShutter(self) -> None:
-        if self.device is None:
-            return
-        if self.deviceName is None or not self.deviceName:
-            return
-
-        position = self.device.getSwitch("DOME_SHUTTER")
-        if "SHUTTER_CLOSE" not in position:
-            return
-
-        position["SHUTTER_OPEN"] = "Off"
-        position["SHUTTER_CLOSE"] = "On"
-        self.client.sendNewSwitch(
-            deviceName=self.deviceName, propertyName="DOME_SHUTTER", elements=position
-        )
+        self.sendQ.put((self.deviceName, "DOME_SHUTTER", {"SHUTTER_CLOSE": "On"}))
 
     def slewCW(self) -> None:
-        if self.device is None:
-            return
-        if self.deviceName is None or not self.deviceName:
-            return
-
-        position = self.device.getSwitch("DOME_MOTION")
-        if "DOME_CW" not in position:
-            return
-
-        position["DOME_CW"] = "On"
-        position["DOME_CCW"] = "Off"
-        self.client.sendNewSwitch(
-            deviceName=self.deviceName, propertyName="DOME_MOTION", elements=position
-        )
+        self.sendQ.put((self.deviceName, "DOME_MOTION", {"DOME_CW": "On"}))
 
     def slewCCW(self) -> None:
-        if self.device is None:
-            return
-        if self.deviceName is None or not self.deviceName:
-            return
-
-        position = self.device.getSwitch("DOME_MOTION")
-        if "DOME_CW" not in position:
-            return
-
-        position["DOME_CW"] = "Off"
-        position["DOME_CCW"] = "On"
-        self.client.sendNewSwitch(
-            deviceName=self.deviceName, propertyName="DOME_MOTION", elements=position
-        )
+        self.sendQ.put((self.deviceName, "DOME_MOTION", {"DOME_CCW": "On"}))
 
     def abortSlew(self) -> None:
-        if self.device is None:
-            return
-        if self.deviceName is None or not self.deviceName:
-            return
-
-        position = self.device.getSwitch("DOME_ABORT_MOTION")
-        if "ABORT" not in position:
-            return
-
-        position["ABORT"] = "On"
-        self.client.sendNewSwitch(
-            deviceName=self.deviceName,
-            propertyName="DOME_ABORT_MOTION",
-            elements=position,
-        )
+        self.sendQ.put((self.deviceName, "DOME_ABORT_MOTION", {"ABORT": "On"}))

@@ -381,240 +381,218 @@ def test_togglePortUSB_indigo_on_to_off(function):
 # ---------------------------------------------------------------------------
 
 def test_toggleAutoDew_device_none(function):
-    """device=None → early return."""
+    """device=None → early return, nothing put into sendQ."""
+    function.sendQ = Queue()
     function.device = None
-    function.toggleAutoDew()  # must not raise
+    function.toggleAutoDew()
+    assert function.sendQ.qsize() == 0
 
 
 def test_toggleAutoDew_indigo_manual_on(function):
-    """isINDIGO=True, MANUAL='On' → swaps to AUTOMATIC."""
+    """isINDIGO=True, MANUAL='On' → sends MANUAL=Off and AUTOMATIC=On."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
     function.isINDIGO = True
-    dev = mock.MagicMock()
-    dev.getSwitch.return_value = {"MANUAL": "On", "AUTOMATIC": "Off"}
-    function.device = dev
-    function.client = mock.MagicMock()
+    function.device = mock.MagicMock()
+    function.data["AUX_DEW_CONTROL.MANUAL"] = "On"
     function.toggleAutoDew()
-    function.client.sendNewSwitch.assert_called_once()
+    assert function.sendQ.qsize() == 2
+    assert function.sendQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"MANUAL": "Off"})
+    assert function.sendQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"AUTOMATIC": "On"})
 
 
 def test_toggleAutoDew_indigo_manual_off(function):
-    """isINDIGO=True, MANUAL='Off' → swaps to MANUAL."""
+    """isINDIGO=True, MANUAL='Off' → sends MANUAL=On and AUTOMATIC=Off."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
     function.isINDIGO = True
-    dev = mock.MagicMock()
-    dev.getSwitch.return_value = {"MANUAL": "Off", "AUTOMATIC": "On"}
-    function.device = dev
-    function.client = mock.MagicMock()
+    function.device = mock.MagicMock()
+    function.data["AUX_DEW_CONTROL.MANUAL"] = "Off"
     function.toggleAutoDew()
-    function.client.sendNewSwitch.assert_called_once()
+    assert function.sendQ.qsize() == 2
+    assert function.sendQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"MANUAL": "On"})
+    assert function.sendQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"AUTOMATIC": "Off"})
 
 
 def test_toggleAutoDew_indi_v1_no_indi_enabled(function):
-    """modelVersion=1, 'INDI_ENABLED' not in switch → early return."""
+    """modelVersion=1, 'AUTO_DEW.INDI_ENABLED' not in data → early return."""
+    function.sendQ = Queue()
     function.isINDIGO = False
     function.modelVersion = 1
-    dev = mock.MagicMock()
-    dev.getSwitch.return_value = {"DEW_A": "On"}
-    function.device = dev
-    function.client = mock.MagicMock()
+    function.device = mock.MagicMock()
+    function.data.pop("AUTO_DEW.INDI_ENABLED", None)
     function.toggleAutoDew()
-    function.client.sendNewSwitch.assert_not_called()
+    assert function.sendQ.qsize() == 0
 
 
 def test_toggleAutoDew_indi_v1_enabled_on(function):
-    """modelVersion=1, INDI_ENABLED='On' → sets Off."""
+    """modelVersion=1, INDI_ENABLED='On' → queues INDI_ENABLED=Off."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
     function.isINDIGO = False
     function.modelVersion = 1
-    dev = mock.MagicMock()
-    dev.getSwitch.return_value = {"INDI_ENABLED": "On", "INDI_DISABLED": "Off"}
-    function.device = dev
-    function.client = mock.MagicMock()
+    function.device = mock.MagicMock()
+    function.data["AUTO_DEW.INDI_ENABLED"] = "On"
     function.toggleAutoDew()
-    function.client.sendNewSwitch.assert_called_once()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"INDI_ENABLED": "Off"})
 
 
 def test_toggleAutoDew_indi_v1_enabled_off(function):
-    """modelVersion=1, INDI_ENABLED='Off' → sets Off (code path)."""
+    """modelVersion=1, INDI_ENABLED='Off' → queues INDI_ENABLED=On."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
     function.isINDIGO = False
     function.modelVersion = 1
-    dev = mock.MagicMock()
-    dev.getSwitch.return_value = {"INDI_ENABLED": "Off", "INDI_DISABLED": "On"}
-    function.device = dev
-    function.client = mock.MagicMock()
+    function.device = mock.MagicMock()
+    function.data["AUTO_DEW.INDI_ENABLED"] = "Off"
     function.toggleAutoDew()
-    function.client.sendNewSwitch.assert_called_once()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"INDI_ENABLED": "On"})
 
 
 def test_toggleAutoDew_indi_v2_no_dew_a(function):
-    """modelVersion=2, 'DEW_A' not in switch → return False."""
+    """modelVersion=2, 'AUTO_DEW.DEW_A' not in data → early return."""
+    function.sendQ = Queue()
     function.isINDIGO = False
     function.modelVersion = 2
-    dev = mock.MagicMock()
-    dev.getSwitch.return_value = {"INDI_ENABLED": "On"}
-    function.device = dev
-    function.client = mock.MagicMock()
+    function.device = mock.MagicMock()
+    function.data.pop("AUTO_DEW.DEW_A", None)
     function.toggleAutoDew()
-    function.client.sendNewSwitch.assert_not_called()
+    assert function.sendQ.qsize() == 0
 
 
 def test_toggleAutoDew_indi_v2_dew_a_on(function):
-    """modelVersion=2, DEW_A='On' → sets all Off."""
+    """modelVersion=2, DEW_A='On' → queues DEW_A/B/C=Off."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
     function.isINDIGO = False
     function.modelVersion = 2
-    dev = mock.MagicMock()
-    dev.getSwitch.return_value = {"DEW_A": "On", "DEW_B": "On", "DEW_C": "On"}
-    function.device = dev
-    function.client = mock.MagicMock()
+    function.device = mock.MagicMock()
+    function.data["AUTO_DEW.DEW_A"] = "On"
     function.toggleAutoDew()
-    function.client.sendNewSwitch.assert_called_once()
+    assert function.sendQ.qsize() == 3
+    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"DEW_A": "Off"})
+    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"DEW_B": "Off"})
+    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"DEW_C": "Off"})
 
 
 def test_toggleAutoDew_indi_v2_dew_a_off(function):
-    """modelVersion=2, DEW_A='Off' → sets all On."""
+    """modelVersion=2, DEW_A='Off' → queues DEW_A/B/C=On."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
     function.isINDIGO = False
     function.modelVersion = 2
-    dev = mock.MagicMock()
-    dev.getSwitch.return_value = {"DEW_A": "Off", "DEW_B": "Off", "DEW_C": "Off"}
-    function.device = dev
-    function.client = mock.MagicMock()
+    function.device = mock.MagicMock()
+    function.data["AUTO_DEW.DEW_A"] = "Off"
     function.toggleAutoDew()
-    function.client.sendNewSwitch.assert_called_once()
+    assert function.sendQ.qsize() == 3
+    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"DEW_A": "On"})
+    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"DEW_B": "On"})
+    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"DEW_C": "On"})
 
 
 # ---------------------------------------------------------------------------
-# sendDew  (legacy)
+# sendDew  (sendQ-based)
 # ---------------------------------------------------------------------------
 
-def test_sendDew_device_none(function):
-    """device=None → early return."""
-    function.device = None
-    function.sendDew(port="A", value=50)  # must not raise
-
-
-def test_sendDew_indi_portname_not_in_dew(function):
-    """isINDIGO=False, DEW_A not in returned dict → early return."""
+def test_sendDew_indi(function):
+    """isINDIGO=False → queues DEW_PWM with correct port key."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
     function.isINDIGO = False
-    dev = mock.MagicMock()
-    dev.getNumber.return_value = {"DEW_B": 0}
-    function.device = dev
-    function.client = mock.MagicMock()
-    function.sendDew(port="A", value=50)
-    function.client.sendNewNumber.assert_not_called()
-
-
-def test_sendDew_indi_portname_in_dew(function):
-    """isINDIGO=False, DEW_A in dict → sends new number."""
-    function.isINDIGO = False
-    dev = mock.MagicMock()
-    dev.getNumber.return_value = {"DEW_A": 0}
-    function.device = dev
-    function.client = mock.MagicMock()
     function.sendDew(port="A", value=75)
-    function.client.sendNewNumber.assert_called_once()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == ("test_upb", "DEW_PWM", {"DEW_A": 75})
 
 
-def test_sendDew_indigo_portname_not_in_dew(function):
-    """isINDIGO=True, OUTLET_1 not in returned dict → early return."""
+def test_sendDew_indi_port_b(function):
+    """isINDIGO=False, port B → queues DEW_B."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
+    function.isINDIGO = False
+    function.sendDew(port="B", value=50)
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == ("test_upb", "DEW_PWM", {"DEW_B": 50})
+
+
+def test_sendDew_indigo(function):
+    """isINDIGO=True, port A → queues AUX_HEATER_OUTLET with OUTLET_1."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
     function.isINDIGO = True
-    dev = mock.MagicMock()
-    dev.getNumber.return_value = {"OUTLET_2": 0}
-    function.device = dev
-    function.client = mock.MagicMock()
     function.sendDew(port="A", value=50)
-    function.client.sendNewNumber.assert_not_called()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == ("test_upb", "AUX_HEATER_OUTLET", {"OUTLET_1": 50})
 
 
-def test_sendDew_indigo_portname_in_dew(function):
-    """isINDIGO=True, OUTLET_1 in dict → sends new number."""
+def test_sendDew_indigo_port_b(function):
+    """isINDIGO=True, port B → queues OUTLET_2."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
     function.isINDIGO = True
-    dev = mock.MagicMock()
-    dev.getNumber.return_value = {"OUTLET_1": 0}
-    function.device = dev
-    function.client = mock.MagicMock()
-    function.sendDew(port="A", value=50)
-    function.client.sendNewNumber.assert_called_once()
+    function.sendDew(port="B", value=30)
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == ("test_upb", "AUX_HEATER_OUTLET", {"OUTLET_2": 30})
 
 
 # ---------------------------------------------------------------------------
-# sendAdjustableOutput  (legacy)
+# sendAdjustableOutput  (sendQ-based)
 # ---------------------------------------------------------------------------
-
-def test_sendAdjustableOutput_device_none(function):
-    """device=None → early return."""
-    function.device = None
-    function.sendAdjustableOutput(12.0)  # must not raise
-
 
 def test_sendAdjustableOutput_indi(function):
-    """isINDIGO=False → uses ADJUSTABLE_VOLTAGE_VALUE."""
+    """isINDIGO=False → queues ADJUSTABLE_VOLTAGE_VALUE."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
     function.isINDIGO = False
-    dev = mock.MagicMock()
-    dev.getNumber.return_value = {"ADJUSTABLE_VOLTAGE_VALUE": 0}
-    function.device = dev
-    function.client = mock.MagicMock()
     function.sendAdjustableOutput(12.0)
-    function.client.sendNewNumber.assert_called_once()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_upb", "ADJUSTABLE_VOLTAGE", {"ADJUSTABLE_VOLTAGE_VALUE": 12.0}
+    )
 
 
 def test_sendAdjustableOutput_indigo(function):
-    """isINDIGO=True → uses OUTLET_1."""
+    """isINDIGO=True → queues X_AUX_VARIABLE_POWER_OUTLET OUTLET_1."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
     function.isINDIGO = True
-    dev = mock.MagicMock()
-    dev.getNumber.return_value = {"OUTLET_1": 0}
-    function.device = dev
-    function.client = mock.MagicMock()
     function.sendAdjustableOutput(12.0)
-    function.client.sendNewNumber.assert_called_once()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == (
+        "test_upb", "X_AUX_VARIABLE_POWER_OUTLET", {"OUTLET_1": 12.0}
+    )
 
 
 # ---------------------------------------------------------------------------
-# reboot  (legacy)
+# reboot  (sendQ-based)
 # ---------------------------------------------------------------------------
 
 def test_reboot_device_none(function):
-    """device=None → early return."""
+    """device=None → early return, nothing in sendQ."""
+    function.sendQ = Queue()
     function.device = None
-    function.reboot()  # must not raise
+    function.reboot()
+    assert function.sendQ.qsize() == 0
 
 
-def test_reboot_indi_portname_missing(function):
-    """isINDIGO=False, 'REBOOT' not in switch dict → early return."""
+def test_reboot_indi(function):
+    """isINDIGO=False → queues REBOOT_DEVICE REBOOT=On."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
     function.isINDIGO = False
-    dev = mock.MagicMock()
-    dev.getSwitch.return_value = {"OTHER": "Off"}
-    function.device = dev
-    function.client = mock.MagicMock()
+    function.device = mock.MagicMock()
     function.reboot()
-    function.client.sendNewSwitch.assert_not_called()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == ("test_upb", "REBOOT_DEVICE", {"REBOOT": "On"})
 
 
-def test_reboot_indi_portname_present(function):
-    """isINDIGO=False, 'REBOOT' in switch dict → sends switch."""
-    function.isINDIGO = False
-    dev = mock.MagicMock()
-    dev.getSwitch.return_value = {"REBOOT": "Off"}
-    function.device = dev
-    function.client = mock.MagicMock()
-    function.reboot()
-    function.client.sendNewSwitch.assert_called_once()
-
-
-def test_reboot_indigo_portname_missing(function):
-    """isINDIGO=True, 'REBOOT' not in switch dict → early return."""
+def test_reboot_indigo(function):
+    """isINDIGO=True → queues X_AUX_REBOOT REBOOT=On."""
+    function.sendQ = Queue()
+    function.deviceName = "test_upb"
     function.isINDIGO = True
-    dev = mock.MagicMock()
-    dev.getSwitch.return_value = {"OTHER": "Off"}
-    function.device = dev
-    function.client = mock.MagicMock()
+    function.device = mock.MagicMock()
     function.reboot()
-    function.client.sendNewSwitch.assert_not_called()
-
-
-def test_reboot_indigo_portname_present(function):
-    """isINDIGO=True, 'REBOOT' in switch dict → sends switch."""
-    function.isINDIGO = True
-    dev = mock.MagicMock()
-    dev.getSwitch.return_value = {"REBOOT": "Off"}
-    function.device = dev
-    function.client = mock.MagicMock()
-    function.reboot()
-    function.client.sendNewSwitch.assert_called_once()
+    assert function.sendQ.qsize() == 1
+    assert function.sendQ.get() == ("test_upb", "X_AUX_REBOOT", {"REBOOT": "On"})

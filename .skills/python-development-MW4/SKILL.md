@@ -20,4 +20,3 @@ When developping code for MountWizzard4 project, reflect following requirments:
 14. if worker is needed, the variable holding the worker should be named worker{name of the function} and the worker method should be named runner{name of the function} the full names comply to camelCase
 15. type annotations should be used for all functions and methods, including return types 
 16. do not take src/maw/gui/widgets into account as there were automatically generated
-17. omit the scr/indibase part as this library is bad

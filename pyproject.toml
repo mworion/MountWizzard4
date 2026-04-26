@@ -75,7 +75,7 @@ dependencies = [
     "websocket-client==1.9.0",
     "hidapi==0.15.0",
     "range-key-dict==1.1.0",
-    "packaging==26.0",
+    "packaging==26.2",
     "lz4==4.4.5",
     "xisf==0.9.6",
     "pyside6==6.11.0",
@@ -104,7 +104,7 @@ dev = [
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
     "invoke==3.0.3",
-    "ruff==0.15.10",
+    "ruff==0.15.12",
     "coverage==7.13.5",
     "scipy-stubs==1.17.1.4",
 ]
@@ -151,5 +151,3 @@ max-complexity = 10
 "src/mw4/gui/extWindows/uploadPopupW.py" = ["SIM115"]
 "src/mw4/logic/powerswitch/pegasusUPBIndi.py" = ["C901"]
 "src/mw4/logic/measure/measureCSV.py" = ["SIM115"]
-"src/mw4/indibase/indiXML.py" = ["C901", "E501"]
-"src/mw4/indibase/indiClient.py" = ["C901", "E501"]

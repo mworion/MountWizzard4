@@ -195,7 +195,6 @@ def test_mw(c):
     runMW(c, "pytest tests/unit_tests/gui/mainWmixin2")
     runMW(c, "pytest tests/unit_tests/gui/mainWmixin3")
     runMW(c, "pytest tests/unit_tests/gui/utilities")
-    runMW(c, "pytest tests/unit_tests/indibase")
     runMW(c, "pytest tests/unit_tests/logic/automation")
     runMW(c, "pytest tests/unit_tests/logic/camera")
     runMW(c, "pytest tests/unit_tests/logic/cover")

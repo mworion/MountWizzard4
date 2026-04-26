@@ -28,7 +28,10 @@ from mw4.base.bootstrap import (
     setupWorkDirs,
     writeSystemInfo,
 )
+from mw4.base.loggerMW import setupLogging
 from pathlib import Path
+
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope="function")
@@ -73,9 +76,10 @@ def test_write_system_info():
 def test_write_system_info_socket_error():
     mwGlob = {"workDir": Path()}
     with mock.patch.object(
-        socket, "gethostbyname_ex", side_effect=Exception()
+        socket, "gethostname", side_effect=Exception("hostname lookup failed")
     ):
-        writeSystemInfo(mwGlob=mwGlob)
+        with pytest.raises(Exception):
+            writeSystemInfo(mwGlob=mwGlob)
 
 
 def test_extract_data_files():

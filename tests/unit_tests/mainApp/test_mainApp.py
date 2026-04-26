@@ -14,6 +14,7 @@
 #
 ###########################################################
 import pytest
+import runpy
 import shutil
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
@@ -87,3 +88,21 @@ def test_quit(app):
     with mock.patch.object(app, "aboutToQuit"):
         with mock.patch.object(app.application, "quit"):
             app.quit()
+
+
+def test_getActiveDrivers(app):
+    """getActiveDrivers() returns the drivers dict from the SettDevice addon."""
+    result = app.getActiveDrivers()
+    assert result is app.mainW.mainWindowAddons.addons["SettDevice"].drivers
+
+
+# ---------------------------------------------------------------------------
+# __main__.py — entry-point guard
+# ---------------------------------------------------------------------------
+
+def test_main_module_entry_point():
+    """Running mw4 as __main__ invokes the cli app() entry point."""
+    with mock.patch("mw4.cli.app") as mock_app:
+        runpy.run_module("mw4", run_name="__main__")
+    mock_app.assert_called_once()
+

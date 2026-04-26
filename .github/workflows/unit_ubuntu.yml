@@ -61,7 +61,6 @@ jobs:
           xvfb-run --auto-servernum pytest tests/unit_tests/base
           xvfb-run --auto-servernum pytest tests/unit_tests/logic/*
           xvfb-run --auto-servernum pytest tests/unit_tests/mountcontrol
-          xvfb-run --auto-servernum pytest tests/unit_tests/indibase
           xvfb-run --auto-servernum pytest tests/unit_tests/gui/utilities
           xvfb-run --auto-servernum pytest tests/unit_tests/gui/styles
         

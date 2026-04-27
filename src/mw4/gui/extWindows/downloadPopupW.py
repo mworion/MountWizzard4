@@ -87,7 +87,7 @@ class DownloadPopup(MWidget):
         downloadDest.unlink()
 
     def downloadFileWorker(self, url: Path, dest: Path, unzip: bool = False) -> bool:
-        downloadDest = dest.parent / "temp.zip" if unzip else dest
+        downloadDest = dest.parent / f"{dest.stem}.zip" if unzip else dest
 
         try:
             self.signalStatus.emit(f"Downloading {dest.stem}")

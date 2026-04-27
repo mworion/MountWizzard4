@@ -129,7 +129,7 @@ class AstroObjects:
             return
 
         self.setAge(0)
-        self.msg.emit(1, self.objectText, "Download", f"{entry}")
+        self.msg.emit(1, self.objectText.capitalize(), "Download", f"{entry}")
         self.log.info(f"Using data for {self.objectText}  {url}, {unzip}, {fileName}")
         self.runDownloadPopup(url, unzip)
 
@@ -160,8 +160,7 @@ class AstroObjects:
 
     def progGUI(self, text: str) -> None:
         source = self.uiSourceList.currentText()
-        objectType = self.objectText.capitalize()
-        self.msg.emit(1, objectType, "Mount upload", f"[{text}] from [{source}]")
+        self.msg.emit(1, self.objectText.capitalize(), "Mount upload", f"[{text}] from [{source}]")
 
     def progSelected(self) -> None:
         self.progGUI("Selected")

@@ -133,7 +133,7 @@ class IndiClass:
         self.commandRunning = True
         self.workerIndiQueueClient = Worker(runqueclient, self.sendQ, self.receiveQ,
                                       indihost=self.hostaddress, indiport=self.port,
-                                      blobfolder=self.app.mwGlob["tempDir"])
+                                      blobfolder=str(self.app.mwGlob["tempDir"]))
         self.workerIndiQueueClient.signals.finished.connect(self.cleanupStop)
         self.threadPool.start(self.workerIndiQueueClient)
         self.workerProcessRxQueue = Worker(self.processRxQueue)
@@ -164,7 +164,7 @@ class IndiClass:
             item = rxQ.get()
             if item is None:
                 continue
-            n = n + 1
+            n = n - 1
             if item.eventtype == "Define" and item.devicename:
                 driver = item.snapshot[item.devicename].get("DRIVER_INFO")
                 if driver:

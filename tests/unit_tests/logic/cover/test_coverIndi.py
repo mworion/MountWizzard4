@@ -68,12 +68,12 @@ def test_writeVectorsToData_cover_missing_members(function):
 # ---------------------------------------------------------------------------
 
 def test_closeCover(function):
-    """closeCover() puts one CAP_PARK/PARK command into sendQ."""
-    function.sendQ = Queue()
+    """closeCover() puts one CAP_PARK/PARK command into txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_cover"
     function.closeCover()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_cover", "CAP_PARK", {"PARK": "On"})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_cover", "CAP_PARK", {"PARK": "On"})
 
 
 # ---------------------------------------------------------------------------
@@ -81,12 +81,12 @@ def test_closeCover(function):
 # ---------------------------------------------------------------------------
 
 def test_openCover(function):
-    """openCover() puts one CAP_PARK/UNPARK command into sendQ."""
-    function.sendQ = Queue()
+    """openCover() puts one CAP_PARK/UNPARK command into txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_cover"
     function.openCover()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_cover", "CAP_PARK", {"UNPARK": "On"})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_cover", "CAP_PARK", {"UNPARK": "On"})
 
 
 # ---------------------------------------------------------------------------
@@ -103,12 +103,12 @@ def test_haltCover(function):
 # ---------------------------------------------------------------------------
 
 def test_lightOn(function):
-    """lightOn() puts FLAT_LIGHT_ON='On' into sendQ."""
-    function.sendQ = Queue()
+    """lightOn() puts FLAT_LIGHT_ON='On' into txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_cover"
     function.lightOn()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_cover", "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "On"}
     )
 
@@ -118,12 +118,12 @@ def test_lightOn(function):
 # ---------------------------------------------------------------------------
 
 def test_lightOff(function):
-    """lightOff() puts FLAT_LIGHT_ON='Off' into sendQ."""
-    function.sendQ = Queue()
+    """lightOff() puts FLAT_LIGHT_ON='Off' into txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_cover"
     function.lightOff()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_cover", "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "Off"}
     )
 
@@ -133,11 +133,11 @@ def test_lightOff(function):
 # ---------------------------------------------------------------------------
 
 def test_lightIntensity(function):
-    """lightIntensity(value) puts the intensity value into sendQ."""
-    function.sendQ = Queue()
+    """lightIntensity(value) puts the intensity value into txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_cover"
     function.lightIntensity(128.0)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_cover", "FLAT_LIGHT_INTENSITY", {"FLAT_LIGHT_INTENSITY_VALUE": 128.0}
     )

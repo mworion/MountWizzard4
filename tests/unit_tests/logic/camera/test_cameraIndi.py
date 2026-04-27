@@ -38,17 +38,17 @@ def function():
 # ---------------------------------------------------------------------------
 
 def test_setUpdateConfig(function):
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.setUpdateConfig("test_device")
-    assert function.sendQ.qsize() == 4
-    assert function.sendQ.get() == ("test_device", "FITS_HEADER", {"FITS_OBJECT": "Skymodel"})
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 4
+    assert function.txQ.get() == ("test_device", "FITS_HEADER", {"FITS_OBJECT": "Skymodel"})
+    assert function.txQ.get() == (
         "test_device", "FITS_HEADER", {"FITS_OBSERVER": "MountWizzard4"}
     )
-    assert function.sendQ.get() == (
+    assert function.txQ.get() == (
         "test_device", "ACTIVE_DEVICES", {"ACTIVE_TELESCOPE": "LX200 10micron"}
     )
-    assert function.sendQ.get() == (
+    assert function.txQ.get() == (
         "test_device", "TELESCOPE_TYPE", {"TELESCOPE_PRIMARY": "On"}
     )
 
@@ -271,8 +271,8 @@ def test_writeVectorsToData(function):
 # ---------------------------------------------------------------------------
 
 def test_expose(function):
-    """expose() puts 5 correctly structured items into the sendQ."""
-    function.sendQ = Queue()
+    """expose() puts 5 correctly structured items into the txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_cam"
     function.parent._binning = 2
     function.parent.posX = 10
@@ -281,20 +281,20 @@ def test_expose(function):
     function.parent.height = 600
     function.parent.exposureTime = 3.0
     function.expose()
-    assert function.sendQ.qsize() == 5
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 5
+    assert function.txQ.get() == (
         "test_cam", "READOUT_QUALITY", {"QUALITY_LOW": "On"}
     )
-    assert function.sendQ.get() == (
+    assert function.txQ.get() == (
         "test_cam", "READOUT_QUALITY", {"QUALITY_LOW": "On"}
     )
-    assert function.sendQ.get() == (
+    assert function.txQ.get() == (
         "test_cam", "CCD_BINNING", {"HOR_BIN": 2, "VER_BIN": 2}
     )
-    assert function.sendQ.get() == (
+    assert function.txQ.get() == (
         "test_cam", "CCD_FRAME", {"X": 10, "Y": 20, "WIDTH": 800, "HEIGHT": 600}
     )
-    assert function.sendQ.get() == (
+    assert function.txQ.get() == (
         "test_cam", "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": 3.0}
     )
 
@@ -304,12 +304,12 @@ def test_expose(function):
 # ---------------------------------------------------------------------------
 
 def test_abort(function):
-    """abort() puts one abort command into the sendQ."""
-    function.sendQ = Queue()
+    """abort() puts one abort command into the txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_cam"
     function.abort()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_cam", "CCD_ABORT_EXPOSURE", {"ABORT": "On"}
     )
 
@@ -320,20 +320,20 @@ def test_abort(function):
 
 def test_sendCoolerSwitch_off(function):
     """sendCoolerSwitch(False) → queues COOLER_ON='Off'."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_cam"
     function.sendCoolerSwitch(coolerOn=False)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_cam", "CCD_COOLER", {"COOLER_ON": "Off"})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_cam", "CCD_COOLER", {"COOLER_ON": "Off"})
 
 
 def test_sendCoolerSwitch_on(function):
     """sendCoolerSwitch(True) → queues COOLER_ON='On'."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_cam"
     function.sendCoolerSwitch(coolerOn=True)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_cam", "CCD_COOLER", {"COOLER_ON": "On"})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_cam", "CCD_COOLER", {"COOLER_ON": "On"})
 
 
 # ---------------------------------------------------------------------------
@@ -342,11 +342,11 @@ def test_sendCoolerSwitch_on(function):
 
 def test_sendCoolerTemp(function):
     """sendCoolerTemp() queues the target CCD temperature."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_cam"
     function.sendCoolerTemp(temperature=-10.5)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_cam", "CCD_TEMPERATURE", {"CCD_TEMPERATURE_VALUE": -10.5}
     )
 
@@ -357,11 +357,11 @@ def test_sendCoolerTemp(function):
 
 def test_sendOffset(function):
     """sendOffset() queues the offset value."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_cam"
     function.sendOffset(offset=50)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_cam", "CCD_OFFSET", {"OFFSET": 50})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_cam", "CCD_OFFSET", {"OFFSET": 50})
 
 
 # ---------------------------------------------------------------------------
@@ -370,8 +370,8 @@ def test_sendOffset(function):
 
 def test_sendGain(function):
     """sendGain() queues the gain value."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_cam"
     function.sendGain(gain=200)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_cam", "CCD_GAIN", {"GAIN": 200})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_cam", "CCD_GAIN", {"GAIN": 200})

@@ -32,20 +32,20 @@ class CoverIndi(IndiClass):
         self.data["CAP_PARK.PARK"] = cover["members"].get("CLOSE", False)
 
     def closeCover(self) -> None:
-        self.sendQ.put((self.deviceName, "CAP_PARK", {"PARK": "On"}))
+        self.txQ.put((self.deviceName, "CAP_PARK", {"PARK": "On"}))
 
     def openCover(self) -> None:
-        self.sendQ.put((self.deviceName, "CAP_PARK", {"UNPARK": "On"}))
+        self.txQ.put((self.deviceName, "CAP_PARK", {"UNPARK": "On"}))
 
     @staticmethod
     def haltCover() -> None:
         pass
 
     def lightOn(self) -> None:
-        self.sendQ.put((self.deviceName, "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "On"}))
+        self.txQ.put((self.deviceName, "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "On"}))
 
     def lightOff(self) -> None:
-        self.sendQ.put((self.deviceName, "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "Off"}))
+        self.txQ.put((self.deviceName, "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "Off"}))
 
     def lightIntensity(self, value: float) -> None:
-        self.sendQ.put((self.deviceName, "FLAT_LIGHT_INTENSITY", {"FLAT_LIGHT_INTENSITY_VALUE": value}))
+        self.txQ.put((self.deviceName, "FLAT_LIGHT_INTENSITY", {"FLAT_LIGHT_INTENSITY_VALUE": value}))

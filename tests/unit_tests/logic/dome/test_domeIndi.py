@@ -162,12 +162,12 @@ def test_writeVectorsToData(function):
 # ---------------------------------------------------------------------------
 
 def test_slewToAltAz(function):
-    """slewToAltAz puts DOME_ABSOLUTE_POSITION with azimuth into sendQ."""
-    function.sendQ = Queue()
+    """slewToAltAz puts DOME_ABSOLUTE_POSITION with azimuth into txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_dome"
     function.slewToAltAz(altitude=30, azimuth=180)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_dome", "ABS_DOME_POSITION", {"DOME_ABSOLUTE_POSITION": 180}
     )
 
@@ -177,12 +177,12 @@ def test_slewToAltAz(function):
 # ---------------------------------------------------------------------------
 
 def test_openShutter(function):
-    """openShutter puts SHUTTER_OPEN=On into sendQ."""
-    function.sendQ = Queue()
+    """openShutter puts SHUTTER_OPEN=On into txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_dome"
     function.openShutter()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_dome", "DOME_SHUTTER", {"SHUTTER_OPEN": "On"}
     )
 
@@ -192,12 +192,12 @@ def test_openShutter(function):
 # ---------------------------------------------------------------------------
 
 def test_closeShutter(function):
-    """closeShutter puts SHUTTER_CLOSE=On into sendQ."""
-    function.sendQ = Queue()
+    """closeShutter puts SHUTTER_CLOSE=On into txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_dome"
     function.closeShutter()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_dome", "DOME_SHUTTER", {"SHUTTER_CLOSE": "On"}
     )
 
@@ -207,12 +207,12 @@ def test_closeShutter(function):
 # ---------------------------------------------------------------------------
 
 def test_slewCW(function):
-    """slewCW puts DOME_CW=On into sendQ."""
-    function.sendQ = Queue()
+    """slewCW puts DOME_CW=On into txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_dome"
     function.slewCW()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_dome", "DOME_MOTION", {"DOME_CW": "On"}
     )
 
@@ -222,12 +222,12 @@ def test_slewCW(function):
 # ---------------------------------------------------------------------------
 
 def test_slewCCW(function):
-    """slewCCW puts DOME_CCW=On into sendQ."""
-    function.sendQ = Queue()
+    """slewCCW puts DOME_CCW=On into txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_dome"
     function.slewCCW()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_dome", "DOME_MOTION", {"DOME_CCW": "On"}
     )
 
@@ -237,11 +237,11 @@ def test_slewCCW(function):
 # ---------------------------------------------------------------------------
 
 def test_abortSlew(function):
-    """abortSlew puts ABORT=On into sendQ."""
-    function.sendQ = Queue()
+    """abortSlew puts ABORT=On into txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_dome"
     function.abortSlew()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_dome", "DOME_ABORT_MOTION", {"ABORT": "On"}
     )

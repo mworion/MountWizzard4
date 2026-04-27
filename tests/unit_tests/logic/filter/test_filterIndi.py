@@ -36,21 +36,21 @@ def function():
 
 def test_sendFilterNumber_default(function):
     """sendFilterNumber() with default value queues filter slot 1."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_filter"
     function.sendFilterNumber()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_filter", "FILTER_SLOT", {"FILTER_SLOT_VALUE": 1}
     )
 
 
 def test_sendFilterNumber_explicit(function):
     """sendFilterNumber(n) queues the given filter number."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_filter"
     function.sendFilterNumber(filterNumber=5)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_filter", "FILTER_SLOT", {"FILTER_SLOT_VALUE": 5}
     )

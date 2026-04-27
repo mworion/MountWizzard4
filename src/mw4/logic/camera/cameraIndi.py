@@ -27,10 +27,10 @@ class CameraIndi(IndiClass):
         self.signals = parent.signals
 
     def setUpdateConfig(self, deviceName: str) -> None:
-        self.sendQ.put((deviceName, "FITS_HEADER", {"FITS_OBJECT": "Skymodel"}))
-        self.sendQ.put((deviceName, "FITS_HEADER", {"FITS_OBSERVER": "MountWizzard4"}))
-        self.sendQ.put((deviceName, "ACTIVE_DEVICES", {"ACTIVE_TELESCOPE": "LX200 10micron"}))
-        self.sendQ.put((deviceName, "TELESCOPE_TYPE", {"TELESCOPE_PRIMARY": "On"}))
+        self.txQ.put((deviceName, "FITS_HEADER", {"FITS_OBJECT": "Skymodel"}))
+        self.txQ.put((deviceName, "FITS_HEADER", {"FITS_OBSERVER": "MountWizzard4"}))
+        self.txQ.put((deviceName, "ACTIVE_DEVICES", {"ACTIVE_TELESCOPE": "LX200 10micron"}))
+        self.txQ.put((deviceName, "TELESCOPE_TYPE", {"TELESCOPE_PRIMARY": "On"}))
 
     def setExposureState(self, vectors: dict) -> None:
         if not vectors.get("CCD_EXPOSURE"):
@@ -88,30 +88,30 @@ class CameraIndi(IndiClass):
         self.saveBLOB(vectors)
 
     def sendDownloadMode(self) -> None:
-        self.sendQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
+        self.txQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
 
     def expose(self) -> None:
         self.sendDownloadMode()
-        self.sendQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
-        self.sendQ.put((self.deviceName, "CCD_BINNING", {"HOR_BIN": self.parent.binning,
+        self.txQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
+        self.txQ.put((self.deviceName, "CCD_BINNING", {"HOR_BIN": self.parent.binning,
                                                            "VER_BIN": self.parent.binning}))
-        self.sendQ.put((self.deviceName, "CCD_FRAME", {"X": self.parent.posX,
+        self.txQ.put((self.deviceName, "CCD_FRAME", {"X": self.parent.posX,
                                                        "Y": self.parent.posY,
                                                        "WIDTH": self.parent.width,
                                                        "HEIGHT": self.parent.height}))
-        self.sendQ.put((self.deviceName, "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": self.parent.exposureTime}))
+        self.txQ.put((self.deviceName, "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": self.parent.exposureTime}))
 
     def abort(self) -> None:
-        self.sendQ.put((self.deviceName, "CCD_ABORT_EXPOSURE", {"ABORT": "On"}))
+        self.txQ.put((self.deviceName, "CCD_ABORT_EXPOSURE", {"ABORT": "On"}))
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        self.sendQ.put((self.deviceName, "CCD_COOLER", {"COOLER_ON": "On" if coolerOn else "Off"}))
+        self.txQ.put((self.deviceName, "CCD_COOLER", {"COOLER_ON": "On" if coolerOn else "Off"}))
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
-        self.sendQ.put((self.deviceName, "CCD_TEMPERATURE", {"CCD_TEMPERATURE_VALUE": temperature}))
+        self.txQ.put((self.deviceName, "CCD_TEMPERATURE", {"CCD_TEMPERATURE_VALUE": temperature}))
 
     def sendOffset(self, offset: int = 0) -> None:
-        self.sendQ.put((self.deviceName, "CCD_OFFSET", {"OFFSET": offset}))
+        self.txQ.put((self.deviceName, "CCD_OFFSET", {"OFFSET": offset}))
 
     def sendGain(self, gain: int = 1) -> None:
-        self.sendQ.put((self.deviceName, "CCD_GAIN", {"GAIN": gain}))
+        self.txQ.put((self.deviceName, "CCD_GAIN", {"GAIN": gain}))

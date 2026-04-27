@@ -37,13 +37,13 @@ def function():
 # ---------------------------------------------------------------------------
 
 def test_setUpdateConfig(function):
-    """setUpdateConfig() puts POLLING_PERIOD with updateRate into sendQ."""
-    function.sendQ = Queue()
+    """setUpdateConfig() puts POLLING_PERIOD with updateRate into txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.updateRate = 1500
     function.setUpdateConfig("ignored")
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_upb", "POLLING_PERIOD", {"PERIOD_MS": 1500})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_upb", "POLLING_PERIOD", {"PERIOD_MS": 1500})
 
 
 # ---------------------------------------------------------------------------
@@ -198,52 +198,52 @@ def test_writeVectorsToData(function):
 
 def test_togglePowerPort_indi_off_to_on(function):
     """isINDIGO=False, current value 'Off' → queues 'On'."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.data["POWER_CONTROL.POWER_CONTROL_1"] = "Off"
     function.togglePowerPort(port="1")
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_upb", "POWER_CONTROL", {"POWER_CONTROL_1": "On"}
     )
 
 
 def test_togglePowerPort_indi_on_to_off(function):
     """isINDIGO=False, current value 'On' → queues 'Off'."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.data["POWER_CONTROL.POWER_CONTROL_2"] = "On"
     function.togglePowerPort(port="2")
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_upb", "POWER_CONTROL", {"POWER_CONTROL_2": "Off"}
     )
 
 
 def test_togglePowerPort_indigo_off_to_on(function):
     """isINDIGO=True, current value 'Off' → queues 'On' to AUX_POWER_OUTLET."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = True
     function.data["AUX_POWER_OUTLET.OUTLET_1"] = "Off"
     function.togglePowerPort(port="1")
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_upb", "AUX_POWER_OUTLET", {"OUTLET_1": "On"}
     )
 
 
 def test_togglePowerPort_indigo_on_to_off(function):
     """isINDIGO=True, current value 'On' → queues 'Off' to AUX_POWER_OUTLET."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = True
     function.data["AUX_POWER_OUTLET.OUTLET_2"] = "On"
     function.togglePowerPort(port="2")
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_upb", "AUX_POWER_OUTLET", {"OUTLET_2": "Off"}
     )
 
@@ -253,35 +253,35 @@ def test_togglePowerPort_indigo_on_to_off(function):
 # ---------------------------------------------------------------------------
 
 def test_togglePowerPortBoot_indigo_returns_early(function):
-    """isINDIGO=True → early return, nothing put into sendQ."""
-    function.sendQ = Queue()
+    """isINDIGO=True → early return, nothing put into txQ."""
+    function.txQ = Queue()
     function.isINDIGO = True
     function.togglePowerPortBoot(port="1")
-    assert function.sendQ.qsize() == 0
+    assert function.txQ.qsize() == 0
 
 
 def test_togglePowerPortBoot_indi_off_to_on(function):
     """isINDIGO=False, current value 'Off' → queues 'On'."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.data["POWER_ON_BOOT.POWER_PORT_1"] = "Off"
     function.togglePowerPortBoot(port="1")
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_upb", "POWER_ON_BOOT", {"POWER_PORT_1": "On"}
     )
 
 
 def test_togglePowerPortBoot_indi_on_to_off(function):
     """isINDIGO=False, current value 'On' → queues 'Off'."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.data["POWER_ON_BOOT.POWER_PORT_2"] = "On"
     function.togglePowerPortBoot(port="2")
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_upb", "POWER_ON_BOOT", {"POWER_PORT_2": "Off"}
     )
 
@@ -291,35 +291,35 @@ def test_togglePowerPortBoot_indi_on_to_off(function):
 # ---------------------------------------------------------------------------
 
 def test_toggleHubUSB_indigo_returns_early(function):
-    """isINDIGO=True → early return, nothing put into sendQ."""
-    function.sendQ = Queue()
+    """isINDIGO=True → early return, nothing put into txQ."""
+    function.txQ = Queue()
     function.isINDIGO = True
     function.toggleHubUSB()
-    assert function.sendQ.qsize() == 0
+    assert function.txQ.qsize() == 0
 
 
 def test_toggleHubUSB_indi_off_to_on(function):
     """isINDIGO=False, USB hub 'Off' → queues 'On'."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.data["USB_HUB_CONTROL.INDI_ENABLED"] = "Off"
     function.toggleHubUSB()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_upb", "USB_HUB_CONTROL", {"INDI_ENABLED": "On"}
     )
 
 
 def test_toggleHubUSB_indi_on_to_off(function):
     """isINDIGO=False, USB hub 'On' → queues 'Off'."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.data["USB_HUB_CONTROL.INDI_ENABLED"] = "On"
     function.toggleHubUSB()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_upb", "USB_HUB_CONTROL", {"INDI_ENABLED": "Off"}
     )
 
@@ -330,50 +330,50 @@ def test_toggleHubUSB_indi_on_to_off(function):
 
 def test_togglePortUSB_indi_off_to_on(function):
     """isINDIGO=False, port 'Off' → queues 'On' to USB_PORT_CONTROL."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.data["USB_PORT_CONTROL.PORT_1"] = "Off"
     function.togglePortUSB(port="1")
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_upb", "USB_PORT_CONTROL", {"PORT_1": "On"}
     )
 
 
 def test_togglePortUSB_indi_on_to_off(function):
     """isINDIGO=False, port 'On' → queues 'Off' to USB_PORT_CONTROL."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.data["USB_PORT_CONTROL.PORT_2"] = "On"
     function.togglePortUSB(port="2")
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_upb", "USB_PORT_CONTROL", {"PORT_2": "Off"}
     )
 
 
 def test_togglePortUSB_indigo_off_to_on(function):
     """isINDIGO=True, port 'Off' → queues 'On' to AUX_USB_PORT."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = True
     function.data["AUX_USB_PORT.PORT_1"] = "Off"
     function.togglePortUSB(port="1")
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_upb", "AUX_USB_PORT", {"PORT_1": "On"})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_upb", "AUX_USB_PORT", {"PORT_1": "On"})
 
 
 def test_togglePortUSB_indigo_on_to_off(function):
     """isINDIGO=True, port 'On' → queues 'Off' to AUX_USB_PORT."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = True
     function.data["AUX_USB_PORT.PORT_2"] = "On"
     function.togglePortUSB(port="2")
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_upb", "AUX_USB_PORT", {"PORT_2": "Off"})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_upb", "AUX_USB_PORT", {"PORT_2": "Off"})
 
 
 # ---------------------------------------------------------------------------
@@ -381,218 +381,218 @@ def test_togglePortUSB_indigo_on_to_off(function):
 # ---------------------------------------------------------------------------
 
 def test_toggleAutoDew_device_none(function):
-    """device=None → early return, nothing put into sendQ."""
-    function.sendQ = Queue()
+    """device=None → early return, nothing put into txQ."""
+    function.txQ = Queue()
     function.device = None
     function.toggleAutoDew()
-    assert function.sendQ.qsize() == 0
+    assert function.txQ.qsize() == 0
 
 
 def test_toggleAutoDew_indigo_manual_on(function):
     """isINDIGO=True, MANUAL='On' → sends MANUAL=Off and AUTOMATIC=On."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = True
     function.device = mock.MagicMock()
     function.data["AUX_DEW_CONTROL.MANUAL"] = "On"
     function.toggleAutoDew()
-    assert function.sendQ.qsize() == 2
-    assert function.sendQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"MANUAL": "Off"})
-    assert function.sendQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"AUTOMATIC": "On"})
+    assert function.txQ.qsize() == 2
+    assert function.txQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"MANUAL": "Off"})
+    assert function.txQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"AUTOMATIC": "On"})
 
 
 def test_toggleAutoDew_indigo_manual_off(function):
     """isINDIGO=True, MANUAL='Off' → sends MANUAL=On and AUTOMATIC=Off."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = True
     function.device = mock.MagicMock()
     function.data["AUX_DEW_CONTROL.MANUAL"] = "Off"
     function.toggleAutoDew()
-    assert function.sendQ.qsize() == 2
-    assert function.sendQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"MANUAL": "On"})
-    assert function.sendQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"AUTOMATIC": "Off"})
+    assert function.txQ.qsize() == 2
+    assert function.txQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"MANUAL": "On"})
+    assert function.txQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"AUTOMATIC": "Off"})
 
 
 def test_toggleAutoDew_indi_v1_no_indi_enabled(function):
     """modelVersion=1, 'AUTO_DEW.INDI_ENABLED' not in data → early return."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.isINDIGO = False
     function.modelVersion = 1
     function.device = mock.MagicMock()
     function.data.pop("AUTO_DEW.INDI_ENABLED", None)
     function.toggleAutoDew()
-    assert function.sendQ.qsize() == 0
+    assert function.txQ.qsize() == 0
 
 
 def test_toggleAutoDew_indi_v1_enabled_on(function):
     """modelVersion=1, INDI_ENABLED='On' → queues INDI_ENABLED=Off."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.modelVersion = 1
     function.device = mock.MagicMock()
     function.data["AUTO_DEW.INDI_ENABLED"] = "On"
     function.toggleAutoDew()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"INDI_ENABLED": "Off"})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_upb", "AUTO_DEW", {"INDI_ENABLED": "Off"})
 
 
 def test_toggleAutoDew_indi_v1_enabled_off(function):
     """modelVersion=1, INDI_ENABLED='Off' → queues INDI_ENABLED=On."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.modelVersion = 1
     function.device = mock.MagicMock()
     function.data["AUTO_DEW.INDI_ENABLED"] = "Off"
     function.toggleAutoDew()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"INDI_ENABLED": "On"})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_upb", "AUTO_DEW", {"INDI_ENABLED": "On"})
 
 
 def test_toggleAutoDew_indi_v2_no_dew_a(function):
     """modelVersion=2, 'AUTO_DEW.DEW_A' not in data → early return."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.isINDIGO = False
     function.modelVersion = 2
     function.device = mock.MagicMock()
     function.data.pop("AUTO_DEW.DEW_A", None)
     function.toggleAutoDew()
-    assert function.sendQ.qsize() == 0
+    assert function.txQ.qsize() == 0
 
 
 def test_toggleAutoDew_indi_v2_dew_a_on(function):
     """modelVersion=2, DEW_A='On' → queues DEW_A/B/C=Off."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.modelVersion = 2
     function.device = mock.MagicMock()
     function.data["AUTO_DEW.DEW_A"] = "On"
     function.toggleAutoDew()
-    assert function.sendQ.qsize() == 3
-    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"DEW_A": "Off"})
-    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"DEW_B": "Off"})
-    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"DEW_C": "Off"})
+    assert function.txQ.qsize() == 3
+    assert function.txQ.get() == ("test_upb", "AUTO_DEW", {"DEW_A": "Off"})
+    assert function.txQ.get() == ("test_upb", "AUTO_DEW", {"DEW_B": "Off"})
+    assert function.txQ.get() == ("test_upb", "AUTO_DEW", {"DEW_C": "Off"})
 
 
 def test_toggleAutoDew_indi_v2_dew_a_off(function):
     """modelVersion=2, DEW_A='Off' → queues DEW_A/B/C=On."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.modelVersion = 2
     function.device = mock.MagicMock()
     function.data["AUTO_DEW.DEW_A"] = "Off"
     function.toggleAutoDew()
-    assert function.sendQ.qsize() == 3
-    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"DEW_A": "On"})
-    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"DEW_B": "On"})
-    assert function.sendQ.get() == ("test_upb", "AUTO_DEW", {"DEW_C": "On"})
+    assert function.txQ.qsize() == 3
+    assert function.txQ.get() == ("test_upb", "AUTO_DEW", {"DEW_A": "On"})
+    assert function.txQ.get() == ("test_upb", "AUTO_DEW", {"DEW_B": "On"})
+    assert function.txQ.get() == ("test_upb", "AUTO_DEW", {"DEW_C": "On"})
 
 
 # ---------------------------------------------------------------------------
-# sendDew  (sendQ-based)
+# sendDew  (txQ-based)
 # ---------------------------------------------------------------------------
 
 def test_sendDew_indi(function):
     """isINDIGO=False → queues DEW_PWM with correct port key."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.sendDew(port="A", value=75)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_upb", "DEW_PWM", {"DEW_A": 75})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_upb", "DEW_PWM", {"DEW_A": 75})
 
 
 def test_sendDew_indi_port_b(function):
     """isINDIGO=False, port B → queues DEW_B."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.sendDew(port="B", value=50)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_upb", "DEW_PWM", {"DEW_B": 50})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_upb", "DEW_PWM", {"DEW_B": 50})
 
 
 def test_sendDew_indigo(function):
     """isINDIGO=True, port A → queues AUX_HEATER_OUTLET with OUTLET_1."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = True
     function.sendDew(port="A", value=50)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_upb", "AUX_HEATER_OUTLET", {"OUTLET_1": 50})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_upb", "AUX_HEATER_OUTLET", {"OUTLET_1": 50})
 
 
 def test_sendDew_indigo_port_b(function):
     """isINDIGO=True, port B → queues OUTLET_2."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = True
     function.sendDew(port="B", value=30)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_upb", "AUX_HEATER_OUTLET", {"OUTLET_2": 30})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_upb", "AUX_HEATER_OUTLET", {"OUTLET_2": 30})
 
 
 # ---------------------------------------------------------------------------
-# sendAdjustableOutput  (sendQ-based)
+# sendAdjustableOutput  (txQ-based)
 # ---------------------------------------------------------------------------
 
 def test_sendAdjustableOutput_indi(function):
     """isINDIGO=False → queues ADJUSTABLE_VOLTAGE_VALUE."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.sendAdjustableOutput(12.0)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_upb", "ADJUSTABLE_VOLTAGE", {"ADJUSTABLE_VOLTAGE_VALUE": 12.0}
     )
 
 
 def test_sendAdjustableOutput_indigo(function):
     """isINDIGO=True → queues X_AUX_VARIABLE_POWER_OUTLET OUTLET_1."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = True
     function.sendAdjustableOutput(12.0)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_upb", "X_AUX_VARIABLE_POWER_OUTLET", {"OUTLET_1": 12.0}
     )
 
 
 # ---------------------------------------------------------------------------
-# reboot  (sendQ-based)
+# reboot  (txQ-based)
 # ---------------------------------------------------------------------------
 
 def test_reboot_device_none(function):
-    """device=None → early return, nothing in sendQ."""
-    function.sendQ = Queue()
+    """device=None → early return, nothing in txQ."""
+    function.txQ = Queue()
     function.device = None
     function.reboot()
-    assert function.sendQ.qsize() == 0
+    assert function.txQ.qsize() == 0
 
 
 def test_reboot_indi(function):
     """isINDIGO=False → queues REBOOT_DEVICE REBOOT=On."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = False
     function.device = mock.MagicMock()
     function.reboot()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_upb", "REBOOT_DEVICE", {"REBOOT": "On"})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_upb", "REBOOT_DEVICE", {"REBOOT": "On"})
 
 
 def test_reboot_indigo(function):
     """isINDIGO=True → queues X_AUX_REBOOT REBOOT=On."""
-    function.sendQ = Queue()
+    function.txQ = Queue()
     function.deviceName = "test_upb"
     function.isINDIGO = True
     function.device = mock.MagicMock()
     function.reboot()
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == ("test_upb", "X_AUX_REBOOT", {"REBOOT": "On"})
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_upb", "X_AUX_REBOOT", {"REBOOT": "On"})

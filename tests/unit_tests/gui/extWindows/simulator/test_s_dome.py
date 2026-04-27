@@ -43,6 +43,17 @@ def test_showEnable_1(function):
     function.showEnable(True)
 
 
+def test_showEnable_disconnect(function):
+    """showEnable with no 'domeRoot' → disconnects updateSize (else branch, line 53)."""
+    # Ensure updateSize is connected first via the if-branch
+    entity = Qt3DCore.QEntity()
+    function.parent.entityModel["domeRoot"] = {"entity": entity}
+    function.showEnable(True)
+    # Now remove domeRoot so the else-branch fires and disconnects updateSize
+    del function.parent.entityModel["domeRoot"]
+    function.showEnable(False)
+
+
 def test_updateSize_1(function):
     function.parent.entityModel["domeWall"] = {"entity": Qt3DCore.QEntity()}
     t = Qt3DCore.QTransform()

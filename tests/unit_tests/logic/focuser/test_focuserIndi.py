@@ -35,12 +35,12 @@ def function():
 # ---------------------------------------------------------------------------
 
 def test_move(function):
-    """move(position) puts ABS_FOCUS_POSITION command into sendQ."""
-    function.sendQ = Queue()
+    """move(position) puts ABS_FOCUS_POSITION command into txQ."""
+    function.txQ = Queue()
     function.deviceName = "test_focuser"
     function.move(position=12500)
-    assert function.sendQ.qsize() == 1
-    assert function.sendQ.get() == (
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
         "test_focuser", "ABS_FOCUS_POSITION", {"FOCUS_ABSOLUTE_POSITION": 12500}
     )
 

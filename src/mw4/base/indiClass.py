@@ -48,8 +48,8 @@ class IndiClass:
         self.isINDIGO: bool = False
         self.messages: bool = False
         self.commandRunning: bool = False
-        self.receiveQ: Queue = Queue()
-        self.sendQ: Queue = Queue()
+        self.rxQ: Queue = Queue()
+        self.txQ: Queue = Queue()
         self.workerIndiQueueClient: Worker | None = None
         self.workerProcessRxQueue: Worker | None = None
 
@@ -90,6 +90,7 @@ class IndiClass:
     def setStatusDeviceConnected(self, status: bool) -> None:
         if status and not self.deviceConnected:
             self.signals.deviceConnected.emit(self.deviceName)
+            self.txQ.put((self.deviceName, None, "snapshot"))
         if not status and self.deviceConnected:
             self.signals.deviceDisconnected.emit(self.deviceName)
         self.deviceConnected = status
@@ -107,10 +108,11 @@ class IndiClass:
 
     def processRxQueue(self) -> None:
         while self.commandRunning:
-            if self.receiveQ.empty():
+            if self.rxQ.empty():
                 time.sleep(0.05)
                 continue
-            item = self.receiveQ.get()
+            item = self.rxQ.get()
+            self.rxQ.task_done()
             print(item)
             if item.snapshot.get(self.deviceName) is None:
                 continue
@@ -121,6 +123,7 @@ class IndiClass:
             vectors = item.snapshot[self.deviceName].dictdump().get("vectors")
             if vectors:
                 self.writeVectorsToData(vectors)
+
     def cleanupStop(self):
         self.clientMutex.unlock()
         print("cleanup stop runqueueclient")
@@ -128,16 +131,15 @@ class IndiClass:
         self.deviceName = ""
         self.deviceConnected = False
 
-
     def startCommunication(self) -> None:
         if not self.clientMutex.tryLock():
             return
         print("startCommunication")
-        self.sendQ.queue.clear()
-        self.receiveQ.queue.clear()
+        self.txQ.queue.clear()
+        self.rxQ.queue.clear()
         self.data.clear()
         self.commandRunning = True
-        self.workerIndiQueueClient = Worker(runqueclient, self.sendQ, self.receiveQ,
+        self.workerIndiQueueClient = Worker(runqueclient, self.txQ, self.rxQ,
                                       indihost=self.hostaddress, indiport=self.port,
                                       blobfolder=str(self.app.mwGlob["tempDir"]))
         self.workerIndiQueueClient.signals.finished.connect(self.cleanupStop)
@@ -147,10 +149,10 @@ class IndiClass:
 
     def stopCommunication(self) -> None:
         print("stopCommunication")
-        self.sendQ.put(None)
+        self.txQ.put(None)
 
     def loadIndiConfig(self, deviceName: str) -> None:
-        self.sendQ.put((deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))
+        self.txQ.put((deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))
 
     def discoverDevices(self, deviceType: str) -> list[str]:
         if not self.discoverMutex.tryLock():
@@ -174,6 +176,7 @@ class IndiClass:
                 if driver:
                     if INDI_TYPES[deviceType] & int(driver["DRIVER_INTERFACE"]):
                         discoverSet.add(item.devicename)
+            rxQ.task_done()
         txQ.put(None)
         self.discoverMutex.unlock()
         return list(discoverSet)

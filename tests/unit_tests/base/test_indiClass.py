@@ -210,7 +210,7 @@ def test_processRxQueue_deviceNotInSnapshot(function):
 
     item = mock.MagicMock()
     item.snapshot = {}  # deviceName not present → .get() returns None → continue
-    function.receiveQ.put(item)
+    function.rxQ.put(item)
 
     def stopper():
         time.sleep(0.15)
@@ -234,7 +234,7 @@ def test_processRxQueue_connectionOn(function):
     item = mock.MagicMock()
     item.snapshot = {"MyDevice": snap_val}
     item.devicename = "MyDevice"
-    function.receiveQ.put(item)
+    function.rxQ.put(item)
 
     def stopper():
         time.sleep(0.15)
@@ -259,7 +259,7 @@ def test_processRxQueue_connectionOff(function):
     item = mock.MagicMock()
     item.snapshot = {"MyDevice": snap_val}
     item.devicename = "MyDevice"
-    function.receiveQ.put(item)
+    function.rxQ.put(item)
 
     def stopper():
         time.sleep(0.15)
@@ -281,7 +281,7 @@ def test_processRxQueue_devicenameMismatch(function):
     item = mock.MagicMock()
     item.snapshot = {"MyDevice": snap_val}
     item.devicename = "OtherDevice"
-    function.receiveQ.put(item)
+    function.rxQ.put(item)
 
     def stopper():
         time.sleep(0.15)
@@ -309,7 +309,7 @@ def test_processRxQueue_withVectors(function):
     item = mock.MagicMock()
     item.snapshot = {"MyDevice": snap_val}
     item.devicename = "MyDevice"
-    function.receiveQ.put(item)
+    function.rxQ.put(item)
 
     def stopper():
         time.sleep(0.15)
@@ -333,7 +333,7 @@ def test_processRxQueue_noVectors(function):
     item = mock.MagicMock()
     item.snapshot = {"MyDevice": snap_val}
     item.devicename = "MyDevice"
-    function.receiveQ.put(item)
+    function.rxQ.put(item)
 
     def stopper():
         time.sleep(0.15)
@@ -392,8 +392,8 @@ def test_stopCommunication(function):
     assert function.deviceName == ""
     assert function.deviceConnected is False
     assert function.commandRunning is False
-    assert not function.sendQ.empty()
-    assert function.sendQ.get() is None
+    assert not function.txQ.empty()
+    assert function.txQ.get() is None
 
 
 # ─── loadIndiConfig ──────────────────────────────────────────────────────────
@@ -402,7 +402,7 @@ def test_stopCommunication(function):
 def test_loadIndiConfig(function):
     function.deviceName = "TestDevice"
     function.loadIndiConfig("TestDevice")
-    item = function.sendQ.get_nowait()
+    item = function.txQ.get_nowait()
     assert item == ("TestDevice", "CONFIG_PROCESS", {"CONFIG_PROCESS": True})
 
 

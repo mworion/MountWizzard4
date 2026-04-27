@@ -23,7 +23,7 @@ class FocuserIndi(IndiClass):
         self.signals = parent.signals
 
     def move(self, position: int) -> None:
-        self.sendQ.put((self.deviceName, "ABS_FOCUS_POSITION", {"FOCUS_ABSOLUTE_POSITION": position}))
+        self.txQ.put((self.deviceName, "ABS_FOCUS_POSITION", {"FOCUS_ABSOLUTE_POSITION": position}))
 
     def halt(self) -> None:
         pass

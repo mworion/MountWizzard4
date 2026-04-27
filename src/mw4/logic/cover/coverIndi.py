@@ -13,8 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-
 from mw4.base.indiClass import IndiClass
+from indipyclient.queclient import EventItem
 from typing import Any
 
 
@@ -23,8 +23,8 @@ class CoverIndi(IndiClass):
         super().__init__(parent=parent)
         self.signals = parent.signals
 
-    def writeVectorsToData(self, vectors: dict) -> None:
-        super().writeVectorsToData(vectors)
+    def writeVectorsToData(self, item:EventItem, vectors: dict) -> None:
+        super().writeVectorsToData(item, vectors)
         cover = vectors.get("Cover", {})
         if not cover:
             return

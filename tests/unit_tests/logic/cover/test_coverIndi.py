@@ -38,27 +38,30 @@ def function():
 
 def test_writeVectorsToData_no_cover(function):
     """No 'Cover' key → only super() is called, data not changed."""
+    item = mock.MagicMock()
     function.data.pop("CAP_PARK.UNPARK", None)
     with mock.patch.object(IndiClass, "writeVectorsToData") as mock_super:
-        function.writeVectorsToData({})
-        mock_super.assert_called_once_with({})
+        function.writeVectorsToData(item, {})
+        mock_super.assert_called_once_with(item, {})
     assert "CAP_PARK.UNPARK" not in function.data
 
 
 def test_writeVectorsToData_with_cover(function):
     """'Cover' key present → data entries populated from members."""
+    item = mock.MagicMock()
     vectors = {"Cover": {"name": "Cover", "members": {"OPEN": True, "CLOSE": False}}}
     with mock.patch.object(IndiClass, "writeVectorsToData"):
-        function.writeVectorsToData(vectors)
+        function.writeVectorsToData(item, vectors)
     assert function.data["CAP_PARK.UNPARK"] is True
     assert function.data["CAP_PARK.PARK"] is False
 
 
 def test_writeVectorsToData_cover_missing_members(function):
     """'Cover' with empty members → default False values applied."""
+    item = mock.MagicMock()
     vectors = {"Cover": {"name": "Cover", "members": {}}}
     with mock.patch.object(IndiClass, "writeVectorsToData"):
-        function.writeVectorsToData(vectors)
+        function.writeVectorsToData(item, vectors)
     assert function.data["CAP_PARK.UNPARK"] is False
     assert function.data["CAP_PARK.PARK"] is False
 

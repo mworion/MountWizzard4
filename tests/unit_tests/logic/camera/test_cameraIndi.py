@@ -226,22 +226,48 @@ def test_addOffsetLimits_without_min_max(function):
 # ---------------------------------------------------------------------------
 
 def test_saveBLOB_absent(function):
-    """No 'CCD1' in vectors → writeImageFitsHeader/exposeFinished not called."""
-    with mock.patch.object(function.parent, "writeImageFitsHeader") as mock_hdr:
-        with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
-            function.saveBLOB({})
-            mock_hdr.assert_not_called()
-            mock_fin.assert_not_called()
+    """No 'CCD1' in vectors → exposeFinished not called."""
+    item = mock.MagicMock()
+    item.eventtype = "SetBLOB"
+    with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
+        function.saveBLOB(item, {})
+        mock_fin.assert_not_called()
+
+
+def test_saveBLOB_not_setblob(function):
+    """'CCD1' present but item.eventtype != 'SetBLOB' → exposeFinished not called."""
+    item = mock.MagicMock()
+    item.eventtype = "DefBLOB"
+    vectors = {"CCD1": {"members": {"CCD1": {"filename": "test.fits",
+                                             "blobformat": ".fits",
+                                             "blobsize": 100}}}}
+    with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
+        function.saveBLOB(item, vectors)
+        mock_fin.assert_not_called()
+
+
+def test_saveBLOB_no_filename(function):
+    """'CCD1' present, SetBLOB, but filename is empty → exposeFinished not called."""
+    item = mock.MagicMock()
+    item.eventtype = "SetBLOB"
+    vectors = {"CCD1": {"members": {"CCD1": {"filename": "",
+                                             "blobformat": ".fits",
+                                             "blobsize": 0}}}}
+    with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
+        function.saveBLOB(item, vectors)
+        mock_fin.assert_not_called()
 
 
 def test_saveBLOB_present(function):
-    """'CCD1' present → writeImageFitsHeader and exposeFinished are called."""
-    vectors = {"CCD1": {"name": "CCD1", "members": {}}}
-    with mock.patch.object(function.parent, "writeImageFitsHeader") as mock_hdr:
-        with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
-            function.saveBLOB(vectors)
-            mock_hdr.assert_called_once()
-            mock_fin.assert_called_once()
+    """'CCD1' present, SetBLOB, valid filename → exposeFinished called."""
+    item = mock.MagicMock()
+    item.eventtype = "SetBLOB"
+    vectors = {"CCD1": {"members": {"CCD1": {"filename": "image.fits",
+                                             "blobformat": ".fits",
+                                             "blobsize": 1024}}}}
+    with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
+        function.saveBLOB(item, vectors)
+        mock_fin.assert_called_once()
 
 
 # ---------------------------------------------------------------------------
@@ -249,7 +275,8 @@ def test_saveBLOB_present(function):
 # ---------------------------------------------------------------------------
 
 def test_writeVectorsToData(function):
-    """All delegate methods and super() are called with the vectors dict."""
+    """All delegate methods and super() are called with item and/or vectors."""
+    item = mock.MagicMock()
     vectors = {}
     with mock.patch.object(IndiClass, "writeVectorsToData") as mock_super:
         with mock.patch.object(function, "addGainLimits") as mock_gain:
@@ -257,13 +284,13 @@ def test_writeVectorsToData(function):
                 with mock.patch.object(function, "setCanTemperature") as mock_temp:
                     with mock.patch.object(function, "setExposureState") as mock_exp:
                         with mock.patch.object(function, "saveBLOB") as mock_blob:
-                            function.writeVectorsToData(vectors)
-                            mock_super.assert_called_once_with(vectors)
+                            function.writeVectorsToData(item, vectors)
+                            mock_super.assert_called_once_with(item, vectors)
                             mock_gain.assert_called_once_with(vectors)
                             mock_offset.assert_called_once_with(vectors)
                             mock_temp.assert_called_once_with(vectors)
                             mock_exp.assert_called_once_with(vectors)
-                            mock_blob.assert_called_once_with(vectors)
+                            mock_blob.assert_called_once_with(item, vectors)
 
 
 # ---------------------------------------------------------------------------

@@ -31,7 +31,7 @@ class Parent:
     updateRate = 1000
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     func = DomeIndi(parent=Parent())
     yield func
@@ -147,12 +147,13 @@ def test_addShutterStatus_ok(function):
 
 def test_writeVectorsToData(function):
     """super(), sendDomePosition and addShutterStatus are all called."""
+    item = mock.MagicMock()
     vectors = {}
     with mock.patch.object(IndiClass, "writeVectorsToData") as mock_super:
         with mock.patch.object(function, "sendDomePosition") as mock_pos:
             with mock.patch.object(function, "addShutterStatus") as mock_shut:
-                function.writeVectorsToData(vectors)
-                mock_super.assert_called_once_with(vectors)
+                function.writeVectorsToData(item, vectors)
+                mock_super.assert_called_once_with(item, vectors)
                 mock_pos.assert_called_once_with(vectors)
                 mock_shut.assert_called_once_with(vectors)
 

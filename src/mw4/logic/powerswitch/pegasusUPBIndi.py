@@ -14,6 +14,7 @@
 #
 ###########################################################
 from mw4.base.indiClass import IndiClass
+from indipyclient.queclient import EventItem
 from typing import Any
 
 
@@ -52,8 +53,8 @@ class PegasusUPBIndi(IndiClass):
                 self.signals.version.emit(2)
             self.modelVersion = 2
 
-    def writeVectorsToData(self, vectors: dict) -> None:
-        super().writeVectorsToData(vectors)
+    def writeVectorsToData(self, item: EventItem, vectors: dict) -> None:
+        super().writeVectorsToData(item, vectors)
         self.checkDriverInfo(vectors)
         self.checkFirmwareInfo(vectors)
 

@@ -31,7 +31,7 @@ class Parent:
         self.updateRate = 1000
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     func = IndiClass(parent=Parent())
     yield func
@@ -78,12 +78,23 @@ def test_defaultConfig(function):
 # ─── setStatusDeviceConnected ─────────────────────────────────────────────────
 
 
+def _make_item(deviceName: str, connect_value: str) -> mock.MagicMock:
+    """Build an EventItem mock whose snapshot reports the given CONNECT value."""
+    conn = mock.MagicMock()
+    conn.get.side_effect = lambda k: connect_value if k == "CONNECT" else None
+    snap_device = mock.MagicMock()
+    snap_device.__getitem__.return_value = conn
+    item = mock.MagicMock()
+    item.snapshot = {deviceName: snap_device}
+    return item
+
+
 def test_setStatusDeviceConnected_becomeConnected(function):
     function.deviceConnected = False
     function.deviceName = "telescope"
     received = []
     function.signals.deviceConnected.connect(lambda name: received.append(name))
-    function.setStatusDeviceConnected(True)
+    function.setStatusDeviceConnected(_make_item("telescope", "On"))
     assert received == ["telescope"]
     assert function.deviceConnected is True
 
@@ -93,7 +104,7 @@ def test_setStatusDeviceConnected_becomeDisconnected(function):
     function.deviceName = "telescope"
     received = []
     function.signals.deviceDisconnected.connect(lambda name: received.append(name))
-    function.setStatusDeviceConnected(False)
+    function.setStatusDeviceConnected(_make_item("telescope", "Off"))
     assert received == ["telescope"]
     assert function.deviceConnected is False
 
@@ -103,7 +114,7 @@ def test_setStatusDeviceConnected_stayConnected(function):
     function.deviceName = "telescope"
     received = []
     function.signals.deviceConnected.connect(lambda name: received.append(name))
-    function.setStatusDeviceConnected(True)
+    function.setStatusDeviceConnected(_make_item("telescope", "On"))
     assert received == []
     assert function.deviceConnected is True
 
@@ -113,7 +124,7 @@ def test_setStatusDeviceConnected_stayDisconnected(function):
     function.deviceName = "telescope"
     received = []
     function.signals.deviceDisconnected.connect(lambda name: received.append(name))
-    function.setStatusDeviceConnected(False)
+    function.setStatusDeviceConnected(_make_item("telescope", "Off"))
     assert received == []
     assert function.deviceConnected is False
 
@@ -130,7 +141,7 @@ def test_writeVectorsToData_value(function):
             "members": {"MEMBER": {"value": "hello"}},
         }
     }
-    function.writeVectorsToData(vectors)
+    function.writeVectorsToData(mock.MagicMock(), vectors)
     assert function.data["TEST_VECTOR.MEMBER"] == "hello"
 
 
@@ -143,7 +154,7 @@ def test_writeVectorsToData_floatvalue(function):
             "members": {"MEMBER": {"floatvalue": 3.14, "value": "ignored"}},
         }
     }
-    function.writeVectorsToData(vectors)
+    function.writeVectorsToData(mock.MagicMock(), vectors)
     assert function.data["TEST_VECTOR.MEMBER"] == 3.14
 
 
@@ -156,7 +167,7 @@ def test_writeVectorsToData_indigoConversion(function):
             "members": {"AbsolutePressure": {"value": 1013.0}},
         }
     }
-    function.writeVectorsToData(vectors)
+    function.writeVectorsToData(mock.MagicMock(), vectors)
     assert function.data.get("WEATHER_PARAMETERS.WEATHER_PRESSURE") == 1013.0
 
 
@@ -169,7 +180,7 @@ def test_writeVectorsToData_indigoNoConversion(function):
             "members": {"MEMBER": {"value": 42}},
         }
     }
-    function.writeVectorsToData(vectors)
+    function.writeVectorsToData(mock.MagicMock(), vectors)
     assert function.data["UNKNOWN_VECTOR.MEMBER"] == 42
 
 
@@ -351,9 +362,7 @@ def test_processRxQueue_noVectors(function):
 
 def test_cleanupStop(function):
     function.clientMutex.lock()
-    function.commandRunning = True
     function.cleanupStop()
-    assert function.commandRunning is False
     # Verify mutex was unlocked by successfully locking it again
     assert function.clientMutex.tryLock() is True
     function.clientMutex.unlock()
@@ -485,20 +494,10 @@ def test_discoverDevices_loopDefineEventMatch(function, monkeypatch):
                 mock_txQ = mock.MagicMock()
                 mock_rxQ = mock.MagicMock()
                 mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-
-                call_count = [0]
-
-                def empty_se():
-                    call_count[0] += 1
-                    return call_count[0] != 1
-
-                mock_rxQ.empty.side_effect = empty_se
+                mock_rxQ.empty.return_value = False
                 mock_rxQ.get.return_value = item
-                with mock.patch("mw4.base.indiClass.time") as mock_time:
-                    mock_time.sleep.side_effect = StopIteration
-                    with pytest.raises(StopIteration):
-                        function.discoverDevices("dome")
-    function.discoverMutex.unlock()
+                result = function.discoverDevices("dome")
+    assert "TestDome" in result
 
 
 def test_discoverDevices_loopDefineEventNoDriver(function, monkeypatch):
@@ -518,20 +517,10 @@ def test_discoverDevices_loopDefineEventNoDriver(function, monkeypatch):
                 mock_txQ = mock.MagicMock()
                 mock_rxQ = mock.MagicMock()
                 mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-
-                call_count = [0]
-
-                def empty_se():
-                    call_count[0] += 1
-                    return call_count[0] != 1
-
-                mock_rxQ.empty.side_effect = empty_se
+                mock_rxQ.empty.return_value = False
                 mock_rxQ.get.return_value = item
-                with mock.patch("mw4.base.indiClass.time") as mock_time:
-                    mock_time.sleep.side_effect = StopIteration
-                    with pytest.raises(StopIteration):
-                        function.discoverDevices("dome")
-    function.discoverMutex.unlock()
+                result = function.discoverDevices("dome")
+    assert result == []
 
 
 def test_discoverDevices_loopDefineEventNoTypeMatch(function, monkeypatch):
@@ -553,20 +542,10 @@ def test_discoverDevices_loopDefineEventNoTypeMatch(function, monkeypatch):
                 mock_txQ = mock.MagicMock()
                 mock_rxQ = mock.MagicMock()
                 mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-
-                call_count = [0]
-
-                def empty_se():
-                    call_count[0] += 1
-                    return call_count[0] != 1
-
-                mock_rxQ.empty.side_effect = empty_se
+                mock_rxQ.empty.return_value = False
                 mock_rxQ.get.return_value = item
-                with mock.patch("mw4.base.indiClass.time") as mock_time:
-                    mock_time.sleep.side_effect = StopIteration
-                    with pytest.raises(StopIteration):
-                        function.discoverDevices("dome")
-    function.discoverMutex.unlock()
+                result = function.discoverDevices("dome")
+    assert result == []
 
 
 def test_discoverDevices_loopNonDefineEvent(function, monkeypatch):
@@ -582,17 +561,7 @@ def test_discoverDevices_loopNonDefineEvent(function, monkeypatch):
                 mock_txQ = mock.MagicMock()
                 mock_rxQ = mock.MagicMock()
                 mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-
-                call_count = [0]
-
-                def empty_se():
-                    call_count[0] += 1
-                    return call_count[0] != 1
-
-                mock_rxQ.empty.side_effect = empty_se
+                mock_rxQ.empty.return_value = False
                 mock_rxQ.get.return_value = item
-                with mock.patch("mw4.base.indiClass.time") as mock_time:
-                    mock_time.sleep.side_effect = StopIteration
-                    with pytest.raises(StopIteration):
-                        function.discoverDevices("dome")
-    function.discoverMutex.unlock()
+                result = function.discoverDevices("dome")
+    assert result == []

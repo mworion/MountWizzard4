@@ -181,13 +181,14 @@ def test_checkFirmwareInfo_missing_version_defaults_old(function):
 # ---------------------------------------------------------------------------
 
 def test_writeVectorsToData(function):
-    """All delegates and super() are called with the vectors dict."""
+    """All delegates and super() are called with item and vectors."""
+    item = mock.MagicMock()
     vectors = {}
     with mock.patch.object(IndiClass, "writeVectorsToData") as mock_super:
         with mock.patch.object(function, "checkDriverInfo") as mock_drv:
             with mock.patch.object(function, "checkFirmwareInfo") as mock_fw:
-                function.writeVectorsToData(vectors)
-                mock_super.assert_called_once_with(vectors)
+                function.writeVectorsToData(item, vectors)
+                mock_super.assert_called_once_with(item, vectors)
                 mock_drv.assert_called_once_with(vectors)
                 mock_fw.assert_called_once_with(vectors)
 

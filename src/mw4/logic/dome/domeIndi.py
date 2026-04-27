@@ -14,6 +14,7 @@
 #
 ###########################################################
 from mw4.base.indiClass import IndiClass
+from indipyclient.queclient import EventItem
 from typing import Any
 
 
@@ -44,8 +45,8 @@ class DomeIndi(IndiClass):
         else:
             self.data["Shutter.Status"] = "-"
 
-    def writeVectorsToData(self, vectors: dict) -> None:
-        super().writeVectorsToData(vectors)
+    def writeVectorsToData(self, item: EventItem, vectors: dict) -> None:
+        super().writeVectorsToData(item, vectors)
         self.sendDomePosition(vectors)
         self.addShutterStatus(vectors)
 

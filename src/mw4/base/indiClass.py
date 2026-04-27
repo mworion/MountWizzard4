@@ -16,7 +16,7 @@
 import logging
 from queue import Queue
 import time
-from indipyclient.queclient import runqueclient
+from indipyclient.queclient import runqueclient, EventItem
 from mw4.base.indiClassAddOns import INDIGO_CONV, INDI_TYPES
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QThreadPool, QMutex
@@ -87,15 +87,15 @@ class IndiClass:
     def port(self, value: int | str) -> None:
         self._port = int(value)
 
-    def setStatusDeviceConnected(self, status: bool) -> None:
+    def setStatusDeviceConnected(self, item: EventItem) -> None:
+        status = item.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "On"
         if status and not self.deviceConnected:
             self.signals.deviceConnected.emit(self.deviceName)
-            self.txQ.put((self.deviceName, None, "snapshot"))
         if not status and self.deviceConnected:
             self.signals.deviceDisconnected.emit(self.deviceName)
         self.deviceConnected = status
 
-    def writeVectorsToData(self, vectors: dict) -> None:
+    def writeVectorsToData(self, item: EventItem, vectors: dict) -> None:
         self.data.update(vectors)
         for vector, vectorItem in vectors.items():
             vectorName = vectorItem["name"]
@@ -104,37 +104,29 @@ class IndiClass:
                 entry = f"{vectorName}.{member}"
                 entry = INDIGO_CONV.get(entry, entry) if self.isINDIGO else entry
                 self.data[entry] = value
-                # print(entry, value)
 
     def processRxQueue(self) -> None:
         while self.commandRunning:
             if self.rxQ.empty():
-                time.sleep(0.05)
+                time.sleep(0.1)
                 continue
             item = self.rxQ.get()
-            self.rxQ.task_done()
-            print(item)
             if item.snapshot.get(self.deviceName) is None:
                 continue
-            if item.snapshot[self.deviceName].get("CONNECTION"):
-                self.setStatusDeviceConnected(item.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "On")
             if item.devicename != self.deviceName:
                 continue
+            if item.snapshot[self.deviceName].get("CONNECTION"):
+                self.setStatusDeviceConnected(item)
             vectors = item.snapshot[self.deviceName].dictdump().get("vectors")
             if vectors:
-                self.writeVectorsToData(vectors)
+                self.writeVectorsToData(item, vectors)
 
     def cleanupStop(self):
         self.clientMutex.unlock()
-        print("cleanup stop runqueueclient")
-        self.commandRunning = False
-        self.deviceName = ""
-        self.deviceConnected = False
 
     def startCommunication(self) -> None:
         if not self.clientMutex.tryLock():
             return
-        print("startCommunication")
         self.txQ.queue.clear()
         self.rxQ.queue.clear()
         self.data.clear()
@@ -148,8 +140,10 @@ class IndiClass:
         self.threadPool.start(self.workerProcessRxQueue)
 
     def stopCommunication(self) -> None:
-        print("stopCommunication")
         self.txQ.put(None)
+        self.commandRunning = False
+        self.deviceName = ""
+        self.deviceConnected = False
 
     def loadIndiConfig(self, deviceName: str) -> None:
         self.txQ.put((deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))

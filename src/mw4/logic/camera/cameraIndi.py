@@ -14,8 +14,10 @@
 #
 ###########################################################
 from mw4.base.indiClass import IndiClass
+from indipyclient.queclient import EventItem
 from pathlib import Path
 from typing import Any
+import time
 
 
 class CameraIndi(IndiClass):
@@ -69,23 +71,30 @@ class CameraIndi(IndiClass):
         self.data["CCD_OFFSET.OFFSET_MIN"] = offset["members"].get("min", 0)
         self.data["CCD_OFFSET.OFFSET_MAX"] = offset["members"].get("max", 1)
 
-    def saveBLOB(self, vectors:dict) -> None:
-        # todo: check if abort still send a blob
+    def saveBLOB(self, item:EventItem, vectors:dict) -> None:
         blob = vectors.get("CCD1", {})
         if not blob:
-            return 
+            return
+        if item.eventtype != "SetBLOB":
+            return
+        filename = blob["members"]["CCD1"]["filename"]
+        if not filename:
+            return
+        blobformat = blob["members"]["CCD1"]["blobformat"]
+        blobsize = blob["members"]["CCD1"]["blobsize"]
+        print(filename, blobformat, blobsize)
         # todo: move file to target directory
-        self.parent.writeImageFitsHeader()
+        # self.parent.writeImageFitsHeader()
         # todo: check if XISF will work
         self.parent.exposeFinished()
 
-    def writeVectorsToData(self, vectors: dict) -> None:
-        super().writeVectorsToData(vectors)
+    def writeVectorsToData(self, item: EventItem, vectors: dict) -> None:
+        super().writeVectorsToData(item, vectors)
         self.addGainLimits(vectors)
         self.addOffsetLimits(vectors)
         self.setCanTemperature(vectors)
         self.setExposureState(vectors)
-        self.saveBLOB(vectors)
+        self.saveBLOB(item, vectors)
 
     def sendDownloadMode(self) -> None:
         self.txQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))

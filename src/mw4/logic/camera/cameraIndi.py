@@ -37,7 +37,6 @@ class CameraIndi(IndiClass):
             return
         value = vectors["CCD_EXPOSURE"]["members"]["CCD_EXPOSURE_VALUE"]["floatvalue"]
         state = vectors["CCD_EXPOSURE"]["state"]
-        print("setExposureState", value, state)
         if state == "Busy" and value > 0:
             self.signals.message.emit(f"expose {value:2.0f} s")
         elif state == "Busy" and value == 0:
@@ -93,6 +92,7 @@ class CameraIndi(IndiClass):
 
     def expose(self) -> None:
         self.sendDownloadMode()
+        self.sendQ.put((self.deviceName, None, "Also"))
         self.sendQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
         self.sendQ.put((self.deviceName, "CCD_BINNING", {"HOR_BIN": self.parent.binning,
                                                            "VER_BIN": self.parent.binning}))

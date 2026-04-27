@@ -95,6 +95,7 @@ class IndiClass:
         self.deviceConnected = status
 
     def writeVectorsToData(self, vectors: dict) -> None:
+        self.data.update(vectors)
         for vector, vectorItem in vectors.items():
             vectorName = vectorItem["name"]
             for member, memberItem in vectorItem["members"].items():
@@ -107,9 +108,10 @@ class IndiClass:
     def processRxQueue(self) -> None:
         while self.commandRunning:
             if self.receiveQ.empty():
-                time.sleep(0.1)
+                time.sleep(0.05)
                 continue
             item = self.receiveQ.get()
+            print(item)
             if item.snapshot.get(self.deviceName) is None:
                 continue
             if item.snapshot[self.deviceName].get("CONNECTION"):
@@ -119,14 +121,18 @@ class IndiClass:
             vectors = item.snapshot[self.deviceName].dictdump().get("vectors")
             if vectors:
                 self.writeVectorsToData(vectors)
-
     def cleanupStop(self):
         self.clientMutex.unlock()
+        print("cleanup stop runqueueclient")
         self.commandRunning = False
+        self.deviceName = ""
+        self.deviceConnected = False
+
 
     def startCommunication(self) -> None:
         if not self.clientMutex.tryLock():
             return
+        print("startCommunication")
         self.sendQ.queue.clear()
         self.receiveQ.queue.clear()
         self.data.clear()
@@ -140,10 +146,8 @@ class IndiClass:
         self.threadPool.start(self.workerProcessRxQueue)
 
     def stopCommunication(self) -> None:
+        print("stopCommunication")
         self.sendQ.put(None)
-        self.deviceName = ""
-        self.deviceConnected = False
-        self.commandRunning = False
 
     def loadIndiConfig(self, deviceName: str) -> None:
         self.sendQ.put((deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))

@@ -435,20 +435,25 @@ def test_discoverDevices_maxSearchZero(function, monkeypatch):
 
 
 def test_discoverDevices_loopEmptyQueue(function, monkeypatch):
-    """Loop branch: queue is empty → time.sleep is called."""
+    """Loop branch: queue is empty → time.sleep is called then continue;
+    second iteration consumes a non-matching item to exhaust n."""
     monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
+    dummy = mock.MagicMock()
+    dummy.eventtype = "Remove"
+    dummy.devicename = "x"
+
     with mock.patch("mw4.base.indiClass.Worker"):
         with mock.patch.object(function.threadPool, "start"):
             with mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls:
                 mock_txQ = mock.MagicMock()
                 mock_rxQ = mock.MagicMock()
                 mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-                mock_rxQ.empty.return_value = True  # always empty → sleep branch
-                with mock.patch("mw4.base.indiClass.time") as mock_time:
-                    mock_time.sleep.side_effect = StopIteration
-                    with pytest.raises(StopIteration):
-                        function.discoverDevices("dome")
-    function.discoverMutex.unlock()
+                # first: empty → sleep → continue; second: not empty → get item
+                mock_rxQ.empty.side_effect = [True, False]
+                mock_rxQ.get.return_value = dummy
+                with mock.patch("mw4.base.indiClass.time"):
+                    result = function.discoverDevices("dome")
+    assert result == []
 
 
 def test_discoverDevices_loopNoneItem(function, monkeypatch):

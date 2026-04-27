@@ -87,6 +87,18 @@ def test_extract_data_files():
     extractDataFiles(mwGlob=mwGlob)
 
 
+def test_extract_data_files_skip_uptodate():
+    """continue branch: dest exists with same mtime → shutil.copy2 not called."""
+    mwGlob = {"dataDir": Path("tests/work/data")}
+    stat_result = mock.MagicMock()
+    stat_result.st_mtime = 1000.0
+    with mock.patch("mw4.base.bootstrap.os.stat", return_value=stat_result):
+        with mock.patch.object(Path, "is_file", return_value=True):
+            with mock.patch("mw4.base.bootstrap.shutil.copy2") as mock_copy:
+                extractDataFiles(mwGlob=mwGlob)
+    mock_copy.assert_not_called()
+
+
 @pytest.mark.skipif(
     platform.system() != "Windows", reason="Windows needed"
 )

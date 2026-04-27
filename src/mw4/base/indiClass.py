@@ -132,7 +132,8 @@ class IndiClass:
         self.data.clear()
         self.commandRunning = True
         self.workerIndiQueueClient = Worker(runqueclient, self.sendQ, self.receiveQ,
-                                      indihost=self.hostaddress, indiport=self.port)
+                                      indihost=self.hostaddress, indiport=self.port,
+                                      blobfolder=self.app.mwGlob["tempDir"])
         self.workerIndiQueueClient.signals.finished.connect(self.cleanupStop)
         self.threadPool.start(self.workerIndiQueueClient)
         self.workerProcessRxQueue = Worker(self.processRxQueue)

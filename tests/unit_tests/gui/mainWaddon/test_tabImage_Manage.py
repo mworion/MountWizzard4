@@ -143,11 +143,8 @@ def test_updateImagingParam_2(function):
     function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     function.app.camera.data["CCD_GAIN.GAIN"] = 0
     function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 1
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 1
     function.app.camera.data["CCD_INFO.CCD_MAX_X"] = 1
     function.app.camera.data["CCD_INFO.CCD_MAX_Y"] = 1
-    function.app.camera.data["READOUT_QUALITY.QUALITY_LOW"] = True
     function.updateImagingParam()
 
 
@@ -156,12 +153,8 @@ def test_updateImagingParam_3(function):
     function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     function.app.camera.data["CCD_GAIN.GAIN"] = 0
     function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 1
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 1
     function.app.camera.data["CCD_INFO.CCD_MAX_X"] = 1
     function.app.camera.data["CCD_INFO.CCD_MAX_Y"] = 1
-    function.app.camera.data["READOUT_QUALITY.QUALITY_LOW"] = True
-    function.ui.automaticTelescope.setChecked(False)
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
     function.updateImagingParam()
@@ -172,12 +165,8 @@ def test_updateImagingParam_4(function):
     function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     function.app.camera.data["CCD_GAIN.GAIN"] = 0
     function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 1
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 1
     function.app.camera.data["CCD_INFO.CCD_MAX_X"] = 4000
     function.app.camera.data["CCD_INFO.CCD_MAX_Y"] = 4000
-    function.app.camera.data["READOUT_QUALITY.QUALITY_LOW"] = True
-    function.ui.automaticTelescope.setChecked(False)
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
     function.updateImagingParam()
@@ -189,12 +178,8 @@ def test_updateImagingParam_5(function):
     function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     function.app.camera.data["CCD_GAIN.GAIN"] = 0
     function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 1
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 1
     function.app.camera.data["CCD_INFO.CCD_MAX_X"] = 1000
     function.app.camera.data["CCD_INFO.CCD_MAX_Y"] = 4000
-    function.app.camera.data["READOUT_QUALITY.QUALITY_LOW"] = True
-    function.ui.automaticTelescope.setChecked(False)
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
     function.updateImagingParam()
@@ -206,12 +191,8 @@ def test_updateImagingParam_6(function):
     function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     function.app.camera.data["CCD_GAIN.GAIN"] = 0
     function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 1
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 1
     function.app.camera.data["CCD_INFO.CCD_MAX_X"] = 8000
     function.app.camera.data["CCD_INFO.CCD_MAX_Y"] = 6000
-    function.app.camera.data["READOUT_QUALITY.QUALITY_LOW"] = True
-    function.ui.automaticTelescope.setChecked(False)
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
     function.updateImagingParam()

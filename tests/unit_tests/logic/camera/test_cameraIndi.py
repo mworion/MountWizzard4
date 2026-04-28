@@ -185,7 +185,7 @@ def test_addGainLimits_absent(function):
 
 def test_addGainLimits_with_limits(function):
     """'CCD_GAIN' with min/max → data populated."""
-    vectors = {"CCD_GAIN": {"state": "Ok", "members": {"min": 0, "max": 255}}}
+    vectors = {"CCD_GAIN": {"state": "Ok", "members": {"GAIN": {"min": 0, "max": 255}}}}
     function.addGainLimits(vectors)
     assert function.data["CCD_GAIN.GAIN_MIN"] == 0
     assert function.data["CCD_GAIN.GAIN_MAX"] == 255
@@ -193,7 +193,7 @@ def test_addGainLimits_with_limits(function):
 
 def test_addGainLimits_without_min_max(function):
     """'CCD_GAIN' without min/max keys → default values applied."""
-    vectors = {"CCD_GAIN": {"state": "Ok", "members": {}}}
+    vectors = {"CCD_GAIN": {"state": "Ok", "members": {"GAIN": {}}}}
     function.addGainLimits(vectors)
     assert function.data["CCD_GAIN.GAIN_MIN"] == 0
     assert function.data["CCD_GAIN.GAIN_MAX"] == 1
@@ -215,7 +215,7 @@ def test_addOffsetLimits_absent(function):
 
 def test_addOffsetLimits_with_limits(function):
     """'CCD_OFFSET' with min/max → data populated."""
-    vectors = {"CCD_OFFSET": {"state": "Ok", "members": {"min": 10, "max": 100}}}
+    vectors = {"CCD_OFFSET": {"state": "Ok", "members": {"OFFSET": {"min": 10, "max": 100}}}}
     function.addOffsetLimits(vectors)
     assert function.data["CCD_OFFSET.OFFSET_MIN"] == 10
     assert function.data["CCD_OFFSET.OFFSET_MAX"] == 100
@@ -223,7 +223,7 @@ def test_addOffsetLimits_with_limits(function):
 
 def test_addOffsetLimits_without_min_max(function):
     """'CCD_OFFSET' without min/max keys → default values applied."""
-    vectors = {"CCD_OFFSET": {"state": "Ok", "members": {}}}
+    vectors = {"CCD_OFFSET": {"state": "Ok", "members": {"OFFSET": {}}}}
     function.addOffsetLimits(vectors)
     assert function.data["CCD_OFFSET.OFFSET_MIN"] == 0
     assert function.data["CCD_OFFSET.OFFSET_MAX"] == 1

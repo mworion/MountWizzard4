@@ -61,15 +61,15 @@ class CameraIndi(IndiClass):
         gain = vectors.get("CCD_GAIN", {})
         if not gain:
             return
-        self.data["CCD_GAIN.GAIN_MIN"] = gain["members"].get("min", 0)
-        self.data["CCD_GAIN.GAIN_MAX"] = gain["members"].get("max", 1)
+        self.data["CCD_GAIN.GAIN_MIN"] = gain["members"]["GAIN"].get("min", 0)
+        self.data["CCD_GAIN.GAIN_MAX"] = gain["members"]["GAIN"].get("max", 1)
 
     def addOffsetLimits(self, vectors: dict) -> None:
         offset = vectors.get("CCD_OFFSET", {})
         if not offset:
             return
-        self.data["CCD_OFFSET.OFFSET_MIN"] = offset["members"].get("min", 0)
-        self.data["CCD_OFFSET.OFFSET_MAX"] = offset["members"].get("max", 1)
+        self.data["CCD_OFFSET.OFFSET_MIN"] = offset["members"]["OFFSET"].get("min", 0)
+        self.data["CCD_OFFSET.OFFSET_MAX"] = offset["members"]["OFFSET"].get("max", 1)
 
     def writeImageXisfHeader(self) -> None:
         xisf = XISF(self.parent.imagePath)

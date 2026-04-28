@@ -96,13 +96,12 @@ class ImageManage:
         self.mainW.wIcon(self.ui.coverUnpark, "exit-up")
 
     def checkEnableCameraUI(self) -> None:
-        coolerTemp = self.app.camera.data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", False)
-        gainCam = self.app.camera.data.get("CCD_GAIN.GAIN", False)
-        pixelX = self.app.camera.data.get("CCD_INFO.CCD_MAX_X", False)
-
-        self.ui.GroupCooler.setEnabled(bool(coolerTemp))
-        self.ui.GroupCCD.setEnabled(bool(gainCam))
-        self.ui.GroupControlledCamera.setEnabled(bool(pixelX))
+        coolerTemp = "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE" in self.app.camera.data
+        gainCam = "CCD_GAIN.GAIN" in self.app.camera.data
+        pixelX = "CCD_INFO.CCD_MAX_X" in self.app.camera.data
+        self.ui.GroupCooler.setEnabled(coolerTemp)
+        self.ui.GroupCCD.setEnabled(gainCam)
+        self.ui.GroupControlledCamera.setEnabled(pixelX)
 
     def updateOffset(self) -> None:
         actValue = self.app.camera.data.get("CCD_OFFSET.OFFSET", False)
@@ -224,7 +223,7 @@ class ImageManage:
             offsetMin = int(offsetMin)
             offsetMax = int(offsetMax)
             value, ok = dlg.getInt(
-                self,
+                self.mainW,
                 "Set offset",
                 f"Values ({offsetMin:4}..{offsetMax:4}):",
                 actValue,

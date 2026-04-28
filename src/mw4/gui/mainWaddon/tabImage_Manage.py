@@ -255,7 +255,7 @@ class ImageManage:
             gainMin = int(gainMin)
             gainMax = int(gainMax)
             value, ok = dlg.getInt(
-                self,
+                self.mainW,
                 "Set gain",
                 f"Values ({gainMin:4}..{gainMax:4}):",
                 actValue,
@@ -288,14 +288,13 @@ class ImageManage:
 
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self,
+            self.mainW,
             "Set filter number",
             f"Value ({start}..{end}):",
             actValue,
             start,
             end,
-            1,
-        )
+            1)
         if ok:
             self.app.filter.sendFilterNumber(filterNumber=value)
 
@@ -309,7 +308,7 @@ class ImageManage:
         availNames = [data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key]
 
         dlg = QInputDialog()
-        value, ok = dlg.getItem(self, "Set filter", "Filter Name: ", availNames, actValue - 1)
+        value, ok = dlg.getItem(self.mainW, "Set filter", "Filter Name: ", availNames, actValue - 1)
         self.mainW.log.debug(f"FilterSelected: [{value}], FilterList: [{availNames}]")
         if not ok:
             return

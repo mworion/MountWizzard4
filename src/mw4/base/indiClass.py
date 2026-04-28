@@ -165,7 +165,6 @@ class IndiClass:
         while n > 0:
             time.sleep(0.1)
             n = n - 1
-            print(n)
             if rxQ.empty():
                 continue
             item = rxQ.get()

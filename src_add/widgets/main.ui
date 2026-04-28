@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -13056,7 +13056,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        </widget>
        <widget class="QGroupBox" name="GroupControlledCamera">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -13172,7 +13172,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        </widget>
        <widget class="QLineEdit" name="optimalBinning">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -13219,7 +13219,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        </widget>
        <widget class="QGroupBox" name="GroupCCD">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -13240,13 +13240,13 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <widget class="QLabel" name="textGain">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
            <x>5</x>
            <y>0</y>
-           <width>96</width>
+           <width>56</width>
            <height>21</height>
           </rect>
          </property>
@@ -13263,7 +13263,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </widget>
         <widget class="QLineEdit" name="offsetCam">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -13313,13 +13313,13 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </widget>
         <widget class="QLabel" name="textOffset">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
            <x>200</x>
            <y>0</y>
-           <width>71</width>
+           <width>46</width>
            <height>21</height>
           </rect>
          </property>
@@ -13336,7 +13336,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </widget>
         <widget class="QLineEdit" name="gainCam">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -13387,7 +13387,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        </widget>
        <widget class="QGroupBox" name="GroupCooler">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -13460,7 +13460,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </widget>
         <widget class="QLineEdit" name="coolerTemp">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -13550,7 +13550,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </widget>
         <widget class="QLineEdit" name="coolerPower">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -13593,6 +13593,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </property>
         </widget>
         <widget class="QLabel" name="textCoolerStatus">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="geometry">
           <rect>
            <x>0</x>

@@ -76,10 +76,6 @@ class MWidget(QWidget, Styles):
                 self.saveWindowAsPNG(windows[window]["classObj"])
 
     def keyPressEvent(self, keyEvent: QKeyEvent) -> None:
-        """
-        Pressing F5 makes a screen copy of the actual window
-        Pressing F6 makes a screen copy of all open windows
-        """
         if keyEvent.key() == Qt.Key.Key_F5:
             self.saveWindowAsPNG(self)
             return

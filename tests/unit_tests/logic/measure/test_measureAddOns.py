@@ -82,9 +82,7 @@ def test_allValuesAreLists():
 def test_allListElementsAreStrings():
     for key, value in measure.items():
         for idx, elem in enumerate(value):
-            assert isinstance(elem, str), (
-                f"measure['{key}'][{idx}] = {elem!r} is not a string"
-            )
+            assert isinstance(elem, str), f"measure['{key}'][{idx}] = {elem!r} is not a string"
 
 
 def test_sectionLengths():
@@ -147,4 +145,3 @@ def test_powerFields():
         "powCurr",
         "powVolt",
     ]
-

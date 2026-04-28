@@ -13,11 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-from mw4.base.indiClass import IndiClass
 from indipyclient.queclient import EventItem
+from mw4.base.indiClass import IndiClass
 from pathlib import Path
 from typing import Any
-import time
 
 
 class CameraIndi(IndiClass):
@@ -71,7 +70,7 @@ class CameraIndi(IndiClass):
         self.data["CCD_OFFSET.OFFSET_MIN"] = offset["members"].get("min", 0)
         self.data["CCD_OFFSET.OFFSET_MAX"] = offset["members"].get("max", 1)
 
-    def saveBLOB(self, item:EventItem, vectors:dict) -> None:
+    def saveBLOB(self, item: EventItem, vectors: dict) -> None:
         blob = vectors.get("CCD1", {})
         if not blob:
             return
@@ -80,9 +79,9 @@ class CameraIndi(IndiClass):
         filename = blob["members"]["CCD1"]["filename"]
         if not filename:
             return
-        blobformat = blob["members"]["CCD1"]["blobformat"]
-        blobsize = blob["members"]["CCD1"]["blobsize"]
-        print(filename, blobformat, blobsize)
+        # blobformat = blob["members"]["CCD1"]["blobformat"]
+        # blobsize = blob["members"]["CCD1"]["blobsize"]
+        # print(filename, blobformat, blobsize)
         # todo: move file to target directory
         # self.parent.writeImageFitsHeader()
         # todo: check if XISF will work
@@ -102,22 +101,41 @@ class CameraIndi(IndiClass):
     def expose(self) -> None:
         self.sendDownloadMode()
         self.txQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
-        self.txQ.put((self.deviceName, "CCD_BINNING", {"HOR_BIN": self.parent.binning,
-                                                           "VER_BIN": self.parent.binning}))
-        self.txQ.put((self.deviceName, "CCD_FRAME", {"X": self.parent.posX,
-                                                       "Y": self.parent.posY,
-                                                       "WIDTH": self.parent.width,
-                                                       "HEIGHT": self.parent.height}))
-        self.txQ.put((self.deviceName, "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": self.parent.exposureTime}))
+        self.txQ.put(
+            (
+                self.deviceName,
+                "CCD_BINNING",
+                {"HOR_BIN": self.parent.binning, "VER_BIN": self.parent.binning},
+            )
+        )
+        self.txQ.put(
+            (
+                self.deviceName,
+                "CCD_FRAME",
+                {
+                    "X": self.parent.posX,
+                    "Y": self.parent.posY,
+                    "WIDTH": self.parent.width,
+                    "HEIGHT": self.parent.height,
+                },
+            )
+        )
+        self.txQ.put(
+            (self.deviceName, "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": self.parent.exposureTime})
+        )
 
     def abort(self) -> None:
         self.txQ.put((self.deviceName, "CCD_ABORT_EXPOSURE", {"ABORT": "On"}))
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        self.txQ.put((self.deviceName, "CCD_COOLER", {"COOLER_ON": "On" if coolerOn else "Off"}))
+        self.txQ.put(
+            (self.deviceName, "CCD_COOLER", {"COOLER_ON": "On" if coolerOn else "Off"})
+        )
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
-        self.txQ.put((self.deviceName, "CCD_TEMPERATURE", {"CCD_TEMPERATURE_VALUE": temperature}))
+        self.txQ.put(
+            (self.deviceName, "CCD_TEMPERATURE", {"CCD_TEMPERATURE_VALUE": temperature})
+        )
 
     def sendOffset(self, offset: int = 0) -> None:
         self.txQ.put((self.deviceName, "CCD_OFFSET", {"OFFSET": offset}))

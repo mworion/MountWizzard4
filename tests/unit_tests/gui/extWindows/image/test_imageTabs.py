@@ -40,6 +40,7 @@ def function(qapp):
     gc.collect()
     QApplication.processEvents()
 
+
 def test_colorChange(function):
     function.colorChange()
 

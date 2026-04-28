@@ -94,21 +94,21 @@ from pathlib import Path
 faulthandler.enable()
 
 # ── absolute paths ─────────────────────────────────────────────────────────────
-PROJECT_ROOT = Path(__file__).resolve().parents[2]   # …/MountWizzard4
-WORK_DIR     = PROJECT_ROOT / "tests" / "work"   # separate from in-process test
+PROJECT_ROOT = Path(__file__).resolve().parents[2]  # …/MountWizzard4
+WORK_DIR = PROJECT_ROOT / "tests" / "work"  # separate from in-process test
 
 # ── parameters (overridable via environment variables) ─────────────────────────
-N_CYCLES      = int(os.environ.get("N_CYCLES",      "100"))
-CYCLE_TIMEOUT = float(os.environ.get("CYCLE_TIMEOUT", "60"))    # s – hard kill limit
-MAX_CYCLE_S   = float(os.environ.get("MAX_CYCLE_S",  "30.0"))   # s – upper assertion
-MIN_CYCLE_S   = float(os.environ.get("MIN_CYCLE_S",  "6.0"))    # s – premature-exit guard
+N_CYCLES = int(os.environ.get("N_CYCLES", "100"))
+CYCLE_TIMEOUT = float(os.environ.get("CYCLE_TIMEOUT", "60"))  # s – hard kill limit
+MAX_CYCLE_S = float(os.environ.get("MAX_CYCLE_S", "30.0"))  # s – upper assertion
+MIN_CYCLE_S = float(os.environ.get("MIN_CYCLE_S", "6.0"))  # s – premature-exit guard
 
 # ── optional real-mount host ────────────────────────────────────────────────────
-MOUNT_HOST    = os.environ.get("MW4_TEST_MOUNT", "mount.uranus")
-MOUNT_PORT_3492 = True   # True → port 3492, False → port 3490
+MOUNT_HOST = os.environ.get("MW4_TEST_MOUNT", "mount.uranus")
+MOUNT_PORT_3492 = True  # True → port 3492, False → port 3490
 
 # ── headless Qt (set MW4_TEST_HEADLESS=1 for CI / no-display environments) ─────
-HEADLESS      = os.environ.get("MW4_TEST_HEADLESS", "0") == "1"
+HEADLESS = os.environ.get("MW4_TEST_HEADLESS", "0") == "1"
 
 # ── sub-directories that survive between cycles ─────────────────────────────────
 _KEEP_SUBDIRS = {"config", "log", "assets", "image"}
@@ -120,6 +120,7 @@ LOG_TAIL_BYTES = 8_000
 # ──────────────────────────────────────────────────────────────────────────────
 # Directory helpers
 # ──────────────────────────────────────────────────────────────────────────────
+
 
 def _ensure_dirs() -> None:
     """Create the WORK_DIR sub-tree (mirrors ``bootstrap.setupWorkDirs``)."""
@@ -143,12 +144,12 @@ def _wipe_transient() -> None:
 
 def _inject_mount_host() -> None:
     """Write ``MOUNT_HOST`` into the active profile config before each cycle."""
-    config_dir   = WORK_DIR / "config"
+    config_dir = WORK_DIR / "config"
     profile_file = config_dir / "profiles.json"
     profile_name = "config"
     if profile_file.exists():
         try:
-            profiles     = json.loads(profile_file.read_text())
+            profiles = json.loads(profile_file.read_text())
             profile_name = profiles.get("profileName", "config")
         except Exception:
             pass
@@ -163,13 +164,14 @@ def _inject_mount_host() -> None:
 
     cfg.setdefault("mainW", {})
     cfg["mainW"]["mountHost"] = MOUNT_HOST
-    cfg["mainW"]["port3492"]  = MOUNT_PORT_3492
+    cfg["mainW"]["port3492"] = MOUNT_PORT_3492
     cfg_path.write_text(json.dumps(cfg, indent=2))
 
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Subprocess helpers
 # ──────────────────────────────────────────────────────────────────────────────
+
 
 def _build_env() -> dict:
     """
@@ -182,7 +184,7 @@ def _build_env() -> dict:
     env = os.environ.copy()
     env["PYTHONFAULTHANDLER"] = "1"
 
-    src_path   = str(PROJECT_ROOT / "src")
+    src_path = str(PROJECT_ROOT / "src")
     pythonpath = env.get("PYTHONPATH", "")
     env["PYTHONPATH"] = f"{src_path}:{pythonpath}" if pythonpath else src_path
 
@@ -194,11 +196,11 @@ def _build_env() -> dict:
 
 def _tail_mw4_log(n_bytes: int = LOG_TAIL_BYTES) -> str:
     """Return the last *n_bytes* of today's mw4 log (empty string if absent)."""
-    today   = datetime.date.today().strftime("%Y-%m-%d")
+    today = datetime.date.today().strftime("%Y-%m-%d")
     log_dir = WORK_DIR / "log"
     matches = glob.glob(str(log_dir / f"mw4-{today}.log"))
     if not matches:
-        matches = glob.glob(str(log_dir / "mw4-*.log"))   # fallback: any date
+        matches = glob.glob(str(log_dir / "mw4-*.log"))  # fallback: any date
     if not matches:
         return ""
     log_path = sorted(matches)[-1]
@@ -234,12 +236,7 @@ def _banner() -> None:
 
 def _row(cycle: int, t_total: float, returncode, status: str) -> None:
     mark = "✓" if status == "ok" else "✗"
-    print(
-        f"  [{mark}] #{cycle:02d}  "
-        f"total={t_total:6.2f}s  "
-        f"rc={returncode!s:>4}  "
-        f"{status}"
-    )
+    print(f"  [{mark}] #{cycle:02d}  total={t_total:6.2f}s  rc={returncode!s:>4}  {status}")
 
 
 def _summary(results: list) -> None:
@@ -251,14 +248,12 @@ def _summary(results: list) -> None:
         print(
             f"  cycle : min={min(totals):.2f}s  "
             f"max={max(totals):.2f}s  "
-            f"avg={sum(totals)/len(totals):.2f}s"
+            f"avg={sum(totals) / len(totals):.2f}s"
         )
     print(f"{'─' * _COL}\n")
 
 
-def _print_diagnostics(cycle: int,
-                        stderr_b: bytes,
-                        stdout_b: bytes) -> None:
+def _print_diagnostics(cycle: int, stderr_b: bytes, stdout_b: bytes) -> None:
     """Print log tail + captured I/O to help diagnose a failed cycle."""
     tail = _tail_mw4_log()
     if tail:
@@ -276,6 +271,7 @@ def _print_diagnostics(cycle: int,
 # Pytest fixtures
 # ──────────────────────────────────────────────────────────────────────────────
 
+
 @pytest.fixture(scope="module", autouse=True)
 def setup_work_dirs():
     """Create ``WORK_DIR`` layout once for the whole module."""
@@ -286,6 +282,7 @@ def setup_work_dirs():
 # ──────────────────────────────────────────────────────────────────────────────
 # Test
 # ──────────────────────────────────────────────────────────────────────────────
+
 
 def test_loader_subprocess_cycles():
     """
@@ -318,8 +315,8 @@ def test_loader_subprocess_cycles():
     _ensure_dirs()
     _banner()
 
-    env     = _build_env()
-    cmd     = [sys.executable, "-m", "mw4.cli", "-t", "1"]
+    env = _build_env()
+    cmd = [sys.executable, "-m", "mw4.cli", "-t", "1"]
     results = []
 
     for cycle in range(1, N_CYCLES + 1):
@@ -327,11 +324,11 @@ def test_loader_subprocess_cycles():
         if MOUNT_HOST:
             _inject_mount_host()
 
-        t0         = time.monotonic()
-        status     = "ok"
+        t0 = time.monotonic()
+        status = "ok"
         returncode = None
-        stdout_b   = b""
-        stderr_b   = b""
+        stdout_b = b""
+        stderr_b = b""
 
         # ── spawn ───────────────────────────────────────────────────────────
         proc = subprocess.Popen(
@@ -345,12 +342,12 @@ def test_loader_subprocess_cycles():
         # ── wait ────────────────────────────────────────────────────────────
         try:
             stdout_b, stderr_b = proc.communicate(timeout=CYCLE_TIMEOUT)
-            returncode         = proc.returncode
+            returncode = proc.returncode
         except subprocess.TimeoutExpired:
             proc.kill()
             stdout_b, stderr_b = proc.communicate()
-            returncode         = proc.returncode
-            status             = f"timeout (>{CYCLE_TIMEOUT:.0f}s)"
+            returncode = proc.returncode
+            status = f"timeout (>{CYCLE_TIMEOUT:.0f}s)"
 
         t_total = time.monotonic() - t0
 
@@ -361,14 +358,16 @@ def test_loader_subprocess_cycles():
             elif t_total < MIN_CYCLE_S:
                 status = f"too-fast ({t_total:.2f}s < {MIN_CYCLE_S:.1f}s)"
 
-        results.append({
-            "cycle":      cycle,
-            "t_total":    t_total,
-            "returncode": returncode,
-            "status":     status,
-            "stderr":     stderr_b,
-            "stdout":     stdout_b,
-        })
+        results.append(
+            {
+                "cycle": cycle,
+                "t_total": t_total,
+                "returncode": returncode,
+                "status": status,
+                "stderr": stderr_b,
+                "stdout": stdout_b,
+            }
+        )
 
         _row(cycle, t_total, returncode, status)
 
@@ -379,12 +378,8 @@ def test_loader_subprocess_cycles():
 
     # ── assertions ──────────────────────────────────────────────────────────
     failed = [r for r in results if r["status"] != "ok"]
-    assert not failed, (
-        f"{len(failed)}/{N_CYCLES} cycle(s) failed:\n"
-        + "\n".join(
-            f"  cycle {r['cycle']:02d}: {r['status']}"
-            for r in failed
-        )
+    assert not failed, f"{len(failed)}/{N_CYCLES} cycle(s) failed:\n" + "\n".join(
+        f"  cycle {r['cycle']:02d}: {r['status']}" for r in failed
     )
 
     for r in results:
@@ -392,4 +387,3 @@ def test_loader_subprocess_cycles():
             f"Cycle {r['cycle']:02d}: total {r['t_total']:.2f}s "
             f"exceeds limit {MAX_CYCLE_S:.1f}s"
         )
-

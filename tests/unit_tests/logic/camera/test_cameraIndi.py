@@ -37,25 +37,29 @@ def function():
 # setUpdateConfig
 # ---------------------------------------------------------------------------
 
+
 def test_setUpdateConfig(function):
     function.txQ = Queue()
     function.setUpdateConfig("test_device")
     assert function.txQ.qsize() == 4
     assert function.txQ.get() == ("test_device", "FITS_HEADER", {"FITS_OBJECT": "Skymodel"})
     assert function.txQ.get() == (
-        "test_device", "FITS_HEADER", {"FITS_OBSERVER": "MountWizzard4"}
+        "test_device",
+        "FITS_HEADER",
+        {"FITS_OBSERVER": "MountWizzard4"},
     )
     assert function.txQ.get() == (
-        "test_device", "ACTIVE_DEVICES", {"ACTIVE_TELESCOPE": "LX200 10micron"}
+        "test_device",
+        "ACTIVE_DEVICES",
+        {"ACTIVE_TELESCOPE": "LX200 10micron"},
     )
-    assert function.txQ.get() == (
-        "test_device", "TELESCOPE_TYPE", {"TELESCOPE_PRIMARY": "On"}
-    )
+    assert function.txQ.get() == ("test_device", "TELESCOPE_TYPE", {"TELESCOPE_PRIMARY": "On"})
 
 
 # ---------------------------------------------------------------------------
 # setExposureState
 # ---------------------------------------------------------------------------
+
 
 def test_setExposureState_no_ccd_exposure(function):
     """No 'CCD_EXPOSURE' key → early return, no signals emitted."""
@@ -149,6 +153,7 @@ def test_setExposureState_unknown_state(function):
 # setCanTemperature
 # ---------------------------------------------------------------------------
 
+
 def test_setCanTemperature_absent(function):
     """No 'CCD_TEMPERATURE' in vectors → data key not set."""
     function.data.pop("CAN_SET_CCD_TEMPERATURE", None)
@@ -166,6 +171,7 @@ def test_setCanTemperature_present(function):
 # ---------------------------------------------------------------------------
 # addGainLimits
 # ---------------------------------------------------------------------------
+
 
 def test_addGainLimits_absent(function):
     """No 'CCD_GAIN' → data unchanged."""
@@ -196,6 +202,7 @@ def test_addGainLimits_without_min_max(function):
 # addOffsetLimits
 # ---------------------------------------------------------------------------
 
+
 def test_addOffsetLimits_absent(function):
     """No 'CCD_OFFSET' → data unchanged."""
     function.data.pop("CCD_OFFSET.OFFSET_MIN", None)
@@ -225,6 +232,7 @@ def test_addOffsetLimits_without_min_max(function):
 # saveBLOB
 # ---------------------------------------------------------------------------
 
+
 def test_saveBLOB_absent(function):
     """No 'CCD1' in vectors → exposeFinished not called."""
     item = mock.MagicMock()
@@ -238,9 +246,13 @@ def test_saveBLOB_not_setblob(function):
     """'CCD1' present but item.eventtype != 'SetBLOB' → exposeFinished not called."""
     item = mock.MagicMock()
     item.eventtype = "DefBLOB"
-    vectors = {"CCD1": {"members": {"CCD1": {"filename": "test.fits",
-                                             "blobformat": ".fits",
-                                             "blobsize": 100}}}}
+    vectors = {
+        "CCD1": {
+            "members": {
+                "CCD1": {"filename": "test.fits", "blobformat": ".fits", "blobsize": 100}
+            }
+        }
+    }
     with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
         function.saveBLOB(item, vectors)
         mock_fin.assert_not_called()
@@ -250,9 +262,9 @@ def test_saveBLOB_no_filename(function):
     """'CCD1' present, SetBLOB, but filename is empty → exposeFinished not called."""
     item = mock.MagicMock()
     item.eventtype = "SetBLOB"
-    vectors = {"CCD1": {"members": {"CCD1": {"filename": "",
-                                             "blobformat": ".fits",
-                                             "blobsize": 0}}}}
+    vectors = {
+        "CCD1": {"members": {"CCD1": {"filename": "", "blobformat": ".fits", "blobsize": 0}}}
+    }
     with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
         function.saveBLOB(item, vectors)
         mock_fin.assert_not_called()
@@ -262,9 +274,13 @@ def test_saveBLOB_present(function):
     """'CCD1' present, SetBLOB, valid filename → exposeFinished called."""
     item = mock.MagicMock()
     item.eventtype = "SetBLOB"
-    vectors = {"CCD1": {"members": {"CCD1": {"filename": "image.fits",
-                                             "blobformat": ".fits",
-                                             "blobsize": 1024}}}}
+    vectors = {
+        "CCD1": {
+            "members": {
+                "CCD1": {"filename": "image.fits", "blobformat": ".fits", "blobsize": 1024}
+            }
+        }
+    }
     with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
         function.saveBLOB(item, vectors)
         mock_fin.assert_called_once()
@@ -273,6 +289,7 @@ def test_saveBLOB_present(function):
 # ---------------------------------------------------------------------------
 # writeVectorsToData
 # ---------------------------------------------------------------------------
+
 
 def test_writeVectorsToData(function):
     """All delegate methods and super() are called with item and/or vectors."""
@@ -297,6 +314,7 @@ def test_writeVectorsToData(function):
 # expose
 # ---------------------------------------------------------------------------
 
+
 def test_expose(function):
     """expose() puts 5 correctly structured items into the txQ."""
     function.txQ = Queue()
@@ -309,26 +327,21 @@ def test_expose(function):
     function.parent.exposureTime = 3.0
     function.expose()
     assert function.txQ.qsize() == 5
+    assert function.txQ.get() == ("test_cam", "READOUT_QUALITY", {"QUALITY_LOW": "On"})
+    assert function.txQ.get() == ("test_cam", "READOUT_QUALITY", {"QUALITY_LOW": "On"})
+    assert function.txQ.get() == ("test_cam", "CCD_BINNING", {"HOR_BIN": 2, "VER_BIN": 2})
     assert function.txQ.get() == (
-        "test_cam", "READOUT_QUALITY", {"QUALITY_LOW": "On"}
+        "test_cam",
+        "CCD_FRAME",
+        {"X": 10, "Y": 20, "WIDTH": 800, "HEIGHT": 600},
     )
-    assert function.txQ.get() == (
-        "test_cam", "READOUT_QUALITY", {"QUALITY_LOW": "On"}
-    )
-    assert function.txQ.get() == (
-        "test_cam", "CCD_BINNING", {"HOR_BIN": 2, "VER_BIN": 2}
-    )
-    assert function.txQ.get() == (
-        "test_cam", "CCD_FRAME", {"X": 10, "Y": 20, "WIDTH": 800, "HEIGHT": 600}
-    )
-    assert function.txQ.get() == (
-        "test_cam", "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": 3.0}
-    )
+    assert function.txQ.get() == ("test_cam", "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": 3.0})
 
 
 # ---------------------------------------------------------------------------
 # abort
 # ---------------------------------------------------------------------------
+
 
 def test_abort(function):
     """abort() puts one abort command into the txQ."""
@@ -336,14 +349,13 @@ def test_abort(function):
     function.deviceName = "test_cam"
     function.abort()
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_cam", "CCD_ABORT_EXPOSURE", {"ABORT": "On"}
-    )
+    assert function.txQ.get() == ("test_cam", "CCD_ABORT_EXPOSURE", {"ABORT": "On"})
 
 
 # ---------------------------------------------------------------------------
 # sendCoolerSwitch
 # ---------------------------------------------------------------------------
+
 
 def test_sendCoolerSwitch_off(function):
     """sendCoolerSwitch(False) → queues COOLER_ON='Off'."""
@@ -367,6 +379,7 @@ def test_sendCoolerSwitch_on(function):
 # sendCoolerTemp
 # ---------------------------------------------------------------------------
 
+
 def test_sendCoolerTemp(function):
     """sendCoolerTemp() queues the target CCD temperature."""
     function.txQ = Queue()
@@ -374,13 +387,16 @@ def test_sendCoolerTemp(function):
     function.sendCoolerTemp(temperature=-10.5)
     assert function.txQ.qsize() == 1
     assert function.txQ.get() == (
-        "test_cam", "CCD_TEMPERATURE", {"CCD_TEMPERATURE_VALUE": -10.5}
+        "test_cam",
+        "CCD_TEMPERATURE",
+        {"CCD_TEMPERATURE_VALUE": -10.5},
     )
 
 
 # ---------------------------------------------------------------------------
 # sendOffset
 # ---------------------------------------------------------------------------
+
 
 def test_sendOffset(function):
     """sendOffset() queues the offset value."""
@@ -394,6 +410,7 @@ def test_sendOffset(function):
 # ---------------------------------------------------------------------------
 # sendGain
 # ---------------------------------------------------------------------------
+
 
 def test_sendGain(function):
     """sendGain() queues the gain value."""

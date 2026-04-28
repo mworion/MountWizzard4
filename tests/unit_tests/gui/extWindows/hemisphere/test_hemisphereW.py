@@ -36,6 +36,7 @@ def function(qapp):
     gc.collect()
     QApplication.processEvents()
 
+
 def test_initConfig_1(function):
     with mock.patch.object(function.horizonDraw, "initConfig"):
         with mock.patch.object(function.hemisphereDraw, "initConfig"):

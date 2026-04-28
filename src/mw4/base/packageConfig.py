@@ -15,4 +15,3 @@
 ###########################################################
 isAnalyse: bool = False
 isReference: bool = False
-

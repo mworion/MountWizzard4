@@ -20,5 +20,3 @@ def mainThreadSleep(value: int) -> None:
     loop = QEventLoop()
     QTimer.singleShot(value, loop.quit)
     loop.exec()
-
-

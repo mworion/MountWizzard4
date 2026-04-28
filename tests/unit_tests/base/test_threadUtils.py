@@ -37,5 +37,3 @@ def test_mainThreadSleep_zero_returns_quickly():
 
     # Should return almost immediately (within 50 ms)
     assert delta < 0.05
-
-

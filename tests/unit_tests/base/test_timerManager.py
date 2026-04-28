@@ -81,13 +81,9 @@ def _collect_emitted(mock_app, mgr, method_name, counter_value):
     """Set the counter and call the named method, returning emitted signal names."""
     emitted = []
     for _, sig_name in CYCLIC_SCHEDULE:
-        getattr(mock_app, sig_name).connect(
-            lambda name=sig_name: emitted.append(name)
-        )
+        getattr(mock_app, sig_name).connect(lambda name=sig_name: emitted.append(name))
     for _, sig_name in START_SCHEDULE:
-        getattr(mock_app, sig_name).connect(
-            lambda name=sig_name: emitted.append(name)
-        )
+        getattr(mock_app, sig_name).connect(lambda name=sig_name: emitted.append(name))
     mgr.counter = counter_value
     getattr(mgr, method_name)()
     return emitted
@@ -96,9 +92,7 @@ def _collect_emitted(mock_app, mgr, method_name, counter_value):
 def test_emit_cyclic_always_fires_update0_1s(mock_app, mgr):
     for counter in [1, 2, 7, 13, 99]:
         emitted = _collect_emitted(mock_app, mgr, "emitCyclic", counter)
-        assert "update0_1s" in emitted, (
-            f"update0_1s should fire at counter={counter}"
-        )
+        assert "update0_1s" in emitted, f"update0_1s should fire at counter={counter}"
 
 
 def test_emit_cyclic_update1s(mock_app, mgr):
@@ -161,9 +155,7 @@ def test_emit_start_fires_at_tick_30(mock_app, mgr):
 def test_emit_start_does_not_fire_at_other_ticks(mock_app, mgr):
     for counter in [10, 29, 31, 50, 100, 300]:
         emitted = _collect_emitted(mock_app, mgr, "emitStart", counter)
-        assert "start3s" not in emitted, (
-            f"start3s should not fire at counter={counter}"
-        )
+        assert "start3s" not in emitted, f"start3s should not fire at counter={counter}"
 
 
 def test_on_tick_emits_signals(mock_app, mgr):
@@ -178,4 +170,3 @@ def test_on_tick_emits_signals(mock_app, mgr):
 def test_schedules_are_not_empty():
     assert len(CYCLIC_SCHEDULE) > 0
     assert len(START_SCHEDULE) > 0
-

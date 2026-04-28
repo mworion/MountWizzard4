@@ -124,4 +124,3 @@ def test_allSignalsDeclared(mountSignals):
         assert callable(getattr(mountSignals, signalName).connect), (
             f"'{signalName}' does not have a callable connect method"
         )
-

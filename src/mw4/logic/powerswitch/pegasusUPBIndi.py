@@ -13,8 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-from mw4.base.indiClass import IndiClass
 from indipyclient.queclient import EventItem
+from mw4.base.indiClass import IndiClass
 from typing import Any
 
 
@@ -63,7 +63,9 @@ class PegasusUPBIndi(IndiClass):
             value = "On" if self.data[f"AUX_POWER_OUTLET.OUTLET_{port}"] == "Off" else "Off"
             self.txQ.put((self.deviceName, "AUX_POWER_OUTLET", {f"OUTLET_{port}": value}))
         else:
-            value = "On" if self.data[f"POWER_CONTROL.POWER_CONTROL_{port}"] == "Off" else "Off"
+            value = (
+                "On" if self.data[f"POWER_CONTROL.POWER_CONTROL_{port}"] == "Off" else "Off"
+            )
             self.txQ.put((self.deviceName, "POWER_CONTROL", {f"POWER_CONTROL_{port}": value}))
 
     def togglePowerPortBoot(self, port: str) -> None:
@@ -75,8 +77,8 @@ class PegasusUPBIndi(IndiClass):
     def toggleHubUSB(self) -> None:
         if self.isINDIGO:
             return
-        value = "On" if self.data[f"USB_HUB_CONTROL.INDI_ENABLED"] == "Off" else "Off"
-        self.txQ.put((self.deviceName, "USB_HUB_CONTROL", {f"INDI_ENABLED": value}))
+        value = "On" if self.data["USB_HUB_CONTROL.INDI_ENABLED"] == "Off" else "Off"
+        self.txQ.put((self.deviceName, "USB_HUB_CONTROL", {"INDI_ENABLED": value}))
 
     def togglePortUSB(self, port: str) -> None:
         if self.isINDIGO:
@@ -90,20 +92,20 @@ class PegasusUPBIndi(IndiClass):
         if self.device is None:
             return
         if self.isINDIGO:
-            value = "On" if self.data[f"AUX_DEW_CONTROL.MANUAL"] == "Off" else "Off"
+            value = "On" if self.data["AUX_DEW_CONTROL.MANUAL"] == "Off" else "Off"
             self.txQ.put((self.deviceName, "AUX_DEW_CONTROL", {"MANUAL": value}))
-            value = "On" if self.data[f"AUX_DEW_CONTROL.MANUAL"] == "On" else "Off"
+            value = "On" if self.data["AUX_DEW_CONTROL.MANUAL"] == "On" else "Off"
             self.txQ.put((self.deviceName, "AUX_DEW_CONTROL", {"AUTOMATIC": value}))
         else:
             if self.modelVersion == 1:
                 if "AUTO_DEW.INDI_ENABLED" not in self.data:
                     return
-                value = "On" if self.data[f"AUTO_DEW.INDI_ENABLED"] == "Off" else "Off"
+                value = "On" if self.data["AUTO_DEW.INDI_ENABLED"] == "Off" else "Off"
                 self.txQ.put((self.deviceName, "AUTO_DEW", {"INDI_ENABLED": value}))
             else:
                 if "AUTO_DEW.DEW_A" not in self.data:
                     return
-                value = "On" if self.data[f"AUTO_DEW.DEW_A"] == "Off" else "Off"
+                value = "On" if self.data["AUTO_DEW.DEW_A"] == "Off" else "Off"
                 self.txQ.put((self.deviceName, "AUTO_DEW", {"DEW_A": value}))
                 self.txQ.put((self.deviceName, "AUTO_DEW", {"DEW_B": value}))
                 self.txQ.put((self.deviceName, "AUTO_DEW", {"DEW_C": value}))
@@ -111,7 +113,9 @@ class PegasusUPBIndi(IndiClass):
     def sendDew(self, port: str, value: float) -> None:
         if self.isINDIGO:
             conv = {"A": "1", "B": "2", "C": "3"}
-            self.txQ.put((self.deviceName, "AUX_HEATER_OUTLET", {f"OUTLET_{conv[port]}": value}))
+            self.txQ.put(
+                (self.deviceName, "AUX_HEATER_OUTLET", {f"OUTLET_{conv[port]}": value})
+            )
         else:
             self.txQ.put((self.deviceName, "DEW_PWM", {f"DEW_{port}": value}))
 
@@ -119,7 +123,9 @@ class PegasusUPBIndi(IndiClass):
         if self.isINDIGO:
             self.txQ.put((self.deviceName, "X_AUX_VARIABLE_POWER_OUTLET", {"OUTLET_1": value}))
         else:
-            self.txQ.put((self.deviceName, "ADJUSTABLE_VOLTAGE", {"ADJUSTABLE_VOLTAGE_VALUE": value}))
+            self.txQ.put(
+                (self.deviceName, "ADJUSTABLE_VOLTAGE", {"ADJUSTABLE_VOLTAGE_VALUE": value})
+            )
 
     def reboot(self) -> None:
         if self.device is None:

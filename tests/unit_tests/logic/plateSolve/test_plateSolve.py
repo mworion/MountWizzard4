@@ -267,4 +267,3 @@ def test_abort_with_process(function):
     function.process = fake
     function.abort()
     assert fake.killed
-

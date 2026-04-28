@@ -14,6 +14,7 @@
 #
 ###########################################################
 """Tests for mw4.base.bootstrap utility functions."""
+
 import sys
 import unittest.mock as mock
 import mw4.base.bootstrap as bootstrap
@@ -29,6 +30,7 @@ def test_namesImportable():
         setupWorkDirs,
         writeSystemInfo,
     )
+
     assert callable(configureEnvironment)
     assert callable(exceptHook)
     assert callable(extractDataFiles)
@@ -40,7 +42,7 @@ def test_namesImportable():
 def test_minimizeStartTerminalNonWindows():
     """minimizeStartTerminal is a no-op on non-Windows platforms."""
     with mock.patch("platform.system", return_value="Linux"):
-        bootstrap.minimizeStartTerminal()   # must not raise
+        bootstrap.minimizeStartTerminal()  # must not raise
 
 
 def test_minimizeStartTerminalOnWindows():
@@ -52,4 +54,3 @@ def test_minimizeStartTerminalOnWindows():
     mockCtypes.windll.user32.ShowWindow.assert_called_once_with(
         mockCtypes.windll.kernel32.GetConsoleWindow(), 0
     )
-

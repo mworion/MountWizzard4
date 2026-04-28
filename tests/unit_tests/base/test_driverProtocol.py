@@ -14,6 +14,7 @@
 #
 ###########################################################
 """Unit tests for mw4.base.driverProtocol.DriverProtocol."""
+
 import pytest
 from typing import Protocol, get_protocol_members, runtime_checkable
 from mw4.base.driverProtocol import DriverProtocol
@@ -22,6 +23,7 @@ from mw4.base.driverProtocol import DriverProtocol
 # ---------------------------------------------------------------------------
 # Concrete stubs used across tests
 # ---------------------------------------------------------------------------
+
 
 class FullyConformingDriver:
     """Implements every attribute and method required by DriverProtocol."""
@@ -109,12 +111,14 @@ class MissingMethodDriver:
 
 class EmptyDriver:
     """No methods, no attributes."""
+
     pass
 
 
 # ---------------------------------------------------------------------------
 # Tests: protocol structure
 # ---------------------------------------------------------------------------
+
 
 def test_driver_protocol_is_a_protocol():
     """DriverProtocol must be a subclass of Protocol."""
@@ -190,6 +194,7 @@ def test_protocol_has_method(method_name):
 # Tests: isinstance checks (runtime_checkable behaviour)
 # ---------------------------------------------------------------------------
 
+
 def test_isinstance_fully_conforming_driver():
     """A class with all methods passes the isinstance check."""
     obj = FullyConformingDriver()
@@ -224,6 +229,7 @@ def test_isinstance_plain_object():
 # Tests: conforming class used as return value / type annotation
 # ---------------------------------------------------------------------------
 
+
 def test_discover_devices_returns_list():
     drv = FullyConformingDriver()
     result = drv.discoverDevices("camera")
@@ -236,4 +242,3 @@ def test_fully_conforming_attributes_types():
     assert isinstance(drv.serverConnected, bool)
     assert isinstance(drv.defaultConfig, dict)
     assert isinstance(drv.data, dict)
-

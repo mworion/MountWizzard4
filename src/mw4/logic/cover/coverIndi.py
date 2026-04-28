@@ -13,8 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-from mw4.base.indiClass import IndiClass
 from indipyclient.queclient import EventItem
+from mw4.base.indiClass import IndiClass
 from typing import Any
 
 
@@ -23,7 +23,7 @@ class CoverIndi(IndiClass):
         super().__init__(parent=parent)
         self.signals = parent.signals
 
-    def writeVectorsToData(self, item:EventItem, vectors: dict) -> None:
+    def writeVectorsToData(self, item: EventItem, vectors: dict) -> None:
         super().writeVectorsToData(item, vectors)
         cover = vectors.get("Cover", {})
         if not cover:
@@ -48,4 +48,6 @@ class CoverIndi(IndiClass):
         self.txQ.put((self.deviceName, "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "Off"}))
 
     def lightIntensity(self, value: float) -> None:
-        self.txQ.put((self.deviceName, "FLAT_LIGHT_INTENSITY", {"FLAT_LIGHT_INTENSITY_VALUE": value}))
+        self.txQ.put(
+            (self.deviceName, "FLAT_LIGHT_INTENSITY", {"FLAT_LIGHT_INTENSITY_VALUE": value})
+        )

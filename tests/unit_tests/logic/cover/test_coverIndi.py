@@ -36,6 +36,7 @@ def function():
 # writeVectorsToData
 # ---------------------------------------------------------------------------
 
+
 def test_writeVectorsToData_no_cover(function):
     """No 'Cover' key → only super() is called, data not changed."""
     item = mock.MagicMock()
@@ -70,6 +71,7 @@ def test_writeVectorsToData_cover_missing_members(function):
 # closeCover
 # ---------------------------------------------------------------------------
 
+
 def test_closeCover(function):
     """closeCover() puts one CAP_PARK/PARK command into txQ."""
     function.txQ = Queue()
@@ -82,6 +84,7 @@ def test_closeCover(function):
 # ---------------------------------------------------------------------------
 # openCover
 # ---------------------------------------------------------------------------
+
 
 def test_openCover(function):
     """openCover() puts one CAP_PARK/UNPARK command into txQ."""
@@ -96,6 +99,7 @@ def test_openCover(function):
 # haltCover
 # ---------------------------------------------------------------------------
 
+
 def test_haltCover(function):
     """haltCover() is a no-op (pass)."""
     function.haltCover()  # must not raise
@@ -105,20 +109,20 @@ def test_haltCover(function):
 # lightOn
 # ---------------------------------------------------------------------------
 
+
 def test_lightOn(function):
     """lightOn() puts FLAT_LIGHT_ON='On' into txQ."""
     function.txQ = Queue()
     function.deviceName = "test_cover"
     function.lightOn()
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_cover", "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "On"}
-    )
+    assert function.txQ.get() == ("test_cover", "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "On"})
 
 
 # ---------------------------------------------------------------------------
 # lightOff
 # ---------------------------------------------------------------------------
+
 
 def test_lightOff(function):
     """lightOff() puts FLAT_LIGHT_ON='Off' into txQ."""
@@ -126,14 +130,13 @@ def test_lightOff(function):
     function.deviceName = "test_cover"
     function.lightOff()
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_cover", "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "Off"}
-    )
+    assert function.txQ.get() == ("test_cover", "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "Off"})
 
 
 # ---------------------------------------------------------------------------
 # lightIntensity
 # ---------------------------------------------------------------------------
+
 
 def test_lightIntensity(function):
     """lightIntensity(value) puts the intensity value into txQ."""
@@ -142,5 +145,7 @@ def test_lightIntensity(function):
     function.lightIntensity(128.0)
     assert function.txQ.qsize() == 1
     assert function.txQ.get() == (
-        "test_cover", "FLAT_LIGHT_INTENSITY", {"FLAT_LIGHT_INTENSITY_VALUE": 128.0}
+        "test_cover",
+        "FLAT_LIGHT_INTENSITY",
+        {"FLAT_LIGHT_INTENSITY_VALUE": 128.0},
     )

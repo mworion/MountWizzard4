@@ -36,6 +36,7 @@ def function():
 # setUpdateConfig
 # ---------------------------------------------------------------------------
 
+
 def test_setUpdateConfig(function):
     """setUpdateConfig() puts POLLING_PERIOD with updateRate into txQ."""
     function.txQ = Queue()
@@ -49,6 +50,7 @@ def test_setUpdateConfig(function):
 # ---------------------------------------------------------------------------
 # checkDriverInfo
 # ---------------------------------------------------------------------------
+
 
 def test_checkDriverInfo_absent(function):
     """No 'DRIVER_INFO' key → early return, modelVersion unchanged."""
@@ -108,6 +110,7 @@ def test_checkDriverInfo_non_upb_already_2(function):
 # ---------------------------------------------------------------------------
 # checkFirmwareInfo
 # ---------------------------------------------------------------------------
+
 
 def test_checkFirmwareInfo_absent(function):
     """No 'FIRMWARE_INFO' key → early return, modelVersion unchanged."""
@@ -180,6 +183,7 @@ def test_checkFirmwareInfo_missing_version_defaults_old(function):
 # writeVectorsToData
 # ---------------------------------------------------------------------------
 
+
 def test_writeVectorsToData(function):
     """All delegates and super() are called with item and vectors."""
     item = mock.MagicMock()
@@ -197,6 +201,7 @@ def test_writeVectorsToData(function):
 # togglePowerPort
 # ---------------------------------------------------------------------------
 
+
 def test_togglePowerPort_indi_off_to_on(function):
     """isINDIGO=False, current value 'Off' → queues 'On'."""
     function.txQ = Queue()
@@ -205,9 +210,7 @@ def test_togglePowerPort_indi_off_to_on(function):
     function.data["POWER_CONTROL.POWER_CONTROL_1"] = "Off"
     function.togglePowerPort(port="1")
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_upb", "POWER_CONTROL", {"POWER_CONTROL_1": "On"}
-    )
+    assert function.txQ.get() == ("test_upb", "POWER_CONTROL", {"POWER_CONTROL_1": "On"})
 
 
 def test_togglePowerPort_indi_on_to_off(function):
@@ -218,9 +221,7 @@ def test_togglePowerPort_indi_on_to_off(function):
     function.data["POWER_CONTROL.POWER_CONTROL_2"] = "On"
     function.togglePowerPort(port="2")
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_upb", "POWER_CONTROL", {"POWER_CONTROL_2": "Off"}
-    )
+    assert function.txQ.get() == ("test_upb", "POWER_CONTROL", {"POWER_CONTROL_2": "Off"})
 
 
 def test_togglePowerPort_indigo_off_to_on(function):
@@ -231,9 +232,7 @@ def test_togglePowerPort_indigo_off_to_on(function):
     function.data["AUX_POWER_OUTLET.OUTLET_1"] = "Off"
     function.togglePowerPort(port="1")
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_upb", "AUX_POWER_OUTLET", {"OUTLET_1": "On"}
-    )
+    assert function.txQ.get() == ("test_upb", "AUX_POWER_OUTLET", {"OUTLET_1": "On"})
 
 
 def test_togglePowerPort_indigo_on_to_off(function):
@@ -244,14 +243,13 @@ def test_togglePowerPort_indigo_on_to_off(function):
     function.data["AUX_POWER_OUTLET.OUTLET_2"] = "On"
     function.togglePowerPort(port="2")
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_upb", "AUX_POWER_OUTLET", {"OUTLET_2": "Off"}
-    )
+    assert function.txQ.get() == ("test_upb", "AUX_POWER_OUTLET", {"OUTLET_2": "Off"})
 
 
 # ---------------------------------------------------------------------------
 # togglePowerPortBoot
 # ---------------------------------------------------------------------------
+
 
 def test_togglePowerPortBoot_indigo_returns_early(function):
     """isINDIGO=True → early return, nothing put into txQ."""
@@ -269,9 +267,7 @@ def test_togglePowerPortBoot_indi_off_to_on(function):
     function.data["POWER_ON_BOOT.POWER_PORT_1"] = "Off"
     function.togglePowerPortBoot(port="1")
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_upb", "POWER_ON_BOOT", {"POWER_PORT_1": "On"}
-    )
+    assert function.txQ.get() == ("test_upb", "POWER_ON_BOOT", {"POWER_PORT_1": "On"})
 
 
 def test_togglePowerPortBoot_indi_on_to_off(function):
@@ -282,14 +278,13 @@ def test_togglePowerPortBoot_indi_on_to_off(function):
     function.data["POWER_ON_BOOT.POWER_PORT_2"] = "On"
     function.togglePowerPortBoot(port="2")
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_upb", "POWER_ON_BOOT", {"POWER_PORT_2": "Off"}
-    )
+    assert function.txQ.get() == ("test_upb", "POWER_ON_BOOT", {"POWER_PORT_2": "Off"})
 
 
 # ---------------------------------------------------------------------------
 # toggleHubUSB
 # ---------------------------------------------------------------------------
+
 
 def test_toggleHubUSB_indigo_returns_early(function):
     """isINDIGO=True → early return, nothing put into txQ."""
@@ -307,9 +302,7 @@ def test_toggleHubUSB_indi_off_to_on(function):
     function.data["USB_HUB_CONTROL.INDI_ENABLED"] = "Off"
     function.toggleHubUSB()
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_upb", "USB_HUB_CONTROL", {"INDI_ENABLED": "On"}
-    )
+    assert function.txQ.get() == ("test_upb", "USB_HUB_CONTROL", {"INDI_ENABLED": "On"})
 
 
 def test_toggleHubUSB_indi_on_to_off(function):
@@ -320,14 +313,13 @@ def test_toggleHubUSB_indi_on_to_off(function):
     function.data["USB_HUB_CONTROL.INDI_ENABLED"] = "On"
     function.toggleHubUSB()
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_upb", "USB_HUB_CONTROL", {"INDI_ENABLED": "Off"}
-    )
+    assert function.txQ.get() == ("test_upb", "USB_HUB_CONTROL", {"INDI_ENABLED": "Off"})
 
 
 # ---------------------------------------------------------------------------
 # togglePortUSB
 # ---------------------------------------------------------------------------
+
 
 def test_togglePortUSB_indi_off_to_on(function):
     """isINDIGO=False, port 'Off' → queues 'On' to USB_PORT_CONTROL."""
@@ -337,9 +329,7 @@ def test_togglePortUSB_indi_off_to_on(function):
     function.data["USB_PORT_CONTROL.PORT_1"] = "Off"
     function.togglePortUSB(port="1")
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_upb", "USB_PORT_CONTROL", {"PORT_1": "On"}
-    )
+    assert function.txQ.get() == ("test_upb", "USB_PORT_CONTROL", {"PORT_1": "On"})
 
 
 def test_togglePortUSB_indi_on_to_off(function):
@@ -350,9 +340,7 @@ def test_togglePortUSB_indi_on_to_off(function):
     function.data["USB_PORT_CONTROL.PORT_2"] = "On"
     function.togglePortUSB(port="2")
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_upb", "USB_PORT_CONTROL", {"PORT_2": "Off"}
-    )
+    assert function.txQ.get() == ("test_upb", "USB_PORT_CONTROL", {"PORT_2": "Off"})
 
 
 def test_togglePortUSB_indigo_off_to_on(function):
@@ -380,6 +368,7 @@ def test_togglePortUSB_indigo_on_to_off(function):
 # ---------------------------------------------------------------------------
 # toggleAutoDew  (legacy: still uses self.device / self.client)
 # ---------------------------------------------------------------------------
+
 
 def test_toggleAutoDew_device_none(function):
     """device=None → early return, nothing put into txQ."""
@@ -497,6 +486,7 @@ def test_toggleAutoDew_indi_v2_dew_a_off(function):
 # sendDew  (txQ-based)
 # ---------------------------------------------------------------------------
 
+
 def test_sendDew_indi(function):
     """isINDIGO=False → queues DEW_PWM with correct port key."""
     function.txQ = Queue()
@@ -541,6 +531,7 @@ def test_sendDew_indigo_port_b(function):
 # sendAdjustableOutput  (txQ-based)
 # ---------------------------------------------------------------------------
 
+
 def test_sendAdjustableOutput_indi(function):
     """isINDIGO=False → queues ADJUSTABLE_VOLTAGE_VALUE."""
     function.txQ = Queue()
@@ -549,7 +540,9 @@ def test_sendAdjustableOutput_indi(function):
     function.sendAdjustableOutput(12.0)
     assert function.txQ.qsize() == 1
     assert function.txQ.get() == (
-        "test_upb", "ADJUSTABLE_VOLTAGE", {"ADJUSTABLE_VOLTAGE_VALUE": 12.0}
+        "test_upb",
+        "ADJUSTABLE_VOLTAGE",
+        {"ADJUSTABLE_VOLTAGE_VALUE": 12.0},
     )
 
 
@@ -561,13 +554,16 @@ def test_sendAdjustableOutput_indigo(function):
     function.sendAdjustableOutput(12.0)
     assert function.txQ.qsize() == 1
     assert function.txQ.get() == (
-        "test_upb", "X_AUX_VARIABLE_POWER_OUTLET", {"OUTLET_1": 12.0}
+        "test_upb",
+        "X_AUX_VARIABLE_POWER_OUTLET",
+        {"OUTLET_1": 12.0},
     )
 
 
 # ---------------------------------------------------------------------------
 # reboot  (txQ-based)
 # ---------------------------------------------------------------------------
+
 
 def test_reboot_device_none(function):
     """device=None → early return, nothing in txQ."""

@@ -63,29 +63,29 @@ from pathlib import Path
 faulthandler.enable()
 
 # ── test parameters ────────────────────────────────────────────────────────────
-N_CYCLES = 100                # number of start/stop cycles to run
-BOOT_TIMEOUT_MS = 15_000   # max ms to wait for the main window to appear
-QUIT_TIMEOUT_MS = 30_000   # max ms to wait for update10s → quit()  (fires at ≈8 s)
-MAX_BOOT_S = 10.0           # per-cycle assertion: boot faster than this
-MAX_CYCLE_S = 25.0          # per-cycle assertion: full cycle faster than this
-                            #   (boot ≈ 5–8 s  +  update10s at 8 s  +  margin)
+N_CYCLES = 100  # number of start/stop cycles to run
+BOOT_TIMEOUT_MS = 15_000  # max ms to wait for the main window to appear
+QUIT_TIMEOUT_MS = 30_000  # max ms to wait for update10s → quit()  (fires at ≈8 s)
+MAX_BOOT_S = 10.0  # per-cycle assertion: boot faster than this
+MAX_CYCLE_S = 25.0  # per-cycle assertion: full cycle faster than this
+#   (boot ≈ 5–8 s  +  update10s at 8 s  +  margin)
 
 # ── optional mount host (set to "" to skip real TCP mount checks) ─────────────
-MOUNT_HOST = "mount.uranus"             # e.g. "192.168.2.15"  – injected into profile config
-MOUNT_PORT_3492 = True      # True → port 3492, False → port 3490
+MOUNT_HOST = "mount.uranus"  # e.g. "192.168.2.15"  – injected into profile config
+MOUNT_PORT_3492 = True  # True → port 3492, False → port 3490
 
 # ── work directory layout (mirrors bootstrap.setupWorkDirs) ──────────────────
 WORK_DIR = Path("tests/work")
 
 mwglob = {
-    "workDir":    WORK_DIR,
-    "configDir":  WORK_DIR / "config",
-    "dataDir":    WORK_DIR / "assets",
-    "imageDir":   WORK_DIR / "image",
-    "tempDir":    WORK_DIR / "temp",
-    "modelDir":   WORK_DIR / "model",
+    "workDir": WORK_DIR,
+    "configDir": WORK_DIR / "config",
+    "dataDir": WORK_DIR / "assets",
+    "imageDir": WORK_DIR / "image",
+    "tempDir": WORK_DIR / "temp",
+    "modelDir": WORK_DIR / "model",
     "measureDir": WORK_DIR / "measure",
-    "logDir":     WORK_DIR / "log",
+    "logDir": WORK_DIR / "log",
 }
 
 # Keys whose content should NOT be wiped between tests
@@ -93,6 +93,7 @@ _SKIP_CLEAN = {"workDir", "configDir", "logDir", "imageDir", "dataDir"}
 
 
 # ── fixtures ───────────────────────────────────────────────────────────────────
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_work_dirs():
@@ -165,6 +166,7 @@ def _wipe():
 
 _COL = 65
 
+
 def _banner():
     mount_info = f"mount={MOUNT_HOST}" if MOUNT_HOST else "no mount"
     print(
@@ -192,22 +194,23 @@ def _summary(results):
     print(f"\n{'─' * _COL}")
     print(f"  {passed}/{len(results)} cycles passed")
     if results:
-        boots  = [r["t_boot"]  for r in results]
+        boots = [r["t_boot"] for r in results]
         totals = [r["t_total"] for r in results]
         print(
             f"  boot  : min={min(boots):.2f}s "
             f"max={max(boots):.2f}s "
-            f"avg={sum(boots)/len(boots):.2f}s"
+            f"avg={sum(boots) / len(boots):.2f}s"
         )
         print(
             f"  cycle : min={min(totals):.2f}s "
             f"max={max(totals):.2f}s "
-            f"avg={sum(totals)/len(totals):.2f}s"
+            f"avg={sum(totals) / len(totals):.2f}s"
         )
     print(f"{'─' * _COL}\n")
 
 
 # ── test ───────────────────────────────────────────────────────────────────────
+
 
 def test_loader_startup_cycles(qtbot, qapp):
     """
@@ -259,10 +262,8 @@ def test_loader_startup_cycles(qtbot, qapp):
         # ── run until auto-quit ───────────────────────────
         if status == "ok":
             try:
-                with qtbot.waitSignal(app.update10s,
-                                      timeout=QUIT_TIMEOUT_MS,
-                                      raising=True):
-                    pass   # event loop runs here; update10s fires → quit()
+                with qtbot.waitSignal(app.update10s, timeout=QUIT_TIMEOUT_MS, raising=True):
+                    pass  # event loop runs here; update10s fires → quit()
             except Exception as exc:
                 status = f"quit-timeout ({exc.__class__.__name__})"
 
@@ -277,44 +278,39 @@ def test_loader_startup_cycles(qtbot, qapp):
         pool_after = app.threadPool.activeThreadCount()
 
         # ── record ───────────────────────────────────────
-        results.append({
-            "cycle":       cycle,
-            "t_boot":      t_boot,
-            "t_total":     t_total,
-            "pool_active": pool_active,
-            "pool_after":  pool_after,
-            "status":      status,
-        })
+        results.append(
+            {
+                "cycle": cycle,
+                "t_boot": t_boot,
+                "t_total": t_total,
+                "pool_active": pool_active,
+                "pool_after": pool_after,
+                "status": status,
+            }
+        )
         _row(cycle, t_boot, t_total, pool_active, status)
 
         # ── cleanup ───────────────────────────────────────
         del app
         gc.collect()
-        qapp.processEvents()   # drain any remaining queued events
+        qapp.processEvents()  # drain any remaining queued events
 
     _summary(results)
 
     # ── assertions ────────────────────────────────────────
     failed = [r for r in results if r["status"] != "ok"]
-    assert not failed, (
-        f"{len(failed)}/{N_CYCLES} cycle(s) failed:\n"
-        + "\n".join(
-            f"  cycle {r['cycle']:02d}: {r['status']}"
-            for r in failed
-        )
+    assert not failed, f"{len(failed)}/{N_CYCLES} cycle(s) failed:\n" + "\n".join(
+        f"  cycle {r['cycle']:02d}: {r['status']}" for r in failed
     )
 
     for r in results:
         assert r["t_boot"] < MAX_BOOT_S, (
-            f"Cycle {r['cycle']:02d}: boot {r['t_boot']:.2f}s "
-            f"exceeds limit {MAX_BOOT_S}s"
+            f"Cycle {r['cycle']:02d}: boot {r['t_boot']:.2f}s exceeds limit {MAX_BOOT_S}s"
         )
         assert r["t_total"] < MAX_CYCLE_S, (
-            f"Cycle {r['cycle']:02d}: total {r['t_total']:.2f}s "
-            f"exceeds limit {MAX_CYCLE_S}s"
+            f"Cycle {r['cycle']:02d}: total {r['t_total']:.2f}s exceeds limit {MAX_CYCLE_S}s"
         )
         assert r["pool_after"] == 0, (
             f"Cycle {r['cycle']:02d}: "
             f"{r['pool_after']} worker thread(s) still active after drain"
         )
-

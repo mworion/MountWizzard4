@@ -41,6 +41,7 @@ def function():
 # __init__
 # ---------------------------------------------------------------------------
 
+
 def test_init_lastAzimuth(function):
     """DomeIndi initialises lastAzimuth to None."""
     assert function.lastAzimuth is None
@@ -49,6 +50,7 @@ def test_init_lastAzimuth(function):
 # ---------------------------------------------------------------------------
 # sendDomePosition
 # ---------------------------------------------------------------------------
+
 
 def test_sendDomePosition_absent(function):
     """No ABS_DOME_POSITION key → early return, no crash."""
@@ -75,9 +77,7 @@ def test_sendDomePosition_busy(function):
     vectors = {
         "ABS_DOME_POSITION": {
             "state": "Busy",
-            "members": {
-                "DOME_ABSOLUTE_POSITION": {"value": "180.0", "floatvalue": 180.0}
-            },
+            "members": {"DOME_ABSOLUTE_POSITION": {"value": "180.0", "floatvalue": 180.0}},
         }
     }
     slot = mock.MagicMock()
@@ -93,9 +93,7 @@ def test_sendDomePosition_ok(function):
     vectors = {
         "ABS_DOME_POSITION": {
             "state": "Ok",
-            "members": {
-                "DOME_ABSOLUTE_POSITION": {"value": "90.0", "floatvalue": 90.0}
-            },
+            "members": {"DOME_ABSOLUTE_POSITION": {"value": "90.0", "floatvalue": 90.0}},
         }
     }
     slot = mock.MagicMock()
@@ -109,6 +107,7 @@ def test_sendDomePosition_ok(function):
 # ---------------------------------------------------------------------------
 # addShutterStatus
 # ---------------------------------------------------------------------------
+
 
 def test_addShutterStatus_absent(function):
     """No DOME_SHUTTER key → early return, Shutter.Status not set."""
@@ -145,6 +144,7 @@ def test_addShutterStatus_ok(function):
 # writeVectorsToData
 # ---------------------------------------------------------------------------
 
+
 def test_writeVectorsToData(function):
     """super(), sendDomePosition and addShutterStatus are all called."""
     item = mock.MagicMock()
@@ -162,6 +162,7 @@ def test_writeVectorsToData(function):
 # slewToAltAz
 # ---------------------------------------------------------------------------
 
+
 def test_slewToAltAz(function):
     """slewToAltAz puts DOME_ABSOLUTE_POSITION with azimuth into txQ."""
     function.txQ = Queue()
@@ -169,7 +170,9 @@ def test_slewToAltAz(function):
     function.slewToAltAz(altitude=30, azimuth=180)
     assert function.txQ.qsize() == 1
     assert function.txQ.get() == (
-        "test_dome", "ABS_DOME_POSITION", {"DOME_ABSOLUTE_POSITION": 180}
+        "test_dome",
+        "ABS_DOME_POSITION",
+        {"DOME_ABSOLUTE_POSITION": 180},
     )
 
 
@@ -177,20 +180,20 @@ def test_slewToAltAz(function):
 # openShutter
 # ---------------------------------------------------------------------------
 
+
 def test_openShutter(function):
     """openShutter puts SHUTTER_OPEN=On into txQ."""
     function.txQ = Queue()
     function.deviceName = "test_dome"
     function.openShutter()
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_dome", "DOME_SHUTTER", {"SHUTTER_OPEN": "On"}
-    )
+    assert function.txQ.get() == ("test_dome", "DOME_SHUTTER", {"SHUTTER_OPEN": "On"})
 
 
 # ---------------------------------------------------------------------------
 # closeShutter
 # ---------------------------------------------------------------------------
+
 
 def test_closeShutter(function):
     """closeShutter puts SHUTTER_CLOSE=On into txQ."""
@@ -198,14 +201,13 @@ def test_closeShutter(function):
     function.deviceName = "test_dome"
     function.closeShutter()
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_dome", "DOME_SHUTTER", {"SHUTTER_CLOSE": "On"}
-    )
+    assert function.txQ.get() == ("test_dome", "DOME_SHUTTER", {"SHUTTER_CLOSE": "On"})
 
 
 # ---------------------------------------------------------------------------
 # slewCW
 # ---------------------------------------------------------------------------
+
 
 def test_slewCW(function):
     """slewCW puts DOME_CW=On into txQ."""
@@ -213,14 +215,13 @@ def test_slewCW(function):
     function.deviceName = "test_dome"
     function.slewCW()
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_dome", "DOME_MOTION", {"DOME_CW": "On"}
-    )
+    assert function.txQ.get() == ("test_dome", "DOME_MOTION", {"DOME_CW": "On"})
 
 
 # ---------------------------------------------------------------------------
 # slewCCW
 # ---------------------------------------------------------------------------
+
 
 def test_slewCCW(function):
     """slewCCW puts DOME_CCW=On into txQ."""
@@ -228,14 +229,13 @@ def test_slewCCW(function):
     function.deviceName = "test_dome"
     function.slewCCW()
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_dome", "DOME_MOTION", {"DOME_CCW": "On"}
-    )
+    assert function.txQ.get() == ("test_dome", "DOME_MOTION", {"DOME_CCW": "On"})
 
 
 # ---------------------------------------------------------------------------
 # abortSlew
 # ---------------------------------------------------------------------------
+
 
 def test_abortSlew(function):
     """abortSlew puts ABORT=On into txQ."""
@@ -243,6 +243,4 @@ def test_abortSlew(function):
     function.deviceName = "test_dome"
     function.abortSlew()
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == (
-        "test_dome", "DOME_ABORT_MOTION", {"ABORT": "On"}
-    )
+    assert function.txQ.get() == ("test_dome", "DOME_ABORT_MOTION", {"ABORT": "On"})

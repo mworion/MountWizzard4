@@ -13,8 +13,8 @@
 # Licence APL2.0
 #
 ###########################################################
-from mw4.base.indiClass import IndiClass
 from indipyclient.queclient import EventItem
+from mw4.base.indiClass import IndiClass
 from typing import Any
 
 
@@ -51,7 +51,9 @@ class DomeIndi(IndiClass):
         self.addShutterStatus(vectors)
 
     def slewToAltAz(self, altitude: float, azimuth: float) -> None:
-        self.txQ.put((self.deviceName, "ABS_DOME_POSITION", {"DOME_ABSOLUTE_POSITION": azimuth}))
+        self.txQ.put(
+            (self.deviceName, "ABS_DOME_POSITION", {"DOME_ABSOLUTE_POSITION": azimuth})
+        )
 
     def openShutter(self) -> None:
         self.txQ.put((self.deviceName, "DOME_SHUTTER", {"SHUTTER_OPEN": "On"}))

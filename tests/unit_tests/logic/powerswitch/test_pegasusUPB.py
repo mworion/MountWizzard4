@@ -30,6 +30,7 @@ def function():
 # properties
 # ---------------------------------------------------------------------------
 
+
 def test_properties(function):
     """host, deviceName, updateRate and loadConfig round-trip correctly."""
     function.framework = "indi"
@@ -49,6 +50,7 @@ def test_properties(function):
 # startCommunication / stopCommunication
 # ---------------------------------------------------------------------------
 
+
 def test_startCommunication(function):
     """startCommunication() delegates to the active framework adapter."""
     function.framework = "indi"
@@ -67,6 +69,7 @@ def test_stopCommunication(function):
 # togglePowerPort
 # ---------------------------------------------------------------------------
 
+
 def test_togglePowerPort(function):
     """togglePowerPort() delegates to the active framework adapter."""
     function.framework = "indi"
@@ -78,6 +81,7 @@ def test_togglePowerPort(function):
 # ---------------------------------------------------------------------------
 # togglePowerPortBoot
 # ---------------------------------------------------------------------------
+
 
 def test_togglePowerPortBoot(function):
     """togglePowerPortBoot() delegates to the active framework adapter."""
@@ -91,6 +95,7 @@ def test_togglePowerPortBoot(function):
 # toggleHubUSB
 # ---------------------------------------------------------------------------
 
+
 def test_toggleHubUSB(function):
     """toggleHubUSB() delegates to the active framework adapter."""
     function.framework = "indi"
@@ -102,6 +107,7 @@ def test_toggleHubUSB(function):
 # ---------------------------------------------------------------------------
 # togglePortUSB
 # ---------------------------------------------------------------------------
+
 
 def test_togglePortUSB(function):
     """togglePortUSB() delegates to the active framework adapter."""
@@ -115,6 +121,7 @@ def test_togglePortUSB(function):
 # toggleAutoDew
 # ---------------------------------------------------------------------------
 
+
 def test_toggleAutoDew(function):
     """toggleAutoDew() delegates to the active framework adapter."""
     function.framework = "indi"
@@ -127,6 +134,7 @@ def test_toggleAutoDew(function):
 # sendDew
 # ---------------------------------------------------------------------------
 
+
 def test_sendDew(function):
     """sendDew() delegates port and value to the active framework adapter."""
     function.framework = "indi"
@@ -138,6 +146,7 @@ def test_sendDew(function):
 # ---------------------------------------------------------------------------
 # sendAdjustableOutput
 # ---------------------------------------------------------------------------
+
 
 def test_sendAdjustableOutput_returns_false(function):
     """sendAdjustableOutput() delegates even when adapter returns False."""
@@ -156,6 +165,7 @@ def test_sendAdjustableOutput_returns_true(function):
 # ---------------------------------------------------------------------------
 # reboot
 # ---------------------------------------------------------------------------
+
 
 def test_reboot_returns_false(function):
     """reboot() delegates even when adapter returns False."""

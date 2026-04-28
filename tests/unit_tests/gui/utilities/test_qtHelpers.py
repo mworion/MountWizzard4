@@ -41,6 +41,7 @@ from PySide6.QtWidgets import (
 )
 from skyfield.api import Angle
 
+
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     yield

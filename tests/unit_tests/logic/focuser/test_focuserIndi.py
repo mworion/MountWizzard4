@@ -34,6 +34,7 @@ def function():
 # move
 # ---------------------------------------------------------------------------
 
+
 def test_move(function):
     """move(position) puts ABS_FOCUS_POSITION command into txQ."""
     function.txQ = Queue()
@@ -41,13 +42,16 @@ def test_move(function):
     function.move(position=12500)
     assert function.txQ.qsize() == 1
     assert function.txQ.get() == (
-        "test_focuser", "ABS_FOCUS_POSITION", {"FOCUS_ABSOLUTE_POSITION": 12500}
+        "test_focuser",
+        "ABS_FOCUS_POSITION",
+        {"FOCUS_ABSOLUTE_POSITION": 12500},
     )
 
 
 # ---------------------------------------------------------------------------
 # halt
 # ---------------------------------------------------------------------------
+
 
 def test_halt(function):
     """halt() is a no-op (pass)."""

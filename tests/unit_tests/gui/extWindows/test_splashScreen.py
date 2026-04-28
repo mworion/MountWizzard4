@@ -69,4 +69,3 @@ def test_close():
     with mock.patch.object(app, "update"):
         with mock.patch.object(app.qss, "close"):
             app.close()
-

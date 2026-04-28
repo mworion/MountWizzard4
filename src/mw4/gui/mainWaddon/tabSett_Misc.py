@@ -13,12 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-import mw4.base.packageConfig as pConf
-from PySide6.QtMultimedia import QSoundEffect
 import hid
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.qtHelpers import getTabIndex, svg2pixmap
+from PySide6.QtMultimedia import QSoundEffect
 from typing import Any
 
 

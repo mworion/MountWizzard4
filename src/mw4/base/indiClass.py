@@ -14,12 +14,12 @@
 #
 ###########################################################
 import logging
-from queue import Queue
 import time
-from indipyclient.queclient import runqueclient, EventItem
-from mw4.base.indiClassAddOns import INDIGO_CONV, INDI_TYPES
+from indipyclient.queclient import EventItem, runqueclient
+from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
 from mw4.base.tpool import Worker
-from PySide6.QtCore import QThreadPool, QMutex
+from PySide6.QtCore import QMutex, QThreadPool
+from queue import Queue
 from typing import Any
 
 
@@ -131,9 +131,14 @@ class IndiClass:
         self.rxQ.queue.clear()
         self.data.clear()
         self.commandRunning = True
-        self.workerIndiQueueClient = Worker(runqueclient, self.txQ, self.rxQ,
-                                      indihost=self.hostaddress, indiport=self.port,
-                                      blobfolder=str(self.app.mwGlob["tempDir"]))
+        self.workerIndiQueueClient = Worker(
+            runqueclient,
+            self.txQ,
+            self.rxQ,
+            indihost=self.hostaddress,
+            indiport=self.port,
+            blobfolder=str(self.app.mwGlob["tempDir"]),
+        )
         self.workerIndiQueueClient.signals.finished.connect(self.cleanupStop)
         self.threadPool.start(self.workerIndiQueueClient)
         self.workerProcessRxQueue = Worker(self.processRxQueue)
@@ -159,7 +164,7 @@ class IndiClass:
         self.threadPool.start(worker)
         while n > 0:
             if rxQ.empty():
-                time.sleep(0.05)
+                time.sleep(0.1)
                 continue
             item = rxQ.get()
             if item is None:
@@ -167,8 +172,7 @@ class IndiClass:
             n = n - 1
             if item.eventtype == "Define" and item.devicename:
                 driver = item.snapshot[item.devicename].get("DRIVER_INFO")
-                if driver:
-                    if INDI_TYPES[deviceType] & int(driver["DRIVER_INTERFACE"]):
+                if driver and (INDI_TYPES[deviceType] & int(driver["DRIVER_INTERFACE"])):
                         discoverSet.add(item.devicename)
             rxQ.task_done()
         txQ.put(None)

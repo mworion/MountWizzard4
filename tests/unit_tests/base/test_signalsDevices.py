@@ -112,4 +112,3 @@ def test_allSignalsDeclared(signals):
         assert callable(getattr(signals, signalName).connect), (
             f"'{signalName}' does not have a callable connect method"
         )
-

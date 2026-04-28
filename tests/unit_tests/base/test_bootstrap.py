@@ -99,8 +99,6 @@ def test_extract_data_files_skip_uptodate():
     mock_copy.assert_not_called()
 
 
-@pytest.mark.skipif(
-    platform.system() != "Windows", reason="Windows needed"
-)
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
 def test_minimize_start_terminal():
     minimizeStartTerminal()

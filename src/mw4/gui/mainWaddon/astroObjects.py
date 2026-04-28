@@ -160,7 +160,9 @@ class AstroObjects:
 
     def progGUI(self, text: str) -> None:
         source = self.uiSourceList.currentText()
-        self.msg.emit(1, self.objectText.capitalize(), "Mount upload", f"[{text}] from [{source}]")
+        self.msg.emit(
+            1, self.objectText.capitalize(), "Mount upload", f"[{text}] from [{source}]"
+        )
 
     def progSelected(self) -> None:
         self.progGUI("Selected")

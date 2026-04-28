@@ -33,5 +33,6 @@ def function():
     func = TelescopeIndi(parent=Parent())
     yield func
 
+
 def test_class(function):
-    assert 1==1
+    assert 1 == 1

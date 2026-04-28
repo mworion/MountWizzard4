@@ -36,6 +36,7 @@ def function(qapp):
             yield func
             QApplication.processEvents()
 
+
 def test_initConfig_1(function):
     with mock.patch.object(function, "positionWindow"):
         with mock.patch.object(function.tabs, "setCrosshair"):

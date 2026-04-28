@@ -96,11 +96,12 @@ class IndiClass:
         self.deviceConnected = status
 
     def writeVectorsToData(self, item: EventItem, vectors: dict) -> None:
-        self.data.update(vectors)
         for vector, vectorItem in vectors.items():
             vectorName = vectorItem["name"]
             for member, memberItem in vectorItem["members"].items():
                 value = memberItem.get("floatvalue", memberItem["value"])
+                value = True if value == "On" else value
+                value = False if value == "Off" else value
                 entry = f"{vectorName}.{member}"
                 entry = INDIGO_CONV.get(entry, entry) if self.isINDIGO else entry
                 self.data[entry] = value

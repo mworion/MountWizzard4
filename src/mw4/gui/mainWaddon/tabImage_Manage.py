@@ -200,7 +200,7 @@ class ImageManage:
         actValue = int(actValue)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self, "Set cooler temperature", "Value (-30..+20):", actValue, -30, 20, 1
+            self.mainW, "Set cooler temperature", "Value (-30..+20):", actValue, -30, 20, 1
         )
         if ok:
             self.app.camera.sendCoolerTemp(temperature=value)
@@ -217,7 +217,7 @@ class ImageManage:
         offsetMax = self.app.camera.data.get("CCD_OFFSET.OFFSET_MAX")
         if offsetList is not None:
             offsetList = list(offsetList)
-            value, ok = dlg.getItem(self, "Set offset", "Offset entry: ", offsetList, actValue)
+            value, ok = dlg.getItem(self.mainW, "Set offset", "Offset entry: ", offsetList, actValue)
             value = offsetList.index(value)
 
         elif offsetMin is not None and offsetMax is not None:
@@ -233,7 +233,7 @@ class ImageManage:
                 int((offsetMax - offsetMin) / 20),
             )
         else:
-            value, ok = dlg.getInt(self, "Set offset", "Values:", actValue)
+            value, ok = dlg.getInt(self.mainW, "Set offset", "Values:", actValue)
         if ok:
             self.app.camera.sendOffset(offset=value)
 
@@ -248,7 +248,7 @@ class ImageManage:
         gainMax = self.app.camera.data.get("CCD_GAIN.GAIN_MAX")
         if gainList is not None:
             gainList = list(gainList)
-            value, ok = dlg.getItem(self, "Set gain", "Gain entry: ", gainList, actValue)
+            value, ok = dlg.getItem(self.mainW, "Set gain", "Gain entry: ", gainList, actValue)
             value = gainList.index(value)
 
         elif gainMin is not None and gainMax is not None:
@@ -264,7 +264,7 @@ class ImageManage:
                 int((gainMax - gainMin) / 20),
             )
         else:
-            value, ok = dlg.getInt(self, "Set gain", "Values:", actValue)
+            value, ok = dlg.getInt(self.mainW, "Set gain", "Values:", actValue)
 
         if ok:
             self.app.camera.sendGain(gain=value)

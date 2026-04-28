@@ -51,41 +51,34 @@ class SettDome:
         self.ui.use10micronDef.clicked.connect(self.switchGeometryDefinition)
         self.ui.use10micronDef.clicked.connect(self.setupIcons)
 
-    def tab1(self):
+    def tab1(self) -> None:
         self.ui.tabDomeExplain.setCurrentIndex(0)
 
-    def tab2(self):
+    def tab2(self) -> None:
         self.ui.tabDomeExplain.setCurrentIndex(1)
 
-    def tab3(self):
+    def tab3(self) -> None:
         self.ui.tabDomeExplain.setCurrentIndex(2)
 
-    def tab4(self):
+    def tab4(self) -> None:
         self.ui.tabDomeExplain.setCurrentIndex(3)
 
-    def tab5(self):
+    def tab5(self) -> None:
         self.ui.tabDomeExplain.setCurrentIndex(4)
 
-    def tab6(self):
+    def tab6(self) -> None:
         self.ui.tabDomeExplain.setCurrentIndex(5)
 
-    def tab7(self):
+    def tab7(self) -> None:
         self.ui.tabDomeExplain.setCurrentIndex(6)
 
-    def tab8(self):
+    def tab8(self) -> None:
         self.ui.tabDomeExplain.setCurrentIndex(7)
 
-    def tab9(self):
+    def tab9(self) -> None:
         self.ui.tabDomeExplain.setCurrentIndex(8)
 
-    def initConfig(self):
-        """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
-        :return: True for test purpose
-        """
+    def initConfig(self) -> None:
         config = self.app.config["mainW"]
         self.ui.domeClearOpening.setValue(config.get("domeClearOpening", 0.4))
         self.ui.domeOpeningHysteresis.setValue(config.get("domeOpeningHysteresis", 0.0))
@@ -103,16 +96,8 @@ class SettDome:
         self.ui.useDynamicFollowing.setChecked(config.get("useDynamicFollowing", False))
         self.ui.settleTimeDome.setValue(config.get("settleTimeDome", 0))
         self.setUseGeometry()
-        return True
 
-    def storeConfig(self):
-        """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
-        :return: True for test purpose
-        """
+    def storeConfig(self) -> None:
         config = self.app.config["mainW"]
         config["domeRadius"] = self.ui.domeRadius.value()
         config["domeClearOpening"] = self.ui.domeClearOpening.value()
@@ -129,12 +114,8 @@ class SettDome:
         config["automaticDome"] = self.ui.automaticDome.isChecked()
         config["useDynamicFollowing"] = self.ui.useDynamicFollowing.isChecked()
         config["settleTimeDome"] = self.ui.settleTimeDome.value()
-        return True
 
-    def setupIcons(self):
-        """
-        :return:
-        """
+    def setupIcons(self) -> None:
         pixmap = img2pixmap("assets/dome/radius.png")
         self.ui.picDome1.setPixmap(pixmap)
 
@@ -169,12 +150,8 @@ class SettDome:
         self.mainW.wIcon(self.ui.domeCloseShutter, "exit-down")
         self.mainW.wIcon(self.ui.domeOpenShutter, "exit-up")
         self.mainW.wIcon(self.ui.domeAbortSlew, "bolt-alt")
-        return True
 
-    def updateDomeGeometryToGui(self):
-        """
-        :return: true for test purpose
-        """
+    def updateDomeGeometryToGui(self) -> None:
         value = float(self.app.dome.data.get("DOME_MEASUREMENTS.DM_OTA_OFFSET", 0))
         self.ui.offGEM.setValue(value)
 
@@ -192,12 +169,8 @@ class SettDome:
 
         value = float(self.app.dome.data.get("DOME_MEASUREMENTS.DM_UP_DISPLACEMENT", 0))
         self.ui.domeVerticalOffset.setValue(value)
-        return True
 
-    def switchGeometryDefinition(self):
-        """
-        :return:
-        """
+    def switchGeometryDefinition(self) -> None:
         self.ui.domeEastOffset.valueChanged.disconnect(self.setUseGeometry)
         self.ui.domeNorthOffset.valueChanged.disconnect(self.setUseGeometry)
         self.ui.domeVerticalOffset.valueChanged.disconnect(self.setUseGeometry)
@@ -213,12 +186,8 @@ class SettDome:
         self.ui.domeEastOffset.valueChanged.connect(self.setUseGeometry)
         self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometry)
         self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometry)
-        return True
 
-    def setUseGeometry(self):
-        """
-        :return: true for test purpose
-        """
+    def setUseGeometry(self) -> None:
         if self.ui.automaticDome.isChecked():
             self.updateDomeGeometryToGui()
 
@@ -250,11 +219,6 @@ class SettDome:
         self.app.dome.useDynamicFollowing = useDynamicFollowing
         self.app.dome.overshoot = self.ui.useOvershoot.isChecked()
         self.app.updateDomeSettings.emit()
-        return True
 
-    def setDomeSettlingTime(self):
-        """
-        :return: true for test purpose
-        """
+    def setDomeSettlingTime(self) -> None:
         self.app.dome.settlingTime = self.ui.settleTimeDome.value()
-        return True

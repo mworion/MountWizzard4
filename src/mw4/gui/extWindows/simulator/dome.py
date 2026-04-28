@@ -25,8 +25,9 @@ class SimulatorDome:
         self.app = app
         self.app.dome.signals.deviceConnected.connect(lambda: self.showEnable(True))
         self.app.dome.signals.deviceDisconnected.connect(lambda: self.showEnable(False))
-        self.app.update1s.connect(self.updateAzimuth)
+        self.app.dome.signals.azimuth.connect(self.updateAzimuth)
         self.app.update1s.connect(self.updateShutter)
+        # self.app.dome.signals.shutter.connect(self.updateShutter)
         self.parent.ui.domeTransparent.checkStateChanged.connect(self.setTransparency)
 
     def setTransparency(self):
@@ -70,14 +71,10 @@ class SimulatorDome:
         nodeT.setScale3D(QVector3D(scale, scale, scale))
         nodeT.setTranslation(QVector3D(0, 0, corrZ))
 
-    def updateAzimuth(self):
-        if "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION" not in self.app.dome.data:
-            return
-
-        az = self.app.dome.data["ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION"]
+    def updateAzimuth(self, azimuth: float):
         node = self.parent.entityModel.get("domeSphere")
         if node:
-            node["trans"].setRotationZ(-az)
+            node["trans"].setRotationZ(-azimuth)
 
     def updateShutter(self):
         if "DOME_SHUTTER.SHUTTER_OPEN" not in self.app.dome.data:
@@ -155,6 +152,6 @@ class SimulatorDome:
         }
         linkModel(model, self.parent.entityModel)
         self.showEnable(self.app.deviceStat["dome"] is True)
-        self.updateAzimuth()
+        self.updateAzimuth(0)
         self.updateShutter()
         self.updateSize()

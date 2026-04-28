@@ -68,15 +68,11 @@ def test_updateSize_1(function):
 
 
 def test_updateAzimuth_1(function):
-    function.app.dome.data = {
-        "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION": 0,
-        "DOME_SHUTTER.SHUTTER_OPEN": True,
-    }
     function.parent.entityModel["domeSphere"] = {"entity": Qt3DCore.QEntity()}
     t = Qt3DCore.QTransform()
     function.parent.entityModel["domeSphere"]["entity"].addComponent(t)
     function.parent.entityModel["domeSphere"]["trans"] = t
-    function.updateAzimuth()
+    function.updateAzimuth(180.0)
 
 
 def test_updateShutter_1(function):

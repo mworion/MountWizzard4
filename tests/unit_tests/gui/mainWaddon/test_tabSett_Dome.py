@@ -71,65 +71,54 @@ def test_tab9(function):
 def test_initConfig_1(function):
     function.app.config["mainW"] = {}
     with mock.patch.object(function, "setUseGeometry"):
-        suc = function.initConfig()
-        assert suc
+        function.initConfig()
 
 
 def test_initConfig_2(function):
     with mock.patch.object(function, "setUseGeometry"):
-        suc = function.initConfig()
-        assert suc
+        function.initConfig()
 
 
 def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_setupIcons_1(function):
     function.ui.use10micronDef.setChecked(True)
-    suc = function.setupIcons()
-    assert suc
+    function.setupIcons()
 
 
 def test_setupIcons_2(function):
     function.ui.use10micronDef.setChecked(False)
-    suc = function.setupIcons()
-    assert suc
+    function.setupIcons()
 
 
 def test_switchGeometryDefinition_1(function):
     function.ui.use10micronDef.setChecked(True)
-    suc = function.switchGeometryDefinition()
-    assert suc
+    function.switchGeometryDefinition()
 
 
 def test_switchGeometryDefinition_2(function):
     function.ui.use10micronDef.setChecked(False)
-    suc = function.switchGeometryDefinition()
-    assert suc
+    function.switchGeometryDefinition()
 
 
 def test_setUseGeometry_1(function):
     function.ui.use10micronDef.setChecked(False)
     function.ui.automaticDome.setChecked(False)
-    suc = function.setUseGeometry()
-    assert suc
+    function.setUseGeometry()
 
 
 def test_setUseGeometry_2(function):
     function.ui.use10micronDef.setChecked(True)
     function.ui.automaticDome.setChecked(True)
     with mock.patch.object(function, "updateDomeGeometryToGui"):
-        suc = function.setUseGeometry()
-        assert suc
+        function.setUseGeometry()
 
 
 def test_updateDomeGeometry_1(function):
-    suc = function.updateDomeGeometryToGui()
-    assert suc
+    function.updateDomeGeometryToGui()
 
 
 def test_setDomeSettlingTime_1(function):
-    suc = function.setDomeSettlingTime()
-    assert suc
+    function.setDomeSettlingTime()

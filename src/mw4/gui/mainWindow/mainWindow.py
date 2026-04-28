@@ -153,12 +153,12 @@ class MainWindow(MWidget):
         self.wIcon(self.ui.setLunarTracking, "lunar")
         self.wIcon(self.ui.setSolarTracking, "solar")
         self.wIcon(self.ui.park, "park")
+        self.mainWindowAddons.setupIcons()
 
     def updateColorSet(self) -> None:
         Styles.colorSet = self.ui.colorSet.currentIndex()
         self.setStyleSheet(self.mw4Style)
         self.setupIcons()
-        self.mainWindowAddons.setupIcons()
         self.mainWindowAddons.updateColorSet()
         self.app.colorChange.emit()
 

@@ -25,7 +25,7 @@ from typing import Any
 
 class IndiClass:
     log = logging.getLogger("MW4")
-    MAX_SEARCH = 40
+    MAX_SEARCH = 20
 
     def __init__(self, parent: Any) -> None:
         self.parent: Any = parent
@@ -163,13 +163,14 @@ class IndiClass:
         worker = Worker(runqueclient, txQ, rxQ, indihost=self.hostaddress, indiport=self.port)
         self.threadPool.start(worker)
         while n > 0:
+            time.sleep(0.1)
+            n = n - 1
+            print(n)
             if rxQ.empty():
-                time.sleep(0.1)
                 continue
             item = rxQ.get()
             if item is None:
                 continue
-            n = n - 1
             if item.eventtype == "Define" and item.devicename:
                 driver = item.snapshot[item.devicename].get("DRIVER_INFO")
                 if driver and (INDI_TYPES[deviceType] & int(driver["DRIVER_INTERFACE"])):

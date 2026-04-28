@@ -15,6 +15,7 @@
 ###########################################################
 import pytest
 import unittest.mock as mock
+from pathlib import Path
 from queue import Queue
 
 from mw4.base.indiClass import IndiClass
@@ -271,7 +272,7 @@ def test_saveImageBLOB_no_filename(function):
 
 
 def test_saveImageBLOB_fits(function):
-    """SetBLOB with .fits format → rename called, writeImageFitsHeader called, exposeFinished called."""
+    """SetBLOB with .fits format → imagePath suffix updated, rename called, writeImageFitsHeader called."""
     item = mock.MagicMock()
     item.eventtype = "SetBLOB"
     vectors = {
@@ -285,16 +286,18 @@ def test_saveImageBLOB_fits(function):
     mock_temp_dir = mock.MagicMock()
     mock_temp_dir.__truediv__ = mock.MagicMock(return_value=mock_blob_file)
     function.app.mwGlob["tempDir"] = mock_temp_dir
+    function.parent.imagePath = Path("tests/work/temp/capture.fits")
     with mock.patch.object(function.parent, "writeImageFitsHeader") as mock_fits:
         with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
             function.saveImageBLOB(item, vectors)
+            assert function.parent.imagePath == Path("tests/work/temp/capture.fits")
             mock_blob_file.rename.assert_called_once_with(function.parent.imagePath)
             mock_fits.assert_called_once()
             mock_fin.assert_called_once()
 
 
 def test_saveImageBLOB_xisf(function):
-    """SetBLOB with .xisf format → rename called, writeImageXisfHeader called, exposeFinished called."""
+    """SetBLOB with .xisf format → imagePath suffix updated, rename called, writeImageXisfHeader called."""
     item = mock.MagicMock()
     item.eventtype = "SetBLOB"
     vectors = {
@@ -308,9 +311,11 @@ def test_saveImageBLOB_xisf(function):
     mock_temp_dir = mock.MagicMock()
     mock_temp_dir.__truediv__ = mock.MagicMock(return_value=mock_blob_file)
     function.app.mwGlob["tempDir"] = mock_temp_dir
+    function.parent.imagePath = Path("tests/work/temp/capture.fits")
     with mock.patch.object(function, "writeImageXisfHeader") as mock_xisf:
         with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
             function.saveImageBLOB(item, vectors)
+            assert function.parent.imagePath == Path("tests/work/temp/capture.xisf")
             mock_blob_file.rename.assert_called_once_with(function.parent.imagePath)
             mock_xisf.assert_called_once()
             mock_fin.assert_called_once()
@@ -341,12 +346,27 @@ def test_writeVectorsToData(function):
 
 
 # ---------------------------------------------------------------------------
+# sendDownloadMode
+# ---------------------------------------------------------------------------
+
+
+def test_sendDownloadMode(function):
+    """sendDownloadMode() puts 2 items into the txQ: READOUT_QUALITY and CCD_COMPRESSION."""
+    function.txQ = Queue()
+    function.deviceName = "test_cam"
+    function.sendDownloadMode()
+    assert function.txQ.qsize() == 2
+    assert function.txQ.get() == ("test_cam", "READOUT_QUALITY", {"QUALITY_LOW": "On"})
+    assert function.txQ.get() == ("test_cam", "CCD_COMPRESSION", {"INDI_DISABLED": "On"})
+
+
+# ---------------------------------------------------------------------------
 # expose
 # ---------------------------------------------------------------------------
 
 
 def test_expose(function):
-    """expose() puts 5 correctly structured items into the txQ."""
+    """expose() puts 6 correctly structured items into the txQ."""
     function.txQ = Queue()
     function.deviceName = "test_cam"
     function.parent._binning = 2
@@ -356,8 +376,9 @@ def test_expose(function):
     function.parent.height = 600
     function.parent.exposureTime = 3.0
     function.expose()
-    assert function.txQ.qsize() == 5
+    assert function.txQ.qsize() == 6
     assert function.txQ.get() == ("test_cam", "READOUT_QUALITY", {"QUALITY_LOW": "On"})
+    assert function.txQ.get() == ("test_cam", "CCD_COMPRESSION", {"INDI_DISABLED": "On"})
     assert function.txQ.get() == ("test_cam", "READOUT_QUALITY", {"QUALITY_LOW": "On"})
     assert function.txQ.get() == ("test_cam", "CCD_BINNING", {"HOR_BIN": 2, "VER_BIN": 2})
     assert function.txQ.get() == (

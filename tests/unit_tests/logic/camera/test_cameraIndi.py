@@ -230,6 +230,48 @@ def test_addOffsetLimits_without_min_max(function):
 
 
 # ---------------------------------------------------------------------------
+# writeImageXisfHeader
+# ---------------------------------------------------------------------------
+
+
+def test_writeImageXisfHeader(function):
+    """writeImageXisfHeader reads XISF, sets FITSKeywords, and calls XISF.write."""
+    function.parent.imagePath = Path("tests/work/temp/capture.xisf")
+    mock_xisf_instance = mock.MagicMock()
+    mock_xisf_instance.get_file_metadata.return_value = {"meta": "data"}
+    mock_ims_meta = [{"FITSKeywords": {}}]
+    mock_xisf_instance.get_images_metadata.return_value = mock_ims_meta
+    mock_xisf_instance.read_image.return_value = mock.MagicMock()
+
+    with mock.patch("mw4.logic.camera.cameraIndi.XISF") as mock_xisf_cls:
+        mock_xisf_cls.return_value = mock_xisf_instance
+        function.writeImageXisfHeader()
+
+        mock_xisf_cls.assert_called_once_with(function.parent.imagePath)
+        mock_xisf_instance.get_file_metadata.assert_called_once()
+        mock_xisf_instance.get_images_metadata.assert_called_once()
+        mock_xisf_instance.read_image.assert_called_once_with(0)
+        assert mock_ims_meta[0]["FITSKeywords"]["OBJECT"] == [
+            {"value": "SKY_OBJECT", "comment": "default name from MW4"}
+        ]
+        assert mock_ims_meta[0]["FITSKeywords"]["AUTHOR"] == [
+            {"value": "MountWizzard4", "comment": "default name from MW4"}
+        ]
+        assert mock_ims_meta[0]["FITSKeywords"]["FRAME"] == [
+            {"value": "Light", "comment": "Modeling works with light frames"}
+        ]
+        mock_xisf_cls.write.assert_called_once_with(
+            function.parent.imagePath,
+            mock_xisf_instance.read_image.return_value,
+            creator_app="MountWizzard4",
+            image_metadata=mock_ims_meta[0],
+            xisf_metadata={"meta": "data"},
+            codec="lz4hc",
+            shuffle=True,
+        )
+
+
+# ---------------------------------------------------------------------------
 # saveImageBLOB
 # ---------------------------------------------------------------------------
 

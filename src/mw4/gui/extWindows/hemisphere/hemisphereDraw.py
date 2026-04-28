@@ -40,7 +40,7 @@ class HemisphereDraw(MWidget):
 
     def initConfig(self) -> None:
         self.app.mount.signals.pointDone.connect(self.drawPointer)
-        self.app.dome.signals.azimuth.connect(self.drawDome)
+        self.app.dome.signals.azimuth.connect(self.setDomeAzimuth)
         self.app.dome.signals.deviceDisconnected.connect(self.drawDome)
         self.app.dome.signals.serverDisconnected.connect(self.drawDome)
         self.ui.showSlewPath.clicked.connect(self.drawTab)
@@ -73,7 +73,7 @@ class HemisphereDraw(MWidget):
         self.app.mount.signals.getModelDone.disconnect(self.drawTab)
         self.app.mount.signals.settingDone.disconnect(self.drawTab)
         self.app.mount.signals.mountIsUp.disconnect(self.setPointerVisibility)
-        self.app.dome.signals.azimuth.disconnect(self.drawDome)
+        self.app.dome.signals.azimuth.disconnect(self.setDomeAzimuth)
         self.app.dome.signals.deviceDisconnected.disconnect(self.drawDome)
         self.app.dome.signals.serverDisconnected.disconnect(self.drawDome)
         self.app.updatePointMarker.disconnect(self.setupModel)
@@ -345,13 +345,12 @@ class HemisphereDraw(MWidget):
         self.pointerDome.setVisible(False)
         plotItem.addItem(self.pointerDome)
 
-    def drawDome(self, azimuth: float | None = None) -> None:
-        if azimuth is None:
-            self.pointerDome.setVisible(False)
-            return
-
-        visible = self.app.deviceStat.get("dome", False)
+    def setDomeAzimuth(self, azimuth: float) -> None:
         self.pointerDome.setRect(azimuth - 15, 1, 30, 88)
+        self.pointerDome.setVisible(True)
+
+    def drawDome(self) -> None:
+        visible = bool(self.app.deviceStat.get("dome"))
         self.pointerDome.setVisible(visible)
 
     def drawModelIsoCurve(self) -> None:

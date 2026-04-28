@@ -150,6 +150,7 @@ class IndiClass:
         self.commandRunning = False
         self.deviceName = ""
         self.deviceConnected = False
+        self.signals.deviceDisconnected.emit(self.deviceName)
 
     def loadIndiConfig(self, deviceName: str) -> None:
         self.txQ.put((deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))

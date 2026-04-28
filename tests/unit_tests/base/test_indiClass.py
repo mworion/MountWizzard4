@@ -68,6 +68,8 @@ def test_properties_host_setter(function):
 
 
 def test_defaultConfig(function):
+    assert function.defaultConfig["deviceName"] == ""
+    assert function.defaultConfig["deviceList"] == []
     assert function.defaultConfig["hostaddress"] == "localhost"
     assert function.defaultConfig["port"] == 7624
     assert function.defaultConfig["loadConfig"] is False
@@ -143,6 +145,32 @@ def test_writeVectorsToData_value(function):
     }
     function.writeVectorsToData(mock.MagicMock(), vectors)
     assert function.data["TEST_VECTOR.MEMBER"] == "hello"
+
+
+def test_writeVectorsToData_valueOn(function):
+    function.isINDIGO = False
+    function.data = {}
+    vectors = {
+        "v1": {
+            "name": "TEST_VECTOR",
+            "members": {"MEMBER": {"value": "On"}},
+        }
+    }
+    function.writeVectorsToData(mock.MagicMock(), vectors)
+    assert function.data["TEST_VECTOR.MEMBER"] is True
+
+
+def test_writeVectorsToData_valueOff(function):
+    function.isINDIGO = False
+    function.data = {}
+    vectors = {
+        "v1": {
+            "name": "TEST_VECTOR",
+            "members": {"MEMBER": {"value": "Off"}},
+        }
+    }
+    function.writeVectorsToData(mock.MagicMock(), vectors)
+    assert function.data["TEST_VECTOR.MEMBER"] is False
 
 
 def test_writeVectorsToData_floatvalue(function):
@@ -457,7 +485,7 @@ def test_discoverDevices_loopEmptyQueue(function, monkeypatch):
 
 
 def test_discoverDevices_loopNoneItem(function, monkeypatch):
-    """Loop branch: rxQ yields None → continue without incrementing n."""
+    """Loop branch: rxQ yields None → continue, loop finishes normally."""
     monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
     with mock.patch("mw4.base.indiClass.Worker"):
         with mock.patch.object(function.threadPool, "start"):
@@ -465,20 +493,11 @@ def test_discoverDevices_loopNoneItem(function, monkeypatch):
                 mock_txQ = mock.MagicMock()
                 mock_rxQ = mock.MagicMock()
                 mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-
-                call_count = [0]
-
-                def empty_se():
-                    call_count[0] += 1
-                    return call_count[0] != 1  # first call: not empty; rest: empty
-
-                mock_rxQ.empty.side_effect = empty_se
-                mock_rxQ.get.return_value = None  # None item → continue
-                with mock.patch("mw4.base.indiClass.time") as mock_time:
-                    mock_time.sleep.side_effect = StopIteration
-                    with pytest.raises(StopIteration):
-                        function.discoverDevices("dome")
-    function.discoverMutex.unlock()
+                mock_rxQ.empty.return_value = False
+                mock_rxQ.get.return_value = None
+                with mock.patch("mw4.base.indiClass.time"):
+                    result = function.discoverDevices("dome")
+    assert result == []
 
 
 def test_discoverDevices_loopDefineEventMatch(function, monkeypatch):

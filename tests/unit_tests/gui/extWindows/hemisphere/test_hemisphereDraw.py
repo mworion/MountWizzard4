@@ -14,7 +14,6 @@
 #
 ###########################################################
 import gc
-import os
 import pyqtgraph as pg
 import pytest
 import shutil
@@ -38,30 +37,6 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    with mock.patch.object(os.path, "isfile", return_value=False):
-        function.initConfig()
-
-
-def test_initConfig_2(function):
-    function.app.config["hemisphereW"] = {"winPosX": 10000}
-    function.app.config["hemisphereW"] = {"winPosY": 10000}
-    with mock.patch.object(os.path, "isfile", return_value=False):
-        function.initConfig()
-
-
-def test_initConfig_3(function):
-    function.app.config["hemisphereW"] = {}
-    function.app.config["hemisphereW"] = {"winPosX": 100}
-    function.app.config["hemisphereW"] = {"winPosY": 100}
-    with mock.patch.object(os.path, "isfile", return_value=False):
-        function.initConfig()
-
-
-def test_initConfig_4(function):
-    shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
-    function.app.config["hemisphereW"] = {}
-    function.app.config["hemisphereW"] = {"winPosX": 100}
-    function.app.config["hemisphereW"] = {"winPosY": 100}
     function.initConfig()
 
 
@@ -82,21 +57,22 @@ def test_mouseMoved_1(function):
 
 
 def test_enableOperationModeChange_1(function):
-    function.enableOperationModeChange(True)
+    function.enableOperationModeChange(1)
+
+
+def test_enableOperationModeChange_2(function):
+    function.enableOperationModeChange(0)
 
 
 def test_setOperationMode_1(function):
     function.ui.editModeHem.setChecked(True)
     with mock.patch.object(function, "drawModelPoints"):
-        with mock.patch.object(function, "drawTab"):
-            function.setOperationMode()
+        function.setOperationMode()
 
 
 def test_setOperationMode_2(function):
     function.ui.alignmentModeHem.setChecked(True)
-    with mock.patch.object(function, "drawModelPoints"):
-        with mock.patch.object(function, "drawTab"):
-            function.setOperationMode()
+    function.setOperationMode()
 
 
 def test_prepareView(function):
@@ -120,7 +96,6 @@ def test_drawHorizon(function):
 
 
 def test_setupAlignmentStars(function):
-    function.app.data.hip = ["test"]
     function.setupAlignmentStars()
 
 
@@ -181,15 +156,16 @@ def test_drawAlignmentStars_1(function):
     function.drawAlignmentStars()
 
 
-def test_drawAlignmentStars_3(function):
+def test_drawAlignmentStars_2(function):
     function.alignmentStarsText = []
     function.alignmentStarsText.append(pg.TextItem())
     function.ui.showAlignStar.setChecked(True)
+    function.ui.alignmentModeHem.setChecked(False)
     function.alignmentStars = pg.ScatterPlotItem()
     function.drawAlignmentStars()
 
 
-def test_drawAlignmentStars_4(function):
+def test_drawAlignmentStars_3(function):
     function.alignmentStarsText = []
     function.alignmentStarsText.append(pg.TextItem())
     function.ui.showAlignStar.setChecked(True)
@@ -262,7 +238,7 @@ def test_setupPointer(function):
     function.setupPointer()
 
 
-def test_drawPointer_2(function):
+def test_drawPointer(function):
     function.app.mount.obsSite.Az = Angle(degrees=10)
     function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.setupPointer()
@@ -273,9 +249,21 @@ def test_setupDome(function):
     function.setupDome()
 
 
+def test_setDomeAzimuth(function):
+    function.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
+    function.setDomeAzimuth(100)
+
+
+def test_drawDome_1(function):
+    function.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
+    function.app.deviceStat["dome"] = False
+    function.drawDome()
+
+
 def test_drawDome_2(function):
     function.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
-    function.drawDome(azimuth=100)
+    function.app.deviceStat["dome"] = True
+    function.drawDome()
 
 
 def test_drawModelIsoCurve_1(function):
@@ -290,7 +278,7 @@ def test_drawModelIsoCurve_2(function):
         errorRMS = 5
 
     function.app.mount.model.starList = [Star()]
-    with mock.patch.object(function.ui.hemisphere, "addIsoItem", return_value=True):
+    with mock.patch.object(function.ui.hemisphere, "addIsoItemHorizon", return_value=True):
         function.drawModelIsoCurve()
 
 
@@ -305,16 +293,27 @@ def test_slewDirect_2(function):
             function.slewDirect(QPointF(1, 1))
 
 
-def test_slewDirect_3(function):
-    with mock.patch.object(function, "messageDialog", return_value=True):
-        with mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=True):
-            function.slewDirect(QPointF(1, 1))
-
-
 def test_slewStar_1(function):
     function.alignmentStars = pg.ScatterPlotItem()
     with mock.patch.object(function.alignmentStars, "pointsAt", return_value=[]):
         function.slewStar(QPointF(1, 1))
+
+
+def test_slewStar_2(function):
+    class Spot:
+        @staticmethod
+        def index():
+            return 0
+
+    function.app.hipparcos.name = ["test"]
+    function.app.mount.setting.statusDualAxisTracking = True
+    function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
+    with mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]):
+        with mock.patch.object(function, "messageDialog", return_value=0):
+            with mock.patch.object(
+                function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
+            ):
+                function.slewStar(QPointF(1, 1))
 
 
 def test_slewStar_3(function):
@@ -324,6 +323,7 @@ def test_slewStar_3(function):
             return 0
 
     function.app.hipparcos.name = ["test"]
+    function.app.mount.setting.statusDualAxisTracking = False
     function.app.mount.model.numberStars = 5
     function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
     with mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]):
@@ -388,6 +388,15 @@ def test_mouseDoubleClick_2(function):
         function.mouseDoubleClick(1, QPointF(1, 1))
 
 
+def test_mouseDoubleClick_3(function):
+    function.ui.editModeHem.setChecked(True)
+    with mock.patch.object(function, "slewStar") as mock_star:
+        with mock.patch.object(function, "slewDirect") as mock_direct:
+            function.mouseDoubleClick(1, QPointF(1, 1))
+            mock_star.assert_not_called()
+            mock_direct.assert_not_called()
+
+
 def test_drawTab_1(function):
     function.ui.showIsoModel.setChecked(True)
     function.ui.showCelestial.setChecked(True)
@@ -395,6 +404,7 @@ def test_drawTab_1(function):
     function.ui.showMountLimits.setChecked(True)
     function.ui.showHorizon.setChecked(True)
     function.app.deviceStat["mount"] = True
+    function.app.mount.model.numberStars = 5
     with mock.patch.object(function, "drawCelestialEquator"):
         with mock.patch.object(function.parent, "drawTerrainImage"):
             with mock.patch.object(function.parent, "drawMeridianLimits"):
@@ -402,3 +412,15 @@ def test_drawTab_1(function):
                     with mock.patch.object(function, "drawModelIsoCurve"):
                         with mock.patch.object(function, "drawHorizon"):
                             function.drawTab()
+
+
+def test_drawTab_2(function):
+    function.ui.showIsoModel.setChecked(False)
+    function.ui.showCelestial.setChecked(False)
+    function.ui.showTerrain.setChecked(False)
+    function.ui.showMountLimits.setChecked(False)
+    function.ui.showHorizon.setChecked(False)
+    function.app.deviceStat["mount"] = False
+    function.app.mount.model.numberStars = 0
+    function.drawTab()
+

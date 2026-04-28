@@ -282,8 +282,6 @@ class SettDevice:
         itemText = f"{selectedFramework} - {name}"
         self.drivers[driver]["uiDropDown"].setCurrentIndex(index)
         self.drivers[driver]["uiDropDown"].setItemText(index, itemText)
-
-        self.stopDriver(driver)
         self.startDriver(driver, True)
 
     def copyConfig(self, driverOrig: str, framework: str) -> None:
@@ -292,7 +290,6 @@ class SettDevice:
                 continue
 
             driverClass = self.drivers[driverDest]["class"]
-
             if driverClass.framework == framework:
                 self.stopDriver(driver=driverOrig)
             if driverDest not in self.driversData:
@@ -307,6 +304,7 @@ class SettDevice:
                 self.driversData[driverDest]["frameworks"][framework][param] = source
 
     def callPopup(self, driver: str) -> None:
+        self.stopDriver(driver)
         data = self.driversData[driver]
         deviceType = self.drivers[driver]["deviceType"]
         deviceClass = self.drivers[driver]["class"]

@@ -294,13 +294,16 @@ def test_callPopup_1(function):
         ui = OK()
 
     function.driversData = {"cover": {}}
-    test = function.drivers
+    saved_drivers = function.drivers
     function.drivers = {"cover": {"deviceType": "cover", "class": mock.Mock()}}
-    with mock.patch.object(
-        mw4.gui.mainWaddon.tabSett_Device, "DevicePopup", return_value=Pop()
-    ):
-        function.callPopup("cover")
-    function.drivers = test
+    try:
+        with mock.patch.object(function, "stopDriver"):
+            with mock.patch.object(
+                mw4.gui.mainWaddon.tabSett_Device, "DevicePopup", return_value=Pop()
+            ):
+                function.callPopup("cover")
+    finally:
+        function.drivers = saved_drivers
 
 
 def test_stopDriver_2(function):

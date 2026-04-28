@@ -125,7 +125,7 @@ class CameraIndi(IndiClass):
 
     def sendDownloadMode(self) -> None:
         self.txQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
-        # self.txQ.put((self.deviceName, "CCD_COMPRESSION", {"QUALITY_LOW": "On"}))
+        self.txQ.put((self.deviceName, "CCD_COMPRESSION", {"INDI_DISABLED": "On"}))
 
     def expose(self) -> None:
         self.sendDownloadMode()

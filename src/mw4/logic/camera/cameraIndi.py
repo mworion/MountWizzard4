@@ -17,6 +17,7 @@ from indipyclient.queclient import EventItem
 from mw4.base.indiClass import IndiClass
 from pathlib import Path
 from typing import Any
+from xisf import XISF
 
 
 class CameraIndi(IndiClass):
@@ -70,21 +71,48 @@ class CameraIndi(IndiClass):
         self.data["CCD_OFFSET.OFFSET_MIN"] = offset["members"].get("min", 0)
         self.data["CCD_OFFSET.OFFSET_MAX"] = offset["members"].get("max", 1)
 
-    def saveBLOB(self, item: EventItem, vectors: dict) -> None:
+    def writeImageXisfHeader(self) -> None:
+        xisf = XISF(self.parent.imagePath)
+        file_meta = xisf.get_file_metadata()
+        ims_meta = xisf.get_images_metadata()
+        im_data = xisf.read_image(0)
+        ims_meta[0]["FITSKeywords"]["OBJECT"] = [
+            {"value": "SKY_OBJECT", "comment": "default name from MW4"}
+        ]
+        ims_meta[0]["FITSKeywords"]["AUTHOR"] = [
+            {"value": "MountWizzard4", "comment": "default name from MW4"}
+        ]
+        ims_meta[0]["FITSKeywords"]["FRAME"] = [
+            {"value": "Light", "comment": "Modeling works with light frames"}
+        ]
+        XISF.write(
+            self.parent.imagePath,
+            im_data,
+            creator_app="MountWizzard4",
+            image_metadata=ims_meta[0],
+            xisf_metadata=file_meta,
+            codec="lz4hc",
+            shuffle=True,
+        )
+
+    def saveImageBLOB(self, item: EventItem, vectors: dict) -> None:
+        if item.eventtype != "SetBLOB":
+            return
         blob = vectors.get("CCD1", {})
         if not blob:
-            return
-        if item.eventtype != "SetBLOB":
             return
         filename = blob["members"]["CCD1"]["filename"]
         if not filename:
             return
-        # blobformat = blob["members"]["CCD1"]["blobformat"]
-        # blobsize = blob["members"]["CCD1"]["blobsize"]
-        # print(filename, blobformat, blobsize)
-        # todo: move file to target directory
-        # self.parent.writeImageFitsHeader()
-        # todo: check if XISF will work
+        blobFile = self.app.mwGlob["tempDir"] / filename
+        blobformat = blob["members"]["CCD1"]["blobformat"]
+        self.parent.imagePath = self.parent.imagePath.with_suffix(blobformat)
+        blobFile.rename(self.parent.imagePath)
+
+        if blobformat == ".xisf":
+            self.writeImageXisfHeader()
+        else:
+            self.parent.writeImageFitsHeader()
         self.parent.exposeFinished()
 
     def writeVectorsToData(self, item: EventItem, vectors: dict) -> None:
@@ -93,10 +121,11 @@ class CameraIndi(IndiClass):
         self.addOffsetLimits(vectors)
         self.setCanTemperature(vectors)
         self.setExposureState(vectors)
-        self.saveBLOB(item, vectors)
+        self.saveImageBLOB(item, vectors)
 
     def sendDownloadMode(self) -> None:
         self.txQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
+        # self.txQ.put((self.deviceName, "CCD_COMPRESSION", {"QUALITY_LOW": "On"}))
 
     def expose(self) -> None:
         self.sendDownloadMode()

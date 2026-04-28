@@ -229,20 +229,20 @@ def test_addOffsetLimits_without_min_max(function):
 
 
 # ---------------------------------------------------------------------------
-# saveBLOB
+# saveImageBLOB
 # ---------------------------------------------------------------------------
 
 
-def test_saveBLOB_absent(function):
+def test_saveImageBLOB_absent(function):
     """No 'CCD1' in vectors → exposeFinished not called."""
     item = mock.MagicMock()
     item.eventtype = "SetBLOB"
     with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
-        function.saveBLOB(item, {})
+        function.saveImageBLOB(item, {})
         mock_fin.assert_not_called()
 
 
-def test_saveBLOB_not_setblob(function):
+def test_saveImageBLOB_not_setblob(function):
     """'CCD1' present but item.eventtype != 'SetBLOB' → exposeFinished not called."""
     item = mock.MagicMock()
     item.eventtype = "DefBLOB"
@@ -254,11 +254,11 @@ def test_saveBLOB_not_setblob(function):
         }
     }
     with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
-        function.saveBLOB(item, vectors)
+        function.saveImageBLOB(item, vectors)
         mock_fin.assert_not_called()
 
 
-def test_saveBLOB_no_filename(function):
+def test_saveImageBLOB_no_filename(function):
     """'CCD1' present, SetBLOB, but filename is empty → exposeFinished not called."""
     item = mock.MagicMock()
     item.eventtype = "SetBLOB"
@@ -266,12 +266,12 @@ def test_saveBLOB_no_filename(function):
         "CCD1": {"members": {"CCD1": {"filename": "", "blobformat": ".fits", "blobsize": 0}}}
     }
     with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
-        function.saveBLOB(item, vectors)
+        function.saveImageBLOB(item, vectors)
         mock_fin.assert_not_called()
 
 
-def test_saveBLOB_present(function):
-    """'CCD1' present, SetBLOB, valid filename → exposeFinished called."""
+def test_saveImageBLOB_fits(function):
+    """SetBLOB with .fits format → rename called, writeImageFitsHeader called, exposeFinished called."""
     item = mock.MagicMock()
     item.eventtype = "SetBLOB"
     vectors = {
@@ -281,9 +281,39 @@ def test_saveBLOB_present(function):
             }
         }
     }
-    with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
-        function.saveBLOB(item, vectors)
-        mock_fin.assert_called_once()
+    mock_blob_file = mock.MagicMock()
+    mock_temp_dir = mock.MagicMock()
+    mock_temp_dir.__truediv__ = mock.MagicMock(return_value=mock_blob_file)
+    function.app.mwGlob["tempDir"] = mock_temp_dir
+    with mock.patch.object(function.parent, "writeImageFitsHeader") as mock_fits:
+        with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
+            function.saveImageBLOB(item, vectors)
+            mock_blob_file.rename.assert_called_once_with(function.parent.imagePath)
+            mock_fits.assert_called_once()
+            mock_fin.assert_called_once()
+
+
+def test_saveImageBLOB_xisf(function):
+    """SetBLOB with .xisf format → rename called, writeImageXisfHeader called, exposeFinished called."""
+    item = mock.MagicMock()
+    item.eventtype = "SetBLOB"
+    vectors = {
+        "CCD1": {
+            "members": {
+                "CCD1": {"filename": "image.xisf", "blobformat": ".xisf", "blobsize": 2048}
+            }
+        }
+    }
+    mock_blob_file = mock.MagicMock()
+    mock_temp_dir = mock.MagicMock()
+    mock_temp_dir.__truediv__ = mock.MagicMock(return_value=mock_blob_file)
+    function.app.mwGlob["tempDir"] = mock_temp_dir
+    with mock.patch.object(function, "writeImageXisfHeader") as mock_xisf:
+        with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
+            function.saveImageBLOB(item, vectors)
+            mock_blob_file.rename.assert_called_once_with(function.parent.imagePath)
+            mock_xisf.assert_called_once()
+            mock_fin.assert_called_once()
 
 
 # ---------------------------------------------------------------------------
@@ -300,7 +330,7 @@ def test_writeVectorsToData(function):
             with mock.patch.object(function, "addOffsetLimits") as mock_offset:
                 with mock.patch.object(function, "setCanTemperature") as mock_temp:
                     with mock.patch.object(function, "setExposureState") as mock_exp:
-                        with mock.patch.object(function, "saveBLOB") as mock_blob:
+                        with mock.patch.object(function, "saveImageBLOB") as mock_blob:
                             function.writeVectorsToData(item, vectors)
                             mock_super.assert_called_once_with(item, vectors)
                             mock_gain.assert_called_once_with(vectors)

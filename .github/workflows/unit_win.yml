@@ -194,9 +194,9 @@ jobs:
     - name: combining_data
       run: |
         dir
-        python -m pip install coverage
-        python -m coverage combine c0.dat c1.dat c2.dat c3.dat c4.dat
-        python -m coverage xml
+        uv pip install coverage
+        uv coverage combine c0.dat c1.dat c2.dat c3.dat c4.dat
+        uv coverage xml
 
     - name: upload
       uses: codecov/codecov-action@v4

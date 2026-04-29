@@ -23,7 +23,6 @@ from PySide6.QtCore import QDir, QSize, Qt
 from PySide6.QtGui import (
     QGuiApplication,
     QKeyEvent,
-    QPalette,
     QPixmap,
 )
 from PySide6.QtWidgets import (
@@ -40,7 +39,6 @@ class MWidget(QWidget, Styles):
 
     def __init__(self):
         super().__init__()
-        self.palette = QPalette()
         self.initUI()
         self.screenSizeX = QGuiApplication.primaryScreen().geometry().width()
         self.screenSizeY = QGuiApplication.primaryScreen().geometry().height()

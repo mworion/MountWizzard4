@@ -77,6 +77,62 @@ def test_defaultConfig(function):
     assert function.defaultConfig["updateRate"] == 1000
 
 
+# ─── updateMessage ───────────────────────────────────────────────────────────
+
+
+def test_updateMessage_messagesDisabled(function):
+    """messages == False → early return, msg.emit never called."""
+    function.messages = False
+    function.deviceName = "MyDevice"
+    mock_msg = mock.MagicMock()
+    original_msg, function.msg = function.msg, mock_msg
+    try:
+        function.updateMessage(mock.MagicMock())
+    finally:
+        function.msg = original_msg
+    mock_msg.emit.assert_not_called()
+
+
+def test_updateMessage_noMessageInSnapshot(function):
+    """messages == True but snapshot contains no messages → early return."""
+    function.messages = True
+    function.deviceName = "MyDevice"
+
+    snap_device = mock.MagicMock()
+    snap_device.dictdump.return_value = {}   # no "messages" key
+    item = mock.MagicMock()
+    item.snapshot = {"MyDevice": snap_device}
+
+    mock_msg = mock.MagicMock()
+    original_msg, function.msg = function.msg, mock_msg
+    try:
+        function.updateMessage(item)
+    finally:
+        function.msg = original_msg
+    mock_msg.emit.assert_not_called()
+
+
+def test_updateMessage_emitsMessage(function):
+    """messages == True and snapshot contains a message → msg.emit called."""
+    function.messages = True
+    function.deviceName = "MyDevice"
+
+    snap_device = mock.MagicMock()
+    snap_device.dictdump.return_value = {"messages": [("2024-01-01", "Hello INDI")]}
+    item = mock.MagicMock()
+    item.snapshot = {"MyDevice": snap_device}
+
+    mock_msg = mock.MagicMock()
+    original_msg, function.msg = function.msg, mock_msg
+    try:
+        function.updateMessage(item)
+    finally:
+        function.msg = original_msg
+    mock_msg.emit.assert_called_once_with(
+        0, "INDI", "Device message", f"{'MyDevice':15s} Hello INDI"
+    )
+
+
 # ─── setStatusDeviceConnected ─────────────────────────────────────────────────
 
 
@@ -383,6 +439,41 @@ def test_processRxQueue_noVectors(function):
     function.processRxQueue()
     t.join()
     assert function.data == {}
+
+
+def test_processRxQueue_messageEvent(function):
+    """eventtype == 'Message' → updateMessage is called."""
+    function.commandRunning = True
+    function.deviceName = "MyDevice"
+    function.messages = True
+
+    snap_device = mock.MagicMock()
+    snap_device.get.return_value = None          # no CONNECTION key
+    snap_device.dictdump.return_value = {"messages": [("2024-01-01", "test msg")]}
+
+    item = mock.MagicMock()
+    item.snapshot = {"MyDevice": snap_device}
+    item.devicename = "MyDevice"
+    item.eventtype = "Message"
+    function.rxQ.put(item)
+
+    mock_msg = mock.MagicMock()
+    original_msg, function.msg = function.msg, mock_msg
+
+    def stopper():
+        time.sleep(0.15)
+        function.commandRunning = False
+
+    t = threading.Thread(target=stopper)
+    t.start()
+    try:
+        function.processRxQueue()
+    finally:
+        function.msg = original_msg
+    t.join()
+    mock_msg.emit.assert_called_once_with(
+        0, "INDI", "Device message", f"{'MyDevice':15s} test msg"
+    )
 
 
 # ─── cleanupStop ─────────────────────────────────────────────────────────────

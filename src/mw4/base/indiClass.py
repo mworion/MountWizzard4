@@ -87,6 +87,14 @@ class IndiClass:
     def port(self, value: int | str) -> None:
         self._port = int(value)
 
+    def updateMessage(self, item: EventItem) -> None:
+        if not self.messages:
+            return
+        message = item.snapshot[self.deviceName].dictdump().get("messages")
+        if not message:
+            return
+        self.msg.emit(0, "INDI", "Device message", f"{self.deviceName:15s} {message[0][1]}")
+
     def setStatusDeviceConnected(self, item: EventItem) -> None:
         status = item.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "On"
         if status and not self.deviceConnected:
@@ -118,6 +126,8 @@ class IndiClass:
                 continue
             if item.snapshot[self.deviceName].get("CONNECTION"):
                 self.setStatusDeviceConnected(item)
+            if item.eventtype == "Message":
+                self.updateMessage(item)
             vectors = item.snapshot[self.deviceName].dictdump().get("vectors")
             if vectors:
                 self.writeVectorsToData(item, vectors)

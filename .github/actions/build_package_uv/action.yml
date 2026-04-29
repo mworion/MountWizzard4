@@ -7,16 +7,11 @@ runs:
   steps:
     - uses: actions/download-artifact@v8
 
-    - name: setup python
-      uses: actions/setup-python@v6
-      with:
-        python-version: '3.13'
-
     - name: install uv
       uses: astral-sh/setup-uv@v7
       with:
         enable-cache: true
-        python-version: ${{ matrix.python-version }}
+        python-version: '3.13'
 
     - name: build package
       shell: bash

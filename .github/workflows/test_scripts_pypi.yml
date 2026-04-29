@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: True
 
 env:
-  version: '4.0.0a42'
+  version: '4.0.0b5'
 
 on:
   push:

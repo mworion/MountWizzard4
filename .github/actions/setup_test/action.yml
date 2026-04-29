@@ -27,6 +27,7 @@ runs:
         enable-cache: true
         python-version: '3.13'
 
+    - name: install #1
       run: |
         uv venv -p 3.13
         uv pip install -e .

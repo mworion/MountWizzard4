@@ -20,6 +20,7 @@ from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.mountcontrol.tleParams import TLEParams
 from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem
 from sgp4.exporter import export_tle
 from skyfield.api import Angle, EarthSatellite
@@ -372,30 +373,27 @@ def test_chooseSatellite_2(function):
 
 
 def test_getSatelliteDataFromDatabase_2(function):
-    class Name:
-        name = ""
-
-    tleParams = Name()
+    tleParams = TLEParams()
     with mock.patch.object(function, "extractSatelliteData"):
         with mock.patch.object(function, "showSatPasses"):
             function.getSatelliteDataFromDatabase(tleParams=tleParams)
 
 
 def test_updateOrbit_1(function):
-    function.satellite = EarthSatellite()
+    function.satellite = EarthSatellite("", "")
     function.satSourceValid = False
     function.updateOrbit()
 
 
 def test_updateOrbit_2(function):
-    function.satellite = EarthSatellite()
+    function.satellite = EarthSatellite("","")
     function.satSourceValid = True
     function.updateOrbit()
 
 
 def test_updateOrbit_4(function):
     function.satSourceValid = True
-    function.satellite = EarthSatellite()
+    function.satellite = EarthSatellite("", "")
     function.updateOrbit()
 
 

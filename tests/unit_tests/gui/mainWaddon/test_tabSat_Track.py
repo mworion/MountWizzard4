@@ -383,19 +383,11 @@ def test_getSatelliteDataFromDatabase_2(function):
 
 
 def test_updateOrbit_1(function):
-    function.satellite = EarthSatellite("", "")
-    function.satSourceValid = False
+    function.satellite = None
     function.updateOrbit()
 
 
 def test_updateOrbit_2(function):
-    function.satellite = EarthSatellite("","")
-    function.satSourceValid = True
-    function.updateOrbit()
-
-
-def test_updateOrbit_4(function):
-    function.satSourceValid = True
     function.satellite = EarthSatellite("", "")
     function.updateOrbit()
 

@@ -175,8 +175,10 @@ jobs:
       with:
         ref: ${{env.branch}}
 
-    - name: install package
-      uses: ./.github/actions/setup_test_cov
+    - name: install uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true
 
     - uses: actions/download-artifact@v7
       with:

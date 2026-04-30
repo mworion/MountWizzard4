@@ -121,4 +121,4 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run --auto-servernum uv run tests/unit_tests/mainApp
+          xvfb-run --auto-servernum uv run pytest tests/unit_tests/mainApp

@@ -44,11 +44,10 @@ jobs:
       uses: astral-sh/setup-uv@v6
       with:
         enable-cache: true
-        python-version: '3.13'
 
     - name: build_widgets_resource
       run: |
-        uv venv
+        uv venv -p 3.13
         uv pip install PySide6
         ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.widDest}}devicePopup_ui.py
         ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.widDest}}downloadPopup_ui.py

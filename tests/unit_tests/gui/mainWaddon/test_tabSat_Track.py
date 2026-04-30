@@ -373,7 +373,10 @@ def test_chooseSatellite_2(function):
 
 
 def test_getSatelliteDataFromDatabase_2(function):
-    tleParams = TLEParams()
+    class Test:
+        obssite = None
+    tleParams = TLEParams(Test())
+    tleParams.name = ""
     with mock.patch.object(function, "extractSatelliteData"):
         with mock.patch.object(function, "showSatPasses"):
             function.getSatelliteDataFromDatabase(tleParams=tleParams)

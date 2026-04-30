@@ -201,8 +201,8 @@ jobs:
         dir
         uv venv -p 3.13
         uv pip install coverage
-        uv coverage combine c0.dat c1.dat c2.dat c3.dat c4.dat
-        uv coverage xml
+        uv run coverage combine c0.dat c1.dat c2.dat c3.dat c4.dat
+        uv run coverage xml
 
     - name: upload
       uses: codecov/codecov-action@v4

@@ -174,7 +174,10 @@ jobs:
     - uses: actions/checkout@v6
       with:
         ref: ${{env.branch}}
-        
+
+    - name: install package
+      uses: ./.github/actions/setup_test_cov
+
     - uses: actions/download-artifact@v7
       with:
         name: c0

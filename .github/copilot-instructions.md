@@ -1,61 +1,61 @@
 # MountWizzard4 – GitHub Copilot Instructions
 
-## Projektbeschreibung
-MountWizzard4 ist eine Python-Desktop-Anwendung zur Steuerung von **10micron-Montierungen**
-für astronomische Beobachtungen. Sie stellt eine vollständige GUI bereit und unterstützt
-Kamera-, Kuppel-, Wetter- und Satelliten-Workflows.
+## Project Description
+MountWizzard4 is a Python desktop application for controlling **10micron mounts**
+for astronomical observations. It provides a full GUI and supports camera, dome,
+weather, and satellite workflows.
 
 ---
 
 ## Tech Stack
 
-| Bereich           | Technologie                              |
+| Area              | Technology                               |
 |-------------------|------------------------------------------|
-| Sprache           | Python 3.11–3.13                         |
+| Language          | Python 3.11–3.13                         |
 | GUI               | PySide6 (Qt6), PyQtGraph                 |
-| Astronomie        | Astropy, Skyfield, SGP4, SEP, PyERFA     |
-| Datenverarbeitung | NumPy, SciPy, OpenCV (headless)          |
-| Protokolle        | INDI (indipyclient), WebSocket, HID, REST|
-| Bildformate       | FITS, XISF                               |
-| Konfiguration     | PyYAML, JSON                             |
+| Astronomy         | Astropy, Skyfield, SGP4, SEP, PyERFA     |
+| Data Processing   | NumPy, SciPy, OpenCV (headless)          |
+| Protocols         | INDI (indipyclient), WebSocket, HID, REST|
+| Image Formats     | FITS, XISF                               |
+| Configuration     | PyYAML, JSON                             |
 | Build             | uv / uv_build                            |
 | Testing           | pytest, pytest-qt, pytest-cov            |
 | Linting           | Ruff                                     |
 
 ---
 
-## Projektstruktur
+## Project Structure
 
 ```
-src/mw4/          → Hauptquellcode (src-Layout)
-  gui/            → PySide6-GUI (Widgets, Windows, Styles)
-  logic/          → Gerätelogik (Kamera, Kuppel, Wetter, ...)
-  base/           → Basisklassen und Utilities
-  mountcontrol/   → Kommunikation mit 10micron-Montierung
+src/mw4/          → Main source code (src layout)
+  gui/            → PySide6 GUI (widgets, windows, styles)
+  logic/          → Device logic (camera, dome, weather, ...)
+  base/           → Base classes and utilities
+  mountcontrol/   → Communication with 10micron mount
 tests/
-  unit_tests/     → Unit-Tests (spiegeln src/mw4/ Struktur)
-  testData/       → Testdaten (FITS, WCS, JSON, ...)
+  unit_tests/     → Unit tests (mirror the src/mw4/ structure)
+  testData/       → Test data (FITS, WCS, JSON, ...)
 src_add/
-  widgets/        → Qt Designer .ui-Dateien
+  widgets/        → Qt Designer .ui files
 ```
 
 ---
 
-## Coding-Konventionen
+## Coding Conventions
 
-- **Zeilenlänge**: max. 95 Zeichen (Ruff)
-- **Einrückung**: 4 Leerzeichen
-- **Imports**: sortiert ohne Sektionen (isort via Ruff)
-- **GUI-Kommunikation**: Qt Signals & Slots
-- **Tests**: pytest, Mocking mit `unittest.mock`
-- **Dateinamen**: camelCase für Klassen, snake_case für Module
-- **Keine** direkten Abhängigkeiten zwischen GUI-Tabs (lose Kopplung)
+- **Line length**: max. length out of pyproject.toml (Ruff)
+- **Indentation**: 4 spaces
+- **Imports**: sorted without sections (isort via Ruff)
+- **GUI communication**: Qt Signals & Slots
+- **Tests**: pytest, mocking with `unittest.mock`
+- **Naming**: camelCase for classes and modules
+- **No** direct dependencies between GUI tabs (loose coupling)
 
 ---
 
-## Typische Muster
+## Typical Patterns
 
-### Geräte-Klasse (Logic-Layer)
+### Device Class (Logic Layer)
 ```python
 class MyDevice:
     def __init__(self, app):
@@ -63,7 +63,7 @@ class MyDevice:
         self.signals = MyDeviceSignals()
 ```
 
-### GUI-Mixin
+### GUI Mixin
 ```python
 class TabMyFeatureMixin:
     def initConfig(self): ...
@@ -71,7 +71,7 @@ class TabMyFeatureMixin:
     def setupGui(self): ...
 ```
 
-### Unit-Test
+### Unit Test
 ```python
 def test_myFunction(app):
     # arrange
@@ -84,11 +84,37 @@ def test_myFunction(app):
 
 ---
 
-## Wichtige Hinweise für Copilot
+## Important Notes for Copilot
 
-- Tests immer unter `tests/unit_tests/` mit gleicher Ordnerstruktur wie `src/mw4/`
-- GUI-Widgets werden aus `.ui`-Dateien generiert – diese **nicht** manuell bearbeiten
-- Astronomische Berechnungen bevorzugt mit **Astropy** oder **Skyfield**
-- INDI-Protokoll für Hardware-Kommunikation verwenden
-- Platform-spezifischer Code (Windows) mit `platform_system == 'Windows'` absichern
-
+- Tests must always be placed under `tests/unit_tests/` mirroring the
+  `src/mw4/` folder structure.
+- GUI widgets are generated from `.ui` files – do **not** edit them manually.
+- Astronomical calculations should preferably use **Astropy** or **Skyfield**.
+- Platform-specific code (Windows) must be guarded with
+  `platform_system == 'Windows'`.
+- Method names, function names, variables, etc. stay in camelCase format.
+- Source code is located in `src/mw4`.
+- Unit tests are located in `tests/unit_tests`.
+- All code must be covered by tests with a test coverage of 100%.
+- As a first step, a plan must be created before implementing any changes.
+- The plan will be saved as a Markdown file with an appropriate name in the
+  root directory.
+- After all changes, the package will be tested to 100% coverage.
+- Ruff will be used as formatter and linter when finished. All findings will
+  be resolved.
+- As the last step before completion, the overall package will be tested.
+- Python 3.11 language features should be used.
+- There is a clear separation between business logic in `src/mw4/logic` and
+  the GUI in `src/mw4/gui`.
+- For the GUI, PySide6 is used.
+- All longer-running calculations must be separated into workers of the main
+  threadPool.
+- If a worker is needed, the variable holding the worker should be named
+  `worker{NameOfFunction}` and the worker method should be named
+  `runner{NameOfFunction}`; full names comply with camelCase.
+- Type annotations must be used for all functions and methods, including
+  return types.
+- Do not take `src/mw4/gui/widgets` into account, as those files are
+  automatically generated.
+- When adding comments, check the line length – it must not exceed the limit
+  defined in `pyproject.toml`; split long comments into multiple lines.

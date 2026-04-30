@@ -13,6 +13,7 @@
 |---|---|
 | 2026-04-30 | Initial report |
 | 2026-04-30 | Applied fixes: BUG-01, BUG-02, BUG-03, STUB-01, STUB-02; annotation sweeps for `styles.py` (+31), `tabMount_Sett.py` (+22), `simulatorW.py` (+15), `tabAnalysis.py` (+12); `driverProtocol.py` deleted (ARCH-02 superseded) |
+| 2026-04-30 | Commits `7344e992a`/`0e0aac8d9`: `tabMount_Sett.py` slot parameter types fully annotated (`ObsSite`, `Setting`, `Firmware`, `Angle`); dead `cycleData` timer references removed from `startNINATimer`/`stopNINATimer` and `startSGProTimer`/`stopSGProTimer`; QA-03 fully resolved |
 
 ---
 
@@ -34,9 +35,9 @@
 | Metric | Initial | After Fixes |
 |---|---|---|
 | Total source files reviewed | 232 | 232 |
-| Total function/method definitions | 1 974 | ~1 962 |
-| Definitions with return-type annotation | 1 722 (87.2 %) | ~1 802 (92.3 %) |
-| **Missing return-type annotations** | **252 (12.8 %)** | **~160 (8.2 %)** |
+| Total function/method definitions | 1 974 | ~1 958 |
+| Definitions with return-type annotation | 1 722 (87.2 %) | ~1 805 (92.7 %) |
+| **Missing return-type annotations** | **252 (12.8 %)** | **~153 (7.8 %)** |
 | Files with untyped `app` parameter | ≥ 41 (19 logic + 22 GUI) | ≥ 41 (unchanged) |
 | Confirmed logic bugs | 3 | **0 (all fixed)** |
 | Stub / no-op methods (undocumented) | 5 | **2 (STUB-01/02 resolved; STUB-03/04 remain)** |
@@ -48,13 +49,15 @@ signals & slots are used correctly.
 
 All three critical bugs have been resolved.  Two stub-method clusters
 (`NINAClass` and `SGProClass` poll-data machinery) were cleaned up by
-removing the entire cycle rather than marking as abstract.  Annotation
-coverage improved from 87.2 % to approximately 92.3 % through targeted
-sweeps of the four highest-priority files.
+removing the entire cycle rather than marking as abstract; residual
+dead `cycleData` timer calls were also removed.  Annotation coverage
+improved from 87.2 % to approximately 92.7 % through targeted sweeps
+of the four highest-priority files, with `tabMount_Sett.py` now fully
+annotated including parameter types.
 
 The remaining areas that need attention are:
 
-- ~160 un-annotated definitions, concentrated in
+- ~153 un-annotated definitions, concentrated in
   `satellite_calculations.py`, `buildPoints.py`, `splashScreen.py`,
   `imageTabs.py`, `tabSat_Search.py`, `tabSett_Update.py`,
   `qtMain.py`, `mountcontrol/mount.py`, and the 22 GUI `__init__`
@@ -71,17 +74,18 @@ The remaining areas that need attention are:
 
 ```
                                Initial    After Fixes
-Total defs reviewed          :  1 974       ~1 962
-With return-type annotation  :  1 722 (87.2 %)  ~1 802 (92.3 %)
-Missing return-type annotation:   252 (12.8 %)   ~160  ( 8.2 %)
+Total defs reviewed          :  1 974       ~1 958
+With return-type annotation  :  1 722 (87.2 %)  ~1 805 (92.7 %)
+Missing return-type annotation:   252 (12.8 %)   ~153  ( 7.8 %)
 
 Fixes applied (approx.):
-  styles.py           +31
-  tabMount_Sett.py    +22
-  simulatorW.py       +15
-  tabAnalysis.py      +12
+  styles.py                    +31
+  tabMount_Sett.py (returns)   +22
+  simulatorW.py                +15
+  tabAnalysis.py               +12
+  tabMount_Sett.py (params)     +3
   NINAClass/SGProClass: ~12 methods removed (poll-data cycle)
-  Total               +80 (net)
+  Total                        +83 (net) / ~16 defs removed
 ```
 
 ### 2.2 Files with Remaining Missing Annotations
@@ -91,7 +95,7 @@ Files fully resolved in the latest sweep are struck through.
 | # Missing | File | Status |
 |---|---|---|
 | ~~31~~ | ~~`src/mw4/gui/styles/styles.py`~~ | ✅ Fixed |
-| ~~22~~ | ~~`src/mw4/gui/mainWaddon/tabMount_Sett.py`~~ | ✅ Fixed (return types); parameter types `obs`/`sett`/`fw` still untyped |
+| ~~22~~ | ~~`src/mw4/gui/mainWaddon/tabMount_Sett.py`~~ | ✅ Fixed (all return + parameter types) |
 | ~~15~~ | ~~`src/mw4/gui/extWindows/simulator/simulatorW.py`~~ | ✅ Fixed |
 | ~~12~~ | ~~`src/mw4/gui/mainWaddon/tabAnalysis.py`~~ | ✅ Fixed |
 | 10 | `src/mw4/logic/satellites/satellite_calculations.py` | ⚠️ Open |
@@ -113,11 +117,11 @@ Files fully resolved in the latest sweep are struck through.
 All 31 `@property` colour accessors (`M_PRIM`, `M_SEC`, `M_RED`, etc.)
 now carry `-> str` return-type annotations.
 
-#### b) GUI signal-slot callbacks (`tabMount_Sett.py`) — ✅ PARTIALLY FIXED
+#### b) GUI signal-slot callbacks (`tabMount_Sett.py`) — ✅ FIXED
 
-Return-type annotations have been added to all 22 slot methods.
-Parameter types for domain objects (`obs`, `sett`, `fw`) are still
-missing (see QA-03).
+All 22 slot methods now carry both return-type and parameter-type
+annotations.  Proper domain types (`ObsSite`, `Setting`, `Firmware`,
+`Angle`) were imported and applied.
 
 #### c) Pure functions in `satellite_calculations.py`
 
@@ -355,7 +359,9 @@ ignore_missing_imports = true
 The entire poll-data machinery (`workerPollData`, `processPolledData`,
 `pollData`, `cycleData` timer, `workerData` worker attribute) has been
 **removed** from `NINAClass`.  The corresponding empty override in
-`CameraNINA` (`cameraNINA.py`) was removed as well.
+`CameraNINA` (`cameraNINA.py`) was removed as well.  A follow-up
+commit also removed the dead `self.cycleData.start/stop()` calls that
+remained in `startNINATimer` / `stopNINATimer`.
 
 The `workerGetInitialConfig` stub (`pass`) remains intentionally as a
 base-class default.
@@ -367,7 +373,8 @@ base-class default.
 Same resolution as STUB-01: the entire poll-data cycle
 (`workerPollData`, `processPolledData`, `pollData`, `cycleData`,
 `workerData`) has been removed from `SGProClass` and from its
-`CameraSGPro` subclass.
+`CameraSGPro` subclass.  Dead `cycleData` references in
+`startSGProTimer` / `stopSGProTimer` were also removed.
 
 ### STUB-03 — `AscomClass.processPolledData` and `workerPollData` — ⚠️ Open
 
@@ -425,12 +432,13 @@ Doppler calculations, etc.) are the most scientifically complex code
 in the project but have no docstrings and no type annotations.
 Both are required for correctness validation.
 
-### QA-03 — `tabMount_Sett.py` slot methods lack parameter annotations — ⚠️ PARTIALLY FIXED
+### QA-03 — `tabMount_Sett.py` slot methods lack parameter annotations — ✅ FIXED
 
-Return-type annotations have been added to all 22 slot methods.
-However, the domain-object parameters (`obs`, `sett`, `fw`) are still
-untyped.  Without parameter annotations, callers passing the wrong
-signal payload type are not caught statically.
+All 22 slot methods now carry both return-type **and** parameter-type
+annotations.  Domain types `ObsSite`, `Setting`, `Firmware`, and
+`Angle` were imported and applied.  The `setLocationValues` helper
+also received proper `Angle | None` and `float | None` parameter
+types.
 
 ### QA-04 — `mountcontrol/mount.py` public API partially unannotated
 
@@ -480,7 +488,7 @@ entry points.
 |---|---|---|---|
 | ~~High~~ | ~~`gui/styles/styles.py`~~ | ~~31 `@property` return types~~ | ✅ Fixed |
 | ~~High~~ | ~~`gui/mainWaddon/tabMount_Sett.py`~~ | ~~22 slot return types~~ | ✅ Fixed (return types only) |
-| High | `gui/mainWaddon/tabMount_Sett.py` | 3 slot parameter types (`obs`, `sett`, `fw`) | ⚠️ Open |
+| ~~High~~ | ~~`gui/mainWaddon/tabMount_Sett.py`~~ | ~~3 slot parameter types (`obs`, `sett`, `fw`)~~ | ✅ Fixed |
 | High | `logic/satellites/satellite_calculations.py` | 10 function signatures | ⚠️ Open |
 | ~~Medium~~ | ~~`gui/extWindows/simulator/simulatorW.py`~~ | ~~15 methods~~ | ✅ Fixed |
 | ~~Medium~~ | ~~`gui/mainWaddon/tabAnalysis.py`~~ | ~~12 methods~~ | ✅ Fixed |
@@ -503,4 +511,4 @@ Additionally: STUB-03 – mark `AscomClass.workerPollData` /
 ---
 
 *Report generated by GitHub Copilot code review — MountWizzard4
-v4.0.0b6, 2026-04-30. Updated 2026-04-30 after commit `e17d1b271`.*
+v4.0.0b6, 2026-04-30. Updated 2026-04-30 after commit `0e0aac8d9`.*

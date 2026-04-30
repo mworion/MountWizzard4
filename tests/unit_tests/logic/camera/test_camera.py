@@ -238,13 +238,17 @@ def test_waitStart_1(function, mocked_sleepAndEvents):
 
 
 def test_waitDownload(function, mocked_sleepAndEvents):
-    function.data["Device.Message"] = "downloading"
+    # message does not yet contain "downloading" → loop body executes once;
+    # the sleep monkeypatch sets exposing=False so the loop exits cleanly
+    function.data["Device.Message"] = "capturing"
     function.exposing = True
     function.waitDownload()
 
 
 def test_waitSave_1(function, mocked_sleepAndEvents):
-    function.data["Device.Message"] = "image is ready"
+    # message does not yet contain "image is ready" → loop body executes once;
+    # the sleep monkeypatch sets exposing=False so the loop exits cleanly
+    function.data["Device.Message"] = "downloading"
     function.exposing = True
     function.waitSave()
 

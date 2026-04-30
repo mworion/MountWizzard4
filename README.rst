@@ -133,7 +133,7 @@ CS Michel
     https://img.shields.io/github/issues-pr-raw/mworion/mountwizzard4
 
 .. |COMMITS_MAIN| image::
-    https://img.shields.io/github/commits-since/mworion/mountwizzard4/4.0.0b0
+    https://img.shields.io/github/commits-since/mworion/mountwizzard4/main
     :target: https://github.com/mworion/MountWizzard4/commits/main
 
 .. |COMMITS_WEEK| image::

@@ -274,7 +274,7 @@ class AscomClass(DriverData):
             self.propertyExceptions = []
         self.signals.deviceDisconnected.emit(f"{self.deviceName}")
         self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
-        self.msg.emit(0, "ALPACA", "Device  remove", f"{self.deviceName}")
+        self.msg.emit(0, "ASCOM", "Device  remove", f"{self.deviceName}")
 
     def selectAscomDriver(self, deviceName: str) -> str:
         try:

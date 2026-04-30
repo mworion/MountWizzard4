@@ -59,7 +59,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          uv run tests/unit_tests/mainApp ${{env.cov}}
+          uv run pytest tests/unit_tests/mainApp ${{env.cov}}
 
       - name: rename_coveragefile
         run: mv .coverage c0.dat
@@ -82,7 +82,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          uv run tests/unit_tests/gui/mainWindow ${{env.cov}}
+          uv run pytest tests/unit_tests/gui/mainWindow ${{env.cov}}
 
       - name: rename_coveragefile
         run: mv .coverage c1.dat
@@ -105,12 +105,12 @@ jobs:
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/base ${{env.cov}}
-          uv run tests/unit_tests/logic ${{env.cov}}
-          uv run tests/unit_tests/mountcontrol ${{env.cov}}
+          uv run pytest tests/unit_tests/logic ${{env.cov}}
+          uv run pytest tests/unit_tests/mountcontrol ${{env.cov}}
 
       - name: rename_coveragefile
         run: mv .coverage c2.dat
-      
+
       - uses: actions/upload-artifact@v6
         with:
           name: c2
@@ -129,7 +129,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          uv run tests/unit_tests/gui/extWindows ${{env.cov}}
+          uv run pytest tests/unit_tests/gui/extWindows ${{env.cov}}
 
       - name: rename_coveragefile
         run: mv .coverage c3.dat
@@ -152,9 +152,9 @@ jobs:
 
       - name: running_unit_tests
         run: |
-          uv run tests/unit_tests/gui/utilities ${{env.cov}}
-          uv run tests/unit_tests/gui/styles ${{env.cov}}
-          uv run tests/unit_tests/gui/mainWaddon ${{env.cov}}
+          uv run pytest tests/unit_tests/gui/utilities ${{env.cov}}
+          uv run pytest tests/unit_tests/gui/styles ${{env.cov}}
+          uv run pytest tests/unit_tests/gui/mainWaddon ${{env.cov}}
 
       - name: rename_coveragefile
         run: mv .coverage c4.dat

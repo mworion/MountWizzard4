@@ -54,11 +54,11 @@ jobs:
 
       - name: running_unit_tests
         run: |
-          uv run tests/unit_tests/base
-          uv run tests/unit_tests/logic
-          uv run tests/unit_tests/mountcontrol
-          uv run tests/unit_tests/gui/utilities
-          uv run tests/unit_tests/gui/styles
+          uv run pytest tests/unit_tests/base
+          uv run pytest tests/unit_tests/logic
+          uv run pytest tests/unit_tests/mountcontrol
+          uv run pytest tests/unit_tests/gui/utilities
+          uv run pytest tests/unit_tests/gui/styles
 
   run_tests_macos_2:
     #
@@ -73,7 +73,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          uv run tests/unit_tests/gui/extWindows
+          uv run pytest tests/unit_tests/gui/extWindows
 
   run_tests_macos_3:
     #
@@ -88,8 +88,8 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          uv run tests/unit_tests/gui/mainWaddon
-          uv run tests/unit_tests/gui/mainWindow
+          uv run pytest tests/unit_tests/gui/mainWaddon
+          uv run pytest tests/unit_tests/gui/mainWindow
 
   run_tests_macos_4:
     #
@@ -104,4 +104,4 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          uv run tests/unit_tests/mainApp
+          uv run pytest tests/unit_tests/mainApp

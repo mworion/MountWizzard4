@@ -22,8 +22,11 @@ from mw4.mountcontrol.convert import (
     formatLatToText,
     formatLonToText,
 )
+from mw4.mountcontrol.obsSite import ObsSite
+from mw4.mountcontrol.setting import Setting
+from mw4.mountcontrol.firmware import Firmware
 from PySide6.QtWidgets import QInputDialog, QLineEdit
-from skyfield.api import wgs84
+from skyfield.api import wgs84, Angle
 from typing import Any
 
 
@@ -58,7 +61,7 @@ class MountSett:
         clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
         self.app.mount.signals.firmwareDone.connect(self.setWOLorAPO)
 
-    def setWOLorAPO(self, fw) -> None:
+    def setWOLorAPO(self, fw: Firmware) -> None:
         self.ui.statusWOL.setEnabled(fw.isHW2012())
         self.ui.label_statusWOL.setEnabled(fw.isHW2012())
         self.ui.statusAPO.setEnabled(fw.isHW2024())
@@ -68,7 +71,7 @@ class MountSett:
         self.ui.statusAPO.setVisible(fw.isHW2024())
         self.ui.label_statusAPO.setVisible(fw.isHW2024())
 
-    def updatePointGUI(self, obs) -> None:
+    def updatePointGUI(self, obs: ObsSite) -> None:
         isJ2000 = self.ui.coordsJ2000.isChecked()
         isValid = obs.raJNow is not None
         isValid = isValid and obs.decJNow is not None
@@ -90,7 +93,7 @@ class MountSett:
         guiSetText(self.ui.pierside, "s", obs.pierside)
         guiSetText(self.ui.timeSidereal, "HSTR", obs.timeSidereal)
 
-    def updateSettingGUI(self, sett) -> None:
+    def updateSettingGUI(self, sett: Setting) -> None:
         ui = self.ui.UTCExpire
         guiSetText(ui, "s", sett.UTCExpire)
         if sett.UTCExpire is not None:
@@ -174,7 +177,7 @@ class MountSett:
             changeStyleDynamic(self.ui.setSiderealTracking, "run", False)
             changeStyleDynamic(self.ui.setSolarTracking, "run", True)
 
-    def updateLocGUI(self, obs) -> None:
+    def updateLocGUI(self, obs: ObsSite) -> None:
         if obs is None:
             return
         location = obs.location
@@ -279,7 +282,7 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "Slew Rate cannot be set")
             return False
 
-    def setLocationValues(self, lat=None, lon=None, elev=None) -> None:
+    def setLocationValues(self, lat: Angle | None = None, lon: Angle | None =None, elev: float=None) -> None:
         obs = self.app.mount.obsSite
         loc = obs.location
         lat = loc.latitude if lat is None else lat

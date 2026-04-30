@@ -48,7 +48,6 @@ class SGProClass(DriverData):
 
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
-        self.workerData: Worker | None = None
         self.workerGetConfig: Worker | None = None
         self.workerStatus: Worker | None = None
         self.mutexPollStatus: QMutex = QMutex()
@@ -56,9 +55,6 @@ class SGProClass(DriverData):
         self.cycleDevice: QTimer = QTimer()
         self.cycleDevice.setSingleShot(False)
         self.cycleDevice.timeout.connect(self.pollStatus)
-        self.cycleData: QTimer = QTimer()
-        self.cycleData.setSingleShot(False)
-        self.cycleData.timeout.connect(self.pollData)
         self.signalRS.signalRemoteShutdown.connect(self.stopCommunication)
 
     @property
@@ -122,19 +118,6 @@ class SGProClass(DriverData):
     def stopSGProTimer(self) -> None:
         self.cycleData.stop()
         self.cycleDevice.stop()
-
-    def processPolledData(self) -> None:
-        pass
-
-    def workerPollData(self) -> None:
-        pass
-
-    def pollData(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.workerData = Worker(self.workerPollData)
-        self.workerData.signals.result.connect(self.processPolledData)
-        self.threadPool.start(self.workerData)
 
     def workerGetInitialConfig(self) -> None:
         pass

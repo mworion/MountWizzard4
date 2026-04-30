@@ -33,7 +33,7 @@ class Analysis:
         self.ui.cancelAnalysis.clicked.connect(self.cancelAnalysis)
         self.app.operationRunning.connect(self.setAnalysisOperationMode)
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         config = self.app.config["mainW"]
         self.ui.flexureAlt.setValue(config.get("flexureAlt", 45))
         self.ui.flexureAz.setValue(config.get("flexureAz", 45))
@@ -42,7 +42,7 @@ class Analysis:
         self.ui.hysteresisMinAlt.setValue(config.get("hysteresisMinAlt", 45))
         self.ui.hysteresisRuns.setValue(config.get("hysteresisRuns", 1))
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         config = self.app.config["mainW"]
         config["flexureAlt"] = self.ui.flexureAlt.value()
         config["flexureAz"] = self.ui.flexureAz.value()
@@ -51,12 +51,12 @@ class Analysis:
         config["hysteresisMinAlt"] = self.ui.hysteresisMinAlt.value()
         config["hysteresisRuns"] = self.ui.hysteresisRuns.value()
 
-    def setupIcons(self):
+    def setupIcons(self) -> None:
         self.mainW.wIcon(self.ui.runFlexure, "start")
         self.mainW.wIcon(self.ui.runHysteresis, "start")
         self.mainW.wIcon(self.ui.cancelAnalysis, "cross-circle")
 
-    def setAnalysisOperationMode(self, status):
+    def setAnalysisOperationMode(self, status) -> None:
         if status == 4:
             self.ui.cancelAnalysis.setEnabled(True)
             self.ui.runHysteresis.setEnabled(False)
@@ -72,7 +72,7 @@ class Analysis:
             self.ui.analysisGroup.setEnabled(False)
             self.ui.cancelAnalysis.setEnabled(False)
 
-    def checkAnalysisConditions(self):
+    def checkAnalysisConditions(self) -> bool:
         if self.ui.plateSolveDevice.currentText().startswith("No device"):
             self.msg.emit(2, "Analysis", "Run error", "No plate solver selected")
             return False
@@ -85,19 +85,18 @@ class Analysis:
             return False
         return True
 
-    def setupFlexurePoints(self):
+    def setupFlexurePoints(self) -> tuple[list, float]:
         alt = self.ui.flexureAlt.value()
         az = self.ui.flexureAz.value()
         waitTime = self.ui.flexureTime.value()
         duration = self.ui.flexureDuration.value()
         numberPoints = int(duration * 60 / waitTime)
-
         data = []
         for i in range(numberPoints):
             data.append((alt, az))
         return data, waitTime
 
-    def restoreAnalysisDefaultContextAndGuiStatus(self):
+    def restoreAnalysisDefaultContextAndGuiStatus(self) -> None:
         changeStyleDynamic(self.ui.runFlexure, "run", False)
         changeStyleDynamic(self.ui.runHysteresis, "run", False)
         self.ui.cancelAnalysis.setEnabled(False)
@@ -107,13 +106,13 @@ class Analysis:
         self.app.playSound.emit("RunFinished")
         self.app.operationRunning.emit(0)
 
-    def cancelAnalysis(self):
+    def cancelAnalysis(self) -> None:
         self.restoreAnalysisDefaultContextAndGuiStatus()
 
-    def processAnalysisData(self):
+    def processAnalysisData(self) -> None:
         self.restoreAnalysisDefaultContextAndGuiStatus()
 
-    def updateAnalysisProgress(self, mPoint):
+    def updateAnalysisProgress(self, mPoint) -> bool:
         number = mPoint.get("lenSequence", 0)
         count = mPoint.get("countSequence", 0)
         if not 0 < count <= number:
@@ -125,5 +124,5 @@ class Analysis:
         self.ui.analysisProgress.setValue(analysisPercent)
         return True
 
-    def runFlexure(self):
+    def runFlexure(self) -> None:
         pass

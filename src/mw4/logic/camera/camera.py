@@ -186,13 +186,17 @@ class Camera:
 
     def waitDownload(self) -> None:
         self.signals.message.emit("download")
-        while self.exposing and "downloading" in self.data.get("Device.Message", ""):
+        msg = self.data.get("Device.Message", "")
+        while self.exposing and "downloading" not in msg:
             time.sleep(0.1)
+            msg = self.data.get("Device.Message", "")
 
     def waitSave(self) -> None:
         self.signals.message.emit("saving")
-        while self.exposing and "image is ready" in self.data.get("Device.Message", ""):
+        msg = self.data.get("Device.Message", "")
+        while self.exposing and "image is ready" not in msg:
             time.sleep(0.1)
+            msg = self.data.get("Device.Message", "")
 
     def waitFinish(self, function: Callable[..., bool], param: Any) -> None:
         while self.exposing and not function(param):

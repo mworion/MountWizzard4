@@ -56,9 +56,6 @@ class CameraSGPro(SGProClass):
     def workerGetInitialConfig(self) -> None:
         self.storePropertyToData(1, "CCD_BINNING.HOR_BIN")
 
-    def workerPollData(self) -> None:
-        pass
-
     def sendDownloadMode(self) -> None:
         pass
 

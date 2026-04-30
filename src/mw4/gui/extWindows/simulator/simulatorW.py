@@ -32,7 +32,7 @@ from PySide6.QtWidgets import QWidget
 
 
 class SimulatorWindow(MWidget):
-    def __init__(self, app):
+    def __init__(self, app) -> None:
         super().__init__()
         self.app = app
         self.ui = simulator_ui.Ui_SimulatorDialog()
@@ -59,7 +59,7 @@ class SimulatorWindow(MWidget):
         self.cameraController = None
         self.setupCamera(self.entityModel["root"]["entity"])
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         config = self.app.config.get("simulatorW", {})
 
         self.positionWindow(config)
@@ -71,7 +71,7 @@ class SimulatorWindow(MWidget):
         self.ui.showSlewPath.setChecked(config.get("showSlewPath", False))
         self.ui.showHorizon.setChecked(config.get("showHorizon", False))
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         configMain = self.app.config
         configMain["simulatorW"] = {}
         config = configMain["simulatorW"]
@@ -92,7 +92,7 @@ class SimulatorWindow(MWidget):
         config["showSlewPath"] = self.ui.showSlewPath.isChecked()
         config["showHorizon"] = self.ui.showHorizon.isChecked()
 
-    def closeEvent(self, closeEvent):
+    def closeEvent(self, closeEvent) -> None:
         self.app.mount.signals.pointDone.disconnect(self.buildPoints.updatePositions)
         self.app.mount.signals.pointDone.disconnect(self.laser.updatePositions)
         self.app.mount.signals.pointDone.disconnect(self.pointer.updatePositions)
@@ -101,7 +101,7 @@ class SimulatorWindow(MWidget):
         self.storeConfig()
         super().closeEvent(closeEvent)
 
-    def showWindow(self):
+    def showWindow(self) -> None:
         self.ui.topView.clicked.connect(self.topView)
         self.ui.topEastView.clicked.connect(self.topEastView)
         self.ui.topWestView.clicked.connect(self.topWestView)
@@ -116,7 +116,7 @@ class SimulatorWindow(MWidget):
         self.show()
         self.colorChange()
 
-    def setupCamera(self, parentEntity):
+    def setupCamera(self, parentEntity) -> None:
         self.camera = self.window3D.camera()
         self.camera.lens().setPerspectiveProjection(60, 16 / 9, 0.1, 10000)
         self.camera.setViewCenter(QVector3D(0, 1, 0))
@@ -127,15 +127,11 @@ class SimulatorWindow(MWidget):
         self.cameraController.setLinearSpeed(5.0)
         self.cameraController.setLookSpeed(90)
 
-    def colorChange(self):
-        """
-        We change the color of the background and the style of the window but
-        not for the 3D scene itself during runtime.
-        """
+    def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.window3D.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
 
-    def limitPositionZ(self):
+    def limitPositionZ(self) -> None:
         """
         Here we limit the position of the camera to the z=0 plane. This helps
         to keep the camera from going below the horizon and looking up into the
@@ -146,37 +142,37 @@ class SimulatorWindow(MWidget):
         posNew = QVector3D(pos.x(), y, pos.z())
         self.camera.setPosition(posNew)
 
-    def topView(self):
+    def topView(self) -> None:
         changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(0.001, 5.0, 0.001))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
-    def topEastView(self):
+    def topEastView(self) -> None:
         changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.1, 1.5, 0.1))
         self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
-    def topWestView(self):
+    def topWestView(self) -> None:
         changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
-    def eastView(self):
+    def eastView(self) -> None:
         changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
-    def westView(self):
+    def westView(self) -> None:
         changeStyleDynamic(self.ui.telescopeView, "run", False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
-    def createReference(self):
+    def createReference(self) -> None:
         """
         Coordinate Systems:
         - fusion360 (x is north, y is west, z is up), scale in mm
@@ -205,13 +201,7 @@ class SimulatorWindow(MWidget):
         }
         linkModel(model, self.entityModel)
 
-    def createScene(self):
-        """
-        SetupScene initially builds all 3d models and collects them to Qt3D
-        scene graph. The scene graph is stored parallel in the dict
-        'entityModel'. The dict is used to link the models please look
-        closely which references are used.
-        """
+    def createScene(self) -> None:
         self.createReference()
         self.light.create()
         self.world.create()

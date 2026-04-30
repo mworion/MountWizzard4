@@ -27,75 +27,75 @@ class Styles:
     colorSet = 0
 
     @property
-    def M_TRANS(self):
+    def M_TRANS(self) -> str:
         return colors["M_TRANS"][self.colorSet]
 
     @property
-    def M_PRIM(self):
+    def M_PRIM(self) -> str:
         return colors["M_PRIM"][self.colorSet]
 
     @property
-    def M_PRIM1(self):
+    def M_PRIM1(self) -> str:
         return colors["M_PRIM1"][self.colorSet]
 
     @property
-    def M_PRIM2(self):
+    def M_PRIM2(self) -> str:
         return colors["M_PRIM2"][self.colorSet]
 
     @property
-    def M_PRIM3(self):
+    def M_PRIM3(self) -> str:
         return colors["M_PRIM3"][self.colorSet]
 
     @property
-    def M_PRIM4(self):
+    def M_PRIM4(self) -> str:
         return colors["M_PRIM4"][self.colorSet]
 
     @property
-    def M_SEC(self):
+    def M_SEC(self) -> str:
         return colors["M_SEC"][self.colorSet]
 
     @property
-    def M_SEC1(self):
+    def M_SEC1(self) -> str:
         return colors["M_SEC1"][self.colorSet]
 
     @property
-    def M_TER(self):
+    def M_TER(self) -> str:
         return colors["M_TER"][self.colorSet]
 
     @property
-    def M_TER1(self):
+    def M_TER1(self) -> str:
         return colors["M_TER1"][self.colorSet]
 
     @property
-    def M_TER2(self):
+    def M_TER2(self) -> str:
         return colors["M_TER2"][self.colorSet]
 
     @property
-    def M_BACK(self):
+    def M_BACK(self) -> str:
         return colors["M_BACK"][self.colorSet]
 
     @property
-    def M_BACK1(self):
+    def M_BACK1(self) -> str:
         return colors["M_BACK1"][self.colorSet]
 
     @property
-    def M_GRAY(self):
+    def M_GRAY(self) -> str:
         return colors["M_GRAY"][self.colorSet]
 
     @property
-    def M_RED(self):
+    def M_RED(self) -> str:
         return colors["M_RED"][self.colorSet]
 
     @property
-    def M_RED1(self):
+    def M_RED1(self) -> str:
         return colors["M_RED1"][self.colorSet]
 
     @property
-    def M_RED2(self):
+    def M_RED2(self) -> str:
         return colors["M_RED2"][self.colorSet]
 
     @property
-    def M_YELLOW(self):
+    def M_YELLOW(self) -> str:
         return colors["M_YELLOW"][self.colorSet]
 
     @property
@@ -103,47 +103,47 @@ class Styles:
         return colors["M_YELLOW1"][self.colorSet]
 
     @property
-    def M_YELLOW2(self):
+    def M_YELLOW2(self) -> str:
         return colors["M_YELLOW2"][self.colorSet]
 
     @property
-    def M_GREEN(self):
+    def M_GREEN(self) -> str:
         return colors["M_GREEN"][self.colorSet]
 
     @property
-    def M_GREEN1(self):
+    def M_GREEN1(self) -> str:
         return colors["M_GREEN1"][self.colorSet]
 
     @property
-    def M_GREEN2(self):
+    def M_GREEN2(self) -> str:
         return colors["M_GREEN2"][self.colorSet]
 
     @property
-    def M_PINK(self):
+    def M_PINK(self) -> str:
         return colors["M_PINK"][self.colorSet]
 
     @property
-    def M_PINK1(self):
+    def M_PINK1(self) -> str:
         return colors["M_PINK1"][self.colorSet]
 
     @property
-    def M_CYAN(self):
+    def M_CYAN(self) -> str:
         return colors["M_CYAN"][self.colorSet]
 
     @property
-    def M_CYAN1(self):
+    def M_CYAN1(self) -> str:
         return colors["M_CYAN1"][self.colorSet]
 
     @property
-    def M_TAB(self):
+    def M_TAB(self) -> str:
         return colors["M_TAB"][self.colorSet]
 
     @property
-    def M_TAB1(self):
+    def M_TAB1(self) -> str:
         return colors["M_TAB1"][self.colorSet]
 
     @property
-    def M_TAB2(self):
+    def M_TAB2(self) -> str:
         return colors["M_TAB2"][self.colorSet]
 
     @property

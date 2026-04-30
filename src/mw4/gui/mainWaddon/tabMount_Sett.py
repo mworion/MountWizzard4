@@ -58,7 +58,7 @@ class MountSett:
         clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
         self.app.mount.signals.firmwareDone.connect(self.setWOLorAPO)
 
-    def setWOLorAPO(self, fw):
+    def setWOLorAPO(self, fw) -> None:
         self.ui.statusWOL.setEnabled(fw.isHW2012())
         self.ui.label_statusWOL.setEnabled(fw.isHW2012())
         self.ui.statusAPO.setEnabled(fw.isHW2024())
@@ -68,7 +68,7 @@ class MountSett:
         self.ui.statusAPO.setVisible(fw.isHW2024())
         self.ui.label_statusAPO.setVisible(fw.isHW2024())
 
-    def updatePointGUI(self, obs):
+    def updatePointGUI(self, obs) -> None:
         isJ2000 = self.ui.coordsJ2000.isChecked()
         isValid = obs.raJNow is not None
         isValid = isValid and obs.decJNow is not None
@@ -90,7 +90,7 @@ class MountSett:
         guiSetText(self.ui.pierside, "s", obs.pierside)
         guiSetText(self.ui.timeSidereal, "HSTR", obs.timeSidereal)
 
-    def updateSettingGUI(self, sett):
+    def updateSettingGUI(self, sett) -> None:
         ui = self.ui.UTCExpire
         guiSetText(ui, "s", sett.UTCExpire)
         if sett.UTCExpire is not None:
@@ -174,7 +174,7 @@ class MountSett:
             changeStyleDynamic(self.ui.setSiderealTracking, "run", False)
             changeStyleDynamic(self.ui.setSolarTracking, "run", True)
 
-    def updateLocGUI(self, obs):
+    def updateLocGUI(self, obs) -> None:
         if obs is None:
             return
         location = obs.location
@@ -185,14 +185,13 @@ class MountSett:
         self.ui.siteLatitude.setText(formatLatToText(location.latitude))
         self.ui.siteElevation.setText(str(location.elevation.m))
 
-    def setMeridianLimitTrack(self):
+    def setMeridianLimitTrack(self) -> bool:
         sett = self.app.mount.setting
         actValue = 0 if not sett.meridianLimitTrack else int(sett.meridianLimitTrack)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
             self.mainW, "Set Meridian Limit Track", "Value (1-30):", actValue, 1, 30, 1
         )
-
         if not ok:
             return False
         if sett.setMeridianLimitTrack(value):
@@ -202,14 +201,13 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "Meridian Limit Track cannot be set")
             return False
 
-    def setMeridianLimitSlew(self):
+    def setMeridianLimitSlew(self) -> bool:
         sett = self.app.mount.setting
         actValue = 0 if not sett.meridianLimitSlew else int(sett.meridianLimitSlew)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
             self.mainW, "Set Meridian Limit Slew", "Value (0-30):", actValue, 0, 30, 1
         )
-
         if not ok:
             return False
         if sett.setMeridianLimitSlew(value):
@@ -219,14 +217,13 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "Meridian Limit Slew cannot be set")
             return False
 
-    def setHorizonLimitHigh(self):
+    def setHorizonLimitHigh(self) -> bool:
         sett = self.app.mount.setting
         actValue = 0 if sett.horizonLimitHigh is None else int(sett.horizonLimitHigh)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
             self.mainW, "Set Horizon Limit High", "Value (0-90):", actValue, 0, 90, 1
         )
-
         if not ok:
             return False
         if sett.setHorizonLimitHigh(value):
@@ -236,7 +233,7 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "Horizon Limit High cannot be set")
             return False
 
-    def setHorizonLimitLow(self):
+    def setHorizonLimitLow(self) -> bool:
         sett = self.app.mount.setting
         actValue = 0 if sett.horizonLimitLow is None else int(sett.horizonLimitLow)
         dlg = QInputDialog()
@@ -249,7 +246,6 @@ class MountSett:
             90,
             1,
         )
-
         if not ok:
             return False
         if sett.setHorizonLimitLow(value):
@@ -259,7 +255,7 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "Horizon Limit Low cannot be set")
             return False
 
-    def setSlewRate(self):
+    def setSlewRate(self) -> bool:
         sett = self.app.mount.setting
         actValue = 0 if sett.slewRate is None else int(sett.slewRate)
         minRate = 0 if sett.slewRateMin is None else int(sett.slewRateMin)
@@ -274,7 +270,6 @@ class MountSett:
             maxRate,
             1,
         )
-
         if not ok:
             return False
         if sett.setSlewRate(value):
@@ -284,7 +279,7 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "Slew Rate cannot be set")
             return False
 
-    def setLocationValues(self, lat=None, lon=None, elev=None):
+    def setLocationValues(self, lat=None, lon=None, elev=None) -> None:
         obs = self.app.mount.obsSite
         loc = obs.location
         lat = loc.latitude if lat is None else lat
@@ -296,7 +291,6 @@ class MountSett:
             latitude_degrees=lat.degrees,
             elevation_m=elev,
         )
-
         if self.app.deviceStat["mount"]:
             obs.setLocation(topo)
             self.app.mount.getLocation()
@@ -308,7 +302,7 @@ class MountSett:
         t += f"{lon.degrees:3.2f} deg, {elev:4.1f} m]"
         self.msg.emit(0, "Mount", "Setting", t)
 
-    def setLongitude(self):
+    def setLongitude(self) -> None:
         dlg = QInputDialog()
         value, ok = dlg.getText(
             self.mainW,
@@ -318,13 +312,11 @@ class MountSett:
             self.ui.siteLongitude.text(),
         )
         if not ok:
-            return False
-
+            return
         value = convertLonToAngle(value)
         self.setLocationValues(lon=value)
-        return True
 
-    def setLatitude(self):
+    def setLatitude(self) -> None:
         dlg = QInputDialog()
         value, ok = dlg.getText(
             self.mainW,
@@ -334,13 +326,11 @@ class MountSett:
             self.ui.siteLatitude.text(),
         )
         if not ok:
-            return False
-
+            return
         value = convertLatToAngle(value)
         self.setLocationValues(lat=value)
-        return True
 
-    def setElevation(self):
+    def setElevation(self) -> bool:
         obs = self.app.mount.obsSite
         dlg = QInputDialog()
         value, ok = dlg.getDouble(
@@ -354,11 +344,10 @@ class MountSett:
         )
         if not ok:
             return False
-
         self.setLocationValues(elev=value)
         return True
 
-    def setUnattendedFlip(self):
+    def setUnattendedFlip(self) -> bool:
         sett = self.app.mount.setting
         dlg = QInputDialog()
         value, ok = dlg.getItem(
@@ -378,7 +367,7 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "Unattended flip cannot be set")
         return suc
 
-    def setDualAxisTracking(self):
+    def setDualAxisTracking(self) -> bool:
         sett = self.app.mount.setting
         dlg = QInputDialog()
         value, ok = dlg.getItem(
@@ -391,7 +380,6 @@ class MountSett:
         )
         if not ok:
             return False
-
         suc = sett.setDualAxisTracking(value == "ON")
         if suc:
             self.msg.emit(0, "Mount", "Setting", f"DualAxis tracking: [{value}]")
@@ -399,7 +387,7 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "DualAxis tracking cannot be set")
         return suc
 
-    def setWOL(self):
+    def setWOL(self) -> bool:
         sett = self.app.mount.setting
         dlg = QInputDialog()
         act = 0 if sett.wakeOnLan == "ON" else 1
@@ -408,7 +396,6 @@ class MountSett:
         )
         if not ok:
             return False
-
         suc = sett.setWOL(value == "ON")
         if suc:
             self.msg.emit(0, "Mount", "Setting", f"Wake On Lan: [{value}]")
@@ -416,7 +403,7 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "Wake On Lan cannot be set")
         return suc
 
-    def setAPO(self):
+    def setAPO(self) -> bool:
         sett = self.app.mount.setting
         dlg = QInputDialog()
         act = 0 if sett.autoPowerOn else 1
@@ -425,7 +412,6 @@ class MountSett:
         )
         if not ok:
             return False
-
         suc = sett.setAutoPower(value == "ON")
         if suc:
             self.msg.emit(0, "Mount", "Setting", f"AutoPowerOn: [{value}]")
@@ -433,7 +419,7 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "AutoPowerOn cannot be set")
         return suc
 
-    def setRefractionTemp(self):
+    def setRefractionTemp(self) -> bool:
         sett = self.app.mount.setting
         actValue = 0 if sett.refractionTemp is None else sett.refractionTemp
         minVal = -40
@@ -448,7 +434,6 @@ class MountSett:
             maxVal,
             1,
         )
-
         if not ok:
             return False
         if sett.setRefractionTemp(value):
@@ -458,7 +443,7 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "Refraction Temp cannot be set")
             return False
 
-    def setRefractionPress(self):
+    def setRefractionPress(self) -> bool:
         sett = self.app.mount.setting
         actValue = 0 if sett.refractionPress is None else sett.refractionPress
         minVal = 500
@@ -473,7 +458,6 @@ class MountSett:
             maxVal,
             1,
         )
-
         if not ok:
             return False
         if sett.setRefractionPress(value):
@@ -483,7 +467,7 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "Refraction Press cannot be set")
             return False
 
-    def setRefraction(self):
+    def setRefraction(self) -> bool:
         sett = self.app.mount.setting
         dlg = QInputDialog()
         value, ok = dlg.getItem(
@@ -496,7 +480,6 @@ class MountSett:
         )
         if not ok:
             return False
-
         suc = sett.setRefraction(value == "ON")
         if suc:
             self.msg.emit(0, "Mount", "Setting", f"Refraction corr: [{value}]")
@@ -504,14 +487,13 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "Refraction correction cannot be set")
         return suc
 
-    def setSettleTimeMount(self):
+    def setSettleTimeMount(self) -> bool:
         sett = self.app.mount.setting
         actValue = 0 if sett.settleTime is None else int(sett.settleTime)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
             self.mainW, "Set Settle Time", "Value (0-999):", actValue, 0, 999, 1
         )
-
         if not ok:
             return False
         if sett.setSettleTime(value):
@@ -521,7 +503,7 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "Settle Time cannot be set")
             return False
 
-    def showOffset(self):
+    def showOffset(self) -> None:
         connectSync = self.ui.clockSync.isChecked()
         delta = self.app.mount.obsSite.timeDiff * 1000
         ui = self.ui.timeDeltaPC2Mount

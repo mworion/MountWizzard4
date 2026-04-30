@@ -59,15 +59,17 @@ def test_writeCSV_1(function):
 
 
 def test_writeCSV_2(function):
-    function.csvFile = open("tests/work/temp/test.csv", "w")
-    function.writeCSV()
+    with open("tests/work/temp/test.csv", "w") as f:
+        function.csvFile = f
+        function.writeCSV()
 
 
 def test_writeCSV_3(function):
-    function.csvFile = open("tests/work/temp/test.csv", "w")
-    function.csvWriter = csv.DictWriter(function.csvFile, ["test"])
-    function.data = {"test": [1, 2]}
-    function.writeCSV()
+    with open("tests/work/temp/test.csv", "w") as f:
+        function.csvFile = f
+        function.csvWriter = csv.DictWriter(f, ["test"])
+        function.data = {"test": [1, 2]}
+        function.writeCSV()
 
 
 def test_closeCSV_1(function):
@@ -75,14 +77,16 @@ def test_closeCSV_1(function):
 
 
 def test_closeCSV_2(function):
-    function.csvFile = open("tests/work/temp/test.csv", "w")
-    function.closeCSV()
+    with open("tests/work/temp/test.csv", "w") as f:
+        function.csvFile = f
+        function.closeCSV()
 
 
 def test_closeCSV_3(function):
-    function.csvFile = open("tests/work/temp/test.csv", "w")
-    function.csvWriter = csv.DictWriter(function.csvFile, ["test"])
-    function.closeCSV()
+    with open("tests/work/temp/test.csv", "w") as f:
+        function.csvFile = f
+        function.csvWriter = csv.DictWriter(f, ["test"])
+        function.closeCSV()
 
 
 def test_measureTask(function):

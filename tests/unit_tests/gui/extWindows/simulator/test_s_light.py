@@ -33,9 +33,9 @@ def function(qapp):
 def test_setIntensity_1(function):
     function.parent.entityModel["main"] = {"entity": Qt3DCore.QEntity()}
     a = Qt3DCore.QEntity(function.parent.entityModel["main"]["entity"])
-    l = Qt3DRender.QPointLight()
-    a.addComponent(l)
-    function.parent.entityModel["main"]["light"] = l
+    light = Qt3DRender.QPointLight()
+    a.addComponent(light)
+    function.parent.entityModel["main"]["light"] = light
     with mock.patch.object(Qt3DRender.QPointLight, "setIntensity"):
         function.setIntensity()
 

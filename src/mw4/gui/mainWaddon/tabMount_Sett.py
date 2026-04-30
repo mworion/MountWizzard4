@@ -22,11 +22,11 @@ from mw4.mountcontrol.convert import (
     formatLatToText,
     formatLonToText,
 )
+from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.setting import Setting
-from mw4.mountcontrol.firmware import Firmware
 from PySide6.QtWidgets import QInputDialog, QLineEdit
-from skyfield.api import wgs84, Angle
+from skyfield.api import Angle, wgs84
 from typing import Any
 
 
@@ -282,7 +282,9 @@ class MountSett:
             self.msg.emit(2, "Mount", "Setting", "Slew Rate cannot be set")
             return False
 
-    def setLocationValues(self, lat: Angle | None = None, lon: Angle | None =None, elev: float=None) -> None:
+    def setLocationValues(
+        self, lat: Angle | None = None, lon: Angle | None = None, elev: float = None
+    ) -> None:
         obs = self.app.mount.obsSite
         loc = obs.location
         lat = loc.latitude if lat is None else lat

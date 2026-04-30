@@ -54,11 +54,6 @@ def test_processPolledData_1(function):
     function.processPolledData()
 
 
-def test_workerPollData_1(function):
-    function.deviceConnected = False
-    function.workerPollData()
-
-
 def test_workerPollData_2(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getAlpacaProperty", return_value=0):

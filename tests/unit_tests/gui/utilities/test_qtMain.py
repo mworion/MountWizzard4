@@ -22,11 +22,11 @@ from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
 from PySide6.QtWidgets import (
     QFileDialog,
-    QPushButton,
     QMessageBox,
+    QPushButton,
     QWidget,
 )
-from skyfield.api import Angle, load
+from skyfield.api import load
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

@@ -15,10 +15,9 @@
 ###########################################################
 
 import pytest
-from queue import Queue
-
 from mw4.logic.filter.filter import Filter
 from mw4.logic.filter.filterIndi import FilterIndi
+from queue import Queue
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

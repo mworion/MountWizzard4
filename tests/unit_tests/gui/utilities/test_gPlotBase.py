@@ -207,4 +207,3 @@ def test_addIsoItemHorizon_2():
     with mock.patch.object(p, "addIsoItem") as m:
         p.addIsoItemHorizon(az, alt, err, plotItem=p.p[0], levels=5)
         assert m.called
-

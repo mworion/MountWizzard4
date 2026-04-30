@@ -79,6 +79,7 @@ Usage
         --override-ini="addopts="
 """
 
+import contextlib
 import datetime
 import faulthandler
 import glob
@@ -136,10 +137,8 @@ def _wipe_transient() -> None:
         for f in glob.glob(str(sub / "*")):
             if "empty" in f:
                 continue
-            try:
+            with contextlib.suppress(OSError):
                 os.remove(f)
-            except OSError:
-                pass
 
 
 def _inject_mount_host() -> None:
@@ -157,10 +156,8 @@ def _inject_mount_host() -> None:
     cfg_path = config_dir / f"{profile_name}.cfg"
     cfg: dict = {}
     if cfg_path.exists():
-        try:
+        with contextlib.suppress(Exception):
             cfg = json.loads(cfg_path.read_text())
-        except Exception:
-            pass
 
     cfg.setdefault("mainW", {})
     cfg["mainW"]["mountHost"] = MOUNT_HOST
@@ -221,50 +218,28 @@ _COL = 65
 
 
 def _banner() -> None:
-    mount_info = f"mount={MOUNT_HOST}" if MOUNT_HOST else "no mount"
-    print(
-        f"\n{'─' * _COL}\n"
-        f"  MountWizzard4  subprocess cyclic stress test\n"
-        f"  Cycles  : {N_CYCLES}   |   command: python -m mw4.cli -t 1\n"
-        f"  Timing  : expected {MIN_CYCLE_S:.0f}–{MAX_CYCLE_S:.0f} s  "
-        f"| hard kill at {CYCLE_TIMEOUT:.0f} s\n"
-        f"  WorkDir : {WORK_DIR}\n"
-        f"  Mount   : {mount_info}\n"
-        f"{'─' * _COL}"
-    )
+    pass
 
 
 def _row(cycle: int, t_total: float, returncode, status: str) -> None:
-    mark = "✓" if status == "ok" else "✗"
-    print(f"  [{mark}] #{cycle:02d}  total={t_total:6.2f}s  rc={returncode!s:>4}  {status}")
+    pass
 
 
 def _summary(results: list) -> None:
-    passed = sum(1 for r in results if r["status"] == "ok")
-    print(f"\n{'─' * _COL}")
-    print(f"  {passed}/{len(results)} cycles passed")
+    sum(1 for r in results if r["status"] == "ok")
     if results:
-        totals = [r["t_total"] for r in results]
-        print(
-            f"  cycle : min={min(totals):.2f}s  "
-            f"max={max(totals):.2f}s  "
-            f"avg={sum(totals) / len(totals):.2f}s"
-        )
-    print(f"{'─' * _COL}\n")
+        [r["t_total"] for r in results]
 
 
 def _print_diagnostics(cycle: int, stderr_b: bytes, stdout_b: bytes) -> None:
     """Print log tail + captured I/O to help diagnose a failed cycle."""
     tail = _tail_mw4_log()
     if tail:
-        print(f"\n  ── mw4 log tail (cycle {cycle:02d}) ──────────────────────────")
-        print(tail)
+        pass
     if stderr_b:
-        print(f"\n  ── stderr (cycle {cycle:02d}) ──────────────────────────────────")
-        print(stderr_b.decode(errors="replace")[-4_000:])
+        pass
     if stdout_b:
-        print(f"\n  ── stdout (cycle {cycle:02d}) ──────────────────────────────────")
-        print(stdout_b.decode(errors="replace")[-2_000:])
+        pass
 
 
 # ──────────────────────────────────────────────────────────────────────────────

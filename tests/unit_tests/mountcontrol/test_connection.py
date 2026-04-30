@@ -13,14 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import socket
 import unittest
 import unittest.mock as mock
 from mw4.base.loggerMW import setupLogging
+from mw4.mountcontrol.connection import Connection
 
 setupLogging()
-from mw4.mountcontrol.connection import Connection
 
 
 class TestConnection(unittest.TestCase):

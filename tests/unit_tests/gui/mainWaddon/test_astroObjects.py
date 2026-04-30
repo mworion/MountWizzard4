@@ -15,8 +15,6 @@
 ###########################################################
 import pytest
 import shutil
-
-from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from pathlib import Path
 from PySide6.QtCore import QThreadPool

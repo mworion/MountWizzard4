@@ -14,10 +14,9 @@
 #
 ###########################################################
 import pytest
-from queue import Queue
-
 from mw4.logic.environment.sensorWeather import SensorWeather
 from mw4.logic.environment.sensorWeatherIndi import SensorWeatherIndi
+from queue import Queue
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

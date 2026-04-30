@@ -16,9 +16,8 @@
 """Unit tests for mw4.base.driverProtocol.DriverProtocol."""
 
 import pytest
-from typing import Protocol, get_protocol_members, runtime_checkable
 from mw4.base.driverProtocol import DriverProtocol
-
+from typing import Protocol, get_protocol_members
 
 # ---------------------------------------------------------------------------
 # Concrete stubs used across tests
@@ -158,7 +157,7 @@ def test_protocol_declares_data():
 
 
 def test_protocol_has_all_expected_annotations():
-    assert EXPECTED_ANNOTATIONS <= set(DriverProtocol.__annotations__)
+    assert set(DriverProtocol.__annotations__) >= EXPECTED_ANNOTATIONS
 
 
 # ---------------------------------------------------------------------------
@@ -178,7 +177,7 @@ EXPECTED_METHODS = {
 
 def test_protocol_members_contain_all_methods():
     members = set(get_protocol_members(DriverProtocol))
-    assert EXPECTED_METHODS <= members, (
+    assert members >= EXPECTED_METHODS, (
         f"Missing protocol members: {EXPECTED_METHODS - members}"
     )
 

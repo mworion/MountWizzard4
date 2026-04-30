@@ -21,7 +21,6 @@ if platform.system() != "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 
-import mw4.base.ascomClass
 import PySide6
 import time
 import win32com.client

@@ -19,16 +19,16 @@ from mw4.gui.utilities.qtHelpers import (
     changeStyleDynamic,
     clickable,
     findIndexValue,
-    guiSetText,
-    svg2pixmap,
-    svg2icon,
-    img2pixmap,
-    getTabIndex,
     getTabAndIndex,
-    setTabAndIndex,
+    getTabIndex,
+    guiSetText,
+    img2pixmap,
     positionCursorInTable,
+    setTabAndIndex,
+    svg2icon,
+    svg2pixmap,
 )
-from PySide6.QtCore import QPoint, QTimer, Qt
+from PySide6.QtCore import QPoint, Qt
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import (

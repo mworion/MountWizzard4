@@ -15,12 +15,11 @@
 ###########################################################
 import pytest
 import unittest.mock as mock
-from pathlib import Path
-from queue import Queue
-
 from mw4.base.indiClass import IndiClass
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraIndi import CameraIndi
+from pathlib import Path
+from queue import Queue
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -314,7 +313,6 @@ def test_saveImageBLOB_no_filename(function):
 
 
 def test_saveImageBLOB_fits(function):
-    """SetBLOB with .fits format → imagePath suffix updated, rename called, writeImageFitsHeader called."""
     item = mock.MagicMock()
     item.eventtype = "SetBLOB"
     vectors = {
@@ -339,7 +337,6 @@ def test_saveImageBLOB_fits(function):
 
 
 def test_saveImageBLOB_xisf(function):
-    """SetBLOB with .xisf format → imagePath suffix updated, rename called, writeImageXisfHeader called."""
     item = mock.MagicMock()
     item.eventtype = "SetBLOB"
     vectors = {

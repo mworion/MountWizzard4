@@ -16,11 +16,10 @@
 
 import pytest
 import unittest.mock as mock
-from queue import Queue
-
 from mw4.base.indiClass import IndiClass
 from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
 from mw4.logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
+from queue import Queue
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

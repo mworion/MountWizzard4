@@ -99,7 +99,7 @@ def test_updateMessage_noMessageInSnapshot(function):
     function.deviceName = "MyDevice"
 
     snap_device = mock.MagicMock()
-    snap_device.dictdump.return_value = {}   # no "messages" key
+    snap_device.dictdump.return_value = {}  # no "messages" key
     item = mock.MagicMock()
     item.snapshot = {"MyDevice": snap_device}
 
@@ -448,7 +448,7 @@ def test_processRxQueue_messageEvent(function):
     function.messages = True
 
     snap_device = mock.MagicMock()
-    snap_device.get.return_value = None          # no CONNECTION key
+    snap_device.get.return_value = None  # no CONNECTION key
     snap_device.dictdump.return_value = {"messages": [("2024-01-01", "test msg")]}
 
     item = mock.MagicMock()

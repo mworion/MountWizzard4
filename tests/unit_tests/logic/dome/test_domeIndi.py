@@ -15,11 +15,10 @@
 ###########################################################
 import pytest
 import unittest.mock as mock
-from queue import Queue
-
 from mw4.base.indiClass import IndiClass
 from mw4.base.signalsDevices import Signals
 from mw4.logic.dome.domeIndi import DomeIndi
+from queue import Queue
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

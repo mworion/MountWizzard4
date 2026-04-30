@@ -423,4 +423,3 @@ def test_drawTab_2(function):
     function.app.deviceStat["mount"] = False
     function.app.mount.model.numberStars = 0
     function.drawTab()
-

@@ -24,7 +24,7 @@ package-data = ["data/**/*.*"]
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0b5"
+version = "4.0.0b6"
 license = "Apache-2.0"
 description = "Tool for managing 10_micron mounts"
 readme = "README.rst"
@@ -151,3 +151,5 @@ max-complexity = 10
 "src/mw4/gui/extWindows/uploadPopupW.py" = ["SIM115"]
 "src/mw4/logic/powerswitch/pegasusUPBIndi.py" = ["C901"]
 "src/mw4/logic/measure/measureCSV.py" = ["SIM115"]
+"tests/unit_tests/logic/environment/test_boltwoodWeather.py" = ["E501"]
+"tests/unit_tests/gui/styles/test_styles.py" = ["E501"]

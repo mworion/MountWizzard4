@@ -185,7 +185,7 @@ class IndiClass:
             if item.eventtype == "Define" and item.devicename:
                 driver = item.snapshot[item.devicename].get("DRIVER_INFO")
                 if driver and (INDI_TYPES[deviceType] & int(driver["DRIVER_INTERFACE"])):
-                        discoverSet.add(item.devicename)
+                    discoverSet.add(item.devicename)
             rxQ.task_done()
         txQ.put(None)
         self.discoverMutex.unlock()

@@ -14,11 +14,11 @@
 #
 ###########################################################
 import mw4.gui
+import mw4.gui.utilities.qtMain
 import pytest
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
 from mw4.gui.utilities.qtMain import MWidget
-import mw4.gui.utilities.qtMain
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem
 from sgp4.exporter import export_tle
@@ -382,20 +382,20 @@ def test_getSatelliteDataFromDatabase_2(function):
 
 
 def test_updateOrbit_1(function):
-    function.satellite = None
+    function.satellite = EarthSatellite()
     function.satSourceValid = False
     function.updateOrbit()
 
 
 def test_updateOrbit_2(function):
-    function.satellite = None
+    function.satellite = EarthSatellite()
     function.satSourceValid = True
     function.updateOrbit()
 
 
 def test_updateOrbit_4(function):
     function.satSourceValid = True
-    function.satellite = "test"
+    function.satellite = EarthSatellite()
     function.updateOrbit()
 
 
@@ -414,7 +414,7 @@ def test_selectStartEnd_2(function):
 
 def test_selectStartEnd_3(function):
     ts = function.app.mount.obsSite.ts
-    function.satOrbits = [{"test": ts.tt_jd(2459215.5), "test": ts.tt_jd(2459215.7)}]
+    function.satOrbits = [{"test": ts.tt_jd(2459215.5), "test1": ts.tt_jd(2459215.7)}]
     s, e = function.selectStartEnd()
     assert s == 0
     assert e == 0
@@ -427,7 +427,7 @@ def test_selectStartEnd_4(function):
         {
             "rise": ts.tt_jd(2459215.5),
             "test": ts.tt_jd(2459215.6),
-            "test": ts.tt_jd(2459215.7),
+            "test1": ts.tt_jd(2459215.7),
         }
     ]
     s, e = function.selectStartEnd()

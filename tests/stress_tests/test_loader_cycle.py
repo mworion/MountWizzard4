@@ -48,6 +48,7 @@ Usage
     N_CYCLES=20 pytest tests/stress_tests/test_loader_cycle.py -v -s
 """
 
+import contextlib
 import faulthandler
 import gc
 import glob
@@ -137,12 +138,9 @@ def _inject_mount_host():
     cfg_path = config_dir / f"{profile_name}.cfg"
     cfg = {}
     if cfg_path.exists():
-        try:
+        with contextlib.suppress(Exception):
             cfg = json.loads(cfg_path.read_text())
-        except Exception:
-            pass
 
-    port = 3492 if MOUNT_PORT_3492 else 3490
     cfg.setdefault("mainW", {})
     cfg["mainW"]["mountHost"] = MOUNT_HOST
     cfg["mainW"]["port3492"] = MOUNT_PORT_3492
@@ -156,10 +154,8 @@ def _wipe():
         for f in glob.glob(str(path / "*")):
             if "empty" in f:
                 continue
-            try:
+            with contextlib.suppress(OSError):
                 os.remove(f)
-            except OSError:
-                pass
 
 
 # ── helpers ────────────────────────────────────────────────────────────────────
@@ -168,45 +164,18 @@ _COL = 65
 
 
 def _banner():
-    mount_info = f"mount={MOUNT_HOST}" if MOUNT_HOST else "no mount"
-    print(
-        f"\n{'─' * _COL}\n"
-        f"  MountWizzard4  cyclic startup stress test\n"
-        f"  Cycles : {N_CYCLES}   |   mode: test=1  (update10s → quit, ≈8 s)\n"
-        f"  Limits : boot < {MAX_BOOT_S}s   cycle < {MAX_CYCLE_S}s   {mount_info}\n"
-        f"{'─' * _COL}"
-    )
+    pass
 
 
 def _row(cycle, t_boot, t_total, pool_active, status):
-    mark = "✓" if status == "ok" else "✗"
-    print(
-        f"  [{mark}] #{cycle:02d}  "
-        f"boot={t_boot:5.2f}s  "
-        f"total={t_total:5.2f}s  "
-        f"pool={pool_active:2d}  "
-        f"{status}"
-    )
+    pass
 
 
 def _summary(results):
-    passed = sum(1 for r in results if r["status"] == "ok")
-    print(f"\n{'─' * _COL}")
-    print(f"  {passed}/{len(results)} cycles passed")
+    sum(1 for r in results if r["status"] == "ok")
     if results:
-        boots = [r["t_boot"] for r in results]
-        totals = [r["t_total"] for r in results]
-        print(
-            f"  boot  : min={min(boots):.2f}s "
-            f"max={max(boots):.2f}s "
-            f"avg={sum(boots) / len(boots):.2f}s"
-        )
-        print(
-            f"  cycle : min={min(totals):.2f}s "
-            f"max={max(totals):.2f}s "
-            f"avg={sum(totals) / len(totals):.2f}s"
-        )
-    print(f"{'─' * _COL}\n")
+        [r["t_boot"] for r in results]
+        [r["t_total"] for r in results]
 
 
 # ── test ───────────────────────────────────────────────────────────────────────
@@ -271,9 +240,8 @@ def test_loader_startup_cycles(qtbot, qapp):
         pool_active = app.threadPool.activeThreadCount()
 
         # ── drain thread pool ─────────────────────────────
-        if not app.threadPool.waitForDone(10_000):
-            if status == "ok":
-                status = "pool-drain-timeout"
+        if not app.threadPool.waitForDone(10_000) and status == "ok":
+            status = "pool-drain-timeout"
 
         pool_after = app.threadPool.activeThreadCount()
 

@@ -15,10 +15,9 @@
 ###########################################################
 
 import pytest
-from queue import Queue
-
 from mw4.logic.focuser.focuser import Focuser
 from mw4.logic.focuser.focuserIndi import FocuserIndi
+from queue import Queue
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

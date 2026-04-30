@@ -216,7 +216,9 @@ class ImageManage:
         offsetMax = self.app.camera.data.get("CCD_OFFSET.OFFSET_MAX")
         if offsetList is not None:
             offsetList = list(offsetList)
-            value, ok = dlg.getItem(self.mainW, "Set offset", "Offset entry: ", offsetList, actValue)
+            value, ok = dlg.getItem(
+                self.mainW, "Set offset", "Offset entry: ", offsetList, actValue
+            )
             value = offsetList.index(value)
 
         elif offsetMin is not None and offsetMax is not None:
@@ -293,7 +295,8 @@ class ImageManage:
             actValue,
             start,
             end,
-            1)
+            1,
+        )
         if ok:
             self.app.filter.sendFilterNumber(filterNumber=value)
 
@@ -307,7 +310,9 @@ class ImageManage:
         availNames = [data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key]
 
         dlg = QInputDialog()
-        value, ok = dlg.getItem(self.mainW, "Set filter", "Filter Name: ", availNames, actValue - 1)
+        value, ok = dlg.getItem(
+            self.mainW, "Set filter", "Filter Name: ", availNames, actValue - 1
+        )
         self.mainW.log.debug(f"FilterSelected: [{value}], FilterList: [{availNames}]")
         if not ok:
             return

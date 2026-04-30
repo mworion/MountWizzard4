@@ -1,5 +1,4 @@
 import time
-
 from PySide6.QtCore import QCoreApplication
 
 

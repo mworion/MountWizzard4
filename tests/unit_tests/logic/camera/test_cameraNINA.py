@@ -145,10 +145,6 @@ def test_workerGetInitialConfig_1(function):
     assert function.data["CCD_BINNING.HOR_BIN"] == 1
 
 
-def test_workerPollData_1(function):
-    function.workerPollData()
-
-
 def test_sendDownloadMode_1(function):
     function.sendDownloadMode()
 

@@ -112,11 +112,9 @@ class NINAClass(DriverData):
         return response.get("Devices", [])
 
     def startNINATimer(self) -> None:
-        self.cycleData.start(self.updateRate)
         self.cycleDevice.start(self.updateRate)
 
     def stopNINATimer(self) -> None:
-        self.cycleData.stop()
         self.cycleDevice.stop()
 
     def workerGetInitialConfig(self) -> None:

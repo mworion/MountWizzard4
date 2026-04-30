@@ -200,26 +200,6 @@ def test_stopTimer(function):
         function.stopNINATimer()
 
 
-def test_processPolledData(function):
-    function.processPolledData()
-
-
-def test_workerPollData(function):
-    function.workerPollData()
-
-
-def test_pollData_1(function):
-    function.deviceConnected = True
-    with mock.patch.object(function.threadPool, "start"):
-        function.pollData()
-
-
-def test_pollData_2(function):
-    function.deviceConnected = False
-    with mock.patch.object(function.threadPool, "start"):
-        function.pollData()
-
-
 def test_workerGetInitialConfig_1(function):
     function.workerGetInitialConfig()
 

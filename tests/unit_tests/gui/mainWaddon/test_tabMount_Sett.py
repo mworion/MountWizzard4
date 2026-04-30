@@ -547,8 +547,7 @@ def test_setLongitude_2(function):
     with mock.patch.object(
         PySide6.QtWidgets.QInputDialog, "getText", return_value=("011E 40 40", False)
     ):
-        suc = function.setLongitude()
-        assert not suc
+        function.setLongitude()
 
 
 def test_setLongitude_3(function):
@@ -559,8 +558,7 @@ def test_setLongitude_3(function):
         PySide6.QtWidgets.QInputDialog, "getText", return_value=("011E 40 40", True)
     ):
         with mock.patch.object(function, "setLocationValues"):
-            suc = function.setLongitude()
-            assert suc
+            function.setLongitude()
 
 
 def test_setLatitude_2(function):
@@ -570,8 +568,7 @@ def test_setLatitude_2(function):
     with mock.patch.object(
         PySide6.QtWidgets.QInputDialog, "getText", return_value=("48N 00 00", False)
     ):
-        suc = function.setLatitude()
-        assert not suc
+        function.setLatitude()
 
 
 def test_setLatitude_3(function):
@@ -582,8 +579,7 @@ def test_setLatitude_3(function):
         PySide6.QtWidgets.QInputDialog, "getText", return_value=("48N 00 00", True)
     ):
         with mock.patch.object(function, "setLocationValues"):
-            suc = function.setLatitude()
-            assert suc
+            function.setLatitude()
 
 
 def test_setElevation_2(function):

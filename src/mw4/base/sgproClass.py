@@ -112,11 +112,9 @@ class SGProClass(DriverData):
         return response.get("Devices", [])
 
     def startSGProTimer(self) -> None:
-        self.cycleData.start(self.updateRate)
         self.cycleDevice.start(self.updateRate)
 
     def stopSGProTimer(self) -> None:
-        self.cycleData.stop()
         self.cycleDevice.stop()
 
     def workerGetInitialConfig(self) -> None:

@@ -27,7 +27,6 @@ class SimulatorDome:
         self.app.dome.signals.deviceDisconnected.connect(lambda: self.showEnable(False))
         self.app.dome.signals.azimuth.connect(self.updateAzimuth)
         self.app.update1s.connect(self.updateShutter)
-        # self.app.dome.signals.shutter.connect(self.updateShutter)
         self.parent.ui.domeTransparent.checkStateChanged.connect(self.setTransparency)
 
     def setTransparency(self):
@@ -107,18 +106,6 @@ class SimulatorDome:
             "domeRoot": {
                 "parent": "ref_fusion_m",
             },
-            "domeFloor": {
-                "parent": "domeRoot",
-                "source": "dome-floor.stl",
-                "scale": [1, 1, 1],
-                "mat": Materials().aluminiumGrey,
-            },
-            "domeWall": {
-                "parent": "domeRoot",
-                "source": "dome-wall.stl",
-                "scale": [1, 1, 1],
-                "mat": Materials().walls,
-            },
             "domeSphere": {
                 "parent": "domeRoot",
                 "source": "dome-sphere.stl",
@@ -147,7 +134,20 @@ class SimulatorDome:
                 "parent": "domeSphere",
                 "source": "dome-door2.stl",
                 "scale": [1, 1, 1],
+                "trans": [0, 5, 0],
                 "mat": Materials().domeDoor,
+            },
+            "domeFloor": {
+                "parent": "domeRoot",
+                "source": "dome-floor.stl",
+                "scale": [1, 1, 1],
+                "mat": Materials().aluminiumGrey,
+            },
+            "domeWall": {
+                "parent": "domeRoot",
+                "source": "dome-wall.stl",
+                "scale": [1, 1, 1],
+                "mat": Materials().walls,
             },
         }
         linkModel(model, self.parent.entityModel)

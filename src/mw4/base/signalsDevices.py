@@ -25,7 +25,6 @@ class Signals(QObject):
     downloaded = Signal(object)
     saved = Signal(object)
     azimuth = Signal(object)
-    shutter = Signal(object)
     slewed = Signal(object)
     message = Signal(object)
     version = Signal(int)

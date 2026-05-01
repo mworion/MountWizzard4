@@ -44,7 +44,7 @@ class Ui_SimulatorDialog(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.gridLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
         self.gridLayout.setContentsMargins(0, -1, -1, -1)
         self.groupBox_2 = QGroupBox(SimulatorDialog)
         self.groupBox_2.setObjectName(u"groupBox_2")
@@ -112,52 +112,53 @@ class Ui_SimulatorDialog(object):
 
         self.groupBox = QGroupBox(SimulatorDialog)
         self.groupBox.setObjectName(u"groupBox")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(1)
         sizePolicy1.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
         self.groupBox.setSizePolicy(sizePolicy1)
-        self.groupBox.setMaximumSize(QSize(150, 16777215))
+        self.groupBox.setMinimumSize(QSize(150, 0))
+        self.groupBox.setMaximumSize(QSize(0, 16777215))
         self.groupBox.setProperty(u"large", True)
-        self.verticalLayout = QVBoxLayout(self.groupBox)
-        self.verticalLayout.setSpacing(4)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(8, 10, 16, 4)
+        self.gridLayout_2 = QGridLayout(self.groupBox)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.gridLayout_2.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
+        self.gridLayout_2.setContentsMargins(8, 10, 16, 4)
         self.topView = QPushButton(self.groupBox)
         self.topView.setObjectName(u"topView")
         self.topView.setMinimumSize(QSize(0, 25))
 
-        self.verticalLayout.addWidget(self.topView)
+        self.gridLayout_2.addWidget(self.topView, 0, 0, 1, 1)
 
         self.topWestView = QPushButton(self.groupBox)
         self.topWestView.setObjectName(u"topWestView")
         self.topWestView.setMinimumSize(QSize(0, 25))
 
-        self.verticalLayout.addWidget(self.topWestView)
+        self.gridLayout_2.addWidget(self.topWestView, 1, 0, 1, 1)
 
         self.westView = QPushButton(self.groupBox)
         self.westView.setObjectName(u"westView")
         self.westView.setMinimumSize(QSize(0, 25))
 
-        self.verticalLayout.addWidget(self.westView)
+        self.gridLayout_2.addWidget(self.westView, 2, 0, 1, 1)
 
         self.topEastView = QPushButton(self.groupBox)
         self.topEastView.setObjectName(u"topEastView")
         self.topEastView.setMinimumSize(QSize(0, 25))
 
-        self.verticalLayout.addWidget(self.topEastView)
+        self.gridLayout_2.addWidget(self.topEastView, 3, 0, 1, 1)
 
         self.eastView = QPushButton(self.groupBox)
         self.eastView.setObjectName(u"eastView")
         self.eastView.setMinimumSize(QSize(0, 25))
 
-        self.verticalLayout.addWidget(self.eastView)
+        self.gridLayout_2.addWidget(self.eastView, 4, 0, 1, 1)
 
         self.telescopeView = QPushButton(self.groupBox)
         self.telescopeView.setObjectName(u"telescopeView")
         self.telescopeView.setMinimumSize(QSize(0, 25))
 
-        self.verticalLayout.addWidget(self.telescopeView)
+        self.gridLayout_2.addWidget(self.telescopeView, 5, 0, 1, 1)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
@@ -178,11 +179,11 @@ class Ui_SimulatorDialog(object):
         self.horizontalLayout_2.addWidget(self.lightIntensity)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.gridLayout_2.addLayout(self.horizontalLayout_2, 6, 0, 1, 1)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 10, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.verticalLayout.addItem(self.verticalSpacer)
+        self.gridLayout_2.addItem(self.verticalSpacer, 7, 0, 1, 1)
 
 
         self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
@@ -190,7 +191,7 @@ class Ui_SimulatorDialog(object):
         self.simulator = QHBoxLayout()
         self.simulator.setSpacing(0)
         self.simulator.setObjectName(u"simulator")
-        self.simulator.setSizeConstraint(QLayout.SetMinimumSize)
+        self.simulator.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
 
         self.gridLayout.addLayout(self.simulator, 0, 1, 2, 1)
 

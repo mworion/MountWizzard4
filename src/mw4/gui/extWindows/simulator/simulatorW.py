@@ -13,6 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
+import logging
 from mw4.gui.extWindows.simulator.buildPoints import SimulatorBuildPoints
 from mw4.gui.extWindows.simulator.dome import SimulatorDome
 from mw4.gui.extWindows.simulator.horizon import SimulatorHorizon
@@ -32,6 +33,8 @@ from PySide6.QtWidgets import QWidget
 
 
 class SimulatorWindow(MWidget):
+    log = logging.getLogger("MW4")
+
     def __init__(self, app) -> None:
         super().__init__()
         self.app = app
@@ -45,23 +48,20 @@ class SimulatorWindow(MWidget):
         self.pointer = SimulatorPointer(self, self.app)
         self.horizon = SimulatorHorizon(self, self.app)
         self.buildPoints = SimulatorBuildPoints(self, self.app)
-
         self.window3D = Qt3DExtras.Qt3DWindow()
         self.entityModel = {"root": {"entity": Qt3DCore.QEntity()}}
         self.window3D.setRootEntity(self.entityModel["root"]["entity"])
         self.entityModel["root"]["entity"].setObjectName("root")
         self.window3D.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
-        self.createScene()
         self.container = QWidget.createWindowContainer(self.window3D)
         self.ui.simulator.addWidget(self.container)
-
         self.camera = None
         self.cameraController = None
         self.setupCamera(self.entityModel["root"]["entity"])
+        self.createScene()
 
     def initConfig(self) -> None:
         config = self.app.config.get("simulatorW", {})
-
         self.positionWindow(config)
         self.ui.domeTransparent.setChecked(config.get("domeTransparent", False))
         self.ui.showPointer.setChecked(config.get("showPointer", False))
@@ -114,7 +114,6 @@ class SimulatorWindow(MWidget):
         self.app.mount.signals.pointDone.connect(self.pointer.updatePositions)
         self.app.mount.signals.pointDone.connect(self.telescope.updateRotation)
         self.show()
-        self.colorChange()
 
     def setupCamera(self, parentEntity) -> None:
         self.camera = self.window3D.camera()
@@ -203,11 +202,11 @@ class SimulatorWindow(MWidget):
 
     def createScene(self) -> None:
         self.createReference()
-        self.light.create()
-        self.world.create()
+        self.horizon.create()
         self.dome.create()
         self.telescope.create()
-        self.horizon.create()
         self.laser.create()
         self.pointer.create()
         self.buildPoints.create()
+        self.light.create()
+        self.world.create()

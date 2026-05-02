@@ -177,9 +177,7 @@ class SettDevice:
             },
         }
         self.app.deviceRegistry.update(self.drivers)
-
         self.driversData = {}
-
         for driver in self.drivers:
             self.drivers[driver]["uiDropDown"].activated.connect(
                 partial(self.dispatchDriverDropdown, driver)

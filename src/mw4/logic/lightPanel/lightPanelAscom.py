@@ -17,9 +17,7 @@ from mw4.base.ascomClass import AscomClass
 from typing import Any
 
 
-class CoverAscom(AscomClass):
-    coverStates = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
-
+class LightPanelAscom(AscomClass):
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
 
@@ -27,21 +25,29 @@ class CoverAscom(AscomClass):
         self.data = parent.data
 
     def workerPollData(self) -> None:
-        state = self.getAscomProperty("CoverState")
-        stateText = self.coverStates[state]
-        self.storePropertyToData(stateText, "Status.Cover")
+        brightness = self.getAscomProperty("Brightness")
+        self.storePropertyToData(brightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
 
-    def closeCover(self) -> None:
+        maxBrightness = self.getAscomProperty("MaxBrightness")
+        self.storePropertyToData(
+            maxBrightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX"
+        )
+
+    def lightOn(self) -> None:
         if not self.deviceConnected:
             return
-        self.callMethodThreaded(self.client.CloseCover)
+        maxBrightness = self.app.cover.data.get(
+            "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
+        )
+        brightness = int(maxBrightness / 2)
+        self.callMethodThreaded(self.client.CalibratorOn, brightness)
 
-    def openCover(self) -> None:
+    def lightOff(self) -> None:
         if not self.deviceConnected:
             return
-        self.callMethodThreaded(self.client.OpenCover)
+        self.callMethodThreaded(self.client.CalibratorOff)
 
-    def haltCover(self) -> None:
+    def lightIntensity(self, value: float) -> None:
         if not self.deviceConnected:
             return
-        self.callMethodThreaded(self.client.HaltCover)
+        self.callMethodThreaded(self.client.CalibratorOn, value)

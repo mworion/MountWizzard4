@@ -13,14 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import platform
 import PySide6
 import pytest
 import unittest.mock as mock
 from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
-from mw4.logic.cover.coverAscom import CoverAscom
+from mw4.logic.lightPanel.lightPanelAscom import LightPanelAscom
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()
@@ -44,19 +43,6 @@ def function():
         Name = "test"
         DriverVersion = "1"
         DriverInfo = "test1"
-        CoverState = 1
-
-        @staticmethod
-        def CloseCover():
-            return True
-
-        @staticmethod
-        def OpenCover():
-            return True
-
-        @staticmethod
-        def HaltCover():
-            return True
 
         @staticmethod
         def CalibratorOn():
@@ -71,7 +57,7 @@ def function():
             return True
 
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = CoverAscom(parent=Parent)
+        func = LightPanelAscom(parent=Parent)
         func.client = Test1()
         func.clientProps = []
         yield func
@@ -83,46 +69,46 @@ def test_workerPollData_1(function):
             function.workerPollData()
 
 
-def test_closeCover_1(function):
+def test_lightOn_1(function):
     function.deviceConnected = False
-    function.closeCover()
+    function.lightOn()
 
 
-def test_closeCover_2(function):
+def test_lightOn_2(function):
     function.deviceConnected = True
-    function.closeCover()
+    function.lightOn()
 
 
-def test_closeCover_3(function):
+def test_lightOn_3(function):
     function.deviceConnected = True
-    function.closeCover()
+    function.lightOn()
 
 
-def test_openCover_1(function):
+def test_lightOff_1(function):
     function.deviceConnected = False
-    function.openCover()
+    function.lightOff()
 
 
-def test_openCover_2(function):
+def test_lightOff_2(function):
     function.deviceConnected = True
-    function.openCover()
+    function.lightOff()
 
 
-def test_openCover_3(function):
+def test_lightOff_3(function):
     function.deviceConnected = True
-    function.openCover()
+    function.lightOff()
 
 
-def test_haltCover_1(function):
+def test_lightIntensity_1(function):
     function.deviceConnected = False
-    function.haltCover()
+    function.lightIntensity(0)
 
 
-def test_haltCover_2(function):
+def test_lightIntensity_2(function):
     function.deviceConnected = True
-    function.haltCover()
+    function.lightIntensity(0)
 
 
-def test_haltCover_3(function):
+def test_lightIntensity_3(function):
     function.deviceConnected = True
-    function.haltCover()
+    function.lightIntensity(0)

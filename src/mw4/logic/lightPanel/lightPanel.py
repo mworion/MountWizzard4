@@ -16,15 +16,15 @@
 import logging
 import platform
 from mw4.base.signalsDevices import Signals
-from mw4.logic.cover.coverAlpaca import CoverAlpaca
-from mw4.logic.cover.coverIndi import CoverIndi
+from mw4.logic.lightPanel.lightPanelAlpaca import LightPanelAlpaca
+from mw4.logic.lightPanel.lightPanelIndi import LightPanelIndi
 from typing import Any
 
 if platform.system() == "Windows":
-    from mw4.logic.cover.coverAscom import CoverAscom
+    from mw4.logic.lightPanel.LightPanelAscom import LightPanelAscom
 
 
-class Cover:
+class LightPanel:
     log = logging.getLogger("MW4")
 
     def __init__(self, app: Any) -> None:
@@ -38,12 +38,12 @@ class Cover:
         self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
         self.framework: str = ""
         self.run: dict[str, Any] = {
-            "indi": CoverIndi(self),
-            "alpaca": CoverAlpaca(self),
+            "indi": LightPanelIndi(self),
+            "alpaca": LightPanelAlpaca(self),
         }
 
         if platform.system() == "Windows":
-            self.run["ascom"] = CoverAscom(self)
+            self.run["ascom"] = LightPanelAscom(self)
 
         for fw in self.run:
             self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
@@ -54,11 +54,11 @@ class Cover:
     def stopCommunication(self) -> None:
         self.run[self.framework].stopCommunication()
 
-    def closeCover(self) -> None:
-        self.run[self.framework].closeCover()
+    def lightOn(self) -> None:
+        self.run[self.framework].lightOn()
 
-    def openCover(self) -> None:
-        self.run[self.framework].openCover()
+    def lightOff(self) -> None:
+        self.run[self.framework].lightOff()
 
-    def haltCover(self) -> None:
-        self.run[self.framework].haltCover()
+    def lightIntensity(self, value: float) -> None:
+        self.run[self.framework].lightIntensity(value)

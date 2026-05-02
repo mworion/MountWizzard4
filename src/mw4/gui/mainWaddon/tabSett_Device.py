@@ -79,6 +79,12 @@ class SettDevice:
                 "class": self.app.cover,
                 "deviceType": "covercalibrator",
             },
+            "lightPanel": {
+                "uiDropDown": self.ui.lightPanelDevice,
+                "uiSetup": self.ui.lightPanelSetup,
+                "class": self.app.lightPanel,
+                "deviceType": "covercalibrator",
+            },
             "camera": {
                 "uiDropDown": self.ui.cameraDevice,
                 "uiSetup": self.ui.cameraSetup,

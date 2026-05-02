@@ -145,6 +145,23 @@ class Cover:
     def haltCover():
         return
 
+
+class LightPanelSignals(QObject):
+    message = Signal(object)
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(object)
+    deviceDisconnected = Signal(object)
+
+
+class LightPanel:
+    def __init__(self):
+        self.signals = LightPanelSignals()
+        self.data = {}
+        self.framework = None
+        self.defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
+        self.run = {"indi": "dummy"}
+
     @staticmethod
     def lightOn():
         return
@@ -1174,6 +1191,7 @@ class App(QObject):
         self.plateSolve = PlateSolve()
         self.camera = Camera()
         self.cover = Cover()
+        self.lightPanel = LightPanel()
         self.data = Data()
         self.filter = Filter()
         self.focuser = Focuser()

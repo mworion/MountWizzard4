@@ -30,6 +30,7 @@ from mw4.logic.environment.seeingWeather import SeeingWeather
 from mw4.logic.environment.sensorWeather import SensorWeather
 from mw4.logic.filter.filter import Filter
 from mw4.logic.focuser.focuser import Focuser
+from mw4.logic.lightPanel.lightPanel import LightPanel
 from mw4.logic.measure.measure import MeasureData
 from mw4.logic.plateSolve.plateSolve import PlateSolve
 from mw4.logic.powerswitch.kmRelay import KMRelay
@@ -145,6 +146,7 @@ class MountWizzard4(QObject):
             "refraction": None,
             "dome": None,
             "cover": None,
+            "lightPanel": None,
             "camera": None,
             "filter": None,
             "sensor1Weather": None,
@@ -193,6 +195,7 @@ class MountWizzard4(QObject):
         self.directWeather = DirectWeather(self)
         self.seeingWeather = SeeingWeather(self)
         self.cover = Cover(self)
+        self.lightPanel = LightPanel(self)
         self.dome = Dome(self)
         self.camera = Camera(self)
         self.filter = Filter(self)

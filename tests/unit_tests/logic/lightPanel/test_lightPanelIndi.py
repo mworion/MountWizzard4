@@ -14,53 +14,61 @@
 #
 ###########################################################
 import pytest
-from mw4.logic.cover.cover import Cover
-from mw4.logic.cover.coverIndi import CoverIndi
+from mw4.logic.lightPanel.lightPanel import LightPanel
+from mw4.logic.lightPanel.lightPanelIndi import LightPanelIndi
 from queue import Queue
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    cover = Cover(App())
-    func = CoverIndi(parent=cover)
+    cover = LightPanel(App())
+    func = LightPanelIndi(parent=cover)
     yield func
     func.app.threadPool.waitForDone(5000)
 
 
 # ---------------------------------------------------------------------------
-# closeCover
+# lightOn
 # ---------------------------------------------------------------------------
 
 
-def test_closeCover(function):
-    """closeCover() puts one CAP_PARK/PARK command into txQ."""
+def test_lightOn(function):
+    """lightOn() puts FLAT_LIGHT_ON='On' into txQ."""
     function.txQ = Queue()
     function.deviceName = "test_cover"
-    function.closeCover()
+    function.lightOn()
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == ("test_cover", "CAP_PARK", {"PARK": "On"})
+    assert function.txQ.get() == ("test_cover", "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "On"})
 
 
 # ---------------------------------------------------------------------------
-# openCover
+# lightOff
 # ---------------------------------------------------------------------------
 
 
-def test_openCover(function):
-    """openCover() puts one CAP_PARK/UNPARK command into txQ."""
+def test_lightOff(function):
+    """lightOff() puts FLAT_LIGHT_ON='Off' into txQ."""
     function.txQ = Queue()
     function.deviceName = "test_cover"
-    function.openCover()
+    function.lightOff()
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == ("test_cover", "CAP_PARK", {"UNPARK": "On"})
+    assert function.txQ.get() == ("test_cover", "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_OFF": "On"})
 
 
 # ---------------------------------------------------------------------------
-# haltCover
+# lightIntensity
 # ---------------------------------------------------------------------------
 
 
-def test_haltCover(function):
-    """haltCover() is a no-op (pass)."""
-    function.haltCover()  # must not raise
+def test_lightIntensity(function):
+    """lightIntensity(value) puts the intensity value into txQ."""
+    function.txQ = Queue()
+    function.deviceName = "test_cover"
+    function.lightIntensity(128.0)
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == (
+        "test_cover",
+        "FLAT_LIGHT_INTENSITY",
+        {"FLAT_LIGHT_INTENSITY_VALUE": 128.0},
+    )

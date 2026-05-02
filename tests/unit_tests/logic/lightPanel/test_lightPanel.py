@@ -13,16 +13,15 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
 import unittest.mock as mock
-from mw4.logic.cover.cover import Cover
+from mw4.logic.lightPanel.lightPanel import LightPanel
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="function")
 def function():
-    func = Cover(app=App())
+    func = LightPanel(app=App())
     yield func
 
 
@@ -55,37 +54,37 @@ def test_stopCommunication_2(function):
         function.stopCommunication()
 
 
-def test_closeCover_2(function):
+def test_lightOn_2(function):
     function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "closeCover", return_value=False):
-        function.closeCover()
+    with mock.patch.object(function.run["indi"], "lightOn", return_value=False):
+        function.lightOn()
 
 
-def test_closeCover_3(function):
+def test_lightOn_3(function):
     function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "closeCover", return_value=True):
-        function.closeCover()
+    with mock.patch.object(function.run["indi"], "lightOn", return_value=True):
+        function.lightOn()
 
 
-def test_openCover_2(function):
+def test_lightOff_2(function):
     function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "openCover", return_value=False):
-        function.openCover()
+    with mock.patch.object(function.run["indi"], "lightOff", return_value=False):
+        function.lightOff()
 
 
-def test_openCover_3(function):
+def test_lightOff_3(function):
     function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "openCover", return_value=True):
-        function.openCover()
+    with mock.patch.object(function.run["indi"], "lightOff", return_value=True):
+        function.lightOff()
 
 
-def test_haltCover_2(function):
+def test_lightIntensity_2(function):
     function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "haltCover", return_value=False):
-        function.haltCover()
+    with mock.patch.object(function.run["indi"], "lightIntensity", return_value=False):
+        function.lightIntensity(0)
 
 
-def test_haltCover_3(function):
+def test_lightIntensity_3(function):
     function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "haltCover", return_value=True):
-        function.haltCover()
+    with mock.patch.object(function.run["indi"], "lightIntensity", return_value=True):
+        function.lightIntensity(0)

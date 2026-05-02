@@ -17,7 +17,7 @@ from mw4.base.alpacaClass import AlpacaClass
 from typing import Any
 
 
-class CoverAlpaca(AlpacaClass):
+class LightPanelAlpaca(AlpacaClass):
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.parent = parent
@@ -25,25 +25,32 @@ class CoverAlpaca(AlpacaClass):
         self.data = parent.data
 
     def workerPollData(self) -> None:
-        states = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
         if not self.deviceConnected:
             return
 
-        state = self.getAlpacaProperty("coverstate")
-        stateText = states[state]
-        self.storePropertyToData(stateText, "Status.Cover")
+        brightness = self.getAlpacaProperty("Brightness")
+        self.storePropertyToData(brightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
 
-    def closeCover(self) -> None:
+        maxBrightness = self.getAlpacaProperty("MaxBrightness")
+        self.storePropertyToData(
+            maxBrightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX"
+        )
+
+    def lightOn(self) -> None:
         if not self.deviceConnected:
             return
-        self.getAlpacaProperty("closecover")
+        maxBrightness = self.app.cover.data.get(
+            "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
+        )
+        brightness = int(maxBrightness / 2)
+        self.setAlpacaProperty("calibratoron", Brightness=brightness)
 
-    def openCover(self) -> None:
+    def lightOff(self) -> None:
         if not self.deviceConnected:
             return
-        self.getAlpacaProperty("opencover")
+        self.getAlpacaProperty("calibratoroff")
 
-    def haltCover(self) -> None:
+    def lightIntensity(self, value: float) -> None:
         if not self.deviceConnected:
             return
-        self.getAlpacaProperty("haltcover")
+        self.setAlpacaProperty("calibratoron", Brightness=value)

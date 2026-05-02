@@ -13617,20 +13617,20 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </widget>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="GroupFlipFlat">
+      <widget class="QGroupBox" name="GroupCover">
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>115</y>
+         <y>95</y>
          <width>366</width>
-         <height>81</height>
+         <height>51</height>
         </rect>
        </property>
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the light on. Only available when closed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="title">
-        <string>Cover Calibrator</string>
+        <string>Cover</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -13716,99 +13716,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>Stop</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="coverLightOn">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>50</y>
-          <width>76</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Light On</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="coverLightOff">
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>50</y>
-          <width>76</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the light off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Light Off</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_411">
-        <property name="geometry">
-         <rect>
-          <x>175</x>
-          <y>50</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Intensity</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="coverLightIntensity">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>50</y>
-          <width>111</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::FocusPolicy::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Shows the status of the cover.</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LayoutDirection::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="frame">
-         <bool>false</bool>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
         </property>
        </widget>
       </widget>
@@ -14434,6 +14341,118 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="checked">
          <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="GroupLightPanel">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>160</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the light on. Only available when closed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="title">
+        <string>LightPanel</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_411">
+        <property name="geometry">
+         <rect>
+          <x>175</x>
+          <y>25</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Intensity</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lightPanelIntensity">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>250</x>
+          <y>25</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Shows the status of the cover.</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="lightPanelOn">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>25</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Light On</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="lightPanelOff">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>25</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the light off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Light Off</string>
         </property>
        </widget>
       </widget>
@@ -23882,7 +23901,7 @@ Next point in time when satellite settles.</string>
          <x>400</x>
          <y>10</y>
          <width>366</width>
-         <height>201</height>
+         <height>231</height>
         </rect>
        </property>
        <property name="title">
@@ -24156,7 +24175,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>11</x>
-          <y>170</y>
+          <y>200</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -24182,7 +24201,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>170</y>
+          <y>200</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -24198,7 +24217,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>85</x>
-          <y>170</y>
+          <y>200</y>
           <width>221</width>
           <height>21</height>
          </rect>
@@ -24211,6 +24230,64 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is not a telecope driver for the interaction for modeling etc. This driver is used for capturing the configured optics data like focal length from a telecope driver !&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="lightPanelDevice">
+        <property name="geometry">
+         <rect>
+          <x>85</x>
+          <y>170</y>
+          <width>221</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_59">
+        <property name="geometry">
+         <rect>
+          <x>12</x>
+          <y>170</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>LightPanel</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="lightPanelSetup">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>170</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Configure the cover device. A popup will open and ask for the parameters.</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
         </property>
        </widget>
       </widget>
@@ -32636,8 +32713,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>coverUnpark</tabstop>
   <tabstop>coverPark</tabstop>
   <tabstop>coverHalt</tabstop>
-  <tabstop>coverLightOn</tabstop>
-  <tabstop>coverLightOff</tabstop>
   <tabstop>moveFocuserIn</tabstop>
   <tabstop>moveFocuserOut</tabstop>
   <tabstop>haltFocuser</tabstop>

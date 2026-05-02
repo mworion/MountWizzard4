@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
 from mw4.gui.mainWaddon.tabImage_Manage import ImageManage
 from mw4.gui.utilities.qtMain import MWidget
@@ -382,19 +381,19 @@ def test_updateCoverStatGui_3(function):
     function.updateCoverStatGui()
 
 
-def test_updateCoverLightGui_1(function):
+def test_updateLightPanelGui_1(function):
     function.app.cover.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = True
-    function.updateCoverLightGui()
+    function.updateLightPanelGui()
 
 
-def test_updateCoverLightGui_2(function):
+def test_updateLightPanelGui_2(function):
     function.app.cover.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = False
-    function.updateCoverLightGui()
+    function.updateLightPanelGui()
 
 
-def test_updateCoverLightGui_3(function):
+def test_updateLightPanelGui_3(function):
     function.app.cover.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = None
-    function.updateCoverLightGui()
+    function.updateLightPanelGui()
 
 
 def test_setCoverPark_1(function):
@@ -458,43 +457,43 @@ def test_haltFocuser_2(function):
 
 
 def test_switchLightOn_1(function):
-    with mock.patch.object(function.app.cover, "lightOn", return_value=False):
-        function.switchLightOn()
+    with mock.patch.object(function.app.lightPanel, "lightOn", return_value=False):
+        function.switchLightPanelOn()
 
 
 def test_switchLightOn_2(function):
-    with mock.patch.object(function.app.cover, "lightOn", return_value=True):
-        function.switchLightOn()
+    with mock.patch.object(function.app.lightPanel, "lightOn", return_value=True):
+        function.switchLightPanelOn()
 
 
 def test_switchLightOff_1(function):
-    with mock.patch.object(function.app.cover, "lightOff", return_value=False):
-        function.switchLightOff()
+    with mock.patch.object(function.app.lightPanel, "lightOff", return_value=False):
+        function.switchLightPanelOff()
 
 
 def test_switchLightOff_2(function):
-    with mock.patch.object(function.app.cover, "lightOff", return_value=True):
-        function.switchLightOff()
+    with mock.patch.object(function.app.lightPanel, "lightOff", return_value=True):
+        function.switchLightPanelOff()
 
 
-def test_setLightIntensity_2(function):
+def test_setLightPanelIntensity_2(function):
     function.app.cover.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, False)):
-        function.setLightIntensity()
+        function.setLightPanelIntensity()
 
 
-def test_setLightIntensity_3(function):
+def test_setLightPanelIntensity_3(function):
     function.app.cover.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
-        with mock.patch.object(function.app.cover, "lightIntensity", return_value=False):
-            function.setLightIntensity()
+        with mock.patch.object(function.app.lightPanel, "lightIntensity", return_value=False):
+            function.setLightPanelIntensity()
 
 
-def test_setLightIntensity_4(function):
+def test_setLightPanelIntensity_4(function):
     function.app.cover.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
-        with mock.patch.object(function.app.cover, "lightIntensity", return_value=True):
-            function.setLightIntensity()
+        with mock.patch.object(function.app.lightPanel, "lightIntensity", return_value=True):
+            function.setLightPanelIntensity()
 
 
 def test_updateDomeGui_1(function):

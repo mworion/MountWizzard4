@@ -40,9 +40,9 @@ class ImageManage:
         self.ui.domeOpenShutter.clicked.connect(self.domeOpenShutter)
         self.ui.domeCloseShutter.clicked.connect(self.domeCloseShutter)
         self.ui.coverHalt.clicked.connect(self.setCoverHalt)
-        self.ui.coverLightOn.clicked.connect(self.switchLightOn)
-        self.ui.coverLightOff.clicked.connect(self.switchLightOff)
-        clickable(self.ui.coverLightIntensity).connect(self.setLightIntensity)
+        self.ui.lightPanelOn.clicked.connect(self.switchLightPanelOn)
+        self.ui.lightPanelOff.clicked.connect(self.switchLightPanelOff)
+        clickable(self.ui.lightPanelIntensity).connect(self.setLightPanelIntensity)
 
         self.ui.aperture.valueChanged.connect(self.updateImagingParam)
         self.ui.focalLength.valueChanged.connect(self.updateImagingParam)
@@ -59,7 +59,7 @@ class ImageManage:
         self.app.gameSL.connect(self.domeMoveGameController)
 
         self.app.update1s.connect(self.updateCoverStatGui)
-        self.app.update1s.connect(self.updateCoverLightGui)
+        self.app.update1s.connect(self.updateLightPanelGui)
         self.app.update1s.connect(self.updateDomeGui)
         self.app.update1s.connect(self.updateShutterStatGui)
 
@@ -341,20 +341,20 @@ class ImageManage:
         value = self.app.cover.data.get("Status.Cover", "-")
         self.ui.coverStatusText.setText(value)
 
-    def updateCoverLightGui(self) -> None:
-        value = self.app.cover.data.get("FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON", None)
+    def updateLightPanelGui(self) -> None:
+        value = self.app.lightPanel.data.get("FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON", None)
         if value:
-            changeStyleDynamic(self.ui.coverLightOn, "run", True)
-            changeStyleDynamic(self.ui.coverLightOff, "run", False)
+            changeStyleDynamic(self.ui.lightPanelOn, "run", True)
+            changeStyleDynamic(self.ui.lightPanelOff, "run", False)
         elif value is None:
-            changeStyleDynamic(self.ui.coverLightOn, "run", False)
-            changeStyleDynamic(self.ui.coverLightOff, "run", False)
+            changeStyleDynamic(self.ui.lightPanelOn, "run", False)
+            changeStyleDynamic(self.ui.lightPanelOff, "run", False)
         else:
-            changeStyleDynamic(self.ui.coverLightOn, "run", False)
-            changeStyleDynamic(self.ui.coverLightOff, "run", True)
+            changeStyleDynamic(self.ui.lightPanelOn, "run", False)
+            changeStyleDynamic(self.ui.lightPanelOff, "run", True)
 
         value = self.app.cover.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
-        guiSetText(self.ui.coverLightIntensity, "3.0f", value)
+        guiSetText(self.ui.lightPanelIntensity, "3.0f", value)
 
     def setCoverPark(self) -> None:
         self.app.cover.closeCover()
@@ -380,20 +380,19 @@ class ImageManage:
     def haltFocuser(self) -> None:
         self.app.focuser.halt()
 
-    def switchLightOn(self) -> None:
-        self.app.cover.lightOn()
+    def switchLightPanelOn(self) -> None:
+        self.app.lightPanel.lightOn()
 
-    def switchLightOff(self) -> None:
-        self.app.cover.lightOff()
+    def switchLightPanelOff(self) -> None:
+        self.app.lightPanel.lightOff()
 
-    def setLightIntensity(self) -> None:
+    def setLightPanelIntensity(self) -> None:
         actValue = self.app.cover.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE", 0
         )
         maxBrightness = self.app.cover.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
         )
-
         dlg = QInputDialog()
         value, ok = dlg.getInt(
             self.mainW,
@@ -406,9 +405,8 @@ class ImageManage:
         )
         if not ok:
             return
-
-        self.ui.coverLightIntensity.setText(f"{value}")
-        self.app.cover.lightIntensity(value)
+        self.ui.lightPanelIntensity.setText(f"{value}")
+        self.app.lightPanel.lightIntensity(value)
 
     def updateDomeGui(self) -> None:
         value = self.app.dome.data.get("DOME_MOTION.DOME_CW", None)

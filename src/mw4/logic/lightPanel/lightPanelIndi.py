@@ -18,17 +18,18 @@ from mw4.base.indiClass import IndiClass
 from typing import Any
 
 
-class CoverIndi(IndiClass):
+class LightPanelIndi(IndiClass):
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.signals = parent.signals
 
-    def closeCover(self) -> None:
-        self.txQ.put((self.deviceName, "CAP_PARK", {"PARK": "On"}))
+    def lightOn(self) -> None:
+        self.txQ.put((self.deviceName, "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "On"}))
 
-    def openCover(self) -> None:
-        self.txQ.put((self.deviceName, "CAP_PARK", {"UNPARK": "On"}))
+    def lightOff(self) -> None:
+        self.txQ.put((self.deviceName, "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_OFF": "On"}))
 
-    @staticmethod
-    def haltCover() -> None:
-        pass
+    def lightIntensity(self, value: float) -> None:
+        self.txQ.put(
+            (self.deviceName, "FLAT_LIGHT_INTENSITY", {"FLAT_LIGHT_INTENSITY_VALUE": value})
+        )

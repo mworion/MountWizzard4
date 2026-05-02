@@ -346,7 +346,6 @@ class KeyPad:
     def workerWebsocket(self, host: tuple) -> None:
         if self.ws is not None:
             return
-
         ipaddress = host[0]
         websocket.setdefaulttimeout(3)
         self.ws = websocket.WebSocketApp(

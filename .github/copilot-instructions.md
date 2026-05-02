@@ -9,18 +9,18 @@ weather, and satellite workflows.
 
 ## Tech Stack
 
-| Area              | Technology                               |
-|-------------------|------------------------------------------|
-| Language          | Python 3.11–3.13                         |
-| GUI               | PySide6 (Qt6), PyQtGraph                 |
-| Astronomy         | Astropy, Skyfield, SGP4, SEP, PyERFA     |
-| Data Processing   | NumPy, SciPy, OpenCV (headless)          |
-| Protocols         | INDI (indipyclient), WebSocket, HID, REST|
-| Image Formats     | FITS, XISF                               |
-| Configuration     | PyYAML, JSON                             |
-| Build             | uv / uv_build                            |
-| Testing           | pytest, pytest-qt, pytest-cov            |
-| Linting           | Ruff                                     |
+| Area              | Technology                                |
+|-------------------|-------------------------------------------|
+| Language          | Python 3.11 compatible                    |
+| GUI               | PySide6 (Qt6), PyQtGraph                  |
+| Astronomy         | Astropy, Skyfield, SGP4, SEP, PyERFA      |
+| Data Processing   | NumPy, SciPy, OpenCV (headless)           |
+| Protocols         | INDI (indipyclient), WebSocket, HID, REST |
+| Image Formats     | FITS, XISF                                |
+| Configuration     | PyYAML, JSON                              |
+| Build             | uv / uv_build                             |
+| Testing           | pytest, pytest-qt, pytest-cov             |
+| Linting           | Ruff                                      |
 
 ---
 
@@ -48,7 +48,7 @@ src_add/
 - **Imports**: sorted without sections (isort via Ruff)
 - **GUI communication**: Qt Signals & Slots
 - **Tests**: pytest, mocking with `unittest.mock`
-- **Naming**: camelCase for classes and modules
+- **Naming**: camelCase for classes and modules and variable
 - **No** direct dependencies between GUI tabs (loose coupling)
 
 ---
@@ -118,3 +118,5 @@ def test_myFunction(app):
   automatically generated.
 - When adding comments, check the line length – it must not exceed the limit
   defined in `pyproject.toml`; split long comments into multiple lines.
+- stay close with the task description and do not add any additional features or changes that are not
+  explicitly mentioned in the task description.

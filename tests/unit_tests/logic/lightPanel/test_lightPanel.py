@@ -13,8 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
+import importlib
 import pytest
 import unittest.mock as mock
+import mw4.logic.lightPanel.lightPanel as lp_module
 from mw4.logic.lightPanel.lightPanel import LightPanel
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -88,3 +90,4 @@ def test_lightIntensity_3(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "lightIntensity", return_value=True):
         function.lightIntensity(0)
+

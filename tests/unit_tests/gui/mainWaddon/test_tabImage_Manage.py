@@ -382,17 +382,17 @@ def test_updateCoverStatGui_3(function):
 
 
 def test_updateLightPanelGui_1(function):
-    function.app.cover.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = True
+    function.app.lightPanel.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = True
     function.updateLightPanelGui()
 
 
 def test_updateLightPanelGui_2(function):
-    function.app.cover.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = False
+    function.app.lightPanel.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = False
     function.updateLightPanelGui()
 
 
 def test_updateLightPanelGui_3(function):
-    function.app.cover.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = None
+    function.app.lightPanel.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = None
     function.updateLightPanelGui()
 
 

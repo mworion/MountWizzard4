@@ -63,6 +63,7 @@ class UploadPopup(MWidget):
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.returnValues = {"success": False, "successMount": False}
         self.parentWidget = parentWidget
+        self.msg = parentWidget.app.msg
         self.threadPool = parentWidget.app.threadPool
         self.worker: Worker | None = None
         self.workerStatus: Worker | None = None
@@ -112,6 +113,7 @@ class UploadPopup(MWidget):
 
         single = len(text) == 1
         multiple = len(text) > 1
+        print(text)
 
         if single and text[0].split()[0] in ["Uploading", "Processing"]:
             self.signalStatus.emit(text[0])
@@ -165,14 +167,14 @@ class UploadPopup(MWidget):
     def deleteHostData(self) -> bool:
         returnValues = requests.delete(self.generateURL())
         if returnValues.status_code not in [200, 204]:
-            self.log.debug(f"Error deleting files: {returnValues.status_code}")
+            self.msg.emit(0, "Upload", "Error", f"Deleting File: {returnValues.status_code}")
             return False
         return True
 
     def postHostData(self, files: dict) -> bool:
         returnValues = requests.post(self.generateURL(), files=files)
         if returnValues.status_code != 202:
-            self.log.debug(f"Error uploading data: {returnValues.status_code}")
+            self.msg.emit(0, "Upload", "Error", f"Data: {returnValues.status_code}")
             return False
         return True
 
@@ -196,6 +198,7 @@ class UploadPopup(MWidget):
                 self.signalProgressBarColor.emit("green")
             else:
                 self.signalProgressBarColor.emit("red")
+                self.msg.emit(2, "Upload", "Error", "Uploaded but mount failed to save data")
 
         mainThreadSleep(1500)
         self.close()

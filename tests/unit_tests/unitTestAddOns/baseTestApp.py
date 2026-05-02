@@ -14,6 +14,7 @@
 #
 ###########################################################
 import numpy as np
+from mw4.base.deviceRegistry import DeviceRegistry
 from mw4.base.signalsDevices import Signals
 from packaging.version import Version
 from pathlib import Path
@@ -1223,6 +1224,7 @@ class App(QObject):
         }
         self.uiWindows = {}
         self.mainW = MainW()
+        self.deviceRegistry = DeviceRegistry()
         self.threadPool = QThreadPool()
         self.onlineMode = False
 

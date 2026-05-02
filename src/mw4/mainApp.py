@@ -17,6 +17,7 @@ import logging
 import sys
 from importlib.metadata import version
 from mw4.base.bootstrap import MwGlob
+from mw4.base.deviceRegistry import DeviceRegistry
 from mw4.base.loggerMW import setCustomLoggingLevel
 from mw4.base.timerManager import CyclicTimerManager
 from mw4.gui.mainWindow.mainWindow import MainWindow
@@ -141,6 +142,7 @@ class MountWizzard4(QObject):
         self.statusOperationRunning: int = 0
         self.messageQueue: Queue = Queue()
         self.config = loadProfileStart(self.mwGlob["configDir"])
+        self.deviceRegistry: DeviceRegistry = DeviceRegistry()
         self.deviceStat: dict[str, bool | None] = {
             "mount": None,
             "refraction": None,
@@ -253,13 +255,13 @@ class MountWizzard4(QObject):
             self.config["topoElev"] = float(location.elevation.m)
 
     def getActiveDrivers(self) -> dict[str, Any]:
-        """Return the live driver-class mapping from the settings GUI.
+        """Return the live driver-class mapping from the device registry.
 
         Centralises the single point of GUI/logic coupling so that
         logic-layer modules (e.g. MeasureData) never need to navigate
         the widget tree directly.
         """
-        return self.mainW.mainWindowAddons.addons["SettDevice"].drivers
+        return self.deviceRegistry.getDrivers()
 
     # ------------------------------------------------------------------
     # Lifecycle

@@ -15,6 +15,7 @@
 | 2026-04-30 | Applied fixes: BUG-01, BUG-02, BUG-03, STUB-01, STUB-02; annotation sweeps for `styles.py` (+31), `tabMount_Sett.py` (+22), `simulatorW.py` (+15), `tabAnalysis.py` (+12); `driverProtocol.py` deleted (ARCH-02 superseded) |
 | 2026-04-30 | Commits `7344e992a`/`0e0aac8d9`: `tabMount_Sett.py` slot parameter types fully annotated (`ObsSite`, `Setting`, `Firmware`, `Angle`); dead `cycleData` timer references removed from `startNINATimer`/`stopNINATimer` and `startSGProTimer`/`stopSGProTimer`; QA-03 fully resolved |
 | 2026-05-02 | Tier-3 annotation sweep completed: `satellite_calculations.py`, `imageTabs.py`, `buildPoints.py` (simulator), `tabSat_Search.py`, `splashScreen.py`, `tools.py` (simulator), `dome.py` (simulator), `indiClass.py`, `loggerMW.py`, `qtMain.py`, `tabSett_Update.py`; all 22 GUI `__init__(self, app)` methods annotated with `app: Any` and `-> None`; `simulatorW.py.__init__` `app: Any` added |
+| 2026-05-02 | ARCH-04 resolved: introduced `DeviceRegistry` (`src/mw4/base/deviceRegistry.py`); `getActiveDrivers()` now delegates to `app.deviceRegistry`; `SettDevice.__init__` pushes `self.drivers` into the registry; 6 new unit tests added in `tests/unit_tests/base/test_deviceRegistry.py` |
 
 ---
 
@@ -489,7 +490,7 @@ entry points.
 | ARCH-01 | All 19 logic classes | Replace `app: Any` with `AppProtocol` | ⚠️ Open |
 | ARCH-02 | `dome.py`, `focuser.py`, `filter.py`, `camera.py` | `DriverProtocol` deleted; `run: dict[str, Any]` typing gap remains | ⚠️ Open (superseded) |
 | ARCH-03 | `mainWindowAddons.py` | Define `MainWindowAddonProtocol`; remove `hasattr` dispatch | ⚠️ Open |
-| ARCH-04 | `mainApp.py` | Decouple `getActiveDrivers()` from live widget tree | ⚠️ Open |
+| ARCH-04 | `mainApp.py` | Decouple `getActiveDrivers()` from live widget tree | ✅ Fixed |
 | ARCH-05 | `pyproject.toml` | Add `mypy`/`ANN` Ruff rules to CI pipeline | ⚠️ Open |
 | QA-01 | `baseTestApp.py` | Replace with `create_autospec`-based fixtures | ⚠️ Open |
 | STUB-04 | `loggerMW.py` | Resolve `redirectSTD` dead code | ⚠️ Open |

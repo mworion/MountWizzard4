@@ -59,9 +59,8 @@ class LoggerWriter:
 
 
 def redirectSTD() -> None:
-    pass
-    # sys.stderr = LoggerWriter(logging.getLogger().error, "STDERR", sys.stderr)
-    # sys.stdout = LoggerWriter(logging.getLogger().info, "STDOUT", sys.stdout)
+    sys.stderr = LoggerWriter(logging.getLogger().error, "STDERR", sys.stderr)
+    sys.stdout = LoggerWriter(logging.getLogger().info, "STDOUT", sys.stdout)
 
 
 def setupLogging() -> None:

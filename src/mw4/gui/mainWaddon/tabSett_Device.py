@@ -176,6 +176,7 @@ class SettDevice:
                 "deviceType": None,
             },
         }
+        self.app.deviceRegistry.update(self.drivers)
 
         self.driversData = {}
 

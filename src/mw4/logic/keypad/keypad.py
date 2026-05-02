@@ -192,8 +192,7 @@ class KeyPad:
         return result
 
     def convertChar(self, inChar: int) -> int:
-        outChar = self.charTrans.get(inChar, inChar)
-        return outChar
+        return self.charTrans.get(inChar, inChar)
 
     def dispText(self, value: list[int]) -> None:
         row = [0] * 16
@@ -260,8 +259,7 @@ class KeyPad:
     def send(self, message: list[int]) -> None:
         if self.ws is None:
             return
-        messageToSend = str(message)
-        self.ws.send(messageToSend, websocket.ABNF.OPCODE_BINARY)
+        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
 
     def mousePressed(self, key: str) -> None:
         keyUsed = self.buttonCodes.get(key, None)

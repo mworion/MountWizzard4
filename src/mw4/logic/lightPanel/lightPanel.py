@@ -21,7 +21,7 @@ from mw4.logic.lightPanel.lightPanelIndi import LightPanelIndi
 from typing import Any
 
 if platform.system() == "Windows":
-    from mw4.logic.lightPanel.LightPanelAscom import LightPanelAscom
+    from mw4.logic.lightPanel.lightPanelAscom import LightPanelAscom
 
 
 class LightPanel:

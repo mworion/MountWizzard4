@@ -19,6 +19,7 @@ from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.QtGui import QFont, QVector3D
 from skyfield import functions
+from typing import Any
 
 
 class SimulatorBuildPoints:
@@ -27,7 +28,7 @@ class SimulatorBuildPoints:
     POINT_RADIUS = 0.07
     FONT_SIZE = 50
 
-    def __init__(self, parent, app):
+    def __init__(self, parent: Any, app: Any) -> None:
         super().__init__()
         self.parent = parent
         self.app = app
@@ -38,13 +39,13 @@ class SimulatorBuildPoints:
         self.app.updatePointMarker.connect(self.create)
         self.app.drawBuildPoints.connect(self.create)
 
-    def showEnable(self):
+    def showEnable(self) -> None:
         isVisible = self.parent.ui.showBuildPoints.isChecked()
         node = self.parent.entityModel.get("buildPoints")
         if node:
             node["entity"].setEnabled(isVisible)
 
-    def clear(self):
+    def clear(self) -> None:
         node = self.parent.entityModel.get("buildPoints")
         if not node:
             return
@@ -54,7 +55,7 @@ class SimulatorBuildPoints:
         del self.parent.entityModel["buildPoints"]
         self.points = []
 
-    def updatePositions(self):
+    def updatePositions(self) -> None:
         if not self.app.mount.obsSite.haJNow:
             return
 
@@ -66,7 +67,13 @@ class SimulatorBuildPoints:
         if node:
             node["trans"].setTranslation(QVector3D(PB[0], PB[1], PB[2]))
 
-    def createLine(self, parentEntity, dx, dy, dz):
+    def createLine(
+        self,
+        parentEntity: Qt3DCore.QEntity,
+        dx: float,
+        dy: float,
+        dz: float,
+    ) -> tuple:
         """
         Create a line draw a line between two point or better along dx, dy, dz.
         Therefore, three transformations are made and the resulting vector has
@@ -100,7 +107,13 @@ class SimulatorBuildPoints:
 
         return (e1, trans1, e2, trans2, e3, trans3, mesh3, mat3)
 
-    def createPoint(self, parentEntity, alt, az, status):
+    def createPoint(
+        self,
+        parentEntity: Qt3DCore.QEntity,
+        alt: float,
+        az: float,
+        status: int,
+    ) -> tuple:
         """
         the point is located in a distance of radius meters from the ota axis
         and positioned in azimuth and altitude correctly. its representation
@@ -122,7 +135,15 @@ class SimulatorBuildPoints:
         entity.addComponent(mat)
         return (entity, mesh, trans, mat), x, y, z
 
-    def createAnnotation(self, parentEntity, alt, az, text, status, faceIn=False):
+    def createAnnotation(
+        self,
+        parentEntity: Qt3DCore.QEntity,
+        alt: float,
+        az: float,
+        text: str,
+        status: int,
+        faceIn: bool = False,
+    ) -> tuple:
         """
         the annotation - basically the number of the point - is positioned
         relative to the build point in its local coordinate system. to face the
@@ -164,7 +185,7 @@ class SimulatorBuildPoints:
         e2.addComponent(mat2)
         return (e1, trans1, e2, trans2, mesh2, mat2, e3, trans3)
 
-    def loopCreate(self, buildPointEntity):
+    def loopCreate(self, buildPointEntity: Qt3DCore.QEntity) -> None:
         isNumber = self.parent.ui.showNumbers.isChecked()
         isSlewPath = self.parent.ui.showSlewPath.isChecked()
 
@@ -191,7 +212,7 @@ class SimulatorBuildPoints:
             element = {"x": x, "y": y, "z": z, "a": a, "e": e, "l": line}
             self.points.append(element)
 
-    def create(self):
+    def create(self) -> bool:
         """
         Create show the point in the sky if checked, in addition if
         selected the slew path between the points, and in addition if checked

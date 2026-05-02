@@ -14,10 +14,11 @@
 #
 ###########################################################
 from mw4.gui.extWindows.video.videoBase import VideoWindowBase
+from typing import Any
 
 
 class VideoWindow(VideoWindowBase):
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         super().__init__(app=app)
         self.setWindowTitle("Video Stream 1")
         self.setObjectName("Video1")

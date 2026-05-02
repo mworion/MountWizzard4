@@ -37,7 +37,7 @@ from skyfield.api import Time
 class MWidget(QWidget, Styles):
     log = logging.getLogger("MW4")
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.initUI()
         self.screenSizeX = QGuiApplication.primaryScreen().geometry().width()
@@ -57,7 +57,7 @@ class MWidget(QWidget, Styles):
         self.ui = None
 
     @staticmethod
-    def saveWindowAsPNG(window) -> None:
+    def saveWindowAsPNG(window: QWidget) -> None:
         name = window.windowTitle().replace(" ", "_")
         timeTrigger = datetime.datetime.now(datetime.UTC)
         timeTag = timeTrigger.strftime("%Y-%m-%d-%H-%M-%S")
@@ -66,7 +66,7 @@ class MWidget(QWidget, Styles):
         window.log.info(f"Screenshot: [{fullFileName}]")
         window.grab().save(fullFileName)
 
-    def saveAllWindowsAsPNG(self, window):
+    def saveAllWindowsAsPNG(self, window: QWidget) -> None:
         windows = window.app.mainW.externalWindows.uiWindows
         self.saveWindowAsPNG(window)
         for window in windows:
@@ -171,7 +171,7 @@ class MWidget(QWidget, Styles):
         filterSet: str,
         enableDir: bool = False,
         multiple: bool = False,
-    ):
+    ) -> list[Path] | Path:
         dlg = self.prepareFileDialog(window=window, enableDir=enableDir)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         dlg.setWindowTitle(title)
@@ -199,7 +199,7 @@ class MWidget(QWidget, Styles):
         folder: Path,
         filterSet: str,
         enableDir: bool = False,
-    ):
+    ) -> Path:
         dlg = self.prepareFileDialog(window, enableDir)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         dlg.setWindowTitle(title)

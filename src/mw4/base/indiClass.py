@@ -132,7 +132,7 @@ class IndiClass:
             if vectors:
                 self.writeVectorsToData(item, vectors)
 
-    def cleanupStop(self):
+    def cleanupStop(self) -> None:
         self.clientMutex.unlock()
 
     def startCommunication(self) -> None:

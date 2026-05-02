@@ -16,10 +16,11 @@
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.bigPopup_ui import Ui_BigPopup
+from typing import Any
 
 
 class BigPopup(MWidget):
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
         self.ui = Ui_BigPopup()

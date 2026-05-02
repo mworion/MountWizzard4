@@ -22,6 +22,7 @@ from mw4.logic.keypad.keypad import KeyPad
 from PySide6.QtCore import QMutex, QObject, Signal
 from PySide6.QtGui import QPixmap
 from qimage2ndarray import array2qimage
+from typing import Any
 
 
 class KeypadSignals(QObject):
@@ -37,7 +38,7 @@ class KeypadSignals(QObject):
 
 
 class KeypadWindow(MWidget):
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
         self.msg = app.msg
@@ -186,7 +187,7 @@ class KeypadWindow(MWidget):
         self.clearCursor()
         self.inputActive = False
 
-    def clearCursor(self):
+    def clearCursor(self) -> None:
         self.inputActive = False
         self.ui.cursor.setVisible(False)
 

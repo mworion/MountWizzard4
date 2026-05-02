@@ -16,10 +16,11 @@
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import linkModel
 from PySide6.QtGui import QVector3D
+from typing import Any
 
 
 class SimulatorDome:
-    def __init__(self, parent, app):
+    def __init__(self, parent: Any, app: Any) -> None:
         super().__init__()
         self.parent = parent
         self.app = app
@@ -29,7 +30,7 @@ class SimulatorDome:
         self.app.update1s.connect(self.updateShutter)
         self.parent.ui.domeTransparent.checkStateChanged.connect(self.setTransparency)
 
-    def setTransparency(self):
+    def setTransparency(self) -> None:
         showTransparent = self.parent.ui.domeTransparent.isChecked()
         alpha = 0.5 if showTransparent else 1
         for node in [
@@ -44,7 +45,7 @@ class SimulatorDome:
             if nodeM:
                 nodeM["material"].setAlpha(alpha)
 
-    def showEnable(self, show):
+    def showEnable(self, show: bool) -> None:
         node = self.parent.entityModel.get("domeRoot")
         if node:
             node["entity"].setEnabled(show)
@@ -52,7 +53,7 @@ class SimulatorDome:
         else:
             self.app.updateDomeSettings.disconnect(self.updateSize)
 
-    def updateSize(self):
+    def updateSize(self) -> None:
         """
         updateSettings resize parts depending on the setting made in the dome tab.
         likewise some transformations have to be reverted as they are propagated
@@ -70,12 +71,12 @@ class SimulatorDome:
         nodeT.setScale3D(QVector3D(scale, scale, scale))
         nodeT.setTranslation(QVector3D(0, 0, corrZ))
 
-    def updateAzimuth(self, azimuth: float):
+    def updateAzimuth(self, azimuth: float) -> None:
         node = self.parent.entityModel.get("domeSphere")
         if node:
             node["trans"].setRotationZ(-azimuth)
 
-    def updateShutter(self):
+    def updateShutter(self) -> None:
         if "DOME_SHUTTER.SHUTTER_OPEN" not in self.app.dome.data:
             return
 
@@ -101,7 +102,7 @@ class SimulatorDome:
             if node:
                 node["trans"].setTranslation(QVector3D(0, -shiftShutter, 0))
 
-    def create(self):
+    def create(self) -> None:
         model = {
             "domeRoot": {
                 "parent": "ref_fusion_m",

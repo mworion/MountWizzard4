@@ -22,6 +22,7 @@ from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import hemisphere_ui
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QCursor, QGuiApplication
+from typing import Any
 
 
 class HemisphereWindow(MWidget):
@@ -41,7 +42,7 @@ class HemisphereWindow(MWidget):
         - checked build points  50
     """
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
         self.msg = app.msg

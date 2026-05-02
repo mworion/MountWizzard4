@@ -20,6 +20,7 @@ from mw4.gui.widgets import message_ui
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QBrush, QColor, QFont
 from PySide6.QtWidgets import QTableWidgetItem
+from typing import Any
 
 
 class MessageWindow(MWidget):
@@ -30,7 +31,7 @@ class MessageWindow(MWidget):
     TEXT_WARNING = 2
     TEXT_ERROR = 3
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
         self.ui = message_ui.Ui_MessageDialog()

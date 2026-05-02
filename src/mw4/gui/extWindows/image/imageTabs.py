@@ -25,6 +25,7 @@ from mw4.logic.fits.fitsFunction import (
 )
 from PySide6.QtCore import QRectF
 from PySide6.QtGui import QFont
+from typing import Any
 
 
 class ImageTabs:
@@ -37,7 +38,7 @@ class ImageTabs:
         "extreme": 1000,
     }
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         super().__init__()
         self.parent = parent
         self.ui = parent.ui
@@ -143,7 +144,7 @@ class ImageTabs:
         self.setCrosshair()
         self.writeHeaderDataToGUI(self.fileHandler.header)
 
-    def showHFR(self):
+    def showHFR(self) -> None:
         self.ui.hfr.setImage(imageDisp=self.photometry.hfrGrid)
         self.ui.hfr.barItem.setLevels((self.photometry.hfrMin, self.photometry.hfrMax))
         self.ui.hfrPercentile.setText(f"{self.photometry.hfrPercentile:1.1f}")
@@ -154,7 +155,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(getTabIndex(tab, "HFR"), True)
 
-    def showTiltSquare(self):
+    def showTiltSquare(self) -> bool:
         segHFR = self.photometry.hfrSegSquare
         w = self.photometry.w
         h = self.photometry.h
@@ -268,7 +269,7 @@ class ImageTabs:
         tab.setTabEnabled(getTabIndex(tab, "TiltSquare"), True)
         return True
 
-    def showTiltTriangle(self):
+    def showTiltTriangle(self) -> None:
         segHFR = self.photometry.hfrSegTriangle
         w = self.photometry.w
         h = self.photometry.h
@@ -370,7 +371,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(getTabIndex(tab, "TiltTriangle"), True)
 
-    def showRoundness(self):
+    def showRoundness(self) -> None:
         self.ui.roundness.setImage(imageDisp=self.photometry.roundnessGrid)
         self.ui.roundness.p[0].showAxes(False, showValues=False)
         self.ui.roundness.p[0].setMouseEnabled(x=False, y=False)
@@ -385,7 +386,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(getTabIndex(tab, "Roundness"), True)
 
-    def showAberrationInspect(self):
+    def showAberrationInspect(self) -> None:
         self.ui.aberration.barItem.setVisible(False)
         self.ui.aberration.p[0].clear()
         self.ui.aberration.p[0].setAspectLocked(True)
@@ -409,7 +410,7 @@ class ImageTabs:
         tab.setTabEnabled(getTabIndex(tab, "Aberration"), True)
         self.ui.aberration.p[0].getViewBox().rightMouseRange()
 
-    def showImageSources(self):
+    def showImageSources(self) -> None:
         temp = self.imageSourceRange
         self.ui.imageSource.setImage(imageDisp=self.photometry.image)
         self.ui.imageSource.p[0].getViewBox().sigRangeChanged.connect(self.getImageSourceRange)
@@ -433,7 +434,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(getTabIndex(tab, "Sources"), True)
 
-    def showBackground(self):
+    def showBackground(self) -> None:
         self.ui.background.setImage(imageDisp=self.photometry.background)
         self.ui.background.barItem.setLevels(
             (self.photometry.backgroundMin, self.photometry.backgroundMax)
@@ -441,7 +442,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(getTabIndex(tab, "Back"), True)
 
-    def showBackgroundRMS(self):
+    def showBackgroundRMS(self) -> None:
         self.ui.backgroundRMS.setImage(imageDisp=self.photometry.backgroundRMS)
         tab = self.ui.tabImage
         tab.setTabEnabled(getTabIndex(tab, "BackRMS"), True)

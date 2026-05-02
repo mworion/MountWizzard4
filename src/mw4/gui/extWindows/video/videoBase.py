@@ -23,12 +23,13 @@ from mw4.gui.widgets import video_ui
 from PySide6.QtCore import Signal
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QInputDialog, QLineEdit, QSizePolicy
+from typing import Any
 
 
 class VideoWindowBase(MWidget):
     pixmapReady = Signal(object)
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
         self.msg = app.msg

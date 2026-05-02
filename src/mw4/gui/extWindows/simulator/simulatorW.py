@@ -30,12 +30,13 @@ from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.QtGui import QColor, QVector3D
 from PySide6.QtWidgets import QWidget
+from typing import Any
 
 
 class SimulatorWindow(MWidget):
     log = logging.getLogger("MW4")
 
-    def __init__(self, app) -> None:
+    def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
         self.ui = simulator_ui.Ui_SimulatorDialog()

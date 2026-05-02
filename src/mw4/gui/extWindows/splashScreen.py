@@ -17,8 +17,8 @@
 
 from importlib.resources import as_file, files
 from PySide6.QtCore import QRectF, Qt
-from PySide6.QtGui import QColor, QPixmap
-from PySide6.QtWidgets import QApplication, QSplashScreen
+from PySide6.QtGui import QColor, QPainter, QPixmap
+from PySide6.QtWidgets import QApplication, QSplashScreen, QWidget
 
 
 class SplashScreen:
@@ -36,7 +36,7 @@ class SplashScreen:
     Maurizio
     """
 
-    def __init__(self, application=None):
+    def __init__(self, application: QApplication | None = None) -> None:
         self._qapp = application
         with as_file(files("mw4").joinpath("assets/icon/mw4.png")) as imageFile:
             self._pxm = QPixmap(str(imageFile))
@@ -52,11 +52,11 @@ class SplashScreen:
         self.qss.raise_()
         QApplication.processEvents()
 
-    def close(self):
+    def close(self) -> None:
         self.update()
         self.qss.close()
 
-    def setValue(self, val):
+    def setValue(self, val: float) -> None:
         step = self.maxv / 5.0
         v = self.cval
         while v < val:
@@ -66,15 +66,15 @@ class SplashScreen:
         self.cval = val
         self.update()
 
-    def showMessage(self, msg):
+    def showMessage(self, msg: str) -> None:
         self.msg = msg
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         self.qss.update()
         QApplication.processEvents()
 
-    def drawContents(self, painter):
+    def drawContents(self, painter: QPainter) -> None:
         viewPort = painter.viewport()
         w = viewPort.right()
         h = viewPort.bottom()
@@ -97,5 +97,5 @@ class SplashScreen:
         painter.drawLine(w, 0, w, h)
         painter.drawLine(w, h, 0, h)
 
-    def finish(self, qwid):
+    def finish(self, qwid: QWidget) -> None:
         self.qss.finish(qwid)

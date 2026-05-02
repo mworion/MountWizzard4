@@ -20,10 +20,11 @@ from collections.abc import Callable
 from functools import partial, partialmethod
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
+from typing import Any
 
 if not hasattr(logging.Logger, "_set_defaults"):
     # noinspection PyUnusedLocal
-    def _set_defaults(self, *args, **kwargs):
+    def _set_defaults(self, *args: Any, **kwargs: Any) -> None:
         return
 
     logging.Logger._set_defaults = _set_defaults

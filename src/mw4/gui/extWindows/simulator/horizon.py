@@ -18,13 +18,14 @@ from mw4.gui.extWindows.simulator.materials import Materials
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.QtGui import QVector3D
+from typing import Any
 
 
 class SimulatorHorizon:
     WALL_RADIUS = 4
     WALL_SPACE = 5
 
-    def __init__(self, parent, app):
+    def __init__(self, parent: Any, app: Any) -> None:
         super().__init__()
         self.parent = parent
         self.app = app

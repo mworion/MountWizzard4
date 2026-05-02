@@ -24,7 +24,7 @@ from skyfield.units import Angle
 from typing import Any
 
 
-def findSunlit(sat: EarthSatellite, ephemeris, tEvent: tuple) -> bool:
+def findSunlit(sat: EarthSatellite, ephemeris: Any, tEvent: tuple) -> bool:
     sunlit = sat.at(tEvent).is_sunlit(ephemeris)
     return sunlit
 
@@ -106,7 +106,7 @@ def calcSatelliteMeridianTransit(
 ) -> Callable:
     difference = sat - loc
 
-    def westOfMeridianAt(t):
+    def westOfMeridianAt(t: Time) -> bool:
         alt, az, _ = difference.at(t).altaz()
         delta = (az.degrees + tolerance + 360) % 360 - 180
         return delta < 0

@@ -24,7 +24,7 @@ from typing import Any
 
 
 class AnalyseWindow(MWidget):
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
         self.ui = analyse_ui.Ui_AnalyseDialog()

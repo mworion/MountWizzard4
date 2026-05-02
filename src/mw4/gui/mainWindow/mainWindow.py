@@ -32,10 +32,11 @@ from mw4.logic.profiles.profile import loadConfig, saveConfig
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
 from skyfield.almanac import TWILIGHTS, dark_twilight_day
+from typing import Any
 
 
 class MainWindow(MWidget):
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
         self.msg = app.msg

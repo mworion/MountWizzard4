@@ -28,10 +28,11 @@ from mw4.logic.photometry.photometry import Photometry
 from mw4.mountcontrol.convert import convertToDMS, convertToHMS
 from pathlib import Path
 from skyfield.api import Angle
+from typing import Any
 
 
 class ImageWindow(MWidget):
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
         self.msg = app.msg

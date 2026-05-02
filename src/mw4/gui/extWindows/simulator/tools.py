@@ -19,9 +19,12 @@ from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.Qt3DRender import Qt3DRender
 from PySide6.QtCore import QUrl
 from PySide6.QtGui import QColor, QFont, QVector3D
+from typing import Any
 
 
-def linkLight(node):
+def linkLight(
+    node: dict,
+) -> Qt3DRender.QPointLight | Qt3DRender.QDirectionalLight | Qt3DRender.QSpotLight | None:
     light = node.get("light")
     if light:
         if light[0] == "point":
@@ -46,7 +49,16 @@ def linkLight(node):
     return lightSource
 
 
-def linkSource(node):
+def linkSource(
+    node: dict,
+) -> (
+    Qt3DRender.QMesh
+    | Qt3DExtras.QCuboidMesh
+    | Qt3DExtras.QSphereMesh
+    | Qt3DExtras.QCylinderMesh
+    | Qt3DExtras.QExtrudedTextMesh
+    | None
+):
     source = node.get("source")
     if source:
         if isinstance(source, str):
@@ -85,7 +97,7 @@ def linkSource(node):
     return mesh
 
 
-def linkTransform(node):
+def linkTransform(node: dict) -> Qt3DCore.QTransform | None:
     trans = node.get("trans")
     rot = node.get("rot")
     scale = node.get("scale")
@@ -109,12 +121,12 @@ def linkTransform(node):
     return transform
 
 
-def linkMaterial(node):
+def linkMaterial(node: dict) -> Any:
     mat = node.get("mat")
     return mat
 
 
-def linkModel(model, entityModel):
+def linkModel(model: dict, entityModel: dict) -> None:
     for node in model:
         parent = model[node].get("parent")
         if parent is None:
@@ -145,7 +157,15 @@ def linkModel(model, entityModel):
             entityModel[node]["light"] = light
 
 
-def getMaterial(entity):
+def getMaterial(
+    entity: Qt3DCore.QEntity | None,
+) -> (
+    Qt3DExtras.QMetalRoughMaterial
+    | Qt3DExtras.QDiffuseSpecularMaterial
+    | Qt3DExtras.QPhongAlphaMaterial
+    | Qt3DExtras.QPhongMaterial
+    | None
+):
     if entity is None:
         return None
 
@@ -161,7 +181,9 @@ def getMaterial(entity):
             return component
 
 
-def getLight(entity):
+def getLight(
+    entity: Qt3DCore.QEntity | None,
+) -> Qt3DRender.QPointLight | Qt3DRender.QDirectionalLight | Qt3DRender.QSpotLight | None:
     if entity is None:
         return None
 

@@ -22,13 +22,14 @@ from mw4.gui.widgets import measure_ui
 from PySide6.QtCore import QMutex
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QListView
+from typing import Any
 
 
 class MeasureWindow(MWidget):
     NUMBER_POINTS = 250
     NUMBER_XTICKS = 5
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
         self.ui = measure_ui.Ui_MeasureDialog()

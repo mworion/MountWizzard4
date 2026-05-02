@@ -29,6 +29,8 @@ from mw4.logic.satellites.satellite_calculations import (
 )
 from PySide6.QtCore import QObject, QPoint, QRect, Qt, Signal
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
+from skyfield.api import EarthSatellite, Time
+from skyfield.toposlib import GeographicPosition
 from typing import Any
 
 
@@ -147,12 +149,12 @@ class SatSearch(QObject, SatData):
     def updateListSats(
         self,
         row: int,
-        satParam,
+        satParam: tuple[float, float, float, float],
         isUp: list = [],
         isSunlit: bool = False,
         appMag: float | None = None,
         twilight: int | None = None,
-    ):
+    ) -> None:
         entry = QTableWidgetItem(f"{satParam[0]:5.0f}")
         entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.setSatListItem.emit(row, 2, entry)
@@ -186,7 +188,7 @@ class SatSearch(QObject, SatData):
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.setSatListItem.emit(row, 8, entry)
 
-    def calcSatListDynamic(self):
+    def calcSatListDynamic(self) -> None:
         # to optimize performance, we do not update if the tab is not visible
         if self.ui.satTabWidget.currentIndex() != 0 or not self.ui.satTabWidget.isVisible():
             return
@@ -219,14 +221,23 @@ class SatSearch(QObject, SatData):
                 appMag = 99
             self.updateListSats(row, satParam, isSunlit=isSunlit, appMag=appMag)
 
-    def checkSatOk(self, sat, tEnd):
+    def checkSatOk(self, sat: EarthSatellite, tEnd: Time) -> bool:
         msg = sat.at(tEnd).message
         if msg:
             self.mainW.log.warning(f"{sat.name} caused SGP4: [{msg}]")
             return False
         return True
 
-    def calcSat(self, sat, row, loc, timeNow, timeNext, altMin, eph):
+    def calcSat(
+        self,
+        sat: EarthSatellite,
+        row: int,
+        loc: GeographicPosition,
+        timeNow: Time,
+        timeNext: Time,
+        altMin: float,
+        eph: Any,
+    ) -> None:
         satParam = findRangeRate(sat, loc, timeNow)
         if not np.isnan(satParam).any():
             isSunlit = findSunlit(sat, eph, timeNow)
@@ -241,7 +252,7 @@ class SatSearch(QObject, SatData):
             appMag = 99
         self.updateListSats(row, satParam, isUp, isSunlit, appMag, fitTwilight)
 
-    def workerCalcSatList(self):
+    def workerCalcSatList(self) -> None:
         satTab = self.ui.listSats
         loc = self.app.mount.obsSite.location
         ts = self.app.mount.obsSite.ts
@@ -266,7 +277,7 @@ class SatSearch(QObject, SatData):
         self.ui.satFilterGroup.setTitle(t)
         changeStyleDynamic(self.ui.satFilterGroup, "run", False)
 
-    def calcSatList(self):
+    def calcSatList(self) -> None:
         title = "Setup " + self.mainW.timeZoneString()
         self.ui.satSetupGroup.setTitle(title)
         self.worker = Worker(self.workerCalcSatList)
@@ -274,7 +285,7 @@ class SatSearch(QObject, SatData):
         changeStyleDynamic(self.ui.satFilterGroup, "running", True)
         self.app.threadPool.start(self.worker)
 
-    def fillSatListName(self):
+    def fillSatListName(self) -> None:
         self.ui.listSats.setRowCount(0)
         for name in self.satellites.objects:
             number = self.satellites.objects[name].model.satnum

@@ -81,4 +81,3 @@ def test_getDriversReturnsAllKeys(registry: DeviceRegistry) -> None:
     result = registry.getDrivers()
     # assert
     assert set(result.keys()) == {"camera", "dome", "focuser"}
-

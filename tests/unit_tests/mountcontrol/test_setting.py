@@ -24,6 +24,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function():
     yield Setting(App().mount)
 
+
 #
 #
 # testing the class Setting and it's attribute

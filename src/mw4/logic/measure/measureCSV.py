@@ -74,7 +74,9 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
     ]
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any = None, parent: Any = None, data: dict[str, float]={}) -> None:
+    def __init__(
+        self, app: Any = None, parent: Any = None, data: dict[str, float] = {}
+    ) -> None:
         super().__init__()
 
         self.app = app

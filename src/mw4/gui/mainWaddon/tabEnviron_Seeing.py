@@ -55,6 +55,7 @@ class EnvironSeeing:
         "badlayer_gradient",
         "jetstream",
     ]
+
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
@@ -136,15 +137,11 @@ class EnvironSeeing:
         item = QTableWidgetItem()
         item.setTextAlignment(Qt.AlignmentFlag.AlignHCenter)
         item.setForeground(QColor(self.mainW.M_PRIM))
-        t = self.applyColumnStyle(
-            item, j, field, data, i, colorPrim, colorQuar, colorTer
-        )
+        t = self.applyColumnStyle(item, j, field, data, i, colorPrim, colorQuar, colorTer)
         item.setText(t)
         return item
 
-    def markActualColumn(
-        self, item: QTableWidgetItem, data: dict, i: int
-    ) -> int:
+    def markActualColumn(self, item: QTableWidgetItem, data: dict, i: int) -> int:
         item.setForeground(QColor(self.mainW.M_PINK))
         val = data["seeing_arcsec"][i]
         self.ui.limitForecast.setText(f"{val}")
@@ -167,9 +164,7 @@ class EnvironSeeing:
         for i in range(0, 96):
             isActual = abs(data["time"][i] - ts.now()) < 1 / 48
             for j, field in enumerate(self.DataFields):
-                item = self.buildSeeingItem(
-                    j, field, data, i, colorPrim, colorQuar, colorTer
-                )
+                item = self.buildSeeingItem(j, field, data, i, colorPrim, colorQuar, colorTer)
                 if isActual:
                     columnCenter = self.markActualColumn(item, data, i)
                 seeTab.setItem(j, i, item)

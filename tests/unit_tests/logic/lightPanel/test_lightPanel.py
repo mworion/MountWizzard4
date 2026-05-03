@@ -88,4 +88,3 @@ def test_lightIntensity_3(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "lightIntensity", return_value=True):
         function.lightIntensity(0)
-

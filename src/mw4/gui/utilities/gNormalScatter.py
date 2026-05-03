@@ -27,9 +27,7 @@ class NormalScatter(PlotBase):
         self.col = None
         self.p[0].setVisible(True)
 
-    def setupRangeLimits(
-        self, x: np.ndarray, y: np.ndarray, kwargs: dict
-    ) -> None:
+    def setupRangeLimits(self, x: np.ndarray, y: np.ndarray, kwargs: dict) -> None:
         self.defRange = kwargs.get("range", {})
         xMin = self.defRange.get("xMin", np.min(x))
         yMin = self.defRange.get("yMin", np.min(y))
@@ -54,9 +52,7 @@ class NormalScatter(PlotBase):
             )
             self.p[0].setYRange(yMin, yMax)
 
-    def computeZColorMap(
-        self, z: np.ndarray
-    ) -> tuple[np.ndarray, float, float]:
+    def computeZColorMap(self, z: np.ndarray) -> tuple[np.ndarray, float, float]:
         err = np.abs(z)
         minE = float(np.min(err))
         maxE = float(np.max(err))
@@ -64,9 +60,7 @@ class NormalScatter(PlotBase):
         colorInx = (err - minE) / divisor
         return colorInx, minE, maxE
 
-    def setupColorData(
-        self, x: np.ndarray, kwargs: dict
-    ) -> tuple[float, float]:
+    def setupColorData(self, x: np.ndarray, kwargs: dict) -> tuple[float, float]:
         self.col = kwargs.get("color", self.M_PRIM)
         if isinstance(self.col, str | QColor):
             self.col = [self.col] * len(x)
@@ -75,18 +69,14 @@ class NormalScatter(PlotBase):
             self.colorInx, minE, maxE = self.computeZColorMap(kwargs["z"])
         return minE, maxE
 
-    def setupBarItem(
-        self, kwargs: dict, minE: float, maxE: float
-    ) -> None:
+    def setupBarItem(self, kwargs: dict, minE: float, maxE: float) -> None:
         if not (kwargs.get("bar", False) and "z" in kwargs):
             return
         self.barItem.setVisible(True)
         self.barItem.setLevels(values=(minE, maxE))
         self.barItem.setColorMap(self.cMapGYR)
 
-    def buildSpots(
-        self, x: np.ndarray, y: np.ndarray, kwargs: dict
-    ) -> list:
+    def buildSpots(self, x: np.ndarray, y: np.ndarray, kwargs: dict) -> list:
         dataVal = kwargs.get("data", y)
         spots = []
         for i in range(len(x)):
@@ -115,9 +105,7 @@ class NormalScatter(PlotBase):
     def plot(self, x: np.ndarray, y: np.ndarray, **kwargs) -> None:
         self.p[0].clear()
         self.p[0].showAxes(True, showValues=True)
-        self.scatterItem = pg.ScatterPlotItem(
-            hoverable=True, hoverSize=10, hoverPen=self.pen
-        )
+        self.scatterItem = pg.ScatterPlotItem(hoverable=True, hoverSize=10, hoverPen=self.pen)
         self.p[0].addItem(self.scatterItem)
         self.setupRangeLimits(x, y, kwargs)
         self.p[0].getViewBox().rightMouseRange()

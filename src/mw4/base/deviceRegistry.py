@@ -52,4 +52,3 @@ class DeviceRegistry:
         ``if device not in drivers``.
         """
         return self._drivers
-

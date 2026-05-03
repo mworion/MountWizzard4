@@ -103,9 +103,7 @@ class CustomViewBox(pg.ViewBox):
             return float(np.clip(value, limits[0], limits[1]))
         return value
 
-    def clampXToNeighbors(
-        self, x: np.ndarray, index: int, px: float
-    ) -> float:
+    def clampXToNeighbors(self, x: np.ndarray, index: int, px: float) -> float:
         if index == 0:
             return float(np.minimum(px, x[index + 1]))
         if index == len(x) - 1:

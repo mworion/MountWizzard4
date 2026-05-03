@@ -638,72 +638,56 @@ def test_getTrackingOffsets_1():
 
 def test_getTrackingOffsets_2():
     sat = Satellite(App().mount)
-    with mock.patch.object(
-        Connection, "communicate", return_value=(True, [1, 2, 3], 1)
-    ):
+    with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3], 1)):
         suc = sat.getTrackingOffsets()
         assert not suc
 
 
 def test_getTrackingOffsets_3():
     sat = Satellite(App().mount)
-    with mock.patch.object(
-        Connection, "communicate", return_value=(True, [1, 2, 3], 3)
-    ):
+    with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3], 3)):
         suc = sat.getTrackingOffsets()
         assert not suc
 
 
 def test_getTrackingOffsets_4():
     sat = Satellite(App().mount)
-    with mock.patch.object(
-        Connection, "communicate", return_value=(True, [1, 2, 3, 4], 4)
-    ):
+    with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3, 4], 4)):
         suc = sat.getTrackingOffsets()
         assert suc
 
 
 def test_setTrackingOffsets_1():
     sat = Satellite(App().mount)
-    with mock.patch.object(
-        Connection, "communicate", return_value=(False, [1, 2, 3, 4], 4)
-    ):
+    with mock.patch.object(Connection, "communicate", return_value=(False, [1, 2, 3, 4], 4)):
         suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
         assert not suc
 
 
 def test_setTrackingOffsets_2():
     sat = Satellite(App().mount)
-    with mock.patch.object(
-        Connection, "communicate", return_value=(True, [1, 2, 3, 4], 1)
-    ):
+    with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3, 4], 1)):
         suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
         assert not suc
 
 
 def test_setTrackingOffsets_3():
     sat = Satellite(App().mount)
-    with mock.patch.object(
-        Connection, "communicate", return_value=(True, ["E", 2, 3], 3)
-    ):
+    with mock.patch.object(Connection, "communicate", return_value=(True, ["E", 2, 3], 3)):
         suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
         assert not suc
 
 
 def test_setTrackingOffsets_4():
     sat = Satellite(App().mount)
-    with mock.patch.object(
-        Connection, "communicate", return_value=(True, ["E", 2, 3, 4], 4)
-    ):
+    with mock.patch.object(Connection, "communicate", return_value=(True, ["E", 2, 3, 4], 4)):
         suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
         assert not suc
 
 
 def test_setTrackingOffsets_5():
     sat = Satellite(App().mount)
-    with mock.patch.object(
-        Connection, "communicate", return_value=(True, [1, 2, 3, 4], 4)
-    ):
+    with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3, 4], 4)):
         suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
         assert suc
 

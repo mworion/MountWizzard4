@@ -59,9 +59,7 @@ class IERSTime:
             self.ui.iersSource.addItem(name)
 
     def finishProgEarthRotationData(self) -> None:
-        self.uploadPopup.worker.signals.finished.disconnect(
-            self.finishProgEarthRotationData
-        )
+        self.uploadPopup.worker.signals.finished.disconnect(self.finishProgEarthRotationData)
         if self.uploadPopup.returnValues["success"]:
             self.msg.emit(1, "IERS", "Upload", "Successfully uploaded")
         else:
@@ -84,9 +82,7 @@ class IERSTime:
         )
         self.uploadPopup.show()
         self.uploadPopup.uploadFile()
-        self.uploadPopup.worker.signals.finished.connect(
-            self.finishProgEarthRotationData
-        )
+        self.uploadPopup.worker.signals.finished.connect(self.finishProgEarthRotationData)
 
     def finishLoadTimeDataFromSourceURLs(self) -> None:
         self.downloadPopup.worker.signals.finished.disconnect(

@@ -76,6 +76,11 @@ def function(qapp):
     parent = Test()
     shutil.copyfile("tests/testData/visual.txt", "tests/work/data/visual.txt")
 
+    patcher_dl = mock.patch("mw4.gui.mainWaddon.astroObjects.DownloadPopup")
+    patcher_ul = mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup")
+    patcher_dl.start()
+    patcher_ul.start()
+
     function = AstroObjects(
         window=parent,
         objectText="test",
@@ -89,6 +94,9 @@ def function(qapp):
     function.window.threadPool = QThreadPool()
     function.uiSourceList.currentIndexChanged.disconnect(function.loadSourceUrl)
     yield function
+
+    patcher_dl.stop()
+    patcher_ul.stop()
 
 
 def test_buildSourceListDropdown_1(function):
